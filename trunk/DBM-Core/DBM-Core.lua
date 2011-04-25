@@ -541,7 +541,7 @@ do
 		end
 		
 		-- tries to push a table on the stack
-		-- only tables with <= 4 array entries are accepted as cached tables are only used for tasks with few arguments for performance reasons
+		-- only tables with <= 4 array entries are accepted as cached tables are only used for tasks with few arguments as we don't want to have big arrays wasting our precious memory space doing nothing...
 		-- also, the maximum number of cached tables is limited to 8 as DBM rarely has more than eight scheduled tasks with less than 4 arguments at the same time
 		-- this is just to re-use all the tables of the small tasks that are scheduled all the time (like the wipe detection)
 		-- note that the cache does not use weak references anywhere for performance reasons, so a cached table will never be deleted by the garbage collector
@@ -622,6 +622,7 @@ do
 		function removeAllMatching(f, mod, ...)
 			-- remove all elements that match the signature, this destroyes the heap and leaves a normal array
 			local v, match
+			local foundMatch = false
 			for i = #heap, 1, -1 do -- iterate backwards over the array to allow usage of table.remove
 				v = heap[i]
 				if (not f or v.func == f) and (not mod or v.mod == mod) then
@@ -635,12 +636,15 @@ do
 					if match then
 						table.remove(heap, i)
 						firstFree = firstFree - 1
+						foundMatch = true
 					end
 				end
 			end
 			-- rebuild the heap from the array in O(n)
-			for i = floor((firstFree - 1) / 2), 1, -1 do
-				siftDown(i)
+			if foundMatch then
+				for i = floor((firstFree - 1) / 2), 1, -1 do
+					siftDown(i)
+				end
 			end
 		end
 	end
@@ -821,6 +825,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 				DBM:AddMsg(v)
 			end
 		end
+	elseif cmd:sub(1, 7) == "lockout" or cmd:sub(1, 3) == "ids" then
+		if DBM:GetRaidRank() == 0 then
+			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+		end
+		if GetNumRaidMembers() == 0 then
+			return DBM:AddMsg(DBM_ERROR_NO_RAID)
+		end
+		DBM:RequestInstanceInfo()
 	else
 		DBM:LoadGUI()
 	end
@@ -1133,11 +1145,11 @@ do
 				inRaid = true
 				sendSync("H")
 				-- TODO: can be removed as soon as filters are live, this is just for some basic backwards compatibility while 4.1 isn't live
-				if zoneType == "pvp" or zoneType == "arena" then
-					SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
-				else
-					SendAddonMessage("DBMv4-Ver", "Hi!", "RAID")
-				end
+--				if zoneType == "pvp" or zoneType == "arena" then
+--					SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
+--				else
+--					SendAddonMessage("DBMv4-Ver", "Hi!", "RAID")
+--				end
 				self:Schedule(2, DBM.RequestTimers, DBM)
 				fireEvent("raidJoin", UnitName("player"))
 			end
@@ -1163,7 +1175,7 @@ do
 				inRaid = true
 				sendSync("H")
 				-- TODO: can be removed as soon as filters are live, this is just for some basic backwards compatibility while 4.1 isn't live
-				SendAddonMessage("DBMv4-Ver", "Hi!", "PARTY")
+--				SendAddonMessage("DBMv4-Ver", "Hi!", "PARTY")
 				self:Schedule(2, DBM.RequestTimers, DBM)
 				fireEvent("partyJoin", UnitName("player"))
 			end
@@ -1435,27 +1447,35 @@ end
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
-function DBM:ZONE_CHANGED_NEW_AREA()
-	if IsInInstance() then--Don't change or check maps if not in instance, it makes archaeologists mad.
-		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on login or reloadui and returns maelstrom or throne of four winds, the latter loading throne mod by mistake instead of correct boss mod for zone.
-	end
-	local zoneName = GetRealZoneText()
-	local zoneId = GetCurrentMapAreaID()
-	LastZoneMapID = zoneId--Cache map on zone change.
-	LastZoneText = zoneName--Cache zone name on change.
-	for i, v in ipairs(self.AddOns) do
-		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or (checkEntry(v.zoneId, zoneId) and IsInInstance())) then--To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances.
-			-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
-			-- TODO: is this still necessary? this was a WotLK beta bug
-			DBM:Unschedule(DBM.LoadMod, DBM, v)
-			DBM:Schedule(3, DBM.LoadMod, DBM, v)
+do
+	local firstZoneChangedEvent = true
+	function DBM:ZONE_CHANGED_NEW_AREA()
+		if IsInInstance() then --Don't change or check maps if not in instance, it makes archaeologists mad.
+			SetMapToCurrentZone() --To Fix blizzard bug, sometimes map isn't loaded on login or reloadui and returns maelstrom or throne of four winds, the latter loading throne mod by mistake instead of correct boss mod for zone.
 		end
-	end
-	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
-		for i, v in ipairs(DBM.AddOns) do
-			if v.modId == "DBM-PvP" then
-				DBM:LoadMod(v)
-				break
+		local zoneName = GetRealZoneText()
+		local zoneId = GetCurrentMapAreaID()
+		LastZoneMapID = zoneId --Cache map on zone change.
+		LastZoneText = zoneName --Cache zone name on change.
+		for i, v in ipairs(self.AddOns) do
+			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or (checkEntry(v.zoneId, zoneId) and IsInInstance())) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
+				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
+				-- TODO: is this still necessary? this was a WotLK beta bug
+				if firstZoneChangedEvent then
+					firstZoneChangedEvent = false
+					DBM:Unschedule(DBM.LoadMod, DBM, v)
+					DBM:Schedule(3, DBM.LoadMod, DBM, v)
+				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
+					DBM:LoadMod(v)
+				end
+			end
+		end
+		if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-PvP" then
+					DBM:LoadMod(v)
+					break
+				end
 			end
 		end
 	end
@@ -1533,6 +1553,8 @@ do
 	-- RT = Request Timers
 	-- CI = Combat Info
 	-- TI = Timer Info
+	-- IR = Instance Info Request
+	-- II = Instance Info
 	
 	syncHandlers["M"] = function(sender, mod, revision, event, arg)
 		mod = DBM:GetModByName(mod or "")
@@ -1608,6 +1630,185 @@ do
 			DBM:CreatePizzaTimer(time, text, nil, sender)
 		end
 	end
+	
+	-- beware, ugly and missplaced code ahead
+	-- todo: move this somewhere else
+	do
+		local accessList
+		
+		StaticPopupDialogs["DBM_INSTANCE_ID_PERMISSION"] = {
+			text = DBM_REQ_INSTANCE_ID_PERMISSION,
+			button1 = YES,
+			button2 = NO,
+			OnAccept = function(self)
+				accessList[sender] = self.data
+				syncHandlers["IR"](self.data) -- just call the sync handler again, the sender is now on the accessList and the requested data will be sent
+			end,
+			OnCancel = function(self, data, reason)
+				SendAddonMessage("D4", "II\t" .. reason, "WHISPER", self.data)
+			end,
+			timeout = 59,
+			hideOnEscape = 1,
+			noCancelOnReuse = 1,
+			multiple = 1,
+			showAlert = 1,
+			whileDead = 1,
+		}
+		
+		syncHandlers["IR"] = function(sender)
+			if DBM:GetRaidRank(sender) == 0 or sender == UnitName("player") then
+				return
+			end
+			accessList = accessList or {}
+			if not accessList[sender] then
+				-- ask for permission
+				StaticPopup_Show("DBM_INSTANCE_ID_PERMISSION", sender, sender, sender)
+				return
+			end
+			-- okay, send data
+			local sendData = false
+			for i = 1, GetNumSavedInstances() do
+				local name, id, _, difficulty, locked, _, instanceIDMostSig, _, maxPlayers, _, _, progress = GetSavedInstanceInfo(i)
+				local longId = ("%x%x"):format(instanceIDMostSig, id) -- used as unique id by then default UI, so it's probably the "real" id
+				if locked and maxPlayers > 5 then -- only report locked instances and ignore 5 man instances
+					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. longId .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. progress, "WHISPER", sender)
+					sendData = true
+				end
+			end
+			if not sendData then
+				-- send something even if there is nothing to report so the receiver is able to tell you apart from someone who just didn't respond...
+				SendAddonMessage("D4", "II\tNoData", "WHISPER", sender)
+			end
+		end
+		
+		local lastRequest = 0
+		local numResponses = 0
+		local expectedResponses = 0
+		local results
+		
+		local updateInstanceInfo, showResults
+		
+		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress)
+			if GetTime() - lastRequest > 62 or not results then
+				return
+			end
+			if not result then
+				return
+			end
+			name = name or "Unknown"
+			id = id or ""
+			diff = diff or ""
+			maxPlayers = tonumber(maxPlayers or 0) or 0
+			progress = tonumber(progress or 0) or 0
+			
+			-- count responses
+			if not results.responses[sender] then
+				results.responses[sender] = result
+				numResponses = numResponses + 1
+			end
+			
+			local instanceId = name.." "..maxPlayers.." "..diff -- locale-dependant dungeon ID
+			
+			results.data[instanceId] = results.data[instanceId] or {
+				ids = {}, -- array of all ids of all raid members
+				name = name,
+				diff = diff,
+				maxPlayers = maxPlayers,
+			}
+			results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress }
+			table.insert(results.data[instanceId].ids, sender)
+			if numResponses == expectedResponses then -- unlikely, lol
+				DBM:Unschedule(updateInstanceInfo)
+				DBM:Unschedule(showResults)
+				DBM:AddMsg(DBM_INSTANCE_INFO_ALL_RESPONSES)
+				showResults()
+			end
+		end
+		
+		function showResults()
+			-- TODO: you could catch some localized instances by observing IDs if there are multiple players with the same instance ID but a different name ;) (not that useful if you are trying to get a fresh instance)
+			for i, v in pairs(results.data) do
+				DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_HEADER:format(v.name, v.maxPlayers, v.diff))
+				for id, v in ipairs(v.ids) do
+					DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_INSTANCE:format(id, v.progress, strjoin(", ", v)))
+				end
+			end
+			local denied = {}
+			local away = {}
+			local noResponse = {}
+			for i = 1, GetNumRaidMembers() do
+				if not UnitIsUnit("raid"..i, "player") then
+					table.insert(noResponse, UnitName("raid"..i))
+				end
+			end
+			for i, v in pairs(results.responses) do
+				if v == "Data" or v == "NoData" then
+				elseif v == "timeout" then
+					table.insert(away, i)
+				else -- could be "clicked" or "override", in both cases we don't get the data because the dialog requesting it was dismissed
+					table.insert(denied, i)
+				end
+				removeEntry(noResponse, i)
+			end
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_DENIED:format(strjoin(", ", denied)))
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_AWAY:format(strjoin(", ", away)))
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(strjoin(", ", noResponse)))
+			results = nil
+		end
+		
+		local function getResponseStats()
+			local numResponses = 0
+			local sent = 0
+			local denied = 0
+			local away = 0
+			for k, v in pairs(results.responses) do
+				numResponses = numResponses + 1
+				if v == "Data" or v == "NoData" then
+					sent = sent + 1
+				elseif v == "timeout" then
+					away = away + 1
+				else -- could be "clicked" or "override", in both cases we don't get the data because the dialog requesting it was dismissed
+					denied = denied + 1
+				end
+			end
+			return numResponses, sent, denied, away
+		end
+		
+		local function getNumDBMUsers() -- without ourselves
+			local r = 0
+			for i, v in pairs(raid) do
+				if v.revision and v.name ~= UnitName("player") then
+					r = r + 1
+				end
+			end
+			return r
+		end
+		
+		function updateInstanceInfo(timeRemaining)
+			local numResponses, sent, denied, away = getResponseStats()
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATUS_UPDATE:format(numResponses, getNumDBMUsers(), sent, denied, timeRemaining))
+		end
+		
+		function DBM:RequestInstanceInfo()
+			DBM:AddMsg(DBM_INSTANCE_INFO_REQUESTED)
+			lastRequest = GetTime()
+			results = {
+				responses = { -- who responded to our request?
+				},
+				data = { -- the actual data
+				}
+			}
+			numResponses = 0
+			expectedResponses = getNumDBMUsers()
+			sendSync("IR")
+			DBM:Unschedule(updateInstanceInfo)
+			DBM:Unschedule(showResults)
+			DBM:Schedule(17, updateInstanceInfo, 45)
+			DBM:Schedule(32, updateInstanceInfo, 30)
+			DBM:Schedule(48, updateInstanceInfo, 15)
+			DBM:Schedule(62, showResults)
+		end
+	end
 
 	whisperSyncHandlers["RT"] = function(sender)
 		DBM:SendTimers(sender)
@@ -1648,15 +1849,15 @@ do
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "BATTLEGROUND" or channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none") then
 			handleSync(channel, sender, strsplit("\t", msg))
-		elseif prefix == "DBMv4-Ver" and msg == "Hi!" then -- an old client is trying to communicate with us, but we can't respond as he won't be able to receive our messages
-			if raid[sender] and not raid[sender].revision then -- it is actually an old client and not a recent one sending an old sync for compatibility reasons during 4.0
-				raid[sender].revision = 0
-				raid[sender].version = 4
-				raid[sender].displayVersion = "Unknown (uses incompatible pre-4.1 sync system without support for filters)"
-				raid[sender].locale = "unknown"
-			end
-		elseif prefix == "DBMv4-Ver" then -- 4.1 isn't live yet and the old clients can still communicate with us
-			syncHandlers["V"](sender, strsplit("\t", msg))
+--		elseif prefix == "DBMv4-Ver" and msg == "Hi!" then -- an old client is trying to communicate with us, but we can't respond as he won't be able to receive our messages
+--			if raid[sender] and not raid[sender].revision then -- it is actually an old client and not a recent one sending an old sync for compatibility reasons during 4.0
+--				raid[sender].revision = 0
+--				raid[sender].version = 4
+--				raid[sender].displayVersion = "Unknown (uses incompatible pre-4.1 sync system without support for filters)"
+--				raid[sender].locale = "unknown"
+--			end
+--		elseif prefix == "DBMv4-Ver" then -- 4.1 isn't live yet and the old clients can still communicate with us
+--			syncHandlers["V"](sender, strsplit("\t", msg))
 		end
 	end
 end
@@ -2270,7 +2471,7 @@ do
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				DBM:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
-			RegisterAddonMessagePrefix("DBM4-Ver") -- to see old clients which will still try to communicate with us, but we won't be able to respond as they will filter our messages (allow silent failure as this isn't really important)
+--			RegisterAddonMessagePrefix("DBMv4-Ver") -- to see old clients which will still try to communicate with us, but we won't be able to respond as they will filter our messages (allow silent failure as this isn't really important)
 		end
 	end
 end

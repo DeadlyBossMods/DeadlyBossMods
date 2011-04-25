@@ -80,13 +80,15 @@ DBM_LFG_INVITE						= "LFG Invite"
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
 	"/dbm version: Performs a raid-wide version check (alias: ver).",
-	"/dbm version2: Performs a raid-wide version check and whispers members who are out of date (alias: ver2).",
+--	"/dbm version2: Performs a raid-wide version check and whispers members who are out of date (alias: ver2).",
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
 	"/dbm timer <x> <text>: Starts a <x> second DBM Timer with the name <text>.",
 	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second DBM Timer with the name <text> to the raid (requires leader/promoted status).",
 	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
 	"/dbm pull <sec>: Starts a pull timer for <sec> seconds. Gives all raid members with DBM a pull timer (requires leader/promoted status).",
-	"/dbm help: Shows slash command descriptions",
+	"/dbm arrow: shows the DBM arrow, see /dbm arrow help for details.",
+	"/dbm lockout: asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires leader/promoted status).",
+	"/dbm help: Shows this message.",
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
@@ -209,3 +211,15 @@ DBM_ARROW_ERROR_USAGE	= {
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Record Kill"
 DBM_SPEED_KILL_TIMER_OPTION	= "Show a timer to beat your fastest kill"
+
+
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s requested to see your current instance IDs and progress.\nDo you want to send this information to %s? He or she will be able to request this information during your current session (i. e. until you relog)."
+DBM_ERROR_NO_RAID					= "You need to be in a raid group to use this feature."
+DBM_INSTANCE_INFO_REQUESTED			= "Send request for raid lockout information to the raid group.\nPlease note that the users will be asked for permission before sending the data to you, so it might take a minute until we get all responses."
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "Got responses from %d players of %d DBM users: %d sent data, %d denied the request. Waiting %d more seconds for responses..."
+DBM_INSTANCE_INFO_ALL_RESPONSES		= "Received responses from all raid members"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), difficulty %d:"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "ID %s, progress %d: %s"
+DBM_INSTANCE_INFO_STATS_DENIED		= "Denied the request: %s"
+DBM_INSTANCE_INFO_STATS_AWAY		= "Away: %s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No recent DBM version installed: %s"
