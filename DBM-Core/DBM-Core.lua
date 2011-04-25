@@ -1645,7 +1645,7 @@ do
 				syncHandlers["IR"](self.data) -- just call the sync handler again, the sender is now on the accessList and the requested data will be sent
 			end,
 			OnCancel = function(self, data, reason)
-				SendAddonMessage("D4", "II\t" .. reason, "WHISPER", self.data)
+				SendAddonMessage("D4", "II\t" .. (reason or "unknown"), "WHISPER", self.data) -- some events might 
 			end,
 			timeout = 59,
 			hideOnEscape = 1,
