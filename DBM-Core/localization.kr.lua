@@ -81,13 +81,15 @@ DBM_LFG_INVITE						= "던전 입장"
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능한 명령어:",
 	"/dbm version: 공격대 전체 버전 체크 (줄임말: ver)",
-	"/dbm version2: 공격대 전체 DBM 버전 체크. 오래된 DBM일 경우 귓속말로 알립니다. (줄임말: ver2).",	
-	"/dbm unlock: 상태 바 타이머를 움직일 수 있도록 보여줍니다.(줄임말: move)",
-	"/dbm timer <숫자> <글자>: <숫자> 초만큼 진행되는 <글자>바가 생성 됨.",
-	"/dbm broadcast timer <숫자> <글자>: <숫자> 초만큼 진행되는 <글자>바를 공격대에 알립니다.(승급 권한이 있을 경우만 작동)",
-	"/dbm break <min>: <min>분 동안 타이머를 작동합니다.  모든 공격대원에게 DBM이 발송하는 쉬는 시간 타이머를 보냅니다.",	
-	"/dbm pull <sec>: 풀링 타이머. 공격대 전원에게 DBM 풀링 타이머를 알립니다. (승급 권한이 있을 경우만 작동).",	
-	"/dbm help: 현재 보고 있는 도움말.",
+--	"/dbm version2: 공격대 전체 DBM 버전 체크. 오래된 DBM일 경우 귓속말로 알립니다. (줄임말: ver2).",
+	"/dbm unlock: 바 위치조정을 할 수 있도록 상태 바를 보여줌.(줄임말: move)",
+	"/dbm timer <숫자> <글자>: <숫자>초 지속되는 <글자>바가 생성됨.",
+	"/dbm broadcast timer <숫자> <글자>: <숫자>초 지속되는 <글자>바를 공격대에 보여줌 (승급 권한 필요).",
+	"/dbm break <min>: <min>분 지속되는 휴식 타이머를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요).",
+	"/dbm pull <sec>: <sec>초 후 풀링한다는 타이머를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요).",
+	"/dbm arrow: DBM 화살표를 보여줌. 추가 도움말은 /dbm arrow help 를 입력.",
+	"/dbm lockout: 공격대원에게 현재 인던 귀속 정보 확인을 요청함 (출력형식: 던전이름, 던전 ID) (승급 권한 필요).",
+	"/dbm help: 지금 보고 있는 도움말을 보여줌.",
 }
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
@@ -200,5 +202,16 @@ DBM_ARROW_ERROR_USAGE	= {
 
 DBM_SPEED_KILL_TIMER_TEXT	= "가장 빨랐던 보스킬"
 DBM_SPEED_KILL_TIMER_OPTION	= "당신이 죽였던 가장 빨랐던 보스킬 시간을 타이머로 보기"
+
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s 님이 현재 공격대 귀속 정보를 요청합니다.\n%s 님의 요청을 수락하시겠습니까? 현재 상태의 정보가 필요하므로 여러번 요청 할 수도 있습니다. (예: 재접속 할 때 까지)."
+DBM_ERROR_NO_RAID					= "이 기능을 사용하기 위해서는 공격대에 속해 있어야 합니다."
+DBM_INSTANCE_INFO_REQUESTED			= "공격대원에게 공격대 귀속 정보를 요청합니다.\n모든 공격대원에게 별도의 수락 메세지가 갈 것이므로, 모두 응답하기 전까지 약간의 시간이 필요합니다."
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "%d명의 플레이어가 응답했습니다. (총 %d명): %d명이 요청을 수락했으며, %d명은 요청을 거부했습니다. 응답을 %d초 동안 더 기다립니다..."
+DBM_INSTANCE_INFO_ALL_RESPONSES		= "모든 공격대원의 공격대 귀속 정보"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), 난이도 %d:"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 킬수 %d: %s"
+DBM_INSTANCE_INFO_STATS_DENIED		= "요청거부: %s"
+DBM_INSTANCE_INFO_STATS_AWAY		= "자리비움: %s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "DBM 구버전 사용중: %s"
 
 end
