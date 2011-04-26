@@ -59,7 +59,8 @@ L:SetOptionLocalization({
 	specWarnGenerator			= "Спец-предупреждение, когда босс стоит в $spell:91557",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	SetIconOnActivated			= "Устанавливать метку на появившегося босса"
 })
 
 L:SetMiscLocalization({
@@ -195,6 +196,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerNefLanding		= "Приземление Нефариана",
 	OnySwipeTimer		= "Удар хвостом - перезарядка (Ониксия)",
 	NefSwipeTimer		= "Удар хвостом - перезарядка (Нефариан)",
 	OnyBreathTimer		= "Дыхание темного огня (Ониксия)",
@@ -207,12 +209,14 @@ L:SetOptionLocalization({
 	OnyBreath			= "Предупреждение для $spell:94124 Ониксии",
 	NefBreath			= "Предупреждение для $spell:94124 Нефариана",
 	specWarnShadowblazeSoon	= "Предупреждение для $spell:94085 (~5с)",
+	timerNefLanding		= "Отсчет времени до приземления Нефариана",
 	OnySwipeTimer		= "Отсчет времени до восстановления $spell:77827 Ониксии",
 	NefSwipeTimer		= "Отсчет времени до восстановления $spell:77827 Нефариана",
 	OnyBreathTimer		= "Отсчет времени до восстановления $spell:94124 Ониксии",
 	NefBreathTimer		= "Отсчет времени до восстановления $spell:94124 Нефариана",
 	InfoFrame			= "Показывать информационное окно для Электрического заряда Ониксии",
-	SetWater			= "Автоматически отключать настройку Брызги воды\n(включается обратно при выходе из боя)",	
+	SetWater			= "Автоматически отключать настройку Брызги воды\n(Включается обратно при выходе из боя)",	
+	TankArrow			= "Показывать стрелку для кайтера Оживших костяных воинов\n(Работает только для стратегии с одним кайтером)",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
 	RangeFrame			= "Окно проверки дистанции (10м) для $spell:79339\n(Если на вас дебафф - показывает всех, иначе только игроков с метками)"
 })

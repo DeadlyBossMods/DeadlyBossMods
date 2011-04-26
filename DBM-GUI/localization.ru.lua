@@ -88,6 +88,7 @@ L.RaidWarnMessage 			= "Спасибо за использование Deadly Bo
 L.BarWhileMove 				= "Действие рейд-предупреждения"
 L.RaidWarnSound				= "Звук рейд-предупреждения"
 L.SpecialWarnSound			= "Звук спец-предупреждения"
+L.SpecialWarnSound2			= "Звук рейдового спец-предупреждения"
 
 -- Tab: Barsetup
 L.BarSetup   				= "Стиль индикатора"
