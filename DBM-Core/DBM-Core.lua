@@ -1721,7 +1721,7 @@ do
 			}
 			results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress }
 			table.insert(results.data[instanceId].ids, sender)
-			if numResponses == expectedResponses then -- unlikely, lol
+			if numResponses >= expectedResponses then -- unlikely, lol
 				DBM:Unschedule(updateInstanceInfo)
 				DBM:Unschedule(showResults)
 				DBM:AddMsg(DBM_INSTANCE_INFO_ALL_RESPONSES)
@@ -1754,9 +1754,9 @@ do
 				end
 				removeEntry(noResponse, i)
 			end
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_DENIED:format(strjoin(", ", denied)))
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_AWAY:format(strjoin(", ", away)))
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(strjoin(", ", noResponse)))
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_DENIED:format(table.concat(denied, ", ")))
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_AWAY:format(table.concat(away, ", ")))
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(table.concat(noResponse, ", ")))
 			results = nil
 		end
 		
