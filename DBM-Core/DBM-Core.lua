@@ -43,9 +43,9 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.75",
-	DisplayVersion = "4.75 alpha", -- the string that is shown as version
-	ReleaseRevision = 5279 -- the revision of the latest stable version that is available (for /dbm ver2)
+	Version = "4.80",
+	DisplayVersion = "4.81 alpha", -- the string that is shown as version
+	ReleaseRevision = 5649 -- the revision of the latest stable version that is available (for /dbm ver2)
 }
 
 DBM_SavedOptions = {}
