@@ -1,5 +1,5 @@
-﻿## Interface: 40000
-## X-Min-Interface: 40000
+﻿## Interface: 40100
+## X-Min-Interface: 40100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastion of Twilight|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión del Crepúsculo|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0황혼의 요새|r
