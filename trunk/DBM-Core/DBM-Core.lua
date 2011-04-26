@@ -1448,7 +1448,7 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
-	local firstZoneChangedEvent = true
+--	local firstZoneChangedEvent = true
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		if IsInInstance() then --Don't change or check maps if not in instance, it makes archaeologists mad.
 			SetMapToCurrentZone() --To Fix blizzard bug, sometimes map isn't loaded on login or reloadui and returns maelstrom or throne of four winds, the latter loading throne mod by mistake instead of correct boss mod for zone.
@@ -1460,14 +1460,14 @@ do
 		for i, v in ipairs(self.AddOns) do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or (checkEntry(v.zoneId, zoneId) and IsInInstance())) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
 				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
-				-- TODO: is this still necessary? this was a WotLK beta bug
-				if firstZoneChangedEvent then
-					firstZoneChangedEvent = false
+				-- TODO: is this still necessary? this was a WotLK beta bug A: loading stuff during a loading screen seems to bug sometimes as of 4.1
+--				if firstZoneChangedEvent then
+--					firstZoneChangedEvent = false
 					DBM:Unschedule(DBM.LoadMod, DBM, v)
 					DBM:Schedule(3, DBM.LoadMod, DBM, v)
-				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
-					DBM:LoadMod(v)
-				end
+--				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
+--					DBM:LoadMod(v)
+--				end
 			end
 		end
 		if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
