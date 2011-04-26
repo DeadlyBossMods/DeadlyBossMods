@@ -1641,7 +1641,7 @@ do
 			button1 = YES,
 			button2 = NO,
 			OnAccept = function(self)
-				accessList[sender] = self.data
+				accessList[self.data] = true
 				syncHandlers["IR"](self.data) -- just call the sync handler again, the sender is now on the accessList and the requested data will be sent
 			end,
 			OnCancel = function(self, data, reason)
@@ -1697,7 +1697,7 @@ do
 			end
 			name = name or "Unknown"
 			id = id or ""
-			diff = diff or ""
+			diff = tonumber(diff or 0) or 0
 			maxPlayers = tonumber(maxPlayers or 0) or 0
 			progress = tonumber(progress or 0) or 0
 			
@@ -1705,6 +1705,10 @@ do
 			if not results.responses[sender] then
 				results.responses[sender] = result
 				numResponses = numResponses + 1
+			end
+			
+			if result ~= "Data" then
+				return
 			end
 			
 			local instanceId = name.." "..maxPlayers.." "..diff -- locale-dependant dungeon ID
