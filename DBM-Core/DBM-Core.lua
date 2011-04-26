@@ -1668,9 +1668,9 @@ do
 			-- okay, send data
 			local sentData = false
 			for i = 1, GetNumSavedInstances() do
-				local name, id, _, difficulty, locked, _, instanceIDMostSig, isRaid, maxPlayers, _, _, progress = GetSavedInstanceInfo(i)
+				local name, id, _, difficulty, locked, extended, instanceIDMostSig, isRaid, maxPlayers, _, _, progress = GetSavedInstanceInfo(i)
 				local longId = ("%x%x"):format(instanceIDMostSig, id) -- used as unique id by then default UI, so it's probably the "real" id
-				if locked and isRaid then -- only report locked raid instances
+				if (locked or extended) and isRaid then -- only report locked raid instances
 					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. longId .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. (progress or 0), "WHISPER", sender)
 					sentData = true
 				end
