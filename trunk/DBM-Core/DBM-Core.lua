@@ -1666,16 +1666,16 @@ do
 				return
 			end
 			-- okay, send data
-			local sendData = false
+			local sentData = false
 			for i = 1, GetNumSavedInstances() do
 				local name, id, _, difficulty, locked, _, instanceIDMostSig, _, maxPlayers, _, _, progress = GetSavedInstanceInfo(i)
 				local longId = ("%x%x"):format(instanceIDMostSig, id) -- used as unique id by then default UI, so it's probably the "real" id
-				if locked and maxPlayers > 5 then -- only report locked instances and ignore 5 man instances
+				if locked and maxPlayers and maxPlayers > 5 then -- only report locked instances and ignore 5 man instances
 					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. longId .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. progress, "WHISPER", sender)
-					sendData = true
+					sentData = true
 				end
 			end
-			if not sendData then
+			if not sentData then
 				-- send something even if there is nothing to report so the receiver is able to tell you apart from someone who just didn't respond...
 				SendAddonMessage("D4", "II\tNoData", "WHISPER", sender)
 			end
