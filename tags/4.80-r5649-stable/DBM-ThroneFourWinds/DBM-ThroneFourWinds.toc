@@ -1,0 +1,32 @@
+﻿## Interface: 40100
+## X-Min-Interface: 40100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Throne of the Four Winds|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Thron der Vier Winde|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trono de los Cuatro Vientos|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0네 바람의 왕좌|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Трон Четырех Ветров|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0四風王座|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMThroneFourWinds_SavedVars, DBMThroneFourWinds_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-Name: Throne of the Four Winds
+## X-DBM-Mod-Name-deDE: Thron der Vier Winde
+## X-DBM-Mod-Name-esES: Trono de los Cuatro Vientos
+## X-DBM-Mod-Name-koKR: 네 바람의 왕좌
+## X-DBM-Mod-Name-ruRU: Трон Четырех Ветров
+## X-DBM-Mod-Name-zhTW: 四風王座
+## X-DBM-Mod-Sort: 104
+## X-DBM-Mod-LoadZoneID: 773
+localization.en.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+MapSizes.lua
+Conclave.lua
+AlAkir.lua
