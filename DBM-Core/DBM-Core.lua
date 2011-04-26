@@ -1717,7 +1717,7 @@ do
 					maxPlayers = maxPlayers,
 				}
 				results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress }
-				table.insert(results.data[instanceId].ids, sender)
+				table.insert(results.data[instanceId].ids[id], sender)
 			end
 			
 			if numResponses >= expectedResponses then -- unlikely, lol
