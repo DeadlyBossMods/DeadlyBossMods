@@ -1742,7 +1742,7 @@ do
 			local noResponse = {}
 			for i = 1, GetNumRaidMembers() do
 				if not UnitIsUnit("raid"..i, "player") then
-					table.insert(noResponse, UnitName("raid"..i))
+					table.insert(noResponse, (UnitName("raid"..i)))
 				end
 			end
 			for i, v in pairs(results.responses) do
