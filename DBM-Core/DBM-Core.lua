@@ -1668,10 +1668,10 @@ do
 			-- okay, send data
 			local sentData = false
 			for i = 1, GetNumSavedInstances() do
-				local name, id, _, difficulty, locked, _, instanceIDMostSig, _, maxPlayers, _, _, progress = GetSavedInstanceInfo(i)
+				local name, id, _, difficulty, locked, _, instanceIDMostSig, isRaid, maxPlayers, _, _, progress = GetSavedInstanceInfo(i)
 				local longId = ("%x%x"):format(instanceIDMostSig, id) -- used as unique id by then default UI, so it's probably the "real" id
-				if locked and maxPlayers and maxPlayers > 5 then -- only report locked instances and ignore 5 man instances
-					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. longId .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. progress, "WHISPER", sender)
+				if locked and isRaid then -- only report locked raid instances
+					SendAddonMessage("D4", "II\tData\t" .. name .. "\t" .. longId .. "\t" .. difficulty .. "\t" .. maxPlayers .. "\t" .. (progress or 0), "WHISPER", sender)
 					sentData = true
 				end
 			end
@@ -1707,20 +1707,19 @@ do
 				numResponses = numResponses + 1
 			end
 			
-			if result ~= "Data" then
-				return
+			if result == "Data" then
+				-- got data in that response and not just a "no" or "i'm away"
+				local instanceId = name.." "..maxPlayers.." "..diff -- locale-dependant dungeon ID	
+				results.data[instanceId] = results.data[instanceId] or {
+					ids = {}, -- array of all ids of all raid members
+					name = name,
+					diff = diff,
+					maxPlayers = maxPlayers,
+				}
+				results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress }
+				table.insert(results.data[instanceId].ids, sender)
 			end
 			
-			local instanceId = name.." "..maxPlayers.." "..diff -- locale-dependant dungeon ID
-			
-			results.data[instanceId] = results.data[instanceId] or {
-				ids = {}, -- array of all ids of all raid members
-				name = name,
-				diff = diff,
-				maxPlayers = maxPlayers,
-			}
-			results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress }
-			table.insert(results.data[instanceId].ids, sender)
 			if numResponses >= expectedResponses then -- unlikely, lol
 				DBM:Unschedule(updateInstanceInfo)
 				DBM:Unschedule(showResults)
@@ -1731,6 +1730,7 @@ do
 		
 		function showResults()
 			-- TODO: you could catch some localized instances by observing IDs if there are multiple players with the same instance ID but a different name ;) (not that useful if you are trying to get a fresh instance)
+			DBM:AddMsg(DMB_INSTANCE_INFO_RESULTS)
 			for i, v in pairs(results.data) do
 				DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_HEADER:format(v.name, v.maxPlayers, v.diff))
 				for id, v in ipairs(v.ids) do
@@ -1754,9 +1754,15 @@ do
 				end
 				removeEntry(noResponse, i)
 			end
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_DENIED:format(table.concat(denied, ", ")))
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_AWAY:format(table.concat(away, ", ")))
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(table.concat(noResponse, ", ")))
+			if #denied > 0 then
+				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_DENIED:format(table.concat(denied, ", ")))
+			end
+			if #away > 0 then
+				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_AWAY:format(table.concat(away, ", ")))
+			end
+			if #noResponse > 0 then
+				DBM:AddMsg(DBM_INSTANCE_INFO_STATS_NO_RESPONSE:format(table.concat(noResponse, ", ")))
+			end
 			results = nil
 		end
 		
