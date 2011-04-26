@@ -215,7 +215,7 @@ DBM_SPEED_KILL_TIMER_OPTION	= "Show a timer to beat your fastest kill"
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s requested to see your current instance IDs and progress.\nDo you want to send this information to %s? He or she will be able to request this information during your current session (i. e. until you relog)."
 DBM_ERROR_NO_RAID					= "You need to be in a raid group to use this feature."
-DBM_INSTANCE_INFO_REQUESTED			= "Send request for raid lockout information to the raid group.\nPlease note that the users will be asked for permission before sending the data to you, so it might take a minute until we get all responses."
+DBM_INSTANCE_INFO_REQUESTED			= "Sent request for raid lockout information to the raid group.\nPlease note that the users will be asked for permission before sending the data to you, so it might take a minute until we get all responses."
 DBM_INSTANCE_INFO_STATUS_UPDATE		= "Got responses from %d players of %d DBM users: %d sent data, %d denied the request. Waiting %d more seconds for responses..."
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "Received responses from all raid members"
 DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), difficulty %d:"
