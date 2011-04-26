@@ -258,7 +258,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:IsDestTypeHostile() then--Check if Generator buff is gained by a hostile.
-		local targetCID = GetUnitCreatureID("target")--Get CID of current target
+		local targetCID = self:GetUnitCreatureID("target")--Get CID of current target
 		if args:GetDestCreatureID() == targetCID and args:GetDestCreatureID() ~= 42897 then--If target gaining buff is target then not an ooze (only hostiles left filtering oozes is golems)
 			specWarnGenerator:Show(args.destName)--Show special warning to move him out of it.
 		end
