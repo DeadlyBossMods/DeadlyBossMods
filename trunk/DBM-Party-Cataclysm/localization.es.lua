@@ -842,16 +842,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 restantes"--translate
+	WarnBarrierDown	= "Barrera de las cadenas de Hakkar eliminada - %d/3 restantes"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down"--translate
+	WarnBarrierDown	= "Anunciar cuando se elimine una barrera de cadenas"
 }
 
 L:SetMiscLocalization{
-	Kill	= "Oh no, Hakkar's spirit is free!" --translate
+	Kill	= "Te has pasado de la raya, Jin'do. Juegas con poderes que van más allá de ti. ¿Acaso has olvidado quién soy? ¡¿Es que has olvidado lo que puedo hacer?!"
 }
