@@ -104,6 +104,7 @@ mod:AddBoolOption("SetIconOnActivated")
 local pulled = false
 local cloudSpam = 0
 local lastActivate = 0
+local activateThreshold = 25
 local lastInterrupt = 0
 local incinerateCast = 0
 local encasing = false
@@ -186,6 +187,9 @@ function mod:OnCombatStart(delay)
 	lastActivate = 0
 	if mod:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
+		activateThreshold = 25
+	else
+		activateThreshold = 40
 	end
 	DBM.BossHealth:Clear()
 	DBM.BossHealth:AddBoss(42180, 42178, 42179, 42166, L.name)
@@ -196,7 +200,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(78740, 95016, 95017, 95018) and GetTime() - lastActivate > 25 then
+	if args:IsSpellID(78740, 95016, 95017, 95018) and GetTime() - lastActivate > activateThreshold then--Ignore any activates that fire too close to eachother thanks to 4.1 screwing it up.
 		warnActivated:Show(args.destName)
 		bossActivate(args.destName)
 		lastActivate = GetTime()
