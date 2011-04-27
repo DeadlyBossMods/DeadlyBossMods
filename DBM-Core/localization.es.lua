@@ -88,7 +88,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm break <min>: Empieza un descanso de <min> minutos. Muestra a todos los miembros de banda con DBM un contador de descanso (requiere lider/ayudante).",
 	"/dbm pull <seg>: Empieza una cuenta atrás para pullear en <seg> segundos. Muestra a todos los miembros de banda con DBM un contador para pullear (requiere lider/ayudante).",
 	"/dbm arrow: Muestra la flecha DBM, escribe /dbm arrow help para más detalles.",
-	"/dbm lockout: pregunta a los miembros de la raid por sus bloqueos de instancia (alias: lockouts, ids) (requiere líder/ayudante).",
+	"/dbm lockout: pregunta a los miembros de la raid por sus bloqueos de estancia (alias: lockouts, ids) (requiere líder/ayudante).",
 	"/dbm help: muestra esta ayuda",
 }
 
@@ -213,9 +213,9 @@ DBM_SPEED_KILL_TIMER_TEXT	= "Superar récord"
 DBM_SPEED_KILL_TIMER_OPTION	= "Mostrar tiempo para superar tu muerte más rápida"
 
 
-DBM_REQ_INSTANCE_ID_PERMISSION		= "%s ha pedido tu ID de instancia y el progreso.\nQuieres enviarle esta información a %s? Esa persona podrá volver a solicitar esta información si aceptas hasta que reloguees."
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s ha pedido tu ID de estancia y el progreso.\nQuieres enviarle esta información a %s? Esa persona podrá volver a solicitar esta información si aceptas hasta que reloguees."
 DBM_ERROR_NO_RAID					= "Tienes que estar en un grupo de banda para usar ésta característica."
-DBM_INSTANCE_INFO_REQUESTED			= "Enviar solicitud de bloqueo de instancias al grupo de banda.\nPor favor, entiende que los jugadores serán preguntados por si quieren enviarte esa información antes, por lo que se puede tardar un minuto en recibir todas las respuestas."
+DBM_INSTANCE_INFO_REQUESTED			= "Enviar solicitud de ID de estancias al grupo de banda.\nPor favor, entiende que los jugadores serán preguntados por si quieren enviarte esa información antes, por lo que se puede tardar un minuto en recibir todas las respuestas."
 DBM_INSTANCE_INFO_STATUS_UPDATE		= "Se ha obtenido respuesta de %d jugadores de %d usuarios de DBM: %d han enviado los datos, %d han denegado la solicitud. Se esperará %d segundos más para respuestas..."
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "Se ha recibido respuestas de todos los miembros de la banda"
 DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), dificultad %d:"
@@ -223,3 +223,4 @@ DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, progreso %d: %s"
 DBM_INSTANCE_INFO_STATS_DENIED		= "Han denegado la solicitud: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "Ausentes: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No tienen una versión reciente de DBM instalada: %s"
+DBM_INSTANCE_INFO_RESULTS			= "Resultado del escaneo del ID de estancia. Quizas algunas estancias aparezcan más de una vez si hay jugadores que juegan a WoW con distintos idiomas en la banda."
