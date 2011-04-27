@@ -213,5 +213,6 @@ DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 킬수 %d: %s"
 DBM_INSTANCE_INFO_STATS_DENIED		= "요청거부: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "자리비움: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "DBM 구버전 사용중: %s"
+DBM_INSTANCE_INFO_RESULTS			= "공격대 귀속 정보 확인 결과입니다. 만약 공격대원이 다른 언어의 WoW 클라이언트를 사용 중이라면 결과가 중복되어 보일 수도 있습니다."
 
 end
