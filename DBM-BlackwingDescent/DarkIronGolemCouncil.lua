@@ -103,6 +103,7 @@ mod:AddBoolOption("SetIconOnActivated")
 
 local pulled = false
 local cloudSpam = 0
+local lastActivate = 0
 local lastInterrupt = 0
 local incinerateCast = 0
 local encasing = false
@@ -182,6 +183,7 @@ function mod:OnCombatStart(delay)
 	lastInterrupt = 0
 	encasing = false
 	incinerateCast = 0
+	lastActivate = 0
 	if mod:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
 	end
@@ -194,9 +196,10 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(78740, 95016, 95017, 95018) then
+	if args:IsSpellID(78740, 95016, 95017, 95018) and GetTime() - lastActivate > 25 then
 		warnActivated:Show(args.destName)
 		bossActivate(args.destName)
+		lastActivate = GetTime()
 		if pulled then -- prevent show warning when first pulled.
 			specWarnActivated:Show(args.destName)
 		end
