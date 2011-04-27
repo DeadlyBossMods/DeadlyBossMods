@@ -57,7 +57,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(97417) then
-		barrier = barrer - 1
+		barrier = barrier - 1
 		warnBarrierDown:Show(barrier)
 	end
 end
