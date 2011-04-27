@@ -32,12 +32,12 @@ local specWarnIgnition		= mod:NewSpecialWarningMove(92198)
 local specWarnInfernoSoon   = mod:NewSpecialWarning("SpecWarnInferno")
 local specWarnArmageddon	= mod:NewSpecialWarningSpell(92177, nil, nil, nil, true)
 
-local timerLavaSpew			= mod:NewCDTimer(26, 77689, nil, mod:IsHealer())
+local timerLavaSpew			= mod:NewCDTimer(22, 77689, nil, mod:IsHealer())
 local timerPillarFlame		= mod:NewCDTimer(32.5, 78006)--This timer is a CD timer. 30-40 seconds. Use your judgement.
 local timerMangle			= mod:NewTargetTimer(30, 89773)
 local timerExposed			= mod:NewBuffActiveTimer(30, 79011)
 local timerMangleCD			= mod:NewCDTimer(95, 89773)
-local timerInferno			= mod:NewCDTimer(35, 92190)
+local timerInferno			= mod:NewNextTimer(35, 92190)
 local timerArmageddon		= mod:NewCastTimer(8, 92177)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
