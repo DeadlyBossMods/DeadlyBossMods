@@ -1,0 +1,37 @@
+﻿## Interface: 40100
+## X-Min-Interface: 40100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Descent|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pechschwingenabstieg|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Descenso de Alanegra|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0검은날개 강림지|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Твердыня Крыла Тьмы|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑翼陷窟|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMBlackwingDescent_SavedVars, DBMBlackwingDescent_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-Name: Blackwing Descent
+## X-DBM-Mod-Name-deDE: Pechschwingenabstieg
+## X-DBM-Mod-Name-esES: Descenso de Alanegra
+## X-DBM-Mod-Name-koKR: 검은날개 강림지
+## X-DBM-Mod-Name-ruRU: Твердыня Крыла Тьмы
+## X-DBM-Mod-Name-zhTW: 黑翼陷窟
+## X-DBM-Mod-Sort: 103
+## X-DBM-Mod-LoadZoneID: 754
+localization.en.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+MapSizes.lua
+Magmaw.lua
+DarkIronGolemCouncil.lua
+Maloriak.lua
+Chimaeron.lua
+Atramedes.lua
+Nefarian.lua
+BWDTrash.lua
