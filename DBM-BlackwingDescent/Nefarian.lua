@@ -41,7 +41,7 @@ local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
 local specWarnShadowblazeSoon	= mod:NewSpecialWarning("specWarnShadowblazeSoon", mod:IsTank())
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
 local specWarnDominion			= mod:NewSpecialWarningYou(79318)
-local specWarnStolenPower		= mod:NewSpecialWarningStack(80626, nil, 150)
+local specWarnStolenPower		= mod:NewSpecialWarningStack(80627, nil, 150)
 local specWarnCinder			= mod:NewSpecialWarningYou(79339)
 local yellCinder				= mod:NewYell(79339)
 
@@ -201,7 +201,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(80626, 80627) and args:IsPlayer() and (args.amount or 1) >= 150 then
+	if args:IsSpellID(80627) and args:IsPlayer() and (args.amount or 1) >= 150 then
 		specWarnStolenPower:Show(args.amount)
 	end
 end
