@@ -53,7 +53,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerZanzilGas:Start()
 	elseif args:IsSpellID(96316) then
 		warnZanzilElixir:Show()
-		timerZanzilElixir:Start()
+--		timerZanzilElixir:Start()
 	end
 end
 
