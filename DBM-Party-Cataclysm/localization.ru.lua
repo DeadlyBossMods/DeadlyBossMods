@@ -693,7 +693,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Malacrass5")
 
 L:SetGeneralLocalization{
-	name = "Hexlord Malacrass"
+	name = "Повелитель проклятий Малакрасс"
 }
 
 L:SetWarningLocalization{
@@ -716,7 +716,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Daakara")
 
 L:SetGeneralLocalization{
-	name = "Daakara"
+	name = "Даакара"
 }
 
 L:SetWarningLocalization{
@@ -740,7 +740,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Venoxis")
 
 L:SetGeneralLocalization{
-	name = "High Priest Venoxis"
+	name = "Верховный жрец Веноксис"
 }
 
 L:SetWarningLocalization{
@@ -762,24 +762,24 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Mandokir")
 
 L:SetGeneralLocalization{
-	name = "Bloodlord Mandokir"
+	name = "Мандокир Повелитель Крови"
 }
 
 L:SetWarningLocalization{
-	WarnRevive		= "Ghost Revive - %d left",
-	SpecWarnOhgan	= "Ohgan revived! Attack now!" -- check this, i'm not good at English
+	WarnRevive		= "Осталось духов: %d",
+	SpecWarnOhgan	= "Оган возродился! Убейте его!" -- check this, i'm not good at English
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnRevive		= "Announce how many ghost revive remaining",
-	SpecWarnOhgan	= "Show warning when Ohgan is revived" -- check this, i'm not good at English
+	WarnRevive		= "Показывать количество оставшихся духов",
+	SpecWarnOhgan	= "Предупреждение, когда Оган возрождается" -- check this, i'm not good at English
 }
 
 L:SetMiscLocalization{
-	Ohgan		= "Ohgan"
+	Ohgan		= "Оган"
 }
 
 ------------
@@ -788,7 +788,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Zanzil")
 
 L:SetGeneralLocalization{
-	name = "Zanzil"
+	name = "Занзил"
 }
 
 L:SetWarningLocalization{
@@ -810,7 +810,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Kilnara")
 
 L:SetGeneralLocalization{
-	name = "High Priestess Kilnara"
+	name = "Верховная жрица Килнара"
 }
 
 L:SetWarningLocalization{
@@ -831,20 +831,20 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Jindo")
 
 L:SetGeneralLocalization{
-	name = "Jin'do the Godbreaker"
+	name = "Джин'до Низвержитель Богов"
 }
 
 L:SetWarningLocalization{
-	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left"
+	WarnBarrierDown	= "Барьер над цепями Хаккара снят - осталось %d/3"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down"
+	WarnBarrierDown	= "Предупреждение, кода спадает барьер над цепями Хаккара"
 }
 
 L:SetMiscLocalization{
-	Kill			= "Oh no, Hakkar's spirit is free!" -- temporarily
+	Kill			= "Нет! НЕЕЕЕТ!" -- temporarily
 }
