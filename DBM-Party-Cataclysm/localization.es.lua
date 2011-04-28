@@ -616,8 +616,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "¡Si llamáis a la bestia, vais a recibir más de lo que esperáis!",--translate ?
-	YellNormal	= "¡Dejad paso al Nalorakk!"--translate ?
+	YellBear 	= "¡Si llamáis a la beh'tia, vais a recibir más de lo que eh'peráis!",
+	YellNormal	= "¡Dejad paso al Nalorakk!"
 }
 
 ---------------
@@ -663,8 +663,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBomb	= "¡Ahora os quemaré!",--translate ?
-	YellAdds	= "¿Dónde está mi criador? ¡A por los huevos!"--translate ?
+	YellBomb	= "¡Ahora os quemaré!",
+	YellAdds	= "¿Dónde está mi criador? ¡A por los huevos!"
 }
 
 -------------
@@ -690,8 +690,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSpirit	= "Lucho con libertad de espíritu...",--translate ?
-	YellNormal	= "¡Espíritu, vuelve a mí!"--translate ?
+	YellSpirit	= "Lucho con libertad de espíritu...",
+	YellNormal	= "¡Espíritu, vuelve a mí!"
 }
 
 -----------------------
