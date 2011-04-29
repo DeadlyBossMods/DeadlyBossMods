@@ -98,10 +98,10 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(97338) and GetTime() - spamEffusion >= 3 then
+	if args:IsSpellID(97338) and GetTime() - spamEffusion >= 3 and args:IsPlayer() then
 		specWarnEffusion:Show()
 		spamEffusion = GetTime()
-	elseif args:IsSpellID(97089) and GetTime() - spamPool >= 3 then
+	elseif args:IsSpellID(97089) and GetTime() - spamPool >= 3 and args:IsPlayer() then
 		specWarnPoolAcridTears:Show()
 		spamPool = GetTime()
 	end

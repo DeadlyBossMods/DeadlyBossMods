@@ -12,9 +12,6 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
---local warnCauldronRed		= mod:NewSpellAnnounce(96486, 3)
---local warnCauldronGreen	= mod:NewSpellAnnounce(96487, 3)
---local warnCauldronBlue	= mod:NewSpellAnnounce(96488, 3)
 local warnZanzilElixir		= mod:NewSpellAnnounce(96316, 4)
 local warnZanzilFire		= mod:NewSpellAnnounce(96914, 3)
 local warnZanzilGas			= mod:NewSpellAnnounce(96338, 3)
@@ -24,7 +21,7 @@ local specWarnGaze			= mod:NewSpecialWarningYou(96342)
 
 local timerZanzilGas		= mod:NewBuffActiveTimer(7, 96338)
 local timerGaze				= mod:NewTargetTimer(17, 96342)
---local timerZanzilElixir	= mod:NewCDTimer(30, 96316) -- this spell not have cooldown, seeming ramdomly.
+local timerZanzilElixir		= mod:NewCDTimer(30, 96316)
 
 local soundGaze			= mod:NewSound(96342)
 
@@ -53,14 +50,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerZanzilGas:Start()
 	elseif args:IsSpellID(96316) then
 		warnZanzilElixir:Show()
---		timerZanzilElixir:Start()
+		timerZanzilElixir:Start()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(96914) then
 		warnZanzilFire:Show()
-		-- no target exists.
 	elseif args:IsSpellID(96338) then
 		warnZanzilGas:Show()
 	elseif args:IsSpellID(96342) and self:IsInCombat() then
@@ -68,12 +64,9 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(96486) then
-		warnCauldronRed:Show()
-	elseif args:IsSpellID(96487) then
-		warnCauldronGreen:Show()
-	elseif args:IsSpellID(96488) then
-		warnCauldronBlue:Show()
-	end
-end]] -- removed. Zanzil do not use these spells while combat, only use this spell not pulled. It's just spam
+--[[
+SPELL_AURA_APPLIED:  96316 - "Zanzil's Resurrection Elixir"
+19:25:47.165
+19:26:17.697
+19:26:48.624
+--]]

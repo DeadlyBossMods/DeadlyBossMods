@@ -86,7 +86,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(96684) then
-		warnDecapitate:Show(args.destName) -- yes, this works according to combatlog
+		warnDecapitate:Show(args.destName)
 		timerDecapitate:Start()
 	end
 end
