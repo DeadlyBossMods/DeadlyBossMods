@@ -16,7 +16,6 @@ mod:RegisterEvents(
 local warnWordHethiss		= mod:NewSpellAnnounce(96560, 2)
 local warnWhisperHethiss	= mod:NewTargetAnnounce(96466, 3)
 local warnBreathHethiss		= mod:NewSpellAnnounce(96509, 3)
-local warnToxicLinkCast		= mod:NewCastAnnounce(96477, 2, nil, nil, false)
 local warnToxicLink			= mod:NewTargetAnnounce(96477, 4)
 local warnBlessing			= mod:NewSpellAnnounce(97354, 3)
 local warnBloodvenom		= mod:NewSpellAnnounce(96842, 3)
@@ -24,10 +23,12 @@ local warnBloodvenom		= mod:NewSpellAnnounce(96842, 3)
 local timerWhisperHethiss	= mod:NewTargetTimer(8, 96466)
 local timerBreathHethiss	= mod:NewNextTimer(12, 96509)
 
+local specWarnWhisperHethiss	= mod:NewSpecialWarningInterrupt(96466, not mod:IsHealer())
 local specWarnToxicLink		= mod:NewSpecialWarningYou(96477)
-local specWarnBloodvenom	= mod:NewSpecialWarningSpell(96842)
+local specWarnBloodvenom	= mod:NewSpecialWarningSpell(96842, nil, nil, nil, true)
 
 mod:AddBoolOption("SetIconOnToxicLink")
+mod:AddBoolOption("LinkArrow")
 
 local toxicLinkIcon = 8
 local toxicLinkTargets = {}
@@ -47,14 +48,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(96477) then
 		toxicLinkTargets[#toxicLinkTargets + 1] = args.destName
 		toxicLinkIcon = toxicLinkIcon - 1
-		self:Unschedule(warnToxicLinkTargets)
-		self:Schedule(0.2, warnToxicLinkTargets)
+		if self.Options.LinkArrow and #toxicLinkTargets == 2 then
+			if toxicLinkTargets[1] == UnitName("player") then
+				DBM.Arrow:ShowRunAway(toxicLinkTargets[2])
+			elseif toxicLinkTargets[2] == UnitName("player") then
+				DBM.Arrow:ShowRunAway(toxicLinkTargets[1])
+			end
+		end		
 		if args:IsPlayer() then
 			specWarnToxicLink:Show()
 		end
 		if mod.Options.SetIconOnToxicLink then
 			self:SetIcon(args.destName, toxicLinkIcon, 10)
 		end
+		self:Unschedule(warnToxicLinkTargets)
+		self:Schedule(0.2, warnToxicLinkTargets)
 	elseif args:IsSpellID(96509) then
 		warnBreathHethiss:Show()
 		timerBreathHethiss:Start()
@@ -63,19 +71,20 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(96466) and args:IsDestTypePlayer() then
 		warnWhisperHethiss:Show(args.destName)
 		timerWhisperHethiss:Start(args.destName)
+		specWarnWhisperHethiss:Show()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(96466) then
 		timerWhisperHethiss:Cancel(args.destName)
+	elseif args:IsSpellID(96477) then
+		DBM.Arrow:Hide()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(96477) then
-		warnToxicLinkCast:Show()
-	elseif args:IsSpellID(96842) then
+	if args:IsSpellID(96842) then
 		warnBloodvenom:Show()
 		specWarnBloodvenom:Show()
 	end
