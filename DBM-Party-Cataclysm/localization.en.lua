@@ -627,8 +627,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Show range frame (10 yards)"
+	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97300),
+	RangeFrame	= "Show range frame (10 yards)",
+	StormArrow	= "Show DBM Arrow for $spell:97300",
+	SetIconOnEagle	= DBM_CORE_AUTA_ICONS_OPTION_TEXT:format(97318)
 }
 
 L:SetMiscLocalization{
