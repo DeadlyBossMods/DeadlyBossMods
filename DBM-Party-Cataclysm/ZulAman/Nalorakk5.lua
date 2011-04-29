@@ -18,9 +18,11 @@ local warnBearSoon		= mod:NewAnnounce("WarnBearSoon", 3, 39414)
 local warnNormal		= mod:NewAnnounce("WarnNormal", 4, 39414)
 local warnNormalSoon	= mod:NewAnnounce("WarnNormalSoon", 3, 39414)
 local warnSilence		= mod:NewSpellAnnounce(42398, 3)
+local warnSurge			= mod:NewTargetAnnounce(42402)
 
 local timerBear			= mod:NewTimer(45, "TimerBear", 39414)
 local timerNormal		= mod:NewTimer(30, "TimerNormal", 39414)
+local timerSurge		= mod:NewTargetTimer(42402, 20)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 

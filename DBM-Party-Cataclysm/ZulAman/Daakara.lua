@@ -16,9 +16,13 @@ mod:RegisterEvents(
 local warnThrow		= mod:NewTargetAnnounce(97639, 3)
 local warnWhirlwind	= mod:NewSpellAnnounce(17207, 3)
 local warnLynx		= mod:NewSpellAnnounce(42607, 3)
+local warnClawRage	= mod:NewTargetAnnounce(97672, 3)
 
 local timerLynx		= mod:NewNextTimer(40, 42607)
 local timerThrow	= mod:NewNextTimer(15, 97639)
+
+mod:AddBoolOption("ThrowIcon", true)
+mod:AddBoolOption("ClawRageIcon", true)
 
 function mod:OnCombatStart(delay)
 	timerLynx:Start(40-delay)
@@ -28,16 +32,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(97639) then
 		warnThrow:Show(args.destName)
 		timerThrow:Start()
-		if mod.Options.SetIconOnThrow then
+		if self.Options.ThrowIcon then
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(17207) then
 		warnWhirlwind:Show()
+	elseif args:IsSpellID(97672) then
+		warnClawRage:Show(args.destName)
+		if self.Options.ClawRageIcon then
+			self:SetIcon(args.destName, 8, 5)
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(97639) and mod.Options.SetIconOnThrow then
+	if args:IsSpellID(97639) and mod.Options.ThrowIcon then
 		self:SetIcon(args.destName, 0)
 	end
 end
