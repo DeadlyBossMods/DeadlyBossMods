@@ -637,7 +637,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Mostrar distancia"
+	RangeFrame	= "Mostrar distancia",
+	StormArrow	= "Show DBM Arrow for $spell:97300",	-- translate
+	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
 L:SetMiscLocalization{
@@ -733,10 +735,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
+	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
-	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
 }
 
 -----------------
@@ -764,9 +767,9 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
-------------
+--------------
 -- Mandokir --
-------------
+--------------
 L = DBM:GetModLocalization("Mandokir")
 
 L:SetGeneralLocalization{
