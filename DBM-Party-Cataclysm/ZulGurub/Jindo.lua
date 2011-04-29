@@ -72,7 +72,7 @@ function mod:SPELL_CAST_START(args)
 		warnPhase2:Show()
 		phase2warned = true
 	elseif args:IsSpellID(97198) and self:IsInCombat() then
-		self:ScheduleMethod(0.15, "SlamTarget")
+		self:ScheduleMethod(0.2, "SlamTarget")
 	end
 end
 
