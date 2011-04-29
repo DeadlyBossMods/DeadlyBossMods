@@ -638,7 +638,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
 	RangeFrame	= "Mostrar distancia",
-	StormArrow	= "Show DBM Arrow for $spell:97300",	-- translate
+	StormArrow	= "Mostrar flecha para $spell:97300",
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
