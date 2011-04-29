@@ -56,7 +56,7 @@ local timerOnyBreathCD			= mod:NewTimer(12, "OnyBreathTimer", 94124, mod:IsTank(
 local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--same as above
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
 local timerCinderCD				= mod:NewCDTimer(22, 79339)--Heroic Ability (Every 22-25 seconds, 25 being most common but we gotta use 22 for timer cause of that small chance it's that).
-local timerDominionCD			= mod:NewNextTimer(15, 79318)
+local timerDominionCD			= mod:NewNextTimer(15, 79318, nil, not mod:IsTank())
 
 local berserkTimer				= mod:NewBerserkTimer(630)
 
