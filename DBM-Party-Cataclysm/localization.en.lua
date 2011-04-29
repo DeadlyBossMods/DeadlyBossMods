@@ -755,9 +755,9 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
-------------
--- Zanzil --
-------------
+------------------------
+-- Bloodlord Mandokir --
+------------------------
 L = DBM:GetModLocalization("Mandokir")
 
 L:SetGeneralLocalization{
@@ -765,7 +765,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnRevive		= "Ghost Revive - %d left",
+	WarnRevive		= "%d ghosts remaining",
 	SpecWarnOhgan	= "Ohgan revived! Attack now!" -- check this, i'm not good at English
 }
 
@@ -774,7 +774,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnRevive		= "Announce how many ghost revive remaining",
-	SpecWarnOhgan	= "Show warning when Ohgan is revived" -- check this, i'm not good at English
+	SpecWarnOhgan	= "Show warning when Ohgan is revived", -- check this, i'm not good at English
+	SetIconOnOhgan	= "Put an icon on Ohgan when he revives" 
 }
 
 L:SetMiscLocalization{
