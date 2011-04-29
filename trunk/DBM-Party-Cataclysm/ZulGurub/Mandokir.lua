@@ -37,7 +37,7 @@ local timerOhgan			= mod:NewCastTimer(96724)
 local specWarnSlam			= mod:NewSpecialWarningSpell(96740)
 local specWarnOhgan			= mod:NewSpecialWarning("SpecWarnOhgan")
 
-mod:AddBoolOption("SetIconOnOhgan")
+mod:AddBoolOption("SetIconOnOhgan", false)
 
 local reviveCounter = 8
 local ohganGUID = nil
