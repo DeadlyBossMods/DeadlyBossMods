@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnFlame			= mod:NewTargetAnnounce(43140, 3)
+local warnFlame			= mod:NewTargetAnnounce(97488, 3)
 local warnAdds			= mod:NewSpellAnnounce(43962, 4)
 local warnAddsSoon		= mod:NewSoonAnnounce(43962, 3)
 local warnFireBomb		= mod:NewSpellAnnounce(42630, 3)
@@ -44,7 +44,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(43140) then
+	if args:IsSpellID(97488) then
 		self:ScheduleMethod(0.2, "FlameTarget")
 	end
 end
