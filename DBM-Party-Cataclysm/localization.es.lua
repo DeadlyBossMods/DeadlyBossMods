@@ -757,7 +757,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
+	LinkArrow		= "Mostrar una flecha cuando te afecte $spell:96477"
 }
 
 L:SetMiscLocalization{
@@ -773,7 +774,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnRevive		= "Revive un fantasma - %d restantes",
+	WarnRevive		= "%d fantasmas restantes",
 	SpecWarnOhgan	= "¡Ohgan ha resucitado! ¡Ataca ahora!"
 }
 
@@ -782,7 +783,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnRevive	= "Anunciar cuantas resurrecciones de fantasmas quedan",
-	SpecWarnOhgan	= "Mostrar aviso cuando Ohgan es resucitado"
+	SpecWarnOhgan	= "Mostrar aviso cuando Ohgan es resucitado",
+	SetIconOnOhgan	= "Poner un icono a Ohgan cuando resucite" 
 }
 
 L:SetMiscLocalization{
