@@ -22,7 +22,6 @@ local warnSurge			= mod:NewTargetAnnounce(42402)
 
 local timerBear			= mod:NewTimer(45, "TimerBear", 39414)
 local timerNormal		= mod:NewTimer(30, "TimerNormal", 39414)
-local timerSurge		= mod:NewTargetTimer(42402, 20)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 
@@ -39,6 +38,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(42398) and GetTime() - silenceSpam > 4 then
 		warnSilence:Show()
 		silenceSpam = GetTime()
+	elseif args:IsSpellID(42402) then
+		warnSurge:Show(args.destName)
 	end
 end
 
