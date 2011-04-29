@@ -331,7 +331,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Окно проверки дистанции (5 м)"
+	RangeFrame	= "Окно проверки дистанции (5м)"
 }
 
 ----------
@@ -444,7 +444,7 @@ L:SetOptionLocalization({
 	TimerEmerge		= "Показывать таймер до появления",
 	TimerSubmerge	= "Показывать таймер до погружения",
 	CrystalArrow	= "Показать стрелку DBM когда $spell:81634 около вас",
-	RangeFrame		= "Окно проверки дистанции (5 м)"
+	RangeFrame		= "Окно проверки дистанции (5м)"
 })
 
 -----------
@@ -630,7 +630,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Окно проверки дистанции (10 м)"
+	RangeFrame	= "Окно проверки дистанции (10м)",
+	StormArrow	= "Показывать стрелку DBM для $spell:97300",
+	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
 L:SetMiscLocalization{
@@ -750,15 +752,16 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
+	LinkArrow		= "Показывать стрелку DBM, когда на вас $spell:96477"
 }
 
 L:SetMiscLocalization{
 }
 
-------------
--- Zanzil --
-------------
+------------------------
+-- Bloodlord Mandokir --
+------------------------
 L = DBM:GetModLocalization("Mandokir")
 
 L:SetGeneralLocalization{
@@ -767,7 +770,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnRevive		= "Осталось духов: %d",
-	SpecWarnOhgan	= "Оган возродился! Убейте его!" -- check this, i'm not good at English
+	SpecWarnOhgan	= "Оган возродился! Убейте его!", -- check this, i'm not good at English
+	SetIconOnOhgan	= "Устанавливать метку на Огана, когда он возрождается"
 }
 
 L:SetTimerLocalization{
