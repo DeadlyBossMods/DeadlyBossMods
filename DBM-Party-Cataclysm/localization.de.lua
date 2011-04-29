@@ -622,7 +622,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Zeige Abstandsfenster (10m)"
+	RangeFrame	= "Zeige Abstandsfenster (10m)",
+	StormArrow	= "Show DBM Arrow for $spell:97300", --translate
+	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
 L:SetMiscLocalization{
@@ -718,10 +720,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
+	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
-	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
 }
 
 -----------------
@@ -742,7 +745,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
+	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477" --translate
 }
 
 L:SetMiscLocalization{
@@ -767,7 +771,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnRevive		= "Verkünde wieviele Geisterwiederbelebungen verbleiben",
-	SpecWarnOhgan	= "Zeige Warnung, wenn Ohgan wiederbelebt wird"
+	SpecWarnOhgan	= "Zeige Warnung, wenn Ohgan wiederbelebt wird",
+	SetIconOnOhgan	= "Put an icon on Ohgan when he revives" --translate
 }
 
 L:SetMiscLocalization{

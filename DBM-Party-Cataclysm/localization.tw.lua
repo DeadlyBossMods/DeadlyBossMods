@@ -594,7 +594,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "顯示距離框"
+	RangeFrame	= "顯示距離框",
+	StormArrow	= "Show DBM Arrow for $spell:97300",
+	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
 L:SetMiscLocalization{
@@ -714,10 +716,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
+	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
-	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
 }
 
 -----------------
@@ -738,15 +741,16 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
+	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477" --translate
 }
 
 L:SetMiscLocalization{
 }
 
-------------
--- Zanzil --
-------------
+------------------------
+-- Bloodlord Mandokir --
+------------------------
 L = DBM:GetModLocalization("Mandokir")
 
 L:SetGeneralLocalization{
@@ -763,7 +767,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnRevive		= "Announce how many ghost revive remaining",
-	SpecWarnOhgan	= "Show warning when Ohgan is revived" -- check this, i'm not good at English
+	SpecWarnOhgan	= "Show warning when Ohgan is revived",
+	SetIconOnOhgan	= "Put an icon on Ohgan when he revives" --translate
 }
 
 L:SetMiscLocalization{
