@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"SPELL_DAMAGE"
 )
 
 local warnWordHethiss		= mod:NewSpellAnnounce(96560, 2)
@@ -26,12 +27,16 @@ local timerBreathHethiss	= mod:NewNextTimer(12, 96509)
 local specWarnWhisperHethiss	= mod:NewSpecialWarningInterrupt(96466, not mod:IsHealer())
 local specWarnToxicLink		= mod:NewSpecialWarningYou(96477)
 local specWarnBloodvenom	= mod:NewSpecialWarningSpell(96842, nil, nil, nil, true)
+local specWarnPoolAcridTears 	= mod:NewSpecialWarningMove(97089)
+local specWarnEffusion		= mod:NewSpecialWarningMove(97338)
 
 mod:AddBoolOption("SetIconOnToxicLink")
 mod:AddBoolOption("LinkArrow")
 
 local toxicLinkIcon = 8
 local toxicLinkTargets = {}
+local spamPool = 0
+local spamEffusion = 0
 
 local function warnToxicLinkTargets()
 	warnToxicLink:Show(table.concat(toxicLinkTargets, "<, >"))
@@ -42,6 +47,8 @@ end
 function mod:OnCombatStart(delay)
 	toxicLinkIcon = 8
 	table.wipe(toxicLinkTargets)
+	spamPool = 0
+	spamEffusion = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -87,5 +94,15 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(96842) then
 		warnBloodvenom:Show()
 		specWarnBloodvenom:Show()
+	end
+end
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(97338) and GetTime() - spamEffusion >= 3 then
+		specWarnEffusion:Show()
+		spamEffusion = GetTime()
+	elseif args:IsSpellID(97089) and GetTime() - spamPool >= 3 then
+		specWarnPoolAcridTears:Show()
+		spamPool = GetTime()
 	end
 end
