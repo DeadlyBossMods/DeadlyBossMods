@@ -731,7 +731,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
+	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
+	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 -----------------
