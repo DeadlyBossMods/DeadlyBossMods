@@ -25,6 +25,7 @@ local warnBodySlam				= mod:NewTargetAnnounce(97198, 2)
 
 local specWarnShadow			= mod:NewSpecialWarningSpell(97172)
 local specWarnBodySlam			= mod:NewSpecialWarningYou(97198)
+local specWarnSunderRift		= mod:NewSpecialWarningMove(97320)
 
 local timerDeadzone				= mod:NewNextTimer(21, 97170)
 local timerShadowsOfHakkar		= mod:NewBuffActiveTimer(10, 97172)
@@ -52,6 +53,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnShadow:Show()
 		timerShadowsOfHakkar:Start()
 		timerShadowsOfHakkarNext:Start()
+	elseif args:IsSpellID(97320) and args:IsPlayer() then
+		specWarnSunderRift:Show()
 	end
 end
 
