@@ -28,7 +28,7 @@ local timerNextForm			= mod:NewTimer(45, "timerNextForm")--His forms are random 
 --local timerThrow			= mod:NewNextTimer(15, 97639)--I haven't seen him cast this more than once per fight.
 local timerParalysisCD		= mod:NewNextTimer(30, 43095)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
 local timerSurgeCD			= mod:NewNextTimer(8, 42402)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
-local timerLightningTotemCD	= mod:NewNextTimer(16.9, 42402)--Eagle Form Ability.
+local timerLightningTotemCD	= mod:NewNextTimer(16.9, 97930)--Eagle Form Ability.
 
 local Form = 0
 
