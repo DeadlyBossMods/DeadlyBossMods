@@ -1,4 +1,3 @@
-if tonumber((select(2, GetBuildInfo()))) < 13682 then return end
 local mod	= DBM:NewMod("Daakara", "DBM-Party-Cataclysm", 10)
 local L		= mod:GetLocalizedStrings()
 
