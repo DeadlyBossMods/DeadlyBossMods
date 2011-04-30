@@ -19,7 +19,8 @@ local warnNormalSoon	= mod:NewAnnounce("WarnNormalSoon", 3, 39414)
 local warnSilence		= mod:NewSpellAnnounce(42398, 3)
 local warnSurge			= mod:NewTargetAnnounce(42402)
 
-local timerBear			= mod:NewTimer(45, "TimerBear", 39414)
+local timerSurgeCD		= mod:NewNextTimer(8, 42402)
+local timerBear			= mod:NewTimer(30, "TimerBear", 39414)
 local timerNormal		= mod:NewTimer(30, "TimerNormal", 39414)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
@@ -28,8 +29,9 @@ local silenceSpam = 0
 
 function mod:OnCombatStart(delay)
 	silenceSpam = 0
+	timerSurgeCD:Start(-delay)
 	timerBear:Start()
-	warnBearSoon:Schedule(40)
+	warnBearSoon:Schedule(25)
 	berserkTimer:Start(-delay)
 end
 
@@ -39,12 +41,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		silenceSpam = GetTime()
 	elseif args:IsSpellID(42402) then
 		warnSurge:Show(args.destName)
+		timerSurgeCD:Start()
 	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellBear or msg:find(L.YellBear) then
 		timerBear:Cancel()
+		timerSurgeCD:Cancel()
 		warnBearSoon:Cancel()
 		warnBear:Show()
 		timerNormal:Start()
@@ -53,6 +57,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNormal:Cancel()
 		warnNormalSoon:Cancel()
 		warnNormal:Show()
+		timerSurgeCD:Start()
 		timerBear:Start()
 		warnBearSoon:Schedule(40)
 	end
