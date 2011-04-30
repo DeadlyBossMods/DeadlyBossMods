@@ -60,7 +60,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(96338) then
 		warnZanzilGas:Show()
 	elseif args:IsSpellID(96342) and self:IsInCombat() then
-		self:ScheduleMethod(0.15, "GazeTarget")
+		self:ScheduleMethod(0.2, "GazeTarget")
 	end
 end
 
