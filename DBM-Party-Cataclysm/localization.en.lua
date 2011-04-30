@@ -657,6 +657,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellBomb	= "I burn ya now!",
+	YellHatchAll= "I show you strength... in numbers.",
 	YellAdds	= "Where ma hatcha? Get to work on dem eggs!"
 }
 
@@ -708,6 +709,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+	YellPull	= "Da shadow gonna fall on you...."
 }
 
 -------------
