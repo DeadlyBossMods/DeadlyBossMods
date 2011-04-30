@@ -666,6 +666,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellBomb	= "¡Ahora os quemaré!",
+	YellHatchAll= "Os mostraré la fuerza... con números.",
 	YellAdds	= "¿Dónde está mi criador? ¡A por los huevos!"
 }
 
@@ -717,6 +718,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+	YellPull	= "Las sombras caerán sobre vosotros..."
 }
 
 -------------
@@ -732,9 +734,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	timerNextForm	= "Next Form Change"
 }
 
 L:SetOptionLocalization{
+	timerNextForm	= "Mostrar tiempo para los cambios de forma.",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
