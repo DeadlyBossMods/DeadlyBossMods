@@ -24,10 +24,10 @@ local warnSurge				= mod:NewTargetAnnounce(42402, 3)--Bear Form
 local warnClawRage			= mod:NewTargetAnnounce(97672, 3)--Lynx Form
 local warnLightningTotem	= mod:NewSpellAnnounce(97930, 4)--Eagle Form
 
---local timerThrow			= mod:NewNextTimer(15, 97639)--I haven't seen him cast this more than once per fight.
-local timerParalysisCD		= mod:NewNextTimer(30, 43095)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
-local timerSurgeCD			= mod:NewNextTimer(8, 42402)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
-local timerLightningTotemCD	= mod:NewNextTimer(16.9, 97930)--Eagle Form Ability.
+--local timerThrow			= mod:NewNextTimer(15, 97639)
+local timerParalysisCD		= mod:NewNextTimer(27, 43095)
+local timerSurgeCD			= mod:NewNextTimer(8.5, 42402)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
+local timerLightningTotemCD	= mod:NewNextTimer(17, 97930)--Eagle Form Ability.
 
 mod:AddBoolOption("ThrowIcon", true)
 mod:AddBoolOption("ClawRageIcon", true)
