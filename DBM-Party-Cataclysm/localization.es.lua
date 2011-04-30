@@ -858,7 +858,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "Anunciar cuando se elimine una barrera de cadenas"
+	WarnBarrierDown	= "Anunciar cuando se elimine una barrera de cadenas",
+	BodySlamIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97198)
 }
 
 L:SetMiscLocalization{

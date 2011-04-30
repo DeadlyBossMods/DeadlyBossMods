@@ -847,7 +847,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "Предупреждение, кода спадает барьер над цепями Хаккара"
+	WarnBarrierDown	= "Предупреждение, кода спадает барьер над цепями Хаккара",
+	BodySlamIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97198)
 }
 
 L:SetMiscLocalization{

@@ -1,11 +1,10 @@
--- this fight seems to incomplete, anyway supports to mods
-
 local mod	= DBM:NewMod("Jindo", "DBM-Party-Cataclysm", 11)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(52148)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Kill)
@@ -31,17 +30,10 @@ local timerDeadzone				= mod:NewNextTimer(21, 97170)
 local timerShadowsOfHakkar		= mod:NewBuffActiveTimer(10, 97172)
 local timerShadowsOfHakkarNext	= mod:NewNextTimer(21, 97172)
 
+mod:AddBoolOption("BodySlamIcon")
+
 local phase2warned = false
 local barrier = 3
-
-function mod:SlamTarget()
-	local targetname = self:GetBossTarget(52730)
-	if not targetname then return end
-	warnBodySlam:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnBodySlam:Show()
-	end
-end
 
 function mod:OnCombatStart(delay)
 	phase2warned = false
@@ -55,6 +47,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerShadowsOfHakkarNext:Start()
 	elseif args:IsSpellID(97320) and args:IsPlayer() then
 		specWarnSunderRift:Show()
+	elseif args:IsSpellID(97597) then
+		warnBodySlam:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnBodySlam:Show()
+		end
+		if self.Options.BodySlamIcon then
+			self:SetIcon(args.destName, 8, 2)
+		end
 	end
 end
 
@@ -71,8 +71,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(97158) and not phase2warned then
 		warnPhase2:Show()
 		phase2warned = true
-	elseif args:IsSpellID(97198) and self:IsInCombat() then
-		self:ScheduleMethod(0.2, "SlamTarget")
 	end
 end
 
