@@ -839,7 +839,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down" --translate
+	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down", --translate,
+	BodySlamIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97198)
 }
 
 L:SetMiscLocalization{

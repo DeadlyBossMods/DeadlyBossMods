@@ -848,7 +848,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "학카르의 사슬 보호막이 사라질 때 경고 보기"
+	WarnBarrierDown	= "학카르의 사슬 보호막이 사라질 때 경고 보기",
+	BodySlamIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97198)
 }
 
 L:SetMiscLocalization{
