@@ -81,7 +81,7 @@ function mod:SPELL_CAST_START(args)
 		warnDragonhawk:Show()
 	elseif args:IsSpellID(97930) then
 		warnLightningTotem:Show()
-		timerLightningTotemCD()
+		timerLightningTotemCD:Start()
 	end
 end
 
