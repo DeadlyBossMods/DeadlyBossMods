@@ -585,7 +585,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Nalorakk5")
 
 L:SetGeneralLocalization{
-	name = "날로라크 (곰)"
+	name = "날로라크 (5인)"
 }
 
 L:SetWarningLocalization{
@@ -620,7 +620,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Akilzon5")
 
 L:SetGeneralLocalization{
-	name = "아킬존 (독수리)"
+	name = "아킬존 (5인)"
 }
 
 L:SetWarningLocalization{
@@ -630,9 +630,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "거리 프레임 보기 (10 m)",
-	StormArrow	= "Show DBM Arrow for $spell:97300", -- translate
+	StormIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
+	RangeFrame		= "거리 프레임 보기 (10 m)",
+	StormArrow		= "$spell:97300이 시전된 경우 DBM 화살표 보기", -- translate
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
@@ -645,7 +645,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
-	name = "잔알라이 (용매)"
+	name = "잔알라이 (5인)"
 }
 
 L:SetWarningLocalization{
@@ -659,8 +659,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBomb	= "태워버리겠다!",
-	YellAdds	= "다 어디 갔지? 당장 알을 부화시켜!"
+	YellBomb		= "태워버리겠다!",
+	YellHatchAll	= "힘을 보여주마",
+	YellAdds		= "다 어디 갔지? 당장 알을 부화시켜!"
 }
 
 --------------
@@ -669,7 +670,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Halazzi5")
 
 L:SetGeneralLocalization{
-	name = "할라지 (스라소니)"
+	name = "할라지 (5인)"
 }
 
 L:SetWarningLocalization{
@@ -711,6 +712,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+	YellPull	= "너희에게 그림자가 드리우리라..."
 }
 
 -------------
@@ -726,11 +728,13 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	timerNextForm	= "다음 형상 변환"
 }
 
 L:SetOptionLocalization{
+	timerNextForm	= "형상 변환 타이머 보기",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
-	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
+	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
@@ -755,7 +759,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477" -- translate
+	LinkArrow			= "$spell:96477의 영향을 받을경우 DBM 화살표 보기" -- translate
 }
 
 L:SetMiscLocalization{
@@ -772,8 +776,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnRevive		= "영혼 부활 - %d회 남음",
-	SpecWarnOhgan	= "오간 되살아남! 극딜!",
-	SetIconOnOhgan	= "Put an icon on Ohgan when he revives" -- translate
+	SpecWarnOhgan	= "오간 되살아남! 극딜!"
 }
 
 L:SetTimerLocalization{
@@ -781,7 +784,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnRevive		= "영혼 부활 남은 횟수 경고 보기",
-	SpecWarnOhgan	= "오간이 공격 가능 할때 특수 경고 보기"
+	SpecWarnOhgan	= "오간이 공격 가능 할때 특수 경고 보기",
+	SetIconOnOhgan	= "되살아난 오간에게 전술 목표 아이콘 설정하기" -- translate
 }
 
 L:SetMiscLocalization{
