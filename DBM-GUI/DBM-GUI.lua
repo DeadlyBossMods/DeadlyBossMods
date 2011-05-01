@@ -592,6 +592,7 @@ function PanelPrototype:SetMyOwnHeight()
 			need_height = need_height +  child.myheight
 		end
 	end
+	self.frame.actualHeight = need_height -- HACK: work-around for some strange bug, panels that are overriden (e.g. stats panels when the mod is loaded) are behaving strange since 4.1. GetHeight() will always return the height of the old panel and not of the new...
 	self.frame:SetHeight(need_height)
 end
 
@@ -921,10 +922,11 @@ do
 		container.displayedFrame = frame
 
 		DBM_GUI_OptionsFramePanelContainerHeaderText:SetText( frame.name )
+				
+		local mymax = (frame.actualHeight or frame:GetHeight()) - container:GetHeight()
 		
-		local mymax = frame:GetHeight() - container:GetHeight()
 		if mymax <= 0 then mymax = 0 end
-
+		
 		if mymax > 0 then
 			_G[container:GetName().."FOV"]:Show()
 			_G[container:GetName().."FOV"]:SetScrollChild(frame)
@@ -936,7 +938,7 @@ do
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
-						child:SetWidth( child:GetWidth() - listwidth )
+						child:SetWidth( child:GetWidth() - listwidth - 1 )
 					end
 				end
 			end
@@ -1881,7 +1883,7 @@ do
 		ptext:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 10, -10)
 
 		local bossstats = 0 
-		local area = panel:CreateArea(nil, nil, 0)
+		local area = panel:CreateArea(nil, panel.frame:GetWidth() - 20, 0)
 		area.frame:SetPoint("TOPLEFT", 10, -25)
 		area.onshowcall = {}
 
@@ -1976,7 +1978,7 @@ do
 				table.insert(area.onshowcall, OnShowGetStats(mod.stats, party, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6))
 			end
 		end
-		area.frame:SetScript("OnShow", function(self) 
+		area.frame:SetScript("OnShow", function(self)
 			for _,v in pairs(area.onshowcall) do
 				v()
 			end
