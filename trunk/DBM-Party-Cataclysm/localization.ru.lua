@@ -771,8 +771,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnRevive		= "Осталось духов: %d",
-	SpecWarnOhgan	= "Оган возродился! Убейте его!", -- check this, i'm not good at English
-	SetIconOnOhgan	= "Устанавливать метку на Огана, когда он возрождается"
+	SpecWarnOhgan	= "Оган возродился! Убейте его!" -- check this, i'm not good at English
 }
 
 L:SetTimerLocalization{
@@ -780,7 +779,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnRevive		= "Показывать количество оставшихся духов",
-	SpecWarnOhgan	= "Предупреждение, когда Оган возрождается" -- check this, i'm not good at English
+	SpecWarnOhgan	= "Предупреждение, когда Оган возрождается", -- check this, i'm not good at English
+	SetIconOnOhgan	= "Устанавливать метку на Огана, когда он возрождается"
 }
 
 L:SetMiscLocalization{
