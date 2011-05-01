@@ -609,8 +609,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "Если вызвать чудовище, то мало не покажется, точно говорю!",
-	YellNormal	= "Пропустите Налоракка!"
+	YellBear 	= "Хотели разбудить во мне зверя? Вам это удалось.",
+	YellNormal	= "C дороги!"
 }
 
 ---------------
@@ -658,8 +658,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBomb	= "Сгиньте в огне!",
-	YellAdds	= "Где мои Наседки? Пора за яйца приниматься!"
+	YellBomb	= "Щас я вас сожгу!",
+	YellHatchAll= "Я покажу вам… что такое численное превосходство!",
+	YellAdds	= "Эй, хранители! Займитесь яйцами!"
 }
 
 --------------
@@ -685,8 +686,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSpirit	= "Со мною дикий дух...",
-	YellNormal	= "О дух, вернись ко мне!"
+	YellSpirit	= "Мы с моим духом уничтожим вас!",
+	YellNormal	= "Дух мой, вернись ко мне!"
 }
 
 -----------------------
@@ -710,6 +711,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+	YellPull	= "Сегодня духи попируют на славу!"
 }
 
 -------------
@@ -725,9 +727,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	timerNextForm	= "Смена формы"
 }
 
 L:SetOptionLocalization{
+	timerNextForm	= "Отсчет времени до следующей смены формы",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
