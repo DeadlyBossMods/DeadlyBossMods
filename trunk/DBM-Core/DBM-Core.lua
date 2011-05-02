@@ -76,8 +76,6 @@ DBM.DefaultOptions = {
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
-	FixCLEUOnCombatStart = false,
-	SetCurrentMapOnPull = true,
 	BlockVersionUpdatePopup = true,
 	ShowSpecialWarnings = true,
 	AlwaysShowHealthFrame = false,
@@ -2197,12 +2195,6 @@ function DBM:StartCombat(mod, delay, synced)
 				BigBrother:ConsumableCheck("SELF")
 			end
 		end	
-		if DBM.Options.FixCLEUOnCombatStart then
-			CombatLogClearEntries()
-		end
-		if DBM.Options.SetCurrentMapOnPull then
-			SetMapToCurrentZone()--Set to current map once engaged for /range and /arrow functions.
-		end
 	end
 end
 
