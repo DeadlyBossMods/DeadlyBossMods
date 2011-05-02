@@ -1197,7 +1197,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 280, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 240, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1206,8 +1206,6 @@ local function CreateOptionsMenu()
 		local StatusEnabled				= generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
 		local AutoRespond				= generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
 		local MiniMapIcon				= generaloptions:CreateCheckButton(L.EnableMiniMapIcon,  true)
-		local FixCLEUOnCombatStart		= generaloptions:CreateCheckButton(L.FixCLEUOnCombatStart,  true, nil, "FixCLEUOnCombatStart")
-		local SetCurrentMapOnPull		= generaloptions:CreateCheckButton(L.SetCurrentMapOnPull,  true, nil, "SetCurrentMapOnPull")
 		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume,  true, nil, "UseMasterVolume")--Needs someone smarter then me to hide/disable this option if not 4.0.6+
 		MiniMapIcon:SetScript("OnClick", function(self)
 			DBM:ToggleMinimapButton()
@@ -1219,7 +1217,7 @@ local function CreateOptionsMenu()
 		generaloptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
 	
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -95)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -55)
 		bmrange:SetScript("OnClick", function(self) 
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
