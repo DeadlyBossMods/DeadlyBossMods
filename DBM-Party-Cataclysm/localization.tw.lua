@@ -553,9 +553,9 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnBear		= "熊階段",
-	WarnBearSoon	= "5秒後 熊階段",
+	WarnBearSoon		= "5秒後 熊階段",
 	WarnNormal		= "普通階段",
-	WarnNormalSoon	= "5秒後 普通階段"
+	WarnNormalSoon		= "5秒後 普通階段"
 }
 
 L:SetTimerLocalization{
@@ -564,17 +564,17 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBear		= "Show warning for Bear form",--Translate
-	WarnBearSoon	= "Show pre-warning for Bear form",--Translate
-	WarnNormal		= "Show warning for Normal form",--Translate
-	WarnNormalSoon	= "Show pre-warning for Normal form",--Translate
-	TimerBear		= "Show timer for Bear form",--Translate
-	TimerNormal		= "Show timer for Normal form"--Translate
+	WarnBear		= "為熊階段顯示警告",
+	WarnBearSoon		= "為熊階段顯示預先警告",
+	WarnNormal		= "為普通階段顯示警告",
+	WarnNormalSoon		= "為熊階段顯示預先警告",
+	TimerBear		= "為熊階段顯示計時器",
+	TimerNormal		= "為普通階段顯示計時器"
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "你們既然將野獸召喚出來，就將付出更多的代價!",
-	YellNormal	= "沒有人可以擋在納羅拉克的面前!"
+	YellBear 		= "你們既然將野獸召喚出來，就將付出更多的代價!",
+	YellNormal		= "沒有人可以擋在納羅拉克的面前!"
 }
 
 ---------------
@@ -593,9 +593,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
+	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97300),
 	RangeFrame	= "顯示距離框",
-	StormArrow	= "Show DBM Arrow for $spell:97300",
+	StormArrow	= "為$spell:97300顯示BDM箭頭",
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
@@ -623,6 +623,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellBomb	= "燒死你們!",
+	YellHatchAll	= "I show you strength... in numbers.",
 	YellAdds	= "雌鷹哪裡去啦?快去孵蛋!"
 }
 
@@ -632,7 +633,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Halazzi5")
 
 L:SetGeneralLocalization{
-	name = "Халаззи"
+	name = "哈拉齊"
 }
 
 L:SetWarningLocalization{
@@ -644,8 +645,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnSpirit	= "Show warning for Spirit phase",--Translate
-	WarnNormal	= "Show warning for Normal phase"--Translate
+	WarnSpirit	= "為靈魂階段顯示警告",
+	WarnNormal	= "為普通階段顯示警告"
 }
 
 L:SetMiscLocalization{
@@ -706,18 +707,20 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Daakara")
 
 L:SetGeneralLocalization{
-	name = "Daakara"
+	name = "達卡拉"
 }
 
 L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	timerNextForm	= "下一次轉換形態"
 }
 
 L:SetOptionLocalization{
+	timerNextForm	= "為轉換形態顯示計時器",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
-	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
+	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
@@ -742,7 +745,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477" --translate
+	LinkArrow		= "當你中了$spell:96477顯顯示DBM箭頭"
 }
 
 L:SetMiscLocalization{
@@ -758,21 +761,21 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnRevive		= "Ghost Revive - %d left",
-	SpecWarnOhgan	= "Ohgan revived! Attack now!" -- check this, i'm not good at English
+	WarnRevive		= "剩餘%d鬼魂",
+	SpecWarnOhgan		= "奧根到了!攻擊!" -- check this, i'm not good at English
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnRevive		= "Announce how many ghost revive remaining",
-	SpecWarnOhgan	= "Show warning when Ohgan is revived",
-	SetIconOnOhgan	= "Put an icon on Ohgan when he revives" --translate
+	WarnRevive		= "公布剩餘多少鬼魂",
+	SpecWarnOhgan	= "當奧根到來時顯示警告",
+	SetIconOnOhgan	= "當奧根到來時標記它"
 }
 
 L:SetMiscLocalization{
-	Ohgan		= "Ohgan"
+	Ohgan		= "奧根"
 }
 
 ------------
@@ -803,7 +806,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Kilnara")
 
 L:SetGeneralLocalization{
-	name = "High Priestess Kilnara"
+	name = "高階祭司基爾娜拉"
 }
 
 L:SetWarningLocalization{
@@ -824,7 +827,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Jindo")
 
 L:SetGeneralLocalization{
-	name = "妖術師金度"
+	name = "破神者金度"
 }
 
 L:SetWarningLocalization{
