@@ -91,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSpiritBoltsNext:Start()
 	elseif args:IsSpellID(43421) then
 		warnLifebloom:Show(args.destName)
-		specWarnLifebloom(args.destName)
+		specWarnLifebloom:Show(args.destName)
 	end
 end
 
