@@ -77,9 +77,11 @@ local playerDebuffed = false
 local playerDebuffs = 0
 local cinderTargets	= {}
 local dominionTargets = {}
+local lastBlaze = 0
 
 --Credits to Bigwigs for original, modified when blizz nerfed it.
 function mod:ShadowBlazeFunction()
+	lastBlaze = GetTime()
 	if shadowblazeTimer > 10 then--Keep it from dropping below 10
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
@@ -267,17 +269,22 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			timerCinderCD:Start(11.5)--10+ cast, since we track application not cast.
 		end
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
+		lastBlaze = 0
 		warnPhase3:Show()
 		timerCinderCD:Cancel()
 		timerShadowflameBarrage:Cancel()
 		timerShadowBlazeCD:Start(12)--Seems to vary some, 12 should be a happy medium, it can be off 1-2 seconds though.
 		self:ScheduleMethod(12, "ShadowBlazeFunction")
---[[	elseif msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze) then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
-		self:UnscheduleMethod("ShadowBlazeFunction")
+	elseif msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze) then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
+		self:UnscheduleMethod("ShadowBlazeFunction")--Unschedule any running stuff
 		specWarnShadowblazeSoon:Cancel()
-		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Pre warning 5 seconds prior
-		timerShadowBlazeCD:Start(shadowblazeTimer)
-		self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")--]]
+		if GetTime() - lastBlaze <= 3 then--The blaze timer is too fast, since the actual cast happened immediately after the method ran. So reschedule functions using last timing which should be right just a little fast. :)
+			specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)
+			timerShadowBlazeCD:Start(shadowblazeTimer)
+			self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")
+		elseif GetTime() - lastBlaze >= 6 then--It's been a considerable amount of time since last blaze, which means timer is slow cause he cast it before a new time stamp could be created.
+			self:ShadowBlazeFunction()--run function immediately, the function will handle the rest.
+		end
 	end
 end
 
