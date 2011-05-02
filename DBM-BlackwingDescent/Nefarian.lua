@@ -272,6 +272,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerShadowflameBarrage:Cancel()
 		timerShadowBlazeCD:Start(12)--Seems to vary some, 12 should be a happy medium, it can be off 1-2 seconds though.
 		self:ScheduleMethod(12, "ShadowBlazeFunction")
+--[[	elseif msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze) then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
+		self:UnscheduleMethod("ShadowBlazeFunction")
+		specWarnShadowblazeSoon:Cancel()
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Pre warning 5 seconds prior
+		timerShadowBlazeCD:Start(shadowblazeTimer)
+		self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")--]]
 	end
 end
 
