@@ -49,7 +49,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	eagleGUID = nil
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show()
+		DBM.RangeCheck:Show(6)
 	end
 end
 
@@ -69,7 +69,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 			mod:Schedule(10, function()
-				DBM.RangeCheck:Show()
+				DBM.RangeCheck:Show(6)
 			end)
 		end
 		if self.Options.StormIcon then
