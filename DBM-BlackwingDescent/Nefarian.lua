@@ -49,7 +49,6 @@ local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
 local timerElectrocute			= mod:NewCastTimer(5, 81198)
 local timerNefLanding			= mod:NewTimer(30, "timerNefLanding", 78620)
 local timerShadowflameBarrage	= mod:NewBuffActiveTimer(150, 78621)
-local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
 local timerOnySwipeCD			= mod:NewTimer(10, "OnySwipeTimer", 77827)--10-20 second cd (18 being the most consistent)
 local timerNefSwipeCD			= mod:NewTimer(10, "NefSwipeTimer", 77827, false)--Same as hers, but not synced.
 local timerOnyBreathCD			= mod:NewTimer(12, "OnyBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--12-20 second variations
@@ -57,11 +56,13 @@ local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank(
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
 local timerCinderCD				= mod:NewCDTimer(22, 79339)--Heroic Ability (Every 22-25 seconds, 25 being most common but we gotta use 22 for timer cause of that small chance it's that).
 local timerDominionCD			= mod:NewNextTimer(15, 79318, nil, not mod:IsTank())
+local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
 
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
 
+mod:AddBoolOption("FixShadowblaze", false, "timer")--Off by default since i've gotten reports that "Flesh turns to ash!" yells can be done for shadow blaze OR player deaths, so auto correct will work well or really badly depending on your raids experience level on fight.
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("HealthFrame", true)
@@ -275,7 +276,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerShadowflameBarrage:Cancel()
 		timerShadowBlazeCD:Start(12)--Seems to vary some, 12 should be a happy medium, it can be off 1-2 seconds though.
 		self:ScheduleMethod(12, "ShadowBlazeFunction")
-	elseif msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze) then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
+	elseif (msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze)) and self.Options.FixShadowblaze then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
 		self:UnscheduleMethod("ShadowBlazeFunction")--Unschedule any running stuff
 		specWarnShadowblazeSoon:Cancel()
 		if GetTime() - lastBlaze <= 3 then--The blaze timer is too fast, since the actual cast happened immediately after the method ran. So reschedule functions using last timing which should be right just a little fast. :)
