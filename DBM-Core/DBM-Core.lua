@@ -117,6 +117,8 @@ DBM.DefaultOptions = {
 	SettingsMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
 --	HelpMessageShown = false,
+	
+	ShowLHFrame = true,
 }
 
 DBM.Bars = DBT:New()
@@ -3301,11 +3303,15 @@ do
 	frame:SetScript("OnUpdate", function(self, elapsed)
 		self.timer = self.timer - elapsed
 		if self.timer >= 3 and self.timer <= 4 then
-			LowHealthFrame:SetAlpha(self.timer - 3)
+			if not self.healthFrameHidden then
+				LowHealthFrame:SetAlpha(self.timer - 3)
+			end
 		elseif self.timer <= 2 then
 			frame:SetAlpha(self.timer/2)
 		elseif self.timer <= 0 then
-			LowHealthFrame:Hide()
+			if not self.healthFrameHidden then
+				LowHealthFrame:Hide()
+			end
 			frame:Hide()
 		end
 	end)
@@ -3313,8 +3319,13 @@ do
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then	
 			font:SetText(pformat(self.text, ...))
-			LowHealthFrame:Show()
-			LowHealthFrame:SetAlpha(1)
+			if DBM.Options.ShowLHFrame then
+				LowHealthFrame:Show()
+				LowHealthFrame:SetAlpha(1)
+				frame.healthFrameHidden = nil
+			else
+				frame.healthFrameHidden = true -- to prevent bugs in the case that this option is changed while the flash effect is active (which is not that unlikely as there is a test button in the gui...)
+			end
 			frame:Show()
 			frame:SetAlpha(1)
 			frame.timer = 5
