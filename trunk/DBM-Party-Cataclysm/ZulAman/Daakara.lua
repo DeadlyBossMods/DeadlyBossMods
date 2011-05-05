@@ -24,7 +24,7 @@ local warnSurge				= mod:NewTargetAnnounce(42402, 3)--Bear Form
 local warnClawRage			= mod:NewTargetAnnounce(97672, 3)--Lynx Form
 local warnLightningTotem	= mod:NewSpellAnnounce(97930, 4)--Eagle Form
 
---local timerThrow			= mod:NewNextTimer(15, 97639)
+local timerThrow			= mod:NewNextTimer(15, 97639)
 local timerParalysisCD		= mod:NewNextTimer(27, 43095)
 local timerSurgeCD			= mod:NewNextTimer(8.5, 42402)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
 local timerLightningTotemCD	= mod:NewNextTimer(17, 97930)--Eagle Form Ability.
@@ -38,7 +38,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(97639) then
 		warnThrow:Show(args.destName)
---		timerThrow:Start()
+		timerThrow:Start()
 		if self.Options.ThrowIcon then
 			self:SetIcon(args.destName, 8)
 		end
@@ -69,17 +69,22 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(42594) then
+		timerThrow:Cancel()
 		warnBear:Show()
 		timerParalysisCD:Start(2.5)
 		timerSurgeCD:Start()
 	elseif args:IsSpellID(42606) then
+		timerThrow:Cancel()
 		warnEagle:Show()
 		timerLightningTotemCD:Start(10)
 	elseif args:IsSpellID(42607) then
+		timerThrow:Cancel()
 		warnLynx:Show()
 	elseif args:IsSpellID(42608) then
+		timerThrow:Cancel()
 		warnDragonhawk:Show()
 	elseif args:IsSpellID(97930) then
+		timerThrow:Cancel()
 		warnLightningTotem:Show()
 		timerLightningTotemCD:Start()
 	end
