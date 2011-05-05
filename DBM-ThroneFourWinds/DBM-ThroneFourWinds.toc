@@ -18,7 +18,7 @@
 ## X-DBM-Mod-Name-koKR: 네 바람의 왕좌
 ## X-DBM-Mod-Name-ruRU: Трон Четырех Ветров
 ## X-DBM-Mod-Name-zhTW: 四風王座
-## X-DBM-Mod-Sort: 104
+## X-DBM-Mod-Sort: 105
 ## X-DBM-Mod-LoadZoneID: 773
 localization.en.lua
 localization.de.lua

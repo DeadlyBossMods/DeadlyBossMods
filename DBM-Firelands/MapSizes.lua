@@ -1,0 +1,1 @@
+--DBM:RegisterMapSize("NAME", floor, width, height)
