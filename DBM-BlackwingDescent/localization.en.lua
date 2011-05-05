@@ -213,7 +213,7 @@ L:SetOptionLocalization({
 	OnyBreathTimer			= "Show timer for Onyxia's $spell:94124 cooldown",
 	NefBreathTimer			= "Show timer for Nefarian's $spell:94124 cooldown",
 	InfoFrame				= "Show info frame for Onyxia's Electric Charge",
-	FixShadowblaze			= "Attempt auto correction on shadowblaze timer\n(uses boss yell that may not be accurate with player deaths)",
+	FixShadowblaze			= "Attempt auto correction on $spell:94085 timer\n(Experimental: uses yell that Nefarian sometimes does)",
 	SetWater				= "Automatically disable water collision on pull\n(returns it to enabled upon leaving combat)",
 	TankArrow				= "Show DBM arrow for Animated Bone Warrior kiter\n(designed for one kiter strategy)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
