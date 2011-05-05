@@ -78,6 +78,7 @@ DBM.DefaultOptions = {
 	ShowMinimapButton = true,
 	BlockVersionUpdatePopup = true,
 	ShowSpecialWarnings = true,
+	ShowLHFrame = true,
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
 	UseMasterVolume = true,
@@ -117,8 +118,6 @@ DBM.DefaultOptions = {
 	SettingsMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
 --	HelpMessageShown = false,
-	
-	ShowLHFrame = true,
 }
 
 DBM.Bars = DBT:New()
