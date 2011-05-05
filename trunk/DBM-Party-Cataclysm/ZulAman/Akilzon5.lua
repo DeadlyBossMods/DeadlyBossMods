@@ -9,7 +9,8 @@ mod:SetUsedIcons(1, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_SUCCESS"
 )
 
 local warnStorm			= mod:NewTargetAnnounce(97300, 4)
@@ -60,7 +61,17 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(97300) then
+	if args:IsSpellID(97318)then
+		if args:IsDestTypePlayer() then
+			warnPlucked:Show(args.destName)	
+		else
+			eagleGUID = args.destGUID
+		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(43648) then
 		warnStorm:Show(args.destName)
 		specWarnStorm:Show()
 		timerStorm:Start()
@@ -78,11 +89,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.StormArrow then
 			DBM.Arrow:ShowRunTo(args.destName, 0, 0, 8)
 		end
-	elseif args:IsSpellID(97318)then
-		if args:IsDestTypePlayer() then
-			warnPlucked:Show(args.destName)	
-		else
-			eagleGUID = args.destGUID
-		end
 	end
 end
+
