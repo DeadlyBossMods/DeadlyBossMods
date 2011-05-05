@@ -2638,15 +2638,17 @@ do
 	local testMod
 	local testWarning1, testWarning2, testWarning3
 	local testTimer
-	local testSpecialWarning
+	local testSpecialWarning1
+	local testSpecialWarning2
 	function DBM:DemoMode()
 		if not testMod then
 			testMod = DBM:NewMod("TestMod")
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
-			testTimer = testMod:NewTimer(20, "%s")			
-			testSpecialWarning = testMod:NewSpecialWarning("%s")
+			testTimer = testMod:NewTimer(20, "%s")	
+			testSpecialWarning1 = testMod:NewSpecialWarning("%s")		
+			testSpecialWarning2 = testMod:NewSpecialWarning("%s", nil, nil, nil, true)
 		end
 		testTimer:Start(20, "Pew Pew Pew...")
 		testTimer:UpdateIcon("Interface\\Icons\\Spell_Nature_Starfall", "Pew Pew Pew...")
@@ -2659,7 +2661,8 @@ do
 		testWarning1:Cancel()
 		testWarning2:Cancel()
 		testWarning3:Cancel()
-		testSpecialWarning:Cancel()
+		testSpecialWarning1:Cancel()
+		testSpecialWarning2:Cancel()
 		testWarning1:Show("Test-mode started...")
 		testWarning1:Schedule(62, "Test-mode finished!")
 		testWarning3:Schedule(50, "Boom in 10 sec!")
@@ -2667,7 +2670,8 @@ do
 		testWarning2:Schedule(38, "Evil Spell in 5 sec!")
 		testWarning2:Schedule(43, "Evil Spell!")
 		testWarning1:Schedule(10, "Test bar expired!")
-		testSpecialWarning:Schedule(60, "Boom!")
+		testSpecialWarning1:Schedule(43, "Evil Spell!")
+		testSpecialWarning2:Schedule(60, "Boom!")
 	end
 end
 
