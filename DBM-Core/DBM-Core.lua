@@ -479,14 +479,14 @@ do
 		return handleEvent(nil, event, args)
 	end
 	
-	-- fix for 4.2 which introduces some new argument
-	-- this is a temporary work-around which just drops the new argument for a quick and easy fix that is compatible with 4.2
-	-- TODO: figure out the purpose of this argument...looks like a bitfield, let's have a look at the default UI source later...
-	-- TODO: apply this change to the actual function above when 4.2 goes live, the new argument can then be added to the args table if necessary
+	-- fix for 4.2 which introduces some new arguments
+	-- this is a temporary work-around which just drops the new arguments for a quick and easy fix that is compatible with 4.2
+	-- TODO: figure out the purpose of these arguments...look like bitfields, let's have a look at the default UI source later...
+	-- TODO: apply this change to the actual function above when 4.2 goes live, the new arguments can then be added to the args table if necessary
 	if tonumber((select(4, GetBuildInfo()))) >= 40200 then
 		local oldHandler = DBM.COMBAT_LOG_EVENT_UNFILTERED
-		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, mysteryFlags, ...)
-			return oldHandler(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, ...)
+		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, mysteryArgument, destGUID, destName, destFlags, anotherMysteryArgument, ...)
+			return oldHandler(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		end
 	end
 	
