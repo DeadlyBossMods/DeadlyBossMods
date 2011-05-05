@@ -1,0 +1,37 @@
+﻿## Interface: 40100
+## X-Min-Interface: 40100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMFirelands_SavedVars, DBMFirelands_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-Name: Firelands
+## X-DBM-Mod-Name-deDE: Firelands
+## X-DBM-Mod-Name-esES: Firelands
+## X-DBM-Mod-Name-koKR: Firelands
+## X-DBM-Mod-Name-ruRU: Firelands
+## X-DBM-Mod-Name-zhTW: Firelands
+## X-DBM-Mod-Sort: 101
+## X-DBM-Mod-LoadZoneID: 999
+localization.en.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+MapSizes.lua
+Alysrazor.lua
+Rhyolith.lua
+Bethtilac.lua
+Shannox.lua
+Baleroc.lua
+FandralStaghelm.lua
+Ragnaros.lua
