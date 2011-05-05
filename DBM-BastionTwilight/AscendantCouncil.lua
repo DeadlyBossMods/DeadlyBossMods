@@ -308,10 +308,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnAegisFlame:Show()
 		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
 		self:Schedule(20, hideShieldHealthBar)
-	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin
+--[[	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin (doesn't work, dumb thing doesn't use absorb events it tracks as damage done to boss, even though the boss isn't taking damage, shield is.
 		local shieldname = GetSpellInfo(92543)
 		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
-		self:Schedule(30, hideShieldHealthBar)
+		self:Schedule(30, hideShieldHealthBar)--]]
 	elseif args:IsSpellID(82762) and args:IsPlayer() then
 		specWarnWaterLogged:Show()
 	elseif args:IsSpellID(84948, 92486, 92487, 92488) then
@@ -477,9 +477,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686 then
 			specWarnRisingFlames:Show()
 		end
-	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin Removed
+--[[	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin Removed
 		self:Unschedule(hideShieldHealthBar)
-		hideShieldHealthBar()
+		hideShieldHealthBar()-]]
 	end
 end
 
