@@ -18,7 +18,7 @@
 ## X-DBM-Mod-Name-koKR: 검은날개 강림지
 ## X-DBM-Mod-Name-ruRU: Твердыня Крыла Тьмы
 ## X-DBM-Mod-Name-zhTW: 黑翼陷窟
-## X-DBM-Mod-Sort: 103
+## X-DBM-Mod-Sort: 104
 ## X-DBM-Mod-LoadZoneID: 754
 localization.en.lua
 localization.de.lua
