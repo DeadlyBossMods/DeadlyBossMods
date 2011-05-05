@@ -17,7 +17,7 @@
 ## X-DBM-Mod-Name-koKR: 황혼의 요새
 ## X-DBM-Mod-Name-ruRU: Сумеречный бастион
 ## X-DBM-Mod-Name-zhTW: 暮光堡壘
-## X-DBM-Mod-Sort: 102
+## X-DBM-Mod-Sort: 103
 ## X-DBM-Mod-LoadZoneID: 758
 localization.en.lua
 localization.de.lua

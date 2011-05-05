@@ -19,7 +19,7 @@
 ## X-DBM-Mod-Name-koKR: 바라딘 요새
 ## X-DBM-Mod-Name-ruRU: Крепость Барадин
 ## X-DBM-Mod-Name-zhTW: 巴拉丁堡
-## X-DBM-Mod-Sort: 101
+## X-DBM-Mod-Sort: 102
 ## X-DBM-Mod-LoadZoneID: 752
 localization.en.lua
 localization.de.lua
