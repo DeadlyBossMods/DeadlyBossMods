@@ -29,7 +29,7 @@ local timerParalysisCD		= mod:NewNextTimer(27, 43095)
 local timerSurgeCD			= mod:NewNextTimer(8.5, 42402)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
 local timerLightningTotemCD	= mod:NewNextTimer(17, 97930)--Eagle Form Ability.
 
-mod:AddBoolOption("ThrowIcon", true)
+mod:AddBoolOption("ThrowIcon", false)
 mod:AddBoolOption("ClawRageIcon", true)
 
 function mod:OnCombatStart(delay)
