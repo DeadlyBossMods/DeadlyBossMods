@@ -28,7 +28,7 @@ local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 
 local specWarnFailure		= mod:NewSpecialWarningSpell(88853, nil, nil, nil, true)
-local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer(), nil, nil, true)
+local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer())
 local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
 
 local timerBreak			= mod:NewTargetTimer(60, 82881)

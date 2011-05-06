@@ -94,7 +94,7 @@ local timerQuakeCast		= mod:NewCastTimer(3, 83565)
 --Arion
 local timerLightningRod		= mod:NewBuffActiveTimer(15, 83099)
 local timerDisperse			= mod:NewCDTimer(30, 83087)
-local timerLightningBlast	= mod:NewCastTimer(4, 83070)
+local timerLightningBlast	= mod:NewCastTimer(4, 83070, nil, false)
 local timerThundershockCD	= mod:NewNextTimer(33, 83067)
 local timerThundershockCast	= mod:NewCastTimer(3, 83067)
 --Elementium Monstrosity
