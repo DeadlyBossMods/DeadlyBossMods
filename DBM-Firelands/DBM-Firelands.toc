@@ -3,7 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0불의 땅|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Firelands|r
 ## Author: Nitram/Tandanu
@@ -15,7 +15,7 @@
 ## X-DBM-Mod-Name: Firelands
 ## X-DBM-Mod-Name-deDE: Firelands
 ## X-DBM-Mod-Name-esES: Firelands
-## X-DBM-Mod-Name-koKR: Firelands
+## X-DBM-Mod-Name-koKR: 불의 땅
 ## X-DBM-Mod-Name-ruRU: Firelands
 ## X-DBM-Mod-Name-zhTW: Firelands
 ## X-DBM-Mod-Sort: 101

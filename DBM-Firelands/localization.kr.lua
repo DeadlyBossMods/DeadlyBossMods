@@ -7,7 +7,7 @@ local L
 L = DBM:GetModLocalization("Alysrazor")
 
 L:SetGeneralLocalization({
-	name = "Alysrazor"
+	name = "알리스라조르"
 })
 
 L:SetWarningLocalization({
@@ -28,7 +28,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("LordRhyolith")
 
 L:SetGeneralLocalization({
-	name = "LordRhyolith"
+	name = "군주 라이올리스"
 })
 
 L:SetWarningLocalization({
@@ -49,7 +49,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Beththilac")
 
 L:SetGeneralLocalization({
-	name = "Beth'thilac"
+	name = "베스틸락"
 })
 
 L:SetWarningLocalization({
@@ -70,7 +70,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Shannox")
 
 L:SetGeneralLocalization({
-	name = "Shannox"
+	name = "샤녹스"
 })
 
 L:SetWarningLocalization({
@@ -91,7 +91,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Baleroc")
 
 L:SetGeneralLocalization({
-	name = "Baleroc"
+	name = "발레록"
 })
 
 L:SetWarningLocalization({
@@ -112,7 +112,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("FandralStaghelm")
 
 L:SetGeneralLocalization({
-	name = "Majordomo Fandral Staghelm"	-- too long for interface?
+	name = "청지기 스태그헬름"	-- too long for interface?
 })
 
 L:SetWarningLocalization({
@@ -133,7 +133,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Ragnaros-Cata")
 
 L:SetGeneralLocalization({
-	name = "Ragnaros"
+	name = "라그나로스 (불의 땅)"
 })
 
 L:SetWarningLocalization({
