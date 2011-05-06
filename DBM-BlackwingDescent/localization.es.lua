@@ -216,6 +216,7 @@ L:SetOptionLocalization({
 	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
 	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
 	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
+	FixShadowblaze		= "Intentar auto-corregir el tiempo de $spell:94085\n(Experimental: utiliza un grito que Nefarian usa a veces)",
 	SetWater			= "Desactivar la colisión con el agua automáticamente al pullear\n(se reactiva al abandonar el combate)",
 	TankArrow			= "Mostrar flecha para el kiteador de Guerrero Hueso animado\n(diseñado para estrategia de kiteo)",--npc 41918
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
@@ -226,6 +227,7 @@ L:SetMiscLocalization({
 	NefAoe			= "¡El aire crepita cargado de electricidad!",
 	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",
 	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate?
+	YellShadowBlaze	= "Flesh turns to ash!",--translate
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
 	Charge			= "Carga Eléctrica"
