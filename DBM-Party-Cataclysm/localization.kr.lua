@@ -857,5 +857,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill	= "Oh no, Hakkar's spirit is free!" -- temporarily
+	Kill	= "안 돼... 안 돼!!!" -- temporarily
 }
