@@ -65,7 +65,7 @@ local soundCinder				= mod:NewSound(79339)
 mod:AddBoolOption("FixShadowblaze", false, "timer")--Off by default since i've gotten reports that "Flesh turns to ash!" yells can be done for shadow blaze OR player deaths, so auto correct will work well or really badly depending on your raids experience level on fight.
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
-mod:AddBoolOption("HealthFrame", true)
+mod:AddBoolOption("HealthFrame", false)
 mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetWater", false)
 mod:AddBoolOption("TankArrow", false)--May be prone to some issues if you have 2 kiters, or unpicked up adds, but it's off by default so hopefully feature is used by smart people.

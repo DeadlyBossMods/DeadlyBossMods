@@ -69,8 +69,8 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(97172) then
 		warnShadowsOfHakkar:Show()
 	elseif args:IsSpellID(97158) and not phase2warned then
-		warnPhase2:Show()
 		phase2warned = true
+		warnPhase2:Show()
 	end
 end
 
