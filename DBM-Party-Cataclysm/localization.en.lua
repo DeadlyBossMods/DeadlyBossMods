@@ -854,5 +854,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill			= "Oh no, Hakkar's spirit is free!" -- temporarily
+	Kill			= "You overstepped your bounds, Jin'do. You toy with powers that are beyond you. Have you forgotten who I am? Have you forgotten what I can do?!"
 }

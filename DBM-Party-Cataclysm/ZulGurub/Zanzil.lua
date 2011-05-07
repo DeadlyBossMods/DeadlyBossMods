@@ -30,10 +30,9 @@ mod:AddBoolOption("SetIconOnGaze")
 function mod:GazeTarget()
 	local targetname = self:GetBossTarget(52054)
 	if not targetname then return end
-
 	warnGaze:Show(targetname)
 	timerGaze:Start(targetname)
-	if self.Options.SetIconOnIcon then
+	if self.Options.SetIconOnGaze then
 		self:SetIcon(targetname, 8, 17)
 	end
 	if targetname == UnitName("player") then
