@@ -59,6 +59,7 @@ local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660, false)
 local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631, nil, nil, nil, true)
 local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
 --Terrastra
+local specWarnEruption		= mod:NewSpecialWarningSpell(83675, false)
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
 local specWarnHardenedSkin	= mod:NewSpecialWarningInterrupt(83718, false)
 --Arion
@@ -507,6 +508,7 @@ function mod:SPELL_CAST_START(args)
 		timerWaterBomb:Start()
 	elseif args:IsSpellID(83675) then
 		warnEruption:Show()
+		specWarnEruption:Show()
 		timerEruptionCD:Start()
 	elseif args:IsSpellID(83718, 92541, 92542, 92543) then
 		warnHardenSkin:Show()
@@ -517,6 +519,7 @@ function mod:SPELL_CAST_START(args)
 		timerQuakeCD:Cancel()
 		timerQuakeCast:Start()
 		timerThundershockCD:Start()
+		self:Schedule(5, checkGrounded)
 	elseif args:IsSpellID(83087) then
 		warnDisperse:Show()
 		timerDisperse:Start()
@@ -529,6 +532,7 @@ function mod:SPELL_CAST_START(args)
 		timerThundershockCD:Cancel()
 		timerThundershockCast:Start()
 		timerQuakeCD:Start()
+		self:Schedule(5, checkSearingWinds)
 	elseif args:IsSpellID(84913) then
 		warnLavaSeed:Show()
 		timerLavaSeedCD:Start()
@@ -564,6 +568,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			timerFlameStrikeCD:Start(30)
 		end
 		timerQuakeCD:Start()
+		self:Schedule(5, checkSearingWinds)
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		updateBossFrame(3)
 		timerQuakeCD:Cancel()
@@ -592,18 +597,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnQuakeSoon:Show()
 		checkSearingWinds()
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			self:Schedule(3, checkSearingWinds)
-			self:Schedule(6, checkSearingWinds)
-			self:Schedule(8, checkSearingWinds)
+			self:Schedule(3.3, checkSearingWinds)
+			self:Schedule(6.6, checkSearingWinds)
 		end
 	elseif msg == L.Thundershock or msg:find(L.Thundershock) then
 		timerThundershockCD:Update(23, 33)
 		warnThundershockSoon:Show()
 		checkGrounded()
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			self:Schedule(3, checkGrounded)
-			self:Schedule(6, checkGrounded)
-			self:Schedule(8, checkGrounded)
+			self:Schedule(3.3, checkGrounded)
+			self:Schedule(6.6, checkGrounded)
 		end
 	end
 end
