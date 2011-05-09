@@ -697,7 +697,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Malacrass5")
 
 L:SetGeneralLocalization{
-	name = "주술 군주 말라크라스 (5인)"
+	name = "사술 군주 말라크라스 (5인)"
 }
 
 L:SetWarningLocalization{
