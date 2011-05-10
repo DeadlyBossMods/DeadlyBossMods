@@ -47,7 +47,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-local usemodelframe = false		-- very beta
+local usemodelframe = true		-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
 	if forceshow == true then
@@ -979,20 +979,20 @@ function UpdateAnimationFrame(mod)
 
 	DBM_BossPreview:Show()
 	DBM_BossPreview:ClearModel()
-	DBM_BossPreview:SetCreature(mod.modelId or mod.creatureId or 0)
+	DBM_BossPreview:SetDisplayInfo(mod.modelId or 0)
 	DBM_BossPreview:SetModelScale(mod.modelScale or 0.5)
 
 	DBM_BossPreview.atime = 0 
 	DBM_BossPreview.apos = 0
 	DBM_BossPreview.rotation = 0
-	DBM_BossPreview.modelRotation = mod.modelRotation or -90
+	DBM_BossPreview.modelRotation = mod.modelRotation or -60
 	DBM_BossPreview.modelOffsetX = mod.modelOffsetX or 0
 	DBM_BossPreview.modelOffsetY = mod.modelOffsetY or 0
 	DBM_BossPreview.modelOffsetZ = mod.modelOffsetZ or 0
 	DBM_BossPreview.modelscale = mod.modelScale or 0.5
 	DBM_BossPreview.modelMoveSpeed = mod.modelMoveSpeed or 1
-	DBM_BossPreview.pos_x = 1
-	DBM_BossPreview.pos_y = 0
+	DBM_BossPreview.pos_x = 0.5
+	DBM_BossPreview.pos_y = 0.1
 	DBM_BossPreview.pos_z = 0
 	DBM_BossPreview.alpha = 1
 	DBM_BossPreview.scale = 0
@@ -1022,10 +1022,10 @@ local function CreateAnimationFrame()
 
 				-- move in the fov and to waypoint #1
 				{animation = 4, time = 1500, move_x = -0.7},
-				--{animation = 0, time = 10, endfacing = -90 }, -- rotate in an animation
+				{animation = 0, time = 10, endfacing = -90 }, -- rotate in an animation
 
 				-- stay on waypoint #1 
-				{setfacing = 0},
+				{setfacing = -90},
 				{animation = 0, time = 10000},
 				--{animation = 0, time = 2000, randomanimation = {45,46,47}},	-- play a random emote
 
@@ -1050,26 +1050,21 @@ local function CreateAnimationFrame()
 				{mintime = 1000, maxtime = 3000},
 	} 
 
+	mobstyle.animationTypes = {1, 4, 5, 14, 40} -- die, walk, run, kneel?, swim/fly
+	mobstyle.animation = 3
 	mobstyle:SetScript("OnUpdate", function(self, e)
 		if not self.enabled then return end
 		
 		self.atime = self.atime + e*1000
-		if self.pos_x < -2.5 then
-			self.pos_x = 1
+
+		if self.atime >= 10000 then
+			mobstyle.animation = floor(math.random(1, #mobstyle.animationTypes))
+			self.atime = 0
 		end
-		self.pos_x = self.pos_x - 0.005
-		self:SetSequenceTime(4,  self.atime) 
-		self:SetPosition(
-					self.pos_z + self.modelOffsetZ, 
-					self.pos_x + self.modelOffsetX, 
-					self.pos_y + self.modelOffsetY
-				)
-		--DBM:AddMsg("X = "..self.pos_x)
-
+		self:SetSequenceTime(mobstyle.animationTypes[mobstyle.animation], self.atime) 
 	end)
-
-	--[[
-	mobstyle:SetScript("OnUpdate", function(self, e)
+	
+--[[	mobstyle:SetScript("OnUpdate", function(self, e)
 		--if true then return end
 		if not self.enabled then return end
 		self.atime = self.atime + e * 1000  
@@ -1126,7 +1121,7 @@ local function CreateAnimationFrame()
 
 			self.atime = 0
 			self.playlist[self.apos].animation = self.playlist[self.apos].animation or 0
-			self:SetSequence(self.playlist[self.apos].animation)
+			self:SetSequenceTime(self.playlist[self.apos].animation, self.atime)
 		end
 
 		if self.playlist[self.apos].animation > 0 then
@@ -1165,7 +1160,7 @@ local function CreateAnimationFrame()
 			if self.scale < 0 then self.scale = 0.0001 end
 			self:SetModelScale(self.scale)
 		end
-	end) --]]
+	end)--]]
 	return mobstyle
 end
 
