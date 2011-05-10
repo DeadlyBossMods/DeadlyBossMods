@@ -3322,7 +3322,7 @@ do
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then	
 			font:SetText(pformat(self.text, ...))
-			if DBM.Options.ShowLHFrame then
+			if DBM.Options.ShowLHFrame and not UnitIsDeadOrGhost("player") then
 				LowHealthFrame:Show()
 				LowHealthFrame:SetAlpha(1)
 				frame.healthFrameHidden = nil
