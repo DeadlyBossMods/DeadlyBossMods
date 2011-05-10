@@ -73,6 +73,7 @@ local yellGravityCore		= mod:NewYell(92075)
 local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
 local yellStaticOverload	= mod:NewYell(92067)
 local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
+local yellFrostbeacon		= mod:NewYell(92307)
 
 local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
 
@@ -110,6 +111,7 @@ local timerFlameStrikeCD	= mod:NewNextTimer(20, 92212)--Heroic Phase 2 ablity
 local timerFrostBeaconCD	= mod:NewNextTimer(20, 92307)--Heroic Phase 2 ablity
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
+local soundLightingRod		= mod:NewSound(83099)
 local soundBeacon			= mod:NewSound(92307)
 
 mod:AddBoolOption("HealthFrame", true)
@@ -292,6 +294,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
+			soundLightingRod:Play()
 			yellLightningRod:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
@@ -341,15 +344,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
 			soundBeacon:Play()
+			yellFrostbeacon:Yell()
 		end
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
 		end
-		if GetTime() - lastBeacon >= 18 then -- sometimes Frost Beacon change targets unreasonally, show only new Frost orbs.
+		if GetTime() - lastBeacon >= 18 then -- sometimes Frost Beacon change targets, show only new Frost orbs.
 			timerFrostBeaconCD:Start()
 			lastBeacon = GetTime()
 		end
-	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them. Since jump warnings are gone that's no longer nessesary
+	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them.
 		warnStaticOverload:Show(args.destName)
 		timerStaticOverloadCD:Start()
 		if self.Options.StaticOverloadIcon then
@@ -362,7 +366,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92075) then
 		warnGravityCore:Show(args.destName)
 		timerGravityCoreCD:Start()
-		if self.Options.GravityCoreIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
+		if self.Options.GravityCoreIcon then
 			self:SetIcon(args.destName, 5)
 		end
 		if args:IsPlayer() then
@@ -382,6 +386,8 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
+			soundLightingRod:Play()
+			yellLightningRod:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
@@ -415,11 +421,13 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 		warnFrostBeacon:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
+			soundBeacon:Play()
+			yellFrostbeacon:Yell()
 		end
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
 		end
-	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them. Since jump warnings are gone that's no longer nessesary
+	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them.
 		warnStaticOverload:Show(args.destName)
 		timerStaticOverloadCD:Start()
 		if self.Options.StaticOverloadIcon then
