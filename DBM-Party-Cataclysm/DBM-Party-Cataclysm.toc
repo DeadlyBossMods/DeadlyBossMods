@@ -75,7 +75,7 @@ ShadowFangKeep\Walden.lua
 ShadowFangKeep\Godfrey.lua
 TheVortexPinnacle\MapSizes.lua
 TheVortexPinnacle\GrandVizierErtan.lua
-TheVortexPinnacle\Altarius.lua
+TheVortexPinnacle\Altairus.lua
 TheVortexPinnacle\Asaad.lua
 TheStonecore\MapSizes.lua
 TheStonecore\Corborus.lua
