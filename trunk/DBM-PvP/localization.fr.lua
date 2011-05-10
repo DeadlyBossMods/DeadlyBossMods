@@ -63,18 +63,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "Début de la bataille dans", 
 	TimerTower		= "%s",
 	TimerGY			= "%s",
 })
 
-L:SetMiscLocalization({
-	BgStart60		= "Début de la bataille pour la vallée d'Alterac dans 1 minute.",
-	BgStart30		= "Début de la bataille pour la vallée d'Alterac dans 30 secondes."
-})
-
 L:SetOptionLocalization({
-	TimerStart		= "Voir: Temps de départ du BG",
 	TimerTower		= "Voir le timer des captures des tours",
 	TimerGY			= "Voir le timer des captures des cimetières",
 	AutoTurnIn		= "Fini automatiquement les quêtes dans la Vallée d'Alterac"
@@ -276,8 +269,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "Début de la bataille de Gilnéas dans 1 minute.",
-	BgStart30				= "Début de la bataille de Gilnéas dans 30 secondes.",
 	ScoreExpr 				= "(%d+)/2000",
 	Alliance 				= "Alliance",
 	Horde 					= "Horde",
@@ -287,12 +278,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 				= "Début de la bataille dans", 
 	TimerCap 				= "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart  			= "Voir: Temps de départ du BG",
 	TimerWin 				= "Montre le timer de la victoire",
 	TimerCap 				= "Montre le timer de capture",
 	ShowGilneasEstimatedPoints	= "Montre l'estimation de points pour gagner / perdre",

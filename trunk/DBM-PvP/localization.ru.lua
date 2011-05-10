@@ -61,18 +61,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Битва начнется через", 
 	TimerTower	= "%s",
 	TimerGY		= "%s"
 })
 
-L:SetMiscLocalization({
-	BgStart60	= "До начала сражения за Альтеракскую долину остается 1 минута.",
-	BgStart30	= "30 секунд до начала битвы в Альтеракской долине."
-})
-
 L:SetOptionLocalization({
-	TimerStart	= "Отсчет времени до начала битвы",
 	TimerTower	= "Отсчет времени до захвата",
 	TimerGY		= "Отсчет времени до захвата кладбищ",
 	AutoTurnIn	= "Автоматическая сдача заданий"
@@ -273,8 +266,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60	= "Битва начнется через 1 минуту.",
-	BgStart30	= "Битва начнется через 30 секунд.",
 	ScoreExpr	= "(%d+)/2000",
 	Alliance	= "Альянса",
 	Horde		= "Орды",
@@ -284,12 +275,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Битва начнется через", 
 	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerStart				= "Отсчет времени до начала битвы",
 	TimerWin				= "Отсчет времени до победы",
 	TimerCap				= "Отсчет времени до захвата",
 	ShowGilneasEstimatedPoints	= "Отображать предполагаемые очки оставшиеся до победы/поражения",

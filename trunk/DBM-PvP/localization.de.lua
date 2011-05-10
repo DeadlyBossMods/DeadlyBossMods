@@ -60,18 +60,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Spiel startet in", 
 	TimerTower = "%s",
 	TimerGY = "%s",
 })
 
-L:SetMiscLocalization({
-	BgStart60 = "Der Kampf um das Alteractal beginnt in 1 Minute.",
-	BgStart30 = "Der Kampf um das Alteractal beginnt in 30 Sekunden."
-})
-
 L:SetOptionLocalization({
-	TimerStart  = "Zeige Starttimer",
 	TimerTower = "Zeige Turmzerstörungstimer",
 	TimerGY = "Zeige Friedhoferoberungstimer",
 	AutoTurnIn = "Automatisches Abgeben der Quests im Alteractal"
@@ -269,8 +262,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Die Schlacht wird in 1 Minute beginnen.",
-	BgStart30 = "Die Schlacht in 30 Sekunden beginnen.",
 	ScoreExpr = "(%d+)/2000",
 	Alliance = "Allianz",
 	Horde = "Horde",
@@ -280,12 +271,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Spiel startet in", 
 	TimerCap = "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Zeige Starttimer",
 	TimerWin = "Zeige Siegtimer",
 	TimerCap = "Zeige Eroberungstimer",
 	ShowGilneasEstimatedPoints = "Zeige geschätzte Kampf-Endpunkte",
