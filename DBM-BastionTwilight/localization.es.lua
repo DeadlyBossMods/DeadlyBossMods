@@ -97,7 +97,8 @@ L:SetMiscLocalization({
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Monstruosidad de Elementium",
-	Kill			= "Imposible..."
+	Kill			= "Imposible...",
+	blizzHatesMe	= "¡Escarcha y relámpagos en mi! ¡Apartaos o morid!"--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
 })
 
 ----------------
