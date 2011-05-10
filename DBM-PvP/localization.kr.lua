@@ -61,18 +61,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 	= "게임 시작", 
 	TimerTower	= "%s",
 	TimerGY 	= "%s"
 })
 
-L:SetMiscLocalization({
-	BgStart60 	= "알터랙 계곡 전투 개시 1분 전...",
-	BgStart30 	= "알터랙 계곡 전투 개시 30초 전..."
-})
-
 L:SetOptionLocalization({
-	TimerStart  = "시작 타이머 보기",
 	TimerTower 	= "탑 점령 타이머 보기",
 	TimerGY 	= "무덤 점령 타이머 보기",
 	AutoTurnIn 	= "알터랙 계곡내 퀘스트 자동 완료"
@@ -273,8 +266,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 		= "1분 후 전투가 시작됩니다.",
-	BgStart30 		= "30초 후 전투가 시작됩니다.",
 	ScoreExpr 		= "(%d+)/2000",
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
@@ -284,12 +275,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 				= "게임 시작", 
 	TimerCap 				= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerStart  				= "시작 타이머 보기",
 	TimerWin 					= "승리 예상 타이머 보기",
 	TimerCap 					= "깃발 점령 타이머 보기",
 	ShowGilneasEstimatedPoints 	= "승/패 예상 포인트 보기",
