@@ -103,7 +103,7 @@ local function showOrbWarning(source)
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
-		if UnitThreatSituation(n) == 3 and UnitHealthMax("raid"..i) <= 165000 then--Much simpler, no istank function, no target scanning no nothing. Just clean health check
+		if UnitThreatSituation(n) == 3 and UnitHealthMax("raid"..i) <= 180000 then--Much simpler, no istank function, no target scanning no nothing. Just clean health check
 --		if UnitThreatSituation(n) == 3 and not isTank(n) then
 			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
