@@ -2,7 +2,8 @@ local mod	= DBM:NewMod("Ozumat", "DBM-Party-Cataclysm", 9)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(40807)
+mod:SetCreatureID(42172)
+mod:SetModelID(32911)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
@@ -40,5 +41,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(83985, 83986, 91511) then
 		warnBlightSpray:Show()
 		timerBlightSpray:Start()
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if self:GetUnitCreatureId(uId) == 42172 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.02 then--This boss doesn't die, the event ends when he reaches 1 health. So we assume if he's less than 2% he's probably dead
+		self:SendSync("bossdown")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "bossdown" then
+		DBM:EndCombat(self)
 	end
 end
