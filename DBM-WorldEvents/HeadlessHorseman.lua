@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(23682, 23775)
-mod:SetModelID(22351)
+--mod:SetModelID(22351)--Model doesn't work/render for some reason.
 mod:RegisterCombat("combat")
 mod:RegisterKill("say", L.SayCombatEnd)
 
