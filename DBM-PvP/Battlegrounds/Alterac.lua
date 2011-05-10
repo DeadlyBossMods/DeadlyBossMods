@@ -22,7 +22,6 @@ Alterac:RegisterEvents(
 	"QUEST_COMPLETE"
 )
 
-local startTimer = Alterac:NewTimer(62, "TimerStart", 2457)
 local towerTimer = Alterac:NewTimer(243, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
 local gyTimer = Alterac:NewTimer(243, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
 
@@ -141,16 +140,7 @@ do
 	Alterac.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 	Alterac.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
 	Alterac.CHAT_MSG_RAID_BOSS_EMOTE = schedule_check
-
-	function Alterac:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
-		if not bgzone then return end
-		if arg1 == L.BgStart60 then
-			startTimer:Start()
-		elseif arg1 == L.BgStart30  then		
-			startTimer:Update(31, 62)
-		end
-		schedule_check(self)
-	end
+	Alterac.CHAT_MSG_BG_SYSTEM_NEUTRAL = schedule_check
 end
 
 local quests

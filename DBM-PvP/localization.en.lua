@@ -59,18 +59,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
 	TimerTower	= "%s",
 	TimerGY		= "%s"
 })
 
-L:SetMiscLocalization({
-	BgStart60	= "1 minute until the battle for Alterac Valley begins.",
-	BgStart30	= "30 seconds until the battle for Alterac Valley begins."
-})
-
 L:SetOptionLocalization({
-	TimerStart	= "Show start timer",
 	TimerTower	= "Show tower capture timer",
 	TimerGY		= "Show graveyard capture timer",
 	AutoTurnIn	= "Automatically turn-in quests"
@@ -270,8 +263,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60	= "The battle will begin in 1 minute.",
-	BgStart30	= "The battle will begin in 30 seconds.",
 	ScoreExpr	= "(%d+)/2000",
 	Alliance	= "Alliance",
 	Horde		= "Horde",
@@ -281,12 +272,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
 	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerStart				= "Show start timer",
 	TimerWin				= "Show win timer",
 	TimerCap				= "Show capture timer",
 	ShowGilneasEstimatedPoints		= "Show estimated points on win/loss",

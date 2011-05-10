@@ -12,7 +12,6 @@ Gilneas:RegisterEvents(
 	"UPDATE_WORLD_STATES"
 )
 
-local startTimer 	= Gilneas:NewTimer(62, "TimerStart", 2457)
 local winTimer 		= Gilneas:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 local capTimer 		= Gilneas:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
@@ -185,16 +184,8 @@ do
 	Gilneas.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 	Gilneas.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
 	Gilneas.CHAT_MSG_RAID_BOSS_EMOTE = schedule_check
+	Gilneas.CHAT_MSG_BG_SYSTEM_NEUTRAL = schedule_check
 
-	function Gilneas:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
-		if not bgzone then return end
-		if arg1 == L.BgStart60 then
-			startTimer:Start()
-		elseif arg1 == L.BgStart30  then		
-			startTimer:Update(31, 62)
-		end
-		schedule_check(self)
-	end
 end
 
 do
