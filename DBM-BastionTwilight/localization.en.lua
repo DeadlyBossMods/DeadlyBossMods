@@ -76,6 +76,7 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
 	timerTransition			= "Show Phase transition timer",
 	RangeFrame				= "Show range frame automatically when needed",
+	yellScrewed				= "Yell when you have $spell:83099 & $spell:92307 at same time",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -95,7 +96,8 @@ L:SetMiscLocalization({
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Elementium Monstrosity",
-	Kill			= "Impossible...."
+	Kill			= "Impossible....",
+	blizzHatesMe	= "Beacon & Rod on me! Clear a path!"--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
 })
 
 ----------------
