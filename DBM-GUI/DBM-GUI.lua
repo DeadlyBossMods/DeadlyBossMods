@@ -980,6 +980,9 @@ function UpdateAnimationFrame(mod)
 	DBM_BossPreview:Show()
 	DBM_BossPreview:ClearModel()
 	DBM_BossPreview:SetDisplayInfo(mod.modelId or 0)
+	DBM_BossPreview:SetSequence(4)
+
+--[[	** FANCY STUFF WE DO NOT USE FOR NOW **
 	DBM_BossPreview:SetModelScale(mod.modelScale or 0.5)
 
 	DBM_BossPreview.atime = 0 
@@ -1004,15 +1007,19 @@ function UpdateAnimationFrame(mod)
 		DBM_BossPreview.pos_x + DBM_BossPreview.modelOffsetX, 
 		DBM_BossPreview.pos_y + DBM_BossPreview.modelOffsetY)
 	DBM_BossPreview.enabled = true
-
-	DBM_BossPreview:SetSequence(4)
+--]]
 end
 
 local function CreateAnimationFrame()
 	local mobstyle = CreateFrame('PlayerModel', "DBM_BossPreview", DBM_GUI_OptionsFramePanelContainer)
 	mobstyle:SetPoint("BOTTOMRIGHT", DBM_GUI_OptionsFramePanelContainer, "BOTTOMRIGHT", -5, 5)
-	mobstyle:SetWidth( DBM_GUI_OptionsFramePanelContainer:GetWidth()-10 )
-	mobstyle:SetHeight( DBM_GUI_OptionsFramePanelContainer:GetHeight()-10 )
+	mobstyle:SetWidth( 300 )
+	mobstyle:SetHeight( 230 )
+	mobstyle:SetPortraitZoom(0.4)
+	mobstyle:SetRotation(0)
+	mobstyle:SetClampRectInsets(0, 0, 24, 0)
+
+--[[    ** FANCY STUFF WE DO NOT USE FOR NOW **
 
 	mobstyle.playlist = { 	-- start animation outside of our fov    
 				{set_y = 0, set_x = 1.1, set_z = 0, setfacing = -90, setalpha = 1},
@@ -1037,7 +1044,7 @@ local function CreateAnimationFrame()
 				{setfacing = 0},
 				{animation = 0, time = 10000,},
 				 
-				--[[
+				
 				-- move to the horizont
 				{setfacing = 180},
 				{animation = 4, time = 10000, toscale=0.005},
@@ -1045,12 +1052,12 @@ local function CreateAnimationFrame()
 				-- die and despawn
 				{animation = 1, time = 5000},
 				{animation = 6, time = 2000, toalpha = 0},
-				--]]
+
 				-- we want so sleep a little while on animation end
 				{mintime = 1000, maxtime = 3000},
 	} 
 
-	mobstyle.animationTypes = {1, 4, 5} -- die, walk, run
+	mobstyle.animationTypes = {1, 4, 5, 14, 40} -- die, walk, run, kneel?, swim/fly
 	mobstyle.animation = 3
 	mobstyle:SetScript("OnUpdate", function(self, e)
 		if not self.enabled then return end
@@ -1064,7 +1071,7 @@ local function CreateAnimationFrame()
 		self:SetSequenceTime(mobstyle.animationTypes[mobstyle.animation], self.atime) 
 	end)
 	
---[[	mobstyle:SetScript("OnUpdate", function(self, e)
+	mobstyle:SetScript("OnUpdate", function(self, e)
 		--if true then return end
 		if not self.enabled then return end
 		self.atime = self.atime + e * 1000  
