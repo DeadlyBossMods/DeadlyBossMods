@@ -1050,7 +1050,7 @@ local function CreateAnimationFrame()
 				{mintime = 1000, maxtime = 3000},
 	} 
 
-	mobstyle.animationTypes = {1, 4, 5, 14, 40} -- die, walk, run, kneel?, swim/fly
+	mobstyle.animationTypes = {1, 4, 5} -- die, walk, run
 	mobstyle.animation = 3
 	mobstyle:SetScript("OnUpdate", function(self, e)
 		if not self.enabled then return end
