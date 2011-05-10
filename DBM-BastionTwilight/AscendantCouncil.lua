@@ -74,6 +74,7 @@ local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
 local yellStaticOverload	= mod:NewYell(92067)
 local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
 local yellFrostbeacon		= mod:NewYell(92307)
+local yellScrewed			= mod:NewYell(92307, L.blizzHatesMe, true, "yellScrewed", "YELL")--Amusing but effective.
 
 local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
 
@@ -133,6 +134,8 @@ local sendedLowHP = {}
 local warnedLowHP = {}
 local frozenCount = 0
 local lastBeacon = 0
+local isBeacon = false
+local isRod = false
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -246,6 +249,8 @@ function mod:OnCombatStart(delay)
 	gravityCrushIcon = 8
 	frozenCount = 0
 	lastBeacon = 0
+	isBeacon = false
+	isRod = false
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
@@ -293,9 +298,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(83099) then
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
+			isRod = true
 			specWarnLightningRod:Show()
 			soundLightingRod:Play()
-			yellLightningRod:Yell()
+			if isBeacon then--You have lighting rod and frost beacon at same time.
+				yellScrewed:Yell()
+			else--You only have rod so do normal yell
+				yellLightningRod:Yell()
+			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
@@ -342,9 +352,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92307) then
 		warnFrostBeacon:Show(args.destName)
 		if args:IsPlayer() then
+			isBeacon = true
 			specWarnFrostBeacon:Show()
 			soundBeacon:Play()
-			yellFrostbeacon:Yell()
+			if isRod then--You have lighting rod and frost beacon at same time.
+				yellScrewed:Yell()
+			else--You only have beacon so do normal yell
+				yellFrostbeacon:Yell()
+			end
 		end
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
@@ -385,9 +400,14 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 	elseif args:IsSpellID(83099) then
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
+			isRod = true
 			specWarnLightningRod:Show()
 			soundLightingRod:Play()
-			yellLightningRod:Yell()
+			if isBeacon then--You have lighting rod and frost beacon at same time.
+				yellScrewed:Yell()
+			else--You only have rod so do normal yell
+				yellLightningRod:Yell()
+			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
@@ -420,9 +440,14 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 	elseif args:IsSpellID(92307) then
 		warnFrostBeacon:Show(args.destName)
 		if args:IsPlayer() then
+			isBeacon = true
 			specWarnFrostBeacon:Show()
 			soundBeacon:Play()
-			yellFrostbeacon:Yell()
+			if isRod then--You have lighting rod and frost beacon at same time.
+				yellScrewed:Yell()
+			else--You only have beacon so do normal yell
+				yellFrostbeacon:Yell()
+			end
 		end
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
@@ -468,6 +493,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(83099) then
 		timerLightningRod:Cancel(args.destName)
+		if args:IsPlayer() then
+			isRod = false
+		end
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 0)
 		end
@@ -477,6 +505,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(92307) then
+		if args:IsPlayer() then
+			isBeacon = false
+		end
 		if self.Options.FrostBeacondIcon then
 			self:SetIcon(args.destName, 0)
 		end
