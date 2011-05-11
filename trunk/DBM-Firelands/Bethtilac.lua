@@ -17,8 +17,8 @@ mod:RegisterEvents(
 	Smoldering Devastation has a blizzard emote
 --]]
 
-local timerSpinners 			= mod:NewTimer("TimerSpinners", 18) -- 10secs after Smoldering (10+8)
-local timerSpiderlings			= mod:NewTimer("TimerSpiderlings", 30)
+local timerSpinners 			= mod:NewTimer(18, "TimerSpinners") -- 10secs after Smoldering (10+8)
+local timerSpiderlings			= mod:NewTimer(30, "TimerSpiderlings")
 local timerSmolderingDevastation	= mod:NewNextTimer(90, 99052)
 local timerSmolderingDevastationTimer	= mod:NewCastTimer(8, 99052)
 

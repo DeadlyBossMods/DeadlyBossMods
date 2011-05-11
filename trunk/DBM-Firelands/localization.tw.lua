@@ -25,10 +25,10 @@ L:SetMiscLocalization({
 -------------------
 -- Lord Rhyolith --
 -------------------
-L = DBM:GetModLocalization("LordRhyolith")
+L = DBM:GetModLocalization("Rhyolith")
 
 L:SetGeneralLocalization({
-	name = "LordRhyolith"
+	name = "Lord Rhyolith"
 })
 
 L:SetWarningLocalization({
