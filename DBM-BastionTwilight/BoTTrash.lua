@@ -23,7 +23,6 @@ local specWarnFlameStrike	= mod:NewSpecialWarningMove(93362)
 local yellFlamestrike		= mod:NewYell(93362)
 
 local timerVolcanicWrath	= mod:NewBuffActiveTimer(9, 87903)--Maybe need a Guid based targettimer since most pulls have 2 of these?
-local timerFrostWhirl		= mod:NewBuffActiveTimer(4, 93340)--Maybe need a Guid based targettimer in case you pull more than one?
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -59,7 +58,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(93340) then
 		warnFrostWhirl:Show()
 		specWarnFrostWhirl:Show()
-		timerFrostWhirl:Show()
 	end
 end
 
