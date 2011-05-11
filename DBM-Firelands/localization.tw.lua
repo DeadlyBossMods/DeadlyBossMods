@@ -43,13 +43,13 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 })
 
------------------
--- Beth'thilac --
------------------
-L = DBM:GetModLocalization("Beththilac")
+----------------
+-- Beth'tilac --
+----------------
+L = DBM:GetModLocalization("Bethtilac")
 
 L:SetGeneralLocalization({
-	name = "Beth'thilac"
+	name = "Beth'tilac"
 })
 
 L:SetWarningLocalization({
