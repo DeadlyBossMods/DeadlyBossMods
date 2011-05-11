@@ -28,8 +28,8 @@ function mod:repeatSpiderlings()
 end
 
 function mod:OnCombatStart(delay)
-	timerSpinners:Start(10-delay)
-	timerSpiderlings:Start(11-delay)
+	timerSpinners:Start(11-delay)
+	timerSpiderlings:Start(12-delay)
 	self:ScheduleMethod(11-delay , "repeatSpiderlings")
 	timerSmolderingDevastation:Start(-delay)
 end
@@ -44,7 +44,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.EmoteSpiderlings then
-		self:UnscheduleMethod("repeatSpiderlings")
+		self:UnscheduleMethod("repeatSpiderlings")	-- in case it is off for some reason (if it is a little random)
 		self:repeatSpiderlings()
 	end
 end
