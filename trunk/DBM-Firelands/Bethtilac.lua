@@ -9,6 +9,7 @@ mod:SetUsedIcons()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_DIED"
@@ -19,12 +20,14 @@ mod:RegisterEvents(
 --]]
 
 local warnSmolderingDevastation		= mod:NewCastAnnounce(99052, 4)
+local warnWidowKiss			= mod:NewTargetAnnounce(99476, 3)
 
 local timerSpinners 				= mod:NewTimer(18, "TimerSpinners") -- 10secs after Smoldering (10+8)
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
 local timerDrone					= mod:NewTimer("TimerDrone", 60)
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
+local timerWidowKiss			= mod:NewTargetTimer(20, 99476)
 
 local droneCount = 0
 
@@ -37,6 +40,13 @@ function mod:repeatDrone()
 	if droneCount >= 4 then return end	-- 4th dead = P2 = no more drones?
 	timerDrone:Start()
 	self:ScheduleMethod(60, "repeatDrone")
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(99476, 99506) then
+		warnWidowKiss:Show(args.destName)
+		timerWidowKiss:Start(args.destName)
+	end
 end
 
 function mod:OnCombatStart(delay)
