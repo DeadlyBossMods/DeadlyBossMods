@@ -18,11 +18,13 @@ mod:RegisterEvents(
 	Smoldering Devastation has a blizzard emote
 --]]
 
-local timerSpinners 			= mod:NewTimer(18, "TimerSpinners") -- 10secs after Smoldering (10+8)
-local timerSpiderlings			= mod:NewTimer(30, "TimerSpiderlings")
-local timerDrone			= mod:NewTimer("TimerDrone", 60)
-local timerSmolderingDevastation	= mod:NewNextTimer(90, 99052)
-local timerSmolderingDevastationTimer	= mod:NewCastTimer(8, 99052)
+local warnSmolderingDevastation		= mod:NewCastAnnounce(99052, 4)
+
+local timerSpinners 				= mod:NewTimer(18, "TimerSpinners") -- 10secs after Smoldering (10+8)
+local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
+local timerDrone					= mod:NewTimer("TimerDrone", 60)
+local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
+local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 
 local droneCount = 0
 
@@ -38,7 +40,7 @@ function mod:repeatDrone()
 end
 
 function mod:OnCombatStart(delay)
-	timerSmolderingDevastation:Start(-delay)
+	timerSmolderingDevastationCD:Start(-delay)
 	timerSpinners:Start(11-delay)
 	timerSpiderlings:Start(12-delay)
 	self:ScheduleMethod(11-delay , "repeatSpiderlings")
@@ -49,8 +51,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(99052) then
+		warnSmolderingDevastation:Show()
 		timerSmolderingDevastation:Start()
-		timerSmolderingDevastationTimer:Start()
+		timerSmolderingDevastationCD:Start()
 		timerSpinners:Start() -- 10secs after Smoldering Devastation
 	end
 end
