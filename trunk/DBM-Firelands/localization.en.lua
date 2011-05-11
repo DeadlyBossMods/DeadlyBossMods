@@ -55,12 +55,18 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSpinners 		= "Next Spinners",
+	TimerSpiderlings	= "Next Spiderlings"
 })
 
 L:SetOptionLocalization({
+	TimerSpinners		= "Show timer for next Cinderweb Spinners",
+	TimerSpiderlings	= "Show timer for next Cinderweb Spiderlings"
 })
 
 L:SetMiscLocalization({
+	EmoteSpiderlings 	= "Spiderlings have been rousted from their nest!",
+	EmoteSpinners 		= "Spinners dangle from above."
 })
 
 -------------
