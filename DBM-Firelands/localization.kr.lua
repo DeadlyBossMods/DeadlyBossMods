@@ -25,7 +25,7 @@ L:SetMiscLocalization({
 -------------------
 -- Lord Rhyolith --
 -------------------
-L = DBM:GetModLocalization("LordRhyolith")
+L = DBM:GetModLocalization("Rhyolith")
 
 L:SetGeneralLocalization({
 	name = "군주 라이올리스"
