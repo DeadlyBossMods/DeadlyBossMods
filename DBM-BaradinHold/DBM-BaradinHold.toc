@@ -30,3 +30,4 @@ localization.ru.lua
 localization.tw.lua
 MapSizes.lua
 Argaloth.lua
+Occuthar.lua
