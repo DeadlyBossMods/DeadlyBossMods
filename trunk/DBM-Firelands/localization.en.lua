@@ -56,12 +56,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerSpinners 		= "Next Spinners",
-	TimerSpiderlings	= "Next Spiderlings"
+	TimerSpiderlings	= "Next Spiderlings",
+	TimerDrone		= "Next Drone"
 })
 
 L:SetOptionLocalization({
 	TimerSpinners		= "Show timer for next Cinderweb Spinners",
-	TimerSpiderlings	= "Show timer for next Cinderweb Spiderlings"
+	TimerSpiderlings	= "Show timer for next Cinderweb Spiderlings",
+	TimerDron		= "Show timer for next Cinderweb Drone"
 })
 
 L:SetMiscLocalization({
