@@ -2,6 +2,7 @@ local mod	= DBM:NewMod("BWDTrash", "DBM-BlackwingDescent")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetModelID(29539)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
