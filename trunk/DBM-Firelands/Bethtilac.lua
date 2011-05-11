@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_DIED"
 )
 
 --[[
@@ -19,19 +20,31 @@ mod:RegisterEvents(
 
 local timerSpinners 			= mod:NewTimer(18, "TimerSpinners") -- 10secs after Smoldering (10+8)
 local timerSpiderlings			= mod:NewTimer(30, "TimerSpiderlings")
+local timerDrone			= mod:NewTimer("TimerDrone", 60)
 local timerSmolderingDevastation	= mod:NewNextTimer(90, 99052)
 local timerSmolderingDevastationTimer	= mod:NewCastTimer(8, 99052)
+
+local droneCount = 0
 
 function mod:repeatSpiderlings()
 	timerSpiderlings:Start()
 	self:ScheduleMethod(30, "repeatSpiderlings")
 end
 
+function mod:repeatDrone()
+	if droneCount >= 4 then return end	-- 4th dead = P2 = no more drones?
+	timerDrone:Start()
+	self:ScheduleMethod(60, "repeatDrone")
+end
+
 function mod:OnCombatStart(delay)
+	timerSmolderingDevastation:Start(-delay)
 	timerSpinners:Start(11-delay)
 	timerSpiderlings:Start(12-delay)
 	self:ScheduleMethod(11-delay , "repeatSpiderlings")
-	timerSmolderingDevastation:Start(-delay)
+	timerDrone:Start(45-delay)
+	self:ScheduleMethod(45-delay, "repeatDrone")
+	droneCount = 0
 end
 
 function mod:SPELL_CAST_START(args)
@@ -39,6 +52,13 @@ function mod:SPELL_CAST_START(args)
 		timerSmolderingDevastation:Start()
 		timerSmolderingDevastationTimer:Start()
 		timerSpinners:Start() -- 10secs after Smoldering Devastation
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 53635 then -- guessed creature ID
+		droneCount = droneCount + 1
 	end
 end
 
