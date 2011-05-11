@@ -9,7 +9,42 @@ mod:SetUsedIcons()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
+--[[
+	Smoldering Devastation has a blizzard emote
+--]]
+
+local timerSpinners 			= mod:NewTimer("TimerSpinners", 18) -- 10secs after Smoldering (10+8)
+local timerSpiderlings			= mod:NewTimer("TimerSpiderlings", 30)
+local timerSmolderingDevastation	= mod:NewNextTimer(90, 99052)
+local timerSmolderingDevastationTimer	= mod:NewCastTimer(8, 99052)
+
+function mod:repeatSpiderlings()
+	timerSpiderlings:Start()
+	self:ScheduleMethod(30, "repeatSpiderlings")
+end
+
 function mod:OnCombatStart(delay)
+	timerSpinners:Start(10-delay)
+	timerSpiderlings:Start(11-delay)
+	self:ScheduleMethod(11-delay , "repeatSpiderlings")
+	timerSmolderingDevastation:Start(-delay)
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(99052) then
+		timerSmolderingDevastation:Start()
+		timerSmolderingDevastationTimer:Start()
+		timerSpinners:Start() -- 10secs after Smoldering Devastation
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.EmoteSpiderlings then
+		self:UnscheduleMethod("repeatSpiderlings")
+		self:repeatSpiderlings()
+	end
 end
