@@ -39,6 +39,7 @@ local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to ac
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local yellCrash						= mod:NewYell(93178)--Second thought, it occured to me that the crash should never target the adherent tank, so if he yells so what heh. But it is accurate if it targest chogal tank. On for everyone now.
 local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177, mod:IsMelee())--On by default for melee, but can be tweaked to off if that's still too much.
+local specwarnFury					= mod:NewSpecialWarningTarget(82524, mod:IsTank())
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
@@ -53,7 +54,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnWorship", true)
 mod:AddBoolOption("SetIconOnCreature", true)
-mod:AddBoolOption("CorruptingCrashArrow", true)--Subject to accuracy flaws so off by default.
+mod:AddBoolOption("CorruptingCrashArrow", true)
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
 
@@ -160,6 +161,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(81572, 93218, 93219, 93220) then
 		warnEmpoweredShadows:Show()
 		timerEmpoweredShadows:Start()
+	elseif args:IsSpellID(82518, 93154, 93155, 93156) then
+		specwarnFury:Show(args.destName)
 	end
 end
 
