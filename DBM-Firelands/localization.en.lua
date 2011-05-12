@@ -67,8 +67,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!",
-	EmoteSpinners 		= "Spinners dangle from above."
+	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
 })
 
 -------------

@@ -11,25 +11,21 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_DIED"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---[[
-	Smoldering Devastation has a blizzard emote
---]]
-
 local warnSmolderingDevastation		= mod:NewCastAnnounce(99052, 4)
-local warnWidowKiss			= mod:NewTargetAnnounce(99476, 3)
+local warnWidowKiss					= mod:NewTargetAnnounce(99476, 3)
+local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
 
-local timerSpinners 				= mod:NewTimer(18, "TimerSpinners") -- 10secs after Smoldering (10+8)
+local timerSpinners 				= mod:NewTimer(15, "TimerSpinners") -- 15secs after Smoldering cast start
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
 local timerDrone					= mod:NewTimer("TimerDrone", 60)
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
-local timerWidowKiss			= mod:NewTargetTimer(20, 99476)
+local timerWidowKiss				= mod:NewTargetTimer(20, 99476)
 
-local droneCount = 0
+local smolderingCount = 0
 
 function mod:repeatSpiderlings()
 	timerSpiderlings:Start()
@@ -37,7 +33,6 @@ function mod:repeatSpiderlings()
 end
 
 function mod:repeatDrone()
-	if droneCount >= 4 then return end	-- 4th dead = P2 = no more drones?
 	timerDrone:Start()
 	self:ScheduleMethod(60, "repeatDrone")
 end
@@ -51,33 +46,34 @@ end
 
 function mod:OnCombatStart(delay)
 	timerSmolderingDevastationCD:Start(-delay)
-	timerSpinners:Start(11-delay)
-	timerSpiderlings:Start(12-delay)
+	timerSpinners:Start(12-delay)
+	timerSpiderlings:Start(12.5-delay)
 	self:ScheduleMethod(11-delay , "repeatSpiderlings")
 	timerDrone:Start(45-delay)
 	self:ScheduleMethod(45-delay, "repeatDrone")
-	droneCount = 0
+	smolderingCount = 0
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(99052) then
+	if args:IsSpellID(99052) then		-- only being cast in P1?
 		warnSmolderingDevastation:Show()
 		timerSmolderingDevastation:Start()
 		timerSmolderingDevastationCD:Start()
-		timerSpinners:Start() -- 10secs after Smoldering Devastation
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 53635 then -- guessed creature ID
-		droneCount = droneCount + 1
+		
+		smolderingCount = smolderingCount + 1
+		if smolderingCount == 3 then	-- 3rd cast = start P2
+			warnPhase2Soon:Show()
+			self:UnscheduleMethod("repeatSpiderlings")
+			self:UnscheduleMethod("repeatDrone")
+		else
+			timerSpinners:Start()		-- Only spawn in P1?
+		end
 	end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.EmoteSpiderlings then
-		self:UnscheduleMethod("repeatSpiderlings")	-- in case it is off for some reason (if it is a little random)
+		self:UnscheduleMethod("repeatSpiderlings")	-- in case it is off
 		self:repeatSpiderlings()
 	end
 end
