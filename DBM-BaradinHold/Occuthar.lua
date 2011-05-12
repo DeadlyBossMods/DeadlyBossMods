@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(52363)	-- guessed
-mod:SetModelID(35904)		-- Guessing it looks like a kind of core hound :p
+mod:SetModelID(35904)		-- Guessing it looks like the trapped mob inside Baradin Hold
 mod:SetZone()
 --mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
