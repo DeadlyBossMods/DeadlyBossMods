@@ -69,7 +69,7 @@ L.PizzaTimer_BroadCast		= "공격대에 알리기"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 		= "공격대 경보"
-L.RaidWarning_Header	= "공격대 경고 설정"
+L.RaidWarning_Header	= "공격대 경보 설정"
 L.RaidWarnColors 		= "공격대 경보 색상"
 L.RaidWarnColor_1 		= "색상 1"
 L.RaidWarnColor_2 		= "색상 2"
@@ -85,7 +85,7 @@ L.WarningIconRight 		= "아이콘을 오른쪽에 보여주기"
 L.RaidWarnMessage 		= "<Deadly Boss Mods>를 사용해 주셔셔 감사합니다."
 L.BarWhileMove 			= "공격대 경보 위치 수정"
 L.RaidWarnSound			= "공격대 경보 소리"
-L.SpecialWarnSound		= "특수 경고 소리 (자신이 영향을 받을 경우)"
+L.SpecialWarnSound		= "특수 경고 소리 (자신이나 특정 직업군만 영향을 받을 경우)"
 L.SpecialWarnSound2		= "특수 경고 소리 (공격대원 전체가 영향을 받을 경우)"
 
 -- Tab: Barsetup
