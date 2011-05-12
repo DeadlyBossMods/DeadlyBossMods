@@ -59,14 +59,15 @@ function mod:SPELL_CAST_START(args)
 		warnSmolderingDevastation:Show()
 		timerSmolderingDevastation:Start()
 		timerSmolderingDevastationCD:Start()
+		timerSpinners:Start()		-- Only spawn in P1?
 		
 		smolderingCount = smolderingCount + 1
 		if smolderingCount == 3 then	-- 3rd cast = start P2
 			warnPhase2Soon:Show()
 			self:UnscheduleMethod("repeatSpiderlings")
 			self:UnscheduleMethod("repeatDrone")
-		else
-			timerSpinners:Start()		-- Only spawn in P1?
+			timerSpiderlings:Cancel()
+			timerDrone:Cancel()
 		end
 	end
 end
