@@ -260,6 +260,9 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 		warnPhase2:Show()
 		timerOnySwipeCD:Cancel()
 		timerNefSwipeCD:Cancel()
