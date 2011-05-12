@@ -19,7 +19,7 @@
 ## X-DBM-Mod-Name-ruRU: Firelands
 ## X-DBM-Mod-Name-zhTW: Firelands
 ## X-DBM-Mod-Sort: 101
-## X-DBM-Mod-LoadZoneID: 999
+## X-DBM-Mod-LoadZoneID: 800
 localization.en.lua
 localization.de.lua
 localization.es.lua
