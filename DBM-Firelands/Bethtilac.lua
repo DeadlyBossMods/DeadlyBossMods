@@ -20,7 +20,7 @@ local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
 
 local timerSpinners 				= mod:NewTimer(15, "TimerSpinners") -- 15secs after Smoldering cast start
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
-local timerDrone					= mod:NewTimer("TimerDrone", 60)
+local timerDrone					= mod:NewTimer(60, "TimerDrone")
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 local timerWidowKiss				= mod:NewTargetTimer(20, 99476)
