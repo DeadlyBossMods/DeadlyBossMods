@@ -14,3 +14,10 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
 )
+
+
+local berserkTimer			= mod:NewBerserkTimer(420)
+
+function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
+end
