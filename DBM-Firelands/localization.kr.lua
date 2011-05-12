@@ -56,12 +56,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSpinners 		= "다음 Spinners",
+	TimerSpiderlings	= "다음 Spiderlings",
+	TimerDrone			= "다음 Drone"
 })
 
 L:SetOptionLocalization({
+	TimerSpinners		= "다음 Cinderweb Spinners 타이머 보기",
+	TimerSpiderlings	= "다음 Cinderweb Spiderlings 타이머 보기",
+	TimerDrone			= "다음 Cinderweb Drone 타이머 보기"
 })
 
 L:SetMiscLocalization({
+	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!",
+	EmoteSpinners 		= "Spinners dangle from above."
 })
 
 -------------
