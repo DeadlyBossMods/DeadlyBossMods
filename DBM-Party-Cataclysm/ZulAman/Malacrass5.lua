@@ -46,8 +46,10 @@ local timerSpiritBoltsNext	= mod:NewNextTimer(36, 43383)
 
 local function getClass(name)
 	local class = "unknown"
+	local nameString = "%s-%s"	-- "PlayerName-RealmName"
 	for i=1, GetNumPartyMembers() do
-		if UnitName("party"..i) == name then
+		local n,r = UnitName("party"..i)	-- arg1 = PlayerName , arg2 = RealmName
+		if nameString:format(n,r) == name then
 			_, class = UnitClass("party"..i)
 			break
 		end
