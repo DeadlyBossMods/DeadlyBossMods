@@ -80,8 +80,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Die Schlacht um das Arathibecken beginnt in 1 Minute.",
-	BgStart30 = "Die Schlacht um das Arathibecken beginnt in 30 Sekunden.",
 	ScoreExpr = "(%d+)/1600",
 	Alliance = "Allianz",
 	Horde = "Horde",
@@ -91,12 +89,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Spiel startet in", 
 	TimerCap = "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Zeige Starttimer",
 	TimerWin = "Zeige Siegtimer",
 	TimerCap = "Zeige Eroberungstimer",
 	ShowAbEstimatedPoints = "Zeige geschätzte Kampf-Endpunkte",
@@ -113,8 +109,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Die Schlacht beginnt in 1 Minute!",
-	BgStart30 = "Die Schlacht beginnt in 30 Sekunden!",
 	ZoneName = "Auge des Sturms",
 	ScoreExpr = "(%d+)/1600",
 	Alliance = "Allianz",
@@ -128,12 +122,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Spiel startet in", 
 	TimerFlag = "Flaggenrespawn"
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Zeige Starttimer",
 	TimerWin = "Zeige Siegtimer",
 	TimerFlag = "Zeige Timer für Flaggen-Respawn",
 	ShowPointFrame = "Zeige Flaggenträger und geschätzten Endpunktestand"

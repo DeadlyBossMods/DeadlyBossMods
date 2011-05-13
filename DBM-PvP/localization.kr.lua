@@ -81,8 +81,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 		= "1분 후 전투가 시작됩니다.",
-	BgStart30 		= "30초 후 전투가 시작됩니다.",
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
@@ -92,12 +90,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 				= "게임 시작", 
 	TimerCap 				= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerStart  			= "시작 타이머 보기",
 	TimerWin 				= "승리 예상 타이머 보기",
 	TimerCap 				= "깃발 점령 타이머 보기",
 	ShowAbEstimatedPoints 	= "승/패 예상 포인트 보기",
@@ -114,8 +110,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "1분 후 전투가 시작됩니다!",
-	BgStart30 		= "30초 후 전투가 시작됩니다!",
 	ZoneName		= "폭풍의 눈",
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "얼라이언스",
@@ -129,12 +123,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 		= "게임 시작", 
 	TimerFlag		= "깃발 재생성"
 })
 
 L:SetOptionLocalization({
-	TimerStart 		= "시작 타이머 보기",
 	TimerWin 		= "승리 타이머 보기",
 	TimerFlag 		= "깃발 재생성 타이머 보기",
 	ShowPointFrame 	= "깃발 운반자 및 승/패 예상 포인트 보기"

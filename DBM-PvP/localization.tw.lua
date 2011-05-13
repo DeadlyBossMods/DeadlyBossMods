@@ -81,8 +81,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60			= "戰鬥將在1分鐘後開始。",
-	BgStart30			= "戰鬥將在30秒後開始。",
 	ScoreExpr 			= "(%d+)/1600",
 	Alliance 			= "聯盟",
 	Horde 				= "部落",
@@ -92,12 +90,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "戰鬥開始", 
 	TimerCap 			= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "顯示開始計時器",
 	TimerWin			= "顯示勝利計時器",
 	TimerCap			= "顯示奪取計時器",
 	ShowAbEstimatedPoints		= "顯示戰鬥結束時雙方資源預計值",
@@ -114,8 +110,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60			= "戰鬥在1分鐘內開始!",
-	BgStart30			= "戰鬥在30秒內開始!",
 	ZoneName			= "暴風之眼",
 	ScoreExpr			= "(%d+)/1600",
 	Alliance 			= "聯盟",
@@ -128,12 +122,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "戰鬥開始", 
 	TimerFlag 			= "旗幟重生"
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "顯示開始計時器",
 	TimerWin 			= "顯示勝利計時器",
 	TimerFlag 			= "顯示旗幟重生計時器",
 	ShowPointFrame			= "顯示旗幟攜帶者和預計勝利方"

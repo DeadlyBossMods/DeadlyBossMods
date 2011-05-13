@@ -79,8 +79,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60	= "The battle will begin in 1 minute.",
-	BgStart30	= "The battle will begin in 30 seconds.",
 	ScoreExpr	= "(%d+)/1600",
 	Alliance	= "Alliance",
 	Horde		= "Horde",
@@ -90,12 +88,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
 	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerStart				= "Show start timer",
 	TimerWin				= "Show win timer",
 	TimerCap				= "Show capture timer",
 	ShowAbEstimatedPoints	= "Show estimated points on win/loss",
@@ -112,8 +108,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "The battle begins in 1 minute!",
-	BgStart30		= "The battle begins in 30 seconds!",
 	ZoneName		= "Eye of the Storm",
 	ScoreExpr		= "(%d+)/1600",
 	Alliance 		= "Alliance",
@@ -127,12 +121,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
 	TimerFlag	= "Flag respawn"
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Show start timer",
 	TimerWin 		= "Show win timer",
 	TimerFlag 		= "Show flag respawn timer",
 	ShowPointFrame	= "Show flag carrier and estimated points"
