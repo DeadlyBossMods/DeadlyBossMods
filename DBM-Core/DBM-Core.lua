@@ -1684,12 +1684,13 @@ do
 		local lastRequest = 0
 		local numResponses = 0
 		local expectedResponses = 0
+		local allResponded = false
 		local results
 		
 		local updateInstanceInfo, showResults
 		
 		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress)
-			--DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_DEBUG:format(sender, result, name, id, diff, maxPlayers, progress))--Debug code to monitor incoming data in sync handler.
+--			DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_DEBUG:format(sender, result, name, id, diff, maxPlayers, progress))--Debug code to monitor incoming data in sync handler.
 			if GetTime() - lastRequest > 62 or not results then
 				return
 			end
@@ -1724,8 +1725,11 @@ do
 			if numResponses >= expectedResponses then -- unlikely, lol
 				DBM:Unschedule(updateInstanceInfo)
 				DBM:Unschedule(showResults)
-				DBM:AddMsg(DBM_INSTANCE_INFO_ALL_RESPONSES)
-				showResults()
+				if not allResponded then--Only display message once in case we get for example 4 syncs the last sender
+					DBM:AddMsg(DBM_INSTANCE_INFO_ALL_RESPONSES)
+					allResponded = true
+				end
+				DBM:Schedule(3, showResults)--Delay results so we allow time for same sender to send more than 1 lockout, otherwise, if we get expectedResponses before all data is sent from 1 user, we clip some of their data.
 			end
 		end
 		
@@ -1803,6 +1807,7 @@ do
 		function DBM:RequestInstanceInfo()
 			DBM:AddMsg(DBM_INSTANCE_INFO_REQUESTED)
 			lastRequest = GetTime()
+			allResponded = false
 			results = {
 				responses = { -- who responded to our request?
 				},
@@ -4247,4 +4252,3 @@ do
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
 end
-
