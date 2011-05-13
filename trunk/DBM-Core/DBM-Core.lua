@@ -1689,6 +1689,7 @@ do
 		local updateInstanceInfo, showResults
 		
 		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress)
+			--DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_DEBUG:format(sender, result, name, id, diff, maxPlayers, progress))--Debug code to monitor incoming data in sync handler.
 			if GetTime() - lastRequest > 62 or not results then
 				return
 			end
