@@ -45,8 +45,6 @@ EyeOfTheStorm:AddBoolOption("ShowPointFrame", true, nil, function()
 	end
 end)
 
-
-local startTimer = EyeOfTheStorm:NewTimer(62, "TimerStart", 2457)
 local winTimer = EyeOfTheStorm:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 local flagTimer = EyeOfTheStorm:NewTimer(7, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 
@@ -209,13 +207,7 @@ do
 			return
 		end
 
-		if arg1 == L.BgStart60 then
-			startTimer:Start()
-
-		elseif arg1 == L.BgStart30  then		
-			startTimer:Update(31, 62)
-
-		elseif string.match(arg1, L.FlagReset) then
+		if string.match(arg1, L.FlagReset) then
 			EyeOfTheStorm.AllyFlag = nil
 			EyeOfTheStorm.HordeFlag = nil
 			EyeOfTheStorm:UpdateFlagDisplay()

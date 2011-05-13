@@ -83,8 +83,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "Début de la bataille pour le bassin d'Arathi dans 1 minute.",
-	BgStart30				= "Début de la bataille pour le bassin d'Arathi dans 30 secondes.",
 	ScoreExpr 				= "(%d+)/1600",
 	Alliance 				= "Alliance",
 	Horde 					= "Horde",
@@ -94,12 +92,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 				= "Début de la bataille dans", 
 	TimerCap 				= "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart  			= "Voir: Temps de départ du BG",
 	TimerWin 				= "Montre le timer de la victoire",
 	TimerCap 				= "Montre le timer de capture",
 	ShowAbEstimatedPoints	= "Montre l'estimation de point pour gagner / perdre",
@@ -116,8 +112,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60			= "Début de la bataille dans 1 minute !",
-	BgStart30			= "Début de la bataille dans 30 secondes !",
 	ZoneName			= "L'Œil du cyclone",
 	ScoreExpr			= "(%d+)/1600",
 	Alliance 			= "Alliance",
@@ -131,12 +125,10 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "Début de la bataille dans", 
 	TimerFlag 			= "Respawn du drapeau",
 })
 
 L:SetOptionLocalization({
-	TimerStart  		= "Voir: Temps de départ du BG",
 	TimerWin 			= "Montre le timer de la victoire",
 	TimerFlag 			= "Montre le timer du respawn du drapeau",
 	ShowPointFrame 		= "Montre les porteurs des drapeaux et les points estimés",
