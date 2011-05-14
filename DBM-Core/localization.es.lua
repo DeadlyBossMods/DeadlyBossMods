@@ -218,6 +218,7 @@ DBM_ERROR_NO_RAID					= "Tienes que estar en un grupo de banda para usar ésta c
 DBM_INSTANCE_INFO_REQUESTED			= "Enviar solicitud de ID de estancias al grupo de banda.\nPor favor, entiende que los jugadores serán preguntados por si quieren enviarte esa información antes, por lo que se puede tardar un minuto en recibir todas las respuestas."
 DBM_INSTANCE_INFO_STATUS_UPDATE		= "Se ha obtenido respuesta de %d jugadores de %d usuarios de DBM: %d han enviado los datos, %d han denegado la solicitud. Se esperará %d segundos más para respuestas..."
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "Se ha recibido respuestas de todos los miembros de la banda"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "Personaje: %s Resultado: %s Estancia: %s IDEstancia: %s Difficultad: %d Tamaño: %d Progreso: %s"
 DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), dificultad %d:"
 DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, progreso %d: %s"
 DBM_INSTANCE_INFO_STATS_DENIED		= "Han denegado la solicitud: %s"
