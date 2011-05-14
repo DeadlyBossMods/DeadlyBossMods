@@ -31,12 +31,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnElementals		= "Elementals spawning"
 })
 
 L:SetTimerLocalization({
+	TimerElementals		= "Next elementals"
 })
 
 L:SetOptionLocalization({
+	WarnElementals		= "Show a warning when elementals are spawning",
+	TimerElementals		= "Show a timer for next elementals spawning"
 })
 
 L:SetMiscLocalization({
