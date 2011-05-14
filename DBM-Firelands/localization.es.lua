@@ -28,20 +28,25 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Rhyolith")
 
 L:SetGeneralLocalization({
-	name = "Lord Rhyolith"
+	name = "Lord Rhyolith"--translate
 })
 
 L:SetWarningLocalization({
+	WarnElementals		= "Elementals spawning"--translate
 })
 
 L:SetTimerLocalization({
+	TimerElementals		= "Next elementals"--translate
 })
 
 L:SetOptionLocalization({
+	WarnElementals		= "Show a warning when elementals are spawning",--translate
+	TimerElementals		= "Show a timer for next elementals spawning"--translate
 })
 
 L:SetMiscLocalization({
 })
+
 
 ----------------
 -- Beth'tilac --
@@ -56,12 +61,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSpinners 		= "Next Spinners",--translate
+	TimerSpiderlings	= "Next Spiderlings",--translate
+	TimerDrone			= "Next Drone"--translate
 })
 
 L:SetOptionLocalization({
+	TimerSpinners		= "Show timer for next Cinderweb Spinners",--translate
+	TimerSpiderlings	= "Show timer for next Cinderweb Spiderlings",--translate
+	TimerDrone		= "Show timer for next Cinderweb Drone"--translate
 })
 
 L:SetMiscLocalization({
+	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!",--translate
+	EmoteSpinners 		= "Spinners dangle from above."--translate
 })
 
 -------------
@@ -112,7 +125,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("FandralStaghelm")
 
 L:SetGeneralLocalization({
-	name = "Majordomo Fandral Staghelm"	-- too long for interface?
+	name = "Majordomo Fandral Staghelm"	-- translate
 })
 
 L:SetWarningLocalization({

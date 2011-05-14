@@ -86,7 +86,7 @@ L.WarningIconRight 	= "Mostrar icono en el lado derecho"
 L.RaidWarnMessage 	= "Gracias por usar Deadly Boss Mods - Español"
 L.BarWhileMove 		= "Avisos de banda se pueden mover"
 L.RaidWarnSound		= "Reproducir sonido para aviso-banda"
-L.SpecialWarnSound	= "Fijar sonido para avisos especiales que te afecten a ti"
+L.SpecialWarnSound	= "Fijar sonido para avisos especiales que te afecten a ti o a tu rol"
 L.SpecialWarnSound2	= "Fijar sonido para avisos especiales que afectan a todos"
 
 
