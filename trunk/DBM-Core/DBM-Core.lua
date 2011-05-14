@@ -1738,7 +1738,7 @@ do
 			DBM:AddMsg(DBM_INSTANCE_INFO_RESULTS)
 			for i, v in pairs(results.data) do
 				DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_HEADER:format(v.name, v.maxPlayers, v.diff))
-				for id, v in ipairs(v.ids) do
+				for id, v in pairs(v.ids) do
 					DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_INSTANCE:format(id, v.progress, table.concat(v, ", ")))
 				end
 			end
