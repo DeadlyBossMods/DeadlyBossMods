@@ -143,7 +143,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Ragnaros-Cata")
 
 L:SetGeneralLocalization({
-	name = "Ragnaros"
+	name = "Ragnaros' End"--Temp name, i'm sure blizz will give it a unique name like they did with "Nefarian's End" being officlal name of encounter
 })
 
 L:SetWarningLocalization({
