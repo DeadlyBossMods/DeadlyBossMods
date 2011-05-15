@@ -1833,14 +1833,14 @@ do
 					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
 					local noResponse = {}
 					for i = 1, GetNumRaidMembers() do
-						if not UnitIsUnit("raid"..i, "player") then
+						if not UnitIsUnit("raid"..i, "player") and raid[UnitName("raid"..i)] and raid[UnitName("raid"..i)].revision then -- only show players who actually can respond (== DBM users)
 							table.insert(noResponse, (UnitName("raid"..i)))
 						end
 					end
 					for i, v in pairs(results.responses) do
 						removeEntry(noResponse, i)
 					end
-					
+				
 					--[[
 					-- this looked like the easiest way (for some reason?) to create the player string when writing this code -.-
 					local function dup(...) if select("#", ...) == 0 then return else return ..., ..., dup(select(2, ...)) end end
