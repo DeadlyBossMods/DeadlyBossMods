@@ -50,7 +50,7 @@ local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 local specWarnSludge			= mod:NewSpecialWarningMove(92987)
 local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896)
 local specWarnMagmaJets			= mod:NewSpecialWarningMove(78194, mod:IsTank())
-local specWarnEngulfingDarkness	= mod:NewSpecialWarningSpell(92754, mod:IsTank())--Heroic Ability
+local specWarnEngulfingDarkness	= mod:NewSpecialWarningSpell(92754, mod:IsHealer() or mod:IsTank())--Heroic Ability
 local specWarnFlashFreeze		= mod:NewSpecialWarningTarget(77699, mod:IsRanged())--On Heroic it has a lot more health.
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
@@ -212,7 +212,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(92754) then
 		warnEngulfingDarkness:Show()
 		timerEngulfingDarknessCD:Start()
-		if self:GetUnitCreatureId("target") == 41378 then--Add tank doesn't need this spam, just tank on mal.
+		if self:GetUnitCreatureId("target") == 41378 or self:GetBossTarget(33186) == UnitName("target") then--Add tank doesn't need this spam, just tank on mal and healers healing that tank.
 			specWarnEngulfingDarkness:Show()
 		end
 	elseif args:IsSpellID(78194) then
