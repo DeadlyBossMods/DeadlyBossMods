@@ -49,7 +49,7 @@ local function getClass(name)
 	local nameString = "%s-%s"	-- "PlayerName-RealmName"
 	for i=1, GetNumPartyMembers() do
 		local n,r = UnitName("party"..i)	-- arg1 = PlayerName , arg2 = RealmName
-		if nameString:format(n,r) == name then
+		if UnitName("player") == name or (n and r and nameString:format(n,r) == name) then
 			_, class = UnitClass("party"..i)
 			break
 		end
