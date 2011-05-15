@@ -980,14 +980,19 @@ do
 
 	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button, ...)
 		local linkType, arg1, arg2, arg3 = strsplit(":", link)
-		if linkType == "DBM" and arg1 == "cancel" then
+		if linkType ~= "DBM" then
+			return
+		end
+		if arg1 == "cancel" then
 			DBM.Bars:CancelBar(link:match("DBM:cancel:(.+):nil$"))
-		elseif linkType == "DBM" and arg1 == "ignore" then
+		elseif arg1 == "ignore" then
 			cancel = link:match("DBM:ignore:(.+):[^%s:]+$")
 			ignore = link:match(":([^:]+)$")
 			StaticPopup_Show("DBM_CONFIRM_IGNORE", ignore)
-		elseif linkType == "DBM" and arg1 == "update" then
-			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision			
+		elseif arg1 == "update" then
+			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision
+		elseif arg1 == "showRaidIdResults" then
+			DBM:ShowRaidIDRequestResults()
 		end
 	end)
 end
@@ -995,7 +1000,9 @@ end
 do
 	local old = ItemRefTooltip.SetHyperlink -- we have to hook this function since the default ChatFrame code assumes that all links except for player and channel links are valid arguments for this function
 	function ItemRefTooltip:SetHyperlink(link, ...)
-		if link:match("^DBM") then return end
+		if link:sub(0, 4) == "DBM:" then
+			return
+		end
 		return old(self, link, ...)
 	end
 end
@@ -1554,6 +1561,7 @@ do
 	-- CI = Combat Info
 	-- TI = Timer Info
 	-- IR = Instance Info Request
+	-- IRE = Instance Info Requested Ended/Canceled
 	-- II = Instance Info
 	
 	syncHandlers["M"] = function(sender, mod, revision, event, arg)
@@ -1681,6 +1689,13 @@ do
 			end
 		end
 		
+		syncHandlers["IRE"] = function(sender)
+			local popup = StaticPopup_FindVisible("DBM_INSTANCE_ID_PERMISSION", sender)
+			if popup and popup.data == sender then -- found the popup with the correct data (StaticPopup_FindVisible already checks the data (but only if multiple is set), check it again to be safe is the function changes or something...)
+				popup:Hide()
+			end
+		end
+		
 		local lastRequest = 0
 		local numResponses = 0
 		local expectedResponses = 0
@@ -1770,6 +1785,17 @@ do
 			results = nil
 		end
 		
+		-- called when the chat link is clicked
+		function DBM:ShowRaidIDRequestResults()
+			if not results then -- check if we are currently querying raid IDs, results will be nil if we don't
+				return
+			end
+			DBM:Unschedule(updateInstanceInfo)
+			DBM:Unschedule(showResults)
+			showResults() -- sets results to nil after the results are displayed, ending the current id request; future incoming data will be discarded
+			sendSync("IRE")
+		end
+		
 		local function getResponseStats()
 			local numResponses = 0
 			local sent = 0
@@ -1798,9 +1824,35 @@ do
 			return r
 		end
 		
-		function updateInstanceInfo(timeRemaining)
+		function updateInstanceInfo(timeRemaining, dontAddShowResultNowButton)
 			local numResponses, sent, denied, away = getResponseStats()
-			DBM:AddMsg(DBM_INSTANCE_INFO_STATUS_UPDATE:format(numResponses, getNumDBMUsers(), sent, denied, timeRemaining))
+			local dbmUsers = getNumDBMUsers()
+			DBM:AddMsg(DBM_INSTANCE_INFO_STATUS_UPDATE:format(numResponses, dbmUsers, sent, denied, timeRemaining))
+			if not dontAddShowResultNowButton then
+				if dbmUsers - numResponses <= 7 then -- waiting for 7 or less players, show their names and the early result option
+					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
+					local noResponse = {}
+					for i = 1, GetNumRaidMembers() do
+						if not UnitIsUnit("raid"..i, "player") then
+							table.insert(noResponse, (UnitName("raid"..i)))
+						end
+					end
+					for i, v in pairs(results.responses) do
+						removeEntry(noResponse, i)
+					end
+					
+					--[[
+					-- this looked like the easiest way (for some reason?) to create the player string when writing this code -.-
+					local function dup(...) if select("#", ...) == 0 then return else return ..., ..., dup(select(2, ...)) end end
+					DBM:AddMsg(DBM_INSTANCE_INFO_SHOW_RESULTS:format(("|Hplayer:%s|h[%s]|h| "):rep(#noResponse):format(dup(unpack(noResponse)))))
+					]]
+					-- code that one can actually read
+					for i, v in ipairs(noResponse) do
+						noResponse[i] = ("|Hplayer:%s|h[%s]|h|"):format(v, v)
+					end
+					DBM:AddMsg(DBM_INSTANCE_INFO_SHOW_RESULTS:format(table.concat(noResponse, ", ")))
+				end
+			end
 		end
 		
 		function DBM:RequestInstanceInfo()
@@ -1818,7 +1870,7 @@ do
 			sendSync("IR")
 			DBM:Unschedule(updateInstanceInfo)
 			DBM:Unschedule(showResults)
-			DBM:Schedule(17, updateInstanceInfo, 45)
+			DBM:Schedule(17, updateInstanceInfo, 45, true)
 			DBM:Schedule(32, updateInstanceInfo, 30)
 			DBM:Schedule(48, updateInstanceInfo, 15)
 			DBM:Schedule(62, showResults)
