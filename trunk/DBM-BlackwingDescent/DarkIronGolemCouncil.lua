@@ -46,7 +46,7 @@ local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 local specWarnBarrier			= mod:NewSpecialWarningSpell(79582, not mod:IsHealer())
 local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
 local yellAcquiringTarget		= mod:NewYell(92037)
-local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false, nil, nil, true)--Heroic Ability
+local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
 local yellEncasingShadows		= mod:NewYell(92023, L.YellTargetLock)
 --Electron
 local specWarnUnstableShield	= mod:NewSpecialWarningSpell(79900, not mod:IsHealer())
@@ -95,6 +95,7 @@ local timerNefAbilityCD			= mod:NewTimer(30, "timerNefAblity", 92048)--Huge vari
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
+local soundLightningConductor	= mod:NewSound(79888)
 local soundFixate				= mod:NewSound(80094)
 
 mod:AddBoolOption("AcquiringTargetIcon")
@@ -236,6 +237,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
 		if args:IsPlayer() then
 			specWarnConductor:Show()
+			soundLightningConductor:Play()
 			yellLightConductor:Yell()
 		end
 		if self.Options.ConductorIcon then
