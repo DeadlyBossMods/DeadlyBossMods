@@ -60,6 +60,7 @@ mod:AddBoolOption("InfoFrame")
 
 local worshipTargets = {}
 local prewarned_Phase2 = false
+local firstFury = false
 local worshipIcon = 8
 local worshipCooldown = 21
 local blazeSpam = 0
@@ -120,6 +121,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(worshipTargets)
 	table.wipe(creatureIcons)
 	prewarned_Phase2 = false
+	firstFury = false
 	worshipIcon = 8
 	worshipCooldown = 21
 	blazeSpam = 0
@@ -179,10 +181,14 @@ function mod:SPELL_CAST_START(args)
 		warnAdherent:Show()
 		timerAdherent:Start()
 		timerFesterBlood:Start()
-		worshipCooldown = 36
 	elseif args:IsSpellID(82524) then
 		warnFury:Show()
 		timerFuryCD:Start()
+		if not firstFury then--85% fury of chogal, it resets cd on worship and changes cd to 36
+			firstFury = true
+			worshipCooldown = 36
+			timerWorshipCD:Start(10)--worship is 10 seconds after first fury, regardless of what timer was at before 85%
+		end
 	elseif args:IsSpellID(82411, 93132, 93133, 93134) then -- Creatures are channeling after their spawn.
 		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
 			creatureIcons[args.sourceGUID] = creatureIcon
