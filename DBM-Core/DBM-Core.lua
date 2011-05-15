@@ -1690,7 +1690,6 @@ do
 		local updateInstanceInfo, showResults
 		
 		whisperSyncHandlers["II"] = function(sender, result, name, id, diff, maxPlayers, progress)
---			DBM:AddMsg(DBM_INSTANCE_INFO_DETAIL_DEBUG:format(sender, result, name, id, diff, maxPlayers, progress))--Debug code to monitor incoming data in sync handler.
 			if GetTime() - lastRequest > 62 or not results then
 				return
 			end
@@ -1725,11 +1724,11 @@ do
 			if numResponses >= expectedResponses then -- unlikely, lol
 				DBM:Unschedule(updateInstanceInfo)
 				DBM:Unschedule(showResults)
-				if not allResponded then--Only display message once in case we get for example 4 syncs the last sender
-					DBM:AddMsg(DBM_INSTANCE_INFO_ALL_RESPONSES)
+				if not allResponded then --Only display message once in case we get for example 4 syncs the last sender
+					DBM:Schedule(0.99, DBM.AddMsg, DBM, DBM_INSTANCE_INFO_ALL_RESPONSES)
 					allResponded = true
 				end
-				DBM:Schedule(3, showResults)--Delay results so we allow time for same sender to send more than 1 lockout, otherwise, if we get expectedResponses before all data is sent from 1 user, we clip some of their data.
+				DBM:Schedule(1, showResults) --Delay results so we allow time for same sender to send more than 1 lockout, otherwise, if we get expectedResponses before all data is sent from 1 user, we clip some of their data.
 			end
 		end
 		
@@ -1792,7 +1791,7 @@ do
 		local function getNumDBMUsers() -- without ourselves
 			local r = 0
 			for i, v in pairs(raid) do
-				if v.revision and v.name ~= UnitName("player") then
+				if v.revision and v.name ~= UnitName("player") and UnitIsConnected(DBM:GetRaidUnitId(v.name)) then
 					r = r + 1
 				end
 			end
