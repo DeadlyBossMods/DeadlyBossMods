@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Occuthar")
 
 L:SetGeneralLocalization({
-	name = "Occu'thar"
+	name = "오쿠타르"
 })
 
 L:SetWarningLocalization({
