@@ -208,6 +208,7 @@ DBM_ERROR_NO_RAID					= "이 기능을 사용하기 위해서는 공격대에 �
 DBM_INSTANCE_INFO_REQUESTED			= "공격대원에게 공격대 귀속 정보를 요청합니다.\n모든 공격대원에게 별도의 수락 메세지가 갈 것이므로, 모두 응답하기 전까지 약간의 시간이 필요합니다."
 DBM_INSTANCE_INFO_STATUS_UPDATE		= "%d명의 플레이어가 응답했습니다. (총 %d명): %d명이 요청을 수락했으며, %d명은 요청을 거부했습니다. 응답을 %d초 동안 더 기다립니다..."
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "모든 공격대원의 공격대 귀속 정보"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "플레이어: %s, 응답정보: %s, 공격대명: %s, 공격대ID: %s, 난이도: %d, 인원: %d, 킬수: %s"
 DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), 난이도 %d:"
 DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 킬수 %d: %s"
 DBM_INSTANCE_INFO_STATS_DENIED		= "요청거부: %s"
