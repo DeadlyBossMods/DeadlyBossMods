@@ -63,7 +63,7 @@ local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
 
-mod:AddBoolOption("FixShadowblaze", false, "timer")--Off by default since i've gotten reports that "Flesh turns to ash!" yells can be done for shadow blaze OR player deaths, so auto correct will work well or really badly depending on your raids experience level on fight.
+mod:AddBoolOption("FixShadowblaze", true, "timer")--On by default, i cannot verify flesh turns to ash yell being anything other then shadowblaze, but i'll leave option for now. eventually i'll just remove option and make it part of function.
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("HealthFrame", false)
