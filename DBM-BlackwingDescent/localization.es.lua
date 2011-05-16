@@ -53,14 +53,14 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Mostrar tiempo para lanzamiento de $spell:92053",
-	timerArcaneBlowbackCast	= "Mostrar tiempo para lanzamiento de $spell:91879",
+	timerArcaneBlowbackCast		= "Mostrar tiempo para lanzamiento de $spell:91879",
 	timerArcaneLockout			= "Mostrar tiempo de silenciamiento de hechizo de $spell:91542",
 	timerNefAblity				= "Mostrar tiempo de CoolDown de las habilidades de bufos en heroico",
 	SpecWarnActivated			= "Mostrar aviso especial cuando se activa un nuevo boss",
 	specWarnGenerator			= "Mostrar aviso especial cuando un boss gana $spell:91557",
-	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
 	SetIconOnActivated			= "Poner un icono en el último boss activado"
 })
 
@@ -225,9 +225,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	NefAoe			= "¡El aire crepita cargado de electricidad!",
-	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",
-	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate?
-	YellShadowBlaze	= "Flesh turns to ash!",--translate
+	YellPhase2		= "¡Malditos mortales! ¡Tal negligencia con las posesiones ajenas debe ser castigada!",
+	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",
+	YellShadowBlaze	= "¡La llama de las sombras los reanima! ¡Luchan a mis órdenes!",
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
 	Charge			= "Carga Eléctrica"
