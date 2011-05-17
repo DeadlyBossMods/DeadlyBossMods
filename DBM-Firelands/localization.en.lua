@@ -10,16 +10,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase		= "Phase %d"
 })
 
 L:SetTimerLocalization({
+	TimerPhaseChange	= "Phase %d",
+	TimerHatchEggs		= "Hatch Eggs"
 })
 
 L:SetOptionLocalization({
-	InfoFrame		= "Show info frame for Blazing Power",
+	WarnPhase		= "Show a warning for each phase change",
+	TimerPhaseChange	= "Show a timer till next phase",
+	TimerHatchEggs		= "Show a timer till next eggs are hatched",
+	InfoFrame		= "Show info frame for Blazing Power"
 })
 
 L:SetMiscLocalization({
+	YellPull		= "I serve a new master now, mortals!",
+	YellPhase2		= "These skies are MINE!",
 	PowerLevel		= "Blazing Power"
 })
 
