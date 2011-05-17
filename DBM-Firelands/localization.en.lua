@@ -16,9 +16,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	InfoFrame		= "Show info frame for Blazing Power",
 })
 
 L:SetMiscLocalization({
+	PowerLevel		= "Blazing Power"
 })
 
 -------------------
