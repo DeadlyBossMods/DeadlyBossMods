@@ -25,6 +25,7 @@ local warnPillarFlame		= mod:NewSpellAnnounce(78006, 3)
 local warnMoltenTantrum		= mod:NewSpellAnnounce(78403, 4)
 local warnInferno			= mod:NewSpellAnnounce(92190, 4)
 local warnMangle			= mod:NewTargetAnnounce(89773, 3)
+local warnArmageddon		= mod:NewSpellAnnounce(92177, 4)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)--heroic
 local warnPhase2			= mod:NewPhaseAnnounce(2, 4)--heroic
 
@@ -98,6 +99,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLavaSpew:Start()
 		lastLavaSpew = GetTime()
 	elseif args:IsSpellID(92177) then
+		warnArmageddon:Show()
 		specWarnArmageddon:Show()
 		timerArmageddon:Start()
 		geddonConstruct = args.sourceGUID--Cache last mob to cast armageddon
