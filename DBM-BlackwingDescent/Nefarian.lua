@@ -7,7 +7,7 @@ mod:SetModelID(32716)
 mod:SetZone()
 
 mod:SetBossHealthInfo(
-	41376, L.Nefarian,		-- L.name = "Nefarian"
+	41376, L.Nefarian,
 	41270, L.Onyxia
 )
 
@@ -63,7 +63,7 @@ local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
 
-mod:AddBoolOption("FixShadowblaze", true, "timer")--On by default, i cannot verify flesh turns to ash yell being anything other then shadowblaze, but i'll leave option for now. eventually i'll just remove option and make it part of function.
+--mod:AddBoolOption("FixShadowblaze", true, "timer")--On by default, i cannot verify flesh turns to ash yell being anything other then shadowblaze, but i'll leave option for now. eventually i'll just remove option and make it part of function.
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("HealthFrame", false)
@@ -280,7 +280,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerShadowflameBarrage:Cancel()
 		timerShadowBlazeCD:Start(12)--Seems to vary some, 12 should be a happy medium, it can be off 1-2 seconds though.
 		self:ScheduleMethod(12, "ShadowBlazeFunction")
-	elseif (msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze)) and self.Options.FixShadowblaze then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
+	elseif msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze) then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
 		self:UnscheduleMethod("ShadowBlazeFunction")--Unschedule any running stuff
 		specWarnShadowblazeSoon:Cancel()
 		if GetTime() - lastBlaze <= 3 then--The blaze timer is too fast, since the actual cast happened immediately after the method ran. So reschedule functions using last timing which should be right just a little fast. :)
