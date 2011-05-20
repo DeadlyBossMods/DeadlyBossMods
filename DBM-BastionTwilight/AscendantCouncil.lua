@@ -125,6 +125,7 @@ mod:AddBoolOption("FrostBeaconIcon")
 mod:AddBoolOption("StaticOverloadIcon")
 mod:AddBoolOption("GravityCoreIcon")
 mod:AddBoolOption("RangeFrame")
+--mod:AddBoolOption("InfoFrame")
 
 local frozenTargets = {}
 local lightningRodTargets = {}
@@ -270,6 +271,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+--[[	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end--]]
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -603,6 +607,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerGravityCoreCD:Cancel()
 		timerStaticOverloadCD:Cancel()
 		timerHydroLanceCD:Cancel()
+		--[[if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+			DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
+		end--]]
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerFrostBeaconCD:Start(27)
 			timerFlameStrikeCD:Start(30)
