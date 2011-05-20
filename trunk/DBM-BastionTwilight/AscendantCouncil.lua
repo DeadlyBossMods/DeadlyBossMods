@@ -138,6 +138,7 @@ local frozenCount = 0
 local lastBeacon = 0
 local isBeacon = false
 local isRod = false
+local infoFrameUpdated = false
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -163,7 +164,8 @@ local function checkGrounded()
 	if not UnitDebuff("player", GetSpellInfo(83581)) and not UnitIsDeadOrGhost("player") then
 		specWarnGrounded:Show()
 	end
-	if self.Options.InfoFrame then
+	if self.Options.InfoFrame and not infoFrameUpdated then
+		infoFrameUpdated = true
 		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
 		DBM.InfoFrame:Show(5, "playerdebuff", 83581)
 	end
@@ -173,7 +175,8 @@ local function checkSearingWinds()
 	if not UnitDebuff("player", GetSpellInfo(83500)) and not UnitIsDeadOrGhost("player") then
 		specWarnSearingWinds:Show()
 	end
-	if self.Options.InfoFrame then
+	if self.Options.InfoFrame and not infoFrameUpdated then
+		infoFrameUpdated = true
 		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
 		DBM.InfoFrame:Show(5, "playerdebuff", 83500)
 	end
@@ -261,6 +264,7 @@ function mod:OnCombatStart(delay)
 	lastBeacon = 0
 	isBeacon = false
 	isRod = false
+	infoFrameUpdated = false
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
@@ -567,6 +571,7 @@ function mod:SPELL_CAST_START(args)
 		timerHardenSkinCD:Start()
 		specWarnHardenedSkin:Show()
 	elseif args:IsSpellID(83565, 92544, 92545, 92546) then
+		infoFrameUpdated = false
 		warnQuake:Show()
 		timerQuakeCD:Cancel()
 		timerQuakeCast:Start()
@@ -580,6 +585,7 @@ function mod:SPELL_CAST_START(args)
 		timerLightningBlast:Start()
 		specWarnLightningBlast:Show()
 	elseif args:IsSpellID(83067, 92469, 92470, 92471) then
+		infoFrameUpdated = false
 		warnThundershock:Show()
 		timerThundershockCD:Cancel()
 		timerThundershockCast:Start()
