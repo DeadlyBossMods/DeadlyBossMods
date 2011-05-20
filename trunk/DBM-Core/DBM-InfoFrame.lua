@@ -213,7 +213,7 @@ local function updatePlayerDebuffs()
 	table.wipe(lines)
 	for i = 1, GetNumRaidMembers() do
 		if not UnitDebuff("raid"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
-			lines[UnitName("raid"..i)] = UnitName("raid"..i)
+			lines[UnitName("raid"..i)] = ""
 		end
 	end
 	updateLines()
