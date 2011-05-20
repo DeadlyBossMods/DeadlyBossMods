@@ -125,7 +125,7 @@ mod:AddBoolOption("FrostBeaconIcon")
 mod:AddBoolOption("StaticOverloadIcon")
 mod:AddBoolOption("GravityCoreIcon")
 mod:AddBoolOption("RangeFrame")
---mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame")
 
 local frozenTargets = {}
 local lightningRodTargets = {}
@@ -163,11 +163,19 @@ local function checkGrounded()
 	if not UnitDebuff("player", GetSpellInfo(83581)) and not UnitIsDeadOrGhost("player") then
 		specWarnGrounded:Show()
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+		DBM.InfoFrame:Show(5, "playerdebuff", 83581)
+	end
 end
 
 local function checkSearingWinds()
 	if not UnitDebuff("player", GetSpellInfo(83500)) and not UnitIsDeadOrGhost("player") then
 		specWarnSearingWinds:Show()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+		DBM.InfoFrame:Show(5, "playerdebuff", 83500)
 	end
 end
 
@@ -271,9 +279,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---[[	if self.Options.InfoFrame then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end--]]
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -607,10 +615,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerGravityCoreCD:Cancel()
 		timerStaticOverloadCD:Cancel()
 		timerHydroLanceCD:Cancel()
-		--[[if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
-			DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
-		end--]]
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerFrostBeaconCD:Start(27)
 			timerFlameStrikeCD:Start(30)
@@ -635,6 +639,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self:Unschedule(checkGrounded)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
 		end
 	end
 end
