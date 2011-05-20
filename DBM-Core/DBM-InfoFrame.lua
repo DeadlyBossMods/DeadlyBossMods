@@ -209,6 +209,16 @@ local function updateEnemyPower()
 	updateLines()
 end
 
+local function updatePlayerDebuffs()
+	table.wipe(lines)
+	for i = 1, GetNumRaidMembers() do
+		if not UnitDebuff("raid"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+			lines[UnitName("raid"..i)] = UnitName("raid"..i)
+		end
+	end
+	updateLines()
+end
+
 ----------------
 --  OnUpdate  --
 ----------------
@@ -225,6 +235,8 @@ function onUpdate(self, elapsed)
 		updatePlayerPower()
 	elseif currentEvent == "enemypower" then
 		updateEnemyPower()
+	elseif currentEvent == "playerdebuff" then
+		updatePlayerDebuffs()
 	end
 	for i = 1, #sortedLines do
 		if self:NumLines() > maxlines or not addedSelf and DBM.Options.InfoFrameShowSelf and self:NumLines() > maxlines-1 then break end
@@ -263,6 +275,8 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 		updatePlayerPower()
 	elseif event == "enemypower" then
 		updateEnemyPower()
+	elseif event == "playerdebuff" then
+		updatePlayerDebuffs()
 	else
 		print("DBM-InfoFrame: Unsupported event given")
 	end
