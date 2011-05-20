@@ -77,6 +77,7 @@ L:SetOptionLocalization({
 	timerTransition			= "Show Phase transition timer",
 	RangeFrame				= "Show range frame automatically when needed",
 	yellScrewed				= "Yell when you have $spell:83099 & $spell:92307 at same time",
+	InfoFrame				= "Show info frame for players without $spell:83581 or $spell:83500",--Not yet implimented, but putting local in now to get translations rolling.
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -97,7 +98,8 @@ L:SetMiscLocalization({
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Elementium Monstrosity",
 	Kill			= "Impossible....",
-	blizzHatesMe	= "Beacon & Rod on me! Clear a path!"--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
+	blizzHatesMe	= "Beacon & Rod on me! Clear a path!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
+	PlayerDebuffs	= "No Debuff"
 })
 
 ----------------
