@@ -247,7 +247,7 @@ function onUpdate(self, elapsed)
 			addedSelf = true
 		end
 	end
-	if not addedSelf and DBM.Options.InfoFrameShowSelf then
+	if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then 	-- Don't show self on health/enemypower/playerdebuff
 		self:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.R, color.G, color.B, 255, 255, 255)
 	end
 	self:Show()
