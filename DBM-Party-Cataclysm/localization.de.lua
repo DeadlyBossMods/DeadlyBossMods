@@ -22,11 +22,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd		= "Add frei"
+	WarnAdd		= "Add freigesetzt"
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "Warne wenn ein Add den $spell:75608 Buff verliert"
+	WarnAdd		= "Warne, wenn ein Add den $spell:75608 Buff verliert"
 })
 
 -----------------------
@@ -43,7 +43,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSuperheated	= "Zeige Timer für die Dauer von $spell:75846"
+	TimerSuperheated	= "Dauer von $spell:75846 anzeigen"
 })
 
 ------------
@@ -107,7 +107,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Ripsnarl")
 
 L:SetGeneralLocalization({
-	name = "Admiral Knurreißer"
+	name = "Admiral Knurrreißer"
 })
 
 ----------------------
@@ -125,7 +125,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Vanessa")
 
 L:SetGeneralLocalization({
-	name = "Vanessa VanCleef"
+	name = "Vanessa van Cleef"
 })
 
 L:SetTimerLocalization({
@@ -140,7 +140,7 @@ L:SetTimerLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "General Umbriss"
+	name 		= "General Umbriss"
 })
 
 L:SetOptionLocalization{
@@ -170,8 +170,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Drache, du wirst tun, was ich sage! Fang mich!",
-	Add			= "%s Summons an", --translate
+	ValionaYell	= "Drache, Ihr werdet tun, was ich sage! Fangt mich!",
+	Add			= "%s wirkt den Zauber",
 	Valiona		= "Valiona"
 }
 
@@ -298,7 +298,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization{
-	specWarnPhase2Soon	= "Zeige Spezialwarnung für Phase 2 bald (5 Sekunden)",
+	specWarnPhase2Soon	= "Zeige Spezialwarnung für baldige Phase 2 (5 Sekunden)",
 	timerPhase2 		= "Zeige Timer für den Beginn von Phase 2"
 }
 
@@ -312,11 +312,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "Zeige die Gesundheit der Adds"
+	BossHealthAdds	= "Zeige die Gesundheit der Adds in der Lebensanzeige"
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "Flamme des Himmels",
+	BlazeHeavens		= "Flamme der Himmel",
 	HarbringerDarkness	= "Bote der Dunkelheit"
 }
 
@@ -330,7 +330,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Zeige Abstandsfenster(5)"
+	RangeFrame	= "Zeige Abstandsfenster (5m)"
 }
 
 ----------
@@ -339,7 +339,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Augh")
 
 L:SetGeneralLocalization({
-	name = "Augh"		-- he is fightable after Lockmaw :o
+	name = "Augh"
 })
 
 -----------------------
@@ -393,12 +393,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization{
-	specWarnCoagulant	= "Grüne Mischung - Lauf!",	-- Green light
-	specWarnRedMix		= "Rote Mischung - Bleib stehen!"		-- Red light
+	specWarnCoagulant	= "Grüne Mischung - Lauf!",
+	specWarnRedMix		= "Rote Mischung - Bleib stehen!"
 }
 
 L:SetOptionLocalization{
-	RedLightGreenLight	= "Show special warnings for Red/Green movement queues"
+	RedLightGreenLight	= "Zeige Spezialwarnungen für Bewegungen bei Rot/Grün"
 }
 
 ------------------
@@ -428,23 +428,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEmerge	= "Auftauchen",
-	WarnSubmerge	= "Untertauchen"
+	WarnEmerge		= "Auftauchen",
+	WarnSubmerge	= "Abtauchen"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Nächstes Auftauchen",
-	TimerSubmerge	= "Nächstes Untertauchen"
+	TimerEmerge		= "Nächstes Auftauchen",
+	TimerSubmerge	= "Nächstes Abtauchen"
 })
 
 L:SetOptionLocalization({
-	WarnEmerge	= "Zeige Warnung für Auftauchen",
-	WarnSubmerge	= "eige Warnung für Untertauchen",
-	TimerEmerge	= "Zeige Timer für Auftauchen",
-	TimerSubmerge	= "Zeige Timer für Untertauchen",
+	WarnEmerge		= "Zeige Warnung für Auftauchen",
+	WarnSubmerge	= "Zeige Warnung für Abtauchen",
+	TimerEmerge		= "Zeige Timer für Auftauchen",
+	TimerSubmerge	= "Zeige Timer für Abtauchen",
 	CrystalArrow	= "Zeige DBM-Pfeil, wenn $spell:81634 in deiner Nähe ist",
 	RangeFrame		= "Zeige Abstandsfenster (5m)"
-
 })
 
 -----------
@@ -465,10 +464,15 @@ L:SetGeneralLocalization({
 	name = "Plattenhaut"
 })
 
-L:SetWarningLocalization({	
+L:SetWarningLocalization({
 	WarnAirphase			= "Luftphase",
 	WarnGroundphase			= "Bodenphase",
-	specWarnCrystalStorm		= "Kristallsturm - Geh in Deckung"
+	specWarnCrystalStorm	= "Kristallsturm - Geh in Deckung"
+})
+
+L:SetTimerLocalization({
+	TimerAirphase			= "Nächste Luftphase",
+	TimerGroundphase		= "Nächste Bodenphase"
 })
 
 L:SetOptionLocalization({
@@ -476,8 +480,7 @@ L:SetOptionLocalization({
 	WarnGroundphase			= "Zeige Warnung, wenn Plattenhaut landet",
 	TimerAirphase			= "Zeige Timer für die nächste Luftphase",
 	TimerGroundphase		= "Zeige Timer für die nächste Bodenphase",
-
-	specWarnCrystalStorm		= "Zeige Spezialwarnung für $spell:92265"
+	specWarnCrystalStorm	= "Zeige Spezialwarnung für $spell:92265"
 })
 
 -------------------------
@@ -499,6 +502,10 @@ L = DBM:GetModLocalization("GrandVizierErtan")
 L:SetGeneralLocalization({
 	name = "Großwesir Ertan"
 })
+
+L:SetMiscLocalization{
+	Retract		= "%s zieht sein Wirbelsturmschild zurück!"
+}
 
 --------------
 -- Altairus --
@@ -582,13 +589,13 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnBear		= "Bärform",
 	WarnBearSoon	= "Bärform in 5 Sek",
-	WarnNormal		= "Normale Form",
-	WarnNormalSoon	= "Normale Form in 5 Sek"
+	WarnNormal		= "Normalform",
+	WarnNormalSoon	= "Normalform in 5 Sek"
 }
 
 L:SetTimerLocalization{
 	TimerBear		= "Bärform",
-	TimerNormal		= "Normale Form"
+	TimerNormal		= "Normalform"
 }
 
 L:SetOptionLocalization{
@@ -623,7 +630,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
 	RangeFrame	= "Zeige Abstandsfenster (10m)",
-	StormArrow	= "Show DBM Arrow for $spell:97300", --translate
+	StormArrow	= "Zeige DBM-Pfeil für $spell:97300",
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
@@ -636,7 +643,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
-	name = "Jan'alai"
+	name = "Jan'alai (Drachenfalke)"
 }
 
 L:SetWarningLocalization{
@@ -651,6 +658,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellBomb	= "Jetzt sollt ihr brennen!",
+	YellHatchAll= "Stärke... und zwar viel davon.",
 	YellAdds	= "Wo is' meine Brut? Was ist mit den Eiern?"
 }
 
@@ -660,12 +668,12 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Halazzi5")
 
 L:SetGeneralLocalization{
-	name = "Halazzi (Lynx)"
+	name = "Halazzi (Luchs)"
 }
 
 L:SetWarningLocalization{
-	WarnSpirit	= "Geist Phase",
-	WarnNormal	= "Normale Phase"
+	WarnSpirit	= "Geistphase",
+	WarnNormal	= "Normalphase"
 }
 
 L:SetTimerLocalization{
@@ -673,7 +681,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnSpirit	= "Zeige Warnung für Geistphase",
-	WarnNormal	= "Zeige Warnung für normale Phase"
+	WarnNormal	= "Zeige Warnung für Normalphase"
 }
 
 L:SetMiscLocalization{
@@ -702,6 +710,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+	YellPull	= "Der Schatten wird euch verschlingen..."
 }
 
 -------------
@@ -717,11 +726,13 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	timerNextForm	= "Nächster Formwechsel"
 }
 
 L:SetOptionLocalization{
+	timerNextForm	= "Zeige Timer für Formwechsel.",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
-	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
+	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
@@ -735,7 +746,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Venoxis")
 
 L:SetGeneralLocalization{
-	name = "Hohepriesterin Venoxis" --check
+	name = "Hohepriester Venoxis"
 }
 
 L:SetWarningLocalization{
@@ -746,7 +757,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477" --translate
+	LinkArrow		= "Zeige DBM-Pfeil wenn du von $spell:96477 betroffen bist"
 }
 
 L:SetMiscLocalization{
@@ -758,7 +769,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Mandokir")
 
 L:SetGeneralLocalization{
-	name = "Blutfürst Mandokir" --check
+	name = "Blutfürst Mandokir"
 }
 
 L:SetWarningLocalization{
@@ -770,9 +781,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnRevive		= "Verkünde wieviele Geisterwiederbelebungen verbleiben",
+	WarnRevive		= "Verkünde die Anzahl der verbleibenden Geisterwiederbelebungen",
 	SpecWarnOhgan	= "Zeige Warnung, wenn Ohgan wiederbelebt wird",
-	SetIconOnOhgan	= "Put an icon on Ohgan when he revives" --translate
+	SetIconOnOhgan	= "Setze ein Zeichen auf Ohgan, wenn er wiederbelebt wird"
 }
 
 L:SetMiscLocalization{
@@ -807,7 +818,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Kilnara")
 
 L:SetGeneralLocalization{
-	name = "Hohepriesterin Kilnara" --check
+	name = "Hohepriesterin Kilnara"
 }
 
 L:SetWarningLocalization{
@@ -828,21 +839,21 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Jindo")
 
 L:SetGeneralLocalization{
-	name = "Jin'do the Godbreaker" --translate
+	name = "Jin'do der Götterbrecher"
 }
 
 L:SetWarningLocalization{
-	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left" --translate
+	WarnBarrierDown	= "Schild von Hakkars Ketten zerstört - %d/3 verbleibend"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down", --translate,
+	WarnBarrierDown	= "Verkünde Zerstörung der Schilde von Hakkars Ketten",
 	BodySlamIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97198)
 }
 
 L:SetMiscLocalization{
-	Kill			= "Oh no, Hakkar's spirit is free!" -- translate (temporarily)
+	Kill			= "Du hast deine Grenzen überschritten, Jin'do. Diese Macht kannst du nicht kontrollieren. Hast du vergessen, wer ich bin? Hast du vergessen, wozu ich fähig bin?!"
 }
