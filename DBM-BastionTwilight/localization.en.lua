@@ -62,8 +62,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s below 30%% - next phase soon!",
-	SpecWarnGrounded		= "Get Grounded buff",
-	SpecWarnSearingWinds	= "Get Searing Winds buff"
+	SpecWarnGrounded		= "Get Grounded",
+	SpecWarnSearingWinds	= "Get Searing Winds"
 })
 
 L:SetTimerLocalization({
@@ -72,12 +72,12 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBossLow			= "Show special warning when Bosses are below 30% HP",
-	SpecWarnGrounded		= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
-	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
+	SpecWarnGrounded		= "Show special warning when you are missing $spell:83581 debuff\n(~10sec before cast)",
+	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 debuff\n(~10sec before cast)",
 	timerTransition			= "Show Phase transition timer",
 	RangeFrame				= "Show range frame automatically when needed",
 	yellScrewed				= "Yell when you have $spell:83099 & $spell:92307 at same time",
-	InfoFrame				= "Show info frame for players without $spell:83581 or $spell:83500",--Not yet implimented, but putting local in now to get translations rolling.
+	InfoFrame				= "Show info frame for players without $spell:83581 or $spell:83500",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),

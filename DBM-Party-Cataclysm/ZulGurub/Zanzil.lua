@@ -19,14 +19,16 @@ local warnZanzilGas			= mod:NewSpellAnnounce(96338, 3)
 local warnGaze				= mod:NewTargetAnnounce(96342, 3)
 
 local specWarnGaze			= mod:NewSpecialWarningYou(96342)
+local specWarnToxic			= mod:NewSpecialWarning("SpecWarnToxic")
 
 local timerZanzilGas		= mod:NewBuffActiveTimer(7, 96338)
 local timerGaze				= mod:NewTargetTimer(17, 96342)
 local timerZanzilElixir		= mod:NewCDTimer(30, 96316)
 
-local soundGaze			= mod:NewSound(96342)
+local soundGaze				= mod:NewSound(96342)
 
 mod:AddBoolOption("SetIconOnGaze")
+mod:AddBoolOption("InfoFrame", mod:IsHealer())--on by default for healers, so they know what numpties to heal through gas
 
 function mod:GazeTarget()
 	local targetname = self:GetBossTarget(52054)
@@ -42,7 +44,23 @@ function mod:GazeTarget()
 	end
 end
 
+local function checkToxic()
+	if not UnitDebuff("player", GetSpellInfo(96328)) and not UnitIsDeadOrGhost("player") then
+		specWarnToxic:Show()
+	end
+end
+
 function mod:OnCombatStart(delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+		DBM.InfoFrame:Show(5, "playerdebuff", 96328)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -59,6 +77,7 @@ function mod:SPELL_CAST_START(args)
 		warnZanzilFire:Show()
 	elseif args:IsSpellID(96338) then
 		warnZanzilGas:Show()
+		checkToxic()
 	elseif args:IsSpellID(96342) and self:IsInCombat() then
 		self:ScheduleMethod(0.2, "GazeTarget")
 	end

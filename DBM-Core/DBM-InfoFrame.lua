@@ -209,6 +209,16 @@ local function updateEnemyPower()
 	updateLines()
 end
 
+local function updatePlayerBuffs()
+	table.wipe(lines)
+	for i = 1, GetNumRaidMembers() do
+		if not UnitBuff("raid"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+			lines[UnitName("raid"..i)] = ""
+		end
+	end
+	updateLines()
+end
+
 local function updatePlayerDebuffs()
 	table.wipe(lines)
 	for i = 1, GetNumRaidMembers() do
@@ -235,6 +245,8 @@ function onUpdate(self, elapsed)
 		updatePlayerPower()
 	elseif currentEvent == "enemypower" then
 		updateEnemyPower()
+	elseif currentEvent == "playerbuff" then
+		updatePlayerBuffs()
 	elseif currentEvent == "playerdebuff" then
 		updatePlayerDebuffs()
 	end
@@ -275,6 +287,8 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 		updatePlayerPower()
 	elseif event == "enemypower" then
 		updateEnemyPower()
+	elseif event == "playerbuff" then
+		updatePlayerBuffs()
 	elseif event == "playerdebuff" then
 		updatePlayerDebuffs()
 	else
