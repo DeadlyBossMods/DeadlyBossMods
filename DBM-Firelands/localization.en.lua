@@ -100,6 +100,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
+	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
 })
 
 L:SetMiscLocalization({
@@ -118,9 +120,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerBladeActive	= "%s",
+	TimerBladeNext		= "Next blade"
 })
 
 L:SetOptionLocalization({
+	TimerBladeActive	= "Show a duration timer for the active blade",
+	TimerBladeNext		= "Show a next timer for blade"
 })
 
 L:SetMiscLocalization({
