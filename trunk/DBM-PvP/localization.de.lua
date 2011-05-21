@@ -16,9 +16,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ColorByClass	= "Einfärbung der Spielernamen in der Schlachtfeld-Punktetafel",
+	ColorByClass	= "Einfärbung der Spielernamen nach Klasse in der Schlachtfeld-Punktetafel",
 	ShowInviteTimer	= "Zeige Zeit für Schlachtfeld-Beitrittsmöglichkeit",
-	AutoSpirit	= "Automatisch Geist freilassen"
+	AutoSpirit		= "Automatisch Geist freilassen",
+	HideBossEmoteFrame	= "Verberge das Schlachtzugsboss-Emote-Fenster ('RaidBossEmoteFrame')"
 })
 
 L:SetMiscLocalization({
@@ -35,13 +36,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Spiel startet in",
+	TimerStart	= "Kampfbeginn",
 	TimerShadow	= "Schattensicht"
 })
 
 L:SetOptionLocalization({
-	TimerStart	= "Zeige Starttimer",
-	TimerShadow = "Zeige Timer für Schattensicht"
+	TimerStart	= "Zeige Zeit bis Kampfbeginn",
+	TimerShadow = "Zeige Zeit bis $spell:34709 verfügbar"
 })
 
 L:SetMiscLocalization({
@@ -60,14 +61,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerTower = "%s",
-	TimerGY = "%s",
+	TimerTower	= "%s",
+	TimerGY		= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerTower = "Zeige Turmzerstörungstimer",
-	TimerGY = "Zeige Friedhoferoberungstimer",
-	AutoTurnIn = "Automatisches Abgeben der Quests im Alteractal"
+	TimerTower	= "Zeige Zerstörungsdauer für Türme",
+	TimerGY		= "Zeige Eroberungsdauer für Friedhofe",
+	AutoTurnIn	= "Automatisches Abgeben der Quests im Alteractal"
 })
 
 --------------------
@@ -80,23 +81,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr = "(%d+)/1600",
-	Alliance = "Allianz",
-	Horde = "Horde",
-	WinBarText = "%s gewinnt",
-	BasesToWin = "Punkte nötig um zu gewinnen: %d",
-	Flag = "Flagge"
+	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "Allianz",
+	Horde		= "Horde",
+	WinBarText	= "%s gewinnt",
+	BasesToWin	= "benötigte Basen für Sieg: %d",
+	Flag		= "Flagge"
 })
 
 L:SetTimerLocalization({
-	TimerCap = "%s",
+	TimerCap	= "%s",
 })
 
 L:SetOptionLocalization({
-	TimerWin = "Zeige Siegtimer",
-	TimerCap = "Zeige Eroberungstimer",
-	ShowAbEstimatedPoints = "Zeige geschätzte Kampf-Endpunkte",
-	ShowAbBasesToWin = "Zeige benötigte Anzahl an Punkten zum Sieg"
+	TimerWin				= "Zeige Zeit bis eine Fraktion gewinnt",
+	TimerCap				= "Zeige Eroberungsdauer für Basen",
+	ShowAbEstimatedPoints	= "Zeige geschätzten Endpunktestand",
+	ShowAbBasesToWin		= "Zeige benötigte Anzahl von Basen zum Sieg"
 })
 
 ------------------------
@@ -109,26 +110,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName = "Auge des Sturms",
-	ScoreExpr = "(%d+)/1600",
-	Alliance = "Allianz",
-	Horde = "Horde",
-	WinBarText = "%s gewinnt",
-	FlagReset = "Die Flagge wurde zurückgesetzt.",
-	FlagTaken = "(.+) hat die Flagge erobert%.",
-	FlagCaptured = "Die %w+ hat die F%w+ erobert!",
-	FlagDropped = "Die F%w+ wurde fallengelassen."
+	ZoneName		= "Auge des Sturms",
+	ScoreExpr		= "(%d+)/1600",
+	Alliance 		= "Allianz",
+	Horde 			= "Horde",
+	WinBarText 		= "%s gewinnt",
+	FlagReset 		= "Die Flagge wurde zurückgesetzt.",
+	FlagTaken 		= "(.+) hat die Flagge aufgenommen.",
+	FlagCaptured	= "Die %w+ hat die Flagge erobert!",
+	FlagDropped		= "Die Flagge wurde fallengelassen."
 
 })
 
 L:SetTimerLocalization({
-	TimerFlag = "Flaggenrespawn"
+	TimerFlag	= "Flaggen-Respawn"
 })
 
 L:SetOptionLocalization({
-	TimerWin = "Zeige Siegtimer",
-	TimerFlag = "Zeige Timer für Flaggen-Respawn",
-	ShowPointFrame = "Zeige Flaggenträger und geschätzten Endpunktestand"
+	TimerWin 		= "Zeige Zeit bis eine Fraktion gewinnt",
+	TimerFlag 		= "Zeige Zeit bis zum Respawn der Flagge",
+	ShowPointFrame	= "Zeige Flaggenträger und geschätzten Endpunktestand"
 })
 
 ---------------------
@@ -141,29 +142,29 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Der Kampf um die Kriegshymnenschlucht beginnt in 1 Minute.",
-	BgStart30 = "Der Kampf um die Kriegshymnenschlucht beginnt in 30 Sekunden. Haltet Euch bereit!",
-	Alliance = "Allianz",
-	Horde = "Horde",	
-	InfoErrorText = "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
-	ExprFlagPickUp = "(.*) hat die Flagge der (%w+) aufgenommen!",
-	ExprFlagCaptured = "(.+) hat die Flagge der (%w+) errungen!",
-	ExprFlagReturn = "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
-	FlagAlliance = "Allianz-Flagge: ",
-	FlagHorde = "Horde-Flagge: ",
-	FlagBase = "Basis"
+	BgStart60 			= "Die Schlacht beginnt in 1 Minute.",
+	BgStart30 			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
+	Alliance 			= "Allianz",
+	Horde 				= "Horde",	
+	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
+	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
+	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!", 
+	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
+	FlagAlliance		= "Allianz-Flagge: ",
+	FlagHorde			= "Horde-Flagge: ",
+	FlagBase			= "Basis"
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Spiel startet in", 
-	TimerFlag = "Flaggen-Respawn"
+	TimerStart	= "Kampfbeginn", 
+	TimerFlag	= "Flaggen-Respawn"
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Zeige Starttimer",
-	TimerFlag = "Zeige Timer für Flaggen-Respawn",
-	ShowFlagCarrier = "Zeige Flaggenträger",
-	ShowFlagCarrierErrorNote = "Zeige Fehlermeldung wenn Flaggenträger-Zielauswahl nicht gesetzt werden kann"
+	TimerStart					= "Zeige Zeit bis Kampfbeginn",
+	TimerFlag					= "Zeige Zeit bis zum Respawn der Flaggen",
+	ShowFlagCarrier				= "Zeige Flaggenträger",
+	ShowFlagCarrierErrorNote	= "Zeige Fehlermeldung, wenn Flaggenträger-Zielauswahl nicht gesetzt werden kann"
 })
 
 ------------------------
@@ -176,37 +177,37 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSiegeEngine		= "Belagerungsmaschine",
+	WarnSiegeEngine		= "Belagerungsmaschine bereit!",
 	WarnSiegeEngineSoon	= "Belagerungsmaschine in ~10 Sekunden",
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "Spiel startet in", 
-	TimerPOI		= "%s",
+	TimerStart			= "Kampfbeginn", 
+	TimerPOI			= "%s",
 	TimerSiegeEngine	= "Belagerungsmaschine"
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Zeige Starttimer", 
-	TimerPOI		= "Zeige Timer für Eroberungen",
+	TimerStart			= "Zeige Zeit bis Kampfbeginn", 
+	TimerPOI			= "Zeige Eroberungsdauer",
 	TimerSiegeEngine	= "Zeige Timer für Belagerungsmaschine",
-	WarnSiegeEngine		= "Zeige Warnung wenn Belagerungsmaschine bereit ist",
-	WarnSiegeEngineSoon	= "Zeige Warnung wenn Belagerungsmaschine fast bereit ist"
+	WarnSiegeEngine		= "Zeige Warnung, wenn Belagerungsmaschine bereit ist",
+	WarnSiegeEngineSoon	= "Zeige Warnung, wenn Belagerungsmaschine fast bereit ist"
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "Die Schlacht beginnt in 60 Sekunden.",
-	BgStart30		= "Die Schlacht beginnt in 30 Sekunden.",
-	BgStart15		= "Die Schlacht beginnt in 15 Sekunden.",
-	SiegeEngine		= "Belagerungsmaschine",
-	GoblinStartAlliance	= "Seht Ihr diese Zephyriumbomben? Benutzt sie an den Toren, während ich die Belagerungsmaschine repariere!",
-	GoblinStartHorde	= "Ich arbeite an der Belagerungsmaschine. Haltet mir einfach nur den Rücken frei. Benutzt diese Zephyriumbomben an den Toren, solltet Ihr sie brauchen!",
+	BgStart60				= "Die Schlacht beginnt in 60 Sekunden.",
+	BgStart30				= "Die Schlacht beginnt in 30 Sekunden.",
+	BgStart15				= "Die Schlacht beginnt in 15 Sekunden.",
+	SiegeEngine				= "Belagerungsmaschine",
+	GoblinStartAlliance		= "Ich arbeite an der Belagerungsmaschine. Haltet mir einfach nur den Rücken frei. Benutzt diese Zephyriumbomben an den Toren, solltet Ihr sie brauchen!",
+	GoblinStartHorde		= "Seht Ihr diese Zephyriumbomben? Benutzt sie an den Toren, während ich die Belagerungsmaschine repariere!",
 	GoblinHalfwayAlliance	= "Ich hab's gleich! Haltet die Horde von hier fern. Kämpfen stand in der Ingenieursschule nicht auf dem Lehrplan!",
-	GoblinHalfwayHorde	= "Ich hab's gleich! Haltet mir die Allianz vom Leib. Kämpfen steht nicht in meinem Vertrag!",
+	GoblinHalfwayHorde		= "Ich hab's gleich! Haltet mir die Allianz vom Leib. Kämpfen steht nicht in meinem Vertrag!",
 	GoblinFinishedAlliance	= "Meine beste Arbeit bisher! Diese Belagerungsmaschine ist bereit, ein bisschen Aktion zu sehen!",
-	GoblinFinishedHorde	= "Die Belagerungsmaschine ist bereit, loszurollen!",
+	GoblinFinishedHorde		= "Die Belagerungsmaschine ist bereit, loszurollen!",
 	GoblinBrokenAlliance	= "Es ist schon kaputt?! Ach, keine Sorge, nichts, was ich nicht reparieren kann.",
-	GoblinBrokenHorde	= "Schon wieder kaputt?! Ich werde es richten... Ihr solltet allerdings nicht davon ausgehen, dass das noch unter die Garantie fällt."
+	GoblinBrokenHorde		= "Schon wieder kaputt?! Ich werde es richten... Ihr solltet allerdings nicht davon ausgehen, dass das noch unter die Garantie fällt."
 })
 
 ------------------
@@ -219,30 +220,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Der Kampf um die Kriegshymnenschlucht beginnt in 1 Minute.",
-	BgStart30 = "Der Kampf um die Kriegshymnenschlucht beginnt in 30 Sekunden. Haltet Euch bereit!",
-	Alliance = "Allianz",
-	Horde = "Horde",	
-	InfoErrorText = "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
-	ExprFlagPickUp = "(.*) hat die Flagge der (%w+) aufgenommen!",
-	ExprFlagCaptured = "(.+) hat die Flagge der (%w+) errungen!",
-	ExprFlagReturn = "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
-	FlagAlliance = "Allianz-Flagge: ",
-	FlagHorde = "Horde-Flagge: ",
-	FlagBase = "Basis"
+	BgStart60 			= "Die Schlacht beginnt in 1 Minute.",
+	BgStart30 			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
+	ZoneName 			= "Zwillingsgipfel",
+	Alliance 			= "Allianz",
+	Horde 				= "Horde",	
+	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
+	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
+	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
+	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
+	FlagAlliance		= "Allianz-Flagge: ",
+	FlagHorde			= "Horde-Flagge: ",
+	FlagBase			= "Basis"
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Spiel startet in", 
-	TimerFlag = "Flaggen-Respawn"
+	TimerStart	= "Kampfbeginn", 
+	TimerFlag	= "Flaggen-Respawn"
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Zeige Starttimer",
-	TimerFlag = "Zeige Timer für Flaggen-Respawn",
-	ShowFlagCarrier = "Zeige Flaggenträger",
-	ShowFlagCarrierErrorNote = "Zeige Fehlermeldung wenn Flaggenträger-Zielauswahl nicht gesetzt werden kann"
+	TimerStart					= "Zeige Zeit bis Kampfbeginn",
+	TimerFlag					= "Zeige Zeit bis zum Respawn der Flaggen",
+	ShowFlagCarrier				= "Zeige Flaggenträger",
+	ShowFlagCarrierErrorNote	= "Zeige Fehlermeldung, wenn Flaggenträger-Zielauswahl nicht gesetzt werden kann"
 })
+
 
 --------------------------
 --  Battle for Gilneas  --
@@ -254,21 +257,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr = "(%d+)/2000",
-	Alliance = "Allianz",
-	Horde = "Horde",
-	WinBarText = "%s gewinnt",
-	BasesToWin = "Punkte nötig um zu gewinnen: %d",
-	Flag = "Flagge"
+	ScoreExpr	= "(%d+)/2000",
+	Alliance	= "Allianz",
+	Horde		= "Horde",
+	WinBarText	= "%s gewinnt",
+	BasesToWin	= "benötigte Basen für Sieg: %d",
+	Flag		= "Flagge"
 })
 
 L:SetTimerLocalization({
-	TimerCap = "%s",
+	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerWin = "Zeige Siegtimer",
-	TimerCap = "Zeige Eroberungstimer",
-	ShowGilneasEstimatedPoints = "Zeige geschätzte Kampf-Endpunkte",
-	ShowGilneasBasesToWin = "Zeige benötigte Anzahl an Punkten zum Sieg"
+	TimerWin				= "Zeige Zeit bis eine Fraktion gewinnt",
+	TimerCap				= "Zeige Eroberungsdauer für Basen",
+	ShowGilneasEstimatedPoints		= "Zeige geschätzten Endpunktestand",
+	ShowGilneasBasesToWin			= "Zeige benötigte Anzahl von Basen zum Sieg"
 })
