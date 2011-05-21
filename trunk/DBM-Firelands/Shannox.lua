@@ -19,7 +19,7 @@ mod:RegisterEvents(
 local warnFaceRage	= mod:NewTargetAnnounce(99945, 4)
 local warnRage		= mod:NewTargetAnnounce(100415, 3)
 local warnWary		= mod:NewTargetAnnounce(100167, 2, nil, false)	-- which hound has this buff?
-local warnTears		= mod:NewStackWarning(99937, 3)
+local warnTears		= mod:NewStackAnnounce(99937, 3)
 local warnSpear		= mod:NewSpellAnnounce(100002, 3)
 
 local timerRage		= mod:NewTargetTimer(15, 100415)
