@@ -64,8 +64,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s por debajo del 30%% ¡Siguiente fase pronto!",
-	SpecWarnGrounded	= "Coge el bufo de Domeñado",
-	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales"
+	SpecWarnGrounded	= "Coge Domeñado",
+	SpecWarnSearingWinds	= "Coge Vientos espirales"
 })
 
 L:SetTimerLocalization({
@@ -74,10 +74,12 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBossLow			= "Mostrar un aviso especial cuando los Bosses estén por debajo del 30% de vida",
-	SpecWarnGrounded	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83581\n(~10seg antes de castear)",
-	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)",
+	SpecWarnGrounded	= "Mostrar aviso especial cuando estes a punto de perder el debufo de $spell:83581\n(~10seg antes de castear)",
+	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el debufo de $spell:83500\n(~10seg antes de castear)",
 	timerTransition		= "Mostrar tiempo para transición de fase",
 	RangeFrame			= "Mostrar distancia cuando sea necesario",
+	yellScrewed				= "Gritar cuando tengas $spell:83099 y $spell:92307 a la vez",
+	InfoFrame				= "Mostrar nombres de los jugadores sin $spell:83581 o $spell:83500",
 	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -98,7 +100,9 @@ L:SetMiscLocalization({
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Monstruosidad de Elementium",
 	Kill			= "Imposible...",
-	blizzHatesMe	= "¡Escarcha y relámpagos en mi! ¡Apartaos o morid!"--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
+	blizzHatesMe	= "¡Escarcha y relámpagos en mi! ¡Apartaos o morid!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
+	PlayerDebuffs	= "Debuff equivocado"
+
 })
 
 ----------------
@@ -145,6 +149,8 @@ L:SetWarningLocalization({
 	SpecWarnOrbs		= "¡Cercenadora Crepuscular pronto!",
 	warnWrackJump		= "%s ha saltado a >%s<",
 	WarnWrackCount5s	= "%d segundos des del último Arruinar",
+	warnAggro			= "%s tiene Aggro (candidato de orbe)",
+	SpecWarnAggroOnYou	= "¡tienes Aggro! ¡Vigila los Orbes!",
 	SpecWarnDispel		= "¡Han pasado %d seg des del último Arruinar ¡Dispelea ahora!",
 	SpecWarnEggWeaken	= "¡Caparazón Crepuscular Eliminado! ¡Pega el Huevo!",
 	SpecWarnEggShield	= "¡Caparazón Crepuscular se ha regenerado!"
@@ -154,7 +160,8 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerDragon			= "Siguientes Crias Crepusculares",
 	TimerEggWeakening	= "Caparazón Crepuscular Eliminado",
-	TimerEggWeaken		= "Caparazón Crepuscular Regenerándose"
+	TimerEggWeaken		= "Caparazón Crepuscular Regenerándose",
+	TimerOrbs			= "Siguientes Orbes"
 })
 
 L:SetOptionLocalization({
@@ -163,6 +170,8 @@ L:SetOptionLocalization({
 	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
 	WarnWrackCount5s	= "Announce los segundos de $spell:92955 transcurridos a los 10, 15, 20 segundos",
+	warnAggro			= "Anunciar jugadores que tienen Aggro cuando salen Orbes\n(Pueden ser objetivos de orbes)",
+	SpecWarnAggroOnYou	= "Mostrar aviso especial si TU tienes aggro cuando Orbes\n(Puedes ser objetivo de orbes)",
 	SpecWarnOrbs		= "Mostrar aviso especial para $spell:92954\n(Puede ser impreciso.)",
 	SpecWarnDispel		= "Mostrar aviso especial para dispellear $spell:92955\n(después de cierto tiempo de que haya saltado)",
 	SpecWarnEggWeaken	= "Mostrar aviso especial cuando $spell:87654 es eliminado",
@@ -170,6 +179,7 @@ L:SetOptionLocalization({
 	TimerDragon			= "Mostrar tiempo para que salga una nueva Cría Crepuscular",
 	TimerEggWeakening	= "Mostrar tiempo para eliminación de $spell:87654",
 	TimerEggWeaken		= "Mostrar tiempo para regeneración de $spell:87654",
+	TimerOrbs			= "Mostrar tiempo para siguientes Orbes\n(Tiempo esperado. puede no ser preciso)",
 	SetIconOnOrbs		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92954)
 
 })

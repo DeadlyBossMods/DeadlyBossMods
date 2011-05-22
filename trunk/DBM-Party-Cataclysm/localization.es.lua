@@ -808,16 +808,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	SpecWarnToxic	= "Coge Tormento tóxico"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	SpecWarnToxic	= "Mostrar aviso especial cuando pierdas el debufo de $spell:96328",
+	InfoFrame		= "Mostrar información de jugadores sin $spell:96328",
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
 L:SetMiscLocalization{
+	PlayerDebuffs	= "Sin Tormento tóxico"
 }
 
 ----------------------------
