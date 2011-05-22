@@ -187,7 +187,7 @@ local function updateHealth()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			if UnitHealth("party"..i) < infoFrameThreshold and not UnitIsDeadOrGhost("party"..i) then
-				lines[UnitName("party"..i)] = UnitHealth("raid"..i) - infoFrameThreshold 
+				lines[UnitName("party"..i)] = UnitHealth("party"..i) - infoFrameThreshold 
 			end
 		end
 	end
