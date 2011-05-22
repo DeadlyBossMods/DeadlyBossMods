@@ -99,8 +99,7 @@ L:SetMiscLocalization({
 	Monstrosity		= "Elementium Monstrosity",
 	Kill			= "Impossible....",
 	blizzHatesMe	= "Beacon & Rod on me! Clear a path!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
-	GroundedDebuff	= "No Grounded",
-	WindedDebuff	= "No Swirling Winds"
+	WrongDebuff	= "No %s"
 })
 
 ----------------
