@@ -27,7 +27,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Slump			= "¡%s cae hacia delante y deja expuestas sus tenazas!",
 	HeadExposed		= "¡%s acaba empalado en el pincho y deja expuesta la cabeza!",
-	YellPhase2		= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."--translate
+	YellPhase2		= "¡Inconcebible! ¡Existe la posibilidad de que venzáis a mi gusano de lava! Quizás yo pueda... desequilibrar la balanza."
 })
 
 -------------------------------
@@ -224,10 +224,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NefAoe			= "¡El aire crepita cargado de electricidad!",
-	YellPhase2		= "¡Malditos mortales! ¡Tal negligencia con las posesiones ajenas debe ser castigada!",
-	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",
-	YellShadowBlaze	= "¡La llama de las sombras los reanima! ¡Luchan a mis órdenes!",
+	NefAoe			= "¡El aire crepita cargado de electricidad!",--translate?
+	YellPhase2		= "¡Malditos mortales! ¡Tal negligencia con las posesiones ajenas debe ser castigada!",--translate?
+	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate?
+	YellShadowBlaze	= "¡La llama de las sombras los reanima! ¡Luchan a mis órdenes!",--translate?
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
 	Charge			= "Carga Eléctrica"
