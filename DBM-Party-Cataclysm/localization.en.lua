@@ -608,8 +608,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "You call on da beast, you gonna get more dan you bargain for!",
-	YellNormal	= "Make way for Nalorakk!",
+	YellBear 		= "You call on da beast, you gonna get more dan you bargain for!",
+	YellNormal		= "Make way for Nalorakk!",
 	PlayerDebuffs	= "No Surge Debuff"
 }
 
@@ -816,7 +816,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "No Green Cauldron"
+	PlayerDebuffs	= "No Toxic Torment"
 }
 
 ----------------------------
