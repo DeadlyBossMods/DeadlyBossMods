@@ -44,12 +44,6 @@ function mod:GazeTarget()
 	end
 end
 
-local function checkToxic()
-	if not UnitDebuff("player", GetSpellInfo(96328)) and not UnitIsDeadOrGhost("player") then
-		specWarnToxic:Show()
-	end
-end
-
 function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
@@ -77,7 +71,9 @@ function mod:SPELL_CAST_START(args)
 		warnZanzilFire:Show()
 	elseif args:IsSpellID(96338) then
 		warnZanzilGas:Show()
-		checkToxic()
+		if not UnitDebuff("player", GetSpellInfo(96328)) and not UnitIsDeadOrGhost("player") then
+			specWarnToxic:Show()
+		end
 	elseif args:IsSpellID(96342) and self:IsInCombat() then
 		self:ScheduleMethod(0.2, "GazeTarget")
 	end

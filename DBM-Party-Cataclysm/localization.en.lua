@@ -603,12 +603,14 @@ L:SetOptionLocalization{
 	WarnNormal		= "Show warning for Normal form",
 	WarnNormalSoon	= "Show pre-warning for Normal form",
 	TimerBear		= "Show timer for Bear form",
-	TimerNormal		= "Show timer for Normal form"
+	TimerNormal		= "Show timer for Normal form",
+	InfoFrame		= "Show info frame for players not affected by $spell:42402"
 }
 
 L:SetMiscLocalization{
 	YellBear 	= "You call on da beast, you gonna get more dan you bargain for!",
-	YellNormal	= "Make way for Nalorakk!"
+	YellNormal	= "Make way for Nalorakk!",
+	PlayerDebuffs	= "No Surge Debuff"
 }
 
 --------------
@@ -730,11 +732,13 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "Show timer for form changes.",
+	InfoFrame		= "Show info frame for players not affected by $spell:42402",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
+	PlayerDebuffs	= "No Surge Debuff"
 }
 
 -----------------
@@ -756,7 +760,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477"
+	LinkArrow			= "Show DBM arrow when you are affected by $spell:96477"
 }
 
 L:SetMiscLocalization{
@@ -807,12 +811,12 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnToxic	= "Show special warning when you are missing $spell:96328 debuff",
-	InfoFrame		= "Show info frame for players without $spell:96328",
+	InfoFrame		= "Show info frame for players not affected by $spell:96328",
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "No Toxic Torment"
+	PlayerDebuffs	= "No Green Cauldron"
 }
 
 ----------------------------
