@@ -26,6 +26,8 @@ local timerNormal		= mod:NewTimer(30, "TimerNormal", 39414)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 
+mod:AddBoolOption("InfoFrame")
+
 local silenceSpam = 0
 
 function mod:OnCombatStart(delay)
@@ -34,6 +36,16 @@ function mod:OnCombatStart(delay)
 	timerBear:Start()
 	warnBearSoon:Schedule(25)
 	berserkTimer:Start(-delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+		DBM.InfoFrame:Show(5, "playerdebuff", 42402)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
