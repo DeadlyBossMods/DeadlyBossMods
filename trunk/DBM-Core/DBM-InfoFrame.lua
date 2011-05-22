@@ -211,9 +211,17 @@ end
 
 local function updatePlayerBuffs()
 	table.wipe(lines)
-	for i = 1, GetNumRaidMembers() do
-		if not UnitBuff("raid"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
-			lines[UnitName("raid"..i)] = ""
+	if GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if not UnitBuff("raid"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+				lines[UnitName("raid"..i)] = ""
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumPartyMembers() do
+			if not UnitBuff("party"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+				lines[UnitName("party"..i)] = ""
+			end
 		end
 	end
 	updateLines()
@@ -221,9 +229,17 @@ end
 
 local function updatePlayerDebuffs()
 	table.wipe(lines)
-	for i = 1, GetNumRaidMembers() do
-		if not UnitDebuff("raid"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
-			lines[UnitName("raid"..i)] = ""
+	if GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if not UnitDebuff("raid"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+				lines[UnitName("raid"..i)] = ""
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumPartyMembers() do
+			if not UnitDebuff("party"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+				lines[UnitName("party"..i)] = ""
+			end
 		end
 	end
 	updateLines()
