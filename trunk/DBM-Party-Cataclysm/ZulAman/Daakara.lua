@@ -32,8 +32,15 @@ local timerLightningTotemCD	= mod:NewNextTimer(17, 97930)--Eagle Form Ability.
 
 mod:AddBoolOption("ThrowIcon", false)
 mod:AddBoolOption("ClawRageIcon", true)
+mod:AddBoolOption("InfoFrame")
 
 function mod:OnCombatStart(delay)
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -59,6 +66,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(42594) then--Bear
 		timerSurgeCD:Cancel()
 		timerParalysisCD:Cancel()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	elseif args:IsSpellID(42606) then--Eagle
 		timerLightningTotemCD:Cancel()
 	elseif args:IsSpellID(42607) then--Lynx
@@ -74,6 +84,10 @@ function mod:SPELL_CAST_START(args)
 		warnBear:Show()
 		timerParalysisCD:Start(2.5)
 		timerSurgeCD:Start()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+			DBM.InfoFrame:Show(5, "playerdebuff", 42402)
+		end
 	elseif args:IsSpellID(42606) then
 		timerThrow:Cancel()
 		warnEagle:Show()
