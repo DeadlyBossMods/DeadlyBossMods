@@ -166,7 +166,7 @@ local function checkGrounded()
 	end
 	if self.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
-		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+		DBM.InfoFrame:SetHeader(L.GroundedDebuff)
 		DBM.InfoFrame:Show(5, "playerdebuff", 83581)
 	end
 end
@@ -177,7 +177,7 @@ local function checkSearingWinds()
 	end
 	if self.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
-		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+		DBM.InfoFrame:SetHeader(L.WindedDebuff)
 		DBM.InfoFrame:Show(5, "playerdebuff", 83500)
 	end
 end
