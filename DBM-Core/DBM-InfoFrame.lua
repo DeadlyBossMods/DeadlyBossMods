@@ -178,9 +178,17 @@ end
 
 local function updateHealth()
 	table.wipe(lines)
-	for i = 1, GetNumRaidMembers() do
-		if UnitHealth("raid"..i) < infoFrameThreshold and not UnitIsDeadOrGhost("raid"..i) then
-			lines[UnitName("raid"..i)] = UnitHealth("raid"..i) - infoFrameThreshold 
+	if GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if UnitHealth("raid"..i) < infoFrameThreshold and not UnitIsDeadOrGhost("raid"..i) then
+				lines[UnitName("raid"..i)] = UnitHealth("raid"..i) - infoFrameThreshold 
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumPartyMembers() do
+			if UnitHealth("party"..i) < infoFrameThreshold and not UnitIsDeadOrGhost("party"..i) then
+				lines[UnitName("party"..i)] = UnitHealth("raid"..i) - infoFrameThreshold 
+			end
 		end
 	end
 	updateLines()
@@ -219,7 +227,7 @@ local function updatePlayerBuffs()
 		end
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
-			if not UnitBuff("party"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+			if not UnitBuff("party"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("party"..i) then
 				lines[UnitName("party"..i)] = ""
 			end
 		end
@@ -237,7 +245,7 @@ local function updatePlayerDebuffs()
 		end
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
-			if not UnitDebuff("party"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("raid"..i) then
+			if not UnitDebuff("party"..i, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("party"..i) then
 				lines[UnitName("party"..i)] = ""
 			end
 		end
