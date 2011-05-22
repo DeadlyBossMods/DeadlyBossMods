@@ -34,7 +34,7 @@ DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Anuncios"
 DBM_CORE_OPTION_CATEGORY_MISC		= "Miscelaneo"
 
 DBM_CORE_AUTO_RESPONDED				= "Auto-respusta."
-DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d gete viva"
+DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d gente viva"
 DBM_CORE_AUTO_RESPOND_WHISPER		= "%s esta ocupado en la batalla contra %s (%s, %d/%d gente viva)"
 DBM_CORE_WHISPER_COMBAT_END_KILL	= "%s ha derrotado a %s!"
 DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s ha wipeado en %s"
