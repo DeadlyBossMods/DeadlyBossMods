@@ -149,12 +149,14 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(77826, 94124, 94125, 94126) and args:GetSrcCreatureID() == 41270 then--Onyxia's Breath
-		warnOnyShadowflameBreath:Show()
-		timerOnyBreathCD:Start()
-	elseif args:IsSpellID(77826, 94124, 94125, 94126) and args:GetSrcCreatureID() == 41376 then--Nefarians Breath
-		warnNefShadowflameBreath:Show()
-		timerNefBreathCD:Start()
+	if args:IsSpellID(77826, 94124, 94125, 94126) then
+		if args:GetSrcCreatureID() == 41270 then--Source is onyxia
+			warnOnyShadowflameBreath:Show()
+			timerOnyBreathCD:Start()
+		else--if not onyxia then it's nef
+			warnNefShadowflameBreath:Show()
+			timerNefBreathCD:Start()
+		end
 	elseif args:IsSpellID(80734) then--Since this is cast within 5 seconds of adds spawning, can use a GUID check here to add all 3 of http://www.wowhead.com/npc=41948 to boss health if not already on boss health.
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
@@ -226,12 +228,14 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(77827, 94128, 94129, 94130) and args:GetSrcCreatureID() == 41270 then
-		warnOnyTailSwipe:Show()
-		timerOnySwipeCD:Start()
-	elseif args:IsSpellID(77827, 94128, 94129, 94130) and args:GetSrcCreatureID() == 41376 then
-		warnNefTailSwipe:Show()
-		timerNefSwipeCD:Start()
+	if args:IsSpellID(77827, 94128, 94129, 94130) then
+		if args:GetSrcCreatureID() == 41270 then
+			warnOnyTailSwipe:Show()
+			timerOnySwipeCD:Start()
+		else
+			warnNefTailSwipe:Show()
+			timerNefSwipeCD:Start()
+		end
 	end
 end
 
