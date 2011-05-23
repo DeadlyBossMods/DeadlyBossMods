@@ -25,14 +25,14 @@ mod:RegisterEvents(
 
 local warnElementals		= mod:NewAnnounce("WarnElementals", 3)
 local warnHeatedVolcano		= mod:NewSpellAnnounce(98493, 3)
-local warnFlameStomp		= mod:NewSpellAnnounce(97282, 3)
-local warnMoltenArmor		= mod:NewStackAnnounce(98255, 4)	-- Would this be nice if we could show this in the infoFrame?
+local warnFlameStomp		= mod:NewSpellAnnounce(97282, 3, nil, mod:IsMelee())--According to journal only hits players within 20 yards of him, so melee by default?
+local warnMoltenArmor		= mod:NewStackAnnounce(98255, 4, nil, mod:IsTank() or mod:IsHealer())	-- Would this be nice if we could show this in the infoFrame? (changed defaults to tanks/healers, if you aren't either it doesn't concern you unless you find shit to stand in)
 local warnDrinkMagma		= mod:NewSpellAnnounce(98034, 2)	-- if you "kite" him to close to magma
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 
 local timerElementals		= mod:NewTimer(22.5, "TimerElementals")
 local timerHeatedVolcano	= mod:NewCDTimer(40, 98493)
-local timerFlameStomp		= mod:NewNextTimer(30, 97282)
+local timerFlameStomp		= mod:NewNextTimer(30, 97282, nil, mod:IsMelee())
 local timerMoltenSpew		= mod:NewNextTimer(6, 98034)	-- 6secs after Drinking Magma
 
 local spamElementals = 0
