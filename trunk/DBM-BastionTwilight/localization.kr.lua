@@ -63,8 +63,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s 체력 30%% 이하 - 곧 다음 단계!",
-	SpecWarnGrounded		= "접지 버프 받기!!",
-	SpecWarnSearingWinds	= "소용돌이 치는 바람 버프 받기!!"
+	SpecWarnGrounded		= "접지 받으세요!",
+	SpecWarnSearingWinds	= "소용돌이 치는 바람 받으세요!"
 })
 
 L:SetTimerLocalization({
@@ -73,11 +73,12 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBossLow			= "보스의 체력이 30% 이하로 내려갈 경우 특수 경고 보기",
-	SpecWarnGrounded		= "$spell:83581 버프가 없을 경우, 특수 경고 보기(~10초 전)",
-	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기(~10초 전)",
+	SpecWarnGrounded		= "$spell:83581 디버프가 없을 경우, 특수 경고 보기(~10초 전)",
+	SpecWarnSearingWinds	= "$spell:83500 디버프가 없을 경우, 특수 경고 보기(~10초 전)",
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
 	yellScrewed				= "$spell:83099와 $spell:92307의 영향을 동시에 받을경우 외치기",
+	InfoFrame				= "$spell:83581 또는 $spell:83500 디버프에 대한 정보 프레임 보기",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -98,7 +99,8 @@ L:SetMiscLocalization({
 	Terrastra		= "테라스트라",
 	Monstrosity		= "엘레멘티움 괴물",
 	Kill			= "이럴 수가...",
-	blizzHatesMe	= "봉화랑 벼락 막대 같이 걸렸어요! 비켜주세요!"--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
+	blizzHatesMe	= "봉화랑 벼락 막대 같이 걸렸어요! 비켜주세요!",
+	WrongDebuff		= "%s 없음"
 })
 
 ----------------

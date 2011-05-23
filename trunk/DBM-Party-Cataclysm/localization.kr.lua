@@ -606,12 +606,14 @@ L:SetOptionLocalization{
 	WarnNormal		= "인간 형상 경고 보기",
 	WarnNormalSoon	= "인간 형상 사전 경고 보기(soon)",
 	TimerBear		= "다음 곰 형상 타이머 보기",
-	TimerNormal		= "다음 인간 형상 타이머 보기"
+	TimerNormal		= "다음 인간 형상 타이머 보기",
+	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기"
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "너희들이 짐승을 불러냈다. 놀랄 준비나 해라!",
-	YellNormal	= "날로라크 나가신다!"
+	YellBear 		= "너희들이 짐승을 불러냈다. 놀랄 준비나 해라!",
+	YellNormal		= "날로라크 나가신다!",
+	PlayerDebuffs	= "쇄도 디버프 없음",
 }
 
 ---------------
@@ -733,11 +735,13 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "형상 변환 타이머 보기",
+	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
+	PlayerDebuffs	= "쇄도 디버프 없음"
 }
 
 -----------------
@@ -802,16 +806,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	SpecWarnToxic	= "독 가마솥 클릭!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	SpecWarnToxic	= "$spell:96328 디버프가 없을 경우 특수 경고 보기",
+	InfoFrame		= "$spell:96328 디버프에 대한 정보 프레임 보기",
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
 L:SetMiscLocalization{
+	PlayerDebuffs	= "맹독성 고문 없음"
 }
 
 ----------------------------
