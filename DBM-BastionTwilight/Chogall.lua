@@ -23,10 +23,10 @@ mod:RegisterEvents(
 local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
 local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
 local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
-local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnFlamingDestruction		= mod:NewSpellAnnounce(81194, 4)
-local warnEmpoweredShadows			= mod:NewSpellAnnounce(81572, 4)
+local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3)
+local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3)
+local warnFlamingDestruction		= mod:NewSpellAnnounce(81194, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnEmpoweredShadows			= mod:NewSpellAnnounce(81572, 4, nil, mod:IsHealer())
 local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, nil, false)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2)
@@ -35,17 +35,18 @@ local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Ranged should already be spread out and not need a special warning every sickness.
 local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
 local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
+local specWarnEmpoweredShadows		= mod:NewSpecialWarningSpell(81572, mod:IsHealer(), nil, nil, true)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local yellCrash						= mod:NewYell(93178)--Second thought, it occured to me that the crash should never target the adherent tank, so if he yells so what heh. But it is accurate if it targest chogal tank. On for everyone now.
-local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177, mod:IsMelee())--On by default for melee, but can be tweaked to off if that's still too much.
+local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177)--On by default for everyone now.
 local specwarnFury					= mod:NewSpecialWarningTarget(82524, mod:IsTank())
 
-local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
+local timerWorshipCD				= mod:NewCDTimer(36, 91317)
 local timerAdherent					= mod:NewCDTimer(92, 81628)
 local timerFesterBlood				= mod:NewNextTimer(40, 82299)--40 seconds after an adherent is summoned
-local timerFlamingDestruction		= mod:NewBuffActiveTimer(10, 81194)
-local timerEmpoweredShadows			= mod:NewBuffActiveTimer(9, 81572)
+local timerFlamingDestruction		= mod:NewBuffActiveTimer(10, 81194, nil, mod:IsTank() or mod:IsHealer())
+local timerEmpoweredShadows			= mod:NewBuffActiveTimer(9, 81572, nil, mod:IsHealer())
 local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
 local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 local timerSickness					= mod:NewBuffActiveTimer(5, 82235)
@@ -167,6 +168,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFlamingDestruction:Start()
 	elseif args:IsSpellID(81572, 93218, 93219, 93220) then
 		warnEmpoweredShadows:Show()
+		specWarnEmpoweredShadows:Show()
 		timerEmpoweredShadows:Start()
 	elseif args:IsSpellID(82518, 93154, 93155, 93156) then
 		specwarnFury:Show(args.destName)
