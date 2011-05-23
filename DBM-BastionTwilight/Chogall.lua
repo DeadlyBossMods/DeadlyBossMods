@@ -49,6 +49,8 @@ local timerEmpoweredShadows			= mod:NewBuffActiveTimer(9, 81572)
 local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
 local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 local timerSickness					= mod:NewBuffActiveTimer(5, 82235)
+local timerFlamesOrders				= mod:NewNextTimer(25, 81171)
+local timerShadowsOrders			= mod:NewNextTimer(25, 81556)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -63,6 +65,7 @@ local prewarned_Phase2 = false
 local firstFury = false
 local worshipIcon = 8
 local worshipCooldown = 21
+local shadowOrdersCD = 15
 local blazeSpam = 0
 local sickSpam = 0
 local creatureIcons = {}
@@ -117,6 +120,7 @@ function mod:CorruptingCrashTarget(sGUID)
 end
 
 function mod:OnCombatStart(delay)
+	timerFlamesOrders:Start(5-delay)
 	timerWorshipCD:Start(10-delay)
 	table.wipe(worshipTargets)
 	table.wipe(creatureIcons)
@@ -124,6 +128,7 @@ function mod:OnCombatStart(delay)
 	firstFury = false
 	worshipIcon = 8
 	worshipCooldown = 21
+	shadowOrdersCD = 15
 	blazeSpam = 0
 	sickSpam = 0
 	creatureIcon = 8
@@ -187,7 +192,10 @@ function mod:SPELL_CAST_START(args)
 		if not firstFury then--85% fury of chogal, it resets cd on worship and changes cd to 36
 			firstFury = true
 			worshipCooldown = 36
+			shadowOrdersCD = 25
 			timerWorshipCD:Start(10)--worship is 10 seconds after first fury, regardless of what timer was at before 85%
+			timerShadowsOrders:Cancel()--Cancel shadows orders timer, flame is going to be next.
+			timerFlamesOrders:Start(15)--Flames orders is 15 seconds after first fury, regardless whether or not shadow was last.
 		end
 	elseif args:IsSpellID(82411, 93132, 93133, 93134) then -- Creatures are channeling after their spawn.
 		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
@@ -232,10 +240,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerAdherent:Cancel()
 		timerWorshipCD:Cancel()
 		timerFesterBlood:Cancel()
+		timerFlamesOrders:Cancel()
+		timerShadowsOrders:Cancel()
 	elseif args:IsSpellID(81556) then--87575?
 		warnShadowOrders:Show()
+		timerFlamesOrders:Start()--always 25 seconds after shadows orders, regardless of phase.
 	elseif args:IsSpellID(81171) then--87579?
 		warnFlameOrders:Show()
+		timerShadowsOrders:Start(shadowOrdersCD)--15 seconds after a flame order above 85%, 25 seconds after a flame orders below 85%
 	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then--Check if added to boss health
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)--And add if not.
