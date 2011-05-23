@@ -11,15 +11,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase		= "%d 단계"
 })
 
 L:SetTimerLocalization({
+	TimerPhaseChange	= "%d 단계",
+	TimerHatchEggs		= "알 부화"
 })
 
 L:SetOptionLocalization({
+	WarnPhase			= "단계 전환 경고 보기",
+	TimerPhaseChange	= "단계 전환 타이머 보기",
+	TimerHatchEggs		= "알 부화 타이머 보기",
+	InfoFrame			= "용암 마력 정보 프레임 보기"
 })
 
 L:SetMiscLocalization({
+	YellPull		= "I serve a new master now, mortals!",
+	YellPhase2		= "These skies are MINE!",
+	PowerLevel		= "용암 마력"
 })
 
 -------------------
@@ -91,6 +101,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
+	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
 })
 
 L:SetMiscLocalization({
@@ -109,9 +121,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerBladeActive	= "%s",
+	TimerBladeNext		= "다음 칼날"
 })
 
 L:SetOptionLocalization({
+	TimerBladeActive	= "칼날 유지 타이머 보기",
+	TimerBladeNext		= "다음 칼날 타이머 보기"
 })
 
 L:SetMiscLocalization({
