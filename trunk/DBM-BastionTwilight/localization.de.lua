@@ -92,15 +92,15 @@ L:SetMiscLocalization({
 	Quake			= "Der Boden unter Euch grollt unheilvoll...",
 	Thundershock	= "Die Luft beginnt, vor Energie zu knistern...",
 	Switch			= "Genug der Spielereien!",--"Wir kümmern uns um sie!" comes 3 seconds after this one
-	Phase3			= "Beeindruckende Leistung...",--"SCHMECKT DIE VERDAMMNIS!" is about 13 seconds after
+	Phase3			= "Beeindruckende Leistung…",--"SCHMECKT DIE VERDAMMNIS!" is about 13 seconds after; its indeed this special UTF-8 char at end, not "..." (logfiles 4.1.0.14007)
 	Ignacious		= "Ignazius",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Elementiumungeheuer",
-	Kill			= "Unmöglich...",
+	Kill			= "Unmöglich…", -- its indeed this special UTF-8 char at end, not "..." (logfiles 4.1.0.14007)
 	blizzHatesMe	= "Leuchtfeuer & Ableiter auf mir! Aus dem Weg!",
-	PlayerDebuffs	= "Falscher Debuff"
+	WrongDebuff		= "Kein %s"
 })
 
 ----------------
