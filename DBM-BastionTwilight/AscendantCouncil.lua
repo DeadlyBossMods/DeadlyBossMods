@@ -54,7 +54,7 @@ local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic Phase 2 ablity
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665, false)
 local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsMelee())
 local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
-local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509, false)
+local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509)
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660, false)
 local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631, nil, nil, nil, true)
@@ -557,7 +557,9 @@ function mod:SPELL_CAST_START(args)
 			soundGlaciate:Play()
 		end
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
-		specWarnHydroLance:Show()
+		if self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687 then
+			specWarnHydroLance:Show()
+		end
 		timerHydroLanceCD:Show()
 	elseif args:IsSpellID(82699) then
 		warnWaterBomb:Show()
