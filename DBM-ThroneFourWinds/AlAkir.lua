@@ -78,13 +78,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87904) then
 		warnFeedback:Show(args.destName, args.amount or 1)
 		timerFeedback:Cancel()--prevent multiple timers spawning with diff args.
-		if tonumber((select(4, GetBuildInfo()))) >= 40200 then
+		if tonumber((select(4, GetBuildInfo()))) >= 40200 then--since only one spell id in game at all, assume the nerf affects all modes for now until we find out if blizz added a new spellid for normal to be longer than heroic.
 			timerFeedback:Start(30, args.amount or 1)
 		else
 			timerFeedback:Start(20, args.amount or 1)
 		end
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
-		if tonumber((select(4, GetBuildInfo()))) >= 40200 then
+		if tonumber((select(4, GetBuildInfo()))) >= 40200 and mod:IsDifficulty("normal10", "normal25") then--until blizz clarifies more certainty in patch notes lets assume all nerfs are normal mode only.
 			timerAcidRainStack:Start(20)
 		else
 			timerAcidRainStack:Start()
