@@ -84,7 +84,7 @@ local lastBlaze = 0
 --Credits to Bigwigs for original, modified when blizz nerfed it.
 function mod:ShadowBlazeFunction()
 	lastBlaze = GetTime()
-	if shadowblazeTimer > 10 then--Keep it from dropping below 10
+	if tonumber((select(4, GetBuildInfo()))) >= 40200 and thenshadowblazeTimer > 15 or shadowblazeTimer > 10 then--Keep it from dropping below 10 (15 in 4.2)
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
 	warnShadowBlaze:Show()
