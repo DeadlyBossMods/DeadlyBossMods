@@ -31,7 +31,7 @@ local warnNefTailSwipe			= mod:NewAnnounce("NefTailSwipe", 3, 77827, false)--but
 local warnOnyShadowflameBreath	= mod:NewAnnounce("OnyBreath", 3, 94124, mod:IsTank())
 local warnNefShadowflameBreath	= mod:NewAnnounce("NefBreath", 3, 94124, mod:IsTank())
 local warnBlastNova				= mod:NewSpellAnnounce(80734, 3, nil, false)--Can be spammy so now off by default.
-local warnShadowBlaze			= mod:NewSpellAnnounce(94085, 4)--May be quirky
+local warnShadowBlaze			= mod:NewSpellAnnounce(81031, 4)--May be quirky
 local warnCinder				= mod:NewTargetAnnounce(79339, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
@@ -57,7 +57,7 @@ local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank(
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
 local timerCinderCD				= mod:NewCDTimer(22, 79339)--Heroic Ability (Every 22-25 seconds, 25 being most common but we gotta use 22 for timer cause of that small chance it's that).
 local timerDominionCD			= mod:NewNextTimer(15, 79318, nil, not mod:IsTank())
-local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
+local timerShadowBlazeCD		= mod:NewCDTimer(10, 81031)
 
 local berserkTimer				= mod:NewBerserkTimer(630)
 
@@ -240,7 +240,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsPlayer() and args:IsSpellID(81007, 94085, 94086, 94087) and GetTime() - spamShadowblaze > 5 then--Drycodes
+	if args:IsPlayer() and args:IsSpellID(81007, 94085, 94086, 94087) and GetTime() - spamShadowblaze > 5 then
 		specWarnShadowblaze:Show()
 		spamShadowblaze = GetTime()
 	elseif args:GetDestCreatureID() == 41918 and args:IsSrcTypePlayer() and not args:IsSpellID(50288) and self:IsInCombat() then--Any spell damage except for starfall
