@@ -164,7 +164,7 @@ local function checkGrounded()
 	if not UnitDebuff("player", GetSpellInfo(83581)) and not UnitIsDeadOrGhost("player") then
 		specWarnGrounded:Show()
 	end
-	if self.Options.InfoFrame and not infoFrameUpdated then
+	if mod.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(GetSpellInfo(83581)))
 		DBM.InfoFrame:Show(5, "playerdebuff", 83581)
@@ -175,7 +175,7 @@ local function checkSearingWinds()
 	if not UnitDebuff("player", GetSpellInfo(83500)) and not UnitIsDeadOrGhost("player") then
 		specWarnSearingWinds:Show()
 	end
-	if self.Options.InfoFrame and not infoFrameUpdated then
+	if mod.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(GetSpellInfo(83500)))
 		DBM.InfoFrame:Show(5, "playerdebuff", 83500)
