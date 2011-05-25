@@ -84,7 +84,7 @@ local lastBlaze = 0
 --Credits to Bigwigs for original, modified when blizz nerfed it.
 function mod:ShadowBlazeFunction()
 	lastBlaze = GetTime()
-	if tonumber((select(4, GetBuildInfo()))) >= 40200 and thenshadowblazeTimer > 15 or shadowblazeTimer > 10 then--Keep it from dropping below 10 (15 in 4.2 since only one spell id in game at all, assume the nerf affects all modes for now)
+	if tonumber((select(4, GetBuildInfo()))) >= 40200 and thenshadowblazeTimer > 15 and mod:IsDifficulty("normal10", "normal25") or shadowblazeTimer > 10 then--Keep it from dropping below 10 (15 in 4.2 since only one spell id in game at all, assume the nerf affects all modes for now)
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
 	warnShadowBlaze:Show()
