@@ -943,7 +943,7 @@ do
 		if sender and ignore[sender] then return end
 		text = text:sub(1, 16)
 		text = text:gsub("%%t", UnitName("target") or "<no target>")
-		self.Bars:CreateBar(time, text)
+		self.Bars:CreateBar(time, text, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		if broadcast and self:GetRaidRank() >= 1 then
 			sendSync("U", ("%s\t%s"):format(time, text))
 		end
