@@ -132,7 +132,7 @@ local lightningRodTargets = {}
 local gravityCrushTargets = {}
 local lightningRodIcon = 8
 local gravityCrushIcon = 8
-local sendedLowHP = {}
+local sentLowHP = {}
 local warnedLowHP = {}
 local frozenCount = 0
 local lastBeacon = 0
@@ -256,7 +256,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(frozenTargets)
 	table.wipe(lightningRodTargets)
 	table.wipe(gravityCrushTargets)
-	table.wipe(sendedLowHP)
+	table.wipe(sentLowHP)
 	table.wipe(warnedLowHP)
 	lightningRodIcon = 8
 	gravityCrushIcon = 8
@@ -678,8 +678,8 @@ function mod:UNIT_HEALTH(uId)
 	if (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4") and self:IsInCombat() then
 		if UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
 			local cid = self:GetUnitCreatureId(uId)
-			if (cid == 43686 or cid == 43687 or cid == 43688 or cid == 43689) and not sendedLowHP[cid] then
-				sendedLowHP[cid] = true
+			if (cid == 43686 or cid == 43687 or cid == 43688 or cid == 43689) and not sentLowHP[cid] then
+				sentLowHP[cid] = true
 				self:SendSync("lowhealth", UnitName(uId))
 			end
 		end
