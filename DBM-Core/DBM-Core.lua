@@ -3324,7 +3324,9 @@ do
 
 	function yellPrototype:Cancel(...)
 		return unschedule(self.Yell, self.mod, self, ...)
-	end	
+	end
+	
+	yellPrototype.Show = yellPrototype.Yell
 end
 
 ------------------------------
