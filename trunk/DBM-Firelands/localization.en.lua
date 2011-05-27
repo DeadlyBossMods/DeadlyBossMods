@@ -126,7 +126,9 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerBladeActive	= "Show a duration timer for the active blade",
-	TimerBladeNext		= "Show a next timer for blade"
+	TimerBladeNext		= "Show a next timer for blade",
+	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
+	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 "
 })
 
 L:SetMiscLocalization({
