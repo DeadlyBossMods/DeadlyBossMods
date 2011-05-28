@@ -53,11 +53,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(99937) then
 		if args.amount or 0 % 2 == 0 then	-- announce: 1 - 2 - 4 - 6 - 8 stacks
 			warnTears:Show(args.destName, args.amount or 1)
-			timerTears:Start(args.destName)
 		end
 		if args.amount or 0 >= 5 then		-- tank switch @ 5?
 			specWarnTears:Show()
 		end
+		timerTears:Start(args.destName)
 	end
 end
 
