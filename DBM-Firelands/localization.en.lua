@@ -172,7 +172,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\""
+	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
+	RangeFrame		= "Show range frame"
 })
 
 L:SetMiscLocalization({
