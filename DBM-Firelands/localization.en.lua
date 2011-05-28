@@ -140,7 +140,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("FandralStaghelm")
 
 L:SetGeneralLocalization({
-	name = "Majordomo Fandral Staghelm"	-- too long for interface?
+	name = "Majordomo Fandral Staghelm"
 })
 
 L:SetWarningLocalization({
@@ -168,9 +168,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerPhaseSons		= "Sons phase ends"
 })
 
 L:SetOptionLocalization({
+	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\""
 })
 
 L:SetMiscLocalization({
