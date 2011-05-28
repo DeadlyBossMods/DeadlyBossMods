@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_DIED",
-	"UNIT_HEALHT"
+	"UNIT_HEALTH"
 )
 
 local warnHandRagnaros		= mod:NewSpellAnnounce(99237, 3)
@@ -29,8 +29,8 @@ local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- might even be a "next" tim
 local timerSulfurasSmash	= mod:NewCDTimer(40, 98710)		-- might even be a "next" timer
 local timerHandRagnaros		= mod:NewCDTimer(35, 99237)		-- might even be a "next" timer
 local timerWrathRagnaros	= mod:NewCDTimer(25, 98263)		-- 25-35sec variation?
-local timerBurningWound		= mod:NewTargetTimer(20, 99399)
-local timerFlames		= mod:NewCDTimer(60, 99171)		-- Engulfing Flames spell ID?
+local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
+local timerFlames			= mod:NewCDTimer(60, 99171)		-- Engulfing Flames spell ID?
 local timerMoltenSeed 		= mod:NewBuffActiveTimer(10, 98520)	-- spell ID ??
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)		-- spell ID ??  Might even be a "next" timer
 local timerPhaseSons		= mod:NewPhaseSons(45, "TimerPhaseSons")-- lasts 45secs or till all sons are dead
