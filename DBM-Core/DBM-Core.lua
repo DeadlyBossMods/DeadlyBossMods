@@ -3043,6 +3043,19 @@ local function IsDruidTank()
 	return tankTalents >= 3
 end
 
+function bossModPrototype:IsDps()--For features that simply should only be on for dps and not healers or tanks and without me having to use "not is heal or not is tank" rules :)
+	return (class == "WARRIOR" and not IsSpellKnown(93098))--Veangeance Check (false)
+	or (class == "DEATHKNIGHT" and not IsSpellKnown(93099))--Veangeance Check (false)
+	or (class == "PALADIN" and IsSpellKnown(53503))--Sheath of Light (true)
+	or (class == "DRUID" and not (IsSpellKnown(85101) or IsDruidTank()))--Druids suck, have to check 3 tank talents on top of Meditation.
+    or (class == "SHAMAN" and not IsSpellKnown(95862))--Meditation Check (False)
+   	or (class == "PRIEST" and IsSpellKnown(95740))--Shadow Orbs Check (true)
+	or class == "WARLOCK"
+	or class == "MAGE"
+	or class == "HUNTER"
+	or class == "ROGUE"
+end
+
 --A simple check to see if these classes know "Vengeance".
 function bossModPrototype:IsTank()
 	return (class == "WARRIOR" and IsSpellKnown(93098))

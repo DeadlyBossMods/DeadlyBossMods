@@ -23,8 +23,8 @@ mod:RegisterEvents(
 local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
 local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
 local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
-local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3)
-local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3)
+local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3, nil, mod:IsDps())--Warning is disabled on normal mode, it has no use there
+local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3, nil, mod:IsDps())--This one is also disabled on normal.
 local warnFlamingDestruction		= mod:NewSpellAnnounce(81194, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnEmpoweredShadows			= mod:NewSpellAnnounce(81572, 4, nil, mod:IsHealer())
 local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, nil, false)
@@ -37,10 +37,11 @@ local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
 local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 local specWarnEmpoweredShadows		= mod:NewSpecialWarningSpell(81572, mod:IsHealer(), nil, nil, true)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
-local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
-local yellCrash						= mod:NewYell(93178)--Second thought, it occured to me that the crash should never target the adherent tank, so if he yells so what heh. But it is accurate if it targest chogal tank. On for everyone now.
-local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177)--On by default for everyone now.
+local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--^^
+local yellCrash						= mod:NewYell(93178)--^^
+local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177)--On by default cause these things don't get interrupted otherwise.
 local specwarnFury					= mod:NewSpecialWarningTarget(82524, mod:IsTank())
+local specwarnFlamingDestruction	= mod:NewSpecialWarningSpell(81194, mod:IsTank())
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)
 local timerAdherent					= mod:NewCDTimer(92, 81628)
@@ -50,8 +51,10 @@ local timerEmpoweredShadows			= mod:NewBuffActiveTimer(9, 81572, nil, mod:IsHeal
 local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
 local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 local timerSickness					= mod:NewBuffActiveTimer(5, 82235)
-local timerFlamesOrders				= mod:NewNextTimer(25, 81171)
-local timerShadowsOrders			= mod:NewNextTimer(25, 81556)
+local timerFlamesOrders				= mod:NewNextTimer(25, 81171, nil, mod:IsDps())--Orders are when he summons elemental
+local timerShadowsOrders			= mod:NewNextTimer(25, 81556, nil, mod:IsDps())--These are more for dps to switch to them to lower em so useless for normal mode
+local timerFlamingDestructionCD		= mod:NewNextTimer(20, 81194, nil, mod:IsTank() or mod:IsHealer())--Timer for when the special actually goes off (when he absorbs elemental)
+local timerEmpoweredShadowsCD		= mod:NewNextTimer(20, 81572, nil, mod:IsHealer())--^^
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -165,6 +168,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(81194, 93264, 93265, 93266) then
 		warnFlamingDestruction:Show()
+		specwarnFlamingDestruction:Show()
 		timerFlamingDestruction:Start()
 	elseif args:IsSpellID(81572, 93218, 93219, 93220) then
 		warnEmpoweredShadows:Show()
@@ -244,12 +248,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFesterBlood:Cancel()
 		timerFlamesOrders:Cancel()
 		timerShadowsOrders:Cancel()
-	elseif args:IsSpellID(81556) then--87575?
-		warnShadowOrders:Show()
-		timerFlamesOrders:Start()--always 25 seconds after shadows orders, regardless of phase.
-	elseif args:IsSpellID(81171) then--87579?
-		warnFlameOrders:Show()
-		timerShadowsOrders:Start(shadowOrdersCD)--15 seconds after a flame order above 85%, 25 seconds after a flame orders below 85%
+	elseif args:IsSpellID(81556) then--Shadow's Orders
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			warnShadowOrders:Show()--No reason to do this warning on normal, nothing spawns so nothing you can do about it.
+			timerEmpoweredShadowsCD:Start()--Time til he actually absorbs elemental and gains it's effects
+			timerFlamesOrders:Start()--always 25 seconds after shadows orders, regardless of phase.
+		else
+			timerEmpoweredShadowsCD:Start(10.8)--Half the time on normal since you don't actually have to kill elementals plus the only thing worth showing on normal.
+		end
+	elseif args:IsSpellID(81171) then--Flame's Orders
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			warnFlameOrders:Show()--No reason to do this warning on normal, nothing spawns so nothing you can do about it.
+			timerFlamingDestructionCD:Start()--Time til he actually absorbs elemental and gains it's effects
+			timerShadowsOrders:Start(shadowOrdersCD)--15 seconds after a flame order above 85%, 25 seconds after a flame orders below 85%
+		else
+			timerFlamingDestructionCD:Start(10.8)--Half the time on normal since you don't actually have to kill elementals plus the only thing worth showing on normal.
+		end
 	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then--Check if added to boss health
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)--And add if not.
