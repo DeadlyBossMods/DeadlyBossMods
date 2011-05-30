@@ -77,7 +77,6 @@ local function resetPlayerOrbStatus(resetWarning)
 	playerIsOrb = nil
 end
 
---[[
 local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
@@ -90,10 +89,10 @@ local function isTank(unit)
 		return true
 	end
 	if UnitIsUnit("boss1target", unit) then return true end
-	if UnitHealthMax(unit) >= 165000 then return true end
+	if UnitHealthMax(unit) >= 180000 then return true end
 --	if tanks[UnitName(unit)] then return true end
 	return false
-end--]]
+end
 
 local function showOrbWarning(source)
 	table.wipe(orbList)
@@ -103,8 +102,7 @@ local function showOrbWarning(source)
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
-		if UnitThreatSituation(n) == 3 and UnitHealthMax("raid"..i) <= 180000 then--Much simpler, no istank function, no target scanning no nothing. Just clean health check
---		if UnitThreatSituation(n) == 3 and not isTank(n) then
+		if UnitThreatSituation(n) == 3 and not isTank(n) then
 			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
 		end
