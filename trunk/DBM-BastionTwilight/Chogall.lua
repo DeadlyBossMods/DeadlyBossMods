@@ -68,7 +68,7 @@ local worshipTargets = {}
 local prewarned_Phase2 = false
 local firstFury = false
 local worshipIcon = 8
-local worshipCooldown = 21
+local worshipCooldown = 20.5
 local shadowOrdersCD = 15
 local blazeSpam = 0
 local sickSpam = 0
@@ -131,7 +131,7 @@ function mod:OnCombatStart(delay)
 	prewarned_Phase2 = false
 	firstFury = false
 	worshipIcon = 8
-	worshipCooldown = 21
+	worshipCooldown = 20.5
 	shadowOrdersCD = 15
 	blazeSpam = 0
 	sickSpam = 0
