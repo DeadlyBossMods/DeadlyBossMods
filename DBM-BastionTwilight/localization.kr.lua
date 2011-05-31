@@ -78,7 +78,7 @@ L:SetOptionLocalization({
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
 	yellScrewed				= "$spell:83099와 $spell:92307의 영향을 동시에 받을경우 외치기",
-	InfoFrame				= "$spell:83581 또는 $spell:83500 디버프에 대한 정보 프레임 보기",
+	InfoFrame				= "$spell:83581 또는 $spell:83500 디버프 없음에 대한 정보 프레임 보기",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
