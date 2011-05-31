@@ -607,7 +607,7 @@ L:SetOptionLocalization{
 	WarnNormalSoon	= "인간 형상 사전 경고 보기(soon)",
 	TimerBear		= "다음 곰 형상 타이머 보기",
 	TimerNormal		= "다음 인간 형상 타이머 보기",
-	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기"
+	InfoFrame		= "$spell:42402 디버프 없음에 대한 정보 프레임 보기"
 }
 
 L:SetMiscLocalization{
@@ -735,7 +735,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "형상 변환 타이머 보기",
-	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기",
+	InfoFrame		= "$spell:42402 디버프 없음에 대한 정보 프레임 보기",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
@@ -814,12 +814,12 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnToxic	= "$spell:96328 디버프가 없을 경우 특수 경고 보기",
-	InfoFrame		= "$spell:96328 디버프에 대한 정보 프레임 보기",
+	InfoFrame		= "$spell:96328 디버프 없음에 대한 정보 프레임 보기",
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "맹독성 고문 없음"
+	PlayerDebuffs	= "고문의 독액 없음"
 }
 
 ----------------------------
@@ -865,5 +865,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill	= "안 돼... 안 돼!!!" -- temporarily
+	Kill	= "너는 넘어서는 안 될 선을 넘었다. 진도. 감당하지도 못할 힘으로 장난을 치다니. 너는 내가 누군지 잊었느냐? 너는 내가 가진 힘을 잊었느냐?!"
 }
