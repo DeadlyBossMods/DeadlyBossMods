@@ -6,6 +6,9 @@ mod:SetCreatureID(43686, 43687, 43688, 43689, 43735)
 mod:SetModelID(35064)
 mod:SetZone()
 mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
+mod:SetModelSound("Sound\\Creature\\Chogall\\VO_BT_Chogall_BotEvent14.wav", "Sound\\Creature\\Terrastra\\VO_BT_Terrastra_Event02.wav")
+--Long: Brothers of Twilight! The Hammer calls to you! Fire, water, earth, air! Leave your mortal shell behind! Fire, water, earth, air! Embrace your new forms, for here and ever after... Burn and drown and crush and sufficate!...and use your gifts to destroy the unbelievers! Burn and drown and crush and sufficate!
+--Short: We will handle them!
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Kill)
