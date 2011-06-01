@@ -4210,6 +4210,11 @@ function bossModPrototype:SetModelID(id)
 	self.modelId = id
 end
 
+function bossModPrototype:SetModelSound(long, short)--PlaySoundFile prototype for model viewer, long is long sound, short is a short clip, configurable in UI, both sound paths defined in boss mods.
+	self.modelSoundLong = long
+	self.modelSoundShort = short
+end
+
 function bossModPrototype:EnableModel()
 	self.modelEnabled = true
 end
