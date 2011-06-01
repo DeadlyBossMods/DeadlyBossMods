@@ -343,7 +343,11 @@ function mod:SPELL_CAST_START(args)
 		timerNefAbilityCD:Start()
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79710, 91540, 91541, 91542) then
-		specWarnAnnihilator:Show()
+		if mod:IsTank() and self:GetUnitCreatureId("target") == 42166 then--Only warn if you are teh tank that happens to be tanking him.
+			specWarnAnnihilator:Show()
+		else
+			specWarnAnnihilator:Show()--Warn ergardless if he's your target or not if you aren't a tank since warning is off by default you probably enabled it for a reason.
+		end
 	end
 end
 
