@@ -65,7 +65,7 @@ local specWarnGrip				= mod:NewSpecialWarningSpell(91849, nil, nil, nil, true)--
 --Arcanotron
 local specWarnConversion		= mod:NewSpecialWarningSpell(79729, not mod:IsHealer())
 local specWarnGenerator			= mod:NewSpecialWarning("specWarnGenerator", mod:IsTank())
-local specWarnAnnihilator		= mod:NewSpecialWarningInterrupt(91542, false)
+local specWarnAnnihilator		= mod:NewSpecialWarningInterrupt(91542, mod:IsMelee())--On by default for melee now that there is a smart filterin place on whether or not they should be warned.
 local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
 --All
 local specWarnActivated			= mod:NewSpecialWarning("SpecWarnActivated", not mod:IsHealer())--Good for target switches, but healers probably don't want an extra special warning for it.
@@ -343,10 +343,10 @@ function mod:SPELL_CAST_START(args)
 		timerNefAbilityCD:Start()
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79710, 91540, 91541, 91542) then
-		if mod:IsTank() and self:GetUnitCreatureId("target") == 42166 then--Only warn if you are teh tank that happens to be tanking him.
+		if self:IsMelee() and (self:GetUnitCreatureId("target") == 42166 or self:GetUnitCreatureId("focus") == 42166) then--Only warn for melee targeting him or exclicidly put him on focus.
 			specWarnAnnihilator:Show()
-		else
-			specWarnAnnihilator:Show()--Warn ergardless if he's your target or not if you aren't a tank since warning is off by default you probably enabled it for a reason.
+		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
+			specWarnAnnihilator:Show()
 		end
 	end
 end

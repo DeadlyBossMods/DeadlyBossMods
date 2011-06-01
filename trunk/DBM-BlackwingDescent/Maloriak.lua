@@ -19,6 +19,10 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
+local isDispeller = select(2, UnitClass("player")) == "MAGE"
+	    		 or select(2, UnitClass("player")) == "PRIEST"
+	    		 or select(2, UnitClass("player")) == "SHAMAN"
+
 local warnPhase					= mod:NewAnnounce("WarnPhase", 2)
 local warnReleaseAdds			= mod:NewSpellAnnounce(77569, 3)
 local warnRemainingAdds			= mod:NewAnnounce("WarnRemainingAdds", 2, 77569)
@@ -48,11 +52,11 @@ local timerEngulfingDarknessCD	= mod:NewNextTimer(12, 92754, nil, mod:IsHealer()
 local specWarnBitingChill		= mod:NewSpecialWarningYou(77760)
 local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 local specWarnSludge			= mod:NewSpecialWarningMove(92987)
-local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896)
+local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896, mod:IsMelee())
 local specWarnMagmaJets			= mod:NewSpecialWarningMove(78194, mod:IsTank())
 local specWarnEngulfingDarkness	= mod:NewSpecialWarningSpell(92754, mod:IsHealer() or mod:IsTank())--Heroic Ability
 local specWarnFlashFreeze		= mod:NewSpecialWarningTarget(77699, mod:IsRanged())--On Heroic it has a lot more health.
-local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
+local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, isDispeller)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
 
 local berserkTimer				= mod:NewBerserkTimer(420)
@@ -188,7 +192,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77569) then
 		warnReleaseAdds:Show()
-		specWarnAdds:Show()
+		specWarnAdds:Show()--Special case that does not use standardized melee/ranged check do to fact this one usually has very specific assignments and may have a melee assigned that has to be warned regardless of target.
 		timerAddsCD:Start()
 		if adds >= 3 then--only schedule it if there actually are adds left.
 			self:Schedule(3, InterruptCheck)
@@ -212,7 +216,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
 		timerArcaneStormCD:Start()
-		if self:GetUnitCreatureId("target") == 41378 or self:GetUnitCreatureId("focus") == 41378 then
+		if self:IsMelee() and (self:GetUnitCreatureId("target") == 41378 or self:GetUnitCreatureId("focus") == 41378) then--Only warn for melee targeting him or exclicidly put him on focus.
+			specWarnArcaneStorm:Show()
+		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
 			specWarnArcaneStorm:Show()
 		end
 	elseif args:IsSpellID(78194) then
