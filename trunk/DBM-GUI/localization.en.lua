@@ -55,6 +55,10 @@ L.UseMasterVolume			= "Use Master audio channel to play sound files. (4.0.6+)"
 L.SKT_Enabled				= "Always show speed kill timer (Overrides boss-specific option)"
 L.Latency_Text				= "Set max latency sync threshold: %d"
 
+L.ModelSoundOptions			= "Set sound option for model viewer"
+L.ModelSoundShort			= "Short"
+L.ModelSoundLong			= "Long"
+
 L.Button_RangeFrame			= "Show/hide range frame"
 L.Button_TestBars			= "Start test bars"
 

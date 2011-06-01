@@ -60,6 +60,7 @@ DBM.DefaultOptions = {
 	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.wav",
 	SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.wav",
 	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav",
+	ModelSoundValue = "Short",
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,

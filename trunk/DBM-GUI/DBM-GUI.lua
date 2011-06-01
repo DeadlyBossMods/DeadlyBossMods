@@ -1199,7 +1199,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 240, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 275, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1217,9 +1217,21 @@ local function CreateOptionsMenu()
 			self:SetChecked( DBM.Options.ShowMinimapButton )
 		end)
 		generaloptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
-	
+
+		local modelSounds = {
+			{	text	= L.NoSound,			value	= "" },
+			{	text	= L.ModelSoundShort,	value 	= "Short"},
+			{	text	= L.ModelSoundLong,		value 	= "Long"},
+		}
+		local ModelSoundDropDown = generaloptions:CreateDropdown(L.ModelSoundOptions, modelSounds, 
+		DBM.Options.ModelSoundValue, function(value) 
+			DBM.Options.ModelSoundValue = value
+		end
+		)
+		ModelSoundDropDown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -170)
+
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -55)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -95)
 		bmrange:SetScript("OnClick", function(self) 
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
