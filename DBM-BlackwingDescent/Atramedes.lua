@@ -35,8 +35,8 @@ local specWarnSonarPulse	= mod:NewSpecialWarningSpell(92411, false, nil, nil, tr
 local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 local specWarnPestered		= mod:NewSpecialWarningYou(92685)
 local yellPestered			= mod:NewYell(92685, L.YellPestered)
-local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92702, false)
-local specWarnAddTargetable	= mod:NewSpecialWarning("specWarnAddTargetable", false)
+local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92702, mod:IsMelee())
+local specWarnAddTargetable	= mod:NewSpecialWarning("specWarnAddTargetable", mod:IsRanged())
 
 local timerSonarPulseCD		= mod:NewCDTimer(10, 92411)
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
@@ -111,7 +111,11 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(92677, 92702) then
 		warnObnoxious:Show()
-		specWarnObnoxious:Show()
+		if self:IsMelee() and (self:GetUnitCreatureId("target") == 49740 or self:GetUnitCreatureId("focus") == 49740) then--Only warn for melee targeting him or exclicidly put him on focus.
+			specWarnObnoxious:Show()
+		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
+			specWarnObnoxious:Show()
+		end
 	end
 end
 
