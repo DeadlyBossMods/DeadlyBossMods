@@ -216,11 +216,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
 		timerArcaneStormCD:Start()
-		if self:IsMelee() and (self:GetUnitCreatureId("target") == 41378 or self:GetUnitCreatureId("focus") == 41378) then--Only warn for melee targeting him or exclicidly put him on focus.
-			specWarnArcaneStorm:Show()
-		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
-			specWarnArcaneStorm:Show()
-		end
+		specWarnArcaneStorm:Show()
 	elseif args:IsSpellID(78194) then
 		warnMagmaJets:Show()
 		if mod:IsDifficulty("heroic10", "heroic25") then
