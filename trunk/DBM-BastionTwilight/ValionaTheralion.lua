@@ -6,6 +6,9 @@ mod:SetCreatureID(45992, 45993)
 mod:SetModelID(34812)
 mod:SetZone()
 mod:SetUsedIcons(6, 7, 8)
+mod:SetModelSound("Sound\\Creature\\Chogall\\VO_BT_Chogall_BotEvent10.wav", "Sound\\Creature\\Valiona\\VO_BT_Valiona_Event06.wav")
+--Long: Valiona, Theralion put them in their place!
+--Short: Enter twilight!
 
 mod:RegisterCombat("combat")
 

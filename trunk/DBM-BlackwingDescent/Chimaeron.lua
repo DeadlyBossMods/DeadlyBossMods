@@ -6,6 +6,9 @@ mod:SetCreatureID(43296)
 mod:SetModelID(33308)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetModelSound("Sound\\Creature\\Nefarian\\VO_BD_Nefarian_ChimaronIntro01.wav", nil)
+--Long: Ah, Chimaeron, truly a living testament to my scientific prowess. I reworked and twisted his form countless times over the years, and the final result is truly something to behold.
+--Short: There isn't one
 
 mod:RegisterCombat("combat")
 

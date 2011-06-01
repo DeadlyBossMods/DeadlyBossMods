@@ -5,6 +5,9 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(44600)
 mod:SetModelID(34816)
 mod:SetZone()
+mod:SetModelSound("Sound\\Creature\\Chogall\\VO_BT_Chogall_BotEvent02.wav", "Sound\\Creature\\Halfus\\VO_BT_Halfus_Event07.wav")
+--Long: Halfus! Hear me! The master calls, the master wants! Protect our secrets, Halfus! Destroy the intruders! Murder for his glory, murder for his hunger!
+--Short: Dragons to my side!
 
 mod:RegisterCombat("combat")
 

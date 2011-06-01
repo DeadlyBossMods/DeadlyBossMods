@@ -6,6 +6,9 @@ mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetModelID(32688)
 mod:SetZone()
 mod:SetUsedIcons(1, 3, 6, 7, 8)
+mod:SetModelSound("Sound\\Creature\\Nefarian\\VO_BD_Nefarian_OmnitronIntro01.wav", "Sound\\Creature\\Council\\VO_BD_Council_Event01.wav")
+--Long: Hmm, the Omnotron Defense System. Centuries ago, these constructs were considered the dwarves greatest tactical achievements. With so many counters to each construct's attacks, I'll have to rectify these designs for them to provide me ANY entertainment!
+--Short: Intruders detected. Primary defense matrix initiated.
 
 mod:RegisterCombat("combat")
 
