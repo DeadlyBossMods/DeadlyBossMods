@@ -48,6 +48,7 @@ local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
 local specWarnDominion			= mod:NewSpecialWarningYou(79318)
 local specWarnStolenPower		= mod:NewSpecialWarningStack(80627, nil, 150)
 local specWarnCinder			= mod:NewSpecialWarningYou(79339)
+local specWarnCinderMove		= mod:NewSpecialWarningMove(79339, false)
 local yellCinder				= mod:NewYell(79339)
 
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
@@ -180,7 +181,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			playerDebuffed = true
 			specWarnCinder:Show()
-			soundCinder:Play()
+			specWarnCinderMove:Schedule(3)
+			soundCinder:Schedule(3)	-- no need to move as soon as the debuff is applied
 			yellCinder:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
