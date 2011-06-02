@@ -116,7 +116,7 @@ function mod:SPELL_CAST_START(args)
 		warnObnoxious:Show()
 		if self:IsMelee() and (self:GetUnitCreatureId("target") == 49740 or self:GetUnitCreatureId("focus") == 49740) then--Only warn for melee targeting him or exclicidly put him on focus.
 			specWarnObnoxious:Show()
-		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
+		elseif not self:IsMelee() then--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
 			specWarnObnoxious:Show()
 		end
 	end
