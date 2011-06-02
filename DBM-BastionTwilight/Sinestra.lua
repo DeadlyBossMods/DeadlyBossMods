@@ -6,7 +6,7 @@ mod:SetCreatureID(45213)
 mod:SetModelID(34335)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
-mod:SetModelSound("Sound\\Creature\\Sinestra\\VO_BT_Sinestra_Aggro01.wav", "Sound\\Sinestra\\VO_BT_Sinestra_Kill02.wav")
+mod:SetModelSound("Sound\\Creature\\Sinestra\\VO_BT_Sinestra_Aggro01.wav", "Sound\\Creature\\Sinestra\\VO_BT_Sinestra_Kill02.wav")
 --Long: We were fools to entrust an imbecile like Cho'gall with such a sacred duty! I will deal with you intruders myself!
 --Short: Powerless....
 
