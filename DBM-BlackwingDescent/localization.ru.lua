@@ -192,7 +192,7 @@ L:SetWarningLocalization({
 	NefTailSwipe		= "Удар хвостом (Нефариан)",
 	OnyBreath			= "Дыхание темного огня (Ониксия)",
 	NefBreath			= "Дыхание темного огня (Нефариан)",
-	specWarnShadowblazeSoon	= "Скоро Пламя тени (~5с)"
+	specWarnShadowblazeSoon	= "%s"
 })
 
 L:SetTimerLocalization({
@@ -227,7 +227,9 @@ L:SetMiscLocalization({
 	YellPhase3			= "Я пытался следовать законам гостеприимства, но вы всё никак не умрете!",
 	Nefarian			= "Нефариан",
 	Onyxia				= "Ониксия",
-	Charge				= "Электрический заряд"
+	Charge				= "Электрический заряд",
+	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeEstimate		= "Скоро Пламя тени (~5с)"
 })
 
 --------------

@@ -193,7 +193,7 @@ L:SetWarningLocalization({
 	NefTailSwipe		= "Latigazo de cola (Nefarian)",
 	OnyBreath			= "Aliento (Onyxia)",
 	NefBreath			= "Aliento (Nefarian)",
-	specWarnShadowblazeSoon	= "Llamarada de las Sombras pronto (~5s)"
+	specWarnShadowblazeSoon	= "%s"
 })
 
 L:SetTimerLocalization({
@@ -230,7 +230,9 @@ L:SetMiscLocalization({
 	YellShadowBlaze	= "¡La llama de las sombras los reanima! ¡Luchan a mis órdenes!",--translate?
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
-	Charge			= "Carga Eléctrica"
+	Charge			= "Carga Eléctrica",
+	ShadowBlazeExact	= "Shadowblaze in %ds",
+	ShadowBlazeEstimate	= "Llamarada de las Sombras pronto (~5s)"
 })
 
 --------------

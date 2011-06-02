@@ -191,7 +191,7 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "꼬리 채찍 (네파리안)",
 	OnyBreath				= "암흑불길 숨결 (오닉시아)",
 	NefBreath				= "암흑불길 숨결 (네파리안)",
-	specWarnShadowblazeSoon	= "곧 암흑 화로 (~5초 전)!"
+	specWarnShadowblazeSoon	= "%s"
 })
 
 L:SetTimerLocalization({
@@ -228,7 +228,9 @@ L:SetMiscLocalization({
 	YellShadowBlaze		= "살을 재로 만들어 주마!",
 	Nefarian			= "네파리안",
 	Onyxia				= "오닉시아",
-	Charge				= "전하 충전"
+	Charge				= "전하 충전",
+	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeEstimate		= "곧 암흑 화로 (~5초 전)!"
 })
 
 --------------

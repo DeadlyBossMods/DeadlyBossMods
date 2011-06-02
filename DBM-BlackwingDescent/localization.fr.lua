@@ -205,5 +205,7 @@ L:SetMiscLocalization({
 	NefAoe			= "L'air craque sous l'électricité !", -- à vérifier 
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
 	YellPhase3			= "J'ai tout fait pour être un hôte accomodant, mais vous ne daignez pas mourir ! Oublions les bonnes manières et passons aux choses sérieuses... VOUS TUER TOUS !",
-	Onyxia				= "Onyxia"
+	Onyxia				= "Onyxia",
+	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeEstimate		= "Shadowblaze soon (~5s)"
 })
