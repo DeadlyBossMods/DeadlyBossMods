@@ -544,7 +544,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		hideShieldHealthBar()
 		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686) then--Only warn for melee targeting him or exclicidly put him on focus.
 			specWarnRisingFlames:Show()
-		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default you probably enabled it for a reason and have more luxury to switch targets then melee does.
+		elseif not self:IsMelee() then--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default you probably enabled it for a reason and have more luxury to switch targets then melee does.
 			specWarnRisingFlames:Show()
 		end
 --[[	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin Removed
@@ -564,7 +564,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
 		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687) then--Only warn for melee targeting him or exclicidly put him on focus.
 			specWarnHydroLance:Show()
-		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
+		elseif not self:IsMelee() then--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
 			specWarnHydroLance:Show()
 		end
 		timerHydroLanceCD:Show()
