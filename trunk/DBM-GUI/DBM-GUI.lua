@@ -983,15 +983,15 @@ function UpdateAnimationFrame(mod)
 	DBM_BossPreview:SetSequence(4)
 	if DBM.Options.ModelSoundValue == "Short" then
 		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(mod.modelSoundShort, "Master")
+			PlaySoundFile(mod.modelSoundShort or 0, "Master")
 		else
-			PlaySoundFile(mod.modelSoundShort)
+			PlaySoundFile(mod.modelSoundShort or 0)
 		end
 	elseif DBM.Options.ModelSoundValue == "Long" then
 		if DBM.Options.UseMasterVolume then
-			PlaySoundFile(mod.modelSoundLong, "Master")
+			PlaySoundFile(mod.modelSoundLong or 0, "Master")
 		else
-			PlaySoundFile(mod.modelSoundLong)
+			PlaySoundFile(mod.modelSoundLong or 0)
 		end
 	end
 
