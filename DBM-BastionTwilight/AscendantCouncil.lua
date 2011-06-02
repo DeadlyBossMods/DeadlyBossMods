@@ -542,10 +542,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then	-- Shield Removed
 		self:Unschedule(hideShieldHealthBar)
 		hideShieldHealthBar()
-		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686) then--Only warn for melee targeting him or exclicidly put him on focus.
-			specWarnRisingFlames:Show()
-		elseif not self:IsMelee() then--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default you probably enabled it for a reason and have more luxury to switch targets then melee does.
-			specWarnRisingFlames:Show()
+		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686) or not self:IsMelee() then
+			specWarnRisingFlames:Show()--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
 		end
 --[[	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin Removed
 		self:Unschedule(hideShieldHealthBar)
@@ -562,10 +560,8 @@ function mod:SPELL_CAST_START(args)
 			soundGlaciate:Play()
 		end
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
-		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687) then--Only warn for melee targeting him or exclicidly put him on focus.
-			specWarnHydroLance:Show()
-		elseif not self:IsMelee() then--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
-			specWarnHydroLance:Show()
+		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687) or not self:IsMelee() then
+			specWarnHydroLance:Show()--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
 		end
 		timerHydroLanceCD:Show()
 	elseif args:IsSpellID(82699) then
