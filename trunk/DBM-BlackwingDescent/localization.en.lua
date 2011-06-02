@@ -229,8 +229,8 @@ L:SetMiscLocalization({
 	Nefarian				= "Nefarian",
 	Onyxia					= "Onyxia",
 	Charge					= "Electric Charge",
-	ShadowBlazeExact		= "Shadowblaze in %ds",
-	ShadowBlazeEstimate		= "Shadowblaze soon (~5s)"
+	ShadowBlazeExact		= "Shadowblaze Spark in %ds",
+	ShadowBlazeEstimate		= "Shadowblaze Spark soon (~5s)"
 })
 
 --------------
