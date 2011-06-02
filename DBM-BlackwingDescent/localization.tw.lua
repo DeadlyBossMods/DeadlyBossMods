@@ -194,7 +194,7 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "尾部鞭擊 (奈法利安)",
 	OnyBreath			= "暗影焰息 (奧妮克希亞)",
 	NefBreath			= "暗影焰息 (奈法利安)",
-	specWarnShadowblazeSoon		= "暗影炎 即將到來 (~5秒)"
+	specWarnShadowblazeSoon		= "%s"
 })
 
 L:SetTimerLocalization({
@@ -228,7 +228,9 @@ L:SetMiscLocalization({
 	YellShadowBlaze			= "化為灰燼吧!",
 	Nefarian			= "奈法利安",
 	Onyxia				= "奧妮克希亞",
-	Charge				= "電流充能"
+	Charge				= "電流充能",
+	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeEstimate		= "暗影炎 即將到來 (~5秒)"
 })
 
 --------------
