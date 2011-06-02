@@ -190,7 +190,7 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "Tail Lash (Nefarian)",
 	OnyBreath				= "Breath (Onyxia)",
 	NefBreath				= "Breath (Nefarian)",
-	specWarnShadowblazeSoon	= "Shadowblaze Soon (~5s)"
+	specWarnShadowblazeSoon	= "%s"
 })
 
 L:SetTimerLocalization({
@@ -227,7 +227,9 @@ L:SetMiscLocalization({
 	YellShadowBlaze			= "Flesh turns to ash!",
 	Nefarian				= "Nefarian",
 	Onyxia					= "Onyxia",
-	Charge					= "Electric Charge"
+	Charge					= "Electric Charge",
+	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeEstimate		= "Shadowblaze soon (~5s)"
 })
 
 --------------

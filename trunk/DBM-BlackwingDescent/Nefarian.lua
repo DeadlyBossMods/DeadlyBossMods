@@ -85,6 +85,7 @@ local playerDebuffs = 0
 local cinderTargets	= {}
 local dominionTargets = {}
 local lastBlaze = 0
+local shadowBlazeSynced = false
 
 --Credits to Bigwigs for original, modified when blizz nerfed it.
 function mod:ShadowBlazeFunction()
@@ -93,7 +94,15 @@ function mod:ShadowBlazeFunction()
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
 	warnShadowBlaze:Show()
-	specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Pre warning 5 seconds prior
+	if not shadowBlazeSynced then
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeEstimate)--Pre warning 5 seconds prior
+	else
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 2, L.ShadowBlazeExact:format(2))
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 1, L.ShadowBlazeExact:format(1))
+	end
 	timerShadowBlazeCD:Start(shadowblazeTimer)
 	self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")
 end
@@ -118,6 +127,7 @@ end
 
 function mod:OnCombatStart(delay)
 	spamShadowblaze = 0
+	shadowBlazeSynced = false
 	spamLightningDischarge = 0
 	shadowblazeTimer = 35
 	playerDebuffed = false
@@ -291,6 +301,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerShadowBlazeCD:Start(12)--Seems to vary some, 12 should be a happy medium, it can be off 1-2 seconds though.
 		self:ScheduleMethod(12, "ShadowBlazeFunction")
 	elseif msg == L.YellShadowBlaze or msg:find(L.YellShadowBlaze) then--He only does this sometimes, it's not a trigger to replace loop, more so to correct it.
+--		shadowBlazeSynced = true
 		self:UnscheduleMethod("ShadowBlazeFunction")--Unschedule any running stuff
 		specWarnShadowblazeSoon:Cancel()
 		if GetTime() - lastBlaze <= 3 then--The blaze timer is too fast, since the actual cast happened immediately after the method ran. So reschedule functions using last timing which should be right just a little fast. :)

@@ -191,7 +191,7 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "Schwanzpeitscher (Nefarian)",
 	OnyBreath				= "Atem (Onyxia)",
 	NefBreath				= "Atem (Nefarian)",
-	specWarnShadowblazeSoon	= "Schattensengen bald  (~5s)"
+	specWarnShadowblazeSoon	= "%s"
 })
 
 L:SetTimerLocalization({
@@ -228,7 +228,9 @@ L:SetMiscLocalization({
 	YellShadowBlaze			= "Fleisch wird zu Asche!", --needs to be verified (video-captured translation)
 	Nefarian				= "Nefarian",
 	Onyxia					= "Onyxia",
-	Charge					= "Elektrische Aufladung"
+	Charge					= "Elektrische Aufladung",
+	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeEstimate		= "Schattensengen bald  (~5s)"
 })
 
 --------------
