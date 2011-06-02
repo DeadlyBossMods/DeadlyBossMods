@@ -69,7 +69,6 @@ local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
 
---mod:AddBoolOption("FixShadowblaze", true, "timer")--On by default, i cannot verify flesh turns to ash yell being anything other then shadowblaze, but i'll leave option for now. eventually i'll just remove option and make it part of function.
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("HealthFrame", false)
