@@ -190,7 +190,8 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "Tail Lash (Nefarian)",
 	OnyBreath				= "Breath (Onyxia)",
 	NefBreath				= "Breath (Nefarian)",
-	specWarnShadowblazeSoon	= "%s"
+	specWarnShadowblazeSoon	= "%s",
+	warnShadowblazeSoon		= "%s"
 })
 
 L:SetTimerLocalization({
