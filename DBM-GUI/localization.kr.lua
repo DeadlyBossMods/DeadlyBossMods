@@ -56,6 +56,10 @@ L.UseMasterVolume		= "기본 오디오 채널로 소리 재생(4.0.6+)"
 L.SKT_Enabled			= "각 보스 설정에서 끈 상태라도 항상 빠르게 죽인 타이머 보기(강제)"
 L.Latency_Text			= "동기화를 사용 할 최대 지연시간 설정 : %d"
 
+L.ModelSoundOptions		= "각 보스 설정에서 사용할 보스 음성 선택"
+L.ModelSoundShort		= "짧은 음성"
+L.ModelSoundLong		= "긴 음성"
+
 L.Button_RangeFrame		= "거리 프레임 켜기/끄기"
 L.Button_TestBars		= "테스트 바 시작"
 

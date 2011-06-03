@@ -3151,8 +3151,56 @@ do
 		end
 	end
 
+	function announcePrototype:Show2(...) -- temp added. prevent double sound using countdown.
+		if not self.option or self.mod.Options[self.option] then
+			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumPartyMembers() >= 1)) then
+				local message = pformat(self.text, ...)
+				message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
+				SendChatMessage(("*** %s ***"):format(message), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
+			end
+			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
+			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
+			local text = ("%s%s%s|r%s"):format(
+				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
+				colorCode,
+				pformat(self.text, ...),
+				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
+			)
+			if not cachedColorFunctions[self.color] then
+				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
+				cachedColorFunctions[color] = function(cap)
+					cap = cap:sub(2, -2)
+					if DBM:GetRaidClass(cap) then
+						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or color
+						cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
+					end
+					return cap
+				end
+			end
+			text = text:gsub(">.-<", cachedColorFunctions[self.color])
+			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this (this would save some of the WTFs))
+			if DBM.Options.ShowWarningsInChat then
+				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
+				if DBM.Options.ShowFakedRaidWarnings then
+					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
+						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
+						if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
+							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 99, "")
+						end
+					end
+				else
+					self.mod:AddMsg(text, nil)
+				end
+			end
+		end
+	end
+
 	function announcePrototype:Schedule(t, ...)
 		return schedule(t, self.Show, self.mod, self, ...)
+	end
+
+	function announcePrototype:Schedule2(t, ...)
+		return schedule(t, self.Show2, self.mod, self, ...)
 	end
 
 	function announcePrototype:Cancel(...)
@@ -3311,7 +3359,7 @@ do
 
 	function countdownProtoType:Start(timer)
 		timer = timer or self.timer or 10
-		timer = timer <= 10 and self.timer or timer
+		timer = timer <= 5 and self.timer or timer
 		self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\5.mp3")
 		self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\4.mp3")
 		self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\3.mp3")

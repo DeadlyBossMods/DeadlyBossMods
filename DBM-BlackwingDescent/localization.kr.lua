@@ -191,7 +191,8 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "꼬리 채찍 (네파리안)",
 	OnyBreath				= "암흑불길 숨결 (오닉시아)",
 	NefBreath				= "암흑불길 숨결 (네파리안)",
-	specWarnShadowblazeSoon	= "%s"
+	specWarnShadowblazeSoon	= "%s",
+	warnShadowblazeSoon		= "%s"
 })
 
 L:SetTimerLocalization({
@@ -207,7 +208,9 @@ L:SetOptionLocalization({
 	NefTailSwipe			= "네파리안의 $spell:77827 경고 보기",
 	OnyBreath				= "오닉시아의 $spell:94124 경고 보기",
 	NefBreath				= "네파리안의 $spell:94124 경고 보기",
-	specWarnShadowblazeSoon	= "$spell:94085의 사전 특수 경고 보기 (~5초 전)",
+	specWarnCinderMove		= "$spell:79339의 이동 알림 특수 경고 보기 (폭발 5초 전)",
+	warnShadowblazeSoon		= "$spell:81031의 사전 카운트다운 보기 (~5초 전)\n(정확성을 위해 동기화 후에만 작동됨)",
+	specWarnShadowblazeSoon	= "$spell:81031의 사전 특수 경고 보기\n(처음에는 5초 전에 알림. 동기화 후에는 1초 전에 알림)",
 	timerNefLanding			= "네파리안 착지 타이머 보기",
 	OnySwipeTimer			= "오닉시아의 $spell:77827 쿨다운 타이머 보기",
 	NefSwipeTimer			= "네파리안의 $spell:77827 쿨다운 타이머 보기",
@@ -229,8 +232,8 @@ L:SetMiscLocalization({
 	Nefarian			= "네파리안",
 	Onyxia				= "오닉시아",
 	Charge				= "전하 충전",
-	ShadowBlazeExact		= "Shadowblaze in %ds",
-	ShadowBlazeEstimate		= "곧 암흑 화로 (~5초 전)!"
+	ShadowBlazeExact	= "%d초 후 암흑 불길 불꽃!",
+	ShadowBlazeEstimate	= "약 5초 후 암흑 불길 불꽃!"
 })
 
 --------------
