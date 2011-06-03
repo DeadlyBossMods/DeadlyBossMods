@@ -114,11 +114,6 @@ local function showOrbWarning(source)
 	end
 
 	if playerIsOrb then specWarnOrbOnYou:Show() end
-	if not playerIsOrb and source == "spawn" then
-		-- Orbs also important for non-targeted players. (aoe damage 10 yards).
-		-- Currently, orb targets not accurate. So special warn to everyone.
-		specWarnOrbs:Show()
-	end
 	if mod.Options.SetIconOnOrbs then
 		mod:ClearIcons()
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
@@ -148,7 +143,7 @@ end
 
 function mod:OrbsRepeat()
 	timerOrbs:Start()
-	if self.Options.warnOrbSoon then
+	if self.Options.WarnOrbSoon then
 		warnOrbSoon:Schedule(23, 5)
 		warnOrbSoon:Schedule(24, 4)
 		warnOrbSoon:Schedule(25, 3)
@@ -156,6 +151,7 @@ function mod:OrbsRepeat()
 		warnOrbSoon:Schedule(27, 1)
 		OrbsCountdown:Start(28)
 	end
+	specWarnOrbs:Show()--generic aoe warning on spawn, before we have actual targets yet.
 	self:ScheduleMethod(28, "OrbsRepeat")
 	self:Schedule(2, showOrbWarning, "spawn")
 end
@@ -185,7 +181,7 @@ function mod:OnCombatStart(delay)
 	playerIsOrb = nil
 	table.wipe(wrackTargets)
 --	table.wipe(tanks)
-	if self.Options.warnOrbSoon then
+	if self.Options.WarnOrbSoon then
 		warnOrbSoon:Schedule(24-delay, 5)
 		warnOrbSoon:Schedule(25-delay, 4)
 		warnOrbSoon:Schedule(26-delay, 3)
@@ -258,7 +254,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase2:Show()
 		timerBreathCD:Cancel()
 		timerOrbs:Cancel()
-		if self.Options.warnOrbSoon then
+		if self.Options.WarnOrbSoon then
 			warnOrbSoon:Cancel()
 			OrbsCountdown:Cancel()
 		end
@@ -344,7 +340,7 @@ function mod:UNIT_DIED(args)
 			timerOrbs:Start(30)
 			timerDragon:Start()
 			timerRedEssenceCD:Start()
-			if self.Options.warnOrbSoon then
+			if self.Options.WarnOrbSoon then
 				warnOrbSoon:Schedule(25, 5)
 				warnOrbSoon:Schedule(26, 4)
 				warnOrbSoon:Schedule(27, 3)
