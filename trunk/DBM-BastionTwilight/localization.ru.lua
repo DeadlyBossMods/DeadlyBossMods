@@ -143,7 +143,7 @@ L:SetWarningLocalization({
 	SpecWarnOrbs		= "Скоро появятся сферы!",
 	warnWrackJump		= "%s прыгнуло на >%s<",
 	WarnWrackCount5s	= "%d сек прошло после последнего Смятия",
-	warnAggro			= "На %s АГРО (возможные цели сфер)",
+	warnAggro			= "На >%s< АГРО (возможные цели сфер)",
 	SpecWarnAggroOnYou	= "На вас АГРО! Смотрите за сферами!",
 	SpecWarnDispel		= "%d сек прошло после последнего Смятия - рассейте!",
 	SpecWarnEggWeaken	= "Панцирь снят - весь урон в яйца!",

@@ -84,7 +84,7 @@ local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
 	-- 3. anyone with Sinestra Aggro
-	-- 4. anyone with whelp aggro. scan Twilight Spilt debuff.
+	-- 4. anyone with 180k+ health
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
@@ -93,7 +93,6 @@ local function isTank(unit)
 	end
 	if UnitIsUnit("boss1target", unit) then return true end
 	if UnitHealthMax(unit) >= 180000 then return true end
---	if tanks[UnitName(unit)] then return true end
 	return false
 end
 
@@ -121,14 +120,14 @@ local function showOrbWarning(source)
 		mod:ClearIcons()
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
 		if orbList[2] then mod:SetIcon(orbList[2], 7) end
-		if source == "spawn" then
+--		if source == "spawn" then
 			if orbList[3] then mod:SetIcon(orbList[3], 6) end
 			if orbList[4] then mod:SetIcon(orbList[4], 5) end
 			if orbList[5] then mod:SetIcon(orbList[5], 4) end
 			if orbList[6] then mod:SetIcon(orbList[6], 3) end
 			if orbList[7] then mod:SetIcon(orbList[7], 2) end
 			if orbList[8] then mod:SetIcon(orbList[8], 1) end
-		end
+--		end
 	end
 
 	if source == "spawn" then
@@ -138,7 +137,7 @@ local function showOrbWarning(source)
 			-- if not then we might as well just save them for next time
 			mod:Schedule(5, resetPlayerOrbStatus) -- might need to adjust this
 		end
-	elseif source == "damage" then--We got the 2 real targets now
+	elseif source == "damage" then--Orbs for sure are targeting the 2 players now, but healers will still have aggro from whelps sometimes.
 		warnOrbs:Show(table.concat(orbList, "<, >"))
 		mod:Schedule(10, resetPlayerOrbStatus, true)
 	end
@@ -154,7 +153,7 @@ function mod:OrbsRepeat()
 		warnOrbsSoon:Schedule(27, 1)
 	end
 	self:ScheduleMethod(28, "OrbsRepeat")
-	showOrbWarning("spawn")
+	self:Schedule(2, showOrbWarning, "spawn")
 end
 
 local function showWrackWarning()
@@ -258,6 +257,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnOrbsSoon:Cancel()
 		end
 		self:UnscheduleMethod("OrbsRepeat")
+		if self.Options.SetIconOnOrbs then
+			self:ClearIcons()
+		end
 	elseif args:IsSpellID(87231) and not args:IsDestTypePlayer() then
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
