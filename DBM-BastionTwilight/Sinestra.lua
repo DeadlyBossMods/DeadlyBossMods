@@ -54,7 +54,7 @@ local timerDragon		= mod:NewTimer(50, "TimerDragon", 69002)
 local timerRedEssenceCD	= mod:NewNextTimer(22, 87946)--21-23 seconds after red egg dies
 local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
 
-local OrbsCountdown		= mod:NewCountdown(28)
+local OrbsCountdown		= mod:NewCountdown(28, 92852)
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnOrbs", true)
