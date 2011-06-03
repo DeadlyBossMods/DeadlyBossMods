@@ -90,6 +90,7 @@ L.WarningIconRight 			= "Show icon on right side"
 L.RaidWarnMessage 			= "Thanks for using Deadly Boss Mods"
 L.BarWhileMove 				= "Raid warning movable"
 L.RaidWarnSound				= "Play sound on raid warning"
+L.CountdownVoice			= "Set voice for countdown sounds"
 L.SpecialWarnSound			= "Set sound for special warnings affecting you or your specific role"
 L.SpecialWarnSound2			= "Set sound for special warnings affecting everyone"
 
