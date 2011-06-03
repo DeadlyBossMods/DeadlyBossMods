@@ -574,11 +574,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(83718, 92541, 92542, 92543) then
 		warnHardenSkin:Show()
 		timerHardenSkinCD:Start()
-		specWarnHardenedSkin:Show()
-		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43689 or self:GetUnitCreatureId("focus") == 43689) then--Only warn for melee targeting him or exclicidly put him on focus.
-			specWarnHardenedSkin:Show()
-		else--Warn regardless if he's your target/focus or not if you aren't a melee since warning is off by default for ranged, you probably enabled it for a reason and have more luxury to switch targets then melee does.
-			specWarnHardenedSkin:Show()
+		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43689 or self:GetUnitCreatureId("focus") == 43689) or not self:IsMelee() then
+			specWarnHardenedSkin:Show()--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
 		end
 	elseif args:IsSpellID(83565, 92544, 92545, 92546) then
 		infoFrameUpdated = false

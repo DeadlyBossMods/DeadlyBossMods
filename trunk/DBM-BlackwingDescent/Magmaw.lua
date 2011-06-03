@@ -97,7 +97,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(77690, 91931, 91932) and GetTime() - lastLavaSpew > 5 then--SpellIds for other modes are guesswork, 77690 10 man confirmed
+	if args:IsSpellID(77690, 91919, 91931, 91932) and GetTime() - lastLavaSpew > 5 then--SpellIds for other modes are guesswork, 77690 10 man confirmed
 		warnLavaSpew:Show()
 		timerLavaSpew:Start()
 		lastLavaSpew = GetTime()
