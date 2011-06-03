@@ -961,7 +961,7 @@ do
 		end
 		frame:Show();
 
-		if usemodelframe then
+		if DBM.Options.EnableModels then
 			DBM_BossPreview.enabled = false
 			DBM_BossPreview:Hide()
 			for _, mod in ipairs(DBM.Mods) do
@@ -1212,16 +1212,16 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 275, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 230, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
 		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable() else DBM:Enable() end end)
 	
 		local StatusEnabled				= generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
-		local AutoRespond				= generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
-		local MiniMapIcon				= generaloptions:CreateCheckButton(L.EnableMiniMapIcon,  true)
-		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume,  true, nil, "UseMasterVolume")--Needs someone smarter then me to hide/disable this option if not 4.0.6+
+		local AutoRespond				= generaloptions:CreateCheckButton(L.AutoRespond, true, nil, "AutoRespond")
+		local MiniMapIcon				= generaloptions:CreateCheckButton(L.EnableMiniMapIcon, true)
+		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume, true, nil, "UseMasterVolume")
 		MiniMapIcon:SetScript("OnClick", function(self)
 			DBM:ToggleMinimapButton()
 			self:SetChecked( DBM.Options.ShowMinimapButton )
@@ -1231,20 +1231,8 @@ local function CreateOptionsMenu()
 		end)
 		generaloptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
 
-		local modelSounds = {
-			{	text	= L.NoSound,			value	= "" },
-			{	text	= L.ModelSoundShort,	value 	= "Short"},
-			{	text	= L.ModelSoundLong,		value 	= "Long"},
-		}
-		local ModelSoundDropDown = generaloptions:CreateDropdown(L.ModelSoundOptions, modelSounds, 
-		DBM.Options.ModelSoundValue, function(value) 
-			DBM.Options.ModelSoundValue = value
-		end
-		)
-		ModelSoundDropDown:SetPoint("TOPLEFT", generaloptions.frame, "TOPLEFT", 0, -170)
-
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -95)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -50)
 		bmrange:SetScript("OnClick", function(self) 
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
@@ -1262,9 +1250,27 @@ local function CreateOptionsMenu()
      	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 
+		--Model viewer options
+		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 85)
+		modelarea.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
+		
+		local enablemodels	= modelarea:CreateCheckButton(L.EnableModels,  true, nil, "EnableModels")--Needs someone smarter then me to hide/disable this option if not 4.0.6+
+
+		local modelSounds = {
+			{	text	= L.NoSound,			value	= "" },
+			{	text	= L.ModelSoundShort,	value 	= "Short"},
+			{	text	= L.ModelSoundLong,		value 	= "Long"},
+		}
+		local ModelSoundDropDown = generaloptions:CreateDropdown(L.ModelSoundOptions, modelSounds, 
+		DBM.Options.ModelSoundValue, function(value) 
+			DBM.Options.ModelSoundValue = value
+		end
+		)
+		ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
+
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
-		pizzaarea.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
+		pizzaarea.frame:SetPoint('TOPLEFT', modelarea.frame, "BOTTOMLEFT", 0, -20)
 	
 		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza!", 175)
 		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
