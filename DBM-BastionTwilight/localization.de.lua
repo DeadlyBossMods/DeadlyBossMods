@@ -146,7 +146,7 @@ L:SetWarningLocalization({
 	SpecWarnOrbs		= "Schattenkugeln kommen! Aufpassen!",
 	warnWrackJump		= "%s gesprungen auf >%s<",
 	WarnWrackCount5s	= "%d Sek. vergangen seit letztem Zermürben",
-	warnAggro			= "%s hat Aggro (Schattenkugeln-Kandidat)",
+	warnAggro			= ">%s< hat Aggro (Schattenkugeln-Kandidat)",
 	SpecWarnAggroOnYou	= "Du hast Aggro! Auf Schattenkugeln achten!",
 	SpecWarnDispel		= "%d Sek. vergangen seit letztem Zermürben - Jetzt reinigen!",
 	SpecWarnEggWeaken	= "Zwielichtpanzer ist zerfallen - Jetzt Schaden auf das EI!",

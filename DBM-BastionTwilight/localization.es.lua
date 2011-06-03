@@ -149,7 +149,7 @@ L:SetWarningLocalization({
 	SpecWarnOrbs		= "¡Cercenadora Crepuscular pronto!",
 	warnWrackJump		= "%s ha saltado a >%s<",
 	WarnWrackCount5s	= "%d segundos des del último Arruinar",
-	warnAggro			= "%s tiene Aggro (candidato de orbe)",
+	warnAggro			= ">%s< tiene Aggro (candidato de orbe)",
 	SpecWarnAggroOnYou	= "¡tienes Aggro! ¡Vigila los Orbes!",
 	SpecWarnDispel		= "¡Han pasado %d seg des del último Arruinar ¡Dispelea ahora!",
 	SpecWarnEggWeaken	= "¡Caparazón Crepuscular Eliminado! ¡Pega el Huevo!",

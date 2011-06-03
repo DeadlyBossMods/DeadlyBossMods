@@ -145,7 +145,7 @@ L:SetWarningLocalization({
 	SpecWarnOrbs		= "Orbs coming! Watch Out!",
 	warnWrackJump		= "%s jumped to >%s<",
 	WarnWrackCount5s	= "%d sec elapsed since last Wrack",
-	warnAggro			= "%s have Aggro (Orbs candidate)",
+	warnAggro			= ">%s< have Aggro (Orbs candidate)",
 	SpecWarnAggroOnYou	= "You have Aggro! Watch Orbs!",
 	SpecWarnDispel		= "%d sec elapsed since last Wrack - Dispel Now!",
 	SpecWarnEggWeaken	= "Twilight Carapace dissipated - Dps EGG Now!",
