@@ -40,7 +40,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnDominion				= mod:NewTargetAnnounce(79318, 3)
 local warnShadowBlaze			= mod:NewSpellAnnounce(81031, 4)--May be quirky
-local warnShadowblazeSoon		= mod:NewAnnounce("warnShadowblazeSoon", mod:IsTank())
+local warnShadowblazeSoon		= mod:NewAnnounce("warnShadowblazeSoon", false)--Redundancy, if you play with game sound off you may prefer this over audio count though.
 
 local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198, nil, nil, nil, true)
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
@@ -68,7 +68,7 @@ local timerShadowBlazeCD		= mod:NewCDTimer(10, 81031)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
-local shadowblazeCountdown			= mod:NewCountdown(30)
+local shadowblazeCountdown		= mod:NewCountdown(30)
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
@@ -307,6 +307,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self:UnscheduleMethod("ShadowBlazeFunction")--Unschedule any running stuff
 		specWarnShadowblazeSoon:Cancel()--^^
 		if GetTime() - lastBlaze <= 3 then--The blaze timer is too fast, since the actual cast happened immediately after the method ran. So reschedule functions using last timing which should be right just a little fast. :)
+			shadowblazeCountdown:Start(shadowblazeTimer)
 			warnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
 			warnShadowblazeSoon:Schedule(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
 			warnShadowblazeSoon:Schedule(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))
