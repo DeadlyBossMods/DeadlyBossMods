@@ -146,7 +146,7 @@ L:SetWarningLocalization({
 	SpecWarnOrbs		= "곧 구슬! 조심하세요!",
 	warnWrackJump		= "%s 전이 : >%s<",
 	WarnWrackCount5s	= "마지막 파멸 후 %d초 지남",
-	warnAggro			= "위협 수준 획득(구슬 예상 대상) : %s",
+	warnAggro			= "위협 수준 획득(구슬 예상 대상) : >%s<",
 	SpecWarnAggroOnYou	= "위협 수준 획득함! 구슬 조심하세요!",
 	SpecWarnDispel		= "마지막 파멸 후 %d초 지남 - 지금 해제!",
 	SpecWarnEggWeaken	= "황혼 껍질 사라짐 - 알 극딜!",
