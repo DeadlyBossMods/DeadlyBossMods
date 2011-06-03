@@ -144,7 +144,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnDragon			= "Sale Cría Crepuscular",
-	warnOrbSoon			= "¡Cercenadora Crepuscular en %d seg!",
+	WarnOrbSoon			= "¡Cercenadora Crepuscular en %d seg!",
 	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
 	SpecWarnOrbs		= "¡Cercenadora Crepuscular pronto!",
 	warnWrackJump		= "%s ha saltado a >%s<",
@@ -166,7 +166,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
-	warnOrbSoon			= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
+	WarnOrbSoon			= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
 	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
 	WarnWrackCount5s	= "Announce los segundos de $spell:92955 transcurridos a los 10, 15, 20 segundos",
