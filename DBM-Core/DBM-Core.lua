@@ -83,6 +83,7 @@ DBM.DefaultOptions = {
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
 	UseMasterVolume = true,
+	EnableModels = true,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,
