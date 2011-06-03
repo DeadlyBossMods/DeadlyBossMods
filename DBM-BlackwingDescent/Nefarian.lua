@@ -68,6 +68,7 @@ local timerShadowBlazeCD		= mod:NewCDTimer(10, 81031)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
+local shadowblazeCountdown			= mod:NewCountdown(30)
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
@@ -97,6 +98,7 @@ function mod:ShadowBlazeFunction()
 	if not shadowBlazeSynced then
 		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeEstimate)--Pre warning 5 seconds prior to be safe, until we sync timer and know for sure.
 	else
+		shadowblazeCountdown:Start(shadowblazeTimer)
 		warnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
 		warnShadowblazeSoon:Schedule(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
 		warnShadowblazeSoon:Schedule(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))

@@ -3299,7 +3299,62 @@ do
 
 	function soundPrototype:Cancel(...)
 		return unschedule(self.Play, self.mod, self, ...)
-	end	
+	end
+end
+
+------------------------
+--  Countdown object  --
+------------------------
+do
+	local countdownProtoType = {}
+	local mt = {__index = countdownProtoType}
+
+	function countdownProtoType:Start(timer)
+		timer = timer or self.timer or 10
+		timer = timer <= 10 and self.timer or timer
+		self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\5.mp3")
+		self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\4.mp3")
+		self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\3.mp3")
+		self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\2.mp3")
+		self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\1.mp3")
+	end
+
+	function countdownProtoType:Schedule(t)
+		return self.owner:Schedule(t, self.Start, self)
+	end
+
+	function countdownProtoType:Cancel()
+		self.owner:Unschedule(self.Start, self)
+		self.sound1:Cancel()
+		self.sound2:Cancel()
+		self.sound3:Cancel()
+		self.sound4:Cancel()
+		self.sound5:Cancel()
+		self.bar:Stop()
+	end
+	countdownProtoType.Stop = countdownProtoType.Cancel
+
+	function bossModPrototype:NewCountdown(timer, text, barText, barIcon)
+		local sound5 = self:NewSound(5, false, true)
+		local sound4 = self:NewSound(4, false, true)
+		local sound3 = self:NewSound(3, false, true)
+		local sound2 = self:NewSound(2, false, true)
+		local sound1 = self:NewSound(1, false, true)
+		timer = timer or 10
+		local obj = setmetatable(
+			{
+				sound1 = sound1,
+				sound2 = sound2,
+				sound3 = sound3,
+				sound4 = sound4,
+				sound5 = sound5,
+				timer = timer,
+				owner = self
+			},
+			mt
+		)
+		return obj
+	end
 end
 
 --------------------
