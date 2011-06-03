@@ -40,7 +40,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnDominion				= mod:NewTargetAnnounce(79318, 3)
 local warnShadowBlaze			= mod:NewSpellAnnounce(81031, 4)--May be quirky
-local warnShadowblazeSoon		= mod:NewAnnounce("warnShadowblazeSoon", mod:IsTank())--Back to on by default for tanks until optoin isn't tied to sound.
+local warnShadowblazeSoon		= mod:NewAnnounce("warnShadowblazeSoon", 2, 81031, mod:IsTank(), nil, true)--Back to on by default for tanks until option isn't tied to sound.
 
 local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198, nil, nil, nil, true)
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
@@ -101,10 +101,10 @@ function mod:ShadowBlazeFunction()
 		if self.Options.warnShadowblazeSoon then -- prevent playing countdown sound people not using shadowblazeCountdown options. will be removed when adding countdown options. (may be?)
 			shadowblazeCountdown:Start(shadowblazeTimer)
 		end
-		warnShadowblazeSoon:Schedule2(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
-		warnShadowblazeSoon:Schedule2(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
-		warnShadowblazeSoon:Schedule2(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))
-		warnShadowblazeSoon:Schedule2(shadowblazeTimer - 2, L.ShadowBlazeExact:format(2))
+		warnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
+		warnShadowblazeSoon:Schedule(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
+		warnShadowblazeSoon:Schedule(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))
+		warnShadowblazeSoon:Schedule(shadowblazeTimer - 2, L.ShadowBlazeExact:format(2))
 		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 1, L.ShadowBlazeExact:format(1))--Special warn at 1 seconds to hall ass at this time.
 	end
 	timerShadowBlazeCD:Start(shadowblazeTimer)
@@ -312,10 +312,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			if self.Options.warnShadowblazeSoon then -- prevent playing countdown sound people not using shadowblazeCountdown options. will be removed when adding countdown options. (may be?)
 				shadowblazeCountdown:Start(shadowblazeTimer)
 			end
-			warnShadowblazeSoon:Schedule2(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
-			warnShadowblazeSoon:Schedule2(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
-			warnShadowblazeSoon:Schedule2(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))
-			warnShadowblazeSoon:Schedule2(shadowblazeTimer - 2, L.ShadowBlazeExact:format(2))
+			warnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
+			warnShadowblazeSoon:Schedule(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
+			warnShadowblazeSoon:Schedule(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))
+			warnShadowblazeSoon:Schedule(shadowblazeTimer - 2, L.ShadowBlazeExact:format(2))
 			specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 1, L.ShadowBlazeExact:format(1))--Special warn at 1 seconds to hall ass at this time.
 			timerShadowBlazeCD:Start(shadowblazeTimer)
 			self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")

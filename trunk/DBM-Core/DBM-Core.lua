@@ -3143,53 +3143,11 @@ do
 					self.mod:AddMsg(text, nil)
 				end
 			end
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(DBM.Options.RaidWarningSound, "Master")--4.0.6 arg to use master sound channel, re-enableing sound playback when effects are turned off.
-			else
-				PlaySoundFile(DBM.Options.RaidWarningSound)--not cata so we don't use the channel arg to maintain CN wow compatability.
-			end
-		end
-	end
-
-	function announcePrototype:Show2(...) -- temp added. prevent double sound using countdown.
-		if not self.option or self.mod.Options[self.option] then
-			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumPartyMembers() >= 1)) then
-				local message = pformat(self.text, ...)
-				message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
-				SendChatMessage(("*** %s ***"):format(message), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
-			end
-			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
-			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
-			local text = ("%s%s%s|r%s"):format(
-				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
-				colorCode,
-				pformat(self.text, ...),
-				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
-			)
-			if not cachedColorFunctions[self.color] then
-				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
-				cachedColorFunctions[color] = function(cap)
-					cap = cap:sub(2, -2)
-					if DBM:GetRaidClass(cap) then
-						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or color
-						cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
-					end
-					return cap
-				end
-			end
-			text = text:gsub(">.-<", cachedColorFunctions[self.color])
-			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this (this would save some of the WTFs))
-			if DBM.Options.ShowWarningsInChat then
-				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
-				if DBM.Options.ShowFakedRaidWarnings then
-					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
-						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
-						if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
-							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 99, "")
-						end
-					end
+			if self.sound then
+				if DBM.Options.UseMasterVolume then
+					PlaySoundFile(DBM.Options.RaidWarningSound, "Master")--4.0.6 arg to use master sound channel, re-enableing sound playback when effects are turned off.
 				else
-					self.mod:AddMsg(text, nil)
+					PlaySoundFile(DBM.Options.RaidWarningSound)--not cata so we don't use the channel arg to maintain CN wow compatability.
 				end
 			end
 		end
@@ -3199,21 +3157,18 @@ do
 		return schedule(t, self.Show, self.mod, self, ...)
 	end
 
-	function announcePrototype:Schedule2(t, ...)
-		return schedule(t, self.Show2, self.mod, self, ...)
-	end
-
 	function announcePrototype:Cancel(...)
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
 	-- old constructor (no auto-localize)
-	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName)
+	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, noSound)
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				option = optionName or text,
+				sound = not noSound,
 				mod = self,
 				icon = (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
 			},
