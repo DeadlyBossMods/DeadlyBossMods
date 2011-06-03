@@ -51,6 +51,7 @@ local timerExtinction	= mod:NewCastTimer(16, 86227)
 local timerEggWeakening	= mod:NewTimer(4, "TimerEggWeakening", 61357)
 local timerEggWeaken	= mod:NewTimer(30, "TimerEggWeaken", 61357)
 local timerDragon		= mod:NewTimer(50, "TimerDragon", 69002)
+local timerRedEssenceCD	= mod:NewNextTimer(22, 87946)--21-23 seconds after red egg dies
 local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
 
 mod:AddBoolOption("HealthFrame", true)
@@ -337,6 +338,7 @@ function mod:UNIT_DIED(args)
 			timerBreathCD:Start()
 			timerOrbs:Start(30)
 			timerDragon:Start()
+			timerRedEssenceCD:Start()
 			if self.Options.WarnOrbsSoon then
 				warnOrbsSoon:Schedule(24, 5)
 				warnOrbsSoon:Schedule(25, 4)
