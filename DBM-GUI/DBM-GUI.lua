@@ -1318,7 +1318,7 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 165, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 200, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
@@ -1346,6 +1346,18 @@ local function CreateOptionsMenu()
 		)
 		RaidWarnSoundDropDown:SetPoint("TOPLEFT", WarningIconRight, "BOTTOMLEFT", 20, -10)
 
+		local countSounds = {
+			{	text	= "Mosh (Male)",	value 	= "Mosh"},
+			{	text	= "Corsica (Female)",value 	= "Corsica"},
+		}
+		local CountSoundDropDown = raidwarnoptions:CreateDropdown(L.CountdownVoice, countSounds, 
+		DBM.Options.CountdownVoice, function(value) 
+			DBM.Options.CountdownVoice = value
+		end
+		)
+		CountSoundDropDown:SetPoint("TOPLEFT", WarningIconRight, "BOTTOMLEFT", 20, -50)
+
+		--Raid Warning Colors 
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
 	
 		local color1 = raidwarncolors:CreateColorSelect(64)
