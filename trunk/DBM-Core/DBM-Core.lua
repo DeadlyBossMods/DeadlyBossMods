@@ -3318,11 +3318,11 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer <= 5 and self.timer or timer
-			self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\5.mp3")
-			self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\4.mp3")
-			self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\3.mp3")
-			self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\2.mp3")
-			self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\1.mp3")
+			self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.mp3")
+			self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.mp3")
+			self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.mp3")
+			self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.mp3")
+			self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.mp3")
 		end
 	end
 
