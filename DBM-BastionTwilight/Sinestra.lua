@@ -149,13 +149,13 @@ end
 function mod:OrbsRepeat()
 	timerOrbs:Start()
 	if self.Options.warnOrbSoon then
-		OrbsCountdown:Start(28)
-		warnOrbSoon:Schedule2(23, 5)
-		warnOrbSoon:Schedule2(24, 4)
-		warnOrbSoon:Schedule2(25, 3)
-		warnOrbSoon:Schedule2(26, 2)
-		warnOrbSoon:Schedule2(27, 1)
+		warnOrbSoon:Schedule(23, 5)
+		warnOrbSoon:Schedule(24, 4)
+		warnOrbSoon:Schedule(25, 3)
+		warnOrbSoon:Schedule(26, 2)
+		warnOrbSoon:Schedule(27, 1)
 	end
+	OrbsCountdown:Start(28)
 	self:ScheduleMethod(28, "OrbsRepeat")
 	self:Schedule(2, showOrbWarning, "spawn")
 end
@@ -186,13 +186,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(wrackTargets)
 --	table.wipe(tanks)
 	if self.Options.warnOrbSoon then
-		OrbsCountdown:Start(29-delay)
-		warnOrbSoon:Schedule2(24-delay, 5)
-		warnOrbSoon:Schedule2(25-delay, 4)
-		warnOrbSoon:Schedule2(26-delay, 3)
-		warnOrbSoon:Schedule2(27-delay, 2)
-		warnOrbSoon:Schedule2(28-delay, 1)
+		warnOrbSoon:Schedule(24-delay, 5)
+		warnOrbSoon:Schedule(25-delay, 4)
+		warnOrbSoon:Schedule(26-delay, 3)
+		warnOrbSoon:Schedule(27-delay, 2)
+		warnOrbSoon:Schedule(28-delay, 1)
 	end
+	OrbsCountdown:Start(29-delay)
 	self:ScheduleMethod(29-delay, "OrbsRepeat")
 end
 
@@ -259,7 +259,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBreathCD:Cancel()
 		timerOrbs:Cancel()
 		if self.Options.warnOrbSoon then
-			orbsCountdown:Cancel()
 			warnOrbSoon:Cancel()
 		end
 		OrbsCountdown:Cancel()
@@ -346,13 +345,13 @@ function mod:UNIT_DIED(args)
 			timerDragon:Start()
 			timerRedEssenceCD:Start()
 			if self.Options.warnOrbSoon then
-				OrbsCountdown:Start(30)
-				warnOrbSoon:Schedule2(25, 5)
-				warnOrbSoon:Schedule2(26, 4)
-				warnOrbSoon:Schedule2(27, 3)
-				warnOrbSoon:Schedule2(28, 2)
-				warnOrbSoon:Schedule2(29, 1)
+				warnOrbSoon:Schedule(25, 5)
+				warnOrbSoon:Schedule(26, 4)
+				warnOrbSoon:Schedule(27, 3)
+				warnOrbSoon:Schedule(28, 2)
+				warnOrbSoon:Schedule(29, 1)
 			end
+			OrbsCountdown:Start(30)
 			self:ScheduleMethod(30, "OrbsRepeat")
 		end
 	end
