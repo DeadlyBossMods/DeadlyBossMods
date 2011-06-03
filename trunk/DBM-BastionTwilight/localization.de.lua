@@ -141,7 +141,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnDragon			= "Zwielichtwelpen gespawnt",
-	WarnOrbsSoon		= "Schattenkugeln in %d Sekunden!",
+	warnOrbSoon			= "Schattenkugeln in %d Sekunden!",
 	WarnEggWeaken		= "Zwielichtpanzer um Ei ist zerfallen",
 	SpecWarnOrbs		= "Schattenkugeln kommen! Aufpassen!",
 	warnWrackJump		= "%s gesprungen auf >%s<",
@@ -162,7 +162,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDragon			= "Zeige Warnung, wenn Zwielichtwelpen spawnen",
-	WarnOrbsSoon		= "Zeige Vorwarnung für Schattenkugeln (5s zuvor, sekündlich)\n(voraussichtlich, kann ungenau sein, kann spammen)",
+	warnOrbSoon		= "Zeige Vorwarnung für Schattenkugeln (5s zuvor, sekündlich)\n(voraussichtlich, kann ungenau sein, kann spammen)",
 	WarnEggWeaken		= "Zeige Warnung, wenn $spell:87654 zerfallen ist",
 	warnWrackJump		= "Verkünde Sprungziele von $spell:92955 ",
 	WarnWrackCount5s	= "Verkünde die Zeit, die ein Spieler von $spell:92955 betroffen ist,\n bei 10, 15, 20 Sekunden",
