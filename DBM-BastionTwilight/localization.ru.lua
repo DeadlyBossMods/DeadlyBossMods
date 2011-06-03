@@ -138,7 +138,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnDragon			= "Появились сумеречные дракончики",
-	WarnOrbsSoon		= "Сферы через %d сек!",
+	warnOrbSoon			= "Сферы через %d сек!",
 	WarnEggWeaken		= "С яиц убран сумеречный панцирь",
 	SpecWarnOrbs		= "Скоро появятся сферы!",
 	warnWrackJump		= "%s прыгнуло на >%s<",
@@ -159,7 +159,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDragon			= "Предупреждение, когда появляются сумеречные дракончики",
-	WarnOrbsSoon		= "Предупреждение о появлении сфер (за 5с до начала, каждую 1с)\n(Предупреждение может быть неточным!)",
+	warnOrbSoon			= "Предупреждение о появлении сфер (за 5с до начала, каждую 1с)\n(Предупреждение может быть неточным!)",
 	WarnEggWeaken		= "Предупреждение, когда спадает $spell:87654",
 	warnWrackJump		= "Показывать цели, на которые прыгает $spell:92955",
 	WarnWrackCount5s	= "Предупреждение, когда $spell:92955 висит на игроке 10, 15, 20 секунд",	

@@ -23,7 +23,7 @@ mod:RegisterEvents(
 )
 
 local warnBreath		= mod:NewSpellAnnounce(92944, 3)
-local warnOrbsSoon		= mod:NewAnnounce("WarnOrbsSoon", 2, 92954) -- yeah, this stuff can be very spammy, but in Sinestra, Orbs is very very very important, so on it by default.
+local warnOrbSoon		= mod:NewAnnounce("WarnOrbSoon", 2, 92954, false) -- Now off by default with voice countdown on by default.
 local warnOrbs			= mod:NewAnnounce("warnAggro", 4, 92954)
 local warnWrack			= mod:NewTargetAnnounce(92955, 4)
 local warnWrackJump		= mod:NewAnnounce("warnWrackJump", 3, 92955, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
@@ -53,6 +53,8 @@ local timerEggWeaken	= mod:NewTimer(30, "TimerEggWeaken", 61357)
 local timerDragon		= mod:NewTimer(50, "TimerDragon", 69002)
 local timerRedEssenceCD	= mod:NewNextTimer(22, 87946)--21-23 seconds after red egg dies
 local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
+
+local OrbsCountdown		= mod:NewCountdown(28)
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnOrbs", true)
@@ -146,13 +148,14 @@ end
 
 function mod:OrbsRepeat()
 	timerOrbs:Start()
-	if self.Options.WarnOrbsSoon then
-		warnOrbsSoon:Schedule(23, 5)
-		warnOrbsSoon:Schedule(24, 4)
-		warnOrbsSoon:Schedule(25, 3)
-		warnOrbsSoon:Schedule(26, 2)
-		warnOrbsSoon:Schedule(27, 1)
+	if self.Options.warnOrbSoon then
+		warnOrbSoon:Schedule(23, 5)
+		warnOrbSoon:Schedule(24, 4)
+		warnOrbSoon:Schedule(25, 3)
+		warnOrbSoon:Schedule(26, 2)
+		warnOrbSoon:Schedule(27, 1)
 	end
+	OrbsCountdown:Start(28)
 	self:ScheduleMethod(28, "OrbsRepeat")
 	self:Schedule(2, showOrbWarning, "spawn")
 end
@@ -182,13 +185,14 @@ function mod:OnCombatStart(delay)
 	playerIsOrb = nil
 	table.wipe(wrackTargets)
 --	table.wipe(tanks)
-	if self.Options.WarnOrbsSoon then
-		warnOrbsSoon:Schedule(24, 5)
-		warnOrbsSoon:Schedule(25, 4)
-		warnOrbsSoon:Schedule(26, 3)
-		warnOrbsSoon:Schedule(27, 2)
-		warnOrbsSoon:Schedule(28, 1)
+	if self.Options.warnOrbSoon then
+		warnOrbSoon:Schedule(24, 5)
+		warnOrbSoon:Schedule(25, 4)
+		warnOrbSoon:Schedule(26, 3)
+		warnOrbSoon:Schedule(27, 2)
+		warnOrbSoon:Schedule(28, 1)
 	end
+	OrbsCountdown:Start(28)
 	self:ScheduleMethod(29-delay, "OrbsRepeat")
 end
 
@@ -254,9 +258,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase2:Show()
 		timerBreathCD:Cancel()
 		timerOrbs:Cancel()
-		if self.Options.WarnOrbsSoon then
-			warnOrbsSoon:Cancel()
+		if self.Options.warnOrbSoon then
+			warnOrbSoon:Cancel()
 		end
+		OrbsCountdown:Cancel()
 		self:UnscheduleMethod("OrbsRepeat")
 		if self.Options.SetIconOnOrbs then
 			self:ClearIcons()
@@ -339,13 +344,14 @@ function mod:UNIT_DIED(args)
 			timerOrbs:Start(30)
 			timerDragon:Start()
 			timerRedEssenceCD:Start()
-			if self.Options.WarnOrbsSoon then
-				warnOrbsSoon:Schedule(24, 5)
-				warnOrbsSoon:Schedule(25, 4)
-				warnOrbsSoon:Schedule(26, 3)
-				warnOrbsSoon:Schedule(27, 2)
-				warnOrbsSoon:Schedule(28, 1)
+			if self.Options.warnOrbSoon then
+				warnOrbSoon:Schedule(24, 5)
+				warnOrbSoon:Schedule(25, 4)
+				warnOrbSoon:Schedule(26, 3)
+				warnOrbSoon:Schedule(27, 2)
+				warnOrbSoon:Schedule(28, 1)
 			end
+			OrbsCountdown:Start(28)
 			self:ScheduleMethod(30, "OrbsRepeat")
 		end
 	end
