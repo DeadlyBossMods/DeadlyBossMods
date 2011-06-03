@@ -40,7 +40,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnDominion				= mod:NewTargetAnnounce(79318, 3)
 local warnShadowBlaze			= mod:NewSpellAnnounce(81031, 4)--May be quirky
-local warnShadowblazeSoon		= mod:NewAnnounce("warnShadowblazeSoon", false)--Redundancy, if you play with game sound off you may prefer this over audio count though.
+local warnShadowblazeSoon		= mod:NewAnnounce("warnShadowblazeSoon", mod:IsTank())--Back to on by default for tanks until optoin isn't tied to sound.
 
 local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198, nil, nil, nil, true)
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
