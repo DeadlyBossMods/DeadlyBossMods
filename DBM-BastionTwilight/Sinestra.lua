@@ -23,7 +23,7 @@ mod:RegisterEvents(
 )
 
 local warnBreath		= mod:NewSpellAnnounce(92944, 3)
-local warnOrbSoon		= mod:NewAnnounce("WarnOrbSoon", 2, 92954, false) -- Now off by default with voice countdown on by default.
+local warnOrbSoon		= mod:NewAnnounce("WarnOrbSoon", 3, 92954, true, nil, true)--Still on by default but no longer plays it's own sounds, uses countdown sounds.
 local warnOrbs			= mod:NewAnnounce("warnAggro", 4, 92954)
 local warnWrack			= mod:NewTargetAnnounce(92955, 4)
 local warnWrackJump		= mod:NewAnnounce("warnWrackJump", 3, 92955, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
@@ -154,8 +154,8 @@ function mod:OrbsRepeat()
 		warnOrbSoon:Schedule(25, 3)
 		warnOrbSoon:Schedule(26, 2)
 		warnOrbSoon:Schedule(27, 1)
+		OrbsCountdown:Start(28)
 	end
-	OrbsCountdown:Start(28)
 	self:ScheduleMethod(28, "OrbsRepeat")
 	self:Schedule(2, showOrbWarning, "spawn")
 end
@@ -191,8 +191,8 @@ function mod:OnCombatStart(delay)
 		warnOrbSoon:Schedule(26-delay, 3)
 		warnOrbSoon:Schedule(27-delay, 2)
 		warnOrbSoon:Schedule(28-delay, 1)
+		OrbsCountdown:Start(29-delay)
 	end
-	OrbsCountdown:Start(29-delay)
 	self:ScheduleMethod(29-delay, "OrbsRepeat")
 end
 
@@ -260,8 +260,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerOrbs:Cancel()
 		if self.Options.warnOrbSoon then
 			warnOrbSoon:Cancel()
+			OrbsCountdown:Cancel()
 		end
-		OrbsCountdown:Cancel()
 		self:UnscheduleMethod("OrbsRepeat")
 		if self.Options.SetIconOnOrbs then
 			self:ClearIcons()
@@ -350,8 +350,8 @@ function mod:UNIT_DIED(args)
 				warnOrbSoon:Schedule(27, 3)
 				warnOrbSoon:Schedule(28, 2)
 				warnOrbSoon:Schedule(29, 1)
+				OrbsCountdown:Start(30)
 			end
-			OrbsCountdown:Start(30)
 			self:ScheduleMethod(30, "OrbsRepeat")
 		end
 	end
