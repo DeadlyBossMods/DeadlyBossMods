@@ -175,7 +175,8 @@ L:SetOptionLocalization({
 	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
 	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
 	TimerOrbs			= "Show timer for next Orbs (Expected timer. may not be accurate)",
-	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn\n(Can be target of Orbs)"
+	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn\n(Can be target of Orbs)",
+	OrbsCountdown		= "Play countdown sound for Orbs"
 })
 
 L:SetMiscLocalization({
