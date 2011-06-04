@@ -140,7 +140,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnDragon			= "새끼용 등장",
+	WarnDragon			= "새끼용 추가",
 	WarnOrbSoon			= "%d초 후 구슬!",
 	WarnEggWeaken		= "황혼 껍질 사라짐",
 	SpecWarnOrbs		= "곧 구슬! 조심하세요!",
@@ -154,21 +154,21 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDragon        	= "다음 새끼용 등장",
+	TimerDragon        	= "다음 새끼용 추가",
 	TimerEggWeakening 	= "황혼 껍질 제거",
 	TimerEggWeaken		= "황혼 껍질 재생성",
 	TimerOrbs			= "다음 구슬"
 })	
 
 L:SetOptionLocalization({
-	WarnDragon       	= "새끼용 등장 경고 보기",
-	WarnOrbSoon			= "구슬 등장 사전 경고 보기 (5초 전부터, 1초 마다)\n(예상 경보이며, 정확하지 않을 수 있습니다.)",
+	WarnDragon       	= "새끼용 추가 경고 보기",
+	WarnOrbSoon			= "구슬 카운트 다운 경고 보기 (5초 전부터, 1초 마다)\n(예상 경보이며, 정확하지 않을 수 있습니다.)",
 	WarnEggWeaken    	= "$spell:87654 제거 사전 경고 보기",
 	warnWrackJump		= "$spell:92955 전이 경고 보기",
 	WarnWrackCount5s	= "$spell:92955이 시전/전이 된 후 10, 15, 20 초가 지나면 경고 보기",
-	warnAggro			= "구슬 등장시 위협 수준이 있는 대상 알리기 (구슬 예상 대상)",
-	SpecWarnAggroOnYou	= "구슬 등장시 위협 수준을 획득한 경우 특수 경고 보기\n(구슬 대상이 될 수 있습니다.)",
-	SpecWarnOrbs		= "구슬 등장시 특수 경고 보기 (예상 경보이며, 정확하지 않을 수 있습니다.)",
+	warnAggro			= "구슬 생성시 위협 수준이 있는 대상 알리기 (구슬 예상 대상)",
+	SpecWarnAggroOnYou	= "구슬 생성시 당신이 위협 수준을 획득한 경우 특수 경고 보기\n(구슬 대상일 가능성이 높습니다.)",
+	SpecWarnOrbs		= "구슬 특수 경고 보기 (예상 경보이며, 정확하지 않을 수 있습니다.)",
 	SpecWarnDispel		= "$spell:92955이 시전/전이 된 후 일정 시간이 지나면 특수 경고 보기(해제)",
 	SpecWarnEggWeaken	= "$spell:87654 사라짐 특수 경고 보기",
 	SpecWarnEggShield	= "$spell:87654의 재생성 특수 경고 보기",
@@ -176,7 +176,8 @@ L:SetOptionLocalization({
 	TimerEggWeakening  	= "$spell:87654 사라짐 타이머 보기",
 	TimerEggWeaken		= "$spell:87654 재생성 타이머 보기",
 	TimerOrbs			= "다음 구슬 타이머 보기 (예상 시간이며, 정확하지 않을 수 있습니다.)",
-	SetIconOnOrbs		= "구슬 등장시 위협 수준이 있는 대상에게 전술 목표 아이콘 설정하기\n(구슬 대상이 될 수 있습니다.)"
+	SetIconOnOrbs		= "구슬 생성시 위협 수준이 있는 대상에게 전술 목표 아이콘 설정하기\n(구슬 대상일 가능성이 높습니다.)",
+	OrbsCountdown		= "구슬 카운트 다운 소리 재생"
 })
 
 L:SetMiscLocalization({
