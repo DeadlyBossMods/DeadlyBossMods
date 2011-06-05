@@ -3340,7 +3340,7 @@ do
 	end
 
 	function countdownProtoType:Cancel()
-		self.owner:Unschedule(self.Start, self)
+		self.mod:Unschedule(self.Start, self)
 		self.sound1:Cancel()
 		self.sound2:Cancel()
 		self.sound3:Cancel()
