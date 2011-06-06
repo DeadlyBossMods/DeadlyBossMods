@@ -109,6 +109,7 @@ local function showOrbWarning(source)
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
 		if UnitThreatSituation(n) == 3 and not isTank(n) then
+--		if UnitThreatSituation(n, UnitName("Shadow Orb")) == 3 then--Will this work? damn sure be awesome if it does.
 			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
 		end
