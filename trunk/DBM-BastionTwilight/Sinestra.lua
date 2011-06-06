@@ -58,7 +58,7 @@ local OrbsCountdown		= mod:NewCountdown(28, 92954, nil, "OrbsCountdown")
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnOrbs", true)
-mod:AddBoolOption("InfoFrame", true)
+mod:AddBoolOption("InfoFrame", false)--Does not filter tanks. not putting ugly hack in info frame, its simpley an aggro tracker
 
 local eggDown = 0
 local eggSpam = 0
@@ -192,7 +192,7 @@ function mod:OnCombatStart(delay)
 	OrbsCountdown:Start(29-delay)
 	self:ScheduleMethod(29-delay, "OrbsRepeat")
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader("Has Aggro")
+		DBM.InfoFrame:SetHeader(L.HasAggro)
 		DBM.InfoFrame:Show(6, "playeraggro", 3)
 	end
 end
