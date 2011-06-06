@@ -188,6 +188,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Устанавливать метки на цели заклинания $spell:%d"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал при $spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Звуковой отчест для $spell:%d"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Кричать, когда на вас $spell:%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "На МНЕ - %s!"
 
@@ -217,9 +218,11 @@ DBM_ERROR_NO_RAID					= "Вы должны состоять в рейдовой 
 DBM_INSTANCE_INFO_REQUESTED			= "Отослан запрос на просмотр текущих сохранений подземелий у членов рейда.\nОбратите внимание, что игроки будут уведомлены об этом и могут отклонить ваш запрос."
 DBM_INSTANCE_INFO_STATUS_UPDATE		= "На запрос ответили %d игроков из %d пользователей DBM: %d послали данные, %d отклонили запрос. Ожидание ответа продлено на %d секунд..."
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "Получен ответ ото всех членов рейда"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "Игрок: %s ТипРезультата: %s Название: %s ID: %s Сложность: %d Размер: %d Прогресс: %s"
 DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), сложность %d:"
 DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, прогресс %d: %s"
 DBM_INSTANCE_INFO_STATS_DENIED		= "Отклонили запрос: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "Отошли от компьютера: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "Установлена устаревшая версия DBM: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Результаты сканирования сохранений."
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "Не все игроки ещё ответили: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Показать текущие результаты]|r|h"

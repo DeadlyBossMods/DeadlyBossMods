@@ -605,12 +605,14 @@ L:SetOptionLocalization{
 	WarnNormal		= "Показывать предупреждения для обычного облика",
 	WarnNormalSoon	= "Показывать предупреждение о скорой смене облика на обычный",
 	TimerBear		= "Показывать таймер облика медведя",
-	TimerNormal		= "Показывать таймер обычного облика"
+	TimerNormal		= "Показывать таймер обычного облика",
+	InfoFrame		= "Показывать игроков без $spell:42402"
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "Хотели разбудить во мне зверя? Вам это удалось.",
-	YellNormal	= "C дороги!"
+	YellBear 		= "Хотели разбудить во мне зверя? Вам это удалось.",
+	YellNormal		= "C дороги!",
+	PlayerDebuffs	= "Без дебаффа"
 }
 
 ---------------
@@ -732,11 +734,13 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "Отсчет времени до следующей смены формы",
+	InfoFrame		= "Показывать игроков без $spell:42402",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
+	PlayerDebuffs	= "Без дебаффа"
 }
 
 -----------------
@@ -758,7 +762,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow		= "Показывать стрелку DBM, когда на вас $spell:96477"
+	LinkArrow			= "Показывать стрелку DBM, когда на вас $spell:96477"
 }
 
 L:SetMiscLocalization{
@@ -801,16 +805,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	SpecWarnToxic	= "Воспользуйтесь зелёным котлом!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	SpecWarnToxic	= "Спец-предупреждение, когда на вас нет $spell:96328",
+	InfoFrame		= "Показывать игроков без $spell:96328",
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
 L:SetMiscLocalization{
+	PlayerDebuffs	= "Без зелёного дебаффа"
 }
 
 ----------------------------
@@ -856,5 +864,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill			= "Нет! НЕЕЕЕТ!" -- temporarily
+	Kill			= "Ты перешел все границы, Джин'до. Ты играешь с силами, которые тебе неподвластны. Ты забыл, кто я? Забыл, что я могу с тобой сделать?!" -- temporarily
 }
