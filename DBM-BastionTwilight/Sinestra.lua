@@ -109,7 +109,6 @@ local function showOrbWarning(source)
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
 		if UnitThreatSituation(n) == 3 and not isTank(n) then
---		if UnitThreatSituation(n, UnitName("Shadow Orb")) == 3 then--Will this work? damn sure be awesome if it does.
 			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
 		end
@@ -195,6 +194,12 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.HasAggro)
 		DBM.InfoFrame:Show(6, "playeraggro", 3)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
