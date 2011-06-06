@@ -3346,7 +3346,7 @@ do
 		self.sound3:Cancel()
 		self.sound4:Cancel()
 		self.sound5:Cancel()
-		self.bar:Stop()
+--		self.bar:Stop()
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
