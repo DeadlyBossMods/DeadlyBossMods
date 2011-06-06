@@ -346,12 +346,15 @@ function mod:UNIT_DIED(args)
 			timerDragon:Start()
 			timerRedEssenceCD:Start()
 			if self.Options.WarnOrbSoon then
+				warnOrbSoon:Cancel()
 				warnOrbSoon:Schedule(25, 5)
 				warnOrbSoon:Schedule(26, 4)
 				warnOrbSoon:Schedule(27, 3)
 				warnOrbSoon:Schedule(28, 2)
 				warnOrbSoon:Schedule(29, 1)
 			end
+			OrbsCountdown:Cancel()
+			self:UnscheduleMethod("OrbsRepeat")
 			OrbsCountdown:Start(30)
 			self:ScheduleMethod(30, "OrbsRepeat")
 		end
