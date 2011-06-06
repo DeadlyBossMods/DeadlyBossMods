@@ -176,12 +176,14 @@ L:SetOptionLocalization({
 	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
 	TimerOrbs			= "Show timer for next Orbs (Expected timer. may not be accurate)",
 	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn\n(Can be target of Orbs)",
-	OrbsCountdown		= "Play countdown sound for Orbs"
+	OrbsCountdown		= "Play countdown sound for Orbs",
+	InfoFrame			= "Show info frame for players who have aggro"
 })
 
 L:SetMiscLocalization({
 	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",
-	YellEgg				= "You mistake this for weakness?  Fool!"
+	YellEgg				= "You mistake this for weakness?  Fool!",
+	HasAggro			= "Has Aggro"
 })
 
 --------------------------
