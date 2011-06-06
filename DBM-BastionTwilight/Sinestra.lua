@@ -58,6 +58,7 @@ local OrbsCountdown		= mod:NewCountdown(28, 92954, nil, "OrbsCountdown")
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnOrbs", true)
+mod:AddBoolOption("InfoFrame", true)
 
 local eggDown = 0
 local eggSpam = 0
@@ -153,7 +154,7 @@ function mod:OrbsRepeat()
 	OrbsCountdown:Start(28)
 	specWarnOrbs:Show()--generic aoe warning on spawn, before we have actual targets yet.
 	self:ScheduleMethod(28, "OrbsRepeat")
-	self:Schedule(2, showOrbWarning, "spawn")
+	self:Schedule(2.5, showOrbWarning, "spawn")--2.5 seems to be about right timing, will do more info checking with info frame though.
 end
 
 local function showWrackWarning()
@@ -190,6 +191,10 @@ function mod:OnCombatStart(delay)
 	end
 	OrbsCountdown:Start(29-delay)
 	self:ScheduleMethod(29-delay, "OrbsRepeat")
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader("Has Aggro")
+		DBM.InfoFrame:Show(6, "playeraggro", 3)
+	end
 end
 
 function mod:SPELL_CAST_START(args)

@@ -195,6 +195,8 @@ local function updateHealth()
 	end
 end
 
+
+
 local function updatePlayerPower()
 	table.wipe(lines)
 	for i = 1, GetNumRaidMembers() do
@@ -256,6 +258,25 @@ local function updatePlayerDebuffs()
 	end
 end
 
+local function updatePlayerAggro()
+	table.wipe(lines)
+	if GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if UnitThreatSituation("raid"..i) == infoFrameThreshold then
+				lines[UnitName("raid"..i)] = ""
+			end
+		end
+		updateLines()
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumPartyMembers() do
+			if UnitThreatSituation("party"..i) == infoFrameThreshold then
+				lines[UnitName("party"..i)] = ""
+			end
+		end
+		updateLines()
+	end
+end
+
 ----------------
 --  OnUpdate  --
 ----------------
@@ -276,6 +297,8 @@ function onUpdate(self, elapsed)
 		updatePlayerBuffs()
 	elseif currentEvent == "playerdebuff" then
 		updatePlayerDebuffs()
+	elseif currentEvent == "playeraggro" then
+		updatePlayerAggro()
 	end
 	for i = 1, #sortedLines do
 		if self:NumLines() > maxlines or not addedSelf and DBM.Options.InfoFrameShowSelf and self:NumLines() > maxlines-1 then break end
@@ -318,6 +341,8 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 		updatePlayerBuffs()
 	elseif event == "playerdebuff" then
 		updatePlayerDebuffs()
+	elseif currentEvent == "playeraggro" then
+		updatePlayerAggro()
 	else
 		print("DBM-InfoFrame: Unsupported event given")
 	end
