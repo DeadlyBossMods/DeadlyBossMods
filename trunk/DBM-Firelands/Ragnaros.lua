@@ -73,7 +73,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99399) then
+	if args:IsSpellID(99399, 101238) then
 		if args.amount or 0 % 2 == 0 then
 			warnBurningWound:Show(args.destName, args,amount or 1)
 		end
@@ -86,7 +86,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(98710) then
+	if args:IsSpellID(98710, 100890) then
 		timerSulfurasSmash:Start()
 	elseif args:IsSpellID(98952) then
 		timerMagmaTrap:Cancel()
@@ -101,12 +101,12 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(98237) then
+	if args:IsSpellID(98237, 100383) then
 		warnHandRagnaros:Show()
 		timerHandRagnaros:Start()
 	elseif args:IsSpellID(98164) then
 		timerMagmaTrap:Start()
-	elseif args:IsSpellID(98263) then
+	elseif args:IsSpellID(98263, 100113) then
 		warnWrathRagnaros:Show()
 		timerWrathRagnaros:Start()
 	elseif args:IsSpellID(99171) then	-- correct SpellID ???

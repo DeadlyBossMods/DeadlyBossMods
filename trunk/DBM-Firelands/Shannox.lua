@@ -70,7 +70,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(100002) then
+	if args:IsSpellID(100002, 100031) then
 		warnSpear:Show()
 	end
 end
