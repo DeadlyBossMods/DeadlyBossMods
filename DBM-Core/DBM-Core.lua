@@ -3187,7 +3187,7 @@ do
 	end
 	
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
+	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound)
 		spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		icon = icon or spellId
 		local text
