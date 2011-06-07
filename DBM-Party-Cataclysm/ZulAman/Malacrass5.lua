@@ -40,7 +40,7 @@ local specWarnConsecration	= mod:NewSpecialWarningMove(43429)
 local specWarnRainofFire	= mod:NewSpecialWarningMove(43440)
 local specWarnDeathNDecay	= mod:NewSpecialWarningMove(61603)
 
-local timerSiphon			= mod:NewTimer(30, "TimerSiphon")
+local timerSiphon			= mod:NewTimer(30, "TimerSiphon", 43501)
 local timerSpiritBolts		= mod:NewBuffActiveTimer(5, 43383)
 local timerSpiritBoltsNext	= mod:NewNextTimer(36, 43383)
 
