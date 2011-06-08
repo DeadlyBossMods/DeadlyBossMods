@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(52530)
-mod:SetModelID(38446) -- Temporary till real modelID is known  (this 1 taken from wowhead)
+mod:SetModelID(38446)
 mod:SetZone()
 mod:SetUsedIcons()
 
