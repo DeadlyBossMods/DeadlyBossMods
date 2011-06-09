@@ -976,10 +976,19 @@ end
 
 function UpdateAnimationFrame(mod)
 	DBM_BossPreview.currentMod = mod
+	local displayId = nil
+	if mod.encounterId and mod.instanceId then
+		EJ_SetDifficulty(true, true)
+		EncounterJournal.instanceID = mod.instanceId
+		EncounterJournal_Refresh(EncounterJournal.encounter)
+		EncounterJournal.encounterID = mod.encounterId
+		EncounterJournal_Refresh(EncounterJournal.encounter)
+		displayId = EncounterJournal.encounter["creatureButton1"].displayInfo
+	end
 
 	DBM_BossPreview:Show()
 	DBM_BossPreview:ClearModel()
-	DBM_BossPreview:SetDisplayInfo(mod.modelId or 0)
+	DBM_BossPreview:SetDisplayInfo(displayId or mod.modelId or 0)
 	DBM_BossPreview:SetSequence(4)
 	if DBM.Options.ModelSoundValue == "Short" then
 		if DBM.Options.UseMasterVolume then
