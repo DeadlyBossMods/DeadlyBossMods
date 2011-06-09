@@ -2791,7 +2791,14 @@ do
 	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
-	function DBM:NewMod(name, modId, modSubTab)
+	function DBM:NewMod(name, modId, modSubTab, instanceId, encounterId)
+		local encounterId
+		if type(name) == "number" then
+			encounterId = name
+			name = EJ_GetEncounterInfo(name)
+		else
+			encounterId = encounterId
+		end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
@@ -2808,6 +2815,8 @@ do
 				specwarns = {},
 				timers = {},
 				modId = modId,
+				instanceId = instanceId,
+				encounterId = encounterId,
 				revision = 0,
 				localization = self:GetModLocalization(name)
 			},
