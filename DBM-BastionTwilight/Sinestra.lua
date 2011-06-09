@@ -96,7 +96,7 @@ local function isTank(unit)
 		return true
 	end
 	if UnitIsUnit("boss1target", unit) then return true end
-	if UnitHealthMax(unit) >= 180000 then return true end
+	if UnitHealthMax(unit) >= 180000 then return true end--Will need tuning or removal for new expansions or maybe even new tiers.
 	return false
 end
 
@@ -108,6 +108,9 @@ local function showOrbWarning(source)
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
+		if  #orbList <= 1 then--we don't have both orbs
+			mod:Schedule(0.5, showOrbWarning, "spawn")--check again soon
+		end
 		if UnitThreatSituation(n) == 3 and not isTank(n) then
 			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
@@ -119,24 +122,22 @@ local function showOrbWarning(source)
 		mod:ClearIcons()
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
 		if orbList[2] then mod:SetIcon(orbList[2], 7) end
---		if source == "spawn" then
-			if orbList[3] then mod:SetIcon(orbList[3], 6) end
-			if orbList[4] then mod:SetIcon(orbList[4], 5) end
-			if orbList[5] then mod:SetIcon(orbList[5], 4) end
-			if orbList[6] then mod:SetIcon(orbList[6], 3) end
-			if orbList[7] then mod:SetIcon(orbList[7], 2) end
-			if orbList[8] then mod:SetIcon(orbList[8], 1) end
---		end
+		if orbList[3] then mod:SetIcon(orbList[3], 6) end
+		if orbList[4] then mod:SetIcon(orbList[4], 5) end
+		if orbList[5] then mod:SetIcon(orbList[5], 4) end
+		if orbList[6] then mod:SetIcon(orbList[6], 3) end
+		if orbList[7] then mod:SetIcon(orbList[7], 2) end
+		if orbList[8] then mod:SetIcon(orbList[8], 1) end
 	end
 
 	if source == "spawn" then
-		if #orbList >= 2 then
+		if #orbList >= 2 then--only warn for 2 or more.
 			warnOrbs:Show(table.concat(orbList, "<, >"))
 			-- if we could guess orb targets lets wipe the orb list in 5 sec
 			-- if not then we might as well just save them for next time
 			mod:Schedule(5, resetPlayerOrbStatus) -- might need to adjust this
 		end
-	elseif source == "damage" then--Orbs for sure are targeting the 2 players now, but healers will still have aggro from whelps sometimes.
+	elseif source == "damage" then--Orbs are damaging people, they are without a doubt targeting 2 players by now, although may still have others with aggro :\
 		warnOrbs:Show(table.concat(orbList, "<, >"))
 		mod:Schedule(10, resetPlayerOrbStatus, true)
 	end
@@ -154,7 +155,7 @@ function mod:OrbsRepeat()
 	OrbsCountdown:Start(28)
 	specWarnOrbs:Show()--generic aoe warning on spawn, before we have actual targets yet.
 	self:ScheduleMethod(28, "OrbsRepeat")
-	self:Schedule(2.5, showOrbWarning, "spawn")--2.5 seems to be about right timing, will do more info checking with info frame though.
+	self:Schedule(0.5, showOrbWarning, "spawn")--Start spawn checks
 end
 
 local function showWrackWarning()
