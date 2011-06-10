@@ -141,6 +141,17 @@ local function showOrbWarning(source)
 	elseif source == "damage" then--Orbs are damaging people, they are without a doubt targeting 2 players by now, although may still have others with aggro :\
 		warnOrbs:Show(table.concat(orbList, "<, >"))
 		mod:Schedule(10, resetPlayerOrbStatus, true)
+		if mod.Options.SetIconOnOrbs then
+			mod:ClearIcons()
+			if orbList[1] then mod:SetIcon(orbList[1], 8) end
+			if orbList[2] then mod:SetIcon(orbList[2], 7) end
+			if orbList[3] then mod:SetIcon(orbList[3], 6) end
+			if orbList[4] then mod:SetIcon(orbList[4], 5) end
+			if orbList[5] then mod:SetIcon(orbList[5], 4) end
+			if orbList[6] then mod:SetIcon(orbList[6], 3) end
+			if orbList[7] then mod:SetIcon(orbList[7], 2) end
+			if orbList[8] then mod:SetIcon(orbList[8], 1) end
+		end
 	end
 end
 
