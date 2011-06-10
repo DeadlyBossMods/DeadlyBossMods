@@ -4409,6 +4409,9 @@ do
 	end
 
 	function DBM:GetModLocalization(name)
+		if type(name) == "number" then
+			name = EJ_GetEncounterInfo(name)
+		end
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
 end

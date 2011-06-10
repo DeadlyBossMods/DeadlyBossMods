@@ -179,7 +179,7 @@ L:SetMiscLocalization({
 ----------------
 --  Nefarian  --
 ----------------
-L = DBM:GetModLocalization("Nefarian-BD")	-- No conflict with BWL version :)
+L = DBM:GetModLocalization("Nefarian")
 
 L:SetGeneralLocalization({
 	name = "Nefarian's End"	-- No conflict with BWL version (probably also why blizzard calls the encounter "Nefarian's End"
