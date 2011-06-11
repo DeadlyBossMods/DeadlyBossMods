@@ -180,15 +180,19 @@ local function updateHealth()
 	table.wipe(lines)
 	if GetNumRaidMembers() > 0 then
 		for i = 1, GetNumRaidMembers() do
-			if UnitHealth("raid"..i) < infoFrameThreshold and not UnitIsDeadOrGhost("raid"..i) then
-				lines[UnitName("raid"..i)] = UnitHealth("raid"..i) - infoFrameThreshold 
+			local uId = "raid"..i
+			local icon = GetRaidTargetIndex(uId)
+			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
+				lines[UnitName(uId)] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth(uId) - infoFrameThreshold, icon) or UnitHealth(uId) - infoFrameThreshold
 			end
 		end
 		updateLines()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
-			if UnitHealth("party"..i) < infoFrameThreshold and not UnitIsDeadOrGhost("party"..i) then
-				lines[UnitName("party"..i)] = UnitHealth("party"..i) - infoFrameThreshold 
+			local uId = "party"..i
+			local icon = GetRaidTargetIndex(uId)
+			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
+				lines[UnitName(uId)] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth(uId) - infoFrameThreshold, icon) or UnitHealth(uId) - infoFrameThreshold
 			end
 		end
 		updateLines()
