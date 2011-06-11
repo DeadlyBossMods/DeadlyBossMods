@@ -1411,6 +1411,7 @@ do
 				"CHAT_MSG_MONSTER_EMOTE",
 				"CHAT_MSG_MONSTER_SAY",
 				"CHAT_MSG_RAID_BOSS_EMOTE",
+				"RAID_BOSS_EMOTE",
 				"PLAYER_ENTERING_WORLD",
 				"LFG_PROPOSAL_SHOW",
 				"LFG_PROPOSAL_FAILED",
@@ -2167,6 +2168,11 @@ do
 	end
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, ...)
+		onMonsterMessage("emote", msg)
+		return self:FilterRaidBossEmote(msg, ...)
+	end
+	
+	function DBM:RAID_BOSS_EMOTE(msg, ...)--In 4.2 CHAT_MSG_ is removed from it, when patch launches we can delete the above prototype
 		onMonsterMessage("emote", msg)
 		return self:FilterRaidBossEmote(msg, ...)
 	end
