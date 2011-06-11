@@ -1919,15 +1919,13 @@ do
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "BATTLEGROUND" or channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none") then
 			handleSync(channel, sender, strsplit("\t", msg))
---		elseif prefix == "DBMv4-Ver" and msg == "Hi!" then -- an old client is trying to communicate with us, but we can't respond as he won't be able to receive our messages
---			if raid[sender] and not raid[sender].revision then -- it is actually an old client and not a recent one sending an old sync for compatibility reasons during 4.0
---				raid[sender].revision = 0
---				raid[sender].version = 4
---				raid[sender].displayVersion = "Unknown (uses incompatible pre-4.1 sync system without support for filters)"
---				raid[sender].locale = "unknown"
---			end
---		elseif prefix == "DBMv4-Ver" then -- 4.1 isn't live yet and the old clients can still communicate with us
---			syncHandlers["V"](sender, strsplit("\t", msg))
+		elseif prefix == "DBMv4-Ver" and msg == "Hi!" then -- an old client is trying to communicate with us, but we can't respond as he won't be able to receive our messages
+			if raid[sender] and not raid[sender].revision then -- it is actually an old client and not a recent one sending an old sync for compatibility reasons during 4.0
+				raid[sender].revision = 0
+				raid[sender].version = 4
+				raid[sender].displayVersion = "Unknown (uses incompatible pre-4.1 sync system)"
+				raid[sender].locale = "unknown"
+			end
 		end
 	end
 end
