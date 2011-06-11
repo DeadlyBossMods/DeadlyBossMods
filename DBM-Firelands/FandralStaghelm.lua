@@ -40,7 +40,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(98374) then		-- Cat Form
+	if args:IsSpellID(98374) then		-- Cat Form (99574? maybe the form id for druids with is heroic staff)
 		transforms = transforms + 1
 		abilityCount = 0
 		timerFlameScythe:Cancel()
@@ -67,7 +67,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		abilitySpam = GetTime()
 		local t = abilityTimers[abilityCount] or 0
 		timerLeapingFlames:Start(t)
-	elseif args:IsSpellID(100212) and GetTime() - abilitySpam > 3 then
+	elseif args:IsSpellID(98474, 100212, 100213, 100214) and GetTime() - abilitySpam > 3 then
 		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
 		local t = abilityTimers[abilityCount] or 0

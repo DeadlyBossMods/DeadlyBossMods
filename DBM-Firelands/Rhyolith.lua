@@ -50,7 +50,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(98255, 101157) and self:GetCIDFromGUID(args.destGUID) == 52558 and args.amount > 10 and GetTime() - spamMoltenArmor > 5 then
+	if args:IsSpellID(98255, 101157, 101158, 101159) and self:GetCIDFromGUID(args.destGUID) == 52558 and args.amount > 10 and GetTime() - spamMoltenArmor > 5 then
 		warnMoltenArmor:Show(args.destName, args.amount)
 	end
 end
