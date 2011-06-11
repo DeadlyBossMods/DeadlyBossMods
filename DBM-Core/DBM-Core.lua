@@ -2273,12 +2273,12 @@ end
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
-		mod:Stop()
-		mod.inCombat = false
-		mod.blockSyncs = true
 		if not wipe then
 			mod.lastKillTime = GetTime()
 		end
+		mod:Stop()
+		mod.inCombat = false
+		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
 			for i, v in pairs(mod.combatInfo.killMobs) do
 				mod.combatInfo.killMobs[i] = true
