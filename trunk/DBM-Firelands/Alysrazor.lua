@@ -38,7 +38,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(99464) then
+	if args:IsSpellID(99464, 100698, 100836, 100837) then
 		warnMolting:Show()
 		timerMoltingCD:Start()
 		if phase ~= 1 then
