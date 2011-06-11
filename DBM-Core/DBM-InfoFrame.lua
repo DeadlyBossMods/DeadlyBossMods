@@ -176,6 +176,7 @@ local function updateLines()
 	end
 end
 
+--Icons are violently unstable in this method do to the health sorting code, it will creating about 200 errors per second.
 local function updateHealth()
 	table.wipe(lines)
 	if GetNumRaidMembers() > 0 then
@@ -190,10 +191,16 @@ local function updateHealth()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
-			local icon = GetRaidTargetIndex(uId)
 			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
-				lines[UnitName(uId)] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth(uId) - infoFrameThreshold, icon) or UnitHealth(uId) - infoFrameThreshold
+--				local icon = GetRaidTargetIndex(uId)
+--				lines[UnitName(uId)] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth(uId) - infoFrameThreshold, icon) or UnitHealth(uId) - infoFrameThreshold
+				lines[UnitName(uId)] = UnitHealth(uId) - infoFrameThreshold
 			end
+		end
+		if UnitHealth("player") < infoFrameThreshold and not UnitIsDeadOrGhost("player") then
+--			local icon = GetRaidTargetIndex("player")
+--			lines[UnitName("player")] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth("player") - infoFrameThreshold, icon) or UnitHealth("player") - infoFrameThreshold
+			lines[UnitName("player")] = UnitHealth("player") - infoFrameThreshold
 		end
 		updateLines()
 	end
@@ -238,10 +245,14 @@ local function updatePlayerBuffs()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
-			local icon = GetRaidTargetIndex(uId)
 			if not UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
+				local icon = GetRaidTargetIndex(uId)
 				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
 			end
+		end
+		if not UnitBuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then
+			local icon = GetRaidTargetIndex("player")
+			lines[UnitName("player")] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
 		end
 		updateLines()
 	end
@@ -261,10 +272,14 @@ local function updatePlayerDebuffs()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
-			local icon = GetRaidTargetIndex(uId)
 			if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
+				local icon = GetRaidTargetIndex(uId)
 				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
 			end
+		end
+		if not UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player but "raid"..i includes player wtf?
+			local icon = GetRaidTargetIndex("player")
+			lines[UnitName("player")] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
 		end
 		updateLines()
 	end
