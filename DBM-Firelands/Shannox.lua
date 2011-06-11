@@ -47,10 +47,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnRage then
 			self:SetIcon(args.destName, 6, 15)
 		end
-	elseif args:IsSpellID(100167) then
+	elseif args:IsSpellID(100167, 101215, 101216, 101217) then
 		warnWary:Show(args.destName)
 		timerWary:Start(args.destName)
-	elseif args:IsSpellID(99937) then
+	elseif args:IsSpellID(99937, 101218, 101219, 101220) then--99936?
 		if args.amount or 0 % 2 == 0 then	-- announce: 1 - 2 - 4 - 6 - 8 stacks
 			warnTears:Show(args.destName, args.amount or 1)
 		end
@@ -70,7 +70,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(100002, 100031) then
+	if args:IsSpellID(100002, 100031) then--all/right ids?
 		warnSpear:Show()
 	end
 end

@@ -71,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(99352) then
+	if args:IsSpellID(99352, 99405) then
 		warnDecimationBlade:Show()
 		timerBladeActive:Start(args.spellName)
 		timerBladeNext:Start()
