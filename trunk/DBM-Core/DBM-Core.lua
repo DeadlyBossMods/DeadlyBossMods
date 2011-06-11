@@ -2790,12 +2790,6 @@ do
 	local mt = {__index = bossModPrototype}
 
 	function DBM:NewMod(name, modId, modSubTab, instanceId, encounterId)
-		local eId = nil
-		if type(name) == "number" then
-			eId = name
-			local t = EJ_GetEncounterInfo(name)
-			name, _ = string.split(",", t)
-		end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
@@ -2825,7 +2819,15 @@ do
 				break
 			end
 		end
-		if obj.localization.general.name == "name" then obj.localization.general.name = name end
+
+		if obj.localization.general.name == "name" then
+			if type(name) == "number" then
+				local t = EJ_GetEncounterInfo(name)
+				obj.localization.general.name = string.split(",", t)
+			else
+				obj.localization.general.name = name 
+			end
+		end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
 		obj:AddBoolOption("SpeedKillTimer", false, "misc")
@@ -4408,10 +4410,6 @@ do
 	end
 
 	function DBM:GetModLocalization(name)
-		if type(name) == "number" then
-			local t = EJ_GetEncounterInfo(name)
-			name, _ = string.split(",", t)
-		end
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
 end
