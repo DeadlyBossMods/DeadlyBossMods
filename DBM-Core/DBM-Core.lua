@@ -2795,7 +2795,8 @@ do
 		local eId = nil
 		if type(name) == "number" then
 			eId = name
-			name = EJ_GetEncounterInfo(name)
+			local t = EJ_GetEncounterInfo(name)
+			name, _ = string.split(",", t)
 		end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
@@ -4410,7 +4411,8 @@ do
 
 	function DBM:GetModLocalization(name)
 		if type(name) == "number" then
-			name = EJ_GetEncounterInfo(name)
+			local t = EJ_GetEncounterInfo(name)
+			name, _ = string.split(",", t)
 		end
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
