@@ -63,6 +63,7 @@ local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHea
 local currentEvent
 local sortingAsc
 local lines = {}
+local icons = {}
 local sortedLines = {}
 
 ---------------------
@@ -176,6 +177,30 @@ local function updateLines()
 	end
 end
 
+local function updateIcons()
+	table.wipe(icons)
+	if GetNumRaidMembers() > 0 then
+		for i=1, GetNumRaidMembers() do
+			local uId = "raid"..i
+			local icon = GetRaidTargetIndex(uId)
+			if icon then
+				icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i=1, GetNumPartyMembers() do
+			local uId = "party"..i
+			local icon = GetRaidTargetIndex(uId)
+			if icon then
+				icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+			end
+		end
+		local icon = GetRaidTargetIndex("player")
+		icons[UnitName("player")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+	end
+end
+		
+
 --Icons are violently unstable in this method do to the health sorting code, it will creating about 200 errors per second.
 local function updateHealth()
 	table.wipe(lines)
@@ -187,23 +212,18 @@ local function updateHealth()
 				lines[UnitName(uId)] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth(uId) - infoFrameThreshold, icon) or UnitHealth(uId) - infoFrameThreshold
 			end
 		end
-		updateLines()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
 			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
---				local icon = GetRaidTargetIndex(uId)
---				lines[UnitName(uId)] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth(uId) - infoFrameThreshold, icon) or UnitHealth(uId) - infoFrameThreshold
 				lines[UnitName(uId)] = UnitHealth(uId) - infoFrameThreshold
 			end
 		end
 		if UnitHealth("player") < infoFrameThreshold and not UnitIsDeadOrGhost("player") then
---			local icon = GetRaidTargetIndex("player")
---			lines[UnitName("player")] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth("player") - infoFrameThreshold, icon) or UnitHealth("player") - infoFrameThreshold
 			lines[UnitName("player")] = UnitHealth("player") - infoFrameThreshold
 		end
-		updateLines()
 	end
+	updateLines()
 end
 
 
@@ -331,15 +351,20 @@ function onUpdate(self, elapsed)
 	elseif currentEvent == "playeraggro" then
 		updatePlayerAggro()
 	end
+	updateIcons()
 	for i = 1, #sortedLines do
 		if self:NumLines() > maxlines or not addedSelf and DBM.Options.InfoFrameShowSelf and self:NumLines() > maxlines-1 then break end
 		local name = sortedLines[i]
 		local power = lines[name]
-		self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-		if name == UnitName("player") then 						-- Add a method to color the power value?
+		local icon = icons[name]
+		if name == UnitName("player") then
 			addedSelf = true
 		end
-	end
+		if icon then
+			name = icons[name]..name
+		end
+		self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+	end					 						-- Add a method to color the power value?
 	if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then 	-- Don't show self on health/enemypower/playerdebuff
 		self:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.R, color.G, color.B, 255, 255, 255)
 	end
