@@ -196,7 +196,9 @@ local function updateIcons()
 			end
 		end
 		local icon = GetRaidTargetIndex("player")
-		icons[UnitName("player")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+		if icon then
+			icons[UnitName("player")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
+		end
 	end
 end
 		
@@ -258,27 +260,23 @@ local function updatePlayerBuffs()
 	if GetNumRaidMembers() > 0 then
 		for i = 1, GetNumRaidMembers() do
 			local uId = "raid"..i
-			local icon = GetRaidTargetIndex(uId)
 			if not UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
-				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+				lines[UnitName(uId)] = ""
 			end
 		end
-		updateLines()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
 			if not UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
-				local icon = GetRaidTargetIndex(uId)
-				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+				lines[UnitName(uId)] = ""
 			end
 		end
 		if not UnitBuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then
-			local icon = GetRaidTargetIndex("player")
-			lines[UnitName("player")] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+			lines[UnitName("player")] = ""
 		end
-		updateLines()
-		updateIcons()
 	end
+	updateLines()
+	updateIcons()
 end
 
 local function updatePlayerDebuffs()
@@ -286,27 +284,24 @@ local function updatePlayerDebuffs()
 	if GetNumRaidMembers() > 0 then
 		for i = 1, GetNumRaidMembers() do
 			local uId = "raid"..i
-			local icon = GetRaidTargetIndex(uId)
 			if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
-				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+				lines[UnitName(uId)] = ""
 			end
 		end
-		updateLines()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
 			if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				local icon = GetRaidTargetIndex(uId)
-				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+				lines[UnitName(uId)] = ""
 			end
 		end
 		if not UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player but "raid"..i includes player wtf?
-			local icon = GetRaidTargetIndex("player")
-			lines[UnitName("player")] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+			lines[UnitName("player")] = ""
 		end
-		updateLines()
-		updateIcons()
 	end
+	updateLines()
+	updateIcons()
 end
 
 local function updatePlayerAggro()
@@ -314,23 +309,20 @@ local function updatePlayerAggro()
 	if GetNumRaidMembers() > 0 then
 		for i = 1, GetNumRaidMembers() do
 			local uId = "raid"..i
-			local icon = GetRaidTargetIndex(uId)
 			if UnitThreatSituation(uId) == infoFrameThreshold then
-				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+				lines[UnitName(uId)] = ""
 			end
 		end
-		updateLines()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
-			local icon = GetRaidTargetIndex(uId)
 			if UnitThreatSituation(uId) == infoFrameThreshold then
-				lines[UnitName(uId)] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
+				lines[UnitName(uId)] = ""
 			end
 		end
-		updateLines()
-		updateIcons()
 	end
+	updateLines()
+	updateIcons()
 end
 
 ----------------
