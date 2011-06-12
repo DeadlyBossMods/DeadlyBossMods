@@ -224,6 +224,7 @@ local function updateHealth()
 		end
 	end
 	updateLines()
+	updateIcons()
 end
 
 
@@ -239,6 +240,7 @@ local function updatePlayerPower()
 		lines[UnitName("player")] = UnitPower("player", pIndex)
 	end
 	updateLines()
+	updateIcons()
 end
 
 local function updateEnemyPower()
@@ -275,6 +277,7 @@ local function updatePlayerBuffs()
 			lines[UnitName("player")] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
 		end
 		updateLines()
+		updateIcons()
 	end
 end
 
@@ -302,6 +305,7 @@ local function updatePlayerDebuffs()
 			lines[UnitName("player")] = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon) or ""
 		end
 		updateLines()
+		updateIcons()
 	end
 end
 
@@ -325,6 +329,7 @@ local function updatePlayerAggro()
 			end
 		end
 		updateLines()
+		updateIcons()
 	end
 end
 
@@ -351,7 +356,7 @@ function onUpdate(self, elapsed)
 	elseif currentEvent == "playeraggro" then
 		updatePlayerAggro()
 	end
-	updateIcons()
+--	updateIcons()
 	for i = 1, #sortedLines do
 		if self:NumLines() > maxlines or not addedSelf and DBM.Options.InfoFrameShowSelf and self:NumLines() > maxlines-1 then break end
 		local name = sortedLines[i]
