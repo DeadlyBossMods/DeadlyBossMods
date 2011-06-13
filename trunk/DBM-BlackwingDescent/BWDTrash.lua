@@ -42,9 +42,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(80652) then
 		warnWhirlwind:Show(args.destName)
 		timerWhirlwind:Start(args.destName)
-	elseif args.IsSpellID(79630) then--Drakonid Rush
+	elseif args:IsSpellID(79630) then--Drakonid Rush
 		timerChargeCD:Start()
-	elseif args.IsSpellID(80035) then--Drakonid Vengeful rage, good way to reset dragonid died counter without a pull mechanic to reset on.
+	elseif args:IsSpellID(80035) then--Drakonid Vengeful rage, good way to reset dragonid died counter without a pull mechanic to reset on.
 		drakonidDied = 1
 	end
 end
