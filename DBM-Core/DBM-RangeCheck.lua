@@ -375,7 +375,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.2 then
+		if elapsed >= 0.05 then
 			onUpdateRadar(self, elapsed)
 			elapsed = 0
 		end
@@ -424,17 +424,33 @@ function onUpdate(self, elapsed)
 	self:ClearLines()
 	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range), 1, 1, 1)
 	if initRangeCheck(self.range) then
-		for i = 1, GetNumRaidMembers() do
-			local uId = "raid"..i
-			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
-				j = j + 1
-				color = RAID_CLASS_COLORS[select(2, UnitClass(uId))] or NORMAL_FONT_COLOR
-				local icon = GetRaidTargetIndex(uId)
-				local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
-				self:AddLine(text, color.r, color.g, color.b)
-				if j >= 5 then
-					break
-				end
+		if GetNumRaidMembers() > 0 then
+			for i = 1, GetNumRaidMembers() do
+				local uId = "raid"..i
+				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
+					j = j + 1
+					color = RAID_CLASS_COLORS[select(2, UnitClass(uId))] or NORMAL_FONT_COLOR
+					local icon = GetRaidTargetIndex(uId)
+					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
+					self:AddLine(text, color.r, color.g, color.b)
+					if j >= 5 then
+						break
+					end
+				end	
+			end
+		elseif GetNumPartyMembers() > 0 then
+			for i = 1, GetNumPartyMembers() do
+				local uId = "party"..i
+				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
+					j = j + 1
+					color = RAID_CLASS_COLORS[select(2, UnitClass(uId))] or NORMAL_FONT_COLOR
+					local icon = GetRaidTargetIndex(uId)
+					local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
+					self:AddLine(text, color.r, color.g, color.b)
+					if j >= 5 then
+						break
+					end
+				end	
 			end
 		end
 	else
@@ -469,10 +485,14 @@ do
 
 	local function setDot(name)
 		local dot = positions[name].dot or createDot(name)		-- load the dot, or create a new one if none exists yet
-		local x = ((positions[name].x * math.cos(rotation)) - (-1 * positions[name].y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
-		local y = ((positions[name].x * math.sin(rotation)) + (-1 * positions[name].y * math.cos(rotation))) * pixelsperyard
+		local x = positions[name].x
+		local y = positions[name].y
 		local range = (x*x + y*y) ^ 0.5
-		if range < 1.5*frame.range then			-- if person is closer than 1.5 * range, show the dot. Else hide it
+		
+		if range < (1.5 * frame.range) then							-- if person is closer than 1.5 * range, show the dot. Else hide it
+			x = ((x * math.cos(rotation)) - (-1 * y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
+			y = ((x * math.sin(rotation)) + (-1 * y * math.cos(rotation))) * pixelsperyard
+
 			dot:ClearAllPoints()
 			dot:SetPoint("CENTER", radarFrame, "CENTER", x, y)
 			dot:Show()
@@ -482,6 +502,19 @@ do
 		if range < 1.05 * frame.range then		-- add an extra 5% in case of inaccuracy
 			playerTooClose = true
 		end			
+	end
+
+	local function createTestDots()
+		positions["arta"] = {class="PRIEST",x=10.6,y=0}
+		positions["omega"] = {class="WARRIOR",x=0,y=-15}
+		positions["jack"] = {class="HUNTER",x=-5,y=11}
+		positions["gerard"] = {class="MAGE",x=5.3,y=-9.8}
+		positions["simon"] = {class="DRUID",x=12,y=6}
+		positions["steven"] = {class="DEATHKNIGHT",x=-19,y=3}
+	end
+	local function showTestDots()
+		if not positions["arta"] then createTestDots() end
+		setDot("arta") setDot("omega") setDot("jack") setDot("gerard") setDot("simon") setDot("steven")
 	end
 
 	function onUpdateRadar(self, elapsed)
@@ -495,25 +528,34 @@ do
 		local mapName = GetMapInfo()
 		local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
 		if not dims then return end
-		for i=1, GetNumRaidMembers() do
-			local uId = "raid"..i
-			if not UnitIsUnit(uId, "player") then
+		local numPlayers = 0
+		local unitID = "raid%d"
+		if GetNumRaidMembers() > 0 then
+			unitID = "raid%d"
+			numPlayers = GetNumRaidMembers()
+		elseif GetNumPartyMembers() > 0 then
+			unitID = "party%d"
+			numPlayers = GetNumPartyMembers()
+		end
+		for i=1, numPlayers do
+			local uId = unitID:format(i)
+			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) then
 				local x,y = GetPlayerMapPosition(uId)
 				local name = UnitName(uId)
 				if not positions[name] then
 					positions[name] = {
 						class = select(2, UnitClass(uId)),
-						x = (playerX - x) * dims[1],
-						y = (playerY - y) * dims[2]
+						x = (x - playerX) * dims[1],
+						y = (y - playerY) * dims[2]
 					}
 					setDot(name)
 				else
-					local dx = positions[name].x - ((playerX - x) * dims[1])
-					local dy = positions[name].y - ((playerY - y) * dims[2])
+					local dx = positions[name].x - ((x - playerX) * dims[1])
+					local dy = positions[name].y - ((y - playerY) * dims[2])
 
 					if (dx*dx)^0.5 > 0.1 or (dy*dy)^0.5 > 0.1 then 	-- did person move? If not, we dont have to update the dot
-						positions[name].x = (playerX - x) * dims[1]
-						positions[name].y = (playerY - y) * dims[2]
+						positions[name].x = (x - playerX) * dims[1]
+						positions[name].y = (y - playerY) * dims[2]
 						setDot(name)
 					end
 				end
