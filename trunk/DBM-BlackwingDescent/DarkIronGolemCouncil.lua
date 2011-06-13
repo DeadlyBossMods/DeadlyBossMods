@@ -25,17 +25,18 @@ mod:RegisterEvents(
 local warnIncineration			= mod:NewSpellAnnounce(79023, 2, nil, mod:IsHealer())
 local warnBarrierSoon			= mod:NewPreWarnAnnounce(79582, 10, 3, nil, not mod:IsHealer())
 local warnBarrier				= mod:NewSpellAnnounce(79582, 4, nil, not mod:IsHealer())
-local warnAcquiringTarget		= mod:NewTargetAnnounce(92036, 4)
+local warnAcquiringTarget		= mod:NewTargetAnnounce(92036, 4, nil, false)--Off by default, default UI has this warning built in
 --Electron
+local warnLightningConductor	= mod:NewTargetAnnounce(91431, 4, nil, false)--Off by default, default UI has this warning built in
 local warnUnstableShieldSoon	= mod:NewPreWarnAnnounce(79900, 10, 3, nil, not mod:IsHealer())
 local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4, nil, not mod:IsHealer())
 local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92053, 5, 4)--Heroic Ability
 --Toxitron
-local warnPoisonProtocol		= mod:NewSpellAnnounce(80053, 2)
-local warnFixate				= mod:NewTargetAnnounce(80094, 3, nil, false)--Spammy, off by default. Raid leader can turn it on if they wanna yell at these people.
+local warnPoisonProtocol		= mod:NewSpellAnnounce(80053, 3)
+local warnFixate				= mod:NewTargetAnnounce(80094, 4, nil, false)--Spammy, off by default. Raid leader can turn it on if they wanna yell at these people.
 local warnChemicalBomb			= mod:NewTargetAnnounce(80157, 3)
-local warnShellSoon				= mod:NewPreWarnAnnounce(79835, 10, 3, nil, false)
-local warnShell					= mod:NewSpellAnnounce(79835, 4, nil, not mod:IsHealer())
+local warnShellSoon				= mod:NewPreWarnAnnounce(79835, 10, 2, nil, false)
+local warnShell					= mod:NewSpellAnnounce(79835, 3, nil, not mod:IsHealer())
 local warnGrip					= mod:NewCastAnnounce(91849, 4)--Heroic Ability
 --Arcanotron
 local warnGenerator				= mod:NewSpellAnnounce(79624, 3)
@@ -238,6 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 7, 8)
 		end
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
+		warnLightningConductor:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnConductor:Show()
 			soundLightningConductor:Play()
