@@ -55,13 +55,29 @@ local rangeCheck = DBM.RangeCheck
 local checkFuncs = {}
 local frame
 local createFrame
+local radarFrame
+local createRadarFrame
 local onUpdate
+local onUpdateRadar
 local dropdownFrame
 local initializeDropdown
 local initRangeCheck -- initializes the range check for a specific range (if necessary), returns false if the initialization failed (because of a map range check in an unknown zone)
+local positions = {}
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+local BLIP_TEX_COORDS = {
+	["WARRIOR"]	= { 0, 0.125, 0, 0.25 },
+	["PALADIN"]	= { 0.125, 0.25, 0, 0.25 },
+	["HUNTER"]	= { 0.25, 0.375, 0, 0.25 },
+	["ROGUE"]	= { 0.375, 0.5, 0, 0.25 },
+	["PRIEST"]	= { 0.5, 0.625, 0, 0.25 },
+	["DEATHKNIGHT"]	= { 0.625, 0.75, 0, 0.25 },
+	["SHAMAN"]	= { 0.75, 0.875, 0, 0.25 },
+	["MAGE"]	= { 0.875, 1, 0, 0.25 },
+	["WARLOCK"]	= { 0, 0.125, 0.25, 0.5 },
+	["DRUID"]	= { 0.25, 0.375, 0.25, 0.5 }
+}
 
 ---------------------
 --  Dropdown Menu  --
@@ -90,6 +106,16 @@ do
 	local function toggleLocked()
 		DBM.Options.RangeFrameLocked = not DBM.Options.RangeFrameLocked
 	end
+
+	local function toggleRadar()
+		DBM.Options.RangeFrameRadar = not DBM.Options.RangeFrameRadar
+		if DBM.Options.RangeFrameRadar then
+			radarFrame = radarFrame or createRadarFrame()
+			radarFrame:Show()
+		else
+			radarFrame:Hide()
+		end
+	end
 	
 	function initializeDropdown(dropdownFrame, level, menu)
 		local info
@@ -117,14 +143,22 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 			
 			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_RANGECHECK_RADAR
+			if DBM.Options.RangeFrameRadar then
+				info.checked = true
+			end
+			info.func = toggleRadar
+--			UIDropDownMenu_AddButton(info, 1)
+			
+			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_HIDE
 			info.notCheckable = true
 			info.func = rangeCheck.Hide
 			info.arg1 = rangeCheck
 			UIDropDownMenu_AddButton(info, 1)
+
 		elseif level == 2 then
 			if menu == "range" then
-
 				if initRangeCheck() then
 					info = UIDropDownMenu_CreateInfo()
 					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(5)
@@ -313,10 +347,76 @@ function createFrame()
 	return frame
 end
 
+function createRadarFrame()
+	if not DBM.Options.RangeFrameRadar then return end
+	local elapsed = 0
+	local radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
+	radarFrame:SetFrameStrata("DIALOG")
+	
+	radarFrame:SetPoint(DBM.Options.RangeFrameRadarPoint, UIParent, DBM.Options.RangeFrameRadarPoint, DBM.Options.RangeFrameRadarX, DBM.Options.RangeFrameRadarY)
+	radarFrame:SetHeight(128)
+	radarFrame:SetWidth(128)
+	radarFrame:EnableMouse(true)
+	radarFrame:SetToplevel(true)
+	radarFrame:SetMovable()
+	radarFrame:RegisterForDrag("LeftButton")
+	radarFrame:SetScript("OnDragStart", function(self)
+		if not DBM.Options.RangeFrameLocked then
+			self:StartMoving()
+		end
+	end)
+	radarFrame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing()
+		ValidateFramePosition(self)
+		local point, _, _, x, y = self:GetPoint(1)
+		DBM.Options.RangeFrameRadarX = x
+		DBM.Options.RangeFrameYRadar = y
+		DBM.Options.RangeFrameRadarPoint = point
+	end)
+	radarFrame:SetScript("OnUpdate", function(self, e)
+		elapsed = elapsed + e
+		if elapsed >= 0.2 then
+			onUpdateRadar(self, elapsed)
+			elapsed = 0
+		end
+	end)
+	radarFrame:SetScript("OnMouseDown", function(self, button)
+		if button == "RightButton" then
+			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown, "MENU")
+			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
+		end
+	end)
+
+	local bg = radarFrame:CreateTexture(nil, "BACKGROUND")
+	bg:SetAllPoints(radarFrame)
+	bg:SetBlendMode("BLEND")
+	bg:SetTexture(0, 0, 0, 0.3)
+	radarFrame.background = bg
+	
+	local circle = radarFrame:CreateTexture(nil, "ARTWORK")
+	circle:SetPoint("CENTER")
+	circle:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\radar_circle.blp")
+	circle:SetBlendMode("ADD")
+	radarFrame.circle = circle
+
+	local player = radarFrame:CreateTexture(nil, "OVERLAY")
+	player:SetSize(32, 32)
+	player:SetTexture("Interface\\Minimap\\MinimapArrow.blp")
+	player:SetBlendMode("ADD")
+	player:SetPoint("CENTER")
+
+	radarFrame:Show()
+	return radarFrame
+end
 
 ----------------
 --  OnUpdate  --
 ----------------
+
+function onUpdate(self, elapsed)
+print("hi")
+end
+
 local soundUpdate = 0
 function onUpdate(self, elapsed)
 	local color
@@ -346,6 +446,87 @@ function onUpdate(self, elapsed)
 		soundUpdate = 0
 	end
 	self:Show()
+end
+
+do
+	local rotation, pixelsperyard, playerTooClose
+	local function createDot(name)
+		local class = positions[name].class
+		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..name, radarFrame, "WorldMapPartyUnitTemplate")
+		dot:SetFrameStrata("TOOLTIP")
+		dot:SetWidth(24)
+		dot:SetHeight(24)
+		dot.icon:SetTexCoord(
+			BLIP_TEX_COORDS[class][1],
+			BLIP_TEX_COORDS[class][2],
+			BLIP_TEX_COORDS[class][3],
+			BLIP_TEX_COORDS[class][4]
+		)
+
+		positions[name].dot = dot	-- store the dot so we can use it later again
+		return dot
+	end
+
+	local function setDot(name)
+		local dot = positions[name].dot or createDot(name)		-- load the dot, or create a new one if none exists yet
+		local x = ((positions[name].x * math.cos(rotation)) - (-1 * positions[name].y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
+		local y = ((positions[name].x * math.sin(rotation)) + (-1 * positions[name].y * math.cos(rotation))) * pixelsperyard
+		local range = (x*x + y*y) ^ 0.5
+		if range < 1.5*frame.range then			-- if person is closer than 1.5 * range, show the dot. Else hide it
+			dot:ClearAllPoints()
+			dot:SetPoint("CENTER", radarFrame, "CENTER", x, y)
+			dot:Show()
+		else
+			dot:Hide()
+		end
+		if range < 1.05 * frame.range then		-- add an extra 5% in case of inaccuracy
+			playerTooClose = true
+		end			
+	end
+
+	function onUpdateRadar(self, elapsed)
+		if not DBM.Options.RangeFrameRadar then return end
+		pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
+		rotation = (2 * math.pi) - GetPlayerFacing()
+		playerTooClose = false
+		radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
+
+		local playerX, playerY = GetPlayerMapPosition("player")
+		local mapName = GetMapInfo()
+		local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
+		if not dims then return end
+		for i=1, GetNumRaidMembers() do
+			local uId = "raid"..i
+			if not UnitIsUnit(uId, "player") then
+				local x,y = GetPlayerMapPosition(uId)
+				local name = UnitName(uId)
+				if not positions[name] then
+					positions[name] = {
+						class = select(2, UnitClass(uId)),
+						x = (playerX - x) * dims[1],
+						y = (playerY - y) * dims[2]
+					}
+					setDot(name)
+				else
+					local dx = positions[name].x - ((playerX - x) * dims[1])
+					local dy = positions[name].y - ((playerY - y) * dims[2])
+
+					if (dx*dx)^0.5 > 0.1 or (dy*dy)^0.5 > 0.1 then 	-- did person move? If not, we dont have to update the dot
+						positions[name].x = (playerX - x) * dims[1]
+						positions[name].y = (playerY - y) * dims[2]
+						setDot(name)
+					end
+				end
+			end
+		end
+
+		if playerTooClose then
+			radarFrame.circle:SetVertexColor(1,0,0)
+		else
+			radarFrame.circle:SetVertexColor(0,1,0)
+		end
+		self:Show()
+	end
 end
 
 
@@ -441,18 +622,22 @@ function rangeCheck:Show(range, filter)
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
 	end
+	
 	range = range or 10
 	frame = frame or createFrame()
+	radarFrame = radarFrame or createRadarFrame()
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
 	frame.range = range
 	frame.filter = filter
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame, 0)
+	onUpdateRadar(radarFrame, 0)
 end
 
 function rangeCheck:Hide()
 	if frame then frame:Hide() end
+	if radarFrame then radarFrame:Hide() end
 end
 
 function rangeCheck:IsShown()
@@ -464,4 +649,3 @@ function rangeCheck:GetDistance(...)
 		return getDistanceBetween(...)
 	end
 end
-
