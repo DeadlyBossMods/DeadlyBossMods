@@ -86,10 +86,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(87904) then
+	if args:IsSpellID(87904, 101458, 101459, 101460) then
 		warnFeedback:Show(args.destName, args.amount or 1)
 		timerFeedback:Cancel()--prevent multiple timers spawning with diff args.
-		if tonumber((select(4, GetBuildInfo()))) >= 40200 then--since only one spell id in game at all, assume the nerf affects all modes for now until we find out if blizz added a new spellid for normal to be longer than heroic.
+		if tonumber((select(4, GetBuildInfo()))) >= 40200 and mod:IsDifficulty("normal10", "normal25") then
 			timerFeedback:Start(30, args.amount or 1)
 		else
 			timerFeedback:Start(20, args.amount or 1)
