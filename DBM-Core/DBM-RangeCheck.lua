@@ -554,7 +554,7 @@ do
 				else
 					if positions[uId].name ~= name then
 						positions[uId].name = name
-						positions[uId].class = select(2, UnitClasS(uId))
+						positions[uId].class = select(2, UnitClass(uId))
 					end
 					local dx = positions[uId].x - ((x - playerX) * dims[1])
 					local dy = positions[uId].y - ((y - playerY) * dims[2])
