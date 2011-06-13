@@ -148,7 +148,7 @@ do
 				info.checked = true
 			end
 			info.func = toggleRadar
---			UIDropDownMenu_AddButton(info, 1)
+			UIDropDownMenu_AddButton(info, 1)
 			
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_HIDE
@@ -490,17 +490,19 @@ do
 		local range = (x*x + y*y) ^ 0.5
 		
 		if range < (1.5 * frame.range) then							-- if person is closer than 1.5 * range, show the dot. Else hide it
-			x = ((x * math.cos(rotation)) - (-1 * y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
-			y = ((x * math.sin(rotation)) + (-1 * y * math.cos(rotation))) * pixelsperyard
+			local dx = ((x * math.cos(rotation)) - (-1 * y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
+			local dy = ((x * math.sin(rotation)) + (-1 * y * math.cos(rotation))) * pixelsperyard
 
 			dot:ClearAllPoints()
-			dot:SetPoint("CENTER", radarFrame, "CENTER", x, y)
+			dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
 			dot:Show()
 		else
 			dot:Hide()
 		end
 		if range < 1.05 * frame.range then		-- add an extra 5% in case of inaccuracy
-			playerTooClose = true
+			positions[name].tooClose = true
+		else
+			positions[name].tooClose = false
 		end			
 	end
 
@@ -521,7 +523,6 @@ do
 		if not DBM.Options.RangeFrameRadar then return end
 		pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
 		rotation = (2 * math.pi) - GetPlayerFacing()
-		playerTooClose = false
 		radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
 
 		local playerX, playerY = GetPlayerMapPosition("player")
@@ -552,8 +553,7 @@ do
 				else
 					local dx = positions[name].x - ((x - playerX) * dims[1])
 					local dy = positions[name].y - ((y - playerY) * dims[2])
-
-					if (dx*dx)^0.5 > 0.1 or (dy*dy)^0.5 > 0.1 then 	-- did person move? If not, we dont have to update the dot
+					if (dx*dx)^0.5 > 0.1 or (dy*dy)^0.5 > 0.1 then 	-- did person move? If not, we dont have to update the dot-						positions[name].x = (playerX - x) * dims[1]-						positions[name].y = (playerY - y) * dims[2]+						positions[name].x = (x - playerX) * dims[1]+						positions[name].y = (y - playerY) * dims[2]
 						positions[name].x = (x - playerX) * dims[1]
 						positions[name].y = (y - playerY) * dims[2]
 						setDot(name)
@@ -562,6 +562,13 @@ do
 			end
 		end
 
+		local playerTooClose = false
+		for i,v in pairs(positions) do
+			if v.tooClose then
+				playerTooClose = true
+				break;
+			end
+		end
 		if playerTooClose then
 			radarFrame.circle:SetVertexColor(1,0,0)
 		else
