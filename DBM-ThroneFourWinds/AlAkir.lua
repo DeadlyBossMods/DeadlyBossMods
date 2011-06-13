@@ -15,6 +15,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"SPELL_PERIODIC_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
 )
@@ -44,6 +45,7 @@ local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDeathKnight)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 local timerLightningCloudCD	= mod:NewNextTimer(15, 89588)
+local timerLightningStrikeCD= mod:NewNextTimer(10, 93257)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -53,6 +55,8 @@ local lastWindburst = 0
 local phase2Started = false
 local spamIce = 0
 local spamCloud = 0
+local spamStrike = 0
+--local strikedest = {}
 
 function mod:CloudRepeat()
 	warnCloud:Show()
@@ -65,13 +69,20 @@ function mod:CloudRepeat()
 	end
 end
 
+--local function ClearLightingStrikes()
+--	table.wipe(strikedest)
+--end
+
 function mod:OnCombatStart(delay)
 	timerWindBurstCD:Start(20-delay)
 	lastWindburst = 0
 	phase2Started = false
 	spamIce = 0
 	spamCloud = 0
+	spamStrike = 0
 	berserkTimer:Start(-delay)
+	timerLightningStrikeCD:Start(-delay)
+--	table.wipe(strikedest)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -84,7 +95,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFeedback:Start(20, args.amount or 1)
 		end
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
-		if tonumber((select(4, GetBuildInfo()))) >= 40200 and mod:IsDifficulty("normal10", "normal25") then--until blizz clarifies more certainty in patch notes lets assume all nerfs are normal mode only.
+		if tonumber((select(4, GetBuildInfo()))) >= 40200 and mod:IsDifficulty("normal10", "normal25") then
 			timerAcidRainStack:Start(20)
 		else
 			timerAcidRainStack:Start()
@@ -96,6 +107,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			phase2Started = true
 			warnPhase2:Show()
 			timerWindBurstCD:Cancel()
+			timerLightningStrikeCD:Cancel()
 		end
 	elseif args:IsSpellID(89668) then
 		warnLightingRod:Show(args.destName)
@@ -143,8 +155,20 @@ function mod:SPELL_DAMAGE(args)
 	elseif args:IsSpellID(89588, 93299, 93298, 93297) and GetTime() - spamCloud >= 4 and args:IsPlayer() then
 		specWarnCloud:Show()
 		spamCloud = GetTime()
+--will try simple approach first before messing with filtering.
+	elseif args:IsSpellID(88214, 93255, 93256, 93257) then--Lighting strike, only CLEU event for it is spell_damage or spell_miss :(
+--		if not strikedest[args.destName] then--Lets check ignored names and filter them before we do anything.
+--			strikedest[args.destName] = true--Lets add names to an ignore table for heroic mode, so they can be ignored for 15 seconds.
+			if GetTime() - spamStrike > 9.5 then--Completely ignore damage for 9 seconds to anyone. Hopefully filter people who run into a strike from a diff section while it's going off.
+				spamStrike = GetTime()
+				timerLightningStrikeCD:Start()--Start 10 second timer for next lighthing strike.
+--				self:Schedule(15, ClearLightingStrikes)--Schedule a table wipe when that 15 seconds as expired.
+			end
+--		end
 	end
 end
+
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(args)
 	if args:IsSpellID(91020, 93258, 93259, 93260) and GetTime() - spamIce >= 4 and args:IsPlayer() then
