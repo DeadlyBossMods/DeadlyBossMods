@@ -509,9 +509,9 @@ do
 			dot:Hide()
 		end
 		if range < 1.05 * frame.range then		-- add an  extra 5% in case of inaccuracy
-			positions[uId].tooClose = true
+			positions[id].tooClose = true
 		else
-			positions[uId].tooClose = false
+			positions[id].tooClose = false
 		end			
 	end
 
@@ -534,7 +534,7 @@ do
 			unitID = "party%d"
 			numPlayers = GetNumPartyMembers()
 		end
-		if numPlayers < prevNumPlayers then
+		if numPlayers < (prevNumPlayers or 0) then
 			for i=numPlayers+1, prevNumPlayers do
 				positions[i].dot:Hide()		-- Hide dots when people leave the group
 			end
