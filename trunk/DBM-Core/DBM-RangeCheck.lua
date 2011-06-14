@@ -375,7 +375,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.1 then
+		if elapsed >= 0.5 then
 			onUpdateRadar(self, elapsed)
 			elapsed = 0
 		end
@@ -405,6 +405,15 @@ function createRadarFrame()
 	player:SetBlendMode("ADD")
 	player:SetPoint("CENTER")
 
+	for i=1, 25 do
+		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
+		dot:SetWidth(24)
+		dot:SetHeight(24)
+		dot:SetFrameStrata("TOOLTIP")
+		dot:Hide()
+		positions[i] = {dot = dot}
+	end
+
 	radarFrame:Show()
 	return radarFrame
 end
@@ -412,10 +421,6 @@ end
 ----------------
 --  OnUpdate  --
 ----------------
-
-function onUpdate(self, elapsed)
-print("hi")
-end
 
 local soundUpdate = 0
 function onUpdate(self, elapsed)
@@ -465,30 +470,34 @@ function onUpdate(self, elapsed)
 end
 
 do
-	local rotation, pixelsperyard, playerTooClose
-	local function createDot(name)
-		local class = positions[name].class
-		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..name, radarFrame, "WorldMapPartyUnitTemplate")
+	local rotation, pixelsperyard, prevNumPlayers = 0
+	local function createDot(id)
+		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..id, radarFrame, "WorldMapPartyUnitTemplate")
 		dot:SetFrameStrata("TOOLTIP")
 		dot:SetWidth(24)
 		dot:SetHeight(24)
-		dot.icon:SetTexCoord(
+		dot:Hide()
+
+		positions[id].dot = dot	-- store the dot so we can use it later again
+		return dot
+	end
+
+	local function setDotColor(id, class)
+		if class == positions[id].class then return end
+		positions[id].dot.icon:SetTexCoord(
 			BLIP_TEX_COORDS[class][1],
 			BLIP_TEX_COORDS[class][2],
 			BLIP_TEX_COORDS[class][3],
 			BLIP_TEX_COORDS[class][4]
 		)
-
-		positions[name].dot = dot	-- store the dot so we can use it later again
-		return dot
+		positions[id].class = class		
 	end
 
-	local function setDot(name)
-		local dot = positions[name].dot or createDot(name)		-- load the dot, or create a new one if none exists yet
-		local x = positions[name].x
-		local y = positions[name].y
+	local function setDot(id)
+		local dot = positions[id].dot or createDot(id)		-- load the dot, or create a new one if none exists yet (creating new probably never happens as the dots are created when the frame is created)
+		local x = positions[id].x
+		local y = positions[id].y
 		local range = (x*x + y*y) ^ 0.5
-
 		if range < (1.5 * frame.range) then							-- if person is closer than 1.5 * range, show the dot. Else hide it
 			local dx = ((x * math.cos(rotation)) - (-1 * y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
 			local dy = ((x * math.sin(rotation)) + (-1 * y * math.cos(rotation))) * pixelsperyard
@@ -499,36 +508,23 @@ do
 		else
 			dot:Hide()
 		end
-		if range < 1.05 * frame.range then		-- add an extra 5% in case of inaccuracy
-			positions[name].tooClose = true
+		if range < 1.05 * frame.range then		-- add an  extra 5% in case of inaccuracy
+			positions[uId].tooClose = true
 		else
-			positions[name].tooClose = false
+			positions[uId].tooClose = false
 		end			
-	end
-
-	local function createTestDots()
-		positions["arta"] = {class="PRIEST",x=10.6,y=0}
-		positions["omega"] = {class="WARRIOR",x=0,y=-15}
-		positions["jack"] = {class="HUNTER",x=-5,y=11}
-		positions["gerard"] = {class="MAGE",x=5.3,y=-9.8}
-		positions["simon"] = {class="DRUID",x=12,y=6}
-		positions["steven"] = {class="DEATHKNIGHT",x=-19,y=3}
-	end
-	local function showTestDots()
-		if not positions["arta"] then createTestDots() end
-		setDot("arta") setDot("omega") setDot("jack") setDot("gerard") setDot("simon") setDot("steven")
 	end
 
 	function onUpdateRadar(self, elapsed)
 		if not DBM.Options.RangeFrameRadar then return end
 		pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
-		rotation = (2 * math.pi) - GetPlayerFacing()
 		radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
 
-		local playerX, playerY = GetPlayerMapPosition("player")
+		rotation = (2 * math.pi) - GetPlayerFacing()		
 		local mapName = GetMapInfo()
 		local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
 		if not dims then return end
+
 		local numPlayers = 0
 		local unitID = "raid%d"
 		if GetNumRaidMembers() > 0 then
@@ -538,32 +534,32 @@ do
 			unitID = "party%d"
 			numPlayers = GetNumPartyMembers()
 		end
+		if numPlayers < prevNumPlayers then
+			for i=numPlayers+1, prevNumPlayers do
+				positions[i].dot:Hide()		-- Hide dots when people leave the group
+			end
+		end
+		prevNumPlayers = numPlayers
+
+		local playerX, playerY = GetPlayerMapPosition("player")
+		if playerX == 0 and playerY == 0 then return end		-- Somehow we can't get the correct position?
+
 		for i=1, numPlayers do
 			local uId = unitID:format(i)
 			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) then
 				local x,y = GetPlayerMapPosition(uId)
-				local name = UnitName(uId)
-				if not positions[uId] then
-					positions[uId] = {
-						name = name,
-						class = select(2, UnitClass(uId)),
+				if not positions[i] then
+					positions[i] = {
+						class = "none",
 						x = (x - playerX) * dims[1],
 						y = (y - playerY) * dims[2]
 					}
-					setDot(uId)
 				else
-					if positions[uId].name ~= name then
-						positions[uId].name = name
-						positions[uId].class = select(2, UnitClass(uId))
-					end
-					local dx = positions[uId].x - ((x - playerX) * dims[1])
-					local dy = positions[uId].y - ((y - playerY) * dims[2])
-					if (dx*dx)^0.5 > 0.1 or (dy*dy)^0.5 > 0.1 then 	-- did person move? If not, we dont have to update the dot-						positions[name].x = (playerX - x) * dims[1]-						positions[name].y = (playerY - y) * dims[2]+						positions[name].x = (x - playerX) * dims[1]+						positions[name].y = (y - playerY) * dims[2]
-						positions[uId].x = (x - playerX) * dims[1]
-						positions[uId].y = (y - playerY) * dims[2]
-						setDot(uId)
-					end
+					positions[i].x = (x - playerX) * dims[1]
+					positions[i].y = (y - playerY) * dims[2]
 				end
+				setDotColor(i, select(2, UnitClass(uId)))
+				setDot(i)
 			end
 		end
 
