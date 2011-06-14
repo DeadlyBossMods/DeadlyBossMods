@@ -483,7 +483,7 @@ do
 	end
 
 	local function setDotColor(id, class)
-		if class == positions[id].class then return end
+		if class and class == positions[id].class then return end
 		positions[id].dot.icon:SetTexCoord(
 			BLIP_TEX_COORDS[class][1],
 			BLIP_TEX_COORDS[class][2],
@@ -537,6 +537,7 @@ do
 		if numPlayers < (prevNumPlayers or 0) then
 			for i=numPlayers+1, prevNumPlayers do
 				positions[i].dot:Hide()		-- Hide dots when people leave the group
+				positions[i].tooClose = false
 			end
 		end
 		prevNumPlayers = numPlayers
@@ -546,8 +547,9 @@ do
 
 		for i=1, numPlayers do
 			local uId = unitID:format(i)
-			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) then
-				local x,y = GetPlayerMapPosition(uId)
+			if not UnitIsUnit(uId, "player") then
+				local x,y = GetPlayerMapPosition(uId)				
+				if UnitIsDeadOrGhost(uId) then x = 100 end	-- hack to make sure dead people aren't shown			
 				if not positions[i] then
 					positions[i] = {
 						class = "none",
