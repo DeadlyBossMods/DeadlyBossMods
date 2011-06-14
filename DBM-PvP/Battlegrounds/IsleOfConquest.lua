@@ -48,11 +48,11 @@ local function isPoi(id)
 		or (id >= 9 and id <= 12)		-- Keep
 end
 function getPoiState(id)
-	if isInArgs(id, 16, 135, 140, 145, 150) then		return -1		-- Neutral
-	elseif isInArgs(id, 18, 136, 141, 146, 151) then	return 1		-- Alliance controlled
-	elseif isInArgs(id, 20, 138, 143, 148, 153) then 	return 2		-- Horde controlled
-	elseif isInArgs(id, 17, 137, 142, 147, 152) then	return 3		-- Alliance assaulted
-	elseif isInArgs(id, 19, 139, 144, 149, 154) then	return 4		-- Horde assaulted
+	if isInArgs(id, 16, 135, 140, 145, 150) then			return -1 -- Neutral
+	elseif isInArgs(id, 11, 18, 136, 141, 146, 151) then	return 1 -- Alliance controlled
+	elseif isInArgs(id, 10, 20, 138, 143, 148, 153) then	return 2 -- Horde controlled
+	elseif isInArgs(id, 9, 17, 137, 142, 147, 152) then		return 3 -- Alliance assaulted
+	elseif isInArgs(id, 12, 19, 139, 144, 149, 154) then	return 4 -- Horde assaulted
 	else return false
 	end
 end
