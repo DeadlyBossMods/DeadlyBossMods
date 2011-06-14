@@ -114,9 +114,6 @@ local function showOrbWarning(source)
 			orbList[#orbList + 1] = n
 		end
 	end
-	if  #orbList <= 1 then--we don't have both orbs
-		mod:Schedule(0.5, showOrbWarning, "spawn")--check again soon
-	end
 
 	if playerIsOrb then specWarnOrbOnYou:Show() end
 
@@ -137,6 +134,8 @@ local function showOrbWarning(source)
 				if orbList[7] then mod:SetIcon(orbList[7], 2) end
 				if orbList[8] then mod:SetIcon(orbList[8], 1) end
 			end
+		else
+			mod:Schedule(0.5, showOrbWarning, "spawn")--check again soon since we didn't have 2 yet.
 		end
 	elseif source == "damage" then--Orbs are damaging people, they are without a doubt targeting 2 players by now, although may still have others with aggro :\
 		warnOrbs:Show(table.concat(orbList, "<, >"))
