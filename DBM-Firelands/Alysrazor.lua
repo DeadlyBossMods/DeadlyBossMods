@@ -11,13 +11,14 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_POWER"
 )
 
-
 local warnMolting		= mod:NewSpellAnnounce(99464, 3)
+local warnFirestorm		= mod:NewSpellAnnounce(100744, 3)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
 
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
@@ -37,8 +38,20 @@ function mod:OnCombatStart(delay)
 	end
 end
 
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(100744) then
+		warnFirestorm:Show()
+--[[
+wowhead says: 10sec duration
+Cast start 	21:36:02.777
+aura applied	21:36:07.778
+aura removed	21:36:11.321
+--]]
+	end
+end
+
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(99464, 100698, 100836, 100837) then
+	if args:IsSpellID(99464, 100698, 100836, 100837) then	--99464, 100698 confirmed
 		warnMolting:Show()
 		timerMoltingCD:Start()
 		if phase ~= 1 then

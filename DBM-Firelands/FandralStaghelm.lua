@@ -12,11 +12,13 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS"
 )
 
 local warnAdrenaline		= mod:NewStackAnnounce(97238, 3)
 local warnFury			= mod:NewStackAnnounce(97235, 3)
+local warnOrbs			= mod:NewCastAnnounce(98451, 3, nil, mod:IsTank())
 
 local timerLeapingFlames	= mod:NewCDTimer(17, 100208)
 local timerFlameScythe		= mod:NewCDTimer(17, 98474)
@@ -31,7 +33,7 @@ local abilityTimers = {
 	[1] = 12.740,
 	[2] = 10.025,
 	[3] = 8.381,
-	[4] = 7.214	-- should only allow him to cast more (need logs for more/better timing or different timing)
+	[4] = 7.214	-- should not allow him to cast more (need logs for more/better timing or different timing)
 }
 
 function mod:OnCombatStart(delay)
@@ -42,12 +44,12 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(98374) then		-- Cat Form (99574? maybe the form id for druids with is heroic staff)
 		transforms = transforms + 1
-		abilityCount = 0
+		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
 		timerFlameScythe:Cancel()
 		timerLeapingFlames:Start(abilityTimers[0])
 	elseif args:IsSpellID(98379) then	-- Scorpion Form
 		transforms = transforms + 1
-		abilityCount = 0
+		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
 		timerLeapingFlames:Cancel()
 		timerFlameScythe:Start(abilityTimers[0])
 	elseif args:IsSpellID(97238) then
@@ -61,13 +63,19 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+function mod:SPELL_CASST_START(args)
+	if args:IsSpellID(98451) then	--98451 confirmed
+		warnOrbs:Show()
+	end
+end
+
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(98476) and GetTime() - abilitySpam > 3 then
+	if args:IsSpellID(98476) and GetTime() - abilitySpam > 3 then	--98476 confirmed
 		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
 		local t = abilityTimers[abilityCount] or 0
 		timerLeapingFlames:Start(t)
-	elseif args:IsSpellID(98474, 100212, 100213, 100214) and GetTime() - abilitySpam > 3 then
+	elseif args:IsSpellID(98474, 100212, 100213, 100214) and GetTime() - abilitySpam > 3 then	--98474, 100213 confirmed
 		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
 		local t = abilityTimers[abilityCount] or 0

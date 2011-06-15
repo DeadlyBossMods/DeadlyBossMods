@@ -73,7 +73,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99399, 101238, 101239, 101240) then
+	if args:IsSpellID(99399, 101238, 101239, 101240) then	--99399, 101238 confirmed
 		if args.amount or 0 % 2 == 0 then
 			warnBurningWound:Show(args.destName, args,amount or 1)
 		end
@@ -86,9 +86,9 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(98710, 100890, 100891, 100892) then
+	if args:IsSpellID(98710, 100890, 100891, 100892) then	--98710, 100890 confirmed
 		timerSulfurasSmash:Start()
-	elseif args:IsSpellID(98952) then--This has 11 spellids, veryify what's used for what
+	elseif args:IsSpellID(98952, 100883) then--This has 11 spellids, veryify what's used for what
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
 		timerHandRagnaros:Cancel()
@@ -101,15 +101,15 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(98237, 100383, 100384, 100387) then
+	if args:IsSpellID(98237, 100383, 100384, 100387) then	--98237, 100383 confirmed
 		warnHandRagnaros:Show()
 		timerHandRagnaros:Start()
-	elseif args:IsSpellID(98164) then
+	elseif args:IsSpellID(98164) then	--98164 confirmed
 		timerMagmaTrap:Start()
-	elseif args:IsSpellID(98263, 100113, 100114, 100115) then
+	elseif args:IsSpellID(98263, 100113, 100114, 100115) then	--98263, 100113 confirmed
 		warnWrathRagnaros:Show()
 		timerWrathRagnaros:Start()
-	elseif args:IsSpellID(99171, 100172, 100173, 100174) then	-- correct SpellID ???
+	elseif args:IsSpellID(99171, 100172, 100173, 100174) or args:IsSpellID(100181) then	-- correct SpellID? | 100181 confirmed
 		timerFlames:Start()
 	elseif args:IsSpellID(98520) then	-- correct spell ID ???
 		warnMoltenSeed:Show()

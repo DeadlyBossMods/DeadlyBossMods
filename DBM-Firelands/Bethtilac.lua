@@ -43,6 +43,16 @@ function mod:repeatDrone()
 	self:ScheduleMethod(60, "repeatDrone")
 end
 
+function mod:OnCombatStart(delay)
+	timerSmolderingDevastationCD:Start(-delay)
+	timerSpinners:Start(12-delay)
+	timerSpiderlings:Start(12.5-delay)
+	self:ScheduleMethod(11-delay , "repeatSpiderlings")
+	timerDrone:Start(45-delay)
+	self:ScheduleMethod(45-delay, "repeatDrone")
+	smolderingCount = 0
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99476, 99506) then
 		timerWidowKiss:Start(args.destName)
@@ -71,16 +81,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end--]]
 	end
-end
-
-function mod:OnCombatStart(delay)
-	timerSmolderingDevastationCD:Start(-delay)
-	timerSpinners:Start(12-delay)
-	timerSpiderlings:Start(12.5-delay)
-	self:ScheduleMethod(11-delay , "repeatSpiderlings")
-	timerDrone:Start(45-delay)
-	self:ScheduleMethod(45-delay, "repeatDrone")
-	smolderingCount = 0
 end
 
 function mod:SPELL_CAST_START(args)
