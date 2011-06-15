@@ -385,7 +385,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.05 then
+		if elapsed >= 0.15 then
 			onUpdateRadar(self, elapsed)
 			elapsed = 0
 		end
