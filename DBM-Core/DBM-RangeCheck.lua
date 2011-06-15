@@ -62,23 +62,33 @@ local onUpdateRadar
 local dropdownFrame
 local initializeDropdown
 local initRangeCheck -- initializes the range check for a specific range (if necessary), returns false if the initialization failed (because of a map range check in an unknown zone)
-local positions = {}
+local dots = {}
+local charms = {}
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 local BLIP_TEX_COORDS = {
-	["WARRIOR"]	= { 0, 0.125, 0, 0.25 },
-	["PALADIN"]	= { 0.125, 0.25, 0, 0.25 },
-	["HUNTER"]	= { 0.25, 0.375, 0, 0.25 },
-	["ROGUE"]	= { 0.375, 0.5, 0, 0.25 },
-	["PRIEST"]	= { 0.5, 0.625, 0, 0.25 },
-	["DEATHKNIGHT"]	= { 0.625, 0.75, 0, 0.25 },
-	["SHAMAN"]	= { 0.75, 0.875, 0, 0.25 },
-	["MAGE"]	= { 0.875, 1, 0, 0.25 },
-	["WARLOCK"]	= { 0, 0.125, 0.25, 0.5 },
-	["DRUID"]	= { 0.25, 0.375, 0.25, 0.5 }
+	["WARRIOR"]	= { 0,	   0.125, 0,    0.25 },
+	["PALADIN"]	= { 0.125, 0.25,  0,    0.25 },
+	["HUNTER"]	= { 0.25,  0.375, 0,    0.25 },
+	["ROGUE"]	= { 0.375, 0.5,   0,    0.25 },
+	["PRIEST"]	= { 0.5,   0.625, 0,    0.25 },
+	["DEATHKNIGHT"]	= { 0.625, 0.75,  0,    0.25 },
+	["SHAMAN"]	= { 0.75,  0.875, 0,    0.25 },
+	["MAGE"]	= { 0.875, 1,     0,    0.25 },
+	["WARLOCK"]	= { 0,     0.125, 0.25, 0.5  },
+	["DRUID"]	= { 0.25,  0.375, 0.25, 0.5  }
 }
-
+local CHARM_TEX_COORDS = {
+	[1] = 	{ 0,	0.25, 0,    0.25 },
+	[2] = 	{ 0.25, 0.5,  0,    0.25 },
+	[3] = 	{ 0.5, 	0.75, 0,    0.25 },
+	[4] = 	{ 0.75, 1,    0,    0.25 },
+	[5] = 	{ 0, 	0.25, 0.25, 0.5  },
+	[6] = 	{ 0.25, 0.5,  0.25, 0.5  },
+	[7] = 	{ 0.5, 	0.75, 0.25, 0.5  },
+	[8] = 	{ 0.75, 1,    0.25, 0.5  }
+}
 ---------------------
 --  Dropdown Menu  --
 ---------------------
@@ -375,7 +385,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.5 then
+		if elapsed >= 0.05 then
 			onUpdateRadar(self, elapsed)
 			elapsed = 0
 		end
@@ -411,7 +421,21 @@ function createRadarFrame()
 		dot:SetHeight(24)
 		dot:SetFrameStrata("TOOLTIP")
 		dot:Hide()
-		positions[i] = {dot = dot}
+		dots[i] = {dot = dot}
+	end
+	for i=1, 8 do
+		local charm = radarFrame:CreateTexture("DBMRangeCheckRadarCharm"..i, "OVERLAY")
+		charm:SetTexture("interface\\targetingframe\\UI-RaidTargetingIcons.blp")
+		charm:SetWidth(16)
+		charm:SetHeight(16)
+		charm:SetTexCoord(
+			CHARM_TEX_COORDS[i][1],
+			CHARM_TEX_COORDS[i][2],
+			CHARM_TEX_COORDS[i][3],
+			CHARM_TEX_COORDS[i][4]
+		)
+		charm:Hide()
+		charms[i] = charm
 	end
 
 	radarFrame:Show()
@@ -478,40 +502,52 @@ do
 		dot:SetHeight(24)
 		dot:Hide()
 
-		positions[id].dot = dot	-- store the dot so we can use it later again
+		dots[id].dot = dot	-- store the dot so we can use it later again
 		return dot
 	end
 
 	local function setDotColor(id, class)
-		if class and class == positions[id].class then return end
-		positions[id].dot.icon:SetTexCoord(
+		if class and class == dots[id].class then return end
+		dots[id].dot.icon:SetTexCoord(
 			BLIP_TEX_COORDS[class][1],
 			BLIP_TEX_COORDS[class][2],
 			BLIP_TEX_COORDS[class][3],
 			BLIP_TEX_COORDS[class][4]
 		)
-		positions[id].class = class		
+		dots[id].class = class		
 	end
 
-	local function setDot(id)
-		local dot = positions[id].dot or createDot(id)		-- load the dot, or create a new one if none exists yet (creating new probably never happens as the dots are created when the frame is created)
-		local x = positions[id].x
-		local y = positions[id].y
+	local function setDot(id, icon)
+		local dot = dots[id].dot or createDot(id)		-- load the dot, or create a new one if none exists yet (creating new probably never happens as the dots are created when the frame is created)
+		local x = dots[id].x
+		local y = dots[id].y
 		local range = (x*x + y*y) ^ 0.5
 		if range < (1.5 * frame.range) then							-- if person is closer than 1.5 * range, show the dot. Else hide it
 			local dx = ((x * math.cos(rotation)) - (-1 * y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
 			local dy = ((x * math.sin(rotation)) + (-1 * y * math.cos(rotation))) * pixelsperyard
 
-			dot:ClearAllPoints()
-			dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
-			dot:Show()
+			if icon then
+				charms[icon]:ClearAllPoints()
+				charms[icon]:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
+				charms[icon]:Show()
+				dot:Hide()
+				dots[id].icon = icon
+			else
+				dot:ClearAllPoints()
+				dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
+				dot:Show()
+				if dots[id].icon then
+					charms[dots[id].icon]:Hide()
+					dots[id].icon = nil
+				end
+			end
 		else
 			dot:Hide()
 		end
 		if range < 1.05 * frame.range then		-- add an  extra 5% in case of inaccuracy
-			positions[id].tooClose = true
+			dots[id].tooClose = true
 		else
-			positions[id].tooClose = false
+			dots[id].tooClose = false
 		end			
 	end
 
@@ -536,8 +572,12 @@ do
 		end
 		if numPlayers < (prevNumPlayers or 0) then
 			for i=numPlayers+1, prevNumPlayers do
-				positions[i].dot:Hide()		-- Hide dots when people leave the group
-				positions[i].tooClose = false
+				dots[i].dot:Hide()		-- Hide dots when people leave the group
+				dots[i].tooClose = false
+				if dots[i].icon then
+					charms[dots[i].icon]:Hide()
+					dots[i].icon = nil
+				end
 			end
 		end
 		prevNumPlayers = numPlayers
@@ -550,23 +590,24 @@ do
 			if not UnitIsUnit(uId, "player") then
 				local x,y = GetPlayerMapPosition(uId)				
 				if UnitIsDeadOrGhost(uId) then x = 100 end	-- hack to make sure dead people aren't shown			
-				if not positions[i] then
-					positions[i] = {
+				if not dots[i] then
+					dots[i] = {
+						icon = nil,
 						class = "none",
 						x = (x - playerX) * dims[1],
 						y = (y - playerY) * dims[2]
 					}
 				else
-					positions[i].x = (x - playerX) * dims[1]
-					positions[i].y = (y - playerY) * dims[2]
+					dots[i].x = (x - playerX) * dims[1]
+					dots[i].y = (y - playerY) * dims[2]
 				end
 				setDotColor(i, select(2, UnitClass(uId)))
-				setDot(i)
+				setDot(i, GetRaidTargetIndex(uId))
 			end
 		end
 
 		local playerTooClose = false
-		for i,v in pairs(positions) do
+		for i,v in pairs(dots) do
 			if v.tooClose then
 				playerTooClose = true
 				break;
