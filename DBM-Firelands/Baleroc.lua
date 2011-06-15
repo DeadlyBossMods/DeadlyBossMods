@@ -27,6 +27,8 @@ local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 
 local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
 
+local berserkTimer		= mod:NewBerserkTimer(360)
+
 mod:AddBoolOption("SetIconOnCountdown")
 mod:AddBoolOption("ArrowOnCountdown")
 
@@ -44,6 +46,7 @@ function mod:OnCombatStart(delay)
 	timerBladeNext:Start(-delay)
 	timerShardsTorment:Start(-delay)
 	table.wipe(countdownTargets)
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -71,7 +74,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(99352, 99405) then
+	if args:IsSpellID(99352, 99405) then	--99352 confirmed
 		warnDecimationBlade:Show()
 		timerBladeActive:Start(args.spellName)
 		timerBladeNext:Start()
@@ -79,5 +82,7 @@ function mod:SPELL_CAST_START(args)
 		warnInfernoBlade:Show()
 		timerBladeActive:Start(args.spellName)
 		timerBladeNext:Start()
+	elseif args:IsSpellID(99259) then
+		warnShardsTorment:Show()
 	end
 end

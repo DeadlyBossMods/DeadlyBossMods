@@ -28,6 +28,8 @@ local warnHeatedVolcano		= mod:NewSpellAnnounce(98493, 3)
 local warnFlameStomp		= mod:NewSpellAnnounce(97282, 3, nil, mod:IsMelee())--According to journal only hits players within 20 yards of him, so melee by default?
 local warnMoltenArmor		= mod:NewStackAnnounce(98255, 4, nil, mod:IsTank() or mod:IsHealer())	-- Would this be nice if we could show this in the infoFrame? (changed defaults to tanks/healers, if you aren't either it doesn't concern you unless you find shit to stand in)
 local warnDrinkMagma		= mod:NewSpellAnnounce(98034, 2)	-- if you "kite" him to close to magma
+local warnFragments		= mod:NewSpellAnnounce(98136, 2, false, mod:IsTank())
+local warnFlameLife		= mod:NewSpellAnnounce(98552, 3)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 
 local timerElementals		= mod:NewTimer(22.5, "TimerElementals")
@@ -35,7 +37,7 @@ local timerHeatedVolcano	= mod:NewCDTimer(40, 98493)
 local timerFlameStomp		= mod:NewNextTimer(30, 97282, nil, mod:IsMelee())
 local timerMoltenSpew		= mod:NewNextTimer(6, 98034)	-- 6secs after Drinking Magma
 
-local spamElementals = 0
+local spamAdds = 0
 local spamMoltenArmor = 0
 local prewarnedPhase2 = false
 
@@ -44,7 +46,7 @@ function mod:OnCombatStart(delay)
 	timerFireElementals:Start(45-delay)
 	timerHeatedVolcano:Start(55-delay)
 	timerFlameStomp:Start(28-delay)
-	spamElementals = 0
+	spamAdds = 0
 	spamMoltenArmor = 0
 	prewarnedPhase2 = false
 end
@@ -59,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98034) then
 		warnDrinkMagma:Show()
 		timerMoltenSpew:Start()
-	elseif args:IsSpellID(97282) then
+	elseif args:IsSpellID(97282, 100969) then
 		warnFlameStomp:Show()
 		timerFlameStomp:Start()
 	end
@@ -73,10 +75,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(98552, 98146) and GetTime() - spamElementals > 5 then
-		warnElementals:Show()
+	if args:IsSpellID(98136, 100392) and GetTime() - spamAdds > 5 then
+		warnFragments:Show()
 		timerElementals:Start()
-		spamElementals = GetTime()
+		spamAdds = GetTime()
+	elseif args:IsSpellID(98552, 98045) and GetTime() - spamAdds > 5 then
+		warnFlameLife:Show()
+		timerElementals:Start()
+		spamAdds = GetTime()
 	end
 end
 
