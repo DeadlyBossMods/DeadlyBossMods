@@ -567,7 +567,7 @@ do
 				charms[icon]:Show()
 				dot:Hide()
 				dots[id].icon = icon
-			elseif (not frame.filter or frame.filter(uId)) then
+			else --if (not frame.filter or frame.filter(uId)) then
 				dot:ClearAllPoints()
 				dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
 				dot:Show()
@@ -575,8 +575,8 @@ do
 					charms[dots[id].icon]:Hide()
 					dots[id].icon = nil
 				end
-			else
-				dot:Hide()
+			--else
+			--	dot:Hide()
 			end
 		else
 			dot:Hide()
