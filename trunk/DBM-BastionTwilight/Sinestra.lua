@@ -15,7 +15,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_DAMAGE",
@@ -27,19 +26,17 @@ local warnOrbSoon		= mod:NewAnnounce("WarnOrbSoon", 3, 92954, true, nil, true)--
 local warnOrbs			= mod:NewAnnounce("warnAggro", 4, 92954)
 local warnWrack			= mod:NewTargetAnnounce(92955, 4)
 local warnWrackJump		= mod:NewAnnounce("warnWrackJump", 3, 92955, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
-local warnWrackCount5s	= mod:NewAnnounce("WarnWrackCount5s", 2, 92955, false)--Announce wrack duration at 10 15 and 20 seconds, should work for most strats of dispeling.
 local warnDragon		= mod:NewAnnounce("WarnDragon", 3, 69002)
 local warnEggWeaken		= mod:NewAnnounce("WarnEggWeaken", 4, 61357)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
 local warnIndomitable	= mod:NewSpellAnnounce(92946, 3)
 local warnExtinction	= mod:NewSpellAnnounce(86227, 4)
 local warnEggShield		= mod:NewSpellAnnounce(87654, 3)
-local warnPhase3		= mod:NewPhaseAnnounce(3)
+local warnPhase3		= mod:NewPhaseAnnounce(3, 2)
 local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
 
 local specWarnOrbs		= mod:NewSpecialWarning("SpecWarnOrbs", nil, nil, nil, true)
 local specWarnOrbOnYou	= mod:NewSpecialWarning("SpecWarnAggroOnYou")
-local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately. (Maybe add support for common 10 man variation with if/else rules?)
 local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false, nil, nil, true)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
@@ -56,32 +53,23 @@ local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
 
 local OrbsCountdown		= mod:NewCountdown(28, 92954, nil, "OrbsCountdown")
 
-mod:AddBoolOption("HealthFrame", true)
+mod:AddBoolOption("HealthFrame", false)
 mod:AddBoolOption("SetIconOnOrbs", true)
 mod:AddBoolOption("InfoFrame", false)--Does not filter tanks. not putting ugly hack in info frame, its simpley an aggro tracker
 
 local eggDown = 0
 local eggSpam = 0
-local lastDispeled = 0
-local newWrackTime = 0
-local oldWrackTime = 0
-local newWrackCount = 0
-local oldWrackCount = 0
 local eggRemoved = false
-local wrackWarned2 = false
-local wrackWarned4 = false
-local redSpam = 0
 local calenGUID = 0
 local orbList = {}
 local orbWarned = nil
-local playerIsOrb = nil
+local playerWarned = nil
 local wrackName = GetSpellInfo(92955)
 local wrackTargets = {}
---local tanks = {}
 
-local function resetPlayerOrbStatus(resetWarning)
-	if resetWarning then orbWarned = nil end
-	playerIsOrb = nil
+local function resetPlayerOrbStatus()
+	orbWarned = nil
+	playerWarned = nil
 end
 
 local function isTank(unit)
@@ -110,19 +98,18 @@ local function showOrbWarning(source)
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
 		if UnitThreatSituation(n) == 3 and not isTank(n) then
-			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
+			if UnitIsUnit(n, "player") and not playerWarned then
+				playerWarned = true
+				specWarnOrbOnYou:Show()
+			end
 		end
 	end
-
-	if playerIsOrb then specWarnOrbOnYou:Show() end
-
 	if source == "spawn" then
 		if #orbList >= 2 then--only warn for 2 or more.
 			warnOrbs:Show(table.concat(orbList, "<, >"))
 			-- if we could guess orb targets lets wipe the orb list in 5 sec
 			-- if not then we might as well just save them for next time
-			mod:Schedule(5, resetPlayerOrbStatus) -- might need to adjust this
 			if mod.Options.SetIconOnOrbs then
 				mod:ClearIcons()
 				if orbList[1] then mod:SetIcon(orbList[1], 8) end
@@ -139,7 +126,7 @@ local function showOrbWarning(source)
 		end
 	elseif source == "damage" then--Orbs are damaging people, they are without a doubt targeting 2 players by now, although may still have others with aggro :\
 		warnOrbs:Show(table.concat(orbList, "<, >"))
-		mod:Schedule(10, resetPlayerOrbStatus, true)
+		mod:Schedule(10, resetPlayerOrbStatus)
 		if mod.Options.SetIconOnOrbs then
 			mod:ClearIcons()
 			if orbList[1] then mod:SetIcon(orbList[1], 8) end
@@ -155,6 +142,7 @@ local function showOrbWarning(source)
 end
 
 function mod:OrbsRepeat()
+	resetPlayerOrbStatus()
 	timerOrbs:Start()
 	if self.Options.WarnOrbSoon then
 		warnOrbSoon:Schedule(23, 5)
@@ -177,23 +165,15 @@ end
 function mod:OnCombatStart(delay)
 	eggDown = 0
 	eggSpam = 0
-	lastDispeled = 0
-	newWrackTime = 0
-	oldWrackTime = 0
-	newWrackCount = 0
-	wrackWarned2 = false
-	wrackWarned4 = false
 	eggRemoved = false
-	redSpam = 0
 	calenGUID = 0
 	timerDragon:Start(16-delay)
 	timerBreathCD:Start(21-delay)
 	timerOrbs:Start(29-delay)
 	table.wipe(orbList)
 	orbWarned = nil
-	playerIsOrb = nil
+	playerWarned = nil
 	table.wipe(wrackTargets)
---	table.wipe(tanks)
 	if self.Options.WarnOrbSoon then
 		warnOrbSoon:Schedule(24-delay, 5)
 		warnOrbSoon:Schedule(25-delay, 4)
@@ -232,46 +212,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(89421, 92955) then--Cast wracks (10,25)
 		warnWrack:Show(args.destName)
 		timerWrack:Start()
-		if oldWrackTime == 0 then
-			oldWrackTime = GetTime()
-		else
-			oldWrackTime = newWrackTime
-		end
-		newWrackTime = GetTime()
-		newWrackCount = 1
-		lastDispeled = 0
-		wrackWarned4 = false
-		wrackWarned2 = false
-		warnWrackCount5s:Schedule(10, 10)
-		warnWrackCount5s:Schedule(15, 15)
-		warnWrackCount5s:Schedule(20, 20)
-		specWarnDispel:Schedule(18, 18)
-		self:Schedule(60, function()
-			specWarnDispel:Cancel()
-			warnWrackCount5s:Cancel()
-		end)
-	elseif args:IsSpellID(89435, 92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped wracks (10,25)
-		newWrackCount = newWrackCount + 1
+	elseif args:IsSpellID(89435, 92956) then -- jumped wracks (10,25)
 		wrackTargets[#wrackTargets + 1] = args.destName
 		self:Unschedule(showWrackWarning)
 		self:Schedule(0.3, showWrackWarning)
-		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned4 then
-			specWarnDispel:Cancel()
-			warnWrackCount5s:Cancel()
-			warnWrackCount5s:Schedule(10, 10)
-			warnWrackCount5s:Schedule(15, 15)
-			warnWrackCount5s:Schedule(20, 20)
-			specWarnDispel:Schedule(12, 12)
-			wrackWarned4 = true
-		elseif newWrackCount > 1 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned2 then
-			specWarnDispel:Cancel()
-			warnWrackCount5s:Cancel()
-			warnWrackCount5s:Schedule(10, 10)
-			warnWrackCount5s:Schedule(15, 15)
-			warnWrackCount5s:Schedule(20, 20)
-			specWarnDispel:Schedule(17, 17)
-			wrackWarned2 = true
-		end
 	elseif args:IsSpellID(87299) then
 		eggDown = 0
 		warnPhase2:Show()
@@ -302,20 +246,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnEggShield:Show()
 			end
 		end
-	elseif args:IsSpellID(87946) and GetTime() - redSpam >= 4 then
+	elseif args:IsSpellID(87946) and args:IsNPC() then--NPC check just simplifies it cause he gains the buff too, before he dies, less local variables this way.
 		warnRedEssence:Show()
 		timerRedEssence:Start()
-		redSpam = GetTime()
---[[	elseif args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax(args.destName) >= 165000 then--No healer should have 165 health ;)
-		tanks[args.destName] = true--]]
 	end
 end
-
---[[function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax(args.destName) >= 165000 then--No healer should have 165 health ;)
-		tanks[args.destName] = true
-	end
-end--]]
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(87654) and GetTime() - eggSpam >= 3 then
@@ -324,13 +259,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEggWeaken:Show()
 		specWarnEggWeaken:Show()
 		eggRemoved = true
-	elseif args:IsSpellID(89421, 89435, 92955, 92956) then
-		if GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12 then
-			newWrackCount = newWrackCount - 1
-			if GetTime() - lastDispeled > 5 then
-				lastDispeled = GetTime()
-			end
-		end
 	end
 end
 
