@@ -211,7 +211,7 @@ local function updateHealth()
 			local uId = "raid"..i
 			local icon = GetRaidTargetIndex(uId)
 			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
-				lines[UnitName(uId)] = icon and ("%d |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(UnitHealth(uId) - infoFrameThreshold, icon) or UnitHealth(uId) - infoFrameThreshold
+				lines[UnitName(uId)] = UnitHealth(uId) - infoFrameThreshold
 			end
 		end
 	elseif GetNumPartyMembers() > 0 then
