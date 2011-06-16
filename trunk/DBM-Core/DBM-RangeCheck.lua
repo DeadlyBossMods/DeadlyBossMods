@@ -769,12 +769,12 @@ function rangeCheck:Show(range, filter)
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
 	frame.range = range
 	frame.filter = filter
-	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" then
+	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or DBM.MapSizes[GetMapInfo()] == nil then
 		frame:Show()
 		frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 		onUpdate(frame, 0)
 	end
-	if DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both" then
+	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and DBM.MapSizes[GetMapInfo()] ~= nil then
 		onUpdateRadar(radarFrame, 0)
 	end
 end
@@ -785,7 +785,7 @@ function rangeCheck:Hide()
 end
 
 function rangeCheck:IsShown()
-	return frame and frame:IsShown()
+	return frame and frame:IsShown() or radarFrame and radarFrame:IsShown()
 end
 
 function rangeCheck:GetDistance(...)
