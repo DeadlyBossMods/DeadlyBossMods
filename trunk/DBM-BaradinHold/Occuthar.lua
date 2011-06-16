@@ -20,7 +20,7 @@ local warnEyes			= mod:NewSpellAnnounce(96920, 3)
 
 local timerSearingShadows	= mod:NewCDTimer(22, 96913)
 local timerEyes			= mod:NewCDTimer(60, 96920)
-local timerFocusedFire		= mod:NewCDTimer(15.5, 96883) -- 96884 is actual spell but has no info on tooltip
+local timerFocusedFire		= mod:NewCDTimer(30, 96883) -- 96884 is actual spell but has no info on tooltip
 
 local specWarnSearingShadows	= mod:NewSpecialWarningSpell(96913, mod:IsTank())
 local specWarnFocusedFire	= mod:NewSpecialWarningMove(97212)
@@ -37,7 +37,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(96920) then
+	if args:IsSpellID(96920, 101006) then
 		warnEyes:Show()
 		timerEyes:Start()
 	elseif args:IsSpellID(96913) then
@@ -48,7 +48,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(96884) then
+	if args:IsSpellID(96884, 101004) then
 		timerFocusedFire:Start()
 	end
 end
