@@ -119,12 +119,9 @@ do
 		frame:Hide()
 		rangeCheck:Show(frame.range, frame.filter)
 	end
-	
-	local function setFrames2(self, option)
+
+	local function setSpeed(self, option)
 		DBM.Options.RangeFrameUpdates = option
-		radarFrame:Hide()
-		frame:Hide()
-		rangeCheck:Show(frame.range, frame.filter)
 	end
 
 	local function toggleLocked()
@@ -299,21 +296,21 @@ do
 			elseif menu == "speed" then
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_OPTION_SLOW
-				info.func = setFrames2
+				info.func = setSpeed
 				info.arg1 = "Slow"
 				info.checked = (DBM.Options.RangeFrameUpdates == "Slow")
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_OPTION_AVERAGE
-				info.func = setFrames2
+				info.func = setSpeed
 				info.arg1 = "Average"
 				info.checked = (DBM.Options.RangeFrameUpdates == "Average")
 				UIDropDownMenu_AddButton(info, 2)
 
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_OPTION_FAST
-				info.func = setFrames2
+				info.func = setSpeed
 				info.arg1 = "Fast"
 				info.checked = (DBM.Options.RangeFrameUpdates == "Fast")
 				UIDropDownMenu_AddButton(info, 2)	
