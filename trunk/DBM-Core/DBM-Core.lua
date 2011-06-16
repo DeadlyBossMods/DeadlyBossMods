@@ -86,6 +86,7 @@ DBM.DefaultOptions = {
 	UseMasterVolume = true,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
+	RangeFrameUpdates = "Average",
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,

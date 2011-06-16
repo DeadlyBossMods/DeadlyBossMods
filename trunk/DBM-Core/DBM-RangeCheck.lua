@@ -143,21 +143,28 @@ do
 			info.hasArrow = true
 			info.menuList = "range"
 			UIDropDownMenu_AddButton(info, 1)
-			
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_SOUNDS
 			info.notCheckable = true
 			info.hasArrow = true
 			info.menuList = "sounds"
 			UIDropDownMenu_AddButton(info, 1)
-			
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_OPTION_FRAMES
 			info.notCheckable = true
 			info.hasArrow = true
 			info.menuList = "frames"
 			UIDropDownMenu_AddButton(info, 1)
-			
+
+			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_RANGECHECK_OPTION_SPEED
+			info.notCheckable = true
+			info.hasArrow = true
+			info.menuList = "speed"
+			UIDropDownMenu_AddButton(info, 1)
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_LOCK
 			if DBM.Options.RangeFrameLocked then
@@ -165,7 +172,7 @@ do
 			end
 			info.func = toggleLocked
 			UIDropDownMenu_AddButton(info, 1)
-			
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_HIDE
 			info.notCheckable = true
@@ -282,6 +289,27 @@ do
 				info.arg1 = "both"
 				info.checked = (DBM.Options.RangeFrameFrames == "both")
 				UIDropDownMenu_AddButton(info, 2)	
+			elseif menu == "speed" then
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_OPTION_SLOW
+				info.func = setFrames
+				info.arg1 = "Slow"
+				info.checked = (DBM.Options.RangeFrameUpdates == "Slow")
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_OPTION_AVERAGE
+				info.func = setFrames
+				info.arg1 = "Average"
+				info.checked = (DBM.Options.RangeFrameUpdates == "Average")
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_OPTION_FAST
+				info.func = setFrames
+				info.arg1 = "Fast"
+				info.checked = (DBM.Options.RangeFrameUpdates == "Fast")
+				UIDropDownMenu_AddButton(info, 2)	
 			end
 		elseif level == 3 then
 			local option = menu
@@ -343,6 +371,14 @@ end
 ------------------------
 function createFrame()
 	local elapsed = 0
+	local updateRate
+	if DBM.Options.RangeFrameUpdates == "Slow" then
+		updateRate = 0.5
+	elseif DBM.Options.RangeFrameUpdates == "Average" then
+		updateRate = 0.25
+	elseif DBM.Options.RangeFrameUpdates == "Fast" then
+		updateRate = 0.05
+	end
 	local frame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
 	dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", frame, "UIDropDownMenuTemplate")
 	frame:SetFrameStrata("DIALOG")
@@ -370,7 +406,7 @@ function createFrame()
 	end)
 	frame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.5 and self.checkFunc then
+		if elapsed >= updateRate and self.checkFunc then
 			onUpdate(self, elapsed)
 			elapsed = 0
 		end
@@ -386,6 +422,14 @@ end
 
 function createRadarFrame()
 	local elapsed = 0
+	local updateRate
+	if DBM.Options.RangeFrameUpdates == "Slow" then
+		updateRate = 0.5
+	elseif DBM.Options.RangeFrameUpdates == "Average" then
+		updateRate = 0.25
+	elseif DBM.Options.RangeFrameUpdates == "Fast" then
+		updateRate = 0.05
+	end
 	local radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
 	radarFrame:SetFrameStrata("DIALOG")
 	
@@ -411,7 +455,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.15 then
+		if elapsed >= updateRate then
 			onUpdateRadar(self, elapsed)
 			elapsed = 0
 		end
