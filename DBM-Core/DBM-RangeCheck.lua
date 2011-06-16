@@ -618,9 +618,9 @@ do
 				for i=numPlayers+1, prevNumPlayers do
 					dots[i].dot:Hide()		-- Hide dots when people leave the group
 					dots[i].tooClose = false
-					if dots[i].icon then
-						charms[dots[i].icon]:Hide()
-						dots[i].icon = nil
+					dots[i].icon = nil
+					for i=1, 8 do
+						charms[i]:Hide()	
 					end
 				end
 			end
