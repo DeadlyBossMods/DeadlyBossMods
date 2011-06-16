@@ -113,6 +113,13 @@ do
 		end
 	end
 	
+	local function setFrames(self, option)
+		DBM.Options.RangeFrameFrames = option
+		radarFrame:Hide()
+		frame:Hide()
+		rangeCheck:Show(frame.range, frame.filter)
+	end
+
 	local function toggleLocked()
 		DBM.Options.RangeFrameLocked = not DBM.Options.RangeFrameLocked
 	end
@@ -145,19 +152,18 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 			
 			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_RANGECHECK_OPTION_FRAMES
+			info.notCheckable = true
+			info.hasArrow = true
+			info.menuList = "frames"
+			UIDropDownMenu_AddButton(info, 1)
+			
+			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_LOCK
 			if DBM.Options.RangeFrameLocked then
 				info.checked = true
 			end
 			info.func = toggleLocked
-			UIDropDownMenu_AddButton(info, 1)
-			
-			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_RADAR
-			if DBM.Options.RangeFrameRadar then
-				info.checked = true
-			end
-			info.func = toggleRadar
 			UIDropDownMenu_AddButton(info, 1)
 			
 			info = UIDropDownMenu_CreateInfo()
@@ -255,6 +261,27 @@ do
 				info.hasArrow = true
 				info.menuList = "RangeFrameSound2"
 				UIDropDownMenu_AddButton(info, 2)
+			elseif menu == "frames" then
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_OPTION_TEXT
+				info.func = setFrames
+				info.arg1 = "text"
+				info.checked = (DBM.Options.RangeFrameFrames == "text")
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_OPTION_RADAR
+				info.func = setFrames
+				info.arg1 = "radar"
+				info.checked = (DBM.Options.RangeFrameFrames == "radar")
+				UIDropDownMenu_AddButton(info, 2)
+
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_OPTION_BOTH
+				info.func = setFrames
+				info.arg1 = "both"
+				info.checked = (DBM.Options.RangeFrameFrames == "both")
+				UIDropDownMenu_AddButton(info, 2)	
 			end
 		elseif level == 3 then
 			local option = menu
@@ -414,6 +441,15 @@ function createRadarFrame()
 	player:SetBlendMode("ADD")
 	player:SetPoint("CENTER")
 
+	local text = radarFrame:CreateFontString(nil, "OVERLAY")
+	text:SetWidth(128)
+	text:SetHeight(15)
+	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT", 0,0)
+	text:SetFont("Fonts\\FRIZQT__.TTF", 11)
+	text:SetTextColor(1, 1, 1, 1)
+	text:Show()
+	radarFrame.text = text
+
 	for i=1, 25 do
 		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
 		dot:SetWidth(24)
@@ -493,7 +529,7 @@ function onUpdate(self, elapsed)
 end
 
 do
-	local rotation, pixelsperyard, prevNumPlayers = 0
+	local rotation, pixelsperyard, prevNumPlayers, range
 	local function createDot(id)
 		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..id, radarFrame, "WorldMapPartyUnitTemplate")
 		dot:SetFrameStrata("TOOLTIP")
@@ -531,7 +567,7 @@ do
 				charms[icon]:Show()
 				dot:Hide()
 				dots[id].icon = icon
-			else
+			elseif (not frame.filter or frame.filter(uId)) then
 				dot:ClearAllPoints()
 				dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
 				dot:Show()
@@ -539,6 +575,8 @@ do
 					charms[dots[id].icon]:Hide()
 					dots[id].icon = nil
 				end
+			else
+				dot:Hide()
 			end
 		else
 			dot:Hide()
@@ -551,9 +589,13 @@ do
 	end
 
 	function onUpdateRadar(self, elapsed)
-		if not DBM.Options.RangeFrameRadar then return end
 		pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
 		radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
+
+		if frame.range ~= (range or 0) then
+			range = frame.range
+			radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(range))
+		end
 
 		local mapName = GetMapInfo()
 		local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
@@ -727,10 +769,14 @@ function rangeCheck:Show(range, filter)
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
 	frame.range = range
 	frame.filter = filter
-	frame:Show()
-	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
-	onUpdate(frame, 0)
-	onUpdateRadar(radarFrame, 0)
+	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" then
+		frame:Show()
+		frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
+		onUpdate(frame, 0)
+	end
+	if DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both" then
+		onUpdateRadar(radarFrame, 0)
+	end
 end
 
 function rangeCheck:Hide()
