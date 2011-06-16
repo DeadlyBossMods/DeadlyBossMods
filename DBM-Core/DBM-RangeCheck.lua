@@ -596,7 +596,7 @@ do
 		dots[id].class = class		
 	end
 
-	local function setDot(id, icon)
+	local function setDot(id, icon, filtered)
 		local dot = dots[id].dot or createDot(id)		-- load the dot, or create a new one if none exists yet (creating new probably never happens as the dots are created when the frame is created)
 		local x = dots[id].x
 		local y = dots[id].y
@@ -611,7 +611,7 @@ do
 				charms[icon]:Show()
 				dot:Hide()
 				dots[id].icon = icon
-			else --if (not frame.filter or frame.filter(uId)) then
+			elseif not filtered then
 				dot:ClearAllPoints()
 				dot:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
 				dot:Show()
@@ -619,8 +619,8 @@ do
 					charms[dots[id].icon]:Hide()
 					dots[id].icon = nil
 				end
-			--else
-			--	dot:Hide()
+			else
+				dot:Hide()
 			end
 		else
 			dot:Hide()
@@ -690,7 +690,7 @@ do
 						dots[i].y = (y - playerY) * dims[2]
 					end
 					setDotColor(i, select(2, UnitClass(uId)))
-					setDot(i, GetRaidTargetIndex(uId))
+					setDot(i, GetRaidTargetIndex(uId), (self.filter and self.filter(uId)))
 				end
 			end
 
