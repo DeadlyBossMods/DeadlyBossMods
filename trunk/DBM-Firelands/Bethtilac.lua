@@ -20,7 +20,7 @@ local warnSmolderingDevastation		= mod:NewCastAnnounce(99052, 4)
 local warnWidowKiss					= mod:NewStackAnnounce(99476, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
 
---local specWarnTouchWidowKiss		= mod:NewSpecialWarningStack(99476, nil, 5)--How many stacks? does it differ 10/25 or heroic?
+local specWarnTouchWidowKiss		= mod:NewSpecialWarningStack(99476, nil, 5)--How many stacks? does it differ 10/25 or heroic?
 
 local timerSpinners 				= mod:NewTimer(15, "TimerSpinners") -- 15secs after Smoldering cast start
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
@@ -31,7 +31,7 @@ local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod
 
 local smolderingCount = 0
 
---mod:AddBoolOption("RangeFrame")--Maybe needed for widows kiss aoe effect?
+mod:AddBoolOption("RangeFrame")--Maybe needed for widows kiss aoe effect?
 
 function mod:repeatSpiderlings()
 	timerSpiderlings:Start()
@@ -59,14 +59,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args.amount % 5 == 0 then		-- warn every 5th stack. not sure what's going to be relevent yet
 			warnWidowKiss:Show(args.destName, args.amount)
 		end
---[[	if args:IsPlayer() then
+		if args:IsPlayer() then
 			if (args.amount or 1) >= 5 then
 				specWarnTouchWidowKiss:Show(args.amount)
 			end
 			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Show(10)
 			end
-		end--]]
+		end
 	end
 end
 
@@ -75,11 +75,11 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(99476, 99506) then
 		timerWidowKiss:Cancel(args.destName)
---[[	if args:IsPlayer() then
+		if args:IsPlayer() then
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
-		end--]]
+		end
 	end
 end
 

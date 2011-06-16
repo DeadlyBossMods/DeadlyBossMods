@@ -20,6 +20,7 @@ local warnAdrenaline		= mod:NewStackAnnounce(97238, 3)
 local warnFury			= mod:NewStackAnnounce(97235, 3)
 local warnOrbs			= mod:NewCastAnnounce(98451, 3, nil, mod:IsTank())
 
+local timerSearingSeed		= mod:NewTargetTimer(60, 98450)
 local timerLeapingFlames	= mod:NewCDTimer(17, 100208)
 local timerFlameScythe		= mod:NewCDTimer(17, 98474)
 
@@ -59,6 +60,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(98450) and args:IsPlayer() then
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)	-- does duration return actual duration or the total duration?
 		specWarnSearingSeed:Schedule(expires - GetTime() - 5)	-- Show "move away" warning 5secs before explode?
+		timerSearingSeed:Start(expires-GetTime())
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
