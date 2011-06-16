@@ -18,12 +18,17 @@ mod:RegisterEvents(
 )
 
 local warnMolting		= mod:NewSpellAnnounce(99464, 3)
+local warnBrushfire		= mod:NewSpellAnnounce(98868, 2)
 local warnFirestorm		= mod:NewSpellAnnounce(100744, 3)
+local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
 
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
+local timerCataclysm		= mod:NewCastTimer(5, 102111)
 local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange")
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs")
+
+local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094)
 
 mod:AddBoolOption("InfoFrame")
 
@@ -39,7 +44,16 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(100744) then
+	if args:IsSpellID(98868) then
+		warnBrushfire:Show()
+	elseif args:IsSpellID(100094, 101223, 101294, 101295) or args:IsSpellID(101296) then
+		if args.sourceGUID == UnitGUID("target") then
+			specWarnFieroblast:Show()
+		end
+	elseif args:IsSpellID(102111, 100761) then
+		warnCataclysm:Show()
+		timerCataclysm:Start()
+	elseif args:IsSpellID(100744) then
 		warnFirestorm:Show()
 --[[
 wowhead says: 10sec duration
