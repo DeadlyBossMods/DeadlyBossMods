@@ -151,9 +151,9 @@ function mod:OrbsRepeat()
 		warnOrbSoon:Schedule(26, 2)
 		warnOrbSoon:Schedule(27, 1)
 	end
-	OrbsCountdown:Start(27.5)
+	OrbsCountdown:Start(27.75)
 	specWarnOrbs:Show()--generic aoe warning on spawn, before we have actual targets yet.
-	self:ScheduleMethod(27.5, "OrbsRepeat")
+	self:ScheduleMethod(27.75, "OrbsRepeat")
 	self:Schedule(0.5, showOrbWarning, "spawn")--Start spawn checks
 end
 
