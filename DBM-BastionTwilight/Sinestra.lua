@@ -145,11 +145,11 @@ function mod:OrbsRepeat()
 	resetPlayerOrbStatus()
 	timerOrbs:Start()
 	if self.Options.WarnOrbSoon then
-		warnOrbSoon:Schedule(23, 5)
-		warnOrbSoon:Schedule(24, 4)
-		warnOrbSoon:Schedule(25, 3)
-		warnOrbSoon:Schedule(26, 2)
-		warnOrbSoon:Schedule(27, 1)
+		warnOrbSoon:Schedule(22.75, 5)
+		warnOrbSoon:Schedule(23.75, 4)
+		warnOrbSoon:Schedule(24.75, 3)
+		warnOrbSoon:Schedule(25.75, 2)
+		warnOrbSoon:Schedule(26.75, 1)
 	end
 	OrbsCountdown:Start(27.75)
 	specWarnOrbs:Show()--generic aoe warning on spawn, before we have actual targets yet.
