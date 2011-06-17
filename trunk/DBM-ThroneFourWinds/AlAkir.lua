@@ -56,7 +56,7 @@ local phase2Started = false
 local spamIce = 0
 local spamCloud = 0
 local spamStrike = 0
---local strikedest = {}
+local strikedest = {}
 
 function mod:CloudRepeat()
 	warnCloud:Show()
@@ -69,9 +69,9 @@ function mod:CloudRepeat()
 	end
 end
 
---local function ClearLightingStrikes()
---	table.wipe(strikedest)
---end
+local function ClearLightingStrikes()
+	table.wipe(strikedest)
+end
 
 function mod:OnCombatStart(delay)
 	timerWindBurstCD:Start(20-delay)
@@ -82,7 +82,7 @@ function mod:OnCombatStart(delay)
 	spamStrike = 0
 	berserkTimer:Start(-delay)
 	timerLightningStrikeCD:Start(-delay)
---	table.wipe(strikedest)
+	table.wipe(strikedest)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -157,14 +157,14 @@ function mod:SPELL_DAMAGE(args)
 		spamCloud = GetTime()
 --will try simple approach first before messing with filtering.
 	elseif args:IsSpellID(88214, 93255, 93256, 93257) then--Lighting strike, only CLEU event for it is spell_damage or spell_miss :(
---		if not strikedest[args.destName] then--Lets check ignored names and filter them before we do anything.
---			strikedest[args.destName] = true--Lets add names to an ignore table for heroic mode, so they can be ignored for 15 seconds.
+		if not strikedest[args.destName] then--Lets check ignored names and filter them before we do anything.
+			strikedest[args.destName] = true--Lets add names to an ignore table for heroic mode, so they can be ignored for 15 seconds.
 			if GetTime() - spamStrike > 9.5 then--Completely ignore damage for 9 seconds to anyone. Hopefully filter people who run into a strike from a diff section while it's going off.
 				spamStrike = GetTime()
 				timerLightningStrikeCD:Start()--Start 10 second timer for next lighthing strike.
---				self:Schedule(15, ClearLightingStrikes)--Schedule a table wipe when that 15 seconds as expired.
+				self:Schedule(15, ClearLightingStrikes)--Schedule a table wipe when that 15 seconds as expired.
 			end
---		end
+		end
 	end
 end
 

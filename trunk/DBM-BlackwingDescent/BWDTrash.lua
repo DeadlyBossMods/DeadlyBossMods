@@ -46,6 +46,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerChargeCD:Start()
 	elseif args:IsSpellID(80035) then--Drakonid Vengeful rage, good way to reset dragonid died counter without a pull mechanic to reset on.
 		drakonidDied = 1
+	elseif args:GetDestCreatureID() == 42362 and not InCombatLockdown() then--A way to detect combat without firing an engage event.
+		timerChargeCD:Start(23)
 	end
 end
 
@@ -67,7 +69,7 @@ end
 
 --does this consume too much cpu?--
 function mod:SPELL_DAMAGE(args)
-	if args:GetDestCreatureID() == 42362 and not InCombatLockdown() then--A way to detect combat without firing an engage event.
+	if args:GetDestCreatureID() == 42362 and not InCombatLockdown() then
 		timerChargeCD:Start(23)
 	end
 end
