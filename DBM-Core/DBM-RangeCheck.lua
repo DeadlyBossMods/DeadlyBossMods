@@ -804,7 +804,6 @@ do
 	end
 end
 
-
 ---------------
 --  Methods  --
 ---------------
@@ -812,19 +811,19 @@ function rangeCheck:Show(range, filter)
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
 	end
-	
+	local mapName = GetMapInfo()
 	range = range or 10
 	frame = frame or createFrame()
 	radarFrame = radarFrame or createRadarFrame()
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
 	frame.range = range
 	frame.filter = filter
-	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or DBM.MapSizes[GetMapInfo()] == nil then
+	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or DBM.MapSizes[mapName] == nil or (DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()] == nil) then
 		frame:Show()
 		frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 		onUpdate(frame, 0)
 	end
-	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and DBM.MapSizes[GetMapInfo()] ~= nil then
+	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and (DBM.MapSizes[mapName] and DBM.MapSizes[GetMapInfo()][GetCurrentMapDungeonLevel()] ~= nil) then
 		onUpdateRadar(radarFrame, 0)
 	end
 end
