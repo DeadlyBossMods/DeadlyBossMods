@@ -145,10 +145,8 @@ L:SetWarningLocalization({
 	WarnEggWeaken		= "황혼 껍질 사라짐",
 	SpecWarnOrbs		= "곧 구슬! 조심하세요!",
 	warnWrackJump		= "%s 전이 : >%s<",
-	WarnWrackCount5s	= "마지막 파멸 후 %d초 지남",
 	warnAggro			= "위협 수준 획득(구슬 예상 대상) : >%s<",
 	SpecWarnAggroOnYou	= "위협 수준 획득함! 구슬 조심하세요!",
-	SpecWarnDispel		= "마지막 파멸 후 %d초 지남 - 지금 해제!",
 	SpecWarnEggWeaken	= "황혼 껍질 사라짐 - 알 극딜!",
 	SpecWarnEggShield	= "황혼 껍질 재생성!"
 })
@@ -165,11 +163,9 @@ L:SetOptionLocalization({
 	WarnOrbSoon			= "구슬 카운트 다운 경고 보기 (5초 전부터, 1초 마다)\n(예상 경보이며, 정확하지 않을 수 있습니다.)",
 	WarnEggWeaken    	= "$spell:87654 제거 사전 경고 보기",
 	warnWrackJump		= "$spell:92955 전이 경고 보기",
-	WarnWrackCount5s	= "$spell:92955이 시전/전이 된 후 10, 15, 20 초가 지나면 경고 보기",
 	warnAggro			= "구슬 생성시 위협 수준이 있는 대상 알리기 (구슬 예상 대상)",
 	SpecWarnAggroOnYou	= "구슬 생성시 당신이 위협 수준을 획득한 경우 특수 경고 보기\n(구슬 대상일 가능성이 높습니다.)",
 	SpecWarnOrbs		= "구슬 특수 경고 보기 (예상 경보이며, 정확하지 않을 수 있습니다.)",
-	SpecWarnDispel		= "$spell:92955이 시전/전이 된 후 일정 시간이 지나면 특수 경고 보기(해제)",
 	SpecWarnEggWeaken	= "$spell:87654 사라짐 특수 경고 보기",
 	SpecWarnEggShield	= "$spell:87654의 재생성 특수 경고 보기",
 	TimerDragon        	= "다음 새끼용 등장 타이머 보기",
