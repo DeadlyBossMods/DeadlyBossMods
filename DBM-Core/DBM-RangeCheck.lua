@@ -699,7 +699,7 @@ do
 						dots[i].y = (y - playerY) * dims[2]
 					end
 					setDotColor(i, select(2, UnitClass(uId)))
-					setDot(i, GetRaidTargetIndex(uId), (self.filter and self.filter(uId)))
+					setDot(i, GetRaidTargetIndex(uId), (frame.filter and frame.filter(uId)))
 				end
 			end
 
