@@ -45,7 +45,7 @@ local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
 local timerSlicingGale		= mod:NewBuffActiveTimer(45, 93058, nil, false)
 local timerWindBlast		= mod:NewBuffActiveTimer(11.5, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
-local timerStormShieldCD	= mod:NewNextTimer(35, 95865)--Heroic ability, seems to share CD/line up with Nurture and also 35 seconds after a special ended.
+local timerStormShieldCD	= mod:NewCDTimer(35, 95865)--Heroic ability, seems to share CD/line up with Nurture and also 35 seconds after a special ended.
 local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
 local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)--is this a CD or a next timer?
