@@ -629,6 +629,7 @@ do
 			else
 				if dots[id].icon and dots[id].icon ~= icon then
 					charms[dots[id].icon]:Hide()
+					dots[id].icon = nil
 				end
 				dot:Hide()
 			end
