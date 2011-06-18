@@ -627,12 +627,15 @@ do
 					dots[id].icon = nil
 				end
 			else
+				if dots[id].icon and dots[id].icon ~= icon then
+					charms[dots[id].icon]:Hide()
+				end
 				dot:Hide()
 			end
 		else
 			dot:Hide()
 		end
-		if range < 1.05 * frame.range then		-- add an  extra 5% in case of inaccuracy
+		if range < 1.05 * frame.range and not filtered then		-- add an  extra 5% in case of inaccuracy
 			dots[id].tooClose = true
 		else
 			dots[id].tooClose = false
@@ -699,7 +702,7 @@ do
 						dots[i].y = (y - playerY) * dims[2]
 					end
 					setDotColor(i, select(2, UnitClass(uId)))
-					setDot(i, GetRaidTargetIndex(uId), (frame.filter and frame.filter(uId)))
+					setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
 				end
 			end
 
