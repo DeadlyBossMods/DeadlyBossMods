@@ -610,7 +610,7 @@ do
 			local dy = ((x * math.sin(rotation)) + (-1 * y * math.cos(rotation))) * pixelsperyard
 
 			if icon then
-				if dots[id].icon ~= icon then
+				if dots[id].icon and dots[id].icon ~= icon then
 					charms[dots[id].icon]:Hide()
 				end
 				charms[icon]:ClearAllPoints()
