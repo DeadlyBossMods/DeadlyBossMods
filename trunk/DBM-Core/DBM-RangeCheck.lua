@@ -808,6 +808,7 @@ end
 --  Methods  --
 ---------------
 function rangeCheck:Show(range, filter)
+	SetMapToCurrentZone()--Set map to current zone before checking other stuff, work around annoying bug i hope?
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
 	end
