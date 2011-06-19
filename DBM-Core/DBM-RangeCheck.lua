@@ -489,7 +489,7 @@ function createRadarFrame()
 	player:SetBlendMode("ADD")
 	player:SetPoint("CENTER")
 
-	local text = radarFrame:CreateFontString(nil, "OVERLAY")
+	local text = radarFrame:CreateFontString(nil, "OVERLAY","GameTooltipText")
 	text:SetWidth(128)
 	text:SetHeight(15)
 	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT", 0,0)
