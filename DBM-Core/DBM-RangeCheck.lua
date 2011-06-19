@@ -493,7 +493,7 @@ function createRadarFrame()
 	text:SetWidth(128)
 	text:SetHeight(15)
 	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT", 0,0)
-	text:SetFont("Fonts\\FRIZQT__.TTF", 11)
+--	text:SetFont("Fonts\\FRIZQT__.TTF", 11)
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
 	radarFrame.text = text
