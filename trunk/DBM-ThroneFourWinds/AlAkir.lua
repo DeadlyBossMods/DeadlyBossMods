@@ -60,19 +60,23 @@ local spamCloud = 0
 function mod:CloudRepeat()
 	self:UnscheduleMethod("CloudRepeat")
 	warnCloud:Show()
-	if mod:IsDifficulty("heroic10", "heroic25") then
-		timerLightningCloudCD:Start(10)
-		self:ScheduleMethod(10, "CloudRepeat")
-	else
-		timerLightningCloudCD:Start()
-		self:ScheduleMethod(15, "CloudRepeat")
+	if self:IsInCombat() then--Don't schedule if not in combat, prevent an infinite loop from happening if for some reason one got scheduled exactly on boss death.
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			timerLightningCloudCD:Start(10)
+			self:ScheduleMethod(10, "CloudRepeat")
+		else
+			timerLightningCloudCD:Start()
+			self:ScheduleMethod(15, "CloudRepeat")
+		end
 	end
 end
 
 function mod:StrikeRepeat()
 	self:UnscheduleMethod("StrikeRepeat")
 	timerLightningStrikeCD()
-	self:ScheduleMethod(10, "StrikeRepeat")
+	if self:IsInCombat() then
+		self:ScheduleMethod(10, "StrikeRepeat")
+	end
 end
 
 function mod:OnCombatStart(delay)
