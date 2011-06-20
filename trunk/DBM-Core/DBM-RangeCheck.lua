@@ -644,7 +644,7 @@ do
 	end
 
 	function onUpdateRadar(self, elapsed)
-		if initRangeCheck(self.range) then
+		if initRangeCheck(frame.range) then
 			pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
 			radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
 
