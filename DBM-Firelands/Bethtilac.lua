@@ -19,7 +19,9 @@ mod:RegisterEvents(
 local warnSmolderingDevastation		= mod:NewCastAnnounce(99052, 4)
 local warnWidowKiss					= mod:NewStackAnnounce(99476, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
+local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability according to EJ
 
+local specWarnFixate				= mod:NewSpecialWarningStack(99559)--Does it need run away sound? icon? EJ wasn't too specific.
 local specWarnTouchWidowKiss		= mod:NewSpecialWarningStack(99476, nil, 5)--How many stacks? does it differ 10/25 or heroic?
 
 local timerSpinners 				= mod:NewTimer(15, "TimerSpinners") -- 15secs after Smoldering cast start
@@ -27,6 +29,7 @@ local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
 local timerDrone					= mod:NewTimer(60, "TimerDrone")
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
+local timerFixate					= mod:NewTargetTimer(10, 99559)
 local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod:IsHealer())
 
 local smolderingCount = 0
@@ -66,6 +69,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Show(10)
 			end
+		end
+	elseif args:IsSpellID(99559) then--99526?
+		warnFixate:Show(args.destName)
+		timerFixate:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnFixate:Show()
 		end
 	end
 end
