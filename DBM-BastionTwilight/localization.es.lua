@@ -101,8 +101,7 @@ L:SetMiscLocalization({
 	Monstrosity		= "Monstruosidad de Elementium",
 	Kill			= "Imposible...",
 	blizzHatesMe	= "¡Escarcha y relámpagos en mi! ¡Apartaos o morid!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
-	PlayerDebuffs	= "Debuff equivocado"
-
+	WrongDebuff	= "Sin %s"
 })
 
 ----------------
@@ -148,10 +147,8 @@ L:SetWarningLocalization({
 	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
 	SpecWarnOrbs		= "¡Cercenadora Crepuscular pronto!",
 	warnWrackJump		= "%s ha saltado a >%s<",
-	WarnWrackCount5s	= "%d segundos des del último Arruinar",
 	warnAggro			= ">%s< tiene Aggro (candidato de orbe)",
 	SpecWarnAggroOnYou	= "¡tienes Aggro! ¡Vigila los Orbes!",
-	SpecWarnDispel		= "¡Han pasado %d seg des del último Arruinar ¡Dispelea ahora!",
 	SpecWarnEggWeaken	= "¡Caparazón Crepuscular Eliminado! ¡Pega el Huevo!",
 	SpecWarnEggShield	= "¡Caparazón Crepuscular se ha regenerado!"
 
@@ -169,24 +166,24 @@ L:SetOptionLocalization({
 	WarnOrbSoon			= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
 	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
-	WarnWrackCount5s	= "Announce los segundos de $spell:92955 transcurridos a los 10, 15, 20 segundos",
 	warnAggro			= "Anunciar jugadores que tienen Aggro cuando salen Orbes\n(Pueden ser objetivos de orbes)",
 	SpecWarnAggroOnYou	= "Mostrar aviso especial si TU tienes aggro cuando Orbes\n(Puedes ser objetivo de orbes)",
 	SpecWarnOrbs		= "Mostrar aviso especial para $spell:92954\n(Puede ser impreciso.)",
-	SpecWarnDispel		= "Mostrar aviso especial para dispellear $spell:92955\n(después de cierto tiempo de que haya saltado)",
 	SpecWarnEggWeaken	= "Mostrar aviso especial cuando $spell:87654 es eliminado",
 	SpecWarnEggShield	= "Mostrar aviso especial cuando $spell:87654 se hay regenerado",
 	TimerDragon			= "Mostrar tiempo para que salga una nueva Cría Crepuscular",
 	TimerEggWeakening	= "Mostrar tiempo para eliminación de $spell:87654",
 	TimerEggWeaken		= "Mostrar tiempo para regeneración de $spell:87654",
 	TimerOrbs			= "Mostrar tiempo para siguientes Orbes\n(Tiempo esperado. puede no ser preciso)",
-	SetIconOnOrbs		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92954)
-
+	SetIconOnOrbs		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92954),
+	OrbsCountdown		= "Reproducir sonido de cuenta atrás para Orbes",
+	InfoFrame			= "Mostrar información de jugadores que tienen aggro"
 })
 
 L:SetMiscLocalization({
 	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",--translate
-	YellEgg				= "You mistake this for weakness?  Fool!"--translate
+	YellEgg				= "You mistake this for weakness?  Fool!",--translate
+	HasAggro			= "Tiene Aggro"
 })
 
 --------------------------

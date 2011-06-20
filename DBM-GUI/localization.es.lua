@@ -57,6 +57,12 @@ L.UseMasterVolume			= "Usar el canal de audio Principal para reproducir archivos
 L.SKT_Enabled			= "Mostrar siempre el contador para superar récord de tiempo (Sobreescribe la opción de bosses específicos)"
 L.Latency_Text				= "Umbral de latencia máxima para sincronización: %d"
 
+L.ModelOptions				= "Opciones del Visor de Modelos 3D"
+L.EnableModels				= "Activar modelos 3D en las opciones de los jefes"
+L.ModelSoundOptions			= "Assignar la opción de sonido para el Visor de Modelos"
+L.ModelSoundShort			= "Corto"
+L.ModelSoundLong			= "Largo"
+
 L.Button_RangeFrame	= "Mostrar/Ocultar cuadro de rango"
 L.Button_TestBars	= "Testear barras"
 
@@ -86,6 +92,7 @@ L.WarningIconRight 	= "Mostrar icono en el lado derecho"
 L.RaidWarnMessage 	= "Gracias por usar Deadly Boss Mods - Español"
 L.BarWhileMove 		= "Avisos de banda se pueden mover"
 L.RaidWarnSound		= "Reproducir sonido para aviso-banda"
+L.CountdownVoice			= "Fijar voz para sonido de cuenta atrás"
 L.SpecialWarnSound	= "Fijar sonido para avisos especiales que te afecten a ti o a tu rol"
 L.SpecialWarnSound2	= "Fijar sonido para avisos especiales que afectan a todos"
 
