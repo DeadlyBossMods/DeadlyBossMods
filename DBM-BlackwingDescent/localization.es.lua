@@ -193,7 +193,8 @@ L:SetWarningLocalization({
 	NefTailSwipe		= "Latigazo de cola (Nefarian)",
 	OnyBreath			= "Aliento (Onyxia)",
 	NefBreath			= "Aliento (Nefarian)",
-	specWarnShadowblazeSoon	= "%s"
+	specWarnShadowblazeSoon	= "%s",
+	warnShadowblazeSoon		= "%s"
 })
 
 L:SetTimerLocalization({
@@ -208,15 +209,16 @@ L:SetOptionLocalization({
 	OnyTailSwipe		= "Mostrar aviso para el $spell:77827 de Onyxia",
 	NefTailSwipe		= "Mostrar aviso para el $spell:77827 de Nefarian",
 	OnyBreath			= "Mostrar aviso para el $spell:94124 de Onyxia",
-	NefBreath			= "Mostrar aviso para el $spell:94124 de Nefarian",
-	specWarnShadowblazeSoon	= "Mostrar pre-aviso especial para $spell:94085 (~5s)",
+	NefBreath			= "Mostrar aviso para el $spell:94124 de Nefarian",	
+	specWarnCinderMove		= "Mostrar aviso especial para moverte si te afecta\n $spell:79339 (5s antes de la explosión)",	
+	warnShadowblazeSoon		= "Mostrar pre-aviso de cuenta atrás para $spell:81031 (5s before)\n(Solo después que el contador se haya sincronizado para asegurar precisión)",
+	specWarnShadowblazeSoon	= "Mostrar pre-aviso especial para $spell:81031 (~5s)",
 	timerNefLanding		= "Mostrar tiempo para que Nefarian aterrice",
 	OnySwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Onyxia",
 	NefSwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Nefarian",
 	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
 	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
 	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
-	FixShadowblaze		= "Intentar auto-corregir el tiempo de $spell:94085\n(Experimental: utiliza un grito que Nefarian usa a veces)",
 	SetWater			= "Desactivar la colisión con el agua automáticamente al pullear\n(se reactiva al abandonar el combate)",
 	TankArrow			= "Mostrar flecha para el kiteador de Guerrero Hueso animado\n(diseñado para estrategia de kiteo)",--npc 41918
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
@@ -231,7 +233,7 @@ L:SetMiscLocalization({
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
 	Charge			= "Carga Eléctrica",
-	ShadowBlazeExact	= "Shadowblaze in %ds",
+	ShadowBlazeExact	= "hispa de Fuegoarbusto en %ds",
 	ShadowBlazeEstimate	= "Llamarada de las Sombras pronto (~5s)"
 })
 
