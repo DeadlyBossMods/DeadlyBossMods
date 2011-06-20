@@ -94,6 +94,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerWhisperHethiss:Cancel(args.destName)
 	elseif args:IsSpellID(96477) then
 		DBM.Arrow:Hide()
+		if self.Options.SetIconOnToxicLink then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
