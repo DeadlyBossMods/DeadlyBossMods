@@ -644,85 +644,85 @@ do
 	end
 
 	function onUpdateRadar(self, elapsed)
-		pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
-		radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
+		if initRangeCheck(self.range) then
+			pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
+			radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
 
-		if frame.range ~= (range or 0) then
-			range = frame.range
-			radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(range))
-		end
+			if frame.range ~= (range or 0) then
+				range = frame.range
+				radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(range))
+			end
 
-		local mapName = GetMapInfo()
-		local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
-		if not dims then 
+			local mapName = GetMapInfo()
+			local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
+				rotation = (2 * math.pi) - GetPlayerFacing()
+				local numPlayers = 0
+				local unitID = "raid%d"
+				if GetNumRaidMembers() > 0 then
+					unitID = "raid%d"
+					numPlayers = GetNumRaidMembers()
+				elseif GetNumPartyMembers() > 0 then
+					unitID = "party%d"
+					numPlayers = GetNumPartyMembers()
+				end
+				if numPlayers < (prevNumPlayers or 0) then
+					for i=numPlayers+1, prevNumPlayers do
+						if dots[i].dot then
+							dots[i].dot:Hide()		-- Hide dots when people leave the group
+						end
+						dots[i].tooClose = false
+						dots[i].icon = nil
+						for i=1, 8 do
+							charms[i]:Hide()	
+						end
+					end
+				end
+				prevNumPlayers = numPlayers
+
+				local playerX, playerY = GetPlayerMapPosition("player")
+				if playerX == 0 and playerY == 0 then return end		-- Somehow we can't get the correct position?
+
+				for i=1, numPlayers do
+					local uId = unitID:format(i)
+					if not UnitIsUnit(uId, "player") then
+						local x,y = GetPlayerMapPosition(uId)
+						if UnitIsDeadOrGhost(uId) then x = 100 end	-- hack to make sure dead people aren't shown
+						if not dots[i] then
+							dots[i] = {
+								icon = nil,
+								class = "none",
+								x = (x - playerX) * dims[1],
+								y = (y - playerY) * dims[2]
+							}
+						else
+							dots[i].x = (x - playerX) * dims[1]
+							dots[i].y = (y - playerY) * dims[2]
+						end
+						setDotColor(i, select(2, UnitClass(uId)))
+						setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
+					end
+				end
+
+				local playerTooClose = false
+				for i,v in pairs(dots) do
+					if v.tooClose then
+						playerTooClose = true
+						break;
+					end
+				end
+				if UnitIsDeadOrGhost("player") then
+					radarFrame.circle:SetVertexColor(1,1,1)
+				elseif playerTooClose then
+					radarFrame.circle:SetVertexColor(1,0,0)
+				else
+					radarFrame.circle:SetVertexColor(0,1,0)
+				end
+			self:Show()
+		else
 			if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
 				radarFrame.circle:SetVertexColor(1,1,1)
 			end
-		else
-			rotation = (2 * math.pi) - GetPlayerFacing()
-			local numPlayers = 0
-			local unitID = "raid%d"
-			if GetNumRaidMembers() > 0 then
-				unitID = "raid%d"
-				numPlayers = GetNumRaidMembers()
-			elseif GetNumPartyMembers() > 0 then
-				unitID = "party%d"
-				numPlayers = GetNumPartyMembers()
-			end
-			if numPlayers < (prevNumPlayers or 0) then
-				for i=numPlayers+1, prevNumPlayers do
-					if dots[i].dot then
-						dots[i].dot:Hide()		-- Hide dots when people leave the group
-					end
-					dots[i].tooClose = false
-					dots[i].icon = nil
-					for i=1, 8 do
-						charms[i]:Hide()	
-					end
-				end
-			end
-			prevNumPlayers = numPlayers
-
-			local playerX, playerY = GetPlayerMapPosition("player")
-			if playerX == 0 and playerY == 0 then return end		-- Somehow we can't get the correct position?
-
-			for i=1, numPlayers do
-				local uId = unitID:format(i)
-				if not UnitIsUnit(uId, "player") then
-					local x,y = GetPlayerMapPosition(uId)
-					if UnitIsDeadOrGhost(uId) then x = 100 end	-- hack to make sure dead people aren't shown
-					if not dots[i] then
-						dots[i] = {
-							icon = nil,
-							class = "none",
-							x = (x - playerX) * dims[1],
-							y = (y - playerY) * dims[2]
-						}
-					else
-						dots[i].x = (x - playerX) * dims[1]
-						dots[i].y = (y - playerY) * dims[2]
-					end
-					setDotColor(i, select(2, UnitClass(uId)))
-					setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
-				end
-			end
-
-			local playerTooClose = false
-			for i,v in pairs(dots) do
-				if v.tooClose then
-					playerTooClose = true
-					break;
-				end
-			end
-			if UnitIsDeadOrGhost("player") then
-				radarFrame.circle:SetVertexColor(1,1,1)
-			elseif playerTooClose then
-				radarFrame.circle:SetVertexColor(1,0,0)
-			else
-				radarFrame.circle:SetVertexColor(0,1,0)
-			end
 		end
-		self:Show()
 	end
 end
 
