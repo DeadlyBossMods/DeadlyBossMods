@@ -71,6 +71,15 @@ DBM_CORE_RANGECHECK_SOUND_2			= "Sonido de despertador"
 DBM_CORE_RANGECHECK_HIDE			= "Esconder"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 DBM_CORE_RANGECHECK_LOCK			= "Bloquear ventana"
+DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Marcos"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "Mostrar marco de radar"
+DBM_CORE_RANGECHECK_OPTION_TEXT		= "Mostrar marco de texto"
+DBM_CORE_RANGECHECK_OPTION_BOTH		= "Mostrar los dos"
+DBM_CORE_RANGECHECK_OPTION_SPEED	= "Tasa de actualicación (requiere recargar)"
+DBM_CORE_RANGECHECK_OPTION_SLOW		= "Lento (ahorra CPU)"
+DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "Medio"
+DBM_CORE_RANGECHECK_OPTION_FAST		= "Rápido (Casi tiempo real)"
+DBM_CORE_RANGERADAR_HEADER			= "Radar de rango (%d yd)"
 
 DBM_CORE_INFOFRAME_LOCK				= "Bloquear ventana"
 DBM_CORE_INFOFRAME_HIDE				= "Esconder"
@@ -189,6 +198,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Poner iconos en objetivos de $spell:%d"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Reproducir sonido en $spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Reproducir sonido de cuenta atrás para $spell:%d"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Gritar cuando tengas $spell:%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "¡%s en mi!"--Verify (%s is spellname)
 
@@ -225,3 +235,4 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "Han denegado la solicitud: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "Ausentes: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No tienen una versión reciente de DBM instalada: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Resultado del escaneo del ID de estancia. Quizas algunas estancias aparezcan más de una vez si hay jugadores que juegan a WoW con distintos idiomas en la banda."
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "Jugadores que aún no han contestado: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
