@@ -64,6 +64,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	summonSquall    ="Буря! Приди мне на помощь!", -- or this: Ветра! Повинуйтесь моей воле!
+	summonAdd	    ="Буря! Приди мне на помощь!", -- or this: Ветра! Повинуйтесь моей воле!
 	phase3          ="Довольно! Меня ничто не в силах сдерживать!"
 })

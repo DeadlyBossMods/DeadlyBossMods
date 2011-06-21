@@ -64,6 +64,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	summonSquall		= "폭풍이여! 너를 소환하노라!",
+	summonAdd			= "폭풍이여! 너를 소환하노라!",
 	phase3				= "그만! 더는 자제하지 않겠다!" -- check "Enough! I will no longer be contained!"
 })
