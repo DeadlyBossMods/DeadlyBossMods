@@ -498,7 +498,7 @@ function createRadarFrame()
 	text:Show()
 	radarFrame.text = text
 
-	for i=1, 25 do
+	for i=1, 40 do
 		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
 		dot:SetWidth(24)
 		dot:SetHeight(24)
