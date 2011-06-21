@@ -29,7 +29,7 @@ local warnAcidRain			= mod:NewCountAnnounce(93281, 2, nil, false)
 local warnFeedback			= mod:NewStackAnnounce(87904, 2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnCloud				= mod:NewSpellAnnounce(89588, 3)
-local warnLightingRod		= mod:NewTargetAnnounce(89668, 4)
+local warnLightningRod		= mod:NewTargetAnnounce(89668, 4)
 
 local specWarnWindBurst		= mod:NewSpecialWarningSpell(87770, nil, nil, nil, true)
 local specWarnIceStorm		= mod:NewSpecialWarningMove(91020)
@@ -49,7 +49,10 @@ local timerLightningStrikeCD= mod:NewNextTimer(10, 93257)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
+local soundLightningRod		= mod:NewSound(89668)
+
 mod:AddBoolOption("LightningRodIcon")
+mod:AddBoolOption("RangeFrame", true)
 
 local lastWindburst = 0
 local phase2Started = false
@@ -92,6 +95,12 @@ function mod:OnCombatStart(delay)
 	table.wipe(strikedest)
 end
 
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87904, 101458, 101459, 101460) then
 		warnFeedback:Show(args.destName, args.amount or 1)
@@ -118,12 +127,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:UnscheduleMethod("StrikeRepeat")
 		end
 	elseif args:IsSpellID(89668) then
-		warnLightingRod:Show(args.destName)
+		warnLightningRod:Show(args.destName)
 		timerLightningRod:Show(args.destName)
 		timerLightningRodCD:Start()
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
 			yellLightningRod:Yell()
+			soundLightningRod:Play()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(20)
+			end
 		end
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 8)
@@ -138,6 +151,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerLightningRod:Cancel(args.destName)
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 0)
+		end
+		if args:IsPlayer() then
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
 	end
 end
@@ -179,7 +197,7 @@ function mod:SPELL_PERIODIC_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.summonSquall or msg:find(L.summonSquall) then--Adds being summoned
+	if msg == L.summonAdd or msg:find(L.summonAdd) then--Adds being summoned
 		warnAdd:Show()
 		timerAddCD:Start()
 	elseif msg == L.phase3 or msg:find(L.phase3) then

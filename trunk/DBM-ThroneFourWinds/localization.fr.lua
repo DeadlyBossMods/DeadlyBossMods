@@ -63,6 +63,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	summonSquall	=	"Tempêtes! Je vous appelle à mes côtés!",
+	summonAdd	=	"Tempêtes! Je vous appelle à mes côtés!",
 	phase3		=	"Assez! Je ne veux plus être contenu!"
 })
