@@ -655,6 +655,11 @@ do
 
 			local mapName = GetMapInfo()
 			local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
+			if not dims then--Still needed, in case radar is open on wipe and we lose map during an update but after initRangeCheck fired. Prevents a nil error.
+				if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
+					radarFrame.circle:SetVertexColor(1,1,1)
+				end
+			else
 				rotation = (2 * math.pi) - GetPlayerFacing()
 				local numPlayers = 0
 				local unitID = "raid%d"
@@ -717,7 +722,8 @@ do
 				else
 					radarFrame.circle:SetVertexColor(0,1,0)
 				end
-			self:Show()
+				self:Show()
+			end
 		else
 			if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
 				radarFrame.circle:SetVertexColor(1,1,1)
