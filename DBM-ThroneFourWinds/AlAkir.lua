@@ -92,7 +92,6 @@ function mod:OnCombatStart(delay)
 	spamStrike = 0
 	berserkTimer:Start(-delay)
 	timerLightningStrikeCD:Start(-delay)
-	table.wipe(strikedest)
 end
 
 function mod:OnCombatEnd()
