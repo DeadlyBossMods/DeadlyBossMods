@@ -50,6 +50,7 @@ local timerLightningStrikeCD= mod:NewNextTimer(10, 93257)
 local berserkTimer			= mod:NewBerserkTimer(600)
 
 local soundLightningRod		= mod:NewSound(89668)
+local CloudsCountown		= mod:NewCountdown(10, 93299, false)
 
 mod:AddBoolOption("LightningRodIcon")
 mod:AddBoolOption("RangeFrame", true)
@@ -66,9 +67,11 @@ function mod:CloudRepeat()
 	if self:IsInCombat() then--Don't schedule if not in combat, prevent an infinite loop from happening if for some reason one got scheduled exactly on boss death.
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerLightningCloudCD:Start(10)
+			CloudsCountown:Start(10)
 			self:ScheduleMethod(10, "CloudRepeat")
 		else
 			timerLightningCloudCD:Start()
+			CloudsCountown:Start(15)
 			self:ScheduleMethod(15, "CloudRepeat")
 		end
 	end
