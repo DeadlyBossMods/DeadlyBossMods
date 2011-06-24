@@ -154,7 +154,7 @@ L:SetTimerLocalization({
 	TimerDragon			= "Next Twilight Whelps",
 	TimerEggWeakening	= "Twilight Carapace dissipates",
 	TimerEggWeaken		= "Twilight Capapace Regeneration",
-	TimerOrbs			= "Next Orbs"
+	TimerOrbs			= "Shadow Orbs CD"
 })
 
 L:SetOptionLocalization({
