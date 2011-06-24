@@ -76,7 +76,7 @@ end
 
 function mod:StrikeRepeat()
 	self:UnscheduleMethod("StrikeRepeat")
-	timerLightningStrikeCD()
+	timerLightningStrikeCD:Start()
 	if self:IsInCombat() then
 		self:ScheduleMethod(10, "StrikeRepeat")
 	end
