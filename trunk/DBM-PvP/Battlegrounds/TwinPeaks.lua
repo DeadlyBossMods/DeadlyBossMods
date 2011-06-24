@@ -15,7 +15,7 @@ TwinPeaks:RegisterEvents(
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+--	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UPDATE_BATTLEFIELD_SCORE"
 )
@@ -26,7 +26,7 @@ local FlagCarrier = {
 	[2] = nil
 }
 
-local startTimer 	= TwinPeaks:NewTimer(62, "TimerStart", 2457)
+--local startTimer 	= TwinPeaks:NewTimer(62, "TimerStart", 2457)
 local flagTimer 	= TwinPeaks:NewTimer(23, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 
 TwinPeaks:AddBoolOption("ShowFlagCarrier", true, nil, function()
@@ -63,14 +63,14 @@ do
 	TwinPeaks.ZONE_CHANGED_NEW_AREA = TwinPeaks_Initialize
 end
 
-function TwinPeaks:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
+--[[function TwinPeaks:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	if not bgzone then return end
 	if arg1 == L.BgStart60 then
 		startTimer:Start()
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
 	end
-end
+end--]]
 
 
 function TwinPeaks:ShowFlagCarrier()
