@@ -19,7 +19,7 @@ IsleOfConquest:RemoveOption("SpeedKillTimer")
 local warnSiegeEngine 		= IsleOfConquest:NewAnnounce("WarnSiegeEngine", 3)
 local warnSiegeEngineSoon 	= IsleOfConquest:NewAnnounce("WarnSiegeEngineSoon", 2) 
 
-local startTimer 		= IsleOfConquest:NewTimer(62, "TimerStart", 2457)
+--local startTimer 		= IsleOfConquest:NewTimer(62, "TimerStart", 2457)
 local POITimer 			= IsleOfConquest:NewTimer(61, "TimerPOI", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")	-- point of interest
 local timerSiegeEngine 	= IsleOfConquest:NewTimer(180, "TimerSiegeEngine", 15048)
 
@@ -115,13 +115,13 @@ do
 
 	function IsleOfConquest:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 		if not bgzone then return end
-		if arg1 == L.BgStart60 then
+--[[		if arg1 == L.BgStart60 then
 			startTimer:Start()
 		elseif arg1 == L.BgStart30  then		
 			startTimer:Update(31, 62)
 		elseif arg1 == L.BgStart15 then
 			startTimer:Update(47, 62)
-		end
+		end--]]
 		scheduleCheck(self)
 	end
 	

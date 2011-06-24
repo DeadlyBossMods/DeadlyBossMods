@@ -21,12 +21,12 @@ Warsong:RegisterEvents(
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+--	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UPDATE_BATTLEFIELD_SCORE"
 )
 
-local startTimer = Warsong:NewTimer(62, "TimerStart", 2457)
+--local startTimer = Warsong:NewTimer(62, "TimerStart", 2457)
 local flagTimer = Warsong:NewTimer(23, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 
 Warsong:AddBoolOption("ShowFlagCarrier", true, nil, function()
@@ -63,14 +63,14 @@ do
 	Warsong.ZONE_CHANGED_NEW_AREA = WSG_Initialize
 end
 
-function Warsong:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
+--[[function Warsong:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	if not bgzone then return end
 	if arg1 == L.BgStart60 then
 		startTimer:Start()
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
 	end
-end
+end--]]
 
 
 function Warsong:ShowFlagCarrier()
