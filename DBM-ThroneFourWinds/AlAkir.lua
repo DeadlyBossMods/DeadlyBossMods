@@ -51,6 +51,7 @@ local berserkTimer			= mod:NewBerserkTimer(600)
 
 local soundLightningRod		= mod:NewSound(89668)
 local CloudsCountown		= mod:NewCountdown(10, 93299, false)
+local FeedbackCountown		= mod:NewCountdown(20, 87904, false)
 
 mod:AddBoolOption("LightningRodIcon")
 mod:AddBoolOption("RangeFrame", true)
@@ -107,10 +108,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87904, 101458, 101459, 101460) then
 		warnFeedback:Show(args.destName, args.amount or 1)
 		timerFeedback:Cancel()--prevent multiple timers spawning with diff args.
+		FeedbackCountown:Cancel()
 		if tonumber((select(4, GetBuildInfo()))) >= 40200 and mod:IsDifficulty("normal10", "normal25") then
 			timerFeedback:Start(30, args.amount or 1)
+			FeedbackCountown:Start(30)
 		else
 			timerFeedback:Start(20, args.amount or 1)
+			FeedbackCountown:Start(20)
 		end
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
 		if tonumber((select(4, GetBuildInfo()))) >= 40200 and mod:IsDifficulty("normal10", "normal25") then
