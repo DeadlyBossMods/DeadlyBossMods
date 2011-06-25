@@ -454,7 +454,7 @@ function createRadarFrame()
 		ValidateFramePosition(self)
 		local point, _, _, x, y = self:GetPoint(1)
 		DBM.Options.RangeFrameRadarX = x
-		DBM.Options.RangeFrameYRadar = y
+		DBM.Options.RangeFrameRadarY = y
 		DBM.Options.RangeFrameRadarPoint = point
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
