@@ -120,9 +120,9 @@ do
 		rangeCheck:Show(frame.range, frame.filter)
 	end
 
-	local function setSpeed(self, option)
-		DBM.Options.RangeFrameUpdates = option
-	end
+--	local function setSpeed(self, option)
+--		DBM.Options.RangeFrameUpdates = option
+--	end
 
 	local function toggleLocked()
 		DBM.Options.RangeFrameLocked = not DBM.Options.RangeFrameLocked
@@ -162,12 +162,12 @@ do
 			info.menuList = "frames"
 			UIDropDownMenu_AddButton(info, 1)
 
-			info = UIDropDownMenu_CreateInfo()
+--[[			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_OPTION_SPEED
 			info.notCheckable = true
 			info.hasArrow = true
 			info.menuList = "speed"
-			UIDropDownMenu_AddButton(info, 1)
+			UIDropDownMenu_AddButton(info, 1)]]
 
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_LOCK
@@ -293,7 +293,7 @@ do
 				info.arg1 = "both"
 				info.checked = (DBM.Options.RangeFrameFrames == "both")
 				UIDropDownMenu_AddButton(info, 2)	
-			elseif menu == "speed" then
+--[[			elseif menu == "speed" then
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_OPTION_SLOW
 				info.func = setSpeed
@@ -313,7 +313,7 @@ do
 				info.func = setSpeed
 				info.arg1 = "Fast"
 				info.checked = (DBM.Options.RangeFrameUpdates == "Fast")
-				UIDropDownMenu_AddButton(info, 2)	
+				UIDropDownMenu_AddButton(info, 2)	]]
 			end
 		elseif level == 3 then
 			local option = menu
@@ -375,14 +375,14 @@ end
 ------------------------
 function createFrame()
 	local elapsed = 0
-	local updateRate
+--[[	local updateRate
 	if DBM.Options.RangeFrameUpdates == "Slow" then
 		updateRate = 0.5
 	elseif DBM.Options.RangeFrameUpdates == "Average" then
 		updateRate = 0.25
 	elseif DBM.Options.RangeFrameUpdates == "Fast" then
 		updateRate = 0.05
-	end
+	end]]
 	local frame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
 	dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", frame, "UIDropDownMenuTemplate")
 	frame:SetFrameStrata("DIALOG")
@@ -410,7 +410,7 @@ function createFrame()
 	end)
 	frame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= updateRate and self.checkFunc then
+		if elapsed >= 0.04 and self.checkFunc then
 			onUpdate(self, elapsed)
 			elapsed = 0
 		end
@@ -426,14 +426,14 @@ end
 
 function createRadarFrame()
 	local elapsed = 0
-	local updateRate
+--[[	local updateRate
 	if DBM.Options.RangeFrameUpdates == "Slow" then
 		updateRate = 0.5
 	elseif DBM.Options.RangeFrameUpdates == "Average" then
 		updateRate = 0.25
 	elseif DBM.Options.RangeFrameUpdates == "Fast" then
 		updateRate = 0.05
-	end
+	end]]
 	local radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
 	radarFrame:SetFrameStrata("DIALOG")
 	
@@ -459,7 +459,7 @@ function createRadarFrame()
 	end)
 	radarFrame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= updateRate then
+		if elapsed >= 0.04 then
 			onUpdateRadar(self, elapsed)
 			elapsed = 0
 		end
@@ -498,14 +498,14 @@ function createRadarFrame()
 	text:Show()
 	radarFrame.text = text
 
-	for i=1, 40 do
-		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
-		dot:SetWidth(24)
-		dot:SetHeight(24)
-		dot:SetFrameStrata("TOOLTIP")
-		dot:Hide()
-		dots[i] = {dot = dot}
-	end
+--	for i=1, 40 do
+--		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
+--		dot:SetWidth(24)
+--		dot:SetHeight(24)
+--		dot:SetFrameStrata("TOOLTIP")
+--		dot:Hide()
+--		dots[i] = {dot = dot}
+--	end
 	for i=1, 8 do
 		local charm = radarFrame:CreateTexture("DBMRangeCheckRadarCharm"..i, "OVERLAY")
 		charm:SetTexture("interface\\targetingframe\\UI-RaidTargetingIcons.blp")
@@ -577,7 +577,7 @@ function onUpdate(self, elapsed)
 end
 
 do
-	local rotation, pixelsperyard, prevNumPlayers, range
+	local rotation, pixelsperyard, prevNumPlayers, range, isInSupportedArea
 	local function createDot(id)
 		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..id, radarFrame, "WorldMapPartyUnitTemplate")
 		dot:SetFrameStrata("TOOLTIP")
@@ -606,8 +606,8 @@ do
 		local y = dots[id].y
 		local range = (x*x + y*y) ^ 0.5
 		if range < (1.5 * frame.range) then							-- if person is closer than 1.5 * range, show the dot. Else hide it
-			local dx = ((x * math.cos(rotation)) - (-1 * y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
-			local dy = ((x * math.sin(rotation)) + (-1 * y * math.cos(rotation))) * pixelsperyard
+			local dx = ((x * math.cos(rotation)) - (-y * math.sin(rotation))) * pixelsperyard		-- Rotate the X,Y based on player facing
+			local dy = ((x * math.sin(rotation)) + (-y * math.cos(rotation))) * pixelsperyard
 
 			if icon then
 				if dots[id].icon and dots[id].icon ~= icon then
@@ -659,11 +659,12 @@ do
 
 			local mapName = GetMapInfo()
 			local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
-			if not dims then--Still needed, in case radar is open on wipe and we lose map during an update but after initRangeCheck fired. Prevents a nil error.
+			if not dims then -- This should actually never happen as initRangeCheck should perform the exact same check.
 				if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
 					radarFrame.circle:SetVertexColor(1,1,1)
 				end
 			else
+				isInSupportedArea = true
 				rotation = (2 * math.pi) - GetPlayerFacing()
 				local numPlayers = 0
 				local unitID = "raid%d"
@@ -676,13 +677,15 @@ do
 				end
 				if numPlayers < (prevNumPlayers or 0) then
 					for i=numPlayers+1, prevNumPlayers do
-						if dots[i].dot then
-							dots[i].dot:Hide()		-- Hide dots when people leave the group
-						end
-						dots[i].tooClose = false
-						dots[i].icon = nil
-						for i=1, 8 do
-							charms[i]:Hide()	
+						if dots[i] then
+							if dots[i].dot then
+								dots[i].dot:Hide()		-- Hide dots when people leave the group
+							end
+							dots[i].tooClose = false
+							dots[i].icon = nil
+							for i=1, 8 do
+								charms[i]:Hide()
+							end
 						end
 					end
 				end
@@ -707,8 +710,8 @@ do
 							dots[i].x = (x - playerX) * dims[1]
 							dots[i].y = (y - playerY) * dims[2]
 						end
-						setDotColor(i, select(2, UnitClass(uId)))
 						setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
+						setDotColor(i, (select(2, UnitClass(uId))))
 					end
 				end
 
@@ -729,8 +732,18 @@ do
 				self:Show()
 			end
 		else
-			if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
+			if isInSupportedArea then
+				-- we were in an area with known map dimensions during the last update but looks like we left it
+				isInSupportedArea = false
+				-- white frame
 				radarFrame.circle:SetVertexColor(1,1,1)
+				-- hide everything
+				for i, v in pairs(dots) do
+					v.dot:Hide()
+				end
+				for i = 1, 8 do
+					charms[i]:Hide()	
+				end
 			end
 		end
 	end
@@ -842,7 +855,7 @@ function rangeCheck:Show(range, filter)
 		onUpdate(frame, 0)
 	end
 	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and (DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()] ~= nil) then
-		onUpdateRadar(radarFrame, 0)
+		onUpdateRadar(radarFrame, 1)
 	end
 end
 
