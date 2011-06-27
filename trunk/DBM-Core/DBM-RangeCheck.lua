@@ -613,9 +613,13 @@ do
 				if dots[id].icon and dots[id].icon ~= icon then
 					charms[dots[id].icon]:Hide()
 				end
-				charms[icon]:ClearAllPoints()
-				charms[icon]:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
-				charms[icon]:Show()
+				if not filtered then
+					charms[icon]:ClearAllPoints()
+					charms[icon]:SetPoint("CENTER", radarFrame, "CENTER", dx, dy)
+					charms[icon]:Show()
+				else
+					charms[icon]:Hide()
+				end
 				dot:Hide()
 				dots[id].icon = icon
 			elseif not filtered then
