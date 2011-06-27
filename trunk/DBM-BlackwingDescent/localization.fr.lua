@@ -8,6 +8,7 @@ local L
 --------------
 --  Magmaw  --
 --------------
+--L = DBM:GetModLocalization(170)
 L = DBM:GetModLocalization("Magmaw")
 
 L:SetGeneralLocalization({
@@ -35,6 +36,7 @@ L:SetOptionLocalization({
 -------------------------------
 --  Dark Iron Golem Council  --
 -------------------------------
+--L = DBM:GetModLocalization(169)
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
@@ -68,6 +70,7 @@ L:SetMiscLocalization({
 ----------------
 --  Maloriak  --
 ----------------
+--L = DBM:GetModLocalization(173)
 L = DBM:GetModLocalization("Maloriak")
 
 L:SetGeneralLocalization({
@@ -107,6 +110,7 @@ L:SetOptionLocalization({
 -----------------
 --  Chimaeron  --
 -----------------
+--L = DBM:GetModLocalization(172)
 L = DBM:GetModLocalization("Chimaeron")
 
 L:SetGeneralLocalization({
@@ -132,6 +136,7 @@ L:SetMiscLocalization({
 -----------------
 --  Atramedes  --
 -----------------
+--L = DBM:GetModLocalization(171)
 L = DBM:GetModLocalization("Atramedes")
 
 L:SetGeneralLocalization({
@@ -168,6 +173,7 @@ L:SetOptionLocalization({
 ----------------
 --  Nefarian  --
 ----------------
+--L = DBM:GetModLocalization(174)
 L = DBM:GetModLocalization("Nefarian")
 
 L:SetGeneralLocalization({
@@ -208,4 +214,25 @@ L:SetMiscLocalization({
 	Onyxia				= "Onyxia",
 	ShadowBlazeExact		= "Shadowblaze in %ds",
 	ShadowBlazeEstimate		= "Shadowblaze soon (~5s)"
+})
+
+-------------------------------
+--  Blackwing Descent Trash  --
+-------------------------------
+L = DBM:GetModLocalization("BWDTrash")
+
+L:SetGeneralLocalization({
+	name = "Blackwing Descent Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })

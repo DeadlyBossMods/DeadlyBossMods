@@ -4,6 +4,7 @@ local L
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
+--L = DBM:GetModLocalization(156)
 L = DBM:GetModLocalization("HalfusWyrmbreaker")
 
 L:SetGeneralLocalization({
@@ -26,6 +27,7 @@ L:SetMiscLocalization({
 ---------------------------
 --  Valiona & Theralion  --
 ---------------------------
+--L = DBM:GetModLocalization(157)
 L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
@@ -55,6 +57,7 @@ L:SetMiscLocalization({
 ----------------------------------
 --  Twilight Ascendant Council  --
 ----------------------------------
+--L = DBM:GetModLocalization(158)
 L = DBM:GetModLocalization("AscendantCouncil")
 
 L:SetGeneralLocalization({
@@ -106,6 +109,7 @@ L:SetMiscLocalization({
 ----------------
 --  Cho'gall  --
 ----------------
+--L = DBM:GetModLocalization(167)
 L = DBM:GetModLocalization("Chogall")
 
 L:SetGeneralLocalization({
@@ -133,6 +137,7 @@ L:SetMiscLocalization({
 ----------------
 --  Sinestra  --
 ----------------
+--L = DBM:GetModLocalization(168)
 L = DBM:GetModLocalization("Sinestra")
 
 L:SetGeneralLocalization({
@@ -184,9 +189,9 @@ L:SetMiscLocalization({
 	YellEgg				= "Ihr denkt, ich sei schwach? Narren!" --needs to be verified (video-captured translation, maybe inaccurate whitespaces)
 })
 
---------------------------
+-------------------------------------
 --  The Bastion of Twilight Trash  --
---------------------------
+-------------------------------------
 L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({

@@ -4,6 +4,7 @@ local L
 ---------------
 -- Alysrazor --
 ---------------
+--L= DBM:GetModLocalization(194)
 L = DBM:GetModLocalization("Alysrazor")
 
 L:SetGeneralLocalization({
@@ -35,6 +36,7 @@ L:SetMiscLocalization({
 -------------------
 -- Lord Rhyolith --
 -------------------
+--L= DBM:GetModLocalization(193)
 L = DBM:GetModLocalization("Rhyolith")
 
 L:SetGeneralLocalization({
@@ -60,6 +62,7 @@ L:SetMiscLocalization({
 -----------------
 -- Beth'tilac --
 -----------------
+--L= DBM:GetModLocalization(192)
 L = DBM:GetModLocalization("Bethtilac")
 
 L:SetGeneralLocalization({
@@ -76,9 +79,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Mostrar tiempo para siguientes Hiladoras Telaceniza",
-	TimerSpiderlings	= "Mostrar tiempo para siguientes Arañitas Telaceniza",
-	TimerDrone		= "Mostrar tiempo para siguientes Zánganos Telaceniza"
+	TimerSpinners		= "Mostrar tiempo para siguientes $journal:2770",
+	TimerSpiderlings	= "Mostrar tiempo para siguientes $journal:2778",
+	TimerDrone		= "Mostrar tiempo para siguientes $journal:2773"
 })
 
 L:SetMiscLocalization({
@@ -88,6 +91,7 @@ L:SetMiscLocalization({
 -------------
 -- Shannox --
 -------------
+--L= DBM:GetModLocalization(195)
 L = DBM:GetModLocalization("Shannox")
 
 L:SetGeneralLocalization({
@@ -111,6 +115,7 @@ L:SetMiscLocalization({
 -------------
 -- Baleroc --
 -------------
+--L= DBM:GetModLocalization(196)
 L = DBM:GetModLocalization("Baleroc")
 
 L:SetGeneralLocalization({
@@ -138,6 +143,7 @@ L:SetMiscLocalization({
 --------------------------------
 -- Majordomo Fandral Staghelm --
 --------------------------------
+--L= DBM:GetModLocalization(197)
 L = DBM:GetModLocalization("FandralStaghelm")
 
 L:SetGeneralLocalization({
@@ -159,6 +165,7 @@ L:SetMiscLocalization({
 --------------
 -- Ragnaros --
 --------------
+--L= DBM:GetModLocalization(198)
 L = DBM:GetModLocalization("Ragnaros-Cata")
 
 L:SetGeneralLocalization({
