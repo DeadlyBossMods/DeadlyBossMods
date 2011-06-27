@@ -648,7 +648,7 @@ do
 	end
 
 	function onUpdateRadar(self, elapsed)
-		if initRangeCheck(frame.range) then
+		if initRangeCheck(frame.range) then--This is basically fixing a bug with map not being on right dungeon level half the time.
 			pixelsperyard = min(radarFrame:GetWidth(), radarFrame:GetHeight()) / (frame.range * 3)
 			radarFrame.circle:SetSize(frame.range * pixelsperyard * 2, frame.range * pixelsperyard * 2)
 
@@ -659,7 +659,7 @@ do
 
 			local mapName = GetMapInfo()
 			local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
-			if not dims then -- This should actually never happen as initRangeCheck should perform the exact same check.
+			if not dims then -- This ALWAYS happens when leaving a zone that has a map and moving into one that does not.
 				if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
 					radarFrame.circle:SetVertexColor(1,1,1)
 				end
@@ -736,7 +736,7 @@ do
 				end
 				self:Show()
 			end
-		else--This appearently is only true if you open radar outside of instance?
+		else--This appearently is only true if you open radar outside of instance? otherwise initRangeCheck is always valid on zone change leaving an instance, causing below code never to serve any purpose.
 			if isInSupportedArea then
 				-- we were in an area with known map dimensions during the last update but looks like we left it
 				isInSupportedArea = false
