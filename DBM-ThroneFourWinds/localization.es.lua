@@ -5,6 +5,7 @@ local L
 ------------------------
 --  Conclave of Wind  --
 ------------------------
+--L = DBM:GetModLocalization(154)
 L = DBM:GetModLocalization("Conclave")
 
 L:SetGeneralLocalization({
@@ -41,6 +42,7 @@ L:SetMiscLocalization({
 ---------------
 --  Al'Akir  --
 ---------------
+--L = DBM:GetModLocalization(155)
 L = DBM:GetModLocalization("AlAkir")
 
 L:SetGeneralLocalization({

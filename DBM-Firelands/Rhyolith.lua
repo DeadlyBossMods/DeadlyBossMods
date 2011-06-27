@@ -1,3 +1,4 @@
+--local mod	= DBM:NewMod(193, "DBM-Firelands", nil, 78)
 local mod	= DBM:NewMod("Rhyolith", "DBM-Firelands")
 local L		= mod:GetLocalizedStrings()
 
