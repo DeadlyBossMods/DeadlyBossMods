@@ -677,9 +677,10 @@ do
 				if GetNumRaidMembers() > 0 then
 					unitID = "raid%d"
 					numPlayers = GetNumRaidMembers()
+					numPlayers = numPlayers - 1
 				elseif GetNumPartyMembers() > 0 then
 					unitID = "party%d"
-					numPlayers = GetNumPartyMembers() + 1
+					numPlayers = GetNumPartyMembers()
 				end
 				if numPlayers < (prevNumPlayers or 0) then
 					for i=numPlayers, prevNumPlayers do
