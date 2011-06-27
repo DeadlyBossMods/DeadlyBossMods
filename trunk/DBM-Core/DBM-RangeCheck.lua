@@ -679,10 +679,10 @@ do
 					numPlayers = GetNumRaidMembers()
 				elseif GetNumPartyMembers() > 0 then
 					unitID = "party%d"
-					numPlayers = GetNumPartyMembers()
+					numPlayers = GetNumPartyMembers() + 1
 				end
 				if numPlayers < (prevNumPlayers or 0) then
-					for i=numPlayers+1, prevNumPlayers do
+					for i=numPlayers, prevNumPlayers do
 						if dots[i].dot then
 							dots[i].dot:Hide()		-- Hide dots when people leave the group
 						end
