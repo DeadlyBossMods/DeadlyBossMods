@@ -498,14 +498,14 @@ function createRadarFrame()
 	text:Show()
 	radarFrame.text = text
 
---	for i=1, 40 do
---		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
---		dot:SetWidth(24)
---		dot:SetHeight(24)
---		dot:SetFrameStrata("TOOLTIP")
---		dot:Hide()
---		dots[i] = {dot = dot}
---	end
+	for i=1, 40 do
+		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
+		dot:SetWidth(24)
+		dot:SetHeight(24)
+		dot:SetFrameStrata("TOOLTIP")
+		dot:Hide()
+		dots[i] = {dot = dot}
+	end
 	for i=1, 8 do
 		local charm = radarFrame:CreateTexture("DBMRangeCheckRadarCharm"..i, "OVERLAY")
 		charm:SetTexture("interface\\targetingframe\\UI-RaidTargetingIcons.blp")
@@ -677,21 +677,22 @@ do
 				if GetNumRaidMembers() > 0 then
 					unitID = "raid%d"
 					numPlayers = GetNumRaidMembers()
-					numPlayers = numPlayers - 1
 				elseif GetNumPartyMembers() > 0 then
 					unitID = "party%d"
 					numPlayers = GetNumPartyMembers()
 				end
 				if numPlayers < (prevNumPlayers or 0) then
 					for i=numPlayers, prevNumPlayers do
-						if dots[i].dot then
-							dots[i].dot:Hide()		-- Hide dots when people leave the group
+						if dots[i] then
+							if dots[i].dot then
+								dots[i].dot:Hide()		-- Hide dots when people leave the group
+							end
+							dots[i].tooClose = false
+							dots[i].icon = nil
 						end
-						dots[i].tooClose = false
-						dots[i].icon = nil
-						for i=1, 8 do
-							charms[i]:Hide()	
-						end
+					end
+					for i=1, 8 do
+						charms[i]:Hide()	
 					end
 				end
 				prevNumPlayers = numPlayers
@@ -717,6 +718,10 @@ do
 						end
 						setDot(i, GetRaidTargetIndex(uId), (frame.filter and not frame.filter(uId)))
 						setDotColor(i, (select(2, UnitClass(uId))))
+					else
+						if dots[i] and dots[i].dot then
+							dots[i].dot:Hide()
+						end
 					end
 				end
 
@@ -736,7 +741,7 @@ do
 				end
 				self:Show()
 			end
-		else--This appearently is only true if you open radar outside of instance? otherwise initRangeCheck is always valid on zone change leaving an instance, causing below code never to serve any purpose.
+		else
 			if isInSupportedArea then
 				-- we were in an area with known map dimensions during the last update but looks like we left it
 				isInSupportedArea = false
