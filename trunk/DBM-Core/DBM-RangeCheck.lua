@@ -677,15 +677,13 @@ do
 				end
 				if numPlayers < (prevNumPlayers or 0) then
 					for i=numPlayers+1, prevNumPlayers do
-						if dots[i] then
-							if dots[i].dot then
-								dots[i].dot:Hide()		-- Hide dots when people leave the group
-							end
-							dots[i].tooClose = false
-							dots[i].icon = nil
-							for i=1, 8 do
-								charms[i]:Hide()
-							end
+						if dots[i].dot then
+							dots[i].dot:Hide()		-- Hide dots when people leave the group
+						end
+						dots[i].tooClose = false
+						dots[i].icon = nil
+						for i=1, 8 do
+							charms[i]:Hide()	
 						end
 					end
 				end
@@ -738,8 +736,8 @@ do
 				-- white frame
 				radarFrame.circle:SetVertexColor(1,1,1)
 				-- hide everything
-				for i, v in pairs(dots) do
-					v.dot:Hide()
+				if dots[i].dot then
+					dots[i].dot:Hide()		-- Hide dots when people leave the group
 				end
 				for i = 1, 8 do
 					charms[i]:Hide()	
