@@ -663,6 +663,12 @@ do
 				if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
 					radarFrame.circle:SetVertexColor(1,1,1)
 				end
+				for i, v in pairs(dots) do
+					v.dot:Hide()
+				end
+				for i = 1, 8 do
+					charms[i]:Hide()	
+				end
 			else
 				isInSupportedArea = true
 				rotation = (2 * math.pi) - GetPlayerFacing()
@@ -729,15 +735,15 @@ do
 				end
 				self:Show()
 			end
-		else
+		else--This appearently is only true if you open radar outside of instance?
 			if isInSupportedArea then
 				-- we were in an area with known map dimensions during the last update but looks like we left it
 				isInSupportedArea = false
 				-- white frame
 				radarFrame.circle:SetVertexColor(1,1,1)
 				-- hide everything
-				if dots[i].dot then
-					dots[i].dot:Hide()		-- Hide dots when people leave the group
+				for i, v in pairs(dots) do
+					v.dot:Hide()
 				end
 				for i = 1, 8 do
 					charms[i]:Hide()	
