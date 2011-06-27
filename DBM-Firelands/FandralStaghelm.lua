@@ -22,20 +22,25 @@ local warnFury			= mod:NewStackAnnounce(97235, 3)
 local warnOrbs			= mod:NewCastAnnounce(98451, 3, nil, mod:IsTank())
 
 local timerSearingSeed		= mod:NewTargetTimer(60, 98450)
-local timerLeapingFlames	= mod:NewCDTimer(17, 100208)
-local timerFlameScythe		= mod:NewCDTimer(17, 98474)
+local timerLeapingFlames	= mod:NewCDTimer(4, 100208)
+local timerFlameScythe		= mod:NewCDTimer(4, 98474)
 
 local specWarnSearingSeed	= mod:NewSpecialWarningMove(98450)
 
--- Tried to find a start timer and make it 20% 'faster' each time, but from PTR logs it would mean to be correct to have a start timer of 15.66 which is 1sec off for the first ability :s
 local abilitySpam	-- Cat ability happens twice in a row (2 combat log events), but using it for both just in case :)
 local abilityCount = 0
 local abilityTimers = {
-	[0] = 16.708,
-	[1] = 12.740,
-	[2] = 10.025,
-	[3] = 8.381,
-	[4] = 7.214	-- should not allow him to cast more (need logs for more/better timing or different timing)
+	[0] = 17,
+	[1] = 13,
+	[2] = 10.5,
+	[3] = 8.5,
+	[4] = 7,
+	[5] = 7,
+	[6] = 6,
+	[7] = 6,
+	[8] = 5,
+	[9] = 5,
+	[10]= 5
 }
 
 function mod:OnCombatStart(delay)
@@ -76,12 +81,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(98476) and GetTime() - abilitySpam > 3 then	--98476 confirmed
 		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
-		local t = abilityTimers[abilityCount] or 0
+		local t = abilityTimers[abilityCount] or 4
 		timerLeapingFlames:Start(t)
 	elseif args:IsSpellID(98474, 100212, 100213, 100214) and GetTime() - abilitySpam > 3 then	--98474, 100213 confirmed
 		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
-		local t = abilityTimers[abilityCount] or 0
+		local t = abilityTimers[abilityCount] or 4
 		timerFlameScythe:Start(t)
 	end
 end
