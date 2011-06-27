@@ -75,9 +75,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Show timer for next Cinderweb Spinners",
-	TimerSpiderlings	= "Show timer for next Cinderweb Spiderlings",
-	TimerDrone		= "Show timer for next Cinderweb Drone"
+	TimerSpinners		= "Show timer for next $journal:2770",
+	TimerSpiderlings	= "Show timer for next $journal:2778",
+	TimerDrone		= "Show timer for next $journal:2773"
 })
 
 L:SetMiscLocalization({

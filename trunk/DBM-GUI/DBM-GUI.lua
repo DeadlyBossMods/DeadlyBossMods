@@ -278,6 +278,11 @@ do
 		local spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
 	end
+
+	local function replaceJournalLinks(id)
+		local title = EJ_GetSectionInfo(id)
+		return ("|cff71d5ff%s|r"):format(title)
+	end
 	
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
 		if not name then
@@ -292,6 +297,9 @@ do
 		-- font strings do not support hyperlinks, so check if we need one...
 		if name:find("%$spell:") then
 			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
+		end
+		if name:find("%$journal:") then
+			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		if name and name:find("|H") then -- ...and replace it with a SimpleHTML frame
 			_G[button:GetName().."Text"] = CreateFrame("SimpleHTML", button:GetName().."Text", button)
