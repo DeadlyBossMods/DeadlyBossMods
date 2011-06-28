@@ -62,7 +62,8 @@ L:SetOptionLocalization({
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback		= "$spell:87904 유지 타이머 보기",
 	WarnAdd				= "폭풍 정령이 생성 될 때 경고 보기",
-	TimerAddCD			= "다음 폭풍 정령 생성 타이머 보기"
+	TimerAddCD			= "다음 폭풍 정령 생성 타이머 보기",
+	RangeFrame			= "$spell:89668의 영향을 받을 경우 거리 프레임 보기(20 m)"
 })
 
 L:SetMiscLocalization({
