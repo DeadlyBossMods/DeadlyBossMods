@@ -4,12 +4,7 @@ local L
 ---------------
 -- Alysrazor --
 ---------------
---L= DBM:GetModLocalization(194)
-L = DBM:GetModLocalization("Alysrazor")
-
-L:SetGeneralLocalization({
-	name = "알리스라조르"
-})
+L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase		= "%d 단계"
@@ -36,12 +31,7 @@ L:SetMiscLocalization({
 -------------------
 -- Lord Rhyolith --
 -------------------
---L= DBM:GetModLocalization(193)
-L = DBM:GetModLocalization("Rhyolith")
-
-L:SetGeneralLocalization({
-	name = "군주 라이올리스"
-})
+L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
 	WarnElementals		= "정령 소환"
@@ -62,12 +52,7 @@ L:SetMiscLocalization({
 ----------------
 -- Beth'tilac --
 ----------------
---L= DBM:GetModLocalization(192)
-L = DBM:GetModLocalization("Bethtilac")
-
-L:SetGeneralLocalization({
-	name = "베스틸락"
-})
+L= DBM:GetModLocalization(192)
 
 L:SetWarningLocalization({
 })
@@ -91,12 +76,7 @@ L:SetMiscLocalization({
 -------------
 -- Shannox --
 -------------
---L= DBM:GetModLocalization(195)
-L = DBM:GetModLocalization("Shannox")
-
-L:SetGeneralLocalization({
-	name = "샤녹스"
-})
+L= DBM:GetModLocalization(195)
 
 L:SetWarningLocalization({
 })
@@ -115,12 +95,7 @@ L:SetMiscLocalization({
 -------------
 -- Baleroc --
 -------------
---L= DBM:GetModLocalization(196)
-L = DBM:GetModLocalization("Baleroc")
-
-L:SetGeneralLocalization({
-	name = "발레록"
-})
+L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
 })
@@ -143,12 +118,7 @@ L:SetMiscLocalization({
 --------------------------------
 -- Majordomo Fandral Staghelm --
 --------------------------------
---L= DBM:GetModLocalization(197)
-L = DBM:GetModLocalization("FandralStaghelm")
-
-L:SetGeneralLocalization({
-	name = "청지기 스태그헬름"
-})
+L= DBM:GetModLocalization(197)
 
 L:SetWarningLocalization({
 })
@@ -165,12 +135,7 @@ L:SetMiscLocalization({
 --------------
 -- Ragnaros --
 --------------
---L= DBM:GetModLocalization(198)
-L = DBM:GetModLocalization("Ragnaros-Cata")
-
-L:SetGeneralLocalization({
-	name = "라그나로스 (불의 땅)"
-})
+L= DBM:GetModLocalization(198)
 
 L:SetTimerLocalization({
 	TimerPhaseSons		= "자손 단계 종료"

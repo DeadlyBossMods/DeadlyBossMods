@@ -3,12 +3,7 @@ local L
 ---------------
 -- Alysrazor --
 ---------------
---L= DBM:GetModLocalization(194)
-L = DBM:GetModLocalization("Alysrazor")
-
-L:SetGeneralLocalization({
-	name = "Alysrazor"
-})
+L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase		= "Phase %d"
@@ -35,12 +30,7 @@ L:SetMiscLocalization({
 -------------------
 -- Lord Rhyolith --
 -------------------
---L= DBM:GetModLocalization(192)
-L = DBM:GetModLocalization("Rhyolith")
-
-L:SetGeneralLocalization({
-	name = "Lord Rhyolith"
-})
+L= DBM:GetModLocalization(192)
 
 L:SetWarningLocalization({
 	WarnElementals		= "Elementals spawning"
@@ -61,12 +51,7 @@ L:SetMiscLocalization({
 -----------------
 -- Beth'tilac --
 -----------------
---L= DBM:GetModLocalization(192)
-L = DBM:GetModLocalization("Bethtilac")
-
-L:SetGeneralLocalization({
-	name = "Beth'tilac"
-})
+L= DBM:GetModLocalization(192)
 
 L:SetWarningLocalization({
 })
@@ -90,12 +75,7 @@ L:SetMiscLocalization({
 -------------
 -- Shannox --
 -------------
---L= DBM:GetModLocalization(195)
-L = DBM:GetModLocalization("Shannox")
-
-L:SetGeneralLocalization({
-	name = "Shannox"
-})
+L= DBM:GetModLocalization(195)
 
 L:SetWarningLocalization({
 })
@@ -114,12 +94,7 @@ L:SetMiscLocalization({
 -------------
 -- Baleroc --
 -------------
---L= DBM:GetModLocalization(196)
-L = DBM:GetModLocalization("Baleroc")
-
-L:SetGeneralLocalization({
-	name = "Baleroc"
-})
+L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
 })
@@ -142,12 +117,7 @@ L:SetMiscLocalization({
 --------------------------------
 -- Majordomo Fandral Staghelm --
 --------------------------------
---L= DBM:GetModLocalization(197)
-L = DBM:GetModLocalization("FandralStaghelm")
-
-L:SetGeneralLocalization({
-	name = "Majordomo Fandral Staghelm"
-})
+L= DBM:GetModLocalization(197)
 
 L:SetWarningLocalization({
 })
@@ -164,12 +134,7 @@ L:SetMiscLocalization({
 --------------
 -- Ragnaros --
 --------------
---L= DBM:GetModLocalization(198)
-L = DBM:GetModLocalization("Ragnaros-Cata")
-
-L:SetGeneralLocalization({
-	name = "Ragnaros' End"--Temp name, i'm sure blizz will give it a unique name like they did with "Nefarian's End" being officlal name of encounter
-})
+L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
 })
