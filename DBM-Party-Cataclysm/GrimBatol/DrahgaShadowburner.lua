@@ -13,7 +13,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_EMOTE",
 	"UNIT_AURA"
 )
 
@@ -69,7 +69,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Add or msg:find(L.Add) then
 		fixateWarned = false--This will of course mess up if you haven't killed your last add yet, it'll rewarn fixate on that one then not warn for new one.
 	end

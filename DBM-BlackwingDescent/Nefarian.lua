@@ -27,7 +27,7 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"SWING_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_EMOTE",
 	"UNIT_DIED"
 )
 
@@ -92,7 +92,7 @@ local shadowBlazeSynced = false
 --Credits to Bigwigs for original, modified when blizz nerfed it.
 function mod:ShadowBlazeFunction()
 	lastBlaze = GetTime()
-	if tonumber((select(4, GetBuildInfo()))) >= 40200 and thenshadowblazeTimer > 15 and mod:IsDifficulty("normal10", "normal25") or shadowblazeTimer > 10 then--Keep it from dropping below 10 (15 in normal mode 4.2+)
+	if thenshadowblazeTimer > 15 and mod:IsDifficulty("normal10", "normal25") or shadowblazeTimer > 10 then--Keep it from dropping below 10 (15 in normal mode 4.2+)
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
 	warnShadowBlaze:Show()
@@ -323,7 +323,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+function mod:RAID_BOSS_EMOTE(msg)
 	if (msg == L.NefAoe or msg:find(L.NefAoe)) and self:IsInCombat() then
 		specWarnElectrocute:Show()
 		timerElectrocute:Start()

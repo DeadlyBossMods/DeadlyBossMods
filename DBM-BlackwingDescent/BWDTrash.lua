@@ -17,8 +17,7 @@ mod:RegisterEvents(
 
 local warnLaserStrike		= mod:NewSpellAnnounce(81063, 2)--Big red don't stand in beam golems use.
 local warnFlashBomb			= mod:NewSpellAnnounce(81056, 2)--Flash bomb used by golems that disorients anyone within 12 yards of target.
-local warnBPBronze			= mod:NewTargetAnnounce(80372, 3)--Debuff is 80329, but not sure what aspect uses it. Fairly certain it's bronze though so that's what we warn for, for now.
-local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for Maimgor drake in front of maloriaks area.
+local warnEnrage			= mod:NewStackAnnounce(80084, 3)--This is enrage effect for Maimgor drake in front of maloriaks area.
 local warnSacrifice			= mod:NewTargetAnnounce(80727, 2)--Sacrifice used by spirits before atramedes
 local warnWhirlwind			= mod:NewTargetAnnounce(80652, 2)--Whirlwind used by spirits before atramedes
 
@@ -32,13 +31,11 @@ mod:RemoveOption("SpeedKillTimer")
 local drakonidDied = 0
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(80372) then
-		warnBPBronze:Show(args.destName)
-	elseif args:IsSpellID(80727) and args:IsDestTypePlayer() then
+	if args:IsSpellID(80727) and args:IsDestTypePlayer() then
 		warnSacrifice:Show(args.destName)
 		timerSacrifice:Start(args.destName)
 	elseif args:IsSpellID(80084) then
-		warnEnrage:Show(args.destName)
+		warnEnrage:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(80652) then
 		warnWhirlwind:Show(args.destName)
 		timerWhirlwind:Start(args.destName)
