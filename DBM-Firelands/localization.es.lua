@@ -58,9 +58,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Siguiente Hiladoras",
-	TimerSpiderlings	= "Siguientes Arañitas",
-	TimerDrone		= "Siguiente Zánganos"
+	TimerSpinners 		= "Siguiente $journal:2770",
+	TimerSpiderlings	= "Siguientes $journal:2778",
+	TimerDrone		= "Siguiente $journal:2773"
 })
 
 L:SetOptionLocalization({
