@@ -28,12 +28,7 @@ L:SetOptionLocalization({
 -----------------
 --  Occu'thar  --
 -----------------
---L= DBM:GetModLocalization(140)
-L = DBM:GetModLocalization("Occuthar")
-
-L:SetGeneralLocalization({
-	name = "Occu'thar"
-})
+L= DBM:GetModLocalization(140)
 
 L:SetWarningLocalization({
 })

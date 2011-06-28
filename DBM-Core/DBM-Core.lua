@@ -2801,7 +2801,7 @@ do
 	local mt = {__index = bossModPrototype}
 
 	function DBM:NewMod(name, modId, modSubTab, instanceId, encounterId)
-		if type(name) == "number" then encounterID = name end
+		if type(name) == "number" then encounterId = name end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
