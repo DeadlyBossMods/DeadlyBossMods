@@ -1,10 +1,8 @@
---local mod	= DBM:NewMod(198, "DBM-Firelands", nil, 78)
-local mod	= DBM:NewMod("Ragnaros-Cata", "DBM-Firelands")
+local mod	= DBM:NewMod(198, "DBM-Firelands", nil, 78)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(52409)
-mod:SetModelID(37875)
 mod:SetZone()
 mod:SetUsedIcons()
 

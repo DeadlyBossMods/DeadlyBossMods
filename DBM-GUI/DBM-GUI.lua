@@ -985,6 +985,8 @@ end
 function UpdateAnimationFrame(mod)
 	DBM_BossPreview.currentMod = mod
 	local displayId = nil
+
+--[[ This way will break the Encounter Journal GUI .. needs a "fix" before activating
 	if mod.encounterId and mod.instanceId then
 		EJ_SetDifficulty(true, true)
 		EncounterJournal.instanceID = mod.instanceId
@@ -992,7 +994,7 @@ function UpdateAnimationFrame(mod)
 		EncounterJournal.encounterID = mod.encounterId
 		EncounterJournal_Refresh(EncounterJournal.encounter)
 		displayId = EncounterJournal.encounter["creatureButton1"].displayInfo
-	end
+	end]]
 
 	DBM_BossPreview:Show()
 	DBM_BossPreview:ClearModel()
