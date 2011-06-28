@@ -16,7 +16,7 @@ Alterac:RegisterEvents(
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_EMOTE",
 	"GOSSIP_SHOW",
 	"QUEST_PROGRESS",
 	"QUEST_COMPLETE"
@@ -139,7 +139,7 @@ do
 	Alterac.CHAT_MSG_MONSTER_YELL = schedule_check
 	Alterac.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 	Alterac.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
-	Alterac.CHAT_MSG_RAID_BOSS_EMOTE = schedule_check
+	Alterac.RAID_BOSS_EMOTE = schedule_check
 	Alterac.CHAT_MSG_BG_SYSTEM_NEUTRAL = schedule_check
 end
 

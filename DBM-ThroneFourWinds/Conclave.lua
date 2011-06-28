@@ -23,7 +23,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_POWER",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"RAID_BOSS_EMOTE"
 )
 
 local warnNurture			= mod:NewSpellAnnounce(85422, 3)
@@ -227,7 +227,7 @@ function mod:UNIT_POWER(uId)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, boss)
+function mod:RAID_BOSS_EMOTE(msg, boss)
 	if msg == L.gatherstrength or msg:find(L.gatherstrength) then
 		self:SendSync("GatherStrength", boss)
 	end
@@ -237,7 +237,11 @@ function mod:OnSync(msg, boss)
 	if msg == "GatherStrength" and self:IsInCombat() then
 		warnGatherStrength:Show(boss)
 		if not GatherStrengthwarned then
-			timerGatherStrength:Start(boss)
+			if mod:IsDifficulty("heroic10", "heroic25") then
+				timerGatherStrength:Start(boss)
+			else
+				timerGatherStrength:Start(120, boss)--2 minutes on normal as of 4.2
+			end
 			GatherStrengthwarned = true
 		end
 	end
