@@ -79,9 +79,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "다음 잿그물 거미 타이머 보기",	-- replace "Cinderweb Spinners" with "$journal:2770"
-	TimerSpiderlings	= "다음 잿그물 새끼거미 타이머 보기",	-- replace "Cinderweb Spiderlings" with "$journal:2778"
-	TimerDrone		= "다음 잿그물 일거미 타이머 보기"	-- replace "Cinderweb Drone" with "$journal:2773"
+	TimerSpinners		= "다음 $journal:2770 타이머 보기",
+	TimerSpiderlings	= "다음 $journal:2778 타이머 보기",
+	TimerDrone			= "다음 $journal:2773 타이머 보기"
 })
 
 L:SetMiscLocalization({
