@@ -21,7 +21,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_EMOTE",
 	"UNIT_HEALTH"
 )
 
@@ -220,7 +220,7 @@ do
 		return math.max(1, math.floor(absorbRemaining / maxAbsorb * 100))
 	end
 	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	local function handler(self, event, timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
+	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
 		if shieldedMob == destGUID then
 			local absorbed
 			if subEvent == "SWING_MISSED" then 
@@ -232,15 +232,7 @@ do
 				absorbRemaining = absorbRemaining - absorbed
 			end
 		end
-	end
-	-- TODO: this is the same workaround as in the DBM-Core handler for the same event, so this should be changed as soon as 4.2 is live
-	if tonumber((select(4, GetBuildInfo()))) >= 40200 then
-		frame:SetScript("OnEvent", function(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, mysteryArgument, destGUID, destName, destFlags, anotherMysteryArgument, ...)
-			return handler(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
-		end)
-	else
-		frame:SetScript("OnEvent", handler)
-	end
+	end)
 	
 	function showShieldHealthBar(self, mob, shieldName, absorb)
 		shieldedMob = mob
@@ -660,7 +652,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Quake or msg:find(L.Quake) then
 		timerQuakeCD:Update(23, 33)
 		warnQuakeSoon:Show()

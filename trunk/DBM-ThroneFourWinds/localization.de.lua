@@ -32,7 +32,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength	= "%s beinnt von den verbliebenen Windlords Stärke zu beziehen!", --yes the typo is from the logfiles (4.06a) "<356.9> CHAT_MSG_RAID_BOSS_EMOTE#%s beinnt von den verbliebenen Windlords Stärke zu beziehen!#Rohash#####0#0##0#1616##0#false#false", -- [6]
+	gatherstrength	= "%s beinnt von den verbliebenen Windlords Stärke zu beziehen!", --yes the typo is from the logfiles (4.06a) "<356.9> RAID_BOSS_EMOTE#%s beinnt von den verbliebenen Windlords Stärke zu beziehen!#Rohash#####0#0##0#1616##0#false#false", -- [6]
 	Anshal			= "Anshal",
 	Nezir			= "Nezir",
 	Rohash			= "Rohash"

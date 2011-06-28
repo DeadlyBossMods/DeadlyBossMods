@@ -371,7 +371,7 @@ do
 	end
 	
 
-	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
+	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
 		if not registeredEvents[event] then return end
 		twipe(args)
 		args.timestamp = timestamp
@@ -379,9 +379,11 @@ do
 		args.sourceGUID = sourceGUID
 		args.sourceName = sourceName
 		args.sourceFlags = sourceFlags
+		args.sourceRaidFlags = sourceRaidFlags
 		args.destGUID = destGUID
 		args.destName = destName
 		args.destFlags = destFlags
+		args.destRaidFlags = destRaidFlags
 		-- taken from Blizzard_CombatLog.lua
 		if event == "SWING_DAMAGE" then
 			args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(1, ...)
@@ -488,16 +490,13 @@ do
 		return handleEvent(nil, event, args)
 	end
 	
-	-- fix for 4.2 which introduces some new arguments
-	-- this is a temporary work-around which just drops the new arguments for a quick and easy fix that is compatible with 4.2
-	-- TODO: figure out the purpose of these arguments...look like bitfields, let's have a look at the default UI source later...
-	-- TODO: apply this change to the actual function above when 4.2 goes live, the new arguments can then be added to the args table if necessary
-	if tonumber((select(4, GetBuildInfo()))) >= 40200 then
+	-- fix for 4.3 which will probably screw with combat log even more crap, so commented out instead of deleted :)
+--[[	if tonumber((select(4, GetBuildInfo()))) >= 40300 then
 		local oldHandler = DBM.COMBAT_LOG_EVENT_UNFILTERED
-		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, mysteryArgument, destGUID, destName, destFlags, anotherMysteryArgument, ...)
-			return oldHandler(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
+		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
+			return oldHandler(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
 		end
-	end
+	end--]]
 	
 	mainFrame:SetScript("OnEvent", handleEvent)
 end

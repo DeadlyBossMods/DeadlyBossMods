@@ -19,7 +19,7 @@ mod:RegisterEvents(
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_EMOTE",
 	"UNIT_HEALTH",
 	"UNIT_DIED"
 )
@@ -137,7 +137,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Slump or msg:find(L.Slump) then
 		timerPillarFlame:Start(15)--Resets to 15. If you don't get his head down by then he gives you new adds to mess with. (theory, don't have a lot of logs with chain screwups yet)
 	elseif msg == L.HeadExposed or msg:find(L.HeadExposed) then
