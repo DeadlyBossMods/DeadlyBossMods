@@ -160,7 +160,7 @@ L:SetTimerLocalization({
 	TimerDragon        	= "다음 새끼용 추가",
 	TimerEggWeakening 	= "황혼 껍질 제거",
 	TimerEggWeaken		= "황혼 껍질 재생성",
-	TimerOrbs			= "다음 구슬"
+	TimerOrbs			= "구슬 쿨다운"
 })	
 
 L:SetOptionLocalization({
@@ -176,7 +176,7 @@ L:SetOptionLocalization({
 	TimerDragon        	= "다음 새끼용 등장 타이머 보기",
 	TimerEggWeakening  	= "$spell:87654 사라짐 타이머 보기",
 	TimerEggWeaken		= "$spell:87654 재생성 타이머 보기",
-	TimerOrbs			= "다음 구슬 타이머 보기 (예상 시간이며, 정확하지 않을 수 있습니다.)",
+	TimerOrbs			= "구슬 쿨다운 타이머 보기 (예상 시간이며, 정확하지 않을 수 있습니다.)",
 	SetIconOnOrbs		= "구슬 생성시 위협 수준이 있는 대상에게 전술 목표 아이콘 설정하기\n(구슬 대상일 가능성이 높습니다.)",
 	OrbsCountdown		= "구슬 카운트 다운 소리 재생",
 	InfoFrame			= "위협 수준 획득 대상 정보 프레임 보기 (구슬 대상자 후보)"
