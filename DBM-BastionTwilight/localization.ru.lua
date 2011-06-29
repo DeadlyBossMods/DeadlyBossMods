@@ -44,7 +44,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TBwarnWhileBlackout		= "Предупреждение о $spell:92898, когда активно $spell:86788",
 	TwilightBlastArrow		= "Показывать стрелку DBM, когда $spell:92898 около вас",
-	RangeFrame				= "Показывать проверки дистанции (10м)",
+	RangeFrame				= "Показывать окно проверки дистанции (10м)",
 	BlackoutShieldFrame		= "Показывать полоску здоровья для $spell:92878",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
