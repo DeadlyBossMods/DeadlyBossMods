@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_SUMMON"
+	"SPELL_SUMMON",
+	"UNIT_HEALTH"
 )
 
 local warnFaceRage				= mod:NewTargetAnnounce(99945, 4)
@@ -24,6 +25,7 @@ local warnTears					= mod:NewStackAnnounce(99937, 3)
 local warnMagmaFlare			= mod:NewSpellAnnounce(100495, 3)
 local warnCrystalPrison			= mod:NewSpellAnnounce(99836, 2)
 local warnCrystalPrisonTarget	= mod:NewTargetAnnounce(99837, 4)
+local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 
 local timerRage				= mod:NewTargetTimer(15, 100415)
 local timerWary				= mod:NewTargetTimer(25, 100167, nil, false)
@@ -38,9 +40,11 @@ local specWarnTears			= mod:NewSpecialWarningStack(99937, 8, nil, mod:IsTank())
 mod:AddBoolOption("SetIconOnFaceRage")
 mod:AddBoolOption("SetIconOnRage")
 
+local prewarnedPhase2 = false
 local spamFaceRage = 0
 function mod:OnCombatStart(delay)
 	spamFaceRage = 0
+	prewarnedPhase2 = false
 --	timerCrystalPrisonCD:Start(-delay)--Don't know yet, Need to run transcriptor with combat logging turned OFF to get the timestamps right.
 	timerMagmaFlareCD:Start(20-delay)--Guesswork
 end
@@ -102,5 +106,17 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(99836) then
 		warnCrystalPrison:Show()
 		timerCrystalPrisonCD:Start()
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if self:GetUnitCreatureId(uId) == 53691 then
+		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		if h > 50 and prewarnedPhase2 then
+			prewarnedPhase2 = false
+		elseif h > 33 and h < 36 and not prewarnedPhase2 then
+			prewarnedPhase2 = true
+			warnPhase2Soon:Show()
+		end
 	end
 end
