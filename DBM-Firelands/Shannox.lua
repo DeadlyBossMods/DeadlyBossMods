@@ -79,7 +79,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(99945) then
-		timerRage:Cancel(args.destName)
 		if self.Options.SetIconOnFaceRage then
 			self:SetIcon(args.destName, 0)
 		end
