@@ -137,6 +137,6 @@ end
 
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 53694 then
-		ripDead = true
+		riplimbDead = true
 	end
 end
