@@ -7,25 +7,25 @@ local L
 L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
-	WarnPhase		= "Phase %d"
+	WarnPhase		= "Фаза %d"
 })
 
 L:SetTimerLocalization({
-	TimerPhaseChange	= "Phase %d",
-	TimerHatchEggs		= "Hatch Eggs"
+	TimerPhaseChange	= "Фаза %d",
+	TimerHatchEggs		= "Вылупление яиц"
 })
 
 L:SetOptionLocalization({
-	WarnPhase		= "Show a warning for each phase change",
-	TimerPhaseChange	= "Show a timer till next phase",
-	TimerHatchEggs		= "Show a timer till next eggs are hatched",
-	InfoFrame		= "Show info frame for Blazing Power"
+	WarnPhase			= "Предупреждение о смене фаз",
+	TimerPhaseChange	= "Отсчет времени до следующей фазы",
+	TimerHatchEggs		= "Отсчет времени до вылупления яиц",
+	InfoFrame			= "Информационное окно для $spell:99461"
 })
 
 L:SetMiscLocalization({
 	YellPull		= "I serve a new master now, mortals!",
 	YellPhase2		= "These skies are MINE!",
-	PowerLevel		= "Blazing Power"
+	PowerLevel		= "Пылающая энергия"
 })
 
 -------------------
@@ -34,16 +34,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(192)
 
 L:SetWarningLocalization({
-	WarnElementals		= "Elementals spawning"
+	WarnElementals		= "Появление элементалей"
 })
 
 L:SetTimerLocalization({
-	TimerElementals		= "Next elementals"
+	TimerElementals		= "Следущие элементали"
 })
 
 L:SetOptionLocalization({
-	WarnElementals		= "Show a warning when elementals are spawning",
-	TimerElementals		= "Show a timer for next elementals spawning"
+	WarnElementals		= "Предупреждение о появлении элементалей",
+	TimerElementals		= "Отсчет времени до следующих элементалей"
 })
 
 L:SetMiscLocalization({
@@ -58,15 +58,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Next Spinners",
-	TimerSpiderlings	= "Next Spiderlings",
-	TimerDrone		= "Next Drone"
+	TimerSpinners 		= "Следующие Пеплопряды-ткачи",
+	TimerSpiderlings	= "Следующие Паучата",
+	TimerDrone			= "Следующий Трутень"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Show timer for next $journal:2770",
-	TimerSpiderlings	= "Show timer for next $journal:2778",
-	TimerDrone		= "Show timer for next $journal:2773"
+	TimerSpinners		= "Отсчет времени до следующих $journal:2770",
+	TimerSpiderlings	= "Отсчет времени до следующих $journal:2778",
+	TimerDrone			= "Отсчет времени до следующего $journal:2773"
 })
 
 L:SetMiscLocalization({
@@ -102,14 +102,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerBladeActive	= "%s",
-	TimerBladeNext		= "Next blade"
+	TimerBladeNext		= "Следующее лезвие"
 })
 
 L:SetOptionLocalization({
-	TimerBladeActive	= "Show a duration timer for the active blade",
-	TimerBladeNext		= "Show a next timer for blade",
+	TimerBladeActive	= "Отсчет времени действия активного лезвия",
+	TimerBladeNext		= "Отсчет времени до следующего лезвия",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 "
+	ArrowOnCountdown	= "Показывать стрелку DBM, когда на вас $spell:99516"
 })
 
 L:SetMiscLocalization({
@@ -141,12 +141,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Sons phase ends"
+	TimerPhaseSons		= "Окончание фазы с помощниками"
 })
 
 L:SetOptionLocalization({
-	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
-	RangeFrame		= "Show range frame"
+	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей Пламени\"",
+	RangeFrame			= "Показывать окно проверки дистанции"
 })
 
 L:SetMiscLocalization({
