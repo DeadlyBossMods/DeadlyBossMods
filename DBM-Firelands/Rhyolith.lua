@@ -42,8 +42,8 @@ local spamMoltenArmor = 0
 local prewarnedPhase2 = false
 
 function mod:OnCombatStart(delay)
-	timerRockElementals:Start(21.5-delay)
-	timerFireElementals:Start(45-delay)
+	timerElementals:Start(21.5-delay)
+--	timerFireElementals:Start(45-delay)--No idea wtf arta was doing or which to comment out so for now do this.
 	timerHeatedVolcano:Start(55-delay)
 	timerFlameStomp:Start(28-delay)
 	spamAdds = 0
