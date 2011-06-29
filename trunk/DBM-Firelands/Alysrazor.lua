@@ -77,7 +77,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 then
 		warnPhase:Show(2)
-		timerMolting:Cancel()
+		timerMoltingCD:Cancel()
 		timerPhaseChange:Start(30, 3)
 		phase = 2
 	end
