@@ -75,7 +75,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99399, 101238, 101239, 101240) then	--99399, 101238 confirmed
 		if args.amount or 0 % 2 == 0 then
-			warnBurningWound:Show(args.destName, args,amount or 1)
+			warnBurningWound:Show(args.destName, args.amount or 1)
 		end
 		if args.amount or 0 > 5 then
 			specWarnBurningWound:Show(args.amount)
