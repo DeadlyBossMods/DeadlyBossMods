@@ -7,7 +7,7 @@ mod:SetModelID(38446)
 mod:SetZone()
 mod:SetUsedIcons()
 
-mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("combat")
 --[[			"<11.4> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I serve a new master now, mortals!#Alysrazor###Dswarden##0#0##0#916##0#false", -- [1]
 			"<11.5> [ENGAGE] Fake Args:#1#1#Alysrazor#0xF150CD320000F2C8#elite#154605600#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [2]
 --]]
