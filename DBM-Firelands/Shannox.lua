@@ -20,6 +20,12 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
+mod:SetBossHealthInfo(
+	54691,	L.name,
+	53694,	L.Riplimb,
+	53695,	L.Rageface
+)
+
 local warnFaceRage				= mod:NewTargetAnnounce(99945, 4)
 local warnRage					= mod:NewTargetAnnounce(100415, 3)
 local warnWary					= mod:NewTargetAnnounce(100167, 2, nil, false)	-- which hound has this buff? They get it when being trapped

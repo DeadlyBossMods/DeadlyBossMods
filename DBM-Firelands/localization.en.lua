@@ -98,6 +98,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Riplimb		= "Riplimb",
+	Rageface	= "Rageface"
 })
 
 -------------
