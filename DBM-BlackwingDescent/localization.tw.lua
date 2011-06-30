@@ -43,13 +43,13 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	SpecWarnActivated		= "轉換目標到 %s!",
 	specWarnGenerator		= "發電機 - 拉開%s!",
-	timerArcaneLockout		= "秘法殲滅者鎖定"
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "秘法逆爆",
 	timerShadowConductorCast	= "眾影體",
-	timerNefAblity			= "技能增益冷卻"
+	timerNefAblity			= "技能增益冷卻",
+	timerArcaneLockout		= "秘法殲滅者鎖定",
 })
 
 L:SetOptionLocalization({
@@ -61,7 +61,6 @@ L:SetOptionLocalization({
 	specWarnGenerator		= "當首領獲得$spell:91557時顯示特別警告",
 	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
 	ShadowConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
 	SetIconOnActivated		= "設置標記到最後啟動的首領"
 })
@@ -200,10 +199,12 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "尾部鞭擊 (奈法利安)",
 	OnyBreath			= "暗影焰息 (奧妮克希亞)",
 	NefBreath			= "暗影焰息 (奈法利安)",
-	specWarnShadowblazeSoon		= "%s"
+	specWarnShadowblazeSoon		= "%s",
+	warnShadowblazeSoon		= "%s",
 })
 
 L:SetTimerLocalization({
+	timerNefLanding			= "奈法利安 落地",
 	OnySwipeTimer			= "尾部鞭擊冷卻 (奧妮)",
 	NefSwipeTimer			= "尾部鞭擊冷卻 (奈法)",
 	OnyBreathTimer			= "暗影焰息冷卻 (奧妮)",
@@ -215,7 +216,10 @@ L:SetOptionLocalization({
 	NefTailSwipe			= "為奈法利安的$spell:77827顯示警告",
 	OnyBreath			= "為奧妮克希亞的$spell:94124顯示警告",
 	NefBreath			= "為奈法利安的$spell:94124顯示警告",
+	specWarnCinderMove		= "為 $spell:79339 顯示特殊警告提示你離開 (爆炸前5秒)",
+	warnShadowblazeSoon		= "為 $spell:81031 顯示提前警告\n(只在計時器與其他玩家同步後顯示, 以確保準確)",
 	specWarnShadowblazeSoon		= "為$spell:94085顯示預先特別警告 (~5秒)",
+	timerNefLanding			= "為奈法利安落地顯示計時器",
 	OnySwipeTimer			= "為奧妮克希亞的$spell:77827的冷卻時間顯示計時器",
 	NefSwipeTimer			= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
 	OnyBreathTimer			= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
@@ -235,7 +239,7 @@ L:SetMiscLocalization({
 	Nefarian			= "奈法利安",
 	Onyxia				= "奧妮克希亞",
 	Charge				= "電流充能",
-	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeExact		= "暗影炎 %d 秒",
 	ShadowBlazeEstimate		= "暗影炎 即將到來 (~5秒)"
 })
 
