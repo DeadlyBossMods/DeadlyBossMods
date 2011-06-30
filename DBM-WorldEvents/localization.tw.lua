@@ -40,12 +40,18 @@ L:SetWarningLocalization({
 	warnHorsemanHead	= "旋風斬 - 轉換目標!"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "戰鬥開始"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "顯示戰鬥開始的計時器",
 	warnHorsemanSoldiers	= "為跳動的南瓜出現顯示警告",
 	warnHorsemanHead	= "為旋風斬顯示特別警告 (第二次及最後的頭顱出現)"
 })
 
 L:SetMiscLocalization({
+	HorsemanSummon			= "Horseman rise...",
 	HorsemanHead		= "過來這裡，你這白痴!",
 	HorsemanSoldiers	= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!",
 	SayCombatEnd		= "我也曾面對過這樣的末路。還有什麼新的冒險在等著呢?"

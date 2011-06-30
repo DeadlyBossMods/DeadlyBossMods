@@ -81,6 +81,8 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)",
 	timerTransition		= "顯示階段轉換計時器",
 	RangeFrame		= "當需要時自動顯示距離框",
+	yellScrewed				= "黨你同時有 $spell:83099 和 $spell:92307 時喊話",
+	InfoFrame				= "顯示沒有 $spell:83581 或 $spell:83500 的玩家",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -100,7 +102,9 @@ L:SetMiscLocalization({
 	Arion			= "艾理奧",
 	Terrastra		= "特拉斯特拉",
 	Monstrosity		= "卓越者議會",
-	Kill			= "不可能..."
+	Kill			= "不可能...",
+	blizzHatesMe	= "Beacon & Rod on me! Clear a path!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
+	WrongDebuff	= "No %s"
 })
 
 ----------------
@@ -147,10 +151,8 @@ L:SetWarningLocalization({
 	WarnEggWeaken		= "Twilight Carapace dissipated on Egg",
 	SpecWarnOrbs		= "Orbs coming! Watch Out!",
 	warnWrackJump		= "%s jumped to >%s<",
-	WarnWrackCount5s	= "%d sec elapsed since last Wrack",
 	warnAggro			= ">%s< have Aggro (Orbs candidate)",
 	SpecWarnAggroOnYou	= "You have Aggro! Watch Orbs!",
-	SpecWarnDispel		= "%d sec elapsed since last Wrack - Dispel Now!",
 	SpecWarnEggWeaken	= "Twilight Carapace dissipated - Dps EGG Now!",
 	SpecWarnEggShield	= "Twilight Capapace Regenerated!"
 })
@@ -167,23 +169,24 @@ L:SetOptionLocalization({
 	WarnOrbSoon			= "Show pre-warning for Orbs (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
 	WarnEggWeaken		= "Show pre-warning for when $spell:87654 dissipates",
 	warnWrackJump		= "Announce $spell:92955 jump targets",
-	WarnWrackCount5s	= "Announce $spell:92955 elapsed player duration at 10, 15, 20 seconds",
 	warnAggro			= "Announce players who have Aggro when Orbs spawn (Can be target of Orbs)",
 	SpecWarnAggroOnYou	= "Show special warning if you have Aggro when Orbs spawn\n(Can be target of Orbs)",
 	SpecWarnOrbs		= "Show special warning when Orbs spawn (Expected warning)",
-	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)",
 	SpecWarnEggWeaken	= "Show special warning when $spell:87654 dissipates",
 	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated",
 	TimerDragon			= "Show timer for new Twilight Whelp",
 	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
 	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
 	TimerOrbs			= "Show timer for next Orbs (Expected timer. may not be accurate)",
-	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn\n(Can be target of Orbs)"
+	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn\n(Can be target of Orbs)",
+	OrbsCountdown		= "Play countdown sound for Orbs",
+	InfoFrame			= "Show info frame for players who have aggro"
 })
 
 L:SetMiscLocalization({
 	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",
-	YellEgg				= "You mistake this for weakness?  Fool!"
+	YellEgg				= "You mistake this for weakness?  Fool!",
+	HasAggro			= "Has Aggro"
 })
 
 -------------------------------------

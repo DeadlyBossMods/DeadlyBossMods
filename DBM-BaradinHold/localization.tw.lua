@@ -5,7 +5,7 @@ local L
 ----------------
 --  Argaloth  --
 ----------------
---L = DBM:GetModLicalization(139)
+--L= DBM:GetModLocalization(139)
 L = DBM:GetModLocalization("Argaloth")
 
 L:SetGeneralLocalization({
@@ -13,7 +13,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnFirestormSoon		= "魔化火颶 即將到來"
 })
 
 L:SetTimerLocalization({
@@ -23,7 +22,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnFirestormSoon		= "為$spell:88972顯示預先警告",
 	SetIconOnConsuming		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88954)
 })
 
