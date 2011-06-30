@@ -35,3 +35,4 @@ Shannox.lua
 Baleroc.lua
 FandralStaghelm.lua
 Ragnaros.lua
+FirelandsTrash.lua
