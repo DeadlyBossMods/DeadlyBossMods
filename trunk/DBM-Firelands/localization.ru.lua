@@ -7,25 +7,33 @@ local L
 L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
-	WarnPhase		= "Фаза %d"
+	WarnPhase			= "Фаза %d",
+	WarnNewInitiate		= "Новообращенный друид-огнеястреб (%d)"
 })
 
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Фаза %d",
-	TimerHatchEggs		= "Вылупление яиц"
+	TimerHatchEggs		= "Вылупление яиц",
+	timerNextInitiate	= "Следующий друид"
 })
 
 L:SetOptionLocalization({
 	WarnPhase			= "Предупреждение о смене фаз",
+	WarnNewInitiate		= "Предупреждение о появлении нового друида-огнеястреба",
+	timerNextInitiate	= "Отсчет времени до появления нового друида-огнеястреба",
 	TimerPhaseChange	= "Отсчет времени до следующей фазы",
 	TimerHatchEggs		= "Отсчет времени до вылупления яиц",
 	InfoFrame			= "Информационное окно для $spell:99461"
 })
 
 L:SetMiscLocalization({
-	YellPull		= "I serve a new master now, mortals!",
-	YellPhase2		= "These skies are MINE!",
-	PowerLevel		= "Пылающая энергия"
+	YellPull			= "Теперь я служу новому господину, смертные!",
+	YellInitiate1		= "Взываем к тебе, Повелитель огня!",
+	YellInitiate2		= "Узрите его силу!",
+	YellInitiate3		= "Пусть неверные горят в огне!",
+	YellInitiate4		= "Узрите величие огня.",
+	YellPhase2			= "Небо над вами принадлежит МНЕ!",
+	PowerLevel			= "Пылающая энергия"
 })
 
 -------------------
@@ -147,6 +155,29 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей Пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции"
+})
+
+L:SetMiscLocalization({
+})
+
+
+-----------------------
+--  Firelands Trash  --
+-----------------------
+L = DBM:GetModLocalization("FirelandsTrash")
+
+L:SetGeneralLocalization({
+	name = "Треш-мобы"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	RangeFrame	= "Показывать окно проверки дистанции (10м) для $spell:100012"
 })
 
 L:SetMiscLocalization({
