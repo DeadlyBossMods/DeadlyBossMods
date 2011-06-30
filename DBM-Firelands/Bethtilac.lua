@@ -59,7 +59,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99476, 99506) then
 		timerWidowKiss:Start(args.destName)
-		if args.amount % 5 == 0 then		-- warn every 5th stack. not sure what's going to be relevent yet
+		if (args.amount or 1) % 5 == 0 then		-- warn every 5th stack. not sure what's going to be relevent yet
 			warnWidowKiss:Show(args.destName, args.amount)
 		end
 		if args:IsPlayer() then
