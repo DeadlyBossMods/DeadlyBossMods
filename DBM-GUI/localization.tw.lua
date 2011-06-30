@@ -1,5 +1,5 @@
 ﻿if GetLocale() ~= "zhTW" then return end
-if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
+DBM_GUI_Translations = DBM_GUI_Translations or {}
 
 local L = DBM_GUI_Translations
 
@@ -52,11 +52,15 @@ L.EnableDBM 				= "啟用DBM"
 L.EnableStatus 				= "回復“status”密語"
 L.AutoRespond 				= "啟用戰鬥中自動密語回復"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
-L.FixCLEUOnCombatStart			= "清除戰鬥紀錄的快取"
-L.SetCurrentMapOnPull			= "設定地圖到當前區域 (確保 /range & /arrow 準確性)"
 L.UseMasterVolume			= "使用主要聲音頻道來播放音效檔。(4.0.6+)"
 L.SKT_Enabled				= "永遠顯示快速擊殺計時器 (覆蓋首領特定的選項)"
 L.Latency_Text				= "設定最高延遲同步門檻: %d"
+
+L.ModelOptions				= "3D模型瀏覽器選項"
+L.EnableModels				= "在首領選項中啟用3D模型瀏覽器"
+L.ModelSoundOptions			= "設置模型預覽聲音"
+L.ModelSoundShort			= "短"
+L.ModelSoundLong			= "長"
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
 L.Button_TestBars			= "測試計時條"
@@ -87,7 +91,9 @@ L.WarningIconRight 			= "右側顯示圖示"
 L.RaidWarnMessage 			= "感謝您使用Deadly Boss Mods"
 L.BarWhileMove 				= "可移動的團隊警告"
 L.RaidWarnSound				= "發出團隊警告時播放音效"
-L.SpecialWarnSound			= "發出特別警告時播放音效"
+L.CountdownVoice			= "設置倒計時聲音"
+L.SpecialWarnSound			= "設定只作用於你的特別警告的音效"
+L.SpecialWarnSound2			= "設定作用於全團的特別警告的音效"
 
 -- Tab: Barsetup
 L.BarSetup   				= "計時條樣式"
@@ -114,6 +120,7 @@ L.ClickThrough				= "禁用鼠標事件（允許你點擊穿透計時條）"
 L.Panel_SpecWarnFrame			= "特別警告"
 L.Area_SpecWarn				= "特別警告選項"
 L.SpecWarn_Enabled			= "為首領的技能顯示特別警告"
+L.SpecWarn_LHFrame			= "為特別警告閃爍屏幕"
 L.SpecWarn_Font				= "特別警告使用的字型"
 L.SpecWarn_DemoButton			= "顯示範例"
 L.SpecWarn_MoveMe			= "設定位置"
@@ -138,9 +145,11 @@ L.SpamBlockRaidWarning			= "過濾其他首領模組的警告"
 L.SpamBlockBossWhispers			= "當戰鬥時過濾 <DBM> 密語警告"
 L.BlockVersionUpdatePopup		= "關閉彈出的更新通知"
 L.ShowBigBrotherOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
+L.BigBrotherAnnounceToRaid		= "通告BigBrother的結果給團隊"
 
 L.Area_SpamFilter_Outgoing		= "整體過濾選項"
 L.SpamBlockNoShowAnnounce		= "不顯示提示或播放警告音效"
 L.SpamBlockNoSendAnnounce		= "不發送提示到團隊頻道"
 L.SpamBlockNoSendWhisper		= "不發送密語給其他玩家"
 L.SpamBlockNoSetIcon			= "不設置標記在目標上"
+
