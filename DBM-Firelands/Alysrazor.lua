@@ -8,7 +8,10 @@ mod:SetZone()
 mod:SetUsedIcons()
 
 mod:RegisterCombat("yell", L.YellPull)
-
+--[[			"<11.4> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I serve a new master now, mortals!#Alysrazor###Dswarden##0#0##0#916##0#false", -- [1]
+			"<11.5> [ENGAGE] Fake Args:#1#1#Alysrazor#0xF150CD320000F2C8#elite#154605600#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [2]
+--]]
+--Why are we using yell instead of INSTANCE_ENCOUNTER_ENGAGE_UNIT? according to transcriptor the encounter does use ENGAGE event and Boss1 does return Alysrazor, so hit should function, unless it's a work around for first pull maybe that has RP?
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
@@ -22,21 +25,27 @@ local warnBrushfire		= mod:NewSpellAnnounce(98868, 2)
 local warnFirestorm		= mod:NewSpellAnnounce(100744, 3)
 local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
+local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3)
 
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)
-local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange")
-local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs")
+local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
+local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
+local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 
 local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
 local phase = 1
+local initiatesSpawned = 0
+
 function mod:OnCombatStart(delay)
 	timerMoltingCD:Start(10-delay)
 	timerHatchEggs:Start(50-delay)
+	timerNextInitiate:Start(27-delay)
 	phase = 1
+	initiatesSpawned = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PowerLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
@@ -81,11 +90,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase2 then
+	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then
 		warnPhase:Show(2)
 		timerMoltingCD:Cancel()
 		timerPhaseChange:Start(30, 3)
 		phase = 2
+		initiatesSpawned = 0
+	--Yes it's ugly, but least prone to failure. May make something more complex using spell_cast_start from CID with unique GUID's, but that'd still be 0.1 seconds slower since they yell before they cast their first spell.
+	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
+		initiatesSpawned = initiatesSpawned + 1
+		warnNewInitiate:Show(initiatesSpawned)
+		if initiatesSpawned < 3 then
+			timerNextInitiate:Start(32)--Might tune this slightly to be for when you see them fly in, since the yell happens when they land and are attackable
+		else
+			timerNextInitiate:Start(20)--Might tune this slightly to be for when you see them fly in, since the yell happens when they land and are attackable
+		end
 	end
 end
 
