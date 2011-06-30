@@ -75,7 +75,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(99837) then--Filter when the dogs get it?
 		warnCrystalPrisonTarget:Show(args.destName)
 	elseif args:IsSpellID(99937, 101218, 101219, 101220) then
-		if args.amount or 0 % 3 == 0 then	--Warn every 3 stacks
+		if (args.amount or 1) % 3 == 0 then	--Warn every 3 stacks
 			warnTears:Show(args.destName, args.amount or 1)
 		end
 		if args:IsPlayer() and (args.amount or 1) >= 8 then		-- tank switch @ 8?
