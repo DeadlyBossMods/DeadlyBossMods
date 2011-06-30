@@ -158,3 +158,25 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 })
+
+-----------------------
+--  Firelands Trash  --
+-----------------------
+L = DBM:GetModLocalization("FirelandsTrash")
+
+L:SetGeneralLocalization({
+	name = "Firelands Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	RangeFrame	= "Show range frame (10) for $spell:100012"
+})
+
+L:SetMiscLocalization({
+})
