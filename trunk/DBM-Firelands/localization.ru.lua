@@ -31,7 +31,7 @@ L:SetMiscLocalization({
 -------------------
 -- Lord Rhyolith --
 -------------------
-L= DBM:GetModLocalization(192)
+L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
 	WarnElementals		= "Появление элементалей"
