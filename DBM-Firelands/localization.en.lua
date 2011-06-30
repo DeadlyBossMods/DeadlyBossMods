@@ -6,23 +6,31 @@ local L
 L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
-	WarnPhase		= "Phase %d"
+	WarnPhase			= "Phase %d",
+	WarnNewInitiate		= "Blazing Talon Initiate (%d)"
 })
 
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Phase %d",
-	TimerHatchEggs		= "Hatch Eggs"
+	TimerHatchEggs		= "Hatch Eggs",
+	timerNextInitiate	= "Next Initiate"
 })
 
 L:SetOptionLocalization({
-	WarnPhase		= "Show a warning for each phase change",
+	WarnPhase			= "Show a warning for each phase change",
+	WarnNewInitiate		= "Show a warning for new Blazing Talon Initiate",
+	timerNextInitiate	= "Show a timer for next Blazing Talon Initiate",
 	TimerPhaseChange	= "Show a timer till next phase",
 	TimerHatchEggs		= "Show a timer till next eggs are hatched",
-	InfoFrame		= "Show info frame for Blazing Power"
+	InfoFrame			= "Show info frame for Blazing Power"
 })
 
 L:SetMiscLocalization({
 	YellPull		= "I serve a new master now, mortals!",
+	YellInitiate1	= "We call upon you, Firelord!",
+	YellInitiate2	= "Behold His power!",
+	YellInitiate3	= "Let the unbelievers perish in fire!",
+	YellInitiate4	= "Witness the majesty of flame!",
 	YellPhase2		= "These skies are MINE!",
 	PowerLevel		= "Blazing Power"
 })
