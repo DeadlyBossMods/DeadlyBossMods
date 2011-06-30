@@ -40,6 +40,8 @@ local specWarnRage			= mod:NewSpecialWarningYou(100415)
 local specWarnImmTrap		= mod:NewSpecialWarningMove(99838)
 local specWarnTears			= mod:NewSpecialWarningStack(99937, 8, nil, mod:IsTank())
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 mod:AddBoolOption("SetIconOnFaceRage")
 mod:AddBoolOption("SetIconOnRage")
 
@@ -53,6 +55,7 @@ function mod:OnCombatStart(delay)
 	riplimbDead = false
 --	timerCrystalPrisonCD:Start(-delay)--Don't know yet, Need to run transcriptor with combat logging turned OFF to get the timestamps right.
 	timerMagmaFlareCD:Start(20-delay)--Guesswork
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
