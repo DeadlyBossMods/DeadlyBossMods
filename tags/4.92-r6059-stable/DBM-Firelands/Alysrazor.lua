@@ -1,0 +1,127 @@
+local mod	= DBM:NewMod(194, "DBM-Firelands", nil, 78)
+local L		= mod:GetLocalizedStrings()
+
+mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetCreatureID(52530)
+mod:SetModelID(38446)
+mod:SetZone()
+mod:SetUsedIcons()
+
+mod:RegisterCombat("combat")
+--[[			"<11.4> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I serve a new master now, mortals!#Alysrazor###Dswarden##0#0##0#916##0#false", -- [1]
+			"<11.5> [ENGAGE] Fake Args:#1#1#Alysrazor#0xF150CD320000F2C8#elite#154605600#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [2]
+--]]
+--Why are we using yell instead of INSTANCE_ENCOUNTER_ENGAGE_UNIT? according to transcriptor the encounter does use ENGAGE event and Boss1 does return Alysrazor, so hit should function, unless it's a work around for first pull maybe that has RP?
+mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_POWER"
+)
+
+local warnMolting		= mod:NewSpellAnnounce(99464, 3)
+local warnBrushfire		= mod:NewSpellAnnounce(98868, 2)
+local warnFirestorm		= mod:NewSpellAnnounce(100744, 3)
+local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
+local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
+local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3)
+
+local timerMoltingCD		= mod:NewNextTimer(60, 99464)
+local timerCataclysm		= mod:NewCastTimer(5, 102111)
+local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
+local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
+local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
+
+local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094)
+
+mod:AddBoolOption("InfoFrame", false)--Why is this useful?
+
+local phase = 1
+local initiatesSpawned = 0
+
+function mod:OnCombatStart(delay)
+	timerMoltingCD:Start(10-delay)
+	timerHatchEggs:Start(50-delay)
+	timerNextInitiate:Start(27-delay)
+	phase = 1
+	initiatesSpawned = 0
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.PowerLevel)
+		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
+end 
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(98868) then
+		warnBrushfire:Show()
+	elseif args:IsSpellID(101223, 101294, 101295, 101296) then--100094 is trash before it, it belongs in trash mod where users can toggle it individually
+		if args.sourceGUID == UnitGUID("target") then
+			specWarnFieroblast:Show()
+		end
+	elseif args:IsSpellID(102111, 100761) then
+		warnCataclysm:Show()
+		timerCataclysm:Start()
+	elseif args:IsSpellID(100744) then
+		warnFirestorm:Show()
+--[[
+wowhead says: 10sec duration
+Cast start 	21:36:02.777
+aura applied	21:36:07.778
+aura removed	21:36:11.321
+--]]
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(99464, 100698, 100836, 100837) then	--99464, 100698 confirmed
+		warnMolting:Show()
+		timerMoltingCD:Start()
+		if phase ~= 1 then
+			phase = 1
+		end
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then
+		warnPhase:Show(2)
+		timerMoltingCD:Cancel()
+		timerPhaseChange:Start(30, 3)
+		phase = 2
+		initiatesSpawned = 0
+	--Yes it's ugly, but least prone to failure. May make something more complex using spell_cast_start from CID with unique GUID's, but that'd still be 0.1 seconds slower since they yell before they cast their first spell.
+	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
+		initiatesSpawned = initiatesSpawned + 1
+		warnNewInitiate:Show(initiatesSpawned)
+		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
+		if initiatesSpawned < 3 then
+			timerNextInitiate:Start(32)--Might tune this slightly to be for when you see them fly in, since the yell happens when they land and are attackable
+		else
+			timerNextInitiate:Start(20)--Might tune this slightly to be for when you see them fly in, since the yell happens when they land and are attackable
+		end
+	end
+end
+
+function mod:UNIT_POWER(uId)
+	if uId == "boss1" then
+		local p = UnitPower(uId, ALTERNATE_POWER_INDEX) / UnitPowerMax(uId, ALTERNATE_POWER_INDEX) * 100
+		if p == 0 then		-- Seems to drop instantly from 100 -> 0
+			warnPhase:Show(3)
+			phase = 3
+		elseif phase == 3 and p >= 50 then
+			warnPhase:Show(4)
+			phase = 4
+		elseif phase == 4 and p == 100 then
+			timerHatchEggs:Start(38)
+			warnPhase:Show(1)
+			phase = 1
+		end
+	end
+end
