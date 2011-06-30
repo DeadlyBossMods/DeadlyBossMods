@@ -7,25 +7,33 @@ local L
 L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
-	WarnPhase		= "%d 단계"
+	WarnPhase			= "%d 단계",
+	WarnNewInitiate		= "타오르는 발톱 수습생 (%d)"
 })
 
 L:SetTimerLocalization({
 	TimerPhaseChange	= "%d 단계",
-	TimerHatchEggs		= "용암 알 부화"
+	TimerHatchEggs		= "녹아내린 알 부화",
+	timerNextInitiate	= "다음 수습생"
 })
 
 L:SetOptionLocalization({
 	WarnPhase			= "단계 전환 경고 보기",
+	WarnNewInitiate		= "타오르는 발톱 수습생 등장 경고 보기",
+	timerNextInitiate	= "다음 타오르는 발톱 수습생 타이머 보기",
 	TimerPhaseChange	= "단계 전환 타이머 보기",
-	TimerHatchEggs		= "용암 알 부화 타이머 보기",
-	InfoFrame			= "녹아내리는 힘 정보 프레임 보기"
+	TimerHatchEggs		= "녹아내린 알 부화 타이머 보기",
+	InfoFrame			= "타오르는 힘 정보 프레임 보기"
 })
 
 L:SetMiscLocalization({
-	YellPull		= "I serve a new master now, mortals!",
-	YellPhase2		= "These skies are MINE!",
-	PowerLevel		= "녹아내리는 힘"
+	YellPull		= "이제는 새 주인님을 섬긴다, 필멸자들아!",
+	YellInitiate1	= "힘을 주소서!",
+	YellInitiate2	= "힘을 보아라!",
+	YellInitiate3	= "뜨거운 화염",
+	YellInitiate4	= "화염의 장엄함을",
+	YellPhase2		= "이 하늘은 나의 것이다!",
+	PowerLevel		= "타오르는 힘"
 })
 
 -------------------
@@ -58,19 +66,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "다음 잿그물 거미",
-	TimerSpiderlings	= "다음 잿그물 새끼거미",
-	TimerDrone			= "다음 잿그물 일거미"
+	TimerSpinners 		= "다음 실거미",
+	TimerSpiderlings	= "다음 새끼거미",
+	TimerDrone			= "다음 수거미"
 })
 
 L:SetOptionLocalization({
 	TimerSpinners		= "다음 $journal:2770 타이머 보기",
 	TimerSpiderlings	= "다음 $journal:2778 타이머 보기",
-	TimerDrone			= "다음 $journal:2773 타이머 보기"
+	TimerDrone			= "다음 $journal:2773 타이머 보기",
+	RangeFrame			= "거리 프레임 보기(10 m)"
 })
 
 L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
+	EmoteSpiderlings 	= "새끼거미가 둥지에서 쏟아져나옵니다!"
 })
 
 -------------
@@ -144,6 +153,28 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerPhaseSons		= "'용암의 자손' 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임 보기"
+})
+
+L:SetMiscLocalization({
+})
+
+-----------------------
+--  Firelands Trash  --
+-----------------------
+L = DBM:GetModLocalization("FirelandsTrash")
+
+L:SetGeneralLocalization({
+	name = "불의 땅 일반몹"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	RangeFrame	= "$spell:100012의 거리프레임 보기(10 m)"
 })
 
 L:SetMiscLocalization({
