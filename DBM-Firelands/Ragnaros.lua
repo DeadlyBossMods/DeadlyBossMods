@@ -78,7 +78,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnBurningWound:Show(args.destName, args,amount or 1)
 		end
 		if args.amount or 0 > 5 then
-			specWarnBurningWound:Show()
+			specWarnBurningWound:Show(args.amount)
 		end
 		timerBurningWound:Start(args.destName)
 	end
@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 		timerHandRagnaros:Cancel()
 		timerWrathRagnaros:Cancel()
 		timerPhaseSons:Start(53)	-- 45 + 8sec cast
-		self:hideRangeFrame()
+		hideRangeFrame()
 		sonsDied = 0
 		phase = phase + 1
 	end
@@ -115,7 +115,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnMoltenSeed:Show()
 		timerMoltenSeed:Start()
 		timerMoltenSeedCD:Start()
-		self:HideRangeFrame()			-- only have to spread just before the Molten Seeds
+		hideRangeFrame()			-- only have to spread just before the Molten Seeds
 		self:Schedule(50, showRangeFrame)	-- show the range frame 10secs before next Molten Seeds
 	end
 end
