@@ -61,7 +61,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98868) then
 		warnBrushfire:Show()
-	elseif args:IsSpellID(100094, 101223, 101294, 101295) or args:IsSpellID(101296) then
+	elseif args:IsSpellID(101223, 101294, 101295, 101296) then--100094 is trash before it, it belongs in trash mod where users can toggle it individually
 		if args.sourceGUID == UnitGUID("target") then
 			specWarnFieroblast:Show()
 		end
