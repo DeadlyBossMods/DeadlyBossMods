@@ -73,7 +73,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerSpinners		= "Show timer for next $journal:2770",
 	TimerSpiderlings	= "Show timer for next $journal:2778",
-	TimerDrone		= "Show timer for next $journal:2773"
+	TimerDrone		= "Show timer for next $journal:2773",
+	RangeFrame				= "Show range frame (10)",
 })
 
 L:SetMiscLocalization({
