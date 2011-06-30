@@ -30,7 +30,7 @@ local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs")
 
 local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094)
 
-mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
 local phase = 1
 function mod:OnCombatStart(delay)
@@ -42,6 +42,12 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
 	end
 end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
+end 
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98868) then
