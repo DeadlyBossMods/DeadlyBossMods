@@ -8,10 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons()
 
 mod:RegisterCombat("combat")
---[[			"<11.4> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I serve a new master now, mortals!#Alysrazor###Dswarden##0#0##0#916##0#false", -- [1]
-			"<11.5> [ENGAGE] Fake Args:#1#1#Alysrazor#0xF150CD320000F2C8#elite#154605600#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [2]
---]]
---Why are we using yell instead of INSTANCE_ENCOUNTER_ENGAGE_UNIT? according to transcriptor the encounter does use ENGAGE event and Boss1 does return Alysrazor, so hit should function, unless it's a work around for first pull maybe that has RP?
+
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
@@ -33,7 +30,7 @@ local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 
-local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094)
+local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(101223)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
@@ -61,7 +58,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98868) then
 		warnBrushfire:Show()
-	elseif args:IsSpellID(101223, 101294, 101295, 101296) then--100094 is trash before it, it belongs in trash mod where users can toggle it individually
+	elseif args:IsSpellID(101223, 101294, 101295, 101296) then
 		if args.sourceGUID == UnitGUID("target") then
 			specWarnFieroblast:Show()
 		end
