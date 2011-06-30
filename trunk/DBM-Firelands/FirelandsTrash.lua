@@ -20,9 +20,10 @@ Ancient Core Hound:	Fear CD? (1st = 6-13sec after first breath. 2nd = 26-31 afte
 
 local warnMoltenArmor		= mod:NewStackAnnounce(99532, 3, nil, mod:IsTank() or mod:IsHealer())
 
-local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
-
+local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094, false)
 local specWarnMoltenArmor	= mod:NewSpecialWarningStack(99532, 4, nil, mod:IsTank())
+
+local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
 
 mod:AddBoolOption("RangeFrame", true)
 
@@ -47,6 +48,14 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)	-- BoP or similar can remove the debuff?
 	if args:IsSpellID(99532) then
 		timerMoltenArmor:Cancel(args.destName)
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(100094) then--Trash version of spell used on boss fight.
+		if args.sourceGUID == UnitGUID("target") then
+			specWarnFieroblast:Show()
+		end
 	end
 end
 
