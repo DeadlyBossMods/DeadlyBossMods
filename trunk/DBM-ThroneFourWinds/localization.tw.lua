@@ -33,10 +33,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "開始從剩下的風之王那裡取得力量!",
-	Anshal				= "安蕭爾",
-	Nezir				= "涅茲爾",
-	Rohash				= "洛哈許"
+	gatherstrength			= "開始從剩下的風領主那裡取得力量!",
+	Anshal				= "西風領主安蕭爾",
+	Nezir				= "北風領主涅茲爾",
+	Rohash				= "東風領主洛哈許"
 })
 
 ---------------
@@ -54,15 +54,19 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 			= "回饋 (%d)"
+	TimerFeedback 			= "回饋 (%d)",
+	TimerAddCD		= "下一個小風暴"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
-	TimerFeedback			= "為$spell:87904的持續時間顯示計時器"
+	TimerFeedback			= "為$spell:87904的持續時間顯示計時器",
+	WarnAdd			= "當小風暴出現時顯示警告",
+	TimerAddCD		= "為下一個小風暴出現顯示計時器",
+	RangeFrame		= "Show range frame (20) when affected by $spell:89668",
 })
 
 L:SetMiscLocalization({
-	summonAdd			= "Storms! I summon you to my side!",--Translate
-	phase3				= "Enough! I will no longer be contained!"--Translate
+	summonAdd			= "風暴啊!我召喚你們來我身邊!",
+	phase3				= "夠了!我不要再被束縛住了!"
 })

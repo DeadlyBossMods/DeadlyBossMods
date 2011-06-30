@@ -71,23 +71,33 @@ DBM_CORE_RANGECHECK_SOUND_2			= "蜂鳴聲"
 DBM_CORE_RANGECHECK_HIDE			= "隱藏"
 DBM_CORE_RANGECHECK_SETRANGE_TO			= "%d碼"
 DBM_CORE_RANGECHECK_LOCK			= "鎖定框架"
+DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框體"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "顯示雷達框體"
+DBM_CORE_RANGECHECK_OPTION_TEXT		= "顯示文字框"
+DBM_CORE_RANGECHECK_OPTION_BOTH		= "兩者都顯示"
+DBM_CORE_RANGECHECK_OPTION_SPEED	= "更新頻率 (需要重載)"
+DBM_CORE_RANGECHECK_OPTION_SLOW		= "慢 (CPU使用量低)"
+DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "中"
+DBM_CORE_RANGECHECK_OPTION_FAST		= "快 (實時)"
+DBM_CORE_RANGERADAR_HEADER			= "距離雷達 (%d 碼)"
 
 DBM_CORE_INFOFRAME_LOCK				= "鎖定框架"
 DBM_CORE_INFOFRAME_HIDE				= "隱藏"
 DBM_CORE_INFOFRAME_SHOW_SELF			= "總是顯示你的能量"		-- Always show your own power value even if you are below the threshold
-
 
 DBM_LFG_INVITE					= "地城準備確認"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"可用命令：",
 	"/dbm version：進行團隊範圍內的版本檢測（也可使用：ver）。",
-	"/dbm version2: 進行團隊範圍內的版本檢測及密語通知已過期的成員（也可使用: ver2）。",
+--	"/dbm version2: 進行團隊範圍內的版本檢測及密語通知已過期的成員（也可使用: ver2）。",
 	"/dbm unlock：顯示一個可移動的計時器（也可使用：move）。",
 	"/dbm timer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。",
 	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需開啟團隊廣播及助理權限）。",
-	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需開啟團隊廣播及助理權限）。",
 	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需開啟團隊廣播及助理權限）。",
+	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需開啟團隊廣播及助理權限）。",
+	"/dbm arrow: 顯示DBM箭頭, 輸入 /dbm arrow help 獲得更多訊息。",
+	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需開啟團隊廣播及助理權限)。",
 	"/dbm help：顯示可用命令的說明。",
 }
 
@@ -157,6 +167,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	stack					= "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
 }
 
+
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell					= "為$spell:%d顯示特別警告",
@@ -184,19 +195,22 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	stack					= "%s (%%d)"
 }
 
+
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%d的目標設置標記"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%d時播放音效"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "為 $spell:%d 播放倒計時音效"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%d時大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s!"
+
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖動的特別警告"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特別警告"
 
+
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED		= "在此區域中不支援%d碼的距離檢查。\n已支援的距離有10，11，15及28碼。"
 
 DBM_ARROW_MOVABLE				= "可移動箭頭"
-
 DBM_ARROW_NO_RAIDGROUP				= "此功能僅作用於團隊副本中的團隊小隊。"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 用法:",
@@ -208,3 +222,18 @@ DBM_ARROW_ERROR_USAGE	= {
 
 DBM_SPEED_KILL_TIMER_TEXT			= "記錄擊殺"
 DBM_SPEED_KILL_TIMER_OPTION			= "顯示一個計時器來打敗你上次的最快擊殺"
+
+
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s想要查看你的副本ID和進度鎖定情況。\n你想發送該訊息給%s嗎? 在你的當前進程（除非你下線）他可以一直查閱該訊息。"
+DBM_ERROR_NO_RAID					= "你必須在一個團隊中才可以使用這個功能。"
+DBM_INSTANCE_INFO_REQUESTED			= "查看團隊成員的副本鎖定訊息。\n請注意，隊員們將會被詢問是否願意發送數據給你，因此可能需要等待一段時間才能獲得全部的回覆。"
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "從%d個玩家獲得訊息，來自%d個DBM用戶：%d人發送了數據, %d人拒絕回傳數據。繼續為更多回覆等待%d秒..."
+DBM_INSTANCE_INFO_ALL_RESPONSES		= "已獲得全部團隊成員的回傳數據"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "發送者: %s 結果類型: %s 副本名: %s 副本ID: %s 難度: %d 大小: %d 進度: %s"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), 難度 %d:"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 進度 %d: %s"
+DBM_INSTANCE_INFO_STATS_DENIED		= "拒絕回傳數據: %s"
+DBM_INSTANCE_INFO_STATS_AWAY		= "離開: %s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "沒有安裝最新版本的DBM: %s"
+DBM_INSTANCE_INFO_RESULTS			= "副本ID掃描結果。注意如果團隊中有不同語言版本的魔獸客戶端，那麼同一副本可能會出現不止一次。"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "仍未回复的玩家: %s\n|HDBM:showRaidIdResults|h|cff3588ff[查看結果]|r|h"

@@ -169,7 +169,6 @@ L:SetOptionLocalization({
 ------------------------
 --  Isle of Conquest  --
 ------------------------
-
 L = DBM:GetModLocalization("IsleofConquest")
 
 L:SetGeneralLocalization({
