@@ -100,6 +100,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiatesSpawned)
+		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
 		if initiatesSpawned < 3 then
 			timerNextInitiate:Start(32)--Might tune this slightly to be for when you see them fly in, since the yell happens when they land and are attackable
 		else
