@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
-L.TranslationBy 		= "흑묘서희@에이그윈(Twitter: @Nyx_Khang) & 다시날아@아즈샤라"
+L.TranslationBy 		= "다시날아@아즈샤라 / 흑묘서희@에이그윈(트윗:@Nyx_Khang)"
 
 L.TabCategory_Options 	= "일반 설정"
 L.TabCategory_CATA	 	= "대격변"
@@ -26,7 +26,7 @@ L.MoveMe 				= '위치 이동'
 L.Button_OK 			= '확인'
 L.Button_Cancel 		= '취소'
 L.Button_LoadMod 		= '애드온 불러오기'
-L.Mod_Enabled			= "보스 모드 사용"
+L.Mod_Enabled			= "보스 경고 사용"
 L.Mod_EnableAnnounce	= "공격대 경보로 알리기 (공격대장 권한 필요)"
 L.Reset 				= "초기화"
 
@@ -35,7 +35,7 @@ L.Disable				= "끄기"
 
 L.NoSound				= "소리 끄기"
 
-L.IconsInUse			= "현재 모드에서 사용 되는 전술 목표 아이콘:"
+L.IconsInUse			= "현재 보스에서 사용 되는 전술 목표 아이콘:"
 
 -- Tab: Boss Statistics
 L.BossStatistics		= "보스 공략 상황"
@@ -49,21 +49,21 @@ L.Statistic_25Man		= "25인 공격대"
 -- Tab: General Options
 L.General 				= "일반 DBM 설정"
 L.EnableDBM 			= "DBM 사용"
-L.EnableStatus 			= "'status' 귓속말을 받은 경우 자동 응답 메세지 보내기"
-L.AutoRespond 			= "전투 중 귓속말을 받은 경우 자동 응답 메세지 보내기"
-L.EnableMiniMapIcon		= "Minimap 버튼 사용"
+L.EnableStatus 			= "'status' 라는 귓속말을 받은 경우 자동 응답 메세지 보내기"
+L.AutoRespond 			= "보스 전투 중 귓속말을 받은 경우 자동 응답 메세지 보내기"
+L.EnableMiniMapIcon		= "미니맵 버튼 사용"
 L.UseMasterVolume		= "기본 오디오 채널로 소리 재생"
 L.SKT_Enabled			= "각 보스 설정에서 끈 상태라도 항상 빠르게 죽인 타이머 보기(강제)"
 L.Latency_Text			= "동기화를 사용 할 최대 지연시간 설정 : %d"
 
 L.ModelOptions			= "3D 초상화 배경 설정"
 L.EnableModels			= "각 보스 설정에 3D 초상화 배경 사용"
-L.ModelSoundOptions		= "각 보스 설정에서 사용할 보스 음성 선택"
+L.ModelSoundOptions		= "각 보스 설정을 볼 때 출력될 보스 음성 선택"
 L.ModelSoundShort		= "짧은 음성"
 L.ModelSoundLong		= "긴 음성"
 
 L.Button_RangeFrame		= "거리 프레임 켜기/끄기"
-L.Button_TestBars		= "테스트 바 시작"
+L.Button_TestBars		= "테스트 시작"
 
 L.PizzaTimer_Headline 	= '사용자 지정 타이머 만들기'
 L.PizzaTimer_Title		= '이름 (예 : "Pizza!")'
@@ -81,8 +81,8 @@ L.RaidWarnColor_1 		= "색상 1"
 L.RaidWarnColor_2 		= "색상 2"
 L.RaidWarnColor_3 		= "색상 3"
 L.RaidWarnColor_4 		= "색상 4"
-L.InfoRaidWarning		= [[레이드 경고 프레임의 위치와 색상을 수정할 수 있습니다.
-이 경고 프레임에 "X가 Y의 영향을 받았습니다." 같은 메세지를 나타냅니다.]]
+L.InfoRaidWarning		= [[레이드 경보 프레임의 위치와 색상을 수정할 수 있습니다.
+이 경보 프레임에 "X가 Y의 영향을 받았습니다." 같은 DBM 메세지를 나타냅니다.]]
 L.ColorResetted 		= "현재 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 	= "경고 메세지를 대화 창에 보여줍니다."
 L.ShowFakedRaidWarnings = "경고 메세지를 공격대 경보 대화처럼 보여줍니다."
