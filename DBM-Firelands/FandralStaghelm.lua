@@ -18,9 +18,9 @@ mod:RegisterEvents(
 
 local warnAdrenaline		= mod:NewStackAnnounce(97238, 3)
 local warnFury			= mod:NewStackAnnounce(97235, 3)
-local warnOrbs			= mod:NewCastAnnounce(98451, 3, nil, mod:IsTank())
+local warnOrbs			= mod:NewCastAnnounce(98451, 4)
 
-local timerSearingSeed		= mod:NewTargetTimer(60, 98450)
+local timerSearingSeed		= mod:NewBuffActiveTimer(60, 98450)
 local timerLeapingFlames	= mod:NewCDTimer(4, 100208)
 local timerFlameScythe		= mod:NewCDTimer(4, 98474)
 
@@ -61,6 +61,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLeapingFlames:Cancel()
 		timerFlameScythe:Start(abilityTimers[0])
 	elseif args:IsSpellID(97238) then
+		abilityCount = (args.amount or 1)--This is a more disconnect friendly method, otherwise ability count would be completely wrong entire fight.
 		warnAdrenaline:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
@@ -80,12 +81,12 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(98476) and GetTime() - abilitySpam > 3 then	--98476 confirmed
-		abilityCount = abilityCount + 1
+--		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
 		local t = abilityTimers[abilityCount] or 4
 		timerLeapingFlames:Start(t)
 	elseif args:IsSpellID(98474, 100212, 100213, 100214) and GetTime() - abilitySpam > 3 then	--98474, 100213 confirmed
-		abilityCount = abilityCount + 1
+--		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
 		local t = abilityTimers[abilityCount] or 4
 		timerFlameScythe:Start(t)
