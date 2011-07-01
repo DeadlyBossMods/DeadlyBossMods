@@ -11,20 +11,22 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
 )
 
 local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 3)
 local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3)
 local warnShardsTorment		= mod:NewSpellAnnounce(99259, 3)
-local warnCountdown		= mod:NewTargetAnnounce(99516, 4)
-local yellCountdown		= mod:NewYell(99516)
+local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
+local yellCountdown			= mod:NewYell(99516)
 
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive")
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext")	-- either Decimation Blade or Inferno Blade
-local timerShardsTorment	= mod:NewCDTimer(33, 99259)
+local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 
+local specWarnShardsTorment	= mod:NewSpecialWarningSpell(99259, nil, nil, nil, true)
 local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
@@ -73,16 +75,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(99352, 99405) or args:IsSpellID(99350) then
+		timerBladeNext:Start()--30 seconds after last blades FADED
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(99352, 99405) then	--99352 confirmed
 		warnDecimationBlade:Show()
 		timerBladeActive:Start(args.spellName)
-		timerBladeNext:Start()
 	elseif args:IsSpellID(99350) then
 		warnInfernoBlade:Show()
 		timerBladeActive:Start(args.spellName)
-		timerBladeNext:Start()
 	elseif args:IsSpellID(99259) then
 		warnShardsTorment:Show()
+		timerShardsTorment:Start()
 	end
 end
