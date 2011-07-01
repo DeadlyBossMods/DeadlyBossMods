@@ -99,6 +99,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Riplimb		= "칼로베",
+	Rageface	= "성난얼굴"
 })
 
 -------------
