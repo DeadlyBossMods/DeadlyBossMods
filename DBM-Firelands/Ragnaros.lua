@@ -35,7 +35,7 @@ local timerMoltenSeed 		= mod:NewBuffActiveTimer(10, 98520)	-- spell ID ??
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)		-- spell ID ??  Might even be a "next" timer
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons")	-- lasts 45secs or till all sons are dead
 
-local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, 5, nil, mod:IsTank())
+local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, nil, 5, mod:IsTank())
 
 mod:AddBoolOption("RangeFrame")
 
