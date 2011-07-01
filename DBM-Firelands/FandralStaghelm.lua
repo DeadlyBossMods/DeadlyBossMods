@@ -26,7 +26,7 @@ local timerFlameScythe		= mod:NewCDTimer(4, 98474)
 
 local specWarnSearingSeed	= mod:NewSpecialWarningMove(98450)
 
-local abilitySpam	-- Cat ability happens twice in a row (2 combat log events), but using it for both just in case :)
+local abilitySpam = 0	-- Cat ability happens twice in a row (2 combat log events), but using it for both just in case :)
 local abilityCount = 0
 local transforms = 0
 local abilityTimers = {
