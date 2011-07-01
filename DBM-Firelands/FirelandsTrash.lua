@@ -35,7 +35,7 @@ do
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99532) then
+	if args:IsSpellID(99532, 100767) then
 		warnMoltenArmor:Show(args.destName, args.amount or 1)
 		if args:IsPlayer() and (args.amount or 1) >= 4 then
 			specWarnMoltenArmor:Show(args.amount)
@@ -46,7 +46,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)	-- BoP or similar can remove the debuff?
-	if args:IsSpellID(99532) then
+	if args:IsSpellID(99532, 100767) then
 		timerMoltenArmor:Cancel(args.destName)
 	end
 end
