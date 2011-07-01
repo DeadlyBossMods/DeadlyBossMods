@@ -51,7 +51,7 @@ local yellImmoTrap				= mod:NewYell(99839, nil, false)
 local specWarnCrystalTrap		= mod:NewSpecialWarningMove(99836)
 local specWarnCrystalTrapNear	= mod:NewSpecialWarningClose(99836)
 local yellCrystalTrap			= mod:NewYell(99836)
-local specWarnTears				= mod:NewSpecialWarningStack(99937, 8, nil, mod:IsTank())
+local specWarnTears				= mod:NewSpecialWarningStack(99937, nil, 8, mod:IsTank())
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
