@@ -28,6 +28,7 @@ local specWarnSearingSeed	= mod:NewSpecialWarningMove(98450)
 
 local abilitySpam	-- Cat ability happens twice in a row (2 combat log events), but using it for both just in case :)
 local abilityCount = 0
+local transforms = 0
 local abilityTimers = {
 	[0] = 17,
 	[1] = 13,
@@ -45,6 +46,7 @@ local abilityTimers = {
 function mod:OnCombatStart(delay)
 	abilityCount = 0
 	abilitySpam = 0
+	transforms = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
