@@ -90,6 +90,7 @@ function mod:SPELL_CAST_START(args)
 		timerBladeActive:Start(args.spellName)
 	elseif args:IsSpellID(99259) then
 		warnShardsTorment:Show()
+		specWarnShardsTorment:Show()
 		timerShardsTorment:Start()
 	end
 end
