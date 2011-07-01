@@ -20,7 +20,7 @@ Ancient Core Hound:	Fear CD? (1st = 6-13sec after first breath. 2nd = 26-31 afte
 
 local warnMoltenArmor		= mod:NewStackAnnounce(99532, 3, nil, mod:IsTank() or mod:IsHealer())
 
-local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(99532, false)
+local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094, false)
 local specWarnMoltenArmor	= mod:NewSpecialWarningStack(99532, mod:IsTank(), 4)
 
 local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
