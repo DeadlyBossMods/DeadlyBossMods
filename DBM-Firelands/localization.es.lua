@@ -7,23 +7,31 @@ local L
 L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
-	WarnPhase		= "Fase %d"
+	WarnPhase		= "Fase %d",
+	WarnNewInitiate		= "Iniciado de Garfas Llameantes (%d)"
 })
 
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Fase %d",
-	TimerHatchEggs		= "Eclosión de huevos"
+	TimerHatchEggs		= "Eclosión de huevos",
+	timerNextInitiate	= "Siguiente Iniciado"
 })
 
 L:SetOptionLocalization({
 	WarnPhase		= "Mostrar un aviso para cada cambio de fase",
-	TimerPhaseChange	= "Mostrar tiempo para siguiente fasee",
+	WarnNewInitiate		= "Mostrar aviso para nuevo Iniciado de Garfas Llameantes",
+	timerNextInitiate	= "Mostrar tiempo para siguiente Iniciado de Garfas Llameantes",
+	TimerPhaseChange	= "Mostrar tiempo para siguiente fase",
 	TimerHatchEggs		= "Mostrar tiempo hasta que los huevos eclosionen",
 	InfoFrame		= "Mostrar información para Poder Llameante"
 })
 
 L:SetMiscLocalization({
 	YellPull		= "I serve a new master now, mortals!",--translate
+	YellInitiate1	= "We call upon you, Firelord!",--translate
+	YellInitiate2	= "Behold His power!",--translate
+	YellInitiate3	= "Let the unbelievers perish in fire!",--translate
+	YellInitiate4	= "Witness the majesty of flame!",--translate
 	YellPhase2		= "These skies are MINE!",--translate
 	PowerLevel		= "Poder Llameante"
 })
@@ -58,19 +66,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Siguiente $journal:2770",
-	TimerSpiderlings	= "Siguientes $journal:2778",
-	TimerDrone		= "Siguiente $journal:2773"
+	TimerSpinners 		= "Siguientes hiladoras",
+	TimerSpiderlings	= "Siguientes arañitas",
+	TimerDrone		= "Siguiente zángano"
 })
 
 L:SetOptionLocalization({
 	TimerSpinners		= "Mostrar tiempo para siguientes $journal:2770",
 	TimerSpiderlings	= "Mostrar tiempo para siguientes $journal:2778",
-	TimerDrone		= "Mostrar tiempo para siguientes $journal:2773"
+	TimerDrone		= "Mostrar tiempo para siguiente $journal:2773",
+	RangeFrame				= "Mostrar distancia (10)",
 })
 
 L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"--translate
+	EmoteSpiderlings 	= "¡Las arañitas emergen de su nido!"
 })
 
 -------------
@@ -90,6 +99,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Riplimb		= "Desmembrador",
+	Rageface	= "Rostrofuria"
 })
 
 -------------
@@ -127,6 +138,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	RangeFrameSeeds				= "Mostrar distancia (12) para $spell:98450",
+	RangeFrameCat				= "Mostrar distancia (10) para $spell:98374"
 })
 
 L:SetMiscLocalization({
@@ -141,12 +154,34 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Fase de hijos termina"
+	TimerPhaseSons		= "Fase de Hijos termina"
 })
 
 L:SetOptionLocalization({
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia"
+})
+
+L:SetMiscLocalization({
+})
+
+-----------------------
+--  Firelands Trash  --
+-----------------------
+L = DBM:GetModLocalization("FirelandsTrash")
+
+L:SetGeneralLocalization({
+	name = "Trash de las Tierras del Fuego"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	RangeFrame	= "Mostrar distancia (10) para $spell:100012"
 })
 
 L:SetMiscLocalization({
