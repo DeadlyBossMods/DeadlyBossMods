@@ -11,18 +11,18 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
+--	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
 	"RAID_BOSS_EMOTE"
 )
 
 local warnSmolderingDevastation		= mod:NewCastAnnounce(99052, 4)
-local warnWidowKiss					= mod:NewStackAnnounce(99476, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnWidowKiss					= mod:NewTargetAnnounce(99476, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
 local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability according to EJ
 
 local specWarnFixate				= mod:NewSpecialWarningStack(99559)--Does it need run away sound? icon? EJ wasn't too specific.
-local specWarnTouchWidowKiss		= mod:NewSpecialWarningStack(99476, nil, 5)--How many stacks? does it differ 10/25 or heroic?
+local specWarnTouchWidowKiss		= mod:NewSpecialWarningYou(99476)
 
 local timerSpinners 				= mod:NewTimer(15, "TimerSpinners") -- 15secs after Smoldering cast start
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
@@ -58,14 +58,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99476, 99506) then
+		warnWidowKiss:Show(args.destName)
 		timerWidowKiss:Start(args.destName)
-		if (args.amount or 1) % 5 == 0 then		-- warn every 5th stack. not sure what's going to be relevent yet
-			warnWidowKiss:Show(args.destName, args.amount)
-		end
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 5 then
-				specWarnTouchWidowKiss:Show(args.amount)
-			end
+			specWarnTouchWidowKiss:Show()
 			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Show(10)
 			end
@@ -79,7 +75,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+--mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(99476, 99506) then
