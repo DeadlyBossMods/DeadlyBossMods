@@ -23,6 +23,7 @@ local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability according
 
 local specWarnFixate				= mod:NewSpecialWarningStack(99559)--Does it need run away sound? icon? EJ wasn't too specific.
 local specWarnTouchWidowKiss		= mod:NewSpecialWarningYou(99476)
+local specWarnTouchWidowKissOther	= mod:NewSpecialWarningTarget(99476, mod:IsTank())
 
 local timerSpinners 				= mod:NewTimer(15, "TimerSpinners") -- 15secs after Smoldering cast start
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
@@ -71,6 +72,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Show(10)
 			end
+		else
+			specWarnTouchWidowKissOther:Show()
 		end
 	elseif args:IsSpellID(99559) then--99526?
 		warnFixate:Show(args.destName)
