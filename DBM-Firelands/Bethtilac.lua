@@ -56,6 +56,12 @@ function mod:OnCombatStart(delay)
 	smolderingCount = 0
 end
 
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99476, 99506) then
 		warnWidowKiss:Show(args.destName)
