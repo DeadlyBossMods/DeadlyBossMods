@@ -18,7 +18,6 @@ mod:RegisterEvents(
 )
 
 local warnMolting		= mod:NewSpellAnnounce(99464, 3)
-local warnBrushfire		= mod:NewSpellAnnounce(98868, 2)
 local warnFirestorm		= mod:NewSpellAnnounce(100744, 3)
 local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
@@ -56,9 +55,7 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(98868) then
-		warnBrushfire:Show()
-	elseif args:IsSpellID(101223, 101294, 101295, 101296) then
+	if args:IsSpellID(101223, 101294, 101295, 101296) then
 		if args.sourceGUID == UnitGUID("target") then
 			specWarnFieroblast:Show()
 		end
