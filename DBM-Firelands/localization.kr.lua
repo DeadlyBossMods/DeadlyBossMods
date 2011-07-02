@@ -27,11 +27,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPull		= "이제는 새 주인님을 섬긴다, 필멸자들아!",
-	YellInitiate1	= "힘을 주소서!",
-	YellInitiate2	= "힘을 보아라!",
-	YellInitiate3	= "뜨거운 화염",
-	YellInitiate4	= "화염의 장엄함을",
+	YellPull		= "이제 난 새 주인님을 섬긴다. 필멸자여!",
+	YellInitiate1	= "불의 군주시여, 힘을 주소서!",
+	YellInitiate2	= "그분의 힘을 보아라!",
+	YellInitiate3	= "믿지 않는 자, 불로 멸하리라!",
+	YellInitiate4	= "화염의 장엄함을 지켜봐라!",
 	YellPhase2		= "이 하늘은 나의 것이다!",
 	PowerLevel		= "타오르는 힘"
 })
