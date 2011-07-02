@@ -74,7 +74,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerSpinners		= "Отсчет времени до следующих $journal:2770",
 	TimerSpiderlings	= "Отсчет времени до следующих $journal:2778",
-	TimerDrone			= "Отсчет времени до следующего $journal:2773"
+	TimerDrone			= "Отсчет времени до следующего $journal:2773",
+	RangeFrame			= "Показывать окно проверки дистанции (10м)"
 })
 
 L:SetMiscLocalization({
@@ -98,6 +99,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Riplimb		= "Лютогрыз",
+	Rageface	= "Косоморд"
 })
 
 -------------
@@ -135,6 +138,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	RangeFrameSeeds			= "Показывать окно проверки дистанции (12м) для $spell:98450",
+	RangeFrameCat			= "Показывать окно проверки дистанции (10м) для $spell:98374"
 })
 
 L:SetMiscLocalization({
