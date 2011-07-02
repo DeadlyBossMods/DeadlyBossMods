@@ -21,7 +21,7 @@ mod:RegisterEvents(
 )
 
 mod:SetBossHealthInfo(
-	54691,	L.name,
+	53691,	L.name,
 	53694,	L.Riplimb,
 	53695,	L.Rageface
 )
@@ -32,8 +32,8 @@ local warnWary					= mod:NewTargetAnnounce(100167, 2, nil, false)	-- which hound
 local warnTears					= mod:NewStackAnnounce(99937, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnSpear					= mod:NewSpellAnnounce(100002, 3)--warn for this instead of magmaflare until rip dies.
 local warnMagmaFlare			= mod:NewSpellAnnounce(100495, 3)
---local warnCrystalPrison			= mod:NewTargetAnnounce(99836, 2)--On by default, not as often, and useful for tanks or kiters
---local warnImmoTrap				= mod:NewTargetAnnounce(99839, 2, nil, false)--Spammy, off by default for those who want it.
+local warnCrystalPrison			= mod:NewTargetAnnounce(99836, 2)--On by default, not as often, and useful for tanks or kiters
+local warnImmoTrap				= mod:NewTargetAnnounce(99839, 2, nil, false)--Spammy, off by default for those who want it.
 local warnCrystalPrisonTrapped	= mod:NewTargetAnnounce(99837, 4)--Person/boss actually trapped in crystal who set it off.
 local warnPhase2Soon			= mod:NewPrePhaseAnnounce(2, 3)
 
@@ -45,12 +45,12 @@ local timerSpearCD				= mod:NewCDTimer(42, 100002)--Use this for CD before rip d
 local timerMagmaFlareCD			= mod:NewCDTimer(42, 100495)--Use this for CD after rip dies
 
 local specWarnRage				= mod:NewSpecialWarningYou(100415)
---local specWarnImmTrap			= mod:NewSpecialWarningMove(99839)
---local specWarnImmTrapNear		= mod:NewSpecialWarningClose(99839)
---local yellImmoTrap				= mod:NewYell(99839, nil, false)
---local specWarnCrystalTrap		= mod:NewSpecialWarningMove(99836)
---local specWarnCrystalTrapNear	= mod:NewSpecialWarningClose(99836)
---local yellCrystalTrap			= mod:NewYell(99836)
+local specWarnImmTrap			= mod:NewSpecialWarningMove(99839)
+local specWarnImmTrapNear		= mod:NewSpecialWarningClose(99839)
+local yellImmoTrap				= mod:NewYell(99839, nil, false)
+local specWarnCrystalTrap		= mod:NewSpecialWarningMove(99836)
+local specWarnCrystalTrapNear	= mod:NewSpecialWarningClose(99836)
+local yellCrystalTrap			= mod:NewYell(99836)
 local specWarnTears				= mod:NewSpecialWarningStack(99937, mod:IsTank(), 8)
 
 local berserkTimer				= mod:NewBerserkTimer(600)
@@ -63,7 +63,7 @@ local riplimbDead = false
 local spamFaceRage = 0
 
 function mod:ImmoTrapTarget()
-	local targetname = self:GetBossTarget(54691)
+	local targetname = self:GetBossTarget(53691)
 	if not targetname then return end
 	warnImmoTrap:Show(targetname)
 	if targetname == UnitName("player") then
@@ -86,7 +86,7 @@ function mod:ImmoTrapTarget()
 end
 
 function mod:CrystalTrapTarget()
-	local targetname = self:GetBossTarget(54691)
+	local targetname = self:GetBossTarget(53691)
 	if not targetname then return end
 	warnCrystalPrison:Show(targetname)
 	if targetname == UnitName("player") then
@@ -178,9 +178,9 @@ end
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(99836) then
 		timerCrystalPrisonCD:Start()
---		self:ScheduleMethod(0.2, "CrystalTrapTarget")
+		self:ScheduleMethod(0.2, "CrystalTrapTarget")
 	elseif args:IsSpellID(99839) then
---		self:ScheduleMethod(0.2, "ImmoTrapTarget")
+		self:ScheduleMethod(0.2, "ImmoTrapTarget")
 	end
 end
 
