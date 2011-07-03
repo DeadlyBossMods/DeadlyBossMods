@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(52409)
 mod:SetModelID(37875)
 mod:SetZone()
-mod:SetUsedIcons()
+mod:SetUsedIcons(7, 8) -- cross(7) is hard to see in redish environment?
 
 mod:RegisterCombat("combat")
 
@@ -22,8 +22,12 @@ local warnHandRagnaros		= mod:NewSpellAnnounce(99237, 3)
 local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3)
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3)
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 3)	-- spell ID ??
+local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
+
+local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
+local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 5)
 
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- might even be a "next" timer
 local timerSulfurasSmash	= mod:NewCDTimer(40, 98710)		-- might even be a "next" timer
@@ -35,14 +39,21 @@ local timerMoltenSeed 		= mod:NewBuffActiveTimer(10, 98520)	-- spell ID ??
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)		-- spell ID ??  Might even be a "next" timer
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons")	-- lasts 45secs or till all sons are dead
 
-local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 5)
-
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("BlazingHeatIcons", true)
 
 local sonsDied = 0
 local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
+local blazingHeatTargets = {}
+local blazingHeatIcon 	= 8
+
+local function warnBlazingHeatTargets()
+	warnBlazingHeat:Show(table.concat(blazingHeatTargets, "<, >"))
+	table.wipe(blazingHeatTargets)
+	blazingHeatIcon = 8
+end
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
@@ -70,6 +81,8 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	prewarnedPhase2 = false
 	prewarnedPhase3 = false
+	table.wipe(blazingHeatTargets)
+	blazingHeatIcon = 8
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -117,6 +130,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMoltenSeedCD:Start()
 		hideRangeFrame()			-- only have to spread just before the Molten Seeds
 		self:Schedule(50, showRangeFrame)	-- show the range frame 10secs before next Molten Seeds
+	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat, drycoded.
+		blazingHeatTargets[#blazingHeatTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnBlazingHeat:Show()
+		end
+		if self.Options.BlazingHeatIcons then
+			self:SetIcon(args.destName, blazingHeatIcon, 8)
+			blazingHeatIcon = blazingHeatIcon - 1
+		end
+		self:Unschedule(warnBlazingHeatTargets)
+		self:Schedule(0.3, warnBlazingHeatTargets)
 	end
 end
 
@@ -124,7 +148,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53140 then
 		sonsDied = sonsDied + 1
-		if sonsDied > 6 then		-- 6 on normal 10?  How many are there at which difficulties?
+		if sonsDied >= 8 then
 			timerPhaseSons:Cancel()
 			if phase == 2 then
 				timerSulfurasSmash:Start(25)
