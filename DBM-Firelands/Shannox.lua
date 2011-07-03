@@ -61,10 +61,9 @@ mod:AddBoolOption("SetIconOnRage")
 local prewarnedPhase2 = false
 local riplimbDead = false
 local spamFaceRage = 0
+local trapScanStarted = false
 
-function mod:ImmoTrapTarget()
-	local targetname = self:GetBossTarget(53691)
-	if not targetname then return end
+function mod:ImmoTrapTarget(targetname)
 	warnImmoTrap:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnImmTrap:Show()
@@ -85,9 +84,7 @@ function mod:ImmoTrapTarget()
 	end
 end
 
-function mod:CrystalTrapTarget()
-	local targetname = self:GetBossTarget(53691)
-	if not targetname then return end
+function mod:CrystalTrapTarget(targetname)
 	warnCrystalPrison:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnCrystalTrap:Show()
@@ -108,12 +105,38 @@ function mod:CrystalTrapTarget()
 	end
 end
 
+--Can you tell i really suck at LUA? Ths function sucks ass
+function mod:TrapHandler(SpellID, isTank)
+	local targetname = self:GetBossTarget(53691)
+	if not targetname then return end
+	if UnitDetailedThreatSituation(targetname, "boss1") and not isTank then--He's targeting his highest threat target, the tank. If isTank we force it to else rule even though he's targeting tank
+		trapScanStarted = true
+		if not trapScanStarted then--Only start this scan once we don't need an infinite loop
+			self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
+			self:ScheduleMethod(0.1, "TrapHandler", SpellID)--Check again
+			self:ScheduleMethod(0.15, "TrapHandler", SpellID)--Check again
+			self:ScheduleMethod(0.2, "TrapHandler", SpellID)--Check again
+			self:ScheduleMethod(0.25, "TrapHandler", SpellID)--Check again
+			self:ScheduleMethod(0.3, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
+		end
+	else--He's not targeting tank so for sure we got right trap target.
+		self:UnscheduleMethod("TrapHandler")--Unschedule all checks, we are done.
+		if SpellID == 99836 then
+			self:CrystalTrapTarget(targetname)
+		else
+			self:ImmoTrapTarget(targetname)
+		end
+		trapScanStarted = false--We fired a warning, so reset the scan started check
+	end
+end
+
 function mod:OnCombatStart(delay)
 	spamFaceRage = 0
 	prewarnedPhase2 = false
 	riplimbDead = false
+	trapScanStarted = false
 --	timerCrystalPrisonCD:Start(-delay)--Don't know yet, Need to run transcriptor with combat logging turned OFF to get the timestamps right.
-	timerSpearCD:Start(20-delay)
+	timerSpearCD:Start(20-delay)--High variation, just a CD?
 	berserkTimer:Start(-delay)
 end
 
@@ -178,9 +201,9 @@ end
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(99836) then
 		timerCrystalPrisonCD:Start()
-		self:ScheduleMethod(0.2, "CrystalTrapTarget")
+		self:ScheduleMethod(0.05, "TrapHandler", 99836)
 	elseif args:IsSpellID(99839) then
-		self:ScheduleMethod(0.2, "ImmoTrapTarget")
+		self:ScheduleMethod(0.05, "TrapHandler", 99839)
 	end
 end
 
