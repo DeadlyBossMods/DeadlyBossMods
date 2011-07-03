@@ -25,7 +25,7 @@ local specWarnMoltenArmor	= mod:NewSpecialWarningStack(99532, mod:IsTank(), 4)
 
 local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
 
-mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("RangeFrame", false)--off by default, this was NOT well recieved, furthermore, it doesn't hide if you wipe on the trash.
 
 local surgers = 0
 local surgerGUIDs = {}
