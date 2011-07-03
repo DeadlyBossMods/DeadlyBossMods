@@ -21,11 +21,12 @@ mod:RegisterEvents(
 local warnHandRagnaros		= mod:NewSpellAnnounce(99237, 3)
 local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3)
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3)
-local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 3)	-- spell ID ??
+local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)	-- spell ID ??
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 
+local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 5)
 
@@ -126,6 +127,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFlames:Start()
 	elseif args:IsSpellID(98520) then	-- correct spell ID ???
 		warnMoltenSeed:Show()
+		specWarnMoltenSeed:Show()
 		timerMoltenSeed:Start()
 		timerMoltenSeedCD:Start()
 		hideRangeFrame()			-- only have to spread just before the Molten Seeds
