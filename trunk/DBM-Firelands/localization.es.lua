@@ -181,7 +181,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Mostrar distancia (10) para $spell:100012"
+	RangeFrame	= "Mostrar distancia (10) para $spell:100012",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
