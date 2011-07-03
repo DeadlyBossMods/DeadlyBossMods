@@ -110,7 +110,6 @@ function mod:TrapHandler(SpellID, isTank)
 	local targetname = self:GetBossTarget(53691)
 	if not targetname then return end
 	if UnitDetailedThreatSituation(targetname, "boss1") and not isTank then--He's targeting his highest threat target, the tank. If isTank we force it to else rule even though he's targeting tank
-		trapScanStarted = true
 		if not trapScanStarted then--Only start this scan once we don't need an infinite loop
 			self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
 			self:ScheduleMethod(0.1, "TrapHandler", SpellID)--Check again
@@ -119,6 +118,7 @@ function mod:TrapHandler(SpellID, isTank)
 			self:ScheduleMethod(0.25, "TrapHandler", SpellID)--Check again
 			self:ScheduleMethod(0.3, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
 		end
+		trapScanStarted = true
 	else--He's not targeting tank so for sure we got right trap target.
 		self:UnscheduleMethod("TrapHandler")--Unschedule all checks, we are done.
 		if SpellID == 99836 then
