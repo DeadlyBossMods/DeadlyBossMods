@@ -38,8 +38,9 @@ local timerSulfurasSmash	= mod:NewCDTimer(40, 98710)		-- might even be a "next" 
 local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might even be a "next" timer
 local timerWrathRagnaros	= mod:NewCDTimer(30, 98263, nil, mod:IsRanged())--CD will be delayed by Smash in event of an overlap.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
-local timerFlamesCD			= mod:NewCDTimer(40, 99171)		-- Engulfing Flames spell ID?
-local timerMoltenSeedCD		= mod:NewCDTimer(50, 98520)		-- CD is actually 60, but we can't use the cast cause there isn't one, so we have to use spell damage 10 seconds after cast to start bar.
+local timerFlamesCD			= mod:NewCDTimer(40, 99171)
+local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)
+local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons")	-- lasts 45secs or till all sons are dead
 
@@ -80,9 +81,7 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
 		timerFlamesCD:Start(43)
-		timerMoltenSeedCD:Start(16)--No cast trigger, just spell damamage 26-27sec after transition. But the cast is 10 seconds prior, so this timer syncs to that despite no trigger.
-		warnMoltenSeed:Schedule(16)--We schedule next warning to be roughly correct for next cast.
-		specWarnMoltenSeed:Schedule(16)--^^
+		timerMoltenSeedCD:Start(25)
 		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
 		mod:showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
@@ -184,11 +183,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 15 then--This has no cast trigger to speak of, only spell damage.
-		warnMoltenSeed:Schedule(50)--We schedule next warning to be roughly correct for next cast.
-		specWarnMoltenSeed:Schedule(50)--^^
-		timerMoltenSeedCD:Start()
+	if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 25 then--This has no cast trigger to speak of, only spell damage, so we need anti spam.
 		lastSeeds = GetTime()
+		warnMoltenSeed:Show()--Not sure if this damage is the cast, or the explosion 10 seconds after, so not sure if warn here, or schedule warn in 50 seconds. will have to pull once and see.
+		specWarnMoltenSeed:Show()--^^
+		timerMoltenSeed:Start()--^^
+		timerMoltenSeedCD:Start()
 	end
 end
 
