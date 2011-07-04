@@ -73,9 +73,6 @@ local function hideRangeFrame()
 end
 
 function mod:OnCombatStart(delay)
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show()
-	end
 	timerMagmaTrap:Start(17-delay)
 	timerSulfurasSmash:Start(32-delay)
 	sonsDied = 0
@@ -84,6 +81,12 @@ function mod:OnCombatStart(delay)
 	prewarnedPhase3 = false
 	table.wipe(blazingHeatTargets)
 	blazingHeatIcon = 8
+end
+
+function mod:OnCombatEnd(delay)
+	if mod.Options.RangeFram then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
