@@ -107,7 +107,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd(delay)
-	if mod.Options.RangeFram then
+	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
 end
