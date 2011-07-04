@@ -50,6 +50,7 @@ mod:AddBoolOption("BlazingHeatIcons", true)
 
 local wrathRagSpam = 0
 local lastSeeds = 0
+local lastMeteor = 0
 local sonsDied = 0
 local phase = 1
 local prewarnedPhase2 = false
@@ -97,6 +98,7 @@ function mod:OnCombatStart(delay)
 	timerSulfurasSmash:Start(30-delay)
 	wrathRagSpam = 0
 	lastSeeds = 0
+	lastMeteor = 0
 	sonsDied = 0
 	phase = 1
 	prewarnedPhase2 = false
@@ -174,7 +176,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				blazingHeatIcon = 8
 			end
 		end
-	elseif args:IsSpellID(99268) then
+	elseif args:IsSpellID(99268) and GetTime() - lastMeteor >= 4 then
+		lastMeteor = GetTime()
 		warnLivingMeteor:Show()
 		timerLivingMeteorCD:Start()
 	end
