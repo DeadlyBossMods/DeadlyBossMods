@@ -14,47 +14,49 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
 	"UNIT_DIED",
 	"UNIT_HEALTH"
 )
 
-local warnHandRagnaros		= mod:NewSpellAnnounce(99237, 3)
-local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3)
-local warnBurningWound		= mod:NewStackAnnounce(99399, 3)
-local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)	-- spell ID ??
-local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)
+local warnHandRagnaros		= mod:NewSpellAnnounce(98237, 3, nil, mod:IsMelee())--Phase 1 only ability
+local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--Phase 1 only ability
+local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
+local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
+local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 
+local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
 local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
-local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 5)
+local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 
-local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- might even be a "next" timer
+local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability
 local timerSulfurasSmash	= mod:NewCDTimer(40, 98710)		-- might even be a "next" timer
-local timerHandRagnaros		= mod:NewCDTimer(35, 99237)		-- might even be a "next" timer
-local timerWrathRagnaros	= mod:NewCDTimer(25, 98263)		-- 25-35sec variation?
+local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might even be a "next" timer
+local timerWrathRagnaros	= mod:NewCDTimer(30, 98263, nil, mod:IsRanged())--CD will be delayed by Smash in event of an overlap.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
-local timerFlames			= mod:NewCDTimer(60, 99171)		-- Engulfing Flames spell ID?
-local timerMoltenSeed 		= mod:NewBuffActiveTimer(10, 98520)	-- spell ID ??
-local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)		-- spell ID ??  Might even be a "next" timer
+local timerFlamesCD			= mod:NewCDTimer(40, 99171)		-- Engulfing Flames spell ID?
+local timerMoltenSeedCD		= mod:NewCDTimer(50, 98520)		-- CD is actually 60, but we can't use the cast cause there isn't one, so we have to use spell damage 10 seconds after cast to start bar.
+local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons")	-- lasts 45secs or till all sons are dead
 
-mod:AddBoolOption("RangeFrame")
+local soundBlazingHeat		= mod:NewSound(100460)
+
+mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
 
+local wrathRagSpam = 0
+local lastSeeds = 0
 local sonsDied = 0
 local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
-local blazingHeatTargets = {}
-local blazingHeatIcon 	= 8
-
-local function warnBlazingHeatTargets()
-	warnBlazingHeat:Show(table.concat(blazingHeatTargets, "<, >"))
-	table.wipe(blazingHeatTargets)
-	blazingHeatIcon = 8
-end
+local phase2Started = false
+local phase23tarted = false
+local blazingHeatIcon = 8
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
@@ -72,15 +74,36 @@ local function hideRangeFrame()
 	end
 end
 
+local function TransitionEnded()
+	timerPhaseSons:Cancel()
+	if phase == 2 and not phase2Started then
+		phase2Started = true
+		timerFlamesCD:Start(43)
+		timerMoltenSeedCD:Start(16)--No cast trigger, just spell damamage 26-27sec after transition. But the cast is 10 seconds prior, so this timer syncs to that despite no trigger.
+		warnMoltenSeed:Schedule(16)--We schedule next warning to be roughly correct for next cast.
+		specWarnMoltenSeed:Schedule(16)--^^
+		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
+		mod:showRangeFrame()--Range 6 for seeds
+	elseif phase == 3 and not phase3Started then
+		phase3Started = true
+		mod:showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
+		timerFlamesCD:Start(32)
+		timerLivingMeteorCD:Start()
+	end
+end
+
 function mod:OnCombatStart(delay)
-	timerMagmaTrap:Start(17-delay)
-	timerSulfurasSmash:Start(32-delay)
+	timerMagmaTrap:Start(16-delay)
+	timerSulfurasSmash:Start(30-delay)
+	wrathRagSpam = 0
+	lastSeeds = 0
 	sonsDied = 0
 	phase = 1
 	prewarnedPhase2 = false
 	prewarnedPhase3 = false
-	table.wipe(blazingHeatTargets)
 	blazingHeatIcon = 8
+	phase2Started = false
+	phase23tarted = false
 end
 
 function mod:OnCombatEnd(delay)
@@ -90,11 +113,9 @@ function mod:OnCombatEnd(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99399, 101238, 101239, 101240) then	--99399, 101238 confirmed
-		if args.amount or 0 % 2 == 0 then
-			warnBurningWound:Show(args.destName, args.amount or 1)
-		end
-		if args.amount or 0 > 5 then
+	if args:IsSpellID(99399, 101238, 101239, 101240) then
+		warnBurningWound:Show(args.destName, args.amount or 1)
+		if (args.amount or 0) >= 4 and args:IsPlayer() then
 			specWarnBurningWound:Show(args.amount)
 		end
 		timerBurningWound:Start(args.destName)
@@ -103,49 +124,68 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(98710, 100890, 100891, 100892) then	--98710, 100890 confirmed
-		timerSulfurasSmash:Start()
-	elseif args:IsSpellID(98952, 100883) then--This has 11 spellids, veryify what's used for what
+	if args:IsSpellID(98710, 100890, 100891, 100892) then
+		if phase == 1 then
+			timerSulfurasSmash:Start(30)--30 second cd in phase 1.
+		else
+			timerSulfurasSmash:Start()
+		end
+	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
 		timerHandRagnaros:Cancel()
 		timerWrathRagnaros:Cancel()
-		timerPhaseSons:Start(53)	-- 45 + 8sec cast
 		hideRangeFrame()
+		timerPhaseSons:Start(45)--Is this 45 second from spell cast start or spell cast end?
+		mod:Schedule(45, TransitionEnded)--^^
 		sonsDied = 0
 		phase = phase + 1
+		specWarnSplittingBlow:Show()
+	elseif args:IsSpellID(99172, 99235, 99236, 100175) or args:IsSpellID(100176, 100177, 100178, 100179) or args:IsSpellID(100180, 100181, 100182, 100183) then--Another scripted spell with a ton of spellids based on location of room.
+		if phase == 3 then
+			timerFlamesCD:Start(30)--30 second CD in phase 3
+		else
+			timerFlamesCD:Start()--40 second CD in phase 2
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(98237, 100383, 100384, 100387) then	--98237, 100383 confirmed
+	if args:IsSpellID(98237, 100383, 100384, 100387) then
 		warnHandRagnaros:Show()
 		timerHandRagnaros:Start()
 	elseif args:IsSpellID(98164) then	--98164 confirmed
 		timerMagmaTrap:Start()
-	elseif args:IsSpellID(98263, 100113, 100114, 100115) then	--98263, 100113 confirmed
+	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
+		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
 		timerWrathRagnaros:Start()
-	elseif args:IsSpellID(99171, 100172, 100173, 100174) or args:IsSpellID(100181) then	-- correct SpellID? | 100181 confirmed
-		timerFlames:Start()
-	elseif args:IsSpellID(98520) then	-- correct spell ID ???
-		warnMoltenSeed:Show()
-		specWarnMoltenSeed:Show()
-		timerMoltenSeed:Start()
-		timerMoltenSeedCD:Start()
-		hideRangeFrame()			-- only have to spread just before the Molten Seeds
-		self:Schedule(50, showRangeFrame)	-- show the range frame 10secs before next Molten Seeds
 	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat, drycoded.
-		blazingHeatTargets[#blazingHeatTargets + 1] = args.destName
+		warnBlazingHeat:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBlazingHeat:Show()
+			soundBlazingHeat:Play()
 		end
 		if self.Options.BlazingHeatIcons then
 			self:SetIcon(args.destName, blazingHeatIcon, 8)
-			blazingHeatIcon = blazingHeatIcon - 1
+			if blazingHeatIcon == 8 then-- Alternate icons, they are cast too far apart to sort in a table or do icons at once, and there are 2 adds up so we need to do it this way.
+				blazingHeatIcon = 7
+			else
+				blazingHeatIcon = 8
+			end
 		end
-		self:Unschedule(warnBlazingHeatTargets)
-		self:Schedule(0.3, warnBlazingHeatTargets)
+	elseif args:IsSpellID(99268) then
+		warnLivingMeteor:Show()
+		timerLivingMeteorCD:Start()
+	end
+end
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 15 then--This has no cast trigger to speak of, only spell damage.
+		warnMoltenSeed:Schedule(50)--We schedule next warning to be roughly correct for next cast.
+		specWarnMoltenSeed:Schedule(50)--^^
+		timerMoltenSeedCD:Start()
+		lastSeeds = GetTime()
 	end
 end
 
@@ -154,15 +194,8 @@ function mod:UNIT_DIED(args)
 	if cid == 53140 then
 		sonsDied = sonsDied + 1
 		if sonsDied >= 8 then
-			timerPhaseSons:Cancel()
-			if phase == 2 then
-				timerSulfurasSmash:Start(25)
-				timerFlames:Start(44)
-				timerMoltenSeedCD:Start(16)
-				self:Schedule(6, showRangeFrame)
-			elseif phase == 3 then
-				self:showRangeFrame()	-- Meteors needs spreading
-			end
+			self:Unschedule(TransitionEnded)
+			TransitionEnded()
 		end
 	end
 end
