@@ -151,11 +151,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "자손 단계 종료"
+	TimerPhaseSons		= "다음 단계"
 })
 
 L:SetOptionLocalization({
-	TimerPhaseSons		= "'용암의 자손' 단계 지속 타이머 보기",
+	TimerPhaseSons		= "'용암의 후예' 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임 보기"
 })
 
@@ -178,7 +178,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "$spell:100012의 거리프레임 보기(10 m)"
+	RangeFrame			= "$spell:100012의 거리프레임 보기(10 m)",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
