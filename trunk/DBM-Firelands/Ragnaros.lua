@@ -106,7 +106,7 @@ function mod:OnCombatStart(delay)
 	phase23tarted = false
 end
 
-function mod:OnCombatEnd(delay)
+function mod:OnCombatEnd()
 	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
