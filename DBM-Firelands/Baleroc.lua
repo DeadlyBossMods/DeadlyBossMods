@@ -31,6 +31,7 @@ local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
 
+mod:AddBoolOption("InfoFrame", false)
 mod:AddBoolOption("SetIconOnCountdown")
 mod:AddBoolOption("ArrowOnCountdown")
 
@@ -49,6 +50,16 @@ function mod:OnCombatStart(delay)
 	timerShardsTorment:Start(-delay)
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.VitalSpark)
+		DBM.InfoFrame:Show(5, "playerbuffstacks", 99262, 99263, 1)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)

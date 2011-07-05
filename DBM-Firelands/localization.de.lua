@@ -7,25 +7,33 @@ local L
 L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
-	WarnPhase		= "Phase %d"
+	WarnPhase			= "Phase %d",
+	WarnNewInitiate		= "Lodernder Kralleninitiand (%d)"
 })
 
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Phase %d",
-	TimerHatchEggs		= "Eierausschlüpfen"
+	TimerHatchEggs		= "Eierausschlüpfen",
+	timerNextInitiate	= "Nächster Initiand"
 })
 
 L:SetOptionLocalization({
-	WarnPhase		= "Zeige Warnung für jeden Phasenwechsel",
-	TimerPhaseChange	= "Zeige Timer für nächste Phase",
-	TimerHatchEggs		= "Zeige Timer für nächstes Eierausschlüpfen",
-	InfoFrame		= "Zeige Infofenster für Blazing Power" --translate 'Blazing Power' later
+	WarnPhase			= "Zeige Warnung für jeden Phasenwechsel",
+	WarnNewInitiate		= "Zeige Warnung für neuen Lodernder Kralleninitiand",
+	timerNextInitiate	= "Zeige Zeit bis nächster Lodernder Kralleninitiand",
+	TimerPhaseChange	= "Zeige Zeit bis nächste Phase",
+	TimerHatchEggs		= "Zeige Zeit bis nächstes Eierausschlüpfen",
+	InfoFrame			= "Zeige Infofenster für Lodernde Macht"
 })
 
 L:SetMiscLocalization({
-	YellPull		= "I serve a new master now, mortals!", --translate
-	YellPhase2		= "These skies are MINE!", --translate
-	PowerLevel		= "Blazing Power" --translate
+	YellPull		= "Ich diene jetzt einem neuen Meister, Sterbliche!", --needs to be verified (screenshot-captured translation)
+	YellInitiate1	= "Wir rufen Euch, Feuerlord!",      --needs to be verified (screenshot-captured translation)
+	YellInitiate2	= "Seht seine Macht!",               --needs to be verified (screenshot-captured translation)
+	YellInitiate3	= "Äschert die Ungläubigen ein!",    --needs to be verified (screenshot-captured translation)
+	YellInitiate4	= "Erblicket den Ruhm der Flammen.", --needs to be verified (screenshot-captured translation)
+	YellPhase2		= "Dieser Himmel ist MEIN!",         --needs to be verified (screenshot-captured translation)
+	PowerLevel		= "Lodernde Macht"
 })
 
 -------------------
@@ -34,7 +42,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
-	WarnElementals		= "Elementare spawnen"
+	WarnElementals		= "Elementare erscheinen"
 })
 
 L:SetTimerLocalization({
@@ -42,8 +50,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnElementals		= "Zeige Warnung, wenn Elementare spawnen",
-	TimerElementals		= "Zeige Timer für nächstes Spawnen der Elementare"
+	WarnElementals		= "Zeige Warnung, wenn Elementare erscheinen",
+	TimerElementals		= "Zeige Zeit bis nächstes Erscheinen der Elementare"
 })
 
 L:SetMiscLocalization({
@@ -64,9 +72,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Zeige Timer für nächste Aschenweberspinner",
-	TimerSpiderlings	= "Zeige Timer für nächste Aschenweberspinnlinge",
-	TimerDrone		= "Zeige Timer für nächste Aschenweberdrohne"
+	TimerSpinners		= "Zeige Zeit bis nächste $journal:2770",
+	TimerSpiderlings	= "Zeige Zeit bis nächste $journal:2778e",
+	TimerDrone		= "Zeige Zeit bis nächste $journal:2773",
+	RangeFrame				= "Zeige Abstandsfenster (10m)",
 })
 
 L:SetMiscLocalization({
@@ -85,9 +94,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
+	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
 })
 
 L:SetMiscLocalization({
+	Riplimb		= "Wadenbeißer",
+	Rageface	= "Augenkratzer"
 })
 
 -------------
@@ -99,13 +112,22 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerBladeActive	= "%s",
+	TimerBladeNext		= "Nächste Klinge"
 })
 
 L:SetOptionLocalization({
+	TimerBladeActive	= "Dauer der aktiven Klinge anzeigen",
+	TimerBladeNext		= "Zeige Zeit bis nächste Klinge",
+	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
+	ArrowOnCountdown	= "Zeige DBM-Pfeil, wenn du von $spell:99516 betroffen bist",
+	InfoFrame		= "Show info frame for Vital Spark stacks"
 })
 
 L:SetMiscLocalization({
+	VitalSpark		= GetSpellInfo(99262).." stacks"
 })
+
 
 --------------------------------
 -- Majordomo Fandral Staghelm --
@@ -119,6 +141,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	RangeFrameSeeds				= "Zeige Abstandsfenster (12m) für $spell:98450",
+	RangeFrameCat				= "Zeige Abstandsfenster (10m) für $spell:98374"
 })
 
 L:SetMiscLocalization({
@@ -133,9 +157,34 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerPhaseSons		= "Söhne Phase endet"
 })
 
 L:SetOptionLocalization({
+	TimerPhaseSons		= "Dauer der \"Söhne der Flamme Phase\" anzeigen",
+	RangeFrame		= "Zeige Abstandsfenster"
+})
+
+L:SetMiscLocalization({
+})
+
+-----------------------
+--  Firelands Trash  --
+-----------------------
+L = DBM:GetModLocalization("FirelandsTrash")
+
+L:SetGeneralLocalization({
+	name = "Trash der Feuerlande"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	RangeFrame	= "Zeige Abstandsfenster (10m) für $spell:100012"
 })
 
 L:SetMiscLocalization({
