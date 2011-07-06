@@ -23,13 +23,13 @@ local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
 local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3)
 
+local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(101223)
+
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)
 local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
-
-local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(101223)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
