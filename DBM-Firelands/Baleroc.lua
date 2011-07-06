@@ -21,13 +21,13 @@ local warnShardsTorment		= mod:NewSpellAnnounce(99259, 3)
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
 local yellCountdown			= mod:NewYell(99516)
 
+local specWarnShardsTorment	= mod:NewSpecialWarningSpell(99259, nil, nil, nil, true)
+local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
+
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive")
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext")	-- either Decimation Blade or Inferno Blade
 local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
-
-local specWarnShardsTorment	= mod:NewSpecialWarningSpell(99259, nil, nil, nil, true)
-local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
 

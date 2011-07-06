@@ -37,6 +37,7 @@ local warnImmoTrap				= mod:NewTargetAnnounce(99839, 2, nil, false)--Spammy, off
 local warnCrystalPrisonTrapped	= mod:NewTargetAnnounce(99837, 4)--Player is in prison.
 local warnPhase2Soon			= mod:NewPrePhaseAnnounce(2, 3)
 
+local specWarnSpear				= mod:NewSpecialWarningSpell(100002, false, nil, nil, true)
 local specWarnRage				= mod:NewSpecialWarningYou(100415)
 local specWarnImmTrap			= mod:NewSpecialWarningMove(99839)
 local specWarnImmTrapNear		= mod:NewSpecialWarningClose(99839)
@@ -184,6 +185,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(100002, 100031) then	--100002 confirmed .. all/right ids?
 		warnSpear:Show()--Only valid until rip dies
+		specWarnSpear:Show()
 		timerSpearCD:Start()
 	end
 end
