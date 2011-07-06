@@ -34,15 +34,8 @@ local warnSpear					= mod:NewSpellAnnounce(100002, 3)--warn for this instead of 
 local warnMagmaFlare			= mod:NewSpellAnnounce(100495, 3)
 local warnCrystalPrison			= mod:NewTargetAnnounce(99836, 2)--On by default, not as often, and useful for tanks or kiters
 local warnImmoTrap				= mod:NewTargetAnnounce(99839, 2, nil, false)--Spammy, off by default for those who want it.
-local warnCrystalPrisonTrapped	= mod:NewTargetAnnounce(99837, 4)--Person/boss actually trapped in crystal who set it off.
+local warnCrystalPrisonTrapped	= mod:NewTargetAnnounce(99837, 4)--Player is in prison.
 local warnPhase2Soon			= mod:NewPrePhaseAnnounce(2, 3)
-
-local timerRage					= mod:NewTargetTimer(15, 100415)
-local timerWary					= mod:NewTargetTimer(25, 100167, nil, false)
-local timerTears				= mod:NewTargetTimer(30, 99937, nil, mod:IsTank() or mod:IsHealer())
-local timerCrystalPrisonCD		= mod:NewCDTimer(25.5, 99836)--Seems consistent timing, other trap is not.
-local timerSpearCD				= mod:NewCDTimer(42, 100002)--Use this for CD before rip dies
-local timerMagmaFlareCD			= mod:NewCDTimer(42, 100495)--Use this for CD after rip dies
 
 local specWarnRage				= mod:NewSpecialWarningYou(100415)
 local specWarnImmTrap			= mod:NewSpecialWarningMove(99839)
@@ -52,6 +45,14 @@ local specWarnCrystalTrap		= mod:NewSpecialWarningMove(99836)
 local specWarnCrystalTrapNear	= mod:NewSpecialWarningClose(99836)
 local yellCrystalTrap			= mod:NewYell(99836)
 local specWarnTears				= mod:NewSpecialWarningStack(99937, mod:IsTank(), 8)
+
+local timerRage					= mod:NewTargetTimer(15, 100415)
+local timerWary					= mod:NewTargetTimer(25, 100167, nil, false)
+local timerTears				= mod:NewTargetTimer(30, 99937, nil, mod:IsTank() or mod:IsHealer())
+local timerCrystalPrison		= mod:NewTargetTimer(10, 99837)--Dogs Only
+local timerCrystalPrisonCD		= mod:NewCDTimer(25.5, 99836)--Seems consistent timing, other trap is not.
+local timerSpearCD				= mod:NewCDTimer(42, 100002)--Use this for CD before rip dies
+local timerMagmaFlareCD			= mod:NewCDTimer(42, 100495)--Use this for CD after rip dies
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -154,7 +155,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWary:Show(args.destName)
 		timerWary:Start(args.destName)
 	elseif args:IsSpellID(99837) then--Filter when the dogs get it?
-		warnCrystalPrisonTrapped:Show(args.destName)
+		if args:IsDestTypePlayer() then
+			warnCrystalPrisonTrapped:Show(args.destName)
+		else--It's a trapped dog
+			timerCrystalPrison:Start(args.destName)--make a 10 second timer for how long dog is trapped.
+		end
 	elseif args:IsSpellID(99937, 101218, 101219, 101220) then
 		if (args.amount or 1) % 3 == 0 then	--Warn every 3 stacks
 			warnTears:Show(args.destName, args.amount or 1)
