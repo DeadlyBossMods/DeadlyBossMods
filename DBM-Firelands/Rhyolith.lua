@@ -27,7 +27,7 @@ mod:RegisterEvents(
 local warnHeatedVolcano		= mod:NewSpellAnnounce(98493, 3)
 local warnFlameStomp		= mod:NewSpellAnnounce(97282, 3, nil, mod:IsMelee())--According to journal only hits players within 20 yards of him, so melee by default?
 local warnMoltenArmor		= mod:NewStackAnnounce(98255, 4, nil, mod:IsTank() or mod:IsHealer())	-- Would this be nice if we could show this in the infoFrame? (changed defaults to tanks/healers, if you aren't either it doesn't concern you unless you find shit to stand in)
-local warnDrinkMagma		= mod:NewSpellAnnounce(98034, 2)	-- if you "kite" him to close to magma
+local warnDrinkMagma		= mod:NewSpellAnnounce(98034, 4)	-- if you "kite" him to close to magma
 local warnFragments			= mod:NewSpellAnnounce(98136, 2)
 local warnShard				= mod:NewSpellAnnounce(98552, 3)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
