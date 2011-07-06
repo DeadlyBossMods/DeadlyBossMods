@@ -31,7 +31,7 @@ local spamFire = 0
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerSearingShadows:Start(11-delay)
-	eyesTimer:Start(30-delay)
+	timerEyes:Start(30-delay)
 	timerFocusedFire:Start()
 	spamFire = 0
 end
