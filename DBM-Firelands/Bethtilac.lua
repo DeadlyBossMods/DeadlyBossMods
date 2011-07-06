@@ -16,18 +16,19 @@ mod:RegisterEvents(
 	"RAID_BOSS_EMOTE"
 )
 
-local warnSmolderingDevastation		= mod:NewCastAnnounce(99052, 4)
+local warnSmolderingDevastation		= mod:NewCountAnnounce(99052, 4)--Use count announce, cast time is pretty obvious from the bar, but it's useful to keep track how many of these have been cast.
 local warnWidowKiss					= mod:NewTargetAnnounce(99476, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
 local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability according to EJ
 
 local specWarnFixate				= mod:NewSpecialWarningStack(99559)--Does it need run away sound? icon? EJ wasn't too specific.
 local specWarnTouchWidowKiss		= mod:NewSpecialWarningYou(99476)
+local specWarnSmolderingDevastation	= mod:NewSpecialWarningSpell(99052)
 local specWarnTouchWidowKissOther	= mod:NewSpecialWarningTarget(99476, mod:IsTank())
 
-local timerSpinners 				= mod:NewTimer(15, "TimerSpinners") -- 15secs after Smoldering cast start
-local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings")
-local timerDrone					= mod:NewTimer(60, "TimerDrone")
+local timerSpinners 				= mod:NewTimer(15, "TimerSpinners", 97370) -- 15secs after Smoldering cast start
+local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings", 72106)
+local timerDrone					= mod:NewTimer(60, "TimerDrone", 28866)
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 local timerFixate					= mod:NewTargetTimer(10, 99559)
@@ -73,7 +74,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		else
-			specWarnTouchWidowKissOther:Show()
+			specWarnTouchWidowKissOther:Show(args.destName)
+			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
+				DBM.RangeCheck:Show(10)
+			end
 		end
 	elseif args:IsSpellID(99559) then--99526?
 		warnFixate:Show(args.destName)
@@ -99,12 +103,12 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(99052) then		-- only being cast in P1?
-		warnSmolderingDevastation:Show()
+		smolderingCount = smolderingCount + 1
+		warnSmolderingDevastation:Show(smolderingCount)
+		specWarnSmolderingDevastation:Show()
 		timerSmolderingDevastation:Start()
 		timerSmolderingDevastationCD:Start()
 		timerSpinners:Start()		-- Only spawn in P1?
-		
-		smolderingCount = smolderingCount + 1
 		if smolderingCount == 3 then	-- 3rd cast = start P2
 			warnPhase2Soon:Show()
 			self:UnscheduleMethod("repeatSpiderlings")
