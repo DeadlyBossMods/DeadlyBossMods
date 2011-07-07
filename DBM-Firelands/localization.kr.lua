@@ -120,10 +120,12 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "칼날 유지 타이머 보기",
 	TimerBladeNext		= "다음 칼날 타이머 보기",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	ArrowOnCountdown	= "$spell:99516의 영향을 받은 경우 DBM 화살표 보기"
+	ArrowOnCountdown	= "$spell:99516의 영향을 받은 경우 DBM 화살표 보기",
+	InfoFrame			= "생기의 불꽃 중첩 정보 프레임 보기"
 })
 
 L:SetMiscLocalization({
+	VitalSpark			= GetSpellInfo(99262).." 중첩"
 })
 
 --------------------------------
@@ -156,7 +158,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerPhaseSons		= "'용암의 후예' 단계 지속 타이머 보기",
-	RangeFrame			= "거리 프레임 보기"
+	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기"
 })
 
 L:SetMiscLocalization({
