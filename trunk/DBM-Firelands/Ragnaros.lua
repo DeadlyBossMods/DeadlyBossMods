@@ -83,10 +83,10 @@ local function TransitionEnded()
 		timerFlamesCD:Start(43)
 		timerMoltenSeedCD:Start(25)
 		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
-		mod:showRangeFrame()--Range 6 for seeds
+		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
 		phase3Started = true
-		mod:showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
+		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerFlamesCD:Start(32)
 		timerLivingMeteorCD:Start()
 	end
