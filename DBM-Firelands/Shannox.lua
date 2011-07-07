@@ -110,7 +110,7 @@ end
 --Can you tell i really suck at LUA? Ths function sucks ass
 function mod:TrapHandler(SpellID, isTank)
 	local targetname = self:GetBossTarget(53691)
-	if not targetname then return end
+	if not targetname or not self:IsInCombat() then return end
 	if UnitDetailedThreatSituation(targetname, "boss1") and not isTank then--He's targeting his highest threat target, the tank. If isTank we force it to else rule even though he's targeting tank
 		if not trapScanStarted then--Only start this scan once we don't need an infinite loop
 			self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
