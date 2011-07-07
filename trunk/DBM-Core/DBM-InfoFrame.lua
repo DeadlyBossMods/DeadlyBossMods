@@ -314,7 +314,7 @@ local function updatePlayerBuffStacks()
 			if UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) then
 				lines[UnitName(uId)] = select(4, UnitBuff(uId, GetSpellInfo(infoFrameThreshold)))
 			elseif UnitBuff(uId, GetSpellInfo(pIndex)) then
-				lines[UnitName(uId)] = lastStacks[unitName(uId)] or 0
+				lines[UnitName(uId)] = lastStacks[UnitName(uId)] or 0
 				if iconModifier then
 					icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
 				end
@@ -326,7 +326,7 @@ local function updatePlayerBuffStacks()
 			if UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) then
 				lines[UnitName(uId)] = select(4, UnitBuff(uId, GetSpellInfo(infoFrameThreshold)))
 			elseif UnitBuff(uId, GetSpellInfo(pIndex)) then
-				lines[UnitName(uId)] = lastStacks[unitName(uId)] or 0
+				lines[UnitName(uId)] = lastStacks[UnitName(uId)] or 0
 				if iconModifier then
 					icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
 				end
