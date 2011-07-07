@@ -35,7 +35,9 @@ local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local timerElementals		= mod:NewTimer(22.5, "TimerElementals", 98552)
 local timerHeatedVolcano	= mod:NewCDTimer(40, 98493)
 local timerFlameStomp		= mod:NewNextTimer(30, 97282, nil, mod:IsMelee())
+local timerSuperheated		= mod:NewNextTimer(10, 101305)--Add the 10 second party in later at some point if i remember to actually log it better
 local timerMoltenSpew		= mod:NewNextTimer(6, 98034)	-- 6secs after Drinking Magma
+--101305
 
 local spamAdds = 0
 local spamMoltenArmor = 0
@@ -45,6 +47,9 @@ function mod:OnCombatStart(delay)
 	timerElementals:Start(21.5-delay)
 	timerHeatedVolcano:Start(55-delay)
 	timerFlameStomp:Start(28-delay)
+	if mod:IsDifficulty("heroic10", "heroic25") then
+		timerSuperheated:Start(300-delay)--is this heroic only?
+	end
 	spamAdds = 0
 	spamMoltenArmor = 0
 	prewarnedPhase2 = false
