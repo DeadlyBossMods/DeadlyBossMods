@@ -6,6 +6,9 @@ mod:SetCreatureID(52409)
 mod:SetModelID(37875)
 mod:SetZone()
 mod:SetUsedIcons(7, 8) -- cross(7) is hard to see in redish environment?
+mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.wav", "Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_KILL_03.wav")
+--Long: blah blah blah (didn't feel like transcribing it)
+--Short: This is my realm
 
 mod:RegisterCombat("combat")
 
@@ -42,7 +45,7 @@ local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)
 local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
-local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons")	-- lasts 45secs or till all sons are dead
+local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 
 local soundBlazingHeat		= mod:NewSound(100460)
 
