@@ -24,8 +24,9 @@ local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
 local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3)
 
 local specWarnFieroblast		= mod:NewSpecialWarningInterrupt(101223)
+local specWarnGushingWoundSelf	= mod:NewSpecialWarningYou(99308, false)
 local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
-local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, mod:IsHealer())
+local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, false)
 
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)
@@ -57,10 +58,13 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99362) and args.sourceGUID == UnitGUID("target") then--Tantrum on your target
+	if args:IsSpellID(99362) and (args.sourceGUID == UnitGUID("target") and mod:IsTank()) or not mod:IsTank() then--Only give tantrum warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
 		specWarnTantrum:Show()
-	elseif args:IsSpellID(99308) and args.destName == UnitName("target") then--Gushing Wound
+	elseif args:IsSpellID(99308) then--Gushing Wound
 		specWarnGushingWoundOther:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnGushingWoundSelf:Show()
+		end
 	end
 end
 
