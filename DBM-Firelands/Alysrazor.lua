@@ -23,7 +23,9 @@ local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
 local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3)
 
-local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(101223)
+local specWarnFieroblast		= mod:NewSpecialWarningInterrupt(101223)
+local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
+local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, mod:IsHealer())
 
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)
@@ -53,6 +55,14 @@ function mod:OnCombatEnd()
 		DBM.InfoFrame:Hide()
 	end
 end 
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(99362) and args.sourceGUID == UnitGUID("target") then--Tantrum on your target
+		specWarnTantrum:Show()
+	elseif args:IsSpellID(99308) and args.destName == UnitName("target") then--Gushing Wound
+		specWarnGushingWoundOther:Show(args.destName)
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(101223, 101294, 101295, 101296) then
