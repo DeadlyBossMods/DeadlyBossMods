@@ -6,6 +6,9 @@ mod:SetCreatureID(52571)
 mod:SetModelID(37953)
 mod:SetZone()
 mod:SetUsedIcons()
+mod:SetModelSound("Sound\\Creature\\FandralFlameDruid\\VO_FL_FANDRAL_GATE_INTRO_01.wav", "Sound\\Creature\\FandralFlameDruid\\VO_FL_FANDRAL_KILL_01.wav")
+--Long: Well, well. I admire your tenacity. Baleroc stood guard over this keep for a thousand mortal lifetimes.
+--Short: *Laughs, Burn
 
 mod:RegisterCombat("combat")
 
