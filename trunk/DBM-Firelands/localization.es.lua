@@ -120,10 +120,12 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Mostrar tiempo de duración de la hoja activa",
 	TimerBladeNext		= "Mostrar tiempo para la siguiente hoja",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	ArrowOnCountdown	= "Mostrar flecha cuando te afecte $spell:99516 "
+	ArrowOnCountdown	= "Mostrar flecha cuando te afecte $spell:99516 ",
+	InfoFrame		= "Mostrar información de las marcas de Chispa vital"
 })
 
 L:SetMiscLocalization({
+	VitalSpark		= "Marcas de "..GetSpellInfo(99262)
 })
 
 --------------------------------
