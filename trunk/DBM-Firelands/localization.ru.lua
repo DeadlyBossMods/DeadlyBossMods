@@ -120,10 +120,12 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Отсчет времени действия активного лезвия",
 	TimerBladeNext		= "Отсчет времени до следующего лезвия",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	ArrowOnCountdown	= "Показывать стрелку DBM, когда на вас $spell:99516"
+	ArrowOnCountdown	= "Показывать стрелку DBM, когда на вас $spell:99516",
+	InfoFrame			= "Информационное окно для стаков искр"
 })
 
 L:SetMiscLocalization({
+	VitalSpark			= GetSpellInfo(99262).." стаки"
 })
 
 --------------------------------
@@ -182,7 +184,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Показывать окно проверки дистанции (10м) для $spell:100012"
+	RangeFrame			= "Показывать окно проверки дистанции (10м) для $spell:100012",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
