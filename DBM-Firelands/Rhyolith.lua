@@ -48,7 +48,9 @@ function mod:OnCombatStart(delay)
 	timerHeatedVolcano:Start(55-delay)
 	timerFlameStomp:Start(28-delay)
 	if mod:IsDifficulty("heroic10", "heroic25") then
-		timerSuperheated:Start(300-delay)--is this heroic only?
+		timerSuperheated:Start(300-delay)--5 min on heroic
+	else
+		timerSuperheated:Start(360-delay)--6 min on normal
 	end
 	spamAdds = 0
 	spamMoltenArmor = 0
