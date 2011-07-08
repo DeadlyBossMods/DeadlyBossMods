@@ -6,6 +6,9 @@ mod:SetCreatureID(52558)--or does 53772 die instead?didn't actually varify this 
 mod:SetModelID(38414)
 mod:SetZone()
 mod:SetUsedIcons()
+mod:SetModelSound("Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_AGGRO.wav", "Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_KILL_02.wav")
+--Long: Blah blah blah Nuisances, Nuisances :)
+--Short: So Soft
 
 mod:RegisterCombat("combat")
 

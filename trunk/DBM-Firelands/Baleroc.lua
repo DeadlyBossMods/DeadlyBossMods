@@ -6,6 +6,9 @@ mod:SetCreatureID(53494)
 mod:SetModelID(38621)
 mod:SetZone()
 mod:SetUsedIcons(8, 6)
+mod:SetModelSound("Sound\\Creature\\BALEROC\\VO_FL_BALEROC_AGGRO.wav", "Sound\\Creature\\BALEROC\\VO_FL_BALEROC_KILL_02.wav")
+--Long: You are forbidden from entering my masters domain mortals.
+--Short: You have been judged
 
 mod:RegisterCombat("combat")
 
