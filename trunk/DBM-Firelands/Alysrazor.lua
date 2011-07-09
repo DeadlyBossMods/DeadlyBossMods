@@ -61,7 +61,7 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99362) and (args.sourceGUID == UnitGUID("target") and mod:IsTank()) or not mod:IsTank() then--Only give tantrum warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
+	if args:IsSpellID(99362) and self:IsInCombat() and (args.sourceGUID == UnitGUID("target") and mod:IsTank()) or not mod:IsTank() then--Only give tantrum warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
 		specWarnTantrum:Show()
 	elseif args:IsSpellID(99308) then--Gushing Wound
 		specWarnGushingWoundOther:Show(args.destName)
