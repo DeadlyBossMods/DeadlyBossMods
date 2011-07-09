@@ -305,7 +305,7 @@ local function updatePlayerDebuffs()
 end
 
 local function updatePlayerBuffStacks()
-	lastStacks = lines
+--	lastStacks = lines
 	table.wipe(lines)
 	updateIcons()	-- update Icons first in case of an "icon modifier"
 	if GetNumRaidMembers() > 0 then
@@ -314,7 +314,7 @@ local function updatePlayerBuffStacks()
 			if UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) then
 				lines[UnitName(uId)] = select(4, UnitBuff(uId, GetSpellInfo(infoFrameThreshold)))
 			elseif UnitBuff(uId, GetSpellInfo(pIndex)) then
-				lines[UnitName(uId)] = lastStacks[UnitName(uId)] or 0
+				lines[UnitName(uId)] = lastStacks[UnitName(uId)] or 0			-- is always 0 ?
 				if iconModifier then
 					icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
 				end
@@ -341,6 +341,7 @@ local function updatePlayerBuffStacks()
 			end
 		end
 	end
+	lastStacks = lines		-- Should it be 'copied' here to have a valid "return" for lines 317/329/338 instead of at the begin of this function?
 	updateLines()
 end
 
