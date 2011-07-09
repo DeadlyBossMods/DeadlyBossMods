@@ -18,7 +18,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 3)
+local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4)
 local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3)
 local warnShardsTorment		= mod:NewSpellAnnounce(99259, 3)
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
@@ -26,11 +26,14 @@ local yellCountdown			= mod:NewYell(99516)
 
 local specWarnShardsTorment	= mod:NewSpecialWarningSpell(99259, nil, nil, nil, true)
 local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
+local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 
-local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive")
-local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext")	-- either Decimation Blade or Inferno Blade
+local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
+local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350)	-- either Decimation Blade or Inferno Blade
 local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
+
+local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
 
@@ -50,7 +53,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerBladeNext:Start(-delay)
-	timerShardsTorment:Start(-delay)
+--	timerShardsTorment:Start(-delay)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
@@ -98,6 +101,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(99352, 99405) then	--99352 confirmed
 		warnDecimationBlade:Show()
+		specWarnDecimation:Show()
 		timerBladeActive:Start(args.spellName)
 	elseif args:IsSpellID(99350) then
 		warnInfernoBlade:Show()
@@ -106,5 +110,6 @@ function mod:SPELL_CAST_START(args)
 		warnShardsTorment:Show()
 		specWarnShardsTorment:Show()
 		timerShardsTorment:Start()
+		ShardsCountown:Start(34)
 	end
 end
