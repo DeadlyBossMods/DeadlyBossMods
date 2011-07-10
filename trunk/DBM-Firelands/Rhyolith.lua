@@ -33,13 +33,18 @@ local warnMoltenArmor		= mod:NewStackAnnounce(98255, 4, nil, mod:IsTank() or mod
 local warnDrinkMagma		= mod:NewSpellAnnounce(98034, 4)	-- if you "kite" him to close to magma
 local warnFragments			= mod:NewSpellAnnounce(98136, 2)
 local warnShard				= mod:NewSpellAnnounce(98552, 3)
+local warnMagmaFlow			= mod:NewSpellAnnounce(97225, 4)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
+
+local specWarnMagmaFlow		= mod:NewSpecialWarningSpell(97225, nil, nil, nil, true)
+local specWarnFlameStomp	= mod:NewSpecialWarningSpell(97282, false)
 
 local timerElementals		= mod:NewTimer(22.5, "TimerElementals", 98552)
 local timerHeatedVolcano	= mod:NewCDTimer(40, 98493)
 local timerFlameStomp		= mod:NewNextTimer(30.5, 97282)
 local timerSuperheated		= mod:NewNextTimer(10, 101305)--Add the 10 second party in later at some point if i remember to actually log it better
 local timerMoltenSpew		= mod:NewNextTimer(6, 98034)	-- 6secs after Drinking Magma
+local timerMagmaFlowActive	= mod:NewBuffActiveTimer(10, 97225)	-- 10 second buff volcano has, after which the magma line explodes.
 
 local StompCountown			= mod:NewCountdown(30.5, 97282, false)
 
@@ -51,7 +56,7 @@ function mod:OnCombatStart(delay)
 	timerElementals:Start(21.5-delay)
 	timerHeatedVolcano:Start(55-delay)
 	timerFlameStomp:Start(28-delay)--Is this even right? i need a transcriptor log for fight
-	StompCountown:Start(28-delay)
+	StompCountown:Start(28-delay)--^^
 	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerSuperheated:Start(300-delay)--5 min on heroic
 	else
@@ -74,6 +79,7 @@ function mod:SPELL_CAST_START(args)
 		timerMoltenSpew:Start()
 	elseif args:IsSpellID(97282, 100969) then
 		warnFlameStomp:Show()
+		specWarnFlameStomp:Show()
 		timerFlameStomp:Start()
 		StompCountown:Start(30.5)
 	end
@@ -83,6 +89,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(98493) then
 		warnHeatedVolcano:Show()
 		timerHeatedVolcano:Start()
+	elseif args:IsSpellID(97225) then
+		warnMagmaFlow:Show()
+		specWarnMagmaFlow:Show()
+		timerMagmaFlowActive:Start()
 	end
 end
 
