@@ -10,7 +10,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 --[[	Possible additions?
@@ -78,10 +79,14 @@ function mod:UNIT_DIED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	elseif args:IsPlayer() and surgers > 0 then--You probably wiped on trash and don't need the range finder to get stuck open.
+	end	
+end
+
+function mod:ZONE_CHANGED_NEW_AREA()
+	if surgers > 0 then--You probably wiped on trash and don't need the range finder to get stuck open.
 		surgers = 0--Reset the surgers.
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-	end	
+	end
 end
