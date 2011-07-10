@@ -161,7 +161,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
-	RangeFrame		= "Mostrar distancia"
+	RangeFrame		= "Mostrar distancia",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
@@ -184,7 +185,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrame	= "Mostrar distancia (10) para $spell:100012",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
