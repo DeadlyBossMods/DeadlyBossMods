@@ -79,7 +79,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
-	elseif args:IsSpellID(99559) then--99526?
+	elseif args:IsSpellID(99559) and args:IsDestTypePlayer() then--99526?
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
