@@ -158,7 +158,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerPhaseSons		= "'용암의 후예' 단계 지속 타이머 보기",
-	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기"
+	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
@@ -180,8 +181,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame			= "$spell:100012의 거리프레임 보기(10 m)",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	RangeFrame			= "$spell:100012의 거리프레임 보기(10 m)"
 })
 
 L:SetMiscLocalization({

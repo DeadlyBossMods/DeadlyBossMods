@@ -160,7 +160,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
-	RangeFrame		= "Show range frame"
+	RangeFrame		= "Show range frame",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
@@ -182,8 +183,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Show range frame (10) for $spell:100012",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	RangeFrame	= "Show range frame (10) for $spell:100012"
 })
 
 L:SetMiscLocalization({
