@@ -34,6 +34,8 @@ local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 local timerFixate					= mod:NewTargetTimer(10, 99559)
 local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod:IsHealer())
 
+local soundFixate					= mod:NewSound(99559)
+
 local smolderingCount = 0
 
 mod:AddBoolOption("RangeFrame")--Maybe needed for widows kiss aoe effect?
@@ -84,6 +86,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnFixate:Show()
+			soundFixate:Play()
 		end
 	end
 end
