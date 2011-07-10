@@ -161,7 +161,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей Пламени\"",
-	RangeFrame			= "Показывать окно проверки дистанции"
+	RangeFrame			= "Показывать окно проверки дистанции",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
@@ -185,7 +186,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrame			= "Показывать окно проверки дистанции (10м) для $spell:100012",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({

@@ -161,7 +161,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerPhaseSons		= "為\"烈焰之子階段\"顯示持續時間計時器",
-	RangeFrame		= "顯示距離監視框"
+	RangeFrame		= "顯示距離監視框",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
@@ -184,7 +185,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrame	= "為$spell:100012顯示距離框(10碼)",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
