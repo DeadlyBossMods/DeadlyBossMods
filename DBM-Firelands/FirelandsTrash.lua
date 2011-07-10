@@ -74,6 +74,13 @@ function mod:UNIT_DIED(args)
 		surgers = surgers - 1
 		if surgers <= 0 then 
 			surgers = 0
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
+		end
+	elseif args:IsPlayer() and surgers > 0 then--You probably wiped on trash and don't need the range finder to get stuck open.
+		surgers = 0--Reset the surgers.
+		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
 	end	
