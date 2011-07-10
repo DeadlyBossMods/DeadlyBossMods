@@ -57,6 +57,7 @@ local timerCrystalPrison		= mod:NewTargetTimer(10, 99837)--Dogs Only
 local timerCrystalPrisonCD		= mod:NewCDTimer(25.5, 99836)--Seems consistent timing, other trap is not.
 local timerSpearCD				= mod:NewCDTimer(42, 100002)--Use this for CD before rip dies
 local timerMagmaFlareCD			= mod:NewCDTimer(42, 100495)--Use this for CD after rip dies
+local timerFaceRageCD			= mod:NewCDTimer(27, 99945, nil, false)--Has a 27-30 sec cd but off by default as it's subject to wild variation do to traps.
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -65,7 +66,6 @@ mod:AddBoolOption("SetIconOnRage")
 
 local prewarnedPhase2 = false
 local riplimbDead = false
-local spamFaceRage = 0
 local trapScanStarted = false
 
 function mod:ImmoTrapTarget(targetname)
@@ -139,7 +139,6 @@ function mod:TrapHandler(SpellID, isTank)
 end
 
 function mod:OnCombatStart(delay)
-	spamFaceRage = 0
 	prewarnedPhase2 = false
 	riplimbDead = false
 	trapScanStarted = false
@@ -197,9 +196,9 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(99945, 99947) and GetTime() - spamFaceRage > 3 then--is 99945 even used?, cause my 10 man logs only had 99947 for Spell cast success.
+	if args:IsSpellID(99945, 99947) then--is 99945 even used?, cause my 10 man logs only had 99947 for Spell cast success.
 		warnFaceRage:Show(args.destName)
-		spamFaceRage = GetTime()
+		timerFaceRageCD:Start()
 		if self.Options.SetIconOnFaceRage then
 			self:SetIcon(args.destName, 8)
 		end
