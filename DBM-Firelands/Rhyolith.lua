@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
@@ -34,7 +35,8 @@ local warnDrinkMagma		= mod:NewSpellAnnounce(98034, 4)	-- if you "kite" him to c
 local warnFragments			= mod:NewSpellAnnounce(98136, 2)
 local warnShard				= mod:NewSpellAnnounce(98552, 3)
 local warnMagmaFlow			= mod:NewSpellAnnounce(97225, 4)
-local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
+local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 2)
+local warnPhase2			= mod:NewPhaseAnnounce(2, 3)
 
 local specWarnMagmaFlow		= mod:NewSpecialWarningSpell(97225, nil, nil, nil, true)
 local specWarnFlameStomp	= mod:NewSpecialWarningSpell(97282, false)
@@ -49,6 +51,7 @@ local timerMagmaFlowActive	= mod:NewBuffActiveTimer(10, 97225)	-- 10 second buff
 local StompCountown			= mod:NewCountdown(30.5, 97282, false)
 
 local spamAdds = 0
+local phase = 1
 local spamMoltenArmor = 0
 local prewarnedPhase2 = false
 
@@ -64,6 +67,7 @@ function mod:OnCombatStart(delay)
 	end
 	spamAdds = 0
 	spamMoltenArmor = 0
+	phase = 1
 	prewarnedPhase2 = false
 end
 
@@ -73,15 +77,27 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	end
 end
 
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(98632) and self:GetCIDFromGUID(args.destGUID) == 52558 then
+		warnPhase2:Show()
+		phase = 2
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98034) then
 		warnDrinkMagma:Show()
 		timerMoltenSpew:Start()
-	elseif args:IsSpellID(97282, 100969) then
+	elseif args:IsSpellID(97282, 100411, 100968, 100969) then
 		warnFlameStomp:Show()
 		specWarnFlameStomp:Show()
-		timerFlameStomp:Start()
-		StompCountown:Start(30.5)
+		if phase == 1 then
+			timerFlameStomp:Start()
+			StompCountown:Start(30.5)
+		else--13sec cd in phase 2
+			timerFlameStomp:Start(13)
+			StompCountown:Start(13)
+		end
 	end
 end
 
