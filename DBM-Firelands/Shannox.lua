@@ -122,7 +122,9 @@ function mod:TrapHandler(SpellID, isTank)
 			self:ScheduleMethod(0.15, "TrapHandler", SpellID)--Check again
 			self:ScheduleMethod(0.2, "TrapHandler", SpellID)--Check again
 			self:ScheduleMethod(0.25, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.3, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
+			self:ScheduleMethod(0.3, "TrapHandler", SpellID)--Check again
+			self:ScheduleMethod(0.35, "TrapHandler", SpellID)--Check again
+			self:ScheduleMethod(0.4, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
 		end
 		trapScanStarted = true
 	else--He's not targeting tank so for sure we got right trap target.
