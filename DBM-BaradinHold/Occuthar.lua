@@ -52,7 +52,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(96884) then
-		if focusedFire % 3 or focusedFire == 0 then--We start with 0 to make the math easier to do since it starts on first cast
+		if focusedFire % 3 == 0 then--We start with 0 to make the math easier to do since it starts on first cast
 			timerFocusedFire:Start(24)--Every 3rd cast (starting with first) is longer cd after.
 		else
 			timerFocusedFire:Start()--16 second cd for rest
