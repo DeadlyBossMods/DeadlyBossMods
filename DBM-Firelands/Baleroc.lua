@@ -20,7 +20,7 @@ mod:RegisterEvents(
 
 local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4)
 local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3)
-local warnShardsTorment		= mod:NewSpellAnnounce(99259, 3)
+local warnShardsTorment		= mod:NewCastAnnounce(99259, 3)
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
 local yellCountdown			= mod:NewYell(99516)
 
@@ -108,7 +108,7 @@ function mod:SPELL_CAST_START(args)
 		timerBladeActive:Start(args.spellName)
 	elseif args:IsSpellID(99259) then
 		warnShardsTorment:Show()
-		specWarnShardsTorment:Show()
+		specWarnShardsTorment:Schedule(1.5)
 		timerShardsTorment:Start()
 		ShardsCountown:Start(34)
 	end
