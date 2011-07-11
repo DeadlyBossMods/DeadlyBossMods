@@ -18,8 +18,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4)
-local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3)
+local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3, nil, mod:IsTank())
 local warnShardsTorment		= mod:NewCastAnnounce(99259, 3)
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
 local yellCountdown			= mod:NewYell(99516)
@@ -29,7 +29,7 @@ local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
 local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
-local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350)	-- either Decimation Blade or Inferno Blade
+local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() or mod:IsHealer())	-- either Decimation Blade or Inferno Blade
 local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 
@@ -37,7 +37,7 @@ local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
 
-mod:AddBoolOption("InfoFrame", false)
+mod:AddBoolOption("InfoFrame", mod:IsHealer())
 mod:AddBoolOption("SetIconOnCountdown")
 mod:AddBoolOption("ArrowOnCountdown")
 
