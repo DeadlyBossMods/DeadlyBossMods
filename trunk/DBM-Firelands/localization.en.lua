@@ -152,6 +152,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
+	warnSplittingBlow		= "%s in %s",--Spellname in Location
+	warnEngulfingFlame		= "%s in %s"--Spellname in Location
 })
 
 L:SetTimerLocalization({
@@ -159,9 +161,16 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnSplittingBlow	= "Show warning for $spell:100877",
+	warnEngulfingFlame	= "Show warning for $spell:99171",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
-	RangeFrame		= "Show range frame",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	RangeFrame			= "Show range frame",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983),
+	East				= "East",
+	West				= "West",
+	Middle				= "Middle",
+	North				= "North",
+	South				= "South"
 })
 
 L:SetMiscLocalization({
