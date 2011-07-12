@@ -30,7 +30,7 @@ local timerLeapingFlames	= mod:NewCDTimer(4, 100208)
 local timerFlameScythe		= mod:NewCDTimer(4, 98474)
 
 local yellLeapingFlames		= mod:NewYell(100208, nil, false)
-local specWarnCrystalTrap		= mod:NewSpecialWarningMove(100208)
+local specWarnLeapingFlames	= mod:NewSpecialWarningMove(100208)
 local specWarnSearingSeed	= mod:NewSpecialWarningMove(98450)
 
 local soundSeed				= mod:NewSound(98450)
