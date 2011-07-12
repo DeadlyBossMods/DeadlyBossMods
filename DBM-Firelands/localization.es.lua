@@ -154,6 +154,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
+	warnSplittingBlow		= "%s en %s",
+	warnEngulfingFlame		= "%s en %s"
 })
 
 L:SetTimerLocalization({
@@ -161,12 +163,19 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
+	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
+	East				= "Este",
+	West				= "Oeste",
+	Middle				= "Medio",
+	North				= "Norte",
+	South				= "Sur"
 })
 
 -----------------------
