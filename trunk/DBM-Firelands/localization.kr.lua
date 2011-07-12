@@ -153,17 +153,29 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(198)
 
+L:SetWarningLocalization({
+	warnSplittingBlow		= "%s (%s)",--Spellname in Location
+	warnEngulfingFlame		= "%s (%s)"--Spellname in Location
+})
+
 L:SetTimerLocalization({
 	TimerPhaseSons		= "다음 단계"
 })
 
 L:SetOptionLocalization({
+	warnSplittingBlow	= "$spell:100877 경고 보기",
+	warnEngulfingFlame	= "$spell:99171 경고 보기",
 	TimerPhaseSons		= "'용암의 후예' 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
+	East				= "동쪽",
+	West				= "서쪽",
+	Middle				= "중앙",
+	North				= "북쪽",
+	South				= "남쪽"
 })
 
 -----------------------
