@@ -166,15 +166,15 @@ L:SetOptionLocalization({
 	warnEngulfingFlame	= "Show warning for $spell:99171",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983),
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+})
+
+L:SetMiscLocalization({
 	East				= "East",
 	West				= "West",
 	Middle				= "Middle",
 	North				= "North",
 	South				= "South"
-})
-
-L:SetMiscLocalization({
 })
 
 -----------------------
