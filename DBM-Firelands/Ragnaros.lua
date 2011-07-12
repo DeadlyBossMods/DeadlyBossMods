@@ -27,6 +27,8 @@ local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
 local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
+local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 4, 100877)
+local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
@@ -145,11 +147,31 @@ function mod:SPELL_CAST_START(args)
 		sonsDied = 0
 		phase = phase + 1
 		specWarnSplittingBlow:Show()
+		--Middle: 100877 (25N) (Guessed: 98951, 100878, 100879)
+		--East: 100880 (25N) (Guessed: 98952, 100881, 100882)
+		--West: 100883 (25N) (Guessed: 98953, 100884, 100885)
+		if args:IsSpellID(100877) then--Middle
+			warnSplittingBlow(args.spellName, L.Middle)
+		elseif args:IsSpellID(100880) then--East
+			warnSplittingBlow(args.spellName, L.East)
+		elseif args:IsSpellID(100883) then--West
+			warnSplittingBlow(args.spellName, L.West)
+		end
 	elseif args:IsSpellID(99172, 99235, 99236, 100175) or args:IsSpellID(100176, 100177, 100178, 100179) or args:IsSpellID(100180, 100181, 100182, 100183) then--Another scripted spell with a ton of spellids based on location of room.
 		if phase == 3 then
 			timerFlamesCD:Start(30)--30 second CD in phase 3
 		else
 			timerFlamesCD:Start()--40 second CD in phase 2
+		end
+		--North: 100175 (25N) (Guessed: 99172, 100176, 100177)
+		--Middle: 100178 (25N) (Guessed: 99235, 100179, 100180)
+		--South: 100181 (25N) (Guessed: 99236, 100182, 100183)
+		if args:IsSpellID(100175) then--North
+			warnEngulfingFlame(args.spellName, L.North)
+		elseif args:IsSpellID(100178) then--Middle
+			warnEngulfingFlame(args.spellName, L.Middle)
+		elseif args:IsSpellID(100181) then--South
+			warnEngulfingFlame(args.spellName, L.South)
 		end
 	end
 end
