@@ -141,7 +141,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrameSeeds			= "Показывать окно проверки дистанции (12м) для $spell:98450",
-	RangeFrameCat			= "Показывать окно проверки дистанции (10м) для $spell:98374"
+	RangeFrameCat			= "Показывать окно проверки дистанции (10м) для $spell:98374",
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
 L:SetMiscLocalization({
