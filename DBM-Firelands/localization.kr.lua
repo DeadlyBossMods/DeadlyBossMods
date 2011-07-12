@@ -141,7 +141,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrameSeeds				= "$spell:98450의 거리 프레임 보기(12 m)",
-	RangeFrameCat				= "$spell:98374의 거리 프레임 보기(10 m)"
+	RangeFrameCat				= "$spell:98374의 거리 프레임 보기(10 m)",
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
 L:SetMiscLocalization({

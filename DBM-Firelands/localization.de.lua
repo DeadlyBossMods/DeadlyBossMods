@@ -142,7 +142,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrameSeeds				= "Zeige Abstandsfenster (12m) für $spell:98450",
-	RangeFrameCat				= "Zeige Abstandsfenster (10m) für $spell:98374"
+	RangeFrameCat				= "Zeige Abstandsfenster (10m) für $spell:98374",
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
 L:SetMiscLocalization({

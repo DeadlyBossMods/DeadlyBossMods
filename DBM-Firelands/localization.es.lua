@@ -141,7 +141,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrameSeeds				= "Mostrar distancia (12) para $spell:98450",
-	RangeFrameCat				= "Mostrar distancia (10) para $spell:98374"
+	RangeFrameCat				= "Mostrar distancia (10) para $spell:98374",
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
 L:SetMiscLocalization({

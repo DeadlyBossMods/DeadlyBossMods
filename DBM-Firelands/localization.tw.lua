@@ -141,7 +141,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrameSeeds				= "為$spell:98450顯示距離框(12碼)",
-	RangeFrameCat				= "為$spell:98374顯示距離框(10碼)"
+	RangeFrameCat				= "為$spell:98374顯示距離框(10碼)",
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
 L:SetMiscLocalization({
