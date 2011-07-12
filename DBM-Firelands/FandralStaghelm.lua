@@ -43,18 +43,31 @@ mod:AddBoolOption("IconOnLeapingFlames", false)
 local abilitySpam = 0	-- Cat ability happens twice in a row (2 combat log events), but using it for both just in case :)
 local abilityCount = 0
 local transforms = 0
-local abilityTimers = {
-	[0] = 17,
-	[1] = 13,
-	[2] = 10.5,
-	[3] = 8.5,
-	[4] = 7,
-	[5] = 7,
-	[6] = 6,
-	[7] = 6,
-	[8] = 5,
-	[9] = 5,
-	[10]= 5
+local scytheTimers = {
+	[0] = 17.4,
+	[1] = 12.7,--this is always 12.7 despite the 13.4 leaps have.
+	[2] = 11,
+	[3] = 8.6,
+	[4] = 7.4,
+	[5] = 7.3,
+	[6] = 6.1,
+	[7] = 6.1,
+	[8] = 4.9,
+	[9] = 4.9,
+	[10]= 4.8
+}
+local leapTimers = {
+	[0] = 17.4,
+	[1] = 13.4,--Variation from scythetimers, this is always 13.4 on leaps instead of 12.7
+	[2] = 11,
+	[3] = 8.6,
+	[4] = 7.4,
+	[5] = 7.3,
+	[6] = 6.1,
+	[7] = 6.1,
+	[8] = 4.9,
+	[9] = 4.9,
+	[10]= 4.8
 }
 
 function mod:LeapingFlamesTarget()
@@ -87,7 +100,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		transforms = transforms + 1
 		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
 		timerFlameScythe:Cancel()
-		timerLeapingFlames:Start(abilityTimers[abilityCount])
+		timerLeapingFlames:Start(scytheTimers[abilityCount])
 		if self.Options.RangeFrameCat then
 			DBM.RangeCheck:Show(10)
 		end
@@ -95,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		transforms = transforms + 1
 		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
 		timerLeapingFlames:Cancel()
-		timerFlameScythe:Start(abilityTimers[abilityCount])
+		timerFlameScythe:Start(leapTimers[abilityCount])
 		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
 			DBM.RangeCheck:Hide()
 		end
