@@ -31,17 +31,18 @@ mod:SetBossHealthInfo(
 
 local warnFaceRage				= mod:NewTargetAnnounce(99945, 4)
 local warnRage					= mod:NewTargetAnnounce(100415, 3)
-local warnWary					= mod:NewTargetAnnounce(100167, 2, nil, false)	-- which hound has this buff? They get it when being trapped
+local warnWary					= mod:NewTargetAnnounce(100167, 2, nil, false)
 local warnTears					= mod:NewStackAnnounce(99937, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnSpear					= mod:NewSpellAnnounce(100002, 3)--warn for this instead of magmaflare until rip dies.
+local warnSpear					= mod:NewSpellAnnounce(100002, 3)--warn for this instead of magmaflare until/if rip dies.
 local warnMagmaFlare			= mod:NewSpellAnnounce(100495, 3)
 local warnCrystalPrison			= mod:NewTargetAnnounce(99836, 2)--On by default, not as often, and useful for tanks or kiters
 local warnImmoTrap				= mod:NewTargetAnnounce(99839, 2, nil, false)--Spammy, off by default for those who want it.
 local warnCrystalPrisonTrapped	= mod:NewTargetAnnounce(99837, 4)--Player is in prison.
 local warnPhase2Soon			= mod:NewPrePhaseAnnounce(2, 3)
 
-local specWarnSpear				= mod:NewSpecialWarningSpell(100002, false, nil, nil, true)
+local specWarnSpear				= mod:NewSpecialWarningSpell(100002, false)
 local specWarnRage				= mod:NewSpecialWarningYou(100415)
+local specWarnFaceRage			= mod:NewSpecialWarningTarget(99945, false)
 local specWarnImmTrap			= mod:NewSpecialWarningMove(99839)
 local specWarnImmTrapNear		= mod:NewSpecialWarningClose(99839)
 local yellImmoTrap				= mod:NewYell(99839, nil, false)
@@ -198,6 +199,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(99945, 99947) then--is 99945 even used?, cause my 10 man logs only had 99947 for Spell cast success.
 		warnFaceRage:Show(args.destName)
+		specWarnFaceRage:Show(args.destName)
 		timerFaceRageCD:Start()
 		if self.Options.SetIconOnFaceRage then
 			self:SetIcon(args.destName, 8)
