@@ -158,7 +158,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Sons phase ends"
+	TimerPhaseSons		= "Transition ends"
 })
 
 L:SetOptionLocalization({
@@ -174,7 +174,8 @@ L:SetMiscLocalization({
 	West				= "West",
 	Middle				= "Middle",
 	North				= "North",
-	South				= "South"
+	South				= "South",
+	transitionended		= "Enough! I will finish this."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
 })
 
 -----------------------
