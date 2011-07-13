@@ -147,14 +147,14 @@ function mod:SPELL_CAST_START(args)
 		sonsDied = 0
 		phase = phase + 1
 		specWarnSplittingBlow:Show()
-		--Middle: 100877 (25N) (Guessed: 98951, 100878, 100879)
-		--East: 100880 (25N) (Guessed: 98952, 100881, 100882)
-		--West: 100883 (25N) (Guessed: 98953, 100884, 100885)
-		if args:IsSpellID(100877) then--Middle
+		--Middle: 98952 (10N), 100877 (25N) (Guessed: 100878, 100879)
+		--East: 98953 (10N), 100880 (25N) (Guessed: 100881, 100882)
+		--West: 98951 (10N), 100883 (25N) (Guessed: 100884, 100885)
+		if args:IsSpellID(98952, 100877) then--Middle
 			warnSplittingBlow(args.spellName, L.Middle)
-		elseif args:IsSpellID(100880) then--East
+		elseif args:IsSpellID(98953, 100880) then--East
 			warnSplittingBlow(args.spellName, L.East)
-		elseif args:IsSpellID(100883) then--West
+		elseif args:IsSpellID(98951, 100883) then--West
 			warnSplittingBlow(args.spellName, L.West)
 		end
 	elseif args:IsSpellID(99172, 99235, 99236, 100175) or args:IsSpellID(100176, 100177, 100178, 100179) or args:IsSpellID(100180, 100181, 100182, 100183) then--Another scripted spell with a ton of spellids based on location of room.
