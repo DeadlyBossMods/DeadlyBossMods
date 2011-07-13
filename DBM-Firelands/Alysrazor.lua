@@ -14,8 +14,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+--	"RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_POWER"
 )
@@ -24,15 +26,19 @@ local warnMolting		= mod:NewSpellAnnounce(99464, 3)
 local warnFirestorm		= mod:NewSpellAnnounce(100744, 3)
 local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
-local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3)
+local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3, 61131)
 
+local specWarnFirestorm			= mod:NewSpecialWarningSpell(100744, nil, nil, nil, true)
 local specWarnFieroblast		= mod:NewSpecialWarningInterrupt(101223)
 local specWarnGushingWoundSelf	= mod:NewSpecialWarningYou(99308, false)
 local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
 local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, false)
 
+local timerTornadoCD		= mod:NewNextTimer(190, 99816)
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
-local timerCataclysm		= mod:NewCastTimer(5, 102111)
+local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
+local timerCataclysmCD		= mod:NewCDTimer(30, 102111)--Heroic
+local timerFirestormCD		= mod:NewCDTimer(78, 100744)--Heroic
 local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
@@ -41,13 +47,22 @@ mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
 local phase = 1
 local initiatesSpawned = 0
+local CataCast = 0
+
+--Credits to public WoL http://www.worldoflogs.com/reports/rt-qy30xgzau5w12aae/xe/?enc=bosses&boss=52530&x=spell+%3D+%22Cataclysm%22+or+spell+%3D+%22Burnout%22+or+spell+%3D+%22Firestorm%22+and+%28fulltype+%3D+SPELL_CAST_SUCCESS+or+fulltype+%3D+SPELL_CAST_START+or+fulltype+%3D+SPELL_AURA_APPLIED++or+fulltype+%3D+SPELL_AURA_REMOVED%29
+--For heroic information drycodes.
 
 function mod:OnCombatStart(delay)
-	timerMoltingCD:Start(10-delay)
+	if mod:IsDifficulty("heroic10", "heroic25") then
+		timerTornadoCD:Start(250-delay)
+	else
+		timerTornadoCD:Start(-delay)
+	end
 	timerHatchEggs:Start(50-delay)
 	timerNextInitiate:Start(27-delay)
 	phase = 1
 	initiatesSpawned = 0
+	CataCast = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PowerLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
@@ -71,31 +86,57 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(100744) then--Firestorm removed from boss. No reason for a heroic check here, this shouldn't happen on normal.
+		if CataCast < 3 then
+			timerCataclysmCD:Start(10)--10 seconds after first firestorm ends
+		else
+			timerCataclysmCD:Start(20)--20 seconds after second one ends.
+		end
+	elseif args:IsSpellID(99432) then--Burnout ended. Might be able to use a alter trigger for this, but need transcriptor for that. this was easiest to use based off WoL data.
+		CataCast = 0
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			timerCataclysmCD:Start(45)
+			timerFirestormCD:Start(97)
+		end
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(101223, 101294, 101295, 101296) then
 		if args.sourceGUID == UnitGUID("target") then
 			specWarnFieroblast:Show()
 		end
 	elseif args:IsSpellID(102111, 100761) then
+		CataCast = CataCast + 1
 		warnCataclysm:Show()
 		timerCataclysm:Start()
+		if CataCast == 1 or CataCast == 3 then--Cataclysm is cast 5 times, but there is a firestorm in middle them affecting CD on 2nd and 4th, so you only want to start 30 sec bar after first and third
+			timerCataclysmCD:Start()
+		end
 	elseif args:IsSpellID(100744) then
 		warnFirestorm:Show()
---[[
-wowhead says: 10sec duration
-Cast start 	21:36:02.777
-aura applied	21:36:07.778
-aura removed	21:36:11.321
---]]
+		specWarnFirestorm:Show()
+		if CataCast < 3 then--Firestorm is only cast 2 times per phase. This essencially makes cd bar only start once.
+			timerFirestormCD:Start()
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(99464, 100698, 100836, 100837) then	--99464, 100698 confirmed
-		warnMolting:Show()
-		timerMoltingCD:Start()
+		if mod:IsDifficulty("normal10", "normal25") then--She does this during firestorm on heroic. So only warn for one of them.
+			warnMolting:Show()
+			timerMoltingCD:Start()
+		end
 		if phase ~= 1 then
 			phase = 1
+		end
+	elseif args:IsSpellID(99605, 101658, 101659, 101660) then	--Instant cast Firestorm (pull one)
+		--[18:09:07.835] Alysrazor casts Firestorm
+		--[18:09:37.747] Herald of the Burning End begins to cast Cataclysm
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			timerCataclysmCD:Start(30)--This might be a better place for it anyways, this instant cast spell is only used on pull and it is 30 seconds after this precisely.
 		end
 	end
 end
@@ -133,6 +174,11 @@ function mod:UNIT_POWER(uId)
 			timerHatchEggs:Start(38)
 			warnPhase:Show(1)
 			phase = 1
+			if mod:IsDifficulty("heroic10", "heroic25") then
+				timerTornadoCD:Start(225)
+			else
+				timerTornadoCD:Start(165)
+			end
 		end
 	end
 end
