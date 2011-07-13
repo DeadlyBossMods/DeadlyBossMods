@@ -100,7 +100,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		transforms = transforms + 1
 		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
 		timerFlameScythe:Cancel()
-		timerLeapingFlames:Start(scytheTimers[abilityCount])
+		timerLeapingFlames:Start(leapTimers[abilityCount])
 		if self.Options.RangeFrameCat then
 			DBM.RangeCheck:Show(10)
 		end
@@ -108,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		transforms = transforms + 1
 		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
 		timerLeapingFlames:Cancel()
-		timerFlameScythe:Start(leapTimers[abilityCount])
+		timerFlameScythe:Start(scytheTimers[abilityCount])
 		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
 			DBM.RangeCheck:Hide()
 		end
@@ -149,13 +149,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(98476) and GetTime() - abilitySpam > 3 then	--98476 confirmed
 		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
-		local t = scytheTimers[abilityCount] or 4
+		local t = leapTimers[abilityCount] or 4
 		timerLeapingFlames:Start(t)
 		self:ScheduleMethod(0.2, "LeapingFlamesTarget")
 	elseif args:IsSpellID(98474, 100212, 100213, 100214) and GetTime() - abilitySpam > 3 then	--98474, 100213 confirmed
 		abilityCount = abilityCount + 1
 		abilitySpam = GetTime()
-		local t = leapTimers[abilityCount] or 4
+		local t = scytheTimers[abilityCount] or 4
 		timerFlameScythe:Start(t)
 	end
 end
