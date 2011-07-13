@@ -142,7 +142,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	RangeFrameSeeds			= "Показывать окно проверки дистанции (12м) для $spell:98450",
 	RangeFrameCat			= "Показывать окно проверки дистанции (10м) для $spell:98374",
-	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
+	IconOnLeapingFlames		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
 L:SetMiscLocalization({
@@ -154,21 +154,30 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
+	warnSplittingBlow	= "%s на %s",--Spellname in Location
+	warnEngulfingFlame	= "%s на %s"--Spellname in Location
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Окончание фазы с помощниками"
+	TimerPhaseSons		= "Окончание переходной фазы"
 })
 
 L:SetOptionLocalization({
+	warnSplittingBlow	= "Предупреждение для $spell:100877",
+	warnEngulfingFlame	= "Предупреждение для $spell:99171",
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей Пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
+	East				= "востоке",
+	West				= "западе",
+	Middle				= "центре",
+	North				= "севере",
+	South				= "юге",
+	transitionended		= "Довольно! Пора покончить с этим."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
 })
-
 
 -----------------------
 --  Firelands Trash  --
