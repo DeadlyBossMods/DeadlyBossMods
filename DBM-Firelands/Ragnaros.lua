@@ -49,6 +49,8 @@ local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 
+local berserkTimer			= mod:NewBerserkTimer(1080)
+
 local soundBlazingHeat		= mod:NewSound(100460)
 
 mod:AddBoolOption("RangeFrame", true)
@@ -98,6 +100,7 @@ local function TransitionEnded()
 end
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	timerMagmaTrap:Start(16-delay)
 	timerSulfurasSmash:Start(30-delay)
 	wrathRagSpam = 0
