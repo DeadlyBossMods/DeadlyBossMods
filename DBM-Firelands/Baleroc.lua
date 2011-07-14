@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(53494)
 mod:SetModelID(38621)
 mod:SetZone()
-mod:SetUsedIcons(8, 6)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:SetModelSound("Sound\\Creature\\BALEROC\\VO_FL_BALEROC_AGGRO.wav", "Sound\\Creature\\BALEROC\\VO_FL_BALEROC_KILL_02.wav")
 --Long: You are forbidden from entering my masters domain mortals.
 --Short: You have been judged
@@ -35,20 +35,21 @@ local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 
 local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
-local berserkTimer		= mod:NewBerserkTimer(360)
+local berserkTimer			= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 mod:AddBoolOption("SetIconOnCountdown")
+mod:AddBoolOption("SetIconOnTorment")
 mod:AddBoolOption("ArrowOnCountdown")
 
-local countdownIcon = 8
+local tormentIcon = 8
+local countdownIcon = 2
 local countdownTargets = {}
 
 local function showCountdownWarning()
 	warnCountdown:Show(table.concat(countdownTargets, "<, >"))
-
 	table.wipe(countdownTargets)
-	countdownIcon = 8
+	countdownIcon = 2
 end
 
 function mod:OnCombatStart(delay)
@@ -74,7 +75,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		countdownTargets[#countdownTargets + 1] = args.destName
 		if self.Options.SetIconOnCountdown then
 			self:SetIcon(args.destName, countdownIcon, 8)
-			countdownIcon = countdownIcon - 2   -- avoid "7" (cross)
+			countdownIcon = countdownIcon - 1
 		end
 		if args:IsPlayer() then
 			specWarnCountdown:Show()
@@ -89,12 +90,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(showCountdownWarning)
 		self:Schedule(0.5, showCountdownWarning)
+	elseif args:IsSpellID(99256, 100230, 100231, 100232) then--Torment
+		if self.Options.SetIconOnTorment then
+			self:SetIcon(args.destName, tormentIcon)
+			tormentIcon = tormentIcon - 1
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(99352, 99405) or args:IsSpellID(99350) then
 		timerBladeNext:Start()--30 seconds after last blades FADED
+	elseif args:IsSpellID(99256, 100230, 100231, 100232) then--Torment
+		if self.Options.SetIconOnTorment then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -107,6 +117,7 @@ function mod:SPELL_CAST_START(args)
 		warnInfernoBlade:Show()
 		timerBladeActive:Start(args.spellName)
 	elseif args:IsSpellID(99259) then
+		tormentIcon = 8
 		warnShardsTorment:Show()
 		specWarnShardsTorment:Schedule(1.5)
 		timerShardsTorment:Start()
