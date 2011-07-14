@@ -111,7 +111,7 @@ function mod:CrystalTrapTarget(targetname)
 	end
 end
 
---Can you tell i really suck at LUA? Ths function sucks ass
+--This still nils out from time to time and i cannot comprehend why.
 function mod:TrapHandler(SpellID, isTank)
 	if not self:IsInCombat() then return end
 	local targetname = self:GetBossTarget(53691)
@@ -237,5 +237,7 @@ function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 53694 then
 		riplimbDead = true
 --		timerSpearCD:Cancel()--Cancel it and replace it with other timer somehow? figure out time diff or if cd resets when rip dies? i need more logs for this.
+	elseif self:GetCIDFromGUID(args.destGUID) == 53695 then
+		timerFaceRageCD:Cancel()
 	end
 end
