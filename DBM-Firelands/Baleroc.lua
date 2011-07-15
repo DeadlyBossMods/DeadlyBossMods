@@ -32,6 +32,7 @@ local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() or mod:IsHealer())	-- either Decimation Blade or Inferno Blade
 local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
+local timerCountdownCD		= mod:NewCDTimer(45, 99516)
 
 local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
@@ -54,6 +55,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerBladeNext:Start(-delay)
+	timerCountdownCD:Start(-delay)
 --	timerShardsTorment:Start(-delay)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
@@ -72,6 +74,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99516) then
 		timerCountdown:Start()
+		timerCountdownCD:Start()
 		countdownTargets[#countdownTargets + 1] = args.destName
 		if self.Options.SetIconOnCountdown then
 			self:SetIcon(args.destName, countdownIcon, 8)
