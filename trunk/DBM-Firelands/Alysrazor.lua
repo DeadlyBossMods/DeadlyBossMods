@@ -49,7 +49,7 @@ mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 local phase = 1
 local initiatesSpawned = 0
 local CataCast = 0
-local eggsHatached = 0
+local eggsHatched = 0
 local eggsSpam = 0
 
 --Credits to public WoL http://www.worldoflogs.com/reports/rt-qy30xgzau5w12aae/xe/?enc=bosses&boss=52530&x=spell+%3D+%22Cataclysm%22+or+spell+%3D+%22Burnout%22+or+spell+%3D+%22Firestorm%22+and+%28fulltype+%3D+SPELL_CAST_SUCCESS+or+fulltype+%3D+SPELL_CAST_START+or+fulltype+%3D+SPELL_AURA_APPLIED++or+fulltype+%3D+SPELL_AURA_REMOVED%29
@@ -68,7 +68,7 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	initiatesSpawned = 0
 	CataCast = 0
-	eggsHatached = 0
+	eggsHatched = 0
 	eggsSpam = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PowerLevel)
@@ -159,8 +159,8 @@ end
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(msg)--This is not conventional but it's required for heroic. on heroic you get 3 sets, not 1, but only the first set does emote. :\
 	if mod:IsDifficulty("heroic10", "heroic25") and self:IsInCombat() and GetTime() - eggsSpam > 5 then--Hopefully isincombat is enough to keep this from firing all over the place!
 		eggsSpam = GetTime()
-		eggsHatached = eggsHatached + 1
-		if eggsHatached < 3 then
+		eggsHatched = eggsHatched + 1
+		if eggsHatched < 3 then
 			timerHatchEggs:Start(35)
 		end
 	end
@@ -181,7 +181,7 @@ function mod:UNIT_POWER(uId)
 		elseif phase == 4 and p == 100 then
 			warnPhase:Show(1)
 			phase = 1
-			eggsHatached = 0
+			eggsHatched = 0
 			if mod:IsDifficulty("heroic10", "heroic25") then
 				timerFieryVortexCD:Start(225)--Probably not right.
 				timerHatchEggs:Start(31)--Guesswork. No idea what this is in herioc yet. didn't get that far on first pull. But it's going to be shorter for sure.
