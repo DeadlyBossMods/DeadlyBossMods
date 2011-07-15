@@ -26,7 +26,7 @@ local specWarnMoltenArmor	= mod:NewSpecialWarningStack(99532, mod:IsTank(), 4)
 
 local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
 
-mod:AddBoolOption("RangeFrame", false)--off by default, this was NOT well recieved, furthermore, it doesn't hide if you wipe on the trash.
+mod:AddBoolOption("RangeFrame", false)--off by default, this was NOT well recieved.
 
 local surgers = 0
 local surgerGUIDs = {}
@@ -75,6 +75,7 @@ function mod:UNIT_DIED(args)
 		surgers = surgers - 1
 		if surgers <= 0 then 
 			surgers = 0
+			table.wipe(surgerGUIDs)--Also wipe GUID table
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
@@ -85,6 +86,7 @@ end
 function mod:ZONE_CHANGED_NEW_AREA()
 	if surgers > 0 then--You probably wiped on trash and don't need the range finder to get stuck open.
 		surgers = 0--Reset the surgers.
+		table.wipe(surgerGUIDs)--Also wipe GUID table
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
