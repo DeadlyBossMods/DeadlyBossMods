@@ -200,3 +200,29 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 })
+
+----------------
+--  Volcanus  --
+----------------
+L = DBM:GetModLocalization("Volcanus")
+
+L:SetGeneralLocalization({
+	name = "Volcanus"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	timerStaffTransition	= "Transition ends"
+})
+
+L:SetOptionLocalization({
+	timerStaffTransition	= "Show a timer for the phase transition"
+})
+
+L:SetMiscLocalization({
+	StaffEvent			= "The Branch of Nordrassil reacts violently",--Partial, not sure if pull detection will work with partials yet :\
+	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
+	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
+})
