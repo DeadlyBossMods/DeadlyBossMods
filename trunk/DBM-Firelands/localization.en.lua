@@ -120,6 +120,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Show a duration timer for the active blade",
 	TimerBladeNext		= "Show a next timer for blade",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 ",
 	InfoFrame		= "Show info frame for Vital Spark stacks"
 })

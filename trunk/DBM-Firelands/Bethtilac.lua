@@ -21,7 +21,7 @@ local warnWidowKiss					= mod:NewTargetAnnounce(99476, 3, nil, mod:IsTank() or m
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
 local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability according to EJ
 
-local specWarnFixate				= mod:NewSpecialWarningStack(99559)--Does it need run away sound? icon? EJ wasn't too specific.
+local specWarnFixate				= mod:NewSpecialWarningYou(99559)--Does it need run away sound? icon? EJ wasn't too specific.
 local specWarnTouchWidowKiss		= mod:NewSpecialWarningYou(99476)
 local specWarnSmolderingDevastation	= mod:NewSpecialWarningSpell(99052)
 local specWarnTouchWidowKissOther	= mod:NewSpecialWarningTarget(99476, mod:IsTank())
@@ -38,7 +38,7 @@ local soundFixate					= mod:NewSound(99559)
 
 local smolderingCount = 0
 
-mod:AddBoolOption("RangeFrame")--Maybe needed for widows kiss aoe effect?
+mod:AddBoolOption("RangeFrame")
 
 function mod:repeatSpiderlings()
 	timerSpiderlings:Start()
@@ -105,7 +105,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(99052) then		-- only being cast in P1?
+	if args:IsSpellID(99052) then
 		smolderingCount = smolderingCount + 1
 		warnSmolderingDevastation:Show(smolderingCount)
 		if self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target") then--If spider is you're target or it's tank is, you're up top.
@@ -113,7 +113,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerSmolderingDevastation:Start()
 		timerSmolderingDevastationCD:Start()
-		timerSpinners:Start()		-- Only spawn in P1?
+		timerSpinners:Start()
 		if smolderingCount == 3 then	-- 3rd cast = start P2
 			warnPhase2Soon:Show()
 			self:UnscheduleMethod("repeatSpiderlings")
