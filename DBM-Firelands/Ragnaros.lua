@@ -41,7 +41,7 @@ local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability
 local timerSulfurasSmash	= mod:NewCDTimer(40, 98710)		-- might even be a "next" timer
 local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might even be a "next" timer
-local timerWrathRagnaros	= mod:NewCDTimer(30, 98263, nil, mod:IsRanged())--CD will be delayed by Smash in event of an overlap.
+local timerWrathRagnaros	= mod:NewNextTimer(12, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
 local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)
@@ -139,6 +139,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerSulfurasSmash:Start()
 		end
+		timerWrathRagnaros:Start()
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
@@ -188,7 +189,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
-		timerWrathRagnaros:Start()
 	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat, drycoded.
 		warnBlazingHeat:Show(args.destName)
 		if args:IsPlayer() then
