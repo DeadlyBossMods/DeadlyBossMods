@@ -20,7 +20,7 @@ local warnEyes					= mod:NewSpellAnnounce(96920, 3)
 
 local timerSearingShadows		= mod:NewCDTimer(24, 96913)
 local timerEyes					= mod:NewCDTimer(60, 96920)
-local timerFocusedFire			= mod:NewCDTimer(16, 96884) -- 24 16 16, repeating pattern. Can vary by a couple seconds, ie be 26 18 18, but the pattern is same regardless.
+--local timerFocusedFire			= mod:NewCDTimer(16, 96884) -- 24 16 16, repeating pattern. Can vary by a couple seconds, ie be 26 18 18, but the pattern is same regardless.
 
 local specWarnSearingShadows	= mod:NewSpecialWarningSpell(96913, mod:IsTank())
 local specWarnFocusedFire		= mod:NewSpecialWarningMove(97212)
@@ -49,7 +49,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnSearingShadows:Schedule(2.5) -- Tank switch after spell happened (could be done on SPELL_AURA_APPLIED as well, but then a spam function is needed in case more ppl get hit)
 	end
 end
-
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(96884) then
 		if focusedFire % 3 == 0 then--We start with 0 to make the math easier to do since it starts on first cast
@@ -60,7 +60,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		focusedFire = focusedFire + 1
 	end
 end
-
+--]]
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(97212) and args:IsPlayer() and GetTime() - spamFire > 4 then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
 		specWarnFocusedFire:Show()
