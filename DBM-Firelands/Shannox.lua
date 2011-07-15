@@ -111,12 +111,12 @@ function mod:CrystalTrapTarget(targetname)
 	end
 end
 
---This still errors out from time to time and i cannot comprehend why. target name wasn't nil it was unknown, so lets try this hack.
+--Try another way from uid handler.
 function mod:TrapHandler(SpellID, isTank)
 	if not self:IsInCombat() then return end
-	local targetname = self:GetBossTarget(53691)
-	if not targetname or targetname == "Unknown" then return end
-	if UnitDetailedThreatSituation(targetname, "boss1") and not isTank then--He's targeting his highest threat target, the tank. If isTank we force it to else rule even though he's targeting tank
+	local targetname, targetuid = self:GetBossTarget(53691)
+	if not targetuid then return end
+	if UnitDetailedThreatSituation(targetuid, "boss1") and not isTank then--He's targeting his highest threat target, the tank. If isTank we force it to else rule even though he's targeting tank
 		if not trapScanStarted then--Only start this scan once we don't need an infinite loop
 			self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
 			self:ScheduleMethod(0.1, "TrapHandler", SpellID)--Check again
