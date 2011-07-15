@@ -36,3 +36,4 @@ Baleroc.lua
 FandralStaghelm.lua
 Ragnaros.lua
 FirelandsTrash.lua
+Volcanus.lua
