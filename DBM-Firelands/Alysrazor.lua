@@ -19,6 +19,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 --	"RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_POWER"
 )
 
@@ -34,7 +35,7 @@ local specWarnGushingWoundSelf	= mod:NewSpecialWarningYou(99308, false)
 local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
 local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, false)
 
-local timerTornadoCD		= mod:NewNextTimer(190, 99816)
+local timerFieryVortexCD	= mod:NewNextTimer(195, 99794)
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
 local timerCataclysmCD		= mod:NewCDTimer(31, 102111)--Heroic
@@ -48,21 +49,27 @@ mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 local phase = 1
 local initiatesSpawned = 0
 local CataCast = 0
+local eggsHatached = 0
+local eggsSpam = 0
 
 --Credits to public WoL http://www.worldoflogs.com/reports/rt-qy30xgzau5w12aae/xe/?enc=bosses&boss=52530&x=spell+%3D+%22Cataclysm%22+or+spell+%3D+%22Burnout%22+or+spell+%3D+%22Firestorm%22+and+%28fulltype+%3D+SPELL_CAST_SUCCESS+or+fulltype+%3D+SPELL_CAST_START+or+fulltype+%3D+SPELL_AURA_APPLIED++or+fulltype+%3D+SPELL_AURA_REMOVED%29
 --For heroic information drycodes.
 
 function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic10", "heroic25") then
-		timerTornadoCD:Start(250-delay)
+		timerFieryVortexCD:Start(250-delay)--Probably not right.
+		timerCataclysmCD:Start(32-delay)
+		timerHatchEggs:Start(42-delay)
 	else
-		timerTornadoCD:Start(-delay)
+		timerFieryVortexCD:Start(-delay)
+		timerHatchEggs:Start(50-delay)
 	end
-	timerHatchEggs:Start(50-delay)
 	timerNextInitiate:Start(27-delay)
 	phase = 1
 	initiatesSpawned = 0
 	CataCast = 0
+	eggsHatached = 0
+	eggsSpam = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PowerLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
@@ -92,12 +99,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerCataclysmCD:Start(10)--10 seconds after first firestorm ends
 		else
 			timerCataclysmCD:Start(20)--20 seconds after second one ends.
-		end
-	elseif args:IsSpellID(99432) then--Burnout ended. Might be able to use a alter trigger for this, but need transcriptor for that. this was easiest to use based off WoL data.
-		CataCast = 0
-		if mod:IsDifficulty("heroic10", "heroic25") then
-			timerCataclysmCD:Start(45)
-			timerFirestormCD:Start(97)
 		end
 	end
 end
@@ -132,12 +133,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if phase ~= 1 then
 			phase = 1
 		end
-	elseif args:IsSpellID(99605, 101658, 101659, 101660) then	--Instant cast Firestorm (pull one)
-		--[18:09:07.835] Alysrazor casts Firestorm
-		--[18:09:37.747] Herald of the Burning End begins to cast Cataclysm
-		if mod:IsDifficulty("heroic10", "heroic25") then
-			timerCataclysmCD:Start(30)--This might be a better place for it anyways, this instant cast spell is only used on pull and it is 30 seconds after this precisely.
-		end
 	end
 end
 
@@ -148,15 +143,25 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerPhaseChange:Start(30, 3)
 		phase = 2
 		initiatesSpawned = 0
-	--Yes it's ugly, but least prone to failure. May make something more complex using spell_cast_start from CID with unique GUID's, but that'd still be 0.1 seconds slower since they yell before they cast their first spell.
+	--Yes it's ugly, but it works.
 	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiatesSpawned)
 		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
 		if initiatesSpawned < 3 then
-			timerNextInitiate:Start(32)--Might tune this slightly to be for when you see them fly in, since the yell happens when they land and are attackable
+			timerNextInitiate:Start(32)
 		else
-			timerNextInitiate:Start(20)--Might tune this slightly to be for when you see them fly in, since the yell happens when they land and are attackable
+			timerNextInitiate:Start(20)
+		end
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(msg)--This is not conventional but it's required for heroic. on heroic you get 3 sets, not 1, but only the first set does emote. :\
+	if mod:IsDifficulty("heroic10", "heroic25") and self:IsInCombat() and GetTime() - eggsSpam > 5 then--Hopefully isincombat is enough to keep this from firing all over the place!
+		eggsSpam = GetTime()
+		eggsHatached = eggsHatached + 1
+		if eggsHatached < 3 then
+			timerHatchEggs:Start(35)
 		end
 	end
 end
@@ -164,20 +169,28 @@ end
 function mod:UNIT_POWER(uId)
 	if uId == "boss1" then
 		local p = UnitPower(uId, ALTERNATE_POWER_INDEX) / UnitPowerMax(uId, ALTERNATE_POWER_INDEX) * 100
+--"<485.7> [CLEU] SPELL_AURA_APPLIED#false#0xF150CD320000B106#Alysrazor#133704#0#0xF150CD320000B106#Alysrazor#133704#0#99432#Burnout#8#BUFF", -- [81748]
 		if p == 0 then		-- Seems to drop instantly from 100 -> 0
 			warnPhase:Show(3)
 			phase = 3
+--"<512.9> [RAID_BOSS_EMOTE] RAID_BOSS_EMOTE#|TInterface\\Icons\\inv_elemental_primal_fire.blp:20|t Alysrazor's firey core |cFFFF0000|Hspell:99922|h[Re-Ignites]|h|r!#Alysrazor#0#false", -- [84882]
 		elseif phase == 3 and p >= 50 then
 			warnPhase:Show(4)
 			phase = 4
+--"<539.8> [RAID_BOSS_EMOTE] RAID_BOSS_EMOTE#|TInterface\\Icons\\spell_shaman_improvedfirenova.blp:20|t Alysrazor is at |cFFFF0000|Hspell:99925|h[Full Power]|h|r!#Alysrazor#0#false", -- [89245]
 		elseif phase == 4 and p == 100 then
-			timerHatchEggs:Start(38)
 			warnPhase:Show(1)
 			phase = 1
+			eggsHatached = 0
 			if mod:IsDifficulty("heroic10", "heroic25") then
-				timerTornadoCD:Start(225)
+				timerFieryVortexCD:Start(225)--Probably not right.
+				timerHatchEggs:Start(31)--Guesswork. No idea what this is in herioc yet. didn't get that far on first pull. But it's going to be shorter for sure.
+				timerCataclysmCD:Start(18)
+				timerFirestormCD:Start(70)
+				CataCast = 0
 			else
-				timerTornadoCD:Start(165)
+				timerFieryVortexCD:Start(180)
+				timerHatchEggs:Start(39)
 			end
 		end
 	end
