@@ -27,7 +27,7 @@ local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
 local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
-local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 4, 100877)
+local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
@@ -36,6 +36,7 @@ local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
 local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
+local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability
@@ -66,6 +67,7 @@ local prewarnedPhase3 = false
 local phase2Started = false
 local phase23tarted = false
 local blazingHeatIcon = 8
+local seedsActive = false
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
@@ -83,6 +85,10 @@ local function hideRangeFrame()
 	if mod.Options.RangeFram then
 		DBM.RangeCheck:Hide()
 	end
+end
+
+local function clearSeedsActive()
+	seedsActive = false
 end
 
 local function TransitionEnded()
@@ -122,6 +128,7 @@ function mod:OnCombatStart(delay)
 	blazingHeatIcon = 8
 	phase2Started = false
 	phase23tarted = false
+	seedsActive = false
 	showRangeFrame()
 end
 
@@ -157,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		timerWrathRagnaros:Cancel()
 		hideRangeFrame()
 		timerPhaseSons:Start(45)--Is this 45 second from spell cast start or spell cast end?
-		mod:Schedule(45, TransitionEnded)--^^
+		self:Schedule(45, TransitionEnded)--^^
 		sonsDied = 0
 		phase = phase + 1
 		specWarnSplittingBlow:Show()
@@ -177,14 +184,17 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerFlamesCD:Start()--40 second CD in phase 2
 		end
-		--North: 100175 (25N) (Guessed: 99172, 100176, 100177)
-		--Middle: 100178 (25N) (Guessed: 99235, 100179, 100180)
-		--South: 100181 (25N) (Guessed: 99236, 100182, 100183)
-		if args:IsSpellID(100175) then--North
+		--North: 99172 (10N), 100175 (25N) (Guessed: 100176, 100177)
+		--Middle: 99235 (10N), 100178 (25N) (Guessed: 100179, 100180)
+		--South: 99236 (10N), 100181 (25N) (Guessed: 100182, 100183)
+		if args:IsSpellID(99172, 100175) then--North
 			warnEngulfingFlame:Show(args.spellName, L.North)
-		elseif args:IsSpellID(100178) then--Middle
+			if self:IsMelee() or seedsActive then--Always warn melee classes if it's in melee (duh), warn everyone if seeds are active since 90% of strats group up in melee
+				specWarnEngulfing:Show()
+			end
+		elseif args:IsSpellID(99235, 100178) then--Middle
 			warnEngulfingFlame:Show(args.spellName, L.Middle)
-		elseif args:IsSpellID(100181) then--South
+		elseif args:IsSpellID(99236, 100181) then--South
 			warnEngulfingFlame:Show(args.spellName, L.South)
 		end
 	end
@@ -223,10 +233,12 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 25 then--This has no cast trigger to speak of, only spell damage, so we need anti spam.
 		lastSeeds = GetTime()
+		seedsActive = true
 		warnMoltenSeed:Show()--This only fires if players are not spread properly.
 		specWarnMoltenSeed:Show()--^^
 		timerMoltenSeed:Start()--^^
 		timerMoltenSeedCD:Start()
+		self:Schedule(20, clearSeedsActive)--Clear active seeds after they have all blown up.
 	end
 end
 
