@@ -38,7 +38,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
-		DBM.InfoFrame:Show(5, "playerdebuff", 42402)
+		DBM.InfoFrame:Show(5, "playergooddebuff", 42402)
 	end
 end
 

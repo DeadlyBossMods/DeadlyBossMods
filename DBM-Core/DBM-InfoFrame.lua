@@ -279,7 +279,7 @@ local function updatePlayerBuffs()
 	updateIcons()
 end
 
-local function updatePlayerDebuffs()
+local function updateGoodPlayerDebuffs()
 	table.wipe(lines)
 	if GetNumRaidMembers() > 0 then
 		for i = 1, GetNumRaidMembers() do
@@ -296,7 +296,33 @@ local function updatePlayerDebuffs()
 				lines[UnitName(uId)] = ""
 			end
 		end
-		if not UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player but "raid"..i includes player wtf?
+		if not UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player so we hack it in.
+			lines[UnitName("player")] = ""
+		end
+	end
+	updateLines()
+	updateIcons()
+end
+
+--Maybe a way to merge good and bad later with an arg that determines type of test, but first i gotta see if it actually works on rag first or there won't be any reason to have one yet
+local function updateBadPlayerDebuffs()
+	table.wipe(lines)
+	if GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			local uId = "raid"..i
+			if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
+				lines[UnitName(uId)] = ""
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumPartyMembers() do
+			local uId = "party"..i
+			if  UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
+				local icon = GetRaidTargetIndex(uId)
+				lines[UnitName(uId)] = ""
+			end
+		end
+		if UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player so we hack it in.
 			lines[UnitName("player")] = ""
 		end
 	end
@@ -384,8 +410,10 @@ function onUpdate(self, elapsed)
 		updateEnemyPower()
 	elseif currentEvent == "playerbuff" then
 		updatePlayerBuffs()
-	elseif currentEvent == "playerdebuff" then
-		updatePlayerDebuffs()
+	elseif currentEvent == "playergooddebuff" then
+		updateGoodPlayerDebuffs()
+	elseif currentEvent == "playerbaddebuff" then
+		updateBadPlayerDebuffs()
 	elseif currentEvent == "playeraggro" then
 		updatePlayerAggro()
 	elseif currentEvent == "playerbuffstacks" then
@@ -436,8 +464,10 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 		updateEnemyPower()
 	elseif event == "playerbuff" then
 		updatePlayerBuffs()
-	elseif event == "playerdebuff" then
-		updatePlayerDebuffs()
+	elseif event == "playergooddebuff" then
+		updateGoodPlayerDebuffs()
+	elseif event == "playerbaddebuff" then
+		updateBadPlayerDebuffs()
 	elseif currentEvent == "playeraggro" then
 		updatePlayerAggro()
 	elseif currentEvent == "playerbuffstacks" then
