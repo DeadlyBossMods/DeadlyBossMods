@@ -176,8 +176,8 @@ L:SetMiscLocalization({
 	East				= "동쪽",
 	West				= "서쪽",
 	Middle				= "중앙",
-	North				= "북쪽",
-	South				= "남쪽",
+	North				= "근접",
+	South				= "뒤쪽",
 	transitionended		= "여기까지! 이제 끝내주마."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
 })
 
