@@ -47,7 +47,7 @@ end
 function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
-		DBM.InfoFrame:Show(5, "playerdebuff", 96328)
+		DBM.InfoFrame:Show(5, "playergooddebuff", 96328)
 	end
 end
 

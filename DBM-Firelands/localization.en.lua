@@ -168,6 +168,7 @@ L:SetOptionLocalization({
 	warnEngulfingFlame	= "Show warning for $spell:99171",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
+	InfoFrame			= "Show info frame for $spell:99849 targets",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
@@ -177,6 +178,7 @@ L:SetMiscLocalization({
 	Middle				= "Middle",
 	North				= "Melee",
 	South				= "Back",
+	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
 	transitionended		= "Enough! I will finish this."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
 })
 
