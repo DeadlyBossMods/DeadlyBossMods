@@ -165,11 +165,11 @@ function mod:SPELL_CAST_START(args)
 		--East: 98953 (10N), 100880 (25N) (Guessed: 100881, 100882)
 		--West: 98951 (10N), 100883 (25N) (Guessed: 100884, 100885)
 		if args:IsSpellID(98952, 100877) then--Middle
-			warnSplittingBlow(args.spellName, L.Middle)
+			warnSplittingBlow:Show(args.spellName, L.Middle)
 		elseif args:IsSpellID(98953, 100880) then--East
-			warnSplittingBlow(args.spellName, L.East)
+			warnSplittingBlow:Show(args.spellName, L.East)
 		elseif args:IsSpellID(98951, 100883) then--West
-			warnSplittingBlow(args.spellName, L.West)
+			warnSplittingBlow:Show(args.spellName, L.West)
 		end
 	elseif args:IsSpellID(99172, 99235, 99236, 100175) or args:IsSpellID(100176, 100177, 100178, 100179) or args:IsSpellID(100180, 100181, 100182, 100183) then--Another scripted spell with a ton of spellids based on location of room.
 		if phase == 3 then
@@ -181,11 +181,11 @@ function mod:SPELL_CAST_START(args)
 		--Middle: 100178 (25N) (Guessed: 99235, 100179, 100180)
 		--South: 100181 (25N) (Guessed: 99236, 100182, 100183)
 		if args:IsSpellID(100175) then--North
-			warnEngulfingFlame(args.spellName, L.North)
+			warnEngulfingFlame:Show(args.spellName, L.North)
 		elseif args:IsSpellID(100178) then--Middle
-			warnEngulfingFlame(args.spellName, L.Middle)
+			warnEngulfingFlame:Show(args.spellName, L.Middle)
 		elseif args:IsSpellID(100181) then--South
-			warnEngulfingFlame(args.spellName, L.South)
+			warnEngulfingFlame:Show(args.spellName, L.South)
 		end
 	end
 end
