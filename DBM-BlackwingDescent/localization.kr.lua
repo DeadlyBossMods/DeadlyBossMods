@@ -25,8 +25,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Slump			= "%s|1이;가; 집게를 드러내며 앞으로 몸을 기울입니다!",
-	HeadExposed		= "%s|1이;가; 창에 꽂혀 머리가 노출되었습니다!",
+	Slump			= "기울입니다!",
+	HeadExposed		= "노출되었습니다!",
 	YellPhase2		= "이런 곤란할 데가! 이러다간 내 용암 벌레가 정말 질 수도 있겠군! 그럼... 내가 상황을 좀 바꿔 볼까?" --"Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
 })
 
