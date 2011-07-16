@@ -30,12 +30,15 @@ local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
+local warnMagmaTrap			= mod:NewTargetAnnounce(98164, 3)--Second transition adds ability.
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 
 local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
 local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
+local specWarnMagmaTrap		= mod:NewSpecialWarningMove(98164)
+local yellMagmaTrap			= mod:NewYell(98164)--May Return false tank yells
 local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 
@@ -111,6 +114,16 @@ local function TransitionEnded()
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerFlamesCD:Start(32)
 		timerLivingMeteorCD:Start()
+	end
+end
+
+function mod:MagmaTrapTarget()
+	local targetname = self:GetBossTarget(52409)
+	if not targetname then return end
+	warnMagmaTrap:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnMagmaTrap:Show()
+		yellMagmaTrap:Yell()
 	end
 end
 
@@ -206,6 +219,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHandRagnaros:Start()
 	elseif args:IsSpellID(98164) then	--98164 confirmed
 		timerMagmaTrap:Start()
+		self:ScheduleMethod(0.2, "MagmaTrapTarget")--guessed speed, he definitely targets trap person, may need to change scan rate though.
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
