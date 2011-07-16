@@ -171,7 +171,7 @@ local function checkGrounded()
 	if mod.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(GetSpellInfo(83581)))
-		DBM.InfoFrame:Show(5, "playerdebuff", 83581)
+		DBM.InfoFrame:Show(5, "playergooddebuff", 83581)
 	end
 end
 
@@ -182,7 +182,7 @@ local function checkSearingWinds()
 	if mod.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(GetSpellInfo(83500)))
-		DBM.InfoFrame:Show(5, "playerdebuff", 83500)
+		DBM.InfoFrame:Show(5, "playergooddebuff", 83500)
 	end
 end
 

@@ -86,7 +86,7 @@ function mod:SPELL_CAST_START(args)
 		timerSurgeCD:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
-			DBM.InfoFrame:Show(5, "playerdebuff", 42402)
+			DBM.InfoFrame:Show(5, "playergooddebuff", 42402)
 		end
 	elseif args:IsSpellID(42606) then
 		timerThrow:Cancel()

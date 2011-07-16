@@ -59,6 +59,7 @@ local soundBlazingHeat		= mod:NewSound(100460)
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
+mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
 local lastSeeds = 0
@@ -88,6 +89,9 @@ local function hideRangeFrame()
 	if mod.Options.RangeFram then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 local function clearSeedsActive()
@@ -114,6 +118,10 @@ local function TransitionEnded()
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerFlamesCD:Start(32)
 		timerLivingMeteorCD:Start()
+		if mod.Options.InfoFrame then--This is probably the best way to do it without spam. Does not show in combat log, only unitdebuff/unit_aura will probaby work. will have to find a way to give personal warnings without spam later.
+			DBM.InfoFrame:SetHeader(L.MeteorTargets)
+			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--Maybe need more then 6? 8 or 10 if things go real shitty heh.
+		end
 	end
 end
 
@@ -191,15 +199,15 @@ function mod:SPELL_CAST_START(args)
 		elseif args:IsSpellID(98951, 100883) then--West
 			warnSplittingBlow:Show(args.spellName, L.West)
 		end
-	elseif args:IsSpellID(99172, 99235, 99236, 100175) or args:IsSpellID(100176, 100177, 100178, 100179) or args:IsSpellID(100180, 100181, 100182, 100183) then--Another scripted spell with a ton of spellids based on location of room.
+	elseif args:IsSpellID(99172, 100175) or args:IsSpellID(99235, 100178) or args:IsSpellID(99236, 100181) then--Another scripted spell with a ton of spellids based on location of room. heroic purposely excluded do to different mechanic linked to World of Flames that will be used instead.
 		if phase == 3 then
 			timerFlamesCD:Start(30)--30 second CD in phase 3
 		else
 			timerFlamesCD:Start()--40 second CD in phase 2
 		end
-		--North: 99172 (10N), 100175 (25N) (Guessed: 100176, 100177)
-		--Middle: 99235 (10N), 100178 (25N) (Guessed: 100179, 100180)
-		--South: 99236 (10N), 100181 (25N) (Guessed: 100182, 100183)
+		--North: 99172 (10N), 100175 (25N) (Guessed Heroic ID: 100176, 100177)
+		--Middle: 99235 (10N), 100178 (25N) (Guessed Heroic ID: 100179, 100180)
+		--South: 99236 (10N), 100181 (25N) (Guessed Heroic ID: 100182, 100183)
 		if args:IsSpellID(99172, 100175) then--North
 			warnEngulfingFlame:Show(args.spellName, L.North)
 			if self:IsMelee() or seedsActive then--Always warn melee classes if it's in melee (duh), warn everyone if seeds are active since 90% of strats group up in melee
