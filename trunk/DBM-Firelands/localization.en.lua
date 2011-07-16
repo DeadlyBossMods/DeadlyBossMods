@@ -175,8 +175,8 @@ L:SetMiscLocalization({
 	East				= "East",
 	West				= "West",
 	Middle				= "Middle",
-	North				= "North",
-	South				= "South",
+	North				= "Melee",
+	South				= "Back",
 	transitionended		= "Enough! I will finish this."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
 })
 
