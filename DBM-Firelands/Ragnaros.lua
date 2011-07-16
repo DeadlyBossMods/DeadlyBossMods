@@ -69,10 +69,12 @@ local blazingHeatIcon = 8
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
-		if phase < 3 then
-			DBM.RangeCheck:Show(6)
-		else
-			DBM.RangeCheck:Show(5)
+		if phase == 1 and mod:IsRanged() then
+			DBM.RangeCheck:Show(6)--For wrath of rag, only for ranged.
+		elseif phase == 2 then
+			DBM.RangeCheck:Show(6)--For seeds
+		elseif phase == 3 then
+			DBM.RangeCheck:Show(5)--For meteors
 		end
 	end
 end
@@ -87,9 +89,16 @@ local function TransitionEnded()
 	timerPhaseSons:Cancel()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
-		timerFlamesCD:Start(43)
-		timerMoltenSeedCD:Start(25)
-		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			--Heroics timers are different, but WoL has 0 public logs, so don't know what they are yet.
+			--[[timerFlamesCD:Start(43)
+			timerMoltenSeedCD:Start(25)
+			timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)--]]
+		else
+			timerFlamesCD:Start(43)
+			timerMoltenSeedCD:Start(25)
+			timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
+		end
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
 		phase3Started = true
@@ -113,6 +122,7 @@ function mod:OnCombatStart(delay)
 	blazingHeatIcon = 8
 	phase2Started = false
 	phase23tarted = false
+	showRangeFrame()
 end
 
 function mod:OnCombatEnd()
@@ -213,7 +223,7 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 25 then--This has no cast trigger to speak of, only spell damage, so we need anti spam.
 		lastSeeds = GetTime()
-		warnMoltenSeed:Show()--Not sure if this damage is the cast, or the explosion 10 seconds after, so not sure if warn here, or schedule warn in 50 seconds. will have to pull once and see.
+		warnMoltenSeed:Show()--This only fires if players are not spread properly.
 		specWarnMoltenSeed:Show()--^^
 		timerMoltenSeed:Start()--^^
 		timerMoltenSeedCD:Start()
