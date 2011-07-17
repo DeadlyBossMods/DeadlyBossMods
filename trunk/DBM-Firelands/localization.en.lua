@@ -22,7 +22,7 @@ L:SetOptionLocalization({
 	timerNextInitiate	= "Show a timer for next Blazing Talon Initiate",
 	TimerPhaseChange	= "Show a timer till next phase",
 	TimerHatchEggs		= "Show a timer till next eggs are hatched",
-	InfoFrame			= "Show info frame for Blazing Power"
+	InfoFrame			= "Show info frame for Molten Feather"
 })
 
 L:SetMiscLocalization({
@@ -33,7 +33,7 @@ L:SetMiscLocalization({
 	YellInitiate4	= "Witness the majesty of flame!",
 	YellPhase2		= "These skies are MINE!",
 	LavaWorms		= "Fiery Lava Worms erupt from the ground!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
-	PowerLevel		= "Blazing Power"
+	PowerLevel		= "Molten Feathers"
 })
 
 -------------------
