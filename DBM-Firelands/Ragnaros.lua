@@ -174,10 +174,10 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98710, 100890, 100891, 100892) then
 		if phase == 1 then
 			timerSulfurasSmash:Start(30)--30 second cd in phase 1.
+			timerWrathRagnaros:Start()
 		else
 			timerSulfurasSmash:Start()
 		end
-		timerWrathRagnaros:Start()
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
