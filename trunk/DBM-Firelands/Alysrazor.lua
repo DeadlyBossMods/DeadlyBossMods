@@ -60,6 +60,7 @@ function mod:OnCombatStart(delay)
 		timerFieryVortexCD:Start(250-delay)--Probably not right.
 		timerCataclysmCD:Start(32-delay)
 		timerHatchEggs:Start(42-delay)
+		timerFirestormCD:Start(88-delay)
 	else
 		timerFieryVortexCD:Start(-delay)
 		timerHatchEggs:Start(50-delay)
