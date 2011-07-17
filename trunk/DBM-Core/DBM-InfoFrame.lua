@@ -331,7 +331,6 @@ local function updateBadPlayerDebuffs()
 end
 
 local function updatePlayerBuffStacks()
---	lastStacks = lines
 	table.wipe(lines)
 	updateIcons()	-- update Icons first in case of an "icon modifier"
 	if GetNumRaidMembers() > 0 then
@@ -367,7 +366,12 @@ local function updatePlayerBuffStacks()
 			end
 		end
 	end
-	lastStacks = lines		-- Should it be 'copied' here to have a valid "return" for lines 317/329/338 instead of at the begin of this function?
+
+	table.wipe(lastStacks)		-- 'Erase' the old table, and copy the current values into it
+	for k,v in pairs(lines) do
+		lastStacks[k] = v
+	end
+
 	updateLines()
 end
 
