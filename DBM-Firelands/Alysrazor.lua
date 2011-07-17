@@ -24,8 +24,9 @@ mod:RegisterEvents(
 )
 
 local warnMolting		= mod:NewSpellAnnounce(99464, 3)
-local warnFirestorm		= mod:NewSpellAnnounce(100744, 3)
-local warnCataclysm		= mod:NewCastAnnounce(102111, 4)
+local warnFirestormSoon	= mod:NewPreWarnAnnounce(100744, 10, 3)
+local warnFirestorm		= mod:NewSpellAnnounce(100744, 4)
+local warnCataclysm		= mod:NewCastAnnounce(102111, 3)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
 local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3, 61131)
 
@@ -61,6 +62,7 @@ function mod:OnCombatStart(delay)
 		timerCataclysmCD:Start(32-delay)
 		timerHatchEggs:Start(42-delay)
 		timerFirestormCD:Start(88-delay)
+		warnFirestormSoon:Schedule(78-delay)
 	else
 		timerFieryVortexCD:Start(-delay)
 		timerHatchEggs:Start(50-delay)
@@ -121,6 +123,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnFirestorm:Show()
 		if CataCast < 3 then--Firestorm is only cast 2 times per phase. This essencially makes cd bar only start once.
 			timerFirestormCD:Start()
+			warnFirestormSoon:Cancel()--Just in case it's wrong. WoL may not be perfect, i'll have full transcriptor logs soon.
+			warnFirestormSoon:Schedule(68)
 		end
 	end
 end
@@ -188,6 +192,7 @@ function mod:UNIT_POWER(uId)
 				timerHatchEggs:Start(31)--Guesswork. No idea what this is in herioc yet. didn't get that far on first pull. But it's going to be shorter for sure.
 				timerCataclysmCD:Start(18)
 				timerFirestormCD:Start(70)
+				warnFirestormSoon:Schedule(60)
 				CataCast = 0
 			else
 				timerFieryVortexCD:Start(180)
