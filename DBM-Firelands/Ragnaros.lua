@@ -89,9 +89,6 @@ local function hideRangeFrame()
 	if mod.Options.RangeFram then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
-	end
 end
 
 local function clearSeedsActive()
@@ -154,8 +151,11 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if mod.Options.RangeFrame then
+	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
