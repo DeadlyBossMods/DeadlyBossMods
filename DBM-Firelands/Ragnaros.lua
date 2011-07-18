@@ -86,7 +86,7 @@ local function showRangeFrame()
 end
 
 local function hideRangeFrame()
-	if mod.Options.RangeFram then
+	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
 end
