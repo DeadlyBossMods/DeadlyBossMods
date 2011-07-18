@@ -17,10 +17,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
---	"RAID_BOSS_EMOTE",
-	"CHAT_MSG_MONSTER_YELL",
-	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-	"UNIT_POWER"
+	"RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnMolting		= mod:NewSpellAnnounce(99464, 3)
@@ -40,39 +38,34 @@ local timerFieryVortexCD	= mod:NewNextTimer(195, 99794)
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
 local timerCataclysmCD		= mod:NewCDTimer(31, 102111)--Heroic
-local timerFirestormCD		= mod:NewCDTimer(78, 100744)--Heroic
+local timerFirestormCD		= mod:NewCDTimer(83, 100744)--Heroic
 local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
-local phase = 1
 local initiatesSpawned = 0
 local CataCast = 0
-local eggsHatched = 0
-local eggsSpam = 0
 
 --Credits to public WoL http://www.worldoflogs.com/reports/rt-qy30xgzau5w12aae/xe/?enc=bosses&boss=52530&x=spell+%3D+%22Cataclysm%22+or+spell+%3D+%22Burnout%22+or+spell+%3D+%22Firestorm%22+and+%28fulltype+%3D+SPELL_CAST_SUCCESS+or+fulltype+%3D+SPELL_CAST_START+or+fulltype+%3D+SPELL_AURA_APPLIED++or+fulltype+%3D+SPELL_AURA_REMOVED%29
 --For heroic information drycodes.
 
 function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic10", "heroic25") then
-		timerFieryVortexCD:Start(250-delay)--Probably not right.
+		timerFieryVortexCD:Start(243-delay)--Probably not right.
 		timerCataclysmCD:Start(32-delay)
 		timerHatchEggs:Start(42-delay)
-		timerFirestormCD:Start(88-delay)
-		warnFirestormSoon:Schedule(78-delay)
+		timerFirestormCD:Start(94-delay)
+		warnFirestormSoon:Schedule(84-delay)
+		timerHatchEggs:Start(37-delay)
 	else
 		timerFieryVortexCD:Start(-delay)
-		timerHatchEggs:Start(50-delay)
+		timerHatchEggs:Start(46-delay)
 	end
-	timerNextInitiate:Start(27-delay)
-	phase = 1
+	timerNextInitiate:Start(27-delay)--First one is same on both difficulties.
 	initiatesSpawned = 0
 	CataCast = 0
-	eggsHatched = 0
-	eggsSpam = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PowerLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
@@ -93,16 +86,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGushingWoundSelf:Show()
 		end
+	elseif args:IsSpellID(99432) then--Burnout applied (0 energy)
+		warnPhase:Show(3)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(100744) then--Firestorm removed from boss. No reason for a heroic check here, this shouldn't happen on normal.
+		timerHatchEggs:Start(16.5)
 		if CataCast < 3 then
 			timerCataclysmCD:Start(10)--10 seconds after first firestorm ends
 		else
-			timerCataclysmCD:Start(20)--20 seconds after second one ends.
+			timerCataclysmCD:Start(20)--20 seconds after second one ends. (or so i thought, my new logs show only 4 cataclysms not 5. wtf. I hate inconsistencies
 		end
+	elseif args:IsSpellID(99432) then--Burnout removed (50 energy)
+		warnPhase:Show(4)
 	end
 end
 
@@ -124,7 +122,7 @@ function mod:SPELL_CAST_START(args)
 		if CataCast < 3 then--Firestorm is only cast 2 times per phase. This essencially makes cd bar only start once.
 			timerFirestormCD:Start()
 			warnFirestormSoon:Cancel()--Just in case it's wrong. WoL may not be perfect, i'll have full transcriptor logs soon.
-			warnFirestormSoon:Schedule(68)
+			warnFirestormSoon:Schedule(73)
 		end
 	end
 end
@@ -135,69 +133,54 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnMolting:Show()
 			timerMoltingCD:Start()
 		end
-		if phase ~= 1 then
-			phase = 1
-		end
 	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then
+	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then--Basically the pre warn to feiry vortex
 		warnPhase:Show(2)
 		timerMoltingCD:Cancel()
 		timerPhaseChange:Start(30, 3)
-		phase = 2
 		initiatesSpawned = 0
 	--Yes it's ugly, but it works.
 	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiatesSpawned)
-		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
-		if initiatesSpawned < 3 then
-			timerNextInitiate:Start(32)
-		else
-			timerNextInitiate:Start(20)
-		end
-	end
-end
-
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(msg)--This is not conventional but it's required for heroic. on heroic you get 3 sets, not 1, but only the first set does emote. :\
-	if mod:IsDifficulty("heroic10", "heroic25") and self:IsInCombat() and GetTime() - eggsSpam > 5 then--Hopefully isincombat is enough to keep this from firing all over the place!
-		eggsSpam = GetTime()
-		eggsHatched = eggsHatched + 1
-		if eggsHatched < 3 then
-			timerHatchEggs:Start(35)
-		end
-	end
-end
-
-function mod:UNIT_POWER(uId)
-	if uId == "boss1" then
-		local p = UnitPower(uId, ALTERNATE_POWER_INDEX) / UnitPowerMax(uId, ALTERNATE_POWER_INDEX) * 100
---"<485.7> [CLEU] SPELL_AURA_APPLIED#false#0xF150CD320000B106#Alysrazor#133704#0#0xF150CD320000B106#Alysrazor#133704#0#99432#Burnout#8#BUFF", -- [81748]
-		if p == 0 then		-- Seems to drop instantly from 100 -> 0
-			warnPhase:Show(3)
-			phase = 3
---"<512.9> [RAID_BOSS_EMOTE] RAID_BOSS_EMOTE#|TInterface\\Icons\\inv_elemental_primal_fire.blp:20|t Alysrazor's firey core |cFFFF0000|Hspell:99922|h[Re-Ignites]|h|r!#Alysrazor#0#false", -- [84882]
-		elseif phase == 3 and p >= 50 then
-			warnPhase:Show(4)
-			phase = 4
---"<539.8> [RAID_BOSS_EMOTE] RAID_BOSS_EMOTE#|TInterface\\Icons\\spell_shaman_improvedfirenova.blp:20|t Alysrazor is at |cFFFF0000|Hspell:99925|h[Full Power]|h|r!#Alysrazor#0#false", -- [89245]
-		elseif phase == 4 and p == 100 then
-			warnPhase:Show(1)
-			phase = 1
-			eggsHatched = 0
-			if mod:IsDifficulty("heroic10", "heroic25") then
-				timerFieryVortexCD:Start(225)--Probably not right.
-				timerHatchEggs:Start(31)--Guesswork. No idea what this is in herioc yet. didn't get that far on first pull. But it's going to be shorter for sure.
-				timerCataclysmCD:Start(18)
-				timerFirestormCD:Start(70)
-				warnFirestormSoon:Schedule(60)
-				CataCast = 0
-			else
-				timerFieryVortexCD:Start(180)
-				timerHatchEggs:Start(39)
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			if initiatesSpawned == 1 then
+				timerNextInitiate:Start(22)
+			elseif initiatesSpawned == 2 then
+				timerNextInitiate:Start(63)
+			elseif initiatesSpawned == 3 then
+				timerNextInitiate:Start(42)
+			elseif initiatesSpawned == 4 then
+				timerNextInitiate:Start(40)
 			end
+		else
+			if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
+			if initiatesSpawned < 3 then
+				timerNextInitiate:Start(32)
+			else
+				timerNextInitiate:Start(20)
+			end	
+		end
+	end
+end
+
+function mod:RAID_BOSS_EMOTE(msg)
+	if msg == L.FullPower or msg:find(L.FullPower) then
+		warnPhase:Show(1)
+		timerNextInitiate:Start(13.5)--Seems same on both.
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			timerFieryVortexCD:Start(225)--Probably not right.
+			timerHatchEggs:Start(22)
+			timerCataclysmCD:Start(18)
+			timerFirestormCD:Start(70)
+			warnFirestormSoon:Schedule(60)
+			CataCast = 0
+		else
+			timerFieryVortexCD:Start(180)
+			timerHatchEggs:Start(28)
 		end
 	end
 end
