@@ -26,7 +26,7 @@ local warnMolting		= mod:NewSpellAnnounce(99464, 3)
 local warnFirestormSoon	= mod:NewPreWarnAnnounce(100744, 10, 3)
 local warnFirestorm		= mod:NewSpellAnnounce(100744, 4)
 local warnCataclysm		= mod:NewCastAnnounce(102111, 3)
-local warnPhase			= mod:NewAnnounce("WarnPhase", 3)
+local warnPhase			= mod:NewAnnounce("WarnPhase", 3, "Interface\\Icons\\Spell_Nature_WispSplode")
 local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3, 61131)
 
 local specWarnFirestorm			= mod:NewSpecialWarningSpell(100744, nil, nil, nil, true)
@@ -55,7 +55,7 @@ local CataCast = 0
 --For heroic information drycodes.
 
 function mod:OnCombatStart(delay)
-	if mod:IsDifficulty("heroic10", "heroic25") then
+	if self:IsDifficulty("heroic10", "heroic25") then
 		timerFieryVortexCD:Start(243-delay)--Probably not right.
 		timerCataclysmCD:Start(32-delay)
 		timerHatchEggs:Start(42-delay)
@@ -82,7 +82,7 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and mod:IsTank()) or not mod:IsTank()) then--Only give tantrum warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
+	if args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--Only give tantrum warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
 		specWarnTantrum:Show()
 	elseif args:IsSpellID(99308) then--Gushing Wound
 		specWarnGushingWoundOther:Show(args.destName)
@@ -142,7 +142,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(99464, 100698, 100836, 100837) then	--99464, 100698 confirmed
-		if mod:IsDifficulty("normal10", "normal25") then--She does this during firestorm on heroic. So only warn for one of them.
+		if self:IsDifficulty("normal10", "normal25") then--She does this during firestorm on heroic. So only warn for one of them.
 			warnMolting:Show()
 			timerMoltingCD:Start()
 		end
@@ -159,7 +159,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiatesSpawned)
-		if mod:IsDifficulty("heroic10", "heroic25") then
+		if self:IsDifficulty("heroic10", "heroic25") then
 			if initiatesSpawned == 1 then
 				timerNextInitiate:Start(22)
 			elseif initiatesSpawned == 2 then
@@ -184,7 +184,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.FullPower or msg:find(L.FullPower) then
 		warnPhase:Show(1)
 		timerNextInitiate:Start(13.5)--Seems same on both.
-		if mod:IsDifficulty("heroic10", "heroic25") then
+		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFieryVortexCD:Start(225)--Probably not right.
 			timerHatchEggs:Start(22)
 			timerCataclysmCD:Start(18)

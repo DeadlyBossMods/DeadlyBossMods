@@ -87,7 +87,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
 		timerWindBlastCD:Start(30-delay)
-		if mod:IsDifficulty("heroic10", "heroic25") then
+		if self:IsDifficulty("heroic10", "heroic25") then
 			timerStormShieldCD:Start(30-delay)
 		end
 	end
@@ -164,7 +164,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(85422) then
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			warnNurture:Show()
-			if mod:IsDifficulty("heroic10", "heroic25") then
+			if self:IsDifficulty("heroic10", "heroic25") then
 				timerPoisonToxicCD:Start()
 			end
 		end
@@ -218,11 +218,11 @@ end
 
 -- Posion Toxic can do casts during stun, so if Poison Toxic cancelled, Next Poision Toxic timer known by boss`s power.
 function mod:UNIT_POWER(uId)
-	if self:GetUnitCreatureId(uId) == 45870 and UnitPower(uId) == 62 and poisonCounter == 0 and mod:IsDifficulty("heroic10", "heroic25") then
+	if self:GetUnitCreatureId(uId) == 45870 and UnitPower(uId) == 62 and poisonCounter == 0 and self:IsDifficulty("heroic10", "heroic25") then
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then
 			timerPoisonToxicCD:Start(10)
 		end
-	elseif self:GetUnitCreatureId(uId) == 45870 and UnitPower(uId) == 79 and mod:IsDifficulty("heroic10", "heroic25") then
+	elseif self:GetUnitCreatureId(uId) == 45870 and UnitPower(uId) == 79 and self:IsDifficulty("heroic10", "heroic25") then
 		timerPoisonToxicCD:Cancel()
 	end
 end
@@ -237,7 +237,7 @@ function mod:OnSync(msg, boss)
 	if msg == "GatherStrength" and self:IsInCombat() then
 		warnGatherStrength:Show(boss)
 		if not GatherStrengthwarned then
-			if mod:IsDifficulty("heroic10", "heroic25") then
+			if self:IsDifficulty("heroic10", "heroic25") then
 				timerGatherStrength:Start(boss)
 			else
 				timerGatherStrength:Start(120, boss)--2 minutes on normal as of 4.2

@@ -74,7 +74,7 @@ function mod:OnCombatStart(delay)
 	timerAirphase:Start(90-delay)
 	shieldsLeft = 10
 	pesteredWarned = false
-	if mod:IsDifficulty("heroic10", "heroic25") then
+	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
 	end
 	if self.Options.InfoFrame then
