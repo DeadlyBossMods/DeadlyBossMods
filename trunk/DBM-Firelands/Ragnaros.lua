@@ -9,7 +9,7 @@ mod:SetUsedIcons(7, 8)
 mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.wav", "Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_KILL_03.wav")
 --Long: blah blah blah (didn't feel like transcribing it)
 --Short: This is my realm
-
+print('foo')
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -175,6 +175,9 @@ function mod:SPELL_CAST_START(args)
 		if phase == 1 then
 			timerSulfurasSmash:Start(30)--30 second cd in phase 1.
 			timerWrathRagnaros:Start()
+		elseif phase == 2 then
+			timerMoltenSeedCD:Start(11)
+			timerMoltenSeed:Start(21)
 		else
 			timerSulfurasSmash:Start()
 		end
@@ -253,13 +256,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 25 then--This has no cast trigger to speak of, only spell damage, so we need anti spam.
+	--if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 25 then--This has no cast trigger to speak of, only spell damage, so we need anti spam.
+	if args:IsSpellID(98518, 100252, 100254) and GetTime() - lastSeeds > 25 then
 		lastSeeds = GetTime()
 		seedsActive = true
-		warnMoltenSeed:Show()--This only fires if players are not spread properly.
-		specWarnMoltenSeed:Show()--^^
-		timerMoltenSeed:Start()--^^
-		timerMoltenSeedCD:Start()
+		--warnMoltenSeed:Show()--This only fires if players are not spread properly.
+		--specWarnMoltenSeed:Show()--^^
+		timerMoltenSeed:Start(60)--^^
+		timerMoltenSeedCD:Start(50)
 		self:Schedule(20, clearSeedsActive)--Clear active seeds after they have all blown up.
 	end
 end
