@@ -9,7 +9,6 @@ mod:SetUsedIcons(7, 8)
 mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.wav", "Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_KILL_03.wav")
 --Long: blah blah blah (didn't feel like transcribing it)
 --Short: This is my realm
-print('foo')
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -148,6 +147,7 @@ function mod:OnCombatStart(delay)
 	phase2Started = false
 	phase3Started = false
 	seedsActive = false
+	firstMoltenSeedTimer = false
 	showRangeFrame()
 end
 
