@@ -69,7 +69,7 @@ local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
 local phase2Started = false
-local phase23tarted = false
+local phase3Started = false
 local blazingHeatIcon = 8
 local seedsActive = false
 
@@ -103,7 +103,7 @@ local function TransitionEnded()
 			--Heroics timers are different, but WoL has 0 public logs, so don't know what they are yet.
 			--[[timerFlamesCD:Start(43)
 			timerMoltenSeedCD:Start(25)
-			timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)--]]
+			timerSulfurasSmash:Start(18)--]]
 		else
 			timerFlamesCD:Start(43)
 			timerMoltenSeedCD:Start(25)
@@ -145,7 +145,7 @@ function mod:OnCombatStart(delay)
 	prewarnedPhase3 = false
 	blazingHeatIcon = 8
 	phase2Started = false
-	phase23tarted = false
+	phase3Started = false
 	seedsActive = false
 	showRangeFrame()
 end
@@ -179,6 +179,8 @@ function mod:SPELL_CAST_START(args)
 			timerSulfurasSmash:Start()
 		end
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
+		sonsDied = 0
+		phase = phase + 1
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
 		timerHandRagnaros:Cancel()
@@ -186,8 +188,6 @@ function mod:SPELL_CAST_START(args)
 		hideRangeFrame()
 		timerPhaseSons:Start(45)--Is this 45 second from spell cast start or spell cast end?
 		self:Schedule(45, TransitionEnded)--^^
-		sonsDied = 0
-		phase = phase + 1
 		specWarnSplittingBlow:Show()
 		--Middle: 98952 (10N), 100877 (25N) (Guessed: 100878, 100879)
 		--East: 98953 (10N), 100880 (25N) (Guessed: 100881, 100882)
