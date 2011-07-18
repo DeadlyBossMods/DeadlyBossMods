@@ -99,17 +99,13 @@ local function TransitionEnded()
 	timerPhaseSons:Cancel()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
-		if mod:IsDifficulty("heroic10", "heroic25") then
-			timerFlamesCD:Start(8)
-			timerMoltenSeedCD:Start(25)
-			specWarnMoltenSeed:Schedule(25)--^^
-			timerMoltenSeed:Schedule(25)--^^
-			timerSulfurasSmash:Start(18)
-		else
-			timerFlamesCD:Start(43)
-			timerMoltenSeedCD:Start(25)
-			timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
-		end
+		timerFlamesCD:Start(8)
+		timerMoltenSeedCD:Start(25)
+		specWarnMoltenSeed:Schedule(25)--^^
+		timerMoltenSeed:Schedule(25)--^^
+		timerSulfurasSmash:Start(18)
+		timerFlamesCD:Start(43)
+		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
 		phase3Started = true
