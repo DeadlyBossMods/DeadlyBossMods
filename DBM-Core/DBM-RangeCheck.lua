@@ -644,7 +644,7 @@ do
 				dots[id].icon = nil
 			end
 		end
-		if range < 1.05 * frame.range and not filtered then		-- add an  extra 5% in case of inaccuracy
+		if range < 1.10 * frame.range and not filtered then		-- add an  extra 10% in case of inaccuracy
 			dots[id].tooClose = true
 		else
 			dots[id].tooClose = false
