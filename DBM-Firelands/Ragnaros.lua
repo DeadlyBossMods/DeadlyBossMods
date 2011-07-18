@@ -9,6 +9,7 @@ mod:SetUsedIcons(7, 8)
 mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.wav", "Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_KILL_03.wav")
 --Long: blah blah blah (didn't feel like transcribing it)
 --Short: This is my realm
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -39,6 +40,7 @@ local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
 local specWarnMagmaTrap		= mod:NewSpecialWarningMove(98164)
 local yellMagmaTrap			= mod:NewYell(98164)--May Return false tank yells
 local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
+local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability
@@ -61,7 +63,6 @@ mod:AddBoolOption("BlazingHeatIcons", true)
 mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
-local lastSeeds = 0
 local lastMeteor = 0
 local sonsDied = 0
 local phase = 1
@@ -71,7 +72,6 @@ local phase2Started = false
 local phase3Started = false
 local blazingHeatIcon = 8
 local seedsActive = false
-local firstMoltenSeedTimer = false
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
@@ -100,10 +100,11 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			--Heroics timers are different, but WoL has 0 public logs, so don't know what they are yet.
-			--[[timerFlamesCD:Start(43)
-			timerMoltenSeedCD:Start(25)
-			timerSulfurasSmash:Start(18)--]]
+			timerFlamesCD:Start(8)
+			timerMoltenSeedCD:Start(18)
+			specWarnMoltenSeed:Schedule(18)--^^
+			timerMoltenSeed:Schedule(18)--^^
+			timerSulfurasSmash:Start(18)
 		else
 			timerFlamesCD:Start(43)
 			timerMoltenSeedCD:Start(25)
@@ -137,7 +138,6 @@ function mod:OnCombatStart(delay)
 	timerMagmaTrap:Start(16-delay)
 	timerSulfurasSmash:Start(30-delay)
 	wrathRagSpam = 0
-	lastSeeds = 0
 	lastMeteor = 0
 	sonsDied = 0
 	phase = 1
@@ -147,7 +147,6 @@ function mod:OnCombatStart(delay)
 	phase2Started = false
 	phase3Started = false
 	seedsActive = false
-	firstMoltenSeedTimer = false
 	showRangeFrame()
 end
 
@@ -167,6 +166,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBurningWound:Show(args.amount)
 		end
 		timerBurningWound:Start(args.destName)
+	elseif args:IsSpellID(100171, 100190) then--World of Flames, heroic trigger for engulfing flames. CD timing is not known for this on heroic yet. Assumed same as normal for now.
+		specWarnWorldofFlames:Show()
+		if phase == 3 then
+			timerFlamesCD:Start(30)--30 second CD in phase 3
+		else
+			timerFlamesCD:Start()--40 second CD in phase 2
+		end
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -176,10 +182,6 @@ function mod:SPELL_CAST_START(args)
 		if phase == 1 then
 			timerSulfurasSmash:Start(30)--30 second cd in phase 1.
 			timerWrathRagnaros:Start()
-		elseif phase == 2 and not firstMoltenSeedTimer then
-			firstMoltenSeedTimer = true
-			timerMoltenSeed:Schedule(11)
-			timerMoltenSeedCD:Start(11)
 		else
 			timerSulfurasSmash:Start()
 		end
@@ -191,8 +193,13 @@ function mod:SPELL_CAST_START(args)
 		timerHandRagnaros:Cancel()
 		timerWrathRagnaros:Cancel()
 		hideRangeFrame()
-		timerPhaseSons:Start(45)--Is this 45 second from spell cast start or spell cast end?
-		self:Schedule(45, TransitionEnded)--^^
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerPhaseSons:Start(60)--Longer on heroic
+			self:Schedule(60, TransitionEnded)
+		else
+			timerPhaseSons:Start(45)
+			self:Schedule(45, TransitionEnded)
+		end
 		specWarnSplittingBlow:Show()
 		--Middle: 98952 (10N), 100877 (25N) (Guessed: 100878, 100879)
 		--East: 98953 (10N), 100880 (25N) (Guessed: 100881, 100882)
@@ -210,9 +217,9 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerFlamesCD:Start()--40 second CD in phase 2
 		end
-		--North: 99172 (10N), 100175 (25N) (Guessed Heroic ID: 100176, 100177)
-		--Middle: 99235 (10N), 100178 (25N) (Guessed Heroic ID: 100179, 100180)
-		--South: 99236 (10N), 100181 (25N) (Guessed Heroic ID: 100182, 100183)
+		--North: 99172 (10N), 100175 (25N)
+		--Middle: 99235 (10N), 100178 (25N)
+		--South: 99236 (10N), 100181 (25N)
 		if args:IsSpellID(99172, 100175) then--North
 			warnEngulfingFlame:Show(args.spellName, L.North)
 			if self:IsMelee() or seedsActive then--Always warn melee classes if it's in melee (duh), warn everyone if seeds are active since 90% of strats group up in melee
@@ -258,13 +265,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	--if args:IsSpellID(98495) or args:IsSpellID(98498, 100579, 100580, 100581) and GetTime() - lastSeeds > 25 then--This has no cast trigger to speak of, only spell damage, so we need anti spam.
-	if args:IsSpellID(98518, 100252, 100254) and GetTime() - lastSeeds > 25 then
-		lastSeeds = GetTime()
+	if args:IsSpellID(98498, 100579) and not seedsActive then--trigger spell 98495 doesn't show in combat log :\. This only fires if players are not spread properly but is most accurate detection of cast.
 		seedsActive = true
+		--Cancel any scheduled crap from inferno since someone was bad and didn't spread we got a more accurate trigger then the scheduled ones.
+		warnMoltenSeed:Cancel()
+		specWarnMoltenSeed:Cancel()
+		timerMoltenSeed:Cancel()
+		warnMoltenSeed:Show()
+		specWarnMoltenSeed:Show()--^^
+		timerMoltenSeed:Start()--^^
+		timerMoltenSeedCD:Start()
+	elseif args:IsSpellID(98518, 100252, 100253, 100254) then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one as it will always fire.
+		--This will fire about 100 times so we are gonna spam schedule and cancel, but it's most accurate way to do it, we can't filter it cause the timer starts after the LAST one goes off not first.
+		warnMoltenSeed:Cancel()
+		specWarnMoltenSeed:Cancel()
+		timerMoltenSeed:Cancel()
+		warnMoltenSeed:Schedule(50)
+		specWarnMoltenSeed:Schedule(50)
 		timerMoltenSeed:Schedule(50)
 		timerMoltenSeedCD:Start(50)
-		self:Schedule(20, clearSeedsActive)--Clear active seeds after they have all blown up.
+		self:Unschedule(clearSeedsActive)
+		self:Schedule(5, clearSeedsActive)--Clear active seeds after they have all blown up.
 	end
 end
 
