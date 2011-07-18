@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
@@ -43,6 +44,7 @@ local timerFirestormCD		= mod:NewCDTimer(83, 100744)--Heroic
 local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
+local timerWingsofFlame		= mod:NewBuffActiveTimer(20, 98619)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
@@ -89,6 +91,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(99432) then--Burnout applied (0 energy)
 		warnPhase:Show(3)
+	elseif args:IsSpellID(98619) and args:IsPlayer() then
+		timerWingsofFlame:Start()
+	end
+end
+
+function mod:SPELL_AURA_REFRESH(args)
+	if args:IsSpellID(98619) and args:IsPlayer() then
+		timerWingsofFlame:Start()
 	end
 end
 
