@@ -39,7 +39,6 @@ mod:AddBoolOption("RangeFrameSeeds", true)
 mod:AddBoolOption("RangeFrameCat", false)--Diff options for each ability cause seeds strat is pretty universal, don't blow up raid, but leaps may or may not use a stack strategy, plus melee will never want it on by default.
 mod:AddBoolOption("IconOnLeapingFlames", false)
 
-
 local abilitySpam = 0	-- Cat ability happens twice in a row (2 combat log events), but using it for both just in case :)
 local abilityCount = 0
 local transforms = 0
@@ -113,9 +112,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif args:IsSpellID(97238) then
-		if abilityCount < (args.amount or 1) then--It means for whatever reason your mod missed some stacks, probalby a DC
+--[[		if abilityCount < (args.amount or 1) then--It means for whatever reason your mod missed some stacks, probalby a DC
 			abilityCount = (args.amount or 1)--This should change your ability account to his current stack.
-		end
+		end--]]
 		warnAdrenaline:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
