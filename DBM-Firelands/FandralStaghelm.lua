@@ -97,11 +97,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(98374) then		-- Cat Form (99574? maybe the form id for druids with staff)
 		transforms = transforms + 1
-		if mod:IsDifficulty("heroic10", "heroic25") then
-			abilityCount = 1
-		else
-			abilityCount = 0
-		end
+		abilityCount = (mod:IsDifficulty("heroic10", "heroic25") and 1) or 0
 		timerFlameScythe:Cancel()
 		timerLeapingFlames:Start(leapTimers[abilityCount])
 		if self.Options.RangeFrameCat then
@@ -109,11 +105,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(98379) then	-- Scorpion Form
 		transforms = transforms + 1
-		if mod:IsDifficulty("heroic10", "heroic25") then
-			abilityCount = 1
-		else
-			abilityCount = 0
-		end
+		abilityCount = (mod:IsDifficulty("heroic10", "heroic25") and 1) or 0
 		timerLeapingFlames:Cancel()
 		timerFlameScythe:Start(scytheTimers[abilityCount])
 		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
