@@ -49,7 +49,7 @@ local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might
 local timerWrathRagnaros	= mod:NewNextTimer(12, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
 local timerFlamesCD			= mod:NewCDTimer(40, 99171)
-local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)
+local timerMoltenSeedCD		= mod:NewCDTimer(63, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
@@ -102,7 +102,7 @@ local function TransitionEnded()
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerFlamesCD:Start(8)
 			timerMoltenSeedCD:Start(18)
-			specWarnMoltenSeed:Schedule(18)--^^
+			specWarnMoltenSeed:Schedule(21)--^^
 			timerMoltenSeed:Schedule(18)--^^
 			timerSulfurasSmash:Start(18)
 		else
@@ -275,15 +275,19 @@ function mod:SPELL_DAMAGE(args)
 		specWarnMoltenSeed:Show()--^^
 		timerMoltenSeed:Start()--^^
 		timerMoltenSeedCD:Start()
-	elseif args:IsSpellID(98518, 100252, 100253, 100254) then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one as it will always fire.
-		--This will fire about 100 times so we are gonna spam schedule and cancel, but it's most accurate way to do it, we can't filter it cause the timer starts after the LAST one goes off not first.
+		warnMoltenSeed:Schedule(63)
+		specWarnMoltenSeed:Schedule(63)
+		timerMoltenSeed:Schedule(63)
+		self:Schedule(15, clearSeedsActive)--Clear active seeds after they have all blown up.
+	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one as it will always fire.
+		seedsActive = true
 		warnMoltenSeed:Cancel()
 		specWarnMoltenSeed:Cancel()
 		timerMoltenSeed:Cancel()
-		warnMoltenSeed:Schedule(50)
-		specWarnMoltenSeed:Schedule(50)
-		timerMoltenSeed:Schedule(50)
-		timerMoltenSeedCD:Start(50)
+		warnMoltenSeed:Schedule(53)
+		specWarnMoltenSeed:Schedule(53)
+		timerMoltenSeed:Schedule(53)
+		timerMoltenSeedCD:Start(53)
 		self:Unschedule(clearSeedsActive)
 		self:Schedule(5, clearSeedsActive)--Clear active seeds after they have all blown up.
 	end
