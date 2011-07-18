@@ -72,6 +72,7 @@ local phase2Started = false
 local phase3Started = false
 local blazingHeatIcon = 8
 local seedsActive = false
+local firstMoltenSeedTimer = false
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
@@ -175,9 +176,10 @@ function mod:SPELL_CAST_START(args)
 		if phase == 1 then
 			timerSulfurasSmash:Start(30)--30 second cd in phase 1.
 			timerWrathRagnaros:Start()
-		elseif phase == 2 then
+		elseif phase == 2 and not firstMoltenSeedTimer then
+			firstMoltenSeedTimer = true
+			timerMoltenSeed:Schedule(11)
 			timerMoltenSeedCD:Start(11)
-			timerMoltenSeed:Start(21)
 		else
 			timerSulfurasSmash:Start()
 		end
@@ -260,9 +262,7 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(98518, 100252, 100254) and GetTime() - lastSeeds > 25 then
 		lastSeeds = GetTime()
 		seedsActive = true
-		--warnMoltenSeed:Show()--This only fires if players are not spread properly.
-		--specWarnMoltenSeed:Show()--^^
-		timerMoltenSeed:Start(60)--^^
+		timerMoltenSeed:Schedule(50)
 		timerMoltenSeedCD:Start(50)
 		self:Schedule(20, clearSeedsActive)--Clear active seeds after they have all blown up.
 	end
