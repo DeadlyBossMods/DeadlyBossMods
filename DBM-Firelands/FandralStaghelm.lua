@@ -95,9 +95,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(98374) then		-- Cat Form (99574? maybe the form id for druids with is heroic staff)
+	if args:IsSpellID(98374) then		-- Cat Form (99574? maybe the form id for druids with staff)
 		transforms = transforms + 1
-		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			abilityCount = 1
+		else
+			abilityCount = 0
+		end
 		timerFlameScythe:Cancel()
 		timerLeapingFlames:Start(leapTimers[abilityCount])
 		if self.Options.RangeFrameCat then
@@ -105,16 +109,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(98379) then	-- Scorpion Form
 		transforms = transforms + 1
-		abilityCount = (1 and mod:IsDifficulty("heroic10", "heroic25")) or 0
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			abilityCount = 1
+		else
+			abilityCount = 0
+		end
 		timerLeapingFlames:Cancel()
 		timerFlameScythe:Start(scytheTimers[abilityCount])
 		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
 			DBM.RangeCheck:Hide()
 		end
 	elseif args:IsSpellID(97238) then
---[[		if abilityCount < (args.amount or 1) then--It means for whatever reason your mod missed some stacks, probalby a DC
+		if abilityCount < (args.amount or 1) then--It means for whatever reason your mod missed some stacks, probalby a DC
 			abilityCount = (args.amount or 1)--This should change your ability account to his current stack.
-		end--]]
+		end
 		warnAdrenaline:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
