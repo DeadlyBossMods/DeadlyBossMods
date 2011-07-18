@@ -39,34 +39,21 @@ mod:AddBoolOption("RangeFrameSeeds", true)
 mod:AddBoolOption("RangeFrameCat", false)--Diff options for each ability cause seeds strat is pretty universal, don't blow up raid, but leaps may or may not use a stack strategy, plus melee will never want it on by default.
 mod:AddBoolOption("IconOnLeapingFlames", false)
 
-local abilitySpam = 0	-- Cat ability happens twice in a row (2 combat log events), but using it for both just in case :)
 local abilityCount = 0
 local transforms = 0
-local scytheTimers = {
-	[0] = 17.4,
-	[1] = 12.7,--this is always 12.7 despite the 13.4 leaps have.
-	[2] = 11,
-	[3] = 8.6,
-	[4] = 7.4,
-	[5] = 7.3,
-	[6] = 6.1,
+--http://www.worldoflogs.com/reports/xesfs08iq6xdu6l9/xe/?s=6594&e=7052&x=spell+%3D+%22Flame+Scythe%22+and+fulltype+%3D+SPELL_CAST_SUCCESS+or+spellId+%3D+98476+and+fulltype+%3D+SPELL_CAST_SUCCESS+or+spell+%3D+%22Cat+Form%22+and+sourcereaction%3DREACTION_HOSTILE+or+spell+%3D+%22Scorpion+Form%22+and+sourcereaction%3DREACTION_HOSTILE
+local abilityTimers = {
+	[0] = 17.3,--Sometimes this is 16.7
+	[1] = 13.4,--Sometimes this is 12.7 sigh. Wonder what causes this variation?
+	[2] = 11,--One of the few you can count on being consistent.
+	[3] = 8.6,--Really it's between 8.5 and 8.6
+	[4] = 7.4,--Sometimes 8 instead of 7.3-7.4
+	[5] = 7.4,--Varies from 7.3 or 7.4 as well
+	[6] = 6.1,--Varies between 6 even and 6.1 even.
 	[7] = 6.1,
 	[8] = 4.9,
 	[9] = 4.9,
-	[10]= 4.8
-}
-local leapTimers = {
-	[0] = 17.4,
-	[1] = 13.4,--Variation from scythetimers, this is always 13.4 on leaps instead of 12.7
-	[2] = 11,
-	[3] = 8.6,
-	[4] = 7.4,
-	[5] = 7.3,
-	[6] = 6.1,
-	[7] = 6.1,
-	[8] = 4.9,
-	[9] = 4.9,
-	[10]= 4.8
+	[10]= 4.9
 }
 
 function mod:LeapingFlamesTarget()
@@ -84,7 +71,6 @@ end
 
 function mod:OnCombatStart(delay)
 	abilityCount = 0
-	abilitySpam = 0
 	transforms = 0
 end
 
@@ -99,7 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		transforms = transforms + 1
 		abilityCount = (mod:IsDifficulty("heroic10", "heroic25") and 1) or 0
 		timerFlameScythe:Cancel()
-		timerLeapingFlames:Start(leapTimers[abilityCount])
+		timerLeapingFlames:Start(abilityTimers[abilityCount])
 		if self.Options.RangeFrameCat then
 			DBM.RangeCheck:Show(10)
 		end
@@ -107,7 +93,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		transforms = transforms + 1
 		abilityCount = (mod:IsDifficulty("heroic10", "heroic25") and 1) or 0
 		timerLeapingFlames:Cancel()
-		timerFlameScythe:Start(scytheTimers[abilityCount])
+		timerFlameScythe:Start(abilityTimers[abilityCount])
 		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
 			DBM.RangeCheck:Hide()
 		end
@@ -145,16 +131,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(98476) and GetTime() - abilitySpam > 3 then	--98476 confirmed
+	if args:IsSpellID(98476) then	--98476 confirmed
 		abilityCount = abilityCount + 1
-		abilitySpam = GetTime()
-		local t = leapTimers[abilityCount] or 4
+		local t = abilityTimers[abilityCount] or 4
 		timerLeapingFlames:Start(t)
 		self:ScheduleMethod(0.2, "LeapingFlamesTarget")
-	elseif args:IsSpellID(98474, 100212, 100213, 100214) and GetTime() - abilitySpam > 3 then	--98474, 100213 confirmed
+	elseif args:IsSpellID(98474, 100212, 100213, 100214) then	--98474, 100213 confirmed
 		abilityCount = abilityCount + 1
-		abilitySpam = GetTime()
-		local t = scytheTimers[abilityCount] or 4
+		local t = abilityTimers[abilityCount] or 4
 		timerFlameScythe:Start(t)
 	end
 end
