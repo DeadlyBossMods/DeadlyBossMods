@@ -77,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		else
 			specWarnTouchWidowKissOther:Show(args.destName)
-			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() and mod:IsTank() then
+			if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() and self:IsTank() then
 				DBM.RangeCheck:Show(10)
 			end
 		end
