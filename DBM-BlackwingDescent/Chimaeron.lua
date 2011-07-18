@@ -136,7 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnSlime then
 			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetSlimeIcons")
-			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
 				self:ScheduleMethod(0.5, "SetSlimeIcons")--Still seems touchy and .3 is too fast even on a 70ms connection in rare cases so back to .4
 			end
 		end
