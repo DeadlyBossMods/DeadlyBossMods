@@ -234,7 +234,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(98237, 100383, 100384, 100387) then
+	if args:IsSpellID(98237, 100383, 100384, 100387) and not args:IsSrcTypePlayer() then -- can be stolen which triggers a new SPELL_CAST_SUCCESS event...
 		warnHandRagnaros:Show()
 		timerHandRagnaros:Start()
 	elseif args:IsSpellID(98164) then	--98164 confirmed
