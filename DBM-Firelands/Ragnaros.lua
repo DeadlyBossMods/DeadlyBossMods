@@ -105,7 +105,7 @@ local function TransitionEnded()
 		phase2Started = true
 		timerFlamesCD:Start(43)
 		timerMoltenSeedCD:Start(26)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod.IsDifficulty("heroic10", "heroic25") then
 			specWarnMoltenSeed:Schedule(26)--^^
 			timerMoltenSeed:Schedule(26)--^^
 		end
