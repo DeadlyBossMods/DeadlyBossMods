@@ -100,9 +100,9 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
 		timerFlamesCD:Start(43)
-		timerMoltenSeedCD:Start(25)
-		specWarnMoltenSeed:Schedule(25)--^^
-		timerMoltenSeed:Schedule(25)--^^
+		timerMoltenSeedCD:Start(25.5)
+		specWarnMoltenSeed:Schedule(25.5)--^^
+		timerMoltenSeed:Schedule(25.5)--^^
 		timerSulfurasSmash:Start(18)
 		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
 		showRangeFrame()--Range 6 for seeds
