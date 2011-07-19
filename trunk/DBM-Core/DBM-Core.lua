@@ -4121,11 +4121,11 @@ function bossModPrototype:RegisterKill(msgType, ...)
 	end
 	if msgType == "kill" then
 		if select("#", ...) > 0 then -- calling this method with 0 IDs means "use the values from SetCreatureID", this is already done by RegisterCombat as calling RegisterKill should be optional --> mod:RegisterKill("kill") with no IDs is never necessary
-			info.killMobs = {}
+			self.combatInfo.killMobs = {}
 			for i = 1, select("#", ...) do
 				local v = select(i, ...)
 				if type(v) == "number" then
-					info.killMobs[v] = true
+					self.combatInfo.killMobs[v] = true
 				end
 			end
 		end
