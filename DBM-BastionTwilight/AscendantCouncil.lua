@@ -266,7 +266,7 @@ function mod:OnCombatStart(delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
 	timerBurningBloodCD:Start(28-delay)--could be just as flakey as it is in combat though.
 	timerAegisFlame:Start(31-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerGravityCoreCD:Start(25-delay)
 		timerStaticOverloadCD:Start(20-delay)
 		if self.Options.RangeFrame then
@@ -328,7 +328,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			lightningRodIcon = lightningRodIcon - 1
 		end
 		self:Unschedule(showLightningRodWarning)
-		if (self:IsDifficulty("normal25", "heroic25") and #lightningRodTargets >= 3) or (self:IsDifficulty("normal10", "heroic10") and #lightningRodTargets >= 1) then
+		if (mod:IsDifficulty("normal25", "heroic25") and #lightningRodTargets >= 3) or (mod:IsDifficulty("normal10", "heroic10") and #lightningRodTargets >= 1) then
 			showLightningRodWarning()
 		else
 			self:Schedule(0.3, showLightningRodWarning)
@@ -357,7 +357,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			gravityCrushIcon = gravityCrushIcon - 1
 		end
 		self:Unschedule(showGravityCrushWarning)
-		if (self:IsDifficulty("normal25", "heroic25") and #gravityCrushTargets >= 3) or (self:IsDifficulty("normal10", "heroic10") and #gravityCrushTargets >= 1) then
+		if (mod:IsDifficulty("normal25", "heroic25") and #gravityCrushTargets >= 3) or (mod:IsDifficulty("normal10", "heroic10") and #gravityCrushTargets >= 1) then
 			showGravityCrushWarning()
 		else
 			self:Schedule(0.3, showGravityCrushWarning)
@@ -430,7 +430,7 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 			lightningRodIcon = lightningRodIcon - 1
 		end
 		self:Unschedule(showLightningRodWarning)
-		if (self:IsDifficulty("normal25", "heroic25") and #lightningRodTargets >= 3) or (self:IsDifficulty("normal10", "heroic10") and #lightningRodTargets >= 1) then
+		if (mod:IsDifficulty("normal25", "heroic25") and #lightningRodTargets >= 3) or (mod:IsDifficulty("normal10", "heroic10") and #lightningRodTargets >= 1) then
 			showLightningRodWarning()
 		else
 			self:Schedule(0.3, showLightningRodWarning)
@@ -445,7 +445,7 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 			gravityCrushIcon = gravityCrushIcon - 1
 		end
 		self:Unschedule(showGravityCrushWarning)
-		if (self:IsDifficulty("normal25", "heroic25") and #gravityCrushTargets >= 3) or (self:IsDifficulty("normal10", "heroic10") and #gravityCrushTargets >= 1) then
+		if (mod:IsDifficulty("normal25", "heroic25") and #gravityCrushTargets >= 3) or (mod:IsDifficulty("normal10", "heroic10") and #gravityCrushTargets >= 1) then
 			showGravityCrushWarning()
 		else
 			self:Schedule(0.3, showGravityCrushWarning)
@@ -621,7 +621,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerGravityCoreCD:Cancel()
 		timerStaticOverloadCD:Cancel()
 		timerHydroLanceCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerFrostBeaconCD:Start(27)
 			timerFlameStrikeCD:Start(30)
 		end
@@ -635,7 +635,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerEruptionCD:Cancel()
 		timerDisperse:Cancel()
 		timerTransition:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerFlameStrikeCD:Cancel()
 			self:Schedule(14, function() timerFrostBeaconCD:Cancel() end) -- Frost Beacon appears during phase transition, but not works. Anyway, to prevent spam, actually cancel timers when phase 3 starts.
 		end
@@ -657,7 +657,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 		timerQuakeCD:Update(23, 33)
 		warnQuakeSoon:Show()
 		checkSearingWinds()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			self:Schedule(3.3, checkSearingWinds)
 			self:Schedule(6.6, checkSearingWinds)
 		end
@@ -665,7 +665,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 		timerThundershockCD:Update(23, 33)
 		warnThundershockSoon:Show()
 		checkGrounded()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			self:Schedule(3.3, checkGrounded)
 			self:Schedule(6.6, checkGrounded)
 		end

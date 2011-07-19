@@ -104,7 +104,7 @@ local function InterruptCheck()
 end
 
 function mod:OnCombatStart(delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(720-delay)--12 min berserk on heroic
 	else
 		berserkTimer:Start(-delay)--7 min on normal
@@ -223,7 +223,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnArcaneStorm:Show()
 	elseif args:IsSpellID(78194) then
 		warnMagmaJets:Show()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerMagmaJetsCD:Start(5)
 		else
 			timerMagmaJetsCD:Start()

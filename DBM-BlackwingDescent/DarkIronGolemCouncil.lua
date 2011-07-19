@@ -189,7 +189,7 @@ function mod:OnCombatStart(delay)
 	lastInterrupt = 0
 	encasing = false
 	incinerateCast = 0
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
 	end
 	DBM.BossHealth:Clear()
@@ -210,7 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not pulled then
 			pulled = true
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerNextActivate:Start(30)
 		else
 			timerNextActivate:Start()
@@ -227,7 +227,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		bossInactive(args.destName)
 	elseif args:IsSpellID(79501, 92035, 92036, 92037) then
 		warnAcquiringTarget:Show(args.destName)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerAcquiringTarget:Start(27)
 		else
 			timerAcquiringTarget:Start()
@@ -249,7 +249,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.ConductorIcon then
 			self:SetIcon(args.destName, 1)
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerLightningConductor:Start(15, args.destName)
 			timerLightningConductorCD:Start(20)
 		else
@@ -316,7 +316,7 @@ function mod:SPELL_CAST_START(args)
 		warnIncineration:Show()
 		if incinerateCast == 1 then--Only cast twice on heroic, 3 times on normal.
 			timerIncinerationCD:Start()--second cast is after 27 seconds on heroic and normal.
-		elseif incinerateCast == 2 and self:IsDifficulty("normal10", "normal25") then
+		elseif incinerateCast == 2 and mod:IsDifficulty("normal10", "normal25") then
 			timerIncinerationCD:Start(32)--3rd cast on normal is 32 seconds. 10 27 32 series.
 		end
 	elseif args:IsSpellID(79582, 91516, 91517, 91518) then
@@ -364,14 +364,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:GetUnitCreatureId("target") ~= 42180 then--You're not targeting toxitron
 			specWarnPoisonProtocol:Show()
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerPoisonProtocolCD:Start(25)
 		else
 			timerPoisonProtocolCD:Start()
 		end
 	elseif args:IsSpellID(79624) then
 		warnGenerator:Show()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerGeneratorCD:Start(20)
 		else
 			timerGeneratorCD:Start()

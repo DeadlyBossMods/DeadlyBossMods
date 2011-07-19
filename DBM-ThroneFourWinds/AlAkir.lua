@@ -67,7 +67,7 @@ function mod:CloudRepeat()
 	self:UnscheduleMethod("CloudRepeat")
 	warnCloud:Show()
 	if self:IsInCombat() then--Don't schedule if not in combat, prevent an infinite loop from happening if for some reason one got scheduled exactly on boss death.
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerLightningCloudCD:Start(10)
 			CloudsCountown:Start(10)
 			self:ScheduleMethod(10, "CloudRepeat")
@@ -110,7 +110,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFeedback:Show(args.destName, args.amount or 1)
 		timerFeedback:Cancel()--prevent multiple timers spawning with diff args.
 		FeedbackCountown:Cancel()
-		if self:IsDifficulty("normal10", "normal25") then
+		if mod:IsDifficulty("normal10", "normal25") then
 			timerFeedback:Start(30, args.amount or 1)
 			FeedbackCountown:Start(30)
 		else
@@ -118,7 +118,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			FeedbackCountown:Start(20)
 		end
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
-		if self:IsDifficulty("normal10", "normal25") then
+		if mod:IsDifficulty("normal10", "normal25") then
 			timerAcidRainStack:Start(20)
 		else
 			timerAcidRainStack:Start()
@@ -172,7 +172,7 @@ function mod:SPELL_CAST_START(args)
 		warnWindBurst:Show()
 		specWarnWindBurst:Show()
 		timerWindBurstCD:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerWindBurst:Start(4)--4 second cast on heroic according to wowhead.
 		else
 			timerWindBurst:Start()

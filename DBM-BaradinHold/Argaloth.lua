@@ -71,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			consumingIcon = consumingIcon - 1
 		end
 		self:Unschedule(showConsumingWarning)
-		if (self:IsDifficulty("normal10") and #consumingTargets >= 3) or (self:IsDifficulty("normal25") and #consumingTargets >= 8) then
+		if (mod:IsDifficulty("normal10") and #consumingTargets >= 3) or (mod:IsDifficulty("normal25") and #consumingTargets >= 8) then
 			showConsumingWarning()
 		else
 			self:Schedule(0.3, showConsumingWarning)

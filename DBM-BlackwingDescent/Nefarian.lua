@@ -94,7 +94,7 @@ function mod:ShadowBlazeFunction()
 	lastBlaze = GetTime()
 	if shadowblazeTimer > 15 then
 		shadowblazeTimer = shadowblazeTimer - 5
-	elseif shadowblazeTimer > 10 and self:IsDifficulty("heroic10", "heroic25") then
+	elseif shadowblazeTimer > 10 and mod:IsDifficulty("heroic10", "heroic25") then
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
 	warnShadowBlaze:Show()
@@ -140,7 +140,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(cinderTargets)
 	table.wipe(dominionTargets)
 	timerNefLanding:Start(-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
 		timerDominionCD:Start(50-delay)
 	end
@@ -208,7 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			cinderIcons = cinderIcons - 1
 		end
 		self:Unschedule(warnCinderTargets)
-		if (self:IsDifficulty("heroic25") and #cinderTargets >= 3) or (self:IsDifficulty("heroic10") and #cinderTargets >= 1) then
+		if (mod:IsDifficulty("heroic25") and #cinderTargets >= 3) or (mod:IsDifficulty("heroic10") and #cinderTargets >= 1) then
 			warnCinderTargets()
 		else
 			self:Schedule(0.3, warnCinderTargets)
@@ -219,7 +219,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDominion:Show()
 		end
 		self:Unschedule(warnDominionTargets)
-		if (self:IsDifficulty("heroic25") and #dominionTargets >= 5) or (self:IsDifficulty("heroic10") and #dominionTargets >= 2) then
+		if (mod:IsDifficulty("heroic25") and #dominionTargets >= 5) or (mod:IsDifficulty("heroic10") and #dominionTargets >= 2) then
 			warnDominionTargets()
 		else
 			self:Schedule(0.3, warnDominionTargets)
@@ -295,7 +295,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNefBreathCD:Cancel()
 		timerDominionCD:Cancel()
 		timerShadowflameBarrage:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerCinderCD:Start(11.5)--10+ cast, since we track application not cast.
 		end
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then

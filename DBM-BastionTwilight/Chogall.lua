@@ -166,7 +166,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			worshipIcon = worshipIcon - 1
 		end
 		self:Unschedule(showWorshipWarning)
-		if (self:IsDifficulty("normal25", "heroic25") and #worshipTargets >= 4) or (self:IsDifficulty("normal10", "heroic10") and #worshipTargets >= 2) then
+		if (mod:IsDifficulty("normal25", "heroic25") and #worshipTargets >= 4) or (mod:IsDifficulty("normal10", "heroic10") and #worshipTargets >= 2) then
 			showWorshipWarning()
 		else
 			self:Schedule(0.3, showWorshipWarning)
@@ -248,7 +248,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82414, 93160, 93161, 93162) then
 		warnCreations:Show()
 		resetCreatureIconState()
-		if self:IsDifficulty("heroic10", "heroic25") then -- other difficulty not sure, only comfirmed 25 man heroic
+		if mod:IsDifficulty("heroic10", "heroic25") then -- other difficulty not sure, only comfirmed 25 man heroic
 			timerCreationsCD:Start(40)
 		else
 			timerCreationsCD:Start()
@@ -261,7 +261,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFlamesOrders:Cancel()
 		timerShadowsOrders:Cancel()
 	elseif args:IsSpellID(81556) then--Shadow's Orders
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			warnShadowOrders:Show()--No reason to do this warning on normal, nothing spawns so nothing you can do about it.
 			timerEmpoweredShadowsCD:Start()--Time til he actually absorbs elemental and gains it's effects
 			timerFlamesOrders:Start()--always 25 seconds after shadows orders, regardless of phase.
@@ -269,7 +269,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerEmpoweredShadowsCD:Start(10.8)--Half the time on normal since you don't actually have to kill elementals plus the only thing worth showing on normal.
 		end
 	elseif args:IsSpellID(81171) then--Flame's Orders
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			warnFlameOrders:Show()--No reason to do this warning on normal, nothing spawns so nothing you can do about it.
 			timerFlamingDestructionCD:Start()--Time til he actually absorbs elemental and gains it's effects
 			timerShadowsOrders:Start(shadowOrdersCD)--15 seconds after a flame order above 85%, 25 seconds after a flame orders below 85%
