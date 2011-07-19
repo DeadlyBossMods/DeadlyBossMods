@@ -14,16 +14,18 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Фаза %d",
 	TimerHatchEggs		= "Вылупление яиц",
-	timerNextInitiate	= "Следующий друид"
+	timerNextInitiate	= "Следующий друид",
+	TimerCombatStart	= "Начало боя"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "Отсчет времени до начала боя",
 	WarnPhase			= "Предупреждение о смене фаз",
 	WarnNewInitiate		= "Предупреждение о появлении нового друида-огнеястреба",
 	timerNextInitiate	= "Отсчет времени до появления нового друида-огнеястреба",
 	TimerPhaseChange	= "Отсчет времени до следующей фазы",
 	TimerHatchEggs		= "Отсчет времени до вылупления яиц",
-	InfoFrame			= "Информационное окно для $spell:99461"
+	InfoFrame			= "Информационное окно для $spell:97128"
 })
 
 L:SetMiscLocalization({
@@ -33,7 +35,9 @@ L:SetMiscLocalization({
 	YellInitiate3		= "Пусть неверные горят в огне!",
 	YellInitiate4		= "Узрите величие огня.",
 	YellPhase2			= "Небо над вами принадлежит МНЕ!",
-	PowerLevel			= "Пылающая энергия"
+	FullPower			= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
+	LavaWorms			= "На поверхность вылезают огненные лавовые паразиты!",
+	PowerLevel			= "Опаляющее перо"
 })
 
 -------------------
@@ -120,6 +124,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Отсчет времени действия активного лезвия",
 	TimerBladeNext		= "Отсчет времени до следующего лезвия",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Показывать стрелку DBM, когда на вас $spell:99516",
 	InfoFrame			= "Информационное окно для стаков искр"
 })
@@ -154,8 +159,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
-	warnSplittingBlow	= "%s на %s",--Spellname in Location
-	warnEngulfingFlame	= "%s на %s"--Spellname in Location
+	warnSplittingBlow	= "%s %s",--Spellname in Location
+	warnEngulfingFlame	= "%s %s"--Spellname in Location
 })
 
 L:SetTimerLocalization({
@@ -167,15 +172,17 @@ L:SetOptionLocalization({
 	warnEngulfingFlame	= "Предупреждение для $spell:99171",
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей Пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции",
+	InfoFrame			= "Информационное окно для целей $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
-	East				= "востоке",
-	West				= "западе",
-	Middle				= "центре",
-	North				= "севере",
-	South				= "юге",
+	East				= "на востоке",
+	West				= "на западе",
+	Middle				= "в центре",
+	North				= "в мили",
+	South				= "сзади",
+	MeteorTargets		= "ОМФГ Метеоры!",--Keep rollin' rollin' rollin' rollin'.
 	transitionended		= "Довольно! Пора покончить с этим."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
 })
 
@@ -199,4 +206,30 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+})
+
+----------------
+--  Volcanus  --
+----------------
+L = DBM:GetModLocalization("Volcanus")
+
+L:SetGeneralLocalization({
+	name = "Вулканус"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	timerStaffTransition	= "Следующая фаза"
+})
+
+L:SetOptionLocalization({
+	timerStaffTransition	= "Отсчет времени до перехода фаз"
+})
+
+L:SetMiscLocalization({
+	StaffEvent				= "The Branch of Nordrassil reacts violently",--Partial, not sure if pull detection will work with partials yet :\
+	StaffTrees				= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
+	StaffTransition			= "The fires consuming the Tormented Protector wink out!"
 })
