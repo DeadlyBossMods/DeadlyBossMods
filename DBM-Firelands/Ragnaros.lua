@@ -320,7 +320,7 @@ function mod:UNIT_AURA(uId)
 	if UnitDebuff("player", meteorTarget) and not alreadyWarned then--Warn you that you have a meteor
 		specWarnMeteor:Show()
 		alreadyWarned = true
-	elseif not UnitDebuff("player", meteorTarget) then--reset warned status if you don't have debuff
+	elseif not UnitDebuff("player", meteorTarget) and alreadyWarned then--reset warned status if you don't have debuff
 		alreadyWarned = false
 	end
 end
