@@ -4125,7 +4125,7 @@ function bossModPrototype:RegisterKill(msgType, ...)
 		cType = cType:lower()
 	end
 	if not self.combatInfo then
-		return
+		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
 	self.combatInfo.killType = msgType
 	self.combatInfo.killMsgs = {}
@@ -4138,7 +4138,7 @@ end
 -- needs to be called _AFTER_ RegisterCombat
 function bossModPrototype:SetDetectCombatInVehicle(flag)
 	if not self.combatInfo then
-		return
+		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
 	self.combatInfo.noCombatInVehicle = not flag
 end
@@ -4153,6 +4153,9 @@ end
 
 -- needs to be called after RegisterCombat
 function bossModPrototype:SetWipeTime(t)
+	if not self.combatInfo then
+		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
+	end
 	self.combatInfo.wipeTimer = t
 end
 
