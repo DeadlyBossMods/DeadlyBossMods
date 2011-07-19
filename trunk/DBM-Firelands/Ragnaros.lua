@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(52409)
 mod:SetModelID(37875)
 mod:SetZone()
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(1, 2)
 mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.wav", "Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_KILL_03.wav")
 --Long: blah blah blah (didn't feel like transcribing it)
 --Short: This is my realm
@@ -72,7 +72,7 @@ local prewarnedPhase2 = false
 local prewarnedPhase3 = false
 local phase2Started = false
 local phase3Started = false
-local blazingHeatIcon = 8
+local blazingHeatIcon = 2
 local seedsActive = false
 local seedsWarned = false
 local meteorWarned = false
@@ -154,7 +154,7 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	prewarnedPhase2 = false
 	prewarnedPhase3 = false
-	blazingHeatIcon = 8
+	blazingHeatIcon = 2
 	phase2Started = false
 	phase3Started = false
 	seedsActive = false
@@ -264,10 +264,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if self.Options.BlazingHeatIcons then
 			self:SetIcon(args.destName, blazingHeatIcon, 8)
-			if blazingHeatIcon == 8 then-- Alternate icons, they are cast too far apart to sort in a table or do icons at once, and there are 2 adds up so we need to do it this way.
-				blazingHeatIcon = 7
+			if blazingHeatIcon == 2 then-- Alternate icons, they are cast too far apart to sort in a table or do icons at once, and there are 2 adds up so we need to do it this way.
+				blazingHeatIcon = 1
 			else
-				blazingHeatIcon = 8
+				blazingHeatIcon = 2
 			end
 		end
 	elseif args:IsSpellID(99268) and GetTime() - lastMeteor >= 4 then
