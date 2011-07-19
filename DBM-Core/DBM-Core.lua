@@ -4096,16 +4096,8 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.multiMobPullDetection then
 		info.multiMobPullDetection = self.multiMobPullDetection
 	end
-	local addedKillMobs = false
-	for i = 1, select("#", ...) do
-		local v = select(i, ...)
-		if type(v) == "number" then
-			info.killMobs = info.killMobs or {}
-			info.killMobs[select(i, ...)] = true
-			addedKillMobs = true
-		end
-	end
-	if not addedKillMobs and self.multiMobPullDetection then
+	-- use pull-mobs as kill mobs by default, can be overriden by RegisterKill
+	if self.multiMobPullDetection then
 		for i, v in ipairs(self.multiMobPullDetection) do
 			info.killMobs = info.killMobs or {}
 			info.killMobs[v] = true
@@ -4127,11 +4119,23 @@ function bossModPrototype:RegisterKill(msgType, ...)
 	if not self.combatInfo then
 		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
-	self.combatInfo.killType = msgType
-	self.combatInfo.killMsgs = {}
-	for i = 1, select("#", ...) do
-		local v = select(i, ...)
-		self.combatInfo.killMsgs[v] = true
+	if msgType == "kill" then
+		if select("#", ...) > 0 then -- calling this method with 0 IDs means "use the values from SetCreatureID", this is already done by RegisterCombat as calling RegisterKill should be optional --> mod:RegisterKill("kill") with no IDs is never necessary
+			info.killMobs = {}
+			for i = 1, select("#", ...) do
+				local v = select(i, ...)
+				if type(v) == "number" then
+					info.killMobs[v] = true
+				end
+			end
+		end
+	else
+		self.combatInfo.killType = msgType
+		self.combatInfo.killMsgs = {}
+		for i = 1, select("#", ...) do
+			local v = select(i, ...)
+			self.combatInfo.killMsgs[v] = true
+		end
 	end
 end
 
