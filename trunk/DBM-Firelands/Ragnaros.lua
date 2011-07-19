@@ -270,9 +270,6 @@ function mod:SPELL_DAMAGE(args)
 		specWarnMoltenSeed:Show()--^^
 		timerMoltenSeed:Start()--^^
 		timerMoltenSeedCD:Start()
-		warnMoltenSeed:Schedule(63)
-		specWarnMoltenSeed:Schedule(63)
-		timerMoltenSeed:Schedule(63)
 		self:Schedule(15, clearSeedsActive)--Clear active seeds after they have all blown up.
 	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one as it will always fire.
 		seedsActive = true
