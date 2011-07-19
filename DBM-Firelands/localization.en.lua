@@ -205,6 +205,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Defeat			= "Too Soon! ... You have come too soon..."
 })
 
 ----------------
