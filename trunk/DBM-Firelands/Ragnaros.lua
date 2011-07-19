@@ -100,10 +100,11 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
 		timerFlamesCD:Start(43)
-		timerMoltenSeedCD:Start(25.5)
-		specWarnMoltenSeed:Schedule(25.5)--^^
-		timerMoltenSeed:Schedule(25.5)--^^
-		timerSulfurasSmash:Start(18)
+		timerMoltenSeedCD:Start(26)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			specWarnMoltenSeed:Schedule(26)--^^
+			timerMoltenSeed:Schedule(26)--^^
+		end
 		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
@@ -267,20 +268,16 @@ function mod:SPELL_DAMAGE(args)
 		specWarnMoltenSeed:Cancel()
 		timerMoltenSeed:Cancel()
 		warnMoltenSeed:Show()
-		specWarnMoltenSeed:Show()--^^
-		timerMoltenSeed:Start()--^^
+		specWarnMoltenSeed:Show()
+		timerMoltenSeed:Start()
 		timerMoltenSeedCD:Start()
 		self:Schedule(15, clearSeedsActive)--Clear active seeds after they have all blown up.
 	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one as it will always fire.
 		seedsActive = true
-		warnMoltenSeed:Cancel()
-		specWarnMoltenSeed:Cancel()
-		timerMoltenSeed:Cancel()
 		warnMoltenSeed:Schedule(53)
 		specWarnMoltenSeed:Schedule(53)
 		timerMoltenSeed:Schedule(53)
 		timerMoltenSeedCD:Start(53)
-		self:Unschedule(clearSeedsActive)
 		self:Schedule(5, clearSeedsActive)--Clear active seeds after they have all blown up.
 	end
 end
