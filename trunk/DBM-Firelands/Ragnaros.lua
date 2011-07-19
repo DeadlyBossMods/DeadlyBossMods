@@ -74,7 +74,8 @@ local phase2Started = false
 local phase3Started = false
 local blazingHeatIcon = 8
 local seedsActive = false
-local alreadyWarned = false
+local seedsWarned = false
+local meteorWarned = false
 local meteorTarget = GetSpellInfo(99849)
 
 local function showRangeFrame()
@@ -97,7 +98,17 @@ end
 
 local function clearSeedsActive()
 	seedsActive = false
+	seedsWarned = false
 end
+
+local function warnSeeds()
+	seedsWarned = true
+	warnMoltenSeed:Show()
+	specWarnMoltenSeed:Show()
+	timerMoltenSeed:Start()
+	timerMoltenSeedCD:Start()
+end
+
 
 local function TransitionEnded()
 	timerPhaseSons:Cancel()
@@ -147,7 +158,8 @@ function mod:OnCombatStart(delay)
 	phase2Started = false
 	phase3Started = false
 	seedsActive = false
-	alreadyWarned = false
+	meteorWarned = false
+	seedsWarned = false
 	showRangeFrame()
 end
 
@@ -266,24 +278,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(98498, 100579) and not seedsActive then--trigger spell 98495 doesn't show in combat log :\. This only fires if players are not spread properly but is most accurate detection of cast.
+	if args:IsSpellID(98498, 100579, 100580, 100581) and not seedsActive then--trigger spell 98495 doesn't show in combat log :\. This only fires if players are not spread properly but is most accurate detection of cast.
 		seedsActive = true
-		--Cancel any scheduled crap from inferno since someone was bad and didn't spread we got a more accurate trigger then the scheduled ones.
-		warnMoltenSeed:Cancel()
-		specWarnMoltenSeed:Cancel()
-		timerMoltenSeed:Cancel()
-		warnMoltenSeed:Show()
-		specWarnMoltenSeed:Show()
-		timerMoltenSeed:Start()
-		timerMoltenSeedCD:Start()
-		self:Schedule(15, clearSeedsActive)--Clear active seeds after they have all blown up.
-	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one as it will always fire.
+		self:Unschedule(warnSeeds)--Cancel scheduled one if it hasn't fired yet, this damage event is more precise timing (although it shouldn't happen if people play right, if it does, might as well use it to warn right away)
+		if not seedsWarned then--Check to see if scheduled function already went off, if it did already lets not spam.
+			warnSeeds()
+		end
+		self:Schedule(63, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
+		self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
 		seedsActive = true
-		warnMoltenSeed:Schedule(53)
-		specWarnMoltenSeed:Schedule(53)
-		timerMoltenSeed:Schedule(53)
-		timerMoltenSeedCD:Start(53)
-		self:Schedule(5, clearSeedsActive)--Clear active seeds after they have all blown up.
+		self:Schedule(53, warnSeeds)
+		self:Schedule(5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
 
@@ -317,10 +323,10 @@ end
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
-	if UnitDebuff("player", meteorTarget) and not alreadyWarned then--Warn you that you have a meteor
+	if UnitDebuff("player", meteorTarget) and not meteorWarned then--Warn you that you have a meteor
 		specWarnMeteor:Show()
-		alreadyWarned = true
-	elseif not UnitDebuff("player", meteorTarget) and alreadyWarned then--reset warned status if you don't have debuff
-		alreadyWarned = false
+		meteorWarned = true
+	elseif not UnitDebuff("player", meteorTarget) and meteorWarned then--reset warned status if you don't have debuff
+		meteorWarned = false
 	end
 end
