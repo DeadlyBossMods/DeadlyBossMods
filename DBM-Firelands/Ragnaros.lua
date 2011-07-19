@@ -161,6 +161,9 @@ function mod:OnCombatStart(delay)
 	meteorWarned = false
 	seedsWarned = false
 	showRangeFrame()
+	if self:IsDifficulty("normal10", "normal25") then--register alternate kill detection, he only dies on heroic.
+		self:RegisterKill("yell", L.Defeat)
+	end
 end
 
 function mod:OnCombatEnd()
