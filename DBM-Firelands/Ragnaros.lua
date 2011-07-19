@@ -19,7 +19,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"UNIT_DIED",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"UNIT_AURA"
 )
 
 local warnHandRagnaros		= mod:NewSpellAnnounce(98237, 3, nil, mod:IsMelee())--Phase 1 only ability
@@ -40,6 +41,7 @@ local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
 local specWarnMagmaTrap		= mod:NewSpecialWarningMove(98164)
 local yellMagmaTrap			= mod:NewYell(98164)--May Return false tank yells
 local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
+local specWarnMeteor		= mod:NewSpecialWarningYou(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 
@@ -72,6 +74,8 @@ local phase2Started = false
 local phase3Started = false
 local blazingHeatIcon = 8
 local seedsActive = false
+local alreadyWarned = false
+local meteorTarget = GetSpellInfo(99849)
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
@@ -143,6 +147,7 @@ function mod:OnCombatStart(delay)
 	phase2Started = false
 	phase3Started = false
 	seedsActive = false
+	alreadyWarned = false
 	showRangeFrame()
 end
 
@@ -307,5 +312,15 @@ function mod:UNIT_HEALTH(uId)
 			prewarnedPhase3 = true
 			warnPhase3Soon:Show()
 		end
+	end
+end
+
+function mod:UNIT_AURA(uId)
+	if uId ~= "player" then return end
+	if UnitDebuff("player", meteorTarget) and not alreadyWarned then--Warn you that you have a meteor
+		specWarnMeteor:Show()
+		alreadyWarned = true
+	elseif not UnitDebuff("player", meteorTarget) then--reset warned status if you don't have debuff
+		alreadyWarned = false
 	end
 end
