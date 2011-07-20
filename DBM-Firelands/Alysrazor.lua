@@ -45,6 +45,8 @@ local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 local timerWingsofFlame		= mod:NewBuffActiveTimer(20, 98619)
+local timerTantrum			= mod:NewBuffActiveTimer(10, 99362, nil, mod:IsTank())
+local timerSatiated			= mod:NewBuffActiveTimer(15, 100852, nil, mod:IsTank())
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
@@ -82,8 +84,15 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--Only give tantrum warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
+	if args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--Only give warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
 		specWarnTantrum:Show()
+		timerTantrum:Show()
+	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--^^ Same as above only with diff spell
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerSatiated:Start(10)
+		else
+			timerSatiated:Start()
+		end
 	elseif args:IsSpellID(99308) then--Gushing Wound
 		specWarnGushingWoundOther:Show(args.destName)
 		if args:IsPlayer() then
@@ -99,6 +108,12 @@ end
 function mod:SPELL_AURA_REFRESH(args)
 	if args:IsSpellID(98619) and args:IsPlayer() then
 		timerWingsofFlame:Start()
+	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--^^ Same as above only with diff spell
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerSatiated:Start(10)
+		else
+			timerSatiated:Start()
+		end
 	end
 end
 
@@ -112,6 +127,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(99432) then--Burnout removed (50 energy)
 		warnPhase:Show(4)
+	elseif args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then
+		timerTantrum:Cancel()
+	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--^^ Same as above only with diff spell
+		timerSatiated:Cancel()
 	end
 end
 
@@ -188,8 +207,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 			timerFieryVortexCD:Start(225)--Probably not right.
 			timerHatchEggs:Start(22)
 			timerCataclysmCD:Start(18)
-			timerFirestormCD:Start(70)
-			warnFirestormSoon:Schedule(60)
+			timerFirestormCD:Start(70)--Needs verification.
+			warnFirestormSoon:Schedule(60)--Needs verification.
 			CataCast = 0
 		else
 			timerFieryVortexCD:Start(178)
