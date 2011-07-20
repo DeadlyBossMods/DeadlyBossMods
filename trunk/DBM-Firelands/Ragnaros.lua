@@ -51,7 +51,7 @@ local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might
 local timerWrathRagnaros	= mod:NewNextTimer(12, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
 local timerFlamesCD			= mod:NewCDTimer(40, 99171)
-local timerMoltenSeedCD		= mod:NewCDTimer(63, 98520)--60 seconds from last seed going off, but 63 from first.
+local timerMoltenSeedCD		= mod:NewCDTimer(62, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
@@ -123,6 +123,7 @@ local function TransitionEnded()
 		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
+		self:Unschedule(warnSeeds)
 		phase3Started = true
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerFlamesCD:Start(32)
@@ -287,11 +288,11 @@ function mod:SPELL_DAMAGE(args)
 		if not seedsWarned then--Check to see if scheduled function already went off, if it did already lets not spam.
 			warnSeeds()
 		end
-		self:Schedule(63, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
+		self:Schedule(62, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
 		self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
 		seedsActive = true
-		self:Schedule(53, warnSeeds)
+		self:Schedule(52, warnSeeds)
 		self:Schedule(5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
