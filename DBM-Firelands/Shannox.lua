@@ -34,7 +34,7 @@ local warnRage					= mod:NewTargetAnnounce(100415, 3)
 local warnWary					= mod:NewTargetAnnounce(100167, 2, nil, false)
 local warnTears					= mod:NewStackAnnounce(99937, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnSpear					= mod:NewSpellAnnounce(100002, 3)--warn for this instead of magmaflare until/if rip dies.
-local warnMagmaFlare			= mod:NewSpellAnnounce(100495, 3)
+local warnMagmaRupture			= mod:NewSpellAnnounce(99840, 3)
 local warnCrystalPrison			= mod:NewTargetAnnounce(99836, 2)--On by default, not as often, and useful for tanks or kiters
 local warnImmoTrap				= mod:NewTargetAnnounce(99839, 2, nil, false)--Spammy, off by default for those who want it.
 local warnCrystalPrisonTrapped	= mod:NewTargetAnnounce(99837, 4)--Player is in prison.
@@ -53,11 +53,11 @@ local specWarnTears				= mod:NewSpecialWarningStack(99937, mod:IsTank(), 8)
 
 local timerRage					= mod:NewTargetTimer(15, 100415)
 local timerWary					= mod:NewTargetTimer(25, 100167, nil, false)
-local timerTears				= mod:NewTargetTimer(30, 99937, nil, mod:IsTank() or mod:IsHealer())
+local timerTears				= mod:NewTargetTimer(26, 99937, nil, mod:IsTank() or mod:IsHealer())
 local timerCrystalPrison		= mod:NewTargetTimer(10, 99837)--Dogs Only
 local timerCrystalPrisonCD		= mod:NewCDTimer(25.5, 99836)--Seems consistent timing, other trap is not.
-local timerSpearCD				= mod:NewCDTimer(42, 100002)--Use this for CD before rip dies
-local timerMagmaFlareCD			= mod:NewCDTimer(42, 100495)--Use this for CD after rip dies
+local timerSpearCD				= mod:NewCDTimer(42, 100002)--Before riplimb dies
+local timerMagmaRuptureCD		= mod:NewCDTimer(15, 99840)--After riplimb dies
 local timerFaceRageCD			= mod:NewCDTimer(27, 99945, nil, false)--Has a 27-30 sec cd but off by default as it's subject to wild variation do to traps.
 
 local berserkTimer				= mod:NewBerserkTimer(600)
@@ -66,7 +66,6 @@ mod:AddBoolOption("SetIconOnFaceRage")
 mod:AddBoolOption("SetIconOnRage")
 
 local prewarnedPhase2 = false
-local riplimbDead = false
 local trapScanStarted = false
 
 function mod:ImmoTrapTarget(targetname)
@@ -141,7 +140,6 @@ end
 
 function mod:OnCombatStart(delay)
 	prewarnedPhase2 = false
-	riplimbDead = false
 	trapScanStarted = false
 --	timerCrystalPrisonCD:Start(-delay)--Don't know yet, Need to run transcriptor with combat logging turned OFF to get the timestamps right.
 	timerSpearCD:Start(20-delay)--High variation, just a CD?
@@ -204,11 +202,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconOnFaceRage then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args:IsSpellID(100495) then	--This is cast 2 seconds after spear, although when rip dies he stops casting spear and only casts this.
-		if riplimbDead then--If Riplimb is dead, then he no longer casts spear first, so we need to warn for this instead.
-			warnMagmaFlare:Show()
-			timerMagmaFlareCD:Start()
-		end
+	elseif args:IsSpellID(99840) then	--This is cast after Riplimb dies.
+		warnMagmaRupture:Show()
+		timerMagmaRuptureCD:Start()
 	end
 end
 
@@ -235,8 +231,8 @@ end
 
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 53694 then
-		riplimbDead = true
---		timerSpearCD:Cancel()--Cancel it and replace it with other timer somehow? figure out time diff or if cd resets when rip dies? i need more logs for this.
+		timerSpearCD:Cancel()--Cancel it and replace it with other timer
+		timerMagmaRuptureCD:Start(10)
 	elseif self:GetCIDFromGUID(args.destGUID) == 53695 then
 		timerFaceRageCD:Cancel()
 	end

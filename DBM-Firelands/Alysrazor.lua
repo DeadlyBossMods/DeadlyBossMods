@@ -35,7 +35,7 @@ local specWarnGushingWoundSelf	= mod:NewSpecialWarningYou(99308, false)
 local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
 local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, false)
 
-local timerCombatStart		= mod:NewTimer(34.5, "TimerCombatStart", 2457)
+local timerCombatStart		= mod:NewTimer(36, "TimerCombatStart", 2457)
 local timerFieryVortexCD	= mod:NewNextTimer(195, 99794)
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
@@ -64,7 +64,7 @@ function mod:OnCombatStart(delay)
 		timerHatchEggs:Start(37-delay)
 	else
 		timerFieryVortexCD:Start(-delay)
-		timerHatchEggs:Start(46-delay)
+		timerHatchEggs:Start(47-delay)
 	end
 	timerNextInitiate:Start(27-delay)--First one is same on both difficulties.
 	initiatesSpawned = 0
@@ -192,8 +192,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 			warnFirestormSoon:Schedule(60)
 			CataCast = 0
 		else
-			timerFieryVortexCD:Start(180)
-			timerHatchEggs:Start(28)
+			timerFieryVortexCD:Start(178)
+			timerHatchEggs:Start(32)
 		end
 	end
 end
