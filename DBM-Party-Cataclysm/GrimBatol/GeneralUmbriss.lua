@@ -105,11 +105,13 @@ end
 function mod:RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.Blitz) then
 		timerBlitz:Start()
-		warnBlitz:Show(target)
-		if target == UnitName("player") then
-			specWarnBlitz:Show()
-			if self.Options.PingBlitz then
-				Minimap:PingLocation()
+		if target then
+			warnBlitz:Show(target)
+			if target == UnitName("player") then
+				specWarnBlitz:Show()
+				if self.Options.PingBlitz then
+					Minimap:PingLocation()
+				end
 			end
 		end
 	end
