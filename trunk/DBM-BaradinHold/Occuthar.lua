@@ -19,7 +19,7 @@ local warnSearingShadows		= mod:NewSpellAnnounce(96913, 2)
 local warnEyes					= mod:NewSpellAnnounce(96920, 3)
 
 local timerSearingShadows		= mod:NewCDTimer(24, 96913)
-local timerEyes					= mod:NewCDTimer(60, 96920)
+local timerEyes					= mod:NewCDTimer(57.5, 96920)
 local timerFocusedFire			= mod:NewCDTimer(16, 96884) -- 24 16 16, repeating pattern. Can vary by a couple seconds, ie be 26 18 18, but the pattern is same regardless.
 
 local specWarnSearingShadows	= mod:NewSpecialWarningSpell(96913, mod:IsTank())
@@ -28,7 +28,7 @@ local specWarnFocusedFire		= mod:NewSpecialWarningMove(97212)
 local berserkTimer				= mod:NewBerserkTimer(300)
 
 local spamFire = 0
-local focusedFire = 0
+local focusedCast = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -36,13 +36,14 @@ function mod:OnCombatStart(delay)
 	timerEyes:Start(25-delay)--Need transcriptor to see what first one always is to be sure.
 	timerFocusedFire:Start(15)--Need transcriptor to see what first one always is to be sure.
 	spamFire = 0
-	focusedFire = 0
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(96920, 101006) then
 		warnEyes:Show()
 		timerEyes:Start()
+		focusedCast = 0
+		timerFocusedFire:Start()--eyes resets the CD of focused. Blizz hotfix makes more sense now.
 	elseif args:IsSpellID(96913, 101007) then
 		warnSearingShadows:Show()
 		timerSearingShadows:Start()
@@ -52,12 +53,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(96884) then
-		if focusedFire % 3 == 0 then--We start with 0 to make the math easier to do since it starts on first cast
-			timerFocusedFire:Start(25)--Every 3rd cast (starting with first) is longer cd after.
-		else
-			timerFocusedFire:Start()--16 second cd for rest
+		focusedCast = focusedCast + 1
+		if focusedCast < 3 then--Start start it after 3rd cast since eyes will be cast next and reset the CD, we start a bar there instead.
+			timerFocusedFire:Start()
 		end
-		focusedFire = focusedFire + 1
 	end
 end
 
