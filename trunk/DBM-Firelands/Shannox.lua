@@ -110,31 +110,46 @@ function mod:CrystalTrapTarget(targetname)
 	end
 end
 
---Try another way from uid handler.
 function mod:TrapHandler(SpellID, isTank)
-	if not self:IsInCombat() then return end
-	local targetname, targetuid = self:GetBossTarget(53691)
-	if not targetuid then return end
-	if UnitDetailedThreatSituation(targetuid, "boss1") and not isTank then--He's targeting his highest threat target, the tank. If isTank we force it to else rule even though he's targeting tank
-		if not trapScanStarted then--Only start this scan once we don't need an infinite loop
+	if UnitExists("boss1target") then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
+		local targetname = UnitName("boss1target")
+		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target. Schedule more checks ot make sure it's correct trap target. If isTank=true we force it to report tank.
+			if not trapScanStarted then--Only start this once so we don't get an infinite loop
+				self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
+				self:ScheduleMethod(0.1, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.15, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.2, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.25, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.3, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.35, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.4, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.45, "TrapHandler", SpellID)--^^
+				self:ScheduleMethod(0.5, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
+			end
+			trapScanStarted = true
+		else--He's not targeting tank so for sure we got right trap target.
+			self:UnscheduleMethod("TrapHandler")--Unschedule all checks, we are done.
+			if SpellID == 99836 then
+				self:CrystalTrapTarget(targetname)
+			else
+				self:ImmoTrapTarget(targetname)
+			end
+			trapScanStarted = false--We fired a warning, so reset the scan started check
+		end
+	else--target was nil, lets try again in a second, worst cast, it runschecks and they all return nil and nothing happens.
+		if not trapScanStarted then--Only start this once so we don't get an infinite loop
 			self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.1, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.15, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.2, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.25, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.3, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.35, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.4, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
+			self:ScheduleMethod(0.1, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.15, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.2, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.25, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.3, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.35, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.4, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.45, "TrapHandler", SpellID)--^^
+			self:ScheduleMethod(0.5, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
 		end
 		trapScanStarted = true
-	else--He's not targeting tank so for sure we got right trap target.
-		self:UnscheduleMethod("TrapHandler")--Unschedule all checks, we are done.
-		if SpellID == 99836 then
-			self:CrystalTrapTarget(targetname)
-		else
-			self:ImmoTrapTarget(targetname)
-		end
-		trapScanStarted = false--We fired a warning, so reset the scan started check
 	end
 end
 
