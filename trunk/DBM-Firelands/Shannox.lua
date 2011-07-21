@@ -66,7 +66,7 @@ mod:AddBoolOption("SetIconOnFaceRage")
 mod:AddBoolOption("SetIconOnRage")
 
 local prewarnedPhase2 = false
-local trapScanStarted = false
+local trapScansDone = 0
 
 function mod:ImmoTrapTarget(targetname)
 	warnImmoTrap:Show(targetname)
@@ -111,51 +111,33 @@ function mod:CrystalTrapTarget(targetname)
 end
 
 function mod:TrapHandler(SpellID, isTank)
+	trapScansDone = trapScansDone + 1
 	if UnitExists("boss1target") then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
 		local targetname = UnitName("boss1target")
-		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target. Schedule more checks ot make sure it's correct trap target. If isTank=true we force it to report tank.
-			if not trapScanStarted then--Only start this once so we don't get an infinite loop
-				self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
-				self:ScheduleMethod(0.1, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.15, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.2, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.25, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.3, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.35, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.4, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.45, "TrapHandler", SpellID)--^^
-				self:ScheduleMethod(0.5, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
+		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target.
+			if trapScansDone < 12 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check multiple times to be sure it's not on something other then tank.
+			else
+				self:ScheduleMethod(0.05, "TrapHandler", SpellID, true)--It's still on tank, force true isTank and activate else rule and warn trap is on tank.
 			end
-			trapScanStarted = true
-		else--He's not targeting tank so for sure we got right trap target.
-			self:UnscheduleMethod("TrapHandler")--Unschedule all checks, we are done.
+		else--He's not targeting highest threat target (or isTank was set to true after 12 scans) so this has to be right target.
+			self:UnscheduleMethod("TrapHandler")--Unschedule all checks just to be sure none are running, we are done.
 			if SpellID == 99836 then
 				self:CrystalTrapTarget(targetname)
 			else
 				self:ImmoTrapTarget(targetname)
 			end
-			trapScanStarted = false--We fired a warning, so reset the scan started check
 		end
-	else--target was nil, lets try again in a second, worst cast, it runschecks and they all return nil and nothing happens.
-		if not trapScanStarted then--Only start this once so we don't get an infinite loop
-			self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check again
-			self:ScheduleMethod(0.1, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.15, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.2, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.25, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.3, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.35, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.4, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.45, "TrapHandler", SpellID)--^^
-			self:ScheduleMethod(0.5, "TrapHandler", SpellID, true)--Check one last time, this time we set isTank since at this point if it's still targeting only the tank, the tank must be the target.
+	else--target was nil, lets schedule a rescan here too.
+		if trapScansDone < 12 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.05, "TrapHandler", SpellID)
 		end
-		trapScanStarted = true
 	end
 end
 
 function mod:OnCombatStart(delay)
 	prewarnedPhase2 = false
-	trapScanStarted = false
+	trapScansDone = 0
 --	timerCrystalPrisonCD:Start(-delay)--Don't know yet, Need to run transcriptor with combat logging turned OFF to get the timestamps right.
 	timerSpearCD:Start(20-delay)--High variation, just a CD?
 	berserkTimer:Start(-delay)
@@ -226,8 +208,10 @@ end
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(99836) then
 		timerCrystalPrisonCD:Start()
+		trapScansDone = 0
 		self:ScheduleMethod(0.05, "TrapHandler", 99836)
 	elseif args:IsSpellID(99839) then
+		trapScansDone = 0
 		self:ScheduleMethod(0.05, "TrapHandler", 99839)
 	end
 end
