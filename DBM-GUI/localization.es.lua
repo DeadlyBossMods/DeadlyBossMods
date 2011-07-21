@@ -145,7 +145,7 @@ L.Area_SpamFilter		= "Opciones de spam"
 L.HideBossEmoteFrame		= "Esconder lo que dice el boss"
 L.SpamBlockRaidWarning		= "Filtrar anuncios de otros Boss Mods" 
 L.SpamBlockBossWhispers		= "Filtrar los avisos de <DBM> mientras estas en combate"
-L.BlockVersionUpdatePopup	= "Desabilitar avisos de actualizaciones"
+L.BlockVersionUpdateNotice	= "Desabilitar avisos de actualizaciones"
 L.ShowBigBrotherOnCombatStart	= "Comprobar los bufos con Big Brother al inicio del combate"
 L.BigBrotherAnnounceToRaid		= "Anunciar los resultados de Big Brother a la banda"
 

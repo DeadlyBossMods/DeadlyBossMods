@@ -137,7 +137,7 @@ L.Area_SpamFilter		= "常规设置"
 L.HideBossEmoteFrame	= "隐藏BOSS表情"
 L.SpamBlockRaidWarning	= "过滤其他首领预警插件警报" 
 L.SpamBlockBossWhispers	= "战斗中过滤DBM密语警报"
-L.BlockVersionUpdatePopup	= "禁用升级提示"
+L.BlockVersionUpdateNotice	= "禁用升级提示"
 L.ShowBigBrotherOnCombatStart	= "战斗开始时使用Big Brother检测增益情况"
 L.BigBrotherAnnounceToRaid		= "报告Big Brother的检测结果给团队"
 

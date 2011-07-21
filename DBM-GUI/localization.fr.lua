@@ -137,7 +137,7 @@ L.Area_SpamFilter				= "Options générales du filtre anti-spam"
 L.HideBossEmoteFrame			= "Cacher la fenêtre des emotes de boss"
 L.SpamBlockRaidWarning			= "Filtrer les annonces venant d'autres boss mods"
 L.SpamBlockBossWhispers			= "Filtre: Alerter les chuchotements en commencant par <DBM> lors des combats"
-L.BlockVersionUpdatePopup		= "Enlève le message pop-up quand vous êtes sur un boss"
+L.BlockVersionUpdateNotice		= "Enlève le message pop-up quand vous êtes sur un boss"
 L.ShowBigBrotherOnCombatStart	= "Autoriser Big Brother à regarder les buffs quand le combat débute"
 L.BigBrotherAnnounceToRaid		= "Autoriser Big Brother à annoncer les résultats au raid"
 
