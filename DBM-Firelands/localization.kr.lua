@@ -14,10 +14,12 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerPhaseChange	= "%d 단계",
 	TimerHatchEggs		= "녹아내린 알 부화",
-	timerNextInitiate	= "다음 수습생"
+	timerNextInitiate	= "다음 수습생 (%s)",
+	TimerCombatStart	= "전투 시작"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "전투 시작 타이머 보기",
 	WarnPhase			= "단계 전환 경고 보기",
 	WarnNewInitiate		= "타오르는 발톱 수습생 등장 경고 보기",
 	timerNextInitiate	= "다음 타오르는 발톱 수습생 타이머 보기",
@@ -34,7 +36,10 @@ L:SetMiscLocalization({
 	YellInitiate4	= "화염의 장엄함을 지켜봐라!",
 	YellPhase2		= "이 하늘은 나의 것이다!",
 	LavaWorms		= "불타는 용암 벌레가 땅에서 튀어나옵니다!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
-	PowerLevel		= "타오르는 힘"
+	PowerLevel		= "타오르는 힘",
+	East			= "동쪽",
+	West			= "서쪽",
+	Both			= "양쪽"
 })
 
 -------------------
@@ -178,7 +183,9 @@ L:SetMiscLocalization({
 	Middle				= "중앙",
 	North				= "근접",
 	South				= "뒤쪽",
-	transitionended		= "여기까지! 이제 끝내주마."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	MeteorTargets		= "유성 조심!",--Keep rollin' rollin' rollin' rollin'.
+	transitionended		= "여기까지! 이제 끝내주마.",--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	Defeat				= "조금만!... 조금만 시간이 더 있었어도..."
 })
 
 -----------------------
