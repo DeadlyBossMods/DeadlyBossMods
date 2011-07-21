@@ -10,6 +10,9 @@ mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.wav", "Sound\
 --Long: blah blah blah (didn't feel like transcribing it)
 --Short: This is my realm
 
+--Heroic Rag data (phases 1-3, not 4-5 unfortunately
+--http://www.worldoflogs.com/reports/rt-8vv4qq15o2d1tb02/xe/?s=18319&e=18875&x=%28spell+%3D+%22Splitting+Blow%22++or+spell+%3D+%22Sulfuras+Smash%22%29+and+fulltype+%3D+SPELL_CAST_START+or+fulltype+%3D+UNIT_DIED+and+targetname+%3D%22Son+of+Flame%22+or+spell+%3D+%0D%0A%22World+In+Flames%22+or+%28spell+%3D+%22Hand+of+Ragnaros%22+or+spell+%3D+%22Wrath+of+Ragnaros%22++or+spell+%3D+%22Magma+Trap%22+or+spell+%3D+%22Living+Meteor%22%29+and+fulltype+%3D+SPELL_CAST_SUCCESS+or+spell+%3D+%22Molten+Seeds%22+or+spell+%3D+%22Molten+Inferno%22
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -18,6 +21,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_HEALTH",
 	"UNIT_AURA"
@@ -45,8 +49,8 @@ local specWarnMeteor		= mod:NewSpecialWarningYou(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 
-local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability
-local timerSulfurasSmash	= mod:NewCDTimer(40, 98710)		-- might even be a "next" timer
+local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
+local timerSulfurasSmash	= mod:NewCDTimer(30, 98710)		-- might even be a "next" timer
 local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might even be a "next" timer
 local timerWrathRagnaros	= mod:NewNextTimer(12, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
@@ -115,12 +119,12 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
 		timerFlamesCD:Start(43)
-		timerMoltenSeedCD:Start(26)
+		timerMoltenSeedCD:Start(26)--is this correct in both modes? logs i'm looking at now seem to suggest it could be 20 seconds on heroic.
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			specWarnMoltenSeed:Schedule(26)--^^
-			timerMoltenSeed:Schedule(26)--^^
+			specWarnMoltenSeed:Schedule(26)
+			timerMoltenSeed:Schedule(26)
 		end
-		timerSulfurasSmash:Start(18)--18-20sec after last son dies (or 45second push)
+--		timerSulfurasSmash:Start(18)--Flat out not consistent, 10-30 second variations after transitoin ended or began, neither one is proper trigger for first one. first one may truely be random
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
 		self:Unschedule(warnSeeds)
@@ -148,7 +152,7 @@ end
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerMagmaTrap:Start(16-delay)
-	timerSulfurasSmash:Start(30-delay)
+	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
 	lastMeteor = 0
 	sonsDied = 0
@@ -196,11 +200,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98710, 100890, 100891, 100892) then
-		if phase == 1 then
-			timerSulfurasSmash:Start(30)--30 second cd in phase 1.
-			timerWrathRagnaros:Start()
+		if phase == 1 or phase == 3 then
+			timerSulfurasSmash:Start()--30 second cd in phase 1 and phase 3
+			if phase == 1 then
+				timerWrathRagnaros:Start()
+			end
 		else
-			timerSulfurasSmash:Start()
+			timerSulfurasSmash:Start(40)--40 seconds in phase 2
 		end
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		sonsDied = 0
@@ -296,6 +302,7 @@ function mod:SPELL_DAMAGE(args)
 		self:Schedule(5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the firstone going off.
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
