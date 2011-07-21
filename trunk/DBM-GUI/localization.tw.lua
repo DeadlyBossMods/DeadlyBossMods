@@ -143,7 +143,7 @@ L.Area_SpamFilter			= "垃圾過濾選項"
 L.HideBossEmoteFrame			= "隱藏團隊首領表情框"
 L.SpamBlockRaidWarning			= "過濾其他首領模組的警告" 
 L.SpamBlockBossWhispers			= "當戰鬥時過濾 <DBM> 密語警告"
-L.BlockVersionUpdatePopup		= "關閉彈出的更新通知"
+L.BlockVersionUpdateNotice		= "關閉彈出的更新通知"
 L.ShowBigBrotherOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
 L.BigBrotherAnnounceToRaid		= "通告BigBrother的結果給團隊"
 

@@ -143,7 +143,7 @@ L.Area_SpamFilter				= "일반 설정"
 L.HideBossEmoteFrame			= "블리자드 기본 레이드 경보 숨기기"
 L.SpamBlockRaidWarning			= "다른 보스 모드가 알리는 경보 감추기" 
 L.SpamBlockBossWhispers			= "전투 중 다른 플레이어가 보내는 <DBM> 경보 귓속말 감추기"
-L.BlockVersionUpdatePopup		= "업데이트 알림 창 끄기"
+L.BlockVersionUpdateNotice		= "업데이트 알림 창 끄기"
 L.ShowBigBrotherOnCombatStart	= "전투 시작시 BigBrother 버프 체크 실행하기"
 L.BigBrotherAnnounceToRaid		= "Big Brother 버프 체크 결과를 공격대에 알리기"
 
