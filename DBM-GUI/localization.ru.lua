@@ -143,7 +143,7 @@ L.Area_SpamFilter				= "Параметры спам-фильтра"
 L.HideBossEmoteFrame			= "Скрывать эмоции рейдового босса"
 L.SpamBlockRaidWarning			= "Фильтрация предупреждений от других DBM" 
 L.SpamBlockBossWhispers			= "Фильтрация <DBM> предупреждений шепотом в бою"
-L.BlockVersionUpdatePopup		= "Отключить всплывающее сообщение об устаревшей версии"
+L.BlockVersionUpdateNotice		= "Отключить всплывающее сообщение об устаревшей версии"
 L.ShowBigBrotherOnCombatStart	= "Выполнять проверку положительных эффектов Big Brother в начале боя"
 L.BigBrotherAnnounceToRaid		= "Объявлять результаты проверки Big Brother в рейд"
 

@@ -78,7 +78,7 @@ DBM.DefaultOptions = {
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
-	BlockVersionUpdatePopup = true,
+	BlockVersionUpdateNotice = false,
 	ShowSpecialWarnings = true,
 	ShowLHFrame = true,
 	AlwaysShowHealthFrame = false,
@@ -1624,7 +1624,7 @@ do
 					end
 					if found then
 						showedUpdateReminder = true
-						if not DBM.Options.BlockVersionUpdatePopup then
+						if not DBM.Options.BlockVersionUpdateNotice then
 							DBM:ShowUpdateReminder(displayVersion, revision)
 						else 
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
