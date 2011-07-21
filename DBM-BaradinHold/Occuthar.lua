@@ -33,8 +33,8 @@ local focusedCast = 0
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerSearingShadows:Start(6-delay)--Need transcriptor to see what first one always is to be sure.
-	timerEyes:Start(25-delay)--Need transcriptor to see what first one always is to be sure.
-	timerFocusedFire:Start(15)--Need transcriptor to see what first one always is to be sure.
+	timerEyes:Start(23-delay)--Need transcriptor to see what first one always is to be sure.
+	timerFocusedFire:Start(-delay)--Need transcriptor to see what first one always is to be sure.
 	spamFire = 0
 end
 
