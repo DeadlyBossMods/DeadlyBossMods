@@ -194,7 +194,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 				timerNextInitiate:Start(40, L.West)--Last will be on west, after a fire storm
 			end
 		else
-			--will rework this with new data and locations soonª pretty sure it's both both, east west east west.
+			--will rework this with new data and locations soon pretty sure it's both both, east west east west.
 			if initiatesSpawned < 3 then
 				timerNextInitiate:Start(32)
 			else
