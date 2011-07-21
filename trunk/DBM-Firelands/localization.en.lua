@@ -13,7 +13,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Phase %d",
 	TimerHatchEggs		= "Next Eggs",
-	timerNextInitiate	= "Next Initiate",
+	timerNextInitiate	= "Next Initiate (%s)",
 	TimerCombatStart	= "Combat starts"
 })
 
@@ -36,7 +36,10 @@ L:SetMiscLocalization({
 	YellPhase2		= "These skies are MINE!",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "Fiery Lava Worms erupt from the ground!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
-	PowerLevel		= "Molten Feathers"
+	PowerLevel		= "Molten Feathers",
+	East			= "East",
+	West			= "West",
+	Both			= "Both"
 })
 
 -------------------

@@ -35,7 +35,7 @@ local specWarnGushingWoundSelf	= mod:NewSpecialWarningYou(99308, false)
 local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
 local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, false)
 
-local timerCombatStart		= mod:NewTimer(36, "TimerCombatStart", 2457)
+local timerCombatStart		= mod:NewTimer(35.5, "TimerCombatStart", 2457)
 local timerFieryVortexCD	= mod:NewNextTimer(195, 99794)
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
@@ -68,7 +68,7 @@ function mod:OnCombatStart(delay)
 		timerFieryVortexCD:Start(-delay)
 		timerHatchEggs:Start(47-delay)
 	end
-	timerNextInitiate:Start(27-delay)--First one is same on both difficulties.
+	timerNextInitiate:Start(27-delay, L.Both)--First one is same on both difficulties.
 	initiatesSpawned = 0
 	CataCast = 0
 	if self.Options.InfoFrame then
@@ -178,18 +178,23 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiatesSpawned)
+		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
 		if self:IsDifficulty("heroic10", "heroic25") then
-			if initiatesSpawned == 1 then
-				timerNextInitiate:Start(22)
+		--East: 2 adds, firestorm, 2 adds, firestorm, no adds.
+		--West: 2 adds, firestorm, 1 add, firestorm, 1 add.
+			if initiatesSpawned == 1 then--First on Both sides
+				timerNextInitiate:Start(22, L.Both)--Next will be on both sides
 			elseif initiatesSpawned == 2 then
-				timerNextInitiate:Start(63)
+				timerNextInitiate:Start(63, L.East)--Next will spawn on east only
 			elseif initiatesSpawned == 3 then
-				timerNextInitiate:Start(42)
+				timerNextInitiate:Start(21, L.West)--Next will spawn west only
 			elseif initiatesSpawned == 4 then
-				timerNextInitiate:Start(40)
+				timerNextInitiate:Start(21, L.East)--Next will spawn east only, just before fire storm
+			elseif initiatesSpawned == 5 then
+				timerNextInitiate:Start(40, L.West)--Last will be on west, after a fire storm
 			end
 		else
-			if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
+			--will rework this with new data and locations soonª pretty sure it's both both, east west east west.
 			if initiatesSpawned < 3 then
 				timerNextInitiate:Start(32)
 			else
@@ -202,7 +207,7 @@ end
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.FullPower or msg:find(L.FullPower) then
 		warnPhase:Show(1)
-		timerNextInitiate:Start(13.5)--Seems same on both.
+		timerNextInitiate:Start(13.5, L.Both)--Seems same on both.
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFieryVortexCD:Start(225)--Probably not right.
 			timerHatchEggs:Start(22)
