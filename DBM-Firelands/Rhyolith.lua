@@ -14,10 +14,10 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
+	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_HEALTH"
 )
 
@@ -77,13 +77,6 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(98632) and self:GetCIDFromGUID(args.destGUID) == 52558 then
-		warnPhase2:Show()
-		phase = 2
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98034) then
 		warnDrinkMagma:Show()
@@ -121,6 +114,13 @@ function mod:SPELL_SUMMON(args)
 		warnShard:Show()
 		timerElementals:Start()
 		spamAdds = GetTime()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.yellPhase2 or msg:find(L.yellPhase2) then
+		warnPhase2:Show()
+		phase = 2
 	end
 end
 
