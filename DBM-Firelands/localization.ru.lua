@@ -8,7 +8,7 @@ L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase			= "Фаза %d",
-	WarnNewInitiate		= "Новообращенный друид-огнеястреб (%d)"
+	WarnNewInitiate		= "Новообращенный друид-огнеястреб (%s)"
 })
 
 L:SetTimerLocalization({

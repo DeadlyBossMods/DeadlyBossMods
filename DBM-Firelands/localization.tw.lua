@@ -8,7 +8,7 @@ L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase			= "階段 %d",
-	WarnNewInitiate		= "熾炎爪擊啟動 (%d)"
+	WarnNewInitiate		= "熾炎爪擊啟動 (%s)"
 })
 
 L:SetTimerLocalization({
