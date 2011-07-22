@@ -7,7 +7,7 @@ L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase			= "Phase %d",
-	WarnNewInitiate		= "Blazing Talon Initiate (%d)"
+	WarnNewInitiate		= "Blazing Talon Initiate (%s)"
 })
 
 L:SetTimerLocalization({
