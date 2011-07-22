@@ -8,7 +8,7 @@ L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase		= "Fase %d",
-	WarnNewInitiate		= "Iniciado de Garfas Llameantes (%d)"
+	WarnNewInitiate		= "Iniciado de Garfas Llameantes (%s)"
 })
 
 L:SetTimerLocalization({

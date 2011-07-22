@@ -8,7 +8,7 @@ L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase			= "%d 단계",
-	WarnNewInitiate		= "타오르는 발톱 수습생 (%d)"
+	WarnNewInitiate		= "타오르는 발톱 수습생 (%s)"
 })
 
 L:SetTimerLocalization({

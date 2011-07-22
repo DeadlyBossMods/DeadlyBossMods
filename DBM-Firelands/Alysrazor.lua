@@ -53,6 +53,15 @@ mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 local initiatesSpawned = 0
 local CataCast = 0
 
+local initiateSpawns = {
+	[1] = L.Both,
+	[2] = L.Both,
+	[3] = L.East,
+	[4] = L.West,
+	[5] = L.East,
+	[6] = L.West
+}
+
 --Credits to public WoL http://www.worldoflogs.com/reports/rt-qy30xgzau5w12aae/xe/?enc=bosses&boss=52530&x=spell+%3D+%22Cataclysm%22+or+spell+%3D+%22Burnout%22+or+spell+%3D+%22Firestorm%22+and+%28fulltype+%3D+SPELL_CAST_SUCCESS+or+fulltype+%3D+SPELL_CAST_START+or+fulltype+%3D+SPELL_AURA_APPLIED++or+fulltype+%3D+SPELL_AURA_REMOVED%29
 --For heroic information drycodes.
 
@@ -119,7 +128,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(100744) then--Firestorm removed from boss. No reason for a heroic check here, this shouldn't happen on normal.
-		timerHatchEggs:Start(16.5)
+		timerHatchEggs:Start(16)
 		if CataCast < 3 then
 			timerCataclysmCD:Start(10)--10 seconds after first firestorm ends
 		else
@@ -177,7 +186,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	--Yes it's ugly, but it works.
 	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
 		initiatesSpawned = initiatesSpawned + 1
-		warnNewInitiate:Show(initiatesSpawned)
+		warnNewInitiate:Show(initiateSpawns[initiatesSpawned])
 		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
 		if self:IsDifficulty("heroic10", "heroic25") then
 		--East: 2 adds, firestorm, 2 adds, firestorm, no adds.
@@ -194,12 +203,18 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 				timerNextInitiate:Start(40, L.West)--Last will be on west, after a fire storm
 			end
 		else
-			--will rework this with new data and locations soon pretty sure it's both both, east west east west.
-			if initiatesSpawned < 3 then
-				timerNextInitiate:Start(32)
-			else
-				timerNextInitiate:Start(20)
-			end	
+			--Using averages, 30-32 and 20-22 are variations.
+			if initiatesSpawned == 1 then--First on Both sides
+				timerNextInitiate:Start(31, L.Both)--Next will be on both sides
+			elseif initiatesSpawned == 2 then
+				timerNextInitiate:Start(31, L.East)--Next will spawn on east only
+			elseif initiatesSpawned == 3 then
+				timerNextInitiate:Start(21, L.West)--Next will spawn west only
+			elseif initiatesSpawned == 4 then
+				timerNextInitiate:Start(21, L.East)--Next will spawn east only
+			elseif initiatesSpawned == 5 then
+				timerNextInitiate:Start(21, L.West)--Last will be on west
+			end
 		end
 	end
 end
