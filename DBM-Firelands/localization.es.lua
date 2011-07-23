@@ -13,27 +13,34 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Fase %d",
-	TimerHatchEggs		= "Eclosión de huevos",
-	timerNextInitiate	= "Siguiente Iniciado"
+	TimerHatchEggs		= "Siguientes huevos",
+	timerNextInitiate	= "Siguiente Iniciado",
+	TimerCombatStart	= "Empieza el combate"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
 	WarnPhase		= "Mostrar un aviso para cada cambio de fase",
 	WarnNewInitiate		= "Mostrar aviso para nuevo Iniciado de Garfas Llameantes",
 	timerNextInitiate	= "Mostrar tiempo para siguiente Iniciado de Garfas Llameantes",
 	TimerPhaseChange	= "Mostrar tiempo para siguiente fase",
 	TimerHatchEggs		= "Mostrar tiempo hasta que los huevos eclosionen",
-	InfoFrame		= "Mostrar información para Poder Llameante"
+	InfoFrame		= "Mostrar información para Pluma de arrabio"
 })
 
 L:SetMiscLocalization({
-	YellPull		= "I serve a new master now, mortals!",--translate
-	YellInitiate1	= "We call upon you, Firelord!",--translate
-	YellInitiate2	= "Behold His power!",--translate
-	YellInitiate3	= "Let the unbelievers perish in fire!",--translate
-	YellInitiate4	= "Witness the majesty of flame!",--translate
-	YellPhase2		= "These skies are MINE!",--translate
-	PowerLevel		= "Poder Llameante"
+	YellPull		= "¡Mortales, ahora sirvo a un nuevo amo!",
+	YellInitiate1	= "¡Te invocamos, Señor del Fuego!",
+	YellInitiate2	= "¡Contemplad su poder!",
+	YellInitiate3	= "¡Que los infieles perezcan en el fuego!",
+	YellInitiate4	= "Presenciad la majestuosidad de la llama.",
+	YellPhase2		= "¡Estos cielos son MÍOS!",
+	FullPower		= "spell:99925",
+	LavaWorms		= "¡Gusanos de lava ígneos surgen del suelo!",
+	PowerLevel		= "Pluma de arrabio",
+	East			= "Este",
+	West			= "Oeste",
+	Both			= "Ambos"
 })
 
 -------------------
@@ -55,6 +62,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	yellPhase2			= "Eons I have slept undisturbed... Now this... Creatures of flesh, now you will BURN!"--translate
 })
 
 -----------------
@@ -120,6 +128,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Mostrar tiempo de duración de la hoja activa",
 	TimerBladeNext		= "Mostrar tiempo para la siguiente hoja",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Mostrar flecha cuando te afecte $spell:99516 ",
 	InfoFrame		= "Mostrar información de las marcas de Chispa vital"
 })
@@ -159,7 +168,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Fase de Hijos termina"
+	TimerPhaseSons		= "Transición termina"
 })
 
 L:SetOptionLocalization({
@@ -167,6 +176,7 @@ L:SetOptionLocalization({
 	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
+	InfoFrame			= "Mostrar información de los objetivos de $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
@@ -174,8 +184,12 @@ L:SetMiscLocalization({
 	East				= "Este",
 	West				= "Oeste",
 	Middle				= "Medio",
-	North				= "Norte",
-	South				= "Sur"
+	North				= "Melee",
+	South				= "Atrás",
+	MeteorTargets		= "HOYGA METEHORITOS!",
+	transitionended		= "Enough! I will finish this.",--translate
+	Defeat				= "Too soon! ... You have come too soon..."--translate
+
 })
 
 -----------------------
@@ -198,4 +212,30 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+})
+
+----------------
+--  Volcanus  --
+----------------
+L = DBM:GetModLocalization("Volcanus")
+
+L:SetGeneralLocalization({
+	name = "Volcanus"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	timerStaffTransition	= "Transition ends"--translate
+})
+
+L:SetOptionLocalization({
+	timerStaffTransition	= "Show a timer for the phase transition"--translate
+})
+
+L:SetMiscLocalization({
+	StaffEvent			= "The Branch of Nordrassil reacts violently",--translate
+	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--translate
+	StaffTransition		= "The fires consuming the Tormented Protector wink out!"--translate
 })
