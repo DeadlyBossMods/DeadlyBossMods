@@ -184,7 +184,11 @@ function mod:SPELL_CAST_START(args)
 		if args.sourceGUID == UnitGUID("target") then--Only show warning/timer for your own target.
 			warnBlastNova:Show()
 			specWarnBlastsNova:Show()
-			timerBlastNova:Start()
+			if self:IsDifficulty("heroic10", "heroic25") then
+				timerBlastNova:Start()
+			else
+				timerBlastNova:Start(4)--4 second hurp cast on normal since 4.2
+			end
 		end
 	end
 end
