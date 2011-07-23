@@ -141,7 +141,8 @@ end
 
 function mod:MagmaTrapTarget()
 	local targetname = self:GetBossTarget(52409)
-	if not targetname then return end
+	if not targetname then return end--No target at all, abort.
+	if UnitExists("boss1target") and UnitDetailedThreatSituation("boss1target", "boss1") then return end--Ignore target if it reports tank. A tank swap bugged out scan. This doesn't target tanks.
 	warnMagmaTrap:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnMagmaTrap:Show()
