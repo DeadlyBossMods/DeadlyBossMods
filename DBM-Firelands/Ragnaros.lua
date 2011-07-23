@@ -127,7 +127,7 @@ local function TransitionEnded()
 --		timerSulfurasSmash:Start(18)--Flat out not consistent, 10-30 second variations after transitoin ended or began, neither one is proper trigger for first one. first one may truely be random
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
-		self:Unschedule(warnSeeds)
+		mod:Unschedule(warnSeeds)
 		phase3Started = true
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerFlamesCD:Start(32)
