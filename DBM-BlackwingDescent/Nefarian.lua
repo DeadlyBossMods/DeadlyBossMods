@@ -177,7 +177,7 @@ function mod:SPELL_CAST_START(args)
 			warnNefShadowflameBreath:Show()
 			timerNefBreathCD:Start()
 		end
-	elseif args:IsSpellID(80734, 101431) then--Since this is cast within 5 seconds of adds spawning, can use a GUID check here to add all 3 of http://www.wowhead.com/npc=41948 to boss health if not already on boss health.
+	elseif args:IsSpellID(80734, 101430, 101431, 101432) then--Since this is cast within 5 seconds of adds spawning, can use a GUID check here to add all 3 of http://www.wowhead.com/npc=41948 to boss health if not already on boss health.
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
 		end
