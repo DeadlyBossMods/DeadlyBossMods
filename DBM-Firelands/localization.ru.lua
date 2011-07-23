@@ -14,7 +14,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Фаза %d",
 	TimerHatchEggs		= "Вылупление яиц",
-	timerNextInitiate	= "Следующий друид",
+	timerNextInitiate	= "Следующий друид (%s)",
 	TimerCombatStart	= "Начало боя"
 })
 
@@ -37,7 +37,10 @@ L:SetMiscLocalization({
 	YellPhase2			= "Небо над вами принадлежит МНЕ!",
 	FullPower			= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms			= "На поверхность вылезают огненные лавовые паразиты!",
-	PowerLevel			= "Опаляющее перо"
+	PowerLevel			= "Опаляющее перо",
+	East				= "на востоке",
+	West				= "на западе",
+	Both				= "обе стороны"
 })
 
 -------------------
@@ -59,6 +62,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	yellPhase2			= "Целую вечность я спокойно спал… Маленькие кусочки мяса… Вы СГОРИТЕ!"
 })
 
 -----------------
@@ -83,7 +87,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
+	EmoteSpiderlings 	= "Сверху свисают пеплопряды-ткачи!"
 })
 
 -------------
@@ -183,7 +187,8 @@ L:SetMiscLocalization({
 	North				= "в мили",
 	South				= "сзади",
 	MeteorTargets		= "ОМФГ Метеоры!",--Keep rollin' rollin' rollin' rollin'.
-	transitionended		= "Довольно! Пора покончить с этим."--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	transitionended		= "Довольно! Пора покончить с этим.",--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	Defeat				= "Слишком рано!.. Вы пришли слишком рано…"
 })
 
 -----------------------
@@ -214,7 +219,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Volcanus")
 
 L:SetGeneralLocalization({
-	name = "Вулканус"
+	name = "Вулканий"
 })
 
 L:SetWarningLocalization({
