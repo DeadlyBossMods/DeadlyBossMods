@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Name: Firelands
 ## X-DBM-Mod-Name-deDE: Feuerlande
-## X-DBM-Mod-Name-esES: Firelands
+## X-DBM-Mod-Name-esES: Tierras de Fuego
 ## X-DBM-Mod-Name-koKR: 불의 땅
 ## X-DBM-Mod-Name-ruRU: Огненные Просторы
 ## X-DBM-Mod-Name-zhTW: Firelands
