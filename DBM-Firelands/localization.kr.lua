@@ -205,7 +205,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame			= "$spell:100012의 거리프레임 보기(10 m)"
+	TrashRangeFrame			= "$spell:100012의 거리프레임 보기(10 m)"
 })
 
 L:SetMiscLocalization({

@@ -10,9 +10,6 @@ mod:SetModelSound("Sound\\Creature\\RAGNAROS\\VO_FL_RAGNAROS_AGGRO.wav", "Sound\
 --Long: blah blah blah (didn't feel like transcribing it)
 --Short: This is my realm
 
---Heroic Rag data (phases 1-3, not 4-5 unfortunately
---http://www.worldoflogs.com/reports/rt-8vv4qq15o2d1tb02/xe/?s=18319&e=18875&x=%28spell+%3D+%22Splitting+Blow%22++or+spell+%3D+%22Sulfuras+Smash%22%29+and+fulltype+%3D+SPELL_CAST_START+or+fulltype+%3D+UNIT_DIED+and+targetname+%3D%22Son+of+Flame%22+or+spell+%3D+%0D%0A%22World+In+Flames%22+or+%28spell+%3D+%22Hand+of+Ragnaros%22+or+spell+%3D+%22Wrath+of+Ragnaros%22++or+spell+%3D+%22Magma+Trap%22+or+spell+%3D+%22Living+Meteor%22%29+and+fulltype+%3D+SPELL_CAST_SUCCESS+or+spell+%3D+%22Molten+Seeds%22+or+spell+%3D+%22Molten+Inferno%22
-
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
