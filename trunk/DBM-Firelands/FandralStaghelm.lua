@@ -20,20 +20,21 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnAdrenaline		= mod:NewStackAnnounce(97238, 3)
-local warnFury				= mod:NewStackAnnounce(97235, 3)
-local warnLeapingFlames		= mod:NewTargetAnnounce(100208, 3)
-local warnOrbs				= mod:NewCastAnnounce(98451, 4)
+local warnAdrenaline			= mod:NewStackAnnounce(97238, 3)
+local warnFury					= mod:NewStackAnnounce(97235, 3)
+local warnLeapingFlames			= mod:NewTargetAnnounce(100208, 3)
+local warnOrbs					= mod:NewCastAnnounce(98451, 4)
 
-local timerSearingSeed		= mod:NewBuffActiveTimer(60, 98450)
-local timerLeapingFlames	= mod:NewCDTimer(4, 100208)
-local timerFlameScythe		= mod:NewCDTimer(4, 98474)
+local timerSearingSeed			= mod:NewBuffActiveTimer(60, 98450)
+local timerLeapingFlames		= mod:NewCDTimer(4, 100208)
+local timerFlameScythe			= mod:NewCDTimer(4, 98474)
 
-local yellLeapingFlames		= mod:NewYell(100208, nil, false)
-local specWarnLeapingFlames	= mod:NewSpecialWarningMove(100208)
-local specWarnSearingSeed	= mod:NewSpecialWarningMove(98450)
+local yellLeapingFlames			= mod:NewYell(100208, nil, false)
+local specWarnLeapingFlamesCast	= mod:NewSpecialWarningYou(98476)--Cast on you
+local specWarnLeapingFlames		= mod:NewSpecialWarningMove(100208)--Standing in circle it left behind.
+local specWarnSearingSeed		= mod:NewSpecialWarningMove(98450)
 
-local soundSeed				= mod:NewSound(98450)
+local soundSeed					= mod:NewSound(98450)
 
 mod:AddBoolOption("RangeFrameSeeds", true)
 mod:AddBoolOption("RangeFrameCat", false)--Diff options for each ability cause seeds strat is pretty universal, don't blow up raid, but leaps may or may not use a stack strategy, plus melee will never want it on by default.
@@ -41,7 +42,8 @@ mod:AddBoolOption("IconOnLeapingFlames", false)
 
 local abilityCount = 0
 local transforms = 0
---http://www.worldoflogs.com/reports/xesfs08iq6xdu6l9/xe/?s=6594&e=7052&x=spell+%3D+%22Flame+Scythe%22+and+fulltype+%3D+SPELL_CAST_SUCCESS+or+spellId+%3D+98476+and+fulltype+%3D+SPELL_CAST_SUCCESS+or+spell+%3D+%22Cat+Form%22+and+sourcereaction%3DREACTION_HOSTILE+or+spell+%3D+%22Scorpion+Form%22+and+sourcereaction%3DREACTION_HOSTILE
+local recentlyJumped = false
+
 local abilityTimers = {
 	[0] = 17.3,--Sometimes this is 16.7
 	[1] = 13.4,--Sometimes this is 12.7 sigh. Wonder what causes this variation?
@@ -56,6 +58,10 @@ local abilityTimers = {
 	[10]= 4.9
 }
 
+local function clearLeapWarned()
+	recentlyJumped = false
+end
+
 function mod:LeapingFlamesTarget()
 	local targetname = self:GetBossTarget(52571)
 	if not targetname then return end
@@ -64,8 +70,10 @@ function mod:LeapingFlamesTarget()
 		self:SetIcon(targetname, 8, 5)	-- 5seconds should be long enough to notice
 	end
 	if targetname == UnitName("player") then
-		specWarnLeapingFlames:Show()
+		recentlyJumped = true--Anti Spam
+		specWarnLeapingFlamesCast:Show()
 		yellLeapingFlames:Yell()
+		self:Schedule(4, clearLeapWarned)--So you don't get move warning too from debuff.
 	end
 end
 
@@ -104,6 +112,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAdrenaline:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
+	elseif args:IsSpellID(98535, 100206, 100207, 100208) and args:IsPlayer() and not recentlyJumped then
+		specWarnLeapingFlames:Show()--You stood in the fire!
 	elseif args:IsSpellID(98450) and args:IsPlayer() then
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific seed timer is
 		specWarnSearingSeed:Schedule(expires - GetTime() - 5)	-- Show "move away" warning 5secs before explode

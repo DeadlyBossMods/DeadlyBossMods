@@ -208,7 +208,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Mostrar distancia (10) para $spell:100012",
+	TrashRangeFrame	= "Mostrar distancia (10) para $spell:100012",
 })
 
 L:SetMiscLocalization({
