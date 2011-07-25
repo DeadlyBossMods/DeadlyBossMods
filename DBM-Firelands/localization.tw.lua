@@ -202,7 +202,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "為$spell:100012顯示距離框(10碼)",
+	TrashRangeFrame	= "為$spell:100012顯示距離框(10碼)"
 })
 
 L:SetMiscLocalization({
