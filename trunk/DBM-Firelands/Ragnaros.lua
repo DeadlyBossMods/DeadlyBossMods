@@ -119,15 +119,14 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
 		timerFlamesCD:Start(43)
-		timerMoltenSeedCD:Start(26)--is this correct in both modes? logs i'm looking at now seem to suggest it could be 20 seconds on heroic.
+		timerMoltenSeedCD:Start(25)--is this correct in both modes? logs i'm looking at now seem to suggest it could be 20 seconds on heroic.
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			specWarnMoltenSeed:Schedule(26)
-			timerMoltenSeed:Schedule(26)
+			specWarnMoltenSeed:Schedule(25)
+			timerMoltenSeed:Schedule(25)
 		end
 --		timerSulfurasSmash:Start(18)--Flat out not consistent, 10-30 second variations after transitoin ended or began, neither one is proper trigger for first one. first one may truely be random
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
-		mod:Unschedule(warnSeeds)
 		phase3Started = true
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerFlamesCD:Start(32)
@@ -212,6 +211,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		sonsDied = 0
 		phase = phase + 1
+		self:Unschedule(warnSeeds)
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
 		timerHandRagnaros:Cancel()
