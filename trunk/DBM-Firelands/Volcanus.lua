@@ -7,7 +7,9 @@ mod:SetCreatureID(53833)
 mod:SetModelID(38592)
 mod:SetZone()
 
+--[RAID_BOSS_EMOTE] RAID_BOSS_EMOTE#The Branch of Nordrassil reacts violently to Ambrossia's touch!#Branch of Nordrassil#0#false", -- [1]
 mod:RegisterCombat("emote", L.StaffEvent)
+mod:SetMinCombatTime(15)
 mod:SetWipeTime(40)--You leave combat for about 35 seconds. we do 40 for good measure.
 
 mod:RegisterEvents(
