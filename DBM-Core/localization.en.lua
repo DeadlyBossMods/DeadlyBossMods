@@ -163,7 +163,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase	= "Announce Phase %s",
 	prephase= "Show a prewarning for Phase %s",
 	count	= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
+	stack	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r stacks",
 }
 
 
