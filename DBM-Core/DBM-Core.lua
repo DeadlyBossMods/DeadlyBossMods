@@ -2135,12 +2135,23 @@ do
 end
 
 do
+	
+	local function checkExpressionList(exp, str)
+		for i, v in ipairs(exp) do
+			if str:match(v) then
+				return true
+			end
+		end
+		return false
+	end
+	
 	-- called for all mob chat events
 	local function onMonsterMessage(type, msg)
 		-- pull detection
 		if combatInfo[LastZoneText] then
 			for i, v in ipairs(combatInfo[LastZoneText]) do
-				if v.type == type and checkEntry(v.msgs, msg) then
+				if v.type == type and checkEntry(v.msgs, msg)
+				or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0)
 				end
 			end
@@ -2148,7 +2159,8 @@ do
 		-- copy & paste, lol
 		if combatInfo[LastZoneMapID] then
 			for i, v in ipairs(combatInfo[LastZoneMapID]) do
-				if v.type == type and checkEntry(v.msgs, msg) then
+				if v.type == type and checkEntry(v.msgs, msg)
+				or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0)
 				end
 			end
