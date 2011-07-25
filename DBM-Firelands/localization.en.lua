@@ -234,7 +234,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "The Branch of Nordrassil reacts violently",--Partial, not sure if pull detection will work with partials yet :\
+	StaffEvent			= "The Branch of Nordrassil reacts violently to %S+ touch!",--Reg expression pull match
 	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
 	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
 })
