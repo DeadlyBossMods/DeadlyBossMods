@@ -220,7 +220,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Volcanus")
 
 L:SetGeneralLocalization({
-	name = "Volcanus"
+	name = "볼카누스"
 })
 
 L:SetWarningLocalization({
@@ -235,7 +235,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "The Branch of Nordrassil reacts violently to %S+ touch!",--Partial, not sure if pull detection will work with partials yet :\
-	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
-	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
+	StaffEvent			= "(%S+)|1이;가; 놀드랏실의 가지를 건드리자 격렬하게 반응합니다!",
+	StaffTrees			= "불타는 나무정령이 수호정령을 돕기 위해 땅에서 일어납니다!",--Might add a spec warning for this later.
+	StaffTransition		= "고통받는 수호정령을 태우는 불이 사그라졌습니다!"
 })
