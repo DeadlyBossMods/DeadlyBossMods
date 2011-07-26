@@ -35,8 +35,8 @@ L:SetMiscLocalization({
 	YellInitiate3	= "把不信者全都燒死!",
 	YellInitiate4	= "見證壯麗的火焰。",
 	YellPhase2		= "這片天空屬於我。",
-        FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
-        LavaWorms		= "熾炎熔岩蟲從地上鑽了出來!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
+	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
+	LavaWorms		= "熾炎熔岩蟲從地上鑽了出來!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
 	PowerLevel		= "熔岩之力"
 })
 
