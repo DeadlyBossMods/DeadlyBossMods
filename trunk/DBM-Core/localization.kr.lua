@@ -156,7 +156,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "%s 단계 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase	= "%s 단계 사전 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack	= "|cff71d5ff|Hspell:%d|h%s|h|r 중첩 알리기"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {

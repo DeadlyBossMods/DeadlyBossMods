@@ -35,6 +35,7 @@ L:SetMiscLocalization({
 	YellInitiate3	= "믿지 않는 자, 불로 멸하리라!",
 	YellInitiate4	= "화염의 장엄함을 지켜봐라!",
 	YellPhase2		= "이 하늘은 나의 것이다!",
+	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "불타는 용암 벌레가 땅에서 튀어나옵니다!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
 	PowerLevel		= "타오르는 힘",
 	East			= "동쪽",
@@ -175,6 +176,7 @@ L:SetOptionLocalization({
 	warnEngulfingFlame	= "$spell:99171 경고 보기",
 	TimerPhaseSons		= "전환 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
+	InfoFrame			= "$spell:99849 대상 정보 프레임 보기",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
@@ -209,6 +211,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+
 })
 
 ----------------
@@ -232,7 +235,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "The Branch of Nordrassil reacts violently",--Partial, not sure if pull detection will work with partials yet :\
+	StaffEvent			= "The Branch of Nordrassil reacts violently to %S+ touch!",--Partial, not sure if pull detection will work with partials yet :\
 	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
 	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
 })
