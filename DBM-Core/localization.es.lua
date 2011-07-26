@@ -164,7 +164,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase	= "Mostrar aviso para fase %s",
 	prephase = "Mostrar pre-aviso para Fase %s",
 	count	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack	= "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack	= "Anunciar acumulaciones de |cff71d5ff|Hspell:%d|h%s|h|r",
 }
 
 
@@ -179,7 +179,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 	= "Mostrar aviso especial cuando te afecta \n $spell:%d",
 	run 	= "Mostrar aviso especial para $spell:%d",
 	cast 	= "Mostrar aviso especial para casteo de $spell:%d",
-	stack 	= "Mostrar aviso especial cuando tienes >=%d marcas de \n $spell:%d"
+	stack 	= "Mostrar aviso especial cuando tienes >=%d acumulaciones de \n $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {

@@ -62,7 +62,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yellPhase2			= "Eons I have slept undisturbed... Now this... Creatures of flesh, now you will BURN!"--translate
+	yellPhase2			= "He dormido durante eones sin ser molestado... Y ahora... Seres de carne, ¡ARDERÉIS!"
 })
 
 -----------------
