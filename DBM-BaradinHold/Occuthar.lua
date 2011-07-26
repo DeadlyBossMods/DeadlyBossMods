@@ -54,7 +54,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(96884) then
 		focusedCast = focusedCast + 1
-		if focusedCast < 3 then--Start start it after 3rd cast since eyes will be cast next and reset the CD, we start a bar there instead.
+		if focusedCast < 3 then--Don't start it after 3rd cast since eyes will be cast next and reset the CD, we start a bar there instead.
 			timerFocusedFire:Start()
 		end
 	end

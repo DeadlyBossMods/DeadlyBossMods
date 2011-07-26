@@ -33,6 +33,7 @@ L:SetMiscLocalization({
 	YellInitiate3	= "Äschert die Ungläubigen ein!",    --needs to be verified (screenshot-captured translation)
 	YellInitiate4	= "Erblicket den Ruhm der Flammen.", --needs to be verified (screenshot-captured translation)
 	YellPhase2		= "Dieser Himmel ist MEIN!",         --needs to be verified (screenshot-captured translation)
+	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	PowerLevel		= "Lodernde Macht"
 })
 

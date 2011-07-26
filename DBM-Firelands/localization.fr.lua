@@ -25,6 +25,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	YellPull		= "I serve a new master now, mortals!",
 	YellPhase2		= "These skies are MINE!",
+	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	PowerLevel		= "Blazing Power"
 })
 
