@@ -19,7 +19,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
---	"UNIT_DIED",
+	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_HEALTH",
 	"UNIT_AURA"
@@ -31,6 +31,7 @@ local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mo
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
 local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
+local warnSonsLeft			= mod:NewAnnounce("WarnRemainingAdds", 2, 99014)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
 local warnMagmaTrap			= mod:NewTargetAnnounce(98164, 3)--Second transition adds ability.
@@ -70,7 +71,7 @@ mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
 local lastMeteor = 0
---local sonsDied = 0
+local sonsLeft = 8
 local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
@@ -156,7 +157,7 @@ function mod:OnCombatStart(delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
 	lastMeteor = 0
---	sonsDied = 0
+	sonsLeft = 8
 	phase = 1
 	prewarnedPhase2 = false
 	prewarnedPhase3 = false
@@ -210,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 			timerSulfurasSmash:Start(40)--40 seconds in phase 2
 		end
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
---		sonsDied = 0
+		sonsLeft = 8
 		phase = phase + 1
 		self:Unschedule(warnSeeds)
 		timerMagmaTrap:Cancel()
@@ -307,18 +308,17 @@ function mod:SPELL_DAMAGE(args)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the firstone going off.
 
---[[
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53140 then
-		sonsDied = sonsDied + 1
-		if sonsDied >= 8 then
-			self:Unschedule(TransitionEnded)
-			TransitionEnded()
+		sonsLeft = sonsLeft - 1
+		if sonsLeft < 3 then
+			warnSonsLeft:Show(sonsLeft)
 		end
 	end
 end
---]]
+
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.TransitionEnded1 or msg:find(L.TransitionEnded1) or msg == L.TransitionEnded2 or msg:find(L.TransitionEnded2) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
