@@ -44,6 +44,7 @@ local specWarnMagmaTrap		= mod:NewSpecialWarningMove(98164)
 local yellMagmaTrap			= mod:NewYell(98164)--May Return false tank yells
 local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
 local specWarnMeteor		= mod:NewSpecialWarningYou(99849)
+local yellMeteor			= mod:NewYell(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 
@@ -346,6 +347,7 @@ function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
 	if UnitDebuff("player", meteorTarget) and not meteorWarned then--Warn you that you have a meteor
 		specWarnMeteor:Show()
+		yellMeteor:Yell()
 		meteorWarned = true
 	elseif not UnitDebuff("player", meteorTarget) and meteorWarned then--reset warned status if you don't have debuff
 		meteorWarned = false
