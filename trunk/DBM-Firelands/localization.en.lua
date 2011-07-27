@@ -186,7 +186,8 @@ L:SetMiscLocalization({
 	North				= "Melee",
 	South				= "Back",
 	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
-	transitionended		= "Enough! I will finish this.",--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
+	TransitionEnded2	= "Sulfuras will be your end.",--More reliable then adds method.
 	Defeat				= "Too soon! ... You have come too soon..."
 })
 

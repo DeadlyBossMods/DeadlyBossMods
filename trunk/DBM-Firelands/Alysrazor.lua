@@ -36,12 +36,12 @@ local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
 local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, false)
 
 local timerCombatStart		= mod:NewTimer(35.5, "TimerCombatStart", 2457)
-local timerFieryVortexCD	= mod:NewNextTimer(195, 99794)
+local timerFieryVortexCD	= mod:NewNextTimer(180, 99794)
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
 local timerCataclysmCD		= mod:NewCDTimer(31, 102111)--Heroic
 local timerFirestormCD		= mod:NewCDTimer(83, 100744)--Heroic
-local timerPhaseChange		= mod:NewTimer(30, "TimerPhaseChange", 99816)
+local timerPhaseChange		= mod:NewTimer(32.5, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 local timerWingsofFlame		= mod:NewBuffActiveTimer(20, 98619)
@@ -74,7 +74,7 @@ function mod:OnCombatStart(delay)
 		warnFirestormSoon:Schedule(84-delay)
 		timerHatchEggs:Start(37-delay)
 	else
-		timerFieryVortexCD:Start(-delay)
+		timerFieryVortexCD:Start(196-delay)
 		timerHatchEggs:Start(47-delay)
 	end
 	timerNextInitiate:Start(27-delay, L.Both)--First one is same on both difficulties.
@@ -231,7 +231,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			warnFirestormSoon:Schedule(60)--Needs verification.
 			CataCast = 0
 		else
-			timerFieryVortexCD:Start(178)
+			timerFieryVortexCD:Start()
 			timerHatchEggs:Start(32)
 		end
 	end
