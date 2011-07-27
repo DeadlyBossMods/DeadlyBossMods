@@ -163,7 +163,8 @@ L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s in %s",--Spellname in Location
-	warnEngulfingFlame		= "%s in %s"--Spellname in Location
+	warnEngulfingFlame		= "%s in %s",--Spellname in Location
+	WarnRemainingAdds		= "%d aberrations remaining"
 })
 
 L:SetTimerLocalization({
@@ -173,6 +174,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "Show warning for $spell:100877",
 	warnEngulfingFlame	= "Show warning for $spell:99171",
+	WarnRemainingAdds	= "Show warning for how many Sons of Flame remain",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
 	InfoFrame			= "Show info frame for $spell:99849 targets",

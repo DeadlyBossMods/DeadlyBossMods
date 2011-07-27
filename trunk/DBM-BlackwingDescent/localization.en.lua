@@ -92,7 +92,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase			= "Show warning which phase is incoming",
-	WarnRemainingAdds	= "Show warning how many aberrations remain",
+	WarnRemainingAdds	= "Show warning for how many aberrations remain",
 	TimerPhase			= "Show timer for next phase",
 	RangeFrame			= "Show range frame (6) during blue phase",
 	SetTextures			= "Automatically disable projected textures in dark phase\n(returns it to enabled upon leaving phase)",
