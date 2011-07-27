@@ -187,7 +187,8 @@ L:SetMiscLocalization({
 	North				= "Melee",
 	South				= "Atrás",
 	MeteorTargets		= "HOYGA METEHORITOS!",
-	transitionended		= "Enough! I will finish this.",--translate
+	TransitionEnded1	= "Enough! I will finish this.",--translate
+	TransitionEnded2	= "Sulfuras will be your end.",--translate
 	Defeat				= "Too soon! ... You have come too soon..."--translate
 
 })
