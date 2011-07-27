@@ -19,7 +19,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_DIED",
+--	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_HEALTH",
 	"UNIT_AURA"
 )
@@ -55,6 +56,7 @@ local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(62, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
+local timerSplittingCast	= mod:NewCDTimer(10, 100877)--Spell is technically 8 seconds, but when cast finishes it takes 2 seconds for fireballs to spawn adds.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
@@ -67,7 +69,7 @@ mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
 local lastMeteor = 0
-local sonsDied = 0
+--local sonsDied = 0
 local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
@@ -115,18 +117,19 @@ local function TransitionEnded()
 	timerPhaseSons:Cancel()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
-		timerFlamesCD:Start(43)
-		timerMoltenSeedCD:Start(25)--is this correct in both modes? logs i'm looking at now seem to suggest it could be 20 seconds on heroic.
+		timerSulfurasSmash:Start(15.5)--Also a variation. But seems more consistent then it was, maybe cause using yells now :)
+		timerMoltenSeedCD:Start(24)--is this correct in both modes? 23-25 second variation. 24 is middle ground
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			specWarnMoltenSeed:Schedule(25)
-			timerMoltenSeed:Schedule(25)
+			specWarnMoltenSeed:Schedule(24)
+			timerMoltenSeed:Schedule(24)
 		end
---		timerSulfurasSmash:Start(18)--Flat out not consistent, 10-30 second variations after transitoin ended or began, neither one is proper trigger for first one. first one may truely be random
+		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
 		phase3Started = true
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
-		timerFlamesCD:Start(32)
+		timerSulfurasSmash:Start(15.5)--Also a variation.
+		timerFlamesCD:Start(30)
 		timerLivingMeteorCD:Start()
 		if mod.Options.InfoFrame then--This is probably the best way to do it without spam. Does not show in combat log, only unitdebuff/unit_aura will probaby work. will have to find a way to give personal warnings without spam later.
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
@@ -152,7 +155,7 @@ function mod:OnCombatStart(delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
 	lastMeteor = 0
-	sonsDied = 0
+--	sonsDied = 0
 	phase = 1
 	prewarnedPhase2 = false
 	prewarnedPhase3 = false
@@ -206,7 +209,7 @@ function mod:SPELL_CAST_START(args)
 			timerSulfurasSmash:Start(40)--40 seconds in phase 2
 		end
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
-		sonsDied = 0
+--		sonsDied = 0
 		phase = phase + 1
 		self:Unschedule(warnSeeds)
 		timerMagmaTrap:Cancel()
@@ -216,12 +219,13 @@ function mod:SPELL_CAST_START(args)
 		hideRangeFrame()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerPhaseSons:Start(60)--Longer on heroic
-			self:Schedule(60, TransitionEnded)
+--			self:Schedule(60, TransitionEnded)
 		else
-			timerPhaseSons:Start(45)
-			self:Schedule(45, TransitionEnded)
+			timerPhaseSons:Start(47)--45 sec plus the 2 or so seconds he takes to actually come up and yell.
+--			self:Schedule(47, TransitionEnded)
 		end
 		specWarnSplittingBlow:Show()
+		timerSplittingCast:Start()
 		--Middle: 98952 (10N), 100877 (25N) (Guessed: 100878, 100879)
 		--East: 98953 (10N), 100880 (25N) (Guessed: 100881, 100882)
 		--West: 98951 (10N), 100883 (25N) (Guessed: 100884, 100885)
@@ -302,6 +306,7 @@ function mod:SPELL_DAMAGE(args)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the firstone going off.
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53140 then
@@ -310,6 +315,13 @@ function mod:UNIT_DIED(args)
 			self:Unschedule(TransitionEnded)
 			TransitionEnded()
 		end
+	end
+end
+--]]
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.TransitionEnded1 or msg:find(L.TransitionEnded1) or msg == L.TransitionEnded2 or msg:find(L.TransitionEnded2) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
+		TransitionEnded()
 	end
 end
 
