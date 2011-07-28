@@ -36,11 +36,11 @@ local specWarnFlameStomp	= mod:NewSpecialWarningSpell(97282, false)
 
 local timerSparkCD			= mod:NewNextTimer(22.5, 98552)
 local timerFragmentCD		= mod:NewNextTimer(22.5, 98136)
-local timerHeatedVolcano	= mod:NewCDTimer(40, 98493)
+local timerHeatedVolcano	= mod:NewNextTimer(25.5, 98493)
 local timerFlameStomp		= mod:NewNextTimer(30.5, 97282)
-local timerSuperheated		= mod:NewNextTimer(10, 101305)--Add the 10 second party in later at some point if i remember to actually log it better
-local timerMoltenSpew		= mod:NewNextTimer(6, 98034)	-- 6secs after Drinking Magma
-local timerMagmaFlowActive	= mod:NewBuffActiveTimer(10, 97225)	-- 10 second buff volcano has, after which the magma line explodes.
+local timerSuperheated		= mod:NewNextTimer(10, 101305)		--Add the 10 second party in later at some point if i remember to actually log it better
+local timerMoltenSpew		= mod:NewNextTimer(6, 98034)		--6secs after Drinking Magma
+local timerMagmaFlowActive	= mod:NewBuffActiveTimer(10, 97225)	--10 second buff volcano has, after which the magma line explodes.
 
 local StompCountown			= mod:NewCountdown(30.5, 97282, false)
 
@@ -53,9 +53,9 @@ local prewarnedPhase2 = false
 
 function mod:OnCombatStart(delay)
 	timerFragmentCD:Start(-delay)
-	timerHeatedVolcano:Start(55-delay)
---	timerFlameStomp:Start(28-delay)--Is this even right? i need a transcriptor log for fight
---	StompCountown:Start(28-delay)--^^
+	timerHeatedVolcano:Start(-delay)
+	timerFlameStomp:Start(15-delay)--Actually found an old log, maybe this is right.
+	StompCountown:Start(15-delay)--^^
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerSuperheated:Start(300-delay)--5 min on heroic
 	else
