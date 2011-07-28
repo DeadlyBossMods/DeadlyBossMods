@@ -49,16 +49,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
-	WarnElementals		= "부하 소환"
 })
 
 L:SetTimerLocalization({
-	TimerElementals		= "다음 부하"
 })
 
 L:SetOptionLocalization({
-	WarnElementals		= "부하 소환 경고 보기",
-	TimerElementals		= "다음 부하 소환 타이머 보기"
 })
 
 L:SetMiscLocalization({
