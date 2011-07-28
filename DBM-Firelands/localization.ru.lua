@@ -49,20 +49,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
-	WarnElementals		= "Появление элементалей"
 })
 
 L:SetTimerLocalization({
-	TimerElementals		= "Следущие элементали"
 })
 
 L:SetOptionLocalization({
-	WarnElementals		= "Предупреждение о появлении элементалей",
-	TimerElementals		= "Отсчет времени до следующих элементалей"
 })
 
 L:SetMiscLocalization({
-	yellPhase2			= "Целую вечность я спокойно спал… Маленькие кусочки мяса… Вы СГОРИТЕ!"
 })
 
 -----------------

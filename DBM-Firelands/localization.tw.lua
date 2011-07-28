@@ -46,16 +46,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
-	WarnElementals		= "元素怪出現"
 })
 
 L:SetTimerLocalization({
-	TimerElementals		= "下一次召喚元素怪"
 })
 
 L:SetOptionLocalization({
-	WarnElementals		= "當元素怪出現時顯示警告",
-	TimerElementals		= "為下一次元素怪出現顯示警告"
 })
 
 L:SetMiscLocalization({

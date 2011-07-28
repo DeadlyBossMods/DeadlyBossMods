@@ -49,16 +49,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
-	WarnElementals		= "Salen Elementales"
 })
 
 L:SetTimerLocalization({
-	TimerElementals		= "Siguientes Elementales"
 })
 
 L:SetOptionLocalization({
-	WarnElementals		= "Mostrar aviso cuando salgan los elementales",
-	TimerElementals		= "Mostrar tiempo restante para que salgan elementales"
 })
 
 L:SetMiscLocalization({
