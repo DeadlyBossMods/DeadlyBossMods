@@ -159,7 +159,8 @@ L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
 	warnSplittingBlow	= "%s %s",--Spellname in Location
-	warnEngulfingFlame	= "%s %s"--Spellname in Location
+	warnEngulfingFlame	= "%s %s",--Spellname in Location
+	WarnRemainingAdds	= "Осталось элементалей: %d"
 })
 
 L:SetTimerLocalization({
@@ -169,7 +170,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "Предупреждение для $spell:100877",
 	warnEngulfingFlame	= "Предупреждение для $spell:99171",
-	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей Пламени\"",
+	WarnRemainingAdds	= "Показывать количество оставщихся элементалей",
+	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции",
 	InfoFrame			= "Информационное окно для целей $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
@@ -182,7 +184,8 @@ L:SetMiscLocalization({
 	North				= "в мили",
 	South				= "сзади",
 	MeteorTargets		= "ОМФГ Метеоры!",--Keep rollin' rollin' rollin' rollin'.
-	transitionended		= "Довольно! Пора покончить с этим.",--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	TransitionEnded1	= "Довольно! Пора покончить с этим.",--More reliable then adds method.
+	TransitionEnded2	= "Сульфурас уничтожит вас!",--More reliable then adds method.
 	Defeat				= "Слишком рано!.. Вы пришли слишком рано…"
 })
 
@@ -229,7 +232,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent				= "The Branch of Nordrassil reacts violently",--Partial, not sure if pull detection will work with partials yet :\
+	StaffEvent				= "The Branch of Nordrassil reacts violently to %S+ touch!",--Partial, not sure if pull detection will work with partials yet :\
 	StaffTrees				= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
 	StaffTransition			= "The fires consuming the Tormented Protector wink out!"
 })
