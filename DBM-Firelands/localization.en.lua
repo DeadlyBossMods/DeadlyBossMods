@@ -185,7 +185,8 @@ L:SetMiscLocalization({
 	South				= "Back",
 	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
-	TransitionEnded2	= "Sulfuras will be your end.",--More reliable then adds method.
+	TransitionEnded2	= "Sulfuras will be your end.",
+	TransitionEnded3	= "Fall to your knees, mortals!  This ends now.",
 	Defeat				= "Too soon! ... You have come too soon..."
 })
 
