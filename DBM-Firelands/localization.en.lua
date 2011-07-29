@@ -187,7 +187,8 @@ L:SetMiscLocalization({
 	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
 	TransitionEnded2	= "Sulfuras will be your end.",
 	TransitionEnded3	= "Fall to your knees, mortals!  This ends now.",
-	Defeat				= "Too soon! ... You have come too soon..."
+	Defeat				= "Too soon! ... You have come too soon...",
+	Phase4				= "Too soon..."
 })
 
 -----------------------
