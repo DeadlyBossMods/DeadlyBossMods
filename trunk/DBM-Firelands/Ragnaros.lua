@@ -119,11 +119,14 @@ local function TransitionEnded()
 	timerPhaseSons:Cancel()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
-		timerSulfurasSmash:Start(15.5)--Also a variation. But seems more consistent then it was, maybe cause using yells now :)
-		timerMoltenSeedCD:Start(24)--is this correct in both modes? 23-25 second variation. 24 is middle ground
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			specWarnMoltenSeed:Schedule(24)
-			timerMoltenSeed:Schedule(24)
+			timerSulfurasSmash:Start(5)
+			specWarnMoltenSeed:Schedule(15)
+			timerMoltenSeed:Schedule(15)
+			timerMoltenSeedCD:Start(15)
+		else
+			timerSulfurasSmash:Start(15.5)
+			timerMoltenSeedCD:Start(24)
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
@@ -300,7 +303,7 @@ function mod:SPELL_DAMAGE(args)
 		end
 		self:Schedule(62, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
 		self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
-	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
+	elseif args:IsSpellID(100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
 		seedsActive = true
 		self:Schedule(52, warnSeeds)
 		self:Schedule(5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
