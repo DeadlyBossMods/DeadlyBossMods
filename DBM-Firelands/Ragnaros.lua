@@ -30,6 +30,10 @@ local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
 local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
+local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
+local warnEntrappingRoots	= mod:NewSpellAnnounce(100646, 3)--Heroic phase 4 ability
+local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability
+local warnBreathofFrost		= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnSonsLeft			= mod:NewAnnounce("WarnRemainingAdds", 2, 99014)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
@@ -48,6 +52,7 @@ local specWarnMeteor		= mod:NewSpecialWarningYou(99849)
 local yellMeteor			= mod:NewYell(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
+local specWarnEmpoweredSulf	= mod:NewSpecialWarningSpell(100997, mod:IsTank())--Heroic ability Asuming only the tank cares about this? seems like according to tooltip 5 seconds to hide him into roots?
 
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
 local timerSulfurasSmash	= mod:NewCDTimer(30, 98710)		-- might even be a "next" timer
@@ -58,8 +63,12 @@ local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(62, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
-local timerSplittingCast	= mod:NewCDTimer(10, 100877)--Spell is technically 8 seconds, but when cast finishes it takes 2 seconds for fireballs to spawn adds.
+local timerSplittingCast	= mod:NewCastTimer(10, 100877)--Spell is technically 8 seconds, but when cast finishes it takes 2 seconds for fireballs to spawn adds.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
+--local timerEmpoweerdSulfCD	= mod:NewCDTimer(45, 100997)--No idea what it is
+--local timerEntrapingRootsCD	= mod:NewCDTimer(45, 100646)--No idea what it is
+--local timerCloudBurstCD		= mod:NewCDTimer(45, 100714)--No idea what it is
+--local timerBreathofFrostCD	= mod:NewCDTimer(45, 100479)--No idea what it is
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -71,6 +80,7 @@ mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
 local lastMeteor = 0
+local meteorSpawned = 0
 local sonsLeft = 8
 local phase = 1
 local prewarnedPhase2 = false
@@ -91,6 +101,8 @@ local function showRangeFrame()
 			DBM.RangeCheck:Show(6)--For seeds
 		elseif phase == 3 then
 			DBM.RangeCheck:Show(5)--For meteors
+		elseif phase == 4 then
+			DBM.RangeCheck:Show(6)
 		end
 	end
 end
@@ -120,8 +132,8 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		phase2Started = true
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			timerSulfurasSmash:Start(5)
-			specWarnMoltenSeed:Schedule(15)
+			timerSulfurasSmash:Start(5)--Needs confirmation. Assuming if seeds are 15, then smash is 5 cause smash should be about 10-11 sec before seeds.
+			specWarnMoltenSeed:Schedule(15)--Also wouldn't mind log confirmation with this. Not just "it was 15 seconds in paragon video"
 			timerMoltenSeed:Schedule(15)
 			timerMoltenSeedCD:Start(15)
 		else
@@ -140,6 +152,14 @@ local function TransitionEnded()
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
 			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--Maybe need more then 6? 8 or 10 if things go real shitty heh.
 		end
+	elseif phase == 4 then
+		timerLivingMeteorCD:Cancel()
+		--Start other timers here later for heroic stuffs!
+		--timerEmpoweerdSulfCD:Start()
+		--timerEntrapingRootsCD:Start()
+		--timerCloudBurstCD:Start()
+		--timerBreathofFrostCD:Start()
+		showRangeFrame()
 	end
 end
 
@@ -160,6 +180,7 @@ function mod:OnCombatStart(delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
 	lastMeteor = 0
+	meteorSpawned = 0
 	sonsLeft = 8
 	phase = 1
 	prewarnedPhase2 = false
@@ -260,6 +281,19 @@ function mod:SPELL_CAST_START(args)
 		elseif args:IsSpellID(99236, 100181) then--South
 			warnEngulfingFlame:Show(args.spellName, L.South)
 		end
+	elseif args:IsSpellID(100997) then
+		warnEmpoweredSulf:Show()
+		specWarnEmpoweredSulf:Show()
+		--timerEmpoweerdSulfCD:Start()
+	elseif args:IsSpellID(100646) then
+		warnEntrappingRoots:Show()
+		--timerEntrapingRootsCD:Start()
+	elseif args:IsSpellID(100714) then
+		warnCloudBurst:Show()
+		--timerCloudBurstCD:Start()
+	elseif args:IsSpellID(100479) then
+		warnBreathofFrost:Show()
+		--timerBreathofFrostCD:Start()
 	end
 end
 
@@ -287,10 +321,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 				blazingHeatIcon = 2
 			end
 		end
-	elseif args:IsSpellID(99268) and GetTime() - lastMeteor >= 4 then
-		lastMeteor = GetTime()
-		warnLivingMeteor:Show()
-		timerLivingMeteorCD:Start()
+	elseif args:IsSpellID(99268) then
+		meteorSpawned = meteorSpawned + 1
+		if GetTime() - lastMeteor >= 4 then
+			lastMeteor = GetTime()
+			warnLivingMeteor:Show()
+			timerLivingMeteorCD:Start()
+		end
 	end
 end
 
@@ -319,6 +356,11 @@ function mod:UNIT_DIED(args)
 		if sonsLeft < 3 then
 			warnSonsLeft:Show(sonsLeft)
 		end
+	elseif cid == 53500 then
+		meteorSpawned = meteorSpawned - 1
+		if meteorSpawned == 0 and self.Options.InfoFrame then--Meteors all gone, hide info frame
+			DBM.InfoFrame:Hide()
+		end	
 	end
 end
 
@@ -326,6 +368,9 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.TransitionEnded1 or msg:find(L.TransitionEnded1) or msg == L.TransitionEnded2 or msg:find(L.TransitionEnded2) or msg == L.TransitionEnded3 or msg:find(L.TransitionEnded3) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
 		TransitionEnded()
+	elseif (msg == L.Phase4 or msg:find(L.Phase4)) and self:IsInCombat() then
+		phase = 4
+		TransitionEnded()--Easier to just trigger this and keep all phase change stuff in one place.
 	end
 end
 
