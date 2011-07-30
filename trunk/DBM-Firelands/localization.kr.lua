@@ -160,7 +160,8 @@ L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s (%s)",--Spellname in Location
-	warnEngulfingFlame		= "%s (%s)"--Spellname in Location
+	warnEngulfingFlame		= "%s (%s)",--Spellname in Location
+	WarnRemainingAdds		= "남은 쫄: %d"
 })
 
 L:SetTimerLocalization({
@@ -170,6 +171,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "$spell:100877 경고 보기",
 	warnEngulfingFlame	= "$spell:99171 경고 보기",
+	WarnRemainingAdds	= "전환 단계에서 쫄이 얼마나 남았는지에 대한 경고 보기",
 	TimerPhaseSons		= "전환 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	InfoFrame			= "$spell:99849 대상 정보 프레임 보기",
@@ -183,8 +185,11 @@ L:SetMiscLocalization({
 	North				= "근접",
 	South				= "뒤쪽",
 	MeteorTargets		= "유성 조심!",--Keep rollin' rollin' rollin' rollin'.
-	transitionended		= "여기까지! 이제 끝내주마.",--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
-	Defeat				= "조금만!... 조금만 시간이 더 있었어도..."
+	TransitionEnded1	= "여기까지! 이제 끝내주마.",--More reliable then adds method.
+	TransitionEnded2	= "설퍼라스로 숨통을 끊어 주마.",
+	TransitionEnded3	= "무릎 꿇어라, 필멸자여! 끝낼 시간이다.",
+	Defeat				= "조금만!... 조금만 시간이 더 있었어도...",
+	Phase4				= "너무 일러..."
 })
 
 -----------------------
