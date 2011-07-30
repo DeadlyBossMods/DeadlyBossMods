@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"UNIT_HEALTH",
-	"RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnBleedingWound		= mod:NewTargetAnnounce(74846, 4, nil, mod:IsHealer() or mod:IsTank())
@@ -102,7 +102,7 @@ function mod:UNIT_HEALTH(uId)
 	end
 end
 
-function mod:RAID_BOSS_EMOTE(msg, _, _, _, target)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.Blitz) then
 		timerBlitz:Start()
 		if target then
