@@ -232,9 +232,11 @@ function mod:SPELL_CAST_START(args)
 			timerSulfurasSmash:Start(40)--40 seconds in phase 2
 			if not phase2Started then
 				phase2Started = true
-				specWarnMoltenSeed:Schedule(11)--Schedule the warnings here for more accuracy
-				timerMoltenSeed:Schedule(11)
-				timerMoltenSeedCD:Update(6, 17)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+				if self:IsDifficulty("heroic10", "heroic25") then
+					specWarnMoltenSeed:Schedule(11)--Schedule the warnings here for more accuracy
+					timerMoltenSeed:Schedule(11)
+					timerMoltenSeedCD:Update(6, 17)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+				end
 			end
 		end
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
