@@ -160,7 +160,8 @@ L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s en %s",
-	warnEngulfingFlame		= "%s en %s"
+	warnEngulfingFlame		= "%s en %s",
+	WarnRemainingAdds		= "%d aberraciones restantes"
 })
 
 L:SetTimerLocalization({
@@ -170,6 +171,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
 	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
+	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
 	InfoFrame			= "Mostrar información de los objetivos de $spell:99849",
