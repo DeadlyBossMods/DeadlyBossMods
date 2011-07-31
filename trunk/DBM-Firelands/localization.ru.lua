@@ -187,7 +187,8 @@ L:SetMiscLocalization({
 	TransitionEnded1	= "Довольно! Пора покончить с этим.",--More reliable then adds method.
 	TransitionEnded2	= "Сульфурас уничтожит вас!",--More reliable then adds method.
 	TransitionEnded3	= "На колени, смертные!",
-	Defeat				= "Слишком рано!.. Вы пришли слишком рано…"
+	Defeat				= "Слишком рано!.. Вы пришли слишком рано…",
+	Phase4				= "Too soon..."
 })
 
 -----------------------

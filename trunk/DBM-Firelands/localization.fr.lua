@@ -150,4 +150,15 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	East				= "East",
+	West				= "West",
+	Middle				= "Middle",
+	North				= "Melee",
+	South				= "Back",
+	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
+	TransitionEnded1	= "Assez ! Je vais en finir.",
+	TransitionEnded2	= "Sulfuras sera votre fin.",
+	TransitionEnded3	= "À genoux, mortels !",
+	Defeat				= "Too soon! ... You have come too soon...",--Translate
+	Phase4				= "Trop tôt..."
 })
