@@ -130,12 +130,9 @@ end
 local function TransitionEnded()
 	timerPhaseSons:Cancel()
 	if phase == 2 and not phase2Started then
-		phase2Started = true
 		if mod:IsDifficulty("heroic10", "heroic25") then
-			timerSulfurasSmash:Start(5)--Needs confirmation. Assuming if seeds are 15, then smash is 5 cause smash should be about 10-11 sec before seeds.
-			specWarnMoltenSeed:Schedule(15)--Also wouldn't mind log confirmation with this. Not just "it was 15 seconds in paragon video"
-			timerMoltenSeed:Schedule(15)
-			timerMoltenSeedCD:Start(15)
+			timerSulfurasSmash:Start(6)
+			timerMoltenSeedCD:Start(17)
 		else
 			timerSulfurasSmash:Start(15.5)
 			timerMoltenSeedCD:Start(24)
@@ -233,6 +230,12 @@ function mod:SPELL_CAST_START(args)
 			end
 		else
 			timerSulfurasSmash:Start(40)--40 seconds in phase 2
+			if not phase2Started then
+				phase2Started = true
+				specWarnMoltenSeed:Schedule(11)--Schedule the warnings here for more accuracy
+				timerMoltenSeed:Schedule(11)
+				timerMoltenSeedCD:Update(6, 17)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+			end
 		end
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		sonsLeft = 8
@@ -245,10 +248,8 @@ function mod:SPELL_CAST_START(args)
 		hideRangeFrame()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerPhaseSons:Start(60)--Longer on heroic
---			self:Schedule(60, TransitionEnded)
 		else
 			timerPhaseSons:Start(47)--45 sec plus the 2 or so seconds he takes to actually come up and yell.
---			self:Schedule(47, TransitionEnded)
 		end
 		specWarnSplittingBlow:Show()
 		timerSplittingCast:Start()
