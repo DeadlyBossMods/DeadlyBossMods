@@ -178,8 +178,12 @@ L:SetMiscLocalization({
 	Middle				= "中央",
 	North				= "近戰區",
 	South				= "後面",
-        MeteorTargets		= "我的天阿 隕石!",--Keep rollin' rollin' rollin' rollin'.
-	transitionended		= "夠了!我將結束這一切。"--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	MeteorTargets		= "我的天阿 隕石!",--Keep rollin' rollin' rollin' rollin'.
+	TransitionEnded1	= "夠了!我將結束這一切。",--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
+	TransitionEnded2	= "Sulfuras will be your end.",--Translate
+	TransitionEnded3	= "Fall to your knees, mortals!  This ends now.",--Translate
+	Defeat				= "Too soon! ... You have come too soon...",--Translate
+	Phase4				= "Too soon..."--Translate
 })
 
 -----------------------
