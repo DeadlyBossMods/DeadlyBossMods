@@ -164,6 +164,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	TransitionEnded1	= "Enough! I will finish this.",--Translate
+	TransitionEnded2	= "Sulfuras wird Euer Ende sein.",
+	TransitionEnded3	= "Auf die Knie, Sterbliche! Das ist das Ende.",
+	Defeat				= "Too soon! ... You have come too soon...",--Translate
+	Phase4				= "Too soon..."--Translate
 })
 
 -----------------------

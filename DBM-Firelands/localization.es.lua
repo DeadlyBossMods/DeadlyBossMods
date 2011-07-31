@@ -185,8 +185,9 @@ L:SetMiscLocalization({
 	MeteorTargets		= "HOYGA METEHORITOS!",
 	TransitionEnded1	= "Enough! I will finish this.",--translate
 	TransitionEnded2	= "Sulfuras will be your end.",--translate
-	Defeat				= "Too soon! ... You have come too soon..."--translate
-
+	TransitionEnded3	= "Fall to your knees, mortals!  This ends now.",--translate
+	Defeat				= "Too soon! ... You have come too soon...",--translate
+	Phase4				= "Too soon..."
 })
 
 -----------------------
