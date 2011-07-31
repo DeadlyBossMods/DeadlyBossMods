@@ -33,6 +33,7 @@ local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() o
 local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
+local timerVitalFlame		= mod:NewBuffActiveTimer(15, 99263)
 
 local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
@@ -98,6 +99,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, tormentIcon)
 			tormentIcon = tormentIcon - 1
 		end
+	elseif args:IsSpellID(99263) and args:IsPlayer() then
+		timerVitalFlame:Start()
 	end
 end
 
