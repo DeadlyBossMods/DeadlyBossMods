@@ -30,6 +30,7 @@ local timerMoltenBoltCD		= mod:NewNextTimer(15, 99579)--The worm gyser things th
 
 mod:AddBoolOption("TrashRangeFrame", false)--off by default, this was NOT well recieved.
 
+local boltsSpam = 0
 local surgers = 0
 local surgerGUIDs = {}
 do
@@ -102,7 +103,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.TrashRangeFrame then
 			DBM.RangeCheck:Show(10)
 		end
-	elseif args:IsSpellID(99579) then
+	elseif args:IsSpellID(99579) and GetTime() - boltsSpam >= 4 then
+		boltsSpam = GetTime()
 		warnMoltenBolt:Show()
 		timerMoltenBoltCD:Start()
 	end
