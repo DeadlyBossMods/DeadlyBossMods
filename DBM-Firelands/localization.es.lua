@@ -161,7 +161,7 @@ L= DBM:GetModLocalization(198)
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s en %s",
 	warnEngulfingFlame		= "%s en %s",
-	WarnRemainingAdds		= "%d aberraciones restantes"
+	WarnRemainingAdds		= "%d Hijos de la Llama restantes"
 })
 
 L:SetTimerLocalization({
