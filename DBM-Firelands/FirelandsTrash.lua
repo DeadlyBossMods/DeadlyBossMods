@@ -24,7 +24,7 @@ local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094, false)
 local specWarnMoltenArmor	= mod:NewSpecialWarningStack(99532, mod:IsTank(), 4)
 local specWarnDruidLeap		= mod:NewSpecialWarningYou(99629)
 local specWarnDruidLeapNear	= mod:NewSpecialWarningClose(99629)
-local specWarnEarthQuake	= mod:NewSpecialWarningSpell(100724, mod:IsRanged())
+local specWarnEarthQuake	= mod:NewSpecialWarningCast(100724, mod:IsRanged())
 
 local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
 local timerRaiseLavaCD		= mod:NewNextTimer(17, 99503)--Every 15 sec + 2 sec cast.
