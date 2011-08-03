@@ -112,7 +112,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnSmolderingDevastation:Show()
 		end
 		timerSmolderingDevastation:Start()
-		timerSmolderingDevastationCD:Start()
 		timerSpinners:Start()
 		if smolderingCount == 3 then	-- 3rd cast = start P2
 			warnPhase2Soon:Show()
@@ -120,6 +119,8 @@ function mod:SPELL_CAST_START(args)
 			self:UnscheduleMethod("repeatDrone")
 			timerSpiderlings:Cancel()
 			timerDrone:Cancel()
+		else
+			timerSmolderingDevastationCD:Start()
 		end
 	end
 end

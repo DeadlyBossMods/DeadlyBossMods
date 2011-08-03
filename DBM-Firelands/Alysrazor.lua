@@ -36,12 +36,12 @@ local specWarnTantrum			= mod:NewSpecialWarningSpell(99362, mod:IsTank())
 local specWarnGushingWoundOther	= mod:NewSpecialWarningTarget(99308, false)
 
 local timerCombatStart		= mod:NewTimer(35.5, "TimerCombatStart", 2457)
-local timerFieryVortexCD	= mod:NewNextTimer(180, 99794)
+local timerFieryVortexCD	= mod:NewNextTimer(179, 99794)
 local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
 local timerCataclysmCD		= mod:NewCDTimer(31, 102111)--Heroic
 local timerFirestormCD		= mod:NewCDTimer(83, 100744)--Heroic
-local timerPhaseChange		= mod:NewTimer(32.5, "TimerPhaseChange", 99816)
+local timerPhaseChange		= mod:NewTimer(35, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 local timerWingsofFlame		= mod:NewBuffActiveTimer(20, 98619)
