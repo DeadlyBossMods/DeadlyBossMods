@@ -18,11 +18,13 @@ local warnMoltenArmor		= mod:NewStackAnnounce(99532, 3, nil, mod:IsTank() or mod
 local warnDruidLeap			= mod:NewTargetAnnounce(99629, 3, nil, false)--Probably spammy, more for debugging timing then anything.
 local warnRaiselava			= mod:NewSpellAnnounce(99503, 3)
 local warnMoltenBolt		= mod:NewSpellAnnounce(99579, 3)
+local warnEarthquake		= mod:NewSpellAnnounce(100724, 3)
 
 local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094, false)
 local specWarnMoltenArmor	= mod:NewSpecialWarningStack(99532, mod:IsTank(), 4)
 local specWarnDruidLeap		= mod:NewSpecialWarningYou(99629)
 local specWarnDruidLeapNear	= mod:NewSpecialWarningClose(99629)
+local specWarnEarthQuake	= mod:NewSpecialWarningSpell(100724, mod:IsRanged())
 
 local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
 local timerRaiseLavaCD		= mod:NewNextTimer(17, 99503)--Every 15 sec + 2 sec cast.
@@ -93,6 +95,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(99503) then
 		warnRaiselava:Show()
 		timerRaiseLavaCD:Start()
+	elseif args:IsSpellID(100724) then
+		warnEarthquake:Show()
+		specWarnEarthquake:Show()
 	end
 end
 
