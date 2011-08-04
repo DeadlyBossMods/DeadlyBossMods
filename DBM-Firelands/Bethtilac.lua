@@ -30,6 +30,7 @@ local timerSpinners 				= mod:NewTimer(15, "TimerSpinners", 97370) -- 15secs aft
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings", 72106)
 local timerDrone					= mod:NewTimer(60, "TimerDrone", 28866)
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
+local timerEmberFlareCD				= mod:NewNextTimer(6, 98934)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 local timerFixate					= mod:NewTargetTimer(10, 99559)
 local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod:IsHealer())
@@ -113,6 +114,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerSmolderingDevastation:Start()
 		timerSpinners:Start()
+		timerEmberFlareCD:Cancel()--Cast immediately after Devastation, so don't need to really need to update timer, just cancel last one since it won't be cast during dev
 		if smolderingCount == 3 then	-- 3rd cast = start P2
 			warnPhase2Soon:Show()
 			self:UnscheduleMethod("repeatSpiderlings")
@@ -121,6 +123,14 @@ function mod:SPELL_CAST_START(args)
 			timerDrone:Cancel()
 		else
 			timerSmolderingDevastationCD:Start()
+		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(98934) then--Only show timer if you are up top until 3rd dev then show for everyone.
+		if smolderingCount < 3 and (self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target")) or smolderingCount == 3 then
+			timerEmberFlareCD:Start()
 		end
 	end
 end
