@@ -349,7 +349,7 @@ function mod:SPELL_DAMAGE(args)
 		self:Schedule(5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the firstone going off.
+mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the first one going off.
 
 
 function mod:UNIT_DIED(args)

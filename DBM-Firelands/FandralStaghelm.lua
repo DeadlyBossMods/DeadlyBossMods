@@ -41,8 +41,8 @@ mod:AddBoolOption("RangeFrameCat", false)--Diff options for each ability cause s
 mod:AddBoolOption("IconOnLeapingFlames", false)
 
 local abilityCount = 0
-local transforms = 0
 local recentlyJumped = false
+local kitty = false
 
 local abilityTimers = {
 	[0] = 17.3,--Sometimes this is 16.7
@@ -79,7 +79,7 @@ end
 
 function mod:OnCombatStart(delay)
 	abilityCount = 0
-	transforms = 0
+	kitty = false
 end
 
 function mod:OnCombatEnd()
@@ -90,26 +90,29 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(98374) then		-- Cat Form (99574? maybe the form id for druids with staff)
-		transforms = transforms + 1
-		abilityCount = (self:IsDifficulty("heroic10", "heroic25") and 1) or 0
+		kitty = true
+		abilityCount = 0
 		timerFlameScythe:Cancel()
 		timerLeapingFlames:Start(abilityTimers[abilityCount])
 		if self.Options.RangeFrameCat then
 			DBM.RangeCheck:Show(10)
 		end
 	elseif args:IsSpellID(98379) then	-- Scorpion Form
-		transforms = transforms + 1
-		abilityCount = (self:IsDifficulty("heroic10", "heroic25") and 1) or 0
+		kitty = false
+		abilityCount = 0
 		timerLeapingFlames:Cancel()
 		timerFlameScythe:Start(abilityTimers[abilityCount])
 		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
 			DBM.RangeCheck:Hide()
 		end
 	elseif args:IsSpellID(97238) then
-		if abilityCount < (args.amount or 1) then--It means for whatever reason your mod missed some stacks, probalby a DC
-			abilityCount = (args.amount or 1)--This should change your ability account to his current stack.
-		end
+		abilityCount = (args.amount or 1)--This should change your ability account to his current stack, which is disconnect friendly.
 		warnAdrenaline:Show(args.destName, args.amount or 1)
+		if kitty then
+			timerLeapingFlames:Start(abilityTimers[abilityCount])
+		else
+			timerFlameScythe:Start(abilityTimers[abilityCount])
+		end
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(98535, 100206, 100207, 100208) and args:IsPlayer() and not recentlyJumped then
@@ -142,13 +145,6 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(98476) then	--98476 confirmed
-		abilityCount = abilityCount + 1
-		local t = abilityTimers[abilityCount] or 4
-		timerLeapingFlames:Start(t)
 		self:ScheduleMethod(0.2, "LeapingFlamesTarget")
-	elseif args:IsSpellID(98474, 100212, 100213, 100214) then	--98474, 100213 confirmed
-		abilityCount = abilityCount + 1
-		local t = abilityTimers[abilityCount] or 4
-		timerFlameScythe:Start(t)
 	end
 end
