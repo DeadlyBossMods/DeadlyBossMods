@@ -41,12 +41,14 @@ local timerMoltingCD		= mod:NewNextTimer(60, 99464)
 local timerCataclysm		= mod:NewCastTimer(5, 102111)--Heroic
 local timerCataclysmCD		= mod:NewCDTimer(31, 102111)--Heroic
 local timerFirestormCD		= mod:NewCDTimer(83, 100744)--Heroic
-local timerPhaseChange		= mod:NewTimer(35, "TimerPhaseChange", 99816)
+local timerPhaseChange		= mod:NewTimer(33, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 local timerWingsofFlame		= mod:NewBuffActiveTimer(20, 98619)
 local timerTantrum			= mod:NewBuffActiveTimer(10, 99362, nil, mod:IsTank())
 local timerSatiated			= mod:NewBuffActiveTimer(15, 100852, nil, mod:IsTank())
+
+local FirestormCountdown	= mod:NewCountdown(83, 100744)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
@@ -71,6 +73,7 @@ function mod:OnCombatStart(delay)
 		timerCataclysmCD:Start(32-delay)
 		timerHatchEggs:Start(42-delay)
 		timerFirestormCD:Start(94-delay)
+		FirestormCountdown:Start(94-delay)--Perhaps some tuning.
 		warnFirestormSoon:Schedule(84-delay)
 		timerHatchEggs:Start(37-delay)
 	else
@@ -93,10 +96,10 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--Only give warning if it's mob you're targeting and you're a tank, else, always give tantrum warning regardless of target
+	if args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then--Only give warning if it's mob you're targeting and you're a tank, or you're targeting the tank it's on.
 		specWarnTantrum:Show()
 		timerTantrum:Show()
-	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--^^ Same as above only with diff spell
+	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then--^^ Same as above only with diff spell
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerSatiated:Start(10)
 		else
@@ -117,7 +120,7 @@ end
 function mod:SPELL_AURA_REFRESH(args)
 	if args:IsSpellID(98619) and args:IsPlayer() then
 		timerWingsofFlame:Start()
-	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--^^ Same as above only with diff spell
+	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then--^^ Same as above only with diff spell
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerSatiated:Start(10)
 		else
@@ -134,11 +137,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		else
 			timerCataclysmCD:Start(20)--20 seconds after second one ends. (or so i thought, my new logs show only 4 cataclysms not 5. wtf. I hate inconsistencies
 		end
-	elseif args:IsSpellID(99432) then--Burnout removed (50 energy)
+	elseif args:IsSpellID(99432) and self:IsInCombat() then--Burnout removed (50 energy)
 		warnPhase:Show(4)
-	elseif args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then
+	elseif args:IsSpellID(99362) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then
 		timerTantrum:Cancel()
-	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank()) then--^^ Same as above only with diff spell
+	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then--^^ Same as above only with diff spell
 		timerSatiated:Cancel()
 	end
 end
@@ -160,6 +163,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFirestorm:Show()
 		if CataCast < 3 then--Firestorm is only cast 2 times per phase. This essencially makes cd bar only start once.
 			timerFirestormCD:Start()
+			FirestormCountdown:Start(83)--Perhaps some tuning.
 			warnFirestormSoon:Cancel()--Just in case it's wrong. WoL may not be perfect, i'll have full transcriptor logs soon.
 			warnFirestormSoon:Schedule(73)
 		end
@@ -181,7 +185,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then--Basically the pre warn to feiry vortex
 		warnPhase:Show(2)
 		timerMoltingCD:Cancel()
-		timerPhaseChange:Start(30, 3)
+		timerPhaseChange:Start(33, 3)
 		initiatesSpawned = 0
 	--Yes it's ugly, but it works.
 	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
@@ -228,6 +232,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			timerHatchEggs:Start(22)
 			timerCataclysmCD:Start(18)
 			timerFirestormCD:Start(70)--Needs verification.
+			FirestormCountdown:Start(70)--Perhaps some tuning.
 			warnFirestormSoon:Schedule(60)--Needs verification.
 			CataCast = 0
 		else
