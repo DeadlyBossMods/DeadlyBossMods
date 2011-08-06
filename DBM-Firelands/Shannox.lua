@@ -184,6 +184,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnFaceRage then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args:IsSpellID(99937, 101218, 101219, 101220) then
+		timerTears:Cancel(args.destName)
 	end
 end
 
