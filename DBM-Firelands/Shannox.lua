@@ -169,7 +169,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and (args.amount or 1) >= 8 then		-- tank switch @ 8?
 			specWarnTears:Show(args.amount)
 		end
-		timerTears:Start(args.destName)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerTears:Start(30, args.destName)
+		else
+			timerTears:Start(args.destName)
+		end
 	end
 end
 
