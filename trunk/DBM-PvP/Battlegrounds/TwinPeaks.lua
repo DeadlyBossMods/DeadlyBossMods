@@ -15,7 +15,7 @@ TwinPeaks:RegisterEvents(
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
---	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UPDATE_BATTLEFIELD_SCORE"
 )
@@ -28,6 +28,7 @@ local FlagCarrier = {
 
 --local startTimer 	= TwinPeaks:NewTimer(62, "TimerStart", 2457)
 local flagTimer 	= TwinPeaks:NewTimer(23, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
+local vulnerableTimer	= TwinPeaks:NewNextTimer(60, 46392)
 
 TwinPeaks:AddBoolOption("ShowFlagCarrier", true, nil, function()
 	if TwinPeaks.Options.ShowFlagCarrier and bgzone then
@@ -63,14 +64,11 @@ do
 	TwinPeaks.ZONE_CHANGED_NEW_AREA = TwinPeaks_Initialize
 end
 
---[[function TwinPeaks:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
-	if not bgzone then return end
-	if arg1 == L.BgStart60 then
-		startTimer:Start()
-	elseif arg1 == L.BgStart30  then		
-		startTimer:Update(31, 62)
+function TwinPeaks:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
+	if msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
+		vulnerableTimer:Start()
 	end
-end--]]
+end
 
 
 function TwinPeaks:ShowFlagCarrier()
@@ -228,6 +226,10 @@ do
 						self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
 					end
 				end
+
+				if FlagCarrier[1] and FlagCarrier[2] and not vulnerableTimer:IsStarted() then
+					vulnerableTimer:Start(180)
+				end
 				
 			elseif string.match(arg1, L.ExprFlagReturn) then
 				if( GetLocale() == "ruRU") then
@@ -248,7 +250,7 @@ do
 		end
 		if string.match(arg1, L.ExprFlagCaptured) then
 			flagTimer:Start()
-		
+			vulnerableTimer:Cancel()
 			if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
 				self.FlagCarrierFrame1:Hide()
 				self.FlagCarrierFrame2:Hide()
