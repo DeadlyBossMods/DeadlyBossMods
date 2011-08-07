@@ -28,7 +28,7 @@ local specWarnEarthQuake	= mod:NewSpecialWarningCast(100724, mod:IsRanged())
 
 local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
 local timerRaiseLavaCD		= mod:NewNextTimer(17, 99503)--Every 15 sec + 2 sec cast.
-local timerMoltenBoltCD		= mod:NewNextTimer(15, 99579)--The worm gyser things that always kill people for not moving.
+local timerMoltenBoltCD		= mod:NewNextTimer(15.5, 99579)--The worm gyser things that always kill people for not moving.
 
 mod:AddBoolOption("TrashRangeFrame", false)--off by default, this was NOT well recieved.
 

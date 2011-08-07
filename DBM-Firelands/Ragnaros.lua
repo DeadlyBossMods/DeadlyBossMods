@@ -15,6 +15,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
@@ -220,6 +221,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(99399, 101238, 101239, 101240) then
+		timerBurningWound:Cancel(args.destName)
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98710, 100890, 100891, 100892) then
