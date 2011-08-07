@@ -83,6 +83,7 @@ local wrathRagSpam = 0
 local lastMeteor = 0
 local meteorSpawned = 0
 local sonsLeft = 8
+local trapScansDone = 0
 local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
@@ -162,13 +163,25 @@ local function TransitionEnded()
 end
 
 function mod:MagmaTrapTarget()
-	local targetname = self:GetBossTarget(52409)
-	if not targetname then return end--No target at all, abort.
-	if UnitExists("boss1target") and UnitDetailedThreatSituation("boss1target", "boss1") then return end--Ignore target if it reports tank. A tank swap bugged out scan. This doesn't target tanks.
-	warnMagmaTrap:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnMagmaTrap:Show()
-		yellMagmaTrap:Yell()
+	trapScansDone = trapScansDone + 1
+	if UnitExists("boss1target") then--Check if he actually has a target.
+		local targetname = UnitName("boss1target")
+		if UnitDetailedThreatSituation("boss1target", "boss1") then--He's targeting his highest threat target.
+			if trapScansDone < 10 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.05, "MagmaTrapTarget")--Check again for right target, tanks don't get magma traps.
+			end
+		else--He's not targeting highest threat target so this has to be right target.
+			self:UnscheduleMethod("MagmaTrapTarget")--Unschedule all checks just to be sure none are running, we are done.
+			warnMagmaTrap:Show(targetname)
+			if targetname == UnitName("player") then
+				specWarnMagmaTrap:Show()
+				yellMagmaTrap:Yell()
+			end
+		end
+	else--target was nil, lets schedule a rescan here too.
+		if trapScansDone < 10 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.05, "MagmaTrapTarget")
+		end
 	end
 end
 
@@ -180,6 +193,7 @@ function mod:OnCombatStart(delay)
 	lastMeteor = 0
 	meteorSpawned = 0
 	sonsLeft = 8
+	trapScansDone = 0
 	phase = 1
 	prewarnedPhase2 = false
 	prewarnedPhase3 = false
@@ -312,8 +326,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnHandRagnaros:Show()
 		timerHandRagnaros:Start()
 	elseif args:IsSpellID(98164) then	--98164 confirmed
+		trapScansDone = 0
 		timerMagmaTrap:Start()
-		self:ScheduleMethod(0.2, "MagmaTrapTarget")--guessed speed, he definitely targets trap person, may need to change scan rate though.
+		self:MagmaTrapTarget()
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
