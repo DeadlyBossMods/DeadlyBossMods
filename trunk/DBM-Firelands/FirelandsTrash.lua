@@ -97,7 +97,7 @@ function mod:SPELL_CAST_START(args)
 		timerRaiseLavaCD:Start()
 	elseif args:IsSpellID(100724) then
 		warnEarthquake:Show()
-		specWarnEarthquake:Show()
+		specWarnEarthQuake:Show()
 	end
 end
 
