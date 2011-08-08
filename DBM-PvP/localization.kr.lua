@@ -232,7 +232,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
 	FlagAlliance		= "얼라이언스 깃발: ",
 	FlagHorde			= "호드 깃발: ",
-	FlagBase			= "기지"
+	FlagBase			= "기지",
+	Vulnerable1			= "약해져서",
+	Vulnerable2			= "약해져서"
 })
 
 L:SetTimerLocalization({
