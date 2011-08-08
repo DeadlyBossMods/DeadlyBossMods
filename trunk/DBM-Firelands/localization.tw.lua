@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "zhTW" then return end
+if GetLocale() ~= "zhTW" then return end
 local L
 
 ---------------
@@ -35,9 +35,12 @@ L:SetMiscLocalization({
 	YellInitiate3	= "把不信者全都燒死!",
 	YellInitiate4	= "見證壯麗的火焰。",
 	YellPhase2		= "這片天空屬於我。",
-	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
-	LavaWorms		= "熾炎熔岩蟲從地上鑽了出來!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
-	PowerLevel		= "熔岩之力"
+  FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
+  LavaWorms		= "熾炎熔岩蟲從地上鑽了出來!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
+	PowerLevel		= "熔岩之力",
+  East			= "東邊",
+	West			= "西邊",
+	Both			= "兩側"
 })
 
 -------------------
@@ -46,12 +49,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
+	WarnElementals		= "元素怪出現"
 })
 
 L:SetTimerLocalization({
+	TimerElementals		= "下一次召喚元素怪"
 })
 
 L:SetOptionLocalization({
+	WarnElementals		= "當元素怪出現時顯示警告",
+	TimerElementals		= "為下一次元素怪出現顯示警告"
+})
+
+L:SetMiscLocalization({
+	yellPhase2			= "Eons I have slept undisturbed... Now this... Creatures of flesh, now you will BURN!"
 })
 
 L:SetMiscLocalization({
@@ -120,7 +131,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "為當前強化的刀刃顯示持續時間計時器",
 	TimerBladeNext		= "為下一次強化刀刃顯示計時器",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-        SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
+  SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "當你中了$spell:99516時顯示DBM箭頭",
 	InfoFrame		= "顯示活力火花堆疊訊息框"
 })
@@ -156,7 +167,8 @@ L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s 在 %s 身上",--Spellname in Location
-	warnEngulfingFlame		= "%s 在 %s 身上"--Spellname in Location
+	warnEngulfingFlame		= "%s 在 %s 身上",--Spellname in Location
+	WarnRemainingAdds		= "剩下 %d 個烈焰之子"
 })
 
 L:SetTimerLocalization({
@@ -166,6 +178,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
         warnSplittingBlow	= "為$spell:100877顯示警告",
 	warnEngulfingFlame	= "為$spell:99171顯示警告",
+        WarnRemainingAdds	= "為剩下多少火焰之子顯示警告",
 	TimerPhaseSons		= "為\"烈焰之子階段\"顯示持續時間計時器",
 	RangeFrame		= "顯示距離監視框",
         InfoFrame		= "為$spell:99849顯示目標資訊框架",
@@ -175,15 +188,15 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	East				= "東邊",
 	West				= "西邊",
-	Middle				= "中央",
+	Middle			= "中央",
 	North				= "近戰區",
 	South				= "後面",
-	MeteorTargets		= "我的天阿 隕石!",--Keep rollin' rollin' rollin' rollin'.
+  MeteorTargets		= "我的天阿 隕石!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "夠了!我將結束這一切。",--The adds detection doesn't always work right for some reason. May have to switch to this so translate it in case of switch.
-	TransitionEnded2	= "Sulfuras will be your end.",--Translate
-	TransitionEnded3	= "Fall to your knees, mortals!  This ends now.",--Translate
-	Defeat				= "Too soon! ... You have come too soon...",--Translate
-	Phase4				= "Too soon..."--Translate
+	TransitionEnded2	= "薩弗拉斯將終結你。",
+	TransitionEnded3	= "跪下吧，凡人們!一切都將結束。",
+  Defeat				= "Too soon! ... You have come too soon...",
+  Phase4				= "Too soon..."
 })
 
 -----------------------
@@ -202,7 +215,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "為$spell:100012顯示距離框(10碼)"
+	RangeFrame	= "為$spell:100012顯示距離框(10碼)",
 })
 
 L:SetMiscLocalization({
@@ -229,7 +242,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "The Branch of Nordrassil reacts violently",--Partial, not sure if pull detection will work with partials yet :\
+	StaffEvent			= "The Branch of Nordrassil reacts violently to %S+ touch!",--Reg expression pull match
 	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
 	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
 })
