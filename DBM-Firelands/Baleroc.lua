@@ -19,8 +19,9 @@ mod:RegisterEvents(
 )
 
 local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnDecimationStrike	= mod:NewCountAnnounce(99353, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3, nil, mod:IsTank())
-local warnShardsTorment		= mod:NewCastAnnounce(99259, 3)
+local warnShardsTorment		= mod:NewCountAnnounce(99259, 3)
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
 local yellCountdown			= mod:NewYell(99516)
 
@@ -30,6 +31,7 @@ local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() or mod:IsHealer())	-- either Decimation Blade or Inferno Blade
+local timerDecimatingStrike	= mod:NewNextTimer(5, 99353, nil, mod:IsTank() or mod:IsHealer())--5 or 2.5 sec. Variations are noted but can be auto corrected after first timer since game follows correction.
 local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
@@ -44,6 +46,11 @@ mod:AddBoolOption("SetIconOnCountdown")
 mod:AddBoolOption("SetIconOnTorment")
 mod:AddBoolOption("ArrowOnCountdown")
 
+local lastStrike = 0
+local currentStrike = 0
+local lastStrikeDiff = 0
+local strikeCount = 0
+local shardCount = 0
 local tormentIcon = 8
 local countdownIcon = 2
 local countdownTargets = {}
@@ -55,11 +62,18 @@ local function showCountdownWarning()
 end
 
 function mod:OnCombatStart(delay)
+	lastStrike = 0
+	currentStrike = 0
+	lastStrikeDiff = 0
+	strikeCount = 0
+	shardCount = 0
 	timerBladeNext:Start(-delay)
-	timerCountdownCD:Start(-delay)
 --	timerShardsTorment:Start(-delay)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerCountdownCD:Start(-delay)
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.VitalSpark)
 		DBM.InfoFrame:Show(5, "playerbuffstacks", 99262, 99263, 1)
@@ -101,11 +115,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(99263) and args:IsPlayer() then
 		timerVitalFlame:Start()
+	elseif args:IsSpellID(99352, 99405) then--Decimation Blades
+		lastStrike = GetTime()--Set last strike here too
+		strikeCount = 0--Reset count.
+		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+			timerDecimatingStrike:Start(2.5)
+		else
+			timerDecimatingStrike:Start()--5 seconds on 10 man
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(99352, 99405) or args:IsSpellID(99350) then
+	if args:IsSpellID(99352, 99405) then--Decimation Blades
+		timerBladeNext:Start()--30 seconds after last blades FADED
+	elseif args:IsSpellID(99350) then--Inferno blades
 		timerBladeNext:Start()--30 seconds after last blades FADED
 	elseif args:IsSpellID(99256, 100230, 100231, 100232) then--Torment
 		if self.Options.SetIconOnTorment then
@@ -113,6 +137,37 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
+
+--http://www.worldoflogs.com/reports/yuweptcud92tc0qa/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29
+--http://www.worldoflogs.com/reports/wytw4ybuhgx6xszd/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(99353) then--Decimation Blades
+		strikeCount = strikeCount + 1
+		warnDecimationStrike:Show(strikeCount)
+		if strikeCount == 6 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 3 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
+		currentStrike = GetTime()--Get time of current strike stamped.
+		lastStrikeDiff = currentStrike - lastStrike--Find out time difference between last strike and current strike.
+		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+			if lastStrikeDiff > 2.5 then--We got a late cast since it took longer then 2.5
+				lastStrikeDiff = lastStrikeDiff - 2.5--Subtracked expected result (2.5) from diff to get what's remaining so we know how much of CD to remove from next cast.
+				timerDecimatingStrike:Start(2.5-lastStrikeDiff)--Next strike is gonna come early since previous one was > 2.5. Subtract this diff from the timer.
+			elseif lastStrikeDiff < 2.5 then--We got an early cast.
+				lastStrikeDiff = 2.5 - lastStrikeDiff--Subtracked last strike difference from expected result to figure out how much time to add to next timer.
+				timerDecimatingStrike:Start(2.5+lastStrikeDiff)--Next strike is gonna come late since previous one was early.
+			end
+		else--Do same thing as above only with 10 man timing.
+			if lastStrikeDiff > 5 then
+				lastStrikeDiff = lastStrikeDiff - 5
+				timerDecimatingStrike:Start(5-lastStrikeDiff)
+			elseif lastStrikeDiff < 5 then
+				lastStrikeDiff = 5 - lastStrikeDiff
+				timerDecimatingStrike:Start(5+lastStrikeDiff)
+			end
+		end
+		lastStrike = GetTime()--Update last strike timing to this one after function fires.
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE--Dodge/parried decimation strikes show as SPELL_MISSED
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(99352, 99405) then	--99352 confirmed
@@ -123,8 +178,9 @@ function mod:SPELL_CAST_START(args)
 		warnInfernoBlade:Show()
 		timerBladeActive:Start(args.spellName)
 	elseif args:IsSpellID(99259) then
+		shardCount = shardCount + 1
 		tormentIcon = 8
-		warnShardsTorment:Show()
+		warnShardsTorment:Show(shardCount)
 		specWarnShardsTorment:Schedule(1.5)
 		timerShardsTorment:Start()
 		ShardsCountown:Start(34)
