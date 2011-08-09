@@ -254,8 +254,8 @@ function mod:SPELL_CAST_START(args)
 			if not phase2Started then
 				phase2Started = true
 				if self:IsDifficulty("heroic10", "heroic25") then
-					specWarnMoltenSeed:Schedule(11)--Schedule the warnings here for more accuracy
-					timerMoltenSeed:Schedule(11)
+					specWarnMoltenSeed:Schedule(9)--Schedule the warnings here for more accuracy
+					timerMoltenSeed:Schedule(9)
 					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
 				end
 			end
