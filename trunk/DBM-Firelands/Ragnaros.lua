@@ -364,11 +364,12 @@ function mod:SPELL_DAMAGE(args)
 			warnSeeds()
 		end
 		self:Schedule(62, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
-		self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
-	elseif args:IsSpellID(100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
+		self:Schedule(20, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
 		seedsActive = true
+		self:Unschedule(warnSeeds)
 		self:Schedule(52, warnSeeds)
-		self:Schedule(5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+		self:Schedule(10, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the first one going off.
