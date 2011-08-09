@@ -134,7 +134,7 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerSulfurasSmash:Start(6)
-			timerMoltenSeedCD:Start(17)
+			timerMoltenSeedCD:Start(15)
 		else
 			timerSulfurasSmash:Start(15.5)
 			timerMoltenSeedCD:Start(24)
@@ -363,12 +363,12 @@ function mod:SPELL_DAMAGE(args)
 		if not seedsWarned then--Check to see if scheduled function already went off, if it did already lets not spam.
 			warnSeeds()
 		end
-		self:Schedule(62, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
+		self:Schedule(60, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
 		self:Schedule(20, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
 		seedsActive = true
 		self:Unschedule(warnSeeds)
-		self:Schedule(52, warnSeeds)
+		self:Schedule(50, warnSeeds)
 		self:Schedule(10, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
