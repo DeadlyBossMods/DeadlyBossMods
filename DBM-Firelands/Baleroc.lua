@@ -15,6 +15,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"SPELL_CAST_START"
 )
 
