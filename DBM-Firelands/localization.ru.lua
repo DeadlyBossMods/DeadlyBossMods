@@ -234,7 +234,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent				= "The Branch of Nordrassil reacts violently to %S+ touch!",--Partial, not sure if pull detection will work with partials yet :\
-	StaffTrees				= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
-	StaffTransition			= "The fires consuming the Tormented Protector wink out!"
+	StaffEvent				= "Ветвь Нордрассила яростно реагирует на прикосновение",--Partial, not sure if pull detection will work with partials yet :\
+	StaffTrees				= "Из-под земли появляются пылающие древни, чтобы помощь защитнику!",--Might add a spec warning for this later.
+	StaffTransition			= "Пламя, пожирающее измученного заступника, меркнет."
 })
