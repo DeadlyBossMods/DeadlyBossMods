@@ -232,7 +232,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!",
 	FlagAlliance		= "Флаг Альянса: ",
 	FlagHorde			= "Флаг Орды: ",
-	FlagBase			= "База"
+	FlagBase			= "База",
+	Vulnerable1			= "Персонажи, несущие флаг, стали более уязвимы!",
+	Vulnerable2			= "Персонажи, несущие флаг, стали еще более уязвимы!"
 })
 
 L:SetTimerLocalization({
