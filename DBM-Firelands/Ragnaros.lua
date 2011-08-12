@@ -137,7 +137,7 @@ local function TransitionEnded()
 			timerMoltenSeedCD:Start(15)
 		else
 			timerSulfurasSmash:Start(15.5)
-			timerMoltenSeedCD:Start(24)
+			timerMoltenSeedCD:Start(21)
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
@@ -225,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBurningWound:Show(args.amount)
 		end
 		timerBurningWound:Start(args.destName)
-	elseif args:IsSpellID(100171, 100190) then--World of Flames, heroic trigger for engulfing flames. CD timing is not known for this on heroic yet. Assumed same as normal for now.
+	elseif args:IsSpellID(100171, 100190) then--World of Flames, heroic trigger for engulfing flames. CD timing seems same as normal.
 		specWarnWorldofFlames:Show()
 		if phase == 3 then
 			timerFlamesCD:Start(30)--30 second CD in phase 3
@@ -257,6 +257,10 @@ function mod:SPELL_CAST_START(args)
 					specWarnMoltenSeed:Schedule(9)--Schedule the warnings here for more accuracy
 					timerMoltenSeed:Schedule(9)
 					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+				else
+					specWarnMoltenSeed:Schedule(5.5)
+					timerMoltenSeed:Schedule(5.5)
+					timerMoltenSeedCD:Update(15.5, 21)
 				end
 			end
 		end
@@ -361,7 +365,7 @@ function mod:SPELL_DAMAGE(args)
 		seedsActive = true
 		self:Unschedule(warnSeeds)--Cancel scheduled one if it hasn't fired yet, this damage event is more precise timing (although it shouldn't happen if people play right, if it does, might as well use it to warn right away)
 		if not seedsWarned then--Check to see if scheduled function already went off, if it did already lets not spam.
-			warnSeeds()
+			warnSeeds()--This however should never fire, since damage is 2 seconds after scheduled one should have gone off, but here none the less as failsafe.
 		end
 		self:Schedule(60, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
 		self:Schedule(20, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
