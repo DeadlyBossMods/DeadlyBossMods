@@ -116,6 +116,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerShards			= "Next %s (%%d)",
 	timerStrike			= "Next %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "Next blade"
@@ -123,13 +124,14 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnStrike			= "Show warnings for Decimation/Inferno Strike",
+	timerShards			= "Show timer for next $spell:99259",
 	timerStrike			= "Show timer for next Decimation/Inferno Strike",
-	TimerBladeActive	= "Show a duration timer for the active blade",
-	TimerBladeNext		= "Show a next timer for blade",
+	TimerBladeActive	= "Show a duration timer for the active Blade",
+	TimerBladeNext		= "Show a next timer for Decimation/Inferno Blade",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 ",
-	InfoFrame		= "Show info frame for Vital Spark stacks"
+	InfoFrame			= "Show info frame for Vital Spark stacks"
 })
 
 L:SetMiscLocalization({
