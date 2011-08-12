@@ -116,7 +116,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShards			= "Next %s (%%d)",
+	timerShards			= "Next %s (%d)",
 	timerStrike			= "Next %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "Next blade"
