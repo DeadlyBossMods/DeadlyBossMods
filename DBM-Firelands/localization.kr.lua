@@ -113,16 +113,22 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
+	warnStrike	= "%s (%d)"
 })
 
 L:SetTimerLocalization({
+	timerShards			= "다음 %s (%d)",
+	timerStrike			= "다음 %s",
 	TimerBladeActive	= "%s",
-	TimerBladeNext		= "다음 칼날"
+	TimerBladeNext		= "다음 칼날 활성화"
 })
 
 L:SetOptionLocalization({
-	TimerBladeActive	= "칼날 유지 타이머 보기",
-	TimerBladeNext		= "다음 칼날 타이머 보기",
+	warnStrike			= "지옥불/학살의 칼날에 피해를 입을 때 경고 보기",
+	timerShards			= "다음 $spell:99259 타이머 보기",
+	timerStrike			= "지옥불/학살의 칼날 공격 간격 타이머 보기",
+	TimerBladeActive	= "활성화된 칼날 유지 타이머 보기",
+	TimerBladeNext		= "다음 지옥불/학살의 칼날 활성화 타이머 보기",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "$spell:99516의 영향을 받은 경우 DBM 화살표 보기",
