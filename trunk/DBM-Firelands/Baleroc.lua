@@ -34,7 +34,7 @@ local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() or mod:IsHealer())	-- either Decimation Blade or Inferno Blade
 local timerStrikeCD			= mod:NewTimer(5, "timerStrike", 99353, mod:IsTank() or mod:IsHealer())--5 or 2.5 sec. Variations are noted but can be auto corrected after first timer since game follows correction.
-local timerShardsTorment	= mod:NewNextTimer(34, 99259)
+local timerShardsTorment	= mod:NewTimer(34, "timerShards", 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
 local timerVitalFlame		= mod:NewBuffActiveTimer(15, 99263)
@@ -72,7 +72,7 @@ function mod:OnCombatStart(delay)
 	strikeCount = 0
 	shardCount = 0
 	timerBladeNext:Start(-delay)
---	timerShardsTorment:Start(-delay)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
+--	timerShardsTorment:Start(-delay, args.spellName, 1)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -126,7 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
 			timerStrikeCD:Start(2.5, spellName)
 		else
-			timerStrikeCD:Start(spellName)--5 seconds on 10 man
+			timerStrikeCD:Start(5, spellName)--5 seconds on 10 man
 		end
 	elseif args:IsSpellID(99350) then--Inferno Blades
 		spellName = GetSpellInfo(99350)
@@ -135,7 +135,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
 			timerStrikeCD:Start(2.5, spellName)
 		else
-			timerStrikeCD:Start(spellName)--5 seconds on 10 man
+			timerStrikeCD:Start(5, spellName)--5 seconds on 10 man
 		end	
 	end
 end
@@ -155,7 +155,7 @@ end
 --http://www.worldoflogs.com/reports/yuweptcud92tc0qa/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or%0D%0Aspell+%3D+%22Inferno+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or+spell+%3D+%22Inferno+Blade%22
 --http://www.worldoflogs.com/reports/wytw4ybuhgx6xszd/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(99353) or args:IsSpellID(99351, 101000, 101001, 101002) then--Decimation Blades or Inferno Strike
+	if args:IsSpellID(99353) or args:IsSpellID(99351, 101000, 101001, 101002) then--Decimation Strike or Inferno Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)
 		if strikeCount == 6 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 3 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
@@ -196,7 +196,7 @@ function mod:SPELL_CAST_START(args)
 		tormentIcon = 8
 		warnShardsTorment:Show(shardCount)
 		specWarnShardsTorment:Schedule(1.5)
-		timerShardsTorment:Start()
+		timerShardsTorment:Start(34, args.spellName, shardCount+1)
 		ShardsCountown:Start(34)
 	end
 end
