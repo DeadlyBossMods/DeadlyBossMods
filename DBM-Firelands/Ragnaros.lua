@@ -121,7 +121,7 @@ local function clearSeedsActive()
 end
 
 local function warnSeeds(first)
-	if not first then
+	if not first then--The first one is not triggered off spell_damage, so we need to not flag warned seeds, so first spell_damage event can still schedule next one.
 		seedsWarned = true
 	end
 	warnMoltenSeed:Show()
