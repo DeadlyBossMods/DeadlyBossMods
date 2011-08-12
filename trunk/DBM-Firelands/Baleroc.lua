@@ -21,7 +21,7 @@ mod:RegisterEvents(
 )
 
 local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4, nil, mod:IsTank() or mod:IsHealer())
-local warnDecimationStrike	= mod:NewCountAnnounce(99353, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnStrike			= mod:NewAnnounce("warnStrike", 4, 99353, mod:IsTank() or mod:IsHealer())
 local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3, nil, mod:IsTank())
 local warnShardsTorment		= mod:NewCountAnnounce(99259, 3)
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
@@ -33,7 +33,7 @@ local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() or mod:IsHealer())	-- either Decimation Blade or Inferno Blade
-local timerDecimatingStrike	= mod:NewNextTimer(5, 99353, nil, mod:IsTank() or mod:IsHealer())--5 or 2.5 sec. Variations are noted but can be auto corrected after first timer since game follows correction.
+local timerStrikeCD			= mod:NewTimer(5, "timerStrike", 99353, mod:IsTank() or mod:IsHealer())--5 or 2.5 sec. Variations are noted but can be auto corrected after first timer since game follows correction.
 local timerShardsTorment	= mod:NewNextTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
@@ -48,6 +48,7 @@ mod:AddBoolOption("SetIconOnCountdown")
 mod:AddBoolOption("SetIconOnTorment")
 mod:AddBoolOption("ArrowOnCountdown")
 
+local spellName = nil
 local lastStrike = 0
 local currentStrike = 0
 local lastStrikeDiff = 0
@@ -64,6 +65,7 @@ local function showCountdownWarning()
 end
 
 function mod:OnCombatStart(delay)
+	spellName = nil
 	lastStrike = 0
 	currentStrike = 0
 	lastStrikeDiff = 0
@@ -118,13 +120,23 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(99263) and args:IsPlayer() then
 		timerVitalFlame:Start()
 	elseif args:IsSpellID(99352, 99405) then--Decimation Blades
+		spellName = GetSpellInfo(99405)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
-			timerDecimatingStrike:Start(2.5)
+			timerStrikeCD:Start(2.5, spellName)
 		else
-			timerDecimatingStrike:Start()--5 seconds on 10 man
+			timerStrikeCD:Start(spellName)--5 seconds on 10 man
 		end
+	elseif args:IsSpellID(99350) then--Inferno Blades
+		spellName = GetSpellInfo(99350)
+		lastStrike = GetTime()--Set last strike here too
+		strikeCount = 0--Reset count.
+		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+			timerStrikeCD:Start(2.5, spellName)
+		else
+			timerStrikeCD:Start(spellName)--5 seconds on 10 man
+		end	
 	end
 end
 
@@ -140,30 +152,30 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---http://www.worldoflogs.com/reports/yuweptcud92tc0qa/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29
+--http://www.worldoflogs.com/reports/yuweptcud92tc0qa/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or%0D%0Aspell+%3D+%22Inferno+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or+spell+%3D+%22Inferno+Blade%22
 --http://www.worldoflogs.com/reports/wytw4ybuhgx6xszd/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(99353) then--Decimation Blades
+	if args:IsSpellID(99353) or args:IsSpellID(99351, 101000, 101001, 101002) then--Decimation Blades or Inferno Strike
 		strikeCount = strikeCount + 1
-		warnDecimationStrike:Show(strikeCount)
+		warnStrike:Show(spellName, strikeCount)
 		if strikeCount == 6 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 3 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
 		currentStrike = GetTime()--Get time of current strike stamped.
 		lastStrikeDiff = currentStrike - lastStrike--Find out time difference between last strike and current strike.
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
 			if lastStrikeDiff > 2.5 then--We got a late cast since it took longer then 2.5
 				lastStrikeDiff = lastStrikeDiff - 2.5--Subtracked expected result (2.5) from diff to get what's remaining so we know how much of CD to remove from next cast.
-				timerDecimatingStrike:Start(2.5-lastStrikeDiff)--Next strike is gonna come early since previous one was > 2.5. Subtract this diff from the timer.
+				timerStrikeCD:Start(2.5-lastStrikeDiff, spellName)--Next strike is gonna come early since previous one was > 2.5. Subtract this diff from the timer.
 			elseif lastStrikeDiff < 2.5 then--We got an early cast.
 				lastStrikeDiff = 2.5 - lastStrikeDiff--Subtracked last strike difference from expected result to figure out how much time to add to next timer.
-				timerDecimatingStrike:Start(2.5+lastStrikeDiff)--Next strike is gonna come late since previous one was early.
+				timerStrikeCD:Start(2.5+lastStrikeDiff, spellName)--Next strike is gonna come late since previous one was early.
 			end
 		else--Do same thing as above only with 10 man timing.
 			if lastStrikeDiff > 5 then
 				lastStrikeDiff = lastStrikeDiff - 5
-				timerDecimatingStrike:Start(5-lastStrikeDiff)
+				timerStrikeCD:Start(5-lastStrikeDiff, spellName)
 			elseif lastStrikeDiff < 5 then
-				lastStrikeDiff = 5 - lastStrikeDiff
-				timerDecimatingStrike:Start(5+lastStrikeDiff)
+				lastDiff = 5 - lastStrikeDiff
+				timerStrikeCD:Start(5+lastStrikeDiff, spellName)
 			end
 		end
 		lastStrike = GetTime()--Update last strike timing to this one after function fires.
