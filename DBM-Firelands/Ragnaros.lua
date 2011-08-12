@@ -120,8 +120,10 @@ local function clearSeedsActive()
 	seedsWarned = false
 end
 
-local function warnSeeds()
-	seedsWarned = true
+local function warnSeeds(first)
+	if not first then
+		seedsWarned = true
+	end
 	warnMoltenSeed:Show()
 	specWarnMoltenSeed:Show()
 	timerMoltenInferno:Start()
@@ -254,13 +256,11 @@ function mod:SPELL_CAST_START(args)
 			if not phase2Started then
 				phase2Started = true
 				if self:IsDifficulty("heroic10", "heroic25") then
-					self:Schedule(9, warnSeeds)--Schedule the warnings here for more accuracy
+					self:Schedule(9, warnSeeds, true)--Schedule the warnings here for more accuracy
 					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-					self:Schedule(14, clearSeedsActive)--Clear warned 5 seconds after scheduler goes off so we trigger a new one off molten inferno
 				else
-					self:Schedule(5.5, warnSeeds)
+					self:Schedule(5.5, warnSeeds, true)
 					timerMoltenSeedCD:Update(15.5, 21)
-					self:Schedule(10.5, clearSeedsActive)
 				end
 			end
 		end
@@ -364,9 +364,6 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(98498, 100579, 100580, 100581) and not seedsActive then--trigger spell 98495 doesn't show in combat log :\. This only fires if players are not spread properly but is most accurate detection of cast.
 		seedsActive = true
 		self:Unschedule(warnSeeds)--Cancel scheduled one if it hasn't fired yet, this damage event is more precise timing (although it shouldn't happen if people play right, if it does, might as well use it to warn right away)
-		if not seedsWarned then--Check to see if scheduled function already went off, if it did already lets not spam.
-			warnSeeds()--This however should never fire, since damage is 2 seconds after scheduled one should have gone off, but here none the less as failsafe.
-		end
 		self:Schedule(60, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
 		self:Schedule(20, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
