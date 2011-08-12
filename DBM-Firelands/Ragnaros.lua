@@ -62,7 +62,7 @@ local timerWrathRagnaros	= mod:NewCDTimer(12, 98263, nil, mod:IsRanged())--It's 
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
 local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds from last seed going off, but 63 from first.
-local timerMoltenSeed		= mod:NewBuffActiveTimer(10, 98520)
+local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molten Inferno (seeds exploding)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
 local timerSplittingCast	= mod:NewCastTimer(10, 100877)--Spell is technically 8 seconds, but when cast finishes it takes 2 seconds for fireballs to spawn adds.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
@@ -124,7 +124,7 @@ local function warnSeeds()
 	seedsWarned = true
 	warnMoltenSeed:Show()
 	specWarnMoltenSeed:Show()
-	timerMoltenSeed:Start()
+	timerMoltenInferno:Start()
 	timerMoltenSeedCD:Start()
 end
 
@@ -254,13 +254,13 @@ function mod:SPELL_CAST_START(args)
 			if not phase2Started then
 				phase2Started = true
 				if self:IsDifficulty("heroic10", "heroic25") then
-					specWarnMoltenSeed:Schedule(9)--Schedule the warnings here for more accuracy
-					timerMoltenSeed:Schedule(9)
+					self:Schedule(9, warnSeeds)--Schedule the warnings here for more accuracy
 					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+					self:Schedule(14, clearSeedsActive)--Clear warned 5 seconds after scheduler goes off so we trigger a new one off molten inferno
 				else
-					specWarnMoltenSeed:Schedule(5.5)
-					timerMoltenSeed:Schedule(5.5)
+					self:Schedule(5.5, warnSeeds)
 					timerMoltenSeedCD:Update(15.5, 21)
+					self:Schedule(10.5, clearSeedsActive)
 				end
 			end
 		end
