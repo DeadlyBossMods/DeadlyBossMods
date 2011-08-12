@@ -263,7 +263,9 @@ L:SetMiscLocalization({
 	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
 	BasesToWin 		= "Bases necesarias para ganar: %d",
-	Flag 			= "Bandera"
+	Flag 			= "Bandera",
+	Vulnerable1		= "¡Los portadores de las banderas se han vuelto vulnerables a los ataques!",
+	Vulnerable2		= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!"
 })
 
 L:SetTimerLocalization({
