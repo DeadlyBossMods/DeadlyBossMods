@@ -112,14 +112,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
+	warnStrike	= "%s (%d)"
 })
 
 L:SetTimerLocalization({
+	timerStrike			= "Next %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "Next blade"
 })
 
 L:SetOptionLocalization({
+	warnStrike			= "Show warnings for Decimation/Inferno Strike",
+	timerStrike			= "Show timer for next Decimation/Inferno Strike",
 	TimerBladeActive	= "Show a duration timer for the active blade",
 	TimerBladeNext		= "Show a next timer for blade",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
