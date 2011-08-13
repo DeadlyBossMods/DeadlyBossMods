@@ -113,14 +113,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
+	warnStrike	= "%s (%d)"
 })
 
 L:SetTimerLocalization({
+	timerShards			= "Siguiente %s (%d)",
+	timerStrike			= "Siguiente %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "Siguiente Hoja"
 })
 
 L:SetOptionLocalization({
+	warnStrike			= "Mostrar avisos para Hoja de Infierno/Exterminadora",
+	timerShards			= "Mostrar tiempo para siguiente $spell:99259",
+	timerStrike			= "Mostrar tiempo para la siguiente Hoja de Infierno/Exterminadora",
 	TimerBladeActive	= "Mostrar tiempo de duración de la hoja activa",
 	TimerBladeNext		= "Mostrar tiempo para la siguiente hoja",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
