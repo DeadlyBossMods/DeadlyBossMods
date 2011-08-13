@@ -164,13 +164,27 @@ local function TransitionEnded()
 	end
 end
 
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	-- 3. anyone with 180k+ health
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitHealthMax(unit) >= 180000 then return true end--Will need tuning or removal for new expansions or maybe even new tiers.
+	return false
+end
+
 function mod:MagmaTrapTarget()
 	trapScansDone = trapScansDone + 1
 	if UnitExists("boss1target") then--Check if he actually has a target.
 		local targetname = UnitName("boss1target")
-		if UnitDetailedThreatSituation("boss1target", "boss1") then--He's targeting his highest threat target.
-			if trapScansDone < 10 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.05, "MagmaTrapTarget")--Check again for right target, tanks don't get magma traps.
+		if UnitDetailedThreatSituation("boss1target", "boss1") or isTank(targetname) then--He's targeting his highest threat target or someone that's definitely a tank.
+			if trapScansDone < 12 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.025, "MagmaTrapTarget")--Check again for right target, tanks don't get magma traps.
 			end
 		else--He's not targeting highest threat target so this has to be right target.
 			self:UnscheduleMethod("MagmaTrapTarget")--Unschedule all checks just to be sure none are running, we are done.
@@ -181,13 +195,14 @@ function mod:MagmaTrapTarget()
 			end
 		end
 	else--target was nil, lets schedule a rescan here too.
-		if trapScansDone < 10 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.05, "MagmaTrapTarget")
+		if trapScansDone < 12 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.025, "MagmaTrapTarget")
 		end
 	end
 end
 
 function mod:OnCombatStart(delay)
+	table.wipe(tanks)
 	berserkTimer:Start(-delay)
 	timerMagmaTrap:Start(16-delay)
 	timerSulfurasSmash:Start(-delay)
@@ -222,6 +237,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99399, 101238, 101239, 101240) then
+		previousTank = args.destName
 		warnBurningWound:Show(args.destName, args.amount or 1)
 		if (args.amount or 0) >= 4 and args:IsPlayer() then
 			specWarnBurningWound:Show(args.amount)
