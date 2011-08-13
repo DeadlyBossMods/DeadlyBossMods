@@ -120,7 +120,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(99263) and args:IsPlayer() then
 		timerVitalFlame:Start()
 	elseif args:IsSpellID(99352, 99405) then--Decimation Blades
-		spellName = GetSpellInfo(99405)
+		spellName = GetSpellInfo(99353)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
@@ -129,14 +129,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerStrikeCD:Start(5, spellName)--5 seconds on 10 man
 		end
 	elseif args:IsSpellID(99350) then--Inferno Blades
-		spellName = GetSpellInfo(99350)
+		spellName = GetSpellInfo(101002)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
-		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
-			timerStrikeCD:Start(2.5, spellName)
-		else
-			timerStrikeCD:Start(5, spellName)--5 seconds on 10 man
-		end	
+		timerStrikeCD:Start(2.5, spellName)
 	end
 end
 
@@ -155,7 +151,7 @@ end
 --http://www.worldoflogs.com/reports/yuweptcud92tc0qa/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or%0D%0Aspell+%3D+%22Inferno+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or+spell+%3D+%22Inferno+Blade%22
 --http://www.worldoflogs.com/reports/wytw4ybuhgx6xszd/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(99353) or args:IsSpellID(99351, 101000, 101001, 101002) then--Decimation Strike or Inferno Strike
+	if args:IsSpellID(99353) then--Decimation Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)
 		if strikeCount == 6 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 3 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
@@ -177,6 +173,20 @@ function mod:SPELL_DAMAGE(args)
 				lastDiff = 5 - lastStrikeDiff
 				timerStrikeCD:Start(5+lastStrikeDiff, spellName)
 			end
+		end
+		lastStrike = GetTime()--Update last strike timing to this one after function fires.
+	elseif args:IsSpellID(99351, 101000, 101001, 101002) then--Inferno Strike
+		strikeCount = strikeCount + 1
+		warnStrike:Show(spellName, strikeCount)
+		if strikeCount == 7 then return end--Don't do anything if it's 6th/3rd strike
+		currentStrike = GetTime()--Get time of current strike stamped.
+		lastStrikeDiff = currentStrike - lastStrike--Find out time difference between last strike and current strike.
+		if lastStrikeDiff > 2.5 then--We got a late cast since it took longer then 2.5
+			lastStrikeDiff = lastStrikeDiff - 2.5--Subtracked expected result (2.5) from diff to get what's remaining so we know how much of CD to remove from next cast.
+			timerStrikeCD:Start(2.5-lastStrikeDiff, spellName)--Next strike is gonna come early since previous one was > 2.5. Subtract this diff from the timer.
+		elseif lastStrikeDiff < 2.5 then--We got an early cast.
+			lastStrikeDiff = 2.5 - lastStrikeDiff--Subtracked last strike difference from expected result to figure out how much time to add to next timer.
+			timerStrikeCD:Start(2.5+lastStrikeDiff, spellName)--Next strike is gonna come late since previous one was early.
 		end
 		lastStrike = GetTime()--Update last strike timing to this one after function fires.
 	end
