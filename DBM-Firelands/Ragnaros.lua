@@ -139,7 +139,7 @@ local function TransitionEnded()
 			timerMoltenSeedCD:Start(15)
 		else
 			timerSulfurasSmash:Start(15.5)
-			timerMoltenSeedCD:Start(21)
+			timerMoltenSeedCD:Start(22)
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
@@ -259,8 +259,8 @@ function mod:SPELL_CAST_START(args)
 					self:Schedule(9, warnSeeds, true)--Schedule the warnings here for more accuracy
 					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
 				else
-					self:Schedule(5.5, warnSeeds, true)
-					timerMoltenSeedCD:Update(15.5, 21)
+					self:Schedule(6.5, warnSeeds, true)
+					timerMoltenSeedCD:Update(15.5, 22)
 				end
 			end
 		end
