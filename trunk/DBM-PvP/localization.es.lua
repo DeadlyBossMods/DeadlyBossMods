@@ -233,7 +233,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "¡(.+) ha devuelto la bandera de la (%w+) a su base!",
 	FlagAlliance		= "Bandera de la Alianza: ",
 	FlagHorde			= "Bandera de la Horda: ",
-	FlagBase			= "Base"
+	FlagBase			= "Base",
+	Vulnerable1		= "¡Los portadores de las banderas se han vuelto vulnerables a los ataques!",
+	Vulnerable2		= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!"
 })
 
 L:SetTimerLocalization({
@@ -263,9 +265,7 @@ L:SetMiscLocalization({
 	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
 	BasesToWin 		= "Bases necesarias para ganar: %d",
-	Flag 			= "Bandera",
-	Vulnerable1		= "¡Los portadores de las banderas se han vuelto vulnerables a los ataques!",
-	Vulnerable2		= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!"
+	Flag 			= "Bandera"
 })
 
 L:SetTimerLocalization({
