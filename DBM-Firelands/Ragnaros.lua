@@ -202,7 +202,6 @@ function mod:MagmaTrapTarget()
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(tanks)
 	berserkTimer:Start(-delay)
 	timerMagmaTrap:Start(16-delay)
 	timerSulfurasSmash:Start(-delay)
