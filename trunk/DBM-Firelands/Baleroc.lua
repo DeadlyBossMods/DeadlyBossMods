@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
@@ -24,11 +25,13 @@ local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4, nil, mod:IsTank() or 
 local warnStrike			= mod:NewAnnounce("warnStrike", 4, 99353, mod:IsTank() or mod:IsHealer())
 local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3, nil, mod:IsTank())
 local warnShardsTorment		= mod:NewCountAnnounce(99259, 3)
+local warnTormented			= mod:NewSpellAnnounce(99402, 3)--Self only warning.
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
 local yellCountdown			= mod:NewYell(99516)
 
 local specWarnShardsTorment	= mod:NewSpecialWarningSpell(99259, nil, nil, nil, true)
 local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
+local specWarnTormented		= mod:NewSpecialWarningYou(99402, false)
 local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
@@ -38,6 +41,7 @@ local timerShardsTorment	= mod:NewTimer(34, "timerShards", 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
 local timerVitalFlame		= mod:NewBuffActiveTimer(15, 99263)
+local timerTormented		= mod:NewBuffActiveTimer(40, 99402)
 
 local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
@@ -133,6 +137,30 @@ function mod:SPELL_AURA_APPLIED(args)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
 		timerStrikeCD:Start(2.5, spellName)
+	elseif args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
+		if args:IsPlayer() then
+			warnTormented:Show()
+			specWarnTormented:Show()
+			if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+				timerTormented:Start(60)--Longer on 25 man
+			else
+				timerTormented:Start()
+			end
+		end
+	end
+end
+
+function mod:SPELL_AURA_REFRESH(args)
+	if args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
+		if args:IsPlayer() then
+			warnTormented:Show()
+			specWarnTormented:Show()
+			if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+				timerTormented:Start(60)--Longer on 25 man
+			else
+				timerTormented:Start()
+			end
+		end
 	end
 end
 
@@ -144,6 +172,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(99256, 100230, 100231, 100232) then--Torment
 		if self.Options.SetIconOnTorment then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
+		if args:IsPlayer() then
+			timerTormented:Cancel()
 		end
 	end
 end
