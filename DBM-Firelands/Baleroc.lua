@@ -31,7 +31,7 @@ local yellCountdown			= mod:NewYell(99516)
 
 local specWarnShardsTorment	= mod:NewSpecialWarningSpell(99259, nil, nil, nil, true)
 local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
-local specWarnTormented		= mod:NewSpecialWarningYou(99402, false)
+local specWarnTormented		= mod:NewSpecialWarningYou(99402, mod:IsHealer())
 local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
