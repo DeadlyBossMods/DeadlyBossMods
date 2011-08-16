@@ -165,10 +165,9 @@ function mod:SPELL_AURA_REFRESH(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(99352, 99405) then--Decimation Blades
+	if args:IsSpellID(99352, 99405) or args:IsSpellID(99350) then--Decimation Blade/Inferno blade
 		timerBladeNext:Start()--30 seconds after last blades FADED
-	elseif args:IsSpellID(99350) then--Inferno blades
-		timerBladeNext:Start()--30 seconds after last blades FADED
+		timerStrikeCD:Cancel()
 	elseif args:IsSpellID(99256, 100230, 100231, 100232) then--Torment
 		if self.Options.SetIconOnTorment then
 			self:SetIcon(args.destName, 0)
