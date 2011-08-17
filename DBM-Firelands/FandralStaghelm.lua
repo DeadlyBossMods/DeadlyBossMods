@@ -34,6 +34,8 @@ local specWarnLeapingFlamesCast	= mod:NewSpecialWarningYou(98476)--Cast on you
 local specWarnLeapingFlames		= mod:NewSpecialWarningMove(100208)--Standing in circle it left behind.
 local specWarnSearingSeed		= mod:NewSpecialWarningMove(98450)
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 local soundSeed					= mod:NewSound(98450)
 
 mod:AddBoolOption("RangeFrameSeeds", true)
@@ -78,6 +80,7 @@ function mod:LeapingFlamesTarget()
 end
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	abilityCount = 0
 	kitty = false
 end
