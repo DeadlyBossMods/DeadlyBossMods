@@ -18,6 +18,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "Zeige Zeit bis zum Kampfbeginn",
 	WarnPhase			= "Zeige Warnung für jeden Phasenwechsel",
 	WarnNewInitiate		= "Zeige Warnung für neuen Lodernder Kralleninitiand",
 	timerNextInitiate	= "Zeige Zeit bis nächster Lodernder Kralleninitiand",
@@ -27,14 +28,18 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPull		= "Ich diene jetzt einem neuen Meister, Sterbliche!", --needs to be verified (screenshot-captured translation)
-	YellInitiate1	= "Wir rufen Euch, Feuerlord!",      --needs to be verified (screenshot-captured translation)
-	YellInitiate2	= "Seht seine Macht!",               --needs to be verified (screenshot-captured translation)
-	YellInitiate3	= "Äschert die Ungläubigen ein!",    --needs to be verified (screenshot-captured translation)
-	YellInitiate4	= "Erblicket den Ruhm der Flammen.", --needs to be verified (screenshot-captured translation)
-	YellPhase2		= "Dieser Himmel ist MEIN!",         --needs to be verified (screenshot-captured translation)
+	YellPull		= "Ich diene jetzt einem neuen Meister, Sterbliche!",
+	YellInitiate1	= "Wir rufen Euch, Feuerlord!",
+	YellInitiate2	= "Seht seine Macht!",
+	YellInitiate3	= "Äschert die Ungläubigen ein!",
+	YellInitiate4	= "Erblicket den Ruhm der Flammen.",
+	YellPhase2		= "Dieser Himmel ist MEIN.",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
-	PowerLevel		= "Lodernde Macht"
+	LavaWorms		= "Feurige Lavawürmer brechen aus dem Boden hervor!",
+	PowerLevel		= "Lodernde Macht",
+	East			= "Osten",
+	West			= "Westen",
+	Both			= "Beide"
 })
 
 -------------------
@@ -44,7 +49,7 @@ L= DBM:GetModLocalization(193)
 
 L:SetWarningLocalization({
 })
-
+	
 L:SetTimerLocalization({
 })
 
@@ -52,6 +57,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	yellPhase2			= "Äonen habe ich ungestört durchgeschlafen… jetzt das… Fleischlinge, Ihr werdet BRENNEN!"
 })
 
 ----------------
@@ -76,7 +82,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!" --translate
+	EmoteSpiderlings 	= "Spinnlinge sind aus ihrem Nest aufgeschreckt worden!"
 })
 
 -------------
@@ -117,12 +123,13 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Dauer der aktiven Klinge anzeigen",
 	TimerBladeNext		= "Zeige Zeit bis nächste Klinge",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Zeige DBM-Pfeil, wenn du von $spell:99516 betroffen bist",
-	InfoFrame		= "Show info frame for Vital Spark stacks"
+	InfoFrame		= "Zeige Infofenster für Stapel von Lebensfunke"
 })
 
 L:SetMiscLocalization({
-	VitalSpark		= GetSpellInfo(99262).." stacks"
+	VitalSpark		= GetSpellInfo(99262).." Stapel"
 })
 
 
@@ -152,6 +159,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
+	warnSplittingBlow		= "%s in %s",--Spellname in Location
+	warnEngulfingFlame		= "%s in %s",--Spellname in Location
+	WarnRemainingAdds		= "Noch %d Söhne der Flamme"
 })
 
 L:SetTimerLocalization({
@@ -159,12 +169,23 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnSplittingBlow	= "Zeige Warnung für $spell:100877",
+	warnEngulfingFlame	= "Zeige Warnung für $spell:99171",
+	WarnRemainingAdds	= "Zeige verbleibende Anzahl der Söhne der Flammen",
 	TimerPhaseSons		= "Dauer der \"Söhne der Flamme Phase\" anzeigen",
-	RangeFrame		= "Zeige Abstandsfenster"
+	RangeFrame		= "Zeige Abstandsfenster",
+	InfoFrame			= "Zeige Infofenster für Ziele von $spell:99849",
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
-	TransitionEnded1	= "Enough! I will finish this.",--Translate
+	East				= "Osten",
+	West				= "Westen",
+	Middle				= "Mitte",
+	North				= "Nahkämpfer",
+	South				= "Hinten",
+	MeteorTargets		= "Meteore!",
+	TransitionEnded1	= "Genug! Ich werde dem ein Ende machen.",
 	TransitionEnded2	= "Sulfuras wird Euer Ende sein.",
 	TransitionEnded3	= "Auf die Knie, Sterbliche! Das ist das Ende.",
 	Defeat				= "Too soon! ... You have come too soon...",--Translate
@@ -177,7 +198,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("FirelandsTrash")
 
 L:SetGeneralLocalization({
-	name = "Trash der Feuerlande"
+	name = "Feuerlande Trash"
 })
 
 L:SetWarningLocalization({
@@ -187,8 +208,35 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "Zeige Abstandsfenster (10m) für $spell:100012"
+	TrashRangeFrame	= "Zeige Abstandsfenster (10) für $spell:100012"
 })
 
 L:SetMiscLocalization({
+
+})
+
+----------------
+--  Volcanus  --
+----------------
+L = DBM:GetModLocalization("Volcanus")
+
+L:SetGeneralLocalization({
+	name = "Volcanus"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	timerStaffTransition	= "Transition ends"
+})
+
+L:SetOptionLocalization({
+	timerStaffTransition	= "Show a timer for the phase transition"
+})
+
+L:SetMiscLocalization({
+	StaffEvent			= "The Branch of Nordrassil reacts violently to %S+ touch!",--Reg expression pull match
+	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
+	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
 })
