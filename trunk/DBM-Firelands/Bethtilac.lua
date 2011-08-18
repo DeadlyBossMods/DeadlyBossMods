@@ -13,7 +13,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
-	"RAID_BOSS_EMOTE"
+	"RAID_BOSS_EMOTE",
+	"UNIT_DIED"
 )
 
 local warnSmolderingDevastation		= mod:NewCountAnnounce(99052, 4)--Use count announce, cast time is pretty obvious from the bar, but it's useful to keep track how many of these have been cast.
@@ -32,6 +33,7 @@ local timerDrone					= mod:NewTimer(60, "TimerDrone", 28866)
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
 local timerEmberFlareCD				= mod:NewNextTimer(6, 98934)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
+local timerFixateCD					= mod:NewNextTimer(35, 99559)--This will become inaccurate quick with two drones up, but at that point you're probably doing something wrong anyways.
 local timerFixate					= mod:NewTargetTimer(10, 99559)
 local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod:IsHealer())
 
@@ -85,6 +87,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(99526, 99559) and args:IsDestTypePlayer() then--99526 is on player, 99559 is on drone, leaving both for now with a filter, may remove 99559 and filter later.
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
+		timerFixateCD:Start()
 		if args:IsPlayer() then
 			specWarnFixate:Show()
 			soundFixate:Play()
@@ -139,5 +142,12 @@ function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.EmoteSpiderlings then
 		self:UnscheduleMethod("repeatSpiderlings")	-- in case it is off
 		self:repeatSpiderlings()
+	end
+end
+
+
+function mod:UNIT_DIED(args)
+	if self:GetCIDFromGUID(args.destGUID) == 52581 then--Drone
+		timerFixateCD:Cancel()
 	end
 end
