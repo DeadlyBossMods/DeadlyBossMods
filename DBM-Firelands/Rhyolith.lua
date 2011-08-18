@@ -95,7 +95,11 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(98493) then
 		warnHeatedVolcano:Show()
-		timerHeatedVolcano:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerHeatedVolcano:Start()
+		else
+			timerHeatedVolcano:Start(40)--40 seconds on normal post Aug 16th 2011 hotfix.
+		end
 	elseif args:IsSpellID(97225) then
 		warnMagmaFlow:Show()
 		specWarnMagmaFlow:Show()
