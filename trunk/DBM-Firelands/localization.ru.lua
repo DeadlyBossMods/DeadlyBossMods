@@ -112,14 +112,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
+	warnStrike	= "%s (%d)"
 })
 
 L:SetTimerLocalization({
+	timerShards			= "След. %s (%d)",
 	TimerBladeActive	= "%s",
+	timerStrike			= "След. %s",
 	TimerBladeNext		= "Следующее лезвие"
 })
 
 L:SetOptionLocalization({
+	warnStrike			= "Предупреждение о лезвиях",
+	timerShards			= "Отсчет времени до следующих $spell:99259",
+	timerStrike			= "Отсчет времени между ударами лезвий",
 	TimerBladeActive	= "Отсчет времени действия активного лезвия",
 	TimerBladeNext		= "Отсчет времени до следующего лезвия",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
