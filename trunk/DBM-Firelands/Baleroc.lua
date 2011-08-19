@@ -47,6 +47,7 @@ local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
+mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 mod:AddBoolOption("SetIconOnCountdown")
 mod:AddBoolOption("SetIconOnTorment")
@@ -61,6 +62,7 @@ local shardCount = 0
 local tormentIcon = 8
 local countdownIcon = 2
 local countdownTargets = {}
+local tormented = GetSpellInfo(99404)
 
 local function showCountdownWarning()
 	warnCountdown:Show(table.concat(countdownTargets, "<, >"))
@@ -71,15 +73,13 @@ end
 local tormentDebuffFilter
 do
 	tormentDebuffFilter = function(uId)
-		if UnitDebuff(uId, 99402) then
+		if UnitDebuff(uId, tormented) then
 			return true		-- false if it works the opposite way :p
 		else
 			return false		-- true if it works the opposite way :p
 		end
 	end
 end
-
--- DBM.RangeCheck:Show(10, tormentDebuffFilter)	-- This should set the filter to the function above :)
 
 function mod:OnCombatStart(delay)
 	spellName = nil
@@ -94,6 +94,9 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerCountdownCD:Start(-delay)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5, tormentDebuffFilter)--Show only people who have tormented debuff.
+		end
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.VitalSpark)
@@ -104,6 +107,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -159,6 +165,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				timerTormented:Start()
 			end
+			if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") then
+				DBM.RangeCheck:Show(5, nil)--Show everyone, cause you're debuff person and need to stay away from people.
+			end
 		end
 	end
 end
@@ -188,6 +197,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
 		if args:IsPlayer() then
 			timerTormented:Cancel()
+			if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") then
+				DBM.RangeCheck:Show(5, tormentDebuffFilter)--Show only debuffed poeple again.
+			end
 		end
 	end
 end
