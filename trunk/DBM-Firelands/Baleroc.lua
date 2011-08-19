@@ -62,7 +62,6 @@ local shardCount = 0
 local tormentIcon = 8
 local countdownIcon = 2
 local countdownTargets = {}
-local tormented = GetSpellInfo(99404)
 
 local function showCountdownWarning()
 	warnCountdown:Show(table.concat(countdownTargets, "<, >"))
@@ -73,11 +72,7 @@ end
 local tormentDebuffFilter
 do
 	tormentDebuffFilter = function(uId)
-		if UnitDebuff(uId, tormented) then
-			return true		-- false if it works the opposite way :p
-		else
-			return false		-- true if it works the opposite way :p
-		end
+		return UnitDebuff(uId, (GetSpellInfo(99404)))	-- if it works wrong way around:  return not UnitDebuff(..)
 	end
 end
 
