@@ -68,6 +68,19 @@ local function showCountdownWarning()
 	countdownIcon = 2
 end
 
+local tormentDebuffFilter
+do
+	tormentDebuffFilter = function(uId)
+		if UnitDebuff(uId, 99402) then
+			return true		-- false if it works the opposite way :p
+		else
+			return false		-- true if it works the opposite way :p
+		end
+	end
+end
+
+-- DBM.RangeCheck:Show(10, tormentDebuffFilter)	-- This should set the filter to the function above :)
+
 function mod:OnCombatStart(delay)
 	spellName = nil
 	lastStrike = 0
