@@ -132,7 +132,8 @@ L:SetOptionLocalization({
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Mostrar flecha cuando te afecte $spell:99516 ",
-	InfoFrame		= "Mostrar información de las marcas de Chispa vital"
+	InfoFrame		= "Mostrar información de las marcas de Chispa vital",
+	RangeFrame			= "Mostrar distancia (5) para $spell:99404"
 })
 
 L:SetMiscLocalization({
