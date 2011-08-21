@@ -22,7 +22,7 @@ local specWarnBlades		= mod:NewSpecialWarningRun(96646)
 local timerBlades			= mod:NewBuffActiveTimer(11, 96646)--3sec cast + 8 sec duration
 local timerBladesCD			= mod:NewCDTimer(45, 96646)--Speculated, since log only cast it twice.
 local timerVanishCD			= mod:NewCDTimer(46.5, 96639)--Speculated, since log only cast it twice.
-local timerAmbush			= mod:NewNetTimer(2.5, 96640)--2.5 seconds after vanish.
+local timerAmbush			= mod:NewNextTimer(2.5, 96640)--2.5 seconds after vanish.
 
 local soundBlades			= mod:NewSound(96646)
 
