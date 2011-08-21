@@ -22,9 +22,13 @@ local specWarnRupture			= mod:NewSpecialWarningYou(96619)
 local specWarnRuptureNear		= mod:NewSpecialWarningClose(96619)
 
 local timerPursuit				= mod:NewBuffActiveTimer(15, 96306)
-local timerPursuitCD			= mod:NewNextTimer(45, 96306)--Assumed, it's a very short fight.
+local timerPursuitCD			= mod:NewCDTimer(45, 96306)--Assumed, it's a very short fight.
 
 local soundPursuit				= mod:NewSound(96306)
+
+function mod:OnCombatStart(delay)
+--	timerPursuitCD:Start(-delay)
+end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(96619) then
