@@ -880,7 +880,13 @@ L:SetMiscLocalization{
 -------------
 -- Gri'lek --
 -------------
-L= DBM:GetModLocalization(603)
+--L= DBM:GetModLocalization(603)
+
+L = DBM:GetModLocalization("CoMGrilek")
+
+L:SetGeneralLocalization{
+	name = "Gri'lek"
+}
 
 L:SetWarningLocalization({
 })
@@ -897,7 +903,13 @@ L:SetMiscLocalization({
 ---------------
 -- Hazza'rah --
 ---------------
-L= DBM:GetModLocalization(604)
+--L= DBM:GetModLocalization(604)
+
+L = DBM:GetModLocalization("CoMGHazzarah")
+
+L:SetGeneralLocalization{
+	name = "Hazza'rah"
+}
 
 L:SetWarningLocalization({
 })
@@ -914,7 +926,13 @@ L:SetMiscLocalization({
 --------------
 -- Renataki --
 --------------
-L= DBM:GetModLocalization(605)
+--L= DBM:GetModLocalization(605)
+
+L = DBM:GetModLocalization("CoMRenataki")
+
+L:SetGeneralLocalization{
+	name = "Renataki"
+}
 
 L:SetWarningLocalization({
 })
@@ -931,7 +949,13 @@ L:SetMiscLocalization({
 ---------------
 -- Wushoolay --
 ---------------
-L= DBM:GetModLocalization(606)
+--L= DBM:GetModLocalization(606)
+
+L = DBM:GetModLocalization("CoMWushoolay")
+
+L:SetGeneralLocalization{
+	name = "Wushoolay"
+}
 
 L:SetWarningLocalization({
 })
