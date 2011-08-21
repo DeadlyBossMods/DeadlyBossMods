@@ -100,3 +100,7 @@ ZulGurub\Mandokir.lua
 ZulGurub\Zanzil.lua
 ZulGurub\Kilnara.lua
 ZulGurub\Jindo.lua
+ZulGurub\CoMGrilek.lua
+ZulGurub\CoMHazzarah.lua
+ZulGurub\CoMRenataki.lua
+ZulGurub\CoMWushoolay.lua
