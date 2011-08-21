@@ -76,13 +76,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if uId then--May also not work right if same spellid is applied to people near the target, then will need more work.
-			local inRange = CheckInteractDistance(uId, 2)
 			local x, y = GetPlayerMapPosition(uId)
 			if x == 0 and y == 0 then
 				SetMapToCurrentZone()
 				x, y = GetPlayerMapPosition(uId)
 			end
-			if inRange then
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 6 then
 				specWarnCrystalBarrageClose:Show(args.destName)
 				if self.Options.CrystalArrow then
 					DBM.Arrow:ShowRunAway(x, y, 8, 5)

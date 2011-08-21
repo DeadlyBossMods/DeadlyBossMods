@@ -888,7 +888,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+--			"<15.7> [MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#%s is chasing Bownd.#Gri'lek###Bownd##0#0##0#4672##0#false#false", -- [94]
 L:SetMiscLocalization({
+	pursuitEmote	= "%s is chasing"
 })
 
 ---------------
