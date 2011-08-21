@@ -11,20 +11,22 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
-	"RAID_BOSS_EMOTE",
-	"UNIT_DIED"
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
+	"RAID_BOSS_EMOTE"
+--	"UNIT_DIED"
 )
 
 local warnSmolderingDevastation		= mod:NewCountAnnounce(99052, 4)--Use count announce, cast time is pretty obvious from the bar, but it's useful to keep track how many of these have been cast.
 local warnWidowKiss					= mod:NewTargetAnnounce(99476, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
-local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability according to EJ
+local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability
 
 local specWarnFixate				= mod:NewSpecialWarningYou(99559)--Does it need run away sound? icon? EJ wasn't too specific.
 local specWarnTouchWidowKiss		= mod:NewSpecialWarningYou(99476)
 local specWarnSmolderingDevastation	= mod:NewSpecialWarningSpell(99052)
+local specWarnVolatilePoison		= mod:NewSpecialWarningMove(101133)--Heroic ability
 local specWarnTouchWidowKissOther	= mod:NewSpecialWarningTarget(99476, mod:IsTank())
 
 local timerSpinners 				= mod:NewTimer(15, "TimerSpinners", 97370) -- 15secs after Smoldering cast start
@@ -33,13 +35,14 @@ local timerDrone					= mod:NewTimer(60, "TimerDrone", 28866)
 local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
 local timerEmberFlareCD				= mod:NewNextTimer(6, 98934)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
-local timerFixateCD					= mod:NewNextTimer(35, 99559)--This will become inaccurate quick with two drones up, but at that point you're probably doing something wrong anyways.
+--local timerFixateCD					= mod:NewCDTimer(35, 99559)--Prooved erratic and new logs didn't show same results as first ones so commenting out for now.
 local timerFixate					= mod:NewTargetTimer(10, 99559)
 local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod:IsHealer())
 
 local soundFixate					= mod:NewSound(99559)
 
 local smolderingCount = 0
+local lastPoison = 0
 
 mod:AddBoolOption("RangeFrame")
 
@@ -61,6 +64,7 @@ function mod:OnCombatStart(delay)
 	timerDrone:Start(45-delay)
 	self:ScheduleMethod(45-delay, "repeatDrone")
 	smolderingCount = 0
+	lastPoison = 0
 end
 
 function mod:OnCombatEnd()
@@ -87,15 +91,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(99526, 99559) and args:IsDestTypePlayer() then--99526 is on player, 99559 is on drone, leaving both for now with a filter, may remove 99559 and filter later.
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
-		timerFixateCD:Start()
+--		timerFixateCD:Start()
 		if args:IsPlayer() then
 			specWarnFixate:Show()
 			soundFixate:Play()
 		end
 	end
 end
-
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(99476, 99506) then
@@ -138,6 +140,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(99278, 101133) and args:IsPlayer() and GetTime() - lastPoison > 3 then
+		if args:IsPlayer() and GetTime() - lastflame > 3  then
+			specWarnVolatilePoison:Show()
+			lastPoison = GetTime()
+		end
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.EmoteSpiderlings then
 		self:UnscheduleMethod("repeatSpiderlings")	-- in case it is off
@@ -145,9 +157,9 @@ function mod:RAID_BOSS_EMOTE(msg)
 	end
 end
 
-
+--[[
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 52581 then--Drone
 		timerFixateCD:Cancel()
 	end
-end
+end--]]
