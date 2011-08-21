@@ -867,3 +867,74 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	Kill	= "너는 넘어서는 안 될 선을 넘었다. 진도. 감당하지도 못할 힘으로 장난을 치다니. 너는 내가 누군지 잊었느냐? 너는 내가 가진 힘을 잊었느냐?!"
 }
+
+----------------------
+-- Cache of Madness --
+----------------------
+-------------
+-- Gri'lek --
+-------------
+L= DBM:GetModLocalization(603)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+---------------
+-- Hazza'rah --
+---------------
+L= DBM:GetModLocalization(604)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+--------------
+-- Renataki --
+--------------
+L= DBM:GetModLocalization(605)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+---------------
+-- Wushoolay --
+---------------
+L= DBM:GetModLocalization(606)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
