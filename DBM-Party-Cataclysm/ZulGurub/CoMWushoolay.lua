@@ -21,7 +21,7 @@ local specWarnRush		= mod:NewSpecialWarningYou(96697)--Assumed target scanning e
 local specWarnRushNear	= mod:NewSpecialWarningClose(96697)--Assumed target scanning even works here, if it doesn't mod will be broken.
 local specWarnCloud		= mod:NewSpecialWarningMove(96711)
 
-local timerRushCD		= mod:NewNetTimer(25, 96697)
+local timerRushCD		= mod:NewNextTimer(25, 96697)
 
 function mod:OnCombatStart(delay)
 	timerRushCD:Start(15.5-delay)--Consistent?
