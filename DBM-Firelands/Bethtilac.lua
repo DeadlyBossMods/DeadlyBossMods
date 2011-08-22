@@ -23,7 +23,7 @@ local warnWidowKiss					= mod:NewTargetAnnounce(99476, 3, nil, mod:IsTank() or m
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
 local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability
 
-local specWarnFixate				= mod:NewSpecialWarningYou(99559)--Does it need run away sound? icon? EJ wasn't too specific.
+local specWarnFixate				= mod:NewSpecialWarningYou(99559)
 local specWarnTouchWidowKiss		= mod:NewSpecialWarningYou(99476)
 local specWarnSmolderingDevastation	= mod:NewSpecialWarningSpell(99052)
 local specWarnVolatilePoison		= mod:NewSpecialWarningMove(101133)--Heroic ability
@@ -38,8 +38,6 @@ local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 --local timerFixateCD					= mod:NewCDTimer(35, 99559)--Prooved erratic and new logs didn't show same results as first ones so commenting out for now.
 local timerFixate					= mod:NewTargetTimer(10, 99559)
 local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod:IsHealer())
-
-local soundFixate					= mod:NewSound(99559)
 
 local smolderingCount = 0
 local lastPoison = 0
@@ -94,7 +92,6 @@ function mod:SPELL_AURA_APPLIED(args)
 --		timerFixateCD:Start()
 		if args:IsPlayer() then
 			specWarnFixate:Show()
-			soundFixate:Play()
 		end
 	end
 end
