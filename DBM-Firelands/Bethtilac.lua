@@ -142,7 +142,7 @@ end
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(99278, 101133) and args:IsPlayer() and GetTime() - lastPoison > 3 then
-		if args:IsPlayer() and GetTime() - lastflame > 3  then
+		if args:IsPlayer() and GetTime() - lastPoison > 3  then
 			specWarnVolatilePoison:Show()
 			lastPoison = GetTime()
 		end
