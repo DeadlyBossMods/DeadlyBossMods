@@ -22,7 +22,7 @@ local specWarnCrystalBarrage		= mod:NewSpecialWarningYou(81634)
 local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634)
 
 local timerDampening				= mod:NewCDTimer(10, 82415)
-local timerSubmerge					= mod:NewTimer(90, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local timerSubmerge					= mod:NewTimer(80, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local timerEmerge					= mod:NewTimer(25, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 local crystalTargets = {}
@@ -36,8 +36,8 @@ local function warnCrystalTargets()
 end
 
 function mod:OnCombatStart(delay)
-	timerSubmerge:Start(31-delay)
-	self:ScheduleMethod(31-delay, "Submerge")
+	timerSubmerge:Start(30.5-delay)
+	self:ScheduleMethod(30.5-delay, "Submerge")
 	table.wipe(crystalTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
@@ -63,7 +63,7 @@ end
 function mod:Emerge()
 	warnEmerge:Show()
 	timerSubmerge:Start()
-	self:ScheduleMethod(90, "Submerge")
+	self:ScheduleMethod(80, "Submerge")
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -73,19 +73,20 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(86881, 92648) then
 		if args:IsPlayer() then
 			specWarnCrystalBarrage:Show()
-		end
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if uId then--May also not work right if same spellid is applied to people near the target, then will need more work.
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 6 then
-				specWarnCrystalBarrageClose:Show(args.destName)
-				if self.Options.CrystalArrow then
-					DBM.Arrow:ShowRunAway(x, y, 8, 5)
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then--May also not work right if same spellid is applied to people near the target, then will need more work.
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 6 then
+					specWarnCrystalBarrageClose:Show(args.destName)
+					if self.Options.CrystalArrow then
+						DBM.Arrow:ShowRunAway(x, y, 8, 5)
+					end
 				end
 			end
 		end
