@@ -10,12 +10,14 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED"
 )
 
 local warnCrystalStorm		= mod:NewSpellAnnounce(92265, 4)
 
-local specWarnEruption 		= mod:NewSpecialWarningMove(92657)
+local specWarnEruption 		= mod:NewSpecialWarningMove(92658)
 local specWarnCrystalStorm 	= mod:NewSpecialWarning("specWarnCrystalStorm")
 local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnAirphase			= mod:NewAnnounce("WarnAirphase", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
@@ -45,11 +47,12 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(80800, 92657) and args:IsPlayer() and GetTime() - spamEruption > 5 then
+	if args:IsSpellID(80800, 80801, 92657, 92658) and args:IsPlayer() and GetTime() - spamEruption > 3 then
 		specWarnEruption:Show()
 		spamEruption = GetTime()
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE--Because we still want people to move out of stuff before they eat up an entire PWS in it.
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(92265) then
