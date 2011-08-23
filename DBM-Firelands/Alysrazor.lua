@@ -14,6 +14,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
@@ -28,6 +29,7 @@ local warnFirestorm		= mod:NewSpellAnnounce(100744, 4)
 local warnCataclysm		= mod:NewCastAnnounce(102111, 3)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3, "Interface\\Icons\\Spell_Nature_WispSplode")
 local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3, 61131)
+local warnBlazingClaw	= mod:NewCountAnnounce(101731, 3)
 
 local specWarnFirestorm			= mod:NewSpecialWarningSpell(100744, nil, nil, nil, true)
 local specWarnFieroblast		= mod:NewSpecialWarningInterrupt(101223)
@@ -47,13 +49,16 @@ local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
 local timerWingsofFlame		= mod:NewBuffActiveTimer(20, 98619)
 local timerTantrum			= mod:NewBuffActiveTimer(10, 99362, nil, mod:IsTank())
 local timerSatiated			= mod:NewBuffActiveTimer(15, 100852, nil, mod:IsTank())
+local timerBlazingClaw		= mod:NewTargetTimer(15, 101731, nil, false)
 
 local FirestormCountdown	= mod:NewCountdown(83, 100744)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
 local initiatesSpawned = 0
-local CataCast = 0
+local cataCast = 0
+local clawCast = 0
+local spamClaw = 0
 
 local initiateSpawns = {
 	[1] = L.Both,
@@ -82,7 +87,9 @@ function mod:OnCombatStart(delay)
 	end
 	timerNextInitiate:Start(27-delay, L.Both)--First one is same on both difficulties.
 	initiatesSpawned = 0
-	CataCast = 0
+	cataCast = 0
+	clawCast = 0
+	spamClaw = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PowerLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
@@ -114,6 +121,28 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase:Show(3)
 	elseif args:IsSpellID(98619) and args:IsPlayer() then
 		timerWingsofFlame:Start()
+	elseif args:IsSpellID(101731) then
+		timerBlazingClaw:Start(args.destName)
+		if GetTime() - spamClaw > 1 then--Prevent count from increasing from more then 1 target being hit by it at same time (ie someone is in wrong place)
+			spamClaw = GetTime()
+			clawCast = clawCast + 1
+			if clawCast % 3 == 0 then--Warn every 3
+				warnBlazingClaw:Show(clawCast)--We warn for cast count not spell aura applied count, cause there could be two diff people with two diff stack counts
+			end
+		end
+	end
+end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(101731) then
+		timerBlazingClaw:Start(args.destName)
+		if GetTime() - spamClaw > 1 then
+			spamClaw = GetTime()
+			clawCast = clawCast + 1
+			if clawCast % 3 == 0 then--Warn every 3
+				warnBlazingClaw:Show(clawCast)
+			end
+		end
 	end
 end
 
@@ -132,7 +161,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(100744) then--Firestorm removed from boss. No reason for a heroic check here, this shouldn't happen on normal.
 		timerHatchEggs:Start(16)
-		if CataCast < 3 then
+		if cataCast < 3 then
 			timerCataclysmCD:Start(10)--10 seconds after first firestorm ends
 		else
 			timerCataclysmCD:Start(20)--20 seconds after second one ends. (or so i thought, my new logs show only 4 cataclysms not 5. wtf. I hate inconsistencies
@@ -143,6 +172,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTantrum:Cancel()
 	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then--^^ Same as above only with diff spell
 		timerSatiated:Cancel()
+	elseif args:IsSpellID(101731) then
+		timerBlazingClaw:Cancel(args.destName)
 	end
 end
 
@@ -152,16 +183,16 @@ function mod:SPELL_CAST_START(args)
 			specWarnFieroblast:Show()
 		end
 	elseif args:IsSpellID(102111, 100761) then
-		CataCast = CataCast + 1
+		cataCast = cataCast + 1
 		warnCataclysm:Show()
 		timerCataclysm:Start()
-		if CataCast == 1 or CataCast == 3 then--Cataclysm is cast 5 times, but there is a firestorm in middle them affecting CD on 2nd and 4th, so you only want to start 30 sec bar after first and third
+		if cataCast == 1 or cataCast == 3 then--Cataclysm is cast 5 times, but there is a firestorm in middle them affecting CD on 2nd and 4th, so you only want to start 30 sec bar after first and third
 			timerCataclysmCD:Start()
 		end
 	elseif args:IsSpellID(100744) then
 		warnFirestorm:Show()
 		specWarnFirestorm:Show()
-		if CataCast < 3 then--Firestorm is only cast 2 times per phase. This essencially makes cd bar only start once.
+		if cataCast < 3 then--Firestorm is only cast 2 times per phase. This essencially makes cd bar only start once.
 			timerFirestormCD:Start()
 			FirestormCountdown:Start(83)--Perhaps some tuning.
 			warnFirestormSoon:Cancel()--Just in case it's wrong. WoL may not be perfect, i'll have full transcriptor logs soon.
@@ -173,11 +204,9 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(99464, 100698, 100836, 100837) then	--99464, 100698 confirmed
-		if self:IsDifficulty("normal10", "normal25") then--She does this during firestorm on heroic. So only warn for one of them.
-			warnMolting:Show()
-			timerMoltingCD:Start()
-		end
+	if args:IsSpellID(99464, 100698) then--Do not add heroic spellID for this.
+		warnMolting:Show()
+		timerMoltingCD:Start()
 	end
 end
 
@@ -234,7 +263,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 			timerFirestormCD:Start(70)--Needs verification.
 			FirestormCountdown:Start(70)--Perhaps some tuning.
 			warnFirestormSoon:Schedule(60)--Needs verification.
-			CataCast = 0
+			cataCast = 0
+			clawCast = 0
 		else
 			timerFieryVortexCD:Start()
 			timerHatchEggs:Start(32)
