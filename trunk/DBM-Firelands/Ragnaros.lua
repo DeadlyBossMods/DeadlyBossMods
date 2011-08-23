@@ -29,6 +29,7 @@ mod:RegisterEvents(
 local warnHandRagnaros		= mod:NewSpellAnnounce(98237, 3, nil, mod:IsMelee())--Phase 1 only ability
 local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--Phase 1 only ability
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnSulfurasSmash		= mod:NewSpellAnnounce(98710, 4)--Phase 1-3 ability.
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
 local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
 local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
@@ -43,6 +44,7 @@ local warnMagmaTrap			= mod:NewTargetAnnounce(98164, 3)--Second transition adds 
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 
+local specWarnSulfurasSmash	= mod:NewSpecialWarningSpell(98710, false)
 local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
 local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
@@ -261,6 +263,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98710, 100890, 100891, 100892) then
+		warnSulfurasSmash:Show()
+		specWarnSulfurasSmash:Show()
 		if phase == 1 or phase == 3 then
 			timerSulfurasSmash:Start()--30 second cd in phase 1 and phase 3
 			if phase == 1 then
