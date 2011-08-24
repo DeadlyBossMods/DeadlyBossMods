@@ -879,7 +879,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("CoMGrilek")
 
 L:SetGeneralLocalization{
-	name = "Gri'lek"
+	name = "그리렉"
 }
 
 L:SetWarningLocalization({
@@ -902,7 +902,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CoMGHazzarah")
 
 L:SetGeneralLocalization{
-	name = "Hazza'rah"
+	name = "하자라"
 }
 
 L:SetWarningLocalization({
@@ -925,7 +925,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CoMRenataki")
 
 L:SetGeneralLocalization{
-	name = "Renataki"
+	name = "레나타키"
 }
 
 L:SetWarningLocalization({
@@ -948,7 +948,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CoMWushoolay")
 
 L:SetGeneralLocalization{
-	name = "Wushoolay"
+	name = "우슐레이"
 }
 
 L:SetWarningLocalization({
