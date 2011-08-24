@@ -132,7 +132,8 @@ L:SetOptionLocalization({
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "$spell:99516의 영향을 받은 경우 DBM 화살표 보기",
-	InfoFrame			= "생기의 불꽃 중첩 정보 프레임 보기"
+	InfoFrame			= "생기의 불꽃 중첩 정보 프레임 보기",
+	RangeFrame			= "$spell:99404의 거리 프레임 보기(5 m)"
 })
 
 L:SetMiscLocalization({
@@ -167,7 +168,7 @@ L= DBM:GetModLocalization(198)
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s (%s)",--Spellname in Location
 	warnEngulfingFlame		= "%s (%s)",--Spellname in Location
-	WarnRemainingAdds		= "남은 쫄: %d"
+	WarnRemainingAdds		= "남은 자손: %d"
 })
 
 L:SetTimerLocalization({
