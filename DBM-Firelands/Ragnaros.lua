@@ -66,7 +66,7 @@ local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molten Inferno (seeds exploding)
 local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
-local timerSplittingCast	= mod:NewCastTimer(10, 100877)--Spell is technically 8 seconds, but when cast finishes it takes 2 seconds for fireballs to spawn adds.
+local timerInvokeSons		= mod:NewCastTimer(12.5, 99014)--8 seconds for splitting blow, 4.5 additional setconds from time invoke sons and they actually go active.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 --local timerEmpoweerdSulfCD	= mod:NewCDTimer(45, 100997)--No idea what it is
 --local timerEntrapingRootsCD	= mod:NewCDTimer(45, 100646)--No idea what it is
@@ -298,7 +298,7 @@ function mod:SPELL_CAST_START(args)
 			timerPhaseSons:Start(47)--45 sec plus the 2 or so seconds he takes to actually come up and yell.
 		end
 		specWarnSplittingBlow:Show()
-		timerSplittingCast:Start()
+		timerInvokeSons:Start()
 		--Middle: 98952 (10N), 100877 (25N) (Guessed: 100878, 100879)
 		--East: 98953 (10N), 100880 (25N) (Guessed: 100881, 100882)
 		--West: 98951 (10N), 100883 (25N) (Guessed: 100884, 100885)
