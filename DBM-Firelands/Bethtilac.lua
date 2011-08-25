@@ -115,7 +115,6 @@ function mod:SPELL_CAST_START(args)
 			specWarnSmolderingDevastation:Show()
 		end
 		timerSmolderingDevastation:Start()
-		timerSpinners:Start()
 		timerEmberFlareCD:Cancel()--Cast immediately after Devastation, so don't need to really need to update timer, just cancel last one since it won't be cast during dev
 		if smolderingCount == 3 then	-- 3rd cast = start P2
 			warnPhase2Soon:Show()
@@ -125,6 +124,7 @@ function mod:SPELL_CAST_START(args)
 			timerDrone:Cancel()
 		else
 			timerSmolderingDevastationCD:Start()
+			timerSpinners:Start()
 		end
 	end
 end
