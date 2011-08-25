@@ -204,7 +204,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(99464, 100698) then--Do not add heroic spellID for this.
+	if args:IsSpellID(99464, 100698, 100836, 100837) and self:IsDifficulty("normal10", "normal25") then	--99464, 100698 confirmed
 		warnMolting:Show()
 		timerMoltingCD:Start()
 	end
