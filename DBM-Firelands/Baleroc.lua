@@ -47,7 +47,7 @@ local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
-mod:AddBoolOption("ResetShardsinThrees", false, "announce")
+mod:AddBoolOption("ResetShardsinThrees", true, "announce")
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 mod:AddBoolOption("SetIconOnCountdown")
