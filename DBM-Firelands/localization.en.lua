@@ -123,6 +123,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ResetShardsinThrees	= "Restart $spell:99259 count in sets of 3s",
 	warnStrike			= "Show warnings for Decimation/Inferno Strike",
 	timerShards			= "Show timer for next $spell:99259",
 	timerStrike			= "Show timer for next Decimation/Inferno Strike",

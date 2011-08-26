@@ -47,6 +47,7 @@ local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
+mod:AddBoolOption("ResetShardsinThrees", false, "announce")
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 mod:AddBoolOption("SetIconOnCountdown")
@@ -257,7 +258,12 @@ function mod:SPELL_CAST_START(args)
 		tormentIcon = 8
 		warnShardsTorment:Show(shardCount)
 		specWarnShardsTorment:Schedule(1.5)
-		timerShardsTorment:Start(34, args.spellName, shardCount+1)
 		ShardsCountown:Start(34)
+		if self.Options.ResetShardsinThrees and shardCount == 3 then
+			shardCount = 0
+			timerShardsTorment:Start(34, args.spellName, 1)
+		else
+			timerShardsTorment:Start(34, args.spellName, shardCount+1)
+		end
 	end
 end
