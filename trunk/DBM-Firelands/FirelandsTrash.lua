@@ -88,7 +88,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnFieroblast:Show()
 		end
 	elseif args:IsSpellID(99629) then--Druid of the Flame Leaping
-		self:ScheduleMethod(0.2, "LeapTarget", args.sourceGUID)
+		self:ScheduleMethod(0.3, "LeapTarget", args.sourceGUID)
 	elseif args:IsSpellID(99503) then
 		warnRaiselava:Show()
 		timerRaiseLavaCD:Start()
