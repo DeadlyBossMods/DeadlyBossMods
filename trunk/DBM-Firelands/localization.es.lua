@@ -124,6 +124,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ResetShardsinThrees	= "Reiniciar contador de $spell:99259 en series de 3s",
 	warnStrike			= "Mostrar avisos para Hoja de Infierno/Exterminadora",
 	timerShards			= "Mostrar tiempo para siguiente $spell:99259",
 	timerStrike			= "Mostrar tiempo para la siguiente Hoja de Infierno/Exterminadora",
@@ -242,7 +243,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "The Branch of Nordrassil reacts violently",--translate
-	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--translate
-	StaffTransition		= "The fires consuming the Tormented Protector wink out!"--translate
+	StaffEvent			= "La rama de Nordrassil reacciona de forma violenta",
+	StaffTrees			= "¡Antárboles ardientes emergen del suelo para ayudar al protector!",
+	StaffTransition		= "¡Las llamas que consumen al protector atormentado se extinguen!"
 })
