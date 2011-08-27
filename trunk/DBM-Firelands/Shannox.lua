@@ -116,7 +116,7 @@ function mod:TrapHandler(SpellID, isTank)
 		local targetname = UnitName("boss1target")
 		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target.
 			if trapScansDone < 12 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.025, "TrapHandler", SpellID)--Check multiple times to be sure it's not on something other then tank.
+				self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check multiple times to be sure it's not on something other then tank.
 			else
 				self:TrapHandler(SpellID, true)--It's still on tank, force true isTank and activate else rule and warn trap is on tank.
 			end
@@ -129,8 +129,8 @@ function mod:TrapHandler(SpellID, isTank)
 			end
 		end
 	else--target was nil, lets schedule a rescan here too.
-		if trapScansDone < 14 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.025, "TrapHandler", SpellID)
+		if trapScansDone < 12 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.05, "TrapHandler", SpellID)
 		end
 	end
 end

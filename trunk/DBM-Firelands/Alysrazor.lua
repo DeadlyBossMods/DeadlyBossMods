@@ -121,7 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase:Show(3)
 	elseif args:IsSpellID(98619) and args:IsPlayer() then
 		timerWingsofFlame:Start()
-	elseif args:IsSpellID(101731) then
+	elseif args:IsSpellID(99844, 101729, 101730, 101731) then
 		timerBlazingClaw:Start(args.destName)
 		if GetTime() - spamClaw > 1 then--Prevent count from increasing from more then 1 target being hit by it at same time (ie someone is in wrong place)
 			spamClaw = GetTime()
