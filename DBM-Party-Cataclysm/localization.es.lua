@@ -968,3 +968,111 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 })
+
+--------------------
+--  World Bosses  --
+-------------------------
+-- Akma'hat --
+-------------------------
+L = DBM:GetModLocalization("Akmahat")
+
+L:SetGeneralLocalization{
+	name = "Akma'hat"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Garr --
+----------
+L = DBM:GetModLocalization("Garr")
+
+L:SetGeneralLocalization{
+	name = "Garr (Cata)"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------
+-- Julak-Doom --
+----------------
+L = DBM:GetModLocalization("JulakDoom")
+
+L:SetGeneralLocalization{
+	name = "Julak Fatalidad"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnMC	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(93621)
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Mobus --
+-----------
+L = DBM:GetModLocalization("Mobus")
+
+L:SetGeneralLocalization{
+	name = "Mobus"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Xariona --
+-----------
+L = DBM:GetModLocalization("Xariona")
+
+L:SetGeneralLocalization{
+	name = "Xariona"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
