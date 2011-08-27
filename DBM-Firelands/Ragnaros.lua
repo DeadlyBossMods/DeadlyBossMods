@@ -169,11 +169,15 @@ end
 local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
-	-- 3. anyone with 180k+ health
+	-- 3. check boss1's highest threat target
+	-- 4. anyone with 180k+ health
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
 	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
 		return true
 	end
 	if UnitHealthMax(unit) >= 180000 then return true end--Will need tuning or removal for new expansions or maybe even new tiers.
@@ -184,7 +188,8 @@ function mod:MagmaTrapTarget()
 	trapScansDone = trapScansDone + 1
 	if UnitExists("boss1target") then--Check if he actually has a target.
 		local targetname = UnitName("boss1target")
-		if UnitDetailedThreatSituation("boss1target", "boss1") or isTank(targetname) then--He's targeting his highest threat target or someone that's definitely a tank.
+		local uId = DBM:GetRaidUnitId(targetname)
+		if isTank(uId) then--He's targeting his highest threat target or someone that's definitely a tank.
 			if trapScansDone < 12 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.025, "MagmaTrapTarget")--Check again for right target, tanks don't get magma traps.
 			end
