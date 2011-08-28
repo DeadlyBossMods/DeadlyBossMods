@@ -124,7 +124,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ResetShardsinThrees	= "Reiniciar contador de $spell:99259 en series de 3s",
+	ResetShardsinThrees	= "Reiniciar contador de $spell:99259 en series de 3s(en 25)/2s(en 10)",
 	warnStrike			= "Mostrar avisos para Hoja de Infierno/Exterminadora",
 	timerShards			= "Mostrar tiempo para siguiente $spell:99259",
 	timerStrike			= "Mostrar tiempo para la siguiente Hoja de Infierno/Exterminadora",
