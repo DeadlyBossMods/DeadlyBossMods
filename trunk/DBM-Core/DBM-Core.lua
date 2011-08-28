@@ -1420,7 +1420,9 @@ do
 				"PLAYER_ENTERING_WORLD",
 				"LFG_PROPOSAL_SHOW",
 				"LFG_PROPOSAL_FAILED",
-				"LFG_UPDATE"
+				"LFG_UPDATE",
+				"UPDATE_MOUSEOVER_UNIT",
+				"PLAYER_TARGET_CHANGED"			
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
@@ -1458,6 +1460,53 @@ function DBM:LFG_UPDATE()
             DBM.Bars:CancelBar(DBM_LFG_INVITE)
         end
     end
+end
+
+--Loading routeens hacks for world bosses based on target or mouseover.
+function DBM:UPDATE_MOUSEOVER_UNIT()
+	if IsInInstance() or UnitIsDead("mouseover") then return end--If you're in an instance no reason to waste cpu. If it's dead, no reason to load a mod for it.
+	local guid = UnitGUID("mouseover")
+	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
+		local cId = tonumber(guid:sub(7, 10), 16)
+		if (cId == 17711 or cId == 18728) and not DBM:GetModByName("Doomwalker") then--Doomwalker and Kazzak
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-Outlands" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
+		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not DBM:GetModByName("Beauty") then--Akamhat, Garr, Julak, Mobus, Xariona
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-Party-Cataclysm" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
+		end
+	end
+end
+
+function DBM:PLAYER_TARGET_CHANGED()
+	if IsInInstance() or UnitIsDead("target") then return end--If you're in an instance no reason to waste cpu. If it's dead, no reason to load a mod for it.
+	local guid = UnitGUID("target")
+	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
+		local cId = tonumber(guid:sub(7, 10), 16)
+		if (cId == 17711 or cId == 18728) and not DBM:GetModByName("Doomwalker") then--Doomwalker and Kazzak
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-Outlands" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
+		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not DBM:GetModByName("Beauty") then--Akamhat, Garr, Julak, Mobus, Xariona
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-Party-Cataclysm" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
+		end
+	end
 end
 
 --------------------------------
