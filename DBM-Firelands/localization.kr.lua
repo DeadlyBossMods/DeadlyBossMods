@@ -124,7 +124,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ResetShardsinThrees	= "$spell:99259 시전을 3번 하고 난 후 경고 카운트를 1부터 재시작",
+	ResetShardsinThrees	= "$spell:99259 경고 카운트를 일정 횟수마다 재시작(10인/2회,25인/3회)",
 	warnStrike			= "지옥불/학살의 칼날에 피해를 입을 때 경고 보기",
 	timerShards			= "다음 $spell:99259 타이머 보기",
 	timerStrike			= "지옥불/학살의 칼날 공격 간격 타이머 보기",
