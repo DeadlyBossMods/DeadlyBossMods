@@ -31,7 +31,7 @@ local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnSulfurasSmash		= mod:NewSpellAnnounce(98710, 4)--Phase 1-3 ability.
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
-local warnLivingMeteor		= mod:NewSpellAnnounce(99268, 4)--Phase 3 only ability
+local warnLivingMeteor		= mod:NewCountAnnounce(99268, 4)--Phase 3 only ability
 local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
 local warnEntrappingRoots	= mod:NewSpellAnnounce(100646, 3)--Heroic phase 4 ability
 local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability
@@ -65,7 +65,7 @@ local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mo
 local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molten Inferno (seeds exploding)
-local timerLivingMeteorCD	= mod:NewCDTimer(45, 99268)
+local timerLivingMeteorCD	= mod:NewTimer(45, "timerLivingMeteor", 99268)
 local timerInvokeSons		= mod:NewCastTimer(12.5, 99014)--8 seconds for splitting blow, 4.5 additional setconds from time invoke sons and they actually go active.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 --local timerEmpoweerdSulfCD	= mod:NewCDTimer(45, 100997)--No idea what it is
@@ -150,7 +150,7 @@ local function TransitionEnded()
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
-		timerLivingMeteorCD:Start()
+		timerLivingMeteorCD:Start(45, args.spellName, 1)
 		if mod.Options.InfoFrame then--This is probably the best way to do it without spam. Does not show in combat log, only unitdebuff/unit_aura will probaby work. will have to find a way to give personal warnings without spam later.
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
 			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--Maybe need more then 6? 8 or 10 if things go real shitty heh.
@@ -378,8 +378,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		meteorSpawned = meteorSpawned + 1
 		if GetTime() - lastMeteor >= 4 then
 			lastMeteor = GetTime()
-			warnLivingMeteor:Show()
-			timerLivingMeteorCD:Start()
+			warnLivingMeteor:Show(meteorSpawned)
+			timerLivingMeteorCD:Start(45, args.spellName, meteorSpawned+1)
 		end
 	end
 end
