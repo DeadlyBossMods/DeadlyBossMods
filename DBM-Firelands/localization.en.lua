@@ -172,6 +172,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerLivingMeteor	= "Next %s (%d)",
 	TimerPhaseSons		= "Transition ends"
 })
 
@@ -179,6 +180,7 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "Show warning for $spell:100877",
 	warnEngulfingFlame	= "Show warning for $spell:99171",
 	WarnRemainingAdds	= "Show warning for how many Sons of Flame remain",
+	timerLivingMeteor	= "Show timer for next $spell:99268",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
 	InfoFrame			= "Show info frame for $spell:99849 targets",
