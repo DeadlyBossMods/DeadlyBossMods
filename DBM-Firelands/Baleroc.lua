@@ -259,7 +259,7 @@ function mod:SPELL_CAST_START(args)
 		warnShardsTorment:Show(shardCount)
 		specWarnShardsTorment:Schedule(1.5)
 		ShardsCountown:Start(34)
-		if self.Options.ResetShardsinThrees and shardCount == 3 then
+		if self.Options.ResetShardsinThrees and (self:IsDifficulty("normal25", "heroic25") and shardCount == 3 or self:IsDifficulty("normal10", "heroic10") and shardCount == 2) then
 			shardCount = 0
 			timerShardsTorment:Start(34, args.spellName, 1)
 		else
