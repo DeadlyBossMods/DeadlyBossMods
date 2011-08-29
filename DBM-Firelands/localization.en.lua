@@ -1,5 +1,48 @@
 local L
 
+-----------------
+-- Beth'tilac --
+-----------------
+L= DBM:GetModLocalization(192)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerSpinners 		= "Next Spinners",
+	TimerSpiderlings	= "Next Spiderlings",
+	TimerDrone			= "Next Drone"
+})
+
+L:SetOptionLocalization({
+	TimerSpinners		= "Show timer for next $journal:2770",
+	TimerSpiderlings	= "Show timer for next $journal:2778",
+	TimerDrone			= "Show timer for next $journal:2773",
+	RangeFrame			= "Show range frame (10)"
+})
+
+L:SetMiscLocalization({
+	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
+})
+
+-------------------
+-- Lord Rhyolith --
+-------------------
+L= DBM:GetModLocalization(193)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	yellPhase2			= "Eons I have slept undisturbed... Now this... Creatures of flesh, now you will BURN!"
+})
+
 ---------------
 -- Alysrazor --
 ---------------
@@ -40,49 +83,6 @@ L:SetMiscLocalization({
 	East			= "East",
 	West			= "West",
 	Both			= "Both"
-})
-
--------------------
--- Lord Rhyolith --
--------------------
-L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-	yellPhase2			= "Eons I have slept undisturbed... Now this... Creatures of flesh, now you will BURN!"
-})
-
------------------
--- Beth'tilac --
------------------
-L= DBM:GetModLocalization(192)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-	TimerSpinners 		= "Next Spinners",
-	TimerSpiderlings	= "Next Spiderlings",
-	TimerDrone			= "Next Drone"
-})
-
-L:SetOptionLocalization({
-	TimerSpinners		= "Show timer for next $journal:2770",
-	TimerSpiderlings	= "Show timer for next $journal:2778",
-	TimerDrone			= "Show timer for next $journal:2773",
-	RangeFrame			= "Show range frame (10)"
-})
-
-L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
 })
 
 -------------
