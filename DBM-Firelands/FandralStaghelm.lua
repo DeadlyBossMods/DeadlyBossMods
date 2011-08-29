@@ -26,7 +26,7 @@ local warnLeapingFlames			= mod:NewTargetAnnounce(100208, 3)
 local warnOrbs					= mod:NewCastAnnounce(98451, 4)
 
 local timerSearingSeed			= mod:NewBuffActiveTimer(60, 98450)
-local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)
+local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)--This one stays localized because it's 1 timer used for two abilities
 
 local yellLeapingFlames			= mod:NewYell(100208, nil, false)
 local specWarnLeapingFlamesCast	= mod:NewSpecialWarningYou(98476)--Cast on you

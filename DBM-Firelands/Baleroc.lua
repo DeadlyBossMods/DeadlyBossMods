@@ -37,7 +37,7 @@ local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() or mod:IsHealer())	-- either Decimation Blade or Inferno Blade
 local timerStrikeCD			= mod:NewTimer(5, "timerStrike", 99353, mod:IsTank() or mod:IsHealer())--5 or 2.5 sec. Variations are noted but can be auto corrected after first timer since game follows correction.
-local timerShardsTorment	= mod:NewTimer(34, "timerShards", 99259)
+local timerShardsTorment	= mod:NewNextCountTimer(34, 99259)
 local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
 local timerVitalFlame		= mod:NewBuffActiveTimer(15, 99263)
@@ -85,7 +85,7 @@ function mod:OnCombatStart(delay)
 	strikeCount = 0
 	shardCount = 0
 	timerBladeNext:Start(-delay)
---	timerShardsTorment:Start(-delay, args.spellName, 1)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
+--	timerShardsTorment:Start(-delay, GetSpellInfo(99259), 1)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then

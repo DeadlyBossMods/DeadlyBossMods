@@ -127,7 +127,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast		= "%s",
 	active		= "%s",
 	cd			= "%s CD",
+	cdcount		= "%s CD (%d)",
 	next		= "Next %s",
+	nextcount	= "Next %s (%d)",
 	achievement	= "%s",
 }
 
@@ -136,7 +138,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cast",
 	active		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r duration",
 	cd			= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
+	cdcount		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
 	next		= "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
+	nextcount	= "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement	= "Show timer for %s",
 }
 

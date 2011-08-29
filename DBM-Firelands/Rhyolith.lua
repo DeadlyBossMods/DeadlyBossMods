@@ -34,7 +34,7 @@ local warnPhase2			= mod:NewPhaseAnnounce(2, 3)
 local specWarnMagmaFlow		= mod:NewSpecialWarningSpell(97225, nil, nil, nil, true)
 local specWarnFlameStomp	= mod:NewSpecialWarningSpell(97282, false)
 
-local timerSparkCD			= mod:NewNextTimer(22.5, 98552)
+local timerSparkCD			= mod:NewNextCountTimer(22.5, 98552)
 local timerFragmentCD		= mod:NewNextTimer(22.5, 98136)
 local timerHeatedVolcano	= mod:NewNextTimer(25.5, 98493)
 local timerFlameStomp		= mod:NewNextTimer(30.5, 97282)
@@ -115,7 +115,7 @@ function mod:SPELL_SUMMON(args)
 			timerFragmentCD:Start()
 		else--Spark is next start other CD bar and reset count.
 			fragmentCount = 0
-			timerSparkCD:Start()
+			timerSparkCD:Start(22.5, GetSpellInfo(98552), sparkCount+1)
 		end
 		spamAdds = GetTime()
 	elseif args:IsSpellID(98552) then

@@ -71,14 +71,14 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerSpinners 		= "Next Spinners",
 	TimerSpiderlings	= "Next Spiderlings",
-	TimerDrone		= "Next Drone"
+	TimerDrone			= "Next Drone"
 })
 
 L:SetOptionLocalization({
 	TimerSpinners		= "Show timer for next $journal:2770",
 	TimerSpiderlings	= "Show timer for next $journal:2778",
-	TimerDrone		= "Show timer for next $journal:2773",
-	RangeFrame				= "Show range frame (10)",
+	TimerDrone			= "Show timer for next $journal:2773",
+	RangeFrame			= "Show range frame (10)"
 })
 
 L:SetMiscLocalization({
@@ -116,7 +116,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShards			= "Next %s (%d)",
 	timerStrike			= "Next %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "Next blade"
@@ -125,7 +124,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ResetShardsinThrees	= "Restart $spell:99259 count in sets of 3s(25m)/2s(10m)",
 	warnStrike			= "Show warnings for Decimation/Inferno Strike",
-	timerShards			= "Show timer for next $spell:99259",
 	timerStrike			= "Show timer for next Decimation/Inferno Strike",
 	TimerBladeActive	= "Show a duration timer for the active Blade",
 	TimerBladeNext		= "Show a next timer for Decimation/Inferno Blade",
@@ -174,7 +172,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerLivingMeteor	= "Next %s (%d)",
 	TimerPhaseSons		= "Transition ends"
 })
 
@@ -182,7 +179,6 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "Show warning for $spell:100877",
 	warnEngulfingFlame	= "Show warning for $spell:99171",
 	WarnRemainingAdds	= "Show warning for how many Sons of Flame remain",
-	timerLivingMeteor	= "Show timer for next $spell:99268",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
 	InfoFrame			= "Show info frame for $spell:99849 targets",
