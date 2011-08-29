@@ -82,7 +82,6 @@ mod:AddBoolOption("BlazingHeatIcons", true)
 mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
-local lastMeteor = 0
 local meteorSpawned = 0
 local sonsLeft = 8
 local trapScansDone = 0
@@ -213,7 +212,6 @@ function mod:OnCombatStart(delay)
 	timerMagmaTrap:Start(16-delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
-	lastMeteor = 0
 	meteorSpawned = 0
 	sonsLeft = 8
 	trapScansDone = 0
