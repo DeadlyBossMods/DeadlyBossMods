@@ -115,11 +115,13 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill (Erfolg)"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "%s CD",
-	next = "Nächster %s",
+	target		= "%s: %%s",
+	cast		= "%s",
+	active		= "%s",
+	cd			= "%s CD",
+	cdcount		= "%s CD (%d)",
+	next 		= "Nächster %s",
+	nextcount	= "Nächster %s (%d)",
 	achievement = "%s",
 }
 
@@ -128,7 +130,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast		= "Wirkzeit von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	active		= "Dauer von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	cd			= "Abklingzeit von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
+	cdcount		= "Abklingzeit von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	next		= "Zeit bis nächstes |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
+	nextcount	= "Zeit bis nächstes |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	achievement	= "Zeit für %s anzeigen",
 }
 
