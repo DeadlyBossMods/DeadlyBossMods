@@ -149,9 +149,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerNextSpecial	= "Next %s (%d)"
 })
 
 L:SetOptionLocalization({
+	timerNextSpecial			= "Show timer for next special ability",
 	RangeFrameSeeds				= "Show range frame (12) for $spell:98450",
 	RangeFrameCat				= "Show range frame (10) for $spell:98374",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
