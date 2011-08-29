@@ -26,8 +26,7 @@ local warnLeapingFlames			= mod:NewTargetAnnounce(100208, 3)
 local warnOrbs					= mod:NewCastAnnounce(98451, 4)
 
 local timerSearingSeed			= mod:NewBuffActiveTimer(60, 98450)
-local timerLeapingFlames		= mod:NewCDTimer(4, 100208)
-local timerFlameScythe			= mod:NewCDTimer(4, 98474)
+local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)
 
 local yellLeapingFlames			= mod:NewYell(100208, nil, false)
 local specWarnLeapingFlamesCast	= mod:NewSpecialWarningYou(98476)--Cast on you
@@ -95,16 +94,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(98374) then		-- Cat Form (99574? maybe the form id for druids with staff)
 		kitty = true
 		abilityCount = 0
-		timerFlameScythe:Cancel()
-		timerLeapingFlames:Start(abilityTimers[abilityCount])
+		timerNextSpecial:Cancel()
+		timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(100208), abilityCount+1)
 		if self.Options.RangeFrameCat then
 			DBM.RangeCheck:Show(10)
 		end
 	elseif args:IsSpellID(98379) then	-- Scorpion Form
 		kitty = false
 		abilityCount = 0
-		timerLeapingFlames:Cancel()
-		timerFlameScythe:Start(abilityTimers[abilityCount])
+		timerNextSpecial:Cancel()
+		timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(98474), abilityCount+1)
 		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
 			DBM.RangeCheck:Hide()
 		end
@@ -112,9 +111,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		abilityCount = (args.amount or 1)--This should change your ability account to his current stack, which is disconnect friendly.
 		warnAdrenaline:Show(args.destName, args.amount or 1)
 		if kitty then
-			timerLeapingFlames:Start(abilityTimers[abilityCount])
+			timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(100208), abilityCount+1)
 		else
-			timerFlameScythe:Start(abilityTimers[abilityCount])
+			timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(98474), abilityCount+1)
 		end
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
