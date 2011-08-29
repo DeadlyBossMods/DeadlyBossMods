@@ -127,14 +127,18 @@ DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
 DBM_CORE_AUTO_TIMER_TEXTS.cast 			= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.active 		= "%s"	
 DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "%s 쿨다운"
+DBM_CORE_AUTO_TIMER_TEXTS.cdcount		= "%s 쿨다운 (%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.next 			= "다음 %s"
+DBM_CORE_AUTO_TIMER_TEXTS.nextcount 	= "다음 %s (%d)"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "|cff71d5ff|Hspell:%d|h%s|h|r 디버프 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "|cff71d5ff|Hspell:%d|h%s|h|r 시전 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.active		= "|cff71d5ff|Hspell:%d|h%s|h|r 유지 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "|cff71d5ff|Hspell:%d|h%s|h|r 쿨다운 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdcount		= "|cff71d5ff|Hspell:%d|h%s|h|r 쿨다운 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextcount 	= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "%s 업적 타이머 보기"
 
 -- Auto-generated Warning Localizations

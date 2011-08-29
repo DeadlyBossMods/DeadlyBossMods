@@ -127,7 +127,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast = "%s",
 	active = "%s",
 	cd = "Восст. %s",
+	cdcount		= "Восст. %s (%d)",
 	next = "След. %s",
+	nextcount	= "След. %s (%d)",
 	achievement = "%s",
 }
 
@@ -136,7 +138,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast = "Отсчет времени применения заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 	active = "Отсчет времени действия |cff71d5ff|Hspell:%d|h%s|h|r",
 	cd = "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
+	cdcount = "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
 	next = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
+	nextcount = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Отсчет времени для %s",
 }
 

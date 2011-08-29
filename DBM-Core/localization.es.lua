@@ -128,7 +128,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast = "%s",
 	active = "%s",
 	cd = "%s CD",
+	cdcount		= "%s CD (%d)",
 	next = "Siguiente %s",
+	nextcount	= "Siguiente %s (%d)",
 	achievement = "%s",
 }
 
@@ -137,7 +139,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast = "Mostrar tiempo de cast de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	active = "Mostrar duración de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	cd = "Mostrar CD de |cff71d5ff|Hspell:%d|h%s|h|r ",
+	cdcount = "Mostrar CD de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	next = "Mostrar tiempo para el siguiente |cff71d5ff|Hspell:%d|h%s|h|r ",
+	nextcount = "Mostrar tiempo para el siguiente |cff71d5ff|Hspell:%d|h%s|h|r ",
 	achievement = "Mostrar tiempo para %s",
 }
 
