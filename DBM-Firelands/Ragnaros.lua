@@ -150,7 +150,7 @@ local function TransitionEnded()
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
-		timerLivingMeteorCD:Start(45, GetSpellInfo(99268), 1)
+		timerLivingMeteorCD:Start(45, 1)
 		if mod.Options.InfoFrame then--This is probably the best way to do it without spam. Does not show in combat log, only unitdebuff/unit_aura will probaby work. will have to find a way to give personal warnings without spam later.
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
 			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--Maybe need more then 6? 8 or 10 if things go real shitty heh.
@@ -379,7 +379,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if GetTime() - lastMeteor >= 4 then
 			lastMeteor = GetTime()
 			warnLivingMeteor:Show(meteorSpawned)
-			timerLivingMeteorCD:Start(45, args.spellName, meteorSpawned+1)
+			timerLivingMeteorCD:Start(45, meteorSpawned+1)
 		end
 	end
 end

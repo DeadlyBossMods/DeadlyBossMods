@@ -85,7 +85,7 @@ function mod:OnCombatStart(delay)
 	strikeCount = 0
 	shardCount = 0
 	timerBladeNext:Start(-delay)
---	timerShardsTorment:Start(-delay, GetSpellInfo(99259), 1)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
+--	timerShardsTorment:Start(-delay, 1)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -261,9 +261,9 @@ function mod:SPELL_CAST_START(args)
 		ShardsCountown:Start(34)
 		if self.Options.ResetShardsinThrees and (self:IsDifficulty("normal25", "heroic25") and shardCount == 3 or self:IsDifficulty("normal10", "heroic10") and shardCount == 2) then
 			shardCount = 0
-			timerShardsTorment:Start(34, args.spellName, 1)
+			timerShardsTorment:Start(34, 1)
 		else
-			timerShardsTorment:Start(34, args.spellName, shardCount+1)
+			timerShardsTorment:Start(34, shardCount+1)
 		end
 	end
 end
