@@ -118,7 +118,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast = "%s",
 	active = "%s",
 	cd = "CD de: %s",
+	cdcount		= "CD de: %s (%d)",
 	next = "Prochain(e) %s",
+	nextcount	= "Prochain(e) %s (%d)",
 	achievement = "%s",
 }
 
@@ -127,7 +129,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast 		= "Afficher la barre d'incantation pour: |cff71d5ff|Hspell:%d|h%s|h|r",
 	active 	= "Afficher le timer pour la fin de: |cff71d5ff|Hspell:%d|h%s|h|r",
 	cd 		= "Afficher le cooldown pour: |cff71d5ff|Hspell:%d|h%s|h|r",
+	cdcount 		= "Afficher le cooldown pour: |cff71d5ff|Hspell:%d|h%s|h|r",
 	next 		= "Afficher le timer pour le prochain: |cff71d5ff|Hspell:%d|h%s|h|r",
+	nextcount 		= "Afficher le timer pour le prochain: |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Montre le timer pour %s",
 }
 

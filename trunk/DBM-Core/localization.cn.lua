@@ -123,7 +123,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast					= "%s",
 	active					= "%s",
 	cd					= "%s 冷却",
+	cdcount				= "%s 冷却 (%d)",
 	next 					= "下一次 %s",
+	nextcount			= "下一次 %s (%d)",
 	achievement 				= "%s",
 }
 
@@ -132,7 +134,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast					= "显示|cff71d5ff|Hspell:%d|h%s|h|r施法计时",
 	active					= "显示|cff71d5ff|Hspell:%d|h%s|h|r持续计时",
 	cd					= "显示|cff71d5ff|Hspell:%d|h%s|h|r冷却计时",
+	cdcount					= "显示|cff71d5ff|Hspell:%d|h%s|h|r冷却计时",
 	next					= "显示下一次|cff71d5ff|Hspell:%d|h%s|h|r倒计时",
+	nextcount					= "显示下一次|cff71d5ff|Hspell:%d|h%s|h|r倒计时",
 	achievement				= "显示成就：%s计时",
 }
 
