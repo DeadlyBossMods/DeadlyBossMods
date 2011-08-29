@@ -123,9 +123,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast					= "%s",
 	active					= "%s",
 	cd					= "%s 冷却",
-	cdcount				= "%s 冷却 (%d)",
+	cdcount				= "%s 冷却 (%%d)",
 	next 					= "下一次 %s",
-	nextcount			= "下一次 %s (%d)",
+	nextcount			= "下一次 %s (%%d)",
 	achievement 				= "%s",
 }
 

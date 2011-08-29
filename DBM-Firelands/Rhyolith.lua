@@ -115,7 +115,7 @@ function mod:SPELL_SUMMON(args)
 			timerFragmentCD:Start()
 		else--Spark is next start other CD bar and reset count.
 			fragmentCount = 0
-			timerSparkCD:Start(22.5, GetSpellInfo(98552), sparkCount+1)
+			timerSparkCD:Start(22.5, sparkCount+1)
 		end
 		spamAdds = GetTime()
 	elseif args:IsSpellID(98552) then
