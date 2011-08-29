@@ -32,7 +32,7 @@ local specWarnTouchWidowKissOther	= mod:NewSpecialWarningTarget(99476, mod:IsTan
 local timerSpinners 				= mod:NewTimer(15, "TimerSpinners", 97370) -- 15secs after Smoldering cast start
 local timerSpiderlings				= mod:NewTimer(30, "TimerSpiderlings", 72106)
 local timerDrone					= mod:NewTimer(60, "TimerDrone", 28866)
-local timerSmolderingDevastationCD	= mod:NewNextTimer(90, 99052)
+local timerSmolderingDevastationCD	= mod:NewNextCountTimer(90, 99052)
 local timerEmberFlareCD				= mod:NewNextTimer(6, 98934)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 --local timerFixateCD					= mod:NewCDTimer(35, 99559)--Prooved erratic and new logs didn't show same results as first ones so commenting out for now.
@@ -55,7 +55,7 @@ function mod:repeatDrone()
 end
 
 function mod:OnCombatStart(delay)
-	timerSmolderingDevastationCD:Start(-delay)
+	timerSmolderingDevastationCD:Start(90-delay, GetSpellInfo(99052), 1)
 	timerSpinners:Start(12-delay)
 	timerSpiderlings:Start(12.5-delay)
 	self:ScheduleMethod(11-delay , "repeatSpiderlings")
@@ -123,7 +123,7 @@ function mod:SPELL_CAST_START(args)
 			timerSpiderlings:Cancel()
 			timerDrone:Cancel()
 		else
-			timerSmolderingDevastationCD:Start()
+			timerSmolderingDevastationCD:Start(90, args.spellName, smolderingCount+1)
 			timerSpinners:Start()
 		end
 	end

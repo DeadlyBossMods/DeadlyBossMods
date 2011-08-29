@@ -3973,9 +3973,17 @@ do
 	function bossModPrototype:NewCDTimer(...)
 		return newTimer(self, "cd", ...)
 	end
-	
+
+	function bossModPrototype:NewCDCountTimer(...)
+		return newTimer(self, "cdcount", ...)
+	end
+
 	function bossModPrototype:NewNextTimer(...)
 		return newTimer(self, "next", ...)
+	end
+	
+	function bossModPrototype:NewNextCountTimer(...)
+		return newTimer(self, "nextcount", ...)
 	end
 	
 	function bossModPrototype:NewAchievementTimer(...)
