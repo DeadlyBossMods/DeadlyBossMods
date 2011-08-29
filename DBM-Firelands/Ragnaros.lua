@@ -376,11 +376,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(99268) then
 		meteorSpawned = meteorSpawned + 1
-		if GetTime() - lastMeteor >= 4 then
-			lastMeteor = GetTime()
-			warnLivingMeteor:Show(meteorSpawned)
-			timerLivingMeteorCD:Start(45, meteorSpawned+1)
-		end
+		warnLivingMeteor:Cancel()--Unschedule the first warning in the 2 spawn sets before it goes off.
+		timerLivingMeteorCD:Cancel()--Cancel timer
+		warnLivingMeteor:Schedule(1, meteorSpawned)--Schedule with delay for the sets of 2, so we only warn once.
+		timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
 	end
 end
 
