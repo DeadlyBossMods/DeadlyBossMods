@@ -173,6 +173,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerLivingMeteor	= "다음 %s (%d)",
 	TimerPhaseSons		= "전환 단계"
 })
 
@@ -180,6 +181,7 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "$spell:100877 경고 보기",
 	warnEngulfingFlame	= "$spell:99171 경고 보기",
 	WarnRemainingAdds	= "전환 단계에서 쫄이 얼마나 남았는지에 대한 경고 보기",
+	timerLivingMeteor	= "$spell:99268 타이머 보기",
 	TimerPhaseSons		= "전환 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	InfoFrame			= "$spell:99849 대상 정보 프레임 보기",
