@@ -127,9 +127,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast		= "%s",
 	active		= "%s",
 	cd			= "%s CD",
-	cdcount		= "%s CD (%d)",
+	cdcount		= "%s CD (%%d)",
 	next		= "Next %s",
-	nextcount	= "Next %s (%d)",
+	nextcount	= "Next %s (%%d)",
 	achievement	= "%s",
 }
 

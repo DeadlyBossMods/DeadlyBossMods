@@ -55,7 +55,7 @@ function mod:repeatDrone()
 end
 
 function mod:OnCombatStart(delay)
-	timerSmolderingDevastationCD:Start(90-delay, GetSpellInfo(99052), 1)
+	timerSmolderingDevastationCD:Start(-delay, 1)
 	timerSpinners:Start(12-delay)
 	timerSpiderlings:Start(12.5-delay)
 	self:ScheduleMethod(11-delay , "repeatSpiderlings")
@@ -123,7 +123,7 @@ function mod:SPELL_CAST_START(args)
 			timerSpiderlings:Cancel()
 			timerDrone:Cancel()
 		else
-			timerSmolderingDevastationCD:Start(90, args.spellName, smolderingCount+1)
+			timerSmolderingDevastationCD:Start(90, smolderingCount+1)
 			timerSpinners:Start()
 		end
 	end
