@@ -10,21 +10,21 @@ mod:SetUsedIcons(8, 7)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED"
 )
 
-local warnShockwave			= mod:NewSpellAnnounce(93610, 3)
+local warnShockwave			= mod:NewCastAnnounce(93610, 3)
 local warnMCTargets			= mod:NewTargetAnnounce(93621, 4)
 
 local specWarnShockwave		= mod:NewSpecialWarningMove(93610, mod:IsTank())
 local specWarnBreath		= mod:NewSpecialWarningMove(93612)
 
 local timerShockwaveCD		= mod:NewNextTimer(28.5, 93610)
-local timerMCCD				= mod:NewNextTimer(40, 76189)
+local timerMCCD				= mod:NewNextTimer(40, 93621)
 
 mod:AddBoolOption("SetIconOnMC", true)
 
@@ -35,6 +35,9 @@ local lastBreath = 0
 function mod:OnCombatStart(delay)
 	table.wipe(warnMCTargets)
 	mcIcon = 8
+	lastBreath = 0
+	--timerShockwaveCD:Start(-delay)
+	--timerMCCD:Start(-delay)
 end
 
 local function showMC()
@@ -43,7 +46,7 @@ local function showMC()
 	mcIcon = 8
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
+function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93621) then
 		warnShockwave:Show()
 		specWarnShockwave:Show()
