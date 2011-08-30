@@ -30,6 +30,7 @@ local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)--This one 
 
 local yellLeapingFlames			= mod:NewYell(100208, nil, false)
 local specWarnLeapingFlamesCast	= mod:NewSpecialWarningYou(98476)--Cast on you
+local specWarnLeapingFlamesNear	= mod:NewSpecialWarningClose(98476)--Cast on you
 local specWarnLeapingFlames		= mod:NewSpecialWarningMove(100208)--Standing in circle it left behind.
 local specWarnSearingSeed		= mod:NewSpecialWarningMove(98450)
 
@@ -40,6 +41,8 @@ local soundSeed					= mod:NewSound(98450)
 mod:AddBoolOption("RangeFrameSeeds", true)
 mod:AddBoolOption("RangeFrameCat", false)--Diff options for each ability cause seeds strat is pretty universal, don't blow up raid, but leaps may or may not use a stack strategy, plus melee will never want it on by default.
 mod:AddBoolOption("IconOnLeapingFlames", false)
+mod:AddBoolOption("LeapArrow", true)
+
 
 local abilityCount = 0
 local recentlyJumped = false
@@ -75,6 +78,24 @@ function mod:LeapingFlamesTarget()
 		specWarnLeapingFlamesCast:Show()
 		yellLeapingFlames:Yell()
 		self:Schedule(4, clearLeapWarned)--So you don't get move warning too from debuff.
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 13 then
+				recentlyJumped = true--Anti Spam
+				specWarnLeapingFlamesNear:Show(targetname)
+				if self.Options.LeapArrow then
+					DBM.Arrow:ShowRunAway(x, y, 12, 5)
+				end
+				self:Schedule(2.5, clearLeapWarned)--Clear it a little faster for near warnings though, cause  you definitely don't need 4 seconds to move if it wasn't even on YOU.
+			end
+		end
 	end
 end
 
