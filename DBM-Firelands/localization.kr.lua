@@ -1,6 +1,49 @@
 ﻿if GetLocale() ~= "koKR" then return end
 local L
 
+----------------
+-- Beth'tilac --
+----------------
+L= DBM:GetModLocalization(192)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerSpinners 		= "다음 실거미",
+	TimerSpiderlings	= "다음 새끼거미",
+	TimerDrone			= "다음 수거미"
+})
+
+L:SetOptionLocalization({
+	TimerSpinners		= "다음 $journal:2770 타이머 보기",
+	TimerSpiderlings	= "다음 $journal:2778 타이머 보기",
+	TimerDrone			= "다음 $journal:2773 타이머 보기",
+	RangeFrame			= "거리 프레임 보기(10 m)"
+})
+
+L:SetMiscLocalization({
+	EmoteSpiderlings 	= "새끼거미가 둥지에서 쏟아져나옵니다!"
+})
+
+-------------------
+-- Lord Rhyolith --
+-------------------
+L= DBM:GetModLocalization(193)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	yellPhase2			= "긴 세월 내 잠을 방해한 이가 없었건만... 그래... 이 살덩어리들아. 네놈들을 불태워 주마!"
+})
+
 ---------------
 -- Alysrazor --
 ---------------
@@ -43,49 +86,6 @@ L:SetMiscLocalization({
 	Both			= "양쪽"
 })
 
--------------------
--- Lord Rhyolith --
--------------------
-L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-	yellPhase2			= "긴 세월 내 잠을 방해한 이가 없었건만... 그래... 이 살덩어리들아. 네놈들을 불태워 주마!"
-})
-
-----------------
--- Beth'tilac --
-----------------
-L= DBM:GetModLocalization(192)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-	TimerSpinners 		= "다음 실거미",
-	TimerSpiderlings	= "다음 새끼거미",
-	TimerDrone			= "다음 수거미"
-})
-
-L:SetOptionLocalization({
-	TimerSpinners		= "다음 $journal:2770 타이머 보기",
-	TimerSpiderlings	= "다음 $journal:2778 타이머 보기",
-	TimerDrone			= "다음 $journal:2773 타이머 보기",
-	RangeFrame			= "거리 프레임 보기(10 m)"
-})
-
-L:SetMiscLocalization({
-	EmoteSpiderlings 	= "새끼거미가 둥지에서 쏟아져나옵니다!"
-})
-
 -------------
 -- Shannox --
 -------------
@@ -117,7 +117,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShards			= "다음 %s (%d)",
 	timerStrike			= "다음 %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "다음 칼날 활성화"
@@ -126,7 +125,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ResetShardsinThrees	= "$spell:99259 경고 카운트를 일정 횟수마다 재시작(10인/2회,25인/3회)",
 	warnStrike			= "지옥불/학살의 칼날에 피해를 입을 때 경고 보기",
-	timerShards			= "다음 $spell:99259 타이머 보기",
 	timerStrike			= "지옥불/학살의 칼날 공격 간격 타이머 보기",
 	TimerBladeActive	= "활성화된 칼날 유지 타이머 보기",
 	TimerBladeNext		= "다음 지옥불/학살의 칼날 활성화 타이머 보기",
@@ -147,14 +145,17 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(197)
 
 L:SetWarningLocalization({
+	timerNextSpecial	= "다음 %s (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	timerNextSpecial			= "다음 특수 능력 타이머 보기",
 	RangeFrameSeeds				= "$spell:98450의 거리 프레임 보기(12 m)",
 	RangeFrameCat				= "$spell:98374의 거리 프레임 보기(10 m)",
+	LeapArrow					= "$spell:98476가 주변에 시전될 때 DBM 화살표 보기",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
@@ -173,7 +174,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerLivingMeteor	= "다음 %s (%d)",
 	TimerPhaseSons		= "전환 단계"
 })
 
@@ -181,7 +181,6 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "$spell:100877 경고 보기",
 	warnEngulfingFlame	= "$spell:99171 경고 보기",
 	WarnRemainingAdds	= "전환 단계에서 쫄이 얼마나 남았는지에 대한 경고 보기",
-	timerLivingMeteor	= "$spell:99268 타이머 보기",
 	TimerPhaseSons		= "전환 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	InfoFrame			= "$spell:99849 대상 정보 프레임 보기",
