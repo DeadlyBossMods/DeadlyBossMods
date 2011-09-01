@@ -161,7 +161,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				timerTormented:Start()
 			end
-			if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") then
+			if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") and self:IsInCombat() then
 				DBM.RangeCheck:Show(5, nil)--Show everyone, cause you're debuff person and need to stay away from people.
 			end
 		end
@@ -193,7 +193,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
 		if args:IsPlayer() then
 			timerTormented:Cancel()
-			if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") then
+			if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") and self:IsInCombat() then
 				DBM.RangeCheck:Show(5, tormentDebuffFilter)--Show only debuffed poeple again.
 			end
 		end
