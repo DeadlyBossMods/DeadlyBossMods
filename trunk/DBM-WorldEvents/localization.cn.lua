@@ -1,4 +1,7 @@
-﻿if GetLocale() ~= "zhCN" then return end
+﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
+-- Last update: 8/20/2011
+
+if GetLocale() ~= "zhCN" then return end
 
 local L
 
@@ -40,12 +43,18 @@ L:SetWarningLocalization({
 	warnHorsemanHead		= "旋风斩 - 转换目标!"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "战斗开始"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "显示战斗开始倒计时",
 	warnHorsemanSoldiers	= "为跳动的南瓜出现显示警报",
 	warnHorsemanHead		= "为旋风斩显示特别警报(第二次及最后的头颅出现)"
 })
 
 L:SetMiscLocalization({
+	HorsemanSummon			= "Horseman rise...",
 	HorsemanHead		= "过来这里，你这白痴!",
 	HorsemanSoldiers	= "士兵们起立，挺身奋战!让这个位死去的骑士得到最后的胜利!",
 	SayCombatEnd		= "我也曾面对过这样的末路。还有什么新的冒险在等着呢?"

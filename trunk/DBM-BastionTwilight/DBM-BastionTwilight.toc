@@ -5,6 +5,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0황혼의 요새|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Сумеречный бастион|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暮光堡壘|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暮光堡垒|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -17,6 +18,7 @@
 ## X-DBM-Mod-Name-koKR: 황혼의 요새
 ## X-DBM-Mod-Name-ruRU: Сумеречный бастион
 ## X-DBM-Mod-Name-zhTW: 暮光堡壘
+## X-DBM-Mod-Name-zhCN: 暮光堡垒
 ## X-DBM-Mod-Sort: 103
 ## X-DBM-Mod-LoadZoneID: 758
 localization.en.lua
@@ -26,6 +28,7 @@ localization.fr.lua
 localization.kr.lua
 localization.ru.lua
 localization.tw.lua
+localization.cn.lua
 MapSizes.lua
 HalfusWyrmbreaker.lua
 ValionaTheralion.lua

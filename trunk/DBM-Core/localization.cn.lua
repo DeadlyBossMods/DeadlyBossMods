@@ -1,9 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu/yleaf(yaroot@gmail.com)
--- http://wow.gamespot.com.cn
--- Last Update: 12/13/2008
-
--- yleaf (yaroot@gmail.com) 9-19-2009
--- merge traslation by bigfoot team  - yleaf 9-10-2010
+-- Last update: 8/26/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -25,16 +21,16 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d分钟"
 DBM_CORE_TIMER_FORMAT				= "%d分%d秒"
 
 DBM_CORE_MIN						= "分"
-DBM_CORE_MIN_FMT					= "%d 分"
+DBM_CORE_MIN_FMT					= "%d分"
 DBM_CORE_SEC						= "秒"
-DBM_CORE_SEC_FMT					= "%d 秒"
+DBM_CORE_SEC_FMT					= "%d秒"
 DBM_CORE_DEAD						= "死亡"
 DBM_CORE_OK							= "确定"
 
-DBM_CORE_GENERIC_WARNING_BERSERK	= "%s%s后激怒"
-DBM_CORE_GENERIC_TIMER_BERSERK		= "激怒"
-DBM_CORE_OPTION_TIMER_BERSERK		= "显示激怒倒计时"
-DBM_CORE_OPTION_HEALTH_FRAME		= "显示首领生命值窗口"
+DBM_CORE_GENERIC_WARNING_BERSERK	= "%s%s后狂暴"
+DBM_CORE_GENERIC_TIMER_BERSERK		= "狂暴"
+DBM_CORE_OPTION_TIMER_BERSERK		= "狂暴倒计时"
+DBM_CORE_OPTION_HEALTH_FRAME		= "首领生命值窗口"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "计时条"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "警报"
@@ -50,7 +46,7 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - 版本检测"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s(r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：尚未安装DBM"
 DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用Deadly Boss Mods"
-DBM_CORE_YOUR_VERSION_OUTDATED		= "你的 Deadly Boss Mod 已经过期。请到 www.deadlybossmods.com 下载最新版本。"
+DBM_CORE_YOUR_VERSION_OUTDATED		= "你的Deadly Boss Mods已经过期。请到 www.deadlybossmods.com 下载最新版本。"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "你的Deadly Boss Mods版本已过期。\n你可以在如下地址下载到新版本%s(r%d)："
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl-C：复制下载地址到剪切板。"
@@ -78,21 +74,33 @@ DBM_CORE_RANGECHECK_SOUND_2			= "蜂鸣"
 DBM_CORE_RANGECHECK_HIDE			= "隐藏"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d码"
 DBM_CORE_RANGECHECK_LOCK			= "锁定框架"
+DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框体"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "显示雷达框体"
+DBM_CORE_RANGECHECK_OPTION_TEXT		= "显示文本框体"
+DBM_CORE_RANGECHECK_OPTION_BOTH		= "同时显示2个框体"
+DBM_CORE_RANGECHECK_OPTION_SPEED	= "更新频率 (重载界面后生效)"
+DBM_CORE_RANGECHECK_OPTION_SLOW		= "慢 (适用于低端CPU)"
+DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "中"
+DBM_CORE_RANGECHECK_OPTION_FAST		= "快 (几乎实时)"
+DBM_CORE_RANGERADAR_HEADER			= "距离雷达 (%d码)"
 
+DBM_CORE_INFOFRAME_LOCK				= "锁定框体"
 DBM_CORE_INFOFRAME_HIDE				= "隐藏"
-DBM_CORE_INFOFRAME_LOCK				= "锁定框架"
+DBM_CORE_INFOFRAME_SHOW_SELF		= "永远显示你的power"		-- Always show your own power value even if you are below the threshold
 
 DBM_LFG_INVITE						= "地下城准备确认"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"可用命令：",
 	"/dbm version：进行团队范围的DBM版本检测（也可使用：ver）",
-	"/dbm version2: 进行团队范围的DBM版本检测并密语给那些使用过期版本的玩家（也可使用：ver2）",
+--	"/dbm version2: 进行团队范围的DBM版本检测并密语给那些使用过期版本的玩家（也可使用：ver2）",
 	"/dbm unlock：显示一个可移动的计时条，可通过对它来移动所有DBM计时条的位置（也可使用：move）",
 	"/dbm timer <x> <文本>：开始一个以<文本>为名称的时间为<x>秒的倒计时",
 	"/dbm broadcast timer <x> <文本>：向团队广播一个以<文本>为名称的时间为<x>秒的倒计时（需要团队领袖或助理权限）",
 	"/dbm break <分钟>: 开始一个<分钟>时间的休息计时条。并向所有团队成员发送这个DBM休息计时条（需开启团队广播及助理权限）。",
 	"/dbm pull <秒>: 开始一个<秒>时间的开怪计时条。 并向所有团队成员发送这个DBM开怪计时条（需开启团队广播及助理权限）。",
+	"/dbm arrow: 显示DBM箭头，输入/dbm arrow查询更多信息。",
+	"/dbm lockout: 查询团队成员当前的副本锁定状态（也可使用：lockouts, ids）（需要团队领袖或助理权限）。",
 	"/dbm help：显示可用命令的说明。",
 }
 
@@ -123,28 +131,24 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast					= "%s",
 	active					= "%s",
 	cd					= "%s 冷却",
-	cdcount				= "%s 冷却 (%%d)",
 	next 					= "下一次 %s",
-	nextcount			= "下一次 %s (%%d)",
 	achievement 				= "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target					= "显示|cff71d5ff|Hspell:%d|h%s|h|rdebuff计时",
-	cast					= "显示|cff71d5ff|Hspell:%d|h%s|h|r施法计时",
-	active					= "显示|cff71d5ff|Hspell:%d|h%s|h|r持续计时",
-	cd					= "显示|cff71d5ff|Hspell:%d|h%s|h|r冷却计时",
-	cdcount					= "显示|cff71d5ff|Hspell:%d|h%s|h|r冷却计时",
-	next					= "显示下一次|cff71d5ff|Hspell:%d|h%s|h|r倒计时",
-	nextcount					= "显示下一次|cff71d5ff|Hspell:%d|h%s|h|r倒计时",
-	achievement				= "显示成就：%s计时",
+	target					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
+	cast					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r施法时间",
+	active					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
+	cd					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
+	next					= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
+	achievement				= "计时条：成就%s",
 }
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target					= "%s: >%%s<",
 	spell					= "%s",
-	cast					= "施放%s：%.1f秒",
+	cast					= "正在施放 %s：%.1f秒",
 	soon					= "即将 %s",
 	prewarn					= "%2$s后 %1$s",
 	phase					= "第%s阶段",
@@ -153,32 +157,32 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stack					= "%s: >%%s< (%%d)",
 }
 
-local prewarnOption				= "显示提前警报：|cff71d5ff|Hspell:%d|h%s|h|r"
+local prewarnOption				= "提前警报：|cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target					= "警报|cff71d5ff|Hspell:%d|h%s|h|r的目标",
-	spell					= "显示警报：|cff71d5ff|Hspell:%d|h%s|h|r",
-	cast					= "显示施法警报：|cff71d5ff|Hspell:%d|h%s|h|r",
+	target					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的目标",
+	spell					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r",
+	cast					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的施放",
 	soon					= prewarnOption,
 	prewarn					= prewarnOption,
-	phase					= "显示第%s阶段提示",
-	prephase				= "为第%s阶段显示提前警报",
-	count					= "显示警报：|cff71d5ff|Hspell:%d|h%s|h|r",
-	stack					= "警报|cff71d5ff|Hspell:%d|h%s|h|r的目标",
+	phase					= "警报：第%s阶段",
+	prephase				= "提前警报：第%s阶段",
+	count					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r",
+	stack					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的目标",
 }
 
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell					= "显示特别警报：$spell:%d",
-	dispel					= "需要驱散/偷取$spell:%d时显示特别警报",
-	interrupt				= "需要打断$spell:%d时显示特别警报",
-	you					= "当你中了$spell:%d时显示特别警报",
-	target					= "当有人中了$spell:%d时显示特别警报",
-	close					= "当你附近有人中了$spell:%d时显示特别警报",
-	move					= "当你中了$spell:%d需要躲开时显示特别警报",
-	run					= "当你中了$spell:%d需要跑开时显示特别警报",
-	cast					= "显示特别施法警报：$spell:%d",
-	stack					= "当叠加了>=%d层$spell:%d时显示特别警报"
+	spell					= "特殊警报：$spell:%d",
+	dispel					= "特殊警报：需要驱散或偷取$spell:%d",
+	interrupt				= "特殊警报：需要打断$spell:%d",
+	you					= "特殊警报：当你受到$spell:%d影响时",
+	target					= "特殊警报：当他人受到$spell:%d影响时",
+	close					= "特殊警报：当你附近有人受到$spell:%d影响时",
+	move					= "特殊警报：当你受到$spell:%d影响需要移动时",
+	run					= "特殊警报：当你受到$spell:%d影响需要立刻跑开时",
+	cast					= "特殊警报：$spell:%d的施放",
+	stack					= "特殊警报：当叠加了至少%d层$spell:%d时"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -195,10 +199,11 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "设定标记给$spell:%d的目标"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "为$spell:%d播放警报音效"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "当你中了$spell:%d时大喊"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s - 远离我"--Verify (%s is spellname)
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "为$spell:%d的目标添加团队标记"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "播放声音警报：$spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "播放声音警报：$spell:%d的冷却"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "当你受到$spell:%d影响时时大喊"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s！"--Verify (%s is spellname)
 
 
 -- New special warnings
@@ -217,3 +222,21 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow hide  隐藏箭头",
 	"/dbm arrow move  移动或锁定箭头",
 }
+
+DBM_SPEED_KILL_TIMER_TEXT	= "击杀记录"
+DBM_SPEED_KILL_TIMER_OPTION	= "计时条：最速击杀记录"
+
+
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s requested to see your current instance IDs and progress.\nDo you want to send this information to %s? He or she will be able to request this information during your current session (i. e. until you relog)."
+DBM_ERROR_NO_RAID					= "You need to be in a raid group to use this feature."
+DBM_INSTANCE_INFO_REQUESTED			= "Sent request for raid lockout information to the raid group.\nPlease note that the users will be asked for permission before sending the data to you, so it might take a minute until we get all responses."
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "Got responses from %d players of %d DBM users: %d sent data, %d denied the request. Waiting %d more seconds for responses..."
+DBM_INSTANCE_INFO_ALL_RESPONSES		= "Received responses from all raid members"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "Sender: %s ResultType: %s InstanceName: %s InstanceID: %s Difficulty: %d Size: %d Progress: %s"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), difficulty %d:"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, progress %d: %s"
+DBM_INSTANCE_INFO_STATS_DENIED		= "Denied the request: %s"
+DBM_INSTANCE_INFO_STATS_AWAY		= "Away: %s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No recent DBM version installed: %s"
+DBM_INSTANCE_INFO_RESULTS			= "Instance ID scan results. Note that instances might show up more than once if there are players with localized WoW clients in your raid."
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
