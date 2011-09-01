@@ -6,6 +6,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0검은날개 강림지|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Твердыня Крыла Тьмы|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑翼陷窟|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑翼血环|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -18,6 +19,7 @@
 ## X-DBM-Mod-Name-koKR: 검은날개 강림지
 ## X-DBM-Mod-Name-ruRU: Твердыня Крыла Тьмы
 ## X-DBM-Mod-Name-zhTW: 黑翼陷窟
+## X-DBM-Mod-Name-zhCN: 黑翼血环
 ## X-DBM-Mod-Sort: 104
 ## X-DBM-Mod-LoadZoneID: 754
 localization.en.lua
@@ -27,6 +29,7 @@ localization.fr.lua
 localization.kr.lua
 localization.ru.lua
 localization.tw.lua
+localization.cn.lua
 MapSizes.lua
 Magmaw.lua
 DarkIronGolemCouncil.lua

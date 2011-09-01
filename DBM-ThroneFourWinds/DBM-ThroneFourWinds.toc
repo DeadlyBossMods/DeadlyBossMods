@@ -6,6 +6,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0네 바람의 왕좌|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Трон Четырех Ветров|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0四風王座|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0风神王座|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -18,6 +19,7 @@
 ## X-DBM-Mod-Name-koKR: 네 바람의 왕좌
 ## X-DBM-Mod-Name-ruRU: Трон Четырех Ветров
 ## X-DBM-Mod-Name-zhTW: 四風王座
+## X-DBM-Mod-Name-zhCN: 风神王座
 ## X-DBM-Mod-Sort: 105
 ## X-DBM-Mod-LoadZoneID: 773
 localization.en.lua
@@ -27,6 +29,7 @@ localization.fr.lua
 localization.kr.lua
 localization.ru.lua
 localization.tw.lua
+localization.cn.lua
 MapSizes.lua
 Conclave.lua
 AlAkir.lua

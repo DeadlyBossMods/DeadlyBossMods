@@ -6,6 +6,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0바라딘 요새|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Крепость Барадин|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0巴拉丁堡|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0巴拉丁监狱|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -19,6 +20,7 @@
 ## X-DBM-Mod-Name-koKR: 바라딘 요새
 ## X-DBM-Mod-Name-ruRU: Крепость Барадин
 ## X-DBM-Mod-Name-zhTW: 巴拉丁堡
+## X-DBM-Mod-Name-zhCN: 巴拉丁监狱
 ## X-DBM-Mod-Sort: 102
 ## X-DBM-Mod-LoadZoneID: 752
 localization.en.lua
@@ -28,6 +30,7 @@ localization.fr.lua
 localization.kr.lua
 localization.ru.lua
 localization.tw.lua
+localization.cn.lua
 MapSizes.lua
 Argaloth.lua
 Occuthar.lua

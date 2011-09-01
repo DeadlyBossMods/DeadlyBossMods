@@ -1,4 +1,5 @@
-﻿-- yleaf(yaroot@gmail.com)
+﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
+-- Last update: 8/20/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -20,13 +21,13 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ColorByClass	= "得分板上玩家按职业着色",
 	ShowInviteTimer	= "显示加入计时",
-	AutoSpirit	= "自动释放灵魂"
+	AutoSpirit	= "自动释放灵魂",
+	HideBossEmoteFrame	= "隐藏团队首领表情框体"
 })
 
 L:SetMiscLocalization({
 	ArenaInvite	= "竞技场邀请"
 })
-
 
 --------------
 --  Arenas  --
@@ -63,11 +64,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerStart = "战斗即将开始", 
 	TimerTower = "%s",
 	TimerGY = "%s",
 })
 
+L:SetMiscLocalization({
+	BgStart60 = "奥特兰克山谷的战斗将在1分钟之后开始。",
+	BgStart30 = "奥特兰克山谷的战斗将在30秒之后开始。"
+})
+
 L:SetOptionLocalization({
+	TimerStart  = "显示开始计时",
 	TimerTower = "显示哨塔占领计时",
 	TimerGY = "显示墓地占领计时",
 	AutoTurnIn = "自动递交任务物品"
@@ -83,6 +91,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 = "阿拉希盆地的战斗将在1分钟后开始。",
+	BgStart30 = "阿拉希盆地的战斗将在30秒后开始。",
 	ScoreExpr = "(%d+)/1600",
 	Alliance = "联盟",
 	Horde = "部落",
@@ -92,10 +102,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerStart = "战斗即将开始", 
 	TimerCap = "%s",
 })
 
 L:SetOptionLocalization({
+	TimerStart  = "显示开始计时",
 	TimerWin = "显示获胜计时",
 	TimerCap = "显示占领计时",
 	ShowAbEstimatedPoints = "显示战斗结束时双方资源统计",
@@ -112,6 +124,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 = "战斗将在1分钟后开始！",
+	BgStart30 = "战斗将在30秒后开始！",
 	ZoneName = "风暴之眼",
 	ScoreExpr = "(%d+)/1600",
 	Alliance = "联盟",
@@ -125,10 +139,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerStart = "战斗即将开始", 
 	TimerFlag = "旗帜重置",
 })
 
 L:SetOptionLocalization({
+	TimerStart  = "显示开始计时",
 	TimerWin = "显示获胜计时",
 	TimerFlag = "显示旗帜重置计时",
 	ShowPointFrame = "显示旗帜携带着和获胜计时",
@@ -148,9 +164,9 @@ L:SetMiscLocalization({
 	BgStart30 = "战歌峡谷战斗将在30秒钟内开始。做好准备！",
 	Alliance = "联盟",
 	Horde = "部落",	
-	InfoErrorText = "携带旗帜者目标功能会在你脱离战斗后恢复.",
+	InfoErrorText = "携带旗帜者目标功能会在你脱离战斗后恢复。",
 	ExprFlagPickUp = "(.+)的旗帜被(.+)拔起了！",
-	ExprFlagCaptured = "(.+)夺取(.+)的旗帜！",
+	ExprFlagCaptured = "(.+)夺取了(.+)的旗帜！",
 	ExprFlagReturn = "(.+)的旗帜被(.+)还到了它的基地中！",
 	FlagAlliance = "联盟: ",
 	FlagHorde = "部落: ",
@@ -164,7 +180,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart  = "显示开始计时",
-	TimerWin = "显示获胜计时",
 	TimerFlag = "显示旗帜重置计时",
 	ShowFlagCarrier = "显示旗帜携带者",
 	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息",
@@ -213,6 +228,41 @@ L:SetMiscLocalization({
 	GoblinBrokenHorde		= "又坏掉了吗?!让我来修理吧…但别指望产品的保固会帮你支付这一切。"
 })
 
+------------------
+--  Twin Peaks  --
+------------------
+L = DBM:GetModLocalization("TwinPeaks")
+
+L:SetGeneralLocalization({
+	name = "双子峰"
+})
+
+L:SetMiscLocalization({
+	BgStart60 			= "The battle begins in 1 minute.",
+	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
+	ZoneName 			= "双子峰",
+	Alliance 			= "联盟",
+	Horde 				= "部落",	
+	InfoErrorText		= "携带旗帜者目标功能会在你脱离战斗后恢复。",
+	ExprFlagPickUp = "(.+)的旗帜被(.+)拔起了！",
+	ExprFlagCaptured = "(.+)夺取了(.+)的旗帜！",
+	ExprFlagReturn = "(.+)的旗帜被(.+)还到了它的基地中！",
+	FlagAlliance = "联盟: ",
+	FlagHorde = "部落: ",
+	FlagBase = "基地",
+})
+
+L:SetTimerLocalization({
+	TimerStart = "战斗即将开始", 
+	TimerFlag = "旗帜重置",
+})
+
+L:SetOptionLocalization({
+	TimerStart  = "显示开始计时",
+	TimerFlag = "显示旗帜重置计时",
+	ShowFlagCarrier = "显示旗帜携带者",
+	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息",
+})
 
 --------------------------
 --  Battle for Gilneas  --
@@ -220,10 +270,12 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
-	name = "Battle for Gilneas"	-- translate
+	name = "吉尔尼斯之战"	-- translate
 })
 
 L:SetMiscLocalization({
+	BgStart60 = "阿拉希盆地的战斗将在1分钟后开始。",
+	BgStart30 = "阿拉希盆地的战斗将在30秒后开始。",
 	ScoreExpr = "(%d+)/2000",
 	Alliance = "联盟",
 	Horde = "部落",
@@ -233,10 +285,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerStart = "战斗即将开始", 
 	TimerCap = "%s",
 })
 
 L:SetOptionLocalization({
+	TimerStart  = "显示开始计时",
 	TimerWin = "显示获胜计时",
 	TimerCap = "显示占领计时",
 	ShowGilneasEstimatedPoints = "显示战斗结束时双方资源统计",
