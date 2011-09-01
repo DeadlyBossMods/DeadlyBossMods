@@ -1,8 +1,5 @@
-﻿-- Simplified Chinese by Diablohu
--- http://wow.gamespot.com.cn
--- Last Update: 12/13/2008
-
--- yleaf (yaroot@gmail.com) 9-19-2009
+﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
+-- Last update: 8/20/2011
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -49,6 +46,8 @@ L.Statistic_Kills	= "击杀："
 L.Statistic_Wipes	= "失败："
 L.Statistic_BestKill	= "最好成绩："
 L.Statistic_Heroic	= "英雄模式"
+L.Statistic_10Man			= "10人"
+L.Statistic_25Man			= "25人"
 
 -- Tab: General Options
 L.General 		= "DBM综合设置"
@@ -56,8 +55,15 @@ L.EnableDBM 		= "启用DBM"
 L.EnableStatus 		= "回复“status”密语"
 L.AutoRespond 		= "开启战斗中自动密语回复"
 L.EnableMiniMapIcon	= "显示小地图图标"
-L.FixCLEUOnCombatStart			= "开怪时清除战斗记录的缓存"
+L.UseMasterVolume			= "使用游戏总声道播放音频"
+L.SKT_Enabled				= "永远显示击杀速度计时（无论该首领的相关设置如何）"
 L.Latency_Text				= "设定启用同步功能的最高延迟阀值：%d"
+
+L.ModelOptions				= "3D模型选项"
+L.EnableModels				= "在首领选项中启用3D模型"
+L.ModelSoundOptions			= "为模型查看器设置声音选项"
+L.ModelSoundShort			= "短"
+L.ModelSoundLong			= "长"
 
 L.Button_RangeFrame	= "显示/隐藏距离监视器"
 L.Button_TestBars	= "测试计时条"
@@ -88,7 +94,9 @@ L.WarningIconRight 	= "右侧显示图标"
 L.RaidWarnMessage 	= "感谢您使用Deadly Boss Mods"
 L.BarWhileMove 		= "团队警报可以移动"
 L.RaidWarnSound		= "发出团队警报时播放声音"
-L.SpecialWarnSound	= "发出特殊警报时播放声音"
+L.CountdownVoice			= "倒数时播放声音"
+L.SpecialWarnSound	= "针对你或你的角色发出特殊警报时播放声音"
+L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放声音"
 
 -- Tab: Barsetup
 L.BarSetup   = "计时条样式"
@@ -115,6 +123,7 @@ L.ClickThrough		= "禁用鼠标点击事件 (允许你点击计时条)"
 L.Panel_SpecWarnFrame		= "特殊警报"
 L.Area_SpecWarn				= "特殊警报设置"
 L.SpecWarn_Enabled			= "显示首领技能特殊警报"
+L.SpecWarn_LHFrame			= "特殊警报时屏幕边缘泛光"
 L.SpecWarn_Font				= "特殊警报字体"
 L.SpecWarn_DemoButton		= "测试警报"
 L.SpecWarn_MoveMe			= "设置位置"
