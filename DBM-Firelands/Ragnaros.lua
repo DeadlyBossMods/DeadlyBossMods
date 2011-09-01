@@ -32,10 +32,10 @@ local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mo
 local warnSulfurasSmash		= mod:NewSpellAnnounce(98710, 4)--Phase 1-3 ability.
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
 local warnLivingMeteor		= mod:NewCountAnnounce(99268, 4)--Phase 3 only ability
-local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
+local warnBreadthofFrost	= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
+local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability (only casts this once, doesn't seem to need a timer)
 local warnEntrappingRoots	= mod:NewSpellAnnounce(100646, 3)--Heroic phase 4 ability
-local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability
-local warnBreathofFrost		= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
+local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnSonsLeft			= mod:NewAnnounce("WarnRemainingAdds", 2, 99014)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
@@ -66,12 +66,11 @@ local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molten Inferno (seeds exploding)
 local timerLivingMeteorCD	= mod:NewNextCountTimer(45, 99268)
-local timerInvokeSons		= mod:NewCastTimer(12.5, 99014)--8 seconds for splitting blow, 4.5 additional setconds from time invoke sons and they actually go active.
+local timerInvokeSons		= mod:NewCastTimer(15, 99014)--8 seconds for splitting blow, 7? additional setconds from time invoke sons and they actually go active.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
---local timerEmpoweerdSulfCD	= mod:NewCDTimer(45, 100997)--No idea what it is
---local timerEntrapingRootsCD	= mod:NewCDTimer(45, 100646)--No idea what it is
---local timerCloudBurstCD		= mod:NewCDTimer(45, 100714)--No idea what it is
---local timerBreathofFrostCD	= mod:NewCDTimer(45, 100479)--No idea what it is
+local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)--No idea what it is
+local timerEntrapingRootsCD	= mod:NewCDTimer(56, 100646)--Always cast before empowered sulf, varies between 3 sec before and like 11 sec before.
+local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)--No idea what it is
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -158,10 +157,9 @@ local function TransitionEnded()
 	elseif phase == 4 then
 		timerLivingMeteorCD:Cancel()
 		--Start other timers here later for heroic stuffs!
-		--timerEmpoweerdSulfCD:Start()
+		--timerEmpoweredSulfCD:Start()
 		--timerEntrapingRootsCD:Start()
-		--timerCloudBurstCD:Start()
-		--timerBreathofFrostCD:Start()
+		--timerBreadthofFrostCD:Start()
 		showRangeFrame()
 	end
 end
@@ -255,6 +253,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerFlamesCD:Start()--40 second CD in phase 2
 		end
+	elseif args:IsSpellID(100997) then
+		warnEmpoweredSulf:Show()
+		specWarnEmpoweredSulf:Show()
+		timerEmpoweredSulfCD:Start()
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -332,19 +334,12 @@ function mod:SPELL_CAST_START(args)
 		elseif args:IsSpellID(99236, 100181) then--South
 			warnEngulfingFlame:Show(args.spellName, L.South)
 		end
-	elseif args:IsSpellID(100997) then
-		warnEmpoweredSulf:Show()
-		specWarnEmpoweredSulf:Show()
-		--timerEmpoweerdSulfCD:Start()
 	elseif args:IsSpellID(100646) then
 		warnEntrappingRoots:Show()
-		--timerEntrapingRootsCD:Start()
-	elseif args:IsSpellID(100714) then
-		warnCloudBurst:Show()
-		--timerCloudBurstCD:Start()
+		timerEntrapingRootsCD:Start()
 	elseif args:IsSpellID(100479) then
-		warnBreathofFrost:Show()
-		--timerBreathofFrostCD:Start()
+		warnBreadthofFrost:Show()
+		timerBreadthofFrostCD:Start()
 	end
 end
 
@@ -379,6 +374,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLivingMeteorCD:Cancel()--Cancel timer
 		warnLivingMeteor:Schedule(1, meteorSpawned)--Schedule with delay for the sets of 2, so we only warn once.
 		timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
+	elseif args:IsSpellID(100714) then
+		warnCloudBurst:Show()
 	end
 end
 
