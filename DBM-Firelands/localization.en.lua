@@ -182,6 +182,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Show warning for how many Sons of Flame remain",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
+	InfoHealthFrame		= "Show info frame for health (<80k hp)",
 	InfoFrame			= "Show info frame for $spell:99849 targets",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
@@ -192,6 +193,7 @@ L:SetMiscLocalization({
 	Middle				= "Middle",
 	North				= "Melee",
 	South				= "Back",
+	HealthInfo			= "Health Info",
 	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
 	TransitionEnded2	= "Sulfuras will be your end.",
@@ -220,7 +222,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-
 })
 
 ----------------
