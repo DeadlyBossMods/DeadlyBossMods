@@ -66,11 +66,13 @@ local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds from last seed going off, but 63 from first.
 local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molten Inferno (seeds exploding)
 local timerLivingMeteorCD	= mod:NewNextCountTimer(45, 99268)
-local timerInvokeSons		= mod:NewCastTimer(15, 99014)--8 seconds for splitting blow, 7? additional setconds from time invoke sons and they actually go active.
+local timerInvokeSons		= mod:NewCastTimer(16.5, 99014)--8 seconds for splitting blow, 7? additional setconds from time invoke sons and they actually go active.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)--No idea what it is
 local timerEntrapingRootsCD	= mod:NewCDTimer(56, 100646)--Always cast before empowered sulf, varies between 3 sec before and like 11 sec before.
 local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)--No idea what it is
+
+local SeedsCountdown		= mod:NewCountdown(60, 98520)
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -130,6 +132,7 @@ local function warnSeeds(first)
 	specWarnMoltenSeed:Show()
 	timerMoltenInferno:Start()
 	timerMoltenSeedCD:Start()
+	SeedsCountdown:Start(60)
 end
 
 
@@ -291,9 +294,11 @@ function mod:SPELL_CAST_START(args)
 				if self:IsDifficulty("heroic10", "heroic25") then
 					self:Schedule(9, warnSeeds, true)--Schedule the warnings here for more accuracy
 					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+					SeedsCountdown:Start(9)
 				else
 					self:Schedule(6.5, warnSeeds, true)
 					timerMoltenSeedCD:Update(15.5, 22)
+					SeedsCountdown:Start(6.5)
 				end
 			end
 		end
