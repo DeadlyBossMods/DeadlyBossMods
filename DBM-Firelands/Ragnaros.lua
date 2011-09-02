@@ -236,7 +236,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoHealthFrame then
 		DBM.InfoFrame:SetHeader(L.HealthInfo)
-		DBM.InfoFrame:Show(5, "health", 80000)
+		DBM.InfoFrame:Show(5, "health", 90000)
 	end
 end
 
