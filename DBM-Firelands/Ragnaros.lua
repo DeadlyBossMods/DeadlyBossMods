@@ -60,7 +60,7 @@ local specWarnEmpoweredSulf	= mod:NewSpecialWarningSpell(100997, mod:IsTank())--
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
 local timerSulfurasSmash	= mod:NewCDTimer(30, 98710)		-- might even be a "next" timer
 local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might even be a "next" timer
-local timerWrathRagnaros	= mod:NewCDTimer(12, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
+local timerWrathRagnaros	= mod:NewCDTimer(30, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
 local timerFlamesCD			= mod:NewCDTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds from last seed going off, but 63 from first.
@@ -106,9 +106,9 @@ local function showRangeFrame()
 		elseif phase == 2 then
 			DBM.RangeCheck:Show(6)--For seeds
 		elseif phase == 3 then
-			DBM.RangeCheck:Show(5)--For meteors
+			DBM.RangeCheck:Show(5)--For meteors (honestly i still cannot fathom why this is useful still. the idea for meteors is to stack up not spread out, unless you're kiting it.
 		elseif phase == 4 then
-			DBM.RangeCheck:Show(6)
+			DBM.RangeCheck:Show(6)--maybe useful for setting up your triforce but i'm not entirely sure we need a range frame in phase 4 either.
 		end
 	end
 end
@@ -215,7 +215,9 @@ end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
+	timerWrathRagnaros:Start(6-delay)--People complained about not having this timer, even though it's practically cast on the pull, so here it is.
 	timerMagmaTrap:Start(16-delay)
+	timerHandRagnaros:Start(-delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
 	meteorSpawned = 0
@@ -244,7 +246,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.InfoFrame then
+	if self.Options.InfoFrame or self.Options.InfoHealthFrame then
 		DBM.InfoFrame:Hide()
 	end
 end
@@ -285,7 +287,7 @@ function mod:SPELL_CAST_START(args)
 		if phase == 1 or phase == 3 then
 			timerSulfurasSmash:Start()--30 second cd in phase 1 and phase 3
 			if phase == 1 then
-				timerWrathRagnaros:Start()
+				timerWrathRagnaros:Update(18, 30)--This is most accurate place to put it so we use auto correction here.
 			end
 		else
 			timerSulfurasSmash:Start(40)--40 seconds in phase 2
@@ -367,6 +369,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
+		timerWrathRagnaros:Start()--Start a timer here for most visability, all but one started from here will be accurate. the one that isn't will be fixed by smash update function.
 	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat, drycoded.
 		warnBlazingHeat:Show(args.destName)
 		if args:IsPlayer() then
