@@ -79,6 +79,7 @@ local soundMeteor			= mod:NewSound(99849)
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
+mod:AddBoolOption("InfoHealthFrame", false)
 mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
@@ -144,6 +145,9 @@ local function TransitionEnded()
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
+		if mod.Options.InfoHealthFrame then
+			DBM.InfoFrame:Hide()
+		end
 	elseif phase == 3 and not phase3Started then
 		phase3Started = true
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
@@ -226,6 +230,10 @@ function mod:OnCombatStart(delay)
 	showRangeFrame()
 	if self:IsDifficulty("normal10", "normal25") then--register alternate kill detection, he only dies on heroic.
 		self:RegisterKill("yell", L.Defeat)
+	end
+	if self.Options.InfoHealthFrame then
+		DBM.InfoFrame:SetHeader(L.HealthInfo)
+		DBM.InfoFrame:Show(5, "health", 80000)
 	end
 end
 
