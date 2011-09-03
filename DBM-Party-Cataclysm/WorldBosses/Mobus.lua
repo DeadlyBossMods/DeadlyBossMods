@@ -13,6 +13,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
+local warnAlgae				= mod:NewTargetAnnounce(93491, 2, nil, false)--Cast very frequently, spammy so off by default
 local warnRam				= mod:NewCastAnnounce(93492, 3)
 local warnWake				= mod:NewCastAnnounce(93494, 2)
 
@@ -20,11 +21,20 @@ local specWarnRam			= mod:NewSpecialWarningMove(93492, mod:IsTank())
 local specWarnWake			= mod:NewSpecialWarningMove(93494, mod:IsMelee() and not mod:IsTank())
 local specWarnAlgae			= mod:NewSpecialWarningMove(93490)
 
---local timerRamCD			= mod:NewNextTimer(28.5, 93492)
---local timerWakeCD			= mod:NewNextTimer(28.5, 93494)
+local timerRamCD			= mod:NewCDTimer(40, 93492)--40-50 second variations
+local timerWakeCD			= mod:NewCDTimer(50, 93494)--50-60 second variations
+
+function mod:AlgaeTarget()
+	local targetname = self:GetBossTarget(50009)
+	if not targetname then return end
+	warnAlgae:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnAlgae:Show()
+	end
+end
 
 function mod:OnCombatStart(delay)
-	--timerRamCD:Start(-delay)
+--	timerRamCD:Start(8-delay)--Not a large pool of logs to compare to.
 	--timerWakeCD:Start(-delay)
 end
 
@@ -32,11 +42,13 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93492) then
 		warnRam:Show()
 		specWarnRam:Show()
---		timerRamCD:Start()
+		timerRamCD:Start()
 	elseif args:IsSpellID(93494) then
 		warnWake:Show()
 		specWarnWake:Show()
---		timerRamCD:Start()
+		timerWakeCD:Start()
+	elseif args:IsSpellID(93491) then
+		self:ScheduleMethod(0.2, "AlgaeTarget")
 	end
 end
 
