@@ -134,7 +134,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(101731) then
+	if args:IsSpellID(99844, 101729, 101730, 101731) then
 		timerBlazingClaw:Start(args.destName)
 		if GetTime() - spamClaw > 1 then
 			spamClaw = GetTime()
