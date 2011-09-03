@@ -39,15 +39,15 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(93492) then
+	if args:IsSpellID(93492) and self:IsInCombat() then
 		warnRam:Show()
 		specWarnRam:Show()
 		timerRamCD:Start()
-	elseif args:IsSpellID(93494) then
+	elseif args:IsSpellID(93494) and self:IsInCombat() then
 		warnWake:Show()
 		specWarnWake:Show()
 		timerWakeCD:Start()
-	elseif args:IsSpellID(93491) then
+	elseif args:IsSpellID(93491) and self:IsInCombat() then
 		self:ScheduleMethod(0.2, "AlgaeTarget")
 	end
 end
