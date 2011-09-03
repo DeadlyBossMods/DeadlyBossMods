@@ -17,7 +17,7 @@ local warnRam				= mod:NewCastAnnounce(93492, 3)
 local warnWake				= mod:NewCastAnnounce(93494, 2)
 
 local specWarnRam			= mod:NewSpecialWarningMove(93492, mod:IsTank())
-local specWarnWake			= mod:NewSpecialWarningMove(93494, mod:IsMelee())
+local specWarnWake			= mod:NewSpecialWarningMove(93494, mod:IsMelee() and not mod:IsTank())
 local specWarnAlgae			= mod:NewSpecialWarningMove(93490)
 
 --local timerRamCD			= mod:NewNextTimer(28.5, 93492)
