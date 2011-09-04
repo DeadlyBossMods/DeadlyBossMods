@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(50061)
 mod:SetModelID(32229)
+mod:SetZone(640)--Deepholm
 
 mod:RegisterCombat("combat")
 
