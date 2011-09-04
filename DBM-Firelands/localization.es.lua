@@ -1,6 +1,49 @@
 ﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 local L
 
+-----------------
+-- Beth'tilac --
+-----------------
+L= DBM:GetModLocalization(192)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerSpinners 		= "Siguientes hiladoras",
+	TimerSpiderlings	= "Siguientes arañitas",
+	TimerDrone		= "Siguiente zángano"
+})
+
+L:SetOptionLocalization({
+	TimerSpinners		= "Mostrar tiempo para siguientes $journal:2770",
+	TimerSpiderlings	= "Mostrar tiempo para siguientes $journal:2778",
+	TimerDrone		= "Mostrar tiempo para siguiente $journal:2773",
+	RangeFrame				= "Mostrar distancia (10)",
+})
+
+L:SetMiscLocalization({
+	EmoteSpiderlings 	= "¡Las arañitas emergen de su nido!"
+})
+
+-------------------
+-- Lord Rhyolith --
+-------------------
+L= DBM:GetModLocalization(193)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	yellPhase2			= "He dormido durante eones sin ser molestado... Y ahora... Seres de carne, ¡ARDERÉIS!"
+})
+
 ---------------
 -- Alysrazor --
 ---------------
@@ -43,49 +86,6 @@ L:SetMiscLocalization({
 	Both			= "Ambos"
 })
 
--------------------
--- Lord Rhyolith --
--------------------
-L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-	yellPhase2			= "He dormido durante eones sin ser molestado... Y ahora... Seres de carne, ¡ARDERÉIS!"
-})
-
------------------
--- Beth'tilac --
------------------
-L= DBM:GetModLocalization(192)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-	TimerSpinners 		= "Siguientes hiladoras",
-	TimerSpiderlings	= "Siguientes arañitas",
-	TimerDrone		= "Siguiente zángano"
-})
-
-L:SetOptionLocalization({
-	TimerSpinners		= "Mostrar tiempo para siguientes $journal:2770",
-	TimerSpiderlings	= "Mostrar tiempo para siguientes $journal:2778",
-	TimerDrone		= "Mostrar tiempo para siguiente $journal:2773",
-	RangeFrame				= "Mostrar distancia (10)",
-})
-
-L:SetMiscLocalization({
-	EmoteSpiderlings 	= "¡Las arañitas emergen de su nido!"
-})
-
 -------------
 -- Shannox --
 -------------
@@ -117,7 +117,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShards			= "Siguiente %s (%d)",
 	timerStrike			= "Siguiente %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "Siguiente Hoja"
@@ -126,7 +125,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ResetShardsinThrees	= "Reiniciar contador de $spell:99259 en series de 3s(en 25)/2s(en 10)",
 	warnStrike			= "Mostrar avisos para Hoja de Infierno/Exterminadora",
-	timerShards			= "Mostrar tiempo para siguiente $spell:99259",
 	timerStrike			= "Mostrar tiempo para la siguiente Hoja de Infierno/Exterminadora",
 	TimerBladeActive	= "Mostrar tiempo de duración de la hoja activa",
 	TimerBladeNext		= "Mostrar tiempo para la siguiente hoja",
@@ -150,11 +148,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerNextSpecial	= "Siguiente %s (%d)"
 })
 
 L:SetOptionLocalization({
+	timerNextSpecial			= "Mostrar tiempo para siguiente habilidad especial",
 	RangeFrameSeeds				= "Mostrar distancia (12) para $spell:98450",
 	RangeFrameCat				= "Mostrar distancia (10) para $spell:98374",
+	LeapArrow					= "Mostrar flecha cuando $spell:98476 está cerca de ti",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
@@ -182,6 +183,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
+	InfoHealthFrame		= "Mostrar información de vida (<90k de vida)",
 	InfoFrame			= "Mostrar información de los objetivos de $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
@@ -192,6 +194,7 @@ L:SetMiscLocalization({
 	Middle				= "Medio",
 	North				= "Melee",
 	South				= "Atrás",
+	HealthInfo			= "Info de vida",
 	MeteorTargets		= "HOYGA METEHORITOS!",
 	TransitionEnded1	= "Enough! I will finish this.",--translate
 	TransitionEnded2	= "Sulfuras will be your end.",--translate
@@ -235,11 +238,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerStaffTransition	= "Transition ends"--translate
+	timerStaffTransition	= "Fase de transición termina"
 })
 
 L:SetOptionLocalization({
-	timerStaffTransition	= "Show a timer for the phase transition"--translate
+	timerStaffTransition	= "Mostrar tiempo para la fase de transición"
 })
 
 L:SetMiscLocalization({
