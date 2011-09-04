@@ -183,6 +183,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "전환 단계에서 쫄이 얼마나 남았는지에 대한 경고 보기",
 	TimerPhaseSons		= "전환 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
+	InfoHealthFrame		= "체력 정보 프레임 보기 (9만 미만)",
 	InfoFrame			= "$spell:99849 대상 정보 프레임 보기",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
@@ -193,6 +194,7 @@ L:SetMiscLocalization({
 	Middle				= "중앙",
 	North				= "근접",
 	South				= "뒤쪽",
+	HealthInfo			= "체력 정보",
 	MeteorTargets		= "유성 조심!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "여기까지! 이제 끝내주마.",--More reliable then adds method.
 	TransitionEnded2	= "설퍼라스로 숨통을 끊어 주마.",
@@ -221,7 +223,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-
 })
 
 ----------------
