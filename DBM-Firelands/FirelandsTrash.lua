@@ -24,6 +24,7 @@ local warnEarthquake		= mod:NewSpellAnnounce(100724, 3)
 local specWarnFieroblast	= mod:NewSpecialWarningInterrupt(100094, false)
 local specWarnMoltenArmor	= mod:NewSpecialWarningStack(99532, mod:IsTank(), 4)
 local specWarnDruidLeap		= mod:NewSpecialWarningYou(99629)
+local yelldruidLeap			= mod:NewYell(99629)
 local specWarnDruidLeapNear	= mod:NewSpecialWarningClose(99629)
 local specWarnEarthQuake	= mod:NewSpecialWarningCast(100724, mod:IsRanged())
 
@@ -54,6 +55,7 @@ function mod:LeapTarget(sGUID)
 	warnDruidLeap:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnDruidLeap:Show()
+		yelldruidLeap:Yell()
 	else
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
