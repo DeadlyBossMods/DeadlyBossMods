@@ -35,7 +35,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(warnMCTargets)
 	mcIcon = 8
 	lastBreath = 0
-	--timerShockwaveCD:Start(-delay)
+	timerShockwaveCD:Start(10-delay)
 	--timerMCCD:Start(-delay)
 end
 
@@ -46,7 +46,7 @@ local function showMC()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(93621) then
+	if args:IsSpellID(93610) then
 		warnShockwave:Show()
 		specWarnShockwave:Show()
 		timerShockwaveCD:Start()
