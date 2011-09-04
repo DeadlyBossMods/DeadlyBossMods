@@ -1,6 +1,49 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 local L
 
+-----------------
+-- Beth'tilac --
+-----------------
+L= DBM:GetModLocalization(192)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerSpinners 		= "Следующие Пеплопряды-ткачи",
+	TimerSpiderlings	= "Следующие Паучата",
+	TimerDrone			= "Следующий Трутень"
+})
+
+L:SetOptionLocalization({
+	TimerSpinners		= "Отсчет времени до следующих $journal:2770",
+	TimerSpiderlings	= "Отсчет времени до следующих $journal:2778",
+	TimerDrone			= "Отсчет времени до следующего $journal:2773",
+	RangeFrame			= "Показывать окно проверки дистанции (10м)"
+})
+
+L:SetMiscLocalization({
+	EmoteSpiderlings 	= "Сверху свисают пеплопряды-ткачи!"
+})
+
+-------------------
+-- Lord Rhyolith --
+-------------------
+L= DBM:GetModLocalization(193)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	yellPhase2			= "Целую вечность я спокойно спал… Маленькие кусочки мяса… Вы СГОРИТЕ!"
+})
+
 ---------------
 -- Alysrazor --
 ---------------
@@ -43,48 +86,6 @@ L:SetMiscLocalization({
 	Both				= "обе стороны"
 })
 
--------------------
--- Lord Rhyolith --
--------------------
-L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
------------------
--- Beth'tilac --
------------------
-L= DBM:GetModLocalization(192)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-	TimerSpinners 		= "Следующие Пеплопряды-ткачи",
-	TimerSpiderlings	= "Следующие Паучата",
-	TimerDrone			= "Следующий Трутень"
-})
-
-L:SetOptionLocalization({
-	TimerSpinners		= "Отсчет времени до следующих $journal:2770",
-	TimerSpiderlings	= "Отсчет времени до следующих $journal:2778",
-	TimerDrone			= "Отсчет времени до следующего $journal:2773",
-	RangeFrame			= "Показывать окно проверки дистанции (10м)"
-})
-
-L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Сверху свисают пеплопряды-ткачи!"
-})
-
 -------------
 -- Shannox --
 -------------
@@ -116,22 +117,22 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShards			= "След. %s (%d)",
 	TimerBladeActive	= "%s",
 	timerStrike			= "След. %s",
 	TimerBladeNext		= "Следующее лезвие"
 })
 
 L:SetOptionLocalization({
+	ResetShardsinThrees	= "Отсчитывать кристаллы группами по 3(25 ппл)/2(10 ппл) в каждой",
 	warnStrike			= "Предупреждение о лезвиях",
-	timerShards			= "Отсчет времени до следующих $spell:99259",
 	timerStrike			= "Отсчет времени между ударами лезвий",
 	TimerBladeActive	= "Отсчет времени действия активного лезвия",
 	TimerBladeNext		= "Отсчет времени до следующего лезвия",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Показывать стрелку DBM, когда на вас $spell:99516",
-	InfoFrame			= "Информационное окно для стаков искр"
+	InfoFrame			= "Информационное окно для стаков искр",
+	RangeFrame			= "Показывать окно проверки дистанции (5м) для $spell:99404"
 })
 
 L:SetMiscLocalization({
@@ -147,11 +148,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerNextSpecial		= "След. %s (%d)"
 })
 
 L:SetOptionLocalization({
+	timerNextSpecial		= "Отсчет времени до следующей особой способности",
 	RangeFrameSeeds			= "Показывать окно проверки дистанции (12м) для $spell:98450",
 	RangeFrameCat			= "Показывать окно проверки дистанции (10м) для $spell:98374",
+	LeapArrow				= "Показывать стрелку DBM, когда босс приземляется около вас",
 	IconOnLeapingFlames		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
@@ -176,9 +180,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "Предупреждение для $spell:100877",
 	warnEngulfingFlame	= "Предупреждение для $spell:99171",
-	WarnRemainingAdds	= "Показывать количество оставщихся элементалей",
+	WarnRemainingAdds	= "Показывать количество оставшихся элементалей",
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции",
+	InfoHealthFrame		= "Информационное окно для игроков с низким уровнем здоровья (<90к хп)",
 	InfoFrame			= "Информационное окно для целей $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
@@ -189,6 +194,7 @@ L:SetMiscLocalization({
 	Middle				= "в центре",
 	North				= "в мили",
 	South				= "сзади",
+	HealthInfo			= "Уровень здоровья",
 	MeteorTargets		= "ОМФГ Метеоры!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "Довольно! Пора покончить с этим.",--More reliable then adds method.
 	TransitionEnded2	= "Сульфурас уничтожит вас!",--More reliable then adds method.
