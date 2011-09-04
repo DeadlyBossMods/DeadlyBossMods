@@ -878,7 +878,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("CoMGrilek")
 
 L:SetGeneralLocalization{
-	name = "Gri'lek"
+	name = "Гри'лек"
 }
 
 L:SetWarningLocalization({
@@ -890,7 +890,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+--			"<15.7> [MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#%s is chasing Bownd.#Gri'lek###Bownd##0#0##0#4672##0#false#false", -- [94]
 L:SetMiscLocalization({
+	pursuitEmote	= "%s преследует" --need check
 })
 
 ---------------
@@ -901,7 +903,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CoMGHazzarah")
 
 L:SetGeneralLocalization{
-	name = "Hazza'rah"
+	name = "Хазза'рах"
 }
 
 L:SetWarningLocalization({
@@ -924,7 +926,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CoMRenataki")
 
 L:SetGeneralLocalization{
-	name = "Renataki"
+	name = "Ренатаки"
 }
 
 L:SetWarningLocalization({
@@ -947,7 +949,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CoMWushoolay")
 
 L:SetGeneralLocalization{
-	name = "Wushoolay"
+	name = "Вушулай"
 }
 
 L:SetWarningLocalization({
@@ -961,3 +963,112 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 })
+
+
+--------------------
+--  World Bosses  --
+-------------------------
+-- Akma'hat --
+-------------------------
+L = DBM:GetModLocalization("Akmahat")
+
+L:SetGeneralLocalization{
+	name = "Акма'хат"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Garr --
+----------
+L = DBM:GetModLocalization("Garr")
+
+L:SetGeneralLocalization{
+	name = "Гарр"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------
+-- Julak-Doom --
+----------------
+L = DBM:GetModLocalization("JulakDoom")
+
+L:SetGeneralLocalization{
+	name = "Джулак-Рок"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnMC	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(93621)
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Mobus --
+-----------
+L = DBM:GetModLocalization("Mobus")
+
+L:SetGeneralLocalization{
+	name = "Мобус"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Xariona --
+-----------
+L = DBM:GetModLocalization("Xariona")
+
+L:SetGeneralLocalization{
+	name = "Зариона"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}

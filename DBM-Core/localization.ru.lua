@@ -123,24 +123,24 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Быстрое убийство"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "Восст. %s",
+	target 		= "%s: %%s",
+	cast 		= "%s",
+	active 		= "%s",
+	cd 			= "Восст. %s",
 	cdcount		= "Восст. %s (%%d)",
-	next = "След. %s",
+	next 		= "След. %s",
 	nextcount	= "След. %s (%%d)",
 	achievement = "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Отсчет времени действия эффекта |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Отсчет времени применения заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
-	active = "Отсчет времени действия |cff71d5ff|Hspell:%d|h%s|h|r",
-	cd = "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
-	cdcount = "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
-	next = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
-	nextcount = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
+	target 		= "Отсчет времени действия эффекта |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast 		= "Отсчет времени применения заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
+	active 		= "Отсчет времени действия |cff71d5ff|Hspell:%d|h%s|h|r",
+	cd 			= "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
+	cdcount 	= "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
+	next 		= "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
+	nextcount 	= "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Отсчет времени для %s",
 }
 
@@ -201,7 +201,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Устанавливать метки на цели заклинания $spell:%d"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал при $spell:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Звуковой отчест для $spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Звуковой отсчет для $spell:%d"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Кричать, когда на вас $spell:%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "На МНЕ - %s!"
 
