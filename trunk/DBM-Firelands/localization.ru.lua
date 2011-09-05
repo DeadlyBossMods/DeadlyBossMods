@@ -73,6 +73,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull			= "Теперь я служу новому господину, смертные!",
+	Initiate			= "Новообращенный друид-огнеястреб",
 	YellInitiate1		= "Взываем к тебе, Повелитель огня!",
 	YellInitiate2		= "Узрите его силу!",
 	YellInitiate3		= "Пусть неверные горят в огне!",

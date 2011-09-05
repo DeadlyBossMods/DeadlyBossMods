@@ -29,6 +29,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "Ich diene jetzt einem neuen Meister, Sterbliche!",
+	Initiate		= "Lodernder Kralleninitiand",--http://de.wowhead.com/npc=53896
 	YellInitiate1	= "Wir rufen Euch, Feuerlord!",
 	YellInitiate2	= "Seht seine Macht!",
 	YellInitiate3	= "Äschert die Ungläubigen ein!",
