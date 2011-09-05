@@ -308,6 +308,7 @@ function mod:SPELL_CAST_START(args)
 		sonsLeft = 8
 		phase = phase + 1
 		self:Unschedule(warnSeeds)
+		SeedsCountdown:Cancel()
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
 		timerHandRagnaros:Cancel()
