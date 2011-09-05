@@ -210,14 +210,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
+function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
+	if not self:IsInCombat() then return end
 	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then--Basically the pre warn to feiry vortex
 		warnPhase:Show(2)
 		timerMoltingCD:Cancel()
 		timerPhaseChange:Start(33, 3)
 		initiatesSpawned = 0
 	--Yes it's ugly, but it works.
-	elseif msg == L.YellInitiate1 or msg:find(L.YellInitiate1) or msg == L.YellInitiate2 or msg:find(L.YellInitiate2) or msg == L.YellInitiate3 or msg:find(L.YellInitiate3) or msg == L.YellInitiate4 or msg:find(L.YellInitiate4) then
+	elseif mob == L.Initiate then
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiateSpawns[initiatesSpawned])
 		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
