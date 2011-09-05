@@ -72,6 +72,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "I serve a new master now, mortals!",
+	Initiate		= "Blazing Talon Initiate",--http://www.wowhead.com/npc=53896
+	--Lets try it using above method and not requiring 4 localized yells below.
 	YellInitiate1	= "We call upon you, Firelord!",
 	YellInitiate2	= "Behold His power!",
 	YellInitiate3	= "Let the unbelievers perish in fire!",
