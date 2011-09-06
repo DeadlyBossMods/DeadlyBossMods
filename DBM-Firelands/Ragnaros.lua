@@ -63,7 +63,7 @@ local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might
 local timerWrathRagnaros	= mod:NewCDTimer(30, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
 local timerFlamesCD			= mod:NewCDTimer(40, 99171)
-local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds from last seed going off, but 63 from first.
+local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds CD in between from seed to seed. 50 seconds using the molten inferno trigger.
 local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molten Inferno (seeds exploding)
 local timerLivingMeteorCD	= mod:NewNextCountTimer(45, 99268)
 local timerInvokeSons		= mod:NewCastTimer(17, 99014)--8 seconds for splitting blow, about 8-10 seconds after for them landing, using the average, 9.
@@ -124,15 +124,10 @@ local function clearSeedsActive()
 	seedsWarned = false
 end
 
-local function warnSeeds(first)
-	if not first then--The first one is not triggered off spell_damage, so we need to not flag warned seeds, so first spell_damage event can still schedule next one.
-		seedsWarned = true
-	end
+local function warnSeeds()
 	warnMoltenSeed:Show()
 	specWarnMoltenSeed:Show()
 	timerMoltenInferno:Start()
-	timerMoltenSeedCD:Start()
-	SeedsCountdown:Start(60)
 end
 
 
@@ -294,11 +289,11 @@ function mod:SPELL_CAST_START(args)
 			if not phase2Started then
 				phase2Started = true
 				if self:IsDifficulty("heroic10", "heroic25") then
-					self:Schedule(9, warnSeeds, true)--Schedule the warnings here for more accuracy
+					self:Schedule(9, warnSeeds)--Schedule the warnings here for more accuracy
 					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
 					SeedsCountdown:Start(9)
 				else
-					self:Schedule(6.5, warnSeeds, true)
+					self:Schedule(6.5, warnSeeds)
 					timerMoltenSeedCD:Update(15.5, 22)
 					SeedsCountdown:Start(6.5)
 				end
@@ -309,6 +304,7 @@ function mod:SPELL_CAST_START(args)
 		phase = phase + 1
 		self:Unschedule(warnSeeds)
 		SeedsCountdown:Cancel()
+		timerMoltenSeedCD:Cancel()
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
 		timerHandRagnaros:Cancel()
@@ -401,16 +397,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(98498, 100579, 100580, 100581) and not seedsActive then--trigger spell 98495 doesn't show in combat log :\. This only fires if players are not spread properly but is most accurate detection of cast.
+	if args:IsSpellID(98498, 100579, 100580, 100581) and not seedsActive then--Update seedsActive on earliest possible for engulfing melee warning for normal mode.
 		seedsActive = true
-		self:Unschedule(warnSeeds)--Cancel scheduled one if it hasn't fired yet, this damage event is more precise timing (although it shouldn't happen if people play right, if it does, might as well use it to warn right away)
-		self:Schedule(60, warnSeeds)--Schedule next one off this event, no reason to fire Molten inferno event too.
-		self:Schedule(20, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
-	elseif args:IsSpellID(98518, 100252, 100253, 100254) and not seedsActive then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next one if no one took damage from seeds since this damage cannot be avoided and is 100% gonna trigger.
-		seedsActive = true
-		self:Unschedule(warnSeeds)
-		self:Schedule(50, warnSeeds)
-		self:Schedule(10, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+	elseif args:IsSpellID(98518, 100252, 100253, 100254) then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next seeds
+		if not seedsActive then--In case no one took damage on normal mode from cast, activate seedsActive variable here for the melee engulfing warning.
+			seedsActive = true
+		end
+		if not seedsWarned then--Only schedule once.
+			seedsWarned = true
+			self:Schedule(50, warnSeeds)
+			SeedsCountdown:Start(50)
+			timerMoltenSeedCD:Start(50)
+			self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+		end
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the first one going off.
