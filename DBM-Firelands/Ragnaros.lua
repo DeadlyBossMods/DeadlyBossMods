@@ -95,7 +95,7 @@ local phase2Started = false
 local phase3Started = false
 local blazingHeatIcon = 2
 local seedsActive = false
-local seedsWarned = false
+local seedsScheduled = false
 local meteorWarned = false
 local meteorTarget = GetSpellInfo(99849)
 
@@ -121,7 +121,7 @@ end
 
 local function clearSeedsActive()
 	seedsActive = false
-	seedsWarned = false
+	seedsScheduled = false
 end
 
 local function warnSeeds()
@@ -226,7 +226,7 @@ function mod:OnCombatStart(delay)
 	phase3Started = false
 	seedsActive = false
 	meteorWarned = false
-	seedsWarned = false
+	seedsScheduled = false
 	showRangeFrame()
 	if self:IsDifficulty("normal10", "normal25") then--register alternate kill detection, he only dies on heroic.
 		self:RegisterKill("yell", L.Defeat)
@@ -403,8 +403,8 @@ function mod:SPELL_DAMAGE(args)
 		if not seedsActive then--In case no one took damage on normal mode from cast, activate seedsActive variable here for the melee engulfing warning.
 			seedsActive = true
 		end
-		if not seedsWarned then--Only schedule once.
-			seedsWarned = true
+		if not seedsScheduled then--Only schedule once.
+			seedsScheduled = true
 			self:Schedule(50, warnSeeds)
 			SeedsCountdown:Start(50)
 			timerMoltenSeedCD:Start(50)
