@@ -30,10 +30,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	YellPull		= "Ich diene jetzt einem neuen Meister, Sterbliche!",
 	Initiate		= "Lodernder Kralleninitiand",--http://de.wowhead.com/npc=53896
-	YellInitiate1	= "Wir rufen Euch, Feuerlord!",
-	YellInitiate2	= "Seht seine Macht!",
-	YellInitiate3	= "Äschert die Ungläubigen ein!",
-	YellInitiate4	= "Erblicket den Ruhm der Flammen.",
 	YellPhase2		= "Dieser Himmel ist MEIN.",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "Feurige Lavawürmer brechen aus dem Boden hervor!",
