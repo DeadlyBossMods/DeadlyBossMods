@@ -154,6 +154,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(98450) and args:IsPlayer() then
+		specWarnSearingSeed:Cancel()
+		soundSeed:Cancel()
+		timerSearingSeed:Cancel()
 		if self.Options.RangeFrameSeeds then
 			DBM.RangeCheck:Hide()
 		end
