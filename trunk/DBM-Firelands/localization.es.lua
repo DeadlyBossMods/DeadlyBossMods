@@ -73,10 +73,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "¡Mortales, ahora sirvo a un nuevo amo!",
-	YellInitiate1	= "¡Te invocamos, Señor del Fuego!",
-	YellInitiate2	= "¡Contemplad su poder!",
-	YellInitiate3	= "¡Que los infieles perezcan en el fuego!",
-	YellInitiate4	= "Presenciad la majestuosidad de la llama.",
+	Initiate		= "Iniciado de Garfas Llameantes",--http://www.wowhead.com/npc=53896
 	YellPhase2		= "¡Estos cielos son MÍOS!",
 	FullPower		= "spell:99925",
 	LavaWorms		= "¡Gusanos de lava ígneos surgen del suelo!",
@@ -194,7 +191,7 @@ L:SetMiscLocalization({
 	Middle				= "Medio",
 	North				= "Melee",
 	South				= "Atrás",
-	HealthInfo			= "Info de vida",
+	HealthInfo			= "Menos de 90k de vida",
 	MeteorTargets		= "HOYGA METEHORITOS!",
 	TransitionEnded1	= "Enough! I will finish this.",--translate
 	TransitionEnded2	= "Sulfuras will be your end.",--translate
