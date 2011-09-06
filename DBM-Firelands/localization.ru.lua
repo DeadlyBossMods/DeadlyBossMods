@@ -74,10 +74,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	YellPull			= "Теперь я служу новому господину, смертные!",
 	Initiate			= "Новообращенный друид-огнеястреб",
-	YellInitiate1		= "Взываем к тебе, Повелитель огня!",
-	YellInitiate2		= "Узрите его силу!",
-	YellInitiate3		= "Пусть неверные горят в огне!",
-	YellInitiate4		= "Узрите величие огня.",
 	YellPhase2			= "Небо над вами принадлежит МНЕ!",
 	FullPower			= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms			= "На поверхность вылезают огненные лавовые паразиты!",
