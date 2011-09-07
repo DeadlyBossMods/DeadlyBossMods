@@ -25,14 +25,16 @@ local warnFury					= mod:NewStackAnnounce(97235, 3)
 local warnLeapingFlames			= mod:NewTargetAnnounce(100208, 3)
 local warnOrbs					= mod:NewCastAnnounce(98451, 4)
 
-local timerSearingSeed			= mod:NewBuffActiveTimer(60, 98450)
-local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)--This one stays localized because it's 1 timer used for two abilities
-
 local yellLeapingFlames			= mod:NewYell(100208)
 local specWarnLeapingFlamesCast	= mod:NewSpecialWarningYou(98476)--Cast on you
 local specWarnLeapingFlamesNear	= mod:NewSpecialWarningClose(98476)--Cast on you
 local specWarnLeapingFlames		= mod:NewSpecialWarningMove(100208)--Standing in circle it left behind.
 local specWarnSearingSeed		= mod:NewSpecialWarningMove(98450)
+local specWarnOrb				= mod:NewSpecialWarningStack(100211, true, 4)
+
+local timerOrb					= mod:NewBuffActiveTimer(6, 100211)
+local timerSearingSeed			= mod:NewBuffActiveTimer(60, 98450)
+local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)--This one stays localized because it's 1 timer used for two abilities
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -140,6 +142,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFury:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(98535, 100206, 100207, 100208) and args:IsPlayer() and not recentlyJumped then
 		specWarnLeapingFlames:Show()--You stood in the fire!
+	elseif args:IsSpellID(98584, 100209, 100210, 100211) and args:IsPlayer() then
+		if (args.amount or 1) >= 4 then
+			specWarnOrb:Show(args.amount)--You stood in the fire!
+		end
+		timerOrb:Start()
 	elseif args:IsSpellID(98450) and args:IsPlayer() then
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific seed timer is
 		specWarnSearingSeed:Schedule(expires - GetTime() - 5)	-- Show "move away" warning 5secs before explode
