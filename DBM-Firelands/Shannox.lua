@@ -66,6 +66,7 @@ mod:AddBoolOption("SetIconOnFaceRage")
 mod:AddBoolOption("SetIconOnRage")
 
 local prewarnedPhase2 = false
+local ripLimbDead = false
 local trapScansDone = 0
 
 function mod:ImmoTrapTarget(targetname)
@@ -137,6 +138,7 @@ end
 
 function mod:OnCombatStart(delay)
 	prewarnedPhase2 = false
+	ripLimbDead = false
 	trapScansDone = 0
 --	timerCrystalPrisonCD:Start(-delay)--Don't know yet, Need to run transcriptor with combat logging turned OFF to get the timestamps right.
 	timerSpearCD:Start(20-delay)--High variation, just a CD?
@@ -194,6 +196,9 @@ function mod:SPELL_CAST_START(args)
 		warnSpear:Show()--Only valid until rip dies
 		specWarnSpear:Show()
 		timerSpearCD:Start()
+	elseif args:IsSpellID(99840) and ripLimbDead then	--This is cast after Riplimb dies.
+		warnMagmaRupture:Show()
+		timerMagmaRuptureCD:Start()
 	end
 end
 
@@ -205,9 +210,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconOnFaceRage then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args:IsSpellID(99840) then	--This is cast after Riplimb dies.
-		warnMagmaRupture:Show()
-		timerMagmaRuptureCD:Start()
 	end
 end
 
@@ -227,7 +229,7 @@ function mod:UNIT_HEALTH(uId)
 		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		if h > 50 and prewarnedPhase2 then
 			prewarnedPhase2 = false
-		elseif h > 33 and h < 36 and not prewarnedPhase2 then
+		elseif h > 33 and h < 36 and not prewarnedPhase2 and self:IsDifficulty("normal10", "normal25") then
 			prewarnedPhase2 = true
 			warnPhase2Soon:Show()
 		end
@@ -238,6 +240,7 @@ function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 53694 then
 		timerSpearCD:Cancel()--Cancel it and replace it with other timer
 		timerMagmaRuptureCD:Start(10)
+		ripLimbDead = true
 	elseif self:GetCIDFromGUID(args.destGUID) == 53695 then
 		timerFaceRageCD:Cancel()
 	end
