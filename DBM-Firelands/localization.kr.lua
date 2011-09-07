@@ -73,10 +73,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "이제 난 새 주인님을 섬긴다. 필멸자여!",
-	YellInitiate1	= "불의 군주시여, 힘을 주소서!",
-	YellInitiate2	= "그분의 힘을 보아라!",
-	YellInitiate3	= "믿지 않는 자, 불로 멸하리라!",
-	YellInitiate4	= "화염의 장엄함을 지켜봐라!",
+	Initiate		= "타오르는 발톱 수습생",--http://www.wowhead.com/npc=53896
 	YellPhase2		= "이 하늘은 나의 것이다!",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "불타는 용암 벌레가 땅에서 튀어나옵니다!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
@@ -194,7 +191,7 @@ L:SetMiscLocalization({
 	Middle				= "중앙",
 	North				= "근접",
 	South				= "뒤쪽",
-	HealthInfo			= "체력 정보",
+	HealthInfo			= "체력 9만 미만",
 	MeteorTargets		= "유성 조심!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "여기까지! 이제 끝내주마.",--More reliable then adds method.
 	TransitionEnded2	= "설퍼라스로 숨통을 끊어 주마.",
