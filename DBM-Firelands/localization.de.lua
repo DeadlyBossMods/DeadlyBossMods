@@ -185,7 +185,7 @@ L:SetMiscLocalization({
 	TransitionEnded1	= "Genug! Ich werde dem ein Ende machen.",
 	TransitionEnded2	= "Sulfuras wird Euer Ende sein.",
 	TransitionEnded3	= "Auf die Knie, Sterbliche! Das ist das Ende.",
-	Defeat				= "Too soon! ... You have come too soon...",--Translate
+	Defeat				= "Zu früh!… Ihr kommt zu früh...",
 	Phase4				= "Too soon..."--Translate
 })
 
@@ -225,15 +225,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerStaffTransition	= "Transition ends"
+	timerStaffTransition	= "Übergangsphase endet"
 })
 
 L:SetOptionLocalization({
-	timerStaffTransition	= "Show a timer for the phase transition"
+	timerStaffTransition	= "Zeige Timer für den Phasenübergang"
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "The Branch of Nordrassil reacts violently to %S+ touch!",--Reg expression pull match
-	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
-	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
+	StaffEvent			= "Der Zweig von Nordrassil reagiert heftig auf die Berührung von %S+.",--Reg expression pull match
+	StaffTrees			= "Brennende Treants brechen aus dem Boden hervor, um dem Beschützer beizustehen!",--Might add a spec warning for this later.
+	StaffTransition		= "Die Feuer, die den gepeinigten Beschützer verzehren, erlöschen!"
 })
