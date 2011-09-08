@@ -171,8 +171,8 @@ end
 function mod:SPELL_AURA_REFRESH(args)
 	if args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
 		if args:IsPlayer() then
-			warnTormented:Show()
-			specWarnTormented:Show()
+--			warnTormented:Show()
+--			specWarnTormented:Show()
 			if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
 				timerTormented:Start(60)--Longer on 25 man
 			else
