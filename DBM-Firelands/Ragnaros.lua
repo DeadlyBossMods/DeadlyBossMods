@@ -39,6 +39,9 @@ local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 abili
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnSonsLeft			= mod:NewAnnounce("WarnRemainingAdds", 2, 99014)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
+local warnAggro				= mod:NewAnnounce("warnAggro", 4, 99601, nil, false)
+local warnNoAggro			= mod:NewAnnounce("warnNoAggro", 1, 99601, nil, false)
+mod:AddBoolOption("ElementalAggroWarn", true, "announce")
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
 local warnMagmaTrap			= mod:NewTargetAnnounce(98164, 3)--Second transition adds ability.
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
@@ -99,6 +102,24 @@ local seedsScheduled = false
 local meteorWarned = false
 local meteorTarget = GetSpellInfo(99849)
 
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	-- 3. check boss1's highest threat target
+	-- 4. anyone with 180k+ health
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
+		return true
+	end
+	if UnitHealthMax(unit) >= 180000 then return true end--Will need tuning or removal for new expansions or maybe even new tiers.
+	return false
+end
+
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
 		if phase == 1 and mod:IsRanged() then
@@ -122,6 +143,15 @@ end
 local function clearSeedsActive()
 	seedsActive = false
 	seedsScheduled = false
+end
+
+local function showAggroWarning()
+	if mod:IsTank() or not mod.Options.ElementalAggroWarn then return end--IF you're a tank it's 50/50 you have rag aggro. I could check this but i don't think in any situation it's relevent anyways (ie the tank isn't actually gonna run away from it, he'll tank it if using spread method, or it'll be dead already if using aoe method)
+	if UnitThreatSituation("player") == 3 then
+		warnAggro:Show()
+	else
+		warnNoAggro:Show()
+	end
 end
 
 local function warnSeeds()
@@ -164,24 +194,6 @@ local function TransitionEnded()
 		--timerBreadthofFrostCD:Start()
 		showRangeFrame()
 	end
-end
-
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
-	-- 4. anyone with 180k+ health
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
-		return true
-	end
-	if UnitHealthMax(unit) >= 180000 then return true end--Will need tuning or removal for new expansions or maybe even new tiers.
-	return false
 end
 
 function mod:MagmaTrapTarget()
@@ -409,6 +421,9 @@ function mod:SPELL_DAMAGE(args)
 			SeedsCountdown:Start(50)
 			timerMoltenSeedCD:Start(50)
 			self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+			--[22:58:04.965] Molten Elemental Molten Inferno Melissii Miss
+			--[22:58:05.692] Molten Elemental Molten Inferno Magicmoose 3553 (R: 2160)
+			self:Schedule(1, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
 		end
 	end
 end

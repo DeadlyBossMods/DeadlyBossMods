@@ -111,9 +111,9 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99516) then
+		countdownTargets[#countdownTargets + 1] = args.destName
 		timerCountdown:Start()
 		timerCountdownCD:Start()
-		countdownTargets[#countdownTargets + 1] = args.destName
 		if self.Options.SetIconOnCountdown then
 			self:SetIcon(args.destName, countdownIcon, 8)
 			countdownIcon = countdownIcon - 1
