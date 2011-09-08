@@ -124,9 +124,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.ArrowOnCountdown and #countdownTargets == 2 then
 			if countdownTargets[1] == UnitName("player") then
-				DBM.Arrow:ShowRunAway(countdownTargets[2])
+				DBM.Arrow:ShowRunTo(countdownTargets[2])
 			elseif countdownTargets[2] == UnitName("player") then
-				DBM.Arrow:ShowRunAway(countdownTargets[1])
+				DBM.Arrow:ShowRunTo(countdownTargets[1])
 			end
 		end
 		self:Unschedule(showCountdownWarning)
