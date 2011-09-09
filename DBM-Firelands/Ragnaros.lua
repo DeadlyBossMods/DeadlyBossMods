@@ -85,7 +85,7 @@ local soundMeteor			= mod:NewSound(99849)
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
-mod:AddBoolOption("InfoHealthFrame", false)
+mod:AddBoolOption("InfoHealthFrame", mod:IsHealer())
 mod:AddBoolOption("InfoFrame", true)
 
 local wrathRagSpam = 0
