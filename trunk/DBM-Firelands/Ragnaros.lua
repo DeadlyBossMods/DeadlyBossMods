@@ -417,9 +417,9 @@ function mod:SPELL_DAMAGE(args)
 		end
 		if not seedsScheduled then--Only schedule once.
 			seedsScheduled = true
-			self:Schedule(50, warnSeeds)
-			SeedsCountdown:Start(50)
-			timerMoltenSeedCD:Start(50)
+			self:Schedule(49.25, warnSeeds)
+			SeedsCountdown:Start(49.25)
+			timerMoltenSeedCD:Start(49.25)
 			self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 			--[22:58:04.965] Molten Elemental Molten Inferno Melissii Miss
 			--[22:58:05.692] Molten Elemental Molten Inferno Magicmoose 3553 (R: 2160)
