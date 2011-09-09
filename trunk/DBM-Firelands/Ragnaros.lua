@@ -71,6 +71,7 @@ local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molt
 local timerLivingMeteorCD	= mod:NewNextCountTimer(45, 99268)
 local timerInvokeSons		= mod:NewCastTimer(17, 99014)--8 seconds for splitting blow, about 8-10 seconds after for them landing, using the average, 9.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
+local timerCloudBurstCD		= mod:NewCDTimer(50, 100714)--No idea what it is
 local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)--No idea what it is
 local timerEntrapingRootsCD	= mod:NewCDTimer(56, 100646)--Always cast before empowered sulf, varies between 3 sec before and like 11 sec before.
 local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)--No idea what it is
@@ -193,6 +194,10 @@ local function TransitionEnded()
 		--timerEntrapingRootsCD:Start()
 		--timerBreadthofFrostCD:Start()
 		showRangeFrame()
+		timerBreadthofFrostCD:Start(33)
+		timerCloudBurstCD:Start()
+		timerEntrapingRootsCD:Start(67)
+		timerEmpoweredSulfCD:Start(89)
 	end
 end
 
@@ -417,9 +422,9 @@ function mod:SPELL_DAMAGE(args)
 		end
 		if not seedsScheduled then--Only schedule once.
 			seedsScheduled = true
-			self:Schedule(49.25, warnSeeds)
-			SeedsCountdown:Start(49.25)
-			timerMoltenSeedCD:Start(49.25)
+			self:Schedule(49, warnSeeds)
+			SeedsCountdown:Start(49)
+			timerMoltenSeedCD:Start(49)
 			self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 			--[22:58:04.965] Molten Elemental Molten Inferno Melissii Miss
 			--[22:58:05.692] Molten Elemental Molten Inferno Magicmoose 3553 (R: 2160)
