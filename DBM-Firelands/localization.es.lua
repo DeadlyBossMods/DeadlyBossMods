@@ -167,7 +167,9 @@ L= DBM:GetModLocalization(198)
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s en %s",
 	warnEngulfingFlame		= "%s en %s",
-	WarnRemainingAdds		= "%d Hijos de la Llama restantes"
+	WarnRemainingAdds		= "%d Hijos de la Llama restantes",
+	warnAggro				= "Tienes aggro de Elemental de magma",
+	warnNoAggro				= "No tienes aggro de Elemental de magma"
 })
 
 L:SetTimerLocalization({
@@ -178,6 +180,7 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
 	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
 	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
+	ElementalAggroWarn	= "Mostrar un aviso por si tienes o no aggro de los Elementales de Magma",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
 	InfoHealthFrame		= "Mostrar información de vida (<90k de vida)",
