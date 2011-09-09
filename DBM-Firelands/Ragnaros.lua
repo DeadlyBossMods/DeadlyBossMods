@@ -423,7 +423,7 @@ function mod:SPELL_DAMAGE(args)
 			self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 			--[22:58:04.965] Molten Elemental Molten Inferno Melissii Miss
 			--[22:58:05.692] Molten Elemental Molten Inferno Magicmoose 3553 (R: 2160)
-			self:Schedule(1, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
+			self:Schedule(2.5, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
 		end
 	end
 end
