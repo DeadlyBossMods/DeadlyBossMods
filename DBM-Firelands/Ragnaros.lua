@@ -276,7 +276,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if phase == 3 then
 			timerFlamesCD:Start(30)--30 second CD in phase 3
 		else
-			timerFlamesCD:Start()--40 second CD in phase 2
+			timerFlamesCD:Start(60)--60 second CD in phase 2
 		end
 	elseif args:IsSpellID(100997) then
 		warnEmpoweredSulf:Show()
