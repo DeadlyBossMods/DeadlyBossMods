@@ -18,7 +18,7 @@ mod:RegisterEvents(
 )
 
 local warnShockwave			= mod:NewCastAnnounce(93610, 3)
-local warnMCTargets			= mod:NewTargetAnnounce(93621, 4)
+local warnMC				= mod:NewTargetAnnounce(93621, 4)
 
 local specWarnShockwave		= mod:NewSpecialWarningMove(93610, mod:IsTank())
 local specWarnBreath		= mod:NewSpecialWarningMove(93612)
@@ -37,7 +37,7 @@ function mod:OnCombatStart(delay)
 	mcIcon = 8
 	lastBreath = 0
 	timerShockwaveCD:Start(10-delay)
-	--timerMCCD:Start(-delay)
+	timerMCCD:Start(-delay)
 end
 
 local function showMC()
