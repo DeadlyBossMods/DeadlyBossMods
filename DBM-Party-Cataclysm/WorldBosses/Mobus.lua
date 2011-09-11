@@ -13,7 +13,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnAlgae				= mod:NewTargetAnnounce(93491, 2, nil, false)--Cast very frequently, spammy so off by default
+local warnAlgae				= mod:NewTargetAnnounce(93491, 2)
 local warnRam				= mod:NewCastAnnounce(93492, 3)
 local warnWake				= mod:NewCastAnnounce(93494, 2)
 
