@@ -21,9 +21,9 @@ local warnMantle			= mod:NewSpellAnnounce(93561, 4)
 local specWarnFuryofSands	= mod:NewSpecialWarningSpell(94946, nil, nil, nil, true)
 local specWarnMantle		= mod:NewSpecialWarningSpell(93561)
 
---local timerShockwaveCD	= mod:NewNextTimer(28.5, 94968)
---local timerFuryofSandsCD	= mod:NewNextTimer(28.5, 93494)
---local timerMantleCD		= mod:NewNextTimer(28.5, 93561)
+local timerShockwaveCD		= mod:NewCDTimer(16, 94968)--Every 16 seconds shockwave and fury alternate unless mantle, is cast, then it's 18 seconds cause of the cast delay of mantle affecting both CDs
+local timerFuryofSandsCD	= mod:NewCDTimer(16, 93494)
+local timerMantleCD			= mod:NewCDTimer(43, 93561)--42.8-46.5 variations. a CD timer will suffice of 43
 
 mod:AddBoolOption("HealthFrame", true)
 
@@ -68,22 +68,23 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	--timerMantleCD:Start(-delay)
-	--timerFuryofSandsCD:Start(-delay)
+	timerMantleCD:Start(23-delay)--Highly variable, i don't like it
+	timerShockwaveCD:Start(-delay)
+	timerFuryofSandsCD:Start(11-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93561) then
 		warnMantle:Show()
 		specWarnMantle:Show()
---		timerMantleCD:Start()
+		timerMantleCD:Start()
 	elseif args:IsSpellID(94946) then
 		warnFuryofSands:Show()
 		specWarnFuryofSands:Show()
---		timerFuryofSandsCD:Start()
+		timerFuryofSandsCD:Start()
 	elseif args:IsSpellID(94968) then
 		warnShockwave:Show()
---		timerShockwaveCD:Start()
+		timerShockwaveCD:Start()
 	end
 end
 
