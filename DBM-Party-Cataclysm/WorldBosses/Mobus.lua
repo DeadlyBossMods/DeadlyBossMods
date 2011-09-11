@@ -21,6 +21,7 @@ local specWarnRam			= mod:NewSpecialWarningMove(93492, mod:IsTank())
 local specWarnWake			= mod:NewSpecialWarningMove(93494, mod:IsMelee())
 local specWarnAlgae			= mod:NewSpecialWarningMove(93490)
 
+local timerAlgaeCD			= mod:NewCDTimer(12, 93490)
 local timerRamCD			= mod:NewCDTimer(40, 93492)--40-50 second variations
 local timerWakeCD			= mod:NewCDTimer(50, 93494)--50-60 second variations
 
@@ -34,8 +35,9 @@ function mod:AlgaeTarget()
 end
 
 function mod:OnCombatStart(delay)
---	timerRamCD:Start(8-delay)--Not a large pool of logs to compare to.
-	--timerWakeCD:Start(-delay)
+	timerAlgaeCD:Start(10-delay)
+	timerRamCD:Start(10-delay)--Not a large pool of logs to compare to.
+	timerWakeCD:Start(30-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -48,6 +50,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnWake:Show()
 		timerWakeCD:Start()
 	elseif args:IsSpellID(93491) and self:IsInCombat() then
+		timerAlgaeCD:Start()
 		self:ScheduleMethod(0.2, "AlgaeTarget")
 	end
 end
