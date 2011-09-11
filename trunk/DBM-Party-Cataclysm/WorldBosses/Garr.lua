@@ -13,8 +13,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnAntiMagicPulse		= mod:NewCastAnnounce(93506, 2)--An attack that one shots anyone not in a twilight zone.
-local warnMassiveEruption		= mod:NewCastAnnounce(93508, 4)--An attack that one shots anyone not in a twilight zone.
+local warnAntiMagicPulse		= mod:NewSpellAnnounce(93506, 2)--An attack that one shots anyone not in a twilight zone.
+local warnMassiveEruption		= mod:NewSpellAnnounce(93508, 4)--An attack that one shots anyone not in a twilight zone.
 
 local specWarnMassiveEruption	= mod:NewSpecialWarningSpell(93508, mod:IsMelee())
 
@@ -28,7 +28,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(93508) then--Possibly use 93507 (Magma Shackles) instead if it's always cast before eruption, for an earlier warning?
+	if args:IsSpellID(93508) then--Possibly use 93507 (Magma Shackles) EDIT: nope, they are resistable so they woudln't be reliable.
 		warnMassiveEruption:Show()
 		specWarnMassiveEruption:Show()
 		soundMassiveEruption:Play()
