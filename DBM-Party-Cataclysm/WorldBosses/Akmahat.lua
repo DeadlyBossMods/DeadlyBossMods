@@ -22,7 +22,7 @@ local specWarnFuryofSands	= mod:NewSpecialWarningSpell(94946, nil, nil, nil, tru
 local specWarnMantle		= mod:NewSpecialWarningSpell(93561)
 
 local timerShockwaveCD		= mod:NewCDTimer(16, 94968)--Every 16 seconds shockwave and fury alternate unless mantle, is cast, then it's 18 seconds cause of the cast delay of mantle affecting both CDs
-local timerFuryofSandsCD	= mod:NewCDTimer(16, 93494)
+local timerFuryofSandsCD	= mod:NewCDTimer(16, 94946)
 local timerMantleCD			= mod:NewCDTimer(43, 93561)--42.8-46.5 variations. a CD timer will suffice of 43
 
 mod:AddBoolOption("HealthFrame", true)
