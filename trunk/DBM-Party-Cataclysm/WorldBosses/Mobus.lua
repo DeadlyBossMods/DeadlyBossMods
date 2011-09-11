@@ -21,17 +21,14 @@ local specWarnRam			= mod:NewSpecialWarningMove(93492, mod:IsTank())
 local specWarnWake			= mod:NewSpecialWarningMove(93494, mod:IsMelee())
 local specWarnAlgae			= mod:NewSpecialWarningMove(93490)
 
-local timerAlgaeCD			= mod:NewCDTimer(12, 93490)
-local timerRamCD			= mod:NewCDTimer(40, 93492)--40-50 second variations
-local timerWakeCD			= mod:NewCDTimer(50, 93494)--50-60 second variations
+local timerAlgaeCD			= mod:NewNextTimer(12, 93490)
+local timerRamCD			= mod:NewNextTimer(16, 93492)--16-17 seconds after wake seems more accurate then wild upwards of 20 second variations of starting timer after previous ram
+local timerWakeCD			= mod:NewCDTimer(47, 93494)--47-60 second variations. also typcally 30-33sec after a ram AFTER first one.
 
 function mod:AlgaeTarget()
 	local targetname = self:GetBossTarget(50009)
 	if not targetname then return end
 	warnAlgae:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnAlgae:Show()
-	end
 end
 
 function mod:OnCombatStart(delay)
@@ -44,11 +41,11 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93492) and self:IsInCombat() then
 		warnRam:Show()
 		specWarnRam:Show()
-		timerRamCD:Start()
 	elseif args:IsSpellID(93494) and self:IsInCombat() then
 		warnWake:Show()
 		specWarnWake:Show()
 		timerWakeCD:Start()
+		timerRamCD:Start()
 	elseif args:IsSpellID(93491) and self:IsInCombat() then
 		timerAlgaeCD:Start()
 		self:ScheduleMethod(0.2, "AlgaeTarget")
