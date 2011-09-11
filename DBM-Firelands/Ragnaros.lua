@@ -31,6 +31,7 @@ local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnSulfurasSmash		= mod:NewSpellAnnounce(98710, 4)--Phase 1-3 ability.
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
+mod:AddBoolOption("warnSeedsLand", false, "announce")
 local warnLivingMeteor		= mod:NewCountAnnounce(99268, 4)--Phase 3 only ability
 local warnBreadthofFrost	= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
 local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability (only casts this once, doesn't seem to need a timer)
@@ -167,10 +168,18 @@ local function TransitionEnded()
 	if phase == 2 and not phase2Started then
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerSulfurasSmash:Start(6)
-			timerMoltenSeedCD:Start(15)
+			if mod.Options.warnSeedsLand then
+				timerMoltenSeedCD:Start(17)
+			else
+				timerMoltenSeedCD:Start(15)
+			end
 		else
 			timerSulfurasSmash:Start(15.5)
-			timerMoltenSeedCD:Start(22)
+			if mod.Options.warnSeedsLand then
+				timerMoltenSeedCD:Start(24)--23-25 Variation. we use the average
+			else
+				timerMoltenSeedCD:Start(22)
+			end
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
@@ -306,13 +315,25 @@ function mod:SPELL_CAST_START(args)
 			if not phase2Started then
 				phase2Started = true
 				if self:IsDifficulty("heroic10", "heroic25") then
-					self:Schedule(9, warnSeeds)--Schedule the warnings here for more accuracy
-					timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-					SeedsCountdown:Start(9)
+					if self.Options.warnSeedsLand then
+						self:Schedule(11, warnSeeds)--Schedule the warnings here for more accuracy
+						timerMoltenSeedCD:Update(6, 17)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+						SeedsCountdown:Start(11)
+					else
+						self:Schedule(9, warnSeeds)--Schedule the warnings here for more accuracy
+						timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+						SeedsCountdown:Start(9)
+					end
 				else
-					self:Schedule(6.5, warnSeeds)
-					timerMoltenSeedCD:Update(15.5, 22)
-					SeedsCountdown:Start(6.5)
+					if self.Options.warnSeedsLand then
+						self:Schedule(8, warnSeeds)--Schedule the warnings here for more accuracy
+						timerMoltenSeedCD:Update(16, 24)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+						SeedsCountdown:Start(8)
+					else
+						self:Schedule(6, warnSeeds)
+						timerMoltenSeedCD:Update(16, 22)
+						SeedsCountdown:Start(6)
+					end
 				end
 			end
 		end
@@ -422,12 +443,16 @@ function mod:SPELL_DAMAGE(args)
 		end
 		if not seedsScheduled then--Only schedule once.
 			seedsScheduled = true
-			self:Schedule(49, warnSeeds)
-			SeedsCountdown:Start(49)
-			timerMoltenSeedCD:Start(49)
+			if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode.
+				self:Schedule(52, warnSeeds)--This has a variation of 51-53, for landing warning we just use the average.
+				SeedsCountdown:Start(52)
+				timerMoltenSeedCD:Start(52)
+			else
+				self:Schedule(49, warnSeeds)--This has a variation of 49-51 but for dodging we use 49 for safeest dodge, even if it means some seeds get scattered a little. Cause sometimes moving at 50 kills the raid if it's a 49 seed.
+				SeedsCountdown:Start(49)
+				timerMoltenSeedCD:Start(49)
+			end
 			self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
-			--[22:58:04.965] Molten Elemental Molten Inferno Melissii Miss
-			--[22:58:05.692] Molten Elemental Molten Inferno Magicmoose 3553 (R: 2160)
 			self:Schedule(2.5, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
 		end
 	end
