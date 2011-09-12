@@ -89,6 +89,7 @@ mod:AddBoolOption("BlazingHeatIcons", true)
 mod:AddBoolOption("InfoHealthFrame", mod:IsHealer())
 mod:AddBoolOption("InfoFrame", true)
 
+local firstSmash = false
 local wrathRagSpam = 0
 local meteorSpawned = 0
 local sonsLeft = 8
@@ -245,6 +246,7 @@ function mod:OnCombatStart(delay)
 	sonsLeft = 8
 	trapScansDone = 0
 	phase = 1
+	firstSmash = false
 	prewarnedPhase2 = false
 	prewarnedPhase3 = false
 	blazingHeatIcon = 2
@@ -303,10 +305,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98710, 100890, 100891, 100892) then
+		firstSmash = true
 		warnSulfurasSmash:Show()
 		specWarnSulfurasSmash:Show()
 		if phase == 1 or phase == 3 then
-			timerSulfurasSmash:Start()--30 second cd in phase 1 and phase 3
+			timerSulfurasSmash:Start()--30 second cd in phase 1 and phase 3 in 3/4 difficulties
 			if phase == 1 and not self:IsDifficulty("heroic10") then--10 man heroic seems to have it's own rule while other 3 all work this way
 				timerWrathRagnaros:Update(18, 30)--This is most accurate place to put it so we use auto correction here.
 			end
@@ -404,10 +407,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
-		if self:IsDifficulty("heroic10") then--it has a 25 second cd on 10 man heroic, the other 3 (including 10 man normal) are 30seconds, strange.
+		if self:IsDifficulty("heroic10") or not firstSmash then--it has a 25 second cd on 10 man heroic, the other 3 (including 10 man normal) are 30seconds, strange.
 			timerWrathRagnaros:Start(25)
 		else
-			timerWrathRagnaros:Start()--Start a timer here for most visability, all but one started from here will be accurate. the one that isn't will be fixed by smash update function.
+			timerWrathRagnaros:Start()
 		end
 	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat, drycoded.
 		warnBlazingHeat:Show(args.destName)
