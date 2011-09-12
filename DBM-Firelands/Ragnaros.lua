@@ -61,12 +61,12 @@ local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, 
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 local specWarnEmpoweredSulf	= mod:NewSpecialWarningSpell(100997, mod:IsTank())--Heroic ability Asuming only the tank cares about this? seems like according to tooltip 5 seconds to hide him into roots?
 
-local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
-local timerSulfurasSmash	= mod:NewCDTimer(30, 98710)		-- might even be a "next" timer
-local timerHandRagnaros		= mod:NewCDTimer(25, 98237, nil, mod:IsMelee())-- might even be a "next" timer
-local timerWrathRagnaros	= mod:NewCDTimer(30, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
+local timerMagmaTrap		= mod:NewNextTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
+local timerSulfurasSmash	= mod:NewNextTimer(30, 98710)		-- might even be a "next" timer
+local timerHandRagnaros		= mod:NewNextTimer(25, 98237, nil, mod:IsMelee())-- might even be a "next" timer
+local timerWrathRagnaros	= mod:NewNextTimer(30, 98263, nil, mod:IsRanged())--It's always 12 seconds after smash.
 local timerBurningWound		= mod:NewTargetTimer(20, 99399, nil, mod:IsTank() or mod:IsHealer())
-local timerFlamesCD			= mod:NewCDTimer(40, 99171)
+local timerFlamesCD			= mod:NewNextTimer(40, 99171)
 local timerMoltenSeedCD		= mod:NewCDTimer(60, 98520)--60 seconds CD in between from seed to seed. 50 seconds using the molten inferno trigger.
 local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molten Inferno (seeds exploding)
 local timerLivingMeteorCD	= mod:NewNextCountTimer(45, 99268)
