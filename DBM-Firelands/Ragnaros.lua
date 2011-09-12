@@ -22,6 +22,7 @@ mod:RegisterEvents(
 	"SPELL_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
+	"RAID_BOSS_EMOTE",
 	"UNIT_HEALTH",
 	"UNIT_AURA"
 )
@@ -30,35 +31,36 @@ local warnHandRagnaros		= mod:NewSpellAnnounce(98237, 3, nil, mod:IsMelee())--Ph
 local warnWrathRagnaros		= mod:NewSpellAnnounce(98263, 3, nil, mod:IsRanged())--Phase 1 only ability
 local warnBurningWound		= mod:NewStackAnnounce(99399, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnSulfurasSmash		= mod:NewSpellAnnounce(98710, 4)--Phase 1-3 ability.
+local warnMagmaTrap			= mod:NewTargetAnnounce(98164, 3)--Phase 1 ability.
+local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnMoltenSeed		= mod:NewSpellAnnounce(98520, 4)--Phase 2 only ability
 mod:AddBoolOption("warnSeedsLand", false, "announce")
-local warnLivingMeteor		= mod:NewCountAnnounce(99268, 4)--Phase 3 only ability
-local warnBreadthofFrost	= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
-local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability (only casts this once, doesn't seem to need a timer)
-local warnEntrappingRoots	= mod:NewSpellAnnounce(100646, 3)--Heroic phase 4 ability
-local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnSonsLeft			= mod:NewAnnounce("WarnRemainingAdds", 2, 99014)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
 local warnAggro				= mod:NewAnnounce("warnAggro", 4, 99601, nil, false)
 local warnNoAggro			= mod:NewAnnounce("warnNoAggro", 1, 99601, nil, false)
 mod:AddBoolOption("ElementalAggroWarn", true, "announce")
-local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
-local warnMagmaTrap			= mod:NewTargetAnnounce(98164, 3)--Second transition adds ability.
-local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
+local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
+local warnLivingMeteor		= mod:NewCountAnnounce(99268, 4)--Phase 3 only ability
+local warnBreadthofFrost	= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
+local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability (only casts this once, doesn't seem to need a timer)
+local warnEntrappingRoots	= mod:NewSpellAnnounce(100646, 3)--Heroic phase 4 ability
+local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
+local warnDreadFlame		= mod:NewSpellAnnounce(100675, 3, nil, false)--Heroic phase 4 ability
 
 local specWarnSulfurasSmash	= mod:NewSpecialWarningSpell(98710, false)
-local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
-local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
-local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
 local specWarnMagmaTrap		= mod:NewSpecialWarningMove(98164)
 local yellMagmaTrap			= mod:NewYell(98164)--May Return false tank yells
+local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
+local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
+local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
+local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
 local specWarnMeteor		= mod:NewSpecialWarningYou(99849)
 local yellMeteor			= mod:NewYell(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
-local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 local specWarnEmpoweredSulf	= mod:NewSpecialWarningSpell(100997, mod:IsTank())--Heroic ability Asuming only the tank cares about this? seems like according to tooltip 5 seconds to hide him into roots?
 
 local timerMagmaTrap		= mod:NewNextTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
@@ -72,10 +74,11 @@ local timerMoltenInferno	= mod:NewBuffActiveTimer(10, 100254)--Cast bar for molt
 local timerLivingMeteorCD	= mod:NewNextCountTimer(45, 99268)
 local timerInvokeSons		= mod:NewCastTimer(17, 99014)--8 seconds for splitting blow, about 8-10 seconds after for them landing, using the average, 9.
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
-local timerCloudBurstCD		= mod:NewCDTimer(50, 100714)--No idea what it is
-local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)--No idea what it is
+local timerCloudBurstCD		= mod:NewCDTimer(50, 100714)
+local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)
 local timerEntrapingRootsCD	= mod:NewCDTimer(56, 100646)--Always cast before empowered sulf, varies between 3 sec before and like 11 sec before.
-local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)--No idea what it is
+local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)
+local timerDreadFlameCD		= mod:NewCDTimer(40, 100675, nil, false)--Off by default as only the people dealing with them care about it.
 
 local SeedsCountdown		= mod:NewCountdown(60, 98520)
 
@@ -104,6 +107,8 @@ local seedsActive = false
 local seedsScheduled = false
 local meteorWarned = false
 local meteorTarget = GetSpellInfo(99849)
+local dreadFlame = GetSpellInfo(100675)
+local dreadFlameTimer = 45
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -205,6 +210,7 @@ local function TransitionEnded()
 		--timerBreadthofFrostCD:Start()
 		showRangeFrame()
 		timerBreadthofFrostCD:Start(33)
+		timerDreadFlameCD:Start(48)
 		timerCloudBurstCD:Start()
 		timerEntrapingRootsCD:Start(67)
 		timerEmpoweredSulfCD:Start(89)
@@ -255,6 +261,7 @@ function mod:OnCombatStart(delay)
 	seedsActive = false
 	meteorWarned = false
 	seedsScheduled = false
+	dreadFlameTimer = 45
 	showRangeFrame()
 	if self:IsDifficulty("normal10", "normal25") then--register alternate kill detection, he only dies on heroic.
 		self:RegisterKill("yell", L.Defeat)
@@ -485,6 +492,16 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	elseif (msg == L.Phase4 or msg:find(L.Phase4)) and self:IsInCombat() then
 		phase = 4
 		TransitionEnded()--Easier to just trigger this and keep all phase change stuff in one place.
+	end
+end
+
+function mod:RAID_BOSS_EMOTE(msg)
+	if msg:find(dreadFlame) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
+		if dreadFlameTimer > 15 then
+			dreadFlameTimer = dreadFlameTimer - 5
+		end
+		warnDreadFlame:Show()
+		timerDreadFlameCD:Start(dreadFlameTimer)
 	end
 end
 
