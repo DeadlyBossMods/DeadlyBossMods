@@ -89,7 +89,7 @@ local dominionTargets = {}
 local lastBlaze = 0
 local shadowBlazeSynced = false
 
---Credits to Bigwigs for original, modified when blizz nerfed it.
+--Credits to Caleb for original concept, modified with yell sync and timer tweaks.
 function mod:ShadowBlazeFunction()
 	lastBlaze = GetTime()
 	if shadowblazeTimer > 15 then
