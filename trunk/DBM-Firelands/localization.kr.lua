@@ -152,7 +152,7 @@ L:SetOptionLocalization({
 	timerNextSpecial			= "다음 특수 능력 타이머 보기",
 	RangeFrameSeeds				= "$spell:98450의 거리 프레임 보기(12 m)",
 	RangeFrameCat				= "$spell:98374의 거리 프레임 보기(10 m)",
-	LeapArrow					= "$spell:98476가 주변에 시전될 때 DBM 화살표 보기",
+	LeapArrow					= "$spell:98476이 주변에 시전될 때 DBM 화살표 보기",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
