@@ -167,7 +167,9 @@ L= DBM:GetModLocalization(198)
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s (%s)",--Spellname in Location
 	warnEngulfingFlame		= "%s (%s)",--Spellname in Location
-	WarnRemainingAdds		= "남은 자손: %d"
+	WarnRemainingAdds		= "남은 자손: %d",
+	warnAggro				= "녹아내린 정령으로부터 위협수준 획득함!!!",
+	warnNoAggro				= "녹아내린 정령에게서 안전함:)"
 })
 
 L:SetTimerLocalization({
@@ -178,6 +180,8 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "$spell:100877 경고 보기",
 	warnEngulfingFlame	= "$spell:99171 경고 보기",
 	WarnRemainingAdds	= "전환 단계에서 쫄이 얼마나 남았는지에 대한 경고 보기",
+	warnSeedsLand		= "$spell:98520이 시전될때가 아니라 폭발할때 경고 보기",
+	ElementalAggroWarn	= "녹아내린 정령으로부터 위협수준 획득 유무에 대한 경고 보기",
 	TimerPhaseSons		= "전환 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	InfoHealthFrame		= "체력 정보 프레임 보기 (9만 미만)",
