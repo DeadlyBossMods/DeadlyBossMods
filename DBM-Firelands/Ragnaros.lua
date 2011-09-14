@@ -204,6 +204,8 @@ local function TransitionEnded()
 		end
 	elseif phase == 4 then
 		timerLivingMeteorCD:Cancel()
+		timerFlamesCD:Cancel()
+		timerSulfurasSmash:Cancel()
 		--Start other timers here later for heroic stuffs!
 		--timerEmpoweredSulfCD:Start()
 		--timerEntrapingRootsCD:Start()
@@ -357,6 +359,7 @@ function mod:SPELL_CAST_START(args)
 		timerSulfurasSmash:Cancel()
 		timerHandRagnaros:Cancel()
 		timerWrathRagnaros:Cancel()
+		timerFlamesCD:Cancel()
 		hideRangeFrame()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerPhaseSons:Start(60)--Longer on heroic
