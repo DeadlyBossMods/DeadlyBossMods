@@ -20,6 +20,7 @@ local warnGaze				= mod:NewTargetAnnounce(96342, 3)
 
 local specWarnGaze			= mod:NewSpecialWarningYou(96342)
 local specWarnToxic			= mod:NewSpecialWarning("SpecWarnToxic")
+local specWarnFire			= mod:NewSpecialWarningMove(96916)
 
 local timerZanzilGas		= mod:NewBuffActiveTimer(7, 96338)
 local timerGaze				= mod:NewTargetTimer(17, 96342)
@@ -29,6 +30,8 @@ local soundGaze				= mod:NewSound(96342)
 
 mod:AddBoolOption("SetIconOnGaze")
 mod:AddBoolOption("InfoFrame", mod:IsHealer())--on by default for healers, so they know what numpties to heal through gas
+
+local spamFire = 0
 
 function mod:GazeTarget()
 	local targetname = self:GetBossTarget(52054)
@@ -49,6 +52,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
 		DBM.InfoFrame:Show(5, "playergooddebuff", 96328)
 	end
+	spamFire = 0
 end
 
 function mod:OnCombatEnd()
@@ -63,6 +67,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(96316) then
 		warnZanzilElixir:Show()
 		timerZanzilElixir:Start()
+	elseif args:IsSpellID(96916) and args:IsPlayer() and GetTime() - spamFire >= 3 then
+		specWarnFire:Show()
+		spamFire = GetTime()
 	end
 end
 
