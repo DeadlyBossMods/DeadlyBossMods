@@ -60,7 +60,6 @@ local cataCast = 0
 local clawCast = 0
 local spamClaw = 0
 
-local initiateTimes = {22, 63, 21, 21, 40}
 local initiateSpawns = {
 	[1] = L.Both,
 	[2] = L.Both,
@@ -82,11 +81,9 @@ function mod:OnCombatStart(delay)
 		FirestormCountdown:Start(94-delay)--Perhaps some tuning.
 		warnFirestormSoon:Schedule(84-delay)
 		timerHatchEggs:Start(37-delay)
-		initiateTimes = {22, 63, 21, 21, 40}
 	else
 		timerFieryVortexCD:Start(196-delay)
 		timerHatchEggs:Start(47-delay)
-		initiateTimes = {31, 31, 21, 21, 21}
 	end
 	timerNextInitiate:Start(27-delay, L.Both)--First one is same on both difficulties.
 	initiatesSpawned = 0
@@ -225,7 +222,34 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiateSpawns[initiatesSpawned])
 		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.
-		timerNextInitiate:Start(initiateTimes[initiateSpawned], initiateSpawns[initiatesSpawned+1])
+		if self:IsDifficulty("heroic10", "heroic25") then
+		--East: 2 adds, firestorm, 2 adds, firestorm, no adds.
+		--West: 2 adds, firestorm, 1 add, firestorm, 1 add.
+			if initiatesSpawned == 1 then--First on Both sides
+				timerNextInitiate:Start(22, L.Both)--Next will be on both sides
+			elseif initiatesSpawned == 2 then
+				timerNextInitiate:Start(63, L.East)--Next will spawn on east only
+			elseif initiatesSpawned == 3 then
+				timerNextInitiate:Start(21, L.West)--Next will spawn west only
+			elseif initiatesSpawned == 4 then
+				timerNextInitiate:Start(21, L.East)--Next will spawn east only, just before fire storm
+			elseif initiatesSpawned == 5 then
+				timerNextInitiate:Start(40, L.West)--Last will be on west, after a fire storm
+			end
+		else
+			--Using averages, 30-32 and 20-22 are variations.
+			if initiatesSpawned == 1 then--First on Both sides
+				timerNextInitiate:Start(31, L.Both)--Next will be on both sides
+			elseif initiatesSpawned == 2 then
+				timerNextInitiate:Start(31, L.East)--Next will spawn on east only
+			elseif initiatesSpawned == 3 then
+				timerNextInitiate:Start(21, L.West)--Next will spawn west only
+			elseif initiatesSpawned == 4 then
+				timerNextInitiate:Start(21, L.East)--Next will spawn east only
+			elseif initiatesSpawned == 5 then
+				timerNextInitiate:Start(21, L.West)--Last will be on west
+			end
+		end
 	end
 end
 
