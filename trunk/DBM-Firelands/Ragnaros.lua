@@ -24,7 +24,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
 	"UNIT_HEALTH",
-	"UNIT_AURA"
+	"UNIT_AURA",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnHandRagnaros		= mod:NewSpellAnnounce(98237, 3, nil, mod:IsMelee())--Phase 1 only ability
@@ -530,5 +531,11 @@ function mod:UNIT_AURA(uId)
 		meteorWarned = true
 	elseif not UnitDebuff("player", meteorTarget) and meteorWarned then--reset warned status if you don't have debuff
 		meteorWarned = false
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(100386) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
+		print("Molten Seed Cast Detected")
 	end
 end
