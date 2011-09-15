@@ -537,5 +537,6 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
 		print("Molten Seed Cast Detected")
+		DBM.Bars:CreateBar(60, "TestBar: MoltenSeeds")
 	end
 end
