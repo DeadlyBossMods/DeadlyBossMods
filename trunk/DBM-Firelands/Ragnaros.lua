@@ -501,7 +501,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
 		seedsActive = true
-		timerMoltenInferno:Start(2.25)--Always delay Molten Inferno timer, cause it starts when seeds land.
+		timerMoltenInferno:Schedule(2.25)--Always delay Molten Inferno timer, cause it starts when seeds land.
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
 			self:Schedule(2.25, warnSeeds)
 		else
