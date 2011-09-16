@@ -539,9 +539,15 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
 		seedsActive = true
-		self:Schedule(60, warnSeeds)
-		SeedsCountdown:Start(60)
-		timerMoltenSeedCD:Start(60)
+		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode.
+			self:Schedule(62.5, warnSeeds)--This is for strats where you move after they land
+			SeedsCountdown:Start(62.5)
+			timerMoltenSeedCD:Start(62.5)
+		else
+			self:Schedule(60, warnSeeds)--Moving on cast to dodge them
+			SeedsCountdown:Start(60)
+			timerMoltenSeedCD:Start(60)
+		end
 		self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
