@@ -538,9 +538,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
-		if not seedsActive then--In case no one took damage on normal mode from cast, activate seedsActive variable here for the melee engulfing warning.
-			seedsActive = true
-		end
+		seedsActive = true
 		self:Schedule(60, warnSeeds)
 		SeedsCountdown:Start(60)
 		timerMoltenSeedCD:Start(60)
