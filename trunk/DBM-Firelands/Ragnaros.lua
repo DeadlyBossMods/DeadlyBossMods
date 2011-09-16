@@ -18,8 +18,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
---	"SPELL_DAMAGE",
---	"SPELL_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
@@ -105,7 +103,6 @@ local phase2Started = false
 local phase3Started = false
 local blazingHeatIcon = 2
 local seedsActive = false
---local seedsScheduled = false
 local meteorWarned = false
 local meteorTarget = GetSpellInfo(99849)
 local dreadFlame = GetSpellInfo(100675)
@@ -151,7 +148,6 @@ end
 
 local function clearSeedsActive()
 	seedsActive = false
---	seedsScheduled = false
 end
 
 local function showAggroWarning()
@@ -162,13 +158,6 @@ local function showAggroWarning()
 		warnNoAggro:Show()
 	end
 end
-
-local function warnSeeds()
-	warnMoltenSeed:Show()
-	specWarnMoltenSeed:Show()
-	timerMoltenInferno:Start()
-end
-
 
 local function TransitionEnded()
 	timerPhaseSons:Cancel()
@@ -259,7 +248,6 @@ function mod:OnCombatStart(delay)
 	phase3Started = false
 	seedsActive = false
 	meteorWarned = false
---	seedsScheduled = false
 	dreadFlameTimer = 45
 	showRangeFrame()
 	if self:IsDifficulty("normal10", "normal25") then--register alternate kill detection, he only dies on heroic.
@@ -325,21 +313,17 @@ function mod:SPELL_CAST_START(args)
 				phase2Started = true
 				if self:IsDifficulty("heroic10", "heroic25") then
 					if self.Options.warnSeedsLand then
-						self:Schedule(11, warnSeeds)--Schedule the warnings here for more accuracy
 						timerMoltenSeedCD:Update(6, 17)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
 						SeedsCountdown:Start(11)
 					else
-						self:Schedule(9, warnSeeds)--Schedule the warnings here for more accuracy
 						timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
 						SeedsCountdown:Start(9)
 					end
 				else
 					if self.Options.warnSeedsLand then
-						self:Schedule(8, warnSeeds)--Schedule the warnings here for more accuracy
 						timerMoltenSeedCD:Update(16, 24)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
 						SeedsCountdown:Start(8)
 					else
-						self:Schedule(6, warnSeeds)
 						timerMoltenSeedCD:Update(16, 22)
 						SeedsCountdown:Start(6)
 					end
@@ -349,7 +333,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		sonsLeft = 8
 		phase = phase + 1
-		self:Unschedule(warnSeeds)
 		SeedsCountdown:Cancel()
 		timerMoltenSeedCD:Cancel()
 		timerMagmaTrap:Cancel()
@@ -444,34 +427,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(98498, 100579, 100580, 100581) and not seedsActive then--Update seedsActive on earliest possible for engulfing melee warning for normal mode.
-		seedsActive = true
-	elseif args:IsSpellID(98518, 100252, 100253, 100254) then--Molten Inferno. This is seed exploding at end, we use it to schedule warnings for next seeds
-		if not seedsActive then--In case no one took damage on normal mode from cast, activate seedsActive variable here for the melee engulfing warning.
-			seedsActive = true
-		end
-		if not seedsScheduled then--Only schedule once.
-			seedsScheduled = true
-			if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode.
-				self:Schedule(52, warnSeeds)--This has a variation of 51-53, for landing warning we just use the average.
-				SeedsCountdown:Start(52)
-				timerMoltenSeedCD:Start(52)
-			else
-				self:Schedule(49, warnSeeds)--This has a variation of 49-51 but for dodging we use 49 for safeest dodge, even if it means some seeds get scattered a little. Cause sometimes moving at 50 kills the raid if it's a 49 seed.
-				SeedsCountdown:Start(49)
-				timerMoltenSeedCD:Start(49)
-			end
-			self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
-			self:Schedule(2.5, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
-		end
-	end
-end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the first one going off.
---]]
-
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53140 then
@@ -486,7 +441,6 @@ function mod:UNIT_DIED(args)
 		end	
 	end
 end
-
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.TransitionEnded1 or msg:find(L.TransitionEnded1) or msg == L.TransitionEnded2 or msg:find(L.TransitionEnded2) or msg == L.TransitionEnded3 or msg:find(L.TransitionEnded3) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
@@ -539,12 +493,13 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
 		seedsActive = true
+		warnMoltenSeed:Show()
+		specWarnMoltenSeed:Show()
+		timerMoltenInferno:Start()
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode.
-			self:Schedule(62.5, warnSeeds)--This is for strats where you move after they land
 			SeedsCountdown:Start(62.5)
 			timerMoltenSeedCD:Start(62.5)
 		else
-			self:Schedule(60, warnSeeds)--Moving on cast to dodge them
 			SeedsCountdown:Start(60)
 			timerMoltenSeedCD:Start(60)
 		end
