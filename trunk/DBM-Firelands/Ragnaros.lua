@@ -18,8 +18,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
+--	"SPELL_DAMAGE",
+--	"SPELL_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
@@ -105,7 +105,7 @@ local phase2Started = false
 local phase3Started = false
 local blazingHeatIcon = 2
 local seedsActive = false
-local seedsScheduled = false
+--local seedsScheduled = false
 local meteorWarned = false
 local meteorTarget = GetSpellInfo(99849)
 local dreadFlame = GetSpellInfo(100675)
@@ -151,7 +151,7 @@ end
 
 local function clearSeedsActive()
 	seedsActive = false
-	seedsScheduled = false
+--	seedsScheduled = false
 end
 
 local function showAggroWarning()
@@ -259,7 +259,7 @@ function mod:OnCombatStart(delay)
 	phase3Started = false
 	seedsActive = false
 	meteorWarned = false
-	seedsScheduled = false
+--	seedsScheduled = false
 	dreadFlameTimer = 45
 	showRangeFrame()
 	if self:IsDifficulty("normal10", "normal25") then--register alternate kill detection, he only dies on heroic.
@@ -444,6 +444,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--[[
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(98498, 100579, 100580, 100581) and not seedsActive then--Update seedsActive on earliest possible for engulfing melee warning for normal mode.
 		seedsActive = true
@@ -468,6 +469,7 @@ function mod:SPELL_DAMAGE(args)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Improve the accuracy by tracking aborbs too since the timers are entirely based on the first one going off.
+--]]
 
 
 function mod:UNIT_DIED(args)
@@ -535,8 +537,13 @@ function mod:UNIT_AURA(uId)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(100386) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
-		print("Molten Seed Cast Detected")
-		DBM.Bars:CreateBar(60, "TestBar: MoltenSeeds")
+	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
+		if not seedsActive then--In case no one took damage on normal mode from cast, activate seedsActive variable here for the melee engulfing warning.
+			seedsActive = true
+		end
+		self:Schedule(60, warnSeeds)
+		SeedsCountdown:Start(60)
+		timerMoltenSeedCD:Start(60)
+		self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
