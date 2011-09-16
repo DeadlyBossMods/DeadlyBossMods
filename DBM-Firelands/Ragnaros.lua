@@ -146,10 +146,6 @@ local function hideRangeFrame()
 	end
 end
 
-local function clearSeedsActive()
-	seedsActive = false
-end
-
 local function showAggroWarning()
 	if mod:IsTank() or not mod.Options.ElementalAggroWarn then return end--IF you're a tank it's 50/50 you have rag aggro. I could check this but i don't think in any situation it's relevent anyways (ie the tank isn't actually gonna run away from it, he'll tank it if using spread method, or it'll be dead already if using aoe method)
 	if UnitThreatSituation("player") == 3 then
@@ -333,6 +329,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(98951, 98952, 98953, 100877) or args:IsSpellID(100878, 100879, 100880, 100881) or args:IsSpellID(100882, 100883, 100884, 100885) then--This has 12 spellids, 1 for each possible location for hammer.
 		sonsLeft = 8
 		phase = phase + 1
+		self:Unschedule(warnSeeds)
 		SeedsCountdown:Cancel()
 		timerMoltenSeedCD:Cancel()
 		timerMagmaTrap:Cancel()
@@ -490,19 +487,26 @@ function mod:UNIT_AURA(uId)
 	end
 end
 
+local function warnSeeds()
+	warnMoltenSeed:Show()
+	specWarnMoltenSeed:Show()
+	SeedsCountdown:Start(60)
+	timerMoltenSeedCD:Start()
+end
+
+local function clearSeedsActive()
+	seedsActive = false
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
 		seedsActive = true
-		warnMoltenSeed:Show()
-		specWarnMoltenSeed:Show()
-		timerMoltenInferno:Start()
-		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode.
-			SeedsCountdown:Start(62.5)
-			timerMoltenSeedCD:Start(62.5)
+		timerMoltenInferno:Start(2.25)--Always delay Molten Inferno timer, cause it starts when seeds land.
+		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
+			self:Schedule(2.25, warnSeeds)
 		else
-			SeedsCountdown:Start(60)
-			timerMoltenSeedCD:Start(60)
+			self:warnSeeds()
 		end
-		self:Schedule(15, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+		self:Schedule(17.5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
 end
