@@ -24,7 +24,8 @@ mod:RegisterEvents(
 	"SPELL_HEAL",
 	"SPELL_PERIODIC_HEAL",
 	"RAID_BOSS_EMOTE",
-	"UNIT_AURA"
+	"UNIT_AURA",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --Valiona Ground Phase
@@ -356,5 +357,13 @@ function mod:UNIT_AURA(uId)
 		yellTwilightMeteorite:Yell()
 		markWarned = true
 		self:Schedule(7, markRemoved)
+	end
+end
+
+--Guesswork on event, another fight i'll need to re-transcribe with new working version.
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(86497) then
+		print("Fabulous Flames cast detected")
+		DBM.Bars:CreateBar(15, "Fab Flames Test Bar")
 	end
 end
