@@ -19,7 +19,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_DAMAGE",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnBreath		= mod:NewSpellAnnounce(92944, 3)
@@ -307,5 +308,13 @@ function mod:UNIT_DIED(args)
 			OrbsCountdown:Start(30)
 			self:ScheduleMethod(30, "OrbsRepeat")
 		end
+	end
+end
+
+--I'll still need transcriptor to find an earlier cast if one exists for the actual summoning of orbs.
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(92851) then
+		print("Twilight Slicer cast detected")
+--		DBM.Bars:CreateBar(28, "Slicer Test Bar")
 	end
 end
