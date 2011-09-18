@@ -15,6 +15,7 @@ mod:RegisterEvents(
 
 local warnTwilightZone			= mod:NewSpellAnnounce(93553, 2)--Used for protection against UnleashedMagic
 local warnTwilightFissure		= mod:NewTargetAnnounce(93546, 3)--Typical void zone.
+local warnTwilightBuffet		= mod:NewTargetAnnounce(93551, 3)
 local warnUnleashedMagic		= mod:NewCastAnnounce(93556, 4)--An attack that one shots anyone not in a twilight zone.
 
 local specWarnUnleashedMagic	= mod:NewSpecialWarningSpell(93556, nil, nil, nil, true)
@@ -22,6 +23,8 @@ local specWarnTwilightFissure	= mod:NewSpecialWarningYou(93546)
 
 local timerTwilightFissureCD	= mod:NewCDTimer(23, 93546)
 local timerTwilightZoneCD		= mod:NewNextTimer(30, 93553)
+local timerTwilightBuffetCD		= mod:NewCDTimer(20, 93551)
+local timerTwilightBuffet		= mod:NewTargetTimer(10, 93551)
 --local timerUnleashedMagicCD	= mod:NewNextTimer(60, 93494)--She doesn't seem to use this ability if you don't have at least 3 ranged in group. Melee comps or tiny groups avoid this completely.
 
 function mod:FissureTarget()
@@ -44,15 +47,29 @@ function mod:SPELL_CAST_START(args)
 		warnUnleashedMagic:Show()
 		specWarnUnleashedMagic:Show()
 --		timerUnleashedMagicCD:Start()
-	elseif args:IsSpellID(93546) then--Assumed spell event, could be spell summon or something else.
+	elseif args:IsSpellID(93546) then
 		self:ScheduleMethod(0.2, "FissureTarget")
 		timerTwilightFissureCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(93553) then--Assumed spell event, could be spell summon or something else.
+	if args:IsSpellID(93553) then
 		warnTwilightZone:Show()
 		timerTwilightZoneCD:Start()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(93551) then
+		warnTwilightBuffet:Show(args.destName)
+		timerTwilightBuffet:Start(args.destName)
+		timerTwilightBuffetCD:Start()
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(93551) then
+		timerTwilightBuffet:Cancel(args.destName)
 	end
 end
