@@ -11,7 +11,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED"
 )
 
 local warnThrow				= mod:NewTargetAnnounce(97639, 3)
@@ -25,6 +27,9 @@ local warnSurge				= mod:NewTargetAnnounce(42402, 3)--Bear Form
 local warnClawRage			= mod:NewTargetAnnounce(97672, 3)--Lynx Form
 local warnLightningTotem	= mod:NewSpellAnnounce(97930, 4)--Eagle Form
 
+local specWarnFlameBreath	= mod:NewSpecialWarningMove(97497)
+local specWarnBurn			= mod:NewSpecialWarningMove(97682)
+
 local timerThrow			= mod:NewNextTimer(15, 97639)
 local timerParalysisCD		= mod:NewNextTimer(27, 43095)
 local timerSurgeCD			= mod:NewNextTimer(8.5, 42402)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
@@ -34,7 +39,12 @@ mod:AddBoolOption("ThrowIcon", false)
 mod:AddBoolOption("ClawRageIcon", true)
 mod:AddBoolOption("InfoFrame")
 
+local lastburn = 0
+local spamFlameBreath2 = 0
+
 function mod:OnCombatStart(delay)
+	lastburn = 0
+	spamFlameBreath2 = 0
 end
 
 function mod:OnCombatEnd()
@@ -57,6 +67,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.ClawRageIcon then
 			self:SetIcon(args.destName, 8, 5)
 		end
+	elseif args:IsSpellID(97497) and args:IsPlayer() and GetTime() - spamFlameBreath2 >= 3 and self:IsInCombat() then
+		specWarnFlameBreath:Show()
+		spamFlameBreath2 = GetTime()
 	end
 end
 
@@ -111,3 +124,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerParalysisCD:Start()
 	end
 end
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(97682) and args:IsPlayer() and GetTime() - lastburn > 3 then
+		specWarnBurn:Show()
+		lastburn = GetTime()
+	end
+end
+
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
