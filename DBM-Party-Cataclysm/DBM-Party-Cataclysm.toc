@@ -108,6 +108,15 @@ ZulGurub\CoMWushoolay.lua
 ZulGurub\Kilnara.lua
 ZulGurub\Zanzil.lua
 ZulGurub\Jindo.lua
+EndTime\MapSizes.lua
+EndTime\Sylvanas.lua
+EndTime\Tyrande.lua
+EndTime\Jaina.lua
+EndTime\Baine.lua
+WellOfEternity\MapSizes.lua
+WellOfEternity\Perotharn.lua
+WellOfEternity\Azshara.lua
+WellOfEternity\Mannoroth.lua
 WorldBosses\Akmahat.lua
 WorldBosses\Garr.lua
 WorldBosses\JulakDoom.lua

@@ -1069,3 +1069,154 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 }
+
+----------------
+--  End Time  --
+----------------------
+-- Echo of Sylvanas --
+----------------------
+L = DBM:GetModLocalization("EchoSylvanas")
+
+L:SetGeneralLocalization{
+	name = "Echo of Sylvanas"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+---------------------
+-- Echo of Tyrande --
+---------------------
+L = DBM:GetModLocalization("EchoTyrande")
+
+L:SetGeneralLocalization{
+	name = "Echo of Tyrande"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-------------------
+-- Echo of Jaina --
+-------------------
+L = DBM:GetModLocalization("EchoJaina")
+
+L:SetGeneralLocalization{
+	name = "Echo of Jaina"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------
+-- Echo of Baine --
+----------------------
+L = DBM:GetModLocalization("EchoBaine")
+
+L:SetGeneralLocalization{
+	name = "Echo of Baine"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+------------------------
+--  Well of Eternity  --
+------------------------
+-- Peroth'arn --
+----------------
+L = DBM:GetModLocalization("Perotharn")
+
+L:SetGeneralLocalization{
+	name = "Peroth'arn"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-------------
+-- Azshara --
+-------------
+L = DBM:GetModLocalization("Azshara")
+
+L:SetGeneralLocalization{
+	name = "Azshara"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-----------------------------
+-- Mannoroth and Varo'then --
+-----------------------------
+L = DBM:GetModLocalization("Mannoroth")
+
+L:SetGeneralLocalization{
+	name = "Mannoroth & Varo'then"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
