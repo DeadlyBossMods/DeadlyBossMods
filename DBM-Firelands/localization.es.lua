@@ -180,6 +180,7 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
 	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
 	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
+	warnSeedsLand		= "Mostrar aviso/tiempo para el aterrizaje de $spell:98520 en lugar de los casteos.",
 	ElementalAggroWarn	= "Mostrar un aviso por si tienes o no aggro de los Elementales de Magma",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
@@ -196,11 +197,11 @@ L:SetMiscLocalization({
 	South				= "Atrás",
 	HealthInfo			= "Menos de 110k de vida",
 	MeteorTargets		= "HOYGA METEHORITOS!",
-	TransitionEnded1	= "Enough! I will finish this.",--translate
-	TransitionEnded2	= "Sulfuras will be your end.",--translate
-	TransitionEnded3	= "Fall to your knees, mortals!  This ends now.",--translate
+	TransitionEnded1	= "¡Basta! Yo terminaré esto.",
+	TransitionEnded2	= "Sulfuras será vuestro fin.",
+	TransitionEnded3	= "¡De rodillas, mortales! Esto termina ahora.",
 	Defeat				= "Too soon! ... You have come too soon...",--translate
-	Phase4				= "Too soon..."
+	Phase4				= "Too soon..."--translate
 })
 
 -----------------------
