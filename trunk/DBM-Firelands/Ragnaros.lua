@@ -500,20 +500,6 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
-		self:SendSync("Seeds")--Send a sync out just in case somoene does not get this event.
-		seedsActive = true
-		timerMoltenInferno:Schedule(2.25)--Always delay Molten Inferno timer, cause it starts when seeds land.
-		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
-			self:Schedule(2.25, warnSeeds)
-		else
-			warnSeeds()
-		end
-		self:Schedule(17.5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
-	end
-end
-
-function mod:OnSync(event, arg)
-	if event == "Seeds" and not seedsActive then--Fire event if you recieve a sync and have NOT already fired event off UNIT_SPELLCAST_SUCCEEDED
 		seedsActive = true
 		timerMoltenInferno:Schedule(2.25)--Always delay Molten Inferno timer, cause it starts when seeds land.
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
