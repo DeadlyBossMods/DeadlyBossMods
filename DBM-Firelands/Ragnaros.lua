@@ -506,7 +506,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
 			self:Schedule(2.25, warnSeeds)
 		else
-			self:warnSeeds()
+			warnSeeds()
 		end
 		self:Schedule(17.5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
@@ -519,7 +519,7 @@ function mod:OnSync(event, arg)
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
 			self:Schedule(2.25, warnSeeds)
 		else
-			self:warnSeeds()
+			warnSeeds()
 		end
 		self:Schedule(17.5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 	end
