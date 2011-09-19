@@ -194,7 +194,7 @@ L:SetMiscLocalization({
 	Middle				= "Middle",
 	North				= "Melee",
 	South				= "Back",
-	HealthInfo			= "Under 90k HP",
+	HealthInfo			= "Under 110k HP",
 	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
 	TransitionEnded2	= "Sulfuras will be your end.",
