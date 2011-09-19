@@ -183,7 +183,7 @@ L:SetOptionLocalization({
 	ElementalAggroWarn	= "Mostrar un aviso por si tienes o no aggro de los Elementales de Magma",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
-	InfoHealthFrame		= "Mostrar información de vida (<90k de vida)",
+	InfoHealthFrame		= "Mostrar información de vida (<110k de vida)",
 	InfoFrame			= "Mostrar información de los objetivos de $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
@@ -194,7 +194,7 @@ L:SetMiscLocalization({
 	Middle				= "Medio",
 	North				= "Melee",
 	South				= "Atrás",
-	HealthInfo			= "Menos de 90k de vida",
+	HealthInfo			= "Menos de 110k de vida",
 	MeteorTargets		= "HOYGA METEHORITOS!",
 	TransitionEnded1	= "Enough! I will finish this.",--translate
 	TransitionEnded2	= "Sulfuras will be your end.",--translate
