@@ -1,0 +1,3 @@
+--DBM:RegisterMapSize("EndTime",
+--	0, 1200, 400
+--)
