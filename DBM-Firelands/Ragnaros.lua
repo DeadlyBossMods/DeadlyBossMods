@@ -161,16 +161,16 @@ local function TransitionEnded()
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerSulfurasSmash:Start(6)
 			if mod.Options.warnSeedsLand then
-				timerMoltenSeedCD:Start(17)
+				timerMoltenSeedCD:Start(17.5)
 			else
-				timerMoltenSeedCD:Start(15)
+				timerMoltenSeedCD:Start(15)--14.8-16 variation. We use earliest time for safety.
 			end
 		else
 			timerSulfurasSmash:Start(15.5)
 			if mod.Options.warnSeedsLand then
 				timerMoltenSeedCD:Start(24)--23-25 Variation. we use the average
 			else
-				timerMoltenSeedCD:Start(22)
+				timerMoltenSeedCD:Start(21.5)--Use the earliest known time, based on my logs is 21.5
 			end
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
@@ -309,19 +309,19 @@ function mod:SPELL_CAST_START(args)
 				phase2Started = true
 				if self:IsDifficulty("heroic10", "heroic25") then
 					if self.Options.warnSeedsLand then
-						timerMoltenSeedCD:Update(6, 17)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-						SeedsCountdown:Start(11)
+						timerMoltenSeedCD:Update(6, 17.5)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+						SeedsCountdown:Start(11.5)
 					else
 						timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-						SeedsCountdown:Start(9)
+						SeedsCountdown:Start(9)--9.3-10.5 variation we use 9 to be extra safe as it has worked til now no reason to mess with it.
 					end
 				else
 					if self.Options.warnSeedsLand then
-						timerMoltenSeedCD:Update(16, 24)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-						SeedsCountdown:Start(8)
+						timerMoltenSeedCD:Update(16.2, 24)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
+						SeedsCountdown:Start(7.8)
 					else
-						timerMoltenSeedCD:Update(16, 22)
-						SeedsCountdown:Start(6)
+						timerMoltenSeedCD:Update(16.2, 21.5)--I'll run more transcriptor logs to tweak this
+						SeedsCountdown:Start(5.3)
 					end
 				end
 			end
@@ -501,9 +501,9 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
 		seedsActive = true
-		timerMoltenInferno:Schedule(2.25)--Always delay Molten Inferno timer, cause it starts when seeds land.
+		timerMoltenInferno:Schedule(2.15)--1.8-2.5 variation, we use average here
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
-			self:Schedule(2.25, warnSeeds)
+			self:Schedule(2.5, warnSeeds)--But use upper here
 		else
 			warnSeeds()
 		end
