@@ -183,7 +183,7 @@ L:SetOptionLocalization({
 	ElementalAggroWarn	= "Show warning for whether or not you have Aggro from Molten Elementals",
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
-	InfoHealthFrame		= "Show info frame for health (<90k hp)",
+	InfoHealthFrame		= "Show info frame for health (<110k hp)",
 	InfoFrame			= "Show info frame for $spell:99849 targets",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
