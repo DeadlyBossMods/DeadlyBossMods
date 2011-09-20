@@ -142,11 +142,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		spellName = GetSpellInfo(99353)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
-		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+--[[		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
 			timerStrikeCD:Start(2.5, spellName)
 		else
 			timerStrikeCD:Start(5, spellName)--5 seconds on 10 man
-		end
+		end--]]
 	elseif args:IsSpellID(99350) then--Inferno Blades
 		spellName = GetSpellInfo(101002)
 		lastStrike = GetTime()--Set last strike here too
@@ -156,10 +156,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			warnTormented:Show()
 			specWarnTormented:Show()
-			if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
-				timerTormented:Start(60)--Longer on 25 man
-			else
-				timerTormented:Start()
+			if self:IsDifficulty("normal10") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+--				timerTormented:Start(30)--Unknown post hotfix will need new data
+			elseif self:IsDifficulty("heroic10") then
+				timerTormented:Start(40)
+			elseif self:IsDifficulty("normal25") then
+--				timerTormented:Start(45)--Unknown post hotfix will need new data
+			elseif self:IsDifficulty("heroic25") then
+				timerTormented:Start(60)
 			end
 			if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") and self:IsInCombat() then
 				DBM.RangeCheck:Show(5, nil)--Show everyone, cause you're debuff person and need to stay away from people.
@@ -171,12 +175,14 @@ end
 function mod:SPELL_AURA_REFRESH(args)
 	if args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
 		if args:IsPlayer() then
---			warnTormented:Show()
---			specWarnTormented:Show()
-			if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
-				timerTormented:Start(60)--Longer on 25 man
-			else
-				timerTormented:Start()
+			if self:IsDifficulty("normal10") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+--				timerTormented:Start(30)--Unknown post hotfix will need new data
+			elseif self:IsDifficulty("heroic10") then
+				timerTormented:Start(40)
+			elseif self:IsDifficulty("normal25") then
+--				timerTormented:Start(45)--Unknown post hotfix will need new data
+			elseif self:IsDifficulty("heroic25") then
+				timerTormented:Start(60)
 			end
 		end
 	end
@@ -206,7 +212,7 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(99353) then--Decimation Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)
-		if strikeCount == 6 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 3 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
+--[[		if strikeCount == 6 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 3 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
 		currentStrike = GetTime()--Get time of current strike stamped.
 		lastStrikeDiff = currentStrike - lastStrike--Find out time difference between last strike and current strike.
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
@@ -226,7 +232,7 @@ function mod:SPELL_DAMAGE(args)
 				timerStrikeCD:Start(5+lastStrikeDiff, spellName)
 			end
 		end
-		lastStrike = GetTime()--Update last strike timing to this one after function fires.
+		lastStrike = GetTime()--Update last strike timing to this one after function fires.--]]
 	elseif args:IsSpellID(99351, 101000, 101001, 101002) then--Inferno Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)

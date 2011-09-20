@@ -29,7 +29,7 @@ local warnFirestorm		= mod:NewSpellAnnounce(100744, 4)
 local warnCataclysm		= mod:NewCastAnnounce(102111, 3)
 local warnPhase			= mod:NewAnnounce("WarnPhase", 3, "Interface\\Icons\\Spell_Nature_WispSplode")
 local warnNewInitiate	= mod:NewAnnounce("WarnNewInitiate", 3, 61131)
-local warnBlazingClaw	= mod:NewCountAnnounce(101731, 3)
+--local warnBlazingClaw	= mod:NewCountAnnounce(101731, 3)--This wasn't even remotely accurate going off damage, i'm gonna redo it to use spellcast_succeeded if possible.
 
 local specWarnFirestorm			= mod:NewSpecialWarningSpell(100744, nil, nil, nil, true)
 local specWarnFieroblast		= mod:NewSpecialWarningInterrupt(101223)
@@ -123,26 +123,26 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerWingsofFlame:Start()
 	elseif args:IsSpellID(99844, 101729, 101730, 101731) and args:IsDestTypePlayer() then
 		timerBlazingClaw:Start(args.destName)
-		if GetTime() - spamClaw > 1 then--Prevent count from increasing from more then 1 target being hit by it at same time (ie someone is in wrong place)
+--[[		if GetTime() - spamClaw > 1 then--Prevent count from increasing from more then 1 target being hit by it at same time (ie someone is in wrong place)
 			spamClaw = GetTime()
 			clawCast = clawCast + 1
 			if clawCast % 3 == 0 then--Warn every 3
 				warnBlazingClaw:Show(clawCast)--We warn for cast count not spell aura applied count, cause there could be two diff people with two diff stack counts
 			end
-		end
+		end--]]
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(99844, 101729, 101730, 101731) and args:IsDestTypePlayer() then
 		timerBlazingClaw:Start(args.destName)
-		if GetTime() - spamClaw > 1 then
+--[[		if GetTime() - spamClaw > 1 then
 			spamClaw = GetTime()
 			clawCast = clawCast + 1
 			if clawCast % 3 == 0 then--Warn every 3
 				warnBlazingClaw:Show(clawCast)
 			end
-		end
+		end--]]
 	end
 end
 
