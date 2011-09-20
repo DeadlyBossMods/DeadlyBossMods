@@ -1,0 +1,41 @@
+﻿## Interface: 40200
+## X-Min-Interface: 40200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMDragonSoul_SavedVars, DBMDragonSoul_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-Name: Dragon Soul
+## X-DBM-Mod-Name-deDE: Dragon Soul
+## X-DBM-Mod-Name-esES: Dragon Soul
+## X-DBM-Mod-Name-koKR: Dragon Soul
+## X-DBM-Mod-Name-ruRU: Dragon Soul
+## X-DBM-Mod-Name-zhTW: Dragon Soul
+## X-DBM-Mod-Name-zhCN: Dragon Soul
+## X-DBM-Mod-Sort: 101
+## X-DBM-Mod-LoadZoneID: 999
+localization.en.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+localization.cn.lua
+MapSizes.lua
+Morchok.lua
+Zonozz.lua
+Yorsahj.lua
+Hagara.lua
+Ultraxion.lua
+Blackhorn.lua
+DeathwingFlight.lua
+DeathwingExposed.lua
