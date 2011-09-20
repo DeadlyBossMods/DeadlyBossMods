@@ -501,7 +501,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
 		seedsActive = true
-		timerMoltenInferno:Schedule(2.15)--1.8-2.5 variation, we use average here
+		timerMoltenInferno:Start(12.15)--1.8-2.5 variation, we use average here +10 seconds
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.
 			self:Schedule(2.5, warnSeeds)--But use upper here
 		else
