@@ -20,7 +20,7 @@
 ## X-DBM-Mod-Name-ruRU: Dragon Soul
 ## X-DBM-Mod-Name-zhTW: Dragon Soul
 ## X-DBM-Mod-Name-zhCN: Dragon Soul
-## X-DBM-Mod-Sort: 101
+## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZoneID: 999
 localization.en.lua
 localization.de.lua
