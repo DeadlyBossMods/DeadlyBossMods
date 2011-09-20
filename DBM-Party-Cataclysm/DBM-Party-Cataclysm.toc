@@ -118,6 +118,9 @@ WellOfEternity\Perotharn.lua
 WellOfEternity\Azshara.lua
 WellOfEternity\Mannoroth.lua
 HourOfTwilight\MapSizes.lua
+HourOfTwilight\Arcurion.lua
+HourOfTwilight\AsiraDawnslayer.lua
+HourOfTwilight\Benedictus.lua
 WorldBosses\Akmahat.lua
 WorldBosses\Garr.lua
 WorldBosses\JulakDoom.lua

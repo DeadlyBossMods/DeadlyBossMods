@@ -1103,3 +1103,68 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 }
+
+------------------------
+--  Hour of Twilight  --
+------------------------
+-- Arcurion --
+--------------
+L = DBM:GetModLocalization("Arcurion")
+
+L:SetGeneralLocalization{
+	name = "Arcurion"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------
+-- Asira Dawnslayer --
+----------------------
+L = DBM:GetModLocalization("AsiraDawnslayer")
+
+L:SetGeneralLocalization{
+	name = "Asira Dawnslayer"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+---------------------------
+-- Archbishop Benedictus --
+---------------------------
+L = DBM:GetModLocalization("Benedictus")
+
+L:SetGeneralLocalization{
+	name = "Archbishop Benedictus"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
