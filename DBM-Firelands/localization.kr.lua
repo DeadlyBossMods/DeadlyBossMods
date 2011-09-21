@@ -142,10 +142,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(197)
 
 L:SetWarningLocalization({
-	timerNextSpecial	= "다음 %s (%d)"
 })
 
 L:SetTimerLocalization({
+	timerNextSpecial	= "다음 %s (%d)"
 })
 
 L:SetOptionLocalization({
@@ -167,7 +167,7 @@ L= DBM:GetModLocalization(198)
 L:SetWarningLocalization({
 	warnSplittingBlow		= "%s (%s)",--Spellname in Location
 	warnEngulfingFlame		= "%s (%s)",--Spellname in Location
-	WarnRemainingAdds		= "남은 자손: %d",
+	WarnRemainingAdds		= "남은 피조물: %d",
 	warnAggro				= "녹아내린 정령으로부터 위협수준 획득함!!!",
 	warnNoAggro				= "녹아내린 정령에게서 안전함:)"
 })
@@ -179,12 +179,12 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "$spell:100877 경고 보기",
 	warnEngulfingFlame	= "$spell:99171 경고 보기",
-	WarnRemainingAdds	= "전환 단계에서 쫄이 얼마나 남았는지에 대한 경고 보기",
+	WarnRemainingAdds	= "전환 단계에서 피조물이 얼마나 남았는지에 대한 경고 보기",
 	warnSeedsLand		= "$spell:98520이 시전될때가 아니라 폭발할때 경고 보기",
 	ElementalAggroWarn	= "녹아내린 정령으로부터 위협수준 획득 유무에 대한 경고 보기",
 	TimerPhaseSons		= "전환 단계 지속 타이머 보기",
 	RangeFrame			= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
-	InfoHealthFrame		= "체력 정보 프레임 보기 (9만 미만)",
+	InfoHealthFrame		= "체력 정보 프레임 보기 (11만 미만)",
 	InfoFrame			= "$spell:99849 대상 정보 프레임 보기",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
@@ -195,7 +195,7 @@ L:SetMiscLocalization({
 	Middle				= "중앙",
 	North				= "근접",
 	South				= "뒤쪽",
-	HealthInfo			= "체력 9만 미만",
+	HealthInfo			= "체력 11만 미만",
 	MeteorTargets		= "유성 조심!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "여기까지! 이제 끝내주마.",--More reliable then adds method.
 	TransitionEnded2	= "설퍼라스로 숨통을 끊어 주마.",
