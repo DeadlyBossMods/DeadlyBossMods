@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 9/21/2011
+-- Last update: 9/22/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -131,8 +131,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	target					= "%s: %%s",
 	cast					= "%s",
 	active					= "%s",
-	cd					= "%s 冷却",
-	next 					= "下一次 %s",
+	cd					= "%s冷却",
+	cdcount		= "%s冷却（%%d）",
+	next 					= "下一次%s",
+	nextcount	= "下一次%s（%%d）",
 	achievement 				= "%s",
 }
 
@@ -141,7 +143,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cast					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r施法时间",
 	active					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
 	cd					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
+	cdcount		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
 	next					= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
+	nextcount	= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement				= "计时条：成就%s",
 }
 

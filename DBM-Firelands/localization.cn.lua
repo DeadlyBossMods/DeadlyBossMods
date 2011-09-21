@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/21/2011
+-- Last update: 9/22/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -118,17 +118,22 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerStrike			= "下一次%s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "下一次贝尔洛克之剑"
 })
 
 L:SetOptionLocalization({
+	ResetShardsinThrees	= "每3秒（25人）/2秒（10人）重置$spell:99259的倒数计时",
+	warnStrike			= "警报：毁灭之刃或地狱火之刃",
+	timerStrike			= "计时条：下一次毁灭之刃或地狱火之刃",
 	TimerBladeActive	= "计时条：当前贝尔洛克之剑的持续时间",
 	TimerBladeNext		= "计时条：下一次贝尔洛克之剑",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "DBM箭头：当你受到$spell:99516影响时",
-	InfoFrame		= "信息框：活力火花堆叠层数"
+	InfoFrame		= "信息框：活力火花堆叠层数",
+	RangeFrame			= "距离监视器（5码）：应对$spell:99404"
 })
 
 L:SetMiscLocalization({
@@ -149,8 +154,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerNextSpecial			= "计时条：下一次特殊技能",
-	RangeFrameSeeds				= "距离监视器（12码）：$spell:98450",
-	RangeFrameCat				= "距离监视器（10码）：$spell:98374",
+	RangeFrameSeeds				= "距离监视器（12码）：应对$spell:98450",
+	RangeFrameCat				= "距离监视器（10码）：应对$spell:98374",
 	LeapArrow					= "DBM箭头：当$spell:98476在你附近时",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
@@ -219,7 +224,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "距离监视器（10码）：$spell:100012"
+	TrashRangeFrame	= "距离监视器（10码）：应对$spell:100012"
 })
 
 L:SetMiscLocalization({
