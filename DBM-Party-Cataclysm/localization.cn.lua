@@ -1,5 +1,5 @@
-﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 8/31/2011
+-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
+-- Last update: 9/19/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -152,7 +152,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Blitz		= "sets his eyes on |cFFFF0000(%S+)"
+	Blitz		= "盯住了|cFFFF0000(%S+)"
 }
 
 --------------------------
@@ -175,8 +175,8 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- Yell when Valiona is incoming
-	Add			= "%s Summons an",
-	Valiona		= "Valiona"
+	Add			= "%s召唤了",
+	Valiona		= "瓦里昂娜"
 }
 
 ------------
@@ -209,7 +209,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	Kill		= "Ptah... is... no more..."
+	Kill		= "塔赫……不复存在了……"
 }
 
 --------------
@@ -320,8 +320,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "Blaze of the Heavens",
-	HarbringerDarkness	= "Harbringer of Darkness"
+	BlazeHeavens		= "天堂炽焰",
+	HarbringerDarkness	= "黑暗先驱"
 }
 
 --------------
@@ -870,166 +870,112 @@ L:SetMiscLocalization{
 	Kill			= "You overstepped your bounds, Jin'do. You toy with powers that are beyond you. Have you forgotten who I am? Have you forgotten what I can do?!"
 }
 
-----------------
---  End Time  --
 ----------------------
--- Echo of Sylvanas --
+-- Cache of Madness --
 ----------------------
-L = DBM:GetModLocalization("EchoSylvanas")
-
-L:SetGeneralLocalization{
-	name = "Echo of Sylvanas"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
----------------------
--- Echo of Tyrande --
----------------------
-L = DBM:GetModLocalization("EchoTyrande")
-
-L:SetGeneralLocalization{
-	name = "Echo of Tyrande"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
--------------------
--- Echo of Jaina --
--------------------
-L = DBM:GetModLocalization("EchoJaina")
-
-L:SetGeneralLocalization{
-	name = "Echo of Jaina"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
-----------------------
--- Echo of Baine --
-----------------------
-L = DBM:GetModLocalization("EchoBaine")
-
-L:SetGeneralLocalization{
-	name = "Echo of Baine"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
-------------------------
---  Well of Eternity  --
-------------------------
--- Peroth'arn --
-----------------
-L = DBM:GetModLocalization("Perotharn")
-
-L:SetGeneralLocalization{
-	name = "Peroth'arn"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -------------
--- Azshara --
+-- Gri'lek --
 -------------
-L = DBM:GetModLocalization("Azshara")
+--L= DBM:GetModLocalization(603)
+
+L = DBM:GetModLocalization("CoMGrilek")
 
 L:SetGeneralLocalization{
-	name = "Azshara"
+	name = "格里雷克"
 }
 
-L:SetWarningLocalization{
-}
+L:SetWarningLocalization({
+})
 
-L:SetTimerLocalization{
-}
+L:SetTimerLocalization({
+})
 
-L:SetOptionLocalization{
-}
+L:SetOptionLocalization({
+})
 
-L:SetMiscLocalization{
-}
+--			"<15.7> [MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#%s is chasing Bownd.#Gri'lek###Bownd##0#0##0#4672##0#false#false", -- [94]
+L:SetMiscLocalization({
+	pursuitEmote	= "%s is chasing"
+})
 
------------------------------
--- Mannoroth and Varo'then --
------------------------------
-L = DBM:GetModLocalization("Mannoroth")
+---------------
+-- Hazza'rah --
+---------------
+--L= DBM:GetModLocalization(604)
+
+L = DBM:GetModLocalization("CoMGHazzarah")
 
 L:SetGeneralLocalization{
-	name = "Mannoroth & Varo'then"
+	name = "哈扎拉尔"
 }
 
-L:SetWarningLocalization{
-}
+L:SetWarningLocalization({
+})
 
-L:SetTimerLocalization{
-}
+L:SetTimerLocalization({
+})
 
-L:SetOptionLocalization{
-}
+L:SetOptionLocalization({
+})
 
-L:SetMiscLocalization{
-}
+L:SetMiscLocalization({
+})
 
-------------------------
---  Hour of Twilight  --
-------------------------
--- Arcurion --
 --------------
-L = DBM:GetModLocalization("Arcurion")
+-- Renataki --
+--------------
+--L= DBM:GetModLocalization(605)
+
+L = DBM:GetModLocalization("CoMRenataki")
 
 L:SetGeneralLocalization{
-	name = "Arcurion"
+	name = "雷纳塔基"
+}
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+---------------
+-- Wushoolay --
+---------------
+--L= DBM:GetModLocalization(606)
+
+L = DBM:GetModLocalization("CoMWushoolay")
+
+L:SetGeneralLocalization{
+	name = "乌苏雷"
+}
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+--------------------
+--  World Bosses  --
+-------------------------
+-- Akma'hat --
+-------------------------
+L = DBM:GetModLocalization("Akmahat")
+
+L:SetGeneralLocalization{
+	name = "阿卡玛哈特"
 }
 
 L:SetWarningLocalization{
@@ -1044,13 +990,13 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
-----------------------
--- Asira Dawnslayer --
-----------------------
-L = DBM:GetModLocalization("AsiraDawnslayer")
+-----------
+-- Garr --
+----------
+L = DBM:GetModLocalization("Garr")
 
 L:SetGeneralLocalization{
-	name = "Asira Dawnslayer"
+	name = "加尔（大地的裂变）"
 }
 
 L:SetWarningLocalization{
@@ -1065,13 +1011,56 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
----------------------------
--- Archbishop Benedictus --
----------------------------
-L = DBM:GetModLocalization("Benedictus")
+----------------
+-- Julak-Doom --
+----------------
+L = DBM:GetModLocalization("JulakDoom")
 
 L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
+	name = "厄运由拉克"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnMC	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(93621)
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Mobus --
+-----------
+L = DBM:GetModLocalization("Mobus")
+
+L:SetGeneralLocalization{
+	name = "魔布斯"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+-----------
+-- Xariona --
+-----------
+L = DBM:GetModLocalization("Xariona")
+
+L:SetGeneralLocalization{
+	name = "埃克萨妮奥娜"
 }
 
 L:SetWarningLocalization{
