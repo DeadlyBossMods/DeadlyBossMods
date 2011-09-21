@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/19/2011
+-- Last update: 9/22/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -855,14 +855,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left"
+	WarnBarrierDown	= "哈卡之链壁垒被摧毁 - %d/3剩余"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "警报：哈卡之链的护盾被摧毁",
+	WarnBarrierDown	= "警报：哈卡之链的壁垒被摧毁",
 	BodySlamIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97198)
 }
 
