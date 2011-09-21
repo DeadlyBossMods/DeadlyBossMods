@@ -1,50 +1,33 @@
--- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 8/26/2011
+﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
+-- Last update: 9/21/2011
 
 if GetLocale() ~= "zhCN" then return end
 
 local L
 
----------------
--- Alysrazor --
----------------
-L= DBM:GetModLocalization(194)
+-----------------
+-- Beth'tilac --
+-----------------
+L= DBM:GetModLocalization(192)
 
 L:SetWarningLocalization({
-	WarnPhase			= "第%d阶段",
-	WarnNewInitiate		= "Blazing Talon Initiate (%s)"
 })
 
 L:SetTimerLocalization({
-	TimerPhaseChange	= "Phase %d",
-	TimerHatchEggs		= "Next Eggs",
-	timerNextInitiate	= "Next Initiate (%s)",
-	TimerCombatStart	= "Combat starts"
+	TimerSpinners 		= "下一波织网蛛",
+	TimerSpiderlings	= "下一波幼蛛",
+	TimerDrone			= "下一波工虫"
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Show timer for start of combat",
-	WarnPhase			= "Show a warning for each phase change",
-	WarnNewInitiate		= "Show a warning for new Blazing Talon Initiate",
-	timerNextInitiate	= "Show a timer for next Blazing Talon Initiate",
-	TimerPhaseChange	= "Show a timer till next phase",
-	TimerHatchEggs		= "Show a timer till next eggs are hatched",
-	InfoFrame			= "Show info frame for Molten Feather"
+	TimerSpinners		= "计时条：下一波$journal:2770",
+	TimerSpiderlings	= "计时条：下一波$journal:2778",
+	TimerDrone			= "计时条：下一波$journal:2773",
+	RangeFrame			= "距离监视器（10码）",
 })
 
 L:SetMiscLocalization({
-	YellPull		= "I serve a new master now, mortals!",
-	YellInitiate1	= "We call upon you, Firelord!",
-	YellInitiate2	= "Behold His power!",
-	YellInitiate3	= "Let the unbelievers perish in fire!",
-	YellInitiate4	= "Witness the majesty of flame!",
-	YellPhase2		= "These skies are MINE!",
-	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
-	LavaWorms		= "Fiery Lava Worms erupt from the ground!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
-	PowerLevel		= "Molten Feathers",
-	East			= "East",
-	West			= "West",
-	Both			= "Both"
+	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
 })
 
 -------------------
@@ -65,29 +48,43 @@ L:SetMiscLocalization({
 	yellPhase2			= "Eons I have slept undisturbed... Now this... Creatures of flesh, now you will BURN!"
 })
 
------------------
--- Beth'tilac --
------------------
-L= DBM:GetModLocalization(192)
+---------------
+-- Alysrazor --
+---------------
+L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
+	WarnPhase			= "第%d阶段",
+	WarnNewInitiate		= "炽炎之爪新兵（%s）"
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Next Spinners",
-	TimerSpiderlings	= "Next Spiderlings",
-	TimerDrone		= "Next Drone"
+	TimerPhaseChange	= "第%d阶段",
+	TimerHatchEggs		= "下一波蛋",
+	timerNextInitiate	= "下一个新兵（%s）",
+	TimerCombatStart	= "战斗即将开始"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Show timer for next $journal:2770",
-	TimerSpiderlings	= "Show timer for next $journal:2778",
-	TimerDrone		= "Show timer for next $journal:2773",
-	RangeFrame				= "Show range frame (10)",
+	TimerCombatStart	= "计时条：战斗开始",
+	WarnPhase			= "警报：每次阶段转换",
+	WarnNewInitiate		= "警报：新的炽炎之爪新兵",
+	timerNextInitiate	= "计时条：下一个炽炎之爪新兵",
+	TimerPhaseChange	= "计时条：下一阶段",
+	TimerHatchEggs		= "计时条：下一波蛋孵化",
+	InfoFrame			= "信息框：熔火之羽"
 })
 
 L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
+	YellPull		= "I serve a new master now, mortals!",
+	Initiate		= "炽炎之爪新兵",--http://www.wowhead.com/npc=53896
+	YellPhase2		= "These skies are MINE!",
+	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
+	LavaWorms		= "Fiery Lava Worms erupt from the ground!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
+	PowerLevel		= "熔火之羽",
+	East			= "东",
+	West			= "西",
+	Both			= "Both"
 })
 
 -------------
@@ -107,8 +104,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Riplimb		= "Riplimb",
-	Rageface	= "Rageface"
+	Riplimb		= "裂肢",
+	Rageface	= "狂脸"
 })
 
 -------------
@@ -117,24 +114,25 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
+	warnStrike	= "%s（%d）"
 })
 
 L:SetTimerLocalization({
 	TimerBladeActive	= "%s",
-	TimerBladeNext		= "Next blade"
+	TimerBladeNext		= "下一次贝尔洛克之剑"
 })
 
 L:SetOptionLocalization({
-	TimerBladeActive	= "Show a duration timer for the active blade",
-	TimerBladeNext		= "Show a next timer for blade",
+	TimerBladeActive	= "计时条：当前贝尔洛克之剑的持续时间",
+	TimerBladeNext		= "计时条：下一次贝尔洛克之剑",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
-	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 ",
-	InfoFrame		= "Show info frame for Vital Spark stacks"
+	ArrowOnCountdown	= "DBM箭头：当你受到$spell:99516影响时",
+	InfoFrame		= "信息框：活力火花堆叠层数"
 })
 
 L:SetMiscLocalization({
-	VitalSpark		= GetSpellInfo(99262).." stacks"
+	VitalSpark		= GetSpellInfo(99262).."堆叠"
 })
 
 --------------------------------
@@ -146,11 +144,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerNextSpecial	= "下一次%s（%d）"
 })
 
 L:SetOptionLocalization({
-	RangeFrameSeeds				= "Show range frame (12) for $spell:98450",
-	RangeFrameCat				= "Show range frame (10) for $spell:98374",
+	timerNextSpecial			= "计时条：下一次特殊技能",
+	RangeFrameSeeds				= "距离监视器（12码）：$spell:98450",
+	RangeFrameCat				= "距离监视器（10码）：$spell:98374",
+	LeapArrow					= "DBM箭头：当$spell:98476在你附近时",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
@@ -163,31 +164,37 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
-	warnSplittingBlow		= "%s in %s",--Spellname in Location
-	warnEngulfingFlame		= "%s in %s",--Spellname in Location
-	WarnRemainingAdds		= "%d aberrations remaining"
+	warnSplittingBlow		= "%s在%s",--Spellname in Location
+	warnEngulfingFlame		= "%s在%s",--Spellname in Location
+	WarnRemainingAdds		= "剩余%d个烈焰之子",
+	warnAggro				= "获得仇恨：熔岩元素",
+	warnNoAggro				= "未获仇恨：熔岩元素"
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Transition ends"
+	TimerPhaseSons		= "阶段转换"
 })
 
 L:SetOptionLocalization({
-	warnSplittingBlow	= "Show warning for $spell:100877",
-	warnEngulfingFlame	= "Show warning for $spell:99171",
-	WarnRemainingAdds	= "Show warning for how many Sons of Flame remain",
-	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
-	RangeFrame			= "Show range frame",
-	InfoFrame			= "Show info frame for $spell:99849 targets",
+	warnSplittingBlow	= "警报：$spell:100877",
+	warnEngulfingFlame	= "警报：$spell:99171",
+	WarnRemainingAdds	= "警报：烈焰之子剩余数量",
+	warnSeedsLand		= "警报与计时条：$spell:98520落地位置，而非施法警报",
+	ElementalAggroWarn	= "警报：是否获得熔岩元素的仇恨",
+	TimerPhaseSons		= "计时条：烈焰之子阶段持续时间",
+	RangeFrame			= "距离监视器",
+	InfoHealthFrame		= "信息框：生命值少于9万的团员的列表",
+	InfoFrame			= "信息框：$spell:99849的目标",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
-	East				= "East",
-	West				= "West",
-	Middle				= "Middle",
-	North				= "Melee",
-	South				= "Back",
+	East				= "场景东部",
+	West				= "场景西部",
+	Middle				= "场景中部",
+	North				= "近战范围",
+	South				= "场景后方",
+	HealthInfo			= "生命值少于9万",
 	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
 	TransitionEnded2	= "Sulfuras will be your end.",
@@ -212,11 +219,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "Show range frame (10) for $spell:100012"
+	TrashRangeFrame	= "距离监视器（10码）：$spell:100012"
 })
 
 L:SetMiscLocalization({
-
 })
 
 ----------------
@@ -232,11 +238,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerStaffTransition	= "Transition ends"
+	timerStaffTransition	= "阶段转换"
 })
 
 L:SetOptionLocalization({
-	timerStaffTransition	= "Show a timer for the phase transition"
+	timerStaffTransition	= "计时条：阶段转换"
 })
 
 L:SetMiscLocalization({

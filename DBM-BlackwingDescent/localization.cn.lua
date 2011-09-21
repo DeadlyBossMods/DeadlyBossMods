@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 8/26/2011
+-- Last update: 9/18/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -190,8 +190,7 @@ L:SetMiscLocalization({
 --  Nefarian  --
 ----------------
 --L = DBM:GetModLocalization(174)
---L = DBM:GetModLocalization("Nefarian")
-L = DBM:GetModLocalization("Nefarian-BD")	-- No conflict with BWL version :)
+L = DBM:GetModLocalization("Nefarian")
 
 L:SetGeneralLocalization({
 	name = "奈法利安的末日"	-- No conflict with BWL version (probably also why blizzard calls the encounter "Nefarian's End"

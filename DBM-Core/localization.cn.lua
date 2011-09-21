@@ -1,5 +1,6 @@
-﻿-- Simplified Chinese by Diablohu/yleaf(yaroot@gmail.com)
--- Last update: 8/26/2011
+﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
+-- merge traslation by bigfoot team  - yleaf 9-10-2010
+-- Last update: 9/21/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -227,16 +228,16 @@ DBM_SPEED_KILL_TIMER_TEXT	= "击杀记录"
 DBM_SPEED_KILL_TIMER_OPTION	= "计时条：最速击杀记录"
 
 
-DBM_REQ_INSTANCE_ID_PERMISSION		= "%s requested to see your current instance IDs and progress.\nDo you want to send this information to %s? He or she will be able to request this information during your current session (i. e. until you relog)."
-DBM_ERROR_NO_RAID					= "You need to be in a raid group to use this feature."
-DBM_INSTANCE_INFO_REQUESTED			= "Sent request for raid lockout information to the raid group.\nPlease note that the users will be asked for permission before sending the data to you, so it might take a minute until we get all responses."
-DBM_INSTANCE_INFO_STATUS_UPDATE		= "Got responses from %d players of %d DBM users: %d sent data, %d denied the request. Waiting %d more seconds for responses..."
-DBM_INSTANCE_INFO_ALL_RESPONSES		= "Received responses from all raid members"
-DBM_INSTANCE_INFO_DETAIL_DEBUG		= "Sender: %s ResultType: %s InstanceName: %s InstanceID: %s Difficulty: %d Size: %d Progress: %s"
-DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), difficulty %d:"
-DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, progress %d: %s"
-DBM_INSTANCE_INFO_STATS_DENIED		= "Denied the request: %s"
-DBM_INSTANCE_INFO_STATS_AWAY		= "Away: %s"
-DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No recent DBM version installed: %s"
-DBM_INSTANCE_INFO_RESULTS			= "Instance ID scan results. Note that instances might show up more than once if there are players with localized WoW clients in your raid."
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s请求获取你现在副本的存档ID与进度。是否愿意向&s提交进度？\n\n注意：在接受后，他可以随时查看您当前的进度情况，直到您下线、掉线或重载用户界面。"
+DBM_ERROR_NO_RAID					= "使用该功能需要身处一个团队中。"
+DBM_INSTANCE_INFO_REQUESTED			= "已发送团队副本进度查看请求。\n请注意，团员会根据需要选择接受或拒绝该请求。请求时间约一分钟，请等待。"
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "已收到%d名团员的进度回复（已安装DBM的团员有%d名）：%d人接受请求，%d人拒绝。生成数据需要约%d秒，请等待。"
+DBM_INSTANCE_INFO_ALL_RESPONSES		= "所有团员接受请求。"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "发送者：%s 结果类型：%s 副本名：%s 副本ID：%s 难度：%d 规模：%d 进度：%s"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s（%d），难度%d："
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 进度%d：%s"
+DBM_INSTANCE_INFO_STATS_DENIED		= "拒绝请求：%s"
+DBM_INSTANCE_INFO_STATS_AWAY		= "暂离：%s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "新版DBM未安装：%s"
+DBM_INSTANCE_INFO_RESULTS			= "副本进度扫描结果。" --Note that instances might show up more than once if there are players with localized WoW clients in your raid.
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
