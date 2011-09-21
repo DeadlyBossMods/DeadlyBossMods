@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 8/26/2011
+-- Last update: 9/13/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -106,7 +106,7 @@ L:SetMiscLocalization({
 	Terrastra		= "泰拉斯卓",
 	Monstrosity		= "源质畸体",
 	Kill			= "这不可能……",
-	blizzHatesMe	= "我中了冰霜道标和闪电魔棒！清路！",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
+	blizzHatesMe	= "我中了冰霜道标和闪电魔棒！快让路！",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
 	WrongDebuff	= "没有 %s"
 })
 
@@ -149,47 +149,50 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnDragon			= "Twilight Whelp Spawned",
-	WarnOrbSoon			= "Orbs in %d sec!",
-	WarnEggWeaken		= "Twilight Carapace dissipated on Egg",
-	SpecWarnOrbs		= "Orbs coming! Watch Out!",
-	warnWrackJump		= "%s jumped to >%s<",
-	warnAggro			= "Players with Aggro (Orbs candidates): >%s< ",
-	SpecWarnAggroOnYou	= "You have Aggro! Watch Orbs!",
-	SpecWarnEggWeaken	= "Twilight Carapace dissipated - Dps EGG Now!",
-	SpecWarnEggShield	= "Twilight Capapace Regenerated!"
+	WarnDragon			= "暮光幼龙出现",
+	WarnOrbSoon			= "暗影宝珠 %d秒后出现",
+	WarnEggWeaken		= "龙蛋上的暮光龙鳞消失了",
+	SpecWarnOrbs		= "暗影宝珠即将出现！小心！",
+	warnWrackJump		= "%s跳到>%s<",
+	warnAggro			= "拥有仇恨的团员（宝珠可能的目标）：>%s< ",
+	SpecWarnAggroOnYou	= "获得仇恨！小心宝珠！",
+	SpecWarnEggWeaken	= "暮光龙鳞消失 - 快打龙蛋！",
+	SpecWarnEggShield	= "暮光龙鳞再生！"
 })
 
 L:SetTimerLocalization({
-	TimerDragon			= "Next Twilight Whelps",
-	TimerEggWeakening	= "Twilight Carapace dissipates",
-	TimerEggWeaken		= "Twilight Capapace Regeneration",
-	TimerOrbs			= "Shadow Orbs CD"
+	TimerDragon			= "下一波暮光幼龙",
+	TimerEggWeakening	= "暮光龙鳞消失",
+	TimerEggWeaken		= "暮光龙鳞再生",
+	TimerOrbs			= "暗影宝珠冷却"
 })
 
 L:SetOptionLocalization({
-	WarnDragon			= "Show warning when Twilight Whelp Spawns",
-	WarnOrbSoon			= "Show pre-warning for Orbs (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
-	WarnEggWeaken		= "Show pre-warning for when $spell:87654 dissipates",
-	warnWrackJump		= "Announce $spell:92955 jump targets",
-	warnAggro			= "Announce players who have Aggro when Orbs spawn (Can be target of Orbs)",
-	SpecWarnAggroOnYou	= "Show special warning if you have Aggro when Orbs spawn\n(Can be target of Orbs)",
-	SpecWarnOrbs		= "Show special warning when Orbs spawn (Expected warning)",
-	SpecWarnEggWeaken	= "Show special warning when $spell:87654 dissipates",
-	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated",
-	TimerDragon			= "Show timer for new Twilight Whelp",
-	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
-	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
-	TimerOrbs			= "Show timer for next Orbs (Expected timer. may not be accurate)",
-	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn\n(Can be target of Orbs)",
-	OrbsCountdown		= "Play countdown sound for Orbs",
-	InfoFrame			= "Show info frame for players who have aggro"
+	WarnDragon			= "警报：暮光幼龙出现",
+	WarnOrbSoon			= "提前警报：暗影宝珠（5秒前，每秒警报一次。不精确）",
+	WarnOrbsSoon		= "提前警报：暗影宝珠（5秒前，每秒警报一次。不精确）",
+	WarnEggWeaken		= "提前警报：$spell:87654消失",
+	warnWrackJump		= "警报：$spell:92955跳跃的目标",
+	WarnWrackCount5s	= "警报：当$spell:92955在某一团员身上持续了10、15和20秒时",
+	warnAggro			= "警报：暗影宝珠刷新时拥有仇恨的团员（可能成为宝珠的目标）",
+	SpecWarnAggroOnYou	= "特殊警报：当宝珠刷新时你获得仇恨（可能成为宝珠的目标）",
+	SpecWarnOrbs		= "特殊警报：宝珠即将刷新（预计时间，不精确）",
+	SpecWarnDispel		= "特殊警报：提醒驱散$spell:92955（在效果施放或跳跃后的特定时间警报）",
+	SpecWarnEggWeaken	= "特殊警报：$spell:87654消失",
+	SpecWarnEggShield	= "特殊警报：$spell:87654再生",
+	TimerDragon			= "计时条：下一波暮光幼龙",
+	TimerEggWeakening	= "计时条：$spell:87654消失",
+	TimerEggWeaken		= "计时条：$spell:87654再生",
+	TimerOrbs			= "计时条：暗影宝珠冷却时间",
+	SetIconOnOrbs		= "在暗影宝珠刷新时自动为获得仇恨的团员添加团队标记\n（可能成为宝珠的目标）",
+	OrbsCountdown		= "倒计时警报：暗影宝珠",
+	InfoFrame			= "信息框：获得仇恨的团员的列表"
 })
 
 L:SetMiscLocalization({
-	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",
+	YellDragon			= "吃吧，孩子们！尽情享用他们肥美的躯壳吧！",
 	YellEgg				= "You mistake this for weakness?  Fool!",
-	HasAggro			= "Has Aggro"
+	HasAggro			= "获得仇恨"
 })
 
 -------------------------------------
