@@ -142,11 +142,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		spellName = GetSpellInfo(99353)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
---[[		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
-			timerStrikeCD:Start(2.5, spellName)
+		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
+			timerStrikeCD:Start(3, spellName)
 		else
-			timerStrikeCD:Start(5, spellName)--5 seconds on 10 man
-		end--]]
+			timerStrikeCD:Start(6, spellName)--6 seconds on 10 man
+		end
 	elseif args:IsSpellID(99350) then--Inferno Blades
 		spellName = GetSpellInfo(101002)
 		lastStrike = GetTime()--Set last strike here too
@@ -157,11 +157,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnTormented:Show()
 			specWarnTormented:Show()
 			if self:IsDifficulty("normal10") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
---				timerTormented:Start(30)--Unknown post hotfix will need new data
+				timerTormented:Start(20)
 			elseif self:IsDifficulty("heroic10") then
 				timerTormented:Start(40)
 			elseif self:IsDifficulty("normal25") then
---				timerTormented:Start(45)--Unknown post hotfix will need new data
+				timerTormented:Start(30)
 			elseif self:IsDifficulty("heroic25") then
 				timerTormented:Start(60)
 			end
@@ -176,11 +176,11 @@ function mod:SPELL_AURA_REFRESH(args)
 	if args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
 		if args:IsPlayer() then
 			if self:IsDifficulty("normal10") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
---				timerTormented:Start(30)--Unknown post hotfix will need new data
+				timerTormented:Start(20)
 			elseif self:IsDifficulty("heroic10") then
 				timerTormented:Start(40)
 			elseif self:IsDifficulty("normal25") then
---				timerTormented:Start(45)--Unknown post hotfix will need new data
+				timerTormented:Start(30)
 			elseif self:IsDifficulty("heroic25") then
 				timerTormented:Start(60)
 			end
@@ -212,27 +212,27 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(99353) then--Decimation Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)
---[[		if strikeCount == 6 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 3 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
+		if strikeCount == 5 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 2 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
 		currentStrike = GetTime()--Get time of current strike stamped.
 		lastStrikeDiff = currentStrike - lastStrike--Find out time difference between last strike and current strike.
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
-			if lastStrikeDiff > 2.5 then--We got a late cast since it took longer then 2.5
-				lastStrikeDiff = lastStrikeDiff - 2.5--Subtracked expected result (2.5) from diff to get what's remaining so we know how much of CD to remove from next cast.
-				timerStrikeCD:Start(2.5-lastStrikeDiff, spellName)--Next strike is gonna come early since previous one was > 2.5. Subtract this diff from the timer.
-			elseif lastStrikeDiff < 2.5 then--We got an early cast.
-				lastStrikeDiff = 2.5 - lastStrikeDiff--Subtracked last strike difference from expected result to figure out how much time to add to next timer.
-				timerStrikeCD:Start(2.5+lastStrikeDiff, spellName)--Next strike is gonna come late since previous one was early.
+			if lastStrikeDiff > 3 then--We got a late cast since it took longer then 3
+				lastStrikeDiff = lastStrikeDiff - 3--Subtracked expected result (3) from diff to get what's remaining so we know how much of CD to remove from next cast.
+				timerStrikeCD:Start(3-lastStrikeDiff, spellName)--Next strike is gonna come early since previous one was > 3. Subtract this diff from the timer.
+			elseif lastStrikeDiff < 3 then--We got an early cast.
+				lastStrikeDiff = 3 - lastStrikeDiff--Subtracked last strike difference from expected result to figure out how much time to add to next timer.
+				timerStrikeCD:Start(3+lastStrikeDiff, spellName)--Next strike is gonna come late since previous one was early.
 			end
 		else--Do same thing as above only with 10 man timing.
-			if lastStrikeDiff > 5 then
-				lastStrikeDiff = lastStrikeDiff - 5
-				timerStrikeCD:Start(5-lastStrikeDiff, spellName)
-			elseif lastStrikeDiff < 5 then
-				lastDiff = 5 - lastStrikeDiff
-				timerStrikeCD:Start(5+lastStrikeDiff, spellName)
+			if lastStrikeDiff > 6 then
+				lastStrikeDiff = lastStrikeDiff - 6
+				timerStrikeCD:Start(6-lastStrikeDiff, spellName)
+			elseif lastStrikeDiff < 6 then
+				lastDiff = 6 - lastStrikeDiff
+				timerStrikeCD:Start(6+lastStrikeDiff, spellName)
 			end
 		end
-		lastStrike = GetTime()--Update last strike timing to this one after function fires.--]]
+		lastStrike = GetTime()--Update last strike timing to this one after function fires.
 	elseif args:IsSpellID(99351, 101000, 101001, 101002) then--Inferno Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)
