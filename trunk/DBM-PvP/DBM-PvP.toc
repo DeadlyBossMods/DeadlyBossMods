@@ -20,6 +20,7 @@
 ## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя
 ## X-DBM-Mod-SubCategories-koKR: 투기장,전장
 ## X-DBM-Mod-SubCategories-zhTW: 競技場,戰場
+## X-DBM-Mod-SubCategories-zhCN: 竞技场　,战场
 ## X-DBM-Mod-SubCategories-esES: Arena,Campos de Batallas
 ## X-DBM-Mod-SubCategories-esMX: Arena,Campos de Batallas
 ## X-DBM-Mod-Name: PvP
@@ -27,6 +28,7 @@
 ## X-DBM-Mod-Name-frFR: Champs de bataille
 ## X-DBM-Mod-Name-ruRU: Игрок против игрока
 ## X-DBM-Mod-Name-zhTW: PvP
+## X-DBM-Mod-Name-zhCN: PvP
 ## X-DBM-Mod-Name-koKR: PvP
 ## X-DBM-Mod-Name-esES: JcJ
 ## X-DBM-Mod-Name-esMX: JcJ
