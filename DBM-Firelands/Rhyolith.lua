@@ -12,7 +12,7 @@ mod:SetModelSound("Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_AGGRO.wav", "Sound\
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEventsInCombat(
+mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
