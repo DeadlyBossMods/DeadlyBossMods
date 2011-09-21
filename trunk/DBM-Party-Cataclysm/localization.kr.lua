@@ -1079,7 +1079,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoSylvanas")
 
 L:SetGeneralLocalization{
-	name = "Echo of Sylvanas"
+	name = "실바나스의 환영"
 }
 
 L:SetWarningLocalization{
@@ -1100,7 +1100,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
-	name = "Echo of Tyrande"
+	name = "티란데의 환영"
 }
 
 L:SetWarningLocalization{
@@ -1121,7 +1121,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoJaina")
 
 L:SetGeneralLocalization{
-	name = "Echo of Jaina"
+	name = "제이나의 환영"
 }
 
 L:SetWarningLocalization{
@@ -1142,7 +1142,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoBaine")
 
 L:SetGeneralLocalization{
-	name = "Echo of Baine"
+	name = "바인의 환영"
 }
 
 L:SetWarningLocalization{
@@ -1165,7 +1165,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Perotharn")
 
 L:SetGeneralLocalization{
-	name = "Peroth'arn"
+	name = "페로스안"
 }
 
 L:SetWarningLocalization{
@@ -1186,7 +1186,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
-	name = "Azshara"
+	name = "아즈샤라"
 }
 
 L:SetWarningLocalization{
@@ -1207,7 +1207,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
-	name = "Mannoroth & Varo'then"
+	name = "만노로스와 바르덴"
 }
 
 L:SetWarningLocalization{
@@ -1230,7 +1230,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Arcurion")
 
 L:SetGeneralLocalization{
-	name = "Arcurion"
+	name = "아큐리온"
 }
 
 L:SetWarningLocalization{
@@ -1251,7 +1251,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
-	name = "Asira Dawnslayer"
+	name = "아시라 돈슬레이어"
 }
 
 L:SetWarningLocalization{
@@ -1272,7 +1272,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
+	name = "대주교 베네딕투스"
 }
 
 L:SetWarningLocalization{
