@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/22/2011
+-- Last update: 9/23/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -27,7 +27,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spiderlings have been roused from their nest!"
+	EmoteSpiderlings 	= "幼蛛从巢穴里爬出来了！"
 })
 
 -------------------
@@ -45,7 +45,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yellPhase2			= "Eons I have slept undisturbed... Now this... Creatures of flesh, now you will BURN!"
+	yellPhase2			= "我已经沉睡了无数的时光，现在却被这些血肉生灵所扰……你们将燃烧殆尽！"
 })
 
 ---------------
@@ -76,15 +76,15 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPull		= "I serve a new master now, mortals!",
+	YellPull		= "凡人们，我现在侍奉新的主人！",
 	Initiate		= "炽炎之爪新兵",--http://www.wowhead.com/npc=53896
-	YellPhase2		= "These skies are MINE!",
+	YellPhase2		= "天空，归我统治！",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
-	LavaWorms		= "Fiery Lava Worms erupt from the ground!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
+	LavaWorms		= "熔岩火虫从地下涌出来了！",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
 	PowerLevel		= "熔火之羽",
 	East			= "东",
 	West			= "西",
-	Both			= "Both"
+	Both			= "两侧"
 })
 
 -------------
@@ -200,12 +200,12 @@ L:SetMiscLocalization({
 	North				= "近战范围",
 	South				= "场景后方",
 	HealthInfo			= "生命值少于9万",
-	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
-	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
-	TransitionEnded2	= "Sulfuras will be your end.",
-	TransitionEnded3	= "Fall to your knees, mortals!  This ends now.",
-	Defeat				= "Too soon! ... You have come too soon...",
-	Phase4				= "Too soon..."
+	MeteorTargets		= "看！流星灰过来咯！",--Keep rollin' rollin' rollin' rollin'.
+	TransitionEnded1	= "够了！我会亲自解决。",--More reliable then adds method.
+	TransitionEnded2	= "萨弗拉斯将会是你的末日。",
+	TransitionEnded3	= "跪下吧，凡人们！一切都结束了。",
+	Defeat				= "太早了！……你们来得太早了……",
+	Phase4				= "太早了……"
 })
 
 -----------------------
