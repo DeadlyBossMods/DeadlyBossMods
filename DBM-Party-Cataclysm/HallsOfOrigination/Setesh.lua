@@ -8,7 +8,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 )
 
 -- nothing added yet, he only casts Chaos Bolt in combatlog
