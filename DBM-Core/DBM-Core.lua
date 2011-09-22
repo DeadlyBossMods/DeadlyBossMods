@@ -2511,7 +2511,7 @@ do
 		if not bestClient then return end
 		requestedFrom = bestClient.name
 		requestTime = GetTime()
-		SendAddonMessage("D4", "R", "WHISPER", bestClient.name)
+		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
 	end
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
@@ -2522,6 +2522,10 @@ do
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - time + lag
+			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
+				mod.inCombatOnlyEventsRegistered = 1
+				mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
+			end
 			self:Schedule(3, checkWipe)
 		end
 	end
@@ -2540,14 +2544,22 @@ do
 end
 
 do
-	local spamProtection = 0
+	local spamProtection = {}
 	function DBM:SendTimers(target)
-		if GetTime() - spamProtection < 0.4 then
+		local spamForTarget = spamProtection[target] or 0
+		-- just try to clean up the table, that should keep the hash table at max. 4 entries or something :)
+		for k, v in pairs(spamProtection) do
+			if GetTime() - v >= 1 then
+				spamProtection[k] = nil
+			end
+		end
+		if GetTime() - spamForTarget < 1 then -- just to prevent players from flooding this on purpose
 			return
 		end
-		spamProtection = GetTime()
+		spamProtection[target] = GetTime()
 		if UnitInBattleground("player") then
 			DBM:SendBGTimers(target)
+			return
 		end
 		if #inCombat < 1 then return end
 		local mod
@@ -2609,7 +2621,7 @@ do
 
 	function DBM:PLAYER_ENTERING_WORLD()
 		if #inCombat == 0 then
-			DBM:Schedule(0, requestTimers)
+			DBM:Schedule(2, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires
 		end
 		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
@@ -2876,7 +2888,10 @@ do
 	local mt = {__index = bossModPrototype}
 
 	function DBM:NewMod(name, modId, modSubTab, instanceId, encounterId)
-		if type(name) == "number" then encounterId = name end
+		if type(name) == "number" then
+			encounterId = name
+			name = tostring(number) -- the name should never be a string as it confuses sync handlers that just receive some string and try to get the mod from it
+		end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
