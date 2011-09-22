@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("yell", L.YellPull)
 mod:SetMinCombatTime(30)	-- Prevent pre-maturely combat-end in cases where none targets the boss?
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",

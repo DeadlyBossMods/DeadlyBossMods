@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Kill)
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS"
 )
 

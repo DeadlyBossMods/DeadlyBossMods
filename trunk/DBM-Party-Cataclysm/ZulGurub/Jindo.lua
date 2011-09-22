@@ -10,7 +10,7 @@ mod:SetUsedIcons(8)
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Kill)
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
