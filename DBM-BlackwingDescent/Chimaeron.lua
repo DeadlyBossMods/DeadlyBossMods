@@ -13,7 +13,7 @@ mod:SetModelSound("Sound\\Creature\\Nefarian\\VO_BD_Nefarian_ChimaronIntro01.wav
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REFRESH",

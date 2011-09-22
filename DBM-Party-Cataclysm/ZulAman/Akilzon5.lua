@@ -9,7 +9,7 @@ mod:SetUsedIcons(1, 8)
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_SUCCESS"
 )

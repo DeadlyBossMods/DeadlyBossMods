@@ -8,7 +8,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",

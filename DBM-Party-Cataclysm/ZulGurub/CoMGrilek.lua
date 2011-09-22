@@ -9,7 +9,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_EMOTE"
 )
