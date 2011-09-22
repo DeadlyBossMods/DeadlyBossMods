@@ -2890,7 +2890,7 @@ do
 	function DBM:NewMod(name, modId, modSubTab, instanceId, encounterId)
 		if type(name) == "number" then
 			encounterId = name
-			name = tostring(number) -- the name should never be a string as it confuses sync handlers that just receive some string and try to get the mod from it
+			name = tostring(name) -- the name should never be a string as it confuses sync handlers that just receive some string and try to get the mod from it
 		end
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
