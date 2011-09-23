@@ -508,5 +508,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 			warnSeeds()
 		end
 		self:Schedule(17.5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
+		self:Schedule(12.5, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
 	end
 end
