@@ -2891,8 +2891,8 @@ do
 	function DBM:NewMod(name, modId, modSubTab, instanceId, encounterId)
 		if type(name) == "number" then
 			encounterId = name
-			name = tostring(name) -- the name should never be a string as it confuses sync handlers that just receive some string and try to get the mod from it
 		end
+		name = tostring(name) -- the name should never be a string as it confuses sync handlers that just receive some string and try to get the mod from it
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
@@ -2924,8 +2924,8 @@ do
 		end
 
 		if obj.localization.general.name == "name" then
-			if type(name) == "number" then
-				local t = EJ_GetEncounterInfo(name)
+			if encounterId then
+				local t = EJ_GetEncounterInfo(encounterId)
 				obj.localization.general.name = string.split(",", t)
 			else
 				obj.localization.general.name = name 
