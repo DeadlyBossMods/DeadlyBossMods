@@ -18,6 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
@@ -88,12 +90,14 @@ local soundMeteor			= mod:NewSound(99849)
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
-mod:AddBoolOption("InfoHealthFrame", mod:IsHealer())
-mod:AddBoolOption("InfoFrame", true)
+mod:AddBoolOption("InfoHealthFrame", mod:IsHealer())--Phase 1 info framefor low health detection.
+mod:AddBoolOption("AggroFrame", true)--Phase 2 info frame for seed aggro detection.
+mod:AddBoolOption("MeteorFrame", true)--Phase 3 info frame for meteor fixate detection.
 
 local firstSmash = false
 local wrathRagSpam = 0
 local meteorSpawned = 0
+local elementalsSpawned = 0
 local sonsLeft = 8
 local trapScansDone = 0
 local phase = 1
@@ -175,16 +179,13 @@ local function TransitionEnded()
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
-		if mod.Options.InfoHealthFrame then
-			DBM.InfoFrame:Hide()
-		end
 	elseif phase == 3 and not phase3Started then
 		phase3Started = true
 		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
 		timerLivingMeteorCD:Start(45, 1)
-		if mod.Options.InfoFrame then--This is probably the best way to do it without spam. Does not show in combat log, only unitdebuff/unit_aura will probaby work. will have to find a way to give personal warnings without spam later.
+		if mod.Options.MeteorFrame then--This is probably the best way to do it without spam. Does not show in combat log, only unitdebuff/unit_aura will probaby work. will have to find a way to give personal warnings without spam later.
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
 			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--Maybe need more then 6? 8 or 10 if things go real shitty heh.
 		end
@@ -233,6 +234,7 @@ function mod:OnCombatStart(delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
 	meteorSpawned = 0
+	elementalsSpawned = 0
 	sonsLeft = 8
 	trapScansDone = 0
 	phase = 1
@@ -259,7 +261,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.InfoFrame or self.Options.InfoHealthFrame then
+	if self.Options.MeteorFrame or self.Options.InfoHealthFrame or self.Options.AggroFrame then
 		DBM.InfoFrame:Hide()
 	end
 end
@@ -307,6 +309,13 @@ function mod:SPELL_CAST_START(args)
 			timerSulfurasSmash:Start(40)--40 seconds in phase 2
 			if not phase2Started then
 				phase2Started = true
+				if self.Options.InfoHealthFrame then
+					DBM.InfoFrame:Hide()
+				end
+				if self.Options.AggroFrame then
+					DBM.InfoFrame:SetHeader(L.NoAggro)
+					DBM.InfoFrame:Show(5, "playeraggro", 0)
+				end
 				if self:IsDifficulty("heroic10", "heroic25") then
 					if self.Options.warnSeedsLand then
 						timerMoltenSeedCD:Update(6, 17.5)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
@@ -424,16 +433,29 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(98518, 100252, 100253, 100254) and args:IsPlayer() then--Molten Inferno. This is seed exploding at end, we use it to count spawned elementals.
+		elementalsSpawned = elementalsSpawned + 1--This of course will fail if player is dead so i'm sure it's probably not a perminent solution. Just too lazy to write a GUID method right now.
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE--Have to track absorbs too for this method to work.
+
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 53140 then
+	if cid == 53140 then--Son of Flame
 		sonsLeft = sonsLeft - 1
 		if sonsLeft < 3 then
 			warnSonsLeft:Show(sonsLeft)
 		end
-	elseif cid == 53500 then
+	elseif cid == 53500 then--Meteors
 		meteorSpawned = meteorSpawned - 1
-		if meteorSpawned == 0 and self.Options.InfoFrame then--Meteors all gone, hide info frame
+		if meteorSpawned == 0 and self.Options.MeteorFrame then--Meteors all gone, hide info frame
+			DBM.InfoFrame:Hide()
+		end	
+	elseif cid == 53189 then--Molten elemental
+		elementalsSpawned = elementalsSpawned - 1
+		if elementalsSpawned == 0 and self.Options.AggroFrame then--Elementals all gone, hide info frame
 			DBM.InfoFrame:Hide()
 		end	
 	end

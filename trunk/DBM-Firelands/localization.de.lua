@@ -171,7 +171,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Zeige verbleibende Anzahl der Söhne der Flammen",
 	TimerPhaseSons		= "Dauer der \"Söhne der Flamme Phase\" anzeigen",
 	RangeFrame		= "Zeige Abstandsfenster",
-	InfoFrame			= "Zeige Infofenster für Ziele von $spell:99849",
+	MeteorFrame			= "Zeige Infofenster für Ziele von $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 

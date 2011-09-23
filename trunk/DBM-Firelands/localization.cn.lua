@@ -189,7 +189,7 @@ L:SetOptionLocalization({
 	TimerPhaseSons		= "计时条：烈焰之子阶段持续时间",
 	RangeFrame			= "距离监视器",
 	InfoHealthFrame		= "信息框：生命值少于9万的团员的列表",
-	InfoFrame			= "信息框：$spell:99849的目标",
+	MeteorFrame			= "信息框：$spell:99849的目标",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
