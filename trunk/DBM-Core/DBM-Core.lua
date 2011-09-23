@@ -1301,6 +1301,20 @@ do
 		local savedStats = _G[modId:gsub("-", "").."_SavedStats"] or {}
 		for i, v in ipairs(DBM.Mods) do
 			if v.modId == modId then
+				-- import old options from mods that were using the encounter ID as number as id
+				-- this was changed to use the string for compatibility reasons (see issues with sync),
+				-- but a user might still have saved options or stats that still use the old id as number
+				if tonumber(v.id) then
+					local oldId = tonumber(v.id)
+					if savedOptions[oldId] then
+						savedOptions[v.id] = savedOptions[oldId]
+						savedOptions[oldId] = nil
+					end
+					if savedStats[oldId] then
+						savedStats[v.id] = savedStats[oldId]
+						savedStats[oldId] = nil
+					end
+				end
 				savedOptions[v.id] = savedOptions[v.id] or v.Options
 				for option, optionValue in pairs(v.Options) do
 					if savedOptions[v.id][option] == nil then
