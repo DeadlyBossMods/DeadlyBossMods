@@ -186,6 +186,7 @@ L:SetOptionLocalization({
 	RangeFrame		= "Mostrar distancia",
 	InfoHealthFrame		= "Mostrar información de vida (<110k de vida)",
 	MeteorFrame			= "Mostrar información de los objetivos de $spell:99849",
+	AggroFrame			= "Mostrar información de jugadores sin aggro durante los Elementales de Magma",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
@@ -196,6 +197,7 @@ L:SetMiscLocalization({
 	North				= "Melee",
 	South				= "Atrás",
 	HealthInfo			= "Menos de 110k de vida",
+	HasNoAggro			= "Sin aggro",
 	MeteorTargets		= "HOYGA METEHORITOS!",
 	TransitionEnded1	= "¡Basta! Yo terminaré esto.",
 	TransitionEnded2	= "Sulfuras será vuestro fin.",

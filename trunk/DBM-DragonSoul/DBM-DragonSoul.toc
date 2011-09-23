@@ -2,7 +2,7 @@
 ## X-Min-Interface: 40200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0El Alma de Dragón|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0용의 영혼|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
@@ -15,7 +15,7 @@
 ## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Name: Dragon Soul
 ## X-DBM-Mod-Name-deDE: Dragon Soul
-## X-DBM-Mod-Name-esES: Dragon Soul
+## X-DBM-Mod-Name-esES: El Alma de Dragón
 ## X-DBM-Mod-Name-koKR: 용의 영혼
 ## X-DBM-Mod-Name-ruRU: Dragon Soul
 ## X-DBM-Mod-Name-zhTW: Dragon Soul
