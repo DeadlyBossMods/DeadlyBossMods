@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/23/2011
+-- Last update: 9/24/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -190,6 +190,7 @@ L:SetOptionLocalization({
 	RangeFrame			= "距离监视器",
 	InfoHealthFrame		= "信息框：生命值少于9万的团员的列表",
 	MeteorFrame			= "信息框：$spell:99849的目标",
+	AggroFrame			= "信息框：没有获得熔岩元素仇恨的团员的列表",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
@@ -200,6 +201,7 @@ L:SetMiscLocalization({
 	North				= "近战范围",
 	South				= "场景后方",
 	HealthInfo			= "生命值少于9万",
+	HasNoAggro			= "未获仇恨",
 	MeteorTargets		= "看！流星灰过来咯！",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "够了！我会亲自解决。",--More reliable then adds method.
 	TransitionEnded2	= "萨弗拉斯将会是你的末日。",
