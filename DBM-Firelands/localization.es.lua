@@ -185,7 +185,7 @@ L:SetOptionLocalization({
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
 	InfoHealthFrame		= "Mostrar información de vida (<110k de vida)",
-	InfoFrame			= "Mostrar información de los objetivos de $spell:99849",
+	MeteorFrame			= "Mostrar información de los objetivos de $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
