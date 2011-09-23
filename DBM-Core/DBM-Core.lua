@@ -2940,7 +2940,7 @@ do
 	end
 
 	function DBM:GetModByName(name)
-		return modsById[name]
+		return modsById[tostring(name)]
 	end
 end
 
@@ -4524,6 +4524,7 @@ do
 	end
 
 	function DBM:CreateModLocalization(name)
+		name = tostring(name)
 		local obj = {
 			general = setmetatable({}, returnKey),
 			warnings = setmetatable({}, defaultAnnounceLocalization),
@@ -4539,6 +4540,7 @@ do
 	end
 
 	function DBM:GetModLocalization(name)
+		name = tostring(name)
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
 end
