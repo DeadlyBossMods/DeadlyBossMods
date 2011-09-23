@@ -184,7 +184,8 @@ L:SetOptionLocalization({
 	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame			= "Show range frame",
 	InfoHealthFrame		= "Show info frame for health (<110k hp)",
-	InfoFrame			= "Show info frame for $spell:99849 targets",
+	MeteorFrame			= "Show info frame for $spell:99849 targets",
+	AggroFrame			= "Show info frame for players who have no aggro during Molten Elementals",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
@@ -195,6 +196,7 @@ L:SetMiscLocalization({
 	North				= "Melee",
 	South				= "Back",
 	HealthInfo			= "Under 110k HP",
+	HasNoAggro			= "No Aggro",
 	MeteorTargets		= "ZOMG Meteors!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "Enough! I will finish this.",--More reliable then adds method.
 	TransitionEnded2	= "Sulfuras will be your end.",
