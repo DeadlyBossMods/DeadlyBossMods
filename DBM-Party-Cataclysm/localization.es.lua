@@ -1085,7 +1085,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoSylvanas")
 
 L:SetGeneralLocalization{
-	name = "Echo of Sylvanas"
+	name = "Eco de Sylvanas"
 }
 
 L:SetWarningLocalization{
@@ -1106,7 +1106,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
-	name = "Echo of Tyrande"
+	name = "Eco de Tyrande"
 }
 
 L:SetWarningLocalization{
@@ -1127,7 +1127,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoJaina")
 
 L:SetGeneralLocalization{
-	name = "Echo of Jaina"
+	name = "Eco de Jaina"
 }
 
 L:SetWarningLocalization{
@@ -1148,7 +1148,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoBaine")
 
 L:SetGeneralLocalization{
-	name = "Echo of Baine"
+	name = "Echo de Baine"
 }
 
 L:SetWarningLocalization{
@@ -1213,7 +1213,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
-	name = "Mannoroth & Varo'then"
+	name = "Mannoroth y Varo'then"
 }
 
 L:SetWarningLocalization{
@@ -1257,7 +1257,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
-	name = "Asira Dawnslayer"
+	name = "Asira Asesinaalbas"
 }
 
 L:SetWarningLocalization{
@@ -1278,7 +1278,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
+	name = "Arzobispo Benedictus"
 }
 
 L:SetWarningLocalization{
