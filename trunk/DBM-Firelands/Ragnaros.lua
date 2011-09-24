@@ -96,8 +96,12 @@ mod:AddBoolOption("MeteorFrame", true)--Phase 3 info frame for meteor fixate det
 
 local firstSmash = false
 local wrathRagSpam = 0
-local meteorSpawned = 0
+local trapSpam = 0
+local magmaTrapSpawned = 0
+local magmaTrapGUID = {}
+local elementalsGUID = {}
 local elementalsSpawned = 0
+local meteorSpawned = 0
 local sonsLeft = 8
 local trapScansDone = 0
 local phase = 1
@@ -185,10 +189,6 @@ local function TransitionEnded()
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
 		timerLivingMeteorCD:Start(45, 1)
-		if mod.Options.MeteorFrame then--This is probably the best way to do it without spam. Does not show in combat log, only unitdebuff/unit_aura will probaby work. will have to find a way to give personal warnings without spam later.
-			DBM.InfoFrame:SetHeader(L.MeteorTargets)
-			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--Maybe need more then 6? 8 or 10 if things go real shitty heh.
-		end
 	elseif phase == 4 then
 		timerLivingMeteorCD:Cancel()
 		timerFlamesCD:Cancel()
@@ -233,8 +233,12 @@ function mod:OnCombatStart(delay)
 	timerHandRagnaros:Start(-delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
-	meteorSpawned = 0
+	trapSpam = 0
+	table.wipe(magmaTrapGUID)
+	table.wipe(elementalsGUID)
+	magmaTrapSpawned = 0
 	elementalsSpawned = 0
+	meteorSpawned = 0
 	sonsLeft = 8
 	trapScansDone = 0
 	phase = 1
@@ -250,10 +254,6 @@ function mod:OnCombatStart(delay)
 	showRangeFrame()
 	if self:IsDifficulty("normal10", "normal25") then--register alternate kill detection, he only dies on heroic.
 		self:RegisterKill("yell", L.Defeat)
-	end
-	if self.Options.InfoHealthFrame then
-		DBM.InfoFrame:SetHeader(L.HealthInfo)
-		DBM.InfoFrame:Show(5, "health", 110000)
 	end
 end
 
@@ -309,13 +309,6 @@ function mod:SPELL_CAST_START(args)
 			timerSulfurasSmash:Start(40)--40 seconds in phase 2
 			if not phase2Started then
 				phase2Started = true
-				if self.Options.InfoHealthFrame then
-					DBM.InfoFrame:Hide()
-				end
-				if self.Options.AggroFrame then
-					DBM.InfoFrame:SetHeader(L.NoAggro)
-					DBM.InfoFrame:Show(5, "playeraggro", 0)
-				end
 				if self:IsDifficulty("heroic10", "heroic25") then
 					if self.Options.warnSeedsLand then
 						timerMoltenSeedCD:Update(6, 17.5)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
@@ -397,9 +390,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnHandRagnaros:Show()
 		timerHandRagnaros:Start()
 	elseif args:IsSpellID(98164) then	--98164 confirmed
+		magmaTrapSpawned = magmaTrapSpawned + 1
 		trapScansDone = 0
 		timerMagmaTrap:Start()
 		self:MagmaTrapTarget()
+		if self.Options.InfoHealthFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(L.HealthInfo)
+			DBM.InfoFrame:Show(5, "health", 110000)
+		end
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
@@ -428,14 +426,25 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLivingMeteorCD:Cancel()--Cancel timer
 		warnLivingMeteor:Schedule(1, meteorSpawned)--Schedule with delay for the sets of 2, so we only warn once.
 		timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
+		if self.Options.MeteorFrame and not DBM.InfoFrame:IsShown() then--Show meteor frame and clear any health or aggro frame because nothing is more important then meteors.
+			DBM.InfoFrame:SetHeader(L.MeteorTargets)
+			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--If you get more then 6 chances are you're screwed unless it's normal mode and he's at like 11%. Really anything more then 4 is chaos and wipe waiting to happen.
+		end
 	elseif args:IsSpellID(100714) then
 		warnCloudBurst:Show()
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(98518, 100252, 100253, 100254) and args:IsPlayer() then--Molten Inferno. This is seed exploding at end, we use it to count spawned elementals.
-		elementalsSpawned = elementalsSpawned + 1--This of course will fail if player is dead so i'm sure it's probably not a perminent solution. Just too lazy to write a GUID method right now.
+	if args:IsSpellID(98518, 100252, 100253, 100254) and not elementalsGUID[args.sourceGUID] then--Molten Inferno. elementals cast this on spawn.
+		elementalsGUID[args.sourceGUID] = true--Add unit GUID's to ignore
+		elementalsSpawned = elementalsSpawned + 1--Add up the total elementals
+	elseif args:IsSpellID(98175, 100106, 100107, 100108) and not magmaTrapGUID[args.sourceGUID] then--Magma Trap Eruption. We use it to count traps that have been set off
+		magmaTrapGUID[args.sourceGUID] = true--Add unit GUID's to ignore
+		magmaTrapSpawned = magmaTrapSpawned - 1--Add up total traps
+		if magmaTrapSpawned == 0 and self.Options.InfoHealthFrame then--All traps are gone hide the health frame.
+			DBM.InfoFrame:Hide()
+		end
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Have to track absorbs too for this method to work.
@@ -452,11 +461,19 @@ function mod:UNIT_DIED(args)
 		meteorSpawned = meteorSpawned - 1
 		if meteorSpawned == 0 and self.Options.MeteorFrame then--Meteors all gone, hide info frame
 			DBM.InfoFrame:Hide()
+			if magmaTrapSpawned >= 1 and self.Options.InfoHealthFrame then--If traps are still up we restore the health frame (why on earth traps would still up in phase 4 is beyond me).
+				DBM.InfoFrame:SetHeader(L.HealthInfo)
+				DBM.InfoFrame:Show(5, "health", 110000)
+			end
 		end	
 	elseif cid == 53189 then--Molten elemental
 		elementalsSpawned = elementalsSpawned - 1
 		if elementalsSpawned == 0 and self.Options.AggroFrame then--Elementals all gone, hide info frame
 			DBM.InfoFrame:Hide()
+			if magmaTrapSpawned >= 1 and self.Options.InfoHealthFrame then--If traps are still up we restore the health frame.
+				DBM.InfoFrame:SetHeader(L.HealthInfo)
+				DBM.InfoFrame:Show(5, "health", 110000)
+			end
 		end	
 	end
 end
@@ -531,5 +548,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		end
 		self:Schedule(17.5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
 		self:Schedule(12.5, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
+		if self.Options.AggroFrame then--Show aggro frame regardless if health frame is still up, it should be more important than health frame at this point. Shouldn't be blowing up traps while elementals are up.
+			DBM.InfoFrame:SetHeader(L.NoAggro)
+			DBM.InfoFrame:Show(5, "playeraggro", 0)
+		end
 	end
 end
