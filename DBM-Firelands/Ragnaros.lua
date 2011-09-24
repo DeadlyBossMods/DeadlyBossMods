@@ -96,7 +96,6 @@ mod:AddBoolOption("MeteorFrame", true)--Phase 3 info frame for meteor fixate det
 
 local firstSmash = false
 local wrathRagSpam = 0
-local trapSpam = 0
 local magmaTrapSpawned = 0
 local magmaTrapGUID = {}
 local elementalsGUID = {}
@@ -233,7 +232,6 @@ function mod:OnCombatStart(delay)
 	timerHandRagnaros:Start(-delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
-	trapSpam = 0
 	table.wipe(magmaTrapGUID)
 	table.wipe(elementalsGUID)
 	magmaTrapSpawned = 0
