@@ -424,7 +424,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLivingMeteorCD:Cancel()--Cancel timer
 		warnLivingMeteor:Schedule(1, meteorSpawned)--Schedule with delay for the sets of 2, so we only warn once.
 		timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
-		if self.Options.MeteorFrame and not DBM.InfoFrame:IsShown() then--Show meteor frame and clear any health or aggro frame because nothing is more important then meteors.
+		if self.Options.MeteorFrame and meteorSpawned == 1 then--Show meteor frame and clear any health or aggro frame because nothing is more important then meteors.
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
 			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--If you get more then 6 chances are you're screwed unless it's normal mode and he's at like 11%. Really anything more then 4 is chaos and wipe waiting to happen.
 		end
