@@ -227,7 +227,7 @@ end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
-	timerWrathRagnaros:Start(6-delay)--People complained about not having this timer, even though it's practically cast on the pull, so here it is.
+	timerWrathRagnaros:Start(6-delay)--4.5-6sec variation, as a result, randomizes whether or not there will be a 2nd wrath before sulfuras smash. (favors not tho)
 	timerMagmaTrap:Start(16-delay)
 	timerHandRagnaros:Start(-delay)
 	timerSulfurasSmash:Start(-delay)
@@ -399,10 +399,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
-		if self:IsDifficulty("heroic10") or not firstSmash then--it has a 25 second cd on 10 man heroic, the other 3 (including 10 man normal) are 30seconds, strange.
-			timerWrathRagnaros:Start(25)
-		else
-			timerWrathRagnaros:Start()
+		--Wrath of Ragnaros has a 25 second cd on 10 man heroic entire fight, the other 3 it's only 25 til first smash, then 30
+		--In this function we check whether or nto there will be a 2nd wrath before smash as well and start 1 25 sec bar for other 3 difficulties
+		if self:IsDifficulty("heroic10") or GetTime() - self.combatInfo.pull <= 5 then--We check if it's 10 man heroic, or if pull was within last 5 seconds.
+			timerWrathRagnaros:Start(25)--if yes to either, this bar is always 25 seconds.
+		else--It's not 10 man heroic and pull was > 5 seconds ago, bar is gonna be at least 30 seconds.
+			if firstsmash then--Check if first smash happened yet to determine at this point whether to start a 30 second bar or 36
+				timerWrathRagnaros:Start()--First smash already happened so it's later fight and this is always gonna be 30.
+			else
+				timerWrathRagnaros:Start(36)--First smash didn't happen yet, and first wrath happened later then 5 seconds into pull, 2nd smash will be delayed by sulfuras smash.
+			end
 		end
 	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat, drycoded.
 		warnBlazingHeat:Show(args.destName)
