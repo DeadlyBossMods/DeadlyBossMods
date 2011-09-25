@@ -63,7 +63,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			mcIcon = mcIcon - 1
 		end
 		self:Unschedule(showMC)
-		self:Schedule(0.5, showMC)
+		if #warnMCTargets >= 2 then
+			showMC()
+		else
+			self:Schedule(0.9, showMC)
+		end
 	end
 end
 
