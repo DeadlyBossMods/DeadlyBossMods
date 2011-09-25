@@ -10,7 +10,9 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
 local warnTwilightZone			= mod:NewSpellAnnounce(93553, 2)--Used for protection against UnleashedMagic
@@ -25,7 +27,7 @@ local timerTwilightFissureCD	= mod:NewCDTimer(23, 93546)
 local timerTwilightZoneCD		= mod:NewNextTimer(30, 93553)
 local timerTwilightBuffetCD		= mod:NewCDTimer(20, 93551)
 local timerTwilightBuffet		= mod:NewTargetTimer(10, 93551)
---local timerUnleashedMagicCD	= mod:NewNextTimer(60, 93494)--She doesn't seem to use this ability if you don't have at least 3 ranged in group. Melee comps or tiny groups avoid this completely.
+local timerUnleashedMagicCD		= mod:NewCDTimer(65, 93556)--65 Cd but least priority spell, she will cast breath, fissure zone or buffet before this, so overlapping CDs often delay this upwards to 75 seconds sometimes
 
 function mod:FissureTarget()
 	local targetname = self:GetBossTarget(50061)
@@ -37,16 +39,17 @@ function mod:FissureTarget()
 end
 
 function mod:OnCombatStart(delay)
+	timerTwilightBuffetCD:Start(10-delay)
 	timerTwilightZoneCD:Start(-delay)--Not a large sample size but seems like it'd be right.
 	timerTwilightFissureCD:Start(-delay)--May not be right, not a large sample size
-	--timerUnleashedMagicCD:Start(-delay)
+	timerUnleashedMagicCD:Start(60-delay)--May not get cast entire fight but if it is cast this is about right.
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(93492) then
+	if args:IsSpellID(93556) then
 		warnUnleashedMagic:Show()
 		specWarnUnleashedMagic:Show()
---		timerUnleashedMagicCD:Start()
+		timerUnleashedMagicCD:Start()
 	elseif args:IsSpellID(93546) then
 		self:ScheduleMethod(0.2, "FissureTarget")
 		timerTwilightFissureCD:Start()

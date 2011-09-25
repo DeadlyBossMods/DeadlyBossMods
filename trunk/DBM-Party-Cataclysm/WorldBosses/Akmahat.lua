@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnShockwave			= mod:NewSpellAnnounce(94968, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnShockwave			= mod:NewSpellAnnounce(94968, 2, nil, mod:IsTank() or mod:IsHealer())
+local warnSandsofTime		= mod:NewTargetAnnounce(93578, 2)
 local warnFuryofSands		= mod:NewSpellAnnounce(94946, 3)
 local warnMantle			= mod:NewSpellAnnounce(93561, 4)
 
@@ -23,6 +24,8 @@ local specWarnMantle		= mod:NewSpecialWarningSpell(93561)
 
 local timerShockwaveCD		= mod:NewCDTimer(16, 94968)--Every 16 seconds shockwave and fury alternate unless mantle, is cast, then it's 18 seconds cause of the cast delay of mantle affecting both CDs
 local timerFuryofSandsCD	= mod:NewCDTimer(16, 94946)
+local timerSandsofTime		= mod:NewTargetTimer(15, 93578)
+local timerSandsofTimeCD	= mod:NewCDTimer(25, 93578)
 local timerMantleCD			= mod:NewCDTimer(43, 93561)--42.8-46.5 variations. a CD timer will suffice of 43
 
 mod:AddBoolOption("HealthFrame", true)
@@ -88,17 +91,23 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)--Assumed spell event, might need to use spell damage, or spell periodic damage instead.
+function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93561) then
 		local shieldname = GetSpellInfo(93561)
 		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
 		self:Schedule(60, hideShieldHealthBar)
+	elseif args:IsSpellID(93578) then
+		warnSandsofTime:Show(args.destName)
+		timerSandsofTime:Start(args.destName)
+		timerSandsofTimeCD:Start()
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)--Assumed spell event, might need to use spell damage, or spell periodic damage instead.
+function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(93561) then
 		self:Unschedule(hideShieldHealthBar)
 		hideShieldHealthBar()
+	elseif args:IsSpellID(93578) then
+		timerSandsofTime:Cancel(args.destName)
 	end
 end
