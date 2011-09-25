@@ -63,7 +63,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			mcIcon = mcIcon - 1
 		end
 		self:Unschedule(showMC)
-		self:Schedule(0.3, showMC)
+		self:Schedule(0.5, showMC)
 	end
 end
 
