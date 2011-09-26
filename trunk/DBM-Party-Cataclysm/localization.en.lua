@@ -604,13 +604,13 @@ L:SetOptionLocalization{
 	WarnNormalSoon	= "Show pre-warning for Normal form",
 	TimerBear		= "Show timer for Bear form",
 	TimerNormal		= "Show timer for Normal form",
-	InfoFrame		= "Show info frame for players not affected by $spell:42402"
+	InfoFrame		= "Show info frame for players affected by $spell:42402"
 }
 
 L:SetMiscLocalization{
 	YellBear 		= "You call on da beast, you gonna get more dan you bargain for!",
 	YellNormal		= "Make way for Nalorakk!",
-	PlayerDebuffs	= "No Surge Debuff"
+	PlayerDebuffs	= "Surge Debuff"
 }
 
 --------------
@@ -732,13 +732,13 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "Show timer for form changes.",
-	InfoFrame		= "Show info frame for players not affected by $spell:42402",
+	InfoFrame		= "Show info frame for players affected by $spell:42402",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "No Surge Debuff"
+	PlayerDebuffs	= "Surge Debuff"
 }
 
 -----------------
