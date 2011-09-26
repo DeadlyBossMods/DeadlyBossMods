@@ -255,6 +255,7 @@ local function updateEnemyPower()
 	updateLines()
 end
 
+--Buffs that are good to have, therefor bad not to have them.
 local function updatePlayerBuffs()
 	table.wipe(lines)
 	if GetNumRaidMembers() > 0 then
@@ -279,6 +280,7 @@ local function updatePlayerBuffs()
 	updateIcons()
 end
 
+--Debuffs that are good to have, therefor it's bad NOT to have them.
 local function updateGoodPlayerDebuffs()
 	table.wipe(lines)
 	if GetNumRaidMembers() > 0 then
@@ -304,7 +306,7 @@ local function updateGoodPlayerDebuffs()
 	updateIcons()
 end
 
---Maybe a way to merge good and bad later with an arg that determines type of test, but first i gotta see if it actually works on rag first or there won't be any reason to have one yet
+--Debuffs that are bad to have, therefor it is bad to have them.
 local function updateBadPlayerDebuffs()
 	table.wipe(lines)
 	if GetNumRaidMembers() > 0 then
@@ -391,6 +393,9 @@ local function updatePlayerAggro()
 				lines[UnitName(uId)] = ""
 			end
 		end
+		if UnitThreatSituation("player") == infoFrameThreshold then--"party"..i excludes player so we hack it in.
+			lines[UnitName("player")] = ""
+		end
 	end
 	updateLines()
 	updateIcons()
@@ -429,15 +434,23 @@ function onUpdate(self, elapsed)
 		local name = sortedLines[i]
 		local power = lines[name]
 		local icon = icons[name]
-		if name == UnitName("player") then
-			addedSelf = true
-		end
 		if icon then
 			name = icons[name]..name
 		end
-		self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+		if name == UnitName("player") then
+			addedSelf = true
+			if currentEvent == "playerbuff" or currentEvent == "playerbaddebuff" or currentEvent == "playergooddebuff" or currentEvent == "health" or (currentEvent == "playeraggro" and infoFrameThreshold == 3) then--Player name on frame bad a thing make it red.
+				self:AddDoubleLine(name, power, 255, 0, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+			elseif currentEvent == "playerbuffstacks" or (currentEvent == "playeraggro" and infoFrameThreshold == 0) then--Player name on frame is a good thing, make it green
+				self:AddDoubleLine(name, power, 0, 255, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+			else--it's not defined a color, so default to white.
+				self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+			end
+		else--It's not player, do nothing special with it. Ordinary white text.
+			self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+		end
 	end					 						-- Add a method to color the power value?
-	if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then 	-- Don't show self on health/enemypower/playerdebuff
+	if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then 	-- Don't show self on health/enemypower/playerdebuff/playeraggro
 		self:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.R, color.G, color.B, 255, 255, 255)
 	end
 	self:Show()
