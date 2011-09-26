@@ -184,7 +184,7 @@ L:SetOptionLocalization({
 	ElementalAggroWarn	= "Mostrar un aviso por si tienes o no aggro de los Elementales de Magma",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
-	InfoHealthFrame		= "Mostrar información de vida (<110k de vida)",
+	InfoHealthFrame		= "Mostrar información de vida (<100k de vida)",
 	MeteorFrame			= "Mostrar información de los objetivos de $spell:99849",
 	AggroFrame			= "Mostrar información de jugadores sin aggro durante los Elementales de Magma",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
@@ -196,7 +196,7 @@ L:SetMiscLocalization({
 	Middle				= "Medio",
 	North				= "Melee",
 	South				= "Atrás",
-	HealthInfo			= "Menos de 110k de vida",
+	HealthInfo			= "Menos de 100k de vida",
 	HasNoAggro			= "Sin aggro",
 	MeteorTargets		= "HOYGA METEHORITOS!",
 	TransitionEnded1	= "¡Basta! Yo terminaré esto.",

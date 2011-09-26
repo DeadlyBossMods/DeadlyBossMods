@@ -180,7 +180,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Показывать количество оставшихся элементалей",
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции",
-	InfoHealthFrame		= "Информационное окно для игроков с низким уровнем здоровья (<110к хп)",
+	InfoHealthFrame		= "Информационное окно для игроков с низким уровнем здоровья (<100к хп)",
 	MeteorFrame			= "Информационное окно для целей $spell:99849",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
