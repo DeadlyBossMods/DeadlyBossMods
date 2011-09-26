@@ -394,7 +394,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:MagmaTrapTarget()
 		if self.Options.InfoHealthFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(L.HealthInfo)
-			DBM.InfoFrame:Show(5, "health", 110000)
+			DBM.InfoFrame:Show(5, "health", 100000)
 		end
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
