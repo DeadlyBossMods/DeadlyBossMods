@@ -91,7 +91,7 @@ local soundMeteor			= mod:NewSound(99849)
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
 mod:AddBoolOption("InfoHealthFrame", mod:IsHealer())--Phase 1 info framefor low health detection.
-mod:AddBoolOption("AggroFrame", true)--Phase 2 info frame for seed aggro detection.
+mod:AddBoolOption("AggroFrame", false)--Phase 2 info frame for seed aggro detection.
 mod:AddBoolOption("MeteorFrame", true)--Phase 3 info frame for meteor fixate detection.
 
 local firstSmash = false
@@ -446,7 +446,7 @@ function mod:SPELL_DAMAGE(args)
 	elseif args:IsSpellID(98175, 100106, 100107, 100108) and not magmaTrapGUID[args.sourceGUID] then--Magma Trap Eruption. We use it to count traps that have been set off
 		magmaTrapGUID[args.sourceGUID] = true--Add unit GUID's to ignore
 		magmaTrapSpawned = magmaTrapSpawned - 1--Add up total traps
-		if magmaTrapSpawned == 0 and self.Options.InfoHealthFrame then--All traps are gone hide the health frame.
+		if magmaTrapSpawned == 0 and self.Options.InfoHealthFrame and not seedsActive then--All traps are gone hide the health frame.
 			DBM.InfoFrame:Hide()
 		end
 	end
@@ -554,7 +554,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		self:Schedule(12.5, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
 		if self.Options.AggroFrame then--Show aggro frame regardless if health frame is still up, it should be more important than health frame at this point. Shouldn't be blowing up traps while elementals are up.
 			DBM.InfoFrame:SetHeader(L.NoAggro)
-			DBM.InfoFrame:Show(5, "playeraggro", 0)
+			if self:IsDifficulty("normal25", "heroic25") then
+				DBM.InfoFrame:Show(10, "playeraggro", 0)--20 man has at least 5 targets without aggro, often more do to immunities. because of it's size i may just remove this feature from 25 mans. it's now off by default.
+			else
+				DBM.InfoFrame:Show(5, "playeraggro", 0)
+			end
 		end
 	end
 end
