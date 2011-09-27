@@ -613,13 +613,13 @@ L:SetOptionLocalization{
 	WarnNormalSoon	= "Mostrar preaviso para forma de Normal",
 	TimerBear		= "Mostrar tiempo para forma de Oso",
 	TimerNormal		= "Mostrar tiempo para forma Normal",
-	InfoFrame		= "Mostrar información para jugadores a los que no les afecta $spell:42402"
+	InfoFrame		= "Mostrar información para jugadores a los que les afecta $spell:42402"
 }
 
 L:SetMiscLocalization{
 	YellBear 	= "¡Si llamáis a la beh'tia, vais a recibir más de lo que eh'peráis!",
 	YellNormal	= "¡Dejad paso al Nalorakk!",
-	PlayerDebuffs	= "Sin debuff de Oleada"
+	PlayerDebuffs	= "Debuff de Oleada"
 }
 
 ---------------
@@ -741,13 +741,13 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "Mostrar tiempo para los cambios de forma.",
-	InfoFrame		= "Mostrar información para jugadores a los que no les afecta $spell:42402",
+	InfoFrame		= "Mostrar información para jugadores a los que les afecta $spell:42402",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "Sin debuff de Oleada"
+	PlayerDebuffs	= "Debuff de Oleada"
 }
 
 -----------------
