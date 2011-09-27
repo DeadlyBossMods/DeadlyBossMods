@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/22/2011
+-- Last update: 9/27/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -609,13 +609,13 @@ L:SetOptionLocalization{
 	WarnNormalSoon	= "提前警报：变为人形态",
 	TimerBear		= "计时条：熊形态",
 	TimerNormal		= "计时条：人形态",
-	InfoFrame		= "信息框：没有$spell:42402效果的团员的列表"
+	InfoFrame		= "信息框：拥有$spell:42402效果的团员的列表"
 }
 
 L:SetMiscLocalization{
 	YellBear 		= "你们召唤野兽？你马上就要大大的后悔了！",
 	YellNormal		= "让我带给你们痛苦！",
-	PlayerDebuffs	= "没有澎湃效果"
+	PlayerDebuffs	= "澎湃效果"
 }
 
 --------------
@@ -737,13 +737,13 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "计时条：变形",
-	InfoFrame		= "信息框：没有$spell:42402效果的团员的列表",
+	InfoFrame		= "信息框：拥有$spell:42402效果的团员的列表",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "没有澎湃效果"
+	PlayerDebuffs	= "澎湃效果"
 }
 
 -----------------
