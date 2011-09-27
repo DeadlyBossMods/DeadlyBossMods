@@ -202,8 +202,8 @@ L:SetMiscLocalization({
 	TransitionEnded1	= "¡Basta! Yo terminaré esto.",
 	TransitionEnded2	= "Sulfuras será vuestro fin.",
 	TransitionEnded3	= "¡De rodillas, mortales! Esto termina ahora.",
-	Defeat				= "Too soon! ... You have come too soon...",--translate
-	Phase4				= "Too soon..."--translate
+	Defeat				= "¡Pronto!... Habéis venido demasiado pronto...",
+	Phase4				= "Pronto..."--translate?
 })
 
 -----------------------
