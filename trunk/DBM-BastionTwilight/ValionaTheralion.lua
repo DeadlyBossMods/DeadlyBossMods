@@ -33,6 +33,7 @@ local warnBlackout					= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnDazzlingDestruction		= mod:NewCountAnnounce(86408, 4)--Used by Theralion just before landing
 --Theralion Ground Phase
+local warnFabFlames					= mod:NewSpellAnnounce(92909, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
 local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)--Used by Valiona just before landing
 
@@ -64,7 +65,7 @@ local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
 local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
 local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
 local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
-local timerNextFabFlames			= mod:NewNextTimer(15, 92909)--Cast is every 15 seconds but no cast event for it so we have to use spell damage and a little assumption someone is always gonna take 1 tick.
+local timerNextFabFlames			= mod:NewNextTimer(15, 92909)
 local timerNextDeepBreath			= mod:NewNextTimer(98, 86059)
 
 local timerTwilightShift			= mod:NewTargetTimer(100, 93051)
@@ -87,6 +88,7 @@ local engulfingMagicIcon = 7
 local dazzlingCast = 0
 local breathCast = 0
 local lastflame = 0
+local lastFab = 0
 local spamZone = 0
 local markWarned = false
 local blackoutActive = false
@@ -196,6 +198,7 @@ function mod:OnCombatStart(delay)
 	dazzlingCast = 0
 	breathCast = 0
 	lastflame = 0
+	lastFab = 0
 	spamZone = 0
 	markWarned = false
 	blackoutActive = false
@@ -355,7 +358,9 @@ end
 
 --Good worked for 10 man-heroic
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(86497) and not ValionaLanded then--Make sure it's a new flame and not someone taking damage from old one, and make sure valiona is not on ground.
+	if spellName == GetSpellInfo(86497) and not ValionaLanded and GetTime() - lastFab > 5 then--Anti spam because UNIT events fire for ALL valid UNITIDs, ie Boss1, target, focus, mouseover. It's possible to get as much as 4 events.
+		warnFabFlames:Show()
 		timerNextFabFlames:Start()
+		lastFab = GetTime()
 	end
 end
