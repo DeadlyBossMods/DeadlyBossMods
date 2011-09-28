@@ -606,13 +606,13 @@ L:SetOptionLocalization{
 	WarnNormalSoon	= "Показывать предупреждение о скорой смене облика на обычный",
 	TimerBear		= "Показывать таймер облика медведя",
 	TimerNormal		= "Показывать таймер обычного облика",
-	InfoFrame		= "Показывать игроков без $spell:42402"
+	InfoFrame		= "Показывать игроков с $spell:42402"
 }
 
 L:SetMiscLocalization{
 	YellBear 		= "Хотели разбудить во мне зверя? Вам это удалось.",
 	YellNormal		= "C дороги!",
-	PlayerDebuffs	= "Без дебаффа"
+	PlayerDebuffs	= "С дебаффом"
 }
 
 ---------------
