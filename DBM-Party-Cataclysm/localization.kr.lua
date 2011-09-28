@@ -607,13 +607,13 @@ L:SetOptionLocalization{
 	WarnNormalSoon	= "인간 형상 사전 경고 보기(soon)",
 	TimerBear		= "다음 곰 형상 타이머 보기",
 	TimerNormal		= "다음 인간 형상 타이머 보기",
-	InfoFrame		= "$spell:42402 디버프 없음에 대한 정보 프레임 보기"
+	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기"
 }
 
 L:SetMiscLocalization{
 	YellBear 		= "너희들이 짐승을 불러냈다. 놀랄 준비나 해라!",
 	YellNormal		= "날로라크 나가신다!",
-	PlayerDebuffs	= "쇄도 디버프 없음",
+	PlayerDebuffs	= "쇄도 있음"
 }
 
 ---------------
@@ -735,13 +735,13 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	timerNextForm	= "형상 변환 타이머 보기",
-	InfoFrame		= "$spell:42402 디버프 없음에 대한 정보 프레임 보기",
+	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "쇄도 디버프 없음"
+	PlayerDebuffs	= "쇄도 있음"
 }
 
 -----------------
@@ -1163,7 +1163,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Murozond")
 
 L:SetGeneralLocalization{
-	name = "Murozond"
+	name = "무로존드"
 }
 
 L:SetWarningLocalization{
