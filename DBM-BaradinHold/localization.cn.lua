@@ -1,4 +1,4 @@
--- Simplified Chinese by Diablohu(diablohudream@gmail.com)
+﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
 -- Last update: 8/20/2011
 
 if GetLocale() ~= "zhCN" then return end
@@ -44,3 +44,21 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 })
+
+----------------------------------
+--  Alizabal, Mistress of Hate  --
+----------------------------------
+L= DBM:GetModLocalization(339)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
