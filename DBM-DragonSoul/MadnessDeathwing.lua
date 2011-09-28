@@ -1,5 +1,4 @@
---[[
-local mod	= DBM:NewMod( <EJ encounter ID >, "DBM-DragonSoul", nil, < EJ zone ID >)
+local mod	= DBM:NewMod(333, "DBM-DragonSoul", nil, 187)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -12,4 +11,3 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 )
---]]
