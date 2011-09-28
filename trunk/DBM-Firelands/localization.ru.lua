@@ -167,7 +167,9 @@ L= DBM:GetModLocalization(198)
 L:SetWarningLocalization({
 	warnSplittingBlow	= "%s %s",--Spellname in Location
 	warnEngulfingFlame	= "%s %s",--Spellname in Location
-	WarnRemainingAdds	= "Осталось элементалей: %d"
+	WarnRemainingAdds	= "Осталось элементалей: %d",
+	warnAggro			= "На вас аггро от элементалей",
+	warnNoAggro			= "На вас нет аггро от элементалей"
 })
 
 L:SetTimerLocalization({
@@ -178,10 +180,13 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "Предупреждение для $spell:100877",
 	warnEngulfingFlame	= "Предупреждение для $spell:99171",
 	WarnRemainingAdds	= "Показывать количество оставшихся элементалей",
+	warnSeedsLand		= "Отсчитывать время до появления $spell:98520, а не до их появления в воздухе",
+	ElementalAggroWarn	= "Показывать наличие и отсутствие аггро от элементалей",
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции",
-	InfoHealthFrame		= "Информационное окно для игроков с низким уровнем здоровья (<100к хп)",
+	InfoHealthFrame		= "Информационное окно для игроков с низким уровнем здоровья (<100к)",
 	MeteorFrame			= "Информационное окно для целей $spell:99849",
+	AggroFrame			= "Информационное окно для игроков, не имеющих аггро от элементалей",
 	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
@@ -192,6 +197,7 @@ L:SetMiscLocalization({
 	North				= "в мили",
 	South				= "сзади",
 	HealthInfo			= "Уровень здоровья",
+	HasNoAggro			= "Без аггро",
 	MeteorTargets		= "ОМФГ Метеоры!",--Keep rollin' rollin' rollin' rollin'.
 	TransitionEnded1	= "Довольно! Пора покончить с этим.",--More reliable then adds method.
 	TransitionEnded2	= "Сульфурас уничтожит вас!",--More reliable then adds method.
