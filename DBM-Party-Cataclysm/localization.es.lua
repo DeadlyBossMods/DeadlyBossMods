@@ -736,7 +736,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerNextForm	= "Next Form Change"
+	timerNextForm	= "Siguiente cambio de forma"
 }
 
 L:SetOptionLocalization{
@@ -1134,11 +1134,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlarecoreDetonate	= "Flarecore detonate"
+	TimerFlarecoreDetonate	= "Detonación de Bengala del Núcleo"
 }
 
 L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "Show timer for $spell:101927 detonate"
+	TimerFlarecoreDetonate	= "Mostrar tiempo para detonación de $spell:101927"
 }
 
 L:SetMiscLocalization{
