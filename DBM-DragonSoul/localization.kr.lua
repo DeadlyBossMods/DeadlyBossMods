@@ -1,12 +1,10 @@
 if GetLocale() ~= "koKR" then return end
 local L
 
---[[  Remove comment syntax when EncounterJournal IDs are known
-
 -------------
 -- Morchok --
 -------------
-L= DBM:GetModLocalization( ?? )
+L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
 })
@@ -23,7 +21,7 @@ L:SetMiscLocalization({
 ---------------------
 -- Warlord Zon'ozz --
 ---------------------
-L= DBM:GetModLocalization( ?? )
+L= DBM:GetModLocalization(324)
 
 L:SetWarningLocalization({
 })
@@ -40,7 +38,7 @@ L:SetMiscLocalization({
 -----------------------------
 -- Yor'sahj the Unsleeping --
 -----------------------------
-L= DBM:GetModLocalization( ?? )
+L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
 })
@@ -57,7 +55,7 @@ L:SetMiscLocalization({
 -----------------------
 -- Hagara the Binder --
 -----------------------
-L= DBM:GetModLocalization( ?? )
+L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
 })
@@ -74,7 +72,7 @@ L:SetMiscLocalization({
 ---------------
 -- Ultraxion --
 ---------------
-L= DBM:GetModLocalization( ?? )
+L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
 })
@@ -91,7 +89,7 @@ L:SetMiscLocalization({
 -------------------------
 -- Warmaster Blackhorn --
 -------------------------
-L= DBM:GetModLocalization( ?? )
+L= DBM:GetModLocalization(332)
 
 L:SetWarningLocalization({
 })
@@ -105,10 +103,10 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 })
 
-------------------------
--- Deathwing (Flight) --
-------------------------
-L= DBM:GetModLocalization( ?? )
+-------------------------
+-- Spine of Deathwing  --
+-------------------------
+L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
 })
@@ -122,10 +120,10 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 })
 
---------------------------------------
--- Deathwing (Exposed in Maelstrom) -- 
---------------------------------------
-L= DBM:GetModLocalization( ?? )
+---------------------------
+-- Madness of Deathwing  -- 
+---------------------------
+L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
 })
@@ -138,5 +136,3 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 })
-
---]]
