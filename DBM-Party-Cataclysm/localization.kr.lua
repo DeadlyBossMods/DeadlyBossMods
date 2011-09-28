@@ -1157,6 +1157,27 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
+--------------
+-- Murozond --
+--------------
+L = DBM:GetModLocalization("Murozond")
+
+L:SetGeneralLocalization{
+	name = "Murozond"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
 ------------------------
 --  Well of Eternity  --
 ------------------------
