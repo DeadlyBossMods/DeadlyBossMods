@@ -39,3 +39,21 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 })
+
+----------------------------------
+--  Alizabal, Mistress of Hate  --
+----------------------------------
+L= DBM:GetModLocalization(339)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
