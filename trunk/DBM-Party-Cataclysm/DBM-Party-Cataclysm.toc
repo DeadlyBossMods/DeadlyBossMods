@@ -113,6 +113,7 @@ EndTime\Sylvanas.lua
 EndTime\Tyrande.lua
 EndTime\Jaina.lua
 EndTime\Baine.lua
+EndTime\Murozond.lua
 WellOfEternity\MapSizes.lua
 WellOfEternity\Perotharn.lua
 WellOfEternity\Azshara.lua
