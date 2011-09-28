@@ -34,3 +34,4 @@ localization.cn.lua
 MapSizes.lua
 Argaloth.lua
 Occuthar.lua
+Alizabal.lua
