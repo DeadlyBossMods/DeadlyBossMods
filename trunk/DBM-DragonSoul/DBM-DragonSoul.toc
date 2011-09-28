@@ -37,5 +37,5 @@ Yorsahj.lua
 Hagara.lua
 Ultraxion.lua
 Blackhorn.lua
-DeathwingFlight.lua
-DeathwingExposed.lua
+SpineDeathwing.lua
+MadnessDeathwing.lua
