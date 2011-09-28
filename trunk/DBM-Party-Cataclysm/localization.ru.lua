@@ -1130,9 +1130,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerFlarecoreDetonate	= "Flarecore detonate"
 }
 
 L:SetOptionLocalization{
+	TimerFlarecoreDetonate	= "Show timer for $spell:101927 detonate"
 }
 
 L:SetMiscLocalization{
