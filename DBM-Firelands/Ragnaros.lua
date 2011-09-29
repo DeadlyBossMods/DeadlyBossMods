@@ -39,6 +39,7 @@ mod:AddBoolOption("warnSeedsLand", false, "announce")
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnSonsLeft			= mod:NewAnnounce("WarnRemainingAdds", 2, 99014)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
+mod:AddBoolOption("WarnEngulfingFlameHeroic", false, "announce")
 local warnAggro				= mod:NewAnnounce("warnAggro", 4, 99601, nil, false)
 local warnNoAggro			= mod:NewAnnounce("warnNoAggro", 1, 99601, nil, false)
 mod:AddBoolOption("ElementalAggroWarn", true, "announce")
@@ -361,9 +362,9 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerFlamesCD:Start()--40 second CD in phase 2
 		end
-		--North: 99172 (10N), 100175 (25N)
-		--Middle: 99235 (10N), 100178 (25N)
-		--South: 99236 (10N), 100181 (25N)
+		--North: 99172 (10N), 100175 (25N), 100177 (25H)
+		--Middle: 99235 (10N), 100178 (25N), 100180 (25H)
+		--South: 99236 (10N), 100181 (25N), 100183 (25H)
 		if args:IsSpellID(99172, 100175) then--North
 			warnEngulfingFlame:Show(args.spellName, L.North)
 			if self:IsMelee() or seedsActive then--Always warn melee classes if it's in melee (duh), warn everyone if seeds are active since 90% of strats group up in melee
@@ -372,6 +373,13 @@ function mod:SPELL_CAST_START(args)
 		elseif args:IsSpellID(99235, 100178) then--Middle
 			warnEngulfingFlame:Show(args.spellName, L.Middle)
 		elseif args:IsSpellID(99236, 100181) then--South
+			warnEngulfingFlame:Show(args.spellName, L.South)
+		--Heroic Engulfing Flames below, spammy do to the mechanic difference between heroic and normal thus optional under a different option.
+		elseif args:IsSpellID(100177) and self.Options.WarnEngulfingFlameHeroic then
+			warnEngulfingFlame:Show(args.spellName, L.North)
+		elseif args:IsSpellID(100180) and self.Options.WarnEngulfingFlameHeroic then
+			warnEngulfingFlame:Show(args.spellName, L.Middle)
+		elseif args:IsSpellID(100183) and self.Options.WarnEngulfingFlameHeroic then
 			warnEngulfingFlame:Show(args.spellName, L.South)
 		end
 	elseif args:IsSpellID(100646) then
