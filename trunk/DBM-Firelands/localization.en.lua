@@ -172,21 +172,22 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Transition ends"
+	TimerPhaseSons			= "Transition ends"
 })
 
 L:SetOptionLocalization({
-	warnSplittingBlow	= "Show warning for $spell:100877",
-	warnEngulfingFlame	= "Show warning for $spell:99171",
-	WarnRemainingAdds	= "Show warning for how many Sons of Flame remain",
-	warnSeedsLand		= "Show warning/timer for $spell:98520 landing instead of seed casts.",
-	ElementalAggroWarn	= "Show warning for whether or not you have Aggro from Molten Elementals",
-	TimerPhaseSons		= "Show a duration timer for the \"Sons of Flame phase\"",
-	RangeFrame			= "Show range frame",
-	InfoHealthFrame		= "Show info frame for health (<100k hp)",
-	MeteorFrame			= "Show info frame for $spell:99849 targets",
-	AggroFrame			= "Show info frame for players who have no aggro during Molten Elementals",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	warnSplittingBlow			= "Show warning for $spell:100877",
+	warnEngulfingFlame			= "Show location warnings for $spell:99171",
+	WarnEngulfingFlameHeroic	= "Show location warnings for $spell:99171 on heroic",
+	WarnRemainingAdds			= "Show warning for how many Sons of Flame remain",
+	warnSeedsLand				= "Show warning/timer for $spell:98520 landing instead of seed casts.",
+	ElementalAggroWarn			= "Show warning for whether or not you have Aggro from Molten Elementals",
+	TimerPhaseSons				= "Show a duration timer for the \"Sons of Flame phase\"",
+	RangeFrame					= "Show range frame",
+	InfoHealthFrame				= "Show info frame for health (<100k hp)",
+	MeteorFrame					= "Show info frame for $spell:99849 targets",
+	AggroFrame					= "Show info frame for players who have no aggro during Molten Elementals",
+	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
