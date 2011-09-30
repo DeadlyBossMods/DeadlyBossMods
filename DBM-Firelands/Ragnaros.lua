@@ -378,6 +378,9 @@ function mod:SPELL_CAST_START(args)
 	--Heroic Engulfing Flames below, spammy do to the mechanic difference between heroic and normal thus optional under a different option.
 	elseif args:IsSpellID(100177) and self.Options.WarnEngulfingFlameHeroic then
 		warnEngulfingFlame:Show(args.spellName, L.North)
+		if self:IsMelee() then--Always warn melee classes if it's in melee (duh), warn everyone if seeds are active since 90% of strats group up in melee
+			specWarnEngulfing:Show()
+		end
 	elseif args:IsSpellID(100180) and self.Options.WarnEngulfingFlameHeroic then
 		warnEngulfingFlame:Show(args.spellName, L.Middle)
 	elseif args:IsSpellID(100183) and self.Options.WarnEngulfingFlameHeroic then
