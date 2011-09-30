@@ -211,18 +211,31 @@ do
 			if getCIDfromGUID(UnitGUID("focus")) == cId then
 				targetCache[cId] = "focus"
 			else
-				-- check target and raid/party targets
-				local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-				for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
-					id = (i == 0 and "target") or uId..i.."target"
-					if getCIDfromGUID(UnitGUID(id or "")) == cId then
+				-- just some hack to add support for boss unit ids
+				local found = false
+				for i = 1, 4 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
+					id = "boss"..i
+					if getCIDfromGUID(UnitGUID(id)) == cId then
+						found = true
 						targetCache[cId] = id
 						break
 					end
 				end
+				if not found then
+					-- check target and raid/party targets
+					local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+					for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+						id = (i == 0 and "target") or uId..i.."target"
+						if getCIDfromGUID(UnitGUID(id or "")) == cId then
+							targetCache[cId] = id
+							break
+						end
+					end
+				end
 			end
 		end
-		if getCIDfromGUID(UnitGUID(id or "")) == cId then -- did we find the mob? if yes: update the health bar
+		-- UnitHealthMax is sometimes 0 for one frame when the unit just showed up; so we need to check this here due to stupid UI changes
+		if getCIDfromGUID(UnitGUID(id or "")) == cId and UnitHealthMax(id) ~= 0 then -- did we find the mob? if yes: update the health bar
 			return UnitHealth(id) / UnitHealthMax(id) * 100
 		end
 	end
@@ -237,18 +250,30 @@ do
 			if UnitGUID("focus") == guid then
 				targetGuidCache[guid] = "focus"
 			else
-				-- check target and raid/party targets
-				local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-				for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
-					id = (i == 0 and "target") or uId..i.."target"
-					if UnitGUID(id or "") == guid then
+				local found = false
+				for i = 1, 4 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
+					id = "boss"..i
+					if UnitGUID(id) == guid then
+						found = true
 						targetGuidCache[guid] = id
 						break
 					end
 				end
+				if not found then
+				-- check target and raid/party targets
+					local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+					for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+						id = (i == 0 and "target") or uId..i.."target"
+						if UnitGUID(id or "") == guid then
+							targetGuidCache[guid] = id
+							break
+						end
+					end
+				end
 			end
 		end
-		if UnitGUID(id or "") == guid then -- did we find the mob? if yes: update the health bar
+		-- blah, see above
+		if UnitGUID(id or "") == guid and UnitHealthMax(id) ~= 0  then -- did we find the mob? if yes: update the health bar
 			return UnitHealth(id) / UnitHealthMax(id) * 100
 		end
 	end
