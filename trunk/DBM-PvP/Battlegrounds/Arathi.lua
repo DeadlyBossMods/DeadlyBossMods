@@ -35,7 +35,7 @@ Arathi:RemoveOption("SpeedKillTimer")
 
 local bgzone = false
 local ResPerSec = {
-	[0] = 0,
+	[0] = 1e-300, -- work-around for the divions by zero foo (no, using DOUBLE_MIN is not possible here as it would overflow to infinity which is also an exception)
 	[1] = 10/12,
 	[2] = 10/9,
 	[3] = 10/6,
