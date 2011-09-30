@@ -88,7 +88,7 @@ local berserkTimer			= mod:NewBerserkTimer(1080)
 
 local soundBlazingHeat		= mod:NewSound(100460)
 local soundMeteor			= mod:NewSound(99849)
-local soundEmpoweredSulf	= mod:NewSound(100997)
+local soundEmpoweredSulf	= mod:NewSound(100997, nil, mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
