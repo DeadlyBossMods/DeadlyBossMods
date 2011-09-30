@@ -88,6 +88,7 @@ local berserkTimer			= mod:NewBerserkTimer(1080)
 
 local soundBlazingHeat		= mod:NewSound(100460)
 local soundMeteor			= mod:NewSound(99849)
+local soundEmpoweredSulf	= mod:NewSound(100997)
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
@@ -283,6 +284,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(100997) then
 		warnEmpoweredSulf:Show()
 		specWarnEmpoweredSulf:Show()
+		soundEmpoweredSulf:Play()
 		timerEmpoweredSulfCD:Start()
 	end
 end		

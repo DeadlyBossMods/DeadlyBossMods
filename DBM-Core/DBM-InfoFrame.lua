@@ -386,6 +386,8 @@ local function updatePlayerAggro()
 				lines[UnitName(uId)] = ""
 			end
 		end
+		updateLines()
+		updateIcons()
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
@@ -396,9 +398,9 @@ local function updatePlayerAggro()
 		if UnitThreatSituation("player") == infoFrameThreshold then--"party"..i excludes player so we hack it in.
 			lines[UnitName("player")] = ""
 		end
+		updateLines()
+		updateIcons()
 	end
-	updateLines()
-	updateIcons()
 end
 
 ----------------
