@@ -192,7 +192,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Setze Zeichen auf Ziele von $spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Spiele Sound, wenn du von $spell:%d betroffen bist"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Spiele \"Lauf weg!\"-Sound, wenn du von $spell:%d betroffen bist"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Schreie, wenn du von $spell:%d betroffen bist"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s auf mir!"
 
