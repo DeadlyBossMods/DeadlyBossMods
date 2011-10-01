@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 9/22/2011
+-- Last update: 10/01/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -128,25 +128,25 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速击杀"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target					= "%s: %%s",
-	cast					= "%s",
-	active					= "%s",
-	cd					= "%s冷却",
+	target		= "%s: %%s",
+	cast		= "%s",
+	active		= "%s",
+	cd			= "%s冷却",
 	cdcount		= "%s冷却（%%d）",
-	next 					= "下一次%s",
+	next 		= "下一次%s",
 	nextcount	= "下一次%s（%%d）",
-	achievement 				= "%s",
+	achievement = "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
-	cast					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r施法时间",
-	active					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
-	cd					= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
+	target		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
+	cast		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r施法时间",
+	active		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
+	cd			= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
 	cdcount		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
-	next					= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
+	next		= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
 	nextcount	= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
-	achievement				= "计时条：成就%s",
+	achievement	= "计时条：成就%s",
 }
 
 -- Auto-generated Warning Localizations
@@ -162,7 +162,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stack					= "%s: >%%s< (%%d)",
 }
 
-local prewarnOption				= "提前警报：|cff71d5ff|Hspell:%d|h%s|h|r"
+local prewarnOption			= "提前警报：|cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的目标",
 	spell					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r",
@@ -181,11 +181,11 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell					= "特殊警报：$spell:%d",
 	dispel					= "特殊警报：需要驱散或偷取$spell:%d",
 	interrupt				= "特殊警报：需要打断$spell:%d",
-	you					= "特殊警报：当你受到$spell:%d影响时",
+	you						= "特殊警报：当你受到$spell:%d影响时",
 	target					= "特殊警报：当他人受到$spell:%d影响时",
 	close					= "特殊警报：当你附近有人受到$spell:%d影响时",
 	move					= "特殊警报：当你受到$spell:%d影响需要移动时",
-	run					= "特殊警报：当你受到$spell:%d影响需要立刻跑开时",
+	run						= "特殊警报：当你受到$spell:%d影响需要立刻跑开时",
 	cast					= "特殊警报：$spell:%d的施放",
 	stack					= "特殊警报：当叠加了至少%d层$spell:%d时"
 }
@@ -194,21 +194,21 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell					= "%s!",
 	dispel					= "%%s中了%s - 快驱散",
 	interrupt				= "%s - 快打断",
-	you					= "你中了%s",
+	you						= "你中了%s",
 	target					= "%%s中了%s",
 	close					= "你附近的%%s中了%s",
 	move					= "%s - 快躲开",
-	run					= "%s - 快跑",
+	run						= "%s - 快跑",
 	cast					= "%s - 停止施法",
 	stack					= "%s (%%d)"
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "为$spell:%d的目标添加团队标记"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "播放声音警报：$spell:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "播放声音警报：$spell:%d的冷却"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "当你受到$spell:%d影响时时大喊"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s！"--Verify (%s is spellname)
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "为$spell:%d的目标添加团队标记"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "播放“快跑啊！”声音警报：$spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "播放冷却倒计时声音警报：$spell:%d"
+DBM_CORE_AUTO_YELL_OPTION_TEXT		= "当你受到$spell:%d影响时时大喊"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "我中了%s！"--Verify (%s is spellname)
 
 
 -- New special warnings
@@ -216,10 +216,10 @@ DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖动的特别警报"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特别警报"
 
 
-DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED		= "此区域不支持%d码的距离检查。\n已支持的距离有10，11，15及28码。"
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "此区域不支持%d码的距离检查。\n已支持的距离有10，11，15及28码。"
 
 DBM_ARROW_MOVABLE				= "可移动箭头"
-DBM_ARROW_NO_RAIDGROUP				= "此功能仅适用于副本中的团队。"
+DBM_ARROW_NO_RAIDGROUP			= "此功能仅适用于副本中的团队。"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 可用命令：",
 	"/dbm arrow <x> <y>  新建一个箭头在指定位置(0 < x/y < 100)",
@@ -244,4 +244,4 @@ DBM_INSTANCE_INFO_STATS_DENIED		= "拒绝请求：%s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "暂离：%s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "新版DBM未安装：%s"
 DBM_INSTANCE_INFO_RESULTS			= "副本进度扫描结果。" --Note that instances might show up more than once if there are players with localized WoW clients in your raid.
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "回复请求的玩家：%s\n|HDBM:showRaidIdResults|h|cff3588ff[点击显示结果]|r|h"
