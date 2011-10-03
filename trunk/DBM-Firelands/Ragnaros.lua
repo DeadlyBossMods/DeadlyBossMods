@@ -53,16 +53,20 @@ local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 abili
 local warnDreadFlame		= mod:NewSpellAnnounce(100675, 3, nil, false)--Heroic phase 4 ability
 
 local specWarnSulfurasSmash	= mod:NewSpecialWarningSpell(98710, false)
+local specWarnScorchedGround= mod:NewSpecialWarningMove(100124)--Fire on ground left by Sulfuras Smash
 local specWarnMagmaTrap		= mod:NewSpecialWarningMove(98164)
 local yellMagmaTrap			= mod:NewYell(98164)--May Return false tank yells
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
-local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)
+local specWarnBlazingHeat	= mod:NewSpecialWarningYou(100460)--Debuff on you
+local yellBlazingHeat		= mod:NewYell(100460)
+local specWarnBlazingHeatMV	= mod:NewSpecialWarningMove(100305)--Standing in it
 local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
 local specWarnMeteor		= mod:NewSpecialWarningYou(99849)
 local yellMeteor			= mod:NewYell(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
+local specWarnDreadFlame	= mod:NewSpecialWarningMove(100998)--Standing in dreadflame
 local specWarnEmpoweredSulf	= mod:NewSpecialWarningSpell(100997, mod:IsTank())--Heroic ability Asuming only the tank cares about this? seems like according to tooltip 5 seconds to hide him into roots?
 
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
@@ -98,6 +102,7 @@ mod:AddBoolOption("MeteorFrame", true)--Phase 3 info frame for meteor fixate det
 
 local firstSmash = false
 local wrathRagSpam = 0
+local standingInFireSpam = 0--Because all 3 fires you can stand in, are at diff times of fight, we can use same variable for all 3 vs wasting memory for 3 of them.
 local magmaTrapSpawned = 0
 local magmaTrapGUID = {}
 local elementalsGUID = {}
@@ -234,6 +239,7 @@ function mod:OnCombatStart(delay)
 	timerHandRagnaros:Start(-delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
+	standingInFireSpam = 0
 	table.wipe(magmaTrapGUID)
 	table.wipe(elementalsGUID)
 	magmaTrapSpawned = 0
@@ -348,14 +354,14 @@ function mod:SPELL_CAST_START(args)
 		end
 		specWarnSplittingBlow:Show()
 		timerInvokeSons:Start()
-		--Middle: 98952 (10N), 100877 (25N) (Guessed: 100878, 100879)
-		--East: 98953 (10N), 100880 (25N) (Guessed: 100881, 100882)
-		--West: 98951 (10N), 100883 (25N) (Guessed: 100884, 100885)
-		if args:IsSpellID(98952, 100877) then--Middle
+		--Middle: 98952 (10N), 100877 (25N) (Guessed: 100878)
+		--East: 98953 (10N), 100880 (25N) (Guessed: 100881)
+		--West: 98951 (10N), 100883 (25N) (Guessed: 100884)
+		if args:IsSpellID(98952, 100877, 100878, 100879) then--Middle
 			warnSplittingBlow:Show(args.spellName, L.Middle)
-		elseif args:IsSpellID(98953, 100880) then--East
+		elseif args:IsSpellID(98953, 100880, 100881, 100882) then--East
 			warnSplittingBlow:Show(args.spellName, L.East)
-		elseif args:IsSpellID(98951, 100883) then--West
+		elseif args:IsSpellID(98951, 100883, 100884, 100885) then--West
 			warnSplittingBlow:Show(args.spellName, L.West)
 		end
 	elseif args:IsSpellID(99172, 100175) or args:IsSpellID(99235, 100178) or args:IsSpellID(99236, 100181) then--Another scripted spell with a ton of spellids based on location of room. heroic purposely excluded do to different mechanic linked to World of Flames that will be used instead.
@@ -378,14 +384,14 @@ function mod:SPELL_CAST_START(args)
 			warnEngulfingFlame:Show(args.spellName, L.South)
 		end
 	--Heroic Engulfing Flames below, spammy do to the mechanic difference between heroic and normal thus optional under a different option.
-	elseif args:IsSpellID(100177) and self.Options.WarnEngulfingFlameHeroic then
+	elseif args:IsSpellID(100176, 100177) and self.Options.WarnEngulfingFlameHeroic then
 		warnEngulfingFlame:Show(args.spellName, L.North)
 		if self:IsMelee() then--Always warn melee classes if it's in melee (duh), warn everyone if seeds are active since 90% of strats group up in melee
 			specWarnEngulfing:Show()
 		end
-	elseif args:IsSpellID(100180) and self.Options.WarnEngulfingFlameHeroic then
+	elseif args:IsSpellID(100179, 100180) and self.Options.WarnEngulfingFlameHeroic then
 		warnEngulfingFlame:Show(args.spellName, L.Middle)
-	elseif args:IsSpellID(100183) and self.Options.WarnEngulfingFlameHeroic then
+	elseif args:IsSpellID(100182, 100183) and self.Options.WarnEngulfingFlameHeroic then
 			warnEngulfingFlame:Show(args.spellName, L.South)
 	elseif args:IsSpellID(100646) then
 		warnEntrappingRoots:Show()
@@ -423,11 +429,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerWrathRagnaros:Start(36)--First smash didn't happen yet, and first wrath happened later then 5 seconds into pull, 2nd smash will be delayed by sulfuras smash.
 			end
 		end
-	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat, drycoded.
+	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat
 		warnBlazingHeat:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBlazingHeat:Show()
 			soundBlazingHeat:Play()
+			yellBlazingHeat:Yell()
 		end
 		if self.Options.BlazingHeatIcons then
 			self:SetIcon(args.destName, blazingHeatIcon, 8)
@@ -462,6 +469,15 @@ function mod:SPELL_DAMAGE(args)
 		if magmaTrapSpawned == 0 and self.Options.InfoHealthFrame and not seedsActive then--All traps are gone hide the health frame.
 			DBM.InfoFrame:Hide()
 		end
+	elseif args:IsSpellID(98870, 100122, 100123, 100124) and args:IsPlayer() and GetTime() - standingInFireSpam >= 3 then
+		specWarnScorchedGround:Show()
+		standingInFireSpam = GetTime()
+	elseif args:IsSpellID(99144, 100303, 100304, 100305) and args:IsPlayer() and GetTime() - standingInFireSpam >= 3 then
+		specWarnBlazingHeatMV:Show()
+		standingInFireSpam = GetTime()
+	elseif args:IsSpellID(100941, 100998) and args:IsPlayer() and GetTime() - standingInFireSpam >= 3 and not UnitBuff("player", GetSpellInfo(100713)) then
+		specWarnDreadFlame:Show()
+		standingInFireSpam = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Have to track absorbs too for this method to work.
