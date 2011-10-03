@@ -432,14 +432,19 @@ function onUpdate(self, elapsed)
 	end
 --	updateIcons()
 	for i = 1, #sortedLines do
-		if self:NumLines() > maxlines or not addedSelf and DBM.Options.InfoFrameShowSelf and self:NumLines() > maxlines-1 then break end
+		if self:NumLines() > maxlines then
+			break
+		end
 		local name = sortedLines[i]
 		local power = lines[name]
 		local icon = icons[name]
+		-- work-around for the player bug, "name" should actually be called "displayName" or something as it might contain the icon in addition to the name 
+		-- so we need playerName if we just want the raw name
+		local playerName = name
 		if icon then
 			name = icons[name]..name
 		end
-		if name == UnitName("player") then
+		if playerName == UnitName("player") then
 			addedSelf = true
 			if currentEvent == "playerbuff" or currentEvent == "playerbaddebuff" or currentEvent == "playergooddebuff" or currentEvent == "health" or (currentEvent == "playeraggro" and infoFrameThreshold == 3) then--Player name on frame bad a thing make it red.
 				self:AddDoubleLine(name, power, 255, 0, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
