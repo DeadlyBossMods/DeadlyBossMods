@@ -291,9 +291,9 @@ do
 	local argsMT = {__index = {}}
 	local args = setmetatable({}, argsMT)
 	
-	function argsMT.__index:IsSpellID(a1, a2, a3, a4)
+	function argsMT.__index:IsSpellID(a1, a2, a3, a4, a5)
 		local v = self.spellId
-		return v == a1 or v == a2 or v == a3 or v == a4
+		return v == a1 or v == a2 or v == a3 or v == a4 or v == a5
 	end
 	
 	function argsMT.__index:IsPlayer()
