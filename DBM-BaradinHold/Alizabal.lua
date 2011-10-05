@@ -42,8 +42,9 @@ function mod:OnCombatStart(delay)
 	firstspecial = false
 	firstskewer = true
 	firstseething = true
-	timerSeethingHateCD:Start(6-delay)
-	timerSkewerCD:Start(15-delay)
+	timerFirstSpecial:Start(6-delay)
+--	timerSeethingHateCD:Start(6-delay)
+--	timerSkewerCD:Start(15-delay)
 	timerBladeDanceCD:Start(35-delay)
 --	berserkTimer:Start(-delay)
 end
