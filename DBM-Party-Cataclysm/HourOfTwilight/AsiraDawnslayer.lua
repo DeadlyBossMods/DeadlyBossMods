@@ -18,11 +18,10 @@ local warnBladeBarrier	= mod:NewSpellAnnounce(103419, 3)
 local warnFireTotem	= mod:NewSpellAnnounce(108374, 1)
 
 local timerSmokeBomb	= mod:NewNextTimer(20, 103558)
-local timerFireTotem	= mod:NewNextTimer(22, 108374)
+local timerFireTotem	= mod:NewNextTimer(21, 108374)
 
 function mod:OnCombatStart(delay)
--- timers are from 1 log
-	timerSmokeBomb:Start(26-delay)
+	timerSmokeBomb:Start(26-delay)	-- [26 or 36] (2 logs)
 	timerFireTotem:Start(35-delay)
 end
 

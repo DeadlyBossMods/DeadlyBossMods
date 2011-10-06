@@ -22,18 +22,20 @@ local warnTotem		= mod:NewSpellAnnounce(101614, 3)
 local warnMoltenBlast	= mod:NewTargetAnnounce(101840, 3)
 local warnPulverize	= mod:NewSpellAnnounce(101625, 3)
 
-local timerTotem	= mod:NewNextTimer(30, 101614)
+local timerTotem	= mod:NewNextTimer(25, 101614)
 local timerMoltenBlast	= mod:NewTargetTimer(10, 101840)
 local timerPulverize	= mod:NewNextTimer(40, 101625)
 
 local spamBlast = 0
 local spamPulverize = 0
+local totemCount = 0
 
 function mod:OnCombatStart(delay)
-	timerTotem:Start(10-delay)
+	timerTotem:Start(30-delay)
 	timerPulverize:Start(10-delay)
 	spamBlast = 0
 	spamPulverize = 0
+	totemCount = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
