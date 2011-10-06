@@ -10,22 +10,26 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH"
 )
 
-local warnRighteousShear	= mod:NewSpellAnnounce(103151, 2)
-local warnPurifyingLight	= mod:NewSpellAnnounce(103565, 3)
-local warnWaveVirtue		= mod:NewSpellAnnounce(103681, 4, nil, false)	-- blizzard warning
-local prewarnP2			= mod:NewPrePhaseAnnounce(2, 2)
-local warnTwilightShear		= mod:NewSpellAnnounce(103363, 2)
+local warnRighteousShear		= mod:NewTargetAnnounce(103151, 2)
+local warnPurifyingLight		= mod:NewSpellAnnounce(103565, 3)
+local warnWaveVirtue			= mod:NewSpellAnnounce(103678, 4, nil, false)	-- blizzard warning
+local prewarnP2					= mod:NewPrePhaseAnnounce(2, 2)
+local warnTwilightShear			= mod:NewTargetAnnounce(103363, 2)
 local warnCorruptingTwilight	= mod:NewSpellAnnounce(103767, 3)
-local warnWaveTwilight		= mod:NewSpellAnnounce(103784, 4, nil, false)	-- blizzard warning
--- warn actual 'phase' change?  (Twilight Epiphany (ID = 103754))
+local warnWaveTwilight			= mod:NewSpellAnnounce(103780, 4, nil, false)	-- blizzard warning
 
+local specwarnPurified			= mod:NewSpecialWarningMove(103653)
+local specwarnWaveVirtue		= mod:NewSpecialWarningSpell(103678, nil, nil, nil, true)
+local specwarnTwilight			= mod:NewSpecialWarningMove(103775)
+local specwarnWaveTwilight		= mod:NewSpecialWarningSpell(103780, nil, nil, nil, true)
 
-local specwarnPurified	= mod:NewSpecialWarningMove(103653)
-local specwarnTwilight	= mod:NewSpecialWarningMove(103775)
+local timerWaveVirtueCD			= mod:NewNextTimer(30, 103678)--Will he do it more then once? if you are terrible and take > 30 sec to push him?
+local timerWaveTwilightCD		= mod:NewNextTimer(30, 103780)--^
 
 local warnedP2 = false
 local spamDamage = 0	-- used for both Special Warnings
@@ -33,6 +37,7 @@ local spamDamage = 0	-- used for both Special Warnings
 function mod:OnCombatStart(delay)
 	warnedP2 = false
 	spamDamage = 0
+	timerWaveVirtueCD:Start(-delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -40,14 +45,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnRighteousShear:Show()
 	elseif args:IsSpellID(103565) then
 		warnPurifyingLight:Show()
-	elseif args:IsSpellID(103681) then
+	elseif args:IsSpellID(103677, 103680, 103681) then--Spellids are locationsal. So figure out which one is switch could announce wave direction?
 		warnWaveVirtue:Show()
+		specwarnWaveVirtue:Show()
 	elseif args:IsSpellID(103363) then
 		warnTwilightShear:Show()
 	elseif args:IsSpellID(103767) then
 		warnCorruptingTwilight:Show()
-	elseif args:IsSpellID(103784) then
+	elseif args:IsSpellID(103782, 103783, 103784) then--Same as virtue
 		warnWaveTwilight:Show()
+		specwarnWaveTwilight:Show()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(103151) then
+		warnRighteousShear:Show(args.destName)
+	elseif args:IsSpellID(103363) then
+		warnTwilightShear:Show(args.destName)
+	elseif args:IsSpellID(103754) then--Phase change from holy to shadow.
+		timerWaveVirtueCD:Cancel()--Cancel this timer if he was pushed before he got to do it, which is entirely possible.
+		timerWaveTwilightCD:Start(35)--Is this cast more then once?
 	end
 end
 
@@ -78,9 +96,7 @@ end
 -- Timers from 2 logs so they most likely are incorrect :)  (?? = unknown, didnt happen)
 -- "Holy" timers: X secs after combat start
 	-- 1st Purifying Light after [4 or 5] secs
-	-- 1st Wave Of Virtue after [?? or 24] secs 
 
 -- "Shadow" timers:  X secs after SPELL_AURA_APPLIED event for Twilight Epiphany
 	-- 1st Twilight Shear after [15 or 12] secs
 	-- 1st Corrupting Twilight after [17 or 17] secs
-	-- 1st Wave of Twilight after [37 or 36] secs

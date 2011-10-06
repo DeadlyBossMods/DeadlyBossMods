@@ -10,30 +10,22 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"UNIT_DIED"
 )
 
-local warnIcyTomb	= mod:NewTargetAnnounce(103252, 4)
+local warnIcyTomb		= mod:NewTargetAnnounce(103252, 4)
 local warnChainsFrost	= mod:NewSpellAnnounce(102582, 2)
-local prewarnPhase2	= mod:NewPrePhaseAnnounce(2, 3)
+local prewarnPhase2		= mod:NewPrePhaseAnnounce(2, 3)
+
+local timerIcyTombCD	= mod:NewNextTimer(30, 103252)--^
 
 local warnedP2 = false
+
 function mod:OnCombatStart(delay)
 	warnedP2 = false
-
--- below timers are from 2 logs
-	-- 1st Tomb after [30 or 16] secs	
-	-- 1st Chains after [19 or 32] secs
+	timerIcyTombCD:Start(-delay)
 end
-
---[[ 2nd log timers:
-13:40:35.514 (engage)
-13:40:54:777 (chains 1)
-13:41:05.617 (tomb 1)
-13:41:18.855 (chains 2)
-13:41:35.706 (chains 3)
-13:41:48.972 (tomb 2)
---]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(103252) then
@@ -52,5 +44,11 @@ function mod:UNIT_HEALTH(uId)
 			warnedP2 = true
 			prewarnPhase2:Show()
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if self:GetCIDFromGUID(args.destGUID) == 54995 then--Icy Tombs dying
+		timerIcyTombCD:Start()--Always cast 30 seconds after freed from previous tomb
 	end
 end
