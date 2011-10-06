@@ -21,8 +21,8 @@ local timerSmokeBomb	= mod:NewNextTimer(20, 103558)
 local timerFireTotem	= mod:NewNextTimer(21, 108374)
 
 function mod:OnCombatStart(delay)
-	timerSmokeBomb:Start(26-delay)	-- [26 or 36] (2 logs)
-	timerFireTotem:Start(35-delay)
+	timerSmokeBomb:Start(16-delay)
+--	timerFireTotem:Start(35-delay)		(random?)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
