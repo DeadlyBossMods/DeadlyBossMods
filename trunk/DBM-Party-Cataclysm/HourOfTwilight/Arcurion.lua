@@ -21,10 +21,19 @@ local warnedP2 = false
 function mod:OnCombatStart(delay)
 	warnedP2 = false
 
--- below timers are from 1 log I got (also the abilities only happened once only)
-	-- 1st Tomb after 16 secs? (or HP based?)
-	-- 1st Chains after 32 secs?
+-- below timers are from 2 logs
+	-- 1st Tomb after [30 or 16] secs	
+	-- 1st Chains after [19 or 32] secs
 end
+
+--[[ 2nd log timers:
+13:40:35.514 (engage)
+13:40:54:777 (chains 1)
+13:41:05.617 (tomb 1)
+13:41:18.855 (chains 2)
+13:41:35.706 (chains 3)
+13:41:48.972 (tomb 2)
+--]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(103252) then
