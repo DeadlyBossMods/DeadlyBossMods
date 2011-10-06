@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/27/2011
+-- Last update: 10/6/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -174,8 +174,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- Yell when Valiona is incoming
-	Add			= "%s召唤了",
+	ValionaYell	= "巨龙，听从我的命令！接住我！",	-- Yell when Valiona is incoming
+	Add			= "%s开始施放",
 	Valiona		= "瓦里昂娜"
 }
 
@@ -1136,7 +1136,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "Show timer for $spell:101927 detonate"
+	TimerFlarecoreDetonate	= "计时条：$spell:101927的爆炸"
 }
 
 L:SetMiscLocalization{
@@ -1213,7 +1213,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
-	name = "Azshara"
+	name = "艾萨拉"
 }
 
 L:SetWarningLocalization{
@@ -1299,7 +1299,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
+	name = "大主教本尼迪塔斯"
 }
 
 L:SetWarningLocalization{
