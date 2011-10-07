@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 local warnRighteousShear		= mod:NewTargetAnnounce(103151, 2)
 local warnPurifyingLight		= mod:NewSpellAnnounce(103565, 3)
 local warnWaveVirtue			= mod:NewSpellAnnounce(103678, 4, nil, false)	-- blizzard warning
-local prewarnP2					= mod:NewPrePhaseAnnounce(2, 2)
+local prewarnPhase2			= mod:NewPrePhaseAnnounce(2, 2)
 local warnTwilightShear			= mod:NewTargetAnnounce(103363, 2)
 local warnCorruptingTwilight	= mod:NewSpellAnnounce(103767, 3)
 local warnWaveTwilight			= mod:NewSpellAnnounce(103780, 4, nil, false)	-- blizzard warning
