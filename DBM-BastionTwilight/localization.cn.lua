@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/13/2011
+-- Last update: 10/9/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -191,7 +191,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellDragon			= "吃吧，孩子们！尽情享用他们肥美的躯壳吧！",
-	YellEgg				= "You mistake this for weakness?  Fool!",
+	YellEgg				= "你以为就这么简单？愚蠢！",
 	HasAggro			= "获得仇恨"
 })
 
