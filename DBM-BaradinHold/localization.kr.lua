@@ -50,10 +50,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFirstSpecial		= "First special"
 })
 
 L:SetOptionLocalization({
+	TimerFirstSpecial		= "Show next timer for the first special after $spell:105738\n(First special is random. Either $spell:105067 or $spell:104936)"
+})
+
+L:SetMiscLocalization({
 })
