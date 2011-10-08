@@ -7,8 +7,8 @@ L.MainFrame = "죽이는 보스 모드"
 
 L.TranslationBy 		= "루세린,소망이란 in 데스윙(Old:흑묘서희-에이그윈)"
 
-L.OTabBosses	= "Bosses"
-L.OTabOptions	= "Options"
+L.OTabBosses	= "보스"
+L.OTabOptions	= "설정"
 
 L.TabCategory_Options 	= "일반 설정"
 L.TabCategory_CATA	 	= "대격변"
@@ -158,4 +158,3 @@ L.SpamBlockNoSetIcon			= "전술 목표 아이콘 설정하지 않기"
 
 -- Misc
 L.FontHeight = 16
-
