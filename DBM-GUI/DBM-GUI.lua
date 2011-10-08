@@ -10,7 +10,7 @@
 -- The localizations are written by:
 --    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
 --    * deDE: Tandanu					http://www.deadlybossmods.com
---    * zhCN: Diablohu					http://wow.gamespot.com.cn
+--    * zhCN: Diablohu					http://www.dreamgen.cn | diablohudream@gmail.com
 --    * ruRU: BootWin					bootwin@gmail.com
 --    * ruRU: Vampik					admin@vampik.ru
 --    * zhTW: Hman						herman_c1@hotmail.com
@@ -68,6 +68,9 @@ function DBM_GUI:ShowHide(forceshow)
 end
 
 do
+	DBM_GUI_OptionsFrameTab1:SetText(L.OTabBosses)
+	DBM_GUI_OptionsFrameTab2:SetText(L.OTabOptions)
+
 	local myid = 100
 	local prottypemetatable = {__index = PanelPrototype}
 	-- This function creates a new entry in the menu
@@ -2010,16 +2013,16 @@ do
 
 				if mod.modId:sub(1,9) == "DBM-Party" or mod.modId:sub(1,9) == "DBM-World" then
 					party = true
-					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*(bossstats-1)))
 					Boss10:Hide()
 					Boss25:Hide()
 					bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
-					area.frame:SetHeight( area.frame:GetHeight() + 80 )
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
 				elseif not mod.hasHeroic then
 					Heroic:Hide()
 					area.frame:SetHeight( area.frame:GetHeight() + 100 ) 
 				else
-					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(160*(bossstats-1)))
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					Heroic:Hide()
 					Heroic10:SetPoint("TOPLEFT", bossstat3, "BOTTOMLEFT", -20, -5)
 					bossstat4:SetPoint("TOPLEFT", Heroic10, "BOTTOMLEFT", 20, -5)
@@ -2035,7 +2038,7 @@ do
 					boss25value4:SetPoint("TOPLEFT", boss25stat4, "TOPLEFT", 80, 0)
 					boss25value5:SetPoint("TOPLEFT", boss25stat5, "TOPLEFT", 80, 0)
 					boss25value6:SetPoint("TOPLEFT", boss25stat6, "TOPLEFT", 80, 0)
-					area.frame:SetHeight( area.frame:GetHeight() + 160 ) 
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 ) 
 				end
 
 				table.insert(area.onshowcall, OnShowGetStats(mod.stats, party, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6))

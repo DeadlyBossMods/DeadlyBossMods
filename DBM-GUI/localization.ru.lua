@@ -7,6 +7,9 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationBy 			= "Игорь Бутвин & Vampik & Swix & StingerSoft"
 
+L.OTabBosses	= "Bosses"
+L.OTabOptions	= "Options"
+
 L.TabCategory_Options	 	= "Общие параметры"
 L.TabCategory_CATA	 		= "Катаклизм"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
@@ -153,3 +156,6 @@ L.SpamBlockNoSendAnnounce		= "Не объявлять в чат рейда"
 L.SpamBlockNoSendWhisper		= "Не отправлять предупреждения шепотом другим игрокам"
 L.SpamBlockNoSetIcon			= "Не устанавливать метки на цели"
 
+
+-- Misc
+L.FontHeight	= 16

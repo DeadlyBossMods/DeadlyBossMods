@@ -6,6 +6,9 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationBy 			= "Nitram, Tandanu & Tennberg"
 
+L.OTabBosses	= "Bosses"
+L.OTabOptions	= "Options"
+
 L.TabCategory_Options	 	= "General Options"
 L.TabCategory_CATA	 		= "Cataclysm"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
@@ -152,3 +155,6 @@ L.SpamBlockNoSendAnnounce		= "Do not send announces to raid chat"
 L.SpamBlockNoSendWhisper		= "Do not send whispers to other players"
 L.SpamBlockNoSetIcon			= "Do not set icons on targets"
 
+
+-- Misc
+L.FontHeight	= 16

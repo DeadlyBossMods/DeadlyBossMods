@@ -7,6 +7,9 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationBy 			= "Nightkiller@日落沼澤(Azael Poon)"
 
+L.OTabBosses	= "Bosses"
+L.OTabOptions	= "Options"
+
 L.TabCategory_Options			= "綜合設置"
 L.TabCategory_CATA	 		= "浩劫與重生"
 L.TabCategory_WOTLK 			= "巫妖王之怒"
@@ -153,3 +156,6 @@ L.SpamBlockNoSendAnnounce		= "不發送提示到團隊頻道"
 L.SpamBlockNoSendWhisper		= "不發送密語給其他玩家"
 L.SpamBlockNoSetIcon			= "不設置標記在目標上"
 
+
+-- Misc
+L.FontHeight	= 20
