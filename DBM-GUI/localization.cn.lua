@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 8/20/2011
+-- Last update: 10/9/2011
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -9,6 +9,9 @@ local L = DBM_GUI_Translations
 L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationBy 	= "Diablohu & yleaf"
+
+L.OTabBosses	= "模块"
+L.OTabOptions	= "选项"
 
 L.TabCategory_Options 	= "综合设置"
 L.TabCategory_CATA	 		= "大地的裂变"
@@ -155,3 +158,6 @@ L.SpamBlockNoShowAnnounce		= "不显示警报或播放警报音效"
 L.SpamBlockNoSendAnnounce		= "不发送警报到团队频道"
 L.SpamBlockNoSendWhisper		= "不发送悄悄话提示给其他玩家"
 L.SpamBlockNoSetIcon			= "不设定标记在目标上"
+
+-- Misc
+L.FontHeight	= 20
