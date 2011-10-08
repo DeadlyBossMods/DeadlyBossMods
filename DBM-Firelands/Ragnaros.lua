@@ -102,6 +102,7 @@ mod:AddBoolOption("MeteorFrame", true)--Phase 3 info frame for meteor fixate det
 
 local firstSmash = false
 local wrathRagSpam = 0
+local wrathcount = 0
 local standingInFireSpam = 0--Because all 3 fires you can stand in, are at diff times of fight, we can use same variable for all 3 vs wasting memory for 3 of them.
 local magmaTrapSpawned = 0
 local magmaTrapGUID = {}
@@ -239,6 +240,7 @@ function mod:OnCombatStart(delay)
 	timerHandRagnaros:Start(-delay)
 	timerSulfurasSmash:Start(-delay)
 	wrathRagSpam = 0
+	wrathcount = 0
 	standingInFireSpam = 0
 	table.wipe(magmaTrapGUID)
 	table.wipe(elementalsGUID)
@@ -309,7 +311,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnSulfurasSmash:Show()
 		if phase == 1 or phase == 3 then
 			timerSulfurasSmash:Start()--30 second cd in phase 1 and phase 3 in 3/4 difficulties
-			if phase == 1 and not self:IsDifficulty("heroic10") then--10 man heroic seems to have it's own rule while other 3 all work this way
+			if phase == 1 and wrathcount < 2 then--always 12 seconds after smash if 30 second CD (ie wrathcount didn't reach 2 before first smash)
 				timerWrathRagnaros:Update(18, 30)--This is most accurate place to put it so we use auto correction here.
 			end
 		else
@@ -418,12 +420,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
 		wrathRagSpam = GetTime()
 		warnWrathRagnaros:Show()
-		--Wrath of Ragnaros has a 25 second cd on 10 man heroic entire fight, the other 3 it's only 25 til first smash, then 30
-		--In this function we check whether or nto there will be a 2nd wrath before smash as well and start 1 25 sec bar for other 3 difficulties
-		if self:IsDifficulty("heroic10") or GetTime() - self.combatInfo.pull <= 5 then--We check if it's 10 man heroic, or if pull was within last 5 seconds.
+		--Wrath of Ragnaros has a 25 second cd if 2 happen before first smash, otherwise it's 30.
+		--In this elaborate function we count the wraths before first smash
+		--As well as even dynamically start correct timer based on when first one was cast so people know right away if there will be a 2nd before smash
+		if not firstsmash then--First smash hasn't happened yet
+			wrathcount = wrathcount + 1--So count wraths
+		end
+		if GetTime() - self.combatInfo.pull <= 5 or wrathcount == 2 then--We check if there were two wraths before smash, or if pull was within last 5 seconds.
 			timerWrathRagnaros:Start(25)--if yes to either, this bar is always 25 seconds.
-		else--It's not 10 man heroic and pull was > 5 seconds ago, bar is gonna be at least 30 seconds.
-			if firstsmash then--Check if first smash happened yet to determine at this point whether to start a 30 second bar or 36
+		else--First wrath was after 5 second mark and wrathcount not 2 so we have a 30 second cd wrath.
+			if firstsmash then--Check if first smash happened yet to determine at this point whether to start a 30 second bar or the one time only 36 bar.
 				timerWrathRagnaros:Start()--First smash already happened so it's later fight and this is always gonna be 30.
 			else
 				timerWrathRagnaros:Start(36)--First smash didn't happen yet, and first wrath happened later then 5 seconds into pull, 2nd smash will be delayed by sulfuras smash.
