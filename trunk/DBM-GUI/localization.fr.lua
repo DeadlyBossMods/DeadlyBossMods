@@ -9,6 +9,9 @@ L.MainFrame 		= "Deadly Boss Mods"
 
 L.TranslationBy 	= "Sasmira Alias Zakinda & Obscurantys@EU-Archimonde"
 
+L.OTabBosses	= "Bosses"
+L.OTabOptions	= "Options"
+
 L.TabCategory_Options 	= "Options Générales"
 L.TabCategory_CATA	 	= "Cataclysm"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
@@ -147,3 +150,6 @@ L.SpamBlockNoSendAnnounce		= "Ne pas écrire les annonces dans le chat de raid"
 L.SpamBlockNoSendWhisper		= "Ne pas chuchoter les autres joueurs"
 L.SpamBlockNoSetIcon			= "Ne pas mettre d'icônes sur la cible"
 
+
+-- Misc
+L.FontHeight	= 16

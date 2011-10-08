@@ -7,6 +7,9 @@ L.MainFrame = "Deadly Boss Mods - Español"
 
 L.TranslationBy 	= "Snamor, Interplay"
 
+L.OTabBosses	= "Bosses"
+L.OTabOptions	= "Options"
+
 L.TabCategory_Options 	= "Opciones"
 L.TabCategory_CATA	 		= "Cataclysm"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
@@ -155,3 +158,6 @@ L.SpamBlockNoSendAnnounce		= "No poner mensajes en el chat de banda"
 L.SpamBlockNoSendWhisper		= "No enviar susurros a otros jugadores"
 L.SpamBlockNoSetIcon			= "No poner iconos en objetivos"
 
+
+-- Misc
+L.FontHeight	= 16
