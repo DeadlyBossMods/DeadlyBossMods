@@ -431,10 +431,7 @@ function onUpdate(self, elapsed)
 		updatePlayerBuffStacks()
 	end
 --	updateIcons()
-	for i = 1, #sortedLines do
-		if self:NumLines() > maxlines then
-			break
-		end
+	for i = 1, math.min(#sortedLines, maxlines) do
 		local name = sortedLines[i]
 		local power = lines[name]
 		local icon = icons[name]
@@ -468,12 +465,10 @@ end
 --  Methods  --
 ---------------
 function infoFrame:Show(maxLines, event, threshold, ...)
-	if type(maxLines) ~= "number" then
-		return self:Show(5, maxLines, event, ...)
-	end
+	maxLines = maxLines or 5
 
 	infoFrameThreshold = threshold
-	maxlines = maxLines or 5	-- default 5 lines
+	maxlines = maxLines
 	pIndex = select(1, ...)		-- used as 'filter' for player buff stacks
 	iconModifier = select(2, ...)
 	currentEvent = event
@@ -497,7 +492,7 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 	elseif currentEvent == "playerbuffstacks" then
 		updatePlayerBuffStacks()
 	else		
-		print("DBM-InfoFrame: Unsupported event given")
+		error("DBM-InfoFrame: Unsupported event", 2)
 	end
 	
 	frame:Show()
