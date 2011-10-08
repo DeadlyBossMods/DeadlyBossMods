@@ -7,6 +7,9 @@ L.MainFrame = "죽이는 보스 모드"
 
 L.TranslationBy 		= "루세린,소망이란 in 데스윙(Old:흑묘서희-에이그윈)"
 
+L.OTabBosses	= "Bosses"
+L.OTabOptions	= "Options"
+
 L.TabCategory_Options 	= "일반 설정"
 L.TabCategory_CATA	 	= "대격변"
 L.TabCategory_WOTLK 	= "리치왕의 분노"
@@ -152,3 +155,7 @@ L.SpamBlockNoShowAnnounce		= "알림 또는 경고 소리 끄기"
 L.SpamBlockNoSendAnnounce		= "공격대 경보 알림 대화를 보내지 않기"
 L.SpamBlockNoSendWhisper		= "다른 플레이어에게 귓속말 알림을 보내지 않기"
 L.SpamBlockNoSetIcon			= "전술 목표 아이콘 설정하지 않기"
+
+-- Misc
+L.FontHeight = 16
+
