@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/9/2011
+-- Last update: 10/10/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -48,7 +48,7 @@ L:SetOptionLocalization({
 	TBwarnWhileBlackout		= "警报：$spell:86788时的$spell:92898",
 	TwilightBlastArrow		= "DBM箭头：当有$spell:92898的目标在你附近时",
 	RangeFrame				= "距离监视器（10码）",
-	BlackoutShieldFrame		= "Show boss health with a health bar for $spell:92878",
+	BlackoutShieldFrame		= "为$spell:92878显示首领血量条",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
