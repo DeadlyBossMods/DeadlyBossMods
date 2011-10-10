@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/27/2011
+-- Last update: 10/10/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -188,6 +188,7 @@ L:SetOptionLocalization({
 	ElementalAggroWarn	= "警报：是否获得熔岩元素的仇恨",
 	TimerPhaseSons		= "计时条：烈焰之子阶段持续时间",
 	RangeFrame			= "距离监视器",
+	P4IconRangeFilter	= "距离监视器在第4阶段只显示团队标记的成员（需要开启监视器）",
 	InfoHealthFrame		= "信息框：生命值少于10万的团员的列表",
 	MeteorFrame			= "信息框：$spell:99849的目标",
 	AggroFrame			= "信息框：没有获得熔岩元素仇恨的团员的列表",
