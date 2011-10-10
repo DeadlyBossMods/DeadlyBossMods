@@ -116,7 +116,6 @@ local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
 local phase2Started = false
-local phase3Started = false
 local blazingHeatIcon = 2
 local seedsActive = false
 local meteorWarned = false
@@ -175,7 +174,7 @@ end
 
 local function TransitionEnded()
 	timerPhaseSons:Cancel()
-	if phase == 2 and not phase2Started then
+	if phase == 2 then
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerSulfurasSmash:Start(6)
 			if mod.Options.warnSeedsLand then
@@ -193,8 +192,7 @@ local function TransitionEnded()
 		end
 		timerFlamesCD:Start()--Probably the only thing that's really consistent.
 		showRangeFrame()--Range 6 for seeds
-	elseif phase == 3 and not phase3Started then
-		phase3Started = true
+	elseif phase == 3 then
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
 		timerLivingMeteorCD:Start(45, 1)
@@ -257,7 +255,6 @@ function mod:OnCombatStart(delay)
 	prewarnedPhase3 = false
 	blazingHeatIcon = 2
 	phase2Started = false
-	phase3Started = false
 	seedsActive = false
 	meteorWarned = false
 	dreadFlameTimer = 45
