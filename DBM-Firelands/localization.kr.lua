@@ -185,6 +185,7 @@ L:SetOptionLocalization({
 	ElementalAggroWarn			= "녹아내린 정령으로부터 위협수준 획득 유무에 대한 경고 보기",
 	TimerPhaseSons				= "전환 단계 지속 타이머 보기",
 	RangeFrame					= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
+	P4IconRangeFilter			= "영웅모드 4단계에서 거리 프레임에 전술 목표 아이콘만 보이도록 하기\n(거리 프레임이 켜져 있어야만 함)",
 	InfoHealthFrame				= "체력 정보 프레임 보기 (10만 미만)",
 	MeteorFrame					= "$spell:99849 대상 정보 프레임 보기",
 	AggroFrame					= "녹아내린 정령으로 부터 위협수준을 획득하지 않은 대상에 대한 정보 프레임 보기",
