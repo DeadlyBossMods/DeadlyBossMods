@@ -195,7 +195,6 @@ local function TransitionEnded()
 		showRangeFrame()--Range 6 for seeds
 	elseif phase == 3 and not phase3Started then
 		phase3Started = true
-		showRangeFrame()--Range 5 for meteors (should it be 8 instead?) Conflicting tooltip information.
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
 		timerLivingMeteorCD:Start(45, 1)
