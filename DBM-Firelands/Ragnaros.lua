@@ -423,13 +423,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--Wrath of Ragnaros has a 25 second cd if 2 happen before first smash, otherwise it's 30.
 		--In this elaborate function we count the wraths before first smash
 		--As well as even dynamically start correct timer based on when first one was cast so people know right away if there will be a 2nd before smash
-		if not firstsmash then--First smash hasn't happened yet
+		if not firstSmash then--First smash hasn't happened yet
 			wrathcount = wrathcount + 1--So count wraths
 		end
 		if GetTime() - self.combatInfo.pull <= 5 or wrathcount == 2 then--We check if there were two wraths before smash, or if pull was within last 5 seconds.
 			timerWrathRagnaros:Start(25)--if yes to either, this bar is always 25 seconds.
 		else--First wrath was after 5 second mark and wrathcount not 2 so we have a 30 second cd wrath.
-			if firstsmash then--Check if first smash happened yet to determine at this point whether to start a 30 second bar or the one time only 36 bar.
+			if firstSmash then--Check if first smash happened yet to determine at this point whether to start a 30 second bar or the one time only 36 bar.
 				timerWrathRagnaros:Start()--First smash already happened so it's later fight and this is always gonna be 30.
 			else
 				timerWrathRagnaros:Start(36)--First smash didn't happen yet, and first wrath happened later then 5 seconds into pull, 2nd smash will be delayed by sulfuras smash.
