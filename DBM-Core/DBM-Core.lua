@@ -42,16 +42,13 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.98",
-	DisplayVersion = "4.10.0 alpha", -- the string that is shown as version
-	ReleaseRevision = 6444 -- the revision of the latest stable version that is available (for /dbm ver2)
+	DisplayVersion = "4.9.10", -- the string that is shown as version
+	ReleaseRevision = 6582 -- the revision of the latest stable version that is available (for /dbm ver2)
 }
-
--- TODO: uncomment this and remove the "version" field above for the next release
 
 -- Legacy crap; that stupid "Version" field was never a good idea.
 -- Some functions that should be using ReleaseRevision still use this one, so we will just keep it and set to ReleaseRevision
--- DBM.Version = tostring(DBM.ReleaseRevision)
+DBM.Version = tostring(DBM.ReleaseRevision)
 
 
 DBM_SavedOptions = {}
