@@ -179,11 +179,13 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
 	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
+	WarnEngulfingFlameHeroic	= "Mostrar avisos de localización para $spell:99171 en heroico",
 	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
 	warnSeedsLand		= "Mostrar aviso/tiempo para el aterrizaje de $spell:98520 en lugar de los casteos.",
 	ElementalAggroWarn	= "Mostrar un aviso por si tienes o no aggro de los Elementales de Magma",
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
+	P4IconRangeFilter			= "Hacer que en los avisos de distancia de la fase 4 solo se muestren iconos de raid\n(Necesita distancia habilitada)",
 	InfoHealthFrame		= "Mostrar información de vida (<100k de vida)",
 	MeteorFrame			= "Mostrar información de los objetivos de $spell:99849",
 	AggroFrame			= "Mostrar información de jugadores sin aggro durante los Elementales de Magma",
