@@ -69,6 +69,7 @@ local yellMeteor			= mod:NewYell(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
 local specWarnDreadFlame	= mod:NewSpecialWarningMove(100998)--Standing in dreadflame
 local specWarnEmpoweredSulf	= mod:NewSpecialWarningSpell(100997, mod:IsTank())--Heroic ability Asuming only the tank cares about this? seems like according to tooltip 5 seconds to hide him into roots?
+local specWarnSuperheated	= mod:NewSpecialWarningStack(100915, true, 12)
 
 local timerMagmaTrap		= mod:NewCDTimer(25, 98164)		-- Phase 1 only ability. 25-30sec variations.
 local timerSulfurasSmash	= mod:NewNextTimer(30, 98710)		-- might even be a "next" timer
@@ -280,10 +281,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99399, 101238, 101239, 101240) then
-		previousTank = args.destName
 		warnBurningWound:Show(args.destName, args.amount or 1)
 		if (args.amount or 0) >= 4 and args:IsPlayer() then
 			specWarnBurningWound:Show(args.amount)
+		end
+		timerBurningWound:Start(args.destName)
+	elseif args:IsSpellID(100915) then
+		if (args.amount or 0) >= 12 and args.amount % 4 == 0 and args:IsPlayer() then
+			specWarnSuperheated:Show(args.amount)
 		end
 		timerBurningWound:Start(args.destName)
 	elseif args:IsSpellID(100171, 100190) then--World of Flames, heroic trigger for engulfing flames. CD timing seems same as normal.
