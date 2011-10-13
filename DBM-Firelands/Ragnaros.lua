@@ -45,6 +45,7 @@ local warnNoAggro			= mod:NewAnnounce("warnNoAggro", 1, 99601, nil, false)
 mod:AddBoolOption("ElementalAggroWarn", true, "announce")
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
+local warnLivingMeteorSoon	= mod:NewPreWarnAnnounce(99268, 10, 3)
 local warnLivingMeteor		= mod:NewCountAnnounce(99268, 4)--Phase 3 only ability
 local warnBreadthofFrost	= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
 local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability (only casts this once, doesn't seem to need a timer)
@@ -87,6 +88,7 @@ local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)
 local timerDreadFlameCD		= mod:NewCDTimer(40, 100675, nil, false)--Off by default as only the people dealing with them care about it.
 
 local SeedsCountdown		= mod:NewCountdown(60, 98520)
+local MeteorCountdown		= mod:NewCountdown(45, 99268)
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -195,9 +197,12 @@ local function TransitionEnded()
 	elseif phase == 3 then
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
+		warnLivingMeteorSoon:Schedule(35)
 		timerLivingMeteorCD:Start(45, 1)
 	elseif phase == 4 then
 		timerLivingMeteorCD:Cancel()
+		MeteorCountdown:Cancel()
+		warnLivingMeteorSoon:Cancel()
 		timerFlamesCD:Cancel()
 		timerSulfurasSmash:Cancel()
 		showRangeFrame()
@@ -453,8 +458,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		meteorSpawned = meteorSpawned + 1
 		warnLivingMeteor:Cancel()--Unschedule the first warning in the 2 spawn sets before it goes off.
 		timerLivingMeteorCD:Cancel()--Cancel timer
+		MeteorCountdown:Cancel()--And countdown
+		warnLivingMeteorSoon:Cancel()
 		warnLivingMeteor:Schedule(1, meteorSpawned)--Schedule with delay for the sets of 2, so we only warn once.
 		timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
+		MeteorCountdown:Start(45)
+		warnLivingMeteorSoon:Schedule(35)
 		if self.Options.MeteorFrame and meteorSpawned == 1 then--Show meteor frame and clear any health or aggro frame because nothing is more important then meteors.
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
 			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--If you get more then 6 chances are you're screwed unless it's normal mode and he's at like 11%. Really anything more then 4 is chaos and wipe waiting to happen.
