@@ -199,6 +199,7 @@ local function TransitionEnded()
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
 		warnLivingMeteorSoon:Schedule(35)
+		MeteorCountdown:Start(45)
 		timerLivingMeteorCD:Start(45, 1)
 	elseif phase == 4 then
 		timerLivingMeteorCD:Cancel()
