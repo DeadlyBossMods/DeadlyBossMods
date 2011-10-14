@@ -46,7 +46,7 @@ mod:AddBoolOption("ElementalAggroWarn", true, "announce")
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
 local warnLivingMeteorSoon	= mod:NewPreWarnAnnounce(99268, 10, 3)
-local warnLivingMeteor		= mod:NewCountAnnounce(99268, 4)--Phase 3 only ability
+local warnLivingMeteor		= mod:NewTargetAnnounce(99268, 4)--Phase 3 only ability
 local warnBreadthofFrost	= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
 local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability (only casts this once, doesn't seem to need a timer)
 local warnEntrappingRoots	= mod:NewSpellAnnounce(100646, 3)--Heroic phase 4 ability
@@ -56,6 +56,7 @@ local warnDreadFlame		= mod:NewSpellAnnounce(100675, 3, nil, false)--Heroic phas
 local specWarnSulfurasSmash	= mod:NewSpecialWarningSpell(98710, false)
 local specWarnScorchedGround= mod:NewSpecialWarningMove(100124)--Fire on ground left by Sulfuras Smash
 local specWarnMagmaTrap		= mod:NewSpecialWarningMove(98164)
+local specWarnMagmaTrapNear	= mod:NewSpecialWarningClose(98164)
 local yellMagmaTrap			= mod:NewYell(98164)--May Return false tank yells
 local specWarnBurningWound	= mod:NewSpecialWarningStack(99399, mod:IsTank(), 4)
 local specWarnSplittingBlow	= mod:NewSpecialWarningSpell(100877)
@@ -64,8 +65,11 @@ local yellBlazingHeat		= mod:NewYell(100460)
 local specWarnBlazingHeatMV	= mod:NewSpecialWarningMove(100305)--Standing in it
 local specWarnMoltenSeed	= mod:NewSpecialWarningSpell(98520, nil, nil, nil, true)
 local specWarnEngulfing		= mod:NewSpecialWarningMove(99171)
-local specWarnMeteor		= mod:NewSpecialWarningYou(99849)
-local yellMeteor			= mod:NewYell(99849)
+local specWarnMeteor		= mod:NewSpecialWarningYou(99268)--Spawning on you
+local specWarnMeteorNear	= mod:NewSpecialWarningClose(99268)--Spawning on you
+local yellMeteor			= mod:NewYell(99268)
+local specWarnFixate		= mod:NewSpecialWarningYou(99849)--Chasing you after it spawned
+local yellFixate			= mod:NewYell(99849)
 local specWarnWorldofFlames	= mod:NewSpecialWarningSpell(100171, nil, nil, nil, true)
 local specWarnDreadFlame	= mod:NewSpecialWarningMove(100998)--Standing in dreadflame
 local specWarnEmpoweredSulf	= mod:NewSpecialWarningSpell(100997, mod:IsTank())--Heroic ability Asuming only the tank cares about this? seems like according to tooltip 5 seconds to hide him into roots?
@@ -84,18 +88,18 @@ local timerInvokeSons		= mod:NewCastTimer(17, 99014)--8 seconds for splitting bl
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 local timerCloudBurstCD		= mod:NewCDTimer(50, 100714)
 local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)
-local timerEntrapingRootsCD	= mod:NewCDTimer(56, 100646)--Always cast before empowered sulf, varies between 3 sec before and like 11 sec before.
-local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)
+local timerEntrapingRootsCD	= mod:NewCDTimer(56, 100646)--56-60sec variations. Always cast before empowered sulf, varies between 3 sec before and like 11 sec before.
+local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)--56-64sec variations
 local timerDreadFlameCD		= mod:NewCDTimer(40, 100675, nil, false)--Off by default as only the people dealing with them care about it.
 
 local SeedsCountdown		= mod:NewCountdown(60, 98520)
 local MeteorCountdown		= mod:NewCountdown(45, 99268)
-local EmpoweredSulfCountdown= mod:NewCountdown(56, 100997, mod:IsTank())
+local EmpoweredSulfCountdown= mod:NewCountdown(56, 100997, mod:IsTank())--56-64sec variations
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
 local soundBlazingHeat		= mod:NewSound(100460)
-local soundMeteor			= mod:NewSound(99849)
+local soundFixate			= mod:NewSound(99849)
 local soundEmpoweredSulf	= mod:NewSound(100997, nil, mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)
@@ -115,7 +119,7 @@ local elementalsGUID = {}
 local elementalsSpawned = 0
 local meteorSpawned = 0
 local sonsLeft = 8
-local trapScansDone = 0
+local scansDone = 0
 local phase = 1
 local prewarnedPhase2 = false
 local prewarnedPhase3 = false
@@ -126,24 +130,6 @@ local meteorWarned = false
 local meteorTarget = GetSpellInfo(99849)
 local dreadFlame = GetSpellInfo(100675)
 local dreadFlameTimer = 45
-
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
-	-- 4. anyone with 180k+ health
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
-		return true
-	end
-	if UnitHealthMax(unit) >= 180000 then return true end--Will need tuning or removal for new expansions or maybe even new tiers.
-	return false
-end
 
 local function showRangeFrame()
 	if mod.Options.RangeFrame then
@@ -213,31 +199,75 @@ local function TransitionEnded()
 		timerDreadFlameCD:Start(48)
 		timerCloudBurstCD:Start()
 		timerEntrapingRootsCD:Start(67)
-		timerEmpoweredSulfCD:Start(89)
-		EmpoweredSulfCountdown:Start(89)
+		timerEmpoweredSulfCD:Start(83)
+		EmpoweredSulfCountdown:Start(83)
 	end
 end
 
-function mod:MagmaTrapTarget()
-	trapScansDone = trapScansDone + 1
-	if UnitExists("boss1target") then--Check if he actually has a target.
-		local targetname = UnitName("boss1target")
+function mod:MagmaTrapTarget(targetname)
+	warnMagmaTrap:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnMagmaTrap:Show()
+		yellMagmaTrap:Yell()
+	else
 		local uId = DBM:GetRaidUnitId(targetname)
-		if isTank(uId) then--He's targeting his highest threat target or someone that's definitely a tank.
-			if trapScansDone < 12 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.025, "MagmaTrapTarget")--Check again for right target, tanks don't get magma traps.
+		if uId then
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
 			end
-		else--He's not targeting highest threat target so this has to be right target.
-			self:UnscheduleMethod("MagmaTrapTarget")--Unschedule all checks just to be sure none are running, we are done.
-			warnMagmaTrap:Show(targetname)
-			if targetname == UnitName("player") then
-				specWarnMagmaTrap:Show()
-				yellMagmaTrap:Yell()
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 6 then
+				specWarnMagmaTrapNear:Show(targetname)
+			end
+		end
+	end
+end
+
+function mod:LivingMeteorTarget(targetname)
+	warnLivingMeteor:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnMeteor:Show()
+		yellMeteor:Yell()
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 12 then
+				specWarnMeteorNear:Show(targetname)
+			end
+		end
+	end
+end
+
+function mod:TargetScanner(SpellID, isTank)
+	scansDone = scansDone + 1
+	if UnitExists("boss1target") then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
+		local targetname = UnitName("boss1target")
+		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target.
+			if scansDone < 12 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.025, "TargetScanner", SpellID)--Check multiple times to be sure it's not on something other then tank.
+			else
+				if SpellID == 98164 then return end--Magma Traps don't get cast on tanks
+				self:TargetScanner(SpellID, true)--It's still on tank, force true isTank and activate else rule and Meteor is on tank.
+			end
+		else--He's not targeting highest threat target (or isTank was set to true after 12 scans) so this has to be right target.
+			self:UnscheduleMethod("TargetScanner")--Unschedule all checks just to be sure none are running, we are done.
+			if SpellID == 98164 then
+				self:MagmaTrapTarget(targetname)
+			else
+				self:LivingMeteorTarget(targetname)
 			end
 		end
 	else--target was nil, lets schedule a rescan here too.
-		if trapScansDone < 12 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.025, "MagmaTrapTarget")
+		if scansDone < 12 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.025, "TargetScanner", SpellID)
 		end
 	end
 end
@@ -257,7 +287,7 @@ function mod:OnCombatStart(delay)
 	elementalsSpawned = 0
 	meteorSpawned = 0
 	sonsLeft = 8
-	trapScansDone = 0
+	scansDone = 0
 	phase = 1
 	firstSmash = false
 	prewarnedPhase2 = false
@@ -422,9 +452,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHandRagnaros:Start()
 	elseif args:IsSpellID(98164) then	--98164 confirmed
 		magmaTrapSpawned = magmaTrapSpawned + 1
-		trapScansDone = 0
+		scansDone = 0
 		timerMagmaTrap:Start()
-		self:MagmaTrapTarget()
+		self:TargetScanner(98164)
 		if self.Options.InfoHealthFrame and not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(L.HealthInfo)
 			DBM.InfoFrame:Show(5, "health", 100000)
@@ -464,14 +494,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(99268) then
 		meteorSpawned = meteorSpawned + 1
-		warnLivingMeteor:Cancel()--Unschedule the first warning in the 2 spawn sets before it goes off.
+--[[		warnLivingMeteor:Cancel()--Unschedule the first warning in the 2 spawn sets before it goes off.
 		timerLivingMeteorCD:Cancel()--Cancel timer
 		MeteorCountdown:Cancel()--And countdown
-		warnLivingMeteorSoon:Cancel()
-		warnLivingMeteor:Schedule(1, meteorSpawned)--Schedule with delay for the sets of 2, so we only warn once.
-		timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
-		MeteorCountdown:Start(45)
-		warnLivingMeteorSoon:Schedule(35)
+		warnLivingMeteorSoon:Cancel()--]]
+		if meteorSpawned == 1 or meteorSpawned % 2 == 0 then--Spam filter, announce at 1, 2, 4, 6, 8, 10 etc. The way that they spawn
+			scansDone = 0
+			self:TargetScanner(99268)
+			--warnLivingMeteor:Show(meteorSpawned)
+			timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
+			MeteorCountdown:Start(45)
+			warnLivingMeteorSoon:Schedule(35)
+		end
 		if self.Options.MeteorFrame and meteorSpawned == 1 then--Show meteor frame and clear any health or aggro frame because nothing is more important then meteors.
 			DBM.InfoFrame:SetHeader(L.MeteorTargets)
 			DBM.InfoFrame:Show(6, "playerbaddebuff", 99849)--If you get more then 6 chances are you're screwed unless it's normal mode and he's at like 11%. Really anything more then 4 is chaos and wipe waiting to happen.
@@ -572,9 +606,9 @@ end
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
 	if UnitDebuff("player", meteorTarget) and not meteorWarned then--Warn you that you have a meteor
-		specWarnMeteor:Show()
-		yellMeteor:Yell()
-		soundMeteor:Play()
+		specWarnFixate:Show()
+		yellFixate:Yell()
+		soundFixate:Play()
 		meteorWarned = true
 	elseif not UnitDebuff("player", meteorTarget) and meteorWarned then--reset warned status if you don't have debuff
 		meteorWarned = false
