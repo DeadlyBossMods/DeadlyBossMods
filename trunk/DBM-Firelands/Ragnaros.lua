@@ -90,6 +90,7 @@ local timerDreadFlameCD		= mod:NewCDTimer(40, 100675, nil, false)--Off by defaul
 
 local SeedsCountdown		= mod:NewCountdown(60, 98520)
 local MeteorCountdown		= mod:NewCountdown(45, 99268)
+local EmpoweredSulfCountdown= mod:NewCountdown(56, 100997, mod:IsTank())
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -213,6 +214,7 @@ local function TransitionEnded()
 		timerCloudBurstCD:Start()
 		timerEntrapingRootsCD:Start(67)
 		timerEmpoweredSulfCD:Start(89)
+		EmpoweredSulfCountdown:Start(89)
 	end
 end
 
@@ -303,6 +305,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEmpoweredSulf:Show()
 		soundEmpoweredSulf:Play()
 		timerEmpoweredSulfCD:Start()
+		EmpoweredSulfCountdown:Start(56)
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
