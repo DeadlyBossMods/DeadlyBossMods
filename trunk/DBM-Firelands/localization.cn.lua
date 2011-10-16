@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/10/2011
+-- Last update: 10/17/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -183,6 +183,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnSplittingBlow	= "警报：$spell:100877",
 	warnEngulfingFlame	= "警报：$spell:99171",
+	WarnEngulfingFlameHeroic	= "警报：英雄模式下$spell:99171的位置",
 	WarnRemainingAdds	= "警报：烈焰之子剩余数量",
 	warnSeedsLand		= "警报与计时条：$spell:98520落地位置，而非施法警报",
 	ElementalAggroWarn	= "警报：是否获得熔岩元素的仇恨",
