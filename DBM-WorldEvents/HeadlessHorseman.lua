@@ -9,16 +9,16 @@ mod:RegisterKill("say", L.SayCombatEnd)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"CHAT_MSG_MONSTER_SAY",
-	"CHAT_MSG_SAY"
+	"UNIT_SPELLCAST_SUCCEEDED"
+--	"CHAT_MSG_SAY"
 )
 
 local warnConflag				= mod:NewTargetAnnounce(42380, 3)
 local warnSquashSoul			= mod:NewTargetAnnounce(42514, 2)
-local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers")
-local warnHorsemanHead			= mod:NewAnnounce("warnHorsemanHead")
+local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers", 2, 97133)
+local warnHorsemanHead			= mod:NewAnnounce("warnHorsemanHead", 3)
 
-local timerCombatStart			= mod:NewTimer(17, "TimerCombatStart", 2457)--rollplay for first pull
+--local timerCombatStart			= mod:NewTimer(17, "TimerCombatStart", 2457)--rollplay for first pull
 local timerConflag				= mod:NewTargetTimer(4, 42380)
 local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
 
@@ -32,14 +32,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_SAY(msg)
-	if msg == L.HorsemanHead then			-- No combatlog event for head spawning, Emote works iffy(head doesn't emote First time, only 2nd/3rd)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+--	"<58.1> Head of the Horseman:Possible Target<nil>:target:Headless Horseman Climax - Heal Body::0:43306", -- [97]
+	if spellName == GetSpellInfo(43306) then
 		warnHorsemanHead:Show()
-	elseif msg == L.HorsemanSoldiers then	-- Warning for adds spawning.
+--	"<84.5> Headless Horseman:Possible Target<Omegal>:target:Summon Pumpkin Burst Delay::0:52236", -- [170]
+	elseif spellName == GetSpellInfo(52236) then
 		warnHorsemanSoldiers:Show()
 	end
 end
 
+--[[
 do 
 	local lastSummon = 0
 	function mod:CHAT_MSG_SAY(msg)
@@ -48,4 +51,4 @@ do
 			lastSummon = GetTime()
 		end
 	end
-end
+end--]]
