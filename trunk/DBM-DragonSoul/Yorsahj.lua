@@ -4,7 +4,7 @@ local mod	= DBM:NewMod(325, "DBM-DragonSoul", nil, 187)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(12345)
+mod:SetCreatureID(55312)
 mod:SetModelID(39101)
 mod:SetZone()
 mod:SetUsedIcons()
