@@ -18,7 +18,7 @@ local warnSquashSoul			= mod:NewTargetAnnounce(42514, 2)
 local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers", 2, 97133)
 local warnHorsemanHead			= mod:NewAnnounce("warnHorsemanHead", 3)
 
---local timerCombatStart			= mod:NewTimer(17, "TimerCombatStart", 2457)--rollplay for first pull
+local timerCombatStart			= mod:NewTimer(17, "TimerCombatStart", 2457)--rollplay for first pull
 local timerConflag				= mod:NewTargetTimer(4, 42380)
 local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
 
@@ -34,7 +34,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 --	"<58.1> Head of the Horseman:Possible Target<nil>:target:Headless Horseman Climax - Heal Body::0:43306", -- [97]
-	if spellName == GetSpellInfo(43306) then
+	if spellName == GetSpellInfo(42547) or spellName == GetSpellInfo(42548) then
 		warnHorsemanHead:Show()
 --	"<84.5> Headless Horseman:Possible Target<Omegal>:target:Summon Pumpkin Burst Delay::0:52236", -- [170]
 	elseif spellName == GetSpellInfo(52236) then
@@ -42,7 +42,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	end
 end
 
---[[
+
 do 
 	local lastSummon = 0
 	function mod:CHAT_MSG_SAY(msg)
@@ -51,4 +51,4 @@ do
 			lastSummon = GetTime()
 		end
 	end
-end--]]
+end
