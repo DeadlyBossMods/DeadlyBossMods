@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/6/2011
+-- Last update: 10/18/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -895,7 +895,7 @@ L:SetOptionLocalization({
 
 --			"<15.7> [MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#%s is chasing Bownd.#Gri'lek###Bownd##0#0##0#4672##0#false#false", -- [94]
 L:SetMiscLocalization({
-	pursuitEmote	= "%s is chasing"
+	pursuitEmote	= "%s正在"
 })
 
 ---------------
