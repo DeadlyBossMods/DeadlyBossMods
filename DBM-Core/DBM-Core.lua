@@ -1532,13 +1532,22 @@ end
 do
 --	local firstZoneChangedEvent = true
 	function DBM:ZONE_CHANGED_NEW_AREA()
-		if IsInInstance() then --Don't change or check maps if not in instance, it makes archaeologists mad.
-			SetMapToCurrentZone() --To Fix blizzard bug, sometimes map isn't loaded on login or reloadui and returns maelstrom or throne of four winds, the latter loading throne mod by mistake instead of correct boss mod for zone.
+		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
+		--unless we apsolutely make sure we force it to right zone before asking for info.
+		if WorldMapFrame:IsVisible() then --World map is open, people don't like dbm messing with current map area if it's open (such as flying from zone to zone doing archaeology)
+			local C, Z = GetCurrentMapContinent(), GetCurrentMapZone()--Save current map settings.
+			SetMapToCurrentZone()--Force to right zone
+			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
+			LastZoneText = GetRealZoneText() --Do same with zone name.
+			local C2, Z2 = GetCurrentMapContinent(), GetCurrentMapZone()--Get right info after we set map to right place.
+			if C2 ~= C or Z2 ~= Z then
+				SetMapZoom(C, Z)--Restore old map settings if they differed to what they were prior to forcing mapchange and user has map open.
+			end
+		else--Map isn't open, no reason to save/restore settings, just make sure the information is correct and that's it.
+			SetMapToCurrentZone()
+			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
+			LastZoneText = GetRealZoneText() --Do same with zone name.
 		end
-		local zoneName = GetRealZoneText()
-		local zoneId = GetCurrentMapAreaID()
-		LastZoneMapID = zoneId --Cache map on zone change.
-		LastZoneText = zoneName --Cache zone name on change.
 		for i, v in ipairs(self.AddOns) do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or (checkEntry(v.zoneId, zoneId) and IsInInstance())) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
 				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
