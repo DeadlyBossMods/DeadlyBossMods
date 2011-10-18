@@ -1017,7 +1017,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("JulakDoom")
 
 L:SetGeneralLocalization{
-	name = "厄运由拉克"
+	name = "厄运尤拉克"
 }
 
 L:SetWarningLocalization{
