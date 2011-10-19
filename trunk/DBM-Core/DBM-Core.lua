@@ -2189,10 +2189,7 @@ do
 		if combatInfo[LastZoneText] then
 			for i, v in ipairs(combatInfo[LastZoneText]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
-					-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
-					if not v.mod.lastKillTime or GetTime() - v.mod.lastKillTime > 10 then
-						DBM:StartCombat(v.mod, 0)
-					end
+					DBM:StartCombat(v.mod, 0)
 				end
 			end
 		end
@@ -2200,9 +2197,7 @@ do
 		if combatInfo[LastZoneMapID] then
 			for i, v in ipairs(combatInfo[LastZoneMapID]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
-					if not v.mod.lastKillTime or GetTime() - v.mod.lastKillTime > 10 then
-						DBM:StartCombat(v.mod, 0)
-					end
+					DBM:StartCombat(v.mod, 0)
 				end
 			end
 		end
@@ -2307,6 +2302,8 @@ end
 
 function DBM:StartCombat(mod, delay, synced)
 	if not checkEntry(inCombat, mod) then
+		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
+		if mod.lastKillTime and GetTime() - mod.lastKillTime < 10 then return end
 		if not mod.combatInfo then return end
 		if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 			return
@@ -2377,8 +2374,6 @@ function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		if not wipe then
 			mod.lastKillTime = GetTime()
-		end
-		if not wipe then
 			mod:UnregisterAllEvents()
 		end
 		mod:Stop()
