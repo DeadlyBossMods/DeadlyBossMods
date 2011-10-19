@@ -5,16 +5,18 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(23682, 23775)
 --mod:SetModelID(22351)--Model doesn't work/render for some reason.
 mod:RegisterCombat("combat")
-mod:RegisterKill("say", L.SayCombatEnd)
+--mod:RegisterKill("say", L.SayCombatEnd)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"UNIT_SPELLCAST_SUCCEEDED"
---	"CHAT_MSG_SAY"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"CHAT_MSG_MONSTER_SAY",
+	"CHAT_MSG_SAY"
 )
 
 local warnConflag				= mod:NewTargetAnnounce(42380, 3)
 local warnSquashSoul			= mod:NewTargetAnnounce(42514, 2)
+local warnPhase					= mod:NewAnnounce("WarnPhase", 2, "Interface\\Icons\\Spell_Nature_WispSplode")
 local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers", 2, 97133)
 local warnHorsemanHead			= mod:NewAnnounce("warnHorsemanHead", 3)
 
@@ -33,15 +35,37 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
---	"<58.1> Head of the Horseman:Possible Target<nil>:target:Headless Horseman Climax - Heal Body::0:43306", -- [97]
-	if spellName == GetSpellInfo(42547) or spellName == GetSpellInfo(42548) then
+--	"<48.6> Headless Horseman:Possible Target<Omegal>:target:Headless Horseman Climax - Command, Head Repositions::0:42410", -- [35]
+	if spellName == GetSpellInfo(42410) then
 		warnHorsemanHead:Show()
---	"<84.5> Headless Horseman:Possible Target<Omegal>:target:Summon Pumpkin Burst Delay::0:52236", -- [170]
-	elseif spellName == GetSpellInfo(52236) then
-		warnHorsemanSoldiers:Show()
+--	"<23.0> Headless Horseman:Possible Target<nil>:target:Headless Horseman Climax, Body Stage 1::0:42547", -- [1]
+	elseif spellName == GetSpellInfo(42547) then
+		warnPhase:Show(1)
+--	"<49.0> Headless Horseman:Possible Target<Omegal>:target:Headless Horseman Climax, Body Stage 2::0:42548", -- [7]
+	elseif spellName == GetSpellInfo(42548) then
+		warnPhase:Show(2)
+--	"<70.6> Headless Horseman:Possible Target<Omegal>:target:Headless Horseman Climax, Body Stage 3::0:42549", -- [13]
+	elseif spellName == GetSpellInfo(42549) then
+		warnPhase:Show(3)
+--	"<96.6> Head of the Horseman:Possible Target<nil>:target:Headless Horseman Climax - Head Is Dead::0:42428", -- [20]
+	elseif spellName == GetSpellInfo(42428) then
+--		self:SendSync("HeadIsDead")--Sync it, just in case no one in party at all is targeting it for a unit event to go off
+		DBM:EndCombat(self)--Kill trigger that works without local
 	end
 end
 
+--[[
+function mod:OnSync(event, arg)
+	if event == "HeadIsDead" then
+		DBM:EndCombat(self)--Kill trigger that works without local
+	end
+end--]]
+
+function mod:CHAT_MSG_MONSTER_SAY(msg)
+	if msg == L.HorsemanSoldiers then	-- Warning for adds spawning. No CLEU or UNIT event for it.
+		warnHorsemanSoldiers:Show()
+	end
+end
 
 do 
 	local lastSummon = 0
