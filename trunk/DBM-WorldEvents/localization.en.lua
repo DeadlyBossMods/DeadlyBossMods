@@ -34,6 +34,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase				= "Phase %d",
 	warnHorsemanSoldiers	= "Pulsing Pumpkins spawning",
 	warnHorsemanHead		= "Head of the Horseman Active"
 })
@@ -43,6 +44,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
+	WarnPhase				= "Show a warning for each phase change",
 	TimerCombatStart		= "Show timer for start of combat",
 	warnHorsemanSoldiers	= "Show warning for Pulsing Pumpkin spawn",
 	warnHorsemanHead		= "Show warning for Head of the Horseman spawning"
@@ -50,6 +52,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	HorsemanSummon			= "Horseman rise...",
+	HorsemanHead			= "Get over here, you idiot!",
+	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
 	SayCombatEnd			= "This end have I reached before.  What new adventure lies in store?"
 })
 
