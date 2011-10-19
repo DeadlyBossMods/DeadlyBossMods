@@ -353,19 +353,21 @@ do
 		end
 	end
 	
-	function DBM:UnregisterAllEvents()
-		for i, v in pairs(registeredEvents) do
-			for i = #v, 1, -1 do
-				if v[i] == self then
-					tremove(v, i)
+	function DBM:UnregisterInCombatEvents()
+		for event, mods in pairs(registeredEvents) do
+			for i = #mods, 1, -1 do
+				if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event)  then
+					tremove(mods, i)
 				end
 			end
-			if #v == 0 then
-				registeredEvents[i] = nil
-				mainFrame:UnregisterEvent(i)
+			if #mods == 0 then
+				registeredEvents[event] = nil
+				mainFrame:UnregisterEvent(event)
 			end
 		end
 	end
+
+
 
 	DBM:RegisterEvents("ADDON_LOADED")
 
@@ -2375,8 +2377,8 @@ function DBM:EndCombat(mod, wipe)
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
-				mod:UnregisterAllEvents()
-				mod.inCombatOnlyEventsRegistered = 0
+				mod:UnregisterInCombatEvents()
+				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
 		mod:Stop()
@@ -2965,7 +2967,7 @@ end
 --  General Methods  --
 -----------------------
 bossModPrototype.RegisterEvents = DBM.RegisterEvents
-bossModPrototype.UnregisterAllEvents = DBM.UnregisterAllEvents
+bossModPrototype.UnregisterInCombatEvents = DBM.UnregisterInCombatEvents
 bossModPrototype.AddMsg = DBM.AddMsg
 
 function bossModPrototype:SetZone(...)
@@ -2991,11 +2993,12 @@ end
 
 function bossModPrototype:RegisterEventsInCombat(...)
 	if not self.inCombatOnlyEvents then
-		self.inCombatOnlyEvents = {}
-	end
-	for i = 1, select("#", ...) do
-		local ev = select(i, ...)
-		tinsert(self.inCombatOnlyEvents, ev)
+		self.inCombatOnlyEvents = {...}
+	else
+		for i = 1, select("#", ...) do
+			local ev = select(i, ...)
+			tinsert(self.inCombatOnlyEvents, ev)
+		end
 	end
 end
 
