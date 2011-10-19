@@ -37,29 +37,37 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 --	"<48.6> Headless Horseman:Possible Target<Omegal>:target:Headless Horseman Climax - Command, Head Repositions::0:42410", -- [35]
 	if spellName == GetSpellInfo(42410) then
-		warnHorsemanHead:Show()
+		self:SendSync("HeadRepositions")
 --	"<23.0> Headless Horseman:Possible Target<nil>:target:Headless Horseman Climax, Body Stage 1::0:42547", -- [1]
 	elseif spellName == GetSpellInfo(42547) then
-		warnPhase:Show(1)
+		self:SendSync("BodyStage1")
 --	"<49.0> Headless Horseman:Possible Target<Omegal>:target:Headless Horseman Climax, Body Stage 2::0:42548", -- [7]
 	elseif spellName == GetSpellInfo(42548) then
-		warnPhase:Show(2)
+		self:SendSync("BodyStage2")
 --	"<70.6> Headless Horseman:Possible Target<Omegal>:target:Headless Horseman Climax, Body Stage 3::0:42549", -- [13]
 	elseif spellName == GetSpellInfo(42549) then
-		warnPhase:Show(3)
+		self:SendSync("BodyStage3")
 --	"<96.6> Head of the Horseman:Possible Target<nil>:target:Headless Horseman Climax - Head Is Dead::0:42428", -- [20]
 	elseif spellName == GetSpellInfo(42428) then
---		self:SendSync("HeadIsDead")--Sync it, just in case no one in party at all is targeting it for a unit event to go off
-		DBM:EndCombat(self)--Kill trigger that works without local
+		self:SendSync("HeadIsDead")
 	end
 end
 
---[[
+--Use syncing since these unit events require "target" or "focus" to detect.
+--At least someone in group should be targeting this stuff and sync it to those that aren't (like a healer)
 function mod:OnSync(event, arg)
-	if event == "HeadIsDead" then
+	if event == "HeadRepositions" then
+		warnHorsemanHead:Show()
+	elseif event == "BodyStage1" then
+		warnPhase:Show(1)
+	elseif event == "BodyStage2" then
+		warnPhase:Show(2)
+	elseif event == "BodyStage3" then
+		warnPhase:Show(3)
+	elseif event == "HeadIsDead" then
 		DBM:EndCombat(self)--Kill trigger that works without local
 	end
-end--]]
+end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.HorsemanSoldiers then	-- Warning for adds spawning. No CLEU or UNIT event for it.
