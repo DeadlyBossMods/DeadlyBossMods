@@ -2374,7 +2374,10 @@ function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		if not wipe then
 			mod.lastKillTime = GetTime()
-			mod:UnregisterAllEvents()
+			if mod.inCombatOnlyEvents then
+				mod:UnregisterAllEvents()
+				mod.inCombatOnlyEventsRegistered = 0
+			end
 		end
 		mod:Stop()
 		mod.inCombat = false
