@@ -1991,7 +1991,7 @@ do
 				local boss25value5	= area:CreateText((mod.stats.heroic25Pulls-mod.stats.heroic25Kills), nil, nil, GameFontNormalSmall, "LEFT")
 				local boss25value6	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
 
-				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(100*(bossstats-1)))
+				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
 				Boss10:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
 				bossstat1:SetPoint("TOPLEFT", Boss10, "BOTTOMLEFT", 20, -5)
 				bossstat2:SetPoint("TOPLEFT", bossstat1, "BOTTOMLEFT", 0, -5)
@@ -2020,7 +2020,7 @@ do
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
 				elseif not mod.hasHeroic then
 					Heroic:Hide()
-					area.frame:SetHeight( area.frame:GetHeight() + 100 ) 
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 ) 
 				else
 					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					Heroic:Hide()

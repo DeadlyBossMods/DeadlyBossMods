@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 10/18/2011
+-- Last update: 10/20/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -39,8 +39,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase				= "第%d阶段",
 	warnHorsemanSoldiers	= "跃动的南瓜出现了",
-	warnHorsemanHead		= "旋风斩 - 转换目标！"
+	warnHorsemanHead		= "无头骑士激活"
 })
 
 L:SetTimerLocalization{
@@ -48,13 +49,14 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
+	WarnPhase				= "警报：阶段转换",
 	TimerCombatStart		= "计时条：战斗开始",
 	warnHorsemanSoldiers	= "警报：跃动的南瓜出现",
 	warnHorsemanHead		= "特殊警报：旋风斩（无头骑士的脑袋出现）"
 })
 
 L:SetMiscLocalization({
-	HorsemanSummon			= "湮远而艰辛的探索到此为止，真正的正义者将由命运择示。",
+	HorsemanSummon			= "无头骑士来了……",
 	HorsemanHead		= "白痴，到这边来！",
 	HorsemanSoldiers	= "士兵们，起来战斗吧！为死去的骑士带来胜利的荣耀！",
 	SayCombatEnd		= "我曾经经历过这样的结局。这次会有新意吗？"
