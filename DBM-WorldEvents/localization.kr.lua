@@ -36,18 +36,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHorsemanSoldiers		= "고동치는 호박 생성!",
-	warnHorsemanHead			= "머리 생성! 머리로 대상 전환!"
+	WarnPhase				= "%d 단계",
+	warnHorsemanSoldiers	= "고동치는 호박 생성",
+	warnHorsemanHead		= "저주받은 기사의 머리 생성"
 })
 
 L:SetTimerLocalization{
-	TimerCombatStart			= "전투 시작"
+	TimerCombatStart		= "전투 시작"
 }
 
 L:SetOptionLocalization({
-	TimerCombatStart			= "전투 시작 타이머 보기",
-	warnHorsemanSoldiers		= "고동치는 호박 소환 경고 보기",
-	warnHorsemanHead			= "저주받은 기사의 머리 대상 전환 특수 경고 보기"
+	WarnPhase				= "단계 전환 경고 보기",
+	TimerCombatStart		= "전투 시작 타이머 보기",
+	warnHorsemanSoldiers	= "고동치는 호박 소환 경고 보기",
+	warnHorsemanHead		= "저주받은 기사 머리 생성 경고 보기"
 })
 
 L:SetMiscLocalization({
