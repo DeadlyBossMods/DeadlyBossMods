@@ -8,9 +8,12 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
+mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
+)
+
+mod:RegisterEventsInCombat(
+	"SPELL_AURA_APPLIED"
 )
 
 local warnDeflection	= mod:NewSpellAnnounce(92614, 3)
