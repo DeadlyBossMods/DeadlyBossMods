@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HorsemanSummon				= "기사여 일어나라...",
+	HorsemanSummon				= "기사여, 일어나라...",
 	HorsemanHead				= "냉큼 이리 와라, 이 얼간아!",
 	HorsemanSoldiers			= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!",
 	SayCombatEnd				= "죽음은 이미 겪어 보았노라. 이제 어떤 모험이 날 기다리는가?"
