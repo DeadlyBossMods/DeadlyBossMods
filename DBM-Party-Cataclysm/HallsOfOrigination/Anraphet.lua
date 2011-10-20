@@ -8,11 +8,14 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_SAY"
+)
+
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
-	"CHAT_MSG_MONSTER_SAY"
+	"SPELL_CAST_START"
 )
 
 local warnAlphaBeams		= mod:NewSpellAnnounce(76184, 4)
