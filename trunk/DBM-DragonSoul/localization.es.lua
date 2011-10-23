@@ -1,4 +1,4 @@
-if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
+﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 local L
 
 -------------
@@ -64,9 +64,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	AnnounceFrostTombIcons	= "Anunciar iconos para los objetivos de $spell:104451 a la raid\n(requiere líder)",
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
 })
 
 L:SetMiscLocalization({
+	TombIconSet				= "Icono de tumba de hielo {rt%d} en %s"
 })
 
 ---------------
