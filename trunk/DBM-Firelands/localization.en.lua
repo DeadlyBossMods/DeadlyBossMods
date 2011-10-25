@@ -164,6 +164,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
+	warnRageRagnarosSoon	= "%s on %s in 5 sec",--Spellname on targetname
 	warnSplittingBlow		= "%s in %s",--Spellname in Location
 	warnEngulfingFlame		= "%s in %s",--Spellname in Location
 	WarnRemainingAdds		= "%d Sons of Flame remaining",
@@ -172,16 +173,21 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerRageRagnaros		= "%s on %s",--Spellname on targetname
 	TimerPhaseSons			= "Transition ends"
 })
 
 L:SetOptionLocalization({
+	warnRageRagnarosSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS[prewarn]:format(101109),
+--	warnRageRagnarosSoon		= "Show pre-warning for $spell:101109",
 	warnSplittingBlow			= "Show warning for $spell:100877",
 	warnEngulfingFlame			= "Show location warnings for $spell:99171",
 	WarnEngulfingFlameHeroic	= "Show location warnings for $spell:99171 on heroic",
 	WarnRemainingAdds			= "Show warning for how many Sons of Flame remain",
 	warnSeedsLand				= "Show warning/timer for $spell:98520 landing instead of seed casts.",
-	ElementalAggroWarn			= "Show warning for whether or not you have Aggro from Molten Elementals",
+	ElementalAggroWarn			= "Show warning for whether or not you have Aggro during Molten Elementals",
+--	timerRageRagnaros			= "Show cast timer for $spell:101109",
+	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS[cast]:format(101109),
 	TimerPhaseSons				= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame					= "Show range frame",
 	P4IconRangeFilter			= "Make Range frame in phase 4 only shows raid icons\n(Requires Range Frame enabled)",
