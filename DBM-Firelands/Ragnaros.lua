@@ -135,11 +135,13 @@ local phase2Started = false
 local blazingHeatIcon = 2
 local seedsActive = false
 local meteorWarned = false
+local dreadflame = GetSpellInfo(100675)
 local meteorTarget = GetSpellInfo(99849)
+local staffDebuff = GetSpellInfo(101109)
 local dreadFlameTimer = 45
 
 local function showRangeFrame()
-	if UnitDeBuff("player", GetSpellInfo(101110)) then return end--Staff debuff, don't change their range finder from 8.
+	if UnitDebuff("player", GetSpellInfo(101110)) then return end--Staff debuff, don't change their range finder from 8.
 	if mod.Options.RangeFrame then
 		if phase == 1 and mod:IsRanged() then
 			DBM.RangeCheck:Show(6)--For wrath of rag, only for ranged.
@@ -156,7 +158,7 @@ local function showRangeFrame()
 end
 
 local function hideRangeFrame()
-	if UnitDeBuff("player", GetSpellInfo(101110)) then return end--Staff debuff, don't hide it either.
+	if UnitDebuff("player", GetSpellInfo(101110)) then return end--Staff debuff, don't hide it either.
 	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -618,7 +620,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:RAID_BOSS_EMOTE(msg)
-	if msg:find(GetSpellInfo(100675)) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
+	if msg:find(dreadflame) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
 		if dreadFlameTimer > 15 then
 			dreadFlameTimer = dreadFlameTimer - 5
 		end
@@ -628,7 +630,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find(GetSpellInfo(101109)) then--Only person with staff sees this.
+	if msg:find(staffDebuff) then--Only person with staff sees this.
 		self:SendSync("RageOfRagnaros", UnitName("player"))--Send it out so others can get notice too.
 	end
 end
