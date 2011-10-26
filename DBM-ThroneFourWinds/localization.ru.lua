@@ -50,23 +50,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd			= "Скоро появится Буревик!"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "Ответная реакция (%d)",
-	TimerAddCD		= "Следующий помощник"
+	TimerFeedback 	= "Ответная реакция (%d)"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "Отсчет времени действия $spell:87904",
-	WarnAdd			= "Предупреждать о призыве помощников",
-	TimerAddCD		= "Отсчет времени до новых помощников",
 	RangeFrame		= "Показывать окно проверки дистанции (20), когда на вас $spell:89668"
 })
 
 L:SetMiscLocalization({
-	summonAdd	    ="Буря! Приди мне на помощь!", -- or this: Ветра! Повинуйтесь моей воле!
-	phase3          ="Довольно! Меня ничто не в силах сдерживать!"
 })
