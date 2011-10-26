@@ -165,6 +165,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
+	warnRageRagnarosSoon	= "약 5초 후 %s : %s",--Spellname on targetname
 	warnSplittingBlow		= "%s (%s)",--Spellname in Location
 	warnEngulfingFlame		= "%s (%s)",--Spellname in Location
 	WarnRemainingAdds		= "남은 피조물: %d",
@@ -173,17 +174,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "다음 단계 전환"
+	timerRageRagnaros		= "%s : %s",--Spellname on targetname
+	TimerPhaseSons			= "다음 단계 전환"
 })
 
 L:SetOptionLocalization({
+	warnRageRagnarosSoon		= "$spell:101109의 사전 경고 보기",
 	warnSplittingBlow			= "$spell:100877 경고 보기",
 	warnEngulfingFlame			= "$spell:99171 경고 보기",
 	WarnEngulfingFlameHeroic	= "영웅 모드에 맞는 $spell:99171 위치 경고 보기",
 	WarnRemainingAdds			= "사잇단계에서 피조물이 얼마나 남았는지에 대한 경고 보기",
 	warnSeedsLand				= "$spell:98520이 시전될때가 아니라 폭발할때 경고 보기",
-	ElementalAggroWarn			= "녹아내린 정령으로부터 위협수준 획득 유무에 대한 경고 보기",
-	TimerPhaseSons				= "전환 단계 지속 타이머 보기",
+	ElementalAggroWarn			= "녹아내린 정령이 생성될 동안 위협수준 획득 유무에 대한 경고 보기",
+	timerRageRagnaros			= "$spell:101109 시전 타이머 보기",
+	TimerPhaseSons				= "사잇단계 지속 타이머 보기",
 	RangeFrame					= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	P4IconRangeFilter			= "영웅모드 4단계에서 거리 프레임에 전술 목표 아이콘만 보이도록 하기\n(거리 프레임이 켜져 있어야만 함)",
 	InfoHealthFrame				= "체력 정보 프레임 보기 (10만 미만)",
