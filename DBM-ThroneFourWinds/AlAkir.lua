@@ -18,13 +18,15 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"SPELL_PERIODIC_DAMAGE",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
 
+local warnIceStorm			= mod:NewSpellAnnounce(88239, 3)
+local warnSquallLine		= mod:NewSpellAnnounce(91129, 4)
 local warnWindBurst			= mod:NewSpellAnnounce(87770, 3)
-local warnAdd				= mod:NewAnnounce("WarnAdd", 2, 87856)
+local warnAdd				= mod:NewSpellAnnounce(88272, 2)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnAcidRain			= mod:NewCountAnnounce(93281, 2, nil, false)
 local warnFeedback			= mod:NewStackAnnounce(87904, 2)
@@ -40,13 +42,15 @@ local yellLightningRod		= mod:NewYell(89668)
 
 local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
-local timerAddCD			= mod:NewTimer(20, "TimerAddCD", 87856)
+local timerAddCD			= mod:NewCDTimer(20, 88272)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
 local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDeathKnight)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 local timerLightningCloudCD	= mod:NewNextTimer(15, 89588)
-local timerLightningStrikeCD= mod:NewNextTimer(10, 93257)
+local timerLightningStrikeCD= mod:NewCDTimer(10, 93257)
+local timerIceStormCD		= mod:NewCDTimer(25, 88239)
+local timerSquallLineCD		= mod:NewCDTimer(20, 88239)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -79,16 +83,7 @@ function mod:CloudRepeat()
 	end
 end
 
-function mod:StrikeRepeat()
-	self:UnscheduleMethod("StrikeRepeat")
-	timerLightningStrikeCD:Start()
-	if self:IsInCombat() then
-		self:ScheduleMethod(10, "StrikeRepeat")
-	end
-end
-
 function mod:OnCombatStart(delay)
-	timerWindBurstCD:Start(20-delay)
 	lastWindburst = 0
 	phase2Started = false
 	strikeStarted = false
@@ -96,7 +91,9 @@ function mod:OnCombatStart(delay)
 	spamCloud = 0
 	spamStrike = 0
 	berserkTimer:Start(-delay)
-	timerLightningStrikeCD:Start(-delay)
+	timerWindBurstCD:Start(20-delay)
+	timerLightningStrikeCD:Start(8.5-delay)
+	timerIceStormCD:Start(6-delay)
 end
 
 function mod:OnCombatEnd()
@@ -118,20 +115,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			FeedbackCountown:Start(20)
 		end
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
-		if self:IsDifficulty("normal10", "normal25") then
-			timerAcidRainStack:Start(20)
-		else
-			timerAcidRainStack:Start()
-		end
 		if args.amount and args.amount > 1 and args:IsPlayer() then
 			warnAcidRain:Show(args.amount)
-		end
-		if not phase2Started then
-			phase2Started = true
-			warnPhase2:Show()
-			timerWindBurstCD:Cancel()
-			timerLightningStrikeCD:Cancel()
-			self:UnscheduleMethod("StrikeRepeat")
 		end
 	elseif args:IsSpellID(89668) then
 		warnLightningRod:Show(args.destName)
@@ -188,9 +173,6 @@ function mod:SPELL_DAMAGE(args)
 	elseif args:IsSpellID(89588, 93299, 93298, 93297) and GetTime() - spamCloud >= 4 and args:IsPlayer() then
 		specWarnCloud:Show()
 		spamCloud = GetTime()
-	elseif args:IsSpellID(88214, 93255, 93256, 93257) and not strikeStarted then--Lighting strike, only CLEU event for it is spell_damage or spell_miss :(
-		strikeStarted = true
-		self:StrikeRepeat()
 	end
 end
 
@@ -203,17 +185,47 @@ function mod:SPELL_PERIODIC_DAMAGE(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.summonAdd or msg:find(L.summonAdd) then--Adds being summoned
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if uId ~= "boss1" then return end--Anti spam to ignore all other args
+--	"<42.5> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Squall Line::0:91129", -- [870]
+	if spellName == GetSpellInfo(91129) then -- Squall Line (Tornados)
+		warnSquallLine:Show()
+		if not phase2Started then
+			timerSquallLineCD:Start(30)--Seems like a longer CD in phase 1? That or had some electrocute and windburst delays, need more data.
+		else
+			timerSquallLineCD:Start()
+		end
+--	"<37.6> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Ice Storm::0:88239", -- [462]
+	elseif spellName == GetSpellInfo(88239) then -- Ice Storm (Phase 1)
+		warnIceStorm:Show()
+		timerIceStormCD:Start()
+--	"<94.2> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Stormling::0:88272", -- [5155]
+	elseif spellName == GetSpellInfo(88272) then -- Summon Stormling (Phase 2 add)
 		warnAdd:Show()
 		timerAddCD:Start()
-	elseif msg == L.phase3 or msg:find(L.phase3) then
+--	"<83.2> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Acid Rain::0:101452", -- [4307]
+	elseif spellName == GetSpellInfo(101452) then -- Acid Rain
+		if self:IsDifficulty("normal10", "normal25") then
+			timerAcidRainStack:Start(20)
+		else
+			timerAcidRainStack:Start()
+		end
+		if not phase2Started then
+			phase2Started = true
+			warnPhase2:Show()
+			timerWindBurstCD:Cancel()
+			timerIceStormCD:Cancel()
+		end
+--	"<229.0> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Relentless Storm Initial Vehicle Ride Trigger::0:89528", -- [18459]
+	elseif spellName == GetSpellInfo(89528) then -- Relentless Storm Initial Vehicle Ride Trigger (phase 3 start trigger)
 		warnPhase3:Show()
 		timerLightningCloudCD:Start(15.5)
-		self:ScheduleMethod(15.5, "CloudRepeat")
 		timerWindBurstCD:Start(25)
 		timerLightningRodCD:Start(20)
 		timerAddCD:Cancel()
 		timerAcidRainStack:Cancel()
+--	"<244.5> [CAST_SUCCEEDED] Al'Akir:Possible Target<nil>:boss1:Lightning Clouds::0:93304", -- [19368]
+	elseif spellName == GetSpellInfo(93304) then -- Phase 3 Lightning cloud trigger (only cast once)
+		self:CloudRepeat()
 	end
 end
