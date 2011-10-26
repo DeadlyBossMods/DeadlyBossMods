@@ -64,9 +64,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	AnnounceFrostTombIcons	= "$spell:104451 대상을 공격대 대화로 알리기\n(공격대장 권한 필요)",
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
 })
 
 L:SetMiscLocalization({
+	TombIconSet				= "냉기 봉화 징표 : {rt%d} %s"
 })
 
 ---------------
