@@ -48,23 +48,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd			= "Stormling add incoming"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "Feedback (%d)",
-	TimerAddCD		= "Next add"
+	TimerFeedback 	= "Feedback (%d)"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "Show timer for $spell:87904 duration",
-	WarnAdd			= "Show warning when Stormling add spawns",
-	TimerAddCD		= "Show timer for new add",
 	RangeFrame		= "Show range frame (20) when affected by $spell:89668"
 })
 
 L:SetMiscLocalization({
-	summonAdd		=	"Storms! I summon you to my side!",
-	phase3			=	"Enough! I will no longer be contained!"
 })

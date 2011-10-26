@@ -50,23 +50,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd				= "風暴小怪 即將到來"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 			= "回饋 (%d)",
-	TimerAddCD		= "下一個小風暴"
+	TimerFeedback 			= "回饋 (%d)"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback			= "為$spell:87904的持續時間顯示計時器",
-	WarnAdd			= "當小風暴出現時顯示警告",
-	TimerAddCD		= "為下一個小風暴出現顯示計時器",
 	RangeFrame		= "Show range frame (20) when affected by $spell:89668",
 })
 
 L:SetMiscLocalization({
-	summonAdd			= "風暴啊!我召喚你們來我身邊!",
-	phase3				= "夠了!我不要再被束縛住了!"
 })

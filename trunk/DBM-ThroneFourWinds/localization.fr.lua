@@ -49,22 +49,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd		= " Apparition : Tourmentin"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "Réaction (%d)",
-	TimerAddCD	= "Prochaine apparition"
+	TimerFeedback 	= "Réaction (%d)"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "Afficher le timer pour la durée de: $spell:87904",
-	WarnAdd		= "Affiche une alerte lorsque les Tourmentins apparaissent",
-	TimerAddCD	= "Affiche le timer de la prochaine apparition"
 })
 
 L:SetMiscLocalization({
-	summonAdd	=	"Tempêtes! Je vous appelle à mes côtés!",
-	phase3		=	"Assez! Je ne veux plus être contenu!"
 })

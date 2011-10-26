@@ -53,23 +53,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd			= "风暴火花即将刷新"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "回馈（%d）",
-	TimerAddCD		= "下一个风暴火花"
+	TimerFeedback 	= "回馈（%d）"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "计时条：$spell:87904持续时间",
-	WarnAdd			= "警报：风暴火花出现",
-	TimerAddCD		= "计时条：下一个风暴花火出现",
 	RangeFrame		= "当你中了$spell:89668时显示距离监视器（20码）"
 })
 
 L:SetMiscLocalization({
-	summonAdd		=	"暴风啊！到我的身边来！",
-	phase3			=	"Enough! I will no longer be contained!"
 })
