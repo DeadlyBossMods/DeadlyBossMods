@@ -20,7 +20,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_HEALTH",
+	"UNIT_HEALTH"
+)
+
+mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
