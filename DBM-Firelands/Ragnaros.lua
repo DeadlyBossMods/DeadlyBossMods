@@ -96,13 +96,13 @@ local timerCloudBurstCD		= mod:NewCDTimer(50, 100714)
 local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)
 local timerEntrapingRootsCD	= mod:NewCDTimer(56, 100646)--56-60sec variations. Always cast before empowered sulf, varies between 3 sec before and like 11 sec before.
 local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)--56-64sec variations
-local timerEmpoweredSulf	= mod:NewBuffActiveTimer(15, 100997, nil, mod:IsTank())
+local timerEmpoweredSulf	= mod:NewBuffActiveTimer(10, 100997, nil, mod:IsTank())
 local timerDreadFlameCD		= mod:NewCDTimer(40, 100675, nil, false)--Off by default as only the people dealing with them care about it.
 
 local SeedsCountdown		= mod:NewCountdown(60, 98520)
 local MeteorCountdown		= mod:NewCountdown(45, 99268)
 local EmpoweredSulfCountdown= mod:NewCountdown(56, 100997, mod:IsTank())--56-64sec variations
---local EmpoweredSulfCountout	= mod:NewCountout(10, 100997, mod:IsTank())--Counts out th duration of empowered sulfurus, tanks too busy running around to pay attention to a timer, hearing duration counted should be infinitely helpful.
+local EmpoweredSulfCountout	= mod:NewCountout(10, 100997, mod:IsTank())--Counts out th duration of empowered sulfurus, tanks too busy running around to pay attention to a timer, hearing duration counted should be infinitely helpful.
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -368,8 +368,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEmpoweredSulf:Show()
 		specWarnEmpoweredSulf:Show()
 		soundEmpoweredSulf:Play()
-		timerEmpoweredSulf:Start()
---		EmpoweredSulfCountout:Start(15)
+		timerEmpoweredSulf:Schedule(5)--Schedule 10 second bar to start when cast ends for buff active timer.
+		EmpoweredSulfCountout:Start(15)
 		timerEmpoweredSulfCD:Start()
 		EmpoweredSulfCountdown:Start(56)
 	end
