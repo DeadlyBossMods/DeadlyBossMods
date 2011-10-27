@@ -3455,6 +3455,7 @@ end
 ------------------------
 do
 	local countdownProtoType = {}
+	local countupProtoType = {}
 	local mt = {__index = countdownProtoType}
 
 	function countdownProtoType:Start(timer)
@@ -3476,8 +3477,32 @@ do
 			end
 		end
 	end
+	
+	function countupProtoType:Start(timer)
+		if not self.option or self.mod.Options[self.option] then
+			timer = timer or self.timer or 10
+			timer = timer <= 5 and self.timer or timer
+			if DBM.Options.CountdownVoice == "Mosh" then
+				self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg")
+				self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg")
+				self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg")
+				self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\4.ogg")
+				self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\5.ogg")
+			else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+				self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.mp3")
+				self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.mp3")
+				self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.mp3")
+				self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.mp3")
+				self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.mp3")
+			end
+		end
+	end
 
 	function countdownProtoType:Schedule(t)
+		return self.owner:Schedule(t, self.Start, self)
+	end
+
+	function countupProtoType:Schedule(t)
 		return self.owner:Schedule(t, self.Start, self)
 	end
 
@@ -3490,6 +3515,16 @@ do
 		self.sound5:Cancel()
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
+
+	function countupProtoType:Cancel()
+		self.mod:Unschedule(self.Start, self)
+		self.sound1:Cancel()
+		self.sound2:Cancel()
+		self.sound3:Cancel()
+		self.sound4:Cancel()
+		self.sound5:Cancel()
+	end
+	countupProtoType.Stop = countupProtoType.Cancel
 
 	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName)
 		local sound5 = self:NewSound(5, false, true)
@@ -3511,6 +3546,38 @@ do
 				sound5 = sound5,
 				timer = timer,
 				option = optionName or DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId),
+				mod = self
+			},
+			mt
+		)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(obj.option, optionDefault, "misc")
+		end
+		return obj
+	end
+
+	function bossModPrototype:NewCountup(timer, spellId, optionDefault, optionName)
+		local sound5 = self:NewSound(5, false, true)
+		local sound4 = self:NewSound(4, false, true)
+		local sound3 = self:NewSound(3, false, true)
+		local sound2 = self:NewSound(2, false, true)
+		local sound1 = self:NewSound(1, false, true)
+		timer = timer or 10
+		if not spellId then
+			DBM:AddMsg("Error: No spellID given for counted duration timer")
+			spellId = 39505
+		end
+		local obj = setmetatable(
+			{
+				sound1 = sound1,
+				sound2 = sound2,
+				sound3 = sound3,
+				sound4 = sound4,
+				sound5 = sound5,
+				timer = timer,
+				option = optionName or DBM_CORE_AUTO_COUNTUP_OPTION_TEXT:format(spellId),
 				mod = self
 			},
 			mt
