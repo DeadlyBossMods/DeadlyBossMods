@@ -3482,18 +3482,41 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer <= 5 and self.timer or timer
-			if DBM.Options.CountdownVoice == "Mosh" then
-				self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg")
-				self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg")
-				self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg")
-				self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\4.ogg")
-				self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\5.ogg")
+			if DBM.Options.CountdownVoice == "Mosh" and timer == 5 then--Don't have 6-10 for him yet.
+				self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg")
+				self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg")
+				self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg")
+				self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\4.ogg")
+				self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\5.ogg")
 			else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-				self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.mp3")
-				self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.mp3")
-				self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.mp3")
-				self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.mp3")
-				self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.mp3")
+				--Ugly as hel way to do it but i coudln't think of a different way to do it accurately
+				if timer == 10 then--Common value for a duration.
+					self.sound5:Schedule(timer-9, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.mp3")
+					self.sound5:Schedule(timer-8, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.mp3")
+					self.sound5:Schedule(timer-7, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.mp3")
+					self.sound5:Schedule(timer-6, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.mp3")
+					self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.mp3")
+					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\6.mp3")
+					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\7.mp3")
+					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\8.mp3")
+					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\9.mp3")
+					self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\10.mp3")
+				elseif timer == 8 then--Another common value for a duration.
+					self.sound5:Schedule(timer-7, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.mp3")
+					self.sound5:Schedule(timer-6, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.mp3")
+					self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.mp3")
+					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.mp3")
+					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.mp3")
+					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\6.mp3")
+					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\7.mp3")
+					self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\8.mp3")
+				elseif timer == 5 then--Probably not many buff durations worth counting out that are less then 5 seconds long
+					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.mp3")
+					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.mp3")
+					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.mp3")
+					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.mp3")
+					self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.mp3")
+				end
 			end
 		end
 	end
