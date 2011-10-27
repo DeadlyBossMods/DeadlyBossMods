@@ -102,6 +102,7 @@ local timerDreadFlameCD		= mod:NewCDTimer(40, 100675, nil, false)--Off by defaul
 local SeedsCountdown		= mod:NewCountdown(60, 98520)
 local MeteorCountdown		= mod:NewCountdown(45, 99268)
 local EmpoweredSulfCountdown= mod:NewCountdown(56, 100997, mod:IsTank())--56-64sec variations
+local EmpoweredSulfCountup	= mod:NewCountup(5, 100997, mod:IsTank())--Counts out th duration of empowered sulfurus, tanks too busy running around to pay attention to a timer, hearing duration counted should be infinitely helpful.
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -368,6 +369,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEmpoweredSulf:Show()
 		soundEmpoweredSulf:Play()
 		timerEmpoweredSulf:Start()
+		EmpoweredSulfCountup:Start(5)
 		timerEmpoweredSulfCD:Start()
 		EmpoweredSulfCountdown:Start(56)
 	end
