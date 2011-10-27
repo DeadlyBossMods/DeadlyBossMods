@@ -202,7 +202,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Set icons on $spell:%d targets"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Play \"run away\" sound for $spell:%d"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Play countdown sound for $spell:%d"
-DBM_CORE_AUTO_COUNTUP_OPTION_TEXT	= "Play countup sound for $spell:%d duration"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Play countout sound for $spell:%d duration"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Yell when you are affected by $spell:%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s on me!"
 
