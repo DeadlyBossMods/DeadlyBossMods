@@ -53,7 +53,7 @@ local warnLivingMeteor		= mod:NewTargetAnnounce(99268, 4)--Phase 3 only ability
 local warnBreadthofFrost	= mod:NewSpellAnnounce(100479, 2)--Heroic phase 4 ability
 local warnCloudBurst		= mod:NewSpellAnnounce(100714, 2)--Heroic phase 4 ability (only casts this once, doesn't seem to need a timer)
 local warnEntrappingRoots	= mod:NewSpellAnnounce(100646, 3)--Heroic phase 4 ability
-local warnEmpoweredSulf		= mod:NewSpellAnnounce(100997, 4)--Heroic phase 4 ability
+local warnEmpoweredSulf		= mod:NewAnnounce("warnEmpoweredSulf", 4, 100997)--Heroic phase 4 ability
 local warnDreadFlame		= mod:NewSpellAnnounce(100675, 3, nil, false)--Heroic phase 4 ability
 
 local specWarnSulfurasSmash	= mod:NewSpecialWarningSpell(98710, false)
@@ -365,7 +365,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFlamesCD:Start(60)--60 second CD in phase 2
 		end
 	elseif args:IsSpellID(100997) then
-		warnEmpoweredSulf:Show()
+		warnEmpoweredSulf:Show(args.spellName)
 		specWarnEmpoweredSulf:Show()
 		soundEmpoweredSulf:Play()
 		timerEmpoweredSulf:Schedule(5)--Schedule 10 second bar to start when cast ends for buff active timer.
