@@ -5,13 +5,17 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(23682, 23775)
 --mod:SetModelID(22351)--Model doesn't work/render for some reason.
 mod:RegisterCombat("combat")
-mod:RegisterKill("say", L.SayCombatEnd)
+--mod:RegisterKill("say", L.SayCombatEnd)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"CHAT_MSG_MONSTER_SAY",
 	"CHAT_MSG_SAY"
+)
+
+mod:RegisterEventsInCombat(
+	"UNIT_DIED"
 )
 
 local warnConflag				= mod:NewTargetAnnounce(42380, 3)
@@ -47,9 +51,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 --	"<70.6> Headless Horseman:Possible Target<Omegal>:target:Headless Horseman Climax, Body Stage 3::0:42549", -- [13]
 	elseif spellName == GetSpellInfo(42549) then
 		self:SendSync("BodyStage3")
---	"<96.6> Head of the Horseman:Possible Target<nil>:target:Headless Horseman Climax - Head Is Dead::0:42428", -- [20]
-	elseif spellName == GetSpellInfo(42428) then
-		self:SendSync("HeadIsDead")
 	end
 end
 
@@ -64,8 +65,6 @@ function mod:OnSync(event, arg)
 		warnPhase:Show(2)
 	elseif event == "BodyStage3" then
 		warnPhase:Show(3)
-	elseif event == "HeadIsDead" then
-		DBM:EndCombat(self)--Kill trigger that works without local
 	end
 end
 
@@ -82,5 +81,11 @@ do
 			timerCombatStart:Start()
 			lastSummon = GetTime()
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if self:GetCIDFromGUID(args.destGUID) == 23775 then
+		DBM:EndCombat(self)
 	end
 end
