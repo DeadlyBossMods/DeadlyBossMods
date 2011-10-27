@@ -3455,7 +3455,7 @@ end
 ------------------------
 do
 	local countdownProtoType = {}
-	local countupProtoType = {}
+	local countoutProtoType = {}
 	local mt = {__index = countdownProtoType}
 
 	function countdownProtoType:Start(timer)
@@ -3478,7 +3478,7 @@ do
 		end
 	end
 	
-	function countupProtoType:Start(timer)
+	function countoutProtoType:Start(timer)
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer <= 5 and self.timer or timer
@@ -3502,7 +3502,7 @@ do
 		return self.owner:Schedule(t, self.Start, self)
 	end
 
-	function countupProtoType:Schedule(t)
+	function countoutProtoType:Schedule(t)
 		return self.owner:Schedule(t, self.Start, self)
 	end
 
@@ -3516,7 +3516,7 @@ do
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	function countupProtoType:Cancel()
+	function countoutProtoType:Cancel()
 		self.mod:Unschedule(self.Start, self)
 		self.sound1:Cancel()
 		self.sound2:Cancel()
@@ -3524,7 +3524,7 @@ do
 		self.sound4:Cancel()
 		self.sound5:Cancel()
 	end
-	countupProtoType.Stop = countupProtoType.Cancel
+	countoutProtoType.Stop = countoutProtoType.Cancel
 
 	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName)
 		local sound5 = self:NewSound(5, false, true)
@@ -3558,7 +3558,7 @@ do
 		return obj
 	end
 
-	function bossModPrototype:NewCountup(timer, spellId, optionDefault, optionName)
+	function bossModPrototype:Newcountout(timer, spellId, optionDefault, optionName)
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
 		local sound3 = self:NewSound(3, false, true)
@@ -3577,7 +3577,7 @@ do
 				sound4 = sound4,
 				sound5 = sound5,
 				timer = timer,
-				option = optionName or DBM_CORE_AUTO_COUNTUP_OPTION_TEXT:format(spellId),
+				option = optionName or DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId),
 				mod = self
 			},
 			mt
