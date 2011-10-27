@@ -117,7 +117,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.destGUID) == 40788 and self:IsInCombat() then
+	if self:GetCIDFromGUID(args.destGUID) == 40788 then
 		DBM:EndCombat(self)
 	end
 end
