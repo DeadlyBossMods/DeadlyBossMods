@@ -369,7 +369,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEmpoweredSulf:Show()
 		soundEmpoweredSulf:Play()
 		timerEmpoweredSulf:Schedule(5)--Schedule 10 second bar to start when cast ends for buff active timer.
-		EmpoweredSulfCountout:Start(15)
+		EmpoweredSulfCountout:Schedule(5)
 		timerEmpoweredSulfCD:Start()
 		EmpoweredSulfCountdown:Start(56)
 	end

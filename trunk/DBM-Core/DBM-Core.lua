@@ -3455,7 +3455,6 @@ end
 ------------------------
 do
 	local countdownProtoType = {}
-	local countoutProtoType = {}
 	local mt = {__index = countdownProtoType}
 
 	function countdownProtoType:Start(timer)
@@ -3477,7 +3476,61 @@ do
 			end
 		end
 	end
-	
+
+	function countdownProtoType:Schedule(t)
+		return schedule(t, self.Start, self.mod, self)
+	end
+
+	function countdownProtoType:Cancel()
+		self.mod:Unschedule(self.Start, self)
+		self.sound1:Cancel()
+		self.sound2:Cancel()
+		self.sound3:Cancel()
+		self.sound4:Cancel()
+		self.sound5:Cancel()
+	end
+	countdownProtoType.Stop = countdownProtoType.Cancel
+
+	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName)
+		local sound5 = self:NewSound(5, false, true)
+		local sound4 = self:NewSound(4, false, true)
+		local sound3 = self:NewSound(3, false, true)
+		local sound2 = self:NewSound(2, false, true)
+		local sound1 = self:NewSound(1, false, true)
+		timer = timer or 10
+		if not spellId then
+			DBM:AddMsg("Error: No spellID given for countdown timer")
+			spellId = 39505
+		end
+		local obj = setmetatable(
+			{
+				sound1 = sound1,
+				sound2 = sound2,
+				sound3 = sound3,
+				sound4 = sound4,
+				sound5 = sound5,
+				timer = timer,
+				option = optionName or DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId),
+				mod = self
+			},
+			mt
+		)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(obj.option, optionDefault, "misc")
+		end
+		return obj
+	end
+end
+
+------------------------
+--  Countout object  --
+------------------------
+do
+	local countoutProtoType = {}
+	local mt = {__index = countoutProtoType}
+
 	function countoutProtoType:Start(timer)
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
@@ -3521,23 +3574,9 @@ do
 		end
 	end
 
-	function countdownProtoType:Schedule(t)
-		return self.owner:Schedule(t, self.Start, self)
-	end
-
 	function countoutProtoType:Schedule(t)
-		return self.owner:Schedule(t, self.Start, self)
+		return schedule(t, self.Start, self.mod, self)
 	end
-
-	function countdownProtoType:Cancel()
-		self.mod:Unschedule(self.Start, self)
-		self.sound1:Cancel()
-		self.sound2:Cancel()
-		self.sound3:Cancel()
-		self.sound4:Cancel()
-		self.sound5:Cancel()
-	end
-	countdownProtoType.Stop = countdownProtoType.Cancel
 
 	function countoutProtoType:Cancel()
 		self.mod:Unschedule(self.Start, self)
@@ -3549,39 +3588,7 @@ do
 	end
 	countoutProtoType.Stop = countoutProtoType.Cancel
 
-	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName)
-		local sound5 = self:NewSound(5, false, true)
-		local sound4 = self:NewSound(4, false, true)
-		local sound3 = self:NewSound(3, false, true)
-		local sound2 = self:NewSound(2, false, true)
-		local sound1 = self:NewSound(1, false, true)
-		timer = timer or 10
-		if not spellId then
-			DBM:AddMsg("Error: No spellID given for countdown timer")
-			spellId = 39505
-		end
-		local obj = setmetatable(
-			{
-				sound1 = sound1,
-				sound2 = sound2,
-				sound3 = sound3,
-				sound4 = sound4,
-				sound5 = sound5,
-				timer = timer,
-				option = optionName or DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId),
-				mod = self
-			},
-			mt
-		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(obj.option, optionDefault, "misc")
-		end
-		return obj
-	end
-
-	function bossModPrototype:Newcountout(timer, spellId, optionDefault, optionName)
+	function bossModPrototype:NewCountout(timer, spellId, optionDefault, optionName)
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
 		local sound3 = self:NewSound(3, false, true)
