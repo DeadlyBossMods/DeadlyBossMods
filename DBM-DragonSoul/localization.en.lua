@@ -12,9 +12,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SpecwarnVortexAfter	= "Show a special warning when $spell:110047 ends"
 })
 
 L:SetMiscLocalization({
+	SpecwarnVortexAfter	= "Hide behind pillars!"
 })
 
 ---------------------
