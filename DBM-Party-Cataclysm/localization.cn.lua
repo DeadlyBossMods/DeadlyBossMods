@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/18/2011
+-- Last update: 10/29/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -384,7 +384,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAdds		= "Repel the intruders!"
+	YellAdds		= "击退入侵者！"
 }
 
 -----------------
