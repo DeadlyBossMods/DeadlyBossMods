@@ -50,7 +50,7 @@ local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 local timerLightningCloudCD	= mod:NewNextTimer(15, 89588)
 local timerLightningStrikeCD= mod:NewCDTimer(10, 93257)
 local timerIceStormCD		= mod:NewCDTimer(25, 88239)
-local timerSquallLineCD		= mod:NewCDTimer(20, 88239)
+local timerSquallLineCD		= mod:NewCDTimer(20, 91129)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
