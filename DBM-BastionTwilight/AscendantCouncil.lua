@@ -20,8 +20,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
+	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_HEALTH"
 )
 
@@ -106,7 +106,7 @@ local timerLightningBlast	= mod:NewCastTimer(4, 83070, nil, false)
 local timerThundershockCD	= mod:NewNextTimer(33, 83067)
 local timerThundershockCast	= mod:NewCastTimer(3, 83067)
 --Elementium Monstrosity
-local timerTransition		= mod:NewTimer(15, "timerTransition", 84918)
+local timerTransition		= mod:NewTimer(16.7, "timerTransition", 84918)
 local timerLavaSeedCD		= mod:NewCDTimer(23, 84913)
 local timerGravityCrush		= mod:NewBuffActiveTimer(10, 84948)
 local timerGravityCrushCD	= mod:NewCDTimer(24, 84948)--24-28sec cd, decent varation
@@ -610,6 +610,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Switch or msg:find(L.Switch) then
 		updateBossFrame(2)
@@ -622,11 +623,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerStaticOverloadCD:Cancel()
 		timerHydroLanceCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerFrostBeaconCD:Start(27)
-			timerFlameStrikeCD:Start(30)
+			timerFrostBeaconCD:Start(25)
+			timerFlameStrikeCD:Start(28)
 		end
 		timerQuakeCD:Start()
-		self:Schedule(5, checkSearingWinds)
+		self:Schedule(3, checkSearingWinds)
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		updateBossFrame(3)
 		timerQuakeCD:Cancel()
@@ -651,6 +652,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		end
 	end
 end
+--]]
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Quake or msg:find(L.Quake) then
@@ -669,6 +671,51 @@ function mod:RAID_BOSS_EMOTE(msg)
 			self:Schedule(3.3, checkGrounded)
 			self:Schedule(6.6, checkGrounded)
 		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4") then return end--Anti spam to ignore all other args
+--	"<60.5> Feludius:Possible Target<nil>:boss1:Frost Xplosion (DND)::0:94739"
+	if spellName == GetSpellInfo(94739) then -- Frost Xplosion (Phase 2 starts)
+		updateBossFrame(2)
+		timerWaterBomb:Cancel()
+		timerGlaciate:Cancel()
+		timerAegisFlame:Cancel()
+		timerBurningBloodCD:Cancel()
+		timerHeartIceCD:Cancel()
+		timerGravityCoreCD:Cancel()
+		timerStaticOverloadCD:Cancel()
+		timerHydroLanceCD:Cancel()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerFrostBeaconCD:Start(25)--I need to do heroic hopefully next week after heroic rag to get exact times off new event. We did normal mode this week
+			timerFlameStrikeCD:Start(28)
+		end
+		timerQuakeCD:Start()
+		self:Schedule(3, checkSearingWinds)
+--	"<105.3> Terrastra:Possible Target<Omegal>:boss3:Elemental Stasis::0:82285"
+	elseif spellName == GetSpellInfo(82285) then -- Elemental Stasis (Phase 3 Transition)
+		updateBossFrame(3)
+		timerQuakeCD:Cancel()
+		timerThundershockCD:Cancel()
+		timerHardenSkinCD:Cancel()
+		timerEruptionCD:Cancel()
+		timerDisperse:Cancel()
+		timerTransition:Start()
+		self:Unschedule(checkSearingWinds)
+		self:Unschedule(checkGrounded)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
+--	"<122.0> Elementium Monstrosity:Possible Target<nil>:boss1:Electric Instability::0:84526"
+	elseif spellName == GetSpellInfo(84526) then -- Electric Instability (Phase 3 Actually started)
+		timerFlameStrikeCD:Cancel()
+		timerFrostBeaconCD:Cancel()--Cancel here to avoid probelms with orbs that spawn during the transition.
+		timerLavaSeedCD:Start(18)
+		timerGravityCrushCD:Start(28)
 	end
 end
 
