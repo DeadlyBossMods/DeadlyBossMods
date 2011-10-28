@@ -39,18 +39,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "战斗即将开始",
 	TimerShadow	= "暗影之眼"
 })
 
 L:SetOptionLocalization({
-	TimerStart = "显示开始计时",
 	TimerShadow 	= "显示暗影水晶计时"
 })
 
 L:SetMiscLocalization({
-	Start60 = "竞技场战斗将在一分钟后开始！",
-	Start30 = "竞技场战斗将在三十秒后开始！",
 	Start15 = "竞技场战斗将在十五秒后开始！"
 })
 

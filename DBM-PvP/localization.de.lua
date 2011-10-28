@@ -36,18 +36,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Kampfbeginn",
 	TimerShadow	= "Schattensicht"
 })
 
 L:SetOptionLocalization({
-	TimerStart	= "Zeige Zeit bis Kampfbeginn",
 	TimerShadow = "Zeige Zeit bis $spell:34709 verfügbar"
 })
 
 L:SetMiscLocalization({
-	Start60 = "Noch eine Minute bis der Arenakampf beginnt!",
-	Start30 = "Noch dreißig Sekunden bis der Arenakampf beginnt!",
 	Start15 = "Noch fünfzehn Sekunden bis der Arenakampf beginnt!"
 })
 

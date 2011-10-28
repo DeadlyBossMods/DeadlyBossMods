@@ -36,18 +36,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Битва начнется через",
 	TimerShadow	= "Сумеречное зрение"
 })
 
 L:SetOptionLocalization({
-	TimerStart	= "Отсчет времени до начала битвы",
 	TimerShadow = "Отсчет времени для Сумрачного зрения"
 })
 
 L:SetMiscLocalization({
-	Start60	= "Одна минута до начала боя на арене!",
-	Start30	= "Битва на Арене начнется через 30 секунд!",
 	Start15	= "Пятнадцать секунд до начала схватки на арене!"
 })
 
