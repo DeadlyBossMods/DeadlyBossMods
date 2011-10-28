@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 10/01/2011
+-- Last update: 10/29/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -207,6 +207,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "为$spell:%d的目标添加团队标记"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "播放“快跑啊！”声音警报：$spell:%d"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "播放冷却倒计时声音警报：$spell:%d"
+DBM_CORE_AUTO_COUNTUP_OPTION_TEXT	= "播放持续时间正计时声音警报：$spell:%d"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "当你受到$spell:%d影响时时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "我中了%s！"--Verify (%s is spellname)
 
