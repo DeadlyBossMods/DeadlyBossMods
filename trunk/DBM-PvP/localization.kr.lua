@@ -16,8 +16,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ColorByClass		= "스코어 화면 유저 이름에 직업 색상 사용하기",
-	ShowInviteTimer		= "전장 입장 타이머 보이기",
+	ColorByClass		= "전장 점수판 캐릭터명에 직업 색상 사용하기",
+	ShowInviteTimer		= "전장 입장까지 남은 시간 바 표시",
 	AutoSpirit			= "전장에서 사망시 자동으로 무덤 이동하기",
 	HideBossEmoteFrame	= "화면 가운데 나타나는 전장 메세지 숨기기"
 })
@@ -36,18 +36,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "게임 시작",
 	TimerShadow	= "어둠의 시야"
 })
 
 L:SetOptionLocalization({
-	TimerStart 		= "시작 타이머 보이기",
-	TimerShadow 	= "어둠의 눈 타이머 보기"	
+	TimerShadow 	= "어둠의 시야 바 표시"	
 })
 
 L:SetMiscLocalization({
-	Start60 	= "투기장 전투 시작 1분 전입니다!",
-	Start30 	= "투기장 전투 시작 30초 전입니다!",
 	Start15 	= "투기장 전투 시작 15초 전입니다!"
 })
 
@@ -66,8 +62,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerTower 	= "탑 점령 타이머 보기",
-	TimerGY 	= "무덤 점령 타이머 보기",
+	TimerTower 	= "탑 점령 바 표시",
+	TimerGY 	= "무덤 점령 바 표시",
 	AutoTurnIn 	= "알터랙 계곡내 퀘스트 자동 완료"
 })
 
@@ -94,10 +90,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin 				= "승리 예상 타이머 보기",
-	TimerCap 				= "깃발 점령 타이머 보기",
-	ShowAbEstimatedPoints 	= "승/패 예상 포인트 보기",
-	ShowAbBasesToWin 		= "필요 점령 갯수 보기"
+	TimerWin 				= "전투 승리까지 남은 시간 바 표시",
+	TimerCap 				= "거점 점령 바 표시",
+	ShowAbEstimatedPoints 	= "전투 종료시 승/패 진영 예상 점수 표시",
+	ShowAbBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 개수 표시"
 })
 
 -----------------------
@@ -127,9 +123,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin 		= "승리 타이머 보기",
-	TimerFlag 		= "깃발 재생성 타이머 보기",
-	ShowPointFrame 	= "깃발 운반자 및 승/패 예상 포인트 보기"
+	TimerWin 		= "전투 승리까지 남은 시간 바 표시",
+	TimerFlag 		= "깃발 재생성 바 표시",
+	ShowPointFrame 	= "전투 종료시 승/패 진영 예상 점수 및 깃발 운반자 표시"
 })
 
 --------------------
@@ -142,11 +138,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "1분 후 전투가 시작됩니다!",
-	BgStart30 = "30초 후 전투가 시작됩니다. 준비하십시오!",
 	Alliance = "얼라이언스",
 	Horde = "호드",	
-	InfoErrorText 		= "전투가 종료되면 깃발 운반자 추적 기능이 복구됩니다.",
+	InfoErrorText 		= "현재 전투가 종료되면 깃발 운반자 추적이 가능합니다.",
 	ExprFlagPickUp 		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",	
 	ExprFlagCaptured 	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
 	ExprFlagReturn 		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
@@ -156,15 +150,13 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "게임 시작", 
 	TimerFlag 			= "깃발 재생성",
 })
 
 L:SetOptionLocalization({
-	TimerStart  			 	= "시작 타이머 보기",
-	TimerFlag 					= "깃발 재생성 타이머 보기",
-	ShowFlagCarrier 	 	 	= "깃발 운반자 보기",
-	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 추적 기능 관련 에러 메세지 보기"
+	TimerFlag 					= "깃발 재생성 바 표시",
+	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
+	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 표시 기능에 대한 알림 보기"
 })
 
 ------------------------
@@ -183,23 +175,18 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart				= "게임 시작", 
 	TimerPOI				= "%s",
 	TimerSiegeEngine		= "공성 전차 준비"	
 })
 
 L:SetOptionLocalization({
-	TimerStart				= "게임 시작 타이머 보기", 
-	TimerPOI				= "거점 점령 타이머 보기",
-	TimerSiegeEngine		= "공성 전차 제작 타이머 보기",
-	WarnSiegeEngine			= "공성 전차가 준비되었을 때 경고 알리기",
-	WarnSiegeEngineSoon		= "공성 전차가 곧 준비 될 때 경고 알리기"	
+	TimerPOI				= "거점 점령 바 표시",
+	TimerSiegeEngine		= "공성 전차 제작 바 표시",
+	WarnSiegeEngine			= "공성 전차 제작 완료 알림 보기",
+	WarnSiegeEngineSoon		= "공성 전차 제작 완료 사전 알림 보기"	
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "60초 후 전투가 시작됩니다.",
-	BgStart30				= "30초 후 전투가 시작됩니다.",
-	BgStart15				= "15초 후 전투가 시작됩니다.",
 	SiegeEngine				= "공성 전차",
 	GoblinStartAlliance		= "저기 시포리움 폭탄 보이세요? 제가 공성 전차를 수리하는 동안엔 그걸 사용해서 관문을 공격하세요!",
 	GoblinStartHorde		= "공성 전차를 수리하는 동안 날 좀 지켜 달라고. 필요하면 저기 있는 시포리움 폭탄을 관문에 사용해!",
@@ -221,12 +208,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "1분 후 전투가 시잡됩니다!",
-	BgStart30 			= "30초 후 전투가 시작됩니다! 준비하십시오!",
 	ZoneName 			= "쌍둥이 봉우리",
 	Alliance 			= "얼라이언스",
 	Horde 				= "호드",	
-	InfoErrorText		= "전투가 종료되면 깃발 운반자 추적 기능이 복구됩니다.",
+	InfoErrorText 		= "현재 전투가 종료되면 깃발 운반자 추적이 가능합니다.",
 	ExprFlagPickUp		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",
 	ExprFlagCaptured	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
 	ExprFlagReturn		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
@@ -238,15 +223,13 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "게임 시작", 
 	TimerFlag	= "깃발 재생성"
 })
 
 L:SetOptionLocalization({
-	TimerStart					= "시작 타이머 보기",
-	TimerFlag					= "깃발 재생성 타이머 보기",
-	ShowFlagCarrier				= "깃발 운반자 보기",
-	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 추적 기능 관련 에러 메세지 보기"
+	TimerFlag 					= "깃발 재생성 바 표시",
+	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
+	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 표시 기능에 대한 알림 보기"
 })
 
 
@@ -273,8 +256,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin 					= "승리 예상 타이머 보기",
-	TimerCap 					= "깃발 점령 타이머 보기",
-	ShowGilneasEstimatedPoints 	= "승/패 예상 포인트 보기",
-	ShowGilneasBasesToWin 		= "필요 점령 갯수 보기"
+	TimerWin 					= "전투 승리까지 남은 시간 바 표시",
+	TimerCap 					= "거점 점령 바 표시",
+	ShowGilneasEstimatedPoints 	= "전투 종료시 승/패 진영 예상 점수 표시",
+	ShowGilneasBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 개수 표시"
 })

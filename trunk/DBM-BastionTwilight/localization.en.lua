@@ -146,7 +146,6 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnDragon			= "Twilight Whelp Spawned",
 	WarnOrbSoon			= "Orbs in %d sec!",
-	WarnEggWeaken		= "Twilight Carapace dissipated on Egg",
 	SpecWarnOrbs		= "Orbs coming! Watch Out!",
 	warnWrackJump		= "%s jumped to >%s<",
 	warnAggro			= "Players with Aggro (Orbs candidates): >%s< ",
@@ -165,7 +164,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnDragon			= "Show warning when Twilight Whelp Spawns",
 	WarnOrbSoon			= "Show pre-warning for Orbs (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
-	WarnEggWeaken		= "Show pre-warning for when $spell:87654 dissipates",
 	warnWrackJump		= "Announce $spell:92955 jump targets",
 	warnAggro			= "Announce players who have Aggro when Orbs spawn (Can be target of Orbs)",
 	SpecWarnAggroOnYou	= "Show special warning if you have Aggro when Orbs spawn\n(Can be target of Orbs)",

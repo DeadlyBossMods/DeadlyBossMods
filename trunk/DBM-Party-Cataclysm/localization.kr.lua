@@ -26,7 +26,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "광신도가 $spell:75608 효과를 잃었을 때 경고 보기(광신도 진화)"
+	WarnAdd		= "광신도가 $spell:75608 효과를 잃었을 때 알림 보기(광신도 진화)"
 })
 
 -----------------------
@@ -43,7 +43,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSuperheated	= "$spell:75846 지속 타이머 보기"
+	TimerSuperheated	= "$spell:75846 효과 바 표시"
 })
 
 ------------
@@ -144,7 +144,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	PingBlitz	= "당신이 $spell:74670 의 대상이 될 경우 미니맵에 위치 표시하기"
+	PingBlitz	= "$spell:74670 대상이 될 경우 미니맵에 위치 표시"
 }
 
 L:SetMiscLocalization{
@@ -239,7 +239,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnSplitSoon	= "분리 사전 경고 보기"
+	WarnSplitSoon	= "분리 사전 알림 보기"
 })
 
 -------------
@@ -298,8 +298,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization{
-	specWarnPhase2Soon	= "2 단계 특수 경고 보기(5초 전)",
-	timerPhase2 		= "2 단계 시작 타이머 보기"
+	specWarnPhase2Soon	= "2 단계 시작 특수 경고 보기(5초 전)",
+	timerPhase2 		= "2 단계 시작 바 표시"
 }
 
 ------------------------
@@ -312,12 +312,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "추가되는 몹의 체력 프레임 보기"	-- translate
+	BossHealthAdds	= "추가 몬스터에 대한 체력 프레임 보기"
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "천상의 불꽃",	-- translate
-	HarbringerDarkness	= "암흑의 전령"	-- translate, 영혼의파편
+	BlazeHeavens		= "천상의 불꽃",
+	HarbringerDarkness	= "암흑의 전령"
 }
 
 --------------
@@ -330,7 +330,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "거리 프레임 보기 (5 m)"		-- translate
+	RangeFrame	= "거리 프레임 보기 (5 m)"
 }
 
 ----------
@@ -339,7 +339,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Augh")
 
 L:SetGeneralLocalization({
-	name = "오우"		-- translate
+	name = "오우"
 })
 
 -----------------------
@@ -376,7 +376,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization{
-	TimerAdds		= "다음 유령 소환 타이머 보기"
+	TimerAdds		= "다음 유령 소환 바 표시"
 }
 
 L:SetMiscLocalization{
@@ -393,12 +393,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization{
-	specWarnCoagulant	= "녹색 - 움직이세요!",	-- Green light
-	specWarnRedMix		= "빨강 - 움직이지 마세요!"		-- Red light
+	specWarnCoagulant	= "녹색 빛 - 움직이세요!",	-- Green light
+	specWarnRedMix		= "빨강 빛 - 움직이지 마세요!"		-- Red light
 }
 
 L:SetOptionLocalization{
-	RedLightGreenLight	= "녹색/빨강 이동 관련 특수 경고 보기"
+	RedLightGreenLight	= "녹색/빨강 빛 이동 관련 특수 경고 보기"
 }
 
 ------------------
@@ -438,11 +438,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnEmerge		= "등장 경고 보기",
-	WarnSubmerge	= "잠수 경고 보기",
-	TimerEmerge		= "다음 등장 타이머 보기",
-	TimerSubmerge	= "다음 잠수 타이머 보기",
-	CrystalArrow	= "당신 주변에 $spell:81634이 시전 된 경우 DBM 화살표 보기",
+	WarnEmerge		= "등장 알림 보기",
+	WarnSubmerge	= "잠수 알림 보기",
+	TimerEmerge		= "다음 등장 바 표시",
+	TimerSubmerge	= "다음 잠수 바 표시",
+	CrystalArrow	= "$spell:81634 대상이 근처에 있을 경우 DBM 화살표 보기",
 	RangeFrame		= "거리 프레임 보기 (5m)"	
 })
 
@@ -478,10 +478,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAirphase				= "공중 단계일 때 경고 보기",
-	WarnGroundphase				= "지상 단계일 때 경고 보기",
-	TimerAirphase				= "다음 공중 단계 타이머 보기",
-	TimerGroundphase			= "다음 지상 단계 타이머 보기",
+	WarnAirphase				= "공중 단계 알림 보기",
+	WarnGroundphase				= "지상 단계 알림 보기",
+	TimerAirphase				= "다음 공중 단계 바 표시",
+	TimerGroundphase			= "다음 지상 단계 바 표시",
 	specWarnCrystalStorm		= "$spell:92265 특수 경고 보기"
 })
 
@@ -532,7 +532,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnStaticCling	= "$spell:87618의 특수 경고 보기"
+	SpecWarnStaticCling	= "$spell:87618 특수 경고 보기"
 })
 
 L:SetWarningLocalization({
@@ -601,13 +601,13 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBear		= "곰 형상 경고 보기",
-	WarnBearSoon	= "곰 형상 사전 경고 보기(soon)",
-	WarnNormal		= "인간 형상 경고 보기",
-	WarnNormalSoon	= "인간 형상 사전 경고 보기(soon)",
-	TimerBear		= "다음 곰 형상 타이머 보기",
-	TimerNormal		= "다음 인간 형상 타이머 보기",
-	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기"
+	WarnBear		= "곰 형상 알림 보기",
+	WarnBearSoon	= "곰 형상 사전 알림 보기",
+	WarnNormal		= "인간 형상 알림 보기",
+	WarnNormalSoon	= "인간 형상 사전 알림 보기",
+	TimerBear		= "다음 곰 형상 바 표시",
+	TimerNormal		= "다음 인간 형상 바 표",
+	InfoFrame		= "$spell:42402 효과에 대한 정보 프레임 보기"
 }
 
 L:SetMiscLocalization{
@@ -634,7 +634,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	StormIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
 	RangeFrame		= "거리 프레임 보기 (10 m)",
-	StormArrow		= "$spell:97300이 시전된 경우 DBM 화살표 보기", -- translate
+	StormArrow		= "$spell:97300 시전시 DBM 화살표 보기", -- translate
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
@@ -684,8 +684,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnSpirit	= "영혼 단계 경고 보기",
-	WarnNormal	= "보통 단계 경고 보기"
+	WarnSpirit	= "영혼 단계 알림 보기",
+	WarnNormal	= "보통 단계 알림 보기"
 }
 
 L:SetMiscLocalization{
@@ -710,7 +710,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSiphon	= "$spell:43501 타이머 보기"
+	TimerSiphon	= "$spell:43501 바 표시"
 }
 
 L:SetMiscLocalization{
@@ -734,8 +734,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	timerNextForm	= "형상 변환 타이머 보기",
-	InfoFrame		= "$spell:42402 디버프에 대한 정보 프레임 보기",
+	timerNextForm	= "형상 변환 바 표시",
+	InfoFrame		= "$spell:42402 효과에 대한 정보 프레임 보기",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
 }
@@ -763,7 +763,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow			= "$spell:96477의 영향을 받을경우 DBM 화살표 보기" -- translate
+	LinkArrow			= "$spell:96477 주문의 영향을 받을경우 DBM 화살표 보기" -- translate
 }
 
 L:SetMiscLocalization{
@@ -780,15 +780,15 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnRevive		= "영혼 부활 - %d회 남음",
-	SpecWarnOhgan	= "오간 되살아남! 극딜!"
+	SpecWarnOhgan	= "오간 되살아남!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnRevive		= "영혼 부활 남은 횟수 경고 보기",
-	SpecWarnOhgan	= "오간이 공격 가능 할때 특수 경고 보기",
+	WarnRevive		= "영혼 부활 남은 횟수 알림 보기",
+	SpecWarnOhgan	= "되살아난 오간이 공격 가능 할때 특수 경고 보기",
 	SetIconOnOhgan	= "되살아난 오간에게 전술 목표 아이콘 설정하기" -- translate
 }
 
@@ -813,8 +813,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnToxic	= "$spell:96328 디버프가 없을 경우 특수 경고 보기",
-	InfoFrame		= "$spell:96328 디버프 없음에 대한 정보 프레임 보기",
+	SpecWarnToxic	= "$spell:96328 효과가 없을 경우 특수 경고 보기",
+	InfoFrame		= "$spell:96328 효과 없음에 대한 정보 프레임 보기",
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
@@ -860,7 +860,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBarrierDown	= "학카르의 사슬 보호막이 사라질 때 경고 보기",
+	WarnBarrierDown	= "학카르의 사슬 보호막이 사라질 때 알림 보기",
 	BodySlamIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97198)
 }
 
@@ -1165,7 +1165,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Murozond")
 
 L:SetGeneralLocalization{
-	name = "무로존드"
+	name = "무르도즈노"
 }
 
 L:SetWarningLocalization{

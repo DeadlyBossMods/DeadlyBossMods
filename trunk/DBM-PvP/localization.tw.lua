@@ -36,18 +36,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart			= "戰鬥即將開始",
 	TimerShadow			= "暗影視界"
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "顯示開始計時器",
 	TimerShadow 			= "顯示暗影視界計時器"
 })
 
 L:SetMiscLocalization({
-	Start60				= "競技場戰鬥在1分鐘內開始!",
-	Start30				= "競技場戰鬥在30秒內開始!",
 	Start15				= "競技場戰鬥在15秒內開始!"
 })
 
