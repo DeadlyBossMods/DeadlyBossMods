@@ -249,11 +249,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerStaffTransition	= "전환 단계"
+	timerStaffTransition	= "다음 단계 전환"
 })
 
 L:SetOptionLocalization({
-	timerStaffTransition	= "전환 단계 지속 바 표시"
+	timerStaffTransition	= "다음 단계 전환 바 표시"
 })
 
 L:SetMiscLocalization({
