@@ -20,8 +20,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초 전)",
-	RangeFrame		= "2 단계 거리 프레임 보기 (5m)"
+	SpecWarnInferno	= "$spell:92190 사전 특수 경고 보기(~4초 전)",
+	RangeFrame		= "2 단계에서 거리 프레임 보기 (5m)"
 })
 
 L:SetMiscLocalization({
@@ -48,21 +48,21 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "폭발!",
 	timerShadowConductorCast	= "암흑 전도체 변환",
-	timerNefAblity				= "스킬 강화 쿨다운",
-	timerArcaneLockout			= "비전 파괴자 쿨다운"
+	timerNefAblity				= "스킬 강화 대기시간",
+	timerArcaneLockout			= "비전 파괴자 대기시간"
 })
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "$spell:92053 시전 타이머 보기",
-	timerArcaneBlowbackCast		= "$spell:91879 시전 타이머 보기",
-	timerNefAblity				= "영웅 모드에서 골렘 스킬 강화 쿨다운 타이머 보기",
-	timerArcaneLockout			= "$spell:91542 침묵 타이머 보기",
-	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
-	specWarnGenerator			= "보스가 $spell:91557의 영향을 받을 경우 특수 경고 보기",
+	timerShadowConductorCast	= "$spell:92053 시전 바 표시",
+	timerArcaneBlowbackCast		= "$spell:91879 시전 바 표시",
+	timerNefAblity				= "영웅 난이도에서 골렘 스킬 강화 대기시간 바 표시",
+	timerArcaneLockout			= "$spell:91542 대기시간 바 표시",
+	SpecWarnActivated			= "새로운 보스가 활성화 될 때 대상 전환 특수 경고 보기",
+	specWarnGenerator			= "보스가 $spell:91557 주문의 영향을 받을 경우 특수 경고 보기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
-	SetIconOnActivated			= "새로 활성화된 보스에게 전술 목표 아이콘 설정하기"
+	SetIconOnActivated			= "활성화된 보스에게 전술 목표 아이콘 설정하기"
 })
 
 L:SetMiscLocalization({
@@ -93,11 +93,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase			= "다음 단계 전환 경고 보기",
-	WarnRemainingAdds	= "돌연변이가 얼마나 남았는지 경고 보기",
-	TimerPhase			= "다음 단계 타이머 보기",
-	RangeFrame			= "푸른 단계에서 거리 프레임 보기",	
-	SetTextures			= "암흑 단계에서 텍스쳐 투영 효과 자동으로 끄기\n(암흑 단계가 종료 되면 원상태로)",
+	WarnPhase			= "단계 전환 알림 보기",
+	WarnRemainingAdds	= "남은 돌연변이 숫자 알림 보기",
+	TimerPhase			= "다음 단계 전환 바 표시",
+	RangeFrame			= "푸른색 단계에서 거리 프레임 보기",	
+	SetTextures			= "암흑 단계에서 텍스쳐 투영 효과 자동으로 끄기\n(암흑 단계가 종료 되면 원상태로 복구됨)",
 	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
@@ -164,13 +164,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAirphase			= "공중 단계 경고 보기",
-	WarnGroundphase			= "지상 단계 경고 보기",
-	WarnShieldsLeft			= "고대 드워프 방패 사용시 경고 보기",
-	warnAddSoon				= "불쾌한 마귀 소환 경고 보기",
-	specWarnAddTargetable	= "불쾌한 마귀가 공격 가능할 때 특수 경고 보기",
-	TimerAirphase			= "다음 공중 단계 경고 보기",
-	TimerGroundphase		= "다음 지상 단계 경고 보기",
+	WarnAirphase			= "공중 단계 알림 보기",
+	WarnGroundphase			= "지상 단계 알림 보기",
+	WarnShieldsLeft			= "고대 드워프 방패 사용 알림 보기",
+	warnAddSoon				= "불쾌한 마귀 소환 알림 보기",
+	specWarnAddTargetable	= "불쾌한 마귀를 공격할 수 있을 때 특수 경고 보기",
+	TimerAirphase			= "다음 공중 단계 바 표시",
+	TimerGroundphase		= "다음 지상 단계 바 표시",
 	InfoFrame				= "소음계 정보 프레임 보기",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
@@ -203,31 +203,30 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerNefLanding		= "네파리안 착지",
-	OnySwipeTimer		= "오닉 꼬리 채찍 쿨다운",
-	NefSwipeTimer		= "네파 꼬리 채찍 쿨다운",
-	OnyBreathTimer		= "오닉 브레스 쿨다운",
-	NefBreathTimer		= "네파 브레스 쿨다운"
+	OnySwipeTimer		= "오닉 꼬리 채찍 대기시간",
+	NefSwipeTimer		= "네파 꼬리 채찍 대기시간",
+	OnyBreathTimer		= "오닉 브레스 대기시간",
+	NefBreathTimer		= "네파 브레스 대기시간"
 })
 
 L:SetOptionLocalization({
-	OnyTailSwipe			= "오닉시아의 $spell:77827 경고 보기",
-	NefTailSwipe			= "네파리안의 $spell:77827 경고 보기",
-	OnyBreath				= "오닉시아의 $spell:94124 경고 보기",
-	NefBreath				= "네파리안의 $spell:94124 경고 보기",
-	specWarnCinderMove		= "$spell:79339의 이동 알림 특수 경고 보기 (폭발 5초 전)",
-	warnShadowblazeSoon		= "$spell:81031의 사전 카운트다운 보기 (~5초 전)\n(정확성을 위해 동기화 후에만 작동됨)",
-	specWarnShadowblazeSoon	= "$spell:81031의 사전 특수 경고 보기\n(처음에는 5초 전에 알림. 동기화 후에는 1초 전에 알림)",
-	timerNefLanding			= "네파리안 착지 타이머 보기",
-	OnySwipeTimer			= "오닉시아의 $spell:77827 쿨다운 타이머 보기",
-	NefSwipeTimer			= "네파리안의 $spell:77827 쿨다운 타이머 보기",
-	OnyBreathTimer			= "오닉시아의 $spell:94124 쿨다운 타이머 보기",
-	NefBreathTimer			= "네파리안의 $spell:94124 쿨다운 타이머 보기",
-	InfoFrame				= "오닉시아 전하 충전 정보 프레임 보기",
-	FixShadowblaze			= "$spell:94085의 타이머를 자동으로 보정하기\n(테스트 중: 네파리안이 가끔 사용하는 외침에만 반응합니다.)",
-	SetWater				= "풀링시 수면 자동 시점 옵션을 자동으로 끄기\n(전투가 종료 되면 원상태로)",
+	OnyTailSwipe			= "오닉시아의 $spell:77827 알림 보기",
+	NefTailSwipe			= "네파리안의 $spell:77827 알림 보기",
+	OnyBreath				= "오닉시아의 $spell:94124 알림 보기",
+	NefBreath				= "네파리안의 $spell:94124 알림 보기",
+	specWarnCinderMove		= "$spell:79339 약화 효과가 5초 남았을 때 특수 경고 보기(이동)",
+	warnShadowblazeSoon		= "$spell:81031 사전 알림 보기 (~5초 전/정확성을 위해 동기화 후에만 작동됨)",
+	specWarnShadowblazeSoon	= "$spell:81031 사전 특수 경고 보기\n(처음에는 5초 전에 알림. 동기화 후에는 1초 전에 알림)",
+	timerNefLanding			= "네파리안 착지 바 표시",
+	OnySwipeTimer			= "오닉시아의 $spell:77827 대기시간 바 표시",
+	NefSwipeTimer			= "네파리안의 $spell:77827 대기시간 바 표시",
+	OnyBreathTimer			= "오닉시아의 $spell:94124 대기시간 바 표시",
+	NefBreathTimer			= "네파리안의 $spell:94124 대기시간 바 표시",
+	InfoFrame				= "전하 충전 정보 프레임 보기",
+	SetWater				= "전투 시작시 수면 자동 시점 옵션을 자동으로 끄기\n(전투가 종료 되면 원상태로 복구됨)",
 	TankArrow				= "살아난 뼈다귀 전사 탱커 방향으로 DBM 화살표 보기\n(한 명의 탱커를 사용하는 경우에만 정상 작동)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
-	RangeFrame				= "$spell:79339의 거리 프레임(10m) 보기\n(대상자는 범위내 모든 플레이어 보임. 대상자가 아닌 경우 대상자와 아이콘만 보임)"
+	RangeFrame				= "$spell:79339 주문의 영향을 받을 경우 거리 프레임(10m) 보기\n(대상자는 범위내 모든 사람 보임. 대상자가 아닌 경우 대상자와 아이콘만 보임)"
 })
 
 L:SetMiscLocalization({
@@ -238,8 +237,8 @@ L:SetMiscLocalization({
 	Nefarian			= "네파리안",
 	Onyxia				= "오닉시아",
 	Charge				= "전하 충전",
-	ShadowBlazeExact	= "%d초 후 암흑 불길 불꽃!",
-	ShadowBlazeEstimate	= "약 5초 후 암흑 불길 불꽃!"
+	ShadowBlazeExact	= "%d초 후 암흑불길 불똥!",
+	ShadowBlazeEstimate	= "약 5초 후 암흑불길 불똥!"
 })
 
 -------------------------------

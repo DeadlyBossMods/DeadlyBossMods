@@ -37,18 +37,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "¡La arena va a Comenzar!",
 	TimerShadow	= "Visión de las Sombras"
 })
 
 L:SetOptionLocalization({
-	TimerStart	= "Mostrar tiempo para que la Arena empieze.",
 	TimerShadow 	= "Mostrar tiempo para que salga Visión de las Sombras."
 })
 
 L:SetMiscLocalization({
-    Start60     = "¡Un minuto hasta que comience la batalla en la arena!",
-	Start30		= "¡Treinta segundos hasta que comience la batalla en arena!",
 	Start15		= "¡Quince segundos hasta que comience la batalla en arena!"
 })
 

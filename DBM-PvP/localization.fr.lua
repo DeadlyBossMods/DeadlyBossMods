@@ -38,18 +38,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Début de la bataille dans",
 	TimerShadow	= "Vue de l'ombre"
 })
 
 L:SetOptionLocalization({
-	TimerStart	= "Voir: Temps de départ du BG",
 	TimerShadow = "Montre le timer de la Vue de l'ombre"
 })
 
 L:SetMiscLocalization({
-	Start60		= "Une minute avant le départ de l'arène !",
-	Start30		= "Trente secondes avant le départ de l'arène !",
 	Start15		= "Quinze secondes avant le départ de l'arène !"
 })
 
