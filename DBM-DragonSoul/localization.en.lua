@@ -42,15 +42,27 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
+	warnOozes		= "Oozes incoming: %s, %s, %s",
+	specWarnOozes	= "Oozes incoming!"
 })
 
 L:SetTimerLocalization({
+	timerOozesCD	= "Next Oozes"
 })
 
 L:SetOptionLocalization({
+	warnOozes		= "Show warning for Oozes spawning",
+	specWarnOozes	= "Show special warning for Oozes spawning",
+	timerOozesCD	= "Show timer for next Oozes spawn"
 })
 
 L:SetMiscLocalization({
+	Black			= "|cFF424242Lblack|r",
+	Purple			= "|cFF9932CDLpurple|r",
+	Red				= "|cFFFF0404Lred|r",
+	Green			= "|cFF088A08Lgreen|r",
+	Blue			= "|cFF0080FFLblue|r",
+	Yellow			= "|cFFFFA901Lyellow|r"
 })
 
 -----------------------
