@@ -188,6 +188,15 @@ do
 			if menu == "range" then
 				if initRangeCheck() then
 					info = UIDropDownMenu_CreateInfo()
+					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(3)
+					info.func = setRange
+					info.arg1 = 3
+					info.checked = (frame.range == 3)
+					UIDropDownMenu_AddButton(info, 2)
+				end
+
+				if initRangeCheck() then
+					info = UIDropDownMenu_CreateInfo()
 					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(5)
 					info.func = setRange
 					info.arg1 = 5
@@ -292,28 +301,7 @@ do
 				info.func = setFrames
 				info.arg1 = "both"
 				info.checked = (DBM.Options.RangeFrameFrames == "both")
-				UIDropDownMenu_AddButton(info, 2)	
---[[			elseif menu == "speed" then
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_OPTION_SLOW
-				info.func = setSpeed
-				info.arg1 = "Slow"
-				info.checked = (DBM.Options.RangeFrameUpdates == "Slow")
 				UIDropDownMenu_AddButton(info, 2)
-
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_OPTION_AVERAGE
-				info.func = setSpeed
-				info.arg1 = "Average"
-				info.checked = (DBM.Options.RangeFrameUpdates == "Average")
-				UIDropDownMenu_AddButton(info, 2)
-
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_OPTION_FAST
-				info.func = setSpeed
-				info.arg1 = "Fast"
-				info.checked = (DBM.Options.RangeFrameUpdates == "Fast")
-				UIDropDownMenu_AddButton(info, 2)	]]
 			end
 		elseif level == 3 then
 			local option = menu
@@ -426,14 +414,6 @@ end
 
 function createRadarFrame()
 	local elapsed = 0
---[[	local updateRate
-	if DBM.Options.RangeFrameUpdates == "Slow" then
-		updateRate = 0.5
-	elseif DBM.Options.RangeFrameUpdates == "Average" then
-		updateRate = 0.25
-	elseif DBM.Options.RangeFrameUpdates == "Fast" then
-		updateRate = 0.05
-	end]]
 	local radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
 	radarFrame:SetFrameStrata("DIALOG")
 	

@@ -59,6 +59,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	warnFrostTombCast		= "%s in 8 sec"
 })
 
 L:SetTimerLocalization({
@@ -66,6 +67,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	AnnounceFrostTombIcons	= "Announce icons for $spell:104451 targets to raid chat\n(requires raid leader)",
+	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
 })
 
