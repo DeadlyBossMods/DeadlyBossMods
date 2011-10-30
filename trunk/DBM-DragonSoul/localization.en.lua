@@ -57,12 +57,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Black			= "|cFF424242Lblack|r",
-	Purple			= "|cFF9932CDLpurple|r",
-	Red				= "|cFFFF0404Lred|r",
-	Green			= "|cFF088A08Lgreen|r",
-	Blue			= "|cFF0080FFLblue|r",
-	Yellow			= "|cFFFFA901Lyellow|r"
+	Black			= "|cFF424242black|r",
+	Purple			= "|cFF9932CDpurple|r",
+	Red				= "|cFFFF0404red|r",
+	Green			= "|cFF088A08green|r",
+	Blue			= "|cFF0080FFblue|r",
+	Yellow			= "|cFFFFA901yellow|r"
 })
 
 -----------------------
