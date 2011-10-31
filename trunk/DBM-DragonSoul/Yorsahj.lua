@@ -28,7 +28,7 @@ local specWarnVoidBolt	= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)--wi
 local specWarnManaVoid	= mod:NewSpecialWarning("specWarnManaVoid", mod:IsDps())
 
 local timerOozesCD		= mod:NewTimer(75, "timerOozesCD", 16372)
-local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--i can't quite see what makes him stop casting it yet throughout fight yet though to perfectly cancel/start it so it's semi inaccurate for now.
+--local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--i can't quite see what makes him stop casting it yet throughout fight yet though to perfectly cancel/start it so it's semi inaccurate for now.
 local timerVoidBolt		= mod:NewTargetTimer(20, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
 
 --[[
@@ -55,7 +55,7 @@ local oozeColors = {
 }
 
 function mod:OnCombatStart(delay)
-	timerVoidBoltCD:Start(-delay)
+--	timerVoidBoltCD:Start(-delay)
 	timerOozesCD:Start(22-delay)
 end
 
@@ -64,7 +64,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then--104849, 108383 confirmed 10 and 25 man normal, other 2 drycoded from wowhead.
-		timerVoidBoltCD:Start()--Start CD off this not applied, that way we still get CD if a tank AMS's the debuff application.
+--		timerVoidBoltCD:Start()--Start CD off this not applied, that way we still get CD if a tank AMS's the debuff application.
 	elseif args:IsSpellID(105530) then--105530 confirmed 10 man normal, other drycoded from wowhead.
 		warnManaVoid:Show()
 		specWarnManaVoid:Show()
@@ -91,7 +91,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	if oozeColors[spellID] then
-		warnOozes:Show(oozeColors[spellID][1], oozeColors[spellID][2], oozeColors[spellID][3])
+		warnOozes:Show(oozeColors[spellID][1], oozeColors[spellID][2], oozeColors[spellID][3], oozeColors[spellID][4] or "")--According to EJ, there are 4 on heroic but don't know the spellIDs for color combinations of 4 yet. Could not find on wowhead either.
 --		timerVoidBoltCD:Start(40)
 		timerOozesCD:Start()
 	end
