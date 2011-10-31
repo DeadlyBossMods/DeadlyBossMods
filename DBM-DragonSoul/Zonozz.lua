@@ -80,7 +80,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104543, 109409, 109410, 109411) then--104543 confirmed 10 man normal
 		warnFocusedAnger:Show(args.destName, args.amount or 1)
-		timerVoidBolt:Start(args.destName)
+		timerFocusedAngerCD:Start()
 	elseif args:IsSpellID(106836) then--106836 confirmed 10 man normal, do NOT add 103527 to this, that's a seperate spellid for when BOSS is affected by diffusion, this warning is counting the ball stacks.
 		warnVoidDiffusion:Show(args.destName, args.amount or 1)
 		timerVoidDiffusionCD:Start()
