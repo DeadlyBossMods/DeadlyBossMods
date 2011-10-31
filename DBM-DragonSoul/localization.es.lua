@@ -44,7 +44,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "Vienen mocos: %s, %s, %s, %s",
+	warnOozes		= "Vienen mocos: %s",
 	specWarnOozes	= "Vienen mocos!",
 	specWarnManaVoid= "Vacío de maná. Cambio!"
 })

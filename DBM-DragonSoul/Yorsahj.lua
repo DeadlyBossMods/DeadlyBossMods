@@ -91,7 +91,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	if oozeColors[spellID] then
-		warnOozes:Show(oozeColors[spellID][1], oozeColors[spellID][2], oozeColors[spellID][3], oozeColors[spellID][4] or "")--According to EJ, there are 4 on heroic but don't know the spellIDs for color combinations of 4 yet. Could not find on wowhead either.
+		warnOozes:Show(table.concat(oozeColors[spellID], ", "))
 --		timerVoidBoltCD:Start(40)
 		timerOozesCD:Start()
 	end
