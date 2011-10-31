@@ -23,7 +23,7 @@ local warnOozes			= mod:NewAnnounce("warnOozes", 4, 16372)
 local warnVoidBolt		= mod:NewStackAnnounce(108383, 3, nil, mod:IsTank() or mod:IsHealer())--Makes fight require 2 tanks? (or 1 dk that can AMS and drop stacks).
 local warnManaVoid		= mod:NewSpellAnnounce(105530, 3)
 
-local specWarnOozes		= mod:NewSpecialWarning("specWarnOozes", nil, nil, nil, true)
+local specWarnOozes		= mod:NewSpecialWarning("specWarnOozes", mod:IsDps())
 local specWarnVoidBolt	= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)--with 20 second debuffs and 11 second CDs, can probably trade at 2, but it may still be 30 on 25 man not sure yet so i'll leave 3 for now.
 local specWarnManaVoid	= mod:NewSpecialWarning("specWarnManaVoid", mod:IsDps())
 
