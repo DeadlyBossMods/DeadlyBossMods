@@ -149,7 +149,6 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnDragon			= "Sale Cría Crepuscular",
 	WarnOrbSoon			= "¡Cercenadora Crepuscular en %d seg!",
-	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
 	SpecWarnOrbs		= "¡Cercenadora Crepuscular pronto!",
 	warnWrackJump		= "%s ha saltado a >%s<",
 	warnAggro			= ">%s< tiene Aggro (candidato de orbe)",
@@ -169,7 +168,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
 	WarnOrbSoon			= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
-	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
 	warnAggro			= "Anunciar jugadores que tienen Aggro cuando salen Orbes\n(Pueden ser objetivos de orbes)",
 	SpecWarnAggroOnYou	= "Mostrar aviso especial si TU tienes aggro cuando Orbes\n(Puedes ser objetivo de orbes)",
