@@ -7,17 +7,17 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
+	SpecwarnVortexAfter	= "¡Escóndete detrás de los pilares!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "Show a special warning when $spell:110047 ends"
+	SpecwarnVortexAfter	= "Mostrar un aviso especial cuando $spell:110047 termina"
 })
 
 L:SetMiscLocalization({
-	SpecwarnVortexAfter	= "Hide behind pillars!"
 })
 
 ---------------------
@@ -32,6 +32,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	RangeFrame	= "Mostrar distancia (10) para $spell:104601\n(sólo heroico)"
 })
 
 L:SetMiscLocalization({
@@ -43,16 +44,31 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
+	warnOozes		= "Vienen mocos: %s, %s, %s, %s",
+	specWarnOozes	= "Vienen mocos!",
+	specWarnManaVoid= "Vacío de maná. Cambio!"
 })
 
 L:SetTimerLocalization({
+	timerOozesCD	= "Siguientes mocos"
 })
 
 L:SetOptionLocalization({
+	warnOozes			= "Mostrar aviso cuando salgan mocos",
+	specWarnOozes		= "Mostrar aviso especial cuando salgan mocos",
+	specWarnManaVoid	= "Mostrar aviso especial cuando salga $spell:105530",
+	timerOozesCD		= "Mostrar tiempo para siguientes mocos"
 })
 
 L:SetMiscLocalization({
+	Black			= "|cFF424242negra|r",--translate
+	Purple			= "|cFF9932CDmorada|r",--translate
+	Red				= "|cFFFF0404roja|r",--translate
+	Green			= "|cFF088A08verde|r",--translate
+	Blue			= "|cFF0080FFazul|r",--translate
+	Yellow			= "|cFFFFA901amarilla|r"--translate
 })
+
 
 -----------------------
 -- Hagara the Binder --
@@ -60,15 +76,19 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	warnFrostTombCast		= "%s en 8 seg"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	AnnounceFrostTombIcons	= "Anunciar iconos para los objetivos de $spell:104451 a la raid\n(requiere líder)",
+	RangeFrame	= "Mostrar distancia (3) para $spell:105269",
+	AnnounceFrostTombIcons	= "Anunciar iconos de los objetivos de $spell:104451 a la banda\n(requiere líder)",
+	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
 })
+
 
 L:SetMiscLocalization({
 	TombIconSet				= "Icono de tumba de hielo {rt%d} en %s"

@@ -165,24 +165,30 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
+	warnRageRagnarosSoon	= "%s en %s en 5 seg",
 	warnSplittingBlow		= "%s en %s",
 	warnEngulfingFlame		= "%s en %s",
 	WarnRemainingAdds		= "%d Hijos de la Llama restantes",
 	warnAggro				= "Tienes aggro de Elemental de magma",
-	warnNoAggro				= "No tienes aggro de Elemental de magma"
+	warnNoAggro				= "No tienes aggro de Elemental de magma",
+	warnEmpoweredSulf		= "%s en 5 seg"
 })
 
 L:SetTimerLocalization({
+	timerRageRagnaros		= "%s en %s",
 	TimerPhaseSons		= "Transición termina"
 })
 
 L:SetOptionLocalization({
+	warnRageRagnarosSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn:format(101109, GetSpellInfo(101109)),
 	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
 	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
 	WarnEngulfingFlameHeroic	= "Mostrar avisos de localización para $spell:99171 en heroico",
 	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
 	warnSeedsLand		= "Mostrar aviso/tiempo para el aterrizaje de $spell:98520 en lugar de los casteos.",
 	ElementalAggroWarn	= "Mostrar un aviso por si tienes o no aggro de los Elementales de Magma",
+	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
+	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
 	P4IconRangeFilter			= "Hacer que en los avisos de distancia de la fase 4 solo se muestren iconos de raid\n(Necesita distancia habilitada)",
@@ -200,7 +206,7 @@ L:SetMiscLocalization({
 	South				= "Atrás",
 	HealthInfo			= "Menos de 100k de vida",
 	HasNoAggro			= "Sin aggro",
-	MeteorTargets		= "HOYGA METEHORITOS!",
+	MeteorTargets		= "HOYGA METEORITOS!",
 	TransitionEnded1	= "¡Basta! Yo terminaré esto.",
 	TransitionEnded2	= "Sulfuras será vuestro fin.",
 	TransitionEnded3	= "¡De rodillas, mortales! Esto termina ahora.",

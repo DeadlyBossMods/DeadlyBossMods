@@ -180,7 +180,7 @@ L:SetMiscLocalization({
 	AncientDwarvenShield	= "Antiguo escudo enano",
 	Soundlevel				= "Nivel de sonido",
 	YellPestered			= "¡Maligno Execrable en mi!",
-	NefAdd					= "Atramedes, the heroes are right THERE!",--translate
+	NefAdd					= "¡Atramedes, los héroes están justo AHÍ!",
 	Airphase		= "¡Sí, corred! Con cada paso, vuestros corazones se aceleran. El latido, fuerte y clamoroso... Casi ensordecedor. ¡No podéis escapar!"
 })
 
@@ -232,10 +232,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NefAoe			= "¡El aire crepita cargado de electricidad!",--translate?
-	YellPhase2		= "¡Malditos mortales! ¡Tal negligencia con las posesiones ajenas debe ser castigada!",--translate?
-	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate?
-	YellShadowBlaze	= "¡La llama de las sombras los reanima! ¡Luchan a mis órdenes!",--translate?
+	NefAoe			= "¡El aire crepita cargado de electricidad!",
+	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",
+	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",
+	YellShadowBlaze	= "¡Mirad cómo la llama de las sombras da vida a sus huesos! ¡Luchan a mis órdenes!",
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
 	Charge			= "Carga Eléctrica",

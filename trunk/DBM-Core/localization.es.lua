@@ -90,7 +90,7 @@ DBM_LFG_INVITE						= "Invitación al grupo"
 DBM_CORE_SLASHCMD_HELP				= {
 	"Comandos disponibles:",
 	"/dbm version: comprueba la versión de DBM de toda la banda (alias: ver)",
-	"/dbm version2: comprueba la versión de DBM de toda la banda y susurra a los miembros que estan desactualizados (alias: ver2).",
+--	"/dbm version2: comprueba la versión de DBM de toda la banda y susurra a los miembros que estan desactualizados (alias: ver2).",
 	"/dbm unlock: muestra una barra de estado desplazable (alias: move)",
 	"/dbm timer <x> <text>: Muestra un contador de <x> segundos con el nombre <text>",
 	"/dbm broadcast timer <x> <text>: Muestra un contador de <x> segundos con el nombre <text> a la banda (requiere lider/ayudante)",
@@ -203,6 +203,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Poner iconos en objetivos de $spell:%d"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Reproducir sonido \"huye pequeña\" en $spell:%d"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Reproducir sonido de cuenta atrás para $spell:%d"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Reproducir sonido de la duración de $spell:%d"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Gritar cuando tengas $spell:%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "¡%s en mi!"--Verify (%s is spellname)
 
