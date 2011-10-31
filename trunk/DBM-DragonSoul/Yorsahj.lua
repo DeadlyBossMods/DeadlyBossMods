@@ -84,7 +84,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end		
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
-	if not uId == "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
+	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	if oozeColors[spellID] then
 		warnOozes:Show(oozeColors[spellID][1], oozeColors[spellID][2], oozeColors[spellID][3])
 --		timerVoidBoltCD:Start(40)
