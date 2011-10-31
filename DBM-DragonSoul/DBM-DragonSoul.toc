@@ -21,7 +21,7 @@
 ## X-DBM-Mod-Name-zhTW: Dragon Soul
 ## X-DBM-Mod-Name-zhCN: 巨龙之魂
 ## X-DBM-Mod-Sort: 100
-## X-DBM-Mod-LoadZoneID: 999
+## X-DBM-Mod-LoadZoneID: 824
 localization.en.lua
 localization.de.lua
 localization.es.lua

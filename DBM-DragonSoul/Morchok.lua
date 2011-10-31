@@ -25,7 +25,7 @@ local warnStomp			= mod:NewSpellAnnounce(108571, 3)
 local warnVortex		= mod:NewSpellAnnounce(110047, 4)
 local warnFurious		= mod:NewSpellAnnounce(103846, 3)
 
-local specwarnCrushArmor	= mod:NewSpecialWarningStack(103687, 3, mod:IsTank())
+local specwarnCrushArmor	= mod:NewSpecialWarningStack(103687, mod:IsTank(), 3)
 local specwarnVortexAfter	= mod:NewSpecialWarning("SpecwarnVortexAfter")	-- show a specwarning when Vortex ends
 local specwarnBlood			= mod:NewSpecialWarningMove(108570)
 
