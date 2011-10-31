@@ -92,6 +92,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	if oozeColors[spellID] then
 		warnOozes:Show(table.concat(oozeColors[spellID], ", "))
+		specWarnOozes:Show()
 --		timerVoidBoltCD:Start(40)
 		timerOozesCD:Start()
 	end
