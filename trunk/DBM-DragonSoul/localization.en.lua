@@ -6,6 +6,7 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
+	SpecwarnVortexAfter	= "Hide behind pillars!"
 })
 
 L:SetTimerLocalization({
@@ -16,7 +17,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SpecwarnVortexAfter	= "Hide behind pillars!"
 })
 
 ---------------------
@@ -44,7 +44,8 @@ L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
 	warnOozes		= "Oozes incoming: %s, %s, %s",
-	specWarnOozes	= "Oozes incoming!"
+	specWarnOozes	= "Oozes incoming!",
+	specWarnManaVoid= "Mana Void - Switch"
 })
 
 L:SetTimerLocalization({
@@ -52,9 +53,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnOozes		= "Show warning for Oozes spawning",
-	specWarnOozes	= "Show special warning for Oozes spawning",
-	timerOozesCD	= "Show timer for next Oozes spawn"
+	warnOozes			= "Show warning for Oozes spawning",
+	specWarnOozes		= "Show special warning for Oozes spawning",
+	specWarnManaVoid	= "Show a special warning when $spell:105530 spawns",
+	timerOozesCD		= "Show timer for next Oozes spawn"
 })
 
 L:SetMiscLocalization({
