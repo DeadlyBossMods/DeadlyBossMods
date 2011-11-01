@@ -1,3 +1,5 @@
+if tonumber((select(4, GetBuildInfo()))) <= 40300 then return end
+
 local mod	= DBM:NewMod("Perotharn", "DBM-Party-Cataclysm", 13)
 local L		= mod:GetLocalizedStrings()
 
