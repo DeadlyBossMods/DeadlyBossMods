@@ -1,4 +1,4 @@
-if tonumber((select(4, GetBuildInfo()))) <= 40300 then return end
+if tonumber((select(4, GetBuildInfo()))) < 40300 then return end
 
 local mod	= DBM:NewMod("Benedictus", "DBM-Party-Cataclysm", 14)
 local L		= mod:GetLocalizedStrings()
