@@ -80,7 +80,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(103851) then
 		warnBlood:Show()
 		timerBlood:Start()
-		specwarnAfterVortex:Show()
+		specwarnVortexAfter:Show()
 	end
 end
 
@@ -103,7 +103,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(103785, 108570, 110287, 110288) and GetTime - spamBlood > 3 then--103785 10 man confirmed.
+	if args:IsSpellID(103785, 108570, 110287, 110288) and GetTime() - spamBlood > 3 then--103785 10 man confirmed.
 		specwarnBlood:Show()
 		spamBlood = GetTime()
 	end
