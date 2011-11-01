@@ -1,4 +1,4 @@
-if tonumber((select(4, GetBuildInfo()))) <= 40300 then return end
+if tonumber((select(4, GetBuildInfo()))) < 40300 then return end
 
 local mod	= DBM:NewMod(339, "DBM-BaradinHold", nil, 74)
 local L		= mod:GetLocalizedStrings()
