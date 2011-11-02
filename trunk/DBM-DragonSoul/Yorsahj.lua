@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnOozes			= mod:NewAnnounce("warnOozes", 4, 16372)
-local warnVoidBolt		= mod:NewStackAnnounce(108383, 3, nil, mod:IsTank() or mod:IsHealer())--Makes fight require 2 tanks? (or 1 dk that can AMS and drop stacks).
+local warnVoidBolt		= mod:NewStackAnnounce(108383, 3, nil, mod:IsTank() or mod:IsHealer())--Makes fight require 2 tanks? When properly tuned anyways.
 local warnManaVoid		= mod:NewSpellAnnounce(105530, 3)
 
 local specWarnOozes		= mod:NewSpecialWarning("specWarnOozes", mod:IsDps())
