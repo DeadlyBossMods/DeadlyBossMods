@@ -8,9 +8,9 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 보스 경보를 불러왔습니다 !"
 DBM_CORE_LOAD_GUI_ERROR				= "그래픽 설정 기능을 불러올 수 없습니다: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
-DBM_CORE_BOSS_DOWN					= "%s 전투에서 승리하였습니다. (%s 소요 되었습니다!)"
-DBM_CORE_BOSS_DOWN_LONG				= "%s 전투에서 승리하였습니다. (%s 소요 되었습니다!) 이 보스의 최종 전투 시간은, %s 입니다. 그리고 가장 빠른 전투 시간은 %s 입니다."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s 전투에서 승리하였습니다. (%s 소요 되었습니다!) 이 기록은 새로운 기록이군요! (과거 기록: %s)"
+DBM_CORE_BOSS_DOWN					= "%s 전투에서 승리하였습니다! (%s 소요 되었습니다!)"
+DBM_CORE_BOSS_DOWN_LONG				= "%s 전투에서 승리하였습니다! (%s 소요 되었습니다!) 이 보스의 최종 전투 시간은, %s 입니다. 그리고 가장 빠른 전투 시간은 %s 입니다."
+DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s 전투에서 승리하였습니다! (%s 소요 되었습니다!) 이 기록은 새로운 기록이군요! (과거 기록: %s)"
 DBM_CORE_COMBAT_ENDED				= "%s 전투가 종료되었습니다. (%s 소요 되었습니다.)"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d|4초:초;"
