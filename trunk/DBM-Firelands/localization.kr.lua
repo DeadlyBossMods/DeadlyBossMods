@@ -78,8 +78,8 @@ L:SetMiscLocalization({
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "불타는 용암 벌레가 땅에서 튀어나옵니다!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
 	PowerLevel		= "타오르는 힘",
-	East			= "동쪽",
-	West			= "서쪽",
+	East			= "오른쪽",
+	West			= "왼쪽",
 	Both			= "양쪽"
 })
 
@@ -199,8 +199,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	East				= "동쪽",
-	West				= "서쪽",
+	East				= "오른쪽",
+	West				= "왼쪽",
 	Middle				= "중앙",
 	North				= "근접",
 	South				= "뒤쪽",
