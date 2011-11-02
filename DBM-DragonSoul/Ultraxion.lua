@@ -32,7 +32,7 @@ local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerHourofTwilightCD			= mod:NewNextTimer(45, 109416)
 local timerTwilightEruptionCD		= mod:NewNextTimer(360, 106388)--Berserk timer more or less.
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
-local timerFadingLightCD			= mod:NewNextTimer(10, 109416)
+local timerFadingLightCD			= mod:NewNextTimer(10, 110080)
 
 local fadingLightCount = 0
 local fadingLightTargets = {}
