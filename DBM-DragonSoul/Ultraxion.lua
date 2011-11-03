@@ -34,6 +34,8 @@ local timerTwilightEruptionCD		= mod:NewNextTimer(360, 106388)--Berserk timer mo
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
 local timerFadingLightCD			= mod:NewNextTimer(10, 110080)
 
+local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
+
 local fadingLightCount = 0
 local fadingLightTargets = {}
 
@@ -75,14 +77,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFadingLightCD:Start()
 		end
 		if args:IsPlayer() then
+			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific seed timer is
 			specWarnFadingLight:Show()
+			FadingLightCountdown:Start(expires)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
 	elseif args:IsSpellID(105925, 109075, 110070, 110080) then--Damage done IDs, dps/healer debuffs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
 		if args:IsPlayer() then
+			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific seed timer is
 			specWarnFadingLight:Show()
+			FadingLightCountdown:Start(expires)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
