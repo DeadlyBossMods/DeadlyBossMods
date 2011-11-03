@@ -37,7 +37,7 @@ local timerEmberFlareCD				= mod:NewNextTimer(6, 98934)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
 local timerFixate					= mod:NewTargetTimer(10, 99559)
 local timerWidowsKissCD				= mod:NewCDTimer(32, 99476, nil, mod:IsTank() or mod:IsHealer())
-local timerWidowKiss				= mod:NewTargetTimer(20, 99476, nil, mod:IsTank() or mod:IsHealer())
+local timerWidowKiss				= mod:NewTargetTimer(23, 99476, nil, mod:IsTank() or mod:IsHealer())
 
 local smolderingCount = 0
 local lastPoison = 0
@@ -72,16 +72,12 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99476) then--Cast debuff only, don't add other spellid.
-		warnWidowKiss:Show(args.destName)
+	if args:IsSpellID(99506) then--Cast debuff only, don't add other spellid.
 		timerWidowKiss:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnTouchWidowKiss:Show()
 		else
 			specWarnTouchWidowKissOther:Show(args.destName)
-		end
-		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() and self:IsTank() then
-			DBM.RangeCheck:Show(10)
 		end
 	elseif args:IsSpellID(99526, 99559) and args:IsDestTypePlayer() then--99526 is on player, 99559 is on drone, leaving both for now with a filter, may remove 99559 and filter later.
 		warnFixate:Show(args.destName)
@@ -93,7 +89,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(99476) then
+	if args:IsSpellID(99506) then
 		timerWidowKiss:Cancel(args.destName)
 		if args:IsPlayer() then
 			if self.Options.RangeFrame then
@@ -128,7 +124,11 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(99476) then--Cast debuff only, don't add other spellid. (99476 spellid uses on SPELL_CAST_START, NOT SPELL_AURA_APPLIED), 
+		warnWidowKiss:Show(args.destName)
 		timerWidowsKissCD:Start()
+		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() and self:IsTank() then
+			DBM.RangeCheck:Show(10)
+		end
 	--Phase 1 ember flares. Only show for people who are actually up top.
 	elseif args:IsSpellID(98934, 100648, 100834, 100835) and (self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target")) then
 		timerEmberFlareCD:Start()
