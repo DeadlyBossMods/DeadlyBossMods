@@ -72,7 +72,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99506) then--Cast debuff only, don't add other spellid.
+	if args:IsSpellID(99506) then--Applied debuff after cast. Used to announce special warnings and start target timer, only after application confirmed and not missed.
 		timerWidowKiss:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnTouchWidowKiss:Show()
