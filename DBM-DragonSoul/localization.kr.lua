@@ -101,12 +101,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart	= "전투 시작"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "전투 시작 바 표시"
 })
 
 L:SetMiscLocalization({
+	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
 })
 
 -------------------------
