@@ -72,7 +72,18 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(99526, 99559) and args:IsDestTypePlayer() then--99526 is on player, 99559 is on drone, leaving both for now with a filter, may remove 99559 and filter later.
+	if args:IsSpellID(99476) then--Cast debuff only, don't add other spellid.
+		warnWidowKiss:Show(args.destName)
+		timerWidowKiss:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnTouchWidowKiss:Show()
+		else
+			specWarnTouchWidowKissOther:Show(args.destName)
+		end
+		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() and self:IsTank() then
+			DBM.RangeCheck:Show(10)
+		end
+	elseif args:IsSpellID(99526, 99559) and args:IsDestTypePlayer() then--99526 is on player, 99559 is on drone, leaving both for now with a filter, may remove 99559 and filter later.
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
 		if args:IsPlayer() then
@@ -117,17 +128,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(99476) then--Cast debuff only, don't add other spellid. (99476 spellid uses on SPELL_CAST_START, NOT SPELL_AURA_APPLIED), 
-		warnWidowKiss:Show(args.destName)
-		timerWidowKiss:Start(args.destName)
 		timerWidowsKissCD:Start()
-		if args:IsPlayer() then
-			specWarnTouchWidowKiss:Show()
-		else
-			specWarnTouchWidowKissOther:Show(args.destName)
-		end
-		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() and self:IsTank() then
-			DBM.RangeCheck:Show(10)
-		end
 	--Phase 1 ember flares. Only show for people who are actually up top.
 	elseif args:IsSpellID(98934, 100648, 100834, 100835) and (self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target")) then
 		timerEmberFlareCD:Start()
