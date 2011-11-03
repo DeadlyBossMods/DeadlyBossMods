@@ -17,23 +17,29 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local warnTwilightOnslaught			= mod:NewCastAnnounce(107588, 4)
+local warnHarpoon					= mod:NewSpellAnnounce(108038, 2)
+local warnTwilightOnslaught			= mod:NewCastAnnounce(108862, 4)
 local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:IsHealer())
 
---local specWarmTwilightOnslaught	= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
+local specWarnHarpoon				= mod:NewSpecialWarningSpell(108038, mod:IsDps())
+local specWarnTwilightOnslaught		= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
 local specWarnSunder				= mod:NewSpecialWarningStack(108043, mod:IsTank(), 3)
 
---local timerTwilightOnslaughtCD	= mod:NewCDTimer(60, 107588)--Cd unknown, placeholder
+local timerTwilightOnslaughtCD		= mod:NewCDTimer(35, 107588)--Cd unknown, placeholder
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
 
 function mod:OnCombatStart(delay)
+--	timerTwilightOnslaughtCD:Start(-delay)--Need a log with actual engage time for this
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(107588) then--Assumed since it's only cast ID spellid in ptr.wowhead
 		warnTwilightOnslaught:Show()
---		specWarmTwilightOnslaught:Show()
---		timerTwilightOnslaughtCD:Show()
+		specWarnTwilightOnslaught:Show()
+		timerTwilightOnslaughtCD:Start()
+	elseif args:IsSpellID(108038) then
+		warnHarpoon:Show()
+		specWarnHarpoon:Show()
 	end
 end
 
