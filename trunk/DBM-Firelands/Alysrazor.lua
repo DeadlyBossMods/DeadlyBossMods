@@ -17,10 +17,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL"
+)
+
+mod:RegisterEvents(
+	"SPELL_CAST_START"
 )
 
 local warnMolting		= mod:NewSpellAnnounce(99464, 3)
