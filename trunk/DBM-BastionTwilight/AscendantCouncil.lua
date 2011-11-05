@@ -655,7 +655,7 @@ end
 --]]
 
 function mod:RAID_BOSS_EMOTE(msg)
-	if msg == L.Quake or msg:find(L.Quake) then
+	if (msg == L.Quake or msg:find(L.Quake)) and phase == 2 then
 		timerQuakeCD:Update(23, 33)
 		warnQuakeSoon:Show()
 		checkSearingWinds()
@@ -663,7 +663,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			self:Schedule(3.3, checkSearingWinds)
 			self:Schedule(6.6, checkSearingWinds)
 		end
-	elseif msg == L.Thundershock or msg:find(L.Thundershock) then
+	elseif (msg == L.Thundershock or msg:find(L.Thundershock)) and phase == 2 then
 		timerThundershockCD:Update(23, 33)
 		warnThundershockSoon:Show()
 		checkGrounded()
@@ -675,7 +675,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if uId ~= "boss1" or uId ~= "boss2" or uId ~= "boss3" or uId ~= "boss4" then return end--Anti spam to ignore all other args
+	if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4") then return end--Anti spam to ignore all other args
 --	"<60.5> Feludius:Possible Target<nil>:boss1:Frost Xplosion (DND)::0:94739"
 	if spellName == GetSpellInfo(94739) then -- Frost Xplosion (Phase 2 starts)
 		updateBossFrame(2)
@@ -695,6 +695,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		self:Schedule(3, checkSearingWinds)
 --	"<105.3> Terrastra:Possible Target<Omegal>:boss3:Elemental Stasis::0:82285"
 	elseif spellName == GetSpellInfo(82285) then -- Elemental Stasis (Phase 3 Transition)
+		self:Unschedule(checkSearingWinds)
+		self:Unschedule(checkGrounded)
 		updateBossFrame(3)
 		timerQuakeCD:Cancel()
 		timerThundershockCD:Cancel()
@@ -702,8 +704,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		timerEruptionCD:Cancel()
 		timerDisperse:Cancel()
 		timerTransition:Start()
-		self:Unschedule(checkSearingWinds)
-		self:Unschedule(checkGrounded)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10)
 		end
