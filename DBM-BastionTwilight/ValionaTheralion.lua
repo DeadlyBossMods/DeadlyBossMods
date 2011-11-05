@@ -33,7 +33,7 @@ local warnBlackout					= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnDazzlingDestruction		= mod:NewCountAnnounce(86408, 4)--Used by Theralion just before landing
 --Theralion Ground Phase
-local warnFabFlames					= mod:NewSpellAnnounce(92909, 3)
+local warnFabFlames					= mod:NewTargetAnnounce(92909, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
 local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)--Used by Valiona just before landing
 
@@ -50,6 +50,8 @@ local yellTwilightBlast				= mod:NewYell(92898, nil, false)
 --Theralion Ground Phase
 local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059, nil, nil, nil, true)
 local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)
+local specWarnFabulousFlamesNear	= mod:NewSpecialWarningClose(92907)
+local yellFabFlames					= mod:NewYell(92907)
 local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
 local yellTwilightMeteorite			= mod:NewYell(88518, nil, false)
 local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
@@ -87,7 +89,6 @@ local engulfingMagicTargets = {}
 local engulfingMagicIcon = 7
 local dazzlingCast = 0
 local breathCast = 0
-local lastflame = 0
 local lastFab = 0
 local spamZone = 0
 local markWarned = false
@@ -163,6 +164,32 @@ local function AMSTimerDelay()
 	timerTwilightShiftCD:Start()
 end
 
+function mod:FabFlamesTarget()
+	local targetname = self:GetBossTarget(45993)
+	if not targetname then return end
+	local uId = DBM:GetRaidUnitId(targetname)
+--	if UnitDetailedThreatSituation(uId, "boss1") then return end--He's not gonna fab flame the MT, ever. IF it gets cast in melee, he still targeted someone other then MT that was in wrong place. I'm not sure if he's boss1 or boss2 though so anti tank diabled for now.
+	warnFabFlames:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnFabulousFlames:Show()
+		yellFabFlames:Yell()
+		lastFab = GetTime()--Trigger the anti spam here so when we pre warn it thrown at them we don't double warn them again for taking 1 tick of it when it lands.
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 11 then--What's exact radius of this circle?
+				specWarnFabFlamesNear:Show(targetname)
+			end
+		end
+	end
+end
+
 function mod:TwilightBlastTarget()
 	local targetname = self:GetBossTarget(45993)
 	if not targetname then return end
@@ -197,7 +224,6 @@ function mod:OnCombatStart(delay)
 	timerNextDazzlingDestruction:Start(85-delay)
 	dazzlingCast = 0
 	breathCast = 0
-	lastflame = 0
 	lastFab = 0
 	spamZone = 0
 	markWarned = false
@@ -321,9 +347,9 @@ end
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(86505, 92907, 92908, 92909) then
-		if args:IsPlayer() and GetTime() - lastflame > 3  then
+		if args:IsPlayer() and GetTime() - lastFab > 3  then
 			specWarnFabulousFlames:Show()
-			lastflame = GetTime()
+			lastFab = GetTime()
 		end
 	end
 end
@@ -358,8 +384,9 @@ end
 
 --Good worked for 10 man-heroic
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(86497) and not ValionaLanded and GetTime() - lastFab > 5 then--Anti spam because UNIT events fire for ALL valid UNITIDs, ie Boss1, target, focus, mouseover. It's possible to get as much as 4 events.
-		warnFabFlames:Show()
+	if uId ~= "boss1" or uId ~= "boss2" then return end
+	if spellName == GetSpellInfo(86497) and not ValionaLanded then--Anti spam because UNIT events fire for ALL valid UNITIDs, ie Boss1, target, focus, mouseover. It's possible to get as much as 4 events.
+		self:ScheduleMethod(0.1, "FabFlamesTarget")--Might need a timing tweak but should work.
 		timerNextFabFlames:Start()
 		lastFab = GetTime()
 	end
