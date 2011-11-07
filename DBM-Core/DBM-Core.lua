@@ -2624,6 +2624,47 @@ function DBM:SendTimerInfo(mod, target)
 	end
 end
 
+local soundFiles = {
+	[0] = "Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_KILL_02.wav",
+	[1] = "Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_CHUNK_01.wav",
+	[2] = "Sound\\Creature\\RHYOLITH\\VO_QUEST_42_RHYOLITH_TAUNT_01.wav",
+	[3] = "Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_DEATH.wav",
+	[4] = "Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_CHUNK_04.wav",
+	[5] = "Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_AGGRO.wav",
+	[6] = "Sound\\Creature\\XT002Deconstructor\\UR_XT002_Special01.wav",
+	[7] = "Sound\\Creature\\Thorim\\UR_Thorim_Start02.wav",
+	[8] = "Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.wav",
+	[9] = "Sound\\Creature\\YoggSaron\\UR_YoggSaron_Tentacle01.wav",
+	[10] = "Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper02.wav",
+	[11] = "Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper03.wav",
+	[12] = "Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper04.wav",
+	[13] = "Sound\\Creature\\YoggSaron\\UR_YoggSaron_Death01.wav",
+	[14] = "Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.wav",
+	[15] = "Sound\\Creature\\FlameLeviathan\\UR_Leviathan_HardmodeOn.wav",
+	[16] = "Sound\\Creature\\Sindragosa\\IC_Sindragosa_Arcane01.wav",
+	[17] = "Sound\\Creature\\LordMarrowgar\\IC_Marrowgar_WW01.wav",
+	[18] = "Sound\\Creature\\Chogall\\VO_BT_Chogall_BotEvent28.wav",
+	[19] = "Sound\\Creature\\Arthas\\CS_Arthas_StartingPhase5.wav",
+	[20] = "Sound\\Creature\\Falric\\HR_FalrIC_SP01.wav",
+	[21] = "Sound\\Creature\\Falric\\HR_FalrIC_SP02.wav",
+	[22] = "Sound\\Creature\\PrinceMalchezzar\\PrinceAxeToss01.wav",
+	[23] = "Sound\\Creature\\PrinceMalchezzar\\PrinceSpecial01.wav",
+	[24] = "Sound\\Creature\\MedivhsEcho\\ChessKnightTaken01.wav",
+	[25] = "Sound\\Creature\\MedivhsEcho\\ChessBegin01.wav"
+}
+
+function DBM:AprilFools()
+	DBM:Unschedule(DBM.AprilFools)
+	DBM:Schedule(900, DBM.AprilFools)
+	if IsInInstance() then return end--Don't play joke if you're raiding.
+	local x = random(0, #soundFiles-1)
+	if DBM.Options.UseMasterVolume then
+		PlaySoundFile(soundFiles[x], "Master")
+	else
+		PlaySoundFile(soundFiles[x])
+	end
+end
+
 do
 	local function requestTimers()
 		local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
@@ -2637,6 +2678,10 @@ do
 	end
 
 	function DBM:PLAYER_ENTERING_WORLD()
+		local weekday, month, day, year = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
+		if month == 4 and day == 1 then--April 1st
+			DBM:AprilFools()
+		end
 		if #inCombat == 0 then
 			DBM:Schedule(2, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires
 		end
