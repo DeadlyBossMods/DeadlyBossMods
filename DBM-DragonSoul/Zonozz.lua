@@ -27,7 +27,7 @@ local warnShadows				= mod:NewSpellAnnounce(103434, 3)
 local warnBlackBlood			= mod:NewSpellAnnounce(104378, 2)
 
 local specWarnVoidofUnmaking	= mod:NewSpecialWarningSpell(103571, nil, nil, nil, true)
-local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, mod:IsTank())
+local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, false)
 local specWarnShadows			= mod:NewSpecialWarningYou(103434)
 
 local timerVoidofUnmakingCD		= mod:NewCDTimer(90, 103571, 103527)
