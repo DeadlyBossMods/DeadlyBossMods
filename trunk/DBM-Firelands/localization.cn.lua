@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/29/2011
+-- Last update: 11/8/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -244,7 +244,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Volcanus")
 
 L:SetGeneralLocalization({
-	name = "Volcanus"
+	name = "沃卡纳斯"
 })
 
 L:SetWarningLocalization({
@@ -259,7 +259,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "The Branch of Nordrassil reacts violently to %S+ touch!",--Reg expression pull match
-	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
-	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
+	StaffEvent			= "%S+的触摸令诺达希尔的分枝产生了强烈反应！",--Reg expression pull match
+	StaffTrees			= "烈焰树人从地下涌出，来协助保护者了！",--Might add a spec warning for this later.
+	StaffTransition		= "受折磨的保护者身上一直燃烧着的火焰熄灭了！"
 })
