@@ -67,7 +67,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s por debajo del 30%% ¡Siguiente fase pronto!",
-	SpecWarnGrounded	= "Coge Domeñado",
+	SpecWarnGrounded	= "Coge Toma de tierra",
 	SpecWarnSearingWinds	= "Coge Vientos espirales"
 })
 
