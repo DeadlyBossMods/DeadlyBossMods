@@ -348,7 +348,9 @@ function bossHealth:Hide()
 	if anchor then anchor:Hide() end
 end
 
-
+function bossHealth:IsShown()
+	return anchor and anshow:IsShown()
+end
 
 -- HACK to support the old API cId, name. TODO: change API to name, cId and update _all_ boss mods (or: add new method AddSharedHealthBoss or something but this would also be ugly...) (or: use addBoss({cId1, cId2, ...}, name) for multi-cId bosses but that's just ugly)
 -- for now: using this ugly code here instead of ugly code in all boss mods that make use of multi-cId health bars
