@@ -103,13 +103,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart	= "Empieza el combate"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "Mostrar tiempo para el inicio del combate"
 })
 
 L:SetMiscLocalization({
+	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"--translate
 })
+
 
 -------------------------
 -- Warmaster Blackhorn --
