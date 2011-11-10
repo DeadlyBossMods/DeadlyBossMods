@@ -75,11 +75,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(99506) then--Applied debuff after cast. Used to announce special warnings and start target timer, only after application confirmed and not missed.
 		timerWidowKiss:Start(args.destName)
-		if args:IsPlayer() then
-			specWarnTouchWidowKiss:Show()
-		else
-			specWarnTouchWidowKissOther:Show(args.destName)
-		end
 	elseif args:IsSpellID(99526, 99559) and args:IsDestTypePlayer() then--99526 is on player, 99559 is on drone, leaving both for now with a filter, may remove 99559 and filter later.
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
@@ -129,6 +124,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerWidowsKissCD:Start()
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() and self:IsTank() then
 			DBM.RangeCheck:Show(10)
+		end
+		if args:IsPlayer() then
+			specWarnTouchWidowKiss:Show()
+		else
+			specWarnTouchWidowKissOther:Show(args.destName)
 		end
 	--Phase 1 ember flares. Only show for people who are actually up top.
 	elseif args:IsSpellID(98934, 100648, 100834, 100835) and (self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target")) then
