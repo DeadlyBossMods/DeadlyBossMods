@@ -75,7 +75,7 @@ mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("HealthFrame", false)
 mod:AddBoolOption("InfoFrame", true)
-mod:AddBoolOption("SetWater", false)
+mod:AddBoolOption("SetWater", true)
 mod:AddBoolOption("TankArrow", false)--May be prone to some issues if you have 2 kiters, or unpicked up adds, but it's off by default so hopefully feature is used by smart people.
 
 local spamShadowblaze = 0
@@ -87,6 +87,7 @@ local playerDebuffs = 0
 local cinderTargets	= {}
 local dominionTargets = {}
 local lastBlaze = 0
+local CVAR = false
 local shadowBlazeSynced = false
 
 --Credits to Caleb for original concept, modified with yell sync and timer tweaks.
@@ -137,6 +138,7 @@ function mod:OnCombatStart(delay)
 	shadowblazeTimer = 35
 	playerDebuffed = false
 	playerDebuffs = 0
+	CVAR = false
 	table.wipe(cinderTargets)
 	table.wipe(dominionTargets)
 	timerNefLanding:Start(-delay)
@@ -149,6 +151,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:Show(2, "enemypower", 5, ALTERNATE_POWER_INDEX)
 	end
 	if self.Options.SetWater and GetCVarBool("cameraWaterCollision") then
+		CVAR = true--Cvar was true on pull so we remember that.
 		SetCVar("cameraWaterCollision", 0)
 	end
 end
@@ -160,7 +163,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.SetWater and not GetCVarBool("cameraWaterCollision") then
+	if self.Options.SetWater and not GetCVarBool("cameraWaterCollision") and CVAR then--Only turn it back on if it's off now, but it was on when we pulled.
 		SetCVar("cameraWaterCollision", 1)
 	end
 	if self.Options.TankArrow then

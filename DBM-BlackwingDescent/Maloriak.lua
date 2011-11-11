@@ -69,7 +69,7 @@ mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon", false)
 mod:AddBoolOption("ConsumingFlamesIcon", false)
 mod:AddBoolOption("RangeFrame")
-mod:AddBoolOption("SetTextures", false)--Blizz sucks and just about ALL friendly spells cover dark sludge and make you unable to see it.
+mod:AddBoolOption("SetTextures", true)--Blizz sucks and just about ALL friendly spells cover dark sludge and make you unable to see it.
 
 local adds = 18
 local AddsInterrupted = false
@@ -80,6 +80,7 @@ local flashFreezeTargets = {}
 local bitingChillIcon = 6
 local flashFreezeIcon = 8
 local prewarnedPhase2 = false
+local CVAR = false
 
 local function showBitingChillWarning()
 	warnBitingChill:Show(table.concat(bitingChillTargets, "<, >"))
@@ -116,6 +117,7 @@ function mod:OnCombatStart(delay)
 	bitingChillIcon = 6
 	flashFreezeIcon = 8
 	prewarnedPhase2 = false
+	CVAR = false
 	timerArcaneStormCD:Start(10-delay)--10-15 seconds from pull
 	timerAddsCD:Start()--This may or may not happen depending on arcane storms duration and when it was cast.
 	timerPhase:Start(18.5-delay)
@@ -127,7 +129,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
+	if self.Options.SetTextures and not GetCVarBool("projectedTextures") and CVAR then
 		SetCVar("projectedTextures", 1)
 	end
 end
@@ -208,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 		timerScorchingBlast:Cancel()
 		timerAddsCD:Cancel()
 		timerEngulfingDarknessCD:Cancel()
-		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") and CVAR then
 			SetCVar("projectedTextures", 1)
 		end
 	elseif args:IsSpellID(92754) then
@@ -259,7 +261,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") and CVAR then
 			SetCVar("projectedTextures", 1)
 		end
 	elseif msg == L.YellBlue or msg:find(L.YellBlue) then
@@ -273,7 +275,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
 		end
-		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") and CVAR then
 			SetCVar("projectedTextures", 1)
 		end
 	elseif msg == L.YellGreen or msg:find(L.YellGreen) then
@@ -297,6 +299,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			DBM.RangeCheck:Hide()
 		end
 		if self.Options.SetTextures and GetCVarBool("projectedTextures") then
+			CVAR = true--If projected was on when we entered dark phase, because if it was NOT on, we don't want to turn it back on later.
 			SetCVar("projectedTextures", 0)
 		end
 	end
