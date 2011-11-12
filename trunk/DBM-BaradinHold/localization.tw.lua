@@ -51,10 +51,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFirstSpecial		= "特別技能"
 })
 
 L:SetOptionLocalization({
+	TimerFirstSpecial		= "為下一次的特別技能$spell:105738顯示計時器\n(特別技能是隨機性$spell:105067 或 $spell:104936)"
+})
+
+L:SetMiscLocalization({
 })

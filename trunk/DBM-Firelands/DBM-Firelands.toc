@@ -18,7 +18,7 @@
 ## X-DBM-Mod-Name-esES: Tierras de Fuego
 ## X-DBM-Mod-Name-koKR: 불의 땅
 ## X-DBM-Mod-Name-ruRU: Огненные Просторы
-## X-DBM-Mod-Name-zhTW: Firelands
+## X-DBM-Mod-Name-zhTW: 火源之界
 ## X-DBM-Mod-Name-zhCN: 火焰之地
 ## X-DBM-Mod-Sort: 101
 ## X-DBM-Mod-LoadZoneID: 800
