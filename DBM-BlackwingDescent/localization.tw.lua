@@ -13,14 +13,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnInferno			= "熾熱的煉獄 即將到來 (~4秒)"
+	SpecWarnInferno		= "熾熱的煉獄 即將到來 (~4秒)"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnInferno			= "為$spell:92190顯示預先特別警告 (~4秒)",
+	SpecWarnInferno		= "為$spell:92190顯示預先特別警告 (~4秒)",
 	RangeFrame			= "第2階段時顯示距離框 (5碼)"
 })
 
@@ -37,40 +37,40 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name 				= "全能魔像防禦系統"
+	name 					= "全能魔像防禦系統"
 })
 
 L:SetWarningLocalization({
-	SpecWarnActivated		= "轉換目標到 %s!",
-	specWarnGenerator		= "發電機 - 拉開%s!",
+	SpecWarnActivated			= "轉換目標到 %s!",
+	specWarnGenerator			= "發電機 - 拉開%s!",
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "秘法逆爆",
 	timerShadowConductorCast	= "眾影體",
-	timerNefAblity			= "技能增益冷卻",
-	timerArcaneLockout		= "秘法殲滅者鎖定",
+	timerNefAblity				= "技能增益冷卻",
+	timerArcaneLockout			= "秘法殲滅者鎖定",
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "為$spell:92048的施放顯示計時器",
 	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
-	timerArcaneLockout		= "為$spell:91542法術鎖定顯示計時器",
-	timerNefAblity			= "為困難技能增益冷卻顯示計時器",
-	SpecWarnActivated		= "當新首領啟動時顯示特別警告",
-	specWarnGenerator		= "當首領獲得$spell:91557時顯示特別警告",
-	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
-	SetIconOnActivated		= "設置標記到最後啟動的首領"
+	timerArcaneLockout			= "為$spell:91542法術鎖定顯示計時器",
+	timerNefAblity				= "為困難技能增益冷卻顯示計時器",
+	SpecWarnActivated			= "當新首領啟動時顯示特別警告",
+	specWarnGenerator			= "當首領獲得$spell:91557時顯示特別警告",
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	SetIconOnActivated			= "設置標記到最後啟動的首領"
 })
 
 L:SetMiscLocalization({
-	Magmatron			= "熔岩號",
-	Electron			= "雷電號",
-	Toxitron			= "烈毒號",
-	Arcanotron			= "秘法號",
-	YellTargetLock			= "覆體之影! 遠離我!"
+	Magmatron					= "熔岩號",
+	Electron					= "雷電號",
+	Toxitron					= "烈毒號",
+	Arcanotron					= "秘法號",
+	YellTargetLock				= "覆體之影! 遠離我!"
 })
 
 ----------------
@@ -84,20 +84,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase			= "%s階段",
+	WarnPhase				= "%s階段",
 	WarnRemainingAdds		= "剩餘%d畸變"
 })
 
 L:SetTimerLocalization({
-	TimerPhase			= "下一階段"
+	TimerPhase				= "下一階段"
 })
 
 L:SetOptionLocalization({
-	WarnPhase			= "為那個階段即將到來顯示警告",
+	WarnPhase				= "為哪個階段即將到來顯示警告",
 	WarnRemainingAdds		= "顯示剩餘多少畸變的警告",
-	TimerPhase			= "為下一階段顯示計時器",
-	RangeFrame			= "藍色階段時顯示距離框 (6碼)",
-	SetTextures			= "自動在黑暗階段停用投影材質\n(離開黑暗階段後回到啟用)",
+	TimerPhase				= "為下一階段顯示計時器",
+	RangeFrame				= "藍色階段時顯示距離框 (6碼)",
+	SetTextures				= "自動在黑暗階段停用投影材質\n(離開黑暗階段後回到啟用)",
 	FlashFreezeIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
@@ -109,7 +109,7 @@ L:SetMiscLocalization({
 	YellBlue			= "藍色|r瓶子到鍋子裡!",
 	YellGreen			= "綠色|r瓶子到鍋子裡!",
 	YellDark			= "黑暗|r魔法到鍋子裡!",
-	Red				= "紅色",
+	Red					= "紅色",
 	Blue				= "藍色",
 	Green				= "綠色",
 	Dark				= "黑暗"
@@ -132,13 +132,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame			= "顯示距離框 (6碼)",
+	RangeFrame				= "顯示距離框 (6碼)",
 	SetIconOnSlime			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
-	InfoFrame			= "為血量(低於1萬血)顯示資訊框架"
+	InfoFrame			 	= "為血量(低於1萬血)顯示資訊框架"
 })
 
 L:SetMiscLocalization({
-	HealthInfo			= "血量資訊"
+	HealthInfo				= "血量資訊"
 })
 
 -----------------
@@ -148,15 +148,15 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Atramedes")
 
 L:SetGeneralLocalization({
-	name 				= "亞特拉米德"
+	name 					= "亞特拉米德"
 })
 
 L:SetWarningLocalization({
 	WarnAirphase			= "空中階段",
 	WarnGroundphase			= "地上階段",
 	WarnShieldsLeft			= "使用了古代矮人盾牌 - 剩餘%d次",
-	warnAddSoon			= "討人厭的惡魔已被召喚了",
-	specWarnAddTargetable		= "%s可以點擊了"
+	warnAddSoon				= "討人厭的惡魔已被召喚了",
+	specWarnAddTargetable	= "%s可以點擊了"
 })
 
 L:SetTimerLocalization({
@@ -168,20 +168,20 @@ L:SetOptionLocalization({
 	WarnAirphase			= "當亞特拉米德升空時顯示警告",
 	WarnGroundphase			= "當亞特拉米德降落時顯示警告",
 	WarnShieldsLeft			= "當古代矮人盾牌使用後顯示警告",
-	warnAddSoon			= "當奈法利安召喚小怪時顯示警告",
-	specWarnAddTargetable		= "當小怪可以點擊時顯示特別警告",
+	warnAddSoon				= "當奈法利安召喚小怪時顯示警告",
+	specWarnAddTargetable	= "當小怪可以點擊時顯示特別警告",
 	TimerAirphase			= "為下一次 空中階段顯示計時器",
 	TimerGroundphase		= "為下一次 地上階段顯示計時器",
-	InfoFrame			= "為音波值顯示資訊框架",
+	InfoFrame				= "為音波值顯示資訊框架",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
-	AncientDwarvenShield		= "古代矮人盾牌",
-	Soundlevel			= "聲音值",
+	AncientDwarvenShield	= "古代矮人盾牌",
+	Soundlevel				= "聲音值",
 	YellPestered			= "討人厭的惡魔在我這裡!",--npc 49740
-	NefAdd				= "亞特拉米德，英雄們就在那!",
-	Airphase			= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
+	NefAdd					= "亞特拉米德，英雄們就在那!",
+	Airphase				= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
 })
 
 ----------------
@@ -197,9 +197,9 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	OnyTailSwipe			= "尾部鞭擊 (奧妮克希亞)",
 	NefTailSwipe			= "尾部鞭擊 (奈法利安)",
-	OnyBreath			= "暗影焰息 (奧妮克希亞)",
-	NefBreath			= "暗影焰息 (奈法利安)",
-	specWarnShadowblazeSoon		= "%s",
+	OnyBreath				= "暗影焰息 (奧妮克希亞)",
+	NefBreath				= "暗影焰息 (奈法利安)",
+	specWarnShadowblazeSoon	= "%s",
 	warnShadowblazeSoon		= "%s",
 })
 
@@ -214,31 +214,31 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	OnyTailSwipe			= "為奧妮克希亞的$spell:77827顯示警告",
 	NefTailSwipe			= "為奈法利安的$spell:77827顯示警告",
-	OnyBreath			= "為奧妮克希亞的$spell:94124顯示警告",
-	NefBreath			= "為奈法利安的$spell:94124顯示警告",
+	OnyBreath				= "為奧妮克希亞的$spell:94124顯示警告",
+	NefBreath				= "為奈法利安的$spell:94124顯示警告",
 	specWarnCinderMove		= "為 $spell:79339 顯示特殊警告提示你離開 (爆炸前5秒)",
 	warnShadowblazeSoon		= "為 $spell:81031 顯示提前警告\n(只在計時器與其他玩家同步後顯示, 以確保準確)",
-	specWarnShadowblazeSoon		= "為$spell:94085顯示預先特別警告 (~5秒)",
+	specWarnShadowblazeSoon	= "為$spell:94085顯示預先特別警告 (~5秒)",
 	timerNefLanding			= "為奈法利安落地顯示計時器",
 	OnySwipeTimer			= "為奧妮克希亞的$spell:77827的冷卻時間顯示計時器",
 	NefSwipeTimer			= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
 	OnyBreathTimer			= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
 	NefBreathTimer			= "為奈法利安的$spell:94124的冷卻時間顯示計時器",
-	InfoFrame			= "為奧妮克希亞的電流充能顯示資訊框架",
-	SetWater			= "進入戰鬥後自動停用水體細節\n(離開戰鬥後回到啟用)",
-	TankArrow			= "為風箏復生的白骨戰士的人顯示DBM箭頭\n(設計為只有一個風箏坦)",--npc 41918
+	InfoFrame				= "為奧妮克希亞的電流充能顯示資訊框架",
+	SetWater				= "進入戰鬥後自動停用水體細節\n(離開戰鬥後回到啟用)",
+	TankArrow				= "為風箏復生的白骨戰士的人顯示DBM箭頭\n(設計為只有一個風箏坦)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
-	RangeFrame			= "為$spell:79339顯示距離框 (10碼)\n(當你中減益時顯示所有人, 否則只顯示中的人)"
+	RangeFrame				= "為$spell:79339顯示距離框 (10碼)\n(當你中減益時顯示所有人, 否則只顯示中的人)"
 })
 
 L:SetMiscLocalization({
-	NefAoe				= "響起了電流霹啪作響的聲音!",
-	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
-	YellPhase3			= "我本來只想略盡地主之誼，但是你們就是不肯痛快的受死!是時候拋下一切的虛偽...殺光你們就好!",
+	NefAoe					= "響起了電流霹啪作響的聲音!",
+	YellPhase2 				= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
+	YellPhase3				= "我本來只想略盡地主之誼，但是你們就是不肯痛快的受死!是時候拋下一切的虛偽...殺光你們就好!",
 	YellShadowBlaze			= "化為灰燼吧!",
-	Nefarian			= "奈法利安",
-	Onyxia				= "奧妮克希亞",
-	Charge				= "電流充能",
+	Nefarian				= "奈法利安",
+	Onyxia					= "奧妮克希亞",
+	Charge					= "電流充能",
 	ShadowBlazeExact		= "暗影炎 %d 秒",
 	ShadowBlazeEstimate		= "暗影炎 即將到來 (~5秒)"
 })
