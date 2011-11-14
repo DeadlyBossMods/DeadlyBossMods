@@ -61,12 +61,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Black			= "|cFF424242negra|r",--translate
-	Purple			= "|cFF9932CDmorada|r",--translate
-	Red				= "|cFFFF0404roja|r",--translate
-	Green			= "|cFF088A08verde|r",--translate
-	Blue			= "|cFF0080FFazul|r",--translate
-	Yellow			= "|cFFFFA901amarilla|r"--translate
+	Black			= "|cFF424242negra|r",
+	Purple			= "|cFF9932CDmorada|r",
+	Red				= "|cFFFF0404roja|r",
+	Green			= "|cFF088A08verde|r",
+	Blue			= "|cFF0080FFazul|r",
+	Yellow			= "|cFFFFA901amarilla|r"
 })
 
 
@@ -124,12 +124,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSapper			= "Siguiente Zapador Crepuscular"
 })
 
 L:SetOptionLocalization({
+	TimerSapper			= "Mostrar tiempo para la aparición del siguiente Zapador Crepuscular"
 })
 
 L:SetMiscLocalization({
+	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!"--translate
 })
 
 -------------------------
