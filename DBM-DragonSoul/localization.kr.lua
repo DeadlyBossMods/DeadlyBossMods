@@ -44,20 +44,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "끈적이: %s",
-	specWarnOozes	= "끈적이 등장!",
-	specWarnManaVoid= "마나 공허 - 대상 전환"
+	warnOozes		= "핏방울: %s",
+	specWarnOozes	= "핏방울 등장!",
+	specWarnManaVoid= "마나 공허 생성 - 대상 전환!"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "다음 끈적이"
+	timerOozesCD	= "다음 핏방울"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "끈적이 등장 알림 보기",
-	specWarnOozes		= "끈적이 등장 특수 경고 보기",
-	specWarnManaVoid	= "$spell:105530 소환 특수 경고 보기",
-	timerOozesCD		= "다음 끈적이 바 표시"
+	warnOozes			= "핏방울 등장 알림 보기",
+	specWarnOozes		= "핏방울 등장 특수 경고 보기",
+	specWarnManaVoid	= "$spell:105530 생성 특수 경고 보기",
+	timerOozesCD		= "다음 핏방울 바 표시"
 })
 
 L:SetMiscLocalization({
@@ -79,9 +79,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSpecial			= "첫번째 특수 공격"
 })
 
 L:SetOptionLocalization({
+	TimerSpecial			= "첫번째 특수 공격 시전까지 남은 시간 바 표시",
 	RangeFrame				= "$spell:105269 주문의 영향을 받을 경우 거리 프레임 보기(3m)",
 	AnnounceFrostTombIcons	= "$spell:104451 대상을 공격대 대화로 알리기\n(승급 권한 필요)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
@@ -121,12 +123,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart	= "전투 시작",
+	TimerSapper			= "다음 황혼의 폭파병"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "전투 시작 바 표시",
+	TimerSapper			= "다음 황혼의 폭파병 등장 바 표시"--npc=56923
 })
 
 L:SetMiscLocalization({
+	SapperEmote			= "황혼의 폭파병"
 })
 
 -------------------------
