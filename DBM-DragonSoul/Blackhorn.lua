@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnHarpoon					= mod:NewSpellAnnounce(108038, 2)
-local warnTwilightOnslaught			= mod:NewCastAnnounce(108862, 4)
+local warnTwilightOnslaught			= mod:NewSpellAnnounce(108862, 4)
 local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnHarpoon				= mod:NewSpecialWarningSpell(108038, mod:IsDps())
