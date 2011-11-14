@@ -31,6 +31,7 @@ local warnFurious		= mod:NewSpellAnnounce(103846, 3)
 local specwarnCrushArmor	= mod:NewSpecialWarningStack(103687, mod:IsTank(), 3)
 local specwarnVortexAfter	= mod:NewSpecialWarning("SpecwarnVortexAfter")	-- show a specwarning when Vortex ends
 local specwarnBlood			= mod:NewSpecialWarningMove(108570)
+local specwarnCrystal		= mod:NewSpecialWarningSpell(103639, false)
 
 local timerCrushArmor	= mod:NewTargetTimer(20, 103687, nil, mod:IsTank())
 local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also time till 'detonate')
@@ -65,8 +66,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(103851) then
-		timerStomp:Start(15)
-		timerCrystal:Start(21)
+		timerStomp:Start(19)
+		timerCrystal:Start(26)
 		timerVortexNext:Start()
 	end
 end
@@ -88,6 +89,7 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(103639) then
 		crystalCount = crystalCount + 1
 		warnCrystal:Show()
+		specwarnCrystal:Show()
 		if crystalCount < 3 then
 			timerCrystal:Start()
 		end
