@@ -78,10 +78,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSpecial			= "First Special"
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Show range frame (3) for $spell:105269",
+	TimerSpecial			= "Show timer for first special ability cast",
+	RangeFrame				= "Show range frame (3) for $spell:105269",
 	AnnounceFrostTombIcons	= "Announce icons for $spell:104451 targets to raid chat\n(requires raid leader)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
@@ -120,10 +122,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart	= "Combat starts",
 	TimerSapper			= "Next Twilight Sapper"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "Show timer for start of combat",
 	TimerSapper			= "Show timer for next Twilight Sapper spawn"--npc=56923
 })
 
