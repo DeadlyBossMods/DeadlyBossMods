@@ -30,7 +30,7 @@ local specWarnVoidofUnmaking	= mod:NewSpecialWarningSpell(103571, nil, nil, nil,
 local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, false)
 local specWarnShadows			= mod:NewSpecialWarningYou(103434)
 
-local timerVoidofUnmakingCD		= mod:NewCDTimer(90, 103571)
+local timerVoidofUnmakingCD		= mod:NewCDTimer(90, 103571, nil, nil, nil, 103527)
 local timerVoidDiffusionCD		= mod:NewCDTimer(5, 106836)--Can not be triggered more then once per 5 seconds.
 local timerFocusedAngerCD		= mod:NewCDTimer(6, 104543, nil, false)--Off by default as it may not be entirely useful information to know, but an option just for heck of it. You know SOMEONE is gonna request it
 local timerPsychicDrainCD		= mod:NewCDTimer(20, 104543, nil, mod:IsTank())--Every 20-25 seconds, variates.
