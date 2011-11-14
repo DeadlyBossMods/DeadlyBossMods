@@ -120,12 +120,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSapper			= "Next Twilight Sapper"
 })
 
 L:SetOptionLocalization({
+	TimerSapper			= "Show timer for next Twilight Sapper spawn"--npc=56923
 })
 
 L:SetMiscLocalization({
+	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!"
 })
 
 -------------------------
