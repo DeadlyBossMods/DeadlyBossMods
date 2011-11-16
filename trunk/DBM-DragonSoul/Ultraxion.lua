@@ -86,9 +86,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(105925, 109075, 110070, 110080) then--Damage done IDs, dps/healer debuffs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
 		if args:IsPlayer() then
-			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", GetSpellInfo(105925))--Find out what our specific seed timer is
+			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", GetSpellInfo(105925))--Find out what our specific fading light is
 			specWarnFadingLight:Show()
-			FadingLightCountdown:Start(duration)
+			FadingLightCountdown:Start(expires - GetTime() - 5)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)

@@ -52,9 +52,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	HorsemanSummon			= "Horseman rise...",
-	HorsemanHead			= "Get over here, you idiot!",
-	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
-	SayCombatEnd			= "This end have I reached before.  What new adventure lies in store?"
+	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!"
 })
 
 -----------------------
