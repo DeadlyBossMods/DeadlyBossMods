@@ -52,9 +52,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	HorsemanSummon			= "Horseman rise...",
-	HorsemanHead		= "過來這裡，你這白痴!",
-	HorsemanSoldiers	= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!",
-	SayCombatEnd		= "我也曾面對過這樣的末路。還有什麼新的冒險在等著呢?"
+	HorsemanSoldiers	= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!"
 })
 
 -----------------------

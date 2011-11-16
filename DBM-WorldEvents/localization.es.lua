@@ -54,9 +54,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	HorsemanSummon				= "Jinete álzate...",
-	HorsemanHead				= "¡Ven aquí, idiota!",
-	HorsemanSoldiers			= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero.",
-	SayCombatEnd				= "Este final a mí me suena. Veamos qué nueva me espera."
+	HorsemanSoldiers			= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
 })
 
 -----------------------

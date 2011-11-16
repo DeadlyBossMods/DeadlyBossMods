@@ -57,9 +57,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	HorsemanSummon			= "无头骑士来了……",
-	HorsemanHead		= "白痴，到这边来！",
-	HorsemanSoldiers	= "士兵们，起来战斗吧！为死去的骑士带来胜利的荣耀！",
-	SayCombatEnd		= "我曾经经历过这样的结局。这次会有新意吗？"
+	HorsemanSoldiers	= "士兵们，起来战斗吧！为死去的骑士带来胜利的荣耀！"
 })
 
 -----------------------
