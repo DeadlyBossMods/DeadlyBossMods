@@ -61,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnHourofTwilight:Show()
 		timerHourofTwilightCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerFadingLightCD:Start(15)
+			timerFadingLightCD:Start(13)
 		else
 			timerFadingLightCD:Start(20)--Same in raid finder too? too many difficulties now
 		end
