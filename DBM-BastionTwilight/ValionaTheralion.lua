@@ -184,7 +184,7 @@ function mod:FabFlamesTarget()
 			end
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 			if inRange and inRange < 11 then--What's exact radius of this circle?
-				specWarnFabFlamesNear:Show(targetname)
+				specWarnFabulousFlamesNear:Show(targetname)
 			end
 		end
 	end
