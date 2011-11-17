@@ -132,7 +132,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!"
+	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!",
+	Broadside			= "spell:110153",
+	DeckFire			= "spell:110095"
 })
 
 -------------------------
