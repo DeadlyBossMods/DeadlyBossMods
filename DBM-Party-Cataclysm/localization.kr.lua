@@ -330,7 +330,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "거리 프레임 보기 (5 m)"
+	RangeFrame	= "거리 프레임 보기 (5m)"
 }
 
 ----------
@@ -633,7 +633,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame		= "거리 프레임 보기 (10 m)",
+	RangeFrame		= "거리 프레임 보기 (10m)",
 	StormArrow		= "$spell:97300 시전시 DBM 화살표 보기", -- translate
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }

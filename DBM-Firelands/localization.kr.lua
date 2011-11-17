@@ -19,7 +19,7 @@ L:SetOptionLocalization({
 	TimerSpinners		= "다음 $journal:2770 바 표시",
 	TimerSpiderlings	= "다음 $journal:2778 바 표시",
 	TimerDrone			= "다음 $journal:2773 바 표시",
-	RangeFrame			= "거리 프레임 보기(10 m)"
+	RangeFrame			= "거리 프레임 보기 (10m)"
 })
 
 L:SetMiscLocalization({
@@ -129,7 +129,7 @@ L:SetOptionLocalization({
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "$spell:99516 주문의 영향을 받은 경우 DBM 화살표 보기",
 	InfoFrame			= "생기의 불꽃 정보 프레임 보기",
-	RangeFrame			= "$spell:99404 주문의 영향을 받은 경우 거리 프레임 보기(5 m)"
+	RangeFrame			= "$spell:99404 주문의 영향을 받은 경우 거리 프레임 보기 (5m)"
 })
 
 L:SetMiscLocalization({
@@ -150,8 +150,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerNextSpecial		= "다음 불꽃 낫/화염도약 시전 바 표시",
-	RangeFrameSeeds			= "$spell:98450 주문의 영향을 받은 경우 거리 프레임 보기(12 m)",
-	RangeFrameCat			= "$spell:98374 일때 거리 프레임 보기(10 m)",
+	RangeFrameSeeds			= "$spell:98450 주문의 영향을 받은 경우 거리 프레임 보기 (12m)",
+	RangeFrameCat			= "$spell:98374 일때 거리 프레임 보기 (10m)",
 	LeapArrow				= "$spell:98476 대상이 근처에 있을 경우 DBM 화살표 보기",
 	IconOnLeapingFlames		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
@@ -191,7 +191,7 @@ L:SetOptionLocalization({
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "사잇단계 지속 바 표시",
 	RangeFrame					= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
-	P4IconRangeFilter			= "영웅 난이도 4단계에서 거리 프레임에 전술 목표 아이콘만 보이도록 하기\n(거리 프레임이 켜져 있어야만 함)",
+	P4IconRangeFilter			= "영웅 난이도 4단계에서 거리 프레임에 전술 목표 아이콘만 보이도록 하기\n(거리 프레임을 사용 중일 때만 작동함)",
 	InfoHealthFrame				= "체력 정보 프레임 보기 (10만 미만)",
 	MeteorFrame					= "$spell:99849 대상 정보 프레임 보기",
 	AggroFrame					= "녹아내린 정령으로 부터 위협수준을 획득하지 않은 대상에 대한 정보 프레임 보기",
@@ -230,7 +230,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame			= "$spell:100012 거리 프레임 보기(10 m)"
+	TrashRangeFrame			= "$spell:100012 주문의 영향을 받은 경우 거리 프레임 보기 (10m)"
 })
 
 L:SetMiscLocalization({
