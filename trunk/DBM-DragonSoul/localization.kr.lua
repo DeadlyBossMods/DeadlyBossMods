@@ -133,7 +133,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "황혼의 폭파병"
+	SapperEmote			= "황혼의 폭파병",
+	Broadside			= "spell:110153",
+	DeckFire			= "spell:110095"
 })
 
 -------------------------
