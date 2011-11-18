@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
-L.TranslationBy 		= "루세린,소망이란 in 데스윙(Old:흑묘서희-에이그윈)"
+L.TranslationBy 		= "루세린-데스윙(everfinale@gmail.com)/Old:흑묘서희-에이그윈"
 
 L.OTabBosses	= "보스"
 L.OTabOptions	= "설정"
