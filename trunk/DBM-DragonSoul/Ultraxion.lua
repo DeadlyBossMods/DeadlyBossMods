@@ -32,6 +32,7 @@ local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerHourofTwilightCD			= mod:NewNextTimer(45, 109416)
 local timerTwilightEruptionCD		= mod:NewNextTimer(360, 106388)--Berserk timer more or less.
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
+local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)
 local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 15 on normal
 
 local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
@@ -87,6 +88,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(expires - GetTime() - 5)
+			timerFadingLight:Start(expires-GetTime())
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
@@ -96,6 +98,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(expires - GetTime() - 5)
+			timerFadingLight:Start(expires-GetTime())
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
