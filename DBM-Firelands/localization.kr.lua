@@ -169,8 +169,6 @@ L:SetWarningLocalization({
 	warnSplittingBlow		= "%s (%s)",
 	warnEngulfingFlame		= "%s (%s)",
 	WarnRemainingAdds		= "남은 피조물: %d",
-	warnAggro				= "녹아내린 정령으로부터 위협수준 획득함!!!",
-	warnNoAggro				= "녹아내린 정령에게서 안전함:)",
 	warnEmpoweredSulf		= "5초 후 %s"
 })
 
@@ -186,7 +184,6 @@ L:SetOptionLocalization({
 	WarnEngulfingFlameHeroic	= "영웅 난이도에서 $spell:99171 위치 알림 보기",
 	WarnRemainingAdds			= "사잇단계에서 남은 화염의 피조물 알림 보기",
 	warnSeedsLand				= "$spell:98520 주문이 시전될 때가 아니라 착지되는 시간에 맞는 알림/바 보기",
-	ElementalAggroWarn			= "녹아내린 정령이 생성될 동안 위협수준 획득 유무에 대한 알림 보기",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "사잇단계 지속 바 표시",
