@@ -38,10 +38,10 @@ local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
 local timerBladeNext		= mod:NewTimer(30, "TimerBladeNext", 99350, mod:IsTank() or mod:IsHealer())	-- either Decimation Blade or Inferno Blade
 local timerStrikeCD			= mod:NewTimer(5, "timerStrike", 99353, mod:IsTank() or mod:IsHealer())--5 or 2.5 sec. Variations are noted but can be auto corrected after first timer since game follows correction.
 local timerShardsTorment	= mod:NewNextCountTimer(34, 99259)
-local timerCountdown		= mod:NewBuffActiveTimer(8, 99516)
+local timerCountdown		= mod:NewBuffFadesTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
-local timerVitalFlame		= mod:NewBuffActiveTimer(15, 99263)
-local timerTormented		= mod:NewBuffActiveTimer(40, 99402)
+local timerVitalFlame		= mod:NewBuffFadesTimer(15, 99263)
+local timerTormented		= mod:NewBuffFadesTimer(40, 99402)
 
 local ShardsCountown		= mod:NewCountdown(34, 99259, false)
 
