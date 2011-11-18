@@ -169,8 +169,6 @@ L:SetWarningLocalization({
 	warnSplittingBlow		= "%s在%s",--Spellname in Location
 	warnEngulfingFlame		= "%s在%s",--Spellname in Location
 	WarnRemainingAdds		= "剩下 %d 個烈焰之子",
-	warnAggro				= "你為熔岩煉獄的目標!",
-	warnNoAggro				= "你沒有熔岩煉獄的仇恨",
 	warnEmpoweredSulf		= "%s 在5秒後施放"--The spell has a 5 second channel, but tooltip doesn't reflect it so cannot auto localize
 })
 
@@ -186,7 +184,6 @@ L:SetOptionLocalization({
 	WarnEngulfingFlameHeroic	= "為$spell:99171的位置顯示警告(英雄模式)",
 	WarnRemainingAdds			= "為剩餘烈焰之子的顯示警告",
 	warnSeedsLand				= "顯示$spell:98520落地時警告/計時器而非熔岩晶粒施放時警告/計時器",
-	ElementalAggroWarn			= "無論是否為熔岩煉獄的目標都顯示警告",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "顯示烈焰之子階段的持續時間計時器",

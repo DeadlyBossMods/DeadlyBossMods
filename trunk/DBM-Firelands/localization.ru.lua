@@ -167,9 +167,7 @@ L= DBM:GetModLocalization(198)
 L:SetWarningLocalization({
 	warnSplittingBlow	= "%s %s",--Spellname in Location
 	warnEngulfingFlame	= "%s %s",--Spellname in Location
-	WarnRemainingAdds	= "Осталось элементалей: %d",
-	warnAggro			= "На вас аггро от элементалей",
-	warnNoAggro			= "На вас нет аггро от элементалей"
+	WarnRemainingAdds	= "Осталось элементалей: %d"
 })
 
 L:SetTimerLocalization({
@@ -181,7 +179,6 @@ L:SetOptionLocalization({
 	warnEngulfingFlame	= "Предупреждение для $spell:99171",
 	WarnRemainingAdds	= "Показывать количество оставшихся элементалей",
 	warnSeedsLand		= "Отсчитывать время до появления $spell:98520, а не до их появления в воздухе",
-	ElementalAggroWarn	= "Показывать наличие и отсутствие аггро от элементалей",
 	TimerPhaseSons		= "Отсчет времени до окончания \"фазы Сыновей пламени\"",
 	RangeFrame			= "Показывать окно проверки дистанции",
 	InfoHealthFrame		= "Информационное окно для игроков с низким уровнем здоровья (<100к)",
