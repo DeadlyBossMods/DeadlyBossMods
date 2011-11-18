@@ -66,7 +66,7 @@ local timerDevouringFlamesCD		= mod:NewCDTimer(40, 86840)
 local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
 --Theralion Ground Phase
 local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
-local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
+local timerEngulfingMagic			= mod:NewBuffFadesTimer(20, 86622)
 local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
 local timerNextFabFlames			= mod:NewNextTimer(15, 92909)
 local timerNextDeepBreath			= mod:NewNextTimer(98, 86059)

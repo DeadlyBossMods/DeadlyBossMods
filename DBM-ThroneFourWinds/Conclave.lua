@@ -43,7 +43,7 @@ local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
 
 local timerNurture			= mod:NewNextTimer(35, 85422)--This this is typically 35 seconds after a special has ended.
 local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
-local timerSlicingGale		= mod:NewBuffActiveTimer(45, 93058, nil, false)
+local timerSlicingGale		= mod:NewBuffFadesTimer(45, 93058, nil, false)
 local timerWindBlast		= mod:NewBuffActiveTimer(11.5, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
 local timerStormShieldCD	= mod:NewCDTimer(35, 95865)--Heroic ability, seems to have a 35-40second cd and no longer syncs up to nurture since the windblast change. No longer consistent.

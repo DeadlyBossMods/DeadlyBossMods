@@ -88,7 +88,7 @@ local timerHeartIce			= mod:NewTargetTimer(60, 82665, nil, false)
 local timerHeartIceCD		= mod:NewCDTimer(22, 82665, nil, false)--22-24 seconds
 local timerGlaciate			= mod:NewCDTimer(33, 82746, nil, mod:IsMelee())--33-35 seconds
 local timerWaterBomb		= mod:NewCDTimer(33, 82699)--33-35 seconds
-local timerFrozen			= mod:NewBuffActiveTimer(10, 82772, nil, mod:IsHealer())
+local timerFrozen			= mod:NewBuffFadesTimer(10, 82772, nil, mod:IsHealer())
 local timerHydroLanceCD		= mod:NewCDTimer(12, 92509, nil, false)--12 second cd but lowest cast priority
 --Ignacious
 local timerBurningBlood		= mod:NewTargetTimer(60, 82660, nil, false)
@@ -100,7 +100,7 @@ local timerHardenSkinCD		= mod:NewCDTimer(42, 83718, nil, mod:IsMelee())--This o
 local timerQuakeCD			= mod:NewNextTimer(33, 83565)
 local timerQuakeCast		= mod:NewCastTimer(3, 83565)
 --Arion
-local timerLightningRod		= mod:NewBuffActiveTimer(15, 83099)
+local timerLightningRod		= mod:NewBuffFadesTimer(15, 83099)
 local timerDisperse			= mod:NewCDTimer(30, 83087)
 local timerLightningBlast	= mod:NewCastTimer(4, 83070, nil, false)
 local timerThundershockCD	= mod:NewNextTimer(33, 83067)
