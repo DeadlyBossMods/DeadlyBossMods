@@ -126,7 +126,8 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target		= "%s: %%s",
 	cast 		= "%s",
-	active 		= "%s",	
+	active		= "%s 종료",--Buff/Debuff/event on boss
+	fades		= "%s 사라짐",--Buff/Debuff on players
 	cd 			= "%s 대기시간",
 	cdcount		= "%s 대기시간 (%%d)",
 	next 		= "다음 %s",
@@ -138,11 +139,12 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	target 		= "|cff71d5ff|Hspell:%d|h%s|h|r 약화효과 바 표시",
 	cast 		= "|cff71d5ff|Hspell:%d|h%s|h|r 시전 바 표시",
 	active		= "|cff71d5ff|Hspell:%d|h%s|h|r 유지 시간 바 표시",
+	fades		= "|cff71d5ff|Hspell:%d|h%s|h|r 효과가 사라지기 전까지 남은 시간 바 표시",
 	cd 			= "|cff71d5ff|Hspell:%d|h%s|h|r 대기시간 바 표시",
 	cdcount		= "|cff71d5ff|Hspell:%d|h%s|h|r 대기시간 바 표시",
 	next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 바 표시",
 	nextcount 	= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 바 표시",
-	achievement = "%s 업적을 위한 바 표시"
+	achievement = "%s 업적을 위한 남은시간 바 표시"
 }
 
 -- Auto-generated Warning Localizations
