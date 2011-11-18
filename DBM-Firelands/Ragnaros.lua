@@ -42,10 +42,6 @@ mod:AddBoolOption("warnSeedsLand", false, "announce")
 local warnSplittingBlow		= mod:NewAnnounce("warnSplittingBlow", 3, 100877)
 local warnSonsLeft			= mod:NewAnnounce("WarnRemainingAdds", 2, 99014)
 local warnEngulfingFlame	= mod:NewAnnounce("warnEngulfingFlame", 4, 99171)
-mod:AddBoolOption("WarnEngulfingFlameHeroic", mod:IsMelee(), "announce")
-local warnAggro				= mod:NewAnnounce("warnAggro", 4, 99601, nil, false)
-local warnNoAggro			= mod:NewAnnounce("warnNoAggro", 1, 99601, nil, false)
-mod:AddBoolOption("ElementalAggroWarn", true, "announce")
 local warnPhase3Soon		= mod:NewPrePhaseAnnounce(3, 3)
 local warnBlazingHeat		= mod:NewTargetAnnounce(100460, 4)--Second transition adds ability.
 local warnLivingMeteorSoon	= mod:NewPreWarnAnnounce(99268, 10, 3)
@@ -162,15 +158,6 @@ local function hideRangeFrame()
 	if UnitDebuff("player", GetSpellInfo(101110)) then return end--Staff debuff, don't hide it either.
 	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	end
-end
-
-local function showAggroWarning()
-	if mod:IsTank() or not mod.Options.ElementalAggroWarn then return end--IF you're a tank it's 50/50 you have rag aggro. I could check this but i don't think in any situation it's relevent anyways (ie the tank isn't actually gonna run away from it, he'll tank it if using spread method, or it'll be dead already if using aoe method)
-	if UnitThreatSituation("player") == 3 then
-		warnAggro:Show()
-	else
-		warnNoAggro:Show()
 	end
 end
 
@@ -690,7 +677,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 			warnSeeds()
 		end
 		self:Schedule(17.5, clearSeedsActive)--Clear active/warned seeds after they have all blown up.
-		self:Schedule(13.5, showAggroWarning)--Not sure fastest timing for this, gotta wait for them all to spawn. or if they fixate immediately on spawn in time stamps above or we need an additional second or two.
 		if self.Options.AggroFrame then--Show aggro frame regardless if health frame is still up, it should be more important than health frame at this point. Shouldn't be blowing up traps while elementals are up.
 			DBM.InfoFrame:SetHeader(L.NoAggro)
 			if self:IsDifficulty("normal25", "heroic25") then

@@ -169,8 +169,6 @@ L:SetWarningLocalization({
 	warnSplittingBlow		= "%s en %s",
 	warnEngulfingFlame		= "%s en %s",
 	WarnRemainingAdds		= "%d Hijos de la Llama restantes",
-	warnAggro				= "Tienes aggro de Elemental de magma",
-	warnNoAggro				= "No tienes aggro de Elemental de magma",
 	warnEmpoweredSulf		= "%s en 5 seg"
 })
 
@@ -186,7 +184,6 @@ L:SetOptionLocalization({
 	WarnEngulfingFlameHeroic	= "Mostrar avisos de localización para $spell:99171 en heroico",
 	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
 	warnSeedsLand		= "Mostrar aviso/tiempo para el aterrizaje de $spell:98520 en lugar de los casteos.",
-	ElementalAggroWarn	= "Mostrar un aviso por si tienes o no aggro de los Elementales de Magma",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
