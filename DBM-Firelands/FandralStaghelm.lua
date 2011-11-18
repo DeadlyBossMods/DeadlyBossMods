@@ -32,8 +32,9 @@ local specWarnLeapingFlames		= mod:NewSpecialWarningMove(100208)--Standing in ci
 local specWarnSearingSeed		= mod:NewSpecialWarningMove(98450)
 local specWarnOrb				= mod:NewSpecialWarningStack(100211, true, 4)
 
-local timerOrb					= mod:NewBuffActiveTimer(6, 100211)
-local timerSearingSeed			= mod:NewBuffActiveTimer(60, 98450)
+local timerOrbActive			= mod:NewBuffActiveTimer(64, 98451)
+local timerOrb					= mod:NewTargetTimer(6, 100211)
+local timerSearingSeed			= mod:NewTargetTimer(60, 98450)
 local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)--This one stays localized because it's 1 timer used for two abilities
 
 local berserkTimer				= mod:NewBerserkTimer(600)
@@ -146,12 +147,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) >= 4 then
 			specWarnOrb:Show(args.amount)--You stood in the fire!
 		end
-		timerOrb:Start()
+		timerOrb:Start(args.destName)
 	elseif args:IsSpellID(98450) and args:IsPlayer() then
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific seed timer is
 		specWarnSearingSeed:Schedule(expires - GetTime() - 5)	-- Show "move away" warning 5secs before explode
 		soundSeed:Schedule(expires - GetTime() - 5)
-		timerSearingSeed:Start(expires-GetTime())
+		timerSearingSeed:Start(expires-GetTime(), args.destName)
 		if self.Options.RangeFrameSeeds then
 			DBM.RangeCheck:Show(12)
 		end
@@ -173,6 +174,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(98451) then	--98451 confirmed
 		warnOrbs:Show()
+		timerOrbActive:Start()
 	end
 end
 
