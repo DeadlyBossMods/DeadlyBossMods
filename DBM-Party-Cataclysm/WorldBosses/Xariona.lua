@@ -13,13 +13,14 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"UNIT_POWER"
+	"UNIT_POWER",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnTwilightZone			= mod:NewSpellAnnounce(93553, 2)--Used for protection against UnleashedMagic
 local warnTwilightFissure		= mod:NewTargetAnnounce(93546, 3)--Typical void zone.
 local warnTwilightBuffet		= mod:NewTargetAnnounce(93551, 3)
-local warnUnleashedMagicSoon	= mod:NewSoonAnnounce(93556, 3)--An attack that one shots anyone not in a twilight zone.
+local warnUnleashedMagicSoon	= mod:NewSoonAnnounce(93556, 3)
 local warnUnleashedMagic		= mod:NewCastAnnounce(93556, 4)--An attack that one shots anyone not in a twilight zone.
 
 local specWarnUnleashedMagic	= mod:NewSpecialWarningSpell(93556, nil, nil, nil, true)
@@ -29,7 +30,9 @@ local timerTwilightFissureCD	= mod:NewCDTimer(23, 93546)
 local timerTwilightZoneCD		= mod:NewNextTimer(30, 93553)
 local timerTwilightBuffetCD		= mod:NewCDTimer(20, 93551)
 local timerTwilightBuffet		= mod:NewTargetTimer(10, 93551)
-local timerUnleashedMagicCD		= mod:NewCDTimer(65, 93556)--65 Cd but least priority spell, she will cast breath, fissure zone or buffet before this, so overlapping CDs often delay this upwards to 75 seconds sometimes
+local timerUnleashedMagicCD		= mod:NewCDTimer(66, 93556)--66 Cd but least priority spell, she will cast breath, fissure zone or buffet before this, so overlapping CDs often delay this upwards to 5 seconds late
+
+local specialCharging = false
 
 function mod:FissureTarget()
 	local targetname = self:GetBossTarget(50061)
@@ -41,10 +44,10 @@ function mod:FissureTarget()
 end
 
 function mod:OnCombatStart(delay)
+	specialCharging = false
 	timerTwilightBuffetCD:Start(10-delay)
 	timerTwilightZoneCD:Start(-delay)--Not a large sample size but seems like it'd be right.
 	timerTwilightFissureCD:Start(-delay)--May not be right, not a large sample size
---	timerUnleashedMagicCD:Start(60-delay)--May not get cast entire fight but if it is cast this is about right.
 end
 
 function mod:SPELL_CAST_START(args)
@@ -80,10 +83,16 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:UNIT_POWER(uId)
-	if self:GetUnitCreatureId(uId) == 50061 and UnitPower(uId) == 80 then
-		warnUnleashedMagicSoon:Show()
-		DBM.Bars:CreateBar(10, "Big AOE Testbar")
+	if self:GetUnitCreatureId(uId) == 50061 and UnitPower(uId) == 70 and specialCharging then
+		warnUnleashedMagicSoon:Schedule(10)
+		DBM.Bars:CreateBar(20, "Big AOE Testbar")
 		--Will change to prewarn when i get right tuning and can find right energy level for 10 seconds.
 		--Also once i get that info i'll be able to auto start/correct the timer whenever, and detect whether it's bugged or not.
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(93554) and not specialCharging then -- Fury of the twilight flight. Sometimes she bugs and doesn't cast this,if she doesnt, she won't gain unit power and thus won't use any specials.
+		specialCharging = true
 	end
 end
