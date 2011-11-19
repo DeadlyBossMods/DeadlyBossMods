@@ -70,6 +70,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(97497) and args:IsPlayer() and GetTime() - spamFlameBreath2 >= 3 and self:IsInCombat() then
 		specWarnFlameBreath:Show()
 		spamFlameBreath2 = GetTime()
+	elseif args:IsSpellID(42402) then
+		warnSurge:Show(args.destName)
+		timerSurgeCD:Start()
 	end
 end
 
