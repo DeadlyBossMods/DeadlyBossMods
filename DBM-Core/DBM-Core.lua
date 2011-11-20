@@ -3147,10 +3147,10 @@ end
 
 function bossModPrototype:GetDifficulty() 
 	local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo()
-	local inLFGParty = GetLFGInfoServer()
-	if inLFGParty and difficulty == 2 and instanceType == "raid" and maxPlayers == 25 then
-		return "lfr25"
-	elseif difficulty == 1 then 
+--	local inLFGParty = GetLFGInfoServer()
+--[[	if inLFGParty and difficulty == 2 and instanceType == "raid" and maxPlayers == 25 then
+		return "lfr25"--]]
+	if difficulty == 1 then 
 		return instanceType == "raid" and "normal10" or "normal5"
 	elseif difficulty == 2 then 
 		return instanceType == "raid" and "normal25" or "heroic5"
