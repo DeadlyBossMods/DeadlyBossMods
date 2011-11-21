@@ -80,10 +80,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSpecial			= "Primer especial"
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Mostrar distancia (3) para $spell:105269",
+	TimerSpecial			= "Mostrar tiempo para casteo de la primera habilidad especial",
+	RangeFrame				= "Mostrar distancia (3) para $spell:105269",
 	AnnounceFrostTombIcons	= "Anunciar iconos de los objetivos de $spell:104451 a la banda\n(requiere líder)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
@@ -124,10 +126,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart	= "Empieza el combate",
 	TimerSapper			= "Siguiente Zapador Crepuscular"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
 	TimerSapper			= "Mostrar tiempo para la aparición del siguiente Zapador Crepuscular"
 })
 
