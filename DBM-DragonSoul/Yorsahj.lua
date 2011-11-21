@@ -31,6 +31,8 @@ local timerOozesCD		= mod:NewTimer(75, "timerOozesCD", 16372)
 --local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--i can't quite see what makes him stop casting it yet throughout fight yet though to perfectly cancel/start it so it's semi inaccurate for now.
 local timerVoidBolt		= mod:NewTargetTimer(20, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 --[[
 Confirmed in transcriptor log for normal mode.
 --104894,"Black Blood of Shu'ma"
@@ -57,6 +59,7 @@ local oozeColors = {
 function mod:OnCombatStart(delay)
 --	timerVoidBoltCD:Start(-delay)
 	timerOozesCD:Start(22-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
