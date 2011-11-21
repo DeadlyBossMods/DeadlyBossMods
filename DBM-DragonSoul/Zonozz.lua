@@ -37,6 +37,8 @@ local timerPsychicDrainCD		= mod:NewCDTimer(20, 104543, nil, mod:IsTank())--Ever
 local timerShadowsCD			= mod:NewCDTimer(25, 103434)--Every 25-30, variates
 local timerBlackBlood			= mod:NewBuffActiveTimer(30, 104378)
 
+local berserkTimer				= mod:NewBerserkTimer(360)
+
 mod:AddBoolOption("RangeFrame", true)--For heroic shadows, doesn't seem relevent on normal.
 
 local shadowsTargets	= {}
@@ -56,6 +58,7 @@ function mod:OnCombatStart(delay)
 	timerFocusedAngerCD:Start(10.5-delay)
 	timerPsychicDrainCD:Start(-delay)
 	timerShadowsCD:Start(-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
