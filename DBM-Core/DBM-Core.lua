@@ -2535,6 +2535,7 @@ do
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			local lag = select(4, GetNetStats()) / 1000
 			if not mod.combatInfo then return end
+			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(mod.combatInfo.name, strFromTime(time + lag)))
 			table.insert(inCombat, mod)
 			mod.inCombat = true
 			mod.blockSyncs = nil
