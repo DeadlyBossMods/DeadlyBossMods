@@ -697,25 +697,25 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	elseif spellName == GetSpellInfo(82285) then -- Elemental Stasis (Phase 3 Transition)
 		self:Unschedule(checkSearingWinds)
 		self:Unschedule(checkGrounded)
-		updateBossFrame(3)
 		timerQuakeCD:Cancel()
 		timerThundershockCD:Cancel()
 		timerHardenSkinCD:Cancel()
 		timerEruptionCD:Cancel()
 		timerDisperse:Cancel()
+		timerFlameStrikeCD:Cancel()
 		timerTransition:Start()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(10)
-		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
 		end
 --	"<122.0> Elementium Monstrosity:Possible Target<nil>:boss1:Electric Instability::0:84526"
 	elseif spellName == GetSpellInfo(84526) then -- Electric Instability (Phase 3 Actually started)
-		timerFlameStrikeCD:Cancel()
+		updateBossFrame(3)
 		timerFrostBeaconCD:Cancel()--Cancel here to avoid probelms with orbs that spawn during the transition.
 		timerLavaSeedCD:Start(18)
 		timerGravityCrushCD:Start(28)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)
+		end
 	end
 end
 
