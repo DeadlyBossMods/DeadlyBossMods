@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 11/1/2011
+-- Last update: 11/24/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -11,11 +11,12 @@ DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "成功读取%s模块！"
 DBM_CORE_LOAD_GUI_ERROR				= "无法读取图形界面：%s"
 
-DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)";
+DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 DBM_CORE_BOSS_DOWN					= "%s被击杀！用时%s。"
 DBM_CORE_BOSS_DOWN_LONG				= "%s被击杀！本次用时%s，上次用时%s，最快击杀用时%s。"
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s被击杀！用时%s，新的击杀纪录诞生了！（原纪录为%s）"
 DBM_CORE_COMBAT_ENDED				= "%s作战结束，用时%s。"
+DBM_CORE_COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分钟"
@@ -130,8 +131,9 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速击杀"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target		= "%s: %%s",
 	cast		= "%s",
-	active		= "%s",
-	cd			= "%s冷却",
+	active		= "%s结束",
+	active		= "%s结束",--Buff/Debuff/event on boss
+	fades		= "%s消失",--Buff/Debuff on players
 	cdcount		= "%s冷却（%%d）",
 	next 		= "下一次%s",
 	nextcount	= "下一次%s（%%d）",
@@ -142,6 +144,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	target		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
 	cast		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r施法时间",
 	active		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
+	fades		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r何时从玩家身上消失",
 	cd			= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
 	cdcount		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
 	next		= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
