@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 8/20/2011
+-- Last update: 11/24/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -54,11 +54,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerFirstSpecial		= "第一次特殊技能"
+})
+
+L:SetOptionLocalization({
+	TimerFirstSpecial		= "计时条：$spell:105738后的第一次特殊技能\n（第一次特殊技能是随机的，$spell:105067或$spell:104936）"
 })
 
 L:SetMiscLocalization({
 })
-
-L:SetOptionLocalization({
-})
-

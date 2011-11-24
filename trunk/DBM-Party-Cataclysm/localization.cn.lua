@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/29/2011
+-- Last update: 11/24/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -1083,7 +1083,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoSylvanas")
 
 L:SetGeneralLocalization{
-	name = "Echo of Sylvanas"
+	name = "希尔瓦娜斯的残影"
 }
 
 L:SetWarningLocalization{
@@ -1104,7 +1104,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
-	name = "Echo of Tyrande"
+	name = "泰兰德的残影"
 }
 
 L:SetWarningLocalization{
@@ -1125,18 +1125,18 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoJaina")
 
 L:SetGeneralLocalization{
-	name = "Echo of Jaina"
+	name = "吉安娜的残影"
 }
 
 L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlarecoreDetonate	= "Flarecore detonate"
+	TimerFlarecoreDetonate	= "炙焰之核"
 }
 
 L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "计时条：$spell:101927的爆炸"
+	TimerFlarecoreDetonate	= "计时条：$spell:101927引爆"
 }
 
 L:SetMiscLocalization{
@@ -1148,7 +1148,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("EchoBaine")
 
 L:SetGeneralLocalization{
-	name = "Echo of Baine"
+	name = "贝恩的残影"
 }
 
 L:SetWarningLocalization{
@@ -1169,7 +1169,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Murozond")
 
 L:SetGeneralLocalization{
-	name = "Murozond"
+	name = "姆诺兹多"
 }
 
 L:SetWarningLocalization{
@@ -1192,7 +1192,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Perotharn")
 
 L:SetGeneralLocalization{
-	name = "Peroth'arn"
+	name = "佩罗萨恩"
 }
 
 L:SetWarningLocalization{
@@ -1213,7 +1213,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
-	name = "艾萨拉"
+	name = "艾萨拉女王"
 }
 
 L:SetWarningLocalization{
@@ -1234,7 +1234,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
-	name = "Mannoroth & Varo'then"
+	name = "玛诺洛斯与瓦罗森"
 }
 
 L:SetWarningLocalization{
@@ -1257,7 +1257,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Arcurion")
 
 L:SetGeneralLocalization{
-	name = "Arcurion"
+	name = "阿奎里恩"
 }
 
 L:SetWarningLocalization{
@@ -1278,7 +1278,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
-	name = "Asira Dawnslayer"
+	name = "埃希拉·黎明克星"
 }
 
 L:SetWarningLocalization{

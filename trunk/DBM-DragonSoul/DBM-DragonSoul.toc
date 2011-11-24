@@ -22,6 +22,7 @@
 ## X-DBM-Mod-Name-zhCN: 巨龙之魂
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZoneID: 824
+localization.cn.lua
 localization.en.lua
 localization.es.lua
 localization.kr.lua
