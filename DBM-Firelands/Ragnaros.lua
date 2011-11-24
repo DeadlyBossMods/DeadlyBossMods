@@ -20,13 +20,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
 	"UNIT_HEALTH",
 	"UNIT_AURA",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_DIED"
 )
 
 local warnRageRagnaros		= mod:NewTargetAnnounce(101110, 3)--Staff quest ability (normal only)
@@ -565,35 +565,6 @@ function mod:SPELL_DAMAGE(args)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Have to track absorbs too for this method to work.
 
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 53140 then--Son of Flame
-		sonsLeft = sonsLeft - 1
-		if sonsLeft < 3 then
-			warnSonsLeft:Show(sonsLeft)
-		end
-	elseif cid == 53500 then--Meteors
-		meteorSpawned = meteorSpawned - 1
-		if meteorSpawned == 0 and self.Options.MeteorFrame then--Meteors all gone, hide info frame
-			DBM.InfoFrame:Hide()
-			if magmaTrapSpawned >= 1 and self.Options.InfoHealthFrame then--If traps are still up we restore the health frame (why on earth traps would still up in phase 4 is beyond me).
-				DBM.InfoFrame:SetHeader(L.HealthInfo)
-				DBM.InfoFrame:Show(5, "health", 100000)
-			end
-		end	
-	elseif cid == 53189 then--Molten elemental
-		elementalsSpawned = elementalsSpawned - 1
-		if elementalsSpawned == 0 and self.Options.AggroFrame then--Elementals all gone, hide info frame
-			DBM.InfoFrame:Hide()
-			if magmaTrapSpawned >= 1 and self.Options.InfoHealthFrame then--If traps are still up we restore the health frame.
-				DBM.InfoFrame:SetHeader(L.HealthInfo)
-				DBM.InfoFrame:Show(5, "health", 100000)
-			end
-		end	
-	end
-end
-
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.TransitionEnded1 or msg:find(L.TransitionEnded1) or msg == L.TransitionEnded2 or msg:find(L.TransitionEnded2) or msg == L.TransitionEnded3 or msg:find(L.TransitionEnded3) then--This is more reliable then adds which may or may not add up to 8 cause blizz sucks. Plus it's more precise anyways, timers seem more consistent with this method.
 		TransitionEnded()
@@ -685,5 +656,33 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 				DBM.InfoFrame:Show(5, "playeraggro", 0)
 			end
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 53140 then--Son of Flame
+		sonsLeft = sonsLeft - 1
+		if sonsLeft < 3 then
+			warnSonsLeft:Show(sonsLeft)
+		end
+	elseif cid == 53500 then--Meteors
+		meteorSpawned = meteorSpawned - 1
+		if meteorSpawned == 0 and self.Options.MeteorFrame then--Meteors all gone, hide info frame
+			DBM.InfoFrame:Hide()
+			if magmaTrapSpawned >= 1 and self.Options.InfoHealthFrame then--If traps are still up we restore the health frame (why on earth traps would still up in phase 4 is beyond me).
+				DBM.InfoFrame:SetHeader(L.HealthInfo)
+				DBM.InfoFrame:Show(5, "health", 100000)
+			end
+		end	
+	elseif cid == 53189 then--Molten elemental
+		elementalsSpawned = elementalsSpawned - 1
+		if elementalsSpawned == 0 and self.Options.AggroFrame then--Elementals all gone, hide info frame
+			DBM.InfoFrame:Hide()
+			if magmaTrapSpawned >= 1 and self.Options.InfoHealthFrame then--If traps are still up we restore the health frame.
+				DBM.InfoFrame:SetHeader(L.HealthInfo)
+				DBM.InfoFrame:Show(5, "health", 100000)
+			end
+		end	
 	end
 end
