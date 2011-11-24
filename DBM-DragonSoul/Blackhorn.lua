@@ -143,9 +143,10 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.destGUID) == 56427 then
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 56427 then
 		DBM:EndCombat(self)
-	elseif self:GetCIDFromGUID(args.destGUID) == 56781 then
+	elseif cid == 56781 then
 		timerTwilightFlamesCD:Cancel()
 	end
 end
