@@ -21,15 +21,20 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+--local warnImpale				= mod:NewStackAnnounce(109633, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnElementiumBolt		= mod:NewSpellAnnounce(105651, 4)
 local warnTentacle				= mod:NewSpellAnnounce(105551, 3)
 local warnHemorrhage			= mod:NewSpellAnnounce(105863, 3)
 local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 
+local specWarnImpale			= mod:NewSpecialWarningYou(109632)
+--local specWarnImpaleOther		= mod:NewSpecialWarningTarget(109632, mod:IsTank())
 local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)
 local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDPS())--Maybe add healer to defaults too?
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDPS())
 
+--local timerImpale				= mod:NewTargetTimer(45, 109633, nil, mod:IsTank() or mod:IsHealer())
+local timerImpaleCD				= mod:NewCDTimer(30, 109633, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumBlast		= mod:NewCastTimer(10, 109600)--Variable depending on nozdormu
 local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
 local timerHemorrhageCD			= mod:NewNextTimer(100, 105863)
@@ -72,17 +77,26 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnTentacle:Show()
 			specWarnTentacle:Show()--It's not up so give special warning for these Tentacles.
 		end
+	elseif args:IsSpellID(106444, 109631, 109632, 109633) then
+--		warnImpale:Show(args.destName)
+--		timerImpale:Start(args.destName)
+		timerImpaleCD:Start()
+		if args:IsPlayer() then
+			specWarnImpale:Show()
+		else
+--			specWarnImpaleOther:Show(args.destName)
+		end
 	end
 end		
---mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+--[[mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---[[
+
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(105490, 109457, 109458, 109459) then
-
+	if args:IsSpellID(106444, 109631, 109632, 109633) then
+		timerImpale:Cancel(args.destName)
 	end
-end
---]]
+end--]]
+
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
