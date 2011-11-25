@@ -72,6 +72,7 @@ end
 
 function mod:OnCombatStart(delay)
 	phase2Started = false
+	lastFlames = 0
 	timerCombatStart:Start(-delay)
 	timerSapperCD:Start(69-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
