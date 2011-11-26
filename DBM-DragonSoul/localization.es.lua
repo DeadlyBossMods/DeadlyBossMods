@@ -113,7 +113,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"--translate
+	Pull				= "Percibo que se avecina una gran alteración del equilibrio. ¡Su caos inunda mi mente!"
 })
 
 
@@ -147,15 +147,21 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
+	SpecWarnTendril			= "¡Ponte a salvo!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SpecWarnTendril			= "Mostrar un aviso especial cuando no tengas el debuff de $spell:109454",
+	InfoFrame				= "Mostrar información de jugadores sin $spell:109454",
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
 })
 
 L:SetMiscLocalization({
+	NoDebuff	= "No %s",--traslate
+	DRoll		= "about to roll"--translate
 })
 
 ---------------------------
@@ -164,13 +170,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
+	SpecWarnTentacle	= "¡Tentáculos Virulentos!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SpecWarnTentacle	= "Mostrar aviso especial cuando aparecen Tentáculos Virulentos (y Alextrasza no está activa)"
 })
 
 L:SetMiscLocalization({
+	Pull				= "No habéis hecho nada. Destruiré vuestro mundo."
 })
