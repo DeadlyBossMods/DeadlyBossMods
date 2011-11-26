@@ -131,7 +131,6 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速击杀"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target		= "%s: %%s",
 	cast		= "%s",
-	active		= "%s结束",
 	active		= "%s结束",--Buff/Debuff/event on boss
 	fades		= "%s消失",--Buff/Debuff on players
 	cdcount		= "%s冷却（%%d）",
