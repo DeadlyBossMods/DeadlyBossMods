@@ -125,12 +125,13 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Matar rapido"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "%s CD",
+	target		= "%s: %%s",
+	cast		= "%s",
+	active		= "%s ends",--Buff/Debuff/event on boss
+	fades		= "%s fades",--Buff/Debuff on players
+	cd 			= "%s CD",
 	cdcount		= "%s CD (%%d)",
-	next = "Siguiente %s",
+	next		= "Siguiente %s",
 	nextcount	= "Siguiente %s (%%d)",
 	achievement = "%s",
 }
@@ -139,6 +140,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	target = "Mostrar tiempo de debuff |cff71d5ff|Hspell:%d|h%s|h|r ",
 	cast = "Mostrar tiempo de cast de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	active = "Mostrar duración de |cff71d5ff|Hspell:%d|h%s|h|r ",
+	fades		= "Show timer for when |cff71d5ff|Hspell:%d|h%s|h|r fades from players",
 	cd = "Mostrar CD de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	cdcount = "Mostrar CD de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	next = "Mostrar tiempo para el siguiente |cff71d5ff|Hspell:%d|h%s|h|r ",
