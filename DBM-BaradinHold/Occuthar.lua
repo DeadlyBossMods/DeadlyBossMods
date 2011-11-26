@@ -5,14 +5,14 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(52363)
 mod:SetModelID(37876)
 mod:SetZone()
---mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"SWING_DAMAGE"
 )
 
 local warnSearingShadows		= mod:NewSpellAnnounce(96913, 2)
@@ -64,5 +64,13 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(97212) and args:IsPlayer() and GetTime() - spamFire > 4 then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
 		specWarnFocusedFire:Show()
 		spamFire = GetTime()
+	elseif args:GetDestCreatureID() == 52363 and args.overkill > 0 then--Hack cause occuthar doesn't die in combat log since 4.2. SO we look for a killing blow that has overkill.
+		DBM:EndCombat(self)
+	end
+end
+
+function mod:SWING_DAMAGE(args)
+	if args:GetDestCreatureID() == 52363 and args.overkill > 0 then--Hack cause occuthar doesn't die in combat log since 4.2. SO we look for a killing blow that has overkill.
+		DBM:EndCombat(self)
 	end
 end
