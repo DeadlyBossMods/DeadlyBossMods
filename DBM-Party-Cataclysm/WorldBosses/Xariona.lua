@@ -20,7 +20,7 @@ mod:RegisterEvents(
 local warnTwilightZone			= mod:NewSpellAnnounce(93553, 2)--Used for protection against UnleashedMagic
 local warnTwilightFissure		= mod:NewTargetAnnounce(93546, 3)--Typical void zone.
 local warnTwilightBuffet		= mod:NewTargetAnnounce(93551, 3)
-local warnUnleashedMagicSoon	= mod:NewSoonAnnounce(93556, 3)
+local warnUnleashedMagicSoon	= mod:NewPreWarnAnnounce(93556, 10, 3)
 local warnUnleashedMagic		= mod:NewCastAnnounce(93556, 4)--An attack that one shots anyone not in a twilight zone.
 
 local specWarnUnleashedMagic	= mod:NewSpecialWarningSpell(93556, nil, nil, nil, true)
@@ -84,15 +84,20 @@ end
 
 function mod:UNIT_POWER(uId)
 	if self:GetUnitCreatureId(uId) == 50061 and UnitPower(uId) == 70 and specialCharging then
-		warnUnleashedMagicSoon:Schedule(10)
-		DBM.Bars:CreateBar(20, "Big AOE Testbar")
-		--Will change to prewarn when i get right tuning and can find right energy level for 10 seconds.
-		--Also once i get that info i'll be able to auto start/correct the timer whenever, and detect whether it's bugged or not.
+		warnUnleashedMagicSoon:Schedule(8)
+		timerUnleashedMagicCD:Update(48, 66)--Create/update bar here if one doesn't exist or it's wrong (since it varies sometimes if she delays her energy gain spell)
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(93554) and not specialCharging then -- Fury of the twilight flight. Sometimes she bugs and doesn't cast this,if she doesnt, she won't gain unit power and thus won't use any specials.
 		specialCharging = true
+		timerUnleashedMagicCD:Start()
 	end
 end
+--[[
+			"<7.8> [REGEN_DISABLED]  ++ > Regen Disabled : Entering combat! ++ > ", -- [11]
+			"<9.8> Xariona:Possible Target<Omegal>:target:Fury of the Twilight Flight::0:93554", -- [1]
+			"<39.9> Xariona:Possible Target<Omegal>:target:Fury of the Twilight Flight::0:93554", -- [7]
+			"<75.9> Xariona:Possible Target<Omegal>:target:Unleashed Magic::0:93556", -- [16]
+--]]
