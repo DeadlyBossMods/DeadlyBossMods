@@ -1,4 +1,4 @@
-if GetLocale() ~= "zhTW"  then return end
+﻿if GetLocale() ~= "zhTW"  then return end
 local L
 
 -------------
@@ -79,9 +79,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerSpecial			= "第一次階段轉換"
 })
 
 L:SetOptionLocalization({
+	TimerSpecial			= "為第一次特別技能施放顯示計時器",
 	RangeFrame				= "為$spell:105269顯示距離框(3碼)",
 	AnnounceFrostTombIcons	= "為$spell:104451的目標發佈圖示至團隊頻道\n(需要團隊隊長)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
@@ -105,11 +107,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "戰鬥開始時顯示計時器"
+	TimerCombatStart	= "為戰鬥開始時間顯示計時器"
 })
 
 L:SetMiscLocalization({
-	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
+	Pull				= "我感到平衡被一股強大的波動干擾。如此混沌在燃燒我的心靈!"
 })
 
 -------------------------
@@ -121,13 +123,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart	= "戰鬥開始",
+	TimerSapper			= "下一次暮光工兵"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
+	TimerSapper			= "為下一次暮光工兵重生顯示計時器"--npc=56923
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!",--translate
+	SapperEmote			= "一頭龍急速飛來，載送一名暮光工兵降落到甲板上!",
 	Broadside			= "spell:110153",
 	DeckFire			= "spell:110095"
 })

@@ -1,4 +1,4 @@
-if GetLocale() ~= "zhTW" then return end
+﻿if GetLocale() ~= "zhTW" then return end
 local L
 
 -----------------
@@ -169,6 +169,8 @@ L:SetWarningLocalization({
 	warnSplittingBlow		= "%s在%s",--Spellname in Location
 	warnEngulfingFlame		= "%s在%s",--Spellname in Location
 	WarnRemainingAdds		= "剩下 %d 個烈焰之子",
+	warnAggro				= "你為熔岩煉獄的目標!",
+	warnNoAggro				= "你沒有熔岩煉獄的仇恨",
 	warnEmpoweredSulf		= "%s 在5秒後施放"--The spell has a 5 second channel, but tooltip doesn't reflect it so cannot auto localize
 })
 
@@ -184,6 +186,7 @@ L:SetOptionLocalization({
 	WarnEngulfingFlameHeroic	= "為$spell:99171的位置顯示警告(英雄模式)",
 	WarnRemainingAdds			= "為剩餘烈焰之子的顯示警告",
 	warnSeedsLand				= "顯示$spell:98520落地時警告/計時器而非熔岩晶粒施放時警告/計時器",
+	ElementalAggroWarn			= "無論是否為熔岩煉獄的目標都顯示警告",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "顯示烈焰之子階段的持續時間計時器",
@@ -196,11 +199,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	East				= "東邊East",
-	West				= "西邊West",
-	Middle				= "中間Middle",
-	North				= "近戰區Melee",
-	South				= "後方Back",
+	East				= "東邊",
+	West				= "西邊",
+	Middle				= "中間",
+	North				= "近戰區",
+	South				= "後方",
 	HealthInfo			= "低於十萬生命值",
 	HasNoAggro			= "無目標",
 	MeteorTargets		= "我的天 隕石!",--Keep rollin' rollin' rollin' rollin'.

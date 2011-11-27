@@ -222,7 +222,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Brann				= "Right, let's go! Just need to input the final entry sequence into the door mechanism... and..."
+	Brann				= "好了，快走吧!只需要把最後的登錄程序輸入到門的機關中...然後..."
 })
 
 ------------
@@ -817,7 +817,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "No Toxic Torment"
+	PlayerDebuffs	= "無毒物折磨"
 }
 
 ----------------------------
