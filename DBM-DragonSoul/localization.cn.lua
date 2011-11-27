@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/24/2011
+-- Last update: 11/28/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -171,13 +171,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
+	SpecWarnTentacle	= "灼疮触须 - 转换目标"--Msg too long? maybe just "Blistering Tentacles!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SpecWarnTentacle	= "特殊警报：阿莱克斯塔萨没有激活的情况下灼疮触须出现"--http://ptr.wowhead.com/npc=56188
 })
 
 L:SetMiscLocalization({
+	Pull				= "You have done NOTHING. I will tear your world APART."
 })
