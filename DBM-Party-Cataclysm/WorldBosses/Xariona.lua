@@ -33,6 +33,7 @@ local timerTwilightBuffet		= mod:NewTargetTimer(10, 93551)
 local timerUnleashedMagicCD		= mod:NewCDTimer(66, 93556)--66 Cd but least priority spell, she will cast breath, fissure zone or buffet before this, so overlapping CDs often delay this upwards to 5 seconds late
 
 local specialCharging = false
+local hasPower = false
 
 function mod:FissureTarget()
 	local targetname = self:GetBossTarget(50061)
@@ -45,6 +46,7 @@ end
 
 function mod:OnCombatStart(delay)
 	specialCharging = false
+	hasPower = false
 	timerTwilightBuffetCD:Start(10-delay)
 	timerTwilightZoneCD:Start(-delay)--Not a large sample size but seems like it'd be right.
 	timerTwilightFissureCD:Start(-delay)--May not be right, not a large sample size
@@ -85,14 +87,19 @@ end
 function mod:UNIT_POWER(uId)
 	if self:GetUnitCreatureId(uId) == 50061 and UnitPower(uId) == 70 and specialCharging then
 		warnUnleashedMagicSoon:Schedule(8)
+		timerUnleashedMagicCD:Start(18)--Start a bar in case one doesn't exist, so update function can do it's thing after.
 		timerUnleashedMagicCD:Update(48, 66)--Create/update bar here if one doesn't exist or it's wrong (since it varies sometimes if she delays her energy gain spell)
+	elseif self:GetUnitCreatureId(uId) == 50061 and UnitPower(uId) >= 0 and not hasPower then
+		hasPower = true
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(93554) and not specialCharging then -- Fury of the twilight flight. Sometimes she bugs and doesn't cast this,if she doesnt, she won't gain unit power and thus won't use any specials.
 		specialCharging = true
-		timerUnleashedMagicCD:Start()
+		if not hasPower then--She retains power from previous wipes, so only start this bar if it's 0 on engage, otherwise don't bother, let update function start it later
+			timerUnleashedMagicCD:Start()
+		end
 	end
 end
 --[[
