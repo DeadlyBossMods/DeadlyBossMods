@@ -144,15 +144,21 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
+	SpecWarnTendril			= "Get Secured!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SpecWarnTendril			= "Show special warning when you are missing $spell:109454 debuff",--http://ptr.wowhead.com/npc=56188
+	InfoFrame				= "Show info frame for players without $spell:109454",
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
 })
 
 L:SetMiscLocalization({
+	NoDebuff	= "No %s",
+	DRoll		= "about to roll"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
 })
 
 ---------------------------
@@ -161,13 +167,17 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
+	SpecWarnTentacle	= "Blistering Tentacles - Switch"--Msg too long? maybe just "Blistering Tentacles!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SpecWarnTentacle	= "Show special warning when Blistering Tentacles spawn (and Alexstrasza is not active)"--http://ptr.wowhead.com/npc=56188
 })
 
 L:SetMiscLocalization({
+	Pull				= "You have done NOTHING. I will tear your world APART."
 })
+
