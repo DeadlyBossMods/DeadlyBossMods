@@ -60,6 +60,7 @@ mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 local initiatesSpawned = 0
 local cataCast = 0
 local clawCast = 0
+local moltCast = 0
 
 local initiateSpawns = {
 	[1] = L.Both,
@@ -90,6 +91,7 @@ function mod:OnCombatStart(delay)
 	initiatesSpawned = 0
 	cataCast = 0
 	clawCast = 0
+	moltCast = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PowerLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
@@ -192,7 +194,10 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(99464, 100698, 100836, 100837) and self:IsDifficulty("normal10", "normal25") then	--99464, 100698 confirmed
 		warnMolting:Show()
-		timerMoltingCD:Start()
+		if moltCast < 2 then
+			timerMoltingCD:Start()
+			moltCast = moltCast + 1
+		end
 	end
 end
 

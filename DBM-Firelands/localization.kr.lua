@@ -258,3 +258,24 @@ L:SetMiscLocalization({
 	StaffTrees			= "불타는 나무정령이 수호정령을 돕기 위해 땅에서 일어납니다!",--Might add a spec warning for this later.
 	StaffTransition		= "고통받는 수호정령을 태우는 불이 사그라졌습니다!"
 })
+
+-----------------------
+--  Nexus Legendary  --
+-----------------------
+L = DBM:GetModLocalization("NexusLegendary")
+
+L:SetGeneralLocalization({
+	name = "티리나르"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})

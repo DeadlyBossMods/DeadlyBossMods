@@ -162,3 +162,24 @@ L:SetMiscLocalization({
 	Defeat				= "Too soon! ... You have come too soon...",--Translate
 	Phase4				= "Trop tôt..."
 })
+
+-----------------------
+--  Nexus Legendary  --
+-----------------------
+L = DBM:GetModLocalization("NexusLegendary")
+
+L:SetGeneralLocalization({
+	name = "Thyrinar"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
