@@ -144,20 +144,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
-	SpecWarnTendril			= "Get Secured!"
+	SpecWarnTendril			= "휘감는 촉수 받으세요!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "Show special warning when you are missing $spell:109454 debuff",--http://ptr.wowhead.com/npc=56188
-	InfoFrame				= "Show info frame for players without $spell:109454",
+	SpecWarnTendril			= "$spell:109454 약화 효과가 없을 경우 특수 경고 보기",--http://ptr.wowhead.com/npc=56188
+	InfoFrame				= "$spell:109454 약화 효과 없음에 대한 정보 프레임 보기",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
 })
 
 L:SetMiscLocalization({
-	NoDebuff	= "No %s",
+	NoDebuff	= "%s 없음",
 	DRoll		= "about to roll"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
 })
 
@@ -167,17 +167,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Blistering Tentacles - Switch"--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnTentacle	= "열기 촉수 - 대상 전환!"--Msg too long? maybe just "Blistering Tentacles!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Show special warning when Blistering Tentacles spawn (and Alexstrasza is not active)"--http://ptr.wowhead.com/npc=56188
+	SpecWarnTentacle	= "열기 촉수 등장시 특수 경고 보기 (알렉스트라자가 비활성화 일때만)"--http://ptr.wowhead.com/npc=56188
 })
 
 L:SetMiscLocalization({
 	Pull				= "You have done NOTHING. I will tear your world APART."
 })
-

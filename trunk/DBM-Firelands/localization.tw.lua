@@ -261,3 +261,24 @@ L:SetMiscLocalization({
 	StaffTrees			= "燃燒的樹人從地面冒出來協助保衛者!",--Might add a spec warning for this later.
 	StaffTransition		= "受折磨的保衛者身上的火焰熄滅了!"
 })
+
+-----------------------
+--  Nexus Legendary  --
+-----------------------
+L = DBM:GetModLocalization("NexusLegendary")
+
+L:SetGeneralLocalization({
+	name = "Thyrinar"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})

@@ -257,3 +257,24 @@ L:SetMiscLocalization({
 	StaffTrees			= "Burning Treants erupt from the ground to aid the Protector!",--Might add a spec warning for this later.
 	StaffTransition		= "The fires consuming the Tormented Protector wink out!"
 })
+
+-----------------------
+--  Nexus Legendary  --
+-----------------------
+L = DBM:GetModLocalization("NexusLegendary")
+
+L:SetGeneralLocalization({
+	name = "Thyrinar"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})

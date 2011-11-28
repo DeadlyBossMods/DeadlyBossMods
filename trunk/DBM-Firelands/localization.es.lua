@@ -258,3 +258,24 @@ L:SetMiscLocalization({
 	StaffTrees			= "¡Antárboles ardientes emergen del suelo para ayudar al protector!",
 	StaffTransition		= "¡Las llamas que consumen al protector atormentado se extinguen!"
 })
+
+-----------------------
+--  Nexus Legendary  --
+-----------------------
+L = DBM:GetModLocalization("NexusLegendary")
+
+L:SetGeneralLocalization({
+	name = "Thyrinar"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
