@@ -21,7 +21,7 @@
 ## X-DBM-Mod-Name-zhTW: 火源之界
 ## X-DBM-Mod-Name-zhCN: 火焰之地
 ## X-DBM-Mod-Sort: 101
-## X-DBM-Mod-LoadZoneID: 800
+## X-DBM-Mod-LoadZoneID: 800,803
 localization.en.lua
 localization.de.lua
 localization.es.lua
@@ -40,3 +40,4 @@ FandralStaghelm.lua
 Ragnaros.lua
 FirelandsTrash.lua
 Volcanus.lua
+Nexus.lua
