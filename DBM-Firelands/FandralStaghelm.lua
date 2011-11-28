@@ -46,10 +46,10 @@ mod:AddBoolOption("RangeFrameCat", false)--Diff options for each ability cause s
 mod:AddBoolOption("IconOnLeapingFlames", false)
 mod:AddBoolOption("LeapArrow", true)
 
-
 local abilityCount = 0
 local recentlyJumped = false
 local kitty = false
+local targetScansDone = 0
 
 local abilityTimers = {
 	[0] = 17.3,--Sometimes this is 16.7
@@ -102,10 +102,32 @@ function mod:LeapingFlamesTarget()
 	end
 end
 
+function mod:TargetScanner(SpellID, isTank)
+	targetScansDone = targetScansDone + 1
+	if UnitExists("boss1target") then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a warning.
+		local targetname = UnitName("boss1target")
+		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target.
+			if targetScansDone < 12 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.05, "TargetScanner", SpellID)--Check multiple times to be sure it's not on something other then tank.
+			else
+				self:TargetScanner(SpellID, true)--It's still on tank, force true isTank and activate else rule and warn target is on tank.
+			end
+		else--He's not targeting highest threat target (or isTank was set to true after 12 scans) so this has to be right target.
+			self:UnscheduleMethod("TargetScanner")--Unschedule all checks just to be sure none are running, we are done.
+			self:LeapingFlamesTarget(targetname)
+		end
+	else--target was nil, lets schedule a rescan here too.
+		if targetScansDone < 12 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.05, "TargetScanner", SpellID)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	abilityCount = 0
 	kitty = false
+	targetScansDone = 0
 end
 
 function mod:OnCombatEnd()
@@ -180,6 +202,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(98476) then	--98476 confirmed
-		self:ScheduleMethod(0.2, "LeapingFlamesTarget")
+		targetScansDone = 0
+		self:TargetScanner(98476)
 	end
 end
