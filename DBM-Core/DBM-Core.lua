@@ -492,15 +492,6 @@ do
 		end
 		return handleEvent(nil, event, args)
 	end
-	
-	-- fix for 4.3 which will probably screw with combat log even more crap, so commented out instead of deleted :)
---[[	if tonumber((select(4, GetBuildInfo()))) >= 40300 then
-		local oldHandler = DBM.COMBAT_LOG_EVENT_UNFILTERED
-		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
-			return oldHandler(self, timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
-		end
-	end--]]
-	
 	mainFrame:SetScript("OnEvent", handleEvent)
 end
 
