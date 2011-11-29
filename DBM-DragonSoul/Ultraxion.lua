@@ -19,7 +19,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_SAY"
 )
 
-local warnHourofTwilight			= mod:NewSpellAnnounce(109416, 4)
+local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
 local warnFadingLight				= mod:NewTargetAnnounce(110080, 3)
 
 local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil, true)
@@ -35,6 +35,7 @@ local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 
 
 local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
 
+local hourOfTwilightCount = 0
 local fadingLightCount = 0
 local fadingLightTargets = {}
 
@@ -45,6 +46,7 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(fadingLightTargets)
+	hourOfTwilightCount = 0
 	fadingLightCount = 0
 	timerTwilightEruptionCD:Start(-delay)
 	timerHourofTwilightCD:Start(-delay)
@@ -56,7 +58,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(106371, 109415, 109416, 109417) then
 		fadingLightCount = 0
-		warnHourofTwilight:Show()
+		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
 		timerHourofTwilightCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
