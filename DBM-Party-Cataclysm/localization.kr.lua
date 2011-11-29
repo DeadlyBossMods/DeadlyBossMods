@@ -410,12 +410,6 @@ L:SetGeneralLocalization({
 	name = "고드프리 경"
 })
 
-L:SetWarningLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
 ---------------------
 --  The Stonecore  --
 ---------------------
@@ -625,20 +619,11 @@ L:SetGeneralLocalization{
 	name = "아킬존 (5인)"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	StormIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
 	RangeFrame		= "거리 프레임 보기 (10m)",
 	StormArrow		= "$spell:97300 시전시 DBM 화살표 보기", -- translate
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
-}
-
-L:SetMiscLocalization{
 }
 
 ---------------
@@ -648,12 +633,6 @@ L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
 	name = "잔알라이 (5인)"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -680,9 +659,6 @@ L:SetWarningLocalization{
 	WarnNormal	= "보통 단계"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	WarnSpirit	= "영혼 단계 알림 보기",
 	WarnNormal	= "보통 단계 알림 보기"
@@ -700,9 +676,6 @@ L = DBM:GetModLocalization("Malacrass5")
 
 L:SetGeneralLocalization{
 	name = "사술 군주 말라크라스 (5인)"
-}
-
-L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
@@ -724,9 +697,6 @@ L = DBM:GetModLocalization("Daakara")
 
 L:SetGeneralLocalization{
 	name = "다카라"
-}
-
-L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
@@ -755,18 +725,9 @@ L:SetGeneralLocalization{
 	name = "대사제 베녹시스"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
 	LinkArrow			= "$spell:96477 주문의 영향을 받을경우 DBM 화살표 보기" -- translate
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -781,9 +742,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnRevive		= "영혼 부활 - %d회 남음",
 	SpecWarnOhgan	= "오간 되살아남!"
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -809,9 +767,6 @@ L:SetWarningLocalization{
 	SpecWarnToxic	= "독 가마솥 클릭!"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SpecWarnToxic	= "$spell:96328 효과가 없을 경우 특수 경고 보기",
 	InfoFrame		= "$spell:96328 효과 없음에 대한 정보 프레임 보기",
@@ -831,18 +786,6 @@ L:SetGeneralLocalization{
 	name = "대여사제 킬나라"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ----------------------------
 -- Jindo --
 ----------------------------
@@ -854,9 +797,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnBarrierDown	= "학카르의 사슬 보호막 사라짐 - %d/3"
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -882,18 +822,6 @@ L:SetGeneralLocalization{
 	name = "그리렉"
 }
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------
 -- Hazza'rah --
 ---------------
@@ -904,18 +832,6 @@ L = DBM:GetModLocalization("CoMGHazzarah")
 L:SetGeneralLocalization{
 	name = "하자라"
 }
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 --------------
 -- Renataki --
@@ -928,18 +844,6 @@ L:SetGeneralLocalization{
 	name = "레나타키"
 }
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------
 -- Wushoolay --
 ---------------
@@ -950,18 +854,6 @@ L = DBM:GetModLocalization("CoMWushoolay")
 L:SetGeneralLocalization{
 	name = "우슐레이"
 }
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 --------------------
 --  World Bosses  --
@@ -974,18 +866,6 @@ L:SetGeneralLocalization{
 	name = "아크마하트"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -----------
 -- Garr --
 ----------
@@ -993,18 +873,6 @@ L = DBM:GetModLocalization("Garr")
 
 L:SetGeneralLocalization{
 	name = "가르 (대격변)"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------
@@ -1016,17 +884,8 @@ L:SetGeneralLocalization{
 	name = "줄락둠"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SetIconOnMC	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(93621)
-}
-
-L:SetMiscLocalization{
 }
 
 -----------
@@ -1038,18 +897,6 @@ L:SetGeneralLocalization{
 	name = "모부스"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -----------
 -- Xariona --
 -----------
@@ -1057,18 +904,6 @@ L = DBM:GetModLocalization("Xariona")
 
 L:SetGeneralLocalization{
 	name = "자리오나"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------
@@ -1082,18 +917,6 @@ L:SetGeneralLocalization{
 	name = "실바나스의 환영"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ---------------------
 -- Echo of Tyrande --
 ---------------------
@@ -1101,18 +924,6 @@ L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
 	name = "티란데의 환영"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 -------------------
@@ -1124,20 +935,6 @@ L:SetGeneralLocalization{
 	name = "제이나의 환영"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-	TimerFlarecoreDetonate	= "Flarecore detonate"
-}
-
-L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "Show timer for $spell:101927 detonate"
-}
-
-L:SetMiscLocalization{
-}
-
 ----------------------
 -- Echo of Baine --
 ----------------------
@@ -1147,18 +944,6 @@ L:SetGeneralLocalization{
 	name = "바인의 환영"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 --------------
 -- Murozond --
 --------------
@@ -1166,18 +951,6 @@ L = DBM:GetModLocalization("Murozond")
 
 L:SetGeneralLocalization{
 	name = "무르도즈노"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -1191,18 +964,6 @@ L:SetGeneralLocalization{
 	name = "페로스안"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -------------
 -- Azshara --
 -------------
@@ -1212,16 +973,8 @@ L:SetGeneralLocalization{
 	name = "아즈샤라"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
 L:SetMiscLocalization{
+	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
 }
 
 -----------------------------
@@ -1231,18 +984,6 @@ L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
 	name = "만노로스와 바르덴"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -1256,18 +997,6 @@ L:SetGeneralLocalization{
 	name = "아큐리온"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1277,18 +1006,6 @@ L:SetGeneralLocalization{
 	name = "아시라 돈슬레이어"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ---------------------------
 -- Archbishop Benedictus --
 ---------------------------
@@ -1296,16 +1013,4 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "대주교 베네딕투스"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
