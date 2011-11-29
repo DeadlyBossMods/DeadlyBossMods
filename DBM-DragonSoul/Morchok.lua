@@ -1,5 +1,3 @@
-if tonumber((select(2, GetBuildInfo()))) <= 14545 then return end
-
 local mod	= DBM:NewMod(311, "DBM-DragonSoul", nil, 187)
 local L		= mod:GetLocalizedStrings()
 
