@@ -17,7 +17,7 @@ local warnFrostBlades		= mod:NewSpellAnnounce(101339, 3)
 
 local timerFlarecore		= mod:NewCDTimer(20, 101927)
 local timerFlarecoreDetonate	= mod:NewTimer(10, "TimerFlarecoreDetonate")
-local timerForstBlades		= mod:NewNextTimer(25, 101339)
+local timerFrostBlades		= mod:NewNextTimer(25, 101339)
 
 function mod:OnCombatStart(delay)
 	timerFlarecore:Start(16)
