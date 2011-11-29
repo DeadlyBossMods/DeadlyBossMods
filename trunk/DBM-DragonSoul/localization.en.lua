@@ -157,8 +157,15 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	NoDebuff	= "No %s",
-	DRoll		= "about to roll"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
+	DRoll		= "about to roll"	-- This emote needs to be confirmed/fixed if it's wrong. (no valid Transcriptor logs :( )
 })
+--[[ 	Taken from a video, "pre-warning" before actually performing the roll (or not):  
+	- Deathwing feels players on his left/right side. (new line) He's about to roll left/right.
+
+	5secs later either:
+	- Deathwing rolls left/right!
+	- Deathwing levels out.
+--]] 
 
 ---------------------------
 -- Madness of Deathwing  -- 
