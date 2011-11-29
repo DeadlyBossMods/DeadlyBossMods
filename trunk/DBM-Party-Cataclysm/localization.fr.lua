@@ -388,12 +388,6 @@ L:SetGeneralLocalization({
 	name = "Seigneur Godfrey"
 })
 
-L:SetWarningLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
 ---------------------
 --  The Stonecore  --
 ---------------------
@@ -582,20 +576,11 @@ L:SetGeneralLocalization{
 	name = "Akil'zon (Eagle)"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97300),
 	RangeFrame	= "Show range frame (10 yards)",
 	StormArrow	= "Show DBM Arrow for $spell:97300",
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
-}
-
-L:SetMiscLocalization{
 }
 
 --------------
@@ -605,12 +590,6 @@ L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
 	name = "Jan'alai (Dragonhawk)"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -636,9 +615,6 @@ L:SetWarningLocalization{
 	WarnNormal	= "Normal Phase"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	WarnSpirit	= "Show warning for Spirit phase",
 	WarnNormal	= "Show warning for Normal phase"
@@ -658,18 +634,12 @@ L:SetGeneralLocalization{
 	name = "Hexlord Malacrass"
 }
 
-L:SetWarningLocalization{
-}
-
 L:SetTimerLocalization{
 	TimerSiphon	= "%s: %s"
 }
 
 L:SetOptionLocalization{
 	TimerSiphon	= "Show timer for $spell:43501"
-}
-
-L:SetMiscLocalization{
 }
 
 -------------
@@ -681,18 +651,9 @@ L:SetGeneralLocalization{
 	name = "Daakara"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
-}
-
-L:SetMiscLocalization{
 }
 
 -----------------
@@ -706,18 +667,9 @@ L:SetGeneralLocalization{
 	name = "High Priest Venoxis"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
 	LinkArrow		= "Show DBM arrow when you are affected by $spell:96477"
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -732,9 +684,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnRevive		= "%d ghosts remaining",
 	SpecWarnOhgan	= "Ohgan revived! Attack now!" -- check this, i'm not good at English
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -756,17 +705,8 @@ L:SetGeneralLocalization{
 	name = "Zanzil"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------------------
@@ -776,18 +716,6 @@ L = DBM:GetModLocalization("Kilnara")
 
 L:SetGeneralLocalization{
 	name = "High Priestess Kilnara"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------------------
@@ -801,9 +729,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left"
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -829,18 +754,6 @@ L:SetGeneralLocalization{
 	name = "Gri'lek"
 }
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------
 -- Hazza'rah --
 ---------------
@@ -851,18 +764,6 @@ L = DBM:GetModLocalization("CoMGHazzarah")
 L:SetGeneralLocalization{
 	name = "Hazza'rah"
 }
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 --------------
 -- Renataki --
@@ -875,18 +776,6 @@ L:SetGeneralLocalization{
 	name = "Renataki"
 }
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------
 -- Wushoolay --
 ---------------
@@ -897,18 +786,6 @@ L = DBM:GetModLocalization("CoMWushoolay")
 L:SetGeneralLocalization{
 	name = "Wushoolay"
 }
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ----------------
 --  End Time  --
@@ -921,18 +798,6 @@ L:SetGeneralLocalization{
 	name = "Echo of Sylvanas"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ---------------------
 -- Echo of Tyrande --
 ---------------------
@@ -940,18 +805,6 @@ L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
 	name = "Echo of Tyrande"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 -------------------
@@ -963,18 +816,12 @@ L:SetGeneralLocalization{
 	name = "Echo of Jaina"
 }
 
-L:SetWarningLocalization{
-}
-
 L:SetTimerLocalization{
 	TimerFlarecoreDetonate	= "Flarecore detonate"
 }
 
 L:SetOptionLocalization{
 	TimerFlarecoreDetonate	= "Show timer for $spell:101927 detonate"
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------------
@@ -986,18 +833,6 @@ L:SetGeneralLocalization{
 	name = "Echo of Baine"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 --------------
 -- Murozond --
 --------------
@@ -1005,18 +840,6 @@ L = DBM:GetModLocalization("Murozond")
 
 L:SetGeneralLocalization{
 	name = "Murozond"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -1030,18 +853,6 @@ L:SetGeneralLocalization{
 	name = "Peroth'arn"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -------------
 -- Azshara --
 -------------
@@ -1051,16 +862,8 @@ L:SetGeneralLocalization{
 	name = "Azshara"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
 L:SetMiscLocalization{
+	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
 }
 
 -----------------------------
@@ -1070,18 +873,6 @@ L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
 	name = "Mannoroth & Varo'then"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -1095,18 +886,6 @@ L:SetGeneralLocalization{
 	name = "Arcurion"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1116,18 +895,6 @@ L:SetGeneralLocalization{
 	name = "Asira Dawnslayer"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ---------------------------
 -- Archbishop Benedictus --
 ---------------------------
@@ -1135,16 +902,4 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "Archbishop Benedictus"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }

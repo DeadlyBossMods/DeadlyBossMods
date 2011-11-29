@@ -410,12 +410,6 @@ L:SetGeneralLocalization({
 	name = "高佛雷領主"
 })
 
-L:SetWarningLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
 ---------------------
 --  The Stonecore  --
 ---------------------
@@ -623,20 +617,11 @@ L:SetGeneralLocalization{
 	name = "阿奇爾森"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97300),
 	RangeFrame	= "顯示距離框",
 	StormArrow	= "為$spell:97300顯示BDM箭頭",
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
-}
-
-L:SetMiscLocalization{
 }
 
 ---------------
@@ -646,12 +631,6 @@ L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
 	name = "賈納雷"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -678,9 +657,6 @@ L:SetWarningLocalization{
 	WarnNormal	= "靈魂消失了"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	WarnSpirit	= "為靈魂階段顯示警告",
 	WarnNormal	= "為普通階段顯示警告"
@@ -698,9 +674,6 @@ L = DBM:GetModLocalization("Malacrass5")
 
 L:SetGeneralLocalization{
 	name = "妖術領主瑪拉克雷斯"
-}
-
-L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
@@ -722,9 +695,6 @@ L = DBM:GetModLocalization("Daakara")
 
 L:SetGeneralLocalization{
 	name = "達卡拉"
-}
-
-L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
@@ -753,18 +723,9 @@ L:SetGeneralLocalization{
 	name = "高階祭司溫諾希斯"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
 	LinkArrow		= "當你中了$spell:96477顯顯示DBM箭頭"
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -779,9 +740,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnRevive		= "剩餘%d鬼魂",
 	SpecWarnOhgan		= "奧根蘇醒了!攻擊!" -- check this, i'm not good at English
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -807,9 +765,6 @@ L:SetWarningLocalization{
 	SpecWarnToxic	= "喝下毒物折磨大鍋!!"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SpecWarnToxic	= "顯示特別警告當你沒有$spell:96328",
 	InfoFrame		= "顯示沒有$spell:96328的玩家的訊息框",
@@ -829,18 +784,6 @@ L:SetGeneralLocalization{
 	name = "高階祭司基爾娜拉"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ----------------------------
 -- Jindo --
 ----------------------------
@@ -852,9 +795,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnBarrierDown	= "哈卡之鏈的薄霧障壁破壞 - 剩餘%d/3"
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
@@ -880,16 +820,6 @@ L:SetGeneralLocalization{
 	name = "格里雷克"
 }
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
---			"<15.7> [MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#%s is chasing Bownd.#Gri'lek###Bownd##0#0##0#4672##0#false#false", -- [94]
 L:SetMiscLocalization({
 	pursuitEmote	= "在追著%s"
 })
@@ -905,18 +835,6 @@ L:SetGeneralLocalization{
 	name = "哈札拉爾"
 }
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 --------------
 -- Renataki --
 --------------
@@ -927,18 +845,6 @@ L = DBM:GetModLocalization("CoMRenataki")
 L:SetGeneralLocalization{
 	name = "雷納塔基"
 }
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------
 -- Wushoolay --
@@ -951,18 +857,6 @@ L:SetGeneralLocalization{
 	name = "烏蘇雷"
 }
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 --------------------
 --  World Bosses  --
 -------------------------
@@ -974,18 +868,6 @@ L:SetGeneralLocalization{
 	name = "阿克瑪哈特"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -----------
 -- Garr --
 ----------
@@ -993,18 +875,6 @@ L = DBM:GetModLocalization("Garr")
 
 L:SetGeneralLocalization{
 	name = "加爾(浩劫與重生)"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------
@@ -1016,17 +886,8 @@ L:SetGeneralLocalization{
 	name = "毀滅祖拉克"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
 L:SetOptionLocalization{
 	SetIconOnMC	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(93621)
-}
-
-L:SetMiscLocalization{
 }
 
 -----------
@@ -1038,18 +899,6 @@ L:SetGeneralLocalization{
 	name = "莫比斯"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -----------
 -- Xariona --
 -----------
@@ -1057,18 +906,6 @@ L = DBM:GetModLocalization("Xariona")
 
 L:SetGeneralLocalization{
 	name = "克薩瑞歐納"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------
@@ -1082,18 +919,6 @@ L:SetGeneralLocalization{
 	name = "希瓦娜斯的回音"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ---------------------
 -- Echo of Tyrande --
 ---------------------
@@ -1101,18 +926,6 @@ L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
 	name = "泰蘭妲的回音"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 -------------------
@@ -1124,18 +937,12 @@ L:SetGeneralLocalization{
 	name = "珍娜的回音"
 }
 
-L:SetWarningLocalization{
-}
-
 L:SetTimerLocalization{
 	TimerFlarecoreDetonate	= "光核爆炸"
 }
 
 L:SetOptionLocalization{
 	TimerFlarecoreDetonate	= "為$spell:101927顯示計時器"
-}
-
-L:SetMiscLocalization{
 }
 
 ----------------------
@@ -1147,18 +954,6 @@ L:SetGeneralLocalization{
 	name = "貝恩的回音"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 --------------
 -- Murozond --
 --------------
@@ -1166,18 +961,6 @@ L = DBM:GetModLocalization("Murozond")
 
 L:SetGeneralLocalization{
 	name = "姆多茲諾"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -1191,18 +974,6 @@ L:SetGeneralLocalization{
 	name = "佩洛薩恩"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 -------------
 -- Azshara --
 -------------
@@ -1212,16 +983,8 @@ L:SetGeneralLocalization{
 	name = "艾薩拉女王"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
 L:SetMiscLocalization{
+	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
 }
 
 -----------------------------
@@ -1231,18 +994,6 @@ L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
 	name = "瑪諾洛斯 & 瓦羅森隊長"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }
 
 ------------------------
@@ -1256,18 +1007,6 @@ L:SetGeneralLocalization{
 	name = "阿奇里森"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1277,18 +1016,6 @@ L:SetGeneralLocalization{
 	name = "阿希拉黎明殺戮者"
 }
 
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
-}
-
 ---------------------------
 -- Archbishop Benedictus --
 ---------------------------
@@ -1296,16 +1023,4 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "大主教本尼迪塔斯"
-}
-
-L:SetWarningLocalization{
-}
-
-L:SetTimerLocalization{
-}
-
-L:SetOptionLocalization{
-}
-
-L:SetMiscLocalization{
 }

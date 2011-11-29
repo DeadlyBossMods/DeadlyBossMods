@@ -7,7 +7,7 @@ mod:SetModelID(39391)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---Needs working kill detection, right now always wipes on victories, my logging failed and i didn't get what i need. maybe another time.
+mod:RegisterKill("yell", L.Kill)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
