@@ -24,7 +24,6 @@ local specwarnHealDispel			= mod:NewSpecialWarningDispel(99392)	-- ppl have to m
 local timerHeal					= mod:NewBuffActiveTimer(16, 99392)
 
 function mod:OnCombatStart(delay)
---	timerRootsCD:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
