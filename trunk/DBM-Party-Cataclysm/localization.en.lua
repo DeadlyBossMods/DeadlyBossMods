@@ -868,7 +868,6 @@ L = DBM:GetModLocalization("Akmahat")
 
 L:SetGeneralLocalization{
 	name = "Akma'hat"
-}tMiscLocalization{
 }
 
 -----------
