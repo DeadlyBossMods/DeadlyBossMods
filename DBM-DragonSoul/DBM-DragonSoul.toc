@@ -17,13 +17,14 @@
 ## X-DBM-Mod-Name-deDE: Dragon Soul
 ## X-DBM-Mod-Name-esES: El Alma de Dragón
 ## X-DBM-Mod-Name-koKR: 용의 영혼
-## X-DBM-Mod-Name-ruRU: Dragon Soul
+## X-DBM-Mod-Name-ruRU: Душа Дракона
 ## X-DBM-Mod-Name-zhTW: 巨龍之魂
 ## X-DBM-Mod-Name-zhCN: 巨龙之魂
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZoneID: 824
 localization.cn.lua
 localization.en.lua
+localization.ru.lua
 localization.es.lua
 localization.kr.lua
 localization.tw.lua
