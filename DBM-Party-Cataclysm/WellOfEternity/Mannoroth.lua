@@ -7,6 +7,7 @@ mod:SetModelID(38996)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.Kill)
 
 mod:RegisterEvents(
 )
