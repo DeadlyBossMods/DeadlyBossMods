@@ -1,19 +1,20 @@
+﻿if GetLocale() ~= "ruRU" then return end
 local L
 
--------------
+-----------------
 -- Morchok --
 -------------
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	SpecwarnVortexAfter	= "Hide behind pillars!"
+	SpecwarnVortexAfter	= "Спрячтесь за осколками!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "Show a special warning when $spell:110047 ends"
+	SpecwarnVortexAfter	= "Спец-предупреждение об окончании $spell:110047"
 })
 
 L:SetMiscLocalization({
@@ -31,7 +32,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Show range frame (10) for $spell:104601\n(Heroic difficulty)"
+	RangeFrame	= "Показывать окно проверки дистанции (10м) для $spell:104601\n(Только на героическом уровне сложности)"
 })
 
 L:SetMiscLocalization({
@@ -43,29 +44,29 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "Oozes incoming: %s",
-	specWarnOozes	= "Oozes incoming!",
-	specWarnManaVoid= "Mana Void - Switch"
+	warnOozes		= "Появляются камли: %s",
+	specWarnOozes	= "Появились капли крови!",
+	specWarnManaVoid= "Магическая воронка - переключитесь!"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "Next Oozes"
+	timerOozesCD	= "Следующие капли"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "Show warning for Oozes spawning",
-	specWarnOozes		= "Show special warning for Oozes spawning",
-	specWarnManaVoid	= "Show a special warning when $spell:105530 spawns",
-	timerOozesCD		= "Show timer for next Oozes spawn"
+	warnOozes			= "Предупреждение о появлении новых капель крови",
+	specWarnOozes		= "Спец-предупреждение о появлении новых капель крови",
+	specWarnManaVoid	= "Спец-предупреждение о появлении $spell:105530",
+	timerOozesCD		= "Отсчет времени до следующих капель крови"
 })
 
 L:SetMiscLocalization({
-	Black			= "|cFF424242black|r",
-	Purple			= "|cFF9932CDpurple|r",
-	Red				= "|cFFFF0404red|r",
-	Green			= "|cFF088A08green|r",
-	Blue			= "|cFF0080FFblue|r",
-	Yellow			= "|cFFFFA901yellow|r"
+	Black			= "|cFF424242черная|r",
+	Purple			= "|cFF9932CDтеневая|r",
+	Red				= "|cFFFF0404алая|r",
+	Green			= "|cFF088A08кислотная|r",
+	Blue			= "|cFF0080FFкобальтовая|r",
+	Yellow			= "|cFFFFA901светящаяся|r"
 })
 
 -----------------------
@@ -74,23 +75,23 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
-	warnFrostTombCast		= "%s in 8 sec"
+	warnFrostTombCast		= "%s через 8 секунл"
 })
 
 L:SetTimerLocalization({
-	TimerSpecial			= "First Special"
+	TimerSpecial			= "Первая способность"
 })
 
 L:SetOptionLocalization({
-	TimerSpecial			= "Show timer for first special ability cast",
-	RangeFrame				= "Show range frame (3) for $spell:105269",
-	AnnounceFrostTombIcons	= "Announce icons for $spell:104451 targets to raid chat\n(requires raid leader)",
+	TimerSpecial			= "Отсчет времени до первой особой способности",
+	RangeFrame				= "Показывать окно проверки дистанции (3) для $spell:105269",
+	AnnounceFrostTombIcons	= "Дублировать рейдовые иконки на целях $spell:104451 в рейд-чат\n(Необходимы права лидера или помощника)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
 })
 
 L:SetMiscLocalization({
-	TombIconSet				= "Frost Beacon icon {rt%d} set on %s"
+	TombIconSet				= "Ледяная гробница {rt%d} на %s"
 })
 
 ---------------
@@ -102,15 +103,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCombatStart	= "Combat starts"
+	TimerCombatStart	= "Начало боя"
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Show timer for start of combat"
+	TimerCombatStart	= "Отсчет времени до начала боя"
 })
 
 L:SetMiscLocalization({
-	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
+	Pull				= "Я чувствую приближение Хаоса… Мой разум не в силах этого выдержать!!"
 })
 
 -------------------------
@@ -122,17 +123,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCombatStart	= "Combat starts",
-	TimerSapper			= "Next Twilight Sapper"
+	TimerCombatStart	= "Начало боя",
+	TimerSapper			= "Следующий сапёр"
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Show timer for start of combat",
-	TimerSapper			= "Show timer for next Twilight Sapper spawn"--npc=56923
+	TimerCombatStart	= "Отсчет времени до начала боя",
+	TimerSapper			= "Отсчет времени до появления следующего сапёра"--npc=56923
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!",
+	SapperEmote			= "Дракон пикирует на палубу, чтобы сбросить на нее сумеречного сапера!",
 	Broadside			= "spell:110153",
 	DeckFire			= "spell:110095"
 })
@@ -143,20 +144,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
-	SpecWarnTendril			= "Get Secured!"
+	SpecWarnTendril			= "Закрепитесь!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "Show special warning when you are missing $spell:109454 debuff",--http://ptr.wowhead.com/npc=56188
-	InfoFrame				= "Show info frame for players without $spell:109454",
+	SpecWarnTendril			= "Спец-предупреждение, когда на вас нет дебаффа $spell:109454",--http://ptr.wowhead.com/npc=56188
+	InfoFrame				= "Показывать информационное окно для игроков без $spell:109454",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
 })
 
 L:SetMiscLocalization({
-	NoDebuff	= "No %s",
+	NoDebuff	= "Нет %s",
 	DRoll		= "about to roll"	-- This emote needs to be confirmed/fixed if it's wrong. (no valid Transcriptor logs :( )
 })
 --[[ 	Taken from a video, "pre-warning" before actually performing the roll (or not):  
@@ -173,14 +174,14 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Blistering Tentacles - Switch"--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnTentacle	= "Раскаленное щупальце - переключитесь!"--Msg too long? maybe just "Blistering Tentacles!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Show special warning when Blistering Tentacles spawn (and Alexstrasza is not active)"--http://ptr.wowhead.com/npc=56188
+	SpecWarnTentacle	= "Спец-предупреждение, когда появляются раскаленные щупальца (и Алекстраза не активна)"--http://ptr.wowhead.com/npc=56188
 })
 
 L:SetMiscLocalization({
