@@ -51,10 +51,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFirstSpecial		= "Первая способность"
 })
 
 L:SetOptionLocalization({
+	TimerFirstSpecial		= "Отсчет времени до первой особой способности после $spell:105738\n(Первая способность выбирается случайным образом из $spell:105067 или $spell:104936)"
+})
+
+L:SetMiscLocalization({
 })

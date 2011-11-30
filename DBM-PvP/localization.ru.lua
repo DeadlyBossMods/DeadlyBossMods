@@ -40,11 +40,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShadow = "Отсчет времени для Сумрачного зрения"
+	TimerShadow = "Отсчет времени до сумеречного зрения"
 })
 
 L:SetMiscLocalization({
-	Start15	= "Пятнадцать секунд до начала схватки на арене!"
+	Start15	= "Пятнадцать секунд до начала боя на арене!"
 })
 
 ----------------------
