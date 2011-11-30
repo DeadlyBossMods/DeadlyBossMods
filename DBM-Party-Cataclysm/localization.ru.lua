@@ -921,7 +921,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("EchoSylvanas")
 
 L:SetGeneralLocalization{
-	name = "Echo of Sylvanas"
+	name = "Эхо Сильваны"
 }
 
 ---------------------
@@ -930,7 +930,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
-	name = "Echo of Tyrande"
+	name = "Эхо Тиранды"
 }
 
 -------------------
@@ -939,15 +939,15 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("EchoJaina")
 
 L:SetGeneralLocalization{
-	name = "Echo of Jaina"
+	name = "Эхо Джайны"
 }
 
 L:SetTimerLocalization{
-	TimerFlarecoreDetonate	= "Flarecore detonate"
+	TimerFlarecoreDetonate	= "Взрыв пламенных недр"
 }
 
 L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "Show timer for $spell:101927 detonate"
+	TimerFlarecoreDetonate	= "Отсчет времени до взрыва $spell:101927"
 }
 
 ----------------------
@@ -956,7 +956,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("EchoBaine")
 
 L:SetGeneralLocalization{
-	name = "Echo of Baine"
+	name = "Эхо Бейна"
 }
 
 --------------
@@ -965,7 +965,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("Murozond")
 
 L:SetGeneralLocalization{
-	name = "Murozond"
+	name = "Дорнозму"
 }
 
 ------------------------
@@ -976,7 +976,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("Perotharn")
 
 L:SetGeneralLocalization{
-	name = "Peroth'arn"
+	name = "Парот'арн"
 }
 
 -------------
@@ -985,7 +985,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
-	name = "Azshara"
+	name = "Королева Азшара"
 }
 
 L:SetMiscLocalization{
@@ -998,7 +998,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
-	name = "Mannoroth & Varo'then"
+	name = "Маннорот и Варо'тен"
 }
 
 ------------------------
@@ -1009,7 +1009,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("Arcurion")
 
 L:SetGeneralLocalization{
-	name = "Arcurion"
+	name = "Аркурион"
 }
 ----------------------
 -- Asira Dawnslayer --
@@ -1017,7 +1017,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
-	name = "Asira Dawnslayer"
+	name = "Азира Убийца Зари"
 }
 
 ---------------------------
@@ -1026,5 +1026,5 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
+	name = "Архиепископ Бенедикт"
 }
