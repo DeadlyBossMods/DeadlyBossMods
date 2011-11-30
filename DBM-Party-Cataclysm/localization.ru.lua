@@ -968,6 +968,10 @@ L:SetGeneralLocalization{
 	name = "Дорнозму"
 }
 
+L:SetMiscLocalization{
+	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
+}
+
 ------------------------
 --  Well of Eternity  --
 ------------------------
@@ -999,6 +1003,10 @@ L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
 	name = "Маннорот и Варо'тен"
+}
+
+L:SetMiscLocalization{
+	Kill		= "No...no! This victory will not be ripped from my grasp! I will not return to him in failure! I will not be torn from this pitiful world! No...NOOOOOOOO!!!"
 }
 
 ------------------------
