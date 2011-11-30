@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 local warnVoidofUnmaking		= mod:NewSpellAnnounce(103571, 4, 103527)
 local warnVoidDiffusion			= mod:NewStackAnnounce(106836, 2)
 local warnFocusedAnger			= mod:NewStackAnnounce(104543, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnPsychicDrain			= mod:NewStackAnnounce(104322, 4, nil, mod:IsTank())
+local warnPsychicDrain			= mod:NewSpellAnnounce(104322, 4, nil, mod:IsTank())
 local warnShadows				= mod:NewSpellAnnounce(103434, 3)
 local warnBlackBlood			= mod:NewSpellAnnounce(104378, 2)
 

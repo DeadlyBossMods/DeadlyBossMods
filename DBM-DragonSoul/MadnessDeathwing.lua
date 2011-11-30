@@ -28,8 +28,8 @@ local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 local specWarnImpale			= mod:NewSpecialWarningYou(109632)
 --local specWarnImpaleOther		= mod:NewSpecialWarningTarget(109632, mod:IsTank())
 local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)
-local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDPS())--Maybe add healer to defaults too?
-local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDPS())
+local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps())--Maybe add healer to defaults too?
+local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
 
 --local timerImpale				= mod:NewTargetTimer(45, 109633, nil, mod:IsTank() or mod:IsHealer())
 local timerImpaleCD				= mod:NewCDTimer(30, 109633, nil, mod:IsTank() or mod:IsHealer())
