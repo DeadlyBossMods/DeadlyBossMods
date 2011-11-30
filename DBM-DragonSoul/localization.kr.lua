@@ -111,7 +111,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
+	Pull				= "나는... 종말의 시작이다. 태양을 뒤덮어버리는 그림자이자, 네 파멸을 알리는 종소리이다."
 })
 
 -------------------------
@@ -133,7 +133,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "황혼의 폭파병",
+	SapperEmote			= "비룡이 빠르게 날아와 황혼의 폭파병을 갑판에 떨어뜨립니다!",
 	Broadside			= "spell:110153",
 	DeckFire			= "spell:110095"
 })
@@ -158,7 +158,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	NoDebuff	= "%s 없음",
-	DRoll		= "about to roll"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
+	DRoll		= "회전하려고"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
 })
 
 ---------------------------
@@ -178,5 +178,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "You have done NOTHING. I will tear your world APART."
+	Pull				= "넌 아무것도 못 했다. 내가 이 세상을 조각내주마."
 })
