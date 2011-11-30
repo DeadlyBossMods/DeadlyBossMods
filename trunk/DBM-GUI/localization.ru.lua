@@ -7,8 +7,8 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationBy 			= "Игорь Бутвин & Vampik & Swix & StingerSoft"
 
-L.OTabBosses	= "Bosses"
-L.OTabOptions	= "Options"
+L.OTabBosses	= "Боссы"
+L.OTabOptions	= "Настройки"
 
 L.TabCategory_Options	 	= "Общие параметры"
 L.TabCategory_CATA	 		= "Катаклизм"
