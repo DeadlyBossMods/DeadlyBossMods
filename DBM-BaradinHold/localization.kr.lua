@@ -50,11 +50,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFirstSpecial		= "First special"
+	TimerFirstSpecial		= "첫번째 특수 공격"
 })
 
 L:SetOptionLocalization({
-	TimerFirstSpecial		= "Show next timer for the first special after $spell:105738\n(First special is random. Either $spell:105067 or $spell:104936)"
+	TimerFirstSpecial		= "$spell:105738 주문 시전 후 다음 특수 공격에 대한 바 표시\n(첫번째 특수 공격은 $spell:105067 와 $spell:104936 중 무작위로 결정됩니다.)"
 })
 
 L:SetMiscLocalization({
