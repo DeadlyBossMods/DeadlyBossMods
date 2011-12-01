@@ -967,7 +967,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
+	Kill		= "No tenéis ni idea de lo que habéis hecho. Aman'Thul... Lo que... he... visto..."
 }
 
 ------------------------
@@ -991,7 +991,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
+	Kill		= "Ya basta. Por mucho que me guste hacer de anfitriona, debo atender asuntos más urgentes."
 }
 
 -----------------------------
@@ -1004,7 +1004,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "No...no! This victory will not be ripped from my grasp! I will not return to him in failure! I will not be torn from this pitiful world! No...NOOOOOOOO!!!"
+	Kill		= "¡No... no! ¡No me arrebataréis esta victoria! ¡No regresaré a él con una derrota! ¡No... me arrancaréis... de este patético mundo! ¡No! ¡¡¡NooooOOOOOOOO!!!"
 }
 
 ------------------------
