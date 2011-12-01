@@ -168,9 +168,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(3)
 		end
-	elseif args:IsSpellID(105409) then--Water Shield
+	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
 		timerIceLanceCD:Start()
-		timerFrostTombCD:Start()
+		if not self:IsDifficulty("lfr25") then--Not used in LFR?
+			timerFrostTombCD:Start()
+		end
 		timerAssaultCD:Start(20)
 		timerTempestCD:Start()
 		if self.Options.RangeFrame then
