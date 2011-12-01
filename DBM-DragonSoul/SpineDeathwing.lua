@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(53879)
 mod:SetModelID(35268)
 mod:SetZone()
-mod:SetUsedIcons(3, 2, 1)
+mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 
 mod:RegisterCombat("combat")--May need to use a diff engage trigger, probably chat message.
 
@@ -38,7 +38,7 @@ mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetIconOnGrip", true)
 
 local gripTargets = {}
-local gripIcon = 3
+local gripIcon = 6
 
 local function checkTendrils()
 	if not UnitDebuff("player", GetSpellInfo(109454)) and not UnitIsDeadOrGhost("player") then
@@ -60,12 +60,11 @@ local function showGripWarning()
 	warnGrip:Show(table.concat(gripTargets, "<, >"))
 	specWarnGrip:Show()
 	table.wipe(gripTargets)
-	gripIcon = 3
 end
 
 function mod:OnCombatStart(delay)
 	table.wipe(gripTargets)
-	gripIcon = 3
+	gripIcon = 6
 end
 
 function mod:OnCombatEnd()
@@ -98,6 +97,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then--This ability is not used in LFR, so if you add a CD bar for this, make sure you exclude LFR.
 		gripTargets[#gripTargets + 1] = args.destName
 		if self.Options.SetIconOnGrip then
+			if gripIcon == 0 then
+				gripIcon = 6
+			end
 			self:SetIcon(args.destName, gripIcon)
 			gripIcon = gripIcon - 1
 		end
