@@ -184,7 +184,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(104448) then
 		warnFrostTombCast:Show()
-		specWarnFrostTombCast:Show()
+		specWarnFrostTombCast:Show(args.spellName)
 		timerFrostTomb:Start()
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--109552 25man normal confirmed, rest wowhead drycodes
 		timerAssaultCD:Cancel()
