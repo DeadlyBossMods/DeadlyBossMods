@@ -146,7 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnTombTargets)
 		end
-	elseif args:IsSpellID(107851) then--107851 10/25 man normal confirmed.
+	elseif args:IsSpellID(107851, 110900) then--107851 10/25 man normal confirmed. 110900 is lfr25 difficulty.
 		warnAssault:Show()
 		timerAssault:Start()
 		timerAssaultCD:Start()
@@ -193,7 +193,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-	elseif args:IsSpellID(105409) then--Water Shield
+	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
 		timerAssaultCD:Cancel()
 		warnLightningStorm:Show()
 		specWarnLightingStorm:Show()
