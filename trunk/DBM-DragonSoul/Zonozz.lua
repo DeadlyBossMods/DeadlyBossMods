@@ -68,7 +68,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(104378) then--104378 confirmed 10 man normal
+	if args:IsSpellID(104378, 110322) then--104378 confirmed 10 man normal, 110322 confirmed 25 man normal
 		timerFocusedAngerCD:Cancel()
 		timerPsychicDrainCD:Cancel()
 		warnBlackBlood:Show()
@@ -103,7 +103,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(104378) then--104378 confirmed 10 man normal
+	if args:IsSpellID(104378, 110322) then
 		--Everything but void will be cast 6 seconds after blood phase.
 		timerFocusedAngerCD:Start(6)
 		timerPsychicDrainCD:Start(6)
@@ -111,9 +111,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end	
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
-	if not uId == "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
-	if spellID == 103571 then--Void of the unmaking cast, do not use spellname because we want to ignore vents using spellid 103627 which fires when the sphere dispurses on the boss.
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
+	if spellName == GetSpellInfo(103571) then--Void of the unmaking cast, do not use spellname because we want to ignore vents using spellid 103627 which fires when the sphere dispurses on the boss.
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
 		timerVoidofUnmakingCD:Start()
