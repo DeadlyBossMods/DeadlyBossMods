@@ -36,7 +36,7 @@ local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also 
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
 local timerVortex		= mod:NewBuffActiveTimer(5, 110047)
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
-local timerBlood		= mod:NewBuffActiveTimer(21, 103851)
+local timerBlood		= mod:NewBuffActiveTimer(16, 103851)
 
 local spamBlood = 0
 local crystalCount = 0--3 crystals between each vortex
