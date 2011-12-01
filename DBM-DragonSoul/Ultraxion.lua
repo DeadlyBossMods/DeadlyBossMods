@@ -58,6 +58,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(106371, 109415, 109416, 109417) then
 		fadingLightCount = 0
+		hourOfTwilightCount = hourOfTwilightCount + 1
 		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
 		timerHourofTwilightCD:Start()
@@ -97,8 +98,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
-			FadingLightCountdown:Start(expires - GetTime() - 5)
-			timerFadingLight:Start(expires-GetTime())
+			FadingLightCountdown:Start(duration)
+			timerFadingLight:Start(duration)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
