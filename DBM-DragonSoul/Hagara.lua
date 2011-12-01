@@ -146,7 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnTombTargets)
 		end
-	elseif args:IsSpellID(107851, 110900) then--107851 10/25 man normal confirmed. 110900 is lfr25 difficulty.
+	elseif args:IsSpellID(107851, 110898, 110899, 110900) then--107851 10/25 man normal confirmed. 110900 is lfr25 difficulty.
 		warnAssault:Show()
 		timerAssault:Start()
 		timerAssaultCD:Start()
