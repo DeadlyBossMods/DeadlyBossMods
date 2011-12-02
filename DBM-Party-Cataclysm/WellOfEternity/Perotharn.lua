@@ -40,7 +40,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(103241) then
+	if args:IsSpellID(108141) then
 		timerFelFlamesCD:Start()
 		self:Schedule(0.2, showFelFlamesWarning)
 	end
