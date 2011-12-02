@@ -6,7 +6,8 @@ mod:SetCreatureID(54968)
 mod:SetModelID(38995)
 mod:SetZone()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.Pull)
+mod:SetMinCombatTime(15)	-- need to do another run to confirm it works
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
