@@ -45,19 +45,21 @@ L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
 	warnOozes		= "핏방울: %s",
-	specWarnOozes	= "핏방울 등장!",
-	specWarnManaVoid= "마나 공허 생성 - 대상 전환!"
+	specWarnOozes	= "핏방울 소환!",
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "다음 핏방울"
+	timerOozesCD		= "다음 핏방울",
+	timerOozesActive	= "핏방울 공격 가능",
+	timerOozesReach		= "핏방울 도착"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "핏방울 등장 알림 보기",
-	specWarnOozes		= "핏방울 등장 특수 경고 보기",
-	specWarnManaVoid	= "$spell:105530 생성 특수 경고 보기",
-	timerOozesCD		= "다음 핏방울 바 표시"
+	warnOozes			= "핏방울 소환 알림 보기",
+	specWarnOozes		= "핏방울 소환 특수 경고 보기",
+	timerOozesCD		= "다음 핏방울 바 표시",
+	timerOozesActive	= "핏방울이 소환된 후 공격 가능하기까지 남은시간 바 표시",
+	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시"
 })
 
 L:SetMiscLocalization({

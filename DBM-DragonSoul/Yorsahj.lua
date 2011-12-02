@@ -26,6 +26,8 @@ local specWarnVoidBolt	= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)--wi
 local specWarnManaVoid	= mod:NewSpecialWarningSpell(105530, mod:IsDps() or mod:IsManaUser())
 
 local timerOozesCD		= mod:NewTimer(90, "timerOozesCD", 16372)
+local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- variables (7.0~8.5)
+local timerOozesReach	= mod:NewTimer(34.5, "timerOozesReach", 16372) -- variables (34.5~36.0)
 --local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--i can't quite see what makes him stop casting it yet throughout fight yet though to perfectly cancel/start it so it's semi inaccurate for now.
 local timerVoidBolt		= mod:NewTargetTimer(20, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
 
@@ -94,6 +96,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if oozeColors[spellID] then
 		warnOozes:Show(table.concat(oozeColors[spellID], ", "))
 		specWarnOozes:Show()
+		timerOozesActive:Start()
+		timerOozesReach:Start()
 --		timerVoidBoltCD:Start(40)
 		timerOozesCD:Start()
 	end

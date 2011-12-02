@@ -12,7 +12,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"SPELL_SUMMON"
 )
 
 local warnTempest			= mod:NewCastAnnounce(109552, 4)
@@ -31,7 +32,8 @@ local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 
 local timerFrostTomb		= mod:NewCastTimer(8, 104448)
 local timerFrostTombCD		= mod:NewNextTimer(20, 104451)
-local timerIceLanceCD		= mod:NewCDTimer(12, 105269)
+local timerIceLance			= mod:NewBuffFadesTimer(18, 105269)
+local timerIceLanceCD		= mod:NewCDTimer(30, 105269)
 local timerSpecialCD		= mod:NewTimer(62, "TimerSpecial", "Interface\\Icons\\Spell_Nature_WispSplode")
 local timerTempestCD		= mod:NewCDTimer(62, 105256)
 local timerLightningStormCD	= mod:NewCDTimer(62, 105465)
@@ -60,7 +62,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(tombIconTargets)
 	table.wipe(tombTargets)
 	timerAssaultCD:Start(4-delay)
-	timerIceLanceCD:Start(-delay)
+	timerIceLanceCD:Start(12-delay)
 --	timerFrostTombCD:Start(16-delay)--No longer cast on engage? most recent log she only casts it after specials now and not after pull
 	timerSpecialCD:Start(30-delay)
 --	berserkTimer:Start(-delay)
@@ -77,6 +79,8 @@ end
 
 local function warnLanceTargets()
 	warnIceLance:Show(table.concat(lanceTargets, "<, >"))
+	timerIceLance:Start()
+	timerIceLanceCD:Start()
 	table.wipe(lanceTargets)
 end
 
@@ -150,10 +154,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAssault:Show()
 		timerAssault:Start()
 		timerAssaultCD:Start()
-	elseif args:IsSpellID(105269) then--105269 10 man normal confirmed.
-		lanceTargets[#lanceTargets + 1] = args.destName
-		self:Unschedule(warnLanceTargets)
-		self:Schedule(0.5, warnLanceTargets)--Maybe adjust timing to allow for more combining of people failing at spreading?
 	end
 end
 
@@ -161,7 +161,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then--104451 10/25 man normal confirmed.
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
-		timerIceLanceCD:Start()
+		timerIceLanceCD:Start(12)
 		timerFrostTombCD:Start()
 		timerAssaultCD:Start(20)
 		timerLightningStormCD:Start()
@@ -169,7 +169,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.RangeCheck:Show(3)
 		end
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
-		timerIceLanceCD:Start()
+		timerIceLanceCD:Start(12)
 		if not self:IsDifficulty("lfr25") then--Not used in LFR?
 			timerFrostTombCD:Start()
 		end
@@ -188,6 +188,7 @@ function mod:SPELL_CAST_START(args)
 		timerFrostTomb:Start()
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--109552 25man normal confirmed, rest wowhead drycodes
 		timerAssaultCD:Cancel()
+		timerIceLanceCD:Cancel()
 		warnTempest:Show()
 		specWarnTempest:Show()
 		if self.Options.RangeFrame then
@@ -195,6 +196,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
 		timerAssaultCD:Cancel()
+		timerIceLanceCD:Cancel()
 		warnLightningStorm:Show()
 		specWarnLightingStorm:Show()
 		if self.Options.RangeFrame then
@@ -202,5 +204,13 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(105289, 108567) then--105289 10/25 man normal confirmed.
 		self:ScheduleMethod(0.2, "ShatteredIceTarget")
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(105297) then -- comfirmed 25 man normal(lfg),
+		lanceTargets[#lanceTargets + 1] = args.sourceName
+		self:Unschedule(warnLanceTargets)
+		self:Schedule(0.5, warnLanceTargets)--Maybe adjust timing to allow for more combining of people failing at spreading?
 	end
 end
