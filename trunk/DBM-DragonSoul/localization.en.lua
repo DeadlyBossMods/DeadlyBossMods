@@ -6,14 +6,16 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	SpecwarnVortexAfter	= "Hide behind pillars!"
+	KohcromWarning	= "%s: %s"--Bossname, spellname. At least with this we can get boss name from casts in this one, unlike a timer started off the previous bosses casts.
 })
 
 L:SetTimerLocalization({
+	KohcromCD		= "Kohcrom mimicks %s",--Universal single local timer used for all of his mimick timers
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "Show a special warning when $spell:110047 ends"
+	KohcromWarning	= "Show warnings for Kohcrom mimicking abilities.",
+	KohcromCD		= "Show timers for Kohcrom's next ability mimick."
 })
 
 L:SetMiscLocalization({
