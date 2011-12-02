@@ -26,7 +26,7 @@ local timerDecayCD			= mod:NewNextTimer(17, 105544, nil, mod:IsHealer())
 local timerFelQuickening	= mod:NewBuffActiveTimer(15, 104905, nil, mod:IsHealer() or mod:IsTank())
 
 local function showFelFlamesWarning()
-	local targetname = self:GetBossTarget(55085)
+	local targetname = mod:GetBossTarget(55085)
 	if not targetname then return end
 	warnFelFlames:Show(targetname)
 	if targetname == UnitName("player") then
