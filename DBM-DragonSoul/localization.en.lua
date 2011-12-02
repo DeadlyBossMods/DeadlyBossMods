@@ -45,18 +45,20 @@ L= DBM:GetModLocalization(325)
 L:SetWarningLocalization({
 	warnOozes		= "Oozes incoming: %s",
 	specWarnOozes	= "Oozes incoming!",
-	specWarnManaVoid= "Mana Void - Switch"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "Next Oozes"
+	timerOozesCD		= "Next Oozes",
+	timerOozesActive	= "Oozes Attackable",
+	timerOozesReach		= "Oozes Reaches"
 })
 
 L:SetOptionLocalization({
 	warnOozes			= "Show warning for Oozes spawning",
 	specWarnOozes		= "Show special warning for Oozes spawning",
-	specWarnManaVoid	= "Show a special warning when $spell:105530 spawns",
-	timerOozesCD		= "Show timer for next Oozes spawn"
+	timerOozesCD		= "Show timer for next Oozes spawn",
+	timerOozesActive	= "Show timer when Oozes attackable after Oozes spawns", -- poor grammer.
+	timerOozesReach		= "Show timer when Oozes reaches to Yor'sahj" -- poor grammer.
 })
 
 L:SetMiscLocalization({
