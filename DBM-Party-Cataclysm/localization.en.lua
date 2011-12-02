@@ -983,6 +983,11 @@ L:SetGeneralLocalization{
 	name = "Peroth'arn"
 }
 
+L:SetMiscLocalization{
+	Pull		= "Who shut down the portals? Clever little worms."
+}
+
+
 -------------
 -- Azshara --
 -------------
@@ -1018,6 +1023,10 @@ L = DBM:GetModLocalization("Arcurion")
 
 L:SetGeneralLocalization{
 	name = "Arcurion"
+}
+
+L:SetMiscLocalizatiom{
+	Pull		= "You're a fool if you think to take your place as the Aspect of Earth, Shaman!"
 }
 
 ----------------------
