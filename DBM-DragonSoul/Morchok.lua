@@ -25,9 +25,10 @@ local warnStomp			= mod:NewSpellAnnounce(108571, 3)
 local warnVortex		= mod:NewSpellAnnounce(110047, 3)
 local warnBlood			= mod:NewSpellAnnounce(103851, 4)
 local warnFurious		= mod:NewSpellAnnounce(103846, 3)
+local KohcromWarning	= mod:NewAnnounce("KohcromWarning", 3, 55342)--Mirror image icon.
 
 local specwarnCrushArmor	= mod:NewSpecialWarningStack(103687, mod:IsTank(), 3)
-local specwarnVortexAfter	= mod:NewSpecialWarning("SpecwarnVortexAfter")	-- show a specwarning when Vortex ends
+local specwarnVortex		= mod:NewSpecialWarningSpell(110047, nil, nil, nil, true)
 local specwarnBlood			= mod:NewSpecialWarningMove(108570)
 local specwarnCrystal		= mod:NewSpecialWarningSpell(103639, false)
 
@@ -37,13 +38,21 @@ local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
 local timerVortex		= mod:NewBuffActiveTimer(5, 110047)
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
+--local timerKohcromCD	= mod:NewTimer(20.5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
+--Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
+--We will not start timers using Kohcrom's casts, it'll waste WAY too much space.
+--EJ is pretty clear, they are cast shortly after morchok, always. So echo timer is perfect and clean solution.
 
 local spamBlood = 0
-local crystalCount = 0--3 crystals between each vortex
+local crystalCount = 0--3 crystals between each vortex (6 on heroic because of Kohcrom?)
 
 function mod:OnCombatStart(delay)
 	spamBlood = 0
-	crystalCount = 1--2 before first however so we superficially set it to 1 on pull.
+	if self:IsDifficulty("heroic10", "heroic25") then
+		crystalCount = 2--assuming only 4 before first aoe.
+	else
+		crystalCount = 1--only 2 before first aoe so we fake set it to 1 on pull.
+	end
 	timerStomp:Start(-delay)
 	timerCrystal:Start(19-delay)
 	timerVortex:Start(54-delay)
@@ -63,7 +72,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(103851) then
+	if args:IsSpellID(103851) and args:GetSrcCreatureID() == 55265 then--Filter out Kohcrom here. his echo timers should handle themselves all on their own, but we don't want Kohcrom cast messing up Morchok's timers.
 		timerStomp:Start(19)
 		timerCrystal:Start(26)
 		timerVortexNext:Start()
@@ -72,38 +81,58 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(103414, 108571, 109033, 109034) then
-		warnStomp:Show()
-		if crystalCount < 3 then
-			timerStomp:Start()
+		if args:GetSrcCreatureID() == 55265 then
+			warnStomp:Show()
+			if crystalCount < 3 then
+				timerStomp:Start()
+				--timerKohcromCD:Start(10, args.spellname)
+			end
+		else
+			KohcromWarning:Show(args.sourceName, args.spellName)
 		end
 	elseif args:IsSpellID(103851) then
-		warnBlood:Show()
-		timerBlood:Start()
-		specwarnVortexAfter:Show()
+		if args:GetSrcCreatureID() == 55265 then
+			warnBlood:Show()
+			timerBlood:Start()
+			--timerKohcromCD:Start(10, args.spellname)
+		else
+			KohcromWarning:Show(args.sourceName, args.spellName)
+		end
 	end
 end
 
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(103639) then
-		crystalCount = crystalCount + 1
-		warnCrystal:Show()
 		specwarnCrystal:Show()
-		if crystalCount < 3 then
-			timerCrystal:Start()
+		if args:GetSrcCreatureID() == 55265 then
+			crystalCount = crystalCount + 1
+			warnCrystal:Show()
+			if crystalCount < 3 then
+				timerCrystal:Start()
+				--timerKohcromCD:Start(10, args.spellname)
+			end
+		else
+			KohcromWarning:Show(args.sourceName, args.spellName)
 		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(103821, 110045, 110046, 110047) then
-		crystalCount = 0
-		warnVortex:Show()
-		timerVortex:Start()
+		specwarnVortex:Show()--No reason to split the special warning into 2, it's just an attention getter and doesn't stay on screen like normal messages.
+		if args:GetSrcCreatureID() == 55265 then--Morchok casting it
+			crystalCount = 0
+			warnVortex:Show()
+			timerVortex:Start()
+			--timerKohcromCD:Start(10, args.spellname)
+		else--Kohcrom casting
+			KohcromWarning:Show(args.sourceName, args.spellName)
+		end
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(103785, 108570, 110287, 110288) and args:IsPlayer() and GetTime() - spamBlood > 3 then--103785 10 man confirmed.
+	if args:IsSpellID(103785, 108570, 110287, 110288) and args:IsPlayer() and GetTime() - spamBlood > 3 then
 		specwarnBlood:Show()
 		spamBlood = GetTime()
 	end
