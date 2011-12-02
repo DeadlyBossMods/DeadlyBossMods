@@ -997,6 +997,19 @@ L:SetGeneralLocalization{
 	name = "Azshara"
 }
 
+L:SetWarningLocalization{
+	WarnAdds	= "New adds soon"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "Next adds"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "Announce when new adds \"spawn\"",
+	TimerAdds	= "Show timer till next adds \"spawn\""
+}
+
 L:SetMiscLocalization{
 	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
 }
