@@ -158,16 +158,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
 	NoDebuff	= "No %s",
-	DRoll		= "about to roll"	-- This emote needs to be confirmed/fixed if it's wrong. (no valid Transcriptor logs :( )
+	DRoll		= "about to roll"
 })
---[[ 	Taken from a video, "pre-warning" before actually performing the roll (or not):  
-	- Deathwing feels players on his left/right side. (new line) He's about to roll left/right.
-
-	5secs later either:
-	- Deathwing rolls left/right!
-	- Deathwing levels out.
---]] 
 
 ---------------------------
 -- Madness of Deathwing  -- 

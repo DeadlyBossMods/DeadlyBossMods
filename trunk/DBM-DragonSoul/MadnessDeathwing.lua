@@ -12,6 +12,7 @@ mod:SetMinCombatTime(20)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 --	"SPELL_AURA_APPLIED_DOSE",
 --	"SPELL_AURA_REMOVED",
@@ -40,9 +41,11 @@ local timerCataclysm			= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
 
 local lastBlistering = 0
+local firstAspect = true
 
 function mod:OnCombatStart(delay)
 	lastBlistering = 0
+	firstAspect = true
 end
 
 function mod:OnCombatEnd()
@@ -50,16 +53,24 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(107018) then
-		timerElementiumBoltCD:Start()
-		timerHemorrhageCD:Start()
-		timerCataclysmCD:Start()
+		if firstAspect then--The abilities all come 15seconds earlier for first one only
+			firstAspect = false
+			timerElementiumBoltCD:Start(40)
+			timerHemorrhageCD:Start(85)
+			timerCataclysmCD:Start(115)
+		else
+			timerElementiumBoltCD:Start()
+			timerHemorrhageCD:Start()
+			timerCataclysmCD:Start()
+		end
 	elseif args:IsSpellID(106523, 110042, 110043, 110044) then
+		timerCataclysmCD:Cancel()--Just in case it comes early from another minor change like firstAspect change which wasn't on PTR, don't want to confuse peope with two cata bars.
 		warnCataclysm:Show()
 		timerCataclysm:Start()
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
+function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(105651) then
 		warnElementiumBolt:Show()
 		specWarnElementiumBolt:Show()
@@ -69,7 +80,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else	
 			timerElementiumBlast:Start(20)--Slowed by Nozdormu, explosion in 20 seconds
 		end
-	elseif args:IsSpellID(105444, 109588, 109589, 109590) and GetTime() - lastBlistering > 3 then--Tenticle spawn
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(105444, 109588, 109589, 109590) and GetTime() - lastBlistering > 3 then--Tenticle spawn
 		lastBlistering = GetTime()
 		if not UnitBuff("player", GetSpellInfo(106028)) and not UnitIsDeadOrGhost("player") then--Check for Alexstrasza's Presence
 			warnTentacle:Show()

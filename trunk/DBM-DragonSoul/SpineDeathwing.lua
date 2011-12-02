@@ -7,7 +7,7 @@ mod:SetModelID(35268)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 
-mod:RegisterCombat("combat")--May need to use a diff engage trigger, probably chat message.
+mod:RegisterCombat("yell", L.Pull)--Engage trigger comes 30 seconds after encounter starts, because of this, the mod can miss the first round of ability casts such as first grip targets. have to use yell
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
