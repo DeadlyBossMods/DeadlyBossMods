@@ -1038,7 +1038,7 @@ L:SetGeneralLocalization{
 	name = "Arcurion"
 }
 
-L:SetMiscLocalizatiom{
+L:SetMiscLocalization{
 	Pull		= "You're a mere mortal. It is time you died like one."
 }
 
