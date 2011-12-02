@@ -85,7 +85,9 @@ function mod:SPELL_CAST_START(args)
 			warnStomp:Show()
 			if crystalCount < 3 then
 				timerStomp:Start()
-				--timerKohcromCD:Start(10, args.spellname)
+				if UnitExists("boss2") then
+					--timerKohcromCD:Start(10, args.spellname)
+				end
 			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
@@ -94,7 +96,9 @@ function mod:SPELL_CAST_START(args)
 		if args:GetSrcCreatureID() == 55265 then
 			warnBlood:Show()
 			timerBlood:Start()
-			--timerKohcromCD:Start(10, args.spellname)
+			if UnitExists("boss2") then
+				--timerKohcromCD:Start(10, args.spellname)
+			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
 		end
@@ -109,7 +113,9 @@ function mod:SPELL_SUMMON(args)
 			warnCrystal:Show()
 			if crystalCount < 3 then
 				timerCrystal:Start()
-				--timerKohcromCD:Start(10, args.spellname)
+				if UnitExists("boss2") then
+					--timerKohcromCD:Start(10, args.spellname)
+				end
 			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
@@ -124,7 +130,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			crystalCount = 0
 			warnVortex:Show()
 			timerVortex:Start()
-			--timerKohcromCD:Start(10, args.spellname)
+			if UnitExists("boss2") then--Check if boss2 even exists, if it doesnt, either normal mode, or he hasn't spawned yet, don't start timer.
+				--timerKohcromCD:Start(10, args.spellname)
+			end
 		else--Kohcrom casting
 			KohcromWarning:Show(args.sourceName, args.spellName)
 		end
