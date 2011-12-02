@@ -51,7 +51,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	timerOozesCD		= "다음 핏방울",
 	timerOozesActive	= "핏방울 공격 가능",
-	timerOozesReach		= "핏방울 도착"
+--	timerOozesReach		= "핏방울 도착"
 })
 
 L:SetOptionLocalization({
@@ -59,7 +59,7 @@ L:SetOptionLocalization({
 	specWarnOozes		= "핏방울 소환 특수 경고 보기",
 	timerOozesCD		= "다음 핏방울 바 표시",
 	timerOozesActive	= "핏방울이 소환된 후 공격 가능하기까지 남은시간 바 표시",
-	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시"
+--	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시"
 })
 
 L:SetMiscLocalization({
@@ -113,7 +113,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "나는... 종말의 시작이다. 태양을 뒤덮어버리는 그림자이자, 네 파멸을 알리는 종소리이다."
+	Pull				= "엄청난 무언가가 느껴진다. 조화롭지 못한 그의 혼돈이 내 정신을 어지럽히는구나!"
 })
 
 -------------------------
@@ -159,6 +159,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Pull		= "저 갑옷! 놈의 갑옷이 벗겨지는군! 갑옷을 뜯어내면 놈을 쓰러뜨릴 기회가 생길 거요!",	
 	NoDebuff	= "%s 없음",
 	DRoll		= "회전하려고"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
 })

@@ -8,6 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons()
 
 mod:RegisterCombat("combat")
+mod:SetMinCombatTime(20)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
