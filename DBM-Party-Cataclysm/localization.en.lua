@@ -1026,7 +1026,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalizatiom{
-	Pull		= "You're a fool if you think to take your place as the Aspect of Earth, Shaman!"
+	Pull		= "You're a mere mortal. It is time you died like one."
 }
 
 ----------------------
@@ -1036,6 +1036,10 @@ L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
 	name = "Asira Dawnslayer"
+}
+
+L:SetMiscLocalization{
+	Pull		= "Let's get to work, shall we?"
 }
 
 ---------------------------
