@@ -980,7 +980,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "누가 차원문을 닫았지? 교활한 벌레들 같으니..."
+	Pull		= "필멸자 주제에 내 앞에 서고도 살기를 바라느냐!"
 }
 
 
