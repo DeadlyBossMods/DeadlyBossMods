@@ -979,6 +979,11 @@ L:SetGeneralLocalization{
 	name = "페로스안"
 }
 
+L:SetMiscLocalization{
+	Pull		= "누가 차원문을 닫았지? 교활한 벌레들 같으니..."
+}
+
+
 -------------
 -- Azshara --
 -------------
@@ -986,6 +991,19 @@ L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
 	name = "여왕 아즈샤라"
+}
+
+L:SetWarningLocalization{
+	WarnAdds	= "곧 부하 소환"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "다음 부하 소환"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "새로운 부하가 소환될 때 알림 보기",
+	TimerAdds	= "다음 부화 소환 바 표시"
 }
 
 L:SetMiscLocalization{
@@ -1016,6 +1034,10 @@ L:SetGeneralLocalization{
 	name = "아큐리온"
 }
 
+L:SetMiscLocalization{
+	Pull		= "넌 하찮은 필멸자일 뿐. 필멸자답게 황천에나 떨어져라."
+}
+
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1023,6 +1045,10 @@ L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
 	name = "아시라 돈슬레이어"
+}
+
+L:SetMiscLocalization{
+	Pull		= "자, 본론으로 들어갈까?"
 }
 
 ---------------------------
