@@ -6,7 +6,7 @@ mod:SetCreatureID(55085)
 mod:SetModelID(39182)
 mod:SetZone()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("say", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
