@@ -935,6 +935,17 @@ L:SetGeneralLocalization{
 	name = "제이나의 환영"
 }
 
+L:SetTimerLocalization{
+	TimerFlarecoreDetonate	= "섬광핵 폭발"
+}
+
+L:SetOptionLocalization{
+	TimerFlarecoreDetonate	= "$spell:101927 폭발 까지 남은 시간 바 표시"
+}
+
+L:SetMiscLocalization{
+}
+
 ----------------------
 -- Echo of Baine --
 ----------------------
@@ -954,7 +965,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
+	Kill		= "넌 네가 무슨 짓을 저지르는지 모른다. 아만툴... 내가... 본... 것은..."
 }
 
 ------------------------
@@ -974,11 +985,11 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
-	name = "아즈샤라"
+	name = "여왕 아즈샤라"
 }
 
 L:SetMiscLocalization{
-	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
+	Kill		= "그만! 너희랑 놀아 주는 것도 재미있다만, 난 더 중요한 일이 있어 이만 가봐야겠다."
 }
 
 -----------------------------
@@ -991,7 +1002,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "No...no! This victory will not be ripped from my grasp! I will not return to him in failure! I will not be torn from this pitiful world! No...NOOOOOOOO!!!"
+	Kill		= "안 돼... 안 돼! 승리가 눈앞에 있는데 어떻게 이런 일이! 내가 빈손으로 그분께 돌아갈 것 같으냐! 난... 이 초라한 세계를 떠날 수 없어! 안 돼... 안 돼애애애애!"
 }
 
 ------------------------
