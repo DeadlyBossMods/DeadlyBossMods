@@ -49,16 +49,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerOozesCD		= "Next Oozes",
-	timerOozesActive	= "Oozes Attackable",
-	timerOozesReach		= "Oozes Reaches"
+	timerOozesActive	= "Oozes Attackable"
 })
 
 L:SetOptionLocalization({
 	warnOozes			= "Show warning for Oozes spawning",
 	specWarnOozes		= "Show special warning for Oozes spawning",
 	timerOozesCD		= "Show timer for next Oozes spawn",
-	timerOozesActive	= "Show timer when Oozes attackable after Oozes spawns", -- poor grammer.
-	timerOozesReach		= "Show timer when Oozes reaches to Yor'sahj" -- poor grammer.
+	timerOozesActive	= "Show timer for when Oozes become attackable", -- poor grammer.
 })
 
 L:SetMiscLocalization({
