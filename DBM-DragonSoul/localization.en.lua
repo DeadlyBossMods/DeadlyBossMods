@@ -108,7 +108,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Show timer for start of combat"
+	TimerCombatStart	= "Show timer for Ultraxion RP"
 })
 
 L:SetMiscLocalization({
