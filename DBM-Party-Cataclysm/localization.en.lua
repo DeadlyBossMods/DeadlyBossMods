@@ -984,7 +984,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "Who shut down the portals? Clever little worms."
+	Pull		= "No mortal may stand before me and live!"
 }
 
 
@@ -1021,6 +1021,14 @@ L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
 	name = "Mannoroth & Varo'then"
+}
+
+L:SetTimerLocalization{
+	TimerTyrandeHelp	= "Tyrande needs help"
+}
+
+L:SetOptionLocalization{
+	TimerTyrandeHelp	= "Show timer till Tyrande needs help"
 }
 
 L:SetMiscLocalization{

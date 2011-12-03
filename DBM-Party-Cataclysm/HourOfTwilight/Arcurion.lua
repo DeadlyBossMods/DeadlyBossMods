@@ -20,7 +20,7 @@ local warnIcyTomb		= mod:NewTargetAnnounce(103252, 4)
 local warnChainsFrost	= mod:NewSpellAnnounce(102582, 2)
 local prewarnPhase2		= mod:NewPrePhaseAnnounce(2, 3)
 
-local timerIcyTombCD	= mod:NewNextTimer(30, 103252)--^
+local timerIcyTombCD	= mod:NewNextTimer(40, 103252)
 
 local warnedP2 = false
 
