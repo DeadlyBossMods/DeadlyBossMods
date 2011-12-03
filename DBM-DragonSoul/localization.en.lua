@@ -104,7 +104,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCombatStart	= "Combat starts"
+	TimerCombatStart	= "Ultraxion Lands"
 })
 
 L:SetOptionLocalization({
