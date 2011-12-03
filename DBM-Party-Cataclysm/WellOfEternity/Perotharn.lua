@@ -47,6 +47,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--This mod needs work, the timers on this are based on failing at eyes, I don't have a log of actually doing it right, which should extend this phase significantly
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(104905) then
 		self:SetWipeTime(30)--You leave combat briefly during this transition, we don't want the mod ending prematurely.
@@ -61,8 +62,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDecay:Start(args.destName)
 		timerDecayCD:Start()
 	elseif args:IsSpellID(105526) then
-		warnFelQuickening:Show()
-		timerFelQuickening:Start()
+		warnFelQuickening:Show(args.destName)
+		timerFelQuickening:Start(args.destName)
 	end
 end
 
