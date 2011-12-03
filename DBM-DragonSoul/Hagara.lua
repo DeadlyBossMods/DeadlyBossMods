@@ -29,6 +29,7 @@ local specWarnTempest		= mod:NewSpecialWarningSpell(109552, nil, nil, nil, true)
 local specWarnLightingStorm	= mod:NewSpecialWarningSpell(105465, nil, nil, nil, true)
 local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
 local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
+local specWarnWatery		= mod:NewSpecialWarningMove(110317)
 
 local timerFrostTomb		= mod:NewCastTimer(8, 104448)
 local timerFrostTombCD		= mod:NewNextTimer(20, 104451)
@@ -37,6 +38,7 @@ local timerIceLanceCD		= mod:NewCDTimer(30, 105269)
 local timerSpecialCD		= mod:NewTimer(62, "TimerSpecial", "Interface\\Icons\\Spell_Nature_WispSplode")
 local timerTempestCD		= mod:NewCDTimer(62, 105256)
 local timerLightningStormCD	= mod:NewCDTimer(62, 105465)
+local timerFeedback			= mod:NewBuffActiveTimer(15, 108934)
 local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:IsTank())
 
@@ -154,6 +156,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAssault:Show()
 		timerAssault:Start()
 		timerAssaultCD:Start()
+	elseif args:IsSpellID(110317) and args:IsPlayer() then
+		specWarnWatery:Show()
 	end
 end
 
@@ -162,6 +166,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
 		timerIceLanceCD:Start(12)
+		timerFeedback:Start()
 		timerFrostTombCD:Start()
 		timerAssaultCD:Start(20)
 		timerLightningStormCD:Start()
@@ -170,6 +175,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
 		timerIceLanceCD:Start(12)
+		timerFeedback:Start()
 		if not self:IsDifficulty("lfr25") then--Not used in LFR?
 			timerFrostTombCD:Start()
 		end
