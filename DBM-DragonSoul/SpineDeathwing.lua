@@ -11,7 +11,7 @@ mod:RegisterCombat("yell", L.Pull)--Engage trigger comes 30 seconds after encoun
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
+--	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -30,7 +30,7 @@ local specWarnNuclearBlast	= mod:NewSpecialWarningRun(105845, mod:IsMelee())
 local specWarnSealArmor		= mod:NewSpecialWarningSpell(105847, mod:IsDps())
 
 local timerSealArmor		= mod:NewCastTimer(23, 105847)
-local timerGripCD			= mod:NewCDTimer(25, 109457)
+--local timerGripCD			= mod:NewCDTimer(25, 109457)
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
@@ -85,11 +85,13 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(105490, 109457, 109458, 109459) then
 		timerGripCD:Start(args.sourceGUID)--args.sourceGUID is to support multiple cds when more then 1 is up at once
 	end
 end
+--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
@@ -130,7 +132,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53891 then
-		timerGripCD:Cancel(args.sourceGUID)
+--		timerGripCD:Cancel(args.sourceGUID)
 	elseif cid == 56341 then
 		timerSealArmor:Cancel(args.sourceGUID)
 	end
