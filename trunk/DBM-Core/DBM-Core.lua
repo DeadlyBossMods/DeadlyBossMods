@@ -2641,7 +2641,8 @@ local soundFiles = {
 	"Sound\\Creature\\PrinceMalchezzar\\PrinceAxeToss01.wav",
 	"Sound\\Creature\\PrinceMalchezzar\\PrinceSpecial01.wav",
 	"Sound\\Creature\\MedivhsEcho\\ChessKnightTaken01.wav",
-	"Sound\\Creature\\MedivhsEcho\\ChessBegin01.wav"
+	"Sound\\Creature\\MedivhsEcho\\ChessBegin01.wav",
+	"sound\\CREATURE\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.OGG"
 }
 
 function DBM:AprilFools()
