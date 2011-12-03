@@ -96,7 +96,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(106400) then--106444, 109631, 109632, 109633 are debuff IDs, no reason to use them though cause that'd be a diff function with diff timing
-		warnImpale:Show(args.destName)
+		warnImpale:Show(args.destName, args.amount or 1)
 		timerImpale:Start(args.destName)--May need to add anti spam for heroic. On heroic impale hits everyone near the tenticle not just the tank? But maybe this ID only hits tank so we'll be fine, don't know yet.
 		timerImpaleCD:Start()
 		if args:IsPlayer() then
@@ -156,11 +156,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 end
 
 --He doesn't fire UNIT_DIED so begin kill detection hack that doesn't require localizing some RP dialog that fires several seconds after him dying and you leaving combat.
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+--this hack works invaild. Currently, this hack works at phase 2 start. so commented it until works.
+--[[function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	if phaseTwo and self:IsInCombat() then
 		engageCount = engageCount + 1
 		if engageCount == 2 then
 			DBM:EndCombat(self)
 		end
 	end
-end
+end]]

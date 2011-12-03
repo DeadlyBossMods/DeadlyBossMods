@@ -15,10 +15,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED"
 )
 
-mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_SAY"
-)
-
 local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
 local warnFadingLight				= mod:NewTargetAnnounce(110080, 3)
 
@@ -26,7 +22,6 @@ local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil
 local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
 local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 
-local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerHourofTwilightCD			= mod:NewNextTimer(45, 109416)
 local timerTwilightEruptionCD		= mod:NewNextTimer(360, 106388)--Berserk timer more or less.
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
@@ -103,11 +98,5 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_SAY(msg)
-	if msg == L.Pull or msg:find(L.Pull) then
-		timerCombatStart:Start()
 	end
 end
