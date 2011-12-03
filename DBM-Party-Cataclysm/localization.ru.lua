@@ -969,7 +969,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
+	Kill		= "Что… вы наделали... Аман'Тул... Я…видел…"
 }
 
 ------------------------
@@ -983,6 +983,9 @@ L:SetGeneralLocalization{
 	name = "Парот'арн"
 }
 
+L:SetMiscLocalization{
+	Pull		= "Кто закрыл порталы? Ах вы, пронырливые создания!"
+}
 -------------
 -- Azshara --
 -------------
@@ -992,8 +995,21 @@ L:SetGeneralLocalization{
 	name = "Королева Азшара"
 }
 
+L:SetWarningLocalization{
+	WarnAdds	= "Скоро новые помощники"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "Новые помощники"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "Предупреждать о скором появлении новых помощников",
+	TimerAdds	= "Отсчет времени до появлении новых помощников"
+}
+
 L:SetMiscLocalization{
-	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
+	Kill		= "Довольно. Хоть я и люблю быть радушной хозяйкой, у меня есть более срочные дела."
 }
 
 -----------------------------
@@ -1006,7 +1022,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "No...no! This victory will not be ripped from my grasp! I will not return to him in failure! I will not be torn from this pitiful world! No...NOOOOOOOO!!!"
+	Kill		= "Нет... Нет! Вы не вырвете эту победу из моих рук! Я не вернусь к нему побежденным! Вы не изгоните меня из этого... несчастного... мира! Нет! Нееееееееееееееет!!!"
 }
 
 ------------------------
@@ -1019,6 +1035,10 @@ L = DBM:GetModLocalization("Arcurion")
 L:SetGeneralLocalization{
 	name = "Аркурион"
 }
+
+L:SetMiscLocalization{
+	Pull		= "Ты всего лишь смертный."
+}
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1026,6 +1046,10 @@ L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
 	name = "Азира Убийца Зари"
+}
+
+L:SetMiscLocalization{
+	Pull		= "Ну что, приступим?"
 }
 
 ---------------------------

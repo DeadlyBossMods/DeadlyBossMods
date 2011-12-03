@@ -7,14 +7,16 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	SpecwarnVortexAfter	= "Спрячтесь за осколками!"
+	KohcromWarning	= "%s: %s"--Bossname, spellname. At least with this we can get boss name from casts in this one, unlike a timer started off the previous bosses casts.
 })
 
 L:SetTimerLocalization({
+	KohcromCD		= "Кохром повторяет %s"
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "Спец-предупреждение об окончании $spell:110047"
+	KohcromWarning	= "Предупреждать, когда Кохром повторяет заклинания Морхока",
+	KohcromCD		= "Отсчет времени до следующего повторения заклинания"
 })
 
 L:SetMiscLocalization({
@@ -46,18 +48,19 @@ L= DBM:GetModLocalization(325)
 L:SetWarningLocalization({
 	warnOozes		= "Появляются камли: %s",
 	specWarnOozes	= "Появились капли крови!",
-	specWarnManaVoid= "Магическая воронка - переключитесь!"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "Следующие капли"
+	timerOozesCD		= "Следующие капли",
+	timerOozesActive	= "Появление капель",
 })
 
 L:SetOptionLocalization({
 	warnOozes			= "Предупреждение о появлении новых капель крови",
 	specWarnOozes		= "Спец-предупреждение о появлении новых капель крови",
 	specWarnManaVoid	= "Спец-предупреждение о появлении $spell:105530",
-	timerOozesCD		= "Отсчет времени до следующих капель крови"
+	timerOozesCD		= "Отсчет времени до следующих капель крови",
+	timerOozesActive	= "Отсчет времени спавна капель крови",
 })
 
 L:SetMiscLocalization({
@@ -157,16 +160,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
 	NoDebuff	= "Нет %s",
 	DRoll		= "about to roll"	-- This emote needs to be confirmed/fixed if it's wrong. (no valid Transcriptor logs :( )
 })
---[[ 	Taken from a video, "pre-warning" before actually performing the roll (or not):  
-	- Deathwing feels players on his left/right side. (new line) He's about to roll left/right.
-
-	5secs later either:
-	- Deathwing rolls left/right!
-	- Deathwing levels out.
---]] 
 
 ---------------------------
 -- Madness of Deathwing  -- 
