@@ -7,14 +7,16 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	SpecwarnVortexAfter	= "기둥 뒤에 숨으세요!"
+	KohcromWarning	= "%s: %s"--Bossname, spellname. At least with this we can get boss name from casts in this one, unlike a timer started off the previous bosses casts.
 })
 
 L:SetTimerLocalization({
+	KohcromCD		= "크초르모 주문사용: %s",--Universal single local timer used for all of his mimick timers
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "$spell:110047 종료시 특수 경고 보기"
+	KohcromWarning	= "크초르모가 동일하게 사용하는 주문 알림 보기(영웅 난이도)",
+	KohcromCD		= "크초르모가 동일하게 사용하는 주문 바 표시(영웅 난이도)"
 })
 
 L:SetMiscLocalization({

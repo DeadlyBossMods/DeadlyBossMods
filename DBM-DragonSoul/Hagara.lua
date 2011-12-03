@@ -32,7 +32,7 @@ local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 
 local timerFrostTomb		= mod:NewCastTimer(8, 104448)
 local timerFrostTombCD		= mod:NewNextTimer(20, 104451)
-local timerIceLance			= mod:NewBuffActiveTimer(18, 105269)
+local timerIceLance			= mod:NewBuffActiveTimer(16, 105269)
 local timerIceLanceCD		= mod:NewCDTimer(30, 105269)
 local timerSpecialCD		= mod:NewTimer(62, "TimerSpecial", "Interface\\Icons\\Spell_Nature_WispSplode")
 local timerTempestCD		= mod:NewCDTimer(62, 105256)
@@ -183,8 +183,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(104448) then
-		warnFrostTombCast:Show()
-		specWarnFrostTombCast:Show(args.spellName)
+		warnFrostTombCast:Show(args.spellName)
+		specWarnFrostTombCast:Show()
 		timerFrostTomb:Start()
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--109552 25man normal confirmed, rest wowhead drycodes
 		timerAssaultCD:Cancel()
