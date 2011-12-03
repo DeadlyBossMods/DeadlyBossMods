@@ -7,14 +7,16 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	SpecwarnVortexAfter	= "¡Escóndete detrás de los pilares!"
+	KohcromWarning	= "%s: %s"
 })
 
 L:SetTimerLocalization({
+	KohcromCD		= "Kohcrom mimicks %s"
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "Mostrar un aviso especial cuando $spell:110047 termina"
+	KohcromWarning	= "Show warnings for Kohcrom mimicking abilities.",
+	KohcromCD		= "Show timers for Kohcrom's next ability mimick."
 })
 
 L:SetMiscLocalization({
@@ -45,19 +47,20 @@ L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
 	warnOozes		= "Vienen mocos: %s",
-	specWarnOozes	= "Vienen mocos!",
-	specWarnManaVoid= "Vacío de maná. Cambio!"
+	specWarnOozes	= "Vienen mocos!"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "Siguientes mocos"
+	timerOozesCD	= "Siguientes mocos",
+	timerOozesActive	= "Mocos atacables"
 })
 
 L:SetOptionLocalization({
 	warnOozes			= "Mostrar aviso cuando salgan mocos",
 	specWarnOozes		= "Mostrar aviso especial cuando salgan mocos",
 	specWarnManaVoid	= "Mostrar aviso especial cuando salga $spell:105530",
-	timerOozesCD		= "Mostrar tiempo para siguientes mocos"
+	timerOozesCD		= "Mostrar tiempo para siguientes mocos",
+	timerOozesActive	= "Mostrar tiempo para que los mocos se pueden atacar",
 })
 
 L:SetMiscLocalization({
@@ -160,8 +163,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NoDebuff	= "No %s",--traslate
-	DRoll		= "about to roll"--translate
+	NoDebuff	= "Sin %s",
+	DRoll		= "about to roll",--translate
+	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",--translate
 })
 
 ---------------------------
