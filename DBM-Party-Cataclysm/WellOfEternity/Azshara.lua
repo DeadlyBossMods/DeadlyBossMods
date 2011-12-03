@@ -25,7 +25,10 @@ local timerServantCD	= mod:NewCDTimer(26, 102334)--Still don't have good logs, a
 local timerObedienceCD	= mod:NewCDTimer(37, 103241)
 local timerAdds		= mod:NewTimer(42, "TimerAdds")
 
+local addsCount = 0
 function mod:Adds()
+	addsCount = addsCount + 1
+	if addsCount == 3 then return end
 	timerAdds:Start()
 	warnAdds:Schedule(37)
 	self:ScheduleMethod(42, "Adds")
@@ -34,9 +37,10 @@ end
 function mod:OnCombatStart(delay)
 	timerServantCD:Start(24-delay)
 	timerObedienceCD:Start(36-delay)
-	timerAdds:Start(18-delay)
+	timerAdds:Start(17-delay)
 	warnAdds:Schedule(14-delay)
-	self:ScheduleMethod(18, "Adds")
+	self:ScheduleMethod(17, "Adds")
+	addsCount = 0
 end
 
 function mod:SPELL_CAST_START(args)

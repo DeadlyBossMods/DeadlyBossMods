@@ -25,9 +25,9 @@ local timerFireTotem	= mod:NewNextTimer(23, 108374)
 local timerMarkofSilence= mod:NewNextTimer(8, 102726)	
 
 function mod:OnCombatStart(delay)
---	timerMarkofSilence:Start(5-delay)	-- inaccurate ? 
---	timerSmokeBomb:Start(16-delay)		-- inaccurate ? 
---	timerFireTotem:Start(22-delay)		-- inaccurate ?
+	timerMarkofSilence:Start(8-delay)
+	timerSmokeBomb:Start(10-delay)
+	timerFireTotem:Start(19-delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
