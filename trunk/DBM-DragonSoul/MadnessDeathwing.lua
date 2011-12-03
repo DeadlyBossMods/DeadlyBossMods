@@ -29,6 +29,7 @@ local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
 local warnFragments				= mod:NewSpellAnnounce(109568, 4)--Fairly sure this is fragment summon spell, but could be wrong, will know next time i do fight and if timing matches.
 local warnTerror				= mod:NewSpellAnnounce(106765, 4)
+local warnShrapnel				= mod:NewTargetAnnounce(106789, 3)
 
 local specWarnImpale			= mod:NewSpecialWarningYou(106400)
 local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
@@ -37,6 +38,7 @@ local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps()
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
 --local specWarnFragments		= mod:NewSpecialWarningSpell(109568, mod:IsDps())--If this is fragments summon spell, will uncommeont, for now not sure so won't spam needlessly just in case.
 local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())
+local specWarnShrapnel			= mod:NewSpecialWarningYou(106789)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
@@ -47,15 +49,24 @@ local timerCataclysm			= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
 local timerFragmentsCD			= mod:NewNextTimer(90, 109568)
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
+local timerShrapnel				= mod:NewBuffFadesTimer(6, 106789)
 
 local firstAspect = true
 local phaseTwo = false
 local engageCount = 0
+local shrapnelTargets = {}
+
+local function warnShrapnelTargets()
+	warnShrapnel:Show(table.concat(shrapnelTargets, "<, >"))
+	timerShrapnel:Start()
+	table.wipe(shrapnelTargets)
+end
 
 function mod:OnCombatStart(delay)
 	firstAspect = true
 	phaseTwo = false
 	engageCount = 0
+	table.wipe(shrapnelTargets)
 end
 
 function mod:OnCombatEnd()
@@ -104,8 +115,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnImpaleOther:Show(args.destName)
 		end
+	elseif args:IsSpellID(106789, 106794, 109598, 109599) then -- 106789 confirmed. other drycoded from wowhead.
+		shrapnelTargets[#shrapnelTargets + 1] = args.sourceName
+		self:Unschedule(warnShrapnelTargets)
+		if args:IsPlayer() then
+			specWarnShrapnel:Show()
+		end
+		if (self:IsDifficulty("normal10") and #shrapnelTargets >= 3) then -- confirmed only in 10man normal
+			warnShrapnelTargets()
+		else
+			self:Schedule(0.3, warnShrapnelTargets)
+		end
 	end
-end		
+end
+
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 
