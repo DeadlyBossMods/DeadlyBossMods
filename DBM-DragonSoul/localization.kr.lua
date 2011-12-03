@@ -107,11 +107,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCombatStart	= "전투 시작"
+	TimerCombatStart	= "울트락시온 착지"
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "전투 시작 바 표시"
+	TimerCombatStart	= "울트락시온 착지 바 표시"
 })
 
 L:SetMiscLocalization({
