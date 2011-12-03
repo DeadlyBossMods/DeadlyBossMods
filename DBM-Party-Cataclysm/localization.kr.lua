@@ -1019,6 +1019,14 @@ L:SetGeneralLocalization{
 	name = "만노로스와 바르덴"
 }
 
+L:SetTimerLocalization{
+	TimerTyrandeHelp	= "티란데 도움요청"
+}
+
+L:SetOptionLocalization{
+	TimerTyrandeHelp	= "티란데 도움요청 까지 남은시간 바 표시"
+}
+
 L:SetMiscLocalization{
 	Kill		= "안 돼... 안 돼! 승리가 눈앞에 있는데 어떻게 이런 일이! 내가 빈손으로 그분께 돌아갈 것 같으냐! 난... 이 초라한 세계를 떠날 수 없어! 안 돼... 안 돼애애애애!"
 }
