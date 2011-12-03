@@ -36,7 +36,7 @@ local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
 local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)
 local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps())--Maybe add healer to defaults too?
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
---local specWarnFragments		= mod:NewSpecialWarningSpell(109568, mod:IsDps())--If this is fragments summon spell, will uncommeont, for now not sure so won't spam needlessly just in case.
+--local specWarnFragments		= mod:NewSpecialWarningSpell(109568, mod:IsDps())--If this is fragments summon spell, will uncomment, for now not sure so won't spam needlessly just in case.
 local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())
 local specWarnShrapnel			= mod:NewSpecialWarningYou(106789)
 
@@ -115,7 +115,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnImpaleOther:Show(args.destName)
 		end
-	elseif args:IsSpellID(106789, 106794, 109598, 109599) then -- 106789 confirmed. other drycoded from wowhead.
+	elseif args:IsSpellID(106789, 106791, 110141, 109598, 109599) then -- 106789 confirmed. 110141 25 man confirmed. the other IDs don't still guesses, 5 diff IDs i suspect because of LFR
 		shrapnelTargets[#shrapnelTargets + 1] = args.sourceName
 		self:Unschedule(warnShrapnelTargets)
 		if args:IsPlayer() then
@@ -164,11 +164,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 			specWarnTentacle:Show()--It's not up so give special warning for these Tentacles.
 		end
 	elseif spellName == GetSpellInfo(106708) then--Slump (Phase 2 start)
-		phaseTwo = true
 		warnPhase2:Show()
 		timerFragmentsCD:Start(11)
 		timerTerrorCD:Start(36)
 	elseif spellName == GetSpellInfo(109568) then--Summon Impaling Tentacle (Fragments summon?)
+		if not phaseTwo then
+			phaseTwo = true
+		end
 		warnFragments:Show()
 		timerFragmentsCD:Start()
 	elseif spellName == GetSpellInfo(106765) then--Summon Elementium Terror (Big angry add)
@@ -179,12 +181,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 end
 
 --He doesn't fire UNIT_DIED so begin kill detection hack that doesn't require localizing some RP dialog that fires several seconds after him dying and you leaving combat.
---this hack works invaild. Currently, this hack works at phase 2 start. so commented it until works.
---[[function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+--Found problem, sometimes he does at INSTANCE_ENCOUNTER_ENGAGE_UNIT = 2 sometimes = 3, because sometimes INSTANCE_ENCOUNTER_ENGAGE_UNIT for wing tenticle fires after slump. Fixed by flagging phaseTwo on first Summon Impaling Tentacle cast.
+--[[	"<654.2> [CLEU] UNIT_DIED#true#0x0000000000000000#nil#-2147483648#-2147483648#0xF150DB6800010EAD#Wing Tentacle#68168#0", -- [229923]
+		"<654.2> [UNIT_SPELLCAST_SUCCEEDED] Deathwing:Possible Target<Melissii>:boss1:Slump::0:106708", -- [229935]
+		"<654.2> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Deathwing#0xF150DB6D00010EA5#elite#76272096#1#1#Wing Tentacle#0xF150DB6800010EAD#elite#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [229937]
+		"<665.0> [UNIT_SPELLCAST_SUCCEEDED] Deathwing:Possible Target<nil>:boss2:Summon Impaling Tentacle::0:109568", -- [231693]
+		"<657.4> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#1#Unknown#0xF150DB6D00010EA5#elite#76272096#1#1#Deathwing#0xF130E26A00010EAA#elite#76272096#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [230685]
+		"<801.1> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#1#Unknown#0xF150DB6D00010EA5#elite#5383491#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [280250]
+--]]
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	if phaseTwo and self:IsInCombat() then
 		engageCount = engageCount + 1
 		if engageCount == 2 then
 			DBM:EndCombat(self)
 		end
 	end
-end]]
+end
