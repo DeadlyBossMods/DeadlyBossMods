@@ -981,6 +981,10 @@ L:SetGeneralLocalization{
 	name = "Peroth'arn"
 }
 
+L:SetMiscLocalization{
+	Pull		= "¡Ningún mortal que se enfrente a mí saldrá con vida!"
+}
+
 -------------
 -- Azshara --
 -------------
@@ -988,6 +992,19 @@ L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
 	name = "Azshara"
+}
+
+L:SetWarningLocalization{
+	WarnAdds	= "Siguientes adds pronto"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "Siguientes adds"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "Anunciar cuando \"salgan\" nuevos adds",
+	TimerAdds	= "Mostrar tiempo para que \"salgan\" nuevos adds"
 }
 
 L:SetMiscLocalization{
@@ -1001,6 +1018,14 @@ L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
 	name = "Mannoroth y Varo'then"
+}
+
+L:SetTimerLocalization{
+	TimerTyrandeHelp	= "Tyrande necesita ayuda"
+}
+
+L:SetOptionLocalization{
+	TimerTyrandeHelp	= "Mostrar tiempo para que Tyrande necesite ayuda"
 }
 
 L:SetMiscLocalization{
@@ -1018,6 +1043,10 @@ L:SetGeneralLocalization{
 	name = "Arcurion"
 }
 
+L:SetMiscLocalization{
+	Pull		= "¡Estás loco si crees que vas a ocupar el lugar del Aspecto de la Tierra, chamán!"
+}
+
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1026,6 +1055,11 @@ L = DBM:GetModLocalization("AsiraDawnslayer")
 L:SetGeneralLocalization{
 	name = "Asira Asesinaalbas"
 }
+
+L:SetMiscLocalization{
+	Pull		= "A trabajar, ¿de acuerdo?"
+}
+
 
 ---------------------------
 -- Archbishop Benedictus --
