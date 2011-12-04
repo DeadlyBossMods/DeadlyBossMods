@@ -36,8 +36,7 @@ local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
 local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)
 local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps())--Maybe add healer to defaults too?
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
---local specWarnFragments		= mod:NewSpecialWarningSpell(109568, mod:IsDps())--If this is fragments summon spell, will uncomment, for now not sure so won't spam needlessly just in case.
-local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())
+local specWarnFragments			= mod:NewSpecialWarningSpell(109568, nil, nil, nil, true)--This is indeed the summon fragments trigger
 local specWarnShrapnel			= mod:NewSpecialWarningYou(106789)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
@@ -165,8 +164,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		warnPhase2:Show()
 		timerFragmentsCD:Start(11)
 		timerTerrorCD:Start(36)
-	elseif spellName == GetSpellInfo(109568) then--Summon Impaling Tentacle (Fragments summon?)
+	elseif spellName == GetSpellInfo(109568) then--Summon Impaling Tentacle (Fragments summon)
 		warnFragments:Show()
+		specWarnFragments:Show()
 		timerFragmentsCD:Start()
 	elseif spellName == GetSpellInfo(106765) then--Summon Elementium Terror (Big angry add)
 		warnTerror:Show()
