@@ -18,8 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnImpale				= mod:NewStackAnnounce(106400, 3, nil, mod:IsTank() or mod:IsHealer())
