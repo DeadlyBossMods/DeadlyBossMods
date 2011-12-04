@@ -35,7 +35,6 @@ local specwarnCrystal		= mod:NewSpecialWarningSpell(103639, false)
 local timerCrushArmor	= mod:NewTargetTimer(20, 103687, nil, mod:IsTank())
 local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also time till 'detonate')
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
-local timerVortex		= mod:NewBuffActiveTimer(5, 110047)
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
 --local timerKohcromCD	= mod:NewTimer(20.5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
@@ -55,7 +54,7 @@ function mod:OnCombatStart(delay)
 	end
 	timerStomp:Start(-delay)
 	timerCrystal:Start(19-delay)
-	timerVortex:Start(54-delay)
+	timerVortexNext:Start(54-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -129,7 +128,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:GetSrcCreatureID() == 55265 then--Morchok casting it
 			crystalCount = 0
 			warnVortex:Show()
-			timerVortex:Start()
 			if UnitExists("boss2") then--Check if boss2 even exists, if it doesnt, either normal mode, or he hasn't spawned yet, don't start timer.
 				--timerKohcromCD:Start(10, args.spellname)
 			end
