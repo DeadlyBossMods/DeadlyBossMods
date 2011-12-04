@@ -58,7 +58,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnOozes			= "Mostrar aviso cuando salgan mocos",
 	specWarnOozes		= "Mostrar aviso especial cuando salgan mocos",
-	specWarnManaVoid	= "Mostrar aviso especial cuando salga $spell:105530",
 	timerOozesCD		= "Mostrar tiempo para siguientes mocos",
 	timerOozesActive	= "Mostrar tiempo para que los mocos se pueden atacar",
 })
@@ -163,9 +162,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",--translate
 	NoDebuff	= "Sin %s",
 	DRoll		= "about to roll",--translate
-	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",--translate
 })
 
 ---------------------------
@@ -185,5 +184,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "No habéis hecho nada. Destruiré vuestro mundo."
+	Pull				= "No habéis hecho nada. Destruiré vuestro mundo.",
+	Kill				= "We are one step closer. The unknowable, transcendent power of the Emerald Dream I now give unto the Dragon Soul."--translate
 })
