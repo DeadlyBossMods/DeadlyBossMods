@@ -31,8 +31,8 @@ local spamPulverize = 0
 local totemCount = 0
 
 function mod:OnCombatStart(delay)
-	timerTotem:Start(30-delay)
-	timerPulverize:Start(10-delay)
+	timerTotem:Start(10-delay)
+	timerPulverize:Start(30-delay)
 	spamBlast = 0
 	spamPulverize = 0
 	totemCount = 0

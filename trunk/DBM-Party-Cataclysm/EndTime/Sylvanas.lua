@@ -19,11 +19,11 @@ local warnCalling	= mod:NewSpellAnnounce(100686, 4)
 local warnSacrifice	= mod:NewSpellAnnounce(101348, 2, nil, false)
 
 local timerShriek	= mod:NewTargetTimer(30, 101412)
-local timerCalling	= mod:NewNextTimer(45, 100686)	-- guessed she can do it more than once
+local timerCalling	= mod:NewNextTimer(40, 100686)	-- guessed she can do it more than once
 local timerSacrifice	= mod:NewNextTimer(30, 101348)
 
 function mod:OnCombatStart(delay)
-	timerCalling:Start(45-delay)
+	timerCalling:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
