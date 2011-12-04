@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/24/2011
+-- Last update: 12/4/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -945,6 +945,9 @@ L:SetOptionLocalization{
 	TimerFlarecoreDetonate	= "计时条：$spell:101927引爆"
 }
 
+L:SetMiscLocalization{
+}
+
 ----------------------
 -- Echo of Baine --
 ----------------------
@@ -978,6 +981,11 @@ L:SetGeneralLocalization{
 	name = "佩罗萨恩"
 }
 
+L:SetMiscLocalization{
+	Pull		= "No mortal may stand before me and live!"
+}
+
+
 -------------
 -- Azshara --
 -------------
@@ -985,6 +993,19 @@ L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
 	name = "艾萨拉女王"
+}
+
+L:SetWarningLocalization{
+	WarnAdds	= "新的小怪即将出现"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "下一批小怪"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "警报：新的小怪出现",
+	TimerAdds	= "计时条：下一批小怪"
 }
 
 L:SetMiscLocalization{
@@ -998,6 +1019,14 @@ L = DBM:GetModLocalization("Mannoroth")
 
 L:SetGeneralLocalization{
 	name = "玛诺洛斯与瓦罗森"
+}
+
+L:SetTimerLocalization{
+	TimerTyrandeHelp	= "泰兰德需要帮助"
+}
+
+L:SetOptionLocalization{
+	TimerTyrandeHelp	= "计时条：泰兰德需要帮助"
 }
 
 L:SetMiscLocalization{
@@ -1015,6 +1044,10 @@ L:SetGeneralLocalization{
 	name = "阿奎里恩"
 }
 
+L:SetMiscLocalization{
+	Pull		= "You're a mere mortal. It is time you died like one."
+}
+
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1022,6 +1055,10 @@ L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
 	name = "埃希拉·黎明克星"
+}
+
+L:SetMiscLocalization{
+	Pull		= "Let's get to work, shall we?"
 }
 
 ---------------------------

@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/28/2011
+-- Last update: 12/4/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -11,14 +11,16 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	SpecwarnVortexAfter	= "快躲到碎片后！"
+	KohcromWarning	= "%s：%s"--Bossname, spellname. At least with this we can get boss name from casts in this one, unlike a timer started off the previous bosses casts.
 })
 
 L:SetTimerLocalization({
+	KohcromCD		= "克卓莫模拟%s",--Universal single local timer used for all of his mimick timers
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "特殊警报：$spell:110047结束"
+	KohcromWarning	= "警报：克卓莫模拟技能",
+	KohcromCD		= "计时条：下一次克卓莫模拟技能"
 })
 
 L:SetMiscLocalization({
@@ -49,19 +51,19 @@ L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
 	warnOozes		= "血球即将出现：%s",
-	specWarnOozes	= "血球即将出现！",
-	specWarnManaVoid= "法力虚空 - 转换目标"
+	specWarnOozes	= "血球即将出现！"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "下一次血球"
+	timerOozesCD		= "下一次软泥怪",
+	timerOozesActive	= "软泥怪可攻击"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "警报：召唤血球",
-	specWarnOozes		= "特殊警报：召唤血球",
-	specWarnManaVoid	= "特殊警报：$spell:105530出现",
-	timerOozesCD		= "计时条：下一次血球"
+	warnOozes			= "警报：召唤软泥怪",
+	specWarnOozes		= "特殊警报：召唤软泥怪",
+	timerOozesCD		= "计时条：下一次软泥怪",
+	timerOozesActive	= "计时条：软泥怪可攻击" -- poor grammer.
 })
 
 L:SetMiscLocalization({
@@ -161,6 +163,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
 	NoDebuff	= "没有%s",
 	DRoll		= "about to roll"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
 })
@@ -182,5 +185,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "You have done NOTHING. I will tear your world APART."
+	Pull				= "You have done NOTHING. I will tear your world APART.",
+	Kill				+ "We are one step closer. The unknowable, transcendent power of the Emerald Dream I now give unto the Dragon Soul."
 })
