@@ -181,5 +181,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull				= "You have done NOTHING. I will tear your world APART.",
-	Kill				+ "We are one step closer. The unknowable, transcendent power of the Emerald Dream I now give unto the Dragon Soul."
+	Kill				= "We are one step closer. The unknowable, transcendent power of the Emerald Dream I now give unto the Dragon Soul."
 })
