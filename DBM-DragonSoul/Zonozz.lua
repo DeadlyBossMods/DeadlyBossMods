@@ -13,7 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -50,6 +49,12 @@ local function warnShadowsTargets()
 	table.wipe(shadowsTargets)
 end
 
+local function blackBloodEnds()
+	timerFocusedAngerCD:Start(6)
+	timerShadowsCD:Start(6)
+	timerPsychicDrainCD:Start(20)
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(6-delay)
@@ -73,6 +78,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerPsychicDrainCD:Cancel()
 		specWarnBlackBlood:Show()
 		timerBlackBlood:Start()
+		self:Schedule(30, blackBloodEnds)--More accurate way then tracking spell aura removed of black blood. Players dying in the phase were falsely triggering the phase ending early.
 	elseif args:IsSpellID(104322, 104606, 104607, 104608) then--104378 confirmed 10 man normal
 		warnPsychicDrain:Show()
 		specWarnPsychicDrain:Show()
@@ -102,23 +108,10 @@ function mod:SPELL_AURA_APPLIED(args)
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(104378, 110322) then
-		--Everything but void will be cast 6 seconds after blood phase.
-		timerFocusedAngerCD:Start(6)
---		timerPsychicDrainCD:Start(6)--This has changed, disable for now and use my 10 and 25 man logs to fix it later.
-		timerShadowsCD:Start(6)
-	end
-end	
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
---Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
---Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
---Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
---Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
---Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
-	if spellID == 103571 then
+	--Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
+	if spellID == 103571 then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
 		timerVoidofUnmakingCD:Start()
