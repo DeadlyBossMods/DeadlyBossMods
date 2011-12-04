@@ -106,7 +106,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104378, 110322) then
 		--Everything but void will be cast 6 seconds after blood phase.
 		timerFocusedAngerCD:Start(6)
-		timerPsychicDrainCD:Start(6)
+--		timerPsychicDrainCD:Start(6)--This has changed, disable for now and use my 10 and 25 man logs to fix it later.
 		timerShadowsCD:Start(6)
 	end
 end	
