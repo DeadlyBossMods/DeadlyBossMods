@@ -111,9 +111,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end	
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
-	if spellName == GetSpellInfo(103571) then--Void of the unmaking cast, do not use spellname because we want to ignore vents using spellid 103627 which fires when the sphere dispurses on the boss.
+	if spellID == 103571 then--Void of the unmaking cast, do not use spellname because we want to ignore vents using spellid 103627 which fires when the sphere dispurses on the boss.
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
 		timerVoidofUnmakingCD:Start()
