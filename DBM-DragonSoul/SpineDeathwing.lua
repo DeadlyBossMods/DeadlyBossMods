@@ -38,7 +38,7 @@ local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
 mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetIconOnGrip", true)
---mod:AddBoolOption("ShowShieldInfo", true)
+mod:AddBoolOption("ShowShieldInfo", true)
 
 local gripTargets = {}
 local gripIcon = 6
@@ -78,6 +78,7 @@ do
 	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
 
 	function setPlasmaTarget(guid, name)
+		DBM.BossHealth:Show(L.name)
 		plasmaTargets[guid] = name
 		healed[guid] = 0
 		local maxAbsorb =	mod:IsDifficulty("heroic25") and 420000 or
