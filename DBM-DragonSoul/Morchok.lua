@@ -42,6 +42,8 @@ local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
 --We will not start timers using Kohcrom's casts, it'll waste WAY too much space.
 --EJ is pretty clear, they are cast shortly after morchok, always. So echo timer is perfect and clean solution.
 
+mod:AddBoolOption("RangeFrame", false)--For achievement
+
 local spamBlood = 0
 local crystalCount = 0--3 crystals between each vortex (6 on heroic because of Kohcrom?)
 
@@ -55,6 +57,12 @@ function mod:OnCombatStart(delay)
 	timerStomp:Start(-delay)
 	timerCrystal:Start(19-delay)
 	timerVortexNext:Start(54-delay)
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -71,10 +79,15 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(103851) and args:GetSrcCreatureID() == 55265 then--Filter out Kohcrom here. his echo timers should handle themselves all on their own, but we don't want Kohcrom cast messing up Morchok's timers.
-		timerStomp:Start(19)
-		timerCrystal:Start(26)
-		timerVortexNext:Start()
+	if args:IsSpellID(103851) then
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+		if args:GetSrcCreatureID() == 55265 then--Filter out Kohcrom here. his echo timers should handle themselves all on their own, but we don't want Kohcrom cast messing up Morchok's timers.
+			timerStomp:Start(19)
+			timerCrystal:Start(26)
+			timerVortexNext:Start()
+		end
 	end
 end
 
@@ -125,6 +138,9 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(103821, 110045, 110046, 110047) then
 		specwarnVortex:Show()--No reason to split the special warning into 2, it's just an attention getter and doesn't stay on screen like normal messages.
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5)
+		end
 		if args:GetSrcCreatureID() == 55265 then--Morchok casting it
 			crystalCount = 0
 			warnVortex:Show()
