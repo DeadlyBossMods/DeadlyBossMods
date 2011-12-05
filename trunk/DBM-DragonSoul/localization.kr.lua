@@ -16,7 +16,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	KohcromWarning	= "크초르모가 동일하게 사용하는 주문 알림 보기(영웅 난이도)",
-	KohcromCD		= "크초르모가 동일하게 사용하는 주문 바 표시(영웅 난이도)"
+	KohcromCD		= "크초르모가 동일하게 사용하는 주문 바 표시(영웅 난이도)",
+	RangeFrame		= "거리 프레임 보기(5m, 업적 용도)"
 })
 
 L:SetMiscLocalization({
@@ -61,7 +62,8 @@ L:SetOptionLocalization({
 	specWarnOozes		= "핏방울 소환 특수 경고 보기",
 	timerOozesCD		= "다음 핏방울 바 표시",
 	timerOozesActive	= "핏방울이 소환된 후 공격 가능하기까지 남은시간 바 표시",
---	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시"
+--	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시",
+	RangeFrame			= "보스가 $spell:104898 주문의 영향을 받은 경우 거리 프레임 보기(4m)\n(일반 난이도 이상)"
 })
 
 L:SetMiscLocalization({
@@ -183,5 +185,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "넌 아무것도 못 했다. 내가 이 세상을 조각내주마."
+	Pull				= "넌 아무것도 못 했다. 내가 이 세상을 조각내주마.",
+	Kill				= "드디어 한걸음 다가섰구나. 이제 에메랄드의 꿈이 가진 미지의, 초자연적인 힘을 용의 영혼에 불어넣겠노라."
 })
