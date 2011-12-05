@@ -15,8 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
---	"SPELL_HEAL",
---	"SPELL_PERIODIC_HEAL",
+	"SPELL_HEAL",
+	"SPELL_PERIODIC_HEAL",
 	"RAID_BOSS_EMOTE",
 	"UNIT_DIED"
 )
@@ -65,18 +65,11 @@ local function showGripWarning()
 	table.wipe(gripTargets)
 end
 
---[[ WIP, Shields  (needs testing)
 local clearPlasmaTarget, setPlasmaTarget
 do
 	local plasmaTargets = {}
 	local healed = {}
-	local maxAbsorb = 0
 	
-	local function getShieldHP(guid)
-		if not healed[guid] then return end
-		return math.max(1, math.floor(healed[guid] / maxAbsorb * 100))
-	end
-
 	function mod:SPELL_HEAL(args)
 		if plasmaTargets[args.destGUID] then
 			healed[args.destGUID] = healed[args.destGUID] + (args.absorbed or 0)
@@ -87,20 +80,20 @@ do
 	function setPlasmaTarget(guid, name)
 		plasmaTargets[guid] = name
 		healed[guid] = 0
-		maxAbsorb = 	mod:IsDifficulty("heroic25") and 420000 or
-				mod:IsDifficulty("heroic10") and 280000 or
-				mod:IsDifficulty("normal25") and 300000 or
-				mod:IsDifficulty("normal10") and 200000 or 0
-		DBM.BossHealth:AddBoss({getShieldHP, guid}, L.PlasmaTarget:format(name))	-- correct way to pass guid argument to getShieldHP function?
+		local maxAbsorb =	mod:IsDifficulty("heroic25") and 420000 or
+							mod:IsDifficulty("heroic10") and 280000 or
+							mod:IsDifficulty("normal25") and 300000 or
+							mod:IsDifficulty("normal10") and 200000 or 1
+		DBM.BossHealth:AddBoss(function() return math.max(1, math.floor((healed[guid] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(name))
 	end
 
 	function clearPlasmaTarget(guid, name)
-		DBM.BossHealth:ClearBoss(L.PlasmaTarget:format(name))
+		DBM.BossHealth:RemoveBoss(L.PlasmaTarget:format(name))
 		plasmarTargets[guid] = nil
 		healed[guid] = nil
 	end
 end
---]]
+
 
 
 function mod:OnCombatStart(delay)
@@ -147,7 +140,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			gripIcon = gripIcon - 1
 		end
 		if self.Options.ShowShieldInfo then
-			--setPlasmaTarget(args.destGUID, args.destName)
+			setPlasmaTarget(args.destGUID, args.destName)
 		end
 		self:Unschedule(showGripWarning)
 		self:Schedule(0.3, showGripWarning)
@@ -161,7 +154,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		if self.Options.ShowShieldInfo then
-			--clearPlasmaTarget(args.destGUID, args.destName)
+			clearPlasmaTarget(args.destGUID, args.destName)
 		end
 	end
 end	
