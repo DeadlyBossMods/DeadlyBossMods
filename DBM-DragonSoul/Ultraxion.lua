@@ -111,3 +111,11 @@ function mod:CHAT_MSG_MONSTER_SAY(msg)
 		timerCombatStart:Start()
 	end
 end
+
+--			"<18.7> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Notarget##0#0##0#3731##0#false", -- [1]
+--			"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Trash or msg:find(L.Trash) then
+		DBM.Bars:CreateBar(253, "Skyrim")
+	end
+end
