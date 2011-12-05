@@ -27,7 +27,7 @@ local warnTentacle				= mod:NewSpellAnnounce(105551, 3)
 local warnHemorrhage			= mod:NewSpellAnnounce(105863, 3)
 local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
-local warnFragments				= mod:NewSpellAnnounce(109568, 4)--Fairly sure this is fragment summon spell, but could be wrong, will know next time i do fight and if timing matches.
+local warnFragments				= mod:NewSpellAnnounce(109568, 4)--This is indeed the summon fragments trigger
 local warnTerror				= mod:NewSpellAnnounce(106765, 4)
 local warnShrapnel				= mod:NewTargetAnnounce(106789, 3)
 
@@ -36,8 +36,8 @@ local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
 local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)
 local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps())--Maybe add healer to defaults too?
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
-local specWarnFragments			= mod:NewSpecialWarningSpell(109568, nil, nil, nil, true)--This is indeed the summon fragments trigger
-local specWarnTerror			= mod:NewSpecialWarningSpell(106705, nil, nil, nil, true)
+local specWarnFragments			= mod:NewSpecialWarningSpell(109568, nil, nil, nil, true)
+local specWarnTerror			= mod:NewSpecialWarningSpell(106705, mod:IsTank())--Not need to warn everyone, tanks for sure, everyone else depends on strat and set. Normally kill first set ignore second on normal.
 local specWarnShrapnel			= mod:NewSpecialWarningYou(106789)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
