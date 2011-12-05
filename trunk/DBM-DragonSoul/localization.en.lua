@@ -114,6 +114,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",
 	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
 })
 
