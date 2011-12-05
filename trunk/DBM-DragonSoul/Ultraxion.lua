@@ -16,7 +16,8 @@ mod:RegisterEventsInCombat(
 )
 
 mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_SAY"
+	"CHAT_MSG_MONSTER_SAY",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
