@@ -15,6 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+--	"SPELL_HEAL",
+--	"SPELL_PERIODIC_HEAL",
 	"RAID_BOSS_EMOTE",
 	"UNIT_DIED"
 )
@@ -36,6 +38,7 @@ local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
 mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetIconOnGrip", true)
+--mod:AddBoolOption("ShowShieldInfo", true)
 
 local gripTargets = {}
 local gripIcon = 6
@@ -61,6 +64,44 @@ local function showGripWarning()
 	specWarnGrip:Show()
 	table.wipe(gripTargets)
 end
+
+--[[ WIP, Shields  (needs testing)
+local clearPlasmaTarget, setPlasmaTarget
+do
+	local plasmaTargets = {}
+	local healed = {}
+	local maxAbsorb = 0
+	
+	local function getShieldHP(guid)
+		if not healed[guid] then return end
+		return math.max(1, math.floor(healed[guid] / maxAbsorb * 100))
+	end
+
+	function mod:SPELL_HEAL(args)
+		if plasmaTargets[args.destGUID] then
+			healed[args.destGUID] = healed[args.destGUID] + (args.absorbed or 0)
+		end
+	end
+	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
+
+	function setPlasmaTarget(guid, name)
+		plasmaTargets[guid] = name
+		healed[guid] = 0
+		maxAbsorb = 	mod:IsDifficulty("heroic25") and 420000 or
+				mod:IsDifficulty("heroic10") and 280000 or
+				mod:IsDifficulty("normal25") and 300000 or
+				mod:IsDifficulty("normal10") and 200000 or 0
+		DBM.BossHealth:AddBoss({getShieldHP, guid}, L.PlasmaTarget:format(name))	-- correct way to pass guid argument to getShieldHP function?
+	end
+
+	function clearPlasmaTarget(guid, name)
+		DBM.BossHealth:ClearBoss(L.PlasmaTarget:format(name))
+		plasmarTargets[guid] = nil
+		healed[guid] = nil
+	end
+end
+--]]
+
 
 function mod:OnCombatStart(delay)
 	table.wipe(gripTargets)
@@ -105,6 +146,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, gripIcon)
 			gripIcon = gripIcon - 1
 		end
+		if self.Options.ShowShieldInfo then
+			--setPlasmaTarget(args.destGUID, args.destName)
+		end
 		self:Unschedule(showGripWarning)
 		self:Schedule(0.3, showGripWarning)
 	end
@@ -115,6 +159,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(105490, 109457, 109458, 109459) then
 		if self.Options.SetIconOnGrip then
 			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.ShowShieldInfo then
+			--clearPlasmaTarget(args.destGUID, args.destName)
 		end
 	end
 end	
