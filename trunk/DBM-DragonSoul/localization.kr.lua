@@ -93,7 +93,8 @@ L:SetOptionLocalization({
 	RangeFrame				= "$spell:105269 주문의 영향을 받은 경우 거리 프레임 보기 (3m)",
 	AnnounceFrostTombIcons	= "$spell:104451 대상을 공격대 대화로 알리기\n(승급 권한 필요)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
-	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
+	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
 })
 
 L:SetMiscLocalization({
@@ -160,13 +161,15 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecWarnTendril			= "$spell:109454 약화 효과가 없을 경우 특수 경고 보기",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "$spell:109454 약화 효과 없음에 대한 정보 프레임 보기",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	ShowShieldInfo			= "$spell:109459 주문 흡수량에 대한 바와 함께 보스 체력 프레임 보기"
 })
 
 L:SetMiscLocalization({
-	Pull		= "저 갑옷! 놈의 갑옷이 벗겨지는군! 갑옷을 뜯어내면 놈을 쓰러뜨릴 기회가 생길 거요!",	
-	NoDebuff	= "%s 없음",
-	DRoll		= "회전하려고"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
+	Pull			= "저 갑옷! 놈의 갑옷이 벗겨지는군! 갑옷을 뜯어내면 놈을 쓰러뜨릴 기회가 생길 거요!",	
+	NoDebuff		= "%s 없음",
+	PlasmaTarget	= "이글거리는 혈장: %s",
+	DRoll			= "회전하려고"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
 })
 
 ---------------------------
