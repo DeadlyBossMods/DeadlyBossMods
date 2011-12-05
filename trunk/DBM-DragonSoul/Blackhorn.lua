@@ -44,6 +44,8 @@ local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
 
+local berserkTimer					= mod:NewBerserkTimer(250)
+
 local phase2Started = false
 local lastFlames = 0
 
@@ -114,6 +116,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCombatStart:Start(5)--Shorter now on live? 5-6 seems about right now. Lets try 5.
 		timerTwilightFlamesCD:Start(22)
 		timerShockwaveCD:Start()--23-26 second variation
+		if not self:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR
+			berserkTimer:Start()
+		end
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
