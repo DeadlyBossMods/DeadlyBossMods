@@ -140,9 +140,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, gripIcon)
 			gripIcon = gripIcon - 1
 		end
-		if self.Options.ShowShieldInfo then
-			setPlasmaTarget(args.destGUID, args.destName)
-		end
 		self:Unschedule(showGripWarning)
 		self:Schedule(0.3, showGripWarning)
 	elseif args:IsSpellID(109379, 109362, 109363, 109364) then -- confirmed 109379 in 10 man. otherid is drycoded.
