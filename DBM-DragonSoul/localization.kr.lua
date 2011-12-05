@@ -162,7 +162,7 @@ L:SetOptionLocalization({
 	SpecWarnTendril			= "$spell:109454 약화 효과가 없을 경우 특수 경고 보기",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "$spell:109454 약화 효과 없음에 대한 정보 프레임 보기",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
-	ShowShieldInfo			= "$spell:109459 주문 흡수량에 대한 바와 함께 보스 체력 프레임 보기"
+	ShowShieldInfo			= "$spell:105479 주문 흡수량에 대한 바와 함께 보스 체력 프레임 보기"
 })
 
 L:SetMiscLocalization({
