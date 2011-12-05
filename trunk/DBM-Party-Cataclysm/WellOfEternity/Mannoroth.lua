@@ -36,9 +36,9 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(103888) then
 		felstorms = felstorms + 1
+		specWarnFelStorm:Show()
+		timerFelStorm:Start()
 		if felstorms < 2 then
-			specWarnFelStorm:Show()
-			timerFelStorm:Start()
 			timerFelStormCD:Start()
 		end
 	end
