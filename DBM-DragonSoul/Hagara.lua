@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(55689)
 mod:SetModelID(39318)
 mod:SetZone()
-mod:SetUsedIcons(4, 5, 6, 7, 8)
+mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON"
 )
 
@@ -23,6 +24,8 @@ local warnShatteringIce		= mod:NewTargetAnnounce(105289, 3, nil, mod:IsHealer())
 local warnFrostTombCast		= mod:NewAnnounce("warnFrostTombCast", 4, 104448)--Can't use a generic, cause it's an 8 second cast even though it says 1second in tooltip.
 local warnFrostTomb			= mod:NewTargetAnnounce(104451, 4)
 local warnIceLance			= mod:NewTargetAnnounce(105269, 3)
+local warnFrostflake		= mod:NewTargetAnnounce(109325, 3)	-- verify with logs
+local warnStormPillars		= mod:NewSpellAnnounce(109557, 3)	-- verify with logs
 
 local specWarnFrostTombCast	= mod:NewSpecialWarningSpell(104448, nil, nil, nil, true)
 local specWarnTempest		= mod:NewSpecialWarningSpell(109552, nil, nil, nil, true)
@@ -30,6 +33,7 @@ local specWarnLightingStorm	= mod:NewSpecialWarningSpell(105465, nil, nil, nil, 
 local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
 local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 local specWarnWatery		= mod:NewSpecialWarningMove(110317)
+local specWarnStormPillars	= mod:NewSpecialWarningClose(109557)	-- if target != nil
 
 local timerFrostTomb		= mod:NewCastTimer(8, 104448)
 local timerFrostTombCD		= mod:NewNextTimer(20, 104451)
@@ -46,6 +50,7 @@ local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:Is
 --local soundFrostTomb		= mod:NewSound(104451)--Needed?
 
 mod:AddBoolOption("RangeFrame")--Ice lance spreading. May make it more dynamic later but for now i need to see the fight in realtime before i can do any more guessing off mailed in combat logs.
+mod:AddBoolOption("SetIconOnFrostflake", true)
 mod:AddBoolOption("SetIconOnFrostTomb", true)
 mod:AddBoolOption("AnnounceFrostTombIcons", false)
 
@@ -53,6 +58,24 @@ local lanceTargets = {}
 local tombTargets = {}
 local tombIconTargets = {}
 --local playerTombed = false
+
+function mod:stormPillarsTarget(target)
+	local targetname = target or self:GetBossTarget(55689)
+	if not targetname then return end
+	local uId = DBM:GetRaidUnitId(targetname)
+	if uId then
+		local x, y = GetPlayerMapPosition(uId)
+		if x == 0 and y == 0 then
+			SetMapToCurrentZone()
+			x,y = GetPlayerMapPosition(uId)
+		end
+		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+		if inRange and inRange < 5 then
+			specWarnStormPillars:Show()
+		end
+	end
+end
+
 
 function mod:ShatteredIceTarget()
 	local targetname = self:GetBossTarget(55689)
@@ -159,6 +182,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerAssaultCD:Start()
 	elseif args:IsSpellID(110317) and args:IsPlayer() then
 		specWarnWatery:Show()
+	elseif args:IsSpellID(109325) then
+		warnFrostFlake:Show()
+		if self.Options.SetIconOnFrostflake then
+			mod:SetIcon(args.destName, 3)
+		end
 	end
 end
 
@@ -214,6 +242,13 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(105289, 108567) then--105289 10/25 man normal confirmed.
 		self:ScheduleMethod(0.2, "ShatteredIceTarget")
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(109557) then
+		warnStormPillars:Show()
+		stormPillarsTarget(args.destName)
 	end
 end
 
