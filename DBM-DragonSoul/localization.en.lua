@@ -157,12 +157,14 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecWarnTendril			= "Show special warning when you are missing $spell:109454 debuff",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "Show info frame for players without $spell:109454",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	ShowShieldInfo			= "Show boss health with a health bar for $spell:109459"
 })
 
 L:SetMiscLocalization({
 	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
 	NoDebuff	= "No %s",
+	PlasmaTarget	= "Searing Plasma: %s",
 	DRoll		= "about to roll"
 })
 
