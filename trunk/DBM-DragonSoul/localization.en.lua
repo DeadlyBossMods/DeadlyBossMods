@@ -15,7 +15,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	KohcromWarning	= "Show warnings for Kohcrom mimicking abilities.",
-	KohcromCD		= "Show timers for Kohcrom's next ability mimick."
+	KohcromCD		= "Show timers for Kohcrom's next ability mimick.",
+	RangeFrame		= "Show range frame (5) for achievement."
 })
 
 L:SetMiscLocalization({
@@ -58,7 +59,8 @@ L:SetOptionLocalization({
 	warnOozes			= "Show warning for Oozes spawning",
 	specWarnOozes		= "Show special warning for Oozes spawning",
 	timerOozesCD		= "Show timer for next Oozes spawn",
-	timerOozesActive	= "Show timer for when Oozes become attackable", -- poor grammer.
+	timerOozesActive	= "Show timer for when Oozes become attackable",
+	RangeFrame			= "Show range frame (4) for $spell:104898\n(Normal+ difficulty)"
 })
 
 L:SetMiscLocalization({

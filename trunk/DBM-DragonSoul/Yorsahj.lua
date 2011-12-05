@@ -22,15 +22,17 @@ local warnVoidBolt		= mod:NewStackAnnounce(108383, 3, nil, mod:IsTank() or mod:I
 local warnManaVoid		= mod:NewSpellAnnounce(105530, 3)
 
 local specWarnOozes		= mod:NewSpecialWarning("specWarnOozes", mod:IsDps())
-local specWarnVoidBolt	= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)--with 20 second debuffs and 11 second CDs, can probably trade at 2, but it may still be 30 on 25 man not sure yet so i'll leave 3 for now.
+local specWarnVoidBolt	= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)
 local specWarnManaVoid	= mod:NewSpecialWarningSpell(105530, mod:IsDps() or mod:IsManaUser())
 
 local timerOozesCD		= mod:NewTimer(90, "timerOozesCD", 16372)
 local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- variables (7.0~8.5)
---local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--i can't quite see what makes him stop casting it yet throughout fight yet though to perfectly cancel/start it so it's semi inaccurate for now.
+--local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--Needs more work, need to check for the ability that halfs his CDs and such.
 local timerVoidBolt		= mod:NewTargetTimer(20, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
 
-local berserkTimer				= mod:NewBerserkTimer(600)
+local berserkTimer		= mod:NewBerserkTimer(600)
+
+mod:AddBoolOption("RangeFrame", true)
 
 --[[
 Confirmed in transcriptor log for normal mode.
@@ -62,12 +64,15 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then--104849, 108383 confirmed 10 and 25 man normal, other 2 drycoded from wowhead.
 --		timerVoidBoltCD:Start()--Start CD off this not applied, that way we still get CD if a tank AMS's the debuff application.
-	elseif args:IsSpellID(105530) then--105530 confirmed 10 man normal, other drycoded from wowhead.
+	elseif args:IsSpellID(105530) then--105530 confirmed 10 man normal.
 		warnManaVoid:Show()
 		specWarnManaVoid:Show()
 	end
@@ -80,6 +85,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 0) >= 3 and args:IsPlayer() then
 			specWarnVoidBolt:Show(args.amount)
 		end
+	elseif args:IsSpellID(104898) and not self:IsDifficulty("lfr25") and self.Options.RangeFrame then
+		DBM.RangeCheck:Show(4)
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -87,11 +94,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then--104849, 108383 confirmed 10 and 25 man normal, other 2 drycoded from wowhead.
 		timerVoidBolt:Cancel(args.destName)
+	elseif args:IsSpellID(104898) and self.Options.RangeFrame then--110743 exists but i don't see it in 10 man or 25 man normal logs.
+		DBM.RangeCheck:Hide()
 	end
 end		
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
-	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
+	if uId ~= "boss1" then return end
 	if oozeColors[spellID] then
 		warnOozes:Show(table.concat(oozeColors[spellID], ", "))
 		specWarnOozes:Show()
