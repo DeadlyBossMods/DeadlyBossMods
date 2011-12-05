@@ -372,11 +372,12 @@ function bossHealth:AddBoss(...)
 end
 
 -- just pass any of the creature IDs for shared health bosses
+-- also accepts the name of the bar for generic bars (i.e. id == function) as you probably don't have access to the specific closure when removing something later
 function bossHealth:RemoveBoss(cId)
 	if not anchor or not anchor:IsShown() then return end
 	for i = #bars, 1, -1 do
 		local bar = bars[i]
-		if bar.id == cId or type(bar.id) == "table" and checkEntry(bar.id, cId) then
+		if bar.id == cId or type(bar.id) == "table" and checkEntry(bar.id, cId) or type(bar.id) == "function" and (_G[bar:GetName().."BarName"]):GetText() == cId then
 			if bars[i + 1] then
 				local next = bars[i + 1]
 				if DBM.Options.HealthFrameGrowUp then
