@@ -33,8 +33,8 @@ local specWarnWatery		= mod:NewSpecialWarningMove(110317)
 
 local timerFrostTomb		= mod:NewCastTimer(8, 104448)
 local timerFrostTombCD		= mod:NewNextTimer(20, 104451)
-local timerIceLance			= mod:NewBuffActiveTimer(16, 105269)
-local timerIceLanceCD		= mod:NewCDTimer(30, 105269)
+local timerIceLance			= mod:NewBuffActiveTimer(15, 105269)
+local timerIceLanceCD		= mod:NewNextTimer(30, 105269)
 local timerSpecialCD		= mod:NewTimer(62, "TimerSpecial", "Interface\\Icons\\Spell_Nature_WispSplode")
 local timerTempestCD		= mod:NewCDTimer(62, 105256)
 local timerLightningStormCD	= mod:NewCDTimer(62, 105465)
@@ -167,7 +167,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
-		timerFrostTombCD:Start()
+		if not self:IsDifficulty("lfr25") then
+			timerFrostTombCD:Start()
+		end
 		timerAssaultCD:Start(20)
 		timerLightningStormCD:Start()
 		if self.Options.RangeFrame then
@@ -176,7 +178,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
-		if not self:IsDifficulty("lfr25") then--Not used in LFR?
+		if not self:IsDifficulty("lfr25") then
 			timerFrostTombCD:Start()
 		end
 		timerAssaultCD:Start(20)
