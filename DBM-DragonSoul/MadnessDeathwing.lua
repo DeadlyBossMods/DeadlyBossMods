@@ -37,6 +37,7 @@ local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil,
 local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps())--Maybe add healer to defaults too?
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
 local specWarnFragments			= mod:NewSpecialWarningSpell(109568, nil, nil, nil, true)--This is indeed the summon fragments trigger
+local specWarnTerror			= mod:NewSpecialWarningSpell(106705, nil, nil, nil, true)
 local specWarnShrapnel			= mod:NewSpecialWarningYou(106789)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
@@ -50,8 +51,11 @@ local timerFragmentsCD			= mod:NewNextTimer(90, 109568)
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewBuffFadesTimer(6, 106789)
 
+local berserkTimer				= mod:NewBerserkTimer(900)
+
 local firstAspect = true
 local engageCount = 0
+local phase2 = false
 local shrapnelTargets = {}
 
 local function warnShrapnelTargets()
@@ -63,6 +67,7 @@ end
 function mod:OnCombatStart(delay)
 	firstAspect = true
 	engageCount = 0
+	phase2 = false
 	table.wipe(shrapnelTargets)
 end
 
@@ -112,7 +117,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnImpaleOther:Show(args.destName)
 		end
-	elseif args:IsSpellID(106789, 106791, 110141, 109598, 109599) then -- 106789 confirmed. 110141 25 man confirmed. the other IDs don't still guesses, 5 diff IDs i suspect because of LFR
+	-- confirmed spellid : 106794, 110141
+	-- 106794 is 10man debuff (confirmed), 106791 is used 10man SPELL_CAST_START event. 
+	-- In Game Tooltip, 106794 cast time is channeling, 106791 is 6 sec.. so I guess channeling spell is actually debuff.
+	-- In this rule, I guessed other spellids. (maybe 109598, 109599 used SPELL_CAST_START event, so removed)
+	elseif args:IsSpellID(106794, 110139, 110140, 110141) then
 		shrapnelTargets[#shrapnelTargets + 1] = args.sourceName
 		self:Unschedule(warnShrapnelTargets)
 		if args:IsPlayer() then
@@ -160,7 +169,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 			warnTentacle:Show()
 			specWarnTentacle:Show()--It's not up so give special warning for these Tentacles.
 		end
-	elseif spellName == GetSpellInfo(106708) then--Slump (Phase 2 start)
+	elseif spellName == GetSpellInfo(106708) and not phase2 then--Slump (Phase 2 start), sometimes it's double warned. bliz bug??
+		phase2 = true 
 		warnPhase2:Show()
 		timerFragmentsCD:Start(11)
 		timerTerrorCD:Start(36)
