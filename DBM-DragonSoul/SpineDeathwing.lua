@@ -145,6 +145,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(showGripWarning)
 		self:Schedule(0.3, showGripWarning)
+	elseif args:IsSpellID(109379, 109362, 109363, 109364) then -- confirmed 109379 in 10 man. otherid is drycoded.
+		if self.Options.ShowShieldInfo then
+			setPlasmaTarget(args.destGUID, args.destName)
+		end
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -154,6 +158,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnGrip then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args:IsSpellID(109379, 109362, 109363, 109364) then -- confirmed 109379 in 10 man. otherid is drycoded.
 		if self.Options.ShowShieldInfo then
 			clearPlasmaTarget(args.destGUID, args.destName)
 		end

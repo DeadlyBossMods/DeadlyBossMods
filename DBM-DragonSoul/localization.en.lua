@@ -159,7 +159,7 @@ L:SetOptionLocalization({
 	SpecWarnTendril			= "Show special warning when you are missing $spell:109454 debuff",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "Show info frame for players without $spell:109454",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
-	ShowShieldInfo			= "Show boss health with a health bar for $spell:109459"
+	ShowShieldInfo			= "Show boss health with a health bar for $spell:105479"
 })
 
 L:SetMiscLocalization({
