@@ -33,6 +33,9 @@ local timerTwilightEruptionCD		= mod:NewNextTimer(360, 106388)--Berserk timer mo
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
 --local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)--For some reason the api is not accurate, it's not returning correct value so disabled.
 local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 15 on normal
+local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
+local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
+local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
 
 --local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
 
@@ -50,6 +53,9 @@ function mod:OnCombatStart(delay)
 	hourOfTwilightCount = 0
 	fadingLightCount = 0
 	timerTwilightEruptionCD:Start(-delay)
+	timerGiftofLight:Start(-delay)
+	timerEssenceofDreams:Start(-delay)
+	timerSourceofMagic:Start(-delay)
 	timerHourofTwilightCD:Start(-delay)
 end
 
