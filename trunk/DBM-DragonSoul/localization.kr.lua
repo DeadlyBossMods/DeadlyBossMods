@@ -117,6 +117,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Trash				= "다시 만나 반갑군, 알렉스트라자. 난 떠나 있는 동안 좀 바쁘게 지냈다.",
 	Pull				= "엄청난 무언가가 느껴진다. 조화롭지 못한 그의 혼돈이 내 정신을 어지럽히는구나!"
 })
 
