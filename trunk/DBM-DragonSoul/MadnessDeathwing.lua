@@ -69,6 +69,7 @@ function mod:OnCombatStart(delay)
 	engageCount = 0
 	phase2 = false
 	table.wipe(shrapnelTargets)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
