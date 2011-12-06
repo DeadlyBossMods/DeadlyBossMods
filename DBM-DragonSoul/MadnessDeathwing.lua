@@ -69,7 +69,9 @@ function mod:OnCombatStart(delay)
 	engageCount = 0
 	phase2 = false
 	table.wipe(shrapnelTargets)
-	berserkTimer:Start(-delay)
+	if not self:IsDifficulty("lfr25") then
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
