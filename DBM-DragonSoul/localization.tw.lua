@@ -7,14 +7,16 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	SpecwarnVortexAfter	= "快躲到柱子後!"
+	KohcromWarning	= "%s: %s"
 })
 
 L:SetTimerLocalization({
+	KohcromCD		= "寇魔的%s",
 })
 
 L:SetOptionLocalization({
-	SpecwarnVortexAfter	= "當$spell:110047結束時顯示特別警告"
+	KohcromWarning	= "為寇魔的技能顯示警告。",
+	KohcromCD		= "為寇魔下一次的技能顯示計時器。"
 })
 
 L:SetMiscLocalization({
@@ -46,18 +48,19 @@ L= DBM:GetModLocalization(325)
 L:SetWarningLocalization({
 	warnOozes		= "軟泥即將來臨!: %s",
 	specWarnOozes	= "軟泥來臨!",
-	specWarnManaVoid= "潰法力場 - 更換目標"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "下一次軟泥"
+	timerOozesCD	= "下一次軟泥",
+	timerOozesActive	= "軟泥可被攻擊",
+	
 })
 
 L:SetOptionLocalization({
 	warnOozes			= "當軟泥重生時顯示警告",
 	specWarnOozes		= "當軟泥重生時顯示特別警告",
-	specWarnManaVoid	= "為$spell:105530出現時顯示特別警告",
-	timerOozesCD		= "為下一次軟泥重生顯示計時器"
+	timerOozesCD		= "為下一次軟泥重生顯示計時器",
+	timerOozesActive	= "為軟泥重生後可被攻擊顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -144,21 +147,22 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
-	SpecWarnTendril			= "Get Secured!"
+	SpecWarnTendril			= "已被安全抓住!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "Show special warning when you are missing $spell:109454 debuff",--http://ptr.wowhead.com/npc=56188
-	InfoFrame				= "Show info frame for players without $spell:109454",
+	SpecWarnTendril			= "當你身上沒有$spell:109454減益時顯示特別警告",--http://ptr.wowhead.com/npc=56188
+	InfoFrame				= "為沒有$spell:109454的玩家顯示訊息框",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
 })
 
 L:SetMiscLocalization({
-	NoDebuff	= "No %s",
-	DRoll		= "about to roll"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
+	Pull		= "他的護甲!他正在崩壞!破壞他的護甲，我們就有機會打贏他了!",
+	NoDebuff	= "無%s",
+	DRoll		= "他準備往"
 })
 
 ---------------------------
@@ -167,17 +171,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Blistering Tentacles - Switch"--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnTentacle	= "快攻擊極熾觸手!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Show special warning when Blistering Tentacles spawn (and Alexstrasza is not active)"--http://ptr.wowhead.com/npc=56188
+	SpecWarnTentacle	= "為極熾觸手生長顯示特別警告(當雅立史卓莎不在場時)"--http://ptr.wowhead.com/npc=56188
 })
 
 L:SetMiscLocalization({
-	Pull				= "You have done NOTHING. I will tear your world APART."
+	Pull				= "你們都徒勞無功。我會撕毀你們的世界。"
 })
-

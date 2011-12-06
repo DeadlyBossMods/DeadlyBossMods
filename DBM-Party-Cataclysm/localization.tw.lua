@@ -964,7 +964,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
+	Kill		= "你們不知道自己做了什麼。阿曼蘇爾...我所...見到的..."
 }
 
 ------------------------
@@ -987,8 +987,21 @@ L:SetGeneralLocalization{
 	name = "艾薩拉女王"
 }
 
+L:SetWarningLocalization{
+	WarnAdds	= "新的魔導師!"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "下一次魔導師"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "為下一次魔導師發佈警告",
+	TimerAdds	= "為下一次魔導師顯示計時器"
+}
+
 L:SetMiscLocalization{
-	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
+	Kill		= "夠了。我雖然想當稱職的女主人，但是我還有其他事情要忙。"
 }
 
 -----------------------------
@@ -1001,7 +1014,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "No...no! This victory will not be ripped from my grasp! I will not return to him in failure! I will not be torn from this pitiful world! No...NOOOOOOOO!!!"
+	Kill		= "不...不!勝利應該是屬於我的!我不會失敗地回到他面前!我不會...在這個可悲的世界...被撕裂!絕不-!!!!!"
 }
 
 ------------------------
@@ -1015,6 +1028,10 @@ L:SetGeneralLocalization{
 	name = "阿奇里森"
 }
 
+L:SetMiscLocalization{
+	Pull		= "阿奇里森大喊: 你只是個凡人。就像凡人一樣死去吧。"
+}
+
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
@@ -1022,6 +1039,10 @@ L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
 	name = "阿希拉黎明殺戮者"
+}
+
+L:SetMiscLocalization{
+	Pull		= "該辦正事了，對吧?"
 }
 
 ---------------------------
