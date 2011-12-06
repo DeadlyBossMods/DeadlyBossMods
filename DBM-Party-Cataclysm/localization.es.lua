@@ -827,6 +827,10 @@ L:SetGeneralLocalization{
 	name = "Gri'lek"
 }
 
+L:SetMiscLocalization({
+	pursuitEmote	= "%s está persiguiendo"
+})
+
 ---------------
 -- Hazza'rah --
 ---------------
@@ -1044,7 +1048,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "¡Estás loco si crees que vas a ocupar el lugar del Aspecto de la Tierra, chamán!"
+	Pull		= "Eres un simple mortal y es hora de que mueras como tal."
 }
 
 ----------------------
