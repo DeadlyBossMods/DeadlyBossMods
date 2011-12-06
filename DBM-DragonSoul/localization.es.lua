@@ -16,7 +16,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	KohcromWarning	= "Show warnings for Kohcrom mimicking abilities.",
-	KohcromCD		= "Show timers for Kohcrom's next ability mimick."
+	KohcromCD		= "Show timers for Kohcrom's next ability mimick.",
+	RangeFrame		= "Mostrar distancia (5) para logro."
 })
 
 L:SetMiscLocalization({
@@ -60,6 +61,7 @@ L:SetOptionLocalization({
 	specWarnOozes		= "Mostrar aviso especial cuando salgan mocos",
 	timerOozesCD		= "Mostrar tiempo para siguientes mocos",
 	timerOozesActive	= "Mostrar tiempo para que los mocos se pueden atacar",
+	RangeFrame			= "Mostrar distancia (4) para $spell:104898\n(Dificultad normal o superior)"
 })
 
 L:SetMiscLocalization({
@@ -90,7 +92,8 @@ L:SetOptionLocalization({
 	RangeFrame				= "Mostrar distancia (3) para $spell:105269",
 	AnnounceFrostTombIcons	= "Anunciar iconos de los objetivos de $spell:104451 a la banda\n(requiere líder)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
-	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
+	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
 })
 
 
@@ -115,6 +118,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",--translate
 	Pull				= "Percibo que se avecina una gran alteración del equilibrio. ¡Su caos inunda mi mente!"
 })
 
@@ -158,12 +162,14 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecWarnTendril			= "Mostrar un aviso especial cuando no tengas el debuff de $spell:109454",
 	InfoFrame				= "Mostrar información de jugadores sin $spell:109454",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	ShowShieldInfo			= "Mostrar barra de vida del boss con una barra para $spell:105479"
 })
 
 L:SetMiscLocalization({
 	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",--translate
 	NoDebuff	= "Sin %s",
+	PlasmaTarget	= "Plasma ardiente: %s",
 	DRoll		= "about to roll",--translate
 })
 
