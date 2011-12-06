@@ -37,10 +37,12 @@ local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also 
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
---local timerKohcromCD	= mod:NewTimer(20.5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
+local timerKohcromCD	= mod:NewTimer(20.5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
 --We will not start timers using Kohcrom's casts, it'll waste WAY too much space.
 --EJ is pretty clear, they are cast shortly after morchok, always. So echo timer is perfect and clean solution.
+
+local berserkTimer		= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("RangeFrame", false)--For achievement
 
@@ -51,6 +53,7 @@ function mod:OnCombatStart(delay)
 	spamBlood = 0
 	if self:IsDifficulty("heroic10", "heroic25") then
 		crystalCount = 2--assuming only 4 before first aoe.
+		berserkTimer:Start(-delay)--7 min berserk based on a video, so may not be 100%
 	else
 		crystalCount = 1--only 2 before first aoe so we fake set it to 1 on pull.
 	end
@@ -98,7 +101,7 @@ function mod:SPELL_CAST_START(args)
 			if crystalCount < 3 then
 				timerStomp:Start()
 				if UnitExists("boss2") then
-					--timerKohcromCD:Start(10, args.spellname)
+					timerKohcromCD:Start(5, args.spellname)--Based on video only, seemed to always stomp 5 second after morchok
 				end
 			end
 		else
@@ -141,14 +144,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
-		if args:GetSrcCreatureID() == 55265 then--Morchok casting it
+		if args:GetSrcCreatureID() == 55265 then--Morchok casting it. Seems they cast this at same time, so no reason to announce twin doing it.
 			crystalCount = 0
 			warnVortex:Show()
-			if UnitExists("boss2") then--Check if boss2 even exists, if it doesnt, either normal mode, or he hasn't spawned yet, don't start timer.
-				--timerKohcromCD:Start(10, args.spellname)
-			end
-		else--Kohcrom casting
-			KohcromWarning:Show(args.sourceName, args.spellName)
 		end
 	end
 end
