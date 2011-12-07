@@ -8,7 +8,6 @@ mod:SetZone()
 mod:SetUsedIcons()
 
 mod:RegisterCombat("yell", L.Pull)
-mod:RegisterKill("yell", L.Kill)
 mod:SetMinCombatTime(20)
 
 mod:RegisterEventsInCombat(
@@ -37,7 +36,7 @@ local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil,
 local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps())--Maybe add healer to defaults too?
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
 local specWarnFragments			= mod:NewSpecialWarningSpell(109568, nil, nil, nil, true)
-local specWarnTerror			= mod:NewSpecialWarningSpell(106705, mod:IsTank())--Not need to warn everyone, tanks for sure, everyone else depends on strat and set. Normally kill first set ignore second on normal.
+local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())--Not need to warn everyone, tanks for sure, everyone else depends on strat and set. Normally kill first set ignore second on normal.
 local specWarnShrapnel			= mod:NewSpecialWarningYou(106789)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
@@ -107,6 +106,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else	
 			timerElementiumBlast:Start(20)--Slowed by Nozdormu, explosion in 20 seconds
 		end
+	elseif args:IsSpellID(110063) and phase2 and self:IsInCombat() then--Astral Recall. Thrall teleports off the platform. take THAT for kill detection!
+		DBM:EndCombat(self)
 	end
 end
 
