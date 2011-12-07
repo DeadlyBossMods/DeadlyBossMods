@@ -47,15 +47,13 @@ local berserkTimer		= mod:NewBerserkTimer(360)
 mod:AddBoolOption("RangeFrame", false)--For achievement
 
 local spamBlood = 0
-local crystalCount = 0--3 crystals between each vortex (6 on heroic because of Kohcrom?)
+local crystalCount = 0--3 crystals between each vortex cast by Morchok, we ignore his twins.
 
 function mod:OnCombatStart(delay)
 	spamBlood = 0
+	crystalCount = 1--only 2 before first aoe so we fake set it to 1 on pull.
 	if self:IsDifficulty("heroic10", "heroic25") then
-		crystalCount = 2--assuming only 4 before first aoe.
 		berserkTimer:Start(-delay)--7 min berserk based on a video, so may not be 100%
-	else
-		crystalCount = 1--only 2 before first aoe so we fake set it to 1 on pull.
 	end
 	timerStomp:Start(-delay)
 	timerCrystal:Start(19-delay)
