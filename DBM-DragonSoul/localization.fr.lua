@@ -6,7 +6,7 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	KohcromWarning	= "%s : %s"
+	KohcromWarning	= "%s : %s"
 })
 
 L:SetTimerLocalization({
@@ -46,8 +46,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "Arrivée de gelées : %s",
-	specWarnOozes	= "Arrivée de gelées !",
+	warnOozes		= "Arrivée de gelées : %s",
+	specWarnOozes	= "Arrivée de gelées !",
 })
 
 L:SetTimerLocalization({
@@ -88,14 +88,14 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerSpecial			= "Délai avant la première incantation d'une technique spéciale",
 	RangeFrame				= "Cadre des portées (3) pour $spell:105269",
-	AnnounceFrostTombIcons	= "Annonce des icûnes des cibles de $spell:104451 au canal Raid\n(nécessite d'être le chef du raid)",
+	AnnounceFrostTombIcons	= "Annonce des icônes des cibles de $spell:104451 au canal Raid\n(nécessite d'être le chef du raid)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
 	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
 })
 
 L:SetMiscLocalization({
-	TombIconSet				= "Icûne de Tombeau de glace {rt%d} placée sur %s"
+	TombIconSet				= "Icône de Tombeau de glace {rt%d} placée sur %s"
 })
 
 ---------------
@@ -115,8 +115,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",
-	Pull				= "Je sens un grand trouble dans l'équilibre qui s'approche. Un chaos tel qu'il me brùle l'esprit !"
+	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.", -- à traduire
+	Pull				= "Je sens un grand trouble dans l'équilibre qui s'approche. Un chaos tel qu'il me brùle l'esprit !"
 })
 
 -------------------------
@@ -163,9 +163,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "Les plaques ! Il tombe en morceaux ! Arrachez les plaques et on aura une chance de le descendre !",
+	Pull		= "Les plaques ! Il tombe en morceaux ! Arrachez les plaques et on aura une chance de le descendre !",
 	NoDebuff	= "Sans %s",
-	PlasmaTarget	= "Plasma incendiaire : %s",
+	PlasmaTarget	= "Plasma incendiaire : %s",
 	DRoll		= "va faire un tonneau"
 })
 
@@ -182,7 +182,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Alerte sp ciale quand des Tentacules caustiques apparaissent (et Alexstrasza n'est pas active)"
+	SpecWarnTentacle	= "Alerte spéciale quand des Tentacules caustiques apparaissent (et Alexstrasza n'est pas active)"
 })
 
 L:SetMiscLocalization({
