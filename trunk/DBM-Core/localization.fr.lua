@@ -49,7 +49,7 @@ DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périm�
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites la combinaison Ctrl-C pour copier le lien de téléchargement dans votre presse-papier."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Afficher un popup quand une nouvelle version est disponible"
 
-DBM_CORE_MOVABLE_BAR				= "Saisisez-moi !"
+DBM_CORE_MOVABLE_BAR				= "Saisissez-moi !"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h vous a envoyé un délai DBM : '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Annuler ce délai]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorer les délais |2 %1$s]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "Voulez-vous réellement ignorer les délais DBM |2 %s de cette session ?"
