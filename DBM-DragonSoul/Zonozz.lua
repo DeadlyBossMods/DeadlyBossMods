@@ -27,10 +27,10 @@ local specWarnBlackBlood		= mod:NewSpecialWarningSpell(104378, nil, nil, nil, tr
 local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, false)
 local specWarnShadows			= mod:NewSpecialWarningYou(103434)
 
-local timerVoidofUnmakingCD		= mod:NewCDTimer(90, 103571, nil, nil, nil, 103527)
+local timerVoidofUnmakingCD		= mod:NewCDTimer(12, 103571, nil, nil, nil, 103527)
 local timerVoidDiffusionCD		= mod:NewCDTimer(5, 106836)--Can not be triggered more then once per 5 seconds.
 local timerFocusedAngerCD		= mod:NewCDTimer(6, 104543, nil, false)--Off by default as it may not be entirely useful information to know, but an option just for heck of it. You know SOMEONE is gonna request it
-local timerPsychicDrainCD		= mod:NewCDTimer(20, 104322, nil, mod:IsTank())--Every 20-25 seconds, variates.
+local timerPsychicDrainCD		= mod:NewCDTimer(21.5, 104322, nil, mod:IsTank())--Every 20-25 seconds, variates.
 local timerShadowsCD			= mod:NewCDTimer(25, 103434)--Every 25-30, variates
 local timerBlackBlood			= mod:NewBuffActiveTimer(30, 104378)
 
@@ -38,7 +38,8 @@ local berserkTimer				= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("RangeFrame", true)--For heroic shadows, doesn't seem relevent on normal.
 
-local shadowsTargets	= {}
+local shadowsTargets = {}
+--local blackBloodEnded = false--In case i figure out what truely works these mechanics and can further refine timers. For now i need more data. WoL is useless on this i need transcriptor logs for the void casts.
 
 local function warnShadowsTargets()
 	if mod.Options.RangeFrame and mod:IsDifficulty("heroic10", "heroic25") then
@@ -50,12 +51,15 @@ local function warnShadowsTargets()
 end
 
 local function blackBloodEnds()
+--	blackBloodEnded = true
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
-	timerPsychicDrainCD:Start(20)
+	timerVoidofUnmakingCD:Start()--Always before drain, but timing variates slightly too. But this should be more accurate then it was before
+	timerPsychicDrainCD:Start()--Does this start here? seeing too many variations on this.
 end
 
 function mod:OnCombatStart(delay)
+--	blackBloodEnded = false
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(6-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
@@ -114,6 +118,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if spellID == 103571 then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
-		timerVoidofUnmakingCD:Start()
 	end
 end
