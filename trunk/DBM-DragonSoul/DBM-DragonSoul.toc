@@ -7,6 +7,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Душа Дракона|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0巨龍之魂|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0巨龙之魂|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0L’Âme des dragons|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -20,6 +21,7 @@
 ## X-DBM-Mod-Name-ruRU: Душа Дракона
 ## X-DBM-Mod-Name-zhTW: 巨龍之魂
 ## X-DBM-Mod-Name-zhCN: 巨龙之魂
+## X-DBM-Mod-Name-frFR: L’Âme des dragons
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZoneID: 824
 localization.cn.lua
@@ -28,6 +30,7 @@ localization.ru.lua
 localization.es.lua
 localization.kr.lua
 localization.tw.lua
+localization.fr.lua
 MapSizes.lua
 Morchok.lua
 Zonozz.lua
