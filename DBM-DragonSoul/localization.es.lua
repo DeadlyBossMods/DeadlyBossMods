@@ -11,12 +11,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	KohcromCD		= "Kohcrom mimicks %s"
+	KohcromCD		= "Kohcrom imita %s"
 })
 
 L:SetOptionLocalization({
-	KohcromWarning	= "Show warnings for Kohcrom mimicking abilities.",
-	KohcromCD		= "Show timers for Kohcrom's next ability mimick.",
+	KohcromWarning	= "Mostrar avisos para las habilidades que Kohcrom imita.",
+	KohcromCD		= "Mostrar tiempos para las siguientes habilidades imitadas de Kohcrom.",
 	RangeFrame		= "Mostrar distancia (5) para logro."
 })
 
@@ -190,6 +190,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "No habéis hecho nada. Destruiré vuestro mundo.",
-	Kill				= "We are one step closer. The unknowable, transcendent power of the Emerald Dream I now give unto the Dragon Soul."--translate
+	Pull				= "No habéis hecho nada. Destruiré vuestro mundo."
 })
