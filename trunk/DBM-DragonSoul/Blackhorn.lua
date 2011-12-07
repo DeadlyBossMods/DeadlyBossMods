@@ -76,7 +76,9 @@ function mod:OnCombatStart(delay)
 	phase2Started = false
 	lastFlames = 0
 	timerCombatStart:Start(-delay)
-	timerSapperCD:Start(69-delay)
+	if not self:IsDifficulty("lfr25") then--No sappers in LFR
+		timerSapperCD:Start(69-delay)
+	end
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerTwilightOnslaughtCD:Start(42-delay)--Not sure if variation is cause it was heroic or cause the first one is not consistent
 		timerDeckFireCD:Start(60-delay)--Consistent?
