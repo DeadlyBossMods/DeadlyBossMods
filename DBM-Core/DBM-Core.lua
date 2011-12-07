@@ -2493,6 +2493,23 @@ function DBM:OnMobKill(cId, synced)
 	end
 end
 
+function DBM:GetCurrentInstanceDifficulty()
+	local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo()
+	if IsPartyLFG() and IsInLFGDungeon() and difficulty == 2 and instanceType == "raid" and maxPlayers == 25 then
+		return "lfr25"
+	elseif difficulty == 1 then
+		return instanceType == "raid" and "normal10" or "normal5"
+	elseif difficulty == 2 then
+		return instanceType == "raid" and "normal25" or "heroic5"
+	elseif difficulty == 3 then
+		return "heroic10"
+	elseif difficulty == 4 then
+		return "heroic25"
+	else
+		return "unknown"
+	end
+end
+
 function DBM:UNIT_DIED(args)
 	if bit.band(args.destGUID:sub(1, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(1, 5), 0x00F) == 5  then
 		self:OnMobKill(tonumber(args.destGUID:sub(7, 10), 16))
@@ -2728,7 +2745,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(DBM:Capitalize(DBM:GetCurrentInstanceDifficulty():match("%a*")).." "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
 			local mod
@@ -2737,7 +2754,7 @@ do
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), DBM:GetCurrentInstanceDifficulty():match("%a*").." "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
@@ -3137,20 +3154,7 @@ function bossModPrototype:Stop(cid)
 	self:Unschedule()
 end
 
-function bossModPrototype:GetDifficulty() 
-	local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo()
-	if IsPartyLFG() and IsInLFGDungeon() and difficulty == 2 and instanceType == "raid" and maxPlayers == 25 then
-		return "lfr25"
-	elseif difficulty == 1 then
-		return instanceType == "raid" and "normal10" or "normal5"
-	elseif difficulty == 2 then
-		return instanceType == "raid" and "normal25" or "heroic5"
-	elseif difficulty == 3 then
-		return "heroic10"
-	elseif difficulty == 4 then
-		return "heroic25"
-	end
-end 
+bossModPrototype.GetDifficulty = DBM.GetCurrentInstanceDifficulty
 
 function bossModPrototype:IsDifficulty(...)
 	local diff = self:GetDifficulty()
