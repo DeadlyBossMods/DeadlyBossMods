@@ -125,7 +125,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	-- In Game Tooltip, 106794 cast time is channeling, 106791 is 6 sec.. so I guess channeling spell is actually debuff.
 	-- In this rule, I guessed other spellids. (maybe 109598, 109599 used SPELL_CAST_START event, so removed)
 	elseif args:IsSpellID(106794, 110139, 110140, 110141) then
-		shrapnelTargets[#shrapnelTargets + 1] = args.sourceName
+		shrapnelTargets[#shrapnelTargets + 1] = args.destName
 		self:Unschedule(warnShrapnelTargets)
 		if args:IsPlayer() then
 			specWarnShrapnel:Show()
