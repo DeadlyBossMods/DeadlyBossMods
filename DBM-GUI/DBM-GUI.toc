@@ -7,6 +7,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF옵션 GUI|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOpciones|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOpciones|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFIUG des options|r
 ## Notes: GUI for Deadly Boss Mods
 ## Notes-zhCN: Deadly Boss Mods的设置界面
 ## Notes-ruRU: Графический интерфейс пользователя DBM
@@ -14,6 +15,7 @@
 ## Notes-koKR: 죽이는 보스 모드를 위한 GUI
 ## Notes-esES: Gui para Deadly Boss Mods
 ## Notes-esMX: Gui para Deadly Boss Mods
+## Notes-frFR: IUG pour Deadly Boss Mods
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1
 ## DefaultState: enabled

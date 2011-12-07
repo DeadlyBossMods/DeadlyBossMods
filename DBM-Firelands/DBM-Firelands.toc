@@ -7,6 +7,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Огненные Просторы|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0火源之界|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0火焰之地|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Terres de Feu|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -20,6 +21,7 @@
 ## X-DBM-Mod-Name-ruRU: Огненные Просторы
 ## X-DBM-Mod-Name-zhTW: 火源之界
 ## X-DBM-Mod-Name-zhCN: 火焰之地
+## X-DBM-Mod-Name-frFR: Terres de Feu
 ## X-DBM-Mod-Sort: 101
 ## X-DBM-Mod-LoadZoneID: 800,803
 localization.en.lua
