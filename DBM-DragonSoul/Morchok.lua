@@ -98,13 +98,11 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(103414, 108571, 109033, 109034) then
 		if args:GetSrcCreatureID() == 55265 then
 			warnStomp:Show()
-			if self:IsDifficulty("heroic10", "heroic25") and crystalCount < 3 then
+			if crystalCount < 3 then
 				timerStomp:Start()
 				if UnitExists("boss2") then
 					timerKohcromCD:Start(5, args.spellname)--Based on video only, seemed to always stomp 5 second after morchok
 				end
-			elseif self:IsDifficulty("normal10", "normal25", "lfr") and crystalCount < 3 then
-				timerStomp:Start()
 			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
@@ -123,7 +121,7 @@ function mod:SPELL_SUMMON(args)
 		if args:GetSrcCreatureID() == 55265 then
 			crystalCount = crystalCount + 1
 			warnCrystal:Show()
-			if crystalCount > 1 and crystalCount < 3 and self:IsDifficulty("heroic10", "heroic25") then	-- only mimics 2nd+3rd Crystals?
+			if crystalCount > 1 and crystalCount < 3 then	-- only mimics 2nd+3rd Crystals?
 				timerCrystal:Start()
 				if UnitExists("boss2") then
 					timerKohcromCD:Start(6, args.spellname)
