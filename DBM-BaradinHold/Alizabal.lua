@@ -35,12 +35,14 @@ local soundBladeDance			= mod:NewSound(104995)
 local firstspecial = false
 local firstskewer = true
 local firstseething = true
+local bladeCasts = 0
 
 function mod:OnCombatStart(delay)
 	firstspecial = false
 	firstskewer = true
 	firstseething = true
-	timerFirstSpecial:Start(6-delay)
+	bladeCasts = 0
+	timerFirstSpecial:Start(8-delay)
 --	timerSeethingHateCD:Start(6-delay)
 --	timerSkewerCD:Start(15-delay)
 	timerBladeDanceCD:Start(35-delay)
@@ -48,17 +50,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(105738) then--10m confirmed, 25 probalby uses same scripted spellid though.
-		warnBladeDance:Show()
-		specWarnBladeDance:Show()
-		timerBladeDance:Start()
-		if self:IsInCombat() then--Only start this on actual boss, not trash
-			timerBladeDanceCD:Start()
-			soundBladeDance:Play("Sound\\Creature\\LordMarrowgar\\IC_Marrowgar_WW01.wav")--I amuse myself on this
-		else
-			soundBladeDance:Play()--Play normal sound for the trash mobs tho
-		end
-	elseif args:IsSpellID(104936) then
+	if args:IsSpellID(104936) then
 		if not firstspecial then--First special ability used after a blade dance, so the OTHER special is going to be cast in 8 seconds.
 			timerSeethingHateCD:Start(8)
 			firstspecial = true
@@ -81,14 +73,28 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnSeethingHate:Show(args.destName)
 		timerSeethingHate:Start(args.destName)
+	elseif args:IsSpellID(106248) then--It seems the cast ID was disabled on live, so now gotta do this the dumb way.
+		bladeCasts = bladeCasts + 1
+		if bladeCasts > 1 then return end
+		warnBladeDance:Show()
+		specWarnBladeDance:Show()
+		timerBladeDance:Start()
+		if self:IsInCombat() then--Only start this on actual boss, not trash
+			timerBladeDanceCD:Start()
+			soundBladeDance:Play("Sound\\Creature\\LordMarrowgar\\IC_Marrowgar_WW01.wav")--I amuse myself on this
+		else
+			soundBladeDance:Play()--Play normal sound for the trash mobs tho
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(105738) then--Primarily for trash that dies, but you never know boss could too.
+	if args:IsSpellID(106248) then
+		if bladeCasts < 3 then return end
 		firstspecial = false
 		firstskewer = false
 		firstseething = false
+		bladeCasts = 0
 		timerBladeDance:Cancel()
 		timerFirstSpecial:Start()
 	elseif args:IsSpellID(104936) then
