@@ -2393,7 +2393,7 @@ function DBM:EndCombat(mod, wipe)
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), (mod.combatInfo.name or ""))
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), DBM:GetCurrentInstanceDifficulty():match("%a*").." "..(mod.combatInfo.name or ""))
 				sendWhisper(k, msg)
 			end
 			fireEvent("wipe", mod)
@@ -2451,7 +2451,7 @@ function DBM:EndCombat(mod, wipe)
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), (mod.combatInfo.name or ""))
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), DBM:GetCurrentInstanceDifficulty():match("%a*").." "..(mod.combatInfo.name or ""))
 				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)

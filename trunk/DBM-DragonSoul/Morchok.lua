@@ -37,7 +37,7 @@ local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also 
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
-local timerKohcromCD	= mod:NewTimer(20.5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
+local timerKohcromCD	= mod:NewTimer(5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
 --We will not start timers using Kohcrom's casts, it'll waste WAY too much space.
 --EJ is pretty clear, they are cast shortly after morchok, always. So echo timer is perfect and clean solution.
@@ -122,7 +122,7 @@ function mod:SPELL_SUMMON(args)
 			if crystalCount < 3 then	
 				timerCrystal:Start()
 				if UnitExists("boss2") and crystalCount > 1 then	-- only mimics 2nd+3rd Crystals?
-					timerKohcromCD:Start(6, args.spellName)
+					timerKohcromCD:Start(5, args.spellName)
 				end
 			end
 		else
