@@ -99,7 +99,7 @@ function mod:SPELL_CAST_START(args)
 			if crystalCount < 3 then
 				timerStomp:Start()
 				if UnitExists("boss2") then
-					timerKohcromCD:Start(5, args.spellname)--Based on video only, seemed to always stomp 5 second after morchok
+					timerKohcromCD:Start(5, args.spellName)--Based on video only, seemed to always stomp 5 second after morchok
 				end
 			end
 		else
@@ -122,7 +122,7 @@ function mod:SPELL_SUMMON(args)
 			if crystalCount < 3 then	
 				timerCrystal:Start()
 				if UnitExists("boss2") and crystalCount > 1 then	-- only mimics 2nd+3rd Crystals?
-					timerKohcromCD:Start(6, args.spellname)
+					timerKohcromCD:Start(6, args.spellName)
 				end
 			end
 		else
@@ -141,6 +141,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			crystalCount = 0
 			warnVortex:Show()
 		end
+--	elseif args:IsSpellID(109017) then--Summon Kohcrom
+
 	end
 end
 
