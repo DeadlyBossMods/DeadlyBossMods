@@ -38,6 +38,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	voidYell	= "Gul'kafh an'qov N'Zoth."--Start translating the yell he does for Void of the Unmaking cast, the latest logs from DS indicate blizz removed the UNIT_SPELLCAST_SUCCESS event that detected casts. sigh.
 })
 
 -----------------------------
