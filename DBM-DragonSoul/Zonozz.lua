@@ -13,7 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnVoidofUnmaking		= mod:NewSpellAnnounce(103571, 4, 103527)
@@ -39,7 +40,7 @@ local berserkTimer				= mod:NewBerserkTimer(360)
 mod:AddBoolOption("RangeFrame", true)--For heroic shadows, doesn't seem relevent on normal.
 
 local shadowsTargets = {}
---local blackBloodEnded = false--In case i figure out what truely works these mechanics and can further refine timers. For now i need more data. WoL is useless on this i need transcriptor logs for the void casts.
+local voidWarned = false
 
 local function warnShadowsTargets()
 	if mod.Options.RangeFrame and mod:IsDifficulty("heroic10", "heroic25") then
@@ -51,7 +52,7 @@ local function warnShadowsTargets()
 end
 
 local function blackBloodEnds()
---	blackBloodEnded = true
+	voidWarned = false
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
 	timerVoidofUnmakingCD:Start()--Always before drain, but timing variates slightly too. But this should be more accurate then it was before
@@ -59,7 +60,7 @@ local function blackBloodEnds()
 end
 
 function mod:OnCombatStart(delay)
---	blackBloodEnded = false
+	voidWarned = false
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(6-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
@@ -112,10 +113,23 @@ function mod:SPELL_AURA_APPLIED(args)
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+--It looks like among those reboots this week was a hotfix to hide this event from mods. Sigh. So I had to add a backup event to trigger this warning in case this one doesn't fire.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	--Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
-	if spellID == 103571 then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
+	if spellID == 103571 and not voidWarned then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
+		voidWarned = true
+		warnVoidofUnmaking:Show()
+		specWarnVoidofUnmaking:Show()
+	end
+end
+
+--"<10.8> [UNIT_SPELLCAST_SUCCEEDED] Warlord Zon'ozz:Possible Target<Erej>:boss1:Void of the Unmaking::0:103571", -- [371]
+--"<11.0> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Gul'kafh an'qov N'Zoth.#Warlord Zon'ozz###Warlord Zon'ozz##0#0##0#3201##0#false", -- [413]
+--Backup trigger for when UNIT_SPELLCAST_SUCCEEDED doesn't fire for void cast, which seems true in most recent logs post realm restarts 12/7/11
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if (msg == L.voidYell or msg:find(L.voidYell)) and not voidWarned then
+		voidWarned = true
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
 	end
