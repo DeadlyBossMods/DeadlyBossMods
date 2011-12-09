@@ -73,7 +73,7 @@ end
 local tormentDebuffFilter
 do
 	tormentDebuffFilter = function(uId)
-		return UnitDebuff(uId, (GetSpellInfo(99404)))	-- if it works wrong way around:  return not UnitDebuff(..)
+		return UnitDebuff(uId, (GetSpellInfo(99404)))
 	end
 end
 
@@ -85,7 +85,6 @@ function mod:OnCombatStart(delay)
 	strikeCount = 0
 	shardCount = 0
 	timerBladeNext:Start(-delay)
---	timerShardsTorment:Start(-delay, 1)--This is cast nearly instantly on pull, so this timer on pull is useless or at most like 5 seconds commenting for now.
 	table.wipe(countdownTargets)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -206,8 +205,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---http://www.worldoflogs.com/reports/yuweptcud92tc0qa/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or%0D%0Aspell+%3D+%22Inferno+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29+or+spell+%3D+%22Inferno+Blade%22
---http://www.worldoflogs.com/reports/wytw4ybuhgx6xszd/xe/?enc=bosses&boss=53494&x=spell+%3D+%22Decimation+Blade%22+or+spell+%3D+%22Decimating+Strike%22+and+%28fulltype+%3D+SPELL_DAMAGE+or+fulltype+%3D+SPELL_MISSED%29
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(99353) then--Decimation Strike
 		strikeCount = strikeCount + 1

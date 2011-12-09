@@ -113,9 +113,16 @@ function mod:ShadowBlazeFunction()
 	self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")
 end
 
+local cindersDebuffFilter
+do
+	cindersDebuffFilter = function(uId)
+		return UnitDebuff(uId, (GetSpellInfo(79339)))
+	end
+end
+
 local function warnCinderTargets()
 	if mod.Options.RangeFrame and not playerDebuffed then
-		DBM.RangeCheck:Show(10, GetRaidTargetIndex)--Special range frame that will only show players with raid icons near you (IE, warn you if someone with cinders isn't far enough).
+		DBM.RangeCheck:Show(10, cindersDebuffFilter)--Special range frame that will only show players with Cinders debuff
 	end
 	warnCinder:Show(table.concat(cinderTargets, "<, >"))
 	timerCinder:Start()
@@ -197,7 +204,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(79339) then--Completedly drycoded off wowhead, don't know CD, or even how many targets, when I have logs this will be revised.
+	if args:IsSpellID(79339) then
 		cinderTargets[#cinderTargets + 1] = args.destName
 		playerDebuffs = playerDebuffs + 1
 		if args:IsPlayer() then
@@ -207,7 +214,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			soundCinder:Schedule(3)	-- no need to move as soon as the debuff is applied
 			yellCinder:Yell()
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)
+				DBM.RangeCheck:Show(10, nil)
 			end
 		end
 		if self.Options.SetIconOnCinder then
@@ -244,7 +251,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(79339) then
 		playerDebuffs = playerDebuffs - 1
 		if args:IsPlayer() and self.Options.RangeFrame and playerDebuffs >= 1 then
-			DBM.RangeCheck:Show(10, GetRaidTargetIndex)--Change to raid icon based check since theirs is gone but there are still cinders in raid.
+			DBM.RangeCheck:Show(10, cindersDebuffFilter)--Change to debuff filter based check since theirs is gone but there are still cinders in raid.
 		end
 		if self.Options.RangeFrame and playerDebuffs == 0 then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
 			DBM.RangeCheck:Hide()

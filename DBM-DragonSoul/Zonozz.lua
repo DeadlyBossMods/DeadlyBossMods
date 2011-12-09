@@ -53,7 +53,7 @@ end
 local shadowsDebuffFilter
 do
 	shadowsDebuffFilter = function(uId)
-		return UnitDebuff(uId, (GetSpellInfo(103434)))	-- if it works wrong way around:  return not UnitDebuff(..)
+		return UnitDebuff(uId, (GetSpellInfo(103434)))
 	end
 end
 
