@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"CHAT_MSG_MONSTER_YELL"
 )
@@ -123,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
-function mod:SPELL_AURA_APPLIED(args)
+function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(103434, 104599, 104600, 104601) then
 		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") and self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, shadowsDebuffFilter)--You no longer have debuff, restore range frame that shows only people who do.
