@@ -43,12 +43,16 @@ local shadowsTargets = {}
 local voidWarned = false
 
 local function warnShadowsTargets()
-	if mod.Options.RangeFrame and mod:IsDifficulty("heroic10", "heroic25") then
-		DBM.RangeCheck:Show(10)--Show range frame on heroic
-	end
 	warnShadows:Show(table.concat(shadowsTargets, "<, >"))
 	timerShadowsCD:Start()
 	table.wipe(shadowsTargets)
+end
+
+local shadowsDebuffFilter
+do
+	shadowsDebuffFilter = function(uId)
+		return UnitDebuff(uId, (GetSpellInfo(103434)))	-- if it works wrong way around:  return not UnitDebuff(..)
+	end
 end
 
 local function blackBloodEnds()
@@ -64,10 +68,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(6-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
-	timerPsychicDrainCD:Start(16-delay)
+	timerPsychicDrainCD:Start(17-delay)
 	timerShadowsCD:Start(-delay)
 	if not self:IsDifficulty("lfr25") then--Can confirm what others saw, LFR definitely doesn't have a 6 min berserk. It's either much longer or not there.
 		berserkTimer:Start(-delay)
+	end
+	if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") then
+		DBM.RangeCheck:Show(10, shadowsDebuffFilter)--Show only people who have debuff.
 	end
 end
 
@@ -102,6 +109,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		shadowsTargets[#shadowsTargets + 1] = args.destName
 		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") then
 			specWarnShadows:Show()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10, nil)--Show everyone, cause you're debuff person and need to stay away from people.
+			end
 		end
 		self:Unschedule(warnShadowsTargets)
 		if (self:IsDifficulty("normal10") and #shadowsTargets >= 3) then--Don't know the rest yet, will tweak as they are discovered
@@ -113,7 +123,15 @@ function mod:SPELL_AURA_APPLIED(args)
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
---It looks like among those reboots this week was a hotfix to hide this event from mods. Sigh. So I had to add a backup event to trigger this warning in case this one doesn't fire.
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(103434, 104599, 104600, 104601) then
+		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") and self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10, shadowsDebuffFilter)--You no longer have debuff, restore range frame that shows only people who do.
+		end
+	end
+end		
+
+--It looks this event doesn't fire in raid finder. It seems to still fire in normal and heroic modes.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	--Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
@@ -126,7 +144,7 @@ end
 
 --"<10.8> [UNIT_SPELLCAST_SUCCEEDED] Warlord Zon'ozz:Possible Target<Erej>:boss1:Void of the Unmaking::0:103571", -- [371]
 --"<11.0> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Gul'kafh an'qov N'Zoth.#Warlord Zon'ozz###Warlord Zon'ozz##0#0##0#3201##0#false", -- [413]
---Backup trigger for when UNIT_SPELLCAST_SUCCEEDED doesn't fire for void cast, which seems true in most recent logs post realm restarts 12/7/11
+--Backup trigger for LFR where UNIT_SPELLCAST_SUCCEEDED doesn't fire for void cast
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.voidYell or msg:find(L.voidYell)) and not voidWarned then
 		voidWarned = true
