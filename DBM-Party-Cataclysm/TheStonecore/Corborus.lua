@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnCrystalBarrage			= mod:NewTargetAnnounce(81634, 2)
@@ -23,7 +24,7 @@ local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634)
 
 local timerDampening				= mod:NewCDTimer(10, 82415)
 local timerSubmerge					= mod:NewTimer(80, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-local timerEmerge					= mod:NewTimer(25, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerEmerge					= mod:NewTimer(30, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 local crystalTargets = {}
 
@@ -36,8 +37,7 @@ local function warnCrystalTargets()
 end
 
 function mod:OnCombatStart(delay)
-	timerSubmerge:Start(30.5-delay)
-	self:ScheduleMethod(30.5-delay, "Submerge")
+	timerSubmerge:Start(30-delay)
 	table.wipe(crystalTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
@@ -47,25 +47,6 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	end
-end
-
-function mod:Submerge()
-	warnSubmerge:Show()
-	timerEmerge:Start()
-	timerDampening:Cancel()
-	self:ScheduleMethod(25, "Emerge")
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-end
-
-function mod:Emerge()
-	warnEmerge:Show()
-	timerSubmerge:Start()
-	self:ScheduleMethod(80, "Submerge")
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(5)
 	end
 end
 
@@ -100,5 +81,26 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82415, 92650) then
 		warnDampening:Show()
 		timerDampening:Start()
+	end
+end
+
+--"<6.5> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Corborus#0xF130A9AE00013D1D#elite#2904790#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [40]
+--"<36.5> [UNIT_SPELLCAST_SUCCEEDED] Corborus:Possible Target<Omegal>:boss1:ClearAllDebuffs::0:34098", -- [1228]
+--"<65.6> [UNIT_SPELLCAST_SUCCEEDED] Corborus:Possible Target<nil>:boss1:Emerge::0:81948", -- [1830]
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
+	if spellName == GetSpellInfo(34098) then--ClearAllDebuffs, He casts this before borrowing.
+		warnSubmerge:Show()
+		timerEmerge:Start()
+		timerDampening:Cancel()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+	elseif spellName == GetSpellInfo(81948) then--Emerge, He casts this before borrowing.
+		warnEmerge:Show()
+		timerSubmerge:Start()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5)
+		end
 	end
 end
