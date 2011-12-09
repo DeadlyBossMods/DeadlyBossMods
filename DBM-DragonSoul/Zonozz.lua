@@ -38,7 +38,8 @@ local timerBlackBlood			= mod:NewBuffActiveTimer(30, 104378)
 
 local berserkTimer				= mod:NewBerserkTimer(360)
 
-mod:AddBoolOption("RangeFrame", true)--For heroic shadows, doesn't seem relevent on normal.
+mod:AddBoolOption("RangeFrame", true)--For heroic shadows, with debuff filtering.
+mod:AddBoolOption("NoFilterRangeFrame", false)--For those that want the range frame to simply work as it used to, always show everyone.
 
 local shadowsTargets = {}
 local voidWarned = false
@@ -53,6 +54,15 @@ local shadowsDebuffFilter
 do
 	shadowsDebuffFilter = function(uId)
 		return UnitDebuff(uId, (GetSpellInfo(103434)))	-- if it works wrong way around:  return not UnitDebuff(..)
+	end
+end
+
+function mod:updateRangeFrame()
+	if not self:IsDifficulty("heroic10", "heroic25") then return end--Not needed on normal or LFR
+	if self.Options.NoFilterRangeFrame or UnitDebuff("player", GetSpellInfo(103434)) then
+		DBM.RangeCheck:Show(10, nil)--Show everyone.
+	else
+		DBM.RangeCheck:Show(10, shadowsDebuffFilter)--Show only people who have debuff.
 	end
 end
 
@@ -71,11 +81,9 @@ function mod:OnCombatStart(delay)
 	timerFocusedAngerCD:Start(10.5-delay)
 	timerPsychicDrainCD:Start(17-delay)
 	timerShadowsCD:Start(-delay)
+	self:updateRangeFrame()
 	if not self:IsDifficulty("lfr25") then--Can confirm what others saw, LFR definitely doesn't have a 6 min berserk. It's either much longer or not there.
 		berserkTimer:Start(-delay)
-	end
-	if self.Options.RangeFrame and self:IsDifficulty("heroic10", "heroic25") then
-		DBM.RangeCheck:Show(10, shadowsDebuffFilter)--Show only people who have debuff.
 	end
 end
 
@@ -110,9 +118,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		shadowsTargets[#shadowsTargets + 1] = args.destName
 		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") then
 			specWarnShadows:Show()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10, nil)--Show everyone, cause you're debuff person and need to stay away from people.
-			end
+			self:updateRangeFrame()
 		end
 		self:Unschedule(warnShadowsTargets)
 		if (self:IsDifficulty("normal10") and #shadowsTargets >= 3) then--Don't know the rest yet, will tweak as they are discovered
@@ -125,10 +131,8 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(103434, 104599, 104600, 104601) then
-		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") and self.Options.RangeFrame then
-			DBM.RangeCheck:Show(10, shadowsDebuffFilter)--You no longer have debuff, restore range frame that shows only people who do.
-		end
+	if args:IsSpellID(104600, 104601) and args:IsPlayer() then--Only heroic spellids here, no reason to call functions that aren't needed on normal or LFR
+		self:updateRangeFrame()
 	end
 end		
 
