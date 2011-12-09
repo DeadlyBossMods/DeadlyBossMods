@@ -39,6 +39,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	voidYell	= "Gul'kafh an'qov N'Zoth."--translate
 })
 
 -----------------------------
@@ -118,7 +119,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",--translate
+	Trash				= "Me alegra volver a verte, Alexstrasza. He estado ocupado en mi ausencia.",
 	Pull				= "Percibo que se avecina una gran alteración del equilibrio. ¡Su caos inunda mi mente!"
 })
 
@@ -167,10 +168,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",--translate
+	Pull		= "¡Las placas! ¡Se está deshaciendo! ¡Destrozad las placas y tendremos una oportunidad de derribarlo!",
 	NoDebuff	= "Sin %s",
 	PlasmaTarget	= "Plasma ardiente: %s",
-	DRoll		= "about to roll",--translate
+	DRoll		= "¡Está a punto de girar",
 })
 
 ---------------------------
