@@ -34,8 +34,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show dynamic range frame based on player debuff status for $spell:104601\n(Heroic difficulty)",
-	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone.\n(Requires Range Frame option enabled)"
+	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:104601 on Heroic difficulty",
+	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone"
 })
 
 L:SetMiscLocalization({
