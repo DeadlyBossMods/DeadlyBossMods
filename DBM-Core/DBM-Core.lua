@@ -3107,40 +3107,70 @@ end
 
 function bossModPrototype:GetBossTarget(cid)
 	cid = cid or self.creatureId
+	local name, realm, uid
 	if self:GetUnitCreatureId("target") == cid then
-		return UnitName("targettarget"), "targettarget"
+		name, realm = UnitName("targettarget")
+		uid = "targettarget"
 	elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
-		return UnitName("focustarget"), "focustarget"
+		name, realm = UnitName("focustarget")
+		uid = "focustarget"
 	elseif self:GetUnitCreatureId("boss1") == cid then
-		return UnitName("boss1target"), "boss1target"
+		name, realm = UnitName("boss1target")
+		uid = "boss1target"
 	elseif self:GetUnitCreatureId("boss2") == cid then
-		return UnitName("boss2target"), "boss2target"
+		name, realm = UnitName("boss2target")
+		uid = "boss2target"
 	elseif self:GetUnitCreatureId("boss3") == cid then
-		return UnitName("boss3target"), "boss3target"
+		name, realm = UnitName("boss3target")
+		uid = "boss3target"
 	elseif self:GetUnitCreatureId("boss4") == cid then
-		return UnitName("boss4target"), "boss4target"
+		name, realm = UnitName("boss4target")
+		uid = "boss4target"
 	elseif GetNumRaidMembers() > 0 then
 		for i = 1, GetNumRaidMembers() do
 			if self:GetUnitCreatureId("raid"..i.."target") == cid then
-				return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
+				name, realm = UnitName("raid"..i.."targettarget")
+				uid = "raid"..i.."targettarget"
 			end
 		end
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
-				return UnitName("party"..i.."targettarget"), "party"..i.."targettarget"
+				name, realm = UnitName("party"..i.."targettarget")
+				uid = "party"..i.."targettarget"
 			end
 		end
 	end
+	if name and realm then
+		name = name.."-"..realm
+	end
+	return name, uid
 end
 
 function bossModPrototype:GetThreatTarget(cid)
 	cid = cid or self.creatureId
-	for i = 1, GetNumRaidMembers() do
-		if self:GetUnitCreatureId("raid"..i.."target") == cid then
-			for x = 1, GetNumRaidMembers() do
-				if UnitDetailedThreatSituation("raid"..x, "raid"..i.."target") == 1 then
-					return "raid"..x
+	local name, realm, uid
+	if self:GetUnitCreatureId("target") == cid then
+		if UnitDetailedThreatSituation("player", "target") == 1 then
+			return "player"
+		end
+	elseif GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if self:GetUnitCreatureId("raid"..i.."target") == cid then
+				for x = 1, GetNumRaidMembers() do
+					if UnitDetailedThreatSituation("raid"..x, "raid"..i.."target") == 1 then
+						return "raid"..x
+					end
+				end
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if self:GetUnitCreatureId("party"..i.."target") == cid then
+				for x = 1, GetNumRaidMembers() do
+					if UnitDetailedThreatSituation("party"..x, "party"..i.."target") == 1 then
+						return "party"..x
+					end
 				end
 			end
 		end
