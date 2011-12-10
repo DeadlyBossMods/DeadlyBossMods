@@ -131,12 +131,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "Combat starts",
-	TimerSapper			= "Next Twilight Sapper"
+	TimerSapper			= "Next Twilight Sapper",
+	TimerAdd			= "Next Elites"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Show timer for start of combat",
-	TimerSapper			= "Show timer for next Twilight Sapper spawn"--npc=56923
+	TimerSapper			= "Show timer for next Twilight Sapper spawn",--npc=56923
+	TimerAdd			= "Show timer for next Twilight Elites spawn"
 })
 
 L:SetMiscLocalization({
