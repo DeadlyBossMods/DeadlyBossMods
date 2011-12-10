@@ -188,7 +188,6 @@ L:SetOptionLocalization({
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
-	P4IconRangeFilter			= "Hacer que en los avisos de distancia de la fase 4 solo se muestren iconos de raid\n(Necesita distancia habilitada)",
 	InfoHealthFrame		= "Mostrar información de vida (<100k de vida)",
 	MeteorFrame			= "Mostrar información de los objetivos de $spell:99849",
 	AggroFrame			= "Mostrar información de jugadores sin aggro durante los Elementales de Magma",

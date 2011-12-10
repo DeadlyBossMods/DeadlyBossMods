@@ -188,7 +188,6 @@ L:SetOptionLocalization({
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "사잇단계 지속 바 표시",
 	RangeFrame					= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
-	P4IconRangeFilter			= "영웅 난이도 4단계에서 거리 프레임에 전술 목표 아이콘만 보이도록 하기\n(거리 프레임을 사용 중일 때만 작동함)",
 	InfoHealthFrame				= "체력 정보 프레임 보기 (10만 미만)",
 	MeteorFrame					= "$spell:99849 대상 정보 프레임 보기",
 	AggroFrame					= "녹아내린 정령으로 부터 위협수준을 획득하지 않은 대상에 대한 정보 프레임 보기",
