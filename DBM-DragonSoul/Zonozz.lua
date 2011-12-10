@@ -70,7 +70,11 @@ local function blackBloodEnds()
 	voidWarned = false
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
-	timerVoidofUnmakingCD:Start()--Always before drain, but timing variates slightly too. But this should be more accurate then it was before
+	if self:IsDifficulty("lfr25") then
+		timerVoidofUnmakingCD:Start(6)--Always sooner in LFR?
+	else
+		timerVoidofUnmakingCD:Start()--Always before drain, but timing variates slightly too. But this should be more accurate then it was before
+	end
 	timerPsychicDrainCD:Start()--Does this start here? seeing too many variations on this.
 end
 
