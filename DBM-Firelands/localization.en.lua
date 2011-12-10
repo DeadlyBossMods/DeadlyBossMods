@@ -187,7 +187,6 @@ L:SetOptionLocalization({
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame					= "Show range frame",
-	P4IconRangeFilter			= "Make Range frame in phase 4 only shows raid icons\n(Requires Range Frame enabled)",
 	InfoHealthFrame				= "Show info frame for health (<100k hp)",
 	MeteorFrame					= "Show info frame for $spell:99849 targets",
 	AggroFrame					= "Show info frame for players who have no aggro during Molten Elementals",

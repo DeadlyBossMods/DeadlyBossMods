@@ -188,7 +188,6 @@ L:SetOptionLocalization({
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "Отсчет времени до окончания \"фазы Сыновей пламени\"",
 	RangeFrame					= "Показывать окно проверки дистанции",
-	P4IconRangeFilter			= "Показывать в окне проверки дистанции только рейдовые метки\n(Необходимо также включить предыдущую опцию)",
 	InfoHealthFrame				= "Информационное окно для игроков с низким уровнем здоровья (<100к)",
 	MeteorFrame					= "Информационное окно для целей $spell:99849",
 	AggroFrame					= "Информационное окно для игроков, не имеющих аггро от элементалей",
