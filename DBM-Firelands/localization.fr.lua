@@ -190,7 +190,6 @@ L:SetOptionLocalization({
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "Durée de la \"phase des Fils des flammes\"",
 	RangeFrame					= "Cadre des portées",
-	P4IconRangeFilter			= "Make Range frame in phase 4 only shows raid icons\n(Requires Range Frame enabled)",
 	InfoHealthFrame				= "Cadre d'infos concernant les vies (<110k pv)",
 	MeteorFrame					= "Cadre d'infos concernant les cibles de $spell:99849",
 	AggroFrame					= "Cadre d'infos indiquant les joueurs n'ayant pas l'aggro des Elém. du magma",

@@ -107,7 +107,6 @@ local soundFixate			= mod:NewSound(99849)
 local soundEmpoweredSulf	= mod:NewSound(100997, nil, mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("P4IconRangeFilter", true)
 mod:AddBoolOption("BlazingHeatIcons", true)
 mod:AddBoolOption("InfoHealthFrame", mod:IsHealer())--Phase 1 info framefor low health detection.
 mod:AddBoolOption("AggroFrame", false)--Phase 2 info frame for seed aggro detection.
@@ -144,12 +143,6 @@ local function showRangeFrame()
 			DBM.RangeCheck:Show(6)--For wrath of rag, only for ranged.
 		elseif phase == 2 then
 			DBM.RangeCheck:Show(6)--For seeds
-		elseif phase == 4 then
-			if mod.Options.P4IconRangeFilter then
-				DBM.RangeCheck:Show(6, GetRaidTargetIndex)--maybe useful for setting up your triforce but i'm not entirely sure we need a range frame in phase 4 either.
-			else
-				DBM.RangeCheck:Show(6)--Frost patch spreading
-			end
 		end
 	end
 end
@@ -194,7 +187,6 @@ local function TransitionEnded()
 		warnLivingMeteorSoon:Cancel()
 		timerFlamesCD:Cancel()
 		timerSulfurasSmash:Cancel()
-		showRangeFrame()
 		timerBreadthofFrostCD:Start(33)
 		timerDreadFlameCD:Start(48)
 		timerCloudBurstCD:Start()
