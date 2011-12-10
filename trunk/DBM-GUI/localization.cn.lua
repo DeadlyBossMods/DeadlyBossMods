@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 10/9/2011
+-- Last update: 12/11/2011
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -68,7 +68,9 @@ L.ModelSoundOptions			= "为模型查看器设置声音选项"
 L.ModelSoundShort			= "短"
 L.ModelSoundLong			= "长"
 
-L.Button_RangeFrame	= "显示/隐藏距离监视器"
+L.Button_RangeFrame	= "显示/隐藏距离监视信息框"
+L.Button_RangeRadar	= "显示/隐藏距离监视雷达"
+L.Button_InfoFrame	= "显示/隐藏信息框"
 L.Button_TestBars	= "测试计时条"
 
 L.PizzaTimer_Headline 	= '创建一个计时条'
