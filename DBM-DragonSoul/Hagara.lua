@@ -25,7 +25,7 @@ local warnFrostTombCast		= mod:NewAnnounce("warnFrostTombCast", 4, 104448)--Can'
 local warnFrostTomb			= mod:NewTargetAnnounce(104451, 4)
 local warnIceLance			= mod:NewTargetAnnounce(105269, 3)
 local warnFrostflake		= mod:NewTargetAnnounce(109325, 3)	-- verify with logs
-local warnStormPillars		= mod:NewSpellAnnounce(109557, 3)	-- verify with logs
+local warnStormPillars		= mod:NewTargetAnnounce(109557, 3)	-- verify with logs
 
 local specWarnFrostTombCast	= mod:NewSpecialWarningSpell(104448, nil, nil, nil, true)
 local specWarnTempest		= mod:NewSpecialWarningSpell(109552, nil, nil, nil, true)
@@ -62,6 +62,7 @@ local tombIconTargets = {}
 function mod:stormPillarsTarget(target)
 	local targetname = target or self:GetBossTarget(55689)
 	if not targetname then return end
+	warnStormPillars:Show(targetname)
 	local uId = DBM:GetRaidUnitId(targetname)
 	if uId then
 		local x, y = GetPlayerMapPosition(uId)
@@ -183,9 +184,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(110317) and args:IsPlayer() then
 		specWarnWatery:Show()
 	elseif args:IsSpellID(109325) then
-		warnFrostFlake:Show()
+		warnFrostflake:Show(args.destName)
 		if self.Options.SetIconOnFrostflake then
-			mod:SetIcon(args.destName, 3)
+			self:SetIcon(args.destName, 3)
 		end
 	end
 end
@@ -247,8 +248,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(109557) then
-		warnStormPillars:Show()
-		stormPillarsTarget(args.destName)
+		self:stormPillarsTarget()
 	end
 end
 
