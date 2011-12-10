@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/4/2011
+-- Last update: 12/11/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -20,7 +20,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	KohcromWarning	= "警报：克卓莫模拟技能",
-	KohcromCD		= "计时条：下一次克卓莫模拟技能"
+	KohcromCD		= "计时条：下一次克卓莫模拟技能",
+	RangeFrame		= "距离监视器（5码）：应对成就需求"
 })
 
 L:SetMiscLocalization({
@@ -38,10 +39,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "距离监视器（10码）：应对$spell:104601（英雄难度）"
+	RangeFrame	= "距离监视器（根据玩家状态动态变化）：应对$spell:104601（英雄难度）",
+	NoFilterRangeFrame	= "取消距离监视器的动态监测，总是显示所有团员"
 })
 
 L:SetMiscLocalization({
+	voidYell	= "Gul'kafh an'qov N'Zoth."--Start translating the yell he does for Void of the Unmaking cast, the latest logs from DS indicate blizz removed the UNIT_SPELLCAST_SUCCESS event that detected casts. sigh.
 })
 
 -----------------------------
@@ -63,7 +66,8 @@ L:SetOptionLocalization({
 	warnOozes			= "警报：召唤软泥怪",
 	specWarnOozes		= "特殊警报：召唤软泥怪",
 	timerOozesCD		= "计时条：下一次软泥怪",
-	timerOozesActive	= "计时条：软泥怪可攻击" -- poor grammer.
+	timerOozesActive	= "计时条：软泥怪可攻击",
+	RangeFrame			= "距离监视器（4码）：应对$spell:104898（普通和英雄难度）"
 })
 
 L:SetMiscLocalization({
@@ -93,7 +97,8 @@ L:SetOptionLocalization({
 	RangeFrame				= "距离监视器（3码）：应对$spell:105269",
 	AnnounceFrostTombIcons	= "向团队频道通报$spell:104451目标的团队标记（需要团队领袖权限）",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
-	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
+	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
 })
 
 L:SetMiscLocalization({
@@ -117,6 +122,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",
 	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
 })
 
@@ -130,12 +136,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "战斗即将开始",
-	TimerSapper			= "下一次暮光弹幕"
+	TimerSapper			= "下一次暮光弹幕",
+	TimerAdd			= "下一波暮光精英"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "计时条：战斗即将开始",
-	TimerSapper			= "计时条：下一次暮光弹幕"--npc=56923
+	TimerSapper			= "计时条：下一次暮光弹幕",--npc=56923
+	TimerAdd			= "计时条：下一波暮光精英"
 })
 
 L:SetMiscLocalization({
@@ -159,13 +167,15 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecWarnTendril			= "特殊警报：当你没有$spell:109454效果时",
 	InfoFrame				= "信息框：没有$spell:109454效果的玩家",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	ShowShieldInfo			= "首领生命值信息框：应对$spell:105479"
 })
 
 L:SetMiscLocalization({
 	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
 	NoDebuff	= "没有%s",
-	DRoll		= "about to roll"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
+	PlasmaTarget	= "灼热血浆：%s",
+	DRoll		= "about to roll"
 })
 
 ---------------------------
@@ -185,6 +195,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "You have done NOTHING. I will tear your world APART.",
-	Kill				+ "We are one step closer. The unknowable, transcendent power of the Emerald Dream I now give unto the Dragon Soul."
+	Pull				= "You have done NOTHING. I will tear your world APART."
 })
