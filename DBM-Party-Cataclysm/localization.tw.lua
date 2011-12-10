@@ -976,7 +976,13 @@ L = DBM:GetModLocalization("Perotharn")
 
 L:SetGeneralLocalization{
 	name = "佩洛薩恩"
+
 }
+
+L:SetMiscLocalization{
+	Pull		= "沒有凡人能在我眼前活下來!"
+}
+
 
 -------------
 -- Azshara --
@@ -1013,6 +1019,14 @@ L:SetGeneralLocalization{
 	name = "瑪諾洛斯 & 瓦羅森隊長"
 }
 
+L:SetTimerLocalization{
+	TimerTyrandeHelp	= "泰蘭妲需要幫助"
+}
+
+L:SetOptionLocalization{
+	TimerTyrandeHelp	= "為泰蘭妲需要幫助之前顯示計時器"
+}
+
 L:SetMiscLocalization{
 	Kill		= "不...不!勝利應該是屬於我的!我不會失敗地回到他面前!我不會...在這個可悲的世界...被撕裂!絕不-!!!!!"
 }
@@ -1029,7 +1043,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "阿奇里森大喊: 你只是個凡人。就像凡人一樣死去吧。"
+	Pull		= "你只是個凡人。就像凡人一樣死去吧。"
 }
 
 ----------------------
