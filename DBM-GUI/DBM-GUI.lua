@@ -1234,7 +1234,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 230, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 250, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1263,12 +1263,32 @@ local function CreateOptionsMenu()
 			end
 		end)
 
+		local bmradar  = generaloptions:CreateButton(L.Button_RangeRadar)
+		bmradar:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 0)
+		bmradar:SetScript("OnClick", function(self) 
+			if DBMRangeCheckRadar:IsShown() then
+				DBMRangeCheckRadar:Hide()
+			else
+				DBMRangeCheckRadar:Show()
+			end
+		end)
+
+		local bminfo  = generaloptions:CreateButton(L.Button_InfoFrame)
+		bminfo:SetPoint('TOPLEFT', bmrange, "BOTTOMLEFT", 0, 0)
+		bminfo:SetScript("OnClick", function(self) 
+			if DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:Hide()
+			else
+				DBM.InfoFrame:Show(5, "test")
+			end
+		end)
+
 		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars)
-		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 0)
+		bmtestmode:SetPoint('TOPLEFT', bminfo, "TOPRIGHT", 0, 0)
 		bmtestmode:SetScript("OnClick", function(self) DBM:DemoMode() end)
 
 		local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 750, 5, 210)   -- (text , min_value , max_value , step , width)
-     	latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 10, -35)
+     	latencySlider:SetPoint('BOTTOMLEFT', bminfo, "BOTTOMLEFT", 10, -35)
      	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 
