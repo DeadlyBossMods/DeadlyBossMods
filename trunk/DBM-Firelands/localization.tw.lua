@@ -191,6 +191,7 @@ L:SetOptionLocalization({
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "顯示烈焰之子階段的持續時間計時器",
 	RangeFrame					= "顯示距離框",
+	P4IconRangeFilter			= "讓距離框在P4時只有顯示團隊圖示的團員\n(需要開啟顯示距離框)",
 	InfoHealthFrame				= "顯示生命值框架 (低於十萬生命值)",
 	MeteorFrame					= "顯示$spell:99849的目標的訊息框",
 	AggroFrame					= "顯示沒有熔岩煉獄的仇恨的團員的訊息框",
@@ -267,7 +268,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("NexusLegendary")
 
 L:SetGeneralLocalization({
-	name = "Thyrinar"
+	name = "賽瑞納爾"
 })
 
 L:SetWarningLocalization({

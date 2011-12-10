@@ -16,7 +16,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	KohcromWarning	= "為寇魔的技能顯示警告。",
-	KohcromCD		= "為寇魔下一次的技能顯示計時器。"
+	KohcromCD		= "為寇魔下一次的技能顯示計時器。",
+	RangeFrame		= "為成就顯示距離框(5碼)。"
 })
 
 L:SetMiscLocalization({
@@ -34,10 +35,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "為$spell:104601顯示距離框(10碼)\n(英雄模式)"
+	RangeFrame			= "為英雄難度的$spell:104601顯示動態距離框架",
+	NoFilterRangeFrame	= "停用過濾框架減益並總是顯示所有人"
 })
 
 L:SetMiscLocalization({
+	voidYell	= "Gul'kafh an'qov N'Zoth."
 })
 
 -----------------------------
@@ -60,7 +63,8 @@ L:SetOptionLocalization({
 	warnOozes			= "當軟泥重生時顯示警告",
 	specWarnOozes		= "當軟泥重生時顯示特別警告",
 	timerOozesCD		= "為下一次軟泥重生顯示計時器",
-	timerOozesActive	= "為軟泥重生後可被攻擊顯示計時器"
+	timerOozesActive	= "為軟泥重生後可被攻擊顯示計時器",
+	RangeFrame			= "為$spell:104898顯示計時器(普通以上的難度)"
 })
 
 L:SetMiscLocalization({
@@ -90,7 +94,8 @@ L:SetOptionLocalization({
 	RangeFrame				= "為$spell:105269顯示距離框(3碼)",
 	AnnounceFrostTombIcons	= "為$spell:104451的目標發佈圖示至團隊頻道\n(需要團隊隊長)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
-	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
+	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
 })
 
 L:SetMiscLocalization({
@@ -156,12 +161,14 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecWarnTendril			= "當你身上沒有$spell:109454減益時顯示特別警告",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "為沒有$spell:109454的玩家顯示訊息框",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	ShowShieldInfo			= "為$spell:105479顯示生命條"
 })
 
 L:SetMiscLocalization({
 	Pull		= "他的護甲!他正在崩壞!破壞他的護甲，我們就有機會打贏他了!",
 	NoDebuff	= "無%s",
+	PlasmaTarget	= "燃燒血漿: %s",
 	DRoll		= "他準備往"
 })
 
