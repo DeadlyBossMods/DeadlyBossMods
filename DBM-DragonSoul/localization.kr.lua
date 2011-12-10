@@ -134,12 +134,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "전투 시작",
-	TimerSapper			= "다음 황혼의 폭파병"
+	TimerSapper			= "다음 황혼의 폭파병",
+	TimerAdd			= "다음 정예병"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "전투 시작 바 표시",
-	TimerSapper			= "다음 황혼의 폭파병 등장 바 표시"--npc=56923
+	TimerSapper			= "다음 황혼의 폭파병 등장 바 표시",--npc=56923
+	TimerAdd			= "다음 황혼의 정예병 등장 바 표시"
 })
 
 L:SetMiscLocalization({

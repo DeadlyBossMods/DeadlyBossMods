@@ -25,7 +25,7 @@ local warnHarpoon					= mod:NewTargetAnnounce(108038, 2)
 local warnTwilightOnslaught			= mod:NewSpellAnnounce(108862, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
 local warnTwilightFlames			= mod:NewSpellAnnounce(108051, 3)
-local warnShockwave					= mod:NewTargetAnnounce(108862, 4)
+local warnShockwave					= mod:NewTargetAnnounce(108046, 4)
 local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnHarpoon				= mod:NewSpecialWarningTarget(108038, false)
@@ -37,6 +37,7 @@ local yellShockwave					= mod:NewYell(108046)
 local specWarnSunder				= mod:NewSpecialWarningStack(108043, mod:IsTank(), 3)
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
+local timerAdd						= mod:NewTimer(60, "TimerAdd", 107752)
 local timerTwilightOnslaughtCD		= mod:NewNextTimer(35, 107588)
 local timerSapperCD					= mod:NewTimer(40, "TimerSapper", 107752)
 local timerDeckFireCD				= mod:NewCDTimer(20, 110095)--Not the best log, so not sure if this is accurate or actually based on other variables.
@@ -72,10 +73,17 @@ function mod:ShockwaveTarget()
 	end
 end
 
+function mod:AddsRepeat()
+	timerAdd:Start()
+	self:ScheduleMethod(60, "AddsRepeat")
+end
+
 function mod:OnCombatStart(delay)
 	phase2Started = false
 	lastFlames = 0
 	timerCombatStart:Start(-delay)
+	timerAdd:Start(24-delay)
+	self:ScheduleMethod(24-delay, "AddsRepeat")
 	if not self:IsDifficulty("lfr25") then--No sappers in LFR
 		timerSapperCD:Start(69-delay)
 	end
@@ -113,6 +121,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	--"<2069.5> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Looks like I'm doing this myself. Good!#Warmaster Blackhorn###Goriona##0#0##0#564##0#false", -- [61454]
 	elseif args:IsSpellID(108040) and not phase2Started then--Goriona is being shot by the ships Artillery Barrage (phase 2 trigger)
 		phase2Started = true
+		self:UnscheduleMethod("AddsRepeat")
+		timerAdd:Cancel()
 		--timerDeckFireCD:Cancel()--This continue into phase 2 or do we cancel it?
 		warnPhase2:Show()
 		timerCombatStart:Start(5)--Shorter now on live? 5-6 seems about right now. Lets try 5.
