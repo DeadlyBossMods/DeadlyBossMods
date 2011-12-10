@@ -35,10 +35,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "$spell:104601 주문의 영향을 받은 경우 거리 프레임 보기 (10m)\n(영웅 난이도)"
+	RangeFrame			= "$spell:104601 약화 효과 상태에 따른 거리 프레임 표시(영웅 난이도)",
+	NoFilterRangeFrame	= "거리 프레임 필터링 사용 중지(항상 모든 플레이어 보임)"
 })
 
 L:SetMiscLocalization({
+	voidYell	= "굴카와스 언고브 느조스."--Start translating the yell he does for Void of the Unmaking cast, the latest logs from DS indicate blizz removed the UNIT_SPELLCAST_SUCCESS event that detected casts. sigh.
 })
 
 -----------------------------
