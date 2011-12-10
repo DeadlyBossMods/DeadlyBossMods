@@ -35,7 +35,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Mostrar distancia (10) para $spell:104601\n(sólo heroico)"
+	RangeFrame			= "Mostrar distancia dinámica basada en el estado del estado del debuff \n$spell:104601 en los jugadores en dificultad Heroica",
+	NoFilterRangeFrame	= "Desactivar el filtro de distancia y mostrar siempre a todo el mundo"
 })
 
 L:SetMiscLocalization({
@@ -134,12 +135,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "Empieza el combate",
-	TimerSapper			= "Siguiente Zapador Crepuscular"
+	TimerSapper			= "Siguiente Zapador Crepuscular",
+	TimerAdd			= "Siguientes Élites"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
-	TimerSapper			= "Mostrar tiempo para la aparición del siguiente Zapador Crepuscular"
+	TimerSapper			= "Mostrar tiempo para la aparición del siguiente Zapador Crepuscular",--npc=56923
+	TimerAdd			= "Mostrar tiempo para que salgan los siguientes Élites Crepusculares"
 })
 
 L:SetMiscLocalization({
