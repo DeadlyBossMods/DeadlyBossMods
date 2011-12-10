@@ -65,6 +65,8 @@ L.ModelSoundShort			= "Short"
 L.ModelSoundLong			= "Long"
 
 L.Button_RangeFrame			= "Show/hide range frame"
+L.Button_RangeRadar			= "Show/hide range radar"
+L.Button_InfoFrame			= "Show/hide info frame"
 L.Button_TestBars			= "Start test bars"
 
 L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
