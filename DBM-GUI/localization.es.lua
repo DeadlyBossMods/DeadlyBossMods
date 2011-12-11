@@ -66,8 +66,10 @@ L.ModelSoundOptions			= "Assignar la opción de sonido para el Visor de Modelos"
 L.ModelSoundShort			= "Corto"
 L.ModelSoundLong			= "Largo"
 
-L.Button_RangeFrame	= "Mostrar/Ocultar cuadro de rango"
-L.Button_TestBars	= "Testear barras"
+L.Button_RangeFrame			= "Mostrar/Ocultar cuadro de distancia"
+L.Button_RangeRadar			= "Mostrar/Ocultar radar de distancia"
+L.Button_InfoFrame			= "Mostrar/Ocultar cuado de información"
+L.Button_TestBars			= "Probar barras"
 
 L.PizzaTimer_Headline 	= 'Crear "Cronomentro"'
 L.PizzaTimer_Title	= 'Nombre (ej. "Pizza!")'
