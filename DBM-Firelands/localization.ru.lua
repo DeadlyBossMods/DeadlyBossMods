@@ -10,15 +10,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Следующие Пеплопряды-ткачи",
-	TimerSpiderlings	= "Следующие Паучата",
-	TimerDrone			= "Следующий Трутень"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Отсчет времени до следующих $journal:2770",
-	TimerSpiderlings	= "Отсчет времени до следующих $journal:2778",
-	TimerDrone			= "Отсчет времени до следующего $journal:2773",
 	RangeFrame			= "Показывать окно проверки дистанции (10м)"
 })
 

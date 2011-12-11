@@ -66,16 +66,10 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Nächste Spinner",
-	TimerSpiderlings	= "Nächste Spinnerlinge",
-	TimerDrone		= "Nächste Drohne"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Zeige Zeit bis nächste $journal:2770",
-	TimerSpiderlings	= "Zeige Zeit bis nächste $journal:2778e",
-	TimerDrone		= "Zeige Zeit bis nächste $journal:2773",
-	RangeFrame				= "Zeige Abstandsfenster (10m)",
+	RangeFrame				= "Zeige Abstandsfenster (10m)"
 })
 
 L:SetMiscLocalization({
