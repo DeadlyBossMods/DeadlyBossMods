@@ -32,6 +32,7 @@ local specWarnNuclearBlast	= mod:NewSpecialWarningRun(105845, mod:IsMelee())
 local specWarnSealArmor		= mod:NewSpecialWarningSpell(105847, mod:IsDps())
 
 local timerSealArmor		= mod:NewCastTimer(23, 105847)
+local timerBarrelRoll		= mod:NewCastTimer(5, "ej4050")
 --local timerGripCD			= mod:NewCDTimer(25, 109457)
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
@@ -171,13 +172,19 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end	
 
-function mod:RAID_BOSS_EMOTE(msg)--No one had any logs that were any good, so I don't have the emotes for this. NOT ALL RAID BOSS EMOTSE SHOW IN THE CHAT LOGS. there is a reason i ask for transcriptor logs
+function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.DRoll or msg:find(L.DRoll) then
 		self:Unschedule(checkTendrils)--In case you manage to spam spin him, we don't want to get a bunch of extra stuff scheduled.
+		self:Unschedule(clearTendrils)--^
+		checkTendrils()--Warn you right away.
+		self:Schedule(3, checkTendrils)--Check a second time 3 seconds into 5 second cast to remind player
+		self:Schedule(8, clearTendrils)--Clearing 3 seconds after the roll should be sufficent
+		timerBarrelRoll:Start()
+	elseif msg == L.DLevels or msg:find(L.DLevels) then
+		self:Unschedule(checkTendrils)
 		self:Unschedule(clearTendrils)
-		checkTendrils()
-		self:Schedule(3, checkTendrils)--Check more then once?
-		self:Schedule(8, clearTendrils)--Clearing 3 seconds after the roll should be sufficent? Need to perfect this timing later.
+		clearTendrils()
+		timerBarrelRoll:Cancel()
 	end
 end
 
