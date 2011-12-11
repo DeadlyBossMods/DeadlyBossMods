@@ -66,7 +66,7 @@ function mod:ShockwaveTarget()
 				x, y = GetPlayerMapPosition(uId)
 			end
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 13 then--Might be able to tune range?
+			if inRange and inRange < 6 then--Might be able to tune range?
 				specWarnShockwaveNear:Show(targetname)
 			end
 		end
