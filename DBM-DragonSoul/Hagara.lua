@@ -49,6 +49,8 @@ local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:Is
 
 --local soundFrostTomb		= mod:NewSound(104451)--Needed?
 
+--local berserkTimer				= mod:NewBerserkTimer(600)	-- 10min enrage?  There is 1, but don't know the time
+
 mod:AddBoolOption("RangeFrame")--Ice lance spreading. May make it more dynamic later but for now i need to see the fight in realtime before i can do any more guessing off mailed in combat logs.
 mod:AddBoolOption("SetIconOnFrostflake", true)
 mod:AddBoolOption("SetIconOnFrostTomb", true)
