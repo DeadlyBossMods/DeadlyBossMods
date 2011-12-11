@@ -145,6 +145,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	--Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
 	if spellID == 103571 and not voidWarned then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
+		timerVoidofUnmakingCD:Cancel()
 		voidWarned = true
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
@@ -156,6 +157,7 @@ end
 --Backup trigger for LFR where UNIT_SPELLCAST_SUCCEEDED doesn't fire for void cast
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.voidYell or msg:find(L.voidYell)) and not voidWarned then
+		timerVoidofUnmakingCD:Cancel()
 		voidWarned = true
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()

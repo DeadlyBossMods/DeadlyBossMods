@@ -87,6 +87,7 @@ local timerMoltenInferno	= mod:NewNextTimer(10, 100254)--Cast bar for molten Inf
 local timerLivingMeteorCD	= mod:NewNextCountTimer(45, 99268)
 local timerInvokeSons		= mod:NewCastTimer(17, 99014)--8 seconds for splitting blow, about 8-10 seconds after for them landing, using the average, 9.
 local timerLavaBoltCD		= mod:NewNextTimer(4, 100291)
+local timerBlazingHeatCD	= mod:NewCDTimer(20, 100460)
 local timerPhaseSons		= mod:NewTimer(45, "TimerPhaseSons", 99014)	-- lasts 45secs or till all sons are dead
 local timerCloudBurstCD		= mod:NewCDTimer(50, 100714)
 local timerBreadthofFrostCD	= mod:NewCDTimer(45, 100479)
@@ -495,6 +496,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(100460, 100981, 100982, 100983) then	-- Blazing heat
 		warnBlazingHeat:Show(args.destName)
+		timerBlazingHeatCD:Start(args.sourceGUID)--args.sourceGUID is to support multiple cds when more then 1 is up at once
 		if args:IsPlayer() then
 			specWarnBlazingHeat:Show()
 			soundBlazingHeat:Play()
@@ -675,6 +677,8 @@ function mod:UNIT_DIED(args)
 				DBM.InfoFrame:SetHeader(L.HealthInfo)
 				DBM.InfoFrame:Show(5, "health", 100000)
 			end
-		end	
+		end
+	elseif cid == 53231 then--Lava Scion
+		timerBlazingHeatCD:Cancel(args.sourceGUID)
 	end
 end
