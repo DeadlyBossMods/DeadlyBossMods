@@ -122,9 +122,9 @@ function mod:SPELL_CAST_START(args)
 		warnSealArmor:Show()
 		specWarnSealArmor:Show()
 		if self:IsDifficulty("lfr25") then
-			timerSealArmor:Start(34.5, args.sourceGUID)--Super rare, but 2 of these might be out at same time too.
+			timerSealArmor:Start(34.5)
 		else
-			timerSealArmor:Start(nil, args.sourceGUID)--Super rare, but 2 of these might be out at same time too.
+			timerSealArmor:Start()
 		end
 	end
 end
