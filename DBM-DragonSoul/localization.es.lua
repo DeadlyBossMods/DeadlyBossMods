@@ -40,7 +40,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	voidYell	= "Gul'kafh an'qov N'Zoth."--translate
+	voidYell	= "Gul'kafh an'qov N'Zoth."
 })
 
 -----------------------------
@@ -49,19 +49,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "Vienen mocos: %s",
-	specWarnOozes	= "Vienen mocos!"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "Siguientes mocos",
 	timerOozesActive	= "Mocos atacables"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "Mostrar aviso cuando salgan mocos",
-	specWarnOozes		= "Mostrar aviso especial cuando salgan mocos",
-	timerOozesCD		= "Mostrar tiempo para siguientes mocos",
 	timerOozesActive	= "Mostrar tiempo para que los mocos se pueden atacar",
 	RangeFrame			= "Mostrar distancia (4) para $spell:104898\n(Dificultad normal o superior)"
 })

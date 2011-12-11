@@ -137,15 +137,26 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Mostrar tiempo de debuff |cff71d5ff|Hspell:%d|h%s|h|r ",
-	cast = "Mostrar tiempo de cast de |cff71d5ff|Hspell:%d|h%s|h|r ",
+	target = "Mostrar tiempo de debuff de |cff71d5ff|Hspell:%d|h%s|h|r ",
+	cast = "Mostrar tiempo de casteo de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	active = "Mostrar duración de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	fades		= "Mostrar tiempo para cuando |cff71d5ff|Hspell:%d|h%s|h|r se disipa de los jugadores",
-	cd = "Mostrar CD de |cff71d5ff|Hspell:%d|h%s|h|r ",
-	cdcount = "Mostrar CD de |cff71d5ff|Hspell:%d|h%s|h|r ",
+	cd = "Mostrar cooldown de |cff71d5ff|Hspell:%d|h%s|h|r ",
+	cdcount = "Mostrar cooldown de |cff71d5ff|Hspell:%d|h%s|h|r ",
 	next = "Mostrar tiempo para el siguiente |cff71d5ff|Hspell:%d|h%s|h|r ",
 	nextcount = "Mostrar tiempo para el siguiente |cff71d5ff|Hspell:%d|h%s|h|r ",
 	achievement = "Mostrar tiempo para %s",
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
+	target		= "Mostrar tiempo de debuff de |cff71d5ff%s|r",
+	cast		= "Mostrar tiempo de casteo de |cff71d5ff%s|r",
+	active		= "Mostrar duración de |cff71d5ff%s|r",
+	fades		= "Mostrar tiempo para cuando |cff71d5ff%s|r se disipa de los jugadores",
+	cd			= "Mostrar cooldown de |cff71d5ff%s|r",
+	cdcount		= "Mostrar cooldown de |cff71d5ff%s|r",
+	next		= "Mostrar tiempo para el siguiente |cff71d5ff%s|r",
+	nextcount	= "Mostrar tiempo para el siguiente |cff71d5ff%s|r"
 }
 
 -- Auto-generated Warning Localizations
@@ -163,17 +174,28 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 local prewarnOption = "Mostrar una pre-alerta para |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r",
+	target	= "Anunciar objetivos de |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast	= "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	prewarn	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
-	phase	= "Mostrar aviso para fase %s",
+	phase	= "Anunciar Fase %s",
 	prephase = "Mostrar pre-aviso para Fase %s",
 	count	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	stack	= "Anunciar acumulaciones de |cff71d5ff|Hspell:%d|h%s|h|r",
 }
 
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
+	target	= "Anunciar objetivos de |cff71d5ff%s|r",
+	spell	= "Mostrar aviso para |cff71d5ff%s|r",
+	cast	= "Mostrar aviso cuando castee |cff71d5ff%s|r",
+	soon	= "Mostrar pre-aviso para |cff71d5ff%s|r",
+	prewarn = "Mostrar pre-aviso para |cff71d5ff%s|r",
+	phase	= "Anunciar Fase %s",
+	prephase= "Mostrar pre-aviso para Fase %s",
+	count	= "Mostrar aviso para |cff71d5ff%s|r",
+	stack	= "Anunciar acumulaciones de |cff71d5ff%s|r",
+}
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
@@ -187,6 +209,19 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run 	= "Mostrar aviso especial para $spell:%d",
 	cast 	= "Mostrar aviso especial para casteo de $spell:%d",
 	stack 	= "Mostrar aviso especial cuando tienes >=%d acumulaciones de \n $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
+	spell 		= "Mostrar aviso especial para $journal:%d",
+	dispel 		= "Mostrar aviso especial para dispelear/robar hechizo \n $journal:%d",
+	interrupt	= "Mostrar aviso especial para interrumpir $journal:%d",
+	you 		= "Mostrar aviso especial cuando te afecta \n $journal:%d",
+	target 		= "Mostrar aviso especial cuando a alguien le afecta \n $journal:%d",
+	close 		= "Mostrar aviso especial cuando a alguien cerca de ti \n le afecta $journal:%d",
+	move 		= "Mostrar aviso especial cuando te afecta \n $journal:%d",
+	run 		= "Mostrar aviso especial para $journal:%d",
+	cast 		= "Mostrar aviso especial para casteo de $journal:%d",
+	stack 		= "Mostrar aviso especial cuando tienes >=%d acumulaciones de \n $journal:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -203,12 +238,17 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Poner iconos en objetivos de $spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Reproducir sonido \"huye pequeña\" en $spell:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Reproducir sonido de cuenta atrás para $spell:%d"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Reproducir sonido de la duración de $spell:%d"
-DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Gritar cuando tengas $spell:%d"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "¡%s en mi!"--Verify (%s is spellname)
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Poner iconos en objetivos de $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "Poner iconos en objetivos de $journal:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Reproducir sonido \"huye pequeña\" en $spell:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "Reproducir sonido \"huye pequeña\" en $journal:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Reproducir sonido de cuenta atrás para $spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "Reproducir sonido de cuenta atrás para $journal:%d"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Reproducir sonido de la duración de $spell:%d"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "Reproducir sonido de la duración de $journal:%d"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Gritar cuando tengas $spell:%d"
+DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "Gritar cuando tengas $journal:%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "¡%s en mi!"
 
 
 -- New special warnings
