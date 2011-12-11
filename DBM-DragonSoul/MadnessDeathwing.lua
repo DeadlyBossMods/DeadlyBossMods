@@ -28,7 +28,7 @@ local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
 local warnFragments				= mod:NewSpellAnnounce("ej4115", 4)--This is indeed the summon fragments trigger
 local warnTerror				= mod:NewSpellAnnounce(106765, 4)
-local warnShrapnel				= mod:NewTargetAnnounce(106789, 3)
+local warnShrapnel				= mod:NewTargetAnnounce(109598, 3)
 
 local specWarnImpale			= mod:NewSpecialWarningYou(106400)
 local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
@@ -37,7 +37,7 @@ local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle", mod:IsDps()
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
 local specWarnFragments			= mod:NewSpecialWarningSpell("ej4115", nil, nil, nil, true)
 local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())--Not need to warn everyone, tanks for sure, everyone else depends on strat and set. Normally kill first set ignore second on normal.
-local specWarnShrapnel			= mod:NewSpecialWarningYou(106789)
+local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
@@ -48,7 +48,7 @@ local timerCataclysm			= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
 local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115")
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
-local timerShrapnel				= mod:NewBuffFadesTimer(6, 106789)
+local timerShrapnel				= mod:NewCastTimer(6, 109598)
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
