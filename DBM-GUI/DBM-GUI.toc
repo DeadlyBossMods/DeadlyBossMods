@@ -8,6 +8,7 @@
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOpciones|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOpciones|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFIUG des options|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFIU de opções|r
 ## Notes: GUI for Deadly Boss Mods
 ## Notes-zhCN: Deadly Boss Mods的设置界面
 ## Notes-ruRU: Графический интерфейс пользователя DBM
@@ -16,6 +17,7 @@
 ## Notes-esES: Gui para Deadly Boss Mods
 ## Notes-esMX: Gui para Deadly Boss Mods
 ## Notes-frFR: IUG pour Deadly Boss Mods
+## Notes-ptBR: IU para o Deadly Boss Mods
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1
 ## DefaultState: enabled
@@ -29,6 +31,7 @@ localization.fr.lua
 localization.tw.lua
 localization.kr.lua
 localization.es.lua
+localization.pt.lua
 DBM-GUI_DropDown.xml
 DBM-GUI_Templates.xml
 DBM-GUI.lua

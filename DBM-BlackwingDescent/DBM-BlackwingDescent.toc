@@ -7,6 +7,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Твердыня Крыла Тьмы|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑翼陷窟|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑翼血环|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Descenso do Asa Negra|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -20,6 +21,7 @@
 ## X-DBM-Mod-Name-ruRU: Твердыня Крыла Тьмы
 ## X-DBM-Mod-Name-zhTW: 黑翼陷窟
 ## X-DBM-Mod-Name-zhCN: 黑翼血环
+## X-DBM-Mod-Name-ptBR: Descenso do Asa Negra
 ## X-DBM-Mod-Sort: 104
 ## X-DBM-Mod-LoadZoneID: 754
 localization.en.lua
@@ -30,6 +32,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.pt.lua
 MapSizes.lua
 Magmaw.lua
 DarkIronGolemCouncil.lua
