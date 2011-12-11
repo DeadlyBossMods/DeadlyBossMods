@@ -49,7 +49,7 @@ local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:Is
 
 --local soundFrostTomb		= mod:NewSound(104451)--Needed?
 
---local berserkTimer				= mod:NewBerserkTimer(600)	-- 10min enrage?  There is 1, but don't know the time
+local berserkTimer				= mod:NewBerserkTimer(480)	-- according to Icy-Veins
 
 mod:AddBoolOption("RangeFrame")--Ice lance spreading. May make it more dynamic later but for now i need to see the fight in realtime before i can do any more guessing off mailed in combat logs.
 mod:AddBoolOption("SetIconOnFrostflake", true)
@@ -94,7 +94,7 @@ function mod:OnCombatStart(delay)
 	timerIceLanceCD:Start(12-delay)
 --	timerFrostTombCD:Start(16-delay)--No longer cast on engage? most recent log she only casts it after specials now and not after pull
 	timerSpecialCD:Start(30-delay)
---	berserkTimer:Start(-delay)
+	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3)
 	end
