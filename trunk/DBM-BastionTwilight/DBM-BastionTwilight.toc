@@ -6,6 +6,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Сумеречный бастион|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暮光堡壘|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暮光堡垒|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastião do Crepúsculo|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -19,6 +20,7 @@
 ## X-DBM-Mod-Name-ruRU: Сумеречный бастион
 ## X-DBM-Mod-Name-zhTW: 暮光堡壘
 ## X-DBM-Mod-Name-zhCN: 暮光堡垒
+## X-DBM-Mod-Name-ptBR: Bastião do Crepúsculo
 ## X-DBM-Mod-Sort: 103
 ## X-DBM-Mod-LoadZoneID: 758
 localization.en.lua
@@ -29,6 +31,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.pt.lua
 MapSizes.lua
 HalfusWyrmbreaker.lua
 ValionaTheralion.lua
