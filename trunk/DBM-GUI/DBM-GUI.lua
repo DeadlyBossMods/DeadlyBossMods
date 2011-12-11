@@ -283,7 +283,7 @@ do
 	end
 
 	local function replaceJournalLinks(id)
-		local title = EJ_GetSectionInfo(id)
+		local title = EJ_GetSectionInfo(id) or DBM_CORE_UNKNOWN
 		return ("|cff71d5ff%s|r"):format(title)
 	end
 	
