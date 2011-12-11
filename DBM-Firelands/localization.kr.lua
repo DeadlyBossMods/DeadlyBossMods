@@ -10,15 +10,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "다음 실거미",
-	TimerSpiderlings	= "다음 새끼거미",
-	TimerDrone			= "다음 수거미"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "다음 $journal:2770 바 표시",
-	TimerSpiderlings	= "다음 $journal:2778 바 표시",
-	TimerDrone			= "다음 $journal:2773 바 표시",
 	RangeFrame			= "거리 프레임 보기 (10m)"
 })
 
