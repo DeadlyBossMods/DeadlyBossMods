@@ -10,15 +10,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "下一次 燼網紡織者",
-	TimerSpiderlings	= "下一次 燼網小蜘蛛",
-	TimerDrone			= "下一次 燼網雄蛛"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "為下一次$journal:2770出現顯示計時器",
-	TimerSpiderlings	= "為下一次$journal:2778出現顯示計時器",
-	TimerDrone			= "為下一次$journal:2773出現顯示計時器",
 	RangeFrame			= "顯示距離框(10碼)"
 })
 

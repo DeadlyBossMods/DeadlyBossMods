@@ -14,16 +14,10 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "下一波织网蛛",
-	TimerSpiderlings	= "下一波幼蛛",
-	TimerDrone			= "下一波工虫"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "计时条：下一波$journal:2770",
-	TimerSpiderlings	= "计时条：下一波$journal:2778",
-	TimerDrone			= "计时条：下一波$journal:2773",
-	RangeFrame			= "距离监视器（10码）",
+	RangeFrame			= "距离监视器（10码）"
 })
 
 L:SetMiscLocalization({

@@ -9,15 +9,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Next Spinners",
-	TimerSpiderlings	= "Next Spiderlings",
-	TimerDrone			= "Next Drone"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Show timer for next $journal:2770",
-	TimerSpiderlings	= "Show timer for next $journal:2778",
-	TimerDrone			= "Show timer for next $journal:2773",
 	RangeFrame			= "Show range frame (10)"
 })
 

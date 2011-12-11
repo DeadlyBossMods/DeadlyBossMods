@@ -9,15 +9,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpinners 		= "Prochaines tisseuses",
-	TimerSpiderlings	= "Prochaines jeunes araignées",
-	TimerDrone			= "Prochaine ouvrière"
 })
 
 L:SetOptionLocalization({
-	TimerSpinners		= "Délai avant les prochaines $journal:2770",
-	TimerSpiderlings	= "Délai avant les prochaines $journal:2778",
-	TimerDrone			= "Délai avant la prochaine $journal:2773",
 	RangeFrame			= "Cadre des portées (10)"
 })
 
