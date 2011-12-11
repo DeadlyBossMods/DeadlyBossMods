@@ -161,10 +161,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
-	NoDebuff	= "No %s",
+	Pull			= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
+	NoDebuff		= "No %s",
 	PlasmaTarget	= "Searing Plasma: %s",
-	DRoll		= "about to roll"
+	DRoll			= "about to roll",
+	DLevels			= "levels out"
 })
 
 ---------------------------
