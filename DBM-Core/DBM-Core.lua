@@ -3385,7 +3385,7 @@ do
 				option = optionName or text,
 				sound = not noSound,
 				mod = self,
-				icon = (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
+				icon = (icon and string.match(icon, "ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
 			},
 			mt
 		)
@@ -3400,7 +3400,14 @@ do
 	
 	-- new constructor (auto-localized warnings and options, yay!)
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
-		spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		local ej_spell
+		if string.match(spellId, "ej%d+") then
+			spellId = string.sub(spellId, 3)
+			spellName = EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
+			ej_spell = true
+		else
+			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		end
 		icon = icon or spellId
 		local text
 		if announceType == "cast" then
@@ -3425,7 +3432,7 @@ do
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				option = optionName or text,
 				mod = self,
-				icon = (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
+				icon = (ej_spell and select(4, EJ_GetSectionInfo(icon)) ~= "" and select(4, EJ_GetSectionInfo(icon))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
 				sound = not noSound,
 			},
 			mt
@@ -3436,7 +3443,11 @@ do
 			self:AddBoolOption(optionName or text, optionDefault, "announce")
 		end
 		table.insert(self.announces, obj)
-		self.localization.options[text] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(spellId, spellName)
+		if ej_spell then
+			self.localization.options[text] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ[announceType]:format(spellName)
+		else
+			self.localization.options[text] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(spellId, spellName)
+		end
 		return obj
 	end
 	
@@ -3486,9 +3497,13 @@ do
 	local mt = { __index = soundPrototype }
 	function bossModPrototype:NewSound(spellId, optionName, optionDefault)
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
+		local journalId
+		if string.match(spellId, "ej%d+") then
+			journalId = string.sub(spellId, 3)
+		end
 		local obj = setmetatable(
 			{
-				option = optionName or DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId),
+				option = optionName or (journalId and DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ:format(journalId)) or DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId),
 				mod = self,
 			},
 			mt
@@ -3569,6 +3584,10 @@ do
 		local sound2 = self:NewSound(2, false, true)
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
+		local journalId
+		if string.match(spellId, "ej%d+") then
+			journalId = string.sub(spellId, 3)
+		end
 		if not spellId then
 			DBM:AddMsg("Error: No spellID given for countdown timer")
 			spellId = 39505
@@ -3581,7 +3600,7 @@ do
 				sound4 = sound4,
 				sound5 = sound5,
 				timer = timer,
-				option = optionName or DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId),
+				option = optionName or (journalId and DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ:format(journalId)) or DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId),
 				mod = self
 			},
 			mt
@@ -3666,6 +3685,10 @@ do
 		local sound2 = self:NewSound(2, false, true)
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
+		local journalId
+		if string.match(spellId, "ej%d+") then
+			journalId = string.sub(spellId, 3)
+		end
 		if not spellId then
 			DBM:AddMsg("Error: No spellID given for counted duration timer")
 			spellId = 39505
@@ -3678,7 +3701,7 @@ do
 				sound4 = sound4,
 				sound5 = sound5,
 				timer = timer,
-				option = optionName or DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId),
+				option = optionName or (journalId and DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ:format(journalId)) or DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId),
 				mod = self
 			},
 			mt
@@ -3699,10 +3722,14 @@ do
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
 	function bossModPrototype:NewYell(spellId, yellText, optionDefault, optionName, chatType)
+		local journalId
+		if string.match(spellId, "ej%d+") then
+			journalId = string.sub(spellId, 3)
+		end
 		local obj = setmetatable(
 			{
-				option = optionName or DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId),
-				text = yellText or DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(GetSpellInfo(spellId) or DBM_CORE_UNKNOWN),
+				option = optionName or (journalId and DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ:format(journalId)) or DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId),
+				text = yellText or (journalId and DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(EJ_GetSectionInfo(journalId) or DBM_CORE_UNKNOWN)) or DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(GetSpellInfo(spellId) or DBM_CORE_UNKNOWN),
 				mod = self,
 				chatType = chatType
 			},
@@ -3834,7 +3861,14 @@ do
 	end
 
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
-		spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		local ej_spell
+		if string.match(spellId, "ej%d+") then
+			spellId = string.sub(spellId, 3)
+			spellName = EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
+			ej_spell = true
+		else
+			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
+		end
 		local text = DBM_CORE_AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName) 
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
@@ -3853,7 +3887,11 @@ do
 			self:AddBoolOption(optionName or text, optionDefault, "announce")		-- todo cleanup core code from that indexing type using options[text] is very bad!!! ;)
 		end
 		table.insert(self.specwarns, obj)
-		if announceType == "stack" then
+		if ej_spell and announceType == "stack" then
+			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ[announceType]:format(stacks or 3, spellId)
+		elseif ej_spell then
+			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ[announceType]:format(spellId)
+		elseif announceType == "stack" then
 			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
 		else
 			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId)
@@ -4104,7 +4142,7 @@ do
 	end
 	
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
-		local icon = type(icon) == "number" and select(3, GetSpellInfo(icon)) or icon
+		local icon = (icon and string.match(icon, "ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name],
@@ -4134,7 +4172,7 @@ do
 		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
 			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b)
 		end
-		local spellName, icon
+		local spellName, icon, ej_spell
 		if timerType == "achievement" then
 			spellName = select(2, GetAchievementInfo(spellId))
 			icon = type(texture) == "number" and select(10, GetAchievementInfo(texture)) or texture or spellId and select(10, GetAchievementInfo(spellId))
@@ -4143,8 +4181,15 @@ do
 --				optionDefault = not completed
 --			end
 		else
-			spellName = GetSpellInfo(spellId or 0)
-			if spellName then
+			if string.match(spellId, "ej%d+") then
+				spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or nil
+				ej_spell = true
+			else
+				spellName = GetSpellInfo(spellId or 0)
+			end
+			if spellName and ej_spell then
+				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3)))
+			elseif spellName then
 				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
 			else
 				icon = nil
@@ -4173,6 +4218,8 @@ do
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
+		elseif ej_spell then
+			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS_EJ[timerType]:format(spellName)
 		else
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellId, spellName)
 		end
@@ -4226,6 +4273,8 @@ do
 		local spellName
 		if timerType == "achievement" then
 			spellName = select(2, GetAchievementInfo(spellId))
+		elseif string.match(spellId, "ej%d+") then
+			spellName = EJ_GetSectionInfo(string.sub(spellId, 3))
 		else
 			spellName = GetSpellInfo(spellId)
 		end
