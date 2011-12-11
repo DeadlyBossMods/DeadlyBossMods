@@ -1,7 +1,7 @@
 ﻿## Interface: 40300
 ## X-Min-Interface: 40300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
-## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Dragon Soul|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Drachenseele|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0El Alma de Dragón|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0용의 영혼|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Душа Дракона|r
@@ -16,7 +16,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Name: Dragon Soul
-## X-DBM-Mod-Name-deDE: Dragon Soul
+## X-DBM-Mod-Name-deDE: Drachenseele
 ## X-DBM-Mod-Name-esES: El Alma de Dragón
 ## X-DBM-Mod-Name-koKR: 용의 영혼
 ## X-DBM-Mod-Name-ruRU: Душа Дракона
@@ -28,6 +28,7 @@
 ## X-DBM-Mod-LoadZoneID: 824
 localization.cn.lua
 localization.en.lua
+localization.de.lua
 localization.ru.lua
 localization.es.lua
 localization.kr.lua
