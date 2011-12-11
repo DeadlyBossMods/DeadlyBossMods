@@ -26,7 +26,7 @@ local warnTentacle				= mod:NewSpellAnnounce(105551, 3)
 local warnHemorrhage			= mod:NewSpellAnnounce(105863, 3)
 local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
-local warnFragments				= mod:NewSpellAnnounce(109568, 4)--This is indeed the summon fragments trigger
+local warnFragments				= mod:NewSpellAnnounce("ej4115", 4)--This is indeed the summon fragments trigger
 local warnTerror				= mod:NewSpellAnnounce(106765, 4)
 local warnShrapnel				= mod:NewTargetAnnounce(106789, 3)
 
@@ -46,7 +46,7 @@ local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
 local timerHemorrhageCD			= mod:NewNextTimer(100, 105863)
 local timerCataclysm			= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
-local timerFragmentsCD			= mod:NewNextTimer(90, 109568)
+local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115")
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewBuffFadesTimer(6, 106789)
 
