@@ -116,7 +116,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 			specWarnOozes:Show()
 			timerOozesActive:Start()
 --			timerVoidBoltCD:Start(40)
-			timerOozesCD:Start()
+			timerOozesCD:Start(75)
 		end
 	else
 		if oozeColors[spellID] then
