@@ -9,6 +9,10 @@ mod:SetUsedIcons()
 
 mod:RegisterCombat("combat")
 
+mod:RegisterEvents(
+--	"UNIT_SPELLCAST_START"--Register out of combat to test it on trash too.
+)
+
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
@@ -23,6 +27,7 @@ local warnVoidDiffusion			= mod:NewStackAnnounce(106836, 2)
 local warnFocusedAnger			= mod:NewStackAnnounce(104543, 3, nil, false)
 local warnPsychicDrain			= mod:NewSpellAnnounce(104322, 4, nil, mod:IsTank())
 local warnShadows				= mod:NewSpellAnnounce(103434, 3)
+local warnShadowGaze			= mod:NewAnnounce("warnShadowGaze", 2, 104604)
 
 local specWarnVoidofUnmaking	= mod:NewSpecialWarningSpell(103571, nil, nil, nil, true)
 local specWarnBlackBlood		= mod:NewSpecialWarningSpell(104378, nil, nil, nil, true)
@@ -147,6 +152,21 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:updateRangeFrame()
 	end
 end		
+
+--Eye stalk debug code, they are interruptable but their casts are hidden. I know for a fact they fire a succeeded event when it ends, but i wasn't targeting one (as a tank) long enough to catch any cast starts.
+--"<2.0> Eye of Go'rath:Possible Target<Zaey>:target:Shadow Gaze::0:104604", -- [1]
+--Uncomment in event handler to test, i don't want to cause lua errors with this experiment for end users. Advanced users can enable it by registering UNIT_SPELLCAST_START
+function mod:UNIT_SPELLCAST_START(uId, spellName)
+	if uId == "target" then
+		if spellName == GetSpellInfo(104604) then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
+			warnShadowGaze:Show(spellName, UnitName("targettarget"), "target")
+		end
+	elseif uId == "focus" then
+		if spellName == GetSpellInfo(104604) then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
+			warnShadowGaze:Show(spellName, UnitName("focustarget"), "focus")
+		end
+	end
+end
 
 --It looks this event doesn't fire in raid finder. It seems to still fire in normal and heroic modes.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
