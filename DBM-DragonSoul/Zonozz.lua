@@ -42,6 +42,7 @@ mod:AddBoolOption("RangeFrame", true)--For heroic shadows, with debuff filtering
 mod:AddBoolOption("NoFilterRangeFrame", false)--For those that want the range frame to simply work as it used to, always show everyone.
 
 local shadowsTargets = {}
+local phase2Started = false
 local voidWarned = false
 
 local function warnShadowsTargets()
@@ -68,6 +69,7 @@ end
 
 local function blackBloodEnds()
 	voidWarned = false
+	phase2Started = false
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
 	if mod:IsDifficulty("lfr25") then
@@ -80,6 +82,7 @@ end
 
 function mod:OnCombatStart(delay)
 	voidWarned = false
+	phase2Started = false
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(6-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
@@ -98,13 +101,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(104378, 110322) then--104378 confirmed 10 man normal, 110322 confirmed 25 man normal
-		timerFocusedAngerCD:Cancel()
-		timerPsychicDrainCD:Cancel()
-		specWarnBlackBlood:Show()
-		timerBlackBlood:Start()
-		self:Schedule(30, blackBloodEnds)--More accurate way then tracking spell aura removed of black blood. Players dying in the phase were falsely triggering the phase ending early.
-	elseif args:IsSpellID(104322, 104606, 104607, 104608) then--104378 confirmed 10 man normal
+	if args:IsSpellID(104322, 104606, 104607, 104608) then--104378 confirmed 10 man normal
 		warnPsychicDrain:Show()
 		specWarnPsychicDrain:Show()
 		timerPsychicDrainCD:Start()
@@ -112,7 +109,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 end	
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(104543, 109409, 109410, 109411) then--104543 confirmed 10 man normal
+	if args:IsSpellID(104378, 110322, 110306) and not phase2Started then--104378 confirmed 10 man normal, 110322 confirmed 25 man normal, 110306 confirmed 25 man heroic (doesn't appear as cast success, have to use applied)
+		phase2Started = true
+		timerFocusedAngerCD:Cancel()
+		timerPsychicDrainCD:Cancel()
+		specWarnBlackBlood:Show()
+		timerBlackBlood:Start()
+		self:Schedule(30, blackBloodEnds)--More accurate way then tracking spell aura removed of black blood. Players dying in the phase were falsely triggering the phase ending early.
+	elseif args:IsSpellID(104543, 109409, 109410, 109411) then--104543 confirmed 10 man normal
 		warnFocusedAnger:Show(args.destName, args.amount or 1)
 		timerFocusedAngerCD:Start()
 	elseif args:IsSpellID(106836) then--106836 confirmed 10/25 man normal, do NOT add 103527 to this, that's a seperate spellid for when BOSS is affected by diffusion, this warning is counting the ball stacks.
