@@ -116,10 +116,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 			specWarnOozes:Show()
 			timerOozesActive:Start()
 --			timerVoidBoltCD:Start(40)
-			if self:IsDifficulty("heroic10", "normal10") then
+			if self:IsDifficulty("heroic10", "heroic25") then
 				timerOozesCD:Start(75)
 			else
-				timerOozesCD:Start()--it is 90 without a doubt in LFR, normal25, and heroic25
+				timerOozesCD:Start()--it's still 90 on normal
 			end
 		end
 	else
