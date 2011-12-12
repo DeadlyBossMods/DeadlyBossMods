@@ -72,21 +72,25 @@ local function blackBloodEnds()
 	phase2Started = false
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
-	if mod:IsDifficulty("lfr25") then
-		timerVoidofUnmakingCD:Start(6)--Always sooner in LFR?
-	else
-		timerVoidofUnmakingCD:Start()--Always before drain, but timing variates slightly too. But this should be more accurate then it was before
+	if mod:IsDifficulty("lfr25") then--LFR timers come earlier then everything
+		timerVoidofUnmakingCD:Start(6)
+		timerPsychicDrainCD:Start(14.5)
+	elseif mod:IsDifficulty("heroic10", "heroic25") then--Heroic timers come later
+		timerVoidofUnmakingCD:Start(15)
+		timerPsychicDrainCD:Start(23.5)
+	elseif mod:IsDifficulty("normal10", "normal25") then--Normal appears to be in the middle of the two
+		timerVoidofUnmakingCD:Start()--12
+		timerPsychicDrainCD:Start(21.5)
 	end
-	timerPsychicDrainCD:Start()--Does this start here? seeing too many variations on this.
 end
 
 function mod:OnCombatStart(delay)
 	voidWarned = false
 	phase2Started = false
 	table.wipe(shadowsTargets)
-	timerVoidofUnmakingCD:Start(6-delay)
+	timerVoidofUnmakingCD:Start(5.5-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
-	timerPsychicDrainCD:Start(17-delay)
+	timerPsychicDrainCD:Start(16.5-delay)
 	timerShadowsCD:Start(-delay)
 	self:updateRangeFrame()
 	if not self:IsDifficulty("lfr25") then--Can confirm what others saw, LFR definitely doesn't have a 6 min berserk. It's either much longer or not there.
