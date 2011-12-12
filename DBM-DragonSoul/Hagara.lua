@@ -31,7 +31,7 @@ local specWarnFrostTombCast	= mod:NewSpecialWarningSpell(104448, nil, nil, nil, 
 local specWarnTempest		= mod:NewSpecialWarningSpell(109552, nil, nil, nil, true)
 local specWarnLightingStorm	= mod:NewSpecialWarningSpell(105465, nil, nil, nil, true)
 local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
-local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
+--local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 local specWarnWatery		= mod:NewSpecialWarningMove(110317)
 local specWarnStormPillars	= mod:NewSpecialWarningClose(109557)	-- if target != nil
 
@@ -46,8 +46,6 @@ local timerIceWave			= mod:NewNextTimer(10, 105314)
 local timerFeedback			= mod:NewBuffActiveTimer(15, 108934)
 local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:IsTank())
-
---local soundFrostTomb		= mod:NewSound(104451)--Needed?
 
 local berserkTimer				= mod:NewBerserkTimer(480)	-- according to Icy-Veins
 
@@ -115,9 +113,6 @@ end
 
 local function ClearTombTargets()
 	table.wipe(tombIconTargets)
---[[	if mod.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end--]]
 end
 
 do
@@ -141,26 +136,16 @@ do
 end
 
 local function warnTombTargets()
---[[	if mod.Options.RangeFrame then
-		if not playerTombed then
-			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
-		else
-			DBM.RangeCheck:Show(10)
-		end
-	end--]]
 	warnFrostTomb:Show(table.concat(tombTargets, "<, >"))
 	table.wipe(tombTargets)
---	playertombed = false
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104451) then--104451 25 man normal confirmed.
 		tombTargets[#tombTargets + 1] = args.destName
-		if args:IsPlayer() then
---			playerTombed = true
+		--[[if args:IsPlayer() then
 			specWarnFrostTomb:Show()
---			soundFrostTomb:Play("Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav")
-		end
+		end--]]
 		if self.Options.SetIconOnFrostTomb then
 			table.insert(tombIconTargets, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetTombIcons")
