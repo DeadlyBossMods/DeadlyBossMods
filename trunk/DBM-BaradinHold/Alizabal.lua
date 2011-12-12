@@ -28,7 +28,7 @@ local timerSkewerCD				= mod:NewNextTimer(20.5, 104936)
 local timerSeethingHate			= mod:NewTargetTimer(9, 105067)
 local timerSeethingHateCD		= mod:NewNextTimer(20.5, 105067)
 
---local berserkTimer			= mod:NewBerserkTimer(300)
+local berserkTimer				= mod:NewBerserkTimer(300)
 
 local soundBladeDance			= mod:NewSound(104995)
 
@@ -45,8 +45,8 @@ function mod:OnCombatStart(delay)
 	timerFirstSpecial:Start(8-delay)
 --	timerSeethingHateCD:Start(6-delay)
 --	timerSkewerCD:Start(15-delay)
-	timerBladeDanceCD:Start(30-delay)
---	berserkTimer:Start(-delay)
+	timerBladeDanceCD:Start(26-delay) -- first blade dance variables 26~40 sec
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -89,7 +89,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(106248) then
+	if args:IsSpellID(105784) then
 		if bladeCasts < 3 then return end
 		firstspecial = false
 		firstskewer = false
