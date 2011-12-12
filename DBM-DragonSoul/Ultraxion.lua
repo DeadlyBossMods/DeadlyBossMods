@@ -31,7 +31,7 @@ local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerHourofTwilightCD			= mod:NewNextTimer(45, 109416)
 local timerTwilightEruptionCD		= mod:NewNextTimer(360, 106388)--Berserk timer more or less.
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
---local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)--For some reason the api is not accurate, it's not returning correct value so disabled.
+local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)--Lets try again using duration, not expire. expire just isn't going to work because of GetTime() 4.3 change.
 local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 15 on normal
 local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
 local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
@@ -89,14 +89,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFadingLightCD:Start()
 		elseif self:IsDifficulty("normal10", "normal25") and fadingLightCount < 2 then--It's cast 2 times during hour of twilight buff duration on ultraxion normal. 15 secomds remaining and at 0 seconds remainings.
 			timerFadingLightCD:Start(15)
-		--elseif self:IsDifficulty("lfr25") then
-			--timerFadingLightCD:Start(15)--Same in raid finder as normal?
+		elseif self:IsDifficulty("lfr25") and self:IsTank() then--Only tanks get it in LFR
+			timerFadingLightCD:Start(15)
 		end
 		if args:IsPlayer() then
 			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
---			FadingLightCountdown:Start(expires-GetTime()-5)
---			timerFadingLight:Start(expires-GetTime())
+--			FadingLightCountdown:Start(duration-5)
+			timerFadingLight:Start(duration)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
@@ -105,8 +105,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
---			FadingLightCountdown:Start(expires-GetTime()-5)
---			timerFadingLight:Start(expires-GetTime())
+--			FadingLightCountdown:Start(duration-5)
+			timerFadingLight:Start(duration)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
