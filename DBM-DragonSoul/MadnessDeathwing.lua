@@ -41,7 +41,7 @@ local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
-local timerElementiumBlast		= mod:NewCastTimer(8.5, 109600)--Variable depending on nozdormu
+local timerElementiumBlast		= mod:NewCastTimer(9, 109600)--Variable depending on nozdormu
 local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
 local timerHemorrhageCD			= mod:NewNextTimer(100, 105863)
 local timerCataclysm			= mod:NewCastTimer(60, 106523)

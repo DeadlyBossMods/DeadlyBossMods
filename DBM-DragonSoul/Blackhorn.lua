@@ -12,6 +12,7 @@ mod:SetMinCombatTime(20)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_SUMMON",
@@ -24,6 +25,7 @@ mod:RegisterEventsInCombat(
 local warnHarpoon					= mod:NewTargetAnnounce(108038, 2)
 local warnTwilightOnslaught			= mod:NewSpellAnnounce(108862, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
+local warnRoar						= mod:NewSpellAnnounce(109228, 2)
 local warnTwilightFlames			= mod:NewSpellAnnounce(108051, 3)
 local warnShockwave					= mod:NewTargetAnnounce(108046, 4)
 local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -41,6 +43,7 @@ local timerAdd						= mod:NewTimer(60, "TimerAdd", 107752)
 local timerTwilightOnslaughtCD		= mod:NewNextTimer(35, 107588)
 local timerSapperCD					= mod:NewTimer(40, "TimerSapper", 107752)
 local timerDeckFireCD				= mod:NewCDTimer(20, 110095)--Not the best log, so not sure if this is accurate or actually based on other variables.
+local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
@@ -106,6 +109,13 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(109228, 109229, 109230) then -- 109228 confirmed. other drycoded.
+		warnRoar:Show()
+		timerRoarCD:Start()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(108043) then
 		warnSunder:Show(args.destName, args.amount or 1)
@@ -128,6 +138,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--timerDeckFireCD:Cancel()--This continue into phase 2 or do we cancel it?
 		warnPhase2:Show()
 		timerCombatStart:Start(5)--Shorter now on live? 5-6 seems about right now. Lets try 5.
+		timerRoarCD:Start(22)
 		timerTwilightFlamesCD:Start(22)
 		timerShockwaveCD:Start()--23-26 second variation
 		if not self:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR

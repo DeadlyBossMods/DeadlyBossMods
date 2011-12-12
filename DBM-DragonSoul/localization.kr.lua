@@ -150,7 +150,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
-	SpecWarnTendril			= "휘감는 촉수 받으세요!"
+	SpecWarnTendril			= "등에 달라 붙으세요!"
 })
 
 L:SetTimerLocalization({
@@ -167,7 +167,8 @@ L:SetMiscLocalization({
 	Pull			= "저 갑옷! 놈의 갑옷이 벗겨지는군! 갑옷을 뜯어내면 놈을 쓰러뜨릴 기회가 생길 거요!",	
 	NoDebuff		= "%s 없음",
 	PlasmaTarget	= "이글거리는 혈장: %s",
-	DRoll			= "회전하려고"--Not a single transcriptor log for this fight from anyone, just bad chat logs that have more looting then actual boss encounters. This emote needs to be confirmed/fixed if it's wrong.
+	DRoll			= "회전하려고",
+	DLevels			= "수평으로 균형을"
 })
 
 ---------------------------
