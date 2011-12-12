@@ -91,7 +91,7 @@ do
 
 	function clearPlasmaTarget(guid, name)
 		DBM.BossHealth:RemoveBoss(L.PlasmaTarget:format(name))
-		plasmarTargets[guid] = nil
+		plasmaTargets[guid] = nil
 		healed[guid] = nil
 	end
 end
