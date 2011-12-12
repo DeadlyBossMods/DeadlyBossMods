@@ -30,9 +30,9 @@ local specWarnSmolderingDevastation	= mod:NewSpecialWarningSpell(99052)
 local specWarnVolatilePoison		= mod:NewSpecialWarningMove(101133)--Heroic ability
 local specWarnTouchWidowKissOther	= mod:NewSpecialWarningTarget(99476, mod:IsTank())
 
-local timerSpinners 				= mod:NewNextTimer(15, "ej2770") -- 15secs after Smoldering cast start
-local timerSpiderlings				= mod:NewNextTimer(30, "ej2778")
-local timerDrone					= mod:NewNextTimer(60, "ej2773")
+local timerSpinners 				= mod:NewNextTimer(15, "ej2770", nil, nil, nil, 97370) -- 15secs after Smoldering cast start
+local timerSpiderlings				= mod:NewNextTimer(30, "ej2778", nil, nil, nil, 72106)
+local timerDrone					= mod:NewNextTimer(60, "ej2773", nil, nil, nil, 28866)
 local timerSmolderingDevastationCD	= mod:NewNextCountTimer(90, 99052)
 local timerEmberFlareCD				= mod:NewNextTimer(6, 98934)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)

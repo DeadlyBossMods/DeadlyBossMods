@@ -2,16 +2,19 @@ local mod	= DBM:NewMod(333, "DBM-DragonSoul", nil, 187)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(56173)--Will this work? does he die?
+mod:SetCreatureID(56173)
 mod:SetModelID(40087)
 mod:SetZone()
 mod:SetUsedIcons()
 
-mod:RegisterCombat("yell", L.Pull)
+--mod:RegisterCombat("yell", L.Pull)
 mod:SetMinCombatTime(20)
 
+mod:RegisterEvents(
+	"SPELL_CAST_START"--out of combat register, since we might start using it for new pull local independant pull trigger.
+)
+
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -26,8 +29,8 @@ local warnTentacle				= mod:NewSpellAnnounce(105551, 3)
 local warnHemorrhage			= mod:NewSpellAnnounce(105863, 3)
 local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
-local warnFragments				= mod:NewSpellAnnounce("ej4115", 4)--This is indeed the summon fragments trigger
-local warnTerror				= mod:NewSpellAnnounce(106765, 4)
+local warnFragments				= mod:NewSpellAnnounce("ej4115", 4, 106708)--This needs a custom spell icon, EJ doesn't have icons for entires that are mobs
+local warnTerror				= mod:NewSpellAnnounce(106765, 4)--This needs a fitting spell icon, trigger spell only has a gear.
 local warnShrapnel				= mod:NewTargetAnnounce(109598, 3)
 
 local specWarnImpale			= mod:NewSpecialWarningYou(106400)
@@ -41,12 +44,12 @@ local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
-local timerElementiumBlast		= mod:NewCastTimer(9, 109600)--Variable depending on nozdormu
+local timerElementiumBlast		= mod:NewCastTimer(9, 109600)-- 8-10 variation depending on where it's actually going to land. It'll never be perfect, 9 is probably good enough.
 local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
 local timerHemorrhageCD			= mod:NewNextTimer(100, 105863)
 local timerCataclysm			= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
-local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115")
+local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)--Gear icon for now til i find something more suitable
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
 
@@ -92,6 +95,8 @@ function mod:SPELL_CAST_START(args)
 		timerCataclysmCD:Cancel()--Just in case it comes early from another minor change like firstAspect change which wasn't on PTR, don't want to confuse peope with two cata bars.
 		warnCataclysm:Show()
 		timerCataclysm:Start()
+	elseif args:IsSpellID(108537) then--Thrall teleporting to back platform on engage. Beta testing for local independant pull trigger.
+		DBM:StartCombat(self, 0)
 	end
 end
 
@@ -104,7 +109,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else	
 			timerElementiumBlast:Start(20)--Slowed by Nozdormu, explosion in 20 seconds
 		end
-	elseif args:IsSpellID(110063) and phase2 and self:IsInCombat() then--Astral Recall. Thrall teleports off the platform. take THAT for kill detection!
+	elseif args:IsSpellID(110063) and phase2 and self:IsInCombat() then--Astral Recall. Thrall teleports off back platform back to front on defeat.
 		DBM:EndCombat(self)
 	end
 end

@@ -66,6 +66,7 @@ local function showGripWarning()
 	table.wipe(gripTargets)
 end
 
+--This wasn't working right on 25 man at all, i think more then one went out at a time, and it spam changed name, it didn't want to add more then 1 name to frame at a time so instead it kept replacing the frame, alli saw was about 6 names flash by within 1 second.
 local clearPlasmaTarget, setPlasmaTarget
 do
 	local plasmaTargets = {}
