@@ -2393,7 +2393,7 @@ function DBM:EndCombat(mod, wipe)
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), DBM:GetCurrentInstanceDifficulty():match("%a*").." "..(mod.combatInfo.name or ""))
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), DBM:GetLocalizedInstanceDifficulty().." "..(mod.combatInfo.name or ""))
 				sendWhisper(k, msg)
 			end
 			fireEvent("wipe", mod)
@@ -2451,7 +2451,7 @@ function DBM:EndCombat(mod, wipe)
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), DBM:GetCurrentInstanceDifficulty():match("%a*").." "..(mod.combatInfo.name or ""))
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), DBM:GetLocalizedInstanceDifficulty().." "..(mod.combatInfo.name or ""))
 				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)
@@ -2507,6 +2507,23 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic25"
 	else
 		return "unknown"
+	end
+end
+
+function DBM:GetLocalizedInstanceDifficulty()
+	local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo()
+	if IsPartyLFG() and IsInLFGDungeon() and difficulty == 2 and instanceType == "raid" and maxPlayers == 25 then
+		return PLAYER_DIFFICULTY3
+	elseif difficulty == 1 then
+		return PLAYER_DIFFICULTY1
+	elseif difficulty == 2 then
+		return instanceType == "raid" and PLAYER_DIFFICULTY1 or PLAYER_DIFFICULTY2
+	elseif difficulty == 3 then
+		return PLAYER_DIFFICULTY2
+	elseif difficulty == 4 then
+		return PLAYER_DIFFICULTY2
+	else
+		return DBM_CORE_UNKNOWN
 	end
 end
 
@@ -2745,7 +2762,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(DBM:Capitalize(DBM:GetCurrentInstanceDifficulty():match("%a*")).." "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(DBM:Capitalize(DBM:GetLocalizedInstanceDifficulty()).." "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
 			local mod
@@ -2754,7 +2771,7 @@ do
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), DBM:GetCurrentInstanceDifficulty():match("%a*").." "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), DBM:GetLocalizedInstanceDifficulty().." "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
