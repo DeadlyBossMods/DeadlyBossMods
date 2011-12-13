@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/11/2011
+-- Last update: 12/14/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -33,13 +33,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(324)
 
 L:SetWarningLocalization({
+	warnShadowGaze	= "%s：%s，来自%s，1.5秒后施放"--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "距离监视器（根据玩家状态动态变化）：应对$spell:104601（英雄难度）",
+	warnShadowGaze		= "警报（实验性）：$spell:104604（仅对当前或焦点目标有效）",--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
+	RangeFrame			= "距离监视器（根据玩家状态动态变化）：应对$spell:104601（英雄难度）",
 	NoFilterRangeFrame	= "取消距离监视器的动态监测，总是显示所有团员"
 })
 
@@ -172,10 +174,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
-	NoDebuff	= "没有%s",
+	Pull			= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
+	NoDebuff		= "没有%s",
 	PlasmaTarget	= "灼热血浆：%s",
-	DRoll		= "about to roll"
+	DRoll			= "about to roll",
+	DLevels			= "levels out"
 })
 
 ---------------------------

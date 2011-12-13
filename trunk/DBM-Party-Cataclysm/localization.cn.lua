@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/4/2011
+-- Last update: 12/13/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -967,7 +967,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
+	Kill		= "你根本不明白你究竟干了什么。阿曼苏尔……我……看到……的……"
 }
 
 ------------------------
