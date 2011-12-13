@@ -28,14 +28,15 @@ local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, n
 local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
-local timerHourofTwilightCD			= mod:NewNextTimer(45, 109416)
-local timerTwilightEruptionCD		= mod:NewNextTimer(360, 106388)--Berserk timer more or less.
+local timerHourofTwilightCD			= mod:NewNextCountTimer(45, 109416)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
 local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)--Lets try again using duration, not expire. expire just isn't going to work because of GetTime() 4.3 change.
 local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 15 on normal
 local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
 local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
 local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
+
+local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
 --local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
 
@@ -52,11 +53,11 @@ function mod:OnCombatStart(delay)
 	table.wipe(fadingLightTargets)
 	hourOfTwilightCount = 0
 	fadingLightCount = 0
-	timerTwilightEruptionCD:Start(-delay)
+	timerHourofTwilightCD:Start(46-delay)
 	timerGiftofLight:Start(-delay)
 	timerEssenceofDreams:Start(-delay)
 	timerSourceofMagic:Start(-delay)
-	timerHourofTwilightCD:Start(-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -68,7 +69,7 @@ function mod:SPELL_CAST_START(args)
 		hourOfTwilightCount = hourOfTwilightCount + 1
 		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
-		timerHourofTwilightCD:Start()
+		timerHourofTwilightCD:Start(45, hourOfTwilightCount+1)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFadingLightCD:Start(13)
 		else
