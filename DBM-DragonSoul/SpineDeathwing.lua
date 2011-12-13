@@ -80,7 +80,6 @@ do
 	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
 
 	function setPlasmaTarget(guid, name)
-		DBM.BossHealth:Show(L.name)
 		plasmaTargets[guid] = name
 		healed[guid] = 0
 		local maxAbsorb =	mod:IsDifficulty("heroic25") and 420000 or
