@@ -43,9 +43,9 @@ local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumBlast		= mod:NewCastTimer(9, 109600)-- 8-10 variation depending on where it's actually going to land. It'll never be perfect, 9 is probably good enough.
 local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
-local timerHemorrhageCD			= mod:NewNextTimer(100, 105863)
+local timerHemorrhageCD			= mod:NewNextTimer(101, 105863)
 local timerCataclysm			= mod:NewCastTimer(60, 106523)
-local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
+local timerCataclysmCD			= mod:NewNextTimer(131, 106523)
 local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)--Gear icon for now til i find something more suitable
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
@@ -83,13 +83,30 @@ function mod:SPELL_CAST_START(args)
 			timerHemorrhageCD:Start(85)
 			timerCataclysmCD:Start(115)
 		else
---			"<152.5> [CLEU] SPELL_CAST_START#false#0xF150DB6D00010EA5#Deathwing#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#107018#Assault Aspects#4", -- [57153]
---			"<252.9> [UNIT_SPELLCAST_SUCCEEDED] Deathwing:Possible Target<Melissii>:boss1:Hemorrhage::0:105853", -- [89710]
---			"<283.0> [CLEU] SPELL_CAST_START#false#0xF150DB6D00010EA5#Deathwing#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#110044#Cataclysm#4", -- [101594]
+--[[		"<152.5> [CLEU] SPELL_CAST_START#false#0xF150DB6D00010EA5#Deathwing#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#107018#Assault Aspects#4", -- [57153]
+			"<252.9> [UNIT_SPELLCAST_SUCCEEDED] Deathwing:Possible Target<Melissii>:boss1:Hemorrhage::0:105853", -- [89710]
+			"<283.0> [CLEU] SPELL_CAST_START#false#0xF150DB6D00010EA5#Deathwing#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#110044#Cataclysm#4", -- [101594]
+			-- in wow logs. 100 and 130 not acctuate for me.
+12/13 05:33:06.788  SPELL_CAST_START,0xF150DB6D00003786,"Deathwing",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,107018,"Assault Aspects",0x4
+12/13 05:34:48.008  ! -- Hemorrhage emote message in koKR
+12/13 05:35:17.895  SPELL_CAST_START,0xF150DB6D00003786,"Deathwing",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,106523,"Cataclysm",0x4
+
+12/13 05:35:56.153  SPELL_CAST_START,0xF150DB6D00003786,"Deathwing",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,107018,"Assault Aspects",0x4
+12/13 05:37:37.861  ! -- Hemorrhage emote message in koKR
+12/13 05:38:07.770  SPELL_CAST_START,0xF150DB6D00003786,"Deathwing",0x10a48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,106523,"Cataclysm",0x4
+
+12/13 06:08:09.189  SPELL_CAST_START,0xF150DB6D000039B6,"Deathwing",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,107018,"Assault Aspects",0x4
+12/13 06:09:50.090  ! -- Hemorrhage emote message in koKR
+12/13 06:10:19.980  SPELL_CAST_START,0xF150DB6D000039B6,"Deathwing",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,106523,"Cataclysm",0x4
+
+12/13 06:11:01.038  SPELL_CAST_START,0xF150DB6D000039B6,"Deathwing",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,107018,"Assault Aspects",0x4
+12/13 06:12:42.346  ! -- Hemorrhage emote message in koKR
+12/13 06:13:12.248  SPELL_CAST_START,0xF150DB6D000039B6,"Deathwing",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,106523,"Cataclysm",0x4
+]]
 			timerImpaleCD:Start(37)
 			timerElementiumBoltCD:Start()
-			timerHemorrhageCD:Start()--Without a doubt 100, 49ms latency, dozens of logs verify it.
-			timerCataclysmCD:Start()--Without a doubt 130, ^
+			timerHemorrhageCD:Start()
+			timerCataclysmCD:Start()
 		end
 	elseif args:IsSpellID(106523, 110042, 110043, 110044) then
 		timerCataclysmCD:Cancel()--Just in case it comes early from another minor change like firstAspect change which wasn't on PTR, don't want to confuse peope with two cata bars.
