@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 11/24/2011
+-- Last update: 12/13/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -133,6 +133,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast		= "%s",
 	active		= "%s结束",--Buff/Debuff/event on boss
 	fades		= "%s消失",--Buff/Debuff on players
+	cd			= "%s冷却",
 	cdcount		= "%s冷却（%%d）",
 	next 		= "下一次%s",
 	nextcount	= "下一次%s（%%d）",
