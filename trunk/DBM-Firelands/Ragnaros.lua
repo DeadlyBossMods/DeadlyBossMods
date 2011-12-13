@@ -344,7 +344,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerFlamesCD:Start(60)--60 second CD in phase 2
 		end
-	elseif args:IsSpellID(100997) then
+	elseif args:IsSpellID(100997, 100604) then
 		warnEmpoweredSulf:Show(args.spellName)
 		specWarnEmpoweredSulf:Show()
 		soundEmpoweredSulf:Play()

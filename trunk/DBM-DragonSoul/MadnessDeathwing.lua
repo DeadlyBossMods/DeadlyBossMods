@@ -10,11 +10,8 @@ mod:SetUsedIcons()
 mod:RegisterCombat("yell", L.Pull)
 mod:SetMinCombatTime(20)
 
-mod:RegisterEvents(
-	"SPELL_CAST_START"--out of combat register, since we might start using it for new pull local independant pull trigger.
-)
-
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -46,9 +43,9 @@ local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumBlast		= mod:NewCastTimer(9, 109600)-- 8-10 variation depending on where it's actually going to land. It'll never be perfect, 9 is probably good enough.
 local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
-local timerHemorrhageCD			= mod:NewNextTimer(102, 105863)
+local timerHemorrhageCD			= mod:NewNextTimer(100, 105863)
 local timerCataclysm			= mod:NewCastTimer(60, 106523)
-local timerCataclysmCD			= mod:NewNextTimer(132, 106523)
+local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
 local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)--Gear icon for now til i find something more suitable
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
@@ -86,17 +83,20 @@ function mod:SPELL_CAST_START(args)
 			timerHemorrhageCD:Start(85)
 			timerCataclysmCD:Start(115)
 		else
+--			"<152.5> [CLEU] SPELL_CAST_START#false#0xF150DB6D00010EA5#Deathwing#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#107018#Assault Aspects#4", -- [57153]
+--			"<252.9> [UNIT_SPELLCAST_SUCCEEDED] Deathwing:Possible Target<Melissii>:boss1:Hemorrhage::0:105853", -- [89710]
+--			"<283.0> [CLEU] SPELL_CAST_START#false#0xF150DB6D00010EA5#Deathwing#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#110044#Cataclysm#4", -- [101594]
 			timerImpaleCD:Start(37)
 			timerElementiumBoltCD:Start()
-			timerHemorrhageCD:Start()
-			timerCataclysmCD:Start()
+			timerHemorrhageCD:Start()--Without a doubt 100, 49ms latency, dozens of logs verify it.
+			timerCataclysmCD:Start()--Without a doubt 130, ^
 		end
 	elseif args:IsSpellID(106523, 110042, 110043, 110044) then
 		timerCataclysmCD:Cancel()--Just in case it comes early from another minor change like firstAspect change which wasn't on PTR, don't want to confuse peope with two cata bars.
 		warnCataclysm:Show()
 		timerCataclysm:Start()
-	elseif args:IsSpellID(108537) then--Thrall teleporting to back platform on engage. Beta testing for local independant pull trigger.
-		DBM:StartCombat(self, 0)
+--	elseif args:IsSpellID(108537) then--Thrall teleporting to back platform on engage. Beta testing for local independant pull trigger. (this should work, :\, maybe i did the startcombat wrong)
+--		DBM:StartCombat(self, 0)
 	end
 end
 
