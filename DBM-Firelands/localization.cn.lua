@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/8/2011
+-- Last update: 12/13/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -179,7 +179,7 @@ L:SetOptionLocalization({
 	warnEngulfingFlame			= "警报：$spell:99171",
 	WarnEngulfingFlameHeroic	= "警报：英雄模式下$spell:99171的位置",
 	WarnRemainingAdds			= "警报：烈焰之子剩余数量",
-	warnSeedsLand				= "警报与计时条：$spell:98520落地位置，而非施法警报",
+	warnSeedsLand				= "警报与计时条：$spell:98520落地，而非施法警报",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "计时条：烈焰之子阶段持续时间",
@@ -260,7 +260,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("NexusLegendary")
 
 L:SetGeneralLocalization({
-	name = "Thyrinar"
+	name = "赛瑞纳尔"
 })
 
 L:SetWarningLocalization({
