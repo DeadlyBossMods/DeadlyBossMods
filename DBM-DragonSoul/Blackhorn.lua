@@ -77,8 +77,8 @@ function mod:ShockwaveTarget()
 	end
 end
 
-function mod:AddsRepeat() -- it seems to be adds summon only 4 times. and timer needs more tweak..
-	if addsCount < 4 then
+function mod:AddsRepeat() -- it seems to be adds summon only 3 times. needs more review
+	if addsCount < 2 then -- fix logical error
 		addsCount = addsCount + 1
 		timerAdd:Start()
 		self:ScheduleMethod(61, "AddsRepeat")

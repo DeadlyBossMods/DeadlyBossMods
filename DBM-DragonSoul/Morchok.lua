@@ -38,7 +38,7 @@ local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also 
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
-local timerKohcromCD	= mod:NewTimer(5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
+local timerKohcromCD	= mod:NewTimer(6, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
 --We will not start timers using Kohcrom's casts, it'll waste WAY too much space.
 --EJ is pretty clear, they are cast shortly after morchok, always. So echo timer is perfect and clean solution.
@@ -102,13 +102,26 @@ function mod:SPELL_CAST_START(args)
 			if crystalCount < 3 then
 				timerStomp:Start()
 				if UnitExists("boss2") then
---			"<31.7> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [7458]
---			"<36.9> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [8962]
---			"<46.1> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [11548]
---			"<51.4> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [12939]
---			"<104.0> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [22492]
---			"<109.2> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [23731]
-					timerKohcromCD:Start(5.2, args.spellName)--It's 5.2 (probably 5sec Cd), very rarely did I see 6. 
+--[[				"<31.7> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [7458]
+					"<36.9> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [8962]
+					"<46.1> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [11548]
+					"<51.4> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [12939]
+					"<104.0> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [22492]
+					"<109.2> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [23731]
+					-- transcriptor log not valid timestamp, may be (GetTime() issue?)
+					-- for wow CLEU stomp cooldown is always 6 sec. and actually fights.
+					12/13 02:48:11.850  SPELL_CAST_START,0xF130D7E10000006D,"Morchok",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 02:48:17.865  SPELL_CAST_START,0xF130E1AD00000755,"Kohcrom",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 02:48:26.307  SPELL_CAST_START,0xF130D7E10000006D,"Morchok",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 02:48:32.330  SPELL_CAST_START,0xF130E1AD00000755,"Kohcrom",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 02:52:37.114  SPELL_CAST_START,0xF130D7E1000007C2,"Morchok",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 02:52:43.105  SPELL_CAST_START,0xF130E1AD000008A7,"Kohcrom",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 03:29:04.315  SPELL_CAST_START,0xF130D7E100001298,"Morchok",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 03:29:10.318  SPELL_CAST_START,0xF130E1AD000012D5,"Kohcrom",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 03:29:18.740  SPELL_CAST_START,0xF130D7E100001298,"Morchok",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+					12/13 03:29:24.767  SPELL_CAST_START,0xF130E1AD000012D5,"Kohcrom",0xa48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,109033,"Stomp",0x1
+]]
+					timerKohcromCD:Start(6, args.spellName)
 				end
 			end
 		else
