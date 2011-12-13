@@ -1,7 +1,7 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
 -- Last update: 12/14/2011
 
-if GetLocale() ~= "zhCN" then return end
+if GetLocale() ~= "zhCN"  then return end
 
 local L
 
