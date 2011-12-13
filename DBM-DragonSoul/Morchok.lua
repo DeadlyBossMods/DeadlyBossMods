@@ -38,7 +38,7 @@ local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also 
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
-local timerKohcromCD	= mod:NewTimer(6, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
+local timerKohcromCD	= mod:NewTimer(5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
 --We will not start timers using Kohcrom's casts, it'll waste WAY too much space.
 --EJ is pretty clear, they are cast shortly after morchok, always. So echo timer is perfect and clean solution.
@@ -102,7 +102,13 @@ function mod:SPELL_CAST_START(args)
 			if crystalCount < 3 then
 				timerStomp:Start()
 				if UnitExists("boss2") then
-					timerKohcromCD:Start(6, args.spellName) -- updated by combatlogs . 6 sec exactly
+--			"<31.7> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [7458]
+--			"<36.9> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [8962]
+--			"<46.1> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [11548]
+--			"<51.4> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [12939]
+--			"<104.0> [CLEU] SPELL_CAST_START#false#0xF130D7E10000D438#Morchok#133704#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [22492]
+--			"<109.2> [CLEU] SPELL_CAST_START#false#0xF130E1AD0000D7D6#Kohcrom#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#109034#Stomp#1", -- [23731]
+					timerKohcromCD:Start(5.2, args.spellName)--It's 5.2 (probably 5sec Cd), very rarely did I see 6. 
 				end
 			end
 		else
