@@ -26,12 +26,12 @@
 ## X-DBM-Mod-Name-ptBR: Alma Dragônica
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZoneID: 824
-localization.cn.lua
 localization.en.lua
 localization.de.lua
 localization.ru.lua
 localization.es.lua
 localization.kr.lua
+localization.cn.lua
 localization.tw.lua
 localization.fr.lua
 localization.pt.lua
