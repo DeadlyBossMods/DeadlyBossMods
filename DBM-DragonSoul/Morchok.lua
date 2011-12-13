@@ -25,7 +25,8 @@ local warnStomp			= mod:NewSpellAnnounce(108571, 3)
 local warnVortex		= mod:NewSpellAnnounce(110047, 3)
 local warnBlood			= mod:NewSpellAnnounce(103851, 4)
 local warnFurious		= mod:NewSpellAnnounce(103846, 3)
-local KohcromWarning	= mod:NewAnnounce("KohcromWarning", 3, 55342)--Mirror image icon.
+local warnKohcrom		= mod:NewSpellAnnounce(109017, 4)
+local KohcromWarning	= mod:NewAnnounce("KohcromWarning", 2, 55342)--Mirror image icon. use different color for easlier distingush.
 
 local specwarnCrushArmor	= mod:NewSpecialWarningStack(103687, mod:IsTank(), 3)
 local specwarnVortex		= mod:NewSpecialWarningSpell(110047, nil, nil, nil, true)
@@ -37,7 +38,7 @@ local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also 
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
 local timerVortexNext	= mod:NewNextTimer(71, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
-local timerKohcromCD	= mod:NewTimer(5, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
+local timerKohcromCD	= mod:NewTimer(6, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
 --We will not start timers using Kohcrom's casts, it'll waste WAY too much space.
 --EJ is pretty clear, they are cast shortly after morchok, always. So echo timer is perfect and clean solution.
@@ -48,10 +49,12 @@ mod:AddBoolOption("RangeFrame", false)--For achievement
 
 local spamBlood = 0
 local crystalCount = 0--3 crystals between each vortex cast by Morchok, we ignore his twins.
+local firstCrystalSummoned = false
 
 function mod:OnCombatStart(delay)
 	spamBlood = 0
 	crystalCount = 1--only 2 before first aoe so we fake set it to 1 on pull.
+	firstCrystalSummoned = false
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)--7 min berserk based on a video, so may not be 100%
 	end
@@ -99,7 +102,7 @@ function mod:SPELL_CAST_START(args)
 			if crystalCount < 3 then
 				timerStomp:Start()
 				if UnitExists("boss2") then
-					timerKohcromCD:Start(5, args.spellName)--Based on video only, seemed to always stomp 5 second after morchok
+					timerKohcromCD:Start(6, args.spellName) -- updated by combatlogs . 6 sec exactly
 				end
 			end
 		else
@@ -119,14 +122,26 @@ function mod:SPELL_SUMMON(args)
 		if args:GetSrcCreatureID() == 55265 then
 			crystalCount = crystalCount + 1
 			warnCrystal:Show()
-			if crystalCount < 3 then	
+			if crystalCount < 3 then
 				timerCrystal:Start()
-				if UnitExists("boss2") and crystalCount > 1 then	-- only mimics 2nd+3rd Crystals?
-					timerKohcromCD:Start(5, args.spellName)
+				if UnitExists("boss2") and firstCrystalSummoned and crystalCount > 1 then	-- only mimics 2nd+3rd Crystals. on first encounter, he mimicks only 3rd (2nd) crystals.
+					timerKohcromCD:Start(6, args.spellName)
+				end
+				if UnitExists("boss2") and not firstCrystalSummoned then
+					firstCrystalSummoned = true
 				end
 			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
+		end
+	elseif args:IsSpeellID(109017) then
+		warnKohcrom:Show()
+		-- once Kohcrom summoned, stomp and Crystal timer restarts. For my encounter, always show Kohcrom before first crystal summons. so confirmed only one way.
+		if not firstCrystalSummoned then
+			timerCrystal:Cancel()
+			timerStomp:Cancel()
+			timerCrystal:Start(5.5) -- 5.5~6.8 sec
+			timerStomp:Start(12)
 		end
 	end
 end
@@ -141,8 +156,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			crystalCount = 0
 			warnVortex:Show()
 		end
---	elseif args:IsSpellID(109017) then--Summon Kohcrom
-
 	end
 end
 
