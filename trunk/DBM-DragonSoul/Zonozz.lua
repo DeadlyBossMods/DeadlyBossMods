@@ -10,7 +10,7 @@ mod:SetUsedIcons()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
---	"UNIT_SPELLCAST_START"--Register out of combat to test it on trash too.
+	"UNIT_SPELLCAST_START"--Register out of combat to test it on trash too.
 )
 
 mod:RegisterEventsInCombat(
