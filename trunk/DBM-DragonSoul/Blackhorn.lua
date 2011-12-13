@@ -39,7 +39,7 @@ local yellShockwave					= mod:NewYell(108046)
 local specWarnSunder				= mod:NewSpecialWarningStack(108043, mod:IsTank(), 3)
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
-local timerAdd						= mod:NewTimer(60, "TimerAdd", 107752)
+local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
 local timerTwilightOnslaughtCD		= mod:NewNextTimer(35, 107588)
 local timerSapperCD					= mod:NewTimer(40, "TimerSapper", 107752)
 local timerDeckFireCD				= mod:NewCDTimer(20, 110095)--Not the best log, so not sure if this is accurate or actually based on other variables.
@@ -52,6 +52,7 @@ local berserkTimer					= mod:NewBerserkTimer(250)
 
 local phase2Started = false
 local lastFlames = 0
+local addsCount = 0
 
 function mod:ShockwaveTarget()
 	local targetname = self:GetBossTarget(56427)
@@ -76,14 +77,18 @@ function mod:ShockwaveTarget()
 	end
 end
 
-function mod:AddsRepeat()
-	timerAdd:Start()
-	self:ScheduleMethod(60, "AddsRepeat")
+function mod:AddsRepeat() -- it seems to be adds summon only 4 times. and timer needs more tweak..
+	if addsCount < 4 then
+		addsCount = addsCount + 1
+		timerAdd:Start()
+		self:ScheduleMethod(61, "AddsRepeat")
+	end
 end
 
 function mod:OnCombatStart(delay)
 	phase2Started = false
 	lastFlames = 0
+	addsCount = 0
 	timerCombatStart:Start(-delay)
 	timerAdd:Start(24-delay)
 	self:ScheduleMethod(24-delay, "AddsRepeat")
@@ -110,7 +115,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(109228, 109229, 109230) then -- 109228 confirmed. other drycoded.
+	if args:IsSpellID(108044, 109228, 109229, 109230) then -- 108044 is 10 man / 109228 lfr. other drycoded.
 		warnRoar:Show()
 		timerRoarCD:Start()
 	end

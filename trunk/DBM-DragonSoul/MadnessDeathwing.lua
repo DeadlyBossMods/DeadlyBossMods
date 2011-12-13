@@ -7,7 +7,7 @@ mod:SetModelID(40087)
 mod:SetZone()
 mod:SetUsedIcons()
 
---mod:RegisterCombat("yell", L.Pull)
+mod:RegisterCombat("yell", L.Pull)
 mod:SetMinCombatTime(20)
 
 mod:RegisterEvents(
@@ -46,9 +46,9 @@ local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumBlast		= mod:NewCastTimer(9, 109600)-- 8-10 variation depending on where it's actually going to land. It'll never be perfect, 9 is probably good enough.
 local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
-local timerHemorrhageCD			= mod:NewNextTimer(100, 105863)
+local timerHemorrhageCD			= mod:NewNextTimer(102, 105863)
 local timerCataclysm			= mod:NewCastTimer(60, 106523)
-local timerCataclysmCD			= mod:NewNextTimer(130, 106523)
+local timerCataclysmCD			= mod:NewNextTimer(132, 106523)
 local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)--Gear icon for now til i find something more suitable
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
