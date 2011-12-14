@@ -38,7 +38,7 @@ local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
 
 local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
---local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
+local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
 
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
@@ -94,9 +94,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFadingLightCD:Start(15)
 		end
 		if args:IsPlayer() then
-			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
+			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
---			FadingLightCountdown:Start(duration-5)
+			FadingLightCountdown:Start(duration)
 			timerFadingLight:Start(duration)
 		end
 		self:Unschedule(warnFadingLightTargets)
@@ -104,9 +104,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(105925, 109075, 110070, 110080) then--Damage done IDs, dps/healer debuffs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
 		if args:IsPlayer() then
-			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
+			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
---			FadingLightCountdown:Start(duration-5)
+			FadingLightCountdown:Start(duration)
 			timerFadingLight:Start(duration)
 		end
 		self:Unschedule(warnFadingLightTargets)
