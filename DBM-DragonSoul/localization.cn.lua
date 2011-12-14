@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/14/2011
+-- Last update: 12/15/2011
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -33,14 +33,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(324)
 
 L:SetWarningLocalization({
-	warnShadowGaze	= "%s：%s，来自%s，1.5秒后施放"--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnShadowGaze		= "警报（实验性）：$spell:104604（仅对当前或焦点目标有效）",--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
 	RangeFrame			= "距离监视器（根据玩家状态动态变化）：应对$spell:104601（英雄难度）",
 	NoFilterRangeFrame	= "取消距离监视器的动态监测，总是显示所有团员"
 })
@@ -124,8 +122,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",
-	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
+	Trash				= "重逢真令我高兴，阿莱克斯塔萨。分开之后，我可是一直很忙。",
+	Pull				= "一股破坏平衡的力量正在接近。它的混乱灼烧着我的心智！"
 })
 
 -------------------------
@@ -149,7 +147,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!",
+	SapperEmote			= "一条幼龙俯冲下来，往甲板上投放了一个暮光工兵！",
 	Broadside			= "spell:110153",
 	DeckFire			= "spell:110095"
 })
@@ -160,7 +158,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
-	SpecWarnTendril			= "Get Secured!"
+	SpecWarnTendril			= "小心翻身！"
 })
 
 L:SetTimerLocalization({
@@ -174,10 +172,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull			= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
+	Pull			= "看那些装甲！他正在解体！摧毁那些装甲，我们就能给他最后一击！",
 	NoDebuff		= "没有%s",
 	PlasmaTarget	= "灼热血浆：%s",
-	DRoll			= "about to roll",
+	DRoll			= "侧翻滚！",
 	DLevels			= "levels out"
 })
 
@@ -198,5 +196,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "You have done NOTHING. I will tear your world APART."
+	Pull				= "你们什么都没做到。我要撕碎你们的世界。"
 })
