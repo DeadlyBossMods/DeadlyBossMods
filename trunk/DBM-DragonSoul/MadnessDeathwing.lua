@@ -42,7 +42,7 @@ local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumBlast		= mod:NewCastTimer(8, 109600)--8 variation depending on where it's actually going to land. Use the min time on variance to make sure healer Cds aren't up late.
-local timerElementiumBoltCD		= mod:NewNextTimer(56, 105651)
+local timerElementiumBoltCD		= mod:NewNextTimer(55.5, 105651)
 local timerHemorrhageCD			= mod:NewCDTimer(100.5, 105863)--Also the earliest observed. Also we use the UNIT event, not emote .3 seconds after it.
 local timerCataclysm			= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD			= mod:NewCDTimer(130.5, 106523)--130.5-131.5 variations observed in several guilds logs. But DBM always uses the earliest time for a CD, not the average or upper threshold.
@@ -79,7 +79,7 @@ function mod:SPELL_CAST_START(args)
 		if firstAspect then--The abilities all come 15seconds earlier for first one only
 			firstAspect = false
 			timerImpaleCD:Start(22)
-			timerElementiumBoltCD:Start(40)
+			timerElementiumBoltCD:Start(40.5)
 			timerHemorrhageCD:Start(85.5)
 			timerCataclysmCD:Start(115.5)
 		else
