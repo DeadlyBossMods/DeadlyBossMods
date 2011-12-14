@@ -156,14 +156,15 @@ function mod:UNIT_DIED(args)
 		timerHemorrhageCD:Cancel()--Does this one cancel in event you super overgear this and stomp his ass this fast?
 		timerCataclysm:Cancel()
 		timerCataclysmCD:Cancel()
-	elseif cid == 56262 then--Elementium Bolt/Meteor
-		timerElementiumBlast:Cancel()--Cancel blast if it dies before hitting ground.
 	elseif cid == 56471 then--Mutated Corruption
 		timerImpaleCD:Cancel()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(110663) then--Elementium Meteor Transform (apparently this doesn't fire UNIT_DIED anymore, need to use this alternate method)
+		self:SendSync("BoltDied")--Send sync because Elementium bolts do not have a bossN arg, which means event only fires if it's current target/focus.
+	end
 	if not (uId == "boss1" or uId == "boss2") then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	if spellName == GetSpellInfo(105853) then
 		warnHemorrhage:Show()
@@ -186,5 +187,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		warnTerror:Show()
 		specWarnTerror:Show()
 		timerTerrorCD:Start()
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "BoltDied" then
+		timerElementiumBlast:Cancel()--Lot of work just to cancel a timer, why the heck did blizz break this mob firing UNIT_DIED when it dies? Sigh.
 	end
 end

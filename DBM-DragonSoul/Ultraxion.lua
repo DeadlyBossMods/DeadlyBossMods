@@ -53,7 +53,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(fadingLightTargets)
 	hourOfTwilightCount = 0
 	fadingLightCount = 0
-	timerHourofTwilightCD:Start(46-delay)
+	timerHourofTwilightCD:Start(46-delay, 1)
 	timerGiftofLight:Start(-delay)
 	timerEssenceofDreams:Start(-delay)
 	timerSourceofMagic:Start(-delay)
