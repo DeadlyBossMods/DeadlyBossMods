@@ -83,7 +83,7 @@ function mod:SPELL_CAST_START(args)
 			timerHemorrhageCD:Start(85.5)
 			timerCataclysmCD:Start(115.5)
 		else
-			timerImpaleCD:Start(37)
+			timerImpaleCD:Start(28)
 			timerElementiumBoltCD:Start()
 			timerHemorrhageCD:Start()
 			timerCataclysmCD:Start()
