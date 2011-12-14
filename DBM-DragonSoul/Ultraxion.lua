@@ -27,6 +27,7 @@ local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil
 local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
 local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 
+local timerDrakes					= mod:NewTimer(253, "TimerDrakes", 61248)
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerHourofTwilightCD			= mod:NewNextCountTimer(45, 109416)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
@@ -120,10 +121,10 @@ function mod:CHAT_MSG_MONSTER_SAY(msg)
 	end
 end
 
---			"<18.7> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Notarget##0#0##0#3731##0#false", -- [1]
---			"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
+--	"<18.7> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Notarget##0#0##0#3731##0#false", -- [1]
+--	"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Trash or msg:find(L.Trash) then
-		DBM.Bars:CreateBar(253, "Skyrim")
+		timerDrakes:Start(253, GetSpellInfo(109904))
 	end
 end
