@@ -28,14 +28,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(324)
 
 L:SetWarningLocalization({
-	warnShadowGaze	= "%s on %s from %s in 1.5sec"--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnShadowGaze		= "Show Experimental warnings for $spell:104604 casts\n(Only works for target/focus targets)",--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
 	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:104601 on Heroic difficulty",
 	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone"
 })
