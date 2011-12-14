@@ -25,7 +25,7 @@ local specWarnOozes		= mod:NewSpecialWarningSpell("ej3978")
 local specWarnVoidBolt	= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)
 local specWarnManaVoid	= mod:NewSpecialWarningSpell(105530, mod:IsDps() or mod:IsManaUser())
 
-local timerOozesCD		= mod:NewCDTimer(90, "ej3978")
+local timerOozesCD		= mod:NewNextTimer(90, "ej3978")
 local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- variables (7.0~8.5)
 --local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--Needs more work, need to check for the ability that halfs his CDs and such.
 local timerVoidBolt		= mod:NewTargetTimer(20, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
@@ -116,11 +116,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 			specWarnOozes:Show()
 			timerOozesActive:Start()
 --			timerVoidBoltCD:Start(40)
-			if self:IsDifficulty("heroic10", "heroic25") then
-				timerOozesCD:Start(75)
-			else
-				timerOozesCD:Start()--it's still 90 on normal
-			end
+			timerOozesCD:Start(75)
 		end
 	else
 		if oozeColors[spellID] then
