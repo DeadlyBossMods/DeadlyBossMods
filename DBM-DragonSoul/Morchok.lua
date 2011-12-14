@@ -49,12 +49,12 @@ mod:AddBoolOption("RangeFrame", false)--For achievement
 
 local spamBlood = 0
 local crystalCount = 0--3 crystals between each vortex cast by Morchok, we ignore his twins.
-local firstCrystalSummoned = false
+local firstPhase = true
 
 function mod:OnCombatStart(delay)
 	spamBlood = 0
-	crystalCount = 1--only 2 before first aoe so we fake set it to 1 on pull.
-	firstCrystalSummoned = false
+	crystalCount = 0
+	firstPhase = true
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)--7 min berserk based on a video, so may not be 100%
 	end
@@ -83,14 +83,12 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(103851) then
+	if args:IsSpellID(103851) and args:GetSrcCreatureID() == 55265 then--Filter twin here, they vortex together but we don't want to trigger everything twice needlessly.
+		timerStomp:Start(19)
+		timerCrystal:Start(26)
+		timerVortexNext:Start()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
-		end
-		if args:GetSrcCreatureID() == 55265 then--Filter out Kohcrom here. his echo timers should handle themselves all on their own, but we don't want Kohcrom cast messing up Morchok's timers.
-			timerStomp:Start(19)
-			timerCrystal:Start(26)
-			timerVortexNext:Start()
 		end
 	end
 end
@@ -99,14 +97,12 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(103414, 108571, 109033, 109034) then
 		if args:GetSrcCreatureID() == 55265 then
 			warnStomp:Show()
-			if crystalCount < 3 then
-				timerStomp:Start()
-				if UnitExists("boss2") then
-					if self:IsDifficulty("heroic25") then
-						timerKohcromCD:Start(5, args.spellName)--I went through another dozon logs on WoL Expression editor. it comes earlier on 25 man. because 6 was way wrong
-					else
-						timerKohcromCD:Start(6, args.spellName)--it was 6 in all the 10 man logs though.
-					end
+			timerStomp:Start()
+			if UnitExists("boss2") then
+				if self:IsDifficulty("heroic25") then
+					timerKohcromCD:Start(5, args.spellName)--I went through another dozon logs on WoL Expression editor. it comes earlier on 25 man. because 6 was way wrong
+				else
+					timerKohcromCD:Start(6, args.spellName)--it was 6 in all the 10 man logs though.
 				end
 			end
 		else
@@ -126,17 +122,14 @@ function mod:SPELL_SUMMON(args)
 		if args:GetSrcCreatureID() == 55265 then
 			crystalCount = crystalCount + 1
 			warnCrystal:Show()
-			if crystalCount < 3 then
+			if crystalCount < 3 or (firstPhase and crystalCount < 2) then
 				timerCrystal:Start()
-				if UnitExists("boss2") and firstCrystalSummoned and crystalCount > 1 then	-- only mimics 2nd+3rd Crystals. on first encounter, he mimicks only 3rd (2nd) crystals.
-					if self:IsDifficulty("heroic25") then
-						timerKohcromCD:Start(5, args.spellName)--Same as stomps, earlier on 25 man.
-					else
-						timerKohcromCD:Start(6, args.spellName)
-					end
-				end
-				if UnitExists("boss2") and not firstCrystalSummoned then
-					firstCrystalSummoned = true
+			end
+			if UnitExists("boss2") and crystalCount > 1 then-- only mimics 2nd+3rd Crystals.
+				if self:IsDifficulty("heroic25") then
+					timerKohcromCD:Start(5, args.spellName)--Same as stomps, earlier on 25 man.
+				else
+					timerKohcromCD:Start(6, args.spellName)
 				end
 			end
 		else
@@ -145,7 +138,8 @@ function mod:SPELL_SUMMON(args)
 	elseif args:IsSpellID(109017) then
 		warnKohcrom:Show()
 		-- once Kohcrom summoned, stomp and Crystal timer restarts. For my encounter, always show Kohcrom before first crystal summons. so confirmed only one way.
-		if not firstCrystalSummoned then
+		-- This week i'm going to TRY convince guild to let him cast a crystal before 90%, to see how it affects this
+		if crystalCount == 0 then--Not sure if this isi relevent yet, need a log where there was a crystal before summon.
 			timerCrystal:Cancel()
 			timerStomp:Cancel()
 			timerCrystal:Start(5.5) -- 5.5~6.8 sec
@@ -155,14 +149,18 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(103821, 110045, 110046, 110047) then
+	if args:IsSpellID(103821, 110045, 110046, 110047) and args:GetSrcCreatureID() == 55265 then
+		crystalCount = 0
+		timerStomp:Cancel()
+		timerCrystal:Cancel()
+		timerKohcromCD:Cancel()
+		warnVortex:Show()
 		specwarnVortex:Show()--No reason to split the special warning into 2, it's just an attention getter and doesn't stay on screen like normal messages.
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
-		if args:GetSrcCreatureID() == 55265 then--Morchok casting it. Seems they cast this at same time, so no reason to announce twin doing it.
-			crystalCount = 0
-			warnVortex:Show()
+		if firstPhase then
+			firstPhase = false
 		end
 	end
 end
