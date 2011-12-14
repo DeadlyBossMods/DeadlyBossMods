@@ -30,7 +30,7 @@ local specWarnBlackBlood		= mod:NewSpecialWarningSpell(104378, nil, nil, nil, tr
 local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, false)
 local specWarnShadows			= mod:NewSpecialWarningYou(103434)
 
-local timerVoidofUnmakingCD		= mod:NewCDTimer(12, 103571, nil, nil, nil, 103527)
+local timerVoidofUnmakingCD		= mod:NewCDTimer(6, 103571, nil, nil, nil, 103527)
 local timerVoidDiffusionCD		= mod:NewCDTimer(5, 106836)--Can not be triggered more then once per 5 seconds.
 local timerFocusedAngerCD		= mod:NewCDTimer(6, 104543, nil, false)--Off by default as it may not be entirely useful information to know, but an option just for heck of it. You know SOMEONE is gonna request it
 local timerPsychicDrainCD		= mod:NewCDTimer(20, 104322, nil, mod:IsTank())--Every 20-25 seconds, variates.
@@ -73,15 +73,19 @@ local function blackBloodEnds()
 	phase2Started = false
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
-	if mod:IsDifficulty("lfr25") then--LFR timers come earlier then everything
-		timerVoidofUnmakingCD:Start(6)
+	--Seems every difficulty has a variation. They aren't random, i verify from pull to pull each difficulty is always the same, but completely different from one another
+	if mod:IsDifficulty("lfr25") then--LFR timers come earliest
+		timerVoidofUnmakingCD:Start()--6
 		timerPsychicDrainCD:Start(14.5)
-	elseif mod:IsDifficulty("heroic10", "heroic25") then--Heroic timers come later
+	elseif mod:IsDifficulty("normal25") then--Normal 25 appears to be next
+		timerVoidofUnmakingCD:Start(12)
+		timerPsychicDrainCD:Start(20.5)
+	elseif mod:IsDifficulty("heroic10", "heroic25") then--Heroic 25 and 10 seem to be the same
 		timerVoidofUnmakingCD:Start(15)
 		timerPsychicDrainCD:Start(23.5)
-	elseif mod:IsDifficulty("normal10", "normal25") then--Normal appears to be in the middle of the two
-		timerVoidofUnmakingCD:Start()--12
-		timerPsychicDrainCD:Start(21.5)
+	elseif mod:IsDifficulty("normal10") then--Normal 10 has the longest timers for this stuff after a dark phase.
+		timerVoidofUnmakingCD:Start(22.5)
+		timerPsychicDrainCD:Start(31)
 	end
 end
 
@@ -114,7 +118,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end	
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(104378, 110322, 110306) and not phase2Started then--104378 confirmed 10 man normal, 110322 confirmed 25 man normal, 110306 confirmed 25 man heroic (doesn't appear as cast success, have to use applied)
+	if args:IsSpellID(104377, 104378, 110322, 110306) and not phase2Started then--All spellids Confirmed
 		phase2Started = true
 		timerFocusedAngerCD:Cancel()
 		timerPsychicDrainCD:Cancel()
