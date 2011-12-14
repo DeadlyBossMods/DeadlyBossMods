@@ -47,7 +47,9 @@ local timerFeedback			= mod:NewBuffActiveTimer(15, 108934)
 local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:IsTank())
 
-local berserkTimer				= mod:NewBerserkTimer(480)	-- according to Icy-Veins
+local berserkTimer			= mod:NewBerserkTimer(480)	-- according to Icy-Veins
+
+local SpecialCountdown		= mod:NewCountdown(62, 105256)--Apparently countdown prototype doesn't support localized text, too lazy to do that now, so i'll just use tempest, even though it's enabled for both specials.
 
 mod:AddBoolOption("RangeFrame")--Ice lance spreading. May make it more dynamic later but for now i need to see the fight in realtime before i can do any more guessing off mailed in combat logs.
 mod:AddBoolOption("SetIconOnFrostflake", true)
@@ -92,6 +94,7 @@ function mod:OnCombatStart(delay)
 	timerIceLanceCD:Start(12-delay)
 --	timerFrostTombCD:Start(16-delay)--No longer cast on engage? most recent log she only casts it after specials now and not after pull
 	timerSpecialCD:Start(30-delay)
+	SpecialCountdown(30-delay)
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3)
@@ -189,6 +192,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerAssaultCD:Start(20)
 		timerLightningStormCD:Start()
+		SpecialCountdown:Start(62)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(3)
 		end
@@ -200,6 +204,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		timerAssaultCD:Start(20)
 		timerTempestCD:Start()
+		SpecialCountdown:Start(62)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(3)
 		end
