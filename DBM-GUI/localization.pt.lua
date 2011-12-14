@@ -144,7 +144,7 @@ L.BarWidth					= "Largura da barra: %d"
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Filtros Global e de Spam"
 L.Area_SpamFilter				= "Opções do filtro Global"
-L.HideBossEmoteFrame			= "Esconder quadro de chefe de raid" -- not so sure about that translation
+L.HideBossEmoteFrame			= "Esconder quadro de emoção de chefe de raid" -- not so sure about that translation
 L.SpamBlockRaidWarning			= "Filtrar anúncions de outros boss mods" 
 L.SpamBlockBossWhispers			= "Filtrar sussuros de aviso <DBM> durante a luta."
 L.BlockVersionUpdateNotice		= "Desabilitar pop-up de notificação de atualização."

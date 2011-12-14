@@ -8,6 +8,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0JxJ|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -23,6 +24,7 @@
 ## X-DBM-Mod-SubCategories-zhCN: 竞技场　,战场
 ## X-DBM-Mod-SubCategories-esES: Arena,Campos de Batallas
 ## X-DBM-Mod-SubCategories-esMX: Arena,Campos de Batallas
+## X-DBM-Mod-SubCategories-ptBR: Arena,Campos de Batalha
 ## X-DBM-Mod-Name: PvP
 ## X-DBM-Mod-Name-deDE: PvP
 ## X-DBM-Mod-Name-frFR: Champs de bataille
@@ -32,6 +34,7 @@
 ## X-DBM-Mod-Name-koKR: PvP
 ## X-DBM-Mod-Name-esES: JcJ
 ## X-DBM-Mod-Name-esMX: JcJ
+## X-DBM-Mod-Name-ptBR: JxJ
 ## X-DBM-Mod-Sort: 175
 ## X-DBM-Mod-LoadZoneID: 461,443,401,540,482
 localization.en.lua
@@ -42,6 +45,7 @@ localization.es.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua
+localization.pt.lua
 Battlegrounds\Battlegrounds.lua
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua

@@ -7,6 +7,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Трон Четырех Ветров|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0四風王座|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0风神王座|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trono dos Quatro Ventos|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -20,6 +21,7 @@
 ## X-DBM-Mod-Name-ruRU: Трон Четырех Ветров
 ## X-DBM-Mod-Name-zhTW: 四風王座
 ## X-DBM-Mod-Name-zhCN: 风神王座
+## X-DBM-Mod-Name-ptBR: Trono dos Quatro Ventos
 ## X-DBM-Mod-Sort: 105
 ## X-DBM-Mod-LoadZoneID: 773
 localization.en.lua
@@ -30,6 +32,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.pt.lua
 MapSizes.lua
 Conclave.lua
 AlAkir.lua
