@@ -29,14 +29,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(324)
 
 L:SetWarningLocalization({
-	warnShadowGaze	= "1.5초 후 %s : %s (%s) "--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnShadowGaze		= "$spell:104604 알림 보기(테스트 중인 기능)\n(대상/주시대상인 경우만 작동합니다.)",--Spellname, possible target, source(target/focus) This is a temporary local and will be improved or made a generic after testing.
 	RangeFrame			= "$spell:104601 약화 효과 상태에 따른 거리 프레임 표시(영웅 난이도)",
 	NoFilterRangeFrame	= "거리 프레임 필터링 사용 중지(항상 모든 플레이어 보임)"
 })
