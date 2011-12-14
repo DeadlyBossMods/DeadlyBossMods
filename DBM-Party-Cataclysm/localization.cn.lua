@@ -1058,7 +1058,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "Let's get to work, shall we?"
+	Pull		= "该干正事了，对吧？"
 }
 
 ---------------------------
