@@ -106,10 +106,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerDrakes			= "%s",
 	TimerCombatStart	= "울트락시온 착지"
 })
 
 L:SetOptionLocalization({
+	TimerDrakes			= "황혼의 습격자가 $spell:109904 시전까지 남은시간 바 표시",
 	TimerCombatStart	= "울트락시온 착지 바 표시"
 })
 
