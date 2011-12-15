@@ -23,7 +23,6 @@ local warnVoidDiffusion			= mod:NewStackAnnounce(106836, 2)
 local warnFocusedAnger			= mod:NewStackAnnounce(104543, 3, nil, false)
 local warnPsychicDrain			= mod:NewSpellAnnounce(104322, 4, nil, mod:IsTank())
 local warnShadows				= mod:NewSpellAnnounce(103434, 3)
-local warnShadowGaze			= mod:NewAnnounce("warnShadowGaze", 2, 104604)
 
 local specWarnVoidofUnmaking	= mod:NewSpecialWarningSpell(103571, nil, nil, nil, true)
 local specWarnBlackBlood		= mod:NewSpecialWarningSpell(104378, nil, nil, nil, true)

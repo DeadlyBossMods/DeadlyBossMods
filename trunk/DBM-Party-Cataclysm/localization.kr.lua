@@ -727,7 +727,7 @@ L:SetGeneralLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow			= "$spell:96477 주문의 영향을 받을경우 DBM 화살표 보기" -- translate
+	LinkArrow			= "$spell:96477 주문의 영향을 받은 경우 DBM 화살표 보기" -- translate
 }
 
 ------------------------

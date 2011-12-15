@@ -58,7 +58,7 @@ L:SetOptionLocalization({
 	timerNefAblity				= "영웅 난이도에서 골렘 스킬 강화 대기시간 바 표시",
 	timerArcaneLockout			= "$spell:91542 대기시간 바 표시",
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 대상 전환 특수 경고 보기",
-	specWarnGenerator			= "보스가 $spell:91557 주문의 영향을 받을 경우 특수 경고 보기",
+	specWarnGenerator			= "보스가 $spell:91557 주문의 영향을 받은 경우 특수 경고 보기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
@@ -226,7 +226,7 @@ L:SetOptionLocalization({
 	SetWater				= "전투 시작시 수면 자동 시점 옵션을 자동으로 끄기\n(전투가 종료 되면 원상태로 복구됨)",
 	TankArrow				= "살아난 뼈다귀 전사 탱커 방향으로 DBM 화살표 보기\n(한 명의 탱커를 사용하는 경우에만 정상 작동)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
-	RangeFrame				= "$spell:79339 주문의 영향을 받을 경우 거리 프레임 (10 m) 보기\n(대상자는 범위내 모든 사람 보임. 대상자가 아닌 경우 대상자와 아이콘만 보임)"
+	RangeFrame				= "$spell:79339 주문의 영향을 받은 경우 거리 프레임 (10 m) 보기\n(대상자는 범위내 모든 사람 보임. 대상자가 아닌 경우 대상자와 아이콘만 보임)"
 })
 
 L:SetMiscLocalization({
