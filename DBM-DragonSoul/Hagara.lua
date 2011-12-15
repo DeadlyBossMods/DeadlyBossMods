@@ -34,6 +34,9 @@ local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
 --local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 local specWarnWatery		= mod:NewSpecialWarningMove(110317)
 local specWarnStormPillars	= mod:NewSpecialWarningClose(109557)	-- if target != nil
+local specWarnWatery		= mod:NewSpecialWarningMove(110317)
+local specWarnFrostflake	= mod:NewSpecialWarningYou(109325)
+local yellFrostflake		= mod:NewYell(109325)
 
 local timerFrostTomb		= mod:NewCastTimer(8, 104448)
 local timerFrostTombCD		= mod:NewNextTimer(20, 104451)
@@ -74,7 +77,7 @@ function mod:stormPillarsTarget(target)
 		end
 		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 		if inRange and inRange < 5 then
-			specWarnStormPillars:Show()
+			specWarnStormPillars:Show(targetname)
 		end
 	end
 end
@@ -175,6 +178,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnWatery:Show()
 	elseif args:IsSpellID(109325) then
 		warnFrostflake:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnFrostflake:Show()
+			yellFrostflake:Yell()
+		end
 		if self.Options.SetIconOnFrostflake then
 			self:SetIcon(args.destName, 3)
 		end
