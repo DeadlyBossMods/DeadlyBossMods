@@ -34,7 +34,6 @@ local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
 --local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 local specWarnWatery		= mod:NewSpecialWarningMove(110317)
 local specWarnStormPillars	= mod:NewSpecialWarningClose(109557)	-- if target != nil
-local specWarnWatery		= mod:NewSpecialWarningMove(110317)
 local specWarnFrostflake	= mod:NewSpecialWarningYou(109325)
 local yellFrostflake		= mod:NewYell(109325)
 
