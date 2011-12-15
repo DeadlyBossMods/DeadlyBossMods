@@ -21,7 +21,7 @@ local specWarnBladeDance		= mod:NewSpecialWarningRun(104995, nil, nil, true)--No
 local specWarnSkewer			= mod:NewSpecialWarningSpell(104936, mod:IsTank() or mod:IsHealer())
 
 local timerBladeDance			= mod:NewBuffActiveTimer(15, 104995)
-local timerBladeDanceCD			= mod:NewNextTimer(60, 104995)
+local timerBladeDanceCD			= mod:NewCDTimer(60, 104995)
 local timerFirstSpecial			= mod:NewTimer(8, "TimerFirstSpecial", "Interface\\Icons\\Spell_Nature_WispSplode")--Whether she casts skewer or seething after a blade dance is random. This generic timer just gives you a timer for whichever she'll do.
 local timerSkewer				= mod:NewTargetTimer(8, 104936)
 local timerSkewerCD				= mod:NewNextTimer(20.5, 104936)
@@ -43,9 +43,7 @@ function mod:OnCombatStart(delay)
 	firstseething = true
 	bladeCasts = 0
 	timerFirstSpecial:Start(8-delay)
---	timerSeethingHateCD:Start(6-delay)
---	timerSkewerCD:Start(15-delay)
-	timerBladeDanceCD:Start(26-delay) -- first blade dance variables 26~40 sec
+	timerBladeDanceCD:Start(26-delay) -- first blade dance variables 26~40 sec (sigh blizz sucks, it was always 35 on PTR)
 	berserkTimer:Start(-delay)
 end
 
