@@ -34,6 +34,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShadowYell			= "Yell when you are affected by $spell:104600\n(Heroic difficulty only)",
 	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:104601 on Heroic difficulty",
 	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone"
 })
