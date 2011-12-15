@@ -86,6 +86,9 @@ do
 							mod:IsDifficulty("heroic10") and 280000 or
 							mod:IsDifficulty("normal25") and 300000 or
 							mod:IsDifficulty("normal10") and 200000 or 1
+		if not DBM.BossHealth:IsShown() then
+			DBM.BossHealth:Show(L.name)
+		end
 		DBM.BossHealth:AddBoss(function() return math.max(1, math.floor((healed[guid] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(name))
 	end
 
