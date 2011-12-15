@@ -28,7 +28,7 @@ local specWarnVoidofUnmaking	= mod:NewSpecialWarningSpell(103571, nil, nil, nil,
 local specWarnBlackBlood		= mod:NewSpecialWarningSpell(104378, nil, nil, nil, true)
 local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, false)
 local specWarnShadows			= mod:NewSpecialWarningYou(103434)
-local yellShadows				= mod:NewYell(103434, nil, false)--Requested by 10 man guilds, but a spammy mess in 25s, so off by default. With the option to enable when desired.
+local yellShadows				= mod:NewYell(103434, nil, false, L.ShadowYell)--Requested by 10 man guilds, but a spammy mess in 25s, so off by default. With the option to enable when desired.
 
 local timerVoidofUnmakingCD		= mod:NewCDTimer(6, 103571, nil, nil, nil, 103527)
 local timerVoidDiffusionCD		= mod:NewCDTimer(5, 106836)--Can not be triggered more then once per 5 seconds.

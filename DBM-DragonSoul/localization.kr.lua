@@ -35,6 +35,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기(영웅 난이도에서만)",
 	RangeFrame			= "$spell:104601 약화 효과 상태에 따른 거리 프레임 표시(영웅 난이도)",
 	NoFilterRangeFrame	= "거리 프레임 필터링 사용 중지(항상 모든 플레이어 보임)"
 })
