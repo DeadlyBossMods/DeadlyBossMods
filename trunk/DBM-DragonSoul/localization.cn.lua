@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/15/2011
+-- Last update: 12/16/2011
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -39,6 +39,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShadowYell			= "当你受到$spell:104600影响时时大喊（英雄难度）",
 	RangeFrame			= "距离监视器（根据玩家状态动态变化）：应对$spell:104601（英雄难度）",
 	NoFilterRangeFrame	= "取消距离监视器的动态监测，总是显示所有团员"
 })
@@ -114,10 +115,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerDrakes			= "%s",--spellname from mod
 	TimerCombatStart	= "战斗即将开始"
 })
 
 L:SetOptionLocalization({
+	TimerDrakes			= "计时条：暮光突袭者何时$spell:109904",
 	TimerCombatStart	= "计时条：战斗即将开始"
 })
 
