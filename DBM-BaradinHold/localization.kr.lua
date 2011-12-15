@@ -50,7 +50,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFirstSpecial		= "첫번째 특수 공격"
+	TimerFirstSpecial		= "다음 증오 또는 꼬챙이"
 })
 
 L:SetOptionLocalization({
