@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("Greench", "DBM-WorldEvents")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(55003)--Does he have more then one? i've been also told 54999 is valid but unverified.
+mod:SetCreatureID(55003, 54499)--He has multiple IDs, sigh.
 mod:SetModelID(21601)--Icehowl's Model ID
 mod:RegisterCombat("combat")
 mod:SetZone(24)--Hillsbread Foothills
@@ -12,6 +12,9 @@ mod:RegisterEvents(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+mod:RegisterEventsInCombat(
+	"UNIT_DIED"
+)
 
 local warnShrinkHeart			= mod:NewSpellAnnounce(101873, 2)
 local warnSnowman				= mod:NewSpellAnnounce(101910, 3)--target scanning doesn't work, he doesn't look at anyone but tank.
@@ -53,5 +56,12 @@ function mod:OnSync(event, arg)
 		warnTree:Show()
 		timerCrushCD:Start()
 		timerSnowmanCD:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 55003 or cid == 54499 then
+		DBM:EndCombat(self)
 	end
 end
