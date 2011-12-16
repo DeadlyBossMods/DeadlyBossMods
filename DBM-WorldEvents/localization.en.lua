@@ -1,60 +1,5 @@
 local L
 
-----------------------
---  Coren Direbrew  --
-----------------------
-L = DBM:GetModLocalization("CorenDirebrew")
-
-L:SetGeneralLocalization({
-	name = "Coren Direbrew"
-})
-
-L:SetWarningLocalization({
-	specWarnBrew		= "Get rid of the brew before she tosses you another one!",
-	specWarnBrewStun	= "HINT: You were bonked, remember to drink the brew next time!"
-})
-
-L:SetOptionLocalization({
-	specWarnBrew		= "Show special warning for $spell:47376",
-	specWarnBrewStun	= "Show special warning for $spell:47340",
-	YellOnBarrel		= "Yell on $spell:51413"
-})
-
-L:SetMiscLocalization({
-	YellBarrel			= "Barrel on me!"
-})
-
--------------------------
---  Headless Horseman  --
--------------------------
-L = DBM:GetModLocalization("HeadlessHorseman")
-
-L:SetGeneralLocalization({
-	name = "Headless Horseman"
-})
-
-L:SetWarningLocalization({
-	WarnPhase				= "Phase %d",
-	warnHorsemanSoldiers	= "Pulsing Pumpkins spawning",
-	warnHorsemanHead		= "Head of the Horseman Active"
-})
-
-L:SetTimerLocalization{
-	TimerCombatStart		= "Combat starts"
-}
-
-L:SetOptionLocalization({
-	WarnPhase				= "Show a warning for each phase change",
-	TimerCombatStart		= "Show timer for start of combat",
-	warnHorsemanSoldiers	= "Show warning for Pulsing Pumpkin spawn",
-	warnHorsemanHead		= "Show warning for Head of the Horseman spawning"
-})
-
-L:SetMiscLocalization({
-	HorsemanSummon			= "Horseman rise...",
-	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!"
-})
-
 -----------------------
 --  Apothecary Trio  --
 -----------------------
@@ -113,4 +58,80 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull			= "The Ice Stone has melted!"
+})
+
+----------------------
+--  Coren Direbrew  --
+----------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "Coren Direbrew"
+})
+
+L:SetWarningLocalization({
+	specWarnBrew		= "Get rid of the brew before she tosses you another one!",
+	specWarnBrewStun	= "HINT: You were bonked, remember to drink the brew next time!"
+})
+
+L:SetOptionLocalization({
+	specWarnBrew		= "Show special warning for $spell:47376",
+	specWarnBrewStun	= "Show special warning for $spell:47340",
+	YellOnBarrel		= "Yell on $spell:51413"
+})
+
+L:SetMiscLocalization({
+	YellBarrel			= "Barrel on me!"
+})
+
+-------------------------
+--  Headless Horseman  --
+-------------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name = "Headless Horseman"
+})
+
+L:SetWarningLocalization({
+	WarnPhase				= "Phase %d",
+	warnHorsemanSoldiers	= "Pulsing Pumpkins spawning",
+	warnHorsemanHead		= "Head of the Horseman Active"
+})
+
+L:SetTimerLocalization{
+	TimerCombatStart		= "Combat starts"
+}
+
+L:SetOptionLocalization({
+	WarnPhase				= "Show a warning for each phase change",
+	TimerCombatStart		= "Show timer for start of combat",
+	warnHorsemanSoldiers	= "Show warning for Pulsing Pumpkin spawn",
+	warnHorsemanHead		= "Show warning for Head of the Horseman spawning"
+})
+
+L:SetMiscLocalization({
+	HorsemanSummon			= "Horseman rise...",
+	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!"
+})
+
+------------------------------
+--  The Abominable Greench  --
+------------------------------
+L = DBM:GetModLocalization("Greench")
+
+L:SetGeneralLocalization({
+	name = "The Abominable Greench"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
