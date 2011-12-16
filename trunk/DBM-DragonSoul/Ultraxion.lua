@@ -29,6 +29,7 @@ local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 
 local timerDrakes					= mod:NewTimer(253, "TimerDrakes", 61248)
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
+local timerHourofTwilight			= mod:NewCastTimer(5, 109416)
 local timerHourofTwilightCD			= mod:NewNextCountTimer(45, 109416)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
 local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)--Lets try again using duration, not expire. expire just isn't going to work because of GetTime() 4.3 change.
@@ -70,6 +71,7 @@ function mod:SPELL_CAST_START(args)
 		hourOfTwilightCount = hourOfTwilightCount + 1
 		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
+		timerHourofTwilight:Start()
 		timerHourofTwilightCD:Start(45, hourOfTwilightCount+1)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFadingLightCD:Start(13)
