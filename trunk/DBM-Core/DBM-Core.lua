@@ -1496,6 +1496,13 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 					break
 				end
 			end
+		elseif cId == 55003 and not DBM:GetModByName("Greench") then--The Abominable Greench (Winter Veil world boss)
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-WorldEvents" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
 		end
 	end
 end
@@ -1515,6 +1522,13 @@ function DBM:PLAYER_TARGET_CHANGED()
 		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not DBM:GetModByName("Beauty") then--Akamhat, Garr, Julak, Mobus, Xariona
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-Cataclysm" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
+		elseif cId == 55003 and not DBM:GetModByName("Greench") then--The Abominable Greench (Winter Veil world boss)
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-WorldEvents" then
 					DBM:LoadMod(v)
 					break
 				end
