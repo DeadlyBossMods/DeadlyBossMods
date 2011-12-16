@@ -38,3 +38,4 @@ ApothecaryTrio.lua
 Ahune.lua
 CorenDirebrew.lua
 HeadlessHorseman.lua
+Greench.lua
