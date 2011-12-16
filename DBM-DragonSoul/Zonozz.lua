@@ -122,6 +122,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		phase2Started = true
 		timerFocusedAngerCD:Cancel()
 		timerPsychicDrainCD:Cancel()
+		timerShadowsCD:Cancel()
 		specWarnBlackBlood:Show()
 		timerBlackBlood:Start()
 		self:Schedule(30, blackBloodEnds)--More accurate way then tracking spell aura removed of black blood. Players dying in the phase were falsely triggering the phase ending early.
