@@ -1496,7 +1496,7 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 					break
 				end
 			end
-		elseif cId == 55003 and not DBM:GetModByName("Greench") then--The Abominable Greench (Winter Veil world boss)
+		elseif (cId == 55003 or cId == 54499) and not DBM:GetModByName("Greench") then--The Abominable Greench (Winter Veil world boss)
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
 					DBM:LoadMod(v)
@@ -1526,7 +1526,7 @@ function DBM:PLAYER_TARGET_CHANGED()
 					break
 				end
 			end
-		elseif cId == 55003 and not DBM:GetModByName("Greench") then--The Abominable Greench (Winter Veil world boss)
+		elseif (cId == 55003 or cId == 54499) and not DBM:GetModByName("Greench") then--The Abominable Greench (Winter Veil world boss)
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
 					DBM:LoadMod(v)
