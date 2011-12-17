@@ -2327,19 +2327,19 @@ function DBM:StartCombat(mod, delay, synced)
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
 		end
 		if mod:IsDifficulty("lfr25") then
-			savedDifficulty = PLAYER_DIFFICULTY3
+			savedDifficulty = PLAYER_DIFFICULTY3.." - "
 		elseif mod:IsDifficulty("normal5", "normal10") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY1
+			savedDifficulty = PLAYER_DIFFICULTY1.." - "
 		elseif mod:IsDifficulty("heroic5", "heroic10") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY2
+			savedDifficulty = PLAYER_DIFFICULTY2.." - "
 		elseif mod:IsDifficulty("normal25") then
 			mod.stats.normal25Pulls = mod.stats.normal25Pulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY1
+			savedDifficulty = PLAYER_DIFFICULTY1.." - "
 		elseif mod:IsDifficulty("heroic25") then
 			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY2
+			savedDifficulty = PLAYER_DIFFICULTY2.." - "
 		else--you were not in an instance when you started combat, this is an outdoor boss.
 			savedDifficulty = ""--So lets just return no difficulty :)
 		end
@@ -2423,7 +2423,7 @@ function DBM:EndCombat(mod, wipe)
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), savedDifficulty.." - "..(mod.combatInfo.name or ""))
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), savedDifficulty..(mod.combatInfo.name or ""))
 				sendWhisper(k, msg)
 			end
 			fireEvent("wipe", mod)
@@ -2481,7 +2481,7 @@ function DBM:EndCombat(mod, wipe)
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), savedDifficulty.." - "..(mod.combatInfo.name or ""))
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), savedDifficulty..(mod.combatInfo.name or ""))
 				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)
@@ -2775,7 +2775,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(savedDifficulty.." - "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(savedDifficulty..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
 			local mod
@@ -2784,7 +2784,7 @@ do
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), savedDifficulty.." - "..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), savedDifficulty..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
