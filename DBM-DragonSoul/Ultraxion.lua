@@ -41,6 +41,7 @@ local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
 local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
 local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
+local HourofTwilightCountdown		= mod:NewCountdown(45, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
@@ -55,7 +56,8 @@ function mod:OnCombatStart(delay)
 	table.wipe(fadingLightTargets)
 	hourOfTwilightCount = 0
 	fadingLightCount = 0
-	timerHourofTwilightCD:Start(46-delay, 1)
+	timerHourofTwilightCD:Start(45.5-delay, 1)
+	HourofTwilightCountdown:Start(45.5)
 	timerGiftofLight:Start(-delay)
 	timerEssenceofDreams:Start(-delay)
 	timerSourceofMagic:Start(-delay)
@@ -72,6 +74,7 @@ function mod:SPELL_CAST_START(args)
 		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
 		timerHourofTwilightCD:Start(45, hourOfTwilightCount+1)
+		HourofTwilightCountdown:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFadingLightCD:Start(13)
 			timerHourofTwilight:Start(3)
