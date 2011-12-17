@@ -184,7 +184,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",--translate
+	YellDragon			= "¡Comed, hijos! ¡Alimentaos de sus magros cuerpos!",
 	YellEgg				= "You mistake this for weakness?  Fool!",--translate
 	HasAggro			= "Tiene Aggro"
 })

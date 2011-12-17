@@ -2,61 +2,6 @@
 
 local L
 
--------------------
--- Coren Direbrew --
--------------------
-L = DBM:GetModLocalization("CorenDirebrew")
-
-L:SetGeneralLocalization({
-	name = "Coren Cerveza Temible"
-})
-
-L:SetWarningLocalization({
-	specWarnBrew		= "¡Bebete la cerveza antes de que lanze otra!",
-	specWarnBrewStun		= "SUGERENCIA: ¡Te han dado! ¡Acuerdate de beber la cerveza si te han lanzado!"
-})
-
-L:SetOptionLocalization({
-	specWarnBrew		= "Mostrar aviso especial para $spell:47376",
-	specWarnBrewStun		= "Mostrar aviso especial para $spell:47340",
-	YellOnBarrel	= "Avisar si $spell:51413"
-})
-
-L:SetMiscLocalization({
-	YellBarrel		= "¡Tengo el Barril!"
-})
-
--------------------
--- Headless Horseman --
--------------------
-L = DBM:GetModLocalization("HeadlessHorseman")
-
-L:SetGeneralLocalization({
-	name = "El Jinete decapitado"
-})
-
-L:SetWarningLocalization({
-	WarnPhase				= "Fase %d",
-	warnHorsemanSoldiers	= "Salen las Calabazas con pulso",
-	warnHorsemanHead		= "¡Torbellino! ¡Mata a la cabeza!"
-})
-
-L:SetTimerLocalization{
-	TimerCombatStart		= "Empieza el combate"
-}
-
-L:SetOptionLocalization({
-	WarnPhase				= "Mostrar un aviso para cada cambio de fase",
-	TimerCombatStart		= "Mostrar tiempo para inicio del combate",	
-	warnHorsemanSoldiers	= "Mostrar aviso a la llegada de Calabazas con pulso",
-	warnHorsemanHead		= "Mostrar un aviso para torbellino (2ª i posteriores apariciones de cabeza)"
-})
-
-L:SetMiscLocalization({
-	HorsemanSummon				= "Jinete álzate...",
-	HorsemanSoldiers			= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
-})
-
 -----------------------
 --  Apothecary Trio  --
 -----------------------
@@ -115,4 +60,80 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull			= "¡La piedra de hielo se ha derretido!"
+})
+
+-------------------
+-- Coren Direbrew --
+-------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "Coren Cerveza Temible"
+})
+
+L:SetWarningLocalization({
+	specWarnBrew		= "¡Bebete la cerveza antes de que lanze otra!",
+	specWarnBrewStun		= "SUGERENCIA: ¡Te han dado! ¡Acuerdate de beber la cerveza si te han lanzado!"
+})
+
+L:SetOptionLocalization({
+	specWarnBrew		= "Mostrar aviso especial para $spell:47376",
+	specWarnBrewStun		= "Mostrar aviso especial para $spell:47340",
+	YellOnBarrel	= "Avisar si $spell:51413"
+})
+
+L:SetMiscLocalization({
+	YellBarrel		= "¡Tengo el Barril!"
+})
+
+-------------------
+-- Headless Horseman --
+-------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name = "El Jinete decapitado"
+})
+
+L:SetWarningLocalization({
+	WarnPhase				= "Fase %d",
+	warnHorsemanSoldiers	= "Salen las Calabazas con pulso",
+	warnHorsemanHead		= "¡Torbellino! ¡Mata a la cabeza!"
+})
+
+L:SetTimerLocalization{
+	TimerCombatStart		= "Empieza el combate"
+}
+
+L:SetOptionLocalization({
+	WarnPhase				= "Mostrar un aviso para cada cambio de fase",
+	TimerCombatStart		= "Mostrar tiempo para inicio del combate",	
+	warnHorsemanSoldiers	= "Mostrar aviso a la llegada de Calabazas con pulso",
+	warnHorsemanHead		= "Mostrar un aviso para torbellino (2ª i posteriores apariciones de cabeza)"
+})
+
+L:SetMiscLocalization({
+	HorsemanSummon				= "Jinete álzate...",
+	HorsemanSoldiers			= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
+})
+
+------------------------------
+--  The Abominable Greench  --
+------------------------------
+L = DBM:GetModLocalization("Greench")
+
+L:SetGeneralLocalization({
+	name = "The Abominable Greench"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
