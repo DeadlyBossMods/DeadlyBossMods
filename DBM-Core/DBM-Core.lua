@@ -3430,11 +3430,11 @@ do
 	
 	-- new constructor (auto-localized warnings and options, yay!)
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
-		local ej_spell
+		local ejSpell
 		if spellId and spellId:match("ej%d+") then
 			spellId = string.sub(spellId, 3)
 			spellName = EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
-			ej_spell = true
+			ejSpell = true
 		else
 			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
@@ -3462,7 +3462,7 @@ do
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				option = optionName or text,
 				mod = self,
-				icon = (ej_spell and select(4, EJ_GetSectionInfo(icon)) ~= "" and select(4, EJ_GetSectionInfo(icon))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
+				icon = (ejSpell and select(4, EJ_GetSectionInfo(icon)) ~= "" and select(4, EJ_GetSectionInfo(icon))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
 				sound = not noSound,
 			},
 			mt
@@ -3473,7 +3473,7 @@ do
 			self:AddBoolOption(optionName or text, optionDefault, "announce")
 		end
 		table.insert(self.announces, obj)
-		if ej_spell then
+		if ejSpell then
 			self.localization.options[text] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ[announceType]:format(spellName)
 		else
 			self.localization.options[text] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(spellId, spellName)
@@ -3915,11 +3915,11 @@ do
 	end
 
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
-		local ej_spell
+		local ejSpell
 		if spellId and spellId:match("ej%d+") then
 			spellId = string.sub(spellId, 3)
 			spellName = EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
-			ej_spell = true
+			ejSpell = true
 		else
 			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
@@ -3941,9 +3941,9 @@ do
 			self:AddBoolOption(optionName or text, optionDefault, "announce")		-- todo cleanup core code from that indexing type using options[text] is very bad!!! ;)
 		end
 		table.insert(self.specwarns, obj)
-		if ej_spell and announceType == "stack" then
+		if ejSpell and announceType == "stack" then
 			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ[announceType]:format(stacks or 3, spellId)
-		elseif ej_spell then
+		elseif ejSpell then
 			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ[announceType]:format(spellId)
 		elseif announceType == "stack" then
 			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
@@ -4226,7 +4226,7 @@ do
 		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
 			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b)
 		end
-		local spellName, icon, ej_spell
+		local spellName, icon, ejSpell
 		if timerType == "achievement" then
 			spellName = select(2, GetAchievementInfo(spellId))
 			icon = type(texture) == "number" and select(10, GetAchievementInfo(texture)) or texture or spellId and select(10, GetAchievementInfo(spellId))
@@ -4237,11 +4237,11 @@ do
 		else
 			if spellId and spellId:match("ej%d+") then
 				spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or nil
-				ej_spell = true
+				ejSpell = true
 			else
 				spellName = GetSpellInfo(spellId or 0)
 			end
-			if spellName and ej_spell then
+			if spellName and ejSpell then
 				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3)))
 			elseif spellName then
 				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
@@ -4272,7 +4272,7 @@ do
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
-		elseif ej_spell then
+		elseif ejSpell then
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS_EJ[timerType]:format(spellName)
 		else
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellId, spellName)
