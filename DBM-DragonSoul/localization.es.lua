@@ -35,6 +35,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShadowYell			= "Gritar cuando te afecte $spell:104600\n(Solo dificultad Heroica)",
 	RangeFrame			= "Mostrar distancia dinámica basada en el estado del estado del debuff \n$spell:104601 en los jugadores en dificultad Heroica",
 	NoFilterRangeFrame	= "Desactivar el filtro de distancia y mostrar siempre a todo el mundo"
 })
@@ -106,10 +107,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCombatStart	= "Empieza el combate"
+	TimerDrakes			= "%s",
+	TimerCombatStart	= "Ultraxion aterriza"
 })
 
 L:SetOptionLocalization({
+	TimerDrakes			= "Mostrar tiempo para Fuga Crepuscular	de los Asaltantes Crepusculares",
 	TimerCombatStart	= "Mostrar tiempo para el inicio del combate"
 })
 
@@ -169,6 +172,7 @@ L:SetMiscLocalization({
 	NoDebuff	= "Sin %s",
 	PlasmaTarget	= "Plasma ardiente: %s",
 	DRoll		= "¡Está a punto de girar",
+	DLevels			= "levels out"--translate
 })
 
 ---------------------------
