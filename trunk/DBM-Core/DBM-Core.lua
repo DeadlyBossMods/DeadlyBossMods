@@ -3415,7 +3415,7 @@ do
 				option = optionName or text,
 				sound = not noSound,
 				mod = self,
-				icon = (icon and string.match(icon, "ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
+				icon = (icon and icon:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
 			},
 			mt
 		)
@@ -3431,7 +3431,7 @@ do
 	-- new constructor (auto-localized warnings and options, yay!)
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
 		local ej_spell
-		if string.match(spellId, "ej%d+") then
+		if spellId and spellId:match("ej%d+") then
 			spellId = string.sub(spellId, 3)
 			spellName = EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
 			ej_spell = true
@@ -3528,7 +3528,7 @@ do
 	function bossModPrototype:NewSound(spellId, optionName, optionDefault)
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local journalId
-		if string.match(spellId, "ej%d+") then
+		if spellId and spellId:match("ej%d+") then
 			journalId = string.sub(spellId, 3)
 		end
 		local obj = setmetatable(
@@ -3639,7 +3639,7 @@ do
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
 		local journalId
-		if string.match(spellId, "ej%d+") then
+		if spellId and spellId:match("ej%d+") then
 			journalId = string.sub(spellId, 3)
 		end
 		if not spellId then
@@ -3740,7 +3740,7 @@ do
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
 		local journalId
-		if string.match(spellId, "ej%d+") then
+		if spellId and spellId:match("ej%d+") then
 			journalId = string.sub(spellId, 3)
 		end
 		if not spellId then
@@ -3777,7 +3777,7 @@ do
 	local mt = { __index = yellPrototype }
 	function bossModPrototype:NewYell(spellId, yellText, optionDefault, optionName, chatType)
 		local journalId
-		if string.match(spellId, "ej%d+") then
+		if spellId and spellId:match("ej%d+") then
 			journalId = string.sub(spellId, 3)
 		end
 		local obj = setmetatable(
@@ -3916,7 +3916,7 @@ do
 
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
 		local ej_spell
-		if string.match(spellId, "ej%d+") then
+		if spellId and spellId:match("ej%d+") then
 			spellId = string.sub(spellId, 3)
 			spellName = EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
 			ej_spell = true
@@ -4196,7 +4196,7 @@ do
 	end
 	
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
-		local icon = (icon and string.match(icon, "ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon
+		local icon = (icon and icon:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name],
@@ -4235,7 +4235,7 @@ do
 --				optionDefault = not completed
 --			end
 		else
-			if string.match(spellId, "ej%d+") then
+			if spellId and spellId:match("ej%d+") then
 				spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or nil
 				ej_spell = true
 			else
@@ -4327,7 +4327,7 @@ do
 		local spellName
 		if timerType == "achievement" then
 			spellName = select(2, GetAchievementInfo(spellId))
-		elseif string.match(spellId, "ej%d+") then
+		elseif spellId and spellId:match("ej%d+") then
 			spellName = EJ_GetSectionInfo(string.sub(spellId, 3))
 		else
 			spellName = GetSpellInfo(spellId)
