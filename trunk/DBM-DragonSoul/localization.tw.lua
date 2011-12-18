@@ -35,6 +35,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShadowYell			= "當你中了$spell:104600時大喊(只有英雄模式)",
 	RangeFrame			= "為英雄難度的$spell:104601顯示動態距離框架",
 	NoFilterRangeFrame	= "停用過濾框架減益並總是顯示所有人"
 })
@@ -49,20 +50,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "軟泥即將來臨!: %s",
-	specWarnOozes	= "軟泥來臨!",
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "下一次軟泥",
-	timerOozesActive	= "軟泥可被攻擊",
-	
+	timerOozesActive	= "軟泥可被攻擊"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "當軟泥重生時顯示警告",
-	specWarnOozes		= "當軟泥重生時顯示特別警告",
-	timerOozesCD		= "為下一次軟泥重生顯示計時器",
 	timerOozesActive	= "為軟泥重生後可被攻擊顯示計時器",
 	RangeFrame			= "為$spell:104898顯示計時器(普通以上的難度)"
 })
@@ -111,14 +105,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerDrakes			= "%s",
 	TimerCombatStart	= "戰鬥開始"
 })
 
 L:SetOptionLocalization({
+	TimerDrakes			= "為暮光猛擊者施放$spell:109904顯示計時器",
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器"
 })
 
 L:SetMiscLocalization({
+	Trash				= "很高興又見到你，雅立史卓莎。我離開這段時間忙得很。",
 	Pull				= "我感到平衡被一股強大的波動干擾。如此混沌在燃燒我的心靈!"
 })
 
@@ -132,12 +129,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "戰鬥開始",
-	TimerSapper			= "下一次暮光工兵"
+	TimerSapper			= "下一次暮光工兵",
+	TimerAdd			= "下一次精英暮光"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	TimerSapper			= "為下一次暮光工兵重生顯示計時器"--npc=56923
+	TimerSapper			= "為下一次暮光工兵重生顯示計時器",--npc=56923
+	TimerAdd			= "為下一次暮光精英顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -169,7 +168,8 @@ L:SetMiscLocalization({
 	Pull		= "他的護甲!他正在崩壞!破壞他的護甲，我們就有機會打贏他了!",
 	NoDebuff	= "無%s",
 	PlasmaTarget	= "燃燒血漿: %s",
-	DRoll		= "他準備往"
+	DRoll		= "他準備往",
+	DLevels			= "回復平衡"
 })
 
 ---------------------------
@@ -189,5 +189,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "你們都徒勞無功。我會撕毀你們的世界。"
+	Pull				= "你們都徒勞無功。我會撕裂你們的世界。"
 })

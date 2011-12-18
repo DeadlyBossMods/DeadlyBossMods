@@ -66,6 +66,8 @@ L.ModelSoundShort			= "短"
 L.ModelSoundLong			= "長"
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
+L.Button_RangeRadar			= "顯示/隱藏距離雷達"
+L.Button_InfoFrame			= "顯示/隱藏訊息框架"
 L.Button_TestBars			= "測試計時條"
 
 L.PizzaTimer_Headline		= '創建一個計時條'

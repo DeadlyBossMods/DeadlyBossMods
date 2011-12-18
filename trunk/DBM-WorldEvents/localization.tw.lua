@@ -2,59 +2,6 @@
 
 local L
 
-----------------------
---  Coren Direbrew  --
-----------------------
-L = DBM:GetModLocalization("CorenDirebrew")
-
-L:SetGeneralLocalization({
-	name 			= "寇仁·恐酒"
-})
-
-L:SetWarningLocalization({
-	specWarnBrew		= "在他再丟你一個前喝掉酒!",
-	specWarnBrewStun	= "提示:你瘋狂了,記得下一次喝啤酒!"
-})
-
-L:SetOptionLocalization({
-	specWarnBrew		= "為$spell:47376顯示特別警告",
-	specWarnBrewStun	= "為$spell:47340顯示特別警告",
-	YellOnBarrel		= "當你中了$spell:51413時大喊"
-})
-
-L:SetMiscLocalization({
-	YellBarrel		= "我中了空桶(暈)"
-})
-
--------------------------
---  Headless Horseman  --
--------------------------
-L = DBM:GetModLocalization("HeadlessHorseman")
-
-L:SetGeneralLocalization({
-	name 			= "無頭騎士"
-})
-
-L:SetWarningLocalization({
-	warnHorsemanSoldiers	= "跳動的南瓜出現了!",
-	warnHorsemanHead	= "旋風斬 - 轉換目標!"
-})
-
-L:SetTimerLocalization{
-	TimerCombatStart		= "戰鬥開始"
-}
-
-L:SetOptionLocalization({
-	TimerCombatStart		= "顯示戰鬥開始的計時器",
-	warnHorsemanSoldiers	= "為跳動的南瓜出現顯示警告",
-	warnHorsemanHead	= "為旋風斬顯示特別警告 (第二次及最後的頭顱出現)"
-})
-
-L:SetMiscLocalization({
-	HorsemanSummon			= "Horseman rise...",
-	HorsemanSoldiers	= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!"
-})
-
 -----------------------
 --  Apothecary Trio  --
 -----------------------
@@ -113,4 +60,80 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull			= "冰石已經溶化了!"
+})
+
+----------------------
+--  Coren Direbrew  --
+----------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name 			= "寇仁·恐酒"
+})
+
+L:SetWarningLocalization({
+	specWarnBrew		= "在他再丟你一個前喝掉酒!",
+	specWarnBrewStun	= "提示:你瘋狂了,記得下一次喝啤酒!"
+})
+
+L:SetOptionLocalization({
+	specWarnBrew		= "為$spell:47376顯示特別警告",
+	specWarnBrewStun	= "為$spell:47340顯示特別警告",
+	YellOnBarrel		= "當你中了$spell:51413時大喊"
+})
+
+L:SetMiscLocalization({
+	YellBarrel		= "我中了空桶(暈)"
+})
+
+-------------------------
+--  Headless Horseman  --
+-------------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name 			= "無頭騎士"
+})
+
+L:SetWarningLocalization({
+	WarnPhase				= "階段 %d",
+	warnHorsemanSoldiers	= "跳動的南瓜出現了!",
+	warnHorsemanHead	= "旋風斬 - 轉換目標!"
+})
+
+L:SetTimerLocalization{
+	TimerCombatStart		= "戰鬥開始"
+}
+
+L:SetOptionLocalization({
+	WarnPhase				= "為每個階段改變顯示警告",
+	TimerCombatStart		= "顯示戰鬥開始的計時器",
+	warnHorsemanSoldiers	= "為跳動的南瓜出現顯示警告",
+	warnHorsemanHead	= "為旋風斬顯示特別警告 (第二次及最後的頭顱出現)"
+})
+
+L:SetMiscLocalization({
+	HorsemanSummon			= "騎士甦醒...",
+	HorsemanSoldiers	= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!"
+})
+
+------------------------------
+--  The Abominable Greench  --
+------------------------------
+L = DBM:GetModLocalization("Greench")
+
+L:SetGeneralLocalization({
+	name = "可惡的格林奇"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
