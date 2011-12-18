@@ -54,19 +54,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "血球即将出现：%s",
-	specWarnOozes	= "血球即将出现！"
 })
 
 L:SetTimerLocalization({
-	timerOozesCD		= "下一次软泥怪",
 	timerOozesActive	= "软泥怪可攻击"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "警报：召唤软泥怪",
-	specWarnOozes		= "特殊警报：召唤软泥怪",
-	timerOozesCD		= "计时条：下一次软泥怪",
 	timerOozesActive	= "计时条：软泥怪可攻击",
 	RangeFrame			= "距离监视器（4码）：应对$spell:104898（普通和英雄难度）"
 })
