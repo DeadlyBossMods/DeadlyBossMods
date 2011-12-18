@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "deDE" then return end
-
 local L
 
 ----------------
@@ -51,10 +50,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFirstSpecial		= "Erste Spezialfähigkeit"
 })
 
 L:SetOptionLocalization({
+	TimerFirstSpecial		= "Zeige Zeit bis erste Spezialfähigkeit nach $spell:105738 (erste Spezialfähigkeit\nist zufällig, entweder $spell:105067 oder $spell:104936)"
+})
+
+L:SetMiscLocalization({
 })

@@ -5,6 +5,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0월드 이벤트|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Игровые события|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0世界事件|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Weltereignisse|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedVars, DBMWorldEvents_SavedStats
@@ -16,6 +17,7 @@
 ## X-DBM-Mod-Name-zhTW: 世界事件
 ## X-DBM-Mod-Name-zhCN: 世界事件
 ## X-DBM-Mod-Name-koKR: 월드 이벤트
+## X-DBM-Mod-Name-deDE: Weltereignisse
 ## X-DBM-Mod-Sort: 150
 ## X-DBM-Mod-LoadZone: Blackrock Depths,Scarlet Monastery,Shadowfang Keep,The Slave Pens
 ## X-DBM-Mod-LoadZone-frFR: Profondeurs de Rochenoire,Monastère écarlate,Donjon d'Ombrecroc,Les enclos aux esclaves

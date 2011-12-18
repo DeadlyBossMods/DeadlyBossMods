@@ -1,6 +1,43 @@
 ﻿if GetLocale() ~= "deDE" then return end
 local L
 
+-----------------
+-- Beth'tilac --
+-----------------
+L= DBM:GetModLocalization(192)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	RangeFrame			= "Zeige Abstandsfenster (10m)"
+})
+
+L:SetMiscLocalization({
+	EmoteSpiderlings 	= "Spinnlinge sind aus ihrem Nest aufgeschreckt worden!"
+})
+
+-------------------
+-- Lord Rhyolith --
+-------------------
+L= DBM:GetModLocalization(193)
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	yellPhase2			= "Äonen habe ich ungestört durchgeschlafen… jetzt das… Fleischlinge, Ihr werdet BRENNEN!"
+})
+
 ---------------
 -- Alysrazor --
 ---------------
@@ -8,20 +45,21 @@ L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
 	WarnPhase			= "Phase %d",
-	WarnNewInitiate		= "Lodernder Kralleninitiand (%s)"
+	WarnNewInitiate		= "Lodernde Kralleninitianden (%s)"
 })
 
 L:SetTimerLocalization({
 	TimerPhaseChange	= "Phase %d",
 	TimerHatchEggs		= "Eierausschlüpfen",
-	timerNextInitiate	= "Nächster Initiand"
+	timerNextInitiate	= "Nächste Initianden (%s)",
+	TimerCombatStart	= "Kampfbeginn"
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Zeige Zeit bis zum Kampfbeginn",
+	TimerCombatStart	= "Zeige Zeit bis Kampfbeginn",
 	WarnPhase			= "Zeige Warnung für jeden Phasenwechsel",
-	WarnNewInitiate		= "Zeige Warnung für neuen Lodernder Kralleninitiand",
-	timerNextInitiate	= "Zeige Zeit bis nächster Lodernder Kralleninitiand",
+	WarnNewInitiate		= "Zeige Warnung für neue Lodernde Kralleninitianden",
+	timerNextInitiate	= "Zeige Zeit bis nächste Lodernde Kralleninitianden",
 	TimerPhaseChange	= "Zeige Zeit bis nächste Phase",
 	TimerHatchEggs		= "Zeige Zeit bis nächstes Eierausschlüpfen",
 	InfoFrame			= "Zeige Infofenster für Lodernde Macht"
@@ -36,44 +74,7 @@ L:SetMiscLocalization({
 	PowerLevel		= "Lodernde Macht",
 	East			= "Osten",
 	West			= "Westen",
-	Both			= "Beide"
-})
-
--------------------
--- Lord Rhyolith --
--------------------
-L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-	
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-	yellPhase2			= "Äonen habe ich ungestört durchgeschlafen… jetzt das… Fleischlinge, Ihr werdet BRENNEN!"
-})
-
-----------------
--- Beth'tilac --
-----------------
-L= DBM:GetModLocalization(192)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	RangeFrame				= "Zeige Abstandsfenster (10m)"
-})
-
-L:SetMiscLocalization({
-	EmoteSpiderlings 	= "Spinnlinge sind aus ihrem Nest aufgeschreckt worden!"
+	Both			= "beidseitig"
 })
 
 -------------
@@ -103,26 +104,31 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(196)
 
 L:SetWarningLocalization({
+	warnStrike	= "%s (%d)"
 })
 
 L:SetTimerLocalization({
+	timerStrike			= "Nächster %s",
 	TimerBladeActive	= "%s",
 	TimerBladeNext		= "Nächste Klinge"
 })
 
 L:SetOptionLocalization({
+	ResetShardsinThrees	= "Neustart der $spell:99259 Zählung in 3er-Gruppen (25 Spieler)\nbzw. 2er-Gruppen (10 Spieler)",
+	warnStrike			= "Zeige Warnungen für $spell:99353 / $spell:101002",
+	timerStrike			= "Zeit bis nächster $spell:99353 / $spell:101002 anzeigen",
 	TimerBladeActive	= "Dauer der aktiven Klinge anzeigen",
-	TimerBladeNext		= "Zeige Zeit bis nächste Klinge",
+	TimerBladeNext		= "Zeit bis nächste $spell:99352 / $spell:99350 anzeigen",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
 	ArrowOnCountdown	= "Zeige DBM-Pfeil, wenn du von $spell:99516 betroffen bist",
-	InfoFrame		= "Zeige Infofenster für Stapel von Lebensfunke"
+	InfoFrame			= "Zeige Infofenster für $spell:99262 Stapel",
+	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:99404"
 })
 
 L:SetMiscLocalization({
 	VitalSpark		= GetSpellInfo(99262).." Stapel"
 })
-
 
 --------------------------------
 -- Majordomo Fandral Staghelm --
@@ -133,11 +139,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerNextSpecial	= "Nächste %s (%d)"
 })
 
 L:SetOptionLocalization({
+	timerNextSpecial			= "Zeige Zeit bis nächste Spezialfähigkeit ($spell:98474 / $spell:100208)",
 	RangeFrameSeeds				= "Zeige Abstandsfenster (12m) für $spell:98450",
 	RangeFrameCat				= "Zeige Abstandsfenster (10m) für $spell:98374",
+	LeapArrow					= "Zeige DBM-Pfeil, falls $spell:98476 nahe bei dir ist",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
 })
 
@@ -150,37 +159,49 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
-	warnSplittingBlow		= "%s in %s",--Spellname in Location
-	warnEngulfingFlame		= "%s in %s",--Spellname in Location
-	WarnRemainingAdds		= "Noch %d Söhne der Flamme"
+	warnRageRagnarosSoon	= "%s auf %s in 5 Sekunden",--Spellname on targetname
+	warnSplittingBlow		= "%s im %s",--Spellname in Location
+	warnEngulfingFlame		= "%s im %s",--Spellname in Location
+	WarnRemainingAdds		= "%d Söhne der Flamme verbleiben",
+	warnEmpoweredSulf		= "%s in 5 Sekunden"
 })
 
 L:SetTimerLocalization({
-	TimerPhaseSons		= "Söhne Phase endet"
+	timerRageRagnaros		= "%s auf %s",--Spellname on targetname
+	TimerPhaseSons			= "Phasenübergang endet"
 })
 
 L:SetOptionLocalization({
-	warnSplittingBlow	= "Zeige Warnung für $spell:100877",
-	warnEngulfingFlame	= "Zeige Warnung für $spell:99171",
-	WarnRemainingAdds	= "Zeige verbleibende Anzahl der Söhne der Flammen",
-	TimerPhaseSons		= "Dauer der \"Söhne der Flamme Phase\" anzeigen",
-	RangeFrame		= "Zeige Abstandsfenster",
-	MeteorFrame			= "Zeige Infofenster für Ziele von $spell:99849",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	warnRageRagnarosSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn:format(101109, GetSpellInfo(101109)),
+	warnSplittingBlow			= "Zeige Warnungen für Position des $spell:100877",
+	warnEngulfingFlame			= "Zeige Warnungen für Position der $spell:99171",
+	WarnEngulfingFlameHeroic	= "Zeige Warnungen für Position der $spell:99171 auf Heroisch",
+	WarnRemainingAdds			= "Verkünde die Anzahl der verbleibenden Söhne der Flamme",
+	warnSeedsLand				= "Zeige Warnung/Timer für Landung der $spell:98520\n(anstatt Erzeugung)",
+	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
+	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
+	TimerPhaseSons				= "Dauer des Phasenübergangs (\"Söhne der Flamme\") anzeigen",
+	RangeFrame					= "Zeige Abstandsfenster",
+	InfoHealthFrame				= "Zeige Infofenster für Gesundheit (<100k Lebenspunkte)",
+	MeteorFrame					= "Zeige Infofenster für Ziele von $spell:99849",
+	AggroFrame					= "Zeige Infofenster für Spieler, die keine Aggro während Geschmolzene Elementare haben",
+	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
 })
 
 L:SetMiscLocalization({
 	East				= "Osten",
 	West				= "Westen",
-	Middle				= "Mitte",
-	North				= "Nahkämpfer",
-	South				= "Hinten",
-	MeteorTargets		= "Meteore!",
+	Middle				= "Zentrum",
+	North				= "Nahkampfbereich",
+	South				= "Außenbereich",
+	HealthInfo			= "Unter 100k LP",
+	HasNoAggro			= "Keine Aggro",
+	MeteorTargets		= "Meteorziele!",
 	TransitionEnded1	= "Genug! Ich werde dem ein Ende machen.",
 	TransitionEnded2	= "Sulfuras wird Euer Ende sein.",
 	TransitionEnded3	= "Auf die Knie, Sterbliche! Das ist das Ende.",
 	Defeat				= "Zu früh!… Ihr kommt zu früh...",
-	Phase4				= "Too soon..."--Translate
+	Phase4				= "Zu früh!…" --needs to be verified (wowhead-captured translation)
 })
 
 -----------------------
@@ -189,7 +210,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("FirelandsTrash")
 
 L:SetGeneralLocalization({
-	name = "Feuerlande Trash"
+	name = "Trash der Feuerlande"
 })
 
 L:SetWarningLocalization({
@@ -199,11 +220,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "Zeige Abstandsfenster (10) für $spell:100012"
+	TrashRangeFrame	= "Zeige Abstandsfenster (10m) für $spell:100012"
 })
 
 L:SetMiscLocalization({
-
 })
 
 ----------------
@@ -219,11 +239,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerStaffTransition	= "Übergangsphase endet"
+	timerStaffTransition	= "Phasenübergang endet"
 })
 
 L:SetOptionLocalization({
-	timerStaffTransition	= "Zeige Timer für den Phasenübergang"
+	timerStaffTransition	= "Dauer des Phasenübergangs anzeigen"
 })
 
 L:SetMiscLocalization({

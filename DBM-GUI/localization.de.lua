@@ -6,8 +6,8 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationBy 			= "Nitram & Tandanu"
 
-L.OTabBosses	= "Bosses"
-L.OTabOptions	= "Options"
+L.OTabBosses	= "Bosse"
+L.OTabOptions	= "Einstellungen"
 
 L.TabCategory_Options	 	= "Allgemeine Einstellungen"
 L.TabCategory_CATA	 		= "Cataclysm"
@@ -19,8 +19,8 @@ L.TabCategory_OTHER    		= "Sonstige Boss Mods"
 L.BossModLoaded 			= "Statistiken von %s"
 L.BossModLoad_now 			= [[Dieses Boss Mod ist nicht geladen. Es wird automatisch geladen, wenn du die Instanz betrittst. Du kannst auch auf den Button klicken um das Boss Mod manuell zu laden.]]
 
-L.PosX 						= 'Position X'
-L.PosY 						= 'Position Y'
+L.PosX						= 'Position X'
+L.PosY						= 'Position Y'
 
 L.MoveMe 					= 'Positionieren'
 L.Button_OK 				= 'OK'
@@ -52,11 +52,19 @@ L.EnableDBM 				= "Aktiviere DBM"
 L.EnableStatus 				= "Antworte auf 'status'-Flüsteranfragen"
 L.AutoRespond 				= "Aktiviere automatische Antwort während eines Bosskampfes"
 L.EnableMiniMapIcon			= "Aktiviere Minimap-Symbol"
-L.UseMasterVolume			= "Benutze Master-Audiokanal um Sounddateien abzuspielen. (4.0.6+)"
+L.UseMasterVolume			= "Benutze Master-Audiokanal um Sounddateien abzuspielen."
 L.SKT_Enabled				= "Zeige immer Timer für schnellsten Kill (ignoriert Boss-spezifische Einstellung)"
 L.Latency_Text				= "Maximale Synchronisierungslatenz: %d"
 
+L.ModelOptions				= "Einstellungen für 3D-Modellanzeige"
+L.EnableModels				= "Aktiviere 3D-Modelle in den Bosseinstellungen"
+L.ModelSoundOptions			= "Setze Soundeinstellung für Modellanzeige"
+L.ModelSoundShort			= "Kurz"
+L.ModelSoundLong			= "Lang"
+
 L.Button_RangeFrame			= "Zeige/Verberge Abstandsfenster"
+L.Button_RangeRadar			= "Zeige/Verberge Abstandsradar"
+L.Button_InfoFrame			= "Zeige/Verberge Infofenster"
 L.Button_TestBars			= "Starte Testbalken"
 
 L.PizzaTimer_Headline 		= 'Erstelle einen "Pizza-Timer"'
@@ -84,6 +92,7 @@ L.WarningIconRight 			= "Zeige Symbol rechts an"
 L.RaidWarnMessage 			= "Danke, dass du Deadly Boss Mods verwendest"
 L.BarWhileMove 				= "bewegbare Schlachtzugwarnung"
 L.RaidWarnSound				= "Spiele Sound bei Schlachtzugwarnung"
+L.CountdownVoice			= "Setze Stimme für Countdown- und Countout-Sounds"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
 
