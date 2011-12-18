@@ -112,8 +112,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",
-	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
+	Trash				= "Es tut gut, Euch wiederzusehen, Alexstrasza. Während meiner Abwesenheit war ich fleißig.",
+	Pull				= "Ich spüre, wie eine gewaltige Störung in der Harmonie näherkommt. Das Chaos bereitet meiner Seele Schmerzen."
 })
 
 -------------------------
@@ -137,7 +137,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!",
+	SapperEmote			= "Ein Drache stürzt herab, um einen Zwielichtpionier auf dem Deck abzusetzen!",
 	Broadside			= "spell:110153",
 	DeckFire			= "spell:110095"
 })
@@ -162,7 +162,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
+	Pull		= "Die Platten! Es zerreißt ihn! Zerlegt die Platten und wir können ihn vielleicht runterbringen.",
 	NoDebuff	= "Keine %s",
 	PlasmaTarget	= "Sengendes Plasma: %s",
 	DRoll		= "about to roll"
@@ -174,7 +174,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Blasiges Tentakel - Ziel wechseln!"--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnTentacle	= "Blasiges Tentakel - Ziel wechseln!"
 })
 
 L:SetTimerLocalization({
