@@ -222,7 +222,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Brann		= "Alles klar, auf geht's! Ich gebe nur noch die letzte Eingangssequenz in den Türmechanismus ein... und..."
+	Brann				= "Alles klar, auf geht's! Ich gebe nur noch die letzte Eingangssequenz in den Türmechanismus ein... und..."
 })
 
 ------------
@@ -376,7 +376,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization{
-	TimerAdds		= "Zeige Timer für Adds"
+	TimerAdds		= "Zeige Zeit bis nächste Adds"
 }
 
 L:SetMiscLocalization{
@@ -434,8 +434,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnEmerge		= "Zeige Warnung für Auftauchen",
 	WarnSubmerge	= "Zeige Warnung für Abtauchen",
-	TimerEmerge		= "Zeige Timer für Auftauchen",
-	TimerSubmerge	= "Zeige Timer für Abtauchen",
+	TimerEmerge		= "Zeige Zeit bis Auftauchen",
+	TimerSubmerge	= "Zeige Zeit bis Abtauchen",
 	CrystalArrow	= "Zeige DBM-Pfeil, wenn $spell:81634 in deiner Nähe ist",
 	RangeFrame		= "Zeige Abstandsfenster (5m)"
 })
@@ -472,8 +472,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnAirphase			= "Zeige Warnung, wenn Plattenhaut abhebt",
 	WarnGroundphase			= "Zeige Warnung, wenn Plattenhaut landet",
-	TimerAirphase			= "Zeige Timer für die nächste Luftphase",
-	TimerGroundphase		= "Zeige Timer für die nächste Bodenphase",
+	TimerAirphase			= "Zeige Zeit bis nächste Luftphase",
+	TimerGroundphase		= "Zeige Zeit bis nächste Bodenphase",
 	specWarnCrystalStorm	= "Zeige Spezialwarnung für $spell:92265"
 })
 
@@ -597,13 +597,15 @@ L:SetOptionLocalization{
 	WarnBearSoon	= "Zeige Vorwarnung für Bärform",
 	WarnNormal		= "Zeige Warnung für Normalform",
 	WarnNormalSoon	= "Zeige Vorwarnung für Normalform",
-	TimerBear		= "Zeige Timer für Bärform",
-	TimerNormal		= "Zeige Timer für Normalform"
+	TimerBear		= "Zeige Zeit bis Bärform",
+	TimerNormal		= "Zeige Zeit bis Normalform",
+	InfoFrame		= "Zeige Infofenster für Spieler, welche von $spell:42402 betroffen sind",
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "Ihr provoziert die Bestie, jetzt werdet ihr sie kennenlernen!",
-	YellNormal	= "Macht Platz für Nalorakk!"
+	YellBear 		= "Ihr provoziert die Bestie, jetzt werdet ihr sie kennenlernen!",
+	YellNormal		= "Macht Platz für Nalorakk!",
+	PlayerDebuffs	= "Anstürmen Debuff"
 }
 
 --------------
@@ -616,10 +618,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetOptionLocalization{
-	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
+	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97300),
 	RangeFrame	= "Zeige Abstandsfenster (10m)",
 	StormArrow	= "Zeige DBM-Pfeil für $spell:97300",
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
+}
+
+L:SetMiscLocalization{
 }
 
 --------------
@@ -679,7 +684,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSiphon	= "Zeige Timer für $spell:43501"
+	TimerSiphon	= "Dauer von $spell:43501 anzeigen"
 }
 
 L:SetMiscLocalization{
@@ -700,9 +705,14 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	timerNextForm	= "Zeige Timer für Formwechsel.",
+	timerNextForm	= "Zeige Zeit bis Formwechsel",
+	InfoFrame		= "Zeige Infofenster für Spieler, welche von $spell:42402 betroffen sind",
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
 	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
+}
+
+L:SetMiscLocalization{
+	PlayerDebuffs	= "Anstürmen Debuff"
 }
 
 -----------------
@@ -718,12 +728,12 @@ L:SetGeneralLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow		= "Zeige DBM-Pfeil wenn du von $spell:96477 betroffen bist"
+	LinkArrow		= "Zeige DBM-Pfeil, wenn du von $spell:96477 betroffen bist"
 }
 
-------------
--- Zanzil --
-------------
+------------------------
+-- Bloodlord Mandokir --
+------------------------
 L = DBM:GetModLocalization("Mandokir")
 
 L:SetGeneralLocalization{
@@ -731,7 +741,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnRevive		= "Geisterwiederbelebung - %d verbleiben",
+	WarnRevive		= "%d Geister verbleiben",
 	SpecWarnOhgan	= "Ohgan wiederbelebt! Angreifen!"
 }
 
@@ -754,8 +764,18 @@ L:SetGeneralLocalization{
 	name = "Zanzil"
 }
 
+L:SetWarningLocalization{
+	SpecWarnToxic	= "Hole Toxische Qual"
+}
+
 L:SetOptionLocalization{
+	SpecWarnToxic	= "Zeige Spezialwarnung, wenn dir der $spell:96328 Buff fehlt",
+	InfoFrame		= "Zeige Infofenster für Spieler, denen der $spell:96328 Buff fehlt",
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
+}
+
+L:SetMiscLocalization{
+	PlayerDebuffs	= "Keine Toxische Qual"
 }
 
 ----------------------------
@@ -803,6 +823,10 @@ L:SetGeneralLocalization{
 	name = "Gri'lek"
 }
 
+L:SetMiscLocalization({
+	pursuitEmote	= "%s jagt"
+})
+
 ---------------
 -- Hazza'rah --
 ---------------
@@ -836,6 +860,57 @@ L:SetGeneralLocalization{
 	name = "Wushoolay"
 }
 
+--------------------
+--  World Bosses  --
+-------------------------
+-- Akma'hat --
+-------------------------
+L = DBM:GetModLocalization("Akmahat")
+
+L:SetGeneralLocalization{
+	name = "Akma'hat"
+}
+
+-----------
+-- Garr --
+----------
+L = DBM:GetModLocalization("Garr")
+
+L:SetGeneralLocalization{
+	name = "Garr (Cataclysm)"
+}
+
+----------------
+-- Julak-Doom --
+----------------
+L = DBM:GetModLocalization("JulakDoom")
+
+L:SetGeneralLocalization{
+	name = "Julak-Doom"
+}
+
+L:SetOptionLocalization{
+	SetIconOnMC	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(93621)
+}
+
+-----------
+-- Mobus --
+-----------
+L = DBM:GetModLocalization("Mobus")
+
+L:SetGeneralLocalization{
+	name = "Mobus"
+}
+
+-----------
+-- Xariona --
+-----------
+L = DBM:GetModLocalization("Xariona")
+
+L:SetGeneralLocalization{
+	name = "Xariona"
+}
+
 ----------------
 --  End Time  --
 ----------------------
@@ -844,7 +919,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("EchoSylvanas")
 
 L:SetGeneralLocalization{
-	name = "Echo of Sylvanas"
+	name = "Echo von Sylvanas"
 }
 
 ---------------------
@@ -853,7 +928,7 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("EchoTyrande")
 
 L:SetGeneralLocalization{
-	name = "Echo of Tyrande"
+	name = "Echo von Tyrande"
 }
 
 -------------------
@@ -862,15 +937,18 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("EchoJaina")
 
 L:SetGeneralLocalization{
-	name = "Echo of Jaina"
+	name = "Echo von Jaina"
 }
 
 L:SetTimerLocalization{
-	TimerFlarecoreDetonate	= "Flarecore detonate"
+	TimerFlarecoreDetonate	= "Flammenkern detoniert"
 }
 
 L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "Show timer for $spell:101927 detonate"
+	TimerFlarecoreDetonate	= "Zeige Zeit bis $spell:101927 detoniert"
+}
+
+L:SetMiscLocalization{
 }
 
 ----------------------
@@ -879,7 +957,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("EchoBaine")
 
 L:SetGeneralLocalization{
-	name = "Echo of Baine"
+	name = "Echo von Baine"
 }
 
 --------------
@@ -892,7 +970,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
+	Kill		= "Ihr wisst nicht, was Ihr getan habt. Aman'Thul... Was ich... gesehen... habe..."
 }
 
 ------------------------
@@ -906,17 +984,35 @@ L:SetGeneralLocalization{
 	name = "Peroth'arn"
 }
 
+L:SetMiscLocalization{
+	Pull		= "Kein Sterblicher überlebt es, sich mir gegenüberzustellen!"
+}
+
+
 -------------
 -- Azshara --
 -------------
 L = DBM:GetModLocalization("Azshara")
 
 L:SetGeneralLocalization{
-	name = "Azshara"
+	name = "Königin Azshara"
+}
+
+L:SetWarningLocalization{
+	WarnAdds	= "Neue Adds bald"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "Nächste Adds"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "Verkünde, wenn neue Adds \"erscheinen\"",
+	TimerAdds	= "Zeige Zeit bis nächste Adds \"erscheinen\""
 }
 
 L:SetMiscLocalization{
-	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
+	Kill		= "Genug. So gern ich auch Gastgeberin bin, muss ich mich doch um wichtigere Angelegenheiten kümmern."
 }
 
 -----------------------------
@@ -928,8 +1024,16 @@ L:SetGeneralLocalization{
 	name = "Mannoroth & Varo'then"
 }
 
+L:SetTimerLocalization{
+	TimerTyrandeHelp	= "Tyrande braucht Hilfe"
+}
+
+L:SetOptionLocalization{
+	TimerTyrandeHelp	= "Zeige Zeit bis Tyrande Hilfe braucht"
+}
+
 L:SetMiscLocalization{
-	Kill		= "No...no! This victory will not be ripped from my grasp! I will not return to him in failure! I will not be torn from this pitiful world! No...NOOOOOOOO!!!"
+	Kill		= "Nein... nein! Diesen Sieg lasse ich mir nicht entreißen! Ich werde ihn nicht enttäuschen! Man wird mich nicht... aus dieser armseligen Welt... reißen! Nein! NeeEEIIIINN!"
 }
 
 ------------------------
@@ -943,13 +1047,21 @@ L:SetGeneralLocalization{
 	name = "Arcurion"
 }
 
+L:SetMiscLocalization{
+	Pull		= "Ihr seid bloß ein Sterblicher. Also ist es Zeit, dass Ihr sterbt."
+}
+
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
 L = DBM:GetModLocalization("AsiraDawnslayer")
 
 L:SetGeneralLocalization{
-	name = "Asira Dawnslayer"
+	name = "Asira Dämmerschlächter"
+}
+
+L:SetMiscLocalization{
+	Pull		= "Wir sollten loslegen, nicht wahr?"
 }
 
 ---------------------------
@@ -958,5 +1070,5 @@ L:SetGeneralLocalization{
 L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
+	name = "Erzbischof Benedictus"
 }

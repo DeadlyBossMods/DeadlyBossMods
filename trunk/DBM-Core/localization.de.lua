@@ -12,6 +12,7 @@ DBM_CORE_BOSS_DOWN					= "%s tot nach %s!"
 DBM_CORE_BOSS_DOWN_LONG				= "%s tot nach %s! Dein letzter Kill hat %s gedauert und der schnellste %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s tot nach %s! Das ist ein neuer Rekord! (Der alte Rekord war %s.)"
 DBM_CORE_COMBAT_ENDED				= "Kampf gegen %s hat nach %s aufgehört."
+DBM_CORE_COMBAT_STATE_RECOVERED		= "Kampf gegen %s hat vor %s begonnen, Neukalibrierung der Timer erfolgt..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4Sekunde:Sekunden;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4Minute:Minuten;"
@@ -71,6 +72,15 @@ DBM_CORE_RANGECHECK_SOUND_2			= "Nerviges Piepsen"
 DBM_CORE_RANGECHECK_HIDE			= "Verstecken"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%dm"
 DBM_CORE_RANGECHECK_LOCK			= "Fenster sperren"
+DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Fenster"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "Zeige Radarfenster"
+DBM_CORE_RANGECHECK_OPTION_TEXT		= "Zeige Textfenster"
+DBM_CORE_RANGECHECK_OPTION_BOTH		= "Zeige beide Fenster"
+DBM_CORE_RANGECHECK_OPTION_SPEED	= "Aktualisierungsrate (Reload erforderlich)"
+DBM_CORE_RANGECHECK_OPTION_SLOW		= "Langsam (geringste CPU-Last)"
+DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "Mittel"
+DBM_CORE_RANGECHECK_OPTION_FAST		= "Schnell (nahezu Echtzeit)"
+DBM_CORE_RANGERADAR_HEADER			= "Abstandsradar (%dm)"
 
 DBM_CORE_INFOFRAME_LOCK				= "Fenster sperren"
 DBM_CORE_INFOFRAME_HIDE				= "Verstecken"
@@ -117,25 +127,36 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill (Erfolg)"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target		= "%s: %%s",
 	cast		= "%s",
-	active		= "%s ends",--Buff/Debuff/event on boss
-	fades		= "%s fades",--Buff/Debuff on players
+	active		= "%s endet",--Buff/Debuff/event on boss
+	fades		= "%s schwindet",--Buff/Debuff on players
 	cd			= "%s CD",
 	cdcount		= "%s CD (%%d)",
-	next 		= "Nächster %s",
+	next		= "Nächster %s",
 	nextcount	= "Nächster %s (%%d)",
-	achievement = "%s",
+	achievement	= "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
 	target		= "Dauer des Debuffs |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	cast		= "Wirkzeit von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	active		= "Dauer von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
-	fades		= "Show timer for when |cff71d5ff|Hspell:%d|h%s|h|r fades from players",
+	fades		= "Zeit bis |cff71d5ff|Hspell:%d|h%s|h|r von Spielern schwindet anzeigen",
 	cd			= "Abklingzeit von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	cdcount		= "Abklingzeit von |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	next		= "Zeit bis nächstes |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	nextcount	= "Zeit bis nächstes |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	achievement	= "Zeit für %s anzeigen",
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
+	target		= "Dauer des Debuffs |cff71d5ff%s|r anzeigen",
+	cast		= "Wirkzeit von |cff71d5ff%s|r anzeigen",
+	active		= "Dauer von |cff71d5ff%s|r anzeigen",
+	fades		= "Zeit bis |cff71d5ff%s|r von Spielern schwindet anzeigen",
+	cd			= "Abklingzeit von |cff71d5ff%s|r anzeigen",
+	cdcount		= "Abklingzeit von |cff71d5ff%s|r anzeigen",
+	next		= "Zeit bis nächstes |cff71d5ff%s|r anzeigen",
+	nextcount	= "Zeit bis nächstes |cff71d5ff%s|r anzeigen"
 }
 
 -- Auto-generated Warning Localizations
@@ -161,9 +182,20 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase	= "Verkünde Phase %s",
 	prephase= "Zeige Vorwarnung für Phase %s",
 	count	= "Zeige Warnung für |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack	= "Verkünde Ziele von |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack	= "Verkünde |cff71d5ff|Hspell:%d|h%s|h|r Stapel",
 }
 
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
+	target	= "Verkünde Ziele von |cff71d5ff%s|r",
+	spell	= "Zeige Warnung für |cff71d5ff%s|r",
+	cast	= "Zeige Warnung, wenn |cff71d5ff%s|r gewirkt wird",
+	soon	= "Zeige Vorwarnung für |cff71d5ff%s|r",
+	prewarn = "Zeige Vorwarnung für |cff71d5ff%s|r",
+	phase	= "Verkünde Phase %s",
+	prephase= "Zeige Vorwarnung für Phase %s",
+	count	= "Zeige Warnung für |cff71d5ff%s|r",
+	stack	= "Verkünde |cff71d5ff%s|r Stapel",
+}
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
@@ -176,7 +208,20 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Zeige Spezialwarnung, wenn du von $spell:%d betroffen bist",
 	run 		= "Zeige Spezialwarnung zum Weglaufen vor $spell:%d",
 	cast 		= "Zeige Spezialwarnung zum Zauberstopp bei $spell:%d",
-	stack 		= "Zeige Spezialwarnung für >=%d Stacks von $spell:%d"
+	stack 		= "Zeige Spezialwarnung für >=%d Stapel von $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
+	spell 		= "Zeige Spezialwarnung für $journal:%d",
+	dispel 		= "Zeige Spezialwarnung zum Reinigen/Rauben von $journal:%d",
+	interrupt	= "Zeige Spezialwarnung zum Unterbrechen von $journal:%d",
+	you 		= "Zeige Spezialwarnung, wenn du von $journal:%d betroffen ist",
+	target 		= "Zeige Spezialwarnung, wenn jemand von $journal:%d betroffen ist",
+	close 		= "Zeige Spezialwarnung, wenn jemand in deiner Nähe von\n$journal:%d betroffen ist",
+	move 		= "Zeige Spezialwarnung, wenn du von $journal:%d betroffen bist",
+	run 		= "Zeige Spezialwarnung zum Weglaufen vor $journal:%d",
+	cast 		= "Zeige Spezialwarnung zum Zauberstopp bei $journal:%d",
+	stack 		= "Zeige Spezialwarnung für >=%d Stapel von $journal:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -193,10 +238,17 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Setze Zeichen auf Ziele von $spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Spiele \"Lauf weg!\"-Sound, wenn du von $spell:%d betroffen bist"
-DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Schreie, wenn du von $spell:%d betroffen bist"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s auf mir!"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Setze Zeichen auf Ziele von $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "Setze Zeichen auf Ziele von $journal:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "Spiele \"Lauf weg!\"-Sound für $journal:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele Countdown-Sound für $spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "Spiele Countdown-Sound für $journal:%d"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Spiele Countout-Sound für Dauer von $spell:%d"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "Spiele Countout-Sound für Dauer von $journal:%d"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie, wenn du von $spell:%d betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "Schreie, wenn du von $journal:%d betroffen bist"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s auf mir!"
 
 
 -- New special warnings
