@@ -143,9 +143,20 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades					= "為當|cff71d5ff|Hspell:%d|h%s|h|r從玩家消失顯示計時器",
 	cd						= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器",
 	cdcount					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器",
-	next					= "為下一次 |cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
-	nextcount				= "為下一次 |cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
-	achievement				= "為成就:%s顯示計時器",
+	next					= "為下一次|cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
+	nextcount				= "為下一次|cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
+	achievement				= "為成就:%s顯示計時器"
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
+	target					= "為|cff71d5ff%s|r顯示減益計時器",
+	cast					= "為|cff71d5ff%s|r顯示施法計時器",
+	active					= "為|cff71d5ff%s|r顯示持續時間計時器",
+	fades					= "為當|cff71d5ff%s|r從玩家消失顯示計時器",
+	cd						= "為|cff71d5ff%s|r顯示冷卻計時器",
+	cdcount					= "為|cff71d5ff%s|r顯示冷卻計時器",
+	next					= "為下一次|cff71d5ff%s|r顯示計時器",
+	nextcount				= "為下一次|cff71d5ff%s|r顯示計時器",
 }
 
 -- Auto-generated Warning Localizations
@@ -171,9 +182,20 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase					= "提示第%s階段",
 	prephase				= "為第%s階段顯示預先警告",
 	count					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
-	stack					= "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
+	stack					= "提示|cff71d5ff|Hspell:%d|h%s|h|r的堆疊",
 }
 
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
+	target					= "提示|cff71d5ff%s|r的目標",
+	spell					= "為|cff71d5ff%s|r顯示警告",
+	cast					= "當|cff71d5ff%s|r施放時顯示警告",
+	soon					= "為|cff71d5ff%s|r顯示預先警告",
+	prewarn 				= "為|cff71d5ff%s|r顯示預先警告",
+	phase					= "提示第%s階段",
+	prephase				= "為第%s階段顯示預先警告",
+	count					= "為|cff71d5ff%s|r顯示警告",
+	stack					= "提示|cff71d5ff%s|r的堆疊",
+}
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
@@ -187,6 +209,19 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run						= "為$spell:%d顯示特別警告",
 	cast					= "為$spell:%d施放時顯示特別警告",
 	stack					= "為>=%d層$spell:%d時顯示特別警告"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
+	spell					= "為$journal:%d顯示特別警告",
+	dispel					= "需對$journal:%d驅散/竊取時顯示特別警告",
+	interrupt				= "需對$journal:%d斷法時顯示特別警告",
+	you						= "當你中了$journal:%d時顯示特別警告",
+	target					= "當有人中了$journal:%d時顯示特別警告",
+	close					= "當你附近有人中了$journal:%d時顯示特別警告",
+	move					= "當你中了$journal:%d時顯示特別警告",
+	run						= "為$journal:%d顯示特別警告",
+	cast					= "為$journal:%d施放時顯示特別警告",
+	stack					= "為>=%d層$journal:%d時顯示特別警告"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -204,10 +239,15 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%d的目標設置標記"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "為$journal:%d的目標設置標記"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%d時播放音效"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "當你中了$journal:%d時播放音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為 $spell:%d 播放倒計時音效"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "為 $journal:%d 播放倒計時音效"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為 $spell:%d 的持續時間播放倒計時音效"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "為 $journal:%d 的持續時間播放倒計時音效"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%d時大喊"
+DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "當你中了$journal:%d時大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s!"
 
 
