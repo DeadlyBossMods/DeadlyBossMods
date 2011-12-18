@@ -46,6 +46,7 @@ Confirmed in transcriptor log for normal mode.
 Seem to be alternate versions of Yellow and Blue on ptr.wowhead.com. heroic stronger versions maybe?
 --105027,"Blue Blood of Shu'ma"
 --108221,"Yellow Blood of Shu'ma"
+--105441 is a color combination trigger that fires for all, don't add
 --]]
 
 local oozeColorsHeroic = {
@@ -109,7 +110,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end		
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
-	if uId ~= "boss1" then return end
+	if not uId:find("boss") then return end--yor can apparently be boss 1 2 3 or 4. even though he's only boss, :o
 	if self:IsDifficulty("heroic10", "heroic25") then
 		if oozeColorsHeroic[spellID] then
 			warnOozes:Show(table.concat(oozeColorsHeroic[spellID], ", "))
