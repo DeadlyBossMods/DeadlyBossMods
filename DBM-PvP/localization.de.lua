@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "deDE" then return end
-
 local L
 
 --------------------------
@@ -8,7 +7,7 @@ local L
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "Allgemeine Optionen"
+	name = "Allgemeine Einstellungen"
 })
 
 L:SetTimerLocalization({
@@ -186,7 +185,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerStart			= "Zeige Zeit bis Kampfbeginn", 
 	TimerPOI			= "Zeige Eroberungsdauer",
-	TimerSiegeEngine	= "Zeige Timer für Belagerungsmaschine",
+	TimerSiegeEngine	= "Zeige Zeit bis Belagerungsmaschine bereit ist",
 	WarnSiegeEngine		= "Zeige Warnung, wenn Belagerungsmaschine bereit ist",
 	WarnSiegeEngineSoon	= "Zeige Warnung, wenn Belagerungsmaschine fast bereit ist"
 })
@@ -228,8 +227,8 @@ L:SetMiscLocalization({
 	FlagAlliance		= "Allianz-Flagge: ",
 	FlagHorde			= "Horde-Flagge: ",
 	FlagBase			= "Basis",
-	Vulnerable1			= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
-	Vulnerable2			= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
+	Vulnerable1		= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
+	Vulnerable2		= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
 })
 
 L:SetTimerLocalization({
@@ -245,9 +244,9 @@ L:SetOptionLocalization({
 })
 
 
---------------------------
---  Battle for Gilneas  --
---------------------------
+-------------------------
+--  Battle of Gilneas  --
+-------------------------
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({

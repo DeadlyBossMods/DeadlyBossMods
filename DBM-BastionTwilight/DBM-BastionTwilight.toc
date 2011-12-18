@@ -1,6 +1,7 @@
 ﻿## Interface: 40300
 ## X-Min-Interface: 40200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastion of Twilight|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Die Bastion des Zwielichts|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión del Crepúsculo|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0황혼의 요새|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Сумеречный бастион|r
@@ -14,7 +15,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Name: Bastion of Twilight
-## X-DBM-Mod-Name-deDE: Bastion des Zwielichts
+## X-DBM-Mod-Name-deDE: Die Bastion des Zwielichts
 ## X-DBM-Mod-Name-esES: Bastión del Crepúsculo
 ## X-DBM-Mod-Name-koKR: 황혼의 요새
 ## X-DBM-Mod-Name-ruRU: Сумеречный бастион

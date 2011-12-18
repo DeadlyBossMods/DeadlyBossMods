@@ -96,7 +96,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Verkünde die Anzahl der verbleibenden Entartungen",
 	TimerPhase			= "Zeige Zeit bis nächste Phase",
 	RangeFrame			= "Zeige Abstandsfenster (6m) während der blauen Phase",
-	SetTextures			= "Automatische Deaktivierung der Grafikeinstellung 'Projizierte Texturen' in\nder dunklen Phase (wird Verlassen der Phase automatisch wieder aktiviert)",
+	SetTextures			= "Automatische Deaktivierung der Grafikeinstellung 'Projizierte Texturen' in\nder dunklen Phase (wird nach Verlassen der Phase autom. wieder aktiviert)",
 	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
@@ -178,7 +178,7 @@ L:SetMiscLocalization({
 	AncientDwarvenShield	= "Uralter Zwergenschild",
 	Soundlevel				= "Geräuschpegel",
 	YellPestered			= "Nerviges Scheusal auf mir!",--npc 49740
-	NefAdd					= "Atramedes, die Helden sind direkt DA DRÜBEN!", --needs to be verified (video-captured translation)
+	NefAdd					= "Atramedes, die Helden sind direkt DA DRÜBEN!",
 	Airphase				= "Ja, lauft! Jeder Schritt lässt Euer Herz stärker klopfen. Laut und heftig... ohrenbetäubend. Es gibt kein Entkommen!"
 })
 
@@ -197,7 +197,8 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "Schwanzpeitscher (Nefarian)",
 	OnyBreath				= "Atem (Onyxia)",
 	NefBreath				= "Atem (Nefarian)",
-	specWarnShadowblazeSoon	= "%s"
+	specWarnShadowblazeSoon	= "%s",
+	warnShadowblazeSoon		= "%s"
 })
 
 L:SetTimerLocalization({
@@ -205,7 +206,7 @@ L:SetTimerLocalization({
 	OnySwipeTimer			= "Schwanzpeitscher CD (Ony)",
 	NefSwipeTimer			= "Schwanzpeitscher CD (Nef)",
 	OnyBreathTimer			= "Atem CD (Ony)",
-	NefBreathTimer			= "Atem CD (Nef)",
+	NefBreathTimer			= "Atem CD (Nef)"
 })
 
 L:SetOptionLocalization({
@@ -213,14 +214,15 @@ L:SetOptionLocalization({
 	NefTailSwipe			= "Zeige Warnung für Nefarians $spell:77827",
 	OnyBreath				= "Zeige Warnung für Onyxias $spell:94124",
 	NefBreath				= "Zeige Warnung für Nefarians $spell:94124",
-	specWarnShadowblazeSoon	= "Zeige Spezialvorwarnung für $spell:94085 (~5s)",
+	specWarnCinderMove		= "Zeige Spezialwarnung zum Weglaufen, wenn du von $spell:79339\nbetroffen bist (5s vor Explosion)",
+	warnShadowblazeSoon		= "Zeige Vorwarnungscountdown für $spell:81031 (5s zuvor)\n(aus Genauigkeitsgründen erst nach Synchronisierung mit erstem Ausruf)",
+	specWarnShadowblazeSoon	= "Zeige Spezialvorwarnung für $spell:81031 (aus Genauigkeits-\ngründen zu Beginn 5s Vorwarnung, 1s Vorwarnung nach erstem Ausruf)",
 	timerNefLanding			= "Zeige Zeit bis Nefarian landet",
 	OnySwipeTimer			= "Zeige Abklingzeit für Onyxias $spell:77827",
 	NefSwipeTimer			= "Zeige Abklingzeit für Nefarians $spell:77827",
 	OnyBreathTimer			= "Zeige Abklingzeit für Onyxias $spell:94124",
 	NefBreathTimer			= "Zeige Abklingzeit für Nefarians $spell:94124",
 	InfoFrame				= "Zeige Infofenster für Onyxias Elektrische Aufladung",
-	FixShadowblaze			= "Versuche automatische Korrektur des Timers für $spell:94085\n(experimentell: nutzt einen Ausruf, den Nefarian manchmal macht)",
 	SetWater				= "Automatische Deaktivierung der Kameraeinstellung 'Wasserkollision' bei\nKampfbeginn (wird nach Kampfende automatisch wieder aktiviert)",
 	TankArrow				= "Zeige DBM-Pfeil für den Kiter von 'Belebter Knochenkrieger'\n(abgestimmt auf eine Kiter-Taktik)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
@@ -231,11 +233,11 @@ L:SetMiscLocalization({
 	NefAoe					= "Elektrizität lässt die Luft knistern!",
 	YellPhase2				= "Verfluchte Sterbliche! Ein solcher Umgang mit dem Eigentum anderer verlangt nach Gewalt!",
 	YellPhase3				= "Ich habe versucht, ein guter Gastgeber zu sein, aber ihr wollt einfach nicht sterben! Genug der Spielchen! Ich werde euch einfach... ALLE TÖTEN!",
-	YellShadowBlaze			= "Fleisch wird zu Asche!", --needs to be verified (video-captured translation)
+	YellShadowBlaze			= "Fleisch wird zu Asche!",
 	Nefarian				= "Nefarian",
 	Onyxia					= "Onyxia",
 	Charge					= "Elektrische Aufladung",
-	ShadowBlazeExact		= "Shadowblaze in %ds",
+	ShadowBlazeExact		= "Schattensengen in %ds",
 	ShadowBlazeEstimate		= "Schattensengen bald  (~5s)"
 })
 

@@ -26,7 +26,7 @@ L:SetOptionLocalization({
 	warnSpecial			= "Zeige Warnung, wenn Hurrikan/Zephyr/Graupelsturm gewirkt werden",
 	specWarnSpecial		= "Zeige Spezialwarnung, wenn Spezialfähigkeiten gewirkt werden",
 	timerSpecial		= "Zeige Abklingzeit für Spezialfähigkeiten",
-	timerSpecialActive	= "Zeige Dauer der Spezialfähigkeiten",
+	timerSpecialActive	= "Dauer der Spezialfähigkeiten anzeigen",
 	warnSpecialSoon		= "Zeige Vorwarnung 10 Sekunden vor den Spezialfähigkeiten",
 	OnlyWarnforMyTarget	= "Zeige Warnungen und Timer nur für aktuelles Ziel und Fokusziel\n(Versteckt den Rest. Dies beinhaltet den PULL!)"
 })
@@ -49,22 +49,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd			= "Sturmling gespawned"
 })
 
 L:SetTimerLocalization({
 	TimerFeedback 	= "Rückkopplung (%d)",
-	TimerAddCD		= "Nächstes Add"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
-	TimerFeedback	= "Zeige Dauer von $spell:87904",
-	WarnAdd			= "Zeige Warnung, wenn ein Sturmling spawned", 
-	TimerAddCD		= "Zeige Timer für neues Add"
+	TimerFeedback	= "Dauer von $spell:87904 anzeigen",
+	RangeFrame		= "Zeige Abstandsfenster (20m), wenn du von $spell:89668 betroffen bist"
 })
 
 L:SetMiscLocalization({
-	summonAdd	=	"Stürme! Ich rufe euch an meine Seite!",
-	phase3		=	"Genug! Ich werde mich nicht länger zurückhalten!"
 })
