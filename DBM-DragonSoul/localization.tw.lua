@@ -58,7 +58,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerOozesActive	= "為軟泥重生後可被攻擊顯示計時器",
-	RangeFrame			= "為$spell:104898顯示計時器(普通以上的難度)"
+	RangeFrame			= "為$spell:104898顯示距離框(4碼)(普通以上的難度)"
 })
 
 L:SetMiscLocalization({

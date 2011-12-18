@@ -803,7 +803,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill			= "Oh no, Hakkar's spirit is free!" -- temporarily
+	Kill			= "你跨越了你的分際，金度。你觸碰了遠超越你的力量。你忘了我是誰嗎?你忘了我的能耐了嗎?"
 }
 
 ----------------------
