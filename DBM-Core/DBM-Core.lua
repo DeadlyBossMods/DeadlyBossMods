@@ -41,7 +41,7 @@
 --  Globals/Default Options  --
 -------------------------------
 DBM = {
-	Revision = ("$Revision$"):sub(12, -3),
+	Revision = tonumber(("$Revision$"):sub(12, -3)),
 	DisplayVersion = "4.10.5 alpha", -- the string that is shown as version
 	ReleaseRevision = 6839 -- the revision of the latest stable version that is available
 }
@@ -49,6 +49,12 @@ DBM = {
 -- Legacy crap; that stupid "Version" field was never a good idea.
 -- Some functions that should be using ReleaseRevision still use this one, so we will just keep it and set to ReleaseRevision
 DBM.Version = tostring(DBM.ReleaseRevision)
+
+-- support for git svn which doesn't support svn keyword expansion
+if not DBM.Revision then
+	-- just use the latest release revision
+	DBM.Revision = DBM.ReleaseRevision
+end
 
 DBM_SavedOptions = {}
 
@@ -1687,7 +1693,7 @@ do
 	
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
 	syncHandlers["H"] = function(sender)
-		sendSync("V", ("%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
+		sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 	end
 	
 	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale)
@@ -3119,6 +3125,11 @@ function bossModPrototype:RegisterOnUpdateHandler(func, interval)
 end
 
 function bossModPrototype:SetRevision(revision)
+	revision = tonumber(revision or "")
+	if not revision then
+		-- bad revision: either forgot the svn keyword or using git svn
+		revision = DBM.Revision
+	end
 	self.revision = revision
 end
 
