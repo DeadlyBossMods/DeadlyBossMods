@@ -46,19 +46,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "Arrivée de gelées : %s",
-	specWarnOozes	= "Arrivée de gelées !",
 })
 
 L:SetTimerLocalization({
-	timerOozesCD	= "Prochaines gelées",
-	timerOozesActive	= "Gelées attaquables",
+	timerOozesActive	= "Gelées attaquables"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "Alerte lors de l'apparition de gelées",
-	specWarnOozes		= "Alerte spéciale lors de l'apparition de gelées",
-	timerOozesCD		= "Délai avant l'apparition des prochaines gelées",
 	timerOozesActive	= "Délai avant que les gelées ne soient attaquables après leur apparition",
 	RangeFrame			= "Cadre des portées (4) pour $spell:104898\n(difficulté Normal+)"
 })

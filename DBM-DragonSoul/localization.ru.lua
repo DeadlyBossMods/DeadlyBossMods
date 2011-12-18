@@ -46,21 +46,15 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "Появляются камли: %s",
-	specWarnOozes	= "Появились капли крови!",
 })
 
 L:SetTimerLocalization({
-	timerOozesCD		= "Следующие капли",
-	timerOozesActive	= "Появление капель",
+	timerOozesActive	= "Появление капель"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "Предупреждение о появлении новых капель крови",
-	specWarnOozes		= "Спец-предупреждение о появлении новых капель крови",
 	specWarnManaVoid	= "Спец-предупреждение о появлении $spell:105530",
-	timerOozesCD		= "Отсчет времени до следующих капель крови",
-	timerOozesActive	= "Отсчет времени спавна капель крови",
+	timerOozesActive	= "Отсчет времени спавна капель крови"
 })
 
 L:SetMiscLocalization({

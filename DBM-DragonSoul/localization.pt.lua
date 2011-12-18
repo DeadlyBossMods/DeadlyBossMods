@@ -48,19 +48,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozes		= "Glóbulos chegando: %s",
-	specWarnOozes	= "Glóbulos chegando!",
 })
 
 L:SetTimerLocalization({
-	timerOozesCD		= "Próximos Glóbulos",
 	timerOozesActive	= "Glóbulos atacáveis"
 })
 
 L:SetOptionLocalization({
-	warnOozes			= "Exibir aviso para Glóbulos surgindo",
-	specWarnOozes		= "Exibir aviso especial para Glóbulos surgindo",
-	timerOozesCD		= "Exibir cronógrafo para a próxima aparição de Glóbulos",
 	timerOozesActive	= "Exibir cronógrafo para quando os Glóbulos se tornam atacáveis",
 	RangeFrame			= "Exibir medidor de distância (4) para $spell:104898\n(Modo Normal+)"
 })
