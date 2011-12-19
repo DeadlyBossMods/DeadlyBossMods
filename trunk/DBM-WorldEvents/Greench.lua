@@ -4,8 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(54499)--He has multiple IDs, sigh.
 mod:SetModelID(21601)--Icehowl's Model ID
-mod:RegisterCombat("combat")--Why doesn't this work? :\
 mod:SetZone(24)--Hillsbread Foothills
+
+mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
