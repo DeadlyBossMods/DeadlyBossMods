@@ -25,8 +25,8 @@ local warnShatteringIce		= mod:NewTargetAnnounce(105289, 3, nil, mod:IsHealer())
 local warnFrostTombCast		= mod:NewAnnounce("warnFrostTombCast", 4, 104448)--Can't use a generic, cause it's an 8 second cast even though it says 1second in tooltip.
 local warnFrostTomb			= mod:NewTargetAnnounce(104451, 4)
 local warnIceLance			= mod:NewTargetAnnounce(105269, 3)
-local warnFrostflake		= mod:NewTargetAnnounce(109325, 3)	-- verify with logs
-local warnStormPillars		= mod:NewTargetAnnounce(109557, 3)	-- verify with logs
+local warnFrostflake		= mod:NewTargetAnnounce(109325, 3, nil, mod:IsHealer())--Spammy, only a dispeller really needs to know this, probably a healer assigned to managing it.
+local warnStormPillars		= mod:NewSpellAnnounce(109557, 3, nil, false)--Spammy, off by default (since we can't get a target anyways.
 
 local specWarnIceLance		= mod:NewSpecialWarningStack(107061, nil, 3)
 local specWarnFrostTombCast	= mod:NewSpecialWarningSpell(104448, nil, nil, nil, true)
@@ -35,13 +35,14 @@ local specWarnLightingStorm	= mod:NewSpecialWarningSpell(105465, nil, nil, nil, 
 local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
 --local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 local specWarnWatery		= mod:NewSpecialWarningMove(110317)
-local specWarnStormPillars	= mod:NewSpecialWarningClose(109557)	-- if target != nil
+--local specWarnStormPillars	= mod:NewSpecialWarningClose(109557)	-- target was always nil on my pulls. She didn't target anyone
 local specWarnFrostflake	= mod:NewSpecialWarningYou(109325)
 local yellFrostflake		= mod:NewYell(109325)
 
 local timerFrostTomb		= mod:NewCastTimer(8, 104448)
 local timerFrostTombCD		= mod:NewNextTimer(20, 104451)
 local timerIceLance			= mod:NewBuffActiveTimer(15, 105269)
+local timerShatteringCD		= mod:NewCDTimer(10.5, 105289)--every 10.5-15 seconds
 local timerIceLanceCD		= mod:NewNextTimer(30, 105269)
 local timerSpecialCD		= mod:NewTimer(62, "TimerSpecial", "Interface\\Icons\\Spell_Nature_WispSplode")
 local timerTempestCD		= mod:NewNextTimer(62, 105256)
@@ -50,21 +51,26 @@ local timerIceWave			= mod:NewNextTimer(10, 105314)
 local timerFeedback			= mod:NewBuffActiveTimer(15, 108934)
 local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:IsTank())
+local timerStormPillarCD	= mod:NewNextTimer(5, 109557)--Both of these are just spammed every 5 seconds on new targets.
+local timerFrostFlakeCD		= mod:NewNextTimer(5, 104451)
 
 local berserkTimer			= mod:NewBerserkTimer(480)	-- according to Icy-Veins
 
 local SpecialCountdown		= mod:NewCountdown(62, 105256)--Apparently countdown prototype doesn't support localized text, too lazy to do that now, so i'll just use tempest, even though it's enabled for both specials.
 
 mod:AddBoolOption("RangeFrame")--Ice lance spreading in ice phases, and lighting linking in lighting phases (with reverse intent, staying within 10 yards, not out of 10 yards)
-mod:AddBoolOption("SetIconOnFrostflake", true)
+mod:AddBoolOption("SetIconOnFrostflake", false)--You can use an icon if you want, but this is cast on a new target every 5 seconds, often times on 25 man 2-3 have it at same time while finding a good place to drop it.
 mod:AddBoolOption("SetIconOnFrostTomb", true)
 mod:AddBoolOption("AnnounceFrostTombIcons", false)
 
 local lanceTargets = {}
 local tombTargets = {}
 local tombIconTargets = {}
---local playerTombed = false
 
+--[[
+"<44.3> [UNIT_SPELLCAST_SUCCEEDED] Hagara the Stormbinder:Possible Target<nil>:boss1:Storm Pillar::0:109541", -- [97]
+"<49.3> [UNIT_SPELLCAST_SUCCEEDED] Hagara the Stormbinder:Possible Target<nil>:boss1:Storm Pillar::0:109541", -- [98]
+"<54.2> [UNIT_SPELLCAST_SUCCEEDED] Hagara the Stormbinder:Possible Target<nil>:boss1:Storm Pillar::0:109541", -- [99]
 function mod:stormPillarsTarget(target)
 	local targetname = target or self:GetBossTarget(55689)
 	if not targetname then return end
@@ -81,13 +87,13 @@ function mod:stormPillarsTarget(target)
 			specWarnStormPillars:Show(targetname)
 		end
 	end
-end
-
+end--]]
 
 function mod:ShatteredIceTarget()
 	local targetname = self:GetBossTarget(55689)
 	if not targetname then return end
 	warnShatteringIce:Show(targetname)
+	timerShatteringCD:Start()
 end
 
 function mod:OnCombatStart(delay)
@@ -95,7 +101,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(tombIconTargets)
 	table.wipe(tombTargets)
 	timerAssaultCD:Start(4-delay)
-	timerIceLanceCD:Start(12-delay)
+	timerIceLanceCD:Start(10-delay)
 --	timerFrostTombCD:Start(16-delay)--No longer cast on engage? most recent log she only casts it after specials now and not after pull
 	timerSpecialCD:Start(30-delay)
 	SpecialCountdown:Start(30-delay)
@@ -179,6 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnWatery:Show()
 	elseif args:IsSpellID(109325) then
 		warnFrostflake:Show(args.destName)
+		timerFrostFlakeCD:Start()
 		if args:IsPlayer() then
 			specWarnFrostflake:Show()
 			yellFrostflake:Yell()
@@ -205,6 +212,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then--104451 10/25 man normal confirmed.
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
+		timerFrostFlakeCD:Cancel()
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
 		if not self:IsDifficulty("lfr25") then
@@ -217,6 +225,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.RangeCheck:Show(3)
 		end
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
+		timerStormPillarCD:Cancel()
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
 		if not self:IsDifficulty("lfr25") then
@@ -253,14 +262,16 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10)
 		end
-	elseif args:IsSpellID(105289, 108567) then--105289 10/25 man normal confirmed.
+	elseif args:IsSpellID(105289, 108567, 110887, 110888) then
 		self:ScheduleMethod(0.2, "ShatteredIceTarget")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(109557) then
-		self:stormPillarsTarget()
+--		self:stormPillarsTarget()
+		warnStormPillars:Show()
+		timerStormPillarCD:Start()
 	end
 end
 

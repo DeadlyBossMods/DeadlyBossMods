@@ -103,8 +103,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
-			FadingLightCountdown:Start(duration)
-			timerFadingLight:Start(duration)
+			FadingLightCountdown:Start(duration-1)--For some reason need to offset it by 1 second to make it accurate but otherwise it's perfect
+			timerFadingLight:Start(duration-1)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
@@ -113,8 +113,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
-			FadingLightCountdown:Start(duration)
-			timerFadingLight:Start(duration)
+			FadingLightCountdown:Start(duration-1)
+			timerFadingLight:Start(duration-1)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
