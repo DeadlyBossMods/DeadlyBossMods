@@ -92,7 +92,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then--104849, 108383 confirmed 10 and 25 man normal, other 2 drycoded from wowhead.
 		warnVoidBolt:Show(args.destName, args.amount or 1)
 		timerVoidBolt:Start(args.destName)
-		if (args.amount or 0) >= 3 and args:IsPlayer() then
+		if (args.amount or 1) >= 3 and args:IsPlayer() then
 			specWarnVoidBolt:Show(args.amount)
 		end
 	elseif args:IsSpellID(104898) and not self:IsDifficulty("lfr25") and self.Options.RangeFrame then
