@@ -172,7 +172,7 @@ L:SetMiscLocalization({
 	NoDebuff	= "Sin %s",
 	PlasmaTarget	= "Plasma ardiente: %s",
 	DRoll		= "¡Está a punto de girar",
-	DLevels			= "levels out"--translate
+	DLevels			= "se estabiliza."
 })
 
 ---------------------------
