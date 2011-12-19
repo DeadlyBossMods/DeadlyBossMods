@@ -87,7 +87,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerSpecial			= "$spell:105456 또는 $spell:109552 까지 남은 시간 바 표시",
-	RangeFrame				= "$spell:105269 주문의 영향을 받은 경우 거리 프레임 보기 (3m)",
+	RangeFrame				= "$spell:105269 (3m), $journal:4327 (10m) 주문의 영향을 받은 경우 거리 프레임 보기",
 	AnnounceFrostTombIcons	= "$spell:104451 대상을 공격대 대화로 알리기\n(승급 권한 필요)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
