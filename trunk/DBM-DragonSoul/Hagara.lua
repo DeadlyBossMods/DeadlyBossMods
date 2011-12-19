@@ -192,7 +192,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(105316, 107061, 107062, 107063) then
+		if (args.amount or 1) % 3 == 0 and args:IsPlayer() then--Warn every 3 stacks, don't want to spam TOO much.
+			specWarnIceLance:Show(args.amount)
+		end
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then--104451 10/25 man normal confirmed.
