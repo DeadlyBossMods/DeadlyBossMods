@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
@@ -27,6 +28,7 @@ local warnIceLance			= mod:NewTargetAnnounce(105269, 3)
 local warnFrostflake		= mod:NewTargetAnnounce(109325, 3)	-- verify with logs
 local warnStormPillars		= mod:NewTargetAnnounce(109557, 3)	-- verify with logs
 
+local specWarnIceLance		= mod:NewSpecialWarningStack(107061, nil, 3)
 local specWarnFrostTombCast	= mod:NewSpecialWarningSpell(104448, nil, nil, nil, true)
 local specWarnTempest		= mod:NewSpecialWarningSpell(109552, nil, nil, nil, true)
 local specWarnLightingStorm	= mod:NewSpecialWarningSpell(105465, nil, nil, nil, true)
@@ -184,8 +186,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFrostflake then
 			self:SetIcon(args.destName, 3)
 		end
+	elseif args:IsSpellID(105316, 107061, 107062, 107063) then
+		if (args.amount or 1) % 3 == 0 and args:IsPlayer() then--Warn every 3 stacks, don't want to spam TOO much.
+			specWarnIceLance:Show(args.amount)
+		end
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then--104451 10/25 man normal confirmed.
