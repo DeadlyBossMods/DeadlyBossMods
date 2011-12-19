@@ -2,18 +2,14 @@ local mod	= DBM:NewMod("Greench", "DBM-WorldEvents")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(55003, 54499)--He has multiple IDs, sigh.
+mod:SetCreatureID(54499)--He has multiple IDs, sigh.
 mod:SetModelID(21601)--Icehowl's Model ID
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat")--Why doesn't this work? :\
 mod:SetZone(24)--Hillsbread Foothills
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"UNIT_SPELLCAST_SUCCEEDED"
-)
-
-mod:RegisterEventsInCombat(
-	"UNIT_DIED"
 )
 
 local warnShrinkHeart			= mod:NewSpellAnnounce(101873, 2)
@@ -56,12 +52,5 @@ function mod:OnSync(event, arg)
 		warnTree:Show()
 		timerCrushCD:Start()
 		timerSnowmanCD:Start()
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 55003 or cid == 54499 then
-		DBM:EndCombat(self)
 	end
 end
