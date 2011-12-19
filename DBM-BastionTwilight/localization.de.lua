@@ -66,8 +66,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s unter 30%% - nächste Phase bald!",
-	SpecWarnGrounded		= "Hole den Geerdet Buff",
-	SpecWarnSearingWinds	= "Hole den Wirbelnde Winde Buff"
+	SpecWarnGrounded		= "Hole Geerdet",
+	SpecWarnSearingWinds	= "Hole Wirbelnde Winde"
 })
 
 L:SetTimerLocalization({
@@ -78,7 +78,7 @@ L:SetOptionLocalization({
 	specWarnBossLow			= "Zeige Spezialwarnung, wenn Bosse unter 30% Lebenspunkten sind",
 	SpecWarnGrounded		= "Zeige Spezialwarnung, falls dir der $spell:83581 Buff fehlt\n(~10 Sekunden vor dem Wirken von $spell:83067)",
 	SpecWarnSearingWinds	= "Zeige Spezialwarnung, falls dir der $spell:83500 Buff fehlt\n(~10 Sekunden vor dem Wirken von $spell:83565)",
-	timerTransition			= "Zeige Timer für den Phasenübergang",
+	timerTransition			= "Dauer des Phasenübergangs anzeigen",
 	RangeFrame				= "Zeige Abstandsfenster automatisch bei Bedarf",
 	yellScrewed				= "Schreie, wenn du gleichzeitig von $spell:83099 und $spell:92307\nbetroffen bist",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:83581 bzw. $spell:83500",
@@ -145,15 +145,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnDragon			= "Zwielichtwelpen gespawnt",
+	WarnDragon			= "Zwielichtwelpen erschienen",
 	WarnOrbSoon			= "Schattenkugeln in %d Sekunden!",
-	WarnEggWeaken		= "Zwielichtpanzer um Ei ist zerfallen",
 	SpecWarnOrbs		= "Schattenkugeln kommen! Aufpassen!",
 	warnWrackJump		= "%s gesprungen auf >%s<",
-	WarnWrackCount5s	= "%d Sek. vergangen seit letztem Zermürben",
-	warnAggro			= ">%s< hat Aggro (Schattenkugeln-Kandidat)",
+	warnAggro			= "Spieler mit Aggro (Schattenkugeln-Kandidaten): >%s<",
 	SpecWarnAggroOnYou	= "Du hast Aggro! Auf Schattenkugeln achten!",
-	SpecWarnDispel		= "%d Sek. vergangen seit letztem Zermürben - Jetzt reinigen!",
 	SpecWarnEggWeaken	= "Zwielichtpanzer ist zerfallen - Jetzt Schaden auf das EI!",
 	SpecWarnEggShield	= "Zwielichtpanzer erneuert!"
 })
@@ -166,27 +163,27 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnDragon			= "Zeige Warnung, wenn Zwielichtwelpen spawnen",
-	WarnOrbSoon		= "Zeige Vorwarnung für Schattenkugeln (5s zuvor, sekündlich)\n(voraussichtlich, kann ungenau sein, kann spammen)",
-	WarnEggWeaken		= "Zeige Warnung, wenn $spell:87654 zerfallen ist",
+	WarnDragon			= "Zeige Warnung, wenn Zwielichtwelpen erscheinen",
+	WarnOrbSoon			= "Zeige Vorwarnung für Schattenkugeln (5s zuvor, sekündlich)\n(voraussichtlich, kann ungenau sein, kann spammen)",
 	warnWrackJump		= "Verkünde Sprungziele von $spell:92955 ",
-	WarnWrackCount5s	= "Verkünde die Zeit, die ein Spieler von $spell:92955 betroffen ist,\n bei 10, 15, 20 Sekunden",
-	warnAggro			= "Verkünde Spieler mit Aggro, wenn Schattenkugeln spawnen\n(mögliches Ziel der Schattenkugeln)",
-	SpecWarnAggroOnYou	= "Zeige Spezialwarnung, falls du Aggro hast, wenn Schattenkugeln spawnen\n(mögliches Ziel der Schattenkugeln)",
-	SpecWarnOrbs		= "Zeige Spezialwarnung, wenn Schattenkugeln spawnen (voraussichtlich)",
-	SpecWarnDispel		= "Zeige Spezialwarnung um $spell:92955 zu reinigen\n(nachdem nach dem Wirken/Springen eine bestimmte Zeit vergangen ist)",
+	warnAggro			= "Verkünde Spieler mit Aggro, wenn Schattenkugeln erscheinen\n(mögliches Ziel der Schattenkugeln)",
+	SpecWarnAggroOnYou	= "Zeige Spezialwarnung, falls du Aggro hast, wenn Schattenkugeln\nerscheinen (mögliches Ziel der Schattenkugeln)",
+	SpecWarnOrbs		= "Zeige Spezialwarnung, wenn Schattenkugeln erscheinen (voraussichtlich)",
 	SpecWarnEggWeaken	= "Zeige Spezialwarnung, wenn $spell:87654 zerfallen ist",
 	SpecWarnEggShield	= "Zeige Spezialwarnung, wenn $spell:87654 erneuert wurde",
-	TimerDragon			= "Zeit bis nächste Zwielichtwelpen spawnen anzeigen",
+	TimerDragon			= "Zeige Zeit bis nächste Zwielichtwelpen erscheinen",
 	TimerEggWeakening	= "Zeige Timer, wenn $spell:87654 zerfällt",
 	TimerEggWeaken		= "Dauer der Erneuerung des $spell:87654 anzeigen",
-	TimerOrbs			= "Zeit bis nächste Schattenkugeln anzeigen\n(voraussichtlich, kann ungenau sein)",
-	SetIconOnOrbs		= "Setze Zeichen auf Spieler mit Aggro wenn Schattenkugeln spawnen\n(mögliches Ziel der Schattenkugeln)"
+	TimerOrbs			= "Zeige Zeit bis nächste Schattenkugeln erscheinen\n(voraussichtlich, kann ungenau sein)",
+	SetIconOnOrbs		= "Setze Zeichen auf Spieler mit Aggro, wenn Schattenkugeln erscheinen\n(mögliches Ziel der Schattenkugeln)",
+	OrbsCountdown		= "Spiele Countdown-Sound für Schattenkugeln",
+	InfoFrame			= "Zeige Infofenster für Spieler mit Aggro"
 })
 
 L:SetMiscLocalization({
 	YellDragon			= "Fresst, Kinder! Nährt Euch an ihrem Fleisch!", --needs to be verified (video-captured translation, maybe inaccurate whitespaces)
-	YellEgg				= "Ihr denkt, ich sei schwach? Narren!" --needs to be verified (video-captured translation, maybe inaccurate whitespaces)
+	YellEgg				= "Ihr denkt, ich sei schwach? Narren!", --needs to be verified (video-captured translation, maybe inaccurate whitespaces)
+	HasAggro			= "Hat Aggro"
 })
 
 -------------------------------------
