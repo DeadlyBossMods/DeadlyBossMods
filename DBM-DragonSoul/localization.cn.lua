@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/16/2011
+-- Last update: 12/20/2011
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -89,7 +89,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerSpecial			= "计时条：第一次特殊技能施放",
-	RangeFrame				= "距离监视器（3码）：应对$spell:105269",
+	RangeFrame				= "距离监视器（3码）：应对$spell:105269 |（10码）：应对$journal:4327",
 	AnnounceFrostTombIcons	= "向团队频道通报$spell:104451目标的团队标记（需要团队领袖权限）",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
