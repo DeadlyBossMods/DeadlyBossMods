@@ -60,6 +60,7 @@ do
 end
 
 function mod:updateRangeFrame()
+	if not self.Options.RangeFrame then return end -- only update/show if this is enabled
 	if not self:IsDifficulty("heroic10", "heroic25") then return end--Not needed on normal or LFR
 	if self.Options.NoFilterRangeFrame or UnitDebuff("player", GetSpellInfo(103434)) then
 		DBM.RangeCheck:Show(10, nil)--Show everyone.
