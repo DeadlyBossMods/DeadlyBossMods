@@ -85,7 +85,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerSpecial			= "為第一次特別技能施放顯示計時器",
-	RangeFrame				= "為$spell:105269顯示距離框(3碼)",
+	RangeFrame				= "為$spell:105269(3碼),$journal:4327(10碼)顯示距離框",
 	AnnounceFrostTombIcons	= "為$spell:104451的目標發佈圖示至團隊頻道\n(需要團隊隊長)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),

@@ -52,7 +52,7 @@ local timerFeedback			= mod:NewBuffActiveTimer(15, 108934)
 local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerStormPillarCD	= mod:NewNextTimer(5, 109557)--Both of these are just spammed every 5 seconds on new targets.
-local timerFrostFlakeCD		= mod:NewNextTimer(5, 104451)
+local timerFrostFlakeCD		= mod:NewNextTimer(5, 109325)
 
 local berserkTimer			= mod:NewBerserkTimer(480)	-- according to Icy-Veins
 
