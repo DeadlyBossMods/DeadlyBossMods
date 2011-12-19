@@ -1552,7 +1552,7 @@ do
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
 		--unless we apsolutely make sure we force it to right zone before asking for info.
-		if WorldMapFrame:IsVisible() then --World map is open, people don't like dbm messing with current map area if it's open (such as flying from zone to zone doing archaeology)
+		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
 			local C, Z = GetCurrentMapContinent(), GetCurrentMapZone()--Save current map settings.
 			SetMapToCurrentZone()--Force to right zone
 			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
