@@ -86,7 +86,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerSpecial			= "Mostrar tiempo para casteo de la primera habilidad especial",
-	RangeFrame				= "Mostrar distancia (3) para $spell:105269",
+	RangeFrame				= "Mostrar distancia (3) para $spell:105269, (10) para $journal:4327",
 	AnnounceFrostTombIcons	= "Anunciar iconos de los objetivos de $spell:104451 a la banda\n(requiere líder)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
