@@ -53,7 +53,7 @@ local berserkTimer			= mod:NewBerserkTimer(480)	-- according to Icy-Veins
 
 local SpecialCountdown		= mod:NewCountdown(62, 105256)--Apparently countdown prototype doesn't support localized text, too lazy to do that now, so i'll just use tempest, even though it's enabled for both specials.
 
-mod:AddBoolOption("RangeFrame")--Ice lance spreading. May make it more dynamic later but for now i need to see the fight in realtime before i can do any more guessing off mailed in combat logs.
+mod:AddBoolOption("RangeFrame")--Ice lance spreading in ice phases, and lighting linking in lighting phases (with reverse intent, staying within 10 yards, not out of 10 yards)
 mod:AddBoolOption("SetIconOnFrostflake", true)
 mod:AddBoolOption("SetIconOnFrostTomb", true)
 mod:AddBoolOption("AnnounceFrostTombIcons", false)
@@ -237,7 +237,7 @@ function mod:SPELL_CAST_START(args)
 		warnLightningStorm:Show()
 		specWarnLightingStorm:Show()
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			DBM.RangeCheck:Show(10)
 		end
 	elseif args:IsSpellID(105289, 108567) then--105289 10/25 man normal confirmed.
 		self:ScheduleMethod(0.2, "ShatteredIceTarget")
