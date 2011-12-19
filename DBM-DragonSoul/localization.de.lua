@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "deDE" then return end
+if GetLocale() ~= "deDE" then return end
 local L
 
 -------------
@@ -7,17 +7,17 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	KohcromWarning	= "%s: %s"--Bossname, spellname. At least with this we can get boss name from casts in this one, unlike a timer started off the previous bosses casts.
+	KohcromWarning	= "%s: %s"
 })
 
 L:SetTimerLocalization({
-	KohcromCD		= "Kohcrom mimicks %s",--Universal single local timer used for all of his mimick timers
+	KohcromCD		= "Kohcrom imitiert %s",
 })
 
 L:SetOptionLocalization({
-	KohcromWarning	= "Show warnings for Kohcrom mimicking abilities.",
-	KohcromCD		= "Show timers for Kohcrom's next ability mimick.",
-	RangeFrame		= "Zeige Abstandsfenster (5m) für den Erfolg."
+	KohcromWarning	= "Zeige Warnungen, wenn Kohcrom Fähigkeiten nachahmt",
+	KohcromCD		= "Zeige Zeiten bis Kohcrom Fähigkeiten nachahmt",
+	RangeFrame		= "Zeige Abstandsfenster (5m) für Erfolg \"Rück' mir nicht auf die Pelle\""
 })
 
 L:SetMiscLocalization({
@@ -35,12 +35,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:104601 on Heroic difficulty",
-	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone"
+	ShadowYell			= "Schreie, wenn du von $spell:104600 betroffen bist\n(nur heroischer Schwierigkeitsgrad)",
+	RangeFrame			= "Zeige dynamisches Abstandsfenster (10m) basierend auf Spieler-Debuffs für\n$spell:104601 auf heroischem Schwierigkeitsgrad",
+	NoFilterRangeFrame	= "Deaktiviere Abstandsfensterdebufffilter und zeige immer jeden Spieler"
 })
 
 L:SetMiscLocalization({
-	voidYell	= "Gul'kafh an'qov N'Zoth."--Start translating the yell he does for Void of the Unmaking cast, the latest logs from DS indicate blizz removed the UNIT_SPELLCAST_SUCCESS event that detected casts. sigh.
+	voidYell	= "Gul'kafh an'qov N'Zoth." -- verified (4.3.0.15050de)
 })
 
 -----------------------------
@@ -52,17 +53,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerOozesActive	= "Kugeln verwundbar"
+	timerOozesActive	= "Kugeln angreifbar"
 })
 
 L:SetOptionLocalization({
-	timerOozesActive	= "Zeige Timer bis zum Zeitpunkt da die Kugeln angreifbar werden.",
-	RangeFrame			= "Zeige Abstandsfenster (4m) für $spell:104898\n(Normal & Heroisch)"
+	timerOozesActive	= "Zeige Zeit bis Blutkugeln angreifbar sind",
+	RangeFrame			= "Zeige Abstandsfenster (4m) für $spell:104898\n(normaler und heroischer Schwierigkeitsgrad)"
 })
 
 L:SetMiscLocalization({
 	Black			= "|cFF424242schwarz|r",
-	Purple			= "|cFF9932CDlila|r",
+	Purple			= "|cFF9932CDpurpur|r",
 	Red				= "|cFFFF0404rot|r",
 	Green			= "|cFF088A08grün|r",
 	Blue			= "|cFF0080FFblau|r",
@@ -75,7 +76,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
-	warnFrostTombCast		= "%s in 8 Sek"
+	warnFrostTombCast		= "%s in 8 Sekunden"
 })
 
 L:SetTimerLocalization({
@@ -83,16 +84,16 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSpecial			= "Zeige Timer für die zuerst gewirkte Spezialfähigkeit",
-	RangeFrame				= "Zeige Abstandsfenster(3m) für $spell:105269",
-	AnnounceFrostTombIcons	= "Verkünde Schlachtzugsymbole für Ziele von $spell:104451 im Raidchat\n(benötigt Schlachtzugleiter)",
+	TimerSpecial			= "Zeige Zeit bis erste Spezialfähigkeit gewirkt wird",
+	RangeFrame				= "Zeige Abstandsfenster: (3m) für $spell:105269, (10m) für $journal:4327",
+	AnnounceFrostTombIcons	= "Verkünde Zeichen für Ziele von $spell:104451 im Schlachtzugchat (nur als Leiter)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
 	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
 })
 
 L:SetMiscLocalization({
-	TombIconSet				= "Frost Beacon icon {rt%d} set on %s"
+	TombIconSet				= "Eisgrabzeichen {rt%d} auf %s gesetzt"
 })
 
 ---------------
@@ -104,11 +105,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerDrakes			= "%s",--spellname from mod
 	TimerCombatStart	= "Ultraxion landet"
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Zeige Timer für Ultraxion RP"
+	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen",
+	TimerCombatStart	= "Zeige Zeit bis Ultraxion landet (Rollenspiel)"
 })
 
 L:SetMiscLocalization({
@@ -131,9 +134,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Zeige Timer für Kampfbeginn",
-	TimerSapper			= "Zeige Timer für das Erscheinen des nächsten Zwielichtpioniers",--npc=56923
-	TimerAdd			= "Zeige Timer für das Erscheinen der nächsten Zwielicht Elite "
+	TimerCombatStart	= "Zeige Zeit bis Kampfbeginn",
+	TimerSapper			= "Zeige Zeit bis nächster Zwielichtpionier erscheint",
+	TimerAdd			= "Zeige Zeit bis nächste Zwielichtelitegegner erscheinen"
 })
 
 L:SetMiscLocalization({
@@ -148,24 +151,25 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
-	SpecWarnTendril			= "Haltet euch fest!"
+	SpecWarnTendril			= "Festhalten!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "Zeige Spezialwarnung wenn du nich von$spell:109454 betroffen bist.",--http://ptr.wowhead.com/npc=56188
+	SpecWarnTendril			= "Zeige Spezialwarnung, falls dir der $spell:109454 Buff fehlt",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:109454",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
-	ShowShieldInfo			= "Zeige Bosslebensbalken für $spell:105479"
+	ShowShieldInfo			= "Zeige Lebensanzeige mit einem Balken für $spell:105479"
 })
 
 L:SetMiscLocalization({
-	Pull		= "Die Platten! Es zerreißt ihn! Zerlegt die Platten und wir können ihn vielleicht runterbringen.",
-	NoDebuff	= "Keine %s",
+	Pull			= "Die Platten! Es zerreißt ihn! Zerlegt die Platten und wir können ihn vielleicht runterbringen.",
+	NoDebuff		= "Keine %s",
 	PlasmaTarget	= "Sengendes Plasma: %s",
-	DRoll		= "about to roll"
+	DRoll			= "rollt nach",
+	DLevels			= "stabilisiert sich"
 })
 
 ---------------------------
@@ -174,14 +178,14 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Blasiges Tentakel - Ziel wechseln!"
+	SpecWarnTentacle	= "Blasige Tentakel fokussieren!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Zeige Spezialwarnung wenn Blasige Tentakeln erscheinen (und Alexstrasza inaktiv ist)"
+	SpecWarnTentacle	= "Zeige Spezialwarnung, wenn Blasige Tentakel erscheinen (und Alexstrasza nicht aktiv ist)"
 })
 
 L:SetMiscLocalization({
