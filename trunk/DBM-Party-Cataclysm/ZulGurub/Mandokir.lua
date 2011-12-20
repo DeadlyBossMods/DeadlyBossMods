@@ -29,7 +29,7 @@ local warnOhgan				= mod:NewSpellAnnounce(96724, 4)
 local warnFrenzy			= mod:NewSpellAnnounce(96800, 3)
 local warnRevive 			= mod:NewAnnounce("WarnRevive", 2, nil, false)
 
-local timerDecapitate		= mod:NewNextTimer(30, 96684)
+local timerDecapitate		= mod:NewNextTimer(35, 96684)
 local timerBloodletting		= mod:NewTargetTimer(10, 96776)
 local timerBloodlettingCD	= mod:NewCDTimer(25, 96776)
 local timerSlam				= mod:NewCastTimer(96740)
