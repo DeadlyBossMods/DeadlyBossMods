@@ -17,17 +17,14 @@ mod:RegisterEventsInCombat(
 
 local warnSmokeBomb		= mod:NewSpellAnnounce(103558, 2)
 local warnBladeBarrier	= mod:NewSpellAnnounce(103419, 3)
-local warnMarkofSilence	= mod:NewSpellAnnounce(102726, 3, nil, false)
 local warnFireTotem		= mod:NewSpellAnnounce(108374, 1)
 
 local timerSmokeBomb	= mod:NewNextTimer(24, 103558)
 local timerFireTotem	= mod:NewNextTimer(23, 108374)
-local timerMarkofSilence= mod:NewNextTimer(8, 102726)	
 
 function mod:OnCombatStart(delay)
-	timerMarkofSilence:Start(8-delay)
-	timerSmokeBomb:Start(10-delay)
-	timerFireTotem:Start(19-delay)
+	timerSmokeBomb:Start(16-delay)
+	timerFireTotem:Start(25-delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -36,9 +33,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSmokeBomb:Start()
 	elseif args:IsSpellID(103419) then
 		warnBladeBarrier:Show()
-	elseif args:IsSpellID(102726) then
-		warnMarkofSilence:Show()
-		timerMarkofSilence:Start()
 	end
 end
 
