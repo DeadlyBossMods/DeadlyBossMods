@@ -1033,7 +1033,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "Nein... nein! Diesen Sieg lasse ich mir nicht entreißen! Ich werde ihn nicht enttäuschen! Man wird mich nicht... aus dieser armseligen Welt... reißen! Nein! NeeEEIIIINN!"
+	Kill		= "Malfurion, er hat es geschafft! Das Portal bricht zusammen!"
 }
 
 ------------------------
@@ -1061,7 +1061,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "Wir sollten loslegen, nicht wahr?"
+	Pull		= "... Das wäre erledigt. Jetzt seid Ihr und Eure tollpatschigen Freunde an der Reihe. Mmm, ich dachte schon, Ihr würdet nie kommen!"
 }
 
 ---------------------------
