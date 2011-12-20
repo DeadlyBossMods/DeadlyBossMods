@@ -37,6 +37,7 @@ local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 
 local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
 local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
 local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
+local timerLoomingDarkness			= mod:NewBuffFadesTimer(120, 106498)--Heroic ability, personal only timer.
 
 local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
@@ -87,10 +88,12 @@ function mod:SPELL_CAST_START(args)
 		timerTwilightEruption:Start()
 	end
 end
-
-
+--Tank IDs
+--105925, 110068, 110069, 110070
+--Non tank IDs
+--109075, 110078, 110079, 110080
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(110068, 110069, 110078, 110079) then--Damage taken IDs, tank specific debuffs.
+	if args:IsSpellID(105925, 110068, 110069, 110070) then--Tank Only SpellIDS
 		fadingLightCount = fadingLightCount + 1
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
 		if self:IsDifficulty("heroic10", "heroic25") and fadingLightCount < 3 then--It's cast 3 times during hour of twilight buff duration on ultraxion heroic. 20 secomds remaining, 10 seconds remaining, and at 0 seconds remainings.
@@ -108,7 +111,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
-	elseif args:IsSpellID(105925, 109075, 110070, 110080) then--Damage done IDs, dps/healer debuffs
+	elseif args:IsSpellID(109075, 110078, 110079, 110080) then--Non Tank IDs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
 		if args:IsPlayer() then
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
@@ -118,6 +121,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
+	elseif args:IsSpellID(106498) and args:IsPlayer() then
+		timerLoomingDarkness:Start()
 	end
 end
 
