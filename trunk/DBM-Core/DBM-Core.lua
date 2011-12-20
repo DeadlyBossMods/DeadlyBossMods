@@ -3264,6 +3264,15 @@ end
 --Simple talent checker.
 --It checks for key skills in spellbook, without having to do in dept talent point checks.
 
+
+--Unfortunately since feral dps also have vengeance we still have to go more in dept for them.
+local function IsDruidTank()
+	local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +		-- Natural Reaction
+						(getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
+						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
+	return tankTalents >= 3
+end
+
 function bossModPrototype:IsMelee()
 	return class == "ROGUE"
 	or class == "WARRIOR"
@@ -3305,13 +3314,6 @@ function bossModPrototype:IsDps()--For features that simply should only be on fo
 	or class == "ROGUE"
 end
 
---Unfortunately since feral dps also have vengeance we still have to go more in dept for them.
-local function IsDruidTank()
-	local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +		-- Natural Reaction
-						(getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
-						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
-	return tankTalents >= 3
-end
 
 --A simple check to see if these classes know "Vengeance".
 function bossModPrototype:IsTank()
