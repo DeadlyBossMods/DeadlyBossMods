@@ -79,23 +79,30 @@ do
 	end
 	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
 
-	function setPlasmaTarget(guid, name)
-		plasmaTargets[guid] = name
-		healed[guid] = 0
+	local function updatePlasmaTargets()
 		local maxAbsorb =	mod:IsDifficulty("heroic25") and 420000 or
 							mod:IsDifficulty("heroic10") and 280000 or
 							mod:IsDifficulty("normal25") and 300000 or
 							mod:IsDifficulty("normal10") and 200000 or 1
+		DBM.BossHealth:Clear()
 		if not DBM.BossHealth:IsShown() then
 			DBM.BossHealth:Show(L.name)
 		end
-		DBM.BossHealth:AddBoss(function() return math.max(1, math.floor((healed[guid] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(name))
+		for i,v in pairs(plasmaTargets) do
+			DBM.BossHealth:AddBoss(function() return math.max(1, math.floor((healed[i] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(v))
+		end
+	end
+
+	function setPlasmaTarget(guid, name)
+		plasmaTargets[guid] = name
+		healed[guid] = 0
+		updatePlasmaTargets()
 	end
 
 	function clearPlasmaTarget(guid, name)
-		DBM.BossHealth:RemoveBoss(L.PlasmaTarget:format(name))
 		plasmaTargets[guid] = nil
 		healed[guid] = nil
+		updatePlasmaTargets()
 	end
 end
 
