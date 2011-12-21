@@ -571,6 +571,7 @@ do
 
 	local function setDotColor(id, class)
 		if class and class == dots[id].class then return end
+		if not class then class = "PRIEST" end	-- if class=nil -> use white dots (priest)
 		dots[id].dot.icon:SetTexCoord(
 			BLIP_TEX_COORDS[class][1],
 			BLIP_TEX_COORDS[class][2],
