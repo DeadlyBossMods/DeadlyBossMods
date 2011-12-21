@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 			= "Игорь Бутвин & Vampik & Swix & StingerSoft"
+L.TranslationBy 			= "Swix"
 
 L.OTabBosses	= "Боссы"
 L.OTabOptions	= "Настройки"
@@ -66,6 +66,8 @@ L.ModelSoundShort			= "Короткое"
 L.ModelSoundLong			= "Длинное"
 
 L.Button_RangeFrame			= "Окно проверки дистанции"
+L.Button_RangeRadar			= "Показать/скрыть радар"
+L.Button_InfoFrame			= "Показать/скрыть окно информации"
 L.Button_TestBars			= "Запустить проверку"
 
 L.PizzaTimer_Headline 		= 'Создать "Pizza Timer"'

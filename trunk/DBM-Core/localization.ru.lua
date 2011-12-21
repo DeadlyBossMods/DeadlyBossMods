@@ -144,6 +144,18 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	next 		= "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
 	nextcount 	= "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Отсчет времени для %s",
+	achievement	= "Отсчет времени для %s"
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
+	target		= "Отсчет времени для дебаффа |cff71d5ff%s|r",
+	cast		= "Отсчет времени применения |cff71d5ff%s|r",
+	active		= "Отсчет времени действия |cff71d5ff%s|r",
+	fades		= "Отсчет времени действия |cff71d5ff%s|r на игроках",
+	cd			= "Отсчет времени до восстановления |cff71d5ff%s|r",
+	cdcount		= "Отсчет времени до восстановления |cff71d5ff%s|r",
+	next		= "Отсчет времени до следующего |cff71d5ff%s|r",
+	nextcount	= "Отсчет времени до следующего |cff71d5ff%s|r"
 }
 
 -- Auto-generated Warning Localizations
@@ -169,22 +181,47 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase = "Объявлять фазу %s",
 	prephase = "Предупреждать заранее о фазе %s",
 	count = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack = "Объявлять цели заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack = "Объявлять количество стаков |cff71d5ff|Hspell:%d|h%s|h|r",
+}
+
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
+	target	= "Объявлять цели заклинания |cff71d5ff%s|r",
+	spell	= "Предупреждение для |cff71d5ff%s|r",
+	cast	= "Предупреждать о применении заклинания |cff71d5ff%s|r",
+	soon	= "Предупреждать заранее о |cff71d5ff%s|r",
+	prewarn = "Предупреждать заранее о |cff71d5ff%s|r",
+	phase	= "Объявлять фазу %s",
+	prephase= "Предупреждать заранее о фазе %s",
+	count	= "Предупреждение для |cff71d5ff%s|r",
+	stack	= "Объявлять количество стаков |cff71d5ff%s|r",
 }
 
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell 		= "Спец-предупреждение для $spell:%d",
-	dispel 		= "Спец-предупреждение для рассеивания/похищения заклинания \n$spell:%d",
-	interrupt	= "Спец-предупреждение для прерывания заклинания \n$spell:%d",
+	dispel 		= "Спец-предупреждение для рассеивания/похищения заклинания \n $spell:%d",
+	interrupt	= "Спец-предупреждение для прерывания заклинания $spell:%d",
 	you 		= "Спец-предупреждение, когда на вас $spell:%d",
 	target 		= "Спец-предупреждение, когда на ком-то $spell:%d",
 	close 		= "Спец-предупреждение, когда на ком-то рядом с вами \n$spell:%d",
-	move 		= "Спец-предупреждение для $spell:%d",
+	move 		= "Спец-предупреждение, когда на вас $spell:%d",
 	run 		= "Спец-предупреждение для $spell:%d",
 	cast 		= "Спец-предупреждение о применении заклинания \n$spell:%d",
 	stack 		= "Спец-предупреждение для >=%d стаков $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
+	spell 		= "Спец-предупреждение для $journal:%d",
+	dispel 		= "Спец-предупреждение для рассеивания/похищения заклинания \n $journal:%d",
+	interrupt	= "Спец-предупреждение для прерывания заклинания $journal:%d",
+	you 		= "Спец-предупреждение, когда на вас \n $journal:%d",
+	target 		= "Спец-предупреждение, когда на ком-то \n $journal:%d",
+	close 		= "Спец-предупреждение, когда на ком-то рядом с вами \n $journal:%d",
+	move 		= "Спец-предупреждение, когда на вас \n $journal:%d",
+	run 		= "Спец-предупреждение для $journal:%d",
+	cast 		= "Спец-предупреждение о применении заклинания $journal:%d",
+	stack 		= "Спец-предупреждение для >=%d стаков \n $journal:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -202,10 +239,15 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Устанавливать метки на цели заклинания $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "Устанавливать метки на цели заклинания $journal:%d"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал при $spell:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "Звуковой сигнал при $journal:%d"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Звуковой отсчет для $spell:%d"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "Звуковой отсчет для $journal:%d"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Звуковой отсчет во время действия $spell:%d"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "Звуковой отсчет во время действия $journal:%d"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Кричать, когда на вас $spell:%d"
+DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "Кричать, когда на вас $journal:%d"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "На МНЕ - %s!"
 
 
