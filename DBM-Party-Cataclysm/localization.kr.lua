@@ -1043,7 +1043,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "넌 하찮은 필멸자일 뿐. 필멸자답게 황천에나 떨어져라."
+	Pull		= "골짜기 위쪽에서 황혼의 군대가 나타납니다."
 }
 
 ----------------------

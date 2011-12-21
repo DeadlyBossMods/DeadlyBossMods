@@ -1047,7 +1047,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "You're a mere mortal. It is time you died like one."
+	Pull		= "Twilight forces begin to appear around the canyons edges."
 }
 
 ----------------------
