@@ -42,7 +42,7 @@ function mod:OnCombatStart(delay)
 	firstskewer = true
 	firstseething = true
 	bladeCasts = 0
-	timerFirstSpecial:Start(8-delay)
+	timerFirstSpecial:Start(5.5-delay)
 	timerBladeDanceCD:Start(26-delay) -- first blade dance variables 26~40 sec (sigh blizz sucks, it was always 35 on PTR)
 	berserkTimer:Start(-delay)
 end
@@ -50,6 +50,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104936) then
 		if not firstspecial then--First special ability used after a blade dance, so the OTHER special is going to be cast in 8 seconds.
+			timerFirstSpecial:Cancel()
 			timerSeethingHateCD:Start(8)
 			firstspecial = true
 		end
@@ -62,6 +63,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSkewer:Show()
 	elseif args:IsSpellID(105067) then--10m ID confirmed
 		if not firstspecial then--First special ability used after a blade dance, so the OTHER special is going to be cast in 8 seconds.
+			timerFirstSpecial:Cancel()
 			timerSkewerCD:Start(8)
 			firstspecial = true
 		end
