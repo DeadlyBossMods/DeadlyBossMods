@@ -51,7 +51,24 @@ local recentlyJumped = false
 local kitty = false
 local targetScansDone = 0
 
+--Verified by my logs, it seems despite the tooltip saying 20%, in 4.3 it's 15% per stack of adrenalin rush now.
 local abilityTimers = {
+	[0] = 17.3,--Still The same baseline. 17ish with slight variations or downward.
+	[1] = 14.4,
+	[2] = 12,
+	[3] = 10.9,
+	[4] = 9.6,
+	[5] = 8.4,
+	[6] = 8.4,--Makes me wonder why this didn't get faster thn 5, but same thing happened iwth 4-5 on old timers.
+	[7] = 7.2,--Unknown, drycoded with 15% math. Probably wrong
+	[8] = 6.1,--Unknown, drycoded with 15% math. Probably wrong
+	[9] = 5.2,--Unknown, drycoded with 15% math. Probably wrong
+	[10]= 5.2--Unknown, Probably wrong
+}
+
+--Keeping this around for now
+--[[
+local oldabilityTimers = {
 	[0] = 17.3,--Sometimes this is 16.7
 	[1] = 13.4,--Sometimes this is 12.7 sigh. Wonder what causes this variation?
 	[2] = 11,--One of the few you can count on being consistent.
@@ -63,7 +80,8 @@ local abilityTimers = {
 	[8] = 4.9,
 	[9] = 4.9,
 	[10]= 4.9
-}
+}--]]
+
 
 local function clearLeapWarned()
 	recentlyJumped = false
@@ -107,17 +125,17 @@ function mod:TargetScanner(SpellID, isTank)
 	if UnitExists("boss1target") then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a warning.
 		local targetname = UnitName("boss1target")
 		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target.
-			if targetScansDone < 12 then--Make sure no infinite loop.
+			if targetScansDone < 16 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.05, "TargetScanner", SpellID)--Check multiple times to be sure it's not on something other then tank.
 			else
 				self:TargetScanner(SpellID, true)--It's still on tank, force true isTank and activate else rule and warn target is on tank.
 			end
-		else--He's not targeting highest threat target (or isTank was set to true after 12 scans) so this has to be right target.
+		else--He's not targeting highest threat target (or isTank was set to true after 16 scans) so this has to be right target.
 			self:UnscheduleMethod("TargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			self:LeapingFlamesTarget(targetname)
 		end
 	else--target was nil, lets schedule a rescan here too.
-		if targetScansDone < 12 then--Make sure not to infinite loop here as well.
+		if targetScansDone < 16 then--Make sure not to infinite loop here as well.
 			self:ScheduleMethod(0.05, "TargetScanner", SpellID)
 		end
 	end
