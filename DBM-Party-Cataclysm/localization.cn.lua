@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/13/2011
+-- Last update: 12/22/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -1030,7 +1030,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "不……不！我不能让到手的胜利白白溜走！我不能带着一场失败回去见他！我不能……这样……离开这个可悲的世界！不，不——！！！！！"
+	Kill		= "玛法里奥，他成功了！传送门崩溃了！"
 }
 
 ------------------------
@@ -1046,6 +1046,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Pull		= "你不过是个凡人。现在，像个凡人那样卑微地死去吧。"
+	--Pull		= "Twilight forces begin to appear around the canyons edges."
 }
 
 ----------------------
