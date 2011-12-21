@@ -16,7 +16,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	KohcromWarning	= "Предупреждать, когда Кохром повторяет заклинания Морхока",
-	KohcromCD		= "Отсчет времени до следующего повторения заклинания"
+	KohcromCD		= "Отсчет времени до следующего повторения заклинания",
+	RangeFrame		= "Показывать окно проверки дистанции (5м) для достижения."
 })
 
 L:SetMiscLocalization({
@@ -34,10 +35,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Показывать окно проверки дистанции (10м) для $spell:104601\n(Только на героическом уровне сложности)"
+	ShadowYell	= "Кричать, когда на вас $spell:104600\n(Героический уровень сложности)",
+	RangeFrame	= "Показывать окно проверки дистанции для $spell:104601\n(Героический уровень сложности)",
+	NoFilterRangeFrame	= "Показывать всех игроков в этом окне, а не только с дебаффами"
 })
 
 L:SetMiscLocalization({
+	voidYell	= "Gul'kafh an'qov N'Zoth."--Start translating the yell he does for Void of the Unmaking cast, the latest logs from DS indicate blizz removed the UNIT_SPELLCAST_SUCCESS event that detected casts. sigh.
 })
 
 -----------------------------
@@ -49,12 +53,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerOozesActive	= "Появление капель"
+	timerOozesActive	= "Появление капель крови"
 })
 
 L:SetOptionLocalization({
-	specWarnManaVoid	= "Спец-предупреждение о появлении $spell:105530",
-	timerOozesActive	= "Отсчет времени спавна капель крови"
+	timerOozesActive	= "Отсчет времени спавна капель крови",
+	RangeFrame			= "Показывать окно проверки дистанции (4м) для $spell:104898"
 })
 
 L:SetMiscLocalization({
@@ -81,10 +85,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerSpecial			= "Отсчет времени до первой особой способности",
-	RangeFrame				= "Показывать окно проверки дистанции (3) для $spell:105269",
+	RangeFrame				= "Показывать окно проверки дистанции: (3м) для $spell:105269 и\n(10м) для $journal:4327",
 	AnnounceFrostTombIcons	= "Дублировать рейдовые иконки на целях $spell:104451 в рейд-чат\n(Необходимы права лидера или помощника)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
-	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451)
+	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
+	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
 })
 
 L:SetMiscLocalization({
@@ -100,14 +105,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCombatStart	= "Начало боя"
+	TimerDrakes			= "%s",--spellname from mod
+	TimerCombatStart	= "Ультраксион приземляется"
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Отсчет времени до начала боя"
+	TimerDrakes			= "Отсчет времени при применении $spell:109904 Сумеречными агрессорами",
+	TimerCombatStart	= "Отсчет времени до приземления Ультраксиона"
 })
 
 L:SetMiscLocalization({
+	Trash				= "Рад встрече, Алекстраза. Скоро ты увидишь, над чем я трудился.",
 	Pull				= "Я чувствую приближение Хаоса… Мой разум не в силах этого выдержать!!"
 })
 
@@ -121,12 +129,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "Начало боя",
-	TimerSapper			= "Следующий сапёр"
+	TimerSapper			= "Следующий сапёр",
+	TimerAdd			= "Следующие помощники"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Отсчет времени до начала боя",
-	TimerSapper			= "Отсчет времени до появления следующего сапёра"--npc=56923
+	TimerSapper			= "Отсчет времени до появления следующего сапёра",--npc=56923
+	TimerAdd			= "Отсчет времени до появления следующих помощников"
 })
 
 L:SetMiscLocalization({
@@ -150,13 +160,16 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecWarnTendril			= "Спец-предупреждение, когда на вас нет дебаффа $spell:109454",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "Показывать информационное окно для игроков без $spell:109454",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459)
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	ShowShieldInfo			= "Показывать полосы здоровья для исцеления $spell:105479"
 })
 
 L:SetMiscLocalization({
-	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
+	Pull		= "Смотрите, он разваливается! Оторвите пластины, и у нас появится шанс сбить его!",
 	NoDebuff	= "Нет %s",
-	DRoll		= "about to roll"	-- This emote needs to be confirmed/fixed if it's wrong. (no valid Transcriptor logs :( )
+	PlasmaTarget	= "Жгучая плазма: %s",
+	DRoll		= "собирается накрениться",
+	DLevels		= "выравнивается"
 })
 
 ---------------------------
@@ -176,5 +189,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "You have done NOTHING. I will tear your world APART."
+	Pull				= "У вас НИЧЕГО не вышло. Я РАЗОРВУ ваш мир на куски.",
 })
