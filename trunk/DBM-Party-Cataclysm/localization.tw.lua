@@ -1043,7 +1043,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "你只是個凡人。就像凡人一樣死去吧。"
+	Pull		= "暮光的軍隊開始出現在峽谷邊緣。"
 }
 
 ----------------------
