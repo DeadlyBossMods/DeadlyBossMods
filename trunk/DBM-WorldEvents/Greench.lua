@@ -23,7 +23,7 @@ local warnTree					= mod:NewSpellAnnounce(101938, 2)--Needs a custom icon, i'll 
 
 local specWarnShrinkHeart		= mod:NewSpecialWarningMove(101860)
 
-local timerShrinkHeartCD		= mod:NewCDTimer(35, 101873)
+local timerShrinkHeartCD		= mod:NewCDTimer(32.5, 101873)
 local timerSnowmanCD			= mod:NewCDTimer(10, 101910)--He alternates these
 local timerTreeCD				= mod:NewCDTimer(10, 101938)
 local timerCrushCD				= mod:NewCDTimer(5, 101885)--Used 5 seconds after tree casts (on the tree itself). Right before stomp he stops targeting tank. He has no target during stomp, usable for cast trigger? Only trigger in log is the stomp landing.
