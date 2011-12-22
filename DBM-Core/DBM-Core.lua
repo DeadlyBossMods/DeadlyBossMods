@@ -2365,7 +2365,9 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
 			local bestTime
-			if mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime then
+			if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
+				bestTime = mod.stats.lfr25BestTime
+			elseif mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime then
 				bestTime = mod.stats.normalBestTime
 			elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
 				bestTime = mod.stats.heroicBestTime
@@ -2416,7 +2418,9 @@ function DBM:EndCombat(mod, wipe)
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
 			if thisTime < 30 then
-				if mod:IsDifficulty("normal5", "normal10") then
+				if mod:IsDifficulty("lfr25") then
+					mod.stats.lfr25Pulls = mod.stats.lfr25Pulls - 1
+				elseif mod:IsDifficulty("normal5", "normal10") then
 					mod.stats.normalPulls = mod.stats.normalPulls - 1
 				elseif mod:IsDifficulty("heroic5", "heroic10") then
 					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
@@ -2435,9 +2439,17 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalLastTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicLastTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25LastTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25LastTime)
-			local bestTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25BestTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime)
-			if mod:IsDifficulty("normal5") then
+			local lastTime = (mod:IsDifficulty("lfr25") and mod.stats.lfr25LastTime) or (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalLastTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicLastTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25LastTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25LastTime)
+			local bestTime = (mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime) or (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25BestTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime)
+			if mod:IsDifficulty("lfr25") then
+				mod.stats.lfr25Kills = mod.stats.lfr25Kills + 1
+				mod.stats.lfr25LastTime = thisTime
+				if bestTime and bestTime > 0 and bestTime < 10 then--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
+					mod.stats.lfr25BestTime = thisTime
+				else
+					mod.stats.lfr25BestTime = math.min(bestTime or math.huge, thisTime)
+				end
+			elseif mod:IsDifficulty("normal5") then
 				mod.stats.normalKills = mod.stats.normalKills + 1
 				mod.stats.normalLastTime = thisTime
 				mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
@@ -2456,7 +2468,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("heroic10") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
-				if bestTime and bestTime > 0 and bestTime < 15 then--you did not kill a heroic raid boss in 15 seconds (first heroic raid boss in game is ToC10 and most zergable boss would be 8,376,000 valk twins. This could however change in a couple tiers. Current record is 31seconds)
+				if bestTime and bestTime > 0 and bestTime < 10 then
 					mod.stats.heroicBestTime = thisTime
 				else
 					mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
@@ -2464,7 +2476,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("normal25") then
 				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
 				mod.stats.normal25LastTime = thisTime
-				if bestTime and bestTime > 0 and bestTime < 10 then--(All classic raids report as difficulty 1 so this difficulty would mean naxx and later only. I could not find any record less than 20 seconds even for sarth or archavon or any naxx boss yet. So i'm leaving this 10 for now.)
+				if bestTime and bestTime > 0 and bestTime < 10 then
 					mod.stats.normal25BestTime = thisTime
 				else
 					mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
@@ -2472,7 +2484,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("heroic25") then
 				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
 				mod.stats.heroic25LastTime = thisTime
-				if bestTime and bestTime > 0 and bestTime < 35 then--(Current fastest record heroic 25 boss kill is 00:52 on Lord Marrowgar)
+				if bestTime and bestTime > 0 and bestTime < 10 then
 					mod.stats.heroic25BestTime = thisTime
 				else
 					mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
