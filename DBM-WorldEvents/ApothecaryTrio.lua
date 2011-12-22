@@ -31,15 +31,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 do 
-	local lastPerfspill = 0
-	local lastColnspill = 0
+	local lastspill = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(68927) and args:IsPlayer() and time() - lastPerfspill > 2 then
+		if args:IsSpellID(68927) and args:IsPlayer() and GetTime() - lastspill > 2 then
 			specWarnPerfumeSpill:Show()
-			lastPerfspill = time()
-		elseif args:IsSpellID(68934) and args:IsPlayer() and time() - lastColnspill > 2 then
+			lastspill = GetTime()
+		elseif args:IsSpellID(68934) and args:IsPlayer() and GetTime() - lastspill > 2 then
 			specWarnCologneSpill:Show()
-			lastColnspill = time()
+			lastspill = GetTime()
 		end
 	end
 end
