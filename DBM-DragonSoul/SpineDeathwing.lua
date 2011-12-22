@@ -11,7 +11,6 @@ mod:RegisterCombat("yell", L.Pull)--Engage trigger comes 30 seconds after encoun
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -33,7 +32,7 @@ local specWarnSealArmor		= mod:NewSpecialWarningSpell(105847, mod:IsDps())
 
 local timerSealArmor		= mod:NewCastTimer(23, 105847)
 local timerBarrelRoll		= mod:NewCastTimer(5, "ej4050")
---local timerGripCD			= mod:NewCDTimer(25, 109457)
+local timerGripCD			= mod:NewCDTimer(32, 109457)
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
@@ -43,6 +42,7 @@ mod:AddBoolOption("ShowShieldInfo", true)
 
 local gripTargets = {}
 local gripIcon = 6
+local corruptionActive = {}
 
 local function checkTendrils()
 	if not UnitDebuff("player", GetSpellInfo(109454)) and not UnitIsDeadOrGhost("player") then
@@ -115,6 +115,7 @@ function mod:OnCombatStart(delay)
 		warnSealArmor = mod:NewCastAnnounce(105847, 4)
 	end
 	table.wipe(gripTargets)
+	table.wipe(corruptionActive)
 	gripIcon = 6
 end
 
@@ -137,22 +138,27 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerSealArmor:Start()
 		end
+	elseif args:IsSpellID(109379) then -- plasma spell cast start id. may be same all difficulties?
+		if not corruptionActive[args.sourceGUID] then
+			corruptionActive[args.sourceGUID] = true
+			if self:IsDifficulty("heroic10", "heroic25") then -- confirmed by kin raiders. always use grip after 2 times of plasma cast (8 sec x 2).
+				timerGripCD:Start(16, args.sourceGUID)
+			else -- for my 10 man log. after 4 times of plasma cast (8 sec x 4).
+				timerGripCD:Start(nil, args.sourceGUID)
+			end
+		end
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(105490, 109457, 109458, 109459) then
-		timerGripCD:Start(args.sourceGUID)--args.sourceGUID is to support multiple cds when more then 1 is up at once
-	end
-end
---]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
 		warnAbsorbedBlood:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then--This ability is not used in LFR, so if you add a CD bar for this, make sure you exclude LFR.
 		gripTargets[#gripTargets + 1] = args.destName
+		timerGripCD:Cancel(args.sourceGUID)
+		if corruptionActive[args.sourceGUID] then
+			corruptionActive[args.sourceGUID] = nil
+		end
 		if self.Options.SetIconOnGrip then
 			if gripIcon == 0 then
 				gripIcon = 6
@@ -201,7 +207,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53891 then
---		timerGripCD:Cancel(args.sourceGUID)
+		timerGripCD:Cancel(args.sourceGUID)
 	elseif cid == 56341 or cid == 56575 then
 		timerSealArmor:Cancel()
 	end
