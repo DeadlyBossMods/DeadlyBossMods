@@ -1314,29 +1314,20 @@ do
 					end
 				end
 				v.Options = savedOptions[v.id] or {}
-				savedStats[v.id] = savedStats[v.id] or {
-					normalKills = 0,
-					normalPulls = 0,
-					heroicKills = 0,
-					heroicPulls = 0,
-					normal25Kills = 0,
-					normal25Pulls = 0,
-					heroic25Kills = 0,
-					heroic25Pulls = 0
-				}
-				if not savedStats[v.id].normalPulls then
-					savedStats[v.id] = {
-						normalKills = 0,
-						normalPulls = 0,
-						heroicKills = 0,
-						heroicPulls = 0,
-						normal25Kills = 0,
-						normal25Pulls = 0,
-						heroic25Kills = 0,
-						heroic25Pulls = 0
-					}
-				end
-				v.stats = savedStats[v.id]
+				savedStats[v.id] = savedStats[v.id] or {}
+				local stats = savedStats[v.id]
+				stats.normalKills = stats.normalKills or 0
+				stats.normalPulls = stats.normalPulls or 0
+				stats.heroicKills = stats.heroicKills or 0
+				stats.heroicPulls = stats.heroicPulls or 0
+				stats.normal25Kills = stats.normal25Kills or 0
+				stats.normal25Kills = stats.normal25Kills or 0
+				stats.normal25Pulls = stats.normal25Pulls or 0
+				stats.heroic25Kills = stats.heroic25Kills or 0
+				stats.heroic25Pulls = stats.heroic25Pulls or 0
+				stats.lfr25Kills = stats.lfr25Kills or 0
+				stats.lfr25Pulls = stats.lfr25Pulls or 0
+				v.stats = stats
 				if v.OnInitialize then v:OnInitialize() end
 				for i, cat in ipairs(v.categorySort) do -- temporary hack
 					if cat == "misc" then
@@ -2333,6 +2324,7 @@ function DBM:StartCombat(mod, delay, synced)
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
 		end
 		if mod:IsDifficulty("lfr25") then
+			mod.stats.lfr25Pulls = mod.stats.lfr25Pulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY3.." - "
 		elseif mod:IsDifficulty("normal5", "normal10") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
@@ -2417,7 +2409,7 @@ function DBM:EndCombat(mod, wipe)
 		end
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
-			if thisTime < 30 then
+			if thisTime < 15 then
 				if mod:IsDifficulty("lfr25") then
 					mod.stats.lfr25Pulls = mod.stats.lfr25Pulls - 1
 				elseif mod:IsDifficulty("normal5", "normal10") then
