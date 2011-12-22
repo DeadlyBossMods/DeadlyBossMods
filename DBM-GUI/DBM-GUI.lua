@@ -1266,9 +1266,10 @@ local function CreateOptionsMenu()
 		local bmradar  = generaloptions:CreateButton(L.Button_RangeRadar)
 		bmradar:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 0)
 		bmradar:SetScript("OnClick", function(self) 
-			if DBMRangeCheckRadar:IsShown() then
+			if DBMRangeCheckRadar and DBMRangeCheckRadar:IsShown() then
 				DBMRangeCheckRadar:Hide()
 			else
+				DBM.RangeCheck:Show()
 				DBMRangeCheckRadar:Show()
 			end
 		end)
