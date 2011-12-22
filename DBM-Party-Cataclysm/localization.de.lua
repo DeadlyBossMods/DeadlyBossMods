@@ -1048,7 +1048,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "Ihr seid bloß ein Sterblicher. Also ist es Zeit, dass Ihr sterbt."
+	Pull		= "Streitkräfte des Schattenhammers tauchen an den Rändern der Schlucht auf."
 }
 
 ----------------------
