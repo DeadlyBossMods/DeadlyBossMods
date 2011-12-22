@@ -41,7 +41,7 @@ local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
-local timerElementiumCast		= mod:NewCastTimer(8, 105651)
+local timerElementiumCast		= mod:NewCastTimer(7.5, 105651)
 local timerElementiumBlast		= mod:NewCastTimer(8, 109600)--8 variation depending on where it's actually going to land. Use the min time on variance to make sure healer Cds aren't up late.
 local timerElementiumBoltCD		= mod:NewNextTimer(55.5, 105651)
 local timerHemorrhageCD			= mod:NewCDTimer(100.5, 105863)--Also the earliest observed. Also we use the UNIT event, not emote .3 seconds after it.
@@ -107,7 +107,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerElementiumCast:Start()
 			timerElementiumBlast:Start(20)--Slowed by Nozdormu, explosion in 20 seconds
-			specWarnElementiumBolt:Schedule(8)
+			specWarnElementiumBolt:Schedule(7.5)
 		end
 	elseif args:IsSpellID(110063) and phase2 and self:IsInCombat() then--Astral Recall. Thrall teleports off back platform back to front on defeat.
 		DBM:EndCombat(self)
