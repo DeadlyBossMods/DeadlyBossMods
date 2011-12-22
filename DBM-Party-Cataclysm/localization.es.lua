@@ -1033,7 +1033,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill		= "¡No... no! ¡No me arrebataréis esta victoria! ¡No regresaré a él con una derrota! ¡No... me arrancaréis... de este patético mundo! ¡No! ¡¡¡NooooOOOOOOOO!!!"
+	Kill		= "¡Malfurion... lo ha logrado! ¡El portal se desmorona!"
 }
 
 ------------------------
@@ -1048,7 +1048,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "Eres un simple mortal y es hora de que mueras como tal."
+	Pull		= "Las fuerzas Crepusculares comienzan a aparecer en los bordes de los cañones."
 }
 
 ----------------------
@@ -1061,7 +1061,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "A trabajar, ¿de acuerdo?"
+	Pull		= "... una vez liquidado eso, tú y ese rebaño de torpes amigos tuyos sois los siguientes en mi lista. ¡Mmm, creí que nunca llegarías!"
 }
 
 
