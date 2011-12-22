@@ -27,7 +27,8 @@ local specWarnManaVoid	= mod:NewSpecialWarningSpell(105530, mod:IsDps() or mod:I
 
 local timerOozesCD		= mod:NewNextTimer(90, "ej3978")
 local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- variables (7.0~8.5)
---local timerVoidBoltCD	= mod:NewCDTimer(10.5, 108383, nil, mod:IsTank())--Needs more work, need to check for the ability that halfs his CDs and such.
+--local timerAcidCD		= mod:NewNextTimer(8.3, 108352)--Green ooze aoe (I need a log where you let green and yellow both hit boss for i tweak this)
+local timerVoidBoltCD	= mod:NewNextTimer(6, 108383, nil, mod:IsTank())--Needs more work, need to check for the ability that halfs his CDs and such.
 local timerVoidBolt		= mod:NewTargetTimer(20, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
 
 local berserkTimer		= mod:NewBerserkTimer(600)
@@ -68,7 +69,7 @@ local oozeColors = {
 }
 
 function mod:OnCombatStart(delay)
---	timerVoidBoltCD:Start(-delay)
+	timerVoidBoltCD:Start(-delay)
 	timerOozesCD:Start(22-delay)
 	berserkTimer:Start(-delay)
 end
@@ -80,11 +81,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(104849, 108383, 108384, 108385) then--104849, 108383 confirmed 10 and 25 man normal, other 2 drycoded from wowhead.
---		timerVoidBoltCD:Start()--Start CD off this not applied, that way we still get CD if a tank AMS's the debuff application.
-	elseif args:IsSpellID(105530) then--105530 confirmed 10 man normal.
+	if args:IsSpellID(104849, 108383, 108384, 108385) then--Do not add any other ID, these are tank IDs. Raid aoe IDs coul be added as an alternate timer somewhere else maybe.
+		timerVoidBoltCD:Start()--Start CD off this not applied, that way we still get CD if a tank AMS's the debuff application.
+	elseif args:IsSpellID(105530) then
 		warnManaVoid:Show()
 		specWarnManaVoid:Show()
+	elseif args:IsSpellID(105573, 108350, 108351, 108352) then
+--		timerAcidCD:Start()
 	end
 end
 
@@ -95,8 +98,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) >= 3 and args:IsPlayer() then
 			specWarnVoidBolt:Show(args.amount)
 		end
-	elseif args:IsSpellID(104898) and not self:IsDifficulty("lfr25") and self.Options.RangeFrame then
-		DBM.RangeCheck:Show(4)
+	elseif args:IsSpellID(104898) then
+		if args:GetSrcCreatureID() == 55312 then--Only trigger the actual acid spits off the boss getting buff, not the oozes spawning.
+			--timerAcidCD:Start()
+		end
+		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
+			DBM.RangeCheck:Show(4)
+		end
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -116,7 +124,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 			warnOozes:Show(table.concat(oozeColorsHeroic[spellID], ", "))
 			specWarnOozes:Show()
 			timerOozesActive:Start()
---			timerVoidBoltCD:Start(40)
+			timerVoidBoltCD:Start(42)
 			timerOozesCD:Start(75)
 		end
 	else
@@ -124,7 +132,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 			warnOozes:Show(table.concat(oozeColors[spellID], ", "))
 			specWarnOozes:Show()
 			timerOozesActive:Start()
---			timerVoidBoltCD:Start(40)
+			timerVoidBoltCD:Start(42)
 			timerOozesCD:Start()
 		end
 	end
