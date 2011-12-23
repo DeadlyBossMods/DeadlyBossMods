@@ -72,7 +72,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBrew		= "在他再丟你一個前喝掉酒!",
+	specWarnBrew		= "在他再丟你另一個前喝掉酒!",
 	specWarnBrewStun	= "提示:你瘋狂了,記得下一次喝啤酒!"
 })
 
@@ -96,7 +96,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase				= "階段 %d",
+	WarnPhase				= "第%d階段",
 	warnHorsemanSoldiers	= "跳動的南瓜出現了!",
 	warnHorsemanHead	= "旋風斬 - 轉換目標!"
 })

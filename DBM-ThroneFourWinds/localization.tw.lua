@@ -15,7 +15,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnSpecial			= "颶風/微風/冰雨風暴啟動",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial			= "特別技能啟動!",
-	warnSpecialSoon			= "10秒後 特別技能啟動!"
+	warnSpecialSoon			= "10秒後特別技能啟動!"
 })
 
 L:SetTimerLocalization({
@@ -34,9 +34,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	gatherstrength			= "開始從剩下的風領主那裡取得力量!",
-	Anshal				= "西風領主安蕭爾",
-	Nezir				= "北風領主涅茲爾",
-	Rohash				= "東風領主洛哈許"
+	Anshal				= "安蕭爾",
+	Nezir				= "涅茲爾",
+	Rohash				= "洛哈許"
 })
 
 ---------------
@@ -53,13 +53,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 			= "回饋 (%d)"
+	TimerFeedback 			= "回饋(%d)"
 })
 
 L:SetOptionLocalization({
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback			= "為$spell:87904的持續時間顯示計時器",
-	RangeFrame		= "當被$spell:89668影響時顯示距離框(20碼)"
+	RangeFrame				= "為當中了$spell:89668時顯示距離框(20碼)"
 })
 
 L:SetMiscLocalization({
