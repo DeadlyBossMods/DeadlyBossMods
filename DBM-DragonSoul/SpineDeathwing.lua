@@ -206,7 +206,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 53891 then
+	if cid == 53891 or cid == 56162 or cid == 56161 then
 		timerGripCD:Cancel(args.sourceGUID)
 	elseif cid == 56341 or cid == 56575 then
 		timerSealArmor:Cancel()
