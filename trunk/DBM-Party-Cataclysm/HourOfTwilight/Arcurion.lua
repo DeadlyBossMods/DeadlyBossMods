@@ -15,10 +15,15 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_SAY"
+)
+
 local warnIcyTomb		= mod:NewTargetAnnounce(103252, 4)
 local warnChainsFrost	= mod:NewSpellAnnounce(102582, 2)
 local prewarnPhase2		= mod:NewPrePhaseAnnounce(2, 3)
 
+local timerCombatStart	= mod:NewTimer(33.5, "TimerCombatStart", 2457)
 local timerIcyTombCD	= mod:NewNextTimer(30, 103252)
 
 local warnedP2 = false
@@ -51,5 +56,11 @@ end
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 54995 then--Icy Tombs dying
 		timerIcyTombCD:Start()--Always cast 30 seconds after freed from previous tomb
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_SAY(msg)
+	if msg == L.Event or msg:find(L.Event) then
+		timerCombatStart:Start()
 	end
 end
