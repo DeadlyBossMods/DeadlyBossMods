@@ -133,6 +133,7 @@ DBM.DefaultOptions = {
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
+	DisableCinematics = false,
 --	HelpMessageShown = false,
 }
 
@@ -2737,13 +2738,13 @@ do
 		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true DBM:AddMsg(DBM_HOW_TO_USE_MOD) end end)
-		
-		-- TODO: check if this is the correct place to register the prefixes. http://us.battle.net/wow/en/forum/topic/2228413591 suggests PLAYER_ENTERING_WORLD to do this, however ADDON_LOADED might be sufficient (unless the server forgets the filter list when entering an instance)
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				DBM:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
---			RegisterAddonMessagePrefix("DBMv4-Ver") -- to see old clients which will still try to communicate with us, but we won't be able to respond as they will filter our messages (allow silent failure as this isn't really important)
+		end
+		if DBM.Options.DisableCinematics then
+			MovieFrame:SetScript("OnEvent", function() GameMovieFinished() end)
 		end
 	end
 end

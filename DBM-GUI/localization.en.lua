@@ -55,6 +55,7 @@ L.EnableStatus 				= "Reply to 'status' whispers"
 L.AutoRespond 				= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon			= "Show minimap button"
 L.UseMasterVolume			= "Use Master audio channel to play sound files."
+L.DisableCinematics			= "Disable Cinematics (requires reload for new settings to take effect)"
 L.SKT_Enabled				= "Always show speed kill timer (Overrides boss-specific option)"
 L.Latency_Text				= "Set max latency sync threshold: %d"
 
