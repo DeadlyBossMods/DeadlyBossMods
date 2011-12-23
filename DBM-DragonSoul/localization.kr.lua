@@ -167,7 +167,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull			= "저 갑옷! 놈의 갑옷이 벗겨지는군! 갑옷을 뜯어내면 놈을 쓰러뜨릴 기회가 생길 거요!",	
+	Pull			= "저 갑옷! 놈의 갑옷이 벗겨지는군! 갑옷을 뜯어내면 놈을 쓰러뜨릴 기회가 생길 거요!",
 	NoDebuff		= "%s 없음",
 	PlasmaTarget	= "이글거리는 혈장: %s",
 	DRoll			= "회전하려고",

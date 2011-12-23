@@ -1042,7 +1042,16 @@ L:SetGeneralLocalization{
 	name = "아큐리온"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "전투 시작"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "전투 시작 바 표시"
+}
+
 L:SetMiscLocalization{
+	Event		= "모습을 드러내라!",
 	Pull		= "골짜기 위쪽에서 황혼의 군대가 나타납니다."
 }
 
@@ -1066,4 +1075,16 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "대주교 베네딕투스"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "전투 시작"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "전투 시작 바 표시"
+}
+
+L:SetMiscLocalization{
+	Event		= "그럼... 주술사, 용의 영혼을 내놓으시지. 당장."
 }
