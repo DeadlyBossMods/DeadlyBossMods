@@ -15,10 +15,14 @@ mod:RegisterEventsInCombat(
 	"UNIT_HEALTH"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_SAY"
+)
+
 local warnRighteousShear		= mod:NewTargetAnnounce(103151, 2)
 local warnPurifyingLight		= mod:NewSpellAnnounce(103565, 3)
 local warnWaveVirtue			= mod:NewSpellAnnounce(103678, 4, nil, false)	-- blizzard warning
-local prewarnPhase2			= mod:NewPrePhaseAnnounce(2, 2)
+local prewarnPhase2				= mod:NewPrePhaseAnnounce(2, 2)
 local warnTwilightShear			= mod:NewTargetAnnounce(103363, 2)
 local warnCorruptingTwilight	= mod:NewSpellAnnounce(103767, 3)
 local warnWaveTwilight			= mod:NewSpellAnnounce(103780, 4, nil, false)	-- blizzard warning
@@ -28,6 +32,7 @@ local specwarnWaveVirtue		= mod:NewSpecialWarningSpell(103678, nil, nil, nil, tr
 local specwarnTwilight			= mod:NewSpecialWarningMove(103775)
 local specwarnWaveTwilight		= mod:NewSpecialWarningSpell(103780, nil, nil, nil, true)
 
+local timerCombatStart			= mod:NewTimer(42, "TimerCombatStart", 2457)
 local timerWaveVirtueCD			= mod:NewNextTimer(30, 103678)--Will he do it more then once? if you are terrible and take > 30 sec to push him?
 local timerWaveTwilightCD		= mod:NewNextTimer(30, 103780)--^
 
@@ -96,3 +101,9 @@ end
 -- "Shadow" timers:  X secs after SPELL_AURA_APPLIED event for Twilight Epiphany
 	-- 1st Twilight Shear after [15 or 12] secs
 	-- 1st Corrupting Twilight after [17 or 17] secs
+
+function mod:CHAT_MSG_MONSTER_SAY(msg)
+	if msg == L.Event or msg:find(L.Event) then
+		timerCombatStart:Start()
+	end
+end
