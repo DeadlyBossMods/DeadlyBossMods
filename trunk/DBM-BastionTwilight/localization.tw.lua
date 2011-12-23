@@ -44,15 +44,15 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TBwarnWhileBlackout	= "當$spell:86788生效時顯示$spell:92898警告",
 	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
-	RangeFrame			= "顯示距離框 (10碼)",
-	BlackoutShieldFrame	= "為$spell:92878顯示首領血量及血量條",
+	RangeFrame			= "顯示距離框(10碼)",
+	BlackoutShieldFrame	= "為$spell:92878顯示首領血量條",
 	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization({
 	Trigger1			= "深呼吸",
-	BlackoutTarget		= "昏天暗地: %s"
+	BlackoutTarget		= "昏天暗地:%s"
 })
 
 ----------------------------------
@@ -81,8 +81,8 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)",
 	timerTransition			= "顯示階段轉換計時器",
 	RangeFrame	 			= "當需要時自動顯示距離框",
-	yellScrewed				= "當你同時有 $spell:83099 和 $spell:92307 時喊話",
-	InfoFrame				= "顯示沒有 $spell:83581 或 $spell:83500 的玩家",
+	yellScrewed				= "當你同時有$spell:83099和$spell:92307時大喊",
+	InfoFrame				= "顯示沒有$spell:83581或$spell:83500的玩家",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -103,8 +103,8 @@ L:SetMiscLocalization({
 	Terrastra		= "特拉斯特拉",
 	Monstrosity		= "卓越者議會",
 	Kill			= "不可能...",
-	blizzHatesMe	= "Beacon & Rod on me! Clear a path!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
-	WrongDebuff	    = "無 %s"
+	blizzHatesMe	= "我中了冰凍寶珠和聚雷針!清出一條路來!",
+	WrongDebuff	    = "無%s"
 })
 
 ----------------
@@ -126,7 +126,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame				= "為$spell:81701顯示資訊框架",
-	RangeFrame				= "為$spell:82235顯示距離框 (5碼)",
+	RangeFrame				= "為$spell:82235顯示距離框(5碼)",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "設定標記到暗色觸鬚"
 })
@@ -151,7 +151,7 @@ L:SetWarningLocalization({
 	WarnEggWeaken		= "暮光殼甲從幕光蛋上消散!",
 	SpecWarnOrbs		= "暗影寶珠!小心!",
 	warnWrackJump		= "%s跳到>%s<",
-	warnAggro			= ">%s< 為暗影寶珠的目標(可能的目標)",
+	warnAggro			= ">%s<為暗影寶珠的目標(可能的目標)",
 	SpecWarnAggroOnYou	= "小心暗影寶珠!",
 	SpecWarnEggWeaken	= "暮光殼甲消散 - 集火幕光蛋!",
 	SpecWarnEggShield	= "暮光殼甲重生!"
@@ -178,7 +178,7 @@ L:SetOptionLocalization({
 	TimerEggWeakening	= "顯示$spell:87654消散的計時器",
 	TimerEggWeaken		= "顯示$spell:87654重生的計時器",
 	TimerOrbs			= "顯示下一個暗影寶珠的計時器(猜測的時間，可能不準確)",
-	SetIconOnOrbs		= "標記圖示給暗影寶珠的目標",
+	SetIconOnOrbs		= "標記圖示給暗影寶珠的目標(可能的目標)",
 	OrbsCountdown		= "為暗影寶珠播放倒數音效",
 	InfoFrame			= "為有仇恨的玩家顯示訊息框"
 })

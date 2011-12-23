@@ -34,7 +34,7 @@ L.Mod_EnableAnnounce		= "團隊廣播 (需要隊長)"
 L.Reset 					= "重置"
 
 L.Enable  					= "啟用"
-L.Disable					= "關閉"
+L.Disable					= "禁用"
 
 L.NoSound					= "靜音"
 
@@ -55,13 +55,13 @@ L.EnableDBM 				= "啟用DBM"
 L.EnableStatus 				= "回復“status”密語"
 L.AutoRespond 				= "啟用戰鬥中自動密語回復"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
-L.UseMasterVolume			= "使用主要聲音頻道來播放音效檔。(4.0.6+)"
+L.UseMasterVolume			= "使用主要聲音頻道來播放音效檔。"
 L.SKT_Enabled				= "永遠顯示快速擊殺計時器 (覆蓋首領特定的選項)"
 L.Latency_Text				= "設定最高延遲同步門檻: %d"
 
-L.ModelOptions				= "3D模型瀏覽器選項"
-L.EnableModels				= "在首領選項中啟用3D模型瀏覽器"
-L.ModelSoundOptions			= "設置模型預覽聲音"
+L.ModelOptions				= "3D模型預覽選項"
+L.EnableModels				= "在首領選項中啟用3D模型瀏覽"
+L.ModelSoundOptions			= "為模型預覽設置聲音"
 L.ModelSoundShort			= "短"
 L.ModelSoundLong			= "長"
 
@@ -70,7 +70,7 @@ L.Button_RangeRadar			= "顯示/隱藏距離雷達"
 L.Button_InfoFrame			= "顯示/隱藏訊息框架"
 L.Button_TestBars			= "測試計時條"
 
-L.PizzaTimer_Headline		= '創建一個計時條'
+L.PizzaTimer_Headline		= '建立一個計時條'
 L.PizzaTimer_Title			= '名稱（如“Pizza計時器”）'
 L.PizzaTimer_Hours 			= "時"
 L.PizzaTimer_Mins 			= "分"
@@ -97,7 +97,7 @@ L.RaidWarnMessage 			= "感謝您使用Deadly Boss Mods"
 L.BarWhileMove 				= "可移動的團隊警告"
 L.RaidWarnSound				= "發出團隊警告時播放音效"
 L.CountdownVoice			= "設置倒計時聲音"
-L.SpecialWarnSound			= "設定只作用於你的特別警告的音效"
+L.SpecialWarnSound			= "設定只作用於你或你的角色天賦的特別警告的音效"
 L.SpecialWarnSound2			= "設定作用於全團的特別警告的音效"
 
 -- Tab: Barsetup
@@ -148,7 +148,7 @@ L.Area_SpamFilter				= "垃圾過濾選項"
 L.HideBossEmoteFrame			= "隱藏團隊首領表情框"
 L.SpamBlockRaidWarning			= "過濾其他首領模組的警告" 
 L.SpamBlockBossWhispers			= "當戰鬥時過濾 <DBM> 密語警告"
-L.BlockVersionUpdateNotice		= "關閉彈出的更新通知"
+L.BlockVersionUpdateNotice		= "禁用彈出的更新通知"
 L.ShowBigBrotherOnCombatStart	= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
 L.BigBrotherAnnounceToRaid		= "通告BigBrother的結果給團隊"
 

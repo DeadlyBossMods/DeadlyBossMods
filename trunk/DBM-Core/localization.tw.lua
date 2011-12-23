@@ -1,10 +1,10 @@
 ﻿if GetLocale() ~= "zhTW" then return end
 
-DBM_CORE_NEED_SUPPORT				= "嘿, 你是否擁有良好的程式開發或語言能力? 如果是的話, DBM團隊真的需要你的幫助以保持成為WOW入面最佳的首領模組。觀看 www.deadlybossmods.com 或發送郵件到 tandanu@deadlybossmods.com 或 nitram@deadlybossmods.com 來加入團隊。"
+DBM_CORE_NEED_SUPPORT				= "你是否擁有良好的程式開發或語言能力? 如果是的話, DBM團隊真的需要你的幫助以保持成為WOW裡最佳的首領模組。觀看 www.deadlybossmods.com 或發送郵件到 tandanu@deadlybossmods.com 或 nitram@deadlybossmods.com 來加入團隊。"
 DBM_HOW_TO_USE_MOD					= "歡迎使用DBM。在聊天頻道輸入 /dbm 打開設定開始設定。你可以載入特定區域後為任何首領設定你喜歡的特別設置。DBM會在第一次啟動時嘗試掃描你的職業天賦，但有些選項你可能想打開。"
 
 DBM_CORE_LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組。輸入/dbm有更多選項。"
+DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組。輸入/dbm或/dbm help有更多選項。"
 DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
@@ -12,7 +12,7 @@ DBM_CORE_BOSS_DOWN					= "擊敗%s，經過%s!"
 DBM_CORE_BOSS_DOWN_LONG				= "擊敗%s!本次經過%s，上次經過%s，最快紀錄%s。"
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "擊敗%s!經過%s，這是一個新記錄!（舊紀錄為%s）"
 DBM_CORE_COMBAT_ENDED				= "%s的戰鬥經過%s結束。"
-DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥已過%s，回覆計時器中..."
+DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥已過%s，恢復計時器中..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
@@ -59,7 +59,7 @@ DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <時間（秒）> <�
 DBM_CORE_ERROR_DBMV3_LOADED			= "目前有2個版本的Deadly Boss Mods正在運行：DBMv3和DBMv4。\n按一下“確定”按鈕可將DBMv3關閉並重載插件。\n我們建議將插件目錄下的DBMv3刪除。"
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
-DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+左鍵或右鍵點擊即可移動"
+DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+左鍵或右鍵點擊即可移動，Alt+Shift+點擊即可拖放"
 
 DBM_CORE_RANGECHECK_HEADER			= "距離監視（%d碼）"
 DBM_CORE_RANGECHECK_SETRANGE		= "設置距離"
@@ -72,15 +72,15 @@ DBM_CORE_RANGECHECK_SOUND_2			= "蜂鳴聲"
 DBM_CORE_RANGECHECK_HIDE			= "隱藏"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d碼"
 DBM_CORE_RANGECHECK_LOCK			= "鎖定框架"
-DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框體"
-DBM_CORE_RANGECHECK_OPTION_RADAR	= "顯示雷達框體"
+DBM_CORE_RANGECHECK_OPTION_FRAMES	= "框架"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "顯示雷達框架"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "顯示文字框"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "兩者都顯示"
-DBM_CORE_RANGECHECK_OPTION_SPEED	= "更新頻率 (需要重載)"
-DBM_CORE_RANGECHECK_OPTION_SLOW		= "慢 (CPU使用量低)"
+DBM_CORE_RANGECHECK_OPTION_SPEED	= "更新頻率(需要重載介面)"
+DBM_CORE_RANGECHECK_OPTION_SLOW		= "慢(CPU使用量低)"
 DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "中"
-DBM_CORE_RANGECHECK_OPTION_FAST		= "快 (實時)"
-DBM_CORE_RANGERADAR_HEADER			= "距離雷達 (%d 碼)"
+DBM_CORE_RANGECHECK_OPTION_FAST		= "快(幾近即時)"
+DBM_CORE_RANGERADAR_HEADER			= "距離雷達(%d碼)"
 
 DBM_CORE_INFOFRAME_LOCK				= "鎖定框架"
 DBM_CORE_INFOFRAME_HIDE				= "隱藏"
@@ -94,11 +94,11 @@ DBM_CORE_SLASHCMD_HELP				= {
 --	"/dbm version2: 進行團隊範圍內的版本檢測及密語通知已過期的成員（也可使用: ver2）。",
 	"/dbm unlock：顯示一個可移動的計時器（也可使用：move）。",
 	"/dbm timer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。",
-	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需開啟團隊廣播及助理權限）。",
-	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需開啟團隊廣播及助理權限）。",
-	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需開啟團隊廣播及助理權限）。",
+	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需要團隊隊長或助理權限）。",
+	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需要團隊隊長或助理權限）。",
+	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需要團隊隊長或助理權限）。",
 	"/dbm arrow: 顯示DBM箭頭, 輸入 /dbm arrow help 獲得更多訊息。",
-	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需開啟團隊廣播及助理權限)。",
+	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需要團隊隊長或助理權限)。",
 	"/dbm help：顯示可用命令的說明。",
 }
 
@@ -125,14 +125,14 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL 		= "快速擊殺"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target					= "%s: %%s",
+	target					= "%s:%%s",
 	cast					= "%s",
-	active					= "%s 結束",
-	fades					= "%s 消失",
-	cd						= "%s 冷卻",
-	cdcount					= "%s 冷卻 (%%d)",
-	next 					= "下一次 %s",
-	nextcount 				= "下一次 %s (%%d)",
+	active					= "%s結束",
+	fades					= "%s消散",
+	cd						= "%s冷卻",
+	cdcount					= "%s冷卻(%%d)",
+	next 					= "下一次%s",
+	nextcount 				= "下一次%s(%%d)",
 	achievement 			= "%s",
 }
 
@@ -140,7 +140,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	target					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示減益計時器",
 	cast					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示施法計時器",
 	active					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示持續時間計時器",
-	fades					= "為當|cff71d5ff|Hspell:%d|h%s|h|r從玩家消失顯示計時器",
+	fades					= "為當|cff71d5ff|Hspell:%d|h%s|h|r將從玩家消散顯示計時器",
 	cd						= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器",
 	cdcount					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器",
 	next					= "為下一次|cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
@@ -152,7 +152,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 	target					= "為|cff71d5ff%s|r顯示減益計時器",
 	cast					= "為|cff71d5ff%s|r顯示施法計時器",
 	active					= "為|cff71d5ff%s|r顯示持續時間計時器",
-	fades					= "為當|cff71d5ff%s|r從玩家消失顯示計時器",
+	fades					= "為當|cff71d5ff%s|r將從玩家消散顯示計時器",
 	cd						= "為|cff71d5ff%s|r顯示冷卻計時器",
 	cdcount					= "為|cff71d5ff%s|r顯示冷卻計時器",
 	next					= "為下一次|cff71d5ff%s|r顯示計時器",
@@ -161,15 +161,15 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target					= "%s: >%%s<",
+	target					= "%s中了>%%s<",
 	spell					= "%s",
-	cast					= "施放 %s: %.1f 秒",
-	soon					= "%s 即將到來",
-	prewarn					= "%s 在 %s",
+	cast					= "施放%s:%.1f秒",
+	soon					= "%s即將到來",
+	prewarn					= "%s在%s",
 	phase					= "第%s階段",
 	prephase				= "第%s階段 即將到來",
-	count					= "%s (%%d)",
-	stack					= "%s: >%%s< (%%d)",
+	count					= "%s(%%d)",
+	stack					= "%s在>%%s<(%%d)",
 }
 
 local prewarnOption				= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
@@ -234,7 +234,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move					= "%s - 快離開",
 	run						= "%s - 快跑開",
 	cast					= "%s - 停止施法",
-	stack					= "%s (%%d)"
+	stack					= "%s(%%d)"
 }
 
 
@@ -242,10 +242,10 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%d的目標設置標記"
 DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "為$journal:%d的目標設置標記"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%d時播放音效"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "當你中了$journal:%d時播放音效"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為 $spell:%d 播放倒計時音效"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "為 $journal:%d 播放倒計時音效"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為 $spell:%d 的持續時間播放倒計時音效"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "為 $journal:%d 的持續時間播放倒計時音效"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為$spell:%d播放倒計時音效"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "為$journal:%d播放倒計時音效"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為$spell:%d的持續時間播放倒計時音效"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "為$journal:%d的持續時間播放倒計時音效"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%d時大喊"
 DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "當你中了$journal:%d時大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s!"
@@ -274,14 +274,14 @@ DBM_SPEED_KILL_TIMER_OPTION			= "顯示一個計時器來打敗你上次的最�
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s想要查看你的副本ID和進度鎖定情況。\n你想發送該訊息給%s嗎? 在你的當前進程（除非你下線）他可以一直查閱該訊息。"
 DBM_ERROR_NO_RAID					= "你必須在一個團隊中才可以使用這個功能。"
-DBM_INSTANCE_INFO_REQUESTED			= "查看團隊成員的副本鎖定訊息。\n請注意，隊員們將會被詢問是否願意發送數據給你，因此可能需要等待一段時間才能獲得全部的回覆。"
-DBM_INSTANCE_INFO_STATUS_UPDATE		= "從%d個玩家獲得訊息，來自%d個DBM用戶：%d人發送了數據, %d人拒絕回傳數據。繼續為更多回覆等待%d秒..."
-DBM_INSTANCE_INFO_ALL_RESPONSES		= "已獲得全部團隊成員的回傳數據"
-DBM_INSTANCE_INFO_DETAIL_DEBUG		= "發送者: %s 結果類型: %s 副本名: %s 副本ID: %s 難度: %d 大小: %d 進度: %s"
-DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), 難度 %d:"
-DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 進度 %d: %s"
-DBM_INSTANCE_INFO_STATS_DENIED		= "拒絕回傳數據: %s"
-DBM_INSTANCE_INFO_STATS_AWAY		= "離開: %s"
-DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "沒有安裝最新版本的DBM: %s"
+DBM_INSTANCE_INFO_REQUESTED			= "查看團隊成員的副本鎖定訊息。\n請注意，隊員們將會被詢問是否願意發送資料給你，因此可能需要等待一段時間才能獲得全部的回覆。"
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "從%d個玩家獲得訊息，來自%d個DBM用戶：%d人發送了資料, %d人拒絕回傳資料。繼續為更多回覆等待%d秒..."
+DBM_INSTANCE_INFO_ALL_RESPONSES		= "已獲得全部團隊成員的回傳資料"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "發送者:%s 結果類型:%s 副本名:%s 副本ID:%s 難度:%d 大小:%d 進度:%s"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s(%d), 難度%d:"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 進度%d:%s"
+DBM_INSTANCE_INFO_STATS_DENIED		= "拒絕回傳數據:%s"
+DBM_INSTANCE_INFO_STATS_AWAY		= "離開:%s"
+DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "沒有安裝最新版本的DBM:%s"
 DBM_INSTANCE_INFO_RESULTS			= "副本ID掃描結果。注意如果團隊中有不同語言版本的魔獸客戶端，那麼同一副本可能會出現不止一次。"
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "仍未回复的玩家: %s\n|HDBM:showRaidIdResults|h|cff3588ff[查看結果]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "仍未回覆的玩家: %s\n|HDBM:showRaidIdResults|h|cff3588ff[查看結果]|r|h"

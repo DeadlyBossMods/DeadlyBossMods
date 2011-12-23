@@ -32,7 +32,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name 				= "競技場 "
+	name 				= "競技場"
 })
 
 L:SetTimerLocalization({
@@ -80,8 +80,8 @@ L:SetMiscLocalization({
 	ScoreExpr 			= "(%d+)/1600",
 	Alliance 			= "聯盟",
 	Horde 				= "部落",
-	WinBarText 			= "%s 勝利",
-	BasesToWin 			= "勝利需要基地: %d",
+	WinBarText 			= "%s勝利",
+	BasesToWin 			= "勝利需要基地:%d",
 	Flag 				= "旗幟"
 })
 
@@ -110,7 +110,7 @@ L:SetMiscLocalization({
 	ScoreExpr			= "(%d+)/1600",
 	Alliance 			= "聯盟",
 	Horde 				= "部落",
-	WinBarText 			= "%s 勝利",
+	WinBarText 			= "%s勝利",
 	FlagReset 			= "旗幟已重置!",
 	FlagTaken 			= "(.+)已經奪走了旗幟!",
 	FlagCaptured			= "(.+)已奪得旗幟!",
@@ -254,7 +254,7 @@ L:SetMiscLocalization({
 	ScoreExpr 			= "(%d+)/2000",
 	Alliance 			= "聯盟",
 	Horde 				= "部落",
-	WinBarText 			= "%s 勝利",
+	WinBarText 			= "%s勝利",
 	BasesToWin 			= "勝利需要基地: %d",
 	Flag 				= "旗幟"
 })
