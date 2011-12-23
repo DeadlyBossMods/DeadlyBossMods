@@ -1047,7 +1047,16 @@ L:SetGeneralLocalization{
 	name = "Arcurion"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "Kampfbeginn"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "Zeige Zeit bis Kampfbeginn"
+}
+
 L:SetMiscLocalization{
+	Event		= "Zeigt Euch!",
 	Pull		= "Streitkräfte des Schattenhammers tauchen an den Rändern der Schlucht auf."
 }
 
@@ -1071,4 +1080,16 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "Erzbischof Benedictus"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "Kampfbeginn"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "Zeige Zeit bis Kampfbeginn"
+}
+
+L:SetMiscLocalization{
+	Event		= "Und nun, Schamane, werdet Ihr MIR die Drachenseele geben."
 }
