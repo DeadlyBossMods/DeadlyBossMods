@@ -141,7 +141,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(109379) then -- plasma spell cast start id. may be same all difficulties?
 		if not corruptionActive[args.sourceGUID] then
 			corruptionActive[args.sourceGUID] = true
-			if self:IsDifficulty("heroic10", "heroic25") then -- confirmed by kin raiders. always use grip after 2 times of plasma cast (8 sec x 2).
+			if self:IsDifficulty("normal25", "heroic25") then -- confirmed by kin raiders. always use grip after 2 times of plasma cast (8 sec x 2).
 				timerGripCD:Start(16, args.sourceGUID)
 			else -- for my 10 man log. after 4 times of plasma cast (8 sec x 4).
 				timerGripCD:Start(nil, args.sourceGUID)
