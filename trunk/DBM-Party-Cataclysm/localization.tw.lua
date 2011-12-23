@@ -1042,7 +1042,16 @@ L:SetGeneralLocalization{
 	name = "阿奇里森"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "戰鬥開始"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "為戰鬥開始顯示計時器"
+}
+
 L:SetMiscLocalization{
+	Event		= "現身吧!",
 	Pull		= "暮光的軍隊開始出現在峽谷邊緣。"
 }
 
@@ -1066,4 +1075,16 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "大主教本尼迪塔斯"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "戰鬥開始"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "為戰鬥開始顯示計時器"
+}
+
+L:SetMiscLocalization{
+	Event		= "現在，薩滿，你要把巨龍之魂交給我。"
 }
