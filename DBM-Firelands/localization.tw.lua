@@ -44,12 +44,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(194)
 
 L:SetWarningLocalization({
-	WarnPhase			= "階段 %d",
-	WarnNewInitiate		= "熾炎猛禽學徒 (%s)"
+	WarnPhase			= "第%d階段",
+	WarnNewInitiate		= "熾炎猛禽學徒(%s)"
 })
 
 L:SetTimerLocalization({
-	TimerPhaseChange	= "階段 %d",
+	TimerPhaseChange	= "第%d階段",
 	TimerHatchEggs		= "下次熔岩蛋",
 	timerNextInitiate	= "下次熾炎爪擊啟動",
 	TimerCombatStart	= "戰鬥開始"
@@ -108,9 +108,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerStrike			= "下一次 %s",
+	timerStrike			= "下一次%s",
 	TimerBladeActive	= "%s",
-	TimerBladeNext		= "下一次 巴勒羅克之刃"
+	TimerBladeNext		= "下一次巴勒羅克之刃"
 })
 
 L:SetOptionLocalization({
@@ -162,10 +162,10 @@ L:SetWarningLocalization({
 	warnRageRagnarosSoon	= "%s在%s在5秒後",--Spellname on targetname
 	warnSplittingBlow		= "%s在%s",--Spellname in Location
 	warnEngulfingFlame		= "%s在%s",--Spellname in Location
-	WarnRemainingAdds		= "剩下 %d 個烈焰之子",
+	WarnRemainingAdds		= "剩下%d個烈焰之子",
 	warnAggro				= "你為熔岩煉獄的目標!",
 	warnNoAggro				= "你沒有熔岩煉獄的仇恨",
-	warnEmpoweredSulf		= "%s 在5秒後施放"--The spell has a 5 second channel, but tooltip doesn't reflect it so cannot auto localize
+	warnEmpoweredSulf		= "%s在5秒後施放"--The spell has a 5 second channel, but tooltip doesn't reflect it so cannot auto localize
 })
 
 L:SetTimerLocalization({
@@ -179,13 +179,11 @@ L:SetOptionLocalization({
 	warnEngulfingFlame			= "為$spell:99171的位置顯示警告",
 	WarnEngulfingFlameHeroic	= "為$spell:99171的位置顯示警告(英雄模式)",
 	WarnRemainingAdds			= "為剩餘烈焰之子的顯示警告",
-	warnSeedsLand				= "顯示$spell:98520落地時警告/計時器而非熔岩晶粒施放時警告/計時器",
-	ElementalAggroWarn			= "無論是否為熔岩煉獄的目標都顯示警告",
+	warnSeedsLand				= "為$spell:98520落地而非熔岩晶粒施放顯示警告/計時器",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "顯示烈焰之子階段的持續時間計時器",
 	RangeFrame					= "顯示距離框",
-	P4IconRangeFilter			= "讓距離框在P4時只有顯示團隊圖示的團員\n(需要開啟顯示距離框)",
 	InfoHealthFrame				= "顯示生命值框架 (低於十萬生命值)",
 	MeteorFrame					= "顯示$spell:99849的目標的訊息框",
 	AggroFrame					= "顯示沒有熔岩煉獄的仇恨的團員的訊息框",

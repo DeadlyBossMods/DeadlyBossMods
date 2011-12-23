@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(311)
 
 L:SetWarningLocalization({
-	KohcromWarning	= "%s: %s"
+	KohcromWarning	= "%s:%s"
 })
 
 L:SetTimerLocalization({
@@ -36,7 +36,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "當你中了$spell:104600時大喊(只有英雄模式)",
-	RangeFrame			= "為英雄難度的$spell:104601顯示動態距離框架",
+	RangeFrame			= "為玩家的減益狀態顯示動態距離框架，應對英雄難度的$spell:104601",
 	NoFilterRangeFrame	= "停用過濾框架減益並總是顯示所有人"
 })
 
@@ -80,11 +80,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpecial			= "第一次階段轉換"
+	TimerSpecial			= "第一次特別技能"
 })
 
 L:SetOptionLocalization({
-	TimerSpecial			= "為第一次特別技能施放顯示計時器",
+	TimerSpecial			= "為第一次特別技能$spell:105256或$spell:105465施放顯示計時器(第一次施放根據首領手中的武器的附魔)",
 	RangeFrame				= "為$spell:105269(3碼),$journal:4327(10碼)顯示距離框",
 	AnnounceFrostTombIcons	= "為$spell:104451的目標發佈圖示至團隊頻道\n(需要團隊隊長)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
@@ -93,7 +93,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	TombIconSet				= "寒冰之墓標記{rt%d}設置於 %s"
+	TombIconSet				= "寒冰之墓{rt%d}標記於%s"
 })
 
 ---------------
@@ -110,7 +110,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerDrakes			= "為暮光猛擊者施放$spell:109904顯示計時器",
+	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器",
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器"
 })
 
@@ -136,7 +136,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
 	TimerSapper			= "為下一次暮光工兵重生顯示計時器",--npc=56923
-	TimerAdd			= "為下一次暮光精英顯示計時器"
+	TimerAdd			= "為下一次精英暮光顯示計時器"
 })
 
 L:SetMiscLocalization({

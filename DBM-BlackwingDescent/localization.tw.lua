@@ -13,15 +13,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnInferno		= "熾熱的煉獄 即將到來 (~4秒)"
+	SpecWarnInferno		= "熾熱的煉獄即將到來(約4秒前)"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnInferno		= "為$spell:92190顯示預先特別警告 (~4秒)",
-	RangeFrame			= "第2階段時顯示距離框 (5碼)"
+	SpecWarnInferno		= "為$spell:92190顯示預先特別警告(約4秒前)",
+	RangeFrame			= "第2階段時顯示距離框(5碼)"
 })
 
 L:SetMiscLocalization({
@@ -47,7 +47,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "秘法逆爆",
-	timerShadowConductorCast	= "眾影體",
+	timerShadowConductorCast	= "聚影體",
 	timerNefAblity				= "技能增益冷卻",
 	timerArcaneLockout			= "秘法殲滅者鎖定",
 })
@@ -204,7 +204,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerNefLanding			= "奈法利安 落地",
+	timerNefLanding			= "奈法利安落地",
 	OnySwipeTimer			= "尾部鞭擊冷卻 (奧妮)",
 	NefSwipeTimer			= "尾部鞭擊冷卻 (奈法)",
 	OnyBreathTimer			= "暗影焰息冷卻 (奧妮)",
@@ -216,9 +216,9 @@ L:SetOptionLocalization({
 	NefTailSwipe			= "為奈法利安的$spell:77827顯示警告",
 	OnyBreath				= "為奧妮克希亞的$spell:94124顯示警告",
 	NefBreath				= "為奈法利安的$spell:94124顯示警告",
-	specWarnCinderMove		= "為 $spell:79339 顯示特殊警告提示你離開 (爆炸前5秒)",
-	warnShadowblazeSoon		= "為 $spell:81031 顯示提前警告\n(只在計時器與其他玩家同步後顯示, 以確保準確)",
-	specWarnShadowblazeSoon	= "為$spell:94085顯示預先特別警告 (~5秒)",
+	specWarnCinderMove		= "為$spell:79339顯示特殊警告提示你離開(爆炸前5秒)",
+	warnShadowblazeSoon		= "為$spell:81031顯示提前警告\n(只在計時器與第一次大喊台詞同步後顯示, 以確保準確)",
+	specWarnShadowblazeSoon	= "為$spell:94085顯示預先特別警告(約5秒)",
 	timerNefLanding			= "為奈法利安落地顯示計時器",
 	OnySwipeTimer			= "為奧妮克希亞的$spell:77827的冷卻時間顯示計時器",
 	NefSwipeTimer			= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
@@ -228,7 +228,7 @@ L:SetOptionLocalization({
 	SetWater				= "進入戰鬥後自動停用水體細節\n(離開戰鬥後回到啟用)",
 	TankArrow				= "為風箏復生的白骨戰士的人顯示DBM箭頭\n(設計為只有一個風箏坦)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
-	RangeFrame				= "為$spell:79339顯示距離框 (10碼)\n(當你中減益時顯示所有人, 否則只顯示中的人)"
+	RangeFrame				= "為$spell:79339顯示距離框(10碼)\n(當你中減益時顯示所有人, 否則只顯示中的人)"
 })
 
 L:SetMiscLocalization({
@@ -239,8 +239,8 @@ L:SetMiscLocalization({
 	Nefarian				= "奈法利安",
 	Onyxia					= "奧妮克希亞",
 	Charge					= "電流充能",
-	ShadowBlazeExact		= "暗影炎 %d 秒",
-	ShadowBlazeEstimate		= "暗影炎 即將到來 (~5秒)"
+	ShadowBlazeExact		= "暗影炎%d 秒",
+	ShadowBlazeEstimate		= "暗影炎即將到來(約5秒後)"
 })
 
 -------------------------------
