@@ -26,6 +26,7 @@ local warnFadingLight				= mod:NewTargetAnnounce(110080, 3)
 local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil, true)
 local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
 local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
+local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(110080, mod:IsTank())
 
 local timerDrakes					= mod:NewTimer(253, "TimerDrakes", 61248)
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
@@ -108,6 +109,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)--For some reason need to offset it by 1 second to make it accurate but otherwise it's perfect
 			timerFadingLight:Start(duration-1)
+		else
+			specWarnFadingLightOther:Show(args.destName)
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
