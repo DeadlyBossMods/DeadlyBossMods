@@ -1437,6 +1437,12 @@ do
 			DBM:Schedule(1.5, setCombatInitialized)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
+			-- setup MovieFrame hook (TODO: replace this by a proper filtering function that only filters certain movie IDs (which requires some API for boss mods to specify movie IDs and default actions)))
+			MovieFrame:HookScript("OnEvent", function(self, event, movieId)
+				if event == "PLAY_MOVIE" and DBM.Options.DisableCinematics then
+					MovieFrame_OnMovieFinished(MovieFrame) -- this function actually just calls GameMovieFinished() and then hides the MovieFrame
+				end
+			end)
 		elseif modname == "DBM-BurningCrusade" then
 			-- workaround to ban really old ZA/ZG mods that are still loaded through the compatibility layer. These mods should be excluded by the compatibility layer by design, however they are no longer loaded through the compatibility layer.
 			-- that means this is unnecessary if you are using a recent version of DBM-BC. However, if you are still on an old version of DBM-BC then filtering ZA/ZG through DBM-Core wouldn't be possible and no one really ever updates DBM-BC
@@ -2742,9 +2748,6 @@ do
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				DBM:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
-		end
-		if DBM.Options.DisableCinematics then
-			MovieFrame:SetScript("OnEvent", function() GameMovieFinished() end)
 		end
 	end
 end
