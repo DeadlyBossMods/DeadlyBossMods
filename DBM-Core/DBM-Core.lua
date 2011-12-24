@@ -1442,7 +1442,8 @@ do
 			local oldMovieEventHandler = MovieFrame:GetScript("OnEvent")
 			MovieFrame:SetScript("OnEvent", function(self, event, movieId, ...)
 				if event == "PLAY_MOVIE" and DBM.Options.DisableCinematics then
-					-- do nothing
+					-- you still have to call OnMovieFinished, even if you never actually told the movie frame to start the movie, otherwise you will end up in a weird state (input stops working)
+					MovieFrame_OnMovieFinished(MovieFrame)
 					return
 				else
 					-- other event or cinematics enabled
