@@ -56,6 +56,7 @@ L.EnableStatus 			= "'status' 라는 귓속말을 받은 경우 자동 응답 �
 L.AutoRespond 			= "보스 전투 중 귓속말을 받은 경우 자동 응답 메세지 보내기"
 L.EnableMiniMapIcon		= "미니맵 버튼 사용"
 L.UseMasterVolume		= "기본 오디오 채널로 소리 듣기"
+L.DisableCinematics		= "모든 게임내 동영상 끄기"
 L.SKT_Enabled			= "각 보스 설정에서 끈 상태라도 가장 빨랐던 보스 전투 바 표시(강제)"
 L.Latency_Text			= "동기화를 사용 할 최대 지연시간 설정 : %d"
 
@@ -160,3 +161,4 @@ L.SpamBlockNoSetIcon			= "전술 목표 아이콘 설정하지 않기"
 
 -- Misc
 L.FontHeight = 16
+
