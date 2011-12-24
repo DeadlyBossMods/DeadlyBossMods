@@ -38,7 +38,7 @@ local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
 mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetIconOnGrip", true)
-mod:AddBoolOption("ShowShieldInfo", true)
+mod:AddBoolOption("ShowShieldInfo", mod:IsHealer())
 
 local gripTargets = {}
 local gripIcon = 6
