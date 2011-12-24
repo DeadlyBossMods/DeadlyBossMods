@@ -52,15 +52,16 @@ L.Statistic_25Man			= "25人團隊"
 -- Tab: General Options
 L.General 					= "DBM綜合設置"
 L.EnableDBM 				= "啟用DBM"
-L.EnableStatus 				= "回復“status”密語"
-L.AutoRespond 				= "啟用戰鬥中自動密語回復"
+L.EnableStatus 				= "回覆'status'的密語"
+L.AutoRespond 				= "啟用戰鬥中自動密語回覆"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
 L.UseMasterVolume			= "使用主要聲音頻道來播放音效檔。"
+L.DisableCinematics			= "禁用所有遊戲中的過場動畫"
 L.SKT_Enabled				= "永遠顯示快速擊殺計時器 (覆蓋首領特定的選項)"
-L.Latency_Text				= "設定最高延遲同步門檻: %d"
+L.Latency_Text				= "設定最高延遲同步門檻:%d"
 
 L.ModelOptions				= "3D模型預覽選項"
-L.EnableModels				= "在首領選項中啟用3D模型瀏覽"
+L.EnableModels				= "在首領選項中啟用3D模型預覽"
 L.ModelSoundOptions			= "為模型預覽設置聲音"
 L.ModelSoundShort			= "短"
 L.ModelSoundLong			= "長"
@@ -160,4 +161,4 @@ L.SpamBlockNoSetIcon			= "不設置標記在目標上"
 
 
 -- Misc
-L.FontHeight	= 20
+L.FontHeight	= 18

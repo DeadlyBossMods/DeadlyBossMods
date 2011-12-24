@@ -1086,5 +1086,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Event		= "現在，薩滿，你要把巨龍之魂交給我。"
+	Event		= "現在呢，薩滿，把巨龍之魂交給我吧。"
 }
