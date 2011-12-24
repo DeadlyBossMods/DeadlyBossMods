@@ -122,7 +122,9 @@ function mod:OnCombatStart(delay)
 	end
 	table.wipe(gripTargets)
 	table.wipe(corruptionActive)
-	clearPlasmaVariables()
+	if self.Options.ShowShieldInfo then
+		clearPlasmaVariables()
+	end
 	gripIcon = 6
 end
 
