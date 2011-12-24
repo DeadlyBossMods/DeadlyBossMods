@@ -157,7 +157,11 @@ local function createBar(self, name, ...) -- the vararg will also contain the na
 	bar.hidden = false
 	bar:ClearAllPoints()
 	bartext:SetText(name)
-	updateBar(bar, 100)
+	if type(bar.id) == "function" then
+		updateBar(bar, bar.id(), true)
+	else
+		updateBar(bar, 100)
+	end
 	return bar
 end
 
