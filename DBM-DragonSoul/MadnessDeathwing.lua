@@ -39,7 +39,7 @@ local specWarnFragments			= mod:NewSpecialWarningSpell("ej4115", nil, nil, nil, 
 local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())--Not need to warn everyone, tanks for sure, everyone else depends on strat and set. Normally kill first set ignore second on normal.
 local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 
-local timerMutated				= mod:NewNextTimer(16.5, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
+local timerMutated				= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumCast		= mod:NewCastTimer(7.5, 105651)

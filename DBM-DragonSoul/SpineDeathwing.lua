@@ -67,7 +67,7 @@ local function showGripWarning()
 end
 
 --This wasn't working right on 25 man at all, i think more then one went out at a time, and it spam changed name, it didn't want to add more then 1 name to frame at a time so instead it kept replacing the frame, alli saw was about 6 names flash by within 1 second.
-local clearPlasmaTarget, setPlasmaTarget
+local clearPlasmaTarget, setPlasmaTarget, clearPlasmaVariables
 do
 	local plasmaTargets = {}
 	local healed = {}
@@ -89,7 +89,7 @@ do
 			DBM.BossHealth:Show(L.name)
 		end
 		for i,v in pairs(plasmaTargets) do
-			DBM.BossHealth:AddBoss(function() return math.max(1, math.floor((healed[i] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(v))
+			DBM.BossHealth:AddBoss(function() return math.max(0, math.floor((healed[i] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(v))
 		end
 	end
 
@@ -104,6 +104,12 @@ do
 		healed[guid] = nil
 		updatePlasmaTargets()
 	end
+
+	function clearPlasmaVariables()
+		table.wipe(plasmaTargets)
+		table.wipe(healed)
+		updatePlasmaTargets()
+	end
 end
 
 
@@ -116,6 +122,7 @@ function mod:OnCombatStart(delay)
 	end
 	table.wipe(gripTargets)
 	table.wipe(corruptionActive)
+	clearPlasmaVariables()
 	gripIcon = 6
 end
 
