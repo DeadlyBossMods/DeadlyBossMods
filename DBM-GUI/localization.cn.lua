@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 12/11/2011
+-- Last update: 12/26/2011
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -59,6 +59,7 @@ L.EnableStatus 		= "回复“status”密语"
 L.AutoRespond 		= "开启战斗中自动密语回复"
 L.EnableMiniMapIcon	= "显示小地图图标"
 L.UseMasterVolume			= "使用游戏总声道播放音频"
+L.DisableCinematics			= "关闭所有游戏内过场动画"
 L.SKT_Enabled				= "永远显示击杀速度计时（无论该首领的相关设置如何）"
 L.Latency_Text				= "设定启用同步功能的最高延迟阀值：%d"
 
