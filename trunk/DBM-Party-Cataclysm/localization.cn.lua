@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/22/2011
+-- Last update: 12/26/2011
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -1044,7 +1044,16 @@ L:SetGeneralLocalization{
 	name = "阿奎里恩"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "战斗即将开始"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "计时条：战斗即将开始"
+}
+
 L:SetMiscLocalization{
+	--Event		= "Show yourself!",
 	Pull		= "你不过是个凡人。现在，像个凡人那样卑微地死去吧。"
 	--Pull		= "Twilight forces begin to appear around the canyons edges."
 }
@@ -1069,4 +1078,16 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "大主教本尼迪塔斯"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "战斗即将开始"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "计时条：战斗即将开始"
+}
+
+L:SetMiscLocalization{
+	Event		= "And now, Shaman.. you will give the Dragon Soul to me."
 }
