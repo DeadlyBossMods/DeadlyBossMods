@@ -83,13 +83,21 @@ function mod:SPELL_CAST_START(args)
 			timerMutated:Start(11)
 			timerImpaleCD:Start(22)
 			timerElementiumBoltCD:Start(40.5)
-			timerHemorrhageCD:Start(85.5)
+			if self:IsDifficulty("heroic10", "heroic25") then -- updated by kin raiders video. needs more review
+				timerHemorrhageCD:Start(56)
+			else
+				timerHemorrhageCD:Start(85.5)
+			end
 			timerCataclysmCD:Start(115.5)
 		else
 			timerMutated:Start()
 			timerImpaleCD:Start(27.5)
 			timerElementiumBoltCD:Start()
-			timerHemorrhageCD:Start()
+			if self:IsDifficulty("heroic10", "heroic25") then -- updated by kin raiders video. needs more review
+				timerHemorrhageCD:Start(71)
+			else
+				timerHemorrhageCD:Start()
+			end
 			timerCataclysmCD:Start()
 		end
 	elseif args:IsSpellID(106523, 110042, 110043, 110044) then
