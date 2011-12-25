@@ -8,6 +8,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05인던전-대격변|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mazmorras-Cataclysm|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05人小队-大地的裂变|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05Masmorras-Cataclysm|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPartyCataclysm_SavedVars, DBMPartyCataclysm_SavedStats
@@ -20,6 +21,7 @@
 ## X-DBM-Mod-SubCategories-ruRU: Пещеры Черной горы, Мертвые копи, Грим Батол, Чертоги Созидания, Затерянный город Тол'вир, Крепость Темного Клыка, Каменные Недра, Вершина смерча, Трон Приливов, Зул'Аман, Зул'Гуруб, Конец Времен, Источник Вечности, Время Сумерек, World Bosses
 ## X-DBM-Mod-SubCategories-zhTW: 黑石洞穴, 死亡礦坑, 格瑞姆巴托, 起源大廳, 托維爾的失落之城, 影牙城堡, 石岩之心, 旋渦尖塔, 海湖王座, 祖阿曼 (5人英雄), 祖爾格拉布 (5人英雄), 終焉之刻, 永恆之井, 暮光之時, 世界首領
 ## X-DBM-Mod-SubCategories-zhCN: 黑石岩窟, 死亡矿井, 格瑞姆巴托, 起源大厅, 托维尔失落之城, 影牙城堡, 巨石之核, 旋云之巅, 潮汐王座, 祖阿曼（5人）, 祖尔格拉布（5人）, 时光之末, 永恒之井, 暮光审判, 世界首领
+## X-DBM-Mod-SubCategories-ptBR: Caverna Rocha Negra, Minas Mortas, Grim Batol, Salões Primordiais, Cidade Perdida dos Tol'vir, Bastilha da Presa Negra, Litocerne, Pináculo do Vórtice, Trono das Marés, Zul'Aman (Masmorra), Zul'Gurub (Masmorra), Fim dos Tempos, Nascente da Eternidade, Hora do Crepúsculo, Chefes do Mundo
 ## X-DBM-Mod-Name: Party (Cataclysm)
 ## X-DBM-Mod-Name-frFR: Groupe (Cataclysm)
 ## X-DBM-Mod-Name-deDE: Gruppe (Cataclysm)
@@ -29,6 +31,7 @@
 ## X-DBM-Mod-Name-esES: Mazmorras (Cataclysm)
 ## X-DBM-Mod-Name-koKR: 5인 던전 (대격변)
 ## X-DBM-Mod-Name-esMX: Mazmorras (Cataclysm)
+## X-DBM-Mod-Name-ptBR: Masmorras (Cataclysm)
 ## X-DBM-Mod-Sort: 125
 ## X-DBM-Mod-LoadZoneID: 747,753,756,757,759,764,767,768,769,697,793,781,820,819,816
 localization.en.lua
@@ -39,6 +42,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.pt.lua
 BlackrockCaverns\MapSizes.lua
 BlackrockCaverns\RomoggBonecrusher.lua
 BlackrockCaverns\Corla.lua
