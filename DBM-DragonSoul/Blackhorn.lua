@@ -32,7 +32,6 @@ local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:
 
 local specWarnHarpoon				= mod:NewSpecialWarningTarget(108038, false)
 local specWarnTwilightOnslaught		= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
-local specWarnShockwaveNear			= mod:NewSpecialWarningClose(108046)
 local specWarnShockwave				= mod:NewSpecialWarningMove(108046)
 local specWarnTwilightFlames		= mod:NewSpecialWarningMove(108076)
 local yellShockwave					= mod:NewYell(108046)
@@ -61,19 +60,6 @@ function mod:ShockwaveTarget()
 	if targetname == UnitName("player") then
 		specWarnShockwave:Show()
 		yellShockwave:Yell()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 5 then--Might be able to tune range?
-				specWarnShockwaveNear:Show(targetname)
-			end
-		end
 	end
 end
 
