@@ -57,6 +57,7 @@ L.EnableStatus 				= "Responder a sussurros de 'status'"
 L.AutoRespond 				= "Habilitar auto-resposta durante batalhas"
 L.EnableMiniMapIcon			= "Exibir botão no mini-mapa"
 L.UseMasterVolume			= "Utilizar canal principal de áudio para reproduzir arquivos de som."
+L.DisableCinematics			= "Desabilitar todas as cinemáticas no jogo."
 L.SKT_Enabled				= "Sempre mostrar cronógrafo de vitória récorde (Sobrepõe opção específica por chefe)"
 L.Latency_Text				= "Definir latência máxima de sincronização: %d"
 
