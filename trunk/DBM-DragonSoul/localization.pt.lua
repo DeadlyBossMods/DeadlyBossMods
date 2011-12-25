@@ -36,6 +36,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+    ShadowYell	= "Gritar ao ser afetado por $spell:104600\n(Apenas modo heróico)",
 	RangeFrame	= "Exibir medidor de distância (10) para $spell:104601\n(Modo Heróico)"
 })
 
@@ -83,7 +84,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerSpecial			= "Exibir cronógrafo para lançamento da primeira habilidade",
-	RangeFrame				= "Exibir medidor de distância (3) para $spell:105269",
+    RangeFrame				= "Exibir medidor de distância: (3) para $spell:105269, (10) para $journal:4327",
 	AnnounceFrostTombIcons	= "Anunciar no chat da raide, ícones para alvos de $spell:104451\n(requer liderança)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
@@ -103,10 +104,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+    TimerDrakes			= "%s",--spellname from mod
 	TimerCombatStart	= "Ultraxion pousa"
 })
 
 L:SetOptionLocalization({
+	TimerDrakes			= "Exibir cronógrafo para quando Assaltantes do Crepúsculo $spell:109904",
 	TimerCombatStart	= "Exibir cronógrafo para início do combate."
 })
 
@@ -162,7 +165,8 @@ L:SetMiscLocalization({
 	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
 	NoDebuff	= "Sem %s",
 	PlasmaTarget	= "Searing Plasma: %s",
-	DRoll		= "about to roll"
+	DRoll		= "about to roll",
+	DLevels			= "levels out"
 })
 
 ---------------------------
