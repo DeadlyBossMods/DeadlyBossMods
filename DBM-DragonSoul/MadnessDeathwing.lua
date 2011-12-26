@@ -84,7 +84,7 @@ function mod:SPELL_CAST_START(args)
 			timerImpaleCD:Start(22)
 			timerElementiumBoltCD:Start(40.5)
 			if self:IsDifficulty("heroic10", "heroic25") then -- updated by kin raiders video. needs more review
-				timerHemorrhageCD:Start(56)
+				timerHemorrhageCD:Start(55.5)--Appearns to be 30 seconds earlier in heroic
 			else
 				timerHemorrhageCD:Start(85.5)
 			end
@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 			timerImpaleCD:Start(27.5)
 			timerElementiumBoltCD:Start()
 			if self:IsDifficulty("heroic10", "heroic25") then -- updated by kin raiders video. needs more review
-				timerHemorrhageCD:Start(71)
+				timerHemorrhageCD:Start(70.5)
 			else
 				timerHemorrhageCD:Start()
 			end
