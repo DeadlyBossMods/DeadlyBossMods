@@ -89,7 +89,7 @@ do
 			DBM.BossHealth:Show(L.name)
 		end
 		for i,v in pairs(plasmaTargets) do
-			DBM.BossHealth:AddBoss(function() return math.max(0, math.floor((healed[i] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(v))
+			DBM.BossHealth:AddBoss(function() return math.max(1, math.floor((healed[i] or 0) / maxAbsorb * 100))	end, L.PlasmaTarget:format(v))
 		end
 	end
 
@@ -111,8 +111,6 @@ do
 		updatePlasmaTargets()
 	end
 end
-
-
 
 function mod:OnCombatStart(delay)
 	if self:IsDifficulty("lfr25") then
