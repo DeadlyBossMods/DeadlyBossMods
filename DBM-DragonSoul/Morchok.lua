@@ -31,7 +31,7 @@ local KohcromWarning	= mod:NewAnnounce("KohcromWarning", 2, 55342)--Mirror image
 local specwarnCrushArmor	= mod:NewSpecialWarningStack(103687, mod:IsTank(), 3)
 local specwarnVortex		= mod:NewSpecialWarningSpell(110047, nil, nil, nil, true)
 local specwarnBlood			= mod:NewSpecialWarningMove(108570)
-local specwarnCrystal		= mod:NewSpecialWarningSpell(103639, false)
+local specwarnCrystal		= mod:NewSpecialWarningTarget(103639, false)
 
 local timerCrushArmor	= mod:NewTargetTimer(20, 103687, nil, mod:IsTank())
 local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also time till 'detonate')
@@ -120,7 +120,6 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(103639) then
-		specwarnCrystal:Show()
 		if args:GetSrcCreatureID() == 55265 then
 			crystalCount = crystalCount + 1
 			warnCrystal:Show()
@@ -134,8 +133,14 @@ function mod:SPELL_SUMMON(args)
 					timerKohcromCD:Start(6, args.spellName)
 				end
 			end
+			if self:GetUnitCreatureId("target") == 55265 or self:GetUnitCreatureId("focus") == 55265 then
+				specwarnCrystal:Show(args.sourceName)
+			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
+			if self:GetUnitCreatureId("target") == 57773 or self:GetUnitCreatureId("focus") == 57773 then
+				specwarnCrystal:Show(args.sourceName)
+			end
 		end
 	elseif args:IsSpellID(109017) then
 		warnKohcrom:Show()
