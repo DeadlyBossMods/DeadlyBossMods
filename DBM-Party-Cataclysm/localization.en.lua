@@ -1090,5 +1090,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Event		= "And now, Shaman.. you will give the Dragon Soul to me."
+	Event		= "And now, Shaman, you will give the Dragon Soul to ME."
 }
