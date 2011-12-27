@@ -1053,7 +1053,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	--Event		= "Show yourself!",
+	Event		= "现身吧！",
 	Pull		= "你不过是个凡人。现在，像个凡人那样卑微地死去吧。"
 	--Pull		= "Twilight forces begin to appear around the canyons edges."
 }
@@ -1089,5 +1089,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Event		= "And now, Shaman.. you will give the Dragon Soul to me."
+	Event		= " 萨满，你会把巨龙之魂交给我。"
 }
