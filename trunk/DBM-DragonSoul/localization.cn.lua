@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/20/2011
+-- Last update: 12/28/2011
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -189,7 +189,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "特殊警报：阿莱克斯塔萨没有激活的情况下灼疮触须出现"--http://ptr.wowhead.com/npc=56188
+	SpecWarnTentacle	= "特殊警报：阿莱克斯塔萨没有激活的情况下灼疮触须出现",--http://ptr.wowhead.com/npc=56188
+	RangeFrame			= "距离监视器（根据玩家状态动态变化）：应对$spell:108649（英雄难度）",
+	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
 
 L:SetMiscLocalization({
