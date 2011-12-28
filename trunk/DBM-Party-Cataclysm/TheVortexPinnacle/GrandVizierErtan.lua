@@ -19,7 +19,7 @@ local timerSummonTempest	= mod:NewCDTimer(17, 86340)
 local timerShield			= mod:NewNextTimer(31.5, 93991)
 
 function mod:OnCombatStart(delay)
-	timerShield:Start(24-delay)--May need a slight tweak i forgot to log on pull i started logging mid fight then made this timer based off scrolling up and chat log time stamps.
+	timerShield:Start(24-delay)
 end
 
 function mod:SPELL_CAST_START(args)
