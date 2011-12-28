@@ -184,7 +184,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Show special warning when Blistering Tentacles spawn (and Alexstrasza is not active)"--http://ptr.wowhead.com/npc=56188
+	SpecWarnTentacle	= "Show special warning when Blistering Tentacles spawn (and Alexstrasza is not active)",--http://ptr.wowhead.com/npc=56188
+	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:108649 on Heroic difficulty",
+	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
 
 L:SetMiscLocalization({
