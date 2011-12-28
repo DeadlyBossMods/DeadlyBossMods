@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(56173)
 mod:SetModelID(40087)
 mod:SetZone()
-mod:SetUsedIcons()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("yell", L.Pull)
 mod:SetMinCombatTime(20)
@@ -29,6 +29,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
 local warnFragments				= mod:NewSpellAnnounce("ej4115", 4, 106708)--This needs a custom spell icon, EJ doesn't have icons for entires that are mobs
 local warnTerror				= mod:NewSpellAnnounce(106765, 4)--This needs a fitting spell icon, trigger spell only has a gear.
 local warnShrapnel				= mod:NewTargetAnnounce(109598, 3)
+local warnParasite				= mod:NewTargetAnnounce(108649, 4)
 
 local specWarnImpale			= mod:NewSpecialWarningYou(106400)
 local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
@@ -38,6 +39,8 @@ local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
 local specWarnFragments			= mod:NewSpecialWarningSpell("ej4115", nil, nil, nil, true)
 local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())--Not need to warn everyone, tanks for sure, everyone else depends on strat and set. Normally kill first set ignore second on normal.
 local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
+local specWarnParasite			= mod:NewSpecialWarningYou(108649)
+local yellParasite				= mod:NewYell(108649)
 
 local timerMutated				= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
@@ -51,13 +54,34 @@ local timerCataclysmCD			= mod:NewCDTimer(130.5, 106523)--130.5-131.5 variations
 local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)--Gear icon for now til i find something more suitable
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
+local timerParasite				= mod:NewTargetTimer(10, 108649)
+--local timerUnstableCorruption	= mod:NewCastTimer(10, ??????)--Don't have a spellid for it, wowhead has no data on spell :\ Will have to wait for longs
 
 local berserkTimer				= mod:NewBerserkTimer(900)
+
+mod:AddBoolOption("RangeFrame", true)--For heroic parasites, with debuff filtering.
+mod:AddBoolOption("SetIconOnParasite", true)
 
 local firstAspect = true
 local engageCount = 0
 local phase2 = false
 local shrapnelTargets = {}
+
+local debuffFilter
+do
+	debuffFilter = function(uId)
+		return UnitDebuff(uId, (GetSpellInfo(108649)))
+	end
+end
+
+function mod:updateRangeFrame()
+	if not self.Options.RangeFrame then return end
+	if UnitDebuff("player", GetSpellInfo(108649)) then
+		DBM.RangeCheck:Show(10, nil)--Show everyone.
+	else
+		DBM.RangeCheck:Show(10, debuffFilter)--Show only people who have debuff.
+	end
+end
 
 local function warnShrapnelTargets()
 	warnShrapnel:Show(table.concat(shrapnelTargets, "<, >"))
@@ -74,6 +98,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -84,7 +111,7 @@ function mod:SPELL_CAST_START(args)
 			timerImpaleCD:Start(22)
 			timerElementiumBoltCD:Start(40.5)
 			if self:IsDifficulty("heroic10", "heroic25") then -- updated by kin raiders video. needs more review
-				timerHemorrhageCD:Start(55.5)--Appearns to be 30 seconds earlier in heroic
+				timerHemorrhageCD:Start(55.5)--Appears to be 30 seconds earlier in heroic
 			else
 				timerHemorrhageCD:Start(85.5)
 			end
@@ -150,6 +177,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnShrapnelTargets)
 		end
+	elseif args:IsSpellID(108649) then
+		warnParasite:Show(args.destName)
+		timerParasite:Start(args.destName)
+		self:updateRangeFrame()
+		if args:IsPlayer() then
+			specWarnParasite:Show()
+			yellParasite:Yell()
+		end
+		if self.Options.SetIconOnParasite then
+			self:SetIcon(args.destName, 8)
+		end
 	end
 end
 
@@ -159,6 +197,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(106444, 109631, 109632, 109633) then--Over here, we do use the secondary spellids to cancel the debuff target timer.
 		timerImpale:Cancel(args.destName)
+	elseif args:IsSpellID(108649) then
+		if self.Options.SetIconOnParasite then
+			self:SetIcon(args.destName, 0)
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
 
