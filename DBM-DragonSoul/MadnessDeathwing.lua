@@ -41,6 +41,7 @@ local specWarnTerror			= mod:NewSpecialWarningSpell(106765, mod:IsTank())--Not n
 local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 local specWarnParasite			= mod:NewSpecialWarningYou(108649)
 local yellParasite				= mod:NewYell(108649)
+--local specWarnCongealingBlood	= mod:NewSpecialWarning("SpecWarnCongealing", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089
 
 local timerMutated				= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
