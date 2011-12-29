@@ -178,7 +178,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Blistering Tentacles - Switch"--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnTentacle	= "Blistering Tentacles - Switch",--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnCongealing	= "Congealing Blood - Switch"
 })
 
 L:SetTimerLocalization({
@@ -186,6 +187,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnTentacle	= "Show special warning when Blistering Tentacles spawn (and Alexstrasza is not active)",--http://ptr.wowhead.com/npc=56188
+	SpecWarnCongealing	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(109089),
 	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:108649 on Heroic difficulty",
 	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
