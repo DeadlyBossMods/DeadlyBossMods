@@ -111,7 +111,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器",
-	TimerCombatStart	= "為戰鬥開始時間顯示計時器"
+	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
+	ResetHoTCount		= "每3次(25人)/2次(10人)重置$spell:109417的計算次數"
 })
 
 L:SetMiscLocalization({

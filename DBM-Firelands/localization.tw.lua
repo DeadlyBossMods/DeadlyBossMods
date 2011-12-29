@@ -67,10 +67,10 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "我現在有新的主人了，凡人!",
-	Initiate		= "熾炎猛禽學徒",--http://www.wowhead.com/npc=53896
+	Initiate		= "熾炎猛禽學徒",
 	YellPhase2		= "這片天空屬於我。",
-	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
-	LavaWorms		= "熾炎熔岩蟲從地上鑽了出來!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
+	FullPower		= "spell:99925",
+	LavaWorms		= "熾炎熔岩蟲從地上鑽了出來!",
 	PowerLevel		= "熔岩之力",
 	East			= "東邊",
 	West			= "西邊",
@@ -114,7 +114,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ResetShardsinThrees	= "每3秒（25人）/2秒（10人）重置$spell:99259的倒數計時",
+	ResetShardsinThrees	= "每3次(25人)/2次(10人)重置$spell:99259的計算次數",
 	warnStrike			= "為虐殺/煉獄之刃顯示警告",
 	timerStrike			= "為下一次虐殺/煉獄之刃顯示計時器",
 	TimerBladeActive	= "為目前虐殺/煉獄之刃顯示持續時間",
@@ -139,7 +139,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerNextSpecial	= "下一次 %s (%d)"
+	timerNextSpecial	= "下一次%s(%d)"
 })
 
 L:SetOptionLocalization({
@@ -159,17 +159,17 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(198)
 
 L:SetWarningLocalization({
-	warnRageRagnarosSoon	= "%s在%s在5秒後",--Spellname on targetname
-	warnSplittingBlow		= "%s在%s",--Spellname in Location
-	warnEngulfingFlame		= "%s在%s",--Spellname in Location
+	warnRageRagnarosSoon	= "%s在%s在5秒後",
+	warnSplittingBlow		= "%s在%s",
+	warnEngulfingFlame		= "%s在%s",
 	WarnRemainingAdds		= "剩下%d個烈焰之子",
 	warnAggro				= "你為熔岩煉獄的目標!",
 	warnNoAggro				= "你沒有熔岩煉獄的仇恨",
-	warnEmpoweredSulf		= "%s在5秒後施放"--The spell has a 5 second channel, but tooltip doesn't reflect it so cannot auto localize
+	warnEmpoweredSulf		= "%s在5秒後施放"
 })
 
 L:SetTimerLocalization({
-	timerRageRagnaros		= "%s在%s",--Spellname on targetname
+	timerRageRagnaros		= "%s在%s",
 	TimerPhaseSons			= "烈焰之子階段結束"
 })
 
@@ -178,7 +178,7 @@ L:SetOptionLocalization({
 	warnSplittingBlow			= "為$spell:100877的位置顯示警告",
 	warnEngulfingFlame			= "為$spell:99171的位置顯示警告",
 	WarnEngulfingFlameHeroic	= "為$spell:99171的位置顯示警告(英雄模式)",
-	WarnRemainingAdds			= "為剩餘烈焰之子的顯示警告",
+	WarnRemainingAdds			= "為剩餘的烈焰之子顯示警告",
 	warnSeedsLand				= "為$spell:98520落地而非熔岩晶粒施放顯示警告/計時器",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
@@ -198,8 +198,8 @@ L:SetMiscLocalization({
 	South				= "後方",
 	HealthInfo			= "低於十萬生命值",
 	HasNoAggro			= "無目標",
-	MeteorTargets		= "我的天 隕石!",--Keep rollin' rollin' rollin' rollin'.
-	TransitionEnded1	= "夠了!我將結束這一切。",--More reliable then adds method.
+	MeteorTargets		= "我的天 隕石!",
+	TransitionEnded1	= "夠了!我將結束這一切。",
 	TransitionEnded2	= "薩弗拉斯將終結你。",
 	TransitionEnded3	= "跪下吧，凡人們!一切都將結束。",
 	Defeat				= "太早了!...你們來的太早了...",
@@ -249,8 +249,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaffEvent			= "諾達希爾木枝對於%S+的觸碰產生了激烈的反應!",--Reg expression pull match
-	StaffTrees			= "燃燒的樹人從地面冒出來協助保衛者!",--Might add a spec warning for this later.
+	StaffEvent			= "諾達希爾木枝對於%S+的觸碰產生了激烈的反應!",
+	StaffTrees			= "燃燒的樹人從地面冒出來協助保衛者!",
 	StaffTransition		= "受折磨的保衛者身上的火焰熄滅了!"
 })
 
