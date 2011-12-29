@@ -56,7 +56,7 @@ local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
 local timerParasite				= mod:NewTargetTimer(10, 108649)
 local timerParasiteCD			= mod:NewCDTimer(60, 108649)
---local timerUnstableCorruption	= mod:NewCastTimer(10, ??????)--Don't have a spellid for it, wowhead has no data on spell :\ Will have to wait for longs
+--local timerUnstableCorruption	= mod:NewCastTimer(10, 108813)--Don't have a spellid for it, wowhead has no data on spell :\ Will have to wait for longs
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
