@@ -45,6 +45,8 @@ local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultrax
 local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
 local HourofTwilightCountdown		= mod:NewCountdown(45, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
+mod:AddBoolOption("ResetHoTCount", true, "announce")
+
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
 local fadingLightTargets = {}
@@ -75,13 +77,16 @@ function mod:SPELL_CAST_START(args)
 		hourOfTwilightCount = hourOfTwilightCount + 1
 		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
+		if self.Options.ResetHoTCount and ((self:IsDifficulty("heroic10", "heroic25") and hourOfTwilightCount == 3) or (self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2)) then
+			hourOfTwilightCount = 0
+		end
 		timerHourofTwilightCD:Start(45, hourOfTwilightCount+1)
 		HourofTwilightCountdown:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFadingLightCD:Start(13)
 			timerHourofTwilight:Start(3)
 		else
-			timerFadingLightCD:Start(20)--Same in raid finder too? too many difficulties now
+			timerFadingLightCD:Start(20)
 			timerHourofTwilight:Start()
 		end
 	elseif args:IsSpellID(106388) then
