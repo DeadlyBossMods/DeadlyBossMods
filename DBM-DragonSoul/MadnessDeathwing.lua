@@ -55,6 +55,7 @@ local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)
 local timerTerrorCD				= mod:NewNextTimer(90, 106765)
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
 local timerParasite				= mod:NewTargetTimer(10, 108649)
+local timerParasiteCD			= mod:NewCDTimer(60, 108649)
 --local timerUnstableCorruption	= mod:NewCastTimer(10, ??????)--Don't have a spellid for it, wowhead has no data on spell :\ Will have to wait for longs
 
 local berserkTimer				= mod:NewBerserkTimer(900)
@@ -112,6 +113,7 @@ function mod:SPELL_CAST_START(args)
 			timerElementiumBoltCD:Start(40.5)
 			if self:IsDifficulty("heroic10", "heroic25") then -- updated by kin raiders video. needs more review
 				timerHemorrhageCD:Start(55.5)--Appears to be 30 seconds earlier in heroic
+				timerParasiteCD:Start(11)
 			else
 				timerHemorrhageCD:Start(85.5)
 			end
@@ -122,6 +124,7 @@ function mod:SPELL_CAST_START(args)
 			timerElementiumBoltCD:Start()
 			if self:IsDifficulty("heroic10", "heroic25") then -- updated by kin raiders video. needs more review
 				timerHemorrhageCD:Start(70.5)
+				timerParasiteCD:Start(22)
 			else
 				timerHemorrhageCD:Start()
 			end
@@ -180,6 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(108649) then
 		warnParasite:Show(args.destName)
 		timerParasite:Start(args.destName)
+		timerParasiteCD:Start()
 		self:updateRangeFrame()
 		if args:IsPlayer() then
 			specWarnParasite:Show()
@@ -217,6 +221,7 @@ function mod:UNIT_DIED(args)
 		timerCataclysmCD:Cancel()
 	elseif cid == 56471 then--Mutated Corruption
 		timerImpaleCD:Cancel()
+		timerParasiteCD:Cancel()
 	end
 end
 
