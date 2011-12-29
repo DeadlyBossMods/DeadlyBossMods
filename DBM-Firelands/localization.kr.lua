@@ -114,7 +114,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ResetShardsinThrees	= "$spell:99259 알림 숫자를 지정 횟수 이후 초기화(10인/2회,25인/3회)",
+	ResetShardsinThrees	= "$spell:99259 시전 횟수 알림을 일정 단위마다 초기화 (10인: 2회, 25인: 3회)",
 	warnStrike			= "지옥불/학살의 칼날에 피해를 입을 때 알림 보기",
 	timerStrike			= "지옥불/학살의 칼날 공격 간격 바 표시",
 	TimerBladeActive	= "활성화된 칼날 유지 시간 바 표시",
