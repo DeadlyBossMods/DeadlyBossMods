@@ -197,6 +197,15 @@ do
 
 				if initRangeCheck() then
 					info = UIDropDownMenu_CreateInfo()
+					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(4)
+					info.func = setRange
+					info.arg1 = 4
+					info.checked = (frame.range == 4)
+					UIDropDownMenu_AddButton(info, 2)
+				end
+
+				if initRangeCheck() then
+					info = UIDropDownMenu_CreateInfo()
 					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(5)
 					info.func = setRange
 					info.arg1 = 5
