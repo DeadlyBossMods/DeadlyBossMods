@@ -5,10 +5,10 @@ local L = DBM_GUI_Translations
 
 L.MainFrame		 = "Deadly Boss Mods"
 
-L.TranslationBy 		= "Nightkiller@日落沼澤(Azael Poon)"
+L.TranslationBy 		= "Nightkiller@日落沼澤(Azael Poon)\nWhyv@巴納札爾"
 
-L.OTabBosses	= "Bosses"
-L.OTabOptions	= "Options"
+L.OTabBosses	= "首領模組"
+L.OTabOptions	= "選項"
 
 L.TabCategory_Options		= "綜合設置"
 L.TabCategory_CATA	 		= "浩劫與重生"
