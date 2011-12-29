@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
 )
@@ -30,6 +31,7 @@ local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(110080, mod:IsTank
 
 local timerDrakes					= mod:NewTimer(253, "TimerDrakes", 61248)
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
+local timerUnstableMonstrosity		= mod:NewNextTimer(60, 106372, nil, mod:IsHealer())
 local timerHourofTwilight			= mod:NewCastTimer(5, 109416)
 local timerHourofTwilightCD			= mod:NewNextCountTimer(45, 109416)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
@@ -94,6 +96,13 @@ function mod:SPELL_CAST_START(args)
 		timerTwilightEruption:Start()
 	end
 end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(106372, 106376, 106377, 106378, 106379) then
+		timerUnstableMonstrosity:Start()
+	end
+end
+
 --Tank IDs
 --105925, 110068, 110069, 110070
 --Non tank IDs
