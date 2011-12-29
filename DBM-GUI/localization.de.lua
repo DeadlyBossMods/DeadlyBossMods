@@ -53,6 +53,7 @@ L.EnableStatus 				= "Antworte auf 'status'-Flüsteranfragen"
 L.AutoRespond 				= "Aktiviere automatische Antwort während eines Bosskampfes"
 L.EnableMiniMapIcon			= "Aktiviere Minimap-Symbol"
 L.UseMasterVolume			= "Benutze Master-Audiokanal um Sounddateien abzuspielen."
+L.DisableCinematics			= "Deaktiviere alle Videosequenzen in Dungeons und Schlachtzügen"
 L.SKT_Enabled				= "Zeige immer Timer für schnellsten Kill (ignoriert Boss-spezifische Einstellung)"
 L.Latency_Text				= "Maximale Synchronisierungslatenz: %d"
 
