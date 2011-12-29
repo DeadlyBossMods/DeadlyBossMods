@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/28/2011
+-- Last update: 12/29/2011
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -40,7 +40,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "当你受到$spell:104600影响时时大喊（英雄难度）",
-	RangeFrame			= "距离监视器（根据玩家状态动态变化）：应对$spell:104601（英雄难度）",
+	RangeFrame			= "距离监视器（根据状态动态变化）：应对$spell:104601（英雄难度）",
 	NoFilterRangeFrame	= "取消距离监视器的动态监测，总是显示所有团员"
 })
 
@@ -115,7 +115,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerDrakes			= "计时条：暮光突袭者何时$spell:109904",
-	TimerCombatStart	= "计时条：战斗即将开始"
+	TimerCombatStart	= "计时条：战斗即将开始",
+	ResetHoTCount		= "每3秒（英雄）/2秒（普通）重置$spell:109417计数"
 })
 
 L:SetMiscLocalization({
@@ -173,7 +174,7 @@ L:SetMiscLocalization({
 	NoDebuff		= "没有%s",
 	PlasmaTarget	= "灼热血浆：%s",
 	DRoll			= "侧翻滚！",
-	DLevels			= "levels out"
+	DLevels			= "平衡" -- 保持平衡
 })
 
 ---------------------------
@@ -182,7 +183,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "灼疮触须 - 转换目标"--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnTentacle	= "灼疮触须 - 转换目标",--Msg too long? maybe just "Blistering Tentacles!"
+	SpecWarnCongealing	= "凝固之血 - 转换目标"
 })
 
 L:SetTimerLocalization({
@@ -190,7 +192,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnTentacle	= "特殊警报：阿莱克斯塔萨没有激活的情况下灼疮触须出现",--http://ptr.wowhead.com/npc=56188
-	RangeFrame			= "距离监视器（根据玩家状态动态变化）：应对$spell:108649（英雄难度）",
+	SpecWarnCongealing	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(109089),
+	RangeFrame			= "距离监视器（根据状态动态变化）：应对$spell:108649（英雄难度）",
 	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
 
