@@ -15,9 +15,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	KohcromWarning	= "크초르모가 동일하게 사용하는 주문 알림 보기(영웅 난이도)",
-	KohcromCD		= "크초르모가 동일하게 사용하는 주문 바 표시(영웅 난이도)",
-	RangeFrame		= "거리 프레임 보기(5m, 업적 용도)"
+	KohcromWarning	= "크초르모가 동일하게 사용하는 주문 알림 보기 (영웅 난이도)",
+	KohcromCD		= "크초르모가 동일하게 사용하는 주문 바 표시 (영웅 난이도)",
+	RangeFrame		= "거리 프레임 보기 (5m, 업적 용도)"
 })
 
 L:SetMiscLocalization({
@@ -35,9 +35,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기(영웅 난이도에서만)",
-	RangeFrame			= "$spell:104601 약화 효과 상태에 따른 거리 프레임 표시(영웅 난이도)",
-	NoFilterRangeFrame	= "거리 프레임 필터링 사용 중지(항상 모든 플레이어 보임)"
+	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기 (영웅 난이도에서만)",
+	RangeFrame			= "$spell:104601 약화 효과 상태에 따른 거리 프레임 표시 (영웅 난이도)",
+	NoFilterRangeFrame	= "거리 프레임 필터링 사용 중지 (항상 모든 플레이어 보임)"
 })
 
 L:SetMiscLocalization({
@@ -60,7 +60,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerOozesActive	= "핏방울이 소환된 후 공격 가능하기까지 남은시간 바 표시",
 --	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시",
-	RangeFrame			= "보스가 $spell:104898 주문의 영향을 받은 경우 거리 프레임 보기(4m)\n(일반 난이도 이상)"
+	RangeFrame			= "보스가 $spell:104898 주문의 영향을 받은 경우 거리 프레임 보기 (4m)\n(일반 난이도 이상)"
 })
 
 L:SetMiscLocalization({
@@ -108,12 +108,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",
-	TimerCombatStart	= "울트락시온 착지"
+	TimerCombatStart	= "울트락시온 활성화"
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "황혼의 습격자가 $spell:109904 시전까지 남은시간 바 표시",
-	TimerCombatStart	= "울트락시온 착지 바 표시"
+	TimerCombatStart	= "울트락시온 활성화 바 표시",
+	ResetHoTCount		= "$spell:109417 시전 횟수 알림을 일정 단위마다 초기화 (일반: 2회, 영웅: 3회)"
 })
 
 L:SetMiscLocalization({
@@ -188,7 +189,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnTentacle	= "열기 촉수 등장시 특수 경고 보기 (알렉스트라자의 강화 효과가 비활성화 일때)",
-	RangeFrame			= "$spell:108649 약화 효과 상태에 따른 거리 프레임 표시(영웅 난이도)",
+	RangeFrame			= "$spell:108649 약화 효과 상태에 따른 거리 프레임 표시 (영웅 난이도)",
 	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
 
