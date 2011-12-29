@@ -106,12 +106,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",--spellname from mod
-	TimerCombatStart	= "Ultraxion landet"
+	TimerCombatStart	= "Ultraxion aktiv"
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen",
-	TimerCombatStart	= "Zeige Zeit bis Ultraxion landet (Rollenspiel)"
+	TimerCombatStart	= "Zeige Dauer des Rollenspiels bevor Ultraxion aktiv wird",
+	ResetHoTCount		= "Neustart der $spell:109417 Zählung in 3er-Gruppen (heroisch)\nbzw. 2er-Gruppen (normal)"
 })
 
 L:SetMiscLocalization({
@@ -178,14 +179,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Blasige Tentakel fokussieren!"
+	SpecWarnTentacle	= "Blasige Tentakel fokussieren!",
+	SpecWarnCongealing	= "Gerinnendes Blut beseitigen!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Zeige Spezialwarnung, wenn Blasige Tentakel erscheinen (und Alexstrasza nicht aktiv ist)"
+	SpecWarnTentacle	= "Zeige Spezialwarnung, wenn Blasige Tentakel erscheinen (und Alexstrasza nicht aktiv ist)",
+	SpecWarnCongealing	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(109089),
+	RangeFrame			= "Zeige dynamisches Abstandsfenster (10m) basierend auf Spieler-Debuffs für\n$spell:108649 auf heroischem Schwierigkeitsgrad",
+	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
 
 L:SetMiscLocalization({
