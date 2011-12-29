@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame		 = "Deadly Boss Mods"
 
-L.TranslationBy 		= "Nightkiller@日落沼澤(Azael Poon)\nWhyv@巴納札爾"
+L.TranslationBy 		= "Whyv@巴納札爾,Nightkiller@日落沼澤(Azael Poon)"
 
 L.OTabBosses	= "首領模組"
 L.OTabOptions	= "選項"
