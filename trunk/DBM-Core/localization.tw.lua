@@ -12,7 +12,7 @@ DBM_CORE_BOSS_DOWN					= "擊敗%s，經過%s!"
 DBM_CORE_BOSS_DOWN_LONG				= "擊敗%s!本次經過%s，上次經過%s，最快紀錄%s。"
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "擊敗%s!經過%s，這是一個新記錄!（舊紀錄為%s）"
 DBM_CORE_COMBAT_ENDED				= "%s的戰鬥經過%s結束。"
-DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥已過%s，恢復計時器中..."
+DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
@@ -84,7 +84,7 @@ DBM_CORE_RANGERADAR_HEADER			= "距離雷達(%d碼)"
 
 DBM_CORE_INFOFRAME_LOCK				= "鎖定框架"
 DBM_CORE_INFOFRAME_HIDE				= "隱藏"
-DBM_CORE_INFOFRAME_SHOW_SELF		= "總是顯示你的能量"		-- Always show your own power value even if you are below the threshold
+DBM_CORE_INFOFRAME_SHOW_SELF		= "總是顯示你的能量"
 
 DBM_LFG_INVITE						= "地城準備確認"
 
@@ -161,7 +161,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target					= "%s中了>%%s<",
+	target					= "%s:>%%s<",
 	spell					= "%s",
 	cast					= "施放%s:%.1f秒",
 	soon					= "%s即將到來",

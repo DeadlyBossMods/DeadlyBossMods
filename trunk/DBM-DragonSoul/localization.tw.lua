@@ -135,7 +135,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	TimerSapper			= "為下一次暮光工兵重生顯示計時器",--npc=56923
+	TimerSapper			= "為下一次暮光工兵重生顯示計時器",
 	TimerAdd			= "為下一次精英暮光顯示計時器"
 })
 
@@ -158,7 +158,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "當你身上沒有$spell:109454減益時顯示特別警告",--http://ptr.wowhead.com/npc=56188
+	SpecWarnTendril			= "當你身上沒有$spell:109454減益時顯示特別警告",
 	InfoFrame				= "為沒有$spell:109454的玩家顯示訊息框",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
 	ShowShieldInfo			= "為$spell:105479顯示生命條"
@@ -185,7 +185,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "為極熾觸手生長顯示特別警告(當雅立史卓莎不在場時)"--http://ptr.wowhead.com/npc=56188
+	SpecWarnTentacle	= "為極熾觸手生長顯示特別警告(當雅立史卓莎不在場時)",
+	RangeFrame			= "根據玩家減益顯示動態的距離框以對應英雄模式的$spell:108649",
+	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
 
 L:SetMiscLocalization({
