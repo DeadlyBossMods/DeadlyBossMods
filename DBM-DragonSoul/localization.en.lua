@@ -105,12 +105,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",--spellname from mod
-	TimerCombatStart	= "Ultraxion Lands"
+	TimerCombatStart	= "Ultraxion Active"
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
-	TimerCombatStart	= "Show timer for Ultraxion RP"
+	TimerCombatStart	= "Show timer for Ultraxion RP",
+	ResetHoTCount		= "Restart $spell:109417 count in sets of 3s(heroic)/2s(normal)"
 })
 
 L:SetMiscLocalization({
