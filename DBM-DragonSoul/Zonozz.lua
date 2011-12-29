@@ -45,6 +45,23 @@ mod:AddBoolOption("NoFilterRangeFrame", false)--For those that want the range fr
 local shadowsTargets = {}
 local phase2Started = false
 local voidWarned = false
+--local voidStacks = 0
+
+--[[
+local voidTimers = { -- all timers is guessed and can't find in my logs (: please check this,
+	[0] = 48,
+	[1] = 43, -- confirmed in my latest lfr.
+	[2] = 38,
+	[3] = 33,
+	[4] = 28,
+	[5] = 22.5,
+	[6] = 18,
+	[7] = 15,
+	[8] = 12,
+	[9] = 9,
+	[10]= 6
+}
+]]
 
 local function warnShadowsTargets()
 	warnShadows:Show(table.concat(shadowsTargets, "<, >"))
@@ -74,17 +91,22 @@ local function blackBloodEnds()
 	phase2Started = false
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
-	--Seems every difficulty has a variation. They aren't random, i verify from pull to pull each difficulty is always the same, but completely different from one another
-	if mod:IsDifficulty("lfr25") then--LFR timers come earliest
-		timerVoidofUnmakingCD:Start()--6
+	--absolutely not difficulty based. it's timer depends on Void Diffusion stacks. But since timer not confirmed, temporarly commented it.
+	--[[
+	timerVoidofUnmakingCD:Start(voidTimers[voidStacks])
+	timerPsychicDrainCD:Start(voidTimers[voidStacks] + 8.5)
+	voidStacks = 0
+	]]
+	if mod:IsDifficulty("lfr25") then -- absoultely 10 stacks
+		timerVoidofUnmakingCD:Start()
 		timerPsychicDrainCD:Start(14.5)
-	elseif mod:IsDifficulty("normal25") then--Normal 25 appears to be next
+	elseif mod:IsDifficulty("normal25") then -- maybe 8 stacks?
 		timerVoidofUnmakingCD:Start(12)
 		timerPsychicDrainCD:Start(20.5)
-	elseif mod:IsDifficulty("heroic10", "heroic25") then--Heroic 25 and 10 seem to be the same
+	elseif mod:IsDifficulty("heroic10", "heroic25") then -- maybe 7 stacks?
 		timerVoidofUnmakingCD:Start(15)
 		timerPsychicDrainCD:Start(23.5)
-	elseif mod:IsDifficulty("normal10") then--Normal 10 has the longest timers for this stuff after a dark phase.
+	elseif mod:IsDifficulty("normal10") then -- maybe 5 stacks?
 		timerVoidofUnmakingCD:Start(22.5)
 		timerPsychicDrainCD:Start(31)
 	end
@@ -93,6 +115,7 @@ end
 function mod:OnCombatStart(delay)
 	voidWarned = false
 	phase2Started = false
+--	voidStacks = 0
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(5.5-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
@@ -133,6 +156,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(106836) then--106836 confirmed 10/25 man normal, do NOT add 103527 to this, that's a seperate spellid for when BOSS is affected by diffusion, this warning is counting the ball stacks.
 		warnVoidDiffusion:Show(args.destName, args.amount or 1)
 		timerVoidDiffusionCD:Start()
+--		if args.amount or 1 < 11 then
+--			voidStacks = args.amount or 1
+--		end
 	elseif args:IsSpellID(103434, 104599, 104600, 104601) then--103434 confirmed 10 man normal.
 		shadowsTargets[#shadowsTargets + 1] = args.destName
 		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") then

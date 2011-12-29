@@ -29,7 +29,7 @@ local timerOozesCD		= mod:NewNextTimer(90, "ej3978")
 local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- variables (7.0~8.5)
 --local timerAcidCD		= mod:NewNextTimer(8.3, 108352)--Green ooze aoe (I need a log where you let green and yellow both hit boss for i tweak this)
 local timerVoidBoltCD	= mod:NewNextTimer(6, 108383, nil, mod:IsTank())--Needs more work, need to check for the ability that halfs his CDs and such.
-local timerVoidBolt		= mod:NewTargetTimer(20, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
+local timerVoidBolt		= mod:NewTargetTimer(21, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20.
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 
