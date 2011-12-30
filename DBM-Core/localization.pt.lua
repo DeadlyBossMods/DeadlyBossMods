@@ -153,6 +153,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target	= "%s em >%%s<",
+	targetcount	= "%s (%%d) em >%%s<",
 	spell	= "%s",
 	cast	= "Lançando %s: %.1f seg",
 	soon	= "%s em breve",
@@ -166,6 +167,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 local prewarnOption = "Exibir aviso antecipado para |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Anunciar alvos de |cff71d5ff|Hspell:%d|h%s|h|r",
+	targetcount	= "Anunciar alvos de |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Exibir aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast	= "Exibir aviso quando |cff71d5ff|Hspell:%d|h%s|h|r está sendo lançado",
 	soon	= prewarnOption,
@@ -176,6 +178,18 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	stack	= "Anunciar empilhamento de |cff71d5ff|Hspell:%d|h%s|h|r",
 }
 
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
+	target	= "Anunciar alvos de |cff71d5ff%s|r",
+	targetcount	= "Anunciar alvos de |cff71d5ff%s|r",
+	spell	= "Exibir aviso para |cff71d5ff%s|r",
+	cast	= "Exibir aviso quando |cff71d5ff%s|r está sendo lançado",
+	soon	= prewarnOption,
+	prewarn = prewarnOption,
+	phase	= "Anunciar Fase %s",
+	prephase= "Mostrar aviso antecipado para a Fase %s",
+	count	= "Exibir aviso para |cff71d5ff%s|r",
+	stack	= "Anunciar empilhamento de |cff71d5ff%s|r",
+}
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
@@ -189,6 +203,19 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run 		= "Exibir aviso especial para $spell:%d",
 	cast 		= "Exibir aviso especial para o lançamento de $spell:%d",
 	stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
+	spell 		= "Exibir aviso especial para $journal:%d",
+	dispel 		= "Exibir aviso especial para remover/roubar \n $journal:%d",
+	interrupt	= "Exibir aviso especial para interromper $journal:%d",
+	you 		= "Exibir aviso especial quando você é afetado por \n $journal:%d",
+	target 		= "Exibir aviso especial quando alguém é afetador por \n $journal:%d",
+	close 		= "Exibir aviso especial quando alguém próximo de você é \n afetado por $journal:%d",
+	move 		= "Exibir aviso especial quando você é afetado por \n $journal:%d",
+	run 		= "Exibir aviso especial para $journal:%d",
+	cast 		= "Exibir aviso especial para o lançamento de $journal:%d",
+	stack 		= "Exibir aviso especial para pilha >=%d de \n $journal:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {

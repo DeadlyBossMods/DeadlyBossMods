@@ -162,6 +162,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target 		= "%s : >%%s<",
+	targetcount = "%s (%%d) : >%%s<",
 	spell 		= "%s",
 	cast 		= "주문시전 %s : %.1f 초",
 	soon 		= "곧 %s",
@@ -174,6 +175,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target		= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 보기",
+	targetcount	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 보기",
 	spell 		= "|cff71d5ff|Hspell:%d|h%s|h|r 알림 보기",
 	cast 		= "|cff71d5ff|Hspell:%d|h%s|h|r 시전시 알림 보기",
 	soon 		= "|cff71d5ff|Hspell:%d|h%s|h|r 사전 알림 보기",
@@ -186,6 +188,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
 	target		= "|cff71d5ff%s|r 대상 보기",
+	targetcount	= "|cff71d5ff%s|r 대상 보기",
 	spell 		= "|cff71d5ff%s|r 알림 보기",
 	cast 		= "|cff71d5ff%s|r 시전시 알림 보기",
 	soon 		= "|cff71d5ff%s|r 사전 알림 보기",

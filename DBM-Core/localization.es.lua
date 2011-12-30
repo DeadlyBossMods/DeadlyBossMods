@@ -162,6 +162,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target = "%s en >%%s<",
+	targetcount = "%s (%%d) en >%%s<",
 	spell = "%s",
 	cast = "Casteando %s: %.1f seg",
 	soon = "%s pronto",
@@ -175,6 +176,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 local prewarnOption = "Mostrar una pre-alerta para |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Anunciar objetivos de |cff71d5ff|Hspell:%d|h%s|h|r",
+	targetcount	= "Anunciar objetivos de |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast	= "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
@@ -187,6 +189,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
 	target	= "Anunciar objetivos de |cff71d5ff%s|r",
+	targetcount	= "Anunciar objetivos de |cff71d5ff%s|r",
 	spell	= "Mostrar aviso para |cff71d5ff%s|r",
 	cast	= "Mostrar aviso cuando castee |cff71d5ff%s|r",
 	soon	= "Mostrar pre-aviso para |cff71d5ff%s|r",
