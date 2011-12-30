@@ -105,13 +105,15 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",--spellname from mod
-	TimerCombatStart	= "Ultraxion Active"
+	TimerCombatStart	= "Ultraxion Active",
+	timerRaidCDs		= "%s CD: %s"--spellname CD Castername
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
 	TimerCombatStart	= "Show timer for Ultraxion RP",
-	ResetHoTCount		= "Restart $spell:109417 count in sets of 3s(heroic)/2s(normal)"
+	ResetHoTCount		= "Restart $spell:109417 count in sets of 3s(heroic)/2s(normal)",
+	ShowRaidCDs			= "Show timers for Raid cooldowns (WIP)"
 })
 
 L:SetMiscLocalization({
