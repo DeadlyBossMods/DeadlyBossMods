@@ -50,6 +50,7 @@ local HourofTwilightCountdown		= mod:NewCountdown(45.5, 109416, mod:IsHealer())-
 
 mod:AddBoolOption("ResetHoTCount", true, "announce")
 mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
+mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--Will be eliminated when popup options are supported.
 --My intent is once tandanu gets popup menu options setup to have variable options for both.
 --Reset will have following: Never reset, always reset in 3s, reset in 3s in heroic 2 normal
 --Raid CDs will have following options: Don't show Raid CDs, Show only My Raid CDs, Show all raid CDs
@@ -105,18 +106,34 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(106372, 106376, 106377, 106378, 106379) then
 		timerUnstableMonstrosity:Start()
-	elseif args:IsSpellID(97462) and self.Options.ShowRaidCDs and self:IsInCombat() then--Warrior Rallying Cry
+	elseif args:IsSpellID(97462) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Warrior Rallying Cry
 		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
 			timerRaidCDs:Start(90, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(180, args.spellName, args.sourceName)
 		end
-	elseif args:IsSpellID(871) and self.Options.ShowRaidCDs and self:IsInCombat() then--Warrior Shield Wall
+	elseif args:IsSpellID(871) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Warrior Shield Wall (4pc Assumed)
 		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(120, args.spellName, args.sourceName)
 		end
+	elseif args:IsSpellID(62618) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Paladin Divine Guardian (4pc assumed)
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+			timerRaidCDs:Start(60, args.spellName, args.sourceName)
+		else
+			timerRaidCDs:Start(120, args.spellName, args.sourceName)
+		end
+	elseif args:IsSpellID(55233) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--DK Vampric Blood (4pc assumed)
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+			timerRaidCDs:Start(30, args.spellName, args.sourceName)
+		else
+			timerRaidCDs:Start(60, args.spellName, args.sourceName)
+		end
+	elseif args:IsSpellID(98008) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Spirit Link
+		timerRaidCDs:Start(180, args.spellName, args.sourceName)
+	elseif args:IsSpellID(62618) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Power Word: Barrior
+		timerRaidCDs:Start(180, args.spellName, args.sourceName)
 	end
 end
 
