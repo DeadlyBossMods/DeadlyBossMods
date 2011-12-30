@@ -106,13 +106,15 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",
-	TimerCombatStart	= "戰鬥開始"
+	TimerCombatStart	= "戰鬥開始",
+	timerRaidCDs		= "%s冷卻:%s"
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器",
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	ResetHoTCount		= "每3次(25人)/2次(10人)重置$spell:109417的計算次數"
+	ResetHoTCount		= "每3次(25人)/2次(10人)重置$spell:109417的計算次數",
+	ShowRaidCDs			= "為坦克冷卻顯示計時器(目前只有戰士生效)"
 })
 
 L:SetMiscLocalization({
