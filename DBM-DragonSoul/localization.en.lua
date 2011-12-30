@@ -36,7 +36,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ShadowYell			= "Yell when you are affected by $spell:104600\n(Heroic difficulty only)",
 	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:104601 on Heroic difficulty",
-	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone"
+	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone\n(requires Range Frame enabled)"
 })
 
 L:SetMiscLocalization({
@@ -113,7 +113,8 @@ L:SetOptionLocalization({
 	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
 	TimerCombatStart	= "Show timer for Ultraxion RP",
 	ResetHoTCount		= "Restart $spell:109417 count in sets of 3s(heroic)/2s(normal)",
-	ShowRaidCDs			= "Show timers for Raid cooldowns (WIP)"
+	ShowRaidCDs			= "Show timers for Raid cooldowns (WIP)",
+	ShowRaidCDsSelf		= "But only show timers for yours\n(requires Raid cooldowns enabled)"
 })
 
 L:SetMiscLocalization({
