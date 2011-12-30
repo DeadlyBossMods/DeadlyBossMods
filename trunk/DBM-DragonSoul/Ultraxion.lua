@@ -22,7 +22,7 @@ mod:RegisterEvents(
 )
 
 local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
-local warnFadingLight				= mod:NewTargetAnnounce(110080, 3)
+local warnFadingLight				= mod:NewTargetCountAnnounce(110080, 3)
 
 local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil, true)
 local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
@@ -33,7 +33,7 @@ local timerDrakes					= mod:NewTimer(253, "TimerDrakes", 61248)
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerUnstableMonstrosity		= mod:NewNextTimer(60, 106372, nil, mod:IsHealer())
 local timerHourofTwilight			= mod:NewCastTimer(5, 109416)
-local timerHourofTwilightCD			= mod:NewNextCountTimer(45, 109416)
+local timerHourofTwilightCD			= mod:NewNextCountTimer(45.5, 109416)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
 local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)--Lets try again using duration, not expire. expire just isn't going to work because of GetTime() 4.3 change.
 local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 15 on normal
@@ -46,18 +46,20 @@ local timerRaidCDs					= mod:NewTimer(60, "timerRaidCDs", 2565, nil, false)--Doe
 local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
 local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
-local HourofTwilightCountdown		= mod:NewCountdown(45, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
+local HourofTwilightCountdown		= mod:NewCountdown(45.5, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
 mod:AddBoolOption("ResetHoTCount", true, "announce")
 mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
---above is obviously missing a TON of CDs, but i don't want a million lua errors if it doesn't work, i want to test it's basic functionality first on my CDs, i'll impliment rest after raid.
+--My intent is once tandanu gets popup menu options setup to have variable options for both.
+--Reset will have following: Never reset, always reset in 3s, reset in 3s in heroic 2 normal
+--Raid CDs will have following options: Don't show Raid CDs, Show only My Raid CDs, Show all raid CDs
 
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
 local fadingLightTargets = {}
 
 local function warnFadingLightTargets()
-	warnFadingLight:Show(table.concat(fadingLightTargets, "<, >"))
+	warnFadingLight:Show(fadingLightCount, table.concat(fadingLightTargets, "<, >"))
 	table.wipe(fadingLightTargets)
 end
 
@@ -85,8 +87,8 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.ResetHoTCount and ((self:IsDifficulty("heroic10", "heroic25") and hourOfTwilightCount == 3) or (self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2)) then
 			hourOfTwilightCount = 0
 		end
-		timerHourofTwilightCD:Start(45, hourOfTwilightCount+1)
-		HourofTwilightCountdown:Start()
+		timerHourofTwilightCD:Start(45.5, hourOfTwilightCount+1)
+		HourofTwilightCountdown:Start(45.5)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFadingLightCD:Start(13)
 			timerHourofTwilight:Start(3)
@@ -104,13 +106,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(106372, 106376, 106377, 106378, 106379) then
 		timerUnstableMonstrosity:Start()
 	elseif args:IsSpellID(97462) and self.Options.ShowRaidCDs and self:IsInCombat() then--Warrior Rallying Cry
-		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth (probalby not right spellid but doesn't matter, we are using spellname)
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
 			timerRaidCDs:Start(90, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(180, args.spellName, args.sourceName)
 		end
 	elseif args:IsSpellID(871) and self.Options.ShowRaidCDs and self:IsInCombat() then--Warrior Shield Wall
-		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth (probalby not right spellid but doesn't matter, we are using spellname)
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(120, args.spellName, args.sourceName)
@@ -130,7 +132,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFadingLightCD:Start()
 		elseif self:IsDifficulty("normal10", "normal25") and fadingLightCount < 2 then--It's cast 2 times during hour of twilight buff duration on ultraxion normal. 15 secomds remaining and at 0 seconds remainings.
 			timerFadingLightCD:Start(15)
-		elseif self:IsDifficulty("lfr25") and self:IsTank() then--Only tanks get it in LFR
+		elseif self:IsDifficulty("lfr25") and self:IsTank() and fadingLightCount < 2 then--Only tanks get it in LFR
 			timerFadingLightCD:Start(15)
 		end
 		if args:IsPlayer() then

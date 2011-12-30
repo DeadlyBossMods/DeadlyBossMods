@@ -3520,6 +3520,10 @@ do
 		return newAnnounce(self, "target", spellId, color or 2, ...)
 	end
 	
+	function bossModPrototype:NewTargetCountAnnounce(spellId, color, ...)
+		return newAnnounce(self, "targetcount", spellId, color or 2, ...)
+	end
+	
 	function bossModPrototype:NewSpellAnnounce(spellId, color, ...)
 		return newAnnounce(self, "spell", spellId, color or 3, ...)
 	end

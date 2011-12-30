@@ -166,6 +166,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target					= "%s: >%%s<",
+	targetcount				= "%s (%%d): >%%s<",
 	spell					= "%s",
 	cast					= "正在施放 %s：%.1f秒",
 	soon					= "即将 %s",
@@ -179,6 +180,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 local prewarnOption			= "提前警报：|cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的目标",
+	targetcount				= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的目标",
 	spell					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r",
 	cast					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的施放",
 	soon					= prewarnOption,
@@ -191,6 +193,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
 	target	= "警报：|cff71d5ff%s|r的目标",
+	targetcount	= "警报：|cff71d5ff%s|r的目标",
 	spell	= "警报：|cff71d5ff%s|r",
 	cast	= "警报：|cff71d5ff%s|r的施放",
 	soon	= "提前警报：|cff71d5ff%s|r",

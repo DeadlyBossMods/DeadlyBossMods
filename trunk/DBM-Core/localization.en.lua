@@ -132,7 +132,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdcount		= "%s CD (%%d)",
 	next		= "Next %s",
 	nextcount	= "Next %s (%%d)",
-	achievement	= "%s",
+	achievement	= "%s"
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -160,40 +160,43 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target	= "%s on >%%s<",
-	spell	= "%s",
-	cast	= "Casting %s: %.1f sec",
-	soon	= "%s soon",
-	prewarn = "%s in %s",
-	phase	= "Phase %s",
-	prephase= "Phase %s soon",
-	count	= "%s (%%d)",
-	stack	= "%s on >%%s< (%%d)",
+	target		= "%s on >%%s<",
+	targetcount	= "%s (%%d) on >%%s<",
+	spell		= "%s",
+	cast		= "Casting %s: %.1f sec",
+	soon		= "%s soon",
+	prewarn		= "%s in %s",
+	phase		= "Phase %s",
+	prephase	= "Phase %s soon",
+	count		= "%s (%%d)",
+	stack		= "%s on >%%s< (%%d)"
 }
 
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
-	spell	= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast	= "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
-	soon	= prewarnOption,
-	prewarn = prewarnOption,
-	phase	= "Announce Phase %s",
-	prephase= "Show a prewarning for Phase %s",
-	count	= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r stacks",
+	target		= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
+	targetcount	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
+	spell		= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast		= "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	soon		= prewarnOption,
+	prewarn 	= prewarnOption,
+	phase		= "Announce Phase %s",
+	prephase	= "Show a prewarning for Phase %s",
+	count		= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack		= "Announce |cff71d5ff|Hspell:%d|h%s|h|r stacks"
 }
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
-	target	= "Announce |cff71d5ff%s|r targets",
-	spell	= "Show warning for |cff71d5ff%s|r",
-	cast	= "Show warning when |cff71d5ff%s|r is being cast",
-	soon	= "Show pre-warning for |cff71d5ff%s|r",
-	prewarn = "Show pre-warning for |cff71d5ff%s|r",
-	phase	= "Announce Phase %s",
-	prephase= "Show a prewarning for Phase %s",
-	count	= "Show warning for |cff71d5ff%s|r",
-	stack	= "Announce |cff71d5ff%s|r stacks",
+	target		= "Announce |cff71d5ff%s|r targets",
+	targetcount	= "Announce |cff71d5ff%s|r targets",
+	spell		= "Show warning for |cff71d5ff%s|r",
+	cast		= "Show warning when |cff71d5ff%s|r is being cast",
+	soon		= "Show pre-warning for |cff71d5ff%s|r",
+	prewarn 	= "Show pre-warning for |cff71d5ff%s|r",
+	phase		= "Announce Phase %s",
+	prephase	= "Show a prewarning for Phase %s",
+	count		= "Show warning for |cff71d5ff%s|r",
+	stack		= "Announce |cff71d5ff%s|r stacks"
 }
 
 -- Auto-generated Special Warning Localizations

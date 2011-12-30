@@ -150,6 +150,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target	= "%s sur >%%s<",
+	targetcount	= "%s (%%d) sur >%%s<",
 	spell	= "%s",
 	cast	= "Incantation |2 %s : %.1f sec",
 	soon	= "%s imminent",
@@ -163,6 +164,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 local prewarnOption = "Alerte préventive concernant |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Alerte indiquant le(s) cible(s) de |cff71d5ff|Hspell:%d|h%s|h|r",
+	targetcount	= "Alerte indiquant le(s) cible(s) de |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Alerte concernant |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast	= "Alerte quand |cff71d5ff|Hspell:%d|h%s|h|r est incanté",
 	soon	= prewarnOption,
@@ -171,6 +173,19 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	prephase= "Alerte préventive indiquant l'arrivée de la phase %s",
 	count	= "Alerte concernant |cff71d5ff|Hspell:%d|h%s|h|r",
 	stack	= "Alerte indiquant les cumuls de |cff71d5ff|Hspell:%d|h%s|h|r",
+}
+
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
+	target	= "Alerte indiquant le(s) cible(s) de |cff71d5ff%s|r",
+	targetcount	= "Alerte indiquant le(s) cible(s) de |cff71d5ff%s|r",
+	spell	= "Alerte concernant |cff71d5ff%s|r",
+	cast	= "Alerte quand |cff71d5ff%s|r est incanté",
+	soon	= prewarnOption,
+	prewarn = prewarnOption,
+	phase	= "Alerte indiquant l'arrivée de la phase %s",
+	prephase= "Alerte préventive indiquant l'arrivée de la phase %s",
+	count	= "Alerte concernant |cff71d5ff%s|r",
+	stack	= "Alerte indiquant les cumuls de |cff71d5ff%s|r"
 }
 
 
@@ -186,6 +201,19 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run 		= "Alerte spéciale concernant $spell:%d",
 	cast 		= "Alerte spéciale quand $spell:%d est incanté",
 	stack 		= "Alerte spéciale quand >=%d cumuls de $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
+	spell 		= "Alerte spéciale concernant $journal:%d",
+	dispel 		= "Alerte spéciale quand $journal:%d doit être dissipé/volé",
+	interrupt	= "Alerte spéciale quand $journal:%d doit être interrompu",
+	you 		= "Alerte spéciale quand vous subissez $journal:%d",
+	target 		= "Alerte spéciale quand quelqu'un subit $journal:%d",
+	close 		= "Alerte spéciale quand quelqu'un proche de vous subit $journal:%d",
+	move 		= "Alerte spéciale quand vous subissez $journal:%d",
+	run 		= "Alerte spéciale concernant $journal:%d",
+	cast 		= "Alerte spéciale quand $journal:%d est incanté",
+	stack 		= "Alerte spéciale quand >=%d cumuls de $journal:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
