@@ -37,7 +37,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ShadowYell			= "Schreie, wenn du von $spell:104600 betroffen bist\n(nur heroischer Schwierigkeitsgrad)",
 	RangeFrame			= "Zeige dynamisches Abstandsfenster (10m) basierend auf Spieler-Debuffs für\n$spell:104601 auf heroischem Schwierigkeitsgrad",
-	NoFilterRangeFrame	= "Deaktiviere Abstandsfensterdebufffilter und zeige immer jeden Spieler"
+	NoFilterRangeFrame	= "\nDeaktiviere Abstandsfensterdebufffilter und zeige immer jeden Spieler\n(benötigt aktiviertes Abstandsfenster)"
 })
 
 L:SetMiscLocalization({
@@ -106,13 +106,16 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",--spellname from mod
-	TimerCombatStart	= "Ultraxion aktiv"
+	TimerCombatStart	= "Ultraxion aktiv",
+	timerRaidCDs		= "%s CD: %s"--spellname CD Castername
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen",
 	TimerCombatStart	= "Zeige Dauer des Rollenspiels bevor Ultraxion aktiv wird",
-	ResetHoTCount		= "Neustart der $spell:109417 Zählung in 3er-Gruppen (heroisch)\nbzw. 2er-Gruppen (normal)"
+	ResetHoTCount		= "Neustart der $spell:109417 Zählung in 3er-Gruppen (heroisch)\nbzw. 2er-Gruppen (normal)",
+	ShowRaidCDs			= "Zeige Timer für \"Raid-Cooldowns\" (in Entwicklung)",
+	ShowRaidCDsSelf		= "Zeige jedoch nur Timer für eigene \"Raid-Cooldowns\"\n(benötigt aktivierte Timer für \"Raid-Cooldowns\")"
 })
 
 L:SetMiscLocalization({
