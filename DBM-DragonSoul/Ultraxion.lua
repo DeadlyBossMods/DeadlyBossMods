@@ -130,9 +130,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		end
-	elseif args:IsSpellID(98008) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Spirit Link
+	elseif args:IsSpellID(22842) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Druid Frenzied Regen (4pc assumed)
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+			timerRaidCDs:Start(90, args.spellName, args.sourceName)
+		else
+			timerRaidCDs:Start(180, args.spellName, args.sourceName)
+		end
+	elseif args:IsSpellID(98008) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Shaman Spirit Link
 		timerRaidCDs:Start(180, args.spellName, args.sourceName)
-	elseif args:IsSpellID(62618) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Power Word: Barrior
+	elseif args:IsSpellID(62618) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Priest Power Word: Barrior
 		timerRaidCDs:Start(180, args.spellName, args.sourceName)
 	end
 end
