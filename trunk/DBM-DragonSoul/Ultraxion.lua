@@ -41,6 +41,7 @@ local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
 local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
 local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
 local timerLoomingDarkness			= mod:NewBuffFadesTimer(120, 106498)--Heroic ability, personal only timer.
+local timerRaidCDs					= mod:NewTimer(60, "timerRaidCDs", 2565, nil, false)--Does not need to be localized, has no option, uses ShowRaidCDs bool
 
 local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
@@ -48,6 +49,8 @@ local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variati
 local HourofTwilightCountdown		= mod:NewCountdown(45, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
 mod:AddBoolOption("ResetHoTCount", true, "announce")
+mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
+--above is obviously missing a TON of CDs, but i don't want a million lua errors if it doesn't work, i want to test it's basic functionality first on my CDs, i'll impliment rest after raid.
 
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
@@ -100,6 +103,18 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(106372, 106376, 106377, 106378, 106379) then
 		timerUnstableMonstrosity:Start()
+	elseif args:IsSpellID(97462) and self.Options.ShowRaidCDs and self:IsInCombat() then--Warrior Rallying Cry
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth (probalby not right spellid but doesn't matter, we are using spellname)
+			timerRaidCDs:Start(90, args.spellName, args.sourceName)
+		else
+			timerRaidCDs:Start(180, args.spellName, args.sourceName)
+		end
+	elseif args:IsSpellID(871) and self.Options.ShowRaidCDs and self:IsInCombat() then--Warrior Shield Wall
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth (probalby not right spellid but doesn't matter, we are using spellname)
+			timerRaidCDs:Start(60, args.spellName, args.sourceName)
+		else
+			timerRaidCDs:Start(120, args.spellName, args.sourceName)
+		end
 	end
 end
 
