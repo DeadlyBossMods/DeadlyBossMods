@@ -41,6 +41,8 @@ local berserkTimer				= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("RangeFrame", true)--For heroic shadows, with debuff filtering.
 mod:AddBoolOption("NoFilterRangeFrame", false)--For those that want the range frame to simply work as it used to, always show everyone.
+--When popup feature is added, range frame options will be expanded, maybe even consilidated into one option, just the popup.
+--Popup will include: Disable range Frame, Always show dynamic Range Frane, Show normal RF in p1 and dynamic in p2, Always show normal RF
 
 local shadowsTargets = {}
 local phase2Started = false

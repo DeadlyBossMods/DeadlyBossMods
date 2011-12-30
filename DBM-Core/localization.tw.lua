@@ -162,6 +162,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target					= "%s:>%%s<",
+	targetcount				= "%s (%%d):>%%s<",
 	spell					= "%s",
 	cast					= "施放%s:%.1f秒",
 	soon					= "%s即將到來",
@@ -172,9 +173,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stack					= "%s在>%%s<(%%d)",
 }
 
-local prewarnOption				= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
+local prewarnOption			= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target					= "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
+	targetcount				= "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
 	spell					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
 	cast					= "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告",
 	soon					= prewarnOption,
@@ -187,6 +189,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
 	target					= "提示|cff71d5ff%s|r的目標",
+	targetcount				= "提示|cff71d5ff%s|r的目標",
 	spell					= "為|cff71d5ff%s|r顯示警告",
 	cast					= "當|cff71d5ff%s|r施放時顯示警告",
 	soon					= "為|cff71d5ff%s|r顯示預先警告",

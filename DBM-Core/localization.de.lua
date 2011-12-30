@@ -162,6 +162,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target	= "%s auf >%%s<",
+	targetcount	= "%s (%%d) auf >%%s<",
 	spell	= "%s",
 	cast	= "Wirkt %s: %.1f Sek",
 	soon	= "%s bald",
@@ -175,6 +176,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 local prewarnOption = "Zeige Vorwarnung für |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Verkünde Ziele von |cff71d5ff|Hspell:%d|h%s|h|r",
+	targetcount	= "Verkünde Ziele von |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Zeige Warnung für |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast	= "Zeige Warnung, wenn |cff71d5ff|Hspell:%d|h%s|h|r gewirkt wird",
 	soon	= prewarnOption,
@@ -187,6 +189,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
 	target	= "Verkünde Ziele von |cff71d5ff%s|r",
+	targetcount	= "Verkünde Ziele von |cff71d5ff%s|r",
 	spell	= "Zeige Warnung für |cff71d5ff%s|r",
 	cast	= "Zeige Warnung, wenn |cff71d5ff%s|r gewirkt wird",
 	soon	= "Zeige Vorwarnung für |cff71d5ff%s|r",

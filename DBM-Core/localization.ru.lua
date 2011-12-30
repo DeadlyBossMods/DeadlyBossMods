@@ -161,6 +161,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target = "%s на |3-5(>%%s<)",
+	targetcount = "%s (%%d) на |3-5(>%%s<)",
 	spell = "%s",
 	cast = "Применение заклинания %s: %.1f сек",
 	soon = "Скоро %s",
@@ -174,6 +175,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target = "Объявлять цели заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
+	targetcount = "Объявлять цели заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast = "Предупреждать о применении заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon = prewarnOption,
@@ -186,6 +188,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
 	target	= "Объявлять цели заклинания |cff71d5ff%s|r",
+	targetcount	= "Объявлять цели заклинания |cff71d5ff%s|r",
 	spell	= "Предупреждение для |cff71d5ff%s|r",
 	cast	= "Предупреждать о применении заклинания |cff71d5ff%s|r",
 	soon	= "Предупреждать заранее о |cff71d5ff%s|r",
