@@ -37,7 +37,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
     ShadowYell	= "Gritar ao ser afetado por $spell:104600\n(Apenas modo heróico)",
-	RangeFrame	= "Exibir medidor de distância (10) para $spell:104601\n(Modo Heróico)"
+	CustomRangeFrame	= "Range Frame options",
+	Never				= "Disabled",
+	Normal				= "Normal Range Frame",
+	DynamicPhase2		= "Phase2 Debuff Filtering",
+	DynamicAlways		= "Always Debuff Filtering"
 })
 
 L:SetMiscLocalization({
@@ -110,7 +114,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerDrakes			= "Exibir cronógrafo para quando Assaltantes do Crepúsculo $spell:109904",
-	TimerCombatStart	= "Exibir cronógrafo para início do combate."
+	TimerCombatStart	= "Exibir cronógrafo para início do combate.",
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Never",
+	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	Reset3Always		= "Always Reset in sets of 3"
 })
 
 L:SetMiscLocalization({

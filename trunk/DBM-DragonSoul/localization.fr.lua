@@ -34,10 +34,16 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame	= "Cadre des portées (10) pour $spell:104601 (difficulté héroïque)"
+	ShadowYell			= "Yell when you are affected by $spell:104600\n(Heroic difficulty only)",
+	CustomRangeFrame	= "Range Frame options",
+	Never				= "Disabled",
+	Normal				= "Normal Range Frame",
+	DynamicPhase2		= "Phase2 Debuff Filtering",
+	DynamicAlways		= "Always Debuff Filtering"
 })
 
 L:SetMiscLocalization({
+	voidYell	= "Gul'kafh an'qov N'Zoth."
 })
 
 -----------------------------
@@ -105,7 +111,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerCombatStart	= "Durée du RP d'Ultraxion"
+	TimerCombatStart	= "Durée du RP d'Ultraxion",
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Never",
+	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	Reset3Always		= "Always Reset in sets of 3"
 })
 
 L:SetMiscLocalization({

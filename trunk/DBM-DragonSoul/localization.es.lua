@@ -36,8 +36,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "Gritar cuando te afecte $spell:104600\n(Solo dificultad Heroica)",
-	RangeFrame			= "Mostrar distancia dinámica basada en el estado del estado del debuff \n$spell:104601 en los jugadores en dificultad Heroica",
-	NoFilterRangeFrame	= "Desactivar el filtro de distancia y mostrar siempre a todo el mundo\n(Es necesario tener el marco de distancia activado)"
+	CustomRangeFrame	= "Range Frame options",
+	Never				= "Disabled",
+	Normal				= "Normal Range Frame",
+	DynamicPhase2		= "Phase2 Debuff Filtering",
+	DynamicAlways		= "Always Debuff Filtering"
 })
 
 L:SetMiscLocalization({
@@ -115,7 +118,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "Mostrar tiempo para Fuga Crepuscular	de los Asaltantes Crepusculares",
 	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
-	ResetHoTCount		= "Reiniciar contador de $spell:109417 en grupos de 3s(heroico)/2s(normal)",
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Never",
+	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	Reset3Always		= "Always Reset in sets of 3",
 	ShowRaidCDs			= "Mostrar tiempos de CDs de Banda"
 })
 

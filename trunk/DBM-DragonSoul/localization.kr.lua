@@ -36,8 +36,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기 (영웅 난이도에서만)",
-	RangeFrame			= "$spell:104601 약화 효과 상태에 따른 거리 프레임 표시 (영웅 난이도)",
-	NoFilterRangeFrame	= "거리 프레임 필터링 사용 중지 (항상 모든 플레이어 보임)"
+	CustomRangeFrame	= "Range Frame options",
+	Never				= "Disabled",
+	Normal				= "Normal Range Frame",
+	DynamicPhase2		= "Phase2 Debuff Filtering",
+	DynamicAlways		= "Always Debuff Filtering"
 })
 
 L:SetMiscLocalization({
@@ -115,7 +118,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "황혼의 습격자가 $spell:109904 시전까지 남은시간 바 표시",
 	TimerCombatStart	= "울트락시온 활성화 바 표시",
-	ResetHoTCount		= "$spell:109417 시전 횟수 알림을 일정 단위마다 초기화 (일반: 2회, 영웅: 3회)",
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Never",
+	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	Reset3Always		= "Always Reset in sets of 3",
 	ShowRaidCDs			= "공격대 재사용 대기시간 바 표시 (테스트 중)",
 	ShowRaidCDsSelf		= "자신의 재사용 대기시간 바만 표시 (공격대 재사용 대기시간 바 활성화 필요)"
 })
