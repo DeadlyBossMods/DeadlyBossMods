@@ -172,7 +172,7 @@ L:SetMiscLocalization({
 	Pull			= "Die Platten! Es zerreißt ihn! Zerlegt die Platten und wir können ihn vielleicht runterbringen.",
 	NoDebuff		= "Keine %s",
 	PlasmaTarget	= "Sengendes Plasma: %s",
-	DRoll			= "rollt nach",
+	DRoll			= "wird gleich",
 	DLevels			= "stabilisiert sich"
 })
 
