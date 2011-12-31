@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/29/2011
+-- Last update: 1/1/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -41,7 +41,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ShadowYell			= "当你受到$spell:104600影响时时大喊（英雄难度）",
 	RangeFrame			= "距离监视器（根据状态动态变化）：应对$spell:104601（英雄难度）",
-	NoFilterRangeFrame	= "取消距离监视器的动态监测，总是显示所有团员"
+	NoFilterRangeFrame	= "取消距离监视器的动态监测，总是显示所有团员\n（需要开启距离监视器）"
 })
 
 L:SetMiscLocalization({
@@ -110,13 +110,16 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",--spellname from mod
-	TimerCombatStart	= "战斗即将开始"
+	TimerCombatStart	= "战斗即将开始",
+	timerRaidCDs		= "%s冷却：%s"--spellname CD Castername
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "计时条：暮光突袭者何时$spell:109904",
 	TimerCombatStart	= "计时条：战斗即将开始",
-	ResetHoTCount		= "每3秒（英雄）/2秒（普通）重置$spell:109417计数"
+	ResetHoTCount		= "每3秒（英雄）/2秒（普通）重置$spell:109417计数",
+	ShowRaidCDs			= "计时条：团队减伤技能冷却（测试功能）",
+	ShowRaidCDsSelf		= "团队减伤技能冷却计时条仅显示自身技能\n（需要开启团队减伤技能冷却计时条）"
 })
 
 L:SetMiscLocalization({

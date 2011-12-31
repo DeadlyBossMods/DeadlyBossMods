@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 12/13/2011
+-- Last update: 1/1/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -165,8 +165,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target					= "%s: >%%s<",
-	targetcount				= "%s (%%d): >%%s<",
+	target					= "%s：>%%s<",
+	targetcount				= "%s (%%d)：>%%s<",
 	spell					= "%s",
 	cast					= "正在施放 %s：%.1f秒",
 	soon					= "即将 %s",
