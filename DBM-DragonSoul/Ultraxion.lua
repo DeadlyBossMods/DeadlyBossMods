@@ -21,6 +21,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
+local warnHourofTwilightSoon		= mod:NewPreWarnAnnounce(109416, 15, 4)--Why 15? because this warning signals the best time to pop 1min CDs a second time. (ie lets say you a tank in HoT1 group, you SW, your SW will be usuable one more time before next HoT1, but when do you use it? 15 seconds before the 3rd HoT exactly, then it's stil up for 3rd HoT and still back off cd for HoT1)
 local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
 local warnFadingLight				= mod:NewTargetCountAnnounce(110080, 3)
 
@@ -68,6 +69,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(fadingLightTargets)
 	hourOfTwilightCount = 0
 	fadingLightCount = 0
+	warnHourofTwilightSoon:Schedule(30.5)
 	timerHourofTwilightCD:Start(45.5-delay, 1)
 	HourofTwilightCountdown:Start(45.5)
 	timerGiftofLight:Start(-delay)
@@ -88,6 +90,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.ResetHoTCount and ((self:IsDifficulty("heroic10", "heroic25") and hourOfTwilightCount == 3) or (self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2)) then
 			hourOfTwilightCount = 0
 		end
+		warnHourofTwilightSoon:Schedule(30.5)
 		timerHourofTwilightCD:Start(45.5, hourOfTwilightCount+1)
 		HourofTwilightCountdown:Start(45.5)
 		if self:IsDifficulty("heroic10", "heroic25") then
