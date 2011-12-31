@@ -37,7 +37,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ShadowYell			= "Gritar cuando te afecte $spell:104600\n(Solo dificultad Heroica)",
 	RangeFrame			= "Mostrar distancia dinámica basada en el estado del estado del debuff \n$spell:104601 en los jugadores en dificultad Heroica",
-	NoFilterRangeFrame	= "Desactivar el filtro de distancia y mostrar siempre a todo el mundo"
+	NoFilterRangeFrame	= "Desactivar el filtro de distancia y mostrar siempre a todo el mundo\n(Es necesario tener el marco de distancia activado)"
 })
 
 L:SetMiscLocalization({
@@ -108,12 +108,15 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerDrakes			= "%s",
-	TimerCombatStart	= "Ultraxion aterriza"
+	TimerCombatStart	= "Ultraxion aterriza",
+	timerRaidCDs		= "CD %s de %s listo"--spellname CD Castername
 })
 
 L:SetOptionLocalization({
 	TimerDrakes			= "Mostrar tiempo para Fuga Crepuscular	de los Asaltantes Crepusculares",
-	TimerCombatStart	= "Mostrar tiempo para el inicio del combate"
+	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
+	ResetHoTCount		= "Reiniciar contador de $spell:109417 en grupos de 3s(heroico)/2s(normal)",
+	ShowRaidCDs			= "Mostrar tiempos de CDs de Banda"
 })
 
 L:SetMiscLocalization({
@@ -181,14 +184,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "¡Tentáculos Virulentos!"
+	SpecWarnTentacle	= "¡Tentáculos Virulentos!",
+	SpecWarnCongealing	= "Sangre coagulante ¡Cambio!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Mostrar aviso especial cuando aparecen Tentáculos Virulentos (y Alextrasza no está activa)"
+	SpecWarnTentacle	= "Mostrar aviso especial cuando aparecen Tentáculos Virulentos (y Alextrasza no está activa)",
+	SpecWarnCongealing	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(109089),
+	RangeFrame			= "Mostrar distancia dinamica basada en el estado del debuff\n$spell:108649 en dificultad Heroica",
+	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
 
 L:SetMiscLocalization({
