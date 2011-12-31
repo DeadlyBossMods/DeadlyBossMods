@@ -51,11 +51,9 @@ local HourofTwilightCountdown		= mod:NewCountdown(45.5, 109416, mod:IsHealer())-
 
 mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
 mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--Will be eliminated when popup options are supported.
---My intent is once tandanu gets popup menu options setup to have variable options for both.
---Reset will have following: Never reset, always reset in 3s, reset in 3s in heroic 2 normal
 --Raid CDs will have following options: Don't show Raid CDs, Show only My Raid CDs, Show all raid CDs
 
-mod:AddDropdownOption("ResetHoTCounter", {"Never", "Reset3", "Reset3Heroic"}, "Reset3sHeroic", "announce")
+mod:AddDropdownOption("ResetHoTCounter", {"Never", "Reset3", "Reset3Always"}, "Reset3", "announce")
 
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
@@ -88,7 +86,7 @@ function mod:SPELL_CAST_START(args)
 		hourOfTwilightCount = hourOfTwilightCount + 1
 		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
-		if (self.Options.ResetHoTCounter == "Reset3" or self.Options.ResetHoTCounter == "Reset3Heroic") and self:IsDifficulty("heroic10", "heroic25") and hourOfTwilightCount == 3
+		if (self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always") and hourOfTwilightCount == 3
 		or self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2 then
 			hourOfTwilightCount = 0
 		end

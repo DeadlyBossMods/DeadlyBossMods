@@ -115,7 +115,7 @@ L:SetOptionLocalization({
 	ResetHoTCounter		= "Restart $spell:109417 counter",
 	Never				= "Never",
 	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
-	Reset3Heroic		= "Reset in sets of 3 for heroic",
+	Reset3Always		= "Always Reset in sets of 3",
 	ShowRaidCDs			= "Show timers for Raid cooldowns (WIP)",
 	ShowRaidCDsSelf		= "But only show timers for yours\n(requires Raid cooldowns enabled)"
 })
