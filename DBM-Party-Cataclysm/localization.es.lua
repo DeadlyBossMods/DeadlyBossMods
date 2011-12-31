@@ -1047,7 +1047,16 @@ L:SetGeneralLocalization{
 	name = "Arcurion"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "Empieza el combate"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "Mostrar tiempo para el inicio del combate"
+}
+
 L:SetMiscLocalization{
+	Event		= "¡Muéstrate!",
 	Pull		= "Las fuerzas Crepusculares comienzan a aparecer en los bordes de los cañones."
 }
 
@@ -1056,8 +1065,8 @@ L:SetMiscLocalization{
 ----------------------
 L = DBM:GetModLocalization("AsiraDawnslayer")
 
-L:SetGeneralLocalization{
-	name = "Asira Asesinaalbas"
+L:SetTimerLocalization{
+	TimerCombatStart	= "Combat starts"
 }
 
 L:SetMiscLocalization{
@@ -1072,4 +1081,16 @@ L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
 	name = "Arzobispo Benedictus"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "Empieza el combate"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "Mostrar tiempo para el inicio del combate"
+}
+
+L:SetMiscLocalization{
+	Event		= "Y ahora, chamán, me entregarás el Alma de dragón."
 }
