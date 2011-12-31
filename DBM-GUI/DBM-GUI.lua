@@ -2208,6 +2208,25 @@ do
 						mod.Options[v] = not mod.Options[v]
 						if mod.optionFuncs and mod.optionFuncs[v] then mod.optionFuncs[v]() end
 					end)
+				elseif mod.dropdowns and mod.dropdowns[v] then
+					lastButton = button
+					local dropdownOptions = {}
+					for i, v in ipairs(mod.dropdowns[v]) do
+						dropdownOptions[#dropdownOptions + 1] = { text = mod.localization.options[v], value = v }
+					end
+					button = catpanel:CreateDropdown(mod.localization.options[v], dropdownOptions, mod.Options[v], function(value) mod.Options[v] = value end)
+					if addSpacer then
+						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
+						addSpacer = false
+					else
+						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
+					end
+					button:SetScript("OnShow", function(self)
+						-- set the correct selected value if the mod is being loaded after the gui is loaded (hack because the dropdown menu lacks a SetSelectedValue method)
+						_G[button:GetName().."Text"]:SetText(mod.localization.options[v])
+						button.value = v
+						button.text = mod.localization.options[v]
+					end)
 				end
 			end
 			catpanel:AutoSetDimension()

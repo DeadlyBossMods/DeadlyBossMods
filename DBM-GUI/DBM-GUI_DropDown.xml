@@ -42,9 +42,9 @@
 						<AbsDimension x="0" y="10"/>
 					</Size>
 					<Anchors>
-						<Anchor point="RIGHT" relativeTo="$parentRight">
+						<Anchor point="LEFT" relativeTo="$parentLeft">
 							<Offset>
-								<AbsDimension x="-43" y="2"/>
+								<AbsDimension x="30" y="2"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
