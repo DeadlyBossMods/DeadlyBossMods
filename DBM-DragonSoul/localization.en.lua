@@ -35,7 +35,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "Yell when you are affected by $spell:104600\n(Heroic difficulty only)",
-	CustomRangeFrame	= "Range Frame options",
+	CustomRangeFrame	= "Range Frame options (Heroic only)",
 	Never				= "Disabled",
 	Normal				= "Normal Range Frame",
 	DynamicPhase2		= "Phase2 Debuff Filtering",
