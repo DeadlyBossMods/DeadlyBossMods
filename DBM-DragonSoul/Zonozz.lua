@@ -39,10 +39,7 @@ local timerBlackBlood			= mod:NewBuffActiveTimer(30, 104378)
 
 local berserkTimer				= mod:NewBerserkTimer(360)
 
-mod:AddBoolOption("RangeFrame", true)--For heroic shadows, with debuff filtering.
-mod:AddBoolOption("NoFilterRangeFrame", false)--For those that want the range frame to simply work as it used to, always show everyone.
---When popup feature is added, range frame options will be expanded, maybe even consilidated into one option, just the popup.
---Popup will include: Disable range Frame, Always show dynamic Range Frane, Show normal RF in p1 and dynamic in p2, Always show normal RF
+mod:AddDropdownOption("CustomRangeFrame", {"Never", "Normal", "DynamicPhase2", "DynamicAlways"}, "Dynamic3Always", "misc")
 
 local shadowsTargets = {}
 local phase2Started = false
@@ -158,12 +155,12 @@ do
 	end
 end
 
+--"Never", "Normal", "DynamicPhase2", "DynamicAlways"
 function mod:updateRangeFrame()
-	if not self.Options.RangeFrame then return end -- only update/show if this is enabled
-	if not self:IsDifficulty("heroic10", "heroic25") then return end--Not needed on normal or LFR
-	if self.Options.NoFilterRangeFrame or UnitDebuff("player", GetSpellInfo(103434)) then
+	if self:IsDifficulty("normal10", "normal25", "lfr25") or self.Options.CustomRangeFrame == "Never" then return end
+	if self.Options.CustomRangeFrame == "Normal" or UnitDebuff("player", GetSpellInfo(103434)) or self.Options.CustomRangeFrame == "DynamicPhase2" and not phase2started then--You have debuff or only want normal range frame or it's phase 1 and you only want dymanic in phase 2
 		DBM.RangeCheck:Show(10, nil)--Show everyone.
-	else
+	else 
 		DBM.RangeCheck:Show(10, shadowsDebuffFilter)--Show only people who have debuff.
 	end
 end
@@ -217,7 +214,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
+	if self.Options.CustomRangeFrame ~= "Never" then
 		DBM.RangeCheck:Hide()
 	end
 end

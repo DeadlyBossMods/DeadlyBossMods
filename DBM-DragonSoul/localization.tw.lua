@@ -36,8 +36,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "當你中了$spell:104600時大喊(只有英雄模式)",
-	RangeFrame			= "為玩家的減益狀態顯示動態距離框架，應對英雄難度的$spell:104601",
-	NoFilterRangeFrame	= "停用過濾框架減益並總是顯示所有人"
+	CustomRangeFrame	= "Range Frame options",
+	Never				= "Disabled",
+	Normal				= "Normal Range Frame",
+	DynamicPhase2		= "Phase2 Debuff Filtering",
+	DynamicAlways		= "Always Debuff Filtering"
 })
 
 L:SetMiscLocalization({
@@ -113,7 +116,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器",
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	ResetHoTCount		= "每3次(25人)/2次(10人)重置$spell:109417的計算次數",
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Never",
+	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	Reset3Always		= "Always Reset in sets of 3",
 	ShowRaidCDs			= "為坦克冷卻顯示計時器(目前只有戰士生效)"
 })
 

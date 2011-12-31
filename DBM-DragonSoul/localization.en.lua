@@ -35,8 +35,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "Yell when you are affected by $spell:104600\n(Heroic difficulty only)",
-	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:104601 on Heroic difficulty",
-	NoFilterRangeFrame	= "Disable Range Frame debuff filter and always show everyone\n(requires Range Frame enabled)"
+	CustomRangeFrame	= "Range Frame options",
+	Never				= "Disabled",
+	Normal				= "Normal Range Frame",
+	DynamicPhase2		= "Phase2 Debuff Filtering",
+	DynamicAlways		= "Always Debuff Filtering"
 })
 
 L:SetMiscLocalization({
@@ -112,7 +115,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
 	TimerCombatStart	= "Show timer for Ultraxion RP",
-	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use spellname for now.
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "Never",
 	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
 	Reset3Always		= "Always Reset in sets of 3",
