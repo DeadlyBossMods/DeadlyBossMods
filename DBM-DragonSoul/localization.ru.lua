@@ -36,8 +36,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell	= "Кричать, когда на вас $spell:104600\n(Героический уровень сложности)",
-	RangeFrame	= "Показывать окно проверки дистанции для $spell:104601\n(Героический уровень сложности)",
-	NoFilterRangeFrame	= "Показывать всех игроков в этом окне, а не только с дебаффами"
+	CustomRangeFrame	= "Range Frame options",
+	Never				= "Disabled",
+	Normal				= "Normal Range Frame",
+	DynamicPhase2		= "Phase2 Debuff Filtering",
+	DynamicAlways		= "Always Debuff Filtering"
 })
 
 L:SetMiscLocalization({
@@ -111,7 +114,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerDrakes			= "Отсчет времени при применении $spell:109904 Сумеречными агрессорами",
-	TimerCombatStart	= "Отсчет времени до приземления Ультраксиона"
+	TimerCombatStart	= "Отсчет времени до приземления Ультраксиона",
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Never",
+	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	Reset3Always		= "Always Reset in sets of 3"
 })
 
 L:SetMiscLocalization({
