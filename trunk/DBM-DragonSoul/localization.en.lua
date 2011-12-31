@@ -112,7 +112,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
 	TimerCombatStart	= "Show timer for Ultraxion RP",
-	ResetHoTCounter		= "Restart $spell:109417 counter",
+	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use spellname for now.
 	Never				= "Never",
 	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
 	Reset3Always		= "Always Reset in sets of 3",
