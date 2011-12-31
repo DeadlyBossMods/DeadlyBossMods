@@ -184,8 +184,15 @@ do
 		dropdown.creator = self
 		dropdown.values = values
 		dropdown.callfunc = callfunc
-		dropdown:SetWidth((width or 120)+30)	-- required to fix some setpoint problems
-		_G[dropdown:GetName().."Middle"]:SetWidth(width or 120)
+		if not width then
+			width = 120 -- minimum size
+			for i, v in ipairs(values) do
+				_G[dropdown:GetName().."Text"]:SetText(v.text)
+				width = math.max(width, _G[dropdown:GetName().."Text"]:GetStringWidth())
+			end
+		end
+		dropdown:SetWidth(width + 30)	-- required to fix some setpoint problems
+		_G[dropdown:GetName().."Middle"]:SetWidth(width + 30)
 		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
 			if DBM.Options.UseMasterVolume then
 				PlaySound("igMainMenuOptionCheckBoxOn", "Master")

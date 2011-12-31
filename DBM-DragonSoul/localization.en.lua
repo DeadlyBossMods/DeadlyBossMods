@@ -112,7 +112,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
 	TimerCombatStart	= "Show timer for Ultraxion RP",
-	ResetHoTCount		= "Restart $spell:109417 count in sets of 3s(heroic)/2s(normal)",
+	ResetHoTCounter		= "Restart $spell:109417 counter",
+	Never				= "Never",
+	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	Reset3Heroic		= "Reset in sets of 3 for heroic",
 	ShowRaidCDs			= "Show timers for Raid cooldowns (WIP)",
 	ShowRaidCDsSelf		= "But only show timers for yours\n(requires Raid cooldowns enabled)"
 })

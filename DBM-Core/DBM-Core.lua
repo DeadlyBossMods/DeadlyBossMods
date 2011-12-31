@@ -4482,6 +4482,8 @@ function bossModPrototype:AddButton(name, onClick, cat, func)
 	end
 end
 
+-- FIXME: this function does not reset any settings to default if you remove an option in a later revision and a user has selected this option in an earlier revision were it still was available
+-- this will be fixed as soon as it is necessary due to removed options ;-)
 function bossModPrototype:AddDropdownOption(name, options, default, cat, func)
 	cat = cat or "misc"
 	self.Options[name] = default
