@@ -26,9 +26,9 @@ local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
 local warnFadingLight				= mod:NewTargetCountAnnounce(110080, 3)
 
 local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil, true)
-local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
 local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(110080, mod:IsTank())
+local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
 
 local timerDrakes					= mod:NewTimer(253, "TimerDrakes", 61248)
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
