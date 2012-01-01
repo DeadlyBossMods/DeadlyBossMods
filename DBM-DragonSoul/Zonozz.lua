@@ -44,7 +44,6 @@ mod:AddDropdownOption("CustomRangeFrame", {"Never", "Normal", "DynamicPhase2", "
 local shadowsTargets = {}
 local phase2Started = false
 local voidWarned = false
---local voidStacks = 0
 
 --[[
 local voidTimers = { -- all timers is guessed and can't find in my logs (: please check this,
@@ -184,13 +183,11 @@ local function blackBloodEnds()
 			timerVoidofUnmakingCD:Update(84.3, 90.3)
 		end
 	end
-	voidStacks = 0
 end
 
 function mod:OnCombatStart(delay)
 	voidWarned = false
 	phase2Started = false
-	voidStacks = 0
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(5.5-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
@@ -231,9 +228,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(106836) then--106836 confirmed 10/25 man normal, do NOT add 103527 to this, that's a seperate spellid for when BOSS is affected by diffusion, this warning is counting the ball stacks.
 		warnVoidDiffusion:Show(args.destName, args.amount or 1)
 		timerVoidDiffusionCD:Start()
-		if voidStacks < 11 then
-			voidStacks = voidStacks + 1
-		end
 	elseif args:IsSpellID(103434, 104599, 104600, 104601) then--103434 confirmed 10 man normal.
 		shadowsTargets[#shadowsTargets + 1] = args.destName
 		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") then
