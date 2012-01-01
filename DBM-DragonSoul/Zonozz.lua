@@ -30,7 +30,7 @@ local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, false)
 local specWarnShadows			= mod:NewSpecialWarningYou(103434)
 local yellShadows				= mod:NewYell(103434, nil, false, L.ShadowYell)--Requested by 10 man guilds, but a spammy mess in 25s, so off by default. With the option to enable when desired.
 
-local timerVoidofUnmakingCD		= mod:NewCDTimer(6, 103571, nil, nil, nil, 103527)
+local timerVoidofUnmakingCD		= mod:NewCDTimer(90.3, 103571, nil, nil, nil, 103527)
 local timerVoidDiffusionCD		= mod:NewCDTimer(5, 106836)--Can not be triggered more then once per 5 seconds.
 local timerFocusedAngerCD		= mod:NewCDTimer(6, 104543, nil, false)--Off by default as it may not be entirely useful information to know, but an option just for heck of it. You know SOMEONE is gonna request it
 local timerPsychicDrainCD		= mod:NewCDTimer(20, 104322)--Every 20-25 seconds, variates.
@@ -44,8 +44,9 @@ mod:AddDropdownOption("CustomRangeFrame", {"Never", "Normal", "DynamicPhase2", "
 local shadowsTargets = {}
 local phase2Started = false
 local voidWarned = false
-local voidStacks = 0
+--local voidStacks = 0
 
+--[[
 local voidTimers = { -- all timers is guessed and can't find in my logs (: please check this,
 	[0] = 48, --Unknown
 	[1] = 43, --Confirmed 25 lfr
@@ -66,14 +67,13 @@ local heroicvoidTimers = { -- all timers is guessed and can't find in my logs (:
 	[3] = 33, --Confirmed 33 on 10 man heroic and 10 man normal
 	[4] = 28, --Unknown
 	[5] = 22, --Unknown for heroic, could be 22, or 25. the 9 7 7 5 strategy lacks the luxury of seeing the 4th black phase end :(
-	[6] = 12.5, --Unknown. the normal version doesn't even make much sense, 
+	[6] = 15, --Unknown. assumed no lower then 15 though.
 	[7] = 15, --Confirmed in 10 heroic and 25 man heroic
 	[8] = 15, --Unknown, but unlikely changed being in the middle of 7 and 9
 	[9] = 15, --Confirmed in 10 heroic and 25 man heroic
 	[10]= 15, --Assumed, maybe heroic min time is 15 sec.
 }
 
---[[
 3 stack normal 10:
 [21:30:17.044] Void of the Unmaking afflicted by Void Diffusion (3) from Void of the Unmaking
 [21:30:25.671] Anshlun afflicted by Black Blood of Go'rath from Warlord Zon'ozz
@@ -89,12 +89,12 @@ local heroicvoidTimers = { -- all timers is guessed and can't find in my logs (:
 [21:04:36.002] Void of the Unmaking afflicted by Void Diffusion (5) from Void of the Unmaking
 [21:04:44.710] Shiramune afflicted by Black Blood of Go'rath from Warlord Zon'ozz
 [21:05:14.710] Shiramune fake arg
-[21:05:46.022] Warlord Zon'ozz casts Psychic Drain (30-31.5 sec for 5 stack on 25 man normal)
+[21:05:46.022] Warlord Zon'ozz casts Psychic Drain (31.5 sec for 5 stack on 25 man normal)
 5 Stack normal 10:
 [20:49:05.332] Void of the Unmaking afflicted by Void Diffusion (5) from Void of the Unmaking
 [20:49:14.223] Erej afflicted by Black Blood of Go'rath from  Warlord Zon'ozz
 [20:50:44.223] Erej fake arg
-[20:50:15.600]  Warlord Zon'ozz casts Psychic Drain (30-31.5 sec for a 5 stack on 10 man normal)
+[20:50:15.600]  Warlord Zon'ozz casts Psychic Drain (31.5 sec for a 5 stack on 10 man normal)
 
 6 Stack normal 10:
 [19:39:15.772] Void of the Unmaking afflicted by Void Diffusion (6) from Void of the Unmaking
@@ -174,11 +174,15 @@ local function blackBloodEnds()
 	--It DOES appear to be difficulty based to a minor extent, i've verified it through MANY guilds 10 and 25 herioc logs. particularly the 7-9 stack on heroic without a doubt being 3 seconds later then normal in every log.
 	--Still need data for the following (0, 2, 4, 6, 8 stacks in all difficulties. 1, 10 for heroic difficulties. 8 and 9 for normal difficulties)
 	if mod:IsDifficulty("heroic10", "heroic25") then
-		timerVoidofUnmakingCD:Start(heroicvoidTimers[voidStacks])
-		timerPsychicDrainCD:Start(heroicvoidTimers[voidStacks] + 8.5)
+		if timerVoidofUnmakingCD:GetTime() < 15 then--Heroic has a failsafe in place, if CD exausts before 15 seconds after black phase ending, it's extended, probably to allow raid more time to repositoin vs normal
+			timerVoidofUnmakingCD:Update(75.3, 90.3)
+		end
+--		timerVoidofUnmakingCD:Start(heroicvoidTimers[voidStacks])
 	else
-		timerVoidofUnmakingCD:Start(voidTimers[voidStacks])
-		timerPsychicDrainCD:Start(voidTimers[voidStacks] + 8.5)
+--		timerVoidofUnmakingCD:Start(voidTimers[voidStacks])
+		if timerVoidofUnmakingCD:GetTime() < 6 then--Normal also has a failsafe but much smaller, if it comes off CD before 6 seconds has passed after dark, it gets delayed until 6 seconds have passed
+			timerVoidofUnmakingCD:Update(84.3, 90.3)
+		end
 	end
 	voidStacks = 0
 end
@@ -258,7 +262,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	--Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
 	if spellID == 103571 and not voidWarned then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
-		timerVoidofUnmakingCD:Cancel()
+		timerPsychicDrainCD:Start(8.5)
+		timerVoidofUnmakingCD:Start()
 		voidWarned = true
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
@@ -270,7 +275,8 @@ end
 --Backup trigger for LFR where UNIT_SPELLCAST_SUCCEEDED doesn't fire for void cast
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.voidYell or msg:find(L.voidYell)) and not voidWarned then
-		timerVoidofUnmakingCD:Cancel()
+		timerPsychicDrainCD:Start(8.3)--Yell comes .2 after unit event, so we adjust the timers.
+		timerVoidofUnmakingCD:Start(90.1)
 		voidWarned = true
 		warnVoidofUnmaking:Show()
 		specWarnVoidofUnmaking:Show()
