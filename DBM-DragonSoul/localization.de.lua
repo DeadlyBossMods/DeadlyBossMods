@@ -36,11 +36,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "Schreie, wenn du von $spell:104600 betroffen bist\n(nur heroischer Schwierigkeitsgrad)",
-	CustomRangeFrame	= "Range Frame options",
-	Never				= "Disabled",
-	Normal				= "Normal Range Frame",
-	DynamicPhase2		= "Phase2 Debuff Filtering",
-	DynamicAlways		= "Always Debuff Filtering"
+	CustomRangeFrame	= "Abstandsfenster (10m) für Störende Schatten (nur heroischer Schwierigkeitsgrad)",
+	Never				= "Deaktiviert",
+	Normal				= "Aktiviert (ohne Debufffilter)",
+	DynamicPhase2		= "Aktiviert (mit Debufffilter in Phase 2)",
+	DynamicAlways		= "Aktiviert (mit Debufffilter in allen Phasen)"
 })
 
 L:SetMiscLocalization({
@@ -116,10 +116,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen",
 	TimerCombatStart	= "Zeige Dauer des Rollenspiels bevor Ultraxion aktiv wird",
-	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
-	Never				= "Never",
-	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
-	Reset3Always		= "Always Reset in sets of 3",
+	ResetHoTCounter		= "Neustart der Stunde des Zwielichts Zählung",
+	Never				= "Kein Neustart",
+	Reset3				= "Neustart in 3er/2er-Gruppen (heroisch/normal)",
+	Reset3Always		= "Neustart immer in 3er-Gruppen",
 	ShowRaidCDs			= "Zeige Timer für \"Raid-Cooldowns\" (in Entwicklung)",
 	ShowRaidCDsSelf		= "Zeige jedoch nur Timer für eigene \"Raid-Cooldowns\"\n(benötigt aktivierte Timer für \"Raid-Cooldowns\")"
 })
