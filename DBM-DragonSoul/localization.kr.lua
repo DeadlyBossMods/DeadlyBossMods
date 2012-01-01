@@ -36,11 +36,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기 (영웅 난이도에서만)",
-	CustomRangeFrame	= "Range Frame options",
-	Never				= "Disabled",
-	Normal				= "Normal Range Frame",
-	DynamicPhase2		= "Phase2 Debuff Filtering",
-	DynamicAlways		= "Always Debuff Filtering"
+	CustomRangeFrame	= "교란의 그림자 주문에 대한 거리 프레임 설정 (영웅 난이도)",
+	Never				= "사용안함",
+	Normal				= "일반 거리 프레임",
+	DynamicPhase2		= "고라스의 검은 피 도중에만 필터링 사용",
+	DynamicAlways		= "항상 디버프 필터링 사용"
 })
 
 L:SetMiscLocalization({
@@ -118,10 +118,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "황혼의 습격자가 $spell:109904 시전까지 남은시간 바 표시",
 	TimerCombatStart	= "울트락시온 활성화 바 표시",
-	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
-	Never				= "Never",
-	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
-	Reset3Always		= "Always Reset in sets of 3",
+	ResetHoTCounter		= "황혼의 시간 시전 횟수 재시작 설정",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "재시작 안함",
+	Reset3				= "일반 3회, 영웅 2회 단위로 재시작",
+	Reset3Always		= "난이도 구분 없이 3회 단위로 재시작",
 	ShowRaidCDs			= "공격대 재사용 대기시간 바 표시 (테스트 중)",
 	ShowRaidCDsSelf		= "자신의 재사용 대기시간 바만 표시 (공격대 재사용 대기시간 바 활성화 필요)"
 })

@@ -44,9 +44,8 @@ mod:AddDropdownOption("CustomRangeFrame", {"Never", "Normal", "DynamicPhase2", "
 local shadowsTargets = {}
 local phase2Started = false
 local voidWarned = false
---local voidStacks = 0
+local voidStacks = 0
 
---[[
 local voidTimers = { -- all timers is guessed and can't find in my logs (: please check this,
 	[0] = 48, --Unknown
 	[1] = 43, --Confirmed 25 lfr
@@ -74,6 +73,7 @@ local heroicvoidTimers = { -- all timers is guessed and can't find in my logs (:
 	[10]= 15, --Assumed, maybe heroic min time is 15 sec.
 }
 
+--[[
 3 stack normal 10:
 [21:30:17.044] Void of the Unmaking afflicted by Void Diffusion (3) from Void of the Unmaking
 [21:30:25.671] Anshlun afflicted by Black Blood of Go'rath from Warlord Zon'ozz
@@ -160,7 +160,7 @@ function mod:updateRangeFrame()
 	if self:IsDifficulty("normal10", "normal25", "lfr25") or self.Options.CustomRangeFrame == "Never" then return end
 	if self.Options.CustomRangeFrame == "Normal" or UnitDebuff("player", GetSpellInfo(103434)) or self.Options.CustomRangeFrame == "DynamicPhase2" and not phase2started then--You have debuff or only want normal range frame or it's phase 1 and you only want dymanic in phase 2
 		DBM.RangeCheck:Show(10, nil)--Show everyone.
-	else 
+	else
 		DBM.RangeCheck:Show(10, shadowsDebuffFilter)--Show only people who have debuff.
 	end
 end
@@ -173,7 +173,6 @@ local function blackBloodEnds()
 	--it's timer depends on Void Diffusion stacks. But since timer not confirmed, temporarly commented it.
 	--It DOES appear to be difficulty based to a minor extent, i've verified it through MANY guilds 10 and 25 herioc logs. particularly the 7-9 stack on heroic without a doubt being 3 seconds later then normal in every log.
 	--Still need data for the following (0, 2, 4, 6, 8 stacks in all difficulties. 1, 10 for heroic difficulties. 8 and 9 for normal difficulties)
-	--[[
 	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerVoidofUnmakingCD:Start(heroicvoidTimers[voidStacks])
 		timerPsychicDrainCD:Start(heroicvoidTimers[voidStacks] + 8.5)
@@ -182,26 +181,12 @@ local function blackBloodEnds()
 		timerPsychicDrainCD:Start(voidTimers[voidStacks] + 8.5)
 	end
 	voidStacks = 0
-	]]
-	if mod:IsDifficulty("lfr25") then -- absoultely 10 stacks
-		timerVoidofUnmakingCD:Start()
-		timerPsychicDrainCD:Start(14.5)
-	elseif mod:IsDifficulty("normal25") then -- maybe 8 stacks?
-		timerVoidofUnmakingCD:Start(12)
-		timerPsychicDrainCD:Start(20.5)
-	elseif mod:IsDifficulty("heroic10", "heroic25") then -- maybe 7 stacks?
-		timerVoidofUnmakingCD:Start(15)
-		timerPsychicDrainCD:Start(23.5)
-	elseif mod:IsDifficulty("normal10") then -- maybe 5 stacks?
-		timerVoidofUnmakingCD:Start(22.5)
-		timerPsychicDrainCD:Start(31)
-	end
 end
 
 function mod:OnCombatStart(delay)
 	voidWarned = false
 	phase2Started = false
---	voidStacks = 0
+	voidStacks = 0
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(5.5-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
@@ -242,9 +227,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(106836) then--106836 confirmed 10/25 man normal, do NOT add 103527 to this, that's a seperate spellid for when BOSS is affected by diffusion, this warning is counting the ball stacks.
 		warnVoidDiffusion:Show(args.destName, args.amount or 1)
 		timerVoidDiffusionCD:Start()
---		if voidStacks < 11 then
---			voidStacks = voidStacks + 1
---		end
+		if voidStacks < 11 then
+			voidStacks = voidStacks + 1
+		end
 	elseif args:IsSpellID(103434, 104599, 104600, 104601) then--103434 confirmed 10 man normal.
 		shadowsTargets[#shadowsTargets + 1] = args.destName
 		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") then
