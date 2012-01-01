@@ -132,7 +132,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--timerDeckFireCD:Cancel()--This continue into phase 2 or do we cancel it?
 		warnPhase2:Show()
 		timerCombatStart:Start(5)--Shorter now on live? 5-6 seems about right now. Lets try 5.
-		timerRoarCD:Start(22)
+		timerRoarCD:Start(21)
 		timerTwilightFlamesCD:Start(22)
 		timerShockwaveCD:Start()--23-26 second variation
 		if not self:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR
