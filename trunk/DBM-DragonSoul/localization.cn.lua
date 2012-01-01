@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/1/2012
+-- Last update: 1/2/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -40,11 +40,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "当你受到$spell:104600影响时时大喊（英雄难度）",
-	CustomRangeFrame	= "Range Frame options",
-	Never				= "Disabled",
-	Normal				= "Normal Range Frame",
-	DynamicPhase2		= "Phase2 Debuff Filtering",
-	DynamicAlways		= "Always Debuff Filtering"
+	CustomRangeFrame	= "距离监视器选项（英雄难度）",
+	Never				= "关闭",
+	Normal				= "普通距离监视",
+	DynamicPhase2		= "第2阶段根据状态动态监视",
+	DynamicAlways		= "总是根据状态动态监视"
 })
 
 L:SetMiscLocalization({
@@ -120,10 +120,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "计时条：暮光突袭者何时$spell:109904",
 	TimerCombatStart	= "计时条：战斗即将开始",
-	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
-	Never				= "Never",
-	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
-	Reset3Always		= "Always Reset in sets of 3",
+	ResetHoTCounter		= "重新开始目光审判计数器",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "从不",
+	Reset3				= "每3/2秒（英雄/普通难度）重置一次",
+	Reset3Always		= "总是每3秒进行重置",
 	ShowRaidCDs			= "计时条：团队减伤技能冷却（测试功能）",
 	ShowRaidCDsSelf		= "团队减伤技能冷却计时条仅显示自身技能\n（需要开启团队减伤技能冷却计时条）"
 })
