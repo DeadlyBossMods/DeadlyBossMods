@@ -35,16 +35,16 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShadowYell			= "當你中了$spell:104600時大喊(只有英雄模式)",
-	CustomRangeFrame	= "Range Frame options",
-	Never				= "Disabled",
-	Normal				= "Normal Range Frame",
-	DynamicPhase2		= "Phase2 Debuff Filtering",
-	DynamicAlways		= "Always Debuff Filtering"
+	ShadowYell			= "當你中了$spell:104600時大喊(英雄模式專用)",
+	CustomRangeFrame	= "距離框選項(英雄模式專用)",
+	Never				= "禁用",
+	Normal				= "普通距離框架",
+	DynamicPhase2		= "過濾第二階段減益",
+	DynamicAlways		= "總是過濾減益"
 })
 
 L:SetMiscLocalization({
-	voidYell	= "Gul'kafh an'qov N'Zoth."
+	voidYell			= "Gul'kafh an'qov N'Zoth."
 })
 
 -----------------------------
@@ -116,11 +116,12 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器",
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
-	Never				= "Never",
-	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
-	Reset3Always		= "Always Reset in sets of 3",
-	ShowRaidCDs			= "為坦克冷卻顯示計時器(目前只有戰士生效)"
+	ResetHoTCounter		= "重置幕光之時計數",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "絕不",
+	Reset3				= "每三次/兩次重置(英雄/普通)",
+	Reset3Always		= "總是每三次重置",
+	ShowRaidCDs			= "為團隊冷卻顯示計時器(未完成)",
+	ShowRaidCDsSelf		= "只顯示你的團隊冷卻計時器\n(需要開啟團隊冷卻)"
 })
 
 L:SetMiscLocalization({
@@ -174,10 +175,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "他的護甲!他正在崩壞!破壞他的護甲，我們就有機會打贏他了!",
-	NoDebuff	= "無%s",
+	Pull			= "他的護甲!他正在崩壞!破壞他的護甲，我們就有機會打贏他了!",
+	NoDebuff		= "無%s",
 	PlasmaTarget	= "燃燒血漿: %s",
-	DRoll		= "他準備往",
+	DRoll			= "他準備往",
 	DLevels			= "回復平衡"
 })
 
