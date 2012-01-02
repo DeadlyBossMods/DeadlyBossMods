@@ -63,7 +63,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerOozesActive	= "핏방울이 소환된 후 공격 가능하기까지 남은시간 바 표시",
 --	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시",
-	RangeFrame			= "보스가 $spell:104898 주문의 영향을 받은 경우 거리 프레임 보기 (4m)\n(일반 난이도 이상)"
+	RangeFrame			= "$spell:104898 주문이 활성화 된 경우 거리 프레임 보기 (4m)\n(일반 난이도 이상)"
 })
 
 L:SetMiscLocalization({
@@ -173,7 +173,7 @@ L:SetOptionLocalization({
 	SpecWarnTendril			= "$spell:109454 약화 효과가 없을 경우 특수 경고 보기",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "$spell:109454 약화 효과 없음에 대한 정보 프레임 보기",
 	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
-	ShowShieldInfo			= "$spell:105479 주문 흡수량에 대한 바와 함께 보스 체력 프레임 보기"
+	ShowShieldInfo			= "보스 체력 프레임에 $spell:105479 주문 흡수량 바 표시"
 })
 
 L:SetMiscLocalization({
