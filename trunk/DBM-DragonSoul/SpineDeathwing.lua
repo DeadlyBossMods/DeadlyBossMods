@@ -151,6 +151,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(109379) then
 		if not corruptionActive[args.sourceGUID] then
+			corruptionActive[args.sourceGUID] = 0
 			if self:IsDifficulty("normal25", "heroic25") then
 				timerGripCD:Start(16, args.sourceGUID)
 			else
