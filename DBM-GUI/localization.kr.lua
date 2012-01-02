@@ -71,12 +71,12 @@ L.Button_RangeRadar		= "거리 레이더 켜기/끄기"
 L.Button_InfoFrame		= "정보 프레임 켜기/끄기"
 L.Button_TestBars		= "테스트 경보 시작"
 
-L.PizzaTimer_Headline 	= '사용자 지정 타이머 만들기'
+L.PizzaTimer_Headline 	= '사용자 지정 바 만들기'
 L.PizzaTimer_Title		= '이름 (예 : "Pizza!")'
 L.PizzaTimer_Hours 		= "시"
 L.PizzaTimer_Mins 		= "분"
 L.PizzaTimer_Secs 		= "초"
-L.PizzaTimer_ButtonStart 	= "타이머 시작"
+L.PizzaTimer_ButtonStart 	= "바 시작"
 L.PizzaTimer_BroadCast		= "공격대에 알리기"
 
 -- Tab: Raidwarning
