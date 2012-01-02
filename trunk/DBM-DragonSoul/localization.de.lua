@@ -139,13 +139,11 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "Kampfbeginn",
-	TimerSapper			= "Nächster Zwielichtpionier",
 	TimerAdd			= "Nächste Elitegegner"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Zeige Zeit bis Kampfbeginn",
-	TimerSapper			= "Zeige Zeit bis nächster Zwielichtpionier erscheint",
 	TimerAdd			= "Zeige Zeit bis nächste Zwielichtelitegegner erscheinen"
 })
 
