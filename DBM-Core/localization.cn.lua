@@ -141,26 +141,15 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r减益效果持续时间",
-	cast		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r施法时间",
-	active		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r效果持续时间",
-	fades		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r何时从玩家身上消失",
-	cd			= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
-	cdcount		= "计时条：|cff71d5ff|Hspell:%d|h%s|h|r冷却时间",
-	next		= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
-	nextcount	= "计时条：下一次|cff71d5ff|Hspell:%d|h%s|h|r",
+	target		= "计时条：$spell:%s减益效果持续时间",
+	cast		= "计时条：$spell:%s施法时间",
+	active		= "计时条：$spell:%s效果持续时间",
+	fades		= "计时条：$spell:%s何时从玩家身上消失",
+	cd			= "计时条：$spell:%s冷却时间",
+	cdcount		= "计时条：$spell:%s冷却时间",
+	next		= "计时条：下一次$spell:%s",
+	nextcount	= "计时条：下一次$spell:%s",
 	achievement	= "计时条：成就%s"
-}
-
-DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
-	target		= "计时条：|cff71d5ff%s|r减益效果持续时间",
-	cast		= "计时条：|cff71d5ff%s|r施法时间",
-	active		= "计时条：|cff71d5ff%s|r效果持续时间",
-	fades		= "计时条：|cff71d5ff%s|r何时从玩家身上消失",
-	cd			= "计时条：|cff71d5ff%s|r冷却时间",
-	cdcount		= "计时条：|cff71d5ff%s|r冷却时间",
-	next		= "计时条：下一次|cff71d5ff%s|r",
-	nextcount	= "计时条：下一次|cff71d5ff%s|r"
 }
 
 -- Auto-generated Warning Localizations
@@ -177,59 +166,32 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stack					= "%s: >%%s< (%%d)",
 }
 
-local prewarnOption			= "提前警报：|cff71d5ff|Hspell:%d|h%s|h|r"
+local prewarnOption			= "提前警报：$spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的目标",
-	targetcount				= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的目标",
-	spell					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r",
-	cast					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r的施放",
+	target					= "警报：$spell:%s的目标",
+	targetcount				= "警报：$spell:%s的目标",
+	spell					= "警报：$spell:%s",
+	cast					= "警报：$spell:%s的施放",
 	soon					= prewarnOption,
 	prewarn					= prewarnOption,
 	phase					= "警报：第%s阶段",
 	prephase				= "提前警报：第%s阶段",
-	count					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r",
-	stack					= "警报：|cff71d5ff|Hspell:%d|h%s|h|r叠加层数",
+	count					= "警报：$spell:%s",
+	stack					= "警报：$spell:%s叠加层数",
 }
-
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
-	target	= "警报：|cff71d5ff%s|r的目标",
-	targetcount	= "警报：|cff71d5ff%s|r的目标",
-	spell	= "警报：|cff71d5ff%s|r",
-	cast	= "警报：|cff71d5ff%s|r的施放",
-	soon	= "提前警报：|cff71d5ff%s|r",
-	prewarn = "提前警报：|cff71d5ff%s|r",
-	phase	= "警报：第%s阶段",
-	prephase= "提前警报：第%s阶段",
-	count	= "警报：|cff71d5ff%s|r",
-	stack	= "警报：|cff71d5ff%s|r叠加层数",
-}
-
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell					= "特殊警报：$spell:%d",
-	dispel					= "特殊警报：需要驱散或偷取$spell:%d",
-	interrupt				= "特殊警报：需要打断$spell:%d",
-	you						= "特殊警报：当你受到$spell:%d影响时",
-	target					= "特殊警报：当他人受到$spell:%d影响时",
-	close					= "特殊警报：当你附近有人受到$spell:%d影响时",
-	move					= "特殊警报：当你受到$spell:%d影响时",
-	run						= "特殊警报：$spell:%d",
-	cast					= "特殊警报：$spell:%d的施放",
-	stack					= "特殊警报：当叠加了至少%d层$spell:%d时"
-}
-
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
-	spell 		= "特殊警报：$journal:%d",
-	dispel 		= "特殊警报：需要驱散或偷取\n $journal:%d",
-	interrupt	= "特殊警报：需要打断$journal:%d",
-	you 		= "特殊警报：当你受到$journal:%d影响时",
-	target 		= "特殊警报：当他人受到$journal:%d影响时",
-	close 		= "特殊警报：当你附近有人受到$journal:%d影响时",
-	move 		= "特殊警报：当你受到$journal:%d影响时",
-	run 		= "特殊警报：$journal:%d",
-	cast 		= "特殊警报：$journal:%d的施放",
-	stack 		= "特殊警报：当叠加了至少%d层$journal:%d时"
+	spell					= "特殊警报：$spell:%s",
+	dispel					= "特殊警报：需要驱散或偷取$spell:%s",
+	interrupt				= "特殊警报：需要打断$spell:%s",
+	you						= "特殊警报：当你受到$spell:%s影响时",
+	target					= "特殊警报：当他人受到$spell:%s影响时",
+	close					= "特殊警报：当你附近有人受到$spell:%s影响时",
+	move					= "特殊警报：当你受到$spell:%s影响时",
+	run						= "特殊警报：$spell:%s",
+	cast					= "特殊警报：$spell:%s的施放",
+	stack					= "特殊警报：当叠加了至少%d层$spell:%s时"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -246,16 +208,11 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "为$spell:%d的目标添加团队标记"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "为$journal:%d的目标添加团队标记"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "声音警报“快跑啊！”：$spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "声音警报“快跑啊！”：$journal:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "声音警报：$spell:%d的冷却时间倒计时"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "声音警报：$journal:%d的冷却时间倒计时"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "声音警报：$spell:%d的持续时间正计时"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "声音警报：$journal:%d的持续时间正计时"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "当你受到$spell:%d影响时时大喊"
-DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "当你受到$journal:%d影响时时大喊"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "为$spell:%s的目标添加团队标记"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "声音警报“快跑啊！”：$spell:%s"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "声音警报：$spell:%s的冷却时间倒计时"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "声音警报：$spell:%s的持续时间正计时"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "当你受到$spell:%s影响时时大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s！"--Verify (%s is spellname)
 
 
