@@ -139,13 +139,11 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "戰鬥開始",
-	TimerSapper			= "下一次暮光工兵",
 	TimerAdd			= "下一次精英暮光"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	TimerSapper			= "為下一次暮光工兵重生顯示計時器",
 	TimerAdd			= "為下一次精英暮光顯示計時器"
 })
 

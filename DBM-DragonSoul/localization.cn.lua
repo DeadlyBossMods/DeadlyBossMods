@@ -143,13 +143,11 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "战斗即将开始",
-	TimerSapper			= "下一次暮光弹幕",
 	TimerAdd			= "下一波暮光精英"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "计时条：战斗即将开始",
-	TimerSapper			= "计时条：下一次暮光弹幕",--npc=56923
 	TimerAdd			= "计时条：下一波暮光精英"
 })
 
