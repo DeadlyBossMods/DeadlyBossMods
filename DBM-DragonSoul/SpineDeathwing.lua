@@ -149,14 +149,19 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerSealArmor:Start()
 		end
-	elseif args:IsSpellID(109379) then -- plasma spell cast start id. may be same all difficulties?
+	elseif args:IsSpellID(109379) then
 		if not corruptionActive[args.sourceGUID] then
-			corruptionActive[args.sourceGUID] = true
-			if self:IsDifficulty("normal25", "heroic25") then -- confirmed by kin raiders. always use grip after 2 times of plasma cast (8 sec x 2).
+			if self:IsDifficulty("normal25", "heroic25") then
 				timerGripCD:Start(16, args.sourceGUID)
-			else -- for my 10 man log. after 4 times of plasma cast (8 sec x 4).
+			else
 				timerGripCD:Start(nil, args.sourceGUID)
 			end
+		end
+		corruptionActive[args.sourceGUID] = corruptionActive[args.sourceGUID] + 1
+		if corruptionActive[args.sourceGUID] == 2 and self:IsDifficulty("normal25", "heroic25") then
+			timerGripCD:Update(8, 16)
+		elseif corruptionActive[args.sourceGUID] == 4 and self:IsDifficulty("normal10", "heroic10") then
+			timerGripCD:Update(24, 32)
 		end
 	end
 end
@@ -164,7 +169,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
 		warnAbsorbedBlood:Show(args.destName, args.amount or 1)
-	elseif args:IsSpellID(105490, 109457, 109458, 109459) then--This ability is not used in LFR, so if you add a CD bar for this, make sure you exclude LFR.
+	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
 		gripTargets[#gripTargets + 1] = args.destName
 		timerGripCD:Cancel(args.sourceGUID)
 		if corruptionActive[args.sourceGUID] then
