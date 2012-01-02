@@ -139,14 +139,14 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target		= "Exibir cronógrafo para a penalidade |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast		= "Exibir cronógrafo para lançar |cff71d5ff|Hspell:%d|h%s|h|r",
-	active		= "Exibir cronógrafo para a duração de |cff71d5ff|Hspell:%d|h%s|h|r",
-	fades		= "Exibir cronógrafo para quando |cff71d5ff|Hspell:%d|h%s|h|r desvanecerá dos jogadores",
-	cd			= "Exibir cronógrafo para recarga de |cff71d5ff|Hspell:%d|h%s|h|r",
-	cdcount		= "Exibir cronógrafo para recarga de |cff71d5ff|Hspell:%d|h%s|h|r",
-	next		= "Exibir cronógrafo para o próximo |cff71d5ff|Hspell:%d|h%s|h|r",
-	nextcount	= "Exibir cronógrafo para o próximo |cff71d5ff|Hspell:%d|h%s|h|r",
+	target		= "Exibir cronógrafo para a penalidade $spell:%s",
+	cast		= "Exibir cronógrafo para lançar $spell:%s",
+	active		= "Exibir cronógrafo para a duração de $spell:%s",
+	fades		= "Exibir cronógrafo para quando $spell:%s desvanecerá dos jogadores",
+	cd			= "Exibir cronógrafo para recarga de $spell:%s",
+	cdcount		= "Exibir cronógrafo para recarga de $spell:%s",
+	next		= "Exibir cronógrafo para o próximo $spell:%s",
+	nextcount	= "Exibir cronógrafo para o próximo $spell:%s",
 	achievement	= "Exibir cronógrafo para %s",
 }
 
@@ -164,58 +164,32 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stack	= "%s em >%%s< (%%d)",
 }
 
-local prewarnOption = "Exibir aviso antecipado para |cff71d5ff|Hspell:%d|h%s|h|r"
+local prewarnOption = "Exibir aviso antecipado para $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "Anunciar alvos de |cff71d5ff|Hspell:%d|h%s|h|r",
-	targetcount	= "Anunciar alvos de |cff71d5ff|Hspell:%d|h%s|h|r",
-	spell	= "Exibir aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast	= "Exibir aviso quando |cff71d5ff|Hspell:%d|h%s|h|r está sendo lançado",
+	target	= "Anunciar alvos de $spell:%s",
+	targetcount	= "Anunciar alvos de $spell:%s",
+	spell	= "Exibir aviso para $spell:%s",
+	cast	= "Exibir aviso quando $spell:%s está sendo lançado",
 	soon	= prewarnOption,
 	prewarn = prewarnOption,
 	phase	= "Anunciar Fase %s",
 	prephase= "Mostrar aviso antecipado para a Fase %s",
-	count	= "Exibir aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack	= "Anunciar empilhamento de |cff71d5ff|Hspell:%d|h%s|h|r",
-}
-
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
-	target	= "Anunciar alvos de |cff71d5ff%s|r",
-	targetcount	= "Anunciar alvos de |cff71d5ff%s|r",
-	spell	= "Exibir aviso para |cff71d5ff%s|r",
-	cast	= "Exibir aviso quando |cff71d5ff%s|r está sendo lançado",
-	soon	= prewarnOption,
-	prewarn = prewarnOption,
-	phase	= "Anunciar Fase %s",
-	prephase= "Mostrar aviso antecipado para a Fase %s",
-	count	= "Exibir aviso para |cff71d5ff%s|r",
-	stack	= "Anunciar empilhamento de |cff71d5ff%s|r",
+	count	= "Exibir aviso para $spell:%s",
+	stack	= "Anunciar empilhamento de $spell:%s",
 }
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "Exibir aviso especial para $spell:%d",
-	dispel 		= "Exibir aviso especial para remover/roubar \n $spell:%d",
-	interrupt	= "Exibir aviso especial para interromper $spell:%d",
-	you 		= "Exibir aviso especial quando você é afetado por \n $spell:%d",
-	target 		= "Exibir aviso especial quando alguém é afetador por \n $spell:%d",
-	close 		= "Exibir aviso especial quando alguém próximo de você é \n afetado por $spell:%d",
-	move 		= "Exibir aviso especial quando você é afetado por \n $spell:%d",
-	run 		= "Exibir aviso especial para $spell:%d",
-	cast 		= "Exibir aviso especial para o lançamento de $spell:%d",
-	stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%d"
-}
-
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
-	spell 		= "Exibir aviso especial para $journal:%d",
-	dispel 		= "Exibir aviso especial para remover/roubar \n $journal:%d",
-	interrupt	= "Exibir aviso especial para interromper $journal:%d",
-	you 		= "Exibir aviso especial quando você é afetado por \n $journal:%d",
-	target 		= "Exibir aviso especial quando alguém é afetador por \n $journal:%d",
-	close 		= "Exibir aviso especial quando alguém próximo de você é \n afetado por $journal:%d",
-	move 		= "Exibir aviso especial quando você é afetado por \n $journal:%d",
-	run 		= "Exibir aviso especial para $journal:%d",
-	cast 		= "Exibir aviso especial para o lançamento de $journal:%d",
-	stack 		= "Exibir aviso especial para pilha >=%d de \n $journal:%d"
+	spell 		= "Exibir aviso especial para $spell:%s",
+	dispel 		= "Exibir aviso especial para remover/roubar \n $spell:%s",
+	interrupt	= "Exibir aviso especial para interromper $spell:%s",
+	you 		= "Exibir aviso especial quando você é afetado por \n $spell:%s",
+	target 		= "Exibir aviso especial quando alguém é afetador por \n $spell:%s",
+	close 		= "Exibir aviso especial quando alguém próximo de você é \n afetado por $spell:%s",
+	move 		= "Exibir aviso especial quando você é afetado por \n $spell:%s",
+	run 		= "Exibir aviso especial para $spell:%s",
+	cast 		= "Exibir aviso especial para o lançamento de $spell:%s",
+	stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -232,11 +206,11 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Colocar ícones nos alvos de $spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Tocar som \"Fuja garotinha\" para $spell:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Tocar som de contagem regressiva para $spell:%d"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Tocar som de contagem regressiva para duração de $spell:%d"
-DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Gritar quando você é afetado por $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Colocar ícones nos alvos de $spell:%s"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Tocar som \"Fuja garotinha\" para $spell:%s"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Tocar som de contagem regressiva para $spell:%s"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Tocar som de contagem regressiva para duração de $spell:%s"
+DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Gritar quando você é afetado por $spell:%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s em mim!"
 
 

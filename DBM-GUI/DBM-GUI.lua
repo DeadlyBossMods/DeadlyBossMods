@@ -257,7 +257,18 @@ do
 
 	local function onHyperlinkEnter(self, data, link)
 		GameTooltip:SetOwner(self, "ANCHOR_NONE") -- I want to anchor BOTTOMLEFT of the tooltip to the cursor... (not BOTTOM as in ANCHOR_CURSOR)
-		GameTooltip:SetHyperlink(data)
+		local linkType = strsplit(":", data)
+		if linkType ~= "journal" then
+			GameTooltip:SetHyperlink(data)
+		else -- "journal:contentType:contentID:difficulty"
+			local _, contentType, contentID = strsplit(":", data)
+			if contentType == "2" then -- EJ section
+				local name, description = EJ_GetSectionInfo(tonumber(contentID))
+				GameTooltip:AddLine(name or DBM_CORE_UNKNOWN, 255, 255, 255, 0)
+				GameTooltip:AddLine(" ")
+				GameTooltip:AddLine(description or DBM_CORE_UNKNOWN, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+			end
+		end
 		GameTooltip:Show()
 		currActiveButton = self:GetParent()
 		updateFrame:SetScript("OnUpdate", onUpdate)
@@ -283,8 +294,8 @@ do
 	end
 
 	local function replaceJournalLinks(id)
-		local title = EJ_GetSectionInfo(id) or DBM_CORE_UNKNOWN
-		return ("|cff71d5ff%s|r"):format(title)
+		local link = select(9, EJ_GetSectionInfo(tonumber(id))) or DBM_CORE_UNKNOWN
+		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 	
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
@@ -298,6 +309,9 @@ do
 		button.myheight = 25
 		button.mytype = "checkbutton"
 		-- font strings do not support hyperlinks, so check if we need one...
+		if name:find("%$spell:ej") then -- it is in fact a journal link :-)
+			name = name:gsub("%$spell:ej(%d+)", "$journal:%1")
+		end
 		if name:find("%$spell:") then
 			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
 		end
