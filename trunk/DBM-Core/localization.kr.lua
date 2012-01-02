@@ -92,14 +92,14 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능한 명령어:",
 	"/dbm version: 공격대원의 DBM 버전 체크 (줄임말: ver)",
 --	"/dbm version2: 공격대 전체 DBM 버전 체크. 오래된 DBM일 경우 귓속말로 알립니다. (줄임말: ver2).",
-	"/dbm unlock: 바 위치조정을 할 수 있도록 상태 바를 보여줌.(줄임말: move)",
-	"/dbm timer <숫자> <글자>: <숫자>초 지속되는 <글자>바가 생성됨.",
-	"/dbm broadcast timer <숫자> <글자>: <숫자>초 지속되는 <글자>바를 공격대에 보여줌 (승급 권한 필요).",
-	"/dbm break <min>: <min>분 지속되는 휴식 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요).",
-	"/dbm pull <sec>: <sec>초 후 풀링한다는 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요).",
-	"/dbm arrow: DBM 화살표를 보여줌. 추가 도움말은 /dbm arrow help 를 입력.",
-	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요청함 (출력형식: 던전이름, 던전 ID) (승급 권한 필요).",
-	"/dbm help: 이 도움말을 보여줌.",
+	"/dbm unlock(move): 바 위치조정을 할 수 있도록 위치조정 바를 보여줌",
+	"/dbm timer <숫자> <글자>: <숫자>초 지속되는 <글자>바가 생성됨",
+	"/dbm broadcast timer <숫자> <글자>: <숫자>초 지속되는 <글자>바를 공격대에 보여줌 (승급 권한 필요)",
+	"/dbm break <min>: <min>분 지속되는 휴식 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
+	"/dbm pull <sec>: <sec>초 후 풀링한다는 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
+	"/dbm arrow: DBM 화살표를 보여줌. 추가 도움말은 /dbm arrow help 를 입력",
+	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요청함 (출력형식: 던전이름, 던전 ID) (승급 권한 필요)",
+	"/dbm help: 이 도움말을 보여줌",
 }
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
