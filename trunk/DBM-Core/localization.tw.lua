@@ -130,9 +130,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	active					= "%s結束",
 	fades					= "%s消散",
 	cd						= "%s冷卻",
-	cdcount					= "%s冷卻(%%d)",
+	cdcount					= "%s冷卻 (%%d)",
 	next 					= "下一次%s",
-	nextcount 				= "下一次%s(%%d)",
+	nextcount 				= "下一次%s (%%d)",
 	achievement 			= "%s",
 }
 
@@ -158,8 +158,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	prewarn					= "%s在%s",
 	phase					= "第%s階段",
 	prephase				= "第%s階段 即將到來",
-	count					= "%s(%%d)",
-	stack					= "%s在>%%s<(%%d)",
+	count					= "%s (%%d)",
+	stack					= "%s在>%%s< (%%d)",
 }
 
 local prewarnOption			= "為$spell:%s顯示預先警告"
