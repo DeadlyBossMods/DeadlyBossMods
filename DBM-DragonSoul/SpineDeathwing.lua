@@ -38,6 +38,7 @@ local timerGripCD			= mod:NewCDTimer(32, 109457)
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
+mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetIconOnGrip", true)
 mod:AddBoolOption("ShowShieldInfo", mod:IsHealer())
