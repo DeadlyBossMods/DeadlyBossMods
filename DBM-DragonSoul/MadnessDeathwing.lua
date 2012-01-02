@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-local warnImpale				= mod:NewStackAnnounce(106400, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnImpale				= mod:NewTargetAnnounce(106400, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnElementiumBolt		= mod:NewSpellAnnounce(105651, 4)
 local warnTentacle				= mod:NewSpellAnnounce(105551, 3)
 local warnHemorrhage			= mod:NewSpellAnnounce(105863, 3)
@@ -158,7 +158,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(106400) then--106444, 109631, 109632, 109633 are debuff IDs, no reason to use them though cause that'd be a diff function with diff timing
-		warnImpale:Show(args.destName, args.amount or 1)
+		warnImpale:Show(args.destName)
 		timerImpale:Start(args.destName)--May need to add anti spam for heroic. On heroic impale hits everyone near the tenticle not just the tank? But maybe this ID only hits tank so we'll be fine, don't know yet.
 		timerImpaleCD:Start()
 		if args:IsPlayer() then
