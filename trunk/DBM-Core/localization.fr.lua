@@ -136,14 +136,14 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target		= "Durée d'affaiblissement de |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast		= "Durée d'incantation de |cff71d5ff|Hspell:%d|h%s|h|r",
-	active		= "Durée d'activité de |cff71d5ff|Hspell:%d|h%s|h|r",
-	fades		= "Délai avant la dissipation de |cff71d5ff|Hspell:%d|h%s|h|r",
-	cd			= "Durée de recharge de |cff71d5ff|Hspell:%d|h%s|h|r",
-	cdcount		= "Durée de recharge de |cff71d5ff|Hspell:%d|h%s|h|r",
-	next		= "Délai avant le prochain |cff71d5ff|Hspell:%d|h%s|h|r",
-	nextcount	= "Délai avant le prochain |cff71d5ff|Hspell:%d|h%s|h|r",
+	target		= "Durée d'affaiblissement de $spell:%s",
+	cast		= "Durée d'incantation de $spell:%s",
+	active		= "Durée d'activité de $spell:%s",
+	fades		= "Délai avant la dissipation de $spell:%s",
+	cd			= "Durée de recharge de $spell:%s",
+	cdcount		= "Durée de recharge de $spell:%s",
+	next		= "Délai avant le prochain $spell:%s",
+	nextcount	= "Délai avant le prochain $spell:%s",
 	achievement	= "Délai pour réussir %s",
 }
 
@@ -161,59 +161,32 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stack	= "%s sur >%%s< (%%d)",
 }
 
-local prewarnOption = "Alerte préventive concernant |cff71d5ff|Hspell:%d|h%s|h|r"
+local prewarnOption = "Alerte préventive concernant $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "Alerte indiquant le(s) cible(s) de |cff71d5ff|Hspell:%d|h%s|h|r",
-	targetcount	= "Alerte indiquant le(s) cible(s) de |cff71d5ff|Hspell:%d|h%s|h|r",
-	spell	= "Alerte concernant |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast	= "Alerte quand |cff71d5ff|Hspell:%d|h%s|h|r est incanté",
+	target	= "Alerte indiquant le(s) cible(s) de $spell:%s",
+	targetcount	= "Alerte indiquant le(s) cible(s) de $spell:%s",
+	spell	= "Alerte concernant $spell:%s",
+	cast	= "Alerte quand $spell:%s est incanté",
 	soon	= prewarnOption,
 	prewarn = prewarnOption,
 	phase	= "Alerte indiquant l'arrivée de la phase %s",
 	prephase= "Alerte préventive indiquant l'arrivée de la phase %s",
-	count	= "Alerte concernant |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack	= "Alerte indiquant les cumuls de |cff71d5ff|Hspell:%d|h%s|h|r",
+	count	= "Alerte concernant $spell:%s",
+	stack	= "Alerte indiquant les cumuls de $spell:%s",
 }
-
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
-	target	= "Alerte indiquant le(s) cible(s) de |cff71d5ff%s|r",
-	targetcount	= "Alerte indiquant le(s) cible(s) de |cff71d5ff%s|r",
-	spell	= "Alerte concernant |cff71d5ff%s|r",
-	cast	= "Alerte quand |cff71d5ff%s|r est incanté",
-	soon	= prewarnOption,
-	prewarn = prewarnOption,
-	phase	= "Alerte indiquant l'arrivée de la phase %s",
-	prephase= "Alerte préventive indiquant l'arrivée de la phase %s",
-	count	= "Alerte concernant |cff71d5ff%s|r",
-	stack	= "Alerte indiquant les cumuls de |cff71d5ff%s|r"
-}
-
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "Alerte spéciale concernant $spell:%d",
-	dispel 		= "Alerte spéciale quand $spell:%d doit être dissipé/volé",
-	interrupt	= "Alerte spéciale quand $spell:%d doit être interrompu",
-	you 		= "Alerte spéciale quand vous subissez $spell:%d",
-	target 		= "Alerte spéciale quand quelqu'un subit $spell:%d",
-	close 		= "Alerte spéciale quand quelqu'un proche de vous subit $spell:%d",
-	move 		= "Alerte spéciale quand vous subissez $spell:%d",
-	run 		= "Alerte spéciale concernant $spell:%d",
-	cast 		= "Alerte spéciale quand $spell:%d est incanté",
-	stack 		= "Alerte spéciale quand >=%d cumuls de $spell:%d"
-}
-
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
-	spell 		= "Alerte spéciale concernant $journal:%d",
-	dispel 		= "Alerte spéciale quand $journal:%d doit être dissipé/volé",
-	interrupt	= "Alerte spéciale quand $journal:%d doit être interrompu",
-	you 		= "Alerte spéciale quand vous subissez $journal:%d",
-	target 		= "Alerte spéciale quand quelqu'un subit $journal:%d",
-	close 		= "Alerte spéciale quand quelqu'un proche de vous subit $journal:%d",
-	move 		= "Alerte spéciale quand vous subissez $journal:%d",
-	run 		= "Alerte spéciale concernant $journal:%d",
-	cast 		= "Alerte spéciale quand $journal:%d est incanté",
-	stack 		= "Alerte spéciale quand >=%d cumuls de $journal:%d"
+	spell 		= "Alerte spéciale concernant $spell:%s",
+	dispel 		= "Alerte spéciale quand $spell:%s doit être dissipé/volé",
+	interrupt	= "Alerte spéciale quand $spell:%s doit être interrompu",
+	you 		= "Alerte spéciale quand vous subissez $spell:%s",
+	target 		= "Alerte spéciale quand quelqu'un subit $spell:%s",
+	close 		= "Alerte spéciale quand quelqu'un proche de vous subit $spell:%s",
+	move 		= "Alerte spéciale quand vous subissez $spell:%s",
+	run 		= "Alerte spéciale concernant $spell:%s",
+	cast 		= "Alerte spéciale quand $spell:%s est incanté",
+	stack 		= "Alerte spéciale quand >=%d cumuls de $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -230,11 +203,11 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Icône(s) sur le(s) cible(s) de $spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Son \"run away\" pour $spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Son quand vous subissez $spell:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Compte à rebours sonore pour $spell:%d"
-DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Cri quand vous subissez $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Icône(s) sur le(s) cible(s) de $spell:%s"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Son \"run away\" pour $spell:%s"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Son quand vous subissez $spell:%s"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Compte à rebours sonore pour $spell:%s"
+DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Cri quand vous subissez $spell:%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s sur moi !"
 
 

@@ -136,26 +136,15 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r debuff",
-	cast		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cast",
-	active		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r duration",
-	fades		= "Show timer for when |cff71d5ff|Hspell:%d|h%s|h|r fades from players",
-	cd			= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
-	cdcount		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
-	next		= "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
-	nextcount	= "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
+	target		= "Show timer for $spell:%s debuff",
+	cast		= "Show timer for $spell:%s cast",
+	active		= "Show timer for $spell:%s duration",
+	fades		= "Show timer for when $spell:%s fades from players",
+	cd			= "Show timer for $spell:%s cooldown",
+	cdcount		= "Show timer for $spell:%s cooldown",
+	next		= "Show timer for next $spell:%s",
+	nextcount	= "Show timer for next $spell:%s",
 	achievement	= "Show timer for %s"
-}
-
-DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
-	target		= "Show timer for |cff71d5ff%s|r debuff",
-	cast		= "Show timer for |cff71d5ff%s|r cast",
-	active		= "Show timer for |cff71d5ff%s|r duration",
-	fades		= "Show timer for when |cff71d5ff%s|r fades from players",
-	cd			= "Show timer for |cff71d5ff%s|r cooldown",
-	cdcount		= "Show timer for |cff71d5ff%s|r cooldown",
-	next		= "Show timer for next |cff71d5ff%s|r",
-	nextcount	= "Show timer for next |cff71d5ff%s|r"
 }
 
 -- Auto-generated Warning Localizations
@@ -172,58 +161,32 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	stack		= "%s on >%%s< (%%d)"
 }
 
-local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
+local prewarnOption = "Show pre-warning for $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target		= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
-	targetcount	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
-	spell		= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast		= "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	target		= "Announce $spell:%s targets",
+	targetcount	= "Announce $spell:%s targets",
+	spell		= "Show warning for $spell:%s",
+	cast		= "Show warning when $spell:%s is being cast",
 	soon		= prewarnOption,
 	prewarn 	= prewarnOption,
 	phase		= "Announce Phase %s",
 	prephase	= "Show a prewarning for Phase %s",
-	count		= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack		= "Announce |cff71d5ff|Hspell:%d|h%s|h|r stacks"
-}
-
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
-	target		= "Announce |cff71d5ff%s|r targets",
-	targetcount	= "Announce |cff71d5ff%s|r targets",
-	spell		= "Show warning for |cff71d5ff%s|r",
-	cast		= "Show warning when |cff71d5ff%s|r is being cast",
-	soon		= "Show pre-warning for |cff71d5ff%s|r",
-	prewarn 	= "Show pre-warning for |cff71d5ff%s|r",
-	phase		= "Announce Phase %s",
-	prephase	= "Show a prewarning for Phase %s",
-	count		= "Show warning for |cff71d5ff%s|r",
-	stack		= "Announce |cff71d5ff%s|r stacks"
+	count		= "Show warning for $spell:%s",
+	stack		= "Announce $spell:%s stacks"
 }
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "Show special warning for $spell:%d",
-	dispel 		= "Show special warning to dispel/spellsteal \n $spell:%d",
-	interrupt	= "Show special warning to interrupt $spell:%d",
-	you 		= "Show special warning when you are affected by \n $spell:%d",
-	target 		= "Show special warning when someone is affected by \n $spell:%d",
-	close 		= "Show special warning when someone close to you is \n affected by $spell:%d",
-	move 		= "Show special warning when you are affected by \n $spell:%d",
-	run 		= "Show special warning for $spell:%d",
-	cast 		= "Show special warning for $spell:%d cast",
-	stack 		= "Show special warning for >=%d stacks of \n $spell:%d"
-}
-
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
-	spell 		= "Show special warning for $journal:%d",
-	dispel 		= "Show special warning to dispel/spellsteal \n $journal:%d",
-	interrupt	= "Show special warning to interrupt $journal:%d",
-	you 		= "Show special warning when you are affected by \n $journal:%d",
-	target 		= "Show special warning when someone is affected by \n $journal:%d",
-	close 		= "Show special warning when someone close to you is \n affected by $journal:%d",
-	move 		= "Show special warning when you are affected by \n $journal:%d",
-	run 		= "Show special warning for $journal:%d",
-	cast 		= "Show special warning for $journal:%d cast",
-	stack 		= "Show special warning for >=%d stacks of \n $journal:%d"
+	spell 		= "Show special warning for $spell:%s",
+	dispel 		= "Show special warning to dispel/spellsteal \n $spell:%s",
+	interrupt	= "Show special warning to interrupt $spell:%s",
+	you 		= "Show special warning when you are affected by \n $spell:%s",
+	target 		= "Show special warning when someone is affected by \n $spell:%s",
+	close 		= "Show special warning when someone close to you is \n affected by $spell:%s",
+	move 		= "Show special warning when you are affected by \n $spell:%s",
+	run 		= "Show special warning for $spell:%s",
+	cast 		= "Show special warning for $spell:%s cast",
+	stack 		= "Show special warning for >=%d stacks of \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -240,16 +203,11 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Set icons on $spell:%d targets"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "Set icons on $journal:%d targets"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Play \"run away\" sound for $spell:%d"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "Play \"run away\" sound for $journal:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%d"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "Play countdown sound for $journal:%d"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Play countout sound for $spell:%d duration"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "Play countout sound for $journal:%d duration"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Yell when you are affected by $spell:%d"
-DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "Yell when you are affected by $journal:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Set icons on $spell:%s targets"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Play \"run away\" sound for $spell:%s"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%s"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Play countout sound for $spell:%s duration"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Yell when you are affected by $spell:%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s on me!"
 
 

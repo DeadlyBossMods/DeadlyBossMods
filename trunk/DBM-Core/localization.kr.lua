@@ -137,26 +137,15 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target 		= "|cff71d5ff|Hspell:%d|h%s|h|r 약화효과 바 표시",
-	cast 		= "|cff71d5ff|Hspell:%d|h%s|h|r 시전 바 표시",
-	active		= "|cff71d5ff|Hspell:%d|h%s|h|r 유지시간 바 표시",
-	fades		= "|cff71d5ff|Hspell:%d|h%s|h|r 효과가 사라지기 전까지 남은시간 바 표시",
-	cd 			= "|cff71d5ff|Hspell:%d|h%s|h|r 대기시간 바 표시",
-	cdcount		= "|cff71d5ff|Hspell:%d|h%s|h|r 대기시간 바 표시",
-	next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 바 표시",
-	nextcount 	= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 바 표시",
+	target 		= "$spell:%s 약화효과 바 표시",
+	cast 		= "$spell:%s 시전 바 표시",
+	active		= "$spell:%s 유지시간 바 표시",
+	fades		= "$spell:%s 효과가 사라지기 전까지 남은시간 바 표시",
+	cd 			= "$spell:%s 대기시간 바 표시",
+	cdcount		= "$spell:%s 대기시간 바 표시",
+	next 		= "다음 $spell:%s 바 표시",
+	nextcount 	= "다음 $spell:%s 바 표시",
 	achievement = "%s 업적을 위한 남은시간 바 표시"
-}
-
-DBM_CORE_AUTO_TIMER_OPTIONS_EJ = {
-	target 		= "|cff71d5ff%s|r 약화효과 바 표시",
-	cast 		= "|cff71d5ff%s|r 시전 바 표시",
-	active		= "|cff71d5ff%s|r 유지시간 바 표시",
-	fades		= "|cff71d5ff%s|r 효과가 사라지기 전까지 남은시간 바 표시",
-	cd 			= "|cff71d5ff%s|r 대기시간 바 표시",
-	cdcount		= "|cff71d5ff%s|r 대기시간 바 표시",
-	next 		= "다음 |cff71d5ff%s|r 바 표시",
-	nextcount 	= "다음 |cff71d5ff%s|r 바 표시"
 }
 
 -- Auto-generated Warning Localizations
@@ -174,56 +163,30 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 }
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target		= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 보기",
-	targetcount	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 보기",
-	spell 		= "|cff71d5ff|Hspell:%d|h%s|h|r 알림 보기",
-	cast 		= "|cff71d5ff|Hspell:%d|h%s|h|r 시전시 알림 보기",
-	soon 		= "|cff71d5ff|Hspell:%d|h%s|h|r 사전 알림 보기",
-	prewarn		= "|cff71d5ff|Hspell:%d|h%s|h|r 사전 알림 보기",
+	target		= "$spell:%s 대상 보기",
+	targetcount	= "$spell:%s 대상 보기",
+	spell 		= "$spell:%s 알림 보기",
+	cast 		= "$spell:%s 시전시 알림 보기",
+	soon 		= "$spell:%s 사전 알림 보기",
+	prewarn		= "$spell:%s 사전 알림 보기",
 	phase 		= "%s 단계 알림 보기",
 	prephase	= "%s 단계 사전 알림 보기",
-	count 		= "|cff71d5ff|Hspell:%d|h%s|h|r 알림 보기",
-	stack		= "|cff71d5ff|Hspell:%d|h%s|h|r 중첩 보기"
-}
-
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS_EJ = {
-	target		= "|cff71d5ff%s|r 대상 보기",
-	targetcount	= "|cff71d5ff%s|r 대상 보기",
-	spell 		= "|cff71d5ff%s|r 알림 보기",
-	cast 		= "|cff71d5ff%s|r 시전시 알림 보기",
-	soon 		= "|cff71d5ff%s|r 사전 알림 보기",
-	prewarn		= "|cff71d5ff%s|r 사전 알림 보기",
-	phase 		= "%s 단계 알림 보기",
-	prephase	= "%s 단계 사전 알림 보기",
-	count 		= "|cff71d5ff%s|r 알림 보기",
-	stack		= "|cff71d5ff%s|r 중첩 보기"
+	count 		= "$spell:%s 알림 보기",
+	stack		= "$spell:%s 중첩 보기"
 }
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "$spell:%d 특수 경고 보기",
-	dispel 		= "$spell:%d 특수 경고 보기(해제/마법훔치기)",
-	interrupt	= "$spell:%d 특수 경고 보기(차단)",	
-	you 		= "$spell:%d 주문의 영향을 받은 경우 특수 경고 보기",
-	target 		= "$spell:%d 주문의 영향을 누군가 받은 경우 특수 경고 보기",
-	close 		= "$spell:%d 대상이 근처에 있을 경우 특수 경고 보기",
-	move 		= "$spell:%d 주문의 영향을 받은 경우 특수 경고 보기(이동)",
-	run 		= "$spell:%d 특수 경고 보기(빠른이동)",
-	cast 		= "$spell:%d 시전을 시작할 경우 특수 경고 보기",
-	stack 		= "%d 중첩 이상시 $spell:%d 특수 경고 보기"
-}
-
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS_EJ = {
-	spell 		= "$journal:%d 특수 경고 보기",
-	dispel 		= "$journal:%d 특수 경고 보기(해제/마법훔치기)",
-	interrupt	= "$journal:%d 특수 경고 보기(차단)",	
-	you 		= "$journal:%d 주문의 영향을 받은 경우 특수 경고 보기",
-	target 		= "$journal:%d 주문의 영향을 누군가 받은 경우 특수 경고 보기",
-	close 		= "$journal:%d 대상이 근처에 있을 경우 특수 경고 보기",
-	move 		= "$journal:%d 주문의 영향을 받은 경우 특수 경고 보기(이동)",
-	run 		= "$journal:%d 특수 경고 보기(빠른이동)",
-	cast 		= "$journal:%d 시전을 시작할 경우 특수 경고 보기",
-	stack 		= "%d 중첩 이상시 $journal:%d 특수 경고 보기"
+	spell 		= "$spell:%s 특수 경고 보기",
+	dispel 		= "$spell:%s 특수 경고 보기(해제/마법훔치기)",
+	interrupt	= "$spell:%s 특수 경고 보기(차단)",	
+	you 		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기",
+	target 		= "$spell:%s 주문의 영향을 누군가 받은 경우 특수 경고 보기",
+	close 		= "$spell:%s 대상이 근처에 있을 경우 특수 경고 보기",
+	move 		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기(이동)",
+	run 		= "$spell:%s 특수 경고 보기(빠른이동)",
+	cast 		= "$spell:%s 시전을 시작할 경우 특수 경고 보기",
+	stack 		= "%d 중첩 이상시 $spell:%s 특수 경고 보기"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -239,17 +202,14 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	stack 		= "%s (%%d)"
 }
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상에게 전술 목표 아이콘 설정"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT_EJ		= "$journal:%d 대상에게 전술 목표 아이콘 설정"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 주문의 영향을 받은 경우 특수 경고음 듣기"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT_EJ		= "$journal:%d 주문의 영향을 받은 경우 특수 경고음 듣기"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%d 시전 전에 초읽기 소리 듣기(5,4,3,2,1)"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT_EJ	= "$journal:%d 시전 전에 초읽기 소리 듣기(5,4,3,2,1)"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%d 주문의 활성화 시간 소리 듣기(1,2,3,...)"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT_EJ	= "$journal:%d 주문의 활성화 시간 소리 듣기(1,2,3,...)"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%d 주문의 영향을 받은 경우 외치기"
-DBM_CORE_AUTO_YELL_OPTION_TEXT_EJ		= "$journal:%d 주문의 영향을 받은 경우 외치기"
+
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 주문의 영향을 받은 경우 특수 경고음 듣기"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 시전 전에 초읽기 소리 듣기(5,4,3,2,1)"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 주문의 활성화 시간 소리 듣기(1,2,3,...)"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 주문의 영향을 받은 경우 외치기"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "나에게 %s!"
+
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"
