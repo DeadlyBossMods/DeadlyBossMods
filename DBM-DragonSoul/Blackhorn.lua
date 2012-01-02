@@ -85,7 +85,7 @@ function mod:OnCombatStart(delay)
 		timerSapperCD:Start(69-delay)
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerTwilightOnslaughtCD:Start(42-delay)--Not sure if variation is cause it was heroic or cause the first one is not consistent
+		timerTwilightOnslaughtCD:Start(48-delay)--Not sure if variation is cause it was heroic or cause the first one is not consistent
 		timerDeckFireCD:Start(60-delay)--Consistent?
 	else
 		timerTwilightOnslaughtCD:Start(48-delay)

@@ -218,7 +218,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if not self:IsDifficulty("lfr25") then
 			timerFrostTombCD:Start()
 		end
-		timerAssaultCD:Start(20)
+		timerAssaultCD:Start()
 		timerLightningStormCD:Start()
 		SpecialCountdown:Start(62)
 		if self.Options.RangeFrame then
@@ -231,7 +231,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if not self:IsDifficulty("lfr25") then
 			timerFrostTombCD:Start()
 		end
-		timerAssaultCD:Start(20)
+		timerAssaultCD:Start()
 		timerTempestCD:Start()
 		SpecialCountdown:Start(62)
 		if self.Options.RangeFrame then
