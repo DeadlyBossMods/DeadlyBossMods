@@ -136,12 +136,10 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "Início do combate",
-	TimerSapper			= "Próximo Sapador do Crepúsculo"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Exibir cronógrafo para o início do combate",
-	TimerSapper			= "Exibir cronógrafo para surgir o próximo Sapador do Crepúsculo"--npc=56923
 })
 
 L:SetMiscLocalization({

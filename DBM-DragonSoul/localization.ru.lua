@@ -136,13 +136,11 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "Начало боя",
-	TimerSapper			= "Следующий сапёр",
 	TimerAdd			= "Следующие помощники"
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Отсчет времени до начала боя",
-	TimerSapper			= "Отсчет времени до появления следующего сапёра",--npc=56923
 	TimerAdd			= "Отсчет времени до появления следующих помощников"
 })
 
