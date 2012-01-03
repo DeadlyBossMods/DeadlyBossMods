@@ -172,17 +172,6 @@ local function blackBloodEnds()
 	--it's timer depends on Void Diffusion stacks. But since timer not confirmed, temporarly commented it.
 	--It DOES appear to be difficulty based to a minor extent, i've verified it through MANY guilds 10 and 25 herioc logs. particularly the 7-9 stack on heroic without a doubt being 3 seconds later then normal in every log.
 	--Still need data for the following (0, 2, 4, 6, 8 stacks in all difficulties. 1, 10 for heroic difficulties. 8 and 9 for normal difficulties)
-	if mod:IsDifficulty("heroic10", "heroic25") then
-		if timerVoidofUnmakingCD:GetTime() < 15 then--Heroic has a failsafe in place, if CD exausts before 15 seconds after black phase ending, it's extended, probably to allow raid more time to repositoin vs normal
-			timerVoidofUnmakingCD:Update(75.3, 90.3)
-		end
---		timerVoidofUnmakingCD:Start(heroicvoidTimers[voidStacks])
-	else
---		timerVoidofUnmakingCD:Start(voidTimers[voidStacks])
-		if timerVoidofUnmakingCD:GetTime() < 6 then--Normal also has a failsafe but much smaller, if it comes off CD before 6 seconds has passed after dark, it gets delayed until 6 seconds have passed
-			timerVoidofUnmakingCD:Update(84.3, 90.3)
-		end
-	end
 end
 
 function mod:OnCombatStart(delay)
@@ -222,6 +211,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBlackBlood:Show()
 		timerBlackBlood:Start()
 		self:Schedule(30, blackBloodEnds)--More accurate way then tracking spell aura removed of black blood. Players dying in the phase were falsely triggering the phase ending early.
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			if timerVoidofUnmakingCD:GetTime() < 45 then--Heroic has a failsafe in place, if CD exausts before 15 seconds after black phase ending, it's extended, probably to allow raid more time to repositoin vs normal
+				timerVoidofUnmakingCD:Update(45.3, 90.3)
+			end
+		else
+			if timerVoidofUnmakingCD:GetTime() < 36 then--Normal also has a failsafe but much smaller, if it comes off CD before 6 seconds has passed after dark, it gets delayed until 6 seconds have passed
+				timerVoidofUnmakingCD:Update(54.3, 90.3)
+			end
+		end
 	elseif args:IsSpellID(104543, 109409, 109410, 109411) then--104543 confirmed 10 man normal
 		warnFocusedAnger:Show(args.destName, args.amount or 1)
 		timerFocusedAngerCD:Start()
