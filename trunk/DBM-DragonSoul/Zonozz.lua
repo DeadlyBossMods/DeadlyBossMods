@@ -211,12 +211,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBlackBlood:Show()
 		timerBlackBlood:Start()
 		self:Schedule(30, blackBloodEnds)--More accurate way then tracking spell aura removed of black blood. Players dying in the phase were falsely triggering the phase ending early.
+		--GetTime() Method returns elapsed values. so this will be working intended?
 		if self:IsDifficulty("heroic10", "heroic25") then
-			if timerVoidofUnmakingCD:GetTime() < 45 then--Heroic has a failsafe in place, if CD exausts before 15 seconds after black phase ending, it's extended, probably to allow raid more time to repositoin vs normal
+			if timerVoidofUnmakingCD:GetTime() > 45.3 then--Heroic has a failsafe in place, if CD exausts before 15 seconds after black phase ending, it's extended, probably to allow raid more time to repositoin vs normal
 				timerVoidofUnmakingCD:Update(45.3, 90.3)
 			end
 		else
-			if timerVoidofUnmakingCD:GetTime() < 36 then--Normal also has a failsafe but much smaller, if it comes off CD before 6 seconds has passed after dark, it gets delayed until 6 seconds have passed
+			if timerVoidofUnmakingCD:GetTime() > 54.3 then--Normal also has a failsafe but much smaller, if it comes off CD before 6 seconds has passed after dark, it gets delayed until 6 seconds have passed
 				timerVoidofUnmakingCD:Update(54.3, 90.3)
 			end
 		end
