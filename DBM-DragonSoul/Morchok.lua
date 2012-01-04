@@ -86,6 +86,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(103851) and args:GetSrcCreatureID() == 55265 then--Filter twin here, they vortex together but we don't want to trigger everything twice needlessly.
+		stompCount = 0
+		crystalCount = 0
 		timerStomp:Start(19)
 		timerCrystal:Start(26)
 		timerVortexNext:Start()
