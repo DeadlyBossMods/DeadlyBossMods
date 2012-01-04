@@ -3472,7 +3472,7 @@ do
 		else
 			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
-		icon = icon or spellId
+		icon = icon or unparsedId
 		local text
 		if announceType == "cast" then
 			local spellHaste = select(7, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
@@ -4244,7 +4244,7 @@ do
 		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
 			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b)
 		end
-		local spellName, icon, ejSpell
+		local spellName, icon
 		local unparsedId = spellId
 		if timerType == "achievement" then
 			spellName = select(2, GetAchievementInfo(spellId))
@@ -4255,15 +4255,12 @@ do
 --			end
 		else
 			if type(spellId) == "string" and spellId:match("ej%d+") then
-				spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or nil
-				ejSpell = true
+				spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or ""
 			else
 				spellName = GetSpellInfo(spellId or 0)
 			end
-			if spellName and ejSpell then
-				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or type(spellId) == "string" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3)))
-			elseif spellName then
-				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
+			if spellName then
+				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or type(spellId) == "string" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(spellId, 3))) or (type(spellId) == "number" and select(3, GetSpellInfo(spellId)))
 			else
 				icon = nil
 			end
