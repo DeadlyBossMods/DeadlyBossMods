@@ -72,73 +72,6 @@ local heroicvoidTimers = { -- all timers is guessed and can't find in my logs (:
 	[9] = 15, --Confirmed in 10 heroic and 25 man heroic
 	[10]= 15, --Assumed, maybe heroic min time is 15 sec.
 }
-
-3 stack normal 10:
-[21:30:17.044] Void of the Unmaking afflicted by Void Diffusion (3) from Void of the Unmaking
-[21:30:25.671] Anshlun afflicted by Black Blood of Go'rath from Warlord Zon'ozz
-[21:30:55.671] Anshlun fake arg
-[21:31:37.872] Warlord Zon'ozz casts Psychic Drain (42)
-3 stack heroic 10:
-[22:30:48.983] Void of the Unmaking afflicted by Void Diffusion (3) from Void of the Unmaking
-[22:30:59.993] Karnadas afflicted by Black Blood of Go'rath from Eye of Go'rath
-[22:31:29.993] Karnadas fake arg
-[22:32:11.796] Warlord Zon'ozz casts Psychic Drain (42 on heroic as well, disproves the +3 theory being across the board)
-
-5 Stack normal 25:
-[21:04:36.002] Void of the Unmaking afflicted by Void Diffusion (5) from Void of the Unmaking
-[21:04:44.710] Shiramune afflicted by Black Blood of Go'rath from Warlord Zon'ozz
-[21:05:14.710] Shiramune fake arg
-[21:05:46.022] Warlord Zon'ozz casts Psychic Drain (31.5 sec for 5 stack on 25 man normal)
-5 Stack normal 10:
-[20:49:05.332] Void of the Unmaking afflicted by Void Diffusion (5) from Void of the Unmaking
-[20:49:14.223] Erej afflicted by Black Blood of Go'rath from  Warlord Zon'ozz
-[20:50:44.223] Erej fake arg
-[20:50:15.600]  Warlord Zon'ozz casts Psychic Drain (31.5 sec for a 5 stack on 10 man normal)
-
-6 Stack normal 10:
-[19:39:15.772] Void of the Unmaking afflicted by Void Diffusion (6) from Void of the Unmaking
-[19:39:26.244] Erej afflicted by Black Blood of Go'rath from Warlord Zon'ozz
-[19:39:56.244] Erej fake arg
-[19:40:14.372] Warlord Zon'ozz casts Psychic Drain (18 sec for a 6 stack on 10 man normal)
-
-7 stack normal 25:
-[19:46:42.409] Void of the Unmaking afflicted by Void Diffusion (7) from Void of the Unmaking
-[19:46:51.628] Shiramune afflicted by Black Blood of Go'rath from Warlord Zon'ozz
-[19:47:21.628] Shiramune fake arg
-[19:47:42.127] Warlord Zon'ozz casts Psychic Drain (drain was 20.5 seconds later)
-7 Stack heroic 25:
-[19:43:52.721] Void of the Unmaking afflicted by Void Diffusion (7) from Void of the Unmaking
-[19:44:03.283] Shiramune afflicted by Black Blood of Go'rath from Eye of Go'rath
-[19:44:33.283] Shiramune fake arg
-[19:44:56.201] Void of the Unmaking afflicted by Void Diffusion from Void of the Unmaking
-[19:44:56.998] Warlord Zon'ozz casts Psychic Drain (drain was 23 seconds later, over multiple logs the variation was 23-24, 23.5 is the consistent average, maybe heroic adds +3?)
-7 Stack normal 10:
-[19:33:50.795] Void of the Unmaking afflicted by Void Diffusion (7) from Void of the Unmaking
-[19:34:00.051] Erej afflicted by Black Blood of Go'rath from Warlord Zon'ozz
-[19:34:30.051] Erej fake arg
-[19:34:50.520] Warlord Zon'ozz casts Psychic Drain (drain was 20 sec on 10 man normal, but i only have 1 pull)
-7 stack heroic 10:
-[22:26:01.708] Void of the Unmaking afflicted by Void Diffusion (7) from Void of the Unmaking
-[22:26:12.087] Karnadas afflicted by Black Blood of Go'rath from Eye of Go'rath
-[22:26:42.087] Karnadas fake arg
-[22:27:05.819] Warlord Zon'ozz casts Psychic Drain (23-24 again, just ilke 25 heroic, again, confirms heroic vs normal is heroic is 3 seconds later)
-
-9 Stack heroic 25:
-[19:53:23.358] Void of the Unmaking afflicted by Void Diffusion (9) from Void of the Unmaking
-[19:53:34.172] Shiramune afflicted by Black Blood of Go'rath from Eye of Go'rath
-[19:54:04.172] Shiramune Fake arg
-[19:54:27.827] Warlord Zon'ozz casts Psychic Drain (drain was 23 seconds later, over multiple logs the variation was 23-24, 23.5 is the consistent average))
-9 stack heroic 10:
-[22:41:34.932] Void of the Unmaking afflicted by Void Diffusion (9) from Void of the Unmaking
-[22:41:45.620] Karnadas afflicted by Black Blood of Go'rath from Eye of Go'rath
-[22:42:15.620] Karnadas fake arg
-[22:42:39.388] Warlord Zon'ozz casts Psychic Drain (drain was 23.5 on 10 man heroic as well)
-
-10 Stack normal 25:
-[21:03:06.726] Void of the Unmaking afflicted by Void Diffusion (10) from Void of the Unmaking
-[21:03:31.232] Shiramune afflicted by Black Blood of Go'rath from Warlord Zon'ozz
-[21:04:01.232] fake arg
-[21:04:15.735] Warlord Zon'ozz casts Psychic Drain (14.5 for a 10 stack, confirmed the same in LFR and 25 man)
 ]]
 
 local function warnShadowsTargets()
@@ -255,7 +188,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
 	--Void of the unmaking cast, do not use spellname because we want to ignore events using spellid 103627 which fires when the sphere dispurses on the boss.
 	if spellID == 103571 and not voidWarned then--This spellid is same in 10/25 and raid finder, and assuming also same in heroic. No reason to use spellname, or other IDs.
-		timerPsychicDrainCD:Start(8.5)
+		if timerPsychicDrainCD:GetTime() == 0 then--Just a hack to prevent this from overriding first timer on pull, which is only drain that doesn't follow this rule
+			timerPsychicDrainCD:Start(8.5)
+		end
 		timerVoidofUnmakingCD:Start()
 		voidWarned = true
 		warnVoidofUnmaking:Show()
