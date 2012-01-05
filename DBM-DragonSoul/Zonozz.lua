@@ -45,35 +45,6 @@ local shadowsTargets = {}
 local phase2Started = false
 local voidWarned = false
 
---[[
-local voidTimers = { -- all timers is guessed and can't find in my logs (: please check this,
-	[0] = 48, --Unknown
-	[1] = 43, --Confirmed 25 lfr
-	[2] = 38, --Unknown
-	[3] = 33, --Confirmed 33 on 10 man heroic and 10 man normal
-	[4] = 28, --Unknown
-	[5] = 22, --Confirmed 22 normal 10 and normal 25
-	[6] = 9.5, --Questionable 9.5 on 10 man normal. Had one log with this timing but it makes no sense. I'd like to verify it further. This makes no sense in the pattern. maybe a bad time stamp, 19.5 would make more sense IMO
-	[7] = 12, --Confirmed, 3 seconds earlier then heroic in both 10 and 25 normal.
-	[8] = 6, --Confirmed, 25 lfr.. in sometimes Void Diffusion comes slowly. He absorbs orb at 8 stacks.
-	[9] = 6, --Assumed, maybe 8 >= stacks fixed to 6 sec?
-	[10]= 6 --Confirmed
-}
-local heroicvoidTimers = { -- all timers is guessed and can't find in my logs (: please check this,
-	[0] = 48, --Unknown
-	[1] = 43, --Unknown
-	[2] = 38, --Unknown
-	[3] = 33, --Confirmed 33 on 10 man heroic and 10 man normal
-	[4] = 28, --Unknown
-	[5] = 22, --Unknown for heroic, could be 22, or 25. the 9 7 7 5 strategy lacks the luxury of seeing the 4th black phase end :(
-	[6] = 15, --Unknown. assumed no lower then 15 though.
-	[7] = 15, --Confirmed in 10 heroic and 25 man heroic
-	[8] = 15, --Unknown, but unlikely changed being in the middle of 7 and 9
-	[9] = 15, --Confirmed in 10 heroic and 25 man heroic
-	[10]= 15, --Assumed, maybe heroic min time is 15 sec.
-}
-]]
-
 local function warnShadowsTargets()
 	warnShadows:Show(table.concat(shadowsTargets, "<, >"))
 	timerShadowsCD:Start()
@@ -102,9 +73,6 @@ local function blackBloodEnds()
 	phase2Started = false
 	timerFocusedAngerCD:Start(6)
 	timerShadowsCD:Start(6)
-	--it's timer depends on Void Diffusion stacks. But since timer not confirmed, temporarly commented it.
-	--It DOES appear to be difficulty based to a minor extent, i've verified it through MANY guilds 10 and 25 herioc logs. particularly the 7-9 stack on heroic without a doubt being 3 seconds later then normal in every log.
-	--Still need data for the following (0, 2, 4, 6, 8 stacks in all difficulties. 1, 10 for heroic difficulties. 8 and 9 for normal difficulties)
 end
 
 function mod:OnCombatStart(delay)
@@ -128,7 +96,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(104322, 104606, 104607, 104608) then--104378 confirmed 10 man normal
+	if args:IsSpellID(104322, 104606, 104607, 104608) then
 		warnPsychicDrain:Show()
 		specWarnPsychicDrain:Show()
 		timerPsychicDrainCD:Start()
@@ -136,7 +104,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end	
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(104377, 104378, 110322, 110306) and not phase2Started then--All spellids Confirmed
+	if args:IsSpellID(104377, 104378, 110322, 110306) and not phase2Started then
 		phase2Started = true
 		timerFocusedAngerCD:Cancel()
 		timerPsychicDrainCD:Cancel()
@@ -154,13 +122,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerVoidofUnmakingCD:Update(54.3, 90.3)
 			end
 		end
-	elseif args:IsSpellID(104543, 109409, 109410, 109411) then--104543 confirmed 10 man normal
+	elseif args:IsSpellID(104543, 109409, 109410, 109411) then
 		warnFocusedAnger:Show(args.destName, args.amount or 1)
 		timerFocusedAngerCD:Start()
 	elseif args:IsSpellID(106836) then--106836 confirmed 10/25 man normal, do NOT add 103527 to this, that's a seperate spellid for when BOSS is affected by diffusion, this warning is counting the ball stacks.
 		warnVoidDiffusion:Show(args.destName, args.amount or 1)
 		timerVoidDiffusionCD:Start()
-	elseif args:IsSpellID(103434, 104599, 104600, 104601) then--103434 confirmed 10 man normal.
+	elseif args:IsSpellID(103434, 104599, 104600, 104601) then
 		shadowsTargets[#shadowsTargets + 1] = args.destName
 		if args:IsPlayer() and self:IsDifficulty("heroic10", "heroic25") then
 			specWarnShadows:Show()
