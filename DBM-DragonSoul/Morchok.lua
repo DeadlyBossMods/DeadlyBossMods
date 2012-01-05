@@ -109,18 +109,17 @@ function mod:SPELL_CAST_START(args)
 			if stompCount < 4 then
 				timerStomp:Start()
 			end
-			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then-- update this variable in heroic only (normal mode not needed)
-				kohcromSkip = 1
-			end
 			if UnitExists("boss2") then
 				if kohcromSkip == 2 then
 					kohcromSkip = nil
-					return
 				elseif self:IsDifficulty("heroic25") then
 					timerKohcromCD:Start(5, args.spellName)
 				else
 					timerKohcromCD:Start(6, args.spellName)
 				end
+			end
+			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then-- update this variable in heroic only (normal mode not needed)
+				kohcromSkip = 1
 			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
@@ -145,18 +144,17 @@ function mod:SPELL_SUMMON(args)
 			if crystalCount < 3 then
 				timerCrystal:Start()
 			end
-			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then-- update this variable in heroic only (normal mode not needed)
-				kohcromSkip = 2
-			end
 			if UnitExists("boss2") then
 				if kohcromSkip == 1 then
 					kohcromSkip = nil
-					return
 				elseif self:IsDifficulty("heroic25") then
 					timerKohcromCD:Start(5, args.spellName)
 				else
 					timerKohcromCD:Start(6, args.spellName)
 				end
+			end
+			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then-- update this variable in heroic only (normal mode not needed)
+				kohcromSkip = 2
 			end
 		else
 			KohcromWarning:Show(args.sourceName, args.spellName)
