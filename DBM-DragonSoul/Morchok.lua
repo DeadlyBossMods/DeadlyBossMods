@@ -36,7 +36,7 @@ local specwarnCrystal		= mod:NewSpecialWarningTarget(103639, false)
 local timerCrushArmor	= mod:NewTargetTimer(20, 103687, nil, mod:IsTank())
 local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also time till 'detonate')
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
-local timerVortexNext	= mod:NewCDTimer(80, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
+local timerVortexNext	= mod:NewCDTimer(78, 110047)--97 sec after last vortex, but only 71 after last blood ended. More efficent this way.
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
 local timerKohcromCD	= mod:NewTimer(6, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
@@ -62,7 +62,7 @@ function mod:OnCombatStart(delay)
 	end
 	timerStomp:Start(-delay)
 	timerCrystal:Start(19-delay)
-	timerVortexNext:Start(56-delay) -- 56~60 sec variables
+	timerVortexNext:Start(54-delay) -- 56~60 sec variables
 end
 
 function mod:OnCombatEnd()
@@ -115,6 +115,7 @@ function mod:SPELL_CAST_START(args)
 			if UnitExists("boss2") then
 				if kohcromSkip == 2 then
 					kohcromSkip = nil
+					return
 				elseif self:IsDifficulty("heroic25") then
 					timerKohcromCD:Start(5, args.spellName)
 				else
@@ -150,6 +151,7 @@ function mod:SPELL_SUMMON(args)
 			if UnitExists("boss2") then
 				if kohcromSkip == 1 then
 					kohcromSkip = nil
+					return
 				elseif self:IsDifficulty("heroic25") then
 					timerKohcromCD:Start(5, args.spellName)
 				else
