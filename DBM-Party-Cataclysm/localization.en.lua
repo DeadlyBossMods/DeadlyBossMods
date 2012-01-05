@@ -497,7 +497,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	Retract		= "%s retracts"
+	Retract		= "%s retracts her cyclone shield!"
 }
 
 --------------
