@@ -104,7 +104,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
-	specWarnHourofTwilightN		= "%s (%%d)"--spellname Count
+	specWarnHourofTwilightN		= "%s (%%d) in 5s"--spellname Count
 })
 
 L:SetTimerLocalization({
@@ -120,7 +120,7 @@ L:SetOptionLocalization({
 	Never				= "Never",
 	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
 	Reset3Always		= "Always Reset in sets of 3",
-	SpecWarnHoTN		= "Special warn Hour of Twilight (heroic)",
+	SpecWarnHoTN		= "Special warn 5s before Hour of Twilight (heroic)",
 	One					= "1 (ie 1 4 7)",
 	Two					= "2 (ie 2 5)",
 	Three				= "3 (ie 3 6)",
