@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnHarpoon					= mod:NewTargetAnnounce(108038, 2)
-local warnTwilightOnslaught			= mod:NewSpellAnnounce(108862, 4)
+local warnTwilightOnslaught			= mod:NewCountAnnounce(108862, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
 local warnRoar						= mod:NewSpellAnnounce(109228, 2)
 local warnTwilightFlames			= mod:NewSpellAnnounce(108051, 3)
@@ -40,7 +40,8 @@ local specWarnSunder				= mod:NewSpecialWarningStack(108043, mod:IsTank(), 3)
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
 local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
-local timerTwilightOnslaughtCD		= mod:NewNextTimer(35, 107588)
+local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
+local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
 --local timerDeckFireCD				= mod:NewCDTimer(20, 110095)--Not the best log, so not sure if this is accurate or actually based on other variables.
 local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables (i haven't seen any logs where this wasn't always 21.5, are 19s on WoL somewhere?)
@@ -53,6 +54,7 @@ local berserkTimer					= mod:NewBerserkTimer(250)
 local phase2Started = false
 local lastFlames = 0
 local addsCount = 0
+local twilightOnslaughtCount = 0
 
 function mod:ShockwaveTarget()
 	local targetname = self:GetBossTarget(56427)
@@ -78,6 +80,7 @@ function mod:OnCombatStart(delay)
 	phase2Started = false
 	lastFlames = 0
 	addsCount = 0
+	twilightOnslaughtCount = 0
 	timerCombatStart:Start(-delay)
 	timerAdd:Start(24-delay)
 	self:ScheduleMethod(24-delay, "AddsRepeat")
@@ -85,10 +88,10 @@ function mod:OnCombatStart(delay)
 		timerSapperCD:Start(69-delay)
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerTwilightOnslaughtCD:Start(48-delay)--Not sure if variation is cause it was heroic or cause the first one is not consistent
+		timerTwilightOnslaughtCD:Start(48-delay, 1)--Not sure if variation is cause it was heroic or cause the first one is not consistent
 --		timerDeckFireCD:Start(60-delay)--Consistent?
 	else
-		timerTwilightOnslaughtCD:Start(48-delay)
+		timerTwilightOnslaughtCD:Start(48-delay, 1)
 	end
 	if DBM.BossHealth:IsShown() then
 		local shipname = EJ_GetSectionInfo(4202)
@@ -99,9 +102,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(107588) then
-		warnTwilightOnslaught:Show()
+		twilightOnslaughtCount = twilightOnslaughtCount + 1
+		warnTwilightOnslaught:Show(twilightOnslaughtCount)
 		specWarnTwilightOnslaught:Show()
-		timerTwilightOnslaughtCD:Start()
+		timerTwilightOnslaught:Start()
+		timerTwilightOnslaughtCD:Start(nil, twilightOnslaughtCount + 1)
 	elseif args:IsSpellID(108046) then
 		self:ScheduleMethod(0.2, "ShockwaveTarget")
 		timerShockwaveCD:Start()
