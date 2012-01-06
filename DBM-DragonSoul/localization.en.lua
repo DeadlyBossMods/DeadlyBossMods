@@ -104,6 +104,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
+	specWarnHourofTwilightN		= "%s (%%d)"--spellname Count
 })
 
 L:SetTimerLocalization({
@@ -119,7 +120,11 @@ L:SetOptionLocalization({
 	Never				= "Never",
 	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
 	Reset3Always		= "Always Reset in sets of 3",
-	ShowRaidCDs			= "Show timers for Raid cooldowns (WIP)",
+	SpecWarnHoTN		= "Special warn Hour of Twilight (heroic)",
+	One					= "1 (ie 1 4 7)",
+	Two					= "2 (ie 2 5)",
+	Three				= "3 (ie 3 6)",
+	ShowRaidCDs			= "Show timers for Raid cooldowns",
 	ShowRaidCDsSelf		= "But only show timers for yours\n(requires Raid cooldowns enabled)"
 })
 
