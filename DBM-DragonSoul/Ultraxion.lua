@@ -26,6 +26,7 @@ local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
 local warnFadingLight				= mod:NewTargetCountAnnounce(110080, 3)
 
 local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil, true)
+local specWarnHourofTwilightN		= mod:NewSpecialWarning("specWarnHourofTwilightN", nil, false)
 local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(110080, mod:IsTank())
 local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
@@ -54,6 +55,7 @@ mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--Will be eliminated when po
 --Raid CDs will have following options: Don't show Raid CDs, Show only My Raid CDs, Show all raid CDs
 
 mod:AddDropdownOption("ResetHoTCounter", {"Never", "Reset3", "Reset3Always"}, "Reset3", "announce")
+mod:AddDropdownOption("SpecWarnHoTN", {"Never", "One", "Two", "Three"}, "Never", "announce")
 
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
@@ -89,6 +91,9 @@ function mod:SPELL_CAST_START(args)
 		if (self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always") and hourOfTwilightCount == 3
 		or self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2 then
 			hourOfTwilightCount = 0
+		end
+		if self.Options.SpecWarnHoTN == "One" and hourOfTwilightCount == 1 or self.Options.SpecWarnHoTN == "Two" and hourOfTwilightCount == 2 or self.Options.SpecWarnHoTN == "Three" and hourOfTwilightCount == 3 then
+			specWarnHourofTwilightN:Show(args.spellName, hourOfTwilightCount)
 		end
 		warnHourofTwilightSoon:Schedule(30.5)
 		timerHourofTwilightCD:Start(45.5, hourOfTwilightCount+1)
@@ -146,10 +151,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---Tank IDs
---105925, 110068, 110069, 110070
---Non tank IDs
---109075, 110078, 110079, 110080
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105925, 110068, 110069, 110070) then--Tank Only SpellIDS
 		fadingLightCount = fadingLightCount + 1
