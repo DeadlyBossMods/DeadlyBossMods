@@ -120,7 +120,7 @@ L:SetOptionLocalization({
 	Never				= "Never",
 	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
 	Reset3Always		= "Always Reset in sets of 3",
-	SpecWarnHoTN		= "Special warn 5s before Hour of Twilight (heroic)",
+	SpecWarnHoTN		= "Special warn 5s before Hour of Twilight (3 set only)",
 	One					= "1 (ie 1 4 7)",
 	Two					= "2 (ie 2 5)",
 	Three				= "3 (ie 3 6)",
