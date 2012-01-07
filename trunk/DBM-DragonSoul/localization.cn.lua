@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/2/2012
+-- Last update: 1/7/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -125,6 +125,10 @@ L:SetOptionLocalization({
 	Never				= "从不",
 	Reset3				= "每3/2秒（英雄/普通难度）重置一次",
 	Reset3Always		= "总是每3秒进行重置",
+	SpecWarnHoTN		= "特殊警报：目光审判施放5秒前（仅3套）",
+	One					= "1 (如 1 4 7)",
+	Two					= "2 (如 2 5)",
+	Three				= "3 (如 3 6)",
 	ShowRaidCDs			= "计时条：团队减伤技能冷却（测试功能）",
 	ShowRaidCDsSelf		= "团队减伤技能冷却计时条仅显示自身技能\n（需要开启团队减伤技能冷却计时条）"
 })
