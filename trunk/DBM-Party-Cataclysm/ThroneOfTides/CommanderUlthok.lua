@@ -6,9 +6,9 @@ mod:SetCreatureID(40765)
 mod:SetModelID(33792)
 mod:SetZone()
 
-mod:RegisterEventsInCombat("combat")
+mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
