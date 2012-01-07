@@ -72,7 +72,7 @@ function mod:OnCombatStart(delay)
 	fadingLightCount = 0
 	warnHourofTwilightSoon:Schedule(30.5)
 	if self.Options.SpecWarnHoTN == "One" then
-		specWarnHourofTwilightN:Schedule(40.5, args.spellName, hourOfTwilightCount)
+		specWarnHourofTwilightN:Schedule(40.5, args.spellName, hourOfTwilightCount+1)
 	end
 	timerHourofTwilightCD:Start(45.5-delay, 1)
 	HourofTwilightCountdown:Start(45.5)
@@ -95,12 +95,10 @@ function mod:SPELL_CAST_START(args)
 		or self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2 then
 			hourOfTwilightCount = 0
 		end
-		if self.Options.SpecWarnHoTN == "One" and hourOfTwilightCount == 3 then
-			specWarnHourofTwilightN:Schedule(40.5, args.spellName, 1)
-		elseif self.Options.SpecWarnHoTN == "Two" and hourOfTwilightCount == 1 then
-			specWarnHourofTwilightN:Schedule(40.5, args.spellName, 2)
-		elseif self.Options.SpecWarnHoTN == "Three" and hourOfTwilightCount == 2 then
-			specWarnHourofTwilightN:Schedule(40.5, args.spellName, 3)
+		if self.Options.SpecWarnHoTN == "One" and hourOfTwilightCount == 0
+		or self.Options.SpecWarnHoTN == "Two" and hourOfTwilightCount == 1
+		or self.Options.SpecWarnHoTN == "Three" and hourOfTwilightCount == 2 then
+			specWarnHourofTwilightN:Schedule(40.5, args.spellName, hourOfTwilightCount+1)
 		end
 		warnHourofTwilightSoon:Schedule(30.5)
 		timerHourofTwilightCD:Start(45.5, hourOfTwilightCount+1)
