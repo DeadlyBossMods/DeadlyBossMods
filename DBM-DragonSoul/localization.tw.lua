@@ -117,11 +117,15 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器",
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	ResetHoTCounter		= "重置幕光之時計數",--$spell doesn't work in this function apparently so use typed spellname for now.
-	Never				= "絕不",
-	Reset3				= "每三次/兩次重置(英雄/普通)",
-	Reset3Always		= "總是每三次重置",
-	ShowRaidCDs			= "為團隊冷卻顯示計時器(未完成)",
+	ResetHoTCounter		= "重置暮光之時計數",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "不使用",
+	Reset3				= "每三次/兩次重置計數(英雄/普通)",
+	Reset3Always		= "總是每三次重置計數",
+	SpecWarnHoTN		= "前五秒特別警告所設定的暮光之時計數(只適用在每三次重置)",
+	One					= "1(即為第1 4 7次)",
+	Two					= "2(即為第2 5次)",
+	Three				= "3(即為第3 6次)",
+	ShowRaidCDs			= "為團隊冷卻顯示計時器",
 	ShowRaidCDsSelf		= "只顯示你的團隊冷卻計時器\n(需要開啟團隊冷卻)"
 })
 
