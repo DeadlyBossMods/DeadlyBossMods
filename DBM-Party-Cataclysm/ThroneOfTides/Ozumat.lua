@@ -2,15 +2,16 @@ local mod	= DBM:NewMod("Ozumat", "DBM-Party-Cataclysm", 9)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(42172)
+mod:SetCreatureID(40792)--42172 is Ozumat, but we need Neptulon for engage trigger.
 mod:SetModelID(35100)--32911Looks like crap, definitely doesn't scale well. so just use one of his tenticles instead
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnPhase2		= mod:NewPhaseAnnounce(2)
@@ -19,12 +20,13 @@ local warnBlightSpray	= mod:NewSpellAnnounce(83985, 2)
 
 local timerBlightSpray	= mod:NewBuffActiveTimer(4, 83985)
 
-local warnedPhase2
-local warnedPhase3
+local warnedPhase2 = false
+local warnedPhase3 = false
 
 function mod:OnCombatStart(delay)
 	warnedPhase2 = false
 	warnedPhase3 = false
+	DBM.Bars:CreateBar(95, "Phase 2")--Can be done right later once consistency is confirmed.
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -44,8 +46,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_HEALTH(uId)
-	if self:GetUnitCreatureId(uId) == 42172 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.02 then--This boss doesn't die, the event ends when he reaches 1 health. So we assume if he's less than 2% he's probably dead
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(83909) then --Clear Tidal Surge
 		self:SendSync("bossdown")
 	end
 end
