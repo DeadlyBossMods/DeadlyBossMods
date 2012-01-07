@@ -105,7 +105,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
-	specWarnHourofTwilightN		= "%s (%%d)"--spellname Count
+	specWarnHourofTwilightN		= "%s (%%d) in 5 Sek"--spellname Count
 })
 
 L:SetTimerLocalization({
@@ -118,10 +118,14 @@ L:SetOptionLocalization({
 	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen",
 	TimerCombatStart	= "Zeige Dauer des Rollenspiels bevor Ultraxion aktiv wird",
 	ResetHoTCounter		= "Neustart der Stunde des Zwielichts Zählung",
-	Never				= "Kein Neustart",
-	Reset3				= "Neustart in 3er/2er-Gruppen (heroisch/normal)",
-	Reset3Always		= "Neustart immer in 3er-Gruppen",
-	ShowRaidCDs			= "Zeige Timer für \"Raid-Cooldowns\" (in Entwicklung)",
+	Never				= "Nie",
+	Reset3				= "In 3er/2er-Gruppen (heroisch/normal)",
+	Reset3Always		= "Immer in 3er-Gruppen",
+	SpecWarnHoTN		= "Spezialvorwarnung für Stunde des Zwielichts (nur für Neustart in 3er-Gruppen ausgelegt)",
+	One					= "5 Sekunden vor Zählerstand 1 (1 4 7 ...)",
+	Two					= "5 Sekunden vor Zählerstand 2 (2 5 ...)",
+	Three				= "5 Sekunden vor Zählerstand 3 (3 6 ...)",
+	ShowRaidCDs			= "Zeige Timer für \"Raid-Cooldowns\"",
 	ShowRaidCDsSelf		= "Zeige jedoch nur Timer für eigene \"Raid-Cooldowns\"\n(benötigt aktivierte Timer für \"Raid-Cooldowns\")"
 })
 
