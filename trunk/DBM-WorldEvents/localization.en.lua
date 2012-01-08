@@ -9,9 +9,6 @@ L:SetGeneralLocalization({
 	name = "Apothecary Trio"
 })
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization{
 	HummelActive		= "Hummel becomes active",
 	BaxterActive		= "Baxter becomes active",
@@ -124,14 +121,50 @@ L:SetGeneralLocalization({
 	name = "The Abominable Greench"
 })
 
-L:SetWarningLocalization({
+--------------------------
+--  Blastenheimer 5000  --
+--------------------------
+L = DBM:GetModLocalization("Cannon")
+
+L:SetGeneralLocalization({
+	name = "Blastenheimer 5000"
 })
 
-L:SetTimerLocalization{
-}
+-------------
+--  Gnoll  --
+-------------
+L = DBM:GetModLocalization("Gnoll")
+
+L:SetGeneralLocalization({
+	name = "Whack-a-Gnoll"
+})
+
+L:SetWarningLocalization({
+	warnGnoll		= "Gnoll spawned",
+	warnHogger		= "Hogger spawned",
+	specWarnHogger	= "Hogger spawned!"
+})
 
 L:SetOptionLocalization({
+	warnGnoll		= "Announce when a Gnoll spawns",
+	warnHogger		= "Announce when a Hogger spawns",
+	specWarnHogger	= "Show special warning when a Hogger spawns"
 })
 
-L:SetMiscLocalization({
+------------------------
+--  Shooting Gallery  --
+------------------------
+L = DBM:GetModLocalization("Shot")
+
+L:SetGeneralLocalization({
+	name = "Shooting Gallery"
+})
+
+----------------------
+--  Tonk Challenge  --
+----------------------
+L = DBM:GetModLocalization("Tonks")
+
+L:SetGeneralLocalization({
+	name = "Tonk Challenge"
 })
