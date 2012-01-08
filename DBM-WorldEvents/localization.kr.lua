@@ -11,9 +11,6 @@ L:SetGeneralLocalization({
 	name = "화학회사 삼인방"
 })
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization{
 	HummelActive	= "훔멜 활성화",
 	BaxterActive	= "벡스터 활성화",
@@ -126,14 +123,51 @@ L:SetGeneralLocalization({
 	name = "썩은내 그린치"
 })
 
-L:SetWarningLocalization({
+--------------------------
+--  Blastenheimer 5000  --
+--------------------------
+L = DBM:GetModLocalization("Cannon")
+
+L:SetGeneralLocalization({
+	name = "인간 대포알"
 })
 
-L:SetTimerLocalization{
-}
+-------------
+--  Gnoll  --
+-------------
+L = DBM:GetModLocalization("Gnoll")
+
+L:SetGeneralLocalization({
+	name = "놀 때려잡기"
+})
+
+L:SetWarningLocalization({
+	warnGnoll		= "놀 등장",
+	warnHogger		= "들창코 놀 등장",
+	specWarnHogger	= "들창코 놀 등장!"
+})
 
 L:SetOptionLocalization({
+	warnGnoll		= "놀 등장 알림",
+	warnHogger		= "들창코 놀 등장 알림",
+	specWarnHogger	= "들창코 놀 득장 특수 경고 보기"
 })
 
-L:SetMiscLocalization({
+------------------------
+--  Shooting Gallery  --
+------------------------
+L = DBM:GetModLocalization("Shot")
+
+L:SetGeneralLocalization({
+	name = "사격 연습장"
 })
+
+----------------------
+--  Tonk Challenge  --
+----------------------
+L = DBM:GetModLocalization("Tonks")
+
+L:SetGeneralLocalization({
+	name = "통통 전차 게임"
+})
+
