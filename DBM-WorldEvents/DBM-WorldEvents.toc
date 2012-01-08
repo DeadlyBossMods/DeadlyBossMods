@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-deDE: Holidays,Darkmoon Faire
+## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt
 ## X-DBM-Mod-SubCategories-ruRU: Holidays,Darkmoon Faire
 ## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제
 ## X-DBM-Mod-SubCategories-zhTW: Holidays,Darkmoon Faire
