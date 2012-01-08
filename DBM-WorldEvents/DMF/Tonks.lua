@@ -19,6 +19,9 @@ local timerGame					= mod:NewBuffActiveTimer(60, 102178)
 
 local soundMarked				= mod:NewSound(102341)
 
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
+
 local antiSpam = 0
 
 function mod:SPELL_CAST_SUCCESS(args)

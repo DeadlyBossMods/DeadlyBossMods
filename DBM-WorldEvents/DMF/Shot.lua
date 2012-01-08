@@ -13,6 +13,9 @@ mod:RegisterEvents(
 
 local timerGame		= mod:NewBuffActiveTimer(60, 101871)
 
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(101871) and args:IsPlayer() then
 		timerGame:Start()
