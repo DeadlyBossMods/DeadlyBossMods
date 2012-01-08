@@ -2,7 +2,7 @@
 ## X-Min-Interface: 40300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Events|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos del Mundo|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0월드 이벤트|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0이벤트|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Игровые события|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0世界事件|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Weltereignisse|r
@@ -16,7 +16,7 @@
 ## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire
 ## X-DBM-Mod-SubCategories-deDE: Holidays,Darkmoon Faire
 ## X-DBM-Mod-SubCategories-ruRU: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-koKR: Holidays,Darkmoon Faire
+## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제
 ## X-DBM-Mod-SubCategories-zhTW: Holidays,Darkmoon Faire
 ## X-DBM-Mod-SubCategories-zhCN: Holidays,Darkmoon Faire
 ## X-DBM-Mod-SubCategories-esES: Holidays,Darkmoon Faire
@@ -27,7 +27,7 @@
 ## X-DBM-Mod-Name-ruRU: Игровые события
 ## X-DBM-Mod-Name-zhTW: 世界事件
 ## X-DBM-Mod-Name-zhCN: 世界事件
-## X-DBM-Mod-Name-koKR: 월드 이벤트
+## X-DBM-Mod-Name-koKR: 이벤트
 ## X-DBM-Mod-Name-deDE: Weltereignisse
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
 ## X-DBM-Mod-Sort: 150
