@@ -49,6 +49,7 @@ local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
 
+local twilightOnslaughtCountdown	= mod:NewCountdown(35, 107588)
 local berserkTimer					= mod:NewBerserkTimer(250)
 
 local phase2Started = false
@@ -89,9 +90,11 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerTwilightOnslaughtCD:Start(48-delay, 1)--Not sure if variation is cause it was heroic or cause the first one is not consistent
+		twilightOnslaughtCountdown:Start(48-delay)
 --		timerDeckFireCD:Start(60-delay)--Consistent?
 	else
 		timerTwilightOnslaughtCD:Start(48-delay, 1)
+		twilightOnslaughtCountdown:Start()
 	end
 	if DBM.BossHealth:IsShown() then
 		local shipname = EJ_GetSectionInfo(4202)
@@ -107,6 +110,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTwilightOnslaught:Show()
 		timerTwilightOnslaught:Start()
 		timerTwilightOnslaughtCD:Start(nil, twilightOnslaughtCount + 1)
+		twilightOnslaughtCountdown:Start()
 	elseif args:IsSpellID(108046) then
 		self:ScheduleMethod(0.2, "ShockwaveTarget")
 		timerShockwaveCD:Start()
