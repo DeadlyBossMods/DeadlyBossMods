@@ -43,19 +43,31 @@ local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
---local timerDeckFireCD				= mod:NewCDTimer(20, 110095)--Not the best log, so not sure if this is accurate or actually based on other variables.
 local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables (i haven't seen any logs where this wasn't always 21.5, are 19s on WoL somewhere?)
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
 
 local twilightOnslaughtCountdown	= mod:NewCountdown(35, 107588)
-local berserkTimer					= mod:NewBerserkTimer(250)
+local berserkTimer					= mod:NewBerserkTimer(240)
 
 local phase2Started = false
 local lastFlames = 0
 local addsCount = 0
 local twilightOnslaughtCount = 0
+
+local function Phase2Delay()
+	mod:UnscheduleMethod("AddsRepeat")
+	timerAdd:Cancel()
+	timerTwilightOnslaughtCD:Cancel()
+	timerSapperCD:Cancel()
+	timerRoarCD:Start(11)
+	timerTwilightFlamesCD:Start(12)
+	timerShockwaveCD:Start(13)--13-16 second variation
+	if not mod:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR
+		berserkTimer:Start()
+	end
+end
 
 function mod:ShockwaveTarget()
 	local targetname = self:GetBossTarget(56427)
@@ -85,16 +97,10 @@ function mod:OnCombatStart(delay)
 	timerCombatStart:Start(-delay)
 	timerAdd:Start(24-delay)
 	self:ScheduleMethod(24-delay, "AddsRepeat")
+	timerTwilightOnslaughtCD:Start(48-delay, 1)
+	twilightOnslaughtCountdown:Start(48-delay)
 	if not self:IsDifficulty("lfr25") then--No sappers in LFR
 		timerSapperCD:Start(69-delay)
-	end
-	if self:IsDifficulty("heroic10", "heroic25") then
-		timerTwilightOnslaughtCD:Start(48-delay, 1)--Not sure if variation is cause it was heroic or cause the first one is not consistent
-		twilightOnslaughtCountdown:Start(48-delay)
---		timerDeckFireCD:Start(60-delay)--Consistent?
-	else
-		timerTwilightOnslaughtCD:Start(48-delay, 1)
-		twilightOnslaughtCountdown:Start()
 	end
 	if DBM.BossHealth:IsShown() then
 		local shipname = EJ_GetSectionInfo(4202)
@@ -138,20 +144,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	--"<2067.7> [CAST_SUCCEEDED] Goriona:Possible Target<nil>:target:Eject Passenger 1::0:60603", -- [61429]
 	--"<2069.5> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Looks like I'm doing this myself. Good!#Warmaster Blackhorn###Goriona##0#0##0#564##0#false", -- [61454]
 	elseif args:IsSpellID(108040) and not phase2Started then--Goriona is being shot by the ships Artillery Barrage (phase 2 trigger)
+		self:Schedule(10, Phase2Delay)--It seems you can still get phase 1 crap until blackhorn is on the deck itself(ie his yell 10 seconds after this trigger) so we delay canceling timers.
 		phase2Started = true
-		self:UnscheduleMethod("AddsRepeat")
-		timerAdd:Cancel()
-		timerTwilightOnslaughtCD:Cancel()
-		timerSapperCD:Cancel()
-		--timerDeckFireCD:Cancel()--This continue into phase 2 or do we cancel it?
-		warnPhase2:Show()
-		timerCombatStart:Start(5)--Shorter now on live? 5-6 seems about right now. Lets try 5.
-		timerRoarCD:Start(21)
-		timerTwilightFlamesCD:Start(22)
-		timerShockwaveCD:Start()--23-26 second variation
-		if not self:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR
-			berserkTimer:Start()
-		end
+		warnPhase2:Show()--We still warn phase 2 here though to get into position, especially since he can land on deck up to 5 seconds before his yell.
+		timerCombatStart:Start(5)--5-8 seems variation, we use shortest.
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(56427, L.name)
@@ -181,7 +177,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.SapperEmote or msg:find(L.SapperEmote) then
 		timerSapperCD:Start()
 	elseif msg:find(L.DeckFire) then
---		timerDeckFireCD:Start()
+
 	end
 end
 
