@@ -104,7 +104,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
-	specWarnHourofTwilightN		= "%s (%%d) in 5s"--spellname Count
+	specWarnHourofTwilightN		= "%s (%d) in 5s"--spellname Count
 })
 
 L:SetTimerLocalization({
