@@ -107,7 +107,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
-	specWarnHourofTwilightN		= "5초 후 %s! (%%d)"--spellname Count
+	specWarnHourofTwilightN		= "5초 후 %s! (%d)"--spellname Count
 })
 
 L:SetTimerLocalization({
