@@ -176,8 +176,6 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.SapperEmote or msg:find(L.SapperEmote) then
 		timerSapperCD:Start()
-	elseif msg:find(L.DeckFire) then
-
 	end
 end
 
