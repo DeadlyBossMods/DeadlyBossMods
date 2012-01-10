@@ -169,7 +169,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
-		warnAbsorbedBlood:Show(args.destName, args.amount or 1)
+		warnAbsorbedBlood:Unschedule()--Just a little anti spam
+		warnAbsorbedBlood:Schedule(1, args.destName, args.amount or 1)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
 		gripTargets[#gripTargets + 1] = args.destName
 		timerGripCD:Cancel(args.sourceGUID)
