@@ -61,6 +61,8 @@ local timerParasiteCD			= mod:NewCDTimer(60, 108649)
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
+local ShrapnelCountdown			= mod:NewCountdown(6, 109598)
+
 mod:AddBoolOption("RangeFrame", true)--For heroic parasites, with debuff filtering.
 mod:AddBoolOption("SetIconOnParasite", true)
 
@@ -175,6 +177,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnShrapnelTargets)
 		if args:IsPlayer() then
 			specWarnShrapnel:Show()
+			ShrapnelCountdown:Start(6)
 		end
 		if (self:IsDifficulty("normal10") and #shrapnelTargets >= 3) then -- confirmed only in 10man normal
 			warnShrapnelTargets()

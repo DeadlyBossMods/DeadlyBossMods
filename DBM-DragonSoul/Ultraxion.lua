@@ -107,7 +107,9 @@ function mod:SPELL_CAST_START(args)
 			timerFadingLightCD:Start(13)
 			timerHourofTwilight:Start(3)
 		else
-			timerFadingLightCD:Start(20)
+			if (self:IsDifficulty("lfr25") and self:IsTank()) or self:IsDifficulty("normal10", "normal25") then
+				timerFadingLightCD:Start(20)
+			end
 			timerHourofTwilight:Start()
 		end
 	elseif args:IsSpellID(106388) then
