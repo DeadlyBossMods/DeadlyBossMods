@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/13/2011
+-- Last update: 1/1/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -260,7 +260,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("NexusLegendary")
 
 L:SetGeneralLocalization({
-	name = "赛瑞纳尔"
+	name = "泰林纳尔"
 })
 
 L:SetWarningLocalization({
