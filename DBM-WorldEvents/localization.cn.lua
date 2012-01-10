@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 12/17/2011
+-- Last update: 1/11/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -12,9 +12,6 @@ L = DBM:GetModLocalization("ApothecaryTrio")
 
 L:SetGeneralLocalization({
 	name 			= "药剂师三人组"
-})
-
-L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
@@ -140,4 +137,52 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+})
+
+--------------------------
+--  Blastenheimer 5000  --
+--------------------------
+L = DBM:GetModLocalization("Cannon")
+
+L:SetGeneralLocalization({
+	name = "炮弹飞人"
+})
+
+-------------
+--  Gnoll  --
+-------------
+L = DBM:GetModLocalization("Gnoll")
+
+L:SetGeneralLocalization({
+	name = "打豺狼人"
+})
+
+L:SetWarningLocalization({
+	warnGnoll		= "豺狼人出现",
+	warnHogger		= "霍格出现",
+	specWarnHogger	= "霍格出现！"
+})
+
+L:SetOptionLocalization({
+	warnGnoll		= "警报：豺狼人出现",
+	warnHogger		= "警报：霍格出现",
+	specWarnHogger	= "特殊警报：霍格出现"
+})
+
+------------------------
+--  Shooting Gallery  --
+------------------------
+L = DBM:GetModLocalization("Shot")
+
+L:SetGeneralLocalization({
+	name = "射击场"
+})
+
+----------------------
+--  Tonk Challenge  --
+----------------------
+L = DBM:GetModLocalization("Tonks")
+
+L:SetGeneralLocalization({
+	name = "坦克大战"
 })

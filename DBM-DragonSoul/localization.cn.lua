@@ -109,7 +109,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
-	specWarnHourofTwilightN		= "%s (%%d)"--spellname Count
+	specWarnHourofTwilightN		= "%s (%d) - 5秒后施放"--spellname Count
 })
 
 L:SetTimerLocalization({
@@ -186,7 +186,7 @@ L:SetMiscLocalization({
 	NoDebuff		= "没有%s",
 	PlasmaTarget	= "灼热血浆：%s",
 	DRoll			= "侧翻滚！",
-	DLevels			= "平衡" -- 保持平衡
+	DLevels			= "保持平衡" -- 保持平衡
 })
 
 ---------------------------
