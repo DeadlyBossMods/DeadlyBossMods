@@ -53,6 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
+	warnOozesHit	= "%s"
 })
 
 L:SetTimerLocalization({
@@ -60,6 +61,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnOozesHit		= "為何種顏色的軟泥注入至首領發佈提示",
 	timerOozesActive	= "為軟泥重生後可被攻擊顯示計時器",
 	RangeFrame			= "為$spell:104898顯示距離框(4碼)(普通以上的難度)"
 })
