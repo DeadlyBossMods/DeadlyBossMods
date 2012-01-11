@@ -80,6 +80,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	WarnPillars				= "%d %s remaining",
 	warnFrostTombCast		= "%s in 8 sec"
 })
 
