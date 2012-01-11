@@ -61,7 +61,7 @@ local timerParasiteCD			= mod:NewCDTimer(60, 108649)
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
-local ShrapnelCountdown			= mod:NewCountdown(6, 109598)
+local ShrapnelCountdown			= mod:NewCountdown(6, 109598, not mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)--For heroic parasites, with debuff filtering.
 mod:AddBoolOption("SetIconOnParasite", true)
