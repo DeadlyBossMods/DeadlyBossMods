@@ -112,7 +112,8 @@ Ooze Absorption and granted abilities expression (black adds only fire UNIT_SPEL
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then
 		warnVoidBolt:Show(args.destName, args.amount or 1)
-		timerVoidBolt:Start(args.destName)
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(args.destName, args.spellName)--Try to fix some stupidness in this timer having a 20-22second variation.
+		timerVoidBolt:Start(duration, args.destName)
 		if (args.amount or 1) >= 3 and args:IsPlayer() then
 			specWarnVoidBolt:Show(args.amount)
 		end
