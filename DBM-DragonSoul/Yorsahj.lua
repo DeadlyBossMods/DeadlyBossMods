@@ -86,7 +86,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(105530) then
 		warnManaVoid:Show()
 		specWarnManaVoid:Show()
-	elseif args:IsSpellID(105573, 108350, 108351, 108352) and args:GetSrcCreatureID() == 55312 then
+	elseif args:IsSpellID(105573, 108350, 108351, 108352) and self:IsInCombat() then
 		if yellowActive then
 			timerAcidCD:Start(4.15)
 		else
@@ -106,7 +106,7 @@ Ooze Absorption and deaths WoL Expression
 (spellid = 104896 or spellid = 104894 or spellid = 105027 or spellid = 104897 or spellid = 104901 or spellid = 104898) and targetMobId = 55312 or fulltype = UNIT_DIED and (targetMobId = 55862 or targetMobId = 55866 or targetMobId = 55865 or targetMobId = 55867 or targetMobId = 55864 or targetMobId = 55863)
 
 Ooze Absorption and granted abilities expression (black adds only fire UNIT_SPELLCAST_SUCCEEDED Spawning Pool::0:105600 so we can't reg expression it)
-(spellid = 104896 or spellid = 104894 or spellid = 105027 or spellid = 104897 or spellid = 104901 or spellid = 104898) and targetMobId = 55312 or fulltype = SPELL_CAST_SUCCESS and (spell = "Digestive Acid" or spell = "Mana Void" or spell = "Searing Blood" or or spell = "Deep Corruption")
+(spellid = 104896 or spellid = 104894 or spellid = 105027 or spellid = 104897 or spellid = 104901 or spellid = 104898) and targetMobId = 55312 or fulltype = SPELL_CAST_SUCCESS and (spell = "Digestive Acid" or spell = "Mana Void" or spell = "Searing Blood" or spell = "Deep Corruption")
 --]]
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then
