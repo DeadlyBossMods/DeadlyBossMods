@@ -183,10 +183,12 @@ L:SetOptionLocalization({
 	TimerPOI				= "거점 점령 바 표시",
 	TimerSiegeEngine		= "공성 전차 제작 바 표시",
 	WarnSiegeEngine			= "공성 전차 제작 완료 알림 보기",
-	WarnSiegeEngineSoon		= "공성 전차 제작 완료 사전 알림 보기"	
+	WarnSiegeEngineSoon		= "공성 전차 제작 완료 사전 알림 보기",
+	ShowGatesHealth			= "관문의 체력 바 보기 (진행 중인 전장에서는 맞지 않을 수도 있습니다!)"
 })
 
 L:SetMiscLocalization({
+	GatesHealthFrame		= "피해 입은 관문",
 	SiegeEngine				= "공성 전차",
 	GoblinStartAlliance		= "저기 시포리움 폭탄 보이세요? 제가 공성 전차를 수리하는 동안엔 그걸 사용해서 관문을 공격하세요!",
 	GoblinStartHorde		= "공성 전차를 수리하는 동안 날 좀 지켜 달라고. 필요하면 저기 있는 시포리움 폭탄을 관문에 사용해!",
