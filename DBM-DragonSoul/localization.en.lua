@@ -52,7 +52,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozesHit	= "%s"
+	warnOozesHit	= "%s absorbed %s"
 })
 
 L:SetTimerLocalization({
