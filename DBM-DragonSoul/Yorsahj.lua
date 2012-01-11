@@ -32,7 +32,7 @@ local timerOozesCD		= mod:NewNextTimer(90, "ej3978")
 local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- varies (7.0~8.5)
 local timerAcidCD		= mod:NewNextTimer(8.3, 108352)--Green ooze aoe
 local timerSearingCD	= mod:NewNextTimer(6, 108358)--Red ooze aoe
-local timerManaVoidCD	= mod:NewNextTimer(8.3, 108383)--Blue Mana Void
+local timerManaVoidCD	= mod:NewNextTimer(8.3, 105530)--Blue Mana Void
 local timerVoidBoltCD	= mod:NewNextTimer(6, 108383, nil, mod:IsTank())--Needs more work, need to check for the ability that halfs his CDs and such.
 local timerVoidBolt		= mod:NewTargetTimer(21, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20-22 (varies)
 
