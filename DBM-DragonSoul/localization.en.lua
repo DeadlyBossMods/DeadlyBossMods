@@ -52,6 +52,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
+	warnOozesHit	= "%s"
 })
 
 L:SetTimerLocalization({
@@ -59,6 +60,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnOozesHit		= "Announce what oozes hit the boss",
 	timerOozesActive	= "Show timer for when Oozes become attackable",
 	RangeFrame			= "Show range frame (4) for $spell:104898\n(Normal+ difficulty)"
 })

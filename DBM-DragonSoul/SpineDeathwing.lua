@@ -25,7 +25,8 @@ local warnGrip				= mod:NewTargetAnnounce(109459, 4)
 local warnNuclearBlast		= mod:NewCastAnnounce(105845, 4)
 local warnSealArmor			= mod:NewCastAnnounce(105847, 4)--Cast by Burning Tendons when they spawn after you break a plate
 
-local specWarnTendril		= mod:NewSpecialWarning("SpecWarnTendril")
+local specWarnRoll			= mod:NewSpecialWarningSpell("ej4050", nil, nil, nil, true)--The actual roll
+local specWarnTendril		= mod:NewSpecialWarning("SpecWarnTendril")--A personal warning for you only if you're not gripped 3 seconds after roll started
 local specWarnGrip			= mod:NewSpecialWarningSpell(109459, mod:IsDps())
 local specWarnNuclearBlast	= mod:NewSpecialWarningRun(105845, mod:IsMelee())
 local specWarnSealArmor		= mod:NewSpecialWarningSpell(105847, mod:IsDps())
@@ -34,7 +35,6 @@ local timerSealArmor		= mod:NewCastTimer(23, 105847)
 local timerBarrelRoll		= mod:NewCastTimer(5, "ej4050")
 local timerGripCD			= mod:NewCDTimer(32, 109457)
 
---local berserkTimer			= mod:NewBerserkTimer(900)
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
@@ -116,7 +116,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
---	berserkTimer:Start(-delay)
 	if self:IsDifficulty("lfr25") then
 		warnSealArmor = mod:NewCastAnnounce(105847, 4, 34.5)
 	else
@@ -169,8 +168,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
-		warnAbsorbedBlood:Unschedule()--Just a little anti spam
-		warnAbsorbedBlood:Schedule(1, args.destName, args.amount or 1)
+		warnAbsorbedBlood:Cancel()--Just a little anti spam
+		warnAbsorbedBlood:Schedule(2, args.destName, args.amount or 1)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
 		gripTargets[#gripTargets + 1] = args.destName
 		timerGripCD:Cancel(args.sourceGUID)
@@ -210,8 +209,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.DRoll or msg:find(L.DRoll) then
 		self:Unschedule(checkTendrils)--In case you manage to spam spin him, we don't want to get a bunch of extra stuff scheduled.
 		self:Unschedule(clearTendrils)--^
-		checkTendrils()--Warn you right away.
-		self:Schedule(3, checkTendrils)--Check a second time 3 seconds into 5 second cast to remind player
+		specWarnRoll:Show()--Warn you right away.
+		self:Schedule(3, checkTendrils)--After 3 seconds of roll starting, check tendrals, you should have leveled him out by now if this wasn't on purpose.
 		self:Schedule(8, clearTendrils)--Clearing 3 seconds after the roll should be sufficent
 		timerBarrelRoll:Start()
 	elseif msg == L.DLevels or msg:find(L.DLevels) then
