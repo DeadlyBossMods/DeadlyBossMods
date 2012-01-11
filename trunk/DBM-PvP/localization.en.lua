@@ -176,23 +176,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart			= "Game starts", 
 	TimerPOI			= "%s",
 	TimerSiegeEngine	= "Siege Engine ready"
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "Show start timer", 
 	TimerPOI			= "Show capture timer",
 	TimerSiegeEngine	= "Show timer for Siege Engine construction",
 	WarnSiegeEngine		= "Show warning when Siege Engine is ready",
-	WarnSiegeEngineSoon	= "Show warning when Siege Engine is almost ready"
+	WarnSiegeEngineSoon	= "Show warning when Siege Engine is almost ready",
+	ShowGatesHealth		= "Show the health of damaged gates (health values may be wrong after joining an already ongoing battleground!)"
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "The battle will begin in 60 seconds.",
-	BgStart30				= "The battle will begin in 30 seconds.",
-	BgStart15				= "The battle will begin in 15 seconds.",
+	GatesHealthFrame		= "Damaged gates",
 	SiegeEngine				= "Siege Engine",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
 	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
