@@ -20,6 +20,7 @@ mod:RegisterEventsInCombat(
 
 local warnTempest			= mod:NewCastAnnounce(109552, 4)
 local warnLightningStorm	= mod:NewSpellAnnounce(105465, 4)
+local warnPillars			= mod:NewAnnounce("WarnPillars", 2, 105311)
 local warnAssault			= mod:NewSpellAnnounce(107851, 4, nil, mod:IsHealer() or mod:IsTank())
 local warnShatteringIce		= mod:NewTargetAnnounce(105289, 3, nil, mod:IsHealer())--3 second cast, give a healer a heads up of who's about to be kicked in the face.
 local warnFrostTombCast		= mod:NewAnnounce("warnFrostTombCast", 4, 104448)--Can't use a generic, cause it's an 8 second cast even though it says 1second in tooltip.
@@ -33,9 +34,7 @@ local specWarnFrostTombCast	= mod:NewSpecialWarningSpell(104448, nil, nil, nil, 
 local specWarnTempest		= mod:NewSpecialWarningSpell(109552, nil, nil, nil, true)
 local specWarnLightingStorm	= mod:NewSpecialWarningSpell(105465, nil, nil, nil, true)
 local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
---local specWarnFrostTomb		= mod:NewSpecialWarningYou(104451)
 local specWarnWatery		= mod:NewSpecialWarningMove(110317)
---local specWarnStormPillars	= mod:NewSpecialWarningClose(109557)	-- target was always nil on my pulls. She didn't target anyone
 local specWarnFrostflake	= mod:NewSpecialWarningYou(109325)
 local yellFrostflake		= mod:NewYell(109325)
 
@@ -66,28 +65,9 @@ mod:AddBoolOption("AnnounceFrostTombIcons", false)
 local lanceTargets = {}
 local tombTargets = {}
 local tombIconTargets = {}
-
---[[
-"<44.3> [UNIT_SPELLCAST_SUCCEEDED] Hagara the Stormbinder:Possible Target<nil>:boss1:Storm Pillar::0:109541", -- [97]
-"<49.3> [UNIT_SPELLCAST_SUCCEEDED] Hagara the Stormbinder:Possible Target<nil>:boss1:Storm Pillar::0:109541", -- [98]
-"<54.2> [UNIT_SPELLCAST_SUCCEEDED] Hagara the Stormbinder:Possible Target<nil>:boss1:Storm Pillar::0:109541", -- [99]
-function mod:stormPillarsTarget(target)
-	local targetname = target or self:GetBossTarget(55689)
-	if not targetname then return end
-	warnStormPillars:Show(targetname)
-	local uId = DBM:GetRaidUnitId(targetname)
-	if uId then
-		local x, y = GetPlayerMapPosition(uId)
-		if x == 0 and y == 0 then
-			SetMapToCurrentZone()
-			x,y = GetPlayerMapPosition(uId)
-		end
-		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-		if inRange and inRange < 5 then
-			specWarnStormPillars:Show(targetname)
-		end
-	end
-end--]]
+local pillarsRemaining = 4
+local frostPillar = EJ_GetSectionInfo(3919)
+local lightningPillar = EJ_GetSectionInfo(4202)
 
 function mod:ShatteredIceTarget()
 	local targetname = self:GetBossTarget(55689)
@@ -154,15 +134,11 @@ local function warnTombTargets()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(104451) then--104451 25 man normal confirmed.
+	if args:IsSpellID(104451) then
 		tombTargets[#tombTargets + 1] = args.destName
-		--[[if args:IsPlayer() then
-			specWarnFrostTomb:Show()
-		end--]]
 		if self.Options.SetIconOnFrostTomb then
 			table.insert(tombIconTargets, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetTombIcons")
-			--know 25 normal is 5, the rest are just guessed based on similar mechanic off Sindragosa
 			if (self:IsDifficulty("normal25") and #tombIconTargets >= 5) or (self:IsDifficulty("heroic25") and #tombIconTargets >= 6) or (self:IsDifficulty("normal10", "heroic10") and #tombIconTargets >= 2) then
 				self:SetTombIcons()--Sort and fire as early as possible once we have all targets.
 			else
@@ -237,6 +213,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(3)
 		end
+	elseif args:IsSpellID(105311) then--Frost defeated.
+		pillarsRemaining = pillarsRemaining - 1
+		warnPillars:Show(frostPillar, pillarsRemaining)
+	elseif args:IsSpellID(105482) then--Lighting defeated.
+		pillarsRemaining = pillarsRemaining - 1
+		warnPillars:Show(lightningPillar, pillarsRemaining)
 	end
 end
 
@@ -245,7 +227,8 @@ function mod:SPELL_CAST_START(args)
 		warnFrostTombCast:Show(args.spellName)
 		specWarnFrostTombCast:Show()
 		timerFrostTomb:Start()
-	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--109552 25man normal confirmed, rest wowhead drycodes
+	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
+		pillarsRemaining = 4
 		timerAssaultCD:Cancel()
 		timerIceLanceCD:Cancel()
 		warnTempest:Show()
@@ -255,6 +238,11 @@ function mod:SPELL_CAST_START(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
+		if self:IsDifficulty("heroic10") then
+			pillarsRemaining = 8
+		else
+			pillarsRemaining = 4
+		end
 		timerAssaultCD:Cancel()
 		timerIceLanceCD:Cancel()
 		warnLightningStorm:Show()
@@ -269,7 +257,6 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(109557) then
---		self:stormPillarsTarget()
 		warnStormPillars:Show()
 		timerStormPillarCD:Start()
 	end
