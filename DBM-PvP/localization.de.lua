@@ -177,26 +177,23 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart			= "Kampfbeginn", 
 	TimerPOI			= "%s",
 	TimerSiegeEngine	= "Belagerungsmaschine"
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "Zeige Zeit bis Kampfbeginn", 
 	TimerPOI			= "Zeige Eroberungsdauer",
 	TimerSiegeEngine	= "Zeige Zeit bis Belagerungsmaschine bereit ist",
 	WarnSiegeEngine		= "Zeige Warnung, wenn Belagerungsmaschine bereit ist",
-	WarnSiegeEngineSoon	= "Zeige Warnung, wenn Belagerungsmaschine fast bereit ist"
+	WarnSiegeEngineSoon	= "Zeige Warnung, wenn Belagerungsmaschine fast bereit ist",
+	ShowGatesHealth		= "Zeige Erhaltungsgrad beschädigter Tore (kann nach dem Beitritt\nzu einem bereits laufenden Schlachtfeld falsche Werte liefern!)"
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "Die Schlacht beginnt in 60 Sekunden.",
-	BgStart30				= "Die Schlacht beginnt in 30 Sekunden.",
-	BgStart15				= "Die Schlacht beginnt in 15 Sekunden.",
+	GatesHealthFrame		= "Beschädigte Tore",
 	SiegeEngine				= "Belagerungsmaschine",
-	GoblinStartAlliance		= "Ich arbeite an der Belagerungsmaschine. Haltet mir einfach nur den Rücken frei. Benutzt diese Zephyriumbomben an den Toren, solltet Ihr sie brauchen!",
-	GoblinStartHorde		= "Seht Ihr diese Zephyriumbomben? Benutzt sie an den Toren, während ich die Belagerungsmaschine repariere!",
+	GoblinStartAlliance		= "Seht Ihr diese Zephyriumbomben? Benutzt sie an den Toren, während ich die Belagerungsmaschine repariere!",
+	GoblinStartHorde		= "Ich arbeite an der Belagerungsmaschine. Haltet mir einfach nur den Rücken frei. Benutzt diese Zephyriumbomben an den Toren, solltet Ihr sie brauchen!",
 	GoblinHalfwayAlliance	= "Ich hab's gleich! Haltet die Horde von hier fern. Kämpfen stand in der Ingenieursschule nicht auf dem Lehrplan!",
 	GoblinHalfwayHorde		= "Ich hab's gleich! Haltet mir die Allianz vom Leib. Kämpfen steht nicht in meinem Vertrag!",
 	GoblinFinishedAlliance	= "Meine beste Arbeit bisher! Diese Belagerungsmaschine ist bereit, ein bisschen Aktion zu sehen!",

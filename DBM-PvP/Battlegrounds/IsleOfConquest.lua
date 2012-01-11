@@ -8,9 +8,9 @@ IsleOfConquest:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"SPELL_BUILDING_DAMAGE"
 )
 
 IsleOfConquest:RemoveOption("HealthFrame")
@@ -19,14 +19,17 @@ IsleOfConquest:RemoveOption("SpeedKillTimer")
 local warnSiegeEngine 		= IsleOfConquest:NewAnnounce("WarnSiegeEngine", 3)
 local warnSiegeEngineSoon 	= IsleOfConquest:NewAnnounce("WarnSiegeEngineSoon", 2) 
 
---local startTimer 		= IsleOfConquest:NewTimer(62, "TimerStart", 2457)
 local POITimer 			= IsleOfConquest:NewTimer(61, "TimerPOI", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")	-- point of interest
 local timerSiegeEngine 	= IsleOfConquest:NewTimer(180, "TimerSiegeEngine", 15048)
+
+IsleOfConquest:AddBoolOption("ShowGatesHealth", true)
 
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
 local allyColor = {r = 0, g = 0, b = 1}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower"
 local hordeColor = {r = 1, g = 0, b = 0}
+
+local gateHP = {}
 
 local function isInArgs(val, ...)	-- search for val in all args (...)
 	for i=1, select("#", ...), 1 do
@@ -70,7 +73,11 @@ do
 					end
 				end
 			end
+			gateHP = {}
+			DBM.BossHealth:Clear()
 		elseif bgzone then
+			DBM.BossHealth:Clear()
+			DBM.BossHealth:Hide()
 			self:Stop()
 			bgzone = false
 		end
@@ -112,18 +119,6 @@ do
 	function scheduleCheck(self)
 		self:Schedule(1, checkForUpdates)
 	end
-
-	function IsleOfConquest:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
-		if not bgzone then return end
---[[		if arg1 == L.BgStart60 then
-			startTimer:Start()
-		elseif arg1 == L.BgStart30  then		
-			startTimer:Update(31, 62)
-		elseif arg1 == L.BgStart15 then
-			startTimer:Update(47, 62)
-		end--]]
-		scheduleCheck(self)
-	end
 	
 	function IsleOfConquest:CHAT_MSG_MONSTER_YELL(msg)
 		if msg == L.GoblinStartAlliance or msg == L.GoblinBrokenAlliance or msg:find(L.GoblinStartAlliance) or msg:find(L.GoblinBrokenAlliance) then
@@ -154,6 +149,27 @@ function IsleOfConquest:UNIT_DIED(args)
 		self:SendSync("SEBroken", "Alliance")
 	elseif cid == 35069 then
 		self:SendSync("SEBroken", "Horde")	
+	end
+end
+
+function IsleOfConquest:SPELL_BUILDING_DAMAGE(args)
+	if args == nil or args.destName == nil or args.destGUID == nil or args.amount == nil then
+		return
+	end
+	local guid = args.destGUID
+	if gateHP[guid] == nil then -- first hit
+		gateHP[guid] = 600000 -- initial gate health: 600000
+		if	self.Options.ShowGatesHealth then
+			if not DBM.BossHealth:IsShown() then
+				DBM.BossHealth:Show(L.GatesHealthFrame)
+			end
+			DBM.BossHealth:AddBoss(function() return gateHP[guid]/6000	end, args.destName)
+		end
+	end
+	if gateHP[guid] > args.amount then
+		gateHP[guid] = gateHP[guid] - args.amount
+	else
+		gateHP[guid] = 0
 	end
 end
 
