@@ -32,7 +32,7 @@ local timerOozesCD		= mod:NewNextTimer(90, "ej3978")
 local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- varies (7.0~8.5)
 local timerAcidCD		= mod:NewNextTimer(8.3, 108352)--Green ooze aoe
 local timerSearingCD	= mod:NewNextTimer(6, 108358)--Red ooze aoe
-local timerVoidBoltCD	= mod:NewNextTimer(6, 108383, nil, mod:IsTank())--Needs more work, need to check for the ability that halfs his CDs and such.
+local timerVoidBoltCD	= mod:NewNextTimer(6, 108383, nil, mod:IsTank())
 local timerVoidBolt		= mod:NewTargetTimer(21, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20-22 (varies)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
@@ -42,6 +42,7 @@ mod:AddBoolOption("RangeFrame", true)
 local oozesHitTable = {}
 local expectedOozes = 0
 local yellowActive = false
+local bossName = EJ_GetEncounterInfo(325)
 
 local oozeColorsHeroic = {
 	[105420] = { L.Purple, L.Green, L.Black, L.Blue },
@@ -120,40 +121,40 @@ function mod:SPELL_AURA_APPLIED(args)
 		table.insert(oozesHitTable, L.Yellow)
 		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
-			warnOozesHit:Show(table.concat(oozesHitTable, ", "))
+			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 		yellowActive = true
 	elseif args:IsSpellID(104896) and args:GetDestCreatureID() == 55312 then--Purple
 		table.insert(oozesHitTable, L.Purple)
 		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
-			warnOozesHit:Show(table.concat(oozesHitTable, ", "))
+			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 		specWarnPurple:Show()
 	elseif args:IsSpellID(105027) and args:GetDestCreatureID() == 55312 then--Blue
 		table.insert(oozesHitTable, L.Blue)
 		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
-			warnOozesHit:Show(table.concat(oozesHitTable, ", "))
+			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104897) and args:GetDestCreatureID() == 55312 then--Red
 		table.insert(oozesHitTable, L.Red)
 		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
-			warnOozesHit:Show(table.concat(oozesHitTable, ", "))
+			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104894) and args:GetDestCreatureID() == 55312 then--Black
 		table.insert(oozesHitTable, L.Black)
 		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
-			warnOozesHit:Show(table.concat(oozesHitTable, ", "))
+			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104898) then--Green
 		if args:GetSrcCreatureID() == 55312 then--Only trigger the actual acid spits off the boss getting buff, not the oozes spawning.
 			table.insert(oozesHitTable, L.Green)
 			warnOozesHit:Cancel()
 			if #oozesHitTable == expectedOozes then--All of em absorbed
-				warnOozesHit:Show(table.concat(oozesHitTable, ", "))
+				warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 			end
 		end
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then--Range finder outside boss check so we can open and close when green ooze spawns to pre spread.
