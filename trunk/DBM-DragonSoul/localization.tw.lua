@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozesHit	= "%s"
+	warnOozesHit	= "%s注入了%s"
 })
 
 L:SetTimerLocalization({
@@ -81,6 +81,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	WarnPillars				= "%s:剩餘%d",
 	warnFrostTombCast		= "%s 在八秒後"
 })
 
@@ -89,6 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnPillars				= "發佈$journal:3919或$journal:4069的剩餘數量",
 	TimerSpecial			= "為第一次特別技能$spell:105256或$spell:105465施放顯示計時器\n(第一次施放根據首領手中的武器的附魔)",
 	RangeFrame				= "為$spell:105269(3碼),$journal:4327(10碼)顯示距離框",
 	AnnounceFrostTombIcons	= "為$spell:104451的目標發佈圖示至團隊頻道\n(需要團隊隊長)",
