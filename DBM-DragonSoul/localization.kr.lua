@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozesHit	= "핏방울 흡수 : %s"
+	warnOozesHit	= "%s 흡수 : %s"
 })
 
 L:SetTimerLocalization({
@@ -81,6 +81,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	WarnPillars				= "%s : %d 남음",
 	warnFrostTombCast		= "8초 후 %s"
 })
 
@@ -89,6 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnPillars				= "$journal:3919 또는 $journal:4069 남은 횟수 알림 보기",
 	TimerSpecial			= "다음 $spell:105256 또는 $spell:105465 까지 남은 시간 바 표시",
 	RangeFrame				= "$spell:105269 (3m), $journal:4327 (10m) 주문의 영향을 받은 경우 거리 프레임 보기",
 	AnnounceFrostTombIcons	= "$spell:104451 대상을 공격대 대화로 알리기\n(승급 권한 필요)",
