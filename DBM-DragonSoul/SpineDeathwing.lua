@@ -191,7 +191,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end		
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(105248) then
+		if args.amount == 9 then
+			warnAbsorbedBlood:Cancel()--Just a little anti spam
+			warnAbsorbedBlood:Show(args.destName, 9)
+		else
+			warnAbsorbedBlood:Cancel()--Just a little anti spam
+			warnAbsorbedBlood:Schedule(2, args.destName, args.amount or 1)
+		end
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(105490, 109457, 109458, 109459) then
