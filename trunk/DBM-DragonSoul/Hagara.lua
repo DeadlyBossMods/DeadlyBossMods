@@ -67,7 +67,7 @@ local tombTargets = {}
 local tombIconTargets = {}
 local pillarsRemaining = 4
 local frostPillar = EJ_GetSectionInfo(3919)
-local lightningPillar = EJ_GetSectionInfo(4202)
+local lightningPillar = EJ_GetSectionInfo(4069)
 
 function mod:ShatteredIceTarget()
 	local targetname = self:GetBossTarget(55689)
