@@ -53,6 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
+	warnOozesHit	= "%s absorbierte %s"
 })
 
 L:SetTimerLocalization({
@@ -60,6 +61,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnOozesHit		= "Verkünde die Farben der Blutkugeln, die den Boss getroffen haben",
 	timerOozesActive	= "Zeige Zeit bis Blutkugeln angreifbar sind",
 	RangeFrame			= "Zeige Abstandsfenster (4m) für $spell:104898\n(normaler und heroischer Schwierigkeitsgrad)"
 })
@@ -79,6 +81,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	WarnPillars				= "%s: %d verbleibend",
 	warnFrostTombCast		= "%s in 8 Sekunden"
 })
 
@@ -87,6 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnPillars				= "Verkünde die Anzahl der verbleibenden $journal:3919 bzw. $journal:4069e",
 	TimerSpecial			= "Zeige Zeit bis erste Spezialfähigkeit gewirkt wird",
 	RangeFrame				= "Zeige Abstandsfenster: (3m) für $spell:105269, (10m) für $journal:4327",
 	AnnounceFrostTombIcons	= "Verkünde Zeichen für Ziele von $spell:104451 im Schlachtzugchat (nur als Leiter)",
