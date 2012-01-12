@@ -53,7 +53,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
-	warnOozesHit	= "%s 흡수 : %s"
+	warnOozesHit	= "핏방울 흡수 (%s) : %s"
 })
 
 L:SetTimerLocalization({
