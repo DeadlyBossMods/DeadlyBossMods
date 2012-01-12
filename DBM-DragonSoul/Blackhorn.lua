@@ -43,6 +43,7 @@ local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
+local timerBroadsideCD				= mod:NewNextTimer(90, 110153)
 local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables (i haven't seen any logs where this wasn't always 21.5, are 19s on WoL somewhere?)
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
@@ -61,6 +62,7 @@ local function Phase2Delay()
 	timerAdd:Cancel()
 	timerTwilightOnslaughtCD:Cancel()
 	twilightOnslaughtCountdown:Cancel()
+	timerBroadsideCD:Cancel()
 	timerSapperCD:Cancel()
 	timerRoarCD:Start(11)
 	timerTwilightFlamesCD:Start(12)
@@ -100,6 +102,9 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(24-delay, "AddsRepeat")
 	timerTwilightOnslaughtCD:Start(48-delay, 1)
 	twilightOnslaughtCountdown:Start(48-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerBroadsideCD:Start(57-delay)
+	end
 	if not self:IsDifficulty("lfr25") then--No sappers in LFR
 		timerSapperCD:Start(69-delay)
 	end
@@ -177,6 +182,8 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.SapperEmote or msg:find(L.SapperEmote) then
 		timerSapperCD:Start()
+	elseif msg == L.Broadside or msg:find(L.Broadside) then
+		timerBroadsideCD:Start()
 	end
 end
 
