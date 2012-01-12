@@ -36,7 +36,7 @@ local specwarnCrystal		= mod:NewSpecialWarningTarget(103639, false)
 local timerCrushArmor	= mod:NewTargetTimer(20, 103687, nil, mod:IsTank())
 local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also time till 'detonate')
 local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
-local timerVortexNext	= mod:NewCDTimer(75, 110047)--96~97 sec after last vortex. must subtract vortex 17 + cast 4sec, so 75 sec will be correct.
+local timerVortexNext	= mod:NewCDTimer(74, 110047)--96~97 sec after last vortex. must subtract vortex 17 + vortex buff 5 sec. 74 sec left
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
 local timerKohcromCD	= mod:NewTimer(6, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies, timer value here will be useless placeholder.
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 
