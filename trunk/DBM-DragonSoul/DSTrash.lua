@@ -1,8 +1,8 @@
 local mod	= DBM:NewMod("DSTrash", "DBM-Dragonsoul")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 6022 $"):sub(12, -3))
-mod:SetModelID(29539)
+mod:SetRevision(("$Revision$"):sub(12, -3))
+--mod:SetModelID(29539)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
