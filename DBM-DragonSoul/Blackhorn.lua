@@ -54,7 +54,7 @@ local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
 local timerConsumingShroud			= mod:NewCDTimer(30, 110598)
-local timerTwilightBreath			= mod:NewCDTimer(20.5, 110213)
+local timerTwilightBreath			= mod:NewCDTimer(20.5, 110213, nil, mod:IsTank() or mod:IsHealer())
 
 local twilightOnslaughtCountdown	= mod:NewCountdown(35, 107588)
 local berserkTimer					= mod:NewBerserkTimer(240)
