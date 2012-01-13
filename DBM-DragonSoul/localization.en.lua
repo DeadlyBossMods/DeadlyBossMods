@@ -112,13 +112,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrakes			= "%s",--spellname from mod
 	TimerCombatStart	= "Ultraxion Active",
 	timerRaidCDs		= "%s CD: %s"--spellname CD Castername
 })
 
 L:SetOptionLocalization({
-	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
 	TimerCombatStart	= "Show timer for Ultraxion RP",
 	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "Never",
@@ -133,7 +131,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.",
 	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
 })
 
@@ -210,4 +207,28 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull				= "You have done NOTHING. I will tear your world APART."
+})
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("DSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Dragonsoul Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerDrakes			= "%s",--spellname from mod
+})
+
+L:SetOptionLocalization({
+	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
+})
+
+L:SetMiscLocalization({
+	UltraxionTrash		= "It is good to see you again, Alexstrasza. I have been busy in my absence."
 })
