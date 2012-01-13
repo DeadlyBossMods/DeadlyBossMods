@@ -17,8 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_SAY",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_SAY"
 )
 
 local warnHourofTwilightSoon		= mod:NewPreWarnAnnounce(109416, 15, 4)--Why 15? because this warning signals the best time to pop 1min CDs a second time. (ie lets say you a tank in HoT1 group, you SW, your SW will be usuable one more time before next HoT1, but when do you use it? 15 seconds before the 3rd HoT exactly, then it's stil up for 3rd HoT and still back off cd for HoT1)
@@ -31,7 +30,6 @@ local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(110080, mod:IsTank())
 local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
 
-local timerDrakes					= mod:NewTimer(253, "TimerDrakes", 61248)
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerUnstableMonstrosity		= mod:NewNextTimer(60, 106372, nil, mod:IsHealer())
 local timerHourofTwilight			= mod:NewCastTimer(5, 109416)
@@ -197,13 +195,5 @@ end
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.Pull or msg:find(L.Pull) then
 		timerCombatStart:Start()
-	end
-end
-
---	"<18.7> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Notarget##0#0##0#3731##0#false", -- [1]
---	"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Trash or msg:find(L.Trash) then
-		timerDrakes:Start(253, GetSpellInfo(109904))
 	end
 end
