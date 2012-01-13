@@ -30,6 +30,7 @@ local warnRoar						= mod:NewSpellAnnounce(109228, 2)
 local warnTwilightFlames			= mod:NewSpellAnnounce(108051, 3)
 local warnShockwave					= mod:NewTargetAnnounce(108046, 4)
 local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnConsumingShroud			= mod:NewTargetAnnounce(110598)
 
 local specWarnHarpoon				= mod:NewSpecialWarningTarget(108038, false)
 local specWarnTwilightOnslaught		= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
@@ -52,6 +53,8 @@ local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables (i haven't s
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
+local timerConsumingShroud			= mod:NewCDTimer(30, 110598)
+local timerTwilightBreath			= mod:NewCDTimer(20.5, 110213)
 
 local twilightOnslaughtCountdown	= mod:NewCountdown(35, 107588)
 local berserkTimer					= mod:NewBerserkTimer(240)
@@ -71,6 +74,7 @@ local function Phase2Delay()
 	timerRoarCD:Start(11)
 	timerTwilightFlamesCD:Start(12)
 	timerShockwaveCD:Start(13)--13-16 second variation
+	timerConsumingShroud:Start(45)	-- 45seconds once P2 starts?
 	if not mod:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR
 		berserkTimer:Start()
 	end
@@ -131,6 +135,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(108046) then
 		self:ScheduleMethod(0.2, "ShockwaveTarget")
 		timerShockwaveCD:Start()
+	elseif args:IsSpellID(110210, 110213) then
+		timerTwilightBreath:Start()
 	end
 end
 
@@ -163,6 +169,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(56427, L.name)
 		end
+	elseif args:IsSpellID(110598, 110214) then
+		warnConsumingShroud:Show(args.destName)
+		timerConsumingShroud:Start()
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -191,6 +200,10 @@ function mod:RAID_BOSS_EMOTE(msg)
 		timerBroadsideCD:Start()
 	elseif msg == L.DeckFire or msg:find(L.DeckFire) then
 		specWarnDeckFire:Show()
+	elseif msg == L.GorionaRetreat or msg:find(L.GorionaRetreat) then
+		timerTwilightBreath:Cancel()
+		timerConsumingShroud:Cancel()
+		timerTwilightFlamesCD:Cancel()
 	end
 end
 
