@@ -19,7 +19,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"RAID_BOSS_EMOTE",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnHarpoon					= mod:NewTargetAnnounce(108038, 2)
@@ -32,10 +33,12 @@ local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:
 
 local specWarnHarpoon				= mod:NewSpecialWarningTarget(108038, false)
 local specWarnTwilightOnslaught		= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
+local specWarnDeckFire				= mod:NewSpecialWarningSpell(110095, false, nil, nil, true)
+local specWarnElites				= mod:NewSpecialWarning("SpecWarnElites", mod:IsTank())
 local specWarnShockwave				= mod:NewSpecialWarningMove(108046)
 local specWarnShockwaveOther		= mod:NewSpecialWarningTarget(108046, false)
-local specWarnTwilightFlames		= mod:NewSpecialWarningMove(108076)
 local yellShockwave					= mod:NewYell(108046)
+local specWarnTwilightFlames		= mod:NewSpecialWarningMove(108076)
 local specWarnSunder				= mod:NewSpecialWarningStack(108043, mod:IsTank(), 3)
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
@@ -43,6 +46,7 @@ local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
+local timerBladeRushCD				= mod:NewCDTimer(17, 107594)--Experiment, should be precise, if it even works right. Hate casts that have no reasonable trigger :(
 local timerBroadsideCD				= mod:NewNextTimer(90, 110153)
 local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables (i haven't seen any logs where this wasn't always 21.5, are 19s on WoL somewhere?)
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
@@ -87,6 +91,7 @@ end
 function mod:AddsRepeat() -- it seems to be adds summon only 3 times. needs more review
 	if addsCount < 2 then -- fix logical error
 		addsCount = addsCount + 1
+		specWarnElites:Show()
 		timerAdd:Start()
 		self:ScheduleMethod(61, "AddsRepeat")
 	end
@@ -184,6 +189,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 		timerSapperCD:Start()
 	elseif msg == L.Broadside or msg:find(L.Broadside) then
 		timerBroadsideCD:Start()
+	elseif msg == L.DeckFire or msg:find(L.DeckFire) then
+		specWarnDeckFire:Show()
 	end
 end
 
@@ -193,5 +200,23 @@ function mod:UNIT_DIED(args)
 		DBM:EndCombat(self)
 	elseif cid == 56781 then
 		timerTwilightFlamesCD:Cancel()
+	elseif cid == 56848 or cid == 56854 then
+		timerBladeRushCD:Cancel(args.sourceGUID)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(107594) then--Blade Rush, cast start is not detectable, only cast finish, can't use target scanning, or pre warn (ie when the lines go out), only able to detect when they actually finish rush
+		if uId == "target" then--Hack to get GUID, i'm not sure if it's possible to get GUID from UNIT_SPELLCAST_SUCCEEDED or not, all i see is unitname in transcriptor
+			self:SendSync("BladeRush", UnitGUID("target"))--Send your target's GUID since we know it's right, because the UNIT_SPELLCAST_SUCCEEDED came from your target.
+		elseif uId == "focus" then
+			self:SendSync("BladeRush", UnitGUID("focus"))--Send your focus GUID since we know it's right, because the UNIT_SPELLCAST_SUCCEEDED came from your focus.
+		end
+	end
+end
+
+function mod:OnSync(msg, sourceGUID)
+	if msg == "BladeRush" then
+		timerBladeRushCD:Start(sourceGUID)
 	end
 end
