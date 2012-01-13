@@ -10,6 +10,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_DIED",
 	"ZONE_CHANGED_NEW_AREA"
 )
@@ -27,6 +29,7 @@ local specWarnDruidLeap		= mod:NewSpecialWarningYou(99629)
 local yelldruidLeap			= mod:NewYell(99629)
 local specWarnDruidLeapNear	= mod:NewSpecialWarningClose(99629)
 local specWarnEarthQuake	= mod:NewSpecialWarningCast(100724, mod:IsRanged())
+local specWarnLava			= mod:NewSpecialWarningMove(99510)
 
 local timerMoltenArmor		= mod:NewTargetTimer(15, 99532, nil, mod:IsTank() or mod:IsHealer())
 local timerRaiseLavaCD		= mod:NewNextTimer(17, 99503)--Every 15 sec + 2 sec cast.
@@ -35,7 +38,7 @@ local timerLavaSpawnCD		= mod:NewNextTimer(16, 99575)--The worm gyser things tha
 
 mod:AddBoolOption("TrashRangeFrame", false)--off by default, this was NOT well recieved.
 
-local boltsSpam = 0
+local antiSpam = 0
 local surgers = 0
 local surgerGUIDs = {}
 do
@@ -107,8 +110,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.TrashRangeFrame then
 			DBM.RangeCheck:Show(10)
 		end
-	elseif args:IsSpellID(99579) and GetTime() - boltsSpam >= 4 then
-		boltsSpam = GetTime()
+	elseif args:IsSpellID(99579) and GetTime() - antiSpam >= 4 then
+		antiSpam = GetTime()
 		warnMoltenBolt:Show()
 		timerMoltenBoltCD:Start()
 	elseif args:IsSpellID(99575) then
@@ -116,7 +119,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerLavaSpawnCD:Start()
 	end
 end
-			
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(99510) and args:IsPlayer() and GetTime() - antiSpam >= 3 then
+		specWarnLava:Show()
+		antiSpam = GetTime()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+		
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 53141 then
 		surgers = surgers - 1

@@ -140,6 +140,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(332)
 
 L:SetWarningLocalization({
+	SpecWarnElites	= "Twilight Elites!"
 })
 
 L:SetTimerLocalization({
@@ -149,7 +150,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Show timer for start of combat",
-	TimerAdd			= "Show timer for next Twilight Elites spawn"
+	TimerAdd			= "Show timer for next Twilight Elites spawn",
+	SpecWarnElites		= "Show special warning for new Twilight Elites"
 })
 
 L:SetMiscLocalization({
