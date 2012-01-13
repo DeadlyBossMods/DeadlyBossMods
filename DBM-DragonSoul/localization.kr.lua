@@ -113,13 +113,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrakes			= "%s",
 	TimerCombatStart	= "울트락시온 활성화",
 	timerRaidCDs		= "%s 대기시간 : %s"--spellname CD Castername
 })
 
 L:SetOptionLocalization({
-	TimerDrakes			= "황혼의 습격자가 $spell:109904 시전까지 남은시간 바 표시",
 	TimerCombatStart	= "울트락시온 활성화 바 표시",
 	ResetHoTCounter		= "황혼의 시간 시전 횟수 재시작 설정",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "사용 안함",
@@ -134,7 +132,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "다시 만나 반갑군, 알렉스트라자. 난 떠나 있는 동안 좀 바쁘게 지냈다.",
 	Pull				= "엄청난 무언가가 느껴진다. 조화롭지 못한 그의 혼돈이 내 정신을 어지럽히는구나!"
 })
 
@@ -211,4 +208,28 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull				= "넌 아무것도 못 했다. 내가 이 세상을 조각내주마."
+})
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("DSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Dragonsoul Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerDrakes			= "%s",--spellname from mod
+})
+
+L:SetOptionLocalization({
+	TimerDrakes			= "황혼의 습격자가 $spell:109904 시전까지 남은시간 바 표시"
+})
+
+L:SetMiscLocalization({
+	UltraxionTrash		= "다시 만나 반갑군, 알렉스트라자. 난 떠나 있는 동안 좀 바쁘게 지냈다."
 })
