@@ -226,7 +226,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904",
+	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904"
 })
 
 L:SetMiscLocalization({

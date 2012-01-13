@@ -113,13 +113,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrakes			= "%s",
 	TimerCombatStart	= "戰鬥開始",
 	timerRaidCDs		= "%s冷卻:%s"
 })
 
 L:SetOptionLocalization({
-	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器",
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
 	ResetHoTCounter		= "重置暮光之時計數",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "不使用",
@@ -134,7 +132,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "很高興又見到你，雅立史卓莎。我離開這段時間忙得很。",
 	Pull				= "我感到平衡被一股強大的波動干擾。如此混沌在燃燒我的心靈!"
 })
 
@@ -211,4 +208,28 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull				= "你們都徒勞無功。我會撕裂你們的世界。"
+})
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("DSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Dragonsoul Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerDrakes			= "%s",--spellname from mod
+})
+
+L:SetOptionLocalization({
+	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器"
+})
+
+L:SetMiscLocalization({
+	UltraxionTrash		= "很高興又見到你，雅立史卓莎。我離開這段時間忙得很。"
 })

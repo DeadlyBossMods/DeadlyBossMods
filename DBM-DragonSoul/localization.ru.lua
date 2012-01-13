@@ -109,12 +109,10 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrakes			= "%s",--spellname from mod
 	TimerCombatStart	= "Ультраксион приземляется"
 })
 
 L:SetOptionLocalization({
-	TimerDrakes			= "Отсчет времени при применении $spell:109904 Сумеречными агрессорами",
 	TimerCombatStart	= "Отсчет времени до приземления Ультраксиона",
 	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "Never",
@@ -123,7 +121,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "Рад встрече, Алекстраза. Скоро ты увидишь, над чем я трудился.",
 	Pull				= "Я чувствую приближение Хаоса… Мой разум не в силах этого выдержать!!"
 })
 
@@ -196,4 +193,28 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull				= "У вас НИЧЕГО не вышло. Я РАЗОРВУ ваш мир на куски.",
+})
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("DSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Dragonsoul Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerDrakes			= "%s",--spellname from mod
+})
+
+L:SetOptionLocalization({
+	TimerDrakes			= "Отсчет времени при применении $spell:109904 Сумеречными агрессорами"
+})
+
+L:SetMiscLocalization({
+	UltraxionTrash		= "Рад встрече, Алекстраза. Скоро ты увидишь, над чем я трудился."
 })
