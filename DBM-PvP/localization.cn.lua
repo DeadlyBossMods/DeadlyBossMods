@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 8/20/2011
+-- Last update: 1/14/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -196,7 +196,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart			= "战斗开始", 
 	TimerPOI			= "%s",
 	TimerSiegeEngine		= "攻城机具修复"
 })
@@ -210,9 +209,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60			= "战斗将在1分钟后开始！",
-	BgStart30			= "战斗将在30秒后开始！",
-	BgStart15			= "战斗将在15秒后开始！",
+	GatesHealthFrame		= "城门破损状况",
 	SiegeEngine			= "攻城机具",
 	GoblinStartAlliance		= "看到那些爆盐炸弹了吗?当我维修攻城机具的时候用它们来轰破大门!",
 	GoblinStartHorde		= "修理攻城机具的工作就交给我，帮我看着点就够了。如果你想要轰破大门的话，尽管把那些爆盐炸弹拿去用吧!",

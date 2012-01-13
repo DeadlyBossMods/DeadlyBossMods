@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/7/2012
+-- Last update: 1/14/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -57,6 +57,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
+	warnOozesHit	= "%s吸收了%s"
 })
 
 L:SetTimerLocalization({
@@ -64,6 +65,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnOozesHit		= "警报：软泥怪种类",
 	timerOozesActive	= "计时条：软泥怪可攻击",
 	RangeFrame			= "距离监视器（4码）：应对$spell:104898（普通和英雄难度）"
 })
@@ -83,6 +85,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	WarnPillars				= "%s：剩余%d",
 	warnFrostTombCast		= "%s - 8秒后施放"
 })
 
@@ -91,6 +94,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnPillars				= "警报：$journal:3919或$journal:4069剩余数量", -- bad grammer?
 	TimerSpecial			= "计时条：第一次特殊技能施放",
 	RangeFrame				= "距离监视器（3码）：应对$spell:105269 |（10码）：应对$journal:4327",
 	AnnounceFrostTombIcons	= "向团队频道通报$spell:104451目标的团队标记（需要团队领袖权限）",
@@ -141,6 +145,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(332)
 
 L:SetWarningLocalization({
+	SpecWarnElites	= "暮光精英！"
 })
 
 L:SetTimerLocalization({
@@ -150,13 +155,15 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "计时条：战斗即将开始",
-	TimerAdd			= "计时条：下一波暮光精英"
+	TimerAdd			= "计时条：下一波暮光精英",
+	SpecWarnElites		= "特殊警报：新的暮光精英出现"
 })
 
 L:SetMiscLocalization({
 	SapperEmote			= "一条幼龙俯冲下来，往甲板上投放了一个暮光工兵！",
 	Broadside			= "spell:110153",
-	DeckFire			= "spell:110095"
+	DeckFire			= "spell:110095",
+	GorionaRetreat		= "screeches in pain and retreats into the swirling clouds"
 })
 
 -------------------------
@@ -216,7 +223,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("DSTrash")
 
 L:SetGeneralLocalization({
-	name =	"Dragonsoul Trash"
+	name =	"巨龙之魂小怪"
 })
 
 L:SetWarningLocalization({
