@@ -120,7 +120,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trash				= "It is good to see you again, Alexstrasza. I have been busy in my absence.", -- à traduire
 	Pull				= "Je sens un grand trouble dans l'équilibre qui s'approche. Un chaos tel qu'il me brùle l'esprit !"
 })
 
@@ -189,6 +188,27 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "Vous n'avez RIEN fait. Je vais mettre votre monde en PIÈCES.",
-	Kill				= "We are one step closer. The unknowable, transcendent power of the Emerald Dream I now give unto the Dragon Soul." -- à traduire
+	Pull				= "Vous n'avez RIEN fait. Je vais mettre votre monde en PIÈCES."
+})
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("DSTrash")
+
+L:SetGeneralLocalization({
+	name =	"Dragonsoul Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	UltraxionTrash		= "It is good to see you again, Alexstrasza. I have been busy in my absence." -- à traduire
 })
