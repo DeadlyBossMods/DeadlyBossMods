@@ -44,3 +44,4 @@ Ultraxion.lua
 Blackhorn.lua
 SpineDeathwing.lua
 MadnessDeathwing.lua
+DSTrash.lua
