@@ -141,6 +141,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(332)
 
 L:SetWarningLocalization({
+	SpecWarnElites	= "황혼의 정예병!"
 })
 
 L:SetTimerLocalization({
@@ -150,7 +151,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "전투 시작 바 표시",
-	TimerAdd			= "다음 황혼의 정예병 등장 바 표시"
+	TimerAdd			= "다음 황혼의 정예병 등장 바 표시",
+	SpecWarnElites		= "황혼의 정예병 등장시 특수 경고 보기"
 })
 
 L:SetMiscLocalization({
@@ -216,7 +218,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("DSTrash")
 
 L:SetGeneralLocalization({
-	name =	"Dragonsoul Trash"
+	name =	"용의 영혼 일반몹"
 })
 
 L:SetWarningLocalization({
