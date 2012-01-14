@@ -11,6 +11,7 @@ mod:RegisterCombat("yell", L.Pull)--Engage trigger comes 30 seconds after encoun
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -21,6 +22,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnAbsorbedBlood		= mod:NewStackAnnounce(105248, 2)
+local warnResidue			= mod:NewCountAnnounce("ej4057", 3, nil, false) -- maybe info frame will be better. (temporarly added)
 local warnGrip				= mod:NewTargetAnnounce(109459, 4)
 local warnNuclearBlast		= mod:NewCastAnnounce(105845, 4)
 local warnSealArmor			= mod:NewCastAnnounce(105847, 4)--Cast by Burning Tendons when they spawn after you break a plate
@@ -46,6 +48,7 @@ mod:AddBoolOption("ShowShieldInfo", mod:IsHealer())
 local gripTargets = {}
 local gripIcon = 6
 local corruptionActive = {}
+local residueCount = 0
 
 local function checkTendrils()
 	if not UnitDebuff("player", GetSpellInfo(109454)) and not UnitIsDeadOrGhost("player") then
@@ -127,6 +130,7 @@ function mod:OnCombatStart(delay)
 		clearPlasmaVariables()
 	end
 	gripIcon = 6
+	residueCount = 0
 end
 
 function mod:OnCombatEnd()
@@ -166,8 +170,22 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(105219, 109371, 109372, 109373) then
+		residueCount = residueCount + 1
+		if residueCount == 9 then -- announce 9 stacks (ready to eat blood!)
+			warnResidue:Cancel()
+			warnResidue:Show(residueCount)
+		elseif residueCount > 4 and residueCount < 9 then -- annouce 5~8 stacks.
+			warnResidue:Cancel()
+			warnResidue:Schedule(2, residueCount)
+		end
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
+		residueCount = residueCount - 1
 		warnAbsorbedBlood:Cancel()--Just a little anti spam
 		warnAbsorbedBlood:Schedule(2, args.destName, args.amount or 1)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
@@ -194,6 +212,7 @@ end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(105248) then
+		residueCount = residueCount - 1
 		if args.amount == 9 then
 			warnAbsorbedBlood:Cancel()--Just a little anti spam
 			warnAbsorbedBlood:Show(args.destName, 9)
