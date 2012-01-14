@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/14/2012
+-- Last update: 1/15/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -125,9 +125,9 @@ L:SetOptionLocalization({
 	TimerCombatStart	= "计时条：战斗即将开始",
 	ResetHoTCounter		= "重新开始目光审判计数器",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "从不",
-	Reset3				= "每3/2秒（英雄/普通难度）重置一次",
-	Reset3Always		= "总是每3秒进行重置",
-	SpecWarnHoTN		= "特殊警报：目光审判施放5秒前（仅3套）",
+	Reset3				= "每3/2次（英雄/普通难度）重置一次",
+	Reset3Always		= "总是每3次进行重置",
+	SpecWarnHoTN		= "特殊警报：目光审判施放5秒前（仅针对每3次重置）",
 	One					= "1 (如 1 4 7)",
 	Two					= "2 (如 2 5)",
 	Three				= "3 (如 3 6)",
