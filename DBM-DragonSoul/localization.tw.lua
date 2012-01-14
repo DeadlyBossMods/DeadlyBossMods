@@ -141,6 +141,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(332)
 
 L:SetWarningLocalization({
+	SpecWarnElites		= "精英暮光!"
 })
 
 L:SetTimerLocalization({
@@ -150,13 +151,15 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
-	TimerAdd			= "為下一次精英暮光顯示計時器"
+	TimerAdd			= "為下一次精英暮光顯示計時器",
+	SpecWarnElites		= "為新一波的精英暮光顯示特別警告"
 })
 
 L:SetMiscLocalization({
 	SapperEmote			= "一頭龍急速飛來，載送一名暮光工兵降落到甲板上!",
 	Broadside			= "spell:110153",
-	DeckFire			= "spell:110095"
+	DeckFire			= "spell:110095",
+	GorionaRetreat		= "痛苦嘶吼，躲入旋繞的雲裡。"
 })
 
 -------------------------
@@ -216,7 +219,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("DSTrash")
 
 L:SetGeneralLocalization({
-	name =	"Dragonsoul Trash"
+	name =	"巨龍之魂小怪"
 })
 
 L:SetWarningLocalization({
