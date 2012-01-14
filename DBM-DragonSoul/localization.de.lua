@@ -141,6 +141,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(332)
 
 L:SetWarningLocalization({
+	SpecWarnElites	= "Zwielichtelitegegner!"
 })
 
 L:SetTimerLocalization({
@@ -150,13 +151,15 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Zeige Zeit bis Kampfbeginn",
-	TimerAdd			= "Zeige Zeit bis nächste Zwielichtelitegegner erscheinen"
+	TimerAdd			= "Zeige Zeit bis nächste Zwielichtelitegegner erscheinen",
+	SpecWarnElites		= "Zeige Spezialwarnung, wenn neue Zwielichtelitegegner erscheinen"
 })
 
 L:SetMiscLocalization({
 	SapperEmote			= "Ein Drache stürzt herab, um einen Zwielichtpionier auf dem Deck abzusetzen!",
 	Broadside			= "spell:110153",
-	DeckFire			= "spell:110095"
+	DeckFire			= "spell:110095",
+	GorionaRetreat			= "schreit vor Schmerzen auf und zieht sich in die wirbelnden Wolken zurück."
 })
 
 -------------------------
@@ -216,7 +219,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("DSTrash")
 
 L:SetGeneralLocalization({
-	name =	"Dragonsoul Trash"
+	name =	"Trash der Drachenseele"
 })
 
 L:SetWarningLocalization({
@@ -227,9 +230,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen",
+	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen"
 })
 
 L:SetMiscLocalization({
-	UltraxionTrash		= "Es tut gut, Euch wiederzusehen, Alexstrasza. Während meiner Abwesenheit war ich fleißig.",
+	UltraxionTrash		= "Es tut gut, Euch wiederzusehen, Alexstrasza. Während meiner Abwesenheit war ich fleißig."
 })
