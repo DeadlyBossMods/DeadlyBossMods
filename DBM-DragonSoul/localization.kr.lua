@@ -158,7 +158,8 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	SapperEmote			= "비룡이 빠르게 날아와 황혼의 폭파병을 갑판에 떨어뜨립니다!",
 	Broadside			= "spell:110153",
-	DeckFire			= "spell:110095"
+	DeckFire			= "spell:110095",
+	GorionaRetreat		= "고리오나가 고통에 울부짖으며, 소용돌이치는 구름 속으로 달아납니다."
 })
 
 -------------------------
