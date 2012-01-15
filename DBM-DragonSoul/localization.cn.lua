@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/15/2012
+-- Last update: 1/16/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -163,7 +163,7 @@ L:SetMiscLocalization({
 	SapperEmote			= "一条幼龙俯冲下来，往甲板上投放了一个暮光工兵！",
 	Broadside			= "spell:110153",
 	DeckFire			= "spell:110095",
-	GorionaRetreat		= "screeches in pain and retreats into the swirling clouds"
+	GorionaRetreat		= "痛苦地尖叫并退入了云海的漩涡中"
 })
 
 -------------------------
