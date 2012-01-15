@@ -2,10 +2,12 @@ local mod	= DBM:NewMod("DSTrash", "DBM-DragonSoul")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetModelID(29539)
+mod:SetModelID(39378)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -14,11 +16,14 @@ local warnBoulder			= mod:NewTargetAnnounce(107597, 3)--This is morchok entryway
 local specWarnBoulder		= mod:NewSpecialWarningMove(107597)
 local specWarnBoulderNear	= mod:NewSpecialWarningClose(107597)
 local yellBoulder			= mod:NewYell(107597)
+local specWarnFlames		= mod:NewSpecialWarningMove(105579)
 
 local timerDrakes			= mod:NewTimer(253, "TimerDrakes", 61248)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+
+local antiSpam = 0
 
 function mod:BoulderTarget(sGUID)
 	local targetname = nil
@@ -54,6 +59,14 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.2, "BoulderTarget", args.sourceGUID)
 	end
 end
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(105579) and args:IsPlayer() and GetTime() - antiSpam >= 3 then
+		specWarnFlames:Show()
+		antiSpam = GetTime()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 --	"<18.7> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Notarget##0#0##0#3731##0#false", -- [1]
 --	"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
