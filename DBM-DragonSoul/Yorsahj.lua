@@ -119,40 +119,34 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(104901) and args:GetDestCreatureID() == 55312 then--Yellow
 		table.insert(oozesHitTable, L.Yellow)
-		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 		yellowActive = true
 	elseif args:IsSpellID(104896) and args:GetDestCreatureID() == 55312 then--Purple
 		table.insert(oozesHitTable, L.Purple)
-		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 		specWarnPurple:Show()
 	elseif args:IsSpellID(105027) and args:GetDestCreatureID() == 55312 then--Blue
 		table.insert(oozesHitTable, L.Blue)
-		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104897) and args:GetDestCreatureID() == 55312 then--Red
 		table.insert(oozesHitTable, L.Red)
-		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104894) and args:GetDestCreatureID() == 55312 then--Black
 		table.insert(oozesHitTable, L.Black)
-		warnOozesHit:Cancel()
 		if #oozesHitTable == expectedOozes then--All of em absorbed
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104898) then--Green
 		if args:GetSrcCreatureID() == 55312 then--Only trigger the actual acid spits off the boss getting buff, not the oozes spawning.
 			table.insert(oozesHitTable, L.Green)
-			warnOozesHit:Cancel()
 			if #oozesHitTable == expectedOozes then--All of em absorbed
 				warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 			end
