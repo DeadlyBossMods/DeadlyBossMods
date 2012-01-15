@@ -2339,7 +2339,6 @@ function DBM:StartCombat(mod, delay, synced)
 			return
 		end
 		table.insert(inCombat, mod)
-		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
 		if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 			mod.inCombatOnlyEventsRegistered = 1
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -2362,6 +2361,7 @@ function DBM:StartCombat(mod, delay, synced)
 		else--you were not in an instance when you started combat, this is an outdoor boss.
 			savedDifficulty = ""--So lets just return no difficulty :)
 		end
+		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(savedDifficulty..mod.combatInfo.name))
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
