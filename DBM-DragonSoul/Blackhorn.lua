@@ -42,17 +42,20 @@ local specWarnShockwaveOther		= mod:NewSpecialWarningTarget(108046, false)
 local yellShockwave					= mod:NewYell(108046)
 local specWarnTwilightFlames		= mod:NewSpecialWarningMove(108076)
 local specWarnSunder				= mod:NewSpecialWarningStack(108043, mod:IsTank(), 3)
+local specWarnSunderOther			= mod:NewSpecialWarningTarget(108043, mod:IsTank())
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
 local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
-local timerBladeRushCD				= mod:NewCDTimer(17, 107594)--Experiment, 17sec seemed common for heroic, LFR was a variatable 20-25sec? Just need more data, a lot more.
+local timerDegenerationCD			= mod:NewCDTimer(8.5, 109208, nil, mod:IsTank())--8.5-9.5 variation.
+local timerBladeRushCD				= mod:NewCDTimer(15.5, 107594)--Experiment, 15.5-20 seemed common for heroic, LFR was a variatable 20-25sec. Just need more data, a lot more.
 local timerBroadsideCD				= mod:NewNextTimer(90, 110153)
 local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables (i haven't seen any logs where this wasn't always 21.5, are 19s on WoL somewhere?)
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
+local timerDevastateCD				= mod:NewCDTimer(8.5, 108042, nil, mod:IsTank())
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
 local timerConsumingShroud			= mod:NewCDTimer(30, 110598)
 local timerTwilightBreath			= mod:NewCDTimer(20.5, 110213, nil, mod:IsTank() or mod:IsHealer())
@@ -108,8 +111,8 @@ function mod:OnCombatStart(delay)
 	addsCount = 0
 	twilightOnslaughtCount = 0
 	timerCombatStart:Start(-delay)
-	timerAdd:Start(24-delay)
-	self:ScheduleMethod(24-delay, "AddsRepeat")
+	timerAdd:Start(22.8-delay)
+	self:ScheduleMethod(22.8-delay, "AddsRepeat")
 	timerTwilightOnslaughtCD:Start(48-delay, 1)
 	twilightOnslaughtCountdown:Start(48-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -142,9 +145,13 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(108044, 109228, 109229, 109230) then -- 108044 is 10 man / 109228 lfr. other drycoded.
+	if args:IsSpellID(108044, 109228, 109229, 109230) then
 		warnRoar:Show()
 		timerRoarCD:Start()
+	elseif args:IsSpellID(108042) then
+		timerDevastateCD:Start()
+	elseif args:IsSpellID(107558, 108861, 109207, 109208) then
+		timerDegenerationCD:Start(args.sourceGUID)
 	end
 end
 
@@ -152,8 +159,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(108043) then
 		warnSunder:Show(args.destName, args.amount or 1)
 		timerSunder:Start(args.destName)
-		if (args.amount or 0) >= 3 and args:IsPlayer() then
-			specWarnSunder:Show(args.amount)
+		if args:IsPlayer() then
+			if (args.amount or 1) >= 3 then
+				specWarnSunder:Show(args.amount)
+			end
+		else
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(108043)) then--Other tank has 2 or more sunders and you have none.
+				specWarnSunderOther:Show(args.destName)--So nudge you to taunt it off other tank already.
+			end
 		end
 	elseif args:IsSpellID(108038) then
 		warnHarpoon:Show(args.destName)
