@@ -1065,8 +1065,8 @@ L:SetMiscLocalization{
 ----------------------
 L = DBM:GetModLocalization("AsiraDawnslayer")
 
-L:SetTimerLocalization{
-	TimerCombatStart	= "Combat starts"
+L:SetGeneralLocalization{
+	name = "Asira Puñal del Alba"
 }
 
 L:SetMiscLocalization{
