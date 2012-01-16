@@ -69,7 +69,7 @@ mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon", false)
 mod:AddBoolOption("ConsumingFlamesIcon", false)
 mod:AddBoolOption("RangeFrame")
-mod:AddBoolOption("SetTextures", true)--Blizz sucks and just about ALL friendly spells cover dark sludge and make you unable to see it.
+mod:AddBoolOption("SetTextures", true)--Just about ALL friendly spells cover dark sludge and make it very hard to see it.
 
 local adds = 18
 local AddsInterrupted = false
