@@ -63,10 +63,13 @@ local timerTwilightBreath			= mod:NewCDTimer(20.5, 110213, nil, mod:IsTank() or 
 local twilightOnslaughtCountdown	= mod:NewCountdown(35, 107588)
 local berserkTimer					= mod:NewBerserkTimer(240)
 
+mod:AddBoolOption("SetTextures", false)--Disable projected textures in phase 1, because no harmful spells use them in phase 1, but friendly spells make the blade rush lines harder to see.
+
 local phase2Started = false
 local lastFlames = 0
 local addsCount = 0
 local twilightOnslaughtCount = 0
+local CVAR = false
 
 local function Phase2Delay()
 	mod:UnscheduleMethod("AddsRepeat")
@@ -81,6 +84,9 @@ local function Phase2Delay()
 	timerConsumingShroud:Start(45)	-- 45seconds once P2 starts?
 	if not mod:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR
 		berserkTimer:Start()
+	end
+	if mod.Options.SetTextures and not GetCVarBool("projectedTextures") and CVAR then--Confirm we turned them off in phase 1 before messing with anything.
+		SetCVar("projectedTextures", 1)--Turn them back on for phase 2 if we're the ones that turned em off on pull.
 	end
 end
 
@@ -110,6 +116,7 @@ function mod:OnCombatStart(delay)
 	lastFlames = 0
 	addsCount = 0
 	twilightOnslaughtCount = 0
+	CVAR = false
 	timerCombatStart:Start(-delay)
 	timerAdd:Start(22.8-delay)
 	self:ScheduleMethod(22.8-delay, "AddsRepeat")
@@ -125,6 +132,16 @@ function mod:OnCombatStart(delay)
 		local shipname = EJ_GetSectionInfo(4202)
 		DBM.BossHealth:Clear()
 		DBM.BossHealth:AddBoss(56598, shipname)
+	end
+	if self.Options.SetTextures and GetCVarBool("projectedTextures") then--This is only true if projected textures were on when we pulled and option to control setting is also on.
+		CVAR = true--so set this variable to true, which means we are allowed to mess with users graphics settings
+		SetCVar("projectedTextures", 0)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.SetTextures and not GetCVarBool("projectedTextures") and CVAR then--Only turn them back on if they are off now, but were on when we pulled, and the setting is enabled.
+		SetCVar("projectedTextures", 1)
 	end
 end
 

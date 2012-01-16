@@ -151,7 +151,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerCombatStart	= "Show timer for start of combat",
 	TimerAdd			= "Show timer for next Twilight Elites spawn",
-	SpecWarnElites		= "Show special warning for new Twilight Elites"
+	SpecWarnElites		= "Show special warning for new Twilight Elites",
+	SetTextures			= "Automatically disable projected textures in phase 1\n(returns it to enabled in phase 2)"
 })
 
 L:SetMiscLocalization({
