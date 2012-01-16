@@ -131,7 +131,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdcount		= "Восст. %s (%%d)",
 	next 		= "След. %s",
 	nextcount	= "След. %s (%%d)",
-	achievement = "%s",
+	achievement = "%s"
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -151,13 +151,14 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target = "%s на |3-5(>%%s<)",
 	targetcount = "%s (%%d) на |3-5(>%%s<)",
 	spell = "%s",
+	adds		= "%s remaining: %d",
 	cast = "Применение заклинания %s: %.1f сек",
 	soon = "Скоро %s",
 	prewarn = "%s через %s",
 	phase = "Фаза %s",
 	prephase = "Скоро фаза %s",
 	count = "%s (%%d)",
-	stack = "%s на |3-5(>%%s<) (%%d)",
+	stack = "%s на |3-5(>%%s<) (%%d)"
 }
 
 local prewarnOption = "Предупреждать заранее о $spell:%s"
@@ -165,13 +166,14 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target = "Объявлять цели заклинания $spell:%s",
 	targetcount = "Объявлять цели заклинания $spell:%s",
 	spell = "Предупреждение для $spell:%s",
+	adds		= "Announce how many $spell:%s remain",
 	cast = "Предупреждать о применении заклинания $spell:%s",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
 	phase = "Объявлять фазу %s",
 	prephase = "Предупреждать заранее о фазе %s",
 	count = "Предупреждение для $spell:%s",
-	stack = "Объявлять количество стаков $spell:%s",
+	stack = "Объявлять количество стаков $spell:%s"
 }
 
 -- Auto-generated Special Warning Localizations

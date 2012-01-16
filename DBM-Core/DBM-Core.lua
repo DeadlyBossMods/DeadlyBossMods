@@ -3524,6 +3524,10 @@ do
 		return newAnnounce(self, "spell", spellId, color or 3, ...)
 	end
 
+	function bossModPrototype:NewAddsLeftAnnounce(spellId, color, ...)
+		return newAnnounce(self, "adds", spellId, color or 2, ...)
+	end
+
 	function bossModPrototype:NewCountAnnounce(spellId, color, ...)
 		return newAnnounce(self, "count", spellId, color or 3, ...)
 	end

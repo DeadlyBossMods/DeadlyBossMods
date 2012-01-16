@@ -153,19 +153,21 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target 		= "%s : >%%s<",
 	targetcount = "%s (%%d) : >%%s<",
 	spell 		= "%s",
+	adds		= "%s remaining: %d",
 	cast 		= "주문시전 %s : %.1f 초",
 	soon 		= "곧 %s",
 	prewarn		= "곧 %s (%s 후)",
 	phase 		= "%s 단계",
 	prephase	= "곧 %s 단계",
 	count 		= "%s (%%d)",
-	stack 		= "%s : >%%s< (%%d)",
+	stack 		= "%s : >%%s< (%%d)"
 }
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target		= "$spell:%s 대상 보기",
 	targetcount	= "$spell:%s 대상 보기",
 	spell 		= "$spell:%s 알림 보기",
+	adds		= "Announce how many $spell:%s remain",
 	cast 		= "$spell:%s 시전시 알림 보기",
 	soon 		= "$spell:%s 사전 알림 보기",
 	prewarn		= "$spell:%s 사전 알림 보기",

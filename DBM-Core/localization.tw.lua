@@ -133,7 +133,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdcount					= "%s冷卻 (%%d)",
 	next 					= "下一次%s",
 	nextcount 				= "下一次%s (%%d)",
-	achievement 			= "%s",
+	achievement 			= "%s"
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -153,13 +153,14 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target					= "%s:>%%s<",
 	targetcount				= "%s (%%d):>%%s<",
 	spell					= "%s",
+	adds		= "%s remaining: %d",
 	cast					= "施放%s:%.1f秒",
 	soon					= "%s即將到來",
 	prewarn					= "%s在%s",
 	phase					= "第%s階段",
 	prephase				= "第%s階段 即將到來",
 	count					= "%s (%%d)",
-	stack					= "%s在>%%s< (%%d)",
+	stack					= "%s在>%%s< (%%d)"
 }
 
 local prewarnOption			= "為$spell:%s顯示預先警告"
@@ -167,13 +168,14 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target					= "提示$spell:%s的目標",
 	targetcount				= "提示$spell:%s的目標",
 	spell					= "為$spell:%s顯示警告",
+	adds		= "Announce how many $spell:%s remain",
 	cast					= "當$spell:%s施放時顯示警告",
 	soon					= prewarnOption,
 	prewarn					= prewarnOption,
 	phase					= "提示第%s階段",
 	prephase				= "為第%s階段顯示預先警告",
 	count					= "為$spell:%s顯示警告",
-	stack					= "提示$spell:%s的堆疊",
+	stack					= "提示$spell:%s的堆疊"
 }
 
 -- Auto-generated Special Warning Localizations
