@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 1/1/2012
+-- Last update: 1/17/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -157,7 +157,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target					= "%s：>%%s<",
 	targetcount				= "%s (%%d)：>%%s<",
 	spell					= "%s",
-	adds					= "%s remaining: %%d",
+	adds					= "%s剩余：%%d",
 	cast					= "正在施放 %s：%.1f秒",
 	soon					= "即将 %s",
 	prewarn					= "%2$s后 %1$s",
@@ -172,7 +172,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target					= "警报：$spell:%s的目标",
 	targetcount				= "警报：$spell:%s的目标",
 	spell					= "警报：$spell:%s",
-	adds					= "Announce how many $spell:%s remain",
+	adds					= "警报：$spell:%s剩余数量",
 	cast					= "警报：$spell:%s的施放",
 	soon					= prewarnOption,
 	prewarn					= prewarnOption,
