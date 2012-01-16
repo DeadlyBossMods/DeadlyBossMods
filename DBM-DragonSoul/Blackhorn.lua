@@ -253,6 +253,7 @@ function mod:UNIT_DIED(args)
 		timerTwilightFlamesCD:Cancel()
 	elseif cid == 56848 or cid == 56854 then
 		timerBladeRushCD:Cancel(args.sourceGUID)
+		timerDegenerationCD:Cancel(args.sourceGUID)
 	end
 end
 
