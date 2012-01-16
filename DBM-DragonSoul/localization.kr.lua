@@ -152,7 +152,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerCombatStart	= "전투 시작 바 표시",
 	TimerAdd			= "다음 황혼의 정예병 등장 바 표시",
-	SpecWarnElites		= "황혼의 정예병 등장시 특수 경고 보기"
+	SpecWarnElites		= "황혼의 정예병 등장시 특수 경고 보기",
+	SetTextures			= "1 단계 진행 도중 텍스쳐 투영 효과 끄기\n(2 단계에서 다시 활성화 됩니다.)"
 })
 
 L:SetMiscLocalization({
