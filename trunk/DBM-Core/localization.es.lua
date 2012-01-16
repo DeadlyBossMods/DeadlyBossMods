@@ -133,7 +133,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdcount		= "%s CD (%%d)",
 	next		= "Siguiente %s",
 	nextcount	= "Siguiente %s (%%d)",
-	achievement = "%s",
+	achievement = "%s"
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -145,35 +145,37 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cdcount = "Mostrar cooldown de $spell:%s ",
 	next = "Mostrar tiempo para el siguiente $spell:%s ",
 	nextcount = "Mostrar tiempo para el siguiente $spell:%s ",
-	achievement = "Mostrar tiempo para %s",
+	achievement = "Mostrar tiempo para %s"
 }
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s en >%%s<",
+	target 		= "%s en >%%s<",
 	targetcount = "%s (%%d) en >%%s<",
-	spell = "%s",
-	cast = "Casteando %s: %.1f seg",
-	soon = "%s pronto",
-	prewarn = "%s en %s",
-	phase = "Fase %s",
-	prephase = "Fase %s pronto",
-	count = "%s (%%d)",
-	stack = "%s en >%%s< (%%d)",
+	spell 		= "%s",
+	adds		= "%s remaining: %d",
+	cast 		= "Casteando %s: %.1f seg",
+	soon 		= "%s pronto",
+	prewarn 	= "%s en %s",
+	phase		= "Fase %s",
+	prephase	= "Fase %s pronto",
+	count		= "%s (%%d)",
+	stack		= "%s en >%%s< (%%d)"
 }
 
 local prewarnOption = "Mostrar una pre-alerta para $spell:%s"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "Anunciar objetivos de $spell:%s",
+	target		= "Anunciar objetivos de $spell:%s",
 	targetcount	= "Anunciar objetivos de $spell:%s",
-	spell	= "Mostrar aviso para $spell:%s",
-	cast	= "Mostrar aviso cuando castee $spell:%s",
-	soon	= "Mostrar pre-aviso para $spell:%s",
-	prewarn	= "Mostrar pre-aviso para $spell:%s",
-	phase	= "Anunciar Fase %s",
-	prephase = "Mostrar pre-aviso para Fase %s",
-	count	= "Mostrar aviso para $spell:%s",
-	stack	= "Anunciar acumulaciones de $spell:%s",
+	spell		= "Mostrar aviso para $spell:%s",
+	adds		= "Announce how many $spell:%s remain",
+	cast		= "Mostrar aviso cuando castee $spell:%s",
+	soon		= "Mostrar pre-aviso para $spell:%s",
+	prewarn		= "Mostrar pre-aviso para $spell:%s",
+	phase		= "Anunciar Fase %s",
+	prephase	= "Mostrar pre-aviso para Fase %s",
+	count		= "Mostrar aviso para $spell:%s",
+	stack		= "Anunciar acumulaciones de $spell:%s"
 }
 
 -- Auto-generated Special Warning Localizations

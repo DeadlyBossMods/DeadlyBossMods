@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+local warnDrakesLeft				= mod:NewAddsLeftAnnounce("ej4192", 2, 61248)
 local warnHarpoon					= mod:NewTargetAnnounce(108038, 2)
 local warnTwilightOnslaught			= mod:NewCountAnnounce(108862, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
@@ -46,6 +47,9 @@ local specWarnSunderOther			= mod:NewSpecialWarningTarget(108043, mod:IsTank())
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
 local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
+local timerHarpoonCD				= mod:NewCDTimer(48, 108039)--CD when you don't fail at drakes
+local timerHarpoonActive			= mod:NewBuffActiveTimer(20, 108039)--Seems to always hold at least 20 seconds, beyond that, RNG, but you always get at least 20 seconds before they "snap" free.
+local timerReloadingCast			= mod:NewCastTimer(10, 108039)--You screwed up and let a drake get away, this makes a harpoon gun reload and regrab failed drakes after 10 seconds.
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
@@ -68,6 +72,7 @@ mod:AddBoolOption("SetTextures", false)--Disable projected textures in phase 1, 
 local phase2Started = false
 local lastFlames = 0
 local addsCount = 0
+local drakesCount = 6
 local twilightOnslaughtCount = 0
 local CVAR = false
 
@@ -117,6 +122,7 @@ function mod:OnCombatStart(delay)
 	phase2Started = false
 	lastFlames = 0
 	addsCount = 0
+	drakesCount = 6
 	twilightOnslaughtCount = 0
 	CVAR = false
 	timerCombatStart:Start(-delay)
@@ -160,6 +166,9 @@ function mod:SPELL_CAST_START(args)
 		timerShockwaveCD:Start()
 	elseif args:IsSpellID(110210, 110213) then
 		timerTwilightBreath:Start()
+	elseif args:IsSpellID(108039) then
+		timerHarpoonCD:Cancel()--you failed, this guns aren't going to follow their standard CD because they have to cleanup now. Cancel all of the harpoon CDs.
+		timerReloadingCast:Start(args.sourceGUID)--This is your new CD for this harpoon.
 	end
 end
 
@@ -171,6 +180,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDevastateCD:Start()
 	elseif args:IsSpellID(107558, 108861, 109207, 109208) then
 		timerDegenerationCD:Start(args.sourceGUID)
+	elseif args:IsSpellID(108039) then
+		timerHarpoonCD:Start(args.sourceGUID)
 	end
 end
 
@@ -190,9 +201,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(108038) then
 		warnHarpoon:Show(args.destName)
 		specWarnHarpoon:Show(args.destName)
-	--"<2059.6> [CLEU] SPELL_AURA_APPLIED#false#0xF150DFAC0000253E#Skyfire Cannon#2584#0#0xF150DFAC0000253E#Skyfire Cannon#2584#0#108040#Artillery Barrage#5#BUFF", -- [61321]
-	--"<2067.7> [CAST_SUCCEEDED] Goriona:Possible Target<nil>:target:Eject Passenger 1::0:60603", -- [61429]
-	--"<2069.5> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Looks like I'm doing this myself. Good!#Warmaster Blackhorn###Goriona##0#0##0#564##0#false", -- [61454]
+		if not mod:IsDifficulty("lfr25") then--Don't start this in LFR, pretty sure there is no duration there, it's indefinite.
+			timerHarpoonActive:Start(args.destGUID)
+		end
 	elseif args:IsSpellID(108040) and not phase2Started then--Goriona is being shot by the ships Artillery Barrage (phase 2 trigger)
 		self:Schedule(10, Phase2Delay)--It seems you can still get phase 1 crap until blackhorn is on the deck itself(ie his yell 10 seconds after this trigger) so we delay canceling timers.
 		phase2Started = true
@@ -245,15 +256,23 @@ function mod:RAID_BOSS_EMOTE(msg)
 	end
 end
 
+
+--[[Useful reg expressions for WoL
+spellid = 108038 or fulltype = UNIT_DIED and (targetMobId = 56855 or targetMobId = 56587) or spellid = 108039
+spellid = 108038 and fulltype = SPELL_CAST_START or fulltype = UNIT_DIED and (targetMobId = 56855 or targetMobId = 56587) or spellid = 108039
+--]]
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 56427 then
+	if cid == 56427 then--Boss
 		DBM:EndCombat(self)
-	elseif cid == 56781 then
-		timerTwilightFlamesCD:Cancel()
-	elseif cid == 56848 or cid == 56854 then
+	elseif cid == 56848 or cid == 56854 then--Humanoids
 		timerBladeRushCD:Cancel(args.sourceGUID)
 		timerDegenerationCD:Cancel(args.sourceGUID)
+	elseif cid == 56855 or cid == 56587 then--Small Drakes (maybe each side has a unique ID? this could be useful in further filtering which harpoon is which side.
+		drakesCount = drakesCount - 1
+		warnDrakesLeft:Show(drakesCount)
+		timerHarpoonActive:Cancel(args.destGUID)
 	end
 end
 
@@ -265,6 +284,10 @@ end
 
 function mod:OnSync(msg, sourceGUID)
 	if msg == "BladeRush" then
-		timerBladeRushCD:Start(sourceGUID)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerBladeRushCD:Start(sourceGUID)
+		else
+			timerBladeRushCD:Start(20, sourceGUID)--assumed based on LFR, which seemed to have a 20-25 variation, not 15-20
+		end
 	end
 end

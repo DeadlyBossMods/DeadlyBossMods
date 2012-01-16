@@ -133,7 +133,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdcount		= "%s CD (%%d)",
 	next		= "Nächster %s",
 	nextcount	= "Nächster %s (%%d)",
-	achievement	= "%s",
+	achievement	= "%s"
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -145,21 +145,22 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cdcount		= "Abklingzeit von $spell:%s anzeigen",
 	next		= "Zeit bis nächstes $spell:%s anzeigen",
 	nextcount	= "Zeit bis nächstes $spell:%s anzeigen",
-	achievement	= "Zeit für %s anzeigen",
+	achievement	= "Zeit für %s anzeigen"
 }
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target	= "%s auf >%%s<",
+	target		= "%s auf >%%s<",
 	targetcount	= "%s (%%d) auf >%%s<",
-	spell	= "%s",
-	cast	= "Wirkt %s: %.1f Sek",
-	soon	= "%s bald",
-	prewarn = "%s in %s",
-	phase	= "Phase %s",
-	prephase= "Phase %s bald",
-	count	= "%s (%%d)",
-	stack	= "%s auf >%%s< (%%d)",
+	spell		= "%s",
+	adds		= "%s remaining: %d",
+	cast		= "Wirkt %s: %.1f Sek",
+	soon		= "%s bald",
+	prewarn 	= "%s in %s",
+	phase		= "Phase %s",
+	prephase	= "Phase %s bald",
+	count		= "%s (%%d)",
+	stack		= "%s auf >%%s< (%%d)"
 }
 
 local prewarnOption = "Zeige Vorwarnung für $spell:%s"
@@ -167,13 +168,14 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target		= "Verkünde Ziele von $spell:%s",
 	targetcount	= "Verkünde Ziele von $spell:%s",
 	spell		= "Zeige Warnung für $spell:%s",
+	adds		= "Announce how many $spell:%s remain",
 	cast		= "Zeige Warnung, wenn $spell:%s gewirkt wird",
 	soon		= prewarnOption,
 	prewarn 	= prewarnOption,
 	phase		= "Verkünde Phase %s",
 	prephase	= "Zeige Vorwarnung für Phase %s",
 	count		= "Zeige Warnung für $spell:%s",
-	stack		= "Verkünde $spell:%s Stapel",
+	stack		= "Verkünde $spell:%s Stapel"
 }
 
 -- Auto-generated Special Warning Localizations

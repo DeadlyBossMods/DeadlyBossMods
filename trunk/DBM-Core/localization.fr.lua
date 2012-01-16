@@ -132,7 +132,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cdcount		= "Rech. |2 %s (%%d)",
 	next		= "Proch. %s",
 	nextcount	= "Proch. %s (%%d)",
-	achievement	= "%s",
+	achievement	= "%s"
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -144,7 +144,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cdcount		= "Durée de recharge de $spell:%s",
 	next		= "Délai avant le prochain $spell:%s",
 	nextcount	= "Délai avant le prochain $spell:%s",
-	achievement	= "Délai pour réussir %s",
+	achievement	= "Délai pour réussir %s"
 }
 
 -- Auto-generated Warning Localizations
@@ -152,13 +152,14 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target	= "%s sur >%%s<",
 	targetcount	= "%s (%%d) sur >%%s<",
 	spell	= "%s",
+	adds	= "%s remaining: %d",
 	cast	= "Incantation |2 %s : %.1f sec",
 	soon	= "%s imminent",
 	prewarn = "%s de %s",
 	phase	= "Phase %s",
 	prephase= "Phase %s imminente",
 	count	= "%s (%%d)",
-	stack	= "%s sur >%%s< (%%d)",
+	stack	= "%s sur >%%s< (%%d)"
 }
 
 local prewarnOption = "Alerte préventive concernant $spell:%s"
@@ -166,13 +167,14 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Alerte indiquant le(s) cible(s) de $spell:%s",
 	targetcount	= "Alerte indiquant le(s) cible(s) de $spell:%s",
 	spell	= "Alerte concernant $spell:%s",
+	adds		= "Announce how many $spell:%s remain",
 	cast	= "Alerte quand $spell:%s est incanté",
 	soon	= prewarnOption,
 	prewarn = prewarnOption,
 	phase	= "Alerte indiquant l'arrivée de la phase %s",
 	prephase= "Alerte préventive indiquant l'arrivée de la phase %s",
 	count	= "Alerte concernant $spell:%s",
-	stack	= "Alerte indiquant les cumuls de $spell:%s",
+	stack	= "Alerte indiquant les cumuls de $spell:%s"
 }
 
 -- Auto-generated Special Warning Localizations
