@@ -152,7 +152,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerCombatStart	= "Zeige Zeit bis Kampfbeginn",
 	TimerAdd			= "Zeige Zeit bis nächste Zwielichtelitegegner erscheinen",
-	SpecWarnElites		= "Zeige Spezialwarnung, wenn neue Zwielichtelitegegner erscheinen"
+	SpecWarnElites		= "Zeige Spezialwarnung, wenn neue Zwielichtelitegegner erscheinen",
+	SetTextures			= "Automatische Deaktivierung der Grafikeinstellung 'Projizierte Texturen'\nin Phase 1 (wird in Phase 2 automatisch wieder aktiviert)"
 })
 
 L:SetMiscLocalization({
