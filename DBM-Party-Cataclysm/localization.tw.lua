@@ -222,7 +222,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Brann				= "好了，快走吧!只需要把最後的登錄程序輸入到門的機關中...然後..."
+	Brann				= "好了，快走吧!只需要把最後的登錄程序輸入到門的機關中....然後..."
 })
 
 ------------
