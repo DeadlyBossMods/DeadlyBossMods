@@ -180,23 +180,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "¡La batalla va comenzar!", 
 	TimerPOI		= "%s",
 	TimerSiegeEngine	= "Máquina de asedio Lista"
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Mostrar tiempo para que comienze la Batalla.", 
 	TimerPOI		= "Mostrar tiempo para las Capturas",
 	TimerSiegeEngine	= "Mostrar tiempo para la construcción de Máquina de asedio",
 	WarnSiegeEngine		= "Mostrar aviso cuando Máquina de asedio esté lista",
-	WarnSiegeEngineSoon	= "Mostrar aviso cuando Máquina de asedio esté casi lista"
+	WarnSiegeEngineSoon	= "Mostrar aviso cuando Máquina de asedio esté casi lista",
+	ShowGatesHealth		= "Mostrar la vida de las puertas dañadas (Puede que muestre valores erréneos si te unes a una BG empezada!)"
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La batalla comenzará en 60 segundos.",
-	BgStart30		= "La batalla comenzará en 30 segundos.",
-	BgStart15		= "La batalla comenzará en 15 segundos.",
+	GatesHealthFrame		= "Puertas dañadas",
 	SiegeEngine				= "Máquina de asedio",
 	GoblinStartAlliance		= "¿Ves esas bombas de seforio? Úsalas en las puertas mientras reparo la máquina de asedio.",
 	GoblinStartHorde		= "Trabajaré en la máquina de asedio, solo cúbreme las espaldas. ¡Usa esas bombas de seforio en las puertas si las necesitas!",

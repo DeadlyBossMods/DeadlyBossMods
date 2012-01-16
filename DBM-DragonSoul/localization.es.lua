@@ -29,6 +29,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(324)
 
 L:SetWarningLocalization({
+
 })
 
 L:SetTimerLocalization({
@@ -36,11 +37,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ShadowYell			= "Gritar cuando te afecte $spell:104600\n(Solo dificultad Heroica)",
-	CustomRangeFrame	= "Range Frame options",
-	Never				= "Disabled",
-	Normal				= "Normal Range Frame",
-	DynamicPhase2		= "Phase2 Debuff Filtering",
-	DynamicAlways		= "Always Debuff Filtering"
+	CustomRangeFrame	= "Opciones de marco de distancia",
+	Never				= "Deshabilitado",
+	Normal				= "Distancia normal",
+	DynamicPhase2		= "Filtrar por debuff en Fase 2",
+	DynamicAlways		= "Siempre filtrar por debuff"
 })
 
 L:SetMiscLocalization({
@@ -53,6 +54,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(325)
 
 L:SetWarningLocalization({
+	warnOozesHit	= "%s absorbió %s"
 })
 
 L:SetTimerLocalization({
@@ -60,6 +62,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnOozesHit		= "Anunciar los mocos que absorbió el Boss",
 	timerOozesActive	= "Mostrar tiempo para que los mocos se pueden atacar",
 	RangeFrame			= "Mostrar distancia (4) para $spell:104898\n(Dificultad normal o superior)"
 })
@@ -80,6 +83,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(317)
 
 L:SetWarningLocalization({
+	WarnPillars				= "%s: %d restantes",
 	warnFrostTombCast		= "%s en 8 seg"
 })
 
@@ -88,6 +92,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnPillars				= "Anunciar cuantas $journal:3919 o $journal:4069 quedan",
 	TimerSpecial			= "Mostrar tiempo para casteo de la primera habilidad especial",
 	RangeFrame				= "Mostrar distancia (3) para $spell:105269, (10) para $journal:4327",
 	AnnounceFrostTombIcons	= "Anunciar iconos de los objetivos de $spell:104451 a la banda\n(requiere líder)",
@@ -107,21 +112,26 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
-	specWarnHourofTwilightN		= "%s (%%d)"--spellname Count
+	specWarnHourofTwilightN		= "%s (%d) en 5s"--spellname Count
 })
 
 L:SetTimerLocalization({
-	TimerCombatStart	= "Ultraxion aterriza",
-	timerRaidCDs		= "CD %s de %s listo"--spellname CD Castername
+	TimerCombatStart	= "Ultraxion activo",
+	timerRaidCDs		= "CD %s: %s"--spellname CD Castername
 })
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
-	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
-	Never				= "Never",
-	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
-	Reset3Always		= "Always Reset in sets of 3",
-	ShowRaidCDs			= "Mostrar tiempos de CDs de Banda"
+	ResetHoTCounter		= "Reiniciar contador de Hora del crepusculo",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Nunca",
+	Reset3				= "En series de 3/2 (heroico/normal)",
+	Reset3Always		= "Siempre reiniciar en series de 3",
+	SpecWarnHoTN		= "Mostrar aviso especial 5s antes de Hora del Crepusculo (solo en series de 3)",
+	One					= "1 (ej: 1 4 7)",
+	Two					= "2 (ej: 2 5)",
+	Three				= "3 (ej: 3 6)",
+	ShowRaidCDs			= "Mostrar tiempos de CDs de Banda",
+	ShowRaidCDsSelf		= "Pero solo mostrar los CDs propios\n(Requiere 'Mostrar tiempos de CDs de Banda' activado)"
 })
 
 L:SetMiscLocalization({
@@ -135,6 +145,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(332)
 
 L:SetWarningLocalization({
+	SpecWarnElites	= "¡Élites Crepusculares!"
 })
 
 L:SetTimerLocalization({
@@ -144,13 +155,16 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
-	TimerAdd			= "Mostrar tiempo para que salgan los siguientes Élites Crepusculares"
+	TimerAdd			= "Mostrar tiempo para que salgan los siguientes Élites Crepusculares",
+	SpecWarnElites		= "Mostrar un aviso especial cuando salgan nuevos Élites Crepusculares",
+	SetTextures			= "Deshabilitar automaticamente texturas proyectadas en la fase 1 (Se vuelven a activar en fase 2)"
 })
 
 L:SetMiscLocalization({
 	SapperEmote			= "¡Un draco desciende para dejar a un zapador Crepuscular en la cubierta!",
 	Broadside			= "spell:110153",
-	DeckFire			= "spell:110095"
+	DeckFire			= "spell:110095",
+	GorionaRetreat			= "screeches in pain and retreats into the swirling clouds"--translate
 })
 
 -------------------------
