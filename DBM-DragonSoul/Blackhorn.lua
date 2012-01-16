@@ -167,7 +167,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(110210, 110213) then
 		timerTwilightBreath:Start()
 	elseif args:IsSpellID(108039) then
-		timerHarpoonCD:Cancel()--you failed, this guns aren't going to follow their standard CD because they have to cleanup now. Cancel all of the harpoon CDs.
+		timerHarpoonCD:Cancel()--you failed, the guns aren't going to follow their standard CD because they have to cleanup now. Cancel all of the harpoon CDs.
 		timerReloadingCast:Start(args.sourceGUID)--This is your new CD for this harpoon.
 	end
 end
@@ -272,7 +272,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 56855 or cid == 56587 then--Small Drakes (maybe each side has a unique ID? this could be useful in further filtering which harpoon is which side.
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
-		timerHarpoonActive:Cancel(args.destGUID)
+		timerHarpoonActive:Cancel(args.sourceGUID)
 	end
 end
 
