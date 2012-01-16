@@ -25,6 +25,7 @@ mod:RegisterEventsInCombat(
 
 local warnDrakesLeft				= mod:NewAddsLeftAnnounce("ej4192", 2, 61248)
 local warnHarpoon					= mod:NewTargetAnnounce(108038, 2)
+local warnReloading					= mod:NewCastAnnounce(108039, 2)
 local warnTwilightOnslaught			= mod:NewCountAnnounce(108862, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
 local warnRoar						= mod:NewSpellAnnounce(109228, 2)
@@ -167,6 +168,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(110210, 110213) then
 		timerTwilightBreath:Start()
 	elseif args:IsSpellID(108039) then
+		warnReloading:Show()
 		timerHarpoonCD:Cancel()--you failed, the guns aren't going to follow their standard CD because they have to cleanup now. Cancel all of the harpoon CDs.
 		timerReloadingCast:Start(args.sourceGUID)--This is your new CD for this harpoon.
 	end
