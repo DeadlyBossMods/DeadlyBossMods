@@ -87,7 +87,7 @@ local function Phase2Delay()
 	timerRoarCD:Start(10)
 	timerTwilightFlamesCD:Start(12)
 	timerShockwaveCD:Start(13)--13-16 second variation
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerConsumingShroud:Start(45)	-- 45seconds once P2 starts?
 	end
 	if not mod:IsDifficulty("lfr25") then--Assumed, but i find it unlikely a 4 min berserk timer will be active on LFR
