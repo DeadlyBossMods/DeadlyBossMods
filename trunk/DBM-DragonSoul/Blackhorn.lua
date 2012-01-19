@@ -48,9 +48,9 @@ local specWarnSunderOther			= mod:NewSpecialWarningTarget(108043, mod:IsTank())
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
 local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
-local timerHarpoonCD				= mod:NewCDTimer(48, 108038)--CD when you don't fail at drakes
-local timerHarpoonActive			= mod:NewBuffActiveTimer(20, 108038)--Seems to always hold at least 20 seconds, beyond that, RNG, but you always get at least 20 seconds before they "snap" free.
-local timerReloadingCast			= mod:NewCastTimer(10, 108039)--You screwed up and let a drake get away, this makes a harpoon gun reload and regrab failed drakes after 10 seconds.
+local timerHarpoonCD				= mod:NewCDTimer(48, 108038, nil, mod:IsDps())--CD when you don't fail at drakes
+local timerHarpoonActive			= mod:NewBuffActiveTimer(20, 108038, nil, mod:IsDps())--Seems to always hold at least 20 seconds, beyond that, RNG, but you always get at least 20 seconds before they "snap" free.
+local timerReloadingCast			= mod:NewCastTimer(10, 108039, nil, mod:IsDps())--You screwed up and let a drake get away, this makes a harpoon gun reload and regrab failed drakes after 10 seconds.
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
