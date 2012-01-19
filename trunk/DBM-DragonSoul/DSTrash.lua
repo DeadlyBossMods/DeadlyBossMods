@@ -26,14 +26,15 @@ mod:RemoveOption("SpeedKillTimer")
 local antiSpam = 0
 
 function mod:BoulderTarget(sGUID)
-	local targetname = nil
+	local targetname, realm = nil
 	for i=1, GetNumRaidMembers() do
 		if UnitGUID("raid"..i.."target") == sGUID then
-			targetname = UnitName("raid"..i.."targettarget")
+			targetname, realm = UnitName("raid"..i.."targettarget")
 			break
 		end
 	end
 	if not targetname then return end
+	if realm then targetname = targetname.."-"..realm end
 	warnBoulder:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnBoulder:Show()
