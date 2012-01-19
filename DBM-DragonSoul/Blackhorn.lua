@@ -182,7 +182,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDevastateCD:Start()
 	elseif args:IsSpellID(107558, 108861, 109207, 109208) then
 		timerDegenerationCD:Start(args.sourceGUID)
-	elseif args:IsSpellID(108039) then
+	elseif args:IsSpellID(108038) then
 		timerHarpoonCD:Start(args.sourceGUID)
 	end
 end
