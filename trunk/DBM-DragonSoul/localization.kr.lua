@@ -86,7 +86,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpecial			= "다음 폭풍 또는 얼음"
+	TimerSpecial			= "다음 번개 또는 얼음"
 })
 
 L:SetOptionLocalization({
