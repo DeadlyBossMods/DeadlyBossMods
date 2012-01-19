@@ -212,7 +212,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase2:Show()--We still warn phase 2 here though to get into position, especially since he can land on deck up to 5 seconds before his yell.
 		timerCombatStart:Start(5)--5-8 seems variation, we use shortest.
 		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(56427, L.name)
 		end
 	elseif args:IsSpellID(110598, 110214) then
