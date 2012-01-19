@@ -173,11 +173,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(105219, 109371, 109372, 109373) then
 		residueCount = residueCount + 1
-		if residueCount == 9 then -- announce 9 stacks (ready to eat blood!)
-			warnResidue:Cancel()
-			warnResidue:Show(residueCount)
-		elseif residueCount > 4 and residueCount < 9 then -- annouce 5~8 stacks.
-			warnResidue:Cancel()
+		warnResidue:Cancel()
+		if residueCount > 4 and residueCount < 13 then -- announce 9 stacks (ready to eat blood!), sometimes it can be missing 2~3 stacks, announce to 12 stacks.
 			warnResidue:Schedule(2, residueCount)
 		end
 	end
@@ -213,11 +210,11 @@ end
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(105248) then
 		residueCount = residueCount - 1
+		warnResidue:Cancel()
+		warnAbsorbedBlood:Cancel()--Just a little anti spam
 		if args.amount == 9 then
-			warnAbsorbedBlood:Cancel()--Just a little anti spam
 			warnAbsorbedBlood:Show(args.destName, 9)
 		else
-			warnAbsorbedBlood:Cancel()--Just a little anti spam
 			warnAbsorbedBlood:Schedule(2, args.destName, args.amount or 1)
 		end
 	end
