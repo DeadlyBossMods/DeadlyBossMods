@@ -93,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnFieroblast:Show()
 		end
 	elseif args:IsSpellID(99629) then--Druid of the Flame Leaping
-		self:ScheduleMethod(0.6, "LeapTarget", args.sourceGUID)
+		self:ScheduleMethod(1, "LeapTarget", args.sourceGUID)
 	elseif args:IsSpellID(99503) then
 		warnRaiselava:Show()
 		timerRaiseLavaCD:Start()
@@ -129,7 +129,8 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 		
 function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.destGUID) == 53141 then
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 53141 then
 		surgers = surgers - 1
 		if surgers <= 0 then 
 			surgers = 0
@@ -138,12 +139,14 @@ function mod:UNIT_DIED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-	elseif self:GetCIDFromGUID(args.destGUID) == 53575 then
+	elseif cid == 53575 then
 		timerRaiseLavaCD:Cancel()
-	elseif self:GetCIDFromGUID(args.destGUID) == 53617 then
+	elseif cid == 53617 then
 		timerMoltenBoltCD:Cancel()
-	elseif self:GetCIDFromGUID(args.destGUID) == 53616 then
+	elseif cid == 53616 then
 		timerLavaSpawnCD:Cancel()
+	elseif cid == 53619 then
+		self:UnscheduleMethod("LeapTarget", args.destGUID)
 	end	
 end
 
