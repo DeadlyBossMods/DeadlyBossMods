@@ -19,6 +19,7 @@ local warnSeethingHate			= mod:NewTargetAnnounce(105067, 3)
 
 local specWarnBladeDance		= mod:NewSpecialWarningRun(104995, nil, nil, true)--No sound, so it doesn't take from the glory of soundBladeDance
 local specWarnSkewer			= mod:NewSpecialWarningSpell(104936, mod:IsTank() or mod:IsHealer())
+local specWarnSeethingHate		= mod:NewSpecialWarningYou(105067, mod:IsTank())--off tank may need this warn. 
 
 local timerBladeDance			= mod:NewBuffActiveTimer(15, 104995)
 local timerBladeDanceCD			= mod:NewCDTimer(60, 104995)
@@ -73,6 +74,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnSeethingHate:Show(args.destName)
 		timerSeethingHate:Start(args.destName)
+		if args:IsPlayer() then		
+			specWarnSeethingHate:Show()
+		end
 	elseif args:IsSpellID(105784) then--It seems the cast ID was disabled on live, so now gotta do this the dumb way.
 		bladeCasts = bladeCasts + 1
 		if bladeCasts > 1 then return end
