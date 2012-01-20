@@ -57,7 +57,7 @@ local timerTerrorCD				= mod:NewNextTimer(90, "ej4117", nil, nil, nil, 106765)--
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
 local timerParasite				= mod:NewTargetTimer(10, 108649)
 local timerParasiteCD			= mod:NewCDTimer(60, 108649)
---local timerUnstableCorruption	= mod:NewCastTimer(10, 108813)--Don't have a spellid for it, wowhead has no data on spell :\ Will have to wait for logs
+local timerUnstableCorruption	= mod:NewCastTimer(13, 108813)--10 seconds for cast plus 3 seconds before the cast even begins after paracite fades
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
@@ -159,9 +159,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106400) then--106444, 109631, 109632, 109633 are debuff IDs, no reason to use them though cause that'd be a diff function with diff timing
+	if args:IsSpellID(106400) then--106444, 109631, 109632, 109633 are lingering debuff IDs, no reason to use them though cause that'd be a diff function with diff timing
 		warnImpale:Show(args.destName)
-		timerImpale:Start(args.destName)--May need to add anti spam for heroic. On heroic impale hits everyone near the tenticle not just the tank? But maybe this ID only hits tank so we'll be fine, don't know yet.
+		timerImpale:Start(args.destName)
 		timerImpaleCD:Start()
 		if args:IsPlayer() then
 			specWarnImpale:Show()
@@ -206,6 +206,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(106444, 109631, 109632, 109633) then--Over here, we do use the secondary spellids to cancel the debuff target timer.
 		timerImpale:Cancel(args.destName)
 	elseif args:IsSpellID(108649) then
+		timerUnstableCorruption:Start()
 		if self.Options.SetIconOnParasite then
 			self:SetIcon(args.destName, 0)
 		end
