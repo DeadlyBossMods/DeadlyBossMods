@@ -57,7 +57,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(107597) then -- this spell cast 3 sec. and use at target's cast end position. not begin.
-		self:ScheduleMethod(3, "BoulderTarget", args.sourceGUID)
+		self:ScheduleMethod(3, "BoulderTarget", args.sourceGUID)--0.2 worked for me, it was announcing boulder target, NOT tank.
 	end
 end
 
