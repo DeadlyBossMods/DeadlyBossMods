@@ -202,8 +202,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnHarpoon:Show(args.destName)
 		specWarnHarpoon:Show(args.destName)
 		timerHarpoonCD:Start(args.sourceGUID)
-		if not mod:IsDifficulty("lfr25") then--Don't start this in LFR, pretty sure there is no duration there, it's indefinite.
-			timerHarpoonActive:Start(args.destGUID)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerHarpoonActive:Start(nil, args.destGUID)
+		elseif self:IsDifficulty("normal10", "normal25") then
+			timerHarpoonActive:Start(25, args.destGUID)
 		end
 	elseif args:IsSpellID(108040) and not phase2Started then--Goriona is being shot by the ships Artillery Barrage (phase 2 trigger)
 		self:Schedule(10, Phase2Delay)--It seems you can still get phase 1 crap until blackhorn is on the deck itself(ie his yell 10 seconds after this trigger) so we delay canceling timers.
