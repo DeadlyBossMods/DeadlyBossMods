@@ -182,8 +182,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDevastateCD:Start()
 	elseif args:IsSpellID(107558, 108861, 109207, 109208) then
 		timerDegenerationCD:Start(args.sourceGUID)
-	elseif args:IsSpellID(108038) then
-		timerHarpoonCD:Start(args.sourceGUID)
 	end
 end
 
@@ -203,6 +201,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(108038) then
 		warnHarpoon:Show(args.destName)
 		specWarnHarpoon:Show(args.destName)
+		timerHarpoonCD:Start(args.sourceGUID)
 		if not mod:IsDifficulty("lfr25") then--Don't start this in LFR, pretty sure there is no duration there, it's indefinite.
 			timerHarpoonActive:Start(args.destGUID)
 		end
