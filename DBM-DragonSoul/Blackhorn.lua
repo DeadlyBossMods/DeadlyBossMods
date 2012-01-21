@@ -172,7 +172,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(108039) then
 		recentlyReloaded = true
 		warnReloading:Show()
-		timerHarpoonCD:Cancel()--you failed, the guns aren't going to follow their standard CD because they have to cleanup now. Cancel all of the harpoon CDs.
 		timerReloadingCast:Start(args.sourceGUID)--This is your new CD for this harpoon.
 	end
 end
@@ -204,8 +203,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(108038) then
 		warnHarpoon:Show(args.destName)
 		specWarnHarpoon:Show(args.destName)
-		if not recentlyReloaded then--Don't start timer off a harpoon pulling an old drake in.
+		if not recentlyReloaded then--No old drakes are up when this was cast, so start a fresh valid 48 second bar.
 			timerHarpoonCD:Start(args.sourceGUID)
+		else
+			timerHarpoonCD:Cancel()--Cancel all harpoon bars since the "Reloading" cast finished before old drake died, which alters and ruins the bar Cds this drake cycle.
 		end
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerHarpoonActive:Start(nil, args.destGUID)
