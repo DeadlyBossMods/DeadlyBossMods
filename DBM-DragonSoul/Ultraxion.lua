@@ -179,7 +179,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnFadingLightTargets)
 	elseif args:IsSpellID(109075, 110078, 110079, 110080) then--Non Tank IDs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
-		if args:IsPlayer() then
+		if args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109416)) then
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)
