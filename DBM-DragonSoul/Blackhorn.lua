@@ -76,6 +76,7 @@ local addsCount = 0
 local drakesCount = 6
 local twilightOnslaughtCount = 0
 local CVAR = false
+local recentlyReloaded = false
 
 local function Phase2Delay()
 	mod:UnscheduleMethod("AddsRepeat")
@@ -126,6 +127,7 @@ function mod:OnCombatStart(delay)
 	drakesCount = 6
 	twilightOnslaughtCount = 0
 	CVAR = false
+	recentlyReloaded = false
 	timerCombatStart:Start(-delay)
 	timerAdd:Start(22.8-delay)
 	self:ScheduleMethod(22.8-delay, "AddsRepeat")
@@ -168,6 +170,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(110210, 110213) then
 		timerTwilightBreath:Start()
 	elseif args:IsSpellID(108039) then
+		recentlyReloaded = true
 		warnReloading:Show()
 		timerHarpoonCD:Cancel()--you failed, the guns aren't going to follow their standard CD because they have to cleanup now. Cancel all of the harpoon CDs.
 		timerReloadingCast:Start(args.sourceGUID)--This is your new CD for this harpoon.
@@ -201,7 +204,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(108038) then
 		warnHarpoon:Show(args.destName)
 		specWarnHarpoon:Show(args.destName)
-		timerHarpoonCD:Start(args.sourceGUID)
+		if not recentlyReloaded then--Don't start timer off a harpoon pulling an old drake in.
+			timerHarpoonCD:Start(args.sourceGUID)
+		end
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerHarpoonActive:Start(nil, args.destGUID)
 		elseif self:IsDifficulty("normal10", "normal25") then
@@ -275,6 +280,7 @@ function mod:UNIT_DIED(args)
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
 		timerHarpoonActive:Cancel(args.sourceGUID)
+		recentlyReloaded = false
 	end
 end
 
