@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"CHAT_MSG_ADDON",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
 )
@@ -200,3 +201,27 @@ function mod:UNIT_DIED(args)
 		expectedOozes = expectedOozes - 1
 	end
 end
+
+-- support Yor'sahj raid leading tools (eg YorsahjAnnounce) who want to broadcast a target arrow
+RegisterAddonMessagePrefix("DBM-YORSAHJARROW")
+--mod:RegisterEvents("CHAT_MSG_ADDON") -- for debugging
+local oozePos = {
+  ["BLUE"] = 	{ 71, 34 },
+  ["PURPLE"] = 	{ 57, 13 },
+  ["RED"] = 	{ 37, 12 },
+  ["GREEN"] = 	{ 22, 34 },
+  ["YELLOW"] = 	{ 37, 85 },
+  ["BLACK"] = 	{ 71, 65 },
+}
+function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
+  if prefix ~= "DBM-YORSAHJARROW" then return end
+  local cmd = message or ""
+  cmd = cmd:match("^(%w+)") or ""
+  cmd = cmd:upper()
+  if cmd == "CLEAR" then
+    DBM.Arrow:Hide()
+  elseif oozePos[cmd] then
+    DBM.Arrow:ShowRunTo(oozePos[cmd][1]/100,oozePos[cmd][2]/100,nil,20)
+  end
+end
+
