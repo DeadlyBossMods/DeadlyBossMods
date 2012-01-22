@@ -24,15 +24,15 @@ local specWarnMantle		= mod:NewSpecialWarningSpell(93561)
 
 local timerShockwaveCD		= mod:NewCDTimer(16, 94968)--Every 16 seconds shockwave and fury alternate unless mantle, is cast, then it's 18 seconds cause of the cast delay of mantle affecting both CDs
 local timerFuryofSandsCD	= mod:NewCDTimer(16, 94946)
-local timerSandsofTime		= mod:NewTargetTimer(15, 93578)
+local timerSandsofTime		= mod:NewBuffFadesTimer(15, 93578)
 local timerSandsofTimeCD	= mod:NewCDTimer(25, 93578)
 local timerMantleCD			= mod:NewCDTimer(43, 93561)--42.8-46.5 variations. a CD timer will suffice of 43
 
 mod:AddBoolOption("HealthFrame", true)
 
-local shieldValues = {
-	[93561] = 500000,
-}
+local sandsTargets = {}
+local sandsDebuffs = 0
+
 local showShieldHealthBar, hideShieldHealthBar
 do
 	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
@@ -70,10 +70,17 @@ do
 	end
 end
 
+local function showSandsgWarning()
+	warnSandsofTime:Show(table.concat(sandsTargets, "<, >"))
+	table.wipe(sandsTargets)
+end
+
 function mod:OnCombatStart(delay)
 	timerMantleCD:Start(23-delay)--Highly variable, i don't like it
 	timerShockwaveCD:Start(-delay)
 	timerFuryofSandsCD:Start(11-delay)
+	sandsDebuffs = 0
+	table.wipe(sandsTargets)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -94,12 +101,15 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93561) then
 		local shieldname = GetSpellInfo(93561)
-		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
+		showShieldHealthBar(self, args.destGUID, shieldname, 500000)
 		self:Schedule(60, hideShieldHealthBar)
 	elseif args:IsSpellID(93578) then
-		warnSandsofTime:Show(args.destName)
-		timerSandsofTime:Start(args.destName)
+		sandsTargets[#sandsTargets + 1] = args.destName
+		sandsDebuffs = sandsDebuffs + 1
+		timerSandsofTime:Start()
 		timerSandsofTimeCD:Start()
+		self:Unschedule(showSandsgWarning)
+		self:Schedule(0.3, showSandsgWarning)
 	end
 end
 
@@ -108,6 +118,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:Unschedule(hideShieldHealthBar)
 		hideShieldHealthBar()
 	elseif args:IsSpellID(93578) then
-		timerSandsofTime:Cancel(args.destName)
+		sandsDebuffs = sandsDebuffs - 1
+		if sandsDebuffs == 0 then
+			timerSandsofTime:Cancel()
+		end
 	end
 end

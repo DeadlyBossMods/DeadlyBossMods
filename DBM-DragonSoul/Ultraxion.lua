@@ -35,7 +35,7 @@ local timerUnstableMonstrosity		= mod:NewNextTimer(60, 106372, nil, mod:IsHealer
 local timerHourofTwilight			= mod:NewCastTimer(5, 109416)
 local timerHourofTwilightCD			= mod:NewNextCountTimer(45.5, 109416)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
-local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)--Lets try again using duration, not expire. expire just isn't going to work because of GetTime() 4.3 change.
+local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)
 local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 15 on normal
 local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
 local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
@@ -49,7 +49,7 @@ local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variati
 local HourofTwilightCountdown		= mod:NewCountdown(45.5, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
 mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
-mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--Will be eliminated when popup options are supported.
+mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--TODO, make a popup optiopn and combine this with other booleane
 --Raid CDs will have following options: Don't show Raid CDs, Show only My Raid CDs, Show all raid CDs
 
 mod:AddDropdownOption("ResetHoTCounter", {"Never", "Reset3", "Reset3Always"}, "Reset3", "announce")
@@ -58,6 +58,7 @@ mod:AddDropdownOption("SpecWarnHoTN", {"Never", "One", "Two", "Three"}, "Never",
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
 local fadingLightTargets = {}
+local fadingLightSpam = 0
 
 local function warnFadingLightTargets()
 	warnFadingLight:Show(fadingLightCount, table.concat(fadingLightTargets, "<, >"))
@@ -167,11 +168,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif self:IsDifficulty("lfr25") and self:IsTank() and fadingLightCount < 2 then--Only tanks get it in LFR
 			timerFadingLightCD:Start(15)
 		end
-		if args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109416)) then--Sometimes the combat log doesn't report all fading lights, so we make sure we dont have it.
+		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109416))) and GetTime() - fadingLightSpam > 3 then--Sometimes the combatlog doesn't report all fading lights, so we perform an additional aura check 
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", GetSpellInfo(109416))--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)--For some reason need to offset it by 1 second to make it accurate but otherwise it's perfect
 			timerFadingLight:Start(duration-1)
+			fadingLightSpam = GetTime()
 		else
 			specWarnFadingLightOther:Show(args.destName)
 		end
@@ -179,11 +181,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnFadingLightTargets)
 	elseif args:IsSpellID(109075, 110078, 110079, 110080) then--Non Tank IDs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
-		if args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109416)) then
+		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109416))) and GetTime() - fadingLightSpam > 3 then
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)
 			timerFadingLight:Start(duration-1)
+			fadingLightSpam = GetTime()
 		end
 		self:Unschedule(warnFadingLightTargets)
 		self:Schedule(0.3, warnFadingLightTargets)
