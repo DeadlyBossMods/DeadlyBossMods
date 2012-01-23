@@ -69,6 +69,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(fadingLightTargets)
 	hourOfTwilightCount = 0
 	fadingLightCount = 0
+	fadingLightSpam = 0
 	warnHourofTwilightSoon:Schedule(30.5)
 	if self.Options.SpecWarnHoTN == "One" then
 		specWarnHourofTwilightN:Schedule(40.5, GetSpellInfo(109416), hourOfTwilightCount+1)
