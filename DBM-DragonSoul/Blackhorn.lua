@@ -76,7 +76,7 @@ local addsCount = 0
 local drakesCount = 6
 local twilightOnslaughtCount = 0
 local CVAR = false
-local recentlyReloaded = false
+--local recentlyReloaded = false
 
 local function Phase2Delay()
 	mod:UnscheduleMethod("AddsRepeat")
@@ -117,6 +117,15 @@ function mod:AddsRepeat() -- it seems to be adds summon only 3 times. needs more
 		specWarnElites:Show()
 		timerAdd:Start()
 		self:ScheduleMethod(61, "AddsRepeat")
+		--Experimental harpoon stuff. Think it actually works this way but hard to log
+		--since the elites don't fire anything in logs unless you target every Twilight Elite Dreads's Drake before it ejects him to get log time stamps
+		if addsCount == 1 then
+			timerHarpoonCD:Start(20)--20 seconds after first elites
+		elseif addsCount == 2 then
+			timerHarpoonCD:Start(15)--15 seconds after second elites (going off memory, this may be 10)
+		elseif addsCount == 3 then
+			timerHarpoonCD:Start(10)--10 seconds after third elites (going off memory, this may be 5)
+		end
 	end
 end
 
@@ -127,7 +136,7 @@ function mod:OnCombatStart(delay)
 	drakesCount = 6
 	twilightOnslaughtCount = 0
 	CVAR = false
-	recentlyReloaded = false
+--	recentlyReloaded = false
 	timerCombatStart:Start(-delay)
 	timerAdd:Start(22.8-delay)
 	self:ScheduleMethod(22.8-delay, "AddsRepeat")
@@ -170,9 +179,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(110210, 110213) then
 		timerTwilightBreath:Start()
 	elseif args:IsSpellID(108039) then
-		recentlyReloaded = true
+--		recentlyReloaded = true
 		warnReloading:Show()
-		timerReloadingCast:Start(args.sourceGUID)--This is your new CD for this harpoon.
+		timerReloadingCast:Start(args.sourceGUID)
 	end
 end
 
@@ -203,11 +212,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(108038) then
 		warnHarpoon:Show(args.destName)
 		specWarnHarpoon:Show(args.destName)
-		if not recentlyReloaded then--No old drakes are up when this was cast, so start a fresh valid 48 second bar.
+--[[		if not recentlyReloaded then--No old drakes are up when this was cast, so start a fresh valid 48 second bar.
 			timerHarpoonCD:Start(args.sourceGUID)
 		else
 			timerHarpoonCD:Cancel()--Cancel all harpoon bars since the "Reloading" cast finished before old drake died, which alters and ruins the bar Cds this drake cycle.
-		end
+		end--]]
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerHarpoonActive:Start(nil, args.destGUID)
 		elseif self:IsDifficulty("normal10", "normal25") then
@@ -281,9 +290,9 @@ function mod:UNIT_DIED(args)
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
 		timerHarpoonActive:Cancel(args.sourceGUID)
-		if drakesCount == 4 or drakesCount == 2 then
+--[[		if drakesCount == 4 or drakesCount == 2 then
 			recentlyReloaded = false
-		end
+		end--]]
 	end
 end
 
