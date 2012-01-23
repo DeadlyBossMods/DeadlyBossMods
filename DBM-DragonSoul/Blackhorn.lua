@@ -281,7 +281,9 @@ function mod:UNIT_DIED(args)
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
 		timerHarpoonActive:Cancel(args.sourceGUID)
-		recentlyReloaded = false
+		if drakesCount == 4 or drakesCount == 2 then
+			recentlyReloaded = false
+		end
 	end
 end
 
