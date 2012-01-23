@@ -169,8 +169,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif self:IsDifficulty("lfr25") and self:IsTank() and fadingLightCount < 2 then--Only tanks get it in LFR
 			timerFadingLightCD:Start(15)
 		end
-		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109416))) and GetTime() - fadingLightSpam > 3 then--Sometimes the combatlog doesn't report all fading lights, so we perform an additional aura check 
-			local _, _, _, _, _, duration, expires = UnitDebuff("player", GetSpellInfo(109416))--Find out what our specific fading light is
+		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(105925))) and GetTime() - fadingLightSpam > 3 then--Sometimes the combatlog doesn't report all fading lights, so we perform an additional aura check 
+			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)--For some reason need to offset it by 1 second to make it accurate but otherwise it's perfect
 			timerFadingLight:Start(duration-1)
@@ -182,7 +182,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnFadingLightTargets)
 	elseif args:IsSpellID(109075, 110078, 110079, 110080) then--Non Tank IDs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
-		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109416))) and GetTime() - fadingLightSpam > 3 then
+		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109075))) and GetTime() - fadingLightSpam > 3 then
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)
