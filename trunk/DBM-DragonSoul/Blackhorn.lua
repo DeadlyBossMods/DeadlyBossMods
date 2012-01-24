@@ -74,6 +74,7 @@ local phase2Started = false
 local lastFlames = 0
 local addsCount = 0
 local drakesCount = 6
+local ignoredHarpoons = 0
 local twilightOnslaughtCount = 0
 local CVAR = false
 --local recentlyReloaded = false
@@ -117,14 +118,21 @@ function mod:AddsRepeat() -- it seems to be adds summon only 3 times. needs more
 		specWarnElites:Show()
 		timerAdd:Start()
 		self:ScheduleMethod(61, "AddsRepeat")
-		--Experimental harpoon stuff. Think it actually works this way but hard to log
+		--Experimental harpoon stuff. Think it actually works this way.
 		--since the elites don't fire anything in logs unless you target every Twilight Elite Dreads's Drake before it ejects him to get log time stamps
+--		"<15.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assault Drake:Possible Target<nil>:target:Eject Passenger 1::0:60603", -- [180]
+--		The two useless casts are ignored because they actually fail, every pull, the first harpoons fail once (and out of order too not at same time), and relaunch synced up after.
+--		"<35.5> [CLEU] SPELL_AURA_APPLIED#false#0xF150DD6900007D9A#Skyfire Harpoon Gun#2584#0#0xF150DE1700008B45#Twilight Assault Drake#133704#0#108038#Harpoon#1#BUFF", -- [2369]
 		if addsCount == 1 then
-			timerHarpoonCD:Start(20)--20 seconds after first elites
+			timerHarpoonCD:Start(20)--20 seconds after first elites (Confirmed)
+--		Pug was bad and i got distracted and didn't target the drake before it cast "Eject Passenger". 76.9 assumed based on established "elites" cd.
+--		"<82.9> [CLEU] SPELL_AURA_APPLIED#false#0xF150DD6900007D4A#Skyfire Harpoon Gun#2584#0#0xF150DD0B00008C0E#Twilight Assault Drake#2632#0#108038#Harpoon#1#BUFF", -- [12268]
 		elseif addsCount == 2 then
-			timerHarpoonCD:Start(15)--15 seconds after second elites (going off memory, this may be 10)
+			timerHarpoonCD:Start(6)--6 in this log. Maybe 2nd and 3rd sets are both a 6-7 variation and only first is 20 seconds after? Then again the eject passenger time was assumed.
+--		"<138.7> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assault Drake:Possible Target<nil>:target:Eject Passenger 1::0:60603", -- [24162]
+--		"<145.6> [CLEU] SPELL_AURA_APPLIED#false#0xF150DD6900007D9A#Skyfire Harpoon Gun#2584#0#0xF150DE1700008CB9#Twilight Assault Drake#2632#0#108038#Harpoon#1#BUFF", -- [25407]
 		elseif addsCount == 3 then
-			timerHarpoonCD:Start(10)--10 seconds after third elites (going off memory, this may be 5)
+			timerHarpoonCD:Start(7)--7 in this log. Maybe it's 6-7 like 2nd set?
 		end
 	end
 end
@@ -134,6 +142,7 @@ function mod:OnCombatStart(delay)
 	lastFlames = 0
 	addsCount = 0
 	drakesCount = 6
+	ignoredHarpoons = 0
 	twilightOnslaughtCount = 0
 	CVAR = false
 --	recentlyReloaded = false
@@ -210,17 +219,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(108038) then
-		warnHarpoon:Show(args.destName)
-		specWarnHarpoon:Show(args.destName)
+		if ignoredHarpoons < 3 then--First two harpoons of fight are bugged, they fire early, apply to drake, even though they missed, then refire. we simply ignore first 2 bad casts to avoid spam and confusion.
+			ignoredHarpoons = ignoredHarpoons + 1
+		else--We are passed the 2 useless ones, do everything as normal now.
+			warnHarpoon:Show(args.destName)
+			specWarnHarpoon:Show(args.destName)
 --[[		if not recentlyReloaded then--No old drakes are up when this was cast, so start a fresh valid 48 second bar.
-			timerHarpoonCD:Start(args.sourceGUID)
-		else
-			timerHarpoonCD:Cancel()--Cancel all harpoon bars since the "Reloading" cast finished before old drake died, which alters and ruins the bar Cds this drake cycle.
-		end--]]
-		if self:IsDifficulty("heroic10", "heroic25") then
-			timerHarpoonActive:Start(nil, args.destGUID)
-		elseif self:IsDifficulty("normal10", "normal25") then
-			timerHarpoonActive:Start(25, args.destGUID)
+				timerHarpoonCD:Start(args.sourceGUID)
+			else
+				timerHarpoonCD:Cancel()--Cancel all harpoon bars since the "Reloading" cast finished before old drake died, which alters and ruins the bar Cds this drake cycle.
+			end--]]
+			if self:IsDifficulty("heroic10", "heroic25") then
+				timerHarpoonActive:Start(nil, args.destGUID)
+			elseif self:IsDifficulty("normal10", "normal25") then
+				timerHarpoonActive:Start(25, args.destGUID)
+			end
 		end
 	elseif args:IsSpellID(108040) and not phase2Started then--Goriona is being shot by the ships Artillery Barrage (phase 2 trigger)
 		self:Schedule(10, Phase2Delay)--It seems you can still get phase 1 crap until blackhorn is on the deck itself(ie his yell 10 seconds after this trigger) so we delay canceling timers.
