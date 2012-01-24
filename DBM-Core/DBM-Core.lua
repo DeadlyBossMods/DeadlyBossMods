@@ -2346,15 +2346,21 @@ function DBM:StartCombat(mod, delay, synced)
 		if mod:IsDifficulty("lfr25") then
 			mod.stats.lfr25Pulls = mod.stats.lfr25Pulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY3.." - "
-		elseif mod:IsDifficulty("normal5", "normal10") then
+		elseif mod:IsDifficulty("normal5") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY1.." - "
-		elseif mod:IsDifficulty("heroic5", "heroic10") then
+		elseif mod:IsDifficulty("heroic5") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY2.." - "
+			savedDifficulty = PLAYER_DIFFICULTY2.." (10) - "
+		elseif mod:IsDifficulty("normal10") then
+			mod.stats.normalPulls = mod.stats.normalPulls + 1
+			savedDifficulty = PLAYER_DIFFICULTY1.." (10) - "
+		elseif mod:IsDifficulty("heroic10") then
+			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
+			savedDifficulty = PLAYER_DIFFICULTY2.." (25) - "
 		elseif mod:IsDifficulty("normal25") then
 			mod.stats.normal25Pulls = mod.stats.normal25Pulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY1.." - "
+			savedDifficulty = PLAYER_DIFFICULTY1.." (25) - "
 		elseif mod:IsDifficulty("heroic25") then
 			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY2.." - "
