@@ -171,6 +171,7 @@ local _, class = UnitClass("player")
 local LastZoneText
 local LastZoneMapID
 local savedDifficulty
+local queuedBattlefield = {}
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -1484,8 +1485,14 @@ function DBM:LFG_UPDATE()
 end
 
 function DBM:UPDATE_BATTLEFIELD_STATUS()
-	if GetBattlefieldStatus(1) == "confirm" or GetBattlefieldStatus(2) == "confirm" then
-		DBM.Bars:CreateBar(85, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")	-- need to confirm the timer
+	for i = 1, 2 do
+		if GetBattlefieldStatus(i) == "confirm" then
+			queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
+			DBM.Bars:CreateBar(85, queuedBattlefield[i], "Interface\\Icons\\Spell_Holy_BorrowedTime")	-- need to confirm the timer
+		elseif queuedBattlefield[i] then
+			DBM.Bars:CancelBar(queuedBattlefield[i])
+			queuedBattlefield[i] = nil
+		end
 	end
 end
 
