@@ -30,7 +30,7 @@ local specWarnPsychicDrain		= mod:NewSpecialWarningSpell(104322, false)
 local specWarnShadows			= mod:NewSpecialWarningYou(103434)
 local yellShadows				= mod:NewYell(103434, nil, false, L.ShadowYell)--Requested by 10 man guilds, but a spammy mess in 25s, so off by default. With the option to enable when desired.
 
-local timerVoidofUnmakingCD		= mod:NewCDTimer(90.3, 103571, nil, nil, nil, 103527)
+local timerVoidofUnmakingCD		= mod:NewNextTimer(90.3, 103571, nil, nil, nil, 103527)
 local timerVoidDiffusionCD		= mod:NewCDTimer(5, 106836)--Can not be triggered more then once per 5 seconds.
 local timerFocusedAngerCD		= mod:NewCDTimer(6, 104543, nil, false)--Off by default as it may not be entirely useful information to know, but an option just for heck of it. You know SOMEONE is gonna request it
 local timerPsychicDrainCD		= mod:NewCDTimer(20, 104322)--Every 20-25 seconds, variates.
