@@ -58,12 +58,18 @@ local abilityTimers = {
 	[2] = 12,
 	[3] = 10.9,
 	[4] = 9.6,
-	[5] = 8.4,
-	[6] = 8.4,--Makes me wonder why this didn't get faster thn 5, but same thing happened iwth 4-5 on old timers.
-	[7] = 7.2,--Unknown, drycoded with 15% math. Probably wrong
-	[8] = 6.1,--Unknown, drycoded with 15% math. Probably wrong
-	[9] = 5.2,--Unknown, drycoded with 15% math. Probably wrong
-	[10]= 5.2--Unknown, Probably wrong
+	[5] = 8.4,--8.4~8.9 variables.
+	[6] = 8.4,--seems to be always 8.4.
+	[7] = 7.2,--confirmed.
+	[8] = 7.2,--after 8 stack, confirmed by only 1 log.
+	[9] = 6.0,
+	[10]= 6.0,
+	[11]= 6.0,
+	[12]= 6.0,
+	[13]= 4.9,--may be not lower than 4.9 according to 4.2 data?
+	[14]= 4.9,
+	[15]= 4.9,
+	[16]= 4.9,
 }
 
 --Keeping this around for now
