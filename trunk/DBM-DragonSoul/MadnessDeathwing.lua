@@ -172,7 +172,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnShrapnel:Show()
 			ShrapnelCountdown:Start(6)
 		end
-		if (self:IsDifficulty("normal10") and #shrapnelTargets >= 3) then
+		if (self:IsDifficulty("normal10", "heroic10") and #shrapnelTargets >= 3) or (self:IsDifficulty("normal25", "heroic25", "lfr25") and #shrapnelTargets >= 7) then
 			warnShrapnelTargets()
 		else
 			self:Schedule(0.3, warnShrapnelTargets)
