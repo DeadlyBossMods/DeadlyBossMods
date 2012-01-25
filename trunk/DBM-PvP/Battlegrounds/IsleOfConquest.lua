@@ -153,7 +153,7 @@ function IsleOfConquest:UNIT_DIED(args)
 end
 
 function IsleOfConquest:SPELL_BUILDING_DAMAGE(args)
-	if args == nil or args.destName == nil or args.destGUID == nil or args.amount == nil then
+	if args == nil or args.destName == nil or args.destGUID == nil or args.amount == nil or not bgzone then
 		return
 	end
 	local guid = args.destGUID
