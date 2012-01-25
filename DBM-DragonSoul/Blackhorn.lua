@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(56598)--56427 is Boss, but engage trigger needs the ship which is 56598
---TODO, find a way to fix it so status whispers return blackhorns health, not the ships health.
+mod:SetMainBossID(56427)
 mod:SetModelID(39399)
 mod:SetZone()
 mod:SetUsedIcons()
