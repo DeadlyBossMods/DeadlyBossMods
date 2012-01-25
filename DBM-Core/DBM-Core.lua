@@ -2351,19 +2351,19 @@ function DBM:StartCombat(mod, delay, synced)
 			savedDifficulty = PLAYER_DIFFICULTY1.." - "
 		elseif mod:IsDifficulty("heroic5") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY2.." (10) - "
+			savedDifficulty = PLAYER_DIFFICULTY2.." - "
 		elseif mod:IsDifficulty("normal10") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY1.." (10) - "
 		elseif mod:IsDifficulty("heroic10") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY2.." (25) - "
+			savedDifficulty = PLAYER_DIFFICULTY2.." (10) - "
 		elseif mod:IsDifficulty("normal25") then
 			mod.stats.normal25Pulls = mod.stats.normal25Pulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY1.." (25) - "
 		elseif mod:IsDifficulty("heroic25") then
 			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY2.." - "
+			savedDifficulty = PLAYER_DIFFICULTY2.." (25) - "
 		else--you were not in an instance when you started combat, this is an outdoor boss.
 			mod.stats.normalPulls = mod.stats.normalPulls + 1--Treat it as normal for kill stats.
 			savedDifficulty = ""--So lets just return no difficulty :)
