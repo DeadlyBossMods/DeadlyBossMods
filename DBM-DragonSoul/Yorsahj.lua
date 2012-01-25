@@ -214,14 +214,14 @@ local oozePos = {
   ["BLACK"] = 	{ 71, 65 },
 }
 function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
-  if prefix ~= "DBM-YORSAHJARROW" then return end
-  local cmd = message or ""
-  cmd = cmd:match("^(%w+)") or ""
-  cmd = cmd:upper()
-  if cmd == "CLEAR" then
-    DBM.Arrow:Hide()
-  elseif oozePos[cmd] then
-    DBM.Arrow:ShowRunTo(oozePos[cmd][1]/100,oozePos[cmd][2]/100,nil,20)
-  end
+	if prefix ~= "DBM-YORSAHJARROW" then return end
+	local cmd = message or ""
+	cmd = cmd:match("^(%w+)") or ""
+	cmd = cmd:upper()
+	if cmd == "CLEAR" then
+		DBM.Arrow:Hide()
+	elseif oozePos[cmd] then
+		DBM.Arrow:ShowRunTo(oozePos[cmd][1]/100,oozePos[cmd][2]/100,nil,20)
+	end
 end
 
