@@ -7,7 +7,7 @@ mod:SetModelID(35268)
 mod:SetZone()
 mod:SetUsedIcons(6, 5, 4, 3, 2, 1)
 
-mod:RegisterCombat("yell", L.Pull)--Engage trigger comes 30 seconds after encounter starts, because of this, the mod can miss the first round of ability casts such as first grip targets. have to use yell
+mod:RegisterCombat("yell", L.Pull)--INSTANCE_ENCOUNTER_ENGAGE_UNIT comes 30 seconds after encounter starts, because of this, the mod can miss the first round of ability casts such as first grip targets. have to use yell
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -25,7 +25,7 @@ local warnAbsorbedBlood		= mod:NewStackAnnounce(105248, 2)
 local warnResidue			= mod:NewCountAnnounce("ej4057", 3, nil, false) -- maybe info frame will be better. (temporarly added)
 local warnGrip				= mod:NewTargetAnnounce(109459, 4)
 local warnNuclearBlast		= mod:NewCastAnnounce(105845, 4)
-local warnSealArmor			= mod:NewCastAnnounce(105847, 4)--Cast by Burning Tendons when they spawn after you break a plate
+local warnSealArmor			= mod:NewCastAnnounce(105847, 4)
 
 local specWarnRoll			= mod:NewSpecialWarningSpell("ej4050", nil, nil, nil, true)--The actual roll
 local specWarnTendril		= mod:NewSpecialWarning("SpecWarnTendril")--A personal warning for you only if you're not gripped 3 seconds after roll started
@@ -72,7 +72,6 @@ local function showGripWarning()
 	table.wipe(gripTargets)
 end
 
---This wasn't working right on 25 man at all, i think more then one went out at a time, and it spam changed name, it didn't want to add more then 1 name to frame at a time so instead it kept replacing the frame, alli saw was about 6 names flash by within 1 second.
 local clearPlasmaTarget, setPlasmaTarget, clearPlasmaVariables
 do
 	local plasmaTargets = {}
@@ -200,7 +199,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(showGripWarning)
 		self:Schedule(0.3, showGripWarning)
-	elseif args:IsSpellID(105479, 109362, 109363, 109364) then -- 105479 in 10 man. otherid is drycoded.
+	elseif args:IsSpellID(105479, 109362, 109363, 109364) then
 		if self.Options.ShowShieldInfo then
 			setPlasmaTarget(args.destGUID, args.destName)
 		end
@@ -215,7 +214,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		if args.amount == 9 then
 			warnAbsorbedBlood:Show(args.destName, 9)
 		else
-			warnAbsorbedBlood:Schedule(2, args.destName, args.amount or 1)
+			warnAbsorbedBlood:Schedule(2, args.destName, args.amount)
 		end
 	end
 end
@@ -225,7 +224,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnGrip then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(105479, 109362, 109363, 109364) then -- 105479 in 10 man. otherid is drycoded.
+	elseif args:IsSpellID(105479, 109362, 109363, 109364) then
 		if self.Options.ShowShieldInfo then
 			clearPlasmaTarget(args.destGUID, args.destName)
 		end
