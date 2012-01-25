@@ -94,7 +94,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then-- update this variable in heroic only (normal mode not needed)
+		if self:IsDifficulty("heroic10", "heroic25") then
 			kohcromSkip = 1
 		end
 	end
@@ -118,7 +118,7 @@ function mod:SPELL_CAST_START(args)
 					timerKohcromCD:Start(6, args.spellName)
 				end
 			end
-			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then-- update this variable in heroic only (normal mode not needed)
+			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then
 				kohcromSkip = 1
 			end
 		else
@@ -153,7 +153,7 @@ function mod:SPELL_SUMMON(args)
 					timerKohcromCD:Start(6, args.spellName)
 				end
 			end
-			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then-- update this variable in heroic only (normal mode not needed)
+			if kohcromSkip and self:IsDifficulty("heroic10", "heroic25") then
 				kohcromSkip = 2
 			end
 		else
@@ -183,7 +183,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCrystal:Cancel()
 		timerKohcromCD:Cancel()
 		warnVortex:Show()
-		specwarnVortex:Show()--No reason to split the special warning into 2, it's just an attention getter and doesn't stay on screen like normal messages.
+		specwarnVortex:Show()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end

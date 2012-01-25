@@ -52,11 +52,11 @@ local timerFeedback			= mod:NewBuffActiveTimer(15, 108934)
 local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:IsTank())
 local timerStormPillarCD	= mod:NewNextTimer(5, 109557)--Both of these are just spammed every 5 seconds on new targets.
-local timerFrostFlakeCD		= mod:NewNextTimer(5, 109325)
+local timerFrostFlakeCD		= mod:NewNextTimer(5, 109325)--^
 
-local berserkTimer			= mod:NewBerserkTimer(480)	-- according to Icy-Veins
+local berserkTimer			= mod:NewBerserkTimer(480)
 
-local SpecialCountdown		= mod:NewCountdown(62, 105256)--Apparently countdown prototype doesn't support localized text, too lazy to do that now, so i'll just use tempest, even though it's enabled for both specials.
+local SpecialCountdown		= mod:NewCountdown(62, 105256)
 
 mod:AddBoolOption("RangeFrame")--Ice lance spreading in ice phases, and lighting linking in lighting phases (with reverse intent, staying within 10 yards, not out of 10 yards)
 mod:AddBoolOption("SetIconOnFrostflake", false)--You can use an icon if you want, but this is cast on a new target every 5 seconds, often times on 25 man 2-3 have it at same time while finding a good place to drop it.
@@ -86,7 +86,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(tombTargets)
 	timerAssaultCD:Start(4-delay)
 	timerIceLanceCD:Start(10-delay)
---	timerFrostTombCD:Start(16-delay)--No longer cast on engage? most recent log she only casts it after specials now and not after pull
+--	timerFrostTombCD:Start(16-delay)--Not possible until (or if) a way is ever found to detect her enchant on pull.
 	timerSpecialCD:Start(30-delay)
 	SpecialCountdown:Start(30-delay)
 	berserkTimer:Start(-delay)
@@ -144,7 +144,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(tombIconTargets, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetTombIcons")
 			if (self:IsDifficulty("normal25") and #tombIconTargets >= 5) or (self:IsDifficulty("heroic25") and #tombIconTargets >= 6) or (self:IsDifficulty("normal10", "heroic10") and #tombIconTargets >= 2) then
-				self:SetTombIcons()--Sort and fire as early as possible once we have all targets.
+				self:SetTombIcons()
 			else
 				if self:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
 					self:ScheduleMethod(0.3, "SetTombIcons")
@@ -157,7 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnTombTargets)
 		end
-	elseif args:IsSpellID(107851, 110898, 110899, 110900) then--107851 10/25 man normal confirmed. 110900 is lfr25 difficulty.
+	elseif args:IsSpellID(107851, 110898, 110899, 110900) then
 		warnAssault:Show()
 		timerAssault:Start()
 		timerAssaultCD:Start()
@@ -173,23 +173,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFrostflake then
 			self:SetIcon(args.destName, 3)
 		end
-	elseif args:IsSpellID(105316, 107061, 107062, 107063) then
-		if (args.amount or 1) % 3 == 0 and args:IsPlayer() then--Warn every 3 stacks, don't want to spam TOO much.
-			specWarnIceLance:Show(args.amount)
-		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(105316, 107061, 107062, 107063) then
-		if (args.amount or 1) % 3 == 0 and args:IsPlayer() then--Warn every 3 stacks, don't want to spam TOO much.
+		if (self:IsDifficulty("lfr25") and args.amount % 5 == 0 or args.amount % 3 == 0) and args:IsPlayer() then--Warn every 3 stacks (6 stacks in LFR), don't want to spam TOO much.
 			specWarnIceLance:Show(args.amount)
 		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then--104451 10/25 man normal confirmed.
+	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
 		timerFrostFlakeCD:Cancel()
@@ -267,9 +263,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(105297) then -- comfirmed 25 man normal(lfg),
+	if args:IsSpellID(105297) then
 		lanceTargets[#lanceTargets + 1] = args.sourceName
 		self:Unschedule(warnLanceTargets)
-		self:Schedule(0.5, warnLanceTargets)--Maybe adjust timing to allow for more combining of people failing at spreading?
+		self:Schedule(0.5, warnLanceTargets)
 	end
 end

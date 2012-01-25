@@ -84,13 +84,13 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then--Do not add any other ID, these are tank IDs. Raid aoe IDs coul be added as an alternate timer somewhere else maybe.
-		timerVoidBoltCD:Start()--Start CD off this not applied, that way we still get CD if a tank AMS's the debuff application.
+		timerVoidBoltCD:Start()
 	elseif args:IsSpellID(105530) then
 		warnManaVoid:Show()
 		specWarnManaVoid:Show()
 	elseif args:IsSpellID(105573, 108350, 108351, 108352) and self:IsInCombat() then
 		if yellowActive then
-			timerAcidCD:Start(3.5)--Strangely, ths is 3.5 even though base CD is 8.3-8.5
+			timerAcidCD:Start(3.5)--Strangely, this is 3.5 even though base CD is 8.3-8.5
 		else
 			timerAcidCD:Start()
 		end
@@ -126,29 +126,29 @@ function mod:SPELL_AURA_APPLIED(args)
 		yellowActive = true
 	elseif args:IsSpellID(104896) and args:GetDestCreatureID() == 55312 then--Purple
 		table.insert(oozesHitTable, L.Purple)
-		if #oozesHitTable == expectedOozes then--All of em absorbed
+		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 		specWarnPurple:Show()
 	elseif args:IsSpellID(105027) and args:GetDestCreatureID() == 55312 then--Blue
 		table.insert(oozesHitTable, L.Blue)
-		if #oozesHitTable == expectedOozes then--All of em absorbed
+		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104897) and args:GetDestCreatureID() == 55312 then--Red
 		table.insert(oozesHitTable, L.Red)
-		if #oozesHitTable == expectedOozes then--All of em absorbed
+		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104894) and args:GetDestCreatureID() == 55312 then--Black
 		table.insert(oozesHitTable, L.Black)
-		if #oozesHitTable == expectedOozes then--All of em absorbed
+		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
 	elseif args:IsSpellID(104898) then--Green
 		if args:GetSrcCreatureID() == 55312 then--Only trigger the actual acid spits off the boss getting buff, not the oozes spawning.
 			table.insert(oozesHitTable, L.Green)
-			if #oozesHitTable == expectedOozes then--All of em absorbed
+			if #oozesHitTable == expectedOozes then
 				warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 			end
 		end
@@ -160,7 +160,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(104849, 108383, 108384, 108385) then--104849, 108383 confirmed 10 and 25 man normal, other 2 drycoded from wowhead.
+	if args:IsSpellID(104849, 108383, 108384, 108385) then
 		timerVoidBolt:Cancel(args.destName)
 	elseif args:IsSpellID(104901) and args:GetDestCreatureID() == 55312 then--Yellow Removed
 		yellowActive = false
@@ -178,7 +178,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
 	if not uId:find("boss") then return end--yor can apparently be boss 1 2 3 or 4. even though he's only boss, :o
-	if oozeColors[spellID] then--It doesn't really matter which table/ID we check for, spellids are same, only matters in warning.
+	if oozeColors[spellID] then
 		table.wipe(oozesHitTable)
 		specWarnOozes:Show()
 		timerVoidBoltCD:Start(42)

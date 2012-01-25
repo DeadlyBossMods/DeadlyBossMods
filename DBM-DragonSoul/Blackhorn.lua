@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(56598)--56427 is Boss, but engage trigger needs the ship which is 56598
+--TODO, find a way to fix it so status whispers return blackhorns health, not the ships health.
 mod:SetModelID(39399)
 mod:SetZone()
 mod:SetUsedIcons()
@@ -48,14 +49,14 @@ local specWarnSunderOther			= mod:NewSpecialWarningTarget(108043, mod:IsTank())
 
 local timerCombatStart				= mod:NewTimer(20.5, "TimerCombatStart", 2457)
 local timerAdd						= mod:NewTimer(61, "TimerAdd", 107752)
-local timerHarpoonCD				= mod:NewNextTimer(6.5, 108038, nil, mod:IsDps())--CD when you don't fail at drakes
+local timerHarpoonCD				= mod:NewNextTimer(6.5, 108038, nil, mod:IsDps())
 local timerHarpoonActive			= mod:NewBuffActiveTimer(20, 108038, nil, mod:IsDps())--Seems to always hold at least 20 seconds, beyond that, RNG, but you always get at least 20 seconds before they "snap" free.
-local timerReloadingCast			= mod:NewCastTimer(10, 108039, nil, mod:IsDps())--You screwed up and let a drake get away, this makes a harpoon gun reload and regrab failed drakes after 10 seconds.
+local timerReloadingCast			= mod:NewCastTimer(10, 108039, nil, mod:IsDps())
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
 local timerDegenerationCD			= mod:NewCDTimer(8.5, 109208, nil, mod:IsTank())--8.5-9.5 variation.
-local timerBladeRushCD				= mod:NewCDTimer(15.5, 107595)--Experiment, 15.5-20 seemed common for heroic, LFR was a variatable 20-25sec. Just need more data, a lot more.
+local timerBladeRushCD				= mod:NewCDTimer(15.5, 107595)
 local timerBroadsideCD				= mod:NewNextTimer(90, 110153)
 local timerRoarCD					= mod:NewCDTimer(19, 109228)--19~22 variables (i haven't seen any logs where this wasn't always 21.5, are 19s on WoL somewhere?)
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
@@ -226,7 +227,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(108040) and not phase2Started then--Goriona is being shot by the ships Artillery Barrage (phase 2 trigger)
-		self:Schedule(10, Phase2Delay)--It seems you can still get phase 1 crap until blackhorn is on the deck itself(ie his yell 10 seconds after this trigger) so we delay canceling timers.
+		self:Schedule(10, Phase2Delay)--It seems you can still get phase 1 crap until blackhorn's yell 10 seconds after this trigger, so we delay canceling timers.
 		phase2Started = true
 		warnPhase2:Show()--We still warn phase 2 here though to get into position, especially since he can land on deck up to 5 seconds before his yell.
 		timerCombatStart:Start(5)--5-8 seems variation, we use shortest.
@@ -242,7 +243,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(108051, 109216, 109217, 109218) then
-		warnTwilightFlames:Show()--Target scanning? will need to put drake on focus and see
+		warnTwilightFlames:Show()
 		timerTwilightFlamesCD:Start()
 	end
 end
@@ -276,20 +277,14 @@ function mod:RAID_BOSS_EMOTE(msg)
 	end
 end
 
-
---[[Useful reg expressions for WoL
-spellid = 108038 or fulltype = UNIT_DIED and (targetMobId = 56855 or targetMobId = 56587) or spellid = 108039
-spellid = 108038 and fulltype = SPELL_CAST_START or fulltype = UNIT_DIED and (targetMobId = 56855 or targetMobId = 56587) or spellid = 108039
---]]
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 56427 then--Boss
+	if cid == 56427 then--Blackhorn
 		DBM:EndCombat(self)
 	elseif cid == 56848 or cid == 56854 then--Humanoids
 		timerBladeRushCD:Cancel(args.sourceGUID)
 		timerDegenerationCD:Cancel(args.sourceGUID)
-	elseif cid == 56855 or cid == 56587 then--Small Drakes (maybe each side has a unique ID? this could be useful in further filtering which harpoon is which side.
+	elseif cid == 56855 or cid == 56587 then--Drakes
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
 		timerHarpoonActive:Cancel(args.sourceGUID)
