@@ -28,7 +28,7 @@ local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil
 local specWarnHourofTwilightN		= mod:NewSpecialWarning("specWarnHourofTwilightN", nil, false)
 local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
 local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(110080, mod:IsTank())
-local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)--Berserk, you have 5 seconds to finish off the boss ;)
+local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)
 
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerUnstableMonstrosity		= mod:NewNextTimer(60, 106372, nil, mod:IsHealer())
@@ -36,16 +36,16 @@ local timerHourofTwilight			= mod:NewCastTimer(5, 109416)
 local timerHourofTwilightCD			= mod:NewNextCountTimer(45.5, 109416)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
 local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)
-local timerFadingLightCD			= mod:NewNextTimer(10, 110080)--10 second on heroic, 15 on normal
+local timerFadingLightCD			= mod:NewNextTimer(10, 110080)
 local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
 local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
 local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
-local timerLoomingDarkness			= mod:NewBuffFadesTimer(120, 106498)--Heroic ability, personal only timer.
+local timerLoomingDarkness			= mod:NewBuffFadesTimer(120, 106498)
 local timerRaidCDs					= mod:NewTimer(60, "timerRaidCDs", 2565, nil, false)--Does not need to be localized, has no option, uses ShowRaidCDs bool
 
 local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
-local FadingLightCountdown			= mod:NewCountdown(10, 110080)--5-10 second variation that's random according to EJ
+local FadingLightCountdown			= mod:NewCountdown(10, 110080)
 local HourofTwilightCountdown		= mod:NewCountdown(45.5, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
 mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
@@ -107,9 +107,7 @@ function mod:SPELL_CAST_START(args)
 			timerFadingLightCD:Start(13)
 			timerHourofTwilight:Start(3)
 		else
-			if (self:IsDifficulty("lfr25") and self:IsTank()) or self:IsDifficulty("normal10", "normal25") then
-				timerFadingLightCD:Start(20)
-			end
+			timerFadingLightCD:Start(20)
 			timerHourofTwilight:Start()
 		end
 	elseif args:IsSpellID(106388) then
@@ -122,31 +120,31 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(106372, 106376, 106377, 106378, 106379) then
 		timerUnstableMonstrosity:Start()
 	elseif args:IsSpellID(97462) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Warrior Rallying Cry
-		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(90, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(180, args.spellName, args.sourceName)
 		end
 	elseif args:IsSpellID(871) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Warrior Shield Wall (4pc Assumed)
-		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(120, args.spellName, args.sourceName)
 		end
 	elseif args:IsSpellID(62618) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Paladin Divine Guardian (4pc assumed)
-		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(120, args.spellName, args.sourceName)
 		end
 	elseif args:IsSpellID(55233) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--DK Vampric Blood (4pc assumed)
-		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(30, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		end
 	elseif args:IsSpellID(22842) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Druid Frenzied Regen (4pc assumed)
-		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then--Last Defender of Azeroth
+		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(90, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(180, args.spellName, args.sourceName)
@@ -162,14 +160,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105925, 110068, 110069, 110070) then--Tank Only SpellIDS
 		fadingLightCount = fadingLightCount + 1
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
-		if self:IsDifficulty("heroic10", "heroic25") and fadingLightCount < 3 then--It's cast 3 times during hour of twilight buff duration on ultraxion heroic. 20 secomds remaining, 10 seconds remaining, and at 0 seconds remainings.
+		if self:IsDifficulty("heroic10", "heroic25") and fadingLightCount < 3 then
 			timerFadingLightCD:Start()
-		elseif self:IsDifficulty("normal10", "normal25") and fadingLightCount < 2 then--It's cast 2 times during hour of twilight buff duration on ultraxion normal. 15 secomds remaining and at 0 seconds remainings.
-			timerFadingLightCD:Start(15)
-		elseif self:IsDifficulty("lfr25") and self:IsTank() and fadingLightCount < 2 then--Only tanks get it in LFR
+		elseif self:IsDifficulty("normal10", "normal25", "lfr25") and fadingLightCount < 2 then
 			timerFadingLightCD:Start(15)
 		end
-		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(105925))) and GetTime() - fadingLightSpam > 1.5 then--Sometimes the combatlog doesn't report all fading lights, so we perform an additional aura check 
+		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(105925))) and GetTime() - fadingLightSpam > 2 then--Sometimes the combatlog doesn't report all fading lights, so we perform an additional aura check 
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)--For some reason need to offset it by 1 second to make it accurate but otherwise it's perfect
@@ -179,18 +175,26 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFadingLightOther:Show(args.destName)
 		end
 		self:Unschedule(warnFadingLightTargets)
-		self:Schedule(0.3, warnFadingLightTargets)
+		if self:IsDifficulty("lfr25") or self:IsDifficulty("heroic25") and #fadingLightTargets >= 7 or self:IsDifficulty("normal25") and #fadingLightTargets >= 4 or self:IsDifficulty("heroic10") and #fadingLightTargets >= 3 or self:IsDifficulty("normal10") and #fadingLightTargets >= 2 then
+			warnFadingLightTargets()
+		else
+			self:Schedule(0.5, warnFadingLightTargets)
+		end
 	elseif args:IsSpellID(109075, 110078, 110079, 110080) then--Non Tank IDs
 		fadingLightTargets[#fadingLightTargets + 1] = args.destName
-		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109075))) and GetTime() - fadingLightSpam > 1.5 then
-			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
+		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109075))) and GetTime() - fadingLightSpam > 2 then
+			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)
 			specWarnFadingLight:Show()
 			FadingLightCountdown:Start(duration-1)
 			timerFadingLight:Start(duration-1)
 			fadingLightSpam = GetTime()
 		end
 		self:Unschedule(warnFadingLightTargets)
-		self:Schedule(0.3, warnFadingLightTargets)
+		if self:IsDifficulty("heroic25") and #fadingLightTargets >= 7 or self:IsDifficulty("normal25") and #fadingLightTargets >= 4 or self:IsDifficulty("heroic10") and #fadingLightTargets >= 3 or self:IsDifficulty("normal10") and #fadingLightTargets >= 2 then
+			warnFadingLightTargets()
+		else
+			self:Schedule(0.5, warnFadingLightTargets)
+		end
 	elseif args:IsSpellID(106498) and args:IsPlayer() then
 		timerLoomingDarkness:Start()
 	end
