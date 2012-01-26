@@ -178,7 +178,7 @@ end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(105316, 107061, 107062, 107063) then
-		if (self:IsDifficulty("lfr25") and args.amount % 5 == 0 or args.amount % 3 == 0) and args:IsPlayer() then--Warn every 3 stacks (6 stacks in LFR), don't want to spam TOO much.
+		if ((self:IsDifficulty("lfr25") and args.amount % 6 == 0) or (not self:IsDifficulty("lfr25") and args.amount % 3 == 0)) and args:IsPlayer() then--Warn every 3 stacks (6 stacks in LFR), don't want to spam TOO much.
 			specWarnIceLance:Show(args.amount)
 		end
 	end
