@@ -51,43 +51,26 @@ local recentlyJumped = false
 local kitty = false
 local targetScansDone = 0
 
---Verified by my logs, it seems despite the tooltip saying 20%, in 4.3 it's 15% per stack of adrenalin rush now.
 local abilityTimers = {
-	[0] = 17.3,--Still The same baseline. 17ish with slight variations or downward.
-	[1] = 14.4,
+	[0] = 17.3,--Still The same baseline.
+	[1] = 14.4,--Everything here onward nerfed in 4.3
 	[2] = 12,
 	[3] = 10.9,
 	[4] = 9.6,
-	[5] = 8.4,--8.4~8.9 variables.
-	[6] = 8.4,--seems to be always 8.4.
-	[7] = 7.2,--confirmed.
-	[8] = 7.2,--after 8 stack, confirmed by only 1 log.
+	[5] = 8.4,
+	[6] = 8.4,
+	[7] = 7.2,
+	[8] = 7.2,--Everyting up to here confirmed by MANY logs
 	[9] = 6.0,
 	[10]= 6.0,
 	[11]= 6.0,
 	[12]= 6.0,
-	[13]= 4.9,--may be not lower than 4.9 according to 4.2 data?
+	[13]= 4.9,
 	[14]= 4.9,
 	[15]= 4.9,
 	[16]= 4.9,
 }
-
---Keeping this around for now
---[[
-local oldabilityTimers = {
-	[0] = 17.3,--Sometimes this is 16.7
-	[1] = 13.4,--Sometimes this is 12.7 sigh. Wonder what causes this variation?
-	[2] = 11,--One of the few you can count on being consistent.
-	[3] = 8.6,--Really it's between 8.5 and 8.6
-	[4] = 7.4,--Sometimes 8 instead of 7.3-7.4
-	[5] = 7.4,--Varies from 7.3 or 7.4 as well
-	[6] = 6.1,--Varies between 6 even and 6.1 even.
-	[7] = 6.1,
-	[8] = 4.9,
-	[9] = 4.9,
-	[10]= 4.9
-}--]]
-
+--Don't know at what point it caps at 3.7
 
 local function clearLeapWarned()
 	recentlyJumped = false
@@ -181,9 +164,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		abilityCount = (args.amount or 1)--This should change your ability account to his current stack, which is disconnect friendly.
 		warnAdrenaline:Show(args.destName, args.amount or 1)
 		if kitty then
-			timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(100208), abilityCount+1)
+			timerNextSpecial:Start(abilityTimers[abilityCount] or 3.7, GetSpellInfo(100208), abilityCount+1)
 		else
-			timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(98474), abilityCount+1)
+			timerNextSpecial:Start(abilityTimers[abilityCount] or 3.7, GetSpellInfo(98474), abilityCount+1)
 		end
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
