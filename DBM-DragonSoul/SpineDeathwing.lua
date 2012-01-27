@@ -37,6 +37,7 @@ local timerSealArmor		= mod:NewCastTimer(23, 105847)
 local timerBarrelRoll		= mod:NewCastTimer(5, "ej4050")
 local timerGripCD			= mod:NewNextTimer(32, 109457)
 
+local countdownRoll			= mod:NewCountdown(5, "ej4050")
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
@@ -139,11 +140,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(105845) and args.sourceGUID == UnitGUID("target") then--Only warn if it's your target, if it isn't you're probably not by the one exploding.
+	if args:IsSpellID(105845) then
 		warnNuclearBlast:Show()
 		specWarnNuclearBlast:Show()
 		soundNuclearBlast:Play()
-	elseif args:IsSpellID(105847, 105848) then -- sometimes spellid 105848, maybe related to positions?
+	elseif args:IsSpellID(105847, 105848) then -- Maybe related to positions?
 		warnSealArmor:Show()
 		specWarnSealArmor:Show()
 		if self:IsDifficulty("lfr25") then
@@ -235,14 +236,17 @@ function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.DRoll or msg:find(L.DRoll) then
 		self:Unschedule(checkTendrils)--In case you manage to spam spin him, we don't want to get a bunch of extra stuff scheduled.
 		self:Unschedule(clearTendrils)--^
+		countdownRoll:Cancel()--^
 		specWarnRoll:Show()--Warn you right away.
 		self:Schedule(3, checkTendrils)--After 3 seconds of roll starting, check tendrals, you should have leveled him out by now if this wasn't on purpose.
 		self:Schedule(8, clearTendrils)--Clearing 3 seconds after the roll should be sufficent
 		timerBarrelRoll:Start()
+		countdownRoll:Start(5)
 	elseif msg == L.DLevels or msg:find(L.DLevels) then
 		self:Unschedule(checkTendrils)
 		self:Unschedule(clearTendrils)
 		clearTendrils()
+		countdownRoll:Cancel()
 		timerBarrelRoll:Cancel()
 	end
 end
