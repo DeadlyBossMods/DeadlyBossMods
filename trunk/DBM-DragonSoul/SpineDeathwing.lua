@@ -55,10 +55,6 @@ local function checkTendrils()
 	if not UnitDebuff("player", GetSpellInfo(109454)) and not UnitIsDeadOrGhost("player") then
 		specWarnTendril:Show()
 	end
-	if mod.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-		DBM.InfoFrame:SetHeader(L.NoDebuff:format(GetSpellInfo(109454)))
-		DBM.InfoFrame:Show(5, "playergooddebuff", 109454)
-	end
 end
 
 local function clearTendrils()
@@ -184,7 +180,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
 		residueCount = residueCount - 1
 		warnAbsorbedBlood:Cancel()--Just a little anti spam
-		warnAbsorbedBlood:Schedule(2, args.destName, args.amount or 1)
+		warnAbsorbedBlood:Schedule(1.25, args.destName, args.amount or 1)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
 		gripTargets[#gripTargets + 1] = args.destName
 		timerGripCD:Cancel(args.sourceGUID)
@@ -242,6 +238,10 @@ function mod:RAID_BOSS_EMOTE(msg)
 		self:Schedule(8, clearTendrils)--Clearing 3 seconds after the roll should be sufficent
 		timerBarrelRoll:Start()
 		countdownRoll:Start(5)
+		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(L.NoDebuff:format(GetSpellInfo(109454)))
+			DBM.InfoFrame:Show(5, "playergooddebuff", 109454)
+		end
 	elseif msg == L.DLevels or msg:find(L.DLevels) then
 		self:Unschedule(checkTendrils)
 		self:Unschedule(clearTendrils)
