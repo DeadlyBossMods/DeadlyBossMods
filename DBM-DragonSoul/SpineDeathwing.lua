@@ -26,16 +26,19 @@ local warnResidue			= mod:NewCountAnnounce("ej4057", 3, nil, false) -- maybe inf
 local warnGrip				= mod:NewTargetAnnounce(109459, 4)
 local warnNuclearBlast		= mod:NewCastAnnounce(105845, 4)
 local warnSealArmor			= mod:NewCastAnnounce(105847, 4)
+local warnAmalgamation		= mod:NewSpellAnnounce("ej4054", 3)--Amalgamation spawning
 
 local specWarnRoll			= mod:NewSpecialWarningSpell("ej4050", nil, nil, nil, true)--The actual roll
 local specWarnTendril		= mod:NewSpecialWarning("SpecWarnTendril")--A personal warning for you only if you're not gripped 3 seconds after roll started
 local specWarnGrip			= mod:NewSpecialWarningSpell(109459, mod:IsDps())
 local specWarnNuclearBlast	= mod:NewSpecialWarningRun(105845, mod:IsMelee())
 local specWarnSealArmor		= mod:NewSpecialWarningSpell(105847, mod:IsDps())
+local specWarnAmalgamation	= mod:NewSpecialWarningSpell("ej4054", false)
 
 local timerSealArmor		= mod:NewCastTimer(23, 105847)
 local timerBarrelRoll		= mod:NewCastTimer(5, "ej4050")
 local timerGripCD			= mod:NewNextTimer(32, 109457)
+local timerDeathCD			= mod:NewCDTimer(8.5, 106199)--8.5-10sec variation.
 
 local countdownRoll			= mod:NewCountdown(5, "ej4050")
 
@@ -255,6 +258,11 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53891 or cid == 56162 or cid == 56161 then
 		timerGripCD:Cancel(args.sourceGUID)
+		warnAmalgamation:Schedule(4.5)--4.5-5 seconds after corruption dies.
+		specWarnAmalgamation:Schedule(4.5)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerDeathCD:Start(args.destGUID)
+		end
 	elseif cid == 56341 or cid == 56575 then
 		timerSealArmor:Cancel()
 	end
