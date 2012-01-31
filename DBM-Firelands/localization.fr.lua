@@ -161,7 +161,6 @@ L:SetWarningLocalization({
 	warnRageRagnarosSoon	= "%s sur %s dans 5 sec.",--Spellname on targetname
 	warnSplittingBlow		= "%s %s",--Spellname in Location
 	warnEngulfingFlame		= "%s %s",--Spellname in Location
-	WarnRemainingAdds		= "%d Fils des flammes restants",
 	warnAggro				= "Vous avez l'aggro d'un Elémentaire du magma",
 	warnNoAggro				= "Vous n'avez pas l'aggro d'un Elémentaire du magma",
 	warnEmpoweredSulf		= "%s dans 5 sec."--The spell has a 5 second channel, but tooltip doesn't reflect it so cannot auto localize
@@ -177,7 +176,6 @@ L:SetOptionLocalization({
 	warnSplittingBlow			= "Alerte concernant $spell:100877",
 	warnEngulfingFlame			= "Alerte de position concernant $spell:99171",
 	WarnEngulfingFlameHeroic	= "Alerte de position concernant $spell:99171 en héroïque",
-	WarnRemainingAdds			= "Alerte indiquant le nombre de Fils des flammes restants",
 	warnSeedsLand				= "Alerte/Délai concernant l'impact de $spell:98520 au lieu des incant. de graînes",
 	ElementalAggroWarn			= "Alerte indiquant si vous avez ou non l'aggro d'un Elém. du magma",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
