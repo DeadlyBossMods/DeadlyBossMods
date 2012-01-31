@@ -105,7 +105,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(105171) then-- this spellid is debuff spellid(10h, 25h). damaging spellid is different. so added only 1 spellids.
 		timerDeepCorruption:Start()
 		warnDeepCorruption:Show()
-		specWarnPurple:Show()
 	end
 end
 
@@ -135,6 +134,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
+		specWarnPurple:Show()
 	elseif args:IsSpellID(105027) and args:GetDestCreatureID() == 55312 then--Blue
 		table.insert(oozesHitTable, L.Blue)
 		if #oozesHitTable == expectedOozes then
