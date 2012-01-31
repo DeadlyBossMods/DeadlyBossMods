@@ -162,7 +162,6 @@ L:SetWarningLocalization({
 	warnRageRagnarosSoon	= "%s en %s en 5 seg",
 	warnSplittingBlow		= "%s en %s",
 	warnEngulfingFlame		= "%s en %s",
-	WarnRemainingAdds		= "%d Hijos de la Llama restantes",
 	warnEmpoweredSulf		= "%s en 5 seg"
 })
 
@@ -176,7 +175,6 @@ L:SetOptionLocalization({
 	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
 	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
 	WarnEngulfingFlameHeroic	= "Mostrar avisos de localización para $spell:99171 en heroico",
-	WarnRemainingAdds	= "Mostrar aviso para el número de Hijos de la Llama restantes",
 	warnSeedsLand		= "Mostrar aviso/tiempo para el aterrizaje de $spell:98520 en lugar de los casteos.",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),

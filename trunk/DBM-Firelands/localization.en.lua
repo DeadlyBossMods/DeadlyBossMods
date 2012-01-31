@@ -161,7 +161,6 @@ L:SetWarningLocalization({
 	warnRageRagnarosSoon	= "%s on %s in 5 sec",--Spellname on targetname
 	warnSplittingBlow		= "%s in %s",--Spellname in Location
 	warnEngulfingFlame		= "%s in %s",--Spellname in Location
-	WarnRemainingAdds		= "%d Sons of Flame remaining",
 	warnEmpoweredSulf		= "%s in 5 sec"--The spell has a 5 second channel, but tooltip doesn't reflect it so cannot auto localize
 })
 
@@ -175,7 +174,6 @@ L:SetOptionLocalization({
 	warnSplittingBlow			= "Show location warnings for $spell:100877",
 	warnEngulfingFlame			= "Show location warnings for $spell:99171",
 	WarnEngulfingFlameHeroic	= "Show location warnings for $spell:99171 on heroic",
-	WarnRemainingAdds			= "Show warning for how many Sons of Flame remain",
 	warnSeedsLand				= "Show warning/timer for $spell:98520 landing instead of seed casts.",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
