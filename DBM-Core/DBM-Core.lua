@@ -2777,7 +2777,7 @@ do
 			DBM:AprilFools()
 		end
 		if #inCombat == 0 then
-			DBM:Schedule(2, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires
+			DBM:Schedule(3.5, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires. Since boss mod loading takes 3 sec after entering zone, delays more will be good?
 		end
 		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
