@@ -2,6 +2,15 @@
 
 local L
 
+------------
+--  Omen  --
+------------
+L = DBM:GetModLocalization("Omen")
+
+L:SetGeneralLocalization({
+	name = "오멘"
+})
+
 -----------------------
 --  Apothecary Trio  --
 -----------------------
