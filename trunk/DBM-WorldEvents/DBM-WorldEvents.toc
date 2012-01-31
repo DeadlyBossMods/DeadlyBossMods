@@ -41,6 +41,7 @@ localization.de.lua
 localization.es.lua
 localization.cn.lua
 localization.pt.lua
+Holidays\Omen.lua
 Holidays\ApothecaryTrio.lua
 Holidays\Ahune.lua
 Holidays\CorenDirebrew.lua
