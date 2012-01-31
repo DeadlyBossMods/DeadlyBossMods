@@ -19,22 +19,24 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
-local warnOozes			= mod:NewTargetAnnounce("ej3978", 4)
-local warnOozesHit		= mod:NewAnnounce("warnOozesHit", 3, 16372)
-local warnVoidBolt		= mod:NewStackAnnounce(108383, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnManaVoid		= mod:NewSpellAnnounce(105530, 3)
+local warnOozes				= mod:NewTargetAnnounce("ej3978", 4)
+local warnOozesHit			= mod:NewAnnounce("warnOozesHit", 3, 16372)
+local warnVoidBolt			= mod:NewStackAnnounce(108383, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnManaVoid			= mod:NewSpellAnnounce(105530, 3)
+local warnDeepCorruption	= mod:NewSpellAnnounce(105171, 4)
 
-local specWarnOozes		= mod:NewSpecialWarningSpell("ej3978")
-local specWarnVoidBolt	= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)
-local specWarnManaVoid	= mod:NewSpecialWarningSpell(105530, mod:IsManaUser())
-local specWarnPurple	= mod:NewSpecialWarningSpell(110748, mod:IsTank() or mod:IsHealer())
+local specWarnOozes			= mod:NewSpecialWarningSpell("ej3978")
+local specWarnVoidBolt		= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)
+local specWarnManaVoid		= mod:NewSpecialWarningSpell(105530, mod:IsManaUser())
+local specWarnPurple		= mod:NewSpecialWarningSpell(105171, mod:IsTank() or mod:IsHealer())
 
-local timerOozesCD		= mod:NewNextTimer(90, "ej3978")
-local timerOozesActive	= mod:NewTimer(7, "timerOozesActive", 16372) -- varies (7.0~8.5)
-local timerAcidCD		= mod:NewNextTimer(8.3, 108352)--Green ooze aoe
-local timerSearingCD	= mod:NewNextTimer(6, 108358)--Red ooze aoe
-local timerVoidBoltCD	= mod:NewNextTimer(6, 108383, nil, mod:IsTank())
-local timerVoidBolt		= mod:NewTargetTimer(21, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20-22 (varies)
+local timerOozesCD			= mod:NewNextTimer(90, "ej3978")
+local timerOozesActive		= mod:NewTimer(7, "timerOozesActive", 16372) -- varies (7.0~8.5)
+local timerAcidCD			= mod:NewNextTimer(8.3, 108352)--Green ooze aoe
+local timerSearingCD		= mod:NewNextTimer(6, 108358)--Red ooze aoe
+local timerVoidBoltCD		= mod:NewNextTimer(6, 108383, nil, mod:IsTank())
+local timerVoidBolt			= mod:NewTargetTimer(21, 108383, nil, mod:IsTank() or mod:IsHealer())--Tooltip says 30 but combat logs clearly show it fading at 20-22 (varies)
+local timerDeepCorruption	= mod:NewBuffFadesTimer(25, 105171, nil, mod:IsTank() or mod:IsHealer())
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 
@@ -100,6 +102,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerSearingCD:Start()
 		end
+	elseif args:IsSpellID(105171) then-- this spellid is debuff spellid(10h, 25h). damaging spellid is different. so added only 1 spellids.
+		timerDeepCorruption:Start()
+		warnDeepCorruption:Show()
+		specWarnPurple:Show()
 	end
 end
 
@@ -129,7 +135,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #oozesHitTable == expectedOozes then
 			warnOozesHit:Show(bossName, table.concat(oozesHitTable, ", "))
 		end
-		specWarnPurple:Show()
 	elseif args:IsSpellID(105027) and args:GetDestCreatureID() == 55312 then--Blue
 		table.insert(oozesHitTable, L.Blue)
 		if #oozesHitTable == expectedOozes then
