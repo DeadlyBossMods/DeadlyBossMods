@@ -162,7 +162,6 @@ L:SetWarningLocalization({
 	warnRageRagnarosSoon	= "5초 후 %s : %s",
 	warnSplittingBlow		= "%s (%s)",
 	warnEngulfingFlame		= "%s (%s)",
-	WarnRemainingAdds		= "남은 피조물: %d",
 	warnEmpoweredSulf		= "5초 후 %s"
 })
 
@@ -176,7 +175,6 @@ L:SetOptionLocalization({
 	warnSplittingBlow			= "$spell:100877 위치 알림 보기",
 	warnEngulfingFlame			= "$spell:99171 알림 보기",
 	WarnEngulfingFlameHeroic	= "영웅 난이도에서 $spell:99171 위치 알림 보기",
-	WarnRemainingAdds			= "사잇단계에서 남은 화염의 피조물 알림 보기",
 	warnSeedsLand				= "$spell:98520 주문이 시전될 때가 아니라 착지되는 시간에 맞는 알림/바 보기",
 	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
