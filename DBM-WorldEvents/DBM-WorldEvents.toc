@@ -19,7 +19,7 @@
 ## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제
 ## X-DBM-Mod-SubCategories-zhTW: 節慶,暗月馬戲團
 ## X-DBM-Mod-SubCategories-zhCN: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-esES: Holidays,Darkmoon Faire
+## X-DBM-Mod-SubCategories-esES: Fiestas,Feria de la Luna Negra
 ## X-DBM-Mod-SubCategories-esMX: Holidays,Darkmoon Faire
 ## X-DBM-Mod-SubCategories-ptBR: Holidays,Darkmoon Faire
 ## X-DBM-Mod-Name: World Events
