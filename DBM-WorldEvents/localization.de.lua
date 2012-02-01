@@ -1,6 +1,15 @@
 ﻿if GetLocale() ~= "deDE" then return end
 local L
 
+------------
+--  Omen  --
+------------
+L = DBM:GetModLocalization("Omen")
+
+L:SetGeneralLocalization({
+	name = "Omen"
+})
+
 -----------------------
 --  Apothecary Trio  --
 -----------------------
