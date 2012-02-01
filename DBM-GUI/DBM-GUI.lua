@@ -1981,6 +1981,8 @@ do
 		if not panel then 
 			error("Panel is nil", 2)
 		end
+		if addon.modId == "DBM-PvP" then return	end -- no need to create a stats page for PvP modules
+
 		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, GameFontNormal)
 		ptext:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 10, -10)
 
