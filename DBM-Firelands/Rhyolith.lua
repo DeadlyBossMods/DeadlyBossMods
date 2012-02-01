@@ -127,6 +127,10 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.yellPhase2 or msg:find(L.yellPhase2) then
+		StompCountown:Cancel()
+		timerFlameStomp:Cancel()
+		StompCountown:Start(6)
+		timerFlameStomp:Start(6)
 		warnPhase2:Show()
 		phase = 2
 	end
