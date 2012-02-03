@@ -35,7 +35,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yellPhase2			= "Äonen habe ich ungestört durchgeschlafen… jetzt das… Fleischlinge, Ihr werdet BRENNEN!"
 })
 
 ---------------

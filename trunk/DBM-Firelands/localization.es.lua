@@ -35,7 +35,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yellPhase2			= "He dormido durante eones sin ser molestado... Y ahora... Seres de carne, ¡ARDERÉIS!"
 })
 
 ---------------
