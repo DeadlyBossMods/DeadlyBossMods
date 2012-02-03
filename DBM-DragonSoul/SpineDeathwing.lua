@@ -17,6 +17,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_HEAL",
 	"SPELL_PERIODIC_HEAL",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
+	"SWING_DAMAGE",
+	"SWING_MISSED",
 	"RAID_BOSS_EMOTE",
 	"UNIT_DIED"
 )
@@ -50,8 +54,6 @@ mod:AddBoolOption("SetIconOnGrip", true)
 mod:AddBoolOption("ShowShieldInfo", false)--on 25 man this is quite frankly a spammy nightmare, especially on heroic. off by default since it's really only sensible in 10 man. Besides I may be adding an alternate frame option for "grip damage needed"
 
 
-local eventFrame = CreateFrame("Frame") -- frame for high-volume CLEU events that we don't want to pipe through DBM-Core
-
 local gripTargets = {}
 local gripIcon = 6
 local corruptionActive = {}
@@ -81,9 +83,9 @@ do
 	local plasmaTargets = {}
 	local healed = {}
 	
-	function mod:SPELL_HEAL(args)
-		if plasmaTargets[args.destGUID] then
-			healed[args.destGUID] = healed[args.destGUID] + (args.absorbed or 0)
+	function mod:SPELL_HEAL(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, overheal, absorbed)
+		if plasmaTargets[destGUID] then
+			healed[destGUID] = healed[destGUID] + (args.absorbed or 0)
 		end
 	end
 	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
@@ -122,7 +124,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	eventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	if self:IsDifficulty("lfr25") then
 		warnSealArmor = mod:NewCastAnnounce(105847, 4, 34.5)
 	else
@@ -139,7 +140,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	eventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -188,11 +188,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 --Damage event that indicates an ooze is taking damage
---we check it's GUID to see if it's a ressurected ooze and if so remove it from table.
-function mod:SPELL_DAMAGE(hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag)
-	if tonumber(sourceGUID:sub(7, 10), 16) == 53889 and oozeGUIDS[sourceGUID] then--It is an ooze that died earlier. We check source instead of dest, cause then we detect all oozes once they attack someone, vs only oozes that get attacked (and missing untanked oozes)
-		oozeGUIDS[sourceGUID] = false--Remove it
-		residueCount = residueCount - 1--Reduce count
+--we check its GUID to see if it's a resurrected ooze and if so remove it from table.
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag)
+	if oozeGUIDS[sourceGUID] and self:GetCIDFromGUID(sourceGUID) == 53889 then--It is an ooze that died earlier. We check source instead of dest, cause then we detect all oozes once they attack someone, vs only oozes that get attacked (and missing untanked oozes)
+		oozeGUIDS[sourceGUID] = true --Remove it
+		residueCount = residueCount - 1 --Reduce count
 		warnResidue:Cancel()
 		if residueCount > 4 and residueCount < 13 then -- announce new count.
 			warnResidue:Schedule(2, residueCount)
@@ -202,12 +202,6 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 mod.SWING_MISSED = mod.SPELL_DAMAGE
 mod.SWING_DAMAGE = mod.SPELL_DAMAGE
-
-eventFrame:SetScript("OnEvent", function(self, event, timestamp, combatLogEvent, ...)
-	if event == "COMBAT_LOG_EVENT_UNFILTERED" and mod[combatLogEvent] then
-		mod[combatLogEvent](mod, ...)
-	end
-end)
 
 
 function mod:SPELL_AURA_APPLIED(args)
