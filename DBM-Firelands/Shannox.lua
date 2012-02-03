@@ -111,10 +111,12 @@ function mod:CrystalTrapTarget(targetname)
 	end
 end
 
+--This fails if you're already incombat before pulling boss, my transcriptor bugged and didn't log it so I don't know why, because the boss still engaged, registered event, and detected kill fine.
+--I can only speculate that somehow he wasn't boss1 but maybe 2-4? Will be hard to reproduce since it's not customary to purposely pull shannox with trash.
 function mod:TrapHandler(SpellID, isTank)
 	trapScansDone = trapScansDone + 1
 	if UnitExists("boss1target") then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
-		local targetname = UnitName("boss1target")
+		local targetname = self:GetBossTarget(53691)
 		if UnitDetailedThreatSituation("boss1target", "boss1") and not isTank then--He's targeting his highest threat target.
 			if trapScansDone < 12 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check multiple times to be sure it's not on something other then tank.
