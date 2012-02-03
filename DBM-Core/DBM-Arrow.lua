@@ -197,6 +197,7 @@ end
 ----------------------
 local function show(runAway, x, y, distance, time)
 	local player
+	SetMapToCurrentZone()
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
 	end
