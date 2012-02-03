@@ -191,7 +191,7 @@ end
 --we check its GUID to see if it's a resurrected ooze and if so remove it from table.
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag)
 	if oozeGUIDS[sourceGUID] and self:GetCIDFromGUID(sourceGUID) == 53889 then--It is an ooze that died earlier. We check source instead of dest, cause then we detect all oozes once they attack someone, vs only oozes that get attacked (and missing untanked oozes)
-		oozeGUIDS[sourceGUID] = true --Remove it
+		oozeGUIDS[sourceGUID] = nil --Remove it
 		residueCount = residueCount - 1 --Reduce count
 		warnResidue:Cancel()
 		if residueCount > 4 and residueCount < 13 then -- announce new count.
