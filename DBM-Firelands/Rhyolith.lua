@@ -76,8 +76,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if timerFlameStomp:GetTime() > 0 then--This only happens if it was still on CD going into phase
 			StompCountown:Cancel()
 			timerFlameStomp:Cancel()
-			StompCountown:Start(6)
-			timerFlameStomp:Start(6)
+			StompCountown:Start(7)
+			timerFlameStomp:Start(7)
 		else--Else, he uses it right away
 			StompCountown:Start(1)
 			timerFlameStomp:Start(1)
