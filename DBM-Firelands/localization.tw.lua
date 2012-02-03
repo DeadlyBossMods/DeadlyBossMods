@@ -35,7 +35,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yellPhase2			= "數萬年來我平靜地睡著...現在居然這樣...血肉之軀，你們給我燒吧!"
 })
 
 ---------------

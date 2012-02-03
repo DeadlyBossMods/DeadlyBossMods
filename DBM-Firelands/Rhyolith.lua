@@ -13,11 +13,11 @@ mod:SetModelSound("Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_AGGRO.wav", "Sound\
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
-	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_HEALTH"
 )
 
@@ -45,7 +45,7 @@ local timerMagmaFlowActive	= mod:NewBuffActiveTimer(10, 97225)	--10 second buff 
 local StompCountown			= mod:NewCountdown(30.5, 97282, false)
 
 local spamAdds = 0
-local phase = 1
+local phase2Started = false
 local spamMoltenArmor = 0
 local sparkCount = 0
 local fragmentCount = 0
@@ -63,10 +63,26 @@ function mod:OnCombatStart(delay)
 	end
 	spamAdds = 0
 	spamMoltenArmor = 0
-	phase = 1
+	phase2Started = false
 	sparkCount = 0
 	fragmentCount = 1--Fight starts out 1 cycle in so only 1 more spawns before pattern reset.
 	prewarnedPhase2 = false
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(99846) and not phase2Started then
+		phase2Started = true
+		warnPhase2:Show()
+		if timerFlameStomp:GetTime() > 0 then--This only happens if it was still on CD going into phase
+			StompCountown:Cancel()
+			timerFlameStomp:Cancel()
+			StompCountown:Start(6)
+			timerFlameStomp:Start(6)
+		else--Else, he uses it right away
+			StompCountown:Start(1)
+			timerFlameStomp:Start(1)
+		end
+	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
@@ -82,7 +98,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(97282, 100411, 100968, 100969) then
 		warnFlameStomp:Show()
 		specWarnFlameStomp:Show()
-		if phase == 1 then
+		if not phase2Started then
 			timerFlameStomp:Start()
 			StompCountown:Start(30.5)
 		else--13sec cd in phase 2
@@ -122,17 +138,6 @@ function mod:SPELL_SUMMON(args)
 		sparkCount = sparkCount + 1
 		warnShard:Show(sparkCount)
 		timerFragmentCD:Start()
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.yellPhase2 or msg:find(L.yellPhase2) then
-		StompCountown:Cancel()
-		timerFlameStomp:Cancel()
-		StompCountown:Start(6)
-		timerFlameStomp:Start(6)
-		warnPhase2:Show()
-		phase = 2
 	end
 end
 
