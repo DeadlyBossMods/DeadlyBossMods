@@ -185,7 +185,7 @@ end
 --Damage event that indicates an ooze is taking damage
 --we check it's GUID to see if it's a ressurected ooze and if so remove it from table.
 function mod:SPELL_DAMAGE(args)
-	if oozeGUIDS[args.sourceGUID] then--It is an ooze that died earlier
+	if args:GetSrcCreatureID() == 53889 and oozeGUIDS[args.sourceGUID] then--It is an ooze that died earlier. We check source instead of dest, cause then we detect all oozes once they attack someone, vs only oozes that get attacked (and missing untanked oozes)
 		oozeGUIDS[args.sourceGUID] = false--Remove it
 		residueCount = residueCount - 1--Reduce count
 		warnResidue:Cancel()
@@ -200,6 +200,9 @@ mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
+		--Need to check raw logs later to see if these have sourceGUIDs.
+		--if so remove em from table to reduce table size
+		--although it own't break anything not removing em.
 		residueCount = residueCount - 1
 		warnAbsorbedBlood:Cancel()--Just a little anti spam
 		warnAbsorbedBlood:Schedule(1.25, args.destName, args.amount or 1)
