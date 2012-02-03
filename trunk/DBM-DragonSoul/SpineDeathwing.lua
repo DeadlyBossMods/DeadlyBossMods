@@ -49,6 +49,9 @@ mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetIconOnGrip", true)
 mod:AddBoolOption("ShowShieldInfo", false)--on 25 man this is quite frankly a spammy nightmare, especially on heroic. off by default since it's really only sensible in 10 man. Besides I may be adding an alternate frame option for "grip damage needed"
 
+
+local eventFrame = CreateFrame("Frame") -- frame for high-volume CLEU events that we don't want to pipe through DBM-Core
+
 local gripTargets = {}
 local gripIcon = 6
 local corruptionActive = {}
@@ -119,6 +122,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	eventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	if self:IsDifficulty("lfr25") then
 		warnSealArmor = mod:NewCastAnnounce(105847, 4, 34.5)
 	else
@@ -135,6 +139,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	eventFrame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -184,9 +189,9 @@ end
 
 --Damage event that indicates an ooze is taking damage
 --we check it's GUID to see if it's a ressurected ooze and if so remove it from table.
-function mod:SPELL_DAMAGE(args)
-	if args:GetSrcCreatureID() == 53889 and oozeGUIDS[args.sourceGUID] then--It is an ooze that died earlier. We check source instead of dest, cause then we detect all oozes once they attack someone, vs only oozes that get attacked (and missing untanked oozes)
-		oozeGUIDS[args.sourceGUID] = false--Remove it
+function mod:SPELL_DAMAGE(hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag)
+	if tonumber(sourceGUID:sub(7, 10), 16) == 53889 and oozeGUIDS[sourceGUID] then--It is an ooze that died earlier. We check source instead of dest, cause then we detect all oozes once they attack someone, vs only oozes that get attacked (and missing untanked oozes)
+		oozeGUIDS[sourceGUID] = false--Remove it
 		residueCount = residueCount - 1--Reduce count
 		warnResidue:Cancel()
 		if residueCount > 4 and residueCount < 13 then -- announce new count.
@@ -197,6 +202,13 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 mod.SWING_MISSED = mod.SPELL_DAMAGE
 mod.SWING_DAMAGE = mod.SPELL_DAMAGE
+
+eventFrame:SetScript("OnEvent", function(self, event, timestamp, combatLogEvent, ...)
+	if event == "COMBAT_LOG_EVENT_UNFILTERED" and mod[combatLogEvent] then
+		mod[combatLogEvent](mod, ...)
+	end
+end)
+
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
