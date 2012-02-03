@@ -53,6 +53,7 @@ local gripTargets = {}
 local gripIcon = 6
 local corruptionActive = {}
 local residueCount = 0
+local oozeGUIDS = {}
 
 local function checkTendrils()
 	if not UnitDebuff("player", GetSpellInfo(109454)) and not UnitIsDeadOrGhost("player") then
@@ -125,6 +126,7 @@ function mod:OnCombatStart(delay)
 	end
 	table.wipe(gripTargets)
 	table.wipe(corruptionActive)
+	table.wipe(oozeGUIDS)
 	if self.Options.ShowShieldInfo then
 		clearPlasmaVariables()
 	end
@@ -170,7 +172,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(105219, 109371, 109372, 109373) then
+	if args:IsSpellID(105219, 109371, 109372, 109373) and not oozeGUIDS[args.sourceGUID] then
+		oozeGUIDS[args.sourceGUID] = true
 		residueCount = residueCount + 1
 		warnResidue:Cancel()
 		if residueCount > 4 and residueCount < 13 then -- announce 9 stacks (ready to eat blood!), sometimes it can be missing 2~3 stacks, announce to 12 stacks.
@@ -178,6 +181,22 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	end
 end
+
+--Damage event that indicates an ooze is taking damage
+--we check it's GUID to see if it's a ressurected ooze and if so remove it from table.
+function mod:SPELL_DAMAGE(args)
+	if oozeGUIDS[args.sourceGUID] then--It is an ooze that died earlier
+		oozeGUIDS[args.sourceGUID] = false--Remove it
+		residueCount = residueCount - 1--Reduce count
+		warnResidue:Cancel()
+		if residueCount > 4 and residueCount < 13 then -- announce new count.
+			warnResidue:Schedule(2, residueCount)
+		end
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+mod.SWING_MISSED = mod.SPELL_DAMAGE
+mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
