@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISS"
+	"SPELL_PERIODIC_MISSED"
 )
 
 local warnCleave				= mod:NewSpellAnnounce(104903, 2)
@@ -45,5 +45,5 @@ do
 			antiSpam = GetTime()
 		end
 	end
-	mod.SPELL_PERIODIC_MISS = mod.SPELL_PERIODIC_DAMAGE
+	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 end
