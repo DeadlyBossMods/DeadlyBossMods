@@ -73,7 +73,7 @@ end
 
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
-function mod:SWING_DAMAGE(args)
+function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags)
 	if self:GetCIDFromGUID(destGUID) == 42362 and not InCombatLockdown() then
 		timerChargeCD:Start(21.5)
 	end
