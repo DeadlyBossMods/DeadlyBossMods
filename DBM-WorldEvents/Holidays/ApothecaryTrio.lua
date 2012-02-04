@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_SAY"
 )
 
@@ -32,15 +33,16 @@ end
 
 do 
 	local lastspill = 0
-	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(68927) and args:IsPlayer() and GetTime() - lastspill > 2 then
+	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+		if spellId == 68927 and destName == UnitName("player") and GetTime() - lastspill > 2 then
 			specWarnPerfumeSpill:Show()
 			lastspill = GetTime()
-		elseif args:IsSpellID(68934) and args:IsPlayer() and GetTime() - lastspill > 2 then
+		elseif spellId == 68934 and destName == UnitName("player") and GetTime() - lastspill > 2 then
 			specWarnCologneSpill:Show()
 			lastspill = GetTime()
 		end
 	end
+	mod.SPELL_MISSED = mod.SPELL_DAMAGE
 end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)

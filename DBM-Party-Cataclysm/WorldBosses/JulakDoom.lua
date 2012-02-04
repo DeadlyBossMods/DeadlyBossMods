@@ -77,12 +77,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(93612) and args:IsPlayer() and GetTime() - lastBreath > 3 then
-		if args:IsPlayer() and GetTime() - lastBreath > 3  then
-			specWarnBreath:Show()
-			lastBreath = GetTime()
-		end
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 93612 and destName == UnitName("player") and GetTime() - lastBreath > 3 then
+		specWarnBreath:Show()
+		lastBreath = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

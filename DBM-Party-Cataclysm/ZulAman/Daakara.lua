@@ -128,11 +128,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(97682) and args:IsPlayer() and GetTime() - lastburn > 3 then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 97682 and destName == UnitName("player") and GetTime() - lastburn > 3 then
 		specWarnBurn:Show()
 		lastburn = GetTime()
 	end
 end
-
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

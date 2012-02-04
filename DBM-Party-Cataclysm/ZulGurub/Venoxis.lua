@@ -110,11 +110,11 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(97338) and GetTime() - spamEffusion >= 3 and args:IsPlayer() then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 97338 and GetTime() - spamEffusion >= 3 and destName == UnitName("player") then
 		specWarnEffusion:Show()
 		spamEffusion = GetTime()
-	elseif args:IsSpellID(97089) and GetTime() - spamPool >= 3 and args:IsPlayer() then
+	elseif spellId == 97089 and GetTime() - spamPool >= 3 and destName == UnitName("player") then
 		specWarnPoolAcridTears:Show()
 		spamPool = GetTime()
 	end

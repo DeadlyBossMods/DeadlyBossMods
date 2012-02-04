@@ -92,10 +92,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_HEAL(args)
-	if args:IsSpellID(96724) then
+function mod:SPELL_HEAL(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 96724 then
 		specWarnOhgan:Show()
-		ohganGUID = args.destGUID
+		ohganGUID = destGUID
 	end
 end
 

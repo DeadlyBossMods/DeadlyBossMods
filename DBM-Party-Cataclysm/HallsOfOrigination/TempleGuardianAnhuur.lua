@@ -48,8 +48,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(75117, 94951) and GetTime() - spamLight > 5 and args:IsPlayer() then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if (spellId == 75117 or spellId == 94951) and GetTime() - spamLight > 5 and destName == UnitName("player") then
 		specWarnLight:Show()
 	end
 end
