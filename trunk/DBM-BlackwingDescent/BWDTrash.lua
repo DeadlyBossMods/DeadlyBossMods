@@ -65,8 +65,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 --does this consume too much cpu?--
-function mod:SPELL_DAMAGE(args)
-	if args:GetDestCreatureID() == 42362 and not InCombatLockdown() then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags)
+	if self:GetCIDFromGUID(destGUID) == 42362 and not InCombatLockdown() then
 		timerChargeCD:Start(21.5)
 	end
 end
@@ -74,7 +74,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SWING_DAMAGE(args)
-	if args:GetDestCreatureID() == 42362 and not InCombatLockdown() then
+	if self:GetCIDFromGUID(destGUID) == 42362 and not InCombatLockdown() then
 		timerChargeCD:Start(21.5)
 	end
 end

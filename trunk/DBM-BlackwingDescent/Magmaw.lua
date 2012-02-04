@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE",
 	"UNIT_HEALTH",
@@ -119,11 +120,12 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(92128, 92196, 92197, 92198) and args:IsPlayer() and GetTime() - ignitionSpam >= 4 then
+	if (spellId == 92128 or spellId == 92196 or spellId == 92197 or spellId == 92198) and destGUID == UnitGUID("player") and GetTime() - ignitionSpam >= 4 then
 		specWarnIgnition:Show()
 		ignitionSpam = GetTime()
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 -- heroic phase 2
 function mod:CHAT_MSG_MONSTER_YELL(msg)
