@@ -120,8 +120,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(99510) and args:IsPlayer() and GetTime() - antiSpam >= 3 then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 99510 and destName == UnitName("player") and GetTime() - antiSpam >= 3 then
 		specWarnLava:Show()
 		antiSpam = GetTime()
 	end
@@ -151,7 +151,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	if surgers > 0 then--You probably wiped on trash and don't need the range finder to get stuck open.
+	if surgers ~= 0 then--You probably wiped on trash and don't need the range finder to get stuck open.
 		surgers = 0--Reset the surgers.
 		table.wipe(surgerGUIDs)--Also wipe GUID table
 		if self.Options.TrashRangeFrame then
