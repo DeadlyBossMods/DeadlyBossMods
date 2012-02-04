@@ -178,7 +178,7 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
-function mod:SPELL_PERIODIC_DAMAGE(args)
+function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
 	if (spellId == 91020 or spellId == 93258 or spellId == 93259 or spellId == 93260) and GetTime() - spamIce >= 4 and destGUID == UnitGUID("player") then
 		specWarnIceStorm:Show()
 		spamIce = GetTime()
