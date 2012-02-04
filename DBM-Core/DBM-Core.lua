@@ -22,6 +22,7 @@
 --    * Arta
 --    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
+--    * nbluewiz (a lot of fixes in the koKR localization as well as boss mod work)
 --
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
