@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_DIED"
 )
 
@@ -261,12 +262,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(92954, 92959) and not orbWarned then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 92954 or spellId == 92959) and not orbWarned then
 		orbWarned = true
 		showOrbWarning("damage")
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellDragon or msg:find(L.YellDragon) then

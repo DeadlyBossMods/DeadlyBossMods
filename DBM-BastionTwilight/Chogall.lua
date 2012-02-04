@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_HEALTH",
 	"UNIT_AURA",
 	"UNIT_DIED"
@@ -284,12 +285,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(81538, 93212, 93213, 93214) and args:IsPlayer() and GetTime() - blazeSpam >= 4 then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 81538 or spellId == 93212 or spellId == 93213 or spellId == 93214) and destGUID == UnitGUID("player") and GetTime() - blazeSpam >= 4 then
 		specWarnBlaze:Show()
 		blazeSpam = GetTime()
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_HEALTH(uId)
 	if self:GetUnitCreatureId(uId) == 43324 then
