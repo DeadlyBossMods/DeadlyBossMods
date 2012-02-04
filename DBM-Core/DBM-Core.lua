@@ -2336,14 +2336,19 @@ function DBM:StartCombat(mod, delay, synced)
 			savedDifficulty = PLAYER_DIFFICULTY3.." - "
 		elseif mod:IsDifficulty("normal5") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
-			savedDifficulty = PLAYER_DIFFICULTY1.." - "
+			--outdoor areas can return normal5 so we add extra instance check here
+			if IsInInstance() then
+				savedDifficulty = PLAYER_DIFFICULTY1.." - "
+			else
+				savedDifficulty = ""
+			end
 		elseif mod:IsDifficulty("heroic5") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY2.." - "
 		elseif mod:IsDifficulty("normal10") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
 			local _, _, _, _, maxPlayers = GetInstanceInfo()
-			--Because classic raids that don't have sizes all return 1.
+			--Because classic raids that don't have variable sizes all return 1.
 			if maxPlayers == 40 then
 				savedDifficulty = PLAYER_DIFFICULTY1.." (40) - "
 			elseif maxPlayers == 25 then
@@ -2362,7 +2367,7 @@ function DBM:StartCombat(mod, delay, synced)
 		elseif mod:IsDifficulty("heroic25") then
 			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
 			savedDifficulty = PLAYER_DIFFICULTY2.." (25) - "
-		else--you were not in an instance when you started combat, this is an outdoor boss.
+		else--Unknown, just treat it as normal for stat purposes.
 			mod.stats.normalPulls = mod.stats.normalPulls + 1--Treat it as normal for kill stats.
 			savedDifficulty = ""--So lets just return no difficulty :)
 		end
