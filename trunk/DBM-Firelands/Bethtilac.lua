@@ -16,7 +16,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"RAID_BOSS_EMOTE"
---	"UNIT_DIED"
 )
 
 local warnSmolderingDevastation		= mod:NewCountAnnounce(99052, 4)--Use count announce, cast time is pretty obvious from the bar, but it's useful to keep track how many of these have been cast.
@@ -139,12 +138,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(99278, 101133) and args:IsPlayer() and GetTime() - lastPoison > 3 then
-		if args:IsPlayer() and GetTime() - lastPoison > 3  then
-			specWarnVolatilePoison:Show()
-			lastPoison = GetTime()
-		end
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if (spellId == 99278 or spellId == 101133) and destName == UnitName("player") and GetTime() - lastPoison > 3 then
+		specWarnVolatilePoison:Show()
+		lastPoison = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
