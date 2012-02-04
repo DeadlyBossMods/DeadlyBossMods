@@ -12,6 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_DIED"
 )
 
@@ -30,12 +31,10 @@ local specWarnHallowedGround = mod:NewSpecialWarningMove(88814)
 
 mod:AddBoolOption("BossHealthAdds")
 
-local spamHeavenFury = 0
-local spamGround = 0
+local spamSIS = 0
 
 function mod:OnCombatStart(delay)
-	spamHeavenFury = 0
-	spamGround = 0
+	spamSIS = 0
 	if mod.Options.BossHealthAdds then
 		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
 	end
@@ -50,8 +49,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLashings:Start(args.destName)
 	elseif args:IsSpellID(82320) and args.destName == L.name then
 		warnRepentance:Show()
-		spamGround = GetTime()
-		if mod.Options.BossHealthAdds then
+		spamSIS = GetTime()
+		if self.Options.BossHealthAdds then
 			DBM.BossHealth:AddBoss(43927, L.HarbringerDarkness)
 			DBM.BossHealth:RemoveBoss(48906)
 		end
@@ -59,8 +58,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSoulSever:Show(args.destName)
 		timerSoulSever:Start(args.destName)
 		timerSoulSeverCD:Start()
-	elseif args:IsSpellID(88814, 90010) and args:IsPlayer() and GetTime() - spamGround > 5 then
-		spamGround = GetTime()
+	elseif args:IsSpellID(88814, 90010) and args:IsPlayer() and GetTime() - spamSIS > 5.5 then
+		spamSIS = GetTime()
 		specWarnHallowedGround:Show()
 	end
 end
@@ -73,9 +72,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(81942, 90040) and args:IsPlayer() and GetTime() - spamHeavenFury > 5 then
-		spamHeavenFury = GetTime()
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if (spellId == 81942 or spellId == 90040) and destName == UnitName("player") and GetTime() - spamSIS > 3 then
+		spamSIS = GetTime()
 		specWarnHeavenFury:Show()
 	end
 end
