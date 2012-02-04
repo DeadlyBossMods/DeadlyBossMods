@@ -12,6 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_HEALTH"
 )
 
@@ -70,15 +71,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(103653) and args:IsPlayer() and GetTime() - spamDamage > 5 then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 103653 and destName == UnitName("player") and GetTime() - spamDamage > 5 then
 		specwarnPurified:Show()
 		spamDamage = GetTime()
-	elseif args:IsSpellID(103775) and args:IsPlayer() and GetTime() - spamDamage > 5 then
+	elseif spellId == 103775 and destName == UnitName("player") and GetTime() - spamDamage > 5 then
 		specwarnTwilight:Show()
 		spamDamage = GetTime()
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_HEALTH(uId)
 	if self:GetUnitCreatureId(uId) == 54938 then

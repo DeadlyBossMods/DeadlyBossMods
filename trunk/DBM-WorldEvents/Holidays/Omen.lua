@@ -39,8 +39,8 @@ end
 
 do 
 	local antiSpam = 0
-	function mod:SPELL_PERIODIC_DAMAGE(args)
-		if args:IsSpellID(26540) and args:IsPlayer() and GetTime() - antiSpam > 3 then
+	function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+		if spellId == 26540 and destName == UnitName("player") and GetTime() - antiSpam > 3 then
 			specWarnStarfall:Show()
 			antiSpam = GetTime()
 		end
