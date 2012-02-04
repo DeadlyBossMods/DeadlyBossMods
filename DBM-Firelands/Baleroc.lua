@@ -205,8 +205,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(99353) then--Decimation Strike
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 99353 then--Decimation Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)
 		if strikeCount == 5 and self:IsDifficulty("normal25", "heroic25") or strikeCount == 2 and self:IsDifficulty("normal10", "heroic10") then return end--Don't do anything if it's 6th/3rd strike
@@ -230,7 +230,7 @@ function mod:SPELL_DAMAGE(args)
 			end
 		end
 		lastStrike = GetTime()--Update last strike timing to this one after function fires.
-	elseif args:IsSpellID(99351, 101000, 101001, 101002) then--Inferno Strike
+	elseif spellId == 99351 or spellId == 101000 or spellId == 101001 or spellId == 101002 then--Inferno Strike
 		strikeCount = strikeCount + 1
 		warnStrike:Show(spellName, strikeCount)
 		if strikeCount == 7 then return end--Don't do anything if it's 6th/3rd strike
