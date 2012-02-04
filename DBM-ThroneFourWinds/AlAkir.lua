@@ -165,12 +165,12 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(88858, 93286, 93287, 93288) and GetTime() - lastWindburst > 5 then--Phase 3 wind burst, does not use cast success :(
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 88858 or spellId == 93286 or spellId == 93287 or spellId == 93288) and GetTime() - lastWindburst > 5 then--Phase 3 wind burst, does not use cast success :(
 		warnWindBurst:Show()
 		timerWindBurstCD:Start(20)
 		lastWindburst = GetTime()
-	elseif args:IsSpellID(89588, 93299, 93298, 93297) and GetTime() - spamCloud >= 4 and args:IsPlayer() then
+	elseif (spellId == 89588 or spellId == 93299 or spellId == 93298 or spellId == 93297) and GetTime() - spamCloud >= 4 and destGUID == UnitGUID("player") then
 		specWarnCloud:Show()
 		spamCloud = GetTime()
 	end
@@ -179,7 +179,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(args)
-	if args:IsSpellID(91020, 93258, 93259, 93260) and GetTime() - spamIce >= 4 and args:IsPlayer() then
+	if (spellId == 91020 or spellId == 93258 or spellId == 93259 or spellId == 93260) and GetTime() - spamIce >= 4 and destGUID == UnitGUID("player") then
 		specWarnIceStorm:Show()
 		spamIce = GetTime()
 	end
