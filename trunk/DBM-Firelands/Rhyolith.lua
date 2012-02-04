@@ -79,7 +79,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			StompCountown:Start(7)
 			timerFlameStomp:Start(7)
 		else--Else, he uses it right away
-			StompCountown:Start(1)
 			timerFlameStomp:Start(1)
 		end
 	end
