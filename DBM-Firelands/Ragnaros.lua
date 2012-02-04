@@ -533,23 +533,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-	if (spellId == 98518 or spellId == 100252 or spellId == 100253 or spellId == 100254) and not elementalsGUID[args.sourceGUID] then--Molten Inferno. elementals cast this on spawn.
-		elementalsGUID[args.sourceGUID] = true--Add unit GUID's to ignore
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 98518 or spellId == 100252 or spellId == 100253 or spellId == 100254) and not elementalsGUID[sourceGUID] then--Molten Inferno. elementals cast this on spawn.
+		elementalsGUID[sourceGUID] = true--Add unit GUID's to ignore
 		elementalsSpawned = elementalsSpawned + 1--Add up the total elementals
-	elseif (spellId == 98175 or spellId == 100106 or spellId == 100107 or spellId == 100108) and not magmaTrapGUID[args.sourceGUID] then--Magma Trap Eruption. We use it to count traps that have been set off
-		magmaTrapGUID[args.sourceGUID] = true--Add unit GUID's to ignore
+	elseif (spellId == 98175 or spellId == 100106 or spellId == 100107 or spellId == 100108) and not magmaTrapGUID[sourceGUID] then--Magma Trap Eruption. We use it to count traps that have been set off
+		magmaTrapGUID[sourceGUID] = true--Add unit GUID's to ignore
 		magmaTrapSpawned = magmaTrapSpawned - 1--Add up total traps
 		if magmaTrapSpawned == 0 and self.Options.InfoHealthFrame and not seedsActive then--All traps are gone hide the health frame.
 			DBM.InfoFrame:Hide()
 		end
-	elseif (spellId == 98870 or spellId == 100122 or spellId == 100123 or spellId == 100124) and destName == UnitName("player") and GetTime() - standingInFireSpam >= 3 then
+	elseif (spellId == 98870 or spellId == 100122 or spellId == 100123 or spellId == 100124) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 then
 		specWarnScorchedGround:Show()
 		standingInFireSpam = GetTime()
-	elseif (spellId == 99144 or spellId == 100303 or spellId == 100304 or spellId == 100305) and destName == UnitName("player") and GetTime() - standingInFireSpam >= 3 then
+	elseif (spellId == 99144 or spellId == 100303 or spellId == 100304 or spellId == 100305) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 then
 		specWarnBlazingHeatMV:Show()
 		standingInFireSpam = GetTime()
-	elseif (spellId == 100941 or spellId == 100998) and destName == UnitName("player") and GetTime() - standingInFireSpam >= 3 and not UnitBuff("player", GetSpellInfo(100713)) then
+	elseif (spellId == 100941 or spellId == 100998) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 and not UnitBuff("player", GetSpellInfo(100713)) then
 		specWarnDreadFlame:Show()
 		standingInFireSpam = GetTime()
 	elseif (spellId == 98981 or spellId == 100289 or spellId == 100290 or spellId == 100291) and GetTime() - lavaBoltSpam >= 3 then

@@ -16,8 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_SUMMON",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED"
+	"SPELL_DAMAGE"
 )
 
 local warnCrushArmor	= mod:NewStackAnnounce(103687, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -191,10 +190,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-	if (spellId == 103785 or spellId == 108570 or spellId == 110287 or spellId == 110288) and destName == UnitName("player") and GetTime() - spamBlood > 3 then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 103785 or spellId == 108570 or spellId == 110287 or spellId == 110288) and destGUID == UnitGUID("player") and GetTime() - spamBlood > 3 then
 		specwarnBlood:Show()
 		spamBlood = GetTime()
 	end
 end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
