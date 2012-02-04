@@ -64,23 +64,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---does this consume too much cpu?--
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags)
 	if self:GetCIDFromGUID(destGUID) == 42362 and not InCombatLockdown() then
 		timerChargeCD:Start(21.5)
 	end
 end
-
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
-
-function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags)
-	if self:GetCIDFromGUID(destGUID) == 42362 and not InCombatLockdown() then
-		timerChargeCD:Start(21.5)
-	end
-end
-
-mod.SWING_MISSED = mod.SWING_DAMAGE
---does this consume too much cpu?--
+mod.SWING_DAMAGE = mod.SPELL_DAMAGE
+mod.SWING_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
