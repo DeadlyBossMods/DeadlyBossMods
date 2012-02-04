@@ -105,9 +105,9 @@ do
 		return math.max(1, math.floor(healed / maxAbsorb * 100))
 	end
 	
-	function mod:SPELL_HEAL(args)
-		if args.destGUID == BlackoutTarget then
-			healed = healed + (args.absorbed or 0)
+	function mod:SPELL_HEAL(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overheal, absorbed)
+		if destGUID == BlackoutTarget then
+			healed = healed + (absorbed or 0)
 		end
 	end	
 	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
@@ -346,11 +346,9 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(86505, 92907, 92908, 92909) then
-		if args:IsPlayer() and GetTime() - lastFab > 3  then
-			specWarnFabulousFlames:Show()
-			lastFab = GetTime()
-		end
+	if (spellId == 86505 or spellId == 92907 or spellId == 92908 or spellId == 92909) and destGUID == UnitGUID("player") and GetTime() - lastFab > 3 then
+		specWarnFabulousFlames:Show()
+		lastFab = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Absorbs still show as spell missed, such as PWS, but with this you'll still get a special warning to GTFO, instead of dbm waiting til your shield breaks and you take a second tick :)

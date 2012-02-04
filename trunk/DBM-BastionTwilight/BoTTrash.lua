@@ -9,7 +9,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"SPELL_MISSED"
 )
 
 local warnVolcanicWrath		= mod:NewSpellAnnounce(87903, 4)--This is nasty volcano aoe that's channeled that will wipe raid on trash if not interrupted.
@@ -89,10 +90,11 @@ end
 
 do 
 	local lastFlamestrike = 0
-	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(93383, 93362) and args:IsPlayer() and GetTime() - lastFlamestrike > 3 then
+	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+		if (spellId == 93383 or spellId == 93362) and destGUID == UnitGUID("player") and GetTime() - lastFlamestrike > 3 then
 			specWarnFlameStrike:Show()
 			lastFlamestrike = GetTime()
 		end
 	end
+	mod.SPELL_MISSED = mod.SPELL_DAMAGE
 end
