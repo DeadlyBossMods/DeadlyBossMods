@@ -79,7 +79,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
+	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Hide()
 	end
 end
@@ -175,7 +175,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:GetDestCreatureID() == 55312 then
 			timerAcidCD:Cancel()
 		end
-		if self.Options.RangeFrame then
+		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Hide()
 		end
 	end
