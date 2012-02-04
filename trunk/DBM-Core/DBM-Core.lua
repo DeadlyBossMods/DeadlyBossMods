@@ -407,76 +407,77 @@ do
 		-- this prevents work-around with mods that used to have their own event handler to prevent this overhead
 		if noArgTableEvents[event] then
 			handleEvent(nil, event, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
-		end
-		
-		twipe(args)
-		args.timestamp = timestamp
-		args.event = event
-		args.sourceGUID = sourceGUID
-		args.sourceName = sourceName
-		args.sourceFlags = sourceFlags
-		args.sourceRaidFlags = sourceRaidFlags
-		args.destGUID = destGUID
-		args.destName = destName
-		args.destFlags = destFlags
-		args.destRaidFlags = destRaidFlags
-		-- taken from Blizzard_CombatLog.lua
-		if event:sub(0, 6) == "SPELL_" then
-			if event == "SPELL_INTERRUPT" then
-				args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-			elseif event == "SPELL_EXTRA_ATTACKS" then
-				args.amount = select(4, ...)
-			elseif event == "SPELL_DISPEL_FAILED" then
-				args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-			elseif event == "SPELL_AURA_DISPELLED" then
-				args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-				args.auraType = select(7, ...)
-			elseif event == "SPELL_AURA_STOLEN" then
-				args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-				args.auraType = select(7, ...)
-			elseif event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_REFRESH" then
-				args.auraType, args.remainingPoints = select(4, ...)
-				if not args.sourceName then
-					args.sourceName = args.destName
-					args.sourceGUID = args.destGUID
-					args.sourceFlags = args.destFlags
+		else
+			twipe(args)
+			args.timestamp = timestamp
+			args.event = event
+			args.sourceGUID = sourceGUID
+			args.sourceName = sourceName
+			args.sourceFlags = sourceFlags
+			args.sourceRaidFlags = sourceRaidFlags
+			args.destGUID = destGUID
+			args.destName = destName
+			args.destFlags = destFlags
+			args.destRaidFlags = destRaidFlags
+			-- taken from Blizzard_CombatLog.lua
+			if event:sub(0, 6) == "SPELL_" then
+				args.spellId, args.spellName, args.spellSchool = select(1, ...)
+				if event == "SPELL_INTERRUPT" then
+					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
+				elseif event == "SPELL_EXTRA_ATTACKS" then
+					args.amount = select(4, ...)
+				elseif event == "SPELL_DISPEL_FAILED" then
+					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
+				elseif event == "SPELL_AURA_DISPELLED" then
+					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
+					args.auraType = select(7, ...)
+				elseif event == "SPELL_AURA_STOLEN" then
+					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
+					args.auraType = select(7, ...)
+				elseif event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_REFRESH" then
+					args.auraType, args.remainingPoints = select(4, ...)
+					if not args.sourceName then
+						args.sourceName = args.destName
+						args.sourceGUID = args.destGUID
+						args.sourceFlags = args.destFlags
+					end
+				elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
+					args.auraType, args.amount = select(4, ...)
+					if not args.sourceName then
+						args.sourceName = args.destName
+						args.sourceGUID = args.destGUID
+						args.sourceFlags = args.destFlags
+					end
+				elseif event == "SPELL_CAST_FAILED" then
+					args.missType = select(4, ...)
 				end
-			elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
-				args.auraType, args.amount = select(4, ...)
-				if not args.sourceName then
-					args.sourceName = args.destName
-					args.sourceGUID = args.destGUID
-					args.sourceFlags = args.destFlags
-				end
-			elseif event == "SPELL_CAST_FAILED" then
+			elseif event == "DAMAGE_SHIELD" then
+				args.spellId, args.spellName, args.spellSchool = select(1, ...)
+				args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
+			elseif event == "DAMAGE_SHIELD_MISSED" then
+				args.spellId, args.spellName, args.spellSchool = select(1, ...)
 				args.missType = select(4, ...)
+			elseif event == "ENCHANT_APPLIED" then
+				args.spellName = select(1,...)
+				args.itemId, args.itemName = select(2,...)
+			elseif event == "ENCHANT_REMOVED" then
+				args.spellName = select(1,...)
+				args.itemId, args.itemName = select(2,...)
+			elseif event == "UNIT_DIED" or event == "UNIT_DESTROYED" then
+				args.sourceName = args.destName
+				args.sourceGUID = args.destGUID
+				args.sourceFlags = args.destFlags
+			elseif event == "ENVIRONMENTAL_DAMAGE" then
+				args.environmentalType = select(1,...)
+				args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(2, ...)
+				args.spellName = _G["ACTION_"..event.."_"..args.environmentalType]
+				args.spellSchool = args.school
+			elseif event == "DAMAGE_SPLIT" then
+				args.spellId, args.spellName, args.spellSchool = select(1, ...)
+				args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
 			end
-		elseif event == "DAMAGE_SHIELD" then
-			args.spellId, args.spellName, args.spellSchool = select(1, ...)
-			args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
-		elseif event == "DAMAGE_SHIELD_MISSED" then
-			args.spellId, args.spellName, args.spellSchool = select(1, ...)
-			args.missType = select(4, ...)
-		elseif event == "ENCHANT_APPLIED" then
-			args.spellName = select(1,...)
-			args.itemId, args.itemName = select(2,...)
-		elseif event == "ENCHANT_REMOVED" then
-			args.spellName = select(1,...)
-			args.itemId, args.itemName = select(2,...)
-		elseif event == "UNIT_DIED" or event == "UNIT_DESTROYED" then
-			args.sourceName = args.destName
-			args.sourceGUID = args.destGUID
-			args.sourceFlags = args.destFlags
-		elseif event == "ENVIRONMENTAL_DAMAGE" then
-			args.environmentalType = select(1,...)
-			args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(2, ...)
-			args.spellName = _G["ACTION_"..event.."_"..args.environmentalType]
-			args.spellSchool = args.school
-		elseif event == "DAMAGE_SPLIT" then
-			args.spellId, args.spellName, args.spellSchool = select(1, ...)
-			args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
+			return handleEvent(nil, event, args)
 		end
-		return handleEvent(nil, event, args)
 	end
 	mainFrame:SetScript("OnEvent", handleEvent)
 end
