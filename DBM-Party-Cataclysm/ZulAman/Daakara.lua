@@ -128,8 +128,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-	if spellId == 97682 and destName == UnitName("player") and GetTime() - lastburn > 3 then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if spellId == 97682 and destGUID == UnitGUID("player") and GetTime() - lastburn > 3 then
 		specWarnBurn:Show()
 		lastburn = GetTime()
 	end

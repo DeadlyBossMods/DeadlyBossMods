@@ -11,7 +11,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"SPELL_MISSED"
 )
 
 mod:RegisterEvents(
@@ -110,12 +111,13 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-	if spellId == 97338 and GetTime() - spamEffusion >= 3 and destName == UnitName("player") then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if spellId == 97338 and GetTime() - spamEffusion >= 3 and destGUID == UnitGUID("player") then
 		specWarnEffusion:Show()
 		spamEffusion = GetTime()
-	elseif spellId == 97089 and GetTime() - spamPool >= 3 and destName == UnitName("player") then
+	elseif spellId == 97089 and GetTime() - spamPool >= 3 and destGUID == UnitGUID("player") then
 		specWarnPoolAcridTears:Show()
 		spamPool = GetTime()
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
