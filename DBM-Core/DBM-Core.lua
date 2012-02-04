@@ -389,6 +389,7 @@ do
 		SWING_DAMAGE = true,
 		SWING_MISSED = true,
 		SPELL_DAMAGE = true,
+		SPELL_BUILDING_DAMAGE = true,
 		SPELL_MISSED = true,
 		RANGE_DAMAGE = true,
 		RANGE_MISSED = true,
