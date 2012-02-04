@@ -1,9 +1,18 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 1/11/2012
+-- Last update: 2/5/2012
 
 if GetLocale() ~= "zhCN" then return end
 
 local L
+
+------------
+--  Omen  --
+------------
+L = DBM:GetModLocalization("Omen")
+
+L:SetGeneralLocalization({
+	name = "年兽"
+})
 
 -----------------------
 --  Apothecary Trio  --
