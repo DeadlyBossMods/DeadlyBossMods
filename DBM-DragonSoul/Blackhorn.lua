@@ -248,14 +248,14 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(108076, 109222, 109223, 109224) then
-		if args:IsPlayer() and GetTime() - lastFlames > 3  then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
+	if spellId == 108076 or spellId == 109222 or spellId == 109223 or spellId == 109224 then
+		if destName == UnitName("player") and GetTime() - lastFlames > 3  then
 			specWarnTwilightFlames:Show()
 			lastFlames = GetTime()
 		end
-	elseif args:IsSpellID(110095) then
-		if args:IsPlayer() and GetTime() - lastFlames > 3  then
+	elseif spellId == 110095 then
+		if destName == UnitName("player") and GetTime() - lastFlames > 3  then
 			specWarnDeckFire:Show()
 			lastFlames = GetTime()
 		end
