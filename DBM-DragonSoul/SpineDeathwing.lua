@@ -181,7 +181,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		oozeGUIDS[args.sourceGUID] = true
 		residueCount = residueCount + 1
 		warnResidue:Cancel()
-		if residueCount > 4 and residueCount < 13 then -- announce 9 stacks (ready to eat blood!), sometimes it can be missing 2~3 stacks, announce to 12 stacks.
+		if residueCount > 4 and residueCount < 16 then -- announce 9 stacks (ready to eat blood!), sometimes it can be missing 2~3 stacks, announce to 15 stacks.
 			warnResidue:Schedule(2, residueCount)
 		end
 	end
@@ -190,11 +190,18 @@ end
 --Damage event that indicates an ooze is taking damage
 --we check its GUID to see if it's a resurrected ooze and if so remove it from table.
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags)
-	if oozeGUIDS[sourceGUID] and self:GetCIDFromGUID(sourceGUID) == 53889 then--It is an ooze that died earlier. We check source instead of dest, cause then we detect all oozes once they attack someone, vs only oozes that get attacked (and missing untanked oozes)
+	if oozeGUIDS[sourceGUID] and self:GetCIDFromGUID(sourceGUID) == 53889 then--It is an ooze that died earlier. We check source damage since this will detect untanked oozes.
 		oozeGUIDS[sourceGUID] = nil --Remove it
 		residueCount = residueCount - 1 --Reduce count
 		warnResidue:Cancel()
-		if residueCount > 4 and residueCount < 13 then -- announce new count.
+		if residueCount > 4 and residueCount < 16 then -- announce new count.
+			warnResidue:Schedule(2, residueCount)
+		end
+	elseif oozeGUIDS[destGUID] and self:GetCIDFromGUID(destGUID) == 53889 then--It is an ooze that died earlier. We check destination damage to detect oozes faster if they take damage before they do damage.
+		oozeGUIDS[destGUID] = nil --Remove it
+		residueCount = residueCount - 1 --Reduce count
+		warnResidue:Cancel()
+		if residueCount > 4 and residueCount < 16 then -- announce new count.
 			warnResidue:Schedule(2, residueCount)
 		end
 	end
