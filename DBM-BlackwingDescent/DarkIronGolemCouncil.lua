@@ -19,7 +19,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_INTERRUPT",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"SPELL_MISSED"
 )
 
 --Magmatron
@@ -401,8 +402,9 @@ function mod:SPELL_INTERRUPT(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(79710, 91540, 91541, 91542) then--An interrupt failed (or wasn't cast)
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 79710 or spellId == 91540 or spellId == 91541 or spellId == 91542) then--An interrupt failed (or wasn't cast)
 		timerArcaneLockout:Cancel()--Cancel bar just in case one was started by a late SPELL_INTERRUPT event that showed in combat log while cast went off anyways.
 	end
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
