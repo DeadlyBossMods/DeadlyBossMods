@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -175,7 +176,6 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 		spamCloud = GetTime()
 	end
 end
-
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(args)
@@ -184,6 +184,7 @@ function mod:SPELL_PERIODIC_DAMAGE(args)
 		spamIce = GetTime()
 	end
 end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if uId ~= "boss1" then return end--Anti spam to ignore all other args

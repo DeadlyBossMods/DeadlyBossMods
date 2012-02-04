@@ -119,7 +119,7 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(args)
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
 	if (spellId == 92128 or spellId == 92196 or spellId == 92197 or spellId == 92198) and destGUID == UnitGUID("player") and GetTime() - ignitionSpam >= 4 then
 		specWarnIgnition:Show()
 		ignitionSpam = GetTime()
