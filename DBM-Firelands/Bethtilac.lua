@@ -138,8 +138,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-	if (spellId == 99278 or spellId == 101133) and destName == UnitName("player") and GetTime() - lastPoison > 3 then
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 99278 or spellId == 101133) and destGUID == UnitGUID("player") and GetTime() - lastPoison > 3 then
 		specWarnVolatilePoison:Show()
 		lastPoison = GetTime()
 	end
