@@ -249,16 +249,12 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-	if spellId == 108076 or spellId == 109222 or spellId == 109223 or spellId == 109224 then
-		if destName == UnitName("player") and GetTime() - lastFlames > 3  then
-			specWarnTwilightFlames:Show()
-			lastFlames = GetTime()
-		end
-	elseif spellId == 110095 then
-		if destName == UnitName("player") and GetTime() - lastFlames > 3  then
-			specWarnDeckFire:Show()
-			lastFlames = GetTime()
-		end
+	if (spellId == 108076 or spellId == 109222 or spellId == 109223 or spellId == 109224) and destName == UnitName("player") and GetTime() - lastFlames > 3 then
+		specWarnTwilightFlames:Show()
+		lastFlames = GetTime()
+	elseif spellId == 110095 and destName == UnitName("player") and GetTime() - lastFlames > 3 then
+		specWarnDeckFire:Show()
+		lastFlames = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
