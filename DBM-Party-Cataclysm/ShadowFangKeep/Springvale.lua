@@ -58,8 +58,8 @@ end
 
 do 
 	local lastdesecration = 0
-	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-		if spellId == 94370 and destName == UnitName("player") and GetTime() - lastdesecration > 4 then
+	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+		if spellId == 94370 and destGUID == UnitGUID("player") and GetTime() - lastdesecration > 4 then
 			specWarnDesecration:Show()
 			lastdesecration = GetTime()
 		end

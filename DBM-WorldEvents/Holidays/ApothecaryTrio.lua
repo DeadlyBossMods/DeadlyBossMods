@@ -33,11 +33,11 @@ end
 
 do 
 	local lastspill = 0
-	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlag, spellId)
-		if spellId == 68927 and destName == UnitName("player") and GetTime() - lastspill > 2 then
+	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+		if spellId == 68927 and destGUID == UnitGUID("player") and GetTime() - lastspill > 2 then
 			specWarnPerfumeSpill:Show()
 			lastspill = GetTime()
-		elseif spellId == 68934 and destName == UnitName("player") and GetTime() - lastspill > 2 then
+		elseif spellId == 68934 and destGUID == UnitGUID("player") and GetTime() - lastspill > 2 then
 			specWarnCologneSpill:Show()
 			lastspill = GetTime()
 		end
