@@ -152,22 +152,22 @@ function IsleOfConquest:UNIT_DIED(args)
 	end
 end
 
-function IsleOfConquest:SPELL_BUILDING_DAMAGE(args)
-	if args == nil or args.destName == nil or args.destGUID == nil or args.amount == nil or not bgzone then
+function IsleOfConquest:SPELL_BUILDING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount)
+	if sourceGUID == nil or destName == nil or destGUID == nil or amount == nil or not bgzone then
 		return
 	end
-	local guid = args.destGUID
+	local guid = destGUID
 	if gateHP[guid] == nil then -- first hit
 		gateHP[guid] = 600000 -- initial gate health: 600000
-		if	self.Options.ShowGatesHealth then
+		if self.Options.ShowGatesHealth then
 			if not DBM.BossHealth:IsShown() then
 				DBM.BossHealth:Show(L.GatesHealthFrame)
 			end
-			DBM.BossHealth:AddBoss(function() return gateHP[guid]/6000	end, args.destName)
+			DBM.BossHealth:AddBoss(function() return gateHP[guid]/6000	end, destName)
 		end
 	end
-	if gateHP[guid] > args.amount then
-		gateHP[guid] = gateHP[guid] - args.amount
+	if gateHP[guid] > amount then
+		gateHP[guid] = gateHP[guid] - amount
 	else
 		gateHP[guid] = 0
 	end
