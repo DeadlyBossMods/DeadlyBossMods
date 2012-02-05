@@ -188,7 +188,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기(이동)",
 	run 		= "$spell:%s 특수 경고 보기(빠른이동)",
 	cast 		= "$spell:%s 시전을 시작할 경우 특수 경고 보기",
-	stack 		= "%d 중첩 이상시 $spell:%s 특수 경고 보기"
+	stack 		= "%d 중첩 이상시 $spell:%s 특수 경고 보기",
+	switch		= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -201,7 +202,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move 		= "%s - 이동하세요!",
 	run 		= "%s - 뛰세요!",
 	cast 		= "%s - 시전 중지",
-	stack 		= "%s (%%d)"
+	stack 		= "%s (%%d)",
+	switch		= "%s - 대상 전환!"
 }
 
 

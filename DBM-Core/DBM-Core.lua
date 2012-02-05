@@ -4057,6 +4057,10 @@ do
 		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
 	end
 
+	function bossModPrototype:NewSpecialWarningSwitch(text, optionDefault, ...)
+		return newSpecialWarning(self, "switch", text, nil, optionDefault, ...)
+	end
+
 	do
 		local anchorFrame
 		local function moveEnd()

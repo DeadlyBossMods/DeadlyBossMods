@@ -196,16 +196,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "快攻擊極熾觸手!",
-	SpecWarnCongealing	= "快攻擊凝結之血!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "為極熾觸手生長顯示特別警告(當雅立史卓莎不在場時)",
-	SpecWarnCongealing	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(109089),
 	RangeFrame			= "根據玩家減益顯示動態的距離框以對應英雄模式的$spell:108649",
 	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })
