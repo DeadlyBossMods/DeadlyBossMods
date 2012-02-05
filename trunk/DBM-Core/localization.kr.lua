@@ -156,7 +156,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	adds		= "%s : %%d 남음",
 	cast 		= "주문시전 %s : %.1f 초",
 	soon 		= "곧 %s",
-	prewarn		= "곧 %s (%s 후)",
+	prewarn		= "%2$s 후 %1$s",
 	phase 		= "%s 단계",
 	prephase	= "곧 %s 단계",
 	count 		= "%s (%%d)",
@@ -174,7 +174,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase 		= "%s 단계 알림 보기",
 	prephase	= "%s 단계 사전 알림 보기",
 	count 		= "$spell:%s 알림 보기",
-	stack		= "$spell:%s 중첩 보기"
+	stack		= "$spell:%s 중첩 알림 보기"
 }
 
 -- Auto-generated Special Warning Localizations
@@ -186,10 +186,10 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	target 		= "$spell:%s 주문의 영향을 누군가 받은 경우 특수 경고 보기",
 	close 		= "$spell:%s 대상이 근처에 있을 경우 특수 경고 보기",
 	move 		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기(이동)",
-	run 		= "$spell:%s 특수 경고 보기(빠른이동)",
+	run 		= "$spell:%s 특수 경고 보기(빠른 이동)",
 	cast 		= "$spell:%s 시전을 시작할 경우 특수 경고 보기",
-	stack 		= "%d 중첩 이상시 $spell:%s 특수 경고 보기",
-	switch		= "Show special warning to switch targets for \n $spell:%s"
+	stack 		= "$spell:%2$d 주문이 %1$d 중첩 이상시 특수 경고 보기",
+	switch		= "$spell:%s 특수 경고 보기(대상 전환)"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
