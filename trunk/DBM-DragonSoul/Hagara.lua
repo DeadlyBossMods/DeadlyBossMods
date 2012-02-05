@@ -62,6 +62,7 @@ mod:AddBoolOption("RangeFrame")--Ice lance spreading in ice phases, and lighting
 mod:AddBoolOption("SetIconOnFrostflake", false)--You can use an icon if you want, but this is cast on a new target every 5 seconds, often times on 25 man 2-3 have it at same time while finding a good place to drop it.
 mod:AddBoolOption("SetIconOnFrostTomb", true)
 mod:AddBoolOption("AnnounceFrostTombIcons", false)
+mod:AddBoolOption("SetBubbles", true)--because chat bubble hides Ice Tomb target indication if bubbles are on.
 
 local lanceTargets = {}
 local tombTargets = {}
@@ -69,6 +70,21 @@ local tombIconTargets = {}
 local pillarsRemaining = 4
 local frostPillar = EJ_GetSectionInfo(4069)
 local lightningPillar = EJ_GetSectionInfo(3919)
+local CVAR = false
+
+local function disableBubbles()
+	if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
+		CVAR = true
+		SetCVar("chatBubbles", 0)
+	end
+end
+
+local function enableBubbles()
+	if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we minigame
+		SetCVar("chatBubbles", 1)
+		CVAR = false
+	end
+end
 
 function mod:ShatteredIceTarget()
 	local targetname = self:GetBossTarget(55689)
@@ -86,7 +102,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(tombTargets)
 	timerAssaultCD:Start(4-delay)
 	timerIceLanceCD:Start(10-delay)
---	timerFrostTombCD:Start(16-delay)--Not possible until (or if) a way is ever found to detect her enchant on pull.
 	timerSpecialCD:Start(30-delay)
 	SpecialCountdown:Start(30-delay)
 	berserkTimer:Start(-delay)
@@ -96,6 +111,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	enableBubbles()
 	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Hide()
 	end
@@ -197,6 +213,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAssaultCD:Start()
 		timerLightningStormCD:Start()
 		SpecialCountdown:Start(62)
+		disableBubbles()
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(3)
 		end
@@ -210,6 +227,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAssaultCD:Start()
 		timerTempestCD:Start()
 		SpecialCountdown:Start(62)
+		disableBubbles()
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(3)
 		end
@@ -234,6 +252,7 @@ function mod:SPELL_CAST_START(args)
 		warnTempest:Show()
 		specWarnTempest:Show()
 		timerIceWave:Start()
+		enableBubbles()
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Hide()
 		end
@@ -247,6 +266,7 @@ function mod:SPELL_CAST_START(args)
 		timerIceLanceCD:Cancel()
 		warnLightningStorm:Show()
 		specWarnLightingStorm:Show()
+		enableBubbles()
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(10)
 		end
