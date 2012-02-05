@@ -191,7 +191,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Exibir aviso especial quando você é afetado por \n $spell:%s",
 	run 		= "Exibir aviso especial para $spell:%s",
 	cast 		= "Exibir aviso especial para o lançamento de $spell:%s",
-	stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%s"
+	stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%s",
+	switch		= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -204,7 +205,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move = "%s - saia de perto",
 	run = "%s - corra para longe",
 	cast = "%s - pare de lançar",
-	stack = "%s (%%d)"
+	stack = "%s (%%d)",
+	switch = "%s - switch targets"
 }
 
 

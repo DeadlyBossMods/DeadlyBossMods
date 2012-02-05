@@ -189,7 +189,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move					= "當你中了$spell:%s時顯示特別警告",
 	run						= "為$spell:%s顯示特別警告",
 	cast					= "為$spell:%s施放時顯示特別警告",
-	stack					= "為>=%d層$spell:%s時顯示特別警告"
+	stack					= "為>=%d層$spell:%s時顯示特別警告",
+	switch					= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -202,7 +203,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move					= "%s - 快離開",
 	run						= "%s - 快跑開",
 	cast					= "%s - 停止施法",
-	stack					= "%s(%%d)"
+	stack					= "%s(%%d)",
+	switch					= "%s - switch targets"
 }
 
 

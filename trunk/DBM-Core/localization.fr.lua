@@ -188,7 +188,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Alerte spéciale quand vous subissez $spell:%s",
 	run 		= "Alerte spéciale concernant $spell:%s",
 	cast 		= "Alerte spéciale quand $spell:%s est incanté",
-	stack 		= "Alerte spéciale quand >=%d cumuls de $spell:%s"
+	stack 		= "Alerte spéciale quand >=%d cumuls de $spell:%s",
+	switch 		= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -201,7 +202,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move = "%s - écartez-vous",
 	run = "%s - fuyez",
 	cast = "%s - arrêtez d'incanter",
-	stack = "%s (%%d)"
+	stack = "%s (%%d)",
+	switch = "%s - switch targets"
 }
 
 

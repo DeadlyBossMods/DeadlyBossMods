@@ -170,7 +170,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) % 3 == 0 then	--Warn every 3 stacks
 			warnTears:Show(args.destName, args.amount or 1)
 		end
-		if args:IsPlayer() and (args.amount or 1) >= 8 then		-- tank switch @ 8?
+		if args:IsPlayer() and (args.amount or 1) >= 8 then
 			specWarnTears:Show(args.amount)
 		end
 		if self:IsDifficulty("heroic10", "heroic25") then

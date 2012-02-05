@@ -193,7 +193,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move					= "特殊警报：当你受到$spell:%s影响时",
 	run						= "特殊警报：$spell:%s",
 	cast					= "特殊警报：$spell:%s的施放",
-	stack					= "特殊警报：当叠加了至少%d层$spell:%s时"
+	stack					= "特殊警报：当叠加了至少%d层$spell:%s时",
+	switch 					= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -206,7 +207,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move					= "%s - 快躲开",
 	run						= "%s - 快跑",
 	cast					= "%s - 停止施法",
-	stack					= "%s (%%d)"
+	stack					= "%s (%%d)",
+	switch					= "%s - switch targets"
 }
 
 
