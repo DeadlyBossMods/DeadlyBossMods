@@ -267,7 +267,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 	elseif msg == L.DeckFire or msg:find(L.DeckFire) then
 		specWarnDeckFireCast:Show()
 	elseif msg == L.GorionaRetreat or msg:find(L.GorionaRetreat) then
-		self:Schdule(1.5, function()
+		self:Schedule(1.5, function()
 			timerTwilightBreath:Cancel()
 			timerConsumingShroud:Cancel()
 			timerTwilightFlamesCD:Cancel()
