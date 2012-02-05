@@ -189,7 +189,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 	= "Mostrar aviso especial cuando te afecta \n $spell:%s",
 	run 	= "Mostrar aviso especial para $spell:%s",
 	cast 	= "Mostrar aviso especial para casteo de $spell:%s",
-	stack 	= "Mostrar aviso especial cuando tienes >=%d acumulaciones de \n $spell:%s"
+	stack 	= "Mostrar aviso especial cuando tienes >=%d acumulaciones de \n $spell:%s",
+	switch 	= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -202,7 +203,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move = "%s ¡muévete!",
 	run = "%s ¡corre!",
 	cast = "%s ¡para de castear!",
-	stack = "%s (%%d)"
+	stack = "%s (%%d)",
+	switch = "%s - switch targets"
 }
 
 

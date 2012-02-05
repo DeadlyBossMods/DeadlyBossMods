@@ -177,14 +177,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Tentacules caustiques - Switch"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Alerte spéciale quand des Tentacules caustiques apparaissent (et Alexstrasza n'est pas active)"
 })
 
 L:SetMiscLocalization({

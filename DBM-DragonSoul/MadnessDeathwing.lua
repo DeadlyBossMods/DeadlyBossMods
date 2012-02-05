@@ -20,6 +20,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+local warnMutated				= mod:NewSpellAnnounce("ej4112", 3, 467)
 local warnImpale				= mod:NewTargetAnnounce(106400, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnElementiumBolt		= mod:NewSpellAnnounce(105651, 4)
 local warnTentacle				= mod:NewSpellAnnounce(105551, 3)
@@ -31,17 +32,18 @@ local warnTerror				= mod:NewSpellAnnounce("ej4117", 4, 106765)--This needs a fi
 local warnShrapnel				= mod:NewTargetAnnounce(109598, 3)
 local warnParasite				= mod:NewTargetAnnounce(108649, 4)
 
+local specWarnMutated			= mod:NewSpecialWarningSwitch("ej4112", mod:IsDps())
 local specWarnImpale			= mod:NewSpecialWarningYou(106400)
 local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
 local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)
-local specWarnTentacle			= mod:NewSpecialWarning("SpecWarnTentacle")
+local specWarnTentacle			= mod:NewSpecialWarningSwitch("ej4103", mod:IsDps())
 local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
 local specWarnFragments			= mod:NewSpecialWarningSpell("ej4115", nil, nil, nil, true)
-local specWarnTerror			= mod:NewSpecialWarningSpell("ej4117", mod:IsTank())
+local specWarnTerror			= mod:NewSpecialWarningSpell("ej4117", not mod:IsHealer())--Not a "switch" warning because on normal a lot of groups choose to ignore these if they can burn boss. 
 local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 local specWarnParasite			= mod:NewSpecialWarningYou(108649)
 local yellParasite				= mod:NewYell(108649)
---local specWarnCongealingBlood	= mod:NewSpecialWarning("SpecWarnCongealing", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089
+--local specWarnCongealingBlood	= mod:NewSpecialWarningSwitch("ej4350", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089.
 
 local timerMutated				= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
@@ -112,6 +114,8 @@ function mod:SPELL_CAST_START(args)
 		if firstAspect then--The abilities all come 15seconds earlier for first one only
 			firstAspect = false
 			timerMutated:Start(11)
+			warnMutated:Schedule(11)
+			specWarnMutated:Schedule(11)
 			timerImpaleCD:Start(22)
 			timerElementiumBoltCD:Start(40.5)
 			if self:IsDifficulty("heroic10", "heroic25") then
@@ -123,6 +127,8 @@ function mod:SPELL_CAST_START(args)
 			timerCataclysmCD:Start(115.5)
 		else
 			timerMutated:Start()
+			warnMutated:Schedule(17)
+			specWarnMutated:Schedule(17)
 			timerImpaleCD:Start(27.5)
 			timerElementiumBoltCD:Start()
 			if self:IsDifficulty("heroic10", "heroic25") then

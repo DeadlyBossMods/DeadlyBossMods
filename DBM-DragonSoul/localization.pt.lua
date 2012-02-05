@@ -179,14 +179,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Tentáculo Pustuloso"--Msg too long? maybe just "Blistering Tentacles!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Exibir aviso especial quando Tentáculos Pustulosos surgem (e Alexstrasza não está ativa)"--http://ptr.wowhead.com/npc=56188
 })
 
 L:SetMiscLocalization({

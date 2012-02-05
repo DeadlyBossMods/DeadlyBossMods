@@ -187,7 +187,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Спец-предупреждение, когда на вас $spell:%s",
 	run 		= "Спец-предупреждение для $spell:%s",
 	cast 		= "Спец-предупреждение о применении заклинания \n$spell:%s",
-	stack 		= "Спец-предупреждение для >=%d стаков $spell:%s"
+	stack 		= "Спец-предупреждение для >=%d стаков $spell:%s",
+	switch		= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -200,7 +201,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move = "%s - отбегите",
 	run = "%s - бегите",
 	cast = "%s - прекратите чтение заклинаний",
-	stack = "%s (%%d)"
+	stack = "%s (%%d)",
+	switch = "%s - переключитесь"--Verify?
 }
 
 

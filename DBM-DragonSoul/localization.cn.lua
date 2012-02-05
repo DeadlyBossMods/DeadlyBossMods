@@ -200,16 +200,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "灼疮触须 - 转换目标",--Msg too long? maybe just "Blistering Tentacles!"
-	SpecWarnCongealing	= "凝固之血 - 转换目标"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "特殊警报：阿莱克斯塔萨没有激活的情况下灼疮触须出现",--http://ptr.wowhead.com/npc=56188
-	SpecWarnCongealing	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(109089),
 	RangeFrame			= "距离监视器（根据状态动态变化）：应对$spell:108649（英雄难度）",
 	SetIconOnParasite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(108649)
 })

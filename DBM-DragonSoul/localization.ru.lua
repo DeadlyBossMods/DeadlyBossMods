@@ -181,14 +181,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(333)
 
 L:SetWarningLocalization({
-	SpecWarnTentacle	= "Раскаленное щупальце - переключитесь!"--Msg too long? maybe just "Blistering Tentacles!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTentacle	= "Спец-предупреждение, когда появляются раскаленные щупальца (и Алекстраза не активна)"--http://ptr.wowhead.com/npc=56188
 })
 
 L:SetMiscLocalization({

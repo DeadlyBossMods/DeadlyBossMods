@@ -188,7 +188,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Show special warning when you are affected by \n $spell:%s",
 	run 		= "Show special warning for $spell:%s",
 	cast 		= "Show special warning for $spell:%s cast",
-	stack 		= "Show special warning for >=%d stacks of \n $spell:%s"
+	stack 		= "Show special warning for >=%d stacks of \n $spell:%s",
+	switch		= "Show special warning to switch targets for \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -201,7 +202,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move = "%s - move away",
 	run = "%s - run away",
 	cast = "%s - stop casting",
-	stack = "%s (%%d)"
+	stack = "%s (%%d)",
+	switch = "%s - switch targets"
 }
 
 
