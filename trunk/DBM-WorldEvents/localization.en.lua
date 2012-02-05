@@ -169,6 +169,10 @@ L:SetGeneralLocalization({
 	name = "Shooting Gallery"
 })
 
+L:SetOptionLocalization({
+	SetBubbles			= "Automatically disable chat bubbles during $spell:101871\n(restores them when game ends)"
+})
+
 ----------------------
 --  Tonk Challenge  --
 ----------------------
