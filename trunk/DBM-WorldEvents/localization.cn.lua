@@ -20,21 +20,21 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ApothecaryTrio")
 
 L:SetGeneralLocalization({
-	name 			= "药剂师三人组"
+	name 			= "皇冠药剂公司"
 })
 
 L:SetTimerLocalization({
-	HummelActive		= "胡默尔 开始活动",
-	BaxterActive		= "巴克斯特 开始活动",
-	FryeActive		= "弗莱伊 开始活动"
+	HummelActive		= "汉摩尔加入战斗",
+	BaxterActive		= "拜克斯特加入战斗",
+	FryeActive		= "弗莱加入战斗"
 })
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "为药剂师三人组开始活动显示计时条"
+	TrioActiveTimer		= "计时条：药剂师何时加入战斗"
 })
 
 L:SetMiscLocalization({
-	SayCombatStart		= "他们有告诉你我是谁还有我为什么这么做吗?"
+	SayCombatStart		= "他们顾得上告诉你我是谁或者我在做些什么吗？"
 })
 
 -------------
