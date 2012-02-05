@@ -15,8 +15,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	KohcromWarning	= "크초르모가 동일하게 사용하는 주문 알림 보기 (영웅 난이도)",
-	KohcromCD		= "크초르모가 동일하게 사용하는 주문 바 표시 (영웅 난이도)",
+	KohcromWarning	= "$journal:4262가 사용하는 주문 알림 보기 (영웅 난이도)",
+	KohcromCD		= "$journal:4262가 사용할 주문 바 표시 (영웅 난이도)",
 	RangeFrame		= "거리 프레임 보기 (5m, 업적 용도)"
 })
 
@@ -93,10 +93,11 @@ L:SetOptionLocalization({
 	WarnPillars				= "$journal:3919 또는 $journal:4069 남은 횟수 알림 보기",
 	TimerSpecial			= "다음 $spell:105256 또는 $spell:105465 까지 남은 시간 바 표시",
 	RangeFrame				= "$spell:105269 (3m), $journal:4327 (10m) 주문의 영향을 받은 경우 거리 프레임 보기",
-	AnnounceFrostTombIcons	= "$spell:104451 대상을 공격대 대화로 알리기\n(승급 권한 필요)",
+	AnnounceFrostTombIcons	= "$spell:104451 대상을 공격대 대화로 알리기 (승급 권한 필요)",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
-	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
+	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325),
+	SetBubbles				= "$spell:104451 시전이 가능할 때 대화 말풍선을 표시하지 않음\n(전투 종료 후 원래대로 복구됨)"
 })
 
 L:SetMiscLocalization({

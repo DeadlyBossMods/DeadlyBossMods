@@ -171,6 +171,10 @@ L:SetGeneralLocalization({
 	name = "사격 연습장"
 })
 
+L:SetOptionLocalization({
+	SetBubbles			= "$spell:101871 진행 중일때 대화 말풍선을 표시하지 않음\n(게임 종료 후 원래대로 복구됨)"
+})
+
 ----------------------
 --  Tonk Challenge  --
 ----------------------
