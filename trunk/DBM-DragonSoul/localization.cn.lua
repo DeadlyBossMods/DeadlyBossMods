@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/17/2012
+-- Last update: 2/5/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -157,7 +157,7 @@ L:SetOptionLocalization({
 	TimerCombatStart	= "计时条：战斗即将开始",
 	TimerAdd			= "计时条：下一波暮光精英",
 	SpecWarnElites		= "特殊警报：新的暮光精英出现",
-	SetTextures			= "在第1阶段自动禁用弹道纹理（第2阶段自动恢复）"
+	SetTextures			= "在第1阶段自动禁用材质投射（第2阶段自动恢复）"
 })
 
 L:SetMiscLocalization({
