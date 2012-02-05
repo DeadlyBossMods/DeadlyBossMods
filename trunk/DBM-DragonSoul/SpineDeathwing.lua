@@ -57,7 +57,6 @@ local gripTargets = {}
 local gripIcon = 6
 local corruptionActive = {}
 local residueCount = 0
-local resurrectedOozeTime = 0
 local diedOozeGUIDS = {}
 local resurrectedOozeTime = {}
 
