@@ -62,7 +62,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if spellID == 105579 and destGUID == UnitGUID("player") and GetTime() - antiSpam >= 3 then
+	if spellId == 105579 and destGUID == UnitGUID("player") and GetTime() - antiSpam >= 3 then
 		specWarnFlames:Show()
 		antiSpam = GetTime()
 	end
