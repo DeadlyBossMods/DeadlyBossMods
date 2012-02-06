@@ -32,14 +32,15 @@ local warnTerror				= mod:NewSpellAnnounce("ej4117", 4, 106765)--This needs a fi
 local warnShrapnel				= mod:NewTargetAnnounce(109598, 3)
 local warnParasite				= mod:NewTargetAnnounce(108649, 4)
 
-local specWarnMutated			= mod:NewSpecialWarningSwitch("ej4112", mod:IsDps())
+local specWarnMutated			= mod:NewSpecialWarningSwitch("ej4112", not mod:IsHealer())--Because tanks need to switch to it too.
 local specWarnImpale			= mod:NewSpecialWarningYou(106400)
-local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank())
-local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)
-local specWarnTentacle			= mod:NewSpecialWarningSwitch("ej4103", mod:IsDps())
-local specWarnHemorrhage		= mod:NewSpecialWarningSpell(105863, mod:IsDps())
-local specWarnFragments			= mod:NewSpecialWarningSpell("ej4115", nil, nil, nil, true)
-local specWarnTerror			= mod:NewSpecialWarningSpell("ej4117", not mod:IsHealer())--Not a "switch" warning because on normal a lot of groups choose to ignore these if they can burn boss. 
+local specWarnImpaleOther		= mod:NewSpecialWarningTarget(106400, mod:IsTank() or mod:IsHealer())
+local specWarnElementiumBolt	= mod:NewSpecialWarningSpell(105651, nil, nil, nil, true)--Cast, helps you find the mark on ground and get into positions
+local specWarnElementiumBoltDPS	= mod:NewSpecialWarningSwitch(105651, mod:IsDps())--Warning for when to switch to dps it, because i really felt one warning didn't serve both meanings, one is an aoe/damage warning for cast, other should be specifically yelling at dps to kill it.
+local specWarnTentacle			= mod:NewSpecialWarningSwitch("ej4103", mod:IsDps())--Tanks not included in this one cause they may still have adds.
+local specWarnHemorrhage		= mod:NewSpecialWarningSwitch(105863, not mod:IsHealer())--Because tanks need to switch to it too.
+local specWarnFragments			= mod:NewSpecialWarningSpell("ej4115", mod:IsDps())--Not a "switch" warning because on normal a lot of groups choose to ignore these if they can burn boss and just pop dream. Let the raid leader decide strat on this one, not DBM.
+local specWarnTerror			= mod:NewSpecialWarningSpell("ej4117")--Same as fragments.
 local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 local specWarnParasite			= mod:NewSpecialWarningYou(108649)
 local yellParasite				= mod:NewYell(108649)
@@ -148,13 +149,14 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(105651) then
 		warnElementiumBolt:Show()
+		specWarnElementiumBolt:Show()
 		if not UnitBuff("player", GetSpellInfo(109624)) and not UnitIsDeadOrGhost("player") then--Check for Nozdormu's Presence
-			specWarnElementiumBolt:Show()
 			timerElementiumBlast:Start()
+			specWarnElementiumBoltDPS:Schedule(10)
 		else
 			timerElementiumCast:Start()
 			timerElementiumBlast:Start(20)
-			specWarnElementiumBolt:Schedule(7.5)
+			specWarnElementiumBoltDPS:Schedule(7.5)
 		end
 	elseif args:IsSpellID(110063) and phase2 and self:IsInCombat() then--Astral Recall. Thrall teleports off back platform back to front on defeat.
 		self:SendSync("MadnessDown")
