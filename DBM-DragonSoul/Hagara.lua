@@ -73,14 +73,14 @@ local lightningPillar = EJ_GetSectionInfo(3919)
 local CVAR = false
 
 local function disableBubbles()
-	if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
+	if mod.Options.SetBubbles and GetCVarBool("chatBubbles") then
 		CVAR = true
 		SetCVar("chatBubbles", 0)
 	end
 end
 
 local function enableBubbles()
-	if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we minigame
+	if mod.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
 		SetCVar("chatBubbles", 1)
 		CVAR = false
 	end
