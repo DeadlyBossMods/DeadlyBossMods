@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 2/5/2012
+-- Last update: 2/7/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -185,6 +185,10 @@ L = DBM:GetModLocalization("Shot")
 
 L:SetGeneralLocalization({
 	name = "射击场"
+})
+
+L:SetOptionLocalization({
+	SetBubbles			= "在$spell:101871期间自动关闭聊天气泡（结束后自动恢复）"
 })
 
 ----------------------

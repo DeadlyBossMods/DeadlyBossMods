@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 1/17/2012
+-- Last update: 2/7/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -194,7 +194,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run						= "特殊警报：$spell:%s",
 	cast					= "特殊警报：$spell:%s的施放",
 	stack					= "特殊警报：当叠加了至少%d层$spell:%s时",
-	switch 					= "Show special warning to switch targets for \n $spell:%s"
+	switch 					= "特殊警报：针对$spell:%s转换目标"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -208,7 +208,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	run						= "%s - 快跑",
 	cast					= "%s - 停止施法",
 	stack					= "%s (%%d)",
-	switch					= "%s - switch targets"
+	switch					= "%s - 转换目标"
 }
 
 
