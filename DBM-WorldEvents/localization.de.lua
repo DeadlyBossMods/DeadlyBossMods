@@ -170,6 +170,10 @@ L:SetGeneralLocalization({
 	name = "Schießbude"
 })
 
+L:SetOptionLocalization({
+	SetBubbles			= "Automatische Deaktivierung der 'Sprechblasen' während $spell:101871\n(wird nach dem Spielende auf die vorherige Einstellung zurückgesetzt)"
+})
+
 ----------------------
 --  Tonk Challenge  --
 ----------------------
