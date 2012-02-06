@@ -210,8 +210,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%s的目標設置標記"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%s時播放音效"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為$spell:%s播放倒計時音效"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為$spell:%s的持續時間播放倒計時音效"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為$spell:%s播放倒數計時音效"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為$spell:%s的持續時間播放倒數計時音效"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%s時大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s!"
 
