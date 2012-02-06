@@ -203,6 +203,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
+		disableBubbles()
 		timerFrostFlakeCD:Cancel()
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
@@ -212,11 +213,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAssaultCD:Start()
 		timerLightningStormCD:Start()
 		SpecialCountdown:Start(62)
-		disableBubbles()
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(3)
 		end
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
+		disableBubbles()
 		timerStormPillarCD:Cancel()
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
@@ -226,7 +227,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAssaultCD:Start()
 		timerTempestCD:Start()
 		SpecialCountdown:Start(62)
-		disableBubbles()
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(3)
 		end
