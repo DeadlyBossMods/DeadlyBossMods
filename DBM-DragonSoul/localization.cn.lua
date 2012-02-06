@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 2/5/2012
+-- Last update: 2/7/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -19,8 +19,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	KohcromWarning	= "警报：克卓莫模拟技能",
-	KohcromCD		= "计时条：下一次克卓莫模拟技能",
+	KohcromWarning	= "警报：$journal:4262模拟技能",
+	KohcromCD		= "计时条：下一次$journal:4262模拟技能",
 	RangeFrame		= "距离监视器（5码）：应对成就需求"
 })
 
@@ -100,7 +100,9 @@ L:SetOptionLocalization({
 	AnnounceFrostTombIcons	= "向团队频道通报$spell:104451目标的团队标记（需要团队领袖权限）",
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
-	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325)
+	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325),
+	SpecialCount			= "倒计时声音警报：$spell:105256或$spell:105465",
+	SetBubbles				= "在$spell:104451阶段自动关闭聊天气泡（战斗结束后自动恢复）"
 })
 
 L:SetMiscLocalization({
