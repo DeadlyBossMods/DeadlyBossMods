@@ -35,7 +35,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기 (영웅 난이도에서만)",
+	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기 (영웅 난이도)",
 	CustomRangeFrame	= "교란의 그림자 주문에 대한 거리 프레임 설정 (영웅 난이도)",
 	Never				= "사용안함",
 	Normal				= "일반 거리 프레임",
@@ -61,7 +61,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnOozesHit		= "보스에게 흡수된 핏방울에 대한 알림 표시",
+	warnOozesHit		= "보스에게 흡수된 핏방울에 대한 알림 보기",
 	timerOozesActive	= "핏방울이 소환된 후 공격 가능하기까지 남은시간 바 표시",
 	RangeFrame			= "$spell:104898 주문이 활성화 된 경우 거리 프레임 보기 (4m)\n(일반 난이도 이상)"
 })
@@ -97,6 +97,7 @@ L:SetOptionLocalization({
 	warnFrostTombCast		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(104448, GetSpellInfo(104448)),
 	SetIconOnFrostTomb		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(104451),
 	SetIconOnFrostflake		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109325),
+	SpecialCount			= "$spell:105256 또는 $spell:105465 주문의 초읽기 소리 듣기(5,4,3,2,1)",
 	SetBubbles				= "$spell:104451 시전이 가능할 때 대화 말풍선을 표시하지 않음\n(전투 종료 후 원래대로 복구됨)"
 })
 
