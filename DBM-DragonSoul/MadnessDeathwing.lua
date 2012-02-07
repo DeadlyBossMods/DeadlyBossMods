@@ -64,6 +64,7 @@ local timerUnstableCorruption	= mod:NewCastTimer(13, 108813)--10 seconds for cas
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
+local boltBlastCount			= mod:NewCountdown(8, 109600)
 local ShrapnelCountdown			= mod:NewCountdown(6, 109598, not mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)--For heroic parasites, with debuff filtering.
@@ -152,6 +153,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnElementiumBolt:Show()
 		if not UnitBuff("player", GetSpellInfo(109624)) and not UnitIsDeadOrGhost("player") then--Check for Nozdormu's Presence
 			timerElementiumBlast:Start()
+			boltBlastCount:Start()
 			specWarnElementiumBoltDPS:Schedule(10)
 		else
 			timerElementiumCast:Start()
