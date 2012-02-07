@@ -71,20 +71,6 @@ local frostPillar = EJ_GetSectionInfo(4069)
 local lightningPillar = EJ_GetSectionInfo(3919)
 local CVAR = false
 
-local function disableBubbles()
-	if mod.Options.SetBubbles and GetCVarBool("chatBubbles") then
-		CVAR = true
-		SetCVar("chatBubbles", 0)
-	end
-end
-
-local function enableBubbles()
-	if mod.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
-		SetCVar("chatBubbles", 1)
-		CVAR = false
-	end
-end
-
 function mod:ShatteredIceTarget()
 	local targetname = self:GetBossTarget(55689)
 	if not targetname then return end
@@ -110,7 +96,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	enableBubbles()
+	if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
+		SetCVar("chatBubbles", 1)
+		CVAR = false
+	end
 	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Hide()
 	end
@@ -203,7 +192,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(104451) and self.Options.SetIconOnFrostTomb then
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(105256, 109552, 109553, 109554) then--Tempest
-		disableBubbles()
 		timerFrostFlakeCD:Cancel()
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
@@ -213,11 +201,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAssaultCD:Start()
 		timerLightningStormCD:Start()
 		SpecialCountdown:Start(62)
+		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
+			CVAR = true
+			SetCVar("chatBubbles", 0)
+		end
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(3)
 		end
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
-		disableBubbles()
 		timerStormPillarCD:Cancel()
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
@@ -227,6 +218,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerAssaultCD:Start()
 		timerTempestCD:Start()
 		SpecialCountdown:Start(62)
+		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
+			CVAR = true
+			SetCVar("chatBubbles", 0)
+		end
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(3)
 		end
@@ -250,7 +245,10 @@ function mod:SPELL_CAST_START(args)
 		timerIceLanceCD:Cancel()
 		warnTempest:Show()
 		specWarnTempest:Show()
-		enableBubbles()
+		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
+			SetCVar("chatBubbles", 1)
+			CVAR = false
+		end
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Hide()
 		end
@@ -264,7 +262,10 @@ function mod:SPELL_CAST_START(args)
 		timerIceLanceCD:Cancel()
 		warnLightningStorm:Show()
 		specWarnLightingStorm:Show()
-		enableBubbles()
+		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
+			SetCVar("chatBubbles", 1)
+			CVAR = false
+		end
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(10)
 		end
