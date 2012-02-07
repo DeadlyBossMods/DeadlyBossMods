@@ -65,7 +65,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "Je sers désormais un nouveau maître, mortels !",
-	Initiate		= "Initié de la Serre flamboyante",
 	YellPhase2		= "Ce ciel est à MOI.",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "Des vers de lave embrasés surgissent du sol !",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)

@@ -66,7 +66,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "我現在有新的主人了，凡人!",
-	Initiate		= "熾炎猛禽學徒",
 	YellPhase2		= "這片天空屬於我。",
 	FullPower		= "spell:99925",
 	LavaWorms		= "熾炎熔岩蟲從地上鑽了出來!",

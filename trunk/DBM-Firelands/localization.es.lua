@@ -66,7 +66,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "¡Mortales, ahora sirvo a un nuevo amo!",
-	Initiate		= "Iniciado de Garfas Llameantes",--http://www.wowhead.com/npc=53896
 	YellPhase2		= "¡Estos cielos son MÍOS!",
 	FullPower		= "spell:99925",
 	LavaWorms		= "¡Gusanos de lava ígneos surgen del suelo!",

@@ -58,6 +58,7 @@ local FirestormCountdown	= mod:NewCountdown(83, 100744)
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
 local initiatesSpawned = 0
+local initiate = EJ_GetSectionInfo(2834)
 local cataCast = 0
 local clawCast = 0
 local moltCast = 0
@@ -209,7 +210,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 		timerPhaseChange:Start(33, 3)
 		initiatesSpawned = 0
 	--Yes it's ugly, but it works.
-	elseif mob == L.Initiate then
+	elseif mob == initiate then
 		initiatesSpawned = initiatesSpawned + 1
 		warnNewInitiate:Show(initiateSpawns[initiatesSpawned])
 		if initiatesSpawned == 6 then return end--All 6 are spawned, lets not create any timers.

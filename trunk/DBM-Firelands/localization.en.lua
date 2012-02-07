@@ -65,7 +65,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "I serve a new master now, mortals!",
-	Initiate		= "Blazing Talon Initiate",--http://www.wowhead.com/npc=53896
 	YellPhase2		= "These skies are MINE!",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "Fiery Lava Worms erupt from the ground!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
