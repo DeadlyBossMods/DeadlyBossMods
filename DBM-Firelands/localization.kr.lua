@@ -66,7 +66,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "이제 난 새 주인님을 섬긴다. 필멸자여!",
-	Initiate		= "타오르는 발톱 수습생",--http://www.wowhead.com/npc=53896
 	YellPhase2		= "이 하늘은 나의 것이다!",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "불타는 용암 벌레가 땅에서 튀어나옵니다!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)

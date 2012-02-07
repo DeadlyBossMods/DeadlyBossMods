@@ -70,7 +70,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "凡人们，我现在侍奉新的主人！",
-	Initiate		= "炽炎之爪新兵",--http://www.wowhead.com/npc=53896
 	YellPhase2		= "天空，归我统治！",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "熔岩火虫从地下涌出来了！",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
