@@ -53,5 +53,6 @@ end
 function mod:UNIT_EXITED_VEHICLE(uId)
 	if uId == "player" then 
 		timerGame:Cancel()
+		countdownGame:Cancel()
 	end
 end
