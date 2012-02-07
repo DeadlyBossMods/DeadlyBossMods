@@ -80,7 +80,7 @@ end
 
 local function warningResidue()
 	warnResidue:Cancel()
-	if residueCount > 4 and residueCount < 16 then -- announce 9 stacks (ready to eat blood!), sometimes it can be missing 2~3 stacks, announce to 15 stacks.
+	if residueCount > 2 and residueCount < 16 then -- announce 9 stacks (ready to eat blood!), sometimes it can be missing 2~3 stacks, announce to 15 stacks.
 		warnResidue:Schedule(1.25, residueCount)
 	end
 end
