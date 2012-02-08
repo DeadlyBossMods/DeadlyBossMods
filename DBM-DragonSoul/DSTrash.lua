@@ -8,10 +8,12 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
+	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnBoulder			= mod:NewTargetAnnounce(107597, 3)--This is morchok entryway trash that throws rocks at random poeple.
+local warnDrakesLeft		= mod:NewAddsLeftAnnounce("DrakesLeft", 2, 61248)
 
 local specWarnBoulder		= mod:NewSpecialWarningMove(107597)
 local specWarnBoulderNear	= mod:NewSpecialWarningClose(107597)
@@ -19,11 +21,16 @@ local yellBoulder			= mod:NewYell(107597)
 local specWarnFlames		= mod:NewSpecialWarningMove(105579)
 
 local timerDrakes			= mod:NewTimer(253, "TimerDrakes", 61248)
+--Leave this timer for now, I think this is the same.
+--it still seems timed, just ends earlier if you kill 15 drakes.
+--No one knew it ended at 24 drakes before hotfix because timer always expired before any raid hit 24, so we often just saw the hard capped event limit.
+--I suspect some shitty LFR group is still gonna hit timer limit before 15 drakes, so we'll see
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 local antiSpam = 0
+local drakesCount = 15
 
 function mod:BoulderTarget(sGUID)
 	local targetname, realm = nil
@@ -69,12 +76,25 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 56855 or cid == 56587 then--Drakes
+		drakesCount = drakesCount - 1
+		warnDrakesLeft:Show(drakesCount)
+		if drakesCount == 0 then
+			timerDrakes:Cancel()
+		end
+	end
+end
+
 --	"<18.7> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Notarget##0#0##0#3731##0#false", -- [1]
 --	"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
 --	"<101.5> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Vounelli##0#0##0#3093##0#false", -- [1]
 --	"<133.3> [UNIT_SPELLCAST_SUCCEEDED] Thrall:Possible Target<nil>:target:Ward of Earth::0:108161", -- [875]
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.UltraxionTrash or msg:find(L.UltraxionTrash) then
+		drakesCount = 15
+		--Need a way to reset this after wipes.
 		timerDrakes:Start(253, GetSpellInfo(109904))
 	end
 end
