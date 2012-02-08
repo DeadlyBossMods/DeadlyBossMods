@@ -225,13 +225,16 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrakes			= "%s",--spellname from mod
+	DrakesLeft			= "Zwielichtkampfdrachen verbleibend: %d",
+	TimerDrakes			= "%s"--spellname from mod
 })
 
 L:SetOptionLocalization({
+	DrakesLeft			= "Verkünde die Anzahl der verbleibenden Zwielichtkampfdrachen",
 	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen"
 })
 
 L:SetMiscLocalization({
+	EoEEvent			= "Es ist sinnlos, die Macht der Drachenseele ist zu gewaltig",--Partial
 	UltraxionTrash		= "Es tut gut, Euch wiederzusehen, Alexstrasza. Während meiner Abwesenheit war ich fleißig."
 })
