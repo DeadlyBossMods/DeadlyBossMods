@@ -224,10 +224,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrakes			= "%s",--spellname from mod
+	DrakesLeft			= "Twilight Assaulter remaining: %d",
+	TimerDrakes			= "%s"--spellname from mod
 })
 
 L:SetOptionLocalization({
+	DrakesLeft			= "Announce how many Twilight Assaulters remain",
 	TimerDrakes			= "Show timer for when Twilight Assaulters $spell:109904"
 })
 
