@@ -9,7 +9,9 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_MONSTER_SAY",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnBoulder			= mod:NewTargetAnnounce(107597, 3)--This is morchok entryway trash that throws rocks at random poeple.
@@ -20,6 +22,7 @@ local specWarnBoulderNear	= mod:NewSpecialWarningClose(107597)
 local yellBoulder			= mod:NewYell(107597)
 local specWarnFlames		= mod:NewSpecialWarningMove(105579)
 
+local timerEoE				= mod:NewCastTimer(64, 46811, nil, nil, nil, 84358)
 local timerDrakes			= mod:NewTimer(253, "TimerDrakes", 61248)
 --Leave this timer for now, I think this is the same.
 --it still seems timed, just ends earlier if you kill 15 drakes.
@@ -89,12 +92,32 @@ end
 
 --	"<18.7> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Notarget##0#0##0#3731##0#false", -- [1]
 --	"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
---	"<101.5> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Vounelli##0#0##0#3093##0#false", -- [1]
---	"<133.3> [UNIT_SPELLCAST_SUCCEEDED] Thrall:Possible Target<nil>:target:Ward of Earth::0:108161", -- [875]
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.UltraxionTrash or msg:find(L.UltraxionTrash) then
-		drakesCount = 15
-		--Need a way to reset this after wipes.
-		timerDrakes:Start(253, GetSpellInfo(109904))
+		drakesCount = 15--Reset drakes here still in case no one running current dbm is targeting thrall
+		timerDrakes:Start(253, GetSpellInfo(109904))--^^
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_SAY(msg)
+	if msg == L.EoEEvent or msg:find(L.EoEEvent) then
+		self:SendSync("EoEPortal")--because SAY has a much smaller range then YELL, we sync it.
+	end
+end
+
+--	"<101.5> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Vounelli##0#0##0#3093##0#false", -- [1]
+--	"<133.3> [UNIT_SPELLCAST_SUCCEEDED] Thrall:Possible Target<nil>:target:Ward of Earth::0:108161", -- [875]
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(108161) then--Thrall starting drake event, comes much later then yell but is only event that triggers after a wipe to this trash.
+		self:SendSync("Skyrim")--Send sync because Elementium bolts do not have a bossN arg, which means event only fires if it's current target/focus.
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Skyrim" then
+		drakesCount = 15--Reset drakes here too soo they stay accurate after wipes.
+		timerDrakes:Start(231, GetSpellInfo(109904))
+	elseif msg == "EoEPortal" then
+		timerEoE:Start()
 	end
 end
