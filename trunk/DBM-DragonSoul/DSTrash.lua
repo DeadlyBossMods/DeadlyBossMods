@@ -15,7 +15,7 @@ mod:RegisterEvents(
 )
 
 local warnBoulder			= mod:NewTargetAnnounce(107597, 3)--This is morchok entryway trash that throws rocks at random poeple.
-local warnDrakesLeft		= mod:NewAddsLeftAnnounce("DrakesLeft", 2, 61248)
+local warnDrakesLeft		= mod:NewAnnounce("DrakesLeft", 2, 61248)
 
 local specWarnBoulder		= mod:NewSpecialWarningMove(107597)
 local specWarnBoulderNear	= mod:NewSpecialWarningClose(107597)
