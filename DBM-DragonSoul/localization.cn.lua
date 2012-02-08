@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 2/7/2012
+-- Last update: 2/8/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -229,13 +229,16 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	DrakesLeft			= "暮光突袭者剩余：%d",
 	TimerDrakes			= "%s",--spellname from mod
 })
 
 L:SetOptionLocalization({
+	DrakesLeft			= "警报：暮光突袭者剩余数量",
 	TimerDrakes			= "计时条：暮光突袭者何时$spell:109904",
 })
 
 L:SetMiscLocalization({
+	EoEEvent			= "It is no use, the power of the Dragon Soul is too great",--Partial
 	UltraxionTrash		= "重逢真令我高兴，阿莱克斯塔萨。分开之后，我可是一直很忙。",
 })
