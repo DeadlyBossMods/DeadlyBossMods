@@ -222,10 +222,11 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("DSTrash")
 
 L:SetGeneralLocalization({
-	name =	"Dragonsoul Trash"
+	name =	"Pulls de Alma del Dragón"
 })
 
 L:SetWarningLocalization({
+	DrakesLeft			= "Acometedores Crepusculares restantes: %d"
 })
 
 L:SetTimerLocalization({
@@ -233,9 +234,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	DrakesLeft			= "Anunciar cuantos Acometedores Crepusculares quedan",
 	TimerDrakes			= "Mostrar tiempo para Fuga Crepuscular	de los Asaltantes Crepusculares",
 })
 
 L:SetMiscLocalization({
-	UltraxionTrash				= "Me alegra volver a verte, Alexstrasza. He estado ocupado en mi ausencia.",
+	EoEEvent			= "It is no use, the power of the Dragon Soul is too great",--translate
+	UltraxionTrash		= "Me alegra volver a verte, Alexstrasza. He estado ocupado en mi ausencia.",
+	UltraxionTrashEnded	= "Simples crías, experimentos, un medio para un fin mayor. Verás el resultado de las investigaciones de mi nidada."
 })
