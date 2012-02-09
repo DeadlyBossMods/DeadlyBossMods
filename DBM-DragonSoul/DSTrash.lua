@@ -81,7 +81,8 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
-	if (args.destName or "") == L.Drake then
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795 then
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
 		if drakesCount == 0 then
