@@ -81,8 +81,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795 then--Drakes
+	if (args.destName or "") == L.Drake then
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
 		if drakesCount == 0 then
@@ -96,7 +95,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.UltraxionTrash or msg:find(L.UltraxionTrash) then
 		drakesCount = 15--Reset drakes here still in case no one running current dbm is targeting thrall
-		timerDrakes:Start(253, GetSpellInfo(109904))--^^
+		timerDrakes:Start(163, GetSpellInfo(109904))--^^
 	end
 end
 
@@ -117,7 +116,7 @@ end
 function mod:OnSync(msg)
 	if msg == "Skyrim" then
 		drakesCount = 15--Reset drakes here too soo they stay accurate after wipes.
-		timerDrakes:Start(231, GetSpellInfo(109904))
+		timerDrakes:Start(163, GetSpellInfo(109904))
 	elseif msg == "EoEPortal" and timerEoE:GetTime() == 0 then--Why this starts more then once is beyond me, hopefully this fixes it.
 		timerEoE:Start()
 	end

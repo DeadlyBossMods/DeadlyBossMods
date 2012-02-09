@@ -222,10 +222,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	DrakesLeft			= "暮光猛擊者剩餘:%d"
 })
 
 L:SetTimerLocalization({
-	DrakesLeft			= "暮光猛擊者剩餘:%d",
 	TimerDrakes			= "%s"--spellname from mod
 })
 
