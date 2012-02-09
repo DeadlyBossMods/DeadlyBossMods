@@ -222,10 +222,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	DrakesLeft			= "황혼의 습격자 : %d 남음"
 })
 
 L:SetTimerLocalization({
-	DrakesLeft			= "황혼의 습격자 : %d 남음",
 	TimerDrakes			= "%s"--spellname from mod
 })
 
@@ -235,6 +235,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Drake				= "황혼의 습격자",
 	EoEEvent			= "소용없습니다. 용의 영혼이 가진 힘이 너무 강력해 안전하게 다룰 수 없습니다.",
 	UltraxionTrash		= "다시 만나 반갑군, 알렉스트라자. 난 떠나 있는 동안 좀 바쁘게 지냈다."
 })
