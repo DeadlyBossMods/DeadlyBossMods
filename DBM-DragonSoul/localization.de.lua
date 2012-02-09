@@ -222,7 +222,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	DrakesLeft			= "Zwielichtkampfdrachen verbleibend: %d"
+	DrakesLeft			= "Zwielichtangreifer verbleibend: %d"
 })
 
 L:SetTimerLocalization({
@@ -230,11 +230,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	DrakesLeft			= "Verkünde die Anzahl der verbleibenden Zwielichtkampfdrachen",
-	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtkampfdrachen"
+	DrakesLeft			= "Verkünde die Anzahl der verbleibenden Zwielichtangreifer",
+	TimerDrakes			= "Zeige Zeit bis zur $spell:109904 der Zwielichtangreifer"
 })
 
 L:SetMiscLocalization({
 	EoEEvent			= "Es ist sinnlos, die Macht der Drachenseele ist zu gewaltig",--Partial
-	UltraxionTrash		= "Es tut gut, Euch wiederzusehen, Alexstrasza. Während meiner Abwesenheit war ich fleißig."
+	UltraxionTrash		= "Es tut gut, Euch wiederzusehen, Alexstrasza. Während meiner Abwesenheit war ich fleißig.",
+	UltraxionTrashEnded = "Sie waren bloß Welpen, Experimente, Mittel zu einem Zweck. Ihr werdet sehen, was meine Forschung hervorgebracht hat."
 })
