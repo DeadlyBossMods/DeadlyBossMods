@@ -234,7 +234,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Drake				= "Twilight Assaulter",
 	EoEEvent			= "It is no use, the power of the Dragon Soul is too great",--Partial
-	UltraxionTrash		= "It is good to see you again, Alexstrasza. I have been busy in my absence."
+	UltraxionTrash		= "It is good to see you again, Alexstrasza. I have been busy in my absence.",
+	UltraxionTrashEnded = "Mere whelps, experiments, a means to a greater end. You will see what the research of my clutch has yielded."
 })
