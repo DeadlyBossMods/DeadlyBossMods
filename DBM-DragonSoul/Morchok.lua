@@ -51,11 +51,13 @@ local spamBlood = 0
 local stompCount = 1
 local crystalCount = 1--3 crystals between each vortex cast by Morchok, we ignore his twins.
 local kohcromSkip = 2--1 is crystal, 2 is stomp.
+local antiSpam = 0
 
 function mod:OnCombatStart(delay)
 	spamBlood = 0
 	stompCount = 1
 	crystalCount = 1
+	antiSpam = 0
 	if self:IsDifficulty("heroic10", "heroic25") then
 		kohcromSkip = 2
 		berserkTimer:Start(-delay)
@@ -78,7 +80,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) > 3 then
 			specwarnCrushArmor:Show(args.amount or 1)
 		end
-	elseif args:IsSpellID(103846) then
+	elseif args:IsSpellID(103846) and GetTime - antiSpam() > 2 then
+		-- sometimes Morchok and Kohcrom distance farther then 200 yards. so using Morchok's cid can be bad idea on Kohcrom side.
+		antiSpam = GetTime()
 		warnFurious:Show()
 	end
 end
