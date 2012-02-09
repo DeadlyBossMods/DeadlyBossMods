@@ -82,6 +82,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
+	-- i doubt that we have still missing cids? needs review.
 	if cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795 then
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
@@ -97,6 +98,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.UltraxionTrash or msg:find(L.UltraxionTrash) then
 		drakesCount = 15--Reset drakes here still in case no one running current dbm is targeting thrall
 		timerDrakes:Start(253, GetSpellInfo(109904))--^^
+	-- timer still remains even combat starts. so, cancels manually. 
+	elseif msg == L.UltraxionTrashEnded or msg:find(L.UltraxionTrashEnded) then
+		timerDrakes:Cancel()
 	end
 end
 
@@ -111,6 +115,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(108161) then--Thrall starting drake event, comes much later then yell but is only event that triggers after a wipe to this trash.
 		self:SendSync("Skyrim")--Send sync because Elementium bolts do not have a bossN arg, which means event only fires if it's current target/focus.
+	elseif spellName == GetSpellInfo(109904) then
+		self:SendSync("SkyrimEnded")
 	end
 end
 
@@ -118,6 +124,8 @@ function mod:OnSync(msg)
 	if msg == "Skyrim" then
 		drakesCount = 15--Reset drakes here too soo they stay accurate after wipes.
 		timerDrakes:Start(231, GetSpellInfo(109904))
+	elseif msg == "SkyrimEnded" then
+		timerDrakes:Cancel()
 	elseif msg == "EoEPortal" and timerEoE:GetTime() == 0 then--Why this starts more then once is beyond me, hopefully this fixes it.
 		timerEoE:Start()
 	end
