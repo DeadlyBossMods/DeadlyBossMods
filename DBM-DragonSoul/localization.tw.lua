@@ -225,13 +225,16 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrakes			= "%s",--spellname from mod
+	DrakesLeft			= "暮光猛擊者剩餘:%d",
+	TimerDrakes			= "%s"--spellname from mod
 })
 
 L:SetOptionLocalization({
+	DrakesLeft			= "提示暮光猛擊者的剩餘數量",
 	TimerDrakes			= "為暮光猛擊者$spell:109904顯示計時器"
 })
 
 L:SetMiscLocalization({
+	EoEEvent			= "沒有用，巨龍之魂的力量太強了。我無法安全地使用它，它所含有的混沌力量會使我們滅亡。",
 	UltraxionTrash		= "很高興又見到你，雅立史卓莎。我離開這段時間忙得很。"
 })
