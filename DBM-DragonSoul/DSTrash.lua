@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetModelID(39378)
+mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -81,7 +82,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 55636 then--Drakes
+	if cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795 then--Drakes
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
 		if drakesCount == 0 then
