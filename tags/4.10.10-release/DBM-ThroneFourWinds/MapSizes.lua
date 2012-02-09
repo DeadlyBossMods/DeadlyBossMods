@@ -1,0 +1,1 @@
+DBM:RegisterMapSize("ThroneoftheFourWinds", 1, 1500.0, 1000.0)
