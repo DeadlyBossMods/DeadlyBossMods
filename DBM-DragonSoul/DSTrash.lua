@@ -89,7 +89,6 @@ function mod:UNIT_DIED(args)
 		if drakesCount >= 0 then
 			warnDrakesLeft:Show(drakesCount)
 		end
-		warnDrakesLeft:Show(drakesCount)
 		if drakesCount == 0 then
 			self:SendSync("SkyrimEnded")
 		end
