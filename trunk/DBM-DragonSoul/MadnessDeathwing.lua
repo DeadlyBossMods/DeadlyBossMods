@@ -43,6 +43,7 @@ local specWarnFragments			= mod:NewSpecialWarningSpell("ej4115", mod:IsDps())--N
 local specWarnTerror			= mod:NewSpecialWarningSpell("ej4117")--Same as fragments.
 local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 local specWarnParasite			= mod:NewSpecialWarningYou(108649)
+local specWarnParasiteDPS		= mod:NewSpecialWarningSwitch("ej4347", mod:IsDps(), 108649)
 local yellParasite				= mod:NewYell(108649)
 --local specWarnCongealingBlood	= mod:NewSpecialWarningSwitch("ej4350", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089.
 
@@ -60,7 +61,7 @@ local timerTerrorCD				= mod:NewNextTimer(90, "ej4117", nil, nil, nil, 106765)--
 local timerShrapnel				= mod:NewCastTimer(6, 109598)
 local timerParasite				= mod:NewTargetTimer(10, 108649)
 local timerParasiteCD			= mod:NewCDTimer(60, 108649)
-local timerUnstableCorruption	= mod:NewCastTimer(13, 108813)--10 seconds for cast plus 3 seconds before the cast even begins after paracite fades
+local timerUnstableCorruption	= mod:NewCastTimer(10, 108813)
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
@@ -73,12 +74,13 @@ mod:AddBoolOption("SetIconOnParasite", true)
 local firstAspect = true
 local engageCount = 0
 local phase2 = false
+local playerGUID = 0
 local shrapnelTargets = {}
 
 local debuffFilter
 do
 	debuffFilter = function(uId)
-		return UnitDebuff(uId, (GetSpellInfo(108649)))
+		return UnitDebuff(uId, GetSpellInfo(108649))
 	end
 end
 
@@ -144,6 +146,13 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(106523, 110042, 110043, 110044) then
 		warnCataclysm:Show()
 		timerCataclysm:Start()
+	elseif args:IsSpellID(108813) then
+		specWarnParasiteDPS:Show()
+		if UnitDebuff(playerGUID, GetSpellInfo(108646)) then--Check if player that got the debuff is in nozdormu's bubble at time of cast.
+			timerUnstableCorruption:Start(15.5)
+		else
+			timerUnstableCorruption:Start()
+		end
 	end
 end
 
@@ -196,6 +205,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnParasite:Show()
 			yellParasite:Yell()
 		end
+		playerGUID = args.destGUID
 		if self.Options.SetIconOnParasite then
 			self:SetIcon(args.destName, 8)
 		end
@@ -209,7 +219,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(106444, 109631, 109632, 109633) then
 		timerImpale:Cancel(args.destName)
 	elseif args:IsSpellID(108649) then
-		timerUnstableCorruption:Start()
 		if self.Options.SetIconOnParasite then
 			self:SetIcon(args.destName, 0)
 		end
