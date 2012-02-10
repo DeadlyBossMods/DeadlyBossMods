@@ -80,7 +80,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) > 3 then
 			specwarnCrushArmor:Show(args.amount or 1)
 		end
-	elseif args:IsSpellID(103846) and GetTime - antiSpam() > 2 then
+	elseif args:IsSpellID(103846) and GetTime() - antiSpam > 2 then
 		-- sometimes Morchok and Kohcrom distance farther then 200 yards. so using Morchok's cid can be bad idea on Kohcrom side.
 		antiSpam = GetTime()
 		warnFurious:Show()
