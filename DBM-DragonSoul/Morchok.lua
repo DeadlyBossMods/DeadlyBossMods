@@ -183,7 +183,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(103821, 110045, 110046, 110047) and GetTime() - antiSpam > 3 then
-		antiSpam = GetTIme()
+		antiSpam = GetTime()
 		crystalCount = 0
 		timerStomp:Cancel()
 		timerCrystal:Cancel()
