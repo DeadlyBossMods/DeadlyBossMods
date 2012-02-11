@@ -149,10 +149,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnGameOver	= "Game ended with a total of %d possible points spawned",
-	warnGnoll		= "Gnoll spawned",
-	warnHogger		= "Hogger spawned",
-	specWarnHogger	= "Hogger spawned!"
+	warnGameOverQuest	= "Earned %d out of %d possible points spawned",
+	warnGameOverNoQuest	= "Game ended with a total of %d possible points spawned",
+	warnGnoll			= "Gnoll spawned",
+	warnHogger			= "Hogger spawned",
+	specWarnHogger		= "Hogger spawned!"
 })
 
 L:SetOptionLocalization({

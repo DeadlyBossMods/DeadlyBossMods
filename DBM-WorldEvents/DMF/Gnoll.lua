@@ -7,10 +7,13 @@ mod:SetZone()
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"QUEST_WATCH_UPDATE"
 )
 
-local warnGameOver				= mod:NewAnnounce("warnGameOver", 2)--Can't find a way to track how many points YOU earned yet though. If i do, i'll update this to say "Earned x out of x total possible points this game". It'll be a nice self challenge mode ;)
+local warnGameOverQuest			= mod:NewAnnounce("warnGameOverQuest", 2, 101612, nil, false)
+local warnGameOverNoQuest		= mod:NewAnnounce("warnGameOverNoQuest", 2, 101612, nil, false)
+mod:AddBoolOption("warnGameOver", true, "announce")
 local warnGnoll					= mod:NewAnnounce("warnGnoll", 2, nil, false)
 local warnHogger				= mod:NewAnnounce("warnHogger", 4)
 
@@ -20,6 +23,7 @@ local timerGame					= mod:NewBuffActiveTimer(60, 101612)
 
 local countdownGame				= mod:NewCountdown(60, 101612)
 
+local gameEarnedPoints = 0
 local gameMaxPoints = 0
 
 mod:RemoveOption("HealthFrame")
@@ -27,6 +31,7 @@ mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(101612) and args:IsPlayer() then
+		gameEarnedPoints = 0
 		gameMaxPoints = 0
 		timerGame:Start()
 		countdownGame:Start(60)
@@ -37,7 +42,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(101612) and args:IsPlayer() then
 		timerGame:Cancel()
 		countdownGame:Cancel()
-		warnGameOver:Show(gameMaxPoints)
+		if self.Options.warnGameOver then
+			if gameEarnedPoints > 0 then
+				warnGameOverQuest:Show(gameEarnedPoints, gameMaxPoints)
+			else
+				warnGameOverNoQuest:Show(gameMaxPoints)
+			end
+		end
 	end
 end
 
@@ -56,4 +67,8 @@ do
 			warnGnoll:Show()
 		end
 	end
+end
+
+function mod:QUEST_WATCH_UPDATE()
+	gameEarnedPoints = gameEarnedPoints + 1
 end
