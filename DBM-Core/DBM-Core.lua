@@ -1398,6 +1398,7 @@ do
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
+				"UNIT_HEALTH",
 				"CHAT_MSG_WHISPER",
 				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
@@ -2318,6 +2319,10 @@ function checkWipe(confirm)
 	end
 end
 
+
+-- lowest health the boss had in the current fight
+local lowestBossHealth = 1
+
 function DBM:StartCombat(mod, delay, synced)
 	if not checkEntry(inCombat, mod) then
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
@@ -2327,6 +2332,7 @@ function DBM:StartCombat(mod, delay, synced)
 			return
 		end
 		table.insert(inCombat, mod)
+		lowestBossHealth = 1
 		if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 			mod.inCombatOnlyEventsRegistered = 1
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -2421,6 +2427,24 @@ function DBM:StartCombat(mod, delay, synced)
 end
 
 
+
+function DBM:UNIT_HEALTH(uId)
+	local cId = UnitGUID(uId) and tonumber(UnitGUID(uId):sub(7, 10), 16)
+	if not cId then
+		return
+	end
+	for i, v in ipairs(inCombat) do
+		-- best guess for the ID of the boss we are interested in (from GetBossHPString)
+		local bossId = v.mainBossId or (v.combatInfo and v.combatInfo.mob) or v.creatureId
+		if cId == bossId then
+			local health = (UnitHealth(uId) or 0) / (UnitHealthMax(uId) or 1)
+			if health < lowestBossHealth then
+				lowestBossHealth = health
+			end
+		end
+	end
+end
+
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		if not wipe then
@@ -2453,10 +2477,11 @@ function DBM:EndCombat(mod, wipe)
 					mod.stats.heroic25Pulls = mod.stats.heroic25Pulls - 1
 				end
 			end
-			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(savedDifficulty..mod.combatInfo.name, strFromTime(thisTime)))
+			local wipeHP = ("%d%%"):format(lowestBossHealth * 100)
+			self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(savedDifficulty..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), savedDifficulty..(mod.combatInfo.name or ""))
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(UnitName("player"), savedDifficulty..(mod.combatInfo.name or ""), wipeHP)
 				sendWhisper(k, msg)
 			end
 			fireEvent("wipe", mod)
@@ -4635,7 +4660,7 @@ end
 
 -- updated for status whisper.
 function bossModPrototype:SetMainBossID(...)
-	self.mainbossid = ...
+	self.mainBossId = ...
 end
 
 function bossModPrototype:GetBossHPString(cId)
@@ -4657,7 +4682,7 @@ function bossModPrototype:GetBossHPString(cId)
 end
 
 function bossModPrototype:GetHP()
-	return self:GetBossHPString(self.mainbossid or (self.combatInfo and self.combatInfo.mob) or self.creatureId)
+	return self:GetBossHPString(self.mainBossId or (self.combatInfo and self.combatInfo.mob) or self.creatureId)
 end
 
 function bossModPrototype:IsWipe()
