@@ -11,7 +11,7 @@ DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_BOSS_DOWN					= "%s tot nach %s!"
 DBM_CORE_BOSS_DOWN_LONG				= "%s tot nach %s! Dein letzter Kill hat %s gedauert und der schnellste %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s tot nach %s! Das ist ein neuer Rekord! (Der alte Rekord war %s.)"
-DBM_CORE_COMBAT_ENDED				= "Kampf gegen %s hat nach %s aufgehört."
+DBM_CORE_COMBAT_ENDED_AT			= "Kampf gegen %s (%s) hat nach %s aufgehört."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "Kampf gegen %s hat vor %s begonnen, Neukalibrierung der Timer erfolgt..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4Sekunde:Sekunden;"
@@ -38,7 +38,7 @@ DBM_CORE_AUTO_RESPONDED				= "Automatisch geantwortet."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d Spieler am Leben"
 DBM_CORE_AUTO_RESPOND_WHISPER		= "%s ist damit beschäftigt gegen %s zu kämpfen! (%s, %d/%d Spieler am Leben)"
 DBM_CORE_WHISPER_COMBAT_END_KILL	= "%s hat %s besiegt!"
-DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s ist an %s gewipet"
+DBM_CORE_WHISPER_COMBAT_END_WIPE_AT	= "%s ist an %s bei %s gewipet"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versionen"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
