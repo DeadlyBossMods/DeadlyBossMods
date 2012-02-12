@@ -150,12 +150,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnGnoll		= "Gnoll erschienen",
-	warnHogger		= "Hogger erschienen",
-	specWarnHogger	= "Hogger erschienen!"
+	warnGameOverQuest	= "Es wurden %d von insgesamt %d erreichbaren Punkten erzielt.",
+	warnGameOverNoQuest	= "Spielende. Es waren insgesamt %d Punkte erreichbar.",
+	warnGnoll			= "Gnoll erschienen",
+	warnHogger			= "Hogger erschienen",
+	specWarnHogger		= "Hogger erschienen!"
 })
 
 L:SetOptionLocalization({
+	warnGameOver	= "Verkünde nach dem Spielende die insgesamt erreichbaren Punkte",
 	warnGnoll		= "Zeige Warnung, wenn ein Gnoll erscheint",
 	warnHogger		= "Zeige Warnung, wenn ein Hogger erscheint",
 	specWarnHogger	= "Zeige Spezialwarnung, wenn ein Hogger erscheint"
