@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 2/7/2012
+-- Last update: 2/12/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -167,12 +167,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnGnoll		= "豺狼人出现",
-	warnHogger		= "霍格出现",
-	specWarnHogger	= "霍格出现！"
+	warnGameOverQuest	= "得分：%d / %d（可能的最高分数）",
+	warnGameOverNoQuest	= "游戏结束，本次可能的最高分数：%d",
+	warnGnoll			= "豺狼人出现",
+	warnHogger			= "霍格出现",
+	specWarnHogger		= "霍格出现！"
 })
 
 L:SetOptionLocalization({
+	warnGameOver	= "游戏结束时通报本次游戏可能的最高分数",
 	warnGnoll		= "警报：豺狼人出现",
 	warnHogger		= "警报：霍格出现",
 	specWarnHogger	= "特殊警报：霍格出现"
