@@ -243,26 +243,24 @@ local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
 	-- 3. check boss1's highest threat target
-	-- 4. anyone with 180k+ health
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
+	if UnitExists("boss1") and UnitDetailedThreatSituation(unit, "boss1") then
 		return true
 	end
-	if UnitHealthMax(unit) >= 180000 then return true end--Will need tuning or removal for new expansions or maybe even new tiers.
 	return false
 end
 
 
 function mod:TargetScanner(SpellID, Force)
 	scansDone = scansDone + 1
-	if UnitExists("boss1target") then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
-		local targetname = UnitName("boss1target")
-		local uId = DBM:GetRaidUnitId(targetname)
+	local targetname = self:GetBossTarget(52409)
+	local uId = DBM:GetRaidUnitId(targetname)
+	if targetname then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
 		if isTank(uId) and not Force then--He's targeting his highest threat target.
 			if scansDone < 12 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.025, "TargetScanner", SpellID)--Check multiple times to be sure it's not on something other then tank.
