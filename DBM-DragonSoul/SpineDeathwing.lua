@@ -244,7 +244,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		residueCount = residueCount - 1
 --		print ("ooze_absorbed", residueCount)
 		warnAbsorbedBlood:Cancel()--Just a little anti spam
-		warnAbsorbedBlood:Schedule(1.25, args.destName, args.amount or 1)
+		warnAbsorbedBlood:Schedule(1.25, args.destName, 1)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
 		gripTargets[#gripTargets + 1] = args.destName
 		timerGripCD:Cancel(args.sourceGUID)
@@ -275,7 +275,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		if args.amount == 9 then
 			warnAbsorbedBlood:Show(args.destName, 9)
 		else
-			warnAbsorbedBlood:Schedule(2, args.destName, args.amount)
+			warnAbsorbedBlood:Schedule(1.25, args.destName, args.amount)
 		end
 	end
 end

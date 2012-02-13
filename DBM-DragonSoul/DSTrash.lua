@@ -23,7 +23,7 @@ local specWarnBoulderNear	= mod:NewSpecialWarningClose(107597)
 local yellBoulder			= mod:NewYell(107597)
 local specWarnFlames		= mod:NewSpecialWarningMove(105579)
 
-local timerEoE				= mod:NewCastTimer(64, 46811, nil, nil, nil, 84358)
+local timerEoE				= mod:NewCastTimer(80, 46811, nil, nil, nil, 84358)
 local timerDrakes			= mod:NewTimer(253, "TimerDrakes", 61248)
 --Leave this timer for now, I think this is the same.
 --it still seems timed, just ends earlier if you kill 15 drakes.
@@ -35,6 +35,7 @@ mod:RemoveOption("SpeedKillTimer")
 
 local antiSpam = 0
 local drakesCount = 15
+local syncTime = 0
 
 function mod:BoulderTarget(sGUID)
 	local targetname, realm = nil
@@ -67,8 +68,8 @@ function mod:BoulderTarget(sGUID)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(107597) then -- this spell cast 3 sec. and use at target's cast end position. not begin.
-		self:ScheduleMethod(3, "BoulderTarget", args.sourceGUID)
+	if args:IsSpellID(107597) then -- Spell cast 3 sec. Seems to location sets before cast completion. I tested 2.5 and good worked.
+		self:ScheduleMethod(2.5, "BoulderTarget", args.sourceGUID)
 	end
 end
 
@@ -82,8 +83,9 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	-- i doubt that we have still missing cids? needs review. Should be all.
-	-- http://www.wowhead.com/search?q=twilight+assaulter
+	-- drake seems to have 4 cids only. (56249, 56250, 56251, 56252)
+	-- but sometimes UNIT_DIED not fires on drake dies. Because of this bug, drake warning is not perfect and count is incorrect. (koKR only?)
+	-- So currently, this stuff is partly broken.
 	if cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795 then
 		drakesCount = drakesCount - 1
 		if drakesCount >= 0 then
@@ -129,7 +131,8 @@ function mod:OnSync(msg)
 		timerDrakes:Start(231, GetSpellInfo(109904))
 	elseif msg == "SkyrimEnded" then
 		timerDrakes:Cancel()
-	elseif msg == "EoEPortal" and timerEoE:GetTime() == 0 then--Why this starts more then once is beyond me, hopefully this fixes it.
+	elseif msg == "EoEPortal" and GetTime() - syncTime > 300 then -- Sometimes event starts already portal opened (timer expires). So ignore sync for 5 min. I hopefully fixed all problems from this method...
+		syncTime = GetTime()
 		timerEoE:Start()
 	end
 end

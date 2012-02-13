@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON"
 )
 
-local warnAssault			= mod:NewSpellAnnounce(107851, 4, nil, mod:IsHealer() or mod:IsTank())
+local warnAssault			= mod:NewCountAnnounce(107851, 4, nil, mod:IsHealer() or mod:IsTank())
 local warnShatteringIce		= mod:NewTargetAnnounce(105289, 3, nil, mod:IsHealer())--3 second cast, give a healer a heads up of who's about to be kicked in the face.
 local warnIceLance			= mod:NewTargetAnnounce(105269, 3)
 local warnFrostTombCast		= mod:NewAnnounce("warnFrostTombCast", 4, 104448)--Can't use a generic, cause it's an 8 second cast even though it says 1second in tooltip.
@@ -39,8 +39,8 @@ local specWarnWatery		= mod:NewSpecialWarningMove(110317)
 local specWarnFrostflake	= mod:NewSpecialWarningYou(109325)
 local yellFrostflake		= mod:NewYell(109325)
 
-local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsTank())
-local timerAssaultCD		= mod:NewCDTimer(15.5, 107851, nil, mod:IsTank() or mod:IsTank())
+local timerAssault			= mod:NewBuffActiveTimer(5, 107851, nil, mod:IsTank() or mod:IsHealer())
+local timerAssaultCD		= mod:NewCDCountTimer(15.5, 107851, nil, mod:IsTank() or mod:IsHealer())
 local timerShatteringCD		= mod:NewCDTimer(10.5, 105289)--every 10.5-15 seconds
 local timerIceLance			= mod:NewBuffActiveTimer(15, 105269)
 local timerIceLanceCD		= mod:NewNextTimer(30, 105269)
@@ -66,6 +66,9 @@ mod:AddBoolOption("SetBubbles", true)--because chat bubble hides Ice Tomb target
 local lanceTargets = {}
 local tombTargets = {}
 local tombIconTargets = {}
+local firstPhase = true
+local iceFired = false
+local assaultCount = 0
 local pillarsRemaining = 4
 local frostPillar = EJ_GetSectionInfo(4069)
 local lightningPillar = EJ_GetSectionInfo(3919)
@@ -85,7 +88,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(lanceTargets)
 	table.wipe(tombIconTargets)
 	table.wipe(tombTargets)
-	timerAssaultCD:Start(4-delay)
+	firstPhase = true
+	iceFired = false
+	assaultCount = 0
+	timerAssaultCD:Start(4-delay, 1)
 	timerIceLanceCD:Start(10-delay)
 	timerSpecialCD:Start(30-delay)
 	SpecialCountdown:Start(30-delay)
@@ -96,6 +102,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	firstPhase = true
 	if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
 		SetCVar("chatBubbles", 1)
 		CVAR = false
@@ -108,7 +115,10 @@ end
 local function warnLanceTargets()
 	warnIceLance:Show(table.concat(lanceTargets, "<, >"))
 	timerIceLance:Start()
-	timerIceLanceCD:Start()
+	if not firstPhase and not iceFired then
+		timerIceLanceCD:Start()
+	end
+	iceFired = true
 	table.wipe(lanceTargets)
 end
 
@@ -162,9 +172,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.3, warnTombTargets)
 		end
 	elseif args:IsSpellID(107851, 110898, 110899, 110900) then
-		warnAssault:Show()
+		assaultCount = assaultCount + 1
+		warnAssault:Show(assaultCount)
+		specWarnAssault:Show()
 		timerAssault:Start()
-		timerAssaultCD:Start()
+		if (firstPhase and assaultCount < 2) or (not firstPhase and assaultCount < 3) then
+			timerAssaultCD:Start(nil, assaultCount+1)
+		end
 	elseif args:IsSpellID(110317) and args:IsPlayer() then
 		specWarnWatery:Show()
 	elseif args:IsSpellID(109325) then
@@ -198,7 +212,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if not self:IsDifficulty("lfr25") then
 			timerFrostTombCD:Start()
 		end
-		timerAssaultCD:Start()
+		firstPhase = false
+		iceFired = false
+		assaultCount = 0
+		timerAssaultCD:Start(nil, 1)
 		timerLightningStormCD:Start()
 		SpecialCountdown:Start(62)
 		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
@@ -215,7 +232,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if not self:IsDifficulty("lfr25") then
 			timerFrostTombCD:Start()
 		end
-		timerAssaultCD:Start()
+		firstPhase = false
+		iceFired = false
+		assaultCount = 0
+		timerAssaultCD:Start(nil, 1)
 		timerTempestCD:Start()
 		SpecialCountdown:Start(62)
 		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
