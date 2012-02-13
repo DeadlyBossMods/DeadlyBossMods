@@ -151,15 +151,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnGnoll		= "豺狼人出現",
-	warnHogger		= "霍格出現",
-	specWarnHogger	= "霍格出現!"
+	warnGameOverQuest	= "獲得%d點，此次最多可能取得%d點。",
+	warnGameOverNoQuest	= "此次遊戲最多可能取得%d點。",
+	warnGnoll			= "豺狼人出現",
+	warnHogger			= "霍格出現",
+	specWarnHogger		= "霍格出現!"
 })
 
 L:SetOptionLocalization({
-	warnGnoll		= "為豺狼人出現發佈警告",
-	warnHogger		= "為霍格出現發佈警告",
-	specWarnHogger	= "為霍格出現顯示特別警告"
+	warnGameOver		= "當遊戲結束時顯示最多可以取得的點數",
+	warnGnoll			= "為豺狼人出現顯示警告",
+	warnHogger			= "為霍格出現顯示警告",
+	specWarnHogger		= "為霍格出現顯示特別警告"
 })
 
 ------------------------
