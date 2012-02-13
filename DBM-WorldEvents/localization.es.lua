@@ -151,12 +151,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnGameOverQuest	= "Has ganado %d puntos de %d puntos posibles",
+	warnGameOverNoQuest	= "El juego terminó con un total de %d puntos posibles",
 	warnGnoll		= "Sale un Gnoll",
 	warnHogger		= "Sale Hogger",
 	specWarnHogger	= "¡Sale Hogger!"
 })
 
 L:SetOptionLocalization({
+	warnGameOver	= "Anunciar total de puntos posibles al terminar el juego",
 	warnGnoll		= "Anunciar cuando sale un Gnoll",
 	warnHogger		= "Anunciar cuando sale un Hogger",
 	specWarnHogger	= "Mostrar aviso especial cuando sale un Hogger"
