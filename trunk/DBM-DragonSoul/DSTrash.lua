@@ -8,8 +8,10 @@ mod:SetZone()
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
-	"SWING_DAMAGE",
 	"SPELL_MISSED",
+	"SWING_DAMAGE",
+	"SPELL_PERIODIC_DAMAGE",
+	"RANGE_DAMAGE",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 --	"CHAT_MSG_MONSTER_SAY",
@@ -86,11 +88,14 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+--Very shitty performance way of doing it, but it's only way that works. they have about a 1/3 chance to NOT fire UNIT_DIED, sigh. But they do always fire an overkill. Confirmed in my logs.
 function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, overkill)
 	if (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) and (overkill or 0) > 0 then--Hack for mobs that don't fire UNIT_DIED event.
 		self:SendSync("DrakeDied", destGUID)
 	end
 end
+mod.SPELL_PERIODIC_DAMAGE = mod.SWING_DAMAGE
+mod.RANGE_DAMAGE = mod.SWING_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
