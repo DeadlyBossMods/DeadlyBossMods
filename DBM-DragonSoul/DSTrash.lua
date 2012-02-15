@@ -91,6 +91,7 @@ mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
 
 --Very shitty performance way of doing it, but it's only way that works. they have about a 1/3 chance to NOT fire UNIT_DIED, sigh. But they do always fire an overkill. Confirmed in my logs.
 function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, overkill)
+	local cid = self:GetCIDFromGUID(destGUID)
 	if (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) and (overkill or 0) > 0 then--Hack for mobs that don't fire UNIT_DIED event.
 		self:SendSync("DrakeDied", destGUID)
 	end
