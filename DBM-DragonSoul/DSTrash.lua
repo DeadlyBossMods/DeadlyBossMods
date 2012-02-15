@@ -8,6 +8,7 @@ mod:SetZone()
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
+	"SWING_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
