@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_MONSTER_SAY",
+--	"CHAT_MSG_MONSTER_SAY",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -23,7 +23,7 @@ local specWarnBoulderNear	= mod:NewSpecialWarningClose(107597)
 local yellBoulder			= mod:NewYell(107597)
 local specWarnFlames		= mod:NewSpecialWarningMove(105579)
 
-local timerEoE				= mod:NewCastTimer(80, 46811, nil, nil, nil, 84358)
+--local timerEoE				= mod:NewCastTimer(80, 46811, nil, nil, nil, 84358)
 local timerDrakes			= mod:NewTimer(253, "TimerDrakes", 61248)
 --Leave this timer for now, I think this is the same.
 --it still seems timed, just ends earlier if you kill 15 drakes.
@@ -74,13 +74,22 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill)
+	local cid = self:GetCIDFromGUID(destGUID)
 	if spellId == 105579 and destGUID == UnitGUID("player") and GetTime() - antiSpam >= 3 then
 		specWarnFlames:Show()
 		antiSpam = GetTime()
+	elseif (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) and (overkill or 0) > 0 then--Hack for mobs that don't fire UNIT_DIED event.
+		self:SendSync("DrakeDied", destGUID)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, overkill)
+	if (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) and (overkill or 0) > 0 then--Hack for mobs that don't fire UNIT_DIED event.
+		self:SendSync("DrakeDied", destGUID)
+	end
+end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -105,11 +114,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.EoEEvent or msg:find(L.EoEEvent) then
 		self:SendSync("EoEPortal")--because SAY has a much smaller range then YELL, we sync it.
 	end
-end
+end--]]
 
 --	"<101.5> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Vounelli##0#0##0#3093##0#false", -- [1]
 --	"<133.3> [UNIT_SPELLCAST_SUCCEEDED] Thrall:Possible Target<nil>:target:Ward of Earth::0:108161", -- [875]
@@ -137,8 +147,8 @@ function mod:OnSync(msg, GUID)
 		if drakesCount == 0 then
 			self:SendSync("SkyrimEnded")
 		end
-	elseif msg == "EoEPortal" and GetTime() - syncTime > 300 then -- Sometimes event starts already portal opened (timer expires). So ignore sync for 5 min. I hopefully fixed all problems from this method...
+--[[	elseif msg == "EoEPortal" and GetTime() - syncTime > 300 then -- Sometimes event starts already portal opened (timer expires). So ignore sync for 5 min. I hopefully fixed all problems from this method...
 		syncTime = GetTime()
-		timerEoE:Start()
+		timerEoE:Start()--]]
 	end
 end
