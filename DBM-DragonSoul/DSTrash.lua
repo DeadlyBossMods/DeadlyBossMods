@@ -87,6 +87,7 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
 
 --Very shitty performance way of doing it, but it's only way that works. they have about a 1/3 chance to NOT fire UNIT_DIED, sigh. But they do always fire an overkill. Confirmed in my logs.
 function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, overkill)
@@ -94,7 +95,6 @@ function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 		self:SendSync("DrakeDied", destGUID)
 	end
 end
-mod.SPELL_PERIODIC_DAMAGE = mod.SWING_DAMAGE
 mod.RANGE_DAMAGE = mod.SWING_DAMAGE
 
 function mod:UNIT_DIED(args)
