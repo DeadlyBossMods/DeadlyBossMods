@@ -96,7 +96,7 @@ function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 		self:SendSync("DrakeDied", destGUID)
 	end
 end
-mod.RANGE_DAMAGE = mod.SWING_DAMAGE
+--mod.RANGE_DAMAGE = mod.SWING_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
