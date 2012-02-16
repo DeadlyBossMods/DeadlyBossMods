@@ -196,7 +196,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if (spellId == 103785 or spellId == 108570 or spellId == 110287 or spellId == 110288) and destGUID == UnitGUID("player") and GetTime() - spamBlood > 3 then
 		specwarnBlood:Show()
 		spamBlood = GetTime()

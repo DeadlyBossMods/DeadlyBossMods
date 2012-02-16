@@ -117,7 +117,7 @@ do
 	local plasmaTargets = {}
 	local healed = {}
 	
-	function mod:SPELL_HEAL(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overheal, absorbed)
+	function mod:SPELL_HEAL(_, _, _, _, destGUID, _, _, _, _, _, _, _, _, absorbed)
 		if plasmaTargets[destGUID] then
 			healed[destGUID] = healed[destGUID] + (absorbed or 0)
 		end
@@ -224,8 +224,7 @@ end
 --Damage event that indicates an ooze is taking damage
 --we check its GUID to see if it's a resurrected ooze and if so remove it from table.
 --oozes do not fires SPELL_DAMAGE event from source. so track SPELL_DAMAGE event only from dest.
-function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 105219 or spellId == 109371 or spellId == 109372 or spellId == 109373 then return end
+function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID)
 	checkOozeResurrect(destGUID)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
