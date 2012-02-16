@@ -155,7 +155,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target	= "%s em >%%s<",
 	targetcount	= "%s (%%d) em >%%s<",
 	spell	= "%s",
-	adds		= "%s remaining: %%d",
+	adds		= "%s restantes: %%d",
 	cast	= "Lançando %s: %.1f seg",
 	soon	= "%s em breve",
 	prewarn = "%s em %s",
@@ -192,7 +192,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run 		= "Exibir aviso especial para $spell:%s",
 	cast 		= "Exibir aviso especial para o lançamento de $spell:%s",
 	stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%s",
-	switch		= "Show special warning to switch targets for \n $spell:%s"
+	switch		= "Exibir aviso especial para mudar de alvo para \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -206,7 +206,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	run = "%s - corra para longe",
 	cast = "%s - pare de lançar",
 	stack = "%s (%%d)",
-	switch = "%s - switch targets"
+	switch = "%s - mude de alvo"
 }
 
 

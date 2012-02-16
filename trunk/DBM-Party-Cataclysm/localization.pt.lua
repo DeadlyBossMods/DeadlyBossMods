@@ -1057,8 +1057,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Event		= "Show yourself!",
-	Pull		= "Twilight forces begin to appear around the canyons edges."
+	Event		= "Apareça!",
+	Pull		= "Forças do Crepúsculo começam a aparecer nas beiradas do cânion."
 }
 
 ----------------------
@@ -1071,7 +1071,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Pull		= "...and with that out of the way, you and your flock of fumbling friends are next on my list. Mmm, I thought you'd never get here!"
+	Pull		= "...e com isso fora do caminho, você e seu bando de amigos desajeitados são os próximos da minha lista. Mmm, achei que vocês não iam chegar nunca!"
 }
 
 ---------------------------
@@ -1080,7 +1080,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Benedictus")
 
 L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
+	name = "Arcebispo Benedictus"
 }
 
 L:SetTimerLocalization{
@@ -1092,5 +1092,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Event		= "And now, Shaman.. you will give the Dragon Soul to me."
+	Event		= "E agora, Xamã, entregue a Alma Dragônica para MIM."
 }
