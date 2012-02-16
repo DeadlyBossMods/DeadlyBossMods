@@ -16,6 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_SUMMON",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -45,7 +46,7 @@ local specWarnShrapnel			= mod:NewSpecialWarningYou(109598)
 local specWarnParasite			= mod:NewSpecialWarningYou(108649)
 local specWarnParasiteDPS		= mod:NewSpecialWarningSwitch("ej4347", mod:IsDps())
 local yellParasite				= mod:NewYell(108649)
---local specWarnCongealingBlood	= mod:NewSpecialWarningSwitch("ej4350", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089.
+local specWarnCongealingBlood	= mod:NewSpecialWarningSwitch("ej4350", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089.
 
 local timerMutated				= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
@@ -76,6 +77,7 @@ local engageCount = 0
 local phase2 = false
 local playerGUID = 0
 local shrapnelTargets = {}
+local antiSpam = 0
 
 local debuffFilter
 do
@@ -103,6 +105,7 @@ function mod:OnCombatStart(delay)
 	firstAspect = true
 	engageCount = 0
 	phase2 = false
+	antiSpam = 0
 	table.wipe(shrapnelTargets)
 	berserkTimer:Start(-delay)
 end
@@ -228,6 +231,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(109091) and GetTime() - antiSpam > 10 then
+		antiSpam = GetTime()--Because they don't spawn at same time, a bunch spawn over about 7-8 sec, so we have to filter a ton of em.
+		specWarnCongealingBlood:Show()
+	end
+end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
