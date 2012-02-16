@@ -147,7 +147,6 @@ function mod:SPELL_CAST_START(args)
 		warnCataclysm:Show()
 		timerCataclysm:Start()
 	elseif args:IsSpellID(108813) then
-		specWarnParasiteDPS:Show()
 		if UnitDebuff(playerGUID, GetSpellInfo(108646)) then--Check if player that got the debuff is in nozdormu's bubble at time of cast.
 			timerUnstableCorruption:Start(15.5)
 		else
@@ -219,6 +218,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(106444, 109631, 109632, 109633) then
 		timerImpale:Cancel(args.destName)
 	elseif args:IsSpellID(108649) then
+		specWarnParasiteDPS:Show()
 		if self.Options.SetIconOnParasite then
 			self:SetIcon(args.destName, 0)
 		end
