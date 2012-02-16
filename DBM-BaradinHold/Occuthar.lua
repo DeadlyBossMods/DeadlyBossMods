@@ -62,26 +62,30 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
 	if spellId == 97212 and destGUID == UnitGUID("player") and GetTime() - spamFire > 4 then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
 		specWarnFocusedFire:Show()
 		spamFire = GetTime()
-	elseif self:GetCIDFromGUID(destGUID) == 52363 and (overkill or 0) > 0 then--Hack cause occuthar doesn't die in combat log since 4.2. SO we look for a killing blow that has overkill.
-		DBM:EndCombat(self)
+	elseif (overkill or 0) > 0 then
+		if self:GetCIDFromGUID(destGUID) == 52363 then--Hack cause occuthar doesn't die in combat log since 4.2. SO we look for a killing blow that has overkill.
+			DBM:EndCombat(self)
+		end
 	end
 end
-mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
+mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 
-function mod:SPELL_MISSED(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+function mod:SPELL_MISSED(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 97212 and destGUID == UnitGUID("player") and GetTime() - spamFire > 4 then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
 		specWarnFocusedFire:Show()
 		spamFire = GetTime()
 	end
 end
 
-function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, overkill)
-	if self:GetCIDFromGUID(destGUID) == 52363 and (overkill or 0) > 0 then--Hack cause occuthar doesn't die in combat log since 4.2. SO we look for a killing blow that has overkill.
-		DBM:EndCombat(self)
+function mod:SWING_DAMAGE(_, _, _, _, destGUID, _, _, _, _, overkill)
+	if (overkill or 0) > 0 then
+		if self:GetCIDFromGUID(destGUID) == 52363 then--Hack cause occuthar doesn't die in combat log since 4.2. SO we look for a killing blow that has overkill.
+			DBM:EndCombat(self)
+		end
 	end
 end
