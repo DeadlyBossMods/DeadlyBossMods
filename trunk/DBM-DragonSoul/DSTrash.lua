@@ -41,6 +41,19 @@ local drakesCount = 15
 local syncTime = 0
 local drakeguid = {}
 
+local function drakeDied(GUID)
+	if not drakeguid[GUID] then
+		drakeguid[GUID] = true
+		drakesCount = drakesCount - 1
+		if drakesCount >= 0 then
+			warnDrakesLeft:Show(drakesCount)
+		end
+		if drakesCount == 0 then
+			mod:SendSync("SkyrimEnded")
+		end
+	end
+end
+
 function mod:BoulderTarget(sGUID)
 	local targetname, realm = nil
 	for i=1, GetNumRaidMembers() do
@@ -77,24 +90,34 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount, overkill)
-	local cid = self:GetCIDFromGUID(destGUID)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
 	if spellId == 105579 and destGUID == UnitGUID("player") and GetTime() - antiSpam >= 3 then
 		specWarnFlames:Show()
 		antiSpam = GetTime()
-	elseif (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) and (overkill or 0) > 0 then--Hack for mobs that don't fire UNIT_DIED event.
-		self:SendSync("DrakeDied", destGUID)
+	elseif (overkill or 0) > 0 then -- prevent to waste cpu. only pharse cid when event have overkill parameter.
+		local cid = self:GetCIDFromGUID(destGUID)
+		if (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) then--Hack for mobs that don't fire UNIT_DIED event.
+			drakeDied(destGUID)
+		end
 	end
 end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
-mod.RANGE_DAMAGE = mod.SWING_DAMAGE
+mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
+
+function mod:SPELL_MISSED(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 105579 and destGUID == UnitGUID("player") and GetTime() - antiSpam >= 3 then
+		specWarnFlames:Show()
+		antiSpam = GetTime()
+	end
+end
 
 --Very shitty performance way of doing it, but it's only way that works. they have about a 1/3 chance to NOT fire UNIT_DIED, sigh. But they do always fire an overkill. Confirmed in my logs.
-function mod:SWING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, overkill)
-	local cid = self:GetCIDFromGUID(destGUID)
-	if (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) and (overkill or 0) > 0 then--Hack for mobs that don't fire UNIT_DIED event.
-		self:SendSync("DrakeDied", destGUID)
+function mod:SWING_DAMAGE(_, _, _, _, destGUID, _, _, _, _, overkill)
+	if (overkill or 0) > 0 then
+		local cid = self:GetCIDFromGUID(destGUID) -- prevent to waste cpu. only pharse cid when event have overkill parameter.
+		if (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) then--Hack for mobs that don't fire UNIT_DIED event.
+			drakeDied(destGUID)
+		end
 	end
 end
 
@@ -105,7 +128,7 @@ function mod:UNIT_DIED(args)
 	-- So currently, this stuff is partly broken.
 	-- Combat log range could be a factor, lets try fixing this with syncing, as well as more running mod the better, only one persons combat log needs to pick it up, sync fix the rest.
 	if cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795 then
-		self:SendSync("DrakeDied", args.destGUID)
+		drakeDied(args.destGUID)
 	end
 end
 
@@ -145,15 +168,6 @@ function mod:OnSync(msg, GUID)
 		timerDrakes:Start(231, GetSpellInfo(109904))
 	elseif msg == "SkyrimEnded" then
 		timerDrakes:Cancel()
-	elseif not drakeguid[GUID] and msg == "DrakeDied" then
-		drakeguid[GUID] = true
-		drakesCount = drakesCount - 1
-		if drakesCount >= 0 then
-			warnDrakesLeft:Show(drakesCount)
-		end
-		if drakesCount == 0 then
-			self:SendSync("SkyrimEnded")
-		end
 --[[	elseif msg == "EoEPortal" and GetTime() - syncTime > 300 then -- Sometimes event starts already portal opened (timer expires). So ignore sync for 5 min. I hopefully fixed all problems from this method...
 		syncTime = GetTime()
 		timerEoE:Start()--]]
