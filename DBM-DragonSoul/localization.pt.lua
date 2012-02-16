@@ -37,11 +37,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
     ShadowYell	= "Gritar ao ser afetado por $spell:104600\n(Apenas modo heróico)",
-	CustomRangeFrame	= "Range Frame options",
-	Never				= "Disabled",
-	Normal				= "Normal Range Frame",
-	DynamicPhase2		= "Phase2 Debuff Filtering",
-	DynamicAlways		= "Always Debuff Filtering"
+	CustomRangeFrame	= "Opções do medidor de distância",
+	Never				= "Desabilitado",
+	Normal				= "Medidor Normal",
+	DynamicPhase2		= "Filtrar penalidades na Fase 2",
+	DynamicAlways		= "Sempre filtrar penalidades"
 })
 
 L:SetMiscLocalization({
@@ -65,12 +65,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Black			= "|cFF424242negro|r",
-	Purple			= "|cFF9932CDroxo|r",
-	Red				= "|cFFFF0404vermelho|r",
-	Green			= "|cFF088A08verde|r",
-	Blue			= "|cFF0080FFazul|r",
-	Yellow			= "|cFFFFA901amarelo|r"
+	Black			= "|cFF424242Negro|r",
+	Purple			= "|cFF9932CDPúrpura|r",
+	Red				= "|cFFFF0404Vermelho|r",
+	Green			= "|cFF088A08Verde|r",
+	Blue			= "|cFF0080FFAzul|r",
+	Yellow			= "|cFFFFA901Amarelo|r"
 })
 
 -----------------------
@@ -114,14 +114,14 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerCombatStart	= "Exibir cronógrafo para início do combate.",
-	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
-	Never				= "Never",
-	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
-	Reset3Always		= "Always Reset in sets of 3"
+	ResetHoTCounter		= "Reiniciar contador de Hora do Crepúsculo",--$spell doesn't work in this function apparently so use typed spellname for now.
+	Never				= "Nunca",
+	Reset3				= "Zerar a cada 3/2 (heróico/normal)",
+	Reset3Always		= "Sempre zerar a cada 3"
 })
 
 L:SetMiscLocalization({
-	Pull				= "I sense a great disturbance in the balance approaching. The chaos of it burns my mind!"
+	Pull				= "Eu sinto uma grande desordem no equilíbrio que se aproxima. O caos incendeia a minha mente!"
 })
 
 -------------------------
@@ -141,7 +141,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SapperEmote			= "A drake swoops down to drop a Twilight Sapper onto the deck!",
+	SapperEmote			= "Um draco mergulha para lançar um Sapador do Crepúsculo ao convés!",
 	Broadside			= "spell:110153",
 	DeckFire			= "spell:110095"
 })
@@ -152,7 +152,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(318)
 
 L:SetWarningLocalization({
-	SpecWarnTendril			= "Get Secured!"
+	SpecWarnTendril			= "Segure-se!"
 })
 
 L:SetTimerLocalization({
@@ -166,9 +166,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The plates! He's coming apart! Tear up the plates and we've got a shot at bringing him down!",
+	Pull		= "As placas! Ele está se desfazendo! Destruam as placas e teremos uma chance de derrotá-lo!",
 	NoDebuff	= "Sem %s",
-	PlasmaTarget	= "Searing Plasma: %s",
+	PlasmaTarget	= "Plasma Calcinante: %s",
 	DRoll		= "about to roll",
 	DLevels			= "levels out"
 })
@@ -188,7 +188,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "You have done NOTHING. I will tear your world APART."
+	Pull				= "Vocês não fizeram NADA. Seu mundo será DESTRUÍDO."
 })
 
 -------------
@@ -212,5 +212,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	UltraxionTrash		= "It is good to see you again, Alexstrasza. I have been busy in my absence."
+	UltraxionTrash		= "Que bom vê-la novamente, Alexstrasza. Estive ocupado na minha ausência."
 })
