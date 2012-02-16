@@ -193,7 +193,7 @@ do
 				else
 					sArg1, sArg2 =  string.match(arg1, L.ExprFlagPickUp)
 				end
-				if( GetLocale() == "deDE" or GetLocale() == "koKR") then
+				if( GetLocale() == "deDE" or GetLocale() == "koKR" or GetLocale() == "ptBR" ) then
 					mSide = sArg2
 					mNick = sArg1
 				else

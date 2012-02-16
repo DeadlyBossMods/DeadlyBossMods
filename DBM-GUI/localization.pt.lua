@@ -6,7 +6,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 			= "Vintematar"
+L.TranslationBy 			= "Cavejohnson @ Azralon"
 
 L.OTabBosses	= "Chefes"
 L.OTabOptions	= "Opções"
