@@ -239,6 +239,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EoEEvent			= "It is no use, the power of the Dragon Soul is too great",--Partial
+	EoEEvent			= "这没有用，巨龙之魂的力量太强大了。",--Partial
 	UltraxionTrash		= "重逢真令我高兴，阿莱克斯塔萨。分开之后，我可是一直很忙。",
 })
