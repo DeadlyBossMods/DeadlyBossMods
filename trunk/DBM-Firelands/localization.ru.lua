@@ -216,7 +216,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame			= "Показывать окно проверки дистанции (10м) для $spell:100012",
 })
 
 L:SetMiscLocalization({

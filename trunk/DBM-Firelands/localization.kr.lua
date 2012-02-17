@@ -216,7 +216,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame			= "$spell:100012 주문의 영향을 받은 경우 거리 프레임 보기 (10m)"
 })
 
 L:SetMiscLocalization({
