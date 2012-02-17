@@ -35,7 +35,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 외치기 (영웅 난이도)",
+	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 대화로 알리기 (영웅 난이도)",
 	CustomRangeFrame	= "교란의 그림자 주문에 대한 거리 프레임 설정 (영웅 난이도)",
 	Never				= "사용안함",
 	Normal				= "일반 거리 프레임",
