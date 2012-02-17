@@ -85,7 +85,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnBrew			= "$spell:47376 특수 경고 보기",
 	specWarnBrewStun		= "$spell:47340 특수 경고 보기",
-	YellOnBarrel			= "$spell:51413 주문의 영향을 받은 경우 외치기"
+	YellOnBarrel			= "$spell:51413 주문의 영향을 받은 경우 대화로 알리기"
 })
 
 L:SetMiscLocalization{

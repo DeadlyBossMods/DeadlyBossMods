@@ -80,7 +80,7 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "$spell:83500 효과가 없을 경우, 특수 경고 보기(~10초 전)",
 	timerTransition			= "전환 단계 바 표시",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
-	yellScrewed				= "$spell:83099 와 $spell:92307 주문의 영향을 동시에 받은 경우 외치기",
+	yellScrewed				= "$spell:83099 와 $spell:92307 주문의 영향을 동시에 받은 경우 대화로 알리기",
 	InfoFrame				= "$spell:83581 또는 $spell:83500 효과 없음에 대한 정보 프레임 보기",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
