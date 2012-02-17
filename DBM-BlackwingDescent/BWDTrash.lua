@@ -8,10 +8,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"SWING_DAMAGE",
-	"SWING_MISSED",
 	"UNIT_DIED"
 )
 
@@ -43,8 +39,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerChargeCD:Start()
 	elseif args:IsSpellID(80035) then--Drakonid Vengeful rage, good way to reset dragonid died counter without a pull mechanic to reset on.
 		drakonidDied = 1
-	elseif not args:IsSpellID(1130) and args:GetDestCreatureID() == 42362 and not InCombatLockdown() then--A way to detect combat without firing an engage event.
-		timerChargeCD:Start(21.5)
 	end
 end
 
@@ -63,15 +57,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFlashBomb:Show()
 	end
 end
-
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags)
-	if self:GetCIDFromGUID(destGUID) == 42362 and not InCombatLockdown() then
-		timerChargeCD:Start(21.5)
-	end
-end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
-mod.SWING_DAMAGE = mod.SPELL_DAMAGE
-mod.SWING_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

@@ -10,17 +10,8 @@ L:SetGeneralLocalization({
 	name =	"Halfus Wyrmbreaker"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Show the health of released drakes\n(Requires Boss Health enabled)"
-})
-
-L:SetMiscLocalization({
 })
 
 ---------------------------
@@ -31,12 +22,6 @@ L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
 	name =	"Valiona & Theralion"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -115,12 +100,6 @@ L:SetGeneralLocalization({
 	name =	"Cho'gall"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
 	InfoFrame				= "Show info frame for $spell:81701",
@@ -192,16 +171,4 @@ L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({
 	name =	"The Bastion of Twilight Trash"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
