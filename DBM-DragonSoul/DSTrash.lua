@@ -137,7 +137,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 				"UNIT_DIED"
 			)
 			drakeRunning = true
-			print ("event registered")
 		end
 		table.wipe(drakeguid)
 		drakesCount = 15--Reset drakes here still in case no one running current dbm is targeting thrall
