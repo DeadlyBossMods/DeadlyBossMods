@@ -376,6 +376,23 @@ do
 		end
 	end
 
+	function DBM:UnregisterPartlyEvents()
+		if self.partlyRegisterEvents then
+			for event, mods in pairs(registeredEvents) do
+				for i = #mods, 1, -1 do
+					if mods[i] == self and checkEntry(self.partlyRegisterEvents, event)  then
+						tremove(mods, i)
+					end
+				end
+				if #mods == 0 then
+					registeredEvents[event] = nil
+					mainFrame:UnregisterEvent(event)
+				end
+			end
+			self.partlyEventsRegistered = nil
+		end
+	end
+
 
 
 	DBM:RegisterEvents("ADDON_LOADED")
@@ -3143,6 +3160,7 @@ end
 bossModPrototype.RegisterEvents = DBM.RegisterEvents
 bossModPrototype.UnregisterInCombatEvents = DBM.UnregisterInCombatEvents
 bossModPrototype.AddMsg = DBM.AddMsg
+bossModPrototype.UnregisterPartlyEvents = DBM.UnregisterPartlyEvents
 
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
@@ -3176,6 +3194,21 @@ function bossModPrototype:RegisterEventsInCombat(...)
 			local ev = select(i, ...)
 			tinsert(self.inCombatOnlyEvents, ev)
 		end
+	end
+end
+
+function bossModPrototype:RegisterEventsPartly(...)
+	if not self.partlyRegisterEvents then
+		self.partlyRegisterEvents = {...}
+	else
+		for i = 1, select("#", ...) do
+			local ev = select(i, ...)
+			tinsert(self.partlyRegisterEvents, ev)
+		end
+	end
+	if self.partlyRegisterEvents and not self.partlyEventsRegistered then
+		self.partlyEventsRegistered = 1
+		self:RegisterEvents(unpack(self.partlyRegisterEvents))
 	end
 end
 
