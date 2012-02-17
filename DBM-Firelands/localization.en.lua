@@ -5,12 +5,6 @@ local L
 -----------------
 L= DBM:GetModLocalization(192)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	RangeFrame			= "Show range frame (10)"
 })
@@ -23,18 +17,6 @@ L:SetMiscLocalization({
 -- Lord Rhyolith --
 -------------------
 L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------
 -- Alysrazor --
@@ -78,12 +60,6 @@ L:SetMiscLocalization({
 -- Shannox --
 -------------
 L= DBM:GetModLocalization(195)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
@@ -132,9 +108,6 @@ L:SetMiscLocalization({
 --------------------------------
 L= DBM:GetModLocalization(197)
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	timerNextSpecial	= "Next %s (%d)"
 })
@@ -145,9 +118,6 @@ L:SetOptionLocalization({
 	RangeFrameCat				= "Show range frame (10) for $spell:98374",
 	LeapArrow					= "Show DBM arrow when $spell:98476 is near you",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
-})
-
-L:SetMiscLocalization({
 })
 
 --------------
@@ -208,19 +178,6 @@ L:SetGeneralLocalization({
 	name = "Firelands Trash"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	TrashRangeFrame	= "Show range frame (10) for $spell:100012"
-})
-
-L:SetMiscLocalization({
-})
-
 ----------------
 --  Volcanus  --
 ----------------
@@ -228,9 +185,6 @@ L = DBM:GetModLocalization("Volcanus")
 
 L:SetGeneralLocalization({
 	name = "Volcanus"
-})
-
-L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
@@ -254,16 +208,4 @@ L = DBM:GetModLocalization("NexusLegendary")
 
 L:SetGeneralLocalization({
 	name = "Thyrinar"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })

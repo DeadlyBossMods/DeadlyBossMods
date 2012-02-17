@@ -209,19 +209,6 @@ L:SetGeneralLocalization({
 	name = "Trash der Feuerlande"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	TrashRangeFrame	= "Zeige Abstandsfenster (10m) für $spell:100012"
-})
-
-L:SetMiscLocalization({
-})
-
 ----------------
 --  Volcanus  --
 ----------------

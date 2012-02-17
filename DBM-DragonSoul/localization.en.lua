@@ -27,12 +27,6 @@ L:SetMiscLocalization({
 ---------------------
 L= DBM:GetModLocalization(324)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShadowYell			= "Yell when you are affected by $spell:104600\n(Heroic difficulty only)",
 	CustomRangeFrame	= "Range Frame options (Heroic only)",
@@ -173,9 +167,6 @@ L:SetWarningLocalization({
 	SpecWarnTendril			= "Get Secured!"
 })
 
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	SpecWarnTendril			= "Show special warning when you are missing $spell:109454 debuff",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "Show info frame for players without $spell:109454",
@@ -195,12 +186,6 @@ L:SetMiscLocalization({
 -- Madness of Deathwing  -- 
 ---------------------------
 L= DBM:GetModLocalization(333)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:108649 on Heroic difficulty",

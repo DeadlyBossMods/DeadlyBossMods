@@ -223,7 +223,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "Exibir medidor de distância (10) para $spell:100012"
 })
 
 L:SetMiscLocalization({

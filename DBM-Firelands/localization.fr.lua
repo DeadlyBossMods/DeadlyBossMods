@@ -218,7 +218,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "Cadre des portées (10) pour $spell:100012"
 })
 
 L:SetMiscLocalization({
