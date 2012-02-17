@@ -376,11 +376,11 @@ do
 		end
 	end
 
-	function DBM:UnregisterPartlyEvents()
-		if self.partlyRegisterEvents then
+	function DBM:UnregisterShortTermEvents()
+		if self.shortTermRegisterEvents then
 			for event, mods in pairs(registeredEvents) do
 				for i = #mods, 1, -1 do
-					if mods[i] == self and checkEntry(self.partlyRegisterEvents, event)  then
+					if mods[i] == self and checkEntry(self.shortTermRegisterEvents, event)  then
 						tremove(mods, i)
 					end
 				end
@@ -389,7 +389,7 @@ do
 					mainFrame:UnregisterEvent(event)
 				end
 			end
-			self.partlyEventsRegistered = nil
+			self.shortTermRegisterEvents = nil
 		end
 	end
 
@@ -3160,7 +3160,7 @@ end
 bossModPrototype.RegisterEvents = DBM.RegisterEvents
 bossModPrototype.UnregisterInCombatEvents = DBM.UnregisterInCombatEvents
 bossModPrototype.AddMsg = DBM.AddMsg
-bossModPrototype.UnregisterPartlyEvents = DBM.UnregisterPartlyEvents
+bossModPrototype.UnregisterShortTermEvents = DBM.UnregisterShortTermEvents
 
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
@@ -3197,18 +3197,18 @@ function bossModPrototype:RegisterEventsInCombat(...)
 	end
 end
 
-function bossModPrototype:RegisterEventsPartly(...)
-	if not self.partlyRegisterEvents then
-		self.partlyRegisterEvents = {...}
+function bossModPrototype:RegisterEventsShortTerm(...)
+	if not self.shortTermRegisterEvents then
+		self.shortTermRegisterEvents = {...}
 	else
 		for i = 1, select("#", ...) do
 			local ev = select(i, ...)
-			tinsert(self.partlyRegisterEvents, ev)
+			tinsert(self.shortTermRegisterEvents, ev)
 		end
 	end
-	if self.partlyRegisterEvents and not self.partlyEventsRegistered then
-		self.partlyEventsRegistered = 1
-		self:RegisterEvents(unpack(self.partlyRegisterEvents))
+	if self.shortTermRegisterEvents and not self.shortTermEventsRegistered then
+		self.shortTermEventsRegistered = 1
+		self:RegisterEvents(unpack(self.shortTermRegisterEvents))
 	end
 end
 

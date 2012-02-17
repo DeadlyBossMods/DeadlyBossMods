@@ -128,7 +128,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.UltraxionTrash or msg:find(L.UltraxionTrash) then
 		if not drakeRunning then
-			self:RegisterEventsPartly(
+			self:RegisterEventsShortTerm(
 				"SPELL_DAMAGE",
 				"SPELL_MISSED",
 				"SWING_DAMAGE",
@@ -157,7 +157,7 @@ end--]]
 --	"<101.5> CHAT_MSG_MONSTER_YELL#It is good to see you again, Alexstrasza. I have been busy in my absence.#Deathwing###Vounelli##0#0##0#3093##0#false", -- [1]
 --	"<133.3> [UNIT_SPELLCAST_SUCCEEDED] Thrall:Possible Target<nil>:target:Ward of Earth::0:108161", -- [875]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(108161) then--Thrall starting drake event, comes much later then yell but is only event that triggers after a wipe to this trash.
+	if spellName == GetSpellInfo(108161) then--Thrall starting drake event, comes later then yell but is only event that triggers after a wipe to this trash.
 		self:SendSync("Skyrim")
 	elseif spellName == GetSpellInfo(109904) then
 		self:SendSync("SkyrimEnded")
@@ -167,7 +167,7 @@ end
 function mod:OnSync(msg, GUID)
 	if msg == "Skyrim" then
 		if not drakeRunning then
-			self:RegisterEventsPartly(
+			self:RegisterEventsShortTerm(
 				"SPELL_DAMAGE",
 				"SPELL_MISSED",
 				"SWING_DAMAGE",
@@ -182,7 +182,7 @@ function mod:OnSync(msg, GUID)
 		timerDrakes:Start(231, GetSpellInfo(109904))
 	elseif msg == "SkyrimEnded" then
 		drakeRunning = false
-		self:UnregisterPartlyEvents()
+		self:UnregisterShortTermEvents()
 		timerDrakes:Cancel()
 --[[	elseif msg == "EoEPortal" and GetTime() - syncTime > 300 then -- Sometimes event starts already portal opened (timer expires). So ignore sync for 5 min. I hopefully fixed all problems from this method...
 		syncTime = GetTime()

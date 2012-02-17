@@ -218,7 +218,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TrashRangeFrame	= "距离监视器（10码）：应对$spell:100012"
 })
 
 L:SetMiscLocalization({
