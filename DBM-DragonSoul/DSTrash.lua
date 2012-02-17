@@ -7,12 +7,6 @@ mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"SWING_DAMAGE",
-	"SPELL_PERIODIC_DAMAGE",
-	"RANGE_DAMAGE",
-	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 --	"CHAT_MSG_MONSTER_SAY",
 	"UNIT_SPELLCAST_SUCCEEDED"
@@ -37,8 +31,9 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 local antiSpam = 0
+--local syncTime = 0
+local drakeRunning = false
 local drakesCount = 15
-local syncTime = 0
 local drakeguid = {}
 
 local function drakeDied(GUID)
@@ -113,8 +108,8 @@ end
 
 --Very shitty performance way of doing it, but it's only way that works. they have about a 1/3 chance to NOT fire UNIT_DIED, sigh. But they do always fire an overkill. Confirmed in my logs.
 function mod:SWING_DAMAGE(_, _, _, _, destGUID, _, _, _, _, overkill)
-	if (overkill or 0) > 0 then
-		local cid = self:GetCIDFromGUID(destGUID) -- prevent to waste cpu. only pharse cid when event have overkill parameter.
+	if (overkill or 0) > 0 then -- prevent to waste cpu. only pharse cid when event have overkill parameter.
+		local cid = self:GetCIDFromGUID(destGUID)
 		if (cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795) then--Hack for mobs that don't fire UNIT_DIED event.
 			drakeDied(destGUID)
 		end
@@ -123,10 +118,6 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	-- drake seems to have 4 cids only. (56249, 56250, 56251, 56252)
-	-- but sometimes UNIT_DIED not fires on drake dies (especially in LFR). Because of this bug, drake warning is not perfect and count is incorrect. (koKR only?)
-	-- So currently, this stuff is partly broken.
-	-- Combat log range could be a factor, lets try fixing this with syncing, as well as more running mod the better, only one persons combat log needs to pick it up, sync fix the rest.
 	if cid == 56249 or cid == 56250 or cid == 56251 or cid == 56252 or cid == 57281 or cid == 57795 then
 		drakeDied(args.destGUID)
 	end
@@ -136,6 +127,19 @@ end
 --	"<271.9> [UNIT_SPELLCAST_SUCCEEDED] Twilight Assaulter:Possible Target<nil>:target:Twilight Escape::0:109904", -- [11926]
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.UltraxionTrash or msg:find(L.UltraxionTrash) then
+		if not drakeRunning then
+			self:RegisterEventsPartly(
+				"SPELL_DAMAGE",
+				"SPELL_MISSED",
+				"SWING_DAMAGE",
+				"SPELL_PERIODIC_DAMAGE",
+				"RANGE_DAMAGE",
+				"UNIT_DIED"
+			)
+			drakeRunning = true
+			print ("event registered")
+		end
+		table.wipe(drakeguid)
 		drakesCount = 15--Reset drakes here still in case no one running current dbm is targeting thrall
 		timerDrakes:Start(253, GetSpellInfo(109904))--^^
 	-- timer still remains even combat starts. so, cancels manually. (Probably for someone who wasn't present for first drake dying.
@@ -163,10 +167,23 @@ end
 
 function mod:OnSync(msg, GUID)
 	if msg == "Skyrim" then
+		if not drakeRunning then
+			self:RegisterEventsPartly(
+				"SPELL_DAMAGE",
+				"SPELL_MISSED",
+				"SWING_DAMAGE",
+				"SPELL_PERIODIC_DAMAGE",
+				"RANGE_DAMAGE",
+				"UNIT_DIED"
+			)
+			drakeRunning = true
+		end
 		table.wipe(drakeguid)
 		drakesCount = 15--Reset drakes here too soo they stay accurate after wipes.
 		timerDrakes:Start(231, GetSpellInfo(109904))
 	elseif msg == "SkyrimEnded" then
+		drakeRunning = false
+		self:UnregisterPartlyEvents()
 		timerDrakes:Cancel()
 --[[	elseif msg == "EoEPortal" and GetTime() - syncTime > 300 then -- Sometimes event starts already portal opened (timer expires). So ignore sync for 5 min. I hopefully fixed all problems from this method...
 		syncTime = GetTime()
