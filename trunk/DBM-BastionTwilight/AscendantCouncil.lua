@@ -248,6 +248,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	DBM:GetModByName("BoTrash"):SetFlamestrike(true)
 	updateBossFrame(1)
 	table.wipe(frozenTargets)
 	table.wipe(lightningRodTargets)
