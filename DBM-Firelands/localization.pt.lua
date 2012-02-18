@@ -7,19 +7,7 @@ local L
 -----------------
 L= DBM:GetModLocalization(192)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-	TimerSpinners 		= "Próx. Tecelãs",
-	TimerSpiderlings	= "Próx. Aranitas",
-	TimerDrone			= "Próx. Soldado"
-})
-
 L:SetOptionLocalization({
-	TimerSpinners		= "Exibir cronógrafo para as próximas $journal:2770",
-	TimerSpiderlings	= "Exibir cronógrafo para as próximas $journal:2778",
-	TimerDrone			= "Exibir cronógrafo para o próximo $journal:2773",
 	RangeFrame			= "Exibir medidor de distância (10)"
 })
 
@@ -31,18 +19,6 @@ L:SetMiscLocalization({
 -- Lord Rhyolith --
 -------------------
 L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------
 -- Alysrazor --
@@ -86,12 +62,6 @@ L:SetMiscLocalization({
 -- Shannox --
 -------------
 L= DBM:GetModLocalization(195)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
@@ -140,9 +110,6 @@ L:SetMiscLocalization({
 --------------------------------
 L= DBM:GetModLocalization(197)
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	timerNextSpecial	= "Próx. %s (%d)"
 })
@@ -153,9 +120,6 @@ L:SetOptionLocalization({
 	RangeFrameCat				= "Exibir medidor de distância (10) para $spell:98374",
 	LeapArrow					= "Exibir seta do DBM quando $spell:98476 está próximo de você",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
-})
-
-L:SetMiscLocalization({
 })
 
 --------------
@@ -216,18 +180,6 @@ L:SetGeneralLocalization({
 	name = "Trash de Terras do Fogo"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ----------------
 --  Volcanus  --
 ----------------
@@ -235,9 +187,6 @@ L = DBM:GetModLocalization("Volcanus")
 
 L:SetGeneralLocalization({
 	name = "Volcanus" --TODO I have no Idea what's his localized name (not on dungeon journal)
-})
-
-L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
@@ -261,16 +210,4 @@ L = DBM:GetModLocalization("NexusLegendary")
 
 L:SetGeneralLocalization({
 	name = "Thyrinar" -- TODO no idea of his name either.
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })

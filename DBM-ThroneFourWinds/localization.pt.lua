@@ -49,9 +49,6 @@ L:SetGeneralLocalization({
 	name = "Al'Akir"
 })
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	TimerFeedback 	= "Realimentação (%d)"
 })
@@ -60,7 +57,4 @@ L:SetOptionLocalization({
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "Exibir cronógrafo para a duração de $spell:87904",
 	RangeFrame		= "Exibir medidor de distância (20), quando afetado por $spell:89668"
-})
-
-L:SetMiscLocalization({
 })
