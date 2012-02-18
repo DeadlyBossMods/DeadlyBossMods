@@ -32,6 +32,7 @@ local warnFragments				= mod:NewSpellAnnounce("ej4115", 4, 106708)--This needs a
 local warnTerror				= mod:NewSpellAnnounce("ej4117", 4, 106765)--This needs a fitting spell icon, trigger spell only has a gear.
 local warnShrapnel				= mod:NewTargetAnnounce(109598, 3)
 local warnParasite				= mod:NewTargetAnnounce(108649, 4)
+local warnCongealingBloodSoon	= mod:NewSoonAnnounce("ej4350", 4, 109089)--15%, 10%, 5% on heroic. spellid is 109089.
 
 local specWarnMutated			= mod:NewSpecialWarningSwitch("ej4112", not mod:IsHealer())--Because tanks need to switch to it too.
 local specWarnImpale			= mod:NewSpecialWarningYou(106400)
@@ -78,6 +79,7 @@ local phase2 = false
 local playerGUID = 0
 local shrapnelTargets = {}
 local antiSpam = 0
+local warnedCount = 0
 
 local debuffFilter
 do
@@ -106,6 +108,7 @@ function mod:OnCombatStart(delay)
 	engageCount = 0
 	phase2 = false
 	antiSpam = 0
+	warnedCount = 0
 	table.wipe(shrapnelTargets)
 	berserkTimer:Start(-delay)
 end
@@ -114,6 +117,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -270,6 +274,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		warnPhase2:Show()
 		timerFragmentsCD:Start(11)
 		timerTerrorCD:Start(36)
+		self:RegisterShortTermEvents(
+			"UNIT_HEALTH_FREQUENT"
+		)
 	elseif spellName == GetSpellInfo(109568) then--Summon Impaling Tentacle (Fragments summon)
 		warnFragments:Show()
 		specWarnFragments:Show()
@@ -286,5 +293,22 @@ function mod:OnSync(msg)
 		timerElementiumBlast:Cancel()--Lot of work just to cancel a timer, why the heck did blizz break this mob firing UNIT_DIED when it dies? Sigh.
 	elseif msg == "MadnessDown" and self:IsInCombat() then
 		DBM:EndCombat(self)
+	end
+end
+
+function mod:UNIT_HEALTH_FREQUENT(uId)
+	if uId == "boss1" then
+		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		if hp > 15 and hp < 16.5 and warnedCount == 0 then
+			warnedCount = 1
+			warnCongealingBloodSoon:Show()
+		elseif hp > 10 and hp < 11.5 and warnedCount == 1 then
+			warnedCount = 2
+			warnCongealingBloodSoon:Show()
+		elseif hp > 5 and hp < 6.5 and warnedCount == 2 then
+			warnedCount = 3
+			warnCongealingBloodSoon:Show()
+			self:UnregisterShortTermEvents()
+		end
 	end
 end
