@@ -171,7 +171,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerElementiumBlast:Start(20)
 			specWarnElementiumBoltDPS:Schedule(7.5)
 		end
-	elseif args:IsSpellID(110063) and phase2 and self:IsInCombat() then--Astral Recall. Thrall teleports off back platform back to front on defeat.
+	elseif args:IsSpellID(110063) then--Astral Recall. Thrall teleports off back platform back to front on defeat.
 		self:SendSync("MadnessDown")
 	end
 end
@@ -284,7 +284,7 @@ end
 function mod:OnSync(msg)
 	if msg == "BoltDied" then
 		timerElementiumBlast:Cancel()--Lot of work just to cancel a timer, why the heck did blizz break this mob firing UNIT_DIED when it dies? Sigh.
-	elseif msg == "MadnessDown" then
+	elseif msg == "MadnessDown" and self:IsInCombat() then
 		DBM:EndCombat(self)
 	end
 end
