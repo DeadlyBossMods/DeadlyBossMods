@@ -28,12 +28,6 @@ L:SetMiscLocalization({
 ---------------------
 L= DBM:GetModLocalization(324)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 대화로 알리기 (영웅 난이도)",
 	CustomRangeFrame	= "교란의 그림자 주문에 대한 거리 프레임 설정 (영웅 난이도)",
@@ -174,9 +168,6 @@ L:SetWarningLocalization({
 	SpecWarnTendril			= "등에 달라 붙으세요!"
 })
 
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	SpecWarnTendril			= "$spell:109454 약화 효과가 없을 경우 특수 경고 보기",--http://ptr.wowhead.com/npc=56188
 	InfoFrame				= "$spell:109454 약화 효과 없음에 대한 정보 프레임 보기",
@@ -196,12 +187,6 @@ L:SetMiscLocalization({
 -- Madness of Deathwing  -- 
 ---------------------------
 L= DBM:GetModLocalization(333)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	RangeFrame			= "$spell:108649 약화 효과 상태에 따른 거리 프레임 표시 (영웅 난이도)",

@@ -6,12 +6,6 @@ local L
 ----------------
 L= DBM:GetModLocalization(192)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	RangeFrame			= "거리 프레임 보기 (10m)"
 })
@@ -24,18 +18,6 @@ L:SetMiscLocalization({
 -- Lord Rhyolith --
 -------------------
 L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------
 -- Alysrazor --
@@ -79,12 +61,6 @@ L:SetMiscLocalization({
 -- Shannox --
 -------------
 L= DBM:GetModLocalization(195)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
@@ -133,9 +109,6 @@ L:SetMiscLocalization({
 --------------------------------
 L= DBM:GetModLocalization(197)
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	timerNextSpecial	= "다음 %s (%d)"
 })
@@ -146,9 +119,6 @@ L:SetOptionLocalization({
 	RangeFrameCat			= "$spell:98374 일때 거리 프레임 보기 (10m)",
 	LeapArrow				= "$spell:98476 대상이 근처에 있을 경우 DBM 화살표 보기",
 	IconOnLeapingFlames		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
-})
-
-L:SetMiscLocalization({
 })
 
 --------------
@@ -209,18 +179,6 @@ L:SetGeneralLocalization({
 	name = "불의 땅 일반몹"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ----------------
 --  Volcanus  --
 ----------------
@@ -228,9 +186,6 @@ L = DBM:GetModLocalization("Volcanus")
 
 L:SetGeneralLocalization({
 	name = "볼카누스"
-})
-
-L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
@@ -254,16 +209,4 @@ L = DBM:GetModLocalization("NexusLegendary")
 
 L:SetGeneralLocalization({
 	name = "티리나르"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
