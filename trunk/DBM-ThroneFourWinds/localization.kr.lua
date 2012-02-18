@@ -47,10 +47,6 @@ L:SetGeneralLocalization({
 	name = "알아키르"
 })
 
-
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	TimerFeedback 		= "역순환 (%d)"
 })
@@ -59,7 +55,4 @@ L:SetOptionLocalization({
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback		= "$spell:87904 유지 시간 바 표시",
 	RangeFrame			= "$spell:89668 주문의 영향을 받은 경우 거리 프레임 보기 (20m)"
-})
-
-L:SetMiscLocalization({
 })

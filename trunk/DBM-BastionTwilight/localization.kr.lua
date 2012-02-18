@@ -11,17 +11,8 @@ L:SetGeneralLocalization({
 	name =	"할푸스 웜브레이커"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "풀려난 용의 체력 프레임 보기\n(보스 체력 프레임 보기가 활성화 되어 있어야 함)"
-})
-
-L:SetMiscLocalization({
 })
 
 ---------------------------
@@ -32,12 +23,6 @@ L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
 	name =	"발리오나와 테랄리온"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -116,12 +101,6 @@ L:SetGeneralLocalization({
 	name =	"초갈"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "$spell:93178 대상이 근처에 있을 경우 DBM 화살표 보기",
 	InfoFrame				= "$spell:81701 정보 프레임 보기",
@@ -193,16 +172,4 @@ L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({
 	name =	"황혼의 요새 일반몹"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
