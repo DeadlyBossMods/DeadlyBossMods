@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "zhTW" then return end
-
 local L
 
 ------------------------
@@ -49,9 +48,6 @@ L:SetGeneralLocalization({
 	name 				= "奧拉基爾"
 })
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	TimerFeedback 			= "回饋(%d)"
 })
@@ -60,7 +56,4 @@ L:SetOptionLocalization({
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback			= "為$spell:87904的持續時間顯示計時器",
 	RangeFrame				= "為當中了$spell:89668時顯示距離框(20碼)"
-})
-
-L:SetMiscLocalization({
 })

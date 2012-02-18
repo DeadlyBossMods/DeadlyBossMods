@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "zhTW" then return end
-
 local L
 
 --------------------------
@@ -32,7 +31,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name 				= "競技場"
+	name 				= "競技場 "
 })
 
 L:SetTimerLocalization({
@@ -182,11 +181,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart				= "顯示開始計時器", 
 	TimerPOI				= "顯示奪取計時器",
 	TimerSiegeEngine		= "為攻城機具的修復顯示計時器",
 	WarnSiegeEngine			= "當攻城機具準備好時顯示警告",
-	WarnSiegeEngineSoon		= "當攻城機具接近準備好時顯示警告"
+	WarnSiegeEngineSoon		= "當攻城機具接近準備好時顯示警告",
+	ShowGatesHealth			= "顯示受損大門的耐久值(當加入一個正在進行的戰場大門耐久值可能會不準確!)"
 })
 
 L:SetMiscLocalization({
@@ -223,7 +222,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn			= "(.+)的旗幟被(.+)還到了它的基地",
 	FlagAlliance			= "聯盟旗幟: ",
 	FlagHorde			= "部落旗幟: ",
-	FlagBase			= "基地"
+	FlagBase			= "基地",
+	Vulnerable1			= "旗幟攜帶者變得脆弱了!",
+	Vulnerable2			= "旗幟攜帶者變得更加的脆弱了!"
 })
 
 L:SetTimerLocalization({
