@@ -35,7 +35,7 @@ function mod:SetFlamestrike(CouncilPull)
 		flamestrikeRunning = false
 	end
 	if not flamestrikeRunning and not CouncilPull then
-		self:RegisterEventsShortTerm(
+		self:RegisterShortTermEvents(
 			"SPELL_DAMAGE",
 			"SPELL_MISSED"
 		)

@@ -128,7 +128,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.UltraxionTrash or msg:find(L.UltraxionTrash) then
 		if not drakeRunning then
-			self:RegisterEventsShortTerm(
+			self:RegisterShortTermEvents(
 				"SPELL_DAMAGE",
 				"SPELL_MISSED",
 				"SWING_DAMAGE",
@@ -167,7 +167,7 @@ end
 function mod:OnSync(msg, GUID)
 	if msg == "Skyrim" then
 		if not drakeRunning then
-			self:RegisterEventsShortTerm(
+			self:RegisterShortTermEvents(
 				"SPELL_DAMAGE",
 				"SPELL_MISSED",
 				"SWING_DAMAGE",

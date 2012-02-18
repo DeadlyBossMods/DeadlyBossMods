@@ -3197,7 +3197,7 @@ function bossModPrototype:RegisterEventsInCombat(...)
 	end
 end
 
-function bossModPrototype:RegisterEventsShortTerm(...)
+function bossModPrototype:RegisterShortTermEvents(...)
 	if not self.shortTermRegisterEvents then
 		self.shortTermRegisterEvents = {...}
 	else
