@@ -88,7 +88,7 @@ function mod:SPELL_CAST_START(args)
 		warnRaiselava:Show()
 		timerRaiseLavaCD:Start()
 		if not lavaRunning then
-			self:RegisterEventsShortTerm(
+			self:RegisterShortTermEvents(
 				"SPELL_DAMAGE",
 				"SPELL_MISSED"
 			)
