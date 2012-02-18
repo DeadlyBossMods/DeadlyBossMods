@@ -943,9 +943,6 @@ L:SetOptionLocalization{
 	TimerFlarecoreDetonate	= "$spell:101927 폭발 까지 남은 시간 바 표시"
 }
 
-L:SetMiscLocalization{
-}
-
 ----------------------
 -- Echo of Baine --
 ----------------------
@@ -982,7 +979,6 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Pull		= "필멸자 주제에 내 앞에 서고도 살기를 바라느냐!"
 }
-
 
 -------------
 -- Azshara --
