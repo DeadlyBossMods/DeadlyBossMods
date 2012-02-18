@@ -976,13 +976,11 @@ L = DBM:GetModLocalization("Perotharn")
 
 L:SetGeneralLocalization{
 	name = "佩洛薩恩"
-
 }
 
 L:SetMiscLocalization{
 	Pull		= "沒有凡人能在我眼前活下來!"
 }
-
 
 -------------
 -- Azshara --

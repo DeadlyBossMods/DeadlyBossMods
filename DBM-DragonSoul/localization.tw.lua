@@ -20,19 +20,11 @@ L:SetOptionLocalization({
 	RangeFrame		= "為成就顯示距離框(5碼)。"
 })
 
-L:SetMiscLocalization({
-})
-
 ---------------------
 -- Warlord Zon'ozz --
 ---------------------
 L= DBM:GetModLocalization(324)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	ShadowYell			= "當你中了$spell:104600時大喊(英雄模式專用)",
@@ -174,9 +166,6 @@ L:SetWarningLocalization({
 	SpecWarnTendril			= "已被安全抓住!"
 })
 
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	SpecWarnTendril			= "當你身上沒有$spell:109454減益時顯示特別警告",
 	InfoFrame				= "為沒有$spell:109454的玩家顯示訊息框",
@@ -196,12 +185,6 @@ L:SetMiscLocalization({
 -- Madness of Deathwing  -- 
 ---------------------------
 L= DBM:GetModLocalization(333)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	RangeFrame			= "根據玩家減益顯示動態的距離框以對應英雄模式的$spell:108649",
