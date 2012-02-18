@@ -949,9 +949,6 @@ L:SetOptionLocalization{
 	TimerFlarecoreDetonate	= "Exibir cronógrafo para detonação de $spell:101927"
 }
 
-L:SetMiscLocalization{
-}
-
 ----------------------
 -- Echo of Baine --
 ----------------------
@@ -988,7 +985,6 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Pull		= "No mortal may stand before me and live!"
 }
-
 
 -------------
 -- Azshara --

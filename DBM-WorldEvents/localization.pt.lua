@@ -2,22 +2,28 @@
 
 local L
 
+------------
+--  Omen  --
+------------
+L = DBM:GetModLocalization("Omen")
+
+L:SetGeneralLocalization({
+	name = "Omen"
+})
+
 -----------------------
 --  Apothecary Trio  --
 -----------------------
 L = DBM:GetModLocalization("ApothecaryTrio")
 
 L:SetGeneralLocalization({
-	name = "Apothecary Trio"
-})
-
-L:SetWarningLocalization({
+	name = "Trio de boticários"
 })
 
 L:SetTimerLocalization{
-	HummelActive		= "Hummel se ativa",
-	BaxterActive		= "Baxter se ativa",
-	FryeActive			= "Frye se ativa"
+	HummelActive		= "Humberto se ativa",
+	BaxterActive		= "Balduíno se ativa",
+	FryeActive			= "Frias se ativa"
 }
 
 L:SetOptionLocalization({
@@ -25,7 +31,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SayCombatStart		= "Did they bother to tell you who I am and why I am doing this?"
+	SayCombatStart		= "Eles se deram ao trabalho de lhe dizer quem eu sou e por que estou fazendo isso?"
 })
 
 -------------
@@ -123,17 +129,60 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Greench")
 
 L:SetGeneralLocalization({
-	name = "O Aboi Greench"
+	name = "The Abominable Greench"
+})
+
+--------------------------
+--  Blastenheimer 5000  --
+--------------------------
+L = DBM:GetModLocalization("Cannon")
+
+L:SetGeneralLocalization({
+	name = "Blastenheimer 5000"
+})
+
+-------------
+--  Gnoll  --
+-------------
+L = DBM:GetModLocalization("Gnoll")
+
+L:SetGeneralLocalization({
+	name = "Whack-a-Gnoll"
 })
 
 L:SetWarningLocalization({
+	warnGameOverQuest	= "Você ganhou %d de um total de %d pontos possíveis",
+	warnGameOverNoQuest	= "Fim de jogo com um total de %d pontos possíveis",
+	warnGnoll			= "Gnoll apareceu",
+	warnHogger			= "Hogger apareceu",
+	specWarnHogger		= "Hogger apareceu!"
 })
-
-L:SetTimerLocalization{
-}
 
 L:SetOptionLocalization({
+	warnGameOver	= "Anunciar total de pontos possíveis ao final da partida",
+	warnGnoll		= "Anunciar quando um Gnoll aparecer",
+	warnHogger		= "Anunciar quando um Hogger aparecer",
+	specWarnHogger	= "Exibir aviso especial quando um Hogger aparecer"
 })
 
-L:SetMiscLocalization({
+------------------------
+--  Shooting Gallery  --
+------------------------
+L = DBM:GetModLocalization("Shot")
+
+L:SetGeneralLocalization({
+	name = "Shooting Gallery"
+})
+
+L:SetOptionLocalization({
+	SetBubbles			= "Automaticamente desabilitar balões de fala durante $spell:101871\n(Voltando ao normal ao fim da partida)"
+})
+
+----------------------
+--  Tonk Challenge  --
+----------------------
+L = DBM:GetModLocalization("Tonks")
+
+L:SetGeneralLocalization({
+	name = "Tonk Challenge"
 })
