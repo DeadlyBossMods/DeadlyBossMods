@@ -16,9 +16,6 @@ L:SetWarningLocalization({
 	SpecWarnInferno		= "熾熱的煉獄即將到來(約4秒前)"
 })
 
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	SpecWarnInferno		= "為$spell:92190顯示預先特別警告(約4秒前)",
 	RangeFrame			= "第2階段時顯示距離框(5碼)"
@@ -123,12 +120,6 @@ L = DBM:GetModLocalization("Chimaeron")
 
 L:SetGeneralLocalization({
 	name 				= "奇瑪隆"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -250,16 +241,4 @@ L = DBM:GetModLocalization("BWDTrash")
 
 L:SetGeneralLocalization({
 	name = "黑翼陷窟小怪"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })

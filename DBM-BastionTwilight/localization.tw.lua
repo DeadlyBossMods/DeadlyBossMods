@@ -12,17 +12,8 @@ L:SetGeneralLocalization({
 	name 				= "哈福斯•破龍者"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "顯示已被釋放的小龍血量\n(需要先開啟首領血量)"
-})
-
-L:SetMiscLocalization({
 })
 
 ---------------------------
@@ -33,12 +24,6 @@ L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
 	name 				= "瓦莉歐娜和瑟拉里恩"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -117,12 +102,6 @@ L:SetGeneralLocalization({
 	name 				= "丘加利"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame				= "為$spell:81701顯示資訊框架",
@@ -196,16 +175,4 @@ L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({
 	name =	"暮光堡壘小怪"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
