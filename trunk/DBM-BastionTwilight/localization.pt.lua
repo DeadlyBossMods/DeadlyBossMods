@@ -12,17 +12,8 @@ L:SetGeneralLocalization({
 	name =	"Halfus Quebra-serpe"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Mostrar vida dos dragonetes soltos.\n(Requer quadro de vida habilitado)"
-})
-
-L:SetMiscLocalization({
 })
 
 ---------------------------
@@ -33,12 +24,6 @@ L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
 	name =	"Valiona e Theralion"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -117,12 +102,6 @@ L:SetGeneralLocalization({
 	name =	"Cho'gall"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Exibir seta do DBM quando $spell:93178 for cair próximo a você",
 	InfoFrame				= "Mostrar quadro de informações para $spell:81701",
@@ -194,16 +173,4 @@ L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({
 	name =	"Trash de Bastião do Crepúsculo"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
