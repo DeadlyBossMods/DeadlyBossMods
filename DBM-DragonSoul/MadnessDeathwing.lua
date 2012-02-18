@@ -274,9 +274,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		warnPhase2:Show()
 		timerFragmentsCD:Start(11)
 		timerTerrorCD:Start(36)
-		self:RegisterShortTermEvents(
-			"UNIT_HEALTH_FREQUENT"
-		)
+		if self:IsDifficulty("heroic10", "heroic25") then--Only register on heroic, we don't need on normal.
+			self:RegisterShortTermEvents(
+				"UNIT_HEALTH_FREQUENT"
+			)
+		end
 	elseif spellName == GetSpellInfo(109568) then--Summon Impaling Tentacle (Fragments summon)
 		warnFragments:Show()
 		specWarnFragments:Show()
