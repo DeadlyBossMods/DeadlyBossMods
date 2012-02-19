@@ -53,7 +53,7 @@ local timerMutated				= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use 
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD				= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumCast		= mod:NewCastTimer(7.5, 105651)
-local timerElementiumBlast		= mod:NewCastTimer(8, 109600)--8-10 variation depending on where it's actually going to land. Use the min time on variance to make sure healer Cds aren't up late.
+local timerElementiumBlast		= mod:NewCastTimer(8, 109600)--8-10 variation depending on where it's actually going to land. Use the min time.
 local timerElementiumBoltCD		= mod:NewNextTimer(55.5, 105651)
 local timerHemorrhageCD			= mod:NewCDTimer(100.5, 105863)
 local timerCataclysm			= mod:NewCastTimer(60, 106523)
@@ -75,11 +75,12 @@ mod:AddBoolOption("SetIconOnParasite", true)
 
 local firstAspect = true
 local engageCount = 0
-local phase2 = false
 local playerGUID = 0
 local shrapnelTargets = {}
 local antiSpam = 0
 local warnedCount = 0
+local hemorrhage = GetSpellInfo(105863)
+local fragment = GetSpellInfo(109568)
 
 local debuffFilter
 do
@@ -105,7 +106,6 @@ end
 function mod:OnCombatStart(delay)
 	firstAspect = true
 	engageCount = 0
-	phase2 = false
 	antiSpam = 0
 	warnedCount = 0
 	table.wipe(shrapnelTargets)
@@ -180,11 +180,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106548) then
+	if args:IsSpellID(106548) then--Arm/Wing Transition
 		timerElementiumBoltCD:Cancel()
 		timerHemorrhageCD:Cancel()--Does this one cancel in event you super overgear this and stomp his ass this fast?
 		timerCataclysm:Cancel()
 		timerCataclysmCD:Cancel()
+	elseif args:IsSpellID(109592, 109593, 106834, 109594) then--Phase 2
+		warnPhase2:Show()
+		timerFragmentsCD:Start(10.5)
+		timerTerrorCD:Start(35.5)
+		if self:IsDifficulty("heroic10", "heroic25") then--Only register on heroic, we don't need on normal.
+			self:RegisterShortTermEvents(
+				"UNIT_HEALTH_FREQUENT"
+			)
+		end
 	elseif args:IsSpellID(106400) then
 		warnImpale:Show(args.destName)
 		timerImpale:Start(args.destName)
@@ -259,34 +268,24 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(110663) then--Elementium Meteor Transform (apparently this doesn't fire UNIT_DIED anymore, need to use this alternate method)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
+	if spellId == 110663 then--Elementium Meteor Transform (apparently this doesn't fire UNIT_DIED anymore, need to use this alternate method)
 		self:SendSync("BoltDied")--Send sync because Elementium bolts do not have a bossN arg, which means event only fires if it's current target/focus.
 	end
 	if not uId:find("boss") then return end--Anti spam to ignore all other args (like target/focus/mouseover)
-	if spellName == GetSpellInfo(105853) then
+	if spellName == hemorrhage then
 		warnHemorrhage:Show()
 		specWarnHemorrhage:Show()
-	elseif spellName == GetSpellInfo(105551) then--Spawn Blistering Tentacles
-		if not UnitBuff("player", GetSpellInfo(106028)) and not UnitIsDeadOrGhost("player") then--Check for Alexstrasza's Presence
+	elseif spellId == 105551 then--Spawn Blistering Tentacles
+		if not UnitBuff("player", GetSpellInfo(106028)) then--Check for Alexstrasza's Presence
 			warnTentacle:Show()
 			specWarnTentacle:Show()
 		end
-	elseif spellName == GetSpellInfo(106708) and not phase2 then--Slump (Phase 2 start), sometimes it's double warned. bliz bug??
-		phase2 = true 
-		warnPhase2:Show()
-		timerFragmentsCD:Start(11)
-		timerTerrorCD:Start(36)
-		if self:IsDifficulty("heroic10", "heroic25") then--Only register on heroic, we don't need on normal.
-			self:RegisterShortTermEvents(
-				"UNIT_HEALTH_FREQUENT"
-			)
-		end
-	elseif spellName == GetSpellInfo(109568) then--Summon Impaling Tentacle (Fragments summon)
+	elseif spellName == fragment then--Summon Impaling Tentacle (Fragments summon)
 		warnFragments:Show()
 		specWarnFragments:Show()
 		timerFragmentsCD:Start()
-	elseif spellName == GetSpellInfo(106765) then--Summon Elementium Terror (Big angry add)
+	elseif spellId == 106765 then--Summon Elementium Terror (Big angry add)
 		warnTerror:Show()
 		specWarnTerror:Show()
 		timerTerrorCD:Start()
