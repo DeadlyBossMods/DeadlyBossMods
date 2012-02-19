@@ -28,13 +28,6 @@ L:SetMiscLocalization({
 ---------------------
 L= DBM:GetModLocalization(324)
 
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShadowYell			= "Gritar cuando te afecte $spell:104600\n(Solo dificultad Heroica)",
 	CustomRangeFrame	= "Opciones de marco de distancia",
@@ -178,9 +171,6 @@ L:SetWarningLocalization({
 	SpecWarnTendril			= "¡Ponte a salvo!"
 })
 
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	SpecWarnTendril			= "Mostrar un aviso especial cuando no tengas el debuff de $spell:109454",
 	InfoFrame				= "Mostrar información de jugadores sin $spell:109454",
@@ -200,12 +190,6 @@ L:SetMiscLocalization({
 -- Madness of Deathwing  -- 
 ---------------------------
 L= DBM:GetModLocalization(333)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	RangeFrame			= "Mostrar distancia dinamica basada en el estado del debuff\n$spell:108649 en dificultad Heroica",

@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "Opciones"
+	name = "Opciones generales"
 })
 
 L:SetTimerLocalization({
