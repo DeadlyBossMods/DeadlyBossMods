@@ -12,17 +12,8 @@ L:SetGeneralLocalization({
 	name =	"Halfus Partevermis"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Mostrar la vida de los dragones liberados"
-})
-
-L:SetMiscLocalization({
 })
 
 ---------------------------
@@ -33,12 +24,6 @@ L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
 	name =	"Valiona y Theralion"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -117,13 +102,6 @@ L:SetGeneralLocalization({
 	name =	"Cho'gall"
 })
 
-L:SetWarningLocalization({
-
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:93178 está cerca de ti",
 	InfoFrame				= "Mostrar información para $spell:81701",
@@ -196,16 +174,4 @@ L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({
 	name =	"Pulls de Bastión del Crepúsculo"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
