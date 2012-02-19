@@ -177,9 +177,9 @@ local bossInactive = function(boss)
 end
 
 function mod:CheckEncasing() -- prevent two yells at a time
-	if encasing and self.Options.YellOnTargetLock then
+	if encasing then
 		yellEncasingShadows:Yell()
-	elseif not encasing then
+	else
 		yellAcquiringTarget:Yell()
 	end
 	encasing = false
