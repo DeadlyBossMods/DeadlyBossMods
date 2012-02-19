@@ -26,7 +26,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Slump			= "%s schlittert nach vorne und entblößt seine Zangen!",
 	HeadExposed		= "%s spießt sich selbst auf, was seinen Kopf freilegt!",
-	YellPhase2		= "Unfassbar! Ihr könntet tatsächlich meinen Lavawurm besiegen! Vielleicht kann ich helfen... das Zünglein an der Waage zu sein." --needs to be verified (video-captured translation)
+	YellPhase2		= "Unfassbar! Ihr könntet tatsächlich meinen Lavawurm besiegen! Vielleicht kann ich helfen... das Zünglein an der Waage zu sein."
 })
 
 -------------------------------
