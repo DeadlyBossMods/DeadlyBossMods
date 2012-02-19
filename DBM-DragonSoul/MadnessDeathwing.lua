@@ -180,7 +180,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106400) then
+	if args:IsSpellID(106548) then
+		timerElementiumBoltCD:Cancel()
+		timerHemorrhageCD:Cancel()--Does this one cancel in event you super overgear this and stomp his ass this fast?
+		timerCataclysm:Cancel()
+		timerCataclysmCD:Cancel()
+	elseif args:IsSpellID(106400) then
 		warnImpale:Show(args.destName)
 		timerImpale:Start(args.destName)
 		timerImpaleCD:Start()
@@ -247,12 +252,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 56167 or cid == 56168 or cid == 56846 then--Wings and Arms.
-		timerElementiumBoltCD:Cancel()
-		timerHemorrhageCD:Cancel()--Does this one cancel in event you super overgear this and stomp his ass this fast?
-		timerCataclysm:Cancel()
-		timerCataclysmCD:Cancel()
-	elseif cid == 56471 then--Mutated Corruption
+	if cid == 56471 then--Mutated Corruption
 		timerImpaleCD:Cancel()
 		timerParasiteCD:Cancel()
 		timerImpale:Cancel()--Cancel impale debuff timers since they don't matter anymore until next platform (well after they cleared)
