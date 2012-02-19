@@ -68,6 +68,8 @@ L.ModelSoundShort			= "Curto"
 L.ModelSoundLong			= "Longo"
 
 L.Button_RangeFrame			= "Exibir/esconder quadro de distância"
+L.Button_RangeRadar			= "Exibir/esconder radar de distância"
+L.Button_InfoFrame			= "Exibir/esconder quadro de informações"
 L.Button_TestBars			= "Iniciar barras de teste"
 
 L.PizzaTimer_Headline 		= 'Criar um "Cronógrafo para Pizza"'
