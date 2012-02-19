@@ -143,6 +143,8 @@ local lastBeacon = 0
 local isBeacon = false
 local isRod = false
 local infoFrameUpdated = false
+local groundedName = GetSpellInfo(83581)
+local searingName = GetSpellInfo(83500)
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -165,23 +167,23 @@ local function showGravityCrushWarning()
 end
 
 local function checkGrounded()
-	if not UnitDebuff("player", GetSpellInfo(83581)) and not UnitIsDeadOrGhost("player") then
+	if not UnitDebuff("player", groundedName) and not UnitIsDeadOrGhost("player") then
 		specWarnGrounded:Show()
 	end
 	if mod.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
-		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(GetSpellInfo(83581)))
+		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(groundedName))
 		DBM.InfoFrame:Show(5, "playergooddebuff", 83581)
 	end
 end
 
 local function checkSearingWinds()
-	if not UnitDebuff("player", GetSpellInfo(83500)) and not UnitIsDeadOrGhost("player") then
+	if not UnitDebuff("player", searingName) and not UnitIsDeadOrGhost("player") then
 		specWarnSearingWinds:Show()
 	end
 	if mod.Options.InfoFrame and not infoFrameUpdated then
 		infoFrameUpdated = true
-		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(GetSpellInfo(83500)))
+		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(searingName))
 		DBM.InfoFrame:Show(5, "playergooddebuff", 83500)
 	end
 end
@@ -675,10 +677,10 @@ function mod:RAID_BOSS_EMOTE(msg)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4") then return end--Anti spam to ignore all other args
 --	"<60.5> Feludius:Possible Target<nil>:boss1:Frost Xplosion (DND)::0:94739"
-	if spellName == GetSpellInfo(94739) then -- Frost Xplosion (Phase 2 starts)
+	if spellId == 94739 then -- Frost Xplosion (Phase 2 starts)
 		updateBossFrame(2)
 		timerWaterBomb:Cancel()
 		timerGlaciate:Cancel()
@@ -695,7 +697,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		timerQuakeCD:Start()
 		self:Schedule(3, checkSearingWinds)
 --	"<105.3> Terrastra:Possible Target<Omegal>:boss3:Elemental Stasis::0:82285"
-	elseif spellName == GetSpellInfo(82285) then -- Elemental Stasis (Phase 3 Transition)
+	elseif spellId == 82285 then -- Elemental Stasis (Phase 3 Transition)
 		self:Unschedule(checkSearingWinds)
 		self:Unschedule(checkGrounded)
 		timerQuakeCD:Cancel()
@@ -709,7 +711,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 			DBM.InfoFrame:Hide()
 		end
 --	"<122.0> Elementium Monstrosity:Possible Target<nil>:boss1:Electric Instability::0:84526"
-	elseif spellName == GetSpellInfo(84526) then -- Electric Instability (Phase 3 Actually started)
+	elseif spellId == 84526 then -- Electric Instability (Phase 3 Actually started)
 		updateBossFrame(3)
 		timerFrostBeaconCD:Cancel()--Cancel here to avoid probelms with orbs that spawn during the transition.
 		timerLavaSeedCD:Start(18)
