@@ -8,7 +8,7 @@ mod:SetZone(614, 613)--Abyssal depths, or Vashjir Main map
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED"
 )

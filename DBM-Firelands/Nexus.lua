@@ -15,12 +15,12 @@ mod:RegisterEvents(
 )
 
 local warnBreath				= mod:NewSpellAnnounce(99502, 4)
-local specwarnBreath				= mod:NewSpecialWarningCast(99502)
+local specwarnBreath			= mod:NewSpecialWarningCast(99502)
 local timerBreath				= mod:NewBuffActiveTimer(14, 99502)
 
 local warnHeal					= mod:NewSpellAnnounce(99392, 3)
-local specwarnHealInterrupt			= mod:NewSpecialWarningInterrupt(99392)	-- ppl have to manually turn it off if they cannot interrupt and dont want this spam
-local specwarnHealDispel			= mod:NewSpecialWarningDispel(99392)	-- ppl have to manually turn it off if they cannot dispel and dont want this spam
+local specwarnHealInterrupt		= mod:NewSpecialWarningInterrupt(99392, false)	-- ppl have to manually turn it on if they can interrupt
+local specwarnHealDispel		= mod:NewSpecialWarningDispel(99392, false)	-- ppl have to manually turn it on if they can dispel
 local timerHeal					= mod:NewBuffActiveTimer(16, 99392)
 
 function mod:OnCombatStart(delay)

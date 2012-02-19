@@ -71,14 +71,14 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
-function mod:SPELL_AURA_REMOVED(args)	-- BoP or similar can remove the debuff?
+function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(99532, 100767) then
 		timerMoltenArmor:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(100094) then--Trash version of spell used on boss fight.
+	if args:IsSpellID(100094) then--Trash version of Fieroblast, different from boss version
 		if args.sourceGUID == UnitGUID("target") then
 			specWarnFieroblast:Show()
 		end

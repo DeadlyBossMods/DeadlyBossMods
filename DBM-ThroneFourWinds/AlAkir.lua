@@ -15,14 +15,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
+--Classes that can drop stacks of acid rain, but only if they can time AMS/bubble right, they use it wrong and they do no good.
+local isDKorPaly	= select(2, UnitClass("player")) == "DEATHKNIGHT"
+					or select(2, UnitClass("player")) == "PALADIN"
 
 local warnIceStorm			= mod:NewSpellAnnounce(88239, 3)
 local warnSquallLine		= mod:NewSpellAnnounce(91129, 4)
@@ -45,7 +43,7 @@ local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
 local timerAddCD			= mod:NewCDTimer(20, 88272)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
-local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDeathKnight)
+local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDKorPaly)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 local timerLightningCloudCD	= mod:NewNextTimer(15, 89588)
@@ -95,12 +93,18 @@ function mod:OnCombatStart(delay)
 	timerWindBurstCD:Start(20-delay)
 	timerLightningStrikeCD:Start(8.5-delay)
 	timerIceStormCD:Start(6-delay)
+	--Only needed in phase 1
+	self:RegisterShortTermEvents(
+		"SPELL_PERIODIC_DAMAGE",
+		"SPELL_PERIODIC_MISSED"
+	)
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -225,8 +229,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 		timerLightningRodCD:Start(20)
 		timerAddCD:Cancel()
 		timerAcidRainStack:Cancel()
+		self:UnregisterShortTermEvents()
 --	"<244.5> [CAST_SUCCEEDED] Al'Akir:Possible Target<nil>:boss1:Lightning Clouds::0:93304", -- [19368]
 	elseif spellName == GetSpellInfo(93304) then -- Phase 3 Lightning cloud trigger (only cast once)
 		self:CloudRepeat()
+		--Only needed in phase 2
+		self:RegisterShortTermEvents(
+			"SPELL_DAMAGE",
+			"SPELL_MISSED"
+		)
 	end
 end
