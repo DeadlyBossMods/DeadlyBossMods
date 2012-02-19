@@ -135,10 +135,12 @@ local meteorWarned = false
 local dreadflame = GetSpellInfo(100675)
 local meteorTarget = GetSpellInfo(99849)
 local staffDebuff = GetSpellInfo(101109)
+local seedCast = GetSpellInfo(100386)
+local deluge = GetSpellInfo(100713)
 local dreadFlameTimer = 45
 
 local function showRangeFrame()
-	if UnitDebuff("player", GetSpellInfo(101110)) then return end--Staff debuff, don't change their range finder from 8.
+	if UnitDebuff("player", staffDebuff) then return end--Staff debuff, don't change their range finder from 8.
 	if mod.Options.RangeFrame then
 		if phase == 1 and mod:IsRanged() then
 			DBM.RangeCheck:Show(6)--For wrath of rag, only for ranged.
@@ -149,7 +151,7 @@ local function showRangeFrame()
 end
 
 local function hideRangeFrame()
-	if UnitDebuff("player", GetSpellInfo(101110)) then return end--Staff debuff, don't hide it either.
+	if UnitDebuff("player", staffDebuff) then return end--Staff debuff, don't hide it either.
 	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -547,7 +549,7 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 	elseif (spellId == 99144 or spellId == 100303 or spellId == 100304 or spellId == 100305) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 then
 		specWarnBlazingHeatMV:Show()
 		standingInFireSpam = GetTime()
-	elseif (spellId == 100941 or spellId == 100998) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 and not UnitBuff("player", GetSpellInfo(100713)) then
+	elseif (spellId == 100941 or spellId == 100998) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 and not UnitBuff("player", deluge) then
 		specWarnDreadFlame:Show()
 		standingInFireSpam = GetTime()
 	elseif (spellId == 98981 or spellId == 100289 or spellId == 100290 or spellId == 100291) and GetTime() - lavaBoltSpam >= 3 then
@@ -584,8 +586,8 @@ end
 
 function mod:OnSync(event, target)
 	if event == "RageOfRagnaros" then
-		warnRageRagnarosSoon:Show(GetSpellInfo(101109), target)
-		timerRageRagnaros:Start(5, GetSpellInfo(101109), target)
+		warnRageRagnarosSoon:Show(staffDebuff, target)
+		timerRageRagnaros:Start(5, staffDebuff, target)
 		timerRageRagnarosCD:Start()
 	end
 end
@@ -631,7 +633,7 @@ local function clearSeedsActive()
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(100386) and not seedsActive then -- The true molten seeds cast.
+	if spellName == seedCast and not seedsActive then -- The true molten seeds cast.
 		seedsActive = true
 		timerMoltenInferno:Start(11.5)--1.5-2.5 variation, we use lowest +10 seconds
 		if self.Options.warnSeedsLand then--Warn after they are on ground, typical strat for normal mode. Time not 100% consistent.

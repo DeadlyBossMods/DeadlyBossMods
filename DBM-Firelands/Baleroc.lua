@@ -54,7 +54,7 @@ mod:AddBoolOption("SetIconOnCountdown")
 mod:AddBoolOption("SetIconOnTorment")
 mod:AddBoolOption("ArrowOnCountdown")
 
-local spellName = nil
+local bladesName = nil
 local lastStrike = 0
 local currentStrike = 0
 local lastStrikeDiff = 0
@@ -63,6 +63,7 @@ local shardCount = 0
 local tormentIcon = 8
 local countdownIcon = 2
 local countdownTargets = {}
+local tormentDebuff = GetSpellInfo(99404)
 
 local function showCountdownWarning()
 	warnCountdown:Show(table.concat(countdownTargets, "<, >"))
@@ -73,12 +74,12 @@ end
 local tormentDebuffFilter
 do
 	tormentDebuffFilter = function(uId)
-		return UnitDebuff(uId, (GetSpellInfo(99404)))
+		return UnitDebuff(uId, tormentDebuff)
 	end
 end
 
 function mod:OnCombatStart(delay)
-	spellName = nil
+	bladesName = nil
 	lastStrike = 0
 	currentStrike = 0
 	lastStrikeDiff = 0
@@ -138,19 +139,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(99263) and args:IsPlayer() then
 		timerVitalFlame:Start()
 	elseif args:IsSpellID(99352, 99405) then--Decimation Blades
-		spellName = GetSpellInfo(99353)
+		bladesName = GetSpellInfo(99353)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
 		if self:IsDifficulty("normal25", "heroic25") then--The very first timer is subject to inaccuracis do to variation. But they are minor, usually within 0.5sec
-			timerStrikeCD:Start(3, spellName)
+			timerStrikeCD:Start(3, bladesName)
 		else
-			timerStrikeCD:Start(6, spellName)--6 seconds on 10 man
+			timerStrikeCD:Start(6, bladesName)--6 seconds on 10 man
 		end
 	elseif args:IsSpellID(99350) then--Inferno Blades
-		spellName = GetSpellInfo(101002)
+		bladesName = GetSpellInfo(101002)
 		lastStrike = GetTime()--Set last strike here too
 		strikeCount = 0--Reset count.
-		timerStrikeCD:Start(2.5, spellName)
+		timerStrikeCD:Start(2.5, bladesName)
 	elseif args:IsSpellID(99257, 99402, 99403, 99404) then--Tormented
 		if args:IsPlayer() then
 			warnTormented:Show()

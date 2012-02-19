@@ -50,6 +50,9 @@ local abilityCount = 0
 local recentlyJumped = false
 local kitty = false
 local targetScansDone = 0
+local leap = GetSpellInfo(100208)
+local swipe = GetSpellInfo(98474)
+local seedsDebuff = GetSpellInfo(98450)
 
 local abilityTimers = {
 	[0] = 17.3,--Still The same baseline.
@@ -148,7 +151,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		kitty = true
 		abilityCount = 0
 		timerNextSpecial:Cancel()
-		timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(100208), abilityCount+1)
+		timerNextSpecial:Start(abilityTimers[abilityCount], leap, abilityCount+1)
 		if self.Options.RangeFrameCat then
 			DBM.RangeCheck:Show(10)
 		end
@@ -156,17 +159,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		kitty = false
 		abilityCount = 0
 		timerNextSpecial:Cancel()
-		timerNextSpecial:Start(abilityTimers[abilityCount], GetSpellInfo(98474), abilityCount+1)
-		if self.Options.RangeFrameCat and not UnitDebuff("player", GetSpellInfo(98450)) then--Only hide range finder if you do not have seed.
+		timerNextSpecial:Start(abilityTimers[abilityCount], swipe, abilityCount+1)
+		if self.Options.RangeFrameCat and not UnitDebuff("player", seedsDebuff) then--Only hide range finder if you do not have seed.
 			DBM.RangeCheck:Hide()
 		end
 	elseif args:IsSpellID(97238) then
 		abilityCount = (args.amount or 1)--This should change your ability account to his current stack, which is disconnect friendly.
 		warnAdrenaline:Show(args.destName, args.amount or 1)
 		if kitty then
-			timerNextSpecial:Start(abilityTimers[abilityCount] or 3.7, GetSpellInfo(100208), abilityCount+1)
+			timerNextSpecial:Start(abilityTimers[abilityCount] or 3.7, leap, abilityCount+1)
 		else
-			timerNextSpecial:Start(abilityTimers[abilityCount] or 3.7, GetSpellInfo(98474), abilityCount+1)
+			timerNextSpecial:Start(abilityTimers[abilityCount] or 3.7, swipe, abilityCount+1)
 		end
 	elseif args:IsSpellID(97235) then
 		warnFury:Show(args.destName, args.amount or 1)
