@@ -16,9 +16,6 @@ L:SetWarningLocalization({
 	SpecWarnInferno	= "Ensamblaje osario llameante pronto (~4s)",
 })
 
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	SpecWarnInferno	= "Mostrar pre-aviso especial para $spell:92190 (~4s)",
 	RangeFrame		= "Mostrar distancia en Fase 2 (5 yardas)"
@@ -123,12 +120,6 @@ L = DBM:GetModLocalization("Chimaeron")
 
 L:SetGeneralLocalization({
 	name = "Chimaeron"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -250,16 +241,4 @@ L = DBM:GetModLocalization("BWDTrash")
 
 L:SetGeneralLocalization({
 	name = "Pulls de Descenso de Alanegra"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
