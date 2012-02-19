@@ -185,7 +185,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerHemorrhageCD:Cancel()--Does this one cancel in event you super overgear this and stomp his ass this fast?
 		timerCataclysm:Cancel()
 		timerCataclysmCD:Cancel()
-		timerParasiteCD:Cancel()
 	elseif args:IsSpellID(106400) then
 		warnImpale:Show(args.destName)
 		timerImpale:Start(args.destName)
