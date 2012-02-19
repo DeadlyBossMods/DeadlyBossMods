@@ -181,19 +181,19 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end		
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if not uId:find("boss") then return end--yor can apparently be boss 1 2 3 or 4. even though he's only boss, :o
-	if oozeColors[spellID] then
+	if oozeColors[spellId] then
 		table.wipe(oozesHitTable)
 		specWarnOozes:Show()
 		timerVoidBoltCD:Start(42)
 		timerOozesActive:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
-			warnOozes:Show(table.concat(oozeColorsHeroic[spellID], ", "))
+			warnOozes:Show(table.concat(oozeColorsHeroic[spellId], ", "))
 			timerOozesCD:Start(75)
 			expectedOozes = 4
 		else
-			warnOozes:Show(table.concat(oozeColors[spellID], ", "))
+			warnOozes:Show(table.concat(oozeColors[spellId], ", "))
 			timerOozesCD:Start()
 			expectedOozes = 3
 		end
