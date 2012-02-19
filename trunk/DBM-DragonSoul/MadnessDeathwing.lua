@@ -30,7 +30,7 @@ local warnCataclysm				= mod:NewCastAnnounce(106523, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
 local warnFragments				= mod:NewSpellAnnounce("ej4115", 4, 106708)--This needs a custom spell icon, EJ doesn't have icons for entires that are mobs
 local warnTerror				= mod:NewSpellAnnounce("ej4117", 4, 106765)--This needs a fitting spell icon, trigger spell only has a gear.
-local warnShrapnel				= mod:NewTargetAnnounce(109598, 3)
+local warnShrapnel				= mod:NewTargetAnnounce(109598, 3, nil, false)
 local warnParasite				= mod:NewTargetAnnounce(108649, 4)
 local warnCongealingBloodSoon	= mod:NewSoonAnnounce("ej4350", 4, 109089)--15%, 10%, 5% on heroic. spellid is 109089.
 
@@ -60,7 +60,7 @@ local timerCataclysm			= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD			= mod:NewCDTimer(130.5, 106523)--130.5-131.5 variations
 local timerFragmentsCD			= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)--Gear icon for now til i find something more suitable
 local timerTerrorCD				= mod:NewNextTimer(90, "ej4117", nil, nil, nil, 106765)--^
-local timerShrapnel				= mod:NewCastTimer(6, 109598)
+local timerShrapnel				= mod:NewBuffFadesTimer(6, 109598)
 local timerParasite				= mod:NewTargetTimer(10, 108649)
 local timerParasiteCD			= mod:NewCDTimer(60, 108649)
 local timerUnstableCorruption	= mod:NewCastTimer(10, 108813)
@@ -99,7 +99,6 @@ end
 
 local function warnShrapnelTargets()
 	warnShrapnel:Show(table.concat(shrapnelTargets, "<, >"))
-	timerShrapnel:Start()
 	table.wipe(shrapnelTargets)
 end
 
@@ -195,6 +194,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnShrapnelTargets)
 		if args:IsPlayer() then
 			specWarnShrapnel:Show()
+			timerShrapnel:Start() -- Shrapnel debuff lasts 7 secs. But Shrapnel damages 1 sec early before debuff fades. So 6 sec timer will be more good.
 			ShrapnelCountdown:Start(6)
 		end
 		if (self:IsDifficulty("normal10", "heroic10") and #shrapnelTargets >= 3) or (self:IsDifficulty("normal25", "heroic25", "lfr25") and #shrapnelTargets >= 8) then
@@ -224,6 +224,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(106444, 109631, 109632, 109633) then
 		timerImpale:Cancel(args.destName)
+	elseif args:IsSpellID(106794, 110139, 110140, 110141) and args:IsPlayer() then
+		timerShrapnel:Cancel()
+		ShrapnelCountdown:Cancel()
 	elseif args:IsSpellID(108649) then
 		specWarnParasiteDPS:Show()
 		if self.Options.SetIconOnParasite then
