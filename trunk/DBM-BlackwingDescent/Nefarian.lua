@@ -87,6 +87,7 @@ local cinderIcons = 8
 local playerDebuffed = false
 local playerDebuffs = 0
 local cinderTargets	= {}
+local cinderDebuff = GetSpellInfo(79339)
 local dominionTargets = {}
 local lastBlaze = 0
 local CVAR = false
@@ -118,7 +119,7 @@ end
 local cindersDebuffFilter
 do
 	cindersDebuffFilter = function(uId)
-		return UnitDebuff(uId, (GetSpellInfo(79339)))
+		return UnitDebuff(uId, cinderDebuff)
 	end
 end
 
