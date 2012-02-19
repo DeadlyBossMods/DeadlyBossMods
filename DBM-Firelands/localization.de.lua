@@ -6,12 +6,6 @@ local L
 -----------------
 L= DBM:GetModLocalization(192)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	RangeFrame			= "Zeige Abstandsfenster (10m)"
 })
@@ -24,18 +18,6 @@ L:SetMiscLocalization({
 -- Lord Rhyolith --
 -------------------
 L= DBM:GetModLocalization(193)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------
 -- Alysrazor --
@@ -79,12 +61,6 @@ L:SetMiscLocalization({
 -- Shannox --
 -------------
 L= DBM:GetModLocalization(195)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
@@ -133,9 +109,6 @@ L:SetMiscLocalization({
 --------------------------------
 L= DBM:GetModLocalization(197)
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	timerNextSpecial	= "Nächste %s (%d)"
 })
@@ -146,9 +119,6 @@ L:SetOptionLocalization({
 	RangeFrameCat				= "Zeige Abstandsfenster (10m) für $spell:98374",
 	LeapArrow					= "Zeige DBM-Pfeil, falls $spell:98476 nahe bei dir ist",
 	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
-})
-
-L:SetMiscLocalization({
 })
 
 --------------
@@ -218,9 +188,6 @@ L:SetGeneralLocalization({
 	name = "Volcanus"
 })
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	timerStaffTransition	= "Phasenübergang endet"
 })
@@ -242,16 +209,4 @@ L = DBM:GetModLocalization("NexusLegendary")
 
 L:SetGeneralLocalization({
 	name = "Thyrinar"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })

@@ -11,17 +11,8 @@ L:SetGeneralLocalization({
 	name =	"Halfus Wyrmbrecher"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Zeige die Gesundheit befreiter Drachen (benötigt aktivierte Lebensanzeige)"
-})
-
-L:SetMiscLocalization({
 })
 
 ---------------------------
@@ -32,12 +23,6 @@ L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
 	name =	"Theralion und Valiona"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -116,12 +101,6 @@ L:SetGeneralLocalization({
 	name =	"Cho'gall"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Zeige DBM-Pfeil, falls $spell:93178 nahe bei dir ist",
 	InfoFrame				= "Zeige Infofenster für $spell:81701",
@@ -193,16 +172,4 @@ L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({
 	name =	"Trash der Bastion des Zwielichts"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
