@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetModelID(29539)
+mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
