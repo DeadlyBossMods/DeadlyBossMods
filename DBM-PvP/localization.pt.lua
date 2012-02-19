@@ -177,7 +177,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart			= "Partida inicia", 
 	TimerPOI			= "%s",
 	TimerSiegeEngine	= "Siege Engine pronto"
 })
@@ -191,9 +190,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "The battle will begin in 60 seconds.",
-	BgStart30				= "The battle will begin in 30 seconds.",
-	BgStart15				= "The battle will begin in 15 seconds.",
+	GatesHealthFrame		= "Damaged gates",
 	SiegeEngine				= "Siege Engine",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
 	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
@@ -241,7 +238,6 @@ L:SetOptionLocalization({
 	TimerFlag					= "Exibir cronógrafo para a bandeira reapareceer",
 	ShowFlagCarrier				= "Exibir portador da bandeira",
 	ShowFlagCarrierErrorNote	= "Exibir mensagem de erro de portador de bandeira, enquanto em combate"
-
 })
 
 
