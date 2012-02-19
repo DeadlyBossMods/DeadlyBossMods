@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 5756 $"):sub(12, -3))
 mod:SetModelID(38765)
+mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
