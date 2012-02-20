@@ -173,7 +173,7 @@ local fireEvent
 local _, class = UnitClass("player")
 local LastZoneText = ""
 local LastZoneMapID = -1
-local savedDifficulty
+local savedDifficulty = ""
 local queuedBattlefield = {}
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
