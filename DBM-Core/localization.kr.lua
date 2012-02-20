@@ -164,8 +164,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 }
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target		= "$spell:%s 대상 보기",
-	targetcount	= "$spell:%s 대상 보기",
+	target		= "$spell:%s 대상 알림 보기",
+	targetcount	= "$spell:%s 대상 알림 보기",
 	spell 		= "$spell:%s 알림 보기",
 	adds		= "$spell:%s 남은 횟수 알림 보기",
 	cast 		= "$spell:%s 시전시 알림 보기",
