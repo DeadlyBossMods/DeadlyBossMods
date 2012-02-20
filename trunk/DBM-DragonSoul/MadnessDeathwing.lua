@@ -64,6 +64,8 @@ local timerShrapnel				= mod:NewBuffFadesTimer(6, 109598)
 local timerParasite				= mod:NewTargetTimer(10, 108649)
 local timerParasiteCD			= mod:NewCDTimer(60, 108649)
 local timerUnstableCorruption	= mod:NewCastTimer(10, 108813)
+local timerTetanus				= mod:NewTargetTimer(6, 109605, nil, mod:IsHealer())
+local timerTetanusCD			= mod:NewCDTimer(3.5, 109605, nil, mod:IsTank())
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
@@ -81,6 +83,7 @@ local antiSpam = 0
 local warnedCount = 0
 local hemorrhage = GetSpellInfo(105863)
 local fragment = GetSpellInfo(109568)
+local activateTetanusTimers = false
 
 local debuffFilter
 do
@@ -105,6 +108,7 @@ end
 
 function mod:OnCombatStart(delay)
 	firstAspect = true
+	activateTetanusTimers = false
 	engageCount = 0
 	antiSpam = 0
 	warnedCount = 0
@@ -229,9 +233,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnParasite then
 			self:SetIcon(args.destName, 8)
 		end
+	elseif args:IsSpellID(106730, 109603, 109604, 109605) then -- Debuffs from adds
+		timerTetanus:Start(args.destName)
+		if activateTetanusTimers then -- Only track them when there is no Time Zone down (since we have no way to accurate track/detect whether or not they are tanked in it, ie slowed)
+			timerTetanusCD:Start(args.sourceGUID)
+		end
 	end
 end
-
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 
@@ -265,6 +273,10 @@ function mod:UNIT_DIED(args)
 		timerImpaleCD:Cancel()
 		timerParasiteCD:Cancel()
 		timerImpale:Cancel()--Cancel impale debuff timers since they don't matter anymore until next platform (well after they cleared)
+	elseif cid == 56311 then --Phase 2 Time Zone bubbles (yes it's an npc heh)
+		activateTetanusTimers = true
+	elseif cid == 56710 then
+		timerTetanusCD:Cancel(args.destGUID)
 	end
 end
 
@@ -286,6 +298,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		specWarnFragments:Show()
 		timerFragmentsCD:Start()
 	elseif spellId == 106765 then--Summon Elementium Terror (Big angry add)
+		activateTetanusTimers = false
 		warnTerror:Show()
 		specWarnTerror:Show()
 		timerTerrorCD:Start()
