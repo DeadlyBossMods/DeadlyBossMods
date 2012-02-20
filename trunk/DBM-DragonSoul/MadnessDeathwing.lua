@@ -66,7 +66,7 @@ local timerTerrorCD				= mod:NewNextTimer(90, "ej4117", nil, nil, nil, 106765)--
 local timerShrapnel				= mod:NewBuffFadesTimer(6, 109598)
 local timerParasite				= mod:NewTargetTimer(10, 108649)
 local timerParasiteCD			= mod:NewCDTimer(60, 108649)
-local timerUnstableCorruption	= mod:NewCastTimer(10, 108813)
+--local timerUnstableCorruption	= mod:NewCastTimer(10, 108813)
 local timerTetanus				= mod:NewTargetTimer(6, 109605, nil, mod:IsHealer())
 local timerTetanusCD			= mod:NewCDTimer(3.5, 109605, nil, mod:IsTank())
 
@@ -80,7 +80,7 @@ mod:AddBoolOption("SetIconOnParasite", true)
 
 local firstAspect = true
 local engageCount = 0
-local playerGUID = 0
+--local playerGUID = 0
 local shrapnelTargets = {}
 local antiSpam = 0
 local warnedCount = 0
@@ -159,12 +159,12 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(106523, 110042, 110043, 110044) then
 		warnCataclysm:Show()
 		timerCataclysm:Start()
-	elseif args:IsSpellID(108813) then
+--[[	elseif args:IsSpellID(108813) then
 		if UnitDebuff(playerGUID, GetSpellInfo(108646)) then--Check if player that got the debuff is in nozdormu's bubble at time of cast.
 			timerUnstableCorruption:Start(15.5)
 		else
 			timerUnstableCorruption:Start()
-		end
+		end--]]
 	end
 end
 
@@ -232,7 +232,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnParasite:Show()
 			yellParasite:Yell()
 		end
-		playerGUID = args.destGUID
+--		playerGUID = args.destGUID
 		if self.Options.SetIconOnParasite then
 			self:SetIcon(args.destName, 8)
 		end

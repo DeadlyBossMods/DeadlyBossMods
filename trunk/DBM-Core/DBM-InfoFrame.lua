@@ -229,8 +229,6 @@ local function updateHealth()
 	updateIcons()
 end
 
-
-
 local function updatePlayerPower()
 	table.wipe(lines)
 	for i = 1, GetNumRaidMembers() do
@@ -298,7 +296,7 @@ local function updateGoodPlayerDebuffs()
 				lines[UnitName(uId)] = ""
 			end
 		end
-		if not UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player so we hack it in.
+		if not UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player so manually add it in.
 			lines[UnitName("player")] = ""
 		end
 	end
@@ -324,7 +322,7 @@ local function updateBadPlayerDebuffs()
 				lines[UnitName(uId)] = ""
 			end
 		end
-		if UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player so we hack it in.
+		if UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost("player") then--"party"..i excludes player so manually add it in.
 			lines[UnitName("player")] = ""
 		end
 	end
@@ -395,12 +393,40 @@ local function updatePlayerAggro()
 				lines[UnitName(uId)] = ""
 			end
 		end
-		if UnitThreatSituation("player") == infoFrameThreshold then--"party"..i excludes player so we hack it in.
+		if UnitThreatSituation("player") == infoFrameThreshold then--"party"..i excludes player so manually add it in.
 			lines[UnitName("player")] = ""
 		end
 		updateLines()
 		updateIcons()
 	end
+end
+
+local function getUnitCreatureId(uId)
+	local guid = UnitGUID(uId)
+	return (guid and (tonumber(guid:sub(7, 10), 16))) or 0
+end
+local function updatePlayerTargets()
+	table.wipe(lines)
+	if GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			local uId = "raid"..i
+			if getUnitCreatureId("raid"..i.."target") ~= infoFrameThreshold then
+				lines[UnitName(uId)] = ""
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumPartyMembers() do
+			local uId = "party"..i
+			if getUnitCreatureId("party"..i.."target") ~= infoFrameThreshold then
+				lines[UnitName(uId)] = ""
+			end
+		end
+		if getUnitCreatureId("target") ~= infoFrameThreshold then--"party"..i excludes player so manually add it in.
+			lines[UnitName("player")] = ""
+		end
+	end
+	updateLines()
+	updateIcons()
 end
 
 ----------------
@@ -429,6 +455,8 @@ function onUpdate(self, elapsed)
 		updatePlayerAggro()
 	elseif currentEvent == "playerbuffstacks" then
 		updatePlayerBuffStacks()
+	elseif currentEvent == "playertargets" then
+		updatePlayerTargets()
 	end
 --	updateIcons()
 	for i = 1, math.min(#sortedLines, maxlines) do
@@ -443,7 +471,7 @@ function onUpdate(self, elapsed)
 		end
 		if playerName == UnitName("player") then
 			addedSelf = true
-			if currentEvent == "playerbuff" or currentEvent == "playerbaddebuff" or currentEvent == "playergooddebuff" or currentEvent == "health" or (currentEvent == "playeraggro" and infoFrameThreshold == 3) then--Player name on frame bad a thing make it red.
+			if currentEvent == "playerbuff" or currentEvent == "playerbaddebuff" or currentEvent == "playergooddebuff" or currentEvent == "health" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and infoFrameThreshold == 3) then--Player name on frame bad a thing make it red.
 				self:AddDoubleLine(name, power, 255, 0, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 			elseif currentEvent == "playerbuffstacks" or (currentEvent == "playeraggro" and infoFrameThreshold == 0) then--Player name on frame is a good thing, make it green
 				self:AddDoubleLine(name, power, 0, 255, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
@@ -491,6 +519,8 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 		updatePlayerAggro()
 	elseif currentEvent == "playerbuffstacks" then
 		updatePlayerBuffStacks()
+	elseif currentEvent == "playertargets" then
+		updatePlayerTargets()
 	elseif currentEvent == "test" then
 	else		
 		error("DBM-InfoFrame: Unsupported event", 2)
