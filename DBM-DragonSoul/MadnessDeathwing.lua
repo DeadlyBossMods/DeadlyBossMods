@@ -32,6 +32,7 @@ local warnFragments				= mod:NewSpellAnnounce("ej4115", 4, 106708)--This needs a
 local warnTerror				= mod:NewSpellAnnounce("ej4117", 4, 106765)--This needs a fitting spell icon, trigger spell only has a gear.
 local warnShrapnel				= mod:NewTargetAnnounce(109598, 3, nil, false)
 local warnParasite				= mod:NewTargetAnnounce(108649, 4)
+local warnTetanus				= mod:NewStackAnnounce(109605, 4, nil, false)
 local warnCongealingBloodSoon	= mod:NewSoonAnnounce("ej4350", 4, 109089)--15%, 10%, 5% on heroic. spellid is 109089.
 
 local specWarnMutated			= mod:NewSpecialWarningSwitch("ej4112", not mod:IsHealer())--Because tanks need to switch to it too.
@@ -48,6 +49,8 @@ local specWarnParasite			= mod:NewSpecialWarningYou(108649)
 local specWarnParasiteDPS		= mod:NewSpecialWarningSwitch("ej4347", mod:IsDps())
 local yellParasite				= mod:NewYell(108649)
 local specWarnCongealingBlood	= mod:NewSpecialWarningSwitch("ej4350", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089.
+local specWarnTetanus			= mod:NewSpecialWarningStack(109605, mod:IsTank(), 4)
+local specWarnTetanusOther		= mod:NewSpecialWarningTarget(109605, mod:IsTank())
 
 local timerMutated				= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
 local timerImpale				= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
@@ -234,7 +237,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(106730, 109603, 109604, 109605) then -- Debuffs from adds
+		warnTetanus:Show(args.destName, args.amount or 1)
 		timerTetanus:Start(args.destName)
+		if (args.amount or 1) >= 4 then
+			if args:IsPlayer() then
+				specWarnTetanus:Show(args.amount)
+			else
+				if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", GetSpellInfo(109603)) then--You have no debuff and not dead
+					specWarnTetanusOther:Show(args.destName)--So stop being a tool and taunt off other tank who has 4 stacks.
+				end
+			end
+		end
 		if activateTetanusTimers then -- Only track them when there is no Time Zone down (since we have no way to accurate track/detect whether or not they are tanked in it, ie slowed)
 			timerTetanusCD:Start(args.sourceGUID)
 		end

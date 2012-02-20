@@ -201,7 +201,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSunder:Show(args.amount)
 			end
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(108043)) then--Other tank has 2 or more sunders and you have none.
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(108043)) and not UnitIsDeadOrGhost("player") then--Other tank has 2 or more sunders and you have none.
 				specWarnSunderOther:Show(args.destName)--So nudge you to taunt it off other tank already.
 			end
 		end
