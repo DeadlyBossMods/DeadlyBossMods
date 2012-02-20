@@ -2479,6 +2479,9 @@ function DBM:EndCombat(mod, wipe)
 				mod.combatInfo.killMobs[i] = true
 			end
 		end
+		if not savedDifficulty then -- prevent error when timer recovery function worked and etc (StartCombat not called)
+			savedDifficulty = ""
+		end
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
 			if thisTime < 15 then
