@@ -410,18 +410,18 @@ local function updatePlayerTargets()
 	if GetNumRaidMembers() > 0 then
 		for i = 1, GetNumRaidMembers() do
 			local uId = "raid"..i
-			if getUnitCreatureId("raid"..i.."target") ~= infoFrameThreshold then
+			if getUnitCreatureId("raid"..i.."target") ~= infoFrameThreshold and (UnitGroupRolesAssigned("raid"..i) == "DAMAGER" or UnitGroupRolesAssigned("raid"..i) == "NONE") then
 				lines[UnitName(uId)] = ""
 			end
 		end
 	elseif GetNumPartyMembers() > 0 then
 		for i = 1, GetNumPartyMembers() do
 			local uId = "party"..i
-			if getUnitCreatureId("party"..i.."target") ~= infoFrameThreshold then
+			if getUnitCreatureId("party"..i.."target") ~= infoFrameThreshold and (UnitGroupRolesAssigned("party"..i) == "DAMAGER" or UnitGroupRolesAssigned("party"..i) == "NONE") then
 				lines[UnitName(uId)] = ""
 			end
 		end
-		if getUnitCreatureId("target") ~= infoFrameThreshold then--"party"..i excludes player so manually add it in.
+		if getUnitCreatureId("target") ~= infoFrameThreshold and (UnitGroupRolesAssigned("player") == "DAMAGER" or UnitGroupRolesAssigned("player") == "NONE") then--"party"..i excludes player so manually add it in.
 			lines[UnitName("player")] = ""
 		end
 	end
