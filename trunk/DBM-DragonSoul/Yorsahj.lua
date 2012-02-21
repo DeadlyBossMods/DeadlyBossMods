@@ -36,6 +36,7 @@ local timerAcidCD			= mod:NewNextTimer(8.3, 108352)--Green ooze aoe
 local timerSearingCD		= mod:NewNextTimer(6, 108358)--Red ooze aoe
 local timerVoidBoltCD		= mod:NewNextTimer(6, 108383, nil, mod:IsTank())
 local timerVoidBolt			= mod:NewTargetTimer(12, 108383, nil, mod:IsTank() or mod:IsHealer())--Nerfed yet again, its now 12. Good thing dbm timers were already right since i dbm pulls duration from aura heh.
+local timerManaVoid			= mod:NewBuffFadesTimer(4, 105530, nil, mod:IsManaUser())
 local timerDeepCorruption	= mod:NewBuffFadesTimer(25, 105171, nil, mod:IsTank() or mod:IsHealer())
 
 local berserkTimer		= mod:NewBerserkTimer(600)
@@ -90,6 +91,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(105530) then
 		warnManaVoid:Show()
 		specWarnManaVoid:Show()
+		timerManaVoid:Show()
 	elseif args:IsSpellID(105573, 108350, 108351, 108352) and self:IsInCombat() then
 		if yellowActive then
 			timerAcidCD:Start(3.5)--Strangely, this is 3.5 even though base CD is 8.3-8.5
