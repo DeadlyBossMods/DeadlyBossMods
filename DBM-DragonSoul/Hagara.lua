@@ -263,6 +263,7 @@ function mod:SPELL_CAST_START(args)
 		pillarsRemaining = 4
 		timerAssaultCD:Cancel()
 		timerIceLanceCD:Cancel()
+		timerShatteringCD:Cancel()
 		warnTempest:Show()
 		specWarnTempest:Show()
 		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
@@ -280,6 +281,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerAssaultCD:Cancel()
 		timerIceLanceCD:Cancel()
+		timerShatteringCD:Cancel()
 		warnLightningStorm:Show()
 		specWarnLightingStorm:Show()
 		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
