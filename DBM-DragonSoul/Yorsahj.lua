@@ -92,7 +92,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(105530) then
 		warnManaVoid:Show()
 		specWarnManaVoid:Show()
-		timerManaVoid:Show()
+		timerManaVoid:Start()
 	elseif args:IsSpellID(105573, 108350, 108351, 108352) and self:IsInCombat() then
 		if yellowActive then
 			timerAcidCD:Start(3.5)--Strangely, this is 3.5 even though base CD is 8.3-8.5
