@@ -26,7 +26,8 @@ local warnManaVoid			= mod:NewSpellAnnounce(105530, 3)
 local warnDeepCorruption	= mod:NewSpellAnnounce(105171, 4)
 
 local specWarnOozes			= mod:NewSpecialWarningSpell("ej3978")
-local specWarnVoidBolt		= mod:NewSpecialWarningStack(108383, mod:IsTank(), 3)
+local specWarnVoidBolt		= mod:NewSpecialWarningStack(108383, mod:IsTank(), 2)
+local specWarnVoidBoltOther	= mod:NewSpecialWarningTarget(108383, mod:IsTank())
 local specWarnManaVoid		= mod:NewSpecialWarningSpell(105530, mod:IsManaUser())
 local specWarnPurple		= mod:NewSpecialWarningSpell(104896, mod:IsTank() or mod:IsHealer())
 
@@ -120,10 +121,16 @@ Ooze Absorption and granted abilities expression (black adds only fire UNIT_SPEL
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104849, 108383, 108384, 108385) then
 		warnVoidBolt:Show(args.destName, args.amount or 1)
-		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff(args.destName, args.spellName)--Try to fix some stupidness in this timer having a 20-22second variation.
+		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)--This is now consistently 12 seconds, but it's been nerfed twice without warning, i'm just gonna leave this here to make the mod continue to auto correct it when/if it changes more.
 		timerVoidBolt:Start(duration, args.destName)
-		if (args.amount or 1) >= 3 and args:IsPlayer() then
-			specWarnVoidBolt:Show(args.amount)
+		if (args.amount or 1) >= 2 then
+			if args:IsPlayer() then
+				specWarnVoidBolt:Show(args.amount)
+			else
+				if not UnitIsDeadOrGhost("player") then--You're not dead and other tank has 2 stacks (meaning it's your turn).
+					specWarnVoidBoltOther:Show(args.destName)
+				end
+			end
 		end
 	elseif args:IsSpellID(104901) and args:GetDestCreatureID() == 55312 then--Yellow
 		table.insert(oozesHitTable, L.Yellow)
