@@ -72,8 +72,9 @@ local abilityTimers = {
 	[14]= 4.9,
 	[15]= 4.9,
 	[16]= 4.9,
+	[17]= 4.9,
 }
---Don't know at what point it caps at 3.7
+--caps to 3.7 at 18 stacks.
 
 local function clearLeapWarned()
 	recentlyJumped = false

@@ -53,7 +53,7 @@ local prewarnedPhase2 = false
 
 function mod:OnCombatStart(delay)
 	timerFragmentCD:Start(-delay)
-	timerHeatedVolcano:Start(-delay)
+	timerHeatedVolcano:Start(30-delay)
 	timerFlameStomp:Start(16-delay)--Actually found an old log, maybe this is right.
 	StompCountown:Start(16-delay)--^^
 	if self:IsDifficulty("heroic10", "heroic25") then
