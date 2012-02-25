@@ -81,7 +81,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(shadowsTargets)
 	timerVoidofUnmakingCD:Start(5.5-delay)
 	timerFocusedAngerCD:Start(10.5-delay)
-	timerPsychicDrainCD:Start(16.5-delay)
+	timerPsychicDrainCD:Start(13-delay)
 	timerShadowsCD:Start(-delay)
 	self:updateRangeFrame()
 	if not self:IsDifficulty("lfr25") then
