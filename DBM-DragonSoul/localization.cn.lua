@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 2/8/2012
+-- Last update: 2/25/2012
 
 if GetLocale() ~= "zhCN"  then return end
 
@@ -31,12 +31,6 @@ L:SetMiscLocalization({
 -- Warlord Zon'ozz --
 ---------------------
 L= DBM:GetModLocalization(324)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	ShadowYell			= "当你受到$spell:104600影响时时大喊（英雄难度）",
@@ -178,9 +172,6 @@ L:SetWarningLocalization({
 	SpecWarnTendril			= "小心翻身！"
 })
 
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	SpecWarnTendril			= "特殊警报：当你没有$spell:109454效果时",
 	InfoFrame				= "信息框：没有$spell:109454效果的玩家",
@@ -200,12 +191,6 @@ L:SetMiscLocalization({
 -- Madness of Deathwing  -- 
 ---------------------------
 L= DBM:GetModLocalization(333)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
 
 L:SetOptionLocalization({
 	RangeFrame			= "距离监视器（根据状态动态变化）：应对$spell:108649（英雄难度）",

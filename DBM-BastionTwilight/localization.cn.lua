@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/10/2011
+-- Last update: 2/25/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -15,17 +15,8 @@ L:SetGeneralLocalization({
 	name =	"哈尔弗斯·碎龙者"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "显示已释放幼龙的生命值（需要开启首领生命值显示）"
-})
-
-L:SetMiscLocalization({
 })
 
 ---------------------------
@@ -36,12 +27,6 @@ L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
 	name =	"瓦里昂娜和瑟纳利昂"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
@@ -120,12 +105,6 @@ L:SetGeneralLocalization({
 	name =	"古加尔"
 })
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "DBM箭头：当$spell:93178在你附近时",
 	InfoFrame				= "信息框：$spell:81701",
@@ -202,16 +181,4 @@ L = DBM:GetModLocalization("BoTrash")
 
 L:SetGeneralLocalization({
 	name =	"暮光堡垒小怪"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })
