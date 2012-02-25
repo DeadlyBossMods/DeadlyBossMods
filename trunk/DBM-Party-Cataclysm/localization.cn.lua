@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/26/2011
+-- Last update: 2/25/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -945,9 +945,6 @@ L:SetOptionLocalization{
 	TimerFlarecoreDetonate	= "计时条：$spell:101927引爆"
 }
 
-L:SetMiscLocalization{
-}
-
 ----------------------
 -- Echo of Baine --
 ----------------------
@@ -984,7 +981,6 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Pull		= "没有凡人能从我手中逃脱！"
 }
-
 
 -------------
 -- Azshara --
