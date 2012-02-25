@@ -1,5 +1,5 @@
 -- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 8/26/2011
+-- Last update: 2/25/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -52,9 +52,6 @@ L:SetGeneralLocalization({
 	name = "奥拉基尔"
 })
 
-L:SetWarningLocalization({
-})
-
 L:SetTimerLocalization({
 	TimerFeedback 	= "回馈（%d）"
 })
@@ -63,7 +60,4 @@ L:SetOptionLocalization({
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "计时条：$spell:87904持续时间",
 	RangeFrame		= "当你中了$spell:89668时显示距离监视器（20码）"
-})
-
-L:SetMiscLocalization({
 })
