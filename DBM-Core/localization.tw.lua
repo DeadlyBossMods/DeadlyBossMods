@@ -9,9 +9,10 @@ DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 DBM_CORE_BOSS_DOWN					= "擊敗%s，經過%s!"
-DBM_CORE_BOSS_DOWN_LONG				= "擊敗%s!本次經過%s，上次經過%s，最快紀錄%s。"
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "擊敗%s!經過%s，這是一個新記錄!（舊紀錄為%s）"
+DBM_CORE_BOSS_DOWN_L				= "擊敗%s!本次經過%s，上次經過%s，最快紀錄為%s。你總共擊殺了%d次。"
+DBM_CORE_BOSS_DOWN_NR				= "擊敗%s!經過%s! 這是一個新記錄! (舊紀錄為%s) 你總共擊殺了%d次。"
 DBM_CORE_COMBAT_ENDED_AT			= "%s(%s)的戰鬥經過%s結束。"
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s(%s)的戰鬥經過%s結束。你總共嘗試了%d次。"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
