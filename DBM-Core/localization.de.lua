@@ -9,9 +9,10 @@ DBM_CORE_LOAD_GUI_ERROR				= "Konnte die Benutzeroberfläche nicht laden: %s"
 
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_BOSS_DOWN					= "%s tot nach %s!"
-DBM_CORE_BOSS_DOWN_LONG				= "%s tot nach %s! Dein letzter Kill hat %s gedauert und der schnellste %s."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s tot nach %s! Das ist ein neuer Rekord! (Der alte Rekord war %s.)"
+DBM_CORE_BOSS_DOWN_L				= "%s tot nach %s! Dein letzter Kill hat %s gedauert und der schnellste %s. Das war dein %d. Kill."
+DBM_CORE_BOSS_DOWN_NR				= "%s tot nach %s! Das ist ein neuer Rekord! (Der alte Rekord war %s.) Das war dein %d. Kill."
 DBM_CORE_COMBAT_ENDED_AT			= "Kampf gegen %s (%s) hat nach %s aufgehört."
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "Kampf gegen %s (%s) hat nach %s aufgehört. Das war dein insgesamt %d. Versuch."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "Kampf gegen %s hat vor %s begonnen, Neukalibrierung der Timer erfolgt..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4Sekunde:Sekunden;"
