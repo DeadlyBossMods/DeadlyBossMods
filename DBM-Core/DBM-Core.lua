@@ -2493,6 +2493,8 @@ function DBM:EndCombat(mod, wipe)
 		end
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
+			local wipeHP = ("%d%%"):format(lowestBossHealth * 100)
+			local totalPulls = (mod:IsDifficulty("lfr25") and mod.stats.lfr25Pulls) or (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalPulls) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicPulls) or (mod:IsDifficulty("normal25") and mod.stats.normal25Pulls) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25Pulls)
 			if thisTime < 15 then
 				if mod:IsDifficulty("lfr25") then
 					mod.stats.lfr25Pulls = mod.stats.lfr25Pulls - 1
@@ -2505,9 +2507,11 @@ function DBM:EndCombat(mod, wipe)
 				elseif mod:IsDifficulty("heroic25") then
 					mod.stats.heroic25Pulls = mod.stats.heroic25Pulls - 1
 				end
+				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(savedDifficulty..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
+			else
+				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(savedDifficulty..mod.combatInfo.name, wipeHP, strFromTime(thisTime)), totalPulls)
 			end
-			local wipeHP = ("%d%%"):format(lowestBossHealth * 100)
-			self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(savedDifficulty..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
+
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(UnitName("player"), savedDifficulty..(mod.combatInfo.name or ""), wipeHP)
@@ -2567,6 +2571,7 @@ function DBM:EndCombat(mod, wipe)
 					mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
 				end
 			end
+			local totalKills = (mod:IsDifficulty("lfr25") and mod.stats.lfr25Kills) or (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalKills) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicKills) or (mod:IsDifficulty("normal25") and mod.stats.normal25Kills) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25Kills)
 			if not lastTime then
 				self:AddMsg(DBM_CORE_BOSS_DOWN:format(savedDifficulty..mod.combatInfo.name, strFromTime(thisTime)))
 			elseif thisTime < (bestTime or math.huge) then
