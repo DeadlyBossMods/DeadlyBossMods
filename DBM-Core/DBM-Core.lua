@@ -2509,7 +2509,7 @@ function DBM:EndCombat(mod, wipe)
 				end
 				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(savedDifficulty..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
 			else
-				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(savedDifficulty..mod.combatInfo.name, wipeHP, strFromTime(thisTime)), totalPulls)
+				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(savedDifficulty..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls))
 			end
 
 			local msg
@@ -2575,9 +2575,9 @@ function DBM:EndCombat(mod, wipe)
 			if not lastTime then
 				self:AddMsg(DBM_CORE_BOSS_DOWN:format(savedDifficulty..mod.combatInfo.name, strFromTime(thisTime)))
 			elseif thisTime < (bestTime or math.huge) then
-				self:AddMsg(DBM_CORE_BOSS_DOWN_NR:format(savedDifficulty..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime)), totalKills)
+				self:AddMsg(DBM_CORE_BOSS_DOWN_NR:format(savedDifficulty..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills))
 			else
-				self:AddMsg(DBM_CORE_BOSS_DOWN_L:format(savedDifficulty..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime)), totalKills)
+				self:AddMsg(DBM_CORE_BOSS_DOWN_L:format(savedDifficulty..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills))
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
