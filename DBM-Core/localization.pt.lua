@@ -9,9 +9,10 @@ DBM_CORE_LOAD_GUI_ERROR				= "Não foi possível carregar interface gráfica: %s
 
 DBM_CORE_COMBAT_STARTED				= "%s na mira. Divirta-se e boa sorte! :)"
 DBM_CORE_BOSS_DOWN					= "%s derrotado após %s!"
-DBM_CORE_BOSS_DOWN_LONG				= "%s derrotado após %s! Sua última vitória demorou %s, sua vitória mais rápida %s."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s derrotado após %s! Esse é um novo récorde! (Récorde antigo era %s)"
-DBM_CORE_COMBAT_ENDED_AT			= "Combate contra %s encerrado após %s."
+DBM_CORE_BOSS_DOWN_L				= "%s derrotado após %s! Sua última vitória levou %s, sua vitória mais rápida %s. Você tem um total de %d vitórias."
+DBM_CORE_BOSS_DOWN_NR				= "%s derrotado após %s! Esse é um novo récorde! (Récorde antigo era %s). Você tem um total de %d vitórias."
+DBM_CORE_COMBAT_ENDED_AT			= "Combate contra %s (%s) encerrado após %s."
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "Combate contra %s (%s) encerrado após %s. Você tem um total de %d tentativas."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "Luta contra %s começou %s atrás, reajustando cronógrafos..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4segundo:segundos;"
