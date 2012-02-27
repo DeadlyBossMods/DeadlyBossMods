@@ -143,7 +143,7 @@ do
 		local found = false
 		for i = 1, GetNumBattlefieldScores() do
 			local name, _, _, _, _, faction, _, _, classToken = GetBattlefieldScore(i)
-	 		if (name and class and RAID_CLASS_COLORS[classToken]) then
+	 		if (name and faction and classToken and RAID_CLASS_COLORS[classToken]) then
 				if string.match( name, "-" )  then
 					name = string.match(name, "([^%-]+)%-.+")
 				end
@@ -187,7 +187,7 @@ do
 		if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
 			if string.match(arg1, L.ExprFlagPickUp) then
 				local sArg1, sArg2 =  string.match(arg1, L.ExprFlagPickUp)
-				local mSide, mNick
+				local mSide, mNick, nickLong
 				if( GetLocale() == "deDE") then
 					mSide = sArg2
 					mNick = sArg1
@@ -195,13 +195,25 @@ do
 					mSide = sArg1
 					mNick = sArg2
 				end
-			
-				if( GetLocale() == "koKR") then
+				if GetLocale() == "koKR" then
 					mSide = sArg2
 					mNick = sArg1
-				end			
+				end
+
+				for i = 1, GetNumBattlefieldScores() do
+					local name = GetBattlefieldScore(i)
+					-- check if the player is really the player we are looking for (include the "-" separator in the check to avoid players with matching prefixes)
+					if name and name:sub(0, mNick:len() + 1) == mNick .. "-"  then
+						nickLong = name
+						break
+					end
+				end
+				if not nickLong then
+					nickLong = mNick
+				end
+
 				if mSide == L.Alliance then
-					FlagCarrier[2] = mNick
+					FlagCarrier[2] = nickLong
 					self.FlagCarrierFrame2Text:SetText(mNick)
 					self.FlagCarrierFrame2:Show()
 					self:ColorFlagCarrier(mNick)
@@ -210,11 +222,11 @@ do
 							self:AddMsg(L.InfoErrorText)
 						end
 					else
-						self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
+						self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/targetexact " .. nickLong )
 					end					
 
 				elseif mSide == L.Horde then
-					FlagCarrier[1] = mNick
+					FlagCarrier[1] = nickLong
 					self.FlagCarrierFrame1Text:SetText(mNick)
 					self.FlagCarrierFrame1:Show()
 					self:ColorFlagCarrier(mNick)
@@ -223,7 +235,7 @@ do
 							self:AddMsg(L.InfoErrorText)
 						end
 					else
-						self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
+						self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/targetexact " .. nickLong )
 					end
 				end
 
