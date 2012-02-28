@@ -223,7 +223,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EoEEvent			= "It is no use, the power of the Dragon Soul is too great",--translate
+	EoEEvent			= "No sirve de nada, el Alma es demasiado poderosa. No puedo empuñarla de forma segura; la ira que encierra podría ser nuestra perdición.",
 	UltraxionTrash		= "Me alegra volver a verte, Alexstrasza. He estado ocupado en mi ausencia.",
 	UltraxionTrashEnded	= "Simples crías, experimentos, un medio para un fin mayor. Verás el resultado de las investigaciones de mi nidada."
 })

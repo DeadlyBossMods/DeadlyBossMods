@@ -9,9 +9,10 @@ DBM_CORE_LOAD_GUI_ERROR				= "No se puede cargar la GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s llamado. Buena suerte y diviertase! :)"
 DBM_CORE_BOSS_DOWN					= "%s murio en %s!"
-DBM_CORE_BOSS_DOWN_LONG				= "%s murio en %s! Su muerte reciente fue %s y la muerte mas rapida fue %s."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s murio en %s! Es un nuevo record! (el antiguo era %s)"
+DBM_CORE_BOSS_DOWN_L				= "%s murio en %s! Su muerte reciente fue %s y la muerte mas rapida fue %s. Lo has detrrotado %d veces en total."
+DBM_CORE_BOSS_DOWN_NR				= "%s murio en %s! Es un nuevo record! (el antiguo era %s). Lo has detrrotado %d veces en total."
 DBM_CORE_COMBAT_ENDED_AT			= "El combate contra %s (%s) terminó en %s."
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "El combate contra %s (%s) terminó en %s. Lo has intentado %d veces en total."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s empezó %s atrás. Recalibrando temporizadores..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4segundo:segundos;"
