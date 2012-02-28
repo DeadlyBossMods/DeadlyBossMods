@@ -45,6 +45,7 @@ local timerGripCD			= mod:NewNextTimer(32, 109457)
 local timerDeathCD			= mod:NewCDTimer(8.5, 106199)--8.5-10sec variation.
 
 local countdownRoll			= mod:NewCountdown(5, "ej4050")
+local countdownGrip			= mod:NewCountdown(32, 109457, false)--Can get confusing if used with roll countdown. This is off by default but can be turned on by someone willing to sort out the confusion on their own.
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
@@ -198,8 +199,14 @@ function mod:SPELL_CAST_START(args)
 			corruptionActive[args.sourceGUID] = 0
 			if self:IsDifficulty("normal25", "heroic25") then
 				timerGripCD:Start(16, args.sourceGUID)
+				if #corruptionActive < 2 then--because using countdowns with more then 1 will be noisy not informative.
+					countdownGrip:Start(16, args.sourceGUID)
+				end
 			else
 				timerGripCD:Start(nil, args.sourceGUID)
+				if #corruptionActive < 2 then--because using countdowns with more then 1 will be noisy not informative.
+					countdownGrip:Start(32, args.sourceGUID)
+				end
 			end
 		end
 		corruptionActive[args.sourceGUID] = corruptionActive[args.sourceGUID] + 1
@@ -247,6 +254,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
 		gripTargets[#gripTargets + 1] = args.destName
 		timerGripCD:Cancel(args.sourceGUID)
+		countdownGrip:Cancel(args.sourceGUID)
 		if corruptionActive[args.sourceGUID] then
 			corruptionActive[args.sourceGUID] = nil
 		end
@@ -318,6 +326,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 53891 or cid == 56162 or cid == 56161 then
 		timerGripCD:Cancel(args.sourceGUID)
+		countdownGrip:Cancel(args.sourceGUID)
 		warnAmalgamation:Schedule(4.5)--4.5-5 seconds after corruption dies.
 		specWarnAmalgamation:Schedule(4.5)
 		if self:IsDifficulty("heroic10", "heroic25") then

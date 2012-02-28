@@ -96,10 +96,10 @@ local timerEmpoweredSulfCD	= mod:NewCDTimer(56, 100997)--56-64sec variations
 local timerEmpoweredSulf	= mod:NewBuffActiveTimer(10, 100997, nil, mod:IsTank())
 local timerDreadFlameCD		= mod:NewCDTimer(40, 100675, nil, false)--Off by default as only the people dealing with them care about it.
 
-local SeedsCountdown		= mod:NewCountdown(60, 98520)
-local MeteorCountdown		= mod:NewCountdown(45, 99268)
-local EmpoweredSulfCountdown= mod:NewCountdown(56, 100997, mod:IsTank())--56-64sec variations
-local EmpoweredSulfCountout	= mod:NewCountout(10, 100997, mod:IsTank())--Counts out th duration of empowered sulfurus, tanks too busy running around to pay attention to a timer, hearing duration counted should be infinitely helpful.
+local countdownSeeds		= mod:NewCountdown(60, 98520)
+local countdownMeteor		= mod:NewCountdown(45, 99268)
+local countdownEmpoweredSulf= mod:NewCountdown(56, 100997, mod:IsTank())--56-64sec variations
+local countoutEmpoweredSulf	= mod:NewCountout(10, 100997, mod:IsTank())--Counts out th duration of empowered sulfurus, tanks too busy running around to pay attention to a timer, hearing duration counted should be infinitely helpful.
 
 local berserkTimer			= mod:NewBerserkTimer(1080)
 
@@ -182,11 +182,11 @@ local function TransitionEnded()
 		timerSulfurasSmash:Start(15.5)--Also a variation.
 		timerFlamesCD:Start(30)
 		warnLivingMeteorSoon:Schedule(35)
-		MeteorCountdown:Start(45)
+		countdownMeteor:Start(45)
 		timerLivingMeteorCD:Start(45, 1)
 	elseif phase == 4 then
 		timerLivingMeteorCD:Cancel()
-		MeteorCountdown:Cancel()
+		countdownMeteor:Cancel()
 		warnLivingMeteorSoon:Cancel()
 		timerFlamesCD:Cancel()
 		timerSulfurasSmash:Cancel()
@@ -195,7 +195,7 @@ local function TransitionEnded()
 		timerCloudBurstCD:Start()
 		timerEntrapingRootsCD:Start(67)
 		timerEmpoweredSulfCD:Start(83)
-		EmpoweredSulfCountdown:Start(83)
+		countdownEmpoweredSulf:Start(83)
 	end
 end
 
@@ -349,9 +349,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEmpoweredSulf:Show()
 		soundEmpoweredSulf:Play()
 		timerEmpoweredSulf:Schedule(5)--Schedule 10 second bar to start when cast ends for buff active timer.
-		EmpoweredSulfCountout:Schedule(5)
+		countoutEmpoweredSulf:Schedule(5)
 		timerEmpoweredSulfCD:Start()
-		EmpoweredSulfCountdown:Start(56)
+		countdownEmpoweredSulf:Start(56)
 	end
 end		
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -379,18 +379,18 @@ function mod:SPELL_CAST_START(args)
 				if self:IsDifficulty("heroic10", "heroic25") then
 					if self.Options.warnSeedsLand then
 						timerMoltenSeedCD:Update(6, 17.5)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-						SeedsCountdown:Start(11.5)
+						countdownSeeds:Start(11.5)
 					else
 						timerMoltenSeedCD:Update(6, 15)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-						SeedsCountdown:Start(9)--9.3-10.5 variation we use 9 to be extra safe as it has worked til now no reason to mess with it.
+						countdownSeeds:Start(9)--9.3-10.5 variation we use 9 to be extra safe as it has worked til now no reason to mess with it.
 					end
 				else
 					if self.Options.warnSeedsLand then
 						timerMoltenSeedCD:Update(16.2, 24)--Update the timer here if it's off, but timer still starts at yell so it has more visability sooner.
-						SeedsCountdown:Start(7.8)
+						countdownSeeds:Start(7.8)
 					else
 						timerMoltenSeedCD:Update(16.2, 21.5)--I'll run more transcriptor logs to tweak this
-						SeedsCountdown:Start(5.3)
+						countdownSeeds:Start(5.3)
 					end
 				end
 			end
@@ -399,7 +399,7 @@ function mod:SPELL_CAST_START(args)
 		sonsLeft = 8
 		phase = phase + 1
 		self:Unschedule(warnSeeds)
-		SeedsCountdown:Cancel()
+		countdownSeeds:Cancel()
 		timerMoltenSeedCD:Cancel()
 		timerMagmaTrap:Cancel()
 		timerSulfurasSmash:Cancel()
@@ -516,7 +516,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			scansDone = 0
 			self:TargetScanner(99268)
 			timerLivingMeteorCD:Start(45, meteorSpawned+1)--Start new one with new count.
-			MeteorCountdown:Start(45)
+			countdownMeteor:Start(45)
 			warnLivingMeteorSoon:Schedule(35)
 		end
 		if self.Options.MeteorFrame and meteorSpawned == 1 then--Show meteor frame and clear any health or aggro frame because nothing is more important then meteors.
@@ -624,7 +624,7 @@ end
 local function warnSeeds()
 	warnMoltenSeed:Show()
 	specWarnMoltenSeed:Show()
-	SeedsCountdown:Start(60)
+	countdownSeeds:Start(60)
 	timerMoltenSeedCD:Start()
 end
 

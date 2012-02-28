@@ -66,7 +66,7 @@ local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:
 local timerConsumingShroud			= mod:NewCDTimer(30, 110598)
 local timerTwilightBreath			= mod:NewCDTimer(20.5, 110213, nil, mod:IsTank() or mod:IsHealer())
 
-local twilightOnslaughtCountdown	= mod:NewCountdown(35, 107588)
+local countdownTwilightOnslaught	= mod:NewCountdown(35, 107588)
 local berserkTimer					= mod:NewBerserkTimer(240)
 
 mod:AddBoolOption("SetTextures", false)--Disable projected textures in phase 1, because no harmful spells use them in phase 1, but friendly spells make the blade rush lines harder to see.
@@ -83,7 +83,7 @@ local function Phase2Delay()
 	mod:UnscheduleMethod("AddsRepeat")
 	timerAdd:Cancel()
 	timerTwilightOnslaughtCD:Cancel()
-	twilightOnslaughtCountdown:Cancel()
+	countdownTwilightOnslaught:Cancel()
 	timerBroadsideCD:Cancel()
 	timerSapperCD:Cancel()
 	timerRoarCD:Start(10)
@@ -138,7 +138,7 @@ function mod:OnCombatStart(delay)
 	timerAdd:Start(22.8-delay)
 	self:ScheduleMethod(22.8-delay, "AddsRepeat")
 	timerTwilightOnslaughtCD:Start(48-delay, 1)
-	twilightOnslaughtCountdown:Start(48-delay)
+	countdownTwilightOnslaught:Start(48-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerBroadsideCD:Start(57-delay)
 	end
@@ -169,7 +169,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTwilightOnslaught:Show()
 		timerTwilightOnslaught:Start()
 		timerTwilightOnslaughtCD:Start(nil, twilightOnslaughtCount + 1)
-		twilightOnslaughtCountdown:Start()
+		countdownTwilightOnslaught:Start()
 	elseif args:IsSpellID(108046) then
 		self:ScheduleMethod(0.2, "ShockwaveTarget")
 		timerShockwaveCD:Start()
