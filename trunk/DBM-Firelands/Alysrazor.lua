@@ -53,7 +53,7 @@ local timerTantrum			= mod:NewBuffActiveTimer(10, 99362, nil, mod:IsTank())
 local timerSatiated			= mod:NewBuffActiveTimer(15, 100852, nil, mod:IsTank())
 local timerBlazingClaw		= mod:NewTargetTimer(15, 101731, nil, false)
 
-local FirestormCountdown	= mod:NewCountdown(83, 100744)
+local countdownFirestorm	= mod:NewCountdown(83, 100744)
 
 mod:AddBoolOption("InfoFrame", false)--Why is this useful?
 
@@ -81,7 +81,7 @@ function mod:OnCombatStart(delay)
 		timerCataclysmCD:Start(32-delay)
 		timerHatchEggs:Start(42-delay)
 		timerFirestormCD:Start(94-delay)
-		FirestormCountdown:Start(94-delay)--Perhaps some tuning.
+		countdownFirestorm:Start(94-delay)--Perhaps some tuning.
 		warnFirestormSoon:Schedule(84-delay)
 		timerHatchEggs:Start(37-delay)
 	else
@@ -183,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnFirestorm:Show()
 		if cataCast < 3 then--Firestorm is only cast 2 times per phase. This essencially makes cd bar only start once.
 			timerFirestormCD:Start()
-			FirestormCountdown:Start(83)--Perhaps some tuning.
+			countdownFirestorm:Start(83)--Perhaps some tuning.
 			warnFirestormSoon:Cancel()--Just in case it's wrong. WoL may not be perfect, i'll have full transcriptor logs soon.
 			warnFirestormSoon:Schedule(73)
 		end
@@ -254,7 +254,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			timerHatchEggs:Start(22)
 			timerCataclysmCD:Start(18)
 			timerFirestormCD:Start(70)--Needs verification.
-			FirestormCountdown:Start(70)--Perhaps some tuning.
+			countdownFirestorm:Start(70)--Perhaps some tuning.
 			warnFirestormSoon:Schedule(60)--Needs verification.
 			cataCast = 0
 			clawCast = 0

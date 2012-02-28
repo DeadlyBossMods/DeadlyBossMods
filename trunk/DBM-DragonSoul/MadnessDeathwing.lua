@@ -72,8 +72,8 @@ local timerTetanusCD			= mod:NewCDTimer(3.5, 109605, nil, mod:IsTank())
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
-local boltBlastCount			= mod:NewCountdown(8, 109600)
-local ShrapnelCountdown			= mod:NewCountdown(6, 109598, not mod:IsTank())
+local countdownBoltBlast		= mod:NewCountdown(8, 109600)
+local countdownShrapnel			= mod:NewCountdown(6, 109598, not mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)--For heroic parasites, with debuff filtering.
 mod:AddBoolOption("SetIconOnParasite", true)
@@ -174,7 +174,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnElementiumBolt:Show()
 		if not UnitBuff("player", GetSpellInfo(109624)) and not UnitIsDeadOrGhost("player") then--Check for Nozdormu's Presence
 			timerElementiumBlast:Start()
-			boltBlastCount:Start()
+			countdownBoltBlast:Start()
 			specWarnElementiumBoltDPS:Schedule(10)
 		else
 			timerElementiumCast:Start()
@@ -216,7 +216,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnShrapnel:Show()
 			timerShrapnel:Start() -- Shrapnel debuff lasts 7 secs. But Shrapnel damages 1 sec early before debuff fades. So 6 sec timer will be more good.
-			ShrapnelCountdown:Start(6)
+			countdownShrapnel:Start(6)
 		end
 		if (self:IsDifficulty("normal10", "heroic10") and #shrapnelTargets >= 3) or (self:IsDifficulty("normal25", "heroic25", "lfr25") and #shrapnelTargets >= 8) then
 			warnShrapnelTargets()
@@ -261,7 +261,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerImpale:Cancel(args.destName)
 	elseif args:IsSpellID(106794, 110139, 110140, 110141) and args:IsPlayer() then
 		timerShrapnel:Cancel()
-		ShrapnelCountdown:Cancel()
+		countdownShrapnel:Cancel()
 	elseif args:IsSpellID(108649) then
 		specWarnParasiteDPS:Show()
 		if self.Options.SetIconOnParasite then

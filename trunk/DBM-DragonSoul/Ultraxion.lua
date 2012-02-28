@@ -45,8 +45,8 @@ local timerRaidCDs					= mod:NewTimer(60, "timerRaidCDs", 2565, nil, false)--Doe
 
 local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultraxian mod not shows berserk Timer. so it will be better to use Generic Berserk Timer..
 
-local FadingLightCountdown			= mod:NewCountdown(10, 110080)
-local HourofTwilightCountdown		= mod:NewCountdown(45.5, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
+local countdownFadingLight			= mod:NewCountdown(10, 110080)
+local countdownHourofTwilight		= mod:NewCountdown(45.5, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
 mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
 mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--TODO, make a popup optiopn and combine this with other booleane
@@ -75,7 +75,7 @@ function mod:OnCombatStart(delay)
 		specWarnHourofTwilightN:Schedule(40.5, GetSpellInfo(109416), hourOfTwilightCount+1)
 	end
 	timerHourofTwilightCD:Start(45.5-delay, 1)
-	HourofTwilightCountdown:Start(45.5)
+	countdownHourofTwilight:Start(45.5)
 	timerGiftofLight:Start(-delay)
 	timerEssenceofDreams:Start(-delay)
 	timerSourceofMagic:Start(-delay)
@@ -102,7 +102,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		warnHourofTwilightSoon:Schedule(30.5)
 		timerHourofTwilightCD:Start(45.5, hourOfTwilightCount+1)
-		HourofTwilightCountdown:Start(45.5)
+		countdownHourofTwilight:Start(45.5)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFadingLightCD:Start(13)
 			timerHourofTwilight:Start(3)
@@ -168,7 +168,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(105925))) and GetTime() - fadingLightSpam > 2 then--Sometimes the combatlog doesn't report all fading lights, so we perform an additional aura check 
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)--Find out what our specific fading light is
 			specWarnFadingLight:Show()
-			FadingLightCountdown:Start(duration-1)--For some reason need to offset it by 1 second to make it accurate but otherwise it's perfect
+			countdownFadingLight:Start(duration-1)--For some reason need to offset it by 1 second to make it accurate but otherwise it's perfect
 			timerFadingLight:Start(duration-1)
 			fadingLightSpam = GetTime()
 		else
@@ -185,7 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args:IsPlayer() or UnitDebuff("player", GetSpellInfo(109075))) and GetTime() - fadingLightSpam > 2 then
 			local _, _, _, _, _, duration, expires = UnitDebuff("player", args.spellName)
 			specWarnFadingLight:Show()
-			FadingLightCountdown:Start(duration-1)
+			countdownFadingLight:Start(duration-1)
 			timerFadingLight:Start(duration-1)
 			fadingLightSpam = GetTime()
 		end
