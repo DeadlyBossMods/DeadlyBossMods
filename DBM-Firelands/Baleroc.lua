@@ -43,7 +43,7 @@ local timerCountdownCD		= mod:NewNextTimer(45, 99516)
 local timerVitalFlame		= mod:NewBuffFadesTimer(15, 99263)
 local timerTormented		= mod:NewBuffFadesTimer(40, 99402)
 
-local ShardsCountown		= mod:NewCountdown(34, 99259, false)
+local countdownShards		= mod:NewCountdown(34, 99259, false)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
@@ -262,7 +262,7 @@ function mod:SPELL_CAST_START(args)
 		tormentIcon = 8
 		warnShardsTorment:Show(shardCount)
 		specWarnShardsTorment:Schedule(1.5)
-		ShardsCountown:Start(34)
+		countdownShards:Start(34)
 		if self.Options.ResetShardsinThrees and (self:IsDifficulty("normal25", "heroic25") and shardCount == 3 or self:IsDifficulty("normal10", "heroic10") and shardCount == 2) then
 			shardCount = 0
 			timerShardsTorment:Start(34, 1)

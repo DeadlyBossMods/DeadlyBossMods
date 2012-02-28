@@ -71,7 +71,7 @@ local timerShadowBlazeCD		= mod:NewCDTimer(10, 81031)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
-local shadowblazeCountdown		= mod:NewCountdown(30, 94085, mod:IsTank())
+local countdownShadowblaze		= mod:NewCountdown(30, 94085, mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
@@ -105,7 +105,7 @@ function mod:ShadowBlazeFunction()
 	if not shadowBlazeSynced then
 		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeEstimate)--Pre warning 5 seconds prior to be safe, until we sync timer and know for sure.
 	else
-		shadowblazeCountdown:Start(shadowblazeTimer)
+		countdownShadowblaze:Start(shadowblazeTimer)
 		warnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
 		warnShadowblazeSoon:Schedule(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
 		warnShadowblazeSoon:Schedule(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))
@@ -328,9 +328,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		shadowBlazeSynced = true
 		self:UnscheduleMethod("ShadowBlazeFunction")--Unschedule any running stuff
 		specWarnShadowblazeSoon:Cancel()--^^
-		shadowblazeCountdown:Cancel()--^^ Auto corrections still occur more then once, lets make sure to unschedule audio countdown as well so we don't start getting 2 running.
+		countdownShadowblaze:Cancel()--^^ Auto corrections still occur more then once, lets make sure to unschedule audio countdown as well so we don't start getting 2 running.
 		if GetTime() - lastBlaze <= 3 then--The blaze timer is too fast, since the actual cast happened immediately after the method ran. So reschedule functions using last timing which should be right just a little fast. :)
-			shadowblazeCountdown:Start(shadowblazeTimer)
+			countdownShadowblaze:Start(shadowblazeTimer)
 			warnShadowblazeSoon:Schedule(shadowblazeTimer - 5, L.ShadowBlazeExact:format(5))--Start pre warning with regular warnings only as you don't move at this point yet.
 			warnShadowblazeSoon:Schedule(shadowblazeTimer - 4, L.ShadowBlazeExact:format(4))
 			warnShadowblazeSoon:Schedule(shadowblazeTimer - 3, L.ShadowBlazeExact:format(3))

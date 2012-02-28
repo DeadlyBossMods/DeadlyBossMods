@@ -55,7 +55,7 @@ local timerFeedback			= mod:NewBuffActiveTimer(15, 108934)
 
 local berserkTimer			= mod:NewBerserkTimer(480)
 
-local SpecialCountdown		= mod:NewCountdown(62, 105256, true, L.SpecialCount)
+local countdownSpecial		= mod:NewCountdown(62, 105256, true, L.SpecialCount)
 
 mod:AddBoolOption("RangeFrame")--Ice lance spreading in ice phases, and lighting linking in lighting phases (with reverse intent, staying within 10 yards, not out of 10 yards)
 mod:AddBoolOption("SetIconOnFrostflake", false)--You can use an icon if you want, but this is cast on a new target every 5 seconds, often times on 25 man 2-3 have it at same time while finding a good place to drop it.
@@ -94,7 +94,7 @@ function mod:OnCombatStart(delay)
 	timerAssaultCD:Start(4-delay, 1)
 	timerIceLanceCD:Start(10-delay)
 	timerSpecialCD:Start(30-delay)
-	SpecialCountdown:Start(30-delay)
+	countdownSpecial:Start(30-delay)
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Show(3)
@@ -217,7 +217,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		assaultCount = 0
 		timerAssaultCD:Start(nil, 1)
 		timerLightningStormCD:Start()
-		SpecialCountdown:Start(62)
+		countdownSpecial:Start(62)
 		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
 			CVAR = true
 			SetCVar("chatBubbles", 0)
@@ -237,7 +237,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		assaultCount = 0
 		timerAssaultCD:Start(nil, 1)
 		timerTempestCD:Start()
-		SpecialCountdown:Start(62)
+		countdownSpecial:Start(62)
 		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
 			CVAR = true
 			SetCVar("chatBubbles", 0)

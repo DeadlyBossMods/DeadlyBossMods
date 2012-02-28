@@ -51,7 +51,7 @@ local timerDragon			= mod:NewTimer(50, "TimerDragon", 69002)
 local timerRedEssenceCD		= mod:NewNextTimer(22, 87946)--21-23 seconds after red egg dies
 local timerRedEssence		= mod:NewBuffFadesTimer(180, 87946)
 
-local OrbsCountdown			= mod:NewCountdown(28, 92954, nil, "OrbsCountdown")
+local countdownOrbs			= mod:NewCountdown(28, 92954, nil, "OrbsCountdown")
 
 mod:AddBoolOption("HealthFrame", false)
 mod:AddBoolOption("SetIconOnOrbs", true)
@@ -149,7 +149,7 @@ function mod:OrbsRepeat()
 		warnOrbSoon:Schedule(26, 2)
 		warnOrbSoon:Schedule(27, 1)
 	end
-	OrbsCountdown:Start(28)
+	countdownOrbs:Start(28)
 	specWarnOrbs:Show()--generic aoe warning on spawn, before we have actual targets yet.
 	if self:IsInCombat() then
 		self:ScheduleMethod(28, "OrbsRepeat")
@@ -181,7 +181,7 @@ function mod:OnCombatStart(delay)
 		warnOrbSoon:Schedule(27-delay, 2)
 		warnOrbSoon:Schedule(28-delay, 1)
 	end
-	OrbsCountdown:Start(29-delay)
+	countdownOrbs:Start(29-delay)
 	self:ScheduleMethod(29-delay, "OrbsRepeat")
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.HasAggro)
@@ -224,7 +224,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.WarnOrbSoon then
 			warnOrbSoon:Cancel()
 		end
-		OrbsCountdown:Cancel()
+		countdownOrbs:Cancel()
 		self:UnscheduleMethod("OrbsRepeat")
 		if self.Options.SetIconOnOrbs then
 			self:ClearIcons()
@@ -298,9 +298,9 @@ function mod:UNIT_DIED(args)
 				warnOrbSoon:Schedule(28, 2)
 				warnOrbSoon:Schedule(29, 1)
 			end
-			OrbsCountdown:Cancel()
+			countdownOrbs:Cancel()
 			self:UnscheduleMethod("OrbsRepeat")
-			OrbsCountdown:Start(30)
+			countdownOrbs:Start(30)
 			self:ScheduleMethod(30, "OrbsRepeat")
 		end
 	end
