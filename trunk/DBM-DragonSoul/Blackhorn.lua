@@ -81,10 +81,6 @@ local CVAR = false
 
 local function Phase2Delay()
 	mod:UnscheduleMethod("AddsRepeat")
-	timerAdd:Cancel()
-	timerTwilightOnslaughtCD:Cancel()
-	countdownTwilightOnslaught:Cancel()
-	timerBroadsideCD:Cancel()
 	timerSapperCD:Cancel()
 	timerRoarCD:Start(10)
 	timerTwilightFlamesCD:Start(12)
@@ -239,7 +235,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerHarpoonActive:Start(25, args.destGUID)
 		end
 	elseif args:IsSpellID(108040) and not phase2Started then--Goriona is being shot by the ships Artillery Barrage (phase 2 trigger)
-		self:Schedule(10, Phase2Delay)--It seems you can still get phase 1 crap until blackhorn's yell 10 seconds after this trigger, so we delay canceling timers.
+		timerTwilightOnslaughtCD:Cancel()
+		countdownTwilightOnslaught:Cancel()
+		timerBroadsideCD:Cancel()
+		self:Schedule(10, Phase2Delay)--seems to only sapper comes even phase2 started. so delays only sapper stuff.
 		phase2Started = true
 		warnPhase2:Show()--We still warn phase 2 here though to get into position, especially since he can land on deck up to 5 seconds before his yell.
 		timerCombatStart:Start(5)--5-8 seems variation, we use shortest.
@@ -297,6 +296,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 56855 or cid == 56587 then--Drakes
 		drakesCount = drakesCount - 1
 		warnDrakesLeft:Show(drakesCount)
+		timerReloadingCast:Cancel(args.sourceGUID)
 		timerHarpoonActive:Cancel(args.sourceGUID)
 	end
 end
