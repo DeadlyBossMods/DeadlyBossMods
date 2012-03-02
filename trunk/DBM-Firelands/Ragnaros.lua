@@ -260,12 +260,16 @@ end
 
 function mod:TargetScanner(SpellID, Force)
 	scansDone = scansDone + 1
-	local targetname = self:GetBossTarget(52409)
+	local targetname, uId = self:GetBossTarget(52409)
 	-- This stuff still buggy. Sometimes targetname returns Unknown.
 	-- So, you can see this message "Unkown is not in your party."
 	-- I guess that this message caused by GetPartyAssignment function?
-	if targetname then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
-		if isTank(targetname) and not Force then--He's targeting his highest threat target.
+	
+	-- Shouldn't be, http://wowprogramming.com/docs/api/GetPartyAssignment states it's api should work in party or raid, and value of 1 makes it check for exact match.
+	-- I've also never seen the issue on english client you deserve. This role check has been like this for many months and never changed.
+	-- All i ever changed really was switched from "boss1target" to GetBossTarget to avoid it breaking should boss1 not exist..
+	if targetname and uId then--Check if target exists.
+		if isTank(uId) and not Force then--He's targeting his highest threat target.
 			if scansDone < 12 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.025, "TargetScanner", SpellID)--Check multiple times to be sure it's not on something other then tank.
 			else
