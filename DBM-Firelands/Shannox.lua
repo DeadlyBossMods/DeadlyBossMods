@@ -132,9 +132,9 @@ end
 --Oh why blizz would you remove the boss1 flag from shannox. sigh. Workaround sucks, as it won't tell a tank from another tank, so it'l delay warning riplim tank too, but at least it'll warn again.
 function mod:TrapHandler(SpellID, ScansDone)
 	trapScansDone = trapScansDone + 1
-	local targetname = self:GetBossTarget(53691)
-	if targetname then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
-		if isTank(targetname) and not ScansDone then--He's targeting his highest threat target.
+	local targetname, uId = self:GetBossTarget(53691)
+	if targetname and uId then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
+		if isTank(uId) and not ScansDone then--He's targeting his highest threat target.
 			if trapScansDone < 12 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check multiple times to be sure it's not on something other then tank.
 			else
