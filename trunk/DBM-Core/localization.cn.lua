@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 2/12/2012
+-- Last update: 3/3/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -13,9 +13,12 @@ DBM_CORE_LOAD_GUI_ERROR				= "无法读取图形界面：%s"
 
 DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
 DBM_CORE_BOSS_DOWN					= "%s被击杀！用时%s。"
-DBM_CORE_BOSS_DOWN_LONG				= "%s被击杀！本次用时%s，上次用时%s，最快击杀用时%s。"
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s被击杀！用时%s，新的击杀纪录诞生了！（原纪录为%s）"
+DBM_CORE_BOSS_DOWN_L				= "%s被击杀！本次用时%s，上次用时%s，最快击杀用时%s。总击杀%d次。"--Localize this with new string, won't use it til it has enough language support.
+DBM_CORE_BOSS_DOWN_NR				= "%s被击杀！用时%s，新的击杀纪录诞生了！（原纪录为%s）总击杀%d次。"--Localize this with new string, won't use it til it has enough language support.
+--DBM_CORE_BOSS_DOWN_LONG			= "%s被击杀！本次用时%s，上次用时%s，最快击杀用时%s。"
+--DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s被击杀！用时%s，新的击杀纪录诞生了！（原纪录为%s）"
 DBM_CORE_COMBAT_ENDED_AT			= "%s（%s）作战结束，用时%s。"
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s（%s）作战结束，用时%s。总尝试%d次。"--This is usuable now since it's a new string and won't break locals missing this.
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
