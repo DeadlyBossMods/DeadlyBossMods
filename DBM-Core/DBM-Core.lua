@@ -388,6 +388,7 @@ do
 					mainFrame:UnregisterEvent(event)
 				end
 			end
+			self.shortTermEventsRegistered = nil
 			self.shortTermRegisterEvents = nil
 		end
 	end
