@@ -2804,12 +2804,15 @@ local soundFiles = {
 function DBM:AprilFools()
 	DBM:Unschedule(DBM.AprilFools)
 	DBM:Schedule(900 + math.random(0, 600) , DBM.AprilFools)
-	if IsInInstance() then return end--Don't play joke if you're raiding.
-	local x = math.random(1, #soundFiles)
-	if DBM.Options.UseMasterVolume then
-		PlaySoundFile(soundFiles[x], "Master")
+	if IsInInstance() then--Don't play joke if you're raiding.
+		DBM:Unschedule(DBM.AprilFools)--Unschedule/disable it even.
 	else
-		PlaySoundFile(soundFiles[x])
+		local x = math.random(1, #soundFiles)
+		if DBM.Options.UseMasterVolume then
+			PlaySoundFile(soundFiles[x], "Master")
+		else
+			PlaySoundFile(soundFiles[x])
+		end
 	end
 end
 
