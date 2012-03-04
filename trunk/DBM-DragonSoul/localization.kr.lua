@@ -31,7 +31,7 @@ L= DBM:GetModLocalization(324)
 L:SetOptionLocalization({
 	ShadowYell			= "$spell:104600 주문의 영향을 받은 경우 대화로 알리기 (영웅 난이도)",
 	CustomRangeFrame	= "교란의 그림자 주문에 대한 거리 프레임 설정 (영웅 난이도)",
-	Never				= "사용안함",
+	Never				= "거리 프레임 사용안함",
 	Normal				= "일반 거리 프레임",
 	DynamicPhase2		= "고라스의 검은 피 도중에만 필터링 사용",
 	DynamicAlways		= "항상 디버프 필터링 사용"
@@ -120,9 +120,9 @@ L:SetOptionLocalization({
 	Reset3				= "일반 2회, 영웅 3회 단위로 재시작",
 	Reset3Always		= "난이도 구분 없이 3회 단위로 재시작",
 	SpecWarnHoTN		= "황혼의 시간 시전 5초 전 특수 경고 보기 (3회 단위 재시작에서만 작동)",
-	One					= "첫번째 (예: 1 4 7)",
-	Two					= "두번째 (예: 2 5)",
-	Three				= "세번째 (예: 3 6)",
+	One					= "첫번째 (1, 4, 7)",
+	Two					= "두번째 (2, 5)",
+	Three				= "세번째 (3, 6)",
 	ShowRaidCDs			= "공격대 재사용 대기시간 바 표시",
 	ShowRaidCDsSelf		= "자신의 재사용 대기시간 바만 표시 (공격대 재사용 대기시간 바 활성화 필요)"
 })
