@@ -36,6 +36,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if uId ~= "player" then return end
 	if spellName == GetSpellInfo(102178) then
 		timerGame:Start()
 		countdownGame:Start(60)
