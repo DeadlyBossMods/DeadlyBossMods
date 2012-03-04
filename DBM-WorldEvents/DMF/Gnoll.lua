@@ -55,6 +55,7 @@ end
 do 
 	local antiSpam = 0
 	function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
+		if uId ~= "player" then return end
 		if spellID == 102044 then--Hogger
 			gameMaxPoints = gameMaxPoints + 3
 			warnHogger:Show()
