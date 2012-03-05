@@ -49,12 +49,17 @@ local berserkTimer					= mod:NewBerserkTimer(360)--some players regard as Ultrax
 local countdownFadingLight			= mod:NewCountdown(10, 110080)
 local countdownHourofTwilight		= mod:NewCountdown(45.5, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
-mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
-mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--TODO, make a popup optiopn and combine this with other booleane
+--mod:AddBoolOption("ShowRaidCDs", false, "timer")--Off by default. This is for RAID cds not personal CDs. Shield wall is added because of 4pc bonus, it's assumed on heroic ultraxion you're tanks have 4pc.
+--mod:AddBoolOption("ShowRaidCDsSelf", false, "timer")--TODO, make a popup optiopn and combine this with other booleane
 --Raid CDs will have following options: Don't show Raid CDs, Show only My Raid CDs, Show all raid CDs
+mod:AddDropdownOption("dropdownRaidCDs", {"Never", "ShowRaidCDs", "ShowRaidCDsSelf"}, "Never", "timer")
 
-mod:AddDropdownOption("ResetHoTCounter", {"Never", "Reset3", "Reset3Always"}, "Reset3", "announce")
+mod:AddDropdownOption("ResetHoTCounter", {"Never", "ResetDynamic", "Reset3Always"}, "Reset3Always", "announce")
+--ResetDynamic = 3s on heroic and 2s on normal.
+--Reset3Always = 3s on both heroic and normal.
 mod:AddDropdownOption("SpecWarnHoTN", {"Never", "One", "Two", "Three"}, "Never", "announce")
+--If ResetDynamic, SpecWarnHoTN WILL work for 1-2, if set to 3 it'll just be ignored.
+--If Never, SpecWarnHoTN will work in 3 counts still ie 1 4 7, 2 5, 3 6
 
 local hourOfTwilightCount = 0
 local fadingLightCount = 0
@@ -72,7 +77,7 @@ function mod:OnCombatStart(delay)
 	fadingLightCount = 0
 	fadingLightSpam = 0
 	warnHourofTwilightSoon:Schedule(30.5)
-	if self.Options.SpecWarnHoTN == "One" and (self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always") then
+	if self.Options.SpecWarnHoTN == "One" then--Don't filter here, this is supposed to work for everyone. IF they don't want special warning they set SpecWarnHoTN to Never (it's default)
 		specWarnHourofTwilightN:Schedule(40.5, GetSpellInfo(109416), hourOfTwilightCount+1)
 	end
 	timerHourofTwilightCD:Start(45.5-delay, 1)
@@ -92,14 +97,15 @@ function mod:SPELL_CAST_START(args)
 		hourOfTwilightCount = hourOfTwilightCount + 1
 		warnHourofTwilight:Show(hourOfTwilightCount)
 		specWarnHourofTwilight:Show()
-		if (self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always") and hourOfTwilightCount == 3
-		or self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2 then
+		--Reset Mechanic begin
+		if (self.Options.ResetHoTCounter == "ResetDynamic" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always") and hourOfTwilightCount == 3
+		or self.Options.ResetHoTCounter == "ResetDynamic" and self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2 then
 			hourOfTwilightCount = 0
 		end
-		if (self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always")
-		and (self.Options.SpecWarnHoTN == "One" and hourOfTwilightCount == 0
-		or self.Options.SpecWarnHoTN == "Two" and hourOfTwilightCount == 1
-		or self.Options.SpecWarnHoTN == "Three" and hourOfTwilightCount == 2) then
+		-- If reset is set to never, then we still schedule specail warnings for 4-7 on a 3 set rule
+		if self.Options.SpecWarnHoTN == "One" and (hourOfTwilightCount == 0 or hourOfTwilightCount == 3 or hourOfTwilightCount == 6)--All use this..
+		or self.Options.SpecWarnHoTN == "Two" and (hourOfTwilightCount == 1 or hourOfTwilightCount == 4)--All use this
+		or self.Options.SpecWarnHoTN == "Three" and (hourOfTwilightCount == 2 or hourOfTwilightCount == 5) then--ResetDynamic doesn't use this on normal, however, no reason to filter it here as hourOfTwilightCount was already reset before this ran. Never also uses this safely.
 			specWarnHourofTwilightN:Schedule(40.5, args.spellName, hourOfTwilightCount+1)
 		end
 		warnHourofTwilightSoon:Schedule(30.5)
@@ -121,39 +127,39 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(106372, 106376, 106377, 106378, 106379) then
 		timerUnstableMonstrosity:Start()
-	elseif args:IsSpellID(97462) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Warrior Rallying Cry
+	elseif args:IsSpellID(97462) and self:IsInCombat() and (self.Options.dropdownRaidCDs == "ShowRaidCDs" or (self.Options.dropdownRaidCDs == "ShowRaidCDsSelf" and UnitName("player") == args.sourceName)) then--Warrior Rallying Cry
 		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(90, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(180, args.spellName, args.sourceName)
 		end
-	elseif args:IsSpellID(871) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Warrior Shield Wall (4pc Assumed)
+	elseif args:IsSpellID(871) and self:IsInCombat() and (self.Options.dropdownRaidCDs == "ShowRaidCDs" or (self.Options.dropdownRaidCDs == "ShowRaidCDsSelf" and UnitName("player") == args.sourceName)) then--Warrior Shield Wall (4pc Assumed)
 		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(120, args.spellName, args.sourceName)
 		end
-	elseif args:IsSpellID(62618) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Paladin Divine Guardian (4pc assumed)
+	elseif args:IsSpellID(62618) and self:IsInCombat() and (self.Options.dropdownRaidCDs == "ShowRaidCDs" or (self.Options.dropdownRaidCDs == "ShowRaidCDsSelf" and UnitName("player") == args.sourceName)) then--Paladin Divine Guardian (4pc assumed)
 		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(120, args.spellName, args.sourceName)
 		end
-	elseif args:IsSpellID(55233) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--DK Vampric Blood (4pc assumed)
+	elseif args:IsSpellID(55233) and self:IsInCombat() and (self.Options.dropdownRaidCDs == "ShowRaidCDs" or (self.Options.dropdownRaidCDs == "ShowRaidCDsSelf" and UnitName("player") == args.sourceName)) then--DK Vampric Blood (4pc assumed)
 		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(30, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(60, args.spellName, args.sourceName)
 		end
-	elseif args:IsSpellID(22842) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Druid Frenzied Regen (4pc assumed)
+	elseif args:IsSpellID(22842) and self:IsInCombat() and (self.Options.dropdownRaidCDs == "ShowRaidCDs" or (self.Options.dropdownRaidCDs == "ShowRaidCDsSelf" and UnitName("player") == args.sourceName)) then--Druid Frenzied Regen (4pc assumed)
 		if UnitDebuff(args.sourceName, GetSpellInfo(106218)) then
 			timerRaidCDs:Start(90, args.spellName, args.sourceName)
 		else
 			timerRaidCDs:Start(180, args.spellName, args.sourceName)
 		end
-	elseif args:IsSpellID(98008) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Shaman Spirit Link
+	elseif args:IsSpellID(98008) and self:IsInCombat() and (self.Options.dropdownRaidCDs == "ShowRaidCDs" or (self.Options.dropdownRaidCDs == "ShowRaidCDsSelf" and UnitName("player") == args.sourceName)) then--Shaman Spirit Link
 		timerRaidCDs:Start(180, args.spellName, args.sourceName)
-	elseif args:IsSpellID(62618) and self:IsInCombat() and ((self.Options.ShowRaidCDs and not self.Options.ShowRaidCDsSelf) or (self.Options.ShowRaidCDs and self.Options.ShowRaidCDsSelf and UnitName("player") == args.sourceName)) then--Priest Power Word: Barrior
+	elseif args:IsSpellID(62618) and self:IsInCombat() and (self.Options.dropdownRaidCDs == "ShowRaidCDs" or (self.Options.dropdownRaidCDs == "ShowRaidCDsSelf" and UnitName("player") == args.sourceName)) then--Priest Power Word: Barrior
 		timerRaidCDs:Start(180, args.spellName, args.sourceName)
 	end
 end

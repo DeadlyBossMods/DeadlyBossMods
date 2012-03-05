@@ -115,7 +115,7 @@ L:SetOptionLocalization({
 	TimerCombatStart	= "為戰鬥開始時間顯示計時器",
 	ResetHoTCounter		= "重置暮光之時計數",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "不使用",
-	Reset3				= "每三次/兩次重置計數(英雄/普通)",
+	ResetDynamic		= "每三次/兩次重置計數(英雄/普通)",
 	Reset3Always		= "總是每三次重置計數",
 	SpecWarnHoTN		= "前五秒特別警告所設定的暮光之時計數(只適用在每三次重置)",
 	One					= "1(即為第1 4 7次)",

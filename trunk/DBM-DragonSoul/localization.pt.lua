@@ -118,7 +118,7 @@ L:SetOptionLocalization({
 	TimerCombatStart	= "Exibir cronógrafo para início do combate.",
 	ResetHoTCounter		= "Reiniciar contador de Hora do Crepúsculo",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "Nunca",
-	Reset3				= "Zerar a cada 3/2 (heróico/normal)",
+	ResetDynamic		= "Zerar a cada 3/2 (heróico/normal)",
 	Reset3Always		= "Sempre zerar a cada 3",
 	SpecWarnHoTN		= "Aviso especial 5s antes de  Hora do Crepúsculo (a cada 3)",
 	One					= "1 (ou seja, 1 4 7)",
