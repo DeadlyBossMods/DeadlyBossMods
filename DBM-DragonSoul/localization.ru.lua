@@ -116,7 +116,7 @@ L:SetOptionLocalization({
 	TimerCombatStart	= "Отсчет времени до приземления Ультраксиона",
 	ResetHoTCounter		= "Restart Hour of Twilight counter",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "Never",
-	Reset3				= "Reset in sets of 3/2 (heroic/normal)",
+	ResetDynamic		= "Reset in sets of 3/2 (heroic/normal)",
 	Reset3Always		= "Always Reset in sets of 3"
 })
 

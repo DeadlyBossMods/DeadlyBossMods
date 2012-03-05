@@ -117,7 +117,7 @@ L:SetOptionLocalization({
 	TimerCombatStart	= "울트락시온 활성화 바 표시",
 	ResetHoTCounter		= "황혼의 시간 시전 횟수 재시작 설정",--$spell doesn't work in this function apparently so use typed spellname for now.
 	Never				= "사용 안함",
-	Reset3				= "일반 2회, 영웅 3회 단위로 재시작",
+	ResetDynamic		= "일반 2회, 영웅 3회 단위로 재시작",
 	Reset3Always		= "난이도 구분 없이 3회 단위로 재시작",
 	SpecWarnHoTN		= "황혼의 시간 시전 5초 전 특수 경고 보기 (3회 단위 재시작에서만 작동)",
 	One					= "첫번째 (1, 4, 7)",
