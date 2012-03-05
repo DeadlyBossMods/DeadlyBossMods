@@ -72,7 +72,7 @@ function mod:OnCombatStart(delay)
 	fadingLightCount = 0
 	fadingLightSpam = 0
 	warnHourofTwilightSoon:Schedule(30.5)
-	if self.Options.SpecWarnHoTN == "One" then
+	if self.Options.SpecWarnHoTN == "One" and (self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always") then
 		specWarnHourofTwilightN:Schedule(40.5, GetSpellInfo(109416), hourOfTwilightCount+1)
 	end
 	timerHourofTwilightCD:Start(45.5-delay, 1)
@@ -96,9 +96,10 @@ function mod:SPELL_CAST_START(args)
 		or self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("normal10", "normal25", "lfr25") and hourOfTwilightCount == 2 then
 			hourOfTwilightCount = 0
 		end
-		if self.Options.SpecWarnHoTN == "One" and hourOfTwilightCount == 0
+		if (self.Options.ResetHoTCounter == "Reset3" and self:IsDifficulty("heroic10", "heroic25") or self.Options.ResetHoTCounter == "Reset3Always")
+		and (self.Options.SpecWarnHoTN == "One" and hourOfTwilightCount == 0
 		or self.Options.SpecWarnHoTN == "Two" and hourOfTwilightCount == 1
-		or self.Options.SpecWarnHoTN == "Three" and hourOfTwilightCount == 2 then
+		or self.Options.SpecWarnHoTN == "Three" and hourOfTwilightCount == 2) then
 			specWarnHourofTwilightN:Schedule(40.5, args.spellName, hourOfTwilightCount+1)
 		end
 		warnHourofTwilightSoon:Schedule(30.5)
