@@ -117,7 +117,7 @@ L:SetOptionLocalization({
 	TimerCombatStart	= "Zeige Dauer des Rollenspiels bevor Ultraxion aktiv wird",
 	ResetHoTCounter		= "Neustart der Stunde des Zwielichts Zählung",
 	Never				= "Nie",
-	Reset3				= "In 3er/2er-Gruppen (heroisch/normal)",
+	ResetDynamic		= "In 3er/2er-Gruppen (heroisch/normal)",
 	Reset3Always		= "Immer in 3er-Gruppen",
 	SpecWarnHoTN		= "Spezialvorwarnung für Stunde des Zwielichts (nur für Neustart in 3er-Gruppen ausgelegt)",
 	One					= "5 Sekunden vor Zählerstand 1 (1 4 7 ...)",
