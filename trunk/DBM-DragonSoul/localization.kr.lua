@@ -105,12 +105,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(331)
 
 L:SetWarningLocalization({
-	specWarnHourofTwilightN		= "5초 후 %s! (%d)"--spellname Count
+	specWarnHourofTwilightN		= "5초 후 %s! (%d)"
 })
 
 L:SetTimerLocalization({
 	TimerCombatStart	= "울트락시온 활성화",
-	timerRaidCDs		= "%s 대기시간 : %s"--spellname CD Castername
+	timerRaidCDs		= "%s 대기시간 : %s"
 })
 
 L:SetOptionLocalization({
@@ -119,12 +119,13 @@ L:SetOptionLocalization({
 	Never				= "사용 안함",
 	ResetDynamic		= "일반 2회, 영웅 3회 단위로 재시작",
 	Reset3Always		= "난이도 구분 없이 3회 단위로 재시작",
-	SpecWarnHoTN		= "황혼의 시간 시전 5초 전 특수 경고 보기 (3회 단위 재시작에서만 작동)",
-	One					= "첫번째 (1, 4, 7)",
-	Two					= "두번째 (2, 5)",
-	Three				= "세번째 (3, 6)",
-	ShowRaidCDs			= "공격대 재사용 대기시간 바 표시",
-	ShowRaidCDsSelf		= "자신의 재사용 대기시간 바만 표시 (공격대 재사용 대기시간 바 활성화 필요)"
+	SpecWarnHoTN		= "황혼의 시간 5초 전 특수 경고 설정 (시전 횟수 재시작 설정에 영향 받음)",
+	One					= "시전 횟수가 1일때 보기 (또는 1, 4, 7 일때)",
+	Two					= "시전 횟수가 2일때 보기 (또는 2, 5 일때)",
+	Three				= "시전 횟수가 3일때 보기 (또는 3, 6 일때)",
+	dropdownRaidCDs		= "공격대 재사용 대기시간 바 표시",
+	ShowRaidCDs			= "모두",
+	ShowRaidCDsSelf		= "자신 것만"
 })
 
 L:SetMiscLocalization({
