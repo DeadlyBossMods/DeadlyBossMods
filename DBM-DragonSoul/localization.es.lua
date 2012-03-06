@@ -125,8 +125,9 @@ L:SetOptionLocalization({
 	One					= "1 (ej: 1 4 7)",
 	Two					= "2 (ej: 2 5)",
 	Three				= "3 (ej: 3 6)",
-	ShowRaidCDs			= "Mostrar tiempos de CDs de Banda",
-	ShowRaidCDsSelf		= "Pero solo mostrar los CDs propios\n(Requiere 'Mostrar tiempos de CDs de Banda' activado)"
+	dropdownRaidCDs		= "Mostrar tiempos para CDs de Banda",
+	ShowRaidCDs			= "Todos",
+	ShowRaidCDsSelf		= "Solo los mios"
 })
 
 L:SetMiscLocalization({
