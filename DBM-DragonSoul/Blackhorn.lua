@@ -38,6 +38,7 @@ local warnConsumingShroud			= mod:NewTargetAnnounce(110598)
 
 local specWarnHarpoon				= mod:NewSpecialWarningTarget(108038, false)
 local specWarnTwilightOnslaught		= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
+local specWarnSapper				= mod:NewSpecialWarningSpell("ej4200", false)
 local specWarnDeckFireCast			= mod:NewSpecialWarningSpell(110095, false, nil, nil, true)
 local specWarnDeckFire				= mod:NewSpecialWarningMove(110095)
 local specWarnElites				= mod:NewSpecialWarning("SpecWarnElites", mod:IsTank())
@@ -274,6 +275,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.SapperEmote or msg:find(L.SapperEmote) then
 		timerSapperCD:Start()
+		specWarnSapper:Show()
 	elseif msg == L.Broadside or msg:find(L.Broadside) then
 		timerBroadsideCD:Start()
 	elseif msg == L.DeckFire or msg:find(L.DeckFire) then
