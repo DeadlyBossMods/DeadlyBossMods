@@ -130,6 +130,10 @@ end
 --This fails if you're already incombat before pulling boss, my transcriptor bugged and didn't log it so I don't know why, because the boss still engaged, registered event, and detected kill fine.
 --I can only speculate that somehow he wasn't boss1 but maybe 2-4? Will be hard to reproduce since it's not customary to purposely pull shannox with trash.
 --Oh why blizz would you remove the boss1 flag from shannox. sigh. Workaround sucks, as it won't tell a tank from another tank, so it'l delay warning riplim tank too, but at least it'll warn again.
+--blizz not removes boss1 uid. in koKR client, GetPartyAssignment returns "boss1target is not in your party." system message.
+--I tested about GetPartyAssignment function and founded that GetPartyAssignment function returns system message if you typed bad charname or non-existing uid. (in koKR client)
+--seems that trap target bug concerned with GetBossTarget function. it sometimes returns "Unknown" as unitname even uid is not exists. (i.e : boss1target)
+--so, i think it will better to fliter to bad unitname in GetBossTarget function...
 function mod:TrapHandler(SpellID, ScansDone)
 	trapScansDone = trapScansDone + 1
 	local targetname, uId = self:GetBossTarget(53691)
