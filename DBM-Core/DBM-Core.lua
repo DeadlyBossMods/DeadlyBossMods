@@ -3315,6 +3315,7 @@ function bossModPrototype:GetBossTarget(cid)
 			if self:GetUnitCreatureId("raid"..i.."target") == cid then
 				name, realm = UnitName("raid"..i.."targettarget")
 				uid = "raid"..i.."targettarget"
+				break
 			end
 		end
 	elseif GetNumPartyMembers() > 0 then
@@ -3322,13 +3323,18 @@ function bossModPrototype:GetBossTarget(cid)
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
 				name, realm = UnitName("party"..i.."targettarget")
 				uid = "party"..i.."targettarget"
+				break
 			end
 		end
 	end
 	if name and realm then
 		name = name.."-"..realm
 	end
-	return name, uid
+	if DBM:GetRaidUnitId(name) ~= "none" then
+		return name, uid	
+	else
+		return nil, nil
+	end
 end
 
 function bossModPrototype:GetThreatTarget(cid)
