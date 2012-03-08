@@ -165,17 +165,14 @@ local function AMSTimerDelay()
 end
 
 function mod:FabFlamesTarget()
-	local targetname = self:GetBossTarget(45993)
+	local targetname, uId = self:GetBossTarget(45993)
 	if not targetname then return end
-	local uId = DBM:GetRaidUnitId(targetname)
---	if UnitDetailedThreatSituation(uId, "boss1") then return end--He's not gonna fab flame the MT, ever. IF it gets cast in melee, he still targeted someone other then MT that was in wrong place. I'm not sure if he's boss1 or boss2 though so anti tank diabled for now.
 	warnFabFlames:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnFabulousFlames:Show()
 		yellFabFlames:Yell()
 		lastFab = GetTime()--Trigger the anti spam here so when we pre warn it thrown at them we don't double warn them again for taking 1 tick of it when it lands.
 	else
-		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local x, y = GetPlayerMapPosition(uId)
 			if x == 0 and y == 0 then
