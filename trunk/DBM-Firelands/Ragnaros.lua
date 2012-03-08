@@ -261,6 +261,7 @@ end
 function mod:TargetScanner(SpellID, Force)
 	scansDone = scansDone + 1
 	local targetname, uId = self:GetBossTarget(52409)
+--	print(targetname, uId)
 	if targetname and uId then--Check if target exists.
 		if isTank(uId) and not Force then--He's targeting his highest threat target.
 			if scansDone < 12 then--Make sure no infinite loop.
