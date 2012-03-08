@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnNurture			= mod:NewSpellAnnounce(85422, 3)
-local warnSoothingBreeze	= mod:NewSpellAnnounce(86207, 3)	-- using a spellID here with a better description of the spell
+local warnSoothingBreeze	= mod:NewTargetAnnounce(86207, 3)	-- using a spellID here with a better description of the spell
 local warnSummonTornados	= mod:NewSpellAnnounce(86192, 3)
 local warnWindBlast			= mod:NewSpellAnnounce(86193, 3)
 local warnStormShield		= mod:NewSpellAnnounce(95865, 3)
@@ -68,6 +68,7 @@ local poisonCounter = 0
 local breezeCounter = 0
 local poisonSpam = 0
 local iceSpam = 0
+local scansDone = 0
 local GatherStrengthwarned = false
 
 function mod:OnCombatStart(delay)
@@ -78,6 +79,7 @@ function mod:OnCombatStart(delay)
 	specialsEnded = 0
 	iceSpam = 0
 	poisonSpam = 0
+	scansDone = 0
 	GatherStrengthwarned = false
 	warnSpecialSoon:Schedule(80-delay)
 	timerSpecial:Start(90-delay)
@@ -96,6 +98,25 @@ function mod:OnCombatStart(delay)
 		timerPermaFrostCD:Start(-delay)
 	end
 
+end
+
+function mod:BreezeTarget()
+	scansDone = scansDone + 1
+	local targetname, uId = self:GetBossTarget(45870)
+--	print(targetname, uId)
+	if targetname and uId then
+		if UnitIsFriend("player", uId) then--He's targeting a friendly unit, he doesn't cast this on players, so it's wrong target.
+			if scansDone < 14 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.25, "BreezeTarget")--Check multiple times to find a target that isn't a player.
+			end
+		else--He's not targeting a player, it's definitely breeze target.
+			warnSoothingBreeze:Show(targetname)
+		end
+	else--target was nil, lets schedule a rescan here too.
+		if scansDone < 14 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.25, "BreezeTarget")
+		end
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -148,8 +169,10 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(86205) then
 		breezeCounter = breezeCounter + 1
+		scansDone = 0
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
-			warnSoothingBreeze:Show()--possibly change to target scanning and announce whether he's casting it on himself or one of his flowers.
+			self:ScheduleMethod(0.5, "BreezeTarget")
+--			warnSoothingBreeze:Show()--possibly change to target scanning and announce whether he's casting it on himself or one of his flowers.
 			if breezeCounter < 3 then--Make sure it doesn't start another bar just before special.
 				timerSoothingBreezeCD:Start()
 			end
