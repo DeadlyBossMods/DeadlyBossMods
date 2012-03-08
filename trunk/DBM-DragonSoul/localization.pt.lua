@@ -120,12 +120,13 @@ L:SetOptionLocalization({
 	Never				= "Nunca",
 	ResetDynamic		= "Zerar a cada 3/2 (heróico/normal)",
 	Reset3Always		= "Sempre zerar a cada 3",
-	SpecWarnHoTN		= "Aviso especial 5s antes de  Hora do Crepúsculo (a cada 3)",
+	SpecWarnHoTN		= "Aviso especial 5s antes de Hora do Crepúsculo. Se configurado para Nunca zerar, a regra de 3 em 3 será utilizada.",
 	One					= "1 (ou seja, 1 4 7)",
 	Two					= "2 (ou seja, 2 5)",
 	Three				= "3 (ou seja, 3 6)",
-	ShowRaidCDs			= "Exibir cronógrafos para recargas da Raide",
-	ShowRaidCDsSelf		= "Mas apenas para suas próprias recargas \n(requer recargas de raide habilitado)"
+	dropdownRaidCDs		= "Exibir cronógrafos para recargas da raide.",
+	ShowRaidCDs			= "Todo mundo",
+	ShowRaidCDsSelf		= "Apenas meus"
 })
 
 L:SetMiscLocalization({
