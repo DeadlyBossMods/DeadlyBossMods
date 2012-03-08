@@ -192,8 +192,20 @@ function mod:SPELL_AURA_REMOVED(args)
 end		
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if not uId:find("boss") then return end--yor can apparently be boss 1 2 3 or 4. even though he's only boss, :o
 	if oozeColors[spellId] then
+		self:SendSync("Oozes", spellId)
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 55862 or cid == 55866 or cid == 55865 or cid == 55867 or cid == 55864 or cid == 55863 then--Oozes
+		expectedOozes = expectedOozes - 1
+	end
+end
+
+function mod:OnSync(msg, spellId)
+	if msg == "Oozes" then
 		table.wipe(oozesHitTable)
 		specWarnOozes:Show()
 		timerVoidBoltCD:Start(42)
@@ -207,13 +219,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerOozesCD:Start()
 			expectedOozes = 3
 		end
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 55862 or cid == 55866 or cid == 55865 or cid == 55867 or cid == 55864 or cid == 55863 then--Oozes
-		expectedOozes = expectedOozes - 1
 	end
 end
 
