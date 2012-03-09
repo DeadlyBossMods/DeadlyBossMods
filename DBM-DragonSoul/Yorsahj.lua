@@ -191,12 +191,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end		
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if oozeColors[spellId] then
-		self:SendSync("Oozes", spellId)
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 55862 or cid == 55866 or cid == 55865 or cid == 55867 or cid == 55864 or cid == 55863 then--Oozes
@@ -204,8 +198,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:OnSync(msg, spellId)
-	if msg == "Oozes" then
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if oozeColors[spellId] and self:AntiSpam() then
 		table.wipe(oozesHitTable)
 		specWarnOozes:Show()
 		timerVoidBoltCD:Start(42)
