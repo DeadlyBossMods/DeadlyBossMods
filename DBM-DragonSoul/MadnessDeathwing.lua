@@ -83,7 +83,6 @@ local firstAspect = true
 local engageCount = 0
 --local playerGUID = 0
 local shrapnelTargets = {}
-local antiSpam = 0
 local warnedCount = 0
 local hemorrhage = GetSpellInfo(105863)
 local fragment = GetSpellInfo(109568)
@@ -114,7 +113,6 @@ function mod:OnCombatStart(delay)
 	firstAspect = true
 	activateTetanusTimers = false
 	engageCount = 0
-	antiSpam = 0
 	warnedCount = 0
 	table.wipe(shrapnelTargets)
 	berserkTimer:Start(-delay)
@@ -275,8 +273,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(109091) and GetTime() - antiSpam > 10 then
-		antiSpam = GetTime()--Because they don't spawn at same time, a bunch spawn over about 7-8 sec, so we have to filter a ton of em.
+	if args:IsSpellID(109091) and self:AntiSpam(10) then--They spawn over like 8 seconds, not at same time, so we need a large anti spam.
 		specWarnCongealingBlood:Show()
 	end
 end

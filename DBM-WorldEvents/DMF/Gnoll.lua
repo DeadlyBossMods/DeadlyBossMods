@@ -52,21 +52,17 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-do 
-	local antiSpam = 0
-	function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
-		if uId ~= "player" then return end
-		if spellID == 102044 then--Hogger
-			gameMaxPoints = gameMaxPoints + 3
-			warnHogger:Show()
-			if GetTime() - antiSpam > 2 then
-				specWarnHogger:Show()
-			end
-			antiSpam = GetTime()
-		elseif spellID == 102036 then--Gnoll
-			gameMaxPoints = gameMaxPoints + 1
-			warnGnoll:Show()
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
+	if uId ~= "player" then return end
+	if spellID == 102044 then--Hogger
+		gameMaxPoints = gameMaxPoints + 3
+		warnHogger:Show()
+		if self:AntiSpam() then
+			specWarnHogger:Show()
 		end
+	elseif spellID == 102036 then--Gnoll
+		gameMaxPoints = gameMaxPoints + 1
+		warnGnoll:Show()
 	end
 end
 

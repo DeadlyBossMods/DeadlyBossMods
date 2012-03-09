@@ -62,12 +62,8 @@ mod:AddBoolOption("OnlyWarnforMyTarget", false, "announce")--Default off do to t
 mod:AddBoolOption("HealthFrame", false)
 
 local windBlastCounter = 0
-local specialSpam = 0
-local specialsEnded = 0
 local poisonCounter = 0
 local breezeCounter = 0
-local poisonSpam = 0
-local iceSpam = 0
 local scansDone = 0
 local GatherStrengthwarned = false
 
@@ -75,10 +71,6 @@ function mod:OnCombatStart(delay)
 	windBlastCounter = 0
 	breezeCounter = 0
 	poisonCounter = 0
-	specialSpam = 0
-	specialsEnded = 0
-	iceSpam = 0
-	poisonSpam = 0
 	scansDone = 0
 	GatherStrengthwarned = false
 	warnSpecialSoon:Schedule(80-delay)
@@ -124,12 +116,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			timerSlicingGale:Start()
 		end
-	elseif args:IsSpellID(84651, 93117, 93118, 93119) and args:GetDestCreatureID() == 45870 and GetTime() - specialsEnded >= 3 then--Zephyr stacks on Anshal
+	elseif args:IsSpellID(84651, 93117, 93118, 93119) and args:GetDestCreatureID() == 45870 and self:AntiSpam(3, 1) then--Zephyr stacks on Anshal
 		if (args.amount or 1) >= 15 then--Special has ended when he's at 15 stacks.
 			warnSpecialSoon:Cancel()
 			warnSpecialSoon:Schedule(85)
 			timerSpecial:Start()
-			specialsEnded = GetTime()
 			if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 				timerSoothingBreezeCD:Start(16)
 				timerNurture:Start()
@@ -143,11 +134,10 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(84644, 84643) and GetTime() - specialsEnded >= 3 then--Sleet Storm, Hurricane.
+	if args:IsSpellID(84644, 84643) and self:AntiSpam(3, 1) then--Sleet Storm, Hurricane.
 		warnSpecialSoon:Cancel()
 		warnSpecialSoon:Schedule(85)
 		timerSpecial:Start()
-		specialsEnded = GetTime()
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			timerSoothingBreezeCD:Start(16)
 			timerNurture:Start()
@@ -159,8 +149,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 86111 or spellId == 93129 or spellId == 93130 or spellId == 93131) and destGUID == UnitGUID("player") and GetTime() - iceSpam >= 3 then
-		iceSpam = GetTime()
+	if (spellId == 86111 or spellId == 93129 or spellId == 93130 or spellId == 93131) and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnIcePatch:Show()
 	end
 end
@@ -196,11 +185,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
 			timerPermaFrostCD:Start()
 		end
-	elseif args:IsSpellID(84644, 84638, 84643) and GetTime() - specialSpam > 3 then
+	elseif args:IsSpellID(84644, 84638, 84643) and self:AntiSpam(3, 4) then
 		warnSpecial:Show()
 		specWarnSpecial:Show()
 		timerSpecialActive:Start()
-		specialSpam = GetTime()--Trigger it off any of 3 spells, but only once.
 		poisonCounter = 0
 		breezeCounter = 0
 		if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
@@ -211,8 +199,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnStormShield:Show()
 			specWarnShield:Show()
 		end
-	elseif args:IsSpellID(86281) and GetTime() - poisonSpam > 3 then-- Poison Toxic Warning (at Heroic, Poison Toxic damage is too high, so warning needed)
-		poisonSpam = GetTime()
+	elseif args:IsSpellID(86281) and self:AntiSpam(3, 3) then-- Poison Toxic Warning (at Heroic, Poison Toxic damage is too high, so warning needed)
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then
 			warnPoisonToxic:Show()
 			timerPoisonToxic:Show()

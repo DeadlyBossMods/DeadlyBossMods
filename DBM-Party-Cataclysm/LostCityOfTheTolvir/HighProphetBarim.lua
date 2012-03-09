@@ -31,11 +31,11 @@ local specWarnHallowedGround = mod:NewSpecialWarningMove(88814)
 
 mod:AddBoolOption("BossHealthAdds")
 
-local spamSIS = 0
+local spamSIS = 0--We use custom updating so don't use prototype
 
 function mod:OnCombatStart(delay)
 	spamSIS = 0
-	if mod.Options.BossHealthAdds then
+	if self.Options.BossHealthAdds then
 		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
 	end
 end
@@ -80,7 +80,7 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 end
 
 function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.destGUID) == 43927 and mod.Options.BossHealthAdds then
+	if self:GetCIDFromGUID(args.destGUID) == 43927 and self.Options.BossHealthAdds then
 		DBM.BossHealth:RemoveBoss(43927)
 		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
 	end

@@ -29,8 +29,6 @@ local timerTreeCD				= mod:NewCDTimer(10, 101938)
 local timerCrushCD				= mod:NewCDTimer(5, 101885)--Used 5 seconds after tree casts (on the tree itself). Right before stomp he stops targeting tank. He has no target during stomp, usable for cast trigger? Only trigger in log is the stomp landing.
 local timerSnowCrash			= mod:NewCastTimer(5, 101907)
 
-local antiSpam = 0
-
 function mod:OnCombatStart(delay)
 	timerSnowmanCD:Start(-delay)
 end
@@ -50,9 +48,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101860) and args:IsPlayer() and GetTime() - antiSpam > 2 then
+	if args:IsSpellID(101860) and args:IsPlayer() and self:AntiSpam(2) then
 		specWarnShrinkHeart:Show()
-		antiSpam = GetTime()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
