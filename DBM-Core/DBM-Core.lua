@@ -171,7 +171,6 @@ local loadModOptions
 local checkWipe
 local fireEvent
 local _, class = UnitClass("player")
-local lastCast = 0
 local LastZoneText = ""
 local LastZoneMapID = -1
 local queuedBattlefield = {}
@@ -3399,10 +3398,16 @@ function bossModPrototype:LatencyCheck()
 	return select(4, GetNetStats()) < DBM.Options.LatencyThreshold
 end
 
---A universal anti spam function. This should avoid constantly having ot make them in so many individual mods, they can just call this instead.
-function bossModPrototype:AntiSpam()
-	if GetTime() - lastCast > 2.5 then
-		lastCast = GetTime()
+-- An anti spam function to throttle spammy events (e.g. SPELL_AURA_APPLIED on all group members)
+-- @param id the id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
+-- @param time the time to wait between two events (optional, default 2.5 seconds)
+function bossModPrototype:AntiSpam(id, time)
+	if GetTime() - (id and (self["lastAntiSpam" .. tostring(id)] or 0) or self.lastAntiSpam or 0) > (time or 2.5) then
+		if id then
+			self["lastAntiSpam" .. tostring(id)] = GetTime()
+		else
+			self.lastAntiSpam = GetTime()
+		end
 		return true
 	else
 		return false
