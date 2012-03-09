@@ -21,17 +21,13 @@ local warnRewind		= mod:NewSpellAnnounce(101591, 3)
 local timerBlastCD		= mod:NewNextTimer(12, 102381)
 local timerBreathCD		= mod:NewNextTimer(22, 102569)
 
-local rewindSpam = 0
-
 function mod:OnCombatStart(delay)
-	rewindSpam = 0
 	timerBlastCD:Start(-delay)
 	timerBreathCD:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and GetTime() - rewindSpam >= 3 then
-		rewindSpam = GetTime()
+	if args:IsSpellID(101591) and self:AntiSpam() then
 		warnRewind:Show()
 		timerBlastCD:Cancel()
 		timerBreathCD:Cancel()

@@ -114,10 +114,7 @@ mod:AddBoolOption("AggroFrame", false)--Phase 2 info frame for seed aggro detect
 mod:AddBoolOption("MeteorFrame", true)--Phase 3 info frame for meteor fixate detection.
 
 local firstSmash = false
-local wrathRagSpam = 0
 local wrathcount = 0
-local standingInFireSpam = 0--Because all 3 fires you can stand in, are at diff times of fight, we can use same variable for all 3 vs wasting memory for 3 of them.
-local lavaBoltSpam = 0
 local magmaTrapSpawned = 0
 local magmaTrapGUID = {}
 local elementalsGUID = {}
@@ -291,10 +288,7 @@ function mod:OnCombatStart(delay)
 	timerMagmaTrap:Start(16-delay)
 	timerHandRagnaros:Start(-delay)
 	timerSulfurasSmash:Start(-delay)
-	wrathRagSpam = 0
 	wrathcount = 0
-	standingInFireSpam = 0
-	lavaBoltSpam = 0
 	table.wipe(magmaTrapGUID)
 	table.wipe(elementalsGUID)
 	magmaTrapSpawned = 0
@@ -476,8 +470,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:SetHeader(L.HealthInfo)
 			DBM.InfoFrame:Show(5, "health", 100000)
 		end
-	elseif args:IsSpellID(98263, 100113, 100114, 100115) and GetTime() - wrathRagSpam >= 4 then
-		wrathRagSpam = GetTime()
+	elseif args:IsSpellID(98263, 100113, 100114, 100115) and self:AntiSpam(4, 1) then
 		warnWrathRagnaros:Show()
 		--Wrath of Ragnaros has a 25 second cd if 2 happen before first smash, otherwise it's 30.
 		--In this elaborate function we count the wraths before first smash
@@ -543,18 +536,14 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 		if magmaTrapSpawned == 0 and self.Options.InfoHealthFrame and not seedsActive then--All traps are gone hide the health frame.
 			DBM.InfoFrame:Hide()
 		end
-	elseif (spellId == 98870 or spellId == 100122 or spellId == 100123 or spellId == 100124) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 then
+	elseif (spellId == 98870 or spellId == 100122 or spellId == 100123 or spellId == 100124) and destGUID == UnitGUID("player") and self:AntiSpam(5, 2) then
 		specWarnScorchedGround:Show()
-		standingInFireSpam = GetTime()
-	elseif (spellId == 99144 or spellId == 100303 or spellId == 100304 or spellId == 100305) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 then
+	elseif (spellId == 99144 or spellId == 100303 or spellId == 100304 or spellId == 100305) and destGUID == UnitGUID("player") and self:AntiSpam(5, 2) then
 		specWarnBlazingHeatMV:Show()
-		standingInFireSpam = GetTime()
-	elseif (spellId == 100941 or spellId == 100998) and destGUID == UnitGUID("player") and GetTime() - standingInFireSpam >= 3 and not UnitBuff("player", deluge) then
+	elseif (spellId == 100941 or spellId == 100998) and destGUID == UnitGUID("player") and self:AntiSpam(5, 2) and not UnitBuff("player", deluge) then
 		specWarnDreadFlame:Show()
-		standingInFireSpam = GetTime()
-	elseif (spellId == 98981 or spellId == 100289 or spellId == 100290 or spellId == 100291) and GetTime() - lavaBoltSpam >= 3 then
+	elseif (spellId == 98981 or spellId == 100289 or spellId == 100290 or spellId == 100291) and self:AntiSpam(3, 1) then--Reuse anti spam ID 1 again because lava bolts and wraths are never near eachother.
 		timerLavaBoltCD:Start()
-		lavaBoltSpam = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Have to track absorbs too for this method to work.

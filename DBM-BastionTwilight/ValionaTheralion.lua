@@ -89,8 +89,7 @@ local engulfingMagicTargets = {}
 local engulfingMagicIcon = 7
 local dazzlingCast = 0
 local breathCast = 0
-local lastFab = 0
-local spamZone = 0
+local lastFab = 0--Leave this custom one, we use reset gettime on it in extra places and that cannot be done with prototype
 local markWarned = false
 local blackoutActive = false
 local ValionaLanded = false
@@ -222,7 +221,6 @@ function mod:OnCombatStart(delay)
 	dazzlingCast = 0
 	breathCast = 0
 	lastFab = 0
-	spamZone = 0
 	markWarned = false
 	blackoutActive = false
 	ValionaLanded = true
@@ -286,9 +284,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(AMSTimerDelay)
 		self:Schedule(20, AMSTimerDelay)--Cause when a DK AMSes it we don't get another timer.
 	elseif args:IsSpellID(92887) and args:IsPlayer() then
-		if (args.amount or 1) >= 20 and GetTime() - spamZone > 5 then
+		if (args.amount or 1) >= 20 and self:AntiSpam(5) then
 			specWarnTwilightZone:Show(args.amount)
-			spamZone = GetTime()
 		end
 	end
 end

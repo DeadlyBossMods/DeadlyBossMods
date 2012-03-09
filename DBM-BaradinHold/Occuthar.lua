@@ -29,7 +29,6 @@ local specWarnFocusedFire		= mod:NewSpecialWarningMove(97212)
 
 local berserkTimer				= mod:NewBerserkTimer(300)
 
-local spamFire = 0
 local focusedCast = 0
 
 function mod:OnCombatStart(delay)
@@ -37,7 +36,6 @@ function mod:OnCombatStart(delay)
 	timerSearingShadows:Start(6-delay)--Need transcriptor to see what first one always is to be sure.
 	timerEyes:Start(23-delay)--Need transcriptor to see what first one always is to be sure.
 	timerFocusedFire:Start(-delay)--Need transcriptor to see what first one always is to be sure.
-	spamFire = 0
 end
 
 function mod:SPELL_CAST_START(args)
@@ -63,9 +61,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if spellId == 97212 and destGUID == UnitGUID("player") and GetTime() - spamFire > 4 then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
+	if spellId == 97212 and destGUID == UnitGUID("player") and self:AntiSpam(3) then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
 		specWarnFocusedFire:Show()
-		spamFire = GetTime()
 	elseif (overkill or 0) > 0 then
 		if self:GetCIDFromGUID(destGUID) == 52363 then--Hack cause occuthar doesn't die in combat log since 4.2. SO we look for a killing blow that has overkill.
 			DBM:EndCombat(self)
@@ -76,9 +73,8 @@ mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
 mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:SPELL_MISSED(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 97212 and destGUID == UnitGUID("player") and GetTime() - spamFire > 4 then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
+	if spellId == 97212 and destGUID == UnitGUID("player") and self:AntiSpam(3) then--Is this even right one? 96883, 101004 are ones that do a lot of damage?
 		specWarnFocusedFire:Show()
-		spamFire = GetTime()
 	end
 end
 
