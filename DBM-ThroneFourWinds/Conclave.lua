@@ -106,15 +106,15 @@ function mod:BreezeTarget()
 --	print(targetname, uId)
 	if targetname and uId then
 		if UnitIsFriend("player", uId) then--He's targeting a friendly unit, he doesn't cast this on players, so it's wrong target.
-			if scansDone < 14 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.25, "BreezeTarget")--Check multiple times to find a target that isn't a player.
+			if scansDone < 15 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.1, "BreezeTarget")--Check multiple times to find a target that isn't a player.
 			end
 		else--He's not targeting a player, it's definitely breeze target.
 			warnSoothingBreeze:Show(targetname)
 		end
 	else--target was nil, lets schedule a rescan here too.
-		if scansDone < 14 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.25, "BreezeTarget")
+		if scansDone < 15 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.1, "BreezeTarget")
 		end
 	end
 end
@@ -171,7 +171,7 @@ function mod:SPELL_CAST_START(args)
 		breezeCounter = breezeCounter + 1
 		scansDone = 0
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
-			self:ScheduleMethod(0.5, "BreezeTarget")
+			self:BreezeTarget()
 --			warnSoothingBreeze:Show()--possibly change to target scanning and announce whether he's casting it on himself or one of his flowers.
 			if breezeCounter < 3 then--Make sure it doesn't start another bar just before special.
 				timerSoothingBreezeCD:Start()
