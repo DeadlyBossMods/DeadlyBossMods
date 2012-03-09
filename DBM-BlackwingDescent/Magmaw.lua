@@ -51,14 +51,10 @@ local berserkTimer			= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("RangeFrame")
 
-local lastLavaSpew = 0
-local ignitionSpam = 0
 local geddonConstruct = 0
 local prewarnedPhase2 = false
 
 function mod:OnCombatStart(delay)
-	lastLavaSpew = 0
-	ignitionSpam = 0
 	geddonConstruct = 0
 	prewarnedPhase2 = false
 	timerPillarFlame:Start(30-delay)
@@ -99,10 +95,9 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(77690, 91919, 91931, 91932) and GetTime() - lastLavaSpew > 5 then--SpellIds for other modes are guesswork, 77690 10 man confirmed
+	if args:IsSpellID(77690, 91919, 91931, 91932) and self:AntiSpam(5, 1) then--SpellIds for other modes are guesswork, 77690 10 man confirmed
 		warnLavaSpew:Show()
 		timerLavaSpew:Start()
-		lastLavaSpew = GetTime()
 	elseif args:IsSpellID(92177) then
 		warnArmageddon:Show()
 		specWarnArmageddon:Show()
@@ -120,9 +115,8 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 92128 or spellId == 92196 or spellId == 92197 or spellId == 92198) and destGUID == UnitGUID("player") and GetTime() - ignitionSpam >= 4 then
+	if (spellId == 92128 or spellId == 92196 or spellId == 92197 or spellId == 92198) and destGUID == UnitGUID("player") and self:AntiSpam(4, 2) then
 		specWarnIgnition:Show()
-		ignitionSpam = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

@@ -103,19 +103,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-do 
-	local lastSIS = 0--Last S.I.S. (Stand in shit)
-	function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-		if spellId == 43429 and destGUID == UnitGUID("player") and GetTime() - lastSIS > 3 then	--Paladin (Consecration)
-			specWarnConsecration:Show()
-			lastSIS = GetTime()
-		elseif spellId == 43440 and destGUID == UnitGUID("player") and GetTime() - lastSIS > 3 then	--Warlock(Rain of Fire)
-			specWarnRainofFire:Show()
-			lastSIS = GetTime()
-		elseif spellId == 61603 and destGUID == UnitGUID("player") and GetTime() - lastSIS > 3 then	--Death Knight(Death and Decay)
-			specWarnDeathNDecay:Show()
-			lastSIS = GetTime()
-		end
+function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if spellId == 43429 and destGUID == UnitGUID("player") and self:AntiSpam(3) then		--Paladin (Consecration)
+		specWarnConsecration:Show()
+	elseif spellId == 43440 and destGUID == UnitGUID("player") and self:AntiSpam(3) then	--Warlock(Rain of Fire)
+		specWarnRainofFire:Show()
+	elseif spellId == 61603 and destGUID == UnitGUID("player") and self:AntiSpam(3) then	--Death Knight(Death and Decay)
+		specWarnDeathNDecay:Show()
 	end
-	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

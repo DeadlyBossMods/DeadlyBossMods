@@ -80,8 +80,6 @@ mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetWater", true)
 mod:AddBoolOption("TankArrow", false)--May be prone to some issues if you have 2 kiters, or unpicked up adds, but it's off by default so hopefully feature is used by smart people.
 
-local spamShadowblaze = 0
-local spamLightningDischarge = 0
 local shadowblazeTimer = 35
 local cinderIcons = 8
 local playerDebuffed = false
@@ -89,7 +87,7 @@ local playerDebuffs = 0
 local cinderTargets	= {}
 local cinderDebuff = GetSpellInfo(79339)
 local dominionTargets = {}
-local lastBlaze = 0
+local lastBlaze = 0--Do NOT use prototype for this, it's updated in a special way using different triggers then when method is called.
 local CVAR = false
 local shadowBlazeSynced = false
 
@@ -142,9 +140,7 @@ local function warnDominionTargets()
 end
 
 function mod:OnCombatStart(delay)
-	spamShadowblaze = 0
 	shadowBlazeSynced = false
-	spamLightningDischarge = 0
 	shadowblazeTimer = 35
 	playerDebuffed = false
 	playerDebuffs = 0
@@ -278,9 +274,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 81007 or spellId == 94085 or spellId == 94086 or spellId == 94087) and destGUID == UnitGUID("player") and GetTime() - spamShadowblaze > 5 then
+	if (spellId == 81007 or spellId == 94085 or spellId == 94086 or spellId == 94087) and destGUID == UnitGUID("player") and self:AntiSpam(4) then
 		specWarnShadowblaze:Show()
-		spamShadowblaze = GetTime()
 	elseif spellID ~= 50288 and self:GetCIDFromGUID(destGUID) == 41918 and bit.band(sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 and self:IsInCombat() then--Any spell damage except for starfall
 		if sourceGUID ~= UnitGUID("player") then
 			if self.Options.TankArrow then

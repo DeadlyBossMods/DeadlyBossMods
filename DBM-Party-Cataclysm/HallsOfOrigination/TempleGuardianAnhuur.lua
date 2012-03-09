@@ -23,14 +23,10 @@ local timerReckoning	= mod:NewTargetTimer(8, 75592)
 
 local specWarnLight		= mod:NewSpecialWarningMove(75117)
 
--- Divine Reckoning .. icon ? .. arrow ?
-
-
 local prewarnShield = false
-local spamLight = 0
+
 function mod:OnCombatStart(delay)
 	prewarnShield = false
-	spamLight = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -49,7 +45,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 75117 or spellId == 94951) and GetTime() - spamLight > 5 and destGUID == UnitGUID("player") then
+	if (spellId == 75117 or spellId == 94951) and destGUID == UnitGUID("player") and self:AntiSpam(5) then
 		specWarnLight:Show()
 	end
 end

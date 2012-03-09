@@ -27,31 +27,24 @@ mod:AddBoolOption("RedLightGreenLight", true, "announce")
 local timerIceShards	= mod:NewBuffActiveTimer(5, 93527)
 local timerRedMix		= mod:NewBuffActiveTimer(10, 93689)
 
-local lastCoagulant = 0
-local lastCatalyst = 0
-
 function mod:OnCombatStart(delay)
-	lastCoagulant = 0
-	lastCatalyst = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93527) then
 		warnIceShards:Show()
 		timerIceShards:Start()
-	elseif args:IsSpellID(93689) and GetTime() - lastCatalyst > 4 then--Red Light
+	elseif args:IsSpellID(93689) and self:AntiSpam(4, 1) then--Red Light
 		warnRedMix:Show()
 		timerRedMix:Start()
 		if self.Options.RedLightGreenLight then
 			specWarnRedMix:Show()
 		end
-		lastCatalyst = GetTime()
-	elseif args:IsSpellID(93617) and GetTime() - lastCoagulant > 10 then--Green Light
+	elseif args:IsSpellID(93617) and self:AntiSpam(10, 2) then--Green Light
 		warnGreenMix:Show()
 		if self.Options.RedLightGreenLight then
 			specWarnGreenMix:Show()
 		end
-		lastCoagulant = GetTime()
 	end
 end
 

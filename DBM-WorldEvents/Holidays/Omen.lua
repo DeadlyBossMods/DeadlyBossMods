@@ -37,13 +37,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-do 
-	local antiSpam = 0
-	function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-		if spellId == 26540 and destGUID == UnitGUID("player") and GetTime() - antiSpam > 3 then
-			specWarnStarfall:Show()
-			antiSpam = GetTime()
-		end
+function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if spellId == 26540 and destGUID == UnitGUID("player") and self:AntiSpam(3) then
+		specWarnStarfall:Show()
 	end
-	mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE

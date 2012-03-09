@@ -24,15 +24,11 @@ local timerSunStrike	= mod:NewCDTimer(27, 73872)
 
 local specWarnSunOrb	= mod:NewSpecialWarningInterrupt(80352)
 
-local spamBlessing = 0
-
 function mod:OnCombatStart(delay)
-	spamBlessing = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(76355, 89879) and GetTime() - spamBlessing > 5 then
-		spamBlessing = GetTime()
+	if args:IsSpellID(76355, 89879) and self:AntiSpam(5) then
 		warnBlessing:Show()
 		timerBlessing:Start()
 		timerSunStrike:Start(50)	-- or hack it into SPELL_AURA_REMOVED

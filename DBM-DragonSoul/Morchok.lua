@@ -48,17 +48,14 @@ local berserkTimer		= mod:NewBerserkTimer(420)
 
 mod:AddBoolOption("RangeFrame", false)--For achievement
 
-local spamBlood = 0
 local stompCount = 1
 local crystalCount = 1--3 crystals between each vortex cast by Morchok, we ignore his twins.
 local kohcromSkip = 2--1 is crystal, 2 is stomp.
-local antiSpam = 0
 
 function mod:OnCombatStart(delay)
 	spamBlood = 0
 	stompCount = 1
 	crystalCount = 1
-	antiSpam = 0
 	if self:IsDifficulty("heroic10", "heroic25") then
 		kohcromSkip = 2
 		berserkTimer:Start(-delay)
@@ -81,17 +78,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) > 3 then
 			specwarnCrushArmor:Show(args.amount or 1)
 		end
-	elseif args:IsSpellID(103846) and GetTime() - antiSpam > 3 then
-		-- sometimes Morchok and Kohcrom distance farther then 200 yards. so using Morchok's cid can be bad idea on Kohcrom side.
-		antiSpam = GetTime()
+	elseif args:IsSpellID(103846) and self:AntiSpam(3, 1) then
 		warnFurious:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(103851) and GetTime() - antiSpam > 3 then--Filter twin here, they vortex together but we don't want to trigger everything twice needlessly.
-		antiSpam = GetTime()
+	if args:IsSpellID(103851) and self:AntiSpam(3, 1) then--Filter twin here, they vortex together but we don't want to trigger everything twice needlessly.
 		stompCount = 0
 		crystalCount = 0
 		timerStomp:Start(19)
@@ -183,8 +177,7 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(103821, 110045, 110046, 110047) and GetTime() - antiSpam > 3 then
-		antiSpam = GetTime()
+	if args:IsSpellID(103821, 110045, 110046, 110047) and self:AntiSpam(3, 1) then
 		crystalCount = 0
 		timerStomp:Cancel()
 		timerCrystal:Cancel()
@@ -198,8 +191,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if (spellId == 103785 or spellId == 108570 or spellId == 110287 or spellId == 110288) and destGUID == UnitGUID("player") and GetTime() - spamBlood > 3 then
+	if (spellId == 103785 or spellId == 108570 or spellId == 110287 or spellId == 110288) and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specwarnBlood:Show()
-		spamBlood = GetTime()
 	end
 end
