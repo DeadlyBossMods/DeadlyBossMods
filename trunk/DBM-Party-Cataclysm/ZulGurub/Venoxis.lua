@@ -42,8 +42,6 @@ mod:AddBoolOption("LinkArrow")
 
 local toxicLinkIcon = 8
 local toxicLinkTargets = {}
-local spamPool = 0
-local spamEffusion = 0
 
 local function warnToxicLinkTargets()
 	warnToxicLink:Show(table.concat(toxicLinkTargets, "<, >"))
@@ -55,8 +53,6 @@ function mod:OnCombatStart(delay)
 	timerToxicLinkCD:Start(12-delay)
 	toxicLinkIcon = 8
 	table.wipe(toxicLinkTargets)
-	spamPool = 0
-	spamEffusion = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -112,12 +108,10 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if spellId == 97338 and GetTime() - spamEffusion >= 3 and destGUID == UnitGUID("player") then
+	if spellId == 97338 and self:AntiSpam(3, 1) and destGUID == UnitGUID("player") then
 		specWarnEffusion:Show()
-		spamEffusion = GetTime()
-	elseif spellId == 97089 and GetTime() - spamPool >= 3 and destGUID == UnitGUID("player") then
+	elseif spellId == 97089 and self:AntiSpam(3, 2) and destGUID == UnitGUID("player") then
 		specWarnPoolAcridTears:Show()
-		spamPool = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

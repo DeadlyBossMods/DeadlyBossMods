@@ -24,20 +24,16 @@ local soundMarked				= mod:NewSound(102341)
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
-local antiSpam = 0
-
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(102341) and UnitGUID("pet") == args.destGUID and GetTime() - antiSpam > 3 then
+	if args:IsSpellID(102341) and UnitGUID("pet") == args.destGUID and self:AntiSpam() then
 		warnMarked:Show()
 		specWarnMarked:Show()
 		soundMarked:Play()
-		antiSpam = GetTime()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if uId ~= "player" then return end
-	if spellName == GetSpellInfo(102178) then
+	if uId == "player" and spellName == GetSpellInfo(102178) then
 		timerGame:Start()
 		countdownGame:Start(60)
 	end

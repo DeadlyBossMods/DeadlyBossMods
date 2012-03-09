@@ -21,20 +21,17 @@ local timerVeilShadow	= mod:NewBuffFadesTimer(8, 93956)
 local timerWorgenSpirit	= mod:NewCastTimer(2, 93857)
 
 local veilShadowCast = 0
-local lastVeilShadow = 0
 
 function mod:OnCombatStart(delay)
 	veilShadowCast = 0
-	lastVeilShadow = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93956) then
 		veilShadowCast = veilShadowCast + 1
-		if GetTime() - lastVeilShadow > 4 then
+		if self:AntiSpam(4) then
 			warnVeilShadow:Show()
 			timerVeilShadow:Start()
-			lastVeilShadow = GetTime()
 		end
 	end
 end

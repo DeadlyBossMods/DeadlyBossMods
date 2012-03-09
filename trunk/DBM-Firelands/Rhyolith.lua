@@ -46,7 +46,6 @@ local countdownStomp		= mod:NewCountdown(30.5, 97282, false)
 
 local spamAdds = 0
 local phase2Started = false
-local spamMoltenArmor = 0
 local sparkCount = 0
 local fragmentCount = 0
 local prewarnedPhase2 = false
@@ -62,7 +61,6 @@ function mod:OnCombatStart(delay)
 		timerSuperheated:Start(360-delay)--6 min on normal
 	end
 	spamAdds = 0
-	spamMoltenArmor = 0
 	phase2Started = false
 	sparkCount = 0
 	fragmentCount = 1--Fight starts out 1 cycle in so only 1 more spawns before pattern reset.
@@ -85,7 +83,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(98255, 101157, 101158, 101159) and self:GetCIDFromGUID(args.destGUID) == 52558 and args.amount > 10 and GetTime() - spamMoltenArmor > 5 then
+	if args:IsSpellID(98255, 101157, 101158, 101159) and self:GetCIDFromGUID(args.destGUID) == 52558 and args.amount > 10 and self:AntiSpam(5, 1) then
 		warnMoltenArmor:Show(args.destName, args.amount)
 	end
 end
@@ -123,7 +121,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(98136, 100392) and GetTime() - spamAdds > 5 then
+	if args:IsSpellID(98136, 100392) and self:AntiSpam(5, 2) then
 		fragmentCount = fragmentCount + 1
 		warnFragments:Show()
 		if fragmentCount < 2 then
@@ -132,7 +130,6 @@ function mod:SPELL_SUMMON(args)
 			fragmentCount = 0
 			timerSparkCD:Start(22.5, sparkCount+1)
 		end
-		spamAdds = GetTime()
 	elseif args:IsSpellID(98552) then
 		sparkCount = sparkCount + 1
 		warnShard:Show(sparkCount)

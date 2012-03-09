@@ -29,8 +29,6 @@ local timerCrystalStorm		= mod:NewBuffActiveTimer(8.5, 92265)
 local timerAirphase			= mod:NewTimer(50, "TimerAirphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local timerGroundphase		= mod:NewTimer(10, "TimerGroundphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 
-local spamEruption = 0
-
 function mod:groundphase()
 	warnGroundphase:Show()
 --	timerFissureCD:Start()
@@ -53,9 +51,8 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 80800 or spellId == 80801 or spellId == 92657 or spellId == 92658) and destGUID == UnitGUID("player") and GetTime() - spamEruption > 3 then
+	if (spellId == 80800 or spellId == 80801 or spellId == 92657 or spellId == 92658) and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnEruption:Show()
-		spamEruption = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Because we still want people to move out of stuff before they eat up an entire PWS in it.

@@ -58,7 +58,6 @@ mod:AddBoolOption("SetIconOnOrbs", true)
 mod:AddBoolOption("InfoFrame", false)--Does not filter tanks. not putting ugly hack in info frame, its simpley an aggro tracker
 
 local eggDown = 0
-local eggSpam = 0
 local eggRemoved = false
 local calenGUID = 0
 local orbList = {}
@@ -164,7 +163,6 @@ end
 
 function mod:OnCombatStart(delay)
 	eggDown = 0
-	eggSpam = 0
 	eggRemoved = false
 	calenGUID = 0
 	timerDragon:Start(16-delay)
@@ -238,8 +236,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
 		end
-		if GetTime() - eggSpam >= 3 then
-			eggSpam = GetTime()
+		if self:AntiSpam(3) then
 			timerDragon:Cancel()
 			if eggRemoved then
 				specWarnEggShield:Show()
@@ -252,8 +249,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(87654) and GetTime() - eggSpam >= 3 then
-		eggSpam = GetTime()
+	if args:IsSpellID(87654) and self:AntiSpam(3) then
 		timerEggWeaken:Show()
 		specWarnEggWeaken:Show()
 		eggRemoved = true
