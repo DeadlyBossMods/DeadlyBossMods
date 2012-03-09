@@ -74,8 +74,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
-	if spellName == GetSpellInfo(80803) then--Lava Fissure
+	if spellName == GetSpellInfo(80803) and self:AntiSpam() then--Lava Fissure
 		warnFissure:Show()
 		timerFissureCD:Start()
 	end
