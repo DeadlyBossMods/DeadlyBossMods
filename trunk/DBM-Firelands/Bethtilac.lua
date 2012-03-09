@@ -40,7 +40,6 @@ local timerWidowsKissCD				= mod:NewCDTimer(32, 99476, nil, mod:IsTank() or mod:
 local timerWidowKiss				= mod:NewTargetTimer(23, 99476, nil, mod:IsTank() or mod:IsHealer())
 
 local smolderingCount = 0
-local lastPoison = 0
 
 mod:AddBoolOption("RangeFrame")
 
@@ -62,7 +61,6 @@ function mod:OnCombatStart(delay)
 	timerDrone:Start(45-delay)
 	self:ScheduleMethod(45-delay, "repeatDrone")
 	smolderingCount = 0
-	lastPoison = 0
 end
 
 function mod:OnCombatEnd()
@@ -139,9 +137,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 99278 or spellId == 101133) and destGUID == UnitGUID("player") and GetTime() - lastPoison > 3 then
+	if (spellId == 99278 or spellId == 101133) and destGUID == UnitGUID("player") and self:AntiSpam(3) then
 		specWarnVolatilePoison:Show()
-		lastPoison = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

@@ -55,9 +55,9 @@ mod:AddBoolOption("SetIconOnTorment")
 mod:AddBoolOption("ArrowOnCountdown")
 
 local bladesName = nil
-local lastStrike = 0
-local currentStrike = 0
-local lastStrikeDiff = 0
+local lastStrike = 0--Custom, no prototype
+local currentStrike = 0--^^
+local lastStrikeDiff = 0--^^
 local strikeCount = 0
 local shardCount = 0
 local tormentIcon = 8

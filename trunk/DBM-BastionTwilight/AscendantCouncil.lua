@@ -139,7 +139,6 @@ local gravityCrushIcon = 8
 local sentLowHP = {}
 local warnedLowHP = {}
 local frozenCount = 0
-local lastBeacon = 0
 local isBeacon = false
 local isRod = false
 local infoFrameUpdated = false
@@ -260,7 +259,6 @@ function mod:OnCombatStart(delay)
 	lightningRodIcon = 8
 	gravityCrushIcon = 8
 	frozenCount = 0
-	lastBeacon = 0
 	isBeacon = false
 	isRod = false
 	infoFrameUpdated = false
@@ -380,9 +378,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
 		end
-		if GetTime() - lastBeacon >= 18 then -- sometimes Frost Beacon change targets, show only new Frost orbs.
+		if self:AntiSpam(18) then -- sometimes Frost Beacon change targets, show only new Frost orbs.
 			timerFrostBeaconCD:Start()
-			lastBeacon = GetTime()
 		end
 	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them.
 		warnStaticOverload:Show(args.destName)

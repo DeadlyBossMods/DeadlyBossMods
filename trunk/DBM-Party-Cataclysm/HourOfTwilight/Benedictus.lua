@@ -38,11 +38,9 @@ local timerWaveVirtueCD			= mod:NewNextTimer(30, 103678)--Will he do it more the
 local timerWaveTwilightCD		= mod:NewNextTimer(30, 103780)--^
 
 local warnedP2 = false
-local spamDamage = 0	-- used for both Special Warnings
 
 function mod:OnCombatStart(delay)
 	warnedP2 = false
-	spamDamage = 0
 	timerWaveVirtueCD:Start(-delay)
 end
 
@@ -72,12 +70,10 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if spellId == 103653 and destGUID == UnitGUID("player") and GetTime() - spamDamage > 5 then
+	if spellId == 103653 and destGUID == UnitGUID("player") and self:AntiSpam(5) then
 		specwarnPurified:Show()
-		spamDamage = GetTime()
-	elseif spellId == 103775 and destGUID == UnitGUID("player") and GetTime() - spamDamage > 5 then
+	elseif spellId == 103775 and destGUID == UnitGUID("player") and self:AntiSpam(5) then
 		specwarnTwilight:Show()
-		spamDamage = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

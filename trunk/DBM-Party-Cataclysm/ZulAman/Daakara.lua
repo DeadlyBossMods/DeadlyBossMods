@@ -39,12 +39,7 @@ mod:AddBoolOption("ThrowIcon", false)
 mod:AddBoolOption("ClawRageIcon", true)
 mod:AddBoolOption("InfoFrame")
 
-local lastburn = 0
-local spamFlameBreath2 = 0
-
 function mod:OnCombatStart(delay)
-	lastburn = 0
-	spamFlameBreath2 = 0
 end
 
 function mod:OnCombatEnd()
@@ -67,9 +62,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.ClawRageIcon then
 			self:SetIcon(args.destName, 8, 5)
 		end
-	elseif args:IsSpellID(97497) and args:IsPlayer() and GetTime() - spamFlameBreath2 >= 3 and self:IsInCombat() then
+	elseif args:IsSpellID(97497) and args:IsPlayer() and self:IsInCombat() and self:AntiSpam(3, 1) then
 		specWarnFlameBreath:Show()
-		spamFlameBreath2 = GetTime()
 	elseif args:IsSpellID(42402) then
 		warnSurge:Show(args.destName)
 		timerSurgeCD:Start()
@@ -129,9 +123,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if spellId == 97682 and destGUID == UnitGUID("player") and GetTime() - lastburn > 3 then
+	if spellId == 97682 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnBurn:Show()
-		lastburn = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

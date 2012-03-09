@@ -20,9 +20,7 @@ local timerSuperheated		= mod:NewTimer(17, "TimerSuperheated", 75846)
 
 local specWarnSuperheated	= mod:NewSpecialWarningStack(75846, mod:IsTank(), 5)
 
-local lastSuperheated = 0
 function mod:OnCombatStart(delay)
-	lastSuperheated = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -31,13 +29,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(75846, 93567) then
 		timerSuperheated:Cancel()--Cancel any previous timer before starting new one. No args means it'll cancel any timer with name "timerSuperheated"
 		timerSuperheated:Start(17, args.amount or 1)
-		if GetTime() - lastSuperheated > 3 then
+		if self:AntiSpam(3) then
 			warnSuperheated:Show(args.amount or 1)
 			if args.amount and args.amount >= 5 then
 				specWarnSuperheated:Show(args.amount)
 			end
 		end
-		lastSuperheated = GetTime()
 	end
 end
 

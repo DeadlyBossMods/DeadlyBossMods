@@ -104,13 +104,9 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-do 
-	local lastFlamestrike = 0
-	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-		if (spellId == 93383 or spellId == 93362) and destGUID == UnitGUID("player") and GetTime() - lastFlamestrike > 3 then
-			specWarnFlameStrike:Show()
-			lastFlamestrike = GetTime()
-		end
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if (spellId == 93383 or spellId == 93362) and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnFlameStrike:Show()
 	end
-	mod.SPELL_MISSED = mod.SPELL_DAMAGE
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE

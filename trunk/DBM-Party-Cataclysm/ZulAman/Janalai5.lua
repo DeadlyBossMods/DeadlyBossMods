@@ -39,13 +39,11 @@ function mod:OnCombatStart(delay)
 	timerAdds:Start(12-delay)
 	timerBombCD:Start(55-delay)--Needs verification of consistency.
 	berserkTimer:Start(-delay)
-	spamFlameBreath = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(97497) and args:IsPlayer() and GetTime() - spamFlameBreath >= 3 then
+	if args:IsSpellID(97497) and args:IsPlayer() and self:AntiSpam() then
 		specWarnFlameBreath:Show()
-		spamFlameBreath = GetTime()
 	end
 end
 
