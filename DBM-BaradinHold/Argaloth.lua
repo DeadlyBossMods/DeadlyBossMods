@@ -41,9 +41,7 @@ mod:AddBoolOption("SetIconOnConsuming", false)
 local consumingTargets = {}
 local consumingIcon = 8
 local prewarnedFirestorm = false
-local spamMeteor = 0
 local consuming = 0
-local lastFlames = 0
 
 local function showConsumingWarning()
 	warnConsuming:Show(table.concat(consumingTargets, "<, >"))
@@ -80,8 +78,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(88972) then
 		timerFirestorm:Start()
 	elseif args:IsSpellID(88942, 95172) then--Debuff application not cast, special warning for tank taunts.
-		if GetTime() - spamMeteor >= 4 then
-			spamMeteor = GetTime()
+		if self:AntiSpam(3, 1) then
 			warnMeteorSlash:Show()
 			timerMeteorSlash:Start()
 			specWarnMeteorSlash:Show()
@@ -114,9 +111,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 89000 or spellId == 95177) and destGUID == UnitGUID("player") and GetTime() - lastFlames > 3 then -- Flames on ground from Firestorm
+	if (spellId == 89000 or spellId == 95177) and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then -- Flames on ground from Firestorm
 		specWarnFirestorm:Show()
-		lastFlames = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

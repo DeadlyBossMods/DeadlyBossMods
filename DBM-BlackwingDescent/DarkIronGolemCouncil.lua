@@ -110,8 +110,7 @@ mod:AddBoolOption("ShadowConductorIcon")
 mod:AddBoolOption("SetIconOnActivated", false)
 
 local pulled = false
-local cloudSpam = 0
-local lastInterrupt = 0
+local cloudSpam = 0--Uses custom resets, don't use prototype
 local incinerateCast = 0
 local encasing = false
 
@@ -187,7 +186,6 @@ end
 
 function mod:OnCombatStart(delay)
 	cloudSpam = 0
-	lastInterrupt = 0
 	encasing = false
 	incinerateCast = 0
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -386,8 +384,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_INTERRUPT(args)
-	if (type(args.extraSpellId) == "number" and (args.extraSpellId == 79710 or args.extraSpellId == 91540 or args.extraSpellId == 91541 or args.extraSpellId == 91542)) and GetTime() - lastInterrupt > 2 then
-		lastInterrupt = GetTime()--We only want the first interrupt, any extra won't count til next cast
+	if (type(args.extraSpellId) == "number" and (args.extraSpellId == 79710 or args.extraSpellId == 91540 or args.extraSpellId == 91541 or args.extraSpellId == 91542)) and self:AntiSpam(2) then
 		if args:IsSpellID(2139) then															--Counterspell
 			timerArcaneLockout:Start(7.5)
 		elseif args:IsSpellID(72, 19647) then													--Shield Bash (will be removed in 4.1), Spell Lock (Fel Hunter)

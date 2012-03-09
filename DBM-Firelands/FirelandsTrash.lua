@@ -35,7 +35,6 @@ local timerMoltenBoltCD		= mod:NewNextTimer(15.5, 99579)--The worm gyser things 
 local timerLavaSpawnCD		= mod:NewNextTimer(16, 99575)--The worm gyser things that always kill people for not moving.
 
 local lavaRunning = false
-local antiSpam = 0
 
 function mod:LeapTarget(sGUID)
 	local targetname = nil
@@ -102,8 +101,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(99579) and GetTime() - antiSpam >= 4 then
-		antiSpam = GetTime()
+	if args:IsSpellID(99579) and self:AntiSpam(4) then
 		warnMoltenBolt:Show()
 		timerMoltenBoltCD:Start()
 	elseif args:IsSpellID(99575) then
@@ -113,9 +111,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if spellId == 99510 and destGUID == UnitGUID("player") and GetTime() - antiSpam >= 3 then
+	if spellId == 99510 and destGUID == UnitGUID("player") and self:AntiSpam(3) then
 		specWarnLava:Show()
-		antiSpam = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

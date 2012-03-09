@@ -31,19 +31,14 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-do 
-	local lastspill = 0
-	function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-		if spellId == 68927 and destGUID == UnitGUID("player") and GetTime() - lastspill > 2 then
-			specWarnPerfumeSpill:Show()
-			lastspill = GetTime()
-		elseif spellId == 68934 and destGUID == UnitGUID("player") and GetTime() - lastspill > 2 then
-			specWarnCologneSpill:Show()
-			lastspill = GetTime()
-		end
+function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+	if spellId == 68927 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnPerfumeSpill:Show()
+	elseif spellId == 68934 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnCologneSpill:Show()
 	end
-	mod.SPELL_MISSED = mod.SPELL_DAMAGE
 end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.SayCombatStart or msg:find(L.SayCombatStart) then

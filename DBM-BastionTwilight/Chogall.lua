@@ -76,8 +76,6 @@ local firstFury = false
 local worshipIcon = 8
 local worshipCooldown = 20.5
 local shadowOrdersCD = 15
-local blazeSpam = 0
-local sickSpam = 0
 local creatureIcons = {}
 local creatureIcon = 8
 local iconsSet = 0
@@ -139,8 +137,6 @@ function mod:OnCombatStart(delay)
 	worshipIcon = 8
 	worshipCooldown = 20.5
 	shadowOrdersCD = 15
-	blazeSpam = 0
-	sickSpam = 0
 	creatureIcon = 8
 	iconsSet = 0
 	berserkTimer:Start(-delay)
@@ -286,9 +282,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if (spellId == 81538 or spellId == 93212 or spellId == 93213 or spellId == 93214) and destGUID == UnitGUID("player") and GetTime() - blazeSpam >= 4 then
+	if (spellId == 81538 or spellId == 93212 or spellId == 93213 or spellId == 93214) and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then
 		specWarnBlaze:Show()
-		blazeSpam = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -307,13 +302,12 @@ end
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" or not self:IsInCombat() then return end
-	if UnitDebuff("player", Corruption) and GetTime() - sickSpam >= 7 then
+	if UnitDebuff("player", Corruption) and self:AntiSpam(7, 2) then
 		specWarnSickness:Show()
 		timerSickness:Start()
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(5)
 		end
-		sickSpam = GetTime()
 	end
 end
 

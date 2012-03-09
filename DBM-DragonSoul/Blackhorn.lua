@@ -74,10 +74,8 @@ local berserkTimer					= mod:NewBerserkTimer(240)
 mod:AddBoolOption("SetTextures", false)--Disable projected textures in phase 1, because no harmful spells use them in phase 1, but friendly spells make the blade rush lines harder to see.
 
 local phase2Started = false
-local lastFlames = 0
 local addsCount = 0
 local drakesCount = 6
-local lastHarpoons = 0
 local twilightOnslaughtCount = 0
 local CVAR = false
 
@@ -126,10 +124,8 @@ end
 
 function mod:OnCombatStart(delay)
 	phase2Started = false
-	lastFlames = 0
 	addsCount = 0
 	drakesCount = 6
-	lastHarpoons = 0
 	twilightOnslaughtCount = 0
 	CVAR = false
 	timerCombatStart:Start(-delay)
@@ -225,10 +221,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		-- 2/24 20:50:53.530  SPELL_AURA_APPLIED,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DE17000081F7,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
 		-- 2/24 20:50:54.134  SPELL_AURA_APPLIED,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DD0B000081F5,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF -- 42.8 sec (first harpooning)
 		-- 2/24 20:50:54.134  SPELL_AURA_APPLIED,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DD0B000081F5,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
-		if GetTime() - lastHarpoons > 5 then -- Use time check for harpooning warning. It can be avoid bad casts also.
+		if self:AntiSpam(5, 1) then -- Use time check for harpooning warning. It can be avoid bad casts also.
 			warnHarpoon:Show(args.destName)
 			specWarnHarpoon:Show(args.destName)
-			lastHarpoons = GetTime()
 		end
 		-- Timer not use time check. 2 harpoons cast same time even not bugged.
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -262,12 +257,10 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if (spellId == 108076 or spellId == 109222 or spellId == 109223 or spellId == 109224) and destGUID == UnitGUID("player") and GetTime() - lastFlames > 3 then
+	if (spellId == 108076 or spellId == 109222 or spellId == 109223 or spellId == 109224) and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then--Goriona's Void zones
 		specWarnTwilightFlames:Show()
-		lastFlames = GetTime()
-	elseif spellId == 110095 and destGUID == UnitGUID("player") and GetTime() - lastFlames > 3  then
+	elseif spellId == 110095 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnDeckFire:Show()
-		lastFlames = GetTime()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

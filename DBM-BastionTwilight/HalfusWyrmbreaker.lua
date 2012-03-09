@@ -41,10 +41,7 @@ local berserkTimer			= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("ShowDrakeHealth", true)
 
-local spamFuriousRoar = 0
-
 function mod:OnCombatStart(delay)
-	spamFuriousRoar = 0
 	berserkTimer:Start(-delay)
 	if mod:IsDifficulty("heroic10", "heroic25") then--On heroic we know for sure the drake has breath ability.
 		timerBreathCD:Start(10-delay)
@@ -80,12 +77,11 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(83710, 86169, 86170, 86171) and GetTime() - spamFuriousRoar > 6 then
+	if args:IsSpellID(83710, 86169, 86170, 86171) and self:AntiSpam(6) then
 		warnFuriousRoar:Show()
 		timerFuriousRoar:Cancel()--We Cancel any scheduled roar timers before doing anything else.
 		timerFuriousRoar:Start()--And start a fresh one.
 		timerFuriousRoar:Schedule(30)--If it comes off CD while he's stunned by paralysis, he no longer waits to casts it after stun, it now consumes his CD as if it was cast on time. This is why we schedule this timer. So we get a timer for next roar after a stun.
-		spamFuriousRoar = GetTime()
 	elseif args:IsSpellID(83707) then
 		warnBreath:Show()
 		timerBreathCD:Start()
