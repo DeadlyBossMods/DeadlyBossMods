@@ -96,7 +96,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(99052) then
 		smolderingCount = smolderingCount + 1
 		warnSmolderingDevastation:Show(smolderingCount)
-		if self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("player") then--If spider is you're target or it's tank is, you're up top.
+		if self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target") then--If spider is you're target or it's tank is, you're up top.
 			specWarnSmolderingDevastation:Show()
 		end
 		timerSmolderingDevastation:Start()
