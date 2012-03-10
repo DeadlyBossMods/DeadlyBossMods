@@ -210,7 +210,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(92754) then
 		warnEngulfingDarkness:Show()
 		timerEngulfingDarknessCD:Start()
-		if self:GetUnitCreatureId("target") == 41378 or self:GetBossTarget(33186) == UnitName("target") then--Add tank doesn't need this spam, just tank on mal and healers healing that tank.
+		if self:GetUnitCreatureId("target") == 41378 or self:GetBossTarget(33186) == UnitName("player") then--Add tank doesn't need this spam, just tank on mal and healers healing that tank.
 			specWarnEngulfingDarkness:Show()
 		end
 	elseif args:IsSpellID(77896) then
