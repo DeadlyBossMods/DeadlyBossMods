@@ -151,6 +151,7 @@ function mod:OnCombatStart(delay)
 		clearPlasmaVariables()
 	end
 	gripIcon = 6
+	residueCount = 0
 end
 
 function mod:OnCombatEnd()
