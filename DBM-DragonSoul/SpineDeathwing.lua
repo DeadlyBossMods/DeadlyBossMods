@@ -60,7 +60,6 @@ local gripIcon = 6
 local corruptionActive = {}
 local residueCount = 0
 local diedOozeGUIDS = {}
-local resurrectedOozeTime = {}
 
 local function checkTendrils()
 	if not UnitDebuff("player", GetSpellInfo(109454)) and not UnitIsDeadOrGhost("player") then
@@ -82,35 +81,15 @@ end
 
 local function warningResidue()
 	warnResidue:Cancel()
-	if residueCount > 2 and residueCount < 16 then -- announce 9 stacks (ready to eat blood!), sometimes it can be missing 2~3 stacks, announce to 15 stacks.
-		warnResidue:Schedule(1.25, residueCount)
-	end
-end
-
-local function saveDiedOoze(GUID)
---	print(GUID, "saved")
-	diedOozeGUIDS[GUID] = true
-	resurrectedOozeTime[GUID] = GetTime()
-end
-
-local function removeResurrectedOozeTime(GUID)
-	if resurrectedOozeTime[GUID] then
-		resurrectedOozeTime[GUID] = nil
-	end
+	warnResidue:Schedule(1.25, residueCount)
 end
 
 local function checkOozeResurrect(GUID)
-	-- GUID contains creature id, not needed CID check.
-	if diedOozeGUIDS[GUID] then
-		 -- sometimes residue Count reduces 2 or more from 1 GUID. To prevent this, we use time check.
-		if GetTime() - (resurrectedOozeTime[GUID] or 0) > 2 then--It is an ooze that died earlier. We check destination damage to detect oozes faster if they take damage before they do damage.
-			resurrectedOozeTime[GUID] = GetTime()
-			diedOozeGUIDS[GUID] = nil --Remove it
-			residueCount = residueCount - 1 --Reduce count
-			warningResidue()
-			mod:Schedule(2, removeResurrectedOozeTime, GUID) -- Remove time save table after 2 sec.
---			print ("ooze_revived", GUID, residueCount)
-		end
+	-- set min resurrect time to 5 sec. (guessed)
+	if diedOozeGUIDS[GUID] and GetTime() - diedOozeGUIDS[GUID] > 5 then
+		residueCount = residueCount - 1
+		diedOozeGUIDS[GUID] = nil
+		warningResidue()
 	end
 end
 
@@ -168,12 +147,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(gripTargets)
 	table.wipe(corruptionActive)
 	table.wipe(diedOozeGUIDS)
-	table.wipe(resurrectedOozeTime)
 	if self.Options.ShowShieldInfo then
 		clearPlasmaVariables()
 	end
 	gripIcon = 6
-	residueCount = 0
 end
 
 function mod:OnCombatEnd()
@@ -187,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		warnNuclearBlast:Show()
 		specWarnNuclearBlast:Show()
 		soundNuclearBlast:Play()
-	elseif args:IsSpellID(105847, 105848) then -- Maybe related to positions?
+	elseif args:IsSpellID(105847, 105848) then
 		warnSealArmor:Show()
 		specWarnSealArmor:Show()
 		if self:IsDifficulty("lfr25") then
@@ -222,10 +199,13 @@ end
 -- not needed guid check. This is residue creation step.
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(105219, 109371, 109372, 109373) then 
+		diedOozeGUIDS[args.sourceGUID] = GetTime()
 		residueCount = residueCount + 1
 		warningResidue()
---		print ("ooze_dies", args.sourceGUID, residueCount)
-		self:Schedule(5, saveDiedOoze, args.sourceGUID)-- save died ooze guid. sometimes SPELL_DAMAGE, SWING_DAMAGE event appears after ooze died. so we delays build died ooze table.
+	elseif args:IsSpellID(105248) then
+		diedOozeGUIDS[args.sourceGUID] = nil
+		residueCount = residueCount - 1
+		warningResidue()
 	end
 end
 
@@ -245,11 +225,6 @@ mod.SWING_MISSED = mod.SWING_DAMAGE
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(105248) then
-		--Need to check raw logs later to see if these have sourceGUIDs.
-		--if so remove em from table to reduce table size
-		--although it own't break anything not removing em.
-		residueCount = residueCount - 1
---		print ("ooze_absorbed", residueCount)
 		warnAbsorbedBlood:Cancel()--Just a little anti spam
 		warnAbsorbedBlood:Schedule(1.25, args.destName, 1)
 	elseif args:IsSpellID(105490, 109457, 109458, 109459) then
@@ -277,8 +252,6 @@ end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(105248) then
-		residueCount = residueCount - 1
-		warnResidue:Cancel()
 		warnAbsorbedBlood:Cancel()--Just a little anti spam
 		if args.amount == 9 then
 			warnAbsorbedBlood:Show(args.destName, 9)
