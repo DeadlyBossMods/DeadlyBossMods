@@ -75,7 +75,7 @@ local timerTetanusCD				= mod:NewCDTimer(3.5, 109605, nil, mod:IsTank())
 local berserkTimer					= mod:NewBerserkTimer(900)
 
 local countdownBoltBlast			= mod:NewCountdown(8, 109600)
-local countdownUnstableCorruption	= mod:NewCountdown(10, 108813)
+local countdownUnstableCorruption	= mod:NewCountdown(10, 108813, false)--Even though not at same time as bolt, 2 countdowns in one fight is always confusing. So off by default for this one since it's more obvious then the bolt one where you can not watch a long cast bar.
 local countdownShrapnel				= mod:NewCountdown(6, 109598, not mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)--For heroic parasites, with debuff filtering.
