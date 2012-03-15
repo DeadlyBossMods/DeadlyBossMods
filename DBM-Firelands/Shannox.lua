@@ -114,58 +114,14 @@ end
 local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
-		return true
-	end
 	return false
 end
-
---Oh why blizz would you remove the boss1 flag from shannox. sigh. Workaround sucks, as it won't tell a tank from another tank, so it'll delay warning riplim tank too, but at least it'll warn again.
---blizz not removes boss1 uid. in koKR client, GetPartyAssignment returns "boss1target is not in your party." system message.
---I tested about GetPartyAssignment function and founded that GetPartyAssignment function returns system message if you typed bad charname or non-existing uid. (in koKR client)
---seems that trap target bug concerned with GetBossTarget function. it sometimes returns "Unknown" as unitname even uid is not exists. (i.e : boss1target)
---so, i think it will better to fliter to bad unitname in GetBossTarget function...
-
---It broke BEFORE we were using GetBossTarget, :\. Furthermore, i specificly logged the fight in transcriptor with him as my target ENTIRE time.
---He had no boss1 unitid, period. nothing he cast showed up under boss1, only target/focus. :( Unless they fixed that.
-
---in koKR client in 4.3.3 he has still boss1 uid. so in koKR, I have no uid issue.(wtf?)
---and this is my transcriptor log. (partly)
---"<3.4> Rageface [[boss2:Face Rage::0:99947]]",
---"<12.3> Riplimb [[boss3:Limb Rip::0:99832]]",
---"<12.3> Shannox [[boss1:Hurl Spear::0:99978]]",
---"<12.3> Shannox [[target:Hurl Spear::0:99978]]",
---"<12.3> Shannox [[boss1:Hurl Spear::0:100031]]",
---"<12.3> Shannox [[target:Hurl Spear::0:100031]]",
---"<14.4> Shannox [[boss1:Hurl Spear::0:100002]]",
---"<14.4> Shannox [[target:Hurl Spear::0:100002]]",
---"<17.1> Riplimb [[boss3:Dogged Determination::0:101111]]",
---"<21.9> Riplimb [[boss3:Fetch Spear::0:100026]]",
---"<29.1> Shannox [[boss1:Arcing Slash::0:101202]]",
---"<29.1> Shannox [[target:Arcing Slash::0:101202]]",
---"<32.7> Riplimb [[boss3:Limb Rip::0:99832]]",
---"<36.4> Rageface [[boss2::Face Rage::0:99947]]",
---"<41.2> Riplimb [[boss3:Limb Rip::0:99832]]",
---"<42.4> Shannox [[boss1:Arcing Slash::0:101202]]",
---"<42.4> Shannox [[target:Arcing Slash::0:101202]]",
---"<49.6> Riplimb [[boss3:Limb Rip::0:99832]]",
---"<53.2> Shannox [[boss1:Hurl Spear::0:99978]]",
---"<53.2> Shannox [[target:Hurl Spear::0:99978]]",
---"<53.2> Shannox [[boss1:Hurl Spear::0:100031]]",
---"<53.2> Shannox [[target:Hurl Spear::0:100031]]",
---"<55.2> Shannox [[boss1:Hurl Spear::0:100002]]",
---"<55.2> Shannox [[target:Hurl Spear::0:100002]]",
---"<58.0> Riplimb [[boss3:Limb Rip::0:99832]]",
---"<59.2> Riplimb [[boss3:Dogged Determination::0:101111]]",
---"<61.7> Riplimb [[boss3:Fetch Spear::0:100026]]",
---"<68.9> Rageface [[boss2:Face Rage::0:99947]]",
 
 function mod:TrapHandler(SpellID, ScansDone)
 	trapScansDone = trapScansDone + 1
@@ -173,13 +129,13 @@ function mod:TrapHandler(SpellID, ScansDone)
 	-- UnitExists also accepts not unit id but unitname. so we can use unitname as UnitExists parameter. and it also works with player controlled pet.
 --	print(targetname, uId)
 	if UnitExists(targetname) then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
-		if isTank(uId) and not ScansDone then--He's targeting his highest threat target.
+		if isTank(uId) and not ScansDone then--He's targeting a tank.
 			if trapScansDone < 12 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.05, "TrapHandler", SpellID)--Check multiple times to be sure it's not on something other then tank.
 			else
 				self:TrapHandler(SpellID, true)--It's still on tank, force true isTank and activate else rule and warn trap is on tank.
 			end
-		else--He's not targeting highest threat target (or isTank was set to true after 12 scans) so this has to be right target.
+		else--He's not targeting a tank target (or isTank was set to true after 12 scans) so this has to be right target.
 			self:UnscheduleMethod("TrapHandler")--Unschedule all checks just to be sure none are running, we are done.
 			if SpellID == 99836 then
 				self:CrystalTrapTarget(targetname)

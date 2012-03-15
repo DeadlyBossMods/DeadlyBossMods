@@ -44,17 +44,18 @@ function mod:LeapTarget(sGUID)
 			break
 		end
 	end
-	if not targetname then return end
-	warnDruidLeap:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnDruidLeap:Show()
-		yelldruidLeap:Yell()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnDruidLeapNear:Show(targetname)
+	if targetname and self:AntiSpam(2, targetname) then--Sometimes mod bugs, multiple leaps too close to same time, and it results in double or even tripple announces on one person (and no announce for 1-2 of the real targets). this will at least filter 1 target spam
+		warnDruidLeap:Show(targetname)
+		if targetname == UnitName("player") then
+			specWarnDruidLeap:Show()
+			yelldruidLeap:Yell()
+		else
+			local uId = DBM:GetRaidUnitId(targetname)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
+					specWarnDruidLeapNear:Show(targetname)
+				end
 			end
 		end
 	end
