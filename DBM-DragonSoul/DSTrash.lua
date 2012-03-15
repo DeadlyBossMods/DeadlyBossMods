@@ -28,8 +28,6 @@ local timerDrakes			= mod:NewTimer(253, "TimerDrakes", 61248)
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
-local antiSpam = 0
---local syncTime = 0
 local drakeRunning = false
 local drakesCount = 15
 local drakeguid = {}
@@ -55,23 +53,24 @@ function mod:BoulderTarget(sGUID)
 			break
 		end
 	end
-	if not targetname then return end
-	if realm then targetname = targetname.."-"..realm end
-	warnBoulder:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnBoulder:Show()
-		yellBoulder:Yell()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 6 then--Guessed, unknown, spelltip isn't informative.
-				specWarnBoulderNear:Show(targetname)
+	if targetname and self:AntiSpam(2, targetname) then--Anti spam using targetname as an identifier, will prevent same target being announced double/tripple but NOT prevent multiple targets being announced at once :)
+		if realm then targetname = targetname.."-"..realm end
+		warnBoulder:Show(targetname)
+		if targetname == UnitName("player") then
+			specWarnBoulder:Show()
+			yellBoulder:Yell()
+		else
+			local uId = DBM:GetRaidUnitId(targetname)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 6 then--Guessed, unknown, spelltip isn't informative.
+					specWarnBoulderNear:Show(targetname)
+				end
 			end
 		end
 	end
