@@ -1,0 +1,37 @@
+## Interface: 50000
+## X-Min-Interface: 50000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party-MoP|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMPartyMoP_SavedVars, DBMPartyMoP_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-SubCategories: Temple of the Jade Serpent, Stormstout Brewery, Shado-Pan Monestary, The Gate of the Setting Sun, Palace of the Heavens, Siege of Niuzao Temple, Scholomance, Scarlet Halls, Scarlet Monistary, World Bosses (MoP)
+## X-DBM-Mod-Name: Party (MoP)
+## X-DBM-Mod-Name-frFR: Groupe (MoP)
+## X-DBM-Mod-Name-deDE: Gruppe (MoP)
+## X-DBM-Mod-Name-esES: Mazmorras (MoP)
+## X-DBM-Mod-Name-esMX: Mazmorras (MoP)
+## X-DBM-Mod-Name-ptBR: Masmorras (MoP)
+## X-DBM-Mod-Sort: 25
+## X-DBM-Mod-LoadZoneID: 
+localization.en.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+localization.cn.lua
+localization.pt.lua
+JadeSerpentTemple\MapSizes.lua
+StormstoutBrewery\MapSizes.lua
+ShadoPanMonestary\MapSizes.lua
+GateSettingSun\MapSizes.lua
+PalaceHeavens\MapSizes.lua
+NiuzaoTemple\MapSizes.lua
+Scholomance\MapSizes.lua
+ScarletHalls\MapSizes.lua
+ScarletMonistary\MapSizes.lua
+WorldBosses\Anger.lua
+WorldBosses\Fear.lua
