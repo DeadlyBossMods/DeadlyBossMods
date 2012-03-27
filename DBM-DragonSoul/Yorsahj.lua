@@ -220,13 +220,14 @@ end
 RegisterAddonMessagePrefix("DBM-YORSAHJARROW")
 --mod:RegisterEvents("CHAT_MSG_ADDON") -- for debugging
 local oozePos = {
-  ["BLUE"] = 	{ 71, 34 },
-  ["PURPLE"] = 	{ 57, 13 },
-  ["RED"] = 	{ 37, 12 },
-  ["GREEN"] = 	{ 22, 34 },
-  ["YELLOW"] = 	{ 37, 85 },
-  ["BLACK"] = 	{ 71, 65 },
+	["BLUE"] = 	{ 71, 34 },
+	["PURPLE"] = 	{ 57, 13 },
+	["RED"] = 	{ 37, 12 },
+	["GREEN"] = 	{ 22, 34 },
+	["YELLOW"] = 	{ 37, 85 },
+	["BLACK"] = 	{ 71, 65 },
 }
+
 function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	if prefix ~= "DBM-YORSAHJARROW" then return end
 	local cmd = message or ""
