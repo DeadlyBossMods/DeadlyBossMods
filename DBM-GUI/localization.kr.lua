@@ -11,6 +11,7 @@ L.OTabBosses	= "보스"
 L.OTabOptions	= "설정"
 
 L.TabCategory_Options 	= "일반 설정"
+L.TabCategory_MOP		= "판다리아의 안개"
 L.TabCategory_CATA	 	= "대격변"
 L.TabCategory_WOTLK 	= "리치왕의 분노"
 L.TabCategory_BC 		= "불타는 성전"

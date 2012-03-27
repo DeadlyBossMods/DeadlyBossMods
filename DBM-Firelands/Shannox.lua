@@ -127,7 +127,6 @@ function mod:TrapHandler(SpellID, ScansDone)
 	trapScansDone = trapScansDone + 1
 	local targetname, uId = self:GetBossTarget(53691)
 	-- UnitExists also accepts not unit id but unitname. so we can use unitname as UnitExists parameter. and it also works with player controlled pet.
---	print(targetname, uId)
 	if UnitExists(targetname) then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a trap warning.
 		if isTank(uId) and not ScansDone then--He's targeting a tank.
 			if trapScansDone < 12 then--Make sure no infinite loop.
