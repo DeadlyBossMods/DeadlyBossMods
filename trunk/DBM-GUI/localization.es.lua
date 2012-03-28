@@ -11,6 +11,7 @@ L.OTabBosses	= "Bosses"
 L.OTabOptions	= "Opciones"
 
 L.TabCategory_Options 	= "Opciones generales"
+L.TabCategory_MOP	 		= "Mists of Pandaria"
 L.TabCategory_CATA	 		= "Cataclysm"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
 L.TabCategory_BC 	= "The Burning Crusade"
