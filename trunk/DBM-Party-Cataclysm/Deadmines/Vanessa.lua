@@ -18,7 +18,6 @@ mod:RegisterEventsInCombat(
 
 local warnDeflection	= mod:NewSpellAnnounce(92614, 3)
 local warnDeadlyBlades	= mod:NewSpellAnnounce(92622, 3)
---local warnVengeance	= mod:NewSpellAnnounce(95542, 4)--mechanic reworked in 4.0.6, commenting out til warning can be redesigned as well, right now good chance it'll spam A LOT
 
 local timerDeflection	= mod:NewBuffActiveTimer(10, 92614)
 local timerDeadlyBlades	= mod:NewBuffActiveTimer(5, 92622)
@@ -36,8 +35,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92622) then
 		warnDeadlyBlades:Show()
 		timerDeadlyBlades:Start()
---[[	elseif args:IsSpellID(95542) then
-		warnVengeance:Show()--]]
 	end
 end
 
