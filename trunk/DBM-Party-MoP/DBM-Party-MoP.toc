@@ -7,7 +7,7 @@
 ## SavedVariablesPerCharacter: DBMPartyMoP_SavedVars, DBMPartyMoP_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-SubCategories: Temple of the Jade Serpent, Stormstout Brewery, Shado-Pan Monastery, The Gate of the Setting Sun, Palace of the Heavens, Siege of Niuzao Temple, Scholomance, Scarlet Halls, Scarlet Cathedral, World Bosses (MoP)
+## X-DBM-Mod-SubCategories: Temple of the Jade Serpent, Stormstout Brewery, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, Scholomance, Scarlet Halls, Scarlet Cathedral, World Bosses (MoP)
 ## X-DBM-Mod-SubCategories-deDE: Tempel der Jadeschlange, Die Brauerei Sturmbräu, Shado-Pan Monastery, The Gate of the Setting Sun, Palace of the Heavens, Siege of Niuzao Temple, Scholomance, Scharlachrote Hallen, Scharlachrote Kathedrale, Weltbosse (MoP)
 ## X-DBM-Mod-SubCategories-koKR: 옥룡사, 스톰스타우트 양조장, 음영파 수도원, The Gate of the Setting Sun, Palace of the Heavens, Siege of Niuzao Temple, 스칼로맨스, Scarlet Halls, Scarlet Monastery, 필드 보스 (판다리아의 안개)
 ## X-DBM-Mod-Name: Party (MoP)
@@ -18,7 +18,7 @@
 ## X-DBM-Mod-Name-esMX: Mazmorras (MoP)
 ## X-DBM-Mod-Name-ptBR: Masmorras (MoP)
 ## X-DBM-Mod-Sort: 25
-## X-DBM-Mod-LoadZoneID: 871
+## X-DBM-Mod-LoadZoneID: 871, 867
 localization.en.lua
 localization.de.lua
 localization.es.lua
@@ -32,7 +32,7 @@ JadeSerpentTemple\MapSizes.lua
 StormstoutBrewery\MapSizes.lua
 ShadoPanMonastery\MapSizes.lua
 GateSettingSun\MapSizes.lua
-PalaceHeavens\MapSizes.lua
+MogushanPalace\MapSizes.lua
 NiuzaoTemple\MapSizes.lua
 Scholomance\MapSizes.lua
 ScarletHalls\MapSizes.lua
