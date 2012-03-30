@@ -19,7 +19,7 @@
 ## X-DBM-Mod-SubCategories-esES: Cavernas de Roca Negra, Minas de la Muerte, Grim Batol, Cámaras de los Orígenes, Ciudad Perdida de los Tol'vir, Castillo de Colmillo Oscuro, Núcleo Pétreo, Cumbre del Vortice, Trono de las Mareas, Zul'Aman (HC), Zul'Gurub (HC), End Time, Well of Eternity, Hour of Twilight, World Bosses
 ## X-DBM-Mod-SubCategories-koKR: 검은바위 동굴, 죽음의 폐광, 그림 바톨, 시초의 전당, 톨비르의 잃어버린 도시, 그림자송곳니 성채, 바위심장부, 소용돌이 누각, 파도의 왕좌, 줄아만(5인), 줄구룹(5인), 시간의 끝, 영원의 샘, 황혼의 시간, 필드 보스 (대격변)
 ## X-DBM-Mod-SubCategories-ruRU: Пещеры Черной горы, Мертвые копи, Грим Батол, Чертоги Созидания, Затерянный город Тол'вир, Крепость Темного Клыка, Каменные Недра, Вершина смерча, Трон Приливов, Зул'Аман, Зул'Гуруб, Конец Времен, Источник Вечности, Время Сумерек, World Bosses
-## X-DBM-Mod-SubCategories-zhTW: 黑石洞穴, 死亡礦坑, 格瑞姆巴托, 起源大廳, 托維爾的失落之城, 影牙城堡, 石岩之心, 旋渦尖塔, 海湖王座, 祖阿曼 (5人英雄), 祖爾格拉布 (5人英雄), 終焉之刻, 永恆之井, 暮光之時, 世界首領
+## X-DBM-Mod-SubCategories-zhTW: 黑石洞穴, 死亡礦坑, 格瑞姆巴托, 起源大廳, 托維爾的失落之城, 影牙城堡, 石岩之心, 旋渦尖塔, 海湖王座, 祖阿曼 (5人英雄), 祖爾格拉布 (5人英雄), 終焉之刻, 永恆之井, 暮光之時, 世界首領 (浩劫與重生)
 ## X-DBM-Mod-SubCategories-zhCN: 黑石岩窟, 死亡矿井, 格瑞姆巴托, 起源大厅, 托维尔失落之城, 影牙城堡, 巨石之核, 旋云之巅, 潮汐王座, 祖阿曼（5人）, 祖尔格拉布（5人）, 时光之末, 永恒之井, 暮光审判, 世界首领
 ## X-DBM-Mod-SubCategories-ptBR: Caverna Rocha Negra, Minas Mortas, Grim Batol, Salões Primordiais, Cidade Perdida dos Tol'vir, Bastilha da Presa Negra, Litocerne, Pináculo do Vórtice, Trono das Marés, Zul'Aman (Masmorra), Zul'Gurub (Masmorra), Fim dos Tempos, Nascente da Eternidade, Hora do Crepúsculo, Chefes do Mundo
 ## X-DBM-Mod-Name: Party (Cataclysm)

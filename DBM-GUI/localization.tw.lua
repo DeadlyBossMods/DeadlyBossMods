@@ -11,6 +11,7 @@ L.OTabBosses	= "首領模組"
 L.OTabOptions	= "選項"
 
 L.TabCategory_Options		= "綜合設置"
+L.TabCategory_MOP	 		= "潘達利亞之謎"
 L.TabCategory_CATA	 		= "浩劫與重生"
 L.TabCategory_WOTLK 		= "巫妖王之怒"
 L.TabCategory_BC 			= "燃燒的遠征"
