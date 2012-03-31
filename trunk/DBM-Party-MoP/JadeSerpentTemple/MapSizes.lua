@@ -1,4 +1,3 @@
---[[DBM:RegisterMapSize("TheDeadmines",
-	1, 559.264007568359, 372.842502593994,
-	2, 499.263000488281, 332.842300415039
-)--]]
+DBM:RegisterMapSize("EastTemple",
+	1, 766.584, 510.417
+)
