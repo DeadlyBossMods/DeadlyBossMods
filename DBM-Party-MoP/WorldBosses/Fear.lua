@@ -3,8 +3,8 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(50063)
---mod:SetModelID(34573)
---mod:SetZone(748, 720)--Dread Wastes (zoneid not yet known)
+--mod:SetModelID(41772)
+--mod:SetZone(858)--Dread Wastes (zoneid not yet known)
 --Not listed as a world boss anymore in latest patch EJ, was this boss moved?
 
 mod:RegisterCombat("combat")
