@@ -1,4 +1,3 @@
---[[DBM:RegisterMapSize("BlackrockCaverns",
-	1, 1019.50793457031, 679.672319412231,
-	2, 1019.50793457031, 679.672319412231
-)--]]
+DBM:RegisterMapSize("ScarletHalls",
+	1, 916.6669844, 610.417
+)
