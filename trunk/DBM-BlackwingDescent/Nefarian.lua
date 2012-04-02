@@ -192,7 +192,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		if args.sourceGUID == UnitGUID("target") then--Only show warning/timer for your own target.
 			warnBlastNova:Show()
-			specWarnBlastsNova:Show()
+			specWarnBlastsNova:Show(args.sourceName)
 			if self:IsDifficulty("heroic10", "heroic25") then
 				timerBlastNova:Start()
 			else

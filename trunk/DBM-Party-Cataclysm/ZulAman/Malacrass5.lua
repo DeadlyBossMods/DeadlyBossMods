@@ -70,13 +70,13 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(43451) then					--Paladin Heal (Holy Light)
 		warnHolyLight:Show()
-		specWarnHolyLight:Show()
+		specWarnHolyLight:Show(args.sourceName)
 	elseif args:IsSpellID(43431) then				--Priest Heal (Flash Heal)
 		warnFlashHeal:Show()
-		specWarnFlashHeal:Show()
+		specWarnFlashHeal:Show(args.sourceName)
 	elseif args:IsSpellID(43548) then				--Shaman Heal (Healing Wave)
 		warnHealingWave:Show()
-		specWarnHealingWave:Show()
+		specWarnHealingWave:Show(args.sourceName)
 	end
 end
 

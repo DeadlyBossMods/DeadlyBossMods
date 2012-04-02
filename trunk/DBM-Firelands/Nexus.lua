@@ -33,7 +33,7 @@ function mod:SPELL_CAST_START(args)
 		timerBreath:Start()
 	elseif args:IsSpellID(99392) then
 		warnHeal:Show()
-		specwarnHealInterrupt:Show()
+		specwarnHealInterrupt:Show(args.sourceName)
 	end
 end
 

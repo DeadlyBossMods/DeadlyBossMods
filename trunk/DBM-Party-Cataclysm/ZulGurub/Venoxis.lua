@@ -85,7 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(96466) and args:IsDestTypePlayer() then
 		warnWhisperHethiss:Show(args.destName)
 		timerWhisperHethiss:Start(args.destName)
-		specWarnWhisperHethiss:Show()
+		specWarnWhisperHethiss:Show(args.sourceName)
 	end
 end
 

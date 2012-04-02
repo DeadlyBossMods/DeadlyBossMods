@@ -81,7 +81,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(100094) then--Trash version of Fieroblast, different from boss version
 		if args.sourceGUID == UnitGUID("target") then
-			specWarnFieroblast:Show()
+			specWarnFieroblast:Show(args.sourceName)
 		end
 	elseif args:IsSpellID(99629) then--Druid of the Flame Leaping
 		self:ScheduleMethod(1, "LeapTarget", args.sourceGUID)

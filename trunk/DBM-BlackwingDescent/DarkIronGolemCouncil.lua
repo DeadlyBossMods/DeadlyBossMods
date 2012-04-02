@@ -349,7 +349,7 @@ function mod:SPELL_CAST_START(args)
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79710, 91540, 91541, 91542) then
 		if self:IsMelee() and (self:GetUnitCreatureId("target") == 42166 or self:GetUnitCreatureId("focus") == 42166) or not self:IsMelee() then
-			specWarnAnnihilator:Show()--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
+			specWarnAnnihilator:Show(args.sourceName)--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
 		end
 	end
 end

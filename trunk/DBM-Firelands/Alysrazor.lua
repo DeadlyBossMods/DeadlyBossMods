@@ -169,7 +169,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(101223, 101294, 101295, 101296) then
 		if args.sourceGUID == UnitGUID("target") then
-			specWarnFieroblast:Show()
+			specWarnFieroblast:Show(args.sourceName)
 		end
 	elseif args:IsSpellID(102111, 100761) then
 		cataCast = cataCast + 1

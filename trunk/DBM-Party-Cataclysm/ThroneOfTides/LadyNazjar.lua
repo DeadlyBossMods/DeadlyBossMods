@@ -74,7 +74,7 @@ function mod:SPELL_CAST_START(args)
 		timerShockBlastCD:Cancel()
 	elseif args:IsSpellID(76008, 91477) then
 		warnShockBlast:Show()
-		specWarnShockBlast:Show()
+		specWarnShockBlast:Show(args.sourceName)
 		timerShockBlastCD:Start()
 		if mod:IsDifficulty("heroic5") then
 			timerShockBlast:Start(2)
