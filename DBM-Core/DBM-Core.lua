@@ -136,6 +136,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer = true,
 	DisableCinematics = false,
 --	HelpMessageShown = false,
+	AprilFools = true,
 	MoviesSeen = {},
 	MovieFilters = {},
 }
@@ -2822,7 +2823,7 @@ do
 
 	function DBM:PLAYER_ENTERING_WORLD()
 		local weekday, month, day, year = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
-		if month == 4 and day == 1 then--April 1st
+		if month == 4 and day == 1 and DBM.Options.AprilFools then--April 1st
 			DBM:Schedule(900 + math.random(0, 600) , DBM.AprilFools)
 		end
 		if #inCombat == 0 then
