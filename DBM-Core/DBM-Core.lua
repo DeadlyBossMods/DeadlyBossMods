@@ -2823,7 +2823,7 @@ do
 	function DBM:PLAYER_ENTERING_WORLD()
 		local weekday, month, day, year = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
 		if month == 4 and day == 1 then--April 1st
-			DBM:AprilFools()
+			DBM:Schedule(900 + math.random(0, 600) , DBM.AprilFools)
 		end
 		if #inCombat == 0 then
 			DBM:Schedule(3.5, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires. Since boss mod loading takes 3 sec after entering zone, delays more will be good?
