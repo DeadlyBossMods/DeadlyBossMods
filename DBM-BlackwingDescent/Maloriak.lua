@@ -216,7 +216,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
 		timerArcaneStormCD:Start()
-		specWarnArcaneStorm:Show()
+		specWarnArcaneStorm:Show(args.sourceName)
 	elseif args:IsSpellID(78194) then
 		warnMagmaJets:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then

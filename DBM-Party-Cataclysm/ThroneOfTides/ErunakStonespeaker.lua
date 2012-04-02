@@ -100,7 +100,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(76171, 91412) then
 		warnLavaBolt:Show()
 		timerLavaBolt:Start()
-		specWarnLavaBolt:Show()
+		specWarnLavaBolt:Show(args.sourceName)
 	elseif args:IsSpellID(84931) then
 		self:ScheduleMethod(0.1, "EarthShardsTarget")
 	elseif args:IsSpellID(76307, 91492) then

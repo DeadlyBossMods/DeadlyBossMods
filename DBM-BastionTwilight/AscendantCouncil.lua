@@ -536,7 +536,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:Unschedule(hideShieldHealthBar)
 		hideShieldHealthBar()
 		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686) or not self:IsMelee() then
-			specWarnRisingFlames:Show()--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
+			specWarnRisingFlames:Show(args.sourceName)--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
 		end
 --[[	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin Removed
 		self:Unschedule(hideShieldHealthBar)
@@ -554,7 +554,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
 		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687) or not self:IsMelee() then
-			specWarnHydroLance:Show()--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
+			specWarnHydroLance:Show(args.sourceName)--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
 		end
 		timerHydroLanceCD:Show()
 	elseif args:IsSpellID(82699) then
@@ -568,7 +568,7 @@ function mod:SPELL_CAST_START(args)
 		warnHardenSkin:Show()
 		timerHardenSkinCD:Start()
 		if self:IsMelee() and (self:GetUnitCreatureId("target") == 43689 or self:GetUnitCreatureId("focus") == 43689) or not self:IsMelee() then
-			specWarnHardenedSkin:Show()--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
+			specWarnHardenedSkin:Show(args.sourceName)--Only warn for melee targeting him or exclicidly put him on focus, else warn regardless if he's your target/focus or not if you aren't a melee
 		end
 	elseif args:IsSpellID(83565, 92544, 92545, 92546) then
 		infoFrameUpdated = false
