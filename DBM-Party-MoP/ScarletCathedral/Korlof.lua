@@ -2,10 +2,10 @@ local mod	= DBM:NewMod("Korlof", "DBM-Party-MoP", 9)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(59303)
+mod:SetCreatureID(59223)
 --mod:SetModelID(41154)--Still need correct modelId, wowhead has no data on this guy yet
 
---mod:RegisterCombat("combat")
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS"

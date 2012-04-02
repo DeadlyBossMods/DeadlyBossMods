@@ -46,7 +46,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(82858, 92667) then
 		warnShield:Show()
 	elseif args:IsSpellID(79351) then
-		specWarnGrip:Show()
+		specWarnGrip:Show(args.sourceName)
 	end
 end
 

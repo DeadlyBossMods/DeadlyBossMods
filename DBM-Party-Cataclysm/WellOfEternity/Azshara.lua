@@ -23,7 +23,7 @@ local specWarnObedience	= mod:NewSpecialWarningInterrupt(103241)
 
 local timerServantCD	= mod:NewCDTimer(26, 102334)--Still don't have good logs, and encounter bugs a lot so i can't get any reliable timers except for first casts on engage.
 local timerObedienceCD	= mod:NewCDTimer(37, 103241)
-local timerAdds		= mod:NewTimer(36, "TimerAdds")
+local timerAdds			= mod:NewTimer(36, "TimerAdds")
 
 local addsCount = 0
 function mod:Adds()
@@ -46,7 +46,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(103241) then
 		warnObedience:Show()
-		specWarnObedience:Show()
+		specWarnObedience:Show(args.sourceName)
 --		timerObedienceCD:Start()
 	end
 end

@@ -58,12 +58,12 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(75823, 93462) then
 		warnDarkCommandCast:Show()
-		specWarnDarkCommand:Show()
+		specWarnDarkCommand:Show(args.sourceName)
 		timerDarkCommandCast:Start()
 		timerDarkCommandCD:Start()
 	elseif args:IsSpellID(82362, 87374) then
 		warnShadowStrike:Show()
-		specWarnShadowStrike:Show()
+		specWarnShadowStrike:Show(args.sourceName)
 		if mod:IsDifficulty("heroic5") then
 			timerShadowStrike:Start()
 		else

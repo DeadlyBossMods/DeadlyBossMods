@@ -87,7 +87,7 @@ function mod:SPELL_CAST_START(args)
 		timerBreathCD:Start()
 	elseif args:IsSpellID(83703, 86166, 86167, 86168) then
 		warnShadowNova:Show()
-		specWarnShadowNova:Show()
+		specWarnShadowNova:Show(args.sourceName)
 		timerNovaCD:Start()
 	end
 end

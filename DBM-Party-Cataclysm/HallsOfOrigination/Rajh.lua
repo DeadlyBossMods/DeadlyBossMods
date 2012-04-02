@@ -44,7 +44,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(80352) then
 		warnSunOrb:Show()
-		specWarnSunOrb:Show()
+		specWarnSunOrb:Show(args.sourceName)
 	elseif args:IsSpellID(73872, 89887) then
 		warnSunStrike:Show()
 		timerSunStrike:Start()

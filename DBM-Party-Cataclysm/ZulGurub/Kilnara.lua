@@ -37,7 +37,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(96435) then	-- Tears of Blood, CD 27-37 secs
 		warnTears:Show()
-		specWarnTears:Show()
+		specWarnTears:Show(args.sourceName)
 		timerTears:Start()
 	elseif args:IsSpellID(96958) then
 		warnLash:Show(args.destName)

@@ -43,7 +43,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93844) then
 		warnEmpowerment:Show()
-		specWarnEmpowerment:Show()
+		specWarnEmpowerment:Show(args.sourceName)
 	end
 end
 
