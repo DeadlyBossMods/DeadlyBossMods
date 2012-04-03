@@ -2505,6 +2505,7 @@ function DBM:EndCombat(mod, wipe)
 			local thisTime = GetTime() - mod.combatInfo.pull
 			local wipeHP = ("%d%%"):format(lowestBossHealth * 100)
 			local totalPulls = (savedDifficulty == "lfr25" and mod.stats.lfr25Pulls) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicPulls) or (savedDifficulty == "normal25" and mod.stats.normal25Pulls) or (savedDifficulty == "heroic25" and mod.stats.heroic25Pulls) or mod.stats.normalPulls
+			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
 			if thisTime < 15 then
 				if savedDifficulty == "lfr25" then
 					mod.stats.lfr25Pulls = mod.stats.lfr25Pulls - 1
@@ -2519,7 +2520,7 @@ function DBM:EndCombat(mod, wipe)
 				end
 				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
 			else
-				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls))
+				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
 			end
 
 			local msg
