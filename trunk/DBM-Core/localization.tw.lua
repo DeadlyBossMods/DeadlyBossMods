@@ -12,7 +12,7 @@ DBM_CORE_BOSS_DOWN					= "擊敗%s，經過%s!"
 DBM_CORE_BOSS_DOWN_L				= "擊敗%s!本次經過%s，上次經過%s，最快紀錄為%s。你總共擊殺了%d次。"
 DBM_CORE_BOSS_DOWN_NR				= "擊敗%s!經過%s! 這是一個新記錄! (舊紀錄為%s) 你總共擊殺了%d次。"
 DBM_CORE_COMBAT_ENDED_AT			= "%s(%s)的戰鬥經過%s結束。"
-DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s(%s)的戰鬥經過%s結束。你總共嘗試了%d次。"
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s(%s)的戰鬥經過%s結束。你在這個難度總共滅團了%d次。"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
@@ -197,7 +197,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell					= "%s!",
 	dispel					= "%%s中了%s - 現在驅散",
-	interrupt				= "%s - 現在斷法",
+	interrupt				= "%s - 快中斷%%s !",
 	you						= "你中了%s",
 	target					= "%%s中了%s",
 	close					= "你附近的%%s中了%s",
