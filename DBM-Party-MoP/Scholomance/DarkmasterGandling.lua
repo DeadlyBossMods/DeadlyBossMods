@@ -2,17 +2,20 @@ local mod	= DBM:NewMod("DarkmasterGandling", "DBM-Party-MoP", 7)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(54432)
+mod:SetCreatureID(59080)
 --mod:SetModelID(38931)
 mod:SetZone()
 
---mod:RegisterCombat("combat")
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START"
 )
 
+--His encounter doesn't seem implimented yet, he currently has no EJ entry and he doesn't do anything really, just stands there spamming a fireball til he dies.
+--4/3 16:26:36.671  Darkmaster Gandling yells: AGGRO [PH]
+--4/3 16:27:06.988  Darkmaster Gandling yells: DEATH [PH]
 --[[
 local warnBlast			= mod:NewSpellAnnounce(102381, 3)
 local warnBreath		= mod:NewSpellAnnounce(102569, 4)
