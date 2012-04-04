@@ -9,7 +9,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-SubCategories: Temple of the Jade Serpent, Stormstout Brewery, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, Scholomance, Scarlet Halls, Scarlet Cathedral, World Bosses (MoP)
 ## X-DBM-Mod-SubCategories-deDE: Tempel der Jadeschlange, Die Brauerei Sturmbräu, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, Scholomance, Scharlachrote Hallen, Scharlachrote Kathedrale, Weltbosse (MoP)
-## X-DBM-Mod-SubCategories-koKR: 옥룡사, 스톰스타우트 양조장, 음영파 수도원, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, 스칼로맨스, Scarlet Halls, Scarlet Cathedral, 필드 보스 (판다리아의 안개)
+## X-DBM-Mod-SubCategories-koKR: 옥룡사, 스톰스타우트 양조장, 음영파 수도원, 석양문, 모구샨 궁전, 니우짜오 사원 공성전투, 스칼로맨스, 주홍 전당, 붉은십자군 수도원, 필드 보스 (판다리아의 안개)
 ## X-DBM-Mod-SubCategories-zhTW: 玉蛟寺, 風暴烈酒酒坊, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, 通靈學院, 血色大廳, 血色大教堂, 世界首領 (潘達利亞之謎)
 ## X-DBM-Mod-Name: Party (MoP)
 ## X-DBM-Mod-Name-koKR: 5인 던전 (판다리아의 안개)
