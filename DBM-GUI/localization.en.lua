@@ -101,6 +101,16 @@ L.CountdownVoice			= "Set voice for countdown and countout sounds"
 L.SpecialWarnSound			= "Set sound for special warnings affecting you or your specific role"
 L.SpecialWarnSound2			= "Set sound for special warnings affecting everyone"
 
+-- Tab: Generalwarnings
+L.Tab_GeneralMessages 		= "General Messages"
+L.CombatMessages			= "Combat Message Options"
+L.ShowLoadMessage 			= "Show mod loading messages in chat frame"
+L.ShowEngageMessage 		= "Show engage messages in chat frame"
+L.ShowKillMessage 			= "Show kill messages in chat frame"
+L.ShowWipeMessage 			= "Show wipe messages in chat frame"
+L.ShowRecoveryMessage 		= "Show timer recovery messages in chat frame"
+L.ShowPizzaMessage 			= "Show timer broadcast messages in chat frame"
+
 -- Tab: Barsetup
 L.BarSetup   				= "Bar Style"
 L.BarTexture 				= "Bar texture"
