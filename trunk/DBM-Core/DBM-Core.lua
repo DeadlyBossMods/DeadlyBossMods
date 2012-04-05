@@ -83,6 +83,12 @@ DBM.DefaultOptions = {
 	ShowFakedRaidWarnings = false,
 	WarningIconLeft = true,
 	WarningIconRight = true,
+	ShowLoadMessage = true,
+	ShowPizzaMessage = true,
+	ShowEngageMessage = true,
+	ShowKillMessage = true,
+	ShowWipeMessage = true,
+	ShowRecoveryMessage = true,
 	HideBossEmoteFrame = false,
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
@@ -965,7 +971,9 @@ do
 end
 
 function DBM:ShowPizzaInfo(id, sender)
-	self:AddMsg(DBM_PIZZA_SYNC_INFO:format(sender, id))
+	if DBM.Options.ShowPizzaMessage then
+		self:AddMsg(DBM_PIZZA_SYNC_INFO:format(sender, id))
+	end
 end
 
 
@@ -1625,7 +1633,9 @@ function DBM:LoadMod(mod)
 		end
 		return false
 	else
-		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
+		if DBM.Options.ShowLoadMessage then--Make load option optional for advanced users, option is NOT in the GUI.
+			self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
+		end
 		loadModOptions(mod.modId)
 		for i, v in ipairs(DBM.Mods) do -- load the hasHeroic attribute from the toc into all boss mods as required by the GetDifficulty() method
 			if v.modId == mod.modId then
@@ -2390,7 +2400,9 @@ function DBM:StartCombat(mod, delay, synced)
 			mod.stats.normalPulls = mod.stats.normalPulls + 1--Treat it as normal for kill stats.
 			difficultyText = ""--So lets just return no difficulty :)
 		end
-		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+		if DBM.Options.ShowEngageMessage then
+			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+		end
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
@@ -2518,9 +2530,13 @@ function DBM:EndCombat(mod, wipe)
 				else
 					mod.stats.normalPulls = mod.stats.normalPulls - 1
 				end
-				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
+				if DBM.Options.ShowWipeMessage then
+					self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
+				end
 			else
-				self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+				if DBM.Options.ShowWipeMessage then
+					self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+				end
 			end
 
 			local msg
@@ -2583,12 +2599,14 @@ function DBM:EndCombat(mod, wipe)
 				end
 			end
 			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
-			if not lastTime then
-				self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
-			elseif thisTime < (bestTime or math.huge) then
-				self:AddMsg(DBM_CORE_BOSS_DOWN_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills))
-			else
-				self:AddMsg(DBM_CORE_BOSS_DOWN_L:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills))
+			if DBM.Options.ShowKillMessage then
+				if not lastTime then
+					self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
+				elseif thisTime < (bestTime or math.huge) then
+					self:AddMsg(DBM_CORE_BOSS_DOWN_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills))
+				else
+					self:AddMsg(DBM_CORE_BOSS_DOWN_L:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills))
+				end
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
