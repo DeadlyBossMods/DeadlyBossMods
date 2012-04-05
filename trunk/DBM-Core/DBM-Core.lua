@@ -76,8 +76,6 @@ DBM.DefaultOptions = {
 		X = 0,
 		Y = -185,
 	},
-	StatusEnabled = true,
-	AutoRespond = true,
 	Enabled = true,
 	ShowWarningsInChat = true,
 	ShowFakedRaidWarnings = false,
@@ -89,6 +87,9 @@ DBM.DefaultOptions = {
 	ShowKillMessage = true,
 	ShowWipeMessage = true,
 	ShowRecoveryMessage = true,
+	AutoRespond = true,
+	StatusEnabled = true,
+	WhisperStats = true,
 	HideBossEmoteFrame = false,
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
@@ -2541,7 +2542,11 @@ function DBM:EndCombat(mod, wipe)
 
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), wipeHP)
+				if DBM.Options.WhisperStats then
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), wipeHP, totalPulls - totalKills)
+				else
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), wipeHP)
+				end
 				sendWhisper(k, msg)
 			end
 			fireEvent("wipe", mod)
@@ -2610,7 +2615,11 @@ function DBM:EndCombat(mod, wipe)
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
-				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""))
+				if DBM.Options.WhisperStats then
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL_STATS:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), totalKills)
+				else
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""))
+				end
 				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)

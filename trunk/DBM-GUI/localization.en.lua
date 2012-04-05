@@ -112,6 +112,7 @@ L.ShowRecoveryMessage 		= "Show timer recovery messages in chat frame"
 L.WhisperMessages			= "Whisper Message Options"
 L.AutoRespond 				= "Auto-respond to whispers while fighting"
 L.EnableStatus 				= "Reply to 'status' whispers"
+L.WhisperStats 				= "Include kill/wipe stats in whisper responses"
 
 -- Tab: Barsetup
 L.BarSetup   				= "Bar Style"
