@@ -1248,13 +1248,12 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 250, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 230, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
 		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable() else DBM:Enable() end end)
-	
-		local StatusEnabled				= generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
+
 		local MiniMapIcon				= generaloptions:CreateCheckButton(L.EnableMiniMapIcon, true)
 		MiniMapIcon:SetScript("OnClick", function(self)
 			DBM:ToggleMinimapButton()
@@ -1381,13 +1380,16 @@ local function CreateOptionsMenu()
 		generalCoreArea:CreateCheckButton(L.ShowPizzaMessage, true, nil, "ShowPizzaMessage")
 
 		local generalMessagesArea = generalWarningPanel:CreateArea(L.CombatMessages, nil, 135, true)
-		generalMessagesArea:CreateCheckButton(L.AutoRespond, true, nil, "AutoRespond")
 		generalMessagesArea:CreateCheckButton(L.ShowEngageMessage, true, nil, "ShowEngageMessage")
 		generalMessagesArea:CreateCheckButton(L.ShowKillMessage, true, nil, "ShowKillMessage")
 		generalMessagesArea:CreateCheckButton(L.ShowWipeMessage, true, nil, "ShowWipeMessage")
 		generalMessagesArea:CreateCheckButton(L.ShowRecoveryMessage, true, nil, "ShowRecoveryMessage")
+		local generalWhispersArea = generalWarningPanel:CreateArea(L.WhisperMessages, nil, 135, true)
+		generalWhispersArea:CreateCheckButton(L.AutoRespond, true, nil, "AutoRespond")
+		generalWhispersArea:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
 		generalCoreArea:AutoSetDimension()
 		generalMessagesArea:AutoSetDimension()
+		generalWhispersArea:AutoSetDimension()
 		generalWarningPanel:SetMyOwnHeight()
 	end	
 
