@@ -1532,6 +1532,28 @@ local function CreateOptionsMenu()
 	end
 
 	do
+		-------------------------------------------
+		--            General Warnings           --
+		-------------------------------------------
+		local generalWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_GeneralMessages, "option")
+		local generalCoreArea = generalWarningPanel:CreateArea(L.CoreMessages, nil, 120, true)
+--		generalCoreArea:CreateCheckButton(L.ShowLoadMessage, true, nil, "ShowLoadMessage")--Only here as a note, this is commented out so inexperienced users don't disable this, but an option for advanced users who want to manually change the value from true to false
+		generalCoreArea:CreateCheckButton(L.ShowPizzaMessage, true, nil, "ShowPizzaMessage")
+
+		local generalMessagesArea = generalWarningPanel:CreateArea(L.CombatMessages, nil, 135, true)
+		generalMessagesArea:CreateCheckButton(L.ShowEngageMessage, true, nil, "ShowEngageMessage")
+		generalMessagesArea:CreateCheckButton(L.ShowKillMessage, true, nil, "ShowKillMessage")
+		generalMessagesArea:CreateCheckButton(L.ShowWipeMessage, true, nil, "ShowWipeMessage")
+		generalMessagesArea:CreateCheckButton(L.ShowRecoveryMessage, true, nil, "ShowRecoveryMessage")
+		generalCoreArea:AutoSetDimension()
+		generalMessagesArea:AutoSetDimension()
+		generalWarningPanel:SetMyOwnHeight()
+	end
+
+	do
+		--------------------------------------
+		--            Bar Options           --
+		--------------------------------------
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
 		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 240, true)
