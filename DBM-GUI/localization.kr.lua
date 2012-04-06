@@ -102,6 +102,21 @@ L.CountdownVoice		= "초읽기(5,4,3,2,1) 및 지속시간 읽기 소리 설정"
 L.SpecialWarnSound		= "특수 경고 소리 (자신이나 특정 직업군이 영향을 받는 주문)"
 L.SpecialWarnSound2		= "특수 경고 소리 (공격대원이 영향을 받는 주문)"
 
+-- Tab: Generalwarnings
+L.Tab_GeneralMessages 		= "메세지 설정"
+L.CoreMessages				= "일반 메세지 설정"
+L.ShowLoadMessage 			= "대화 창에 보스 경보 불러오기 메세지 보이기"
+L.ShowPizzaMessage 			= "대화 창에 사용자 지정 바에 관련된 메세지 보이기"
+L.CombatMessages			= "전투 메세지 설정"
+L.ShowEngageMessage 		= "대화 창에 전투 시작 메세지 보이기"
+L.ShowKillMessage 			= "대화 창에 보스 처치 메세지 보이기"
+L.ShowWipeMessage 			= "대화 창에 보스 전멸 메세지 보이기"
+L.ShowRecoveryMessage 		= "대화 창에 바 복구 메세지 보이기"
+L.WhisperMessages			= "귓속말 설정"
+L.AutoRespond 				= "보스 전투 중 귓속말을 받은 경우 자동 응답 메세지 보내기"
+L.EnableStatus 				= "'status' 라는 귓속말을 받은 경우 자동 응답 메세지 보내기"
+L.WhisperStats 				= "귓속말 자동 응답시 처치/전멸 횟수 포함하기"
+
 -- Tab: Barsetup
 L.BarSetup  				= "바 설정"
 L.BarTexture 				= "바 모양"
