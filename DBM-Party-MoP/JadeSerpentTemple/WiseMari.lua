@@ -9,39 +9,53 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+--	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED"
 )
 
---[[
-local warnBlast			= mod:NewSpellAnnounce(102381, 3)
-local warnBreath		= mod:NewSpellAnnounce(102569, 4)
-local warnRewind		= mod:NewSpellAnnounce(101591, 3)
 
-local timerBlastCD		= mod:NewNextTimer(12, 102381)
-local timerBreathCD		= mod:NewNextTimer(22, 102569)
+--local warnHydroLance			= mod:NewSpellAnnounce(106055, 2)--not sure?
+local warnBubbleBurst			= mod:NewCastAnnounce(120900, 3, nil)
+
+--local specWarnLivingWater		= mod:NewSpecialWarningSwitch("ej5870", not mod:IsHealer())--Commented out until i know right section ID
+local specwarnCorruptingWaters	= mod:NewSpecialWarningMove(120907)
+
+--local timerHydroLanceCD			= mod:NewCDTimer(6, 106055)
+local timerLivingWater			= mod:NewCastTimer(5.5, 106526)
+local timerWashAway				= mod:NewNextTimer(8, 106331)
+
+local addsRemaining = 4
 
 function mod:OnCombatStart(delay)
-	timerBlastCD:Start(-delay)
-	timerBreathCD:Start(-delay)
+	addsRemaining = 4
+	timerLivingWaterCD:Start(13-delay)
+	--specWarnLivingWater:Schedule(13)
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and self:AntiSpam() then
-		warnRewind:Show()
-		timerBlastCD:Cancel()
-		timerBreathCD:Cancel()
-		timerBlastCD:Start()
-		timerBreathCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(102381) then
-		warnBlast:Show()
-		timerBlastCD:Start()
-	elseif args:IsSpellID(102569) then
-		warnBreath:Show()
-		timerBreathCD:Start()
+--[[
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(106055) then
+		warnHydroLance:Show()
+		timerHydroLanceCD:Start()
 	end
 end--]]
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(106526) then--Call Water
+		addsRemaining = addsRemaining - 1
+		timerLivingWater:Start()
+		--specWarnLivingWater:Schedule(5.5)
+	elseif args:IsSpellID(106612, 120900) then--Bubble Burst
+		warnBubbleBurst:Show()
+		timerWashAway:Start()
+	end
+end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
+	if (spellId == 115167 or spellId == 120907) and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specwarnCorruptingWaters:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
