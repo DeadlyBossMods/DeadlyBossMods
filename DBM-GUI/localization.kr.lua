@@ -53,8 +53,6 @@ L.Statistic_25Man		= "25인"
 -- Tab: General Options
 L.General 				= "일반 DBM 설정"
 L.EnableDBM 			= "DBM 사용"
-L.EnableStatus 			= "'status' 라는 귓속말을 받은 경우 자동 응답 메세지 보내기"
-L.AutoRespond 			= "보스 전투 중 귓속말을 받은 경우 자동 응답 메세지 보내기"
 L.EnableMiniMapIcon		= "미니맵 버튼 사용"
 L.UseMasterVolume		= "기본 오디오 채널로 소리 듣기"
 L.DisableCinematics		= "게임내 동영상 재생 기능 끄기"
