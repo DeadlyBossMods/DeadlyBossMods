@@ -41,6 +41,10 @@ function mod:OnCombatStart(delay)
 	timerDeathsGraspCD:Start(30-delay)
 end
 
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(111585) and args:IsPlayer() and self:AntiSpam() then
 		specwarnDarkBlaze:Show()
@@ -70,6 +74,11 @@ function mod:SPELL_CAST_START(args)
 		warnShadowShiv:Show()
 		timerShadowShivCD:Start()
 	elseif args:IsSpellID(114262) then--Phase 3, body rezzed and you have soul and body up together.
+		self:RegisterShortTermEvents(
+			"SWING_DAMAGE",
+			"SPELL_PERIODIC_DAMAGE",
+			"RANGE_DAMAGE"
+		)
 		warnReanimateCorpse:Show()
 		timerDeathsGraspCD:Start(9)
 		timerShadowShivCD:Start(20.5)
@@ -79,7 +88,7 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
 	if (overkill or 0) > 0 then
 		local cid = self:GetCIDFromGUID(destGUID)
-		if cid == 58791 then--fight is over when soul dies.
+		if cid == 58791 then--fight is over when soul dies (atleast from my log, but EJ says it's over when body dies, wtf?)
 			DBM:EndCombat(self)
 		end
 	elseif (spellId == 111628 or spellId == 115361) and destGUID == UnitGUID("player") and self:AntiSpam() then
@@ -87,3 +96,14 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overk
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
+mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
+
+function mod:SWING_DAMAGE(_, _, _, _, destGUID, _, _, _, _, overkill)
+	if (overkill or 0) > 0 then
+		local cid = self:GetCIDFromGUID(destGUID)
+		if cid == 58791 then
+			DBM:EndCombat(self)
+		end
+	end
+end
