@@ -2,11 +2,11 @@ local mod	= DBM:NewMod("LuiFlameheart", "DBM-Party-MoP", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(54432)
+mod:SetCreatureID(56732)
 --mod:SetModelID(39487)
 mod:SetZone()
 
---mod:RegisterCombat("combat")
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
