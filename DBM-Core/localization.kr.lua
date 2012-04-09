@@ -41,7 +41,7 @@ DBM_CORE_AUTO_RESPOND_WHISPER				= "%s 님은 현재 바쁩니다. %s 전투가 
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s 님의 %s 전투가 끝났습니다!"
 DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s 님의 %s 전투가 끝났습니다! (처치: %d회)"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 보스의 체력은 %s 입니다."
-DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s 님이 %s 전투에서 전멸하였습니다. (현재 난이도에서 전멸: %d회)"
+DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 보스의 체력은 %s 입니다. (현재 난이도에서 전멸: %d회)"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
