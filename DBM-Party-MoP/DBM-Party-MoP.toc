@@ -50,8 +50,9 @@ MogushanPalace\Gekkan.lua
 MogushanPalace\MoguClanLeaders.lua
 MogushanPalace\WeaponmasterXin.lua
 NiuzaoTemple\MapSizes.lua
+NiuzaoTemple\Jinbak.lua
 NiuzaoTemple\Pavalak.lua
-NiuzaoTemple\ResinharvesterPH.lua
+NiuzaoTemple\Neronok.lua
 Scholomance\MapSizes.lua
 Scholomance\Chillheart.lua
 Scholomance\DarkmasterGandling.lua
