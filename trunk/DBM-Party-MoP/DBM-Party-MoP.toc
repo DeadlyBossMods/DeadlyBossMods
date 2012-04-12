@@ -66,4 +66,4 @@ ScarletCathedral\Durand.lua
 ScarletCathedral\Korlof.lua
 ScarletCathedral\ThalnosSoulrender.lua
 WorldBosses\Anger.lua
-WorldBosses\Fear.lua
+WorldBosses\Salyis.lua
