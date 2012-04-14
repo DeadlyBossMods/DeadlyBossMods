@@ -32,7 +32,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
-localization.pt.lua
+localization.br.lua
 MapSizes.lua
 Conclave.lua
 AlAkir.lua

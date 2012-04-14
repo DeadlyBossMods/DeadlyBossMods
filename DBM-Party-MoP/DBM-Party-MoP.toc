@@ -29,7 +29,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
-localization.pt.lua
+localization.br.lua
 JadeSerpentTemple\MapSizes.lua
 JadeSerpentTemple\LibraryEvent.lua
 JadeSerpentTemple\LiuFlameheart.lua
