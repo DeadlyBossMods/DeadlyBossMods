@@ -45,7 +45,7 @@ localization.es.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua
-localization.pt.lua
+localization.br.lua
 Battlegrounds\Battlegrounds.lua
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua

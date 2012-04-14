@@ -40,7 +40,7 @@ localization.kr.lua
 localization.de.lua
 localization.es.lua
 localization.cn.lua
-localization.pt.lua
+localization.br.lua
 Holidays\Omen.lua
 Holidays\ApothecaryTrio.lua
 Holidays\Ahune.lua
