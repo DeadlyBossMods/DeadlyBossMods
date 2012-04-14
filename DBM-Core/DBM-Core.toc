@@ -22,7 +22,7 @@ localization.fr.lua
 localization.tw.lua
 localization.kr.lua
 localization.es.lua
-localization.pt.lua
+localization.br.lua
 DBT-Template.xml
 DBT.lua
 DBM-Core.lua
