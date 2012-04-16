@@ -994,6 +994,7 @@ do
 		end,
 		timeout = 0,
 		hideOnEscape = 1,
+		preferredIndex = 3,
 	}
 
 	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button, ...)
@@ -1369,6 +1370,7 @@ do
 			timeout = 0,
 			exclusive = 1,
 			whileDead = 1,
+			preferredIndex = 3,
 		}
 		StaticPopup_Show("DBM_OLD_VERSION")
 	end
@@ -1793,6 +1795,7 @@ do
 			multiple = 1,
 			showAlert = 1,
 			whileDead = 1,
+			preferredIndex = 3,
 		}
 		
 		syncHandlers["IR"] = function(sender)
