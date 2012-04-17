@@ -1527,6 +1527,13 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 					break
 				end
 			end
+		elseif (cId == 62352 or cId == 62346) and not DBM:GetModByName("Salyis") then--Name not perminant, EJ IDs will be used when the EJ is less Beta looking and we know IDs are final
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-Party-MoP" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
 		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466) and not DBM:GetModByName("Greench") then--The Abominable Greench & his helpers (Winter Veil world boss), Omen & his minions (Lunar Festival world boss)
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
@@ -1553,6 +1560,13 @@ function DBM:PLAYER_TARGET_CHANGED()
 		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not DBM:GetModByName("Beauty") then--Akamhat, Garr, Julak, Mobus, Xariona
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-Cataclysm" then
+					DBM:LoadMod(v)
+					break
+				end
+			end
+		elseif (cId == 62352 or cId == 62346) and not DBM:GetModByName("Salyis") then--Name not perminant, EJ IDs will be used when the EJ is less Beta looking and we know IDs are final
+			for i, v in ipairs(DBM.AddOns) do
+				if v.modId == "DBM-Party-MoP" then
 					DBM:LoadMod(v)
 					break
 				end
