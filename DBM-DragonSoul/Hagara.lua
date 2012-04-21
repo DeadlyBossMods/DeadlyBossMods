@@ -74,6 +74,7 @@ local pillarsRemaining = 4
 local frostPillar = EJ_GetSectionInfo(4069)
 local lightningPillar = EJ_GetSectionInfo(3919)
 local CVAR = false
+local CVAR2 = false
 
 function mod:ShatteredIceTarget()
 	local targetname = self:GetBossTarget(55689)
@@ -106,6 +107,10 @@ function mod:OnCombatEnd()
 	if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
 		SetCVar("chatBubbles", 1)
 		CVAR = false
+	end
+	if self.Options.SetBubbles and not GetCVarBool("chatBubblesParty") and CVAR2 then--Only turn them back on if they are off now, but were on when we pulled
+		SetCVar("chatBubblesParty", 1)
+		CVAR2 = false
 	end
 	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Hide()
@@ -210,6 +215,10 @@ function mod:SPELL_AURA_REMOVED(args)
 			SetCVar("chatBubbles", 0)
 			CVAR = true
 		end
+		if self.Options.SetBubbles and GetCVarBool("chatBubblesParty") then
+			SetCVar("chatBubblesParty", 0)
+			CVAR2 = true
+		end
 		timerFrostFlakeCD:Cancel()
 		timerIceLanceCD:Start(12)
 		timerFeedback:Start()
@@ -229,6 +238,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetBubbles and GetCVarBool("chatBubbles") then
 			SetCVar("chatBubbles", 0)
 			CVAR = true
+		end
+		if self.Options.SetBubbles and GetCVarBool("chatBubblesParty") then
+			SetCVar("chatBubblesParty", 0)
+			CVAR2 = true
 		end
 		timerStormPillarCD:Cancel()
 		timerIceLanceCD:Start(12)
@@ -264,6 +277,10 @@ function mod:SPELL_CAST_START(args)
 			SetCVar("chatBubbles", 1)
 			CVAR = false
 		end
+		if self.Options.SetBubbles and not GetCVarBool("chatBubblesParty") and CVAR2 then--Only turn them back on if they are off now, but were on when we pulled
+			SetCVar("chatBubblesParty", 1)
+			CVAR2 = false
+		end
 		pillarsRemaining = 4
 		timerAssaultCD:Cancel()
 		timerIceLanceCD:Cancel()
@@ -277,6 +294,10 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
 			SetCVar("chatBubbles", 1)
 			CVAR = false
+		end
+		if self.Options.SetBubbles and not GetCVarBool("chatBubblesParty") and CVAR2 then--Only turn them back on if they are off now, but were on when we pulled
+			SetCVar("chatBubblesParty", 1)
+			CVAR2 = false
 		end
 		if self:IsDifficulty("heroic10") then
 			pillarsRemaining = 8
