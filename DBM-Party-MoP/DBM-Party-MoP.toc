@@ -20,7 +20,7 @@
 ## X-DBM-Mod-Name-ptBR: Masmorras (MoP)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (潘達利亞之謎)
 ## X-DBM-Mod-Sort: 25
-## X-DBM-Mod-LoadZoneID: 871, 867
+## X-DBM-Mod-LoadZoneID: 871, 867, 874
 localization.en.lua
 localization.de.lua
 localization.es.lua
@@ -45,12 +45,18 @@ GateSettingSun\Gadok.lua
 GateSettingSun\Kiptilak.lua
 GateSettingSun\Raigonn.lua
 GateSettingSun\Rimok.lua
+ShadoPanMonastery\MapSizes.lua
+ShadoPanMonastery\GuCloudStrike.lua
+ShadoPanMonastery\Snowdrift.lua
+ShadoPanMonastery\ShaofViolence.lua
+ShadoPanMonastery\TeranZhu.lua
 MogushanPalace\MapSizes.lua
 MogushanPalace\Gekkan.lua
-MogushanPalace\MoguClanLeaders.lua
+MogushanPalace\TrialoftheKing.lua
 MogushanPalace\WeaponmasterXin.lua
 NiuzaoTemple\MapSizes.lua
 NiuzaoTemple\Jinbak.lua
+NiuzaoTemple\Vojak.lua
 NiuzaoTemple\Pavalak.lua
 NiuzaoTemple\Neronok.lua
 Scholomance\MapSizes.lua
@@ -62,6 +68,7 @@ Scholomance\Rattlegore.lua
 ScarletHalls\MapSizes.lua
 ScarletHalls\Braun.lua
 ScarletHalls\Harlan.lua
+ScarletHalls\FlameweaverKoegler.lua
 ScarletCathedral\MapSizes.lua
 ScarletCathedral\Durand.lua
 ScarletCathedral\Korlof.lua
