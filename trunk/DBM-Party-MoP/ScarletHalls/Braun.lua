@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(59303)
---mod:SetModelID(42264)--Still need correct modelId, wowhead has no data on this guy yet  -- Datamined might also be: 42252
+--mod:SetModelID(42264)
 
 mod:RegisterCombat("combat")
 

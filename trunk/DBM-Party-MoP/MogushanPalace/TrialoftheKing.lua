@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(54432)
---mod:SetModelID(42059)
+--mod:SetModelID(42060)	-- 42060=Haiyan the Unstoppable | 42059=Ming the Cunning | 42058=Kuai the Brute
 mod:SetZone()
 
 --mod:RegisterCombat("combat")
