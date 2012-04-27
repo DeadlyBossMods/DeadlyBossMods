@@ -1,5 +1,5 @@
---[[DBM:RegisterMapSize("TheDeadmines",
-	1, 559.264007568359, 372.842502593994,		-- 'first' floor not in DBC files yet
+--[[DBM:RegisterMapSize("StormstoutBrewery",
+	1, 850, 708.334,
 	2, 260.00098, 172.334,
 	3, 260.00098, 172.334,
 	4, 340, 226.6666,
