@@ -1,4 +1,4 @@
---[[DBM:RegisterMapSize("BlackrockCaverns",
-	1, 1019.50793457031, 679.672319412231,
-	2, 1019.50793457031, 679.672319412231
+--[[DBM:RegisterMapSize("ShadowpanHideout",
+	1, 1062.5, 708.334
+	2, 0, 0	-- unknown
 )--]]
