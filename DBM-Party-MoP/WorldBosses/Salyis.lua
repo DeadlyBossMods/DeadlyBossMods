@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Salyis", "DBM-Party-MoP", 10)
+local mod	= DBM:NewMod(725, "DBM-Party-MoP", 10, 322)	-- 322 = Pandaria/Outdoor I assume
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
