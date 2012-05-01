@@ -48,7 +48,7 @@ local timerFirestormCD		= mod:NewCDTimer(83, 100744)--Heroic
 local timerPhaseChange		= mod:NewTimer(33.5, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
-local timerWingsofFlame		= mod:NewBuffFadesTimer(30, 98619)
+--local timerWingsofFlame		= mod:NewBuffFadesTimer(30, 98619)
 local timerTantrum			= mod:NewBuffActiveTimer(10, 99362, nil, mod:IsTank())
 local timerSatiated			= mod:NewBuffActiveTimer(15, 100852, nil, mod:IsTank())
 local timerBlazingClaw		= mod:NewTargetTimer(15, 101731, nil, false)
@@ -122,8 +122,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(99432) then--Burnout applied (0 energy)
 		warnPhase:Show(3)
-	elseif args:IsSpellID(98619) and args:IsPlayer() then
-		timerWingsofFlame:Start()
+--	elseif args:IsSpellID(98619) and args:IsPlayer() then
+--		timerWingsofFlame:Start()
 	elseif args:IsSpellID(99844, 101729, 101730, 101731) and args:IsDestTypePlayer() then
 		timerBlazingClaw:Start(args.destName)
 	end
@@ -136,14 +136,14 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_AURA_REFRESH(args)
-	if args:IsSpellID(98619) and args:IsPlayer() then
-		timerWingsofFlame:Start()
-	elseif args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then--^^ Same as above only with diff spell
+	if args:IsSpellID(99359, 100850, 100851, 100852) and ((args.sourceGUID == UnitGUID("target") and self:IsTank()) or not self:IsTank() and args.sourceGUID == UnitGUID("targettarget")) then--^^ Same as above only with diff spell
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerSatiated:Start(10)
 		else
 			timerSatiated:Start()
 		end
+--	elseif args:IsSpellID(98619) and args:IsPlayer() then
+--		timerWingsofFlame:Start()
 	end
 end
 
