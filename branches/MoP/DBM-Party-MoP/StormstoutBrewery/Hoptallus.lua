@@ -9,7 +9,6 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START"
 )
 
@@ -36,16 +35,6 @@ local soundFurlwind			= mod:NewSound(112992, nil, mod:IsMelee())
 --Maybe add a warning to switch and dps boppers and get em down, or a hammer spawned warning after they die, or both.
 function mod:OnCombatStart(delay)
 	timerFurlwindCD:Start(15-delay)
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and self:AntiSpam() then
-		warnRewind:Show()
-		timerBlastCD:Cancel()
-		timerBreathCD:Cancel()
-		timerBlastCD:Start()
-		timerBreathCD:Start()
-	end
 end
 
 function mod:SPELL_CAST_START(args)
