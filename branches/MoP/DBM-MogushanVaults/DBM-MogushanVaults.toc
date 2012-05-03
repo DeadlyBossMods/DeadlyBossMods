@@ -1,0 +1,42 @@
+﻿## Interface: 50000
+## X-Min-Interface: 50000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMMogushanVaults_SavedVars, DBMMogushanVaults_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Name: Mogu'shan Palace
+## X-DBM-Mod-Name-deDE: Mogu'shan Palace
+## X-DBM-Mod-Name-esES: Mogu'shan Palace
+## X-DBM-Mod-Name-koKR: Mogu'shan Palace
+## X-DBM-Mod-Name-ruRU: Mogu'shan Palace
+## X-DBM-Mod-Name-zhTW: Mogu'shan Palace
+## X-DBM-Mod-Name-zhCN: Mogu'shan Palace
+## X-DBM-Mod-Name-frFR: Mogu'shan Palace
+## X-DBM-Mod-Name-ptBR: Mogu'shan Palace
+## X-DBM-Mod-Sort: 2
+## X-DBM-Mod-LoadZoneID: 999
+localization.en.lua
+localization.de.lua
+localization.ru.lua
+localization.es.lua
+localization.kr.lua
+localization.cn.lua
+localization.tw.lua
+localization.fr.lua
+localization.br.lua
+MapSizes.lua
+GarajalTheSpiritbinder.lua
+SpiritKings.lua
+Elegon.lua
+
