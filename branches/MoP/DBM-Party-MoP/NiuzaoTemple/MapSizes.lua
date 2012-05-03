@@ -1,4 +1,4 @@
---[[DBM:RegisterMapSize("BlackrockCaverns",
-	1, 1019.50793457031, 679.672319412231,
-	2, 1019.50793457031, 679.672319412231
-)--]]
+DBM:RegisterMapSize("SiegeofNiuzaoTemple",
+	1, 1014.584, 677.084,
+	2, 1014.584, 677.084
+)
