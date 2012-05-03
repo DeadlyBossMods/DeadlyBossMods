@@ -1,5 +1,4 @@
---[[DBM:RegisterMapSize("ScarletCathedral",
-	1, 3399.999, 2266.666016
-	2, 343.02, 228.68,
-	3, 600, 400
-)--]]
+DBM:RegisterMapSize("ScarletCathedral",
+	1, 3399.999, 2266.666016,
+	2, 5947.173, 3964.782
+)

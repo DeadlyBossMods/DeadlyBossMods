@@ -1,5 +1,4 @@
---[[DBM:RegisterMapSize("TheGreatWall",
+DBM:RegisterMapSize("TheGreatWall",
 	1, 1800, 1200.000984,
-	2, 1300, 866.666685,
-	3, 222.52, 148.34668
-)--]]
+	2, 308.105, 205.403
+)
