@@ -38,7 +38,7 @@ local warnConsumingShroud			= mod:NewTargetAnnounce(110598)
 
 local specWarnHarpoon				= mod:NewSpecialWarningTarget(108038, false)
 local specWarnTwilightOnslaught		= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
-local specWarnSapper				= mod:NewSpecialWarningSpell("ej4200", false)
+local specWarnSapper				= mod:NewSpecialWarningSwitch("ej4200", mod:IsDps())
 local specWarnDeckFireCast			= mod:NewSpecialWarningSpell(110095, false, nil, nil, true)
 local specWarnDeckFire				= mod:NewSpecialWarningMove(110095)
 local specWarnElites				= mod:NewSpecialWarning("SpecWarnElites", mod:IsTank())
