@@ -1,0 +1,18 @@
+﻿## Interface: 50000
+## X-Min-Interface: 50000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Terrace of Endless Spring|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMTerraceofEndlessSpring_SavedVars, DBMTerraceofEndlessSpring_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Name: Terrace of Endless Spring
+## X-DBM-Mod-Sort: 3
+## X-DBM-Mod-LoadZoneID: 886
+localization.en.lua
+MapSizes.lua
+ProtectorsofEndless.lua
+Tsulong.lua
+LeiShi.lua
+ShaofFear.lua
