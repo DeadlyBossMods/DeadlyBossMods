@@ -1,7 +1,6 @@
---[[DBM:RegisterMapSize("NewScholomance",
-	1, 1799.99993, 1200,		-- Might the from the old scholomance
-	2, 340.000361, 226.6669,
-	3, 445.000366, 296.6669,
-	4, 262.5, 175,
-	5, 262.5, 175
-)--]]
+DBM:RegisterMapSize("NewScholomance",
+	1, 3306.251, 2204.166,
+	2, 4327.298, 2894.588,
+	3, 2552.618, 1701.744,
+	4, 2552.618, 1701.744
+)
