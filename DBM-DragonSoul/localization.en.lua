@@ -50,12 +50,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerOozesActive	= "Oozes Attackable"
+	timerOozesActive	= "Oozes Attackable",
+	timerOozesReach		= "Oozes Reach Boss"
 })
 
 L:SetOptionLocalization({
 	warnOozesHit		= "Announce what oozes hit the boss",
 	timerOozesActive	= "Show timer for when Oozes become attackable",
+	timerOozesReach		= "Show timer for when Oozes reach Yor'sahj",
 	RangeFrame			= "Show range frame (4) for $spell:104898\n(Normal+ difficulty)"
 })
 
