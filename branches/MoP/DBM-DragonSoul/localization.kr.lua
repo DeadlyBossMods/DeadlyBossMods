@@ -52,11 +52,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerOozesActive	= "핏방울 공격 가능",
+	timerOozesReach		= "핏방울 도착"
 })
 
 L:SetOptionLocalization({
 	warnOozesHit		= "보스에게 흡수된 핏방울에 대한 알림 보기",
 	timerOozesActive	= "핏방울이 소환된 후 공격 가능하기까지 남은시간 바 표시",
+	timerOozesReach		= "소환된 핏방울이 보스에게 도착하기까지 남은시간 바 표시",
 	RangeFrame			= "$spell:104898 주문이 활성화 된 경우 거리 프레임 보기 (4m)\n(일반 난이도 이상)"
 })
 
