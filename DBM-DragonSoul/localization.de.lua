@@ -51,12 +51,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerOozesActive	= "Kugeln angreifbar"
+	timerOozesActive	= "Kugeln angreifbar",
+	timerOozesReach		= "Kugeln erreichen Boss"
 })
 
 L:SetOptionLocalization({
 	warnOozesHit		= "Verkünde die Farben der Blutkugeln, die den Boss getroffen haben",
 	timerOozesActive	= "Zeige Zeit bis Blutkugeln angreifbar sind",
+	timerOozesReach		= "Zeige Zeit bis Blutkugeln Yor'sahj erreichen",
 	RangeFrame			= "Zeige Abstandsfenster (4m) für $spell:104898\n(normaler und heroischer Schwierigkeitsgrad)"
 })
 
