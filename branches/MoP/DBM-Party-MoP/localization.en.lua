@@ -97,6 +97,10 @@ L= DBM:GetModLocalization(674)
 -----------------------
 L= DBM:GetModLocalization(671)
 
+L:SetOptionLocalization({
+	KickArrow	= "Show DBM arrow when $spell:114021 is near you",
+})
+
 -----------------------
 -- Thalnos Soulrender --
 -----------------------

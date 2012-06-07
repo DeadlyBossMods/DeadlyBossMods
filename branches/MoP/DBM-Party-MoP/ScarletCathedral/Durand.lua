@@ -15,15 +15,15 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnRes					= mod:NewCastAnnounce(111216, 4)
-local warnMassRes				= mod:NewCastAnnounce(111216, 4)
+local warnRes					= mod:NewCastAnnounce(111670, 4)
+local warnMassRes				= mod:NewCastAnnounce(113134, 4)
 local warnDeepSleep				= mod:NewSpellAnnounce(9256, 2)
 
 local specWarnRes				= mod:NewSpecialWarningInterrupt(111670, true)--Trash mobs before this boss have a res spell that needs warnings too, especially if you screw up and let her rez them with mass rez and join the boss fight after the fact.
-local specWarnMassRes			= mod:NewSpecialWarningInterrupt(111216, true)
+local specWarnMassRes			= mod:NewSpecialWarningInterrupt(113134, true)
 
-local timerMassResCD			= mod:NewCDTimer(14, 111216)--every 14-17 seconds
-local timerDeepSleep			= mod:NewBuffFadesTimer(10, 111216)
+local timerMassResCD			= mod:NewCDTimer(14, 113134)--every 14-17 seconds? (new heroic log doesn't show it cast this often, but i'll leave it for now)
+local timerDeepSleep			= mod:NewBuffFadesTimer(10, 9256)
 
 function mod:OnCombatStart(delay)
 	--Only need these in phase 1 so no sense in wasting cpu in phase 2 and 3.
@@ -36,7 +36,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(113134) then
+	if args:IsSpellID(111670) then
 		warnRes:Show()
 		specWarnRes:Show(args.sourceName)
 	elseif args:IsSpellID(113134) then
@@ -59,7 +59,7 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
 	if (overkill or 0) > 0 then
 		local cid = self:GetCIDFromGUID(destGUID)
-		if cid == 60040 then--Phase 1 ends when he dies first time, but he doesn't UNIT_DIE first time, there is no other usuable event.
+		if cid == 60040 then--Phase 1 ends when he dies first time, but he doesn't UNIT_DIED first time, there is no other usuable event.
 			self:UnregisterShortTermEvents()
 			timerMassResCD:Start()
 		end

@@ -21,7 +21,7 @@ local warnSummonSpirits			= mod:NewSpellAnnounce(115147, 4)
 local warnEmpowerZombie			= mod:NewSpellAnnounce(115239, 4, 115250)
 
 local specWarnFallenCrusader	= mod:NewSpecialWarningSwitch("ej5863", not mod:IsHealer())--Need more data, nots sure if they are meaningful enough to kill or ignore.
-local specWarnEmpoweredZombie	= mod:NewSpecialWarningSwitch("ej5870", not mod:IsHealer())--These zombies hurt, they need to die asap.
+local specWarnEmpoweredSpirit	= mod:NewSpecialWarningSwitch("ej5869", not mod:IsHealer())--These need to die before they become zombies. Cannot see a way in combat log to detect target, i'll have to watch for target scanning next time to warn that player to run away from dead crusaders.
 
 local timerEvictSoul			= mod:NewTargetTimer(6, 116648)
 local timerEvictSoulCD			= mod:NewCDTimer(40, 116648)
@@ -30,7 +30,7 @@ local timerSummonSpiritsCD		= mod:NewNextTimer(60, 115147)
 
 function mod:OnCombatStart(delay)
 	timerRaiseCrusadeCD:Start(6-delay)
-	timerBreathCD:Start(25.5-delay)--Consistent?
+	timerEvictSoulCD:Start(15.5-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -47,10 +47,11 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(115297, 116648) then--Trigger CD off success, since we can resist it. do NOT add ID 115548, it's a similcast to 115297
+	if args:IsSpellID(115297) then--Trigger CD off success, since we can resist it. do NOT add ID 115548, it's a similcast to 115297
 		timerEvictSoulCD:Start()
-	elseif args:IsSpellID(115147, 116653) then--Summon Empowering Spirits
+	elseif args:IsSpellID(115147) then--Summon Empowering Spirits
 		warnSummonSpirits:Show()
+		specWarnEmpoweredSpirit:Show()
 		timerRaiseCrusadeCD:Start(20)--Because they are both 60 second near precise timers, we alternate the timers to reduce needing to have both up at once.
 	elseif args:IsSpellID(115139) then--Raise Fallen Crusade
 		warnRaiseCrusade:Show()
@@ -58,6 +59,5 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSummonSpiritsCD:Start(40)
 	elseif args:IsSpellID(115239) then--Empower Zombie (used by empowering Spirits on fallen Crusaders to make them hulking hard hitting zombies)
 		warnEmpowerZombie:Show()
-		specWarnEmpoweredZombie:Schedule(2)--schedule a delay since it's not targetable for about 2 seconds
 	end
 end

@@ -20,13 +20,13 @@ local warnBladesofLight			= mod:NewCastAnnounce(111216, 4)
 
 local specWarnBladesofLight		= mod:NewSpecialWarningSpell(111216, nil, nil, nil, true)
 
-local timerDragonsReachCD		= mod:NewNextTimer(12, 111217)
-local timerCallReinforcementsCD	= mod:NewNextTimer(60, 111755)
+local timerDragonsReachCD		= mod:NewCDTimer(7, 111217)--12 on normal, 7 on heroic, OR, 7 in both and it was buffed on normal since i've run it. For time being i'll make it 7 but change it from next to CD
+local timerCallReinforcementsCD	= mod:NewNextTimer(60, 111755)--No longer shows in combat log in recent builds, probalby needs redoing with transcriptor :\
 local timerBladesofLightCD		= mod:NewNextTimer(30, 111216)
 
 function mod:OnCombatStart(delay)
 	timerDragonsReachCD:Start(-delay)
-	timerCallReinforcementsCD:Start(20-delay)
+	timerCallReinforcementsCD:Start(20-delay)--Assumed still valid, unknown now that it no longer shows in CLEU
 	timerBladesofLightCD:Start(40-delay)
 end
 
@@ -34,7 +34,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(111217) then
 		timerDragonsReachCD:Start()
 	elseif args:IsSpellID(111755) then
-		timerCallReinforcementsCD:Start()--Can possibly also start this at blades of light cast start since it's typically 29-30 seconds after that, but this may be slightly more accurate
 	end
 end
 
@@ -43,12 +42,12 @@ function mod:SPELL_CAST_START(args)
 		timerDragonsReachCD:Cancel()
 		warnBladesofLight:Show()
 		specWarnBladesofLight:Show()
+		timerCallReinforcementsCD:Start(30)--Moved here since cast trigger is no longer working. This won't be as accurate but close enough.
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(111216) then
-		timerDragonsReachCD:Start()
 		timerBladesofLightCD:Start()
 	end
 end

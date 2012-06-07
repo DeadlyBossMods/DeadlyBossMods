@@ -8,46 +8,78 @@ mod:SetCreatureID(59223)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED"
 )
 
---[[
-local warnPiercingThrow			= mod:NewCountAnnounce(114021, 2)--This is tied to Death Blossom, it goes 2 peircing throw's then death blossom, then repeats.
-local warnDeathBlossom			= mod:NewSpellAnnounce(114025, 3)--^^
-local warnBloodyRage			= mod:NewCountAnnounce(116140, 3)--Fight ends after 4 of these?
+local warnFlyingKick		= mod:NewTargetAnnounce(114487, 3)--This is always followed instantly by Firestorm kick, so no reason to warn both.
+local warnBlazingFists		= mod:NewSpellAnnounce(114807, 3)
+local warnScorchedEarth		= mod:NewCountAnnounce(114460, 3)
 
-local timerPiercingThrowCD		= mod:NewNextTimer(6, 114021)
-local timerDeathBlossomCD		= mod:NewNextTimer(6, 114025)
+local yellFlyingKick		= mod:NewYell(114487)
+local specWarnFlyingKick	= mod:NewSpecialWarningMove(114487)
+local specWarnFlyingKickNear= mod:NewSpecialWarningClose(114487)
+local specWarnScorchedEarth	= mod:NewSpecialWarningMove(114460)
 
-local throwCount = 0
-local bloodyCount = 0
+local timerFlyingKickCD		= mod:NewNextTimer(25, 114021)
+local timerFirestormKick	= mod:NewBuffActiveTimer(6, 113764)
+local timerBlazingFistsCD	= mod:NewNextTimer(30, 114025)
+
+mod:AddBoolOption("KickArrow", true)
 
 function mod:OnCombatStart(delay)
-	throwCount = 0
-	bloodyCount = 0
-	timerPiercingThrowCD:Start(-delay)
+	timerFlyingKickCD:Start(10-delay)
+	timerBlazingFistsCD:Start(20.5-delay)
+end
+
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(114021) then
-		throwCount = throwCount + 1
-		warnPiercingThrow:Show(throwCount)
-		if throwCount < 2 then
-			timerPiercingThrowCD:Start()
+	if args:IsSpellID(114487) then
+		if args:IsPlayer() then
+			specWarnFlyingKick:Show()
+			yellFlyingKick:Yell()
 		else
-			timerDeathBlossomCD:Start()
+			local uId = DBM:GetRaidUnitId(targetname)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 8 then
+					specWarnFlyingKickNear:Show(targetname)
+					if self.Options.KickArrow then
+						DBM.Arrow:ShowRunAway(x, y, 8, 3)
+					end
+				end
+			end
 		end
+		warnFlyingKick:Show(args.destName)
+		timerFirestormKick:Start()
+		timerFlyingKickCD:Start()
 	elseif args:IsSpellID(114025) then
-		warnDeathBlossom:Show()
-		timerPiercingThrowCD:Start()
-	elseif args:IsSpellID(114259) then--Call Dog (cast 4x on normal)
-		timerPiercingThrowCD:Cancel()
-		timerDeathBlossomCD:Cancel()
-	elseif args:IsSpellID(116140) then--Blood Rage(done calling dogs)
-		throwCount = 0
-		bloodyCount = bloodyCount + 1
-		warnBloodyRage:Show(bloodyCount)
-		timerPiercingThrowCD:Start(13.5)
+		warnBlazingFists:Show()
+		timerBlazingFistsCD:Start()
 	end
 end
---]]
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(114460) then
+		warnScorchedEarth:Show()
+		self:RegisterShortTermEvents(
+			"SPELL_DAMAGE",
+			"SPELL_MISSED"
+		)
+	end
+end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
+	if spellId == 114465 and destGUID == UnitGUID("player") and self:AntiSpam(3) then
+		specWarnScorchedEarth:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE

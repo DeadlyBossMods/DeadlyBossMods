@@ -51,7 +51,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(116140) then--Blood Rage(done calling dogs)
 		throwCount = 0
-		bloodyCount = bloodyCount + 1
 		warnBloodyRage:Show()
 		timerPiercingThrowCD:Start(13.5)
 	end
