@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 
 
 local warnRecklessInspiration	= mod:NewTargetAnnounce(118988, 3)--Tooltip says it stacks, but i've never seen it used that way. Its CD is also it's duration.
-local warnShank					= mod:NewTargetAnnounce(118963, 4, nil, false)--Rogue ability that stuns tank for 5 seconds, it can be particularly nasty for burst damage, a healer may want
+local warnShank					= mod:NewTargetAnnounce(118963, 4, nil, mod:IsTank())--Rogue ability that stuns tank for 5 seconds, it can be particularly nasty for burst damage, a healer may want
 local warnHexCast				= mod:NewCastAnnounce(118903, 3)--Interruptable
 local warnHex					= mod:NewTargetAnnounce(118903, 4, nil, mod:IsHealer())--Dispelable
 

@@ -20,7 +20,7 @@
 ## X-DBM-Mod-Name-ptBR: Masmorras (MoP)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (潘達利亞之謎)
 ## X-DBM-Mod-Sort: 25
-## X-DBM-Mod-LoadZoneID: 871, 867, 874
+## X-DBM-Mod-LoadZoneID: 867, 876, 877, 875, 885, 887, 763, 871, 874
 localization.en.lua
 localization.de.lua
 localization.es.lua
