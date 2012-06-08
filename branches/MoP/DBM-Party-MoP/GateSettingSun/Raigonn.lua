@@ -2,46 +2,71 @@ local mod	= DBM:NewMod(649, "DBM-Party-MoP", 4, 303)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(54432)
+mod:SetCreatureID(56877)
 --mod:SetModelID(39519)
 mod:SetZone()
 
---mod:RegisterCombat("combat")
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
 )
 
---[[
-local warnBlast			= mod:NewSpellAnnounce(102381, 3)
-local warnBreath		= mod:NewSpellAnnounce(102569, 4)
-local warnRewind		= mod:NewSpellAnnounce(101591, 3)
 
-local timerBlastCD		= mod:NewNextTimer(12, 102381)
-local timerBreathCD		= mod:NewNextTimer(22, 102569)
+local warnHeadbutt				= mod:NewSpellAnnounce(111668, 2)
+local warnScreechingSwarm		= mod:NewTargetAnnounce(111600, 4)
+local warnBrokenCarapace		= mod:NewSpellAnnounce(107146, 2)--Phase 2
+local warnFixate				= mod:NewTargetAnnounce(111723, 4)
+local warnStomp					= mod:NewCountAnnounce(111728, 3)
+
+local specwarnScreechingSwarm	= mod:NewSpecialWarningDispel(111600, mod:IsHealer())
+
+local timerHeadbuttCD			= mod:NewNextTimer(33, 111668)
+local timerScreechingSwarm		= mod:NewTargetTimer(10, 111600)
+local timerFixate				= mod:NewTargetTimer(15, 111723)
+local timerFixateCD				= mod:NewNextTimer(20.5, 111723)
+local timerStompCD				= mod:NewNextCountTimer(20.5, 111728)
+
+local stompCount = 0
 
 function mod:OnCombatStart(delay)
-	timerBlastCD:Start(-delay)
-	timerBreathCD:Start(-delay)
+	stompCount = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and self:AntiSpam() then
-		warnRewind:Show()
-		timerBlastCD:Cancel()
-		timerBreathCD:Cancel()
-		timerBlastCD:Start()
-		timerBreathCD:Start()
+	if args:IsSpellID(107146) then
+		warnBrokenCarapace:Show()
+		timerHeadbuttCD:Cancel()
+		timerFixateCD:Start(5.5)--Timing for target pick, not cast start.
+		timerStompCD:Start(20.5, 1)
+	elseif args:IsSpellID(111723) then
+		warnFixate:Show(args.destName)
+		timerFixate:Start(args.destname)
+		timerFixateCD:Start()
+	elseif args:IsSpellID(111600) then
+		warnScreechingSwarm:Show(args.destName)
+		specwarnScreechingSwarm:Show(args.destName)
+		timerScreechingSwarm:Start(args.destname)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(111723) then
+		timerFixate:Cancel(args.destname)
+	elseif args:IsSpellID(111600) then
+		timerScreechingSwarm:Cancel(args.destname)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(102381) then
-		warnBlast:Show()
-		timerBlastCD:Start()
-	elseif args:IsSpellID(102569) then
-		warnBreath:Show()
-		timerBreathCD:Start()
+	if args:IsSpellID(111668) then
+		warnHeadbutt:Show()
+		timerHeadbuttCD:Start()
+	elseif args:IsSpellID(111728) then
+		stompCount = stompCount + 1
+		warnStomp:Show(stompCount)
+		timerStompCD:Start(20.5, stompCount+1)
 	end
-end--]]
+end

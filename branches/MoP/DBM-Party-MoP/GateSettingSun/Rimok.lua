@@ -2,46 +2,43 @@ local mod	= DBM:NewMod(676, "DBM-Party-MoP", 4, 303)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(54432)
+mod:SetCreatureID(56636)
 mod:SetModelID(43286)
 mod:SetZone()
 
---mod:RegisterCombat("combat")
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START"
 )
 
---[[
-local warnBlast			= mod:NewSpellAnnounce(102381, 3)
-local warnBreath		= mod:NewSpellAnnounce(102569, 4)
-local warnRewind		= mod:NewSpellAnnounce(101591, 3)
+--This mod needs more stuff involving adds later.
+local warnFrenziedAssault		= mod:NewSpellAnnounce(107120, 3)
 
-local timerBlastCD		= mod:NewNextTimer(12, 102381)
-local timerBreathCD		= mod:NewNextTimer(22, 102569)
+local specwarnFrenziedAssault	= mod:NewSpecialWarningSpell(107120, mod:IsTank())
+local specwarnViscousFluid		= mod:NewSpecialWarningMove(107122)
+
+local timerFrenziedAssault		= mod:NewBuffActiveTimer(6, 107120)
+local timerFrenziedAssaultCD	= mod:NewNextTimer(17, 107120)
 
 function mod:OnCombatStart(delay)
-	timerBlastCD:Start(-delay)
-	timerBreathCD:Start(-delay)
+	timerFrenziedAssaultCD:Start(6-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and self:AntiSpam() then
-		warnRewind:Show()
-		timerBlastCD:Cancel()
-		timerBreathCD:Cancel()
-		timerBlastCD:Start()
-		timerBreathCD:Start()
+	if args:IsSpellID(107122) and args:IsPlayer() and self:AntiSpam(3) then
+		specwarnViscousFluid:Show()
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(102381) then
-		warnBlast:Show()
-		timerBlastCD:Start()
-	elseif args:IsSpellID(102569) then
-		warnBreath:Show()
-		timerBreathCD:Start()
+	if args:IsSpellID(107120) then
+		warnFrenziedAssault:Show()
+		specwarnFrenziedAssault:Show()
+		timerFrenziedAssault:Start()
+		timerFrenziedAssaultCD:Start()
 	end
-end--]]
+end

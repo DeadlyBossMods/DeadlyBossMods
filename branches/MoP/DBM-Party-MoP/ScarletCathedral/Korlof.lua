@@ -43,7 +43,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnFlyingKick:Show()
 			yellFlyingKick:Yell()
 		else
-			local uId = DBM:GetRaidUnitId(targetname)
+			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then
 				local x, y = GetPlayerMapPosition(uId)
 				if x == 0 and y == 0 then
@@ -52,9 +52,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 				if inRange and inRange < 8 then
-					specWarnFlyingKickNear:Show(targetname)
+					specWarnFlyingKickNear:Show(args.destName)
 					if self.Options.KickArrow then
-						DBM.Arrow:ShowRunAway(x, y, 8, 3)
+						DBM.Arrow:ShowRunAway(x, y, 8, 5)
 					end
 				end
 			end
