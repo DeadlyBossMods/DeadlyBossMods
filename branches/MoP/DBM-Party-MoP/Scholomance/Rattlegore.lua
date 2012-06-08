@@ -9,7 +9,9 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
---	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE"
 )
@@ -17,21 +19,47 @@ mod:RegisterEventsInCombat(
 
 local warnBoneSpike		= mod:NewSpellAnnounce(113999, 3)
 
---local specwarnGetBoned	= mod:NewSpecialWarning("specwarnGetBoned")--Since i did this fight solo, i'm not sure if this is a tank only warning or if everyone needs it yet, until i know more i will refrain from enabling this
+local specwarnGetBoned	= mod:NewSpecialWarning("specwarnGetBoned")
 local specwarnSoulFlame	= mod:NewSpecialWarningMove(114009)--Not really sure what the point of this is yet. It's stupid easy to avoid and seems to serve no fight purpose yet, besides maybe cover some of the bone's you need for buff.
+local specWarnRusting	= mod:NewSpecialWarningStack(113765, mod:IsTank(), 8)
 
 local timerBoneSpikeCD	= mod:NewNextTimer(7, 113999)
+local timerRusting		= mod:NewBuffActiveTimer(15, 113765, nil, mod:IsTank())
+
+mod:AddBoolOption("InfoFrame")
 
 function mod:OnCombatStart(delay)
 	timerBoneSpikeCD:Start(6.5-delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
+		DBM.InfoFrame:Show(5, "playergooddebuff", 113996)
+	end
 end
 
---[[
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(113765) then
+		if (args.amount or 0) >= 8 and args.amount % 4 == 0 then
+			specWarnRusting:Show(args.amount)
+			timerRusting:Start()
+		end
+	end
+end		
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(113996) and args:IsPlayer() then
 		specwarnGetBoned:Show()
+	elseif args:IsSpellID(113765) then
+		timerRusting:Cancel()
 	end
-end--]]
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(113999) then

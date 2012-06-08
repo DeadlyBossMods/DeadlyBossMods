@@ -51,12 +51,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerOozesActive	= "Mocos atacables"
+	timerOozesActive	= "Mocos atacables",
+	timerOozesReach		= "Mocos llegan al boss"
 })
 
 L:SetOptionLocalization({
 	warnOozesHit		= "Anunciar los mocos que absorbió el Boss",
 	timerOozesActive	= "Mostrar tiempo para que los mocos se pueden atacar",
+	timerOozesReach		= "Mostrar tiempo para que los mocos lleguen a Yor'sahj",
 	RangeFrame			= "Mostrar distancia (4) para $spell:104898\n(Dificultad normal o superior)"
 })
 

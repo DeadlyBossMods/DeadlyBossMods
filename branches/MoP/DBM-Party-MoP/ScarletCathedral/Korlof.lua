@@ -20,6 +20,7 @@ local yellFlyingKick		= mod:NewYell(114487)
 local specWarnFlyingKick	= mod:NewSpecialWarningMove(114487)
 local specWarnFlyingKickNear= mod:NewSpecialWarningClose(114487)
 local specWarnScorchedEarth	= mod:NewSpecialWarningMove(114460)
+local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank())
 
 local timerFlyingKickCD		= mod:NewNextTimer(25, 114021)
 local timerFirestormKick	= mod:NewBuffActiveTimer(6, 113764)
@@ -63,6 +64,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFlyingKickCD:Start()
 	elseif args:IsSpellID(114025) then
 		warnBlazingFists:Show()
+		specWarnBlazingFists:Show()
 		timerBlazingFistsCD:Start()
 	end
 end

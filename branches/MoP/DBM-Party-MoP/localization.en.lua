@@ -136,6 +136,19 @@ L= DBM:GetModLocalization(663)
 -----------------------
 L= DBM:GetModLocalization(665)
 
+L:SetWarningLocalization{
+	specwarnGetBoned	= "Get Bone Armor"
+}
+
+L:SetOptionLocalization{
+	specwarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
+	InfoFrame			= "Show info frame for players not affected by $spell:113996"
+}
+
+L:SetMiscLocalization{
+	PlayerDebuffs	= "No Bone Armor"
+}
+
 -----------------------
 -- Lillian Voss --
 -----------------------
@@ -145,6 +158,11 @@ L= DBM:GetModLocalization(666)
 -- Darkmaster Gandling --
 -----------------------
 L= DBM:GetModLocalization(684)
+
+L:SetMiscLocalization{
+	HarshLesson		= "spell:113395"--This is in the emote, shouldn't need localizing, just msg:find
+}
+
 
 -----------------------
 -- Gu Cloudstrike --

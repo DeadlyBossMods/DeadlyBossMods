@@ -10,41 +10,30 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"RAID_BOSS_EMOTE"
 )
 
---His encounter doesn't seem implimented yet, he currently has no EJ entry and he doesn't do anything really, just stands there spamming a fireball til he dies.
---4/3 16:26:36.671  Darkmaster Gandling yells: AGGRO [PH]
---4/3 16:27:06.988  Darkmaster Gandling yells: DEATH [PH]
---[[
-local warnBlast			= mod:NewSpellAnnounce(102381, 3)
-local warnBreath		= mod:NewSpellAnnounce(102569, 4)
-local warnRewind		= mod:NewSpellAnnounce(101591, 3)
+local warnLesson		= mod:NewSpellAnnounce(113395, 4)--Needs to be changed to target when transcriptor works, at present CLEU doesn't show anything.
+local warnRise			= mod:NewSpellAnnounce(113143, 3)
 
-local timerBlastCD		= mod:NewNextTimer(12, 102381)
-local timerBreathCD		= mod:NewNextTimer(22, 102569)
+local timerLessonCD		= mod:NewNextTimer(31.25, 113395)
+local timerRiseCD		= mod:NewNextTimer(62.5, 113143)--Assuming this is even CD based, it could be boss health based, in which case timer is worthless
 
 function mod:OnCombatStart(delay)
-	timerBlastCD:Start(-delay)
-	timerBreathCD:Start(-delay)
+	timerLessonCD:Start(17-delay)
+	timerRiseCD:Start(48-delay)--Assumed based off a single log. This may be health based.
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and self:AntiSpam() then
-		warnRewind:Show()
-		timerBlastCD:Cancel()
-		timerBreathCD:Cancel()
-		timerBlastCD:Start()
-		timerBreathCD:Start()
+	if args:IsSpellID(113143) then
+		warnRise:Show()
+		timerRiseCD:Start()
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(102381) then
-		warnBlast:Show()
-		timerBlastCD:Start()
-	elseif args:IsSpellID(102569) then
-		warnBreath:Show()
-		timerBreathCD:Start()
+function mod:RAID_BOSS_EMOTE(msg)--Just until there is a better way
+	if msg == L.HarshLesson or msg:find(L.HarshLesson) then
+		warnLesson:Show()
+		timerLessonCD:Start()
 	end
-end--]]
+end
