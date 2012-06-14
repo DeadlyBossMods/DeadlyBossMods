@@ -91,9 +91,23 @@ L= DBM:GetModLocalization(727)
 L= DBM:GetModLocalization(692)
 
 -----------------------
--- Vojak --
+-- Vo'jak --
 -----------------------
 L= DBM:GetModLocalization(738)
+
+L:SetTimerLocalization({
+	timerWave	= "Starts Sending: %s"
+})
+
+L:SetOptionLocalization({
+	timerWave	= "Show timer for next mob wave"
+})
+
+L:SetMiscLocalization({
+	Pull		= "Fools! Attacking the might of the mantid head on?  Your deaths will be swift.",
+	Wave		= "A wave of",--msg find, not full trigger, full trigger includes group type name.
+	Bombard		= "Bombard the platform!"--Don't you just love spells that don't show in combat log and need to be localized triggers?
+})
 
 -----------------------
 -- Durand/High Inquisitor Whitemane --
