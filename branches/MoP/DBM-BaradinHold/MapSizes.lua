@@ -1,1 +1,0 @@
-DBM:RegisterMapSize("BaradinHold", 1, 585.0, 390.0) -- Baradin Hold
