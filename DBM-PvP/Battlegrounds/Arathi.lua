@@ -15,6 +15,7 @@ Arathi:RegisterEvents(
 local winTimer 		= Arathi:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 local capTimer 		= Arathi:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
+local bgzone = false
 Arathi:AddBoolOption("ShowAbEstimatedPoints", true, nil, function()
 	if Arathi.Options.ShowAbEstimatedPoints and bgzone then
 		Arathi:ShowEstimatedPoints()
@@ -33,7 +34,6 @@ end)
 Arathi:RemoveOption("HealthFrame")
 Arathi:RemoveOption("SpeedKillTimer")
 
-local bgzone = false
 local ResPerSec = {
 	[0] = 1e-300, -- work-around for the divions by zero foo (no, using DOUBLE_MIN is not possible here as it would overflow to infinity which is also an exception)
 	[1] = 10/12,
