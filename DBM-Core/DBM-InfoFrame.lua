@@ -362,7 +362,7 @@ local function updatePlayerBuffStacks()
 		elseif UnitBuff("player", GetSpellInfo(pIndex)) then
 			lines[UnitName("player")] = lastStacks[UnitName("player")]
 			if iconModifier then
-				icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
+				icons[UnitName("player")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
 			end
 		end
 	end
