@@ -22,8 +22,6 @@ local warnSabotage				= mod:NewTargetAnnounce(107268, 4)
 local specWarnSabotage			= mod:NewSpecialWarningYou(107268)
 local specWarnSabotageNear		= mod:NewSpecialWarningClose(107268)
 
-local specWarnGushingWoundSelf	= mod:NewSpecialWarningYou(107268)
-
 local timerSabotage				= mod:NewTargetTimer(4, 107268)
 local timerSabotageCD			= mod:NewNextTimer(12, 107268)
 --local timerThrowExplosiveCD	= mod:NewNextTimer(22, 102569)
@@ -43,7 +41,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8)
 		end
 		if args:IsPlayer() then
-			specWarnGushingWoundSelf:Show()
+			specWarnSabotage:Show()
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then

@@ -21,17 +21,16 @@ mod:RegisterEventsInCombat(
 --Will likely need to transcribe this fight with transcriptor to complete this mod
 --Probably only things worth adding would be Serpant wave and Jade Serpant wave
 local warnDragonStrike			= mod:NewSpellAnnounce(120870, 2)
+local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnJadeDragonStrike		= mod:NewSpellAnnounce(120873, 3)
 local warnJadeFire				= mod:NewTargetAnnounce(107045, 4)
+local warnPhase3				= mod:NewPhaseAnnounce(3)
 
 local specWarnJadeFire			= mod:NewSpecialWarningMove(107045)
 
 local timerDragonStrikeCD		= mod:NewNextTimer(10.5, 120870)
 local timerJadeDragonStrikeCD	= mod:NewNextTimer(10.5, 120873)
 local timerJadeFireCD			= mod:NewNextTimer(3.5, 107045)
-
-local warnPhase2				= mod:NewPhaseAnnounce(2)
-local warnPhase3				= mod:NewPhaseAnnounce(3)
 
 function mod:OnCombatStart(delay)
 --	timerDragonStrikeCD:Start(-delay)--Unknown, tank pulled before i could start a log to get an accurate first timer.
