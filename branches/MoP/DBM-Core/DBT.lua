@@ -650,9 +650,10 @@ function barPrototype:Update(elapsed)
 	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" and self.owner:GetOption("HugeBarsEnabled") then
 		local next = self.next
 		self:RemoveFromList()
+		local oldX, oldY
 		if next then
-			local oldX = next.frame:GetRight() - next.frame:GetWidth()/2 -- the next frame's point needs to be cleared before we enlarge the bar to prevent the frame from "jumping around"
-			local oldY = next.frame:GetTop() -- so we need to save the old point for :MoveToNextPosition() as :GetTop() and :GetRight() might return nil (sometimes? happened only once in 2 weeks of raiding...but it crashed DBT...) after :ClearAllPoints()
+			oldX = next.frame:GetRight() - next.frame:GetWidth()/2 -- the next frame's point needs to be cleared before we enlarge the bar to prevent the frame from "jumping around"
+			oldY = next.frame:GetTop() -- so we need to save the old point for :MoveToNextPosition() as :GetTop() and :GetRight() might return nil (sometimes? happened only once in 2 weeks of raiding...but it crashed DBT...) after :ClearAllPoints()
 			next.frame:ClearAllPoints()
 		end
 		self:Enlarge()

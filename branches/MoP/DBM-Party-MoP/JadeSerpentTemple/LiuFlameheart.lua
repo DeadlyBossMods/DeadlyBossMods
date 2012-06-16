@@ -30,6 +30,9 @@ local timerDragonStrikeCD		= mod:NewNextTimer(10.5, 120870)
 local timerJadeDragonStrikeCD	= mod:NewNextTimer(10.5, 120873)
 local timerJadeFireCD			= mod:NewNextTimer(3.5, 107045)
 
+local warnPhase2				= mod:NewPhaseAnnounce(2)
+local warnPhase3				= mod:NewPhaseAnnounce(3)
+
 function mod:OnCombatStart(delay)
 --	timerDragonStrikeCD:Start(-delay)--Unknown, tank pulled before i could start a log to get an accurate first timer.
 end
@@ -62,7 +65,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(106797) then--Jade Essence (Phase 2 trigger)
-		warnJadeEssence:Show()
+		warnPhase2:Show()
 		timerDragonStrikeCD:Cancel()
 	elseif args:IsSpellID(107045) then
 		self:ScheduleMethod(0.1, "JadeFireTarget")--Assumed. Not entirely sure target scanning works with this. Hate default UI. WTB mods in beta.

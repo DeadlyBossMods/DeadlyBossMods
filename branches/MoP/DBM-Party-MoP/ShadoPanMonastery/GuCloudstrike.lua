@@ -32,9 +32,9 @@ local timerMagneticShroudCD	= mod:NewCDTimer(12.5, 107140)--^^
 function mod:StaticFieldTarget()
 	local targetname = self:GetBossTarget(56754)
 	if not targetname then return end
-	warnStaticField:Show(targetname)
+--	warnStaticField:Show(targetname)
 	if targetname == UnitName("player") then
-		specWarnStaticField:Show()
+--		specWarnStaticField:Show()
 	end
 end
 

@@ -50,7 +50,7 @@ local function isPoi(id)
 		or (id >= 150 and id <= 154)	-- Refinerie
 		or (id >= 9 and id <= 12)		-- Keep
 end
-function getPoiState(id)
+local function getPoiState(id)
 	if isInArgs(id, 16, 135, 140, 145, 150) then			return -1 -- Neutral
 	elseif isInArgs(id, 11, 18, 136, 141, 146, 151) then	return 1 -- Alliance controlled
 	elseif isInArgs(id, 10, 20, 138, 143, 148, 153) then	return 2 -- Horde controlled
@@ -116,7 +116,7 @@ do
 		end
 	end
 
-	function scheduleCheck(self)
+	local function scheduleCheck(self)
 		self:Schedule(1, checkForUpdates)
 	end
 	

@@ -26,6 +26,7 @@ local specwarnCorruptingWaters	= mod:NewSpecialWarningMove(120907)
 
 --local timerHydroLanceCD		= mod:NewCDTimer(6, 106055)
 local timerLivingWater			= mod:NewCastTimer(5.5, 106526)
+local timerLivingWaterCD		= mod:NewCDTimer(13, 106526)
 local timerWashAway				= mod:NewNextTimer(8, 106331)
 
 local addsRemaining = 4--Also 4 on heroic?

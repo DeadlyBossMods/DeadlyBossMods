@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 
 local specwarnIceWave	= mod:NewSpecialWarningMove(115219)--The wave slowly approaches group from back wall, if you choose a bad place to stand, this will tell you to move your ass to a better spot before you die
 
-local berserkTimer		= mod:NewBerserkTimer(134)--not a physical berserk but rathor how long until icewall consumes entire room.
+local timerBerserk		= mod:NewBerserkTimer(134)--not a physical berserk but rathor how long until icewall consumes entire room.
 
 local bossDiedOnce = false
 
