@@ -68,9 +68,9 @@ do
 			return
 		end
 		local dims = floors[GetCurrentMapDungeonLevel()]
-		if not dims and levels and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
+		if not dims and floors and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
 			SetMapToCurrentZone() -- fixes the dungeon level (if it was wrong for some reason)
-			dims = levels[GetCurrentMapDungeonLevel()] -- try again
+			dims = floors[GetCurrentMapDungeonLevel()] -- try again
 		end
 		if not dims then -- we are in an unknown dungeon :(
 			return

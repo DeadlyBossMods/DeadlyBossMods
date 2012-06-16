@@ -231,7 +231,6 @@ function EyeOfTheStorm:UPDATE_WORLD_STATES()
 	if HordeTime > 5000 then	HordeTime = 5000 end
 
 	if AllyTime == HordeTime then
-		winner_is = 0 
 		winTimer:Stop()
 		if self.ScoreFrame1Text then
 			self.ScoreFrame1Text:SetText("")
@@ -239,7 +238,6 @@ function EyeOfTheStorm:UPDATE_WORLD_STATES()
 		end
 		
 	elseif AllyTime > HordeTime then -- Horde wins
-		winner_is = 2
 		winTimer:Update(getGametime(), getGametime()+HordeTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(L.Horde))
@@ -253,7 +251,6 @@ function EyeOfTheStorm:UPDATE_WORLD_STATES()
 		end
 
 	elseif HordeTime > AllyTime then -- Alliance wins
-		winner_is = 1
 		winTimer:Update(getGametime(), getGametime()+AllyTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(L.Alliance))

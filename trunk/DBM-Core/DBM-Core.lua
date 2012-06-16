@@ -812,7 +812,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return false
 		end
 		local x, y = string.split(" ", cmd:sub(6):trim())
-		xNum, yNum = tonumber(x or ""), tonumber(y or "")
+		local xNum, yNum = tonumber(x or ""), tonumber(y or "")
 		local success
 		if xNum and yNum then
 			DBM.Arrow:ShowRunTo(xNum / 100, yNum / 100, 0)
@@ -1275,7 +1275,7 @@ end
 --  Options  --
 ---------------
 do
-	function addDefaultOptions(t1, t2)
+	local function addDefaultOptions(t1, t2)
 		for i, v in pairs(t2) do
 			if t1[i] == nil then
 				t1[i] = v
@@ -3656,8 +3656,9 @@ do
 	end
 	
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
+	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound)
 		local unparsedId = spellId
+		local spellName
 		if type(spellId) == "string" and spellId:match("ej%d+") then
 			spellId = string.sub(spellId, 3)
 			spellName = EJ_GetSectionInfo(spellId) or DBM_CORE_UNKNOWN
@@ -4020,7 +4021,7 @@ do
 
 	function yellPrototype:Yell(...)
 		if not self.option or self.mod.Options[self.option] then
-			SendChatMessage((yellText or self.text):format(...), self.chatType or "SAY")
+			SendChatMessage(self.text:format(...), self.chatType or "SAY")
 		end
 	end
 
@@ -4136,6 +4137,7 @@ do
 	end
 
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
+		local spellName
 		if type(spellId) == "string" and spellId:match("ej%d+") then
 			spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or DBM_CORE_UNKNOWN
 		else
@@ -4647,7 +4649,7 @@ function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, d
 end
 
 function bossModPrototype:AddButton(name, onClick, cat, func)
-	cat = cat or misc
+	cat = cat or "misc"
 	self:SetOptionCategory(name, cat)
 	self.buttons = self.buttons or {}
 	self.buttons[name] = onClick
@@ -4733,9 +4735,6 @@ end
 
 -- needs to be called _AFTER_ RegisterCombat
 function bossModPrototype:RegisterKill(msgType, ...)
-	if cType then
-		cType = cType:lower()
-	end
 	if not self.combatInfo then
 		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end

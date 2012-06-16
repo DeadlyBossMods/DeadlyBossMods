@@ -360,7 +360,7 @@ end
 -- for now: using this ugly code here instead of ugly code in all boss mods that make use of multi-cId health bars
 
 -- hack to support shared health bosses
-local function addBoss(name, ...) -- name, cId1, cId2, ..., cIdN, name
+local function addBoss(self, name, ...) -- name, cId1, cId2, ..., cIdN, name
 	if not anchor or not anchor:IsShown() then
 		return
 	end
@@ -372,7 +372,7 @@ end
 function bossHealth:AddBoss(...)
 	-- copy the name to the front of the arg list
 	-- note: name is now twice in the arg list but we can't really fix that in an efficient way (this is handled in createBar()
-	return addBoss(select(select("#", ...), ...), ...)
+	return addBoss(self, select(select("#", ...), ...), ...)
 end
 
 -- just pass any of the creature IDs for shared health bosses
