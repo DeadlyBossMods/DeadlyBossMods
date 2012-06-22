@@ -677,44 +677,13 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<60.5> Feludius:Possible Target<nil>:boss1:Frost Xplosion (DND)::0:94739"
 	if spellId == 94739 and self:AntiSpam(2, 2) then -- Frost Xplosion (Phase 2 starts)
-		updateBossFrame(2)
-		timerWaterBomb:Cancel()
-		timerGlaciate:Cancel()
-		timerAegisFlame:Cancel()
-		timerBurningBloodCD:Cancel()
-		timerHeartIceCD:Cancel()
-		timerGravityCoreCD:Cancel()
-		timerStaticOverloadCD:Cancel()
-		timerHydroLanceCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") then
-			timerFrostBeaconCD:Start(25)--I need to do heroic hopefully next week after heroic rag to get exact times off new event. We did normal mode this week
-			timerFlameStrikeCD:Start(28)
-		end
-		timerQuakeCD:Start()
-		self:Schedule(3, checkSearingWinds)
+		self:SendSync("Phase2")
 --	"<105.3> Terrastra:Possible Target<Omegal>:boss3:Elemental Stasis::0:82285"
 	elseif spellId == 82285 and self:AntiSpam(2, 2)  then -- Elemental Stasis (Phase 3 Transition)
-		self:Unschedule(checkSearingWinds)
-		self:Unschedule(checkGrounded)
-		timerQuakeCD:Cancel()
-		timerThundershockCD:Cancel()
-		timerHardenSkinCD:Cancel()
-		timerEruptionCD:Cancel()
-		timerDisperse:Cancel()
-		timerFlameStrikeCD:Cancel()
-		timerTransition:Start()
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Hide()
-		end
+		self:SendSync("PhaseTransition")
 --	"<122.0> Elementium Monstrosity:Possible Target<nil>:boss1:Electric Instability::0:84526"
 	elseif spellId == 84526 and self:AntiSpam(2, 2) then -- Electric Instability (Phase 3 Actually started)
-		updateBossFrame(3)
-		timerFrostBeaconCD:Cancel()--Cancel here to avoid problems with orbs that spawn during the transition.
-		timerLavaSeedCD:Start(18)
-		timerGravityCrushCD:Start(28)
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(10)
-		end
+		self:SendSync("Phase3")
 	end
 end
 
@@ -734,5 +703,42 @@ function mod:OnSync(msg, boss)
 	if msg == "lowhealth" and boss and not warnedLowHP[boss] then
 		warnedLowHP[boss] = true
 		specWarnBossLow:Show(boss)
+	elseif msg == "Phase2" and self:IsInCombat() then
+		updateBossFrame(2)
+		timerWaterBomb:Cancel()
+		timerGlaciate:Cancel()
+		timerAegisFlame:Cancel()
+		timerBurningBloodCD:Cancel()
+		timerHeartIceCD:Cancel()
+		timerGravityCoreCD:Cancel()
+		timerStaticOverloadCD:Cancel()
+		timerHydroLanceCD:Cancel()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerFrostBeaconCD:Start(25)
+			timerFlameStrikeCD:Start(28)
+		end
+		timerQuakeCD:Start()
+		self:Schedule(3, checkSearingWinds)
+	elseif msg == "PhaseTransition" and self:IsInCombat() then
+		self:Unschedule(checkSearingWinds)
+		self:Unschedule(checkGrounded)
+		timerQuakeCD:Cancel()
+		timerThundershockCD:Cancel()
+		timerHardenSkinCD:Cancel()
+		timerEruptionCD:Cancel()
+		timerDisperse:Cancel()
+		timerFlameStrikeCD:Cancel()
+		timerTransition:Start()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
+	elseif msg == "Phase3" and self:IsInCombat() then
+		updateBossFrame(3)
+		timerFrostBeaconCD:Cancel()--Cancel here to avoid problems with orbs that spawn during the transition.
+		timerLavaSeedCD:Start(18)
+		timerGravityCrushCD:Start(28)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)
+		end
 	end
 end
