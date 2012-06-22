@@ -88,15 +88,14 @@ end
 --"<36.5> [UNIT_SPELLCAST_SUCCEEDED] Corborus:Possible Target<Omegal>:boss1:ClearAllDebuffs::0:34098", -- [1228]
 --"<65.6> [UNIT_SPELLCAST_SUCCEEDED] Corborus:Possible Target<nil>:boss1:Emerge::0:81948", -- [1830]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if uId ~= "boss1" then return end--Anti spam to ignore all other args (like target/focus/mouseover)
-	if spellName == GetSpellInfo(34098) then--ClearAllDebuffs, He casts this before borrowing.
+	if spellName == GetSpellInfo(34098) and self:AntiSpam() then--ClearAllDebuffs, He casts this before borrowing.
 		warnSubmerge:Show()
 		timerEmerge:Start()
 		timerDampening:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-	elseif spellName == GetSpellInfo(81948) then--Emerge, He casts this before borrowing.
+	elseif spellName == GetSpellInfo(81948) and self:AntiSpam() then--Emerge, He casts this before borrowing.
 		warnEmerge:Show()
 		timerSubmerge:Start()
 		if self.Options.RangeFrame then

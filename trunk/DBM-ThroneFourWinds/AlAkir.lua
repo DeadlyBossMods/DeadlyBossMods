@@ -193,9 +193,8 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-	if uId ~= "boss1" then return end--Anti spam to ignore all other args
 --	"<42.5> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Squall Line::0:91129", -- [870]
-	if spellName == squallName then -- Squall Line (Tornados)
+	if spellName == squallName and self:AntiSpam(2, 3) then -- Squall Line (Tornados)
 		warnSquallLine:Show()
 		if not phase2Started then
 			timerSquallLineCD:Start(30)--Seems like a longer CD in phase 1? That or had some electrocute and windburst delays, need more data.
@@ -203,15 +202,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 			timerSquallLineCD:Start()
 		end
 --	"<37.6> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Ice Storm::0:88239", -- [462]
-	elseif spellName == iceName then -- Ice Storm (Phase 1)
+	elseif spellName == iceName and self:AntiSpam(2, 4) then -- Ice Storm (Phase 1)
 		warnIceStorm:Show()
 		timerIceStormCD:Start()
 --	"<94.2> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Stormling::0:88272", -- [5155]
-	elseif spellName == stormlingName then -- Summon Stormling (Phase 2 add)
+	elseif spellName == stormlingName and self:AntiSpam(2, 4) then -- Summon Stormling (Phase 2 add)
 		warnAdd:Show()
 		timerAddCD:Start()
 --	"<83.2> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Acid Rain::0:101452", -- [4307]
-	elseif spellName == acidName then -- Acid Rain
+	elseif spellName == acidName and self:AntiSpam(2, 5) then -- Acid Rain
 		if self:IsDifficulty("normal10", "normal25") then
 			timerAcidRainStack:Start(20)
 		else
@@ -224,7 +223,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 			timerIceStormCD:Cancel()
 		end
 --	"<229.0> [CAST_SUCCEEDED] Al'Akir:Possible Target<Erej>:boss1:Relentless Storm Initial Vehicle Ride Trigger::0:89528", -- [18459]
-	elseif spellId == 89528 then -- Relentless Storm Initial Vehicle Ride Trigger (phase 3 start trigger)
+	elseif spellId == 89528 and self:AntiSpam(2, 6) then -- Relentless Storm Initial Vehicle Ride Trigger (phase 3 start trigger)
 		warnPhase3:Show()
 		timerLightningCloudCD:Start(15.5)
 		timerWindBurstCD:Start(25)
@@ -233,7 +232,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		timerAcidRainStack:Cancel()
 		self:UnregisterShortTermEvents()
 --	"<244.5> [CAST_SUCCEEDED] Al'Akir:Possible Target<nil>:boss1:Lightning Clouds::0:93304", -- [19368]
-	elseif spellName == cloudsName then -- Phase 3 Lightning cloud trigger (only cast once)
+	elseif spellName == cloudsName and self:AntiSpam(2, 3) then -- Phase 3 Lightning cloud trigger (only cast once)
 		self:CloudRepeat()
 		--Only needed in phase 2
 		self:RegisterShortTermEvents(

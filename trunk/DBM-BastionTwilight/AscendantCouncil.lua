@@ -378,7 +378,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
 		end
-		if self:AntiSpam(18) then -- sometimes Frost Beacon change targets, show only new Frost orbs.
+		if self:AntiSpam(18, 1) then -- sometimes Frost Beacon change targets, show only new Frost orbs.
 			timerFrostBeaconCD:Start()
 		end
 	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them.
@@ -675,9 +675,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if not (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4") then return end--Anti spam to ignore all other args
 --	"<60.5> Feludius:Possible Target<nil>:boss1:Frost Xplosion (DND)::0:94739"
-	if spellId == 94739 then -- Frost Xplosion (Phase 2 starts)
+	if spellId == 94739 and self:AntiSpam(2, 2) then -- Frost Xplosion (Phase 2 starts)
 		updateBossFrame(2)
 		timerWaterBomb:Cancel()
 		timerGlaciate:Cancel()
@@ -694,7 +693,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerQuakeCD:Start()
 		self:Schedule(3, checkSearingWinds)
 --	"<105.3> Terrastra:Possible Target<Omegal>:boss3:Elemental Stasis::0:82285"
-	elseif spellId == 82285 then -- Elemental Stasis (Phase 3 Transition)
+	elseif spellId == 82285 and self:AntiSpam(2, 2)  then -- Elemental Stasis (Phase 3 Transition)
 		self:Unschedule(checkSearingWinds)
 		self:Unschedule(checkGrounded)
 		timerQuakeCD:Cancel()
@@ -708,9 +707,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.InfoFrame:Hide()
 		end
 --	"<122.0> Elementium Monstrosity:Possible Target<nil>:boss1:Electric Instability::0:84526"
-	elseif spellId == 84526 then -- Electric Instability (Phase 3 Actually started)
+	elseif spellId == 84526 and self:AntiSpam(2, 2) then -- Electric Instability (Phase 3 Actually started)
 		updateBossFrame(3)
-		timerFrostBeaconCD:Cancel()--Cancel here to avoid probelms with orbs that spawn during the transition.
+		timerFrostBeaconCD:Cancel()--Cancel here to avoid problems with orbs that spawn during the transition.
 		timerLavaSeedCD:Start(18)
 		timerGravityCrushCD:Start(28)
 		if self.Options.RangeFrame then
