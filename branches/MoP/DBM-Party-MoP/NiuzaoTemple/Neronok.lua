@@ -2,46 +2,54 @@ local mod	= DBM:NewMod(727, "DBM-Party-MoP", 6, 324)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 7464 $"):sub(12, -3))
---mod:SetCreatureID(54432)
+mod:SetCreatureID(62205)
 mod:SetModelID(43151)
 mod:SetZone()
 
---mod:RegisterCombat("combat")
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_INTERRUPT"
 )
 
---[[
-local warnBlast			= mod:NewSpellAnnounce(102381, 3)
-local warnBreath		= mod:NewSpellAnnounce(102569, 4)
-local warnRewind		= mod:NewSpellAnnounce(101591, 3)
+local warnGustingWinds		= mod:NewSpellAnnounce(121282, 4)
+local warnResin				= mod:NewTargetAnnounce(121447, 4)
 
-local timerBlastCD		= mod:NewNextTimer(12, 102381)
-local timerBreathCD		= mod:NewNextTimer(22, 102569)
+local specWarnGustingWinds	= mod:NewSpecialWarningSpell(121282, nil, nil, nil, true)
+local specWarnResin			= mod:NewSpecialWarningYou(121447)
+local specWarnCausticPitch	= mod:NewSpecialWarningMove(121443)
+
+local timerResinCD			= mod:NewCDTimer(14, 121447)
+
+local windsActive = false
 
 function mod:OnCombatStart(delay)
-	timerBlastCD:Start(-delay)
-	timerBreathCD:Start(-delay)
+	windsActive = false
+	timerResinCD:Start(7-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and self:AntiSpam() then
-		warnRewind:Show()
-		timerBlastCD:Cancel()
-		timerBreathCD:Cancel()
-		timerBlastCD:Start()
-		timerBreathCD:Start()
+	if args:IsSpellID(121447) then
+		warnResin:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnResin:Show()
+		end
+	elseif args:IsSpellID(121443) then
+		if args:IsPlayer() then
+			specWarnCausticPitch:Show()
+		end
+	elseif args:IsSpellID(121282) and not windsActive then
+		windsActive = true
+		timerResinCD:Cancel()
+		warnGustingWinds:Show()
+		specWarnGustingWinds:Show()
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(102381) then
-		warnBlast:Show()
-		timerBlastCD:Start()
-	elseif args:IsSpellID(102569) then
-		warnBreath:Show()
-		timerBreathCD:Start()
+function mod:SPELL_INTERRUPT(args)
+	if (type(args.extraSpellId) == "number" and args.extraSpellId == 121282) and self:AntiSpam() then
+		windsActive = false
+		timerResinCD:Start(10)--10-14sec after?
 	end
-end--]]
+end

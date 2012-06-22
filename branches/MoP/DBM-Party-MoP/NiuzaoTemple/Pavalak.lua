@@ -18,6 +18,10 @@ local warnBladeRush			= mod:NewSpellAnnounce(124283, 3)
 local warnTempest			= mod:NewSpellAnnounce(119875, 3)
 local warnBulwark			= mod:NewSpellAnnounce(119476, 3)
 
+--local specWarnBladeRush		= mod:NewSpecialWarningSpell(124283, false)--Probably change to a "You" warning and near warning if target scanning works for this.
+local specWarnTempest		= mod:NewSpecialWarningSpell(119875, mod:IsHealer())
+local specWarnBulwark		= mod:NewSpecialWarningSpell(119476, nil, nil, nil, true)
+
 local timerBladeRushCD		= mod:NewCDTimer(12, 124283)
 local timerTempestCD		= mod:NewCDTimer(43, 119875)--Tempest has a higher cast priority than blade rush, if it's do, it'll delay blade rush.
 
@@ -73,6 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		showShieldHealthBar(self, args.destGUID, shieldname, 1500000)
 		phase = phase + 1
 		warnBulwark:Show()
+		specWarnBulwark:Show()
 		timerBladeRushCD:Cancel()
 		timerTempestCD:Cancel()
 	end
@@ -90,6 +95,7 @@ function mod:SPELL_CAST_START(args)
 		timerBladeRushCD:Start()
 	elseif args:IsSpellID(119875) then
 		warnTempest:Show()
+		specWarnTempest:Show()
 		timerBladeRushCD:Start(7)--always 7-7.5 seconds after tempest.
 		if phase == 2 then
 			timerTempestCD:Start(33)--seems to be cast more often between 66-33% health. (might be 100-33 but didn't get 2 casts before first bulwark)
