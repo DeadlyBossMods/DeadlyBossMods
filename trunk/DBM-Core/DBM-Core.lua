@@ -3175,7 +3175,7 @@ do
 		if type(name) == "number" then
 			encounterId = name
 		end
-		name = tostring(name) -- the name should never be a string as it confuses sync handlers that just receive some string and try to get the mod from it
+		name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
@@ -4601,6 +4601,77 @@ do
 			mt
 		)
 		return obj
+	end
+end
+
+
+--------------------------
+--  Shield Health Bars  --
+--------------------------
+
+do
+	local frame = CreateFrame("Frame") -- frame for CLEU events, we don't want to run all *_MISSED events through the whole DBM event system...
+	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+
+	local activeShields = {}
+	local shieldsByGuid = {}
+
+	local function getShieldHPFunc(shieldInfo)
+		return function()
+			return math.max(1, math.floor(shieldInfo.absorbRemaining / shieldInfo.maxAbsorb * 100))
+		end
+	end
+	
+	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
+			local shieldInfo = destGUID and shieldsByGuid[destGUID]
+			if shieldInfo then
+				local absorbed
+				if subEvent == "SWING_MISSED" then
+					absorbed = select(2, ...)
+				elseif subEvent == "RANGE_MISSED" or subEvent == "SPELL_MISSED" or subEvent == "SPELL_PERIODIC_MISSED" then
+					absorbed = select(5, ...)
+				end
+				if absorbed then
+					shieldInfo.absorbRemaining = shieldInfo.absorbRemaining - absorbed
+				end
+			end
+	end)
+
+	function bossModPrototype:ShowShieldHealthBar(guid, spellId, absorb)
+		self:RemoveShieldHealthBar(guid, spellId)
+		local obj = {
+			mod = self.id,
+			spellId = spellId,
+			guid = guid,
+			absorbRemaining = absorb,
+			maxAbsorb = absorb,
+		}
+		obj.func = getShieldHPFunc(obj)
+		activeShields[#activeShields + 1] = obj
+		shieldsByGuid[guid] = obj
+		DBM.BossHealth:AddBoss(obj.func, GetSpellInfo(spellId) or spellId)
+	end
+	
+	-- removes shield health bars for a specific guid and spellId (optional)
+	function bossModPrototype:RemoveShieldHealthBar(guid, spellId)
+		shieldsByGuid[guid] = nil
+		for i = #activeShields, 1, -1 do
+			if activeShields[i].guid == guid and activeShields[i].mod == self.id and (not spellId or activeShields[i].spellId == spellId) then
+				DBM.BossHealth.RemoveBoss(activeShields[i].func)
+				table.remove(activeShields, i)
+			end
+		end
+	end
+	
+	-- removes all shield bars of a boss mod
+	function bossModPrototype:RemoveAllShieldHealthBars()
+		for i = #activeShields, 1, -1 do
+			if activeShields[i].mod == self.id then
+				DBM.BossHealth.RemoveBoss(activeShields[i].func)
+				shieldsByGuid[activeShields[i].guid] = nil
+				table.remove(activeShields, i)
+			end
+		end
 	end
 end
 
