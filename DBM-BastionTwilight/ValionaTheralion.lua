@@ -94,6 +94,7 @@ local markWarned = false
 local blackoutActive = false
 local ValionaLanded = false
 local meteorTarget = GetSpellInfo(88518)
+local fabFlames = GetSpellInfo(86497)
 
 local setBlackoutTarget, clearBlackoutTarget
 do
@@ -284,7 +285,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(AMSTimerDelay)
 		self:Schedule(20, AMSTimerDelay)--Cause when a DK AMSes it we don't get another timer.
 	elseif args:IsSpellID(92887) and args:IsPlayer() then
-		if (args.amount or 1) >= 20 and self:AntiSpam(5) then
+		if (args.amount or 1) >= 20 and self:AntiSpam(5, 1) then
 			specWarnTwilightZone:Show(args.amount)
 		end
 	end
@@ -373,8 +374,8 @@ function mod:UNIT_AURA(uId)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 86497 and not ValionaLanded and self:AntiSpam() then
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == fabFlames and not ValionaLanded and self:AntiSpam(2, 2) then
 		self:ScheduleMethod(0.1, "FabFlamesTarget")
 		timerNextFabFlames:Start()
 		lastFab = GetTime()
