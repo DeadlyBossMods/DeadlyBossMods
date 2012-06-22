@@ -99,25 +99,25 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg, boss)
 	if msg == L.Overload or msg:find(L.Overload) then--Cast trigger is an emote 5 seconds before, CLEU only shows explosion. Just like nefs electrocute
-		self:SendSync("Overload", boss)
+		self:SendSync("Overload", boss == Cobalt and "Cobalt" or boss == Jade and "Jade" or boss == Jasper and "Jasper" or boss == Amethyst and "Amethyst" or "Unknown")
 	end
 end
 
 function mod:OnSync(msg, boss)
 	if msg == "Overload" then
-		if boss == Cobalt then
+		if boss == "Cobalt" then
 			warnCobaltOverload:Show()
 			specWarnCobaltOverload:Show()
 			timerCobaltOverload:Start()
-		elseif boss == Jade then
+		elseif boss == "Jade" then
 			warnJadeOverload:Show()
 			specWarnJasperOverload:Show()
 			timerJadeOverload:Start()
-		elseif boss == Jasper then
+		elseif boss == "Jasper" then
 			warnJasperOverload:Show()
 			specWarnJasperOverload:Show()
 			timerJasperOverload:Start()
-		elseif boss == Amethyst then
+		elseif boss == "Amethyst" then
 			warnAmethystOverload:Show()
 			specWarnAmethystOverload:Show()
 			timerAmethystOverload:Start()
@@ -134,3 +134,4 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
+
