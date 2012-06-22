@@ -5,6 +5,10 @@ local L
 ------------
 L= DBM:GetModLocalization(679)
 
+L:SetMiscLocalization({
+	Overload	= "%s is about to Overload!"
+})
+
 
 ------------
 -- Feng the Accursed --
