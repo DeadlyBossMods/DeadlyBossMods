@@ -5,6 +5,15 @@ local L
 ------------
 L= DBM:GetModLocalization(745)
 
+L:SetOptionLocalization{
+	MindControlIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+}
+
+L:SetMiscLocalization({
+	Platform	= "%s flies to one of his platforms!",
+	Defeat		= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
+})
+
 
 ------------
 -- Blade Lord Ta'yak --
