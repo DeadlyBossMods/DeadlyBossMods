@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 (spellid = 123791 or spellid = 122713) and fulltype = SPELL_CAST_START or (spell = "Inhale" or spell = "Exhale") and (fulltype = SPELL_AURA_APPLIED or fulltype = SPELL_AURA_APPLIED_DOSE or fulltype = SPELL_AURA_REMOVED) or spellid = 127834 or spell = "Convert" or spellid = 124018
 --]]
 --Notes: Currently, his phase 2 chi blast abiliteis are not detectable via traditional combat log. maybe with transcriptor.
-local warnInhale			= mod:NewCountAnnounce(122852, 2)
+local warnInhale			= mod:NewStackAnnounce(122852, 2)
 local warnExhale			= mod:NewTargetAnnounce(122761, 3)
 local warnForceandVerve		= mod:NewSpellAnnounce(122713, 4)
 local warnAttenuation		= mod:NewSpellAnnounce(127834, 4)
