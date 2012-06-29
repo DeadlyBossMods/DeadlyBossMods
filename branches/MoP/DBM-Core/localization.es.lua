@@ -134,8 +134,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s se disipa",
 	cd 			= "%s CD",
 	cdcount		= "%s CD (%%d)",
+	cdsource	= "%s CD: %%s",
 	next		= "Siguiente %s",
 	nextcount	= "Siguiente %s (%%d)",
+	nextsource	= "Siguiente %s: %%s",
 	achievement = "%s"
 }
 
@@ -146,8 +148,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "Mostrar tiempo para cuando $spell:%s se disipa de los jugadores",
 	cd = "Mostrar cooldown de $spell:%s ",
 	cdcount = "Mostrar cooldown de $spell:%s ",
+	cdsource = "Mostrar cooldown de $spell:%s ",
 	next = "Mostrar tiempo para el siguiente $spell:%s ",
 	nextcount = "Mostrar tiempo para el siguiente $spell:%s ",
+	nextsource = "Mostrar tiempo para el siguiente $spell:%s ",
 	achievement = "Mostrar tiempo para %s"
 }
 
