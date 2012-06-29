@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnAbsorbedBlood		= mod:NewStackAnnounce(105248, 2)
-local warnResidue			= mod:NewCountAnnounce("ej4057", 3, nil, false) -- maybe info frame will be better. (temporarly added)
+local warnResidue			= mod:NewCountAnnounce("ej4057", 3, nil, false)
 local warnGrip				= mod:NewTargetAnnounce(109459, 4)
 local warnNuclearBlast		= mod:NewCastAnnounce(105845, 4)
 local warnSealArmor			= mod:NewCastAnnounce(105847, 4)
