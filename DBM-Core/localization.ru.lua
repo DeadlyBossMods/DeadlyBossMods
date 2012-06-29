@@ -129,8 +129,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s рассеивается",--Buff/Debuff on players
 	cd 			= "Восст. %s",
 	cdcount		= "Восст. %s (%%d)",
+	cdsource	= "Восст. %s: %%s",
 	next 		= "След. %s",
 	nextcount	= "След. %s (%%d)",
+	nextsource	= "След. %s: %%s",
 	achievement = "%s"
 }
 
@@ -141,8 +143,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "Отсчет времени действия $spell:%s на игроках",
 	cd 			= "Отсчет времени до восстановления $spell:%s",
 	cdcount 	= "Отсчет времени до восстановления $spell:%s",
+	cdsource	= "Отсчет времени до восстановления $spell:%s",
 	next 		= "Отсчет времени до следующего $spell:%s",
 	nextcount 	= "Отсчет времени до следующего $spell:%s",
+	nextsource	= "Отсчет времени до следующего $spell:%s",
 	achievement = "Отсчет времени для %s"
 }
 

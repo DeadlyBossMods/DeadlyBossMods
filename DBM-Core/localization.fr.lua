@@ -130,8 +130,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s se dissipe",--Buff/Debuff on players
 	cd			= "Rech. |2 %s",
 	cdcount		= "Rech. |2 %s (%%d)",
+	cdsource	= "Rech. |2 %s: %%s",
 	next		= "Proch. %s",
 	nextcount	= "Proch. %s (%%d)",
+	nextsource	= "Proch. %s: %%s",
 	achievement	= "%s"
 }
 
@@ -142,8 +144,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "Délai avant la dissipation de $spell:%s",
 	cd			= "Durée de recharge de $spell:%s",
 	cdcount		= "Durée de recharge de $spell:%s",
+	cdsource	= "Durée de recharge de $spell:%s",
 	next		= "Délai avant le prochain $spell:%s",
 	nextcount	= "Délai avant le prochain $spell:%s",
+	nextsource	= "Délai avant le prochain $spell:%s",
 	achievement	= "Délai pour réussir %s"
 }
 
