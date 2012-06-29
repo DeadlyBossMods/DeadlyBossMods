@@ -134,8 +134,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades					= "%s消散",
 	cd						= "%s冷卻",
 	cdcount					= "%s冷卻 (%%d)",
+	cdsource				= "%s冷卻: %%s",
 	next 					= "下一次%s",
 	nextcount 				= "下一次%s (%%d)",
+	nextsource				= "下一次%s: %%s",
 	achievement 			= "%s"
 }
 
@@ -146,8 +148,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades					= "為當$spell:%s將從玩家消散顯示計時器",
 	cd						= "為$spell:%s顯示冷卻計時器",
 	cdcount					= "為$spell:%s顯示冷卻計時器",
+	cdsource				= "為$spell:%s顯示冷卻計時器",
 	next					= "為下一次$spell:%s顯示計時器",
 	nextcount				= "為下一次$spell:%s顯示計時器",
+	nextsource				= "為下一次$spell:%s顯示計時器",
 	achievement				= "為成就:%s顯示計時器"
 }
 

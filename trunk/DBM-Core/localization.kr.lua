@@ -134,8 +134,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s 사라짐",--Buff/Debuff on players
 	cd 			= "%s 대기시간",
 	cdcount		= "%s 대기시간 (%%d)",
+	cdsource	= "%s 대기시간: %%s",
 	next 		= "다음 %s",
 	nextcount 	= "다음 %s (%%d)",
+	nextsource	= "다음 %s: %%s",
 	achievement	= "%s"
 }
 
@@ -146,8 +148,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "$spell:%s 효과가 사라지기 전까지 남은시간 바 표시",
 	cd 			= "$spell:%s 대기시간 바 표시",
 	cdcount		= "$spell:%s 대기시간 바 표시",
+	cdsource	= "$spell:%s 대기시간 바 표시",
 	next 		= "다음 $spell:%s 바 표시",
 	nextcount 	= "다음 $spell:%s 바 표시",
+	nextsource	= "다음 $spell:%s 바 표시",
 	achievement = "%s 업적을 위한 남은시간 바 표시"
 }
 
