@@ -133,8 +133,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s fades",--Buff/Debuff on players
 	cd			= "%s CD",
 	cdcount		= "%s CD (%%d)",
+	cdsource	= "%s CD: %%s",
 	next		= "Next %s",
 	nextcount	= "Next %s (%%d)",
+	nextsource	= "Next %s: %%s",
 	achievement	= "%s"
 }
 
@@ -145,8 +147,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "Show timer for when $spell:%s fades from players",
 	cd			= "Show timer for $spell:%s cooldown",
 	cdcount		= "Show timer for $spell:%s cooldown",
+	cdsource	= "Show timer (with source) for $spell:%s cooldown",--Maybe better wording?
 	next		= "Show timer for next $spell:%s",
 	nextcount	= "Show timer for next $spell:%s",
+	nextsource	= "Show timer (with source) for next $spell:%s",--Maybe better wording?
 	achievement	= "Show timer for %s"
 }
 
