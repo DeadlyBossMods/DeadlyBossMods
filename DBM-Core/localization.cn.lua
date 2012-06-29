@@ -138,8 +138,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s消失",--Buff/Debuff on players
 	cd			= "%s冷却",
 	cdcount		= "%s冷却（%%d）",
+	cdsource	= "%s冷却: %%s",
 	next 		= "下一次%s",
 	nextcount	= "下一次%s（%%d）",
+	nextsource	= "下一次%s: %%s",
 	achievement = "%s",
 }
 
@@ -150,8 +152,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "计时条：$spell:%s何时从玩家身上消失",
 	cd			= "计时条：$spell:%s冷却时间",
 	cdcount		= "计时条：$spell:%s冷却时间",
+	cdsource	= "计时条：$spell:%s冷却时间",
 	next		= "计时条：下一次$spell:%s",
 	nextcount	= "计时条：下一次$spell:%s",
+	nextsource	= "计时条：下一次$spell:%s",
 	achievement	= "计时条：成就%s"
 }
 

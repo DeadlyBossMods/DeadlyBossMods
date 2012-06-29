@@ -134,8 +134,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s schwindet",--Buff/Debuff on players
 	cd			= "%s CD",
 	cdcount		= "%s CD (%%d)",
+	cdsource	= "%s CD: %%s",
 	next		= "Nächster %s",
 	nextcount	= "Nächster %s (%%d)",
+	nextsource	= "Nächster %s: %%s",
 	achievement	= "%s"
 }
 
@@ -146,8 +148,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "Zeit bis $spell:%s von Spielern schwindet anzeigen",
 	cd			= "Abklingzeit von $spell:%s anzeigen",
 	cdcount		= "Abklingzeit von $spell:%s anzeigen",
+	cdsource	= "Abklingzeit von $spell:%s anzeigen",
 	next		= "Zeit bis nächstes $spell:%s anzeigen",
 	nextcount	= "Zeit bis nächstes $spell:%s anzeigen",
+	nextsource	= "Zeit bis nächstes $spell:%s anzeigen",
 	achievement	= "Zeit für %s anzeigen"
 }
 

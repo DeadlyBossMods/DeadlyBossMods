@@ -134,8 +134,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	fades		= "%s desvanece",--Buff/Debuff on players
 	cd			= "%s recarrega",
 	cdcount		= "%s recarrega (%%d)",
+	cdsource	= "%s recarrega: %%s",
 	next		= "Próx. %s",
 	nextcount	= "Próx. %s (%%d)",
+	nextsource	= "Próx %s: %%s",
 	achievement	= "%s"
 }
 
@@ -146,8 +148,10 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	fades		= "Exibir cronógrafo para quando $spell:%s desvanecerá dos jogadores",
 	cd			= "Exibir cronógrafo para recarga de $spell:%s",
 	cdcount		= "Exibir cronógrafo para recarga de $spell:%s",
+	cdsource	= "Exibir cronógrafo para recarga de $spell:%s",
 	next		= "Exibir cronógrafo para o próximo $spell:%s",
 	nextcount	= "Exibir cronógrafo para o próximo $spell:%s",
+	nextsource	= "Exibir cronógrafo para o próximo $spell:%s",
 	achievement	= "Exibir cronógrafo para %s"
 }
 
