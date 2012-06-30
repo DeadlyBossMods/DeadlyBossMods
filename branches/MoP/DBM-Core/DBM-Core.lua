@@ -3475,15 +3475,6 @@ end
 --Simple talent checker.
 --It checks for key skills in spellbook, without having to do in dept talent point checks.
 
-
---Unfortunately since feral dps also have vengeance we still have to go more in dept for them.
-local function IsDruidTank()
-	local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +		-- Natural Reaction
-						(getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
-						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
-	return tankTalents >= 3
-end
-
 function bossModPrototype:IsMelee()
 	return class == "ROGUE"
 	or class == "WARRIOR"
@@ -3516,7 +3507,7 @@ function bossModPrototype:IsDps()--For features that simply should only be on fo
 	return (class == "WARRIOR" and not IsSpellKnown(93098))--Veangeance Check (false)
 	or (class == "DEATHKNIGHT" and not IsSpellKnown(93099))--Veangeance Check (false)
 	or (class == "PALADIN" and IsSpellKnown(53503))--Sheath of Light (true)
-	or (class == "DRUID" and not (IsSpellKnown(85101) or IsDruidTank()))--Druids suck, have to check 3 tank talents on top of Meditation.
+	or (class == "DRUID" and not IsSpellKnown(85101))--Vengeance Check (False)
     or (class == "SHAMAN" and not IsSpellKnown(95862))--Meditation Check (False)
    	or (class == "PRIEST" and IsSpellKnown(95740))--Shadow Orbs Check (true)
 	or class == "WARLOCK"
@@ -3531,7 +3522,7 @@ function bossModPrototype:IsTank()
 	return (class == "WARRIOR" and IsSpellKnown(93098))
 	or (class == "DEATHKNIGHT" and IsSpellKnown(93099))
 	or (class == "PALADIN" and IsSpellKnown(84839))
-	or (class == "DRUID" and IsSpellKnown(84840) and IsDruidTank())
+	or (class == "DRUID" and IsSpellKnown(84840))
 end
 
 --A simple check to see if these classes know "Meditation".
