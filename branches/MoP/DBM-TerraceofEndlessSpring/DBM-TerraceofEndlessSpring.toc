@@ -6,13 +6,13 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMTerraceofEndlessSpring_SavedVars, DBMTerraceofEndlessSpring_SavedStats
-## X-DBM-Mod: 1
-## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 1
-## X-DBM-Mod-Name: Terrace of Endless Spring
-## X-DBM-Mod-Name-koKR: 영원한 봄의 정원
-## X-DBM-Mod-Sort: 3
-## X-DBM-Mod-LoadZoneID: 886
+## AuthorDBM: 1
+## AuthorDBMCategory: MOP
+## AuthorDBMHasHeroicMode: 1
+## AuthorDBMName: Terrace of Endless Spring
+## AuthorDBMName-koKR: 영원한 봄의 정원
+## AuthorDBMSort: 3
+## AuthorDBMLoadZoneID: 886
 localization.en.lua
 localization.kr.lua
 MapSizes.lua

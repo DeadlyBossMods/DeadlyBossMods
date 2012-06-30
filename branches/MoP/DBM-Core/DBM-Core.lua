@@ -1387,15 +1387,16 @@ do
 			if not DBM.Options.ShowMinimapButton then DBM:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
-				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
+				-- hack for mop beta. Since build 15640, GetAddOnMetadata don't return variables except for some keywords(i.e: Author, Name, Notes....)
+				if GetAddOnMetadata(i, "AuthorDBM") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
 					table.insert(self.AddOns, {
-						sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
-						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "BogusZone")},--workaround, so mods with zoneids and no zonetext don't get loaded by default before zoneids even checked
-						zoneId		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
-						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
+						sort		= tonumber(GetAddOnMetadata(i, "AuthorDBMSort") or math.huge) or math.huge,
+						category	= GetAddOnMetadata(i, "AuthorDBMCategory") or "Other",
+						name		= GetAddOnMetadata(i, "AuthorDBMName") or "",
+						zone		= {strsplit(",", GetAddOnMetadata(i, "AuthorDBMLoadZone") or "BogusZone")},--workaround, so mods with zoneids and no zonetext don't get loaded by default before zoneids even checked
+						zoneId		= {strsplit(",", GetAddOnMetadata(i, "AuthorDBMLoadZoneID") or "")},
+						subTabs		= GetAddOnMetadata(i, "AuthorDBMSubCategories") and {strsplit(",", GetAddOnMetadata(i, "AuthorDBMSubCategories"))},
+						hasHeroic	= tonumber(GetAddOnMetadata(i, "AuthorDBMHasHeroicMode") or 1) == 1,
 						modId		= GetAddOnInfo(i),
 					})
 					for k, v in ipairs(self.AddOns[#self.AddOns].zone) do

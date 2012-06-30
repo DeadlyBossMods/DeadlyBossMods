@@ -13,30 +13,30 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPvP_SavedVars
-## X-DBM-Mod: 1
-## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 0
-## X-DBM-Mod-SubCategories: Arena,Battlegrounds
-## X-DBM-Mod-SubCategories-deDE: Arena,Schlachtfelder
-## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя
-## X-DBM-Mod-SubCategories-koKR: 투기장,전장
-## X-DBM-Mod-SubCategories-zhTW: 競技場,戰場
-## X-DBM-Mod-SubCategories-zhCN: 竞技场　,战场
-## X-DBM-Mod-SubCategories-esES: Arena,Campos de Batallas
-## X-DBM-Mod-SubCategories-esMX: Arena,Campos de Batallas
-## X-DBM-Mod-SubCategories-ptBR: Arena,Campos de Batalha
-## X-DBM-Mod-Name: PvP
-## X-DBM-Mod-Name-deDE: PvP
-## X-DBM-Mod-Name-frFR: Champs de bataille
-## X-DBM-Mod-Name-ruRU: Игрок против игрока
-## X-DBM-Mod-Name-zhTW: PvP
-## X-DBM-Mod-Name-zhCN: PvP
-## X-DBM-Mod-Name-koKR: PvP
-## X-DBM-Mod-Name-esES: JcJ
-## X-DBM-Mod-Name-esMX: JcJ
-## X-DBM-Mod-Name-ptBR: JxJ
-## X-DBM-Mod-Sort: 75
-## X-DBM-Mod-LoadZoneID: 461,443,401,540,482
+## AuthorDBM: 1
+## AuthorDBMCategory: MOP
+## AuthorDBMHasHeroicMode: 0
+## AuthorDBMSubCategories: Arena,Battlegrounds
+## AuthorDBMSubCategories-deDE: Arena,Schlachtfelder
+## AuthorDBMSubCategories-ruRU: Арена,Поля боя
+## AuthorDBMSubCategories-koKR: 투기장,전장
+## AuthorDBMSubCategories-zhTW: 競技場,戰場
+## AuthorDBMSubCategories-zhCN: 竞技场　,战场
+## AuthorDBMSubCategories-esES: Arena,Campos de Batallas
+## AuthorDBMSubCategories-esMX: Arena,Campos de Batallas
+## AuthorDBMSubCategories-ptBR: Arena,Campos de Batalha
+## AuthorDBMName: PvP
+## AuthorDBMName-deDE: PvP
+## AuthorDBMName-frFR: Champs de bataille
+## AuthorDBMName-ruRU: Игрок против игрока
+## AuthorDBMName-zhTW: PvP
+## AuthorDBMName-zhCN: PvP
+## AuthorDBMName-koKR: PvP
+## AuthorDBMName-esES: JcJ
+## AuthorDBMName-esMX: JcJ
+## AuthorDBMName-ptBR: JxJ
+## AuthorDBMSort: 75
+## AuthorDBMLoadZoneID: 461,443,401,540,482
 localization.en.lua
 localization.de.lua
 localization.tw.lua

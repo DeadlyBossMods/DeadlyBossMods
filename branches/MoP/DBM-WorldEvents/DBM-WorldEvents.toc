@@ -10,28 +10,28 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedVars, DBMWorldEvents_SavedStats
-## X-DBM-Mod: 1
-## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 0
-## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt
-## X-DBM-Mod-SubCategories-ruRU: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제
-## X-DBM-Mod-SubCategories-zhTW: 節慶,暗月馬戲團
-## X-DBM-Mod-SubCategories-zhCN: 节日,暗月马戏团
-## X-DBM-Mod-SubCategories-esES: Fiestas,Feria de la Luna Negra
-## X-DBM-Mod-SubCategories-esMX: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-ptBR: Holidays,Darkmoon Faire
-## X-DBM-Mod-Name: World Events
-## X-DBM-Mod-Name-esES: Eventos del Mundo
-## X-DBM-Mod-Name-ruRU: Игровые события
-## X-DBM-Mod-Name-zhTW: 世界事件
-## X-DBM-Mod-Name-zhCN: 世界事件
-## X-DBM-Mod-Name-koKR: 이벤트
-## X-DBM-Mod-Name-deDE: Weltereignisse
-## X-DBM-Mod-Name-ptBR: Eventos Mundiais
-## X-DBM-Mod-Sort: 150
-## X-DBM-Mod-LoadZoneID: 704,762,764,728,823
+## AuthorDBM: 1
+## AuthorDBMCategory: MOP
+## AuthorDBMHasHeroicMode: 0
+## AuthorDBMSubCategories: Holidays,Darkmoon Faire
+## AuthorDBMSubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt
+## AuthorDBMSubCategories-ruRU: Holidays,Darkmoon Faire
+## AuthorDBMSubCategories-koKR: 연간 이벤트,다크문 축제
+## AuthorDBMSubCategories-zhTW: 節慶,暗月馬戲團
+## AuthorDBMSubCategories-zhCN: 节日,暗月马戏团
+## AuthorDBMSubCategories-esES: Fiestas,Feria de la Luna Negra
+## AuthorDBMSubCategories-esMX: Holidays,Darkmoon Faire
+## AuthorDBMSubCategories-ptBR: Holidays,Darkmoon Faire
+## AuthorDBMName: World Events
+## AuthorDBMName-esES: Eventos del Mundo
+## AuthorDBMName-ruRU: Игровые события
+## AuthorDBMName-zhTW: 世界事件
+## AuthorDBMName-zhCN: 世界事件
+## AuthorDBMName-koKR: 이벤트
+## AuthorDBMName-deDE: Weltereignisse
+## AuthorDBMName-ptBR: Eventos Mundiais
+## AuthorDBMSort: 150
+## AuthorDBMLoadZoneID: 704,762,764,728,823
 localization.en.lua
 localization.ru.lua
 localization.fr.lua
