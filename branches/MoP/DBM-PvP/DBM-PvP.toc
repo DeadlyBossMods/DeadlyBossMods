@@ -14,7 +14,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPvP_SavedVars
 ## X-DBM-Mod: 1
-## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-SubCategories: Arena,Battlegrounds
 ## X-DBM-Mod-SubCategories-deDE: Arena,Schlachtfelder

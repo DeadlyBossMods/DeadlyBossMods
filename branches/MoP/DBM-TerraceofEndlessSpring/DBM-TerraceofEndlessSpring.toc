@@ -8,6 +8,7 @@
 ## SavedVariablesPerCharacter: DBMTerraceofEndlessSpring_SavedVars, DBMTerraceofEndlessSpring_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-Heroic-Mode: 1
 ## X-DBM-Mod-Name: Terrace of Endless Spring
 ## X-DBM-Mod-Name-koKR: 영원한 봄의 정원
 ## X-DBM-Mod-Sort: 3

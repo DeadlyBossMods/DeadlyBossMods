@@ -8,6 +8,7 @@
 ## SavedVariablesPerCharacter: DBMHeartofFear_SavedVars, DBMHeartofFear_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-Heroic-Mode: 1
 ## X-DBM-Mod-Name: Heart of Fear
 ## X-DBM-Mod-Name-koKR: 공포의 심장
 ## X-DBM-Mod-Sort: 1
