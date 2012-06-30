@@ -782,7 +782,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		local timer = tonumber(cmd:sub(6)) or 5
 		local timer = timer * 60
-		local channel = ((GetNumRaidMembers() == 0) and "PARTY") or "RAID_WARNING"
+		local channel = (IsInRaid() and "RAID_WARNING") or "PARTY"
 		DBM:CreatePizzaTimer(timer, DBM_CORE_TIMER_BREAK, true)
 		DBM:Unschedule(SendChatMessage)
 		SendChatMessage(DBM_CORE_BREAK_START:format(timer/60), channel)
@@ -796,7 +796,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
-		local channel = ((GetNumRaidMembers() == 0) and "PARTY") or "RAID_WARNING"
+		local channel = (IsInRaid() and "RAID_WARNING") or "PARTY"
 		DBM:CreatePizzaTimer(timer, DBM_CORE_TIMER_PULL, true)
 		DBM:Unschedule(SendChatMessage)
 		SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)
@@ -845,7 +845,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if DBM:GetRaidRank() == 0 then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
-		if GetNumRaidMembers() == 0 then
+		if not IsInRaid() then
 			return DBM:AddMsg(DBM_ERROR_NO_RAID)
 		end
 		DBM:RequestInstanceInfo()
@@ -1148,9 +1148,9 @@ do
 	local playerRank = 0
 	
 	function DBM:RAID_ROSTER_UPDATE()
-		if GetNumRaidMembers() >= 1 then
+		if IsInRaid() then
 			local playerWithHigherVersionPromoted = false
-			for i = 1, GetNumRaidMembers() do
+			for i = 1, GetNumGroupMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
 				if (not raid[name]) and inRaid then
 					fireEvent("raidJoin", name)
@@ -1195,8 +1195,8 @@ do
 	end
 
 	function DBM:PARTY_MEMBERS_CHANGED()
-		if GetNumRaidMembers() > 0 then return end
-		if GetNumPartyMembers() >= 1 then
+		if IsInRaid() then return end
+		if GetNumSubgroupMembers() >= 1 then
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
@@ -1205,7 +1205,7 @@ do
 				self:Schedule(2, DBM.RequestTimers, DBM)
 				fireEvent("partyJoin", UnitName("player"))
 			end
-			for i = 0, GetNumPartyMembers() do
+			for i = 0, GetNumSubgroupMembers() do
 				local id
 				if (i == 0) then
 					id = "player"
@@ -1487,12 +1487,13 @@ end
 
 function DBM:LFG_UPDATE()
     -- simple fix for China wow
-    if(GetLFGInfoServer) then
+	-- maybe GetLFGInfoServer() removed in mop?
+--[[    if(GetLFGInfoServer) then
         local _, joined = GetLFGInfoServer()
         if not joined then
             DBM.Bars:CancelBar(DBM_LFG_INVITE)
         end
-    end
+    end]]
 end
 
 function DBM:UPDATE_BATTLEFIELD_STATUS()
@@ -1908,7 +1909,7 @@ do
 			local denied = {}
 			local away = {}
 			local noResponse = {}
-			for i = 1, GetNumRaidMembers() do
+			for i = 1, GetNumGroupMembers() do
 				if not UnitIsUnit("raid"..i, "player") then
 					table.insert(noResponse, (UnitName("raid"..i)))
 				end
@@ -1981,7 +1982,7 @@ do
 				if dbmUsers - numResponses <= 7 then -- waiting for 7 or less players, show their names and the early result option
 					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
 					local noResponse = {}
-					for i = 1, GetNumRaidMembers() do
+					for i = 1, GetNumGroupMembers() do
 						if not UnitIsUnit("raid"..i, "player") and raid[UnitName("raid"..i)] and raid[UnitName("raid"..i)].revision then -- only show players who actually can respond (== DBM users)
 							table.insert(noResponse, (UnitName("raid"..i)))
 						end
@@ -2156,8 +2157,8 @@ end
 do
 	local targetList = {}
 	local function buildTargetList()
-		local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+		local uId = (IsInRaid() and "raid") or "party"
+		for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
 			if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
@@ -2341,8 +2342,8 @@ end
 function checkWipe(confirm)
 	if #inCombat > 0 then
 		local wipe = true
-		local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+		local uId = (IsInRaid() and "raid") or "party"
+		for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
 			local id = (i == 0 and "player") or uId..i
 			if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 				wipe = false
@@ -2863,8 +2864,8 @@ end
 
 do
 	local function requestTimers()
-		local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+		local uId = (IsInRaid() and "raid") or "party"
+		for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
 			local id = (i == 0 and "player") or uId..i
 			if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 				DBM:RequestTimers()
@@ -2899,13 +2900,13 @@ end
 do
 	local function getNumAlivePlayers()
 		local alive = 0
-		if GetNumRaidMembers() > 0 then
-			for i = 1, GetNumRaidMembers() do
+		if IsInRaid() then
+			for i = 1, GetNumGroupMembers() do
 				alive = alive + ((UnitIsDeadOrGhost("raid"..i) and 0) or 1)
 			end
 		else
 			alive = (UnitIsDeadOrGhost("player") and 0) or 1
-			for i = 1, GetNumPartyMembers() do
+			for i = 1, GetNumSubgroupMembers() do
 				alive = alive + ((UnitIsDeadOrGhost("party"..i) and 0) or 1)
 			end
 		end
@@ -2929,7 +2930,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumGroupMembers(), GetNumSubgroupMembers() + 1)))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
 			local mod
@@ -2938,7 +2939,7 @@ do
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
+				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumGroupMembers(), GetNumSubgroupMembers() + 1)))
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
@@ -3363,16 +3364,16 @@ function bossModPrototype:GetBossTarget(cid)
 	elseif self:GetUnitCreatureId("boss4") == cid then
 		name, realm = UnitName("boss4target")
 		uid = "boss4target"
-	elseif GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	elseif IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			if self:GetUnitCreatureId("raid"..i.."target") == cid then
 				name, realm = UnitName("raid"..i.."targettarget")
 				uid = "raid"..i.."targettarget"
 				break
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
 				name, realm = UnitName("party"..i.."targettarget")
 				uid = "party"..i.."targettarget"
@@ -3393,20 +3394,20 @@ function bossModPrototype:GetThreatTarget(cid)
 		if UnitDetailedThreatSituation("player", "target") == 1 then
 			return "player"
 		end
-	elseif GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	elseif IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			if self:GetUnitCreatureId("raid"..i.."target") == cid then
-				for x = 1, GetNumRaidMembers() do
+				for x = 1, GetNumGroupMembers() do
 					if UnitDetailedThreatSituation("raid"..x, "raid"..i.."target") == 1 then
 						return "raid"..x
 					end
 				end
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
-				for x = 1, GetNumRaidMembers() do
+				for x = 1, GetNumSubgroupMembers() do
 					if UnitDetailedThreatSituation("party"..x, "party"..i.."target") == 1 then
 						return "party"..x
 					end
@@ -3576,10 +3577,10 @@ do
 	-- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
-			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumPartyMembers() >= 1)) then
+			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumSubgroupMembers() >= 1)) then
 				local message = pformat(self.text, ...)
 				message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
-				SendChatMessage(("*** %s ***"):format(message), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
+				SendChatMessage(("*** %s ***"):format(message), IsInRaid() and "RAID_WARNING" or "PARTY")
 			end
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
@@ -4873,8 +4874,8 @@ function bossModPrototype:GetBossHPString(cId)
 			return math.floor(UnitHealth("boss"..i) / UnitHealthMax("boss"..i) * 100) .. "%"
 		end
 	end
-	local idType = (GetNumRaidMembers() == 0 and "party") or "raid"
-	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+	local idType = (IsInRaid() and "raid") or "party"
+	for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
 		local unitId = ((i == 0) and "target") or idType..i.."target"
 		local guid = UnitGUID(unitId)
 		if guid and (tonumber(guid:sub(7, 10), 16)) == cId then
@@ -4890,8 +4891,8 @@ end
 
 function bossModPrototype:IsWipe()
 	local wipe = true
-	local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+	local uId = (IsInRaid() and "raid") or "party"
+	for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
 		local id = (i == 0 and "player") or uId..i
 		if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 			wipe = false
@@ -4988,14 +4989,14 @@ function bossModPrototype:RemoveIcon(target, timer)
 end
 
 function bossModPrototype:ClearIcons()
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			if UnitExists("raid"..i) and GetRaidTargetIndex("raid"..i) then
 				SetRaidTarget("raid"..i, 0)
 			end
 		end
 	else
-		for i = 1, GetNumPartyMembers() do
+		for i = 1, GetNumSubgroupMembers() do
 			if UnitExists("party"..i) and GetRaidTargetIndex("party"..i) then
 				SetRaidTarget("party"..i, 0)
 			end

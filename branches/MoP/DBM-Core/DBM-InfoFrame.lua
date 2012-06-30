@@ -181,16 +181,16 @@ end
 
 local function updateIcons()
 	table.wipe(icons)
-	if GetNumRaidMembers() > 0 then
-		for i=1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i=1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			local icon = GetRaidTargetIndex(uId)
 			if icon then
 				icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i=1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i=1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			local icon = GetRaidTargetIndex(uId)
 			if icon then
@@ -206,16 +206,16 @@ end
 
 local function updateHealth()
 	table.wipe(lines)
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			local icon = GetRaidTargetIndex(uId)
 			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = UnitHealth(uId) - infoFrameThreshold
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = UnitHealth(uId) - infoFrameThreshold
@@ -231,7 +231,7 @@ end
 
 local function updatePlayerPower()
 	table.wipe(lines)
-	for i = 1, GetNumRaidMembers() do
+	for i = 1, GetNumGroupMembers() do
 		if not UnitIsDeadOrGhost("raid"..i) and UnitPower("raid"..i, pIndex)/UnitPowerMax("raid"..i, pIndex)*100 >= infoFrameThreshold then
 			lines[UnitName("raid"..i)] = UnitPower("raid"..i, pIndex)
 		end
@@ -256,15 +256,15 @@ end
 --Buffs that are good to have, therefor bad not to have them.
 local function updatePlayerBuffs()
 	table.wipe(lines)
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			if not UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			if not UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
@@ -281,15 +281,15 @@ end
 --Debuffs that are good to have, therefor it's bad NOT to have them.
 local function updateGoodPlayerDebuffs()
 	table.wipe(lines)
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				local icon = GetRaidTargetIndex(uId)
@@ -307,15 +307,15 @@ end
 --Debuffs that are bad to have, therefor it is bad to have them.
 local function updateBadPlayerDebuffs()
 	table.wipe(lines)
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			if  UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				local icon = GetRaidTargetIndex(uId)
@@ -333,8 +333,8 @@ end
 local function updatePlayerBuffStacks()
 	table.wipe(lines)
 	updateIcons()	-- update Icons first in case of an "icon modifier"
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			if UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) then
 				lines[UnitName(uId)] = select(4, UnitBuff(uId, GetSpellInfo(infoFrameThreshold)))
@@ -345,8 +345,8 @@ local function updatePlayerBuffStacks()
 				end
 			end			
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			if UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) then
 				lines[UnitName(uId)] = select(4, UnitBuff(uId, GetSpellInfo(infoFrameThreshold)))
@@ -377,8 +377,8 @@ end
 
 local function updatePlayerAggro()
 	table.wipe(lines)
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			if UnitThreatSituation(uId) == infoFrameThreshold then
 				lines[UnitName(uId)] = ""
@@ -386,8 +386,8 @@ local function updatePlayerAggro()
 		end
 		updateLines()
 		updateIcons()
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			if UnitThreatSituation(uId) == infoFrameThreshold then
 				lines[UnitName(uId)] = ""
@@ -407,15 +407,15 @@ local function getUnitCreatureId(uId)
 end
 local function updatePlayerTargets()
 	table.wipe(lines)
-	if GetNumRaidMembers() > 0 then
-		for i = 1, GetNumRaidMembers() do
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
 			local uId = "raid"..i
 			if getUnitCreatureId("raid"..i.."target") ~= infoFrameThreshold and (UnitGroupRolesAssigned("raid"..i) == "DAMAGER" or UnitGroupRolesAssigned("raid"..i) == "NONE") then
 				lines[UnitName(uId)] = ""
 			end
 		end
-	elseif GetNumPartyMembers() > 0 then
-		for i = 1, GetNumPartyMembers() do
+	elseif GetNumSubgroupMembers() > 0 then
+		for i = 1, GetNumSubgroupMembers() do
 			local uId = "party"..i
 			if getUnitCreatureId("party"..i.."target") ~= infoFrameThreshold and (UnitGroupRolesAssigned("party"..i) == "DAMAGER" or UnitGroupRolesAssigned("party"..i) == "NONE") then
 				lines[UnitName(uId)] = ""

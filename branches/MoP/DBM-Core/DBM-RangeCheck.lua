@@ -525,8 +525,8 @@ function onUpdate(self, elapsed)
 	self:ClearLines()
 	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range), 1, 1, 1)
 	if initRangeCheck(self.range) then
-		if GetNumRaidMembers() > 0 then
-			for i = 1, GetNumRaidMembers() do
+		if IsInRaid() then
+			for i = 1, GetNumGroupMembers() do
 				local uId = "raid"..i
 				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
 					j = j + 1
@@ -539,8 +539,8 @@ function onUpdate(self, elapsed)
 					end
 				end	
 			end
-		elseif GetNumPartyMembers() > 0 then
-			for i = 1, GetNumPartyMembers() do
+		elseif GetNumSubgroupMembers() > 0 then
+			for i = 1, GetNumSubgroupMembers() do
 				local uId = "party"..i
 				if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
 					j = j + 1
@@ -668,12 +668,12 @@ do
 				rotation = (2 * math.pi) - GetPlayerFacing()
 				local numPlayers = 0
 				local unitID = "raid%d"
-				if GetNumRaidMembers() > 0 then
+				if IsInRaid() then
 					unitID = "raid%d"
-					numPlayers = GetNumRaidMembers()
-				elseif GetNumPartyMembers() > 0 then
+					numPlayers = GetNumGroupMembers()
+				elseif GetNumSubgroupMembers() > 0 then
 					unitID = "party%d"
-					numPlayers = GetNumPartyMembers()
+					numPlayers = GetNumSubgroupMembers()
 				end
 				if numPlayers < (prevNumPlayers or 0) then
 					for i=numPlayers, prevNumPlayers do

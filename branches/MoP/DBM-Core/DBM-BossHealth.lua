@@ -227,8 +227,8 @@ do
 				end
 				if not found then
 					-- check target and raid/party targets
-					local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-					for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+					local uId = (IsInRaid() and "raid") or "party"
+					for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
 						id = (i == 0 and "target") or uId..i.."target"
 						if getCIDfromGUID(UnitGUID(id or "")) == cId then
 							targetCache[cId] = id
@@ -265,8 +265,8 @@ do
 				end
 				if not found then
 				-- check target and raid/party targets
-					local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-					for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+					local uId = (IsInRaid() and "raid") or "party"
+					for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
 						id = (i == 0 and "target") or uId..i.."target"
 						if UnitGUID(id or "") == guid then
 							targetGuidCache[guid] = id

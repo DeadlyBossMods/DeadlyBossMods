@@ -32,7 +32,7 @@ local specwarnFixateAnger	= mod:NewSpecialWarningRun(115350)
 local timerShadowShivCD		= mod:NewCDTimer(12.5, 115362)--every 12.5-15.5 sec
 local timerDeathsGraspCD	= mod:NewCDTimer(34, 111570)
 local timerFixateAngerCD	= mod:NewCDTimer(12, 115350)
-local timerFixateAnger		= mod:NewtargetTimer(10, 115350)
+local timerFixateAnger		= mod:NewTargetTimer(10, 115350)
 
 local soundFixateAnger		= mod:NewSound(115350)
 
