@@ -48,7 +48,7 @@ local specwarnAmberExplosion	= mod:NewSpecialWarningSpell(122398, nil, nil, nil,
 --Living Amber
 local specwarnBurningAmber		= mod:NewSpecialWarningMove(122504)--Standing in a puddle
 --Amber Monstrosity
-local specwarnAmberMonstrosity	= mod:NewSpecialWarningSwitch("ej6254", not mod:Ishealer())
+local specwarnAmberMonstrosity	= mod:NewSpecialWarningSwitch("ej6254", not mod:IsHealer())
 local specwarnMassiveStomp		= mod:NewSpecialWarningSpell(122408, nil, nil, nil, true)
 
 --Boss
