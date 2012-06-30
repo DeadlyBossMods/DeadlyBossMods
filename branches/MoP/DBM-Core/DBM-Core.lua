@@ -240,9 +240,9 @@ local function sendSync(prefix, msg)
 	msg = msg or ""
 	if zoneType == "pvp" or zoneType == "arena" then
 		SendAddonMessage("D4", prefix .. "\t" .. msg, "BATTLEGROUND")
-	elseif GetRealNumRaidMembers() > 0 then
+	elseif IsInRaid() then
 		SendAddonMessage("D4", prefix .. "\t" .. msg, "RAID")
-	elseif GetRealNumPartyMembers() > 0 then
+	elseif IsInGroup() then
 		SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
 	end
 end
@@ -1213,7 +1213,7 @@ do
 					id = "party"..i
 				end
 				local name, server = UnitName(id)
-				local rank, _, fileName = UnitIsPartyLeader(id), UnitClass(id)
+				local rank, _, fileName = UnitIsGroupLeader(id), UnitClass(id)
 				if server and server ~= ""  then
 					name = name.."-"..server
 				end
@@ -1515,28 +1515,28 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 	local guid = UnitGUID("mouseover")
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(7, 10), 16)
-		if (cId == 17711 or cId == 18728) and not DBM:GetModByName("Doomwalker") then--Doomwalker and Kazzak
+		if (cId == 17711 or cId == 18728) and not not IsAddOnLoaded("DBM-Outlands") then--Doomwalker and Kazzak
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Outlands" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not DBM:GetModByName("Beauty") then--Akamhat, Garr, Julak, Mobus, Xariona
+		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not not IsAddOnLoaded("DBM-Party-Cataclysm") then--Akamhat, Garr, Julak, Mobus, Xariona
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-Cataclysm" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 62352 or cId == 62346) and not DBM:GetModByName("Salyis") then--Name not perminant, EJ IDs will be used when the EJ is less Beta looking and we know IDs are final
+		elseif (cId == 62352 or cId == 62346 or cId == 60491) and not IsAddOnLoaded("DBM-Party-MoP") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-MoP" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466) and not DBM:GetModByName("Greench") then--The Abominable Greench & his helpers (Winter Veil world boss), Omen & his minions (Lunar Festival world boss)
+		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466) and not IsAddOnLoaded("DBM-WorldEvents") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
 					DBM:LoadMod(v)
@@ -3578,7 +3578,7 @@ do
 	-- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
-			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumSubgroupMembers() >= 1)) then
+			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (UnitIsGroupLeader("player") or UnitIsGroupAssistant("player")) then
 				local message = pformat(self.text, ...)
 				message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
 				SendChatMessage(("*** %s ***"):format(message), IsInRaid() and "RAID_WARNING" or "PARTY")
