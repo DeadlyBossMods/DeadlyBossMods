@@ -1439,7 +1439,7 @@ do
 				"PLAYER_ENTERING_WORLD",
 				"LFG_PROPOSAL_SHOW",
 				"LFG_PROPOSAL_FAILED",
-				"LFG_UPDATE",
+				"LFG_PROPOSAL_SUCCEEDED",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"UPDATE_MOUSEOVER_UNIT",
 				"PLAYER_TARGET_CHANGED"	,
@@ -1486,15 +1486,8 @@ function DBM:LFG_PROPOSAL_FAILED()
 	DBM.Bars:CancelBar(DBM_LFG_INVITE)
 end
 
-function DBM:LFG_UPDATE()
-    -- simple fix for China wow
-	-- maybe GetLFGInfoServer() removed in mop?
---[[    if(GetLFGInfoServer) then
-        local _, joined = GetLFGInfoServer()
-        if not joined then
-            DBM.Bars:CancelBar(DBM_LFG_INVITE)
-        end
-    end]]
+function DBM:LFG_PROPOSAL_SUCCEEDED()
+	DBM.Bars:CancelBar(DBM_LFG_INVITE)
 end
 
 function DBM:UPDATE_BATTLEFIELD_STATUS()
@@ -2883,7 +2876,7 @@ do
 		if #inCombat == 0 then
 			DBM:Schedule(3.5, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires. Since boss mod loading takes 3 sec after entering zone, delays more will be good?
 		end
-		self:LFG_UPDATE()
+--		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true DBM:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
