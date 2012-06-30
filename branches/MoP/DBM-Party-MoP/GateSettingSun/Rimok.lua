@@ -17,8 +17,8 @@ mod:RegisterEventsInCombat(
 --This mod needs more stuff involving adds later.
 local warnFrenziedAssault		= mod:NewSpellAnnounce(107120, 3)
 
-local specwarnFrenziedAssault	= mod:NewSpecialWarningSpell(107120, mod:IsTank())
-local specwarnViscousFluid		= mod:NewSpecialWarningMove(107122)
+local specWarnFrenziedAssault	= mod:NewSpecialWarningSpell(107120, mod:IsTank())
+local specWarnViscousFluid		= mod:NewSpecialWarningMove(107122)
 
 local timerFrenziedAssault		= mod:NewBuffActiveTimer(6, 107120)
 local timerFrenziedAssaultCD	= mod:NewNextTimer(17, 107120)
@@ -29,7 +29,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(107122) and args:IsPlayer() and self:AntiSpam(3) then
-		specwarnViscousFluid:Show()
+		specWarnViscousFluid:Show()
+	elseif args:IsSpellID(107120) then
+		timerFrenziedAssault:Start()
+		timerFrenziedAssaultCD:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -37,8 +40,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(107120) then
 		warnFrenziedAssault:Show()
-		specwarnFrenziedAssault:Show()
-		timerFrenziedAssault:Start()
-		timerFrenziedAssaultCD:Start()
+		specWarnFrenziedAssault:Show()
 	end
 end

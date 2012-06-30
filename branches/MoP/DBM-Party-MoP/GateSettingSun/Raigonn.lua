@@ -14,14 +14,14 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START"
 )
 
-
 local warnHeadbutt				= mod:NewSpellAnnounce(111668, 2)
 local warnScreechingSwarm		= mod:NewTargetAnnounce(111600, 4)
 local warnBrokenCarapace		= mod:NewSpellAnnounce(107146, 2)--Phase 2
 local warnFixate				= mod:NewTargetAnnounce(111723, 4)
 local warnStomp					= mod:NewCountAnnounce(111728, 3)
 
-local specwarnScreechingSwarm	= mod:NewSpecialWarningDispel(111600, mod:IsHealer())
+local specWarnScreechingSwarm	= mod:NewSpecialWarningDispel(111600, mod:IsHealer())
+local specWarnBrokenCarapace	= mod:NewSpeicalWarningSpell(107146, mod:IsDps())
 
 local timerHeadbuttCD			= mod:NewNextTimer(33, 111668)
 local timerScreechingSwarm		= mod:NewTargetTimer(10, 111600)
@@ -38,23 +38,24 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(107146) then
 		warnBrokenCarapace:Show()
+		specWarnBrokenCarapace:Show()
 		timerHeadbuttCD:Cancel()
 		timerFixateCD:Start(5.5)--Timing for target pick, not cast start.
 		timerStompCD:Start(20.5, 1)
 	elseif args:IsSpellID(111723) then
 		warnFixate:Show(args.destName)
-		timerFixate:Start(args.destname)
+		timerFixate:Start(args.destName)
 		timerFixateCD:Start()
 	elseif args:IsSpellID(111600) then
 		warnScreechingSwarm:Show(args.destName)
-		specwarnScreechingSwarm:Show(args.destName)
-		timerScreechingSwarm:Start(args.destname)
+		specWarnScreechingSwarm:Show(args.destName)
+		timerScreechingSwarm:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(111723) then
-		timerFixate:Cancel(args.destname)
+		timerFixate:Cancel(args.destName)
 	elseif args:IsSpellID(111600) then
 		timerScreechingSwarm:Cancel(args.destname)
 	end

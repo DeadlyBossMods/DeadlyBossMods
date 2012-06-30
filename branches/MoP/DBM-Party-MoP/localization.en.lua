@@ -1,14 +1,5 @@
 local L
 
--------------
--- Gadok --
--------------
-L= DBM:GetModLocalization(675)
-
-L:SetMiscLocalization{
-	StaffingRun		= "%s prepares to make a strafing run!"
-}
-
 ---------------------
 -- Kiptilak --
 ---------------------
@@ -18,15 +9,24 @@ L:SetOptionLocalization{
 	IconOnSabotage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(107268)
 }
 
------------------------------
--- Raigonn --
------------------------------
-L= DBM:GetModLocalization(649)
+-------------
+-- Gadok --
+-------------
+L= DBM:GetModLocalization(675)
+
+L:SetMiscLocalization{
+	StaffingRun		= "%s prepares to make a strafing run!"
+}
 
 -----------------------
 -- Rimok --
 -----------------------
 L= DBM:GetModLocalization(676)
+
+-----------------------------
+-- Raigonn --
+-----------------------------
+L= DBM:GetModLocalization(649)
 
 -----------------------
 -- LibraryEvent --

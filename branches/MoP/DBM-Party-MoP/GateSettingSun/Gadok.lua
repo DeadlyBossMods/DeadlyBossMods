@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(675, "DBM-Party-MoP", 4, 303)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(54432)
+mod:SetCreatureID(56589)
 mod:SetModelID(43275)
 mod:SetZone()
 
@@ -12,6 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"RAID_BOSS_EMOTE"
 )
 
@@ -20,6 +22,8 @@ local warnPreyTime			= mod:NewTargetAnnounce(106933, 3, nil, mod:IsHealer())
 local warnStrafingRun		= mod:NewSpellAnnounce("ej5660", 4)
 
 local specWarnStafingRun	= mod:NewSpecialWarningSpell("ej5660", nil, nil, nil, true)
+local specWarnStafingRunAoe	= mod:NewSpecialWarningMove(116297)
+local specWarnAcidBomb		= mod:NewSpecialWarningMove(115458)
 
 local timerImpalingStrikeCD	= mod:NewNextTimer(30, 107047)
 local timerPreyTime			= mod:NewTargetTimer(5, 106933, nil, mod:IsHealer())
@@ -50,6 +54,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerImpalingStrikeCD:Start()
 	end
 end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 115458 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnAcidBomb:Show()
+	elseif spellId == 116297 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnStafingRunAoe:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:RAID_BOSS_EMOTE(msg)--Needs a better trigger if possible using transcriptor.
 	if msg == L.StaffingRun or msg:find(L.StaffingRun) then
