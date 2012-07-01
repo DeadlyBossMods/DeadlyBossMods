@@ -3516,7 +3516,7 @@ function bossModPrototype:IsDps()--For features that simply should only be on fo
 	or class == "MAGE"
 	or class == "HUNTER"
 	or class == "ROGUE"
-	or (class == "MONK" and IsSpellKnown(84840))--Vengeance Check (True)
+	or (class == "MONK" and IsSpellKnown(113656))--Fists of Fury (True)
 end
 
 
