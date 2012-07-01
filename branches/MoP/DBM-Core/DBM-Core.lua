@@ -2530,7 +2530,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif difficulty == 2 and instanceType == "party" then
 				difficultyText = PLAYER_DIFFICULTY2.." - "
 				savedDifficulty = "heroic5"
-			elseif difficulty == 8 then
+			elseif difficulty == 8 and instanceType == "party" then
 				difficultyText = CHALLENGE_MODE.." - "
 				savedDifficulty = "challenge5"
 			else
