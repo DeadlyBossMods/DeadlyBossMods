@@ -28,7 +28,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(106651) then
-		warnBananas:Show(args.amount or 1)
+		warnBananas:Show(args.destName, args.amount or 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
