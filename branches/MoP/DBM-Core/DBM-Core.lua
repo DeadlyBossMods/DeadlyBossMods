@@ -3482,6 +3482,7 @@ function bossModPrototype:IsMelee()
 	or (class == "PALADIN" and not IsSpellKnown(95859))--Meditation Check (False)
     or (class == "SHAMAN" and IsSpellKnown(86629))--Dual Wield Check (True)
 	or (class == "DRUID" and IsSpellKnown(84840))--Vengeance Check (True)
+	or (class == "MONK" and (IsSpellKnown(121278) or IsSpellKnown(113656)))--Iffy slope, monk healers will be ranged and melee. :\
 end
 
 function bossModPrototype:IsRanged()
@@ -3492,6 +3493,7 @@ function bossModPrototype:IsRanged()
 	or (class == "PALADIN" and IsSpellKnown(95859))--Meditation Check (True)
     or (class == "SHAMAN" and not IsSpellKnown(86629))--Dual Wield Check (False)
 	or (class == "DRUID" and not IsSpellKnown(84840))--Vengeance Check (False)
+	or (class == "MONK" and IsSpellKnown(121278))--Iffy slope, monk healers will be ranged and melee. :\
 end
 
 function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shaman
@@ -3514,6 +3516,7 @@ function bossModPrototype:IsDps()--For features that simply should only be on fo
 	or class == "MAGE"
 	or class == "HUNTER"
 	or class == "ROGUE"
+	or (class == "MONK" and IsSpellKnown(84840))--Vengeance Check (True)
 end
 
 
@@ -3523,6 +3526,7 @@ function bossModPrototype:IsTank()
 	or (class == "DEATHKNIGHT" and IsSpellKnown(93099))
 	or (class == "PALADIN" and IsSpellKnown(84839))
 	or (class == "DRUID" and IsSpellKnown(84840))
+	or (class == "MONK" and IsSpellKnown(120267))
 end
 
 --A simple check to see if these classes know "Meditation".
@@ -3531,6 +3535,7 @@ function bossModPrototype:IsHealer()
     or (class == "SHAMAN" and IsSpellKnown(95862))
 	or (class == "DRUID" and IsSpellKnown(85101))
 	or (class == "PRIEST" and (IsSpellKnown(95860) or IsSpellKnown(95861)))
+	or (class == "MONK" and IsSpellKnown(121278))
 end
 
 --These don't matter since they don't check talents
