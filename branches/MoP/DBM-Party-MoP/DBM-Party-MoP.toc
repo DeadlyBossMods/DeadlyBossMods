@@ -74,5 +74,6 @@ ScarletCathedral\MapSizes.lua
 ScarletCathedral\Durand.lua
 ScarletCathedral\Korlof.lua
 ScarletCathedral\ThalnosSoulrender.lua
+WorldBosses\MapSizes.lua
 WorldBosses\Anger.lua
 WorldBosses\Salyis.lua

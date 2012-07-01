@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(659, "DBM-Party-MoP", 7, 246)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(58633)--58633 is boss, 58664 is Phylactery. UNIT_DIED event fires when Phylactery kills. (both 58633, 58644). so we can use 58633 only.
+mod:SetCreatureID(58633)--58633 is boss, 58664 is Phylactery. UNIT_DIED event fires when Phylactery kills. (both 58633, 58644). so we can use 58633 only. UNIT_DIED ALSO fires when phase 1 ends, unless they fixed it? there was a reason for way i did it.
 --mod:SetModelID(40301)
 mod:SetZone()
 

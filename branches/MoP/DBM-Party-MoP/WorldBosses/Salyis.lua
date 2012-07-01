@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(62352, 62346)--Salyis 62352, Galleon 62346
 mod:SetModelID(42468)	--Galleon=42439
-mod:SetZone(807)--Valley of the Four winds now?
+mod:SetZone(807)--Valley of the Four winds
 
 mod:RegisterCombat("combat")
 

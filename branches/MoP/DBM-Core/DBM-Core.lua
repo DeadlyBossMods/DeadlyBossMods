@@ -1334,6 +1334,8 @@ do
 				stats.normalPulls = stats.normalPulls or 0
 				stats.heroicKills = stats.heroicKills or 0
 				stats.heroicPulls = stats.heroicPulls or 0
+				stats.challengeKills = stats.challengeKills or 0
+				stats.challengePulls = stats.challengePulls or 0
 				stats.normal25Kills = stats.normal25Kills or 0
 				stats.normal25Kills = stats.normal25Kills or 0
 				stats.normal25Pulls = stats.normal25Pulls or 0
@@ -2397,6 +2399,9 @@ function DBM:StartCombat(mod, delay, synced)
 		elseif mod:IsDifficulty("heroic5") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
 			difficultyText = PLAYER_DIFFICULTY2.." - "
+		elseif mod:IsDifficulty("challenge5") then
+			mod.stats.challengePulls = mod.stats.challengePulls + 1
+			difficultyText = CHALLENGE_MODE.." - "
 		elseif mod:IsDifficulty("normal10") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
 			local _, _, _, _, maxPlayers = GetInstanceInfo()
@@ -2440,6 +2445,8 @@ function DBM:StartCombat(mod, delay, synced)
 				bestTime = mod.stats.normalBestTime
 			elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
 				bestTime = mod.stats.heroicBestTime
+			elseif mod:IsDifficulty("challenge5") and mod.stats.challengeBestTime then
+				bestTime = mod.stats.challengeBestTime
 			elseif mod:IsDifficulty("normal25") and mod.stats.normal25BestTime then
 				bestTime = mod.stats.normal25BestTime
 			elseif mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime then
@@ -2523,6 +2530,9 @@ function DBM:EndCombat(mod, wipe)
 			elseif difficulty == 2 and instanceType == "party" then
 				difficultyText = PLAYER_DIFFICULTY2.." - "
 				savedDifficulty = "heroic5"
+			elseif difficulty == 8 then
+				difficultyText = CHALLENGE_MODE.." - "
+				savedDifficulty = "challenge5"
 			else
 				difficultyText = ""
 				savedDifficulty = "normal5"
@@ -2531,13 +2541,15 @@ function DBM:EndCombat(mod, wipe)
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
 			local wipeHP = ("%d%%"):format(lowestBossHealth * 100)
-			local totalPulls = (savedDifficulty == "lfr25" and mod.stats.lfr25Pulls) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicPulls) or (savedDifficulty == "normal25" and mod.stats.normal25Pulls) or (savedDifficulty == "heroic25" and mod.stats.heroic25Pulls) or mod.stats.normalPulls
-			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
+			local totalPulls = (savedDifficulty == "lfr25" and mod.stats.lfr25Pulls) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicPulls) or (savedDifficulty == "challenge5" and mod.stats.challengePulls) or (savedDifficulty == "normal25" and mod.stats.normal25Pulls) or (savedDifficulty == "heroic25" and mod.stats.heroic25Pulls) or mod.stats.normalPulls
+			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "challenge5" and mod.stats.challengeKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
 			if thisTime < 15 then
 				if savedDifficulty == "lfr25" then
 					mod.stats.lfr25Pulls = mod.stats.lfr25Pulls - 1
 				elseif savedDifficulty == "heroic5" or savedDifficulty == "heroic10" then
 					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
+				elseif savedDifficulty == "challenge5" then
+					mod.stats.challengePulls = mod.stats.challengePulls - 1
 				elseif savedDifficulty == "normal25" then
 					mod.stats.normal25Pulls = mod.stats.normal25Pulls - 1
 				elseif savedDifficulty == "heroic25" then
@@ -2566,8 +2578,8 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = (savedDifficulty == "lfr25" and mod.stats.lfr25LastTime) or ((savedDifficulty == "heroic5" or "heroic10") and mod.stats.heroicLastTime) or (savedDifficulty == "normal25" and mod.stats.normal25LastTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25LastTime) or mod.stats.normalLastTime
-			local bestTime = (savedDifficulty == "lfr25" and mod.stats.lfr25BestTime) or ((savedDifficulty == "heroic5" or "heroic10") and mod.stats.heroicBestTime) or (savedDifficulty == "normal25" and mod.stats.normal25BestTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25BestTime) or mod.stats.normalBestTime
+			local lastTime = (savedDifficulty == "lfr25" and mod.stats.lfr25LastTime) or ((savedDifficulty == "heroic5" or "heroic10") and mod.stats.heroicLastTime) or (savedDifficulty == "challenge5" and mod.stats.challengeLastTime) or (savedDifficulty == "normal25" and mod.stats.normal25LastTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25LastTime) or mod.stats.normalLastTime
+			local bestTime = (savedDifficulty == "lfr25" and mod.stats.lfr25BestTime) or ((savedDifficulty == "heroic5" or "heroic10") and mod.stats.heroicBestTime) or (savedDifficulty == "challenge5" and mod.stats.challengeBestTime) or (savedDifficulty == "normal25" and mod.stats.normal25BestTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25BestTime) or mod.stats.normalBestTime
 			if savedDifficulty == "lfr25" then
 				if mod.stats.lfr25Kills > mod.stats.lfr25Pulls then mod.stats.lfr25Kills = mod.stats.lfr25Pulls end--Fix logical error i've seen where for some reason we have more kills then pulls for boss as seen by - stats for wipe messages.
 				mod.stats.lfr25Kills = mod.stats.lfr25Kills + 1
@@ -2587,6 +2599,11 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
 				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
+			elseif savedDifficulty == "challenge5" then
+				if mod.stats.challengeKills > mod.stats.challengePulls then mod.stats.challengeKills = mod.stats.challengePulls end
+				mod.stats.challengeKills = mod.stats.challengeKills + 1
+				mod.stats.challengeLastTime = thisTime
+				mod.stats.challengeBestTime = math.min(bestTime or math.huge, thisTime)
 			elseif savedDifficulty == "normal10" then
 				if mod.stats.normalKills > mod.stats.normalPulls then mod.stats.normalKills = mod.stats.normalPulls end
 				mod.stats.normalKills = mod.stats.normalKills + 1
@@ -2624,7 +2641,7 @@ function DBM:EndCombat(mod, wipe)
 					mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
 				end
 			end
-			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
+			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "challenge5" and mod.stats.challenge5Kills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
 			if DBM.Options.ShowKillMessage then
 				if not lastTime then
 					self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
@@ -2694,6 +2711,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "heroic10"
 	elseif difficulty == 4 then
 		return "heroic25"
+	elseif difficulty == 8 then
+		return "challenge5"
 	else
 		return "unknown"
 	end
