@@ -160,22 +160,26 @@ L= DBM:GetModLocalization(663)
 L= DBM:GetModLocalization(665)
 
 L:SetWarningLocalization{
-	specwarnGetBoned	= "Get Bone Armor"
+	specWarnGetBoned	= "뼈 갑옷 클릭!"
 }
 
 L:SetOptionLocalization{
-	specwarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
-	InfoFrame			= "Show info frame for players not affected by $spell:113996"
+	specWarnGetBoned	= "$spell:113996 효과가 없을 경우 특수 경고 보기",
+	InfoFrame			= "$spell:113996 효과 없음에 대한 정보 프레임 보기"
 }
 
 L:SetMiscLocalization{
-	PlayerDebuffs	= "No Bone Armor"
+	PlayerDebuffs	= "뼈 갑옷 없음"
 }
 
 -----------------------
 -- Lillian Voss --
 -----------------------
 L= DBM:GetModLocalization(666)
+
+L:SetMiscLocalization{
+	Kill	= "죽어라, 강령술사여!"
+}
 
 -----------------------
 -- Darkmaster Gandling --

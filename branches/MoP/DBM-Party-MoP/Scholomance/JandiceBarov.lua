@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --It looks like proper support of her other ability will require transcriptor.
@@ -21,11 +22,14 @@ mod:RegisterEventsInCombat(
 --Worse come to worse, we can scan for SPELL_DAMAGE from Whirl of Illusion or maybe scan UNIT_AURA to see if we have a debuff (I don't remember). If we do, we are in phase 2, if we don't, we are not.
 --I do know about 7-8 seconds after phase 2 ends she casts her first Rapidity again. that's the fight.
 local warnWondrousRapidity		= mod:NewSpellAnnounce(114062, 3)
+local warnGravityFlux			= mod:NewSpellAnnounce(114059, 2)
+local warnWhirlofIllusion		= mod:NewSpellAnnounce(113808, 4)
 
 local specWarnWondrousRapdity	= mod:NewSpecialWarningMove(114062, mod:IsTank())--Frontal cone fixate attack, easily dodged (in fact if you don't, i imagine it'll wreck you on heroic)
 
 local timerWondrousRapidity		= mod:NewBuffFadesTimer(7.5, 114062)
 local timerWondrousRapidityCD	= mod:NewNextTimer(14, 114062)
+local timerGravityFlux			= mod:NewCDTimer(12, 114059) -- needs more review.
 
 function mod:OnCombatStart(delay)
 	timerWondrousRapidityCD:Start(6-delay)
@@ -42,5 +46,16 @@ function mod:SPELL_CAST_START(args)
 		warnWondrousRapidity:Show()
 		specWarnWondrousRapdity:Show()
 		timerWondrousRapidity:Start()
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if (spellId == 114059 or spellId == 114047) and self:AntiSpam(2, 1) then -- found 2 spellids on first cast, 4 spellids total (114035, 114038, 114047, 114059). needs more logs to confirm whether spellid is correct.
+		warnGravityFlux:Show()
+		timerGravityFlux:Start()
+--	"<330.7> Phylactery [[boss2:Summon Books::0:111669]]"
+	elseif spellId == 113808 and self:AntiSpam(2, 2) then
+		warnWhirlofIllusion:Show()
+		timerGravityFlux:Cancel()
 	end
 end

@@ -21,7 +21,7 @@
 ## AuthorDBMName-ptBR: Masmorras (MoP)
 ## AuthorDBMName-zhTW: 隊伍首領 (潘達利亞之謎)
 ## AuthorDBMSort: 25
-## AuthorDBMLoadZoneID: 867, 876, 877, 875, 885, 887, 763, 871, 874
+## AuthorDBMLoadZoneID: 867, 876, 877, 875, 885, 887, 898, 871, 874
 localization.en.lua
 localization.de.lua
 localization.es.lua
@@ -62,10 +62,10 @@ NiuzaoTemple\Pavalak.lua
 NiuzaoTemple\Neronok.lua
 Scholomance\MapSizes.lua
 Scholomance\Chillheart.lua
-Scholomance\DarkmasterGandling.lua
 Scholomance\JandiceBarov.lua
-Scholomance\LillianVoss.lua
 Scholomance\Rattlegore.lua
+Scholomance\LillianVoss.lua
+Scholomance\DarkmasterGandling.lua
 ScarletHalls\MapSizes.lua
 ScarletHalls\Braun.lua
 ScarletHalls\Harlan.lua

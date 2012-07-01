@@ -13,10 +13,10 @@ mod:RegisterEventsInCombat(
 	"RAID_BOSS_EMOTE"
 )
 
-local warnLesson		= mod:NewSpellAnnounce(113395, 4)--Needs to be changed to target when transcriptor works, at present CLEU doesn't show anything.
+local warnLesson		= mod:NewTargetAnnounce(113395, 2)--Needs to be changed to target when transcriptor works, at present CLEU doesn't show anything.
 local warnRise			= mod:NewSpellAnnounce(113143, 3)
 
-local timerLessonCD		= mod:NewNextTimer(31.25, 113395)
+local timerLessonCD		= mod:NewNextTimer(30, 113395)
 local timerRiseCD		= mod:NewNextTimer(62.5, 113143)--Assuming this is even CD based, it could be boss health based, in which case timer is worthless
 
 function mod:OnCombatStart(delay)
@@ -31,9 +31,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:RAID_BOSS_EMOTE(msg)--Just until there is a better way
+function mod:RAID_BOSS_EMOTE(msg, _, _, _, target)--Just until there is a better way
 	if msg == L.HarshLesson or msg:find(L.HarshLesson) then
-		warnLesson:Show()
+		warnLesson:Show(target)
 		timerLessonCD:Start()
 	end
 end

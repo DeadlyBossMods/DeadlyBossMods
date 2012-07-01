@@ -159,11 +159,11 @@ L= DBM:GetModLocalization(663)
 L= DBM:GetModLocalization(665)
 
 L:SetWarningLocalization{
-	specwarnGetBoned	= "Get Bone Armor"
+	specWarnGetBoned	= "Get Bone Armor"
 }
 
 L:SetOptionLocalization{
-	specwarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
+	specWarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
 	InfoFrame			= "Show info frame for players not affected by $spell:113996"
 }
 
@@ -175,6 +175,10 @@ L:SetMiscLocalization{
 -- Lillian Voss --
 -----------------------
 L= DBM:GetModLocalization(666)
+
+L:SetMiscLocalization{
+	Kill	= "-" -- i can't find en locals. please localize it.
+}
 
 -----------------------
 -- Darkmaster Gandling --
