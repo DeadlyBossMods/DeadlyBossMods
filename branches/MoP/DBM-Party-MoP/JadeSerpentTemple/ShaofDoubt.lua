@@ -15,13 +15,13 @@ mod:RegisterEventsInCombat(
 )
 
 
-local warnWitherWill			= mod:NewSpellAnnounce(120236, 3)
+local warnWitherWill			= mod:NewSpellAnnounce(106736, 3)
 local warnTouchofNothingness	= mod:NewTargetAnnounce(106113, 4)
 local warnBoundsOfReality		= mod:NewSpellAnnounce(117665, 3)
 
 local specwarnTouchOfNothingness= mod:NewSpecialWarningDispel(106113, mod:IsHealer())
 
-local timerWitherWillCD			= mod:NewCDTimer(6, 120236)--6-10 second variations.
+local timerWitherWillCD			= mod:NewCDTimer(6, 106736)--6-10 second variations.
 local timerTouchofNothingnessCD	= mod:NewNextTimer(19.5, 106113)
 local timerTouchofNothingness	= mod:NewTargetTimer(30, 106113)
 local timerBoundsOfRealityCD	= mod:NewNextTimer(60, 117665)
@@ -34,7 +34,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(106736, 120236) then
+	if args:IsSpellID(106736) then
 		warnWitherWill:Show()
 		timerWitherWillCD:Start()
 	elseif args:IsSpellID(106113) then--Start Cd here in case it's resisted

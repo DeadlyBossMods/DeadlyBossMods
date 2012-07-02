@@ -20,16 +20,16 @@ mod:RegisterEventsInCombat(
 --This fight has more abilities not implimented yet do to no combat log or emote/yell triggers at all
 --Will likely need to transcribe this fight with transcriptor to complete this mod
 --Probably only things worth adding would be Serpant wave and Jade Serpant wave
-local warnDragonStrike			= mod:NewSpellAnnounce(120870, 2)
+local warnDragonStrike			= mod:NewSpellAnnounce(106823, 2)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
-local warnJadeDragonStrike		= mod:NewSpellAnnounce(120873, 3)
+local warnJadeDragonStrike		= mod:NewSpellAnnounce(106841, 3)
 local warnJadeFire				= mod:NewTargetAnnounce(107045, 4)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 
-local specWarnJadeFire			= mod:NewSpecialWarningMove(107045)
+local specWarnJadeFire			= mod:NewSpecialWarningMove(107110)
 
-local timerDragonStrikeCD		= mod:NewNextTimer(10.5, 120870)
-local timerJadeDragonStrikeCD	= mod:NewNextTimer(10.5, 120873)
+local timerDragonStrikeCD		= mod:NewNextTimer(10.5, 106823)
+local timerJadeDragonStrikeCD	= mod:NewNextTimer(10.5, 106841)
 local timerJadeFireCD			= mod:NewNextTimer(3.5, 107045)
 
 function mod:OnCombatStart(delay)
@@ -46,10 +46,10 @@ function mod:JadeFireTarget()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(106823, 120870) then--Phase 1 dragonstrike
+	if args:IsSpellID(106823) then--Phase 1 dragonstrike
 		warnDragonStrike:Show()
 		timerDragonStrikeCD:Start()
-	elseif args:IsSpellID(106841, 120873) then--phase 2 dragonstrike
+	elseif args:IsSpellID(106841) then--phase 2 dragonstrike
 		warnJadeDragonStrike:Show()
 		timerJadeDragonStrikeCD:Start()
 	end
@@ -73,7 +73,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
-	if (spellId == 107110 or spellId == 120895) and destGUID == UnitGUID("player") and self:AntiSpam() then
+	if spellId == 107110 and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnJadeFire:Show()
 	end
 end

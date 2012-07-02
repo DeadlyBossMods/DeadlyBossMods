@@ -12,11 +12,11 @@ mod:RegisterEventsInCombat(
 )
 
 local warnPiercingThrow			= mod:NewCountAnnounce(114021, 2)--This is tied to Death Blossom, it goes 2 peircing throw's then death blossom, then repeats.
-local warnDeathBlossom			= mod:NewSpellAnnounce(114025, 3)--^^
+local warnDeathBlossom			= mod:NewSpellAnnounce(114242, 3)--^^
 local warnBloodyRage			= mod:NewSpellAnnounce(116140, 3)--Fight ends after 4 of these?
 
 local timerPiercingThrowCD		= mod:NewNextTimer(6, 114021)--Blizz seems to have altered these to no longer be a static 6, but extend to 12 when call dog is used
-local timerDeathBlossomCD		= mod:NewNextTimer(6, 114025)--Experimental code for this is used but if it doesn't work these will have to be CD bars.
+local timerDeathBlossomCD		= mod:NewNextTimer(6, 114242)--Experimental code for this is used but if it doesn't work these will have to be CD bars.
 
 local throwCount = 0
 local barProgress = 0
@@ -38,7 +38,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerDeathBlossomCD:Start()
 		end
-	elseif args:IsSpellID(114025, 114242) then--wowhead says 114025 doesn't exist, but it certainly does. 114025 normal, 114242 heroic
+	elseif args:IsSpellID(114242) then
 		warnDeathBlossom:Show()
 		timerPiercingThrowCD:Start()
 	elseif args:IsSpellID(114259) then--Call Dog

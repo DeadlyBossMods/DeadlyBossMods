@@ -1549,21 +1549,21 @@ function DBM:PLAYER_TARGET_CHANGED()
 	local guid = UnitGUID("target")
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(7, 10), 16)
-		if (cId == 17711 or cId == 18728) and not DBM:GetModByName("Doomwalker") then--Doomwalker and Kazzak
+		if (cId == 17711 or cId == 18728) and not DBM:GetModByName("Doomwalker") then--Burning Crusade World Bosses: Doomwalker and Kazzak
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Outlands" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not DBM:GetModByName("Beauty") then--Akamhat, Garr, Julak, Mobus, Xariona
+		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not DBM:GetModByName("Beauty") then--Cataclysm World Bosses: Akamhat, Garr, Julak, Mobus, Xariona
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-Cataclysm" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 62352 or cId == 62346) and not DBM:GetModByName("Salyis") then--Name not perminant, EJ IDs will be used when the EJ is less Beta looking and we know IDs are final
+		elseif (cId == 62352 or cId == 62346) and not DBM:GetModByName("Salyis") then--Mists of Pandaria World Bosses: Anger, Salyis
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-MoP" then
 					DBM:LoadMod(v)
@@ -3551,7 +3551,7 @@ end
 --A simple check to see if these classes know "Meditation".
 function bossModPrototype:IsHealer()
 	return (class == "PALADIN" and IsSpellKnown(95859))
-    or (class == "SHAMAN" and IsSpellKnown(95862))
+	or (class == "SHAMAN" and IsSpellKnown(95862))
 	or (class == "DRUID" and IsSpellKnown(85101))
 	or (class == "PRIEST" and (IsSpellKnown(95860) or IsSpellKnown(95861)))
 	or (class == "MONK" and IsSpellKnown(121278))
