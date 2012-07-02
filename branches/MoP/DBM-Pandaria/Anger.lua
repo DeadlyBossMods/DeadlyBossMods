@@ -41,13 +41,12 @@ do
 	end
 end
 
--- in field, we can't use 5 yard range frame. Disabled temporarily.
 function mod:updateRangeFrame()
 	if not self.Options.RangeFrame then return end
 	if UnitDebuff("player", GetSpellInfo(119622)) then
-		DBM.RangeCheck:Show(10, nil)--Show everyone.
+		DBM.RangeCheck:Show(5, nil)--Show everyone.
 	else
-		DBM.RangeCheck:Show(10, debuffFilter)--Show only people who have debuff.
+		DBM.RangeCheck:Show(5, debuffFilter)--Show only people who have debuff.
 	end
 end
 
