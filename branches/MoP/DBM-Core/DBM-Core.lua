@@ -1526,9 +1526,9 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 					break
 				end
 			end
-		elseif (cId == 62352 or cId == 62346 or cId == 60491) and not IsAddOnLoaded("DBM-Party-MoP") then
+		elseif (cId == 62352 or cId == 62346 or cId == 60491) and not IsAddOnLoaded("DBM-Pandaria") then
 			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-Party-MoP" then
+				if v.modId == "DBM-Pandaria" then
 					DBM:LoadMod(v)
 					break
 				end
