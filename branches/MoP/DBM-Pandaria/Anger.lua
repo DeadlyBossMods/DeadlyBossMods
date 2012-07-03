@@ -27,7 +27,7 @@ local timerUnleashedWrath		= mod:NewBuffActiveTimer(28, 119488, nil, mod:IsTank(
 
 local berserkTimer				= mod:NewBerserkTimer(900)--at least 13 min, speculate 15 but can also be 13 or 14min
 
-mod:AddBoolOption("RangeFrame", false)--For Mind control spreading.
+mod:AddBoolOption("RangeFrame", true)--For Mind control spreading.
 mod:AddBoolOption("SetIconOnMC", true)
 
 local warnpreMCTargets = {}
