@@ -1150,6 +1150,12 @@ do
 	function DBM:GROUP_ROSTER_UPDATE()
 		if IsInRaid() then
 			local playerWithHigherVersionPromoted = false
+			if not inRaid then
+				inRaid = true
+				sendSync("H")
+				self:Schedule(2, DBM.RequestTimers, DBM)
+				fireEvent("raidJoin", UnitName("player"))
+			end
 			for i = 1, GetNumGroupMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
 				if (not raid[name]) and inRaid then
@@ -1167,18 +1173,6 @@ do
 				end
 			end
 			enableIcons = not playerWithHigherVersionPromoted
-			if not inRaid then
-				inRaid = true
-				sendSync("H")
-				-- TODO: can be removed as soon as filters are live, this is just for some basic backwards compatibility while 4.1 isn't live
---				if zoneType == "pvp" or zoneType == "arena" then
---					SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
---				else
---					SendAddonMessage("DBMv4-Ver", "Hi!", "RAID")
---				end
-				self:Schedule(2, DBM.RequestTimers, DBM)
-				fireEvent("raidJoin", UnitName("player"))
-			end
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raid[i] = nil
@@ -1187,69 +1181,54 @@ do
 					v.updated = nil
 				end
 			end
-		else
-			if IsInGroup() then
-				if not inRaid then
-					-- joined a new party
-					inRaid = true
-					sendSync("H")
-					self:Schedule(2, DBM.RequestTimers, DBM)
-					fireEvent("partyJoin", UnitName("player"))
-				end
-				for i = 0, GetNumSubgroupMembers() do
-					local id
-					if (i == 0) then
-						id = "player"
-					else
-						id = "party"..i
-					end
-					local name, server = UnitName(id)
-					local rank, _, fileName = UnitIsGroupLeader(id), UnitClass(id)
-					if server and server ~= ""  then
-						name = name.."-"..server
-					end
-					if (not raid[name]) and inRaid then
-						fireEvent("partyJoin", name)
-					end
-					raid[name] = raid[name] or {}
-					raid[name].name = name
-					if rank then
-						raid[name].rank = 2
-					else
-						raid[name].rank = 0
-					end
-					raid[name].class = fileName
-					raid[name].id = id
-					raid[name].updated = true
-				end
-				for i, v in pairs(raid) do
-					if not v.updated then
-						raid[i] = nil
-						fireEvent("partyLeave", i)
-					else
-						v.updated = nil
-					end
-				end
-			else
-				-- left the current group/raid
-				inRaid = false
-				enableIcons = true
-				fireEvent("raidLeave", UnitName("player"))
+		elseif IsInGroup() then
+			if not inRaid then
+				-- joined a new party
+				inRaid = true
+				sendSync("H")
+				self:Schedule(2, DBM.RequestTimers, DBM)
+				fireEvent("partyJoin", UnitName("player"))
 			end
-		end
-	end
-
-	function DBM:PARTY_MEMBERS_CHANGED()
-		if IsInRaid() then return end
-		if GetNumSubgroupMembers() >= 1 then
+			for i = 0, GetNumSubgroupMembers() do
+				local id
+				if (i == 0) then
+					id = "player"
+				else
+					id = "party"..i
+				end
+				local name, server = UnitName(id)
+				local rank, _, fileName = UnitIsGroupLeader(id), UnitClass(id)
+				if server and server ~= ""  then
+					name = name.."-"..server
+				end
+				if (not raid[name]) and inRaid then
+					fireEvent("partyJoin", name)
+				end
+				raid[name] = raid[name] or {}
+				raid[name].name = name
+				if rank then
+					raid[name].rank = 2
+				else
+					raid[name].rank = 0
+				end
+				raid[name].class = fileName
+				raid[name].id = id
+				raid[name].updated = true
+			end
+			for i, v in pairs(raid) do
+				if not v.updated then
+					raid[i] = nil
+					fireEvent("partyLeave", i)
+				else
+					v.updated = nil
+				end
+			end
 		else
+			-- left the current group/raid
 			inRaid = false
 			enableIcons = true
+			fireEvent("raidLeave", UnitName("player"))
 		end
-	end
-
-	function DBM:IsInRaid()
-		return inRaid
 	end
 
 	function DBM:GetRaidRank(name)
@@ -1451,7 +1430,6 @@ do
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:GROUP_ROSTER_UPDATE()
-			self:PARTY_MEMBERS_CHANGED()
 			DBM:Schedule(1.5, setCombatInitialized)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
