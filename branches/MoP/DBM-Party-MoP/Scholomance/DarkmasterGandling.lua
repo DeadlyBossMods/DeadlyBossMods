@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnLesson		= mod:NewTargetAnnounce(113395, 2)--Needs to be changed to target when transcriptor works, at present CLEU doesn't show anything.
@@ -31,7 +31,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:RAID_BOSS_EMOTE(msg, _, _, _, target)--Just until there is a better way
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)--Just until there is a better way
 	if msg == L.HarshLesson or msg:find(L.HarshLesson) then
 		warnLesson:Show(target)
 		timerLessonCD:Start()
