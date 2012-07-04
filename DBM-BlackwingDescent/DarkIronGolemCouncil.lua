@@ -27,9 +27,9 @@ mod:RegisterEvents(
 local warnIncineration			= mod:NewSpellAnnounce(79023, 2, nil, mod:IsHealer())
 local warnBarrierSoon			= mod:NewPreWarnAnnounce(79582, 10, 3, nil, not mod:IsHealer())
 local warnBarrier				= mod:NewSpellAnnounce(79582, 4, nil, not mod:IsHealer())
-local warnAcquiringTarget		= mod:NewTargetAnnounce(92036, 4, nil, false)--Off by default, default UI has this warning built in
+local warnAcquiringTarget		= mod:NewTargetAnnounce(79501, 4, nil, false)--Off by default, default UI has this warning built in
 --Electron
-local warnLightningConductor	= mod:NewTargetAnnounce(91431, 4, nil, false)--Off by default, default UI has this warning built in
+local warnLightningConductor	= mod:NewTargetAnnounce(79888, 4, nil, false)--Off by default, default UI has this warning built in
 local warnUnstableShieldSoon	= mod:NewPreWarnAnnounce(79900, 10, 3, nil, not mod:IsHealer())
 local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4, nil, not mod:IsHealer())
 local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92053, 5, 4)--Heroic Ability
@@ -65,13 +65,13 @@ local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
 local yellFixate				= mod:NewYell(80094, nil, false)
 local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer())
-local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
-local yellChemicalCloud			= mod:NewYell(91473)--May Return false tank yells
+local specWarnChemicalCloud		= mod:NewSpecialWarningMove(80161)
+local yellChemicalCloud			= mod:NewYell(80161)--May Return false tank yells
 local specWarnGrip				= mod:NewSpecialWarningSpell(91849, nil, nil, nil, true)--Heroic Ability
 --Arcanotron
 local specWarnConversion		= mod:NewSpecialWarningSpell(79729, not mod:IsHealer())
 local specWarnGenerator			= mod:NewSpecialWarning("specWarnGenerator", mod:IsTank())
-local specWarnAnnihilator		= mod:NewSpecialWarningInterrupt(91542, mod:IsMelee())--On by default for melee now that there is a smart filterin place on whether or not they should be warned.
+local specWarnAnnihilator		= mod:NewSpecialWarningInterrupt(79710, mod:IsMelee())--On by default for melee now that there is a smart filterin place on whether or not they should be warned.
 local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
 --All
 local specWarnActivated			= mod:NewSpecialWarning("SpecWarnActivated", not mod:IsHealer())--Good for target switches, but healers probably don't want an extra special warning for it.
@@ -93,7 +93,7 @@ local timerPoisonProtocolCD		= mod:NewNextTimer(45, 80053)
 --Arcanotron
 local timerGeneratorCD			= mod:NewNextTimer(30, 79624)
 local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729, nil, false)		--10 + 1.5 cast time
-local timerArcaneLockout		= mod:NewTimer(3, "timerArcaneLockout", 91542, false)	--How long arcanotron is locked out from casting another Arcane Annihilator
+local timerArcaneLockout		= mod:NewTimer(3, "timerArcaneLockout", 79710, false)	--How long arcanotron is locked out from casting another Arcane Annihilator
 local timerArcaneBlowback		= mod:NewTimer(8, "timerArcaneBlowbackCast", 91879)		--what happens after the overcharged power generator explodes. 8 seconds after overcharge cast.
 --All
 local timerNextActivate			= mod:NewNextTimer(45, 78740)				--Activations are every 90 (60sec heroic) seconds but encounter staggers them in an alternating fassion so 45 (30 heroic) seconds between add switches
@@ -262,7 +262,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			soundFixate:Play()
 			yellFixate:Yell()
 		end
-	elseif args:IsSpellID(91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
+	elseif args:IsSpellID(80161, 91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:IsDestTypeHostile() then--Check if Generator buff is gained by a hostile.
@@ -384,7 +384,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_INTERRUPT(args)
-	if (type(args.extraSpellId) == "number" and (args.extraSpellId == 79710 or args.extraSpellId == 91540 or args.extraSpellId == 91541 or args.extraSpellId == 91542)) and self:AntiSpam(2) then
+	if (type(args.extraSpellId) == "number" and (args.extraSpellId == 79710 or args.extraSpellId == 91540 or args.extraSpellId == 91541 or args.extraSpellId == 91542)) and self:AntiSpam(2, 2) then
 		if args:IsSpellID(2139) then															--Counterspell
 			timerArcaneLockout:Start(7.5)
 		elseif args:IsSpellID(72, 19647) then													--Shield Bash (will be removed in 4.1), Spell Lock (Fel Hunter)

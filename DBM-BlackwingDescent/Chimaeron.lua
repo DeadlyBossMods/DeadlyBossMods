@@ -43,7 +43,7 @@ local timerBreak			= mod:NewTargetTimer(60, 82881)
 local timerBreakCD			= mod:NewNextTimer(15, 82881)--Also double attack CD
 local timerMassacre			= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
-local timerCausticSlime		= mod:NewNextTimer(19, 88915)--always 19 seconds after massacre.
+local timerCausticSlime		= mod:NewNextTimer(19, 82935)--always 19 seconds after massacre.
 local timerFailure			= mod:NewBuffActiveTimer(26, 88853)
 local timerFailureNext		= mod:NewNextTimer(25, 88853)
 

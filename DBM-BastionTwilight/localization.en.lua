@@ -25,11 +25,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TBwarnWhileBlackout		= "Show $spell:92898 warning when $spell:86788 active",
-	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
+	TBwarnWhileBlackout		= "Show $spell:86369 warning when $spell:86788 active",
+	TwilightBlastArrow		= "Show DBM arrow when $spell:86369 is near you",
 	RangeFrame				= "Show range frame (10)",
-	BlackoutShieldFrame		= "Show boss health with a health bar for $spell:92878",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	BlackoutShieldFrame		= "Show boss health with a health bar for $spell:86788",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86788),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
@@ -86,8 +86,8 @@ L:SetMiscLocalization({
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Elementium Monstrosity",
 	Kill			= "Impossible....",
-	blizzHatesMe	= "Beacon & Rod on me! Clear a path!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
-	WrongDebuff	= "No %s"
+	blizzHatesMe	= "Beacon & Rod on me! Clear a path!",--Very bad situation.
+	WrongDebuff		= "No %s"
 })
 
 ----------------
@@ -101,7 +101,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
+	CorruptingCrashArrow	= "Show DBM arrow when $spell:81685 is near you",
 	InfoFrame				= "Show info frame for $spell:81701",
 	RangeFrame				= "Show range frame (5) for $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
@@ -143,7 +143,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnDragon			= "Show warning when Twilight Whelp Spawns",
 	WarnOrbSoon			= "Show pre-warning for Orbs (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
-	warnWrackJump		= "Announce $spell:92955 jump targets",
+	warnWrackJump		= "Announce $spell:89421 jump targets",
 	warnAggro			= "Announce players who have Aggro when Orbs spawn (Can be target of Orbs)",
 	SpecWarnAggroOnYou	= "Show special warning if you have Aggro when Orbs spawn\n(Can be target of Orbs)",
 	SpecWarnOrbs		= "Show special warning when Orbs spawn (Expected warning)",
