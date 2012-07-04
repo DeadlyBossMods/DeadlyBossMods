@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 local warnVolcanicWrath		= mod:NewSpellAnnounce(87903, 4)--This is nasty volcano aoe that's channeled that will wipe raid on trash if not interrupted.
 local warnFrostWhirl		= mod:NewSpellAnnounce(93340, 4)--This is nasty frost whirl elementals do before ascendant Council.
-local warnFlameStrike		= mod:NewTargetAnnounce(93383, 4)--This is Flame strike we need to not stand in unless we're dispeling frost dudes shield.
+local warnFlameStrike		= mod:NewTargetAnnounce(93362, 4)--This is Flame strike we need to not stand in unless we're dispeling frost dudes shield.
 local warnRupture			= mod:NewTargetAnnounce(93377, 4)--This is twilight rupture the big guys do in hallway before halfus.
 
 local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903, nil, nil, nil, true)
@@ -95,7 +95,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(93383, 93362) then--Are both IDs used?
+	if args:IsSpellID(93362, 93383) then
 		self:ScheduleMethod(0.2, "FlameStrikeTarget", args.sourceGUID)
 		self:SetFlamestrike()
 	elseif args:IsSpellID(93377) then

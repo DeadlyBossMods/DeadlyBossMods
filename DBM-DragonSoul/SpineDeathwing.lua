@@ -28,25 +28,25 @@ mod:RegisterEventsInCombat(
 
 local warnAbsorbedBlood		= mod:NewStackAnnounce(105248, 2)
 local warnResidue			= mod:NewCountAnnounce("ej4057", 3, nil, false)
-local warnGrip				= mod:NewTargetAnnounce(109459, 4)
+local warnGrip				= mod:NewTargetAnnounce(105490, 4)
 local warnNuclearBlast		= mod:NewCastAnnounce(105845, 4)
 local warnSealArmor			= mod:NewCastAnnounce(105847, 4)
 local warnAmalgamation		= mod:NewSpellAnnounce("ej4054", 3, 106005)--Amalgamation spawning, give temp icon.
 
 local specWarnRoll			= mod:NewSpecialWarningSpell("ej4050", nil, nil, nil, true)--The actual roll
 local specWarnTendril		= mod:NewSpecialWarning("SpecWarnTendril")--A personal warning for you only if you're not gripped 3 seconds after roll started
-local specWarnGrip			= mod:NewSpecialWarningSpell(109459, mod:IsDps())
+local specWarnGrip			= mod:NewSpecialWarningSpell(105490, mod:IsDps())
 local specWarnNuclearBlast	= mod:NewSpecialWarningRun(105845, mod:IsMelee())
 local specWarnSealArmor		= mod:NewSpecialWarningSpell(105847, mod:IsDps())
 local specWarnAmalgamation	= mod:NewSpecialWarningSpell("ej4054", false)
 
 local timerSealArmor		= mod:NewCastTimer(23, 105847)
 local timerBarrelRoll		= mod:NewCastTimer(5, "ej4050")
-local timerGripCD			= mod:NewNextTimer(32, 109457)
+local timerGripCD			= mod:NewNextTimer(32, 105490)
 local timerDeathCD			= mod:NewCDTimer(8.5, 106199)--8.5-10sec variation.
 
 local countdownRoll			= mod:NewCountdown(5, "ej4050")
-local countdownGrip			= mod:NewCountdown(32, 109457, false)--Can get confusing if used with roll countdown. This is off by default but can be turned on by someone willing to sort out the confusion on their own.
+local countdownGrip			= mod:NewCountdown(32, 105490, false)--Can get confusing if used with roll countdown. This is off by default but can be turned on by someone willing to sort out the confusion on their own.
 
 local soundNuclearBlast		= mod:NewSound(105845, nil, mod:IsMelee())
 
@@ -62,7 +62,7 @@ local residueCount = 0
 local diedOozeGUIDS = {}
 
 local function checkTendrils()
-	if not UnitDebuff("player", GetSpellInfo(109454)) and not UnitIsDeadOrGhost("player") then
+	if not UnitDebuff("player", GetSpellInfo(105563)) and not UnitIsDeadOrGhost("player") then
 		specWarnTendril:Show()
 	end
 end
@@ -285,8 +285,8 @@ function mod:RAID_BOSS_EMOTE(msg)
 		timerBarrelRoll:Start()
 		countdownRoll:Start(5)
 		if self.Options.InfoFrame and not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:SetHeader(L.NoDebuff:format(GetSpellInfo(109454)))
-			DBM.InfoFrame:Show(5, "playergooddebuff", 109454)
+			DBM.InfoFrame:SetHeader(L.NoDebuff:format(GetSpellInfo(105563)))
+			DBM.InfoFrame:Show(5, "playergooddebuff", 105563)
 		end
 	elseif msg == L.DLevels or msg:find(L.DLevels) then
 		self:Unschedule(checkTendrils)

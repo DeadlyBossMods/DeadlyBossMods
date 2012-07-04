@@ -26,8 +26,8 @@ mod:RegisterEventsInCombat(
 local warnBreath			= mod:NewSpellAnnounce(92944, 3)
 local warnOrbSoon			= mod:NewAnnounce("WarnOrbSoon", 3, 92954, true, nil, true)--Still on by default but no longer plays it's own sounds
 local warnOrbs				= mod:NewAnnounce("warnAggro", 4, 92954)
-local warnWrack				= mod:NewTargetAnnounce(92955, 4)
-local warnWrackJump			= mod:NewAnnounce("warnWrackJump", 3, 92955, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
+local warnWrack				= mod:NewTargetAnnounce(89421, 4)
+local warnWrackJump			= mod:NewAnnounce("warnWrackJump", 3, 89421, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
 local warnDragon			= mod:NewAnnounce("WarnDragon", 3, 69002)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnExtinction		= mod:NewSpellAnnounce(86227, 4)
@@ -39,11 +39,11 @@ local specWarnOrbOnYou		= mod:NewSpecialWarning("SpecWarnAggroOnYou")
 local specWarnBreath		= mod:NewSpecialWarningSpell(92944, false, nil, nil, true)
 local specWarnEggShield		= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken		= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
-local specWarnIndomitable	= mod:NewSpecialWarningDispel(92946, mod:CanRemoveEnrage())
+local specWarnIndomitable	= mod:NewSpecialWarningDispel(90045, mod:CanRemoveEnrage())
 
 local timerBreathCD			= mod:NewCDTimer(21, 92944)
 local timerOrbs				= mod:NewTimer(28, "TimerOrbs", 92954)
-local timerWrack			= mod:NewNextTimer(61, 92955)
+local timerWrack			= mod:NewNextTimer(61, 89421)
 local timerExtinction		= mod:NewCastTimer(16, 86227)
 local timerEggWeakening		= mod:NewTimer(4, "TimerEggWeakening", 61357)
 local timerEggWeaken		= mod:NewTimer(30, "TimerEggWeaken", 61357)
@@ -63,7 +63,7 @@ local calenGUID = 0
 local orbList = {}
 local orbWarned = nil
 local playerWarned = nil
-local wrackName = GetSpellInfo(92955)
+local wrackName = GetSpellInfo(89421)
 local wrackTargets = {}
 
 local function resetPlayerOrbStatus()
