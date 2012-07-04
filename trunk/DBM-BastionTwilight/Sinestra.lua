@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
-local warnBreath			= mod:NewSpellAnnounce(92944, 3)
+local warnBreath			= mod:NewSpellAnnounce(90125, 3)
 local warnOrbSoon			= mod:NewAnnounce("WarnOrbSoon", 3, 92954, true, nil, true)--Still on by default but no longer plays it's own sounds
 local warnOrbs				= mod:NewAnnounce("warnAggro", 4, 92954)
 local warnWrack				= mod:NewTargetAnnounce(89421, 4)
@@ -36,12 +36,12 @@ local warnRedEssence		= mod:NewSpellAnnounce(87946, 3)
 
 local specWarnOrbs			= mod:NewSpecialWarning("SpecWarnOrbs", nil, nil, nil, true)
 local specWarnOrbOnYou		= mod:NewSpecialWarning("SpecWarnAggroOnYou")
-local specWarnBreath		= mod:NewSpecialWarningSpell(92944, false, nil, nil, true)
+local specWarnBreath		= mod:NewSpecialWarningSpell(90125, false, nil, nil, true)
 local specWarnEggShield		= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken		= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
 local specWarnIndomitable	= mod:NewSpecialWarningDispel(90045, mod:CanRemoveEnrage())
 
-local timerBreathCD			= mod:NewCDTimer(21, 92944)
+local timerBreathCD			= mod:NewCDTimer(21, 90125)
 local timerOrbs				= mod:NewTimer(28, "TimerOrbs", 92954)
 local timerWrack			= mod:NewNextTimer(61, 89421)
 local timerExtinction		= mod:NewCastTimer(16, 86227)

@@ -28,14 +28,14 @@ mod:RegisterEventsInCombat(
 local warnLavaSpew			= mod:NewSpellAnnounce(77689, 3, nil, mod:IsHealer())
 local warnPillarFlame		= mod:NewSpellAnnounce(78006, 3)
 local warnMoltenTantrum		= mod:NewSpellAnnounce(78403, 4)
-local warnInferno			= mod:NewSpellAnnounce(92190, 4)
+local warnInferno			= mod:NewSpellAnnounce(92154, 4)
 local warnMangle			= mod:NewTargetAnnounce(89773, 3)
 local warnArmageddon		= mod:NewSpellAnnounce(92177, 4)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)--heroic
 local warnPhase2			= mod:NewPhaseAnnounce(2, 4)--heroic
 
 local specWarnPillar		= mod:NewSpecialWarningSpell(78006, mod:IsRanged())
-local specWarnIgnition		= mod:NewSpecialWarningMove(92198)
+local specWarnIgnition		= mod:NewSpecialWarningMove(92128)
 local specWarnInfernoSoon   = mod:NewSpecialWarning("SpecWarnInferno")
 local specWarnArmageddon	= mod:NewSpecialWarningSpell(92177, nil, nil, nil, true)
 
@@ -44,7 +44,7 @@ local timerPillarFlame		= mod:NewCDTimer(32.5, 78006)--This timer is a CD timer.
 local timerMangle			= mod:NewTargetTimer(30, 89773)
 local timerExposed			= mod:NewBuffActiveTimer(30, 79011)
 local timerMangleCD			= mod:NewCDTimer(95, 89773)
-local timerInferno			= mod:NewNextTimer(35, 92190)
+local timerInferno			= mod:NewNextTimer(35, 92154)
 local timerArmageddon		= mod:NewCastTimer(8, 92177)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
@@ -95,7 +95,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(77690, 91919, 91931, 91932) and self:AntiSpam(5, 1) then--SpellIds for other modes are guesswork, 77690 10 man confirmed
+	if args:IsSpellID(77690, 91919, 91931, 91932) and self:AntiSpam(5, 1) then
 		warnLavaSpew:Show()
 		timerLavaSpew:Start()
 	elseif args:IsSpellID(92177) then
