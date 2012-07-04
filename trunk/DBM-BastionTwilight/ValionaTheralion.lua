@@ -33,7 +33,7 @@ local warnBlackout					= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnDazzlingDestruction		= mod:NewCountAnnounce(86408, 4)--Used by Theralion just before landing
 --Theralion Ground Phase
-local warnFabFlames					= mod:NewTargetAnnounce(92909, 3)
+local warnFabFlames					= mod:NewTargetAnnounce(86505, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
 local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)--Used by Valiona just before landing
 
@@ -44,13 +44,13 @@ local specWarnDevouringFlames		= mod:NewSpecialWarningSpell(86840, nil, nil, nil
 local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408, nil, nil, nil, true)
 local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
 mod:AddBoolOption("TBwarnWhileBlackout", false, "announce")
-local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898, false)
-local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
-local yellTwilightBlast				= mod:NewYell(92898, nil, false)
+local specWarnTwilightBlast			= mod:NewSpecialWarningMove(86369, false)
+local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(86369, false)
+local yellTwilightBlast				= mod:NewYell(86369, nil, false)
 --Theralion Ground Phase
 local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059, nil, nil, nil, true)
-local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)
-local specWarnFabulousFlamesNear	= mod:NewSpecialWarningClose(92907)
+local specWarnFabulousFlames		= mod:NewSpecialWarningMove(86505)
+local specWarnFabulousFlamesNear	= mod:NewSpecialWarningClose(86505)
 local yellFabFlames					= mod:NewYell(92907)
 local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
 local yellTwilightMeteorite			= mod:NewYell(88518, nil, false)

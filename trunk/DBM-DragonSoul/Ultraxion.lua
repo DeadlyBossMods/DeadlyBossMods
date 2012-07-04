@@ -21,23 +21,23 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_SAY"
 )
 
-local warnHourofTwilightSoon		= mod:NewPreWarnAnnounce(109416, 15, 4)--Why 15? because this warning signals the best time to pop 1min CDs a second time. (ie lets say you a tank in HoT1 group, you SW, your SW will be usuable one more time before next HoT1, but when do you use it? 15 seconds before the 3rd HoT exactly, then it's stil up for 3rd HoT and still back off cd for HoT1)
-local warnHourofTwilight			= mod:NewCountAnnounce(109416, 4)
-local warnFadingLight				= mod:NewTargetCountAnnounce(110080, 3)
+local warnHourofTwilightSoon		= mod:NewPreWarnAnnounce(106371, 15, 4)--Why 15? because this warning signals the best time to pop 1min CDs a second time. (ie lets say you a tank in HoT1 group, you SW, your SW will be usuable one more time before next HoT1, but when do you use it? 15 seconds before the 3rd HoT exactly, then it's stil up for 3rd HoT and still back off cd for HoT1)
+local warnHourofTwilight			= mod:NewCountAnnounce(106371, 4)
+local warnFadingLight				= mod:NewTargetCountAnnounce(109075, 3)
 
-local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(109416, nil, nil, nil, true)
+local specWarnHourofTwilight		= mod:NewSpecialWarningSpell(106371, nil, nil, nil, true)
 local specWarnHourofTwilightN		= mod:NewSpecialWarning("specWarnHourofTwilightN", nil, false)
-local specWarnFadingLight			= mod:NewSpecialWarningYou(110080)
-local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(110080, mod:IsTank())
+local specWarnFadingLight			= mod:NewSpecialWarningYou(109075)
+local specWarnFadingLightOther		= mod:NewSpecialWarningTarget(109075, mod:IsTank())
 local specWarnTwilightEruption		= mod:NewSpecialWarningSpell(106388, nil, nil, nil, true)
 
 local timerCombatStart				= mod:NewTimer(35, "TimerCombatStart", 2457)
 local timerUnstableMonstrosity		= mod:NewNextTimer(60, 106372, nil, mod:IsHealer())
-local timerHourofTwilight			= mod:NewCastTimer(5, 109416)
-local timerHourofTwilightCD			= mod:NewNextCountTimer(45.5, 109416)
+local timerHourofTwilight			= mod:NewCastTimer(5, 106371)
+local timerHourofTwilightCD			= mod:NewNextCountTimer(45.5, 106371)
 local timerTwilightEruption			= mod:NewCastTimer(5, 106388)
-local timerFadingLight				= mod:NewBuffFadesTimer(10, 110080)
-local timerFadingLightCD			= mod:NewNextTimer(10, 110080)
+local timerFadingLight				= mod:NewBuffFadesTimer(10, 109075)
+local timerFadingLightCD			= mod:NewNextTimer(10, 109075)
 local timerGiftofLight				= mod:NewNextTimer(80, 105896, nil, mod:IsHealer())
 local timerEssenceofDreams			= mod:NewNextTimer(155, 105900, nil, mod:IsHealer())
 local timerSourceofMagic			= mod:NewNextTimer(215, 105903, nil, mod:IsHealer())
@@ -46,8 +46,8 @@ local timerRaidCDs					= mod:NewTimer(60, "timerRaidCDs", 2565, nil, false)
 
 local berserkTimer					= mod:NewBerserkTimer(360)
 
-local countdownFadingLight			= mod:NewCountdown(10, 110080)
-local countdownHourofTwilight		= mod:NewCountdown(45.5, 109416, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
+local countdownFadingLight			= mod:NewCountdown(10, 109075)
+local countdownHourofTwilight		= mod:NewCountdown(45.5, 106371, mod:IsHealer())--can be confusing with Fading Light, only enable for healer. (healers no dot affect by Fading Light)
 
 --Raid CDs will have following options: Don't show Raid CDs, Show only My Raid CDs, Show all raid CDs
 mod:AddDropdownOption("dropdownRaidCDs", {"Never", "ShowRaidCDs", "ShowRaidCDsSelf"}, "Never", "timer")
@@ -74,7 +74,7 @@ function mod:OnCombatStart(delay)
 	fadingLightCount = 0
 	warnHourofTwilightSoon:Schedule(30.5)
 	if self.Options.SpecWarnHoTN == "One" then--Don't filter here, this is supposed to work for everyone. IF they don't want special warning they set SpecWarnHoTN to Never (it's default)
-		specWarnHourofTwilightN:Schedule(40.5, GetSpellInfo(109416), hourOfTwilightCount+1)
+		specWarnHourofTwilightN:Schedule(40.5, GetSpellInfo(106371), hourOfTwilightCount+1)
 	end
 	timerHourofTwilightCD:Start(45.5-delay, 1)
 	countdownHourofTwilight:Start(45.5)

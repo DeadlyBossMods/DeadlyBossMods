@@ -22,22 +22,22 @@ mod:RegisterEventsInCombat(
 
 local warnCrushArmor	= mod:NewStackAnnounce(103687, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnCrystal		= mod:NewSpellAnnounce(103639, 3)
-local warnStomp			= mod:NewSpellAnnounce(108571, 3)
-local warnVortex		= mod:NewSpellAnnounce(110047, 3)
+local warnStomp			= mod:NewSpellAnnounce(103414, 3)
+local warnVortex		= mod:NewSpellAnnounce(103821, 3)
 local warnBlood			= mod:NewSpellAnnounce(103851, 4)
 local warnFurious		= mod:NewSpellAnnounce(103846, 3)
 local warnKohcrom		= mod:NewSpellAnnounce(109017, 4)
 local KohcromWarning	= mod:NewAnnounce("KohcromWarning", 2, 55342)--Mirror image icon. use different color for easlier distingush.
 
 local specwarnCrushArmor	= mod:NewSpecialWarningStack(103687, mod:IsTank(), 3)
-local specwarnVortex		= mod:NewSpecialWarningSpell(110047, nil, nil, nil, true)
-local specwarnBlood			= mod:NewSpecialWarningMove(108570)
+local specwarnVortex		= mod:NewSpecialWarningSpell(103821, nil, nil, nil, true)
+local specwarnBlood			= mod:NewSpecialWarningMove(103785)
 local specwarnCrystal		= mod:NewSpecialWarningTarget(103639, false)
 
 local timerCrushArmor	= mod:NewTargetTimer(20, 103687, nil, mod:IsTank())
 local timerCrystal		= mod:NewCDTimer(12, 103640)	-- 12-14sec variation (is also time till 'detonate')
-local timerStomp 		= mod:NewCDTimer(12, 108571)	-- 12-14sec variation
-local timerVortexNext	= mod:NewCDTimer(74, 110047)--96~97 sec after last vortex. must subtract blood 17 + vortex buff 5 sec. 74 sec left
+local timerStomp 		= mod:NewCDTimer(12, 103414)	-- 12-14sec variation
+local timerVortexNext	= mod:NewCDTimer(74, 103821)--96~97 sec after last vortex. must subtract blood 17 + vortex buff 5 sec. 74 sec left
 local timerBlood		= mod:NewBuffActiveTimer(17, 103851)
 local timerKohcromCD	= mod:NewTimer(6, "KohcromCD", 55342)--Enable when we have actual timing for any of his abilies
 --Basically any time morchok casts, we'll start an echo timer for when it will be mimiced by his twin Kohcrom. 

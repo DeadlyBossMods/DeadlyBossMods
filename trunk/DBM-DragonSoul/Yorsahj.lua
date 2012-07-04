@@ -22,23 +22,23 @@ mod:RegisterEventsInCombat(
 
 local warnOozes				= mod:NewTargetAnnounce("ej3978", 4)
 local warnOozesHit			= mod:NewAnnounce("warnOozesHit", 3, 16372)
-local warnVoidBolt			= mod:NewStackAnnounce(108383, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnVoidBolt			= mod:NewStackAnnounce(104849, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnManaVoid			= mod:NewSpellAnnounce(105530, 3)
 local warnDeepCorruption	= mod:NewSpellAnnounce(105171, 4)
 
 local specWarnOozes			= mod:NewSpecialWarningSpell("ej3978")
-local specWarnVoidBolt		= mod:NewSpecialWarningStack(108383, mod:IsTank(), 2)
-local specWarnVoidBoltOther	= mod:NewSpecialWarningTarget(108383, mod:IsTank())
+local specWarnVoidBolt		= mod:NewSpecialWarningStack(104849, mod:IsTank(), 2)
+local specWarnVoidBoltOther	= mod:NewSpecialWarningTarget(104849, mod:IsTank())
 local specWarnManaVoid		= mod:NewSpecialWarningSpell(105530, mod:IsManaUser())
 local specWarnPurple		= mod:NewSpecialWarningSpell(104896, mod:IsTank() or mod:IsHealer())
 
 local timerOozesCD			= mod:NewNextTimer(90, "ej3978")
 local timerOozesActive		= mod:NewTimer(7, "timerOozesActive", 16372) -- varies (7.0~8.5)
 local timerOozesReach		= mod:NewTimer(34.5, "timerOozesReach", 16372)
-local timerAcidCD			= mod:NewNextTimer(8.3, 108352)--Green ooze aoe
-local timerSearingCD		= mod:NewNextTimer(6, 108358)--Red ooze aoe
-local timerVoidBoltCD		= mod:NewNextTimer(6, 108383, nil, mod:IsTank())
-local timerVoidBolt			= mod:NewTargetTimer(12, 108383, nil, mod:IsTank() or mod:IsHealer())--Nerfed yet again, its now 12. Good thing dbm timers were already right since i dbm pulls duration from aura heh.
+local timerAcidCD			= mod:NewNextTimer(8.3, 105573)--Green ooze aoe
+local timerSearingCD		= mod:NewNextTimer(6, 105033)--Red ooze aoe
+local timerVoidBoltCD		= mod:NewNextTimer(6, 104849, nil, mod:IsTank())
+local timerVoidBolt			= mod:NewTargetTimer(12, 104849, nil, mod:IsTank() or mod:IsHealer())--Nerfed yet again, its now 12. Good thing dbm timers were already right since i dbm pulls duration from aura heh.
 local timerManaVoid			= mod:NewBuffFadesTimer(4, 105530, nil, mod:IsManaUser())
 local timerDeepCorruption	= mod:NewBuffFadesTimer(25, 105171, nil, mod:IsTank() or mod:IsHealer())
 

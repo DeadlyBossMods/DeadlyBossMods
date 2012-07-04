@@ -32,7 +32,7 @@ local warnPillars			= mod:NewAnnounce("WarnPillars", 2, 105311)
 
 local specWarnAssault		= mod:NewSpecialWarningSpell(107851, mod:IsTank())
 local specWarnShattering	= mod:NewSpecialWarningYou(105289, false)
-local specWarnIceLance		= mod:NewSpecialWarningStack(107061, nil, 3)
+local specWarnIceLance		= mod:NewSpecialWarningStack(105316, nil, 3)
 local specWarnFrostTombCast	= mod:NewSpecialWarningSpell(104448, nil, nil, nil, true)
 local specWarnTempest		= mod:NewSpecialWarningSpell(109552, nil, nil, nil, true)
 local specWarnLightingStorm	= mod:NewSpecialWarningSpell(105465, nil, nil, nil, true)

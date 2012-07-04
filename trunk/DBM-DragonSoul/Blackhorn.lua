@@ -28,13 +28,14 @@ mod:RegisterEventsInCombat(
 local warnDrakesLeft				= mod:NewAddsLeftAnnounce("ej4192", 2, 61248)
 local warnHarpoon					= mod:NewTargetAnnounce(108038, 2)
 local warnReloading					= mod:NewCastAnnounce(108039, 2)
-local warnTwilightOnslaught			= mod:NewCountAnnounce(108862, 4)
+local warnTwilightOnslaught			= mod:NewCountAnnounce(107588, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
-local warnRoar						= mod:NewSpellAnnounce(109228, 2)
+local warnRoar						= mod:NewSpellAnnounce(108044, 2)
 local warnTwilightFlames			= mod:NewSpellAnnounce(108051, 3)
+local warnTwilightBreath			= mod:NewSpellAnnounce(110212, 3)
 local warnShockwave					= mod:NewTargetAnnounce(108046, 4)
 local warnSunder					= mod:NewStackAnnounce(108043, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnConsumingShroud			= mod:NewTargetAnnounce(110598)
+local warnConsumingShroud			= mod:NewTargetAnnounce(110214)
 
 local specWarnHarpoon				= mod:NewSpecialWarningTarget(108038, false)
 local specWarnTwilightOnslaught		= mod:NewSpecialWarningSpell(107588, nil, nil, nil, true)
@@ -57,16 +58,16 @@ local timerReloadingCast			= mod:NewCastTimer(10, 108039, nil, mod:IsDps())
 local timerTwilightOnslaught		= mod:NewCastTimer(7, 107588)
 local timerTwilightOnslaughtCD		= mod:NewNextCountTimer(35, 107588)
 local timerSapperCD					= mod:NewNextTimer(40, "ej4200", nil, nil, nil, 107752)
-local timerDegenerationCD			= mod:NewCDTimer(8.5, 109208, nil, mod:IsTank())--8.5-9.5 variation.
+local timerDegenerationCD			= mod:NewCDTimer(8.5, 107558, nil, mod:IsTank())--8.5-9.5 variation.
 local timerBladeRushCD				= mod:NewCDTimer(15.5, 107595)
 local timerBroadsideCD				= mod:NewNextTimer(90, 110153)
-local timerRoarCD					= mod:NewCDTimer(18.5, 109228)--18.5~24 variables
+local timerRoarCD					= mod:NewCDTimer(18.5, 108044)--18.5~24 variables
 local timerTwilightFlamesCD			= mod:NewNextTimer(8, 108051)
 local timerShockwaveCD				= mod:NewCDTimer(23, 108046)
 local timerDevastateCD				= mod:NewCDTimer(8.5, 108042, nil, mod:IsTank())
 local timerSunder					= mod:NewTargetTimer(30, 108043, nil, mod:IsTank() or mod:IsHealer())
-local timerConsumingShroud			= mod:NewCDTimer(30, 110598)
-local timerTwilightBreath			= mod:NewCDTimer(20.5, 110213, nil, mod:IsTank() or mod:IsHealer())
+local timerConsumingShroud			= mod:NewCDTimer(30, 110214)
+local timerTwilightBreath			= mod:NewCDTimer(20.5, 110212, nil, mod:IsTank() or mod:IsHealer())
 
 local countdownTwilightOnslaught	= mod:NewCountdown(35, 107588)
 local berserkTimer					= mod:NewBerserkTimer(240)
@@ -167,7 +168,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(108046) then
 		self:ScheduleMethod(0.2, "ShockwaveTarget")
 		timerShockwaveCD:Start()
-	elseif args:IsSpellID(110210, 110213) then
+	elseif args:IsSpellID(110212, 110213) then
+		warnTwilightBreath:Show()
 		timerTwilightBreath:Start()
 	elseif args:IsSpellID(108039) then
 		warnReloading:Show()
@@ -200,27 +202,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(108038) then
-		-- Sometimes first harpoon bug is not happens. So always igonre 2 harpoons can be broken on first harpooning.
-		-- <not bugged>
-		-- 2/24 20:38:43.901  Sky Captain Swayze yells: All ahead full. Everything depends on our speed! We can't let the Destroyer get away. -- combat start message.
-		-- 2/24 20:39:21.864  SPELL_CAST_START,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:39:21.864  SPELL_CAST_START,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:39:23.779  SPELL_AURA_APPLIED,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DE17000071E9,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF -- 40 sec (first harpooning. not bugged)
-		-- 2/24 20:39:23.779  SPELL_AURA_APPLIED,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DE17000071E9,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
-		-- <bugged>
-		-- 2/24 20:50:11.266  Sky Captain Swayze yells: All ahead full. Everything depends on our speed! We can't let the Destroyer get away. -- combat start message.
-		-- 2/24 20:50:51.379  SPELL_CAST_START,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:50:51.379  SPELL_CAST_START,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:50:51.780  SPELL_CAST_START,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:50:51.780  SPELL_CAST_START,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:50:52.191  SPELL_AURA_REMOVED,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DE17000081F7,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
-		-- 2/24 20:50:52.191  SPELL_AURA_REMOVED,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DE17000081F7,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
-		-- 2/24 20:50:52.191  SPELL_CAST_START,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:50:52.191  SPELL_CAST_START,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0x0000000000000000,nil,0x80000000,0x80000000,108038,"Harpoon",0x1
-		-- 2/24 20:50:53.530  SPELL_AURA_APPLIED,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DE17000081F7,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
-		-- 2/24 20:50:53.530  SPELL_AURA_APPLIED,0xF150DD69000007FC,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DE17000081F7,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
-		-- 2/24 20:50:54.134  SPELL_AURA_APPLIED,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DD0B000081F5,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF -- 42.8 sec (first harpooning)
-		-- 2/24 20:50:54.134  SPELL_AURA_APPLIED,0xF150DD69000008E1,"Skyfire Harpoon Gun",0xa18,0x0,0xF150DD0B000081F5,"Twilight Assault Drake",0xa48,0x0,108038,"Harpoon",0x1,BUFF
 		if self:AntiSpam(5, 1) then -- Use time check for harpooning warning. It can be avoid bad casts also.
 			warnHarpoon:Show(args.destName)
 			specWarnHarpoon:Show(args.destName)
@@ -242,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if DBM.BossHealth:IsShown() then
 			DBM.BossHealth:AddBoss(56427, L.name)
 		end
-	elseif args:IsSpellID(110598, 110214) then
+	elseif args:IsSpellID(110214, 110598) then
 		warnConsumingShroud:Show(args.destName)
 		timerConsumingShroud:Start()
 	end

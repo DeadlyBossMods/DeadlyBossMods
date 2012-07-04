@@ -31,10 +31,10 @@ local warnCataclysm					= mod:NewCastAnnounce(106523, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
 local warnFragments					= mod:NewSpellAnnounce("ej4115", 4, 106708)--This needs a custom spell icon, EJ doesn't have icons for entires that are mobs
 local warnTerror					= mod:NewSpellAnnounce("ej4117", 4, 106765)--This needs a fitting spell icon, trigger spell only has a gear.
-local warnShrapnel					= mod:NewTargetAnnounce(109598, 3, nil, false)
+local warnShrapnel					= mod:NewTargetAnnounce(106794, 3, nil, false)
 local warnParasite					= mod:NewTargetAnnounce(108649, 2)
 local warnUnstableCorruption		= mod:NewCastAnnounce(108813, 4, 10)
-local warnTetanus					= mod:NewStackAnnounce(109605, 4, nil, false)
+local warnTetanus					= mod:NewStackAnnounce(106730, 4, nil, false)
 local warnCongealingBloodSoon		= mod:NewSoonAnnounce("ej4350", 4, 109089)--15%, 10%, 5% on heroic. spellid is 109089.
 
 local specWarnMutated				= mod:NewSpecialWarningSwitch("ej4112", not mod:IsHealer())--Because tanks need to switch to it too.
@@ -46,37 +46,37 @@ local specWarnTentacle				= mod:NewSpecialWarningSwitch("ej4103", mod:IsDps())--
 local specWarnHemorrhage			= mod:NewSpecialWarningSpell(105863, not mod:IsHealer())--Because tanks need to switch to it too.
 local specWarnFragments				= mod:NewSpecialWarningSpell("ej4115", mod:IsDps())--Not a "switch" warning because on normal a lot of groups choose to ignore these if they can burn boss and just pop dream. Let the raid leader decide strat on this one, not DBM.
 local specWarnTerror				= mod:NewSpecialWarningSpell("ej4117")--Same as fragments.
-local specWarnShrapnel				= mod:NewSpecialWarningYou(109598)
+local specWarnShrapnel				= mod:NewSpecialWarningYou(106794)
 local specWarnParasite				= mod:NewSpecialWarningYou(108649)
 local specWarnParasiteDPS			= mod:NewSpecialWarningSpell("ej4347", mod:IsDps())--many raid teams using kalecgos buff. they do not target switch to parasite
 local yellParasite					= mod:NewYell(108649)
 local specWarnCongealingBlood		= mod:NewSpecialWarningSwitch("ej4350", mod:IsDps())--15%, 10%, 5% on heroic. spellid is 109089.
-local specWarnTetanus				= mod:NewSpecialWarningStack(109605, mod:IsTank(), 4)
-local specWarnTetanusOther			= mod:NewSpecialWarningTarget(109605, mod:IsTank())
+local specWarnTetanus				= mod:NewSpecialWarningStack(106730, mod:IsTank(), 4)
+local specWarnTetanusOther			= mod:NewSpecialWarningTarget(106730, mod:IsTank())
 
 local timerMutated					= mod:NewNextTimer(17, "ej4112", nil, nil, nil, 467)--use druid spell Thorns icon temporarily.
 local timerImpale					= mod:NewTargetTimer(49.5, 106400, nil, mod:IsTank() or mod:IsHealer())--45 plus 4 second cast plus .5 delay between debuff ID swap.
 local timerImpaleCD					= mod:NewCDTimer(35, 106400, nil, mod:IsTank() or mod:IsHealer())
 local timerElementiumCast			= mod:NewCastTimer(7.5, 105651)
-local timerElementiumBlast			= mod:NewCastTimer(8, 109600)--8-10 variation depending on where it's actually going to land. Use the min time.
+local timerElementiumBlast			= mod:NewCastTimer(8, 105723)--8-10 variation depending on where it's actually going to land. Use the min time.
 local timerElementiumBoltCD			= mod:NewNextTimer(55.5, 105651)
 local timerHemorrhageCD				= mod:NewCDTimer(100.5, 105863)
 local timerCataclysm				= mod:NewCastTimer(60, 106523)
 local timerCataclysmCD				= mod:NewCDTimer(130.5, 106523)--130.5-131.5 variations
 local timerFragmentsCD				= mod:NewNextTimer(90, "ej4115", nil, nil, nil, 106708)--Gear icon for now til i find something more suitable
 local timerTerrorCD					= mod:NewNextTimer(90, "ej4117", nil, nil, nil, 106765)--^
-local timerShrapnel					= mod:NewBuffFadesTimer(6, 109598)
+local timerShrapnel					= mod:NewBuffFadesTimer(6, 106794)
 local timerParasite					= mod:NewTargetTimer(10, 108649)
 local timerParasiteCD				= mod:NewCDTimer(60, 108649)
 local timerUnstableCorruption		= mod:NewCastTimer(10, 108813)
-local timerTetanus					= mod:NewTargetTimer(6, 109605, nil, mod:IsHealer())
-local timerTetanusCD				= mod:NewCDTimer(3.5, 109605, nil, mod:IsTank())
+local timerTetanus					= mod:NewTargetTimer(6, 106730, nil, mod:IsHealer())
+local timerTetanusCD				= mod:NewCDTimer(3.5, 106730, nil, mod:IsTank())
 
 local berserkTimer					= mod:NewBerserkTimer(900)
 
-local countdownBoltBlast			= mod:NewCountdown(8, 109600)
+local countdownBoltBlast			= mod:NewCountdown(8, 105723)
 local countdownUnstableCorruption	= mod:NewCountdown(10, 108813, false)--Even though not at same time as bolt, 2 countdowns in one fight is always confusing. So off by default for this one since it's more obvious then the bolt one where you can not watch a long cast bar.
-local countdownShrapnel				= mod:NewCountdown(6, 109598, not mod:IsTank())
+local countdownShrapnel				= mod:NewCountdown(6, 106794, not mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)--For heroic parasites, with debuff filtering.
 mod:AddBoolOption("SetIconOnParasite", true)
@@ -86,7 +86,7 @@ local engageCount = 0
 local shrapnelTargets = {}
 local warnedCount = 0
 local hemorrhage = GetSpellInfo(105863)
-local fragment = GetSpellInfo(109568)
+local fragment = GetSpellInfo(106775)
 local activateTetanusTimers = false
 local parasite = EJ_GetSectionInfo(4347)
 local parasiteScan = 0
@@ -201,7 +201,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(105651) then
 		warnElementiumBolt:Show()
 		specWarnElementiumBolt:Show()
-		if not UnitBuff("player", GetSpellInfo(109624)) and not UnitIsDeadOrGhost("player") then--Check for Nozdormu's Presence
+		if not UnitBuff("player", GetSpellInfo(106027)) and not UnitIsDeadOrGhost("player") then--Check for Nozdormu's Presence
 			timerElementiumBlast:Start()
 			countdownBoltBlast:Start()
 			specWarnElementiumBoltDPS:Schedule(10)
@@ -221,7 +221,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerHemorrhageCD:Cancel()--Does this one cancel in event you super overgear this and stomp his ass this fast?
 		timerCataclysm:Cancel()
 		timerCataclysmCD:Cancel()
-	elseif args:IsSpellID(109592, 109593, 106834, 109594) then--Phase 2
+	elseif args:IsSpellID(106834, 109592, 109593, 109594) then--Phase 2
 		warnPhase2:Show()
 		timerFragmentsCD:Start(10.5)
 		timerTerrorCD:Start(35.5)
@@ -275,7 +275,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnTetanus:Show(args.amount)
 			else
-				if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", GetSpellInfo(109603)) then--You have no debuff and not dead
+				if not UnitIsDeadOrGhost("player") and not UnitDebuff("player", GetSpellInfo(106730)) then--You have no debuff and not dead
 					specWarnTetanusOther:Show(args.destName)--So stop being a tool and taunt off other tank who has 4 stacks.
 				end
 			end
@@ -302,6 +302,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
+	elseif args:IsSpellID(106730, 109603, 109604, 109605) then -- Debuffs from adds
+		timerTetanus:Cancel(args.destName)
 	end
 end
 
