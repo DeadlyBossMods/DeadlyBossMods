@@ -34,7 +34,7 @@ local timerFuriousRoar		= mod:NewCDTimer(30, 83710)
 local timerBreathCD			= mod:NewCDTimer(20, 83707)--every 20-25 seconds.
 local timerParalysis		= mod:NewBuffActiveTimer(12, 84030)
 local timerParalysisCD		= mod:NewCDTimer(35, 84030)
-local timerNovaCD			= mod:NewCDTimer(7.2, 86168)--7.2 is actually exact next timer, but since there are other variables like roars, or paralysis that could mis time it, we use CD bar instead so we don't give false idea of precision.
+local timerNovaCD			= mod:NewCDTimer(7.2, 83703)--7.2 is actually exact next timer, but since there are other variables like roars, or paralysis that could mis time it, we use CD bar instead so we don't give false idea of precision.
 local timerMalevolentStrike	= mod:NewTargetTimer(30, 83908, nil, mod:IsTank() or mod:IsHealer())
 
 local berserkTimer			= mod:NewBerserkTimer(360)
