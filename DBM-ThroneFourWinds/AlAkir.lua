@@ -27,7 +27,7 @@ local warnSquallLine		= mod:NewSpellAnnounce(91129, 4)
 local warnWindBurst			= mod:NewSpellAnnounce(87770, 3)
 local warnAdd				= mod:NewSpellAnnounce(88272, 2)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
-local warnAcidRain			= mod:NewCountAnnounce(93281, 2, nil, false)
+local warnAcidRain			= mod:NewCountAnnounce(88301, 2, nil, false)
 local warnFeedback			= mod:NewStackAnnounce(87904, 2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnCloud				= mod:NewSpellAnnounce(89588, 3)
@@ -43,18 +43,17 @@ local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
 local timerAddCD			= mod:NewCDTimer(20, 88272)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
-local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDKorPaly)
+local timerAcidRainStack	= mod:NewNextTimer(15, 88301, nil, isDKorPaly)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 local timerLightningCloudCD	= mod:NewNextTimer(15, 89588)
-local timerLightningStrikeCD= mod:NewCDTimer(10, 93257)
 local timerIceStormCD		= mod:NewCDTimer(25, 88239)
 local timerSquallLineCD		= mod:NewCDTimer(20, 91129)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
 local soundLightningRod		= mod:NewSound(89668)
-local countdownClouds		= mod:NewCountdown(10, 93299, false)
+local countdownClouds		= mod:NewCountdown(10, 89588, false)
 local countdownFeedback		= mod:NewCountdown(20, 87904, false)
 
 mod:AddBoolOption("LightningRodIcon")
@@ -68,8 +67,8 @@ local spamCloud = 0
 local squallName = GetSpellInfo(91129)
 local iceName = GetSpellInfo(88239)
 local stormlingName = GetSpellInfo(88272)
-local acidName = GetSpellInfo(101452)
-local cloudsName = GetSpellInfo(93304)
+local acidName = GetSpellInfo(88290)
+local cloudsName = GetSpellInfo(89639)
 
 function mod:CloudRepeat()
 	self:UnscheduleMethod("CloudRepeat")
@@ -96,7 +95,6 @@ function mod:OnCombatStart(delay)
 	spamStrike = 0
 	berserkTimer:Start(-delay)
 	timerWindBurstCD:Start(20-delay)
-	timerLightningStrikeCD:Start(8.5-delay)
 	timerIceStormCD:Start(6-delay)
 	--Only needed in phase 1
 	self:RegisterShortTermEvents(

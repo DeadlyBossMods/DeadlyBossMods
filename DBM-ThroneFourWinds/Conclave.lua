@@ -31,23 +31,23 @@ local warnNurture			= mod:NewSpellAnnounce(85422, 3)
 local warnSoothingBreeze	= mod:NewTargetAnnounce(86207, 3)	-- using a spellID here with a better description of the spell
 local warnSummonTornados	= mod:NewSpellAnnounce(86192, 3)
 local warnWindBlast			= mod:NewSpellAnnounce(86193, 3)
-local warnStormShield		= mod:NewSpellAnnounce(95865, 3)
+local warnStormShield		= mod:NewSpellAnnounce(93059, 3)
 local warnPoisonToxic	 	= mod:NewSpellAnnounce(86281, 3)
 local warnGatherStrength	= mod:NewTargetAnnounce(86307, 4)
 local warnSpecialSoon		= mod:NewAnnounce("warnSpecialSoon", 2, "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--Hurricane/Sleet Storm/Zephyr in single announce
 local warnSpecial			= mod:NewAnnounce("warnSpecial", 3, "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--Hurricane/Sleet Storm/Zephyr in single announce
 
 local specWarnSpecial		= mod:NewSpecialWarning("specWarnSpecial", nil, nil, nil, true)
-local specWarnIcePatch      = mod:NewSpecialWarningMove(93131)
+local specWarnIcePatch      = mod:NewSpecialWarningMove(86111)
 local specWarnShield		= mod:NewSpecialWarningSpell(95865)
 local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
 
 local timerNurture			= mod:NewNextTimer(35, 85422)--This this is typically 35 seconds after a special has ended.
 local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
-local timerSlicingGale		= mod:NewBuffFadesTimer(45, 93058, nil, false)
+local timerSlicingGale		= mod:NewBuffFadesTimer(45, 93057, nil, false)
 local timerWindBlast		= mod:NewBuffActiveTimer(11.5, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
-local timerStormShieldCD	= mod:NewCDTimer(35, 95865)--Heroic ability, seems to have a 35-40second cd and no longer syncs up to nurture since the windblast change. No longer consistent.
+local timerStormShieldCD	= mod:NewCDTimer(35, 93059)--Heroic ability, seems to have a 35-40second cd and no longer syncs up to nurture since the windblast change. No longer consistent.
 local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
 local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)--is this a CD or a next timer?
@@ -185,7 +185,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
 			timerPermaFrostCD:Start()
 		end
-	elseif args:IsSpellID(84644, 84638, 84643) and self:AntiSpam(3, 4) then
+	elseif args:IsSpellID(84638, 84643, 84644) and self:AntiSpam(3, 4) then
 		warnSpecial:Show()
 		specWarnSpecial:Show()
 		timerSpecialActive:Start()
