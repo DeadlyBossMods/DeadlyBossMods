@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_AURA"
 )
 
-local warnSonarPulse		= mod:NewSpellAnnounce(92411, 3)
+local warnSonarPulse		= mod:NewSpellAnnounce(77672, 3)
 local warnSonicBreath		= mod:NewSpellAnnounce(78075, 3)
 local warnTracking			= mod:NewTargetAnnounce(78092, 4)
 local warnAirphase			= mod:NewAnnounce("WarnAirphase", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
@@ -31,18 +31,18 @@ local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 2, "Interface\\AddOn
 local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 2, 77611)
 local warnAddSoon			= mod:NewAnnounce("warnAddSoon", 3, 92685)
 local warnPhaseShift		= mod:NewSpellAnnounce(92681, 3)
-local warnObnoxious			= mod:NewCastAnnounce(92702, 4, nil, false)
+local warnObnoxious			= mod:NewCastAnnounce(92677, 4, nil, false)
 local warnSearingFlameSoon	= mod:NewSoonAnnounce(77840, 3, nil, false)
 
 local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840, nil, nil, nil, true)
-local specWarnSonarPulse	= mod:NewSpecialWarningSpell(92411, false, nil, nil, true)
+local specWarnSonarPulse	= mod:NewSpecialWarningSpell(77672, false, nil, nil, true)
 local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 local specWarnPestered		= mod:NewSpecialWarningYou(92685)
 local yellPestered			= mod:NewYell(92685, L.YellPestered)
-local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92702, mod:IsMelee())
+local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92677, mod:IsMelee())
 local specWarnAddTargetable	= mod:NewSpecialWarning("specWarnAddTargetable", mod:IsRanged())
 
-local timerSonarPulseCD		= mod:NewCDTimer(10, 92411)
+local timerSonarPulseCD		= mod:NewCDTimer(10, 77672)
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewCDTimer(45, 77840)
 local timerAirphase			= mod:NewTimer(85, "TimerAirphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")--These both need more work

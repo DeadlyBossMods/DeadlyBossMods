@@ -32,7 +32,7 @@ local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3, nil, mod:IsDps())--Wa
 local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3, nil, mod:IsDps())--This one is also disabled on normal.
 local warnFlamingDestruction		= mod:NewSpellAnnounce(81194, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnEmpoweredShadows			= mod:NewSpellAnnounce(81572, 4, nil, mod:IsHealer())
-local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, nil, false)
+local warnCorruptingCrash			= mod:NewTargetAnnounce(81685, 2, nil, false)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2)
 local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
@@ -41,10 +41,10 @@ local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Rang
 local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
 local specWarnWorship				= mod:NewSpecialWarningSpell(91317, false)
 local specWarnEmpoweredShadows		= mod:NewSpecialWarningSpell(81572, mod:IsHealer(), nil, nil, true)
-local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
-local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--^^
-local yellCrash						= mod:NewYell(93178)--^^
-local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177)--On by default cause these things don't get interrupted otherwise. but will only warn if it's target.
+local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(81685)--Subject to accuracy flaws in rare cases but most of the time it's right.
+local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(81685)--^^
+local yellCrash						= mod:NewYell(81685)--^^
+local specWarnDepravity				= mod:NewSpecialWarningInterrupt(81713)--On by default cause these things don't get interrupted otherwise. but will only warn if it's target.
 local specwarnFury					= mod:NewSpecialWarningTarget(82524, mod:IsTank())
 local specwarnFlamingDestruction	= mod:NewSpecialWarningSpell(81194, mod:IsTank())
 
@@ -60,7 +60,7 @@ local timerFlamesOrders				= mod:NewNextTimer(25, 81171, nil, mod:IsDps())--Orde
 local timerShadowsOrders			= mod:NewNextTimer(25, 81556, nil, mod:IsDps())--These are more for dps to switch to them to lower em so useless for normal mode
 local timerFlamingDestructionCD		= mod:NewNextTimer(20, 81194, nil, mod:IsTank() or mod:IsHealer())--Timer for when the special actually goes off (when he absorbs elemental)
 local timerEmpoweredShadowsCD		= mod:NewNextTimer(20, 81572, nil, mod:IsHealer())--^^
-local timerDepravityCD				= mod:NewCDTimer(12, 93177, nil, mod:IsMelee())
+local timerDepravityCD				= mod:NewCDTimer(12, 81713, nil, mod:IsMelee())
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
