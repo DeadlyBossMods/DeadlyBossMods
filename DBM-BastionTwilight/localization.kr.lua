@@ -26,11 +26,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TBwarnWhileBlackout		= "$spell:86788 주문이 시전 중일때도 $spell:92898 경고 보기",
-	TwilightBlastArrow		= "$spell:92898 대상이 근처에 있을 경우 DBM 화살표 보기",
+	TBwarnWhileBlackout		= "$spell:86788 주문이 시전 중일때도 $spell:86369 경고 보기",
+	TwilightBlastArrow		= "$spell:86369 대상이 근처에 있을 경우 DBM 화살표 보기",
 	RangeFrame				= "거리 프레임 보기 (10m)",
-	BlackoutShieldFrame		= "보스 체력 프레임과 $spell:92878의 치유량 바 보기",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	BlackoutShieldFrame		= "보스 체력 프레임과 $spell:86788의 치유량 바 보기",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86788),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
@@ -102,7 +102,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	CorruptingCrashArrow	= "$spell:93178 대상이 근처에 있을 경우 DBM 화살표 보기",
+	CorruptingCrashArrow	= "$spell:81685 대상이 근처에 있을 경우 DBM 화살표 보기",
 	InfoFrame				= "$spell:81701 정보 프레임 보기",
 	RangeFrame				= "$spell:82235 주문의 영항을 받은 경우 거리 프레임 (5m) 보기",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
@@ -144,7 +144,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnDragon       	= "새끼용 등장 알림 보기",
 	WarnOrbSoon			= "구슬 초읽기 알림 보기 (5초 전부터, 1초 마다)\n(예상 경보이며, 정확하지 않을 수 있습니다.)",
-	warnWrackJump		= "$spell:92955 전이 알림 보기",
+	warnWrackJump		= "$spell:89421 전이 알림 보기",
 	warnAggro			= "구슬 생성시 위협 수준이 있는 대상(구슬 예상 대상자) 알림 보기",
 	SpecWarnAggroOnYou	= "구슬 생성시 위협 수준을 획득한 경우 특수 경고 보기\n(구슬 대상자일 가능성이 높습니다.)",
 	SpecWarnOrbs		= "구슬 생성 특수 경고 보기 (예상 경보이며, 정확하지 않을 수 있습니다.)",
