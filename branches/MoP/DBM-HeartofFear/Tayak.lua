@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnTempestSlash					= mod:NewSpellAnnounce(122839, 2)
-local warnOverwhelmingAssault			= mod:NewTargetAnnounce(123474, 3, nil, mod:IsTank() or mod:Ishealer())
+local warnOverwhelmingAssault			= mod:NewTargetAnnounce(123474, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnWindStep						= mod:NewTargetAnnounce(123175, 3)
 local warnUnseenStrike					= mod:NewTargetAnnounce(122949, 4)
 local warnIntensify						= mod:NewStackAnnounce(123471, 2)
@@ -31,7 +31,7 @@ local specWarnStormUnleashed			= mod:NewSpecialWarningSpell(123814, nil, nil, ni
 
 local timerTempestSlashCD				= mod:NewCDTimer(20.5, 122839)
 local timerOverwhelmingAssault			= mod:NewTargetTimer(45, 123474, nil, mod:IsTank())
-local timerOverwhelmingAssaultCD		= mod:NewCDTimer(20.5, 123474, nil, mod:IsTank() or mod:Ishealer())
+local timerOverwhelmingAssaultCD		= mod:NewCDTimer(20.5, 123474, nil, mod:IsTank() or mod:IsHealer())
 local timerWindStepCD					= mod:NewCDTimer(30, 123175)
 local timerUnseenStrikeCD				= mod:NewCDTimer(61, 122949)
 local timerIntensifyCD					= mod:NewCDTimer(60, 123471)
