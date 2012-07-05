@@ -20,7 +20,7 @@ local yellFlyingKick		= mod:NewYell(114487)
 local specWarnFlyingKick	= mod:NewSpecialWarningMove(114487)
 local specWarnFlyingKickNear= mod:NewSpecialWarningClose(114487)
 local specWarnScorchedEarth	= mod:NewSpecialWarningMove(114460)
---local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank()) -- this spell is not dangerous. so maybe not need to warn.
+local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank()) -- Everything is dangerous in challenge mode, entry level heriocs will also be dangerous when they aren't overtuning your gear with an ilvl buff.if its avoidable, you should avoid it, in good practice, to create good habit for challenge modes.
 
 local timerFlyingKickCD		= mod:NewNextTimer(25, 114487)
 local timerFirestormKick	= mod:NewBuffActiveTimer(6, 113764)
@@ -64,6 +64,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFlyingKickCD:Start()
 	elseif args:IsSpellID(114025) then
 		warnBlazingFists:Show()
+		specWarnBlazingFists:Show()
 		timerBlazingFistsCD:Start()
 	end
 end
