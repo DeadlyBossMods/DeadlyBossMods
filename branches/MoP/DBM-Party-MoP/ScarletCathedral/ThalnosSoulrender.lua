@@ -11,20 +11,21 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_SUMMON"
 )
 
 
 local warnEvictSoul				= mod:NewTargetAnnounce(115297, 3)
 local warnRaiseCrusade			= mod:NewSpellAnnounce(115139, 3)
 local warnSummonSpirits			= mod:NewSpellAnnounce(115147, 4)
-local warnEmpowerZombie			= mod:NewSpellAnnounce(115239, 4, 115250)
+local warnEmpowerZombie			= mod:NewSpellAnnounce(115239, 4)
 
 local specWarnFallenCrusader	= mod:NewSpecialWarningSwitch("ej5863", not mod:IsHealer())--Need more data, nots sure if they are meaningful enough to kill or ignore.
 local specWarnEmpoweredSpirit	= mod:NewSpecialWarningSwitch("ej5869", not mod:IsHealer())--These need to die before they become zombies. Cannot see a way in combat log to detect target, i'll have to watch for target scanning next time to warn that player to run away from dead crusaders.
 
-local timerEvictSoul			= mod:NewTargetTimer(6, 116648)
-local timerEvictSoulCD			= mod:NewCDTimer(40, 116648)
+local timerEvictSoul			= mod:NewTargetTimer(6, 115297)
+local timerEvictSoulCD			= mod:NewCDTimer(40, 115297)
 local timerRaiseCrusadeCD		= mod:NewNextTimer(60, 115139)
 local timerSummonSpiritsCD		= mod:NewNextTimer(60, 115147)
 
@@ -57,7 +58,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnRaiseCrusade:Show()
 		specWarnFallenCrusader:Show()
 		timerSummonSpiritsCD:Start(40)
-	elseif args:IsSpellID(115239) then--Empower Zombie (used by empowering Spirits on fallen Crusaders to make them hulking hard hitting zombies)
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(115250) then--Empower Zombie (used by empowering Spirits on fallen Crusaders to make them hulking hard hitting zombies)
 		warnEmpowerZombie:Show()
 	end
 end

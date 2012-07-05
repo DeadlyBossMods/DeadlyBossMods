@@ -14,17 +14,17 @@ mod:RegisterEventsInCombat(
 
 local warnFlyingKick		= mod:NewTargetAnnounce(114487, 3)--This is always followed instantly by Firestorm kick, so no reason to warn both.
 local warnBlazingFists		= mod:NewSpellAnnounce(114807, 3)
-local warnScorchedEarth		= mod:NewCountAnnounce(114460, 3)
+--local warnScorchedEarth		= mod:NewCountAnnounce(114460, 3)--only aoe warn will be enough.
 
 local yellFlyingKick		= mod:NewYell(114487)
 local specWarnFlyingKick	= mod:NewSpecialWarningMove(114487)
 local specWarnFlyingKickNear= mod:NewSpecialWarningClose(114487)
 local specWarnScorchedEarth	= mod:NewSpecialWarningMove(114460)
-local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank())
+--local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank()) -- this spell is not dangerous. so maybe not need to warn.
 
-local timerFlyingKickCD		= mod:NewNextTimer(25, 114021)
+local timerFlyingKickCD		= mod:NewNextTimer(25, 114487)
 local timerFirestormKick	= mod:NewBuffActiveTimer(6, 113764)
-local timerBlazingFistsCD	= mod:NewNextTimer(30, 114025)
+local timerBlazingFistsCD	= mod:NewNextTimer(30, 114807)
 
 mod:AddBoolOption("KickArrow", true)
 
@@ -64,14 +64,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFlyingKickCD:Start()
 	elseif args:IsSpellID(114025) then
 		warnBlazingFists:Show()
-		specWarnBlazingFists:Show()
 		timerBlazingFistsCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(114460) then
-		warnScorchedEarth:Show()
 		self:RegisterShortTermEvents(
 			"SPELL_DAMAGE",
 			"SPELL_MISSED"
