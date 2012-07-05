@@ -1,6 +1,89 @@
 ﻿if GetLocale() ~= "koKR" then return end
 local L
 
+-----------------------
+-- <<<Temple of the Jade Serpent>>> --
+-----------------------
+-----------------------
+-- Wise Mari --
+-----------------------
+L= DBM:GetModLocalization(672)
+
+-----------------------
+-- Lorewalker Stonestep --
+-----------------------
+L= DBM:GetModLocalization(664)
+
+-----------------------
+-- Liu Flameheart --
+-----------------------
+L= DBM:GetModLocalization(658)
+
+-----------------------
+-- Sha of Doubt --
+-----------------------
+L= DBM:GetModLocalization(335)
+
+-----------------------
+-- <<<Stormstout Brewery>>> --
+-----------------------
+-----------------------
+-- Ook-Ook --
+-----------------------
+L= DBM:GetModLocalization(668)
+
+-----------------------
+-- Hoptallus --
+-----------------------
+L= DBM:GetModLocalization(669)
+
+-----------------------
+-- Yan Zhu the Uncasked --
+-----------------------
+L= DBM:GetModLocalization(670)
+
+-----------------------
+-- <<<Shado-Pan Monastery>>> --
+-----------------------
+-----------------------
+-- Gu Cloudstrike --
+-----------------------
+L= DBM:GetModLocalization(673)
+
+-----------------------
+-- Snowdrift --
+-----------------------
+L= DBM:GetModLocalization(657)
+
+L:SetTimerLocalization{
+	TimerTransition		= "Phase transition"
+}
+
+L:SetOptionLocalization{
+	TimerTransition		= "Show time for phase transitions"
+}
+
+L:SetMiscLocalization({
+	Pull		= "If you truly wish to undo what your kind have wrought upon our land you must first prove yourselves here in our school.",
+	Adds1Ended	= "You have bested our most junior of students.  Now you will face two of my most senior.",
+	Adds2Ended	= "You have bested my prize students. Perhaps you can be of use to us after all...",
+	Phase1Ended	= "%s vanishes to the shadows!",
+	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
+})
+
+-----------------------
+-- Sha of Violence --
+-----------------------
+L= DBM:GetModLocalization(685)
+
+-----------------------
+-- Taran Zhu --
+-----------------------
+L= DBM:GetModLocalization(686)
+
+-----------------------
+-- <<<The Gate of the Setting Sun>>> --
+-----------------------
 ---------------------
 -- Kiptilak --
 ---------------------
@@ -30,25 +113,8 @@ L= DBM:GetModLocalization(676)
 L= DBM:GetModLocalization(649)
 
 -----------------------
--- LibraryEvent --
+-- <<<Mogu'Shan Palace>>> --
 -----------------------
-L= DBM:GetModLocalization(664)
-
------------------------
--- Liu Flameheart --
------------------------
-L= DBM:GetModLocalization(658)
-
------------------------
--- Sha of Doubt --
------------------------
-L= DBM:GetModLocalization(335)--This right?
-
------------------------
--- Wise Mari --
------------------------
-L= DBM:GetModLocalization(672)
-
 -----------------------
 -- Gekkan --
 -----------------------
@@ -77,19 +143,12 @@ L:SetMiscLocalization({
 })
 
 -----------------------
+-- <<<Siege of Niuzao Temple>>> --
+-----------------------
+-----------------------
 -- Jinbak --
 -----------------------
 L= DBM:GetModLocalization(693)
-
------------------------
--- Neronok --
------------------------
-L= DBM:GetModLocalization(727)
-
------------------------
--- Pavalak --
------------------------
-L= DBM:GetModLocalization(692)
 
 -----------------------
 -- Vo'jak --
@@ -111,39 +170,18 @@ L:SetMiscLocalization({
 })
 
 -----------------------
--- Durand/High Inquisitor Whitemane --
+-- Pavalak --
 -----------------------
-L= DBM:GetModLocalization(674)
+L= DBM:GetModLocalization(692)
 
 -----------------------
--- Korlof --
+-- Neronok --
 -----------------------
-L= DBM:GetModLocalization(671)
-
-L:SetOptionLocalization({
-	KickArrow	= "Show DBM arrow when $spell:114021 is near you",
-})
+L= DBM:GetModLocalization(727)
 
 -----------------------
--- Thalnos Soulrender --
+-- <<<Scholomance>>> --
 -----------------------
-L= DBM:GetModLocalization(688)
-
------------------------
--- Braun --
------------------------
-L= DBM:GetModLocalization(660)
-
------------------------
--- Flameweaver Koegler --
------------------------
-L= DBM:GetModLocalization(656)
-
------------------------
--- Harlan --
------------------------
-L= DBM:GetModLocalization(654)
-
 -----------------------
 -- Instructor Chillheart --
 -----------------------
@@ -190,71 +228,42 @@ L:SetMiscLocalization{
 	HarshLesson		= "spell:113395"--This is in the emote, shouldn't need localizing, just msg:find
 }
 
+-----------------------
+-- <<<Scarlet Halls>>> --
+-----------------------
+-----------------------
+-- Braun --
+-----------------------
+L= DBM:GetModLocalization(660)
 
 -----------------------
--- Gu Cloudstrike --
+-- Flameweaver Koegler --
 -----------------------
-L= DBM:GetModLocalization(673)
+L= DBM:GetModLocalization(656)
 
 -----------------------
--- Sha of Violence --
+-- Harlan --
 -----------------------
-L= DBM:GetModLocalization(685)
+L= DBM:GetModLocalization(654)
 
 -----------------------
--- Snowdrift --
+-- <<<Scarlet Cathedral>>> --
 -----------------------
-L= DBM:GetModLocalization(657)
-
-L:SetTimerLocalization{
-	TimerTransition		= "Phase transition"
-}
-
-L:SetOptionLocalization{
-	TimerTransition		= "Show time for phase transitions"
-}
-
-L:SetMiscLocalization({
-	Pull		= "If you truly wish to undo what your kind have wrought upon our land you must first prove yourselves here in our school.",
-	Adds1Ended	= "You have bested our most junior of students.  Now you will face two of my most senior.",
-	Adds2Ended	= "You have bested my prize students. Perhaps you can be of use to us after all...",
-	Phase1Ended	= "%s vanishes to the shadows!",
-	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
-})
+-----------------------
+-- Thalnos Soulrender --
+-----------------------
+L= DBM:GetModLocalization(688)
 
 -----------------------
--- Taran Zhu --
+-- Korlof --
 -----------------------
-L= DBM:GetModLocalization(686)
-
------------------------
--- Ook-Ook --
------------------------
-L= DBM:GetModLocalization(668)
-
------------------------
--- Hoptallus --
------------------------
-L= DBM:GetModLocalization(669)
-
------------------------
--- Yan Zhu the Uncasked --
------------------------
-L= DBM:GetModLocalization(670)
-
------------------------
--- Sha of Anger --
------------------------
-L= DBM:GetModLocalization(691)
+L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:119622",
-	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(119622)
+	KickArrow	= "$spell:114487 주문이 근처에 시전된 경우 DBM 화살표 보기",
 })
 
 -----------------------
--- Salyis --
+-- Durand/High Inquisitor Whitemane --
 -----------------------
-L= DBM:GetModLocalization(725)
-
-
+L= DBM:GetModLocalization(674)
