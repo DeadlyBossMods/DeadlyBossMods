@@ -22,18 +22,18 @@ mod:RegisterEventsInCombat(
 
 local warnAdrenaline			= mod:NewStackAnnounce(97238, 3)
 local warnFury					= mod:NewStackAnnounce(97235, 3)
-local warnLeapingFlames			= mod:NewTargetAnnounce(100208, 3)
+local warnLeapingFlames			= mod:NewTargetAnnounce(98476, 3)
 local warnOrbs					= mod:NewCastAnnounce(98451, 4)
 
-local yellLeapingFlames			= mod:NewYell(100208)
+local yellLeapingFlames			= mod:NewYell(98476)
 local specWarnLeapingFlamesCast	= mod:NewSpecialWarningYou(98476)
 local specWarnLeapingFlamesNear	= mod:NewSpecialWarningClose(98476)
-local specWarnLeapingFlames		= mod:NewSpecialWarningMove(100208)
+local specWarnLeapingFlames		= mod:NewSpecialWarningMove(98535)
 local specWarnSearingSeed		= mod:NewSpecialWarningMove(98450)
-local specWarnOrb				= mod:NewSpecialWarningStack(100211, true, 4)
+local specWarnOrb				= mod:NewSpecialWarningStack(98584, true, 4)
 
 local timerOrbActive			= mod:NewBuffActiveTimer(64, 98451)
-local timerOrb					= mod:NewBuffFadesTimer(6, 100211)
+local timerOrb					= mod:NewBuffFadesTimer(6, 98584)
 local timerSearingSeed			= mod:NewBuffFadesTimer(60, 98450)
 local timerNextSpecial			= mod:NewTimer(4, "timerNextSpecial", 97238)--This one stays localized because it's 1 timer used for two abilities
 
@@ -50,7 +50,7 @@ local abilityCount = 0
 local recentlyJumped = false
 local kitty = false
 local targetScansDone = 0
-local leap = GetSpellInfo(100208)
+local leap = GetSpellInfo(98535)
 local swipe = GetSpellInfo(98474)
 local seedsDebuff = GetSpellInfo(98450)
 
