@@ -63,7 +63,7 @@ local shardCount = 0
 local tormentIcon = 8
 local countdownIcon = 2
 local countdownTargets = {}
-local tormentDebuff = GetSpellInfo(99404)
+local tormentDebuff = GetSpellInfo(99257)
 
 local function showCountdownWarning()
 	warnCountdown:Show(table.concat(countdownTargets, "<, >"))
@@ -250,7 +250,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE--Dodge/parried decimation strikes show as SPELL_MISSED
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(99352, 99405) then	--99352 confirmed
+	if args:IsSpellID(99352, 99405) then
 		warnDecimationBlade:Show()
 		specWarnDecimation:Show()
 		timerBladeActive:Start(args.spellName)

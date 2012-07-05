@@ -38,7 +38,7 @@ local timerFragmentCD		= mod:NewNextTimer(22.5, "ej2531", nil, nil, nil, 98136)
 local timerSparkCD			= mod:NewNextCountTimer(22.5, "ej2532", nil, nil, nil, 98552)
 local timerHeatedVolcano	= mod:NewNextTimer(25.5, 98493)
 local timerFlameStomp		= mod:NewNextTimer(30.5, 97282)
-local timerSuperheated		= mod:NewNextTimer(10, 101305)		--Add the 10 second party in later at some point if i remember to actually log it better
+local timerSuperheated		= mod:NewNextTimer(10, 101304)		--Add the 10 second party in later at some point if i remember to actually log it better
 local timerMoltenSpew		= mod:NewNextTimer(6, 98034)		--6secs after Drinking Magma
 local timerMagmaFlowActive	= mod:NewBuffActiveTimer(10, 97225)	--10 second buff volcano has, after which the magma line explodes.
 
