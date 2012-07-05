@@ -62,7 +62,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(195)
 
 L:SetOptionLocalization({
-	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
+	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99947),
 	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
 })
 
@@ -93,7 +93,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Show a duration timer for the active Blade",
 	TimerBladeNext		= "Show a next timer for Decimation/Inferno Blade",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 ",
 	InfoFrame			= "Show info frame for Vital Spark stacks",
 	RangeFrame			= "Show range frame (5) for $spell:99404"
@@ -117,7 +117,7 @@ L:SetOptionLocalization({
 	RangeFrameSeeds				= "Show range frame (12) for $spell:98450",
 	RangeFrameCat				= "Show range frame (10) for $spell:98374",
 	LeapArrow					= "Show DBM arrow when $spell:98476 is near you",
-	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(98476)
 })
 
 --------------
@@ -139,18 +139,17 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnRageRagnarosSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn:format(101109, GetSpellInfo(101109)),
-	warnSplittingBlow			= "Show location warnings for $spell:100877",
 	warnEngulfingFlame			= "Show location warnings for $spell:99171",
 	WarnEngulfingFlameHeroic	= "Show location warnings for $spell:99171 on heroic",
 	warnSeedsLand				= "Show warning/timer for $spell:98520 landing instead of seed casts.",
-	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
+	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100604, GetSpellInfo(100604)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "Show a duration timer for the \"Sons of Flame phase\"",
 	RangeFrame					= "Show range frame",
 	InfoHealthFrame				= "Show info frame for health (<100k hp)",
 	MeteorFrame					= "Show info frame for $spell:99849 targets",
 	AggroFrame					= "Show info frame for players who have no aggro during Molten Elementals",
-	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100460)
 })
 
 L:SetMiscLocalization({

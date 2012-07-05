@@ -29,7 +29,7 @@ mod:SetBossHealthInfo(
 	53695,	L.Rageface
 )
 
-local warnFaceRage				= mod:NewTargetAnnounce(99945, 4)
+local warnFaceRage				= mod:NewTargetAnnounce(99947, 4)
 local warnRage					= mod:NewTargetAnnounce(100415, 3)
 local warnWary					= mod:NewTargetAnnounce(100167, 2, nil, false)
 local warnTears					= mod:NewStackAnnounce(99937, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -42,7 +42,7 @@ local warnPhase2Soon			= mod:NewPrePhaseAnnounce(2, 3)
 
 local specWarnSpear				= mod:NewSpecialWarningSpell(100002, false)
 local specWarnRage				= mod:NewSpecialWarningYou(100415)
-local specWarnFaceRage			= mod:NewSpecialWarningTarget(99945, false)
+local specWarnFaceRage			= mod:NewSpecialWarningTarget(99947, false)
 local specWarnImmTrap			= mod:NewSpecialWarningMove(99839)
 local specWarnImmTrapNear		= mod:NewSpecialWarningClose(99839)
 local yellImmoTrap				= mod:NewYell(99839, nil, false)
@@ -58,7 +58,7 @@ local timerCrystalPrison		= mod:NewTargetTimer(10, 99837)--Dogs Only
 local timerCrystalPrisonCD		= mod:NewCDTimer(25.5, 99836)--Seems consistent timing, other trap is not.
 local timerSpearCD				= mod:NewCDTimer(42, 100002)--Before riplimb dies
 local timerMagmaRuptureCD		= mod:NewCDTimer(15, 99840)--After riplimb dies
-local timerFaceRageCD			= mod:NewCDTimer(27, 99945, nil, false)--Has a 27-30 sec cd but off by default as it's subject to wild variation do to traps.
+local timerFaceRageCD			= mod:NewCDTimer(27, 99947, nil, false)--Has a 27-30 sec cd but off by default as it's subject to wild variation do to traps.
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -205,7 +205,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(100002, 100031) then	--100002 confirmed .. all/right ids?
+	if args:IsSpellID(100002) then
 		warnSpear:Show()--Only valid until rip dies
 		specWarnSpear:Show()
 		timerSpearCD:Start()
@@ -216,7 +216,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(99945, 99947) then--is 99945 even used?, cause my 10 man logs only had 99947 for Spell cast success.
+	if args:IsSpellID(99947) then
 		warnFaceRage:Show(args.destName)
 		specWarnFaceRage:Show(args.destName)
 		timerFaceRageCD:Start()

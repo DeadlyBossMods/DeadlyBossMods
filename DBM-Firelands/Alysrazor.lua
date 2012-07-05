@@ -48,10 +48,9 @@ local timerFirestormCD		= mod:NewCDTimer(83, 100744)--Heroic
 local timerPhaseChange		= mod:NewTimer(33.5, "TimerPhaseChange", 99816)
 local timerHatchEggs		= mod:NewTimer(50, "TimerHatchEggs", 42471)
 local timerNextInitiate		= mod:NewTimer(32, "timerNextInitiate", 61131)
---local timerWingsofFlame		= mod:NewBuffFadesTimer(30, 98619)
 local timerTantrum			= mod:NewBuffActiveTimer(10, 99362, nil, mod:IsTank())
-local timerSatiated			= mod:NewBuffActiveTimer(15, 100852, nil, mod:IsTank())
-local timerBlazingClaw		= mod:NewTargetTimer(15, 101731, nil, false)
+local timerSatiated			= mod:NewBuffActiveTimer(15, 99359, nil, mod:IsTank())
+local timerBlazingClaw		= mod:NewTargetTimer(15, 99844, nil, false)
 
 local countdownFirestorm	= mod:NewCountdown(83, 100744)
 
