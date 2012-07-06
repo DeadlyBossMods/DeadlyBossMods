@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(195)
 
 L:SetOptionLocalization({
-	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
+	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99947),
 	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
 })
 
@@ -94,7 +94,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "활성화된 칼날 유지 시간 바 표시",
 	TimerBladeNext		= "다음 지옥불/학살의 칼날 시전 바 표시",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "$spell:99516 주문의 영향을 받은 경우 DBM 화살표 보기",
 	InfoFrame			= "생기의 불꽃 정보 프레임 보기",
 	RangeFrame			= "$spell:99404 주문의 영향을 받은 경우 거리 프레임 보기 (5m)"
@@ -118,7 +118,7 @@ L:SetOptionLocalization({
 	RangeFrameSeeds			= "$spell:98450 주문의 영향을 받은 경우 거리 프레임 보기 (12m)",
 	RangeFrameCat			= "$spell:98374 일때 거리 프레임 보기 (10m)",
 	LeapArrow				= "$spell:98476 대상이 근처에 있을 경우 DBM 화살표 보기",
-	IconOnLeapingFlames		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
+	IconOnLeapingFlames		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(98476)
 })
 
 --------------
@@ -140,18 +140,18 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnRageRagnarosSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn:format(101109, GetSpellInfo(101109)),
-	warnSplittingBlow			= "$spell:100877 위치 알림 보기",
-	warnEngulfingFlame			= "$spell:99171 알림 보기",
-	WarnEngulfingFlameHeroic	= "영웅 난이도에서 $spell:99171 위치 알림 보기",
+	warnSplittingBlow			= "$spell:98951 위치 알림 보기",
+	warnEngulfingFlame			= "$spell:99171 위치 알림 보기 (일반)",
+	warnEngulfingFlameHeroic	= "$spell:99171 위치 알림 보기 (영웅)",
 	warnSeedsLand				= "$spell:98520 주문이 시전될 때가 아니라 착지되는 시간에 맞는 알림/바 보기",
-	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
+	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100604, GetSpellInfo(100604)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
-	TimerPhaseSons				= "사잇단계 지속 바 표시",
+	TimerPhaseSons				= "사잇단계 지속시간 바 표시",
 	RangeFrame					= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	InfoHealthFrame				= "체력 정보 프레임 보기 (10만 미만)",
 	MeteorFrame					= "$spell:99849 대상 정보 프레임 보기",
-	AggroFrame					= "녹아내린 정령으로 부터 위협수준을 획득하지 않은 대상에 대한 정보 프레임 보기",
-	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	AggroFrame					= "녹아내린 정령에게 위협수준이 없는 대상에 대한 정보 프레임 보기",
+	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100460)
 })
 
 L:SetMiscLocalization({
