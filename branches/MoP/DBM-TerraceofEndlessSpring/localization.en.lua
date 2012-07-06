@@ -16,8 +16,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Sunbeam	= "spell:122789",--This is in the emote, shouldn't need localizing, just msg:find
-	Victory	= "I thank you, strangers. I have been freed."--Boss does not die or cast anything special, this is only way.
+	Sunbeam	= "spell:122789",
+	Victory	= "I thank you, strangers. I have been freed."
 }
 
 
@@ -25,6 +25,18 @@ L:SetMiscLocalization{
 -- Lei Shi --
 -------------------------------
 L= DBM:GetModLocalization(729)
+
+L:SetWarningLocalization({
+	warnHideOver			= "%s has ended"
+})
+
+L:SetOptionLocalization({
+	warnHideOver			= "Show warning when $spell:123244 has ended"
+})
+
+L:SetMiscLocalization{
+	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy."--wtb alternate and less crappy victory event.
+}
 
 
 ----------------------
