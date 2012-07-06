@@ -15,6 +15,11 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(742)
 
+L:SetMiscLocalization{
+	Sunbeam	= "spell:122789",--This is in the emote, shouldn't need localizing, just msg:find
+	Victory	= "I thank you, strangers. I have been freed."--Boss does not die or cast anything special, this is only way.
+}
+
 
 -------------------------------
 -- Lei Shi --
