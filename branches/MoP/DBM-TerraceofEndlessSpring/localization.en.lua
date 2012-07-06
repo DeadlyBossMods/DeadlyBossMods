@@ -5,6 +5,10 @@ local L
 ------------
 L= DBM:GetModLocalization(683)
 
+L:SetOptionLocalization({
+	RangeFrame				= "Show range frame (8) for $spell:117436"
+})
+
 
 ------------
 -- Tsulong --
