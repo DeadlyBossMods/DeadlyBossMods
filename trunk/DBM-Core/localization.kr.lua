@@ -1,6 +1,6 @@
 ﻿if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_SUPPORT				= "안녕하세요. DBM Team입니다. 만약 프로그래밍 또는 언어에 대해 잘 아신다면, DBM Team에 도움을 주실 수 있습니다. 건의/수정 요청 사항이 있다면 루세린-데스윙(everfinale@gmail.com)으로 보내주시면 됩니다. DBM Team에 직접 참가하고 싶다면 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주세요. 단, 영어로 보내셔야 합니다."
+DBM_CORE_NEED_SUPPORT				= "버그/건의사항은 법사세린-아즈샤라(everfinale@gmail.com) 또는 인벤 닉네임 다시날아 로 보내주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주시기 바랍니다."
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 표시되는 창에서 각 보스에 대한 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 경보를 불러오는 중 오류 발생: %s"

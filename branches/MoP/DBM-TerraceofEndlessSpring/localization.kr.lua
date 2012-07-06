@@ -1,10 +1,14 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 local L
 
 ------------
 -- Protectors of the Endless --
 ------------
 L= DBM:GetModLocalization(683)
+
+L:SetOptionLocalization({
+	RangeFrame				= "$spell:117436 주문의 영향을 받은 경우 거리 프레임 표시(8m)"
+})
 
 
 ------------

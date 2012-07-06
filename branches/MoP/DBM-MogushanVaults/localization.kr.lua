@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 local L
 
 ------------

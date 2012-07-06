@@ -8,9 +8,6 @@ mod:SetModelID(41503)--Protector Kaolan, 41502 and 41504 are elders
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-)
-
-mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
