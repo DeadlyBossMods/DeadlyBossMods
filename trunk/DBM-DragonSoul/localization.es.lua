@@ -175,9 +175,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "Mostrar un aviso especial cuando no tengas el debuff de $spell:109454",
-	InfoFrame				= "Mostrar información de jugadores sin $spell:109454",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	SpecWarnTendril			= "Mostrar un aviso especial cuando no tengas el debuff de $spell:105563",
+	InfoFrame				= "Mostrar información de jugadores sin $spell:105563",
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(105490),
 	ShowShieldInfo			= "Mostrar barra de vida del boss con una barra para $spell:105479"
 })
 
