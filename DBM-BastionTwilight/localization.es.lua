@@ -27,11 +27,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TBwarnWhileBlackout		= "Mostrar aviso de $spell:92898 cuando $spell:86788 está activo",
-	TwilightBlastArrow		= "Mostrar flecha cuando $spell:92898 está cerca de ti",
+	TBwarnWhileBlackout		= "Mostrar aviso de $spell:86369 cuando $spell:86788 está activo",
+	TwilightBlastArrow		= "Mostrar flecha cuando $spell:86369 está cerca de ti",
 	RangeFrame				= "Mostrar distancia (10 yardas)",
-	BlackoutShieldFrame		= "Mostrar barra de vida del boss con una barra para $spell:92878",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	BlackoutShieldFrame		= "Mostrar barra de vida del boss con una barra para $spell:86788",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86788),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
@@ -103,7 +103,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:93178 está cerca de ti",
+	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:81685 está cerca de ti",
 	InfoFrame				= "Mostrar información para $spell:81701",
 	RangeFrame				= "Mostrar distancia (5 yardas) para $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
@@ -146,7 +146,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
 	WarnOrbSoon			= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
-	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
+	warnWrackJump		= "Anunciar los objetivos del salto de $spell:89421",
 	warnAggro			= "Anunciar jugadores que tienen Aggro cuando salen Orbes\n(Pueden ser objetivos de orbes)",
 	SpecWarnAggroOnYou	= "Mostrar aviso especial si TU tienes aggro cuando Orbes\n(Puedes ser objetivo de orbes)",
 	SpecWarnOrbs		= "Mostrar aviso especial para $spell:92954\n(Puede ser impreciso.)",
