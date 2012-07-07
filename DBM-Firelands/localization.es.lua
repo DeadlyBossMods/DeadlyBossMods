@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(195)
 
 L:SetOptionLocalization({
-	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
+	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99947),
 	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
 })
 
@@ -94,7 +94,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Mostrar tiempo de duración de la hoja activa",
 	TimerBladeNext		= "Mostrar tiempo para la siguiente hoja",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "Mostrar flecha cuando te afecte $spell:99516 ",
 	InfoFrame		= "Mostrar información de las marcas de Chispa vital",
 	RangeFrame			= "Mostrar distancia (5) para $spell:99404"
@@ -118,7 +118,7 @@ L:SetOptionLocalization({
 	RangeFrameSeeds				= "Mostrar distancia (12) para $spell:98450",
 	RangeFrameCat				= "Mostrar distancia (10) para $spell:98374",
 	LeapArrow					= "Mostrar flecha cuando $spell:98476 está cerca de ti",
-	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(98476)
 })
 
 --------------
@@ -140,18 +140,18 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnRageRagnarosSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn:format(101109, GetSpellInfo(101109)),
-	warnSplittingBlow	= "Mostrar aviso para $spell:100877",
-	warnEngulfingFlame	= "Mostrar aviso para $spell:99171",
+	warnSplittingBlow	= "Mostrar aviso para $spell:98951",
+	warnEngulfingFlame	= "Mostrar aviso para $spell:99171 en normal",
 	WarnEngulfingFlameHeroic	= "Mostrar avisos de localización para $spell:99171 en heroico",
 	warnSeedsLand		= "Mostrar aviso/tiempo para el aterrizaje de $spell:98520 en lugar de los casteos.",
-	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
+	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100604, GetSpellInfo(100604)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons		= "Mostrar tiempo de duración para la fase de \"Hijos de la Llama\"",
 	RangeFrame		= "Mostrar distancia",
 	InfoHealthFrame		= "Mostrar información de vida (<100k de vida)",
 	MeteorFrame			= "Mostrar información de los objetivos de $spell:99849",
 	AggroFrame			= "Mostrar información de jugadores sin aggro durante los Elementales de Magma",
-	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	BlazingHeatIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100460)
 })
 
 L:SetMiscLocalization({

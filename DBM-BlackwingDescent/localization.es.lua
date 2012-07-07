@@ -17,7 +17,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnInferno	= "Mostrar pre-aviso especial para $spell:92190 (~4s)",
+	SpecWarnInferno	= "Mostrar pre-aviso especial para $spell:92154 (~4s)",
 	RangeFrame		= "Mostrar distancia en Fase 2 (5 yardas)"
 
 })
@@ -53,7 +53,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Mostrar tiempo para lanzamiento de $spell:92053",
 	timerArcaneBlowbackCast		= "Mostrar tiempo para lanzamiento de $spell:91879",
-	timerArcaneLockout			= "Mostrar tiempo de silenciamiento de hechizo de $spell:91542",
+	timerArcaneLockout			= "Mostrar tiempo de silenciamiento de hechizo de $spell:79710",
 	timerNefAblity				= "Mostrar tiempo de CoolDown de las habilidades de bufos en heroico",
 	SpecWarnActivated			= "Mostrar aviso especial cuando se activa un nuevo boss",
 	specWarnGenerator			= "Mostrar aviso especial cuando un boss gana $spell:91557",
@@ -96,7 +96,7 @@ L:SetOptionLocalization({
 	TimerPhase		= "Mostrar tiempo para la siguiente fase",	
 	RangeFrame		= "Mostrar distancia (6 yardas) durante la fase azul",
 	SetTextures			= "Desactivar las texturas proyectadas automáticamente en fase oscura\n(se reactivan al cambiar de fase)",
-	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77699),
 	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
@@ -205,16 +205,16 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	OnyTailSwipe		= "Mostrar aviso para el $spell:77827 de Onyxia",
 	NefTailSwipe		= "Mostrar aviso para el $spell:77827 de Nefarian",
-	OnyBreath			= "Mostrar aviso para el $spell:94124 de Onyxia",
-	NefBreath			= "Mostrar aviso para el $spell:94124 de Nefarian",	
+	OnyBreath			= "Mostrar aviso para el $spell:77826 de Onyxia",
+	NefBreath			= "Mostrar aviso para el $spell:77826 de Nefarian",	
 	specWarnCinderMove		= "Mostrar aviso especial para moverte si te afecta\n $spell:79339 (5s antes de la explosión)",	
 	warnShadowblazeSoon		= "Mostrar pre-aviso de cuenta atrás para $spell:81031 (5s before)\n(Solo después que el contador se haya sincronizado para asegurar precisión)",
 	specWarnShadowblazeSoon	= "Mostrar pre-aviso especial para $spell:81031 (~5s)",
 	timerNefLanding		= "Mostrar tiempo para que Nefarian aterrice",
 	OnySwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Onyxia",
 	NefSwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Nefarian",
-	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
-	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
+	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:77826 de Onyxia",
+	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:77826 de Nefarian",
 	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
 	SetWater			= "Desactivar la colisión con el agua automáticamente al pullear\n(se reactiva al abandonar el combate)",
 	TankArrow			= "Mostrar flecha para el kiteador de Guerrero Hueso animado\n(diseñado para estrategia de kiteo)",--npc 41918
