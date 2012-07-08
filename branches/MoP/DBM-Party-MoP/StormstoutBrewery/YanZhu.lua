@@ -26,7 +26,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106651) and args:IsPlayer() and (args.amount or 3) >= 3 and self:AntiSpam() then
+	if args:IsSpellID(106851) and args:IsPlayer() and (args.amount or 3) >= 3 and self:AntiSpam() then
 		specWarnBlackoutBrew:Show()--Basically special warn any time you gain a stack over 3, if stack is nil, then it's initial application and stack count is 3.
 	end
 end

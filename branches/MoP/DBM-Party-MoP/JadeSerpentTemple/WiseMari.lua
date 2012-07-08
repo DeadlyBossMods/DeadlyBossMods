@@ -55,9 +55,9 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
 	if spellId == 115167 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specwarnCorruptingWaters:Show()
+		specwarnCorruptingWaters:Show(spellName)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
