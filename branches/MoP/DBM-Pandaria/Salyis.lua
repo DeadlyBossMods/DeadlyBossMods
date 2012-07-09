@@ -30,8 +30,13 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find(L.CannonBarrage) then
+		warnCannonBarrage:Show()
+		specWarnCannonBarrage:Show()
 		timerCannonBarrage:Start()
 	elseif msg:find(L.Stomp) then
+		warnStomp:Show()
+		warnWarmonger:Schedule(10.5)
+		specWarnWarmonger:Schedule(10.5)
 		timerWarmonger:Start()
 		timerStomp:Start()
 	end
