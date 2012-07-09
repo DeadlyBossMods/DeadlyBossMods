@@ -71,7 +71,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(113682) then
+	if args:IsSpellID(113682) and not args:IsDestTypePlayer() then
 		specWarnQuickenedMind:Show(args.destName)
 --		timerQuickenedMindCD:Start()
 	elseif args:IsSpellID(113641) then--Actual dragons breath buff, don't want to give a dispel warning too early

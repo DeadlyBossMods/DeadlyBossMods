@@ -15,12 +15,12 @@ mod:RegisterEventsInCombat(
 )
 
 local warnHeadbutt				= mod:NewSpellAnnounce(111668, 2)
-local warnScreechingSwarm		= mod:NewTargetAnnounce(111600, 4)
+local warnScreechingSwarm		= mod:NewTargetAnnounce(111600, 4, nil, false)--Can be spam if adds not die.
 local warnBrokenCarapace		= mod:NewSpellAnnounce(107146, 2)--Phase 2
 local warnFixate				= mod:NewTargetAnnounce(111723, 4)
 local warnStomp					= mod:NewCountAnnounce(111728, 3)
 
-local specWarnScreechingSwarm	= mod:NewSpecialWarningDispel(111600, mod:IsHealer())
+local specWarnScreechingSwarm	= mod:NewSpecialWarningDispel(111600, false)--Can be spam if adds not die.
 local specWarnBrokenCarapace	= mod:NewSpecialWarningSpell(107146, mod:IsDps())
 
 local timerHeadbuttCD			= mod:NewNextTimer(33, 111668)

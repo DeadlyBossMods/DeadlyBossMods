@@ -99,7 +99,7 @@ L:SetOptionLocalization{
 L= DBM:GetModLocalization(675)
 
 L:SetMiscLocalization{
-	StaffingRun		= "%s prepares to make a strafing run!"
+	StaffingRun		= "Striker Ga'dok prepares to make a strafing run!"
 }
 
 -----------------------
@@ -237,14 +237,18 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(660)
 
 -----------------------
--- Flameweaver Koegler --
------------------------
-L= DBM:GetModLocalization(656)
-
------------------------
 -- Harlan --
 -----------------------
 L= DBM:GetModLocalization(654)
+
+L:SetMiscLocalization{
+	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!"
+}
+
+-----------------------
+-- Flameweaver Koegler --
+-----------------------
+L= DBM:GetModLocalization(656)
 
 -----------------------
 -- <<<Scarlet Cathedral>>> --
