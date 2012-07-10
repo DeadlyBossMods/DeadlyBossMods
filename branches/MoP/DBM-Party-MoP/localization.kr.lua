@@ -121,7 +121,6 @@ L= DBM:GetModLocalization(649)
 L= DBM:GetModLocalization(708)
 
 L:SetMiscLocalization({
-	Pull		= "만회, 아니, 증명해라. 침입자들을 처치해라. 놈들의 머리를 바치는 부족은 내 총애를 얻을 것이다!",
 	Kuai		= "구르단 부족이 폐하와 권력에 굶주린 너희 애송이들에게 보여주마. 왜 우리가 폐하를 보좌해야 하는지!",
 	Ming		= "하르닥 부족이 왜 모구 최고의 부족인지 보여주마!",
 	Haiyan		= "왜 카게쉬 부족이 왕을 보좌할만한 힘을 가진 유일한 부족인지 보여주겠다!",
