@@ -54,13 +54,13 @@ L= DBM:GetModLocalization(673)
 -----------------------
 L= DBM:GetModLocalization(657)
 
-L:SetTimerLocalization{
+L:SetTimerLocalization({
 	TimerTransition		= "Phase transition"
-}
+})
 
-L:SetOptionLocalization{
+L:SetOptionLocalization({
 	TimerTransition		= "Show time for phase transitions"
-}
+})
 
 L:SetMiscLocalization({
 	Pull		= "If you truly wish to undo what your kind have wrought upon our land you must first prove yourselves here in our school.",
@@ -88,18 +88,18 @@ L= DBM:GetModLocalization(686)
 ---------------------
 L= DBM:GetModLocalization(655)
 
-L:SetOptionLocalization{
+L:SetOptionLocalization({
 	IconOnSabotage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(107268)
-}
+})
 
 -------------
 -- Gadok --
 -------------
 L= DBM:GetModLocalization(675)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	StaffingRun		= "Striker Ga'dok prepares to make a strafing run!"
-}
+})
 
 -----------------------
 -- Rimok --
@@ -115,31 +115,27 @@ L= DBM:GetModLocalization(649)
 -- <<<Mogu'Shan Palace>>> --
 -----------------------
 -----------------------
--- Gekkan --
------------------------
-L= DBM:GetModLocalization(690)
-
------------------------
 -- Trial of Kings --
 -----------------------
 L= DBM:GetModLocalization(708)
 
 L:SetMiscLocalization({
-	Pull		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!",
-	Phase2		= "We will never surrender our right to rule the destiny of our people!",
-	Phase3		= "Our clan is the true clan! No interloper can change that!",
-	Defeat		= "Impossible! Our might is the greatest in all the empire!"
+	Pull		= "Useless, all of you! Even the guards you give me in tribute can't keep these lesser beings from my palace.", -- I can't found enUS locales. This string is not matching with koKR locals.
+	Kuai		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!",
+	Ming		= "",
+	Haiyan		= "",
+	Defeat		= ""
 })
+
+-----------------------
+-- Gekkan --
+-----------------------
+L= DBM:GetModLocalization(690)
 
 -----------------------
 -- Weaponmaster Xin --
 -----------------------
 L= DBM:GetModLocalization(698)
-
-L:SetMiscLocalization({
-	Axes		= "%s activates his Whirlwinding Axe trap!",--Possibly wrong, if the realtext has a link in it(not shown in chat log) it won't be right
-	Blades		= "%s activates his Stream of Blades trap!"--Since both of these are RAID EMOTES and not yells.
-})
 
 -----------------------
 -- <<<Siege of Niuzao Temple>>> --
@@ -196,36 +192,36 @@ L= DBM:GetModLocalization(663)
 -----------------------
 L= DBM:GetModLocalization(665)
 
-L:SetWarningLocalization{
+L:SetWarningLocalization({
 	specWarnGetBoned	= "Get Bone Armor"
-}
+})
 
-L:SetOptionLocalization{
+L:SetOptionLocalization({
 	specWarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
 	InfoFrame			= "Show info frame for players not affected by $spell:113996"
-}
+})
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	PlayerDebuffs	= "No Bone Armor"
-}
+})
 
 -----------------------
 -- Lillian Voss --
 -----------------------
 L= DBM:GetModLocalization(666)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Kill	= "-" -- i can't find en locals. please localize it.
-}
+})
 
 -----------------------
 -- Darkmaster Gandling --
 -----------------------
 L= DBM:GetModLocalization(684)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	HarshLesson		= "spell:113395"--This is in the emote, shouldn't need localizing, just msg:find
-}
+})
 
 -----------------------
 -- <<<Scarlet Halls>>> --
@@ -240,9 +236,9 @@ L= DBM:GetModLocalization(660)
 -----------------------
 L= DBM:GetModLocalization(654)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!"
-}
+})
 
 -----------------------
 -- Flameweaver Koegler --

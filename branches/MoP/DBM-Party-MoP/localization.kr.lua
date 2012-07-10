@@ -55,13 +55,13 @@ L= DBM:GetModLocalization(673)
 -----------------------
 L= DBM:GetModLocalization(657)
 
-L:SetTimerLocalization{
+L:SetTimerLocalization({
 	TimerTransition		= "Phase transition"
-}
+})
 
-L:SetOptionLocalization{
+L:SetOptionLocalization({
 	TimerTransition		= "Show time for phase transitions"
-}
+})
 
 L:SetMiscLocalization({
 	Pull		= "If you truly wish to undo what your kind have wrought upon our land you must first prove yourselves here in our school.",
@@ -89,18 +89,18 @@ L= DBM:GetModLocalization(686)
 ---------------------
 L= DBM:GetModLocalization(655)
 
-L:SetOptionLocalization{
+L:SetOptionLocalization({
 	IconOnSabotage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(107268)
-}
+})
 
 -------------
 -- Gadok --
 -------------
 L= DBM:GetModLocalization(675)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	StaffingRun		= "Striker Ga'dok prepares to make a strafing run!"
-}
+})
 
 -----------------------
 -- Rimok --
@@ -116,31 +116,27 @@ L= DBM:GetModLocalization(649)
 -- <<<Mogu'Shan Palace>>> --
 -----------------------
 -----------------------
--- Gekkan --
------------------------
-L= DBM:GetModLocalization(690)
-
------------------------
 -- Trial of Kings --
 -----------------------
 L= DBM:GetModLocalization(708)
 
 L:SetMiscLocalization({
-	Pull		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!",
-	Phase2		= "We will never surrender our right to rule the destiny of our people!",
-	Phase3		= "Our clan is the true clan! No interloper can change that!",
-	Defeat		= "Impossible! Our might is the greatest in all the empire!"
+	Pull		= "만회, 아니, 증명해라. 침입자들을 처치해라. 놈들의 머리를 바치는 부족은 내 총애를 얻을 것이다!",
+	Kuai		= "구르단 부족이 폐하와 권력에 굶주린 너희 애송이들에게 보여주마. 왜 우리가 폐하를 보좌해야 하는지!",
+	Ming		= "하르닥 부족이 왜 모구 최고의 부족인지 보여주마!",
+	Haiyan		= "왜 카게쉬 부족이 왕을 보좌할만한 힘을 가진 유일한 부족인지 보여주겠다!",
+	Defeat		= "누가 우리 전당에 외부인을 들였지? 하르닥과 카케쉬 부족 놈들이나 이런 배신을 저지를 것이다!"
 })
+
+-----------------------
+-- Gekkan --
+-----------------------
+L= DBM:GetModLocalization(690)
 
 -----------------------
 -- Weaponmaster Xin --
 -----------------------
 L= DBM:GetModLocalization(698)
-
-L:SetMiscLocalization({
-	Axes		= "%s activates his Whirlwinding Axe trap!",--Possibly wrong, if the realtext has a link in it(not shown in chat log) it won't be right
-	Blades		= "%s activates his Stream of Blades trap!"--Since both of these are RAID EMOTES and not yells.
-})
 
 -----------------------
 -- <<<Siege of Niuzao Temple>>> --
@@ -197,36 +193,36 @@ L= DBM:GetModLocalization(663)
 -----------------------
 L= DBM:GetModLocalization(665)
 
-L:SetWarningLocalization{
+L:SetWarningLocalization({
 	specWarnGetBoned	= "뼈 갑옷 클릭!"
-}
+})
 
-L:SetOptionLocalization{
+L:SetOptionLocalization({
 	specWarnGetBoned	= "$spell:113996 효과가 없을 경우 특수 경고 보기",
 	InfoFrame			= "$spell:113996 효과 없음에 대한 정보 프레임 보기"
-}
+})
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	PlayerDebuffs	= "뼈 갑옷 없음"
-}
+})
 
 -----------------------
 -- Lillian Voss --
 -----------------------
 L= DBM:GetModLocalization(666)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Kill	= "죽어라, 강령술사여!"
-}
+})
 
 -----------------------
 -- Darkmaster Gandling --
 -----------------------
 L= DBM:GetModLocalization(684)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	HarshLesson		= "spell:113395"--This is in the emote, shouldn't need localizing, just msg:find
-}
+})
 
 -----------------------
 -- <<<Scarlet Halls>>> --
@@ -241,9 +237,9 @@ L= DBM:GetModLocalization(660)
 -----------------------
 L= DBM:GetModLocalization(654)
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!"
-}
+})
 
 -----------------------
 -- Flameweaver Koegler --
