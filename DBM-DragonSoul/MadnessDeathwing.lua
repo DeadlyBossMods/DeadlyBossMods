@@ -329,10 +329,10 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-	if spellId == 110663 and self:AntiSpam(2, 2) then--Elementium Meteor Transform (apparently this doesn't fire UNIT_DIED anymore, need to use this alternate method)
+	if spellId == 110663 and self:AntiSpam(2, 3) then--Elementium Meteor Transform (apparently this doesn't fire UNIT_DIED anymore, need to use this alternate method)
 		self:SendSync("BoltDied")--Send sync because Elementium bolts do not have a bossN arg, which means event only fires if it's current target/focus.
 	end
-	if spellName == hemorrhage then
+	if spellName == hemorrhage and self:AntiSpam(2, 2) then
 		warnHemorrhage:Show()
 		specWarnHemorrhage:Show()
 	elseif spellId == 105551 and self:AntiSpam(2, 2) then--Spawn Blistering Tentacles
