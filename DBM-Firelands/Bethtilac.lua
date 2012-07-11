@@ -21,9 +21,9 @@ mod:RegisterEventsInCombat(
 local warnSmolderingDevastation		= mod:NewCountAnnounce(99052, 4)--Use count announce, cast time is pretty obvious from the bar, but it's useful to keep track how many of these have been cast.
 local warnWidowKiss					= mod:NewTargetAnnounce(99476, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2, 3)
-local warnFixate					= mod:NewTargetAnnounce(99559, 4)--Heroic ability
+local warnFixate					= mod:NewTargetAnnounce(99526, 4)--Heroic ability
 
-local specWarnFixate				= mod:NewSpecialWarningYou(99559)
+local specWarnFixate				= mod:NewSpecialWarningYou(99526)
 local specWarnTouchWidowKiss		= mod:NewSpecialWarningYou(99476)
 local specWarnSmolderingDevastation	= mod:NewSpecialWarningSpell(99052)
 local specWarnVolatilePoison		= mod:NewSpecialWarningMove(99278)--Heroic ability
@@ -35,7 +35,7 @@ local timerDrone					= mod:NewNextTimer(60, "ej2773", nil, nil, nil, 28866)
 local timerSmolderingDevastationCD	= mod:NewNextCountTimer(90, 99052)
 local timerEmberFlareCD				= mod:NewNextTimer(6, 98934)
 local timerSmolderingDevastation	= mod:NewCastTimer(8, 99052)
-local timerFixate					= mod:NewTargetTimer(10, 99559)
+local timerFixate					= mod:NewTargetTimer(10, 99526)
 local timerWidowsKissCD				= mod:NewCDTimer(32, 99476, nil, mod:IsTank() or mod:IsHealer())
 local timerWidowKiss				= mod:NewTargetTimer(23, 99476, nil, mod:IsTank() or mod:IsHealer())
 
