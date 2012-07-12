@@ -172,9 +172,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "Zeige Spezialwarnung, falls dir der $spell:109454 Buff fehlt",
-	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:109454",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	SpecWarnTendril			= "Zeige Spezialwarnung, falls dir der $spell:105563 Buff fehlt",
+	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:105563",
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(105490),
 	ShowShieldInfo			= "Zeige Lebensanzeige mit einem Balken für $spell:105479"
 })
 

@@ -19,7 +19,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnInferno	= "Zeige Spezialvorwarnung für $spell:92190 (~4s)",
+	SpecWarnInferno	= "Zeige Spezialvorwarnung für $spell:92154 (~4s)",
 	RangeFrame		= "Zeige Abstandsfenster in Phase 2 (5m)"
 })
 
@@ -54,7 +54,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Zeige Zeit bis $spell:92048 gewirkt wird",
 	timerArcaneBlowbackCast		= "Zeige Zeit bis $spell:91879 gewirkt wird",
-	timerArcaneLockout			= "Zeige Zeit, in der $spell:91542 nicht gewirkt werden kann",
+	timerArcaneLockout			= "Zeige Zeit, in der $spell:79710 nicht gewirkt werden kann",
 	timerNefAblity				= "Zeige Abklingzeit für heroische Fähigkeitsverbesserungen",
 	SpecWarnActivated			= "Zeige Spezialwarnung, wenn ein neuer Boss aktiviert wird",
 	specWarnGenerator			= "Zeige Spezialwarnung, wenn ein Boss von $spell:91557 profitiert",
@@ -97,7 +97,7 @@ L:SetOptionLocalization({
 	TimerPhase			= "Zeige Zeit bis nächste Phase",
 	RangeFrame			= "Zeige Abstandsfenster (6m) während der blauen Phase",
 	SetTextures			= "Automatische Deaktivierung der Grafikeinstellung 'Projizierte Texturen' in\nder dunklen Phase (wird nach Verlassen der Phase autom. wieder aktiviert)",
-	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77699),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
@@ -212,16 +212,16 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	OnyTailSwipe			= "Zeige Warnung für Onyxias $spell:77827",
 	NefTailSwipe			= "Zeige Warnung für Nefarians $spell:77827",
-	OnyBreath				= "Zeige Warnung für Onyxias $spell:94124",
-	NefBreath				= "Zeige Warnung für Nefarians $spell:94124",
+	OnyBreath				= "Zeige Warnung für Onyxias $spell:77826",
+	NefBreath				= "Zeige Warnung für Nefarians $spell:77826",
 	specWarnCinderMove		= "Zeige Spezialwarnung zum Weglaufen, wenn du von $spell:79339\nbetroffen bist (5s vor Explosion)",
 	warnShadowblazeSoon		= "Zeige Vorwarnungscountdown für $spell:81031 (5s zuvor)\n(aus Genauigkeitsgründen erst nach Synchronisierung mit erstem Ausruf)",
 	specWarnShadowblazeSoon	= "Zeige Spezialvorwarnung für $spell:81031 (aus Genauigkeits-\ngründen zu Beginn 5s Vorwarnung, 1s Vorwarnung nach erstem Ausruf)",
 	timerNefLanding			= "Zeige Zeit bis Nefarian landet",
 	OnySwipeTimer			= "Zeige Abklingzeit für Onyxias $spell:77827",
 	NefSwipeTimer			= "Zeige Abklingzeit für Nefarians $spell:77827",
-	OnyBreathTimer			= "Zeige Abklingzeit für Onyxias $spell:94124",
-	NefBreathTimer			= "Zeige Abklingzeit für Nefarians $spell:94124",
+	OnyBreathTimer			= "Zeige Abklingzeit für Onyxias $spell:77826",
+	NefBreathTimer			= "Zeige Abklingzeit für Nefarians $spell:77826",
 	InfoFrame				= "Zeige Infofenster für Onyxias Elektrische Aufladung",
 	SetWater				= "Automatische Deaktivierung der Kameraeinstellung 'Wasserkollision' bei\nKampfbeginn (wird nach Kampfende automatisch wieder aktiviert)",
 	TankArrow				= "Zeige DBM-Pfeil für den Kiter von 'Belebter Knochenkrieger'\n(abgestimmt auf eine Kiter-Taktik)",--npc 41918
