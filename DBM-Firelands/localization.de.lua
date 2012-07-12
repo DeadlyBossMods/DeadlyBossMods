@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(195)
 
 L:SetOptionLocalization({
-	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99945),
+	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99947),
 	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
 })
 
@@ -94,7 +94,7 @@ L:SetOptionLocalization({
 	TimerBladeActive	= "Dauer der aktiven Klinge anzeigen",
 	TimerBladeNext		= "Zeit bis nächste $spell:99352 / $spell:99350 anzeigen",
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
-	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100232),
+	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "Zeige DBM-Pfeil, wenn du von $spell:99516 betroffen bist",
 	InfoFrame			= "Zeige Infofenster für $spell:99262 Stapel",
 	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:99404"
@@ -118,7 +118,7 @@ L:SetOptionLocalization({
 	RangeFrameSeeds				= "Zeige Abstandsfenster (12m) für $spell:98450",
 	RangeFrameCat				= "Zeige Abstandsfenster (10m) für $spell:98374",
 	LeapArrow					= "Zeige DBM-Pfeil, falls $spell:98476 nahe bei dir ist",
-	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100208)
+	IconOnLeapingFlames			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(98476)
 })
 
 --------------
@@ -140,18 +140,18 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnRageRagnarosSoon		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn:format(101109, GetSpellInfo(101109)),
-	warnSplittingBlow			= "Zeige Warnungen für Position des $spell:100877",
-	warnEngulfingFlame			= "Zeige Warnungen für Position der $spell:99171",
-	WarnEngulfingFlameHeroic	= "Zeige Warnungen für Position der $spell:99171 auf Heroisch",
+	warnSplittingBlow			= "Zeige Warnungen für Position des $spell:98951",
+	warnEngulfingFlame			= "Zeige Warnungen für Position der $spell:99171 auf Normal",
+	warnEngulfingFlameHeroic	= "Zeige Warnungen für Position der $spell:99171 auf Heroisch",
 	warnSeedsLand				= "Zeige Warnung/Timer für Landung der $spell:98520\n(anstatt Erzeugung)",
-	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100997, GetSpellInfo(100997)),
+	warnEmpoweredSulf			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast:format(100604, GetSpellInfo(100604)),
 	timerRageRagnaros			= DBM_CORE_AUTO_TIMER_OPTIONS.cast:format(101109, GetSpellInfo(101109)),
 	TimerPhaseSons				= "Dauer des Phasenübergangs (\"Söhne der Flamme\") anzeigen",
 	RangeFrame					= "Zeige Abstandsfenster",
 	InfoHealthFrame				= "Zeige Infofenster für Gesundheit (<100k Lebenspunkte)",
 	MeteorFrame					= "Zeige Infofenster für Ziele von $spell:99849",
 	AggroFrame					= "Zeige Infofenster für Spieler, die keine Aggro während Geschmolzene Elementare haben",
-	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100983)
+	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100460)
 })
 
 L:SetMiscLocalization({
