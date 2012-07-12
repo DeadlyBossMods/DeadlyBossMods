@@ -26,11 +26,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TBwarnWhileBlackout		= "Warne auch bei aktivem $spell:86788 vor $spell:92898",
-	TwilightBlastArrow		= "Zeige DBM-Pfeil, falls $spell:92898 in deiner Nähe ist",
+	TBwarnWhileBlackout		= "Warne auch bei aktivem $spell:86788 vor $spell:86369",
+	TwilightBlastArrow		= "Zeige DBM-Pfeil, falls $spell:86369 in deiner Nähe ist",
 	RangeFrame				= "Zeige Abstandsfenster (10m)",
-	BlackoutShieldFrame		= "Zeige Lebensanzeige mit einem Balken für $spell:92878",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	BlackoutShieldFrame		= "Zeige Lebensanzeige mit einem Balken für $spell:86788",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86788),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
@@ -102,7 +102,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	CorruptingCrashArrow	= "Zeige DBM-Pfeil, falls $spell:93178 nahe bei dir ist",
+	CorruptingCrashArrow	= "Zeige DBM-Pfeil, falls $spell:81685 nahe bei dir ist",
 	InfoFrame				= "Zeige Infofenster für $spell:81701",
 	RangeFrame				= "Zeige Abstandsfenster (5m) für $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
@@ -144,7 +144,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnDragon			= "Zeige Warnung, wenn Zwielichtwelpen erscheinen",
 	WarnOrbSoon			= "Zeige Vorwarnung für Schattenkugeln (5s zuvor, sekündlich)\n(voraussichtlich, kann ungenau sein, kann spammen)",
-	warnWrackJump		= "Verkünde Sprungziele von $spell:92955 ",
+	warnWrackJump		= "Verkünde Sprungziele von $spell:89421",
 	warnAggro			= "Verkünde Spieler mit Aggro, wenn Schattenkugeln erscheinen\n(mögliches Ziel der Schattenkugeln)",
 	SpecWarnAggroOnYou	= "Zeige Spezialwarnung, falls du Aggro hast, wenn Schattenkugeln\nerscheinen (mögliches Ziel der Schattenkugeln)",
 	SpecWarnOrbs		= "Zeige Spezialwarnung, wenn Schattenkugeln erscheinen (voraussichtlich)",
