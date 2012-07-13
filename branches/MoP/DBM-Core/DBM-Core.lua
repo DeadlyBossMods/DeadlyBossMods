@@ -3460,19 +3460,6 @@ function bossModPrototype:AntiSpam(time, id)
 	end
 end
 
-local function getTalentpointsSpent(spellID)
-	local spellName = GetSpellInfo(spellID)
-	for tabIndex=1, GetNumTalentTabs() do
-		for talentID=1, GetNumTalents(tabIndex) do
-			local name, _, _, _, spent = GetTalentInfo(tabIndex, talentID)
-			if(name == spellName) then
-				return spent
-			end
-		end
-	end
-	return 0
-end
-
 --Simple talent checker.
 --It checks for key skills in spellbook, without having to do in dept talent point checks.
 
