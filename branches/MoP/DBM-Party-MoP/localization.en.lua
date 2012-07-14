@@ -80,6 +80,10 @@ L= DBM:GetModLocalization(685)
 -----------------------
 L= DBM:GetModLocalization(686)
 
+L:SetMiscLocalization({
+	Defeat		= "No... NO!"
+})
+
 -----------------------
 -- <<<The Gate of the Setting Sun>>> --
 -----------------------
