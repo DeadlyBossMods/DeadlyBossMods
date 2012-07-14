@@ -13,7 +13,7 @@ mod:RegisterCombat("yell", L.Kuai, L.Ming, L.Haiyan)--Pull boss off first group 
 mod:RegisterKill("yell", L.Defeat)--Defeat off first line said after all are defeated.
 --6/6 21:19:55.375  You are now saved to this instance
 --6/6 21:19:58.324  Kuai the Brute yells: Who allowed these outsiders inside our halls? Only Clan Harthak or Clan Kargesh would stoop to such treachery!
-mod:SetWipeTime(20)--Based on data, phase transitions are 10-16 seconds, 20 should be enough, but can raise if needed.
+mod:SetWipeTime(30)--Based on data, phase transitions are 10-16 seconds, 20 should be enough, but can raise if needed.
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
