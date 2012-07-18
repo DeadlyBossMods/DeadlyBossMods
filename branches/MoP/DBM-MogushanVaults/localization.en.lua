@@ -51,3 +51,11 @@ L = DBM:GetModLocalization(726)
 ------------
 L= DBM:GetModLocalization(677)
 
+L:SetMiscLocalization({
+	Pull		= "Destroying the pipes leaks |cFFFF0000|Hspell:116779|h[Titan Gas]|h|r into the room!",--Emote
+	Rage		= "The Emperor's Rage echoes through the hills.",--Yell
+	Strength	= "The Emperor's Strength appears in the alcoves!",--Emote
+	Courage		= "The Emperor's Courage appears in the alcoves!",--Emote
+	Boss		= "Two titanic constructs appear in the large alcoves!"--Emote
+})
+

@@ -2305,7 +2305,7 @@ do
 		return self:FilterRaidBossEmote(msg, ...)
 	end
 	
-	function DBM:RAID_BOSS_EMOTE(msg, ...)--In 4.2 CHAT_MSG_ is removed from it, when patch launches we can delete the above prototype
+	function DBM:RAID_BOSS_EMOTE(msg, ...)--This is a mirror of above prototype only it has less args, both still exist for some reason.
 		onMonsterMessage("emote", msg)
 		return self:FilterRaidBossEmote(msg, ...)
 	end
