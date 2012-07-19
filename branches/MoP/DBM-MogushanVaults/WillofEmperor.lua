@@ -31,10 +31,10 @@ local warnSpark					= mod:NewCountAnnounce("ej5674", 3)--Probably not very accur
 local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
-local warnArcLeft				= mod:NewSpellAnnounce(116968, 3, nil, false)--Mostly informative, we cannot detect cast starts, only cast finishes, which is basically too late to pre warn :\
-local warnArcRight				= mod:NewSpellAnnounce(116971, 3, nil, false)
-local warnArcCenter				= mod:NewSpellAnnounce(116968, 4, nil, false)
-local warnStomp					= mod:NewSpellAnnounce(116969, 4, nil, false)
+local warnArcLeft				= mod:NewCountAnnounce(116968, 3, nil, false)--Mostly informative, we cannot detect cast starts, only cast finishes, which is basically too late to pre warn :\
+local warnArcRight				= mod:NewCountAnnounce(116971, 3, nil, false)
+local warnArcCenter				= mod:NewCountAnnounce(116968, 4, nil, false)
+local warnStomp					= mod:NewCountAnnounce(116969, 4, nil, false)
 
 --Rage
 local specWarnFocusedAssault	= mod:NewSpecialWarningYou(116525, false)
@@ -62,10 +62,12 @@ local timerComboCD				= mod:NewNextTimer(19.2, "ej5672")--20 seconds after last 
 
 local comboWarned = false
 local sparkCount = 0
+local comboCount = 0
 
 function mod:OnCombatStart(delay)
 	comboWarned = false
 	sparkCount = 0
+	comboCount = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -108,14 +110,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnEnergizingSmash:Show()
 --		specWarnEnergizingSmash:Show()
 	elseif spellId == 116968 and self:AntiSpam(2, 2) then--Arc Left
-		warnArcLeft:Show()
+		comboCount = comboCount + 1
+		warnArcLeft:Show(comboCount)
 	elseif spellId == 116971 and self:AntiSpam(2, 3) then--Arc Right
-		warnArcRight:Show()
+		comboCount = comboCount + 1
+		warnArcRight:Show(comboCount)
 	elseif spellId == 116972 and self:AntiSpam(2, 4) then--Arc Center
-		warnArcCenter:Show()
+		comboCount = comboCount + 1
+		warnArcCenter:Show(comboCount)
 --		specWarnArcCenter:Show()
 	elseif spellId == 116969 and self:AntiSpam(2, 5) then--Stomp
-		warnStomp:Show()
+		comboCount = comboCount + 1
+		warnStomp:Show(comboCount)
 --		specWarnStomp:Show()
 
 	--Not most accurate way to detect sparks, as both depend on SOMEONE in raid to be targeting the mob creating spark, or the spark that's dying.
@@ -162,6 +168,7 @@ function mod:UNIT_POWER(uId)
 		comboWarned = true
 	elseif (self:GetUnitCreatureId(uId) == 60399 or self:GetUnitCreatureId(uId) == 60400) and UnitPower(uId) == 1 then
 		comboWarned = false
+		comboCount = 0
 		timerComboCD:Start()
 	end
 end
