@@ -60,14 +60,27 @@ local timerCourageActivates		= mod:NewNextTimer(13, "ej5676", 116778)
 local timerBossesActivates		= mod:NewNextTimer(103.2, "ej5726", 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
 local timerComboCD				= mod:NewNextTimer(19.2, "ej5672")--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
 
+mod:AddBoolOption("InfoFrame", false)
+
 local comboWarned = false
 local sparkCount = 0
 local comboCount = 0
+local focusedAssault = GetSpellInfo(116525)
 
 function mod:OnCombatStart(delay)
 	comboWarned = false
 	sparkCount = 0
 	comboCount = 0
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(focusedAssault)
+		DBM.InfoFrame:Show(10, "playerbaddebuff", 116525)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)

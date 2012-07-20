@@ -53,3 +53,10 @@ L= DBM:GetModLocalization(737)
 ------------
 L= DBM:GetModLocalization(743)
 
+L:SetOptionLocalization({
+	InfoFrame		= "Show info frame for players affected by $spell:125390"
+})
+
+L:SetMiscLocalization({
+	PlayerDebuffs	= "Fixated"
+})
