@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(743, "DBM-HeartofFear", nil, 330)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(62837)
+mod:SetCreatureID(62837)--62847 Dissonance Field, 63591 Kor'thik Reaver, 63589 Set'thik Windblade
 mod:SetModelID(42730)
 mod:SetZone()
 
@@ -20,15 +20,17 @@ local warnScreech				= mod:NewSpellAnnounce(123735, 3)
 local warnCryOfTerror			= mod:NewTargetAnnounce(123788, 3, nil, mod:IsHealer())
 local warnEyes					= mod:NewStackAnnounce(123707, 2, nil, mod:IsTank())
 local warnRetreat				= mod:NewSpellAnnounce(125098, 4)
+local warnAdvance				= mod:NewSpellAnnounce(125304, 4)
 
 local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 4)
 local specWarnEyesOther			= mod:NewSpecialWarningTarget(123707, mod:IsTank())
 local specWarnRetreat			= mod:NewSpecialWarningSpell(125098, nil, nil, nil, true)
+local specWarnAdvance			= mod:NewSpecialWarningSpell(125304, nil, nil, nil, true)
 
 local timerScreechCD			= mod:NewNextTimer(7, 123735)
 local timerCryOfTerror			= mod:NewTargetTimer(20, 123788, nil, mod:IsHealer())
 local timerCryOfTerrorCD		= mod:NewNextTimer(25, 123788, nil, mod:IsHealer())
---local timerPhase1				= mod:NewTimer(120, "Return")
+local timerPhase1				= mod:NewTimer(157.4, 125304)
 local timerPhase2				= mod:NewNextTimer(152, 125098)
 
 function mod:OnCombatStart(delay)
@@ -37,7 +39,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(123735) then
+	if args:IsSpellID(123707) then
 		warnEyes:Show(args.destName, args.amount or 1)
 --		timerEyes:Start(args.destName)
 		if args:IsPlayer() and (args.amount or 1) >= 4 then--MUSt get other tank to taunt at 4 stacks at latest
@@ -62,7 +64,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(123707) then
+	if args:IsSpellID(123735) then
 		warnScreech:Show()
 		timerScreechCD:Start()
 	end
@@ -74,6 +76,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerCryOfTerrorCD:Cancel()
 		warnRetreat:Show()
 		specWarnRetreat:Show()
---		timerPhase1:Start()
+		timerPhase1:Start()
+	elseif spellId == 125304 and self:AntiSpam(2, 1) then
+		timerPhase1:Cancel()--If you kill everything it should end early.
+		warnAdvance:Show()
+		specWarnAdvance:Show()
+		timerPhase2:Start()--Assumed same as pull
 	end
 end
