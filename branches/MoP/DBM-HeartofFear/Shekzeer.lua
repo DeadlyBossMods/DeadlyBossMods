@@ -13,10 +13,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local warnEyes					= mod:NewStackAnnounce(123707, 3, nil, mod:IsTank())
+local warnEyes					= mod:NewStackAnnounce(123707, 4, nil, mod:IsTank())
 
-local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 3)
-local specWarnEyesOther			= mod:NewSpecialWarningTarget(123707, mod:IsTank())
+local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 4)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123707) then
