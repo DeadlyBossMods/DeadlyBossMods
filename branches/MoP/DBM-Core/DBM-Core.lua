@@ -2682,17 +2682,21 @@ function DBM:OnMobKill(cId, synced)
 end
 
 function DBM:GetCurrentInstanceDifficulty()
-	local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo()
-	if IsPartyLFG() and IsInLFGDungeon() and difficulty == 2 and instanceType == "raid" and maxPlayers == 25 then
-		return "lfr25"
-	elseif difficulty == 1 then
-		return instanceType == "raid" and "normal10" or "normal5"
+	local _, _, difficulty = GetInstanceInfo()
+	if difficulty == 1 then
+		return "normal5"
 	elseif difficulty == 2 then
-		return instanceType == "raid" and "normal25" or "heroic5"
+		return "heroic5"
 	elseif difficulty == 3 then
-		return "heroic10"
+		return "normal10"
 	elseif difficulty == 4 then
+		return "normal25"
+	elseif difficulty == 5 then
+		return "heroic10"
+	elseif difficulty == 6 then
 		return "heroic25"
+	elseif difficulty == 7 then
+		return "lfr25"
 	elseif difficulty == 8 then
 		return "challenge5"
 	else
