@@ -2,11 +2,177 @@ local mod	= DBM:NewMod(689, "DBM-MogushanVaults", nil, 317)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(12345)	-- Needs to be changed
+mod:SetCreatureID(60009)--60781 Soul Fragment
 mod:SetModelID(41192)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_SUCCESS",
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
+
+--Fire/Spear
+local warnFlamingSpear				= mod:NewStackAnnounce(116942, 3, nil, mod:IsTank())
+local warnWildSpark					= mod:NewTargetCountAnnounce(116784, 4)
+local yellWildSpark					= mod:NewYell(116784)
+local warnDrawFlame					= mod:NewSpellAnnounce(116711, 4)
+
+--Arcane/Staff
+local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
+local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
+
+--Nature/Fist
+local warnEpicenter					= mod:NewSpellAnnounce(116018, 4)
+--Missing other ability entirely, cannot drycode it either, way too many spellids for it, no idea what's right.
+
+--Shadow/Shield (Heroic Only)
+local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
+local warnSiphoningShield			= mod:NewSpellAnnounce(117203, 4)
+
+--Fire/Spear
+local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 4)
+local specWarnFlamingSpearOther		= mod:NewSpecialWarningTarget(116942, mod:IsTank())
+local specWarnWildSpark				= mod:NewSpecialWarningYou(116784)
+local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, true)
+
+--Arcane/Staff
+local specWarnArcaneResonance		= mod:NewSpecialWarningYou(116417)
+local yellArcaneResonance			= mod:NewYell(116417)
+local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, true)
+
+--Nature/Fist
+local specWarnEpicenter				= mod:NewSpecialWarningRun(116018, nil, nil, nil, true)
+
+--Shadow/Shield (Heroic Only)
+local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
+
+--Fire/Spear
+local timerFlamingSpear				= mod:NewTargetTimer(20, 116942, nil, mod:IsTank())
+local timerFlamingSpearCD			= mod:NewCDTimer(8, 116942, nil, mod:IsTank())--8-11second variation, usually 10 though.
+local timerWildSpark				= mod:NewTargetTimer(5, 116784)
+local timerDrawFlame				= mod:NewBuffActiveTimer(6, 116711)
+local timerDrawFlameCD				= mod:NewNextTimer(30, 116711)--30 seconds after last ended.
+
+--Arcane/Staff
+local timerArcaneResonanceCD		= mod:NewCDTimer(15, 116417)--CD is also duration, it's just cast back to back to back.
+local timerArcaneVelocityCD			= mod:NewCDTimer(22, 116364)--22 seconds after last ended.
+
+--Nature/Fist
+--local timerEpicenterCD			= mod:NewCDTimer(22, 116018)--Unknown, failed to log this phase by mistake.
+
+--Shadow/Shield (Heroic Only)
+local timerChainsOfShadowCD			= mod:NewCDTimer(6, 118783, nil, false)--6-10sec variation noted
+local timerSiphoningShieldCD		= mod:NewCDTimer(45, 117203)--45-50sec variation noted
+
+local soundEpicenter				= mod:NewSound(116018)
+
+local sparkCount = 0
+local fragmentCount = 5
+
+function mod:OnCombatStart(delay)
+	sparkCount = 0
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(116942) then
+		warnFlamingSpear:Show(args.destName, args.amount or 1)
+		timerFlamingSpear:Start(args.destName)
+		timerFlamingSpearCD:Start()
+		if args:IsPlayer() and (args.amount or 1) >= 3 then
+			specWarnFlamingSpear:Show(args.amount)
+		else
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(116942)) and not UnitIsDeadOrGhost("player") then
+				specWarnFlamingSpearOther:Show(args.destName)
+			end
+		end
+	elseif args:IsSpellID(116784) then
+		sparkCount = sparkCount + 1
+		warnWildSpark:Show(sparkCount, args.destName)
+		timerWildSpark:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnWildSpark:Show()
+			yellWildSpark:Yell()
+		end
+	elseif args:IsSpellID(116711) then
+		sparkCount = 0
+		warnDrawFlame:Show()
+		specWarnDrawFlame:Show()
+	elseif args:IsSpellID(116417) then
+		warnArcaneResonance:Show(args.destName)
+		timerArcaneResonanceCD:Start()
+		if args:IsPlayer() then
+			specWarnArcaneResonance:Show()
+			yellArcaneResonance:Yell()
+		end
+	elseif args:IsSpellID(116364) then
+		warnArcaneVelocity:Show()
+		specWarnArcaneVelocity:Show()
+	end
+end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(116942) then
+		timerFlamingSpear:Cancel(args.destName)
+	elseif args:IsSpellID(116784) then
+		timerWildSpark:Cancel(args.destName)
+	elseif args:IsSpellID(116711) then
+		timerDrawFlameCD:Start()
+	elseif args:IsSpellID(116364) then
+		timerArcaneVelocityCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(116018) then
+		warnEpicenter:Show()
+		specWarnEpicenter:Show()
+		soundEpicenter:Play()
+--		timerEpicenterCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(118783) then
+		warnChainsOfShadow:Show()
+		timerChainsOfShadowCD:Start()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Fire or msg:find(L.Fire) then
+		timerFlamingSpearCD:Start(5.5)
+		timerDrawFlameCD:Start(35)
+	elseif msg == L.Arcane or msg:find(L.Arcane) then
+		timerArcaneResonanceCD:Start(14)
+		timerArcaneVelocityCD:Start(16.5)
+	elseif msg == L.Nature or msg:find(L.Nature) then
+--		timerEpicenterCD:Start()
+	elseif msg == L.Shadow or msg:find(L.Shadow) then
+		timerSiphoningShieldCD:Start(6)
+		timerChainsOfShadowCD:Start(10)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 117203 and self:AntiSpam(2, 1) then--Siphoning Shield:
+		warnSiphoningShield:Show()
+		specWarnSiphoningShield:Show()
+		timerSiphoningShieldCD:Start()
+	elseif spellId == 121631 and self:AntiSpam(2, 2) then--Draw Essence.
+		--Best place to cancel timers, vs duplicating cancel code in all 4 yells above.
+		timerFlamingSpearCD:Cancel()
+		timerDrawFlameCD:Cancel()
+		timerArcaneResonanceCD:Cancel()
+		timerArcaneVelocityCD:Cancel()
+--		timerEpicenterCD:Start()
+		timerSiphoningShieldCD:Cancel()
+		timerChainsOfShadowCD:Cancel()
+	end
+end

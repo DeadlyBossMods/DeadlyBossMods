@@ -15,6 +15,13 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(689)
 
+L:SetMiscLocalization({
+	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!",
+	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!",
+	Nature		= "Oh great spirit! Grant me the power of the earth!",--I did not log this one, text is probably not right
+	Shadow		= "Great soul of champions past! Bear to me your shield!"
+})
+
 
 -------------------------------
 -- Gara'jal the Spiritbinder --
