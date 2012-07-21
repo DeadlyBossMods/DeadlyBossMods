@@ -40,7 +40,7 @@ local timerCryOfTerror			= mod:NewTargetTimer(20, 123788, nil, mod:IsHealer())
 local timerCryOfTerrorCD		= mod:NewNextTimer(25, 123788, nil, mod:IsHealer())
 local timerEyes					= mod:NewTargetTimer(30, 123707, nil, mod:IsTank())
 local timerEyesCD				= mod:NewNextTimer(10, 123707, nil, mod:IsTank())
-local timerPhase1				= mod:NewTimer(156.4, 125304)--156.4 til ENGAGE fires and boss is out, 157.4 until "advance" fires though. But 156.4 is more accurate timer
+local timerPhase1				= mod:NewNextTimer(156.4, 125304)--156.4 til ENGAGE fires and boss is out, 157.4 until "advance" fires though. But 156.4 is more accurate timer
 local timerPhase2				= mod:NewNextTimer(152, 125098)
 
 mod:AddBoolOption("InfoFrame")--On by default because these do more then just melee, they interrupt spellcasting (bad for healers)
