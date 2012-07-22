@@ -89,7 +89,6 @@ function mod:OnCombatStart(delay)
 	if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
 		timerPermaFrostCD:Start(-delay)
 	end
-
 end
 
 function mod:BreezeTarget()
