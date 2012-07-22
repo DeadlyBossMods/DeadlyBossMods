@@ -82,7 +82,6 @@ mod:AddBoolOption("TankArrow", false)--May be prone to some issues if you have 2
 
 local shadowblazeTimer = 35
 local cinderIcons = 8
-local playerDebuffed = false
 local playerDebuffs = 0
 local cinderTargets	= {}
 local cinderDebuff = GetSpellInfo(79339)
@@ -122,15 +121,18 @@ do
 end
 
 local function warnCinderTargets()
-	if mod.Options.RangeFrame and not playerDebuffed then
-		DBM.RangeCheck:Show(10, cindersDebuffFilter)--Special range frame that will only show players with Cinders debuff
+	if mod.Options.RangeFrame then
+		if UnitDebuff("player", GetSpellInfo(79339)) then--You have debuff, show everyone
+			DBM.RangeCheck:Show(10, nil)
+		else--You do not have debuff, only show players who do
+			DBM.RangeCheck:Show(10, cindersDebuffFilter)
+		end
 	end
 	warnCinder:Show(table.concat(cinderTargets, "<, >"))
 	timerCinder:Start()
 	timerCinderCD:Start()
 	table.wipe(cinderTargets)
 	cinderIcons = 8
-	playerDebuffed = false
 end
 
 local function warnDominionTargets()
@@ -142,7 +144,6 @@ end
 function mod:OnCombatStart(delay)
 	shadowBlazeSynced = false
 	shadowblazeTimer = 35
-	playerDebuffed = false
 	playerDebuffs = 0
 	CVAR = false
 	table.wipe(cinderTargets)
@@ -207,14 +208,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		cinderTargets[#cinderTargets + 1] = args.destName
 		playerDebuffs = playerDebuffs + 1
 		if args:IsPlayer() then
-			playerDebuffed = true
 			specWarnCinder:Show()
 			specWarnCinderMove:Schedule(3)
 			soundCinder:Schedule(3)	-- no need to move as soon as the debuff is applied
 			yellCinder:Yell()
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10, nil)
-			end
 		end
 		if self.Options.SetIconOnCinder then
 			self:SetIcon(args.destName, cinderIcons)
