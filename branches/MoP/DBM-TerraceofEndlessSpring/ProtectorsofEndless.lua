@@ -4,6 +4,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60585, 60586, 60583)--60583 Protector Kaolan, 60585 Elder Regail, 60586 Elder Asani
 mod:SetModelID(41503)--Protector Kaolan, 41502 and 41504 are elders
+mod:SetZone()
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 
 mod:RegisterCombat("combat")
 
@@ -16,7 +18,7 @@ mod:RegisterEventsInCombat(
 
 --[[
 --Both Elders use Overhwelming Corruption as their phase 3 ability. It's not worth warning for since it's just a periodic aoe you can't do anything about with stacking damage.
-spellid = 117309 or spellid = 117227 or spellid = 117436 or spellid = 117519 and not(fulltype = SPELL_PERIODIC_DAMAGE) or spellid = 117986 or spellid = 117975 or spellid = 118077
+spellid = 117309 or spellid = 117227 or spellid = 111850 or spellid = 117519 and not(fulltype = SPELL_PERIODIC_DAMAGE) or spellid = 117986 or spellid = 117975 or spellid = 118077
 --]]
 local isDispeller = select(2, UnitClass("player")) == "MAGE"
 	    		 or select(2, UnitClass("player")) == "PRIEST"
@@ -28,7 +30,7 @@ local warnPhase3					= mod:NewPhaseAnnounce(3)
 local warnCleansingWaters			= mod:NewTargetAnnounce(117309, 3)--Phase 1+ ability. If target scanning fails, will switch to spell announce
 local warnCorruptingWaters			= mod:NewSpellAnnounce(117227, 4)--Phase 2+ ability.
 --Elder Regail (Also uses Overwhelming Corruption in phase 3)
-local warnLightningPrison			= mod:NewTargetAnnounce(117436, 3)--Phase 1+ ability.
+local warnLightningPrison			= mod:NewTargetAnnounce(111850, 3)--Phase 1+ ability.
 local warnLightningStorm			= mod:NewSpellAnnounce(118077, 4)--Phase 2+ ability.								
 --Protector Kaolan
 local warnTouchofSha				= mod:NewTargetAnnounce(117519, 3, nil, mod:IsHealer())--Phase 1+ ability. He stops casting it when everyone in raid has it then ceases. If someone dies and is brezed, he casts it on them again.
@@ -40,7 +42,8 @@ local specWarnCleansingWaters		= mod:NewSpecialWarningTarget(117309, mod:IsTank(
 local specWarnCleansingWatersDispel	= mod:NewSpecialWarningDispel(117309, isDispeller)--The boss wasn't moved in time, now he needs to be dispelled.
 local specWarnCorruptingWaters		= mod:NewSpecialWarningSwitch("ej5821", mod:IsDps())
 --Elder Regail
-local specWarnLightningPrison		= mod:NewSpecialWarningSpell(117436, mod:IsHealer())--Since it's multiple targets, will just use spell instead of dispel warning.
+local specWarnLightningPrison		= mod:NewSpecialWarningYou(111850)--Debuff you gain before you are hit with it.
+local yellLightningPrison			= mod:NewYell(111850)
 local specWarnLightningStorm		= mod:NewSpecialWarningSpell(118077, nil, nil, nil, true)--Since it's multiple targets, will just use spell instead of dispel warning.
 --Protector Kaolan
 local specWarnDefiledGround			= mod:NewSpecialWarningMove(117986, mod:IsTank())
@@ -50,26 +53,43 @@ local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, ni
 local timerCleansingWatersCD		= mod:NewCDTimer(32.5, 117309)
 local timerCorruptingWatersCD		= mod:NewCDTimer(42, 117227)
 --Elder Regail
-local timerLightningPrisonCD		= mod:NewCDTimer(25, 117436, nil, mod:IsHealer())--*This currently seems bugged and can be prevented by interrupting lightning bolt casts (it locks out entire school and can prevent this being cast
+local timerLightningPrisonCD		= mod:NewCDTimer(25, 111850, nil, mod:IsHealer())--*This currently seems bugged and can be prevented by interrupting lightning bolt casts (it locks out entire school and can prevent this being cast
 local timerLightningStormCD			= mod:NewCDTimer(42, 118077)--Shorter Cd in phase 3 32 seconds.
 local timerLightningStorm			= mod:NewBuffActiveTimer(14, 118077)
 --Protector Kaolan
-local timerTouchOfShaCD				= mod:NewCDTimer(20, 117519)
+local timerTouchOfShaCD				= mod:NewCDTimer(37.4, 117519)--Timer seemed longer on heroic then it even was on normal, considering most heroic modes have same timings as normal this tier, i'm guessing every 20 sec was just too often for 10 man, normal or heroic. For now we'll assume all modes got this nerf. 25 man may still be 20 tho, will need to find out and see
 local timerDefiledGroundCD			= mod:NewCDTimer(15.5, 117986, nil, mod:IsMelee())
 local timerExpelCorruptionCD		= mod:NewCDTimer(39, 117975)
 
-mod:AddBoolOption("RangeFrame", mod:IsRanged())--For Lightning Prison
+mod:AddBoolOption("RangeFrame")--For Lightning Prison
+mod:AddBoolOption("SetIconOnPrison", true)--For Lightning Prison (icons don't go out until it's DISPELLABLE, not when targetting is up).
 
 local phase = 1
 local totalTouchOfSha = 0
 local scansDone = 0
 local prisonTargets = {}
+local prisonIcon = 1--Will try to start from 1 and work up, to avoid using icons you are probalby putting on bosses (unless you really fail at spreading).
+local prisonDebuff = GetSpellInfo(79339)
+
+local DebuffFilter
+do
+	DebuffFilter = function(uId)
+		return UnitDebuff(uId, prisonDebuff)
+	end
+end
 
 local function warnPrisonTargets()
+	if mod.Options.RangeFrame then
+		if UnitDebuff("player", GetSpellInfo(111850)) then--You have debuff, show everyone
+			DBM.RangeCheck:Show(8, nil)
+		else--You do not have debuff, only show players who do
+			DBM.RangeCheck:Show(8, DebuffFilter)
+		end
+	end
 	warnLightningPrison:Show(table.concat(prisonTargets, "<, >"))
-	specWarnLightningPrison:Show()
 	timerLightningPrisonCD:Start()
 	table.wipe(prisonTargets)
+	prisonIcon = 1
 end
 
 function mod:WatersTarget()
@@ -98,12 +118,9 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	totalTouchOfSha = 0
 	table.wipe(prisonTargets)
-	timerCleansingWatersCD:Start(9-delay)
-	timerLightningPrisonCD:Start(31-delay)--May be off a tiny bit, (or a lot of blizzard doesn't fix bug where cast doesn't happen at all)
-	timerTouchOfShaCD:Start(37-delay)
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(8)
-	end
+	timerCleansingWatersCD:Start(12-delay)
+	timerLightningPrisonCD:Start(15.5-delay)--May be off a tiny bit, (or a lot of blizzard doesn't fix bug where cast doesn't happen at all)
+	timerTouchOfShaCD:Start(36-delay)
 end
 
 function mod:OnCombatEnd()
@@ -119,10 +136,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if totalTouchOfSha < GetNumGroupMembers() then--This ability will not be cast if everyone in raid has it.
 			timerTouchOfShaCD:Start()
 		end
-	elseif args:IsSpellID(117436) then
+	elseif args:IsSpellID(111850) then--111850 is targeting debuff (NOT dispelable one)
 		prisonTargets[#prisonTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnLightningPrison:Show()
+			yellLightningPrison:Yell()
+		end
 		self:Unschedule(warnPrisonTargets)
 		self:Schedule(0.3, warnPrisonTargets)
+	elseif args:IsSpellID(117436) then--111850 is pre warning, mainly for player, 117436 is the actual final result, mainly for the healer dispels
+		if self.Options.SetIconOnPrison then
+			self:SetIcon(args.destName, prisonIcon)
+			prisonIcon = prisonIcon + 1
+		end
 	elseif args:IsSpellID(117283) and not args:IsDestTypePlayer() then
 		specWarnCleansingWatersDispel:Show(args.destName)
 	elseif args:IsSpellID(117052) then--Phase changes
@@ -151,6 +177,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(117519) then
 		totalTouchOfSha = totalTouchOfSha - 1
+	elseif args:IsSpellID(117436) then
+		if self.Options.SetIconOnPrison then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 

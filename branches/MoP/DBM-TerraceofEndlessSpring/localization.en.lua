@@ -6,7 +6,8 @@ local L
 L= DBM:GetModLocalization(683)
 
 L:SetOptionLocalization({
-	RangeFrame				= "Show range frame (8) for $spell:117436"
+	RangeFrame			= "Show range frame (8) for $spell:111850\n(Shows everyone if you have debuff, only players with debuff if not)",
+	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
 
 
