@@ -53,7 +53,7 @@ local specwarnMassiveStomp		= mod:NewSpecialWarningSpell(122408, nil, nil, nil, 
 
 --Boss
 local timerReshapeLifeCD		= mod:NewNextTimer(45, 122784)
-local timerAmberScalpelCD		= mod:NewNextTimer(36, 121994)--36 seconds after last one ENDED, 46 from beginning.
+local timerAmberScalpelCD		= mod:NewCDTimer(36, 121994)--36 seconds after last one ENDED, 46 from beginning.
 local timerAmberScalpel			= mod:NewBuffActiveTimer(10, 121994)
 local timerParasiticGrowthCD	= mod:NewCDTimer(45, 121949, nil, mod:IsHealer())
 local timerParasiticGrowth		= mod:NewTargetTimer(30, 121949, nil, mod:IsHealer())
@@ -97,7 +97,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
 	elseif args:IsSpellID(122784) then
-		warnReshapeLife:Show()
+		warnReshapeLife:Show(args.destName)
 		if args:IsPlayer() then
 			specwarnReshape:Show()
 		end
