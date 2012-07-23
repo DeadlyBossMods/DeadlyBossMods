@@ -48,21 +48,22 @@ local specWarnGetAway					= mod:NewSpecialWarningSpell(123461, nil, nil, nil, tr
 local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 12)--Not sure what's too big of a number yet. Fight was a bit undertuned.
 local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())--Not sure what's too big of a number yet. Fight was a bit undertuned.
 
-local timerProtectCD					= mod:NewNextTimer(121, 123250)--Only thing that has a predictable Cd. Hide and Get away are random, one will be cast immediately after protect ends, other some time (random, after it)
-local timerSpray						= mod:NewTargetTimer(10, 123121)--Not worth adding yet, it only lasts like 4 seconds, blizzard needs to buff this to make it relevant to tanks.
+local timerSpecialCD					= mod:NewTimer(22, "timerSpecialCD", 123250)--Not even this is 100% reliable. it's iffy at best, but she seems to use specials about 22-25 seconds after last one ended, except when last one was protect, then next one is used IMMEDIATELY upon protect ending. Timers for this fight are just jacked.
+local timerSpray						= mod:NewTargetTimer(10, 123121)--blizzard needs to buff this to make it relevant to tanks.
+local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
 function mod:OnCombatStart(delay)
-	timerProtectCD:Start(52-delay)--May be off 1-2 sec.
+	timerSpecialCD:Start(52-delay)--the ONLY timer that ever seems to be right, is FIRST special.
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123250) then
 		warnProtect:Show()
 		specWarnAnimatedProtector:Show()
-		timerProtectCD:Start()
 	elseif args:IsSpellID(123461) then
 		warnGetAway:Show()
 		specWarnGetAway:Show()
+		timerGetAway:Start()
 	elseif args:IsSpellID(123121) then
 		timerSpray:Start(args.destName)
 		if args:IsPlayer() and (args.amount or 1) >= 12 then
@@ -79,6 +80,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(123121) then
 		timerSpray:Cancel(args.destName)
+	elseif args:IsSpellID(123461) then
+		timerGetAway:Cancel()
+--		timerSpecialCD:Start()--Probably wrong so disabled. i still can't find this fights true pattern since it's all over the place and never matches up.
 	end
 end
 
@@ -97,4 +101,5 @@ end
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
+--	timerSpecialCD:Start()--Probably wrong so disabled. i still can't find this fights true pattern since it's all over the place and never matches up.
 end

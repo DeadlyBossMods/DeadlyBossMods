@@ -31,8 +31,13 @@ L:SetWarningLocalization({
 	warnHideOver			= "%s has ended"
 })
 
+L:SetTimerLocalization({
+	timerSpecialCD			= "Next Special"
+})
+
 L:SetOptionLocalization({
-	warnHideOver			= "Show warning when $spell:123244 has ended"
+	warnHideOver			= "Show warning when $spell:123244 has ended",
+	timerSpecialCD			= "Show timer for when next special ability will be cast."
 })
 
 L:SetMiscLocalization{
