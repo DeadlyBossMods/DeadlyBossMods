@@ -48,6 +48,8 @@ local specWarnLightningStorm		= mod:NewSpecialWarningSpell(118077, nil, nil, nil
 --Protector Kaolan
 local specWarnDefiledGround			= mod:NewSpecialWarningMove(117986, mod:IsTank())
 local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, nil, true)--Entire raid needs to move.
+--Minions of Fear
+local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 7)--Amount may need adjusting depending on what becomes an accepted strategy
 
 --Elder Asani
 local timerCleansingWatersCD		= mod:NewCDTimer(32.5, 117309)
@@ -70,6 +72,7 @@ local scansDone = 0
 local prisonTargets = {}
 local prisonIcon = 1--Will try to start from 1 and work up, to avoid using icons you are probalby putting on bosses (unless you really fail at spreading).
 local prisonDebuff = GetSpellInfo(79339)
+local prisonCount = 0
 
 local DebuffFilter
 do
@@ -117,6 +120,7 @@ end
 function mod:OnCombatStart(delay)
 	phase = 1
 	totalTouchOfSha = 0
+	prisonCount = 0
 	table.wipe(prisonTargets)
 	timerCleansingWatersCD:Start(12-delay)
 	timerLightningPrisonCD:Start(15.5-delay)--May be off a tiny bit, (or a lot of blizzard doesn't fix bug where cast doesn't happen at all)
@@ -138,6 +142,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(111850) then--111850 is targeting debuff (NOT dispelable one)
 		prisonTargets[#prisonTargets + 1] = args.destName
+		prisonCount = prisonCount + 1
 		if args:IsPlayer() then
 			specWarnLightningPrison:Show()
 			yellLightningPrison:Yell()
@@ -170,6 +175,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerExpelCorruptionCD:Start(5)
 			end
 		end
+	elseif args:IsSpellID(118191) then
+		if args:IsPlayer() then
+			if (args.amount or 1) >= 7 then
+				specWarnCorruptedEssence:Show(args.amount)
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -178,6 +189,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(117519) then
 		totalTouchOfSha = totalTouchOfSha - 1
 	elseif args:IsSpellID(117436) then
+		prisonCount = prisonCount - 1
+		if prisonCount == 0 and self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 		if self.Options.SetIconOnPrison then
 			self:SetIcon(args.destName, 0)
 		end
