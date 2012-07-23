@@ -38,6 +38,7 @@ local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3)
 local warnFling					= mod:NewSpellAnnounce(122413, 3)--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
 
 --Boss
+local specwarnAmberScalpel		= mod:NewSpecialWarningSpell(121994, nil, nil, nil, true)
 local specwarnReshape			= mod:NewSpecialWarningYou(122784)
 local specwarnParasiticGrowth	= mod:NewSpecialWarningTarget(121949, mod:IsHealer())
 --Construct
@@ -52,10 +53,10 @@ local specwarnAmberMonstrosity	= mod:NewSpecialWarningSwitch("ej6254", not mod:I
 local specwarnMassiveStomp		= mod:NewSpecialWarningSpell(122408, nil, nil, nil, true)
 
 --Boss
-local timerReshapeLifeCD		= mod:NewNextTimer(45, 122784)
-local timerAmberScalpelCD		= mod:NewCDTimer(36, 121994)--36 seconds after last one ENDED, 46 from beginning.
+local timerReshapeLifeCD		= mod:NewNextTimer(50, 122784)
+local timerAmberScalpelCD		= mod:NewCDTimer(40, 121994)--40 seconds after last one ENDED
 local timerAmberScalpel			= mod:NewBuffActiveTimer(10, 121994)
-local timerParasiticGrowthCD	= mod:NewCDTimer(45, 121949, nil, mod:IsHealer())
+local timerParasiticGrowthCD	= mod:NewCDTimer(50, 121949, nil, mod:IsHealer())
 local timerParasiticGrowth		= mod:NewTargetTimer(30, 121949, nil, mod:IsHealer())
 --Construct
 local timerAmberExplosionCD		= mod:NewNextSourceTimer(13, 122398)--13 second cd on player controled units, 18 seconds on non player controlled constructs
@@ -80,8 +81,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(122754) and not args:GetDestCreatureID() == 62691 then--Only track debuffs on boss, constructs, or monstrosity, ignore oozes.
 		warnDestabalize:Show(args.amount or 1)
 		timerDestabalize:Start(args.destName)
-	elseif args:IsSpellID(121994) then
-		warnAmberScalpel:Show()
 	elseif args:IsSpellID(121949) then
 		warnParasiticGrowth:Show(args.destName)
 		specwarnParasiticGrowth:Show(args.destName)
@@ -147,6 +146,9 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(122348) then
 		warnLivingAmber:Show()
+	elseif args:IsSpellID(121994) then
+		warnAmberScalpel:Show()
+		specwarnAmberScalpel:Show()
 	elseif args:IsSpellID(122532) then
 		Puddles = Puddles + 1
 		warnBurningAmber:Show(Puddles)
