@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 local warnNight							= mod:NewSpellAnnounce("ej6310", 2, 108558)
 local warnSunbeam						= mod:NewSpellAnnounce(122789, 3)
 local warnShadowBreath					= mod:NewSpellAnnounce(122752, 3)
-local warnNightmares					= mod:NewSpellAnnounce(122770, 3)--maybe target scanning will work on this trigger?
+local warnNightmares					= mod:NewTargetAnnounce(122770, 4)--Target scanning not tested
 local warnDarkOfNight					= mod:NewSpellAnnounce("ej6550", 4, 130013)--Heroic
 local warnDay							= mod:NewSpellAnnounce("ej6315", 2, 122789)
 local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, 122953)--needs some Sha like icon.
@@ -30,6 +30,9 @@ local warnLightOfDay					= mod:NewSpellAnnounce("ej6551", 4, 123716, mod:IsHeale
 
 local specWarnShadowBreath				= mod:NewSpecialWarningSpell(122752, mod:IsTank())
 local specWarnDreadShadows				= mod:NewSpecialWarningStack(122768, nil, 6)--For heroic, 10 is unhealable, and it stacks pretty fast so adaquate warning to get over there would be abou 5-6
+local specWarnNightmares				= mod:NewSpecialWarningSpell(122770)
+local specWarnNightmaresNear			= mod:NewSpecialWarningClose(122770)
+local yellNightmares					= mod:NewYell(122770)
 local specWarnDarkOfNight				= mod:NewSpecialWarningSwitch("ej6550", mod:IsDps())
 local specWarnTerrorize					= mod:NewSpecialWarningDispel(123012, mod:IsHealer())
 local specWarnLightOfDay				= mod:NewSpecialWarningSpell("ej6551", mod:IsHealer())
@@ -47,6 +50,65 @@ local timerSunBreathCD					= mod:NewCDTimer(29, 122855, nil, mod:IsHealer())
 --local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, logs i was sent always wiped VERy early in light phase.
 
 local terrorName = EJ_GetSectionInfo(6316)
+local targetScansDone = 0
+
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	-- 3. check boss1's highest threat target
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
+		return true
+	end
+	return false
+end
+
+function mod:ShadowsTarget(targetname)
+	warnNightmares:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnNightmares:Show()
+		yellNightmares:Yell()
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 9 then
+				specWarnNightmaresNear:Show(targetname)
+			end
+		end
+	end
+end
+
+function mod:TargetScanner(ScansDone)
+	targetScansDone = targetScansDone + 1
+	local targetname, uId = self:GetBossTarget(62442)
+	if UnitExists(targetname) then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a warning.
+		if isTank(uId) and not ScansDone then--He's targeting his highest threat target.
+			if targetScansDone < 16 then--Make sure no infinite loop.
+				self:ScheduleMethod(0.05, "TargetScanner")--Check multiple times to be sure it's not on something other then tank.
+			else
+				self:TargetScanner(true)--It's still on tank, force true isTank and activate else rule and warn target is on tank.
+			end
+		else--He's not targeting highest threat target (or isTank was set to true after 16 scans) so this has to be right target.
+			self:UnscheduleMethod("TargetScanner")--Unschedule all checks just to be sure none are running, we are done.
+			self:ShadowsTarget(targetname)
+		end
+	else--target was nil, lets schedule a rescan here too.
+		if targetScansDone < 16 then--Make sure not to infinite loop here as well.
+			self:ScheduleMethod(0.05, "TargetScanner")
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
 	warnShadowBreath:Start(8.5-delay)
@@ -91,6 +153,8 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 122770 and self:AntiSpam(2, 1) then--Nightmares (Night Phase)
+		targetScansDone = 0
+		self:TargetScanner()
 		warnNightmares:Show()
 		timerNightmaresCD:Start()
 	elseif spellId == 123252 and self:AntiSpam(2, 2) then--Dread Shadows Cancel (Sun Phase)
