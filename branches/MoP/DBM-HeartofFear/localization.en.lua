@@ -41,6 +41,13 @@ L= DBM:GetModLocalization(713)
 ----------------------
 L= DBM:GetModLocalization(741)
 
+L:SetOptionLocalization({
+	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
+})
+
+L:SetMiscLocalization({
+	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"
+})
 
 ------------
 -- Amber-Shaper Un'sok --

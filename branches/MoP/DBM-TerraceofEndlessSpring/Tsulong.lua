@@ -30,7 +30,7 @@ local warnLightOfDay					= mod:NewSpellAnnounce("ej6551", 4, 123716, mod:IsHeale
 
 local specWarnShadowBreath				= mod:NewSpecialWarningSpell(122752, mod:IsTank())
 local specWarnDreadShadows				= mod:NewSpecialWarningStack(122768, nil, 6)--For heroic, 10 is unhealable, and it stacks pretty fast so adaquate warning to get over there would be abou 5-6
-local specWarnNightmares				= mod:NewSpecialWarningSpell(122770)
+local specWarnNightmares				= mod:NewSpecialWarningYou(122770)
 local specWarnNightmaresNear			= mod:NewSpecialWarningClose(122770)
 local yellNightmares					= mod:NewYell(122770)
 local specWarnDarkOfNight				= mod:NewSpecialWarningSwitch("ej6550", mod:IsDps())
@@ -155,7 +155,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 122770 and self:AntiSpam(2, 1) then--Nightmares (Night Phase)
 		targetScansDone = 0
 		self:TargetScanner()
-		warnNightmares:Show()
 		timerNightmaresCD:Start()
 	elseif spellId == 123252 and self:AntiSpam(2, 2) then--Dread Shadows Cancel (Sun Phase)
 		timerShadowBreathCD:Cancel()
