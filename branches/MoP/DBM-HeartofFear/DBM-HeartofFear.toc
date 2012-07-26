@@ -6,13 +6,13 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMHeartofFear_SavedVars, DBMHeartofFear_SavedStats
-## AuthorDBM: 1
-## AuthorDBMCategory: MOP
-## AuthorDBMHasHeroicMode: 1
-## AuthorDBMName: Heart of Fear
-## AuthorDBMName-koKR: 공포의 심장
-## AuthorDBMSort: 1
-## AuthorDBMLoadZoneID: 897
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-Heroic-Mode: 1
+## X-DBM-Mod-Name: Heart of Fear
+## X-DBM-Mod-Name-koKR: 공포의 심장
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-LoadZoneID: 897
 localization.en.lua
 localization.kr.lua
 MapSizes.lua

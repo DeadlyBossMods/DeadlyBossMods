@@ -5,18 +5,18 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPandaria_SavedVars, DBMPandaria_SavedStats
-## AuthorDBM: 1
-## AuthorDBMCategory: MOP
-## AuthorDBMHasHeroicMode: 0
-## AuthorDBMName: Pandaria
-## AuthorDBMName-koKR: 판다리아
-## AuthorDBMName-frFR: Pandaria
-## AuthorDBMName-deDE: Pandaria
-## AuthorDBMName-esES: Pandaria
-## AuthorDBMName-esMX: Pandaria
-## AuthorDBMName-ptBR: Pandaria
-## AuthorDBMName-zhTW: Pandaria
-## AuthorDBMSort: 4
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Name: Pandaria
+## X-DBM-Mod-Name-koKR: 판다리아
+## X-DBM-Mod-Name-frFR: Pandaria
+## X-DBM-Mod-Name-deDE: Pandaria
+## X-DBM-Mod-Name-esES: Pandaria
+## X-DBM-Mod-Name-esMX: Pandaria
+## X-DBM-Mod-Name-ptBR: Pandaria
+## X-DBM-Mod-Name-zhTW: Pandaria
+## X-DBM-Mod-Sort: 4
 localization.en.lua
 localization.de.lua
 localization.es.lua
