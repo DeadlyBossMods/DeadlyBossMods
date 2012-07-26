@@ -31,10 +31,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength	= "begins to gather strength",
-	Anshal			= "Anshal",
-	Nezir			= "Nezir",
-	Rohash			= "Rohash"
+	gatherstrength	= "begins to gather strength"
 })
 
 ---------------
