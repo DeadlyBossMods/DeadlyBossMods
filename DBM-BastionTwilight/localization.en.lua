@@ -123,33 +123,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnDragon			= "Twilight Whelp Spawned",
 	WarnOrbSoon			= "Orbs in %d sec!",
 	SpecWarnOrbs		= "Orbs coming! Watch Out!",
 	warnWrackJump		= "%s jumped to >%s<",
 	warnAggro			= "Players with Aggro (Orbs candidates): >%s< ",
-	SpecWarnAggroOnYou	= "You have Aggro! Watch Orbs!",
-	SpecWarnEggWeaken	= "Twilight Carapace dissipated - Dps EGG Now!",
-	SpecWarnEggShield	= "Twilight Capapace Regenerated!"
+	SpecWarnAggroOnYou	= "You have Aggro! Watch Orbs!"
 })
 
 L:SetTimerLocalization({
-	TimerDragon			= "Next Twilight Whelps",
 	TimerEggWeakening	= "Twilight Carapace dissipates",
-	TimerEggWeaken		= "Twilight Capapace Regeneration",
+	TimerEggWeaken		= "Twilight Capapace Regenerates",
 	TimerOrbs			= "Shadow Orbs CD"
 })
 
 L:SetOptionLocalization({
-	WarnDragon			= "Show warning when Twilight Whelp Spawns",
 	WarnOrbSoon			= "Show pre-warning for Orbs (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
 	warnWrackJump		= "Announce $spell:89421 jump targets",
 	warnAggro			= "Announce players who have Aggro when Orbs spawn (Can be target of Orbs)",
 	SpecWarnAggroOnYou	= "Show special warning if you have Aggro when Orbs spawn\n(Can be target of Orbs)",
 	SpecWarnOrbs		= "Show special warning when Orbs spawn (Expected warning)",
-	SpecWarnEggWeaken	= "Show special warning when $spell:87654 dissipates",
-	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated",
-	TimerDragon			= "Show timer for new Twilight Whelp",
 	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
 	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
 	TimerOrbs			= "Show timer for next Orbs (Expected timer. may not be accurate)",

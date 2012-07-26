@@ -127,15 +127,15 @@ function mod:LeapingFlamesTarget(targetname)
 	end
 end
 
-function mod:TargetScanner(SpellID, ScansDone)
+function mod:TargetScanner(ScansDone)
 	targetScansDone = targetScansDone + 1
 	local targetname, uId = self:GetBossTarget(52571)
 	if UnitExists(targetname) then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a warning.
 		if isTank(uId) and not ScansDone then--He's targeting his highest threat target.
 			if targetScansDone < 16 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.05, "TargetScanner", SpellID)--Check multiple times to be sure it's not on something other then tank.
+				self:ScheduleMethod(0.05, "TargetScanner")--Check multiple times to be sure it's not on something other then tank.
 			else
-				self:TargetScanner(SpellID, true)--It's still on tank, force true isTank and activate else rule and warn target is on tank.
+				self:TargetScanner(true)--It's still on tank, force true isTank and activate else rule and warn target is on tank.
 			end
 		else--He's not targeting highest threat target (or isTank was set to true after 16 scans) so this has to be right target.
 			self:UnscheduleMethod("TargetScanner")--Unschedule all checks just to be sure none are running, we are done.
@@ -143,7 +143,7 @@ function mod:TargetScanner(SpellID, ScansDone)
 		end
 	else--target was nil, lets schedule a rescan here too.
 		if targetScansDone < 16 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.05, "TargetScanner", SpellID)
+			self:ScheduleMethod(0.05, "TargetScanner")
 		end
 	end
 end
@@ -219,15 +219,15 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(98451) then	--98451 confirmed
+	if args:IsSpellID(98451) then
 		warnOrbs:Show()
 		timerOrbActive:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(98476) then	--98476 confirmed
+	if args:IsSpellID(98476) then
 		targetScansDone = 0
-		self:TargetScanner(98476)
+		self:TargetScanner()
 	end
 end

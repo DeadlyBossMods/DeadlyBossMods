@@ -82,8 +82,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase			= "%s phase",
-	WarnRemainingAdds	= "%d aberrations remaining"
+	WarnPhase			= "%s phase"
 })
 
 L:SetTimerLocalization({
@@ -92,7 +91,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase			= "Show warning which phase is incoming",
-	WarnRemainingAdds	= "Show warning for how many aberrations remain",
 	TimerPhase			= "Show timer for next phase",
 	RangeFrame			= "Show range frame (6) during blue phase",
 	SetTextures			= "Automatically disable projected textures in dark phase\n(returns it to enabled upon leaving phase)",
@@ -152,8 +150,6 @@ L:SetWarningLocalization({
 	WarnAirphase			= "Airphase",
 	WarnGroundphase			= "Groundphase",
 	WarnShieldsLeft			= "Ancient Dwarven Shield used - %d left",
-	warnAddSoon				= "Obnoxious Fiend summoned",
-	specWarnAddTargetable	= "%s is targetable"
 })
 
 L:SetTimerLocalization({
@@ -165,8 +161,6 @@ L:SetOptionLocalization({
 	WarnAirphase			= "Show warning when Atramedes lifts off",
 	WarnGroundphase			= "Show warning when Atramedes lands",
 	WarnShieldsLeft			= "Show warning when a Ancient Dwarven Shield gets used",
-	warnAddSoon				= "Show warning when Nefarian summons adds",
-	specWarnAddTargetable	= "Show special warning when adds are targetable",
 	TimerAirphase			= "Show timer for next airphase",
 	TimerGroundphase		= "Show timer for next groundphase",
 	InfoFrame				= "Show info frame for sound levels",
@@ -174,7 +168,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	AncientDwarvenShield	= "Ancient Dwarven Shield",
 	Soundlevel				= "Sound Level",
 	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
 	NefAdd					= "Atramedes, the heroes are right THERE!",
