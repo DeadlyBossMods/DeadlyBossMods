@@ -5,8 +5,13 @@ local L
 ------------
 L= DBM:GetModLocalization(745)
 
+L:SetWarningLocalization({
+	specwarnPlatform	= "Platform change"
+})
+
 L:SetOptionLocalization({
-	MindControlIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+	specwarnPlatform	= "Show special warning when boss changes platforms",
+	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
 L:SetMiscLocalization({
