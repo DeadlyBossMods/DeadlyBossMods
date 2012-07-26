@@ -37,6 +37,7 @@ local specwarnAttenuation	= mod:NewSpecialWarningSpell(127834, nil, nil, nil, tr
 --My goal is to have all the timers be precise, not half assed CD timers that say (this ability might be in 34 seconds, or 74 seconds)
 --^^ is not acceptable. A timer that's 40 seconds off is not a useful timer. I will only start timers if i know they are RIGHT
 --For beta testing i may start them on some working theories, but on live i will comment out any timers that aren't figured out by then.
+local timerInhaleCD				= mod:NewCDTimer(41, 122852)
 local timerExhaleCD				= mod:NewCDTimer(41, 122761)
 local timerExhale				= mod:NewTargetTimer(6, 122761)
 local timerForceCD				= mod:NewCDTimer(48, 122713)--Phase 1, every 41 seconds since exhale keeps resetting it, phase 2, 48 seconds or as wildly high as 76 seconds if exhale resets it late in it's natural CD
@@ -69,9 +70,9 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(122852) then
 		inhaleCount = (args.amount or 1)
-		warnInhale:Show(inhaleCount)
+		warnInhale:Show(args.destName, inhaleCount)
 		if inhaleCount < 3 and platform < 4 then--Can't figure out how this behaves in phase 2 yet
-			timerInhaleCD:Start()	
+--			timerInhaleCD:Start()	
 		end
 	elseif args:IsSpellID(122761) then
 		warnExhale:Show(args.destName)
