@@ -61,6 +61,7 @@ local initiate = EJ_GetSectionInfo(2834)
 local cataCast = 0
 local clawCast = 0
 local moltCast = 0
+local PowerLevel = GetSpellInfo(98734)
 
 local initiateSpawns = {
 	[1] = L.Both,
@@ -90,7 +91,7 @@ function mod:OnCombatStart(delay)
 	clawCast = 0
 	moltCast = 0
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(L.PowerLevel)
+		DBM.InfoFrame:SetHeader(PowerLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
 	end
 end
