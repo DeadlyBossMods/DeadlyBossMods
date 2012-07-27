@@ -5,12 +5,7 @@ local L
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
---L = DBM:GetModLocalization(156)
-L = DBM:GetModLocalization("HalfusWyrmbreaker")
-
-L:SetGeneralLocalization({
-	name =	"Halfus Quebra-serpe"
-})
+L = DBM:GetModLocalization(156)
 
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Mostrar vida dos dragonetes soltos.\n(Requer quadro de vida habilitado)"
@@ -19,12 +14,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Valiona & Theralion  --
 ---------------------------
---L = DBM:GetModLocalization(157)
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Valiona e Theralion"
-})
+L = DBM:GetModLocalization(157)
 
 L:SetOptionLocalization({
 	TBwarnWhileBlackout		= "Exibir aviso para $spell:92898 quando $spell:86788 estiver ativo",
@@ -43,12 +33,7 @@ L:SetMiscLocalization({
 ----------------------------------
 --  Twilight Ascendant Council  --
 ----------------------------------
---L = DBM:GetModLocalization(158)
-L = DBM:GetModLocalization("AscendantCouncil")
-
-L:SetGeneralLocalization({
-	name =	"Conselho Ascendente"
-})
+L = DBM:GetModLocalization(158)
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s abaixo de 30%% - próxima fase em breve!",
@@ -82,11 +67,6 @@ L:SetMiscLocalization({
 	Thundershock	= "The surrounding air crackles with energy....",
 	Switch			= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
 	Phase3			= "An impressive display...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
-	Ignacious		= "Ignícius",
-	Feludius		= "Feludius",
-	Arion			= "Arion",
-	Terrastra		= "Terrastra",
-	Monstrosity		= "Monstruosidade de Elemêntio",
 	Kill			= "Impossible....",
 	blizzHatesMe	= "Pára-raios e Sinalizador Gélido em mim! Abram espaço!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
 	WrongDebuff	= "Sem %s"
@@ -95,63 +75,41 @@ L:SetMiscLocalization({
 ----------------
 --  Cho'gall  --
 ----------------
---L = DBM:GetModLocalization(167)
-L = DBM:GetModLocalization("Chogall")
-
-L:SetGeneralLocalization({
-	name =	"Cho'gall"
-})
+L = DBM:GetModLocalization(167)
 
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Exibir seta do DBM quando $spell:93178 for cair próximo a você",
-	InfoFrame				= "Mostrar quadro de informações para $spell:81701",
+	InfoFrame				= "Mostrar quadro de informações para $journal:3165",
 	RangeFrame				= "Mostrar medidor de distância (5) para $spell:82235",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
 	SetIconOnCreature		= "Colocar ícones nas Criações Sombrias"
-})
-
-L:SetMiscLocalization({
-	Bloodlevel				= "Corrupção"
 })
 
 ----------------
 --  Sinestra  --
 ----------------
---L = DBM:GetModLocalization(168)
-L = DBM:GetModLocalization("Sinestra")
-
-L:SetGeneralLocalization({
-	name =	"Sinestra"
-})
+L = DBM:GetModLocalization(168)
 
 L:SetWarningLocalization({
-	WarnDragon			= "Dragonetes Crepusculares surgiram!",
 	WarnOrbSoon			= "Orbes em %d seg!",
 	SpecWarnOrbs		= "Orbes chegando! Atenção!",
 	warnWrackJump		= "%s pulou para >%s<",
 	warnAggro			= "Jogadores com ameaça (Sujeitos a orbes): >%s< ",
-	SpecWarnAggroOnYou	= "Você tem ameaça! Atenção aos Orbes!",
-	SpecWarnEggWeaken	= "Carapaça Crepuscular desvaneceu - Bata no ovo Agora!",
-	SpecWarnEggShield	= "Carapaça Crepuscular regenerou-se!"
+	SpecWarnAggroOnYou	= "Você tem ameaça! Atenção aos Orbes!"
 })
 
 L:SetTimerLocalization({
-	TimerDragon			= "Próx. Dragonetes Crepusculares",
 	TimerEggWeakening	= "Carapaça Crepuscular desvanece",
 	TimerEggWeaken		= "Carapaça Crepuscular regenera-se",
 	TimerOrbs			= "Recarga de Orbes Sombrios"
 })
 
 L:SetOptionLocalization({
-	WarnDragon			= "Exibir aviso quando Dragonetes Crepusculares surgirem",
 	WarnOrbSoon			= "Exibir aviso antecipado para orbes ( 5s antes, a cada 1s)\n(Pode não ser correto. Pode causar spam.)",
 	warnWrackJump		= "Anunciar quando $spell:92955 saltar de alvo",
 	warnAggro			= "Anunciar jogadores que tem Ameaça quando os orbes surgirem (podem ser alvo dos orbes)",
 	SpecWarnAggroOnYou	= "Exibir aviso especial se você tiver Ameaça quando os orbes surgirem\n(você pode ser o alvo dos orbes)",
 	SpecWarnOrbs		= "Exibir aviso especial quando orbes surgirem (Aviso esperado)",
-	SpecWarnEggWeaken	= "Exibir aviso especial quando $spell:87654 desvanescer",
-	SpecWarnEggShield	= "Exibir aviso especial quando $spell:87654 regenerar",
-	TimerDragon			= "Exibir cronógrafo para novos Dragonetes Crepusculares",
 	TimerEggWeakening	= "Exibir cronógrafo para quando $spell:87654 desvanescer",
 	TimerEggWeaken		= "Exibir cronógrafo para regeneração de $spell:87654",
 	TimerOrbs			= "Exibir cronógrafo para os próximos orbes (Tempo esperado, Pode não ser correto)",

@@ -3,12 +3,7 @@ local L
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
---L = DBM:GetModLocalization(156)
-L = DBM:GetModLocalization("HalfusWyrmbreaker")
-
-L:SetGeneralLocalization({
-	name =	"Halfus Wyrmbreaker"
-})
+L = DBM:GetModLocalization(156)
 
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Show the health of released drakes\n(Requires Boss Health enabled)"
@@ -17,12 +12,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Valiona & Theralion  --
 ---------------------------
---L = DBM:GetModLocalization(157)
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"
-})
+L = DBM:GetModLocalization(157)
 
 L:SetOptionLocalization({
 	TBwarnWhileBlackout		= "Show $spell:86369 warning when $spell:86788 active",
@@ -41,12 +31,7 @@ L:SetMiscLocalization({
 ----------------------------------
 --  Twilight Ascendant Council  --
 ----------------------------------
---L = DBM:GetModLocalization(158)
-L = DBM:GetModLocalization("AscendantCouncil")
-
-L:SetGeneralLocalization({
-	name =	"Twilight Ascendant Council"
-})
+L = DBM:GetModLocalization(158)
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s below 30%% - next phase soon!",
@@ -80,11 +65,6 @@ L:SetMiscLocalization({
 	Thundershock	= "The surrounding air crackles with energy....",
 	Switch			= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
 	Phase3			= "An impressive display...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
-	Ignacious		= "Ignacious",
-	Feludius		= "Feludius",
-	Arion			= "Arion",
-	Terrastra		= "Terrastra",
-	Monstrosity		= "Elementium Monstrosity",
 	Kill			= "Impossible....",
 	blizzHatesMe	= "Beacon & Rod on me! Clear a path!",--Very bad situation.
 	WrongDebuff		= "No %s"
@@ -93,34 +73,20 @@ L:SetMiscLocalization({
 ----------------
 --  Cho'gall  --
 ----------------
---L = DBM:GetModLocalization(167)
-L = DBM:GetModLocalization("Chogall")
-
-L:SetGeneralLocalization({
-	name =	"Cho'gall"
-})
+L = DBM:GetModLocalization(167)
 
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Show DBM arrow when $spell:81685 is near you",
-	InfoFrame				= "Show info frame for $spell:81701",
-	RangeFrame				= "Show range frame (5) for $spell:82235",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
+	InfoFrame				= "Show info frame for $journal:3165",
+	RangeFrame				= "Show range frame (5) for $journal:3165",
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
 	SetIconOnCreature		= "Set icons on Darkened Creations"
-})
-
-L:SetMiscLocalization({
-	Bloodlevel				= "Corruption"
 })
 
 ----------------
 --  Sinestra  --
 ----------------
---L = DBM:GetModLocalization(168)
-L = DBM:GetModLocalization("Sinestra")
-
-L:SetGeneralLocalization({
-	name =	"Sinestra"
-})
+L = DBM:GetModLocalization(168)
 
 L:SetWarningLocalization({
 	WarnOrbSoon			= "Orbs in %d sec!",

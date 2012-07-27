@@ -4,12 +4,7 @@ local L
 ------------------------
 --  Conclave of Wind  --
 ------------------------
---L = DBM:GetModLocalization(154)
-L = DBM:GetModLocalization("Conclave")
-
-L:SetGeneralLocalization({
-	name = "바람의 비밀의회"
-})
+L = DBM:GetModLocalization(154)
 
 L:SetWarningLocalization({
 	warnSpecial				= "궁극의 힘", --Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
@@ -32,20 +27,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "힘을 모으기 시작합니다!",
-	Anshal					= "안샬",
-	Nezir					= "네지르",
-	Rohash					= "로하시"
+	gatherstrength			= "힘을 모으기 시작합니다!"
 })
+
 ---------------
 --  Al'Akir  --
 ---------------
---L = DBM:GetModLocalization(155)
-L = DBM:GetModLocalization("AlAkir")
-
-L:SetGeneralLocalization({
-	name = "알아키르"
-})
+L = DBM:GetModLocalization(155)
 
 L:SetTimerLocalization({
 	TimerFeedback 		= "역순환 (%d)"

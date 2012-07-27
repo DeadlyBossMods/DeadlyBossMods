@@ -7,12 +7,7 @@ local L
 ----------------
 --  Argaloth  --
 ----------------
---L= DBM:GetModLocalization(139)
-L = DBM:GetModLocalization("Argaloth")
-
-L:SetGeneralLocalization({
-	name = "Argaloth"
-})
+L= DBM:GetModLocalization(139)
 
 L:SetWarningLocalization({
 })

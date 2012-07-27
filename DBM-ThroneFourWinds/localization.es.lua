@@ -5,12 +5,7 @@ local L
 ------------------------
 --  Conclave of Wind  --
 ------------------------
---L = DBM:GetModLocalization(154)
-L = DBM:GetModLocalization("Conclave")
-
-L:SetGeneralLocalization({
-	name = "Cónclave del Viento"
-})
+L = DBM:GetModLocalization(154)
 
 L:SetWarningLocalization({
 	warnSpecial			= "Huracan/Céfiro/Tormenta de granizo activados",
@@ -33,21 +28,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "empieza a extraer fuerza",
-	Anshal			= "Anshal",
-	Nezir			= "Nezir",
-	Rohash			= "Rohash"
+	gatherstrength			= "empieza a extraer fuerza"
 })
 
 ---------------
 --  Al'Akir  --
 ---------------
---L = DBM:GetModLocalization(155)
-L = DBM:GetModLocalization("AlAkir")
-
-L:SetGeneralLocalization({
-	name = "Al'Akir"
-})
+L = DBM:GetModLocalization(155)
 
 L:SetTimerLocalization({
 	TimerFeedback 	= "Rebote (%d)"

@@ -1,5 +1,4 @@
---local mod	= DBM:NewMod(167, "DBM-BastionTwilight", nil, 72)
-local mod	= DBM:NewMod("Chogall", "DBM-BastionTwilight")
+local mod	= DBM:NewMod(167, "DBM-BastionTwilight", nil, 72)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -25,7 +24,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
-local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
+local warnWorship					= mod:NewTargetAnnounce(91303, 3)--Phase 1
 local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
 local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
 local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3, nil, mod:IsDps())--Warning is disabled on normal mode, it has no use there
@@ -80,6 +79,7 @@ local creatureIcons = {}
 local creatureIcon = 8
 local iconsSet = 0
 local Corruption = GetSpellInfo(82235)
+local Bloodlevel = EJ_GetSectionInfo(3165)
 
 local function showWorshipWarning()
 	warnWorship:Show(table.concat(worshipTargets, "<, >"))
@@ -95,6 +95,7 @@ local function resetCreatureIconState()
 	iconsSet = 0
 end
 
+-- needs to be change in MoP (GetNumRaidMembers() removed in 5.0)
 function mod:CorruptingCrashTarget(sGUID)
 	local targetname = nil
 	for i=1, GetNumRaidMembers() do
@@ -141,7 +142,7 @@ function mod:OnCombatStart(delay)
 	iconsSet = 0
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(L.Bloodlevel)
+		DBM.InfoFrame:SetHeader(Bloodlevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
 	end
 end	

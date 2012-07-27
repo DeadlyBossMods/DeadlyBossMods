@@ -4,12 +4,7 @@ local L
 ------------------------
 --  Conclave of Wind  --
 ------------------------
---L = DBM:GetModLocalization(154)
-L = DBM:GetModLocalization("Conclave")
-
-L:SetGeneralLocalization({
-	name 				= "風之議會"
-})
+L = DBM:GetModLocalization(154)
 
 L:SetWarningLocalization({
 	warnSpecial			= "颶風/微風/冰雨風暴啟動",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
@@ -32,21 +27,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "開始從剩下的風領主那裡取得力量!",
-	Anshal				= "安蕭爾",
-	Nezir				= "涅茲爾",
-	Rohash				= "洛哈許"
+	gatherstrength			= "開始從剩下的風領主那裡取得力量!"
 })
 
 ---------------
 --  Al'Akir  --
 ---------------
---L = DBM:GetModLocalization(155)
-L = DBM:GetModLocalization("AlAkir")
-
-L:SetGeneralLocalization({
-	name 				= "奧拉基爾"
-})
+L = DBM:GetModLocalization(155)
 
 L:SetTimerLocalization({
 	TimerFeedback 			= "回饋(%d)"

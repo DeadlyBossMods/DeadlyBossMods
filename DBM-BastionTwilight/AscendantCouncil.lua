@@ -1,5 +1,4 @@
---local mod	= DBM:NewMod(158, "DBM-BastionTwilight", nil, 72)
-local mod	= DBM:NewMod("AscendantCouncil", "DBM-BastionTwilight")
+local mod	= DBM:NewMod(158, "DBM-BastionTwilight", nil, 72)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -144,6 +143,11 @@ local isRod = false
 local infoFrameUpdated = false
 local groundedName = GetSpellInfo(83581)
 local searingName = GetSpellInfo(83500)
+local Ignacious = EJ_GetSectionInfo(3118)
+local Feludius = EJ_GetSectionInfo(3110)
+local Arion = EJ_GetSectionInfo(3128)
+local Terrastra = EJ_GetSectionInfo(3135)
+local Monstrosity = EJ_GetSectionInfo(3145)
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -190,13 +194,13 @@ end
 local updateBossFrame = function(phase)
 	DBM.BossHealth:Clear()
 	if phase == 1 then
-		DBM.BossHealth:AddBoss(43687, L.Feludius)
-		DBM.BossHealth:AddBoss(43686, L.Ignacious)
+		DBM.BossHealth:AddBoss(43687, Feludius)
+		DBM.BossHealth:AddBoss(43686, Ignacious)
 	elseif phase == 2 then
-		DBM.BossHealth:AddBoss(43688, L.Arion)
-		DBM.BossHealth:AddBoss(43689, L.Terrastra)
+		DBM.BossHealth:AddBoss(43688, Arion)
+		DBM.BossHealth:AddBoss(43689, Terrastra)
 	elseif phase == 3 then
-		DBM.BossHealth:AddBoss(43735, L.Monstrosity)
+		DBM.BossHealth:AddBoss(43735, Monstrosity)
 	end
 end
 
