@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Cookie", "DBM-Party-Cataclysm", 2)
+local mod	= DBM:NewMod(93, "DBM-Party-Cataclysm", 2, 63)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))

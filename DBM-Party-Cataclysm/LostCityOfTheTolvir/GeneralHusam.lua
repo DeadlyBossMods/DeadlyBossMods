@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("GeneralHusam", "DBM-Party-Cataclysm", 5)
+local mod	= DBM:NewMod(117, "DBM-Party-Cataclysm", 5, 69)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))

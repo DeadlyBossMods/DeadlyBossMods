@@ -4,26 +4,17 @@ local L
 -- Initial release by Sasmira: 12/26/2010
 -- Last update: 01/19/2011 (by Sasmira) 
 
-
 -------------------------
 --  Blackrock Caverns  --
 --------------------------
 -- Rom'ogg Bonecrusher --
 --------------------------
-L = DBM:GetModLocalization("Romogg")
-
-L:SetGeneralLocalization({
-	name = "Rom'ogg Broie-les-Os"
-})
+L= DBM:GetModLocalization(105)
 
 -------------------------------
 -- Corla, Herald of Twilight --
 -------------------------------
-L = DBM:GetModLocalization("Corla")
-
-L:SetGeneralLocalization({
-	name = "Corla, héraut du Crépuscule"
-})
+L= DBM:GetModLocalization(106)
 
 L:SetWarningLocalization({
 	WarnAdd		= "Add libérés"
@@ -36,11 +27,7 @@ L:SetOptionLocalization({
 -----------------------
 -- Karsh SteelBender --
 -----------------------
-L = DBM:GetModLocalization("KarshSteelbender")
-
-L:SetGeneralLocalization({
-	name = "Karsh Plielacier"
-})
+L= DBM:GetModLocalization(107)
 
 L:SetTimerLocalization({
 	TimerSuperheated 	= "(%d) Armure en vif-argent surchauffé"
@@ -53,20 +40,12 @@ L:SetOptionLocalization({
 ------------
 -- Beauty --
 ------------
-L = DBM:GetModLocalization("Beauty")
-
-L:SetGeneralLocalization({
-	name = "La Belle"
-})
+L= DBM:GetModLocalization(108)
 
 -----------------------------
 -- Ascendant Lord Obsidius --
 -----------------------------
-L = DBM:GetModLocalization("AscendantLordObsidius")
-
-L:SetGeneralLocalization({
-	name = "Seigneur ascendant Obsidius"
-})
+L= DBM:GetModLocalization(109)
 
 L:SetOptionLocalization({
 	SetIconOnBoss	= "Poser un icône sur le Boss après le sort $spell:76200 "
@@ -77,29 +56,17 @@ L:SetOptionLocalization({
 ---------------------
 -- Glubtok --
 -------------
-L = DBM:GetModLocalization("Glubtok")
-
-L:SetGeneralLocalization({
-	name = "Glubtok"
-})
+L= DBM:GetModLocalization(89)
 
 -----------------------
 -- Helix Gearbreaker --
 -----------------------
-L = DBM:GetModLocalization("Helix")
-
-L:SetGeneralLocalization({
-	name = "Hélix Engrecasse"
-})
+L= DBM:GetModLocalization(90)
 
 ---------------------
 -- Foe Reaper 5000 --
 ---------------------
-L = DBM:GetModLocalization("FoeReaper")
-
-L:SetGeneralLocalization({
-	name = "Faucheur 5000"
-})
+L= DBM:GetModLocalization(91)
 
 L:SetOptionLocalization{
 	HarvestIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88495)
@@ -108,29 +75,17 @@ L:SetOptionLocalization{
 ----------------------
 -- Admiral Ripsnarl --
 ----------------------
-L = DBM:GetModLocalization("Ripsnarl")
-
-L:SetGeneralLocalization({
-	name = "Amiral Grondéventre"
-})
+L= DBM:GetModLocalization(92)
 
 ----------------------
 -- "Captain" Cookie --
 ----------------------
-L = DBM:GetModLocalization("Cookie")
-
-L:SetGeneralLocalization({
-	name = "\"Captaine\" Macaron"
-})
+L= DBM:GetModLocalization(93)
 
 ----------------------
 -- Vanessa VanCleef --
 ----------------------
-L = DBM:GetModLocalization("Vanessa")
-
-L:SetGeneralLocalization({
-	name = "Vanessa VanCleef"
-})
+L= DBM:GetModLocalization(95)
 
 L:SetTimerLocalization({
 	achievementGauntlet	= "Gantelet"
@@ -141,11 +96,7 @@ L:SetTimerLocalization({
 ---------------------
 -- General Umbriss --
 ---------------------
-L = DBM:GetModLocalization("GeneralUmbriss")
-
-L:SetGeneralLocalization({
-	name = "Général Umbriss"
-})
+L= DBM:GetModLocalization(131)
 
 L:SetOptionLocalization{
 	PingBlitz	= "Ping sur la minimap lorsque le Général Umbriss est sur le point de vous faire une Attaque éclair"
@@ -158,54 +109,33 @@ L:SetMiscLocalization{
 --------------------------
 -- Forgemaster Throngus --
 --------------------------
-L = DBM:GetModLocalization("ForgemasterThrongus")
-
-L:SetGeneralLocalization({
-	name = "Maître-forge Throngus"
-})
+L= DBM:GetModLocalization(132)
 
 -------------------------
 -- Drahga Shadowburner --
 -------------------------
-L = DBM:GetModLocalization("DrahgaShadowburner")
-
-L:SetGeneralLocalization({
-	name = "Drahga Brûle-Ombre"
-})
+L= DBM:GetModLocalization(133)
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, vous faites ce que je commande! Attrape-moi!",	-- Yell when Valiona is incoming
-	Valiona		= "Valiona"
+	ValionaYell	= "Dragon, vous faites ce que je commande! Attrape-moi!"	-- Yell when Valiona is incoming
 }
 
 ------------
 -- Erudax --
 ------------
-L = DBM:GetModLocalization("Erudax")
-
-L:SetGeneralLocalization({
-	name = "Erudax"
-})
+L= DBM:GetModLocalization(134)
 
 ----------------------------
 --  Halls of Origination  --
 ----------------------------
 -- Temple Guardian Anhuur --
 ----------------------------
-L = DBM:GetModLocalization("TempleGuardianAnhuur")
-
-L:SetGeneralLocalization({
-	name = "Gardien du temple Anhuur"
-})
+L= DBM:GetModLocalization(124)
 
 ---------------------
 -- Earthrager Ptah --
 ---------------------
-L = DBM:GetModLocalization("EarthragerPtah")
-
-L:SetGeneralLocalization({
-	name = "Enrageterre Ptah"
-})
+L= DBM:GetModLocalization(125)
 
 L:SetMiscLocalization{
 	Kill		= "Ptah... n'est ... plus la..." -- à vérifier
@@ -214,11 +144,7 @@ L:SetMiscLocalization{
 --------------
 -- Anraphet --
 --------------
-L = DBM:GetModLocalization("Anraphet")
-
-L:SetGeneralLocalization({
-	name = "Anraphet"
-})
+L= DBM:GetModLocalization(126)
 
 L:SetTimerLocalization({
 	achievementGauntlet	= "Vitesse de la Lumière"
@@ -231,11 +157,7 @@ L:SetMiscLocalization({
 ------------
 -- Isiset --
 ------------
-L = DBM:GetModLocalization("Isiset")
-
-L:SetGeneralLocalization({
-	name = "Isiset"
-})
+L= DBM:GetModLocalization(127)
 
 L:SetWarningLocalization({
 	WarnSplitSoon	= "Séparation imminente !"
@@ -248,76 +170,29 @@ L:SetOptionLocalization({
 -------------
 -- Ammunae --
 ------------- 
-L = DBM:GetModLocalization("Ammunae")
-
-L:SetGeneralLocalization({
-	name = "Ammunae"
-})
+L= DBM:GetModLocalization(128)
 
 -------------
 -- Setesh  --
 ------------- 
-L = DBM:GetModLocalization("Setesh")
-
-L:SetGeneralLocalization({
-	name = "Setesh"
-})
+L= DBM:GetModLocalization(129)
 
 ----------
 -- Rajh --
 ----------
-L = DBM:GetModLocalization("Rajh")
-
-L:SetGeneralLocalization({
-	name = "Rajh"
-})
+L= DBM:GetModLocalization(130)
 
 --------------------------------
 --  Lost City of the Tol'vir  --
 --------------------------------
 -- General Husam --
 -------------------
-L = DBM:GetModLocalization("GeneralHusam")
-
-L:SetGeneralLocalization({
-	name = "Général Husam"
-})
-
-------------------------------------
--- Siamat, Lord of the South Wind --
-------------------------------------
-L = DBM:GetModLocalization("Siamat")
-
-L:SetGeneralLocalization({
-	name = "Siamat"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
-})
-
-------------------------
--- High Prophet Barim --
-------------------------
-L = DBM:GetModLocalization("HighProphetBarim")
-
-L:SetGeneralLocalization({
-	name = "Grand prophète Barim"
-})
-
-L:SetOptionLocalization{
-	BossHealthAdds	= "Afficher la vie des adds dans la fenêtre de vie du Boss"
-}
-
-L:SetMiscLocalization{
-	BlazeHeavens		= "Brasier des cieux",
-	HarbringerDarkness	= "Hurlement des ténèbres"
-}
+L= DBM:GetModLocalization(117)
 
 --------------
 -- Lockmaw --
 --------------
-L = DBM:GetModLocalization("Lockmaw")
-
-L:SetGeneralLocalization({
-	name = "Claque-mâchoire"
-})
+L= DBM:GetModLocalization(118)
 
 L:SetOptionLocalization{
 	RangeFrame	= "Afficher la fenêtre de portée (5 mêtres)"
@@ -332,43 +207,41 @@ L:SetGeneralLocalization({
 	name = "Augh"		-- he is fightable after Lockmaw :o
 })
 
+------------------------
+-- High Prophet Barim --
+------------------------
+L= DBM:GetModLocalization(119)
+
+L:SetOptionLocalization{
+	BossHealthAdds	= "Afficher la vie des adds dans la fenêtre de vie du Boss"
+}
+
+------------------------------------
+-- Siamat, Lord of the South Wind --
+------------------------------------
+L= DBM:GetModLocalization(122)
+
 -----------------------
 --  Shadowfang Keep  --
 -----------------------
 -- Baron Ashbury --
 -------------------
-L = DBM:GetModLocalization("Ashbury")
-
-L:SetGeneralLocalization({
-	name = "Baron Ashbury"
-})
+L= DBM:GetModLocalization(96)
 
 -----------------------
 -- Baron Silverlaine --
 -----------------------
-L = DBM:GetModLocalization("Silverlaine")
-
-L:SetGeneralLocalization({
-	name = "Baron d'Argelaine"
-})
+L= DBM:GetModLocalization(97)
 
 --------------------------
 -- Commander Springvale --
 --------------------------
-L = DBM:GetModLocalization("Springvale")
-
-L:SetGeneralLocalization({
-	name = "Commandant Printeval"
-})
+L= DBM:GetModLocalization(98)
 
 -----------------
 -- Lord Walden --
 -----------------
-L = DBM:GetModLocalization("Walden")
-
-L:SetGeneralLocalization({
-	name = "Seigneur Walden"
-})
+L= DBM:GetModLocalization(99)
 
 L:SetWarningLocalization{
 	specWarnCoagulant	= "Lumière Verte - Bougez !",	-- Green light
@@ -382,18 +255,14 @@ L:SetOptionLocalization{
 ------------------
 -- Lord Godfrey --
 ------------------
-L = DBM:GetModLocalization("Godfrey")
-
-L:SetGeneralLocalization({
-	name = "Seigneur Godfrey"
-})
+L= DBM:GetModLocalization(100)
 
 ---------------------
 --  The Stonecore  --
 ---------------------
 -- Corborus --
 -------------- 
-L = DBM:GetModLocalization("Corborus")
+L= DBM:GetModLocalization(110)
 
 L:SetWarningLocalization({
 	WarnEmerge	= "Surgit",
@@ -412,27 +281,10 @@ L:SetOptionLocalization({
 	TimerSubmerge	= "Afficher le temps lorsqu'il s'enterre"
 })
 
-L:SetGeneralLocalization({
-	name = "Corborus"
-})
-
------------
--- Ozruk --
------------ 
-L = DBM:GetModLocalization("Ozruk")
-
-L:SetGeneralLocalization({
-	name = "Ozruk"
-})
-
 --------------
 -- Slabhide --
 -------------- 
-L = DBM:GetModLocalization("Slabhide")
-
-L:SetGeneralLocalization({
-	name = "Peau-de-pierre"
-})
+L= DBM:GetModLocalization(111)
 
 L:SetWarningLocalization({
 	specWarnCrystalStorm		= "Tempête de cristal - Cachez vous derrière les pierres !"
@@ -442,34 +294,27 @@ L:SetOptionLocalization({
 	specWarnCrystalStorm		= "Afficher une alerte spéciale pour le sort $spell:92265"
 })
 
+-----------
+-- Ozruk --
+----------- 
+L= DBM:GetModLocalization(112)
+
 -------------------------
 -- High Priestess Azil --
 ------------------------
-L = DBM:GetModLocalization("HighPriestessAzil")
-
-L:SetGeneralLocalization({
-	name = "Grande prêtresse Azil"
-})
+L= DBM:GetModLocalization(113)
 
 ---------------------------
 --  The Vortex Pinnacle  --
 ---------------------------
 -- Grand Vizier Ertan --
 ------------------------
-L = DBM:GetModLocalization("GrandVizierErtan")
-
-L:SetGeneralLocalization({
-	name = "Grand vizir Ertan"
-})
+L= DBM:GetModLocalization(114)
 
 --------------
 -- Altairus --
 -------------- 
-L = DBM:GetModLocalization("Altairus")
-
-L:SetGeneralLocalization({
-	name = "Altairus"
-})
+L= DBM:GetModLocalization(115)
 
 L:SetOptionLocalization({
 	BreathIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88308)
@@ -478,11 +323,7 @@ L:SetOptionLocalization({
 -----------
 -- Asaad --
 -----------
-L = DBM:GetModLocalization("Asaad")
-
-L:SetGeneralLocalization({
-	name = "Asaad"
-})
+L= DBM:GetModLocalization(116)
 
 L:SetOptionLocalization({
 	SpecWarnStaticCling	= "Alerte spéciale pour le sort $spell:87618"
@@ -497,49 +338,41 @@ L:SetWarningLocalization({
 ---------------------------
 -- Lady Naz'jar --
 ------------------ 
-L = DBM:GetModLocalization("LadyNazjar")
-
-L:SetGeneralLocalization({
-	name = "Dame Naz'jar"
-})
+L= DBM:GetModLocalization(101)
 
 -----======-----------
 -- Commander Ulthok --
 ---------------------- 
-L = DBM:GetModLocalization("CommanderUlthok")
-
-L:SetGeneralLocalization({
-	name = "Commandant Ulthok"
-})
+L= DBM:GetModLocalization(102)
 
 -------------------------
 -- Erunak Stonespeaker --
 -------------------------
-L = DBM:GetModLocalization("ErunakStonespeaker")
-
-L:SetGeneralLocalization({
-	name = "Erunak Parlepierre"
-})
+L= DBM:GetModLocalization(103)
 
 ------------
 -- Ozumat --
 ------------ 
-L = DBM:GetModLocalization("Ozumat")
-
-L:SetGeneralLocalization({
-	name = "Ozumat"
-})
+L= DBM:GetModLocalization(104)
 
 ----------------
 --  Zul'Aman  --
 ----------------
--- Nalorakk --
---------------
-L = DBM:GetModLocalization("Nalorakk5")
+--  Akil'zon --
+---------------
+L= DBM:GetModLocalization(186)
 
-L:SetGeneralLocalization{
-	name = "Nalorakk (Bear)"
+L:SetOptionLocalization{
+	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97300),
+	RangeFrame	= "Show range frame (10 yards)",
+	StormArrow	= "Show DBM Arrow for $spell:97300",
+	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
+
+---------------
+--  Nalorakk --
+---------------
+L= DBM:GetModLocalization(187)
 
 L:SetWarningLocalization{
 	WarnBear		= "Bear Form",
@@ -567,30 +400,10 @@ L:SetMiscLocalization{
 	YellNormal	= "Make way for Nalorakk!"
 }
 
---------------
--- Akil'zon --
---------------
-L = DBM:GetModLocalization("Akilzon5")
-
-L:SetGeneralLocalization{
-	name = "Akil'zon (Eagle)"
-}
-
-L:SetOptionLocalization{
-	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97300),
-	RangeFrame	= "Show range frame (10 yards)",
-	StormArrow	= "Show DBM Arrow for $spell:97300",
-	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
-}
-
---------------
--- Jan'alai --
---------------
-L = DBM:GetModLocalization("Janalai5")
-
-L:SetGeneralLocalization{
-	name = "Jan'alai (Dragonhawk)"
-}
+---------------
+--  Jan'alai --
+---------------
+L= DBM:GetModLocalization(188)
 
 L:SetOptionLocalization{
 	FlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43140)
@@ -601,14 +414,10 @@ L:SetMiscLocalization{
 	YellAdds	= "Where ma hatcha? Get to work on dem eggs!"
 }
 
--------------
--- Halazzi --
--------------
-L = DBM:GetModLocalization("Halazzi5")
-
-L:SetGeneralLocalization{
-	name = "Halazzi (Lynx)"
-}
+--------------
+--  Halazzi --
+--------------
+L= DBM:GetModLocalization(189)
 
 L:SetWarningLocalization{
 	WarnSpirit	= "Spirit Phase",
@@ -628,11 +437,7 @@ L:SetMiscLocalization{
 -----------------------
 -- Hexlord Malacrass --
 -----------------------
-L = DBM:GetModLocalization("Malacrass5")
-
-L:SetGeneralLocalization{
-	name = "Hexlord Malacrass"
-}
+L= DBM:GetModLocalization(190)
 
 L:SetTimerLocalization{
 	TimerSiphon	= "%s: %s"
@@ -645,11 +450,7 @@ L:SetOptionLocalization{
 -------------
 -- Daakara --
 -------------
-L = DBM:GetModLocalization("Daakara")
-
-L:SetGeneralLocalization{
-	name = "Daakara"
-}
+L= DBM:GetModLocalization(191)
 
 L:SetOptionLocalization{
 	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
@@ -658,14 +459,10 @@ L:SetOptionLocalization{
 
 -----------------
 --  Zul'Gurub  --
--------------------------
+-----------------
 -- High Priest Venoxis --
 -------------------------
-L = DBM:GetModLocalization("Venoxis")
-
-L:SetGeneralLocalization{
-	name = "High Priest Venoxis"
-}
+L= DBM:GetModLocalization(175)
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
@@ -675,11 +472,7 @@ L:SetOptionLocalization{
 ------------------------
 -- Bloodlord Mandokir --
 ------------------------
-L = DBM:GetModLocalization("Mandokir")
-
-L:SetGeneralLocalization{
-	name = "Bloodlord Mandokir"
-}
+L= DBM:GetModLocalization(176)
 
 L:SetWarningLocalization{
 	WarnRevive		= "%d ghosts remaining",
@@ -692,40 +485,47 @@ L:SetOptionLocalization{
 	SetIconOnOhgan	= "Put an icon on Ohgan when he revives" 
 }
 
-L:SetMiscLocalization{
-	Ohgan		= "Ohgan"
-}
+----------------------
+-- Cache of Madness --
+----------------------
+-------------
+-- Gri'lek --
+-------------
+L= DBM:GetModLocalization(177)
+
+---------------
+-- Hazza'rah --
+---------------
+L= DBM:GetModLocalization(178)
+
+--------------
+-- Renataki --
+--------------
+L= DBM:GetModLocalization(179)
+
+---------------
+-- Wushoolay --
+---------------
+L= DBM:GetModLocalization(180)
+
+----------------------------
+-- High Priestess Kilnara --
+----------------------------
+L= DBM:GetModLocalization(181)
 
 ------------
 -- Zanzil --
 ------------
-L = DBM:GetModLocalization("Zanzil")
-
-L:SetGeneralLocalization{
-	name = "Zanzil"
-}
+L= DBM:GetModLocalization(184)
 
 L:SetOptionLocalization{
 	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
 ----------------------------
--- High Priestess Kilnara --
-----------------------------
-L = DBM:GetModLocalization("Kilnara")
-
-L:SetGeneralLocalization{
-	name = "High Priestess Kilnara"
-}
-
-----------------------------
 -- Jindo --
 ----------------------------
-L = DBM:GetModLocalization("Jindo")
-
-L:SetGeneralLocalization{
-	name = "Jin'do the Godbreaker"
-}
+L= DBM:GetModLocalization(185)
 
 L:SetWarningLocalization{
 	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left"
@@ -740,81 +540,17 @@ L:SetMiscLocalization{
 	Kill			= "Oh no, Hakkar's spirit is free!" -- temporarily
 }
 
-----------------------
--- Cache of Madness --
-----------------------
--------------
--- Gri'lek --
--------------
---L= DBM:GetModLocalization(603)
-
-L = DBM:GetModLocalization("CoMGrilek")
-
-L:SetGeneralLocalization{
-	name = "Gri'lek"
-}
-
----------------
--- Hazza'rah --
----------------
---L= DBM:GetModLocalization(604)
-
-L = DBM:GetModLocalization("CoMGHazzarah")
-
-L:SetGeneralLocalization{
-	name = "Hazza'rah"
-}
-
---------------
--- Renataki --
---------------
---L= DBM:GetModLocalization(605)
-
-L = DBM:GetModLocalization("CoMRenataki")
-
-L:SetGeneralLocalization{
-	name = "Renataki"
-}
-
----------------
--- Wushoolay --
----------------
---L= DBM:GetModLocalization(606)
-
-L = DBM:GetModLocalization("CoMWushoolay")
-
-L:SetGeneralLocalization{
-	name = "Wushoolay"
-}
-
 ----------------
 --  End Time  --
-----------------------
--- Echo of Sylvanas --
-----------------------
-L = DBM:GetModLocalization("EchoSylvanas")
-
-L:SetGeneralLocalization{
-	name = "Echo of Sylvanas"
-}
-
----------------------
--- Echo of Tyrande --
----------------------
-L = DBM:GetModLocalization("EchoTyrande")
-
-L:SetGeneralLocalization{
-	name = "Echo of Tyrande"
-}
+-------------------
+-- Echo of Baine --
+-------------------
+L= DBM:GetModLocalization(340)
 
 -------------------
 -- Echo of Jaina --
 -------------------
-L = DBM:GetModLocalization("EchoJaina")
-
-L:SetGeneralLocalization{
-	name = "Echo of Jaina"
-}
+L= DBM:GetModLocalization(285)
 
 L:SetTimerLocalization{
 	TimerFlarecoreDetonate	= "Flarecore detonate"
@@ -825,22 +561,19 @@ L:SetOptionLocalization{
 }
 
 ----------------------
--- Echo of Baine --
+-- Echo of Sylvanas --
 ----------------------
-L = DBM:GetModLocalization("EchoBaine")
+L= DBM:GetModLocalization(323)
 
-L:SetGeneralLocalization{
-	name = "Echo of Baine"
-}
+---------------------
+-- Echo of Tyrande --
+---------------------
+L= DBM:GetModLocalization(283)
 
 --------------
 -- Murozond --
 --------------
-L = DBM:GetModLocalization("Murozond")
-
-L:SetGeneralLocalization{
-	name = "Murozond"
-}
+L= DBM:GetModLocalization(289)
 
 L:SetMiscLocalization{
 	Kill		= "You know not what you have done. Aman'Thul... What I... have... seen..."
@@ -851,20 +584,12 @@ L:SetMiscLocalization{
 ------------------------
 -- Peroth'arn --
 ----------------
-L = DBM:GetModLocalization("Perotharn")
-
-L:SetGeneralLocalization{
-	name = "Peroth'arn"
-}
+L= DBM:GetModLocalization(290)
 
 -------------
 -- Azshara --
 -------------
-L = DBM:GetModLocalization("Azshara")
-
-L:SetGeneralLocalization{
-	name = "Azshara"
-}
+L= DBM:GetModLocalization(291)
 
 L:SetMiscLocalization{
 	Kill		= "Enough! As much as I adore playing hostess, I have more pressing matters to attend to."
@@ -873,11 +598,7 @@ L:SetMiscLocalization{
 -----------------------------
 -- Mannoroth and Varo'then --
 -----------------------------
-L = DBM:GetModLocalization("Mannoroth")
-
-L:SetGeneralLocalization{
-	name = "Mannoroth & Varo'then"
-}
+L= DBM:GetModLocalization(292)
 
 L:SetMiscLocalization{
 	Kill		= "No...no! This victory will not be ripped from my grasp! I will not return to him in failure! I will not be torn from this pitiful world! No...NOOOOOOOO!!!"
@@ -888,26 +609,14 @@ L:SetMiscLocalization{
 ------------------------
 -- Arcurion --
 --------------
-L = DBM:GetModLocalization("Arcurion")
-
-L:SetGeneralLocalization{
-	name = "Arcurion"
-}
+L= DBM:GetModLocalization(322)
 
 ----------------------
 -- Asira Dawnslayer --
 ----------------------
-L = DBM:GetModLocalization("AsiraDawnslayer")
-
-L:SetGeneralLocalization{
-	name = "Asira Dawnslayer"
-}
+L= DBM:GetModLocalization(342)
 
 ---------------------------
 -- Archbishop Benedictus --
 ---------------------------
-L = DBM:GetModLocalization("Benedictus")
-
-L:SetGeneralLocalization{
-	name = "Archbishop Benedictus"
-}
+L= DBM:GetModLocalization(341)
