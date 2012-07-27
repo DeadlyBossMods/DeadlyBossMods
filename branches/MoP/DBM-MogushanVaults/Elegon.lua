@@ -26,12 +26,14 @@ local warnClosedCircuit				= mod:NewTargetAnnounce(117949, 3, nil, mod:IsHealer(
 local warnTotalAnnihilation			= mod:NewCastAnnounce(129711, 4)--Protector dying(exploding)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)--124967 Draw Power
 local warnPhase3					= mod:NewPhaseAnnounce(3, 3)--116994 Unstable Energy Starting
+local warnRadiatingEnergies			= mod:NewSpellAnnounce(118310, 4)
 
 local specWarnOvercharged			= mod:NewSpecialWarningStack(117878, nil, 6)
 local specWarnTotalAnnihilation		= mod:NewSpecialWarningSpell(129711, nil, nil, nil, true)
 local specWarnProtector				= mod:NewSpecialWarningSwitch("ej6178", mod:IsDps() or mod:IsTank())
 local specWarnClosedCircuit			= mod:NewSpecialWarningDispel(117949, false)--Probably a spammy mess if this hits a few at once. But here in case someone likes spam.
 local specWarnDespawnFloor			= mod:NewSpecialWarningSpell("specWarnDespawnFloor", nil, nil, nil, true)
+local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, nil, true)
 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
@@ -69,6 +71,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
 			specWarnOvercharged:Show(args.amount)
 		end
+	elseif args:IsSpellID(118310) then--Below 50% health
+		warnRadiatingEnergies:Show()
+		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
