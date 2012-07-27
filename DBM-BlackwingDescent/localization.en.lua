@@ -1,20 +1,46 @@
 local L
 
---------------
---  Magmaw  --
---------------
---L = DBM:GetModLocalization(170)
-L = DBM:GetModLocalization("Magmaw")
-
-L:SetGeneralLocalization({
-	name = "Magmaw"
-})
+-------------------------------
+--  Dark Iron Golem Council  --
+-------------------------------
+L = DBM:GetModLocalization(169)
 
 L:SetWarningLocalization({
-	SpecWarnInferno	= "Blazing Bone Construct Soon (~4s)"
+	SpecWarnActivated			= "Change Target to %s!",
+	specWarnGenerator			= "Power Generator - Move %s!"
 })
 
 L:SetTimerLocalization({
+	timerShadowConductorCast	= "Shadow Conductor",
+	timerArcaneLockout			= "Annihilator Lockout",
+	timerArcaneBlowbackCast		= "Arcane Blowback",
+	timerNefAblity				= "Ability Buff CD"
+})
+
+L:SetOptionLocalization({
+	timerShadowConductorCast	= "Show timer for $spell:92048 cast",
+	timerArcaneLockout			= "Show timer for $spell:79710 spell lockout",
+	timerArcaneBlowbackCast		= "Show timer for $spell:91879 cast",
+	timerNefAblity				= "Show timer for heroic ability buff cooldown",
+	SpecWarnActivated			= "Show special warning when new boss activated",
+	specWarnGenerator			= "Show special warning when a boss gains $spell:91557",
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	SetIconOnActivated			= "Set icon on last activated boss"
+})
+
+L:SetMiscLocalization({
+	YellTargetLock				= "Encasing Shadows! Away from me!"
+})
+
+--------------
+--  Magmaw  --
+--------------
+L = DBM:GetModLocalization(170)
+
+L:SetWarningLocalization({
+	SpecWarnInferno	= "Blazing Bone Construct Soon (~4s)"
 })
 
 L:SetOptionLocalization({
@@ -28,58 +54,40 @@ L:SetMiscLocalization({
 	YellPhase2		= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
 })
 
--------------------------------
---  Dark Iron Golem Council  --
--------------------------------
---L = DBM:GetModLocalization(169)
-L = DBM:GetModLocalization("DarkIronGolemCouncil")
-
-L:SetGeneralLocalization({
-	name = "Omnotron Defense System"
-})
-
-L:SetWarningLocalization({
-	SpecWarnActivated			= "Change Target to %s!",
-	specWarnGenerator			= "Power Generator - Move %s!"
-})
-
-L:SetTimerLocalization({
-	timerArcaneBlowbackCast		= "Arcane Blowback",
-	timerShadowConductorCast	= "Shadow Conductor",
-	timerNefAblity				= "Ability Buff CD",
-	timerArcaneLockout			= "Annihilator Lockout"
-})
+-----------------
+--  Atramedes  --
+-----------------
+L = DBM:GetModLocalization(171)
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "Show timer for $spell:92048 cast",
-	timerArcaneBlowbackCast		= "Show timer for $spell:91879 cast",
-	timerArcaneLockout			= "Show timer for $spell:79710 spell lockout",
-	timerNefAblity				= "Show timer for heroic ability buff cooldown",
-	SpecWarnActivated			= "Show special warning when new boss activated",
-	specWarnGenerator			= "Show special warning when a boss gains $spell:91557",
-	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
-	SetIconOnActivated			= "Set icon on last activated boss"
+	InfoFrame				= "Show info frame for $journal:3072",
+	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
-	Magmatron					= "Magmatron",
-	Electron					= "Electron",
-	Toxitron					= "Toxitron",
-	Arcanotron					= "Arcanotron",
-	YellTargetLock				= "Encasing Shadows! Away from me!"
+	NefAdd					= "Atramedes, the heroes are right THERE!",
+	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
+})
+
+-----------------
+--  Chimaeron  --
+-----------------
+L = DBM:GetModLocalization(172)
+
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame (6)",
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
+	InfoFrame		= "Show info frame for health (<10k hp)"
+})
+
+L:SetMiscLocalization({
+	HealthInfo	= "Health Info"
 })
 
 ----------------
 --  Maloriak  --
 ----------------
---L = DBM:GetModLocalization(173)
-L = DBM:GetModLocalization("Maloriak")
-
-L:SetGeneralLocalization({
-	name = "Maloriak"
-})
+L = DBM:GetModLocalization(173)
 
 L:SetWarningLocalization({
 	WarnPhase			= "%s phase"
@@ -103,86 +111,13 @@ L:SetMiscLocalization({
 	YellRed				= "red|r vial into the cauldron!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
 	YellBlue			= "blue|r vial into the cauldron!",
 	YellGreen			= "green|r vial into the cauldron!",
-	YellDark			= "dark|r magic into the cauldron!",
-	Red					= "Red",
-	Blue				= "Blue",
-	Green				= "Green",
-	Dark				= "Dark"
-})
-
------------------
---  Chimaeron  --
------------------
---L = DBM:GetModLocalization(172)
-L = DBM:GetModLocalization("Chimaeron")
-
-L:SetGeneralLocalization({
-	name = "Chimaeron"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	RangeFrame		= "Show range frame (6)",
-	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
-	InfoFrame		= "Show info frame for health (<10k hp)"
-})
-
-L:SetMiscLocalization({
-	HealthInfo	= "Health Info"
-})
-
------------------
---  Atramedes  --
------------------
---L = DBM:GetModLocalization(171)
-L = DBM:GetModLocalization("Atramedes")
-
-L:SetGeneralLocalization({
-	name = "Atramedes"
-})
-
-L:SetWarningLocalization({
-	WarnAirphase			= "Airphase",
-	WarnGroundphase			= "Groundphase",
-	WarnShieldsLeft			= "Ancient Dwarven Shield used - %d left",
-})
-
-L:SetTimerLocalization({
-	TimerAirphase			= "Next Airphase",
-	TimerGroundphase		= "Next Groundphase"
-})
-
-L:SetOptionLocalization({
-	WarnAirphase			= "Show warning when Atramedes lifts off",
-	WarnGroundphase			= "Show warning when Atramedes lands",
-	WarnShieldsLeft			= "Show warning when a Ancient Dwarven Shield gets used",
-	TimerAirphase			= "Show timer for next airphase",
-	TimerGroundphase		= "Show timer for next groundphase",
-	InfoFrame				= "Show info frame for sound levels",
-	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
-})
-
-L:SetMiscLocalization({
-	Soundlevel				= "Sound Level",
-	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
-	NefAdd					= "Atramedes, the heroes are right THERE!",
-	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
+	YellDark			= "dark|r magic into the cauldron!"
 })
 
 ----------------
 --  Nefarian  --
 ----------------
---L = DBM:GetModLocalization(174)
-L = DBM:GetModLocalization("Nefarian")
-
-L:SetGeneralLocalization({
-	name = "Nefarian's End"	-- No conflict with BWL version (probably also why blizzard calls the encounter "Nefarian's End"
-})
+L = DBM:GetModLocalization(174)
 
 L:SetWarningLocalization({
 	OnyTailSwipe			= "Tail Lash (Onyxia)",
@@ -214,7 +149,7 @@ L:SetOptionLocalization({
 	NefSwipeTimer			= "Show timer for Nefarian's $spell:77827 cooldown",
 	OnyBreathTimer			= "Show timer for Onyxia's $spell:77826 cooldown",
 	NefBreathTimer			= "Show timer for Nefarian's $spell:77826 cooldown",
-	InfoFrame				= "Show info frame for Onyxia's Electric Charge",
+	InfoFrame				= "Show info frame for $journal:3274",
 	SetWater				= "Automatically disable water collision on pull\n(returns it to enabled upon leaving combat)",
 	TankArrow				= "Show DBM arrow for Animated Bone Warrior kiter\n(designed for one kiter strategy)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
@@ -226,9 +161,6 @@ L:SetMiscLocalization({
 	YellPhase2				= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
 	YellPhase3				= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
 	YellShadowBlaze			= "Flesh turns to ash!",
-	Nefarian				= "Nefarian",
-	Onyxia					= "Onyxia",
-	Charge					= "Electric Charge",
 	ShadowBlazeExact		= "Shadowblaze Spark in %ds",
 	ShadowBlazeEstimate		= "Shadowblaze Spark soon (~5s)"
 })
@@ -240,16 +172,4 @@ L = DBM:GetModLocalization("BWDTrash")
 
 L:SetGeneralLocalization({
 	name = "Blackwing Descent Trash"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })

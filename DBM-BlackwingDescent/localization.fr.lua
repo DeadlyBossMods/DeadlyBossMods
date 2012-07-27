@@ -4,22 +4,35 @@ local L
 -- Initial release by Sasmira: 12/26/2010
 -- Last update: 01/25/2011 (by Sasmira) 
 
+-------------------------------
+--  Dark Iron Golem Council  --
+-------------------------------
+L = DBM:GetModLocalization(169)
+
+L:SetTimerLocalization({
+	timerShadowConductorCast	= "Conducteur d'ombre",
+	timerArcaneBlowbackCast	= "Retour arcanique"
+})
+
+L:SetOptionLocalization({
+	timerShadowConductorCast	= "Affiche le timer : $spell:92053",
+	timerArcaneBlowbackCast	= "Affiche le timer : $spell:91879",
+	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+})
+
+L:SetMiscLocalization({
+})
 
 --------------
 --  Magmaw  --
 --------------
---L = DBM:GetModLocalization(170)
-L = DBM:GetModLocalization("Magmaw")
-
-L:SetGeneralLocalization({
-	name = "Magmagueule"
-})
+L = DBM:GetModLocalization(170)
 
 L:SetWarningLocalization({
 	SpecWarnInferno	= "Assemblage d'os flamboyant Imminent (~4s)",
-})
-
-L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
@@ -33,95 +46,24 @@ L:SetOptionLocalization({
 	RangeFrame		= "Affiche la fenêtre de portée en Phase 2 (5)"
 })
 
--------------------------------
---  Dark Iron Golem Council  --
--------------------------------
---L = DBM:GetModLocalization(169)
-L = DBM:GetModLocalization("DarkIronGolemCouncil")
-
-L:SetGeneralLocalization({
-	name = "Système de défense Omnitron"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-	timerArcaneBlowbackCast	= "Retour arcanique",
-	timerShadowConductorCast	= "Conducteur d'ombre"
-})
+-----------------
+--  Atramedes  --
+-----------------
+L = DBM:GetModLocalization(171)
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "Affiche le timer : $spell:92053",
-	timerArcaneBlowbackCast	= "Affiche le timer : $spell:91879",
-	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	InfoFrame			= "Affiche une fenêtre d'info pour le niveau sonore",
+	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
-	Magmatron		= "Magmatron",
-	Electron		= "Electron",
-	Toxitron		= "Toxitron",
-	Arcanotron		= "Arcanotron"
-})
-
-----------------
---  Maloriak  --
-----------------
---L = DBM:GetModLocalization(173)
-L = DBM:GetModLocalization("Maloriak")
-
-L:SetGeneralLocalization({
-	name = "Maloriak"
-})
-
-L:SetWarningLocalization({
-	WarnPhase		= " Phase %s",
-	WarnRemainingAdds	= "%d Aberrations restantes"
-})
-
-L:SetTimerLocalization({
-	TimerPhase		= "Prochaine Phase"
-})
-
-L:SetMiscLocalization({
-	YellRed		= "Flacon rouge|r dans le chaudron !",-- à vérifier
-	YellBlue		= "Flacon bleu|r dans le chaudron !",-- à vérifier
-	YellGreen		= "Flacon vert|r dans le chaudron !",-- à vérifier
-	YellDark		= "Flacon sombre|r dans le chaudron !",-- à vérifier
-	Red			= "Rouge",
-	Blue			= "Bleue",
-	Green		= "Verte",
-	Dark			= "Sombre"
-})
-
-L:SetOptionLocalization({
-	WarnPhase			= "Affiche l'alerte d'une nouvelle phase",
-	WarnRemainingAdds	= "Alerte sur le nombre d'aberrations restantes",
-	TimerPhase			= "Affiche le timer de la prochaine phase",
-	RangeFrame		= "Affiche la fenêtre de portée (6) durant la Phase Bleue",
-	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
-	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
-	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
+	Airphase			= "Oui, fuyez ! Chaque foulée accélère votre cœur. Les battements résonnent comme le tonnerre... Assourdissant. Vous ne vous échapperez pas !" -- à vérifier
 })
 
 -----------------
 --  Chimaeron  --
 -----------------
---L = DBM:GetModLocalization(172)
-L = DBM:GetModLocalization("Chimaeron")
-
-L:SetGeneralLocalization({
-	name = "Chimaeron"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
+L = DBM:GetModLocalization(172)
 
 L:SetOptionLocalization({
 	RangeFrame	= "Affiche la fenêtre de portée (6)",
@@ -133,52 +75,39 @@ L:SetMiscLocalization({
 	HealthInfo		= "Info Santé"
 })
 
------------------
---  Atramedes  --
------------------
---L = DBM:GetModLocalization(171)
-L = DBM:GetModLocalization("Atramedes")
-
-L:SetGeneralLocalization({
-	name = "Atramédès"
-})
+----------------
+--  Maloriak  --
+----------------
+L = DBM:GetModLocalization(173)
 
 L:SetWarningLocalization({
-	WarnAirphase		= "Phase en l'air",
-	WarnGroundphase	= "Phase au sol",
-	WarnShieldsLeft		= "Ancien bouclier nain - %d restant"
+	WarnPhase		= " Phase %s"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "Phase en l'air",
-	TimerGroundphase	= "Phase au sol"
-})
-
-L:SetMiscLocalization({
-	AncientDwarvenShield	= "Ancien bouclier nain",
-	Soundlevel			= "Niveau Sonore",
-	Airphase			= "Oui, fuyez ! Chaque foulée accélère votre cœur. Les battements résonnent comme le tonnerre... Assourdissant. Vous ne vous échapperez pas !" -- à vérifier
+	TimerPhase		= "Prochaine Phase"
 })
 
 L:SetOptionLocalization({
-	WarnAirphase		= "Affiche l'alerte lorsque Atramédès décolle",
-	WarnGroundphase	= "Affiche l'alerte lorsque Atramédès est à terre",
-	WarnShieldsLeft		= "Affiche l'alerte lorsqu'un Ancien bouclier nain est utilisé",
-	TimerAirphase		= "Affiche le timer pour la prochaine Phase en l'air",
-	TimerGroundphase	= "Affiche le timer pour la prochaine Phase au sol",
-	InfoFrame			= "Affiche une fenêtre d'info pour le niveau sonore",
-	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
+	WarnPhase			= "Affiche l'alerte d'une nouvelle phase",
+	TimerPhase			= "Affiche le timer de la prochaine phase",
+	RangeFrame		= "Affiche la fenêtre de portée (6) durant la Phase Bleue",
+	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
+})
+
+L:SetMiscLocalization({
+	YellRed		= "Flacon rouge|r dans le chaudron !",-- à vérifier
+	YellBlue		= "Flacon bleu|r dans le chaudron !",-- à vérifier
+	YellGreen		= "Flacon vert|r dans le chaudron !",-- à vérifier
+	YellDark		= "Flacon sombre|r dans le chaudron !"-- à vérifier
 })
 
 ----------------
 --  Nefarian  --
 ----------------
---L = DBM:GetModLocalization(174)
-L = DBM:GetModLocalization("Nefarian")
-
-L:SetGeneralLocalization({
-	name = "Nefarian"
-})
+L = DBM:GetModLocalization(174)
 
 L:SetWarningLocalization({
 	OnyTailSwipe		= "(Onyxia) Fouette-queue",
@@ -211,7 +140,6 @@ L:SetMiscLocalization({
 	NefAoe			= "L'air craque sous l'électricité !", -- à vérifier 
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
 	YellPhase3			= "J'ai tout fait pour être un hôte accomodant, mais vous ne daignez pas mourir ! Oublions les bonnes manières et passons aux choses sérieuses... VOUS TUER TOUS !",
-	Onyxia				= "Onyxia",
 	ShadowBlazeExact		= "Shadowblaze in %ds",
 	ShadowBlazeEstimate		= "Shadowblaze soon (~5s)"
 })
@@ -223,16 +151,4 @@ L = DBM:GetModLocalization("BWDTrash")
 
 L:SetGeneralLocalization({
 	name = "Blackwing Descent Trash"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })

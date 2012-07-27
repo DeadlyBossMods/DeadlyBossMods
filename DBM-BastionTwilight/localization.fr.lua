@@ -7,12 +7,7 @@ local L
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
---L= DBM:GetModLocalization(156)
-L = DBM:GetModLocalization("HalfusWyrmbreaker")
-
-L:SetGeneralLocalization({
-	name =	"Halfus Brise-wyrm"
-})
+L= DBM:GetModLocalization(156)
 
 L:SetWarningLocalization({
 })
@@ -29,12 +24,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Valiona & Theralion  --
 ---------------------------
---L= DBM:GetModLocalization(157)
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"
-})
+L= DBM:GetModLocalization(157)
 
 L:SetWarningLocalization({
 })
@@ -56,12 +46,7 @@ L:SetMiscLocalization({
 ----------------------------------
 --  Twilight Ascendant Council  --
 ----------------------------------
---L= DBM:GetModLocalization(158)
-L = DBM:GetModLocalization("AscendantCouncil")
-
-L:SetGeneralLocalization({
-	name =	"Conseil d'ascendants"
-})
+L= DBM:GetModLocalization(158)
 
 L:SetWarningLocalization({
 	specWarnBossLow	= ">%s< en dessous de 30%",
@@ -78,11 +63,6 @@ L:SetMiscLocalization({
 	Thundershock	= "L'air qui vous entoure crépite d'énergie...", -- A verifier ...
 	Switch		= "Nous allons nous occuper d'eux !", -- A verifier ...
 	Phase3		= "CONTEMPLEZ VOTRE DESTIN !", -- A verifier ...
-	Ignacious		= "Ignacious",
-	Feludius		= "Feludius",
-	Arion			= "Arion",
-	Terrastra		= "Terrastra",
-	Monstrosity		= "Monstruosité en élémentium",
 	Kill			= "Impossible...."
 })
 
@@ -104,12 +84,7 @@ L:SetOptionLocalization({
 ----------------
 --  Cho'gall  --
 ----------------
---L= DBM:GetModLocalization(167)
-L = DBM:GetModLocalization("Chogall")
-
-L:SetGeneralLocalization({
-	name =	"Cho'gall"
-})
+L= DBM:GetModLocalization(167)
 
 L:SetWarningLocalization({
 --	WarnPhase2Soon	= "Phase 2 imminente"
@@ -118,28 +93,19 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	Bloodlevel		= "Corruption"
-})
-
 L:SetOptionLocalization({
 --	WarnPhase2Soon		= "Afficher la pré-alerte pour la Phase 2",
 	CorruptingCrashArrow	= "Afficher la flèche DBM lorsque $spell:93178 est près de vous",
-	InfoFrame			= "Afficher la fenêtre d'info pour le sort $spell:81701",
+	InfoFrame			= "Afficher la fenêtre d'info pour le sort $journal:3165",
 	RangeFrame		= "Afficher la fenêtre de portée (5) pour $spell:82235",
-	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
+	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
 	SetIconOnCreature	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
 ----------------
 --  Sinestra  --
 ----------------
---L= DBM:GetModLocalization(168)
-L = DBM:GetModLocalization("Sinestra")
-
-L:SetGeneralLocalization({
-	name =	"Sinestra"
-})
+L= DBM:GetModLocalization(168)
 
 L:SetWarningLocalization({
 })

@@ -1,6 +1,7 @@
---local mod	= DBM:NewMod(174, "DBM-BlackwingDescent", nil, 73)
-local mod	= DBM:NewMod("Nefarian", "DBM-BlackwingDescent")
+local mod	= DBM:NewMod(174, "DBM-BlackwingDescent", nil, 73)
 local L		= mod:GetLocalizedStrings()
+local Nefarian	= EJ_GetSectionInfo(3279)
+local Onyxia	= EJ_GetSectionInfo(3283)
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(41376, 41270)
@@ -12,8 +13,8 @@ mod:SetModelSound("Sound\\Creature\\Nefarian\\VO_BD_Nefarian_Event09.wav", "Soun
 --Short: You really have to want it!
 
 mod:SetBossHealthInfo(
-	41376, L.Nefarian,
-	41270, L.Onyxia
+	41376, Nefarian,
+	41270, Onyxia
 )
 
 mod:RegisterCombat("combat")
@@ -89,6 +90,7 @@ local dominionTargets = {}
 local lastBlaze = 0--Do NOT use prototype for this, it's updated in a special way using different triggers then when method is called.
 local CVAR = false
 local shadowBlazeSynced = false
+local Charge = EJ_GetSectionInfo(3284)
 
 --Credits to Caleb for original concept, modified with yell sync and timer tweaks.
 function mod:ShadowBlazeFunction()
@@ -154,7 +156,7 @@ function mod:OnCombatStart(delay)
 		timerDominionCD:Start(50-delay)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(L.Charge)
+		DBM.InfoFrame:SetHeader(Charge)
 		DBM.InfoFrame:Show(2, "enemypower", 5, ALTERNATE_POWER_INDEX)
 	end
 	if self.Options.SetWater and GetCVarBool("cameraWaterCollision") then

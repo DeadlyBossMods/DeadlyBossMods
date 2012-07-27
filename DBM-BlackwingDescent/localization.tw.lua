@@ -2,15 +2,44 @@
 
 local L
 
+-------------------------------
+--  Dark Iron Golem Council  --
+-------------------------------
+L = DBM:GetModLocalization(169)
+
+L:SetWarningLocalization({
+	SpecWarnActivated			= "轉換目標到 %s!",
+	specWarnGenerator			= "發電機 - 拉開%s!",
+})
+
+L:SetTimerLocalization({
+	timerShadowConductorCast	= "聚影體",
+	timerArcaneLockout			= "秘法殲滅者鎖定",
+	timerArcaneBlowbackCast		= "秘法逆爆",
+	timerNefAblity				= "技能增益冷卻"
+})
+
+L:SetOptionLocalization({
+	timerShadowConductorCast	= "為$spell:92048的施放顯示計時器",
+	timerArcaneLockout			= "為$spell:91542法術鎖定顯示計時器",
+	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
+	timerNefAblity				= "為困難技能增益冷卻顯示計時器",
+	SpecWarnActivated			= "當新首領啟動時顯示特別警告",
+	specWarnGenerator			= "當首領獲得$spell:91557時顯示特別警告",
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	SetIconOnActivated			= "設置標記到最後啟動的首領"
+})
+
+L:SetMiscLocalization({
+	YellTargetLock				= "覆體之影! 遠離我!"
+})
+
 --------------
 --  Magmaw  --
 --------------
---L = DBM:GetModLocalization(170)
-L = DBM:GetModLocalization("Magmaw")
-
-L:SetGeneralLocalization({
-	name 				= "熔喉"
-})
+L = DBM:GetModLocalization(170)
 
 L:SetWarningLocalization({
 	SpecWarnInferno		= "熾熱的煉獄即將到來(約4秒前)"
@@ -27,100 +56,25 @@ L:SetMiscLocalization({
 	YellPhase2			= "真難想像!看來你真有機會打敗我的蟲子!也許我可幫忙...扭轉戰局。"
 })
 
--------------------------------
---  Dark Iron Golem Council  --
--------------------------------
---L = DBM:GetModLocalization(169)
-L = DBM:GetModLocalization("DarkIronGolemCouncil")
-
-L:SetGeneralLocalization({
-	name 					= "全能魔像防禦系統"
-})
-
-L:SetWarningLocalization({
-	SpecWarnActivated			= "轉換目標到 %s!",
-	specWarnGenerator			= "發電機 - 拉開%s!",
-})
-
-L:SetTimerLocalization({
-	timerArcaneBlowbackCast		= "秘法逆爆",
-	timerShadowConductorCast	= "聚影體",
-	timerNefAblity				= "技能增益冷卻",
-	timerArcaneLockout			= "秘法殲滅者鎖定",
-})
+-----------------
+--  Atramedes  --
+-----------------
+L = DBM:GetModLocalization(171)
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "為$spell:92048的施放顯示計時器",
-	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
-	timerArcaneLockout			= "為$spell:91542法術鎖定顯示計時器",
-	timerNefAblity				= "為困難技能增益冷卻顯示計時器",
-	SpecWarnActivated			= "當新首領啟動時顯示特別警告",
-	specWarnGenerator			= "當首領獲得$spell:91557時顯示特別警告",
-	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
-	SetIconOnActivated			= "設置標記到最後啟動的首領"
+	InfoFrame				= "為音波值顯示資訊框架",
+	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
-	Magmatron					= "熔岩號",
-	Electron					= "雷電號",
-	Toxitron					= "烈毒號",
-	Arcanotron					= "秘法號",
-	YellTargetLock				= "覆體之影! 遠離我!"
-})
-
-----------------
---  Maloriak  --
-----------------
---L = DBM:GetModLocalization(173)
-L = DBM:GetModLocalization("Maloriak")
-
-L:SetGeneralLocalization({
-	name 				= "瑪洛里亞克"
-})
-
-L:SetWarningLocalization({
-	WarnPhase				= "%s階段",
-	WarnRemainingAdds		= "剩餘%d畸變"
-})
-
-L:SetTimerLocalization({
-	TimerPhase				= "下一階段"
-})
-
-L:SetOptionLocalization({
-	WarnPhase				= "為哪個階段即將到來顯示警告",
-	WarnRemainingAdds		= "顯示剩餘多少畸變的警告",
-	TimerPhase				= "為下一階段顯示計時器",
-	RangeFrame				= "藍色階段時顯示距離框 (6碼)",
-	SetTextures				= "自動在黑暗階段停用投影材質\n(離開黑暗階段後回到啟用)",
-	FlashFreezeIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
-	BitingChillIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
-	ConsumingFlamesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
-})
-
-L:SetMiscLocalization({
-
-	YellRed				= "紅色|r瓶子到鍋子裡!",
-	YellBlue			= "藍色|r瓶子到鍋子裡!",
-	YellGreen			= "綠色|r瓶子到鍋子裡!",
-	YellDark			= "黑暗|r魔法到鍋子裡!",
-	Red					= "紅色",
-	Blue				= "藍色",
-	Green				= "綠色",
-	Dark				= "黑暗"
+	NefAdd					= "亞特拉米德，英雄們就在那!",
+	Airphase				= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
 })
 
 -----------------
 --  Chimaeron  --
 -----------------
---L = DBM:GetModLocalization(172)
-L = DBM:GetModLocalization("Chimaeron")
-
-L:SetGeneralLocalization({
-	name 				= "奇瑪隆"
-})
+L = DBM:GetModLocalization(172)
 
 L:SetOptionLocalization({
 	RangeFrame				= "顯示距離框 (6碼)",
@@ -132,58 +86,40 @@ L:SetMiscLocalization({
 	HealthInfo				= "血量資訊"
 })
 
------------------
---  Atramedes  --
------------------
---L = DBM:GetModLocalization(171)
-L = DBM:GetModLocalization("Atramedes")
-
-L:SetGeneralLocalization({
-	name 					= "亞特拉米德"
-})
+----------------
+--  Maloriak  --
+----------------
+L = DBM:GetModLocalization(173)
 
 L:SetWarningLocalization({
-	WarnAirphase			= "空中階段",
-	WarnGroundphase			= "地上階段",
-	WarnShieldsLeft			= "使用了古代矮人盾牌 - 剩餘%d次",
-	warnAddSoon				= "討人厭的惡魔已被召喚了",
-	specWarnAddTargetable	= "%s可以點擊了"
+	WarnPhase				= "%s階段"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase			= "下一次 空中階段",
-	TimerGroundphase		= "下一次 地上階段"
+	TimerPhase				= "下一階段"
 })
 
 L:SetOptionLocalization({
-	WarnAirphase			= "當亞特拉米德升空時顯示警告",
-	WarnGroundphase			= "當亞特拉米德降落時顯示警告",
-	WarnShieldsLeft			= "當古代矮人盾牌使用後顯示警告",
-	warnAddSoon				= "當奈法利安召喚小怪時顯示警告",
-	specWarnAddTargetable	= "當小怪可以點擊時顯示特別警告",
-	TimerAirphase			= "為下一次 空中階段顯示計時器",
-	TimerGroundphase		= "為下一次 地上階段顯示計時器",
-	InfoFrame				= "為音波值顯示資訊框架",
-	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
+	WarnPhase				= "為哪個階段即將到來顯示警告",
+	TimerPhase				= "為下一階段顯示計時器",
+	RangeFrame				= "藍色階段時顯示距離框 (6碼)",
+	SetTextures				= "自動在黑暗階段停用投影材質\n(離開黑暗階段後回到啟用)",
+	FlashFreezeIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	ConsumingFlamesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
 L:SetMiscLocalization({
-	AncientDwarvenShield	= "古代矮人盾牌",
-	Soundlevel				= "聲音值",
-	YellPestered			= "討人厭的惡魔在我這裡!",--npc 49740
-	NefAdd					= "亞特拉米德，英雄們就在那!",
-	Airphase				= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
+	YellRed				= "紅色|r瓶子到鍋子裡!",
+	YellBlue			= "藍色|r瓶子到鍋子裡!",
+	YellGreen			= "綠色|r瓶子到鍋子裡!",
+	YellDark			= "黑暗|r魔法到鍋子裡!"
 })
 
 ----------------
 --  Nefarian  --
 ----------------
---L = DBM:GetModLocalization(174)
-L = DBM:GetModLocalization("Nefarian")
-
-L:SetGeneralLocalization({
-	name 				= "奈法利安的末日"
-})
+L = DBM:GetModLocalization(174)
 
 L:SetWarningLocalization({
 	OnyTailSwipe			= "尾部鞭擊 (奧妮克希亞)",
@@ -227,9 +163,6 @@ L:SetMiscLocalization({
 	YellPhase2 				= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
 	YellPhase3				= "我本來只想略盡地主之誼，但是你們就是不肯痛快的受死!是時候拋下一切的虛偽...殺光你們就好!",
 	YellShadowBlaze			= "化為灰燼吧!",
-	Nefarian				= "奈法利安",
-	Onyxia					= "奧妮克希亞",
-	Charge					= "電流充能",
 	ShadowBlazeExact		= "暗影炎%d 秒",
 	ShadowBlazeEstimate		= "暗影炎即將到來(約5秒後)"
 })

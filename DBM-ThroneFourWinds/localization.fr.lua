@@ -7,12 +7,7 @@ local L
 ------------------------
 --  Conclave of Wind  --
 ------------------------
---L = DBM:GetModLocalization(154)
-L = DBM:GetModLocalization("Conclave")
-
-L:SetGeneralLocalization({
-	name = "Conclave du Vent"
-})
+L = DBM:GetModLocalization(154)
 
 L:SetWarningLocalization({
 	warnSpecial			= "Ouragan/Zéphyr/Tempête de grésil Actifs",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
@@ -24,13 +19,6 @@ L:SetTimerLocalization({
 	timerSpecialActive		= "Abiletés Speciales Actives"
 })
 
-L:SetMiscLocalization({
-	gatherstrength			= "%s commence à rassembler ses forces à partir des autres Seigneurs du Vent !",
-	Anshal			= "Anshal",
-	Nezir			= "Nezir",
-	Rohash			= "Rohash"
-})
-
 L:SetOptionLocalization({
 	warnSpecial		= "Alerter lorsque Ouragan/Zéphyr/Tempête de grésil  sont cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial		= "Alerter lorsque les abiletés spéciales sont cast",
@@ -38,15 +26,14 @@ L:SetOptionLocalization({
 	timerSpecialActive	= "Afficher le timer de la durée des abiletés spéciales"
 })
 
+L:SetMiscLocalization({
+	gatherstrength			= "%s commence à rassembler ses forces à partir des autres Seigneurs du Vent !"
+})
+
 ---------------
 --  Al'Akir  --
 ---------------
---L = DBM:GetModLocalization(155)
-L = DBM:GetModLocalization("AlAkir")
-
-L:SetGeneralLocalization({
-	name = "Al'Akir"
-})
+L = DBM:GetModLocalization(155)
 
 L:SetWarningLocalization({
 })
@@ -58,7 +45,4 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "Afficher le timer pour la durée de: $spell:87904",
-})
-
-L:SetMiscLocalization({
 })

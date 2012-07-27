@@ -1,5 +1,4 @@
---local mod	= DBM:NewMod(173, "DBM-BlackwingDescent", nil, 73)
-local mod	= DBM:NewMod("Maloriak", "DBM-BlackwingDescent")
+local mod	= DBM:NewMod(173, "DBM-BlackwingDescent", nil, 73)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -79,6 +78,10 @@ local bitingChillIcon = 6
 local flashFreezeIcon = 8
 local prewarnedPhase2 = false
 local CVAR = false
+local Red = EJ_GetSectionInfo(2935)
+local Green = EJ_GetSectionInfo(2941)
+local Blue = EJ_GetSectionInfo(2938)
+local Dark = EJ_GetSectionInfo(2943)
 
 local function showBitingChillWarning()
 	warnBitingChill:Show(table.concat(bitingChillTargets, "<, >"))
@@ -245,7 +248,7 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.YellRed or msg:find(L.YellRed) then
-		warnPhase:Show(L.Red)
+		warnPhase:Show(Red)
 		timerAddsCD:Start()
 		timerArcaneStormCD:Start(19)
 		timerScorchingBlast:Start(22)
@@ -259,7 +262,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			SetCVar("projectedTextures", 1)
 		end
 	elseif msg == L.YellBlue or msg:find(L.YellBlue) then
-		warnPhase:Show(L.Blue)
+		warnPhase:Show(Blue)
 		timerPhase:Start()
 		timerAddsCD:Start()
 		timerArcaneStormCD:Start(19)
@@ -273,7 +276,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			SetCVar("projectedTextures", 1)
 		end
 	elseif msg == L.YellGreen or msg:find(L.YellGreen) then
-		warnPhase:Show(L.Green)
+		warnPhase:Show(Green)
 		timerPhase:Start()
 		timerAddsCD:Start()
 		timerArcaneStormCD:Start(12)--First one is always shorter in green phase then other 2.
@@ -284,7 +287,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			DBM.RangeCheck:Hide()
 		end
 	elseif msg == L.YellDark or msg:find(L.YellDark) then
-		warnPhase:Show(L.Dark)
+		warnPhase:Show(Dark)
 		timerEngulfingDarknessCD:Start(16.5)
 		timerPhase:Start(100)
 		timerArcaneStormCD:Cancel()

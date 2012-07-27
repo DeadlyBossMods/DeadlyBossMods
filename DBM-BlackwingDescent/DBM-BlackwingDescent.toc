@@ -34,10 +34,10 @@ localization.tw.lua
 localization.cn.lua
 localization.br.lua
 MapSizes.lua
-Magmaw.lua
 DarkIronGolemCouncil.lua
-Maloriak.lua
-Chimaeron.lua
+Magmaw.lua
 Atramedes.lua
+Chimaeron.lua
+Maloriak.lua
 Nefarian.lua
 BWDTrash.lua
