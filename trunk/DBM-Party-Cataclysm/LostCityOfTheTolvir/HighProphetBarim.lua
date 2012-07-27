@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("HighProphetBarim", "DBM-Party-Cataclysm", 5)
+local mod	= DBM:NewMod(119, "DBM-Party-Cataclysm", 5, 69)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -32,11 +32,13 @@ local specWarnHallowedGround = mod:NewSpecialWarningMove(88814)
 mod:AddBoolOption("BossHealthAdds")
 
 local spamSIS = 0--We use custom updating so don't use prototype
+local BlazeHeavens = EJ_GetSectionInfo(2459)
+local HarbringerDarkness = EJ_GetSectionInfo(2473)
 
 function mod:OnCombatStart(delay)
 	spamSIS = 0
 	if self.Options.BossHealthAdds then
-		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
+		DBM.BossHealth:AddBoss(48906, BlazeHeavens)
 	end
 end
 
@@ -51,7 +53,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRepentance:Show()
 		spamSIS = GetTime()
 		if self.Options.BossHealthAdds then
-			DBM.BossHealth:AddBoss(43927, L.HarbringerDarkness)
+			DBM.BossHealth:AddBoss(43927, HarbringerDarkness)
 			DBM.BossHealth:RemoveBoss(48906)
 		end
 	elseif args:IsSpellID(82255) then
@@ -82,7 +84,7 @@ end
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 43927 and self.Options.BossHealthAdds then
 		DBM.BossHealth:RemoveBoss(43927)
-		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
+		DBM.BossHealth:AddBoss(48906, BlazeHeavens)
 	end
 end
 		
