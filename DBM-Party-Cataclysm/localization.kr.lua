@@ -6,20 +6,12 @@ local L
 --------------------------
 -- Rom'ogg Bonecrusher --
 --------------------------
-L = DBM:GetModLocalization("Romogg")
-
-L:SetGeneralLocalization({
-	name = "해골분쇄자 롬오그"
-})
+L= DBM:GetModLocalization(105)
 
 -------------------------------
 -- Corla, Herald of Twilight --
 -------------------------------
-L = DBM:GetModLocalization("Corla")
-
-L:SetGeneralLocalization({
-	name = "황혼의 전령 코를라"
-})
+L= DBM:GetModLocalization(106)
 
 L:SetWarningLocalization({
 	WarnAdd		= "광신도 진화!"
@@ -32,11 +24,7 @@ L:SetOptionLocalization({
 -----------------------
 -- Karsh SteelBender --
 -----------------------
-L = DBM:GetModLocalization("KarshSteelbender")
-
-L:SetGeneralLocalization({
-	name = "카쉬 스틸벤더"
-})
+L= DBM:GetModLocalization(107)
 
 L:SetTimerLocalization({
 	TimerSuperheated 	= "과열된 수은갑옷 (%d)"
@@ -49,20 +37,12 @@ L:SetOptionLocalization({
 ------------
 -- Beauty --
 ------------
-L = DBM:GetModLocalization("Beauty")
-
-L:SetGeneralLocalization({
-	name = "아름이"
-})
+L= DBM:GetModLocalization(108)
 
 -----------------------------
 -- Ascendant Lord Obsidius --
 -----------------------------
-L = DBM:GetModLocalization("AscendantLordObsidius")
-
-L:SetGeneralLocalization({
-	name = "승천 군주 옵시디우스"
-})
+L= DBM:GetModLocalization(109)
 
 L:SetOptionLocalization({
 	SetIconOnBoss	= "$spell:76200 시전 후 보스에게 전술 목표 아이콘 표시 "
@@ -73,29 +53,17 @@ L:SetOptionLocalization({
 ---------------------
 -- Glubtok --
 -------------
-L = DBM:GetModLocalization("Glubtok")
-
-L:SetGeneralLocalization({
-	name = "글럽톡"
-})
+L= DBM:GetModLocalization(89)
 
 -----------------------
 -- Helix Gearbreaker --
 -----------------------
-L = DBM:GetModLocalization("Helix")
-
-L:SetGeneralLocalization({
-	name = "헬릭스 기어브레이커"
-})
+L= DBM:GetModLocalization(90)
 
 ---------------------
 -- Foe Reaper 5000 --
 ---------------------
-L = DBM:GetModLocalization("FoeReaper")
-
-L:SetGeneralLocalization({
-	name = "전투 절단기 5000"
-})
+L= DBM:GetModLocalization(91)
 
 L:SetOptionLocalization{
 	HarvestIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88495)
@@ -104,29 +72,17 @@ L:SetOptionLocalization{
 ----------------------
 -- Admiral Ripsnarl --
 ----------------------
-L = DBM:GetModLocalization("Ripsnarl")
-
-L:SetGeneralLocalization({
-	name = "제독 으르렁니"
-})
+L= DBM:GetModLocalization(92)
 
 ----------------------
 -- "Captain" Cookie --
 ----------------------
-L = DBM:GetModLocalization("Cookie")
-
-L:SetGeneralLocalization({
-	name = "\"선장\" 쿠키"
-})
+L= DBM:GetModLocalization(93)
 
 ----------------------
 -- Vanessa VanCleef --
 ----------------------
-L = DBM:GetModLocalization("Vanessa")
-
-L:SetGeneralLocalization({
-	name = "바네사 밴클리프"
-})
+L= DBM:GetModLocalization(95)
 
 L:SetTimerLocalization({
 	achievementGauntlet	= "불같은 밴클리프 복수자"
@@ -137,11 +93,7 @@ L:SetTimerLocalization({
 ---------------------
 -- General Umbriss --
 ---------------------
-L = DBM:GetModLocalization("GeneralUmbriss")
-
-L:SetGeneralLocalization({
-	name = "장군 움브리스"
-})
+L= DBM:GetModLocalization(131)
 
 L:SetOptionLocalization{
 	PingBlitz	= "$spell:74670 대상이 될 경우 미니맵에 위치 표시"
@@ -154,55 +106,34 @@ L:SetMiscLocalization{
 --------------------------
 -- Forgemaster Throngus --
 --------------------------
-L = DBM:GetModLocalization("ForgemasterThrongus")
-
-L:SetGeneralLocalization({
-	name = "제련장인 트롱구스"
-})
+L= DBM:GetModLocalization(132)
 
 -------------------------
 -- Drahga Shadowburner --
 -------------------------
-L = DBM:GetModLocalization("DrahgaShadowburner")
-
-L:SetGeneralLocalization({
-	name = "드라가 섀도버너"
-})
+L= DBM:GetModLocalization(133)
 
 L:SetMiscLocalization{
-	ValionaYell	= "용이여, 내 명령을 따라라! 날 태워라!",	-- translate -- Yell when Valiona is incoming
-	Add			= "화염의 기원",
-	Valiona		= "발리오나"	-- translate
+	ValionaYell	= "용이여, 내 명령을 따라라! 날 태워라!",
+	Add			= "화염의 기원"
 }
 
 ------------
 -- Erudax --
 ------------
-L = DBM:GetModLocalization("Erudax")
-
-L:SetGeneralLocalization({
-	name = "에루닥스"
-})
+L= DBM:GetModLocalization(134)
 
 ----------------------------
 --  Halls of Origination  --
 ----------------------------
 -- Temple Guardian Anhuur --
 ----------------------------
-L = DBM:GetModLocalization("TempleGuardianAnhuur")
-
-L:SetGeneralLocalization({
-	name = "사원 수호자 안후르"
-})
+L= DBM:GetModLocalization(124)
 
 ---------------------
 -- Earthrager Ptah --
 ---------------------
-L = DBM:GetModLocalization("EarthragerPtah")
-
-L:SetGeneralLocalization({
-	name = "대지전복자 프타"
-})
+L= DBM:GetModLocalization(125)
 
 L:SetMiscLocalization{
 	Kill		= "프타는... 이젠..."
@@ -211,11 +142,7 @@ L:SetMiscLocalization{
 --------------
 -- Anraphet --
 --------------
-L = DBM:GetModLocalization("Anraphet")
-
-L:SetGeneralLocalization({
-	name = "안라펫"
-})
+L= DBM:GetModLocalization(126)
 
 L:SetTimerLocalization({
 	achievementGauntlet	= "빛 보다 빠르게"
@@ -228,11 +155,7 @@ L:SetMiscLocalization({
 ------------
 -- Isiset --
 ------------
-L = DBM:GetModLocalization("Isiset")
-
-L:SetGeneralLocalization({
-	name = "이시세트"
-})
+L= DBM:GetModLocalization(127)
 
 L:SetWarningLocalization({
 	WarnSplitSoon	= "곧 분리"
@@ -245,89 +168,29 @@ L:SetOptionLocalization({
 -------------
 -- Ammunae --
 ------------- 
-L = DBM:GetModLocalization("Ammunae")
-
-L:SetGeneralLocalization({
-	name = "아뮤내"
-})
+L= DBM:GetModLocalization(128)
 
 -------------
 -- Setesh  --
 ------------- 
-L = DBM:GetModLocalization("Setesh")
-
-L:SetGeneralLocalization({
-	name = "세테쉬"
-})
+L= DBM:GetModLocalization(129)
 
 ----------
 -- Rajh --
 ----------
-L = DBM:GetModLocalization("Rajh")
-
-L:SetGeneralLocalization({
-	name = "라지"
-})
+L= DBM:GetModLocalization(130)
 
 --------------------------------
 --  Lost City of the Tol'vir  --
 --------------------------------
 -- General Husam --
 -------------------
-L = DBM:GetModLocalization("GeneralHusam")
-
-L:SetGeneralLocalization({
-	name = "장군 후삼"
-})
-
-------------------------------------
--- Siamat, Lord of the South Wind --
--------------------
-L = DBM:GetModLocalization("Siamat")
-
-L:SetGeneralLocalization({
-	name = "남풍 군주 시아마트"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
-})
-
-L:SetWarningLocalization{
-	specWarnPhase2Soon	= "5초 후 2 단계 시작!"
-}
-
-L:SetTimerLocalization({
-	timerPhase2 		= "2 단계 시작"
-})
-
-L:SetOptionLocalization{
-	specWarnPhase2Soon	= "2 단계 시작 특수 경고 보기(5초 전)",
-	timerPhase2 		= "2 단계 시작 바 표시"
-}
-
-------------------------
--- High Prophet Barim --
-------------------------
-L = DBM:GetModLocalization("HighProphetBarim")
-
-L:SetGeneralLocalization({
-	name = "고위 사제 바림"
-})
-
-L:SetOptionLocalization{
-	BossHealthAdds	= "추가 몬스터에 대한 체력 프레임 보기"
-}
-
-L:SetMiscLocalization{
-	BlazeHeavens		= "천상의 불꽃",
-	HarbringerDarkness	= "암흑의 전령"
-}
+L= DBM:GetModLocalization(117)
 
 --------------
 -- Lockmaw --
 --------------
-L = DBM:GetModLocalization("Lockmaw")
-
-L:SetGeneralLocalization({
-	name = "톱니아귀"
-})
+L= DBM:GetModLocalization(118)
 
 L:SetOptionLocalization{
 	RangeFrame	= "거리 프레임 보기 (5m)"
@@ -342,34 +205,49 @@ L:SetGeneralLocalization({
 	name = "오우"
 })
 
+------------------------
+-- High Prophet Barim --
+------------------------
+L= DBM:GetModLocalization(119)
+
+L:SetOptionLocalization{
+	BossHealthAdds	= "추가 몬스터에 대한 체력 프레임 보기"
+}
+
+------------------------------------
+-- Siamat, Lord of the South Wind --
+------------------------------------
+L= DBM:GetModLocalization(122)
+
+L:SetWarningLocalization{
+	specWarnPhase2Soon	= "5초 후 2 단계 시작!"
+}
+
+L:SetTimerLocalization({
+	timerPhase2 		= "2 단계 시작"
+})
+
+L:SetOptionLocalization{
+	specWarnPhase2Soon	= "2 단계 시작 특수 경고 보기(5초 전)",
+	timerPhase2 		= "2 단계 시작 바 표시"
+}
+
 -----------------------
 --  Shadowfang Keep  --
 -----------------------
 -- Baron Ashbury --
 -------------------
-L = DBM:GetModLocalization("Ashbury")
-
-L:SetGeneralLocalization({
-	name = "남작 애쉬버리"
-})
+L= DBM:GetModLocalization(96)
 
 -----------------------
 -- Baron Silverlaine --
 -----------------------
-L = DBM:GetModLocalization("Silverlaine")
-
-L:SetGeneralLocalization({
-	name = "남작 실버레인"
-})
+L= DBM:GetModLocalization(97)
 
 --------------------------
 -- Commander Springvale --
 --------------------------
-L = DBM:GetModLocalization("Springvale")
-
-L:SetGeneralLocalization({
-	name = "사령관 스프링베일"
-})
+L= DBM:GetModLocalization(98)
 
 L:SetTimerLocalization({
 	TimerAdds		= "다음 유령 소환"
@@ -386,11 +264,7 @@ L:SetMiscLocalization{
 -----------------
 -- Lord Walden --
 -----------------
-L = DBM:GetModLocalization("Walden")
-
-L:SetGeneralLocalization({
-	name = "월든 경"
-})
+L= DBM:GetModLocalization(99)
 
 L:SetWarningLocalization{
 	specWarnCoagulant	= "녹색 빛 - 움직이세요!",	-- Green light
@@ -404,22 +278,14 @@ L:SetOptionLocalization{
 ------------------
 -- Lord Godfrey --
 ------------------
-L = DBM:GetModLocalization("Godfrey")
-
-L:SetGeneralLocalization({
-	name = "고드프리 경"
-})
+L= DBM:GetModLocalization(100)
 
 ---------------------
 --  The Stonecore  --
 ---------------------
 -- Corborus --
 -------------- 
-L = DBM:GetModLocalization("Corborus")
-
-L:SetGeneralLocalization({
-	name = "코보루스"
-})
+L= DBM:GetModLocalization(110)
 
 L:SetWarningLocalization({
 	WarnEmerge		= "등장",
@@ -440,25 +306,10 @@ L:SetOptionLocalization({
 	RangeFrame		= "거리 프레임 보기 (5m)"	
 })
 
-
-
------------
--- Ozruk --
------------ 
-L = DBM:GetModLocalization("Ozruk")
-
-L:SetGeneralLocalization({
-	name = "오즈룩"
-})
-
 --------------
 -- Slabhide --
 -------------- 
-L = DBM:GetModLocalization("Slabhide")
-
-L:SetGeneralLocalization({
-	name = "돌거죽"
-})
+L= DBM:GetModLocalization(111)
 
 L:SetWarningLocalization({
 	WarnAirphase				= "공중 단계",
@@ -479,25 +330,22 @@ L:SetOptionLocalization({
 	specWarnCrystalStorm		= "$spell:92265 특수 경고 보기"
 })
 
+-----------
+-- Ozruk --
+----------- 
+L= DBM:GetModLocalization(112)
+
 -------------------------
 -- High Priestess Azil --
 ------------------------
-L = DBM:GetModLocalization("HighPriestessAzil")
-
-L:SetGeneralLocalization({
-	name = "대여사제 아질"
-})
+L= DBM:GetModLocalization(113)
 
 ---------------------------
 --  The Vortex Pinnacle  --
 ---------------------------
 -- Grand Vizier Ertan --
 ------------------------
-L = DBM:GetModLocalization("GrandVizierErtan")
-
-L:SetGeneralLocalization({
-	name = "대장로 에르탄"
-})
+L= DBM:GetModLocalization(114)
 
 L:SetMiscLocalization{
 	Retract		= "회오리 방패를 가까이 끌어당깁니다!"
@@ -506,11 +354,7 @@ L:SetMiscLocalization{
 --------------
 -- Altairus --
 -------------- 
-L = DBM:GetModLocalization("Altairus")
-
-L:SetGeneralLocalization({
-	name = "알타이루스"
-})
+L= DBM:GetModLocalization(115)
 
 L:SetOptionLocalization({
 	BreathIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88308)
@@ -519,11 +363,7 @@ L:SetOptionLocalization({
 -----------
 -- Asaad --
 -----------
-L = DBM:GetModLocalization("Asaad")
-
-L:SetGeneralLocalization({
-	name = "아사드"
-})
+L= DBM:GetModLocalization(116)
 
 L:SetOptionLocalization({
 	SpecWarnStaticCling	= "$spell:87618 특수 경고 보기"
@@ -538,49 +378,41 @@ L:SetWarningLocalization({
 ---------------------------
 -- Lady Naz'jar --
 ------------------ 
-L = DBM:GetModLocalization("LadyNazjar")
-
-L:SetGeneralLocalization({
-	name = "여군주 나즈자르"
-})
+L= DBM:GetModLocalization(101)
 
 -----======-----------
 -- Commander Ulthok --
 ---------------------- 
-L = DBM:GetModLocalization("CommanderUlthok")
-
-L:SetGeneralLocalization({
-	name = "사령관 울톡"
-})
+L= DBM:GetModLocalization(102)
 
 -------------------------
 -- Erunak Stonespeaker --
 -------------------------
-L = DBM:GetModLocalization("ErunakStonespeaker")
-
-L:SetGeneralLocalization({
-	name = "에루낙 스톤스피커"
-})
+L= DBM:GetModLocalization(103)
 
 ------------
 -- Ozumat --
 ------------ 
-L = DBM:GetModLocalization("Ozumat")
-
-L:SetGeneralLocalization({
-	name = "오주마트"
-})
+L= DBM:GetModLocalization(104)
 
 ----------------
 --  Zul'Aman  --
 ----------------
+--  Akil'zon --
+---------------
+L= DBM:GetModLocalization(186)
+
+L:SetOptionLocalization{
+	StormIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
+	RangeFrame		= "거리 프레임 보기 (10m)",
+	StormArrow		= "$spell:97300 시전시 DBM 화살표 보기",
+	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
+}
+
+---------------
 --  Nalorakk --
 ---------------
-L = DBM:GetModLocalization("Nalorakk5")
-
-L:SetGeneralLocalization{
-	name = "날로라크 (5인)"
-}
+L= DBM:GetModLocalization(187)
 
 L:SetWarningLocalization{
 	WarnBear		= "곰 형상",
@@ -611,29 +443,9 @@ L:SetMiscLocalization{
 }
 
 ---------------
---  Akil'zon --
----------------
-L = DBM:GetModLocalization("Akilzon5")
-
-L:SetGeneralLocalization{
-	name = "아킬존 (5인)"
-}
-
-L:SetOptionLocalization{
-	StormIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame		= "거리 프레임 보기 (10m)",
-	StormArrow		= "$spell:97300 시전시 DBM 화살표 보기", -- translate
-	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
-}
-
----------------
 --  Jan'alai --
 ---------------
-L = DBM:GetModLocalization("Janalai5")
-
-L:SetGeneralLocalization{
-	name = "잔알라이 (5인)"
-}
+L= DBM:GetModLocalization(188)
 
 L:SetOptionLocalization{
 	FlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43140)
@@ -648,11 +460,7 @@ L:SetMiscLocalization{
 --------------
 --  Halazzi --
 --------------
-L = DBM:GetModLocalization("Halazzi5")
-
-L:SetGeneralLocalization{
-	name = "할라지 (5인)"
-}
+L= DBM:GetModLocalization(189)
 
 L:SetWarningLocalization{
 	WarnSpirit	= "영혼 단계",
@@ -672,11 +480,7 @@ L:SetMiscLocalization{
 -----------------------
 -- Hexlord Malacrass --
 -----------------------
-L = DBM:GetModLocalization("Malacrass5")
-
-L:SetGeneralLocalization{
-	name = "사술 군주 말라크라스 (5인)"
-}
+L= DBM:GetModLocalization(190)
 
 L:SetTimerLocalization{
 	TimerSiphon	= "%s: %s"
@@ -693,11 +497,7 @@ L:SetMiscLocalization{
 -------------
 -- Daakara --
 -------------
-L = DBM:GetModLocalization("Daakara")
-
-L:SetGeneralLocalization{
-	name = "다카라"
-}
+L= DBM:GetModLocalization(191)
 
 L:SetTimerLocalization{
 	timerNextForm	= "다음 형상 변환"
@@ -716,28 +516,20 @@ L:SetMiscLocalization{
 
 -----------------
 --  Zul'Gurub  --
--------------------------
+-----------------
 -- High Priest Venoxis --
 -------------------------
-L = DBM:GetModLocalization("Venoxis")
-
-L:SetGeneralLocalization{
-	name = "대사제 베녹시스"
-}
+L= DBM:GetModLocalization(175)
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow			= "$spell:96477 주문의 영향을 받은 경우 DBM 화살표 보기" -- translate
+	LinkArrow			= "$spell:96477 주문의 영향을 받은 경우 DBM 화살표 보기"
 }
 
 ------------------------
 -- Bloodlord Mandokir --
 ------------------------
-L = DBM:GetModLocalization("Mandokir")
-
-L:SetGeneralLocalization{
-	name = "혈군주 만도키르"
-}
+L= DBM:GetModLocalization(176)
 
 L:SetWarningLocalization{
 	WarnRevive		= "영혼 부활 - %d회 남음",
@@ -747,21 +539,41 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnRevive		= "영혼 부활 남은 횟수 알림 보기",
 	SpecWarnOhgan	= "되살아난 오간이 공격 가능 할때 특수 경고 보기",
-	SetIconOnOhgan	= "되살아난 오간에게 전술 목표 아이콘 설정하기" -- translate
+	SetIconOnOhgan	= "되살아난 오간에게 전술 목표 아이콘 설정하기"
 }
 
-L:SetMiscLocalization{
-	Ohgan		= "오간"
-}
+----------------------
+-- Cache of Madness --
+----------------------
+-------------
+-- Gri'lek --
+-------------
+L= DBM:GetModLocalization(177)
+
+---------------
+-- Hazza'rah --
+---------------
+L= DBM:GetModLocalization(178)
+
+--------------
+-- Renataki --
+--------------
+L= DBM:GetModLocalization(179)
+
+---------------
+-- Wushoolay --
+---------------
+L= DBM:GetModLocalization(180)
+
+----------------------------
+-- High Priestess Kilnara --
+----------------------------
+L= DBM:GetModLocalization(181)
 
 ------------
 -- Zanzil --
 ------------
-L = DBM:GetModLocalization("Zanzil")
-
-L:SetGeneralLocalization{
-	name = "잔질"
-}
+L= DBM:GetModLocalization(184)
 
 L:SetWarningLocalization{
 	SpecWarnToxic	= "독 가마솥 클릭!"
@@ -778,22 +590,9 @@ L:SetMiscLocalization{
 }
 
 ----------------------------
--- High Priestess Kilnara --
-----------------------------
-L = DBM:GetModLocalization("Kilnara")
-
-L:SetGeneralLocalization{
-	name = "대여사제 킬나라"
-}
-
-----------------------------
 -- Jindo --
 ----------------------------
-L = DBM:GetModLocalization("Jindo")
-
-L:SetGeneralLocalization{
-	name = "신파괴자 진도"
-}
+L= DBM:GetModLocalization(185)
 
 L:SetWarningLocalization{
 	WarnBarrierDown	= "학카르의 사슬 보호막 사라짐 - %d/3"
@@ -808,51 +607,139 @@ L:SetMiscLocalization{
 	Kill	= "너는 넘어서는 안 될 선을 넘었다, 진도. 감당하지도 못할 힘으로 장난을 치다니. 너는 내가 누군지 잊었느냐? 너는 내가 가진 힘을 잊었느냐?!"
 }
 
-----------------------
--- Cache of Madness --
-----------------------
--------------
--- Gri'lek --
--------------
---L= DBM:GetModLocalization(603)
+----------------
+--  End Time  --
+-------------------
+-- Echo of Baine --
+-------------------
+L= DBM:GetModLocalization(340)
 
-L = DBM:GetModLocalization("CoMGrilek")
+-------------------
+-- Echo of Jaina --
+-------------------
+L= DBM:GetModLocalization(285)
 
-L:SetGeneralLocalization{
-	name = "그리렉"
+L:SetTimerLocalization{
+	TimerFlarecoreDetonate	= "섬광핵 폭발"
 }
 
----------------
--- Hazza'rah --
----------------
---L= DBM:GetModLocalization(604)
-
-L = DBM:GetModLocalization("CoMGHazzarah")
-
-L:SetGeneralLocalization{
-	name = "하자라"
+L:SetOptionLocalization{
+	TimerFlarecoreDetonate	= "$spell:101927 폭발 까지 남은 시간 바 표시"
 }
+
+----------------------
+-- Echo of Sylvanas --
+----------------------
+L= DBM:GetModLocalization(323)
+
+---------------------
+-- Echo of Tyrande --
+---------------------
+L= DBM:GetModLocalization(283)
 
 --------------
--- Renataki --
+-- Murozond --
 --------------
---L= DBM:GetModLocalization(605)
+L= DBM:GetModLocalization(289)
 
-L = DBM:GetModLocalization("CoMRenataki")
-
-L:SetGeneralLocalization{
-	name = "레나타키"
+L:SetMiscLocalization{
+	Kill		= "넌 네가 무슨 짓을 저지르는지 모른다. 아만툴... 내가... 본... 것은..."
 }
 
----------------
--- Wushoolay --
----------------
---L= DBM:GetModLocalization(606)
+------------------------
+--  Well of Eternity  --
+------------------------
+-- Peroth'arn --
+----------------
+L= DBM:GetModLocalization(290)
 
-L = DBM:GetModLocalization("CoMWushoolay")
+L:SetMiscLocalization{
+	Pull		= "필멸자 주제에 내 앞에 서고도 살기를 바라느냐!"
+}
 
-L:SetGeneralLocalization{
-	name = "우슐레이"
+-------------
+-- Azshara --
+-------------
+L= DBM:GetModLocalization(291)
+
+L:SetWarningLocalization{
+	WarnAdds	= "곧 부하 소환"
+}
+
+L:SetTimerLocalization{
+	TimerAdds	= "다음 부하 소환"
+}
+
+L:SetOptionLocalization{
+	WarnAdds	= "새로운 부하가 소환될 때 알림 보기",
+	TimerAdds	= "다음 부하 소환 바 표시"
+}
+
+L:SetMiscLocalization{
+	Kill		= "그만! 너희랑 놀아 주는 것도 재미있다만, 난 더 중요한 일이 있어 이만 가봐야겠다."
+}
+
+-----------------------------
+-- Mannoroth and Varo'then --
+-----------------------------
+L= DBM:GetModLocalization(292)
+
+L:SetTimerLocalization{
+	TimerTyrandeHelp	= "티란데 도움요청"
+}
+
+L:SetOptionLocalization{
+	TimerTyrandeHelp	= "티란데 도움요청 까지 남은시간 바 표시"
+}
+
+L:SetMiscLocalization{
+	Kill		= "말퓨리온, 그가 해냈어! 차원문이 무너지고 있어!"
+}
+
+------------------------
+--  Hour of Twilight  --
+------------------------
+-- Arcurion --
+--------------
+L= DBM:GetModLocalization(322)
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "전투 시작"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "전투 시작 바 표시"
+}
+
+L:SetMiscLocalization{
+	Event		= "모습을 드러내라!",
+	Pull		= "골짜기 위쪽에서 황혼의 군대가 나타납니다."
+}
+
+----------------------
+-- Asira Dawnslayer --
+----------------------
+L= DBM:GetModLocalization(342)
+
+L:SetMiscLocalization{
+	Pull		= "일단 저놈은 처리했으니, 이제 네놈과 네 멍청한 친구들을 처치하면 되겠군. 음, 날 이렇게 오래 기다리게 하다니!"
+}
+
+---------------------------
+-- Archbishop Benedictus --
+---------------------------
+L= DBM:GetModLocalization(341)
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "전투 시작"
+}
+
+L:SetOptionLocalization{
+	TimerCombatStart	= "전투 시작 바 표시"
+}
+
+L:SetMiscLocalization{
+	Event		= "그럼... 주술사, 용의 영혼을 내놓으시지. 당장."
 }
 
 --------------------
@@ -904,183 +791,4 @@ L = DBM:GetModLocalization("Xariona")
 
 L:SetGeneralLocalization{
 	name = "자리오나"
-}
-
-----------------
---  End Time  --
-----------------------
--- Echo of Sylvanas --
-----------------------
-L = DBM:GetModLocalization("EchoSylvanas")
-
-L:SetGeneralLocalization{
-	name = "실바나스의 환영"
-}
-
----------------------
--- Echo of Tyrande --
----------------------
-L = DBM:GetModLocalization("EchoTyrande")
-
-L:SetGeneralLocalization{
-	name = "티란데의 환영"
-}
-
--------------------
--- Echo of Jaina --
--------------------
-L = DBM:GetModLocalization("EchoJaina")
-
-L:SetGeneralLocalization{
-	name = "제이나의 환영"
-}
-
-L:SetTimerLocalization{
-	TimerFlarecoreDetonate	= "섬광핵 폭발"
-}
-
-L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "$spell:101927 폭발 까지 남은 시간 바 표시"
-}
-
-----------------------
--- Echo of Baine --
-----------------------
-L = DBM:GetModLocalization("EchoBaine")
-
-L:SetGeneralLocalization{
-	name = "바인의 환영"
-}
-
---------------
--- Murozond --
---------------
-L = DBM:GetModLocalization("Murozond")
-
-L:SetGeneralLocalization{
-	name = "무르도즈노"
-}
-
-L:SetMiscLocalization{
-	Kill		= "넌 네가 무슨 짓을 저지르는지 모른다. 아만툴... 내가... 본... 것은..."
-}
-
-------------------------
---  Well of Eternity  --
-------------------------
--- Peroth'arn --
-----------------
-L = DBM:GetModLocalization("Perotharn")
-
-L:SetGeneralLocalization{
-	name = "페로스안"
-}
-
-L:SetMiscLocalization{
-	Pull		= "필멸자 주제에 내 앞에 서고도 살기를 바라느냐!"
-}
-
--------------
--- Azshara --
--------------
-L = DBM:GetModLocalization("Azshara")
-
-L:SetGeneralLocalization{
-	name = "여왕 아즈샤라"
-}
-
-L:SetWarningLocalization{
-	WarnAdds	= "곧 부하 소환"
-}
-
-L:SetTimerLocalization{
-	TimerAdds	= "다음 부하 소환"
-}
-
-L:SetOptionLocalization{
-	WarnAdds	= "새로운 부하가 소환될 때 알림 보기",
-	TimerAdds	= "다음 부화 소환 바 표시"
-}
-
-L:SetMiscLocalization{
-	Kill		= "그만! 너희랑 놀아 주는 것도 재미있다만, 난 더 중요한 일이 있어 이만 가봐야겠다."
-}
-
------------------------------
--- Mannoroth and Varo'then --
------------------------------
-L = DBM:GetModLocalization("Mannoroth")
-
-L:SetGeneralLocalization{
-	name = "만노로스와 바르덴"
-}
-
-L:SetTimerLocalization{
-	TimerTyrandeHelp	= "티란데 도움요청"
-}
-
-L:SetOptionLocalization{
-	TimerTyrandeHelp	= "티란데 도움요청 까지 남은시간 바 표시"
-}
-
-L:SetMiscLocalization{
-	Kill		= "말퓨리온, 그가 해냈어! 차원문이 무너지고 있어!"
-}
-
-------------------------
---  Hour of Twilight  --
-------------------------
--- Arcurion --
---------------
-L = DBM:GetModLocalization("Arcurion")
-
-L:SetGeneralLocalization{
-	name = "아큐리온"
-}
-
-L:SetTimerLocalization{
-	TimerCombatStart	= "전투 시작"
-}
-
-L:SetOptionLocalization{
-	TimerCombatStart	= "전투 시작 바 표시"
-}
-
-L:SetMiscLocalization{
-	Event		= "모습을 드러내라!",
-	Pull		= "골짜기 위쪽에서 황혼의 군대가 나타납니다."
-}
-
-----------------------
--- Asira Dawnslayer --
-----------------------
-L = DBM:GetModLocalization("AsiraDawnslayer")
-
-L:SetGeneralLocalization{
-	name = "아시라 돈슬레이어"
-}
-
-L:SetMiscLocalization{
-	Pull		= "일단 저놈은 처리했으니, 이제 네놈과 네 멍청한 친구들을 처치하면 되겠군. 음, 날 이렇게 오래 기다리게 하다니!"
-}
-
----------------------------
--- Archbishop Benedictus --
----------------------------
-L = DBM:GetModLocalization("Benedictus")
-
-L:SetGeneralLocalization{
-	name = "대주교 베네딕투스"
-}
-
-L:SetTimerLocalization{
-	TimerCombatStart	= "전투 시작"
-}
-
-L:SetOptionLocalization{
-	TimerCombatStart	= "전투 시작 바 표시"
-}
-
-L:SetMiscLocalization{
-	Event		= "그럼... 주술사, 용의 영혼을 내놓으시지. 당장."
 }

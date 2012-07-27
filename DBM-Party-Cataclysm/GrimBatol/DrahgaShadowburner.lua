@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("DrahgaShadowburner", "DBM-Party-Cataclysm", 3)
+local mod	= DBM:NewMod(133, "DBM-Party-Cataclysm", 3, 71)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -32,6 +32,7 @@ local timerShredding			= mod:NewBuffActiveTimer(20, 75271)
 
 local flamingFixate = GetSpellInfo(82850)
 local fixateWarned = false
+local Valiona = EJ_GetSectionInfo(3369)
 
 function mod:OnCombatStart(delay)
 	fixateWarned = false
@@ -65,7 +66,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.ValionaYell or msg:find(L.ValionaYell) then
-		DBM.BossHealth:AddBoss(40320, L.Valiona)
+		DBM.BossHealth:AddBoss(40320, Valiona)
 	end
 end
 
