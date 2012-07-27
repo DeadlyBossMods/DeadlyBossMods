@@ -17,7 +17,6 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Sunbeam	= "spell:122789",
 	Victory	= "I thank you, strangers. I have been freed."
 }
 

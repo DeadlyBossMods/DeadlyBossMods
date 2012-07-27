@@ -7,11 +7,11 @@ local L
 L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
-	specwarnPlatform	= "Platform change"
+	specwarnPlatform	= "단상 이동!"
 })
 
 L:SetOptionLocalization({
-	specwarnPlatform	= "Show special warning when boss changes platforms",
+	specwarnPlatform	= "보스가 단상 이동시 특수 경고 보기",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
@@ -19,7 +19,6 @@ L:SetMiscLocalization({
 	Platform	= "%s flies to one of his platforms!",
 	Defeat		= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
 })
-
 
 ------------
 -- Blade Lord Ta'yak --
@@ -31,16 +30,10 @@ L:SetOptionLocalization({
 	RangeFrame			= "$spell:123175 주문의 영향을 받은 경우 거리 프레임 표시(10m)"
 })
 
-L:SetMiscLocalization{
-	UnseenStrike	= "spell:122949"--This is in the emote, shouldn't need localizing, just msg:find
-}
-
-
 -------------------------------
 -- Garalon --
 -------------------------------
 L= DBM:GetModLocalization(713)
-
 
 ----------------------
 -- Wind Lord Mel'jarak --
@@ -60,16 +53,15 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(737)
 
-
 ------------
 -- Grand Empress Shek'zeer --
 ------------
 L= DBM:GetModLocalization(743)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Show info frame for players affected by $spell:125390"
+	InfoFrame		= "$spell:125390 주문의 영향을 받은 플레이어를 정보 프레임에 표시"
 })
 
 L:SetMiscLocalization({
-	PlayerDebuffs	= "Fixated"
+	PlayerDebuffs	= "시선 집중 대상"
 })

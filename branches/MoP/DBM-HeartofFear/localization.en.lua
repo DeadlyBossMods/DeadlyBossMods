@@ -30,10 +30,6 @@ L:SetOptionLocalization({
 	RangeFrame			= "Show range frame (10) for $spell:123175"
 })
 
-L:SetMiscLocalization{
-	UnseenStrike	= "spell:122949"--This is in the emote, shouldn't need localizing, just msg:find
-}
-
 
 -------------------------------
 -- Garalon --

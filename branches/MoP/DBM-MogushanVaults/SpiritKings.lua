@@ -192,7 +192,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg:find(L.Pillage) then
+	if msg:find("spell:118047") then
 		timerPillageCD:Start()
 		if target then
 			warnPillage:Show(target)

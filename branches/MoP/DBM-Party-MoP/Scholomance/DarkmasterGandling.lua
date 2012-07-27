@@ -32,7 +32,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)--Just until there is a better way
-	if msg == L.HarshLesson or msg:find(L.HarshLesson) then
+	if msg:find("spell:113395") then
 		warnLesson:Show(target)
 		timerLessonCD:Start()
 	end

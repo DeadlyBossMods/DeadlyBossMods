@@ -7,9 +7,9 @@ local L
 L= DBM:GetModLocalization(683)
 
 L:SetOptionLocalization({
-	RangeFrame				= "$spell:117436 주문의 영향을 받은 경우 거리 프레임 표시(8m)"
+	RangeFrame			= "$spell:111850 주문의 영향을 받은 경우 거리 프레임 표시(8m)\n(약화 효과가 있을 경우 모든 플레이어를 표시, 약화 효과가 없으면 효과가 있는 플레이어만 표시)",
+	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
-
 
 ------------
 -- Tsulong --
@@ -17,10 +17,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Sunbeam	= "spell:122789",
 	Victory	= "I thank you, strangers. I have been freed."
 }
-
 
 -------------------------------
 -- Lei Shi --
@@ -31,14 +29,18 @@ L:SetWarningLocalization({
 	warnHideOver			= "%s 종료"
 })
 
+L:SetTimerLocalization({
+	timerSpecialCD			= "Next Special"
+})
+
 L:SetOptionLocalization({
-	warnHideOver			= "$spell:123244 종료 알림 보기"
+	warnHideOver			= "$spell:123244 종료 알림 보기",
+	timerSpecialCD			= "Show timer for when next special ability will be cast."
 })
 
 L:SetMiscLocalization{
 	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy."--wtb alternate and less crappy victory event.
 }
-
 
 ----------------------
 -- Sha of Fear --

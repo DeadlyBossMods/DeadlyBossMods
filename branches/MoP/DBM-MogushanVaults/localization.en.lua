@@ -42,8 +42,7 @@ L:SetMiscLocalization({
 	--localized names for the CHAT_MSG_MONSTER_YELL (not EJ)
 	Meng	= "Meng the Demented",
 	Qiang	= "Qiang the Merciless",
-	Subetai	= "Subetai the Swift",
-	Pillage	= "spell:118047"
+	Subetai	= "Subetai the Swift"
 })
 
 

@@ -222,10 +222,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(684)
 
-L:SetMiscLocalization({
-	HarshLesson		= "spell:113395"--This is in the emote, shouldn't need localizing, just msg:find
-})
-
 -----------------------
 -- <<<Scarlet Halls>>> --
 -----------------------

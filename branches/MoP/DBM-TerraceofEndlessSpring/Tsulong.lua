@@ -142,7 +142,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:RAID_BOSS_EMOTE(msg)
-	if msg == L.Sunbeam or msg:find(L.Sunbeam) then
+	if msg:find("spell:122789") then
 		timerSunbeamCD:Start()
 	elseif msg:find(terrorName) then
 		timerTerrorizeCD:Start()--always cast 14-15 seconds after one spawns.
