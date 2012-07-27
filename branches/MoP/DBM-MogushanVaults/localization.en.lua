@@ -52,6 +52,19 @@ L:SetMiscLocalization({
 ------------
 L = DBM:GetModLocalization(726)
 
+L:SetWarningLocalization({
+	specWarnDespawnFloor		= "Watch your step!"
+})
+
+L:SetTimerLocalization({
+	timerDespawnFloor			= "Watch your step!"
+})
+
+L:SetOptionLocalization({
+	specWarnDespawnFloor		= "Show special warning before floor vanishes",
+	timerDespawnFloor			= "show timer for when floor vanishes"
+})
+
 
 ------------
 -- Will of the Emperor --

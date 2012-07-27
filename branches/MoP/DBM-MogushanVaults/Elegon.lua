@@ -27,14 +27,16 @@ local warnTotalAnnihilation			= mod:NewCastAnnounce(129711, 4)--Protector dying(
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)--124967 Draw Power
 local warnPhase3					= mod:NewPhaseAnnounce(3, 3)--116994 Unstable Energy Starting
 
+local specWarnOvercharged			= mod:NewSpecialWarningStack(117878, nil, 6)
 local specWarnTotalAnnihilation		= mod:NewSpecialWarningSpell(129711, nil, nil, nil, true)
-local specWarnProtector				= mod:NewSpecialWarningSwitch("ej6178", mod:IsDps())
+local specWarnProtector				= mod:NewSpecialWarningSwitch("ej6178", mod:IsDps() or mod:IsTank())
 local specWarnClosedCircuit			= mod:NewSpecialWarningDispel(117949, false)--Probably a spammy mess if this hits a few at once. But here in case someone likes spam.
---local specWarnDespawnFloor			= mod:NewSpecialWarningSpell("specWarnDespawnFloor", nil, nil, nil, true)
+local specWarnDespawnFloor			= mod:NewSpecialWarningSpell("specWarnDespawnFloor", nil, nil, nil, true)
 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
+local timerDespawnFloor				= mod:NewTimer(10, "timerDespawnFloor", 116994)
 --Some timer work needs to be added for the adds spawning and reaching outer bubble
 --(ie similar to yorsahj oozes reach, only for how long you have to kill adds before you fail and phase 2 ends)
 
@@ -49,7 +51,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(closedCircuitTargets)
 	timerBreathCD:Start(8-delay)
-	timerProtectorCD:Start(24-delay)
+	timerProtectorCD:Start(14-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -61,9 +63,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(116994) then--Phase 3 begin/Phase 2 end
 		phase2Started = false
 		warnPhase3:Show()
---		specWarnDespawnFloor:Show()--Maybe not right place? not sure if floor despawned before or after 116994 was removed from boss. it doesn't show in log or transcriptor so next test i'll have to do /yell when floor vanishes
+		specWarnDespawnFloor:Show()
+		timerDespawnFloor:Start()--Should be pretty accurate, may need minor tweak
+	elseif args:IsSpellID(117878) and args:IsPlayer() then
+		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
+			specWarnOvercharged:Show(args.amount)
+		end
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(116994) then--phase 3 end
