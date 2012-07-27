@@ -1,5 +1,4 @@
---local mod	= DBM:NewMod(171, "DBM-BlackwingDescent", nil, 73)
-local mod	= DBM:NewMod("Atramedes", "DBM-BlackwingDescent")
+local mod	= DBM:NewMod(171, "DBM-BlackwingDescent", nil, 73)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -26,10 +25,10 @@ mod:RegisterEventsInCombat(
 local warnSonarPulse		= mod:NewSpellAnnounce(77672, 3)
 local warnSonicBreath		= mod:NewSpellAnnounce(78075, 3)
 local warnTracking			= mod:NewTargetAnnounce(78092, 4)
-local warnAirphase			= mod:NewAnnounce("WarnAirphase", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 2, 77611)
-local warnAddSoon			= mod:NewSpellAnnounce("ej3082", 3, 92685)
+local warnAirphase			= mod:NewSpellAnnounce("ej3081", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local warnGroundphase		= mod:NewSpellAnnounce("ej3061", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local warnShieldsLeft		= mod:NewAddsLeftAnnounce("ej3073", 2, 77611)
+local warnAddSoon			= mod:NewSoonAnnounce("ej3082", 3, 92685)
 local warnPhaseShift		= mod:NewSpellAnnounce(92681, 3)
 local warnObnoxious			= mod:NewCastAnnounce(92677, 4, nil, false)
 local warnSearingFlameSoon	= mod:NewSoonAnnounce(77840, 3, nil, false)
@@ -38,15 +37,15 @@ local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840, nil, nil, nil, tr
 local specWarnSonarPulse	= mod:NewSpecialWarningSpell(77672, false, nil, nil, true)
 local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 local specWarnPestered		= mod:NewSpecialWarningYou(92685)
-local yellPestered			= mod:NewYell(92685, L.YellPestered)
+local yellPestered			= mod:NewYell("ej3082")
 local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92677, mod:IsMelee())
 local specWarnAddTargetable	= mod:NewSpecialWarningSwitch("ej3082", mod:IsRanged())
 
 local timerSonarPulseCD		= mod:NewCDTimer(10, 77672)
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewCDTimer(45, 77840)
-local timerAirphase			= mod:NewTimer(85, "TimerAirphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")--These both need more work
-local timerGroundphase		= mod:NewTimer(31.5, "TimerGroundphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")--I just never remember to log and /yell at right times since they lack most accurate triggers.
+local timerAirphase			= mod:NewNextTimer(85, "ej3081", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")--These both need more work
+local timerGroundphase		= mod:NewNextTimer(31.5, "ej3061", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")--I just never remember to log and /yell at right times since they lack most accurate triggers.
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -58,6 +57,7 @@ mod:AddBoolOption("InfoFrame")
 local shieldsLeft = 10
 local pestered = GetSpellInfo(92685)
 local pesteredWarned = false
+local SoundLevel = EJ_GetSectionInfo(3072)
 
 local function groundphase()
 	timerAirphase:Start()
@@ -78,7 +78,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(L.Soundlevel)
+		DBM.InfoFrame:SetHeader(Soundlevel)
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
 	end
 end

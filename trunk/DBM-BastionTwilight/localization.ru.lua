@@ -5,12 +5,7 @@ local L
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
---L= DBM:GetModLocalization(156)
-L = DBM:GetModLocalization("HalfusWyrmbreaker")
-
-L:SetGeneralLocalization({
-	name =	"Халфий Змеерез"
-})
+L= DBM:GetModLocalization(156)
 
 L:SetWarningLocalization({
 })
@@ -28,12 +23,7 @@ L:SetMiscLocalization({
 ---------------------------
 --  Valiona & Theralion  --
 ---------------------------
---L= DBM:GetModLocalization(157)
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Валиона и Тералион"
-})
+L= DBM:GetModLocalization(157)
 
 L:SetWarningLocalization({
 })
@@ -58,12 +48,7 @@ L:SetMiscLocalization({
 ----------------------------------
 --  Twilight Ascendant Council  --
 ----------------------------------
---L= DBM:GetModLocalization(158)
-L = DBM:GetModLocalization("AscendantCouncil")
-
-L:SetGeneralLocalization({
-	name =	"Совет Перерожденных"
-})
+L= DBM:GetModLocalization(158)
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s ниже 30%% - скоро следующая фаза!",
@@ -97,11 +82,6 @@ L:SetMiscLocalization({
 	Thundershock			= "Воздух потрескивает от скопившейся энергии...", -- Yell string: Ветер, явись на мой зов!
 	Switch					= "Закончим этот фарс!",--"We will handle them!" comes 3 seconds after this one
 	Phase3					= "Ваше упорство...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
-	Ignacious				= "Огнис",
-	Feludius				= "Акварион",
-	Arion					= "Аэрон",
-	Terrastra				= "Террастра",
-	Monstrosity				= "Элементиевое чудовище",
 	Kill					= "Невозможно....",
 	blizzHatesMe			= "Сфера и громотвод на МНЕ! С ДОРОГИ!!!",--You're probably fucked, and gonna kill half your raid if this happens, but worth a try anyways :).
 	WrongDebuff				= "Отсутствует %s"
@@ -110,12 +90,7 @@ L:SetMiscLocalization({
 ----------------
 --  Cho'gall  --
 ----------------
---L= DBM:GetModLocalization(167)
-L = DBM:GetModLocalization("Chogall")
-
-L:SetGeneralLocalization({
-	name =	"Чо'Галл"
-})
+L= DBM:GetModLocalization(167)
 
 L:SetWarningLocalization({
 })
@@ -125,54 +100,37 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Показывать стрелку DBM, когда $spell:93178 около вас",
-	InfoFrame				= "Показывать информационное окно для $spell:81701",
+	InfoFrame				= "Показывать информационное окно для $journal:3165",
 	RangeFrame				= "Показывать окно проверки дистанции (5м) для $spell:82235",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
 	SetIconOnCreature		= "Устанавливать метки на Смутные творения"
-})
-
-L:SetMiscLocalization({
-	Bloodlevel				= "Порча"
 })
 
 ----------------
 --  Sinestra  --
 ----------------
---L= DBM:GetModLocalization(168)
-L = DBM:GetModLocalization("Sinestra")
-
-L:SetGeneralLocalization({
-	name =	"Синестра"
-})
+L= DBM:GetModLocalization(168)
 
 L:SetWarningLocalization({
-	WarnDragon			= "Появились сумеречные дракончики",
 	WarnOrbSoon			= "Сферы через %d сек!",
 	SpecWarnOrbs		= "Скоро появятся сферы!",
 	warnWrackJump		= "%s прыгнуло на >%s<",
 	warnAggro			= "На >%s< АГРО (возможные цели сфер)",
-	SpecWarnAggroOnYou	= "На вас АГРО! Смотрите за сферами!",
-	SpecWarnEggWeaken	= "Панцирь снят - весь урон в яйца!",
-	SpecWarnEggShield	= "Панцирь восстановился!"
+	SpecWarnAggroOnYou	= "На вас АГРО! Смотрите за сферами!"
 })
 
 L:SetTimerLocalization({
-	TimerDragon			= "След. дракончики",
 	TimerEggWeakening	= "Снятие зашиты с яиц",
 	TimerEggWeaken		= "Восст. Сумеречного панциря",
 	TimerOrbs			= "Восст. Сферы Тьмы"
 })
 
 L:SetOptionLocalization({
-	WarnDragon			= "Предупреждение, когда появляются сумеречные дракончики",
 	WarnOrbSoon			= "Предупреждение о появлении сфер (за 5с до начала, каждую 1с)\n(Предупреждение может быть неточным!)",
 	warnWrackJump		= "Показывать цели, на которые прыгает $spell:92955",
 	warnAggro			= "Показывать игроков, имеющих агро от сфер (возможные цели сфер)",
 	SpecWarnAggroOnYou	= "Спец-предупреждение, если на вас есть агро при появлении сфер",
 	SpecWarnOrbs		= "Спец-предупреждение при появлении сфер\n(Предупреждение может быть неточным)",
-	SpecWarnEggWeaken	= "Спец-предупреждение, когда спадает $spell:87654",
-	SpecWarnEggShield	= "Спец-предупреждение, когда восстанавливается $spell:87654",
-	TimerDragon			= "Отсчет времени до новых сумеречных дракончиков",
 	TimerEggWeakening	= "Отсчет времени до снятия $spell:87654",
 	TimerEggWeaken		= "Отсчет времени восстановления $spell:87654",
 	TimerOrbs			= "Отсчет времени до следующих сфер (таймер может быть неточным)",

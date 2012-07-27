@@ -5,12 +5,7 @@ local L
 ------------------------
 --  Conclave of Wind  --
 ------------------------
---L = DBM:GetModLocalization(154)
-L = DBM:GetModLocalization("Conclave")
-
-L:SetGeneralLocalization({
-	name = "Конклав Ветра"
-})
+L = DBM:GetModLocalization(154)
 
 L:SetWarningLocalization({
 	warnSpecial			= "Активация - Урагана/Зефира/Вихря",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
@@ -33,24 +28,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength		= "%s близок к обретению абсолютной силы",
-	Anshal				= "Аншал",
-	Nezir				= "Незир",
-	Rohash				= "Рохаш"
+	gatherstrength		= "%s близок к обретению абсолютной силы"
 })
 
 ---------------
 --  Al'Akir  --
 ---------------
---L = DBM:GetModLocalization(155)
-L = DBM:GetModLocalization("AlAkir")
-
-L:SetGeneralLocalization({
-	name = "Ал'акир"
-})
-
-L:SetWarningLocalization({
-})
+L = DBM:GetModLocalization(155)
 
 L:SetTimerLocalization({
 	TimerFeedback 	= "Ответная реакция (%d)"
@@ -60,7 +44,4 @@ L:SetOptionLocalization({
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback	= "Отсчет времени действия $spell:87904",
 	RangeFrame		= "Показывать окно проверки дистанции (20), когда на вас $spell:89668"
-})
-
-L:SetMiscLocalization({
 })

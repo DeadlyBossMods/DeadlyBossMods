@@ -2,21 +2,47 @@
 
 local L
 
---------------
---  Magmaw  --
---------------
---L = DBM:GetModLocalization(170)
-L = DBM:GetModLocalization("Magmaw")
-
-L:SetGeneralLocalization({
-	name = "Магмарь"
-})
+-------------------------------
+--  Dark Iron Golem Council  --
+-------------------------------
+L = DBM:GetModLocalization(169)
 
 L:SetWarningLocalization({
-	SpecWarnInferno	= "Появляется Пыляющее костяное создание! (~4сек)",
+	SpecWarnActivated			= "Смена цели на: %s!",
+	specWarnGenerator			= "Генератор энергии - Двигайтесь %s!"
 })
 
 L:SetTimerLocalization({
+	timerShadowConductorCast	= "Проводник тьмы",
+	timerArcaneLockout			= "Волшебный уничтожитель",
+	timerArcaneBlowbackCast		= "Чародейская обратная вспышка",
+	timerNefAblity				= "Восст. баффа" --Ability Buff CD
+})
+
+L:SetOptionLocalization({
+	timerShadowConductorCast	= "Отсчет времени применения заклинания $spell:92053",
+	timerArcaneLockout			= "Отсчет времени блокировки $spell:91542",
+	timerArcaneBlowbackCast		= "Отсчет времени применения заклинания $spell:91879",
+	timerNefAblity				= "Отсчет времени восстановления баффа (героический режим)",
+	SpecWarnActivated			= "Спец-предупреждение при активации нового босса",
+	specWarnGenerator			= "Спец-предупреждение, когда босс стоит в $spell:91557",
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	SetIconOnActivated			= "Устанавливать метку на появившегося босса"
+})
+
+L:SetMiscLocalization({
+	YellTargetLock				= "На МНЕ - Обрамляющие тени! Прочь от меня!"
+})
+
+--------------
+--  Magmaw  --
+--------------
+L = DBM:GetModLocalization(170)
+
+L:SetWarningLocalization({
+	SpecWarnInferno	= "Появляется Пыляющее костяное создание! (~4сек)",
 })
 
 L:SetOptionLocalization({
@@ -30,62 +56,43 @@ L:SetMiscLocalization({
 	YellPhase2		= "Непостижимо! Вы, кажется, можете уничтожить моего лавового червяка! Пожалуй, я помогу ему."
 })
 
--------------------------------
---  Dark Iron Golem Council  --
--------------------------------
---L = DBM:GetModLocalization(169)
-L = DBM:GetModLocalization("DarkIronGolemCouncil")
-
-L:SetGeneralLocalization({
-	name = "Защитная система Омнотрона"
-})
-
-L:SetWarningLocalization({
-	SpecWarnActivated			= "Смена цели на: %s!",
-	specWarnGenerator			= "Генератор энергии - Двигайтесь %s!"
-})
-
-L:SetTimerLocalization({
-	timerArcaneBlowbackCast		= "Чародейская обратная вспышка",
-	timerShadowConductorCast	= "Проводник тьмы",
-	timerNefAblity				= "Восст. баффа", --Ability Buff CD
-	timerArcaneLockout			= "Волшебный уничтожитель"
-})
+-----------------
+--  Atramedes  --
+-----------------
+L = DBM:GetModLocalization(171)
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "Отсчет времени применения заклинания $spell:92053",
-	timerArcaneBlowbackCast		= "Отсчет времени применения заклинания $spell:91879",
-	timerArcaneLockout			= "Отсчет времени блокировки $spell:91542",
-	timerNefAblity				= "Отсчет времени восстановления баффа (героический режим)",
-	SpecWarnActivated			= "Спец-предупреждение при активации нового босса",
-	specWarnGenerator			= "Спец-предупреждение, когда босс стоит в $spell:91557",
-	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
-	SetIconOnActivated			= "Устанавливать метку на появившегося босса"
+	InfoFrame				= "Показывать информационное окно для уровня звуков",
+	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
-	Magmatron					= "Магматрон",
-	Electron					= "Электрон",
-	Toxitron					= "Токситрон",
-	Arcanotron					= "Чаротрон",
-	YellTargetLock				= "На МНЕ - Обрамляющие тени! Прочь от меня!"
+	NefAdd					= "Атрамед, они вон там!",
+	Airphase				= "Да, беги! С каждым шагом твое сердце бьется все быстрее. Эти громкие, оглушительные удары... Тебе некуда бежать!"
+})
+
+-----------------
+--  Chimaeron  --
+-----------------
+L = DBM:GetModLocalization(172)
+
+L:SetOptionLocalization({
+	RangeFrame		= "Показывать окно проверки дистанции (6м)",
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
+	InfoFrame		= "Показывать информационное окно со здоровьем (<10к хп)"
+})
+
+L:SetMiscLocalization({
+	HealthInfo	= "Инфо о здоровье"
 })
 
 ----------------
 --  Maloriak  --
 ----------------
---L = DBM:GetModLocalization(173)
-L = DBM:GetModLocalization("Maloriak")
-
-L:SetGeneralLocalization({
-	name = "Малориак"
-})
+L = DBM:GetModLocalization(173)
 
 L:SetWarningLocalization({
-	WarnPhase			= "%s фаза",
-	WarnRemainingAdds	= "Осталось аберраций: %d"
+	WarnPhase			= "%s фаза"
 })
 
 L:SetTimerLocalization({
@@ -94,7 +101,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase			= "Предупреждать о переходе фаз",
-	WarnRemainingAdds	= "Предупреждать об оставшемся количестве аберраций",
 	TimerPhase			= "Показывать таймер до следующей фазы",
 	RangeFrame			= "В ходе синей фазы, показывать окно проверки дистанции (6м)",
 	SetTextures			= "Автоматически отключить \"Проецирование текстур\" в темной фазе\n(включается обратно при выходе из фазы)",
@@ -107,91 +113,13 @@ L:SetMiscLocalization({
 	YellRed				= "красный|r пузырек в котел!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
 	YellBlue			= "синий|r пузырек в котел!",
 	YellGreen			= "зеленый|r пузырек в котел!",
-	YellDark			= "магию на котле!",
-	Red		     		= "Огненная",
-	Blue				= "Ледяная",
-	Green				= "Кислотная",
-	Dark				= "Тёмная"
-})
-
------------------
---  Chimaeron  --
------------------
---L = DBM:GetModLocalization(172)
-L = DBM:GetModLocalization("Chimaeron")
-
-L:SetGeneralLocalization({
-	name = "Химерон"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	RangeFrame		= "Показывать окно проверки дистанции (6м)",
-	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
-	InfoFrame		= "Показывать информационное окно со здоровьем (<10к хп)"
-})
-
-L:SetMiscLocalization({
-	HealthInfo	= "Инфо о здоровье"
-})
-
------------------
---  Atramedes  --
------------------
---L = DBM:GetModLocalization(171)
-L = DBM:GetModLocalization("Atramedes")
-
-L:SetGeneralLocalization({
-	name = "Атрамед"
-})
-
-L:SetWarningLocalization({
-	WarnAirphase			= "Воздушная фаза",
-	WarnGroundphase			= "Наземная фаза",
-	WarnShieldsLeft			= "Древний дворфийский щит - %d осталось",
-	warnAddSoon				= "Призван Гнусный бес",
-	specWarnAddTargetable	= "%s - активен"
-})
-
-L:SetTimerLocalization({
-	TimerAirphase			= "Воздушная фаза",
-	TimerGroundphase		= "Наземная фаза"
-})
-
-L:SetOptionLocalization({
-	WarnAirphase			= "Предупреждение, когда Атрамед взлетает",
-	WarnGroundphase			= "Предупреждение, когда Атрамед приземляется",
-	WarnShieldsLeft			= "Предупреждение, когда используется Древний дворфийский щит",
-	warnAddSoon				= "Предупреждение, когда Нефариан призывает помощников",
-	specWarnAddTargetable	= "Спец-предупреждение, когда Гнусного беса можно взять в цель",
-	TimerAirphase			= "Отсчет времени до следующей воздушной фазы",
-	TimerGroundphase		= "Отсчет времени до следующей наземной фазы",
-	InfoFrame				= "Показывать информационное окно для уровня звуков",
-	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
-})
-
-L:SetMiscLocalization({
-	AncientDwarvenShield	= "Древний дворфийский щит",
-	Soundlevel				= "Уровень звука",
-	YellPestered			= "На МНЕ - Гнусный бес!",--npc 49740
-	NefAdd					= "Атрамед, они вон там!",
-	Airphase				= "Да, беги! С каждым шагом твое сердце бьется все быстрее. Эти громкие, оглушительные удары... Тебе некуда бежать!"
+	YellDark			= "магию на котле!"
 })
 
 ----------------
 --  Nefarian  --
 ----------------
---L = DBM:GetModLocalization(174)
-L = DBM:GetModLocalization("Nefarian")
-
-L:SetGeneralLocalization({
-	name = "Нефариан"
-})
+L = DBM:GetModLocalization(174)
 
 L:SetWarningLocalization({
 	OnyTailSwipe		= "Удар хвостом (Ониксия)",
@@ -235,9 +163,6 @@ L:SetMiscLocalization({
 	YellPhase2			= "Дерзкие смертные! Неуважение к чужой собственности нужно пресекать самым жестоким образом!",
 	YellPhase3			= "Я пытался следовать законам гостеприимства, но вы всё никак не умрете!",
 	YellShadowBlaze		= "И плоть превратится в прах!",
-	Nefarian			= "Нефариан",
-	Onyxia				= "Ониксия",
-	Charge				= "Электрический заряд",
 	ShadowBlazeExact		= "Вспышка пламени тени через %d",
 	ShadowBlazeEstimate		= "Скоро вспышка пламени тени (~5с)"
 })
@@ -249,16 +174,4 @@ L = DBM:GetModLocalization("BWDTrash")
 
 L:SetGeneralLocalization({
 	name = "Существа Твердыни Крыла Тьмы"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
 })

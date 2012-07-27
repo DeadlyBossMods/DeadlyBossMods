@@ -1,6 +1,8 @@
---local mod	= DBM:NewMod(154, "DBM-ThroneFourWinds", nil, 75)
-local mod	= DBM:NewMod("Conclave", "DBM-ThroneFourWinds")
+local mod	= DBM:NewMod(154, "DBM-ThroneFourWinds", nil, 75)
 local L		= mod:GetLocalizedStrings()
+local Anshal	= EJ_GetSectionInfo(3166)
+local Nezir	= EJ_GetSectionInfo(3178)
+local Rohash	= EJ_GetSectionInfo(3172)
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(45870, 45871, 45872)
@@ -8,9 +10,9 @@ mod:SetModelID(35232)
 mod:SetZone()
 
 mod:SetBossHealthInfo(
-	45870, L.Anshal,
-	45871, L.Nezir,
-	45872, L.Rohash
+	45870, Anshal,
+	45871, Nezir,
+	45872, Rohash
 )
 
 mod:RegisterCombat("combat")

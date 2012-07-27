@@ -5,12 +5,7 @@ local L
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
---L= DBM:GetModLocalization(156)
-L = DBM:GetModLocalization("HalfusWyrmbreaker")
-
-L:SetGeneralLocalization({
-	name 				= "哈福斯•破龍者"
-})
+L= DBM:GetModLocalization(156)
 
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "顯示已被釋放的小龍血量\n(需要先開啟首領血量)"
@@ -19,12 +14,7 @@ L:SetOptionLocalization({
 ---------------------------
 --  Valiona & Theralion  --
 ---------------------------
---L= DBM:GetModLocalization(157)
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name 				= "瓦莉歐娜和瑟拉里恩"
-})
+L= DBM:GetModLocalization(157)
 
 L:SetOptionLocalization({
 	TBwarnWhileBlackout	= "當$spell:86788生效時顯示$spell:92898警告",
@@ -43,12 +33,7 @@ L:SetMiscLocalization({
 ----------------------------------
 --  Twilight Ascendant Council  --
 ----------------------------------
---L= DBM:GetModLocalization(158)
-L = DBM:GetModLocalization("AscendantCouncil")
-
-L:SetGeneralLocalization({
-	name 					= "暮光卓越者議會"
-})
+L= DBM:GetModLocalization(158)
 
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s血量低於30%% - 即將進入下一階段!",
@@ -82,11 +67,6 @@ L:SetMiscLocalization({
 	Thundershock	= "四周的空氣爆出能量霹啪作響聲音....",
 	Switch			= "我們會解決他們!",
 	Phase3			= "見證你的滅亡!",
-	Ignacious		= "伊格納修斯",
-	Feludius		= "費魯迪厄斯",
-	Arion			= "艾理奧",
-	Terrastra		= "特拉斯特拉",
-	Monstrosity		= "卓越者議會",
 	Kill			= "不可能...",
 	blizzHatesMe	= "我中了冰凍寶珠和聚雷針!清出一條路來!",
 	WrongDebuff	    = "無%s"
@@ -95,65 +75,43 @@ L:SetMiscLocalization({
 ----------------
 --  Cho'gall  --
 ----------------
---L= DBM:GetModLocalization(167)
-L = DBM:GetModLocalization("Chogall")
-
-L:SetGeneralLocalization({
-	name 				= "丘加利"
-})
+L= DBM:GetModLocalization(167)
 
 L:SetOptionLocalization({
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
-	InfoFrame				= "為$spell:81701顯示資訊框架",
+	InfoFrame				= "為$journal:3165顯示資訊框架",
 	RangeFrame				= "為$spell:82235顯示距離框(5碼)",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
 	SetIconOnCreature		= "設定標記到暗色觸鬚"
-})
-
-L:SetMiscLocalization({
-	Bloodlevel				= "腐化"
 })
 
 ----------------
 --  Sinestra  --
 ----------------
---L= DBM:GetModLocalization(168)
-L = DBM:GetModLocalization("Sinestra")
-
-L:SetGeneralLocalization({
-	name 				= "賽絲特拉"
-})
+L= DBM:GetModLocalization(168)
 
 L:SetWarningLocalization({
-	WarnDragon			= "暮光雛龍!",
 	WarnOrbSoon			= "暗影寶珠在%d秒!",
 	WarnEggWeaken		= "暮光殼甲從幕光蛋上消散!",
 	SpecWarnOrbs		= "暗影寶珠!小心!",
 	warnWrackJump		= "%s跳到>%s<",
 	warnAggro			= ">%s<為暗影寶珠的目標(可能的目標)",
-	SpecWarnAggroOnYou	= "小心暗影寶珠!",
-	SpecWarnEggWeaken	= "暮光殼甲消散 - 集火幕光蛋!",
-	SpecWarnEggShield	= "暮光殼甲重生!"
+	SpecWarnAggroOnYou	= "小心暗影寶珠!"
 })
 
 L:SetTimerLocalization({
-	TimerDragon			= "下一次暮光雛龍",
 	TimerEggWeakening	= "暮光殼甲消散",
 	TimerEggWeaken		= "暮光殼甲重生",
 	TimerOrbs			= "下一次暗影寶珠"
 })
 
 L:SetOptionLocalization({
-	WarnDragon			= "顯示警告暮光雛龍",
 	WarnOrbSoon			= "提前警告暗影寶珠(5秒前, 每1秒)\n(猜測的時間，可能不準確)",
 	WarnEggWeaken		= "提前警告當$spell:87654消散",
 	warnWrackJump		= "提示$spell:92955的目標",
 	warnAggro			= "提示玩家暗影寶珠的目標(可能的目標)",
 	SpecWarnAggroOnYou	= "顯示特別警告當你是暗影寶珠的目標時\n(可能的目標)",
 	SpecWarnOrbs		= "顯示特別警告暗影寶珠施放(猜測的警告)",
-	SpecWarnEggWeaken	= "顯示特別警告$spell:87654消散",
-	SpecWarnEggShield	= "顯示特別警告$spell:87654再生",
-	TimerDragon			= "顯示下一次暮光雛龍的計時器",
 	TimerEggWeakening	= "顯示$spell:87654消散的計時器",
 	TimerEggWeaken		= "顯示$spell:87654重生的計時器",
 	TimerOrbs			= "顯示下一個暗影寶珠的計時器(猜測的時間，可能不準確)",

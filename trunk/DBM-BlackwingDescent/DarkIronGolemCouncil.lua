@@ -1,5 +1,4 @@
---local mod	= DBM:NewMod(169, "DBM-BlackwingDescent", nil, 73)
-local mod	= DBM:NewMod("DarkIronGolemCouncil", "DBM-BlackwingDescent")
+local mod	= DBM:NewMod(169, "DBM-BlackwingDescent", nil, 73)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -113,6 +112,10 @@ local pulled = false
 local cloudSpam = 0--Uses custom resets, don't use prototype
 local incinerateCast = 0
 local encasing = false
+local Magmatron = EJ_GetSectionInfo(3207)
+local Electron = EJ_GetSectionInfo(3201)
+local Toxitron = EJ_GetSectionInfo(3208)
+local Arcanotron = EJ_GetSectionInfo(3194)
 
 function mod:ChemicalBombTarget()
 	local targetname = self:GetBossTarget(42180)
@@ -124,7 +127,7 @@ function mod:ChemicalBombTarget()
 end
 
 local bossActivate = function(boss)
-	if boss == L.Magmatron or boss == 42178 then
+	if boss == Magmatron or boss == 42178 then
 		incinerateCast = 0
 		timerAcquiringTarget:Start(20)--These are same on heroic and normal
 		timerIncinerationCD:Start(10)
@@ -133,7 +136,7 @@ local bossActivate = function(boss)
 		else
 			warnBarrierSoon:Schedule(40)
 		end
-	elseif boss == L.Electron or boss == 42179 then
+	elseif boss == Electron or boss == 42179 then
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerLightningConductorCD:Start(15)--Probably also has a variation if it's like normal. Needs more logs to verify.
 			warnUnstableShieldSoon:Schedule(30)
@@ -141,7 +144,7 @@ local bossActivate = function(boss)
 			timerLightningConductorCD:Start(11)--11-15 variation confirmed for normal, only boss ability with an actual variation on timer. Strange.
 			warnUnstableShieldSoon:Schedule(40)
 		end
-	elseif boss == L.Toxitron or boss == 42180 then
+	elseif boss == Toxitron or boss == 42180 then
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerChemicalBomb:Start(25)
 			timerPoisonProtocolCD:Start(15)
@@ -151,7 +154,7 @@ local bossActivate = function(boss)
 			timerPoisonProtocolCD:Start(21)
 			warnShellSoon:Schedule(40)
 		end
-	elseif boss == L.Arcanotron or boss == 42166 then
+	elseif boss == Arcanotron or boss == 42166 then
 		timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			warnConversionSoon:Schedule(30)
@@ -162,15 +165,15 @@ local bossActivate = function(boss)
 end
 
 local bossInactive = function(boss)
-	if boss == L.Magmatron then
+	if boss == Magmatron then
 		timerAcquiringTarget:Cancel()
 		timerIncinerationCD:Cancel()
-	elseif boss == L.Electron then
+	elseif boss == Electron then
 		timerLightningConductorCD:Cancel()
-	elseif boss == L.Toxitron then
+	elseif boss == Toxitron then
 		timerChemicalBomb:Cancel()
 		timerPoisonProtocolCD:Cancel()
-	elseif boss == L.Arcanotron then
+	elseif boss == Arcanotron then
 		timerGeneratorCD:Cancel()
 	end
 end
