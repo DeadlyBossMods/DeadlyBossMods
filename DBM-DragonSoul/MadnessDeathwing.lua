@@ -331,10 +331,8 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	if spellId == 110663 and self:AntiSpam(2, 3) then--Elementium Meteor Transform (apparently this doesn't fire UNIT_DIED anymore, need to use this alternate method)
 		self:SendSync("BoltDied")--Send sync because Elementium bolts do not have a bossN arg, which means event only fires if it's current target/focus.
-	-- hemorrhage warning works bad in koKR client
-	-- sometimes this fucntion spams every 2 sec even boss is idle. (especially heroic25)
-	-- sometimes no warn shows at all. (especially heroic10)
-	elseif spellName == hemorrhage and self:AntiSpam(2, 2) then
+	-- Actually i have a pretty good idea what problem is now. thinking about it, with no uId filter, it's triggering off a rogue in raid (also have hemorrhage spell)
+	elseif spellName == hemorrhage and self:AntiSpam(2, 2) and not UnitIsFriend("player", uId) then--Filter all party/pet unitIDs, should eliminate friendly hemorrhage casts.
 		warnHemorrhage:Show()
 		specWarnHemorrhage:Show()
 	elseif spellId == 105551 and self:AntiSpam(2, 2) then--Spawn Blistering Tentacles
