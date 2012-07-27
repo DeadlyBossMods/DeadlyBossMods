@@ -42,7 +42,7 @@ L:SetOptionLocalization({
 	timerNextInitiate	= "Show a timer for next Blazing Talon Initiate",
 	TimerPhaseChange	= "Show a timer till next phase",
 	TimerHatchEggs		= "Show a timer till next eggs are hatched",
-	InfoFrame			= "Show info frame for Molten Feather"
+	InfoFrame			= "Show info frame for $spell:98734"
 })
 
 L:SetMiscLocalization({
@@ -50,7 +50,6 @@ L:SetMiscLocalization({
 	YellPhase2		= "These skies are MINE!",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "Fiery Lava Worms erupt from the ground!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
-	PowerLevel		= "Molten Feathers",
 	East			= "East",
 	West			= "West",
 	Both			= "Both"
@@ -64,11 +63,6 @@ L= DBM:GetModLocalization(195)
 L:SetOptionLocalization({
 	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99947),
 	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
-})
-
-L:SetMiscLocalization({
-	Riplimb		= "Riplimb",
-	Rageface	= "Rageface"
 })
 
 -------------
@@ -95,7 +89,7 @@ L:SetOptionLocalization({
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 ",
-	InfoFrame			= "Show info frame for Vital Spark stacks",
+	InfoFrame			= "Show info frame for $spell:99262 stacks",
 	RangeFrame			= "Show range frame (5) for $spell:99404"
 })
 
@@ -149,7 +143,7 @@ L:SetOptionLocalization({
 	RangeFrame					= "Show range frame",
 	InfoHealthFrame				= "Show info frame for health (<100k hp)",
 	MeteorFrame					= "Show info frame for $spell:99849 targets",
-	AggroFrame					= "Show info frame for players who have no aggro during Molten Elementals",
+	AggroFrame					= "Show info frame for players who have no aggro during $journal:2647",
 	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100460)
 })
 

@@ -43,7 +43,7 @@ L:SetOptionLocalization({
 	timerNextInitiate	= "다음 타오르는 발톱 수습생 등장 바 표시",
 	TimerPhaseChange	= "단계 전환 바 표시",
 	TimerHatchEggs		= "녹아내린 알 부화 바 표시",
-	InfoFrame			= "타오르는 힘 정보 프레임 보기"
+	InfoFrame			= "$spell:98734 정보 프레임 보기"
 })
 
 L:SetMiscLocalization({
@@ -51,7 +51,6 @@ L:SetMiscLocalization({
 	YellPhase2		= "이 하늘은 나의 것이다!",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "불타는 용암 벌레가 땅에서 튀어나옵니다!",--Might use this one day if i feel it needs a warning for something. Or maybe pre warning for something else (like transition soon)
-	PowerLevel		= "타오르는 힘",
 	East			= "오른쪽",
 	West			= "왼쪽",
 	Both			= "양쪽"
@@ -65,11 +64,6 @@ L= DBM:GetModLocalization(195)
 L:SetOptionLocalization({
 	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99947),
 	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
-})
-
-L:SetMiscLocalization({
-	Riplimb		= "칼로베",
-	Rageface	= "성난얼굴"
 })
 
 -------------
@@ -96,7 +90,7 @@ L:SetOptionLocalization({
 	SetIconOnCountdown	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99516),
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "$spell:99516 주문의 영향을 받은 경우 DBM 화살표 보기",
-	InfoFrame			= "생기의 불꽃 정보 프레임 보기",
+	InfoFrame			= "$spell:99262 정보 프레임 보기",
 	RangeFrame			= "$spell:99404 주문의 영향을 받은 경우 거리 프레임 보기 (5m)"
 })
 
@@ -150,7 +144,7 @@ L:SetOptionLocalization({
 	RangeFrame					= "거리 프레임이 필요하게 될 때 거리 프레임 보기",
 	InfoHealthFrame				= "체력 정보 프레임 보기 (10만 미만)",
 	MeteorFrame					= "$spell:99849 대상 정보 프레임 보기",
-	AggroFrame					= "녹아내린 정령에게 위협수준이 없는 대상에 대한 정보 프레임 보기",
+	AggroFrame					= "$journal:2647 에게 위협수준이 없는 대상에 대한 정보 프레임 보기",
 	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100460)
 })
 

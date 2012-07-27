@@ -6,8 +6,13 @@ local L
 ------------
 L= DBM:GetModLocalization(745)
 
+L:SetWarningLocalization({
+	specwarnPlatform	= "Platform change"
+})
+
 L:SetOptionLocalization({
-	MindControlIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+	specwarnPlatform	= "Show special warning when boss changes platforms",
+	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
 L:SetMiscLocalization({
@@ -42,6 +47,13 @@ L= DBM:GetModLocalization(713)
 ----------------------
 L= DBM:GetModLocalization(741)
 
+L:SetOptionLocalization({
+	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
+})
+
+L:SetMiscLocalization({
+	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"
+})
 
 ------------
 -- Amber-Shaper Un'sok --
@@ -54,3 +66,10 @@ L= DBM:GetModLocalization(737)
 ------------
 L= DBM:GetModLocalization(743)
 
+L:SetOptionLocalization({
+	InfoFrame		= "Show info frame for players affected by $spell:125390"
+})
+
+L:SetMiscLocalization({
+	PlayerDebuffs	= "Fixated"
+})
