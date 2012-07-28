@@ -22,7 +22,7 @@ local warnJasperOverload			= mod:NewCastAnnounce(115843, 4, 5)
 local warnAmethystOverload			= mod:NewCastAnnounce(115844, 4, 5)
 local warnCobaltGrasp				= mod:NewTargetAnnounce(116281, 3)
 local warnJadeShards				= mod:NewSpellAnnounce(116223, 3)
-local warnJasperCleave				= mod:NewTargetAnnounce(116207, 3)
+--local warnJasperCleave				= mod:NewTargetAnnounce(116207, 3) -- replaced to Jasper Chains?
 local warnAmethystPool				= mod:NewSpellAnnounce(116235, 3)
 
 local specWarnCobaltOverload		= mod:NewSpecialWarningSpell(115840, nil, nil, nil, true)
@@ -38,7 +38,7 @@ local timerAmethystOverload			= mod:NewCastTimer(5, 115844)
 local timerGobaltGrasp				= mod:NewTargetTimer(6, 116281)
 local timerGobaltGraspCD			= mod:NewCDTimer(12, 116281)--12-15second variations
 local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223)--Always 20.5 seconds
-local timerJasperCleaveCD			= mod:NewCDTimer(12, 116207)--12-15second variations
+--local timerJasperCleaveCD			= mod:NewCDTimer(12, 116207)--12-15second variations
 --local timerAmethystPoolCD			= mod:NewCDTimer(12, 116235)--Unknown, no log for this guardian yet.
 
 local expectedBosses = 3
@@ -61,7 +61,7 @@ spellid = 115840 and fulltype = SPELL_CAST_SUCCESS or spellid = 116281 and fullt
 function mod:OnCombatStart(delay)
 	if self:IsDifficulty("normal25", "heroic25") then
 		timerGobaltGraspCD:Start(-delay)
-		timerJasperCleaveCD:Start(-delay)
+--		timerJasperCleaveCD:Start(-delay)
 		timerJadeShardsCD:Start(-delay)
 --		timerAmethystPoolCD:Start(-delay)
 		expectedBosses = 4--Only fight all 4 at once on 25man (excluding LFR)
@@ -89,9 +89,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(116223) then
 		warnJadeShards:Show()
 		timerJadeShardsCD:Start()
-	elseif args:IsSpellID(116207) then
-		warnJasperCleave:Show(args.destName)
-		timerJasperCleaveCD:Start()
+--	elseif args:IsSpellID(116207) then
+--		warnJasperCleave:Show(args.destName)
+--		timerJasperCleaveCD:Start()
 	elseif args:IsSpellID(116235) then
 		warnAmethystPool:Show()
 --		timerAmethystPoolCD:Start()

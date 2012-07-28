@@ -50,16 +50,16 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "Watch your step!"
+	specWarnDespawnFloor		= "바닥 조심!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "Watch your step!"
+	timerDespawnFloor			= "바닥 조심!"
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "Show special warning before floor vanishes",
-	timerDespawnFloor			= "show timer for when floor vanishes"
+	specWarnDespawnFloor		= "바닥이 무너지기 전에 특수 경고 보기",
+	timerDespawnFloor			= "바닥이 무너지기 전까지 남은 시간 바 표시"
 })
 
 ------------

@@ -36,6 +36,9 @@ L:SetOptionLocalization({
 -------------------------------
 L= DBM:GetModLocalization(713)
 
+L:SetOptionLocalization({
+	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+})
 
 ----------------------
 -- Wind Lord Mel'jarak --
