@@ -133,7 +133,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122752) then
-		warnShadowBreath:Show()
+		warnShadowBreath:Show()--Very good chance with latest build this was changed to SPELL_CAST_SUCCESS event. it was changed from a cast time spell to an instant cast in build 15913. Need log to reconfirm this spell
 		timerShadowBreathCD:Start()
 	elseif args:IsSpellID(122855) then
 		warnSunBreath:Show()
