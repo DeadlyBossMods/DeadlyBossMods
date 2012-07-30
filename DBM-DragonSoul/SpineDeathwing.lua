@@ -101,6 +101,7 @@ do
 	function mod:SPELL_HEAL(_, _, _, _, destGUID, _, _, _, _, _, _, _, _, absorbed)
 		if plasmaTargets[destGUID] then
 			healed[destGUID] = healed[destGUID] + (absorbed or 0)
+			DBM.BossHealth:Update()
 		end
 	end
 	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
