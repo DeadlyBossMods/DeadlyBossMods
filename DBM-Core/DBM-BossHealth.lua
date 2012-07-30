@@ -428,3 +428,8 @@ function bossHealth:UpdateSettings()
 		updateBarStyle(v, i)
 	end
 end
+
+function bossHealth:Update()
+	if not anchor or not anchor:IsShown() then return end
+	updateFrame(self, 0.5)
+end
