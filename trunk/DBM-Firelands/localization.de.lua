@@ -43,7 +43,7 @@ L:SetOptionLocalization({
 	timerNextInitiate	= "Zeige Zeit bis nächste Lodernde Kralleninitianden",
 	TimerPhaseChange	= "Zeige Zeit bis nächste Phase",
 	TimerHatchEggs		= "Zeige Zeit bis nächstes Eierausschlüpfen",
-	InfoFrame			= "Zeige Infofenster für Lodernde Macht"
+	InfoFrame			= "Zeige Infofenster für $spell:98734"
 })
 
 L:SetMiscLocalization({
@@ -51,7 +51,6 @@ L:SetMiscLocalization({
 	YellPhase2		= "Dieser Himmel ist MEIN.",
 	FullPower		= "spell:99925",--This is in the emote, shouldn't need localizing, just msg:find
 	LavaWorms		= "Feurige Lavawürmer brechen aus dem Boden hervor!",
-	PowerLevel		= "Lodernde Macht",
 	East			= "Osten",
 	West			= "Westen",
 	Both			= "beidseitig"
@@ -65,11 +64,6 @@ L= DBM:GetModLocalization(195)
 L:SetOptionLocalization({
 	SetIconOnFaceRage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99947),
 	SetIconOnRage		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100415)
-})
-
-L:SetMiscLocalization({
-	Riplimb		= "Wadenbeißer",
-	Rageface	= "Augenkratzer"
 })
 
 -------------
@@ -150,7 +144,7 @@ L:SetOptionLocalization({
 	RangeFrame					= "Zeige Abstandsfenster",
 	InfoHealthFrame				= "Zeige Infofenster für Gesundheit (<100k Lebenspunkte)",
 	MeteorFrame					= "Zeige Infofenster für Ziele von $spell:99849",
-	AggroFrame					= "Zeige Infofenster für Spieler, die keine Aggro während Geschmolzene Elementare haben",
+	AggroFrame					= "Zeige Infofenster für Spieler, die keine Aggro während\n$journal:2647 haben",
 	BlazingHeatIcons			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(100460)
 })
 
