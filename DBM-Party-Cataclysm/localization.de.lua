@@ -398,8 +398,8 @@ L= DBM:GetModLocalization(104)
 ----------------
 --  Zul'Aman  --
 ----------------
---  Akil'zon --
----------------
+-- Akil'zon --
+--------------
 L= DBM:GetModLocalization(186)
 
 L:SetOptionLocalization{
@@ -409,9 +409,9 @@ L:SetOptionLocalization{
 	SetIconOnEagle	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97318)
 }
 
----------------
---  Nalorakk --
----------------
+--------------
+-- Nalorakk --
+--------------
 L= DBM:GetModLocalization(187)
 
 L:SetWarningLocalization{
@@ -442,9 +442,9 @@ L:SetMiscLocalization{
 	PlayerDebuffs	= "Anstürmen Debuff"
 }
 
----------------
---  Jan'alai --
----------------
+--------------
+-- Jan'alai --
+--------------
 L= DBM:GetModLocalization(188)
 
 L:SetOptionLocalization{
@@ -457,9 +457,9 @@ L:SetMiscLocalization{
 	YellAdds	= "Wo is' meine Brut? Was ist mit den Eiern?"
 }
 
---------------
---  Halazzi --
---------------
+-------------
+-- Halazzi --
+-------------
 L= DBM:GetModLocalization(189)
 
 L:SetWarningLocalization{
@@ -516,14 +516,14 @@ L:SetMiscLocalization{
 
 -----------------
 --  Zul'Gurub  --
------------------
+-------------------------
 -- High Priest Venoxis --
 -------------------------
 L= DBM:GetModLocalization(175)
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477),
-	LinkArrow		= "Zeige DBM-Pfeil, wenn du von $spell:96477 betroffen bist"
+	LinkArrow			= "Zeige DBM-Pfeil, wenn du von $spell:96477 betroffen bist"
 }
 
 ------------------------
