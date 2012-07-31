@@ -121,10 +121,15 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	totalTouchOfSha = 0
 	prisonCount = 0
+	scansDone = 0
 	table.wipe(prisonTargets)
 	timerCleansingWatersCD:Start(12-delay)
 	timerLightningPrisonCD:Start(15.5-delay)--May be off a tiny bit, (or a lot of blizzard doesn't fix bug where cast doesn't happen at all)
-	timerTouchOfShaCD:Start(36-delay)
+	if self:IsDifficulty("normal10", "normal25") then
+		timerTouchOfShaCD:Start(36-delay)
+	else
+		timerTouchOfShaCD:Start(10-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -138,7 +143,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		totalTouchOfSha = totalTouchOfSha + 1
 		warnTouchofSha:Show(args.destName)
 		if totalTouchOfSha < GetNumGroupMembers() then--This ability will not be cast if everyone in raid has it.
-			timerTouchOfShaCD:Start()
+			if self:IsDifficulty("normal10", "normal25") then
+				timerTouchOfShaCD:Start(-delay)
+			else
+				timerTouchOfShaCD:Start(20-delay)
+			end
 		end
 	elseif args:IsSpellID(111850) then--111850 is targeting debuff (NOT dispelable one)
 		prisonTargets[#prisonTargets + 1] = args.destName
@@ -201,11 +210,17 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(117309) then
+		scansDone = 0
 		self:WatersTarget()
+		timerCleansingWatersCD:Start()
 	elseif args:IsSpellID(117975) then
 		warnExpelCorruption:Show()
 		specWarnExpelCorruption:Show()
 		timerExpelCorruptionCD:Start()
+	elseif args:IsSpellID(117227) then
+		warnCorruptingWaters:Show()
+		specWarnCorruptingWaters:Show()
+		timerCorruptingWatersCD:Start()
 	elseif args:IsSpellID(118077) then
 		warnLightningStorm:Show()
 		specWarnLightningStorm:Show()
