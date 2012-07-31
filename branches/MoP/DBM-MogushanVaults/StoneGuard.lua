@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(679, "DBM-MogushanVaults", nil, 317)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(60051, 60043, 59915)--Cobalt: 60051 Jade: 60043 Jasper: 59915
+mod:SetCreatureID(60051, 60043, 59915, 60047)--Cobalt: 60051 Jade: 60043 Jasper: 59915
 mod:SetModelID(41892)
 mod:SetZone()
 
@@ -128,7 +128,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 60051 or cid == 60043 or cid == 59915 then--Fight is over. NYI, amethyst guardian CID is not yet known.
+	if cid == 60051 or cid == 60043 or cid == 59915 or cid == 60047 then--Fight is over. NYI, amethyst guardian CID is not yet known.
 		expectedBosses = expectedBosses - 1
 		if expectedBosses == 0 then
 			DBM:EndCombat(self)
