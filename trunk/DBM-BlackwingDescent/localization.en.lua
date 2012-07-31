@@ -149,7 +149,7 @@ L:SetOptionLocalization({
 	NefSwipeTimer			= "Show timer for Nefarian's $spell:77827 cooldown",
 	OnyBreathTimer			= "Show timer for Onyxia's $spell:77826 cooldown",
 	NefBreathTimer			= "Show timer for Nefarian's $spell:77826 cooldown",
-	InfoFrame				= "Show info frame for $journal:3274",
+	InfoFrame				= "Show info frame for $journal:3284",
 	SetWater				= "Automatically disable water collision on pull\n(returns it to enabled upon leaving combat)",
 	TankArrow				= "Show DBM arrow for Animated Bone Warrior kiter\n(designed for one kiter strategy)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
