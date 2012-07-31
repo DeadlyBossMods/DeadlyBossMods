@@ -27,7 +27,7 @@ L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
 	UnseenStrikeArrow	= "$spell:122949 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
-	RangeFrame			= "$spell:123175 주문의 영향을 받은 경우 거리 프레임 표시(10m)"
+	RangeFrame			= "$spell:123175 주문의 영향을 받은 경우 거리 프레임 표시(8m)"
 })
 
 -------------------------------
