@@ -150,7 +150,7 @@ L:SetOptionLocalization({
 	NefSwipeTimer			= "네파리안의 $spell:77827 대기시간 바 표시",
 	OnyBreathTimer			= "오닉시아의 $spell:77826 대기시간 바 표시",
 	NefBreathTimer			= "네파리안의 $spell:77826 대기시간 바 표시",
-	InfoFrame				= "$journal:3274 정보 프레임 보기",
+	InfoFrame				= "$journal:3284 정보 프레임 보기",
 	SetWater				= "전투 시작시 수면 자동 시점 옵션을 자동으로 끄기\n(전투가 종료 되면 원상태로 복구됨)",
 	TankArrow				= "살아난 뼈다귀 전사 탱커 방향으로 DBM 화살표 보기\n(한 명의 탱커를 사용하는 경우에만 정상 작동)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),

@@ -150,7 +150,7 @@ L:SetOptionLocalization({
 	NefSwipeTimer			= "Zeige Abklingzeit für Nefarians $spell:77827",
 	OnyBreathTimer			= "Zeige Abklingzeit für Onyxias $spell:77826",
 	NefBreathTimer			= "Zeige Abklingzeit für Nefarians $spell:77826",
-	InfoFrame				= "Zeige Infofenster für $journal:3274",
+	InfoFrame				= "Zeige Infofenster für $journal:3284",
 	SetWater				= "Automatische Deaktivierung der Kameraeinstellung 'Wasserkollision' bei\nKampfbeginn (wird nach Kampfende automatisch wieder aktiviert)",
 	TankArrow				= "Zeige DBM-Pfeil für den Kiter von 'Belebter Knochenkrieger'\n(abgestimmt auf eine Kiter-Taktik)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
