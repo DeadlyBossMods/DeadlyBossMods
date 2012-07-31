@@ -16,54 +16,53 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
-local warnCobaltOverload			= mod:NewCastAnnounce(115840, 4, 5)
-local warnJadeOverload				= mod:NewCastAnnounce(115842, 4, 5)
-local warnJasperOverload			= mod:NewCastAnnounce(115843, 4, 5)
-local warnAmethystOverload			= mod:NewCastAnnounce(115844, 4, 5)
-local warnCobaltGrasp				= mod:NewTargetAnnounce(116281, 3)
+local warnCobaltOverload			= mod:NewCastAnnounce(115840, 4, 7)
+local warnJadeOverload				= mod:NewCastAnnounce(115842, 4, 7)
+local warnJasperOverload			= mod:NewCastAnnounce(115843, 4, 7)
+local warnAmethystOverload			= mod:NewCastAnnounce(115844, 4, 7)
+--local warnCobaltGrasp				= mod:NewTargetAnnounce(116281, 3)
 local warnJadeShards				= mod:NewSpellAnnounce(116223, 3)
---local warnJasperCleave				= mod:NewTargetAnnounce(116207, 3) -- replaced to Jasper Chains?
-local warnAmethystPool				= mod:NewSpellAnnounce(116235, 3)
+local warnJasperChains				= mod:NewTargetAnnounce(116207, 4)
+local warnAmethystPool				= mod:NewSpellAnnounce(116235, 3, nil, mod:IsMelee())
 
 local specWarnCobaltOverload		= mod:NewSpecialWarningSpell(115840, nil, nil, nil, true)
 local specWarnJadeOverload			= mod:NewSpecialWarningSpell(115842, nil, nil, nil, true)
 local specWarnJasperOverload		= mod:NewSpecialWarningSpell(115843, nil, nil, nil, true)
-local specWarnCobaltGrasp			= mod:NewSpecialWarningDispel(116281, false)
-local specWarnAmethystOverload		= mod:NewSpecialWarningSpell(115844)
+local specWarnAmethystOverload		= mod:NewSpecialWarningSpell(115844, nil, nil, nil, true)
+--local specWarnCobaltGrasp			= mod:NewSpecialWarningDispel(116281, false)
+local specWarnJasperChains			= mod:NewSpecialWarningYou(115844)
+local yellJasperChains				= mod:NewYell(115844)
+local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
 
-local timerCobaltOverload			= mod:NewCastTimer(5, 115840)
-local timerJadeOverload				= mod:NewCastTimer(5, 115842)
-local timerJasperOverload			= mod:NewCastTimer(5, 115843)
-local timerAmethystOverload			= mod:NewCastTimer(5, 115844)
-local timerGobaltGrasp				= mod:NewTargetTimer(6, 116281)
-local timerGobaltGraspCD			= mod:NewCDTimer(12, 116281)--12-15second variations
+local timerCobaltOverload			= mod:NewCastTimer(7, 115840)
+local timerJadeOverload				= mod:NewCastTimer(7, 115842)
+local timerJasperOverload			= mod:NewCastTimer(7, 115843)
+local timerAmethystOverload			= mod:NewCastTimer(7, 115844)
+--local timerGobaltGrasp			= mod:NewTargetTimer(6, 116281)
+--local timerGobaltGraspCD			= mod:NewCDTimer(12, 116281)--12-15second variations
 local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223)--Always 20.5 seconds
---local timerJasperCleaveCD			= mod:NewCDTimer(12, 116207)--12-15second variations
---local timerAmethystPoolCD			= mod:NewCDTimer(12, 116235)--Unknown, no log for this guardian yet.
+local timerJasperChainsCD			= mod:NewCDTimer(12, 115844)--11-13
+local timerAmethystPoolCD			= mod:NewCDTimer(6, 116235, nil, mod:IsMelee())
 
 local expectedBosses = 3
 local Jade = EJ_GetSectionInfo(5773)
 local Jasper = EJ_GetSectionInfo(5774)
 local Cobalt = EJ_GetSectionInfo(5771)
 local Amethyst = EJ_GetSectionInfo(5691)
+local jasperChainsTargets = {}
 
---[[WoL Reg Expressions
-All Bosses combined
-(spellid = 115840 or spellid = 115843 or spellid = 115842 or spellid = 116207 or spellid = 116223) and fulltype = SPELL_CAST_SUCCESS or spellid = 116281 and fulltype = SPELL_AURA_APPLIED
-Jade
-(spellid = 115842 or spellid = 116223) and fulltype = SPELL_CAST_SUCCESS
-Jasper
-(spellid = 115843 or spellid = 116207) and fulltype = SPELL_CAST_SUCCESS
-Cobalt
-spellid = 115840 and fulltype = SPELL_CAST_SUCCESS or spellid = 116281 and fulltype = SPELL_AURA_APPLIED
---]]
+local function warnJasperChainsTargets()
+	warnJasperChains:Show(table.concat(jasperChainsTargets, "<, >"))
+	table.wipe(jasperChainsTargets)
+end
 
 function mod:OnCombatStart(delay)
+	table.wipe(jasperChainsTargets)
 	if self:IsDifficulty("normal25", "heroic25") then
-		timerGobaltGraspCD:Start(-delay)
---		timerJasperCleaveCD:Start(-delay)
+--		timerGobaltGraspCD:Start(-delay)
+		timerJasperChainsCD:Start(-delay)
 		timerJadeShardsCD:Start(-delay)
---		timerAmethystPoolCD:Start(-delay)
+		timerAmethystPoolCD:Start(-delay)
 		expectedBosses = 4--Only fight all 4 at once on 25man (excluding LFR)
 	else
 		expectedBosses = 3--Else you get a random set of 3/4
@@ -72,10 +71,21 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(116281) then
+	if args:IsSpellID(130395) then
+		jasperChainsTargets[#jasperChainsTargets + 1] = args.destName
+		timerJasperChainsCD:Start()
+		self:Unschedule(warnJasperChainsTargets)
+		self:Schedule(0.3, warnJasperChainsTargets)
+		if args:IsPlayer() then
+			specWarnJasperChains:Show()
+			yellJasperChains:Yell()
+		end
+	elseif args:IsSpellID(130774) and args:IsPlayer() then
+		specWarnAmethystPool:Show()
+--[[elseif args:IsSpellID(116281) then
 		warnCobaltGrasp:Show(args.destName)
 		timerGobaltGrasp:Start(args.destName)
-		timerGobaltGraspCD:Start()
+		timerGobaltGraspCD:Start()--]]
 	end
 end
 
@@ -94,7 +104,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		timerJasperCleaveCD:Start()
 	elseif args:IsSpellID(116235) then
 		warnAmethystPool:Show()
---		timerAmethystPoolCD:Start()
+		timerAmethystPoolCD:Start()
 	end
 end
 
