@@ -38,7 +38,7 @@ local specWarnRecklessness				= mod:NewSpecialWarningTarget(125873)
 local specWarnReinforcements			= mod:NewSpecialWarningSpell("ej6554", mod:IsTank())
 local specWarnAmberPrison				= mod:NewSpecialWarningYou(121881)
 local yellAmberPrison					= mod:NewYell(121881)
-local specWarnAmberPrisonOther			= mod:NewSpecialWarningTarget(121881, false)--Only people who are freeing these need to know this.
+local specWarnAmberPrisonOther			= mod:NewSpecialWarningSpell(121881, false)--Only people who are freeing these need to know this.
 local specWarnCorrosiveResin			= mod:NewSpecialWarningRun(122064)
 local yellCorrosiveResin				= mod:NewYell(122064)
 local specWarnCorrosiveResinPool		= mod:NewSpecialWarningMove(122125)
@@ -61,6 +61,12 @@ mod:AddBoolOption("AmberPrisonIcons", true)
 
 local addsCount = 0
 local amberPrisonIcon = 2
+local amberPrisonTargets = {}
+
+local function warnAmberPrisonTargets()
+	warnAmberPrison:Show(table.concat(amberPrisonTargets, "<, >"))
+	table.wipe(amberPrisonTargets)
+end
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -77,6 +83,7 @@ end
 function mod:OnCombatStart(delay)
 	addsCount = 0
 	amberPrisonIcon = 2
+	table.wipe(amberPrisonTargets)
 	timerWhirlingBladeCD:Start(35.5-delay)
 	timerRainOfBladesCD:Start(60-delay)
 end
@@ -86,15 +93,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnImpalingSpear:Schedule(45)
 		timerImpalingSpear:Start(args.destName)
 	elseif args:IsSpellID(121881) then--Not a mistake, 121881 is targeting spellid.
-		warnAmberPrison:Show(args.destName)
-		specWarnAmberPrisonOther:Show(args.destName)
+		amberPrisonTargets[#amberPrisonTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnAmberPrison:Show()
 			yellAmberPrison:Yell()
 		end
+		self:Unschedule(warnAmberPrisonTargets)
+		self:Schedule(0.3, warnAmberPrisonTargets)
+		specWarnAmberPrisonOther:Show()
 		if self.Options.AmberPrisonIcons then
 			self:SetIcon(args.destName, amberPrisonIcon)
-			if amberPrisonIcon == 2 then-- Alternate icons, they are cast too far apart to sort in a table or do icons at once, and there are 2 adds up so we need to do it this way.
+			if amberPrisonIcon == 2 then
 				amberPrisonIcon = 1
 			else
 				amberPrisonIcon = 2
