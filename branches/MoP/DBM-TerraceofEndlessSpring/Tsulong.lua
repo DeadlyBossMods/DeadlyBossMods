@@ -111,7 +111,7 @@ function mod:TargetScanner(ScansDone)
 end
 
 function mod:OnCombatStart(delay)
-	warnShadowBreath:Start(8.5-delay)
+	timerShadowBreathCD:Start(8.5-delay)
 	timerNightmaresCD:Start(13.5-delay)
 	timerDayCD:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
