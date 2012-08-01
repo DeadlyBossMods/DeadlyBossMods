@@ -100,7 +100,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerEggWeakening 	= "황혼 껍질 제거",
 	TimerEggWeaken		= "황혼 껍질 재생성",
-	TimerOrbs			= "구슬 쿨다운"
+	TimerOrbs			= "구슬 대기시간"
 })	
 
 L:SetOptionLocalization({

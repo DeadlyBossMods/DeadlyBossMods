@@ -38,7 +38,7 @@ local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
 local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Ranged should already be spread out and not need a special warning every sickness.
 local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
-local specWarnWorship				= mod:NewSpecialWarningSpell(91317, false)
+local specWarnWorship				= mod:NewSpecialWarningSpell(91303, false)
 local specWarnEmpoweredShadows		= mod:NewSpecialWarningSpell(81572, mod:IsHealer(), nil, nil, true)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(81685)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(81685)--^^
@@ -47,7 +47,7 @@ local specWarnDepravity				= mod:NewSpecialWarningInterrupt(81713)--On by defaul
 local specwarnFury					= mod:NewSpecialWarningTarget(82524, mod:IsTank())
 local specwarnFlamingDestruction	= mod:NewSpecialWarningSpell(81194, mod:IsTank())
 
-local timerWorshipCD				= mod:NewCDTimer(36, 91317)
+local timerWorshipCD				= mod:NewCDTimer(36, 91303)
 local timerAdherent					= mod:NewCDTimer(92, 81628)
 local timerFesterBlood				= mod:NewNextTimer(40, 82299)--40 seconds after an adherent is summoned
 local timerFlamingDestruction		= mod:NewBuffActiveTimer(10, 81194, nil, mod:IsTank() or mod:IsHealer())
