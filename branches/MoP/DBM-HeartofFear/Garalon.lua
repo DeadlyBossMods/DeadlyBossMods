@@ -31,8 +31,8 @@ local warnCrush					= mod:NewSpellAnnounce(122774, 3)--On normal, only cast if y
 local specwarnPheromonesTarget	= mod:NewSpecialWarningTarget(122835, false)
 local specwarnPheromonesYou		= mod:NewSpecialWarningYou(122835)
 local specwarnPheromonesNear	= mod:NewSpecialWarningClose(122835)
-local specwarnCrush				= mod:NewSpecialWarningSpell(122774, false, nil, nil, true)--Maybe set to true later, not sure. Some strats on normal involve purposely having tanks rapidly pass debuff and create lots of stomps
-local specwarnLeg				= mod:NewSpecialWarningSwitch("ej6270", false)--If no legs are up (ie all dead), when one respawns, this special warning can be used to alert of a respawned leg and to switch back.
+local specwarnCrush				= mod:NewSpecialWarningSpell(122774, true, nil, nil, true)--Maybe set to true later, not sure. Some strats on normal involve purposely having tanks rapidly pass debuff and create lots of stomps
+local specwarnLeg				= mod:NewSpecialWarningSwitch("ej6270")--If no legs are up (ie all dead), when one respawns, this special warning can be used to alert of a respawned leg and to switch back.
 local specwarnPheromoneTrail	= mod:NewSpecialWarningMove(123120)--Because this starts doing damage BEFORE the visual is there.
 
 local timerFuriousSwipeCD		= mod:NewCDTimer(8, 122735)
@@ -44,19 +44,19 @@ local timerPungency				= mod:NewBuffFadesTimer(75, 123081)
 mod:AddBoolOption("PheromonesIcon", true)
 
 local madeUpNumber = 0
-local PeromonesIcon = 8
+local PeromonesIcon = 1
 local brokenLegs = 0
 
 function mod:OnCombatStart(delay)
 	madeUpNumber = 0
-	PeromonesIcon = 8
+	PeromonesIcon = 1
 	brokenLegs = 0
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(122754) and args:GetDestCreatureID() == 63191 then--It applies to both creatureids, so we antispam it
-		warnFury:Show(args.amount or 1)
+		warnFury:Show(args.destName, args.amount or 1)
 		timerFury:Start()
 	elseif args:IsSpellID(122786) and args:GetDestCreatureID() == 63191 then--This one also hits both CIDs, so filter second one here as well.
 		madeUpNumber = madeUpNumber + 1
@@ -84,10 +84,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.PheromonesIcon then
 			self:SetIcon(args.destName, PeromonesIcon)
-			if PeromonesIcon == 8 then	-- 2 will have it at a time on 25 man so we alternate icons.
-				PeromonesIcon = 7
+			if PeromonesIcon == 1 then	-- 2 will have it at a time on 25 man so we alternate icons.
+				PeromonesIcon = 2
 			else
-				PeromonesIcon = 8
+				PeromonesIcon = 1
 			end
 		end
 	elseif args:IsSpellID(123081) and args:IsPlayer() then
