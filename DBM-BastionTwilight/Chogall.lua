@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
-local warnWorship					= mod:NewTargetAnnounce(91303, 3)--Phase 1
+local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
 local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
 local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
 local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3, nil, mod:IsDps())--Warning is disabled on normal mode, it has no use there
@@ -38,7 +38,7 @@ local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
 local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Ranged should already be spread out and not need a special warning every sickness.
 local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
-local specWarnWorship				= mod:NewSpecialWarningSpell(91303, false)
+local specWarnWorship				= mod:NewSpecialWarningSpell(91317, false)
 local specWarnEmpoweredShadows		= mod:NewSpecialWarningSpell(81572, mod:IsHealer(), nil, nil, true)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(81685)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(81685)--^^
