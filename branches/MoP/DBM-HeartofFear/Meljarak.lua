@@ -99,7 +99,7 @@ end
 --The mobs cast this at same time, so this will probably fuck up and just spam that both casts are on same target, we'll see.
 function mod:KorthikStrikeTarget(sGUID)
 	local targetname, realm = nil
-	for i=1, GetNumRaidMembers() do
+	for i=1, GetNumGroupMembers() do
 		if UnitGUID("raid"..i.."target") == sGUID then
 			targetname = UnitName("raid"..i.."targettarget")
 			break
