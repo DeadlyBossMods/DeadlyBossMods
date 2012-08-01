@@ -29,6 +29,7 @@ local timerBreathOfFearCD				= mod:NewNextTimer(33.5, 119414)--Based off bosses 
 local timerOminousCrackleCD				= mod:NewNextTimer(91.5, 119693)
 local timerDreadSpray					= mod:NewBuffActiveTimer(8, 120047)
 local timerDreadSprayCD					= mod:NewNextTimer(20.5, 120047)
+local timerTerrorSpawnCD				= mod:NewNextTimer(30, 119108)
 
 local onPlatform = false--you're on one of side platforms. WARNING: do to no one in the test actually successfully LEAVING platform, we currently don't accurately depict when you leave a platform, only assume it.
 local ominousCrackleTargets = {}
@@ -43,7 +44,7 @@ function mod:OnCombatStart(delay)
 	self:TerrorSpawns()
 	warnBreathOfFearSoon:Schedule(23.4-delay)
 	timerBreathOfFearCD:Start(-delay)
-	timerOminousCackleCD:Start(45.5-delay)
+	timerOminousCrackleCD:Start(45.5-delay)
 	onPlatform = false
 	table.wipe(ominousCrackleTargets)
 	table.wipe(platformGUIDs)

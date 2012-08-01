@@ -107,7 +107,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 125098 and self:AntiSpam(2, 1) then
-		timerScreech:Cancel()
+		timerScreechCD:Cancel()
 		timerCryOfTerrorCD:Cancel()
 		timerEyesCD:Cancel()
 		warnRetreat:Show()

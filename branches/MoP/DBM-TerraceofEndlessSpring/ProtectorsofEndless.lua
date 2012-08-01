@@ -144,9 +144,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTouchofSha:Show(args.destName)
 		if totalTouchOfSha < GetNumGroupMembers() then--This ability will not be cast if everyone in raid has it.
 			if self:IsDifficulty("normal10", "normal25") then
-				timerTouchOfShaCD:Start(-delay)
+				timerTouchOfShaCD:Start()
 			else
-				timerTouchOfShaCD:Start(20-delay)
+				timerTouchOfShaCD:Start(20)
 			end
 		end
 	elseif args:IsSpellID(111850) then--111850 is targeting debuff (NOT dispelable one)

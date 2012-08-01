@@ -91,7 +91,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(116281) then
-		timerGobaltGrasp:Cancel(args.destName)
+--		timerGobaltGrasp:Cancel(args.destName)
 	end
 end
 
