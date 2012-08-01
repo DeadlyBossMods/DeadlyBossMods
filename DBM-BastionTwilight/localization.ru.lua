@@ -102,7 +102,7 @@ L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Показывать стрелку DBM, когда $spell:93178 около вас",
 	InfoFrame				= "Показывать информационное окно для $journal:3165",
 	RangeFrame				= "Показывать окно проверки дистанции (5м) для $spell:82235",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "Устанавливать метки на Смутные творения"
 })
 
