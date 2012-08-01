@@ -23,8 +23,8 @@ local warnShadowBreath					= mod:NewSpellAnnounce(122752, 3)
 local warnNightmares					= mod:NewTargetAnnounce(122770, 4)--Target scanning not tested
 local warnDarkOfNight					= mod:NewSpellAnnounce("ej6550", 4, 130013)--Heroic
 local warnDay							= mod:NewSpellAnnounce("ej6315", 2, 122789)
-local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, 122953)--needs some Sha like icon.
-local warnSummonEmbodiedTerror			= mod:NewSpellAnnounce("ej6316", 4)--needs some Sha like icon.
+local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
+local warnSummonEmbodiedTerror			= mod:NewSpellAnnounce("ej6316", 4, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnTerrorize						= mod:NewTargetAnnounce(123012, 4, nil, mod:IsHealer())
 local warnSunBreath						= mod:NewSpellAnnounce(122855, 3)
 local warnLightOfDay					= mod:NewSpellAnnounce("ej6551", 4, 123716, mod:IsHealer())--Heroic
@@ -38,17 +38,19 @@ local specWarnDarkOfNight				= mod:NewSpecialWarningSwitch("ej6550", mod:IsDps()
 local specWarnTerrorize					= mod:NewSpecialWarningDispel(123012, mod:IsHealer())
 local specWarnLightOfDay				= mod:NewSpecialWarningSpell("ej6551", mod:IsHealer())
 
-local timerNightCD						= mod:NewNextTimer(121, "ej6310")
+local timerNightCD						= mod:NewNextTimer(121, "ej6310", nil, nil, nil, 130013)
 local timerSunbeamCD					= mod:NewCDTimer(41, 122789)
 local timerShadowBreathCD				= mod:NewCDTimer(28, 122752, nil, mod:IsTank() or mod:IsHealer())
 local timerNightmaresCD					= mod:NewCDTimer(15.5, 122770)
 local timerDarkOfNightCD				= mod:NewCDTimer(30.5, "ej6550", nil, nil, nil, 130013)
-local timerDayCD						= mod:NewNextTimer(121, "ej6315")
-local timerSummonUnstableShaCD			= mod:NewCDTimer(18, "ej6320")
-local timerSummonEmbodiedTerrorCD		= mod:NewCDTimer(41, "ej6316")
+local timerDayCD						= mod:NewNextTimer(121, "ej6315", nil, nil, nil, 122789)
+local timerSummonUnstableShaCD			= mod:NewCDTimer(18, "ej6320", nil, nil,nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
+local timerSummonEmbodiedTerrorCD		= mod:NewCDTimer(41, "ej6316", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local timerTerrorizeCD					= mod:NewNextTimer(14, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
-local timerSunBreathCD					= mod:NewCDTimer(29, 122855, nil, mod:IsHealer())
+local timerSunBreathCD					= mod:NewCDTimer(29, 122855)
 --local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, logs i was sent always wiped VERy early in light phase.
+
+local berserkTimer						= mod:NewBerserkTimer(500)--a little over 8 min, basically 3rd dark phase is auto berserk.
 
 local terrorName = EJ_GetSectionInfo(6316)
 local targetScansDone = 0
@@ -83,7 +85,7 @@ function mod:ShadowsTarget(targetname)
 				x, y = GetPlayerMapPosition(uId)
 			end
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 9 then
+			if inRange and inRange < 10 then
 				specWarnNightmaresNear:Show(targetname)
 			end
 		end
@@ -115,6 +117,7 @@ function mod:OnCombatStart(delay)
 	timerShadowBreathCD:Start(8.5-delay)
 	timerNightmaresCD:Start(13.5-delay)
 	timerDayCD:Start(-delay)
+	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerDarkOfNightCD:Start(10-delay)
 	end
@@ -141,7 +144,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(122752) then
-		warnShadowBreath:Show()--Very good chance with latest build this was changed to SPELL_CAST_SUCCESS event. it was changed from a cast time spell to an instant cast in build 15913. Need log to reconfirm this spell
+		warnShadowBreath:Show()
 		timerShadowBreathCD:Start()
 	end
 end
