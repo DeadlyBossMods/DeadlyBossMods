@@ -79,7 +79,7 @@ L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Show DBM arrow when $spell:81685 is near you",
 	InfoFrame				= "Show info frame for $journal:3165",
 	RangeFrame				= "Show range frame (5) for $journal:3165",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "Set icons on Darkened Creations"
 })
 

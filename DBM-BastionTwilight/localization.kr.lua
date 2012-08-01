@@ -80,7 +80,7 @@ L:SetOptionLocalization({
 	CorruptingCrashArrow	= "$spell:81685 대상이 근처에 있을 경우 DBM 화살표 보기",
 	InfoFrame				= "$journal:3165 정보 프레임 보기",
 	RangeFrame				= "$spell:82235 주문의 영항을 받은 경우 거리 프레임 (5m) 보기",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "어둠에 물든 창조물에 전술 목표 아이콘 설정"
 })
 
