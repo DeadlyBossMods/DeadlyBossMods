@@ -81,7 +81,7 @@ L:SetOptionLocalization({
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame				= "為$journal:3165顯示資訊框架",
 	RangeFrame				= "為$spell:82235顯示距離框(5碼)",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "設定標記到暗色觸鬚"
 })
 

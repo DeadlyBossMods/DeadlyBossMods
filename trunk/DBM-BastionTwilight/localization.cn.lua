@@ -84,7 +84,7 @@ L:SetOptionLocalization({
 	CorruptingCrashArrow	= "DBM箭头：当$spell:93178在你附近时",
 	InfoFrame				= "信息框：$journal:3165",
 	RangeFrame				= "为$spell:82235显示距离监视器（5码）",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "自动为黑暗造物添加团队标记"
 })
 

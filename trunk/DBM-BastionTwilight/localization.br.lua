@@ -81,7 +81,7 @@ L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Exibir seta do DBM quando $spell:93178 for cair próximo a você",
 	InfoFrame				= "Mostrar quadro de informações para $journal:3165",
 	RangeFrame				= "Mostrar medidor de distância (5) para $spell:82235",
-	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91303),
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "Colocar ícones nas Criações Sombrias"
 })
 
