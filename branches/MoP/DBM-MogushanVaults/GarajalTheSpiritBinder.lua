@@ -11,7 +11,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --NOTES
@@ -33,6 +34,7 @@ local timerTotemCD						= mod:NewNextTimer(36, 116174)
 local timerBanishmentCD					= mod:NewNextTimer(65, 116272)
 local timerSoulSever					= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerSpiritualInnervation			= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
+local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej9999")--Unknown ID, arta's database is 3 months old and my DBC tools aren't worth a shit or current either.
 
 local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
@@ -51,6 +53,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
+	timerShadowyAttackCD:start(7-delay)
 	timerTotemCD:Start(-delay)
 	timerBanishmentCD:Start(-delay)
 end
@@ -71,13 +74,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			timerSoulSever:Start()
 			warnSuicide:Schedule(25)
 		end
-	elseif args:IsSpellID(116272) then
-		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
-			specWarnBanishment:Show()
-		end
-		if self:LatencyCheck() then
-			self:SendSync("BanishmentTarget", args.destName)
-		end
+
 	end
 end
 
@@ -94,6 +91,13 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(116174) and self:LatencyCheck() then
 		self:SendSync("SummonTotem")
+	elseif args:IsSpellID(116272) then
+		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
+			specWarnBanishment:Show()
+		end
+		if self:LatencyCheck() then
+			self:SendSync("BanishmentTarget", args.destName)
+		end
 	end
 end
 
@@ -119,3 +123,8 @@ function mod:OnSync(msg, target)
 	end
 end
 
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if (spellId == 117215 or spellId == 117218 or spellId == 117219 or spellId == 117222) and self:AntiSpam(2, 1) then--Shadowy Attacks
+		timerShadowyAttackCD:Start()
+	end
+end
