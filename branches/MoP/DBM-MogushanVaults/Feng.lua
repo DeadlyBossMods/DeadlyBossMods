@@ -12,6 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED"
@@ -28,6 +29,7 @@ local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
 local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
 
 --Nature/Fist
+local warnLightningFists			= mod:NewSpellAnnounce(116157, 3)
 local warnEpicenter					= mod:NewSpellAnnounce(116018, 4)
 --Missing other ability entirely, cannot drycode it either, way too many spellids for it, no idea what's right.
 
@@ -64,7 +66,8 @@ local timerArcaneResonanceCD		= mod:NewCDTimer(15, 116417)--CD is also duration,
 local timerArcaneVelocityCD			= mod:NewCDTimer(22, 116364)--22 seconds after last ended.
 
 --Nature/Fist
---local timerEpicenterCD			= mod:NewCDTimer(22, 116018)--Unknown, failed to log this phase by mistake.
+local timerLightningFistsCD			= mod:NewCDTimer(14, 116157)
+local timerEpicenterCD				= mod:NewCDTimer(29, 116018)
 
 --Shadow/Shield (Heroic Only)
 local timerChainsOfShadowCD			= mod:NewCDTimer(6, 118783, nil, false)--6-10sec variation noted
@@ -134,7 +137,10 @@ function mod:SPELL_CAST_START(args)
 		warnEpicenter:Show()
 		specWarnEpicenter:Show()
 		soundEpicenter:Play()
---		timerEpicenterCD:Start()
+		timerEpicenterCD:Start()
+	elseif args:IsSpellID(116157) then
+		warnLightningFists:Show()
+		timerLightningFistsCD:Start()
 	end
 end
 
@@ -153,7 +159,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerArcaneResonanceCD:Start(14)
 		timerArcaneVelocityCD:Start(16.5)
 	elseif msg == L.Nature or msg:find(L.Nature) then
---		timerEpicenterCD:Start()
+		timerLightningFistsCD:Start(6.5)
+		timerEpicenterCD:Start(19)
 	elseif msg == L.Shadow or msg:find(L.Shadow) then
 		timerSiphoningShieldCD:Start(6)
 		timerChainsOfShadowCD:Start(10)
@@ -171,7 +178,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDrawFlameCD:Cancel()
 		timerArcaneResonanceCD:Cancel()
 		timerArcaneVelocityCD:Cancel()
---		timerEpicenterCD:Start()
+		timerLightningFistsCD:Cancel()
+		timerEpicenterCD:Cancel()
 		timerSiphoningShieldCD:Cancel()
 		timerChainsOfShadowCD:Cancel()
 	end
