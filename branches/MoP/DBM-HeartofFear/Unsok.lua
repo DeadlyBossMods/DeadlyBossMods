@@ -63,8 +63,8 @@ local timerAmberExplosionCD		= mod:NewNextSourceTimer(13, 122398)--13 second cd 
 local timerDestabalize			= mod:NewTargetTimer(10, 123059)
 local timerStruggleForControl	= mod:NewTargetTimer(5, 122395)
 --Amber Monstrosity
-local timerMassiveStompCD		= mod:NewCDTimer(25, 123081)
---local timerFlingCD			= mod:NewCDTimer(25, 122413)--Not yet known, testing was cut short.
+local timerMassiveStompCD		= mod:NewCDTimer(18, 123081)--18-25 seconds variation
+local timerFlingCD				= mod:NewCDTimer(25, 122413)--25-30sec variation.
 
 local Puddles = 0
 local Phase = 1
@@ -78,20 +78,20 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(122754) and not args:GetDestCreatureID() == 62691 then--Only track debuffs on boss, constructs, or monstrosity, ignore oozes.
-		warnDestabalize:Show(args.amount or 1)
+	if args:IsSpellID(123059) and not args:GetDestCreatureID() == 62691 then--Only track debuffs on boss, constructs, or monstrosity, ignore oozes.
+		warnDestabalize:Show(args.destName, args.amount or 1)
 		timerDestabalize:Start(args.destName)
 	elseif args:IsSpellID(121949) then
 		warnParasiticGrowth:Show(args.destName)
 		specwarnParasiticGrowth:Show(args.destName)
 		timerParasiticGrowth:Start(args.destName)
 		timerParasiticGrowthCD:Start()
-	elseif args:IsSpellID(122540) then--Phase 2. Not sure if it changes his phase 1 timers or not, wasn't in phase long enough.
+	elseif args:IsSpellID(122540) then
 		Phase = 2
 		warnAmberCarapace:Show()
 		specwarnAmberMonstrosity:Show()
 		timerMassiveStompCD:Start(20)
---		timerFlingCD:Start()
+		timerFlingCD:Start(33)
 	elseif args:IsSpellID(122395) and Phase < 3 then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -119,12 +119,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(122540) then--Phase 3
 		Phase = 3
 		timerMassiveStompCD:Cancel()
---		timerFlingCD:Cancel()
+		timerFlingCD:Cancel()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(122735) then
+	if args:IsSpellID(122398) then
 		warnAmberExplosion:Show()
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
 			specwarnAmberExplosion:Show()
@@ -139,7 +139,7 @@ function mod:SPELL_CAST_START(args)
 		timerMassiveStompCD:Start()
 	elseif args:IsSpellID(122413) then
 		warnFling:Show()
---		timerFlingCD:Start()
+		timerFlingCD:Start()
 	end
 end
 

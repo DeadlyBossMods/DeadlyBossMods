@@ -19,18 +19,22 @@ local warnProtect						= mod:NewSpellAnnounce(123250, 2)
 local warnHide							= mod:NewSpellAnnounce(123244, 3)
 local warnHideOver						= mod:NewAnnounce("warnHideOver", 2, 123244)--Because we can. with creativeness, the boss returning is detectable a full 1-2 seconds before even visible. A good signal to stop aoe and get ready to return norm DPS
 local warnGetAway						= mod:NewSpellAnnounce(123461, 3)
+local warnSpray							= mod:NewStackAnnounce(123121, 3, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnAnimatedProtector			= mod:NewSpecialWarningSwitch("ej6224", not mod:IsHealer())
 local specWarnHide						= mod:NewSpecialWarningSpell(123244, nil, nil, nil, true)
 local specWarnGetAway					= mod:NewSpecialWarningSpell(123461, nil, nil, nil, true)
-local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 12)--Not sure what's too big of a number yet. Fight was a bit undertuned.
-local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())--Not sure what's too big of a number yet. Fight was a bit undertuned.
+local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 6)
+local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())
 
 local timerSpecialCD					= mod:NewTimer(22, "timerSpecialCD", 123250)--Not even this is 100% reliable. it's iffy at best, but she seems to use specials about 22-25 seconds after last one ended, except when last one was protect, then next one is used IMMEDIATELY upon protect ending. Timers for this fight are just jacked.
-local timerSpray						= mod:NewTargetTimer(10, 123121)--blizzard needs to buff this to make it relevant to tanks.
+local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
 local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
+local hideActive = false
+
 function mod:OnCombatStart(delay)
+	hideActive = false
 	timerSpecialCD:Start(52-delay)--the ONLY timer that ever seems to be right, is FIRST special.
 end
 
@@ -43,13 +47,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGetAway:Show()
 		timerGetAway:Start()
 	elseif args:IsSpellID(123121) then
-		timerSpray:Start(args.destName)
-		if args:IsPlayer() and (args.amount or 1) >= 12 then
-			specWarnSpray:Show(args.amount)
-		else
-			if (args.amount or 1) >= 12 and not UnitDebuff("player", GetSpellInfo(123121)) and not UnitIsDeadOrGhost("player") then--Other tank has 2 or more sunders and you have none.
-				specWarnSprayOther:Show(args.destName)--So nudge you to taunt it off other tank already.
+		if args.amount % 3 == 0 then
+			warnSpray:Show(args.destName, args.amount or 1)
+			if args:IsPlayer() and (args.amount or 1) >= 6 then
+				specWarnSpray:Show(args.amount)
+			else
+				if (args.amount or 1) >= 6 and not UnitDebuff("player", GetSpellInfo(123121)) and not UnitIsDeadOrGhost("player") then
+					specWarnSprayOther:Show(args.destName)
+				end
 			end
+		end
+		if not hideActive then--filter out all the splash sprays that go out during hide.
+			timerSpray:Start(args.destName)
 		end
 	end
 end
@@ -66,6 +75,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(123244) then
+		hideActive = true
 		warnHide:Show()
 		specWarnHide:Show()
 		self:RegisterShortTermEvents(
@@ -77,6 +87,7 @@ end
 --Fires twice when boss returns, once BEFORE visible (and before we can detect unitID, so it flags unknown), then once a 2nd time after visible
 --"<233.9> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#nil#Unknown#0xF130F6070000006C#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [14168]
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
+	hideActive = false
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
 --	timerSpecialCD:Start()--Probably wrong so disabled. i still can't find this fights true pattern since it's all over the place and never matches up.

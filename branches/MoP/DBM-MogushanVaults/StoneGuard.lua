@@ -11,7 +11,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
 	"RAID_BOSS_EMOTE",
 	"UNIT_DIED"
 )
@@ -82,16 +81,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(130774) and args:IsPlayer() then
 		specWarnAmethystPool:Show()
---[[elseif args:IsSpellID(116281) then
-		warnCobaltGrasp:Show(args.destName)
-		timerGobaltGrasp:Start(args.destName)
-		timerGobaltGraspCD:Start()--]]
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(116281) then
---		timerGobaltGrasp:Cancel(args.destName)
 	end
 end
 
@@ -99,9 +88,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(116223) then
 		warnJadeShards:Show()
 		timerJadeShardsCD:Start()
---	elseif args:IsSpellID(116207) then
---		warnJasperCleave:Show(args.destName)
---		timerJasperCleaveCD:Start()
 	elseif args:IsSpellID(116235) then
 		warnAmethystPool:Show()
 		timerAmethystPoolCD:Start()
