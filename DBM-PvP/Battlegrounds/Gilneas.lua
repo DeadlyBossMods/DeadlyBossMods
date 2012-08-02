@@ -15,6 +15,7 @@ Gilneas:RegisterEvents(
 local winTimer 		= Gilneas:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 local capTimer 		= Gilneas:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
+local bgzone = false
 Gilneas:AddBoolOption("ShowGilneasEstimatedPoints", true, nil, function()
 	if Gilneas.Options.ShowGilneasEstimatedPoints and bgzone then
 		Gilneas:ShowEstimatedPoints()
@@ -33,7 +34,6 @@ end)
 Gilneas:RemoveOption("HealthFrame")
 Gilneas:RemoveOption("SpeedKillTimer")
 	
-local bgzone = false
 local ResPerSec = {
 	[0] = 0.01,
 	[1] = 10/9,
