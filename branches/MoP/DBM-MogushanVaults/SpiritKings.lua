@@ -98,6 +98,13 @@ local zianActive = false
 local mengActive = false
 local qiangActive = false
 local subetaiActive = false
+local pinnedTargets = {}
+
+local function warnPinnedDownTargets()
+	warnPinnedDown:Show(table.concat(pinnedTargets, "<, >"))
+	specWarnPinningArrow:Show()
+	table.wipe(pinnedTargets)
+end
 
 function mod:OnCombatStart(delay)
 	zianActive = false
@@ -105,6 +112,7 @@ function mod:OnCombatStart(delay)
 	qiangActive = false
 	subetaiActive = false
 	table.wipe(bossesActivated)
+	table.wipe(pinnedTargets)
 end
 
 function mod:OnCombatEnd()
@@ -133,6 +141,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFixate:Show()
 			yellFixate:Yell()
 		end
+	elseif args:IsSpellID(118135) then
+		pinnedTargets[#pinnedTargets + 1] = args.destName
+		self:Unschedule(warnPinnedDownTargets)
+		self:Schedule(0.3, warnPinnedDownTargets)
 	end
 end
 

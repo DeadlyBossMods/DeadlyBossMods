@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60143)
 mod:SetModelID(41256)
 mod:SetZone()
+mod:SetUsedIcons(5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -36,8 +37,11 @@ local timerSoulSever					= mod:NewBuffFadesTimer(30, 116278)--Tank version of sp
 local timerSpiritualInnervation			= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
 local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698")--Unknown ID, arta's database is 3 months old and my DBC tools aren't worth a shit or current either.
 
+mod:AddBoolOption("SetIconOnVoodoo")
+
 local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
+local voodooDollTargetIcons = {}
 
 local function warnVoodooDollTargets()
 	warnVoodooDolls:Show(table.concat(voodooDollTargets, "<, >"))
@@ -50,9 +54,31 @@ local function warnSpiritualInnervationTargets()
 	table.wipe(spiritualInnervationTargets)
 end
 
+local function ClearVoodooTargets()
+	table.wipe(voodooDollTargetIcons)
+end
+
+do
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
+	end
+	function mod:SetVoodooIcons()
+		if DBM:GetRaidRank() > 0 then
+			table.sort(voodooDollTargetIcons, sort_by_group)
+			local voodooIcon = 8
+			for i, v in ipairs(voodooDollTargetIcons) do
+				self:SetIcon(UnitName(v), voodooIcon)
+				voodooIcon = voodooIcon - 1
+			end
+			self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
+	table.wipe(voodooDollTargetIcons)
 	timerShadowyAttackCD:start(7-delay)
 	timerTotemCD:Start(-delay)
 	timerBanishmentCD:Start(-delay)
@@ -85,6 +111,8 @@ function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actua
 	elseif args:IsSpellID(116278) and args:IsPlayer() then
 		timerSoulSever:Cancel()
 		warnSuicide:Cancel()
+	elseif args:IsSpellID(122151) then
+		self:SendSync("VoodooGoneTargets", args.destName)
 	end
 end
 
@@ -110,6 +138,17 @@ function mod:OnSync(msg, target)
 		voodooDollTargets[#voodooDollTargets + 1] = target
 		self:Unschedule(warnVoodooDollTargets)
 		self:Schedule(0.3, warnVoodooDollTargets)
+		if self.Options.SetIconOnVoodoo then
+			table.insert(voodooDollTargetIcons, DBM:GetRaidUnitId(target))
+			self:UnscheduleMethod("SetVoodooIcons")
+			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				self:ScheduleMethod(0.5, "SetVoodooIcons")--Still seems touchy and .3 is too fast even on a 70ms connection in rare cases so back to .5
+			end
+		end
+	elseif msg == "VoodooGoneTargets" and target then
+		if self.Options.SetIconOnVoodoo then
+			self:SetIcon(target, 0)
+		end
 	elseif msg == "SpiritualTargets" and target then
 		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = target
 		self:Unschedule(warnSpiritualInnervationTargets)
