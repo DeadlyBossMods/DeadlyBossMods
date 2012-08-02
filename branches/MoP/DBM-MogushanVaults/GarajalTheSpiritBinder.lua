@@ -35,7 +35,7 @@ local timerTotemCD						= mod:NewNextTimer(36, 116174)
 local timerBanishmentCD					= mod:NewNextTimer(65, 116272)
 local timerSoulSever					= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerSpiritualInnervation			= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
-local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698")--Unknown ID, arta's database is 3 months old and my DBC tools aren't worth a shit or current either.
+local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698")
 
 mod:AddBoolOption("SetIconOnVoodoo")
 
