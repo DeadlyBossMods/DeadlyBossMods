@@ -87,6 +87,8 @@ local timerPillageCD			= mod:NewNextTimer(41, 118047)
 local timerSleightOfHandCD		= mod:NewCDTimer(42, 118162)
 local timerSleightOfHand		= mod:NewBuffActiveTimer(11, 118162)--2+9 (cast+duration)
 
+local berserkTimer				= mod:NewBerserkTimer(600)--a little over 8 min, basically 3rd dark phase is auto berserk.
+
 mod:AddBoolOption("RangeFrame", mod:IsRanged())--For multiple abilities. the abiliies don't seem to target melee (unless a ranged is too close or a melee is too far.)
 
 local Zian = EJ_GetSectionInfo(5852)
@@ -113,6 +115,7 @@ function mod:OnCombatStart(delay)
 	subetaiActive = false
 	table.wipe(bossesActivated)
 	table.wipe(pinnedTargets)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
