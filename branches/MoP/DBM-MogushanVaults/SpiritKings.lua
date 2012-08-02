@@ -51,11 +51,12 @@ local warnActivated				= mod:NewTargetAnnounce(118212, 3, 78740)
 local specWarnUndyingShadow		= mod:NewSpecialWarningSwitch("ej5854", mod:IsDps())
 local specWarnFixate			= mod:NewSpecialWarningYou(118303)
 local yellFixate				= mod:NewYell(118303)
+local specWarnShadowBlast		= mod:NewSpecialWarningInterrupt(117628, mod:IsMelee())
 local specWarnShieldOfDarkness	= mod:NewSpecialWarningTarget(117697, nil, nil, nil, true)--Heroic Ability
 local specWarnShieldOfDarknessD	= mod:NewSpecialWarningDispel(117697, isDispeller)--Heroic Ability
 --Meng
 local specWarnMaddeningShout	= mod:NewSpecialWarningSpell(117708, nil, nil, nil, true)
-local specWarnCrazyThought		= mod:NewSpecialWarningInterrupt(117833, mod:IsTank())--At very least tank should be able to do this, probably on their own.
+local specWarnCrazyThought		= mod:NewSpecialWarningInterrupt(117833, false)--At discretion of whoever to enable. depending on strat, you may NOT want to interrupt these (or at least not all of them)
 local specWarnDelirious			= mod:NewSpecialWarningDispel(117837, mod:CanRemoveEnrage())--Heroic Ability
 --Qiang
 local specWarnAnnihilate		= mod:NewSpecialWarningSpell(117948)--Maybe tweak options later or add a bool for it, cause on heroic, it's not likely ranged will be in front of Qiang if Zian or Subetai are up.
@@ -68,38 +69,42 @@ local specWarnSleightOfHand		= mod:NewSpecialWarningTarget(118162)--Heroic Abili
 
 --Zian
 local timerChargingShadowsCD	= mod:NewCDTimer(12, 117685)
-local timerUndyingShadowsCD		= mod:NewCDTimer(45.5, 117506)
+local timerUndyingShadowsCD		= mod:NewCDTimer(41.5, 117506)--For most part it's right, but i also think on normal he can only summon a limited amount cause he did seem to skip one? leaving a CD for now until know for sure.
 local timerFixate			  	= mod:NewTargetTimer(20, 118303)
 local timerCoalescingShadowsCD	= mod:NewNextTimer(60, 117539)--EJ says 30sec but logs more recent then last EJ update show 60 seconds on heroic (so probably adjusted since EJ was last revised)
 local timerShieldOfDarknessCD  	= mod:NewCDTimer(42.5, 117697)
 --Meng
-local timerMaddeningShoutCD		= mod:NewCDTimer(50, 117708)--Most of his other stuff is just energy based, this is only ability i could find that actually was a CD
+local timerMaddeningShoutCD		= mod:NewCDTimer(47, 117708)--47-50 sec variation. So a CD timer instead of next.
 local timerDeliriousCD			= mod:NewCDTimer(20.5, 117837, nil, mod:CanRemoveEnrage())
 --Qiang
-local timerAnnihilateCD			= mod:NewCDTimer(40, 117948)
-local timerFlankingOrdersCD		= mod:NewCDTimer(40, 117910)
+local timerAnnihilateCD			= mod:NewNextTimer(39, 117948)
+local timerFlankingOrdersCD		= mod:NewNextTimer(40, 117910)
 local timerImperviousShieldCD	= mod:NewCDTimer(40, 117961)
 --Subetai
-local timerVolleyCD				= mod:NewCDTimer(41.5, 118094)--Pretty much all his stuff is 40-42 sec CD
-local timerRainOfArrowsCD		= mod:NewCDTimer(41, 118122)
-local timerPillageCD			= mod:NewCDTimer(40.5, 118047)
+local timerVolleyCD				= mod:NewNextTimer(41, 118094)
+local timerRainOfArrowsCD		= mod:NewNextTimer(41, 118122)
+local timerPillageCD			= mod:NewNextTimer(41, 118047)
 local timerSleightOfHandCD		= mod:NewCDTimer(42, 118162)
 local timerSleightOfHand		= mod:NewBuffActiveTimer(11, 118162)--2+9 (cast+duration)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())--For multiple abilities. the abiliies don't seem to target melee (unless a ranged is too close or a melee is too far.)
 
---cannot be used all of these yet, some do NOT match the yells right now
-local Zian = EJ_GetSectionInfo(5852)--Only boss who's EJ entry matches his yell name.
---local Meng = EJ_GetSectionInfo(5835)
---local Qiang = EJ_GetSectionInfo(5841)
---local Subetai = EJ_GetSectionInfo(5846)
+local Zian = EJ_GetSectionInfo(5852)
+local Meng = EJ_GetSectionInfo(5835)
+local Qiang = EJ_GetSectionInfo(5841)
+local Subetai = EJ_GetSectionInfo(5846)
 local bossesActivated = {}
+local zianActive = false
+local mengActive = false
+local qiangActive = false
+local subetaiActive = false
 
 function mod:OnCombatStart(delay)
+	zianActive = false
+	mengActive = false
+	qiangActive = false
+	subetaiActive = false
 	table.wipe(bossesActivated)
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(8)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -143,11 +148,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChargingShadowsCD:Start()
 	elseif args:IsSpellID(117506) then
 		warnUndyingShadows:Show()
-		timerUndyingShadowsCD:Start()
+		if zianActive then
+			timerUndyingShadowsCD:Start()
+		else
+			timerUndyingShadowsCD:Start(85)
+		end
 	elseif args:IsSpellID(117910) then
 		warnFlankingOrders:Show()
 		specWarnFlankingOrders:Show()
---		timerFlankingOrdersCD:Start()--Not yet known
+		if qiangActive then
+			timerFlankingOrdersCD:Start()
+		else
+			timerFlankingOrdersCD:Start(75)
+		end
 	end
 end
 
@@ -160,6 +173,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(117506) then
 		warnUndyingShadows:Show()
 		timerUndyingShadowsCD:Start()
+	elseif args:IsSpellID(117628) then
+		specWarnShadowBlast:Show(args.sourceName)
 	elseif args:IsSpellID(117697) then
 		warnShieldOfDarkness:Show(args.sourceName)
 		specWarnShieldOfDarkness:Show(args.sourceName)
@@ -170,7 +185,11 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(117708) then
 		warnMaddeningShout:Show()
 		specWarnMaddeningShout:Show()
-		timerMaddeningShoutCD:Start()
+		if mengActive then
+			timerMaddeningShoutCD:Start()
+		else
+			timerMaddeningShoutCD:Start(77)
+		end
 	elseif args:IsSpellID(117948) then
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
@@ -188,12 +207,44 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerVolleyCD:Start()
 	elseif spellId == 118121 and self:AntiSpam(2, 2) then--Rain of Arrows
 		timerRainOfArrowsCD:Start()
+	elseif spellId == 118219 and self:AntiSpam(2, 3) then--Cancel Activation
+		if UnitName(uId) == Zian then
+			zianActive = false
+			timerChargingShadowsCD:Cancel()
+			timerShieldOfDarknessCD:Cancel()
+			timerUndyingShadowsCD:Start(30)--This boss retains Undying Shadows
+			if self.Options.RangeFrame and not subetaiActive then--Close range frame, but only if zian is also not active, otherwise we still need it
+				DBM.RangeCheck:Hide()
+			end
+		elseif UnitName(uId) == Meng then
+			mengActive = false
+			timerDeliriousCD:Cancel()
+			timerMaddeningShoutCD:Start(30)--This boss retains Maddening Shout
+		elseif UnitName(uId) == Qiang then
+			qiangActive = false
+			timerAnnihilateCD:Cancel()
+			timerImperviousShieldCD:Cancel()
+			timerFlankingOrdersCD:Start(30)--This boss retains Flanking Orders
+		elseif UnitName(uId) == Subetai then
+			subetaiActive = false
+			timerVolleyCD:Cancel()
+			timerRainOfArrowsCD:Cancel()
+			timerSleightOfHandCD:Cancel()
+			timerPillageCD:Start(30)--This boss retains Pillage
+			if self.Options.RangeFrame and not zianActive then--Close range frame, but only if subetai is also not active, otherwise we still need it
+				DBM.RangeCheck:Hide()
+			end
+		end
 	end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:118047") then
-		timerPillageCD:Start()
+		if subetaiActive then
+			timerPillageCD:Start()
+		else
+--			timerPillageCD:Start(75)--Not yet known. Probably 75
+		end
 		if target then
 			warnPillage:Show(target)
 			if target == UnitName("player") then
@@ -216,66 +267,45 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 --Phase change controller. Even for pull.
---This is better then localizing their yells because each boss has 2 or 3 pull yells.
+--Using bossname is better then localizing their yells because each boss has 2 or 3 engage yells.
 --Besides, if they ever get the dang EJ to match the game, we won't even need to localize boss names even.
 function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 	if not self:IsInCombat() or bossesActivated[boss] then return end--Ignore yells out of combat or from bosses we already activated.
 	if not bossesActivated[boss] then bossesActivated[boss] = true end--Once we activate off bosses first yell, add them to ignore.
+	warnActivated:Show(boss)
 	if boss == Zian then
+		zianActive = true
+		timerChargingShadowsCD:Start()
+		timerUndyingShadowsCD:Start(20)
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerChargingShadowsCD:Start(14.2)
-			timerUndyingShadowsCD:Start(20.2)
 			timerShieldOfDarknessCD:Start(40)
-		else
-			--Needs to be added later
 		end
-	elseif boss == L.Meng then
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
+	elseif boss == Meng then
+		mengActive = true
+		timerMaddeningShoutCD:Start(20.5)
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerMaddeningShoutCD:Start(20.5)
 			timerDeliriousCD:Start()
-		else
-			--Needs to be added later
 		end
-	elseif boss == L.Qiang then
+	elseif boss == Qiang then
+		qiangActive = true
+		timerAnnihilateCD:Start(10.5)
+		timerFlankingOrdersCD:Start(25)
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerAnnihilateCD:Start(10.5)
-			timerFlankingOrdersCD:Start(25)
 			timerImperviousShieldCD:Start(40.7)
-		else
-			--Needs to be added later
 		end
-	elseif boss == L.Subetai then
+	elseif boss == Subetai then
+		subetaiActive = true
+		timerVolleyCD:Start(5)
+		timerRainOfArrowsCD:Start(15)
+		timerPillageCD:Start(25)
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerVolleyCD:Start(5.7)
-			timerRainOfArrowsCD:Start(15.3)
-			timerPillageCD:Start(25.8)
 			timerSleightOfHandCD:Start(40.7)
-		else
-			--Needs to be added later
 		end
-	end
-end
-
---of note, this is completely and totally WRONG. I have NO IDEA how they defeat since we coudln't defeat any of them on heroic, and i never got to test normal (or get worth a crap logs for it either).
---point being, this is a template only and not even remotely functional, no timer cancelation will work since the only time they die is when you defeat ALL 4.
---I'll need a transcriptor log that actually has real transitions in it to figure out how they actually phase out (ie become inactive but not dead).
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 60701 then--Zian
-		--This boss retains Undying Shadows
-		timerChargingShadowsCD:Cancel()
-		timerShieldOfDarknessCD:Cancel()
-	elseif cid == 60708 then--Meng
-		--This boss retains Maddening Shout
-		timerDeliriousCD:Cancel()
-	elseif cid == 60709 then--Qiang
-		--This boss retains Flanking Orders
-		timerAnnihilateCD:Cancel()
-		timerImperviousShieldCD:Cancel()
-	elseif cid == 60710 then--Subetai
-		--This boss retains Pillage
-		timerVolleyCD:Cancel()
-		timerRainOfArrowsCD:Cancel()
-		timerSleightOfHandCD:Cancel()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
 	end
 end

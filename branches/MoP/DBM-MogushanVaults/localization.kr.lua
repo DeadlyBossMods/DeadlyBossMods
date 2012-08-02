@@ -37,12 +37,6 @@ L:SetOptionLocalization({
 	RangeFrame			= "거리 프레임 표시 (8m)"
 })
 
-L:SetMiscLocalization({
-	--localized names for the CHAT_MSG_MONSTER_YELL (not EJ)
-	Meng	= "Meng the Demented",
-	Qiang	= "Qiang the Merciless",
-	Subetai	= "Subetai the Swift"
-})
 
 ------------
 -- Elegon --
