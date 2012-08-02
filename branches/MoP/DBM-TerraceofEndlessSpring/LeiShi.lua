@@ -38,6 +38,10 @@ function mod:OnCombatStart(delay)
 	timerSpecialCD:Start(52-delay)--the ONLY timer that ever seems to be right, is FIRST special.
 end
 
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123250) then
 		warnProtect:Show()
