@@ -73,7 +73,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "Destroying the pipes leaks |cFFFF0000|Hspell:116779|h[Titan Gas]|h|r into the room!",--Emote
+	Pull		= "The machine hums to life!  Get to the lower level!",--Emote
 	Rage		= "The Emperor's Rage echoes through the hills.",--Yell
 	Strength	= "The Emperor's Strength appears in the alcoves!",--Emote
 	Courage		= "The Emperor's Courage appears in the alcoves!",--Emote
