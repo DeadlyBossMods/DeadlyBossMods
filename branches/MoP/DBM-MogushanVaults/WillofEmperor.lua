@@ -7,6 +7,7 @@ mod:SetModelID(41391)
 mod:SetZone()
 
 mod:RegisterCombat("emote", L.Pull)
+mod:SetMinCombatTime(25)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
@@ -51,13 +52,13 @@ local specWarnCombo				= mod:NewSpecialWarningSpell("ej5672", nil, nil, nil, tru
 --local specWarnStomp				= mod:NewSpecialWarningMove(116969, mod:IsMelee())--Primary combo ability tanks AND melee need to avoid.
 
 --Rage
-local timerRageActivates		= mod:NewNextTimer(13, "ej5678", 116525)
+local timerRageActivates		= mod:NewNextTimer(10, "ej5678", nil, nil, nil, 116525)
 --Strength
-local timerStrengthActivates	= mod:NewNextTimer(13, "ej5677", 116550)
+local timerStrengthActivates	= mod:NewNextTimer(10, "ej5677", nil, nil, nil, 116550)
 --Courage
-local timerCourageActivates		= mod:NewNextTimer(13, "ej5676", 116778)
+local timerCourageActivates		= mod:NewNextTimer(10, "ej5676", nil, nil, nil, 116778)
 --Jan-xi and Qin-xi
-local timerBossesActivates		= mod:NewNextTimer(103.2, "ej5726", 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
+local timerBossesActivates		= mod:NewNextTimer(103.2, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
 local timerComboCD				= mod:NewNextTimer(19.2, "ej5672")--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
 
 mod:AddBoolOption("InfoFrame", false)
@@ -106,15 +107,15 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Strength or msg:find(L.Strength) then
-		warnStrengthActivated:Schedule(13)
-		specWarnStrengthActivated:Schedule(13)
+		warnStrengthActivated:Schedule(10)
+		specWarnStrengthActivated:Schedule(10)
 		timerStrengthActivates:Start()--They actually spawn 13 seconds after emote
 	elseif msg == L.Courage or msg:find(L.Courage) then
-		warnCourageActivated:Schedule(13)
-		specWarnCourageActivated:Schedule(13)
+		warnCourageActivated:Schedule(10)
+		specWarnCourageActivated:Schedule(10)
 		timerCourageActivates:Start()--They actually spawn 13 seconds after emote
 	elseif msg == L.Boss or msg:find(L.Boss) then
-		warnBossesActivated:Schedule(13)
+		warnBossesActivated:Schedule(10)
 	end
 end
 
