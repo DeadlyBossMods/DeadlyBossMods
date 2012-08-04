@@ -23,6 +23,7 @@ mod:RegisterEventsInCombat(
 --Seems that Feng always change transforms Nature -> Fire -> Arcane -> Shadow(heroic)
 --Nature/Fist (Phase 1)
 local warnPhase1					= mod:NewPhaseAnnounce(1)
+local warnLightningLash				= mod:NewStackAnnounce(131788, 3, nil, mod:IsTank())
 local warnLightningFists			= mod:NewSpellAnnounce(116157, 3)
 local warnEpicenter					= mod:NewSpellAnnounce(116018, 4)
 
@@ -35,6 +36,7 @@ local warnDrawFlame					= mod:NewSpellAnnounce(116711, 4)
 
 --Arcane/Staff (Phase 3)
 local warnPhase3					= mod:NewPhaseAnnounce(3)
+local warnArcaneShock				= mod:NewStackAnnounce(131790, 3, nil, mod:IsTank())
 local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
 local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
 
@@ -46,6 +48,8 @@ local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
 local warnSiphoningShield			= mod:NewSpellAnnounce(117203, 4)
 
 --Nature/Fist
+local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 4)
+local specWarnLightningLashOther	= mod:NewSpecialWarningTarget(131788, mod:IsTank())
 local specWarnEpicenter				= mod:NewSpecialWarningRun(116018, nil, nil, nil, true)
 
 --Fire/Spear
@@ -56,6 +60,8 @@ local specWarnWildfire				= mod:NewSpecialWarningMove(116793)
 local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, true)
 
 --Arcane/Staff
+local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 4)
+local specWarnArcaneShockOther		= mod:NewSpecialWarningTarget(131790, mod:IsTank())
 local specWarnArcaneResonance		= mod:NewSpecialWarningYou(116417)
 local yellArcaneResonance			= mod:NewYell(116417)
 local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, true)
@@ -64,6 +70,8 @@ local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil
 local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
 
 --Nature/Fist
+local timerLightningLash			= mod:NewTargetTimer(20, 131788, nil, mod:IsTank())
+local timerLightningLashCD			= mod:NewCDTimer(8, 131788, nil, mod:IsTank())--not comfirmed
 local timerLightningFistsCD			= mod:NewCDTimer(14, 116157)
 local timerEpicenterCD				= mod:NewCDTimer(29, 116018)
 local timerEpicenter				= mod:NewCastTimer(10, 116018)
@@ -76,6 +84,8 @@ local timerDrawFlame				= mod:NewBuffActiveTimer(6, 116711)
 local timerDrawFlameCD				= mod:NewNextTimer(30, 116711)--30 seconds after last ended.
 
 --Arcane/Staff
+local timerArcaneShock				= mod:NewTargetTimer(20, 131790, nil, mod:IsTank())
+local timerArcaneShockCD			= mod:NewCDTimer(8, 131790, nil, mod:IsTank())--not comfirmed
 local timerArcaneResonanceCD		= mod:NewCDTimer(15, 116417)--CD is also duration, it's just cast back to back to back.
 local timerArcaneVelocityCD			= mod:NewCDTimer(22, 116364)--22 seconds after last ended.
 local timerArcaneVelocity			= mod:NewCastTimer(8, 116364)
@@ -101,10 +111,18 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(116942) then
+	if args:IsSpellID(131788) then
+		warnLightningLash:Show(args.destName, 1)
+		timerLightningLash:Start(args.destName)
+		timerLightningLashCD:Start()
+	elseif args:IsSpellID(116942) then
 		warnFlamingSpear:Show(args.destName, 1)
 		timerFlamingSpear:Start(args.destName)
 		timerFlamingSpearCD:Start()
+	elseif args:IsSpellID(131790) then
+		warnArcaneShock:Show(args.destName, 1)
+		timerArcaneShock:Start(args.destName)
+		timerArcaneShockCD:Start()
 	elseif args:IsSpellID(116784) then
 		sparkCount = sparkCount + 1
 		warnWildSpark:Show(sparkCount, args.destName)
@@ -136,7 +154,18 @@ end
 
 -- split Flaming Spear (Arcane Resonance also uses SPELL_AURA_APPLIED_DOSE, buggy)
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(116942) then
+	if args:IsSpellID(131788) then
+		warnLightningLash:Show(args.destName, args.amount or 1)
+		timerLightningLash:Start(args.destName)
+		timerLightningLashCD:Start()
+		if args:IsPlayer() and (args.amount or 1) >= 3 then
+			specWarnLightningLash:Show(args.amount)
+		else
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(131788)) and not UnitIsDeadOrGhost("player") then
+				specWarnLightningLashOther:Show(args.destName)
+			end
+		end
+	elseif args:IsSpellID(116942) then
 		warnFlamingSpear:Show(args.destName, args.amount or 1)
 		timerFlamingSpear:Start(args.destName)
 		timerFlamingSpearCD:Start()
@@ -145,6 +174,17 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		else
 			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(116942)) and not UnitIsDeadOrGhost("player") then
 				specWarnFlamingSpearOther:Show(args.destName)
+			end
+		end
+	elseif args:IsSpellID(131790) then
+		warnArcaneShock:Show(args.destName, args.amount or 1)
+		timerArcaneShock:Start(args.destName)
+		timerArcaneShockCD:Start()
+		if args:IsPlayer() and (args.amount or 1) >= 3 then
+			specWarnArcaneShock:Show(args.amount)
+		else
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(131790)) and not UnitIsDeadOrGhost("player") then
+				specWarnArcaneShockOther:Show(args.destName)
 			end
 		end
 	end
