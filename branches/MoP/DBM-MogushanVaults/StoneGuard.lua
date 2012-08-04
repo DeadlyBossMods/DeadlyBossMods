@@ -12,33 +12,32 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"RAID_BOSS_EMOTE",
+	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
 )
 
-local warnCobaltOverload			= mod:NewCastAnnounce(115840, 4, 7)
-local warnJadeOverload				= mod:NewCastAnnounce(115842, 4, 7)
-local warnJasperOverload			= mod:NewCastAnnounce(115843, 4, 7)
-local warnAmethystOverload			= mod:NewCastAnnounce(115844, 4, 7)
+local warnCobaltOverload			= mod:NewSpellAnnounce(115840, 4)
+local warnJadeOverload				= mod:NewSpellAnnounce(115842, 4)
+local warnJasperOverload			= mod:NewSpellAnnounce(115843, 4)
+local warnAmethystOverload			= mod:NewSpellAnnounce(115844, 4)
 --local warnCobaltGrasp				= mod:NewTargetAnnounce(116281, 3)
 local warnJadeShards				= mod:NewSpellAnnounce(116223, 3)
 local warnJasperChains				= mod:NewTargetAnnounce(130395, 4)
 local warnAmethystPool				= mod:NewSpellAnnounce(116235, 3, nil, mod:IsMelee())
 
-local specWarnCobaltOverload		= mod:NewSpecialWarningSpell(115840, nil, nil, nil, true)
-local specWarnJadeOverload			= mod:NewSpecialWarningSpell(115842, nil, nil, nil, true)
-local specWarnJasperOverload		= mod:NewSpecialWarningSpell(115843, nil, nil, nil, true)
-local specWarnAmethystOverload		= mod:NewSpecialWarningSpell(115844, nil, nil, nil, true)
+local specWarnOverloadSoon			= mod:NewSpecialWarning("SpecWarnOverloadSoon", nil, nil, nil, true)
 --local specWarnCobaltGrasp			= mod:NewSpecialWarningDispel(116281, false)
 local specWarnJasperChains			= mod:NewSpecialWarningYou(130395)
 local yellJasperChains				= mod:NewYell(130395)
 local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
 
-local timerCobaltOverload			= mod:NewCastTimer(7, 115840)
-local timerJadeOverload				= mod:NewCastTimer(7, 115842)
-local timerJasperOverload			= mod:NewCastTimer(7, 115843)
-local timerAmethystOverload			= mod:NewCastTimer(7, 115844)
+--local timerCobaltOverload			= mod:NewCastTimer(7, 115840)
+--local timerJadeOverload			= mod:NewCastTimer(7, 115842)
+--local timerJasperOverload			= mod:NewCastTimer(7, 115843)
+--local timerAmethystOverload		= mod:NewCastTimer(7, 115844)
 --local timerGobaltGrasp			= mod:NewTargetTimer(6, 116281)
 --local timerGobaltGraspCD			= mod:NewCDTimer(12, 116281)--12-15second variations
+local timerPetrification			= mod:NewNextTimer(76, 125091)
 local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223)--Always 20.5 seconds
 local timerJasperChainsCD			= mod:NewCDTimer(12, 130395)--11-13
 local timerAmethystPoolCD			= mod:NewCDTimer(6, 116235, nil, mod:IsMelee())
@@ -48,6 +47,11 @@ local Jade = EJ_GetSectionInfo(5773)
 local Jasper = EJ_GetSectionInfo(5774)
 local Cobalt = EJ_GetSectionInfo(5771)
 local Amethyst = EJ_GetSectionInfo(5691)
+local CobaltO = GetSpellInfo(115840)
+local JadeO = GetSpellInfo(115842)
+local JasperO = GetSpellInfo(115843)
+local AmethystO = GetSpellInfo(115844)
+local activePetrification = nil
 local jasperChainsTargets = {}
 
 local function warnJasperChainsTargets()
@@ -56,6 +60,7 @@ local function warnJasperChainsTargets()
 end
 
 function mod:OnCombatStart(delay)
+	activePetrification = nil
 	table.wipe(jasperChainsTargets)
 	if self:IsDifficulty("normal25", "heroic25") then
 --		timerGobaltGraspCD:Start(-delay)
@@ -85,7 +90,30 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(116223) then
+	if args:IsSpellID(115840) then -- Cobalt
+		warnCobaltOverload:Show()
+		if activePetrification == "Cobalt" then
+			timerPetrification:Cancel()
+		end
+	elseif args:IsSpellID(115842) then -- Jade
+		warnJadeOverload:Show()
+		if activePetrification == "Jade" then
+			timerPetrification:Cancel()
+		end
+		timerJadePetrification:Cancel()
+	elseif args:IsSpellID(115843) then -- Jasper
+		warnJasperOverload:Show()
+		if activePetrification == "Jasper" then
+			timerPetrification:Cancel()
+		end
+		timerJasperPetrification:Cancel()
+	elseif args:IsSpellID(115844) then -- Amethyst
+		warnAmethystOverload:Show()
+		if activePetrification == "Amethyst" then
+			timerPetrification:Cancel()
+		end
+		timerAmethystPetrification:Cancel()
+	elseif args:IsSpellID(116223) then
 		warnJadeShards:Show()
 		timerJadeShardsCD:Start()
 	elseif args:IsSpellID(116235) then
@@ -101,24 +129,9 @@ function mod:RAID_BOSS_EMOTE(msg, boss)
 end
 
 function mod:OnSync(msg, boss)
+	-- if boss aprats from 10 yard and get Solid Stone, power no longer increase. If this, overlord not casts. So timer can be confusing. Disabled for find better way. 
 	if msg == "Overload" then
-		if boss == "Cobalt" then
-			warnCobaltOverload:Show()
-			specWarnCobaltOverload:Show()
-			timerCobaltOverload:Start()
-		elseif boss == "Jade" then
-			warnJadeOverload:Show()
-			specWarnJasperOverload:Show()
-			timerJadeOverload:Start()
-		elseif boss == "Jasper" then
-			warnJasperOverload:Show()
-			specWarnJasperOverload:Show()
-			timerJasperOverload:Start()
-		elseif boss == "Amethyst" then
-			warnAmethystOverload:Show()
-			specWarnAmethystOverload:Show()
-			timerAmethystOverload:Start()
-		end
+		specWarnOverloadSoon:Show(boss.."O")
 	end
 end
 
@@ -132,3 +145,18 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 115852 and self:AntiSpam(2) then
+		activePetrification = "Cobalt"
+		timerPetrification:Start()
+	elseif spellId == 116008 and self:AntiSpam(2) then--unconfirmed
+		activePetrification = "Jade"
+		timerPetrification:Start()
+	elseif spellId == 116036 and self:AntiSpam(2) then
+		activePetrification = "Jasper"
+		timerPetrification:Start()
+	elseif spellId == 116057 and self:AntiSpam(2) then
+		activePetrification = "Amethyst"
+		timerPetrification:Start()
+	end
+end

@@ -79,7 +79,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
 	table.wipe(voodooDollTargetIcons)
-	timerShadowyAttackCD:start(7-delay)
+	timerShadowyAttackCD:Start(7-delay)
 	timerTotemCD:Start(-delay)
 	timerBanishmentCD:Start(-delay)
 end

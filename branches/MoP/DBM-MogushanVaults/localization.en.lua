@@ -5,6 +5,14 @@ local L
 ------------
 L= DBM:GetModLocalization(679)
 
+L:SetWarningLocalization({
+	SpecWarnOverloadSoon	= "%s castable in 7s!"
+})
+
+L:SetOptionLocalization({
+	SpecWarnOverloadSoon	= "Show special warning before overload",
+})
+
 L:SetMiscLocalization({
 	Overload	= "%s is about to Overload!"
 })

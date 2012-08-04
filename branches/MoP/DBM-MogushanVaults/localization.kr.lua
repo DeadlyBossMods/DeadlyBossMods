@@ -6,6 +6,14 @@ local L
 ------------
 L= DBM:GetModLocalization(679)
 
+L:SetWarningLocalization({
+	SpecWarnOverloadSoon	= "7초 후 %s 가능!"
+})
+
+L:SetOptionLocalization({
+	SpecWarnOverloadSoon	= "과부하 사전 특수 경고 보기",
+})
+
 L:SetMiscLocalization({
 	Overload	= "과부하되기 직전입니다!"
 })
