@@ -47,10 +47,12 @@ local Jade = EJ_GetSectionInfo(5773)
 local Jasper = EJ_GetSectionInfo(5774)
 local Cobalt = EJ_GetSectionInfo(5771)
 local Amethyst = EJ_GetSectionInfo(5691)
-local CobaltO = GetSpellInfo(115840)
-local JadeO = GetSpellInfo(115842)
-local JasperO = GetSpellInfo(115843)
-local AmethystO = GetSpellInfo(115844)
+local Overload = {
+	["Cobalt"] = GetSpellInfo(115840),
+	["Jade"] = GetSpellInfo(115842),
+	["Jasper"] = GetSpellInfo(115843),
+	["Amethyst"] = GetSpellInfo(115844)
+}
 local activePetrification = nil
 local jasperChainsTargets = {}
 
@@ -131,7 +133,7 @@ end
 function mod:OnSync(msg, boss)
 	-- if boss aprats from 10 yard and get Solid Stone, power no longer increase. If this, overlord not casts. So timer can be confusing. Disabled for find better way. 
 	if msg == "Overload" then
-		specWarnOverloadSoon:Show(boss.."O")
+		specWarnOverloadSoon:Show(Overload[boss])
 	end
 end
 
