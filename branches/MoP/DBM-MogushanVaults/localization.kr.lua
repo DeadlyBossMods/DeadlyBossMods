@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetMiscLocalization({
-	Overload	= "%s is about to Overload!"
+	Overload	= "과부하되기 직전입니다!"
 })
 
 ------------
@@ -16,9 +16,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(689)
 
 L:SetMiscLocalization({
-	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!",
-	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!",
-	Nature		= "Oh great spirit! Grant me the power of the earth!",--I did not log this one, text is probably not right
+	Fire		= "오 고귀한 자여! 나와 함께 발라내자! 뼈에서 살을!",
+	Arcane		= "오 세기의 현자여! 내게 비전의 지혜를 불어넣어라!",
+	Nature		= "오 위대한 영혼이여! 내게 대지의 힘을 부여하라!",--I did not log this one, text is probably not right
 	Shadow		= "Great soul of champions past! Bear to me your shield!"
 })
 

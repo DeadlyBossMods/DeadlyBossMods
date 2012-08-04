@@ -21,7 +21,7 @@ local warnJasperOverload			= mod:NewCastAnnounce(115843, 4, 7)
 local warnAmethystOverload			= mod:NewCastAnnounce(115844, 4, 7)
 --local warnCobaltGrasp				= mod:NewTargetAnnounce(116281, 3)
 local warnJadeShards				= mod:NewSpellAnnounce(116223, 3)
-local warnJasperChains				= mod:NewTargetAnnounce(116207, 4)
+local warnJasperChains				= mod:NewTargetAnnounce(130395, 4)
 local warnAmethystPool				= mod:NewSpellAnnounce(116235, 3, nil, mod:IsMelee())
 
 local specWarnCobaltOverload		= mod:NewSpecialWarningSpell(115840, nil, nil, nil, true)
@@ -29,8 +29,8 @@ local specWarnJadeOverload			= mod:NewSpecialWarningSpell(115842, nil, nil, nil,
 local specWarnJasperOverload		= mod:NewSpecialWarningSpell(115843, nil, nil, nil, true)
 local specWarnAmethystOverload		= mod:NewSpecialWarningSpell(115844, nil, nil, nil, true)
 --local specWarnCobaltGrasp			= mod:NewSpecialWarningDispel(116281, false)
-local specWarnJasperChains			= mod:NewSpecialWarningYou(115844)
-local yellJasperChains				= mod:NewYell(115844)
+local specWarnJasperChains			= mod:NewSpecialWarningYou(130395)
+local yellJasperChains				= mod:NewYell(130395)
 local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
 
 local timerCobaltOverload			= mod:NewCastTimer(7, 115840)
@@ -40,7 +40,7 @@ local timerAmethystOverload			= mod:NewCastTimer(7, 115844)
 --local timerGobaltGrasp			= mod:NewTargetTimer(6, 116281)
 --local timerGobaltGraspCD			= mod:NewCDTimer(12, 116281)--12-15second variations
 local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223)--Always 20.5 seconds
-local timerJasperChainsCD			= mod:NewCDTimer(12, 115844)--11-13
+local timerJasperChainsCD			= mod:NewCDTimer(12, 130395)--11-13
 local timerAmethystPoolCD			= mod:NewCDTimer(6, 116235, nil, mod:IsMelee())
 
 local expectedBosses = 3

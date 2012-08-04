@@ -14,6 +14,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -41,6 +43,7 @@ local warnSiphoningShield			= mod:NewSpellAnnounce(117203, 4)
 local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 4)
 local specWarnFlamingSpearOther		= mod:NewSpecialWarningTarget(116942, mod:IsTank())
 local specWarnWildSpark				= mod:NewSpecialWarningYou(116784)
+local specWarnWildfire				= mod:NewSpecialWarningMove(116793)
 local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, true)
 
 --Arcane/Staff
@@ -68,6 +71,7 @@ local timerArcaneVelocityCD			= mod:NewCDTimer(22, 116364)--22 seconds after las
 --Nature/Fist
 local timerLightningFistsCD			= mod:NewCDTimer(14, 116157)
 local timerEpicenterCD				= mod:NewCDTimer(29, 116018)
+local timerEpicenter				= mod:NewCastTimer(8, 116018)
 
 --Shadow/Shield (Heroic Only)
 local timerChainsOfShadowCD			= mod:NewCDTimer(6, 118783, nil, false)--6-10sec variation noted
@@ -137,6 +141,7 @@ function mod:SPELL_CAST_START(args)
 		warnEpicenter:Show()
 		specWarnEpicenter:Show()
 		soundEpicenter:Play()
+		timerEpicenter:Start()
 		timerEpicenterCD:Start()
 	elseif args:IsSpellID(116157) then
 		warnLightningFists:Show()
@@ -150,6 +155,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChainsOfShadowCD:Start()
 	end
 end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 116793 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+		specWarnWildfire:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Fire or msg:find(L.Fire) then
