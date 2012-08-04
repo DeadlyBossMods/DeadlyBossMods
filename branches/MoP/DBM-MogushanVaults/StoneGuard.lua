@@ -102,19 +102,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if activePetrification == "Jade" then
 			timerPetrification:Cancel()
 		end
-		timerJadePetrification:Cancel()
 	elseif args:IsSpellID(115843) then -- Jasper
 		warnJasperOverload:Show()
 		if activePetrification == "Jasper" then
 			timerPetrification:Cancel()
 		end
-		timerJasperPetrification:Cancel()
 	elseif args:IsSpellID(115844) then -- Amethyst
 		warnAmethystOverload:Show()
 		if activePetrification == "Amethyst" then
 			timerPetrification:Cancel()
 		end
-		timerAmethystPetrification:Cancel()
 	elseif args:IsSpellID(116223) then
 		warnJadeShards:Show()
 		timerJadeShardsCD:Start()
