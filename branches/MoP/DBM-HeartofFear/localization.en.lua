@@ -65,7 +65,8 @@ L= DBM:GetModLocalization(737)
 L= DBM:GetModLocalization(743)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Show info frame for players affected by $spell:125390"
+	InfoFrame		= "Show info frame for players affected by $spell:125390",
+	RangeFrame		= "Show range frame (5) for $spell:123735"
 })
 
 L:SetMiscLocalization({
