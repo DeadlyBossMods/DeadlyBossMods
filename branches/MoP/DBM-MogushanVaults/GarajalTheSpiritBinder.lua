@@ -7,7 +7,8 @@ mod:SetModelID(41256)
 mod:SetZone()
 mod:SetUsedIcons(5, 6, 7, 8)
 
-mod:RegisterCombat("combat")
+-- Sometimes it fails combat detection on "combat". Use yell instead until the problem being founded.
+mod:RegisterCombat("yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
@@ -35,7 +36,7 @@ local timerTotemCD						= mod:NewNextTimer(36, 116174)
 local timerBanishmentCD					= mod:NewNextTimer(65, 116272)
 local timerSoulSever					= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerSpiritualInnervation			= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
-local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698")
+local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
 
 mod:AddBoolOption("SetIconOnVoodoo")
 
@@ -100,7 +101,6 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			timerSoulSever:Start()
 			warnSuicide:Schedule(25)
 		end
-
 	end
 end
 
@@ -133,7 +133,11 @@ function mod:OnSync(msg, target)
 	if msg == "SummonTotem" then
 		warnTotem:Show()
 		specWarnTotem:Show()
-		timerTotemCD:Start()
+		if self:IsDifficulty("normal10", "heroic10") then
+			timerTotemCD:Start()
+		else
+			timerTotemCD:Start(20.5)
+		end
 	elseif msg == "VoodooTargets" and target then
 		voodooDollTargets[#voodooDollTargets + 1] = target
 		self:Unschedule(warnVoodooDollTargets)

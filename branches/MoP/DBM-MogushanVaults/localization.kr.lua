@@ -18,6 +18,7 @@ L:SetMiscLocalization({
 	Overload	= "과부하되기 직전입니다!"
 })
 
+
 ------------
 -- Feng the Accursed --
 ------------
@@ -30,6 +31,7 @@ L:SetMiscLocalization({
 	Shadow		= "Great soul of champions past! Bear to me your shield!"
 })
 
+
 -------------------------------
 -- Gara'jal the Spiritbinder --
 -------------------------------
@@ -39,6 +41,11 @@ L:SetOptionLocalization({
 	RangeFrame			= "거리 프레임 표시 (8m)",
 	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
 })
+
+L:SetMiscLocalization({
+	Pull		= "죽을 시간이다!"
+})
+
 
 ----------------------
 -- The Spirit Kings --
@@ -67,6 +74,7 @@ L:SetOptionLocalization({
 	specWarnDespawnFloor		= "바닥이 무너지기 전에 특수 경고 보기",
 	timerDespawnFloor			= "바닥이 무너지기 전까지 남은 시간 바 표시"
 })
+
 
 ------------
 -- Will of the Emperor --

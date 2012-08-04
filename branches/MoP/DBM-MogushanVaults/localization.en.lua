@@ -41,6 +41,10 @@ L:SetOptionLocalization({
 	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
 })
 
+L:SetMiscLocalization({
+	Pull		= "It be dyin' time, now!"
+})
+
 
 ----------------------
 -- The Spirit Kings --
