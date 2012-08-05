@@ -19,22 +19,24 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
-
---Seems that Feng always change transforms Nature -> Fire -> Arcane -> Shadow(heroic)
---Nature/Fist (Phase 1)
+--Phase order is controlled by players. it is only pre determined order in LFR and LFR only.
+--Heroic a player can do ANY phase first. It even says this in encounter journal.
+--on normal, it lets you choose nature or fire first but it will not allow arcane first.
+--none the less, the player can still control it on normal, just not to degree of heroic. The EJ says it's random on normal but it's not.
+--Nature/Fist
 local warnPhase1					= mod:NewPhaseAnnounce(1)
 local warnLightningLash				= mod:NewStackAnnounce(131788, 3, nil, mod:IsTank())
 local warnLightningFists			= mod:NewSpellAnnounce(116157, 3)
 local warnEpicenter					= mod:NewSpellAnnounce(116018, 4)
 
---Fire/Spear (Phase 2)
+--Fire/Spear
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnFlamingSpear				= mod:NewStackAnnounce(116942, 3, nil, mod:IsTank())
 local warnWildSpark					= mod:NewTargetCountAnnounce(116784, 4)
 local yellWildSpark					= mod:NewYell(116784)
 local warnDrawFlame					= mod:NewSpellAnnounce(116711, 4)
 
---Arcane/Staff (Phase 3)
+--Arcane/Staff
 local warnPhase3					= mod:NewPhaseAnnounce(3)
 local warnArcaneShock				= mod:NewStackAnnounce(131790, 3, nil, mod:IsTank())
 local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
@@ -42,7 +44,7 @@ local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
 
 --Missing other ability entirely, cannot drycode it either, way too many spellids for it, no idea what's right.
 
---Shadow/Shield (Heroic Only, Phase 4)
+--Shadow/Shield (Heroic Only)
 local warnPhase4					= mod:NewPhaseAnnounce(4)
 local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
 local warnSiphoningShield			= mod:NewSpellAnnounce(117203, 4)
