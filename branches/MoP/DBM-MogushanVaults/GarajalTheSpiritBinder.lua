@@ -140,6 +140,8 @@ function mod:OnSync(msg, target)
 		--if they did change it to 20 sec for your testing it won't surprise me.
 		--if they did, they probably changed it for ALL modes. Blizz is trying very hard to make sure mechanics are identicle in 10 and 25 man.
 		--every boss i tested i tested in both and blizz goes out of their way this tier to match them up.
+		--WAIT< this change BETTER not be based off LFR, cause i'll revert it immediately if it was. LFR is NOT, i repeat, NOT equal to 25 man difficulty.
+		--this tier, i'd have more faith that 10 man timers are same as 25 vs LFR same as 25. If your log is from LFR, revert this asap and make your new timer LFR only.
 		if self:IsDifficulty("normal10", "heroic10") then
 			timerTotemCD:Start()
 		else
