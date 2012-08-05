@@ -9,6 +9,7 @@ mod:SetUsedIcons(5, 6, 7, 8)
 
 -- Sometimes it fails combat detection on "combat". Use yell instead until the problem being founded.
 --I'd REALLY like to see some transcriptor logs that prove your bug, i pulled this boss like 20 times, on 25 man, 100% functional engage trigger, not once did this mod fail to start, on 25 man or 10 man.
+--seems that combat detection fails only in lfr. (like DS Zonozz Void of Unmaking summon event.)
 --"<102.8> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Gara'jal the Spiritbinder#0xF150EAEF00000F5A#elit
 --"<103.1> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#It be dyin' time, now!#Gara'jal the Spiritbinder#####0#0##0#862##0#false#false", -- [291]
 mod:RegisterCombat("yell", L.Pull)
@@ -136,16 +137,10 @@ function mod:OnSync(msg, target)
 	if msg == "SummonTotem" then
 		warnTotem:Show()
 		specWarnTotem:Show()
-		--How recent of logs, newer then August 1st 25 man test? I did this fight on 25 (and 10), the timer was absolutely the same in both before.
-		--if they did change it to 20 sec for your testing it won't surprise me.
-		--if they did, they probably changed it for ALL modes. Blizz is trying very hard to make sure mechanics are identicle in 10 and 25 man.
-		--every boss i tested i tested in both and blizz goes out of their way this tier to match them up.
-		--WAIT< this change BETTER not be based off LFR, cause i'll revert it immediately if it was. LFR is NOT, i repeat, NOT equal to 25 man difficulty.
-		--this tier, i'd have more faith that 10 man timers are same as 25 vs LFR same as 25. If your log is from LFR, revert this asap and make your new timer LFR only.
-		if self:IsDifficulty("normal10", "heroic10") then
-			timerTotemCD:Start()
-		else
+		if self:IsDifficulty("lfr25") then
 			timerTotemCD:Start(20.5)
+		else
+			timerTotemCD:Start()
 		end
 	elseif msg == "VoodooTargets" and target then
 		voodooDollTargets[#voodooDollTargets + 1] = target

@@ -63,7 +63,8 @@ L= DBM:GetModLocalization(737)
 L= DBM:GetModLocalization(743)
 
 L:SetOptionLocalization({
-	InfoFrame		= "$spell:125390 주문의 영향을 받은 플레이어를 정보 프레임에 표시"
+	InfoFrame		= "$spell:125390 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
+	RangeFrame		= "$spell:123735 주문의 영향을 받은 경우 거리 프레임 표시(5m)"
 })
 
 L:SetMiscLocalization({
