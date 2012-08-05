@@ -212,7 +212,9 @@ function mod:SPELL_CAST_START(args)
 		warnEpicenter:Show()
 		specWarnEpicenter:Show()
 		soundEpicenter:Play()
-		timerEpicenter:Start()
+		if self:IsDifficulty("lfr25") then
+			timerEpicenter:Start()
+		end
 		timerEpicenterCD:Start()
 	elseif args:IsSpellID(116157) then
 		warnLightningFists:Show()
