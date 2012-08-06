@@ -76,7 +76,7 @@ local timerLightningLash			= mod:NewTargetTimer(20, 131788, nil, mod:IsTank())
 local timerLightningLashCD			= mod:NewCDTimer(8, 131788, nil, mod:IsTank())--not comfirmed
 local timerLightningFistsCD			= mod:NewCDTimer(14, 116157)
 local timerEpicenterCD				= mod:NewCDTimer(29, 116018)
-local timerEpicenter				= mod:NewCastTimer(10, 116018)
+local timerEpicenter				= mod:NewBuffActiveTimer(10, 116018)
 
 --Fire/Spear
 local timerFlamingSpear				= mod:NewTargetTimer(20, 116942, nil, mod:IsTank())
@@ -212,9 +212,7 @@ function mod:SPELL_CAST_START(args)
 		warnEpicenter:Show()
 		specWarnEpicenter:Show()
 		soundEpicenter:Play()
-		if self:IsDifficulty("lfr25") then
-			timerEpicenter:Start()
-		end
+		timerEpicenter:Start()
 		timerEpicenterCD:Start()
 	elseif args:IsSpellID(116157) then
 		warnLightningFists:Show()
