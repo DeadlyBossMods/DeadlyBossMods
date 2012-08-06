@@ -55,19 +55,7 @@ L= DBM:GetModLocalization(673)
 -----------------------
 L= DBM:GetModLocalization(657)
 
-L:SetTimerLocalization({
-	TimerTransition		= "Phase transition"
-})
-
-L:SetOptionLocalization({
-	TimerTransition		= "Show time for phase transitions"
-})
-
 L:SetMiscLocalization({
-	Pull		= "If you truly wish to undo what your kind have wrought upon our land you must first prove yourselves here in our school.",
-	Adds1Ended	= "You have bested our most junior of students.  Now you will face two of my most senior.",
-	Adds2Ended	= "You have bested my prize students. Perhaps you can be of use to us after all...",
-	Phase1Ended	= "%s vanishes to the shadows!",
 	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
 })
 
@@ -81,8 +69,8 @@ L= DBM:GetModLocalization(685)
 -----------------------
 L= DBM:GetModLocalization(686)
 
-L:SetMiscLocalization({
-	Defeat		= "No... NO!"
+L:SetOptionLocalization({
+	InfoFrame			= "$journal:5827 정보 프레임 보기"
 })
 
 -----------------------
@@ -197,7 +185,7 @@ L= DBM:GetModLocalization(663)
 L= DBM:GetModLocalization(665)
 
 L:SetWarningLocalization({
-	specWarnGetBoned	= "뼈 갑옷 클릭!"
+	specWarnGetBoned	= "뼈 무더기 클릭!"
 })
 
 L:SetOptionLocalization({
@@ -215,17 +203,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(666)
 
 L:SetMiscLocalization({
-	Kill	= "죽어라, 강령술사여!"
+	Kill	= "아니?!"
 })
 
 -----------------------
 -- Darkmaster Gandling --
 -----------------------
 L= DBM:GetModLocalization(684)
-
-L:SetMiscLocalization({
-	HarshLesson		= "spell:113395"--This is in the emote, shouldn't need localizing, just msg:find
-})
 
 -----------------------
 -- <<<Scarlet Halls>>> --

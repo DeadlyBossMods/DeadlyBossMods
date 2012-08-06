@@ -10,38 +10,33 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS"
 )
 
---[[
-local warnBlast			= mod:NewSpellAnnounce(102381, 3)
-local warnBreath		= mod:NewSpellAnnounce(102569, 4)
-local warnRewind		= mod:NewSpellAnnounce(101591, 3)
+local warnDisorientingSmash			= mod:NewTargetAnnounce(106872, 2)
+local warnShaSpike					= mod:NewSpellAnnounce(106877, 3)--maybe use target scanning?
+local warnEnrage					= mod:NewSpellAnnounce(38166, 4)
 
-local timerBlastCD		= mod:NewNextTimer(12, 102381)
-local timerBreathCD		= mod:NewNextTimer(22, 102569)
-
-function mod:OnCombatStart(delay)
-	timerBlastCD:Start(-delay)
-	timerBreathCD:Start(-delay)
-end
+local timerDisorientingSmashCD		= mod:NewCDTimer(13, 106872)--variables. not confirmed
+local timerShaSpikeCD				= mod:NewNextTimer(9, 106877)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101591) and self:AntiSpam() then
-		warnRewind:Show()
-		timerBlastCD:Cancel()
-		timerBreathCD:Cancel()
-		timerBlastCD:Start()
-		timerBreathCD:Start()
+	if args:IsSpellID(38166) then
+		warnEnrage:Show()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(102381) then
-		warnBlast:Show()
-		timerBlastCD:Start()
-	elseif args:IsSpellID(102569) then
-		warnBreath:Show()
-		timerBreathCD:Start()
+	if args:IsSpellID(106877) then
+		warnShaSpike:Show()
+		timerShaSpikeCD:Start()
 	end
-end--]]
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(106872) then
+		warnDisorientingSmash:Show(args.destName)
+		timerDisorientingSmashCD:Start()
+	end
+end

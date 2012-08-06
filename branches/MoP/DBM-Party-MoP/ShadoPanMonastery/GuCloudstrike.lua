@@ -10,12 +10,13 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"UNIT_DIED"
 )
 
 
 local warnInvokeLightning	= mod:NewSpellAnnounce(106984, 2, nil, false)
---local warnStaticField		= mod:NewTargetAnnounce(106923, 3)--Not verified target scanning works here yet
+local warnStaticField		= mod:NewSpellAnnounce(106923, 3)--Not verified target scanning works here yet
 local warnChargingSoul		= mod:NewSpellAnnounce(110945, 3)--Phase 2
 local warnLightningBreath	= mod:NewSpellAnnounce(102573, 3)
 local warnMagneticShroud	= mod:NewSpellAnnounce(107140, 4)
@@ -64,6 +65,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(106923) then
+		warnStaticField:Show()
 --		self:ScheduleMethod(0.1, "StaticFieldTarget")
 		timerStaticFieldCD:Start()
 	elseif args:IsSpellID(106984) then
@@ -74,6 +76,16 @@ function mod:SPELL_CAST_START(args)
 		timerLightningBreathCD:Start()
 	elseif args:IsSpellID(107140) then
 		warnMagneticShroud:Show()
+		specWarnMagneticShroud:Show()
 		timerMagneticShroudCD:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 56754 then
+		timerMagneticShroudCD:Cancel()
+		timerStaticFieldCD:Cancel()
+		timerLightningBreathCD:Cancel()
 	end
 end
