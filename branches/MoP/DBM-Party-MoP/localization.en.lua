@@ -184,11 +184,11 @@ L= DBM:GetModLocalization(663)
 L= DBM:GetModLocalization(665)
 
 L:SetWarningLocalization({
-	specWarnGetBoned	= "Get Bone Armor"
+	SpecWarnGetBoned	= "Get Bone Armor"
 })
 
 L:SetOptionLocalization({
-	specWarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
+	SpecWarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
 	InfoFrame			= "Show info frame for players not affected by $spell:113996"
 })
 

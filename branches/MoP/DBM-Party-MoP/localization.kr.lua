@@ -185,11 +185,11 @@ L= DBM:GetModLocalization(663)
 L= DBM:GetModLocalization(665)
 
 L:SetWarningLocalization({
-	specWarnGetBoned	= "뼈 무더기 클릭!"
+	SpecWarnGetBoned	= "뼈 무더기 클릭!"
 })
 
 L:SetOptionLocalization({
-	specWarnGetBoned	= "$spell:113996 효과가 없을 경우 특수 경고 보기",
+	SpecWarnGetBoned	= "$spell:113996 효과가 없을 경우 특수 경고 보기",
 	InfoFrame			= "$spell:113996 효과 없음에 대한 정보 프레임 보기"
 })
 

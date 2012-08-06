@@ -24,6 +24,14 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(689)
 
+L:SetWarningLocalization({
+	WarnPhase	= "%d 단계"
+})
+
+L:SetOptionLocalization({
+	WarnPhase	= "단계 전환 알림 보기"
+})
+
 L:SetMiscLocalization({
 	Fire		= "오 고귀한 자여! 나와 함께 발라내자! 뼈에서 살을!",
 	Arcane		= "오 세기의 현자여! 내게 비전의 지혜를 불어넣어라!",

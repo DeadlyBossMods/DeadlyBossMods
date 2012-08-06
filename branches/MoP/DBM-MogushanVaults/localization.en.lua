@@ -23,6 +23,14 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(689)
 
+L:SetWarningLocalization({
+	WarnPhase	= "Phase %d"
+})
+
+L:SetOptionLocalization({
+	WarnPhase	= "Announce Phase transition"
+})
+
 L:SetMiscLocalization({
 	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!",
 	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!",

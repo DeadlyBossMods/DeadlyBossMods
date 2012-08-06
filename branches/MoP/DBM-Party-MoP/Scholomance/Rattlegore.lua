@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 
 local warnBoneSpike		= mod:NewSpellAnnounce(113999, 3)
 
-local specWarnGetBoned	= mod:NewSpecialWarning("specWarnGetBoned")
+local specWarnGetBoned	= mod:NewSpecialWarning("SpecWarnGetBoned")
 local specWarnSoulFlame	= mod:NewSpecialWarningMove(114009)--Not really sure what the point of this is yet. It's stupid easy to avoid and seems to serve no fight purpose yet, besides maybe cover some of the bone's you need for buff.
 local specWarnRusting	= mod:NewSpecialWarningStack(113765, mod:IsTank(), 8)
 

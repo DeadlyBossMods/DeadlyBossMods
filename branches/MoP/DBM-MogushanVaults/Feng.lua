@@ -23,21 +23,20 @@ mod:RegisterEventsInCombat(
 --Heroic a player can do ANY phase first. It even says this in encounter journal.
 --on normal, it lets you choose nature or fire first but it will not allow arcane first.
 --none the less, the player can still control it on normal, just not to degree of heroic. The EJ says it's random on normal but it's not.
+
+local warnPhase						= mod:NewAnnounce("WarnPhase", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 --Nature/Fist
-local warnPhase1					= mod:NewPhaseAnnounce(1)
 local warnLightningLash				= mod:NewStackAnnounce(131788, 3, nil, mod:IsTank())
 local warnLightningFists			= mod:NewSpellAnnounce(116157, 3)
 local warnEpicenter					= mod:NewSpellAnnounce(116018, 4)
 
 --Fire/Spear
-local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnFlamingSpear				= mod:NewStackAnnounce(116942, 3, nil, mod:IsTank())
 local warnWildSpark					= mod:NewTargetCountAnnounce(116784, 4)
 local yellWildSpark					= mod:NewYell(116784)
 local warnDrawFlame					= mod:NewSpellAnnounce(116711, 4)
 
 --Arcane/Staff
-local warnPhase3					= mod:NewPhaseAnnounce(3)
 local warnArcaneShock				= mod:NewStackAnnounce(131790, 3, nil, mod:IsTank())
 local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
 local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
@@ -45,7 +44,6 @@ local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
 --Missing other ability entirely, cannot drycode it either, way too many spellids for it, no idea what's right.
 
 --Shadow/Shield (Heroic Only)
-local warnPhase4					= mod:NewPhaseAnnounce(4)
 local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
 local warnSiphoningShield			= mod:NewSpellAnnounce(117203, 4)
 
@@ -98,6 +96,7 @@ local timerSiphoningShieldCD		= mod:NewCDTimer(45, 117203)--45-50sec variation n
 
 local soundEpicenter				= mod:NewSound(116018)
 
+local phase = 0
 local sparkCount = 0
 local fragmentCount = 5
 local arcaneResonanceTargets = {}
@@ -108,6 +107,7 @@ local function warnArcaneResonanceTargets()
 end
 
 function mod:OnCombatStart(delay)
+	phase = 0
 	sparkCount = 0
 	table.wipe(arcaneResonanceTargets)
 end
@@ -236,19 +236,23 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Nature or msg:find(L.Nature) then
-		warnPhase1:Show()
+		phase = phase + 1
+		warnPhase:Show(phase)
 		timerLightningFistsCD:Start(6.5)
 		timerEpicenterCD:Start(19)
 	elseif msg == L.Fire or msg:find(L.Fire) then
-		warnPhase2:Show()
+		phase = phase + 1
+		warnPhase:Show(phase)
 		timerFlamingSpearCD:Start(5.5)
 		timerDrawFlameCD:Start(35)
 	elseif msg == L.Arcane or msg:find(L.Arcane) then
-		warnPhase3:Show()
+		phase = phase + 1
+		warnPhase:Show(phase)
 		timerArcaneResonanceCD:Start(14)
 		timerArcaneVelocityCD:Start(16.5)
 	elseif msg == L.Shadow or msg:find(L.Shadow) then
-		warnPhase4:Show()
+		phase = phase + 1
+		warnPhase:Show(phase)
 		timerSiphoningShieldCD:Start(6)
 		timerChainsOfShadowCD:Start(10)
 	end
