@@ -71,8 +71,8 @@ local firstPhase = true
 local iceFired = false
 local assaultCount = 0
 local pillarsRemaining = 4
-local frostPillar = EJ_GetSectionInfo(4069)
-local lightningPillar = EJ_GetSectionInfo(3919)
+local currentPillar = "Unknown"--Temp arg, just to prevent nil error if announce happens but you missed getting an assigned value (ie you disconnect and reconnect and came back mid frost/lightning phase)
+local Hagara = EJ_GetEncounterInfo(317)
 local CVAR = false
 local CVAR2 = false
 
@@ -104,6 +104,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
 		SetCVar("chatBubbles", 1)
 		CVAR = false
@@ -258,12 +259,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(3)
 		end
-	elseif args:IsSpellID(105311) then--Frost defeated.
-		pillarsRemaining = pillarsRemaining - 1
-		warnPillars:Show(frostPillar, pillarsRemaining)
-	elseif args:IsSpellID(105482) then--Lighting defeated.
-		pillarsRemaining = pillarsRemaining - 1
-		warnPillars:Show(lightningPillar, pillarsRemaining)
 	end
 end
 
@@ -282,6 +277,7 @@ function mod:SPELL_CAST_START(args)
 			CVAR2 = false
 		end
 		pillarsRemaining = 4
+		currentPillar = EJ_GetSectionInfo(4069)
 		timerAssaultCD:Cancel()
 		timerIceLanceCD:Cancel()
 		timerShatteringCD:Cancel()
@@ -290,6 +286,9 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Hide()
 		end
+		self:RegisterShortTermEvents(
+			"CHAT_MSG_MONSTER_YELL"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
+		)
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
 		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
 			SetCVar("chatBubbles", 1)
@@ -304,6 +303,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			pillarsRemaining = 4
 		end
+		currentPillar = EJ_GetSectionInfo(3919)
 		timerAssaultCD:Cancel()
 		timerIceLanceCD:Cancel()
 		timerShatteringCD:Cancel()
@@ -312,6 +312,9 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(10)
 		end
+		self:RegisterShortTermEvents(
+			"CHAT_MSG_MONSTER_YELL"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
+		)
 	elseif args:IsSpellID(105289, 108567, 110887, 110888) then
 		self:ScheduleMethod(0.2, "ShatteredIceTarget")
 	end
@@ -329,5 +332,16 @@ function mod:SPELL_SUMMON(args)
 		lanceTargets[#lanceTargets + 1] = args.sourceName
 		self:Unschedule(warnLanceTargets)
 		self:Schedule(0.5, warnLanceTargets)
+	end
+end
+
+--Faster way to get remaining count then cast triggers that are like 5 seconds too slow.
+function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
+	if boss == Hagara then
+		pillarsRemaining = pillarsRemaining - 1
+		warnPillars:Show(currentPillar, pillarsRemaining)
+		if pillarsRemaining == 0 then
+			self:UnregisterShortTermEvents()
+		end
 	end
 end
