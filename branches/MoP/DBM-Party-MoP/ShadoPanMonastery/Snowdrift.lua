@@ -14,12 +14,13 @@ mod:RegisterKill("yell", L.Defeat)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_YELL"
+	"RAID_BOSS_EMOTE"
 )
 
 --Chi blast warns very spammy. and not useful.
