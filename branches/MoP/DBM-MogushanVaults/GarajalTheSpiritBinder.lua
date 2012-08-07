@@ -6,6 +6,7 @@ mod:SetCreatureID(60143)
 mod:SetModelID(41256)
 mod:SetZone()
 mod:SetUsedIcons(5, 6, 7, 8)
+mod:SetMinSyncRevision(7731)
 
 -- Sometimes it fails combat detection on "combat". Use yell instead until the problem being founded.
 --I'd REALLY like to see some transcriptor logs that prove your bug, i pulled this boss like 20 times, on 25 man, 100% functional engage trigger, not once did this mod fail to start, on 25 man or 10 man.
