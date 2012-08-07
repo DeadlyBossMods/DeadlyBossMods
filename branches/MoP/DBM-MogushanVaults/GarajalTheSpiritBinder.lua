@@ -24,7 +24,7 @@ mod:RegisterEventsInCombat(
 
 --NOTES
 --Syncing is used for all warnings because the realms don't share combat events. You won't get warnings for other realm any other way.
---Voodoo dolls do not have a CD, they are linked to banishment, when he banishes current tank, he reapplies voodoo dolls to new tank and new players. If tank dies, he just recasts voodoo on a new current threat target.
+--Voodoo dolls do not have a CD, they are linked to banishment (or player deaths), when he banishes current tank, he reapplies voodoo dolls to new tank and new players. If tank dies, he just recasts voodoo on a new current threat target.
 --Latency checks are used for good reason (to prevent lagging users from sending late events and making our warnings go off again incorrectly). if you play with high latency and want to bypass latency check, do so with in game GUI option.
 local warnTotem							= mod:NewSpellAnnounce(116174, 2)
 local warnVoodooDolls					= mod:NewTargetAnnounce(122151, 3)
@@ -85,9 +85,10 @@ do
 			table.sort(voodooDollTargetIcons, sort_by_group)
 			local voodooIcon = 8
 			for i, v in ipairs(voodooDollTargetIcons) do
-				-- SetIcon is DBM function, SetRaidTraget is global function. 
-				-- Because v is uId, no reason to use SetIcon?
-				SetRaidTarget(v, voodooIcon)
+				-- DBM:SetIcon() is used because of follow reasons
+				--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
+				--2. It checks global dbm option "DontSetIcons"
+				self:SetIcon(UnitName(v), voodooIcon)
 				voodooIcon = voodooIcon - 1
 			end
 --			self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
