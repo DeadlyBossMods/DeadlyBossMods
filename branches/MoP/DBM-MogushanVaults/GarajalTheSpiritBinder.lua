@@ -85,7 +85,9 @@ do
 			table.sort(voodooDollTargetIcons, sort_by_group)
 			local voodooIcon = 8
 			for i, v in ipairs(voodooDollTargetIcons) do
-				self:SetIcon(UnitName(v), voodooIcon)
+				-- SetIcon is DBM function, SetRaidTraget is global function. 
+				-- Because v is uId, no reason to use SetIcon?
+				SetRaidTarget(v, voodooIcon)
 				voodooIcon = voodooIcon - 1
 			end
 --			self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
@@ -168,7 +170,7 @@ function mod:OnSync(msg, uId)
 			end
 		end
 	elseif msg == "VoodooGoneTargets" and uId then
-		table.remove(voodooDollTargetIcons, target)
+		table.remove(voodooDollTargetIcons, uId)
 		if self.Options.SetIconOnVoodoo then
 			SetRaidTarget(uId, 0)
 		end
