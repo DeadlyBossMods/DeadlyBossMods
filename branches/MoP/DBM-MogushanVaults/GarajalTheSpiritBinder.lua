@@ -104,14 +104,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(122151) then
-		self:SendSync("VoodooTargets", GetRaidUnitId(args.destName))
+		self:SendSync("VoodooTargets", DBM:GetRaidUnitId(args.destName))
 	elseif args:IsSpellID(117549) then
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
 			timerSpiritualInnervation:Start()
 			warnSuicide:Schedule(25)
 		end
 		if self:LatencyCheck() then
-			self:SendSync("SpiritualTargets", GetRaidUnitId(args.destName))
+			self:SendSync("SpiritualTargets", DBM:GetRaidUnitId(args.destName))
 		end
 	elseif args:IsSpellID(116278) then
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
@@ -129,7 +129,7 @@ function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actua
 		timerSoulSever:Cancel()
 		warnSuicide:Cancel()
 	elseif args:IsSpellID(122151) then
-		self:SendSync("VoodooGoneTargets", GetRaidUnitId(args.destName))
+		self:SendSync("VoodooGoneTargets", DBM:GetRaidUnitId(args.destName))
 	end
 end
 
@@ -141,7 +141,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnBanishment:Show()
 		end
 		if self:LatencyCheck() then
-			self:SendSync("BanishmentTarget", GetRaidUnitId(args.destName))
+			self:SendSync("BanishmentTarget", DBM:GetRaidUnitId(args.destName))
 		end
 	end
 end
