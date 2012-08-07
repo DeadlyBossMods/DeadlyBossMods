@@ -229,9 +229,9 @@ do
 		if shieldedMob == destGUID then
 			local absorbed
 			if subEvent == "SWING_MISSED" then 
-				absorbed = select( 2, ... ) 
+				absorbed = select( 3, ... ) 
 			elseif subEvent == "RANGE_MISSED" or subEvent == "SPELL_MISSED" or subEvent == "SPELL_PERIODIC_MISSED" then 
-				absorbed = select( 5, ... )
+				absorbed = select( 6, ... )
 			end
 			if absorbed then
 				absorbRemaining = absorbRemaining - absorbed
