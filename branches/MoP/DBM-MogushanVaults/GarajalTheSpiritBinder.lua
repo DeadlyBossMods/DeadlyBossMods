@@ -38,16 +38,27 @@ local specWarnBanishmentOther			= mod:NewSpecialWarningTarget(116272, mod:IsTank
 local specWarnVoodooDolls				= mod:NewSpecialWarningSpell(122151, false)
 
 local timerTotemCD						= mod:NewNextTimer(36, 116174)
-local timerBanishmentCD					= mod:NewNextTimer(65, 116272)
+local timerBanishmentCD					= mod:NewNextTimer(70, 116272)
 local timerSoulSever					= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerSpiritualInnervation			= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
 local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
 
 mod:AddBoolOption("SetIconOnVoodoo")
 
+local uName = {}
 local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
 local voodooDollTargetIcons = {}
+
+local function buildUName()
+	table.wipe(uName)
+	for i = 1, GetNumGroupMembers() do
+		local name, realm = nil
+		name, realm = UnitName("raid"..i)
+		if realm then name = name.."-"..realm end
+		uName["raid"..i] = name
+	end	
+end
 
 local function warnVoodooDollTargets()
 	warnVoodooDolls:Show(table.concat(voodooDollTargets, "<, >"))
@@ -60,9 +71,10 @@ local function warnSpiritualInnervationTargets()
 	table.wipe(spiritualInnervationTargets)
 end
 
+--[[
 local function ClearVoodooTargets()
 	table.wipe(voodooDollTargetIcons)
-end
+end--]]
 
 do
 	local function sort_by_group(v1, v2)
@@ -76,12 +88,13 @@ do
 				self:SetIcon(UnitName(v), voodooIcon)
 				voodooIcon = voodooIcon - 1
 			end
-			self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+--			self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 		end
 	end
 end
 
 function mod:OnCombatStart(delay)
+	buildUName()
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
 	table.wipe(voodooDollTargetIcons)
@@ -92,14 +105,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(122151) then
-		self:SendSync("VoodooTargets", args.destName)
+		self:SendSync("VoodooTargets", DBM:GetRaidUnitId(args.destName))
 	elseif args:IsSpellID(117549) then
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
 			timerSpiritualInnervation:Start()
 			warnSuicide:Schedule(25)
 		end
 		if self:LatencyCheck() then
-			self:SendSync("SpiritualTargets", args.destName)
+			self:SendSync("SpiritualTargets", DBM:GetRaidUnitId(args.destName))
 		end
 	elseif args:IsSpellID(116278) then
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
@@ -117,7 +130,7 @@ function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actua
 		timerSoulSever:Cancel()
 		warnSuicide:Cancel()
 	elseif args:IsSpellID(122151) then
-		self:SendSync("VoodooGoneTargets", args.destName)
+		self:SendSync("VoodooGoneTargets", DBM:GetRaidUnitId(args.destName))
 	end
 end
 
@@ -129,12 +142,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnBanishment:Show()
 		end
 		if self:LatencyCheck() then
-			self:SendSync("BanishmentTarget", args.destName)
+			self:SendSync("BanishmentTarget", DBM:GetRaidUnitId(args.destName))
 		end
 	end
 end
 
-function mod:OnSync(msg, target)
+function mod:OnSync(msg, uId)
 	if msg == "SummonTotem" then
 		warnTotem:Show()
 		specWarnTotem:Show()
@@ -143,30 +156,31 @@ function mod:OnSync(msg, target)
 		else
 			timerTotemCD:Start()
 		end
-	elseif msg == "VoodooTargets" and target then
-		voodooDollTargets[#voodooDollTargets + 1] = target
+	elseif msg == "VoodooTargets" and uId then
+		voodooDollTargets[#voodooDollTargets + 1] = uName[uId]
 		self:Unschedule(warnVoodooDollTargets)
 		self:Schedule(0.3, warnVoodooDollTargets)
 		if self.Options.SetIconOnVoodoo then
-			table.insert(voodooDollTargetIcons, DBM:GetRaidUnitId(target))
+			table.insert(voodooDollTargetIcons, uId)
 			self:UnscheduleMethod("SetVoodooIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
 				self:ScheduleMethod(0.5, "SetVoodooIcons")--Still seems touchy and .3 is too fast even on a 70ms connection in rare cases so back to .5
 			end
 		end
-	elseif msg == "VoodooGoneTargets" and target then
+	elseif msg == "VoodooGoneTargets" and uId then
+		table.remove(voodooDollTargetIcons, target)
 		if self.Options.SetIconOnVoodoo then
-			self:SetIcon(target, 0)
+			SetRaidTarget(uId, 0)
 		end
-	elseif msg == "SpiritualTargets" and target then
-		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = target
+	elseif msg == "SpiritualTargets" and uId then
+		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = uName[uId]
 		self:Unschedule(warnSpiritualInnervationTargets)
 		self:Schedule(0.3, warnSpiritualInnervationTargets)
-	elseif msg == "BanishmentTarget" and target then
-		warnBanishment:Show(target)
+	elseif msg == "BanishmentTarget" and uId then
+		warnBanishment:Show(uName[uId])
 		timerBanishmentCD:Start()
-		if target ~= UnitName("player") then--make sure YOU aren't target before warning "other"
-			specWarnBanishmentOther:Show(target)
+		if uName[uId] ~= UnitName("player") then--make sure YOU aren't target before warning "other"
+			specWarnBanishmentOther:Show(uName[uId])
 		end
 	end
 end
