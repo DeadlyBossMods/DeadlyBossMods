@@ -4947,18 +4947,30 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 -------------
 --  Icons  --
 -------------
-function bossModPrototype:SetIcon(target, icon, timer)
+function bossModPrototype:SetIcon(target, icon, timer, uId)
 	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank() == 0 then
 		return
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
-	local oldIcon = self:GetIcon(target) or 0
-	SetRaidTarget(DBM:GetRaidUnitId(target), icon)
-	self:UnscheduleMethod("SetIcon", target)
-	if timer then
-		self:ScheduleMethod(timer, "RemoveIcon", target)
-		if oldIcon then
-			self:ScheduleMethod(timer + 1, "SetIcon", target, oldIcon)
+	if uId then
+		local oldIcon = self:GetIcon(uId) or 0
+		SetRaidTarget(uId, icon)
+		self:UnscheduleMethod("SetIcon", uId)
+		if timer then
+			self:ScheduleMethod(timer, "RemoveIcon", uId)
+			if oldIcon then
+				self:ScheduleMethod(timer + 1, "SetIcon", uId, oldIcon)
+			end
+		end
+	else
+		local oldIcon = self:GetIcon(target) or 0
+		SetRaidTarget(DBM:GetRaidUnitId(target), icon)
+		self:UnscheduleMethod("SetIcon", target)
+		if timer then
+			self:ScheduleMethod(timer, "RemoveIcon", target)
+			if oldIcon then
+				self:ScheduleMethod(timer + 1, "SetIcon", target, oldIcon)
+			end
 		end
 	end
 end
