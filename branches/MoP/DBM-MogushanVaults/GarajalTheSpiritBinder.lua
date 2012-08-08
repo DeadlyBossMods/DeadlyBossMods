@@ -91,7 +91,7 @@ do
 				-- DBM:SetIcon() is used because of follow reasons
 				--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
 				--2. It checks global dbm option "DontSetIcons"
-				self:SetIcon(nil, voodooIcon, nil, v)
+				self:SetIcon(v, voodooIcon)
 				voodooIcon = voodooIcon - 1
 			end
 --			self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
@@ -176,7 +176,7 @@ function mod:OnSync(msg, uId)
 	elseif msg == "VoodooGoneTargets" and uId then
 		table.remove(voodooDollTargetIcons, uId)
 		if self.Options.SetIconOnVoodoo then
-			self:SetIcon(nil, 0, nil, uId)
+			self:SetIcon(uId, 0)
 		end
 	elseif msg == "SpiritualTargets" and uId then
 		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = uName[uId]

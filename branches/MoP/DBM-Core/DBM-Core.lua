@@ -1890,7 +1890,7 @@ do
 			local noResponse = {}
 			for i = 1, GetNumGroupMembers() do
 				if not UnitIsUnit("raid"..i, "player") then
-					table.insert(noResponse, (UnitName("raid"..i)))
+					table.insert(noResponse, (GetRaidRosterInfo(i)))
 				end
 			end
 			for i, v in pairs(results.responses) do
@@ -1962,8 +1962,8 @@ do
 					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
 					local noResponse = {}
 					for i = 1, GetNumGroupMembers() do
-						if not UnitIsUnit("raid"..i, "player") and raid[UnitName("raid"..i)] and raid[UnitName("raid"..i)].revision then -- only show players who actually can respond (== DBM users)
-							table.insert(noResponse, (UnitName("raid"..i)))
+						if not UnitIsUnit("raid"..i, "player") and raid[GetRaidRosterInfo(i)] and raid[GetRaidRosterInfo(i)].revision then -- only show players who actually can respond (== DBM users)
+							table.insert(noResponse, (GetRaidRosterInfo(i)))
 						end
 					end
 					for i, v in pairs(results.responses) do
@@ -4947,36 +4947,27 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 -------------
 --  Icons  --
 -------------
-function bossModPrototype:SetIcon(target, icon, timer, uId)
+function bossModPrototype:SetIcon(target, icon, timer)
 	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank() == 0 then
 		return
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
-	if uId then
-		local oldIcon = self:GetIcon(uId) or 0
-		SetRaidTarget(uId, icon)
-		self:UnscheduleMethod("SetIcon", uId)
-		if timer then
-			self:ScheduleMethod(timer, "RemoveIcon", uId)
-			if oldIcon then
-				self:ScheduleMethod(timer + 1, "SetIcon", uId, oldIcon)
-			end
-		end
-	else
-		local oldIcon = self:GetIcon(target) or 0
-		SetRaidTarget(DBM:GetRaidUnitId(target), icon)
-		self:UnscheduleMethod("SetIcon", target)
-		if timer then
-			self:ScheduleMethod(timer, "RemoveIcon", target)
-			if oldIcon then
-				self:ScheduleMethod(timer + 1, "SetIcon", target, oldIcon)
-			end
+	local uId = DBM:GetRaidUnitId(target)
+	-- if target is uId, GetRaidUnitId returns "none". In this condition, target regards as uId.
+	if uId == "none" then uId = target end
+	local oldIcon = self:GetIcon(uId) or 0
+	SetRaidTarget(uId, icon)
+	self:UnscheduleMethod("SetIcon", target)
+	if timer then
+		self:ScheduleMethod(timer, "RemoveIcon", target)
+		if oldIcon then
+			self:ScheduleMethod(timer + 1, "SetIcon", target, oldIcon)
 		end
 	end
 end
 
-function bossModPrototype:GetIcon(target)
-	return GetRaidTargetIndex(DBM:GetRaidUnitId(target))
+function bossModPrototype:GetIcon(uId)
+	return GetRaidTargetIndex(uId)
 end
 
 function bossModPrototype:RemoveIcon(target, timer)
