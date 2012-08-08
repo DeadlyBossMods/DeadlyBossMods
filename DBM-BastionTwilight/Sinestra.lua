@@ -87,7 +87,7 @@ end
 local function showOrbWarning(source)
 	table.wipe(orbList)
 	mod:Unschedule(showOrbWarning)
-	for i = 1, GetNumRaidMembers() do
+	for i = 1, DBM:GetGroupMembers() do
 		-- do some checks for 25/10 man raid size so we don't warn for ppl who are not in the instance
 		if GetInstanceDifficulty() == 3 and i > 10 then return end
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
