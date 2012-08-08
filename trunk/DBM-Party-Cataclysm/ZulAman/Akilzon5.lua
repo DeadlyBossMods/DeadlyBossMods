@@ -34,8 +34,8 @@ local eagleGUID = nil
 
 mod:RegisterOnUpdateHandler(function(self)
 	if self.Options.SetIconOnEagle and eagleGUID then
-		for i = 1, GetNumPartyMembers() do
-			local uId = "party"..i.."target"
+		for i = 0, DBM:GetGroupMembers() do
+			local uId = (i == 0 and "target") or "party"..i.."target"
 			local guid = UnitGUID(uId)
 			if guid == eagleGUID then
 				SetRaidTarget(uId, 8)

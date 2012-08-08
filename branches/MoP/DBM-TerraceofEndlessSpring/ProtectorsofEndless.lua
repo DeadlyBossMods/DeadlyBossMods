@@ -142,7 +142,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(117519) then
 		totalTouchOfSha = totalTouchOfSha + 1
 		warnTouchofSha:Show(args.destName)
-		if totalTouchOfSha < GetNumGroupMembers() then--This ability will not be cast if everyone in raid has it.
+		if totalTouchOfSha < DBM:GetGroupMembers() then--This ability will not be cast if everyone in raid has it.
 			if self:IsDifficulty("normal10", "normal25") then
 				timerTouchOfShaCD:Start()
 			else

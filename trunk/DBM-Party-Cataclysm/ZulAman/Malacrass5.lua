@@ -51,7 +51,7 @@ local function getClass(name)
 		_, class = UnitClass("player")
 	else
 		local nameString = "%s-%s"	-- "PlayerName-RealmName"
-		for i=1, GetNumPartyMembers() do
+		for i=1, DBM:GetGroupMembers() do
 			local n,r = UnitName("party"..i)	-- arg1 = PlayerName , arg2 = RealmName
 			if n == name or (n and r and nameString:format(n,r) == name) then
 				_, class = UnitClass("party"..i)

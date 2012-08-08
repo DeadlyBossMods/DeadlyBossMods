@@ -1249,6 +1249,10 @@ do
 		return inRaid
 	end
 
+	function DBM:GetGroupMembers()
+		return math.max(GetNumRaidMembers(), GetNumPartyMembers())
+	end
+
 	function DBM:GetRaidRank(name)
 		name = name or UnitName("player")
 		return (raid[name] and raid[name].rank) or 0
