@@ -21,7 +21,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "為$spell:92048的施放顯示計時器",
-	timerArcaneLockout			= "為$spell:91542法術鎖定顯示計時器",
+	timerArcaneLockout			= "為$spell:79710法術鎖定顯示計時器",
 	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
 	timerNefAblity				= "為困難技能增益冷卻顯示計時器",
 	SpecWarnActivated			= "當新首領啟動時顯示特別警告",
@@ -104,7 +104,7 @@ L:SetOptionLocalization({
 	TimerPhase				= "為下一階段顯示計時器",
 	RangeFrame				= "藍色階段時顯示距離框 (6碼)",
 	SetTextures				= "自動在黑暗階段停用投影材質\n(離開黑暗階段後回到啟用)",
-	FlashFreezeIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	FlashFreezeIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77699),
 	BitingChillIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
@@ -141,17 +141,17 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	OnyTailSwipe			= "為奧妮克希亞的$spell:77827顯示警告",
 	NefTailSwipe			= "為奈法利安的$spell:77827顯示警告",
-	OnyBreath				= "為奧妮克希亞的$spell:94124顯示警告",
-	NefBreath				= "為奈法利安的$spell:94124顯示警告",
+	OnyBreath				= "為奧妮克希亞的$spell:77826顯示警告",
+	NefBreath				= "為奈法利安的$spell:77826顯示警告",
 	specWarnCinderMove		= "為$spell:79339顯示特殊警告提示你離開(爆炸前5秒)",
 	warnShadowblazeSoon		= "為$spell:81031顯示提前警告\n(只在計時器與第一次大喊台詞同步後顯示, 以確保準確)",
 	specWarnShadowblazeSoon	= "為$spell:94085顯示預先特別警告(約5秒)",
 	timerNefLanding			= "為奈法利安落地顯示計時器",
 	OnySwipeTimer			= "為奧妮克希亞的$spell:77827的冷卻時間顯示計時器",
 	NefSwipeTimer			= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
-	OnyBreathTimer			= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
-	NefBreathTimer			= "為奈法利安的$spell:94124的冷卻時間顯示計時器",
-	InfoFrame				= "為奧妮克希亞的電流充能顯示資訊框架",
+	OnyBreathTimer			= "為奧妮克希亞的$spell:77826的冷卻時間顯示計時器",
+	NefBreathTimer			= "為奈法利安的$spell:77826的冷卻時間顯示計時器",
+	InfoFrame				= "為$journal:3284顯示資訊框架",
 	SetWater				= "進入戰鬥後自動停用水體細節\n(離開戰鬥後回到啟用)",
 	TankArrow				= "為風箏復生的白骨戰士的人顯示DBM箭頭\n(設計為只有一個風箏坦)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
