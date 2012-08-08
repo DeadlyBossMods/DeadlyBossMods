@@ -1268,6 +1268,13 @@ do
 		name = name or UnitName("player")
 		return (raid[name] and raid[name].id) or "none"
 	end
+
+	function DBM:GetUnitFullName(uId)
+		uId = uId or "player"
+		local name, realm = UnitName(uId)
+		if realm then name = name.."-"..realm end
+		return name or "none"
+	end
 end
 
 
