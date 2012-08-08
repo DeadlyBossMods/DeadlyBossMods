@@ -6,7 +6,7 @@ mod:SetCreatureID(60143)
 mod:SetModelID(41256)
 mod:SetZone()
 mod:SetUsedIcons(5, 6, 7, 8)
-mod:SetMinSyncRevision(7733)
+mod:SetMinSyncRevision(7751)
 
 -- Sometimes it fails combat detection on "combat". Use yell instead until the problem being founded.
 --I'd REALLY like to see some transcriptor logs that prove your bug, i pulled this boss like 20 times, on 25 man, 100% functional engage trigger, not once did this mod fail to start, on 25 man or 10 man.
@@ -48,6 +48,13 @@ mod:AddBoolOption("SetIconOnVoodoo")
 local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
 local voodooDollTargetIcons = {}
+local guids = {}
+local function buildGuidTable()
+	table.wipe(guids)
+	for i = 1, DBM:GetGroupMembers() do
+		guids[UnitGUID("raid"..i) or "none"] = GetRaidRosterInfo(i)
+	end
+end
 
 local function warnVoodooDollTargets()
 	warnVoodooDolls:Show(table.concat(voodooDollTargets, "<, >"))
@@ -86,6 +93,7 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	buildGuidTable()
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
 	table.wipe(voodooDollTargetIcons)
@@ -96,14 +104,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(122151) then
-		self:SendSync("VoodooTargets", DBM:GetRaidUnitId(args.destName))
+		self:SendSync("VoodooTargets", args.destGUID)
 	elseif args:IsSpellID(117549) then
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
 			timerSpiritualInnervation:Start()
 			warnSuicide:Schedule(25)
 		end
 		if self:LatencyCheck() then
-			self:SendSync("SpiritualTargets", DBM:GetRaidUnitId(args.destName))
+			self:SendSync("SpiritualTargets", args.destGUID)
 		end
 	elseif args:IsSpellID(116278) then
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
@@ -121,7 +129,7 @@ function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actua
 		timerSoulSever:Cancel()
 		warnSuicide:Cancel()
 	elseif args:IsSpellID(122151) then
-		self:SendSync("VoodooGoneTargets", DBM:GetRaidUnitId(args.destName))
+		self:SendSync("VoodooGoneTargets", args.destGUID)
 	end
 end
 
@@ -133,12 +141,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnBanishment:Show()
 		end
 		if self:LatencyCheck() then
-			self:SendSync("BanishmentTarget", DBM:GetRaidUnitId(args.destName))
+			self:SendSync("BanishmentTarget", args.destGUID)
 		end
 	end
 end
 
-function mod:OnSync(msg, uId)
+function mod:OnSync(msg, guid)
 	if msg == "SummonTotem" then
 		warnTotem:Show()
 		specWarnTotem:Show()
@@ -147,28 +155,29 @@ function mod:OnSync(msg, uId)
 		else
 			timerTotemCD:Start()
 		end
-	elseif msg == "VoodooTargets" and uId then
-		voodooDollTargets[#voodooDollTargets + 1] = self:GetUnitFullName(uId)
+	elseif msg == "VoodooTargets" and guids[guid] then
+		voodooDollTargets[#voodooDollTargets + 1] = guids[guid]
 		self:Unschedule(warnVoodooDollTargets)
 		self:Schedule(0.3, warnVoodooDollTargets)
 		if self.Options.SetIconOnVoodoo then
-			table.insert(voodooDollTargetIcons, uId)
+			table.insert(voodooDollTargetIcons, DBM:GetRaidUnitId(guids[guid]))
 			self:UnscheduleMethod("SetVoodooIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
 				self:ScheduleMethod(0.5, "SetVoodooIcons")--Still seems touchy and .3 is too fast even on a 70ms connection in rare cases so back to .5
 			end
 		end
-	elseif msg == "VoodooGoneTargets" and uId then
+	elseif msg == "VoodooGoneTargets" and guids[guid] then
+		local uId = DBM:GetRaidUnitId(guids[guid])
 		table.remove(voodooDollTargetIcons, uId)
 		if self.Options.SetIconOnVoodoo then
 			self:SetIcon(uId, 0)
 		end
-	elseif msg == "SpiritualTargets" and uId then
-		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = self:GetUnitFullName(uId)
+	elseif msg == "SpiritualTargets" and guids[guid] then
+		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = guids[guid]
 		self:Unschedule(warnSpiritualInnervationTargets)
 		self:Schedule(0.3, warnSpiritualInnervationTargets)
-	elseif msg == "BanishmentTarget" and uId then
-		local target = self:GetUnitFullName(uId)
+	elseif msg == "BanishmentTarget" and guids[guid] then
+		local target = guids[guId]
 		warnBanishment:Show(target)
 		timerBanishmentCD:Start()
 		if target ~= UnitName("player") then--make sure YOU aren't target before warning "other"
