@@ -176,7 +176,7 @@ function mod:OnSync(msg, uId)
 	elseif msg == "VoodooGoneTargets" and uId then
 		table.remove(voodooDollTargetIcons, uId)
 		if self.Options.SetIconOnVoodoo then
-			self:SetIcon(nil, 10, nil, uId)
+			self:SetIcon(nil, 0, nil, uId)
 		end
 	elseif msg == "SpiritualTargets" and uId then
 		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = uName[uId]
