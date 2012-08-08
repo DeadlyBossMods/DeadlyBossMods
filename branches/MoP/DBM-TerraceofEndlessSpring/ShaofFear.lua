@@ -14,39 +14,46 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+local warnThrash						= mod:NewSpellAnnounce(131996, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnConjureTerrorSpawns			= mod:NewSpellAnnounce(119108, 3)
 local warnBreathOfFearSoon				= mod:NewPreWarnAnnounce(119414, 3, 10)
 local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 3)
-local warnOminousCrackle				= mod:NewTargetAnnounce(129147, 4)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
+local warnOminousCackle					= mod:NewTargetAnnounce(129147, 4)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
 
+local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
 local specWarnBreathOfFear				= mod:NewSpecialWarningSpell(119414, nil, nil, nil, true)
-local specWarnOminousCrackle			= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
-local specWarnOminousCrackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
+local specWarnOminousCackle				= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
+local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
 local specWarnTerrorSpawn				= mod:NewSpecialWarningSwitch("ej6088",  mod:IsDps())
 local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, true)--Platform ability, particularly nasty damage, and fear.
+local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
 
+local timerThrashCD						= mod:NewCDTimer(10, 131996, nil, mod:IsTank() or mod:IsHealer())--Every 10-15 seconds.
 local timerBreathOfFearCD				= mod:NewNextTimer(33.5, 119414)--Based off bosses energy, he casts at 100 energy, and gains about 3 energy per second, so every 33-34 seconds is a breath.
-local timerOminousCrackleCD				= mod:NewNextTimer(91.5, 119693)
+local timerOminousCackleCD				= mod:NewNextTimer(55, 119693)
 local timerDreadSpray					= mod:NewBuffActiveTimer(8, 120047)
 local timerDreadSprayCD					= mod:NewNextTimer(20.5, 120047)
-local timerTerrorSpawnCD				= mod:NewNextTimer(30, 119108)
+local timerTerrorSpawnCD				= mod:NewNextTimer(60, 119108)--every 60 or so seconds, maybe a little more maybe a little less, not sure. this is just based on instinct after seeing where 30 fit.
 
-local onPlatform = false--you're on one of side platforms. WARNING: do to no one in the test actually successfully LEAVING platform, we currently don't accurately depict when you leave a platform, only assume it.
-local ominousCrackleTargets = {}
+local ominousCackleTargets = {}
 local platformGUIDs = {}
+local onPlatform = false--Used to determine when YOU are sent to a platform, so we know to activate platformMob on next shoot
+local platformMob = nil--Use this so we can filter platform events and show you only ones for YOUR platform while ignoring other platforms events.
 
-local function warnOminousCrackleTargets()
-	warnOminousCrackle:Show(table.concat(ominousCrackleTargets, "<, >"))
-	table.wipe(ominousCrackleTargets)
+local function warnOminousCackleTargets()
+	warnOminousCackle:Show(table.concat(ominousCackleTargets, "<, >"))
+	table.wipe(ominousCackleTargets)
 end
 
 function mod:OnCombatStart(delay)
-	self:TerrorSpawns()
 	warnBreathOfFearSoon:Schedule(23.4-delay)
+	timerOminousCackleCD:Start(25.5-delay)
+	timerTerrorSpawnCD:Start(30-delay)--still not perfect, it's hard to do yells when you're always the tank sent out of range of them. I need someone else to do /yell when they spawn and give me timing
+	self:ScheduleMethod(30-delay, "TerrorSpawns")
 	timerBreathOfFearCD:Start(-delay)
-	timerOminousCrackleCD:Start(45.5-delay)
 	onPlatform = false
-	table.wipe(ominousCrackleTargets)
+	platformMob = nil
+	table.wipe(ominousCackleTargets)
 	table.wipe(platformGUIDs)
 end
 
@@ -60,12 +67,12 @@ function mod:TerrorSpawns()
 		warnConjureTerrorSpawns:Show()
 		timerTerrorSpawnCD:Start()
 		self:UnscheduleMethod("TerrorSpawns")
-		self:ScheduleMethod(30, "TerrorSpawns")
+		self:ScheduleMethod(60, "TerrorSpawns")
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(119414) then
+	if args:IsSpellID(119414) and self:AntiSpam(5) then--using this with antispam is still better then registering SPELL_CAST_SUCCESS for a single event when we don't have to. Less cpu cause mod won't have to check every SPELL_CAST_SUCCESS event.
 		warnBreathOfFear:Show()
 		if not onPlatform then--not in middle, not your problem
 			specWarnBreathOfFear:Show()
@@ -73,16 +80,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBreathOfFearSoon:Schedule(23.4)
 		timerBreathOfFearCD:Start()--we still start this for EVERYONE though because you can't blindly leave platform and walk into a breath cause you didn't know it was soon.
 	elseif args:IsSpellID(129147) then
-		ominousCrackleTargets[#ominousCrackleTargets + 1] = args.destName
+		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
 			onPlatform = true
-			specWarnOminousCrackleYou:Show()
+			specWarnOminousCackleYou:Show()
 		end
-		self:Unschedule(warnOminousCrackleTargets)
-		self:Schedule(0.3, warnOminousCrackleTargets)
-	elseif args:IsSpellID(120047) and onPlatform then
-		timerDreadSpray:Start(args.sourceGUID)--args.sourceGUID in case you screw up and have 2 platforms at same time (probably a wipe at that point)
-		timerDreadSprayCD:Start(args.sourceGUID)
+		self:Unschedule(warnOminousCackleTargets)
+		self:Schedule(1, warnOminousCackleTargets)
+	elseif args:IsSpellID(120047) and platformMob and args.sourceName == platformMob  then--might change
+		timerDreadSpray:Start()
+		timerDreadSprayCD:Start()
+	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform
+		onPlatform = false
+		platformMob = nil
+	elseif args:IsSpellID(118977) then--Fearless, you're leaving platform
+		warnThrash:Show()
+		specWarnThrash:Show()
+		timerThrashCD:Start()
 	end
 end
 
@@ -94,18 +108,20 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(119693) then
-		specWarnOminousCrackle:Show()
-		timerOminousCrackleCD:Start()
+		specWarnOminousCackle:Show()
+		timerOminousCackleCD:Start()
 	elseif args:IsSpellID(119862) and onPlatform and not platformGUIDs[args.sourceGUID] then--Best way to track engaging one of the side adds, they cast this instantly.
 		platformGUIDs[args.sourceGUID] = true
-		timerDreadSprayCD:Start(10, args.sourceGUID)--We can accurately start perfectly accurate spray cd bar off their first shoot cast.
+		platformMob = args.sourceName--Get name of your platform mob so we can determine which mob you have engaged
+		timerDreadSprayCD:Start(10.5, args.sourceGUID)--We can accurately start perfectly accurate spray cd bar off their first shoot cast.
+	elseif args:IsSpellID(119888) and platformMob and args.sourceName == platformMob then
+		specWarnDeathBlossom:Show()
 	end
 end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 61042 or cid == 61046 or cid == 61038 then
-		onPlatform = false--hack for time being, until we have a way to ACCURATELY detect when YOU leave a platform, just assume when any platform mob dies, that you're leaving a platform.
 		timerDreadSpray:Cancel(args.destGUID)
 		timerDreadSprayCD:Cancel(args.destGUID)
 	end
