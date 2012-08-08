@@ -134,7 +134,7 @@ end
 
 do
 	local function sort_by_group(v1, v2)
-		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
+		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
 	function mod:SetTombIcons()
 		if DBM:GetRaidRank() > 0 then
@@ -142,9 +142,9 @@ do
 			local tombIcons = 8
 			for i, v in ipairs(tombIconTargets) do
 				if self.Options.AnnounceFrostTombIcons and IsRaidLeader() then
-					SendChatMessage(L.TombIconSet:format(tombIcons, UnitName(v)), "RAID")
+					SendChatMessage(L.TombIconSet:format(tombIcons, DBM:GetUnitFullName(v)), "RAID")
 				end
-				self:SetIcon(UnitName(v), tombIcons)
+				self:SetIcon(v, tombIcons)
 				tombIcons = tombIcons - 1
 			end
 			self:Schedule(8, ClearTombTargets)

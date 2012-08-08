@@ -46,15 +46,14 @@ local function drakeDied(GUID)
 end
 
 function mod:BoulderTarget(sGUID)
-	local targetname, realm = nil
+	local targetname = nil
 	for i=1, GetNumRaidMembers() do
 		if UnitGUID("raid"..i.."target") == sGUID then
-			targetname, realm = UnitName("raid"..i.."targettarget")
+			targetname = DBM:GetUnitFullName("raid"..i.."targettarget")
 			break
 		end
 	end
 	if targetname and self:AntiSpam(2, targetname) then--Anti spam using targetname as an identifier, will prevent same target being announced double/tripple but NOT prevent multiple targets being announced at once :)
-		if realm then targetname = targetname.."-"..realm end
 		warnBoulder:Show(targetname)
 		if targetname == UnitName("player") then
 			specWarnBoulder:Show()
