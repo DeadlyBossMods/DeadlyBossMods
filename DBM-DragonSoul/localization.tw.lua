@@ -15,16 +15,18 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	KohcromWarning	= "為寇魔的技能顯示警告。",
-	KohcromCD		= "為寇魔下一次的技能顯示計時器。",
+	KohcromWarning	= "為$journal:4262的模仿能力顯示警告。",
+	KohcromCD		= "為$journal:4262下一次的模仿能力顯示計時器。",
 	RangeFrame		= "為成就顯示距離框(5碼)。"
+})
+
+L:SetMiscLocalization({
 })
 
 ---------------------
 -- Warlord Zon'ozz --
 ---------------------
 L= DBM:GetModLocalization(324)
-
 
 L:SetOptionLocalization({
 	ShadowYell			= "當你中了$spell:104600時大喊(英雄模式專用)",
@@ -49,12 +51,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerOozesActive	= "軟泥可被攻擊"
+	timerOozesActive	= "軟泥可被攻擊",
+	timerOozesReach		= "軟泥抵達頭目"
 })
 
 L:SetOptionLocalization({
 	warnOozesHit		= "為何種顏色的軟泥注入至首領發佈提示",
 	timerOozesActive	= "為軟泥重生後可被攻擊顯示計時器",
+	timerOozesReach		= "為何時軟泥抵達尤沙吉顯示計時器",
 	RangeFrame			= "為$spell:104898顯示距離框(4碼)(普通以上的難度)"
 })
 
@@ -168,9 +172,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnTendril			= "當你身上沒有$spell:109454減益時顯示特別警告",
-	InfoFrame				= "為沒有$spell:109454的玩家顯示訊息框",
-	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(109459),
+	SpecWarnTendril			= "當你身上沒有$spell:105563減益時顯示特別警告",
+	InfoFrame				= "為沒有$spell:105563的玩家顯示訊息框",
+	SetIconOnGrip			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(105490),
 	ShowShieldInfo			= "為$spell:105479顯示生命條"
 })
 
@@ -220,5 +224,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	EoEEvent			= "沒有用，巨龍之魂的力量太強了。我無法安全地使用它，它所含有的混沌力量會使我們滅亡。",
-	UltraxionTrash		= "很高興又見到你，雅立史卓莎。我離開這段時間忙得很。"
+	UltraxionTrash		= "很高興又見到你，雅立史卓莎。我離開這段時間忙得很。",
+	UltraxionTrashEnded = "這些幼龍、實驗品，只不過是實現更偉大目標的手段罷了。你會看到研究的龍蛋有什麼成果。"
 })

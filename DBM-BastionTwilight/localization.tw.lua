@@ -17,11 +17,11 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(157)
 
 L:SetOptionLocalization({
-	TBwarnWhileBlackout	= "當$spell:86788生效時顯示$spell:92898警告",
-	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
+	TBwarnWhileBlackout	= "當$spell:86369生效時顯示$spell:86788警告",
+	TwilightBlastArrow	= "當你附近的人中了$spell:86369時顯示DBM箭頭",
 	RangeFrame			= "顯示距離框(10碼)",
-	BlackoutShieldFrame	= "為$spell:92878顯示首領血量條",
-	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	BlackoutShieldFrame	= "為$spell:86788顯示首領血量條",
+	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86788),
 	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
@@ -78,9 +78,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(167)
 
 L:SetOptionLocalization({
-	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
+	CorruptingCrashArrow	= "當你附近的人中了$spell:81685時顯示DBM箭頭",
 	InfoFrame				= "為$journal:3165顯示資訊框架",
-	RangeFrame				= "為$spell:82235顯示距離框(5碼)",
+	RangeFrame				= "為$journal:3165顯示距離框(5碼)",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= "設定標記到暗色觸鬚"
 })
@@ -92,7 +92,6 @@ L= DBM:GetModLocalization(168)
 
 L:SetWarningLocalization({
 	WarnOrbSoon			= "暗影寶珠在%d秒!",
-	WarnEggWeaken		= "暮光殼甲從幕光蛋上消散!",
 	SpecWarnOrbs		= "暗影寶珠!小心!",
 	warnWrackJump		= "%s跳到>%s<",
 	warnAggro			= ">%s<為暗影寶珠的目標(可能的目標)",
@@ -107,8 +106,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnOrbSoon			= "提前警告暗影寶珠(5秒前, 每1秒)\n(猜測的時間，可能不準確)",
-	WarnEggWeaken		= "提前警告當$spell:87654消散",
-	warnWrackJump		= "提示$spell:92955的目標",
+	warnWrackJump		= "提示$spell:89421的目標",
 	warnAggro			= "提示玩家暗影寶珠的目標(可能的目標)",
 	SpecWarnAggroOnYou	= "顯示特別警告當你是暗影寶珠的目標時\n(可能的目標)",
 	SpecWarnOrbs		= "顯示特別警告暗影寶珠施放(猜測的警告)",
