@@ -78,6 +78,9 @@ end--]]
 
 do
 	local function sort_by_group(v1, v2)
+		-- This function seems to broken in cross-realm raid.
+		-- first parameter of UnitName returns only UnitName on other server players. but GetRaidSubgroup return value includes servernames.
+		-- I think it's better that check servernames, because player can be same name on other servers.
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
 	end
 	function mod:SetVoodooIcons()
