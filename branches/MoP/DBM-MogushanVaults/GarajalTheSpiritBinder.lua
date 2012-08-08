@@ -53,10 +53,7 @@ local voodooDollTargetIcons = {}
 local function buildUName()
 	table.wipe(uName)
 	for i = 1, GetNumGroupMembers() do
-		local name, realm = nil
-		name, realm = UnitName("raid"..i)
-		if realm then name = name.."-"..realm end
-		uName["raid"..i] = name
+		uName["raid"..i] = GetRaidRosterInfo(i)
 	end	
 end
 
