@@ -48,8 +48,8 @@ end
 function mod:OnCombatStart(delay)
 	warnBreathOfFearSoon:Schedule(23.4-delay)
 	timerOminousCackleCD:Start(25.5-delay)
-	timerTerrorSpawnCD:Start(30-delay)--still not perfect, it's hard to do yells when you're always the tank sent out of range of them. I need someone else to do /yell when they spawn and give me timing
-	self:ScheduleMethod(30-delay, "TerrorSpawns")
+--	timerTerrorSpawnCD:Start(25.5-delay)--still not perfect, it's hard to do yells when you're always the tank sent out of range of them. I need someone else to do /yell when they spawn and give me timing
+--	self:ScheduleMethod(25.5-delay, "TerrorSpawns")
 	timerBreathOfFearCD:Start(-delay)
 	onPlatform = false
 	platformMob = nil
@@ -57,14 +57,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(platformGUIDs)
 end
 
---Does not show in chat log, combat log, or trigger transcriptor event(besides initial pull when it triggers 119108)
---This is completely untested and based solely off wowhead tooltip, could be wrong if blizz has changed timing since making that tooltip (they did hotfix fight some during testing).
+--This may now be depricated, i think blizz synced these up to omninous cackle.
 function mod:TerrorSpawns()
 	if self:IsInCombat() then
-		if not onPlatform then--Can't switch to them if you aren't in middle.
-			specWarnTerrorSpawn:Show()
-		end
-		warnConjureTerrorSpawns:Show()
 		timerTerrorSpawnCD:Start()
 		self:UnscheduleMethod("TerrorSpawns")
 		self:ScheduleMethod(60, "TerrorSpawns")
@@ -112,6 +107,10 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(119693) then
 		specWarnOminousCackle:Show()
 		timerOminousCackleCD:Start()
+		if not onPlatform then--Can't switch to them if you aren't in middle.
+			specWarnTerrorSpawn:Show()
+		end
+		warnConjureTerrorSpawns:Show()
 	elseif args:IsSpellID(119862) and onPlatform and not platformGUIDs[args.sourceGUID] then--Best way to track engaging one of the side adds, they cast this instantly.
 		platformGUIDs[args.sourceGUID] = true
 		platformMob = args.sourceName--Get name of your platform mob so we can determine which mob you have engaged
