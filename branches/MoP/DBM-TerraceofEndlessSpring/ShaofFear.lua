@@ -86,7 +86,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOminousCackleYou:Show()
 		end
 		self:Unschedule(warnOminousCackleTargets)
-		self:Schedule(1, warnOminousCackleTargets)
+		self:Schedule(2, warnOminousCackleTargets)--this actually staggers a bit, so wait the full 2 seconds to get em all in one table
+		--"<76.6> [CLEU] SPELL_AURA_APPLIED#false#0x0100000000181B61#Lycanx#1298#0#0x0100000000181B61#Lycanx#1298#0#129147#Ominous Cackle#32#DEBUFF", -- [12143]
+		--"<78.3> [CLEU] SPELL_AURA_APPLIED#false#0x0100000000011E0F#Derevka#1300#0#0x0100000000011E0F#Derevka#1300#0#129147#Ominous Cackle#32#DEBUFF", -- [12440]
 	elseif args:IsSpellID(120047) and platformMob and args.sourceName == platformMob  then--might change
 		timerDreadSpray:Start()
 		timerDreadSprayCD:Start()
