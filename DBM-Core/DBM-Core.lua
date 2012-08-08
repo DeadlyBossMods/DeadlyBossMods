@@ -1896,7 +1896,7 @@ do
 			local noResponse = {}
 			for i = 1, GetNumRaidMembers() do
 				if not UnitIsUnit("raid"..i, "player") then
-					table.insert(noResponse, (UnitName("raid"..i)))
+					table.insert(noResponse, (GetRaidRosterInfo(i)))
 				end
 			end
 			for i, v in pairs(results.responses) do
@@ -1968,8 +1968,8 @@ do
 					-- copied from above, todo: implement a smarter way of keeping track of stuff like this
 					local noResponse = {}
 					for i = 1, GetNumRaidMembers() do
-						if not UnitIsUnit("raid"..i, "player") and raid[UnitName("raid"..i)] and raid[UnitName("raid"..i)].revision then -- only show players who actually can respond (== DBM users)
-							table.insert(noResponse, (UnitName("raid"..i)))
+						if not UnitIsUnit("raid"..i, "player") and raid[GetRaidRosterInfo(i)] and raid[GetRaidRosterInfo(i)].revision then -- only show players who actually can respond (== DBM users)
+							table.insert(noResponse, (GetRaidRosterInfo(i)))
 						end
 					end
 					for i, v in pairs(results.responses) do
@@ -4954,8 +4954,11 @@ function bossModPrototype:SetIcon(target, icon, timer)
 		return
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
-	local oldIcon = self:GetIcon(target) or 0
-	SetRaidTarget(DBM:GetRaidUnitId(target), icon)
+	local uId = DBM:GetRaidUnitId(target)
+	-- if target is uId, GetRaidUnitId returns "none". In this condition, target regards as uId.
+	if uId == "none" then uId = target end
+	local oldIcon = self:GetIcon(uId) or 0
+	SetRaidTarget(uId, icon)
 	self:UnscheduleMethod("SetIcon", target)
 	if timer then
 		self:ScheduleMethod(timer, "RemoveIcon", target)
@@ -4965,8 +4968,8 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	end
 end
 
-function bossModPrototype:GetIcon(target)
-	return GetRaidTargetIndex(DBM:GetRaidUnitId(target))
+function bossModPrototype:GetIcon(uId)
+	return GetRaidTargetIndex(uId)
 end
 
 function bossModPrototype:RemoveIcon(target, timer)
