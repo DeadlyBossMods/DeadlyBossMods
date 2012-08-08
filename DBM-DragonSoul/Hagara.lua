@@ -157,6 +157,12 @@ local function warnTombTargets()
 	table.wipe(tombTargets)
 end
 
+local function registerYell()
+	mod:RegisterShortTermEvents(
+		"CHAT_MSG_MONSTER_YELL"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
+	)
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(104451) then
 		tombTargets[#tombTargets + 1] = args.destName
@@ -286,9 +292,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Hide()
 		end
-		self:RegisterShortTermEvents(
-			"CHAT_MSG_MONSTER_YELL"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
-		)
+		self:Schedule(1, registerYell) -- delay 1 sec to ignore phase start yell.
 	elseif args:IsSpellID(105409, 109560, 109561, 109562) then--Water Shield
 		if self.Options.SetBubbles and not GetCVarBool("chatBubbles") and CVAR then--Only turn them back on if they are off now, but were on when we pulled
 			SetCVar("chatBubbles", 1)
@@ -312,9 +316,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(10)
 		end
-		self:RegisterShortTermEvents(
-			"CHAT_MSG_MONSTER_YELL"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
-		)
+		self:Schedule(1, registerYell) -- delay 1 sec to ignore phase start yell.
 	elseif args:IsSpellID(105289, 108567, 110887, 110888) then
 		self:ScheduleMethod(0.2, "ShatteredIceTarget")
 	end
