@@ -49,6 +49,7 @@ local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
 local voodooDollTargetIcons = {}
 local guids = {}
+local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
 local function buildGuidTable()
 	table.wipe(guids)
 	for i = 1, DBM:GetGroupMembers() do
@@ -94,6 +95,7 @@ end
 
 function mod:OnCombatStart(delay)
 	buildGuidTable()
+	guidTableBuilt = true
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
 	table.wipe(voodooDollTargetIcons)
@@ -147,6 +149,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:OnSync(msg, guid)
+	--Make sure we build a table if we DCed mid fight, before we try comparing any syncs to that table.
+	if not guidTableBuilt then
+		buildGuidTable()
+		guidTableBuilt = true
+	end
 	if msg == "SummonTotem" then
 		warnTotem:Show()
 		specWarnTotem:Show()
