@@ -96,7 +96,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(99052) then
 		smolderingCount = smolderingCount + 1
 		warnSmolderingDevastation:Show(smolderingCount)
-		if self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target") then--If spider is you're target or it's tank is, you're up top.
+		if self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == self:GetUnitFullName("target") then--If spider is you're target or it's tank is, you're up top.
 			specWarnSmolderingDevastation:Show()
 		end
 		timerSmolderingDevastation:Start()
@@ -128,7 +128,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnTouchWidowKissOther:Show(args.destName)
 		end
 	--Phase 1 ember flares. Only show for people who are actually up top.
-	elseif args:IsSpellID(98934, 100648, 100834, 100835) and (self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == UnitName("target")) then
+	elseif args:IsSpellID(98934, 100648, 100834, 100835) and (self:GetUnitCreatureId("target") == 52498 or self:GetBossTarget(52498) == self:GetUnitFullName("target")) then
 		timerEmberFlareCD:Start()
 	--Phase 2 ember flares. Show for everyone
 	elseif args:IsSpellID(99859, 100649, 100935, 100936) then

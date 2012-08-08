@@ -100,7 +100,7 @@ function mod:CorruptingCrashTarget(sGUID)
 	local targetname = nil
 	for i=1, GetNumRaidMembers() do
 		if UnitGUID("raid"..i.."target") == sGUID then
-			targetname = UnitName("raid"..i.."targettarget")
+			targetname = DBM:GetUnitFullName("raid"..i.."targettarget")
 			break
 		end
 	end
@@ -171,7 +171,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(81194, 93264, 93265, 93266) then
 		warnFlamingDestruction:Show()
-		if self:GetUnitCreatureId("target") == 43324 or self:GetBossTarget(43324) == UnitName("target") then--Add tank doesn't need this spam, just tank on chogal and healers healing that tank.
+		if self:GetUnitCreatureId("target") == 43324 or self:GetBossTarget(43324) == self:GetUnitFullName("target") then--Add tank doesn't need this spam, just tank on chogal and healers healing that tank.
 			specwarnFlamingDestruction:Show()
 		end
 		timerFlamingDestruction:Start()

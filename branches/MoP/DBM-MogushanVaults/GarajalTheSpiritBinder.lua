@@ -45,17 +45,9 @@ local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 11722
 
 mod:AddBoolOption("SetIconOnVoodoo")
 
-local uName = {}
 local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
 local voodooDollTargetIcons = {}
-
-local function buildUName()
-	table.wipe(uName)
-	for i = 1, GetNumGroupMembers() do
-		uName["raid"..i] = GetRaidRosterInfo(i)
-	end	
-end
 
 local function warnVoodooDollTargets()
 	warnVoodooDolls:Show(table.concat(voodooDollTargets, "<, >"))
@@ -75,13 +67,7 @@ end--]]
 
 do
 	local function sort_by_group(v1, v2)
-		-- add server name check
-		local name_v1, r_v1, name_v2, r_v2
-		name_v1, r_v1 = UnitName(v1)
-		name_v2, r_v2 = UnitName(v2)
-		if r_v1 then name_v1 = name_v1.."-"..r_v1 end
-		if r_v2 then name_v2 = name_v2.."-"..r_v2 end
-		return DBM:GetRaidSubgroup(name_v1) < DBM:GetRaidSubgroup(name_v2)
+		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
 	function mod:SetVoodooIcons()
 		if DBM:GetRaidRank() > 0 then
@@ -100,7 +86,6 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	buildUName()
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
 	table.wipe(voodooDollTargetIcons)
@@ -163,7 +148,7 @@ function mod:OnSync(msg, uId)
 			timerTotemCD:Start()
 		end
 	elseif msg == "VoodooTargets" and uId then
-		voodooDollTargets[#voodooDollTargets + 1] = uName[uId]
+		voodooDollTargets[#voodooDollTargets + 1] = self:GetUnitFullName(uId)
 		self:Unschedule(warnVoodooDollTargets)
 		self:Schedule(0.3, warnVoodooDollTargets)
 		if self.Options.SetIconOnVoodoo then
@@ -179,14 +164,15 @@ function mod:OnSync(msg, uId)
 			self:SetIcon(uId, 0)
 		end
 	elseif msg == "SpiritualTargets" and uId then
-		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = uName[uId]
+		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = self:GetUnitFullName(uId)
 		self:Unschedule(warnSpiritualInnervationTargets)
 		self:Schedule(0.3, warnSpiritualInnervationTargets)
 	elseif msg == "BanishmentTarget" and uId then
-		warnBanishment:Show(uName[uId])
+		local target = self:GetUnitFullName(uId)
+		warnBanishment:Show(target)
 		timerBanishmentCD:Start()
-		if uName[uId] ~= UnitName("player") then--make sure YOU aren't target before warning "other"
-			specWarnBanishmentOther:Show(uName[uId])
+		if target ~= UnitName("player") then--make sure YOU aren't target before warning "other"
+			specWarnBanishmentOther:Show(target)
 		end
 	end
 end
