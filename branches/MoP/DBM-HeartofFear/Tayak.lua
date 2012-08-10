@@ -27,6 +27,7 @@ local warnBladeTempest					= mod:NewCastAnnounce(125310, 4)--Phase 1 heroic
 local warnStormUnleashed				= mod:NewSpellAnnounce(123814, 3)--Phase 2
 
 local specWarnUnseenStrike				= mod:NewSpecialWarningTarget(122949)--Everyone needs to know this, and run to this person.
+local yellUnseenStrike					= mod:NewYell(122949)
 local specWarnOverwhelmingAssault		= mod:NewSpecialWarningStack(123474, mod:IsTank(), 2)
 local specWarnOverwhelmingAssaultOther	= mod:NewSpecialWarningTarget(123474, mod:IsTank())
 local specWarnBladeTempest				= mod:NewSpecialWarningRun(125310, true)
@@ -114,6 +115,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		warnUnseenStrike:Show(target)
 		specWarnUnseenStrike:Show(target)
 		timerUnseenStrikeCD:Start()
+		if target == UnitName("player") then
+			yellUnseenStrike:Yell()
+		end
 		if self.Options.UnseenStrikeArrow then
 			DBM.Arrow:ShowRunTo(target, 5)
 		end
