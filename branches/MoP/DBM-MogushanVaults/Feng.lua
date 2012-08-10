@@ -41,58 +41,65 @@ local warnArcaneShock				= mod:NewStackAnnounce(131790, 3, nil, mod:IsTank())
 local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
 local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
 
---Missing other ability entirely, cannot drycode it either, way too many spellids for it, no idea what's right.
-
 --Shadow/Shield (Heroic Only)
+local warnShadowBurn				= mod:NewStackAnnounce(131792, 3, nil, mod:IsTank())
 local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
 local warnSiphoningShield			= mod:NewSpellAnnounce(117203, 4)
 
 --Nature/Fist
-local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 4)
+local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 3)
 local specWarnLightningLashOther	= mod:NewSpecialWarningTarget(131788, mod:IsTank())
 local specWarnEpicenter				= mod:NewSpecialWarningRun(116018, nil, nil, nil, true)
 
 --Fire/Spear
-local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 4)
+local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 3)
 local specWarnFlamingSpearOther		= mod:NewSpecialWarningTarget(116942, mod:IsTank())
 local specWarnWildSpark				= mod:NewSpecialWarningYou(116784)
 local specWarnWildfire				= mod:NewSpecialWarningMove(116793)
 local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, true)
 
 --Arcane/Staff
-local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 4)
+local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 3)
 local specWarnArcaneShockOther		= mod:NewSpecialWarningTarget(131790, mod:IsTank())
 local specWarnArcaneResonance		= mod:NewSpecialWarningYou(116417)
 local yellArcaneResonance			= mod:NewYell(116417)
 local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, true)
 
 --Shadow/Shield (Heroic Only)
+local specWarnShadowBurn			= mod:NewSpecialWarningStack(131792, mod:IsTank(), 3)
+local specWarnShadowBurnOther		= mod:NewSpecialWarningTarget(131792, mod:IsTank())
 local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
 
 --Nature/Fist
 local timerLightningLash			= mod:NewTargetTimer(20, 131788, nil, mod:IsTank())
-local timerLightningLashCD			= mod:NewCDTimer(8, 131788, nil, mod:IsTank())--not comfirmed
+local timerLightningLashCD			= mod:NewCDTimer(9, 131788, nil, mod:IsTank())--9-20 second variation.
 local timerLightningFistsCD			= mod:NewCDTimer(14, 116157)
 local timerEpicenterCD				= mod:NewCDTimer(29, 116018)
 local timerEpicenter				= mod:NewBuffActiveTimer(10, 116018)
 
 --Fire/Spear
 local timerFlamingSpear				= mod:NewTargetTimer(20, 116942, nil, mod:IsTank())
-local timerFlamingSpearCD			= mod:NewCDTimer(8, 116942, nil, mod:IsTank())--8-11second variation, usually 10 though.
+local timerFlamingSpearCD			= mod:NewCDTimer(9, 116942, nil, mod:IsTank())--8-11second variation, usually 10 though.
 local timerWildSpark				= mod:NewTargetTimer(5, 116784)
 local timerDrawFlame				= mod:NewBuffActiveTimer(6, 116711)
 local timerDrawFlameCD				= mod:NewNextTimer(30, 116711)--30 seconds after last ended.
 
 --Arcane/Staff
 local timerArcaneShock				= mod:NewTargetTimer(20, 131790, nil, mod:IsTank())
-local timerArcaneShockCD			= mod:NewCDTimer(8, 131790, nil, mod:IsTank())--not comfirmed
+local timerArcaneShockCD			= mod:NewCDTimer(9, 131790, nil, mod:IsTank())--not comfirmed
 local timerArcaneResonanceCD		= mod:NewCDTimer(15, 116417)--CD is also duration, it's just cast back to back to back.
 local timerArcaneVelocityCD			= mod:NewCDTimer(22, 116364)--22 seconds after last ended.
 local timerArcaneVelocity			= mod:NewCastTimer(8, 116364)
 
 --Shadow/Shield (Heroic Only)
+local timerShadowBurn				= mod:NewTargetTimer(20, 131792, nil, mod:IsTank())
+local timerShadowBurnCD				= mod:NewCDTimer(9, 131792, nil, mod:IsTank())
 local timerChainsOfShadowCD			= mod:NewCDTimer(6, 118783, nil, false)--6-10sec variation noted
 local timerSiphoningShieldCD		= mod:NewCDTimer(45, 117203)--45-50sec variation noted
+
+--Tank Abilities
+local timerNullBarriorCD			= mod:NewCDTimer(60, 115817, nil, mod:IsTank() or mod:IsHealer())--I forget what CD of this was, 30 45 or 60, one of the 3
+
 
 local soundEpicenter				= mod:NewSound(116018)
 
@@ -125,6 +132,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArcaneShock:Show(args.destName, 1)
 		timerArcaneShock:Start(args.destName)
 		timerArcaneShockCD:Start()
+	elseif args:IsSpellID(131792) then
+		warnShadowBurn:Show(args.destName, 1)
+		timerShadowBurn:Start(args.destName)
+		timerShadowBurnCD:Start()
 	elseif args:IsSpellID(116784) then
 		sparkCount = sparkCount + 1
 		warnWildSpark:Show(sparkCount, args.destName)
@@ -189,14 +200,31 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 				specWarnArcaneShockOther:Show(args.destName)
 			end
 		end
+	elseif args:IsSpellID(131792) then
+		warnShadowBurn:Show(args.destName, 1)
+		timerShadowBurn:Start(args.destName)
+		timerShadowBurnCD:Start()
+		if args:IsPlayer() and (args.amount or 1) >= 3 then
+			specWarnShadowBurn:Show(args.amount)
+		else
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(131792)) and not UnitIsDeadOrGhost("player") then
+				specWarnShadowBurnOther:Show(args.destName)
+			end
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(116018) then
-		timerEpicenter:Cancel()--Epicenter can be removed by Lightning Fists (tank can steal). So added remove stuff.
+	if args:IsSpellID(131788) then
+		timerLightningLash:Cancel(args.destName)
 	elseif args:IsSpellID(116942) then
 		timerFlamingSpear:Cancel(args.destName)
+	elseif args:IsSpellID(131790) then
+		timerArcaneShock:Cancel(args.destName)
+	elseif args:IsSpellID(131792) then
+		timerShadowBurn:Cancel(args.destName)
+	elseif args:IsSpellID(116018) then
+		timerEpicenter:Cancel()--Epicenter can be removed by Lightning Fists (tank can steal). So added remove stuff.
 	elseif args:IsSpellID(116784) then
 		timerWildSpark:Cancel(args.destName)
 	elseif args:IsSpellID(116711) then
@@ -224,6 +252,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(118783) then
 		warnChainsOfShadow:Show()
 		timerChainsOfShadowCD:Start()
+	elseif args:IsSpellID(115817) then
+		timerNullBarriorCD:Start()
 	end
 end
 
