@@ -14,14 +14,14 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnStorm			= mod:NewTargetAnnounce(97300, 4)
-local warnStormSoon		= mod:NewSoonAnnounce(97300, 5, 3)
+local warnStorm			= mod:NewTargetAnnounce(43648, 4)
+local warnStormSoon		= mod:NewSoonAnnounce(43648, 5, 3)
 local warnPlucked		= mod:NewTargetAnnounce(97318, 3)
 
-local specWarnStorm		= mod:NewSpecialWarningSpell(97300)
+local specWarnStorm		= mod:NewSpecialWarningSpell(43648)
 
-local timerStorm		= mod:NewCastTimer(8, 97300)
-local timerStormCD		= mod:NewCDTimer(55, 97300)
+local timerStorm		= mod:NewCastTimer(8, 43648)
+local timerStormCD		= mod:NewCDTimer(55, 43648)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 
@@ -62,7 +62,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(97318)then
+	if args:IsSpellID(97318) then
 		if args:IsDestTypePlayer() then
 			warnPlucked:Show(args.destName)	
 		else

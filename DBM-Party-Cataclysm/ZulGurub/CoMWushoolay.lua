@@ -18,7 +18,7 @@ local warnRod			= mod:NewCastAnnounce(96698, 4)
 
 local specWarnRush		= mod:NewSpecialWarningYou(96697)--Assumed target scanning even works here, if it doesn't mod will be broken.
 local specWarnRushNear	= mod:NewSpecialWarningClose(96697)--Assumed target scanning even works here, if it doesn't mod will be broken.
-local specWarnCloud		= mod:NewSpecialWarningMove(96711)
+local specWarnCloud		= mod:NewSpecialWarningMove(96710)
 
 local timerRushCD		= mod:NewNextTimer(25, 96697)
 
@@ -58,7 +58,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(96711) and args:IsPlayer() then
+	if args:IsSpellID(96710, 96711) and args:IsPlayer() then
 		specWarnCloud:Show()
 	end
 end

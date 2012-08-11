@@ -90,7 +90,7 @@ L:SetOptionLocalization({
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "Show DBM Arrow when you are affected by $spell:99516 ",
 	InfoFrame			= "Show info frame for $spell:99262 stacks",
-	RangeFrame			= "Show range frame (5) for $spell:99404"
+	RangeFrame			= "Show range frame (5) for $spell:99257"
 })
 
 L:SetMiscLocalization({

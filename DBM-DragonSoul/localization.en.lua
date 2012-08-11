@@ -28,7 +28,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(324)
 
 L:SetOptionLocalization({
-	ShadowYell			= "Yell when you are affected by $spell:104600\n(Heroic difficulty only)",
+	ShadowYell			= "Yell when you are affected by $spell:103434\n(Heroic difficulty only)",
 	CustomRangeFrame	= "Range Frame options (Heroic only)",
 	Never				= "Disabled",
 	Normal				= "Normal Range Frame",

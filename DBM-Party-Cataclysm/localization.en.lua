@@ -505,8 +505,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	timerNextForm	= "Show timer for form changes.",
 	InfoFrame		= "Show info frame for players affected by $spell:42402",
-	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639),
-	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97672)
+	ThrowIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43093),
+	ClawRageIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43150)
 }
 
 L:SetMiscLocalization{

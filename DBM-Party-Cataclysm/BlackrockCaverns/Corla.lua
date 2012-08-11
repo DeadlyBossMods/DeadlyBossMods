@@ -28,7 +28,7 @@ local timerShadowStrike		= mod:NewCastTimer(2, 82362)
 local timerEvolution		= mod:NewBuffFadesTimer(15, 75697)
 
 local specWarnShadowStrike	= mod:NewSpecialWarningInterrupt(82362)
-local specWarnDarkCommand	= mod:NewSpecialWarningInterrupt(93462)
+local specWarnDarkCommand	= mod:NewSpecialWarningInterrupt(75823)
 local specWarnEvolution		= mod:NewSpecialWarningStack(75697, true, 80)
 
 function mod:OnCombatStart(delay)

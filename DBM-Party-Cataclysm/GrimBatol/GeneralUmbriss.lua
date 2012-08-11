@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnBleedingWound		= mod:NewTargetAnnounce(74846, 4, nil, mod:IsHealer() or mod:IsTank())
-local warnMalady			= mod:NewTargetAnnounce(90179, 2)
+local warnMalady			= mod:NewTargetAnnounce(74837, 2)
 local warnMalice			= mod:NewSpellAnnounce(90170, 4)
 local warnFrenzySoon		= mod:NewSoonAnnounce(74853, 2, nil, mod:IsHealer() or mod:IsTank())
 local warnFrenzy			= mod:NewSpellAnnounce(74853, 3, nil, mod:IsHealer() or mod:IsTank())
@@ -31,7 +31,7 @@ local timerBleedingWound	= mod:NewTargetTimer(15, 74846, nil, mod:IsHealer() or 
 local timerBleedingWoundCD	= mod:NewCDTimer(25, 74846, nil, mod:IsHealer() or mod:IsTank())
 local timerGroundSiege		= mod:NewCastTimer(2, 74634, nil, mod:IsHealer() or mod:IsMelee())
 local timerBlitz			= mod:NewCDTimer(23, 74670)
-local timerMalady			= mod:NewBuffFadesTimer(10, 90179)
+local timerMalady			= mod:NewBuffFadesTimer(10, 74837)
 local timerMalice			= mod:NewBuffActiveTimer(20, 90170)
 
 mod:AddBoolOption("PingBlitz")

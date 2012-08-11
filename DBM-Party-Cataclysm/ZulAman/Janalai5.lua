@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnFlameCast		= mod:NewSpellAnnounce(97855, 2)
+local warnFlameCast		= mod:NewSpellAnnounce(43140, 2)
 local warnAdds			= mod:NewSpellAnnounce(43962, 4)
 local warnAddsSoon		= mod:NewSoonAnnounce(43962, 3)
 local warnFireBomb		= mod:NewSpellAnnounce(42630, 3)
@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(97855) then
+	if args:IsSpellID(43140, 97855) then -- unconfirmed in mop
 		warnFlameCast:Show()	-- Seems he doesn't target the person :(
 	end
 end

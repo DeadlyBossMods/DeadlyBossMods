@@ -21,7 +21,7 @@ local warnAirphase			= mod:NewAnnounce("WarnAirphase", 2, "Interface\\AddOns\\DB
 local warnFissure			= mod:NewSpellAnnounce(80803, 3)
 local warnCrystalStorm		= mod:NewSpellAnnounce(92265, 4)
 
-local specWarnEruption 		= mod:NewSpecialWarningMove(92658)
+local specWarnEruption 		= mod:NewSpecialWarningMove(80801)
 local specWarnCrystalStorm 	= mod:NewSpecialWarning("specWarnCrystalStorm")
 
 local timerFissureCD		= mod:NewCDTimer(6.2, 80803)

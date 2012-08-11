@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_MISSED"
 )
 
-local warnThrow				= mod:NewTargetAnnounce(97639, 3)
+local warnThrow				= mod:NewTargetAnnounce(43093, 3)
 local warnWhirlwind			= mod:NewSpellAnnounce(17207, 3)
 local warnBear				= mod:NewSpellAnnounce(42594, 3)
 local warnEagle				= mod:NewSpellAnnounce(42606, 3)
@@ -24,13 +24,13 @@ local warnLynx				= mod:NewSpellAnnounce(42607, 3)
 local warnDragonhawk		= mod:NewSpellAnnounce(42608, 3)
 local warnParalysis			= mod:NewSpellAnnounce(43095, 4)--Bear Form
 local warnSurge				= mod:NewTargetAnnounce(42402, 3)--Bear Form
-local warnClawRage			= mod:NewTargetAnnounce(97672, 3)--Lynx Form
+local warnClawRage			= mod:NewTargetAnnounce(43150, 3)--Lynx Form
 local warnLightningTotem	= mod:NewSpellAnnounce(97930, 4)--Eagle Form
 
 local specWarnFlameBreath	= mod:NewSpecialWarningMove(97497)
-local specWarnBurn			= mod:NewSpecialWarningMove(97682)
+local specWarnBurn			= mod:NewSpecialWarningMove(43217)
 
-local timerThrow			= mod:NewNextTimer(15, 97639)
+local timerThrow			= mod:NewNextTimer(15, 43093)
 local timerParalysisCD		= mod:NewNextTimer(27, 43095)
 local timerSurgeCD			= mod:NewNextTimer(8.5, 42402)--Bear Form Ability, same mechanic as bear boss, cannot soak more than 1 before debuff fades or you will die.
 local timerLightningTotemCD	= mod:NewNextTimer(17, 97930)--Eagle Form Ability.
@@ -49,7 +49,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(97639) then
+	if args:IsSpellID(43093, 97639) then -- unconfirmed in mop
 		warnThrow:Show(args.destName)
 		timerThrow:Start()
 		if self.Options.ThrowIcon then
@@ -71,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(97639) and mod.Options.ThrowIcon then
+	if args:IsSpellID(43093, 97639) and mod.Options.ThrowIcon then -- unconfirmed in mop
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(42594) then--Bear
 		timerSurgeCD:Cancel()
@@ -123,7 +123,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if spellId == 97682 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
+	if (spellId == 43217 or spellId == 97682) and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then -- unconfirmed in mop
 		specWarnBurn:Show()
 	end
 end
