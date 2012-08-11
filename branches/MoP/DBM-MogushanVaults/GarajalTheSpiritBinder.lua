@@ -101,12 +101,18 @@ function mod:OnCombatStart(delay)
 	table.wipe(voodooDollTargetIcons)
 	timerShadowyAttackCD:Start(7-delay)
 	timerTotemCD:Start(-delay)
-	timerBanishmentCD:Start(-delay)
+	if self:IsDifficulty("lfr25") then
+		timerBanishmentCD:Start(65-delay)
+	else
+		timerBanishmentCD:Start(-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(122151) then
-		self:SendSync("VoodooTargets", args.destGUID)
+		if self:LatencyCheck() then
+			self:SendSync("VoodooTargets", args.destGUID)
+		end
 	elseif args:IsSpellID(117549) then
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
 			timerSpiritualInnervation:Start()
@@ -174,21 +180,23 @@ function mod:OnSync(msg, guid)
 			end
 		end
 	elseif msg == "VoodooGoneTargets" and guids[guid] then
-		local uId = DBM:GetRaidUnitId(guids[guid])
-		table.remove(voodooDollTargetIcons, uId)
+		table.remove(voodooDollTargetIcons, guids[guid])
 		if self.Options.SetIconOnVoodoo then
-			self:SetIcon(uId, 0)
+			self:SetIcon(guids[guid], 0)
 		end
 	elseif msg == "SpiritualTargets" and guids[guid] then
 		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = guids[guid]
 		self:Unschedule(warnSpiritualInnervationTargets)
 		self:Schedule(0.3, warnSpiritualInnervationTargets)
 	elseif msg == "BanishmentTarget" and guids[guid] then
-		local target = guids[guId]
-		warnBanishment:Show(target)
-		timerBanishmentCD:Start()
+		warnBanishment:Show(guids[guid])
+		if self:IsDifficulty("lfr25") then
+			timerBanishmentCD:Start(65)
+		else
+			timerBanishmentCD:Start()
+		end
 		if target ~= UnitName("player") then--make sure YOU aren't target before warning "other"
-			specWarnBanishmentOther:Show(target)
+			specWarnBanishmentOther:Show(guids[guid])
 		end
 	end
 end
@@ -196,5 +204,9 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 117215 or spellId == 117218 or spellId == 117219 or spellId == 117222) and self:AntiSpam(2, 1) then--Shadowy Attacks
 		timerShadowyAttackCD:Start()
+	elseif spellId == 116964 and self:AntiSpam(2, 2) then--Summon Totem
+		if self:LatencyCheck() then
+			self:SendSync("SummonTotem")
+		end
 	end
 end
