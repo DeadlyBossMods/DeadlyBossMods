@@ -91,7 +91,7 @@ L:SetOptionLocalization({
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "$spell:99516 주문의 영향을 받은 경우 DBM 화살표 보기",
 	InfoFrame			= "$spell:99262 정보 프레임 보기",
-	RangeFrame			= "$spell:99404 주문의 영향을 받은 경우 거리 프레임 보기 (5m)"
+	RangeFrame			= "$spell:99257 주문의 영향을 받은 경우 거리 프레임 보기 (5m)"
 })
 
 L:SetMiscLocalization({

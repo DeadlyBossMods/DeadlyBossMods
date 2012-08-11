@@ -18,11 +18,11 @@ mod:RegisterEventsInCombat(
 
 local warnDesecration		= mod:NewSpellAnnounce(93687, 3)
 local warnMaleficStrike		= mod:NewSpellAnnounce(93685, 2, nil, false)
-local warnShield			= mod:NewSpellAnnounce(93736, 4)
+local warnShield			= mod:NewSpellAnnounce(93693, 4)
 local warnWordShame			= mod:NewTargetAnnounce(93852, 3)
 local warnEmpowerment		= mod:NewCastAnnounce(93844, 4)
 
-local specWarnDesecration	= mod:NewSpecialWarningMove(94370)
+local specWarnDesecration	= mod:NewSpecialWarningMove(93691)
 local specWarnEmpowerment	= mod:NewSpecialWarningInterrupt(93844, false)
 
 local timerAdds				= mod:NewTimer(40, "TimerAdds", 48000)
@@ -33,7 +33,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(93736) then
+	if args:IsSpellID(93693, 93736) then -- unconfirmed in mop
 		warnShield:Show()
 	elseif args:IsSpellID(93852) then
 		warnWordShame:Show(args.destName)
@@ -57,7 +57,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
-	if spellId == 94370 and destGUID == UnitGUID("player") and self:AntiSpam(4) then
+	if (spellId == 93691 or spellId == 94370) and destGUID == UnitGUID("player") and self:AntiSpam(4) then
 		specWarnDesecration:Show()
 	end
 end

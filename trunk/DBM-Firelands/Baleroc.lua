@@ -25,13 +25,13 @@ local warnDecimationBlade	= mod:NewSpellAnnounce(99352, 4, nil, mod:IsTank() or 
 local warnStrike			= mod:NewAnnounce("warnStrike", 4, 99353, mod:IsTank() or mod:IsHealer())
 local warnInfernoBlade		= mod:NewSpellAnnounce(99350, 3, nil, mod:IsTank())
 local warnShardsTorment		= mod:NewCountAnnounce(99259, 3)
-local warnTormented			= mod:NewSpellAnnounce(99402, 3)--Self only warning.
+local warnTormented			= mod:NewSpellAnnounce(99257, 3)--Self only warning.
 local warnCountdown			= mod:NewTargetAnnounce(99516, 4)
 local yellCountdown			= mod:NewYell(99516)
 
 local specWarnShardsTorment	= mod:NewSpecialWarningSpell(99259, nil, nil, nil, true)
 local specWarnCountdown		= mod:NewSpecialWarningYou(99516)
-local specWarnTormented		= mod:NewSpecialWarningYou(99402, mod:IsHealer())
+local specWarnTormented		= mod:NewSpecialWarningYou(99257, mod:IsHealer())
 local specWarnDecimation	= mod:NewSpecialWarningSpell(99352, mod:IsTank())
 
 local timerBladeActive		= mod:NewTimer(15, "TimerBladeActive", 99352)
@@ -41,7 +41,7 @@ local timerShardsTorment	= mod:NewNextCountTimer(34, 99259)
 local timerCountdown		= mod:NewBuffFadesTimer(8, 99516)
 local timerCountdownCD		= mod:NewNextTimer(45, 99516)
 local timerVitalFlame		= mod:NewBuffFadesTimer(15, 99263)
-local timerTormented		= mod:NewBuffFadesTimer(40, 99402)
+local timerTormented		= mod:NewBuffFadesTimer(40, 99257)
 
 local countdownShards		= mod:NewCountdown(34, 99259, false)
 

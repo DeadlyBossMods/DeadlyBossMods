@@ -41,19 +41,19 @@ local warnSpecial			= mod:NewAnnounce("warnSpecial", 3, "Interface\\Icons\\INV_E
 
 local specWarnSpecial		= mod:NewSpecialWarning("specWarnSpecial", nil, nil, nil, true)
 local specWarnIcePatch      = mod:NewSpecialWarningMove(86111)
-local specWarnShield		= mod:NewSpecialWarningSpell(95865)
+local specWarnShield		= mod:NewSpecialWarningSpell(93059)
 local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
 
 local timerNurture			= mod:NewNextTimer(35, 85422)--This this is typically 35 seconds after a special has ended.
 local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
-local timerSlicingGale		= mod:NewBuffFadesTimer(45, 93057, nil, false)
+local timerSlicingGale		= mod:NewBuffFadesTimer(45, 86182, nil, false)
 local timerWindBlast		= mod:NewBuffActiveTimer(11.5, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
 local timerStormShieldCD	= mod:NewCDTimer(35, 93059)--Heroic ability, seems to have a 35-40second cd and no longer syncs up to nurture since the windblast change. No longer consistent.
 local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
 local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)--is this a CD or a next timer?
-local timerPermaFrostCD		= mod:NewCDTimer(10, 93233)
+local timerPermaFrostCD		= mod:NewCDTimer(10, 86081)
 local timerSoothingBreezeCD	= mod:NewNextTimer(32.5, 86205)
 local timerSpecial			= mod:NewTimer(95, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD. Shortened cause sometimes slipstreams end early, even though cd is a little longer
 local timerSpecialActive	= mod:NewTimer(15, "timerSpecialActive", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
@@ -113,7 +113,7 @@ function mod:BreezeTarget()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(93057, 93058) then
+	if args:IsSpellID(86182, 93057, 93058) then -- not confirmed. temp mop changes.
 		if args:IsPlayer() then
 			timerSlicingGale:Start()
 		end
@@ -182,7 +182,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerPoisonToxicCD:Start()
 			end
 		end
-	elseif args:IsSpellID(93233) then
+	elseif args:IsSpellID(86082, 93233) then -- 93233 removed in mop, it seems that replaced with 86082
 		if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
 			timerPermaFrostCD:Start()
 		end

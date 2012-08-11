@@ -57,7 +57,7 @@ local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic Phase 2 ablity
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665, false)
 local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsMelee())
 local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
-local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509, mod:IsMelee())
+local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(82752, mod:IsMelee())
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660, false)
 local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631, nil, nil, nil, true)
@@ -88,7 +88,7 @@ local timerHeartIceCD		= mod:NewCDTimer(22, 82665, nil, false)--22-24 seconds
 local timerGlaciate			= mod:NewCDTimer(33, 82746, nil, mod:IsMelee())--33-35 seconds
 local timerWaterBomb		= mod:NewCDTimer(33, 82699)--33-35 seconds
 local timerFrozen			= mod:NewBuffFadesTimer(10, 82772, nil, mod:IsHealer())
-local timerHydroLanceCD		= mod:NewCDTimer(12, 92509, nil, false)--12 second cd but lowest cast priority
+local timerHydroLanceCD		= mod:NewCDTimer(12, 82752, nil, false)--12 second cd but lowest cast priority
 --Ignacious
 local timerBurningBlood		= mod:NewTargetTimer(60, 82660, nil, false)
 local timerBurningBloodCD	= mod:NewCDTimer(22, 82660, nil, false)--22-33 seconds, even worth having a timer?
