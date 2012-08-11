@@ -14,19 +14,19 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnPain				= mod:NewTargetAnnounce(93712, 3)
+local warnPain				= mod:NewTargetAnnounce(93581, 3)
 local warnWracking			= mod:NewSpellAnnounce(93720, 2)
 local warnArchangel			= mod:NewSpellAnnounce(93757, 4)
 
 
-local timerAsphyxiate		= mod:NewCDTimer(45, 93710)
+local timerAsphyxiate		= mod:NewCDTimer(45, 93423)
 
 function mod:OnCombatStart(delay)
 	timerAsphyxiate:Start(18-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(93712) then
+	if args:IsSpellID(93581, 93712) then -- unconfirmed in mop
 		warnPain:Show(args.destName)
 	end
 end
@@ -38,7 +38,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(93710) then
+	if args:IsSpellID(93423, 93710) then -- unconfirmed in mop
 		timerAsphyxiate:Start()
 	elseif args:IsSpellID(93720) then
 		warnWracking:Show()

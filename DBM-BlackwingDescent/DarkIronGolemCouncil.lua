@@ -49,8 +49,8 @@ local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 
 --Magmatron
 local specWarnBarrier			= mod:NewSpecialWarningSpell(79582, not mod:IsHealer())
-local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
-local yellAcquiringTarget		= mod:NewYell(92037)
+local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(79501)
+local yellAcquiringTarget		= mod:NewYell(79501)
 local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
 local yellEncasingShadows		= mod:NewYell(92023, L.YellTargetLock)
 --Electron

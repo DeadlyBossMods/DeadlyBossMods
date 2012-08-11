@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 local warnBinding		= mod:NewTargetAnnounce(75861, 3)
 local warnFeeble		= mod:NewTargetAnnounce(75792, 3)
 local warnGale			= mod:NewSpellAnnounce(75664, 4)
-local warnUmbralMending	= mod:NewSpellAnnounce(91026, 4)
+local warnUmbralMending	= mod:NewSpellAnnounce(75763, 4)
 
 local timerBinding		= mod:NewBuffFadesTimer(6, 75861)
 local timerFeeble		= mod:NewTargetTimer(3, 75792)
@@ -68,7 +68,7 @@ function mod:SPELL_CAST_START(args)
 		warnGale:Show()
 		timerGale:Start()
 		timerGaleCD:Start()
-	elseif args:IsSpellID(91026) then
+	elseif args:IsSpellID(75763, 79467, 91026) then
 		warnUmbralMending:Show()
 	end
 end

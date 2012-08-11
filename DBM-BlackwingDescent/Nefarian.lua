@@ -72,7 +72,7 @@ local timerShadowBlazeCD		= mod:NewCDTimer(10, 81031)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
-local countdownShadowblaze		= mod:NewCountdown(30, 94085, mod:IsTank())
+local countdownShadowblaze		= mod:NewCountdown(30, 81007, mod:IsTank())
 
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)

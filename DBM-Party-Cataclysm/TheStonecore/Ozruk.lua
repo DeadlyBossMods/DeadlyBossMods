@@ -15,24 +15,23 @@ mod:RegisterEventsInCombat(
 	"UNIT_HEALTH"
 )
 
-local warnShatterSoon		= mod:NewSoonAnnounce(92662, 3)
-local warnShatter			= mod:NewSpellAnnounce(92662, 4)
-local warnBulwark			= mod:NewSpellAnnounce(92659, 3)
-local warnGroundSlam		= mod:NewCastAnnounce(92410, 4)
+local warnShatterSoon		= mod:NewSoonAnnounce(78807, 3)
+local warnShatter			= mod:NewSpellAnnounce(78807, 4)
+local warnBulwark			= mod:NewSpellAnnounce(78939, 3)
+local warnGroundSlam		= mod:NewCastAnnounce(78903, 4)
 local warnEnrage			= mod:NewSpellAnnounce(80467, 3)
 local warnEnrageSoon		= mod:NewSoonAnnounce(80467, 2)
-local warnGroundSlam		= mod:NewCastAnnounce(92410, 4)
 
-local specWarnGroundSlam	= mod:NewSpecialWarningMove(92410, mod:IsTank())
-local specWarnShatter		= mod:NewSpecialWarningRun(92662, mod:IsMelee())
+local specWarnGroundSlam	= mod:NewSpecialWarningMove(78903, mod:IsTank())
+local specWarnShatter		= mod:NewSpecialWarningRun(78807, mod:IsMelee())
 
---local timerShatterCD		= mod:NewCDTimer(19, 92662)
-local timerBulwark			= mod:NewBuffActiveTimer(10, 92659)
-local timerBulwarkCD		= mod:NewCDTimer(20, 92659)
-local timerGroundSlam		= mod:NewCastTimer(3, 92410)
-local timerShatter			= mod:NewCastTimer(3, 92662)
+--local timerShatterCD		= mod:NewCDTimer(19, 78807)
+local timerBulwark			= mod:NewBuffActiveTimer(10, 78939)
+local timerBulwarkCD		= mod:NewCDTimer(20, 78939)
+local timerGroundSlam		= mod:NewCastTimer(3, 78903)
+local timerShatter			= mod:NewCastTimer(3, 78807)
 
-local soundShatter			= mod:NewSound(92662, nil, mod:IsMelee())
+local soundShatter			= mod:NewSound(78807, nil, mod:IsMelee())
 
 local prewarnEnrage = false
 

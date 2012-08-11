@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	timerArcaneBlowbackCast		= "$spell:91879 시전 바 표시",
 	timerNefAblity				= "영웅 난이도에서 골렘 스킬 강화 대기시간 바 표시",
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 대상 전환 특수 경고 보기",
-	specWarnGenerator			= "보스가 $spell:91557 주문의 영향을 받은 경우 특수 경고 보기",
+	specWarnGenerator			= "보스가 $spell:79629 주문의 영향을 받은 경우 특수 경고 보기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
@@ -162,8 +162,8 @@ L:SetMiscLocalization({
 	YellPhase2			= "저주받을 필멸자들! 내 소중한 작품을 이렇게 망치다니! 쓴맛을 봐야 정신을 차리겠군!",
 	YellPhase3			= "품위있는 집주인답게 행동하려 했건만, 네놈들이 도무지 죽질 않는군! 겉치레는 이제 집어치우자고. 그냥 모두 없애 버리겠어!", -- "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
 	YellShadowBlaze		= "살을 재로 만들어 주마!",
-	ShadowBlazeExact	= "%d초 후 암흑불길 불똥!",
-	ShadowBlazeEstimate	= "약 5초 후 암흑불길 불똥!"
+	ShadowBlazeExact	= "%d초 후 암흑불꽃 불똥!",
+	ShadowBlazeEstimate	= "약 5초 후 암흑불꽃 불똥!"
 })
 
 -------------------------------
