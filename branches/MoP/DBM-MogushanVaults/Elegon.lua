@@ -38,9 +38,11 @@ local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
-local timerDespawnFloor				= mod:NewTimer(10, "timerDespawnFloor", 116994)
+local timerDespawnFloor				= mod:NewTimer(5, "timerDespawnFloor", 116994)
 --Some timer work needs to be added for the adds spawning and reaching outer bubble
 --(ie similar to yorsahj oozes reach, only for how long you have to kill adds before you fail and phase 2 ends)
+
+local berserkTimer					= mod:NewBerserkTimer(570)
 
 local phase2Started = false
 local closedCircuitTargets = {}
@@ -54,6 +56,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(closedCircuitTargets)
 	timerBreathCD:Start(8-delay)
 	timerProtectorCD:Start(14-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)

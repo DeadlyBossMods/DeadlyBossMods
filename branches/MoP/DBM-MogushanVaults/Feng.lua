@@ -74,7 +74,7 @@ local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
 local timerLightningLash			= mod:NewTargetTimer(20, 131788, nil, mod:IsTank())
 local timerLightningLashCD			= mod:NewCDTimer(9, 131788, nil, mod:IsTank())--9-20 second variation.
 local timerLightningFistsCD			= mod:NewCDTimer(14, 116157)
-local timerEpicenterCD				= mod:NewCDTimer(29, 116018)
+local timerEpicenterCD				= mod:NewCDTimer(30, 116018)
 local timerEpicenter				= mod:NewBuffActiveTimer(10, 116018)
 
 --Fire/Spear
@@ -88,7 +88,7 @@ local timerDrawFlameCD				= mod:NewNextTimer(30, 116711)--30 seconds after last 
 local timerArcaneShock				= mod:NewTargetTimer(20, 131790, nil, mod:IsTank())
 local timerArcaneShockCD			= mod:NewCDTimer(9, 131790, nil, mod:IsTank())--not comfirmed
 local timerArcaneResonanceCD		= mod:NewCDTimer(15, 116417)--CD is also duration, it's just cast back to back to back.
-local timerArcaneVelocityCD			= mod:NewCDTimer(22, 116364)--22 seconds after last ended.
+local timerArcaneVelocityCD			= mod:NewCDTimer(18, 116364)--18 seconds after last ended.
 local timerArcaneVelocity			= mod:NewCastTimer(8, 116364)
 
 --Shadow/Shield (Heroic Only)
@@ -268,23 +268,26 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Nature or msg:find(L.Nature) then
 		phase = phase + 1
 		warnPhase:Show(phase)
-		timerLightningFistsCD:Start(6.5)
-		timerEpicenterCD:Start(19)
+		timerLightningLashCD:Start(7)
+		timerLightningFistsCD:Start(12)
+		timerEpicenterCD:Start(18)--It's either this, or this +10. Not yet sure what causes the +10
 	elseif msg == L.Fire or msg:find(L.Fire) then
 		phase = phase + 1
 		warnPhase:Show(phase)
 		timerFlamingSpearCD:Start(5.5)
-		timerDrawFlameCD:Start(35)
+		timerDrawFlameCD:Start(35)--No variation, or not enough logs of fire phase.
 	elseif msg == L.Arcane or msg:find(L.Arcane) then
 		phase = phase + 1
 		warnPhase:Show(phase)
+		timerArcaneShockCD:Start(7)
 		timerArcaneResonanceCD:Start(14)
-		timerArcaneVelocityCD:Start(16.5)
+		timerArcaneVelocityCD:Start(16.5)--It's either this, or this +10. Not yet sure what causes the +10
 	elseif msg == L.Shadow or msg:find(L.Shadow) then
 		phase = phase + 1
 		warnPhase:Show(phase)
-		timerSiphoningShieldCD:Start(6)
-		timerChainsOfShadowCD:Start(10)
+		timerSiphoningShieldCD:Start(4)--either this, or this +5. Not yet sure what causes the +5
+		timerChainsOfShadowCD:Start(6)
+		timerShadowBurnCD:Start(9)--9-11 variation
 	end
 end
 
@@ -297,10 +300,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		--Best place to cancel timers, vs duplicating cancel code in all 4 yells above.
 		timerFlamingSpearCD:Cancel()
 		timerDrawFlameCD:Cancel()
+		timerArcaneShockCD:Cancel()
 		timerArcaneResonanceCD:Cancel()
 		timerArcaneVelocityCD:Cancel()
+		timerLightningLashCD:Cancel()
 		timerLightningFistsCD:Cancel()
 		timerEpicenterCD:Cancel()
+		timerShadowBurnCD:Cancel()
 		timerSiphoningShieldCD:Cancel()
 		timerChainsOfShadowCD:Cancel()
 	end
