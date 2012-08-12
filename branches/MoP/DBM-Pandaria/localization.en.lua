@@ -14,8 +14,3 @@ L:SetOptionLocalization({
 -- Salyis --
 -----------------------
 L= DBM:GetModLocalization(725)
-
-L:SetMiscLocalization({
-	CannonBarrage		= "spell:121600",
-	Stomp				= "spell:121787"
-})

@@ -14,30 +14,32 @@ mod:RegisterEventsInCombat(
 
 local warnCannonBarrage			= mod:NewSpellAnnounce(121600, 4)
 local warnStomp					= mod:NewSpellAnnounce(121787, 3)
-local warnWarmonger				= mod:NewSpellAnnounce("ej6200", 2)
+local warnWarmonger				= mod:NewSpellAnnounce("ej6200", 2, 121747)
 
 local specWarnCannonBarrage		= mod:NewSpecialWarningSpell(121600, mod:IsTank())
 local specWarnWarmonger			= mod:NewSpecialWarningSwitch("ej6200", not mod:IsHealer())
 
-local timerCannonBarrage		= mod:NewNextTimer(60, 121600)
-local timerStomp				= mod:NewNextTimer(60, 121787)
-local timerWarmonger			= mod:NewNextTimer(10.5, "ej6200")--Comes after Stomp. (Also every 60 sec.)
+local timerCannonBarrageCD		= mod:NewNextTimer(60, 121600)
+local timerStompCD				= mod:NewNextTimer(60, 121787)
+local timerStomp				= mod:NewCastTimer(3, 121787)
+local timerWarmongerCD			= mod:NewNextTimer(10, "ej6200", nil, nil, nil, 121747)--Comes after Stomp. (Also every 60 sec.)
 
 function mod:OnCombatStart(delay)
-	timerCannonBarrage:Start(24-delay)
-	timerStomp:Start(50-delay)
+	timerCannonBarrageCD:Start(24-delay)
+	timerStompCD:Start(50-delay)
 end
 
 function mod:RAID_BOSS_EMOTE(msg)
-	if msg:find(L.CannonBarrage) then
+	if msg:find("spell:121600") then
 		warnCannonBarrage:Show()
 		specWarnCannonBarrage:Show()
-		timerCannonBarrage:Start()
-	elseif msg:find(L.Stomp) then
+		timerCannonBarrageCD:Start()
+	elseif msg:find("spell:121787") then
 		warnStomp:Show()
-		warnWarmonger:Schedule(10.5)
-		specWarnWarmonger:Schedule(10.5)
-		timerWarmonger:Start()
+		warnWarmonger:Schedule(10)
+		specWarnWarmonger:Schedule(10)
 		timerStomp:Start()
+		timerWarmongerCD:Start()
+		timerStompCD:Start()
 	end
 end
