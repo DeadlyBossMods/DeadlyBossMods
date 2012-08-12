@@ -71,16 +71,16 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "바닥 조심!"
+	specWarnDespawnFloor		= "가운데 바닥 조심!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "바닥 조심!"
+	timerDespawnFloor			= "가운데 바닥 사라짐"
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "바닥이 무너지기 전에 특수 경고 보기",
-	timerDespawnFloor			= "바닥이 무너지기 전까지 남은 시간 바 표시"
+	specWarnDespawnFloor		= "가운데 바닥이 무너지기 전에 특수 경고 보기",
+	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 표시"
 })
 
 
@@ -94,9 +94,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "Destroying the pipes leaks |cFFFF0000|Hspell:116779|h[Titan Gas]|h|r into the room!",--Emote
-	Rage		= "The Emperor's Rage echoes through the hills.",--Yell
-	Strength	= "The Emperor's Strength appears in the alcoves!",--Emote
-	Courage		= "The Emperor's Courage appears in the alcoves!",--Emote
-	Boss		= "Two titanic constructs appear in the large alcoves!"--Emote
+	Pull		= "기계가 윙윙거리며 동작하기 시작합니다! 아래층으로 가십시오!",--Emote
+	Rage		= "황제의 분노가 온 언덕에 울려퍼진다.",--Yell
+	Strength	= "황제의 힘이 벽감에 나타납니다!",--Emote
+	Courage		= "황제의 용기가 벽감에 나타납니다!",--Emote
+	Boss		= "거대한 모구 조형체 둘이 큰 벽감에 나타납니다!"--Emote
 })

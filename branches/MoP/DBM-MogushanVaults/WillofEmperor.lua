@@ -37,6 +37,7 @@ local warnArcLeft				= mod:NewCountAnnounce(116968, 4, nil, mod:IsMelee())--Most
 local warnArcRight				= mod:NewCountAnnounce(116971, 4, nil, mod:IsMelee())
 local warnArcCenter				= mod:NewCountAnnounce(116968, 4, nil, mod:IsMelee())
 local warnStomp					= mod:NewCountAnnounce(116969, 4, nil, mod:IsMelee())
+local warnTitanGas				= mod:NewCountAnnounce(116779, 4)
 
 --Rage
 local specWarnFocusedAssault	= mod:NewSpecialWarningYou(116525, false)
@@ -60,19 +61,23 @@ local timerStrengthActivates	= mod:NewNextTimer(9, "ej5677", nil, nil, nil, 1165
 local timerCourageActivates		= mod:NewNextTimer(10, "ej5676", nil, nil, nil, 116778)
 --Jan-xi and Qin-xi
 local timerBossesActivates		= mod:NewNextTimer(103.2, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
-local timerComboCD				= mod:NewNextTimer(19.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
+local timerComboCD				= mod:NewCDTimer(14.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
+local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
+local timerTitanGasCD			= mod:NewNextCountTimer(153, 116779)
 
 mod:AddBoolOption("InfoFrame", false)
 
 local comboWarned = false
 local sparkCount = 0
 local comboCount = 0
+local titanGasCast = 0
 local focusedAssault = GetSpellInfo(116525)
 
 function mod:OnCombatStart(delay)
 	comboWarned = false
 	sparkCount = 0
 	comboCount = 0
+	titanGasCast = 0
 	timerBossesActivates:Start(-delay)--Still start here to give perspective
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(focusedAssault)
@@ -120,6 +125,13 @@ function mod:RAID_BOSS_EMOTE(msg)
 		warnBossesActivated:Schedule(12)
 		specWarnBossesActivated:Schedule(12)
 		timerBossesActivates:Start(12)
+	elseif msg:find("spell:116779") then
+		titanGasCast = titanGasCast + 1
+		warnTitanGas:Show(titanGasCast)
+		if titanGasCast < 5 then -- after Titan Gas casted 5 times, Titan Gas lasts permanently. (soft enrage)
+			timerTitanGas:Start()
+			timerTitanGasCD:Start(titanGasCast+1)
+		end
 	end
 end
 
@@ -181,6 +193,9 @@ end
 "<162.6> Qin-xi [boss2:Arc Center::0:116972]", -- [35]
 "<166.3> Qin-xi [boss2:Arc Left::0:116968]", -- [37]
 --]]
+-- Seems that Jan-xi and Qin-xi mana are not identical. So as time goes, this stuff can be broken.
+-- also timerComboCD is not be fixed. their mana increases 1 or 2 randomly every boss's melee attacks.
+-- 
 function mod:UNIT_POWER(uId)
 	if (self:GetUnitCreatureId(uId) == 60399 or self:GetUnitCreatureId(uId) == 60400) and UnitPower(uId) == 18 and not comboWarned then
 		comboWarned = true

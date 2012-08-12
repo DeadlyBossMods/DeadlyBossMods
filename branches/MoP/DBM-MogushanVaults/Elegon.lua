@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
 )
@@ -71,7 +72,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDespawnFloor:Show()
 		timerDespawnFloor:Start()--Should be pretty accurate, may need minor tweak
 	elseif args:IsSpellID(117878) and args:IsPlayer() then
-		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
+		if (args.amount or 1) >= 6 and (args.amount or 1) % 3 == 0 then--Warn every 3 stacks at 6 and above.
 			specWarnOvercharged:Show(args.amount)
 		end
 	elseif args:IsSpellID(118310) then--Below 50% health
