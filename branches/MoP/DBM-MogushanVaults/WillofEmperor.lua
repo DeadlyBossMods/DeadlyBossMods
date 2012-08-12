@@ -126,11 +126,16 @@ function mod:RAID_BOSS_EMOTE(msg)
 		specWarnBossesActivated:Schedule(12)
 		timerBossesActivates:Start(12)
 	elseif msg:find("spell:116779") then
-		titanGasCast = titanGasCast + 1
-		warnTitanGas:Show(titanGasCast)
-		if titanGasCast < 5 then -- after Titan Gas casted 5 times, Titan Gas lasts permanently. (soft enrage)
-			timerTitanGas:Start()
-			timerTitanGasCD:Start(titanGasCast+1)
+		if self:IsDifficulty("heroic10", "heroic25") then--On heroic the boss activates this perminantly on pull and it's always present
+			--in fact, pretty sure herioc will use THIS as pull trigger
+			--So i may add a if not in combat, StartCombat(self) event here.
+		else
+			titanGasCast = titanGasCast + 1
+			warnTitanGas:Show(titanGasCast)
+			if titanGasCast < 5 then -- after Titan Gas casted 5 times, Titan Gas lasts permanently. (soft enrage)
+				timerTitanGas:Start()
+				timerTitanGasCD:Start(titanGasCast+1)
+			end
 		end
 	end
 end
