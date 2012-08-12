@@ -68,6 +68,15 @@ local function warnSpiritualInnervationTargets()
 	table.wipe(spiritualInnervationTargets)
 end
 
+local function removeIcon(target)
+	for i,j in ipairs(mutateIcons) do
+		if j == target then
+			table.remove(voodooDollTargetIcons, i)
+			mod:SetIcon(target, 0)
+		end
+	end
+end
+
 --[[
 local function ClearVoodooTargets()
 	table.wipe(voodooDollTargetIcons)
@@ -179,11 +188,8 @@ function mod:OnSync(msg, guid)
 				self:ScheduleMethod(0.5, "SetVoodooIcons")--Still seems touchy and .3 is too fast even on a 70ms connection in rare cases so back to .5
 			end
 		end
-	elseif msg == "VoodooGoneTargets" and guids[guid] then
-		table.remove(voodooDollTargetIcons, guids[guid])
-		if self.Options.SetIconOnVoodoo then
-			self:SetIcon(guids[guid], 0)
-		end
+	elseif msg == "VoodooGoneTargets" and guids[guid] and self.Options.SetIconOnVoodoo then
+		removeIcon(guids[guid])
 	elseif msg == "SpiritualTargets" and guids[guid] then
 		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = guids[guid]
 		self:Unschedule(warnSpiritualInnervationTargets)

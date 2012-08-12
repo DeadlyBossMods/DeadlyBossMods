@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_MISSED"
+	"UNIT_AURA"
 )
 
 local warnUnleashedWrath		= mod:NewSpellAnnounce(119488, 3)--Big aoe damage aura when at 100 rage
@@ -41,6 +41,7 @@ mod:AddBoolOption("SetIconOnMC", true)
 local warnpreMCTargets = {}
 local warnMCTargets = {}
 local mcTargetIcons = {}
+local bitterThought = GetSpellInfo(119601)
 
 local debuffFilter
 do
@@ -49,6 +50,14 @@ do
 	end
 end
 
+local function removeIcon(target)
+	for i,j in ipairs(mutateIcons) do
+		if j == target then
+			table.remove(mcTargetIcons, i)
+			mod:SetIcon(target, 0)
+		end
+	end
+end
 
 local function ClearMCTargets()
 	table.wipe(mcTargetIcons)
@@ -131,7 +140,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if args:IsPlayer() then
-			specWarnGrowingAnger:Show()			
+			specWarnGrowingAnger:Show()
 		end
 		self:Unschedule(showpreMC)
 		if #warnpreMCTargets >= 3 then
@@ -149,15 +158,15 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(119626) and self.Options.SetIconOnMC then--Remove them after the MCs break.
-		table.remove(mcTargetIcons, DBM:GetRaidUnitId(args.destName))
-		self:SetIcon(args.destName, 0)
+		removeIcon(args.destName)
 	elseif args:IsSpellID(119488) then
 		timerUnleashedWrathCD:Start()
 	end
 end
 
-function mod:SPELL_MISSED(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 119610 and destGUID == UnitGUID("player") and self:AntiSpam(3) then
+function mod:UNIT_AURA(uId)
+	if uId ~= "player" then return end
+	if UnitDebuff("player", bitterThought) and self:AntiSpam(2) then
 		specWarnBitterThoughts:Show()
 	end
 end
