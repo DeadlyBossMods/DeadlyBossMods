@@ -1277,7 +1277,7 @@ do
 		uId = uId or "player"
 		local name, realm = UnitName(uId)
 		if realm then name = name.."-"..realm end
-		return name or "none"
+		return name
 	end
 end
 
