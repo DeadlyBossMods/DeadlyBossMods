@@ -13,6 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL"
@@ -51,6 +53,7 @@ local warnActivated				= mod:NewTargetAnnounce(118212, 3, 78740)
 local specWarnUndyingShadow		= mod:NewSpecialWarningSwitch("ej5854", mod:IsDps())
 local specWarnFixate			= mod:NewSpecialWarningYou(118303)
 local yellFixate				= mod:NewYell(118303)
+local specWarnCoalescingShadows	= mod:NewSpecialWarningMove(117558)
 local specWarnShadowBlast		= mod:NewSpecialWarningInterrupt(117628, mod:IsMelee())
 local specWarnShieldOfDarkness	= mod:NewSpecialWarningTarget(117697, nil, nil, nil, true)--Heroic Ability
 local specWarnShieldOfDarknessD	= mod:NewSpecialWarningDispel(117697, isDispeller)--Heroic Ability
@@ -215,6 +218,13 @@ function mod:SPELL_CAST_START(args)
 --		timerImperviousShieldCD:Start()--Not yet known
 	end
 end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 117558 and destGUID == UnitGUID("player") and self:AntiSpam(3, 4) then
+		specWarnCoalescingShadows:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 118088 and self:AntiSpam(2, 1) then--Volley

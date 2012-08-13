@@ -51,7 +51,7 @@ do
 end
 
 local function removeIcon(target)
-	for i,j in ipairs(mutateIcons) do
+	for i,j in ipairs(mcTargetIcons) do
 		if j == target then
 			table.remove(mcTargetIcons, i)
 			mod:SetIcon(target, 0)

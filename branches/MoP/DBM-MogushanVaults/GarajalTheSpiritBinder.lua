@@ -69,7 +69,7 @@ local function warnSpiritualInnervationTargets()
 end
 
 local function removeIcon(target)
-	for i,j in ipairs(mutateIcons) do
+	for i,j in ipairs(voodooDollTargetIcons) do
 		if j == target then
 			table.remove(voodooDollTargetIcons, i)
 			mod:SetIcon(target, 0)
