@@ -51,12 +51,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGetAway:Show()
 		timerGetAway:Start()
 	elseif args:IsSpellID(123121) then
-		if args.amount % 3 == 0 then
-			warnSpray:Show(args.destName, args.amount or 1)
-			if args:IsPlayer() and (args.amount or 1) >= 6 then
+		if (args.amount or 1) % 3 == 0 then
+			warnSpray:Show(args.destName, args.amount)
+			if args.amount >= 6 and args:IsPlayer() then
 				specWarnSpray:Show(args.amount)
 			else
-				if (args.amount or 1) >= 6 and not UnitDebuff("player", GetSpellInfo(123121)) and not UnitIsDeadOrGhost("player") then
+				if args.amount >= 6 and not UnitDebuff("player", GetSpellInfo(123121)) and not UnitIsDeadOrGhost("player") then
 					specWarnSprayOther:Show(args.destName)
 				end
 			end
