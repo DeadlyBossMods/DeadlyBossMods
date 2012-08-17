@@ -41,11 +41,10 @@
 -------------------------------
 --  Globals/Default Options  --
 -------------------------------
--- current live version == 4.10.15 alpha, but in mop branch == 4.10.13 alpha. this needs to updated?
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
-	DisplayVersion = "4.10.13 alpha", -- the string that is shown as version
-	ReleaseRevision = 7536 -- the revision of the latest stable version that is available
+	DisplayVersion = "5.0.0 alpha", -- the string that is shown as version
+	ReleaseRevision = 7705 -- the revision of the latest stable version that is available
 }
 
 -- Legacy crap; that stupid "Version" field was never a good idea.
