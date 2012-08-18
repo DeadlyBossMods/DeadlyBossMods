@@ -13,6 +13,14 @@ L= DBM:GetModLocalization(672)
 -----------------------
 L= DBM:GetModLocalization(664)
 
+L:SetWarningLocalization({
+	SpecWarnIntensity	= "%s on %s (%d)"
+})
+
+L:SetOptionLocalization({
+	SpecWarnIntensity	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS["stack"]:format(6, 113315)
+})
+
 -----------------------
 -- Liu Flameheart --
 -----------------------
@@ -40,6 +48,15 @@ L= DBM:GetModLocalization(669)
 -- Yan Zhu the Uncasked --
 -----------------------
 L= DBM:GetModLocalization(670)
+
+L:SetWarningLocalization({
+	SpecWarnFizzyBubbles	= "Get Fizzy Bubble and fly"
+})
+
+L:SetOptionLocalization({
+	SpecWarnFizzyBubbles	= "Show special warning when you are missing $spell:114459 debuff",
+	RangeFrame				= "Show range frame (10) for $spell:106546"
+})
 
 -----------------------
 -- <<<Shado-Pan Monastery>>> --
@@ -142,17 +159,15 @@ L= DBM:GetModLocalization(693)
 L= DBM:GetModLocalization(738)
 
 L:SetTimerLocalization({
-	timerWave	= "Starts Sending: %s"
+	TimerWave	= "Starts Sending: %s"
 })
 
 L:SetOptionLocalization({
-	timerWave	= "Show timer for next mob wave"
+	TimerWave	= "Show timer for next mob wave"
 })
 
 L:SetMiscLocalization({
-	Pull		= "Fools! Attacking the might of the mantid head on?  Your deaths will be swift.",
-	Wave		= "A wave of",--msg find, not full trigger, full trigger includes group type name.
-	Bombard		= "Bombard the platform!"--Don't you just love spells that don't show in combat log and need to be localized triggers?
+	WaveStart	= "Fools! Attacking the might of the mantid head on?  Your deaths will be swift."
 })
 
 -----------------------

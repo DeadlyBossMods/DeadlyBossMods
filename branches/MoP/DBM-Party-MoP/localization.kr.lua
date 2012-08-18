@@ -14,6 +14,14 @@ L= DBM:GetModLocalization(672)
 -----------------------
 L= DBM:GetModLocalization(664)
 
+L:SetWarningLocalization({
+	SpecWarnIntensity	= "%s : %s (%d)"
+})
+
+L:SetOptionLocalization({
+	SpecWarnIntensity	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS["stack"]:format(6, 113315)
+})
+
 -----------------------
 -- Liu Flameheart --
 -----------------------
@@ -41,6 +49,15 @@ L= DBM:GetModLocalization(669)
 -- Yan Zhu the Uncasked --
 -----------------------
 L= DBM:GetModLocalization(670)
+
+L:SetWarningLocalization({
+	SpecWarnFizzyBubbles	= "거품 방울 클릭 후 날아다니세요!"
+})
+
+L:SetOptionLocalization({
+	SpecWarnFizzyBubbles	= "$spell:114459 효과가 없을 경우 특수 경고 보기",
+	RangeFrame				= "$spell:106546 주문의 영향을 받은 경우 거리 프레임 표시(10m)"
+})
 
 -----------------------
 -- <<<Shado-Pan Monastery>>> --
@@ -91,7 +108,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(675)
 
 L:SetMiscLocalization({
-	StaffingRun		= "Striker Ga'dok prepares to make a strafing run!"
+	StaffingRun		= "포격 질주"
 })
 
 -----------------------
@@ -143,17 +160,15 @@ L= DBM:GetModLocalization(693)
 L= DBM:GetModLocalization(738)
 
 L:SetTimerLocalization({
-	timerWave	= "Starts Sending: %s"
+	TimerWave	= "적 등장 : %s"
 })
 
 L:SetOptionLocalization({
-	timerWave	= "Show timer for next mob wave"
+	TimerWave	= "적 등장 바 표시"
 })
 
 L:SetMiscLocalization({
-	Pull		= "Fools! Attacking the might of the mantid head on?  Your deaths will be swift.",
-	Wave		= "A wave of",--msg find, not full trigger, full trigger includes group type name.
-	Bombard		= "Bombard the platform!"--Don't you just love spells that don't show in combat log and need to be localized triggers?
+	WaveStart	= "하! 무적의 사마귀 군단에 정면으로 맞서시겠다? 죽여주마!"
 })
 
 -----------------------
@@ -225,7 +240,7 @@ L= DBM:GetModLocalization(660)
 L= DBM:GetModLocalization(654)
 
 L:SetMiscLocalization({
-	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!"
+	Call		= "무기전문가 할란"
 })
 
 -----------------------

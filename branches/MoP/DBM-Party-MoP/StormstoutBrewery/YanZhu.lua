@@ -11,31 +11,92 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_CAST_START"
+	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE"
 )
 
 
+local warnBloat				= mod:NewTargetAnnounce(106546, 2)
 local warnBlackoutBrew		= mod:NewSpellAnnounce(106851, 2)--Applies 3 stacks of debuff to everyone, these 3 stacks will add to current stacks if you still have them (if you do, you're doing it wrong)
+local warnBubbleShield		= mod:NewSpellAnnounce(106563, 3)
+local warnCarbonation		= mod:NewSpellAnnounce(115003, 4)
 
+local specWarnBloat			= mod:NewSpecialWarningYou(106546)
 local specWarnBlackoutBrew	= mod:NewSpecialWarningMove(106851)--Moving clears this debuff, it should never increase unless you're doing fight wrong (think Hodir)
+local specWarnFizzyBubbles	= mod:NewSpecialWarning("SpecWarnFizzyBubbles")
 
+local timerBloatCD			= mod:NewNextTimer(14.5, 106546)
+local timerBloat			= mod:NewBuffFadesTimer(30, 106546)
 local timerBlackoutBrewCD	= mod:NewNextTimer(10.5, 106851)
+local timerBubbleShieldCD	= mod:NewNextTimer(42, 106563)
+local timerCarbonationCD	= mod:NewNextTimer(64, 115003)
+local timerCarbonation		= mod:NewBuffActiveTimer(23, 115003)
+local timerFizzyBubbles		= mod:NewBuffFadesTimer(20, 114459)
+
+mod:AddBoolOption("RangeFrame")
 
 function mod:OnCombatStart(delay)
-	timerBlackoutBrewCD:Start(7-delay)
+--	timerBlackoutBrewCD:Start(7-delay)-- cannot determine what spells will be used.
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106851) and args:IsPlayer() and (args.amount or 3) >= 3 and self:AntiSpam() then
+	if args:IsSpellID(106546) then
+		warnBloat:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnBloat:Show()
+			timerBloat:Start()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+	elseif args:IsSpellID(106851) and args:IsPlayer() and (args.amount or 3) >= 3 and self:AntiSpam() then
 		specWarnBlackoutBrew:Show()--Basically special warn any time you gain a stack over 3, if stack is nil, then it's initial application and stack count is 3.
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(106546) and args:IsPlayer() then
+		timerBloat:Cancel()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+	end
+end
+
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(106851) then
+	if args:IsSpellID(106546) then
+		timerBloatCD:Start()
+	elseif args:IsSpellID(106851) then
 		warnBlackoutBrew:Show()
 		timerBlackoutBrewCD:Start()
+	elseif args:IsSpellID(106563) then
+		warnBubbleShield:Show()
+		timerBubbleShieldCD:Start()
+	elseif args:IsSpellID(115003) then
+		warnCarbonation:Show()
+		timerCarbonation:Start()
+		timerCarbonationCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(114459) then
+		timerFizzyBubbles:Start()
+	end
+end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 114386 and destGUID == UnitGUID("player") and self:AntiSpam(4, 1) then
+		specWarnFizzyBubbles:Show()
 	end
 end
 

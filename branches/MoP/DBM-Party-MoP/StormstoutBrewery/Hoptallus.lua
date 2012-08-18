@@ -44,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 		soundFurlwind:Play()
 		timerFurlwind:Start()
 		timerBreathCD:Start()--Always 18 seconds after Furlwind
-	elseif args:IsSpellID(102569) then
+	elseif args:IsSpellID(112944) then
 		warnCarrotBreath:Show()
 		specWarnCarrotBreath:Show()
 		timerBreath:Start()

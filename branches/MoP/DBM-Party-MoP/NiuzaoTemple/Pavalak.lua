@@ -18,7 +18,6 @@ local warnBladeRush			= mod:NewSpellAnnounce(124283, 3)
 local warnTempest			= mod:NewSpellAnnounce(119875, 3)
 local warnBulwark			= mod:NewSpellAnnounce(119476, 3)
 
---local specWarnBladeRush		= mod:NewSpecialWarningSpell(124283, false)--Probably change to a "You" warning and near warning if target scanning works for this.
 local specWarnTempest		= mod:NewSpecialWarningSpell(119875, mod:IsHealer())
 local specWarnBulwark		= mod:NewSpecialWarningSpell(119476, nil, nil, nil, true)
 
@@ -43,9 +42,9 @@ do
 		if shieldedMob == destGUID then
 			local absorbed
 			if subEvent == "SWING_MISSED" then 
-				absorbed = select( 2, ... ) 
+				absorbed = select( 3, ... ) 
 			elseif subEvent == "RANGE_MISSED" or subEvent == "SPELL_MISSED" or subEvent == "SPELL_PERIODIC_MISSED" then 
-				absorbed = select( 5, ... )
+				absorbed = select( 6, ... )
 			end
 			if absorbed then
 				absorbRemaining = absorbRemaining - absorbed
@@ -90,7 +89,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(124283) then
+	if args:IsSpellID(124283) then--he do not target anything. so can't use target scan.
 		warnBladeRush:Show()
 		timerBladeRushCD:Start()
 	elseif args:IsSpellID(119875) then

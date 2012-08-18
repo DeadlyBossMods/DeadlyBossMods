@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 local warnIntensity			= mod:NewStackAnnounce(113315, 3)
 local warnUltimatePower		= mod:NewTargetAnnounce(113309, 4)
 
-local specWarnIntensity		= mod:NewSpecialWarningStack(113315, nil, 6)
+local specWarnIntensity		= mod:NewSpecialWarning("SpecWarnIntensity")
 local specWarnUltimatePower	= mod:NewSpecialWarningTarget(113309, nil, nil, nil, true)
 
 local timerUltimatePower	= mod:NewTargetTimer(15, 113309)
@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		if args.amount % 2 == 0 then--only warn every 2
 			warnIntensity:Show(args.destName, args.amount)
 			if args.amount >= 6 then--Start point of special warnings subject to adjustment based on live tuning.
-				specWarnIntensity:Show(args.amount)
+				specWarnIntensity:Show(args.spellName, args.destName, args.amount)
 			end
 		end
 	end

@@ -14,6 +14,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED"
 )
 
@@ -23,9 +25,10 @@ mod:RegisterEventsInCombat(
 local warnDragonStrike			= mod:NewSpellAnnounce(106823, 2)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnJadeDragonStrike		= mod:NewSpellAnnounce(106841, 3)
-local warnJadeFire				= mod:NewTargetAnnounce(107045, 4)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
+local warnJadeFire				= mod:NewSpellAnnounce(107045, 4, nil, false)-- spammy
 
+local specWarnJadeDragonWave	= mod:NewSpecialWarningMove(118540)
 local specWarnJadeFire			= mod:NewSpecialWarningMove(107110)
 
 local timerDragonStrikeCD		= mod:NewNextTimer(10.5, 106823)
@@ -36,14 +39,14 @@ function mod:OnCombatStart(delay)
 --	timerDragonStrikeCD:Start(-delay)--Unknown, tank pulled before i could start a log to get an accurate first timer.
 end
 
-function mod:JadeFireTarget()
+--[[function mod:JadeFireTarget()
 	local targetname = self:GetBossTarget(56762)
 	if not targetname then return end
 	warnJadeFire:Show(targetname)
 	if targetname == UnitName("player") and self:AntiSpam() then
 		specWarnJadeFire:Show()
 	end
-end
+end]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(106823) then--Phase 1 dragonstrike
@@ -67,17 +70,25 @@ function mod:SPELL_CAST_START(args)
 		warnPhase2:Show()
 		timerDragonStrikeCD:Cancel()
 	elseif args:IsSpellID(107045) then
-		self:ScheduleMethod(0.1, "JadeFireTarget")--Assumed. Not entirely sure target scanning works with this. Hate default UI. WTB mods in beta.
+		--self:ScheduleMethod(0.1, "JadeFireTarget")--seems that not works.
+		warnJadeFire:Show()
 		timerJadeFireCD:Start()
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 107110 and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnJadeFire:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 118540 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnJadeFire:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)

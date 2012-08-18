@@ -19,10 +19,10 @@ local warnWitherWill			= mod:NewSpellAnnounce(106736, 3)
 local warnTouchofNothingness	= mod:NewTargetAnnounce(106113, 4)
 local warnBoundsOfReality		= mod:NewSpellAnnounce(117665, 3)
 
-local specwarnTouchOfNothingness= mod:NewSpecialWarningDispel(106113, mod:IsHealer())
+local specWarnTouchOfNothingness= mod:NewSpecialWarningDispel(106113, mod:IsHealer())
 
 local timerWitherWillCD			= mod:NewCDTimer(6, 106736)--6-10 second variations.
-local timerTouchofNothingnessCD	= mod:NewNextTimer(19.5, 106113)
+local timerTouchofNothingnessCD	= mod:NewCDTimer(15.5, 106113)--15.5~20 second variations.
 local timerTouchofNothingness	= mod:NewTargetTimer(30, 106113)
 local timerBoundsOfRealityCD	= mod:NewNextTimer(60, 117665)
 local timerBoundsOfReality		= mod:NewBuffFadesTimer(30, 117665)
@@ -44,14 +44,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(117665) then
-		timerBoundsOfReality:Show()
+		warnBoundsOfReality:Show()
 		timerWitherWillCD:Cancel()
 		timerTouchofNothingnessCD:Cancel()
 		timerBoundsOfReality:Start()
 		timerBoundsOfRealityCD:Start()
 	elseif args:IsSpellID(106113) then
 		warnTouchofNothingness:Show(args.destName)
-		specwarnTouchOfNothingness:Show(args.destName)
+		specWarnTouchOfNothingness:Show(args.destName)
 		timerTouchofNothingness:Start(args.destName)
 	end
 end
