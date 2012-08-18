@@ -148,7 +148,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 115852 and self:AntiSpam(2) then
 		activePetrification = "Cobalt"
 		timerPetrification:Start()
-	elseif spellId == 116008 and self:AntiSpam(2) then--unconfirmed
+	elseif spellId == 116006 and self:AntiSpam(2) then
 		activePetrification = "Jade"
 		timerPetrification:Start()
 	elseif spellId == 116036 and self:AntiSpam(2) then
