@@ -213,7 +213,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(92754) then
 		warnEngulfingDarkness:Show()
 		timerEngulfingDarknessCD:Start()
-		if self:GetUnitCreatureId("target") == 41378 or self:GetBossTarget(33186) == self:GetUnitFullName("target") then--First check is for tank (tank is targeting boss), second check is for HEALER< IE, the HEALER is targeting the bosses TARGET
+		if self:GetUnitCreatureId("target") == 41378 or self:GetBossTarget(33186) == DBM:GetUnitFullName("target") then--First check is for tank (tank is targeting boss), second check is for HEALER< IE, the HEALER is targeting the bosses TARGET
 			specWarnEngulfingDarkness:Show()
 		end
 	elseif args:IsSpellID(77896) then
