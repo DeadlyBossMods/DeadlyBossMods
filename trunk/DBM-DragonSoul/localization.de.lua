@@ -29,7 +29,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(324)
 
 L:SetOptionLocalization({
-	ShadowYell			= "Schreie, wenn du von $spell:104600 betroffen bist\n(nur heroischer Schwierigkeitsgrad)",
+	ShadowYell			= "Schreie, wenn du von $spell:103434 betroffen bist\n(nur heroischer Schwierigkeitsgrad)",
 	CustomRangeFrame	= "Abstandsfenster (10m) für Störende Schatten (nur heroischer Schwierigkeitsgrad)",
 	Never				= "Deaktiviert",
 	Normal				= "Aktiviert (ohne Debufffilter)",
