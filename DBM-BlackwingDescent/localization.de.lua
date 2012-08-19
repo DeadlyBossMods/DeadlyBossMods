@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	timerArcaneBlowbackCast		= "Zeige Zeit bis $spell:91879 gewirkt wird",
 	timerNefAblity				= "Zeige Abklingzeit für heroische Fähigkeitsverbesserungen",
 	SpecWarnActivated			= "Zeige Spezialwarnung, wenn ein neuer Boss aktiviert wird",
-	specWarnGenerator			= "Zeige Spezialwarnung, wenn ein Boss von $spell:91557 profitiert",
+	specWarnGenerator			= "Zeige Spezialwarnung, wenn ein Boss von $spell:79629 profitiert",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),

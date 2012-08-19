@@ -91,7 +91,7 @@ L:SetOptionLocalization({
 	SetIconOnTorment	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(99256),
 	ArrowOnCountdown	= "Zeige DBM-Pfeil, wenn du von $spell:99516 betroffen bist",
 	InfoFrame			= "Zeige Infofenster für $spell:99262 Stapel",
-	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:99404"
+	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:99257"
 })
 
 L:SetMiscLocalization({
