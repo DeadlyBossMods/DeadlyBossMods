@@ -17,7 +17,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "전장 점수판 캐릭터명에 직업 색상 사용하기",
-	ShowInviteTimer		= "전장 입장까지 남은 시간 바 표시",
+	ShowInviteTimer		= "전장 입장까지 남은시간 바 표시",
 	AutoSpirit			= "전장에서 사망시 자동으로 무덤 이동하기",
 	HideBossEmoteFrame	= "화면 가운데 나타나는 전장 메세지 숨기기"
 })
@@ -90,7 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin 				= "전투 승리까지 남은 시간 바 표시",
+	TimerWin 				= "전투 승리까지 남은시간 바 표시",
 	TimerCap 				= "거점 점령 바 표시",
 	ShowAbEstimatedPoints 	= "전투 종료시 승/패 진영 예상 점수 표시",
 	ShowAbBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 개수 표시"
@@ -123,7 +123,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin 		= "전투 승리까지 남은 시간 바 표시",
+	TimerWin 		= "전투 승리까지 남은시간 바 표시",
 	TimerFlag 		= "깃발 재생성 바 표시",
 	ShowPointFrame 	= "전투 종료시 승/패 진영 예상 점수 및 깃발 운반자 표시"
 })
@@ -258,7 +258,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin 					= "전투 승리까지 남은 시간 바 표시",
+	TimerWin 					= "전투 승리까지 남은시간 바 표시",
 	TimerCap 					= "거점 점령 바 표시",
 	ShowGilneasEstimatedPoints 	= "전투 종료시 승/패 진영 예상 점수 표시",
 	ShowGilneasBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 개수 표시"

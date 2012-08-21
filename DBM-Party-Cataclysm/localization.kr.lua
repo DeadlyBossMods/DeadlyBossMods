@@ -395,6 +395,13 @@ L= DBM:GetModLocalization(103)
 ------------ 
 L= DBM:GetModLocalization(104)
 
+L:SetTimerLocalization{
+	TimerPhase		= "2 단계"
+}
+
+L:SetOptionLocalization{
+	TimerPhase		= "2 단계까지 남은시간 바 표시"
+}
 ----------------
 --  Zul'Aman  --
 ----------------
@@ -624,7 +631,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerFlarecoreDetonate	= "$spell:101927 폭발 까지 남은 시간 바 표시"
+	TimerFlarecoreDetonate	= "$spell:101927 폭발 까지 남은시간 바 표시"
 }
 
 ----------------------

@@ -18,6 +18,7 @@ local warnPhase2		= mod:NewPhaseAnnounce(2)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnBlightSpray	= mod:NewSpellAnnounce(83985, 2)
 
+local timerPhase		= mod:NewTimer(95, "TimerPhase")
 local timerBlightSpray	= mod:NewBuffActiveTimer(4, 83985)
 
 local warnedPhase2 = false
@@ -26,7 +27,7 @@ local warnedPhase3 = false
 function mod:OnCombatStart(delay)
 	warnedPhase2 = false
 	warnedPhase3 = false
-	DBM.Bars:CreateBar(95, "Phase 2")--Can be done right later once consistency is confirmed.
+	timerPhase:Start()--Can be done right later once consistency is confirmed.
 end
 
 function mod:SPELL_AURA_APPLIED(args)
