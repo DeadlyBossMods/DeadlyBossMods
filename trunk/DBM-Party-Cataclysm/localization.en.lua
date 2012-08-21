@@ -394,6 +394,14 @@ L= DBM:GetModLocalization(103)
 ------------ 
 L= DBM:GetModLocalization(104)
 
+L:SetTimerLocalization{
+	TimerPhase		= "Phase 2"
+}
+
+L:SetOptionLocalization{
+	TimerPhase		= "Show timer for Phase 2"
+}
+
 ----------------
 --  Zul'Aman  --
 ----------------
