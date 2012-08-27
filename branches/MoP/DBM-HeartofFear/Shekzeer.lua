@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(5)
 	end
 	self:RegisterShortTermEvents(
-		"UNIT_HEALTH_FREQUENT"
+		"UNIT_HEALTH_FREQUENT_UNFILTERED"
 	)
 end
 
@@ -157,14 +157,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.RangeCheck:Show(5)
 		end
 		self:RegisterShortTermEvents(
-			"UNIT_HEALTH_FREQUENT"
+			"UNIT_HEALTH_FREQUENT_UNFILTERED"
 		)
 	end
 end
 
 --May not be that reliable, because they don't have a special unitID and there is little reason to target them.
 --So it may miss some of them, not sure of any other way to PRE-warn though. Can warn on actual cast/damage but not too effective.
-function mod:UNIT_HEALTH_FREQUENT(uId)
+function mod:UNIT_HEALTH_FREQUENT_UNFILTERED(uId)
 	local cid = self:GetUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
 	if cid == 62847 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.05 and not sentLowHP[guid] then

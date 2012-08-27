@@ -352,6 +352,9 @@ do
 	end
 	
 	local function handleEvent(self, event, ...)
+		if self == mainFrame and (event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
+			event = event .. "_UNFILTERED"
+		end
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
 			if type(v[event]) == "function" and (not v.zones or v.zones[LastZoneText] or v.zones[LastZoneMapID]) and (not v.Options or v.Options.Enabled) then
@@ -359,13 +362,58 @@ do
 			end
 		end
 	end
+	
+	local registerUnitEvent, unregisterUnitEvent
+	do
+		local unitEventFrame1 = CreateFrame("Frame")
+		local unitEventFrame2 = CreateFrame("Frame")
+		local unitEventFrame3 = CreateFrame("Frame")
+		
+		unitEventFrame1:SetScript("OnEvent", handleEvent)
+		unitEventFrame2:SetScript("OnEvent", handleEvent)
+		unitEventFrame3:SetScript("OnEvent", handleEvent)
+		
+		function registerUnitEvent(event)
+			unitEventFrame1:RegisterUnitEvent(event, "boss1", "boss2")
+			unitEventFrame2:RegisterUnitEvent(event, "boss3", "boss4")
+			unitEventFrame3:RegisterUnitEvent(event, "target", "focus")
+		end
+
+		function unregisterUnitEvent(event)
+			unitEventFrame1:UnregisterEvent(event)
+			unitEventFrame2:UnregisterEvent(event)
+			unitEventFrame3:UnregisterEvent(event)
+		end
+
+	end
 
 	function DBM:RegisterEvents(...)
 		for i = 1, select("#", ...) do
-			local ev = select(i, ...)
-			registeredEvents[ev] = registeredEvents[ev] or {}
-			tinsert(registeredEvents[ev], self)
-			mainFrame:RegisterEvent(ev)
+			local event = select(i, ...)
+			registeredEvents[event] = registeredEvents[event] or {}
+			tinsert(registeredEvents[event], self)
+			-- unit events that default to boss1-4, target, and focus only
+			-- for now: only UNIT_HEALTH(_FREQUENT), more events (and a lookup table for these events) might be added later
+			if event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT" then
+				registerUnitEvent(event)
+			elseif event == "UNIT_HEALTH_UNFILTERED" or event == "UNIT_HEALTH_FREQUENT_UNFILTERED" then
+				-- unfiltered version of these events
+				mainFrame:RegisterEvent(event:sub(0, -12))
+			else
+				-- normal events
+				mainFrame:RegisterEvent(event)
+			end
+		end
+	end
+
+	local function unregisterEvent(event)
+		registeredEvents[event] = nil
+		if event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT" then
+			unregisterUnitEvent(event)
+		elseif event == "UNIT_HEALTH_UNFILTERED" or event == "UNIT_HEALTH_FREQUENT_UNFILTERED" then
+			mainFrame:UnregisterEvent(event:sub(0, -12))
+		else
+			mainFrame:UnregisterEvent(event)
 		end
 	end
 	
@@ -377,8 +425,7 @@ do
 				end
 			end
 			if #mods == 0 then
-				registeredEvents[event] = nil
-				mainFrame:UnregisterEvent(event)
+				unregisterEvent(event)
 			end
 		end
 	end
@@ -392,8 +439,7 @@ do
 					end
 				end
 				if #mods == 0 then
-					registeredEvents[event] = nil
-					mainFrame:UnregisterEvent(event)
+					unregisterEvent(event)
 				end
 			end
 			self.shortTermEventsRegistered = nil
@@ -2464,8 +2510,6 @@ function DBM:StartCombat(mod, delay, synced)
 		end	
 	end
 end
-
-
 
 function DBM:UNIT_HEALTH(uId)
 	local cId = UnitGUID(uId) and tonumber(UnitGUID(uId):sub(7, 10), 16)

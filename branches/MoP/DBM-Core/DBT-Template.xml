@@ -46,7 +46,7 @@
 						</FontString>
 						<FontString name="$parentName" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
 							<Anchors>
-     								<Anchor point="LEFT" relativePoint="LEFT">
+     								<Anchor point="LEFT" relativePoint="LEFT">
 									<Offset>
 										<AbsDimension x="7" y="0.5"/>
 									</Offset>
@@ -55,7 +55,7 @@
 									<Offset>
 										<AbsDimension x="-7" y="0"/>
 									</Offset>
-								</Anchor>
+								</Anchor>
 							</Anchors>
 						</FontString>
 						<Texture name="$parentIcon1">
@@ -86,16 +86,7 @@
 				</Layers>
 				<BarTexture name="$parentTexture" file="Interface\AddOns\DBM-Core\textures\default.tga"/>
 				<BarColor r="1.0" g="0.7" b="0.0"/>
-				<Scripts>
-					<OnLoad function="DBT_Bar_OnLoad"/>
-				</Scripts>
 			</StatusBar>
 		</Frames>
-		<Scripts>
-			<OnUpdate function="DBT_Bar_OnUpdate"/>
-			<OnMouseDown function="DBT_Bar_OnMouseDown"/>
-			<OnMouseUp function="DBT_Bar_OnMouseUp"/>
-			<OnHide function="DBT_Bar_OnHide"/>
-		</Scripts>
 	</Frame>
 </Ui>	
