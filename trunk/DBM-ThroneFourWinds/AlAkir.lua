@@ -58,11 +58,8 @@ local countdownFeedback		= mod:NewCountdown(20, 87904, false)
 mod:AddBoolOption("LightningRodIcon")
 mod:AddBoolOption("RangeFrame", true)
 
-local lastWindburst = 0
 local phase2Started = false
 local strikeStarted = false
-local spamIce = 0
-local spamCloud = 0
 local squallName = GetSpellInfo(91129)
 local iceName = GetSpellInfo(88239)
 local stormlingName = GetSpellInfo(88272)
@@ -86,12 +83,8 @@ function mod:CloudRepeat()
 end
 
 function mod:OnCombatStart(delay)
-	lastWindburst = 0
 	phase2Started = false
 	strikeStarted = false
-	spamIce = 0
-	spamCloud = 0
-	spamStrike = 0
 	berserkTimer:Start(-delay)
 	timerWindBurstCD:Start(20-delay)
 	timerIceStormCD:Start(6-delay)

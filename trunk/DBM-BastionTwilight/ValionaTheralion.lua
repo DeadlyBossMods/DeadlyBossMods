@@ -340,7 +340,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if (spellId == 86505 or spellId == 92907 or spellId == 92908 or spellId == 92909) and destGUID == UnitGUID("player") and GetTime() - lastFab > 3 then
+	if (args.spellId == 86505 or args.spellId == 92907 or args.spellId == 92908 or args.spellId == 92909) and args.destGUID == UnitGUID("player") and GetTime() - lastFab > 3 then
 		specWarnFabulousFlames:Show()
 		lastFab = GetTime()
 	end

@@ -46,7 +46,6 @@ local function showConsumingWarning()
 	warnConsuming:Show(table.concat(consumingTargets, "<, >"))
 	table.wipe(consumingTargets)
 	consumingIcon = 8
-	lastFlames = 0
 	prewarnedFirestorm = false
 end
 
@@ -54,7 +53,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(consumingTargets)
 	consumingIcon = 8
 	berserkTimer:Start(-delay)
-	spamMeteor = 0
 	consuming = 0
 end
 

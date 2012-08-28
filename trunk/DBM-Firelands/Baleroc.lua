@@ -226,7 +226,7 @@ function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, 
 				lastStrikeDiff = lastStrikeDiff - 6
 				timerStrikeCD:Start(6-lastStrikeDiff, spellName)
 			elseif lastStrikeDiff < 6 then
-				lastDiff = 6 - lastStrikeDiff
+				lastStrikeDiff = 6 - lastStrikeDiff
 				timerStrikeCD:Start(6+lastStrikeDiff, spellName)
 			end
 		end

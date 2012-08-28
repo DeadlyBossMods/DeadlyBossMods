@@ -39,7 +39,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
 			if inRange then
-				specWarnRuptureNear:Show(targetname)
+				specWarnRuptureNear:Show(args.destName)
 			end
 		end
 	end
