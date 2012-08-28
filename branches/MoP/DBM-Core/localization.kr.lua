@@ -1,6 +1,6 @@
 ﻿if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_SUPPORT				= "버그/건의사항은 루세린-Hamuul (KR)(everfinale@gmail.com) 또는 인벤 닉네임 다시날아 로 보내주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주시기 바랍니다."
+DBM_CORE_NEED_SUPPORT				= "버그/건의사항은 법사세린-아즈샤라(everfinale@gmail.com) 또는 인벤 닉네임 다시날아 로 보내주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주시기 바랍니다."
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 표시되는 창에서 각 보스에 대한 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 경보를 불러오는 중 오류 발생: %s"
@@ -35,7 +35,7 @@ DBM_CORE_OPTION_CATEGORY_TIMERS		= "바"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "알림"
 DBM_CORE_OPTION_CATEGORY_MISC		= "기타 추가 기능"
 
-DBM_CORE_AUTO_RESPONDED						= "전투중 받은 귓속말에 대해 자동 응답합니다."
+DBM_CORE_AUTO_RESPONDED						= "전투중 받은 귓속말을 자동 응답합니다."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d 명이 생존해 있습니다."
 DBM_CORE_AUTO_RESPOND_WHISPER				= "%s 님은 현재 바쁩니다. %s 전투가 진행중입니다. (%s, %d/%d 명 생존중) 전투 종료후 다시 알림 메세지가 표시됩니다."
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s 님의 %s 전투가 끝났습니다!"
