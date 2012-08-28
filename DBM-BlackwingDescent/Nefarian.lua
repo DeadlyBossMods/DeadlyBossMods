@@ -275,7 +275,7 @@ end
 function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
 	if (spellId == 81007 or spellId == 94085 or spellId == 94086 or spellId == 94087) and destGUID == UnitGUID("player") and self:AntiSpam(4) then
 		specWarnShadowblaze:Show()
-	elseif spellID ~= 50288 and self:GetCIDFromGUID(destGUID) == 41918 and bit.band(sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 and self:IsInCombat() then--Any spell damage except for starfall
+	elseif spellId ~= 50288 and self:GetCIDFromGUID(destGUID) == 41918 and bit.band(sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 and self:IsInCombat() then--Any spell damage except for starfall
 		if sourceGUID ~= UnitGUID("player") then
 			if self.Options.TankArrow then
 				DBM.Arrow:ShowRunTo(sourceName, 0, 0)

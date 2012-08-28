@@ -62,7 +62,7 @@ end
 --"Never", "Normal", "DynamicPhase2", "DynamicAlways"
 function mod:updateRangeFrame()
 	if self:IsDifficulty("normal10", "normal25", "lfr25") or self.Options.CustomRangeFrame == "Never" then return end
-	if self.Options.CustomRangeFrame == "Normal" or UnitDebuff("player", GetSpellInfo(103434)) or self.Options.CustomRangeFrame == "DynamicPhase2" and not phase2started then--You have debuff or only want normal range frame or it's phase 1 and you only want dymanic in phase 2
+	if self.Options.CustomRangeFrame == "Normal" or UnitDebuff("player", GetSpellInfo(103434)) or self.Options.CustomRangeFrame == "DynamicPhase2" and not phase2Started then--You have debuff or only want normal range frame or it's phase 1 and you only want dymanic in phase 2
 		DBM.RangeCheck:Show(10, nil)--Show everyone.
 	else
 		DBM.RangeCheck:Show(10, shadowsDebuffFilter)--Show only people who have debuff.

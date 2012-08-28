@@ -78,7 +78,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 	end
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(Soundlevel)
+		DBM.InfoFrame:SetHeader("Sound Level")
 		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
 	end
 end
