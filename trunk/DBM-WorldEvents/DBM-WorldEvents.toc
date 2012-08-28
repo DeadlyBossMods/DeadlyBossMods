@@ -1,5 +1,5 @@
-﻿## Interface: 40300
-## X-Min-Interface: 40300
+﻿## Interface: 50001
+## X-Min-Interface: 50000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0World Events|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eventos del Mundo|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0이벤트|r
@@ -11,7 +11,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedVars, DBMWorldEvents_SavedStats
 ## X-DBM-Mod: 1
-## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire
 ## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt
