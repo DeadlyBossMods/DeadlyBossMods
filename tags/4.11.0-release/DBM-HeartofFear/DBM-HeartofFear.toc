@@ -1,0 +1,24 @@
+﻿## Interface: 50001
+## X-Min-Interface: 50000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Heart of Fear|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0공포의 심장|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMHeartofFear_SavedVars, DBMHeartofFear_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-Heroic-Mode: 1
+## X-DBM-Mod-Name: Heart of Fear
+## X-DBM-Mod-Name-koKR: 공포의 심장
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-LoadZoneID: 897
+localization.en.lua
+localization.kr.lua
+MapSizes.lua
+Zorlok.lua
+Tayak.lua
+Garalon.lua
+Meljarak.lua
+Unsok.lua
+Shekzeer.lua
