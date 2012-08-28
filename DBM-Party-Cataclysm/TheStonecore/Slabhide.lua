@@ -44,7 +44,6 @@ function mod:airphase()
 end
 
 function mod:OnCombatStart(delay)
-	spamEruption = 0
 --	timerFissureCD:Start(-delay)
 	timerAirphase:Start(12.5-delay)
 	self:ScheduleMethod(12.5-delay, "airphase")

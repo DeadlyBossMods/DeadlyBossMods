@@ -53,7 +53,6 @@ local crystalCount = 1--3 crystals between each vortex cast by Morchok, we ignor
 local kohcromSkip = 2--1 is crystal, 2 is stomp.
 
 function mod:OnCombatStart(delay)
-	spamBlood = 0
 	stompCount = 1
 	crystalCount = 1
 	if self:IsDifficulty("heroic10", "heroic25") then

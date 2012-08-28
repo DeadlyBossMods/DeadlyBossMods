@@ -255,6 +255,12 @@ local function isTank(unit)
 	return false
 end
 
+local function warnSeeds()
+	warnMoltenSeed:Show()
+	specWarnMoltenSeed:Show()
+	countdownSeeds:Start(60)
+	timerMoltenSeedCD:Start()
+end
 
 function mod:TargetScanner(SpellID, Force)
 	scansDone = scansDone + 1
@@ -606,13 +612,6 @@ function mod:UNIT_AURA(uId)
 	elseif not UnitDebuff("player", meteorTarget) and meteorWarned then--reset warned status if you don't have debuff
 		meteorWarned = false
 	end
-end
-
-local function warnSeeds()
-	warnMoltenSeed:Show()
-	specWarnMoltenSeed:Show()
-	countdownSeeds:Start(60)
-	timerMoltenSeedCD:Start()
 end
 
 local function clearSeedsActive()

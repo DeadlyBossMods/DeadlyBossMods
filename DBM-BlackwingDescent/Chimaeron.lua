@@ -97,7 +97,6 @@ function mod:OnCombatStart(delay)
 	timerBreakCD:Start(4.5-delay)
 	prewarnedPhase2 = false
 	botOffline = false
-	slimeIcon = 8
 	massacreCast = 0
 	phase2 = false
 	table.wipe(slimeTargets)

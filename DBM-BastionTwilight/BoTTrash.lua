@@ -88,7 +88,8 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(80652) then
-		timerFrostWhirl:Cancel()
+		-- FIXME: the timer object below doesn't exist... should it?
+--		timerFrostWhirl:Cancel()
 	elseif args:IsSpellID(87903) then--I will have to log this trash to verify this spell event.
 		timerVolcanicWrath:Cancel()
 	end
