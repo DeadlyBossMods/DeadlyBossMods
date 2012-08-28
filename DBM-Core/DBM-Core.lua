@@ -368,21 +368,25 @@ do
 		local unitEventFrame1 = CreateFrame("Frame")
 		local unitEventFrame2 = CreateFrame("Frame")
 		local unitEventFrame3 = CreateFrame("Frame")
-		
+		local unitEventFrame4 = CreateFrame("Frame")
+
 		unitEventFrame1:SetScript("OnEvent", handleEvent)
 		unitEventFrame2:SetScript("OnEvent", handleEvent)
 		unitEventFrame3:SetScript("OnEvent", handleEvent)
+		unitEventFrame4:SetScript("OnEvent", handleEvent)
 		
 		function registerUnitEvent(event)
 			unitEventFrame1:RegisterUnitEvent(event, "boss1", "boss2")
 			unitEventFrame2:RegisterUnitEvent(event, "boss3", "boss4")
 			unitEventFrame3:RegisterUnitEvent(event, "target", "focus")
+			unitEventFrame4:RegisterUnitEvent(event, "mouseover")
 		end
 
 		function unregisterUnitEvent(event)
 			unitEventFrame1:UnregisterEvent(event)
 			unitEventFrame2:UnregisterEvent(event)
 			unitEventFrame3:UnregisterEvent(event)
+			unitEventFrame4:UnregisterEvent(event)
 		end
 
 	end
