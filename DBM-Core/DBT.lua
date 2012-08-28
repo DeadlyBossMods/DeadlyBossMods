@@ -47,13 +47,13 @@ DBT_SavedOptions = {}
 --------------
 --  Locals  --
 --------------
-local fCounter = 1
 local barPrototype = {}
 local unusedBars = {}
 local unusedBarObjects = setmetatable({}, {__mode = "kv"})
 local instances = {}
 local updateClickThrough
 local options
+local setupHandlers
 local function stringFromTimer(t)
 	if t <= 60 then
 		return ("%.1f"):format(t)
@@ -109,7 +109,7 @@ options = {
 	},
 	Texture = {
 		type = "string",
-		default = "Interface\\AddOns\\DBM-Core\\textures\\default.tga",
+		default = "Interface\\AddOns\\DBM-DefaultSkins\\textures\\default.tga",
 	},
 	StartColorR = {
 		type = "number",
@@ -218,6 +218,14 @@ options = {
 	FontSize = {
 		type = "number",
 		default = 10
+	},
+	Template = {
+		type = "string",
+		default = "DBTBarTemplate"
+	},
+	Skin = {
+		type = "string",
+		default = "DefaultSkin"
 	}
 }
 
@@ -359,6 +367,7 @@ end
 --  Bar Constructor  --
 -----------------------
 do
+	local fCounter = 1
 	local function createBarFrame(self)
 		local frame
 		if unusedBars[#unusedBars] then
@@ -366,7 +375,8 @@ do
 			unusedBars[#unusedBars] = nil
 			frame:Show()
 		else
-			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
+			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, self.options.Template)
+			setupHandlers(frame)
 			fCounter = fCounter + 1
 		end
 		frame:EnableMouse(not self.options.ClickThrough or self.movable)
@@ -815,6 +825,104 @@ end
 	
 options.ClickThrough.onChange = updateClickThrough
 
+--------------------
+--  Skinning API  --
+--------------------
+do
+	local skins = {}
+	local textures = {}
+	local fonts = {}
+
+	local skin = {}
+	skin.__index = skin
+
+	function DBT:RegisterSkin(id)
+		if id:sub(0, 4) == "DBM-" then
+			id = id:sub(5)
+		end
+		local obj = skins[id]
+		if not obj then
+			error("unknown skin id; the id must be equal to the addon's name (with the DBM- prefix being optional)", 2)
+		end
+		obj.loaded = true
+		obj.defaults = {}
+		return obj
+	end
+	
+	function DBT:SetSkin(id)
+		local skin = skins[id]
+		if not skin then
+			error("skin " .. id .. " doesn't exist", 2)
+		end
+		-- changing the skin cancels all timers; this is much easier than creating new frames for all currently running timers
+		for bar in self:GetBarIterator() do
+			bar:Cancel()
+		end
+		self:SetOption("Skin", id)
+		-- throw away old bars (note: there is no way to re-use them as the new skin uses a different XML template)
+		-- note: this doesn't update dummy bars (and can't do it by design); anyone who has a dummy bar for preview purposes (i.e. the GUI) must create new bars (e.g. in a callback)
+		unusedBars = {}
+		-- apply default options from the skin and reset all other options
+		for k, v in pairs(options) do
+			if k ~= "TimerPoint" and k ~= "TimerX" and k ~= "TimerY" -- do not reset the position
+				and k ~= "HugeTimerPoint" and k ~= "HugeTimerX" and k ~= "HugeTimerY"
+				and k ~= "Skin" then -- do not reset the skin we just set
+				self:SetOption(k, skin.defaults[k] or v.default)
+			end
+		end
+	end
+
+	for i = 1, GetNumAddOns() do
+		if GetAddOnMetadata(i, "X-DBM-Timer-Skin") then
+			-- load basic skin data
+			local id = GetAddOnInfo(i)
+			if not IsAddOnLoadOnDemand(i) then
+				geterrorhandler()(id .. " should be marked as load on demand")
+			end
+			if id:sub(0, 4) == "DBM-" then
+				id = id:sub(5)
+			end
+			local name = GetAddOnMetadata(i, "X-DBM-Timer-Skin-Name")
+			skins[id] = setmetatable({
+				name = name
+			}, skin)
+
+			-- load textures and fonts that might be embedded in this skin (to make them available to other skins)
+			local skinTextures = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Textures") or "") }
+			local skinTextureNames = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Texture-Names") or "") }
+			if #skinTextures ~= #skinTextureNames then
+				geterrorhandler()(id .. ": toc file defines " .. #skinTextures .. " textures but " .. #skinTextureNames .. " names for textures")
+			else
+				for i = 1, #skinTextures do
+					textures[skinTextureNames[i]:trim()] = skinTextures[i]:trim()
+				end
+			end
+			local skinFonts = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Fonts") or "") }
+			local skinFontNames = { strsplit(",", GetAddOnMetadata(i, "X-DBM-Timer-Skin-Font-Names") or "") }
+			if #skinFonts ~= #skinFontNames then
+				geterrorhandler()(id .. ": toc file defines " .. #skinFonts .. " fonts but " .. #skinFontNames .. " names for fonts")
+			else
+				for i = 1, #skinFonts do
+					fonts[skinFontNames[i]:trim()] = skinFonts[i]:trim()
+				end
+			end
+
+		end
+	end
+
+	function DBT:GetSkins()
+		return skins
+	end
+
+	function DBT:GetTextures()
+		return textures
+	end
+
+	function DBT:GetFonts()
+		return fonts
+	end
+end
+
 
 --------------------
 --  Bar Announce  --
@@ -829,7 +937,7 @@ function barPrototype:Announce()
 	if chatWindow then
 		chatWindow:Insert(msg)
 	else
-		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
+		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (IsInRaid() and "RAID") or "PARTY")
 	end
 end
 
@@ -928,62 +1036,48 @@ function barPrototype:AnimateEnlarge(elapsed)
 	end
 end
 
---[[
+------------------------
+-- Bar event handlers --
+------------------------
 do
-	local breakFrames = {}
-	function barPrototype:Break() -- coming soon
-		local frame = table.remove(breakTextures, #breakTextures) or CreateFrame("Frame", nil, self.owner.mainAnchor)
-		frame:SetParent(self.owner.mainAnchor)
-		frame.tex1 = frame.tex1 or frame:CreateTexture(nil, "OVERLAY")
-		frame.tex2 = frame.tex2 or frame:CreateTexture(nil, "OVERLAY")
-		local tex1 = frame.tex1
-		local tex2 = frame.tex2
-		tex1:SetTexture(self.owner.options.Texture)
-		tex2:SetTexture(self.owner.options.Texture)
-		-- tex1:SetTexCoordModifiesRect(true)  
-		tex1:SetHorizTile(true)
-		tex1:SetVertTile(true)
-		tex1:SetTexCoord(0, 0.5, 0, 1)
+
+	local function onUpdate(self, elapsed)
+		self.obj:Update(elapsed)
 	end
-end
-]]--
 
-----------------------------------------
--- Functions used by the XML Template --
-----------------------------------------
-function DBT_Bar_OnLoad(self)
-	self:SetMinMaxValues(0, 1)
-	self:SetValue(1)
-end
-
-function DBT_Bar_OnUpdate(self, elapsed)
-	self.obj:Update(elapsed)
-end
-
-function DBT_Bar_OnMouseDown(self, btn)
-	if self.obj.owner.movable and btn == "LeftButton" then
-		if self.obj.enlarged then
-			self.obj.owner.secAnchor:StartMoving()
-		else
-			self.obj.owner.mainAnchor:StartMoving()
+	local function onMouseDown(self, btn)
+		if self.obj.owner.movable and btn == "LeftButton" then
+			if self.obj.enlarged then
+				self.obj.owner.secAnchor:StartMoving()
+			else
+				self.obj.owner.mainAnchor:StartMoving()
+			end
 		end
 	end
-end
 
-function DBT_Bar_OnMouseUp(self, btn)
-	self.obj.owner.mainAnchor:StopMovingOrSizing()
-	self.obj.owner.secAnchor:StopMovingOrSizing()
-	self.obj.owner:SavePosition()
-	if btn == "RightButton" then
-		self.obj:Cancel()
-	elseif btn == "LeftButton" and IsShiftKeyDown() then
-		self.obj:Announce()
-	end
-end
-
-function DBT_Bar_OnHide(self)
-	if self.obj then
+	local function onMouseUp(self, btn)
 		self.obj.owner.mainAnchor:StopMovingOrSizing()
 		self.obj.owner.secAnchor:StopMovingOrSizing()
+		self.obj.owner:SavePosition()
+		if btn == "RightButton" then
+			self.obj:Cancel()
+		elseif btn == "LeftButton" and IsShiftKeyDown() then
+			self.obj:Announce()
+		end
+	end
+
+	local function onHide(self)
+		if self.obj then
+			self.obj.owner.mainAnchor:StopMovingOrSizing()
+			self.obj.owner.secAnchor:StopMovingOrSizing()
+		end
+	end
+
+	function setupHandlers(frame)
+		frame:SetScript("OnUpdate", onUpdate)
+		frame:SetScript("OnMouseDown", onMouseDown)
+		frame:SetScript("OnMouseUp", onMouseUp)
+		frame:SetScript("OnHide", onHide)
+		_G[frame:GetName() .. "Bar"]:SetMinMaxValues(0, 1) -- used to be in the OnLoad handler
 	end
 end
