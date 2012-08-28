@@ -41,13 +41,11 @@ mod:AddBoolOption("SetIconOnMC", true)
 local warnpreMCTargets = {}
 local warnMCTargets = {}
 local mcTargetIcons = {}
+local mcIcon = 8
 local bitterThought = GetSpellInfo(119601)
 
-local debuffFilter
-do
-	debuffFilter = function(uId)
-		return UnitDebuff(uId, GetSpellInfo(119622))
-	end
+local function debuffFilter(uId)
+	return UnitDebuff(uId, GetSpellInfo(119622))
 end
 
 local function removeIcon(target)
@@ -59,23 +57,23 @@ local function removeIcon(target)
 	end
 end
 
-local function ClearMCTargets()
+local function clearMCTargets()
 	table.wipe(mcTargetIcons)
+	mcIcon = 8
 end
 
 do
-	local function sort_by_group(v1, v2)
+	local function sortByGroup(v1, v2)
 		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
 	function mod:SetMCIcons()
 		if DBM:GetRaidRank() > 0 then
-			table.sort(mcTargetIcons, sort_by_group)
-			local mcIcon = 8
+			table.sort(mcTargetIcons, sortByGroup)
 			for i, v in ipairs(mcTargetIcons) do
 				self:SetIcon(v, mcIcon)
 				mcIcon = mcIcon - 1
 			end
-			self:Schedule(10, ClearMCTargets)--delay 10 sec. (mc sperad takes 2~3 sec, and ghost player seems that do not fire SPELL_AURA_REMOVED event)
+			self:Schedule(10, clearMCTargets)--delay 10 sec. (mc sperad takes 2~3 sec, and dead players do not get the SPELL_AURA_REMOVED event)
 		end
 	end
 end

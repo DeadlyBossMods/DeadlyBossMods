@@ -201,7 +201,7 @@ function mod:OnSync(msg, guid)
 		else
 			timerBanishmentCD:Start()
 		end
-		if target ~= UnitName("player") then--make sure YOU aren't target before warning "other"
+		if guid ~= UnitGUID("player") then--make sure YOU aren't target before warning "other"
 			specWarnBanishmentOther:Show(guids[guid])
 		end
 	end
