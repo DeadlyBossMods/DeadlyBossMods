@@ -1,5 +1,5 @@
-﻿## Interface: 40300
-## X-Min-Interface: 40200
+﻿## Interface: 50001
+## X-Min-Interface: 50000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Поля Боя|r
@@ -14,7 +14,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPvP_SavedVars
 ## X-DBM-Mod: 1
-## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-SubCategories: Arena,Battlegrounds
 ## X-DBM-Mod-SubCategories-deDE: Arena,Schlachtfelder
@@ -35,7 +35,7 @@
 ## X-DBM-Mod-Name-esES: JcJ
 ## X-DBM-Mod-Name-esMX: JcJ
 ## X-DBM-Mod-Name-ptBR: JxJ
-## X-DBM-Mod-Sort: 175
+## X-DBM-Mod-Sort: 75
 ## X-DBM-Mod-LoadZoneID: 461,443,401,540,482
 localization.en.lua
 localization.de.lua

@@ -2131,7 +2131,8 @@ do
 	function DBM_GUI:UpdateModList()
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
-				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))
+				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
+				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="MOP"))
 				if L["TabCategory_"..addon.category:upper()] then
 					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..addon.category:upper()])
 					ptext:SetPoint('TOPLEFT', Categories[addon.category].frame, "TOPLEFT", 10, -10)
