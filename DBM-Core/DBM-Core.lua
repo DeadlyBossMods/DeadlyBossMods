@@ -1280,6 +1280,10 @@ do
 			fireEvent("raidLeave", UnitName("player"))
 		end
 	end
+	
+	function DBM:IsInRaid()
+		return inRaid
+	end
 
 	function DBM:GetGroupMembers()
 		return math.max(GetNumGroupMembers(), GetNumSubgroupMembers())
