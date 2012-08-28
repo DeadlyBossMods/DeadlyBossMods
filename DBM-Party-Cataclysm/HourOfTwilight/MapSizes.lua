@@ -1,4 +1,0 @@
-DBM:RegisterMapSize("HourofTwilight",
-	1, 3043.7498779296875,2029.16650390625,
-	2, 375.0,250.0
-)
