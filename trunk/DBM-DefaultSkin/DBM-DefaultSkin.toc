@@ -1,0 +1,12 @@
+﻿## Interface: 50001
+## X-Min-Interface: 50000
+## Title:|cffffe00a<|r|cffff7d0aDBM Skin|r|cffffe00a>|r |cff69ccf0Classic Timer Skin|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## X-DBM-Timer-Skin: 1
+## X-DBM-Timer-Skin-Name: Classic
+## X-DBM-Timer-Skin-Textures: Interface\AddOns\DBM-DefaultSkin\textures\default.tga
+## X-DBM-Timer-Skin-Texture-Names: Default
+Skin.lua
+TimerSkin.xml
+
