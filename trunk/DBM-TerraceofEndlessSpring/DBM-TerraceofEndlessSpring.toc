@@ -2,6 +2,7 @@
 ## X-Min-Interface: 50000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Terrace of Endless Spring|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0영원한 봄의 정원|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Terrasse des Endlosen Frühlings|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -11,10 +12,12 @@
 ## X-DBM-Mod-Has-Heroic-Mode: 1
 ## X-DBM-Mod-Name: Terrace of Endless Spring
 ## X-DBM-Mod-Name-koKR: 영원한 봄의 정원
+## X-DBM-Mod-Name-deDE: Terrasse des Endlosen Frühlings
 ## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZoneID: 886
 localization.en.lua
 localization.kr.lua
+localization.de.lua
 MapSizes.lua
 ProtectorsofEndless.lua
 Tsulong.lua

@@ -9,7 +9,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 1
 ## X-DBM-Mod-SubCategories: Temple of the Jade Serpent, Stormstout Brewery, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, Scholomance, Scarlet Halls, Scarlet Cathedral
-## X-DBM-Mod-SubCategories-deDE: Tempel der Jadeschlange, Die Brauerei Sturmbräu, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, Scholomance, Scharlachrote Hallen, Scharlachrote Kathedrale
+## X-DBM-Mod-SubCategories-deDE: Tempel der Jadeschlange, Die Brauerei Sturmbräu, Das Shado-Pan-Kloster, Tor der Untergehenden Sonne, Mogu'shanpalast, Belagerung des Niuzaotempels, Scholomance, Scharlachrote Hallen, Das Scharlachrote Kloster
 ## X-DBM-Mod-SubCategories-koKR: 옥룡사, 스톰스타우트 양조장, 음영파 수도원, 석양문, 모구샨 궁전, 니우짜오 사원 공성전투, 스칼로맨스, 붉은십자군 전당, 붉은십자군 수도원
 ## X-DBM-Mod-SubCategories-zhTW: 玉蛟寺, 風暴烈酒酒坊, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, 通靈學院, 血色大廳, 血色大教堂
 ## X-DBM-Mod-Name: Party (MoP)
