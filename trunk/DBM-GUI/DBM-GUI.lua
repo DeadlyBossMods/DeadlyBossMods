@@ -2132,10 +2132,15 @@ do
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
-				if tonumber((select(2, GetBuildInfo()))) >= 16017 then--Choose default expanded catagory based on build number. This is so we show Cata mods until sept 25th patch.
+				local expLevel = GetExpansionLevel()
+				if expLevel == 4 then--Choose default expanded category based on players current expansion is.
 					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="MOP"))
-				else
+				elseif expLevel == 3 then
 					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))
+				elseif expLevel == 2 then
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WotLK"))
+				elseif expLevel == 1 then
+					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="BC"))
 				end
 				if L["TabCategory_"..addon.category:upper()] then
 					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..addon.category:upper()])
