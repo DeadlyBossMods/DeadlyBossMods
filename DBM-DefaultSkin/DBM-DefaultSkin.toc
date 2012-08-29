@@ -1,6 +1,7 @@
 ﻿## Interface: 50001
 ## X-Min-Interface: 50000
 ## Title:|cffffe00a<|r|cffff7d0aDBM Skin|r|cffffe00a>|r |cff69ccf0Classic Timer Skin|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM 스킨|r|cffffe00a>|r |cff69ccf0기본 바 스킨|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## X-DBM-Timer-Skin: 1
