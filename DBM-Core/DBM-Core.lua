@@ -146,6 +146,7 @@ DBM.DefaultOptions = {
 	AprilFools = true,
 	MoviesSeen = {},
 	MovieFilters = {},
+	LastRevision = 0
 }
 
 DBM.Bars = DBT:New()
@@ -1341,10 +1342,21 @@ do
 		RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
 	end
 	
+	local function migrateSavedOptions()
+		-- reset default special warning font for russian clients due to many reports of problems with cyrillic characters in special warnings
+		if DBM.Options.LastRevision < 7998 then
+			DBM.Options.LastRevision = DBM.Revision
+			if GetLocale() == "ruRU" then
+				DBM.Options.SpecialWarningFont = STANDARD_TEXT_FONT
+			end
+		end
+	end
+
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
 		-- load special warning options
+		migrateSavedOptions()
 		DBM:UpdateSpecialWarningOptions()
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
 		DBM:Schedule(5, setRaidWarningPositon)
