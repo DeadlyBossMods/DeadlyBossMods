@@ -13,15 +13,15 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 0
-## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt
-## X-DBM-Mod-SubCategories-ruRU: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제
-## X-DBM-Mod-SubCategories-zhTW: 節慶,暗月馬戲團
-## X-DBM-Mod-SubCategories-zhCN: 节日,暗月马戏团
-## X-DBM-Mod-SubCategories-esES: Fiestas,Feria de la Luna Negra
-## X-DBM-Mod-SubCategories-esMX: Holidays,Darkmoon Faire
-## X-DBM-Mod-SubCategories-ptBR: Holidays,Darkmoon Faire
+## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire,Quests
+## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt,Quests
+## X-DBM-Mod-SubCategories-ruRU: Holidays,Darkmoon Faire,Quests
+## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제,Quests
+## X-DBM-Mod-SubCategories-zhTW: 節慶,暗月馬戲團,Quests
+## X-DBM-Mod-SubCategories-zhCN: 节日,暗月马戏团,Quests
+## X-DBM-Mod-SubCategories-esES: Fiestas,Feria de la Luna Negra,Quests
+## X-DBM-Mod-SubCategories-esMX: Holidays,Darkmoon Faire,Quests
+## X-DBM-Mod-SubCategories-ptBR: Holidays,Darkmoon Faire,Quests
 ## X-DBM-Mod-Name: World Events
 ## X-DBM-Mod-Name-esES: Eventos del Mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события
@@ -31,7 +31,7 @@
 ## X-DBM-Mod-Name-deDE: Weltereignisse
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
 ## X-DBM-Mod-Sort: 150
-## X-DBM-Mod-LoadZoneID: 704,762,764,728,823
+## X-DBM-Mod-LoadZoneID: 704,762,764,728,823,24
 localization.en.lua
 localization.ru.lua
 localization.fr.lua
@@ -51,3 +51,4 @@ DMF\Cannon.lua
 DMF\Gnoll.lua
 DMF\Shot.lua
 DMF\Tonks.lua
+Quests\Plants.lua

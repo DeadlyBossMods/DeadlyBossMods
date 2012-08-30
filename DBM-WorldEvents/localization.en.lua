@@ -184,3 +184,27 @@ L = DBM:GetModLocalization("Tonks")
 L:SetGeneralLocalization({
 	name = "Tonk Challenge"
 })
+
+--------------------------
+--  Plants Vs. Zombies  --
+--------------------------
+L = DBM:GetModLocalization("PlantsVsZombies")
+
+L:SetGeneralLocalization({
+	name = "Plants Vs. Zombies"
+})
+
+L:SetWarningLocalization({
+	warnTotalAdds	= "Total zombies spawned since last massive wave: %d",
+	specWarnWave	= "Massive Wave!"
+})
+
+L:SetTimerLocalization{
+	timerWave		= "Next Massive Wave"
+}
+
+L:SetOptionLocalization({
+	warnTotalAdds	= "Announce total add spawn count between each massive wave",
+	specWarnWave	= "Show special warning when a Massive Wave begins",
+	timerWave		= "Show timer for next Massive Wave"
+})
