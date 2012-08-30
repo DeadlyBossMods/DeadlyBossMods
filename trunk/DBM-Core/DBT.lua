@@ -109,7 +109,7 @@ options = {
 	},
 	Texture = {
 		type = "string",
-		default = "Interface\\AddOns\\DBM-DefaultSkins\\textures\\default.tga",
+		default = "Interface\\AddOns\\DBM-DefaultSkin\\textures\\default.tga",
 	},
 	StartColorR = {
 		type = "number",
