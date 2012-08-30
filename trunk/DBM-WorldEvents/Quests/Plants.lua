@@ -16,7 +16,7 @@ local warnZombie				= mod:NewSpellAnnounce(91739, 2, nil, false)--Likely Spammy
 local warnGhoul					= mod:NewSpellAnnounce(91834, 2, nil, false)--Possibly Spammy
 local warnAberration			= mod:NewSpellAnnounce(92228, 3)
 local warnAbomination			= mod:NewSpellAnnounce(92606, 4)
-local warnTotalAdds				= mod:NewSpellAnnounce("warnTotalAdds", 2)
+local warnTotalAdds				= mod:NewAnnounce("warnTotalAdds", 2)
 
 local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, true)
 
