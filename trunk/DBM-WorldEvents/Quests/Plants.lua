@@ -6,7 +6,8 @@ mod:SetZone(24)--Hillsbrad Foothills
 
 mod:RegisterEvents(
 	"UNIT_SPELLCAST_SUCCEEDED",
-	"UNIT_EXITED_VEHICLE"
+	"UNIT_EXITED_VEHICLE",
+	"RAID_BOSS_WHISPER"
 )
 
 --Note, mod writen and tested in ENdless mode only. The actual quests are unverified
@@ -30,9 +31,6 @@ local addCount = 0
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellID)
 	if uId ~= "player" then return end
 	if spellID == 92816 then--Create Battery (Game Start)
-		self:RegisterShortTermEvents(
-			"RAID_BOSS_WHISPER"--We register this only when event is active, since the only whisper we will get during this is the massive wave warnings, no need to localize
-		)
 		timerWave:Start(285)
 		wave = 0
 		addCount = 0
@@ -51,29 +49,30 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellID)
 	end
 end
 
-function mod:RAID_BOSS_WHISPER(event)
-	wave = wave + 1
-	warnTotalAdds:Show(addCount)
-	addCount = 0
-	specWarnWave:Show()
-	--Need more data to confirm this, timing may be based off something else more accurate
-	if wave == 1 then
-		timerWave:Start(298)
-	elseif wave == 2 then
-		timerWave:Start(230)
-	elseif wave == 3 then
-		timerWave:Start(240)
-	elseif wave == 4 then
-		timerWave:Start(170)
-	elseif wave == 5 then
-		timerWave:Start(198)
-	end	
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg == L.MassiveWave or msg:find(L.MassiveWave) then
+		wave = wave + 1
+		warnTotalAdds:Show(addCount)
+		addCount = 0
+		specWarnWave:Show()
+		--Need more data to confirm this, timing may be based off something else more accurate
+		if wave == 1 then
+			timerWave:Start(298)
+		elseif wave == 2 then
+			timerWave:Start(230)
+		elseif wave == 3 then
+			timerWave:Start(240)
+		elseif wave == 4 then
+			timerWave:Start(170)
+		elseif wave == 5 then
+			timerWave:Start(198)
+		end	
+	end
 end
 
 function mod:UNIT_EXITED_VEHICLE(uId)
 	if uId == "player" then 
---		timerWave:Cancel()
-		self:UnregisterShortTermEvents()--Unregister RAID_BOSS_WHISPER here. Certainly don't want massive wave warnings anywhere else now do we.
+		timerWave:Cancel()
 	end
 end
 
