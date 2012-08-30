@@ -20,7 +20,7 @@ local warnTotalAdds				= mod:NewAnnounce("warnTotalAdds", 2)
 
 local specWarnWave				= mod:NewSpecialWarning("specWarnWave", nil, nil, nil, true)
 
-local timerWave					= mod:NewTimer(170, "timerWave")
+--local timerWave					= mod:NewTimer(170, "timerWave")
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -31,7 +31,7 @@ local addCount = 0
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellID)
 	if uId ~= "player" then return end
 	if spellID == 92816 then--Create Battery (Game Start)
-		timerWave:Start(285)
+--		timerWave:Start(285)
 		wave = 0
 		addCount = 0
 	elseif spellID == 91739 then--Zombie
@@ -56,7 +56,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 		addCount = 0
 		specWarnWave:Show()
 		--Need more data to confirm this, timing may be based off something else more accurate
-		if wave == 1 then
+--[[		if wave == 1 then
 			timerWave:Start(298)
 		elseif wave == 2 then
 			timerWave:Start(230)
@@ -66,7 +66,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 			timerWave:Start(170)
 		elseif wave == 5 then
 			timerWave:Start(198)
-		end	
+		end	-]]
 	end
 end
 
