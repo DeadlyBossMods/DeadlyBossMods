@@ -208,3 +208,7 @@ L:SetOptionLocalization({
 	specWarnWave	= "Show special warning when a Massive Wave begins",
 	timerWave		= "Show timer for next Massive Wave"
 })
+
+L:SetMiscLocalization({
+	MassiveWave		= "A Massive Wave of Zombies is Approaching!"
+})
