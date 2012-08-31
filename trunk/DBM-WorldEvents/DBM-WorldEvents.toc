@@ -16,7 +16,7 @@
 ## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire,Quests
 ## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt,Quests
 ## X-DBM-Mod-SubCategories-ruRU: Holidays,Darkmoon Faire,Quests
-## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제,Quests
+## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제,퀘스트
 ## X-DBM-Mod-SubCategories-zhTW: 節慶,暗月馬戲團,Quests
 ## X-DBM-Mod-SubCategories-zhCN: 节日,暗月马戏团,Quests
 ## X-DBM-Mod-SubCategories-esES: Fiestas,Feria de la Luna Negra,Quests
