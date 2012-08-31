@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(683)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show range frame (8) for $spell:111850\n(Shows everyone if you have debuff, only players with debuff if not)",
+	RangeFrame			= "Zeige Abstandsfenster (8m) für $spell:111850\n(zeigt jeden, falls du den Debuff hast; sonst nur betroffene Spieler)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
 
@@ -18,7 +18,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Victory	= "I thank you, strangers. I have been freed."
+	Victory	= "I thank you, strangers. I have been freed." --translate (trigger)
 }
 
 
@@ -28,20 +28,20 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s has ended"
+	warnHideOver			= "%s ist beendet"
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "Next Special"
+	timerSpecialCD			= "Nächste Spezialfähigkeit"
 })
 
 L:SetOptionLocalization({
-	warnHideOver			= "Show warning when $spell:123244 has ended",
-	timerSpecialCD			= "Show timer for when next special ability will be cast."
+	warnHideOver			= "Zeige Warnung, wenn $spell:123244 beendet ist",
+	timerSpecialCD			= "Zeige Zeit bis nächste Spezialfähigkeit gewirkt wird"
 })
 
 L:SetMiscLocalization{
-	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy."--wtb alternate and less crappy victory event.
+	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy." --translate (trigger)
 }
 
 

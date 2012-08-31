@@ -185,3 +185,31 @@ L = DBM:GetModLocalization("Tonks")
 L:SetGeneralLocalization({
 	name = "Panzergeneral"
 })
+
+--------------------------
+--  Plants Vs. Zombies  --
+--------------------------
+L = DBM:GetModLocalization("PlantsVsZombies")
+
+L:SetGeneralLocalization({
+	name = "Pflanzen gegen Zombies"
+})
+
+L:SetWarningLocalization({
+	warnTotalAdds	= "Anzahl erschienener Zombies seit letzter Riesiger Welle: %d",
+	specWarnWave	= "Riesige Welle!"
+})
+
+L:SetTimerLocalization{
+	timerWave		= "Nächste Riesige Welle"
+}
+
+L:SetOptionLocalization({
+	warnTotalAdds	= "Verkünde die Anzahl der erschienenen Zombies zwischen jeder Riesigen Welle",
+	specWarnWave	= "Zeige Spezialwarnung, wenn eine Riesige Welle beginnt",
+	timerWave		= "Zeige Zeit bis nächste Riesige Welle"
+})
+
+L:SetMiscLocalization({
+	MassiveWave		= "Eine riesige Zombiewelle nähert sich!" --needs to be verified (video-captured translation)
+})
