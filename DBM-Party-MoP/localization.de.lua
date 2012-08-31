@@ -15,7 +15,7 @@ L= DBM:GetModLocalization(672)
 L= DBM:GetModLocalization(664)
 
 L:SetWarningLocalization({
-	SpecWarnIntensity	= "%s on %s (%d)"
+	SpecWarnIntensity	= "%s auf %s (%d)"
 })
 
 L:SetOptionLocalization({
@@ -51,12 +51,12 @@ L= DBM:GetModLocalization(669)
 L= DBM:GetModLocalization(670)
 
 L:SetWarningLocalization({
-	SpecWarnFizzyBubbles	= "Get Fizzy Bubble and fly"
+	SpecWarnFizzyBubbles	= "Hole Blubberblase und fliege"
 })
 
 L:SetOptionLocalization({
-	SpecWarnFizzyBubbles	= "Show special warning when you are missing $spell:114459 debuff",
-	RangeFrame				= "Show range frame (10) for $spell:106546"
+	SpecWarnFizzyBubbles	= "Zeige Spezialwarnung, falls dir der $spell:114459 Buff fehlt",
+	RangeFrame				= "Zeige Abstandsfenster (10m) für $spell:106546"
 })
 
 -----------------------
@@ -73,7 +73,7 @@ L= DBM:GetModLocalization(673)
 L= DBM:GetModLocalization(657)
 
 L:SetMiscLocalization({
-	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
+	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha." --translate (trigger)
 })
 
 -----------------------
@@ -87,7 +87,7 @@ L= DBM:GetModLocalization(685)
 L= DBM:GetModLocalization(686)
 
 L:SetOptionLocalization({
-	InfoFrame			= "Show info frame for $journal:5827"
+	InfoFrame			= "Zeige Infofenster für $journal:5827"
 })
 
 -----------------------
@@ -108,7 +108,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(675)
 
 L:SetMiscLocalization({
-	StaffingRun		= "Striker Ga'dok prepares to make a strafing run!"
+	StaffingRun		= "Striker Ga'dok prepares to make a strafing run!" --translate (trigger)
 })
 
 -----------------------
@@ -130,10 +130,10 @@ L= DBM:GetModLocalization(649)
 L= DBM:GetModLocalization(708)
 
 L:SetMiscLocalization({
-	Kuai		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!",
-	Ming		= "Clan Harthak will show all why they are the truest of Mogu!",
-	Haiyan		= "Clan Korgesh will demonstrate why only the strong deserve to stand at our King's side!",
-	Defeat		= "Who allowed these outsiders inside our halls? Only Clan Harthak or Clan Kargesh would stoop to such treachery!"
+	Kuai		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!", --translate (trigger)
+	Ming		= "Clan Harthak will show all why they are the truest of Mogu!", --translate (trigger)
+	Haiyan		= "Clan Korgesh will demonstrate why only the strong deserve to stand at our King's side!", --translate (trigger)
+	Defeat		= "Who allowed these outsiders inside our halls? Only Clan Harthak or Clan Kargesh would stoop to such treachery!" --translate (trigger)
 })
 
 -----------------------
@@ -160,15 +160,15 @@ L= DBM:GetModLocalization(693)
 L= DBM:GetModLocalization(738)
 
 L:SetTimerLocalization({
-	TimerWave	= "Starts Sending: %s"
+	TimerWave	= "Angriffsbefehl an: %s"
 })
 
 L:SetOptionLocalization({
-	TimerWave	= "Show timer for next mob wave"
+	TimerWave	= "Zeige Zeit bis nächsten Angriffsbefehl"
 })
 
 L:SetMiscLocalization({
-	WaveStart	= "Fools! Attacking the might of the mantid head on?  Your deaths will be swift."
+	WaveStart	= "Fools! Attacking the might of the mantid head on?  Your deaths will be swift." --translate (trigger)
 })
 
 -----------------------
@@ -200,16 +200,16 @@ L= DBM:GetModLocalization(663)
 L= DBM:GetModLocalization(665)
 
 L:SetWarningLocalization({
-	SpecWarnGetBoned	= "Get Bone Armor"
+	SpecWarnGetBoned	= "Hole Knochenrüstung"
 })
 
 L:SetOptionLocalization({
-	SpecWarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
-	InfoFrame			= "Show info frame for players not affected by $spell:113996"
+	SpecWarnGetBoned	= "Zeige Spezialwarnung, falls dir der $spell:113996 Buff fehlt",
+	InfoFrame			= "Zeige Infofenster für Spieler, denen der $spell:113996 Buff fehlt"
 })
 
 L:SetMiscLocalization({
-	PlayerDebuffs	= "No Bone Armor"
+	PlayerDebuffs	= "Keine Knochenrüstung"
 })
 
 -----------------------
@@ -240,7 +240,7 @@ L= DBM:GetModLocalization(660)
 L= DBM:GetModLocalization(654)
 
 L:SetMiscLocalization({
-	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!"
+	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!" --translate (trigger)
 })
 
 -----------------------
@@ -262,7 +262,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "Show DBM arrow when $spell:114487 is near you",
+	KickArrow	= "Zeige DBM-Pfeil, falls $spell:114487 in deiner Nähe ist"
 })
 
 -----------------------

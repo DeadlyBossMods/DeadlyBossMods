@@ -7,15 +7,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "%s castable in 7s!"
+	SpecWarnOverloadSoon	= "%s wirkbar in 7 Sek!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "Show special warning before overload",
+	SpecWarnOverloadSoon	= "Zeige Spezialwarnung bevor eine Überladung gewirkt werden kann",
 })
 
 L:SetMiscLocalization({
-	Overload	= "%s is about to Overload!"
+	Overload	= "%s is about to Overload!" --translate (trigger)
 })
 
 
@@ -29,14 +29,14 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "Announce Phase transition"
+	WarnPhase	= "Verkünde Phasenwechsel"
 })
 
 L:SetMiscLocalization({
-	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!",
-	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!",
-	Nature		= "Oh great spirit! Grant me the power of the earth!",--I did not log this one, text is probably not right
-	Shadow		= "Great soul of champions past! Bear to me your shield!"
+	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!", --translate (trigger)
+	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!", --translate (trigger)
+	Nature		= "Oh great spirit! Grant me the power of the earth!", --translate (trigger)
+	Shadow		= "Great soul of champions past! Bear to me your shield!" --translate (trigger)
 })
 
 
@@ -46,12 +46,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(682)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show range frame (8)",
+	RangeFrame			= "Zeige Abstandsfenster (8m)",
 	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
 })
 
 L:SetMiscLocalization({
-	Pull		= "It be dyin' time, now!"
+	Pull		= "It be dyin' time, now!" --translate (trigger)
 })
 
 
@@ -61,7 +61,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization(687)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show range frame (8)"
+	RangeFrame			= "Zeige Abstandsfenster (8m)"
 })
 
 
@@ -71,16 +71,16 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "Watch your step!"
+	specWarnDespawnFloor		= "Paß auf, wo du hintrittst!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "Watch your step!"
+	timerDespawnFloor			= "Paß auf, wo du hintrittst!"
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "Show special warning before floor vanishes",
-	timerDespawnFloor			= "show timer for when floor vanishes"
+	specWarnDespawnFloor		= "Zeige Spezialwarnung bevor der Boden (Energievortex) verschwindet",
+	timerDespawnFloor			= "Zeige Zeit bis der Boden (Energievortex) verschwindet"
 })
 
 
@@ -90,14 +90,14 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Show info frame for players affected by $spell:116525"
+	InfoFrame		= "Zeige Infofenster für Spieler, welche von $spell:116525 betroffen sind"
 })
 
 L:SetMiscLocalization({
-	Pull		= "The machine hums to life!  Get to the lower level!",--Emote
-	Rage		= "The Emperor's Rage echoes through the hills.",--Yell
-	Strength	= "The Emperor's Strength appears in the alcoves!",--Emote
-	Courage		= "The Emperor's Courage appears in the alcoves!",--Emote
-	Boss		= "Two titanic constructs appear in the large alcoves!"--Emote
+	Pull		= "The machine hums to life!  Get to the lower level!", --translate (trigger)
+	Rage		= "The Emperor's Rage echoes through the hills.", --translate (trigger)
+	Strength	= "The Emperor's Strength appears in the alcoves!", --translate (trigger)
+	Courage		= "The Emperor's Courage appears in the alcoves!", --translate (trigger)
+	Boss		= "Two titanic constructs appear in the large alcoves!" --translate (trigger)
 })
 

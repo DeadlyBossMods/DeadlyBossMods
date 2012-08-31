@@ -7,17 +7,17 @@ local L
 L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
-	specwarnPlatform	= "Platform change"
+	specwarnPlatform	= "Plattformwechsel"
 })
 
 L:SetOptionLocalization({
-	specwarnPlatform	= "Show special warning when boss changes platforms",
+	specwarnPlatform	= "Zeige Spezialwarnung bei Plattformwechsel des Bosses",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
 L:SetMiscLocalization({
-	Platform	= "%s flies to one of his platforms!",
-	Defeat		= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
+	Platform	= "%s flies to one of his platforms!", --translate (trigger)
+	Defeat		= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so." --translate (trigger)
 })
 
 
@@ -27,8 +27,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "Show DBM Arrow when someone is affected by $spell:122949 ",
-	RangeFrame			= "Show range frame (8) for $spell:123175"
+	UnseenStrikeArrow	= "Zeige DBM-Pfeil, wenn jemand von $spell:122949 betroffen ist",
+	RangeFrame			= "Zeige Abstandsfenster (8m) für $spell:123175"
 })
 
 
@@ -51,7 +51,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"
+	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!" --translate (trigger)
 })
 
 ------------
@@ -66,10 +66,10 @@ L= DBM:GetModLocalization(737)
 L= DBM:GetModLocalization(743)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Show info frame for players affected by $spell:125390",
-	RangeFrame		= "Show range frame (5) for $spell:123735"
+	InfoFrame		= "Zeige Infofenster für Spieler, welche von $spell:125390 betroffen sind",
+	RangeFrame		= "Zeige Abstandsfenster (5m) für $spell:123735"
 })
 
 L:SetMiscLocalization({
-	PlayerDebuffs	= "Fixated"
+	PlayerDebuffs	= "Fixiert"
 })
