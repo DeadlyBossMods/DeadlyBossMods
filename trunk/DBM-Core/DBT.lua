@@ -1042,7 +1042,9 @@ end
 do
 
 	local function onUpdate(self, elapsed)
-		self.obj:Update(elapsed)
+		if self.obj then -- this check should *never* fail as only dead bars don't have an object and dead bars should always be hidden
+			self.obj:Update(elapsed)
+		end
 	end
 
 	local function onMouseDown(self, btn)
