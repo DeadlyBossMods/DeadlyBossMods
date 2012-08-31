@@ -187,3 +187,31 @@ L:SetGeneralLocalization({
 	name = "통통 전차 게임"
 })
 
+
+--------------------------
+--  Plants Vs. Zombies  --
+--------------------------
+L = DBM:GetModLocalization("PlantsVsZombies")
+
+L:SetGeneralLocalization({
+	name = "평온초 대 구울"
+})
+
+L:SetWarningLocalization({
+	warnTotalAdds	= "총공격 전까지 생성된 적 수 : %d",
+	specWarnWave	= "총공격!"
+})
+
+L:SetTimerLocalization{
+	timerWave		= "다음 총공격"
+}
+
+L:SetOptionLocalization({
+	warnTotalAdds	= "각 총공격시마다 이전 단계에 생성된 적 수 보기",
+	specWarnWave	= "총공격 시작시 특수 경고 보기",
+	timerWave		= "다음 총공격 바 표시"
+})
+
+L:SetMiscLocalization({
+	MassiveWave		= "좀비의 총공격이 시작됐습니다!"
+})
