@@ -2463,7 +2463,7 @@ function DBM:StartCombat(mod, delay, synced)
 		elseif mod:IsDifficulty("normal10") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
 			local _, _, _, _, maxPlayers = GetInstanceInfo()
-			--Because classic raids that don't have variable sizes all return 1.
+			--Because we still combine 40 mans with 10 man raids, we use maxPlayers arg for player count.
 			difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
 		elseif mod:IsDifficulty("heroic10") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
@@ -2567,28 +2567,33 @@ function DBM:EndCombat(mod, wipe)
 		end
 		if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 			local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
-			if difficulty > 2 then--Just neatly combines both heroic raids into 1
-				difficultyText = PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
-				savedDifficulty = "heroic"..maxPlayers
-			elseif difficulty < 3 and instanceType == "raid" and not IsPartyLFG() then--Combine non heroic raids into 1
+			if difficulty == 1 then
 				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
-				savedDifficulty = "normal"..maxPlayers
-			elseif IsPartyLFG() and IsInLFGDungeon() and instanceType == "raid" then
+				savedDifficulty = "normal5"
+			elseif difficulty == 2 then
+				difficultyText = PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
+				savedDifficulty = "heroic5"
+			elseif difficulty == 3 then
+				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
+				savedDifficulty = "normal10"
+			elseif difficulty == 4 then
+				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
+				savedDifficulty = "normal25"
+			elseif difficulty == 5 then
+				difficultyText = PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
+				savedDifficulty = "heroic10"
+			elseif difficulty == 6 then
+				difficultyText = PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
+				savedDifficulty = "heroic25"
+			elseif difficulty == 7 then
 				difficultyText = PLAYER_DIFFICULTY3.." - "
 				savedDifficulty = "lfr25"
-			elseif difficulty == 1 and instanceType == "party" then
-				if IsInInstance() then
-					difficultyText = PLAYER_DIFFICULTY1.." - "
-				else
-					difficultyText = ""
-				end
-				savedDifficulty = "normal5"
-			elseif difficulty == 2 and instanceType == "party" then
-				difficultyText = PLAYER_DIFFICULTY2.." - "
-				savedDifficulty = "heroic5"
-			elseif difficulty == 8 and instanceType == "party" then
-				difficultyText = CHALLENGE_MODE.." - "
+			elseif difficulty == 8 then
+				ifficultyText = CHALLENGE_MODE.." - "
 				savedDifficulty = "challenge5"
+			elseif difficulty == 9 then--40 mans now have their own difficulty, instead of being reported as 10 man normal like they used to in 3.x-4.x
+				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
+				savedDifficulty = "normal10"--Lets just save these where we been saving them, to avoid probelms, instead of creating a normal40 for little reason.
 			else
 				difficultyText = ""
 				savedDifficulty = "normal5"
@@ -2773,6 +2778,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "lfr25"
 	elseif difficulty == 8 then
 		return "challenge5"
+	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
+		return "normal10"--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	else
 		return "unknown"
 	end
