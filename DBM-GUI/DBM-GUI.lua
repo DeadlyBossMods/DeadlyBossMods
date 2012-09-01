@@ -2040,7 +2040,23 @@ do
 				local boss25stat4	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local boss25stat5	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local boss25stat6	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
-
+				if not mod.stats then
+					mod.stats = { }
+				end
+				local stats = mod.stats
+				stats.normalKills = stats.normalKills or 0
+				stats.normalPulls = stats.normalPulls or 0
+				stats.heroicKills = stats.heroicKills or 0
+				stats.heroicPulls = stats.heroicPulls or 0
+				stats.challengeKills = stats.challengeKills or 0
+				stats.challengePulls = stats.challengePulls or 0
+				stats.normal25Kills = stats.normal25Kills or 0
+				stats.normal25Kills = stats.normal25Kills or 0
+				stats.normal25Pulls = stats.normal25Pulls or 0
+				stats.heroic25Kills = stats.heroic25Kills or 0
+				stats.heroic25Pulls = stats.heroic25Pulls or 0
+				stats.lfr25Kills = stats.lfr25Kills or 0
+				stats.lfr25Pulls = stats.lfr25Pulls or 0
 				local bossvalue1	= area:CreateText(mod.stats.normalKills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossvalue2	= area:CreateText((mod.stats.normalPulls-mod.stats.normalKills), nil, nil, GameFontNormalSmall, "LEFT")
 				local bossvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
