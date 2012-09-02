@@ -373,7 +373,6 @@ do
 		if unusedBars[#unusedBars] then
 			frame = unusedBars[#unusedBars]
 			unusedBars[#unusedBars] = nil
-			frame:Show()
 		else
 			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, self.options.Template)
 			setupHandlers(frame)
@@ -436,12 +435,12 @@ do
 			else
 				self.smallBars:Append(newBar)
 			end
-			newBar:ApplyStyle()
 			newBar:SetText(id)
 			newBar:SetIcon(icon)
 			newBar:SetPosition()
-			newBar:Update(0)
 			self.bars[newBar] = true
+			newBar:ApplyStyle()
+			newBar:Update(0)
 		end
 		return newBar
 	end
