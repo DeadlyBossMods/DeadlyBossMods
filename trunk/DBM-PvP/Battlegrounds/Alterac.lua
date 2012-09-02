@@ -95,6 +95,10 @@ do
 		for k,v in pairs(graveyards) do
 			local name, _, textureIndex = GetMapLandmarkInfo(k)
 			if name and textureIndex then
+				-- work-around for a bug in the german localization of WoW: the graveyard seems to change its name depending on the state
+				if name == "Friedhof des Sturmlanzen" then
+					name = "Friedhof der Sturmlanzen"
+				end
 				local curState = gy_state(textureIndex)
 				if curState and gy_state(v) ~= curState then
 					gyTimer:Stop(name)
