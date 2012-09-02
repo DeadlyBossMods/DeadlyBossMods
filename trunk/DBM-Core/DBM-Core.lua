@@ -2589,7 +2589,7 @@ function DBM:EndCombat(mod, wipe)
 				difficultyText = PLAYER_DIFFICULTY3.." - "
 				savedDifficulty = "lfr25"
 			elseif difficulty == 8 then
-				ifficultyText = CHALLENGE_MODE.." - "
+				difficultyText = CHALLENGE_MODE.." - "
 				savedDifficulty = "challenge5"
 			elseif difficulty == 9 then--40 mans now have their own difficulty, instead of being reported as 10 man normal like they used to in 3.x-4.x
 				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
