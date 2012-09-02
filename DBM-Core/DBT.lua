@@ -1042,10 +1042,14 @@ end
 do
 
 	local function onUpdate(self, elapsed)
-		 -- this check should *never* fail as only dead bars don't have an object and dead bars should always be hidden
-		 -- however, this function is apparently called by :Show() under some circumstances
 		if self.obj then
 			self.obj:Update(elapsed)
+		else
+		 	-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
+			-- However, there have been several reports of this happening since WoW 5.x, wtf?
+			-- Unfortunately, none of the developers was ever able to reproduce this.
+			-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
+			self:Hide()
 		end
 	end
 
