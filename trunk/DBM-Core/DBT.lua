@@ -1050,23 +1050,27 @@ do
 	end
 
 	local function onMouseDown(self, btn)
-		if self.obj.owner.movable and btn == "LeftButton" then
-			if self.obj.enlarged then
-				self.obj.owner.secAnchor:StartMoving()
-			else
-				self.obj.owner.mainAnchor:StartMoving()
+		if self.obj then
+			if self.obj.owner.movable and btn == "LeftButton" then
+				if self.obj.enlarged then
+					self.obj.owner.secAnchor:StartMoving()
+				else
+					self.obj.owner.mainAnchor:StartMoving()
+				end
 			end
 		end
 	end
 
 	local function onMouseUp(self, btn)
-		self.obj.owner.mainAnchor:StopMovingOrSizing()
-		self.obj.owner.secAnchor:StopMovingOrSizing()
-		self.obj.owner:SavePosition()
-		if btn == "RightButton" then
-			self.obj:Cancel()
-		elseif btn == "LeftButton" and IsShiftKeyDown() then
-			self.obj:Announce()
+		if self.obj then
+			self.obj.owner.mainAnchor:StopMovingOrSizing()
+			self.obj.owner.secAnchor:StopMovingOrSizing()
+			self.obj.owner:SavePosition()
+			if btn == "RightButton" then
+				self.obj:Cancel()
+			elseif btn == "LeftButton" and IsShiftKeyDown() then
+				self.obj:Announce()
+			end
 		end
 	end
 
