@@ -161,7 +161,6 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 --  Locals  --
 --------------
-local _ --prevent taint issue on glyph window.
 local inCombat = {}
 local combatInfo = {}
 local updateFunctions = {}

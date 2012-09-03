@@ -11,7 +11,6 @@ DBM.BossHealth = {}
 -------------
 --  Locals --
 -------------
-local _ --prevent taint issue on glyph window.
 local bossHealth = DBM.BossHealth
 local bars = {}
 local barCache = {}
