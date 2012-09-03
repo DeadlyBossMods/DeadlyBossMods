@@ -566,16 +566,18 @@ function barPrototype:SetText(text)
 end
 
 function barPrototype:SetIcon(icon)
-	_G[self.frame:GetName().."BarIcon1"]:SetTexture("")
-	_G[self.frame:GetName().."BarIcon1"]:SetTexture(icon)
-	_G[self.frame:GetName().."BarIcon2"]:SetTexture("")
-	_G[self.frame:GetName().."BarIcon2"]:SetTexture(icon)
+	local frame_name = self.frame:GetName()
+	_G[frame_name.."BarIcon1"]:SetTexture("")
+	_G[frame_name.."BarIcon1"]:SetTexture(icon)
+	_G[frame_name.."BarIcon2"]:SetTexture("")
+	_G[frame_name.."BarIcon2"]:SetTexture(icon)
 end
 
 function barPrototype:SetColor(color)
 	self.color = color
-	_G[self.frame:GetName().."Bar"]:SetStatusBarColor(color.r, color.g, color.b)
-	_G[self.frame:GetName().."BarSpark"]:SetVertexColor(color.r, color.g, color.b)
+	local frame_name = self.frame:GetName()
+	_G[frame_name.."Bar"]:SetStatusBarColor(color.r, color.g, color.b)
+	_G[frame_name.."BarSpark"]:SetVertexColor(color.r, color.g, color.b)
 end
 
 ------------------
@@ -583,10 +585,11 @@ end
 ------------------
 function barPrototype:Update(elapsed)
 	local frame = self.frame
-	local bar = _G[frame:GetName().."Bar"]
-	local texture = _G[frame:GetName().."BarTexture"]
-	local spark = _G[frame:GetName().."BarSpark"]
-	local timer = _G[frame:GetName().."BarTimer"]
+	local frame_name = frame:GetName()
+	local bar = _G[frame_name.."Bar"]
+	local texture = _G[frame_name.."BarTexture"]
+	local spark = _G[frame_name.."BarSpark"]
+	local timer = _G[frame_name.."BarTimer"]
 	local obj = self.owner
 	self.timer = self.timer - elapsed
 	if obj.options.DynamicColor and not self.color then
@@ -762,13 +765,14 @@ end
 
 function barPrototype:ApplyStyle()
 	local frame = self.frame
-	local bar = _G[frame:GetName().."Bar"]
-	local spark = _G[frame:GetName().."BarSpark"]
-	local texture = _G[frame:GetName().."BarTexture"]
-	local icon1 = _G[frame:GetName().."BarIcon1"]
-	local icon2 = _G[frame:GetName().."BarIcon2"]
-	local name = _G[frame:GetName().."BarName"]
-	local timer = _G[frame:GetName().."BarTimer"]
+	local frame_name = frame:GetName()
+	local bar = _G[frame_name.."Bar"]
+	local spark = _G[frame_name.."BarSpark"]
+	local texture = _G[frame_name.."BarTexture"]
+	local icon1 = _G[frame_name.."BarIcon1"]
+	local icon2 = _G[frame_name.."BarIcon2"]
+	local name = _G[frame_name.."BarName"]
+	local timer = _G[frame_name.."BarTimer"]
 	texture:SetTexture(self.owner.options.Texture)
 	if self.color then
 		bar:SetStatusBarColor(self.color.r, self.color.g, self.color.b)
