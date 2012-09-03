@@ -57,6 +57,8 @@ local timerMendingCD					= mod:NewNextTimer(36, 122193, nil, false)--To reduce b
 local timerQuickeningCD					= mod:NewNextTimer(36, 122149, nil, false)--^^
 local timerKorthikStrikeCD				= mod:NewCDTimer(40.5, 123963)--^^
 
+local berserkTimer						= mod:NewBerserkTimer(480)
+
 mod:AddBoolOption("AmberPrisonIcons", true)
 
 local addsCount = 0
@@ -86,6 +88,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(amberPrisonTargets)
 	timerWhirlingBladeCD:Start(35.5-delay)
 	timerRainOfBladesCD:Start(60-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
