@@ -87,18 +87,16 @@ do
 		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
 	function mod:SetVoodooIcons()
-		if DBM:GetRaidRank() > 0 then
-			table.sort(voodooDollTargetIcons, sort_by_group)
-			local voodooIcon = 8
-			for i, v in ipairs(voodooDollTargetIcons) do
-				-- DBM:SetIcon() is used because of follow reasons
-				--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
-				--2. It checks global dbm option "DontSetIcons"
-				self:SetIcon(v, voodooIcon)
-				voodooIcon = voodooIcon - 1
-			end
---			self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+		table.sort(voodooDollTargetIcons, sort_by_group)
+		local voodooIcon = 8
+		for i, v in ipairs(voodooDollTargetIcons) do
+			-- DBM:SetIcon() is used because of follow reasons
+			--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
+			--2. It checks global dbm option "DontSetIcons"
+			self:SetIcon(v, voodooIcon)
+			voodooIcon = voodooIcon - 1
 		end
+--		self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 end
 
