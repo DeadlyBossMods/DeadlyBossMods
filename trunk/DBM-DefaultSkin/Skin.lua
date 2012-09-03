@@ -1,4 +1,3 @@
-local _ --prevent taint issue on glyph window.
 local skin = DBT:RegisterSkin("DefaultSkin")
 
 -- DBT templates work by providing a set of DBT options which control the look and feel of the status bars. The DBM 5.0 skinning system consists of two parts:
