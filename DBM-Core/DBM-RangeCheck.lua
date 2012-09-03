@@ -51,6 +51,7 @@ DBM.RangeCheck = {}
 --------------
 --  Locals  --
 --------------
+local _ --prevent taint issue on glyph window.
 local rangeCheck = DBM.RangeCheck
 local checkFuncs = {}
 local frame

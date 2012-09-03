@@ -38,6 +38,7 @@
 --
 --
 
+local _ --prevent taint issue on glyph window.
 local revision =("$Revision$"):sub(12, -3) 
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 

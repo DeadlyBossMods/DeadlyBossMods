@@ -36,6 +36,8 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 
+local _ --prevent taint issue on glyph window.
+
 do 
 	local MAX_BUTTONS = 10
 	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent)
