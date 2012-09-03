@@ -7,6 +7,7 @@
 DBM.Arrow = {}
 
 -- locals
+local _ --prevent taint issue on glyph window.
 local runAwayArrow
 local targetType
 local targetPlayer

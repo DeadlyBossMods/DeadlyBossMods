@@ -50,6 +50,7 @@ DBM.InfoFrame = {}
 --------------
 --  Locals  --
 --------------
+local _ --prevent taint issue on glyph window.
 local infoFrame = DBM.InfoFrame
 local frame
 local createFrame
