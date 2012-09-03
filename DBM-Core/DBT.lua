@@ -47,7 +47,6 @@ DBT_SavedOptions = {}
 --------------
 --  Locals  --
 --------------
-local _ --prevent taint issue on glyph window.
 local barPrototype = {}
 local unusedBars = {}
 local unusedBarObjects = setmetatable({}, {__mode = "kv"})
