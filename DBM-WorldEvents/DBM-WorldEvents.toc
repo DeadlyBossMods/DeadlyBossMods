@@ -51,4 +51,5 @@ DMF\Cannon.lua
 DMF\Gnoll.lua
 DMF\Shot.lua
 DMF\Tonks.lua
+DMF\Rabbit.lua
 Quests\Plants.lua
