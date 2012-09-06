@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Bunny", "DBM-WorldEvents", 2)
+local mod	= DBM:NewMod("Rabbit", "DBM-WorldEvents", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
