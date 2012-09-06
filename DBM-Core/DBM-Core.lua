@@ -1591,7 +1591,7 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 					break
 				end
 			end
-		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466) and not IsAddOnLoaded("DBM-WorldEvents") then--The Abominable Greench & his helpers (Winter Veil world boss), Omen & his minions (Lunar Festival world boss)
+		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466 or cId == 49687) and not IsAddOnLoaded("DBM-WorldEvents") then--The Abominable Greench & his helpers (Winter Veil world boss), Omen & his minions (Lunar Festival world boss), Plants vs Zombie npc
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
 					DBM:LoadMod(v)
@@ -1607,28 +1607,28 @@ function DBM:PLAYER_TARGET_CHANGED()
 	local guid = UnitGUID("target")
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(7, 10), 16)
-		if (cId == 17711 or cId == 18728) and not IsAddOnLoaded("DBM-Outlands") then--Burning Crusade World Bosses: Doomwalker and Kazzak
+		if (cId == 17711 or cId == 18728) and not IsAddOnLoaded("DBM-Outlands") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Outlands" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not IsAddOnLoaded("DBM-Party-Cataclysm") then--Cataclysm World Bosses: Akamhat, Garr, Julak, Mobus, Xariona
+		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not IsAddOnLoaded("DBM-Party-Cataclysm") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-Cataclysm" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 62346 or cId == 60491) and not IsAddOnLoaded("DBM-Pandaria") then--Mists of Pandaria World Bosses: Anger, Salyis
+		elseif (cId == 62346 or cId == 60491) and not IsAddOnLoaded("DBM-Pandaria") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Pandaria" then
 					DBM:LoadMod(v)
 					break
 				end
 			end
-		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466) and not IsAddOnLoaded("DBM-WorldEvents") then--The Abominable Greench & his helpers (Winter Veil world boss), Omen & his minions (Lunar Festival world boss)
+		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466 or cId == 49687) and not IsAddOnLoaded("DBM-WorldEvents") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
 					DBM:LoadMod(v)
