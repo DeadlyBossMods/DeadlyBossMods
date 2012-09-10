@@ -187,6 +187,14 @@ L:SetGeneralLocalization({
 	name = "통통 전차 게임"
 })
 
+-----------------------
+--  Darkmoon Rabbit  --
+-----------------------
+L = DBM:GetModLocalization("Rabbit")
+
+L:SetGeneralLocalization({
+	name = "다크문 토끼"
+})
 
 --------------------------
 --  Plants Vs. Zombies  --
