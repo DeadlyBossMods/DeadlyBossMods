@@ -379,8 +379,8 @@ do
 		function registerUnitEvent(event)
 			unitEventFrame1:RegisterUnitEvent(event, "boss1", "boss2")
 			unitEventFrame2:RegisterUnitEvent(event, "boss3", "boss4")
-			unitEventFrame3:RegisterUnitEvent(event, "target", "focus")
-			unitEventFrame4:RegisterUnitEvent(event, "mouseover")
+			unitEventFrame3:RegisterUnitEvent(event, "boss5", "target")
+			unitEventFrame4:RegisterUnitEvent(event, "focus", "mouseover")
 		end
 
 		function unregisterUnitEvent(event)
@@ -397,7 +397,7 @@ do
 			local event = select(i, ...)
 			registeredEvents[event] = registeredEvents[event] or {}
 			tinsert(registeredEvents[event], self)
-			-- unit events that default to boss1-4, target, and focus only
+			-- unit events that default to boss1-5, target, and focus only
 			-- for now: only UNIT_HEALTH(_FREQUENT), more events (and a lookup table for these events) might be added later
 			if event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT" then
 				registerUnitEvent(event)
@@ -3446,6 +3446,9 @@ function bossModPrototype:GetBossTarget(cid)
 	elseif self:GetUnitCreatureId("boss4") == cid then
 		name, realm = UnitName("boss4target")
 		uid = "boss4target"
+	elseif self:GetUnitCreatureId("boss5") == cid then
+		name, realm = UnitName("boss5target")
+		uid = "boss5target"
 	elseif IsInRaid() then
 		for i = 1, GetNumGroupMembers() do
 			if self:GetUnitCreatureId("raid"..i.."target") == cid then
@@ -3454,7 +3457,7 @@ function bossModPrototype:GetBossTarget(cid)
 				break
 			end
 		end
-	elseif GetNumSubgroupMembers() > 0 then
+	elseif IsInGroup() then
 		for i = 1, GetNumSubgroupMembers() do
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
 				name, realm = UnitName("party"..i.."targettarget")
@@ -3486,7 +3489,7 @@ function bossModPrototype:GetThreatTarget(cid)
 				end
 			end
 		end
-	elseif GetNumSubgroupMembers() > 0 then
+	elseif IsInGroup() then
 		for i = 1, GetNumSubgroupMembers() do
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
 				for x = 1, GetNumSubgroupMembers() do
@@ -4933,7 +4936,7 @@ function bossModPrototype:SetMainBossID(...)
 end
 
 function bossModPrototype:GetBossHPString(cId)
-	for i = 1, 4 do
+	for i = 1, 5 do
 		local guid = UnitGUID("boss"..i)
 		if guid and tonumber(guid:sub(7, 10), 16) == cId then
 			return math.floor(UnitHealth("boss"..i) / UnitHealthMax("boss"..i) * 100) .. "%"
