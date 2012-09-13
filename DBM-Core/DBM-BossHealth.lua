@@ -217,7 +217,7 @@ do
 			else
 				-- just some hack to add support for boss unit ids
 				local found = false
-				for i = 1, 4 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
+				for i = 1, 5 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
 					id = "boss"..i
 					if getCIDfromGUID(UnitGUID(id)) == cId then
 						found = true
@@ -255,7 +255,7 @@ do
 				targetGuidCache[guid] = "focus"
 			else
 				local found = false
-				for i = 1, 4 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
+				for i = 1, 5 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
 					id = "boss"..i
 					if UnitGUID(id) == guid then
 						found = true
