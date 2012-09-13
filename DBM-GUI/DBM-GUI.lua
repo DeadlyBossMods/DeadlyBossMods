@@ -306,6 +306,7 @@ do
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id.")
 		end
 		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
+		button_name = button:GetName()
 		button.myheight = 25
 		button.mytype = "checkbutton"
 		-- font strings do not support hyperlinks, so check if we need one...
@@ -319,8 +320,8 @@ do
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		if name and name:find("|H") then -- ...and replace it with a SimpleHTML frame
-			_G[button:GetName().."Text"] = CreateFrame("SimpleHTML", button:GetName().."Text", button)
-			local html = _G[button:GetName().."Text"]
+			_G[button_name.."Text"] = CreateFrame("SimpleHTML", button_name.."Text", button)
+			local html = _G[button_name.."Text"]
 			html:SetHeight(12)
 			html:SetFontObject("GameFontNormal")
 			html:SetPoint("LEFT", button, "RIGHT", 0, 1)
@@ -328,15 +329,15 @@ do
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
 		end
-		_G[button:GetName() .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
-		_G[button:GetName() .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
+		_G[button_name .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
+		_G[button_name .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
 
 		if textleft then
-			_G[button:GetName() .. 'Text']:ClearAllPoints()
-			_G[button:GetName() .. 'Text']:SetPoint("RIGHT", button, "LEFT", 0, 0)
-			_G[button:GetName() .. 'Text']:SetJustifyH("RIGHT")
+			_G[button_name .. 'Text']:ClearAllPoints()
+			_G[button_name .. 'Text']:SetPoint("RIGHT", button, "LEFT", 0, 0)
+			_G[button_name .. 'Text']:SetJustifyH("RIGHT")
 		else
-			_G[button:GetName() .. 'Text']:SetJustifyH("LEFT")
+			_G[button_name .. 'Text']:SetJustifyH("LEFT")
 		end
 		
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -519,6 +520,7 @@ end
 --
 function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 	local button = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
+	button_name = button:GetName()
 	button.mytype = "button"
 	button:SetWidth(width or 100)
 	button:SetHeight(height or 20)
@@ -530,8 +532,8 @@ function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 		button:SetNormalFontObject(FontObject);
 		button:SetHighlightFontObject(FontObject);		
 	end
-	if _G[button:GetName().."Text"]:GetStringWidth() > button:GetWidth() then
-		button:SetWidth( _G[button:GetName().."Text"]:GetStringWidth() + 25 )
+	if _G[button_name.."Text"]:GetStringWidth() > button:GetWidth() then
+		button:SetWidth( _G[button_name.."Text"]:GetStringWidth() + 25 )
 	end
 
 	self:SetLastObj(button)
@@ -739,7 +741,8 @@ end
 local UpdateAnimationFrame
 do
 	local function HideScrollBar(frame)
-		local list = _G[frame:GetName() .. "List"];
+		local frame_name = frame:GetName()
+		local list = _G[frame_name .. "List"];
 		list:Hide();
 		local listWidth = list:GetWidth();
 		for _, button in next, frame.buttons do
@@ -748,7 +751,7 @@ do
 	end
 
 	local function DisplayScrollBar(frame)
-		local list = _G[frame:GetName() .. "List"];
+		local list = _G[frame_name .. "List"];
 		list:Show();
 		local listWidth = list:GetWidth();
 		for _, button in next, frame.buttons do
@@ -763,7 +766,8 @@ do
 	-- This function is for internal use.
 	-- Function to update the left scrollframe buttons with the menu entries
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
-		local offset = _G[listframe:GetName().."List"].offset;
+		local frame_name = listframe:GetName()
+		local offset = _G[frame_name.."List"].offset;
 		local buttons = listframe.buttons;
 		local TABLE 
 
@@ -795,12 +799,12 @@ do
 		end
 	
 		if ( numAddOnCategories > numButtons ) then
-			_G[listframe:GetName().."List"]:Show();
-			_G[listframe:GetName().."ListScrollBar"]:SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
-			_G[listframe:GetName().."ListScrollBar"]:SetValueStep( buttons[1]:GetHeight() )
+			_G[frame_name.."List"]:Show();
+			_G[frame_name.."ListScrollBar"]:SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
+			_G[frame_name.."ListScrollBar"]:SetValueStep( buttons[1]:GetHeight() )
 		else
-			_G[listframe:GetName().."ListScrollBar"]:SetValue(0);
-			_G[listframe:GetName().."List"]:Hide();
+			_G[frame_name.."ListScrollBar"]:SetValue(0);
+			_G[frame_name.."List"]:Hide();
 		end
 
 		local selection = DBM_GUI_OptionsFrameBossMods.selection;
@@ -913,9 +917,10 @@ do
 	function DBM_GUI_OptionsFrame:OnButtonClick(button)
 		local parent = button:GetParent();
 		local buttons = parent.buttons;
+		local button_name = DBM_GUI_OptionsFrame:GetName()
 	
-		self:ClearSelection(_G[self:GetName().."BossMods"],   _G[self:GetName().."BossMods"].buttons);
-		self:ClearSelection(_G[self:GetName().."DBMOptions"], _G[self:GetName().."DBMOptions"].buttons);
+		self:ClearSelection(_G[button_name.."BossMods"],   _G[button_name.."BossMods"].buttons);
+		self:ClearSelection(_G[button_name.."DBMOptions"], _G[button_name.."DBMOptions"].buttons);
 		self:SelectButton(parent, button);
 
 		self:DisplayFrame(button.element);
@@ -951,15 +956,15 @@ do
 		local mymax = (frame.actualHeight or frame:GetHeight()) - container:GetHeight()
 		
 		if mymax <= 0 then mymax = 0 end
-		
+		local frame_name = container:GetName()
 		if mymax > 0 then
-			_G[container:GetName().."FOV"]:Show()
-			_G[container:GetName().."FOV"]:SetScrollChild(frame)
-			_G[container:GetName().."FOVScrollBar"]:SetMinMaxValues(0, mymax)
+			_G[frame_name.."FOV"]:Show()
+			_G[frame_name.."FOV"]:SetScrollChild(frame)
+			_G[frame_name.."FOVScrollBar"]:SetMinMaxValues(0, mymax)
 
 			if frame.isfixed then
 				frame.isfixed = nil
-				local listwidth = _G[container:GetName().."FOVScrollBar"]:GetWidth()
+				local listwidth = _G[frame_name.."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
@@ -968,14 +973,14 @@ do
 				end
 			end
 		else
-			_G[container:GetName().."FOV"]:Hide()
+			_G[frame_name.."FOV"]:Hide()
 			frame:ClearAllPoints()
 			frame:SetPoint("TOPLEFT", container ,"TOPLEFT", 5, 0)
 			frame:SetPoint("BOTTOMRIGHT", container ,"BOTTOMRIGHT", 0, 0)
 
 			if not frame.isfixed then
 				frame.isfixed = true
-				local listwidth = _G[container:GetName().."FOVScrollBar"]:GetWidth()
+				local listwidth = _G[frame_name.."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
