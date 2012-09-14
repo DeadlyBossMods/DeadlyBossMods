@@ -31,11 +31,14 @@ local timerSpecialCD					= mod:NewTimer(22, "timerSpecialCD", 123250)--Not even 
 local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
 local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
+local berserkTimer						= mod:NewBerserkTimer(600)
+
 local hideActive = false
 
 function mod:OnCombatStart(delay)
 	hideActive = false
 	timerSpecialCD:Start(52-delay)--the ONLY timer that ever seems to be right, is FIRST special.
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()

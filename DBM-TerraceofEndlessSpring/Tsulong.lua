@@ -117,7 +117,9 @@ function mod:OnCombatStart(delay)
 	timerShadowBreathCD:Start(8.5-delay)
 	timerNightmaresCD:Start(13.5-delay)
 	timerDayCD:Start(-delay)
-	berserkTimer:Start(-delay)
+	if not self:IsDifficulty("lfr25") then
+		berserkTimer:Start(-delay)
+	end
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerDarkOfNightCD:Start(10-delay)
 	end

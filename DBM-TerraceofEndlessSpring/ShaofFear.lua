@@ -35,6 +35,8 @@ local timerDreadSpray					= mod:NewBuffActiveTimer(8, 120047)
 local timerDreadSprayCD					= mod:NewNextTimer(20.5, 120047)
 --local timerTerrorSpawnCD				= mod:NewNextTimer(60, 119108)--every 60 or so seconds, maybe a little more maybe a little less, not sure. this is just based on instinct after seeing where 30 fit.
 
+local berserkTimer						= mod:NewBerserkTimer(900)
+
 local ominousCackleTargets = {}
 local platformGUIDs = {}
 local onPlatform = false--Used to determine when YOU are sent to a platform, so we know to activate platformMob on next shoot
@@ -59,6 +61,7 @@ function mod:OnCombatStart(delay)
 	platformMob = nil
 	table.wipe(ominousCackleTargets)
 	table.wipe(platformGUIDs)
+	berserkTimer:Start(-delay)
 end
 
 --This may now be depricated, i think blizz synced these up to omninous cackle.
@@ -94,7 +97,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform
 		onPlatform = false
 		platformMob = nil
-	elseif args:IsSpellID(131996) then
+	elseif args:IsSpellID(131996) and not onPlatform then
 		warnThrash:Show()
 		specWarnThrash:Show()
 		timerThrashCD:Start()
