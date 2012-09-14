@@ -13,11 +13,13 @@
 ## X-DBM-Mod-Name: Heart of Fear
 ## X-DBM-Mod-Name-koKR: 공포의 심장
 ## X-DBM-Mod-Name-deDE: Das Herz der Angst
+## X-DBM-Mod-Name-zhTW: 恐懼之心
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZoneID: 897
 localization.en.lua
 localization.kr.lua
 localization.de.lua
+localization.tw.lua
 MapSizes.lua
 Zorlok.lua
 Tayak.lua

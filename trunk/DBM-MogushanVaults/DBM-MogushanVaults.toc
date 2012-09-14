@@ -13,11 +13,13 @@
 ## X-DBM-Mod-Name: Mogu'shan Palace
 ## X-DBM-Mod-Name-koKR: 모구샨 금고
 ## X-DBM-Mod-Name-deDE: Mogu'shangewölbe
+## X-DBM-Mod-Name-zhTW: 魔古山寶庫
 ## X-DBM-Mod-Sort: 2
 ## X-DBM-Mod-LoadZoneID: 896
 localization.en.lua
 localization.kr.lua
 localization.de.lua
+localization.tw.lua
 MapSizes.lua
 StoneGuard.lua
 Feng.lua
