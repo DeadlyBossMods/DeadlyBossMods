@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Name-esES: Pandaria
 ## X-DBM-Mod-Name-esMX: Pandaria
 ## X-DBM-Mod-Name-ptBR: Pandaria
-## X-DBM-Mod-Name-zhTW: Pandaria
+## X-DBM-Mod-Name-zhTW: 潘達利亞
 ## X-DBM-Mod-Sort: 4
 localization.en.lua
 localization.de.lua
