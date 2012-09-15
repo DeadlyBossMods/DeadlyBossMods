@@ -14,29 +14,35 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_TARGET"
 )
 
-
---local warnHydroLance			= mod:NewSpellAnnounce(106055, 2)--not sure if useful?
 local warnBubbleBurst			= mod:NewCastAnnounce(106612, 3, nil)
-local warnAddsLeft				= mod:NewAddsLeftAnnounce("ej5616", 2, 56511)
+local warnAddsLeft				= mod:NewAddsLeftAnnounce("ej5616", 2, 106526)
 
 local specWarnLivingWater		= mod:NewSpecialWarningSwitch("ej5616", not mod:IsHealer())
 local specWarnCorruptingWaters	= mod:NewSpecialWarningMove(115167)
 local specWarnShaResidue		= mod:NewSpecialWarningMove(106653)
 
---local timerHydroLanceCD		= mod:NewCDTimer(6, 106055)
 local timerLivingWater			= mod:NewCastTimer(5.5, 106526)
 local timerLivingWaterCD		= mod:NewCDTimer(13, 106526)
 local timerWashAway				= mod:NewNextTimer(8, 106334)
 
+mod:AddBoolOption("SetIconOnAdds", false)
+
 local addsRemaining = 4--Also 4 on heroic?
+local addsName = EJ_GetSectionInfo(5616)
+
+function mod:UNIT_TARGET()
+	if self.Options.SetIconOnAdds and UnitName("target") == addsName then
+		SetRaidTarget("target", 8)
+	end
+end
 
 function mod:OnCombatStart(delay)
 	addsRemaining = 4
 	timerLivingWaterCD:Start(13-delay)
-	--specWarnLivingWater:Schedule(13)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -44,14 +50,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnShaResidue:Show()
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(106055) then
-		warnHydroLance:Show()
-		timerHydroLanceCD:Start()
-	end
-end--]]
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(106526) then--Call Water
@@ -63,9 +61,9 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
 	if spellId == 115167 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
-		specWarnCorruptingWaters:Show(spellName)
+		specWarnCorruptingWaters:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
