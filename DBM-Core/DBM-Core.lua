@@ -142,6 +142,7 @@ DBM.DefaultOptions = {
 	SettingsMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
 	DisableCinematics = false,
+	DisableCinematicsOutside = false,
 --	HelpMessageShown = false,
 	AprilFools = true,
 	MoviesSeen = {},
@@ -1517,7 +1518,7 @@ do
 			-- do not use HookScript here, the movie must not even be started to prevent a strange WoW crash bug on OS X with some movies
 			local oldMovieEventHandler = MovieFrame:GetScript("OnEvent")
 			MovieFrame:SetScript("OnEvent", function(self, event, movieId, ...)
-				if event == "PLAY_MOVIE" and DBM.Options.DisableCinematics then
+				if event == "PLAY_MOVIE" and (DBM.Options.DisableCinematics and IsInInstance() or (DBM.Options.DisableCinematicsOutside and not IsInInstance())) then
 					-- you still have to call OnMovieFinished, even if you never actually told the movie frame to start the movie, otherwise you will end up in a weird state (input stops working)
 					MovieFrame_OnMovieFinished(MovieFrame)
 					return
@@ -1640,7 +1641,7 @@ function DBM:PLAYER_TARGET_CHANGED()
 end
 
 function DBM:CINEMATIC_START()
-	if DBM.Options.DisableCinematics and IsInInstance() then--This will also kill non movie cinematics, like the bridge in firelands
+	if DBM.Options.DisableCinematics and IsInInstance() or (DBM.Options.DisableCinematicsOutside and not IsInInstance()) then--This will also kill non movie cinematics, like the bridge in firelands
 		CinematicFrame_CancelCinematic()
 	end
 end
