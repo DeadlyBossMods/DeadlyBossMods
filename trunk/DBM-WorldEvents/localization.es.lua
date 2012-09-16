@@ -187,6 +187,15 @@ L:SetGeneralLocalization({
 	name = "Combate de tonques"
 })
 
+-----------------------
+--  Darkmoon Rabbit  --
+-----------------------
+L = DBM:GetModLocalization("Rabbit")
+
+L:SetGeneralLocalization({
+	name = "Conejo de la Luna Negra"
+})
+
 --------------------------
 --  Plants Vs. Zombies  --
 --------------------------
