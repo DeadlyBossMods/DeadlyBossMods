@@ -38,6 +38,8 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 
+
+
 -------------------------------
 --  Globals/Default Options  --
 -------------------------------
@@ -3935,10 +3937,10 @@ do
 		local sound2 = self:NewSound(2, false, true)
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
-		if not spellId then
-			DBM:AddMsg("Error: No spellID given for countdown timer")
-			spellId = 39505
+		if not spellId and not optionName then
+			error("NewCountdown: you must provide either spellId or optionName", 2)
 		end
+		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
 				sound1 = sound1,
@@ -4032,10 +4034,10 @@ do
 		local sound2 = self:NewSound(2, false, true)
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
-		if not spellId then
-			DBM:AddMsg("Error: No spellID given for counted duration timer")
-			spellId = 39505
+		if not spellId and not optionName then
+			error("NewCountout: you must provide either spellId or optionName", 2)
 		end
+		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
 				sound1 = sound1,
