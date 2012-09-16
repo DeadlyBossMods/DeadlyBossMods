@@ -9,6 +9,10 @@ local L
 -----------------------
 L= DBM:GetModLocalization(672)
 
+L:SetOptionLocalization({
+	SetIconOnAdds	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(106526)
+})
+
 -----------------------
 -- Lorewalker Stonestep --
 -----------------------
