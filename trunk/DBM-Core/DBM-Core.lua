@@ -2451,8 +2451,10 @@ function DBM:StartCombat(mod, delay, synced)
 			difficultyText = PLAYER_DIFFICULTY3.." - "
 		elseif mod:IsDifficulty("normal5") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
-			--outdoor areas can return normal5 so we add extra instance check here
-			if IsInInstance() then
+			local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
+			if not instanceType then--It's a scenario and blizzard reports these really goofy. Only place instanceType is nil
+				difficultyText = GUILD_CHALLENGE_TYPE4.." - "
+			elseif instanceType == "party" then--outdoor areas can return normal5 so we add extra instance check here
 				difficultyText = PLAYER_DIFFICULTY1.." - "
 			else
 				difficultyText = ""
@@ -2570,7 +2572,10 @@ function DBM:EndCombat(mod, wipe)
 		end
 		if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 			local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
-			if difficulty == 1 then
+			if not instanceType then--It's a scenario and blizzard reports these really goofy. Only place instanceType is nil
+				difficultyText = GUILD_CHALLENGE_TYPE4.." - "
+				savedDifficulty = "normal5"--Just treat these like 5 man normals, for stat purposes.
+			elseif difficulty == 1 then
 				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
 				savedDifficulty = "normal5"
 			elseif difficulty == 2 then
@@ -2764,8 +2769,10 @@ function DBM:OnMobKill(cId, synced)
 end
 
 function DBM:GetCurrentInstanceDifficulty()
-	local _, _, difficulty = GetInstanceInfo()
-	if difficulty == 1 then
+	local _, instanceType, difficulty = GetInstanceInfo()
+	if not instanceType then--It's a scenario and blizzard reports these really goofy. Only place instanceType is nil
+		return "normal5"--Just treat these like 5 man normals, for stat purposes.
+	elseif difficulty == 1 then
 		return "normal5"
 	elseif difficulty == 2 then
 		return "heroic5"
