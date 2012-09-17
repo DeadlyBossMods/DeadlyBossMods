@@ -186,6 +186,15 @@ L:SetGeneralLocalization({
 	name = "Panzergeneral"
 })
 
+-----------------------
+--  Darkmoon Rabbit  --
+-----------------------
+L = DBM:GetModLocalization("Rabbit")
+
+L:SetGeneralLocalization({
+	name = "Dunkelmond-Kaninchen"
+})
+
 --------------------------
 --  Plants Vs. Zombies  --
 --------------------------
