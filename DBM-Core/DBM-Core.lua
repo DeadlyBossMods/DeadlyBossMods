@@ -1670,7 +1670,7 @@ do
 			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
 			LastZoneText = GetRealZoneText() --Do same with zone name.
 		end
-		DBM:AddMsg(LastZoneMapID)--Debug
+--		DBM:AddMsg(LastZoneMapID)--Debug
 		for i, v in ipairs(self.AddOns) do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, LastZoneText) or (checkEntry(v.zoneId, LastZoneMapID))) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
 				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
@@ -1685,7 +1685,7 @@ do
 			end
 		end
 		--Scenarios hack to start those mods up in the apsense of a good engage trigger that fires at right time (engage does fire, but BEFORE the zone change, lame)
-		if LastZoneMapID == 851 then
+		if LastZoneMapID == 906 or LastZoneMapID == 851 then--This one has two IDs, one for each faction
 			DBM:Schedule(4, DBM.StartCombat, DBM, DBM:GetModByName("TheramoreFall"), 0)
 		end
 		if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
@@ -2316,7 +2316,6 @@ do
 	end
 	
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		DBM:AddMsg(GetCurrentMapAreaID())--Debug
 		if combatInfo[LastZoneText] then
 			for i, v in ipairs(combatInfo[LastZoneText]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
