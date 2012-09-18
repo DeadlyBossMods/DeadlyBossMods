@@ -2,6 +2,7 @@
 ## X-Min-Interface: 50001
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Scenario-MoP|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0시나리오-판다리아의 안개|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Szenarien-MoP|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMScenarioMoP_SavedVars, DBMScenarioMoP_SavedStats
@@ -10,9 +11,11 @@
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Scenario (MoP)
 ## X-DBM-Mod-Name-koKR: 시나리오 (판다리아의 안개)
+## X-DBM-Mod-Name-deDE: Szenarien (MoP)
 ## X-DBM-Mod-Sort: 35
 ## X-DBM-Mod-LoadZoneID: 906, 851
 localization.en.lua
 localization.kr.lua
+localization.de.lua
 TheramoresFall\MapSizes.lua
 TheramoresFall\Theramore.lua
