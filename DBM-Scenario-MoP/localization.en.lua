@@ -12,5 +12,5 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	AllianceVictory = "All of you have my deepest thanks. With the Focusing Iris removed, this lifeless bomb is merely a sickening testament to Garrosh's brutality. The winds of change blow fiercely; Azeroth is on the brink of war. My apologies, but you must excuse me... I have much to consider. Farewell.",
-	HordeVictory	= "Horde victory message still unknown"
+	HordeVictory	= "My thanks! Shall we make our way off this miserable little island?"
 }
