@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("TheramoreFall", "DBM-Scenario-MoP", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(65442, 99999)--Warlord Rok'nah (Alliance), 
+mod:SetCreatureID(65442, 58840)--Warlord Rok'nah (Alliance), Hedric Evencane (Horde)
 --mod:SetModelID(43283)
 mod:SetZone()
 
