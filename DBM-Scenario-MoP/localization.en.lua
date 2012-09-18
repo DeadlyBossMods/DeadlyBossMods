@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization("TheramoreFall")
 
 L:SetGeneralLocalization{
-	name = "Theramore's Fall Mod"
+	name = "Theramore's Fall"
 }
 
 L:SetMiscLocalization{
