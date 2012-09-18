@@ -10,7 +10,7 @@
 ## X-DBM-Mod-SubCategories: Theramore's Fall
 ## X-DBM-Mod-Name: Scenario (MoP)
 ## X-DBM-Mod-Sort: 35
-## X-DBM-Mod-LoadZoneID: 851
+## X-DBM-Mod-LoadZoneID: 906, 851
 localization.en.lua
 TheramoresFall\MapSizes.lua
 TheramoresFall\Theramore.lua
