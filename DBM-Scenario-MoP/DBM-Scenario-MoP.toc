@@ -15,5 +15,6 @@
 ## X-DBM-Mod-Sort: 35
 ## X-DBM-Mod-LoadZoneID: 906, 851
 localization.en.lua
+localization.kr.lua
 TheramoresFall\MapSizes.lua
 TheramoresFall\Theramore.lua
