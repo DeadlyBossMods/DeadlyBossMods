@@ -8,8 +8,6 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 0
-## X-DBM-Mod-SubCategories: Theramore's Fall
-## X-DBM-Mod-SubCategories-koKR: 테라모어의 몰락　
 ## X-DBM-Mod-Name: Scenario (MoP)
 ## X-DBM-Mod-Name-koKR: 시나리오 (판다리아의 안개)
 ## X-DBM-Mod-Sort: 35
