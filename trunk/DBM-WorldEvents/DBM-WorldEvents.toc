@@ -30,7 +30,7 @@
 ## X-DBM-Mod-Name-koKR: 이벤트
 ## X-DBM-Mod-Name-deDE: Weltereignisse
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
-## X-DBM-Mod-Sort: 150
+## X-DBM-Mod-Sort: 50
 ## X-DBM-Mod-LoadZoneID: 704,762,764,728,823
 localization.en.lua
 localization.ru.lua

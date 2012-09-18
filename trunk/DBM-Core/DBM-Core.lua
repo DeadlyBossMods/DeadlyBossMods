@@ -1683,6 +1683,10 @@ do
 --				end
 			end
 		end
+		--Scenarios hack to start those mods up in the apsense of a good engage trigger that fires at right time (engage does fire, but BEFORE the zone change, lame)
+		if LastZoneMapID == 851 then
+			DBM:StartCombat(DBM:GetModByName("TheramoreFall"), 0)
+		end
 		if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-PvP" then

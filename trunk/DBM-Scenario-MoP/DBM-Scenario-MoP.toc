@@ -1,0 +1,16 @@
+﻿## Interface: 50001
+## X-Min-Interface: 50001
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Scenario-MoP|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMScenarioMoP_SavedVars, DBMScenarioMoP_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-Heroic-Mode: 1
+## X-DBM-Mod-SubCategories: Theramore's Fall
+## X-DBM-Mod-Name: Scenario (MoP)
+## X-DBM-Mod-Sort: 35
+## X-DBM-Mod-LoadZoneID: 851
+localization.en.lua
+TheramoresFall\MapSizes.lua
+TheramoresFall\Theramore.lua
