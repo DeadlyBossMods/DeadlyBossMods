@@ -193,7 +193,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Rabbit")
 
 L:SetGeneralLocalization({
-	name = "暗月兔"
+	name = "暗月小兔"
 })
 
 --------------------------
