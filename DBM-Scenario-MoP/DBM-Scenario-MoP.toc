@@ -12,7 +12,7 @@
 ## X-DBM-Mod-Name: Scenario (MoP)
 ## X-DBM-Mod-Name-koKR: 시나리오 (판다리아의 안개)
 ## X-DBM-Mod-Name-deDE: Szenarien (MoP)
-## X-DBM-Mod-Name-deDE: 情境模式(潘達利亞之謎)
+## X-DBM-Mod-Name-zhTW: 情境模式(潘達利亞之謎)
 ## X-DBM-Mod-Sort: 35
 ## X-DBM-Mod-LoadZoneID: 906, 851
 localization.en.lua
