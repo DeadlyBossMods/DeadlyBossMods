@@ -7,8 +7,8 @@ mod:SetCreatureID(65442, 58840)--Warlord Rok'nah (Alliance), Hedric Evencane (Ho
 mod:SetZone()
 
 mod:RegisterCombat("combat")
-mod:RegisterKill("yell", L.AllianceVictory, L.HordeVictory)--Required, leader dying doesn't trigger ending, leader AND all his adds do.
-mod:SetWipeTime(1200)--Lame hack, I need to write an exclusions function so i can set, on a mod level, what determines end combat, so at very least we can exclude combat_regen
+mod:RegisterKill("say", L.AllianceVictory, L.HordeVictory)--Required, leader dying doesn't trigger ending, leader AND all his adds do.
+mod:SetWipeTime(1800)--Lame hack, I need to write an exclusions function so i can set, on a mod level, what determines end combat, so at very least we can exclude combat_regen
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED"
