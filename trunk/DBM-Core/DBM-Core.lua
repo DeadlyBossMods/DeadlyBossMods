@@ -1509,7 +1509,8 @@ do
 				"UPDATE_BATTLEFIELD_STATUS",
 				"UPDATE_MOUSEOVER_UNIT",
 				"PLAYER_TARGET_CHANGED"	,
-				"CINEMATIC_START"		
+				"CINEMATIC_START",
+				"LFG_COMPLETION_REWARD"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:GROUP_ROSTER_UPDATE()
@@ -1648,6 +1649,17 @@ function DBM:CINEMATIC_START()
 	end
 end
 
+function DBM:LFG_COMPLETION_REWARD()
+	if #inCombat > 0 and C_Scenario.IsInScenario() then
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			if v.inScenario then
+				DBM:EndCombat(v)
+			end
+		end
+	end
+end
+
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -1698,10 +1710,11 @@ end
 
 function DBM:ScenarioCheck()
 	DBM:Unschedule(DBM.ScenarioCheck)
-	--Scenarios hack to start those mods up in the apsense of a good engage trigger that fires at right time (engage does fire, but BEFORE the zone change, lame)
-	if IsAddOnLoaded("DBM-Scenario-MoP") then
-		if LastZoneMapID == 906 or LastZoneMapID == 851 then--This one has two IDs, one for each faction
-			DBM:StartCombat(DBM:GetModByName("TheramoreFall"), 0)
+	if combatInfo[LastZoneMapID] then
+		for i, v in ipairs(combatInfo[LastZoneMapID]) do
+			if v.type == "scenario" and checkEntry(v.msgs, LastZoneMapID) then
+				DBM:StartCombat(v.mod, 0)
+			end
 		end
 	end
 end
@@ -2413,12 +2426,16 @@ end
 function checkWipe(confirm)
 	if #inCombat > 0 then
 		local wipe = true
-		local uId = (IsInRaid() and "raid") or "party"
-		for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
-			local id = (i == 0 and "player") or uId..i
-			if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
-				wipe = false
-				break
+		if IsInScenarioGroup() then -- prevent wipe on ghost in Scenario Group.
+			wipe = false
+		else
+			local uId = (IsInRaid() and "raid") or "party"
+			for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
+				local id = (i == 0 and "player") or uId..i
+				if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+					wipe = false
+					break
+				end
 			end
 		end
 		if not wipe then
@@ -2498,11 +2515,14 @@ function DBM:StartCombat(mod, delay, synced)
 		if DBM.Options.ShowEngageMessage then
 			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
 		end
+		if C_Scenario.IsInScenario() then
+			mod.inScenario = true
+		end
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		self:Schedule(mod.minCombatTime or 3, checkWipe)
-		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and mod.Options.Enabled then
+		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not C_Scenario.IsInScenario() and mod.Options.Enabled then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
