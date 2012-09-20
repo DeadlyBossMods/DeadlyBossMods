@@ -1679,15 +1679,10 @@ do
 --					firstZoneChangedEvent = false
 					DBM:Unschedule(DBM.LoadMod, DBM, v)
 					DBM:Schedule(3, DBM.LoadMod, DBM, v)
+					DBM:Schedule(6, DBM.ScenarioCheck)
 --				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
 --					DBM:LoadMod(v)
 --				end
-			end
-		end
-		--Scenarios hack to start those mods up in the apsense of a good engage trigger that fires at right time (engage does fire, but BEFORE the zone change, lame)
-		if IsAddOnLoaded("DBM-Scenario-MoP") then
-			if LastZoneMapID == 906 or LastZoneMapID == 851 then--This one has two IDs, one for each faction
-				DBM:Schedule(6, DBM.StartCombat, DBM, DBM:GetModByName("TheramoreFall"), 0)
 			end
 		end
 		if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
@@ -1697,6 +1692,16 @@ do
 					break
 				end
 			end
+		end
+	end
+end
+
+function DBM:ScenarioCheck()
+	DBM:Unschedule(DBM.ScenarioCheck)
+	--Scenarios hack to start those mods up in the apsense of a good engage trigger that fires at right time (engage does fire, but BEFORE the zone change, lame)
+	if IsAddOnLoaded("DBM-Scenario-MoP") then
+		if LastZoneMapID == 906 or LastZoneMapID == 851 then--This one has two IDs, one for each faction
+			DBM:StartCombat(DBM:GetModByName("TheramoreFall"), 0)
 		end
 	end
 end
