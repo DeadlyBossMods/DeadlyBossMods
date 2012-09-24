@@ -17,6 +17,8 @@
 ## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZoneID: 896
 localization.en.lua
+localization.es.lua
+localization.it.lua
 localization.kr.lua
 localization.de.lua
 localization.tw.lua
