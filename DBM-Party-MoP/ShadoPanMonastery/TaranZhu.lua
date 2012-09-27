@@ -54,14 +54,14 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(115002) then
+	if args:IsSpellID(115002) and self:AntiSpam(1, 2) then
 		warnGrippingHatred:Show()
 		specWarnGrippingHatred:Show()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 125891 and self:AntiSpam(2) then
+	if spellId == 125891 and self:AntiSpam(2, 2) then
 		DBM:EndCombat(self)
 	end
 end
