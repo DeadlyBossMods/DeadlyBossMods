@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Heart of Fear|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0공포의 심장|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Das Herz der Angst|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0恐惧之心|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -14,12 +15,14 @@
 ## X-DBM-Mod-Name-koKR: 공포의 심장
 ## X-DBM-Mod-Name-deDE: Das Herz der Angst
 ## X-DBM-Mod-Name-zhTW: 恐懼之心
+## X-DBM-Mod-Name-zhCN: 恐惧之心
 ## X-DBM-Mod-Sort: 2
 ## X-DBM-Mod-LoadZoneID: 897
 localization.en.lua
 localization.kr.lua
 localization.de.lua
 localization.tw.lua
+localization.cn.lua
 MapSizes.lua
 Zorlok.lua
 Tayak.lua
