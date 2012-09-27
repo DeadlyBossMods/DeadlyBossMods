@@ -37,12 +37,12 @@ function mod:OnCombatStart(delay)
 	timerFlashofSteel:Start(9-delay)
 	timerDashingStrike:Start(24-delay)
 	--Only need these in phase 1 so no sense in wasting cpu in phase 2 and 3.
-	self:RegisterShortTermEvents(
+--[[	self:RegisterShortTermEvents(
 		"SPELL_DAMAGE",
 		"SWING_DAMAGE",
 		"SPELL_PERIODIC_DAMAGE",
 		"RANGE_DAMAGE"
-	)
+	)--]]
 end
 
 function mod:SPELL_CAST_START(args)
@@ -67,13 +67,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
--- this hack also seems to be not working.
+--[[
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
 	if (overkill or 0) > 0 then
 		local cid = self:GetCIDFromGUID(destGUID)
 		if cid == 60040 then--Phase 1 ends when he dies first time, but he doesn't UNIT_DIED first time, there is no other usuable event.
-			phase = 2
 			self:UnregisterShortTermEvents()
+			phase = 2
 			timerMassResCD:Start()
 			timerFlashofSteel:Cancel()
 			timerDashingStrike:Cancel()
@@ -82,7 +82,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overk
 end
 mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
-mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
+mod.RANGE_DAMAGE = mod.SPELL_DAMAGE--]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 115627 and self:AntiSpam(2, 1) then
@@ -95,7 +95,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_DIED(args)
-	if phase == 3 and self:GetCIDFromGUID(args.destGUID) == 60040 then
-		DBM:EndCombat(self)
+	if self:GetCIDFromGUID(args.destGUID) == 60040 then
+		if phase == 3 then--Fight is over on 2nd death
+			DBM:EndCombat(self)
+		else--it's first death, he's down and whiteman is taking over
+			phase = 2
+			timerMassResCD:Start()
+			timerFlashofSteel:Cancel()
+			timerDashingStrike:Cancel()
+		end
 	end
 end
