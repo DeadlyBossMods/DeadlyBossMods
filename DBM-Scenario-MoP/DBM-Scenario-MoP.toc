@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Name-zhTW: 情境模式(潘達利亞之謎)
 ## X-DBM-Mod-Name-zhCN: 场景战役 (熊猫人之谜)
 ## X-DBM-Mod-Sort: 35
-## X-DBM-Mod-LoadZoneID: 906, 851
+## X-DBM-Mod-LoadZoneID: 906, 851, 899
 localization.en.lua
 localization.kr.lua
 localization.de.lua
@@ -24,3 +24,5 @@ localization.tw.lua
 localization.cn.lua
 TheramoresFall\MapSizes.lua
 TheramoresFall\Theramore.lua
+ArenaOfAnnihilation\MapSizes.lua
+ArenaOfAnnihilation\ArenaOfAnnihilation.lua
