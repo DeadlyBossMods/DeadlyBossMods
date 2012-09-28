@@ -15,9 +15,9 @@ L:SetMiscLocalization{
 --	HordeVictory	= "My thanks! Shall we make our way off this miserable little island?"
 }
 
-----------------------
+---------------------------
 -- Arena Of Annihilation --
-----------------------
+---------------------------
 
 L= DBM:GetModLocalization("ArenaAnnihilation")
 
