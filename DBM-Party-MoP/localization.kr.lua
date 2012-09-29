@@ -76,8 +76,16 @@ L= DBM:GetModLocalization(673)
 -----------------------
 L= DBM:GetModLocalization(657)
 
+L:SetWarningLocalization({
+	warnRemainingNovice	= "음영파 신입생 : %d 남음"
+})
+
+L:SetOptionLocalization({
+	warnRemainingNovice	= "음영파 신입생 남은 횟수 알림 보기"
+})
+
 L:SetMiscLocalization({
-	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
+	NovicesDefeated 	= "갓 들어온 신참들보다는 강하구나. 그럼 우리의 상급생 둘을 상대해 봐라."
 })
 
 -----------------------
