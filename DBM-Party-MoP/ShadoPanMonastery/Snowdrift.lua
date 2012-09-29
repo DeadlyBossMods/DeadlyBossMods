@@ -45,6 +45,7 @@ local remainingNovice = 20
 
 function mod:OnCombatStart(delay)
 	phase = 1
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
