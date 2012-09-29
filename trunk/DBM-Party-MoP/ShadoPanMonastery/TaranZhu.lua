@@ -54,7 +54,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(115002) and self:AntiSpam(1, 2) then
+	if args:IsSpellID(115002) and self:AntiSpam(5, 2) then
 		warnGrippingHatred:Show()
 		specWarnGrippingHatred:Show()
 	end

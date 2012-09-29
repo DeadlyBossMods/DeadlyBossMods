@@ -10,7 +10,6 @@ mod:SetZone()
 -- maybe we need Black Sash wave warns.
 -- but boss (Master Snowdrift) not combat starts automaticilly. 
 mod:RegisterCombat("combat")
-mod:RegisterKill("yell", L.Defeat)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
@@ -20,7 +19,8 @@ mod:RegisterEventsInCombat(
 )
 
 mod:RegisterEvents(
-	"RAID_BOSS_EMOTE"
+	"CHAT_MSG_MONSTER_YELL",
+	"RAID_BOSS_WHISPER"
 )
 
 --Chi blast warns very spammy. and not useful.
@@ -30,6 +30,7 @@ local warnTornadoKick		= mod:NewSpellAnnounce(106434, 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnChaseDown			= mod:NewTargetAnnounce(118961, 3)--Targeting spell for Tornado Slam (106352)
 -- phase3 ability not found yet.
+local warnPhase3			= mod:NewPhaseAnnounce(3)
 
 local specWarnFists			= mod:NewSpecialWarningMove(106853, mod:IsTank())
 local specWarnChaseDown		= mod:NewSpecialWarningYou(118961)
@@ -39,7 +40,12 @@ local timerTornadoKickCD	= mod:NewCDTimer(32, 106434)--Or this
 --local timerChaseDownCD		= mod:NewCDTimer(22, 118961)--Unknown
 local timerChaseDown		= mod:NewTargetTimer(11, 118961)
 
+local phase = 1
 local remainingNovice = 20
+
+function mod:OnCombatStart(delay)
+	phase = 1
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(118961) then
@@ -70,10 +76,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.NovicesPulled or msg:find(L.NovicesPulled) then
-		self:SendSync("NovicesStart")
-	elseif msg == L.NovicesDefeated or msg:find(L.NovicesDefeated) then
+	if msg == L.NovicesDefeated or msg:find(L.NovicesDefeated) then
 		self:SendSync("NovicesEnd")
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:106774") then
+		self:SendSync("NovicesStart")
 	end
 end
 
@@ -115,7 +125,12 @@ mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 110324 and self:AntiSpam(2) then
-		warnPhase2:Show()
+		phase = phase + 1
+		if phase == 2 then
+			warnPhase2:Show()
+		elseif phase == 3 then
+			warnPhase3:Show()
+		end
 		timerFistsOfFuryCD:Cancel()
 		timerTornadoKickCD:Cancel()
 	elseif spellId == 123096 and self:AntiSpam(2) then -- only first kill?
