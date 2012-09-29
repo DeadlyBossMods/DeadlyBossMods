@@ -1695,7 +1695,10 @@ do
 --					firstZoneChangedEvent = false
 					DBM:Unschedule(DBM.LoadMod, DBM, v)
 					DBM:Schedule(3, DBM.LoadMod, DBM, v)
-					DBM:Schedule(6, DBM.ScenarioCheck)
+					--Lets try multiple checks, cause quite frankly this has been failinga bout 50% of time with just one check.
+					DBM:Schedule(5, DBM.ScenarioCheck)
+					DBM:Schedule(7, DBM.ScenarioCheck)
+					DBM:Schedule(9, DBM.ScenarioCheck)
 --				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
 --					DBM:LoadMod(v)
 --				end
