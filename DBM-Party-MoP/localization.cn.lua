@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/28/2012
+-- Last update: 9/29/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -79,8 +79,18 @@ L= DBM:GetModLocalization(673)
 -----------------------
 L= DBM:GetModLocalization(657)
 
+L:SetWarningLocalization({
+	warnRemainingNovice	= "学徒剩余: %d"
+})
+
+L:SetOptionLocalization({
+	warnRemainingNovice	= "警报：学徒剩余数量"
+})
+
 L:SetMiscLocalization({
-	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
+	NovicesPulled	= "You!  You have allowed the Sha to reawaken after all these years!",
+	NovicesDefeated = "You have bested our most junior of students.  Now you will face two of my most senior.",
+	Defeat			= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
 })
 
 -----------------------
