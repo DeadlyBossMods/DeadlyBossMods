@@ -133,7 +133,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(mcTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetMCIcons")
 			if self:LatencyCheck() then
-				self:ScheduleMethod(0.5, "SetMCIcons")
+				self:ScheduleMethod(1.2, "SetMCIcons")
 			end
 		end
 		if args:IsPlayer() then
@@ -143,7 +143,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #warnpreMCTargets >= 3 then
 			showpreMC()
 		else
-			self:Schedule(1.0, showpreMC)
+			self:Schedule(1.2, showpreMC)
 		end
 	elseif args:IsSpellID(119626) then
 		--Maybe add in function to update icons here in case of a spread that results in more then the original 3 getting the final MC debuff.
