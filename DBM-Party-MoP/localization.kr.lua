@@ -85,6 +85,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	NovicesPulled		= "네 이놈들! 너희가 잠들어 있던 샤를 깨운 놈들이로구나!",
 	NovicesDefeated 	= "갓 들어온 신참들보다는 강하구나. 그럼 우리의 상급생 둘을 상대해 봐라."
 })
 

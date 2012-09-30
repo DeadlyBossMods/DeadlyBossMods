@@ -84,7 +84,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	NovicesPulled	= "You!  You have allowed the Sha to reawaken after all these years!",
+	NovicesPulled	= "You!  You have allowed the Sha to reawaken after all these years!",
 	NovicesDefeated = "You have bested our most junior of students.  Now you will face two of my most senior.",
 --	Defeat			= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
 })
