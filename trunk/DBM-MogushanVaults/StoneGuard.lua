@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(679, "DBM-MogushanVaults", nil, 317)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(60051, 60043, 59915, 60047)--Cobalt: 60051 Jade: 60043 Jasper: 59915
+mod:SetCreatureID(60051, 60043, 59915, 60047)--Cobalt: 60051, Jade: 60043, Jasper: 59915, Amethyst: 60047
 mod:SetModelID(41892)
 mod:SetZone()
 
@@ -35,8 +35,8 @@ local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
 --local timerJadeOverload			= mod:NewCastTimer(7, 115842)
 --local timerJasperOverload			= mod:NewCastTimer(7, 115843)
 --local timerAmethystOverload		= mod:NewCastTimer(7, 115844)
---local timerGobaltGrasp			= mod:NewTargetTimer(6, 116281)
---local timerGobaltGraspCD			= mod:NewCDTimer(12, 116281)--12-15second variations
+--local timerCobaltGrasp			= mod:NewTargetTimer(6, 116281)
+--local timerCobaltGraspCD			= mod:NewCDTimer(12, 116281)--12-15second variations
 local timerPetrification			= mod:NewNextTimer(76, 125091)
 local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223)--Always 20.5 seconds
 local timerJasperChainsCD			= mod:NewCDTimer(12, 130395)--11-13
@@ -65,14 +65,25 @@ function mod:OnCombatStart(delay)
 	activePetrification = nil
 	table.wipe(jasperChainsTargets)
 	if self:IsDifficulty("normal25", "heroic25") then
---		timerGobaltGraspCD:Start(-delay)
-		timerJasperChainsCD:Start(-delay)
+--		timerCobaltGraspCD:Start(-delay)
 		timerJadeShardsCD:Start(-delay)
+		timerJasperChainsCD:Start(-delay)
 		timerAmethystPoolCD:Start(-delay)
 		expectedBosses = 4--Only fight all 4 at once on 25man (excluding LFR)
 	else
 		expectedBosses = 3--Else you get a random set of 3/4
-		--Timers here will require more work (IE scanning boss1-4 to determine which boss is NOT up then start timers for all but him)
+		for i = 1, 4 do
+			local id = self:GetUnitCreatureId("boss" .. i)
+			if id == 60051 then -- cobalt
+--				timerCobaltGraspCD:Start(-delay)
+			elseif id == 60043 then -- jade
+				timerJadeShardsCD:Start(-delay)
+			elseif id == 59915 then -- jasper
+				timerJasperChainsCD:Start(-delay)
+			elseif id == 60047 then -- amethyst
+				timerAmethystPoolCD:Start(-delay)
+			end
+		end
 	end
 end
 
