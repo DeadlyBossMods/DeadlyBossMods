@@ -38,12 +38,12 @@ local specWarnBanishmentOther			= mod:NewSpecialWarningTarget(116272, mod:IsTank
 local specWarnVoodooDolls				= mod:NewSpecialWarningSpell(122151, false)
 
 local timerTotemCD						= mod:NewNextTimer(36, 116174)
-local timerBanishmentCD					= mod:NewNextTimer(70, 116272)
+local timerBanishmentCD					= mod:NewNextTimer(65, 116272)
 local timerSoulSever					= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerSpiritualInnervation			= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
 local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
 
-mod:AddBoolOption("SetIconOnVoodoo")
+mod:AddBoolOption("SetIconOnVoodoo", false)
 
 local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
@@ -108,11 +108,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(voodooDollTargetIcons)
 	timerShadowyAttackCD:Start(7-delay)
 	timerTotemCD:Start(-delay)
-	if self:IsDifficulty("lfr25") then
-		timerBanishmentCD:Start(65-delay)
-	else
-		timerBanishmentCD:Start(-delay)
-	end
+	timerBanishmentCD:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
@@ -183,7 +179,7 @@ function mod:OnSync(msg, guid)
 			table.insert(voodooDollTargetIcons, DBM:GetRaidUnitId(guids[guid]))
 			self:UnscheduleMethod("SetVoodooIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.5, "SetVoodooIcons")--Still seems touchy and .3 is too fast even on a 70ms connection in rare cases so back to .5
+				self:ScheduleMethod(1, "SetVoodooIcons")
 			end
 		end
 	elseif msg == "VoodooGoneTargets" and guids[guid] and self.Options.SetIconOnVoodoo then
@@ -194,11 +190,7 @@ function mod:OnSync(msg, guid)
 		self:Schedule(0.3, warnSpiritualInnervationTargets)
 	elseif msg == "BanishmentTarget" and guids[guid] then
 		warnBanishment:Show(guids[guid])
-		if self:IsDifficulty("lfr25") then
-			timerBanishmentCD:Start(65)
-		else
-			timerBanishmentCD:Start()
-		end
+		timerBanishmentCD:Start()
 		if guid ~= UnitGUID("player") then--make sure YOU aren't target before warning "other"
 			specWarnBanishmentOther:Show(guids[guid])
 		end
