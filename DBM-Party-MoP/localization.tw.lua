@@ -19,7 +19,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(664)
 
 L:SetWarningLocalization({
-	SpecWarnIntensity	= "%s on %s (%d)"
+	SpecWarnIntensity	= "%s在%s(%d)"
 })
 
 L:SetOptionLocalization({
@@ -59,8 +59,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnFizzyBubbles	= "Show special warning when you are missing $spell:114459 debuff",
-	RangeFrame				= "Show range frame (10) for $spell:106546"
+	SpecWarnFizzyBubbles	= "當你缺少$spell:114459時顯示特別警告",
+	RangeFrame				= "為$spell:106546顯示距離框"
 })
 
 -----------------------
@@ -76,8 +76,18 @@ L= DBM:GetModLocalization(673)
 -----------------------
 L= DBM:GetModLocalization(657)
 
+L:SetWarningLocalization({
+	warnRemainingNovice	= "Novices remaining: %d"
+})
+
+L:SetOptionLocalization({
+	warnRemainingNovice	= "Announce how many Novices remain"
+})
+
 L:SetMiscLocalization({
-	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
+	NovicesPulled	= "You!  You have allowed the Sha to reawaken after all these years!",
+	NovicesDefeated = "You have bested our most junior of students.  Now you will face two of my most senior.",
+--	Defeat			= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
 })
 
 -----------------------
@@ -91,7 +101,7 @@ L= DBM:GetModLocalization(685)
 L= DBM:GetModLocalization(686)
 
 L:SetOptionLocalization({
-	InfoFrame			= "Show info frame for $journal:5827"
+	InfoFrame			= "為$journal:5827顯示訊息框"
 })
 
 -----------------------
@@ -134,9 +144,10 @@ L= DBM:GetModLocalization(649)
 L= DBM:GetModLocalization(708)
 
 L:SetMiscLocalization({
+	Pull		= "Useless, all of you! Even the guards you give me in tribute can't keep these lesser beings from my palace.",
 	Kuai		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!",
 	Ming		= "Clan Harthak will show all why they are the truest of Mogu!",
-	Haiyan		= "Clan Korgesh will demonstrate why only the strong deserve to stand at our King's side!",
+	Haiyan		= "Clan Kargesh will demonstrate why only the strong deserve to stand at our King's side!",
 	Defeat		= "Who allowed these outsiders inside our halls? Only Clan Harthak or Clan Kargesh would stoop to such treachery!"
 })
 
@@ -208,8 +219,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGetBoned	= "Show special warning when you are missing $spell:113996 debuff",
-	InfoFrame			= "Show info frame for players not affected by $spell:113996"
+	SpecWarnGetBoned	= "當你缺少$spell:113996時顯示特別警告",
+	InfoFrame			= "為沒有$spell:113996的玩家顯示訊息框"
 })
 
 L:SetMiscLocalization({
@@ -266,12 +277,11 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "Show DBM arrow when $spell:114487 is near you",
+	KickArrow	= "當$spell:114487在你附近時顯示DBM箭頭",
 })
 
 -----------------------
 -- Durand/High Inquisitor Whitemane --
 -----------------------
 L= DBM:GetModLocalization(674)
-
 
