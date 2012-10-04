@@ -266,23 +266,35 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Nature or msg:find(L.Nature) then
+		self:SendSync("Earth")
+	elseif msg == L.Fire or msg:find(L.Fire) then
+		self:SendSync("Flame")
+	elseif msg == L.Arcane or msg:find(L.Arcane) then
+		self:SendSync("Purple")
+	elseif msg == L.Shadow or msg:find(L.Shadow) then
+		self:SendSync("Dark")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Earth" then
 		phase = phase + 1
 		warnPhase:Show(phase)
 		timerLightningLashCD:Start(7)
 		timerLightningFistsCD:Start(12)
 		timerEpicenterCD:Start(18)--It's either this, or this +10. Not yet sure what causes the +10
-	elseif msg == L.Fire or msg:find(L.Fire) then
+	elseif msg == "Flame" then
 		phase = phase + 1
 		warnPhase:Show(phase)
 		timerFlamingSpearCD:Start(5.5)
 		timerDrawFlameCD:Start(35)--No variation, or not enough logs of fire phase.
-	elseif msg == L.Arcane or msg:find(L.Arcane) then
+	elseif msg == "Purple" then
 		phase = phase + 1
 		warnPhase:Show(phase)
 		timerArcaneShockCD:Start(7)
 		timerArcaneResonanceCD:Start(14)
 		timerArcaneVelocityCD:Start(16.5)--It's either this, or this +10. Not yet sure what causes the +10
-	elseif msg == L.Shadow or msg:find(L.Shadow) then
+	elseif msg == "Dark" then
 		phase = phase + 1
 		warnPhase:Show(phase)
 		timerSiphoningShieldCD:Start(4)--either this, or this +5. Not yet sure what causes the +5
