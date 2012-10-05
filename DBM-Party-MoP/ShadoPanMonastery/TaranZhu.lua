@@ -31,7 +31,7 @@ local Hate = EJ_GetSectionInfo(5827)
 function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(Hate)
-		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX) -- this not works. need to find another way.
 	end
 end
 
