@@ -26,22 +26,24 @@ mod:RegisterEventsInCombat(
 --Syncing is used for all warnings because the realms don't share combat events. You won't get warnings for other realm any other way.
 --Voodoo dolls do not have a CD, they are linked to banishment (or player deaths), when he banishes current tank, he reapplies voodoo dolls to new tank and new players. If tank dies, he just recasts voodoo on a new current threat target.
 --Latency checks are used for good reason (to prevent lagging users from sending late events and making our warnings go off again incorrectly). if you play with high latency and want to bypass latency check, do so with in game GUI option.
-local warnTotem							= mod:NewSpellAnnounce(116174, 2)
-local warnVoodooDolls					= mod:NewTargetAnnounce(122151, 3)
-local warnSpiritualInnervation			= mod:NewTargetAnnounce(117549, 3)
-local warnBanishment					= mod:NewTargetAnnounce(116272, 3)
-local warnSuicide						= mod:NewPreWarnAnnounce(116325, 5, 4)--Pre warn 5 seconds before you die so you take whatever action you need to, to prevent. (this is effect that happens after 30 seconds of Soul Sever
+local warnTotem						= mod:NewSpellAnnounce(116174, 2)
+local warnVoodooDolls				= mod:NewTargetAnnounce(122151, 3)
+local warnSpiritualInnervation		= mod:NewTargetAnnounce(117549, 3)
+local warnBanishment				= mod:NewTargetAnnounce(116272, 3)
+local warnSuicide					= mod:NewPreWarnAnnounce(116325, 5, 4)--Pre warn 5 seconds before you die so you take whatever action you need to, to prevent. (this is effect that happens after 30 seconds of Soul Sever
 
-local specWarnTotem						= mod:NewSpecialWarningSpell(116174, false)
-local specWarnBanishment				= mod:NewSpecialWarningYou(116272)
-local specWarnBanishmentOther			= mod:NewSpecialWarningTarget(116272, mod:IsTank())
-local specWarnVoodooDolls				= mod:NewSpecialWarningSpell(122151, false)
+local specWarnTotem					= mod:NewSpecialWarningSpell(116174, false)
+local specWarnBanishment			= mod:NewSpecialWarningYou(116272)
+local specWarnBanishmentOther		= mod:NewSpecialWarningTarget(116272, mod:IsTank())
+local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 
-local timerTotemCD						= mod:NewNextTimer(36, 116174)
-local timerBanishmentCD					= mod:NewNextTimer(65, 116272)
-local timerSoulSever					= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
-local timerSpiritualInnervation			= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
-local timerShadowyAttackCD				= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
+local timerTotemCD					= mod:NewNextTimer(36, 116174)
+local timerBanishmentCD				= mod:NewNextTimer(65, 116272)
+local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
+local timerSpiritualInnervation		= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
+local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
+
+local berserkTimer					= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("SetIconOnVoodoo", false)
 
@@ -109,6 +111,9 @@ function mod:OnCombatStart(delay)
 	timerShadowyAttackCD:Start(7-delay)
 	timerTotemCD:Start(-delay)
 	timerBanishmentCD:Start(-delay)
+	if not self:IsDifficulty("lfr25") then -- lfr seems not berserks.
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.

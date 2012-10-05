@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 
-local warnBoneSpike		= mod:NewSpellAnnounce(113999, 3)
+local warnBoneSpike		= mod:NewTargetAnnounce(113999, 3)
 
 local specWarnGetBoned	= mod:NewSpecialWarning("SpecWarnGetBoned")
 local specWarnSoulFlame	= mod:NewSpecialWarningMove(114009)--Not really sure what the point of this is yet. It's stupid easy to avoid and seems to serve no fight purpose yet, besides maybe cover some of the bone's you need for buff.
@@ -28,8 +28,19 @@ local timerRusting		= mod:NewBuffActiveTimer(15, 113765, nil, mod:IsTank())
 
 mod:AddBoolOption("InfoFrame")
 
+local boned = GetSpellInfo(113996)
+
+function mod:BoneSpikeTarget()
+	local targetname = self:GetBossTarget(59153)
+	if not targetname then return end
+	warnBoneSpike:Show(targetname)
+end
+
 function mod:OnCombatStart(delay)
 	timerBoneSpikeCD:Start(6.5-delay)
+	if not UnitDebuff("player", boned) then
+		specWarnGetBoned:Show()
+	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.PlayerDebuffs)
 		DBM.InfoFrame:Show(5, "playergooddebuff", 113996)
@@ -62,7 +73,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(113999) then
-		warnBoneSpike:Show()
+		self:ScheduleMethod(0.1, "BoneSpikeTarget")
 		timerBoneSpikeCD:Start()
 	end
 end
