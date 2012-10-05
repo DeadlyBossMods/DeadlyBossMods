@@ -32,7 +32,6 @@ function mod:ShaSpikeTarget()
 	end
 end
 
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(38166) then
 		warnEnrage:Show()
