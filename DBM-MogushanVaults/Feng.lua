@@ -28,23 +28,23 @@ local warnPhase						= mod:NewAnnounce("WarnPhase", 1, "Interface\\Icons\\Spell_
 --Nature/Fist
 local warnLightningLash				= mod:NewStackAnnounce(131788, 3, nil, mod:IsTank())
 local warnLightningFists			= mod:NewSpellAnnounce(116157, 3)
-local warnEpicenter					= mod:NewSpellAnnounce(116018, 4)
+local warnEpicenter					= mod:NewCountAnnounce(116018, 4)
 
 --Fire/Spear
 local warnFlamingSpear				= mod:NewStackAnnounce(116942, 3, nil, mod:IsTank())
 local warnWildSpark					= mod:NewTargetCountAnnounce(116784, 4)
 local yellWildSpark					= mod:NewYell(116784)
-local warnDrawFlame					= mod:NewSpellAnnounce(116711, 4)
+local warnDrawFlame					= mod:NewCountAnnounce(116711, 4)
 
 --Arcane/Staff
 local warnArcaneShock				= mod:NewStackAnnounce(131790, 3, nil, mod:IsTank())
 local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
-local warnArcaneVelocity			= mod:NewSpellAnnounce(116364, 4)
+local warnArcaneVelocity			= mod:NewCountAnnounce(116364, 4)
 
 --Shadow/Shield (Heroic Only)
 local warnShadowBurn				= mod:NewStackAnnounce(131792, 3, nil, mod:IsTank())
 local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
-local warnSiphoningShield			= mod:NewSpellAnnounce(117203, 4)
+local warnSiphoningShield			= mod:NewCountAnnounce(117203, 4)
 
 --Nature/Fist
 local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 3)
@@ -106,6 +106,7 @@ local soundEpicenter				= mod:NewSound(116018)
 local phase = 0
 local sparkCount = 0
 local fragmentCount = 5
+local specialCount = 0
 local arcaneResonanceTargets = {}
 
 local function warnArcaneResonanceTargets()
@@ -116,6 +117,7 @@ end
 function mod:OnCombatStart(delay)
 	phase = 0
 	sparkCount = 0
+	specialCount = 0
 	table.wipe(arcaneResonanceTargets)
 end
 
@@ -146,7 +148,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(116711) then
 		sparkCount = 0
-		warnDrawFlame:Show()
+		specialCount = specialCount + 1
+		warnDrawFlame:Show(specialCount)
 		specWarnDrawFlame:Show()
 	elseif args:IsSpellID(116417) then
 		-- seems that affects 2 players in 25man lfr. so use multiple target warning.
@@ -159,7 +162,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellArcaneResonance:Yell()
 		end
 	elseif args:IsSpellID(116364) then
-		warnArcaneVelocity:Show()
+		specialCount = specialCount + 1
+		warnArcaneVelocity:Show(specialCount)
 		specWarnArcaneVelocity:Show()
 		timerArcaneVelocity:Start()
 	end
@@ -237,7 +241,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(116018) then
-		warnEpicenter:Show()
+		specialCount = specialCount + 1
+		warnEpicenter:Show(specialCount)
 		specWarnEpicenter:Show()
 		soundEpicenter:Play()
 		timerEpicenter:Start()
@@ -304,12 +309,14 @@ function mod:OnSync(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 117203 and self:AntiSpam(2, 1) then--Siphoning Shield:
-		warnSiphoningShield:Show()
+	if spellId == 117203 and self:AntiSpam(2, 1) then--Siphoning Shield
+		specialCount = specialCount + 1
+		warnSiphoningShield:Show(specialCount)
 		specWarnSiphoningShield:Show()
 		timerSiphoningShieldCD:Start()
 	elseif spellId == 121631 and self:AntiSpam(2, 2) then--Draw Essence.
 		--Best place to cancel timers, vs duplicating cancel code in all 4 yells above.
+		specialCount = 0
 		timerFlamingSpearCD:Cancel()
 		timerDrawFlameCD:Cancel()
 		timerArcaneShockCD:Cancel()
