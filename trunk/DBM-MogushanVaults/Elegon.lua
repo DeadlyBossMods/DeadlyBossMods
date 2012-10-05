@@ -39,7 +39,7 @@ local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
-local timerDespawnFloor				= mod:NewTimer(5, "timerDespawnFloor", 116994)
+--local timerDespawnFloor				= mod:NewTimer(5, "timerDespawnFloor", 116994)
 --Some timer work needs to be added for the adds spawning and reaching outer bubble
 --(ie similar to yorsahj oozes reach, only for how long you have to kill adds before you fail and phase 2 ends)
 
@@ -70,7 +70,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		phase2Started = false
 		warnPhase3:Show()
 		specWarnDespawnFloor:Show()
-		timerDespawnFloor:Start()--Should be pretty accurate, may need minor tweak
+--		timerDespawnFloor:Start()--Should be pretty accurate, may need minor tweak
 	elseif args:IsSpellID(117878) and args:IsPlayer() then
 		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
 			specWarnOvercharged:Show(args.amount)
