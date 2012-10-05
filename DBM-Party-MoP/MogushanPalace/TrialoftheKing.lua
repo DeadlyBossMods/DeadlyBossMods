@@ -44,6 +44,15 @@ local timerConflagCD		= mod:NewCDTimer(22, 120201)--Limited data, may not be com
 local timerMeteorCD			= mod:NewNextTimer(55, 120195)--Assumed based on limited data
 
 local shockwaveCD = 15
+local kuai = EJ_GetSectionInfo(6015)
+local ming = EJ_GetSectionInfo(6019)
+local haiyan = EJ_GetSectionInfo(6023)
+
+function mod:OnCombatStart(delay)
+	if DBM.BossHealth:IsShown() then
+		DBM.BossHealth:Clear()
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(119946) then
@@ -96,18 +105,34 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerWhirlingDervishCD:Cancel()
 		timerConflagCD:Cancel()
 		timerMeteorCD:Cancel()
+		timerTraumaticBlowCD:Cancel()
 		timerShockwaveCD:Start(19)--Not confirmed through multiple pulls, just one
 		timerRavageCD:Start(26)
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:Clear()
+			DBM.BossHealth:AddBoss(61442, kuai)
+		end
 	elseif msg == L.Ming or msg:find(L.Ming) then
 		timerShockwaveCD:Cancel()
+		timerRavageCD:Cancel()
 		timerConflagCD:Cancel()
 		timerMeteorCD:Cancel()
+		timerTraumaticBlowCD:Cancel()
 		timerWhirlingDervishCD:Start(22)--Not confirmed through multiple pulls, just one
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:Clear()
+			DBM.BossHealth:AddBoss(61444, ming)
+		end
 	elseif msg == L.Haiyan or msg:find(L.Haiyan) then
-		timerShockwaveCD:Cancel()
 		timerWhirlingDervishCD:Cancel()
+		timerShockwaveCD:Cancel()
+		timerRavageCD:Cancel()
 		timerConflagCD:Start()--Not confirmed through multiple pulls, just one
 		timerMeteorCD:Start(42)
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:Clear()
+			DBM.BossHealth:AddBoss(61445, haiyan)
+		end
 	end
 end
 

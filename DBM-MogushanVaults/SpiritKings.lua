@@ -66,6 +66,7 @@ local specWarnAnnihilate		= mod:NewSpecialWarningSpell(117948)--Maybe tweak opti
 local specWarnFlankingOrders	= mod:NewSpecialWarningSpell(117910, nil, nil, nil, true)
 local specWarnImperviousShield	= mod:NewSpecialWarningTarget(117961)--Heroic Ability
 --Subetai
+local specWarnVolley			= mod:NewSpecialWarningSpell(118094, nil, nil, nil, true)
 local specWarnPinningArrow		= mod:NewSpecialWarningSwitch("ej5861", mod:IsDps())
 local specWarnPillage			= mod:NewSpecialWarningMove(118047)--Works as both a You and near warning
 local specWarnSleightOfHand		= mod:NewSpecialWarningTarget(118162)--Heroic Ability
@@ -229,6 +230,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 118088 and self:AntiSpam(2, 1) then--Volley
 		warnVolley:Show()
+		specWarnVolley:Show()
 		timerVolleyCD:Start()
 	elseif spellId == 118121 and self:AntiSpam(2, 2) then--Rain of Arrows
 		timerRainOfArrowsCD:Start()
