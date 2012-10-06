@@ -11,7 +11,7 @@ local L
 L= DBM:GetModLocalization(672)
 
 L:SetOptionLocalization({
-	SetIconOnAdds	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(106526)
+	SetIconOnAdds	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej5616")
 })
 
 -----------------------
@@ -77,9 +77,20 @@ L= DBM:GetModLocalization(673)
 -----------------------
 L= DBM:GetModLocalization(657)
 
-L:SetMiscLocalization({
-	Defeat		= "I am bested.  Give me a moment and we will venture forth together to face the Sha."--translate
+L:SetWarningLocalization({
+	warnRemainingNovice	= "Novicios restantes: %d"
 })
+
+L:SetOptionLocalization({
+	warnRemainingNovice	= "Anunciar cuantos novicios quedan"
+})
+
+L:SetMiscLocalization({
+	NovicesPulled	= "¡Vosotros habéis permitido que los sha despierten, después de todos estos años!",
+	NovicesDefeated = "Habéis superado a mis pupilos más inexpertos. Ahora os las veréis con dos de los más veteranos.",
+--	Defeat			= "I am bested.  Give me a moment and we will venture forth together to face the Sha."--translate
+})
+
 
 -----------------------
 -- Sha of Violence --
@@ -135,10 +146,11 @@ L= DBM:GetModLocalization(649)
 L= DBM:GetModLocalization(708)
 
 L:SetMiscLocalization({
+	Pull		= "Useless, all of you! Even the guards you give me in tribute can't keep these lesser beings from my palace.",--translate
 	Kuai		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!",--translate
-	Ming		= "Clan Harthak will show all why they are the truest of Mogu!",--translate
-	Haiyan		= "Clan Korgesh will demonstrate why only the strong deserve to stand at our King's side!",--translate
-	Defeat		= "Who allowed these outsiders inside our halls? Only Clan Harthak or Clan Kargesh would stoop to such treachery!"--translate
+	Ming		= "¡El clan Harthak os demostrará por qué somos los más puros de los mogu!",
+	Haiyan		= "¡El clan Kargesh os demostrará por qué solo los más fuertes merecen servir al Rey!",
+	Defeat		= "¿Quién ha dejado entrar a los forasteros? ¡Solo los clanes Harthak o Kargesh se rebajarían a cometer tal traición!"--translate
 })
 
 -----------------------
