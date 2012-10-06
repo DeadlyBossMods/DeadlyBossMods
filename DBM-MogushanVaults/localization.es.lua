@@ -15,7 +15,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Overload	= "%s is about to Overload!"--translate
+	Overload	= "¡%s se empieza a sobrecargar!"
 })
 
 
