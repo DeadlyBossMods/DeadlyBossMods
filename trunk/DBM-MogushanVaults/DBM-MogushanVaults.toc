@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shan Vaults|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0모구샨 금고|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shangewölbe|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Подземелья Могу'шан|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0魔古山宝库|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
@@ -14,6 +15,7 @@
 ## X-DBM-Mod-Name: Mogu'shan Palace
 ## X-DBM-Mod-Name-koKR: 모구샨 금고
 ## X-DBM-Mod-Name-deDE: Mogu'shangewölbe
+## X-DBM-Mod-Name-ruRU: Дворец Могу'шан
 ## X-DBM-Mod-Name-zhTW: 魔古山寶庫
 ## X-DBM-Mod-Name-zhCN: 魔古山宝库
 ## X-DBM-Mod-Sort: 3
@@ -23,6 +25,7 @@ localization.es.lua
 localization.it.lua
 localization.kr.lua
 localization.de.lua
+localization.ru.lua
 localization.tw.lua
 localization.cn.lua
 MapSizes.lua
