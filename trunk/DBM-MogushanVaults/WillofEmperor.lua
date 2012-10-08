@@ -35,7 +35,7 @@ local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
 local warnArcLeft				= mod:NewCountAnnounce(116968, 4, nil, mod:IsMelee())--Mostly informative, we cannot detect cast starts, only cast finishes, which is basically when it's going off.
 local warnArcRight				= mod:NewCountAnnounce(116971, 4, nil, mod:IsMelee())
-local warnArcCenter				= mod:NewCountAnnounce(116968, 4, nil, mod:IsMelee())
+local warnArcCenter				= mod:NewCountAnnounce(116972, 4, nil, mod:IsMelee())
 local warnStomp					= mod:NewCountAnnounce(116969, 4, nil, mod:IsMelee())
 local warnTitanGas				= mod:NewCountAnnounce(116779, 4)
 
@@ -50,7 +50,6 @@ local specWarnFocusedDefense	= mod:NewSpecialWarningYou(116778)
 --Jan-xi and Qin-xi
 local specWarnBossesActivated	= mod:NewSpecialWarningSwitch("ej5726", mod:IsTank())
 local specWarnCombo				= mod:NewSpecialWarningSpell("ej5672", nil, nil, nil, true)--No one in raid can get hit by this. So everyone needs to know about it.
---local specWarnArcCenter			= mod:NewSpecialWarningMove(116972, mod:IsTank())--Primary combo ability tanks need to avoid, currently not effective special warning, comes too late (cast finish, not cast start).
 --local specWarnStomp				= mod:NewSpecialWarningRun(116969, mod:IsMelee())--Primary combo ability tanks AND melee need to avoid.
 
 --Rage
@@ -63,7 +62,7 @@ local timerCourageActivates		= mod:NewNextTimer(10, "ej5676", nil, nil, nil, 116
 local timerBossesActivates		= mod:NewNextTimer(103.2, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
 local timerComboCD				= mod:NewCDTimer(14.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
 local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
-local timerTitanGasCD			= mod:NewNextCountTimer(153, 116779)
+local timerTitanGasCD			= mod:NewNextCountTimer(221, 116779)--i forgot to log, i only know in a 12 min fight it cast only 3 times, and first was 221 seconds into fight. i'll log again tomorrow.
 
 mod:AddBoolOption("InfoFrame", false)
 
@@ -79,6 +78,7 @@ function mod:OnCombatStart(delay)
 	comboCount = 0
 	titanGasCast = 0
 	timerBossesActivates:Start(-delay)--Still start here to give perspective
+	timerTitanGasCD:Start(221-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(focusedAssault)
 		DBM.InfoFrame:Show(10, "playerbaddebuff", 116525)
@@ -122,9 +122,9 @@ function mod:RAID_BOSS_EMOTE(msg)
 		specWarnCourageActivated:Schedule(10)
 		timerCourageActivates:Start()--They actually spawn 10 seconds after emote
 	elseif msg == L.Boss or msg:find(L.Boss) then
-		warnBossesActivated:Schedule(12)
-		specWarnBossesActivated:Schedule(12)
-		timerBossesActivates:Start(12)
+		warnBossesActivated:Schedule(10)
+		specWarnBossesActivated:Schedule(10)
+		timerBossesActivates:Start(10)
 	elseif msg:find("spell:116779") then
 		if self:IsDifficulty("heroic10", "heroic25") then--On heroic the boss activates this perminantly on pull and it's always present
 			--in fact, pretty sure herioc will use THIS as pull trigger
@@ -132,7 +132,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 		else
 			titanGasCast = titanGasCast + 1
 			warnTitanGas:Show(titanGasCast)
-			if titanGasCast < 5 then -- after Titan Gas casted 5 times, Titan Gas lasts permanently. (soft enrage)
+			if titanGasCast < 3 then -- after Titan Gas casted 3 times, Titan Gas lasts permanently. (soft enrage)
 				timerTitanGas:Start()
 				timerTitanGasCD:Start(titanGasCast+1)
 			end
@@ -153,8 +153,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 116972 and self:AntiSpam(2, 4) then--Arc Center
 		comboCount = comboCount + 1
 		warnArcCenter:Show(comboCount)
---		specWarnArcCenter:Show()
-	elseif spellId == 116969 and self:AntiSpam(2, 5) then--Stomp
+	elseif (spellId == 116969 or spellId == 132425) and self:AntiSpam(2, 5) then--Stomp
 		comboCount = comboCount + 1
 		warnStomp:Show(comboCount)
 --		specWarnStomp:Show()
