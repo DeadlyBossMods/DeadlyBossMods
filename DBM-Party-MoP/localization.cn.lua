@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/06/2012
+-- Last update: 10/09/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -88,7 +88,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NovicesPulled	= "You!  You have allowed the Sha to reawaken after all these years!",
+	NovicesPulled	= "是你们！这么多年了，是你们又让煞再次苏醒！",
 	NovicesDefeated = "你们只是击败了我最年轻的学徒而已。接下来是我的两位得意门生。",
 --	Defeat			= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
 })
