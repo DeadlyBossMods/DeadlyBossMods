@@ -7,15 +7,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "%s castable in 7s!"
+	SpecWarnOverloadSoon	= "%s將在7秒內超載"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "Show special warning before overload",
+	SpecWarnOverloadSoon	= "為超載顯示特別警告",
 })
 
 L:SetMiscLocalization({
-	Overload	= "%s is about to Overload!"
+	Overload	= "%s要超載了!"
 })
 
 
@@ -33,9 +33,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!",
-	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!",
-	Nature		= "Oh great spirit! Grant me the power of the earth!",--I did not log this one, text is probably not right
+	Fire		= "噢，至高的神啊!藉由我來融化他們的血肉吧!",
+	Arcane		= "噢，上古的賢者!賜予我祕法的智慧!",
+	Nature		= "噢，偉大的靈魂!賜予我大地之力!",
 	Shadow		= "Great soul of champions past! Bear to me your shield!"
 })
 
@@ -51,7 +51,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "It be dyin' time, now!"
+	Pull		= "受死吧，你們!"
 })
 
 
@@ -71,16 +71,16 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "Watch your step!"
+	specWarnDespawnFloor		= "小心你的腳步!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "Watch your step!"
+	timerDespawnFloor			= "小心你的腳步!"
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "Show special warning before floor vanishes",
-	timerDespawnFloor			= "show timer for when floor vanishes"
+	specWarnDespawnFloor		= "為地板消失之前顯示特別警告",
+	timerDespawnFloor			= "為地板消失顯示計時器"
 })
 
 
@@ -90,7 +90,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Show info frame for players affected by $spell:116525"
+	InfoFrame		= "為受到$spell:116525的玩家顯示訊息框"
 })
 
 L:SetMiscLocalization({
