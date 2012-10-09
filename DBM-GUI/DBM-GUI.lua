@@ -308,7 +308,7 @@ do
 			return DBM:AddMsg("CreateCheckButton: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id.")
 		end
 		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
-		button_name = button:GetName()
+		local buttonName = button:GetName()
 		button.myheight = 25
 		button.mytype = "checkbutton"
 		-- font strings do not support hyperlinks, so check if we need one...
@@ -322,8 +322,8 @@ do
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		if name and name:find("|H") then -- ...and replace it with a SimpleHTML frame
-			_G[button_name.."Text"] = CreateFrame("SimpleHTML", button_name.."Text", button)
-			local html = _G[button_name.."Text"]
+			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
+			local html = _G[buttonName.."Text"]
 			html:SetHeight(12)
 			html:SetFontObject("GameFontNormal")
 			html:SetPoint("LEFT", button, "RIGHT", 0, 1)
@@ -331,15 +331,15 @@ do
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
 		end
-		_G[button_name .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
-		_G[button_name .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
+		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
+		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
 
 		if textleft then
-			_G[button_name .. 'Text']:ClearAllPoints()
-			_G[button_name .. 'Text']:SetPoint("RIGHT", button, "LEFT", 0, 0)
-			_G[button_name .. 'Text']:SetJustifyH("RIGHT")
+			_G[buttonName .. 'Text']:ClearAllPoints()
+			_G[buttonName .. 'Text']:SetPoint("RIGHT", button, "LEFT", 0, 0)
+			_G[buttonName .. 'Text']:SetJustifyH("RIGHT")
 		else
-			_G[button_name .. 'Text']:SetJustifyH("LEFT")
+			_G[buttonName .. 'Text']:SetJustifyH("LEFT")
 		end
 		
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -522,7 +522,7 @@ end
 --
 function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 	local button = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
-	button_name = button:GetName()
+	local buttonName = button:GetName()
 	button.mytype = "button"
 	button:SetWidth(width or 100)
 	button:SetHeight(height or 20)
@@ -531,11 +531,11 @@ function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 		button:SetScript("OnClick", onclick)
 	end
 	if FontObject then
-		button:SetNormalFontObject(FontObject);
-		button:SetHighlightFontObject(FontObject);		
+		button:SetNormalFontObject(FontObject)
+		button:SetHighlightFontObject(FontObject)		
 	end
-	if _G[button_name.."Text"]:GetStringWidth() > button:GetWidth() then
-		button:SetWidth( _G[button_name.."Text"]:GetStringWidth() + 25 )
+	if _G[buttonName.."Text"]:GetStringWidth() > button:GetWidth() then
+		button:SetWidth( _G[buttonName.."Text"]:GetStringWidth() + 25 )
 	end
 
 	self:SetLastObj(button)
@@ -568,7 +568,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
 	end
 
 	if autoplaced then
-		textblock:SetPoint('TOPLEFT',self.frame, "TOPLEFT", 10, -10);
+		textblock:SetPoint('TOPLEFT',self.frame, "TOPLEFT", 10, -10)
 	end
 
 	self:SetLastObj(textblock)
@@ -743,21 +743,21 @@ end
 local UpdateAnimationFrame
 do
 	local function HideScrollBar(frame)
-		local frame_name = frame:GetName()
-		local list = _G[frame_name .. "List"];
-		list:Hide();
-		local listWidth = list:GetWidth();
+		local frameName = frame:GetName()
+		local list = _G[frameName .. "List"]
+		list:Hide()
+		local listWidth = list:GetWidth()
 		for _, button in next, frame.buttons do
-			button:SetWidth(button:GetWidth() + listWidth);
+			button:SetWidth(button:GetWidth() + listWidth)
 		end
 	end
 
 	local function DisplayScrollBar(frame)
-		local list = _G[frame_name .. "List"];
-		list:Show();
-		local listWidth = list:GetWidth();
+		local list = _G[frame:GetName() .. "List"]
+		list:Show()
+		local listWidth = list:GetWidth()
 		for _, button in next, frame.buttons do
-			button:SetWidth(button:GetWidth() - listWidth);
+			button:SetWidth(button:GetWidth() - listWidth)
 		end
 	end
 
@@ -768,61 +768,61 @@ do
 	-- This function is for internal use.
 	-- Function to update the left scrollframe buttons with the menu entries
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
-		local frame_name = listframe:GetName()
-		local offset = _G[frame_name.."List"].offset;
-		local buttons = listframe.buttons;
+		local frameName = listframe:GetName()
+		local offset = _G[frameName.."List"].offset
+		local buttons = listframe.buttons
 		local TABLE 
 
-		if not buttons then return false; end
+		if not buttons then return false end
 
 		if listframe:GetParent().tab == 2 then
 			TABLE = DBM_GUI_Options:GetVisibleTabs()
 		else 
 			TABLE = DBM_GUI_Bosses:GetVisibleTabs()
 		end
-		local element;
+		local element
 		
 		for i, element in ipairs(displayedElements) do
-			displayedElements[i] = nil;
+			displayedElements[i] = nil
 		end
 
 		for i, element in ipairs(TABLE) do
-			table.insert(displayedElements, element.frame);
+			table.insert(displayedElements, element.frame)
 		end
 
 
-		local numAddOnCategories = #displayedElements;
-		local numButtons = #buttons;
+		local numAddOnCategories = #displayedElements
+		local numButtons = #buttons
 
 		if ( numAddOnCategories > numButtons and ( not listframe:IsShown() ) ) then
-			DisplayScrollBar(listframe);
+			DisplayScrollBar(listframe)
 		elseif ( numAddOnCategories <= numButtons and ( listframe:IsShown() ) ) then
-			HideScrollBar(listframe);
+			HideScrollBar(listframe)
 		end
 	
 		if ( numAddOnCategories > numButtons ) then
-			_G[frame_name.."List"]:Show();
-			_G[frame_name.."ListScrollBar"]:SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
-			_G[frame_name.."ListScrollBar"]:SetValueStep( buttons[1]:GetHeight() )
+			_G[frameName.."List"]:Show()
+			_G[frameName.."ListScrollBar"]:SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight())
+			_G[frameName.."ListScrollBar"]:SetValueStep( buttons[1]:GetHeight() )
 		else
-			_G[frame_name.."ListScrollBar"]:SetValue(0);
-			_G[frame_name.."List"]:Hide();
+			_G[frameName.."ListScrollBar"]:SetValue(0)
+			_G[frameName.."List"]:Hide()
 		end
 
-		local selection = DBM_GUI_OptionsFrameBossMods.selection;
+		local selection = DBM_GUI_OptionsFrameBossMods.selection
 		if ( selection ) then
-			DBM_GUI_OptionsFrame:ClearSelection(listframe, listframe.buttons);
+			DBM_GUI_OptionsFrame:ClearSelection(listframe, listframe.buttons)
 		end
 
 		for i = 1, #buttons do
 			element = displayedElements[i + offset]
 			if ( not element ) then
-				DBM_GUI_OptionsFrame:HideButton(buttons[i]);
+				DBM_GUI_OptionsFrame:HideButton(buttons[i])
 			else
-				DBM_GUI_OptionsFrame:DisplayButton(buttons[i], element);
+				DBM_GUI_OptionsFrame:DisplayButton(buttons[i], element)
 				
 				if ( selection ) and ( selection == element ) and ( not listframe.selection ) then
-					DBM_GUI_OptionsFrame:SelectButton(listframe, buttons[i]);
+					DBM_GUI_OptionsFrame:SelectButton(listframe, buttons[i])
 				end
 			end
 		end
@@ -831,42 +831,42 @@ do
 	-- This function is for internal use.
 	-- Used to show a button from the list
 	function DBM_GUI_OptionsFrame:DisplayButton(button, element)
-		button:Show();
-		button.element = element;
+		button:Show()
+		button.element = element
 
 		button.text:ClearAllPoints()		
-		button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2);
+		button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2)
 		button.text:SetFontObject(GameFontNormalSmall)
 		button.toggle:ClearAllPoints()
-		button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1);
+		button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1)
 
 		if element.depth > 2 then
-			button:SetNormalFontObject(GameFontHighlightSmall);
-			button:SetHighlightFontObject(GameFontHighlightSmall);
+			button:SetNormalFontObject(GameFontHighlightSmall)
+			button:SetHighlightFontObject(GameFontHighlightSmall)
 
 		elseif element.depth > 1  then
-			button:SetNormalFontObject(GameFontNormalSmall);
-			button:SetHighlightFontObject(GameFontNormalSmall);
+			button:SetNormalFontObject(GameFontNormalSmall)
+			button:SetHighlightFontObject(GameFontNormalSmall)
 		else
-			button:SetNormalFontObject(GameFontNormal);
-			button:SetHighlightFontObject(GameFontNormal);
+			button:SetNormalFontObject(GameFontNormal)
+			button:SetHighlightFontObject(GameFontNormal)
 		end
 		button:SetWidth(185)
 
 		if element.haschilds then
 			if not element.showsub then
-				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-UP");
-				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-PlusButton-DOWN");
+				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-UP")
+				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-PlusButton-DOWN")
 			else
-				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-UP");
-				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-MinusButton-DOWN");		
+				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-UP")
+				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-MinusButton-DOWN")		
 			end
-			button.toggle:Show();
+			button.toggle:Show()
 		else
-			button.toggle:Hide();
+			button.toggle:Hide()
 		end
 
-		button.text:SetText(element.name);
+		button.text:SetText(element.name)
 		button.text:Show()
 	end
 
@@ -879,15 +879,15 @@ do
 	-- This function is for internal use.
 	-- Called when a new entry is selected
 	function DBM_GUI_OptionsFrame:ClearSelection(listFrame, buttons)
-		for _, button in ipairs(buttons) do button:UnlockHighlight(); end
-		listFrame.selection = nil;
+		for _, button in ipairs(buttons) do button:UnlockHighlight() end
+		listFrame.selection = nil
 	end
 	
 	-- This function is for Internal use.
 	-- Called when a button is selected
 	function DBM_GUI_OptionsFrame:SelectButton(listFrame, button)
 		button:LockHighlight()
-		listFrame.selection = button.element;
+		listFrame.selection = button.element
 	end
 
 	-- This function is for Internal use.
@@ -917,19 +917,19 @@ do
 	-- This function is for internal use.
 	-- Called when someone clicks a Button
 	function DBM_GUI_OptionsFrame:OnButtonClick(button)
-		local parent = button:GetParent();
-		local buttons = parent.buttons;
-		local button_name = DBM_GUI_OptionsFrame:GetName()
+		local parent = button:GetParent()
+		local buttons = parent.buttons
+		local buttonName = DBM_GUI_OptionsFrame:GetName()
 	
-		self:ClearSelection(_G[button_name.."BossMods"],   _G[button_name.."BossMods"].buttons);
-		self:ClearSelection(_G[button_name.."DBMOptions"], _G[button_name.."DBMOptions"].buttons);
-		self:SelectButton(parent, button);
+		self:ClearSelection(_G[buttonName.."BossMods"],   _G[buttonName.."BossMods"].buttons)
+		self:ClearSelection(_G[buttonName.."DBMOptions"], _G[buttonName.."DBMOptions"].buttons)
+		self:SelectButton(parent, button)
 
-		self:DisplayFrame(button.element);
+		self:DisplayFrame(button.element)
 	end
 
 	function DBM_GUI_OptionsFrame:ToggleSubCategories(button)
-		local parent = button:GetParent();
+		local parent = button:GetParent()
 		if parent.element.showsub then
 			parent.element.showsub = false
 		else
@@ -949,7 +949,7 @@ do
 		end
 
 		if ( container.displayedFrame ) then
-			container.displayedFrame:Hide();
+			container.displayedFrame:Hide()
 		end
 		container.displayedFrame = frame
 
@@ -958,15 +958,15 @@ do
 		local mymax = (frame.actualHeight or frame:GetHeight()) - container:GetHeight()
 		
 		if mymax <= 0 then mymax = 0 end
-		local frame_name = container:GetName()
+		local frameName = container:GetName()
 		if mymax > 0 then
-			_G[frame_name.."FOV"]:Show()
-			_G[frame_name.."FOV"]:SetScrollChild(frame)
-			_G[frame_name.."FOVScrollBar"]:SetMinMaxValues(0, mymax)
+			_G[frameName.."FOV"]:Show()
+			_G[frameName.."FOV"]:SetScrollChild(frame)
+			_G[frameName.."FOVScrollBar"]:SetMinMaxValues(0, mymax)
 
 			if frame.isfixed then
 				frame.isfixed = nil
-				local listwidth = _G[frame_name.."FOVScrollBar"]:GetWidth()
+				local listwidth = _G[frameName.."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
@@ -975,14 +975,14 @@ do
 				end
 			end
 		else
-			_G[frame_name.."FOV"]:Hide()
+			_G[frameName.."FOV"]:Hide()
 			frame:ClearAllPoints()
 			frame:SetPoint("TOPLEFT", container ,"TOPLEFT", 5, 0)
 			frame:SetPoint("BOTTOMRIGHT", container ,"BOTTOMRIGHT", 0, 0)
 
 			if not frame.isfixed then
 				frame.isfixed = true
-				local listwidth = _G[frame_name.."FOVScrollBar"]:GetWidth()
+				local listwidth = _G[frameName.."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
@@ -991,7 +991,7 @@ do
 				end
 			end
 		end
-		frame:Show();
+		frame:Show()
 
 		if DBM.Options.EnableModels then
 			DBM_BossPreview.enabled = false
@@ -1354,7 +1354,7 @@ local function CreateOptionsMenu()
 		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
 
 		local BcastTimer = pizzaarea:CreateCheckButton(L.PizzaTimer_BroadCast)
-		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart);
+		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart)
 		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
 		BcastTimer:SetPoint("TOPLEFT", okbttn, "TOPRIGHT", 10, 3)
 
@@ -1502,8 +1502,8 @@ local function CreateOptionsMenu()
 	
 		local movemebutton = raidwarncolors:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', raidwarncolors.frame, "TOPRIGHT", 0, -1)
-		movemebutton:SetNormalFontObject(GameFontNormalSmall);
-		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		movemebutton:SetNormalFontObject(GameFontNormalSmall)
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall)		
 		do
 			local anchorFrame
 			local function hideme()
@@ -1572,8 +1572,8 @@ local function CreateOptionsMenu()
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
-		movemebutton:SetNormalFontObject(GameFontNormalSmall);
-		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		movemebutton:SetNormalFontObject(GameFontNormalSmall)
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall)		
 		movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
 
 		local maindummybar = DBM.Bars:CreateDummyBar()
@@ -1787,14 +1787,14 @@ local function CreateOptionsMenu()
 
 		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)
-		showbutton:SetNormalFontObject(GameFontNormalSmall);
-		showbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		showbutton:SetNormalFontObject(GameFontNormalSmall)
+		showbutton:SetHighlightFontObject(GameFontNormalSmall)		
 		showbutton:SetScript("OnClick", function() DBM:ShowTestSpecialWarning() end)
 
 		local movemebutton = specArea:CreateButton(L.SpecWarn_MoveMe, 120, 16)
 		movemebutton:SetPoint('TOPRIGHT', showbutton, "BOTTOMRIGHT", 0, -5)
-		movemebutton:SetNormalFontObject(GameFontNormalSmall);
-		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		movemebutton:SetNormalFontObject(GameFontNormalSmall)
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall)		
 		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
 
 		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 40, 1)
@@ -1806,7 +1806,7 @@ local function CreateOptionsMenu()
 					self:SetValue(DBM.Options.SpecialWarningFontSize) 
 			end)
 			fontSizeSlider:HookScript("OnValueChanged", function(self)
-					if firstshow then firstshow = false; return end
+					if firstshow then firstshow = false return end
 					DBM.Options.SpecialWarningFontSize = self:GetValue()
 					DBM:UpdateSpecialWarningOptions()
 					DBM:ShowTestSpecialWarning()
@@ -1834,7 +1834,7 @@ local function CreateOptionsMenu()
 					self:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
 			end)
 			color1:SetScript("OnColorSelect", function(self)
-					if firstshow then firstshow = false; return end
+					if firstshow then firstshow = false return end
 					DBM.Options.SpecialWarningFontColor[1] = select(1, self:GetColorRGB())
 					DBM.Options.SpecialWarningFontColor[2] = select(2, self:GetColorRGB())
 					DBM.Options.SpecialWarningFontColor[3] = select(3, self:GetColorRGB())
@@ -1896,8 +1896,8 @@ local function CreateOptionsMenu()
 
 		local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 		resetbutton:SetPoint('BOTTOMRIGHT', specArea.frame, "BOTTOMRIGHT", -5, 5)
-		resetbutton:SetNormalFontObject(GameFontNormalSmall);
-		resetbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		resetbutton:SetNormalFontObject(GameFontNormalSmall)
+		resetbutton:SetHighlightFontObject(GameFontNormalSmall)		
 		resetbutton:SetScript("OnClick", function()
 				DBM.Options.SpecialWarningFont = DBM.DefaultOptions.SpecialWarningFont
 				DBM.Options.SpecialWarningFontSize = DBM.DefaultOptions.SpecialWarningFontSize
@@ -1935,8 +1935,8 @@ local function CreateOptionsMenu()
 
 		local resetbutton = hpArea:CreateButton(L.Reset, 120, 16)
 		resetbutton:SetPoint('BOTTOMRIGHT', hpArea.frame, "BOTTOMRIGHT", -5, 5)
-		resetbutton:SetNormalFontObject(GameFontNormalSmall);
-		resetbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		resetbutton:SetNormalFontObject(GameFontNormalSmall)
+		resetbutton:SetHighlightFontObject(GameFontNormalSmall)		
 		resetbutton:SetScript("OnClick", function()
 				DBM.Options.HPFramePoint = DBM.DefaultOptions.HPFramePoint
 				DBM.Options.HPFrameX = DBM.DefaultOptions.HPFrameX
@@ -1949,8 +1949,8 @@ local function CreateOptionsMenu()
 		local function createDummyFunc(i) return function() return i end end
 		local showbutton = hpArea:CreateButton(L.HP_ShowDemo, 120, 16)
 		showbutton:SetPoint('BOTTOM', resetbutton, "TOP", 0, 5)
-		showbutton:SetNormalFontObject(GameFontNormalSmall);
-		showbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		showbutton:SetNormalFontObject(GameFontNormalSmall)
+		showbutton:SetHighlightFontObject(GameFontNormalSmall)		
 		showbutton:SetScript("OnClick", function()
 				DBM.BossHealth:Show("Health Frame")
 				DBM.BossHealth:AddBoss(createDummyFunc(25), "TestBoss 1")
