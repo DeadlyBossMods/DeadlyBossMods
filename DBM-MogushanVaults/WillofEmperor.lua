@@ -64,7 +64,7 @@ local timerStrengthActivates	= mod:NewNextTimer(9, "ej5677", nil, nil, nil, 1165
 local timerCourageActivates		= mod:NewNextTimer(115, "ej5676", nil, nil, nil, 116778)
 --Jan-xi and Qin-xi
 local timerBossesActivates		= mod:NewNextTimer(109, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
-local timerComboCD				= mod:NewCDTimer(14.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
+--local timerComboCD				= mod:NewCDTimer(14.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
 local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
 local timerTitanGasCD			= mod:NewNextCountTimer(150, 116779)
 
@@ -220,6 +220,6 @@ function mod:UNIT_POWER(uId)
 	elseif (self:GetUnitCreatureId(uId) == 60399 or self:GetUnitCreatureId(uId) == 60400) and UnitPower(uId) == 1 then
 		comboWarned = false
 		comboCount = 0
-		timerComboCD:Start()
+--		timerComboCD:Start()
 	end
 end
