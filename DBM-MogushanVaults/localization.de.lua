@@ -51,7 +51,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "It be dyin' time, now!" --translate (trigger)
+	Pull		= "Jetzt is' Sterbenszeit!"
 })
 
 
