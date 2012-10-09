@@ -1,15 +1,15 @@
-﻿if GetLocale() ~= "frFR" then return end
-DBM_CORE_NEED_SUPPORT				= "Vous êtes bon en programmation ou en langues ? Si oui, l'équipe de DBM a besoin de votre aide pour que DBM reste le meilleur boss mod de WoW. Rejoignez l'équipe en visitant www.deadlybossmods.com ou en envoyant un message à tandanu@deadlybossmods.com ou à nitram@deadlybossmods.com."
+if GetLocale() ~= "frFR" then return end
+DBM_CORE_NEED_SUPPORT				= "Vous êtes bon en programmation ou en langues ? Si oui, l'équipe de DBM a besoin de votre aide pour que DBM reste le meilleur boss mod de WoW. Rejoignez l'équipe en visitant www.deadlybossmods.com ou en envoyant un message à tandanu@deadlybossmods.com ou à nitram@deadlybossmods.com."
 DBM_HOW_TO_USE_MOD					= "Bienvenue sur DBM. Tapez /dbm help pour une liste des commandes supportées. Pour accédez aux options, tapez /dbm dans la fenêtre de discussion pour commencer la configuration. Chargez des zones spécifiques manuellement pour configurer tous les paramètres spécifiques aux boss selon vos envies. DBM essaie de le faire pour vous en analysant votre spécialisation au premier lancement, mais nous savons que de toute façon certaines personnes souhaitent activer d'autres options."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Erreur lors du chargement des modules %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Modules '%s' chargés. Pour plus d'options, tapez /dbm ou /dbm help dans la fenêtre de discussion."
 DBM_CORE_LOAD_GUI_ERROR				= "Impossible de charger l'interface: %s"
 
-DBM_CORE_COMBAT_STARTED				= "%s engagé. Bonne chance et amusez-vous bien ! :)";
-DBM_CORE_BOSS_DOWN					= "%s vaincu après %s !"
-DBM_CORE_BOSS_DOWN_L				= "%s vaincu après %s ! Votre dernier temps était de %s et votre record de %s. Vous l'avez tué au total %d fois."
-DBM_CORE_BOSS_DOWN_NR				= "%s vaincu après %s ! C'est un nouveau record ! (l'ancien record était de %s). Vous l'avez tué au total %d fois."
+DBM_CORE_COMBAT_STARTED				= "%s engagé. Bonne chance et amusez-vous bien ! :)";
+DBM_CORE_BOSS_DOWN					= "%s vaincu après %s !"
+DBM_CORE_BOSS_DOWN_L				= "%s vaincu après %s ! Votre dernier temps était de %s et votre record de %s. Vous l'avez tué au total %d fois."
+DBM_CORE_BOSS_DOWN_NR				= "%s vaincu après %s ! C'est un nouveau record ! (l'ancien record était de %s). Vous l'avez tué au total %d fois."
 DBM_CORE_COMBAT_ENDED_AT			= "Combat face à %s terminé après %s."
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "Combat face à %s terminé après %s. Vous cumulez un total de %d wipes dans ce mode de difficulté."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s a été engagé il y a %s, récupération des délais..."
@@ -55,7 +55,7 @@ DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Afficher un popup quand une nouvelle version
 DBM_CORE_MOVABLE_BAR				= "Bougez-moi !"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h vous a envoyé un délai DBM: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Annuler ce délais]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorer les délais de %1$s]|r|h"
-DBM_PIZZA_CONFIRM_IGNORE			= "Voulez-vous réellement ignorer les délais DBM de %s de cette session ?"
+DBM_PIZZA_CONFIRM_IGNORE			= "Voulez-vous réellement ignorer les délais DBM de %s de cette session ?"
 DBM_PIZZA_ERROR_USAGE				= "Utilisation: /dbm [broadcast] timer <durée> <texte>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods est exécuté deux fois car DBMv3 et DBMv4 sont tous les deux installés et activés\nCliquez sur \"Okay\" pour désactiver DBMv3 et recharger votre interface.\nIl serait judicieux de nettoyer votre répertoire AddOns en supprimant les vieux répertoires de DBMv3."
@@ -91,17 +91,17 @@ DBM_CORE_INFOFRAME_SHOW_SELF		= "Toujours afficher votre puissance"		-- Always s
 DBM_LFG_INVITE						= "Invitation RdG"
 
 DBM_CORE_SLASHCMD_HELP				= {
-	"Commandes slash disponibles :",
-	"/dbm version : effectue une vérification des versions de tout le raid (alias : ver).",
+	"Commandes slash disponibles :",
+	"/dbm version : effectue une vérification des versions de tout le raid (alias : ver).",
 --	"/dbm version2: Performs a raid-wide version check and whispers members who are out of date (alias: ver2).",
-	"/dbm unlock : affiche une barre de délai déplaçable (alias : move).",
-	"/dbm timer <x> <texte> : lance un délai DBM de <x> secondes ayant pour nom <texte>.",
-	"/dbm broadcast timer <x> <texte> : diffuse un délai DBM de <x> secondes ayant pour nom <texte> au raid (nécessite d'être chef du raid ou assistant).",
-	"/dbm break <min> : lance un délai de pause de <min> minutes. Donne à tous les membres du raid ayant DBM ce délai de pause (nécessite d'être chef du raid ou assistant).",
-	"/dbm pull <sec> : lance un délai de pull de <sec> secondes. Donne à tous les membres du raid ayant DBM ce délai de pull (nécessite d'être chef du raid ou assistant).",
-	"/dbm arrow : affiche la flèche DBM, voir /dbm arrow help pour les détails.",
-	"/dbm lockout : demande aux membres du raid leurs verrouillages actuels d'instance de raid (aliases : lockouts, ids) (nécessite d'être chef du raid ou assistant).",
-	"/dbm help : affiche ce message.",
+	"/dbm unlock : affiche une barre de délai déplaçable (alias : move).",
+	"/dbm timer <x> <texte> : lance un délai DBM de <x> secondes ayant pour nom <texte>.",
+	"/dbm broadcast timer <x> <texte> : diffuse un délai DBM de <x> secondes ayant pour nom <texte> au raid (nécessite d'être chef du raid ou assistant).",
+	"/dbm break <min> : lance un délai de pause de <min> minutes. Donne à tous les membres du raid ayant DBM ce délai de pause (nécessite d'être chef du raid ou assistant).",
+	"/dbm pull <sec> : lance un délai de pull de <sec> secondes. Donne à tous les membres du raid ayant DBM ce délai de pull (nécessite d'être chef du raid ou assistant).",
+	"/dbm arrow : affiche la flèche DBM, voir /dbm arrow help pour les détails.",
+	"/dbm lockout : demande aux membres du raid leurs verrouillages actuels d'instance de raid (aliases : lockouts, ids) (nécessite d'être chef du raid ou assistant).",
+	"/dbm help : affiche ce message.",
 }
 
 DBM_ERROR_NO_PERMISSION				= "Vous n'avez pas la permission requise pour faire cela."
@@ -114,14 +114,14 @@ DBM_CORE_HORDE						= "Horde"
 DBM_CORE_UNKNOWN					= "inconnu"
 
 DBM_CORE_BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s)!"
-DBM_CORE_BREAK_MIN					= "Fin de la pause dans %s minute(s) !"
-DBM_CORE_BREAK_SEC					= "Fin de la pause dans %s secondes !"
-DBM_CORE_TIMER_BREAK				= "Pause !"
+DBM_CORE_BREAK_MIN					= "Fin de la pause dans %s minute(s) !"
+DBM_CORE_BREAK_SEC					= "Fin de la pause dans %s secondes !"
+DBM_CORE_TIMER_BREAK				= "Pause !"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "La pause est terminée"
 
 DBM_CORE_TIMER_PULL					= "Pull dans"
 DBM_CORE_ANNOUNCE_PULL				= "Pull dans %d sec"
-DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull maintenant !"
+DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull maintenant !"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Victoire rapide"
 
@@ -243,15 +243,15 @@ DBM_SPEED_KILL_TIMER_TEXT	= "Record à battre"
 DBM_SPEED_KILL_TIMER_OPTION	= "Délai pour battre votre record"
 
 
-DBM_REQ_INSTANCE_ID_PERMISSION		= "%s a demandé à voir vos IDs d'instance actuels ainsi que leurs progressions.\nSouhaitez-vous envoyer cette information à %s ? Il ou elle pourra demander cette information pendant toute votre session actuelle (c'est-à-dire jusqu'à ce que vous vous reconnectez)."
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s a demandé à voir vos IDs d'instance actuels ainsi que leurs progressions.\nSouhaitez-vous envoyer cette information à %s ? Il ou elle pourra demander cette information pendant toute votre session actuelle (c'est-à-dire jusqu'à ce que vous vous reconnectez)."
 DBM_ERROR_NO_RAID					= "Vous devez être dans un groupe de raid pour utiliser cette fonctionnalité."
-DBM_INSTANCE_INFO_REQUESTED			= "Requête envoyée pour obtenir les information de verrouillage de raid au groupe de raid.\nVeuillez noter que la permission sera demandée aux utilisateurs avant que les données ne vous soient envoyées ; il se peut donc que cela prenne du temps pour recevoir toutes les réponses."
-DBM_INSTANCE_INFO_STATUS_UPDATE		= "Réception des réponses de %d joueurs sur les %d utilisateurs de DBM : %d ont envoyé les données, %d ont refusé la requête. Attente des autres réponses pendant encore %d secondes..."
+DBM_INSTANCE_INFO_REQUESTED			= "Requête envoyée pour obtenir les information de verrouillage de raid au groupe de raid.\nVeuillez noter que la permission sera demandée aux utilisateurs avant que les données ne vous soient envoyées ; il se peut donc que cela prenne du temps pour recevoir toutes les réponses."
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "Réception des réponses de %d joueurs sur les %d utilisateurs de DBM : %d ont envoyé les données, %d ont refusé la requête. Attente des autres réponses pendant encore %d secondes..."
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "Réponses reçues de tous les membres du raid"
 DBM_INSTANCE_INFO_DETAIL_DEBUG		= "Expéditeur: %s TypeRésultat: %s NomInstance: %s IDInstance: %s Difficulté: %d Taille: %d Progression: %s"
-DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), difficulté %d :"
-DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, progression %d : %s"
-DBM_INSTANCE_INFO_STATS_DENIED		= "A refusé la requête : %s"
+DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), difficulté %d :"
+DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, progression %d : %s"
+DBM_INSTANCE_INFO_STATS_DENIED		= "A refusé la requête : %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "Absent: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "Sans une version récente de DBM: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Résultats de l'analyse des IDs d'instance. Notez que les instances peuvent apparaître plusieurs fois si les joueurs de votre raid ont WoW dans différentes langues."
