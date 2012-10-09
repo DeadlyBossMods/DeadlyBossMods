@@ -14,9 +14,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"CHAT_MSG_MONSTER_YELL",
-	"RAID_BOSS_EMOTE",
 	"UNIT_DIED",
 	"UNIT_POWER"
+)
+
+mod:RegisterEvents(
+	"RAID_BOSS_EMOTE"
 )
 
 --Rage
@@ -29,7 +32,7 @@ local warnEnergizingSmash		= mod:NewSpellAnnounce(116550, 3, nil, mod:IsMelee())
 local warnCourageActivated		= mod:NewSpellAnnounce("ej5676", 3, 116778)
 local warnFocusedDefense		= mod:NewTargetAnnounce(116778, 4)
 --Sparks (Heroic Only)
-local warnSpark					= mod:NewCountAnnounce("ej5674", 3)--Probably not very accurate. Not without wasting stupid amounts of cpu same way we do on spine. :\
+--local warnSpark					= mod:NewCountAnnounce("ej5674", 3)--Probably not very accurate. Not without wasting stupid amounts of cpu same way we do on spine. :\
 local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
@@ -43,26 +46,27 @@ local warnTitanGas				= mod:NewCountAnnounce(116779, 4)
 local specWarnFocusedAssault	= mod:NewSpecialWarningYou(116525, false)
 --Strength
 local specWarnStrengthActivated	= mod:NewSpecialWarningSpell("ej5677", mod:IsTank())--These still need to be tanked. so give tanks special warning when these spawn, and dps can enable it too depending on dps strat.
---local specWarnEnergizingSmash	= mod:NewSpecialWarningMove(116550, mod:IsMelee())--very hard to dodge, i'm not sure this will help yet. if it proves useless i'll remove it.
 --Courage
 local specWarnCourageActivated	= mod:NewSpecialWarningSwitch("ej5676", mod:IsDps())--These really need to die asap. If they reach the tank, you will have a dead tank on hands very soon after.
 local specWarnFocusedDefense	= mod:NewSpecialWarningYou(116778)
+--Sparks (Heroic Only)
+local specWarnFocusedEnergy		= mod:NewSpecialWarningYou(116829)
 --Jan-xi and Qin-xi
 local specWarnBossesActivated	= mod:NewSpecialWarningSwitch("ej5726", mod:IsTank())
-local specWarnCombo				= mod:NewSpecialWarningSpell("ej5672", nil, nil, nil, true)--No one in raid can get hit by this. So everyone needs to know about it.
---local specWarnStomp				= mod:NewSpecialWarningRun(116969, mod:IsMelee())--Primary combo ability tanks AND melee need to avoid.
+local specWarnCombo				= mod:NewSpecialWarningSpell("ej5672", mod:IsMelee())
+local specWarnTitanGas			= mod:NewSpecialWarningSpell(116779, nil, nil, nil, true)
 
 --Rage
 local timerRageActivates		= mod:NewNextTimer(11, "ej5678", nil, nil, nil, 116525)
 --Strength
 local timerStrengthActivates	= mod:NewNextTimer(9, "ej5677", nil, nil, nil, 116550)
 --Courage
-local timerCourageActivates		= mod:NewNextTimer(10, "ej5676", nil, nil, nil, 116778)
+local timerCourageActivates		= mod:NewNextTimer(115, "ej5676", nil, nil, nil, 116778)
 --Jan-xi and Qin-xi
-local timerBossesActivates		= mod:NewNextTimer(103.2, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
+local timerBossesActivates		= mod:NewNextTimer(109, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
 local timerComboCD				= mod:NewCDTimer(14.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
 local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
-local timerTitanGasCD			= mod:NewNextCountTimer(221, 116779)--i forgot to log, i only know in a 12 min fight it cast only 3 times, and first was 221 seconds into fight. i'll log again tomorrow.
+local timerTitanGasCD			= mod:NewNextCountTimer(150, 116779)
 
 mod:AddBoolOption("InfoFrame", false)
 
@@ -78,7 +82,8 @@ function mod:OnCombatStart(delay)
 	comboCount = 0
 	titanGasCast = 0
 	timerBossesActivates:Start(-delay)--Still start here to give perspective
-	timerTitanGasCD:Start(221-delay)
+	timerCourageActivates:Start(75-delay)
+	timerTitanGasCD:Start(221-delay, 1)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(focusedAssault)
 		DBM.InfoFrame:Show(10, "playerbaddebuff", 116525)
@@ -102,6 +107,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFocusedDefense:Show()
 		end
+	elseif args:IsSpellID(116829) then
+		warnFocusedEnergy:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnFocusedEnergy:Show()
+		end
 	end
 end
 
@@ -120,67 +130,70 @@ function mod:RAID_BOSS_EMOTE(msg)
 	elseif msg == L.Courage or msg:find(L.Courage) then
 		warnCourageActivated:Schedule(10)
 		specWarnCourageActivated:Schedule(10)
-		timerCourageActivates:Start()--They actually spawn 10 seconds after emote
+		timerCourageActivates:Update()--They actually spawn 10 seconds after emote
+		if timerCourageActivates:GetTime() > 80 then--First timer
+			timerCourageActivates:Update(105, 115)
+		else--first timer
+			timerCourageActivates:Update(65, 75)
+		end
 	elseif msg == L.Boss or msg:find(L.Boss) then
 		warnBossesActivated:Schedule(10)
 		specWarnBossesActivated:Schedule(10)
-		timerBossesActivates:Start(10)
+		timerBossesActivates:Update(99, 109)
 	elseif msg:find("spell:116779") then
+		timerCourageActivates:Start(105)--Resets timer
 		if self:IsDifficulty("heroic10", "heroic25") then--On heroic the boss activates this perminantly on pull and it's always present
-			--in fact, pretty sure herioc will use THIS as pull trigger
-			--So i may add a if not in combat, StartCombat(self) event here.
+			if not self:IsInCombat() then
+				DBM:StartCombat(self, 0)
+			end
 		else
 			titanGasCast = titanGasCast + 1
 			warnTitanGas:Show(titanGasCast)
+			specWarnTitanGas:Show()
 			if titanGasCast < 3 then -- after Titan Gas casted 3 times, Titan Gas lasts permanently. (soft enrage)
 				timerTitanGas:Start()
-				timerTitanGasCD:Start(titanGasCast+1)
+				timerTitanGasCD:Start(150, titanGasCast+1)
 			end
 		end
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 116556 and self:AntiSpam(2, 1) then
+	if spellId == 116556 and uId == "target" then
 		warnEnergizingSmash:Show()
---		specWarnEnergizingSmash:Show()
-	elseif spellId == 116968 and self:AntiSpam(2, 2) then--Arc Left
+	elseif spellId == 116968 and self:AntiSpam(2, 1) then--Arc Left
 		comboCount = comboCount + 1
 		warnArcLeft:Show(comboCount)
-	elseif spellId == 116971 and self:AntiSpam(2, 3) then--Arc Right
+	elseif spellId == 116971 and self:AntiSpam(2, 2) then--Arc Right
 		comboCount = comboCount + 1
 		warnArcRight:Show(comboCount)
-	elseif spellId == 116972 and self:AntiSpam(2, 4) then--Arc Center
+	elseif spellId == 116972 and self:AntiSpam(2, 3) then--Arc Center
 		comboCount = comboCount + 1
 		warnArcCenter:Show(comboCount)
-	elseif (spellId == 116969 or spellId == 132425) and self:AntiSpam(2, 5) then--Stomp
+	elseif (spellId == 116969 or spellId == 132425) and self:AntiSpam(2, 4) then--Stomp
 		comboCount = comboCount + 1
 		warnStomp:Show(comboCount)
---		specWarnStomp:Show()
-
-	--Not most accurate way to detect sparks, as both depend on SOMEONE in raid to be targeting the mob creating spark, or the spark that's dying.
-	--However, FAR more cpu efficent then scanning ALL spell/swing damage and miss events entire fight.
-	--Should be accurate enough with syncing, we'll see.
+--[[	--Some untested heroic spark code that needs more work
 	elseif spellId == 117746 then--Spark Spawning
-		self:SendSync("SparkSpawned")
+		self:SendSync("SparkSpawned")--]]
 	end
 end
 
 --Although, again, it might fail in sync handler antispam throttle if multiple spawn within a single second. Might need more work.
-function mod:OnSync(msg)
+--[[function mod:OnSync(msg)
 	if msg == "SparkSpawned" then
 		sparkCount = sparkCount + 1
 		warnSpark:Show(sparkCount)
 	end
-end
+end-]]
 
-function mod:UNIT_DIED(args)
+--[[function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 60480 and sparkCount > 0 then--Titan Spark
 		sparkCount = sparkCount - 1
 		warnSpark:Show(sparkCount)
 	end
-end
+end--]]
 
 --[[
 "<121.7> MANA#0#1#20#0#0", -- [1]--Start Power Gain
