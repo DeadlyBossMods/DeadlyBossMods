@@ -94,10 +94,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The machine hums to life!  Get to the lower level!",--Emote
-	Rage		= "The Emperor's Rage echoes through the hills.",--Yell
-	Strength	= "The Emperor's Strength appears in the alcoves!",--Emote
-	Courage		= "The Emperor's Courage appears in the alcoves!",--Emote
-	Boss		= "Two titanic constructs appear in the large alcoves!"--Emote
+	Pull		= "這台機器啟動了!到下一層去!",--Emote
+	Rage		= "大帝之怒響徹群山。",--Yell
+	Strength	= "帝王之力出現在壁龜裡!",--Emote
+	Courage		= "帝王之勇出現在壁龜裡!",--Emote
+	Boss		= "兩個泰坦魁儡出現在大壁龜裡!"--Emote
 })
 
