@@ -75,6 +75,7 @@ local function removeIcon(target)
 		if j == target then
 			table.remove(voodooDollTargetIcons, i)
 			mod:SetIcon(target, 0)
+			break
 		end
 	end
 end
@@ -188,7 +189,7 @@ function mod:OnSync(msg, guid)
 			end
 		end
 	elseif msg == "VoodooGoneTargets" and guids[guid] and self.Options.SetIconOnVoodoo then
-		removeIcon(guids[guid])
+		removeIcon(DBM:GetRaidUnitId(guids[guid]))
 	elseif msg == "SpiritualTargets" and guids[guid] then
 		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = guids[guid]
 		self:Unschedule(warnSpiritualInnervationTargets)
