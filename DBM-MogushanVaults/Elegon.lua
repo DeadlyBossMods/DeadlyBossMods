@@ -82,6 +82,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOvercharged:Show(args.amount)
 		end
 	elseif args:IsSpellID(119387) then -- do not add other spellids.
+		--now, this may not be right place for this code, it may hav to go in other draw power trigger, or a UNIT trigger if neither work, need new transcriptor logs.
 		local _, _, _, _, startTime, endTime = UnitCastingInfo("boss1")--Unsure this will work, it behaves wierd, it's a SPELL_AURA_APPLIED event, yet it's a spell channel too and fires no SPELL_CAST_START
 		local castTime
 		if startTime and endTime then--If it doesn't work though this nil check will prevent errors.
