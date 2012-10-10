@@ -26,6 +26,7 @@ local warnArcingEnergy				= mod:NewSpellAnnounce(117945, 2)--Cast randomly at 2 
 local warnClosedCircuit				= mod:NewTargetAnnounce(117949, 3, nil, mod:IsHealer())--what happens if you fail to avoid the above
 local warnTotalAnnihilation			= mod:NewCastAnnounce(129711, 4)--Protector dying(exploding)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)--124967 Draw Power
+local warnDrawPower					= mod:NewCountAnnounce(119387, 4)
 local warnPhase3					= mod:NewPhaseAnnounce(3, 3)--116994 Unstable Energy Starting
 local warnRadiatingEnergies			= mod:NewSpellAnnounce(118310, 4)
 
@@ -33,6 +34,7 @@ local specWarnOvercharged			= mod:NewSpecialWarningStack(117878, nil, 6)
 local specWarnTotalAnnihilation		= mod:NewSpecialWarningSpell(129711, nil, nil, nil, true)
 local specWarnProtector				= mod:NewSpecialWarningSwitch("ej6178", mod:IsDps() or mod:IsTank())
 local specWarnClosedCircuit			= mod:NewSpecialWarningDispel(117949, false)--Probably a spammy mess if this hits a few at once. But here in case someone likes spam.
+local specWarnDrawPower				= mod:NewSpecialWarningStack(119387, nil, 1, nil, nil, true)
 local specWarnDespawnFloor			= mod:NewSpecialWarning("specWarnDespawnFloor", nil, nil, nil, true)
 local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, nil, true)
 
@@ -65,6 +67,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(124967) and not phase2Started then--Phase 2 begin/Phase 1 end
 		phase2Started = true--because if you aren't fucking up, you should get more then one draw power.
+		protectorCount = 0--better to reset protector Count on phase2.
 		warnPhase2:Show()
 		timerBreathCD:Cancel()
 		timerProtectorCD:Cancel()	
@@ -77,6 +80,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
 			specWarnOvercharged:Show(args.amount)
 		end
+	elseif args:IsSpellID(119387) then -- do not add other spellids. 
+		warnDrawPower:Show(args.amount or 1)
+		specWarnDrawPower:Show(args.amount or 1)
 	elseif args:IsSpellID(118310) then--Below 50% health
 		warnRadiatingEnergies:Show()
 		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.
