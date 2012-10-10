@@ -45,7 +45,7 @@ local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222
 
 local berserkTimer					= mod:NewBerserkTimer(360)
 
-mod:AddBoolOption("SetIconOnVoodoo", false)
+mod:AddBoolOption("SetIconOnVoodoo", true)
 
 local voodooDollTargets = {}
 local spiritualInnervationTargets = {}
