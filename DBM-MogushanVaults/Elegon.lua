@@ -41,7 +41,7 @@ local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
-local timerDrawPower				= mod:NewCastTimer(15, 119387)
+local timerFocusPower				= mod:NewCastTimer(16, 119358)
 --local timerDespawnFloor				= mod:NewTimer(5, "timerDespawnFloor", 116994)
 --Some timer work needs to be added for the adds spawning and reaching outer bubble
 --(ie similar to yorsahj oozes reach, only for how long you have to kill adds before you fail and phase 2 ends)
@@ -82,13 +82,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOvercharged:Show(args.amount)
 		end
 	elseif args:IsSpellID(119387) then -- do not add other spellids.
-		--now, this may not be right place for this code, it may hav to go in other draw power trigger, or a UNIT trigger if neither work, need new transcriptor logs.
-		local _, _, _, _, startTime, endTime = UnitCastingInfo("boss1")--Unsure this will work, it behaves wierd, it's a SPELL_AURA_APPLIED event, yet it's a spell channel too and fires no SPELL_CAST_START
-		local castTime
-		if startTime and endTime then--If it doesn't work though this nil check will prevent errors.
-			castTime = ((endTime or 0) - (startTime or 0)) / 1000
-			timerDrawPower:Start(castTime)
-		end
 		warnDrawPower:Show(args.amount or 1)
 		specWarnDrawPower:Show(args.amount or 1)
 	elseif args:IsSpellID(118310) then--Below 50% health
@@ -125,5 +118,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnClosedCircuit:Show(args.destName)
 		self:Unschedule(warnClosedCircuitTargets)
 		self:Schedule(0.3, warnClosedCircuitTargets)
+	elseif args:IsSpellID(119358) then
+		local _, _, _, _, startTime, endTime = UnitCastingInfo("boss1")
+		local castTime
+		if startTime and endTime then--If it doesn't work though this nil check will prevent errors.
+			castTime = ((endTime or 0) - (startTime or 0)) / 1000
+			timerFocusPower:Start(castTime)
+		end
 	end
 end
