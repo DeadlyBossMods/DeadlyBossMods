@@ -258,7 +258,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnChainsOfShadow:Show()
 		timerChainsOfShadowCD:Start()
 	elseif args:IsSpellID(115817) then
-		timerNullBarriorCD:Start()
+		if self:IsDifficulty("lfr25") then
+			timerNullBarriorCD:Start(25)
+		else
+			timerNullBarriorCD:Start()
+		end
 	end
 end
 
