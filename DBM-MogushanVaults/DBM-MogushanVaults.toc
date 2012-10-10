@@ -12,7 +12,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 1
-## X-DBM-Mod-Name: Mogu'shan Palace
+## X-DBM-Mod-Name: Mogu'shan Vaults
 ## X-DBM-Mod-Name-koKR: 모구샨 금고
 ## X-DBM-Mod-Name-deDE: Mogu'shangewölbe
 ## X-DBM-Mod-Name-ruRU: Дворец Могу'шан
