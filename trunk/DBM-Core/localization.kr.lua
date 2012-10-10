@@ -47,10 +47,10 @@ DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 죽이는 보스 모드가 설치 되어있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명의 플레이어가 설치되어 있는 것을 찾았습니다."
-DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 www.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 DBM 버전이 오래되었습니다!\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
-DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl-C 를 누르면 다운로드 주소를 복사하실 수 있습니다."
+DBM_CORE_UPDATEREMINDER_FOOTER		= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 다운로드 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "새로운 버전이 검색되면 알림창을 표시합니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"

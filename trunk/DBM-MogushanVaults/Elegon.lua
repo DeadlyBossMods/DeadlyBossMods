@@ -41,7 +41,7 @@ local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
-local timerDrawPower				= mod:NewCastTimer(15, 119387)
+local timerDrawPower				= mod:NewNextCountTimer(15, 119387)
 --local timerDespawnFloor				= mod:NewTimer(5, "timerDespawnFloor", 116994)
 --Some timer work needs to be added for the adds spawning and reaching outer bubble
 --(ie similar to yorsahj oozes reach, only for how long you have to kill adds before you fail and phase 2 ends)
@@ -50,6 +50,7 @@ local berserkTimer					= mod:NewBerserkTimer(570)
 
 local phase2Started = false
 local protectorCount = 0
+local drawPowerCount = 0
 local closedCircuitTargets = {}
 
 local function warnClosedCircuitTargets()
@@ -59,6 +60,7 @@ end
 
 function mod:OnCombatStart(delay)
 	protectorCount = 0
+	drawPowerCount = 0
 	table.wipe(closedCircuitTargets)
 	timerBreathCD:Start(8-delay)
 	timerProtectorCD:Start(14-delay)
@@ -71,7 +73,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		protectorCount = 0--better to reset protector Count on phase2.
 		warnPhase2:Show()
 		timerBreathCD:Cancel()
-		timerProtectorCD:Cancel()	
+		timerProtectorCD:Cancel()
+		timerDrawPower:Start(15, drawPowerCount + 1)
 	elseif args:IsSpellID(116994) then--Phase 3 begin/Phase 2 end
 		phase2Started = false
 		warnPhase3:Show()
@@ -82,14 +85,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOvercharged:Show(args.amount)
 		end
 	elseif args:IsSpellID(119387) then -- do not add other spellids.
-		local _, _, _, _, startTime, endTime = UnitCastingInfo("boss1")--Unsure this will work, it behaves wierd, it's a SPELL_AURA_APPLIED event, yet it's a spell channel too and fires no SPELL_CAST_START
-		local castTime
-		if startTime and endTime then--If it doesn't work though this nil check will prevent errors.
-			castTime = ((endTime or 0) - (startTime or 0)) / 1000
-			timerDrawPower:Start(castTime)
-		end
 		warnDrawPower:Show(args.amount or 1)
 		specWarnDrawPower:Show(args.amount or 1)
+		drawPowerCount = args.amount or 1
 	elseif args:IsSpellID(118310) then--Below 50% health
 		warnRadiatingEnergies:Show()
 		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.
@@ -124,5 +122,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnClosedCircuit:Show(args.destName)
 		self:Unschedule(warnClosedCircuitTargets)
 		self:Schedule(0.3, warnClosedCircuitTargets)
+	elseif args:IsSpellID(119358) then -- focus power cast
+		local _, _, _, _, startTime, endTime = UnitCastingInfo("boss1")--Unsure this will work, it behaves wierd, it's a SPELL_AURA_APPLIED event, yet it's a spell channel too and fires no SPELL_CAST_START
+		local castTime
+		if startTime and endTime then--If it doesn't work though this nil check will prevent errors.
+			castTime = ((endTime or 0) - (startTime or 0)) / 1000
+			timerDrawPower:Start(castTime + 3, drawPowerCount + 1) -- focus power cast + draw power 3sec cast after 1st casts.
+		end
 	end
 end
