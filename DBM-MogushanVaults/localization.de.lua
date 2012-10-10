@@ -33,10 +33,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!", --translate (trigger)
-	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!", --translate (trigger)
-	Nature		= "Oh great spirit! Grant me the power of the earth!", --translate (trigger)
-	Shadow		= "Great soul of champions past! Bear to me your shield!" --translate (trigger)
+	Fire		= "Oh, Erhabener! Durch mich sollt Ihr das Fleisch von den Knochen schmelzen!",
+	Arcane		= "Oh, Weiser der Zeitalter! Vertraut mir Euer arkanes Wissen an!",
+	Nature		= "Oh, großer Geist! Gewährt mir die Macht der Erde!",
+	Shadow		= "Great soul of champions past! Bear to me your shield!" --translate (trigger, hero only)
 })
 
 
