@@ -7,11 +7,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "7초 후 %s 가능!"
+	SpecWarnOverloadSoon		= "7초 후 %s 가능!",
+	specWarnBreakJasperChains	= "벽옥 석화 푸세요!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "과부하 사전 특수 경고 보기",
+	SpecWarnOverloadSoon		= "과부하 사전 특수 경고 보기",
+	specWarnBreakJasperChains	= "$spell:130395 주문을 안전하게 해제할 수 있을 때 특수 경고 보기",
+	ArrowOnJasperChains			= "$spell:130395 주문의 영향을 받은 경우 DBM 화살표 보기",
+	InfoFrame					= "석화 진행상태에 대한 정보 프레임 보기"
 })
 
 L:SetMiscLocalization({
