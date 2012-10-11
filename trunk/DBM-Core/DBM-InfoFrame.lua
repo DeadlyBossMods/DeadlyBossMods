@@ -59,6 +59,7 @@ local initializeDropdown
 local maxlines
 local infoFrameThreshold 
 local pIndex
+local extraPIndex
 local iconModifier
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local currentEvent
@@ -248,6 +249,11 @@ local function updateEnemyPower()
 	for i = 1, 5 do
 		if UnitPower("boss"..i, pIndex)/UnitPowerMax("boss"..i, pIndex)*100 >= infoFrameThreshold then
 			lines[UnitName("boss"..i)] = UnitPower("boss"..i, pIndex)
+		end
+	end
+	if extraPIndex then
+		if UnitPower("player", extraPIndex) > 0 then
+			lines[UnitName("player")] = UnitPower("player", extraPIndex)
 		end
 	end
 	updateLines()
@@ -499,6 +505,7 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 	maxlines = maxLines
 	pIndex = select(1, ...)		-- used as 'filter' for player buff stacks
 	iconModifier = select(2, ...)
+	extraPIndex = select(3, ...)
 	currentEvent = event
 	frame = frame or createFrame()
 
