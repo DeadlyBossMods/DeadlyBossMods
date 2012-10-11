@@ -232,7 +232,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(666)
 
 L:SetMiscLocalization({
-	Kill	= "아니?!"
+	Kill	= "죽어, 강령술사!"
 })
 
 -----------------------

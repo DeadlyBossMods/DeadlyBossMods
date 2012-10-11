@@ -19,6 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
+	"UNIT_AURA",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -40,9 +41,10 @@ local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 local timerTotemCD					= mod:NewNextTimer(36, 116174)
 local timerBanishmentCD				= mod:NewNextTimer(65, 116272)
 local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
-local timerSpiritualInnervation		= mod:NewBuffFadesTimer(30, 117549)--Dps version of spirit realm
+local timerSpiritualInnervation		= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
 local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
 
+local countdownSuicide				= mod:NewCountdown(30, 116325)
 local berserkTimer					= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("SetIconOnVoodoo", true)
@@ -52,6 +54,8 @@ local spiritualInnervationTargets = {}
 local voodooDollTargetIcons = {}
 local guids = {}
 local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
+local inSpiritualArea = false
+local spiritualInnervation = GetSpellInfo(116161)
 local function buildGuidTable()
 	table.wipe(guids)
 	for i = 1, DBM:GetGroupMembers() do
@@ -105,7 +109,7 @@ end
 
 function mod:OnCombatStart(delay)
 	buildGuidTable()
-	guidTableBuilt = true
+	inSpiritualArea = false
 	table.wipe(voodooDollTargets)
 	table.wipe(spiritualInnervationTargets)
 	table.wipe(voodooDollTargetIcons)
@@ -122,15 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		if self:LatencyCheck() then
 			self:SendSync("VoodooTargets", args.destGUID)
 		end
-	elseif args:IsSpellID(117549) then
-		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
-			timerSpiritualInnervation:Start()
-			warnSuicide:Schedule(25)
-		end
-		if self:LatencyCheck() then
-			self:SendSync("SpiritualTargets", args.destGUID)
-		end
-	elseif args:IsSpellID(116278) then
+	elseif args:IsSpellID(116278) then--this is tank spell, no delays?
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
 			timerSoulSever:Start()
 			warnSuicide:Schedule(25)
@@ -139,10 +135,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 end
 
 function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
-	if args:IsSpellID(117549) and args:IsPlayer() then
-		timerSpiritualInnervation:Cancel()
-		warnSuicide:Cancel()
-	elseif args:IsSpellID(116278) and args:IsPlayer() then
+	if args:IsSpellID(116278) and args:IsPlayer() then
 		timerSoulSever:Cancel()
 		warnSuicide:Cancel()
 	elseif args:IsSpellID(122151) then
@@ -193,7 +186,7 @@ function mod:OnSync(msg, guid)
 	elseif msg == "SpiritualTargets" and guids[guid] then
 		spiritualInnervationTargets[#spiritualInnervationTargets + 1] = guids[guid]
 		self:Unschedule(warnSpiritualInnervationTargets)
-		self:Schedule(0.3, warnSpiritualInnervationTargets)
+		self:Schedule(1, warnSpiritualInnervationTargets)
 	elseif msg == "BanishmentTarget" and guids[guid] then
 		warnBanishment:Show(guids[guid])
 		timerBanishmentCD:Start()
@@ -210,5 +203,27 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self:LatencyCheck() then
 			self:SendSync("SummonTotem")
 		end
+	end
+end
+
+function mod:UNIT_AURA(uId)
+	if uId ~= "player" then return end
+	local _, _, _, _, _, _, expires = UnitDebuff("player", spiritualInnervation)
+	if expires and not inSpiritualArea then
+		inSpiritualArea = true
+		local buffTime = expires - GetTime()
+		warnSuicide:Cancel()
+		warnSuicide:Schedule(buffTime - 5)
+		countdownSuicide:Cancel()
+		countdownSuicide:Start(buffTime)
+		timerSpiritualInnervation:Update(30 - buffTime, 30)
+		if self:LatencyCheck() then
+			self:SendSync("SpiritualTargets", UnitGUID("player"))
+		end
+	elseif not expires and inSpiritualArea then
+		inSpiritualArea = false
+		warnSuicide:Cancel()
+		countdownSuicide:Cancel()
+		timerSpiritualInnervation:Cancel()
 	end
 end
