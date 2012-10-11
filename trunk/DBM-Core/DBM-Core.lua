@@ -3656,7 +3656,7 @@ end
 
 --A simple check to see if these classes know "Meditation".
 function bossModPrototype:IsHealer()
-	return (class == "PALADIN" and IsSpellKnown(95859))
+	return (class == "PALADIN" and IsSpellKnown(112859))
 	or (class == "SHAMAN" and IsSpellKnown(95862))
 	or (class == "DRUID" and IsSpellKnown(85101))
 	or (class == "PRIEST" and (IsSpellKnown(95860) or IsSpellKnown(95861)))
