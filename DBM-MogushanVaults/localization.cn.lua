@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/27/2012
+-- Last update: 10/11/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -10,11 +10,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "%s: 7秒后可施放"
+	SpecWarnOverloadSoon	= "%s: 7秒后可施放",
+	specWarnBreakJasperChains	= "扯断红玉锁链！"
 })
 
 L:SetOptionLocalization({
 	SpecWarnOverloadSoon	= "特殊警报：过载预警",
+	specWarnBreakJasperChains	= "特殊惊爆：可扯断$spell:130395",
+	ArrowOnJasperChains			= "DBM箭头：当你受到$spell:130395效果影响时",
+	InfoFrame					= "信息框：石像激活情况"
 })
 
 L:SetMiscLocalization({
