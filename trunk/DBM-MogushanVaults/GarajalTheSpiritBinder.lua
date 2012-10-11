@@ -43,7 +43,7 @@ local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spi
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
 local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
 
-local countdownSuicide				= mod:NewCountdown(30, 116161)
+local countdownCrossedOver			= mod:NewCountdown(30, 116161)
 local berserkTimer					= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("SetIconOnVoodoo", true)
@@ -53,7 +53,6 @@ local crossedOverTargets = {}
 local voodooDollTargetIcons = {}
 local guids = {}
 local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
-local crossedOver = GetSpellInfo(116161)
 local function buildGuidTable()
 	table.wipe(guids)
 	for i = 1, DBM:GetGroupMembers() do
