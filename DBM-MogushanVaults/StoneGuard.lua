@@ -86,18 +86,18 @@ local function warnJasperChainsTargets()
 	table.wipe(jasperChainsTargets)
 end
 
-local function getBossuId()
+local function getBossuId(Boss)
 	local uId
 	if UnitExists("boss1") or UnitExists("boss2") or UnitExists("boss3") or UnitExists("boss4") then
 		for i = 1, 4 do
-			if UnitName("boss"..i) == Cobalt then
+			if UnitName("boss"..i) == Boss then
 				uId = "boss"..i
 				break
 			end
 		end
 	else
 		for i = 1, DBM:GetGroupMembers() do
-			if UnitName("raid"..i.."target") == Cobalt and not UnitIsPlayer("raid"..i.."target") then
+			if UnitName("raid"..i.."target") == Boss and not UnitIsPlayer("raid"..i.."target") then
 				uId = "raid"..i.."target"
 				break
 			end			
@@ -113,7 +113,7 @@ local function isTank(unit)
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
-	local uId = getBossuId()
+	local uId = getBossuId(Cobalt)
 	if uId and UnitExists(uId.."target") and UnitDetailedThreatSituation(unit, uId) then
 		return true
 	end
@@ -315,8 +315,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.InfoFrame:Show(1, "playerpower", 1, ALTERNATE_POWER_INDEX)
 		end
 		if playerHasChains then
-			specWarnBreakJasperChains:Show()
-			DBM.Arrow:Hide()
+			local uId = getBossuId(Jasper)
+			if uId and UnitPower(uId) <= 50 then--Make sure his energy isn't already high, otherwise breaking chains when jasper will only be active for a few seconds is bad
+				specWarnBreakJasperChains:Show()
+				DBM.Arrow:Hide()
+			end
 		end
 	elseif spellId == 116057 and self:AntiSpam(2, 4) then
 		activePetrification = "Amethyst"
