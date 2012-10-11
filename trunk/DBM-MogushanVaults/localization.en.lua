@@ -14,7 +14,7 @@ L:SetOptionLocalization({
 	SpecWarnOverloadSoon		= "Show special warning before overload",
 	specWarnBreakJasperChains	= "Show special warning when it is safe to break $spell:130395",
 	ArrowOnJasperChains			= "Show DBM Arrow when you are affected by $spell:130395 ",
-	InfoFrame					= "Show info frame for active petrification"
+	InfoFrame					= "Show info frame for boss power and which one is petrifying"
 })
 
 L:SetMiscLocalization({
