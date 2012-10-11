@@ -6,11 +6,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "%s castable in 7s!"
+	SpecWarnOverloadSoon		= "%s castable in 7s!",
+	specWarnBreakJasperChains	= "Break Jasper Chains!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "Show special warning before overload",
+	SpecWarnOverloadSoon		= "Show special warning before overload",
+	specWarnBreakJasperChains	= "Show special warning when it is safe to break $spell:130395",
+	ArrowOnJasperChains			= "Show DBM Arrow when you are affected by $spell:130395 ",
+	InfoFrame					= "Show info frame for active petrification"
 })
 
 L:SetMiscLocalization({
