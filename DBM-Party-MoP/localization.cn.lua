@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/09/2012
+-- Last update: 10/11/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -258,7 +258,7 @@ L= DBM:GetModLocalization(660)
 L= DBM:GetModLocalization(654)
 
 L:SetMiscLocalization({
-	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!"
+	Call		= "武器大师哈兰召唤了两名同伴加入战斗！"
 })
 
 -----------------------

@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 10/9/2012
+-- Last update: 10/11/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -51,10 +51,10 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - 版本检测"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s：未安装DBM"
 DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用Deadly Boss Mods"
-DBM_CORE_YOUR_VERSION_OUTDATED		= "你的Deadly Boss Mods已经过期。请到 www.deadlybossmods.com 下载最新版本。"
+DBM_CORE_YOUR_VERSION_OUTDATED		= "你的Deadly Boss Mods已经过期。请访问 http://dev.deadlybossmods.com 下载最新版本。"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "你的Deadly Boss Mods版本已过期。\n你可以在如下地址下载到新版本%s（r%d）："
-DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl+C：复制下载地址到剪切板。"
+DBM_CORE_UPDATEREMINDER_FOOTER		= (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "Ctrl+C：复制下载地址到剪切板。"
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "检测到新版本后弹出提示框"
 
 DBM_CORE_MOVABLE_BAR				= "拖动我！"
