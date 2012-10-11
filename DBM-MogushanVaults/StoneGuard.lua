@@ -208,11 +208,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerJasperChainsCD:Start()
 		self:Unschedule(warnJasperChainsTargets)
 		self:Schedule(0.3, warnJasperChainsTargets)
-		if args:IsPlayer() then
-			playerHasChains = true
-			specWarnJasperChains:Show()
-			yellJasperChains:Yell()
-		end
 		if activePetrification ~= "Jasper" then
 			if self.Options.ArrowOnJasperChains and #jasperChainsTargets == 2 then
 				if jasperChainsTargets[1] == UnitName("player") then
@@ -220,6 +215,16 @@ function mod:SPELL_AURA_APPLIED(args)
 				elseif jasperChainsTargets[2] == UnitName("player") then
 					DBM.Arrow:ShowRunTo(jasperChainsTargets[1])
 				end
+			end
+		end
+		if args:IsPlayer() then
+			playerHasChains = true
+			specWarnJasperChains:Show()
+			yellJasperChains:Yell()
+			local uId = getBossuId(Jasper)
+			if uId and UnitPower(uId) <= 50 and activePetrification == "Jasper" then--Make sure his energy isn't already high, otherwise breaking chains when jasper will only be active for a few seconds is bad
+				specWarnBreakJasperChains:Show()
+				DBM.Arrow:Hide()
 			end
 		end
 	elseif args:IsSpellID(130774) and args:IsPlayer() then
