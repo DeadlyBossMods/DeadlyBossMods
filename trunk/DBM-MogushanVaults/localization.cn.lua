@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/11/2012
+-- Last update: 10/13/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -18,7 +18,7 @@ L:SetOptionLocalization({
 	SpecWarnOverloadSoon	= "特殊警报：过载预警",
 	specWarnBreakJasperChains	= "特殊惊爆：可扯断$spell:130395",
 	ArrowOnJasperChains			= "DBM箭头：当你受到$spell:130395效果影响时",
-	InfoFrame					= "信息框：石像激活情况"
+	InfoFrame					= "信息框：石像能量及激活情况"
 })
 
 L:SetMiscLocalization({
@@ -58,7 +58,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "It be dyin' time, now!"
+	Pull		= "死亡时间到！"
 })
 
 
