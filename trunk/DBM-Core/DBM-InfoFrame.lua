@@ -232,9 +232,17 @@ end
 
 local function updatePlayerPower()
 	table.wipe(lines)
-	for i = 1, GetNumGroupMembers() do
-		if not UnitIsDeadOrGhost("raid"..i) and UnitPower("raid"..i, pIndex)/UnitPowerMax("raid"..i, pIndex)*100 >= infoFrameThreshold then
-			lines[UnitName("raid"..i)] = UnitPower("raid"..i, pIndex)
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
+			if not UnitIsDeadOrGhost("raid"..i) and UnitPower("raid"..i, pIndex)/UnitPowerMax("raid"..i, pIndex)*100 >= infoFrameThreshold then
+				lines[UnitName("raid"..i)] = UnitPower("raid"..i, pIndex)
+			end
+		end
+	elseif IsInGroup() then
+		for i = 1, GetNumSubgroupMembers() do
+			if not UnitIsDeadOrGhost("party"..i) and UnitPower("party"..i, pIndex)/UnitPowerMax("party"..i, pIndex)*100 >= infoFrameThreshold then
+				lines[UnitName("party"..i)] = UnitPower("party"..i, pIndex)
+			end
 		end
 	end
 	if DBM.Options.InfoFrameShowSelf and not lines[UnitName("player")] and UnitPower("player", pIndex) > 0 then
