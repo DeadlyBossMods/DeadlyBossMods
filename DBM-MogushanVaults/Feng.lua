@@ -228,7 +228,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 			end
 		end
 	elseif args:IsSpellID(131792) then
-		warnShadowBurn:Show(args.destName, 1)
+		warnShadowBurn:Show(args.destName, args.amount or 1)
 		timerShadowBurn:Start(args.destName)
 		timerShadowBurnCD:Start()
 		if args:IsPlayer() and (args.amount or 1) >= 3 then
