@@ -7,11 +7,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "%s將在7秒內超載"
+	SpecWarnOverloadSoon		= "%s將在7秒內超載",
+	specWarnBreakJasperChains	= "扯斷碧玉鎖鏈!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "為超載顯示特別警告",
+	SpecWarnOverloadSoon		= "為超載顯示特別警告",
+	specWarnBreakJasperChains	= "當可安全扯斷$spell:130395時顯示特別警告",
+	ArrowOnJasperChains			= "當受到$spell:130395時顯示DBM箭頭",
+	InfoFrame					= "為首領能量,玩家石化和那個王施放石化顯示訊息框"
 })
 
 L:SetMiscLocalization({
@@ -36,7 +40,7 @@ L:SetMiscLocalization({
 	Fire		= "噢，至高的神啊!藉由我來融化他們的血肉吧!",
 	Arcane		= "噢，上古的賢者!賜予我祕法的智慧!",
 	Nature		= "噢，偉大的靈魂!賜予我大地之力!",
-	Shadow		= "Great soul of champions past! Bear to me your shield!"
+	Shadow		= "英雄之靈!以盾護我之身!"
 })
 
 
