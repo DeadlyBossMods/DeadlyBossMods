@@ -15,7 +15,7 @@ L:SetOptionLocalization({
 	SpecWarnOverloadSoon		= "과부하 사전 특수 경고 보기",
 	specWarnBreakJasperChains	= "$spell:130395 주문을 안전하게 해제할 수 있을 때 특수 경고 보기",
 	ArrowOnJasperChains			= "$spell:130395 주문의 영향을 받은 경우 DBM 화살표 보기",
-	InfoFrame					= "석화 진행상태에 대한 정보 프레임 보기"
+	InfoFrame					= "보스 기력, 석화상태, 석화 진행중인 보스에 대한 정보 프레임 보기"
 })
 
 L:SetMiscLocalization({
@@ -39,8 +39,8 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Fire		= "오 고귀한 자여! 나와 함께 발라내자! 뼈에서 살을!",
 	Arcane		= "오 세기의 현자여! 내게 비전의 지혜를 불어넣어라!",
-	Nature		= "오 위대한 영혼이여! 내게 대지의 힘을 부여하라!",--I did not log this one, text is probably not right
-	Shadow		= "Great soul of champions past! Bear to me your shield!"
+	Nature		= "오 위대한 영혼이여! 내게 대지의 힘을 부여하라!",
+	Shadow		= "과거의 위대한 영웅들이여! 너희의 방패를 빌려다오!"
 })
 
 
