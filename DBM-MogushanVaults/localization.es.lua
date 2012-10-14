@@ -7,11 +7,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "¡%s casteable en 7s!"
+	SpecWarnOverloadSoon	= "¡%s casteable en 7s!",
+	specWarnBreakJasperChains	= "¡Rompe las cadenas de jade!"
 })
 
 L:SetOptionLocalization({
 	SpecWarnOverloadSoon	= "Mostrar aviso especial antes de sobrecarga",
+	specWarnBreakJasperChains	= "Mostrar un aviso especial cuando sea seguro romper break $spell:130395",
+	ArrowOnJasperChains			= "Mostrar flecha cuando te afecten $spell:130395",
+	InfoFrame					= "Mostrar información para poder del boss, petrificación de jugador y que boss está canalizando petrificación"
 })
 
 L:SetMiscLocalization({
@@ -33,9 +37,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!",--translate
-	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!",--translate
-	Nature		= "Oh great spirit! Grant me the power of the earth!",--translate
+	Fire		= "¡Oh, exaltado! ¡Soy tu herramienta para desgarrar la carne de los huesos!",
+	Arcane		= "¡Oh, sabio eterno! ¡Transmíteme tu sapiencia Arcana!",
+	Nature		= "¡Oh, gran espíritu! ¡Otórgame el poder de la tierra!",
 	Shadow		= "Great soul of champions past! Bear to me your shield!"--translate
 })
 
