@@ -124,7 +124,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(675)
 
 L:SetMiscLocalization({
-	StaffingRun		= "Striker Ga'dok prepares to make a strafing run!"--translate
+	StaffingRun		= "¡Asediador Ga'dok se prepara para un bombardeo!"
 })
 
 -----------------------
@@ -146,11 +146,11 @@ L= DBM:GetModLocalization(649)
 L= DBM:GetModLocalization(708)
 
 L:SetMiscLocalization({
-	Pull		= "Useless, all of you! Even the guards you give me in tribute can't keep these lesser beings from my palace.",--translate
-	Kuai		= "Clan Gurthan will show our King and the rest of you power-hungry imposters why we are the rightful ones at his side!",--translate
+	Pull		= "¡Inútiles! ¡Todos! Ni los guardias que me ofrecéis como tributo pueden impedir que entren gusanos en mi palacio.",
+	Kuai		= "¡El clan Gurthan demostrará al Rey y a los impostores sedientos de poder como vosotros por qué merecemos su confianza!",
 	Ming		= "¡El clan Harthak os demostrará por qué somos los más puros de los mogu!",
 	Haiyan		= "¡El clan Kargesh os demostrará por qué solo los más fuertes merecen servir al Rey!",
-	Defeat		= "¿Quién ha dejado entrar a los forasteros? ¡Solo los clanes Harthak o Kargesh se rebajarían a cometer tal traición!"--translate
+	Defeat		= "¿Quién ha dejado entrar a los forasteros? ¡Solo los clanes Harthak o Kargesh se rebajarían a cometer tal traición!"
 })
 
 -----------------------
@@ -185,7 +185,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	WaveStart	= "Fools! Attacking the might of the mantid head on?  Your deaths will be swift."--translate
+	WaveStart	= "¡Necios! ¿Atacáis frontalmente al ejército mántide? ¡Vuestras muertes serán rápidas!"
 })
 
 -----------------------
@@ -257,7 +257,7 @@ L= DBM:GetModLocalization(660)
 L= DBM:GetModLocalization(654)
 
 L:SetMiscLocalization({
-	Call		= "Armsmaster Harlan calls on two of his allies to join the fight!"--translate
+	Call		= "¡El maestro de armas Harlan llama a dos de sus aliados para que se unan al combate!"--translate?
 })
 
 -----------------------
