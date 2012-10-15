@@ -130,7 +130,6 @@ function mod:RAID_BOSS_EMOTE(msg)
 	elseif msg == L.Courage or msg:find(L.Courage) then
 		warnCourageActivated:Schedule(10)
 		specWarnCourageActivated:Schedule(10)
-		timerCourageActivates:Update()--They actually spawn 10 seconds after emote
 		if timerCourageActivates:GetTime() > 80 then--First timer
 			timerCourageActivates:Update(105, 115)
 		else--first timer
@@ -150,7 +149,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 			titanGasCast = titanGasCast + 1
 			warnTitanGas:Show(titanGasCast)
 			specWarnTitanGas:Show()
-			if titanGasCast < 3 then -- after Titan Gas casted 3 times, Titan Gas lasts permanently. (soft enrage)
+			if titanGasCast < 4 then -- after Titan Gas casted 4 times, Titan Gas lasts permanently. (soft enrage)
 				timerTitanGas:Start()
 				timerTitanGasCD:Start(150, titanGasCast+1)
 			end
