@@ -158,18 +158,19 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 116556 and uId == "target" then
+	if uId ~= "target" then return end
+	if spellId == 116556 then
 		warnEnergizingSmash:Show()
-	elseif spellId == 116968 and self:AntiSpam(2, 1) then--Arc Left
+	elseif spellId == 116968 then--Arc Left
 		comboCount = comboCount + 1
 		warnArcLeft:Show(comboCount)
-	elseif spellId == 116971 and self:AntiSpam(2, 2) then--Arc Right
+	elseif spellId == 116971 then--Arc Right
 		comboCount = comboCount + 1
 		warnArcRight:Show(comboCount)
-	elseif spellId == 116972 and self:AntiSpam(2, 3) then--Arc Center
+	elseif spellId == 116972 then--Arc Center
 		comboCount = comboCount + 1
 		warnArcCenter:Show(comboCount)
-	elseif (spellId == 116969 or spellId == 132425) and self:AntiSpam(2, 4) then--Stomp
+	elseif (spellId == 116969 or spellId == 132425) then--Stomp
 		comboCount = comboCount + 1
 		warnStomp:Show(comboCount)
 --[[	--Some untested heroic spark code that needs more work
