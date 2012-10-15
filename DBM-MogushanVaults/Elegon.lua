@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 	protectorCount = 0
 	table.wipe(closedCircuitTargets)
 	timerBreathCD:Start(8-delay)
-	timerProtectorCD:Start(14-delay)
+	timerProtectorCD:Start(12-delay)
 	berserkTimer:Start(-delay)
 end
 
