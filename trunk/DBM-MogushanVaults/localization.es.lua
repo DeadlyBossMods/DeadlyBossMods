@@ -55,7 +55,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "It be dyin' time, now!"--translate
+	Pull		= "¡Ya es hora de morir!"
 })
 
 
@@ -75,11 +75,11 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "¡Cuidado!"
+	specWarnDespawnFloor		= "¡Evacúen la Pista!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "¡Cuidado!"
+	timerDespawnFloor			= "¡Evacúen la Pista!"
 })
 
 L:SetOptionLocalization({
