@@ -98,10 +98,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The machine hums to life!  Get to the lower level!", --translate (trigger)
-	Rage		= "The Emperor's Rage echoes through the hills.", --translate (trigger)
-	Strength	= "The Emperor's Strength appears in the alcoves!", --translate (trigger)
-	Courage		= "The Emperor's Courage appears in the alcoves!", --translate (trigger)
-	Boss		= "Two titanic constructs appear in the large alcoves!" --translate (trigger)
+	Pull		= "Die Maschine brummt und erwacht zu Leben! Geht zur unteren Ebene!",
+	Rage		= "Der Zorn des Kaisers schallt durch die Berge.",
+	Strength	= "Die Stärke des Kaisers erscheint in den Erkern!",
+	Courage		= "Der Mut des Kaisers erscheint in den Erkern!",
+	Boss		= "In den riesigen Erkern erscheinen zwei Titanenkonstrukte!"
 })
 
