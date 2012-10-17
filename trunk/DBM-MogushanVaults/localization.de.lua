@@ -7,15 +7,19 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "%s wirkbar in 7 Sek!"
+	SpecWarnOverloadSoon		= "%s wirkbar in 7 Sek!",
+	specWarnBreakJasperChains	= "Sprenge Jaspisketten!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "Zeige Spezialwarnung bevor eine Überladung gewirkt werden kann",
+	SpecWarnOverloadSoon		= "Zeige Spezialwarnung bevor eine Überladung gewirkt werden kann",
+	specWarnBreakJasperChains	= "Zeige Spezialwarnung, wenn es sicher ist die $spell:130395 zu sprengen",
+	ArrowOnJasperChains			= "Zeige DBM-Pfeil, wenn du von $spell:130395 betroffen bist",
+	InfoFrame					= "Zeige Infofenster für Bossenergie, Spielerversteinerung und welcher Boss Versteinerung wirkt"
 })
 
 L:SetMiscLocalization({
-	Overload	= "%s is about to Overload!" --translate (trigger)
+	Overload	= "%s überlädt sich gleich!"
 })
 
 
