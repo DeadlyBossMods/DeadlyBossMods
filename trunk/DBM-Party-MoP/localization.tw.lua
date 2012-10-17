@@ -175,7 +175,7 @@ L= DBM:GetModLocalization(693)
 L= DBM:GetModLocalization(738)
 
 L:SetTimerLocalization({
-	TimerWave	= "開始進攻:%s"
+	TimerWave	= "進攻:%s"
 })
 
 L:SetOptionLocalization({
