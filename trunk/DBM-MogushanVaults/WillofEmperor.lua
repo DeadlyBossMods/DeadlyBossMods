@@ -36,10 +36,10 @@ local warnFocusedDefense		= mod:NewTargetAnnounce(116778, 4)
 local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
-local warnArcLeft				= mod:NewCountAnnounce(116968, 4, nil, mod:IsMelee())--Mostly informative, we cannot detect cast starts, only cast finishes, which is basically when it's going off.
-local warnArcRight				= mod:NewCountAnnounce(116971, 4, nil, mod:IsMelee())
-local warnArcCenter				= mod:NewCountAnnounce(116972, 4, nil, mod:IsMelee())
-local warnStomp					= mod:NewCountAnnounce(116969, 4, nil, mod:IsMelee())
+local warnArcLeft				= mod:NewCountAnnounce(116968, 4, nil, mod:IsMelee())--This is a pre warn, gives you time to move
+local warnArcRight				= mod:NewCountAnnounce(116971, 4, nil, mod:IsMelee())--This is a pre warn, gives you time to move
+local warnArcCenter				= mod:NewCountAnnounce(116972, 4, nil, mod:IsMelee())--This is a pre warn, gives you time to move
+local warnStomp					= mod:NewCountAnnounce(116969, 4, nil, mod:IsMelee())--This is NOT a pre warn, only fires when stomp ends cast. :(
 local warnTitanGas				= mod:NewCountAnnounce(116779, 4)
 
 --Rage

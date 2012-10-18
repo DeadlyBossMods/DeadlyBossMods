@@ -32,7 +32,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "Announce Phase transition"
+	WarnPhase	= "Announce Phase transition",
+	RangeFrame	= "Show range frame (6) during arcane phase"
 })
 
 L:SetMiscLocalization({

@@ -110,8 +110,9 @@ local timerReversalLightningFists	= mod:NewBuffFadesTimer(20, 118302)
 local timerNullBarrior				= mod:NewBuffFadesTimer(6, 115817)
 local timerNullBarriorCD			= mod:NewCDTimer(55, 115817)
 
-
 local soundEpicenter				= mod:NewSound(116018)
+
+mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
 local phase = 0
 local wildfireCount = 0
@@ -136,6 +137,12 @@ function mod:OnCombatStart(delay)
 	sparkCount = 0
 	specialCount = 0
 	table.wipe(arcaneResonanceTargets)
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -323,11 +330,17 @@ function mod:OnSync(msg)
 		timerLightningLashCD:Start(7)
 		timerLightningFistsCD:Start(12)
 		timerEpicenterCD:Start(18, 1)--It's either this, or this +10. Not yet sure what causes the +10
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif msg == "Flame" then
 		phase = phase + 1
 		warnPhase:Show(phase)
 		timerFlamingSpearCD:Start(5.5)
 		timerDrawFlameCD:Start(35, 1)--No variation, or not enough logs of fire phase.
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif msg == "Purple" then
 		phase = phase + 1
 		warnPhase:Show(phase)
@@ -336,12 +349,18 @@ function mod:OnSync(msg)
 		-- 10/13 01:11:36.671  SPELL_CAST_SUCCESS,0xF150EA690000478E,"",0x10a48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,116417,"",0x40
 		timerArcaneResonanceCD:Start(12)
 		timerArcaneVelocityCD:Start(16.5, 1)--It's either this, or this +10. Not yet sure what causes the +10
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(6)
+		end
 	elseif msg == "Dark" then
 		phase = phase + 1
 		warnPhase:Show(phase)
 		timerSiphoningShieldCD:Start(4, 1)--either this, or this +5. Not yet sure what causes the +5
 		timerChainsOfShadowCD:Start(6)
 		timerShadowBurnCD:Start(9)--9-11 variation
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
 
