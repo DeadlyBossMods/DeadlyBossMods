@@ -39,12 +39,12 @@ local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 local specWarnVoodooDollsMe			= mod:NewSpecialWarningYou(122151, false)
 
 local timerTotemCD					= mod:NewNextTimer(36, 116174)
-local timerBanishmentCD				= mod:NewNextTimer(65, 116272)
+local timerBanishmentCD				= mod:NewCDTimer(65, 116272)
 local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
 local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
 
-local countdownCrossedOver			= mod:NewCountdown(30, 116161)
+local countdownCrossedOver			= mod:NewCountdown(29, 116161)
 local berserkTimer					= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("SetIconOnVoodoo", true)
@@ -135,8 +135,8 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 	elseif args:IsSpellID(116161, 116160) then -- 116161 is normal and heroic, 116160 is lfr.
 		if args:IsPlayer() then
 			warnSuicide:Schedule(25)
-			countdownCrossedOver:Start(30)
-			timerCrossedOver:Start(30)
+			countdownCrossedOver:Start(29)
+			timerCrossedOver:Start(29)
 		end
 		if not self:IsDifficulty("lfr25") then -- lfr totems not breakable, instead totems can click. so lfr warns can be spam, not needed to warn. also CLEU fires all players, no need to use sync.
 			crossedOverTargets[#crossedOverTargets + 1] = args.destName
@@ -146,6 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 	elseif args:IsSpellID(116278) then--this is tank spell, no delays?
 		if args:IsPlayer() then--no latency check for personal notice you aren't syncing.
 			timerSoulSever:Start()
+			countdownCrossedOver:Start(29)
 			warnSuicide:Schedule(25)
 		end
 	end
@@ -159,6 +160,7 @@ function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actua
 	elseif args:IsSpellID(116278) and args:IsPlayer() then
 		timerSoulSever:Cancel()
 		warnSuicide:Cancel()
+		countdownCrossedOver:Cancel()
 	elseif args:IsSpellID(122151) then
 		self:SendSync("VoodooGoneTargets", args.destGUID)
 	end
