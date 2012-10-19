@@ -38,7 +38,7 @@ local specWarnBanishmentOther		= mod:NewSpecialWarningTarget(116272, mod:IsTank(
 local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 local specWarnVoodooDollsMe			= mod:NewSpecialWarningYou(122151, false)
 
-local timerTotemCD					= mod:NewNextTimer(36, 116174)
+local timerTotemCD					= mod:NewNextTimer(20.5, 116174)
 local timerBanishmentCD				= mod:NewCDTimer(65, 116272)
 local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
@@ -188,11 +188,7 @@ function mod:OnSync(msg, guid)
 	if msg == "SummonTotem" then
 		warnTotem:Show()
 		specWarnTotem:Show()
-		if self:IsDifficulty("lfr25") then
-			timerTotemCD:Start(20.5)
-		else
-			timerTotemCD:Start()
-		end
+		timerTotemCD:Start()
 	elseif msg == "VoodooTargets" and guids[guid] then
 		voodooDollTargets[#voodooDollTargets + 1] = guids[guid]
 		self:Unschedule(warnVoodooDollTargets)
