@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/13/2012
+-- Last update: 10/20/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -36,13 +36,14 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "警报：阶段转换"
+	WarnPhase	= "警报：阶段转换",
+	RangeFrame	= "距离监视（6码）：应对奥术阶段"
 })
 
 L:SetMiscLocalization({
-	Fire		= "Oh exalted one! Through me you shall melt flesh from bone!",
-	Arcane		= "Oh sage of the ages! Instill to me your arcane wisdom!",
-	Nature		= "Oh great spirit! Grant me the power of the earth!",--I did not log this one, text is probably not right
+	Fire		= "噢，至高的神！借我之手融化他们的血肉吧！",
+	Arcane		= "噢，上古的贤者！赐予我魔法的智慧吧！",
+	Nature		= "噢，伟大的神灵！赐予我大地的力量！",
 	Shadow		= "Great soul of champions past! Bear to me your shield!"
 })
 
