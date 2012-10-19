@@ -33,7 +33,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "提示轉換階段"
+	WarnPhase	= "提示轉換階段",
+	RangeFrame	= "在祕法階段時顯示距離框(6碼)"
 })
 
 L:SetMiscLocalization({
