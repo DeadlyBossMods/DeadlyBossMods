@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 9/27/2012
+-- Last update: 10/20/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -107,7 +107,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnPhase				= "第%d阶段",
 	warnHorsemanSoldiers	= "跃动的南瓜出现了",
-	warnHorsemanHead		= "无头骑士激活"
+	warnHorsemanHead		= "打脑袋！"
 })
 
 L:SetTimerLocalization{
@@ -158,7 +158,7 @@ L:SetWarningLocalization({
 	warnGameOverNoQuest	= "游戏结束，本次可能的最高分数：%d",
 	warnGnoll			= "豺狼人出现",
 	warnHogger			= "霍格出现",
-	specWarnHogger		= "霍格出现！"
+	specWarnHogger		= "霍格！"
 })
 
 L:SetOptionLocalization({
