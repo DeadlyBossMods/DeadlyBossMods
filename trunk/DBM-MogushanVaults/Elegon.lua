@@ -121,7 +121,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(119358) then
 		local _, _, _, _, startTime, endTime = UnitCastingInfo("boss1")
 		local castTime
-		if startTime and endTime then--If it doesn't work though this nil check will prevent errors.
+		if startTime and endTime then
 			castTime = ((endTime or 0) - (startTime or 0)) / 1000
 			timerFocusPower:Start(castTime)
 		end
