@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/20/2012
+-- Last update: 10/21/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -102,10 +102,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The machine hums to life!  Get to the lower level!",--Emote
-	Rage		= "The Emperor's Rage echoes through the hills.",--Yell
-	Strength	= "The Emperor's Strength appears in the alcoves!",--Emote
-	Courage		= "The Emperor's Courage appears in the alcoves!",--Emote
-	Boss		= "Two titanic constructs appear in the large alcoves!"--Emote
+	Pull		= "机器开始嗡嗡作响了！到下层去！",--Emote
+	Rage		= "皇帝之怒响彻群山。",--Yell
+	Strength	= "皇帝的力量出现在壁龛中！",--Emote
+	Courage		= "皇帝的勇气出现在壁龛中！",--Emote
+	Boss		= "两个巨型构造体出现在大型的壁龛中！"--Emote
 })
 
