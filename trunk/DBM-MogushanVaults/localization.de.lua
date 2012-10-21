@@ -33,7 +33,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "Verkünde Phasenwechsel"
+	WarnPhase	= "Verkünde Phasenwechsel",
+	RangeFrame	= "Zeige Abstandsfenster (6m) während Arkanphase"
 })
 
 L:SetMiscLocalization({
