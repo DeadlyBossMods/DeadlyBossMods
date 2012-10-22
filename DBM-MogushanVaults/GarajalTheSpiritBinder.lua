@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --Syncing is used for all warnings because the realms don't share combat events. You won't get warnings for other realm any other way.
 --Voodoo dolls do not have a CD, they are linked to banishment (or player deaths), when he banishes current tank, he reapplies voodoo dolls to new tank and new players. If tank dies, he just recasts voodoo on a new current threat target.
 --Latency checks are used for good reason (to prevent lagging users from sending late events and making our warnings go off again incorrectly). if you play with high latency and want to bypass latency check, do so with in game GUI option.
-local warnTotem						= mod:NewSpellAnnounce(116174, 2)
+local warnTotem						= mod:NewCountAnnounce(116174, 2)
 local warnVoodooDolls				= mod:NewTargetAnnounce(122151, 3)
 local warnCrossedOver				= mod:NewTargetAnnounce(116161, 3)
 local warnBanishment				= mod:NewTargetAnnounce(116272, 3)
@@ -38,7 +38,7 @@ local specWarnBanishmentOther		= mod:NewSpecialWarningTarget(116272, mod:IsTank(
 local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 local specWarnVoodooDollsMe			= mod:NewSpecialWarningYou(122151, false)
 
-local timerTotemCD					= mod:NewNextTimer(20.5, 116174)
+local timerTotemCD					= mod:NewNextCountTimer(20.5, 116174)
 local timerBanishmentCD				= mod:NewCDTimer(65, 116272)
 local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
@@ -49,6 +49,7 @@ local berserkTimer					= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("SetIconOnVoodoo", true)
 
+local totemCount = 0
 local voodooDollTargets = {}
 local crossedOverTargets = {}
 local voodooDollTargetIcons = {}
@@ -110,13 +111,14 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	totemCount = 0
 	voodooDollWarned = false
 	buildGuidTable()
 	table.wipe(voodooDollTargets)
 	table.wipe(crossedOverTargets)
 	table.wipe(voodooDollTargetIcons)
 	timerShadowyAttackCD:Start(7-delay)
-	timerTotemCD:Start(-delay)
+	timerTotemCD:Start(-delay, 1)
 	timerBanishmentCD:Start(-delay)
 	if not self:IsDifficulty("lfr25") then -- lfr seems not berserks.
 		berserkTimer:Start(-delay)
@@ -186,9 +188,10 @@ function mod:OnSync(msg, guid)
 		guidTableBuilt = true
 	end
 	if msg == "SummonTotem" then
-		warnTotem:Show()
+		totemCount = totemCount + 1
+		warnTotem:Show(totemCount)
 		specWarnTotem:Show()
-		timerTotemCD:Start()
+		timerTotemCD:Start(20, totemCount+1)
 	elseif msg == "VoodooTargets" and guids[guid] then
 		voodooDollTargets[#voodooDollTargets + 1] = guids[guid]
 		self:Unschedule(warnVoodooDollTargets)
