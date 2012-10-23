@@ -217,7 +217,7 @@ L:SetMiscLocalization({
 	Alliance 			= "聯盟",
 	Horde 				= "部落",
 	InfoErrorText			= "當你離開戰鬥後，旗幟框架將會回復。",
-	ExprFlagPickUp			= "(.+)的旗幟被(.+)拔掉了!",
+	ExprFlagPickUp			= "(.+)的旗幟被(.+)拔\230?\142?\137?\232?\181?\183?了!", -- 掉 \230\142\137 起 \232\181\183
 	ExprFlagCaptured		= "(.+)佔據了(.+)的旗幟!",
 	ExprFlagReturn			= "(.+)的旗幟被(.+)還到了它的基地",
 	FlagAlliance			= "聯盟旗幟: ",
