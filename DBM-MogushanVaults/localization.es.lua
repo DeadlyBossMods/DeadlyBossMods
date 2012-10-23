@@ -33,7 +33,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "Anunciar transición de fase"
+	WarnPhase	= "Anunciar transición de fase",
+	RangeFrame	= "Mostrar distancia (6) durante la fase arcana"
 })
 
 L:SetMiscLocalization({
@@ -98,10 +99,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The machine hums to life!  Get to the lower level!",--translate
-	Rage		= "The Emperor's Rage echoes through the hills.",--translate
-	Strength	= "The Emperor's Strength appears in the alcoves!",--translate
-	Courage		= "The Emperor's Courage appears in the alcoves!",--translate
-	Boss		= "Two titanic constructs appear in the large alcoves!"--translate
+	Pull		= "¡La máquina vuelve a la vida! ¡Baja el nivel inferior!",
+	Rage		= "La ira del Emperador resuena por las colinas.",
+	Strength	= "¡La fuerza del Emperador aparece en la habitación!",
+	Courage		= "¡El coraje del Emperador aparece en la habitación!",
+	Boss		= "¡Aparecen dos construcciones titánicas en las enormes habitaciones!"
 })
 
