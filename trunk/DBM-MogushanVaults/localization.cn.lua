@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/21/2012
+-- Last update: 10/25/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -44,7 +44,7 @@ L:SetMiscLocalization({
 	Fire		= "噢，至高的神！借我之手融化他们的血肉吧！",
 	Arcane		= "噢，上古的贤者！赐予我魔法的智慧吧！",
 	Nature		= "噢，伟大的神灵！赐予我大地的力量！",
-	Shadow		= "Great soul of champions past! Bear to me your shield!"
+	Shadow		= "先烈的英灵！用你的盾保护我吧！"
 })
 
 
