@@ -38,9 +38,9 @@ local yellAmethystPool				= mod:NewYell(130774, nil, false)
 
 local timerCobaltMineCD				= mod:NewNextTimer(10.5, 129424)--12-15second variations
 local timerPetrification			= mod:NewNextTimer(76, 125091)
-local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223)--Always 20.5 seconds
+local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223, nil, false)--Always 20.5 seconds
 local timerJasperChainsCD			= mod:NewCDTimer(12, 130395)--11-13
-local timerAmethystPoolCD			= mod:NewCDTimer(6, 130774)
+local timerAmethystPoolCD			= mod:NewCDTimer(6, 130774, nil, false)
 
 local berserkTimer					= mod:NewBerserkTimer(420)
 
