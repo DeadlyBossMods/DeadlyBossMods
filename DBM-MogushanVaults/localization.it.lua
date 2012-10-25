@@ -95,10 +95,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The machine hums to life!  Get to the lower level!",--Emote
-	Rage		= "Rabbia dell'Imperatore echeggia tra le colline.",--Yell
-	Strength	= "Forza dell'Imperatore appare nelle alcove!",--Emote
-	Courage		= "Coraggio dell'Imperatore appare nelle alcove!",--Emote
-	Boss		= "Due costrutti titanici appaiono nelle grandi alcove!"--Emote
+	Pull		= "La macchina si mette in moto! Raggiungi il piano inferiore!",--Emote (ChatLog)
+	Rage		= "La Rabbia dell'Imperatore risuona tra le colline.",--Yell (ChatLog)
+	Strength	= "La Forza dell'Imperatore appare nelle volte!",--Emote (ChatLog)
+	Courage		= "Il Coraggio dell'Imperatore appare nelle volte!",--Emote (ChatLog)
+	Boss		= "Due Costrutti Titanici appaiono nelle alcove più grandi!"--Emote (ChatLog)
 })
 
