@@ -73,6 +73,7 @@ DBM.DefaultOptions = {
 	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav",
 	ModelSoundValue = "Short",
 	CountdownVoice = "Corsica",
+	CountdownPullTimer = true,
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
@@ -856,10 +857,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)
 		if timer > 7 then DBM:Schedule(timer - 7, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(7), channel) end
 		if timer > 5 then DBM:Schedule(timer - 5, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(5), channel) end
+		if timer > 4 then DBM:Schedule(timer - 4, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(4), channel) end
 		if timer > 3 then DBM:Schedule(timer - 3, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(3), channel) end
 		if timer > 2 then DBM:Schedule(timer - 2, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(2), channel) end
 		if timer > 1 then DBM:Schedule(timer - 1, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(1), channel) end
 		DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_PULL_NOW, channel)
+		sendSync("PT", timer)
 	elseif cmd:sub(1, 5) == "arrow" then
 		if not DBM:IsInRaid() then
 			DBM:AddMsg(DBM_ARROW_NO_RAIDGROUP)
@@ -1827,6 +1830,25 @@ do
 		if select(2, IsInInstance()) == "pvp" then return end
 		cId = tonumber(cId or "")
 		if cId then DBM:OnMobKill(cId, true) end
+	end
+	
+	syncHandlers["PT"] = function(sender, timer)
+		if not DBM.Options.CountdownPullTimer then return end
+		local sound5 = self:NewSound(5, false, true)
+		DBM.sound5:Cancel()
+		if DBM.Options.CountdownVoice == "Mosh" then
+			if timer > 5 then DBM.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\5.ogg") end
+			if timer > 4 then DBM.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\4.ogg") end
+			if timer > 3 then DBM.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg") end
+			if timer > 2 then DBM.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg") end
+			if timer > 1 then DBM.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg") end
+		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+			if timer > 5 then DBM.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.ogg") end
+			if timer > 4 then DBM.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.ogg") end
+			if timer > 3 then DBM.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.ogg") end
+			if timer > 2 then DBM.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.ogg") end
+			if timer > 1 then DBM.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.ogg") end
+		end
 	end
 	
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
