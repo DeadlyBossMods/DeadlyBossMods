@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 	protectorCount = 0
 	table.wipe(closedCircuitTargets)
 	timerBreathCD:Start(8-delay)
-	timerProtectorCD:Start(12-delay)
+	timerProtectorCD:Start(10-delay)
 	berserkTimer:Start(-delay)
 end
 
@@ -105,7 +105,11 @@ function mod:SPELL_CAST_START(args)
 		protectorCount = protectorCount + 1
 		warnProtector:Show(protectorCount)
 		specWarnProtector:Show()
-		timerProtectorCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerProtectorCD:Start(26)--26-28 variation on heroic
+		else
+			timerProtectorCD:Start()--35-37 on normal
+		end
 	elseif args:IsSpellID(117945) then
 		warnArcingEnergy:Show()
 		timerArcingEnergyCD:Start(args.sourceGUID)
