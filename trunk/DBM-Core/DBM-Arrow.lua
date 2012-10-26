@@ -151,6 +151,11 @@ do
 			frame:Hide()
 		end
 		arrow:Show()
+		-- the static arrow type is special because it doesn't depend on the player's orientation or position
+		if targetType == "static" then
+			return updateArrow(targetX) -- targetX contains the static angle to show
+		end
+
 		local x, y = GetPlayerMapPosition("player")
 		if x == 0 and y == 0 then
 			SetMapToCurrentZone()
@@ -163,7 +168,7 @@ do
 		if targetType == "player" then
 			targetX, targetY = GetPlayerMapPosition(targetPlayer)
 			if targetX == 0 and targetY == 0 then
-				self:Hide() -- hide the player if the target doesn't exist. TODO: just hide the texture and add a timeout
+				self:Hide() -- hide the arrow if the target doesn't exist. TODO: just hide the texture and add a timeout
 			end
 		elseif targetType == "rotate" then
 			rotateState = rotateState + elapsed
@@ -224,6 +229,16 @@ end
 
 function DBM.Arrow:ShowRunAway(...)
 	return show(true, ...)
+end
+
+-- shows a static arrow
+function DBM.Arrow:ShowStatic(angle)
+	runAwayArrow = false
+	hideDistance = 0
+	hideTime = nil
+	targetType = "static"
+	targetX = angle * pi2 / 360
+	frame:Show()
 end
 
 function DBM.Arrow:Hide(autoHide)
