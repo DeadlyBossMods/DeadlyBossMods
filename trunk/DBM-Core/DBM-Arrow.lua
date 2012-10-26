@@ -232,12 +232,16 @@ function DBM.Arrow:ShowRunAway(...)
 end
 
 -- shows a static arrow
-function DBM.Arrow:ShowStatic(angle)
+function DBM.Arrow:ShowStatic(angle, time)
 	runAwayArrow = false
 	hideDistance = 0
-	hideTime = nil
 	targetType = "static"
 	targetX = angle * pi2 / 360
+	if time then
+		hideTime = time + GetTime()
+	else
+		hideTime = nil
+	end
 	frame:Show()
 end
 
