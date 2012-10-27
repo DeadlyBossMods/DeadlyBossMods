@@ -95,7 +95,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Mostrar información de jugadores a los que les afecta $spell:116525"
+	InfoFrame		= "Mostrar información de jugadores a los que les afecta $spell:116525",
+	ArrowOnCombo	= "Mostrar flecha durante Arco Devastador\nNOTA: Esto asume que el tanque está delante del boss y todos los demás detrás."
 })
 
 L:SetMiscLocalization({
