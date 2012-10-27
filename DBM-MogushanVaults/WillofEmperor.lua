@@ -36,9 +36,9 @@ local warnFocusedDefense		= mod:NewTargetAnnounce(116778, 4)
 local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
-local warnArcLeft				= mod:NewCountAnnounce(116968, 4, nil, mod:IsMelee())--This is a pre warn, gives you time to move
-local warnArcRight				= mod:NewCountAnnounce(116971, 4, nil, mod:IsMelee())--This is a pre warn, gives you time to move
-local warnArcCenter				= mod:NewCountAnnounce(116972, 4, nil, mod:IsMelee())--This is a pre warn, gives you time to move
+local warnArcLeft				= mod:NewCountAnnounce(116968, 4, 89570, mod:IsMelee())--This is a pre warn, gives you time to move
+local warnArcRight				= mod:NewCountAnnounce(116971, 4, 87219, mod:IsMelee())--This is a pre warn, gives you time to move
+local warnArcCenter				= mod:NewCountAnnounce(116972, 4, 74922, mod:IsMelee())--This is a pre warn, gives you time to move
 local warnStomp					= mod:NewCountAnnounce(116969, 4, nil, mod:IsMelee())--This is NOT a pre warn, only fires when stomp ends cast. :(
 local warnTitanGas				= mod:NewCountAnnounce(116779, 4)
 
@@ -69,6 +69,7 @@ local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
 local timerTitanGasCD			= mod:NewNextCountTimer(150, 116779)
 
 mod:AddBoolOption("InfoFrame", false)
+mod:AddBoolOption("ArrowOnCombo", false)
 
 local comboWarned = false
 local sparkCount = 0
@@ -93,6 +94,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.ArrowOnCombo then
+		DBM.Arrow:Hide()
 	end
 end
 
@@ -164,12 +168,31 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 116968 then--Arc Left
 		comboCount = comboCount + 1
 		warnArcLeft:Show(comboCount)
+		if self.Options.ArrowOnCombo then
+			if self:IsTank() then--Assume tank is in front of the boss
+				DBM.Arrow:ShowStatic(240, 3)
+			else--Assume anyone else is behind the boss
+				DBM.Arrow:ShowStatic(90, 3)
+			end
+		end
 	elseif spellId == 116971 then--Arc Right
 		comboCount = comboCount + 1
 		warnArcRight:Show(comboCount)
+		if self.Options.ArrowOnCombo then
+			if self:IsTank() then--Assume tank is in front of the boss
+				DBM.Arrow:ShowStatic(90, 3)
+			else--Assume anyone else is behind the boss
+				DBM.Arrow:ShowStatic(240, 3)
+			end
+		end
 	elseif spellId == 116972 then--Arc Center
 		comboCount = comboCount + 1
 		warnArcCenter:Show(comboCount)
+		if self.Options.ArrowOnCombo then
+			if self:IsTank() then--Assume tank is in front of the boss
+				DBM.Arrow:ShowStatic(0, 3)
+			end
+		end
 	elseif (spellId == 116969 or spellId == 132425) then--Stomp
 		comboCount = comboCount + 1
 		warnStomp:Show(comboCount)

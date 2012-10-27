@@ -13,7 +13,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	SpecWarnOverloadSoon		= "Show special warning before overload",
 	specWarnBreakJasperChains	= "Show special warning when it is safe to break $spell:130395",
-	ArrowOnJasperChains			= "Show DBM Arrow when you are affected by $spell:130395 ",
+	ArrowOnJasperChains			= "Show DBM Arrow when you are affected by $spell:130395",
 	InfoFrame					= "Show info frame for boss power, player petrification, and which boss is casting petrification"
 })
 
@@ -94,7 +94,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Show info frame for players affected by $spell:116525"
+	InfoFrame		= "Show info frame for players affected by $spell:116525",
+	ArrowOnCombo	= "Show DBM Arrow during Devastating Arc\nNOTE: This assumes tank is in front of boss and anyone else is behind."--Todo, make this an EJ clicky instead
 })
 
 L:SetMiscLocalization({
