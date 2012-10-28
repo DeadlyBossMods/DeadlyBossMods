@@ -95,7 +95,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Zeige Infofenster für Spieler, welche von $spell:116525 betroffen sind"
+	InfoFrame		= "Zeige Infofenster für Spieler, welche von $spell:116525 betroffen sind",
+	ArrowOnCombo	= "Zeige DBM-Pfeil während $journal:5673  HINWEIS: Nimmt an,\ndass sich der Tank vor dem Boss befindet und alle anderen dahinter."
 })
 
 L:SetMiscLocalization({
