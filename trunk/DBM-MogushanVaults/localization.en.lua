@@ -95,7 +95,7 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "Show info frame for players affected by $spell:116525",
-	ArrowOnCombo	= "Show DBM Arrow during Devastating Arc\nNOTE: This assumes tank is in front of boss and anyone else is behind."--Todo, make this an EJ clicky instead
+	ArrowOnCombo	= "Show DBM Arrow during $journal:5673\nNOTE: This assumes tank is in front of boss and anyone else is behind."
 })
 
 L:SetMiscLocalization({
