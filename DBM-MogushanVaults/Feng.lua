@@ -52,26 +52,26 @@ local warnReversalLightningFists	= mod:NewTargetAnnounce(118302, 2)--this spell 
 local warnNullBarrior				= mod:NewSpellAnnounce(115817, 2)
 
 --Nature/Fist
-local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 3)
+local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 2)
 local specWarnLightningLashOther	= mod:NewSpecialWarningTarget(131788, mod:IsTank())
 local specWarnEpicenter				= mod:NewSpecialWarningRun(116018, nil, nil, nil, true)
 
 --Fire/Spear
-local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 3)
+local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 2)
 local specWarnFlamingSpearOther		= mod:NewSpecialWarningTarget(116942, mod:IsTank())
 local specWarnWildSpark				= mod:NewSpecialWarningYou(116784)
 local specWarnWildfire				= mod:NewSpecialWarningMove(116793)
 local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, true)
 
 --Arcane/Staff
-local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 3)
+local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 2)
 local specWarnArcaneShockOther		= mod:NewSpecialWarningTarget(131790, mod:IsTank())
 local specWarnArcaneResonance		= mod:NewSpecialWarningYou(116417)
 local yellArcaneResonance			= mod:NewYell(116417)
 local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, true)
 
 --Shadow/Shield (Heroic Only)
-local specWarnShadowBurn			= mod:NewSpecialWarningStack(131792, mod:IsTank(), 3)
+local specWarnShadowBurn			= mod:NewSpecialWarningStack(131792, mod:IsTank(), 2)
 local specWarnShadowBurnOther		= mod:NewSpecialWarningTarget(131792, mod:IsTank())
 local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
 
@@ -205,10 +205,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		warnLightningLash:Show(args.destName, args.amount or 1)
 		timerLightningLash:Start(args.destName)
 		timerLightningLashCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
+		if args:IsPlayer() and (args.amount or 1) >= 2 then
 			specWarnLightningLash:Show(args.amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(131788)) and not UnitIsDeadOrGhost("player") then
+			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131788)) then
 				specWarnLightningLashOther:Show(args.destName)
 			end
 		end
@@ -216,10 +216,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		warnFlamingSpear:Show(args.destName, args.amount or 1)
 		timerFlamingSpear:Start(args.destName)
 		timerFlamingSpearCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
+		if args:IsPlayer() and (args.amount or 1) >= 2 then
 			specWarnFlamingSpear:Show(args.amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(116942)) and not UnitIsDeadOrGhost("player") then
+			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(116942)) then
 				specWarnFlamingSpearOther:Show(args.destName)
 			end
 		end
@@ -227,10 +227,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		warnArcaneShock:Show(args.destName, args.amount or 1)
 		timerArcaneShock:Start(args.destName)
 		timerArcaneShockCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
+		if args:IsPlayer() and (args.amount or 1) >= 2 then
 			specWarnArcaneShock:Show(args.amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(131790)) and not UnitIsDeadOrGhost("player") then
+			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131790)) then
 				specWarnArcaneShockOther:Show(args.destName)
 			end
 		end
@@ -238,10 +238,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		warnShadowBurn:Show(args.destName, args.amount or 1)
 		timerShadowBurn:Start(args.destName)
 		timerShadowBurnCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
+		if args:IsPlayer() and (args.amount or 1) >= 2 then
 			specWarnShadowBurn:Show(args.amount)
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(131792)) and not UnitIsDeadOrGhost("player") then
+			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(131792)) then
 				specWarnShadowBurnOther:Show(args.destName)
 			end
 		end
