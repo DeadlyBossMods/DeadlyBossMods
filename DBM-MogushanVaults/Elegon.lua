@@ -13,12 +13,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_CAST_START"
 )
-
---[[
-spellid = 116994 or spell = "Icy Touch"  and targetname = "Elegon" and sourcename = "Shiramune" and fulltype = SPELL_CAST_SUCCESS or spellid = 117960 and fulltype = SPELL_CAST_START or spellid = 117954 or spellid = 129711 or spell = "Draw Power" or spellid = 117204 or spellid = 117945 and not (fulltype = SPELL_DAMAGE) or spellid = 117949
---]]
 
 local warnPhase1					= mod:NewPhaseAnnounce(1, 2)--117727 Charge Vortex
 local warnBreath					= mod:NewSpellAnnounce(117960, 3)
@@ -35,7 +32,6 @@ local warnRadiatingEnergies			= mod:NewSpellAnnounce(118310, 4)
 local specWarnOvercharged			= mod:NewSpecialWarningStack(117878, nil, 6)
 local specWarnTotalAnnihilation		= mod:NewSpecialWarningSpell(129711, nil, nil, nil, true)
 local specWarnProtector				= mod:NewSpecialWarningSwitch("ej6178", mod:IsDps() or mod:IsTank())
-local specWarnClosedCircuit			= mod:NewSpecialWarningDispel(117949, false)--Probably a spammy mess if this hits a few at once. But here in case someone likes spam.
 local specWarnDrawPower				= mod:NewSpecialWarningStack(119387, nil, 1)
 local specWarnDespawnFloor			= mod:NewSpecialWarning("specWarnDespawnFloor", nil, nil, nil, true)
 local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, nil, true)
@@ -44,19 +40,19 @@ local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
 local timerFocusPower				= mod:NewCastTimer(16, 119358)
---local timerDespawnFloor				= mod:NewTimer(5, "timerDespawnFloor", 116994)
---Some timer work needs to be added for the adds spawning and reaching outer bubble
---(ie similar to yorsahj oozes reach, only for how long you have to kill adds before you fail and phase 2 ends)
+local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5-7.5 variation. 6.5 is safed to use so you don't fall and die.
 
 local berserkTimer					= mod:NewBerserkTimer(570)
 
 mod:AddBoolOption("SetIconOnDestabilized", true)
+mod:AddBoolOption("HealthFrame", false)
 
 local phase2Started = false
 local protectorCount = 0
 local closedCircuitTargets = {}
 local stunTargets = {}
 local stunIcon = 8
+local focusActivated = 0
 
 local function warnClosedCircuitTargets()
 	warnClosedCircuit:Show(table.concat(closedCircuitTargets, "<, >"))
@@ -71,6 +67,7 @@ end
 function mod:OnCombatStart(delay)
 	protectorCount = 0
 	stunIcon = 8
+	focusActivated = 0
 	table.wipe(closedCircuitTargets)
 	table.wipe(stunTargets)
 	timerBreathCD:Start(8-delay)
@@ -86,10 +83,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBreathCD:Cancel()
 		timerProtectorCD:Cancel()	
 	elseif args:IsSpellID(116994) then--Phase 3 begin/Phase 2 end
+		focusActivated = 0
 		phase2Started = false
 		warnPhase3:Show()
 		specWarnDespawnFloor:Show()
---		timerDespawnFloor:Start()--Should be pretty accurate, may need minor tweak
 	elseif args:IsSpellID(117878) and args:IsPlayer() then
 		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
 			specWarnOvercharged:Show(args.amount)
@@ -118,6 +115,20 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(116598) then--Cast when these are activated
+		focusActivated = focusActivated + 1
+		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
+			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
+		end
+		if focusActivated == 6 then
+			timerDespawnFloor:Start()
+		end
+	elseif args:IsSpellID(116989) then--Cast when defeated (or rathor 1 HP)
+		DBM.BossHealth:RemoveBoss(args.sourceGUID)
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(117960) then
 		warnBreath:Show()
@@ -140,7 +151,6 @@ function mod:SPELL_CAST_START(args)
 		timerArcingEnergyCD:Cancel(args.sourceGUID)--add is dying, so this add is done casting arcing Energy
 	elseif args:IsSpellID(117949) then
 		closedCircuitTargets[#closedCircuitTargets + 1] = args.destName
-		specWarnClosedCircuit:Show(args.destName)
 		self:Unschedule(warnClosedCircuitTargets)
 		self:Schedule(0.3, warnClosedCircuitTargets)
 	elseif args:IsSpellID(119358) then
