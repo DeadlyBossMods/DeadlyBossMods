@@ -85,7 +85,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "Mostrar aviso especial antes de que el suelo se desaparezca",
-	timerDespawnFloor			= "Mostrar tiempo para que el suelo desaparezca"
+	timerDespawnFloor			= "Mostrar tiempo para que el suelo desaparezca",
+	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
 
@@ -96,7 +97,7 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "Mostrar información de jugadores a los que les afecta $spell:116525",
-	ArrowOnCombo	= "Mostrar flecha durante Arco Devastador\nNOTA: Esto asume que el tanque está delante del boss y todos los demás detrás."
+	ArrowOnCombo	= "Mostrar flecha durante $journal:5673\nNOTA: Esto asume que el tanque está delante del boss y todos los demás detrás."
 })
 
 L:SetMiscLocalization({
