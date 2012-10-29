@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60410)--Energy Charge (60913), Emphyreal Focus (60776), Cosmic Spark (62618), Celestial Protector (60793)
 mod:SetModelID(41399)
 mod:SetZone()
+mod:SetUsedIcons(8, 7, 6)
 
 mod:RegisterCombat("combat")
 
@@ -25,6 +26,7 @@ local warnProtector					= mod:NewCountAnnounce(117954, 3)
 local warnArcingEnergy				= mod:NewSpellAnnounce(117945, 2)--Cast randomly at 2 players, it is avoidable.
 local warnClosedCircuit				= mod:NewTargetAnnounce(117949, 3, nil, mod:IsHealer())--what happens if you fail to avoid the above
 local warnTotalAnnihilation			= mod:NewCastAnnounce(129711, 4)--Protector dying(exploding)
+local warnStunned					= mod:NewTargetAnnounce(132226, 3, nil, mod:IsHealer())--Heroic
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)--124967 Draw Power
 local warnDrawPower					= mod:NewCountAnnounce(119387, 4)
 local warnPhase3					= mod:NewPhaseAnnounce(3, 3)--116994 Unstable Energy Starting
@@ -48,18 +50,29 @@ local timerFocusPower				= mod:NewCastTimer(16, 119358)
 
 local berserkTimer					= mod:NewBerserkTimer(570)
 
+mod:AddBoolOption("SetIconOnDestabilized", true)
+
 local phase2Started = false
 local protectorCount = 0
 local closedCircuitTargets = {}
+local stunTargets = {}
+local stunIcon = 8
 
 local function warnClosedCircuitTargets()
 	warnClosedCircuit:Show(table.concat(closedCircuitTargets, "<, >"))
 	table.wipe(closedCircuitTargets)
 end
 
+local function warnStunnedTargets()
+	warnStunned:Show(table.concat(stunTargets, "<, >"))
+	table.wipe(stunTargets)
+end
+
 function mod:OnCombatStart(delay)
 	protectorCount = 0
+	stunIcon = 8
 	table.wipe(closedCircuitTargets)
+	table.wipe(stunTargets)
 	timerBreathCD:Start(8-delay)
 	timerProtectorCD:Start(10-delay)
 	berserkTimer:Start(-delay)
@@ -87,6 +100,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(118310) then--Below 50% health
 		warnRadiatingEnergies:Show()
 		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.
+	elseif args:IsSpellID(132226) then
+		stunTargets[#stunTargets + 1] = args.destName
+		if self.Options.SetIconOnDestabilized then
+			self:SetIcon(args.destName, stunIcon)
+			stunIcon = stunIcon - 1
+		end
+		self:Unschedule(warnStunnedTargets)
+		self:Schedule(0.3, warnStunnedTargets)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
