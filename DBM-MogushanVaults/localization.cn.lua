@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/25/2012
+-- Last update: 10/31/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -88,7 +88,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "特殊警报：平台消失预警",
-	timerDespawnFloor			= "计时条：平台消失"
+	timerDespawnFloor			= "计时条：平台消失",
+	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
 
@@ -98,7 +99,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "信息框：受$spell:116525效果影响的玩家"
+	InfoFrame		= "信息框：受$spell:116525效果影响的玩家",
+	ArrowOnCombo	= "DBM箭头：$journal:5673阶段\n注：该功能正常工作的前提是坦克在Boss面前而其他人在Boss身后。"
 })
 
 L:SetMiscLocalization({
