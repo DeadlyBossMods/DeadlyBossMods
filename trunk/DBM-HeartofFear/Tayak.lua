@@ -35,7 +35,7 @@ local specWarnStormUnleashed			= mod:NewSpecialWarningSpell(123814, nil, nil, ni
 
 local timerTempestSlashCD				= mod:NewNextTimer(15.5, 122839)
 local timerOverwhelmingAssault			= mod:NewTargetTimer(45, 123474, nil, mod:IsTank())
-local timerOverwhelmingAssaultCD		= mod:NewCDTimer(25.5, 123474, nil, mod:IsTank() or mod:IsHealer())--Only ability with a variation in 2 pulls so far. this one can vary 25-35 seconds. lowest CD is used because it's most common
+local timerOverwhelmingAssaultCD		= mod:NewCDTimer(20.5, 123474, nil, mod:IsTank() or mod:IsHealer())--Only ability with a variation in 2 pulls so far. He will use every 20.5 seconds unless he's casting something else, then it can be delayed as much as an extra 15-20 seconds. TODO: See if there is a way to detect when variation is going to occur and call update timer.
 local timerWindStepCD					= mod:NewNextTimer(30, 123175)
 local timerUnseenStrikeCD				= mod:NewNextTimer(61, 122949)
 local timerIntensifyCD					= mod:NewNextTimer(60, 123471)
@@ -52,7 +52,7 @@ mod:AddBoolOption("UnseenStrikeArrow")
 
 function mod:OnCombatStart(delay)
 	timerTempestSlashCD:Start(10-delay)
-	timerOverwhelmingAssaultCD:Start(15.5-delay)
+	timerOverwhelmingAssaultCD:Start(15.5-delay)--Possibly wrong, the cd was shortened since beta, need better log with engage timestamp
 	timerWindStepCD:Start(20.5-delay)
 	timerUnseenStrikeCD:Start(30.5-delay)
 	timerIntensifyCD:Start(-delay)
@@ -100,7 +100,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBladeTempest:Show()
 		soundBladeTempest:Play()
 		timerBladeTempest:Start()
-		timerBladeTempestCD:Start()--Start CD here, since this might miss.
+		timerBladeTempestCD:Start()
 	end
 end
 
