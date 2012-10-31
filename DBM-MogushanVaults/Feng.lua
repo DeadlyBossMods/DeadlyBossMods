@@ -111,6 +111,7 @@ local timerNullBarrior				= mod:NewBuffFadesTimer(6, 115817)
 local timerNullBarriorCD			= mod:NewCDTimer(55, 115817)
 
 local soundEpicenter				= mod:NewSound(116018)
+local soundWildSpark				= mod:NewSound(116784, nil, false)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
@@ -171,6 +172,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerWildSpark:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnWildSpark:Show()
+			soundWildSpark:Play()
 			yellWildSpark:Yell()
 		end
 	elseif args:IsSpellID(116711) then
