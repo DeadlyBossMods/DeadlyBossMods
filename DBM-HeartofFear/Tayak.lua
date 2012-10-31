@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnTempestSlash					= mod:NewSpellAnnounce(122839, 2)
-local warnOverwhelmingAssault			= mod:NewTargetAnnounce(123474, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnOverwhelmingAssault			= mod:NewStackAnnounce(123474, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnWindStep						= mod:NewTargetAnnounce(123175, 3)
 local warnUnseenStrike					= mod:NewTargetAnnounce(122949, 4)
 local warnIntensify						= mod:NewStackAnnounce(123471, 2)
@@ -36,7 +36,7 @@ local specWarnStormUnleashed			= mod:NewSpecialWarningSpell(123814, nil, nil, ni
 local timerTempestSlashCD				= mod:NewNextTimer(15.5, 122839)
 local timerOverwhelmingAssault			= mod:NewTargetTimer(45, 123474, nil, mod:IsTank())
 local timerOverwhelmingAssaultCD		= mod:NewCDTimer(20.5, 123474, nil, mod:IsTank() or mod:IsHealer())--Only ability with a variation in 2 pulls so far. He will use every 20.5 seconds unless he's casting something else, then it can be delayed as much as an extra 15-20 seconds. TODO: See if there is a way to detect when variation is going to occur and call update timer.
-local timerWindStepCD					= mod:NewNextTimer(30, 123175)
+local timerWindStepCD					= mod:NewCDTimer(27, 123175)
 local timerUnseenStrikeCD				= mod:NewNextTimer(61, 122949)
 local timerIntensifyCD					= mod:NewNextTimer(60, 123471)
 local timerBladeTempest					= mod:NewBuffActiveTimer(9, 125310)
