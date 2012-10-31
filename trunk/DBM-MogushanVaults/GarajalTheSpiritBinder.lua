@@ -44,8 +44,9 @@ local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spi
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
 local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
 
-local countdownCrossedOver			= mod:NewCountdown(29, 116161)
 local berserkTimer					= mod:NewBerserkTimer(360)
+
+local countdownCrossedOver			= mod:NewCountdown(29, 116161)
 
 mod:AddBoolOption("SetIconOnVoodoo", true)
 
