@@ -234,7 +234,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerVolleyCD:Start()
 	elseif spellId == 118121 and self:AntiSpam(2, 2) then--Rain of Arrows
 		timerRainOfArrowsCD:Start()
-	elseif spellId == 118219 and self:AntiSpam(2, 3) then--Cancel Activation
+--	"<63.5 21:23:16> [UNIT_SPELLCAST_SUCCEEDED] Qiang the Merciless [[boss1:Inactive Visual::0:118205]]", -- [14066]
+--	"<63.5 21:23:16> [UNIT_SPELLCAST_SUCCEEDED] Qiang the Merciless [[boss1:Cancel Activation::0:118219]]", -- [14068]
+	elseif spellId == 118205 and self:AntiSpam(2, 3) then--Cancel Activation
 		if UnitName(uId) == Zian then
 			zianActive = false
 			timerChargingShadowsCD:Cancel()
