@@ -43,6 +43,8 @@ local timerBladeTempest					= mod:NewBuffActiveTimer(9, 125310)
 local timerBladeTempestCD				= mod:NewNextTimer(60, 125310)--Always cast after immediately intensify since they essencially have same CD
 --local timerStormUnleashedCD			= mod:NewCDTimer(60, 123814)--Timer for switching sides, assuming it's time based and not health based, unsure yet, need more data. Also,the side swap does NOT show in transcriptor or CLEU AT ALL. Will need to use /yell to figure it out.
 
+local berserkTimer						= mod:NewBerserkTimer(480)
+
 local soundBladeTempest					= mod:NewSound(125310)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())--For Wind Step
@@ -54,6 +56,7 @@ function mod:OnCombatStart(delay)
 	timerWindStepCD:Start(20.5-delay)
 	timerUnseenStrikeCD:Start(30.5-delay)
 	timerIntensifyCD:Start(-delay)
+	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerBladeTempestCD:Start(-delay)
 	end
