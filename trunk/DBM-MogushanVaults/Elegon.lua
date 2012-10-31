@@ -116,7 +116,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(116598) then--Cast when these are activated
+	if args:IsSpellID(116598, 132265) then--Cast when these are activated
 		focusActivated = focusActivated + 1
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
