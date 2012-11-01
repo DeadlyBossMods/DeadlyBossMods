@@ -76,7 +76,7 @@ local timerChargingShadowsCD	= mod:NewCDTimer(12, 117685)
 local timerUndyingShadowsCD		= mod:NewCDTimer(41.5, 117506)--For most part it's right, but i also think on normal he can only summon a limited amount cause he did seem to skip one? leaving a CD for now until know for sure.
 local timerFixate			  	= mod:NewTargetTimer(20, 118303)
 local timerCoalescingShadowsCD	= mod:NewNextTimer(60, 117539)--EJ says 30sec but logs more recent then last EJ update show 60 seconds on heroic (so probably adjusted since EJ was last revised)
-local timerShieldOfDarknessCD  	= mod:NewCDTimer(42.5, 117697)
+local timerShieldOfDarknessCD  	= mod:NewNextTimer(42.5, 117697)
 --Meng
 local timerMaddeningShoutCD		= mod:NewCDTimer(47, 117708)--47-50 sec variation. So a CD timer instead of next.
 local timerDeliriousCD			= mod:NewCDTimer(20.5, 117837, nil, mod:CanRemoveEnrage())
@@ -92,6 +92,8 @@ local timerSleightOfHandCD		= mod:NewCDTimer(42, 118162)
 local timerSleightOfHand		= mod:NewBuffActiveTimer(11, 118162)--2+9 (cast+duration)
 
 local berserkTimer				= mod:NewBerserkTimer(600)
+
+local countdownShieldOfDarkness	= mod:NewCountdown(42.5, 117697)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())--For multiple abilities. the abiliies don't seem to target melee (unless a ranged is too close or a melee is too far.)
 
@@ -198,6 +200,7 @@ function mod:SPELL_CAST_START(args)
 		warnShieldOfDarkness:Show(args.sourceName)
 		specWarnShieldOfDarkness:Show(args.sourceName)
 		timerShieldOfDarknessCD:Start()
+		countdownShieldOfDarkness:Start()
 	elseif args:IsSpellID(117833) then
 		warnCrazyThought:Show()
 		specWarnCrazyThought:Show(args.sourceName)
@@ -241,6 +244,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			zianActive = false
 			timerChargingShadowsCD:Cancel()
 			timerShieldOfDarknessCD:Cancel()
+			countdownShieldOfDarkness:Cancel()
 			timerUndyingShadowsCD:Start(30)--This boss retains Undying Shadows
 			if self.Options.RangeFrame and not subetaiActive then--Close range frame, but only if zian is also not active, otherwise we still need it
 				DBM.RangeCheck:Hide()

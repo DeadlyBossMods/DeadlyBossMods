@@ -38,7 +38,7 @@ local specWarnBanishmentOther		= mod:NewSpecialWarningTarget(116272, mod:IsTank(
 local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 local specWarnVoodooDollsMe			= mod:NewSpecialWarningYou(122151, false)
 
-local timerTotemCD					= mod:NewNextCountTimer(20.5, 116174)
+local timerTotemCD					= mod:NewNextCountTimer(20, 116174)
 local timerBanishmentCD				= mod:NewCDTimer(65, 116272)
 local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
@@ -119,7 +119,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(crossedOverTargets)
 	table.wipe(voodooDollTargetIcons)
 	timerShadowyAttackCD:Start(7-delay)
-	timerTotemCD:Start(-delay, 1)
+	if self:IsDifficulty("normal25", "heroic25") then
+		timerTotemCD:Start(20-delay, totemCount+1)
+	elseif self:IsDifficulty("lfr25") then
+		timerTotemCD:Start(30-delay, totemCount+1)
+	else
+		timerTotemCD:Start(36-delay, totemCount+1)
+	end
 	timerBanishmentCD:Start(-delay)
 	if not self:IsDifficulty("lfr25") then -- lfr seems not berserks.
 		berserkTimer:Start(-delay)
@@ -192,7 +198,13 @@ function mod:OnSync(msg, guid)
 		totemCount = totemCount + 1
 		warnTotem:Show(totemCount)
 		specWarnTotem:Show()
-		timerTotemCD:Start(20, totemCount+1)
+		if self:IsDifficulty("normal25", "heroic25") then
+			timerTotemCD:Start(20-delay, totemCount+1)
+		elseif self:IsDifficulty("lfr25") then
+			timerTotemCD:Start(30, totemCount+1)
+		else
+			timerTotemCD:Start(36, totemCount+1)
+		end
 	elseif msg == "VoodooTargets" and guids[guid] then
 		voodooDollTargets[#voodooDollTargets + 1] = guids[guid]
 		self:Unschedule(warnVoodooDollTargets)
