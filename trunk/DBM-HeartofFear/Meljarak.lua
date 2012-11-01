@@ -14,6 +14,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"RAID_BOSS_EMOTE",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
@@ -28,11 +30,9 @@ local warnCorrosiveResin				= mod:NewTargetAnnounce(122064, 3)
 local warnMending						= mod:NewCastAnnounce(122193, 4)
 local warnQuickening					= mod:NewCastAnnounce(122149, 4)
 local warnKorthikStrike					= mod:NewSpellAnnounce(123963, 3)--Target scanning does NOT work
+local warnWindBomb						= mod:NewTargetAnnounce(131830, 4)
 
 local specWarnWhirlingBlade				= mod:NewSpecialWarningSpell(121896, nil, nil, nil, true)
---local specWarnWhirlingBladeYou			= mod:NewSpecialWarningYou(121896)--Depends on if target scanning works, otherwise, tanks going to get a lot of wrong spam, :)
---local specWarnWhirlingBladeNear		= mod:NewSpecialWarningClose(121896)--Relevant? does it have a radius on it's impact target?
-local yellWhirlingBlade					= mod:NewYell(121896)
 local specWarnRainOfBlades				= mod:NewSpecialWarningSpell(122406, nil, nil, nil, true)
 local specWarnRecklessness				= mod:NewSpecialWarningTarget(125873)
 local specWarnReinforcements			= mod:NewSpecialWarningSpell("ej6554", mod:IsTank())
@@ -40,11 +40,13 @@ local specWarnAmberPrison				= mod:NewSpecialWarningYou(121881)
 local yellAmberPrison					= mod:NewYell(121881)
 local specWarnAmberPrisonOther			= mod:NewSpecialWarningSpell(121881, false)--Only people who are freeing these need to know this.
 local specWarnCorrosiveResin			= mod:NewSpecialWarningRun(122064)
-local yellCorrosiveResin				= mod:NewYell(122064)
+local yellCorrosiveResin				= mod:NewYell(122064, nil, false)
 local specWarnCorrosiveResinPool		= mod:NewSpecialWarningMove(122125)
-local specWarnMending					= mod:NewSpecialWarningInterrupt(122193, false)--Whoever is doing this or feels responsible should turn it on.
+local specWarnMending					= mod:NewSpecialWarningInterrupt(122193)--Whoever is doing this or feels responsible should turn it on.
 local specWarnQuickening				= mod:NewSpecialWarningSpell(122149, false)--^^
 local specWarnKorthikStrike				= mod:NewSpecialWarningSpell(123963, nil, nil, nil, true)--Depends on if target scanning works, otherwise, tanks going to get a lot of wrong spam, :)
+local specWarnWindBomb					= mod:NewSpecialWarningMove(131830)
+local yellWindBomb						= mod:NewYell(131830)
 
 local timerWhirlingBladeCD				= mod:NewNextTimer(45.5, 121896)
 local timerRainOfBladesCD				= mod:NewNextTimer(61.5, 122406)--60 CD, but Cd starts when last cast ends, IE 60+cast time. Starting cd off cast start is 61.5, but on pull it's 60.0
@@ -55,7 +57,8 @@ local timerAmberPrisonCD				= mod:NewNextTimer(36, 121876)--each add has their o
 local timerCorrosiveResinCD				= mod:NewNextTimer(36, 122064)--^^
 local timerMendingCD					= mod:NewNextTimer(36, 122193, nil, false)--To reduce bar spam, only those dealing with this should turn CD bar on, off by default
 local timerQuickeningCD					= mod:NewNextTimer(36, 122149, nil, false)--^^
-local timerKorthikStrikeCD				= mod:NewCDTimer(40.5, 123963)--^^
+local timerKorthikStrikeCD				= mod:NewCDTimer(32, 123963)--^^
+local timerWindBombCD					= mod:NewCDTimer(6, 131830)--^^
 
 local berserkTimer						= mod:NewBerserkTimer(480)
 
@@ -64,28 +67,24 @@ mod:AddBoolOption("AmberPrisonIcons", true)
 local addsCount = 0
 local amberPrisonIcon = 2
 local amberPrisonTargets = {}
+local windBombTargets = {}
 
 local function warnAmberPrisonTargets()
 	warnAmberPrison:Show(table.concat(amberPrisonTargets, "<, >"))
 	table.wipe(amberPrisonTargets)
 end
 
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	return false
+local function warnWindBombTargets()
+	warnWindBomb:Show(table.concat(windBombTargets, "<, >"))
+	table.wipe(windBombTargets)
+	timerWindBombCD:Start()
 end
 
 function mod:OnCombatStart(delay)
 	addsCount = 0
 	amberPrisonIcon = 2
 	table.wipe(amberPrisonTargets)
+	table.wipe(windBombTargets)
 	timerWhirlingBladeCD:Start(35.5-delay)
 	timerRainOfBladesCD:Start(60-delay)
 	berserkTimer:Start(-delay)
@@ -150,7 +149,9 @@ function mod:SPELL_CAST_START(args)
 		timerCorrosiveResinCD:Start(36, args.sourceGUID)
 	elseif args:IsSpellID(122193) then
 		warnMending:Show()
-		specWarnMending:Show(args.sourceName)
+		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
+			specWarnMending:Show(args.sourceName)
+		end
 		timerMendingCD:Start(36, args.sourceGUID)
 	elseif args:IsSpellID(122149) then
 		warnQuickening:Show()
@@ -159,6 +160,18 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(_, _, _, destName, destGUID, _, _, _, spellId)
+	if spellId == 131830 then
+		windBombTargets[#windBombTargets + 1] = destName
+		self:Unschedule(warnWindBombTargets)
+		self:Schedule(0.3, warnWindBombTargets)
+		if destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+			specWarnWindBomb:Show()
+			yellWindBomb:Yell()
+		end
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Reinforcements or msg:find(L.Reinforcements) then
