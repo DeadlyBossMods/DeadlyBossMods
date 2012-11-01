@@ -46,11 +46,9 @@ local berserkTimer				= mod:NewBerserkTimer(420)
 --mod:AddBoolOption("InfoFrame", true)--Not sure how to do yet, i need to see 25 man first to get a real feel for number of people with debuff at once.
 mod:AddBoolOption("PheromonesIcon", true)
 
-local madeUpNumber = 0
 local brokenLegs = 0
 
 function mod:OnCombatStart(delay)
-	madeUpNumber = 0
 	brokenLegs = 0
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
 	berserkTimer:Start(-delay)
