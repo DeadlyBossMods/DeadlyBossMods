@@ -1,6 +1,7 @@
 ﻿## Interface: 50001
 ## X-Min-Interface: 50000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Heart of Fear|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Сердце Страха|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0공포의 심장|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Das Herz der Angst|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0恐惧之心|r
@@ -12,6 +13,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 1
 ## X-DBM-Mod-Name: Heart of Fear
+## X-DBM-Mod-Name-ruRU: Сердце Страха
 ## X-DBM-Mod-Name-koKR: 공포의 심장
 ## X-DBM-Mod-Name-deDE: Das Herz der Angst
 ## X-DBM-Mod-Name-zhTW: 恐懼之心
@@ -20,6 +22,7 @@
 ## X-DBM-Mod-LoadZoneID: 897
 localization.en.lua
 localization.kr.lua
+localization.ru.lua
 localization.de.lua
 localization.tw.lua
 localization.cn.lua
