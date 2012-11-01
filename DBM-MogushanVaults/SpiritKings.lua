@@ -312,6 +312,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		timerUndyingShadowsCD:Start(20)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerShieldOfDarknessCD:Start(40)
+			countdownShieldOfDarkness:Start(40)
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
