@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(63191)--Also has CID 62164. He has 2 CIDs for a single target, wtf? It seems 63191 is one players attack though so i'll try just it.
 mod:SetModelID(42368)
 mod:SetZone()
-mod:SetUsedIcons(1, 2)
+mod:SetUsedIcons(2)
 
 mod:RegisterCombat("combat")
 
@@ -47,12 +47,10 @@ local berserkTimer				= mod:NewBerserkTimer(420)
 mod:AddBoolOption("PheromonesIcon", true)
 
 local madeUpNumber = 0
-local PeromonesIcon = 1
 local brokenLegs = 0
 
 function mod:OnCombatStart(delay)
 	madeUpNumber = 0
-	PeromonesIcon = 1
 	brokenLegs = 0
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
 	berserkTimer:Start(-delay)
@@ -87,12 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.PheromonesIcon then
-			self:SetIcon(args.destName, PeromonesIcon)
-			if PeromonesIcon == 1 then	-- 2 will have it at a time on 25 man so we alternate icons.
-				PeromonesIcon = 2
-			else
-				PeromonesIcon = 1
-			end
+			self:SetIcon(args.destName, 2)
 		end
 	elseif args:IsSpellID(123081) and args:IsPlayer() then
 		timerPungency:Start()
