@@ -16,8 +16,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Platform	= "%s flies to one of his platforms!",
-	Defeat		= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
+	Platform	= "단상",
+	Defeat		= "우리는 어두운 공허의 절망에 지지 않으리라. 우리가 죽는 것이 그분의 뜻이라면 그대로 따르리라."
 })
 
 ------------
@@ -49,7 +49,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"
+	Reinforcements		= "지원"
 })
 
 ------------
