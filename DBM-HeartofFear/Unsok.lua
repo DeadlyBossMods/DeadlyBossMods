@@ -20,7 +20,8 @@ mod:RegisterEventsInCombat(
 )
 
 --[[WoL Reg Expression
-(spellid = 45477 or spellid = 122540 or spellid = 122532 or spellid = 122348) and fulltype = SPELL_CAST_SUCCESS or (spellid =122784 or spellid =121949 or spellid = 122395 or spellid = 121994) and fulltype = SPELL_AURA_APPLIED or (spellid =122370 or spellid = 122540 or spellid = 122395 or spellid = 121994) and fulltype = SPELL_AURA_REMOVED or (spellid = 122408 or spellid = 122413 or spellid = 122398 or spellid = 122540) and fulltype = SPELL_CAST_START or fulltype = UNIT_DIED and (targetname = "Omegal" or targetname = "Shiramune")
+(spellid = 45477 or spellid = 122540 or spellid = 122532 or spellid = 122348) and fulltype = SPELL_CAST_SUCCESS or (spellid =122784 or spellid =121949 or spellid = 122395 or spellid = 121994) and fulltype = SPELL_AURA_APPLIED or (spellid =122370 or spellid = 122540 or spellid = 122395 or spellid = 121994) and fulltype = SPELL_AURA_REMOVED or (spellid = 122408 or spellid = 122413 or spellid = 122398 or spellid = 122540 or spellid = 122402) and fulltype = SPELL_CAST_START or fulltype = UNIT_DIED and (targetname = "Omegal" or targetname = "Shiramune")
+(spellid = 45477 or spellid = 122540) and fulltype = SPELL_CAST_SUCCESS or (spellid =122784 or spellid =121949 or spellid = 122395 or spellid = 121994) and fulltype = SPELL_AURA_APPLIED or (spellid =122370 or spellid = 122540 or spellid = 122395 or spellid = 121994) and fulltype = SPELL_AURA_REMOVED or (spellid = 122408 or spellid = 122413 or spellid = 122398 or spellid = 122540 or spellid = 122402) and fulltype = SPELL_CAST_START or fulltype = UNIT_DIED and (targetname = "Omegal" or targetname = "Shiramune")
 --]]
 --Boss
 local warnReshapeLife			= mod:NewTargetAnnounce(122784, 4)
@@ -82,7 +83,7 @@ function mod:OnCombatStart(delay)
 	timerReshapeLifeCD:Start(20-delay)
 	timerParasiticGrowthCD:Start(23.5-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader("Will Power")--This is a work in progress
+		DBM.InfoFrame:SetHeader(L.WillPower)--This is a work in progress
 		DBM.InfoFrame:Show(10, "playerpower", 1, ALTERNATE_POWER_INDEX)--At a point i need to add an arg that lets info frame show the 5 LOWEST not the 5 highest, instead of just showing 10
 	end
 end
@@ -108,6 +109,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specwarnAmberMonstrosity:Show()
 		timerMassiveStompCD:Start(20)
 		timerFlingCD:Start(33)
+		warnAmberExplosionSoon:Schedule(45.5)
+		timerAmberExplosionAMCD:Start(55.5)
 	elseif args:IsSpellID(122395) and Phase < 3 then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -138,7 +141,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFlingCD:Cancel()
 		timerAmberExplosionAMCD:Cancel()
 		warnAmberExplosionSoon:Cancel()
-		--He does NOT reset reshape live cd here, he finishes out last one first, THEN starts using new one.
+		--He does NOT reset reshape live cd here, he finishes outlast CD first, THEN starts using new one.
 	end
 end
 
