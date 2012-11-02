@@ -74,6 +74,9 @@ L:SetOptionLocalization({
 	InfoFrame					= "Show info frame for players will power (WIP)"
 })
 
+L:SetMiscLocalization({
+	WillPower					= "Will Power"
+})
 
 ------------
 -- Grand Empress Shek'zeer --

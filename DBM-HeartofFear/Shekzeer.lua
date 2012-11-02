@@ -26,6 +26,7 @@ local warnAmberTrap				= mod:NewSpellAnnounce(125826, 3)--Trap ready
 local warnTrapped				= mod:NewTargetAnnounce(125822, 1)--Trap used
 local warnFixate				= mod:NewTargetAnnounce(125390, 3, nil, false)--Spammy
 local warnAdvance				= mod:NewSpellAnnounce(125304, 4)
+local warnVisions				= mod:NewTargetAnnounce(124862, 4)--Visions of Demise
 
 local specwarnSonicDischarge	= mod:NewSpecialWarningSpell(123504, nil, nil, nil, true)
 local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 4)
@@ -36,6 +37,8 @@ local specwarnAmberTrap			= mod:NewSpecialWarningSpell(125826, false)
 local specwarnFixate			= mod:NewSpecialWarningYou(125390, false)--Could be spammy, make optional, will use info frame to display this more constructively
 local specWarnDispatch			= mod:NewSpecialWarningInterrupt(124077, mod:IsMelee())
 local specWarnAdvance			= mod:NewSpecialWarningSpell(125304)
+local specwarnVisions			= mod:NewSpecialWarningYou(124862)
+local yellVisions				= mod:NewYell(124862)
 
 local timerScreechCD			= mod:NewNextTimer(7, 123735)
 local timerCryOfTerror			= mod:NewTargetTimer(20, 123788, nil, mod:IsHealer())
@@ -50,6 +53,12 @@ mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
 local sentLowHP = {}
 local warnedLowHP = {}
+local visonsTargets = {}
+
+local function warnVisionsTargets()
+	warnVisions:Show(table.concat(visonsTargets, "<, >"))
+	table.wipe(visonsTargets)
+end
 
 function mod:OnCombatStart(delay)
 	timerScreechCD:Start(-delay)
@@ -57,6 +66,7 @@ function mod:OnCombatStart(delay)
 	timerPhase2:Start(-delay)
 	table.wipe(sentLowHP)
 	table.wipe(warnedLowHP)
+	table.wipe(visonsTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -101,6 +111,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specwarnFixate:Show()
 		end
+	elseif args:IsSpellID(124862) then
+		visonsTargets[#visonsTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specwarnVisions:Show()
+			yellVisions:Yell()
+		end
+		self:Unschedule(warnVisionsTargets)
+		self:Schedule(0.3, warnVisionsTargets)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
