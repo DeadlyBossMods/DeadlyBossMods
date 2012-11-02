@@ -66,7 +66,6 @@ local berserkTimer						= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("AmberPrisonIcons", true)
 
-local scansDone = 0
 local addsCount = 0
 local amberPrisonIcon = 2
 local strikeTarget = GetSpellInfo(123963)
@@ -85,80 +84,7 @@ local function warnWindBombTargets()
 	timerWindBombCD:Start()
 end
 
-local function getBossuId()
-	local uId
-	if UnitExists("boss1") or UnitExists("boss2") or UnitExists("boss3") or UnitExists("boss4") then
-		for i = 1, 4 do
-			if UnitName("boss"..i) == L.name then
-				uId = "boss"..i
-				break
-			end
-		end
-	else
-		for i = 1, DBM:GetGroupMembers() do
-			if UnitName("raid"..i.."target") == L.name and not UnitIsPlayer("raid"..i.."target") then
-				uId = "raid"..i.."target"
-				break
-			end			
-		end
-	end
-	return uId
-end
-
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check shannox's highest threat target
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	local uId = getBossuId()
-	if uId and UnitExists(uId.."target") and UnitDetailedThreatSituation(unit, uId) then
-		return true
-	end
-	return false
-end
-
-function mod:ScanHandler(SpellID, GUID, ScanComplete)
-	scansDone = scansDone + 1
-	local targetname = nil
-	for i=1, DBM:GetGroupMembers() do
-		if UnitGUID("raid"..i.."target") == GUID then
-			targetname = DBM:GetUnitFullName("raid"..i.."targettarget")
-			break
-		end
-	end
-	if UnitExists(targetname) then
-		local uId = DBM:GetRaidUnitId(targetname)
-		if isTank(uId) and not ScanComplete then--He's targeting a tank.
-			if scansDone < 12 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.05, "ScanHandler", SpellID, GUID)--Check multiple times to be sure it's not on someone other then tank.
-			else
-				self:ScanHandler(SpellID, GUID, true)--It's still on tank, force true isTank and activate else rule and warn trap is on tank.
-			end
-		else--He's not targeting a tank target (or isTank was set to true after 12 scans) so this has to be right target.
-			self:UnscheduleMethod("ScanHandler")--Unschedule all checks just to be sure none are running, we are done.
-			if SpellID == 122409 then
-			--	self:KorthikStrikeTarget(targetname)
-				print(targetname, SpellID)
-			else
-			--	self:WhirlingBladeTarget(targetname)
-				print(targetname, SpellID)
-			end
-		end
-	else--target was nil, lets schedule a rescan here too.
-		if scansDone < 12 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.05, "ScanHandler", SpellID, GUID)
-		end
---		print("Target scanning failed", SpellID)
-	end
-end
-
 function mod:OnCombatStart(delay)
-	scansDone = 0
 	addsCount = 0
 	amberPrisonIcon = 2
 	strikeWarned = false
@@ -167,12 +93,6 @@ function mod:OnCombatStart(delay)
 	timerWhirlingBladeCD:Start(35.5-delay)
 	timerRainOfBladesCD:Start(60-delay)
 	berserkTimer:Start(-delay)
-	DBM.InfoFrame:SetHeader("Kor'thik Strike Debug")--Temp frame. just need to see if unit aura works way i think it does and if timing is sufficent to avoid ugly target scanning. If it does, i can actually just do it like ragnaros meteors
-	DBM.InfoFrame:Show(1, "playerbaddebuff", 123963)
-end
-
-function mod:OnCombatEnd()
-	DBM.InfoFrame:Hide()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -242,9 +162,6 @@ function mod:SPELL_CAST_START(args)
 		warnQuickening:Show()
 		specWarnQuickening:Show(args.sourceName)
 		timerQuickeningCD:Start(36, args.sourceGUID)
-	elseif args:IsSpellID(122409) then
-		scansDone = 0
-		self:ScanHandler(122409, args.sourceGUID)
 	end
 end
 
@@ -284,9 +201,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 124850 and self:AntiSpam(2, 1) then--Whirling Blade (Throw Cast spellid)
 		specWarnWhirlingBlade:Show()
 		timerWhirlingBladeCD:Start()
-		local GUID = UnitGUID(uId)
-		scansDone = 0
-		self:ScanHandler(124850, GUID)
 --	"<173.1> [UNIT_SPELLCAST_SUCCEEDED] The Kor'thik [[boss4:Kor'thik Strike::0:123963]]", -- [10366]
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC8#Kor'thik Elite Blademaster#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10535]
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC7#Kor'thik Elite Blademaster#2632#8#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10536]
