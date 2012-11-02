@@ -26,7 +26,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "Show DBM Arrow when someone is affected by $spell:122949 ",
+	UnseenStrikeArrow	= "Show DBM Arrow when someone is affected by $spell:122949",
 	RangeFrame			= "Show range frame (8) for $spell:123175"
 })
 
@@ -57,6 +57,22 @@ L:SetMiscLocalization({
 -- Amber-Shaper Un'sok --
 ------------
 L= DBM:GetModLocalization(737)
+
+L:SetWarningLocalization({
+	specwarnWillPower			= "Low Will Power!",
+	specwarnAmberExplosionAM	= "%s - interrupt %s!"
+})
+
+L:SetTimerLocalization{
+	timerAmberExplosionAMCD		= "Next %s: %s"
+}
+
+L:SetOptionLocalization({
+	specwarnWillPower			= "Show special warning when will power is low in construct",
+	specwarnAmberExplosionAM	= "Show special warning to interrupt the Amber Monstrosity's $spell:122402",
+	timerAmberExplosionAMCD		= "Show timer for Amber Monstrosity's next $spell:122402",
+	InfoFrame					= "Show info frame for players will power (WIP)"
+})
 
 
 ------------
