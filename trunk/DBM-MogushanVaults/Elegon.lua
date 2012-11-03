@@ -49,6 +49,7 @@ mod:AddBoolOption("HealthFrame", false)
 
 local phase2Started = false
 local protectorCount = 0
+local powerCount = 0
 local closedCircuitTargets = {}
 local stunTargets = {}
 local stunIcon = 8
@@ -68,6 +69,7 @@ function mod:OnCombatStart(delay)
 	protectorCount = 0
 	stunIcon = 8
 	focusActivated = 0
+	powerCount = 0
 	table.wipe(closedCircuitTargets)
 	table.wipe(stunTargets)
 	timerBreathCD:Start(8-delay)
@@ -78,7 +80,8 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(124967) and not phase2Started then--Phase 2 begin/Phase 1 end
 		phase2Started = true--because if you aren't fucking up, you should get more then one draw power.
-		protectorCount = 0--better to reset protector Count on phase2.
+		protectorCount = 0
+		powerCount = 0
 		warnPhase2:Show()
 		timerBreathCD:Cancel()
 		timerProtectorCD:Cancel()	
@@ -92,8 +95,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOvercharged:Show(args.amount)
 		end
 	elseif args:IsSpellID(119387) then -- do not add other spellids.
-		warnDrawPower:Show(args.amount or 1)
-		specWarnDrawPower:Show(args.amount or 1)
+		powerCount = powerCount + 1
+		warnDrawPower:Show(powerCount)
+		specWarnDrawPower:Show(powerCount)
 	elseif args:IsSpellID(118310) then--Below 50% health
 		warnRadiatingEnergies:Show()
 		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.

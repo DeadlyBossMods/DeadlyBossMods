@@ -57,6 +57,26 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(737)
 
+L:SetWarningLocalization({
+	specwarnWillPower			= "의지력 낮음!",
+	specwarnAmberExplosionAM	= "%s : %s - 차단!"
+})
+
+L:SetTimerLocalization{
+	timerAmberExplosionAMCD		= "다음 %s: %s"
+}
+
+L:SetOptionLocalization({
+	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
+	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
+	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
+	InfoFrame					= "의지력 정보 프레임 보기 (현재 임시 적용)"
+})
+
+L:SetMiscLocalization({
+	WillPower					= "의지력"
+})
+
 ------------
 -- Grand Empress Shek'zeer --
 ------------
