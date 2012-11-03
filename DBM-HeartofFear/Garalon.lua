@@ -16,7 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
-	"SPELL_MISSED"
+	"SPELL_MISSED",
+	"RAID_BOSS_EMOTE"
 )
 
 --[[WoL Reg Expression (you can remove icy touch if you don't have a DK pull bosses, i use it for pull time)
@@ -36,6 +37,7 @@ local specwarnCrush				= mod:NewSpecialWarningSpell(122774, true, nil, nil, true
 local specwarnLeg				= mod:NewSpecialWarningSwitch("ej6270", mod:IsMelee())--If no legs are up (ie all dead), when one respawns, this special warning can be used to alert of a respawned leg and to switch back.
 local specwarnPheromoneTrail	= mod:NewSpecialWarningMove(123120)--Because this starts doing damage BEFORE the visual is there.
 
+local timerCrush				= mod:NewCastTimer(3.5, 122774)--Was 3 second, hotfix went live after my kill log, don't know what new hotfixed cast time is, 3.5, 4? Needs verification.
 local timerFuriousSwipeCD		= mod:NewCDTimer(8, 122735)
 local timerMendLegCD			= mod:NewCDTimer(30, 123495)
 local timerFury					= mod:NewBuffActiveTimer(30, 122754)
@@ -114,10 +116,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(122774) then
-		warnCrush:Show()
-		specwarnCrush:Show()
-	elseif args:IsSpellID(123495) then
+	if args:IsSpellID(123495) then
 		warnMendLeg:Show()
 		timerMendLegCD:Start()
 		if brokenLegs == 4 then--all his legs were broken when heal was cast, which means dps was on body.
@@ -132,3 +131,11 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+function mod:RAID_BOSS_EMOTE(msg)
+	if msg:find("spell:122774") then
+		warnCrush:Show()
+		specwarnCrush:Show()
+		timerCrush:Start()
+	end
+end
