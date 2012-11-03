@@ -9,10 +9,7 @@ mod:SetUsedIcons(5, 6, 7, 8)
 mod:SetMinSyncRevision(7751)
 
 -- Sometimes it fails combat detection on "combat". Use yell instead until the problem being founded.
---I'd REALLY like to see some transcriptor logs that prove your bug, i pulled this boss like 20 times, on 25 man, 100% functional engage trigger, not once did this mod fail to start, on 25 man or 10 man.
 --seems that combat detection fails only in lfr. (like DS Zonozz Void of Unmaking summon event.)
---"<102.8> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Gara'jal the Spiritbinder#0xF150EAEF00000F5A#elit
---"<103.1> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#It be dyin' time, now!#Gara'jal the Spiritbinder#####0#0##0#862##0#false#false", -- [291]
 mod:RegisterCombat("yell", L.Pull)
 
 mod:RegisterEventsInCombat(
