@@ -103,7 +103,7 @@ local timerArcaneVelocity			= mod:NewCastTimer(8, 116364)
 local timerShadowBurn				= mod:NewTargetTimer(20, 131792, nil, mod:IsTank())
 local timerShadowBurnCD				= mod:NewCDTimer(9, 131792, nil, mod:IsTank())
 local timerChainsOfShadowCD			= mod:NewCDTimer(6, 118783, nil, false)--6-10sec variation noted
-local timerSiphoningShieldCD		= mod:NewCDCountTimer(36, 117203)--36-38sec variation noted
+local timerSiphoningShieldCD		= mod:NewCDCountTimer(35, 117203)--35-38sec variation noted
 
 --Tank Abilities
 local timerReversalLightningFists	= mod:NewBuffFadesTimer(20, 118302)
@@ -350,7 +350,7 @@ function mod:OnSync(msg)
 		-- 10/13 01:11:24.437  YELL: Oh sage of the ages! Instill to me your arcane wisdom!
 		-- 10/13 01:11:36.671  SPELL_CAST_SUCCESS,0xF150EA690000478E,"",0x10a48,0x0,0x0000000000000000,nil,0x80000000,0x80000000,116417,"",0x40
 		timerArcaneResonanceCD:Start(12)
-		timerArcaneVelocityCD:Start(16.5, 1)--It's either this, or this +10. Not yet sure what causes the +10
+		timerArcaneVelocityCD:Start(14.5, 1)--It's either this, or this +10. Not yet sure what causes the +10
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
 		end
