@@ -30,7 +30,7 @@ local warnAmberPrison					= mod:NewTargetAnnounce(121881, 3)
 local warnCorrosiveResin				= mod:NewTargetAnnounce(122064, 3)
 local warnMending						= mod:NewCastAnnounce(122193, 4)
 local warnQuickening					= mod:NewCastAnnounce(122149, 4)
-local warnKorthikStrike					= mod:NewSpellAnnounce(123963, 3)--Target scanning does NOT work
+local warnKorthikStrike					= mod:NewTargetAnnounce(123963, 3)
 local warnWindBomb						= mod:NewTargetAnnounce(131830, 4)
 
 local specWarnWhirlingBlade				= mod:NewSpecialWarningSpell(121896, nil, nil, nil, true)
@@ -46,6 +46,7 @@ local specWarnCorrosiveResinPool		= mod:NewSpecialWarningMove(122125)
 local specWarnMending					= mod:NewSpecialWarningInterrupt(122193)--Whoever is doing this or feels responsible should turn it on.
 local specWarnQuickening				= mod:NewSpecialWarningSpell(122149, false)--^^
 local specWarnKorthikStrike				= mod:NewSpecialWarningYou(123963)
+local specWarnKorthikStrikeOther		= mod:NewSpecialWarningTarget(123963, mod:IsHealer())
 local yellKorthikStrike					= mod:NewYell(123963)
 local specWarnWindBomb					= mod:NewSpecialWarningMove(131830)
 local yellWindBomb						= mod:NewYell(131830)
@@ -72,6 +73,14 @@ local strikeTarget = GetSpellInfo(123963)
 local strikeWarned = false
 local amberPrisonTargets = {}
 local windBombTargets = {}
+local guids = {}
+local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
+local function buildGuidTable()
+	table.wipe(guids)
+	for i = 1, DBM:GetGroupMembers() do
+		guids[UnitGUID("raid"..i) or "none"] = GetRaidRosterInfo(i)
+	end
+end
 
 local function warnAmberPrisonTargets()
 	warnAmberPrison:Show(table.concat(amberPrisonTargets, "<, >"))
@@ -205,7 +214,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC8#Kor'thik Elite Blademaster#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10535]
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC7#Kor'thik Elite Blademaster#2632#8#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10536]
 	elseif spellId == 123963 and self:AntiSpam(2, 2) then--Kor'thik Strike Trigger, only triggered once, then all non CCed Kor'thik cast the strike about 2 sec later
-		warnKorthikStrike:Show()
 		timerKorthikStrikeCD:Start()
 	end
 end
@@ -216,7 +224,22 @@ function mod:UNIT_AURA(uId)
 		specWarnKorthikStrike:Show()
 		yellKorthikStrike:Yell()
 		strikeWarned = true
+		self:SendSync("KorthikStrikeTarget", UnitGUID("player"))--Screw target scanning, this way is much better, never wrong.
 	elseif not UnitDebuff("player", strikeTarget) and strikeWarned then--reset warned status if you don't have debuff
 		strikeWarned = false
+	end
+end
+
+function mod:OnSync(msg, guid)
+	--Make sure we build a table if we DCed mid fight, before we try comparing any syncs to that table.
+	if not guidTableBuilt then
+		buildGuidTable()
+		guidTableBuilt = true
+	end
+	if msg == "KorthikStrikeTarget" and guids[guid] then
+		warnKorthikStrike:Show(guids[guid])
+		if guid ~= UnitGUID("player") then--make sure YOU aren't target before warning "other"
+			specWarnKorthikStrikeOther:Show(guids[guid])
+		end
 	end
 end
