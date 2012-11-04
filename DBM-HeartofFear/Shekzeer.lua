@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(62837)--62847 Dissonance Field, 63591 Kor'thik Reaver, 63589 Set'thik Windblade
 mod:SetModelID(42730)
 mod:SetZone()
+mod:SetUsedIcons(1, 2)
 
 mod:RegisterCombat("combat")
 
@@ -24,6 +25,7 @@ local warnSonicDischarge		= mod:NewSoonAnnounce(123504, 4)--Iffy reliability but
 local warnRetreat				= mod:NewSpellAnnounce(125098, 4)
 local warnAmberTrap				= mod:NewSpellAnnounce(125826, 3)--Trap ready
 local warnTrapped				= mod:NewTargetAnnounce(125822, 1)--Trap used
+local warnStickyResin			= mod:NewTargetAnnounce(124097, 3)
 local warnFixate				= mod:NewTargetAnnounce(125390, 3, nil, false)--Spammy
 local warnAdvance				= mod:NewSpellAnnounce(125304, 4)
 local warnVisions				= mod:NewTargetAnnounce(124862, 4)--Visions of Demise
@@ -34,6 +36,8 @@ local specWarnEyesOther			= mod:NewSpecialWarningTarget(123707, mod:IsTank())
 local specwarnCryOfTerror		= mod:NewSpecialWarningYou(123788)
 local specWarnRetreat			= mod:NewSpecialWarningSpell(125098)
 local specwarnAmberTrap			= mod:NewSpecialWarningSpell(125826, false)
+local specwarnStickyResin		= mod:NewSpecialWarningYou(124097)
+local yellStickyResin			= mod:NewYell(124097)
 local specwarnFixate			= mod:NewSpecialWarningYou(125390, false)--Could be spammy, make optional, will use info frame to display this more constructively
 local specWarnDispatch			= mod:NewSpecialWarningInterrupt(124077, mod:IsMelee())
 local specWarnAdvance			= mod:NewSpecialWarningSpell(125304)
@@ -50,10 +54,12 @@ local timerPhase2				= mod:NewNextTimer(151, 125098)--152 until trigger, but pro
 
 mod:AddBoolOption("InfoFrame")--On by default because these do more then just melee, they interrupt spellcasting (bad for healers)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
+mod:AddBoolOption("StickyResinIcons", true)
 
 local sentLowHP = {}
 local warnedLowHP = {}
 local visonsTargets = {}
+local resinIcon = 2
 
 local function warnVisionsTargets()
 	warnVisions:Show(table.concat(visonsTargets, "<, >"))
@@ -61,6 +67,7 @@ local function warnVisionsTargets()
 end
 
 function mod:OnCombatStart(delay)
+	resinIcon = 2
 	timerScreechCD:Start(-delay)
 	timerEyesCD:Start(-delay)
 	timerPhase2:Start(-delay)
@@ -119,6 +126,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnVisionsTargets)
 		self:Schedule(0.3, warnVisionsTargets)
+	elseif args:IsSpellID(124097) then
+		warnStickyResin:Show(args.destName)
+		if args:IsPlayer() then
+			specwarnStickyResin:Show()
+			yellStickyResin:Yell()
+		end
+		if self.Options.StickyResinIcons then
+			self:SetIcon(args.destName, resinIcon)
+			if resinIcon == 2 then
+				resinIcon = 1
+			else
+				resinIcon = 2
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -126,6 +147,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(123788) then
 		timerCryOfTerror:Cancel(args.destName)
+	elseif args:IsSpellID(124097) then
+		if self.Options.StickyResinIcons then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
