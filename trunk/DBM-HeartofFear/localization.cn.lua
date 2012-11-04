@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/27/2012
+-- Last update: 11/04/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -62,6 +62,29 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(737)
 
+L:SetWarningLocalization({
+	warnAmberExplosion			= "%s 正在施放 %s",
+	warnInterruptsAvailable		= "可打断 %s: %s",
+	specwarnWillPower			= "意志低下！",
+	specwarnAmberExplosionYou	= "打断%s！"--Struggle for Control interrupt.
+})
+
+L:SetTimerLocalization{
+	timerAmberExplosionAMCD		= "下一次%s: %s"
+}
+
+L:SetOptionLocalization({
+	warnAmberExplosion			= "警报：$spell:122398正在施放，并警报来源",
+	warnInterruptsAvailable		= "警报：可使用$spell:122402打断琥珀打击的成员",
+	specwarnWillPower			= "特殊警报：在畸形体中意志低下时",
+	specwarnAmberExplosionYou	= "特殊警报：打断自己的$spell:122398",
+	timerAmberExplosionAMCD		= "计时条：琥珀畸怪的下一次$spell:122402",
+	InfoFrame					= "信息框：意志值（功能开发中）"
+})
+
+L:SetMiscLocalization({
+	WillPower					= "意志"
+})
 
 ------------
 -- Grand Empress Shek'zeer --
