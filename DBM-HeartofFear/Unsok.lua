@@ -104,7 +104,7 @@ function mod:OnCombatStart(delay)
 	timerParasiticGrowthCD:Start(23.5-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.WillPower)--This is a work in progress
-		DBM.InfoFrame:Show(10, "playerpower", 1, ALTERNATE_POWER_INDEX)--At a point i need to add an arg that lets info frame show the 5 LOWEST not the 5 highest, instead of just showing 10
+		DBM.InfoFrame:Show(5, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, true)--At a point i need to add an arg that lets info frame show the 5 LOWEST not the 5 highest, instead of just showing 10
 	end
 end
 
@@ -168,7 +168,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFlingCD:Cancel()
 		timerAmberExplosionAMCD:Cancel()
 		warnAmberExplosionSoon:Cancel()
-		--He does NOT reset reshape live cd here, he finishes outlast CD first, THEN starts using new one.
+		--He does NOT reset reshape live cd here, he finishes out last CD first, THEN starts using new one.
 	end
 end
 
