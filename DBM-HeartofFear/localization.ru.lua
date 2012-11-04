@@ -1,4 +1,5 @@
-﻿local L
+﻿if GetLocale() ~= "ruRU" then return end
+local L
 
 ------------
 -- Imperial Vizier Zor'lok --
