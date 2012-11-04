@@ -37,7 +37,8 @@ local timerTempestSlashCD				= mod:NewNextTimer(15.5, 125692)
 local timerOverwhelmingAssault			= mod:NewTargetTimer(45, 123474, nil, mod:IsTank())
 local timerOverwhelmingAssaultCD		= mod:NewCDTimer(20.5, 123474, nil, mod:IsTank() or mod:IsHealer())--Only ability with a variation in 2 pulls so far. He will use every 20.5 seconds unless he's casting something else, then it can be delayed as much as an extra 15-20 seconds. TODO: See if there is a way to detect when variation is going to occur and call update timer.
 local timerWindStepCD					= mod:NewCDTimer(25, 123175)
-local timerUnseenStrikeCD				= mod:NewNextTimer(61, 123017)
+local timerUnseenStrike					= mod:NewCastTimer(5, 123017)
+local timerUnseenStrikeCD				= mod:NewCDTimer(55, 123017) -- this spell seems to have 2 cooldowns. some fight 55, some  61. 
 local timerIntensifyCD					= mod:NewNextTimer(60, 123471)
 local timerBladeTempest					= mod:NewBuffActiveTimer(9, 125310)
 local timerBladeTempestCD				= mod:NewNextTimer(60, 125310)--Always cast after immediately intensify since they essencially have same CD
@@ -49,7 +50,24 @@ local soundBladeTempest					= mod:NewSound(125310)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())--For Wind Step
 mod:AddBoolOption("UnseenStrikeArrow")
 
+local emoteFired = false
+
+local function checkUnseenEmote()
+	if not emoteFired then
+		warnUnseenStrike = mod:NewSpellAnnounce(123017, 4)
+		specWarnUnseenStrike = mod:NewSpecialWarningSpell(122949)
+		warnUnseenStrike:Show()
+		specWarnUnseenStrike:Show()
+		timerUnseenStrike:Start(4.5)
+		timerUnseenStrikeCD:Start(54.5)
+		-- recover Unseen Strike Target Warning
+		warnUnseenStrike = mod:NewTargetAnnounce(123017, 4)
+		specWarnUnseenStrike = mod:NewSpecialWarningTarget(122949)
+	end
+end
+
 function mod:OnCombatStart(delay)
+	emoteFired = false
 	timerTempestSlashCD:Start(10-delay)
 	timerOverwhelmingAssaultCD:Start(15.5-delay)--Possibly wrong, the cd was shortened since beta, need better log with engage timestamp
 	timerWindStepCD:Start(20.5-delay)
@@ -86,6 +104,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnOverwhelmingAssaultOther:Show(args.destName)--So nudge you to taunt it off other tank already.
 			end
 		end
+	elseif args:IsSpellID(123471) then
+		warnIntensify:Show(args.destName, args.amount or 1)
+		timerIntensifyCD:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -117,8 +138,10 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:122949") then--Does not show in combat log except for after it hits. IT does fire a UNIT_SPELLCAST event but has no target info. The only way to get target is emote.
+		emoteFired = true
 		warnUnseenStrike:Show(target)
 		specWarnUnseenStrike:Show(target)
+		timerUnseenStrike:Start()
 		timerUnseenStrikeCD:Start()
 		if target == UnitName("player") then
 			yellUnseenStrike:Yell()
@@ -126,6 +149,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if self.Options.UnseenStrikeArrow then
 			DBM.Arrow:ShowRunTo(target, 5)
 		end
+		self:Schedule(5, function()
+			emoteFired = false
+		end)
 	end
 end
 
@@ -143,5 +169,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnStormUnleashed:Show()
 		specWarnStormUnleashed:Show()
 --		timerStormUnleashedCD:Show()--Timer for when he switches sides, there is no yell, or trigger in CLEU or transcriptor for it, need to figure out timing based on using good ole diagnostic /yell
+	elseif spellId == 122949 and self:AntiSpam(2, 3) then-- sometimes Unseen Strike emote not fires. bliz bug.
+		self:Schedule(0.5, checkUnseenEmote)
 	end
 end

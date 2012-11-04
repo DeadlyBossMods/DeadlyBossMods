@@ -16,8 +16,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Platform	= "단상",
-	Defeat		= "우리는 어두운 공허의 절망에 지지 않으리라. 우리가 죽는 것이 그분의 뜻이라면 그대로 따르리라."
+	Platform	= "황실 장로 조르로크가 단상으로 날아갑니다!",
+	Defeat		= "우리는 어두운 공허의 절망에 지지 않으리라. 우리가 죽는 것이 그분의 뜻이라면, 그대로 따르리라."
 })
 
 ------------
@@ -58,8 +58,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnAmberExplosion			= "%s 주문시전: %s",
+	warnInterruptsAvailable		= "%s의 주문 차단 가능: %s",
 	specwarnWillPower			= "의지력 낮음!",
-	specwarnAmberExplosionAM	= "%s : %s - 차단!"
+	specwarnAmberExplosionYou	= "당신에게 %s 사용 - 차단!"
 })
 
 L:SetTimerLocalization{
@@ -67,8 +69,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
+	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
+	warnInterruptsAvailable		= "호박석 괴수 탑승자중, 누가 $spell:122402 주문을 차단할 수 있는지 알림 보기",
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
-	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
+	specwarnAmberExplosionYou	= "자신의 호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
 	InfoFrame					= "의지력 정보 프레임 보기 (현재 임시 적용)"
 })
