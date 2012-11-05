@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-local warnScreech				= mod:NewSpellAnnounce(123735, 3)
+local warnScreech				= mod:NewSpellAnnounce(123735, 3, nil, mod:IsRanged())
 local warnCryOfTerror			= mod:NewTargetAnnounce(123788, 3, nil, mod:IsHealer())
 local warnEyes					= mod:NewStackAnnounce(123707, 2, nil, mod:IsTank())
 local warnSonicDischarge		= mod:NewSoonAnnounce(123504, 4)--Iffy reliability but better then nothing i suppose.
@@ -44,9 +44,9 @@ local specWarnAdvance			= mod:NewSpecialWarningSpell(125304)
 local specwarnVisions			= mod:NewSpecialWarningYou(124862)
 local yellVisions				= mod:NewYell(124862)
 
-local timerScreechCD			= mod:NewNextTimer(7, 123735)
+local timerScreechCD			= mod:NewNextTimer(7, 123735, nil, mod:IsRanged())
 local timerCryOfTerror			= mod:NewTargetTimer(20, 123788, nil, mod:IsHealer())
-local timerCryOfTerrorCD		= mod:NewCDTimer(25, 123788)
+local timerCryOfTerrorCD		= mod:NewCDTimer(24, 123788)
 local timerEyes					= mod:NewTargetTimer(30, 123707, nil, mod:IsTank())
 local timerEyesCD				= mod:NewNextTimer(12, 123707, nil, mod:IsTank())
 local timerPhase1				= mod:NewNextTimer(156.4, 125304)--156.4 til ENGAGE fires and boss is out, 157.4 until "advance" fires though. But 156.4 is more accurate timer
