@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
@@ -61,6 +62,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFury:Show(args.destName, args.amount or 1)
 		timerFury:Start()
 	elseif args:IsSpellID(122786) and args:GetDestCreatureID() == 63191 then--This one also hits both the leg and the boss, so filter second one here as well.
+		-- this warn seems not works? needs review.
 		warnBrokenLeg:Show(args.destName, args.amount or 1)
 	elseif args:IsSpellID(122835) then
 		warnPheromones:Show(args.destName)
@@ -95,9 +97,9 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(122786) then
+	if args:IsSpellID(122786) and args:GetDestCreatureID() == 63191 then
 		brokenLegs = (args.amount or 0)
-		warnBrokenLeg:Show(brokenLegs)
+		warnBrokenLeg:Show(args.destName, brokenLegs)
 	elseif args:IsSpellID(122835) then
 		if self.Options.PheromonesIcon then
 			self:SetIcon(args.destName, 0)
