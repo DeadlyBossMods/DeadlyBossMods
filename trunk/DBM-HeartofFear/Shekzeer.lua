@@ -46,9 +46,9 @@ local yellVisions				= mod:NewYell(124862)
 
 local timerScreechCD			= mod:NewNextTimer(7, 123735, nil, mod:IsRanged())
 local timerCryOfTerror			= mod:NewTargetTimer(20, 123788, nil, mod:IsHealer())
-local timerCryOfTerrorCD		= mod:NewCDTimer(24, 123788)
+local timerCryOfTerrorCD		= mod:NewCDTimer(25, 123788)
 local timerEyes					= mod:NewTargetTimer(30, 123707, nil, mod:IsTank())
-local timerEyesCD				= mod:NewNextTimer(12, 123707, nil, mod:IsTank())
+local timerEyesCD				= mod:NewNextTimer(11, 123707, nil, mod:IsTank())
 local timerPhase1				= mod:NewNextTimer(156.4, 125304)--156.4 til ENGAGE fires and boss is out, 157.4 until "advance" fires though. But 156.4 is more accurate timer
 local timerPhase2				= mod:NewNextTimer(151, 125098)--152 until trigger, but probalby 150 or 151 til adds are targetable.
 
