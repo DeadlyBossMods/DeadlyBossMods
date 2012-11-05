@@ -59,7 +59,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
-	warnAmberExplosion			= "%s is casting %s",
+	warnAmberExplosion			= ">%s< is casting %s",
 	warnInterruptsAvailable		= "Interupts available for %s: %s",
 	specwarnWillPower			= "Low Will Power!",
 	specwarnAmberExplosionYou	= "Interrupt YOUR %s!"--Struggle for Control interrupt.
@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 	specwarnWillPower			= "Show special warning when will power is low in construct",
 	specwarnAmberExplosionYou	= "Show special warning to interrupt your own $spell:122398",
 	timerAmberExplosionAMCD		= "Show timer for Amber Monstrosity's next $spell:122402",
-	InfoFrame					= "Show info frame for players will power (WIP)"
+	InfoFrame					= "Show info frame for players will power"
 })
 
 L:SetMiscLocalization({
