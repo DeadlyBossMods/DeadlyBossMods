@@ -42,7 +42,6 @@ local timerUnseenStrikeCD				= mod:NewCDTimer(55, 123017) -- this spell seems to
 local timerIntensifyCD					= mod:NewNextTimer(60, 123471)
 local timerBladeTempest					= mod:NewBuffActiveTimer(9, 125310)
 local timerBladeTempestCD				= mod:NewNextTimer(60, 125310)--Always cast after immediately intensify since they essencially have same CD
-local timerStormUnleashedCD				= mod:NewCDTimer(85, 123814)--experimental. needs review.
 
 local berserkTimer						= mod:NewBerserkTimer(480)
 
@@ -174,9 +173,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerBladeTempestCD:Cancel()
 		warnStormUnleashed:Show()
 		specWarnStormUnleashed:Show()
-		timerStormUnleashedCD:Start()--Timer for when he switches sides, there is no yell, or trigger in CLEU or transcriptor for it, need to figure out timing based on using good ole diagnostic /yell
-	elseif spellId == 123810 then -- very very very experimental
-		timerStormUnleashedCD:Start()
 	end
 end
 
