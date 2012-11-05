@@ -42,7 +42,7 @@ local warnFling					= mod:NewSpellAnnounce(122413, 3)--think this always does hi
 local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
 --Boss
-local specwarnAmberScalpel		= mod:NewSpecialWarningSpell(121994, nil, nil, nil, true)
+local specwarnAmberScalpel		= mod:NewSpecialWarningSpell(121994, not mod:IsTank())
 local specwarnReshape			= mod:NewSpecialWarningYou(122784)
 local specwarnParasiticGrowth	= mod:NewSpecialWarningTarget(121949, mod:IsHealer())
 --Construct
@@ -72,6 +72,8 @@ local timerStruggleForControl	= mod:NewTargetTimer(5, 122395)
 local timerMassiveStompCD		= mod:NewCDTimer(18, 122540)--18-25 seconds variation
 local timerFlingCD				= mod:NewCDTimer(25, 122413)--25-40sec variation.
 local timerAmberExplosionAMCD	= mod:NewTimer(49, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
+
+local countdownAmberExplosionAM	= mod:NewCountdown(49, 122402)
 
 mod:AddBoolOption("InfoFrame", true)
 
@@ -135,6 +137,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(45.5)
 		timerAmberExplosionAMCD:Start(55.5, amberExplosion, Monstrosity)
+		countdownAmberExplosionAM:Start(55.5)
 	elseif args:IsSpellID(122395) and Phase < 3 then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -172,6 +175,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMassiveStompCD:Cancel()
 		timerFlingCD:Cancel()
 		timerAmberExplosionAMCD:Cancel()
+		countdownAmberExplosionAM:Cancel()
 		warnAmberExplosionSoon:Cancel()
 		--He does NOT reset reshape live cd here, he finishes out last CD first, THEN starts using new one.
 	end
@@ -213,6 +217,7 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(39)
 		timerAmberExplosionAMCD:Start(49, args.spellName, args.sourceName)
+		countdownAmberExplosionAM:Start(49)
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
 		specwarnMassiveStomp:Show()
@@ -229,7 +234,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnLivingAmber:Show()
 	elseif args:IsSpellID(121994) then
 		warnAmberScalpel:Show()
-		specwarnAmberScalpel:Show()
+		if not playerIsConstruct then--If your a construct you don't need to concern yourself with amber scalpel. should help reduce spam
+			specwarnAmberScalpel:Show()
+		end
 	elseif args:IsSpellID(122532) then
 		Puddles = Puddles + 1
 		warnBurningAmber:Show(Puddles)
