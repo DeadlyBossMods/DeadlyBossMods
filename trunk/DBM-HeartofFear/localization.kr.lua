@@ -58,7 +58,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
-	warnAmberExplosion			= "%s 주문시전: %s",
+	warnAmberExplosion			= ">%s< 주문시전: %s",
 	warnInterruptsAvailable		= "%s의 주문 차단 가능: %s",
 	specwarnWillPower			= "의지력 낮음!",
 	specwarnAmberExplosionYou	= "당신에게 %s 사용 - 차단!"
@@ -74,7 +74,7 @@ L:SetOptionLocalization({
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
 	specwarnAmberExplosionYou	= "자신의 호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
-	InfoFrame					= "의지력 정보 프레임 보기 (현재 임시 적용)"
+	InfoFrame					= "의지력 정보 프레임 보기"
 })
 
 L:SetMiscLocalization({
