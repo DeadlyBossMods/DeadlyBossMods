@@ -79,6 +79,7 @@ local Phase = 1
 local Puddles = 0
 local Constructs = 0
 local playerIsConstruct = false
+local warnedWill = false
 local lastStrike = 0
 local Monstrosity = EJ_GetSectionInfo(6254)
 local MutatedConstruct = EJ_GetSectionInfo(6249)
@@ -93,6 +94,7 @@ local function buildGuidTable()
 end
 
 function mod:OnCombatStart(delay)
+	warnedWill = true--avoid wierd bug on pull
 	buildGuidTable()
 	Phase = 1
 	Puddles = 0
@@ -131,7 +133,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMassiveStompCD:Start(20)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(45.5)
-		timerAmberExplosionAMCD:Start(55.5)
+		timerAmberExplosionAMCD:Start(55.5, GetSpellInfo(122402), Monstrosity)
 	elseif args:IsSpellID(122395) and Phase < 3 then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -140,6 +142,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnReshapeLife:Show(args.destName)
 		if args:IsPlayer() then
 			playerIsConstruct = true
+			warnedWill = false
 			specwarnReshape:Show()
 		end
 		if Phase < 3 then
@@ -208,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(39)
-		timerAmberExplosionAMCD:Start(49, args.sourceName, args.sourceGUID)
+		timerAmberExplosionAMCD:Start(49, args.spellName, args.sourceName)
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
 		specwarnMassiveStomp:Show()
@@ -255,6 +258,7 @@ function mod:UNIT_POWER(uId)
 end
 
 local function warnAmberExplosionCast(SpellId)
+--	print(SpellId)
 	if #canInterrupt == 0 then--No interupts, warn the raid to prep for aoe damage with beware! alert.
 		if SpellId == 122402 then
 			specwarnAmberExplosion:Show(Monstrosity)
@@ -277,6 +281,7 @@ function mod:OnSync(msg, guid, SpellId)
 		guidTableBuilt = true
 	end
 	if msg == "InterruptAvailable" and guids[guid] and SpellId then
+--		print("interuptsync: ", guids[guid])
 		canInterrupt[#canInterrupt + 1] = guids[guid]
 		self:Unschedule(warnAmberExplosionCast)
 		self:Schedule(0.3, warnAmberExplosionCast, SpellId)
