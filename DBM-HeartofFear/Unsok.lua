@@ -189,7 +189,7 @@ function mod:SPELL_CAST_START(args)
 				if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
 					specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
 					if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-						self:SendSync("InterruptAvailable", UnitGUID("player"), 122398)
+						self:SendSync("InterruptAvailable", 122398)
 					end
 				end
 			end
@@ -207,7 +207,7 @@ function mod:SPELL_CAST_START(args)
 			if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
 				specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-					self:SendSync("InterruptAvailable", UnitGUID("player"), 122402)
+					self:SendSync("InterruptAvailable", 122402)
 				end
 			end
 		end
@@ -265,33 +265,25 @@ function mod:UNIT_POWER(uId)
 	end
 end
 
-local function warnAmberExplosionCast(SpellId)
---	print(SpellId)
+local function warnAmberExplosionCast(spellId)
 	if #canInterrupt == 0 then--No interupts, warn the raid to prep for aoe damage with beware! alert.
-		if SpellId == 122402 then
-			specwarnAmberExplosion:Show(Monstrosity)
-		else
-			specwarnAmberExplosion:Show(MutatedConstruct)
-		end
+		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
-		if SpellId == 122402 then
-			warnInterruptsAvailable:Show(Monstrosity, table.concat(canInterrupt, "<, >"))
-		else
-			warnInterruptsAvailable:Show(MutatedConstruct, table.concat(canInterrupt, "<, >"))
-		end
+		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
 end
 
-function mod:OnSync(msg, guid, SpellId)
+function mod:OnSync(msg, spellId, sender)
 	if not guidTableBuilt then
 		buildGuidTable()
 		guidTableBuilt = true
 	end
-	if msg == "InterruptAvailable" and guids[guid] and SpellId then
---		print("interuptsync: ", guids[guid])
+	spellId = tonumber(spellId or "")
+	local guid = sender and DBM:GetRaidUnitId(sender) or UnitGUID("player")
+	if msg == "InterruptAvailable" and guids[guid] and spellId then
 		canInterrupt[#canInterrupt + 1] = guids[guid]
 		self:Unschedule(warnAmberExplosionCast)
-		self:Schedule(0.3, warnAmberExplosionCast, SpellId)
+		self:Schedule(0.3, warnAmberExplosionCast, spellId)
 	end
 end
