@@ -9,9 +9,13 @@ mod:SetUsedIcons(1, 2)
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
+-- CC can be cast before combat. So needs to seperate SPELL_AURA_APPLIED for pre-used CCs before combat.
+mod:RegisterEvents(
 	"SPELL_AURA_REFRESH",
+	"SPELL_AURA_APPLIED"
+)
+
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
@@ -25,7 +29,7 @@ mod:RegisterEventsInCombat(
 local warnWhirlingBlade					= mod:NewTargetAnnounce(121896, 4)--Target scanning not tested
 local warnRainOfBlades					= mod:NewSpellAnnounce(122406, 4)
 local warnRecklessness					= mod:NewTargetAnnounce(125873, 3)
-local warnImpalingSpear					= mod:NewPreWarnAnnounce(125873, 5, 3)--Pre warn your CC is about to break. Maybe need to localize it later to better explain what option is for.
+--local warnImpalingSpear					= mod:NewPreWarnAnnounce(125873, 5, 3)--Pre warn your CC is about to break. Maybe need to localize it later to better explain what option is for.
 local warnAmberPrison					= mod:NewTargetAnnounce(121881, 3)
 local warnCorrosiveResin				= mod:NewTargetAnnounce(122064, 3)
 local warnMending						= mod:NewCastAnnounce(122193, 4)
@@ -64,6 +68,8 @@ local timerKorthikStrikeCD				= mod:NewCDTimer(32, 123963)--^^
 local timerWindBombCD					= mod:NewCDTimer(6, 131830)--^^
 
 local berserkTimer						= mod:NewBerserkTimer(480)
+
+local countdownImpalingSpear			= mod:NewCountdown(49, 122224) -- like Crossed Over, warns 1 sec earlier.
 
 mod:AddBoolOption("AmberPrisonIcons", true)
 
@@ -106,7 +112,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(122224) and args.sourceName == UnitName("player") then
-		warnImpalingSpear:Schedule(45)
+--		warnImpalingSpear:Schedule(45)
+		countdownImpalingSpear:Start()
 		timerImpalingSpear:Start(args.destName)
 	elseif args:IsSpellID(121881) then--Not a mistake, 121881 is targeting spellid.
 		amberPrisonTargets[#amberPrisonTargets + 1] = args.destName
@@ -145,7 +152,8 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(122224) and args.sourceName == UnitName("player") then
-		warnImpalingSpear:Cancel()
+--		warnImpalingSpear:Cancel()
+		countdownImpalingSpear:Cancel()
 		timerImpalingSpear:Cancel(args.destName)
 	elseif args:IsSpellID(121885) and self.Options.AmberPrisonIcons then--Not a mistake, 121885 is frozon spellid
 		self:SetIcon(args.destName, 0)

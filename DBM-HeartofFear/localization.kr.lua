@@ -87,10 +87,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetOptionLocalization({
-	InfoFrame		= "$spell:125390 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
-	RangeFrame		= "$spell:123735 주문의 영향을 받은 경우 거리 프레임 표시(5m)"
+	InfoFrame			= "$spell:125390 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
+	RangeFrame			= "$spell:123735 주문의 영향을 받은 경우 거리 프레임 표시(5m)",
+	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
 })
 
 L:SetMiscLocalization({
-	PlayerDebuffs	= "시선 집중 대상"
+	PlayerDebuffs		= "시선 집중 대상"
 })
