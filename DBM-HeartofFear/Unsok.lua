@@ -81,6 +81,7 @@ local Constructs = 0
 local playerIsConstruct = false
 local warnedWill = false
 local lastStrike = 0
+local amberExplosion = GetSpellInfo(122402)
 local Monstrosity = EJ_GetSectionInfo(6254)
 local MutatedConstruct = EJ_GetSectionInfo(6249)
 local canInterrupt = {}
@@ -133,7 +134,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMassiveStompCD:Start(20)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(45.5)
-		timerAmberExplosionAMCD:Start(55.5, GetSpellInfo(122402), Monstrosity)
+		timerAmberExplosionAMCD:Start(55.5, amberExplosion, Monstrosity)
 	elseif args:IsSpellID(122395) and Phase < 3 then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
