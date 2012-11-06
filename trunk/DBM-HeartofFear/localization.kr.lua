@@ -59,18 +59,18 @@ L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
 	warnAmberExplosion			= ">%s< 주문시전: %s",
-	warnInterruptsAvailable		= "%s의 주문 차단 가능: %s",
+	warnInterruptsAvailable		= "%s의 호박석 폭발 차단 가능: %s",
 	specwarnWillPower			= "의지력 낮음!",
 	specwarnAmberExplosionYou	= "당신에게 %s 사용 - 차단!"
 })
 
 L:SetTimerLocalization{
-	timerAmberExplosionAMCD		= "다음 %s: %s"
+	timerAmberExplosionAMCD		= "%s 대기시간: %s"
 }
 
 L:SetOptionLocalization({
 	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
-	warnInterruptsAvailable		= "호박석 괴수 탑승자중, 누가 $spell:122402 주문을 차단할 수 있는지 알림 보기",
+	warnInterruptsAvailable		= "누가 $spell:122402 주문을 차단할 수 있는지에 대한 알림 보기",
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
 	specwarnAmberExplosionYou	= "자신의 호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
