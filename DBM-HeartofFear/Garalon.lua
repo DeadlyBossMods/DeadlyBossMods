@@ -89,6 +89,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(123081) and args:IsPlayer() then
 		if self:IsDifficulty("normal25", "heroic25") then--Is it also 4 min on LFR?
 			timerPungency:Start(240)
+		elseif self:IsDifficulty("lfr25") then
+			timerPungency:Start(20)
 		else
 			timerPungency:Start()
 		end
