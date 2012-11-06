@@ -59,6 +59,34 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(737)
 
+L:SetWarningLocalization({
+	warnAmberExplosion			= ">%s< кастует %s",
+	warnInterruptsAvailable		= "Сбить %s могут: %s",
+	specwarnWillPower			= "Низкая сила воли!",
+	specwarnAmberExplosionYou	= "Сбейте СВОЙ %s!",--Struggle for Control interrupt.
+	specwarnAmberExplosionAM	= "%s: Interrupt %s!",--Amber Montrosity
+	specwarnAmberExplosionOther	= "%s: Interrupt %s!"--Amber Montrosity	
+})
+
+L:SetTimerLocalization{
+	timerAmberExplosionAMCD		= "%s CD: %s"
+}
+
+L:SetOptionLocalization({
+	warnAmberExplosion			= "Предупреждать (с указанием источника) о начале применения $spell:122398",
+	warnInterruptsAvailable		= "Показывать кто может сбить $spell:122402",
+	specwarnWillPower			= "Спец-предупреждение, когда уровень силы воли слишком низок",
+	specwarnAmberExplosionYou	= "Спец-предупреждение для прерывания своего $spell:122398",
+	timerAmberExplosionAMCD		= "Отсчет времени до следующего $spell:122402 у Янтарного чудовища",
+	specwarnAmberExplosionAM	= "Спец-предупреждение для прерывания $spell:122402 у Янтарного чудовища",
+	specwarnAmberExplosionOther	= "Спец-предупреждение для прерываения $spell:122398 у Мутировавшего организма",	
+	InfoFrame					= "Информационное окно для игроков с низким уровнем силы воли"
+})
+
+L:SetMiscLocalization({
+	WillPower					= "Сила воли"
+})
+
 
 ------------
 -- Grand Empress Shek'zeer --
@@ -67,9 +95,11 @@ L= DBM:GetModLocalization(743)
 
 L:SetOptionLocalization({
 	InfoFrame		= "Информационное окно для игроков с $spell:125390",
-	RangeFrame		= "Окно проверки дистанции (5м) для $spell:123735"
+	RangeFrame		= "Окно проверки дистанции (5м) для $spell:123735",
+	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
 })
 
 L:SetMiscLocalization({
-	PlayerDebuffs	= "Сосредоточение"
+	PlayerDebuffs	= "Сосредоточение",
+	YellPhase3		= "Больше никаких оправданий, императрица! Избавься от этих кретинов или я сам убью тебя!"
 })
