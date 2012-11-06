@@ -61,7 +61,9 @@ L:SetWarningLocalization({
 	warnAmberExplosion			= ">%s< 주문시전: %s",
 	warnInterruptsAvailable		= "%s의 호박석 폭발 차단 가능: %s",
 	specwarnWillPower			= "의지력 낮음!",
-	specwarnAmberExplosionYou	= "당신에게 %s 사용 - 차단!"
+	specwarnAmberExplosionYou	= "당신에게 %s 사용 - 2번으로 차단!",
+	specwarnAmberExplosionAM	= "%s 시전: %s - 1번으로 차단!",
+	specwarnAmberExplosionOther	= "%s 시전: %s - 1번으로 차단!"
 })
 
 L:SetTimerLocalization{
@@ -72,7 +74,9 @@ L:SetOptionLocalization({
 	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
 	warnInterruptsAvailable		= "누가 $spell:122402 주문을 차단할 수 있는지에 대한 알림 보기",
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
-	specwarnAmberExplosionYou	= "자신의 호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
+	specwarnAmberExplosionYou	= "자신의 피조물이 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
+	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
+	specwarnAmberExplosionOther	= "탑승자가 없는 피조물이 $spell:122398 주문을 시전할때 특수 경고 보기(차단)",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
 	InfoFrame					= "의지력 정보 프레임 보기"
 })
@@ -93,5 +97,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	PlayerDebuffs		= "시선 집중 대상"
+	PlayerDebuffs		= "시선 집중 대상",
+	YellPhase3			= "변명은 이제 지겹다, 여제! 당장 이 멍청이들을 쓸어버리지 않으면 내가 몸소 널 죽이겠다!"
 })
