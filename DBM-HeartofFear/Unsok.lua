@@ -49,7 +49,8 @@ local specwarnParasiticGrowth		= mod:NewSpecialWarningTarget(121949, mod:IsHeale
 local specwarnParasiticGrowthYou	= mod:NewSpecialWarningYou(121949) -- This warn will be needed at player is clustered together. Especially on Phase 3.
 --Construct
 local specwarnAmberExplosionYou		= mod:NewSpecialWarning("specwarnAmberExplosionYou")--Only interruptable by the player controling construct casting, so only that person gets warning. non generic used to make this one more specific.
---local specwarnAmberExplosionOther	= mod:NewSpecialWarningInterrupt(122398)--This warning fires only in Phase 3. But, at phase 3, other player's Amber Explosion warning shows only Construct names. In addtion, this warning very confusing with self interrupt warning, So I think this warning is not necessary.
+local specwarnAmberExplosionAM		= mod:NewSpecialWarning("specwarnAmberExplosionAM")--Must be on by default. Amber montrosity's MUST be interrupted on heroic or it's an auto wipe. it hits for over 500k.
+local specwarnAmberExplosionOther	= mod:NewSpecialWarning("specwarnAmberExplosionOther", false)--A compromise. loose non player controled constructs now off by default but should still be an option as they are still perfectly interruptable (and should be)
 local specwarnAmberExplosion		= mod:NewSpecialWarningTarget(122398, nil, nil, nil, true)--One you can't interrupt it
 local specwarnWillPower				= mod:NewSpecialWarning("specwarnWillPower")--Special warning for when your will power is low (construct)
 --local specwarnBossDebuff			= mod:NewSpecialWarning("specwarnBossDebuff")--Some special warning that says "get your ass to boss and refresh debuff NOW" (Debuff stacks up to 255 with 10% damage taken increase every stack, keeping buff up and stacking is paramount to dps check on heroic)
@@ -192,7 +193,7 @@ function mod:SPELL_CAST_START(args)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
 			if playerIsConstruct then--Player is construct
 				if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
-					--specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
+					specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
 					if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
 						self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
 					end
@@ -210,7 +211,7 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if playerIsConstruct then--Player is construct
 			if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
-				--specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
+				specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
 					self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 				end

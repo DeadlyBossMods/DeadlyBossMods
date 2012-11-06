@@ -69,6 +69,7 @@ local warnedLowHP = {}
 local visonsTargets = {}
 local resinIcon = 2
 local shaName = EJ_GetEncounterInfo(709)
+local phase3Started = false
 
 local function warnVisionsTargets()
 	warnVisions:Show(table.concat(visonsTargets, "<, >"))
@@ -77,6 +78,7 @@ local function warnVisionsTargets()
 end
 
 function mod:OnCombatStart(delay)
+	phase3Started = false
 	resinIcon = 2
 	timerScreechCD:Start(-delay)
 	timerEyesCD:Start(-delay)
@@ -174,12 +176,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(124845) then
 		warnCalamity:Show()
 		timerCalamityCD:Start()
-	--[[ Yell comes 3 seconds sooner then combat log event, so it's better phase 3 transitioner to start better timers, especially for first visions of demise
-	Locale indepentdent yell cannot usable, because Sha of Fear yells on phase 1 restarts.
-	"<33.5 22:57:49> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#No more excuses, Empress! Eliminate these cretins or I will kill you myself!#Sha of Fear###Grand Empress Shek'zeer
-	"<36.8 22:57:52> [CLEU] SPELL_CAST_SUCCESS#false#0xF130F9C600007497#Sha of Fear#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#125451#Ultimate Corruption#1", -- [7436]
-	--]]
-	elseif args:IsSpellID(125451) then
+	--"<33.5 22:57:49> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#No more excuses, Empress! Eliminate these cretins or I will kill you myself!#Sha of Fear###Grand Empress Shek'zeer
+	--"<36.8 22:57:52> [CLEU] SPELL_CAST_SUCCESS#false#0xF130F9C600007497#Sha of Fear#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#125451#Ultimate Corruption#1", -- [7436]
+	--backup phase 3 trigger for unlocalized languages
+	elseif args:IsSpellID(125451) and not phase3Started then
+		phase3Started = true
 		self:UnregisterShortTermEvents()
 		timerPhase2:Cancel()
 		warnPhase3:Show()
@@ -198,6 +199,22 @@ function mod:SPELL_CAST_START(args)
 		warnConsumingTerror:Show()
 		specWarnConsumingTerror:Show()
 		timerConsumingTerrorCD:Start()
+	end
+end
+
+--[[ Yell comes 3 seconds sooner then combat log event, so it's better phase 3 transitioner to start better timers, especially for first visions of demise
+"<33.5 22:57:49> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#No more excuses, Empress! Eliminate these cretins or I will kill you myself!#Sha of Fear###Grand Empress Shek'zeer
+"<36.8 22:57:52> [CLEU] SPELL_CAST_SUCCESS#false#0xF130F9C600007497#Sha of Fear#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#125451#Ultimate Corruption#1", -- [7436]
+--]]
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if (msg == L.YellPhase3 or msg:find(L.YellPhase3)) and not phase3Started then
+		phase3Started = true
+		self:UnregisterShortTermEvents()
+		timerPhase2:Cancel()
+		warnPhase3:Show()
+		timerVisionsCD:Start(7)
+		timerCalamityCD:Start(12)
+		timerConsumingTerrorCD:Start(14)
 	end
 end
 
