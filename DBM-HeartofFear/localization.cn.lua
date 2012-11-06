@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/04/2012
+-- Last update: 11/06/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -10,7 +10,7 @@ local L
 L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
-	specwarnPlatform	= "平台变化"
+	specwarnPlatform	= "换平台"
 })
 
 L:SetOptionLocalization({
@@ -19,8 +19,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Platform	= "%s flies to one of his platforms!",
-	Defeat		= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
+	Platform	= "%s朝他其中一个平台飞去了！",
+	Defeat		= "我们不会向黑暗虚空的绝望屈服。如果女皇要我们去死，我们便照做。"
 })
 
 
@@ -66,7 +66,9 @@ L:SetWarningLocalization({
 	warnAmberExplosion			= "%s 正在施放 %s",
 	warnInterruptsAvailable		= "可打断 %s: %s",
 	specwarnWillPower			= "意志低下！",
-	specwarnAmberExplosionYou	= "打断%s！"--Struggle for Control interrupt.
+	specwarnAmberExplosionYou	= "打断%s！",--Struggle for Control interrupt.
+	specwarnAmberExplosionAM	= "%s：打断 %s!",--Amber Montrosity
+	specwarnAmberExplosionOther	= "%s：打断 %s!"--Amber Montrosity
 })
 
 L:SetTimerLocalization{
@@ -78,6 +80,8 @@ L:SetOptionLocalization({
 	warnInterruptsAvailable		= "警报：可使用$spell:122402打断琥珀打击的成员",
 	specwarnWillPower			= "特殊警报：在畸形体中意志低下时",
 	specwarnAmberExplosionYou	= "特殊警报：打断自己的$spell:122398",
+	specwarnAmberExplosionAM	= "特殊警报：打断琥珀畸怪的$spell:122402",
+	specwarnAmberExplosionOther	= "特殊警报：打断畸形体的$spell:122398",
 	timerAmberExplosionAMCD		= "计时条：琥珀畸怪的下一次$spell:122402",
 	InfoFrame					= "信息框：意志值（功能开发中）"
 })
@@ -92,10 +96,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetOptionLocalization({
-	InfoFrame		= "信息框：受$spell:125390效果影响的玩家",
-	RangeFrame		= "距离监视（5码）：$spell:123735"
+	InfoFrame			= "信息框：受$spell:125390效果影响的玩家",
+	RangeFrame			= "距离监视（5码）：$spell:123735",
+	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
 })
 
 L:SetMiscLocalization({
-	PlayerDebuffs	= "凝视"
+	PlayerDebuffs		= "凝视",
+	YellPhase3			= "No more excuses, Empress! Eliminate these cretins or I will kill you myself!"
+
 })
