@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Boss
 local warnReshapeLife			= mod:NewTargetAnnounce(122784, 4)
-local warnAmberScalpel			= mod:NewSpellAnnounce(121994, 3)
+local warnAmberScalpel			= mod:NewTargetAnnounce(121994, 3)
 local warnParasiticGrowth		= mod:NewTargetAnnounce(121949, 4, nil, mod:IsHealer())
 --Construct
 local warnAmberExplosion		= mod:NewAnnounce("warnAmberExplosion", 3, 122398, false)--In case you want to get warned for all of them, but could be spammy later fight so off by default. This announce includes source of cast.
@@ -43,7 +43,9 @@ local warnFling					= mod:NewSpellAnnounce(122413, 3)--think this always does hi
 local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
 --Boss
-local specwarnAmberScalpel			= mod:NewSpecialWarningSpell(121994, not mod:IsTank())
+local specwarnAmberScalpel			= mod:NewSpecialWarningYou(121994)
+local yellAmberScalpel				= mod:NewYell(121994)
+local specwarnAmberScalpelNear		= mod:NewSpecialWarningClose(121994)
 local specwarnReshape				= mod:NewSpecialWarningYou(122784)
 local specwarnParasiticGrowth		= mod:NewSpecialWarningTarget(121949, mod:IsHealer())
 local specwarnParasiticGrowthYou	= mod:NewSpecialWarningYou(121949) -- This warn will be needed at player is clustered together. Especially on Phase 3.
@@ -96,6 +98,28 @@ local function buildGuidTable()
 	table.wipe(guids)
 	for i = 1, DBM:GetGroupMembers() do
 		guids[UnitGUID("raid"..i) or "none"] = GetRaidRosterInfo(i)
+	end
+end
+
+function mod:ScalpelTarget()
+	local targetname = DBM:GetUnitFullName("boss1targettarget")--Not a mistake, just clever use of available api to get the target of an invisible mob the boss is targeting ;)
+	warnAmberScalpel:Show(targetname)
+	if targetname == UnitName("player") then
+		specwarnAmberScalpel:Show()
+		yellAmberScalpel:Yell()
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 5 then--Guessed range
+				specwarnAmberScalpelNear:Show(targetname)
+			end
+		end
 	end
 end
 
@@ -239,10 +263,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(122348) then
 		warnLivingAmber:Show()
 	elseif args:IsSpellID(121994) then
-		warnAmberScalpel:Show()
-		if not playerIsConstruct then--If your a construct you don't need to concern yourself with amber scalpel. should help reduce spam
-			specwarnAmberScalpel:Show()
-		end
+		self:ScheduleMethod(0.5, "ScalpelTarget")--Might need timing adjust
 	elseif args:IsSpellID(122532) then
 		Puddles = Puddles + 1
 		warnBurningAmber:Show(Puddles)
