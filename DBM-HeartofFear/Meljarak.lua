@@ -112,6 +112,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(122224) and args.sourceName == UnitName("player") then
+		warnImpalingSpear:Cancel()
 		warnImpalingSpear:Schedule(45)
 		countdownImpalingSpear:Cancel()
 		countdownImpalingSpear:Start()
