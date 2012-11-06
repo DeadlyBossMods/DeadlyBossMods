@@ -88,6 +88,7 @@ local Constructs = 0
 local playerIsConstruct = false
 local warnedWill = false
 local lastStrike = 0
+local scansDone = 0
 local amberExplosion = GetSpellInfo(122402)
 local Monstrosity = EJ_GetSectionInfo(6254)
 local MutatedConstruct = EJ_GetSectionInfo(6249)
@@ -102,23 +103,30 @@ local function buildGuidTable()
 end
 
 function mod:ScalpelTarget()
+	scansDone = scansDone + 1
 	local targetname = DBM:GetUnitFullName("boss1targettarget")--Not a mistake, just clever use of available api to get the target of an invisible mob the boss is targeting ;)
 	warnAmberScalpel:Show(targetname)
-	if targetname == UnitName("player") then
-		specwarnAmberScalpel:Show()
-		yellAmberScalpel:Yell()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
+	if UnitExists("boss1targettarget") and not UnitIsUnit("boss1", "boss1targettarget") then
+		if targetname == UnitName("player") then
+			specwarnAmberScalpel:Show()
+			yellAmberScalpel:Yell()
+		else
+			local uId = DBM:GetRaidUnitId(targetname)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 5 then--Guessed range
+					specwarnAmberScalpelNear:Show(targetname)
+				end
 			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 5 then--Guessed range
-				specwarnAmberScalpelNear:Show(targetname)
-			end
+		end
+	else--He failed sanity check (ie boss1targettarget was himself, so he was obviously still targeting tank, reschedule check)
+		if scansDone < 6 then
+			self:ScheduleMethod(0.2, "ScalpelTarget")
 		end
 	end
 end
@@ -263,7 +271,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(122348) then
 		warnLivingAmber:Show()
 	elseif args:IsSpellID(121994) then
-		self:ScheduleMethod(0.5, "ScalpelTarget")--Might need timing adjust
+		scansDone = 0
+		self:ScheduleMethod(0.2, "ScalpelTarget")
 	elseif args:IsSpellID(122532) then
 		Puddles = Puddles + 1
 		warnBurningAmber:Show(Puddles)
