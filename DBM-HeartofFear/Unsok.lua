@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(62511)
 mod:SetModelID(43126)
 mod:SetZone()
+mod:SetMinSyncRevision(8052)
 
 mod:RegisterCombat("combat")
 
@@ -42,12 +43,13 @@ local warnFling					= mod:NewSpellAnnounce(122413, 3)--think this always does hi
 local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
 --Boss
-local specwarnAmberScalpel		= mod:NewSpecialWarningSpell(121994, not mod:IsTank())
-local specwarnReshape			= mod:NewSpecialWarningYou(122784)
-local specwarnParasiticGrowth	= mod:NewSpecialWarningTarget(121949, mod:IsHealer())
+local specwarnAmberScalpel			= mod:NewSpecialWarningSpell(121994, not mod:IsTank())
+local specwarnReshape				= mod:NewSpecialWarningYou(122784)
+local specwarnParasiticGrowth		= mod:NewSpecialWarningTarget(121949, mod:IsHealer())
+local specwarnParasiticGrowthYou	= mod:NewSpecialWarningYou(121949) -- This warn will be needed at player is clustered together. Especially on Phase 3.
 --Construct
 local specwarnAmberExplosionYou		= mod:NewSpecialWarning("specwarnAmberExplosionYou")--Only interruptable by the player controling construct casting, so only that person gets warning. non generic used to make this one more specific.
-local specwarnAmberExplosionOther	= mod:NewSpecialWarningInterrupt(122398)--Ones you can interrupt.
+--local specwarnAmberExplosionOther	= mod:NewSpecialWarningInterrupt(122398)--This warning fires only in Phase 3. But, at phase 3, other player's Amber Explosion warning shows only Construct names. In addtion, this warning very confusing with self interrupt warning, So I think this warning is not necessary.
 local specwarnAmberExplosion		= mod:NewSpecialWarningTarget(122398, nil, nil, nil, true)--One you can't interrupt it
 local specwarnWillPower				= mod:NewSpecialWarning("specwarnWillPower")--Special warning for when your will power is low (construct)
 --local specwarnBossDebuff			= mod:NewSpecialWarning("specwarnBossDebuff")--Some special warning that says "get your ass to boss and refresh debuff NOW" (Debuff stacks up to 255 with 10% damage taken increase every stack, keeping buff up and stacking is paramount to dps check on heroic)
@@ -71,9 +73,9 @@ local timerStruggleForControl	= mod:NewTargetTimer(5, 122395)
 --Amber Monstrosity
 local timerMassiveStompCD		= mod:NewCDTimer(18, 122540)--18-25 seconds variation
 local timerFlingCD				= mod:NewCDTimer(25, 122413)--25-40sec variation.
-local timerAmberExplosionAMCD	= mod:NewTimer(49, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
+local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
 
-local countdownAmberExplosionAM	= mod:NewCountdown(49, 122402)
+--local countdownAmberExplosionAM	= mod:NewCountdown(49, 122402)
 
 mod:AddBoolOption("InfoFrame", true)
 
@@ -127,6 +129,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(121949) then
 		warnParasiticGrowth:Show(args.destName)
 		specwarnParasiticGrowth:Show(args.destName)
+		if args:IsPlayer() then
+			specwarnParasiticGrowthYou:Show()
+		end
 		timerParasiticGrowth:Start(args.destName)
 		timerParasiticGrowthCD:Start()
 	elseif args:IsSpellID(122540) then
@@ -137,7 +142,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(45.5)
 		timerAmberExplosionAMCD:Start(55.5, amberExplosion, Monstrosity)
-		countdownAmberExplosionAM:Start(55.5)
+		--countdownAmberExplosionAM:Start(55.5)
 	elseif args:IsSpellID(122395) and Phase < 3 then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -146,7 +151,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnReshapeLife:Show(args.destName)
 		if args:IsPlayer() then
 			playerIsConstruct = true
-			warnedWill = false
+			warnedWill = true -- fix bad low will special warning on entering Construct. After entering vehicle, this will be return to false. (on alt.power changes)
 			specwarnReshape:Show()
 		end
 		if Phase < 3 then
@@ -187,9 +192,9 @@ function mod:SPELL_CAST_START(args)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
 			if playerIsConstruct then--Player is construct
 				if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
-					specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
+					--specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
 					if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-						self:SendSync("InterruptAvailable", 122398)
+						self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
 					end
 				end
 			end
@@ -205,9 +210,9 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if playerIsConstruct then--Player is construct
 			if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
-				specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
+				--specwarnAmberExplosionOther:Show(args.sourceName)--Only give interrupt warning if you are capable of doing it.
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-					self:SendSync("InterruptAvailable", 122402)
+					self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 				end
 			end
 		end
@@ -216,8 +221,8 @@ function mod:SPELL_CAST_START(args)
 		end
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(39)
-		timerAmberExplosionAMCD:Start(49, args.spellName, args.sourceName)
-		countdownAmberExplosionAM:Start(49)
+		timerAmberExplosionAMCD:Start(46, args.spellName, args.sourceName)
+		--countdownAmberExplosionAM:Start(49)
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
 		specwarnMassiveStomp:Show()
@@ -274,13 +279,16 @@ local function warnAmberExplosionCast(spellId)
 	table.wipe(canInterrupt)
 end
 
-function mod:OnSync(msg, spellId, sender)
+function mod:OnSync(msg, str, sender)
 	if not guidTableBuilt then
 		buildGuidTable()
 		guidTableBuilt = true
 	end
-	spellId = tonumber(spellId or "")
-	local guid = sender and DBM:GetRaidUnitId(sender) or UnitGUID("player")
+	local guid, spellId
+	if sender and str then
+		guid, spellId = string.split(":", str)
+		spellId = tonumber(spellId or "")
+	end
 	if msg == "InterruptAvailable" and guids[guid] and spellId then
 		canInterrupt[#canInterrupt + 1] = guids[guid]
 		self:Unschedule(warnAmberExplosionCast)

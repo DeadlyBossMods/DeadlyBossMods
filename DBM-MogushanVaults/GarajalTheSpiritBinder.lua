@@ -33,7 +33,7 @@ local specWarnTotem					= mod:NewSpecialWarningSpell(116174, false)
 local specWarnBanishment			= mod:NewSpecialWarningYou(116272)
 local specWarnBanishmentOther		= mod:NewSpecialWarningTarget(116272, mod:IsTank())
 local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
-local specWarnVoodooDollsMe			= mod:NewSpecialWarningYou(122151, false)
+local specWarnVoodooDollsYou		= mod:NewSpecialWarningYou(122151, false)
 
 local timerTotemCD					= mod:NewNextCountTimer(20, 116174)
 local timerBanishmentCD				= mod:NewCDTimer(65, 116272)
@@ -52,7 +52,6 @@ local voodooDollTargets = {}
 local crossedOverTargets = {}
 local voodooDollTargetIcons = {}
 local guids = {}
-local voodooDollWarned = false
 local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
 local function buildGuidTable()
 	table.wipe(guids)
@@ -63,10 +62,7 @@ end
 
 local function warnVoodooDollTargets()
 	warnVoodooDolls:Show(table.concat(voodooDollTargets, "<, >"))
-	if not voodooDollWarned then
-		specWarnVoodooDolls:Show()
-	end
-	voodooDollWarned = false
+	specWarnVoodooDolls:Show()
 	table.wipe(voodooDollTargets)
 end
 
@@ -110,7 +106,6 @@ end
 
 function mod:OnCombatStart(delay)
 	totemCount = 0
-	voodooDollWarned = false
 	buildGuidTable()
 	table.wipe(voodooDollTargets)
 	table.wipe(crossedOverTargets)
@@ -132,8 +127,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(122151) then
 		if args:IsPlayer() then
-			specWarnVoodooDollsMe:Show()
-			voodooDollWarned = true
+			specWarnVoodooDollsYou:Show()
 		end
 		if self:LatencyCheck() then
 			self:SendSync("VoodooTargets", args.destGUID)
