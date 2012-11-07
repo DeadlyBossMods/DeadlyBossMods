@@ -48,6 +48,8 @@ local timerForce				= mod:NewBuffActiveTimer(12.5, 122713)
 local timerAttenuation			= mod:NewBuffActiveTimer(14, 127834)
 --local timerConvertCD			= mod:NewCDTimer(41, 122740)--totally don't know this CD, but it's probably 41 like other specials in phase 1.
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 mod:AddBoolOption("MindControlIcon", true)
 
 local MCTargets = {}
@@ -65,6 +67,7 @@ function mod:OnCombatStart(delay)
 --	recentPlatformChange = false
 --	platform = 0
 	table.wipe(MCTargets)
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
