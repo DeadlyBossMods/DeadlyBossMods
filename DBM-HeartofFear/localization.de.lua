@@ -69,7 +69,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	timerAmberExplosionAMCD		= "Nächste %s: %s"
+	timerAmberExplosionAMCD		= "%s CD: %s"
 }
 
 L:SetOptionLocalization({
