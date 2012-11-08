@@ -149,7 +149,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			yellUnseenStrike:Yell()
 		end
 		if self.Options.UnseenStrikeArrow then
-			DBM.Arrow:ShowRunTo(target, 5)
+			DBM.Arrow:ShowRunTo(target, 5, 5)
 		end
 		self:Schedule(5, function()
 			emoteFired = false
