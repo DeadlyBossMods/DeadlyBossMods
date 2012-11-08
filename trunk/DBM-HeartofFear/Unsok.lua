@@ -74,7 +74,7 @@ local timerAmberExplosionCD		= mod:NewNextSourceTimer(13, 122398)--13 second cd 
 local timerDestabalize			= mod:NewTargetTimer(10, 123059)
 local timerStruggleForControl	= mod:NewTargetTimer(5, 122395)
 --Amber Monstrosity
-local timerMassiveStompCD		= mod:NewCDTimer(18, 122540)--18-25 seconds variation
+local timerMassiveStompCD		= mod:NewCDTimer(18, 122408)--18-25 seconds variation
 local timerFlingCD				= mod:NewCDTimer(25, 122413)--25-40sec variation.
 local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
 
