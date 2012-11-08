@@ -36,8 +36,17 @@ L:SetOptionLocalization({
 -------------------------------
 L= DBM:GetModLocalization(713)
 
+L:SetWarningLocalization({
+	specwarnUnder	= "Move out of purple ring!"
+})
+
 L:SetOptionLocalization({
+	specwarnUnder	= "Show special warning when you are under boss",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+})
+
+L:SetMiscLocalization({
+	UnderHim	= "under him"
 })
 
 ----------------------
