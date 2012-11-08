@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --[[WoL Reg Expression (you can remove icy touch if you don't have a DK pull bosses, i use it for pull time)
@@ -31,8 +31,10 @@ local warnBrokenLeg				= mod:NewStackAnnounce(122786, 2)
 local warnMendLeg				= mod:NewSpellAnnounce(123495, 1)
 local warnCrush					= mod:NewSpellAnnounce(122774, 3)--On normal, only cast if you do fight wrong (be it on accident or actually on purpose. however, on heroic, this might have a CD)
 
+local specwarnUnder				= mod:NewSpecialWarning("specwarnUnder")
 local specwarnPheromonesTarget	= mod:NewSpecialWarningTarget(122835, false)
 local specwarnPheromonesYou		= mod:NewSpecialWarningYou(122835)
+local yellPheromones			= mod:NewYell(122835)
 local specwarnPheromonesNear	= mod:NewSpecialWarningClose(122835)
 local specwarnCrush				= mod:NewSpecialWarningSpell(122774, true, nil, nil, true)--Maybe set to true later, not sure. Some strats on normal involve purposely having tanks rapidly pass debuff and create lots of stomps
 local specwarnLeg				= mod:NewSpecialWarningSwitch("ej6270", mod:IsMelee())--If no legs are up (ie all dead), when one respawns, this special warning can be used to alert of a respawned leg and to switch back.
@@ -54,7 +56,9 @@ local brokenLegs = 0
 function mod:OnCombatStart(delay)
 	brokenLegs = 0
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
-	berserkTimer:Start(-delay)
+	if not self:IsDifficulty("lfr25") then
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -69,6 +73,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specwarnPheromonesTarget:Show(args.destName)
 		if args:IsPlayer() then
 			specwarnPheromonesYou:Show()
+			yellPheromones:Yell()
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then
@@ -136,10 +141,13 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
-function mod:RAID_BOSS_EMOTE(msg)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:122774") then
 		warnCrush:Show()
 		specwarnCrush:Show()
 		timerCrush:Start()
+		if msg:find(L.UnderHim) and target == UnitName("player") then
+			specwarnUnder:Show()--it's a bit of a too little too late warning, but hopefully it'll help people in LFR understand it's not place to be and less likely to repeat it, eventually thining out LFR failure rate to this.
+		end
 	end
 end
