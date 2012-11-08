@@ -68,6 +68,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLifeTutor		= "1: Interrupt/debuff target, 2: Interrupt yourself, 3: Regen Health/Willpower, 4: Escape Vehicle",
 	warnAmberExplosion			= ">%s< is casting %s",
 	warnInterruptsAvailable		= "Interupts available for %s: %s",
 	specwarnWillPower			= "Low Will Power!",
@@ -81,6 +82,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
+	warnReshapeLifeTutor		= "Display ability purpose rundown of Mutated Construct abilities",
 	warnAmberExplosion			= "Show warning (with source) when $spell:122398 is cast",
 	warnInterruptsAvailable		= "Announce who has Amber Strike interrupts available for $spell:122402",
 	specwarnWillPower			= "Show special warning when will power is low in construct",
