@@ -15,7 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 --	"SPELL_CAST_SUCCESS",
-	"RAID_BOSS_EMOTE"
+	"RAID_BOSS_EMOTE",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 --[[WoL Reg expression
@@ -24,7 +25,7 @@ mod:RegisterEventsInCombat(
 --Notes: Currently, his phase 2 chi blast abiliteis are not detectable via traditional combat log. maybe with transcriptor.
 local warnInhale			= mod:NewStackAnnounce(122852, 2)
 local warnExhale			= mod:NewTargetAnnounce(122761, 3)
-local warnForceandVerve		= mod:NewSpellAnnounce(122713, 4)
+local warnForceandVerve		= mod:NewCastAnnounce(122713, 4, 4)
 local warnAttenuation		= mod:NewSpellAnnounce(127834, 4)
 local warnConvert			= mod:NewTargetAnnounce(122740, 4)
 
@@ -43,6 +44,7 @@ local specwarnAttenuation	= mod:NewSpecialWarningSpell(127834, nil, nil, nil, tr
 --local timerExhaleCD			= mod:NewCDTimer(41, 122761)
 local timerExhale				= mod:NewTargetTimer(6, 122761)
 --local timerForceCD			= mod:NewCDTimer(48, 122713)--Phase 1, every 41 seconds since exhale keeps resetting it, phase 2, 48 seconds or as wildly high as 76 seconds if exhale resets it late in it's natural CD
+local timerForceCast			= mod:NewCastTimer(4, 122713)
 local timerForce				= mod:NewBuffActiveTimer(12.5, 122713)
 --local timerAttenuationCD		= mod:NewCDTimer(34, 127834)--34-41 second variations, when not triggered off exhale. It's ALWAYS 11 seconds after exhale.
 local timerAttenuation			= mod:NewBuffActiveTimer(14, 127834)
@@ -105,7 +107,6 @@ function mod:SPELL_CAST_START(args)
 		specwarnAttenuation:Show()
 		timerAttenuation:Start()
 	elseif args:IsSpellID(122713) then
-		warnForceandVerve:Show()
 		specwarnForce:Show()
 		timerForce:Start()
 --[[	elseif args:IsSpellID(123791) and recentPlatformChange then--No one is in melee range of boss, he's aoeing. (i.e., he's arrived at new platform)
@@ -125,5 +126,12 @@ function mod:RAID_BOSS_EMOTE(msg)
 		specwarnPlatform:Show()
 --		platform = platform + 1
 --		recentPlatformChange = true
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 122933 and self:AntiSpam(2, 1) then--Clear Throat (4 seconds before force and verve)
+		warnForceandVerve:Show()
+		timerForceCast:Start()
 	end
 end
