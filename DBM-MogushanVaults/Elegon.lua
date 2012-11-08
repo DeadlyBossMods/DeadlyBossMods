@@ -89,7 +89,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		focusActivated = 0
 		phase2Started = false
 		warnPhase3:Show()
-		specWarnDespawnFloor:Show()
 	elseif args:IsSpellID(117878) and args:IsPlayer() then
 		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
 			specWarnOvercharged:Show(args.amount)
@@ -127,6 +126,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if focusActivated == 6 then
 			timerDespawnFloor:Start()
+			specWarnDespawnFloor:Show()
 		end
 	elseif args:IsSpellID(116989) then--Cast when defeated (or rathor 1 HP)
 		DBM.BossHealth:RemoveBoss(args.sourceGUID)
