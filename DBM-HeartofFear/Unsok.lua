@@ -78,7 +78,7 @@ local timerMassiveStompCD		= mod:NewCDTimer(18, 122540)--18-25 seconds variation
 local timerFlingCD				= mod:NewCDTimer(25, 122413)--25-40sec variation.
 local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
 
---local countdownAmberExplosionAM	= mod:NewCountdown(49, 122402)
+local countdownAmberExplosion	= mod:NewCountdown(49, 122398)
 
 mod:AddBoolOption("InfoFrame", true)
 
@@ -175,7 +175,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(45.5)
 		timerAmberExplosionAMCD:Start(55.5, amberExplosion, Monstrosity)
-		--countdownAmberExplosionAM:Start(55.5)
 	elseif args:IsSpellID(122395) and Phase < 3 then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -204,6 +203,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			playerIsConstruct = false
 		end
+		countdownAmberExplosion:Cancel()
+		timerAmberExplosionCD:Cancel(args.destName)
 	elseif args:IsSpellID(121994) then
 		timerAmberScalpelCD:Start()
 	elseif args:IsSpellID(121949) then
@@ -213,7 +214,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMassiveStompCD:Cancel()
 		timerFlingCD:Cancel()
 		timerAmberExplosionAMCD:Cancel()
---		countdownAmberExplosionAM:Cancel()
 		warnAmberExplosionSoon:Cancel()
 		--He does NOT reset reshape live cd here, he finishes out last CD first, THEN starts using new one.
 	end
@@ -238,6 +238,7 @@ function mod:SPELL_CAST_START(args)
 		elseif args.sourceGUID == UnitGUID("player") then--Cast by YOU
 			specwarnAmberExplosionYou:Show(args.spellName)
 			timerAmberExplosionCD:Start(13, args.sourceName)--Only player needs to see this, they are only person who can do anything about it.
+			countdownAmberExplosion:Start(13)
 		end
 	elseif args:IsSpellID(122402) then--Amber Monstrosity
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
@@ -255,7 +256,6 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(39)
 		timerAmberExplosionAMCD:Start(46, args.spellName, args.sourceName)
-		--countdownAmberExplosionAM:Start(49)
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
 		specwarnMassiveStomp:Show()
