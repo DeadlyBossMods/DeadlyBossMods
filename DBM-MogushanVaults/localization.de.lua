@@ -76,16 +76,17 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "Paß auf, wo du hintrittst!"
+	specWarnDespawnFloor	= "Paß auf, wo du hintrittst!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "Paß auf, wo du hintrittst!"
+	timerDespawnFloor		= "Paß auf, wo du hintrittst!"
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "Zeige Spezialwarnung bevor der Boden (Energievortex) verschwindet",
-	timerDespawnFloor			= "Zeige Zeit bis der Boden (Energievortex) verschwindet"
+	specWarnDespawnFloor	= "Zeige Spezialwarnung bevor der Boden (Energievortex) verschwindet",
+	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet",
+	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
 
