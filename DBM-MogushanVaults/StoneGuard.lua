@@ -287,7 +287,7 @@ end
 
 function mod:OnSync(msg, boss)
 	-- if boss aprats from 10 yard and get Solid Stone, power no longer increase. If this, overlord not casts. So timer can be confusing. Disabled for find better way. 
-	if msg == "Overload" then
+	if msg == "Overload" and boss ~= activePetrification then
 		specWarnOverloadSoon:Show(Overload[boss])
 	end
 end
