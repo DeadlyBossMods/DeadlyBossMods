@@ -83,7 +83,7 @@ local timerDeliriousCD			= mod:NewCDTimer(20.5, 117837, nil, mod:CanRemoveEnrage
 --Qiang
 local timerAnnihilateCD			= mod:NewNextTimer(39, 117948)
 local timerFlankingOrdersCD		= mod:NewNextTimer(40, 117910)
-local timerImperviousShieldCD	= mod:NewCDTimer(40, 117961)
+local timerImperviousShieldCD	= mod:NewCDTimer(42, 117961)
 --Subetai
 local timerVolleyCD				= mod:NewNextTimer(41, 118094)
 local timerRainOfArrowsCD		= mod:NewNextTimer(41, 118122)
@@ -219,7 +219,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(117961) then
 		warnImperviousShield:Show(args.sourceName)
 		specWarnImperviousShield:Show(args.sourceName)
---		timerImperviousShieldCD:Start()--Not yet known
+		timerImperviousShieldCD:Start()
 	end
 end
 
