@@ -219,7 +219,11 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(117948) then
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
-		timerAnnihilateCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerAnnihilateCD:Start(32.5)
+		else
+			timerAnnihilateCD:Start()
+		end
 	elseif args:IsSpellID(117961) then
 		warnImperviousShield:Show(args.sourceName)
 		specWarnImperviousShield:Show(args.sourceName)
