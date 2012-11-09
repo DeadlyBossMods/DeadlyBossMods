@@ -82,7 +82,7 @@ local timerMaddeningShoutCD		= mod:NewCDTimer(47, 117708)--47-50 sec variation. 
 local timerDeliriousCD			= mod:NewCDTimer(20.5, 117837, nil, mod:CanRemoveEnrage())
 --Qiang
 local timerAnnihilateCD			= mod:NewNextTimer(39, 117948)
-local timerFlankingOrdersCD		= mod:NewNextTimer(40, 117910)
+local timerFlankingOrdersCD		= mod:NewCDTimer(40, 117910)--Every 40 seconds on normal, but on heroic it has a 40-50 second variation so has to be a CD bar instead of next
 local timerImperviousShieldCD	= mod:NewCDTimer(42, 117961)
 --Subetai
 local timerVolleyCD				= mod:NewNextTimer(41, 118094)
@@ -93,6 +93,7 @@ local timerSleightOfHand		= mod:NewBuffActiveTimer(11, 118162)--2+9 (cast+durati
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
+local countdownImperviousShield	= mod:NewCountdown(42, 117961)
 local countdownShieldOfDarkness	= mod:NewCountdown(42.5, 117697)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())--For multiple abilities. the abiliies don't seem to target melee (unless a ranged is too close or a melee is too far.)
@@ -220,6 +221,7 @@ function mod:SPELL_CAST_START(args)
 		warnImperviousShield:Show(args.sourceName)
 		specWarnImperviousShield:Show(args.sourceName)
 		timerImperviousShieldCD:Start()
+		countdownImperviousShield:Start(42)
 	end
 end
 
@@ -257,6 +259,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			qiangActive = false
 			timerAnnihilateCD:Cancel()
 			timerImperviousShieldCD:Cancel()
+			countdownImperviousShield:Cancel()
 			timerFlankingOrdersCD:Start(30)--This boss retains Flanking Orders
 		elseif UnitName(uId) == Subetai then
 			subetaiActive = false
@@ -329,6 +332,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		timerFlankingOrdersCD:Start(25)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerImperviousShieldCD:Start(40.7)
+			countdownImperviousShield:Start(40.7)
 		end
 	elseif boss == Subetai then
 		subetaiActive = true
