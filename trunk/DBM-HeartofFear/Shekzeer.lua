@@ -46,7 +46,7 @@ local specwarnFixate			= mod:NewSpecialWarningYou(125390, false)--Could be spamm
 local specWarnDispatch			= mod:NewSpecialWarningInterrupt(124077, mod:IsMelee())
 local specWarnAdvance			= mod:NewSpecialWarningSpell(125304)
 local specwarnVisions			= mod:NewSpecialWarningYou(124862)
-local yellVisions				= mod:NewYell(124862)
+local yellVisions				= mod:NewYell(124862, nil, false)
 local specWarnConsumingTerror	= mod:NewSpecialWarningSpell(124849, not mod:IsTank())
 
 local timerScreechCD			= mod:NewNextTimer(7, 123735, nil, mod:IsRanged())
