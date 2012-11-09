@@ -7,12 +7,12 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon		= "%s將在7秒內超載",
+	SpecWarnOverloadSoon		= "%s即將超載",
 	specWarnBreakJasperChains	= "扯斷碧玉鎖鏈!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon		= "為超載顯示特別警告",
+	SpecWarnOverloadSoon		= "為即將超載顯示特別警告",
 	specWarnBreakJasperChains	= "當可安全扯斷$spell:130395時顯示特別警告",
 	ArrowOnJasperChains			= "當受到$spell:130395時顯示DBM箭頭",
 	InfoFrame					= "為首領能量,玩家石化和那個王施放石化顯示訊息框"
@@ -56,7 +56,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "受死吧，你們!"
+	Pull				= "受死吧，你們!"
 })
 
 
@@ -76,16 +76,17 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "小心你的腳步!"
+	specWarnDespawnFloor		= "地板將在六秒內消失!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "小心你的腳步!"
+	timerDespawnFloor			= "地板消失"
 })
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "為地板消失之前顯示特別警告",
-	timerDespawnFloor			= "為地板消失顯示計時器"
+	timerDespawnFloor			= "為地板消失顯示計時器",
+	SetIconOnDestabilized		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
 
