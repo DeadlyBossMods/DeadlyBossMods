@@ -55,8 +55,8 @@ local yellKorthikStrike					= mod:NewYell(123963)
 local specWarnWindBomb					= mod:NewSpecialWarningMove(131830)
 local yellWindBomb						= mod:NewYell(131830)
 
-local timerWhirlingBladeCD				= mod:NewNextTimer(45.5, 121896)
-local timerRainOfBladesCD				= mod:NewCDTimer(48, 122406)--48-62 sec variation now. so much for it being a precise timer.
+--local timerWhirlingBladeCD				= mod:NewCDTimer(30, 121896)--30~60 sec. very large variable. timer useless?
+local timerRainOfBladesCD				= mod:NewCDTimer(48, 122406)--48-64 sec variation now. so much for it being a precise timer.
 local timerRecklessness					= mod:NewBuffActiveTimer(30, 125873)
 local timerReinforcementsCD				= mod:NewNextCountTimer(50, "ej6554")--EJ says it's 45 seconds after adds die but it's actually 50 in logs. EJ is not updated for current tuning.
 local timerImpalingSpear				= mod:NewTargetTimer(50, 122224)--Filtered to only show your own target, may change to a popup option later that lets you pick whether you show ALL of them or your own (all will be spammy)
@@ -105,7 +105,7 @@ function mod:OnCombatStart(delay)
 	strikeWarned = false
 	table.wipe(amberPrisonTargets)
 	table.wipe(windBombTargets)
-	timerWhirlingBladeCD:Start(35.5-delay)
+	--timerWhirlingBladeCD:Start(35.5-delay)
 	timerRainOfBladesCD:Start(60-delay)
 	berserkTimer:Start(-delay)
 end
@@ -219,7 +219,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 124850 and self:AntiSpam(2, 1) then--Whirling Blade (Throw Cast spellid)
 		specWarnWhirlingBlade:Show()
-		timerWhirlingBladeCD:Start()
+		--timerWhirlingBladeCD:Start()
 --	"<173.1> [UNIT_SPELLCAST_SUCCEEDED] The Kor'thik [[boss4:Kor'thik Strike::0:123963]]", -- [10366]
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC8#Kor'thik Elite Blademaster#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10535]
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC7#Kor'thik Elite Blademaster#2632#8#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10536]

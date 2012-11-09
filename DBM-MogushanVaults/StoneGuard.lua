@@ -249,21 +249,25 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if activePetrification == "Cobalt" then
 			timerPetrification:Cancel()
 		end
+		activePetrification = nil
 	elseif args:IsSpellID(115842) then -- Jade
 		warnJadeOverload:Show()
 		if activePetrification == "Jade" then
 			timerPetrification:Cancel()
 		end
+		activePetrification = nil
 	elseif args:IsSpellID(115843) then -- Jasper
 		warnJasperOverload:Show()
 		if activePetrification == "Jasper" then
 			timerPetrification:Cancel()
 		end
+		activePetrification = nil
 	elseif args:IsSpellID(115844) then -- Amethyst
 		warnAmethystOverload:Show()
 		if activePetrification == "Amethyst" then
 			timerPetrification:Cancel()
 		end
+		activePetrification = nil
 	elseif args:IsSpellID(116223) then
 		warnJadeShards:Show()
 		timerJadeShardsCD:Start()
