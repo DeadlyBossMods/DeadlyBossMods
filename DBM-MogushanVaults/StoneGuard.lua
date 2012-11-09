@@ -38,7 +38,7 @@ local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
 local yellAmethystPool				= mod:NewYell(130774, nil, false)
 local specWarnPowerDown				= mod:NewSpecialWarningSpell(116529, not mod:IsTank())
 
-local timerCobaltMineCD				= mod:NewNextTimer(10.5, 129424)--12-15second variations
+local timerCobaltMineCD				= mod:NewNextTimer(8.5, 129424)--12-15second variations
 local timerPetrification			= mod:NewNextTimer(76, 125091)
 local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223, nil, false)--Always 20.5 seconds
 local timerJasperChainsCD			= mod:NewCDTimer(12, 130395)--11-13

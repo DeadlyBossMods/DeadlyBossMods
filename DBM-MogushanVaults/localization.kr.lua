@@ -76,7 +76,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "가운데 바닥 조심!"
+	specWarnDespawnFloor		= "6초 후 가운데 바닥 사라짐!"
 })
 
 L:SetTimerLocalization({
