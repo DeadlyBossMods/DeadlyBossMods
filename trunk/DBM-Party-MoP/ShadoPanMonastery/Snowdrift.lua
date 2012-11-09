@@ -19,14 +19,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
---[[
-mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_YELL"
-)
---]]
-
 --Chi blast warns very spammy. and not useful.
---local warnRemainingNovice	= mod:NewAnnounce("warnRemainingNovice", 2, 122863, false)
 local warnFistsOfFury		= mod:NewSpellAnnounce(106853, 3)
 local warnTornadoKick		= mod:NewSpellAnnounce(106434, 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
@@ -44,12 +37,9 @@ local timerChaseDown		= mod:NewTargetTimer(11, 118961)
 
 local phase = 1
 local remainingNovice = 20
---local diedNovice = {}
 
 function mod:OnCombatStart(delay)
 	phase = 1
---	self:UnregisterShortTermEvents()
---	table.wipe(diedNovice)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -79,57 +69,6 @@ function mod:SPELL_CAST_START(args)
 		timerTornadoKickCD:Start()
 	end
 end
-
---[[
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.NovicesPulled or msg:find(L.NovicesPulled) then
-		self:SendSync("NovicesStart")
-	elseif msg == L.NovicesDefeated or msg:find(L.NovicesDefeated) then
-		self:SendSync("NovicesEnd")
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "NovicesStart" then
-		remainingNovice = 20
-		table.wipe(diedNovice)
-		self:RegisterShortTermEvents(
-			"SPELL_DAMAGE",
-			"SWING_DAMAGE",
-			"SPELL_PERIODIC_DAMAGE",
-			"RANGE_DAMAGE"
-		)
-	elseif msg == "NovicesEnd" then
-		self:UnregisterShortTermEvents()
-		table.wipe(diedNovice)
-	end
-end
-
-
-function mod:SWING_DAMAGE(_, _, _, _, destGUID, _, _, _, _, overkill)
-	if (overkill or 0) > 0 then -- prevent to waste cpu. only pharse cid when event have overkill parameter.
-		local cid = self:GetCIDFromGUID(destGUID)
-		if cid == 56395 and not diedNovice[destGUID] then--Hack for mobs that don't fire UNIT_DIED event.
-			remainingNovice = remainingNovice - 1
-			diedNovice[destGUID] = true
-			warnRemainingNovice:Show(remainingNovice)
-		end
-	end
-end
-
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if (overkill or 0) > 0 then -- prevent to waste cpu. only pharse cid when event have overkill parameter.
-		local cid = self:GetCIDFromGUID(destGUID)
-		if cid == 56395 and not diedNovice[destGUID] then--Hack for mobs that don't fire UNIT_DIED event.
-			remainingNovice = remainingNovice - 1
-			diedNovice[destGUID] = true
-			warnRemainingNovice:Show(remainingNovice)
-		end
-	end
-end
-mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
-mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
---]]
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 110324 and self:AntiSpam(2) then
