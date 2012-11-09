@@ -111,7 +111,7 @@ local timerNullBarrior				= mod:NewBuffFadesTimer(6, 115817)
 local timerNullBarriorCD			= mod:NewCDTimer(55, 115817)
 
 local soundEpicenter				= mod:NewSound(116018)
-local soundWildSpark				= mod:NewSound(116784, nil, false)
+local soundWildSpark				= mod:NewSound(116784)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
