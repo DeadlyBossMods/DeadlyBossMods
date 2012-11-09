@@ -75,7 +75,7 @@ local specWarnSleightOfHand		= mod:NewSpecialWarningTarget(118162)--Heroic Abili
 local timerChargingShadowsCD	= mod:NewCDTimer(12, 117685)
 local timerUndyingShadowsCD		= mod:NewCDTimer(41.5, 117506)--For most part it's right, but i also think on normal he can only summon a limited amount cause he did seem to skip one? leaving a CD for now until know for sure.
 local timerFixate			  	= mod:NewTargetTimer(20, 118303)
-local timerCoalescingShadowsCD	= mod:NewNextTimer(60, 117539)--EJ says 30sec but logs more recent then last EJ update show 60 seconds on heroic (so probably adjusted since EJ was last revised)
+local timerCoalescingShadowsCD	= mod:NewNextTimer(60, 117539)
 local timerShieldOfDarknessCD  	= mod:NewNextTimer(42.5, 117697)
 --Meng
 local timerMaddeningShoutCD		= mod:NewCDTimer(47, 117708)--47-50 sec variation. So a CD timer instead of next.
@@ -108,6 +108,7 @@ local mengActive = false
 local qiangActive = false
 local subetaiActive = false
 local pinnedTargets = {}
+local diedShadow = {}
 
 local function warnPinnedDownTargets()
 	warnPinnedDown:Show(table.concat(pinnedTargets, "<, >"))
@@ -122,6 +123,7 @@ function mod:OnCombatStart(delay)
 	subetaiActive = false
 	table.wipe(bossesActivated)
 	table.wipe(pinnedTargets)
+	table.wipe(diedShadow)
 	berserkTimer:Start(-delay)
 end
 
@@ -132,7 +134,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(117539) then
+	if args:IsSpellID(117539) and not diedShadow[args.destGUID] then--They only ressurrect once so only start timer once per GUID
+		diedShadow[args.destGUID] = true
 		timerCoalescingShadowsCD:Start(args.destGUID)--Basically, the rez timer for a defeated Undying Shadow that is going to re-animate in 60 seconds.
 	elseif args:IsSpellID(117837) then
 		warnDelirious:Show(args.destName)
