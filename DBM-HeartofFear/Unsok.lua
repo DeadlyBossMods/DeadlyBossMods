@@ -106,8 +106,8 @@ end
 function mod:ScalpelTarget()
 	scansDone = scansDone + 1
 	local targetname = DBM:GetUnitFullName("boss1targettarget")--Not a mistake, just clever use of available api to get the target of an invisible mob the boss is targeting ;)
-	warnAmberScalpel:Show(targetname)
 	if UnitExists("boss1targettarget") and not UnitIsUnit("boss1", "boss1targettarget") then
+		warnAmberScalpel:Show(targetname)
 		if targetname == UnitName("player") then
 			specwarnAmberScalpel:Show()
 			yellAmberScalpel:Yell()
@@ -225,6 +225,9 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122398) then
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
+			if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
+				specwarnAmberExplosion:Show(args.sourceName)
+			end
 			if playerIsConstruct then--Player is construct
 				if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
 					specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
@@ -232,9 +235,6 @@ function mod:SPELL_CAST_START(args)
 						self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
 					end
 				end
-			end
-			if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
-				specwarnAmberExplosion:Show(args.sourceName)
 			end
 			timerAmberExplosionCD:Start(18, args.sourceName, args.sourceGUID)--Longer CD if it's a non player controlled construct. Everyone needs to see this bar because there is no way to interrupt these.
 		elseif args.sourceGUID == UnitGUID("player") then--Cast by YOU
@@ -244,6 +244,9 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(122402) then--Amber Monstrosity
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
+		if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
+			specwarnAmberExplosion:Show(args.sourceName)
+		end
 		if playerIsConstruct then--Player is construct
 			if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
 				specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
@@ -251,9 +254,6 @@ function mod:SPELL_CAST_START(args)
 					self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 				end
 			end
-		end
-		if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
-			specwarnAmberExplosion:Show(args.sourceName)
 		end
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(39)
