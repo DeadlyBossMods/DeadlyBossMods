@@ -75,11 +75,11 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor	= "Watch your step!"
+	specWarnDespawnFloor	= "Floor despawn in 6s!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor		= "Watch your step!"
+	timerDespawnFloor		= "Floor despawns"
 })
 
 L:SetOptionLocalization({
