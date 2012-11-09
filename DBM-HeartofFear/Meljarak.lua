@@ -56,7 +56,7 @@ local specWarnWindBomb					= mod:NewSpecialWarningMove(131830)
 local yellWindBomb						= mod:NewYell(131830)
 
 local timerWhirlingBladeCD				= mod:NewNextTimer(45.5, 121896)
-local timerRainOfBladesCD				= mod:NewNextTimer(61.5, 122406)--60 CD, but Cd starts when last cast ends, IE 60+cast time. Starting cd off cast start is 61.5, but on pull it's 60.0
+local timerRainOfBladesCD				= mod:NewCDTimer(48, 122406)--48-62 sec variation now. so much for it being a precise timer.
 local timerRecklessness					= mod:NewBuffActiveTimer(30, 125873)
 local timerReinforcementsCD				= mod:NewNextCountTimer(50, "ej6554")--EJ says it's 45 seconds after adds die but it's actually 50 in logs. EJ is not updated for current tuning.
 local timerImpalingSpear				= mod:NewTargetTimer(50, 122224)--Filtered to only show your own target, may change to a popup option later that lets you pick whether you show ALL of them or your own (all will be spammy)
