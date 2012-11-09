@@ -35,8 +35,17 @@ L:SetOptionLocalization({
 -------------------------------
 L= DBM:GetModLocalization(713)
 
+L:SetWarningLocalization({
+	specwarnUnder	= "보라색 원 바깥으로 나가세요!"
+})
+
 L:SetOptionLocalization({
+	specwarnUnder	= "보스의 보라색 원 안에 있을때 특수 경고 보기",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+})
+
+L:SetMiscLocalization({
+	UnderHim	= "있는 것을 감지하고"
 })
 
 ----------------------
@@ -58,6 +67,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLifeTutor		= "1: 대상 차단/공격, 2: 본인 차단, 3: 체력/의지력 회복, 4: 피조물에서 탈출",
 	warnAmberExplosion			= ">%s< 주문시전: %s",
 	warnInterruptsAvailable		= "%s의 호박석 폭발 차단 가능: %s",
 	specwarnWillPower			= "의지력 낮음!",
@@ -71,6 +81,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
+	warnReshapeLifeTutor		= "돌연변이 피조물 탑승시 피조물 주문에 대한 설명 보기",
 	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
 	warnInterruptsAvailable		= "누가 $spell:122402 주문을 차단할 수 있는지에 대한 알림 보기",
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",

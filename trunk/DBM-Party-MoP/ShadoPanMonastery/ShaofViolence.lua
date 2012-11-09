@@ -40,7 +40,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(106877) then
-		self:ScheduleMethod(0.1, "ShaSpikeTarget")
+		self:ScheduleMethod(0.2, "ShaSpikeTarget")
 		timerShaSpikeCD:Start()
 	end
 end
