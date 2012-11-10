@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/06/2012
+-- Last update: 11/11/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -40,8 +40,18 @@ L:SetOptionLocalization({
 -------------------------------
 L= DBM:GetModLocalization(713)
 
+L:SetWarningLocalization({
+	specwarnUnder	= "远离紫圈！"
+})
+
+
 L:SetOptionLocalization({
+	specwarnUnder	= "特殊警报：当你在首领身体下方时",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+})
+
+L:SetMiscLocalization({
+	UnderHim	= "下面"
 })
 
 ----------------------
@@ -63,6 +73,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLifeTutor		= "1：打断/减益目标，2：打断自己，3：回复生命/意志，4：离开构造体",
 	warnAmberExplosion			= "%s 正在施放 %s",
 	warnInterruptsAvailable		= "可打断 %s: %s",
 	specwarnWillPower			= "意志低下！",
@@ -76,6 +87,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
+	warnReshapeLifeTutor		= "当变为变异构造体时显示技能及其作用",
 	warnAmberExplosion			= "警报：$spell:122398正在施放，并警报来源",
 	warnInterruptsAvailable		= "警报：可使用$spell:122402打断琥珀打击的成员",
 	specwarnWillPower			= "特殊警报：在畸形体中意志低下时",

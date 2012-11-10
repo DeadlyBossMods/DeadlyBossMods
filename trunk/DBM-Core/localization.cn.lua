@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 10/11/2012
+-- Last update: 11/10/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -134,8 +134,8 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "成就：快速击杀"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target		= "%s: %%s",
 	cast		= "%s",
-	active		= "%s效果结束",--Buff/Debuff/event on boss
-	fades		= "%s效果消失",--Buff/Debuff on players
+	active		= "%s结束",--Buff/Debuff/event on boss
+	fades		= "%s消失",--Buff/Debuff on players
 	cd			= "%s冷却",
 	cdcount		= "%s冷却（%%d）",
 	cdsource	= "%s冷却: %%s",
