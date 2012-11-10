@@ -69,7 +69,7 @@ local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
 local timerTitanGasCD			= mod:NewNextCountTimer(150, 116779)
 
 mod:AddBoolOption("InfoFrame", false)
-mod:AddBoolOption("ArrowOnCombo", false)
+mod:AddBoolOption("ArrowOnCombo", mod:IsTank())--Very accurate for tank, everyone else not so much (tanks always in front, and boss always faces tank, so if he spins around on you, you expect it, melee on other hand have backwards arrows if you spun him around.
 
 local comboWarned = false
 local sparkCount = 0
