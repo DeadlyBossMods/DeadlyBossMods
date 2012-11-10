@@ -53,6 +53,7 @@ local timerAttenuation			= mod:NewBuffActiveTimer(14, 127834)
 local berserkTimer				= mod:NewBerserkTimer(660)
 
 mod:AddBoolOption("MindControlIcon", true)
+mod:AddBoolOption("ArrowOnAttenuation", true)
 
 local MCTargets = {}
 local MCIcon = 8
@@ -70,6 +71,9 @@ function mod:OnCombatStart(delay)
 --	platform = 0
 	table.wipe(MCTargets)
 	berserkTimer:Start(-delay)
+	if self.Options.ArrowOnCombo then
+		DBM.Arrow:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -87,6 +91,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(showMCWarning)
 		self:Schedule(0.9, showMCWarning)
+	--"<112.7 21:19:19> [CLEU] SPELL_CAST_START#false#0xF150F60400001A34#Imperial Vizier Zor'lok#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#127834#Attenuation#0", -- [30640] --First ID is universal spell cast start spellid
+	--"<114.3 21:19:21> [CLEU] SPELL_AURA_APPLIED#false#0xF130F8420000203A#Imperial Vizier Zor'lok#2632#0#0xF130F8420000203A#Imperial Vizier Zor'lok#2632#0#122474#Attenuation#0#BUFF", -- [30914] --Second ID is direction (one of two buffs he gets, he also gets a buff from cast ID)
+	elseif args:IsSpellID(122474, 122496, 123721) then
+		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
+			DBM.Arrow:ShowStatic(270, 9)
+		end
+	elseif args:IsSpellID(122479, 122497, 123722) then
+		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
+			DBM.Arrow:ShowStatic(90, 9)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

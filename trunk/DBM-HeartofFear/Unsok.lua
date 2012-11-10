@@ -307,14 +307,14 @@ local function warnAmberExplosionCast(spellId)
 	if #canInterrupt == 0 then--No interupts, warn the raid to prep for aoe damage with beware! alert.
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
---		print("Debug: Interrupts Available")
+		print("Debug: Interrupts Available")
 		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
 end
 
 function mod:OnSync(msg, str, sender)
---	print(msg, str, sender)
+	print(msg, str, sender)--This could generate a decent amount of spam in phase 3 if there is a loose construct casting away and multiple player constructs up. None the less, that would be the greatest debug if a user complains about spam (and thus, shares it).
 	if not guidTableBuilt then
 		buildGuidTable()
 		guidTableBuilt = true
@@ -323,7 +323,7 @@ function mod:OnSync(msg, str, sender)
 	if sender and str then
 		guid, spellId = string.split(":", str)
 		spellId = tonumber(spellId or "")
---		print(guid, spellId)
+		print(guid, spellId)
 	end
 	if msg == "InterruptAvailable" and guids[guid] and spellId then
 		canInterrupt[#canInterrupt + 1] = guids[guid]
