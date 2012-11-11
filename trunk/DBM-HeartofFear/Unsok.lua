@@ -203,9 +203,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(122784) then
 		Constructs = Constructs - 1
 		if args:IsPlayer() then
+			countdownAmberExplosion:Cancel()
 			playerIsConstruct = false
 		end
-		countdownAmberExplosion:Cancel()
 		timerAmberExplosionCD:Cancel(args.destName)
 	elseif args:IsSpellID(121994) then
 		timerAmberScalpelCD:Start()
