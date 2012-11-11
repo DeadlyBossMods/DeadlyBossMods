@@ -12,12 +12,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnPlatform	= "보스가 단상 이동시 특수 경고 보기",
+	ArrowOnAttenuation	= "$spell:127834 시전 중에 이동해야 될 방향을 DBM 화살표로 표시",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
 L:SetMiscLocalization({
-	Platform	= "황실 장로 조르로크가 단상으로 날아갑니다!",
-	Defeat		= "우리는 어두운 공허의 절망에 지지 않으리라. 우리가 죽는 것이 그분의 뜻이라면, 그대로 따르리라."
+	Platform			= "황실 장로 조르로크가 단상으로 날아갑니다!",
+	Defeat				= "우리는 어두운 공허의 절망에 지지 않으리라. 우리가 죽는 것이 그분의 뜻이라면, 그대로 따르리라."
 })
 
 ------------

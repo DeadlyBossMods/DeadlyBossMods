@@ -71,7 +71,7 @@ function mod:OnCombatStart(delay)
 --	platform = 0
 	table.wipe(MCTargets)
 	berserkTimer:Start(-delay)
-	if self.Options.ArrowOnCombo then
+	if self.Options.ArrowOnAttenuation then
 		DBM.Arrow:Hide()
 	end
 end
