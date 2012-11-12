@@ -92,7 +92,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionAM	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nder Ambermonstrosität",
 	specwarnAmberExplosionOther	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nunkontrollierter Mutierter Konstrukte",
 	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Ambermonstrosität",
-	InfoFrame					= "Zeige Infofenster für Willenskraft der Spieler (IN ENTWICKLUNG)",
+	InfoFrame					= "Zeige Infofenster für Willenskraft der Spieler",
 	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten bei Kampfbeginn\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
 })
 
