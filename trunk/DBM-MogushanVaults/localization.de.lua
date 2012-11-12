@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon		= "%s wirkbar in 7 Sek!",
+	SpecWarnOverloadSoon		= "%s bald!",
 	specWarnBreakJasperChains	= "Sprenge Jaspisketten!"
 })
 
@@ -76,16 +76,17 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor	= "Paß auf, wo du hintrittst!"
+	specWarnDespawnFloor	= "Der Boden verschwindet in 6 Sekunden!"
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor		= "Paß auf, wo du hintrittst!"
+	timerDespawnFloor		= "Boden verschwindet"
 })
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "Zeige Spezialwarnung bevor der Boden (Energievortex) verschwindet",
 	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet",
+	SetIconOnCreature		= "Setze Zeichen auf $journal:6193",
 	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
