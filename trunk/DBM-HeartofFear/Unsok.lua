@@ -82,6 +82,7 @@ local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 1224
 local countdownAmberExplosion	= mod:NewCountdown(49, 122398)
 
 mod:AddBoolOption("InfoFrame", true)
+mod:AddBoolOption("FixNameplates", false)--Because having 215937495273598637205175t9 hostile nameplates on screen when you enter a construct is not cool.
 
 local Phase = 1
 local Puddles = 0
@@ -90,6 +91,10 @@ local playerIsConstruct = false
 local warnedWill = false
 local lastStrike = 0
 local scansDone = 0
+local Totems = nil
+local Guardians = nil
+local Pets = nil
+local TPTPNormal = nil
 local amberExplosion = GetSpellInfo(122402)
 local Monstrosity = EJ_GetSectionInfo(6254)
 local MutatedConstruct = EJ_GetSectionInfo(6249)
@@ -148,11 +153,51 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(L.WillPower)--This is a work in progress
 		DBM.InfoFrame:Show(5, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, true)--At a point i need to add an arg that lets info frame show the 5 LOWEST not the 5 highest, instead of just showing 10
 	end
+	if self.Options.FixNameplates then
+		--Blizz settings either return 1 or nil, we pull users original settings first, then change em if appropriate after.
+		Totems = GetCVarBool("nameplateShowEnemyTotems")
+		Guardians = GetCVarBool("nameplateShowEnemyGuardians")
+		Pets = GetCVarBool("nameplateShowEnemyPets")
+		--Now change all settings to make the nameplates while in constructs not terrible.
+		if Totems then
+			SetCVar("nameplateShowEnemyTotems", 0)
+		elseif Guardians then
+			SetCVar("nameplateShowEnemyGuardians", 0)
+		elseif Pets then
+			SetCVar("nameplateShowEnemyPets", 0)
+		end
+		--Check for Tidy plates threat plates (it has additional options to even further hide worthless nameplates on unsok.
+		if IsAddOnLoaded("TidyPlates_ThreatPlates") then
+			TidyPlatesNormal = TidyPlatesThreat.db.profile.nameplate.toggle["Normal"]--Returns true or false, use TidyPlatesNormal to save that value on pull
+			if TPTPNormal == true then
+				TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] = false
+				TidyPlates:ReloadTheme()--Call the Tidy plates update methods
+				TidyPlates:ForceUpdate()
+			end
+		end
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.FixNameplates then
+		--if any of settings were on before pull, we put them back to way they were.
+		if Totems then
+			SetCVar("nameplateShowEnemyTotems", 1)
+		elseif Guardians then
+			SetCVar("nameplateShowEnemyGuardians", 1)
+		elseif Pets then
+			SetCVar("nameplateShowEnemyPets", 1)
+		end
+		if IsAddOnLoaded("TidyPlates_ThreatPlates") then
+			if TPTPNormal == true and not TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] then--Normal plates were on when we pulled but aren't on now.
+				TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] = true--Turn them back on
+				TidyPlates:ReloadTheme()--Call the Tidy plates update methods
+				TidyPlates:ForceUpdate()
+			end
+		end
 	end
 end 
 
