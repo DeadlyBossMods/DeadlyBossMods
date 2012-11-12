@@ -128,6 +128,10 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(116994) then--phase 3 end
 		warnPhase1:Show()
+	elseif args:IsSpellID(132226) then
+		if self.Options.SetIconOnDestabilized then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
