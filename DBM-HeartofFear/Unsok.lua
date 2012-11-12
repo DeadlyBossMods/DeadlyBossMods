@@ -234,6 +234,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnedWill = true -- fix bad low will special warning on entering Construct. After entering vehicle, this will be return to false. (on alt.power changes)
 			specwarnReshape:Show()
 			warnReshapeLifeTutor:Show()
+			timerAmberExplosionCD:Start(15, args.destName)--Only player needs to see this, they are only person who can do anything about it.
+			countdownAmberExplosion:Start(15)
 		end
 		if Phase < 3 then
 			timerReshapeLifeCD:Start()
