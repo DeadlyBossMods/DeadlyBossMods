@@ -91,7 +91,8 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionAM	= "Show special warning to interrupt Amber Montrosity's $spell:122402",
 	specwarnAmberExplosionOther	= "Show special warning to interrupt loose Mutated Construct's $spell:122398",
 	timerAmberExplosionAMCD		= "Show timer for Amber Monstrosity's next $spell:122402",
-	InfoFrame					= "Show info frame for players will power"
+	InfoFrame					= "Show info frame for players will power",
+	FixNameplates				= "Automatically disable interfering nameplates on pull\n(restores settings upon leaving combat)"
 })
 
 L:SetMiscLocalization({
