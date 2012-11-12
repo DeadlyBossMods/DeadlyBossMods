@@ -85,6 +85,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "Show special warning before floor vanishes",
 	timerDespawnFloor		= "show timer for when floor vanishes",
+	SetIconOnCreature		= "Set icons on Empyreal Focus",--Maybe use EJ entry for "Empyreal Focus" later. right now just fast coding before raid.
 	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
