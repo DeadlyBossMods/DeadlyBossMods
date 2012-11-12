@@ -7,7 +7,7 @@ L.MainFrame = "Deadly Boss Mods"
 L.TranslationBy 			= "Nitram & Tandanu"
 
 L.OTabBosses	= "Bosse"
-L.OTabOptions	= "Einstellungen"
+L.OTabOptions	= "Optionen"
 
 L.TabCategory_Options	 	= "Allgemeine Einstellungen"
 L.TabCategory_MOP	 		= "Mists of Pandaria"
