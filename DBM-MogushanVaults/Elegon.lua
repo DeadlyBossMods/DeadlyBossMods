@@ -188,6 +188,7 @@ function mod:SPELL_CAST_START(args)
 		warnArcingEnergy:Show()
 		timerArcingEnergyCD:Start(args.sourceGUID)
 	elseif args:IsSpellID(129711) then
+		stunIcon = 8
 		warnTotalAnnihilation:Show()
 		specWarnTotalAnnihilation:Show()
 		timerArcingEnergyCD:Cancel(args.sourceGUID)--add is dying, so this add is done casting arcing Energy
