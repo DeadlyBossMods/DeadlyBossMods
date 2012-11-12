@@ -158,7 +158,8 @@ local function createBar(self, name, ...) -- the vararg will also contain the na
 	bar:ClearAllPoints()
 	bartext:SetText(name)
 	if type(bar.id) == "function" then
-		updateBar(bar, bar.id(), true)
+		local health, icon = bar.id()
+		updateBar(bar, health, icon, true)
 	else
 		updateBar(bar, 100)
 	end
@@ -170,12 +171,19 @@ end
 ------------------
 --  Bar Update  --
 ------------------
-function updateBar(bar, percent, dontShowDead)
-	local bartimer = _G[bar:GetName().."BarTimer"]
-	local barbar = _G[bar:GetName().."Bar"]
+function updateBar(bar, percent, icon, dontShowDead)
+	local bartimer = _G[bar:GetName() .. "BarTimer"]
+	local barbar = _G[bar:GetName() .. "Bar"]
+	local barIcon = _G[bar:GetName() .. "BarIcon"]
 	bartimer:SetText((percent > 0 or dontShowDead) and math.floor(percent).."%" or DBM_CORE_DEAD)
 	barbar:SetValue(percent)
 	barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
+	if not icon or type(icon) ~= "number" or icon < 1 or icon > 8 then
+		barIcon:Hide()
+	else
+		barIcon:Show()
+		barIcon:SetTexCoord((icon - 1) % 4 / 4, (icon - 1) % 4 / 4 + 0.25, icon < 5 and 0 or 0.25, icon < 5 and 0.25 or 0.5)
+	end
 	bar.value = percent
 	local bossAlive = false
 	for i = 1, #bars do
@@ -190,7 +198,6 @@ function updateBar(bar, percent, dontShowDead)
 end
 
 do
-	local t = 0
 	-- TODO: entries in these caches might never get deleted, worst case: one entry per added boss to the health frame; consider wiping these tables on remove of the corresponding bar or on hiding
 	local targetCache = {}
 	local targetGuidCache = {}
@@ -206,7 +213,7 @@ do
 --		return b1.value > b2.value
 --	end
 	
-	-- gets the health of the given creature id, returns nil if the target could not be found
+	-- gets the health and unit id of the given creature id, returns nil if the target could not be found
 	local function getHealth(cId)
 		local id = targetCache[cId] -- ask the cache if we already know where the mob is
 		if getCIDfromGUID(UnitGUID(id or "")) ~= cId then -- the cache doesn't know it or has invalid data, update it
@@ -240,11 +247,11 @@ do
 		end
 		-- UnitHealthMax is sometimes 0 for one frame when the unit just showed up; so we need to check this here due to stupid UI changes
 		if getCIDfromGUID(UnitGUID(id or "")) == cId and UnitHealthMax(id) ~= 0 then -- did we find the mob? if yes: update the health bar
-			return UnitHealth(id) / UnitHealthMax(id) * 100
+			return UnitHealth(id) / UnitHealthMax(id) * 100, id
 		end
 	end
 	
-	-- gets the health of the given GUID, returns nil if the target could not be found
+	-- gets the health and unit id of the given GUID, returns nil if the target could not be found
 	-- TODO: mostly copy & paste from getHealth, these functions should probably be merged somehow...
 	local function getHealthByGuid(guid)
 		local id = targetGuidCache[guid] -- ask the cache if we already know where the mob is
@@ -278,14 +285,15 @@ do
 		end
 		-- blah, see above
 		if UnitGUID(id or "") == guid and UnitHealthMax(id) ~= 0  then -- did we find the mob? if yes: update the health bar
-			return UnitHealth(id) / UnitHealthMax(id) * 100
+			return UnitHealth(id) / UnitHealthMax(id) * 100, id
 		end
 	end
 
+	local t = 0
 	function updateFrame(self, e)
 		t = t + e
 		if t >= 0.5 then
-			t = 0
+			t = t - 0.5
 --			if #bars > DBM.Options.HPFrameMaxEntries then
 --				sortingEnabled = true
 --			end
@@ -299,14 +307,14 @@ do
 --					v:Show()
 --				end
 				if type(v.id) == "number" then -- creature ID
-					local health = getHealth(v.id)
+					local health, id = getHealth(v.id)
 					if health then
-						updateBar(v, health)
+						updateBar(v, health, GetRaidTargetIndex(id))
 					end
 				elseif type(v.id) == "string" then -- GUID
-					local health = getHealthByGuid(v.id)
+					local health, id = getHealthByGuid(v.id)
 					if health then
-						updateBar(v, health)
+						updateBar(v, health, GetRaidTargetIndex(id))
 					end
 				elseif type(v.id) == "table" then -- multi boss
 					-- TODO: it would be more efficient to scan all party/raid members for all IDs instead of going over all raid members n times
@@ -319,7 +327,8 @@ do
 						end
 					end
 				elseif type(v.id) == "function" then -- generic bars
-					updateBar(v, v.id(), true)
+					local health, icon = v.id()
+					updateBar(v, health, icon, true)
 				end
 			end
 		end

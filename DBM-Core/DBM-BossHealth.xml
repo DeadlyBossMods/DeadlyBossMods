@@ -41,6 +41,18 @@
 								</Anchor>
 							</Anchors>
 						</FontString>
+						<Texture name="$parentIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons.blp">
+							<Size>
+								<AbsDimension x="12" y="12"/>
+							</Size>
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset>
+										<AbsDimension x="-4" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
 					</Layer>
 				</Layers>
 				<Frames>
