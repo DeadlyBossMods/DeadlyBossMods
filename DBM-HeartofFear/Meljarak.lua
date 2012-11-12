@@ -20,6 +20,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED",
 	"RAID_BOSS_EMOTE",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED",
@@ -136,12 +138,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(122064) then
 		warnCorrosiveResin:Show(args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(3, 5) then
 			specWarnCorrosiveResin:Show()
 			yellCorrosiveResin:Yell()
 		end
-	elseif args:IsSpellID(122125) and args:IsPlayer() then
-		specWarnCorrosiveResinPool:Show()
 	elseif args:IsSpellID(125873) then
 		addsCount = addsCount + 1
 		warnRecklessness:Show(args.destName)
@@ -193,9 +193,15 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 			specWarnWindBomb:Show()
 			yellWindBomb:Yell()
 		end
+	elseif spellId == 122125 and destGUID == UnitGUID("player") and self:AntiSpam(3, 4) then
+		specWarnCorrosiveResinPool:Show()
+	elseif spellId == 122064 and destGUID == UnitGUID("player") and self:AntiSpam(3, 5) then
+		specWarnCorrosiveResin:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_DAMAGE
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Reinforcements or msg:find(L.Reinforcements) then
