@@ -90,7 +90,8 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	specwarnAmberExplosionOther	= "탑승자가 없는 피조물이 $spell:122398 주문을 시전할때 특수 경고 보기(차단)",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
-	InfoFrame					= "의지력 정보 프레임 보기"
+	InfoFrame					= "의지력 정보 프레임 보기",
+	FixNameplates				= "전투 시작시 이름표 겹침 기능 끄기\n(전투 종료시에 원래 설정대로 돌아감)"
 })
 
 L:SetMiscLocalization({
@@ -102,7 +103,12 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(743)
 
+L:SetWarningLocalization({
+	warnAmberTrap		= "호박석 덪 생성중 (%d/5)",
+})
+
 L:SetOptionLocalization({
+	warnAmberTrap		= "$spell:125826 생성 과정 알림 보기", 
 	InfoFrame			= "$spell:125390 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
 	RangeFrame			= "$spell:123735 주문의 영향을 받은 경우 거리 프레임 표시(5m)",
 	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)

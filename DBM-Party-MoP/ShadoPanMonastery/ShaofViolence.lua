@@ -7,6 +7,7 @@ mod:SetModelID(43283)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.Kill)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
