@@ -57,7 +57,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnInvokeLightning:Cancel()
 		timerStaticFieldCD:Cancel()
 		timerLightningBreathCD:Start()
-		timerMagneticShroudCD:Start(24)
+		timerMagneticShroudCD:Start(20)
 	elseif args:IsSpellID(110852) then
 		warnOverchargedSoul:Show()
 	end

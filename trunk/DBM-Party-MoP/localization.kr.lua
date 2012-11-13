@@ -94,6 +94,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(685)
 
+L:SetMiscLocalization({
+	Kill		= "네 가슴이 폭력에 물들어 있는 한... 난... 다시... 돌아올 것이다.",
+})
+
 -----------------------
 -- Taran Zhu --
 -----------------------
