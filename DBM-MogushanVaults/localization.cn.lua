@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/11/2012
+-- Last update: 11/14/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -87,8 +87,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "特殊警报：平台消失预警",
-	timerDespawnFloor			= "计时条：平台消失",
+	specWarnDespawnFloor	= "特殊警报：平台消失预警",
+	timerDespawnFloor		= "计时条：平台消失",
+	SetIconOnCreature		= "为$journal:6193的目标添加团队标记",
 	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
