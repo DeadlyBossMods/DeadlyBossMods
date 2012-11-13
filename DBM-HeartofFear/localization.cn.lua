@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/11/2012
+-- Last update: 11/14/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -15,12 +15,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnPlatform	= "特殊警报：改变平台",
+	ArrowOnAttenuation	= "DBM箭头：在$spell:127834阶段指示移动方向",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
 L:SetMiscLocalization({
-	Platform	= "%s朝他其中一个平台飞去了！",
-	Defeat		= "我们不会向黑暗虚空的绝望屈服。如果女皇要我们去死，我们便照做。"
+	Platform			= "%s朝他其中一个平台飞去了！",
+	Defeat				= "我们不会向黑暗虚空的绝望屈服。如果女皇要我们去死，我们便照做。"
 })
 
 
@@ -51,7 +52,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	UnderHim	= "下面"
+	UnderHim	= "在它下方"
 })
 
 ----------------------
@@ -95,7 +96,8 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionAM	= "特殊警报：打断琥珀畸怪的$spell:122402",
 	specwarnAmberExplosionOther	= "特殊警报：打断畸形体的$spell:122398",
 	timerAmberExplosionAMCD		= "计时条：琥珀畸怪的下一次$spell:122402",
-	InfoFrame					= "信息框：意志值（功能开发中）"
+	InfoFrame					= "信息框：意志值",
+	FixNameplates				= "在战斗开始后自动关闭影响战斗的姓名面板\n（战斗结束后会自动恢复原始设置）"
 })
 
 L:SetMiscLocalization({
@@ -107,7 +109,12 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(743)
 
+L:SetWarningLocalization({
+	warnAmberTrap		= "琥珀陷阱：%d/5",
+})
+
 L:SetOptionLocalization({
+	warnAmberTrap		= "警报：$spell:125826的生成，并提示进度", -- maybe bad translation.
 	InfoFrame			= "信息框：受$spell:125390效果影响的玩家",
 	RangeFrame			= "距离监视（5码）：$spell:123735",
 	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
@@ -115,6 +122,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	PlayerDebuffs		= "凝视",
-	YellPhase3			= "No more excuses, Empress! Eliminate these cretins or I will kill you myself!"
+	YellPhase3			= "别找借口了，女皇！消灭这些傻瓜，否则我会亲手杀了你！"
 
 })

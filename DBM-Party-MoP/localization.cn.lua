@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 10/20/2012
+-- Last update: 11/14/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -105,6 +105,10 @@ L= DBM:GetModLocalization(686)
 
 L:SetOptionLocalization({
 	InfoFrame			= "信息框：$journal:5827"
+})
+
+L:SetMiscLocalization({
+	Kill		= "So long has violence lurks in your heart...I will return...",
 })
 
 -----------------------
