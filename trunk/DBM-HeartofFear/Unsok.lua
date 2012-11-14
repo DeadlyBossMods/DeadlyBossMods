@@ -282,12 +282,10 @@ function mod:SPELL_CAST_START(args)
 			if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
 				specwarnAmberExplosion:Show(args.sourceName)
 			end
-			if playerIsConstruct then--Player is construct
-				if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
-					specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
-					if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-						self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
-					end
+			if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
+				specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
+				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
+					self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
 				end
 			end
 			timerAmberExplosionCD:Start(18, args.sourceName, args.sourceGUID)--Longer CD if it's a non player controlled construct. Everyone needs to see this bar because there is no way to interrupt these.
@@ -301,12 +299,10 @@ function mod:SPELL_CAST_START(args)
 		if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
 			specwarnAmberExplosion:Show(args.sourceName)
 		end
-		if playerIsConstruct then--Player is construct
-			if GetTime() - lastStrike >= 4 then--Check if Amber Strike will be available before cast ends.
-				specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
-				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-					self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
-				end
+		if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
+			specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
+			if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
+				self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 			end
 		end
 		warnAmberExplosionSoon:Cancel()
@@ -361,14 +357,14 @@ local function warnAmberExplosionCast(spellId)
 	if #canInterrupt == 0 then--No interupts, warn the raid to prep for aoe damage with beware! alert.
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
-		print("Debug: Interrupts Available")
+		DBM:AddMsg("Debug: Interrupts Available")
 		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
 end
 
 function mod:OnSync(msg, str, sender)
-	print(msg, str, sender)--This could generate a decent amount of spam in phase 3 if there is a loose construct casting away and multiple player constructs up. None the less, that would be the greatest debug if a user complains about spam (and thus, shares it).
+--	DBM:AddMsg(msg, str, sender)--This could generate a decent amount of spam in phase 3 if there is a loose construct casting away and multiple player constructs up. None the less, that would be the greatest debug if a user complains about spam (and thus, shares it).
 	if not guidTableBuilt then
 		buildGuidTable()
 		guidTableBuilt = true
@@ -377,7 +373,7 @@ function mod:OnSync(msg, str, sender)
 	if sender and str then
 		guid, spellId = string.split(":", str)
 		spellId = tonumber(spellId or "")
-		print(guid, spellId)
+		DBM:AddMsg(guid, spellId)
 	end
 	if msg == "InterruptAvailable" and guids[guid] and spellId then
 		canInterrupt[#canInterrupt + 1] = guids[guid]
