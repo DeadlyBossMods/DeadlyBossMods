@@ -96,11 +96,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	--"<114.3 21:19:21> [CLEU] SPELL_AURA_APPLIED#false#0xF130F8420000203A#Imperial Vizier Zor'lok#2632#0#0xF130F8420000203A#Imperial Vizier Zor'lok#2632#0#122474#Attenuation#0#BUFF", -- [30914] --Second ID is direction (one of two buffs he gets, he also gets a buff from cast ID)
 	elseif args:IsSpellID(122474, 122496, 123721) then
 		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
-			DBM.Arrow:ShowStatic(270, 9)
+			DBM.Arrow:ShowStatic(90, 9)
 		end
 	elseif args:IsSpellID(122479, 122497, 123722) then
 		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
-			DBM.Arrow:ShowStatic(90, 9)
+			DBM.Arrow:ShowStatic(270, 9)
 		end
 	end
 end

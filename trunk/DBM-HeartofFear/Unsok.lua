@@ -206,7 +206,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123059) and not args:GetDestCreatureID() == 62691 then--Only track debuffs on boss, constructs, or monstrosity, ignore oozes.
 		warnDestabalize:Show(args.destName, args.amount or 1)
-		timerDestabalize:Start(args.destName)
+		if self:IsDifficulty("lfr25") then
+			timerDestabalize:Start(60, args.destName)
+		else
+			timerDestabalize:Start(args.destName)
+		end
 	elseif args:IsSpellID(121949) then
 		warnParasiticGrowth:Show(args.destName)
 		specwarnParasiticGrowth:Show(args.destName)
