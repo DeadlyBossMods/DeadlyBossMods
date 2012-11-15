@@ -42,7 +42,7 @@ local warnAmberCarapace			= mod:NewTargetAnnounce(122540, 4)--Monstrosity Shield
 local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3)
 local warnAmberExplosionSoon	= mod:NewSoonAnnounce(122402, 3)
 local warnFling					= mod:NewSpellAnnounce(122413, 3)--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
---local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
+local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
 --Boss
 local specwarnAmberScalpel			= mod:NewSpecialWarningYou(121994)
@@ -366,22 +366,22 @@ local function warnAmberExplosionCast(spellId)
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
 --		DBM:AddMsg("Debug: Interrupts Available")
---		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
+		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
 end
 
-function mod:OnSync(msg, str, sender)
+function mod:OnSync(msg, str)
 --	DBM:AddMsg(msg, str, sender)--This could generate a decent amount of spam in phase 3 if there is a loose construct casting away and multiple player constructs up. None the less, that would be the greatest debug if a user complains about spam (and thus, shares it).
 	if not guidTableBuilt then
 		buildGuidTable()
 		guidTableBuilt = true
 	end
 	local guid, spellId
-	if sender and str then
+	if str then
 		guid, spellId = string.split(":", str)
 		spellId = tonumber(spellId or "")
-		DBM:AddMsg(guid, spellId)
+--		DBM:AddMsg(guid, spellId)
 	end
 	if msg == "InterruptAvailable" and guids[guid] and spellId then
 		canInterrupt[#canInterrupt + 1] = guids[guid]
