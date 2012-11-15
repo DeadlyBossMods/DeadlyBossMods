@@ -52,16 +52,18 @@ local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, ni
 local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 7)--Amount may need adjusting depending on what becomes an accepted strategy
 
 --Elder Asani
-local timerCleansingWatersCD		= mod:NewCDTimer(32.5, 117309)
-local timerCorruptingWatersCD		= mod:NewCDTimer(42, 117227)
+local timerCleansingWatersCD		= mod:NewNextTimer(32.5, 117309)
+local timerCorruptingWatersCD		= mod:NewNextTimer(42, 117227)
 --Elder Regail
-local timerLightningPrisonCD		= mod:NewCDTimer(25, 111850, nil, mod:IsHealer())--*This currently seems bugged and can be prevented by interrupting lightning bolt casts (it locks out entire school and can prevent this being cast
+local timerLightningPrisonCD		= mod:NewCDTimer(25, 111850)
 local timerLightningStormCD			= mod:NewCDTimer(42, 118077)--Shorter Cd in phase 3 32 seconds.
 local timerLightningStorm			= mod:NewBuffActiveTimer(14, 118077)
 --Protector Kaolan
-local timerTouchOfShaCD				= mod:NewCDTimer(37.4, 117519)--Timer seemed longer on heroic then it even was on normal, considering most heroic modes have same timings as normal this tier, i'm guessing every 20 sec was just too often for 10 man, normal or heroic. For now we'll assume all modes got this nerf. 25 man may still be 20 tho, will need to find out and see
-local timerDefiledGroundCD			= mod:NewCDTimer(15.5, 117986, nil, mod:IsMelee())
-local timerExpelCorruptionCD		= mod:NewCDTimer(39, 117975)
+local timerTouchOfShaCD				= mod:NewCDTimer(29, 117519)--Need new heroic data, timers confirmed for 10 man and 25 man normal as 29 and 12
+local timerDefiledGroundCD			= mod:NewNextTimer(15.5, 117986, nil, mod:IsMelee())
+local timerExpelCorruptionCD		= mod:NewNextTimer(38.5, 117975)--It's a next timer, except first cast. that one variates.
+
+local countdownExpelCorruption		= mod:NewCountdown(38.5, 117975)
 
 mod:AddBoolOption("RangeFrame")--For Lightning Prison
 mod:AddBoolOption("SetIconOnPrison", true)--For Lightning Prison (icons don't go out until it's DISPELLABLE, not when targetting is up).
@@ -123,12 +125,12 @@ function mod:OnCombatStart(delay)
 	prisonCount = 0
 	scansDone = 0
 	table.wipe(prisonTargets)
-	timerCleansingWatersCD:Start(12-delay)
+	timerCleansingWatersCD:Start(10-delay)
 	timerLightningPrisonCD:Start(15.5-delay)--May be off a tiny bit, (or a lot of blizzard doesn't fix bug where cast doesn't happen at all)
-	if self:IsDifficulty("normal10", "normal25") then
-		timerTouchOfShaCD:Start(36-delay)
+	if self:IsDifficulty("normal10", "heroic10") then
+--		timerTouchOfShaCD:Start(29-delay)--New value not known for 10 man
 	else
-		timerTouchOfShaCD:Start(10-delay)
+		timerTouchOfShaCD:Start(15-delay)
 	end
 end
 
@@ -143,10 +145,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		totalTouchOfSha = totalTouchOfSha + 1
 		warnTouchofSha:Show(args.destName)
 		if totalTouchOfSha < DBM:GetGroupMembers() then--This ability will not be cast if everyone in raid has it.
-			if self:IsDifficulty("normal10", "normal25") then
+			if self:IsDifficulty("normal10", "heroic10") then--Heroic is assumed same as 10 normal.
 				timerTouchOfShaCD:Start()
 			else
-				timerTouchOfShaCD:Start(20)
+				timerTouchOfShaCD:Start(12)--every 12 seconds on 25 man. Not sure about LFR though. Will adjust next week accordingly
 			end
 		end
 	elseif args:IsSpellID(111850) then--111850 is targeting debuff (NOT dispelable one)
@@ -158,7 +160,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnPrisonTargets)
 		self:Schedule(0.3, warnPrisonTargets)
-	elseif args:IsSpellID(117436) then--111850 is pre warning, mainly for player, 117436 is the actual final result, mainly for the healer dispels
+	elseif args:IsSpellID(117436) then--111850 is pre warning, mainly for player, 117436 is the actual final result, mainly for the healer dispel icons
 		if self.Options.SetIconOnPrison then
 			self:SetIcon(args.destName, prisonIcon)
 			prisonIcon = prisonIcon + 1
@@ -173,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:GetDestCreatureID() == 60585 then--Elder Regail
 				timerLightningStormCD:Start(20)
 			elseif args:GetDestCreatureID() == 60586 then--Elder Asani
-				timerCorruptingWatersCD:Start(11.5)
+				timerCorruptingWatersCD:Start(10)
 			elseif args:GetDestCreatureID() == 60583 then--Protector Kaolan
 				timerDefiledGroundCD:Start(5)
 			end
@@ -181,7 +183,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:GetDestCreatureID() == 60583 then--Elder Regail
 				timerLightningStormCD:Start(9.5)--His LS cd seems to reset in phase 3 since the CD actually changes.
 			elseif args:GetDestCreatureID() == 60583 then--Protector Kaolan
-				timerExpelCorruptionCD:Start(5)
+				timerExpelCorruptionCD:Start(5)--5-10 second variation for first cast.
+--				countdownExpelCorruption:Start(5)--There seems to be a variation on when he casts first one, but ONLY first one has variation
 			end
 		end
 	elseif args:IsSpellID(118191) then
@@ -217,6 +220,7 @@ function mod:SPELL_CAST_START(args)
 		warnExpelCorruption:Show()
 		specWarnExpelCorruption:Show()
 		timerExpelCorruptionCD:Start()
+		countdownExpelCorruption:Start(38.5)
 	elseif args:IsSpellID(117227) then
 		warnCorruptingWaters:Show()
 		specWarnCorruptingWaters:Show()
@@ -241,7 +245,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(117052) and phase < 3 then--Phase changes
 		phase = phase + 1
-		--We cancel timers for whatever boss just died (ie boss that cast the buff) We do this on success instead of applied since it's only cast ONCE (even if it applies to 2 bosses
+		--We cancel timers for whatever boss just died (ie boss that cast the buff, not the ones getting it)
 		if args:GetSrcCreatureID() == 60585 then--Elder Regail
 			timerLightningPrisonCD:Cancel()
 			timerLightningStormCD:Cancel()
