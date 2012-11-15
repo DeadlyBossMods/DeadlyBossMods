@@ -29,13 +29,15 @@ local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, 
 local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
 
 local timerThrashCD						= mod:NewCDTimer(7, 131996, nil, mod:IsTank() or mod:IsHealer())--Every 7-12 seconds.
-local timerBreathOfFearCD				= mod:NewNextTimer(33.5, 119414)--Based off bosses energy, he casts at 100 energy, and gains about 3 energy per second, so every 33-34 seconds is a breath.
+local timerBreathOfFearCD				= mod:NewNextTimer(33.3, 119414)--Based off bosses energy, he casts at 100 energy, and gains about 3 energy per second, so every 33-34 seconds is a breath.
 local timerOminousCackleCD				= mod:NewNextTimer(55, 119693)
 local timerDreadSpray					= mod:NewBuffActiveTimer(8, 120047)
 local timerDreadSprayCD					= mod:NewNextTimer(20.5, 120047)
 --local timerTerrorSpawnCD				= mod:NewNextTimer(60, 119108)--every 60 or so seconds, maybe a little more maybe a little less, not sure. this is just based on instinct after seeing where 30 fit.
 
 local berserkTimer						= mod:NewBerserkTimer(900)
+
+local countdownBreathOfFear			= mod:NewCountdown(33.3, 119414)
 
 local ominousCackleTargets = {}
 local platformGUIDs = {}
@@ -57,6 +59,7 @@ function mod:OnCombatStart(delay)
 --	timerTerrorSpawnCD:Start(25.5-delay)--still not perfect, it's hard to do yells when you're always the tank sent out of range of them. I need someone else to do /yell when they spawn and give me timing
 --	self:ScheduleMethod(25.5-delay, "TerrorSpawns")
 	timerBreathOfFearCD:Start(-delay)
+	countdownBreathOfFear:Start(33.3-delay)
 	onPlatform = false
 	platformMob = nil
 	table.wipe(ominousCackleTargets)
@@ -81,11 +84,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnBreathOfFearSoon:Schedule(23.4)
 		timerBreathOfFearCD:Start()--we still start this for EVERYONE though because you can't blindly leave platform and walk into a breath cause you didn't know it was soon.
+		countdownBreathOfFear:Start(33.3)
 	elseif args:IsSpellID(129147) then
 		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
 			onPlatform = true
 			specWarnOminousCackleYou:Show()
+--			countdownBreathOfFear:Cancel()--Maybe not cancel it though? for returns? not sure yet. i don't cancel timer
 		end
 		self:Unschedule(warnOminousCackleTargets)
 		self:Schedule(2, warnOminousCackleTargets)--this actually staggers a bit, so wait the full 2 seconds to get em all in one table
