@@ -371,14 +371,12 @@ local function warnAmberExplosionCast(spellId)
 	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
---		DBM:AddMsg("Debug: Interrupts Available")
 		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
 end
 
 function mod:OnSync(msg, str)
---	DBM:AddMsg(msg, str, sender)--This could generate a decent amount of spam in phase 3 if there is a loose construct casting away and multiple player constructs up. None the less, that would be the greatest debug if a user complains about spam (and thus, shares it).
 	if not guidTableBuilt then
 		buildGuidTable()
 		guidTableBuilt = true
@@ -387,7 +385,6 @@ function mod:OnSync(msg, str)
 	if str then
 		guid, spellId = string.split(":", str)
 		spellId = tonumber(spellId or "")
---		DBM:AddMsg(guid, spellId)
 	end
 	if msg == "InterruptAvailable" and guids[guid] and spellId then
 		canInterrupt[#canInterrupt + 1] = guids[guid]
