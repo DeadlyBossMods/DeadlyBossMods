@@ -287,9 +287,6 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122398) then
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
-			if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
-				specwarnAmberExplosion:Show(args.sourceName)
-			end
 			if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
 				specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
@@ -297,25 +294,34 @@ function mod:SPELL_CAST_START(args)
 				end
 			end
 			timerAmberExplosionCD:Start(18, args.sourceName, args.sourceGUID)--Longer CD if it's a non player controlled construct. Everyone needs to see this bar because there is no way to interrupt these.
+			if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
+				specwarnAmberExplosion:Show(args.sourceName)
+			else--There is a construct, lets pass it to interrupt checker to determine if we still fire specwarnAmberExplosion
+				self:Unschedule(warnAmberExplosionCast)
+				self:Schedule(0.5, warnAmberExplosionCast, 122398)
+			end
 		elseif args.sourceGUID == UnitGUID("player") then--Cast by YOU
 			specwarnAmberExplosionYou:Show(args.spellName)
 			timerAmberExplosionCD:Start(13, args.sourceName)--Only player needs to see this, they are only person who can do anything about it.
 			countdownAmberExplosion:Start(13)
 		end
 	elseif args:IsSpellID(122402) then--Amber Monstrosity
-		warnAmberExplosion:Show(args.sourceName, args.spellName)
-		if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
-			specwarnAmberExplosion:Show(args.sourceName)
-		end
 		if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
 			specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
 			if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
 				self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 			end
 		end
+		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(41)
 		timerAmberExplosionAMCD:Start(46, args.spellName, args.sourceName)
+		if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
+			specwarnAmberExplosion:Show(args.sourceName)
+		else--There is a construct, lets pass it to interrupt checker to determine if we still fire specwarnAmberExplosion
+			self:Unschedule(warnAmberExplosionCast)
+			self:Schedule(0.5, warnAmberExplosionCast, 122402)
+		end
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
 		specwarnMassiveStomp:Show()
@@ -362,8 +368,8 @@ function mod:UNIT_POWER(uId)
 end
 
 local function warnAmberExplosionCast(spellId)
-	if #canInterrupt == 0 then--No interupts, warn the raid to prep for aoe damage with beware! alert.
-		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)
+	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
+		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
 --		DBM:AddMsg("Debug: Interrupts Available")
 		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
