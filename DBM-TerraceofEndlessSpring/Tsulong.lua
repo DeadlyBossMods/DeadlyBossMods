@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 local warnNight							= mod:NewSpellAnnounce("ej6310", 2, 108558)
 local warnSunbeam						= mod:NewSpellAnnounce(122789, 3)
 local warnShadowBreath					= mod:NewSpellAnnounce(122752, 3)
-local warnNightmares					= mod:NewTargetAnnounce(122770, 4)--Target scanning not tested
+local warnNightmares					= mod:NewTargetAnnounce(122770, 4)--Target scanning will only work on 1 target on 25 man (only is 1 target on 10 man so they luck out)
 local warnDarkOfNight					= mod:NewSpellAnnounce("ej6550", 4, 130013)--Heroic
 local warnDay							= mod:NewSpellAnnounce("ej6315", 2, 122789)
 local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
@@ -30,7 +30,7 @@ local warnSunBreath						= mod:NewSpellAnnounce(122855, 3)
 local warnLightOfDay					= mod:NewSpellAnnounce("ej6551", 4, 123716, mod:IsHealer())--Heroic
 
 local specWarnShadowBreath				= mod:NewSpecialWarningSpell(122752, mod:IsTank())
-local specWarnDreadShadows				= mod:NewSpecialWarningStack(122768, nil, 6)--For heroic, 10 is unhealable, and it stacks pretty fast so adaquate warning to get over there would be abou 5-6
+local specWarnDreadShadows				= mod:NewSpecialWarningStack(122768, nil, 9)--For heroic, 10 is unhealable, and it stacks pretty fast so adaquate warning to get over there would be abou 5-6
 local specWarnNightmares				= mod:NewSpecialWarningYou(122770)
 local specWarnNightmaresNear			= mod:NewSpecialWarningClose(122770)
 local yellNightmares					= mod:NewYell(122770)
@@ -48,7 +48,7 @@ local timerSummonUnstableShaCD			= mod:NewCDTimer(18, "ej6320", nil, nil,nil, "I
 local timerSummonEmbodiedTerrorCD		= mod:NewCDTimer(41, "ej6316", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local timerTerrorizeCD					= mod:NewNextTimer(14, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
 local timerSunBreathCD					= mod:NewCDTimer(29, 122855)
---local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, logs i was sent always wiped VERy early in light phase.
+--local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, heroic logs i was sent always wiped VERY early in light phase.
 
 local berserkTimer						= mod:NewBerserkTimer(500)--a little over 8 min, basically 3rd dark phase is auto berserk.
 
@@ -127,7 +127,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(122768) then
-		if args:IsPlayer() and (args.amount or 1) >= 6 then
+		if args:IsPlayer() and (args.amount or 1) >= 9 and (args.amount or 1) % 3 == 0  then
 			specWarnDreadShadows:Show(args.amount)
 		end
 	elseif args:IsSpellID(123012) and args:GetDestCreatureID() == 42832 then
@@ -147,6 +147,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(122752) then
 		warnShadowBreath:Show()
+		specWarnShadowBreath:Show()
 		timerShadowBreathCD:Start()
 	end
 end
@@ -155,7 +156,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:122789") then
 		timerSunbeamCD:Start()
 	elseif msg:find(terrorName) then
-		timerTerrorizeCD:Start()--always cast 14-15 seconds after one spawns.
+		timerTerrorizeCD:Start()--always cast 14-15 seconds after one spawns (Unless stunned, if you stun the mob you can delay the cast, using this timer)
 		warnSummonEmbodiedTerror:Show()
 		timerSummonEmbodiedTerrorCD:Start()
 	end
