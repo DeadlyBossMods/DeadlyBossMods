@@ -71,7 +71,7 @@ L= DBM:GetModLocalization(737)
 L:SetWarningLocalization({
 	warnReshapeLifeTutor		= "1: Interrupt/debuff target, 2: Interrupt yourself, 3: Regen Health/Willpower, 4: Escape Vehicle",
 	warnAmberExplosion			= ">%s< is casting %s",
-	warnInterruptsAvailable		= "Interupts available for %s: %s",
+	warnInterruptsAvailable		= "Interupts available for %s: >%s<",
 	specwarnWillPower			= "Low Will Power!",
 	specwarnAmberExplosionYou	= "Interrupt YOUR %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Interrupt %s!",--Amber Montrosity
