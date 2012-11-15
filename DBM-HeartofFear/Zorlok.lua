@@ -27,14 +27,14 @@ mod:RegisterEventsInCombat(
 local warnInhale			= mod:NewStackAnnounce(122852, 2)
 local warnExhale			= mod:NewTargetAnnounce(122761, 3)
 local warnForceandVerve		= mod:NewCastAnnounce(122713, 4, 4)
-local warnAttenuation		= mod:NewSpellAnnounce(127834, 4)
+local warnAttenuation		= mod:NewTargetAnnounce(127834, 4)
 local warnConvert			= mod:NewTargetAnnounce(122740, 4)
 
 local specwarnPlatform		= mod:NewSpecialWarning("specwarnPlatform")
 local specwarnForce			= mod:NewSpecialWarningSpell(122713)
 local specwarnConvert		= mod:NewSpecialWarningSwitch(122740, not mod:IsHealer())
 local specwarnExhale		= mod:NewSpecialWarningTarget(122761, mod:IsHealer() or mod:IsTank())
-local specwarnAttenuation	= mod:NewSpecialWarningSpell(127834, nil, nil, nil, true)
+local specwarnAttenuation	= mod:NewSpecialWarningTarget(127834, nil, nil, nil, true)
 
 --Timers aren't worth a crap, at all, this is a timerless fight and will probably stay that way unless blizz redesigns it.
 --Update, blizzard didn't redesign it, so don't uncomment these timers, they are wrong and will always be wrong until every single failsafe is discovered.
@@ -72,6 +72,9 @@ function mod:OnCombatStart(delay)
 --	platform = 0
 	table.wipe(MCTargets)
 	berserkTimer:Start(-delay)
+end
+
+function mod:OnCombatEnd()
 	if self.Options.ArrowOnAttenuation then
 		DBM.Arrow:Hide()
 	end
@@ -92,16 +95,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(showMCWarning)
 		self:Schedule(0.9, showMCWarning)
-	--"<112.7 21:19:19> [CLEU] SPELL_CAST_START#false#0xF150F60400001A34#Imperial Vizier Zor'lok#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#127834#Attenuation#0", -- [30640] --First ID is universal spell cast start spellid
-	--"<114.3 21:19:21> [CLEU] SPELL_AURA_APPLIED#false#0xF130F8420000203A#Imperial Vizier Zor'lok#2632#0#0xF130F8420000203A#Imperial Vizier Zor'lok#2632#0#122474#Attenuation#0#BUFF", -- [30914] --Second ID is direction (one of two buffs he gets, he also gets a buff from cast ID)
-	elseif args:IsSpellID(122474, 122496, 123721) then
-		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
-			DBM.Arrow:ShowStatic(90, 9)
-		end
-	elseif args:IsSpellID(122479, 122497, 123722) then
-		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
-			DBM.Arrow:ShowStatic(270, 9)
-		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -117,12 +110,27 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(127834) then
-		warnAttenuation:Show()
-		specwarnAttenuation:Show()
-		timerAttenuation:Start()
-	elseif args:IsSpellID(122713) then
+	if args:IsSpellID(122713) then
 		timerForce:Start()
+--[[Looks like directional IDs do have a SPELL_CAST_START event that i overlooked. so no reason to add 127834 at all, we can detect cast and arrows off the direction IDs
+"<21.3 23:50:01> [CLEU] SPELL_CAST_START#false#0xF130F842000098D7#Imperial Vizier Zor'lok#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122474#Attenuation#0", -- [3967]
+"<21.6 23:50:01> [CLEU] SPELL_CAST_START#false#0xF150F604000085FC#Imperial Vizier Zor'lok#199240#0#0x0000000000000000#nil#-2147483648#-2147483648#127834#Attenuation#0", -- [4034]
+"<23.3 23:50:03> [CLEU] SPELL_AURA_APPLIED#false#0xF130F842000098D7#Imperial Vizier Zor'lok#2632#0#0xF130F842000098D7#Imperial Vizier Zor'lok#2632#0#122474#Attenuation#0#BUFF", -- [4450]
+--]]
+	elseif args:IsSpellID(122474, 122496, 123721) then
+		warnAttenuation:Show(args.sourceName)
+		specwarnAttenuation:Show(args.sourceName)
+		timerAttenuation:Start()
+		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
+			DBM.Arrow:ShowStatic(90, 12)
+		end
+	elseif args:IsSpellID(122479, 122497, 123722) then
+		warnAttenuation:Show(args.sourceName)
+		specwarnAttenuation:Show(args.sourceName)
+		timerAttenuation:Start()
+		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
+			DBM.Arrow:ShowStatic(270, 12)
+		end
 --[[	elseif args:IsSpellID(123791) and recentPlatformChange then--No one is in melee range of boss, he's aoeing. (i.e., he's arrived at new platform)
 		recentPlatformChange = false--we want to ignore when this happens as a result of players doing fight wrong. Only interested in platform changes.--]]
 	end
