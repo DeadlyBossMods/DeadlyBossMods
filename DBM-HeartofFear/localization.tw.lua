@@ -12,12 +12,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnPlatform	= "為首領轉換露臺顯示特別警告",
+	ArrowOnAttenuation	= "明確地為$spell:127834指示DBM箭頭移動方向",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
 L:SetMiscLocalization({
-	Platform	= "%s飛向他的其中一個露臺!",
-	Defeat		= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。"
+	Platform			= "%s飛向他的其中一個露臺!",
+	Defeat				= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。"
 })
 
 
@@ -38,16 +39,16 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(713)
 
 L:SetWarningLocalization({
-	specwarnUnder	= "離開紫色圓圈範圍!"
+	specwarnUnder		= "離開紫色圓圈範圍!"
 })
 
 L:SetOptionLocalization({
-	specwarnUnder	= "當你在紫色圓圈範圍內顯示特別警告",
-	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+	specwarnUnder		= "當你在紫色圓圈範圍內顯示特別警告",
+	PheromonesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
 })
 
 L:SetMiscLocalization({
-	UnderHim	= "在他下面"
+	UnderHim			= "在他下面"
 })
 
 ----------------------
@@ -60,7 +61,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"
+	Reinforcements		= "風領主瑪爾加拉克召喚增援!"
 })
 
 ------------
@@ -91,7 +92,8 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionAM	= "為中斷琥珀巨怪的$spell:122402顯示特別警告",
 	specwarnAmberExplosionOther	= "為中斷突變傀儡的$spell:122398顯示特別警告",
 	timerAmberExplosionAMCD		= "為琥珀巨怪下一次的$spell:122402顯示計時器",
-	InfoFrame					= "為玩家的意志力顯示訊息框架"
+	InfoFrame					= "為玩家的意志力顯示訊息框架",
+	FixNameplates				= "開戰後自動禁用干擾的名字血條\n(離開戰鬥後恢復設定)"
 })
 
 L:SetMiscLocalization({
@@ -103,7 +105,12 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(743)
 
+L:SetWarningLocalization({
+	warnAmberTrap		= "琥珀陷阱:(%d/5)",
+})
+
 L:SetOptionLocalization({
+	warnAmberTrap		= "為$spell:125826的製作進度顯示警告", -- maybe bad translation.
 	InfoFrame			= "為受到$spell:125390的玩家顯示訊息框架",
 	RangeFrame			= "為$spell:123735顯示距離框架(5碼)",
 	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
