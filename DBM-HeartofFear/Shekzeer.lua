@@ -154,6 +154,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				resinIcon = 2
 			end
 		end
+	elseif args:IsSpellID(124077) then
+		if args.sourceGUID == UnitGUID("target") then--Only show warning for your own target.
+			specWarnDispatch:Show(args.sourceName)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -185,6 +189,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(125451) and not phase3Started then
 		phase3Started = true
 		self:UnregisterShortTermEvents()
+		DBM.RangeCheck:Hide()
 		timerPhase2:Cancel()
 		timerConsumingTerrorCD:Cancel()
 		timerScreechCD:Cancel()
@@ -196,11 +201,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(124077) then
-		if args.sourceGUID == UnitGUID("target") then--Only show warning for your own target.
-			specWarnDispatch:Show(args.sourceName)
-		end
-	elseif args:IsSpellID(124849) then
+	if args:IsSpellID(124849) then
 		warnConsumingTerror:Show()
 		specWarnConsumingTerror:Show()
 		timerConsumingTerrorCD:Start()
@@ -215,6 +216,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.YellPhase3 or msg:find(L.YellPhase3)) and not phase3Started then
 		phase3Started = true
 		self:UnregisterShortTermEvents()
+		DBM.RangeCheck:Hide()
 		timerPhase2:Cancel()
 		timerConsumingTerrorCD:Cancel()
 		timerScreechCD:Cancel()
