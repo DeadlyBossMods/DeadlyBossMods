@@ -339,6 +339,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		timerFlankingOrdersCD:Start(25)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerImperviousShieldCD:Start(40.7)
+			countdownImperviousShield:Cancel()--Fix a bug where sometimes the last pulls countdown not get canceled when you reset boss.
 			countdownImperviousShield:Start(40.7)
 		end
 	elseif boss == Subetai then
