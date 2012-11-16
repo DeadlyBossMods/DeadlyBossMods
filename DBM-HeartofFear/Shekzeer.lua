@@ -189,7 +189,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(125451) and not phase3Started then
 		phase3Started = true
 		self:UnregisterShortTermEvents()
-		DBM.RangeCheck:Hide()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 		timerPhase2:Cancel()
 		timerConsumingTerrorCD:Cancel()
 		timerScreechCD:Cancel()
