@@ -19,7 +19,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(664)
 
 L:SetWarningLocalization({
-	SpecWarnIntensity	= "%s在%s(%d)"
+	SpecWarnIntensity	= "%s在%s有(%d)層"
 })
 
 L:SetOptionLocalization({
