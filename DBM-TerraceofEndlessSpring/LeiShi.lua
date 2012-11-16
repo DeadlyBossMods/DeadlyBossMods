@@ -37,7 +37,7 @@ local hideActive = false
 
 function mod:OnCombatStart(delay)
 	hideActive = false
-	timerSpecialCD:Start(52-delay)--the ONLY timer that ever seems to be right, is FIRST special.
+	timerSpecialCD:Start(42.5-delay)--the ONLY timer that ever seems to be right, is FIRST special.
 	berserkTimer:Start(-delay)
 end
 
