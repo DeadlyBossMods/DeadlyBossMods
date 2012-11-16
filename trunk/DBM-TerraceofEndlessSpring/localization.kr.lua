@@ -17,7 +17,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Victory	= "I thank you, strangers. I have been freed."
+	Victory	= "고맙다, 이방인이여. 날 자유롭게 해줘서."
 }
 
 -------------------------------
@@ -39,7 +39,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy."--wtb alternate and less crappy victory event.
+	Victory	= "아... 앗! 내가 무슨...? 혹시...? 너무... 흐릿해."--wtb alternate and less crappy victory event.
 }
 
 ----------------------

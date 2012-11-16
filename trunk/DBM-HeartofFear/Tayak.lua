@@ -167,6 +167,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self:Schedule(0.8, checkUnseenEmote)
 	elseif spellId == 123814 and self:AntiSpam(2, 2) then--Do not add other spellids here either. 123814 is only cast once, it starts the channel. everything else is cast every 1-2 seconds as periodic triggers.
 		intensifyCD = 10
+		DBM.RangeCheck:Hide()
 		timerTempestSlashCD:Cancel()
 		timerOverwhelmingAssaultCD:Cancel()
 		timerWindStepCD:Cancel()

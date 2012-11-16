@@ -65,6 +65,8 @@ local timerExpelCorruptionCD		= mod:NewNextTimer(38.5, 117975)--It's a next time
 
 local countdownExpelCorruption		= mod:NewCountdown(38.5, 117975)
 
+local berserkTimer					= mod:NewBerserkTimer(490)
+
 mod:AddBoolOption("RangeFrame")--For Lightning Prison
 mod:AddBoolOption("SetIconOnPrison", true)--For Lightning Prison (icons don't go out until it's DISPELLABLE, not when targetting is up).
 
