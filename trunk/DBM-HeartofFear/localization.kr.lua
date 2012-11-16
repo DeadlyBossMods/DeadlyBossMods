@@ -70,7 +70,7 @@ L= DBM:GetModLocalization(737)
 L:SetWarningLocalization({
 	warnReshapeLifeTutor		= "1: 대상 차단/공격, 2: 본인 차단, 3: 체력/의지력 회복, 4: 피조물에서 탈출",
 	warnAmberExplosion			= "주문시전 %2$s : >%1$s<",
-	warnInterruptsAvailable		= "%s의 호박석 폭발 차단 가능: %s",
+	warnInterruptsAvailable		= "%s의 호박석 폭발 차단 가능: >%s<",
 	specwarnWillPower			= "의지력 낮음!",
 	specwarnAmberExplosionYou	= "당신에게 %s 사용 - 2번으로 차단!",
 	specwarnAmberExplosionAM	= "%s 시전: %s - 1번으로 차단!",
