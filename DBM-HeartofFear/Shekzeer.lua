@@ -218,7 +218,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.YellPhase3 or msg:find(L.YellPhase3)) and not phase3Started then
 		phase3Started = true
 		self:UnregisterShortTermEvents()
-		DBM.RangeCheck:Hide()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 		timerPhase2:Cancel()
 		timerConsumingTerrorCD:Cancel()
 		timerScreechCD:Cancel()
