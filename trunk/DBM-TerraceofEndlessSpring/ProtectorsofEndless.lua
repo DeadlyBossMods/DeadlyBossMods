@@ -130,10 +130,11 @@ function mod:OnCombatStart(delay)
 	timerCleansingWatersCD:Start(10-delay)
 	timerLightningPrisonCD:Start(15.5-delay)--May be off a tiny bit, (or a lot of blizzard doesn't fix bug where cast doesn't happen at all)
 	if self:IsDifficulty("normal10", "heroic10") then
---		timerTouchOfShaCD:Start(29-delay)--New value not known for 10 man
+		timerTouchOfShaCD:Start(35-delay)
 	else
 		timerTouchOfShaCD:Start(15-delay)
 	end
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
