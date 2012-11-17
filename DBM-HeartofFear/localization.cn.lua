@@ -76,7 +76,7 @@ L= DBM:GetModLocalization(737)
 L:SetWarningLocalization({
 	warnReshapeLifeTutor		= "1：打断/减益目标，2：打断自己，3：回复生命/意志，4：离开构造体",
 	warnAmberExplosion			= "%s 正在施放 %s",
-	warnInterruptsAvailable		= "可打断 %s: %s",
+	warnInterruptsAvailable		= "可打断 %s: >%s<",
 	specwarnWillPower			= "意志低下！",
 	specwarnAmberExplosionYou	= "打断%s！",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s：打断 %s!",--Amber Montrosity
