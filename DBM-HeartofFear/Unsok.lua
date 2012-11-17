@@ -42,7 +42,7 @@ local warnAmberCarapace			= mod:NewTargetAnnounce(122540, 4)--Monstrosity Shield
 local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3)
 local warnAmberExplosionSoon	= mod:NewSoonAnnounce(122402, 3)
 local warnFling					= mod:NewSpellAnnounce(122413, 3)--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
-local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
+--local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
 --Boss
 local specwarnAmberScalpel			= mod:NewSpecialWarningYou(121994)
@@ -287,12 +287,14 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122398) then
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
+			--This doesn't work, for no logical reason what so ever.
 			if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
 				specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
 					self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
 				end
 			end
+			--^^
 			timerAmberExplosionCD:Start(18, args.sourceName, args.sourceGUID)--Longer CD if it's a non player controlled construct. Everyone needs to see this bar because there is no way to interrupt these.
 			if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
 				specwarnAmberExplosion:Show(args.sourceName)
@@ -306,12 +308,14 @@ function mod:SPELL_CAST_START(args)
 			countdownAmberExplosion:Start(13)
 		end
 	elseif args:IsSpellID(122402) then--Amber Monstrosity
+		--This doesn't work, for no logical reason what so ever.
 		if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
 			specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
 			if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
 				self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 			end
 		end
+		--^^
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(41)
@@ -371,7 +375,7 @@ local function warnAmberExplosionCast(spellId)
 	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
-		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
+--		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
 end
