@@ -2496,44 +2496,29 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		table.insert(inCombat, mod)
 		lowestBossHealth = 1
-		savedDifficulty = self:GetCurrentInstanceDifficulty()
+		savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 			mod.inCombatOnlyEventsRegistered = 1
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
 		end
 		if mod:IsDifficulty("lfr25") then
 			mod.stats.lfr25Pulls = mod.stats.lfr25Pulls + 1
-			difficultyText = PLAYER_DIFFICULTY3.." - "
 		elseif mod:IsDifficulty("normal5") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
-			local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
-			if not instanceType then--It's a scenario and blizzard reports these really goofy. Only place instanceType is nil
-				difficultyText = GUILD_CHALLENGE_TYPE4.." - "
-			elseif instanceType == "party" then--outdoor areas can return normal5 so we add extra instance check here
-				difficultyText = PLAYER_DIFFICULTY1.." - "
-			else
-				difficultyText = ""
-			end
 		elseif mod:IsDifficulty("heroic5") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			difficultyText = PLAYER_DIFFICULTY2.." - "
 		elseif mod:IsDifficulty("challenge5") then
 			mod.stats.challengePulls = mod.stats.challengePulls + 1
-			difficultyText = CHALLENGE_MODE.." - "
 		elseif mod:IsDifficulty("normal10") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
 			local _, _, _, _, maxPlayers = GetInstanceInfo()
 			--Because we still combine 40 mans with 10 man raids, we use maxPlayers arg for player count.
-			difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
 		elseif mod:IsDifficulty("heroic10") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			difficultyText = PLAYER_DIFFICULTY2.." (10) - "
 		elseif mod:IsDifficulty("normal25") then
 			mod.stats.normal25Pulls = mod.stats.normal25Pulls + 1
-			difficultyText = PLAYER_DIFFICULTY1.." (25) - "
 		elseif mod:IsDifficulty("heroic25") then
 			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
-			difficultyText = PLAYER_DIFFICULTY2.." (25) - "
 		end
 		if DBM.Options.ShowEngageMessage then
 			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
@@ -2625,42 +2610,8 @@ function DBM:EndCombat(mod, wipe)
 				mod.combatInfo.killMobs[i] = true
 			end
 		end
-		if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
-			local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
-			if not instanceType then--It's a scenario and blizzard reports these really goofy. Only place instanceType is nil
-				difficultyText = GUILD_CHALLENGE_TYPE4.." - "
-				savedDifficulty = "normal5"--Just treat these like 5 man normals, for stat purposes.
-			elseif difficulty == 1 then
-				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
-				savedDifficulty = "normal5"
-			elseif difficulty == 2 then
-				difficultyText = PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
-				savedDifficulty = "heroic5"
-			elseif difficulty == 3 then
-				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
-				savedDifficulty = "normal10"
-			elseif difficulty == 4 then
-				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
-				savedDifficulty = "normal25"
-			elseif difficulty == 5 then
-				difficultyText = PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
-				savedDifficulty = "heroic10"
-			elseif difficulty == 6 then
-				difficultyText = PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
-				savedDifficulty = "heroic25"
-			elseif difficulty == 7 then
-				difficultyText = PLAYER_DIFFICULTY3.." - "
-				savedDifficulty = "lfr25"
-			elseif difficulty == 8 then
-				difficultyText = CHALLENGE_MODE.." - "
-				savedDifficulty = "challenge5"
-			elseif difficulty == 9 then--40 mans now have their own difficulty, instead of being reported as 10 man normal like they used to in 3.x-4.x
-				difficultyText = PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
-				savedDifficulty = "normal10"--Lets just save these where we been saving them, to avoid probelms, instead of creating a normal40 for little reason.
-			else
-				difficultyText = ""
-				savedDifficulty = "normal5"
-			end
+		if not savedDifficulty or not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
+			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		end
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
@@ -2832,29 +2783,33 @@ function DBM:OnMobKill(cId, synced)
 end
 
 function DBM:GetCurrentInstanceDifficulty()
-	local _, instanceType, difficulty = GetInstanceInfo()
+	local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
 	if not instanceType then--It's a scenario and blizzard reports these really goofy. Only place instanceType is nil
-		return "normal5"--Just treat these like 5 man normals, for stat purposes.
+		return "normal5", GUILD_CHALLENGE_TYPE4.." - "--Just treat these like 5 man normals, for stat purposes.
 	elseif difficulty == 1 then
-		return "normal5"
+		if instanceType == "party" then
+			return "normal5", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
+		else--Likely an outdoor boss
+			return "normal5", ""
+		end
 	elseif difficulty == 2 then
-		return "heroic5"
+		return "heroic5", PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
 	elseif difficulty == 3 then
-		return "normal10"
+		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
 	elseif difficulty == 4 then
-		return "normal25"
+		return "normal25", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
 	elseif difficulty == 5 then
-		return "heroic10"
+		return "heroic10", PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
 	elseif difficulty == 6 then
-		return "heroic25"
+		return "heroic25", PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
 	elseif difficulty == 7 then
-		return "lfr25"
+		return "lfr25", PLAYER_DIFFICULTY3.." - "
 	elseif difficulty == 8 then
-		return "challenge5"
+		return "challenge5", CHALLENGE_MODE.." - "
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
-		return "normal10"--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
+		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	else
-		return "normal5"
+		return "normal5", ""
 	end
 end
 
@@ -3080,6 +3035,9 @@ do
 	-- sender is a presenceId for real id messages, a character name otherwise
 	local function onWhisper(msg, sender, isRealIdMessage)
 		if msg == "status" and #inCombat > 0 and DBM.Options.StatusEnabled then
+			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
+				difficultyText = select(2, DBM:GetCurrentInstanceDifficulty())
+			end
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
@@ -3088,6 +3046,9 @@ do
 			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumGroupMembers(), GetNumSubgroupMembers() + 1)))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
+			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
+				difficultyText = select(2, DBM:GetCurrentInstanceDifficulty())
+			end
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
