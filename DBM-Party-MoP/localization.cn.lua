@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/14/2012
+-- Last update: 11/18/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -108,7 +108,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Kill		= "So long has violence lurks in your heart...I will return...",
+	Kill		= "只要你们心中的暴虐不除……我……就会……回来的……",
 })
 
 -----------------------
