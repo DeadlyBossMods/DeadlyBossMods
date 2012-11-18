@@ -37,11 +37,7 @@ local specwarnExhale		= mod:NewSpecialWarningTarget(122761, mod:IsHealer() or mo
 local specwarnAttenuation	= mod:NewSpecialWarningTarget(127834, nil, nil, nil, true)
 
 --Timers aren't worth a crap, at all, this is a timerless fight and will probably stay that way unless blizz redesigns it.
---Update, blizzard didn't redesign it, so don't uncomment these timers, they are wrong and will always be wrong until every single failsafe is discovered.
---Every time i figure one failsafe out, i find out it's wrong under a different condition
---basically this fight works like zon ozz, where if a certain condition is present, timers get changed. Problem is, in phase 4, there are about 5 or more failsafes active at same time
---EVERY ability drastically alters every other abilities cd, making it impossible with any level of accuracy to support even remotely accurate timers.
---I'm not adding a timer if the variation for it is gonna be "anywhere between 40 seconds and 90 seconds". Cause yeah, that's not very useful.
+--http://us.battle.net/wow/en/forum/topic/7004456927 for more info on lack of timers.
 --local timerExhaleCD			= mod:NewCDTimer(41, 122761)
 local timerExhale				= mod:NewTargetTimer(6, 122761)
 --local timerForceCD			= mod:NewCDTimer(48, 122713)--Phase 1, every 41 seconds since exhale keeps resetting it, phase 2, 48 seconds or as wildly high as 76 seconds if exhale resets it late in it's natural CD
@@ -58,8 +54,6 @@ mod:AddBoolOption("MindControlIcon", true)
 
 local MCTargets = {}
 local MCIcon = 8
---local recentPlatformChange = false
---local platform = 0
 
 local function showMCWarning()
 	warnConvert:Show(table.concat(MCTargets, "<, >"))
@@ -113,11 +107,6 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122713) then
 		timerForce:Start()
---[[Looks like directional IDs do have a SPELL_CAST_START event that i overlooked. so no reason to add 127834 at all, we can detect cast and arrows off the direction IDs
-"<21.3 23:50:01> [CLEU] SPELL_CAST_START#false#0xF130F842000098D7#Imperial Vizier Zor'lok#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122474#Attenuation#0", -- [3967]
-"<21.6 23:50:01> [CLEU] SPELL_CAST_START#false#0xF150F604000085FC#Imperial Vizier Zor'lok#199240#0#0x0000000000000000#nil#-2147483648#-2147483648#127834#Attenuation#0", -- [4034]
-"<23.3 23:50:03> [CLEU] SPELL_AURA_APPLIED#false#0xF130F842000098D7#Imperial Vizier Zor'lok#2632#0#0xF130F842000098D7#Imperial Vizier Zor'lok#2632#0#122474#Attenuation#0#BUFF", -- [4450]
---]]
 	elseif args:IsSpellID(122474, 122496, 123721) then
 		warnAttenuation:Show(args.sourceName)
 		specwarnAttenuation:Show(args.sourceName)
@@ -134,23 +123,12 @@ function mod:SPELL_CAST_START(args)
 --		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
 --			DBM.Arrow:ShowStatic(270, 12)
 --		end
---[[	elseif args:IsSpellID(123791) and recentPlatformChange then--No one is in melee range of boss, he's aoeing. (i.e., he's arrived at new platform)
-		recentPlatformChange = false--we want to ignore when this happens as a result of players doing fight wrong. Only interested in platform changes.--]]
 	end
 end
-
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(124018) then
-		platform = 4--He moved to middle, it's phase 2, although platform "4" is better then adding an extra variable.
-	end
-end--]]
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Platform or msg:find(L.Platform) then
 		specwarnPlatform:Show()
---		platform = platform + 1
---		recentPlatformChange = true
 	end
 end
 
