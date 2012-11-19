@@ -50,7 +50,7 @@ local timerAttenuation			= mod:NewBuffActiveTimer(14, 127834)
 local berserkTimer				= mod:NewBerserkTimer(660)
 
 mod:AddBoolOption("MindControlIcon", true)
---mod:AddBoolOption("ArrowOnAttenuation", true)
+mod:AddBoolOption("ArrowOnAttenuation", true)
 
 local MCTargets = {}
 local MCIcon = 8
@@ -62,18 +62,15 @@ local function showMCWarning()
 end
 
 function mod:OnCombatStart(delay)
---	recentPlatformChange = false
---	platform = 0
 	table.wipe(MCTargets)
 	berserkTimer:Start(-delay)
 end
 
---[[
 function mod:OnCombatEnd()
 	if self.Options.ArrowOnAttenuation then
 		DBM.Arrow:Hide()
 	end
-end--]]
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(122852) then
@@ -111,18 +108,18 @@ function mod:SPELL_CAST_START(args)
 		warnAttenuation:Show(args.sourceName)
 		specwarnAttenuation:Show(args.sourceName)
 		timerAttenuation:Start()
-		--This doesn't work, for no logical reason what so ever.
---		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
---			DBM.Arrow:ShowStatic(90, 12)
---		end
+		if self.Options.ArrowOnAttenuation then
+			DBM:AddMsg("Debug: Arrows are turned on and should be showing now", args.sourceGUID, UnitGUID("target") or 0, UnitName("target"))--See if GUIDs of target and source match (when we are targeting boss, print name of target too so we know IF we are targeting boss)
+			DBM.Arrow:ShowStatic(90, 12)
+		end
 	elseif args:IsSpellID(122479, 122497, 123722) then
 		warnAttenuation:Show(args.sourceName)
 		specwarnAttenuation:Show(args.sourceName)
 		timerAttenuation:Start()
-		--This doesn't work, for no logical reason what so ever.
---		if self.Options.ArrowOnAttenuation and args.sourceGUID == UnitGUID("target") then
---			DBM.Arrow:ShowStatic(270, 12)
---		end
+		if self.Options.ArrowOnAttenuation then
+			DBM:AddMsg("Debug: Arrows are turned on and should be showing now", args.sourceGUID, UnitGUID("target") or 0, UnitName("target"))
+			DBM.Arrow:ShowStatic(270, 12)
+		end
 	end
 end
 
