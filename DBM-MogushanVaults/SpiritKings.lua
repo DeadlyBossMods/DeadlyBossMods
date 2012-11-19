@@ -119,15 +119,14 @@ local function warnPinnedDownTargets()
 end
 
 function mod:OnCombatStart(delay)
-	zianActive = false
-	mengActive = false
-	qiangActive = false
-	subetaiActive = false
 	table.wipe(bossesActivated)
 	table.wipe(pinnedTargets)
 	table.wipe(diedShadow)
-	berserkTimer:Start(-delay)
+	zianActive = false
+	mengActive = false
+	subetaiActive = false
 	qiangActive = true
+	berserkTimer:Start(-delay)
 	timerAnnihilateCD:Start(10.5)
 	timerFlankingOrdersCD:Start(25)
 	if self:IsDifficulty("heroic10", "heroic25") then
