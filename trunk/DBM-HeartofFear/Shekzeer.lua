@@ -176,8 +176,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(123735) then
 		warnScreech:Show()
 		timerScreechCD:Start()
-	elseif args:IsSpellID(124748) then
-		warnAmberTrap:Show(1)
 	elseif args:IsSpellID(125826) then
 		specwarnAmberTrap:Show()
 	elseif args:IsSpellID(124845) then

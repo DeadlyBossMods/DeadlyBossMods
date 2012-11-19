@@ -119,7 +119,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(119593, 119692, 119693) then--This seems to have multiple spellids, depending on which platform he's going to send you to. TODO, figure out which is which platform and add additional warnings
 --		specWarnOminousCackle:Show()
-		if self:IsDifficulty("lfr25") then
+		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 			timerOminousCackleCD:Start(90)--Far less often on LFR
 		else
 			timerOminousCackleCD:Start()
