@@ -147,7 +147,6 @@ DBM.DefaultOptions = {
 	DisableCinematics = false,
 	DisableCinematicsOutside = false,
 --	HelpMessageShown = false,
-	AprilFools = true,
 	MoviesSeen = {},
 	MovieFilters = {},
 	LastRevision = 0
@@ -1698,9 +1697,9 @@ do
 					DBM:Unschedule(DBM.LoadMod, DBM, v)
 					DBM:Schedule(3, DBM.LoadMod, DBM, v)
 					--Lets try multiple checks, cause quite frankly this has been failinga bout 50% of time with just one check.
-					DBM:Schedule(5, DBM.ScenarioCheck)
-					DBM:Schedule(7, DBM.ScenarioCheck)
-					DBM:Schedule(9, DBM.ScenarioCheck)
+					DBM:Schedule(4, DBM.ScenarioCheck)
+					DBM:Schedule(8, DBM.ScenarioCheck)
+					DBM:Schedule(12, DBM.ScenarioCheck)
 --				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
 --					DBM:LoadMod(v)
 --				end
@@ -2176,13 +2175,6 @@ do
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "BATTLEGROUND" or channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none") then
 			handleSync(channel, sender, strsplit("\t", msg))
-		elseif prefix == "DBMv4-Ver" and msg == "Hi!" then -- an old client is trying to communicate with us, but we can't respond as he won't be able to receive our messages
-			if raid[sender] and not raid[sender].revision then -- it is actually an old client and not a recent one sending an old sync for compatibility reasons during 4.0
-				raid[sender].revision = 0
-				raid[sender].version = 4
-				raid[sender].displayVersion = "Unknown (uses incompatible pre-4.1 sync system)"
-				raid[sender].locale = "unknown"
-			end
 		end
 	end
 end
@@ -2481,8 +2473,7 @@ function checkWipe(confirm)
 end
 
 
--- lowest health the boss had in the current fight
-local lowestBossHealth = 1
+local lowestBossHealth = 1 -- lowest health the boss had in the current fight
 local savedDifficulty
 local difficultyText
 
@@ -2565,7 +2556,6 @@ function DBM:StartCombat(mod, delay, synced)
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
 		end
 		fireEvent("pull", mod, delay, synced)
-		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
 		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			if DBM.Options.BigBrotherAnnounceToRaid then
 				BigBrother:ConsumableCheck("RAID")
@@ -2935,43 +2925,6 @@ function DBM:SendTimerInfo(mod, target)
 	end
 end
 
-local soundFiles = {
-	"Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_KILL_02.wav",
-	"Sound\\Creature\\RHYOLITH\\VO_QUEST_42_RHYOLITH_TAUNT_01.wav",
-	"Sound\\Creature\\RHYOLITH\\VO_FL_RHYOLITH_AGGRO.wav",
-	"Sound\\Creature\\XT002Deconstructor\\UR_XT002_Special01.wav",
-	"Sound\\Creature\\Thorim\\UR_Thorim_Start02.wav",
-	"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Slay01.wav",
-	"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Tentacle01.wav",
-	"Sound\\Creature\\YoggSaron\\UR_YoggSaron_Death01.wav",
-	"Sound\\Creature\\Kologarn\\UR_Kologarn_Slay02.wav",
-	"Sound\\Creature\\FlameLeviathan\\UR_Leviathan_HardmodeOn.wav",
-	"Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_Aggro01.wav",
-	"Sound\\Creature\\Sindragosa\\IC_Sindragosa_Arcane01.wav",
-	"Sound\\Creature\\LordMarrowgar\\IC_Marrowgar_WW01.wav",
-	"Sound\\Creature\\Chogall\\VO_BT_Chogall_BotEvent28.wav",
-	"Sound\\Creature\\Arthas\\CS_Arthas_StartingPhase5.wav",
-	"Sound\\Creature\\Falric\\HR_FalrIC_SP01.wav",
-	"Sound\\Creature\\Falric\\HR_FalrIC_SP02.wav",
-	"Sound\\Creature\\PrinceMalchezzar\\PrinceAxeToss01.wav",
-	"Sound\\Creature\\PrinceMalchezzar\\PrinceSpecial01.wav",
-	"Sound\\Creature\\MedivhsEcho\\ChessKnightTaken01.wav",
-	"Sound\\Creature\\MedivhsEcho\\ChessBegin01.wav",
-	"sound\\CREATURE\\ALIZABAL\\VO_BH_ALIZABAL_RESET_01.OGG"
-}
-
-function DBM:AprilFools()
-	DBM:Unschedule(DBM.AprilFools)
-	if IsInInstance() then return end--Don't play joke if you're raiding.
-	DBM:Schedule(900 + math.random(0, 600) , DBM.AprilFools)
-	local x = math.random(1, #soundFiles)
-	if DBM.Options.UseMasterVolume then
-		PlaySoundFile(soundFiles[x], "Master")
-	else
-		PlaySoundFile(soundFiles[x])
-	end
-end
-
 do
 	local function requestTimers()
 		local uId = (IsInRaid() and "raid") or "party"
@@ -2985,10 +2938,6 @@ do
 	end
 
 	function DBM:PLAYER_ENTERING_WORLD()
-		local weekday, month, day, year = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
-		if month == 4 and day == 1 and DBM.Options.AprilFools then--April 1st
-			DBM:Schedule(900 + math.random(0, 600) , DBM.AprilFools)
-		end
 		if #inCombat == 0 then
 			DBM:Schedule(3.5, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires. Since boss mod loading takes 3 sec after entering zone, delays more will be good?
 		end
