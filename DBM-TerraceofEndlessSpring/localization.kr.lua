@@ -35,7 +35,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "$spell:123244 종료 알림 보기",
-	timerSpecialCD			= "다음 특수 공격까지 남은시간 바 표시"
+	timerSpecialCD			= "다음 특수 공격까지 남은시간 바 표시",
+	SetIconOnGuard			= "$journal:6224에 전술 목표 아이콘 설정"
 })
 
 L:SetMiscLocalization{

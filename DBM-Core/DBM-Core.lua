@@ -723,7 +723,7 @@ do
 		
 		-- execute scheduled tasks
 		local nextTask = getMin()
-		while nextTask and nextTask.time <= time do
+		while nextTask and nextTask.func and nextTask.time <= time do
 			deleteMin()
 			nextTask.func(unpack(nextTask))
 			pushCachedTable(nextTask)
