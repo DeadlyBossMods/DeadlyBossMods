@@ -55,6 +55,7 @@ local specWarnKorthikStrike				= mod:NewSpecialWarningYou(123963)
 local specWarnKorthikStrikeOther		= mod:NewSpecialWarningTarget(123963, mod:IsHealer())
 local yellKorthikStrike					= mod:NewYell(123963)
 local specWarnWindBomb					= mod:NewSpecialWarningMove(131830)
+local specWarnWhirlingBladeMove			= mod:NewSpecialWarningMove(121898)
 local yellWindBomb						= mod:NewYell(131830)
 
 --local timerWhirlingBladeCD				= mod:NewCDTimer(30, 121896)--30~60 sec. very large variable. timer useless?
@@ -197,6 +198,8 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 		specWarnCorrosiveResinPool:Show()
 	elseif spellId == 122064 and destGUID == UnitGUID("player") and self:AntiSpam(3, 5) then
 		specWarnCorrosiveResin:Show()
+	elseif spellId == 121898 and destGUID == UnitGUID("player") and not self:IsDifficulty("lfr25") and self:AntiSpam(3, 6) then
+		specWarnWhirlingBladeMove:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
