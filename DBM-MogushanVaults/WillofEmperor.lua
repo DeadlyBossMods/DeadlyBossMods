@@ -26,15 +26,16 @@ mod:RegisterEvents(
 local warnRageActivated			= mod:NewSpellAnnounce("ej5678", 3, 116525)
 local warnFocusedAssault		= mod:NewTargetAnnounce(116525, 2, nil, false)--Completely and totally spammy, this option is just here for those that want this info despite the spam.
 --Strength
-local warnStrengthActivated		= mod:NewSpellAnnounce("ej5677", 3, 116550)
+local warnStrengthActivated		= mod:NewCountAnnounce("ej5677", 3, 116550)
 local warnEnergizingSmash		= mod:NewSpellAnnounce(116550, 3, nil, mod:IsMelee())--Also might be spammy
 --Courage
-local warnCourageActivated		= mod:NewSpellAnnounce("ej5676", 3, 116778)
+local warnCourageActivated		= mod:NewCountAnnounce("ej5676", 3, 116778)
 local warnFocusedDefense		= mod:NewTargetAnnounce(116778, 4)
 --Sparks (Heroic Only)
 --local warnSpark					= mod:NewCountAnnounce("ej5674", 3)--Probably not very accurate. Not without wasting stupid amounts of cpu same way we do on spine. :\
 local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
+local warnBossesActivatedSoon	= mod:NewPreWarnAnnounce("ej5726", 10, 3, 116815)
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
 local warnArcLeft				= mod:NewCountAnnounce(116968, 4, 89570, mod:IsMelee())--This is a pre warn, gives you time to move
 local warnArcRight				= mod:NewCountAnnounce(116971, 4, 87219, mod:IsMelee())--This is a pre warn, gives you time to move
@@ -57,13 +58,13 @@ local specWarnCombo				= mod:NewSpecialWarningSpell("ej5672", mod:IsMelee())
 local specWarnTitanGas			= mod:NewSpecialWarningSpell(116779, nil, nil, nil, true)
 
 --Rage
-local timerRageActivates		= mod:NewNextTimer(11, "ej5678", nil, nil, nil, 116525)
+local timerRageActivates		= mod:NewNextTimer(30, "ej5678", nil, nil, nil, 116525)
 --Strength
-local timerStrengthActivates	= mod:NewNextTimer(9, "ej5677", nil, nil, nil, 116550)
+local timerStrengthActivates	= mod:NewNextCountTimer(50, "ej5677", nil, nil, nil, 116550)
 --Courage
-local timerCourageActivates		= mod:NewNextTimer(115, "ej5676", nil, nil, nil, 116778)
+local timerCourageActivates		= mod:NewNextCountTimer(100, "ej5676", nil, nil, nil, 116778)
 --Jan-xi and Qin-xi
-local timerBossesActivates		= mod:NewNextTimer(109, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
+local timerBossesActivates		= mod:NewNextTimer(107, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
 --local timerComboCD				= mod:NewCDTimer(14.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
 local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
 local timerTitanGasCD			= mod:NewNextCountTimer(150, 116779)
@@ -77,6 +78,8 @@ local comboWarned = false
 local sparkCount = 0
 local comboCount = 0
 local titanGasCast = 0
+local courageCount = 0
+local strengthCount = 0
 local focusedAssault = GetSpellInfo(116525)
 
 function mod:OnCombatStart(delay)
@@ -84,8 +87,17 @@ function mod:OnCombatStart(delay)
 	sparkCount = 0
 	comboCount = 0
 	titanGasCast = 0
-	timerBossesActivates:Start(-delay)--Still start here to give perspective
-	timerCourageActivates:Start(75-delay)
+	strengthCount = 0
+	courageCount = 0
+	if self:IsDifficulty("heroic10", "heroic25") then--Heroic trigger is shorter, everything comes about 6 seconds earlier
+		timerStrengthActivates:Start(35-delay, 1)
+		timerCourageActivates:Start(69-delay, 1)
+		timerBossesActivates:Start(101-delay)
+	else
+		timerStrengthActivates:Start(42-delay, 1)
+		timerCourageActivates:Start(75-delay, 1)
+		timerBossesActivates:Start(-delay)
+	end
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(focusedAssault)
@@ -122,39 +134,57 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Rage or msg:find(L.Rage) then
+	if msg == L.Rage or msg:find(L.Rage) then--Apparently they only yell about 33% of time so this isn't completely reliable
+		--Maybe make a sequence table assuming this data is right https://docs.google.com/spreadsheet/ccc?key=0AjsIknfmLMegdDRKTE5wa3ZyQy1ScUVPOHBJX053clE#gid=0
+		--Important note, they use first rages as pull timestamp, that is NOT what dbm does. It also appears they treat yells/emotes as spawns, and not account for 10 second delay either.
+		--TODO, make a table if this later factoring in the above points so it's accurate for the way DBM does it.
 		warnRageActivated:Schedule(11)
-		timerRageActivates:Start()--They actually spawn 11 seconds after yell
+		timerRageActivates:Start(11)--They actually spawn 11 seconds after yell
+	end
+end
+
+local function addsDelay(add)
+	if add == "Courage" then
+		courageCount = courageCount + 1
+		warnCourageActivated:Show(courageCount)
+		specWarnCourageActivated:Show()
+		--Titan gases delay spawns by 50 seconds, even on heroic (even though there is no actual gas phase, the timing stays same on heroic)
+		if courageCount >= 2 then
+			timerCourageActivates:Start(150, courageCount+1)
+		else
+			timerCourageActivates:Start(100, courageCount+1)
+		end
+	elseif add == "Strength" then
+		strengthCount = strengthCount + 1
+		warnStrengthActivated:Show(strengthCount)
+		specWarnStrengthActivated:Show()
+		--Titan gases delay spawns by 50 seconds, even on heroic (even though there is no actual gas phase, the timing stays same on heroic)
+		if strengthCount == 4 or strengthCount == 6 or strengthCount == 8 then--The add counts where the delays are
+			timerStrengthActivates:Start(100, strengthCount+1)
+		else
+			timerStrengthActivates:Start(50, strengthCount+1)
+		end
 	end
 end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Strength or msg:find(L.Strength) then
-		warnStrengthActivated:Schedule(9)
-		specWarnStrengthActivated:Schedule(9)
-		timerStrengthActivates:Start()--They actually spawn 10 seconds after emote
+		self:Schedule(9, addsDelay, "Strength")
 	elseif msg == L.Courage or msg:find(L.Courage) then
-		warnCourageActivated:Schedule(10)
-		specWarnCourageActivated:Schedule(10)
-		if timerCourageActivates:GetTime() > 80 then--First timer
-			timerCourageActivates:Update(105, 115)
-		else--first timer
-			timerCourageActivates:Update(65, 75)
-		end
+		self:Schedule(10, addsDelay, "Courage")
 	elseif msg == L.Boss or msg:find(L.Boss) then
+		warnBossesActivatedSoon:Show()
 		warnBossesActivated:Schedule(10)
 		specWarnBossesActivated:Schedule(10)
-		timerBossesActivates:Update(99, 109)
 		if not self:IsDifficulty("heroic10", "heroic25") then
 			timerTitanGasCD:Start(123, 1)
 		end
 	elseif msg:find("spell:116779") then
-		timerCourageActivates:Start(105)--Resets timer
 		if self:IsDifficulty("heroic10", "heroic25") then--On heroic the boss activates this perminantly on pull and it's always present
 			if not self:IsInCombat() then
 				DBM:StartCombat(self, 0)
 			end
-		else
+		else--Normal/LFR
 			titanGasCast = titanGasCast + 1
 			warnTitanGas:Show(titanGasCast)
 			specWarnTitanGas:Show()
