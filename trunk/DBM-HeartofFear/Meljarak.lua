@@ -110,7 +110,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(windBombTargets)
 	--timerWhirlingBladeCD:Start(35.5-delay)
 	timerRainOfBladesCD:Start(60-delay)
-	berserkTimer:Start(-delay)
+	if not self:IsDifficulty("lfr25") then
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
