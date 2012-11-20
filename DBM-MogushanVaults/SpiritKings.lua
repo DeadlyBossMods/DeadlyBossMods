@@ -36,7 +36,7 @@ local warnCrazyThought			= mod:NewCastAnnounce(117833, 2, nil, false)--Just does
 local warnMaddeningShout		= mod:NewSpellAnnounce(117708, 4)
 local warnCrazed				= mod:NewTargetAnnounce(117737, 3)--Basically stance change
 local warnCowardice				= mod:NewTargetAnnounce(117756, 3)--^^
-local warnDelirious				= mod:NewTargetAnnounce(117837, 3, nil, mod:CanRemoveEnrage())--Heroic Ability
+local warnDelirious				= mod:NewTargetAnnounce(117837, 4, nil, mod:CanRemoveEnrage() or mod:IsTank())--Heroic Ability
 --Qiang
 local warnAnnihilate			= mod:NewCastAnnounce(117948, 4)
 local warnFlankingOrders		= mod:NewSpellAnnounce(117910, 4)
@@ -60,7 +60,7 @@ local specWarnShieldOfDarknessD	= mod:NewSpecialWarningDispel(117697, isDispelle
 --Meng
 local specWarnMaddeningShout	= mod:NewSpecialWarningSpell(117708, nil, nil, nil, true)
 local specWarnCrazyThought		= mod:NewSpecialWarningInterrupt(117833, false)--At discretion of whoever to enable. depending on strat, you may NOT want to interrupt these (or at least not all of them)
-local specWarnDelirious			= mod:NewSpecialWarningDispel(117837, mod:CanRemoveEnrage())--Heroic Ability
+local specWarnDelirious			= mod:NewSpecialWarningDispel(117837, mod:CanRemoveEnrage() or mod:IsTank())--Heroic Ability
 --Qiang
 local specWarnAnnihilate		= mod:NewSpecialWarningSpell(117948)--Maybe tweak options later or add a bool for it, cause on heroic, it's not likely ranged will be in front of Qiang if Zian or Subetai are up.
 local specWarnFlankingOrders	= mod:NewSpecialWarningSpell(117910, nil, nil, nil, true)
@@ -81,6 +81,7 @@ local timerShieldOfDarknessCD  	= mod:NewNextTimer(42.5, 117697)
 local timerMaddeningShoutCD		= mod:NewCDTimer(47, 117708)--47-50 sec variation. So a CD timer instead of next.
 local timerDeliriousCD			= mod:NewCDTimer(20.5, 117837, nil, mod:CanRemoveEnrage())
 --Qiang
+local timerMassiveAttackCD		= mod:NewCDTimer(5, 117921, nil, mod:IsTank())
 local timerAnnihilateCD			= mod:NewNextTimer(39, 117948)
 local timerFlankingOrdersCD		= mod:NewCDTimer(40, 117910)--Every 40 seconds on normal, but on heroic it has a 40-50 second variation so has to be a CD bar instead of next
 local timerImperviousShieldCD	= mod:NewCDTimer(42, 117961)
@@ -245,6 +246,8 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 117558 and destGUID == UnitGUID("player") and self:AntiSpam(3, 4) then
 		specWarnCoalescingShadows:Show()
+	elseif spellId == 117921 and self:AntiSpam(3, 5) then
+		timerMassiveAttackCD:Start()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -274,6 +277,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerMaddeningShoutCD:Start(30)--This boss retains Maddening Shout
 		elseif UnitName(uId) == Qiang then
 			qiangActive = false
+			timerMassiveAttackCD:Cancel()
 			timerAnnihilateCD:Cancel()
 			timerImperviousShieldCD:Cancel()
 			countdownImperviousShield:Cancel()
