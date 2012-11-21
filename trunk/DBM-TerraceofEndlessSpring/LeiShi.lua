@@ -95,18 +95,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGetAway:Start()
 	elseif args:IsSpellID(123121) then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if (args.amount or 1) % 3 == 0 then
-			warnSpray:Show(args.destName, args.amount)
-			if args.amount >= 6 and args:IsPlayer() then
-				specWarnSpray:Show(args.amount)
-			else
-				if args.amount >= 6 and not UnitDebuff("player", GetSpellInfo(123121)) and not UnitIsDeadOrGhost("player") then
-					specWarnSprayOther:Show(args.destName)
-				end
-			end
-		end
 		if isTank(uId) then--Only want sprays that are on tanks, not bads standing on tanks.
 			timerSpray:Start(args.destName)
+			if (args.amount or 1) % 3 == 0 then
+				warnSpray:Show(args.destName, args.amount)
+				if args.amount >= 6 and args:IsPlayer() then
+					specWarnSpray:Show(args.amount)
+				else
+					if args.amount >= 6 and not UnitDebuff("player", GetSpellInfo(123121)) and not UnitIsDeadOrGhost("player") then
+						specWarnSprayOther:Show(args.destName)
+					end
+				end
+			end
 		end
 	end
 end
