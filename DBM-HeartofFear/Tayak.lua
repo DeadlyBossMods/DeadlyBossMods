@@ -52,6 +52,7 @@ mod:AddBoolOption("UnseenStrikeArrow")
 
 local emoteFired = false
 local intensifyCD = 60
+local phase2 = false
 
 local function checkUnseenEmote()
 	if not emoteFired then
@@ -70,6 +71,7 @@ end
 function mod:OnCombatStart(delay)
 	emoteFired = false
 	intensifyCD = 60
+	phase2 = false
 	timerTempestSlashCD:Start(10-delay)
 	timerOverwhelmingAssaultCD:Start(15.5-delay)--Possibly wrong, the cd was shortened since beta, need better log with engage timestamp
 	timerWindStepCD:Start(20.5-delay)
@@ -109,7 +111,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(123471) then
-		warnIntensify:Show(args.destName, args.amount or 1)
+		if phase2 and (args.amount or 1) % 3 == 0 or not phase2 then
+			warnIntensify:Show(args.destName, args.amount or 1)
+		end
 		timerIntensifyCD:Start(intensifyCD)
 	end
 end
@@ -141,7 +145,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg:find("spell:122949") then--Does not show in combat log except for after it hits. IT does fire a UNIT_SPELLCAST event but has no target info. The only way to get target is emote.
+	if msg:find("spell:122949") then--Does not show in combat log except for after it hits. IT does fire a UNIT_SPELLCAST event but has no target info. You can get target 1 sec faster with UNIT_AURA but it's more cpu and not worth the trivial gain IMO
 		emoteFired = true
 		warnUnseenStrike:Show(target)
 		specWarnUnseenStrike:Show(target)
@@ -166,6 +170,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 122949 and self:AntiSpam(2, 3) then-- sometimes Unseen Strike emote not fires. bliz bug.
 		self:Schedule(0.8, checkUnseenEmote)
 	elseif spellId == 123814 and self:AntiSpam(2, 2) then--Do not add other spellids here either. 123814 is only cast once, it starts the channel. everything else is cast every 1-2 seconds as periodic triggers.
+		phase2 = true
 		intensifyCD = 10
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
