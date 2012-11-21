@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(683)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show range frame (8) for $spell:111850\n(Shows everyone if you have debuff, only players with debuff if not)",
+	RangeFrame			= "為$spell:111850顯示距離框(8碼)\n(當你有debuff時只顯示其他沒有debuff的玩家)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
 
@@ -18,7 +18,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Victory	= "I thank you, strangers. I have been freed."
+	Victory	= "謝謝你，陌生人。我重獲自由了。"
 }
 
 
@@ -28,20 +28,21 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s has ended"
+	warnHideOver			= "%s結束"
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "Next Special"
+	timerSpecialCD			= "下一次特別技能"
 })
 
 L:SetOptionLocalization({
-	warnHideOver			= "Show warning when $spell:123244 has ended",
-	timerSpecialCD			= "Show timer for when next special ability will be cast."
+	warnHideOver			= "為$spell:123244結束顯示警告",
+	timerSpecialCD			= "為下一次特別技能顯示計時器",
+	SetIconOnCreature		= "為$journal:6224標示團隊圖示"
 })
 
 L:SetMiscLocalization{
-	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy."--wtb alternate and less crappy victory event.
+	Victory	= "我...啊..喔!我曾經...?我是不是...?這一切...都...太模糊了。"--wtb alternate and less crappy victory event.
 }
 
 
