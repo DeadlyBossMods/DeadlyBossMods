@@ -139,6 +139,18 @@ function mod:ScalpelTarget()
 	end
 end
 
+local function warnAmberExplosionCast(spellId, source)
+	DBM:AddMsg("Debug: warnAmberExplosionCast event fired: ", spellId, source)--Determine if this event is even firing from syncs and not just from constructs > 0 internets == 0 scenario
+	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
+		DBM:AddMsg("Debug: Interrupts were not available in warnAmberExplosionCast", spellId)
+		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
+	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
+		DBM:AddMsg("Debug: Interrupts were available in warnAmberExplosionCast", spellId)
+		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
+	end
+	table.wipe(canInterrupt)
+end
+
 function mod:OnCombatStart(delay)
 	warnedWill = true--avoid wierd bug on pull
 	buildGuidTable()
@@ -375,18 +387,6 @@ function mod:UNIT_POWER(uId)
 	elseif UnitPower(uId, ALTERNATE_POWER_INDEX) >= 32 and warnedWill then
 		warnedWill = false
 	end
-end
-
-local function warnAmberExplosionCast(spellId, source)
-	DBM:AddMsg("Debug: warnAmberExplosionCast event fired: ", spellId, source)--Determine if this event is even firing from syncs and not just from constructs > 0 internets == 0 scenario
-	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
-		DBM:AddMsg("Debug: Interrupts were not available in warnAmberExplosionCast", spellId)
-		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
-	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
-		DBM:AddMsg("Debug: Interrupts were available in warnAmberExplosionCast", spellId)
-		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
-	end
-	table.wipe(canInterrupt)
 end
 
 function mod:OnSync(msg, str)
