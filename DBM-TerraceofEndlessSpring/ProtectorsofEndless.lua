@@ -243,7 +243,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(117986) then
 		warnDefiledGround:Show()
 		timerDefiledGroundCD:Start()
-		if args.sourcename == UnitName("target") then 
+		if args.sourceName == UnitName("target") then 
 			specWarnDefiledGround:Show()
 		end
 	elseif args:IsSpellID(117052) and phase < 3 then--Phase changes
