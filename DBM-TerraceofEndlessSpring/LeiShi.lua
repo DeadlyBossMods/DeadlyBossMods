@@ -49,6 +49,22 @@ local function resetGuardIconState()
 	iconsSet = 0
 end
 
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	-- 3. check boss1's highest threat target
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
+		return true
+	end
+	return false
+end
+
 function mod:OnCombatStart(delay)
 	guardActivated = 0
 	hideActive = false
@@ -78,6 +94,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnGetAway:Show()
 		timerGetAway:Start()
 	elseif args:IsSpellID(123121) then
+		local uId = DBM:GetRaidUnitId(args.destName)
 		if (args.amount or 1) % 3 == 0 then
 			warnSpray:Show(args.destName, args.amount)
 			if args.amount >= 6 and args:IsPlayer() then
@@ -88,7 +105,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-		if not hideActive then--filter out all the splash sprays that go out during hide.
+		if isTank(uId) then--Only want sprays that are on tanks, not bads standing on tanks.
 			timerSpray:Start(args.destName)
 		end
 	end
