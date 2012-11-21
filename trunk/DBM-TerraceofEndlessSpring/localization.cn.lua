@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/27/2012
+-- Last update: 11/22/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -21,7 +21,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Victory	= "I thank you, strangers. I have been freed."
+	Victory	= "谢谢你，陌生人。我自由了。"
 }
 
 
@@ -40,11 +40,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "特殊警报：$spell:123244效果结束时",
-	timerSpecialCD			= "计时条：下一次特殊能力"
+	timerSpecialCD			= "计时条：下一次特殊能力",
+	SetIconOnCreature		= "为$journal:6224的目标添加团队标记"
 })
 
+
 L:SetMiscLocalization{
-	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy."--wtb alternate and less crappy victory event.
+	Victory	= "我……啊……噢！我……？眼睛……好……模糊。"--wtb alternate and less crappy victory event.
 }
 
 

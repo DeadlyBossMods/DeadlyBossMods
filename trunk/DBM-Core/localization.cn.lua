@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 11/10/2012
+-- Last update: 11/22/2012
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -12,9 +12,9 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "成功读取%s模块。在聊天框输入 /dbm �
 DBM_CORE_LOAD_GUI_ERROR				= "无法读取图形界面：%s"
 
 DBM_CORE_COMBAT_STARTED				= "%s作战开始，祝你走运 :)"
-DBM_CORE_BOSS_DOWN					= "%s被击杀！用时%s！"
-DBM_CORE_BOSS_DOWN_L				= "%s被击杀！用时%s！上次用时%s，最快击杀用时%s。总击杀%d次。"
-DBM_CORE_BOSS_DOWN_NR				= "%s被击杀！用时%s！新的纪录诞生了！原纪录为%s。总击杀%d次。"
+DBM_CORE_BOSS_DOWN					= "%s战斗胜利！用时%s！"
+DBM_CORE_BOSS_DOWN_L				= "%s战斗胜利！用时%s！上次用时%s，最快用时%s。总计%d次胜利。"
+DBM_CORE_BOSS_DOWN_NR				= "%s战斗胜利！用时%s！新的纪录诞生了！原纪录为%s。总计%d次胜利。"
 DBM_CORE_COMBAT_ENDED_AT			= "%s（%s）作战结束，用时%s。"
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s（%s）作战结束，用时%s。该难度下总计失败%d次。"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s作战%s前开始，正在恢复计时条……"
@@ -42,8 +42,8 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "其它"
 DBM_CORE_AUTO_RESPONDED						= "已自动回复密语。"
 DBM_CORE_STATUS_WHISPER						= "%s：%s，%d/%d存活"
 DBM_CORE_AUTO_RESPOND_WHISPER				= "%s正在与%s交战，（当前%s，%d/%d存活）"
-DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s已经击败%s！"
-DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s已经击败%s！总计击败%d次。"
+DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s已在%s的战斗中取得胜利！"
+DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s已在%s的战斗中取得胜利！总计%d次胜利。"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s在%s（%s）的战斗中灭团了。"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s在%s（%s）的战斗中灭团了。该难度下总共失败%d次。"
 
