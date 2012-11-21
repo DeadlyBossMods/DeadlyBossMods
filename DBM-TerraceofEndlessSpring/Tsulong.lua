@@ -50,7 +50,7 @@ local timerTerrorizeCD					= mod:NewNextTimer(14, 123012)--Besides being cast 14
 local timerSunBreathCD					= mod:NewCDTimer(29, 122855)
 --local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, heroic logs i was sent always wiped VERY early in light phase.
 
-local berserkTimer						= mod:NewBerserkTimer(500)--a little over 8 min, basically 3rd dark phase is auto berserk.
+local berserkTimer						= mod:NewBerserkTimer(490)--a little over 8 min, basically 3rd dark phase is auto berserk.
 
 local terrorName = EJ_GetSectionInfo(6316)
 local targetScansDone = 0
