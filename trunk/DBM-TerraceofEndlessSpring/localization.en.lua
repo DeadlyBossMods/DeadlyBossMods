@@ -37,7 +37,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "Show warning when $spell:123244 has ended",
 	timerSpecialCD			= "Show timer for when next special ability will be cast.",
-	SetIconOnCreature		= "Set icons on $journal:6224"
+	SetIconOnGuard			= "Set icons on $journal:6224"
 })
 
 L:SetMiscLocalization{
