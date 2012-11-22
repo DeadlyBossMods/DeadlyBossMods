@@ -35,7 +35,7 @@ local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("SetIconOnGuard", false)
+mod:AddBoolOption("SetIconOnGuard", true)
 
 local hideActive = false
 
