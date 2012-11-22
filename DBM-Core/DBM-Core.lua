@@ -3852,45 +3852,21 @@ do
 	local countdownProtoType = {}
 	local mt = {__index = countdownProtoType}
 
-	function countdownProtoType:Start(timer)
+	function countdownProtoType:Start(timer, count)
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer < 2 and self.timer or timer
-			if timer >= 5 then
-				if DBM.Options.CountdownVoice == "Mosh" then
-					self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\5.ogg")
-					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\4.ogg")
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg")
-				else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-					self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.ogg")
-					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.ogg")
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.ogg")
+			count = count or self.count or 5
+			if timer <= count then count = floor(timer) end
+			if DBM.Options.CountdownVoice == "Mosh" then
+				for i = count, 1, -1 do
+					if i <= 5 then
+						self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
+					end
 				end
-			elseif timer >= 4 then
-				if DBM.Options.CountdownVoice == "Mosh" then
-					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\4.ogg")
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg")
-				else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.ogg")
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.ogg")
-				end
-			elseif timer >= 3 then
-				if DBM.Options.CountdownVoice == "Mosh" then
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg")
-				else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.ogg")
+			else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+				for i = count, 1, -1 do
+					self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..i..".ogg")
 				end
 			end
 		end
@@ -3910,13 +3886,14 @@ do
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName)
+	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count)
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
 		local sound3 = self:NewSound(3, false, true)
 		local sound2 = self:NewSound(2, false, true)
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
+		count = count or 5
 		if not spellId and not optionName then
 			error("NewCountdown: you must provide either spellId or optionName", 2)
 		end
@@ -3929,6 +3906,7 @@ do
 				sound4 = sound4,
 				sound5 = sound5,
 				timer = timer,
+				count = count,
 				option = optionName or DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId),
 				mod = self
 			},
@@ -3955,39 +3933,13 @@ do
 			timer = timer or self.timer or 10
 			timer = timer <= 5 and self.timer or timer
 			if DBM.Options.CountdownVoice == "Mosh" and timer == 5 then--Don't have 6-10 for him yet.
-				self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\1.ogg")
-				self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\2.ogg")
-				self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\3.ogg")
-				self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\4.ogg")
-				self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\5.ogg")
+				for i = 1, timer do
+					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
+				end
 			else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
 				--Ugly as hel way to do it but i coudln't think of a different way to do it accurately
-				if timer == 10 then--Common value for a duration.
-					self.sound5:Schedule(timer-9, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.ogg")
-					self.sound5:Schedule(timer-8, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.ogg")
-					self.sound5:Schedule(timer-7, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.ogg")
-					self.sound5:Schedule(timer-6, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.ogg")
-					self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.ogg")
-					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\6.ogg")
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\7.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\8.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\9.ogg")
-					self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\10.ogg")
-				elseif timer == 8 then--Another common value for a duration.
-					self.sound5:Schedule(timer-7, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.ogg")
-					self.sound5:Schedule(timer-6, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.ogg")
-					self.sound5:Schedule(timer-5, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.ogg")
-					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.ogg")
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\6.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\7.ogg")
-					self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\8.ogg")
-				elseif timer == 5 then--Probably not many buff durations worth counting out that are less then 5 seconds long
-					self.sound5:Schedule(timer-4, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\1.ogg")
-					self.sound5:Schedule(timer-3, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\2.ogg")
-					self.sound5:Schedule(timer-2, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\3.ogg")
-					self.sound5:Schedule(timer-1, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\4.ogg")
-					self.sound5:Schedule(timer, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\5.ogg")
+				for i = 1, timer do
+					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..i..".ogg")
 				end
 			end
 		end
