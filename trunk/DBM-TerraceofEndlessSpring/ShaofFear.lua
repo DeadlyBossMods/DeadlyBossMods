@@ -37,7 +37,7 @@ local timerDreadSprayCD					= mod:NewNextTimer(20.5, 120047)
 
 local berserkTimer						= mod:NewBerserkTimer(900)
 
-local countdownBreathOfFear			= mod:NewCountdown(33.3, 119414)
+local countdownBreathOfFear			= mod:NewCountdown(33.3, 119414, nil, nil, 10)
 
 local ominousCackleTargets = {}
 local platformGUIDs = {}
