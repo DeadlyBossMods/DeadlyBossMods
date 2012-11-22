@@ -109,7 +109,6 @@ function mod:SPELL_CAST_START(args)
 		specwarnAttenuation:Show(args.sourceName)
 		timerAttenuation:Start()
 		if self.Options.ArrowOnAttenuation then
-			print("Debug: Target Debug Information: ", args.sourceGUID, UnitGUID("target") or 0, UnitName("target"))--See if GUIDs of target and source match (when we are targeting boss, print name of target too so we know IF we are targeting boss)
 			DBM.Arrow:ShowStatic(90, 12)
 		end
 	elseif args:IsSpellID(122479, 122497, 123722) then
@@ -117,7 +116,6 @@ function mod:SPELL_CAST_START(args)
 		specwarnAttenuation:Show(args.sourceName)
 		timerAttenuation:Start()
 		if self.Options.ArrowOnAttenuation then
-			print("Debug: Target Debug Information: ", args.sourceGUID, UnitGUID("target") or 0, UnitName("target"))
 			DBM.Arrow:ShowStatic(270, 12)
 		end
 	end
