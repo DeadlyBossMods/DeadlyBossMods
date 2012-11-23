@@ -76,7 +76,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "6초 후 가운데 바닥 사라짐!"
+	specWarnDespawnFloor		= "6초 후 가운데 바닥 사라짐 - 낙사 주의!"
 })
 
 L:SetTimerLocalization({
@@ -98,7 +98,7 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "$spell:116525 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
-	ArrowOnCombo	= "$journal:5673 도중 정보 프레임 표시\n알림: 방어전담이 보스 앞에 있고 나머지 공격대원이 뒤에 있을때를 기준으로 합니다."
+	ArrowOnCombo	= "$journal:5673 도중 DBM 화살표 표시\n알림: 방어전담이 보스 앞에 있고 나머지 공격대원이 뒤에 있을때를 기준으로 합니다."
 })
 
 L:SetMiscLocalization({

@@ -47,7 +47,7 @@ local berserkTimer						= mod:NewBerserkTimer(490)
 
 local soundBladeTempest					= mod:NewSound(125310)
 
-mod:AddBoolOption("RangeFrame", mod:IsRanged())--For Wind Step
+mod:AddBoolOption("RangeFrame", mod:IsRanged() or mod:IsHealer())--For Wind Step
 mod:AddBoolOption("UnseenStrikeArrow")
 
 local emoteFired = false
