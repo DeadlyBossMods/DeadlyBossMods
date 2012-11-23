@@ -300,7 +300,7 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
 			--This doesn't work, for no logical reason what so ever.
-			print("Debug: Wild Contruct casting Explosion", GetTime(), lastStrike or 0)--Lets see what get time return and what last strike returns
+--			print("Debug: Wild Contruct casting Explosion", GetTime(), lastStrike or 0)--Lets see what get time return and what last strike returns
 			if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
 				print("Debug: You're a construct with available interrupt.")--First logic check passed, this debug tells us we're good so far.
 				specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
@@ -368,7 +368,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBurningAmber:Show(Puddles)
 	elseif args:IsSpellID(122389) and args.sourceGUID == UnitGUID("player") then--Amber Strike
 		lastStrike = GetTime()
-		print("Debug: You just used Amber Strike", lastStrike, args.sourceGUID, UnitGUID("player"))--Maybe GetTime() is messing up, so let see what it is. Also see if for some reason sourceguid doesn't match players GUID
+--		print("Debug: You just used Amber Strike", lastStrike, args.sourceGUID, UnitGUID("player"))--Maybe GetTime() is messing up, so let see what it is. Also see if for some reason sourceguid doesn't match players GUID
 	end
 end
 
