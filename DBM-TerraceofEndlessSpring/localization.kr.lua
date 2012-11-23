@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(683)
 
 L:SetOptionLocalization({
-	RangeFrame			= "$spell:111850 주문의 영향을 받은 경우 거리 프레임 표시(8m)\n(효과가 있을 경우 모든 플레이어를 표시, 효과가 없으면 효과가 있는 플레이어만 표시)",
+	RangeFrame			= "$spell:111850 주문에 대한 거리 프레임 표시(8m)\n(효과가 있을 경우 모든 플레이어를 표시, 효과가 없으면 효과가 있는 플레이어만 표시)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
 

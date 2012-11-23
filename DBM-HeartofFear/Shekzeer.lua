@@ -61,7 +61,7 @@ local timerVisionsCD			= mod:NewCDTimer(19.5, 124862)
 local timerConsumingTerrorCD	= mod:NewCDTimer(32, 124849, nil, not mod:IsTank())
 
 mod:AddBoolOption("InfoFrame")--On by default because these do more then just melee, they interrupt spellcasting (bad for healers)
-mod:AddBoolOption("RangeFrame", mod:IsRanged())
+mod:AddBoolOption("RangeFrame", mod:IsRanged() or mod:IsHealer())
 mod:AddBoolOption("StickyResinIcons", true)
 
 local sentLowHP = {}

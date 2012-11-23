@@ -28,7 +28,7 @@ L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
 	UnseenStrikeArrow	= "$spell:122949 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
-	RangeFrame			= "$spell:123175 주문의 영향을 받은 경우 거리 프레임 표시(8m)"
+	RangeFrame			= "$spell:123175 주문에 대한 거리 프레임 표시(8m)"
 })
 
 -------------------------------
@@ -110,7 +110,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAmberTrap		= "$spell:125826 생성 과정 알림 보기", 
 	InfoFrame			= "$spell:125390 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
-	RangeFrame			= "$spell:123735 주문의 영향을 받은 경우 거리 프레임 표시(5m)",
+	RangeFrame			= "$spell:123735 주문에 대한 거리 프레임 표시(5m)",
 	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
 })
 
