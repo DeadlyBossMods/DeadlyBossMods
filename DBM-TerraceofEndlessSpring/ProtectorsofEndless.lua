@@ -168,7 +168,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, prisonIcon)
 			prisonIcon = prisonIcon + 1
 		end
-	elseif args:IsSpellID(117283) and not args:IsDestTypePlayer() then
+	elseif args:IsSpellID(117283) and args.destGUID == (UnitGUID("target") or UnitGUID("focus")) then -- not needed to dispel except for raid member's dealing boss. 
 		specWarnCleansingWatersDispel:Show(args.destName)
 	elseif args:IsSpellID(117052) then--Phase changes
 		--Here we go off applied because then we can detect both targets in phase 1 to 2 transition.

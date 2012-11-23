@@ -69,8 +69,12 @@ end
 function mod:OnCombatStart(delay)
 	guardActivated = 0
 	hideActive = false
-	timerSpecialCD:Start(42.5-delay)--the ONLY timer that ever seems to be right, is FIRST special.
-	berserkTimer:Start(-delay)
+--	timerSpecialCD:Start(42.5-delay)--FIRST special not match if your party is high DPS. 
+	if self:IsDifficulty("heroic10", "heroic25") then
+		berserkTimer:Start(420-delay)
+	else
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
