@@ -95,6 +95,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(685)
 
+L:SetMiscLocalization({
+	Kill			= "只要你們心中還存有暴力，我就..會回來...",
+})
+
 -----------------------
 -- Taran Zhu --
 -----------------------
