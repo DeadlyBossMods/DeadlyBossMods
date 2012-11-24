@@ -2480,7 +2480,7 @@ local difficultyText
 function DBM:StartCombat(mod, delay, synced)
 	if not checkEntry(inCombat, mod) then
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
-		if mod.lastKillTime and GetTime() - mod.lastKillTime < 10 then return end
+		if mod.lastKillTime and GetTime() - mod.lastKillTime < 20 then return end -- increasing time to 20 sec for ToES lfr Tsulong combat detection bug.
 		if not mod.combatInfo then return end
 		if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 			return
