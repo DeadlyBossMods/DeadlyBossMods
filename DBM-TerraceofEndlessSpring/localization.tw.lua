@@ -42,9 +42,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Victory	= "我...啊..喔!我曾經...?我是不是...?這一切...都...太模糊了。"--wtb alternate and less crappy victory event.
+	Victory	= "我...啊..喔!我曾經...?我是不是...?這一切...都太...模糊了。"--wtb alternate and less crappy victory event.
 }
-
 
 ----------------------
 -- Sha of Fear --
