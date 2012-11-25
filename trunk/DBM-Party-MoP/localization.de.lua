@@ -95,6 +95,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(685)
 
+L:SetMiscLocalization({
+	Kill		= "So lange die Gewalt in Euren Herzen wohnt... werde ich... zurückkehren...",
+})
+
 -----------------------
 -- Taran Zhu --
 -----------------------
@@ -233,7 +237,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(666)
 
 L:SetMiscLocalization({
-	Kill	= "What?!"
+	Kill	= "STERBT, NEKROMANT!"
 })
 
 -----------------------
