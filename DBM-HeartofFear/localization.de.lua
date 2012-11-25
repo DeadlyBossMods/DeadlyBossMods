@@ -12,13 +12,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnPlatform	= "Zeige Spezialwarnung bei Plattformwechsel des Bosses",
-	ArrowOnAttenuation	= "Zeige DBM-Pfeil während $spell:127834 um die Laufrichtung anzuzeigen",
+	ArrowOnAttenuation	= "Zeige DBM-Pfeil während $spell:127834 zur Anzeige der Ausweichrichtung",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
 L:SetMiscLocalization({
 	Platform			= "%s fliegt zu einer seiner Plattformen!",
-	Defeat				= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so." --translate (trigger)
+	Defeat				= "Wir werden der Verzweiflung der dunklen Leere nicht nachgeben. Wenn es Ihr Wille ist, dass wir dahinscheiden, dann soll es so sein."
 })
 
 
@@ -105,7 +105,12 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(743)
 
+L:SetWarningLocalization({
+	warnAmberTrap		= "Amberfallenbau: %d/5",
+})
+
 L:SetOptionLocalization({
+	warnAmberTrap		= "Verkünde den Fortschritt beim Bau einer $spell:125826",
 	InfoFrame			= "Zeige Infofenster für Spieler, welche von $spell:125390 betroffen sind",
 	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:123735",
 	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
@@ -113,5 +118,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	PlayerDebuffs		= "Fixiert",
-	YellPhase3			= "No more excuses, Empress! Eliminate these cretins or I will kill you myself!" --translate (trigger)
+	YellPhase3			= "KEINE AUSREDEN MEHR, KAISERIN! Tötet diese Idioten oder ich selbst mache Euch den Garaus!"
 })

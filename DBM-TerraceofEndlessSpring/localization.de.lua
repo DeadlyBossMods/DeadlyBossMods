@@ -18,7 +18,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Victory	= "I thank you, strangers. I have been freed." --translate (trigger)
+	Victory	= "Ich danke Euch, Fremdlinge. Ich wurde befreit."
 }
 
 
@@ -37,11 +37,12 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "Zeige Warnung, wenn $spell:123244 beendet ist",
-	timerSpecialCD			= "Zeige Zeit bis nächste Spezialfähigkeit gewirkt wird"
+	timerSpecialCD			= "Zeige Zeit bis nächste Spezialfähigkeit gewirkt wird",
+	SetIconOnGuard			= "Setze Zeichen auf $journal:6224"
 })
 
 L:SetMiscLocalization{
-	Victory	= "I... ah... oh! Did I...? Was I...? It was... so... cloudy." --translate (trigger)
+	Victory	= "Ich... ah... oh! Hab ich...? War ich...? Es war... so... trüb."
 }
 
 
