@@ -30,7 +30,7 @@ local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil
 
 local timerThrashCD						= mod:NewCDTimer(7, 131996, nil, mod:IsTank() or mod:IsHealer())--Every 7-12 seconds.
 local timerBreathOfFearCD				= mod:NewNextTimer(33.3, 119414)--Based off bosses energy, he casts at 100 energy, and gains about 3 energy per second, so every 33-34 seconds is a breath.
-local timerOminousCackleCD				= mod:NewNextTimer(55, 119693)
+local timerOminousCackleCD				= mod:NewNextTimer(45.5, 119693)
 local timerDreadSpray					= mod:NewBuffActiveTimer(8, 120047)
 local timerDreadSprayCD					= mod:NewNextTimer(20.5, 120047)
 --local timerTerrorSpawnCD				= mod:NewNextTimer(60, 119108)--every 60 or so seconds, maybe a little more maybe a little less, not sure. this is just based on instinct after seeing where 30 fit.
@@ -51,7 +51,7 @@ end
 
 function mod:OnCombatStart(delay)
 	warnBreathOfFearSoon:Schedule(23.4-delay)
-	if self:IsDifficulty("lfr25") then
+	if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 		timerOminousCackleCD:Start(40-delay)
 	else
 		timerOminousCackleCD:Start(25.5-delay)
@@ -120,7 +120,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(119593, 119692, 119693) then--This seems to have multiple spellids, depending on which platform he's going to send you to. TODO, figure out which is which platform and add additional warnings
 --		specWarnOminousCackle:Show()
 		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
-			timerOminousCackleCD:Start(90)--Far less often on LFR
+			timerOminousCackleCD:Start(90.5)--Far less often on LFR
 		else
 			timerOminousCackleCD:Start()
 		end
