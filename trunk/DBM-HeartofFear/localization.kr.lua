@@ -59,7 +59,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Reinforcements		= "지원"
+	Reinforcements		= "원군"
 })
 
 ------------
