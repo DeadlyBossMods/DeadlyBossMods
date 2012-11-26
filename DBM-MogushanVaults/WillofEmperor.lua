@@ -78,6 +78,7 @@ local comboCount = 0
 local titanGasCast = 0
 local courageCount = 0
 local strengthCount = 0
+local rageCount = 0
 local focusedAssault = GetSpellInfo(116525)
 
 local rageTimers = {
@@ -103,6 +104,7 @@ function mod:OnCombatStart(delay)
 	sparkCount = 0
 	comboCount = 0
 	titanGasCast = 0
+	rageCount = 0
 	strengthCount = 0
 	courageCount = 0
 	if self:IsDifficulty("heroic10", "heroic25") then--Heroic trigger is shorter, everything comes about 6 seconds earlier
