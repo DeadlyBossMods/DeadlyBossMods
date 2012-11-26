@@ -133,16 +133,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Rage or msg:find(L.Rage) then--Apparently they only yell about 33% of time so this isn't completely reliable
-		--Maybe make a sequence table assuming this data is right https://docs.google.com/spreadsheet/ccc?key=0AjsIknfmLMegdDRKTE5wa3ZyQy1ScUVPOHBJX053clE#gid=0
-		--Important note, they use first rages as pull timestamp, that is NOT what dbm does. It also appears they treat yells/emotes as spawns, and not account for 10 second delay either.
-		--TODO, make a table if this later factoring in the above points so it's accurate for the way DBM does it.
-		warnRageActivated:Schedule(11)
-		timerRageActivates:Start(11)--They actually spawn 11 seconds after yell
-	end
-end
-
 local function addsDelay(add)
 	if add == "Courage" then
 		courageCount = courageCount + 1
@@ -164,6 +154,16 @@ local function addsDelay(add)
 		else
 			timerStrengthActivates:Start(50, strengthCount+1)
 		end
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Rage or msg:find(L.Rage) then--Apparently they only yell about 33% of time so this isn't completely reliable
+		--Maybe make a sequence table assuming this data is right https://docs.google.com/spreadsheet/ccc?key=0AjsIknfmLMegdDRKTE5wa3ZyQy1ScUVPOHBJX053clE#gid=0
+		--Important note, they use first rages as pull timestamp, that is NOT what dbm does. It also appears they treat yells/emotes as spawns, and not account for 10 second delay either.
+		--TODO, make a table if this later factoring in the above points so it's accurate for the way DBM does it.
+		warnRageActivated:Schedule(11)
+		timerRageActivates:Start(11)--They actually spawn 11 seconds after yell
 	end
 end
 
