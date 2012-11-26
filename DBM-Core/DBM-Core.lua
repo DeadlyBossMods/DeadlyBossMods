@@ -2480,7 +2480,7 @@ local difficultyText
 function DBM:StartCombat(mod, delay, synced)
 	if not checkEntry(inCombat, mod) then
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
-		if mod.lastKillTime and GetTime() - mod.lastKillTime < 20 then return end -- increasing time to 20 sec for ToES lfr Tsulong combat detection bug.
+		if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 10) then return end
 		if not mod.combatInfo then return end
 		if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 			return
@@ -4863,6 +4863,11 @@ function bossModPrototype:SetWipeTime(t)
 		error("mod.combatInfo not yet initialized, use mod:RegisterCombat before using this method", 2)
 	end
 	self.combatInfo.wipeTimer = t
+end
+
+-- fix for LFR ToES Tsulong combat detection bug after killed.
+function bossModPrototype:SetReCombatTime(t)-- bad wording: ReCombat? 
+	self.reCombatTime = t
 end
 
 -- updated for status whisper.
