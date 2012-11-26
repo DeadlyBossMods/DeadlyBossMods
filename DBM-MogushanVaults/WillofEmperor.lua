@@ -33,7 +33,7 @@ local warnCourageActivated		= mod:NewCountAnnounce("ej5676", 3, 116778)
 local warnFocusedDefense		= mod:NewTargetAnnounce(116778, 4)
 --Sparks (Heroic Only)
 --local warnSpark					= mod:NewCountAnnounce("ej5674", 3)--Probably not very accurate. Not without wasting stupid amounts of cpu same way we do on spine. :\
-local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
+--local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
 local warnBossesActivatedSoon	= mod:NewPreWarnAnnounce("ej5726", 10, 3, 116815)
 local warnBossesActivated		= mod:NewSpellAnnounce("ej5726", 3, 116815)
@@ -126,7 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFocusedDefense:Show()
 		end
 	elseif args:IsSpellID(116829) then
-		warnFocusedEnergy:Show(args.destName)
+--		warnFocusedEnergy:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFocusedEnergy:Show()
 		end
