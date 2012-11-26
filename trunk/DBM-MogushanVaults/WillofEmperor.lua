@@ -23,7 +23,7 @@ mod:RegisterEvents(
 )
 
 --Rage
-local warnRageActivated			= mod:NewSpellAnnounce("ej5678", 3, 116525)
+local warnRageActivated			= mod:NewCountAnnounce("ej5678", 3, 116525)
 local warnFocusedAssault		= mod:NewTargetAnnounce(116525, 2, nil, false)--Completely and totally spammy, this option is just here for those that want this info despite the spam.
 --Strength
 local warnStrengthActivated		= mod:NewCountAnnounce("ej5677", 3, 116550)
@@ -32,7 +32,6 @@ local warnEnergizingSmash		= mod:NewSpellAnnounce(116550, 3, nil, mod:IsMelee())
 local warnCourageActivated		= mod:NewCountAnnounce("ej5676", 3, 116778)
 local warnFocusedDefense		= mod:NewTargetAnnounce(116778, 4)
 --Sparks (Heroic Only)
---local warnSpark					= mod:NewCountAnnounce("ej5674", 3)--Probably not very accurate. Not without wasting stupid amounts of cpu same way we do on spine. :\
 --local warnFocusedEnergy			= mod:NewTargetAnnounce(116829, 4)
 --Jan-xi and Qin-xi
 local warnBossesActivatedSoon	= mod:NewPreWarnAnnounce("ej5726", 10, 3, 116815)
@@ -58,14 +57,13 @@ local specWarnCombo				= mod:NewSpecialWarningSpell("ej5672", mod:IsMelee())
 local specWarnTitanGas			= mod:NewSpecialWarningSpell(116779, nil, nil, nil, true)
 
 --Rage
-local timerRageActivates		= mod:NewNextTimer(30, "ej5678", nil, nil, nil, 116525)
+local timerRageActivates		= mod:NewNextCountTimer(30, "ej5678", nil, nil, nil, 116525)
 --Strength
-local timerStrengthActivates	= mod:NewNextCountTimer(50, "ej5677", nil, nil, nil, 116550)
+local timerStrengthActivates	= mod:NewNextCountTimer(50, "ej5677", nil, nil, nil, 116550)--It's actually 50-55 variation but 50 is good enough.
 --Courage
 local timerCourageActivates		= mod:NewNextCountTimer(100, "ej5676", nil, nil, nil, 116778)
 --Jan-xi and Qin-xi
 local timerBossesActivates		= mod:NewNextTimer(107, "ej5726", nil, nil, nil, 116815)--Might be a little funny sounding "Next Jan-xi and Qin-xi" May just localize it later.
---local timerComboCD				= mod:NewCDTimer(14.2, "ej5672", nil, nil, nil, 116835)--20 seconds after last one ENDED (or rathor, how long it takes to charge up 20 energy) We start timer at 1 energy though so more like 19 seconds.
 local timerTitanGas				= mod:NewBuffActiveTimer(30, 116779)
 local timerTitanGasCD			= mod:NewNextCountTimer(150, 116779)
 
@@ -81,6 +79,24 @@ local titanGasCast = 0
 local courageCount = 0
 local strengthCount = 0
 local focusedAssault = GetSpellInfo(116525)
+
+local rageTimers = {
+	[0] = 15.6,--Varies from heroic vs normal, number here doesn't matter though, we don't start this on pull we start it off first yell (which does always happen).
+	[1] = 30,
+	[2] = 30,
+	[3] = 30,
+	[4] = 30,
+	[5] = 30,
+	[6] = 60,
+	[7] = 30,
+	[8] = 30,
+	[9] = 90,
+	[10]= 30,
+	[11]= 30,
+	[12]= 90,
+	[13]= 60,
+--Rest are all 30
+}
 
 function mod:OnCombatStart(delay)
 	comboWarned = false
@@ -154,16 +170,20 @@ local function addsDelay(add)
 		else
 			timerStrengthActivates:Start(50, strengthCount+1)
 		end
+	elseif add == "Rage" then
+		rageCount = rageCount + 1
+		warnRageActivated:Show(rageCount)
+		--Titan gas delay has funny interaction with these and causes 30 or 60 second delays. Pretty much have to use a table.
+		timerRageActivates:Start(rageTimers[rageCount] or 30, rageCount+1)
+		self:Schedule(rageTimers[rageCount] or 30, addsDelay, "Rage")--Because he doesn't always yell, schedule next one here as a failsafe
 	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Rage or msg:find(L.Rage) then--Apparently they only yell about 33% of time so this isn't completely reliable
-		--Maybe make a sequence table assuming this data is right https://docs.google.com/spreadsheet/ccc?key=0AjsIknfmLMegdDRKTE5wa3ZyQy1ScUVPOHBJX053clE#gid=0
-		--Important note, they use first rages as pull timestamp, that is NOT what dbm does. It also appears they treat yells/emotes as spawns, and not account for 10 second delay either.
-		--TODO, make a table if this later factoring in the above points so it's accurate for the way DBM does it.
-		warnRageActivated:Schedule(11)
-		timerRageActivates:Start(11)--They actually spawn 11 seconds after yell
+	if msg == L.Rage or msg:find(L.Rage) then--Apparently boss only yells sometimes, so this isn't completely reliable
+		--TODO, verify this is even correct. https://docs.google.com/spreadsheet/ccc?key=0AjsIknfmLMegdDRKTE5wa3ZyQy1ScUVPOHBJX053clE#gid=0
+		self:Unschedule(addsDelay, "Rage")--Unschedule any failsafes that triggered and resync to yell
+		self:Schedule(11, addsDelay, "Rage")
 	end
 end
 
@@ -231,46 +251,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif (spellId == 116969 or spellId == 132425) then--Stomp
 		comboCount = comboCount + 1
 		warnStomp:Show(comboCount)
---[[	--Some untested heroic spark code that needs more work
-	elseif spellId == 117746 then--Spark Spawning
-		self:SendSync("SparkSpawned")--]]
 	end
 end
 
---Although, again, it might fail in sync handler antispam throttle if multiple spawn within a single second. Might need more work.
---[[function mod:OnSync(msg)
-	if msg == "SparkSpawned" then
-		sparkCount = sparkCount + 1
-		warnSpark:Show(sparkCount)
-	end
-end-]]
-
---[[function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 60480 and sparkCount > 0 then--Titan Spark
-		sparkCount = sparkCount - 1
-		warnSpark:Show(sparkCount)
-	end
-end--]]
-
---[[
-"<121.7> MANA#0#1#20#0#0", -- [1]--Start Power Gain
-"<138.5> MANA#0#18#20#0#0", -- [18]--Beware! here to give 2.4ish sec warning of incoming special.
-"<139.7> MANA#0#19#20#0#0", -- [19]
-"<140.5> MANA#0#20#20#0#0", -- [20]--Full Power
-"<140.9> Qin-xi [boss2:Arc Right::0:116971]", -- [22]--Begin Combo
-"<144.1> Qin-xi [boss2:Arc Center::0:116972]", -- [24]
-"<149.8> Qin-xi [boss2:Stomp::0:116969]", -- [26]
-"<150.6> Qin-xi [boss2:Arc Right::0:116971]", -- [28]
-"<153.8> Qin-xi [boss2:Arc Left::0:116968]", -- [30]
-"<157.0> Qin-xi [boss2:Arc Right::0:116971]", -- [31]
-"<162.2> Qin-xi [boss2:Stomp::0:116969]", -- [33]
-"<162.6> Qin-xi [boss2:Arc Center::0:116972]", -- [35]
-"<166.3> Qin-xi [boss2:Arc Left::0:116968]", -- [37]
---]]
--- Seems that Jan-xi and Qin-xi mana are not identical. So as time goes, this stuff can be broken.
--- also timerComboCD is not be fixed. their mana increases 1 or 2 randomly every boss's melee attacks.
--- 
 function mod:UNIT_POWER(uId)
 	if uId ~= "target" then return end
 	if UnitPower(uId) == 18 and not comboWarned then
@@ -279,6 +262,5 @@ function mod:UNIT_POWER(uId)
 	elseif UnitPower(uId) == 1 then
 		comboWarned = false
 		comboCount = 0
---		timerComboCD:Start()
 	end
 end
