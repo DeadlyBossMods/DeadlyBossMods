@@ -311,12 +311,8 @@ function mod:SPELL_CAST_START(args)
 			end
 			--^^
 			timerAmberExplosionCD:Start(18, args.sourceName, args.sourceGUID)--Longer CD if it's a non player controlled construct. Everyone needs to see this bar because there is no way to interrupt these.
-			if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
-				specwarnAmberExplosion:Show(args.sourceName)
-			else--There is a construct, lets pass it to interrupt checker to determine if we still fire specwarnAmberExplosion
-				self:Unschedule(warnAmberExplosionCast)
-				self:Schedule(0.5, warnAmberExplosionCast, 122398)
-			end
+			self:Unschedule(warnAmberExplosionCast)
+			self:Schedule(0.5, warnAmberExplosionCast, 122398)--Always check available interrupts and special warn if not
 		elseif args.sourceGUID == UnitGUID("player") then--Cast by YOU
 			specwarnAmberExplosionYou:Show(args.spellName)
 			timerAmberExplosionCD:Start(13, args.sourceName)--Only player needs to see this, they are only person who can do anything about it.
@@ -337,12 +333,8 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(41)
 		timerAmberExplosionAMCD:Start(46, args.spellName, args.sourceName)
-		if Constructs == 0 then--No constructs, thus no interrupt. Give a beware warning.
-			specwarnAmberExplosion:Show(args.sourceName)
-		else--There is a construct, lets pass it to interrupt checker to determine if we still fire specwarnAmberExplosion
-			self:Unschedule(warnAmberExplosionCast)
-			self:Schedule(0.5, warnAmberExplosionCast, 122402, "Contructs")
-		end
+		self:Unschedule(warnAmberExplosionCast)
+		self:Schedule(0.5, warnAmberExplosionCast, 122402, "Contructs")--Always check available interrupts and special warn if not
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
 		specwarnMassiveStomp:Show()
