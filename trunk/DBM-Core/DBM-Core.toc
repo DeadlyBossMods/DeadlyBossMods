@@ -1,5 +1,5 @@
-﻿## Interface: 50001
-## X-Min-Interface: 50000
+﻿## Interface: 50100
+## X-Min-Interface: 50001
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
 ## Title-zhCN: |cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
 ## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Основной|r
