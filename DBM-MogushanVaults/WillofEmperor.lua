@@ -83,17 +83,17 @@ local focusedAssault = GetSpellInfo(116525)
 
 local rageTimers = {
 	[0] = 15.6,--Varies from heroic vs normal, number here doesn't matter though, we don't start this on pull we start it off first yell (which does always happen).
-	[1] = 30,
-	[2] = 30,
-	[3] = 30,
-	[4] = 30,
-	[5] = 30,
+	[1] = 35,
+	[2] = 35,
+	[3] = 35,
+	[4] = 35,
+	[5] = 35,
 	[6] = 60,
-	[7] = 30,
-	[8] = 30,
+	[7] = 35,
+	[8] = 35,
 	[9] = 90,
-	[10]= 30,
-	[11]= 30,
+	[10]= 35,
+	[11]= 35,
 	[12]= 90,
 	[13]= 60,
 --Rest are all 30
