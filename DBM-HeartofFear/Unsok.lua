@@ -141,12 +141,12 @@ function mod:ScalpelTarget()
 end
 
 local function warnAmberExplosionCast(spellId, source)
-	print("Debug: warnAmberExplosionCast event fired: ", spellId, source)--Determine if this event is even firing from syncs and not just from constructs > 0 internets == 0 scenario
+--	print("Debug: warnAmberExplosionCast event fired: ", spellId, source)--Determine if this event is even firing from syncs and not just from constructs > 0 internets == 0 scenario
 	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
-		print("Debug: Interrupts were not available in warnAmberExplosionCast", spellId)
+--		print("Debug: Interrupts were not available in warnAmberExplosionCast", spellId)
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
-		print("Debug: Interrupts were available in warnAmberExplosionCast", spellId)
+--		print("Debug: Interrupts were available in warnAmberExplosionCast", spellId)
 		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
@@ -318,10 +318,10 @@ function mod:SPELL_CAST_START(args)
 			--This doesn't work, for no logical reason what so ever.
 --			print("Debug: Wild Contruct casting Explosion", GetTime(), lastStrike or 0)--Lets see what get time return and what last strike returns
 			if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
-				print("Debug: You're a construct with available interrupt.")--First logic check passed, this debug tells us we're good so far.
+--				print("Debug: You're a construct with available interrupt.")--First logic check passed, this debug tells us we're good so far.
 				specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-					print("Debug: You successfully sent sync to raid about that interrupt")--Latency check passed, this debug tells us we should have at least sent a sync now
+--					print("Debug: You successfully sent sync to raid about that interrupt")--Latency check passed, this debug tells us we should have at least sent a sync now
 					self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
 				end
 			end
@@ -337,10 +337,10 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(122402) then--Amber Monstrosity
 		--This doesn't work, for no logical reason what so ever.
 		if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
-			print("Debug: You're a construct with available interrupt.")
+--			print("Debug: You're a construct with available interrupt.")
 			specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
 			if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
-				print("Debug: You successfully sent sync to raid about that interrupt")
+--				print("Debug: You successfully sent sync to raid about that interrupt")
 				self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 			end
 		end
