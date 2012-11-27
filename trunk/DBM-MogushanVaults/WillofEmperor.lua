@@ -83,20 +83,20 @@ local focusedAssault = GetSpellInfo(116525)
 
 local rageTimers = {
 	[0] = 15.6,--Varies from heroic vs normal, number here doesn't matter though, we don't start this on pull we start it off first yell (which does always happen).
-	[1] = 35,
-	[2] = 35,
-	[3] = 35,
-	[4] = 35,
-	[5] = 35,
-	[6] = 60,
-	[7] = 35,
-	[8] = 35,
-	[9] = 90,
-	[10]= 35,
-	[11]= 35,
-	[12]= 90,
-	[13]= 60,
---Rest are all 30
+	[1] = 33,
+	[2] = 33,
+	[3] = 33,
+	[4] = 33,
+	[5] = 33,
+	[6] = 83,
+	[7] = 33,
+	[8] = 33,
+	[9] = 83,
+	[10]= 33,
+	[11]= 33,
+	[12]= 83,
+	[13]= 83,--Oddball?
+--Rest are all 33
 }
 
 function mod:OnCombatStart(delay)
@@ -176,8 +176,8 @@ local function addsDelay(add)
 		rageCount = rageCount + 1
 		warnRageActivated:Show(rageCount)
 		--Titan gas delay has funny interaction with these and causes 30 or 60 second delays. Pretty much have to use a table.
-		timerRageActivates:Start(rageTimers[rageCount] or 30, rageCount+1)
-		mod:Schedule(rageTimers[rageCount] or 30, addsDelay, "Rage")--Because he doesn't always yell, schedule next one here as a failsafe
+		timerRageActivates:Start(rageTimers[rageCount] or 33, rageCount+1)
+		mod:Schedule(rageTimers[rageCount] or 33, addsDelay, "Rage")--Because he doesn't always yell, schedule next one here as a failsafe
 	end
 end
 
@@ -185,7 +185,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Rage or msg:find(L.Rage) then--Apparently boss only yells sometimes, so this isn't completely reliable
 		--TODO, verify this is even correct. https://docs.google.com/spreadsheet/ccc?key=0AjsIknfmLMegdDRKTE5wa3ZyQy1ScUVPOHBJX053clE#gid=0
 		self:Unschedule(addsDelay, "Rage")--Unschedule any failsafes that triggered and resync to yell
-		self:Schedule(11, addsDelay, "Rage")
+		self:Schedule(14, addsDelay, "Rage")
 	end
 end
 
