@@ -1,5 +1,5 @@
-﻿## Interface: 50001
-## X-Min-Interface: 50000
+﻿## Interface: 50100
+## X-Min-Interface: 50001
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party-MoP|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05인던전-판다리아의 안개|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Gruppe-MoP|r
