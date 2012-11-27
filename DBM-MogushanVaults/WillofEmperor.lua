@@ -177,7 +177,7 @@ local function addsDelay(add)
 		warnRageActivated:Show(rageCount)
 		--Titan gas delay has funny interaction with these and causes 30 or 60 second delays. Pretty much have to use a table.
 		timerRageActivates:Start(rageTimers[rageCount] or 30, rageCount+1)
-		self:Schedule(rageTimers[rageCount] or 30, addsDelay, "Rage")--Because he doesn't always yell, schedule next one here as a failsafe
+		mod:Schedule(rageTimers[rageCount] or 30, addsDelay, "Rage")--Because he doesn't always yell, schedule next one here as a failsafe
 	end
 end
 
