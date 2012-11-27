@@ -32,16 +32,16 @@ local warnParasiticGrowth		= mod:NewTargetAnnounce(121949, 4, nil, mod:IsHealer(
 local warnAmberGlob				= mod:NewTargetAnnounce(125502, 4)--Heroic drycode, might need some tweaks
 --Construct
 local warnAmberExplosion		= mod:NewAnnounce("warnAmberExplosion", 3, 122398, false)--In case you want to get warned for all of them, but could be spammy later fight so off by default. This announce includes source of cast.
-local warnStruggleForControl	= mod:NewTargetAnnounce(122395, 2)--Disabled in phase 3 as at that point it's just a burn.
+local warnStruggleForControl	= mod:NewTargetAnnounce(122395, 2, nil, false)--Disabled in phase 3 as at that point it's just a burn.
 local warnDestabalize			= mod:NewStackAnnounce(123059, 1, nil, false)--This can be super spammy so off by default.
 --Living Amber
 local warnLivingAmber			= mod:NewSpellAnnounce("ej6261", 2, nil, false)--122348 is what you check spawns with. ALso spamming and off by default
 local warnBurningAmber			= mod:NewCountAnnounce("ej6567", 2, nil, false)--Keep track of Burning Amber Puddles. Spammy, but nessesary for heroic for someone managing them.
 --Amber Monstrosity
 local warnAmberCarapace			= mod:NewTargetAnnounce(122540, 4)--Monstrosity Shielding Boss (phase 2 start)
-local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3)
+local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3, nil, mod:IsHealer() or mod:IsMelee())
 local warnAmberExplosionSoon	= mod:NewSoonAnnounce(122402, 3)
-local warnFling					= mod:NewSpellAnnounce(122413, 3)--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
+local warnFling					= mod:NewSpellAnnounce(122413, 3, nil, mod:IsTank())--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
 local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
 --Boss
@@ -74,11 +74,11 @@ local timerParasiticGrowthCD	= mod:NewCDTimer(35, 121949, nil, mod:IsHealer())--
 local timerParasiticGrowth		= mod:NewTargetTimer(30, 121949, nil, mod:IsHealer())
 --Construct
 local timerAmberExplosionCD		= mod:NewNextSourceTimer(13, 122398)--13 second cd on player controled units, 18 seconds on non player controlled constructs
-local timerDestabalize			= mod:NewTargetTimer(10, 123059)
-local timerStruggleForControl	= mod:NewTargetTimer(5, 122395)
+local timerDestabalize			= mod:NewTargetTimer(10, 123059, nil, false)
+local timerStruggleForControl	= mod:NewTargetTimer(5, 122395, nil, false)
 --Amber Monstrosity
-local timerMassiveStompCD		= mod:NewCDTimer(18, 122408)--18-25 seconds variation
-local timerFlingCD				= mod:NewCDTimer(25, 122413)--25-40sec variation.
+local timerMassiveStompCD		= mod:NewCDTimer(18, 122408, nil, mod:IsHealer() or mod:IsMelee())--18-25 seconds variation
+local timerFlingCD				= mod:NewCDTimer(25, 122413, nil, mod:IsTank())--25-40sec variation.
 local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
 
 local countdownAmberExplosion	= mod:NewCountdown(49, 122398)
@@ -118,6 +118,7 @@ function mod:ScalpelTarget()
 		if targetname == UnitName("player") then
 			specwarnAmberScalpel:Show()
 			yellAmberScalpel:Yell()
+			timerAmberScalpel:Start()
 		else
 			local uId = DBM:GetRaidUnitId(targetname)
 			if uId then
@@ -256,6 +257,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnReshapeLifeTutor:Show()
 			timerAmberExplosionCD:Start(15, args.destName)--Only player needs to see this, they are only person who can do anything about it.
 			countdownAmberExplosion:Start(15)
+			if IsAddOnLoaded("TidyPlates_ThreatPlates") then
+				TPTPNormal = TidyPlatesThreat.db.profile.nameplate.toggle["Normal"]--Returns true or false, use TidyPlatesNormal to save that value on pull
+				if TPTPNormal == true then
+					TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] = false
+					TidyPlates:ReloadTheme()--Call the Tidy plates update methods
+					TidyPlates:ForceUpdate()
+				end
+			end
 		end
 		if Phase < 3 then
 			timerReshapeLifeCD:Start()
@@ -279,6 +288,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			countdownAmberExplosion:Cancel()
 			playerIsConstruct = false
+			if IsAddOnLoaded("TidyPlates_ThreatPlates") then
+				if TPTPNormal == true and not TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] then--Normal plates were on when we pulled but aren't on now.
+					TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] = true--Turn them back on
+					TidyPlates:ReloadTheme()--Call the Tidy plates update methods
+					TidyPlates:ForceUpdate()
+				end
+			end
 		end
 		timerAmberExplosionCD:Cancel(args.destName)
 	elseif args:IsSpellID(121994) then
