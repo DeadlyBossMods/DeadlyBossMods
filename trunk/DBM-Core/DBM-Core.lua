@@ -242,12 +242,14 @@ end
 local function sendSync(prefix, msg)
 	local zoneType = select(2, IsInInstance())
 	msg = msg or ""
-	if zoneType == "pvp" or zoneType == "arena" then
-		SendAddonMessage("D4", prefix .. "\t" .. msg, "BATTLEGROUND")
-	elseif IsInRaid() then
-		SendAddonMessage("D4", prefix .. "\t" .. msg, "RAID")
-	elseif IsInGroup() then
-		SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then--For BGs, LFR and LFG
+		SendAddonMessage("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
+	else
+		if IsInRaid() then
+			SendAddonMessage("D4", prefix .. "\t" .. msg, "RAID")
+		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+			SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
+		end
 	end
 end
 
