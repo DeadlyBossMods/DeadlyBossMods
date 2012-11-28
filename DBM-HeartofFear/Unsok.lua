@@ -141,12 +141,9 @@ function mod:ScalpelTarget()
 end
 
 local function warnAmberExplosionCast(spellId, source)
---	print("Debug: warnAmberExplosionCast event fired: ", spellId, source)--Determine if this event is even firing from syncs and not just from constructs > 0 internets == 0 scenario
 	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
---		print("Debug: Interrupts were not available in warnAmberExplosionCast", spellId)
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
---		print("Debug: Interrupts were available in warnAmberExplosionCast", spellId)
 		warnInterruptsAvailable:Show(spellId == 122402 and Monstrosity or MutatedConstruct, table.concat(canInterrupt, "<, >"))
 	end
 	table.wipe(canInterrupt)
@@ -315,17 +312,12 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122398) then
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
-			--This doesn't work, for no logical reason what so ever.
---			print("Debug: Wild Contruct casting Explosion", GetTime(), lastStrike or 0)--Lets see what get time return and what last strike returns
 			if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
---				print("Debug: You're a construct with available interrupt.")--First logic check passed, this debug tells us we're good so far.
 				specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
---					print("Debug: You successfully sent sync to raid about that interrupt")--Latency check passed, this debug tells us we should have at least sent a sync now
 					self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
 				end
 			end
-			--^^
 			timerAmberExplosionCD:Start(18, args.sourceName, args.sourceGUID)--Longer CD if it's a non player controlled construct. Everyone needs to see this bar because there is no way to interrupt these.
 			self:Unschedule(warnAmberExplosionCast)
 			self:Schedule(0.5, warnAmberExplosionCast, 122398)--Always check available interrupts and special warn if not
@@ -335,16 +327,12 @@ function mod:SPELL_CAST_START(args)
 			countdownAmberExplosion:Start(13)
 		end
 	elseif args:IsSpellID(122402) then--Amber Monstrosity
-		--This doesn't work, for no logical reason what so ever.
 		if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
---			print("Debug: You're a construct with available interrupt.")
 			specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
 			if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
---				print("Debug: You successfully sent sync to raid about that interrupt")
 				self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 			end
 		end
-		--^^
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(41)
@@ -376,7 +364,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBurningAmber:Show(Puddles)
 	elseif args:IsSpellID(122389) and args.sourceGUID == UnitGUID("player") then--Amber Strike
 		lastStrike = GetTime()
---		print("Debug: You just used Amber Strike", lastStrike, args.sourceGUID, UnitGUID("player"))--Maybe GetTime() is messing up, so let see what it is. Also see if for some reason sourceguid doesn't match players GUID
 	end
 end
 
@@ -398,7 +385,6 @@ function mod:UNIT_POWER(uId)
 end
 
 function mod:OnSync(msg, str)
---	print("Debug: DBM Sync", msg, str)--Pretty sure this part is already working so leaving commented out.
 	if not guidTableBuilt then
 		buildGuidTable()
 		guidTableBuilt = true
@@ -407,10 +393,8 @@ function mod:OnSync(msg, str)
 	if str then
 		guid, spellId = string.split(":", str)
 		spellId = tonumber(spellId or "")
---		print("Debug: String Split Successful", spellId, guid)--Pretty sure this part is already working so leaving commented out.
 	end
 	if msg == "InterruptAvailable" and guids[guid] and spellId then
-		print("Debug: InterruptAvailable sync recieve successful")--We got the sync, so now we know we got this far.
 		canInterrupt[#canInterrupt + 1] = guids[guid]
 		self:Unschedule(warnAmberExplosionCast)
 		self:Schedule(0.5, warnAmberExplosionCast, spellId, "Interrupt")
