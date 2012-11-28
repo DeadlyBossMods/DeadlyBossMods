@@ -239,7 +239,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnImperviousShield:Show(args.sourceName)
 		timerImperviousShieldCD:Start()
 		countdownImperviousShield:Cancel()
-		countdownImperviousShield:Start(42)
+		if self:IsDifficulty("heroic10") then
+			timerImperviousShieldCD:Start(62)
+			countdownImperviousShield:Start(62)
+		else
+			timerImperviousShieldCD:Start()
+			countdownImperviousShield:Start(42)
+		end
 	end
 end
 
