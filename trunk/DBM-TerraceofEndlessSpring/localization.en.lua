@@ -16,10 +16,6 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(742)
 
-L:SetMiscLocalization{
-	Victory	= "I thank you, strangers. I have been freed."
-}
-
 
 -------------------------------
 -- Lei Shi --
