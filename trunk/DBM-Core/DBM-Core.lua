@@ -238,7 +238,7 @@ local function removeEntry(t, val)
 	return existed
 end
 
--- automatically sends an addon message to the appropriate channel (BATTLEGROUND, RAID or PARTY)
+-- automatically sends an addon message to the appropriate channel (INSTANCE_CHAT, RAID or PARTY)
 local function sendSync(prefix, msg)
 	local zoneType = select(2, IsInInstance())
 	msg = msg or ""
@@ -2175,7 +2175,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
-		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "BATTLEGROUND" or channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none") then
+		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none") then
 			handleSync(channel, sender, strsplit("\t", msg))
 		end
 	end
