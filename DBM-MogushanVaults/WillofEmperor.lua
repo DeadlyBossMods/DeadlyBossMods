@@ -97,6 +97,7 @@ local rageTimers = {
 	[12]= 83,
 	[13]= 83,--Oddball?
 --Rest are all 33
+--timers variate slightly so never will be perfect but trying to get as close as possible. seem same in all modes.
 }
 
 function mod:OnCombatStart(delay)
@@ -258,7 +259,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_POWER(uId)
-	if not uId:find("boss") then return end
 	if uId ~= "target" then return end
 	if UnitPower(uId) == 18 and not comboWarned then
 		comboWarned = true
