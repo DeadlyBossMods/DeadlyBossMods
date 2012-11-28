@@ -83,6 +83,8 @@ local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 1224
 
 local countdownAmberExplosion	= mod:NewCountdown(49, 122398)
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("FixNameplates", false)--Because having 215937495273598637205175t9 hostile nameplates on screen when you enter a construct is not cool.
 
@@ -161,6 +163,7 @@ function mod:OnCombatStart(delay)
 	timerAmberScalpelCD:Start(9-delay)
 	timerReshapeLifeCD:Start(20-delay)
 	timerParasiticGrowthCD:Start(23.5-delay)
+	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.WillPower)--This is a work in progress
 		DBM.InfoFrame:Show(5, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, true)--At a point i need to add an arg that lets info frame show the 5 LOWEST not the 5 highest, instead of just showing 10
