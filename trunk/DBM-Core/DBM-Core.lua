@@ -242,7 +242,7 @@ end
 local function sendSync(prefix, msg)
 	local zoneType = select(2, IsInInstance())
 	msg = msg or ""
-	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then--For BGs, LFR and LFG
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting osmething outside like sha, it'll sync in "RAID" instead)
 		SendAddonMessage("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
 	else
 		if IsInRaid() then
