@@ -333,8 +333,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 	if not self:IsInCombat() or bossesActivated[boss] then return end--Ignore yells out of combat or from bosses we already activated.
 	if not bossesActivated[boss] then bossesActivated[boss] = true end--Once we activate off bosses first yell, add them to ignore.
-	warnActivated:Show(boss)
 	if boss == Zian then
+		warnActivated:Show(boss)
 		zianActive = true
 		timerChargingShadowsCD:Start()
 		timerUndyingShadowsCD:Start(20)
@@ -346,6 +346,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 			DBM.RangeCheck:Show(8)
 		end
 	elseif boss == Meng then
+		warnActivated:Show(boss)
 		mengActive = true
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerDeliriousCD:Start()
@@ -353,9 +354,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		else
 			timerMaddeningShoutCD:Start(20.5)
 		end
---	elseif boss == Qiang then
-
+	elseif boss == Qiang then
+		warnActivated:Show(boss)
 	elseif boss == Subetai then
+		warnActivated:Show(boss)
 		subetaiActive = true
 		timerVolleyCD:Start(5)
 		timerPillageCD:Start(25)
