@@ -30,6 +30,7 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 local warnChargedShadows		= mod:NewTargetAnnounce(117685, 2)
 local warnUndyingShadows		= mod:NewSpellAnnounce(117506, 3)--Target scanning?
 local warnFixate				= mod:NewTargetAnnounce(118303, 4)--Maybe spammy late fight, if zian is first boss you get? (adds are immortal, could be many up)
+local warnShieldOfDarknessSoon	= mod:NewAnnounce("DarknessSoon", 3, 117697, nil, nil, true)
 local warnShieldOfDarkness		= mod:NewTargetAnnounce(117697, 4)
 --Meng
 local warnCrazyThought			= mod:NewCastAnnounce(117833, 2, nil, nil, false)--Just doesn't seem all that important right now.
@@ -40,7 +41,8 @@ local warnDelirious				= mod:NewTargetAnnounce(117837, 4, nil, mod:CanRemoveEnra
 --Qiang
 local warnAnnihilate			= mod:NewCastAnnounce(117948, 4)
 local warnFlankingOrders		= mod:NewSpellAnnounce(117910, 4)
-local warnImperviousShield		= mod:NewTargetAnnounce(117961, 3)--Heroic Ability
+local warnImperviousShieldSoon	= mod:NewPreWarnAnnounce(117961, 5, 3)--Less dangerous than Shield of darkness, doesn't need as much spam
+local warnImperviousShield		= mod:NewTargetAnnounce(117961, 4)--Heroic Ability
 --Subetai
 local warnVolley				= mod:NewSpellAnnounce(118094, 3)--118088 trigger ID, but we use the other ID cause it has a tooltip/icon
 local warnPinnedDown			= mod:NewTargetAnnounce(118135, 4)--We warn for this one since it's more informative then warning for just Rain of Arrows
@@ -133,6 +135,7 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerImperviousShieldCD:Start(40.7)
 		countdownImperviousShield:Start(40.7)
+		warnImperviousShieldSoon:Schedule(35.7)
 	end
 end
 
@@ -213,6 +216,11 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(117697) then
 		warnShieldOfDarkness:Show(args.sourceName)
 		specWarnShieldOfDarkness:Show(args.sourceName)
+		warnShieldOfDarknessSoon:Schedule(35, 5)--Start pre warning with regular warnings only as you don't move at this point yet.
+		warnShieldOfDarknessSoon:Schedule(36, 4)
+		warnShieldOfDarknessSoon:Schedule(37, 3)
+		warnShieldOfDarknessSoon:Schedule(38, 2)
+		warnShieldOfDarknessSoon:Schedule(39, 1)
 		timerShieldOfDarknessCD:Start()
 		countdownShieldOfDarkness:Start()
 	elseif args:IsSpellID(117833) then
@@ -240,9 +248,11 @@ function mod:SPELL_CAST_START(args)
 		timerImperviousShieldCD:Start()
 		countdownImperviousShield:Cancel()
 		if self:IsDifficulty("heroic10") then
+			warnImperviousShieldSoon:Schedule(57)
 			timerImperviousShieldCD:Start(62)
 			countdownImperviousShield:Start(62)
 		else
+			warnImperviousShieldSoon:Schedule(37)
 			timerImperviousShieldCD:Start()
 			countdownImperviousShield:Start(42)
 		end
@@ -267,12 +277,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerRainOfArrowsCD:Start()
 --	"<63.5 21:23:16> [UNIT_SPELLCAST_SUCCEEDED] Qiang the Merciless [[boss1:Inactive Visual::0:118205]]", -- [14066]
 --	"<63.5 21:23:16> [UNIT_SPELLCAST_SUCCEEDED] Qiang the Merciless [[boss1:Cancel Activation::0:118219]]", -- [14068]
-	elseif spellId == 118205 and self:AntiSpam(2, 3) then--Cancel Activation
+	elseif spellId == 118205 and self:AntiSpam(2, 3) then--Inactive Visual
 		if UnitName(uId) == Zian then
 			zianActive = false
 			timerChargingShadowsCD:Cancel()
 			timerShieldOfDarknessCD:Cancel()
 			countdownShieldOfDarkness:Cancel()
+			warnShieldOfDarknessSoon:Cancel()
 			timerUndyingShadowsCD:Start(30)--This boss retains Undying Shadows
 			if self.Options.RangeFrame and not subetaiActive then--Close range frame, but only if zian is also not active, otherwise we still need it
 				DBM.RangeCheck:Hide()
@@ -287,6 +298,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerAnnihilateCD:Cancel()
 			timerImperviousShieldCD:Cancel()
 			countdownImperviousShield:Cancel()
+			warnImperviousShieldSoon:Cancel()
 			timerFlankingOrdersCD:Start(30)--This boss retains Flanking Orders
 		elseif UnitName(uId) == Subetai then
 			subetaiActive = false
@@ -339,6 +351,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		timerChargingShadowsCD:Start()
 		timerUndyingShadowsCD:Start(20)
 		if self:IsDifficulty("heroic10", "heroic25") then
+			warnShieldOfDarknessSoon:Schedule(35, 5)--Start pre warning with regular warnings only as you don't move at this point yet.
+			warnShieldOfDarknessSoon:Schedule(36, 4)
+			warnShieldOfDarknessSoon:Schedule(37, 3)
+			warnShieldOfDarknessSoon:Schedule(38, 2)
+			warnShieldOfDarknessSoon:Schedule(39, 1)
 			timerShieldOfDarknessCD:Start(40)
 			countdownShieldOfDarkness:Start(40)
 		end
