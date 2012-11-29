@@ -21,7 +21,7 @@ local warnCobaltOverload			= mod:NewSpellAnnounce(115840, 4)
 local warnJadeOverload				= mod:NewSpellAnnounce(115842, 4)
 local warnJasperOverload			= mod:NewSpellAnnounce(115843, 4)
 local warnAmethystOverload			= mod:NewSpellAnnounce(115844, 4)
-local warnCobaltMine				= mod:NewTargetAnnounce(129424, 4)
+local warnCobaltMine				= mod:NewSpellAnnounce(129424, 4)
 local warnJadeShards				= mod:NewSpellAnnounce(116223, 3, nil, false)
 local warnJasperChains				= mod:NewTargetAnnounce(130395, 4)
 local warnAmethystPool				= mod:NewTargetAnnounce(130774, 3, nil, false)
@@ -31,9 +31,9 @@ local specWarnOverloadSoon			= mod:NewSpecialWarning("SpecWarnOverloadSoon", nil
 local specWarnJasperChains			= mod:NewSpecialWarningYou(130395)
 local specWarnBreakJasperChains		= mod:NewSpecialWarning("specWarnBreakJasperChains", false)
 local yellJasperChains				= mod:NewYell(130395, nil, false)
-local specWarnCobaltMine			= mod:NewSpecialWarningYou(129424)
+--local specWarnCobaltMine			= mod:NewSpecialWarningYou(129424)
 local specWarnCobaltMineNear		= mod:NewSpecialWarningClose(129424)
-local yellCobaltMine				= mod:NewYell(129424)
+--local yellCobaltMine				= mod:NewYell(129424)
 local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
 local yellAmethystPool				= mod:NewYell(130774, nil, false)
 local specWarnPowerDown				= mod:NewSpecialWarningSpell(116529, not mod:IsTank())
@@ -60,7 +60,7 @@ local Overload = {
 	["Jasper"] = GetSpellInfo(115843),
 	["Amethyst"] = GetSpellInfo(115844)
 }
-local scansDone = 0
+--local scansDone = 0
 local activePetrification = nil
 local playerHasChains = false
 local jasperChainsTargets = {}
@@ -122,6 +122,7 @@ local function isTank(unit)
 	return false
 end
 
+--[[
 function mod:ClobaltMineTarget(targetname)
 	warnCobaltMine:Show(targetname)
 	if targetname == UnitName("player") then
@@ -142,6 +143,7 @@ function mod:ClobaltMineTarget(targetname)
 		end
 	end
 end
+
 
 function mod:ScanHandler(ScansCompleted)
 	scansDone = scansDone + 1
@@ -164,10 +166,11 @@ function mod:ScanHandler(ScansCompleted)
 		end
 	end
 end
+--]]
 
 function mod:OnCombatStart(delay)
 	activePetrification = nil
-	scansDone = 0
+--	scansDone = 0
 	playerHasChains = false
 	table.wipe(jasperChainsTargets)
 	table.wipe(amethystPoolTargets)
@@ -343,8 +346,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.InfoFrame:Show(5, "enemypower", 1, nil, nil, ALTERNATE_POWER_INDEX)
 		end
 	elseif spellId == 129424 and self:AntiSpam(2, 5) then
-		scansDone = 0
-		self:ScanHandler()
+--		scansDone = 0
+--		self:ScanHandler()
+		warnCobaltMine:Show()
 		timerCobaltMineCD:Start()
 	end
 end
