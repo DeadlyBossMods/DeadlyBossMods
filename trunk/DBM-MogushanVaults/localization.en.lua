@@ -64,7 +64,12 @@ L:SetMiscLocalization({
 ----------------------
 L = DBM:GetModLocalization(687)
 
+L:SetWarningLocalization({
+	DarknessSoon		= "Shield of Darkness in %ds"
+})
+
 L:SetOptionLocalization({
+	DarknessSoon		= "Show pre-warning countdown for $spell:117697 (5s before)",
 	RangeFrame			= "Show range frame (8)"
 })
 

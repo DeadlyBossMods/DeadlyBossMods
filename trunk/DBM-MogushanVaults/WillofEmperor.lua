@@ -85,8 +85,8 @@ local rageTimers = {
 	[0] = 15.6,--Varies from heroic vs normal, number here doesn't matter though, we don't start this on pull we start it off first yell (which does always happen).
 	[1] = 33,
 	[2] = 33,
-	[3] = 33,
-	[4] = 33,
+	[3] = 33,--This one may be 40
+	[4] = 33,--or this one, i forget which
 	[5] = 33,
 	[6] = 83,
 	[7] = 33,
@@ -263,7 +263,7 @@ function mod:UNIT_POWER(uId)
 	if UnitPower(uId) == 18 and not comboWarned then
 		comboWarned = true
 		specWarnCombo:Show()
-	elseif UnitPower(uId) == 1 then
+	elseif UnitPower(uId) < 14 and comboWarned then
 		comboWarned = false
 		comboCount = 0
 	end
