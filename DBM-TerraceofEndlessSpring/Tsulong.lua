@@ -7,6 +7,7 @@ mod:SetModelID(42532)
 mod:SetReCombatTime(60)--fix lfr combat re-starts after killed.
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.Victory)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
@@ -151,7 +152,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerShadowBreathCD:Start()
 --"<267.3 22:12:00> [CLEU] SPELL_CAST_SUCCESS#false#0xF150F3EA00000157#Tsulong#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#124176#Gold Active#1", -- [44606]
 --"<267.4 22:12:01> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I thank you, strangers. I have been freed.#Tsulong#####0#0##0#4654##0#false#false", -- [44649]
-	elseif args:IsSpellID(124176) then
+-- 124176 seems not always fires. 123630 seems that followed by after kill events?
+	elseif args:IsSpellID(124176, 123630) then
 		DBM:EndCombat(self)
 	end
 end
