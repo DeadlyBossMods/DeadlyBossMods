@@ -65,7 +65,12 @@ L:SetMiscLocalization({
 ----------------------
 L = DBM:GetModLocalization(687)
 
+L:SetWarningLocalization({
+	DarknessSoon		= "%d초 후 암흑의 방패"
+})
+
 L:SetOptionLocalization({
+	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 경고 보기(5초 전부터)",
 	RangeFrame			= "거리 프레임 표시 (8m)"
 })
 
