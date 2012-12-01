@@ -28,7 +28,7 @@ local specWarnTerrorSpawn				= mod:NewSpecialWarningSwitch("ej6088",  mod:IsDps(
 local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, true)--Platform ability, particularly nasty damage, and fear.
 local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
 
-local timerThrashCD						= mod:NewCDTimer(7, 131996, nil, mod:IsTank() or mod:IsHealer())--Every 7-12 seconds.
+local timerThrashCD						= mod:NewCDTimer(9, 131996, nil, mod:IsTank() or mod:IsHealer())--Every 9-12 seconds.
 local timerBreathOfFearCD				= mod:NewNextTimer(33.3, 119414)--Based off bosses energy, he casts at 100 energy, and gains about 3 energy per second, so every 33-34 seconds is a breath.
 local timerOminousCackleCD				= mod:NewNextTimer(45.5, 119693)
 local timerDreadSpray					= mod:NewBuffActiveTimer(8, 120047)
