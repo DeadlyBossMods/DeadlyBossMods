@@ -7,7 +7,7 @@ mod:SetModelID(42811)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Victory)--Kill detection is aweful. No death, no special cast. yell is like 40 seconds AFTER victory. terrible.
-mod:SetUsedIcons(8, 7, 6, 5)
+mod:SetUsedIcons(8, 7, 6, 5, 4)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
@@ -35,7 +35,7 @@ local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("SetIconOnGuard", true)
+mod:AddBoolOption("SetIconOnGuard", false) -- this works good, but icon sets so slowly.. so not very useful.
 
 local hideActive = false
 
