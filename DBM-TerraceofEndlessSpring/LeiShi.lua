@@ -132,21 +132,22 @@ mod:RegisterOnUpdateHandler(function(self)
 	if self.Options.SetIconOnGuard and (DBM:GetRaidRank() > 0 and (iconsSet < guardActivated)) then
 		for i = 1, DBM:GetGroupMembers() do
 			local uId = "raid"..i.."target"
-			local uId2 = "raid"..i.."mouseover" --Maybe make a little faster with a mouseover check too
 			local guid = UnitGUID(uId)
-			local guid2 = UnitGUID(uId2)
 			if guardIcons[guid] then
 				SetRaidTarget(uId, guardIcons[guid])
 				iconsSet = iconsSet + 1
 				guardIcons[guid] = nil
-			elseif guardIcons[guid2] then
-				SetRaidTarget(uId2, guardIcons[guid2])
-				iconsSet = iconsSet + 1
-				guardIcons[guid2] = nil
 			end
 		end
+		local uId2 = "mouseover" -- raidNmouseover unit Id not exists. 
+		local guid2 = UnitGUID(uId2)
+		if guardIcons[guid2] then
+			SetRaidTarget(uId2, guardIcons[guid2])
+			iconsSet = iconsSet + 1
+			guardIcons[guid2] = nil
+		end
 	end
-end, 1)
+end, 0.2) -- this will be more faster, but leggy and waste cpu. 
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(123244) then
