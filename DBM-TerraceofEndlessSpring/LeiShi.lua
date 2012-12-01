@@ -35,7 +35,7 @@ local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("SetIconOnGuard", false) -- this works good, but icon sets so slowly.. so not very useful.
+mod:AddBoolOption("SetIconOnGuard", true) -- More people with it on, the better (ensures if your latency blows or fps low someone else with faster responding computer sets icons sooner). It's speed is also dependant on raid. it's only slow if your raiders are slow. it sets icons on them the instant ANYONE in raid targets them. in my 25 man guild we get icons on all 5 of them fast
 
 local hideActive = false
 
@@ -132,11 +132,17 @@ mod:RegisterOnUpdateHandler(function(self)
 	if self.Options.SetIconOnGuard and (DBM:GetRaidRank() > 0 and (iconsSet < guardActivated)) then
 		for i = 1, DBM:GetGroupMembers() do
 			local uId = "raid"..i.."target"
+			local uId2 = "raid"..i.."mouseover" --Maybe make a little faster with a mouseover check too
 			local guid = UnitGUID(uId)
+			local guid2 = UnitGUID(uId2)
 			if guardIcons[guid] then
 				SetRaidTarget(uId, guardIcons[guid])
 				iconsSet = iconsSet + 1
 				guardIcons[guid] = nil
+			elseif guardIcons[guid2] then
+				SetRaidTarget(uId2, guardIcons[guid2])
+				iconsSet = iconsSet + 1
+				guardIcons[guid2] = nil
 			end
 		end
 	end
