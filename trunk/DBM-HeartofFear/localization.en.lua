@@ -78,9 +78,9 @@ L:SetWarningLocalization({
 	specwarnAmberExplosionOther	= "%s: Interrupt %s!"--Amber Montrosity
 })
 
-L:SetTimerLocalization{
+L:SetTimerLocalization({
 	timerAmberExplosionAMCD		= "%s CD: %s"
-}
+})
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Display ability purpose rundown of Mutated Construct abilities",

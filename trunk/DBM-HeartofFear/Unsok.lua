@@ -142,7 +142,7 @@ function mod:ScalpelTarget()
 	end
 end
 
-local function warnAmberExplosionCast(spellId, source)
+local function warnAmberExplosionCast(spellId)
 	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
 	else--Interrupts available, lets call em out as a great tool to give raid leader split second decisions on who to allocate to the task (so they don't all waste it on same target and not have for next one).
@@ -342,7 +342,7 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosionSoon:Schedule(41)
 		timerAmberExplosionAMCD:Start(46, args.spellName, args.sourceName)
 		self:Unschedule(warnAmberExplosionCast)
-		self:Schedule(0.5, warnAmberExplosionCast, 122402, "Contructs")--Always check available interrupts and special warn if not
+		self:Schedule(0.5, warnAmberExplosionCast, 122402)--Always check available interrupts and special warn if not
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
 		specwarnMassiveStomp:Show()
@@ -401,6 +401,6 @@ function mod:OnSync(msg, str)
 	if msg == "InterruptAvailable" and guids[guid] and spellId then
 		canInterrupt[#canInterrupt + 1] = guids[guid]
 		self:Unschedule(warnAmberExplosionCast)
-		self:Schedule(0.5, warnAmberExplosionCast, spellId, "Interrupt")
+		self:Schedule(0.5, warnAmberExplosionCast, spellId)
 	end
 end
