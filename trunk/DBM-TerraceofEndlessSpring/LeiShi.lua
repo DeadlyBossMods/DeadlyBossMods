@@ -39,15 +39,23 @@ mod:AddBoolOption("SetIconOnGuard", true) -- More people with it on, the better 
 
 local hideActive = false
 
-local guardIcons = {}
+local guards = {}
 local creatureIcon = 8
 local guardActivated = 0
-local iconsSet = 0
+local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
 
-local function resetGuardIconState()
-	table.wipe(guardIcons)
-	creatureIcon = 8
-	iconsSet = 0
+local function resetguardstate()
+	table.wipe(guards)
+	iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
+end
+
+local function getAvailableIcons()
+	for i = 8, 1, -1 do
+		if not iconsSet[i] then
+			return i
+		end
+	end
+	return 8
 end
 
 local function isTank(unit)
@@ -67,7 +75,7 @@ local function isTank(unit)
 end
 
 function mod:OnCombatStart(delay)
-	guardActivated = 0
+	resetguardstate()
 	hideActive = false
 --	timerSpecialCD:Start(42.5-delay)--FIRST special not match if your party is high DPS. 
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -87,12 +95,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnAnimatedProtector:Show()
 	elseif args:IsSpellID(123505) and self.Options.SetIconOnGuard then
 		if guardActivated == 0 then
-			resetGuardIconState()
+			resetguardstate()
 		end
 		guardActivated = guardActivated + 1
-		if not guardIcons[args.sourceGUID] then
-			guardIcons[args.destGUID] = creatureIcon
-			creatureIcon = creatureIcon - 1
+		if not guards[args.sourceGUID] then
+			guards[args.destGUID] = true
 		end
 	elseif args:IsSpellID(123461) then
 		warnGetAway:Show()
@@ -129,22 +136,33 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnGuard and (DBM:GetRaidRank() > 0 and (iconsSet < guardActivated)) then
+	if self.Options.SetIconOnGuard and guardActivated > 0 and DBM:GetRaidRank() > 0 then
 		for i = 1, DBM:GetGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
-			if guardIcons[guid] then
-				SetRaidTarget(uId, guardIcons[guid])
-				iconsSet = iconsSet + 1
-				guardIcons[guid] = nil
+			if guards[guid] then
+				local existingIcons = GetRaidTargetIndex(uid)
+				if not existingIcons then
+					local icon = getAvailableIcons()
+					SetRaidTarget(uId, icon)
+					iconsSet[icon] = true
+				elseif existingIcons then
+					iconsSet[creatureIcon] = true
+				end
+				guards[guid] = nil
 			end
 		end
-		local uId2 = "mouseover" -- raidNmouseover unit Id not exists. 
-		local guid2 = UnitGUID(uId2)
-		if guardIcons[guid2] then
-			SetRaidTarget(uId2, guardIcons[guid2])
-			iconsSet = iconsSet + 1
-			guardIcons[guid2] = nil
+		local guid2 = UnitGUID("mouseover")
+		if guards[guid2] then
+			local existingIcons = GetRaidTargetIndex("mouseover")
+			if not existingIcons then
+				local icon = getAvailableIcons()
+				SetRaidTarget("mouseover", icon)
+				iconsSet[icon] = true
+			elseif existingIcons then
+				iconsSet[creatureIcon] = true
+			end
+			guards[guid] = nil
 		end
 	end
 end, 0.2) -- this will be more faster, but leggy and waste cpu. 
