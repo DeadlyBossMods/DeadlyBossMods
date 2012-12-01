@@ -10,7 +10,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"COMBAT_REGEN_ENABLED",
+	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -46,9 +46,6 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if not self.Options.SpectatorMode and not playerisFighting then return end
-	if args:IsSpellID(119626) then--Remove them after the MCs break.
-		removeIcon(args.destName)
-	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
@@ -64,7 +61,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	end
 end
 
-function mod:COMBAT_REGEN_ENABLED()
+function mod:PLAYER_REGEN_ENABLED()
 	if playerisFighting then--We check playerisFighting to filter bar brawls, this should only be true if we were ported into ring.
 		playerisFighting = false
 		self:SendSync("MatchEnd")
