@@ -65,7 +65,12 @@ L:SetMiscLocalization({
 ----------------------
 L = DBM:GetModLocalization(687)
 
+L:SetWarningLocalization({
+	DarknessSoon		= "黑暗之盾在%d秒"
+})
+
 L:SetOptionLocalization({
+	DarknessSoon		= "為$spell:117697提示施放前五秒倒數",
 	RangeFrame			= "顯示距離框(8碼)"
 })
 
