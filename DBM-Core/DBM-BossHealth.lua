@@ -206,7 +206,7 @@ do
 			return -1
 		end
 		local cType = bit.band(guid:sub(0, 5), 0x00F)
-		return (cType == 3 or cType == 5) and tonumber(guid:sub(7, 10), 16) or -1
+		return (cType == 3 or cType == 5) and tonumber(guid:sub(6, 10), 16) or -1
 	end
 	
 --	local function compareBars(b1, b2)
