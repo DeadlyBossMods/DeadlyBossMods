@@ -162,7 +162,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDespawnFloor:Start()
 			specWarnDespawnFloor:Show()
 		end
-		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
+--"<1.0 00:25:21> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800007AF8#Empyreal Focus#2632#0#0xF130ED6800007AFB#Empyreal Focus#68168#0#116598#Energy Conduit#1", -- [123]
+--Icons not working with sourceGUID (but boss health is so i'll leave that alone). Based on log source and dest GUId diff. maybe players can't target sourceguid? lets see how destguid works for icons
+		if self.Options.SetIconOnCreature and not creatureIcons[args.destGUID] then
 			creatureIcons[args.sourceGUID] = creatureIcon
 			creatureIcon = creatureIcon - 1
 		end
