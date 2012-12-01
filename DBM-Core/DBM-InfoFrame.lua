@@ -418,7 +418,7 @@ end
 
 local function getUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
-	return (guid and (tonumber(guid:sub(7, 10), 16))) or 0
+	return (guid and (tonumber(guid:sub(6, 10), 16))) or 0
 end
 local function updatePlayerTargets()
 	table.wipe(lines)
