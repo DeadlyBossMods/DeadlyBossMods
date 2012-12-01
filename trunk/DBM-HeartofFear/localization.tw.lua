@@ -79,9 +79,9 @@ L:SetWarningLocalization({
 	specwarnAmberExplosionOther	= "%s:中斷%s!"--Amber Montrosity
 })
 
-L:SetTimerLocalization{
+L:SetTimerLocalization{{
 	timerAmberExplosionAMCD		= "%s冷卻:%s"
-}
+}}
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "顯示突變魁儡的能力說明效果",
