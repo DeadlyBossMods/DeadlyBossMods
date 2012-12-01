@@ -162,7 +162,7 @@ mod:RegisterOnUpdateHandler(function(self)
 			elseif existingIcons then
 				iconsSet[creatureIcon] = true
 			end
-			guards[guid] = nil
+			guards[guid2] = nil
 		end
 	end
 end, 0.2) -- this will be more faster, but leggy and waste cpu. 
