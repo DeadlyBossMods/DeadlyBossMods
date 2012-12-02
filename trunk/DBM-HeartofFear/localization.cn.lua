@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/14/2012
+-- Last update: 12/2/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -83,9 +83,9 @@ L:SetWarningLocalization({
 	specwarnAmberExplosionOther	= "%s：打断 %s!"--Amber Montrosity
 })
 
-L:SetTimerLocalization{
+L:SetTimerLocalization({
 	timerAmberExplosionAMCD		= "下一次%s: %s"
-}
+})
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "当变为变异构造体时显示技能及其作用",
