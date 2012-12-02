@@ -12,9 +12,12 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_SPELLCAST_CHANNEL_START",
 	"UNIT_DIED"
 )
 
+local warnChomp					= mod:NewSpellAnnounce(135342, 4)
+local warnLumberingCharge		= mod:NewSpellAnnounce(134527, 4)
 local warnHeatedPokers			= mod:NewSpellAnnounce(133286, 4)
 local warnThrowNet				= mod:NewSpellAnnounce(133308, 3)--Pretty dangerous but probably no need for special warning.
 local warnGoblinDevice			= mod:NewSpellAnnounce(133227, 4)
@@ -23,14 +26,21 @@ local warnFireWall				= mod:NewSpellAnnounce(132666, 4)
 local warnVolatileFlames		= mod:NewSpellAnnounce(134740, 3)
 local warnFireLine				= mod:NewCastAnnounce(133607, 4)
 local warnDevastatingThrust		= mod:NewSpellAnnounce(134777, 4)--1.5 second cast, does 2 million damage. pretty brutal
+local warnSummonTwister			= mod:NewSpellAnnounce(132670, 3)
+local warnStormCloud			= mod:NewSpellAnnounce(135234, 3)--Can be interrupted
 
 local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
+local specWarnChomp				= mod:NewSpecialWarningMove(135342)
+local specWarnLumberingCharge	= mod:NewSpecialWarningMove(134527)
 local specWarnHeatedPokers		= mod:NewSpecialWarningSpell(133286)--Can be interrupted, if you don't have one. can stun through buff or run away. How you handle varies, but you MUST handle it.
 local specWarnGoblinDevice		= mod:NewSpecialWarningSpell(133227)--This is debuff cast, it makes YOU drop mines 3-4 seconds later. you can drop these where you want.
 local specWarnFireWall			= mod:NewSpecialWarningSpell(132666)
 local specWarnFireLine			= mod:NewSpecialWarningMove(133607)
 local specWarnDevastatingThrust	= mod:NewSpecialWarningMove(134777)
+local specWarnStormCloud		= mod:NewSpecialWarningInterrupt(135234)
 
+local timerChompCD				= mod:NewCDTimer(8, 135342)
+local timerLumberingChargeCD	= mod:NewCDTimer(7, 134527)--7-10 sec variation
 local timerHeatedPokers			= mod:NewBuffActiveTimer(8, 133286)
 local timerHeatedPokersCD		= mod:NewCDTimer(29, 133286)
 local timerThrowNetCD			= mod:NewCDTimer(20, 133308)
@@ -39,6 +49,7 @@ local timerFirewallCD			= mod:NewCDTimer(18, 132666)--18-22 sec variation
 local timerVolatileFlamesCD		= mod:NewCDTimer(11, 134740)--11-20 sec variation
 local timerFireLineCD			= mod:NewCDTimer(15, 133607)--15-22 sec variation
 local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777)--Need more data to verify CD
+local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670)--15-17 sec variation
 
 mod:AddBoolOption("SpectatorMode", true)
 
@@ -47,10 +58,16 @@ local playerisFighting = false
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.SpectatorMode and not playerisFighting then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(133286) then
-		warnHeatedPokers:Show()--Give reg warnings for spectators
-		timerHeatedPokersCD:Start()--And timers
+	if args:IsSpellID(135342) then
+		warnChomp:Show()--Give reg warnings for spectators
+		timerChompCD:Start()--And timers (first one is after 6 seconds)
 		if playerisFighting then--Only give special warnings if you're in arena though.
+			specWarnChomp:Show()
+		end
+	elseif args:IsSpellID(133286) then
+		warnHeatedPokers:Show()
+		timerHeatedPokersCD:Start()
+		if playerisFighting then
 			specWarnHeatedPokers:Show()
 		end
 	elseif args:IsSpellID(133308) then
@@ -76,6 +93,12 @@ function mod:SPELL_CAST_START(args)
 		if playerisFighting then
 			specWarnDevastatingThrust:Show()
 		end
+	elseif args:IsSpellID(135234) then
+		warnStormCloud:Show()
+		--CD seems to be 32 seconds usually but sometimes only 16? no timer for now
+		if playerisFighting then
+			specWarnStormCloud:Show()
+		end
 	end
 end
 
@@ -87,6 +110,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if playerisFighting then--Only give special warnings if you're in arena though.
 			specWarnGoblinDevice:Show()
 		end
+	elseif args:IsSpellID(132670) then
+		warnSummonTwister:Show()
+		timerSummonTwisterCD:Start()--22 seconds after combat start?
 	end
 end
 
@@ -124,6 +150,18 @@ function mod:UNIT_DIED(args)
 		timerThrowNetCD:Cancel()
 	elseif cid == 67525 then
 		timerGoblinDeviceCD:Cancel()
+	end
+end
+
+--This event won't really work well for spectators if they target the player instead of boss. This event only fires if boss is on target/focus
+--It is however the ONLy event you can detect this spell using.
+function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, _, spellId)
+	if spellId == 134527 and self:AntiSpam() then
+		warnLumberingCharge:Show()
+		timerLumberingChargeCD:Start()
+		if playerisFighting then
+			specWarnLumberingCharge:Show()
+		end
 	end
 end
 
