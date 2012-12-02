@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/22/2012
+-- Last update: 12/2/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -41,7 +41,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "特殊警报：$spell:123244效果结束时",
 	timerSpecialCD			= "计时条：下一次特殊能力",
-	SetIconOnCreature		= "为$journal:6224的目标添加团队标记"
+	SetIconOnGuard			= "为$journal:6224的目标添加团队标记"
 })
 
 
