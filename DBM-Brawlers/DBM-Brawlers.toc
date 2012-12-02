@@ -11,7 +11,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Brawlers
-## X-DBM-Mod-Sort: 4
+## X-DBM-Mod-Sort: 15
 ## X-DBM-Mod-LoadZoneID: 922
 localization.en.lua
 MapSizes.lua
