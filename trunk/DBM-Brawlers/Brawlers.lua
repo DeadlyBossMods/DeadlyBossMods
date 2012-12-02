@@ -125,13 +125,13 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 --	"<17.2 15:06:00> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Now entering the arena: a Rank 1 human warrior, Omegal! Omegal is pretty new around here, so go easy!#Bizmo###Omegal##0#0##0#988##0#false#false"
-	if msg:find(L.EnteringArena) then
+	if msg:find(L.EnteringArena1) or msg:find(L.EnteringArena2) or msg:find(L.EnteringArena3) then
 		if target == UnitName("player") then
 			specWarnYourTurn:Show()
 			playerisFighting = true
 		end
 		self:SendSync("MatchBegin")
-	elseif npc == L.Bizmo and matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4)) then
+	elseif npc == L.Bizmo and matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8)) then
 		self:SendSync("MatchEnd")
 	end
 end
