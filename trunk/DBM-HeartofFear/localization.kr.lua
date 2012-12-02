@@ -77,9 +77,9 @@ L:SetWarningLocalization({
 	specwarnAmberExplosionOther	= "%s 시전: %s - 1번으로 차단!"
 })
 
-L:SetTimerLocalization{
+L:SetTimerLocalization({
 	timerAmberExplosionAMCD		= "%s 대기시간: %s"
-}
+})
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "돌연변이 피조물 탑승시 피조물 주문에 대한 설명 보기",
