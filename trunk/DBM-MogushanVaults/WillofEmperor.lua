@@ -86,7 +86,7 @@ local rageTimers = {
 	[1] = 33,
 	[2] = 33,
 	[3] = 33,
-	[4] = 40,--unverified
+	[4] = 33,--no idea, maybe this one is just random 33-40, rest are dead on though.
 	[5] = 33,
 	[6] = 83,
 	[7] = 33,
@@ -168,7 +168,7 @@ local function addsDelay(add)
 		warnStrengthActivated:Show(strengthCount)
 		specWarnStrengthActivated:Show()
 		--Titan gases delay spawns by 50 seconds, even on heroic (even though there is no actual gas phase, the timing stays same on heroic)
-		if strengthCount == 4 or strengthCount == 6 or strengthCount == 8 then--The add counts where the delays are
+		if strengthCount == 4 or strengthCount == 6 or strengthCount == 8 then--Unverified
 			timerStrengthActivates:Start(100, strengthCount+1)
 		else
 			timerStrengthActivates:Start(50, strengthCount+1)
