@@ -262,10 +262,10 @@ end
 function mod:UNIT_POWER(uId)
 	if uId ~= "target" then return end
 	if UnitPower(uId) == 18 and not comboWarned then
+		comboCount = 0
 		comboWarned = true
 		specWarnCombo:Show()
-	elseif UnitPower(uId) < 1 and comboWarned then
+	elseif UnitPower(uId) < 12 and comboWarned then
 		comboWarned = false
-		comboCount = 0
 	end
 end
