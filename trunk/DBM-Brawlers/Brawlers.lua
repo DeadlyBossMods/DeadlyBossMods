@@ -131,7 +131,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			playerisFighting = true
 		end
 		self:SendSync("MatchBegin")
-	elseif npc == L.Bizmo and matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8)) then
+	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8)) then
 		self:SendSync("MatchEnd")
 	end
 end
@@ -146,9 +146,9 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 67524 then
+	if cid == 67524 then--These 2 have a 1 min 50 second berserk
 		timerThrowNetCD:Cancel()
-	elseif cid == 67525 then
+	elseif cid == 67525 then--These 2 have a 1 min 50 second berserk
 		timerGoblinDeviceCD:Cancel()
 	end
 end
