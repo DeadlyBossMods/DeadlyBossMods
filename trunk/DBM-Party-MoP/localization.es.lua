@@ -97,6 +97,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(685)
 
+L:SetMiscLocalization({
+	Kill		= "Siempre que la violencia anide en vuestros corazones... volveré...",
+})
+
 -----------------------
 -- Taran Zhu --
 -----------------------

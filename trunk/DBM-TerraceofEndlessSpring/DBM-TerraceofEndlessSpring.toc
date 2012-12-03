@@ -4,6 +4,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0영원한 봄의 정원|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Terrasse des Endlosen Frühlings|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0永春台|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Veranda de la Primavera Eterna|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,6 +17,7 @@
 ## X-DBM-Mod-Name-deDE: Terrasse des Endlosen Frühlings
 ## X-DBM-Mod-Name-zhTW: 豐泉台
 ## X-DBM-Mod-Name-zhCN: 永春台
+## X-DBM-Mod-Name-esES: Veranda de la Primavera Eterna
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZoneID: 886
 localization.en.lua
@@ -23,6 +25,7 @@ localization.kr.lua
 localization.de.lua
 localization.tw.lua
 localization.cn.lua
+localization.es.lua
 MapSizes.lua
 ProtectorsofEndless.lua
 Tsulong.lua
