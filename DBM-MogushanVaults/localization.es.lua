@@ -65,7 +65,12 @@ L:SetMiscLocalization({
 ----------------------
 L = DBM:GetModLocalization(687)
 
+L:SetWarningLocalization({
+	DarknessSoon		= "Escudo de la oscuridad en %ds"
+})
+
 L:SetOptionLocalization({
+	DarknessSoon		= "Mostrar pre-aviso con contador para for $spell:117697 (5s antes)",
 	RangeFrame			= "Mostrar distancia (8)"
 })
 
@@ -86,6 +91,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "Mostrar aviso especial antes de que el suelo se desaparezca",
 	timerDespawnFloor			= "Mostrar tiempo para que el suelo desaparezca",
+	SetIconOnCreature		= "Poner iconos en $journal:6193",
 	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
