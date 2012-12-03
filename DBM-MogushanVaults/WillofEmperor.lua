@@ -262,7 +262,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_POWER(uId)
-	if (uId ~= "target" or uId ~= "targettarget") or UnitIsFriend(uId) then return end
+	if (uId ~= "target" or uId ~= "targettarget") or UnitIsFriend(uId, "player") then return end
 	if UnitPower(uId) == 18 and not comboWarned then
 		comboCount = 0
 		comboWarned = true
