@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/2/2012
+-- Last update: 12/4/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -65,7 +65,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"
+	Reinforcements		= "风领主梅尔加拉克调遣援兵了！"
 })
 
 ------------
