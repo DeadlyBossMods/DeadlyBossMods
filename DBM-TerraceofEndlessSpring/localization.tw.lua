@@ -38,7 +38,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "為$spell:123244結束顯示警告",
 	timerSpecialCD			= "為下一次特別技能顯示計時器",
-	SetIconOnCreature		= "為$journal:6224標示團隊圖示"
+	SetIconOnGuard			= "為$journal:6224標示團隊圖示"
 })
 
 L:SetMiscLocalization{

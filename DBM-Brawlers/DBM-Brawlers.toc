@@ -4,6 +4,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0싸움꾼 조합|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pandaria|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0搏击俱乐部|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0鬥陣俱樂部|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMBrawlers_SavedVars, DBMBrawlers_SavedStats
@@ -13,10 +14,12 @@
 ## X-DBM-Mod-Name: Brawlers
 ## X-DBM-Mod-Name-koKR: 싸움꾼 조합
 ## X-DBM-Mod-Name-zhCN: 搏击俱乐部
+## X-DBM-Mod-Name-zhTW: 鬥陣俱樂部
 ## X-DBM-Mod-Sort: 15
 ## X-DBM-Mod-LoadZoneID: 922
 localization.en.lua
 localization.kr.lua
 localization.cn.lua
+localization.tw.lua
 MapSizes.lua
 Brawlers.lua
