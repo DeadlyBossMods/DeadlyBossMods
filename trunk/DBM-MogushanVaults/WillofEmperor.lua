@@ -198,8 +198,10 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Strength or msg:find(L.Strength) then
+		self:Unschedule(addsDelay, "Strength")
 		self:Schedule(9, addsDelay, "Strength")
 	elseif msg == L.Courage or msg:find(L.Courage) then
+		self:Unschedule(addsDelay, "Courage")
 		self:Schedule(10, addsDelay, "Courage")
 	elseif msg == L.Boss or msg:find(L.Boss) then
 		warnBossesActivatedSoon:Show()
