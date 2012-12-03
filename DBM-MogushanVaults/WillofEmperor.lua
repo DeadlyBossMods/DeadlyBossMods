@@ -85,8 +85,8 @@ local rageTimers = {
 	[0] = 15.6,--Varies from heroic vs normal, number here doesn't matter though, we don't start this on pull we start it off first yell (which does always happen).
 	[1] = 33,
 	[2] = 33,
-	[3] = 33,--This one may be 40
-	[4] = 33,--or this one, i forget which
+	[3] = 33,
+	[4] = 40,--unverified
 	[5] = 33,
 	[6] = 83,
 	[7] = 33,
@@ -192,6 +192,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Rage or msg:find(L.Rage) then--Apparently boss only yells sometimes, so this isn't completely reliable
 		self:Unschedule(addsDelay, "Rage")--Unschedule any failsafes that triggered and resync to yell
 		self:Schedule(14, addsDelay, "Rage")
+		timerRageActivates:Start(14, rageCount+1)
 	end
 end
 
