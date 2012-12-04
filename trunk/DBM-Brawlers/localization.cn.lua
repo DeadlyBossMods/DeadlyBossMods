@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/2/2012
+-- Last update: 12/5/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -23,15 +23,15 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Bizmo			= "Bizmo",
+	Bizmo			= "比兹莫",
 	--I wish there was a better way to do this....so much localizing. :(
-	EnteringArena1	= "Now entering the arena",
-	EnteringArena2	= "Here's our challenger",
+	EnteringArena1	= "请大家鼓掌欢迎——",
+	EnteringArena2	= "现在进场的是一位",
 	EnteringArena3	= "Look out... here comes",
 	Victory1		= "is our victor",
 	Victory2		= "Congratulations",
-	Victory3		= "Brilliant victory",
-	Victory4		= "wins",
+	Victory3		= "辉煌的胜利",
+	Victory4		= "获胜！",
 	Victory5		= "Keep 'em comin'",
 	Victory6		= "Great job not dying",
 	Lost1			= "were you even trying",
@@ -40,6 +40,6 @@ L:SetMiscLocalization({
 	Lost4			= "Get back in line and try again",
 	Lost5			= "you're gonna have to break a few eggs",
 	Lost6			= "try not to die so much",
-	Lost7			= "what a mess",
+	Lost7			= "呃……真是一团糟",
 	Lost8			= "His name was",--LoL at fight club reference here
 })
