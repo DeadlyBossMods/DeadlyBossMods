@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnThrash						= mod:NewSpellAnnounce(131996, 4, nil, mod:IsTank() or mod:IsHealer())
-local warnConjureTerrorSpawns			= mod:NewSpellAnnounce(119108, 3)
+--local warnConjureTerrorSpawns			= mod:NewSpellAnnounce(119108, 3)
 local warnBreathOfFearSoon				= mod:NewPreWarnAnnounce(119414, 10, 3)
 local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 3)
 local warnOminousCackle					= mod:NewTargetAnnounce(129147, 4)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
@@ -24,7 +24,7 @@ local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
 local specWarnBreathOfFear				= mod:NewSpecialWarningSpell(119414, nil, nil, nil, true)
 --local specWarnOminousCackle				= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
-local specWarnTerrorSpawn				= mod:NewSpecialWarningSwitch("ej6088",  mod:IsDps())
+--local specWarnTerrorSpawn				= mod:NewSpecialWarningSwitch("ej6088",  mod:IsDps())
 local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, true)--Platform ability, particularly nasty damage, and fear.
 local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
 
@@ -124,10 +124,10 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerOminousCackleCD:Start()
 		end
-		if not onPlatform then--Can't switch to them if you aren't in middle.
-			specWarnTerrorSpawn:Show()
-		end
-		warnConjureTerrorSpawns:Show()
+--		if not onPlatform then--Can't switch to them if you aren't in middle.
+--			specWarnTerrorSpawn:Show()
+--		end
+--		warnConjureTerrorSpawns:Show()
 	elseif args:IsSpellID(119862) and onPlatform and not platformGUIDs[args.sourceGUID] then--Best way to track engaging one of the side adds, they cast this instantly.
 		platformGUIDs[args.sourceGUID] = true
 		platformMob = args.sourceName--Get name of your platform mob so we can determine which mob you have engaged
