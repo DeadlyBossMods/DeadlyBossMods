@@ -224,7 +224,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if uId ~= "target" or uId ~= "targettarget" then return end
+	if not (uId == "target" or uId == "targettarget") then return end
 	if spellId == 116556 then
 		warnEnergizingSmash:Show()
 	elseif spellId == 116968 then--Arc Left
