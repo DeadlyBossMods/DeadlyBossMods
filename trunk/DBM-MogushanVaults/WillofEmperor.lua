@@ -224,7 +224,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if uId ~= "target" then return end
+	if uId ~= "target" or uId ~= "targettarget" then return end
 	if spellId == 116556 then
 		warnEnergizingSmash:Show()
 	elseif spellId == 116968 then--Arc Left
@@ -262,12 +262,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_POWER(uId)
-	if (uId ~= "target" or uId ~= "targettarget") or UnitIsFriend(uId, "player") then return end
-	if UnitPower(uId) == 18 and not comboWarned then
-		comboCount = 0
-		comboWarned = true
-		specWarnCombo:Show()
-	elseif UnitPower(uId) < 12 and comboWarned then
-		comboWarned = false
+	if (uId == "target" or uId == "targettarget") and not UnitIsFriend(uId, "player") then
+		if UnitPower(uId) == 18 and not comboWarned then
+			comboCount = 0
+			comboWarned = true
+			specWarnCombo:Show()
+		elseif UnitPower(uId) < 12 and comboWarned then
+			comboWarned = false
+		end
 	end
 end
