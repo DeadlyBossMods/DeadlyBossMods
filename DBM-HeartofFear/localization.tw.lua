@@ -12,7 +12,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnPlatform	= "為首領轉換露臺顯示特別警告",
-	ArrowOnAttenuation	= "明確地為$spell:127834指示DBM箭頭移動方向",
+	ArrowOnAttenuation	= "為$spell:127834指示DBM箭頭移動方向",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
 })
 
@@ -70,7 +70,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
-	warnReshapeLifeTutor		= "1:中斷/益傷,, 2:中斷自己, 3:回復體力/意志力, 4:脫離魁儡",
+	warnReshapeLifeTutor		= "1:中斷/易傷,, 2:中斷自己, 3:回復體力/意志力, 4:脫離魁儡",
 	warnAmberExplosion			= ">%s<正在施放%s",
 	warnInterruptsAvailable		= "可使用中斷%s:%s",
 	specwarnWillPower			= "意志力偏低!",
@@ -79,9 +79,9 @@ L:SetWarningLocalization({
 	specwarnAmberExplosionOther	= "%s:中斷%s!"--Amber Montrosity
 })
 
-L:SetTimerLocalization{{
+L:SetTimerLocalization({
 	timerAmberExplosionAMCD		= "%s冷卻:%s"
-}}
+})
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "顯示突變魁儡的能力說明效果",
@@ -93,7 +93,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionOther	= "為中斷突變傀儡的$spell:122398顯示特別警告",
 	timerAmberExplosionAMCD		= "為琥珀巨怪下一次的$spell:122402顯示計時器",
 	InfoFrame					= "為玩家的意志力顯示訊息框架",
-	FixNameplates				= "開戰後自動禁用干擾的名字血條\n(離開戰鬥後恢復設定)"
+	FixNameplates				= "開戰後自動禁用擾人的名字血條\n(離開戰鬥後恢復設定)"
 })
 
 L:SetMiscLocalization({
