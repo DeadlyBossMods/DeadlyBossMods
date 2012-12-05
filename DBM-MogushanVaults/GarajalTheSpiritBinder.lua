@@ -14,6 +14,7 @@ mod:RegisterCombat("yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_SPELLCAST_SUCCEEDED"
@@ -39,7 +40,9 @@ local timerTotemCD					= mod:NewNextCountTimer(20, 116174)
 local timerBanishmentCD				= mod:NewCDTimer(65, 116272)
 local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
+local timerSpiritualInnervation		= mod:NewBuffFadesTimer(30, 117549)
 local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
+local timerFrailSoul				= mod:NewBuffFadesTimer(30, 117723)
 
 local berserkTimer					= mod:NewBerserkTimer(360)
 
@@ -132,7 +135,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		if self:LatencyCheck() then
 			self:SendSync("VoodooTargets", args.destGUID)
 		end
-	elseif args:IsSpellID(116161, 116160) then -- 116161 is normal and heroic, 116160 is lfr.
+	elseif args:IsSpellID(116161, 116260) then -- 116161 is normal and heroic, 116260 is lfr.
 		if args:IsPlayer() then
 			warnSuicide:Schedule(25)
 			countdownCrossedOver:Start(29)
@@ -149,11 +152,16 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			countdownCrossedOver:Start(29)
 			warnSuicide:Schedule(25)
 		end
+	elseif args:IsSpellID(117543, 117549) and args:IsPlayer() then -- 117543 is healer spell, 117549 is dps spell
+		timerSpiritualInnervation:Start()
+	elseif args:IsSpellID(117723) and args:IsPlayer() then
+		timerFrailSoul:Start()
 	end
 end
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
-	if args:IsSpellID(116161, 116160) and args:IsPlayer() then
+	if args:IsSpellID(116161, 116260) and args:IsPlayer() then
 		warnSuicide:Cancel()
 		countdownCrossedOver:Cancel()
 		timerCrossedOver:Cancel()	
@@ -163,6 +171,10 @@ function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actua
 		countdownCrossedOver:Cancel()
 	elseif args:IsSpellID(122151) then
 		self:SendSync("VoodooGoneTargets", args.destGUID)
+	elseif args:IsSpellID(117543, 117549) and args:IsPlayer() then
+		timerSpiritualInnervation:Cancel()
+	elseif args:IsSpellID(117723) and args:IsPlayer() then
+		timerFrailSoul:Cancel()
 	end
 end
 
