@@ -140,7 +140,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerOverwhelmingAssaultCD:Start()--Start CD here, since this might miss.
 	elseif args:IsSpellID(123175) then
 		warnWindStep:Show(args.destName)
-		timerWindStepCD:Start()
+		if self:IsDifficulty("lfr25") then
+			timerWindStepCD:Start(30)
+		else
+			timerWindStepCD:Start()
+		end
 	end
 end
 
@@ -166,7 +170,11 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 122839 and self:AntiSpam(2, 1) then--Tempest Slash. DO NOT ADD OTHER SPELLID. 122839 is primary cast, 122842 is secondary cast 3 seconds later. We only need to warn for primary and start CD off it and it alone.
 		warnTempestSlash:Show()
-		timerTempestSlashCD:Start()
+		if self:IsDifficulty("lfr25") then
+			timerTempestSlashCD:Start(20)
+		else
+			timerTempestSlashCD:Start()
+		end
 	elseif spellId == 122949 and self:AntiSpam(2, 3) then-- sometimes Unseen Strike emote not fires. bliz bug.
 		self:Schedule(0.8, checkUnseenEmote)
 	elseif spellId == 123814 and self:AntiSpam(2, 2) then--Do not add other spellids here either. 123814 is only cast once, it starts the channel. everything else is cast every 1-2 seconds as periodic triggers.
