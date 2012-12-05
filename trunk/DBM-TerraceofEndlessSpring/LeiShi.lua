@@ -141,7 +141,7 @@ mod:RegisterOnUpdateHandler(function(self)
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
 			if guards[guid] then
-				local existingIcons = GetRaidTargetIndex(uid)
+				local existingIcons = GetRaidTargetIndex(uId)
 				if not existingIcons then
 					local icon = getAvailableIcons()
 					SetRaidTarget(uId, icon)
