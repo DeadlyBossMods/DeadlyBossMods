@@ -34,6 +34,7 @@ local timerOminousCackleCD				= mod:NewNextTimer(45.5, 119693)
 local timerDreadSpray					= mod:NewBuffActiveTimer(8, 120047)
 local timerDreadSprayCD					= mod:NewNextTimer(20.5, 120047)
 --local timerTerrorSpawnCD				= mod:NewNextTimer(60, 119108)--every 60 or so seconds, maybe a little more maybe a little less, not sure. this is just based on instinct after seeing where 30 fit.
+local timerFearless						= mod:NewBuffFadesTimer(30, 118977)
 
 local berserkTimer						= mod:NewBerserkTimer(900)
 
@@ -103,6 +104,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform
 		onPlatform = false
 		platformMob = nil
+		timerFearless:Start()
 	elseif args:IsSpellID(131996) and not onPlatform then
 		warnThrash:Show()
 		specWarnThrash:Show()
