@@ -65,7 +65,12 @@ L:SetMiscLocalization({
 ----------------------
 L = DBM:GetModLocalization(687)
 
+L:SetWarningLocalization({
+	DarknessSoon		= "Schild der Dunkelheit in %d Sekunden"
+})
+
 L:SetOptionLocalization({
+	DarknessSoon		= "Zeige Vorwarnungscountdown für $spell:117697 (5s zuvor)",
 	RangeFrame			= "Zeige Abstandsfenster (8m)"
 })
 

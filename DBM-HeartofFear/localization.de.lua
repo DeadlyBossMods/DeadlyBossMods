@@ -72,16 +72,16 @@ L= DBM:GetModLocalization(737)
 L:SetWarningLocalization({
 	warnReshapeLifeTutor		= "1: Unterbreche/Debuffe Ziel, 2: Unterbreche dich selbst, 3: Regeneriere Gesundheit/Willenskraft, 4: Verlasse Konstrukt",
 	warnAmberExplosion			= ">%s< wirkt %s",
-	warnInterruptsAvailable		= "Unterbrechungen verfügbar für %s: %s",
+	warnInterruptsAvailable		= "Unterbrechungen verfügbar für %s: >%s<",
 	specwarnWillPower			= "Geringe Willenskraft!",
 	specwarnAmberExplosionYou	= "Unterbreche DEINE %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Unterbreche %s!",--Amber Montrosity
 	specwarnAmberExplosionOther	= "%s: Unterbreche %s!"--Amber Montrosity
 })
 
-L:SetTimerLocalization{
+L:SetTimerLocalization({
 	timerAmberExplosionAMCD		= "%s CD: %s"
-}
+})
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Zeige Überblick über den Zweck der Fähigkeiten Mutierter Konstrukte",
