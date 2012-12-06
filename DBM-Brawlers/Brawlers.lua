@@ -125,7 +125,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 --	"<17.2 15:06:00> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Now entering the arena: a Rank 1 human warrior, Omegal! Omegal is pretty new around here, so go easy!#Bizmo###Omegal##0#0##0#988##0#false#false"
-	if msg:find(L.EnteringArena1) or msg:find(L.EnteringArena2) or msg:find(L.EnteringArena3) then
+	if msg:find(L.EnteringArena1) or msg:find(L.EnteringArena2) or msg:find(L.EnteringArena3) or msg:find(L.EnteringArena4) then
 		if target == UnitName("player") then
 			specWarnYourTurn:Show()
 			playerisFighting = true
