@@ -95,7 +95,6 @@ local rageTimers = {
 	[10]= 33,
 	[11]= 33,
 	[12]= 83,
-	[13]= 83,--Oddball?
 --Rest are all 33
 --timers variate slightly so never will be perfect but trying to get as close as possible. seem same in all modes.
 }
