@@ -62,6 +62,8 @@ function mod:OnCombatStart(delay)
 	end
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
+	else
+		berserkTimer:Start(720-delay)
 	end
 end
 
