@@ -102,16 +102,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.PheromonesIcon then
 			self:SetIcon(args.destName, 2)
 		end
-	elseif args:IsSpellID(123081) and args:IsPlayer() then
-		if self:IsDifficulty("normal25", "heroic25") then--Is it also 4 min on LFR?
-			timerPungency:Start(240)
-		elseif self:IsDifficulty("lfr25") then
-			timerPungency:Start(20)
-		else
-			timerPungency:Start()
+	elseif args:IsSpellID(123081) then
+		if (args.amount or 1) >= 9 and (args.amount or 1) % 3 == 0 then
+			warnPungency:Show(args.destName, args.amount)
 		end
-	elseif args:IsSpellID(123081) and (args.amount or 1) >= 9 and (args.amount or 1) % 3 == 0 then
-		warnPungency:Show(args.amount)
+		if args:IsPlayer() then
+			if self:IsDifficulty("normal25", "heroic25") then--Is it also 4 min on LFR?
+				timerPungency:Start(240)
+			elseif self:IsDifficulty("lfr25") then
+				timerPungency:Start(20)
+			else
+				timerPungency:Start()
+			end
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
