@@ -53,7 +53,7 @@ local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670)--15-17 sec variation
 
 mod:AddBoolOption("SpectatorMode", true)
 
-local matchActive = true
+local matchActive = false
 local playerisFighting = false
 
 function mod:SPELL_CAST_START(args)
