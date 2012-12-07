@@ -25,6 +25,7 @@ L:SetMiscLocalization({
 	EnteringArena1	= "Now entering the arena",
 	EnteringArena2	= "Here's our challenger",
 	EnteringArena3	= "Look out... here comes",
+	EnteringArena4	= "Put your hands together",
 	Victory1		= "is our victor",
 	Victory2		= "Congratulations",
 	Victory3		= "Brilliant victory",
