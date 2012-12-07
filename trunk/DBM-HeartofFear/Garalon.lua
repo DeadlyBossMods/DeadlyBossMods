@@ -102,7 +102,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.PheromonesIcon then
 			self:SetIcon(args.destName, 2)
 		end
-	elseif args:IsSpellID(123081) then
+	elseif args:IsSpellID(123081) and not self:IsDifficulty("lfr25") then
 		if (args.amount or 1) >= 9 and (args.amount or 1) % 3 == 0 then
 			warnPungency:Show(args.destName, args.amount)
 		end
