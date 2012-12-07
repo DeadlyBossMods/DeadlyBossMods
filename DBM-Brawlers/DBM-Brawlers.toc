@@ -19,7 +19,7 @@
 ## X-DBM-Mod-Name-zhTW: 鬥陣俱樂部
 ## X-DBM-Mod-Name-esES: Camorristas
 ## X-DBM-Mod-Sort: 15
-## X-DBM-Mod-LoadZoneID: 922
+## X-DBM-Mod-LoadZoneID: 922,925
 localization.en.lua
 localization.kr.lua
 localization.de.lua
