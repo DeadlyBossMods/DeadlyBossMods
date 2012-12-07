@@ -307,6 +307,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMassiveStompCD:Cancel()
 		timerFlingCD:Cancel()
 		timerAmberExplosionAMCD:Cancel()
+		timerDestabalize:Cancel(Monstrosity)
 		warnAmberExplosionSoon:Cancel()
 		--He does NOT reset reshape live cd here, he finishes out last CD first, THEN starts using new one.
 	end

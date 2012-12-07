@@ -120,7 +120,7 @@ DBM_CORE_BREAK_SEC					= "%s 초 후 쉬는 시간이 끝납니다!"
 DBM_CORE_TIMER_BREAK				= "쉬는 시간!"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 종료되었습니다."
 
-DBM_CORE_TIMER_PULL					= "풀링 중 입니다."
+DBM_CORE_TIMER_PULL					= "풀링 중"
 DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 풀링 합니다."
 DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
 
