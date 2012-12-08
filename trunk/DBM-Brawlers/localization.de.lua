@@ -22,21 +22,22 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Bizmo			= "Bizmo",
 	--I wish there was a better way to do this....so much localizing. :(
-	EnteringArena1	= "Now entering the arena", -- translate (trigger)
-	EnteringArena2	= "Here's our challenger", -- translate (trigger)
-	EnteringArena3	= "Look out... here comes", -- translate (trigger)
-	Victory1		= "is our victor", -- translate (trigger)
-	Victory2		= "Congratulations", -- translate (trigger)
-	Victory3		= "Brilliant victory", -- translate (trigger)
-	Victory4		= "wins", -- translate (trigger)
-	Victory5		= "Keep 'em comin'", -- translate (trigger)
-	Victory6		= "Great job not dying", -- translate (trigger)
-	Lost1			= "were you even trying", -- translate (trigger)
-	Lost2			= "Now would you kindly remove your corpse", -- translate (trigger)
-	Lost3			= "So much blood! Nice", -- translate (trigger)
-	Lost4			= "Get back in line and try again", -- translate (trigger)
-	Lost5			= "you're gonna have to break a few eggs", -- translate (trigger)
-	Lost6			= "try not to die so much", -- translate (trigger)
-	Lost7			= "what a mess", -- translate (trigger)
-	Lost8			= "His name was", -- translate (trigger)
+	EnteringArena1	= "Und jetzt in der Arena",
+	EnteringArena2	= "Hier kommt der Herausforderer",
+	EnteringArena3	= "Achtung... hier kommt",
+	EnteringArena4	= "Applaus für",
+	Victory1		= "hat gewonnen",
+	Victory2		= "Glückwunsch",
+	Victory3		= "Ein prächtiger Sieg",
+	Victory4		= "gewinnt",
+	Victory5		= "Macht weiter so",
+	Victory6		= "hat es geschafft, nicht zu sterben",
+	Lost1			= "Habt Ihr Euch überhaupt angestrengt",
+	Lost2			= "Könntet Ihr jetzt wohl bitte Eure Leiche aus dem Weg räumen",
+	Lost3			= "Ahhh ha ha ha! So viel Blut! Herrlich",
+	Lost4			= "Stellt Euch wieder an und versucht's erneut",
+	Lost5			= "Wo gehobelt wird, fallen auch Späne",
+	Lost6			= "versucht doch bitte, nicht so häufig zu sterben",
+	Lost7			= "Argh... das sieht nicht so schön aus",
+	Lost8			= "Sein Name war",
 })
