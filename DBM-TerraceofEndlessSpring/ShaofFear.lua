@@ -17,11 +17,10 @@ mod:RegisterEventsInCombat(
 local warnThrash						= mod:NewSpellAnnounce(131996, 4, nil, mod:IsTank() or mod:IsHealer())
 --local warnConjureTerrorSpawns			= mod:NewSpellAnnounce(119108, 3)
 local warnBreathOfFearSoon				= mod:NewPreWarnAnnounce(119414, 10, 3)
-local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 3)
-local warnOminousCackle					= mod:NewTargetAnnounce(129147, 4)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
+local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 4)
+local warnOminousCackle					= mod:NewTargetAnnounce(129147, 3)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
 
 local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
-local specWarnBreathOfFear				= mod:NewSpecialWarningSpell(119414, nil, nil, nil, true)
 --local specWarnOminousCackle				= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
 --local specWarnTerrorSpawn				= mod:NewSpecialWarningSwitch("ej6088",  mod:IsDps())
@@ -51,7 +50,6 @@ local function warnOminousCackleTargets()
 end
 
 function mod:OnCombatStart(delay)
-	warnBreathOfFearSoon:Schedule(23.4-delay)
 	if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 		timerOminousCackleCD:Start(40-delay)
 	else
@@ -59,6 +57,7 @@ function mod:OnCombatStart(delay)
 	end
 --	timerTerrorSpawnCD:Start(25.5-delay)--still not perfect, it's hard to do yells when you're always the tank sent out of range of them. I need someone else to do /yell when they spawn and give me timing
 --	self:ScheduleMethod(25.5-delay, "TerrorSpawns")
+	warnBreathOfFearSoon:Schedule(23.3-delay)
 	timerBreathOfFearCD:Start(-delay)
 	countdownBreathOfFear:Start(33.3-delay)
 	onPlatform = false
@@ -81,11 +80,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(119414) and self:AntiSpam(5) then--using this with antispam is still better then registering SPELL_CAST_SUCCESS for a single event when we don't have to. Less cpu cause mod won't have to check every SPELL_CAST_SUCCESS event.
 		warnBreathOfFear:Show()
 		if not onPlatform then--not in middle, not your problem
-			specWarnBreathOfFear:Show()
 			timerBreathOfFearCD:Start()
 			countdownBreathOfFear:Start(33.3)
 		end
-		warnBreathOfFearSoon:Schedule(23.4)
+		warnBreathOfFearSoon:Schedule(23.3)
 	elseif args:IsSpellID(129147) then
 		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -105,6 +103,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		onPlatform = false
 		platformMob = nil
 		timerFearless:Start()
+		--Breath of fear timer recovery
+		local shaPower = UnitPower("boss1") --Get Boss Power
+		shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
+		if shaPower < 28 then--Don't bother recovery if breath is in 5 or less seconds, we'll get a new one when it's cast.
+			timerBreathOfFearCD:Start(33.3-shaPower)
+			countdownBreathOfFear:Start(33.3-shaPower)
+		end
 	elseif args:IsSpellID(131996) and not onPlatform then
 		warnThrash:Show()
 		specWarnThrash:Show()
