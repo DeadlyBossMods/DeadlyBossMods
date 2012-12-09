@@ -30,6 +30,9 @@ local timerHeatedPokersCD		= mod:NewCDTimer(29, 133286)
 local timerVolatileFlamesCD		= mod:NewCDTimer(11, 134740)--11-20 sec variation
 local timerFireLineCD			= mod:NewCDTimer(15, 133607)--15-22 sec variation
 
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
+
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
