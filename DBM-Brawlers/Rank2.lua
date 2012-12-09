@@ -24,6 +24,9 @@ local timerThrowNetCD			= mod:NewCDTimer(20, 133308)
 local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227)
 local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670)--15-17 sec variation
 
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
+
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)

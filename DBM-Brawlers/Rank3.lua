@@ -20,6 +20,9 @@ local specWarnDevastatingThrust	= mod:NewSpecialWarningMove(134777)
 local timerFirewallCD			= mod:NewCDTimer(18, 132666)--18-22 sec variation
 local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777)--Need more data to verify CD
 
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
+
 local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
