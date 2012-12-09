@@ -14,6 +14,8 @@ mod:RegisterEvents(
 local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
 
 mod:AddBoolOption("SpectatorMode", true)
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
 
 local matchActive = false
 local playerIsFighting = false

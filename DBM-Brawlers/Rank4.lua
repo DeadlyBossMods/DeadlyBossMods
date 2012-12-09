@@ -9,3 +9,6 @@ mod:SetZone()
 mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
+
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
