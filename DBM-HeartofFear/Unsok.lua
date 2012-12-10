@@ -91,6 +91,7 @@ mod:AddBoolOption("FixNameplates", false)--Because having 2159374952735986372051
 local Phase = 1
 local Puddles = 0
 local Constructs = 0
+local constructCount = 0--NOT same as Constructs variable above. this is one is for counting them mainly in phase 1
 local playerIsConstruct = false
 local warnedWill = false
 local lastStrike = 0
@@ -157,6 +158,7 @@ function mod:OnCombatStart(delay)
 	Phase = 1
 	Puddles = 0
 	Constructs = 0
+	constructCount = 0
 	lastStrike = 0
 	table.wipe(canInterrupt)
 	playerIsConstruct = false
@@ -239,9 +241,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerParasiticGrowth:Start(args.destName)
 		timerParasiticGrowthCD:Start()
 	elseif args:IsSpellID(122540) then
+		constructCount = 0
 		Phase = 2
 		warnAmberCarapace:Show(args.destName)
-		specwarnAmberMonstrosity:Show()
+		if not playerIsConstruct then
+			specwarnAmberMonstrosity:Show()
+		end
 		timerMassiveStompCD:Start(20)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(50.5)
@@ -251,7 +256,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStruggleForControl:Start(args.destName)
 	elseif args:IsSpellID(122784) then
 		Constructs = Constructs + 1
-		warnReshapeLife:Show(args.destName)
+		constructCount = constructCount + 1
+		warnReshapeLife:Show(args.destName.."("..constructCount..")")
 		if args:IsPlayer() then
 			playerIsConstruct = true
 			warnedWill = true -- fix bad low will special warning on entering Construct. After entering vehicle, this will be return to false. (on alt.power changes)
@@ -303,6 +309,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(121949) then
 		timerParasiticGrowth:Cancel(args.destName)
 	elseif args:IsSpellID(122540) then--Phase 3
+		constructCount = 0
 		Phase = 3
 		timerMassiveStompCD:Cancel()
 		timerFlingCD:Cancel()
@@ -346,11 +353,15 @@ function mod:SPELL_CAST_START(args)
 		self:Schedule(0.5, warnAmberExplosionCast, 122402)--Always check available interrupts and special warn if not
 	elseif args:IsSpellID(122408) then
 		warnMassiveStomp:Show()
-		specwarnMassiveStomp:Show()
+		if not playerIsConstruct then
+			specwarnMassiveStomp:Show()
+		end
 		timerMassiveStompCD:Start()
 	elseif args:IsSpellID(122413) then
 		warnFling:Show()
-		specwarnFling:Show()
+		if not playerIsConstruct then
+			specwarnFling:Show()
+		end
 		timerFlingCD:Start()
 	end
 end
