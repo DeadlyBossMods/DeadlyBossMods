@@ -114,6 +114,7 @@ local function buildGuidTable()
 end
 
 function mod:ScalpelTarget()
+	if playerIsConstruct then return end--Don't need this info as a construct
 	scansDone = scansDone + 1
 	local targetname = DBM:GetUnitFullName("boss1targettarget")--Not a mistake, just clever use of available api to get the target of an invisible mob the boss is targeting ;)
 	if UnitExists("boss1targettarget") and not UnitIsUnit("boss1", "boss1targettarget") then
@@ -187,15 +188,11 @@ function mod:OnCombatStart(delay)
 		if Pets then
 			SetCVar("nameplateShowEnemyPets", 0)
 		end
-		--Check for Tidy plates threat plates (it has additional options to even further hide worthless nameplates on unsok.
+		--Check for threat plates on pull and save users setting.
 		if IsAddOnLoaded("TidyPlates_ThreatPlates") then
 			TPTPNormal = TidyPlatesThreat.db.profile.nameplate.toggle["Normal"]--Returns true or false, use TidyPlatesNormal to save that value on pull
-			if TPTPNormal == true then
-				TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] = false
-				TidyPlates:ReloadTheme()--Call the Tidy plates update methods
-				TidyPlates:ForceUpdate()
-			end
 		end
+
 	end
 end
 
@@ -251,7 +248,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(50.5)
 		timerAmberExplosionAMCD:Start(55.5, amberExplosion, Monstrosity)
-	elseif args:IsSpellID(122395) and Phase < 3 then
+	elseif args:IsSpellID(122395) and Phase < 3 and not playerIsConstruct then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
 	elseif args:IsSpellID(122784) then
@@ -265,7 +262,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnReshapeLifeTutor:Show()
 			timerAmberExplosionCD:Start(15, args.destName)--Only player needs to see this, they are only person who can do anything about it.
 			countdownAmberExplosion:Start(15)
-			if IsAddOnLoaded("TidyPlates_ThreatPlates") then
+			if self.Options.FixNameplates and IsAddOnLoaded("TidyPlates_ThreatPlates") then
 				if TPTPNormal == true then
 					TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] = false
 					TidyPlates:ReloadTheme()--Call the Tidy plates update methods
@@ -295,7 +292,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			countdownAmberExplosion:Cancel()
 			playerIsConstruct = false
-			if IsAddOnLoaded("TidyPlates_ThreatPlates") then
+			if self.Options.FixNameplates and IsAddOnLoaded("TidyPlates_ThreatPlates") then
 				if TPTPNormal == true and not TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] then--Normal plates were on when we pulled but aren't on now.
 					TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] = true--Turn them back on
 					TidyPlates:ReloadTheme()--Call the Tidy plates update methods
@@ -352,13 +349,13 @@ function mod:SPELL_CAST_START(args)
 		self:Unschedule(warnAmberExplosionCast)
 		self:Schedule(0.5, warnAmberExplosionCast, 122402)--Always check available interrupts and special warn if not
 	elseif args:IsSpellID(122408) then
-		warnMassiveStomp:Show()
 		if not playerIsConstruct then
+			warnMassiveStomp:Show()--Don't even need normal warning as a construct, it just doesn't matter
 			specwarnMassiveStomp:Show()
 		end
-		timerMassiveStompCD:Start()
+		timerMassiveStompCD:Start()--Still start timer so you still have it when you leave construct
 	elseif args:IsSpellID(122413) then
-		warnFling:Show()
+		warnFling:Show()--Tanks and healers still need to know this even as a construct
 		if not playerIsConstruct then
 			specwarnFling:Show()
 		end
