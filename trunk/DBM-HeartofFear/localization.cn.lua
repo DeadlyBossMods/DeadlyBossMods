@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/4/2012
+-- Last update: 12/11/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -74,6 +74,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLife				= "%s：>%s< (%d)",--Localized because i like class colors on warning and shoving a number into targetname broke it using the generic.
 	warnReshapeLifeTutor		= "1：打断/减益目标，2：打断自己，3：回复生命/意志，4：离开构造体",
 	warnAmberExplosion			= "%s 正在施放 %s",
 	warnInterruptsAvailable		= "可打断 %s: >%s<",
@@ -84,7 +85,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "下一次%s: %s"
+	timerAmberExplosionAMCD		= "下一次%s：琥珀畸怪"
 })
 
 L:SetOptionLocalization({
@@ -97,7 +98,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionOther	= "特殊警报：打断畸形体的$spell:122398",
 	timerAmberExplosionAMCD		= "计时条：琥珀畸怪的下一次$spell:122402",
 	InfoFrame					= "信息框：意志值",
-	FixNameplates				= "在战斗开始后自动关闭影响战斗的姓名面板\n（战斗结束后会自动恢复原始设置）"
+	FixNameplates				= "在变为畸形体后自动关闭影响战斗的姓名板\n（战斗结束后会自动恢复原始设置）"
 })
 
 L:SetMiscLocalization({
