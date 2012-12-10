@@ -70,6 +70,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLife				= "%s auf >%s< (%d)",
 	warnReshapeLifeTutor		= "1: Unterbreche/Debuffe Ziel, 2: Unterbreche dich selbst, 3: Regeneriere Gesundheit/Willenskraft, 4: Verlasse Konstrukt",
 	warnAmberExplosion			= ">%s< wirkt %s",
 	warnInterruptsAvailable		= "Unterbrechungen verfügbar für %s: >%s<",
@@ -80,7 +81,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s CD: %s"
+	timerAmberExplosionAMCD		= "%s CD: Monstrosität"
 })
 
 L:SetOptionLocalization({
@@ -93,7 +94,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionOther	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nunkontrollierter Mutierter Konstrukte",
 	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Ambermonstrosität",
 	InfoFrame					= "Zeige Infofenster für Willenskraft der Spieler",
-	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten bei Kampfbeginn\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
+	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten als Konstrukt\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
 })
 
 L:SetMiscLocalization({

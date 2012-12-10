@@ -1,13 +1,13 @@
 ﻿if GetLocale() ~= "deDE" then return end
 local L
 
------------------------
+--------------
 -- Brawlers --
------------------------
+--------------
 L= DBM:GetModLocalization("Brawlers")
 
 L:SetGeneralLocalization({
-	name = "Kampfgildengegner"
+	name = "Kampfgilde: Einstellungen"
 })
 
 L:SetWarningLocalization({
@@ -20,12 +20,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Bizmo			= "Bizmo",
+--	Bizmo			= "Bizmo",
 	--I wish there was a better way to do this....so much localizing. :(
-	EnteringArena1	= "Und jetzt in der Arena",
-	EnteringArena2	= "Hier kommt der Herausforderer",
-	EnteringArena3	= "Achtung... hier kommt",
-	EnteringArena4	= "Applaus für",
+	Rank			= "Rang (%d+)",
+--	EnteringArena1	= "Und jetzt in der Arena",
+--	EnteringArena2	= "Hier kommt der Herausforderer",
+--	EnteringArena3	= "Achtung... hier kommt",
+--	EnteringArena4	= "Applaus für",
 	Victory1		= "hat gewonnen",
 	Victory2		= "Glückwunsch",
 	Victory3		= "Ein prächtiger Sieg",
@@ -40,4 +41,76 @@ L:SetMiscLocalization({
 	Lost6			= "versucht doch bitte, nicht so häufig zu sterben",
 	Lost7			= "Argh... das sieht nicht so schön aus",
 	Lost8			= "Sein Name war",
+})
+
+------------
+-- Rank 1 --
+------------
+L= DBM:GetModLocalization("BrawlRank1")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 1"
+})
+
+------------
+-- Rank 2 --
+------------
+L= DBM:GetModLocalization("BrawlRank2")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 2"
+})
+
+------------
+-- Rank 3 --
+------------
+L= DBM:GetModLocalization("BrawlRank3")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 3"
+})
+
+------------
+-- Rank 4 --
+------------
+L= DBM:GetModLocalization("BrawlRank4")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 4"
+})
+
+------------
+-- Rank 5 --
+------------
+L= DBM:GetModLocalization("BrawlRank5")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 5"
+})
+
+------------
+-- Rank 6 --
+------------
+L= DBM:GetModLocalization("BrawlRank6")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 6"
+})
+
+------------
+-- Rank 7 --
+------------
+L= DBM:GetModLocalization("BrawlRank7")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 7"
+})
+
+------------
+-- Rank 8 --
+------------
+L= DBM:GetModLocalization("BrawlRank8")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 8"
 })
