@@ -249,7 +249,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMassiveStompCD:Start(20)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(50.5)
-		timerAmberExplosionAMCD:Start(55.5, amberExplosion, Monstrosity)
+		timerAmberExplosionAMCD:Start(55.5, amberExplosion)
 	elseif args:IsSpellID(122395) and Phase < 3 and not playerIsConstruct then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -347,7 +347,7 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(41)
-		timerAmberExplosionAMCD:Start(46, args.spellName, args.sourceName)
+		timerAmberExplosionAMCD:Start(46, args.spellName)
 		self:Unschedule(warnAmberExplosionCast)
 		self:Schedule(0.5, warnAmberExplosionCast, 122402)--Always check available interrupts and special warn if not
 	elseif args:IsSpellID(122408) then

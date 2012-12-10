@@ -79,20 +79,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s CD: %s"
+	timerAmberExplosionAMCD		= "%s CD: Monstrosity"
 })
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Display ability purpose rundown of Mutated Construct abilities",
 	warnAmberExplosion			= "Show warning (with source) when $spell:122398 is cast",
-	warnInterruptsAvailable		= "Announce who has Amber Strike interrupts available for $spell:122402",
+	warnInterruptsAvailable		= "Announce who has Amber Strike interrupts available for\n $spell:122402",
 	specwarnWillPower			= "Show special warning when will power is low in construct",
 	specwarnAmberExplosionYou	= "Show special warning to interrupt your own $spell:122398",
-	specwarnAmberExplosionAM	= "Show special warning to interrupt Amber Montrosity's $spell:122402",
-	specwarnAmberExplosionOther	= "Show special warning to interrupt loose Mutated Construct's $spell:122398",
+	specwarnAmberExplosionAM	= "Show special warning to interrupt Amber Montrosity's\n $spell:122402",
+	specwarnAmberExplosionOther	= "Show special warning to interrupt loose Mutated Construct's\n $spell:122398",
 	timerAmberExplosionAMCD		= "Show timer for Amber Monstrosity's next $spell:122402",
 	InfoFrame					= "Show info frame for players will power",
-	FixNameplates				= "Automatically disable interfering nameplates on pull\n(restores settings upon leaving combat)"
+	FixNameplates				= "Automatically disable interfering nameplates while a construct\n(restores settings upon leaving combat)"
 })
 
 L:SetMiscLocalization({
