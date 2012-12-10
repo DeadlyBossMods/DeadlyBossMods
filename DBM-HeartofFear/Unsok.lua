@@ -26,7 +26,7 @@ mod:RegisterEventsInCombat(
 --]]
 --Boss
 local warnReshapeLifeTutor		= mod:NewAnnounce("warnReshapeLifeTutor", 1, 122784)--Another LFR focused warning really.
-local warnReshapeLife			= mod:NewTargetAnnounce(122784, 4)
+local warnReshapeLife			= mod:NewAnnounce("warnReshapeLife", 4, 122784)
 local warnAmberScalpel			= mod:NewTargetAnnounce(121994, 3)
 local warnParasiticGrowth		= mod:NewTargetAnnounce(121949, 4, nil, mod:IsHealer())
 local warnAmberGlob				= mod:NewTargetAnnounce(125502, 4)--Heroic drycode, might need some tweaks
@@ -256,7 +256,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(122784) then
 		Constructs = Constructs + 1
 		constructCount = constructCount + 1
-		warnReshapeLife:Show(args.destName.."("..constructCount..")")
+		warnReshapeLife:Show(args.spellName, args.destName, constructCount)
 		if args:IsPlayer() then
 			playerIsConstruct = true
 			warnedWill = true -- fix bad low will special warning on entering Construct. After entering vehicle, this will be return to false. (on alt.power changes)
