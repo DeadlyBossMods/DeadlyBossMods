@@ -231,7 +231,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(121949) then
 		warnParasiticGrowth:Show(args.destName)
-		specwarnParasiticGrowth:Show(args.destName)
+		if not playerIsConstruct then--Healers do need to know this, but it's still a distraction as a construct for sound, they got the reg warning.
+			specwarnParasiticGrowth:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			specwarnParasiticGrowthYou:Show()
 		end
