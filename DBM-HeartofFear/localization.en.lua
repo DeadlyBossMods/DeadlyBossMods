@@ -73,7 +73,8 @@ L:SetWarningLocalization({
 	warnReshapeLifeTutor		= "1: Interrupt/debuff target, 2: Interrupt yourself, 3: Regen Health/Willpower, 4: Escape Vehicle",
 	warnAmberExplosion			= ">%s< is casting %s",
 	warnInterruptsAvailable		= "Interupts available for %s: >%s<",
-	specwarnWillPower			= "Low Will Power!",
+	warnWillPower				= "Current Will Power: %s",
+	specwarnWillPower			= "Low Will Power! - 5s remaining",
 	specwarnAmberExplosionYou	= "Interrupt YOUR %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Interrupt %s!",--Amber Montrosity
 	specwarnAmberExplosionOther	= "%s: Interrupt %s!"--Amber Montrosity
@@ -87,6 +88,7 @@ L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Display ability purpose rundown of Mutated Construct abilities",
 	warnAmberExplosion			= "Show warning (with source) when $spell:122398 is cast",
 	warnInterruptsAvailable		= "Announce who has Amber Strike interrupts available for\n $spell:122402",
+	warnWillPower				= "Announce current will power at 75, 50, 25, 10, and 5.",
 	specwarnWillPower			= "Show special warning when will power is low in construct",
 	specwarnAmberExplosionYou	= "Show special warning to interrupt your own $spell:122398",
 	specwarnAmberExplosionAM	= "Show special warning to interrupt Amber Montrosity's\n $spell:122402",

@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 --Boss
 local warnReshapeLifeTutor		= mod:NewAnnounce("warnReshapeLifeTutor", 1, 122784)--Another LFR focused warning really.
 local warnReshapeLife			= mod:NewAnnounce("warnReshapeLife", 4, 122784)
+local warnWillPower				= mod:NewAnnounce("warnWillPower", 3, 63050)
 local warnAmberScalpel			= mod:NewTargetAnnounce(121994, 3)
 local warnParasiticGrowth		= mod:NewTargetAnnounce(121949, 4, nil, mod:IsHealer())
 local warnAmberGlob				= mod:NewTargetAnnounce(125502, 4)--Heroic drycode, might need some tweaks
@@ -94,6 +95,7 @@ local Constructs = 0
 local constructCount = 0--NOT same as Constructs variable above. this is one is for counting them mainly in phase 1
 local playerIsConstruct = false
 local warnedWill = false
+local willNumber = 100--Last warned player will power number (not same as actual player will power)
 local lastStrike = 0
 local scansDone = 0
 local Totems = nil
@@ -155,6 +157,7 @@ end
 
 function mod:OnCombatStart(delay)
 	warnedWill = true--avoid wierd bug on pull
+	willNumber = 100
 	buildGuidTable()
 	Phase = 1
 	Puddles = 0
@@ -171,7 +174,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.WillPower)--This is a work in progress
-		DBM.InfoFrame:Show(5, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, true)--At a point i need to add an arg that lets info frame show the 5 LOWEST not the 5 highest, instead of just showing 10
+		DBM.InfoFrame:Show(5, "playerpower", 1, ALTERNATE_POWER_INDEX, nil, nil, true)
 	end
 	if self.Options.FixNameplates then
 		--Blizz settings either return 1 or nil, we pull users original settings first, then change em if appropriate after.
@@ -391,11 +394,28 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_POWER(uId)
 	if uId ~= "player" then return end
-	if UnitPower(uId, ALTERNATE_POWER_INDEX) < 28 and not warnedWill then
+	local playerWill = UnitPower(uId, ALTERNATE_POWER_INDEX)
+	if playerWill > willNumber then willNumber = playerWill end--Will power has gone up since last warning so reset that warning.
+	if playerWill == 75 and willNumber > 75 then
+		willNumber = 75
+		warnWillPower:Show(willNumber)
+	elseif playerWill == 50 and willNumber > 50 then
+		willNumber = 50
+		warnWillPower:Show(willNumber)
+	elseif playerWill == 25 and willNumber > 25 then
+		willNumber = 25
+		warnWillPower:Show(willNumber)
+	elseif playerWill >= 22 and warnedWill then
+		warnedWill = false
+	elseif playerWill < 18 and not warnedWill then--5 seconds before 0 (after subtracking a budget of 8 for interrupt)
 		warnedWill = true
 		specwarnWillPower:Show()
-	elseif UnitPower(uId, ALTERNATE_POWER_INDEX) >= 32 and warnedWill then
-		warnedWill = false
+	elseif playerWill == 10 and willNumber > 10 then
+		willNumber = 10
+		warnWillPower:Show(willNumber)
+	elseif playerWill == 5 and willNumber > 5 then
+		willNumber = 5
+		warnWillPower:Show(willNumber)
 	end
 end
 
