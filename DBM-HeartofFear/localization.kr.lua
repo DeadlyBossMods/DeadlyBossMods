@@ -68,30 +68,34 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLife				= "%s : >%s< (%d)",
 	warnReshapeLifeTutor		= "1: 대상 차단/공격, 2: 본인 차단, 3: 체력/의지력 회복, 4: 피조물에서 탈출",
 	warnAmberExplosion			= "주문시전 %2$s : >%1$s<",
 	warnInterruptsAvailable		= "%s의 호박석 폭발 차단 가능: >%s<",
-	specwarnWillPower			= "의지력 낮음!",
+	warnWillPower				= "현재 의지력 : %s",
+	specwarnWillPower			= "의지력 낮음! - 약 5초 남음",
 	specwarnAmberExplosionYou	= "당신에게 %s 사용 - 2번으로 차단!",
 	specwarnAmberExplosionAM	= "%s 시전: %s - 1번으로 차단!",
 	specwarnAmberExplosionOther	= "%s 시전: %s - 1번으로 차단!"
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s 대기시간: %s"
+	timerAmberExplosionAMCD		= "%s 대기시간: 호박석 괴수"
 })
 
 L:SetOptionLocalization({
+	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784, GetSpellInfo(122784)),
 	warnReshapeLifeTutor		= "돌연변이 피조물 탑승시 피조물 주문에 대한 설명 보기",
 	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
 	warnInterruptsAvailable		= "누가 $spell:122402 주문을 차단할 수 있는지에 대한 알림 보기",
+	warnWillPower				= "의지력이 75, 50, 25, 10, 5 일때 알림 보기",
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
 	specwarnAmberExplosionYou	= "자신의 피조물이 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	specwarnAmberExplosionOther	= "탑승자가 없는 피조물이 $spell:122398 주문을 시전할때 특수 경고 보기(차단)",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
 	InfoFrame					= "의지력 정보 프레임 보기",
-	FixNameplates				= "전투 시작시 이름표 겹침 기능 끄기\n(전투 종료시에 원래 설정대로 돌아감)"
+	FixNameplates				= "피조물 탑승시 이름표 겹침 기능 끄기\n(전투 종료시에 원래 설정대로 돌아감)"
 })
 
 L:SetMiscLocalization({
