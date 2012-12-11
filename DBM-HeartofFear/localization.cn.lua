@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/11/2012
+-- Last update: 12/12/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -78,7 +78,8 @@ L:SetWarningLocalization({
 	warnReshapeLifeTutor		= "1：打断/减益目标，2：打断自己，3：回复生命/意志，4：离开构造体",
 	warnAmberExplosion			= "%s 正在施放 %s",
 	warnInterruptsAvailable		= "可打断 %s: >%s<",
-	specwarnWillPower			= "意志低下！",
+	warnWillPower				= "当前意志：%s",
+	specwarnWillPower			= "意志低下！- 还剩5秒",
 	specwarnAmberExplosionYou	= "打断%s！",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s：打断 %s!",--Amber Montrosity
 	specwarnAmberExplosionOther	= "%s：打断 %s!"--Amber Montrosity
@@ -89,16 +90,18 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784, GetSpellInfo(122784)),
 	warnReshapeLifeTutor		= "当变为变异构造体时显示技能及其作用",
 	warnAmberExplosion			= "警报：$spell:122398正在施放，并警报来源",
 	warnInterruptsAvailable		= "警报：可使用$spell:122402打断琥珀打击的成员",
-	specwarnWillPower			= "特殊警报：在畸形体中意志低下时",
+	warnWillPower				= "警报：当前意志剩余75、50、25、10以及5点时",
+	specwarnWillPower			= "特殊警报：在变异构造体中意志低下时",
 	specwarnAmberExplosionYou	= "特殊警报：打断自己的$spell:122398",
 	specwarnAmberExplosionAM	= "特殊警报：打断琥珀畸怪的$spell:122402",
-	specwarnAmberExplosionOther	= "特殊警报：打断畸形体的$spell:122398",
+	specwarnAmberExplosionOther	= "特殊警报：打断变异构造体的$spell:122398",
 	timerAmberExplosionAMCD		= "计时条：琥珀畸怪的下一次$spell:122402",
 	InfoFrame					= "信息框：意志值",
-	FixNameplates				= "在变为畸形体后自动关闭影响战斗的姓名板\n（战斗结束后会自动恢复原始设置）"
+	FixNameplates				= "在变为变异构造体后自动关闭影响战斗的姓名板\n（战斗结束后会自动恢复原始设置）"
 })
 
 L:SetMiscLocalization({
