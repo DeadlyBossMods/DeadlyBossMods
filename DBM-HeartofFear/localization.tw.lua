@@ -70,10 +70,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLife				= "%s在>%s<(%d)",
 	warnReshapeLifeTutor		= "1:中斷/易傷,, 2:中斷自己, 3:回復體力/意志力, 4:脫離魁儡",
 	warnAmberExplosion			= ">%s<正在施放%s",
-	warnInterruptsAvailable		= "可使用中斷%s:%s",
-	specwarnWillPower			= "意志力偏低!",
+	warnInterruptsAvailable		= "可使用中斷%s:>%s<",
+	warnWillPower				= "目前的意志力:%s",
+	specwarnWillPower			= "意志力低落! - 剩下五秒",
 	specwarnAmberExplosionYou	= "中斷你自己的%s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s:中斷%s!",--Amber Montrosity
 	specwarnAmberExplosionOther	= "%s:中斷%s!"--Amber Montrosity
@@ -84,10 +86,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784, GetSpellInfo(122784)),
 	warnReshapeLifeTutor		= "顯示突變魁儡的能力說明效果",
 	warnAmberExplosion			= "為$spell:122398施放顯示警告(以及來源)",
 	warnInterruptsAvailable		= "提示誰有琥珀打擊可使用以中斷$spell:122402",
-	specwarnWillPower			= "為在傀儡裡意志力低落時顯示特別警告",
+	warnWillPower				= "提示目前意志力在75,50,25,10,和5.",
+	specwarnWillPower			= "為在傀儡裡時意志力低落顯示特別警告",
 	specwarnAmberExplosionYou	= "為中斷你自己的$spell:122398顯示特別警告",
 	specwarnAmberExplosionAM	= "為中斷琥珀巨怪的$spell:122402顯示特別警告",
 	specwarnAmberExplosionOther	= "為中斷突變傀儡的$spell:122398顯示特別警告",
