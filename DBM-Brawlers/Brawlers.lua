@@ -27,9 +27,27 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 --	"<17.2 15:06:00> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Now entering the arena: a Rank 1 human warrior, Omegal! Omegal is pretty new around here, so go easy!#Bizmo###Omegal##0#0##0#988##0#false#false"
-	local rank = msg:match(L.Rank)
-	if rank and tonumber(rank) then
-		currentRank = tonumber(rank)
+	local isMatchBegin = true
+	if msg:find(L.Rank1) then
+		currentRank = 1
+	elseif msg:find(L.Rank2) then
+		currentRank = 2
+	elseif msg:find(L.Rank3) then
+		currentRank = 3
+	elseif msg:find(L.Rank4) then
+		currentRank = 4
+	elseif msg:find(L.Rank5) then
+		currentRank = 5
+	elseif msg:find(L.Rank6) then
+		currentRank = 6
+	elseif msg:find(L.Rank7) then
+		currentRank = 7
+	elseif msg:find(L.Rank8) then
+		currentRank = 8
+	else
+		isMatchBegin = false
+	end
+	if isMatchBegin then
 		if target == UnitName("player") then
 			specWarnYourTurn:Show()
 			playerIsFighting = true
