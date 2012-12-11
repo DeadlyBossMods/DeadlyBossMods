@@ -1042,6 +1042,7 @@ end
 do
 	local ignore, cancel
 	StaticPopupDialogs["DBM_CONFIRM_IGNORE"] = {
+		preferredIndex = STATICPOPUP_NUMDIALOGS,
 		text = DBM_PIZZA_CONFIRM_IGNORE,
 		button1 = YES,
 		button2 = NO,
@@ -1050,8 +1051,7 @@ do
 			DBM.Bars:CancelBar(cancel)
 		end,
 		timeout = 0,
-		hideOnEscape = 1,
-		preferredIndex = 3,
+		hideOnEscape = 1
 	}
 
 	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button, ...)
@@ -1436,6 +1436,7 @@ end
 do
 	local function showOldVerWarning()
 		StaticPopupDialogs["DBM_OLD_VERSION"] = {
+			preferredIndex = STATICPOPUP_NUMDIALOGS,
 			text = DBM_CORE_ERROR_DBMV3_LOADED,
 			button1 = DBM_CORE_OK,
 			OnAccept = function()
@@ -1444,8 +1445,7 @@ do
 			end,
 			timeout = 0,
 			exclusive = 1,
-			whileDead = 1,
-			preferredIndex = 3,
+			whileDead = 1
 		}
 		StaticPopup_Show("DBM_OLD_VERSION")
 	end
@@ -1905,6 +1905,7 @@ do
 		local accessList
 		
 		StaticPopupDialogs["DBM_INSTANCE_ID_PERMISSION"] = {
+			preferredIndex = STATICPOPUP_NUMDIALOGS,
 			text = DBM_REQ_INSTANCE_ID_PERMISSION,
 			button1 = YES,
 			button2 = NO,
@@ -1920,8 +1921,7 @@ do
 			noCancelOnReuse = 1,
 			multiple = 1,
 			showAlert = 1,
-			whileDead = 1,
-			preferredIndex = 3,
+			whileDead = 1
 		}
 		
 		syncHandlers["IR"] = function(sender)
