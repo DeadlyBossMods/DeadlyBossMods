@@ -21,11 +21,19 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 --	Bizmo			= "Bizmo",
 	--I wish there was a better way to do this....so much localizing. :(
-	Rank			= "Rank (%d+)",--Experimental "Entering arena" detection by scanning for Rank plus number
+--	Rank			= "Rank (%d+)",--Experimental "Entering arena" detection by scanning for Rank plus number
 --	EnteringArena1	= "Now entering the arena",
 --	EnteringArena2	= "Here's our challenger",
 --	EnteringArena3	= "Look out... here comes",
 --	EnteringArena4	= "Put your hands together",
+	Rank1			= "Rank 1",
+	Rank2			= "Rank 2",
+	Rank3			= "Rank 3",
+	Rank4			= "Rank 4",
+	Rank5			= "Rank 5",
+	Rank6			= "Rank 6",
+	Rank7			= "Rank 7",
+	Rank8			= "Rank 8",
 	Victory1		= "is our victor",
 	Victory2		= "Congratulations",
 	Victory3		= "Brilliant victory",
