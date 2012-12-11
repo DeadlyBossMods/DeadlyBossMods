@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/2/2012
+-- Last update: 12/12/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -69,7 +69,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization(687)
 
 L:SetWarningLocalization({
-	DarknessSoon		= "黑暗之盾：%ds秒后施放"
+	DarknessSoon		= "黑暗之盾：%d秒后施放"
 })
 
 L:SetOptionLocalization({
