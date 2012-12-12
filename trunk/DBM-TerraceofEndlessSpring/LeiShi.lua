@@ -40,7 +40,6 @@ mod:AddBoolOption("SetIconOnGuard", true) -- More people with it on, the better 
 local hideActive = false
 
 local guards = {}
-local creatureIcon = 8
 local guardActivated = 0
 local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
 
@@ -147,7 +146,7 @@ mod:RegisterOnUpdateHandler(function(self)
 					SetRaidTarget(uId, icon)
 					iconsSet[icon] = true
 				elseif existingIcons then
-					iconsSet[creatureIcon] = true
+					iconsSet[existingIcons] = true
 				end
 				guards[guid] = nil
 			end
@@ -160,7 +159,7 @@ mod:RegisterOnUpdateHandler(function(self)
 				SetRaidTarget("mouseover", icon)
 				iconsSet[icon] = true
 			elseif existingIcons then
-				iconsSet[creatureIcon] = true
+				iconsSet[existingIcons] = true
 			end
 			guards[guid2] = nil
 		end
