@@ -102,6 +102,7 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "Show info frame for players affected by $spell:116525",
+	CountOutCombo	= "Count out $journal:5673 casts\nNOTE: This currently only has female voice option.",
 	ArrowOnCombo	= "Show DBM Arrow during $journal:5673\nNOTE: This assumes tank is in front of boss and anyone else is behind."
 })
 
