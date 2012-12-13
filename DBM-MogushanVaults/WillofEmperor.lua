@@ -69,6 +69,7 @@ local timerTitanGasCD			= mod:NewNextCountTimer(150, 116779)
 
 local berserkTimer				= mod:NewBerserkTimer(780)
 
+mod:AddBoolOption("CountOutCombo")
 mod:AddBoolOption("InfoFrame", false)
 mod:AddBoolOption("ArrowOnCombo", mod:IsTank())--Very accurate for tank, everyone else not so much (tanks always in front, and boss always faces tank, so if he spins around on you, you expect it, melee on other hand have backwards arrows if you spun him around.
 
@@ -228,10 +229,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnEnergizingSmash:Show()
 	elseif spellId == 116968 then--Arc Left
 		comboCount = comboCount + 1
-		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
-		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
-		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		if self.Options.CountOutCombo then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+			if DBM.Options.UseMasterVolume then
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+			else
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+			end
 		end
 		warnArcLeft:Show(comboCount)
 		if self.Options.ArrowOnCombo then
@@ -243,10 +246,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 116971 then--Arc Right
 		comboCount = comboCount + 1
-		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
-		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
-		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		if self.Options.CountOutCombo then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+			if DBM.Options.UseMasterVolume then
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+			else
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+			end
 		end
 		warnArcRight:Show(comboCount)
 		if self.Options.ArrowOnCombo then
@@ -258,10 +263,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 116972 then--Arc Center
 		comboCount = comboCount + 1
-		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
-		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
-		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		if self.Options.CountOutCombo then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+			if DBM.Options.UseMasterVolume then
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+			else
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+			end
 		end
 		warnArcCenter:Show(comboCount)
 		if self.Options.ArrowOnCombo then
@@ -271,10 +278,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif (spellId == 116969 or spellId == 132425) then--Stomp
 		comboCount = comboCount + 1
-		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
-		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
-		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		if self.Options.CountOutCombo then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+			if DBM.Options.UseMasterVolume then
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+			else
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+			end
 		end
 		warnStomp:Show(comboCount)
 	end
