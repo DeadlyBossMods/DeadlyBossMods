@@ -243,6 +243,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 116971 then--Arc Right
 		comboCount = comboCount + 1
+		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
+		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
+		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		end
 		warnArcRight:Show(comboCount)
 		if self.Options.ArrowOnCombo then
 			if self:IsTank() then--Assume tank is in front of the boss
@@ -253,6 +258,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 116972 then--Arc Center
 		comboCount = comboCount + 1
+		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
+		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
+		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		end
 		warnArcCenter:Show(comboCount)
 		if self.Options.ArrowOnCombo then
 			if self:IsTank() then--Assume tank is in front of the boss
@@ -261,6 +271,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif (spellId == 116969 or spellId == 132425) then--Stomp
 		comboCount = comboCount + 1
+		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
+		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
+		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		end
 		warnStomp:Show(comboCount)
 	end
 end
