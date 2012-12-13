@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/11/2012
+-- Last update: 12/13/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -18,7 +18,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnYourTurn	= "特殊警报：轮到玩家登场h",
+	specWarnYourTurn	= "特殊警报：轮到玩家登场",
 	SpectatorMode		= "在观看比赛时显示警报与计时条"
 })
 
@@ -30,6 +30,14 @@ L:SetMiscLocalization({
 --	EnteringArena2	= "Here's our challenger",
 --	EnteringArena3	= "Look out... here comes",
 --	EnteringArena4	= "Put your hands together",
+	Rank1			= "1级",
+	Rank2			= "2级",
+	Rank3			= "3级",
+	Rank4			= "4级",
+	Rank5			= "5级",
+	Rank6			= "6级",
+	Rank7			= "7级",
+	Rank8			= "8级",
 	Victory1		= "胜利者是：",
 	Victory2		= "官方消息！",
 	Victory3		= "辉煌的胜利",

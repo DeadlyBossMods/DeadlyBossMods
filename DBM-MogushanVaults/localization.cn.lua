@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/12/2012
+-- Last update: 12/13/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -106,7 +106,8 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "信息框：受$spell:116525效果影响的玩家",
-	ArrowOnCombo	= "DBM箭头：$journal:5673阶段\n注：该功能正常工作的前提是坦克在Boss面前而其他人在Boss身后。"
+	CountOutCombo	= "统计$journal:5673次数\n注：当前仅有女性声音设置",
+	ArrowOnCombo	= "DBM箭头：$journal:5673阶段\n注：该功能正常工作的前提是坦克在Boss面前而其他人在Boss身后"
 })
 
 L:SetMiscLocalization({
