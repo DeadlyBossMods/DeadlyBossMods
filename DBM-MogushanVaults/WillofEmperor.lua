@@ -228,6 +228,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnEnergizingSmash:Show()
 	elseif spellId == 116968 then--Arc Left
 		comboCount = comboCount + 1
+		if DBM.Options.CountdownVoice == "Mosh" then--Doesn't count past 5 yet. still waiting on him to do it. grr
+		--	self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"comboCount".ogg")
+		else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+		end
 		warnArcLeft:Show(comboCount)
 		if self.Options.ArrowOnCombo then
 			if self:IsTank() then--Assume tank is in front of the boss
