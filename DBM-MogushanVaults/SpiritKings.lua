@@ -30,7 +30,7 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 local warnChargedShadows		= mod:NewTargetAnnounce(117685, 2)
 local warnUndyingShadows		= mod:NewSpellAnnounce(117506, 3)--Target scanning?
 local warnFixate				= mod:NewTargetAnnounce(118303, 4)--Maybe spammy late fight, if zian is first boss you get? (adds are immortal, could be many up)
-local warnShieldOfDarknessSoon	= mod:NewAnnounce("DarknessSoon", 3, 117697, nil, nil, true)
+local warnShieldOfDarknessSoon	= mod:NewAnnounce("DarknessSoon", 4, 117697, nil, nil, true)
 local warnShieldOfDarkness		= mod:NewTargetAnnounce(117697, 4)
 --Meng
 local warnCrazyThought			= mod:NewCastAnnounce(117833, 2, nil, nil, false)--Just doesn't seem all that important right now.
