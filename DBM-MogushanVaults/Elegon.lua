@@ -45,7 +45,7 @@ local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5
 local berserkTimer					= mod:NewBerserkTimer(570)
 
 mod:AddBoolOption("SetIconOnDestabilized", true)
-mod:AddBoolOption("SetIconOnCreature", true)
+mod:AddBoolOption("SetIconOnCreature", true)--Does not work
 mod:AddBoolOption("HealthFrame", false)
 
 local phase2Started = false
@@ -130,7 +130,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase1:Show()
 	elseif args:IsSpellID(132226) then
 		if self.Options.SetIconOnDestabilized then
-			self:SetIcon(args.destName, 0)
+			self:SetIcon(args.destName, 0)--Sometimes this doesn't work, no idea why?
 		end
 	end
 end
@@ -158,15 +158,25 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
 		end
+		--[[
+			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D05#Empyreal Focus#2632#0#0xF130ED6800001D08#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13961]
+			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D06#Empyreal Focus#2632#0#0xF130ED6800001D09#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13962]
+			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D07#Empyreal Focus#2632#0#0xF130ED6800001D0A#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13963]
+			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D08#Empyreal Focus#2632#0#0xF130ED6800001D05#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13964]
+			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D09#Empyreal Focus#2632#0#0xF130ED6800001D06#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13965]
+			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D0A#Empyreal Focus#2632#0#0xF130ED6800001D07#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13966]
+
+			"<80.7 22:25:05> [PLAYER_TARGET_CHANGED] 90 Hostile (elite Mechanical) - Empyreal Focus # 0xF130ED6800001D09 # 60776", -- [14237]
+			"<83.7 22:25:08> [PLAYER_TARGET_CHANGED] 90 Hostile (elite Mechanical) - Empyreal Focus # 0xF130ED6800001D0A # 60776", -- [14567]
+		--]]
+		--Icons not working using source or destguid. Makes no sense both methods should work really. they cross cast on eachother. but as long as both boss health and icons are using same code (source, or dest). there should be no mismatches
+		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
+			creatureIcons[args.sourceGUID] = creatureIcon
+			creatureIcon = creatureIcon - 1
+		end
 		if focusActivated == 6 then
 			timerDespawnFloor:Start()
 			specWarnDespawnFloor:Show()
-		end
---"<1.0 00:25:21> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800007AF8#Empyreal Focus#2632#0#0xF130ED6800007AFB#Empyreal Focus#68168#0#116598#Energy Conduit#1", -- [123]
---Icons not working with sourceGUID (but boss health is so i'll leave that alone). Based on log source and dest GUId diff. maybe players can't target sourceguid? lets see how destguid works for icons
-		if self.Options.SetIconOnCreature and not creatureIcons[args.destGUID] then
-			creatureIcons[args.sourceGUID] = creatureIcon
-			creatureIcon = creatureIcon - 1
 		end
 	elseif args:IsSpellID(116989) then--Cast when defeated (or rathor 1 HP)
 		DBM.BossHealth:RemoveBoss(args.sourceGUID)
