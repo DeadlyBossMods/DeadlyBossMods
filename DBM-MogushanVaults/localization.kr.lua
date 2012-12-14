@@ -103,6 +103,7 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "$spell:116525 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
+	CountOutCombo	= "$journal:5673 시전 횟수를 초읽기 소리로 읽기\n알림: 초 읽기 소리가 Corsica (Female)로 설정되어 있을때만 작동합니다.",
 	ArrowOnCombo	= "$journal:5673 도중 DBM 화살표 표시\n알림: 방어전담이 보스 앞에 있고 나머지 공격대원이 뒤에 있을때를 기준으로 합니다."
 })
 

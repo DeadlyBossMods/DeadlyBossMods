@@ -2448,6 +2448,8 @@ function checkWipe(confirm)
 		local wipe = true
 		if IsInScenarioGroup() then -- prevent wipe on ghost in Scenario Group.
 			wipe = false
+		elseif IsEncounterInProgress() then
+			wipe = false
 		else
 			local uId = (IsInRaid() and "raid") or "party"
 			for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
