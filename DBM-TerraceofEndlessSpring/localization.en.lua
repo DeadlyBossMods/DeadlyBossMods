@@ -50,3 +50,6 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetOptionLocalization({
+	RangeFrame			= "Show range frame (2) for $spell:119519"
+})
