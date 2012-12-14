@@ -16,8 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"UNIT_POWER"
+	"SPELL_MISSED"
 )
 
 --[[WoL Reg Expression
@@ -200,6 +199,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -261,6 +261,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		constructCount = constructCount + 1
 		warnReshapeLife:Show(args.spellName, args.destName, constructCount)
 		if args:IsPlayer() then
+			self:RegisterShortTermEvents(
+				"UNIT_POWER"
+			)
 			playerIsConstruct = true
 			warnedWill = true -- fix bad low will special warning on entering Construct. After entering vehicle, this will be return to false. (on alt.power changes)
 			specwarnReshape:Show()
@@ -295,6 +298,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(122370) then
 		Constructs = Constructs - 1
 		if args:IsPlayer() then
+			self:UnregisterShortTermEvents()
 			countdownAmberExplosion:Cancel()
 			playerIsConstruct = false
 			if self.Options.FixNameplates and IsAddOnLoaded("TidyPlates_ThreatPlates") then
@@ -396,13 +400,13 @@ function mod:UNIT_POWER(uId)
 	if uId ~= "player" then return end
 	local playerWill = UnitPower(uId, ALTERNATE_POWER_INDEX)
 	if playerWill > willNumber then willNumber = playerWill end--Will power has gone up since last warning so reset that warning.
-	if playerWill == 75 and willNumber > 75 then
+	if playerWill == 75 and willNumber > 75 then--Doesn't work? A mystery
 		willNumber = 75
 		warnWillPower:Show(willNumber)
-	elseif playerWill == 50 and willNumber > 50 then
+	elseif playerWill == 50 and willNumber > 50 then--Works
 		willNumber = 50
 		warnWillPower:Show(willNumber)
-	elseif playerWill == 25 and willNumber > 25 then
+	elseif playerWill == 25 and willNumber > 25 then--Doesn't work? A mystery
 		willNumber = 25
 		warnWillPower:Show(willNumber)
 	elseif playerWill >= 22 and warnedWill then
@@ -410,10 +414,10 @@ function mod:UNIT_POWER(uId)
 	elseif playerWill < 18 and not warnedWill then--5 seconds before 0 (after subtracking a budget of 8 for interrupt)
 		warnedWill = true
 		specwarnWillPower:Show()
-	elseif playerWill == 10 and willNumber > 10 then
+	elseif playerWill == 10 and willNumber > 10 then--Works
 		willNumber = 10
 		warnWillPower:Show(willNumber)
-	elseif playerWill == 5 and willNumber > 5 then
+	elseif playerWill == 5 and willNumber > 5 then--Doesn't work? A mystery
 		willNumber = 5
 		warnWillPower:Show(willNumber)
 	end
