@@ -6,10 +6,14 @@ local L
 L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
+	warnAttenuation		= "%s on %s (%s)",
+	specwarnAttenuation	= "%s on %s (%s)",
 	specwarnPlatform	= "Platform change"
 })
 
 L:SetOptionLocalization({
+	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
+	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
 	specwarnPlatform	= "Show special warning when boss changes platforms",
 	ArrowOnAttenuation	= "Show DBM Arrow during $spell:127834 to indicate which direction to move",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
@@ -17,7 +21,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "%s flies to one of his platforms!",
-	Defeat				= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
+	Defeat				= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so.",
+	Left				= "Left",
+	Right				= "Right"
 })
 
 
