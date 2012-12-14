@@ -48,3 +48,6 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetOptionLocalization({
+	RangeFrame			= "$spell:119519 주문에 대한 거리 프레임 표시(2m)"
+})
