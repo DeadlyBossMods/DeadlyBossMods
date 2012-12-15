@@ -50,7 +50,7 @@ local specWarnLightningStorm		= mod:NewSpecialWarningSpell(118077, nil, nil, nil
 local specWarnDefiledGround			= mod:NewSpecialWarningMove(117986, mod:IsTank())
 local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, nil, true)--Entire raid needs to move.
 --Minions of Fear
-local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 7)--Amount may need adjusting depending on what becomes an accepted strategy
+local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 9)--Amount may need adjusting depending on what becomes an accepted strategy
 
 --Elder Asani
 local timerCleansingWatersCD		= mod:NewNextTimer(32.5, 117309)
@@ -192,7 +192,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(118191) then
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 7 then
+			if (args.amount or 1) >= 9 then
 				specWarnCorruptedEssence:Show(args.amount)
 			end
 		end
