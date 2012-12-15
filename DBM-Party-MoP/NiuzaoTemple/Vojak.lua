@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
-	"CHAT_MSG_MONSTER_YELL",
+--	"CHAT_MSG_MONSTER_YELL",
 	"RAID_BOSS_EMOTE"
 )
 
@@ -26,7 +26,7 @@ local warnThousandBlades		= mod:NewSpellAnnounce(120759, 4)
 
 local specWarnThousandBlades	= mod:NewSpecialWarningRun(120759, mod:IsMelee())
 
-local timerWaveCD				= mod:NewTimer(12, "TimerWave", 69076)--Not wave timers in traditional sense. They are non stop, this is for when he activates certain mob types.
+--local timerWaveCD				= mod:NewTimer(12, "TimerWave", 69076)--Not wave timers in traditional sense. They are non stop, this is for when he activates certain mob types.
 local timerBombard				= mod:NewBuffActiveTimer(15, 120200)
 local timerBombardCD			= mod:NewCDTimer(42, 120200)
 local timerDashingStrikeCD		= mod:NewCDTimer(13.5, 120789)
@@ -35,9 +35,9 @@ local timerThousandBlades		= mod:NewBuffActiveTimer(4, 120759)
 
 local soundThousandBlades		= mod:NewSound(120759, nil, mod:IsMelee())
 
-local Swarmers 		= EJ_GetSectionInfo(6280)
-local Demolishers 	= EJ_GetSectionInfo(6282)
-local Warriors	 	= EJ_GetSectionInfo(6283)
+--local Swarmers 		= EJ_GetSectionInfo(6280)
+--local Demolishers 	= EJ_GetSectionInfo(6282)
+--local Warriors	 	= EJ_GetSectionInfo(6283)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(120759) then
@@ -63,6 +63,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.WaveStart or msg:find(L.WaveStart) then -- all timer and mob not confirmed, maybe useless.
 		timerWaveCD:Start(8, Swarmers) 
@@ -70,7 +71,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerWaveCD:Start(102, Swarmers..", "..Warriors)
 		timerWaveCD:Start(160, Demolishers..", "..Warriors)
 	end
-end
+end--]]
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:120559") then -- Bombard seems to be not related with wave status.
