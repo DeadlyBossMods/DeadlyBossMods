@@ -178,7 +178,7 @@ L= DBM:GetModLocalization(693)
 L= DBM:GetModLocalization(738)
 
 L:SetTimerLocalization({
-	TimerWave	= "Starts Sending: %s"
+	TimerWave	= "Sending: %s"
 })
 
 L:SetOptionLocalization({
