@@ -7,10 +7,14 @@ local L
 L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
+	warnAttenuation		= "%s在%s(%s)",
+	specwarnAttenuation	= "%s在%s(%s)",
 	specwarnPlatform	= "轉換露臺"
 })
 
 L:SetOptionLocalization({
+	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
+	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
 	specwarnPlatform	= "為首領轉換露臺顯示特別警告",
 	ArrowOnAttenuation	= "為$spell:127834指示DBM箭頭移動方向",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
@@ -18,7 +22,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "%s飛向他的其中一個露臺!",
-	Defeat				= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。"
+	Defeat				= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。",
+	Left				= "往左",
+	Right				= "往右"
 })
 
 
