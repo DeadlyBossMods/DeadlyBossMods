@@ -33,15 +33,15 @@ local specWarnDragonsBreath		= mod:NewSpecialWarningSpell(113641, nil, nil, nil,
 
 local timerPyroblastCD			= mod:NewCDTimer(6, 113690, nil, false)
 --local timerQuickenedMindCD	= mod:NewCDTimer(30, 113682)--Needs more data. I see both 30 sec and 1 min cds, so I just need larger sample size.
-local timerFireballVolleyCD		= mod:NewCDTimer(30, 113691)
-local timerBookBurnerCD			= mod:NewCDTimer(30, 113364)
+--local timerFireballVolleyCD		= mod:NewCDTimer(30, 113691)--Seems very random, maybe affected by school lockout so kicking pyroblast prevents this?
+local timerBookBurnerCD			= mod:NewCDTimer(15.5, 113364)
 local timerDragonsBreath		= mod:NewBuffActiveTimer(10, 113641)
-local timerDragonsBreathCD		= mod:NewCDTimer(45.5, 113641)
+local timerDragonsBreathCD		= mod:NewNextTimer(50, 113641)
 
 function mod:OnCombatStart(delay)
 	timerPyroblastCD:Start(5-delay)
 --	timerQuickenedMindCD:Start(9-delay)
-	timerFireballVolleyCD:Start(15.5-delay)
+--	timerFireballVolleyCD:Start(15.5-delay)
 	timerBookBurnerCD:Start(20.5-delay)
 	timerDragonsBreathCD:Start(30-delay)
 end
@@ -54,7 +54,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(113691) then
 		warnFireballVolley:Show()
 		specWarnFireballVolley:Show(args.sourceName)
-		timerFireballVolleyCD:Start()
+--		timerFireballVolleyCD:Start()
 	elseif args:IsSpellID(113364) then
 		warnBookBurner:Show()
 		timerBookBurnerCD:Start()
