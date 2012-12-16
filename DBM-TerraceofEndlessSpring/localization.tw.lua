@@ -50,3 +50,6 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetOptionLocalization({
+	RangeFrame			= "為$spell:119519顯示距離框(8碼)"
+})
