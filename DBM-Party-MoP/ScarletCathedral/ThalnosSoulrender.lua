@@ -25,9 +25,9 @@ local specWarnFallenCrusader	= mod:NewSpecialWarningSwitch("ej5863", not mod:IsH
 local specWarnEmpoweredSpirit	= mod:NewSpecialWarningSwitch("ej5869", not mod:IsHealer())--These need to die before they become zombies. Cannot see a way in combat log to detect target, i'll have to watch for target scanning next time to warn that player to run away from dead crusaders.
 
 local timerEvictSoul			= mod:NewTargetTimer(6, 115297)
-local timerEvictSoulCD			= mod:NewCDTimer(40, 115297)
-local timerRaiseCrusadeCD		= mod:NewNextTimer(60, 115139)
-local timerSummonSpiritsCD		= mod:NewNextTimer(60, 115147)
+local timerEvictSoulCD			= mod:NewNextTimer(41, 115297)
+local timerRaiseCrusadeCD		= mod:NewNextTimer(60, 115139)--Both of these are 40 second cds in challenge modes
+local timerSummonSpiritsCD		= mod:NewNextTimer(60, 115147)--Although correction is only needed in one spot
 
 function mod:OnCombatStart(delay)
 	timerRaiseCrusadeCD:Start(6-delay)
@@ -53,11 +53,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(115147) then--Summon Empowering Spirits
 		warnSummonSpirits:Show()
 		specWarnEmpoweredSpirit:Show()
-		timerRaiseCrusadeCD:Start(20)--Because they are both 60 second near precise timers, we alternate the timers to reduce needing to have both up at once.
+		timerRaiseCrusadeCD:Start(20)--Raise crusaders always 20 seconds after spirits in all modes
 	elseif args:IsSpellID(115139) then--Raise Fallen Crusade
 		warnRaiseCrusade:Show()
 		specWarnFallenCrusader:Show()
-		timerSummonSpiritsCD:Start(40)
+		if self:IsDifficulty("challenge5") then
+			timerSummonSpiritsCD:Start(20)
+		else
+			timerSummonSpiritsCD:Start(40)
+		end
 	end
 end
 
