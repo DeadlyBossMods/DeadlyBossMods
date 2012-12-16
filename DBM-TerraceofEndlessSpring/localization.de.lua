@@ -51,3 +51,6 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetOptionLocalization({
+	RangeFrame			= "Zeige Abstandsfenster (2m) für $spell:119519"
+})
