@@ -20,8 +20,8 @@ local warnBloodyRage			= mod:NewSpellAnnounce(116140, 4)
 local timerPiercingThrowCD		= mod:NewNextTimer(6, 114021)
 local timerDeathBlossomCD		= mod:NewNextTimer(6, 114242)
 
-local throwCount = 0
-local barProgress = 0
+--local throwCount = 0
+--local barProgress = 0
 
 --Old Data
 --Heroic Pull 1 Throw/Blossom Pattern 12, 6, 6, Dog, 12, Dog, 12, 6, 6, 6, Dog, 12, 6, Dog, 12, 6, 6, Blood, 13.5, 6
@@ -50,8 +50,8 @@ local barProgress = 0
 ]]
 
 function mod:OnCombatStart(delay)
-	throwCount = 0
-	barProgress = 0
+--	throwCount = 0
+--	barProgress = 0
 	timerPiercingThrowCD:Start(7-delay)
 end
 
