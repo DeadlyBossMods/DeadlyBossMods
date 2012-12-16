@@ -23,7 +23,7 @@ local warnProtector					= mod:NewCountAnnounce(117954, 3)
 local warnArcingEnergy				= mod:NewSpellAnnounce(117945, 2)--Cast randomly at 2 players, it is avoidable.
 local warnClosedCircuit				= mod:NewTargetAnnounce(117949, 3, nil, mod:IsHealer())--what happens if you fail to avoid the above
 local warnTotalAnnihilation			= mod:NewCastAnnounce(129711, 4)--Protector dying(exploding)
-local warnStunned					= mod:NewTargetAnnounce(132226, 3, nil, mod:IsHealer())--Heroic
+local warnStunned					= mod:NewTargetAnnounce(132226, 3, nil, mod:IsHealer())--Heroic / 132222 is stun debuff, 132226 is 2 min debuff. 
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)--124967 Draw Power
 local warnDrawPower					= mod:NewCountAnnounce(119387, 4)
 local warnPhase3					= mod:NewPhaseAnnounce(3, 3)--116994 Unstable Energy Starting
@@ -39,12 +39,14 @@ local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
+local timerTotalAnnihilation		= mod:NewCastTimer(4, 129711)
+local timerDestabilized				= mod:NewBuffActiveTimer(120, 132226)
 local timerFocusPower				= mod:NewCastTimer(16, 119358)
 local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5-7.5 variation. 6.5 is safed to use so you don't fall and die.
 
 local berserkTimer					= mod:NewBerserkTimer(570)
 
-mod:AddBoolOption("SetIconOnDestabilized", true)
+mod:AddBoolOption("SetIconOnDestabilized", true)--Icon lasts 2 min. Is that intended?
 mod:AddBoolOption("SetIconOnCreature", true)--Does not work
 mod:AddBoolOption("HealthFrame", false)
 
@@ -115,6 +117,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.
 	elseif args:IsSpellID(132226) then
 		stunTargets[#stunTargets + 1] = args.destName
+		if args:IsPlayer() then
+			timerDestabilized:Start()
+		end
 		if self.Options.SetIconOnDestabilized then
 			self:SetIcon(args.destName, stunIcon)
 			stunIcon = stunIcon - 1
@@ -130,6 +135,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase1:Show()
 	--"<104.1 22:25:29> [CLEU] SPELL_AURA_REMOVED#false#0x040000000479BEA6#Settesh#1298#16#0x040000000479BEA6#Settesh#1298#16#132226#Destabilized#1#DEBUFF", -- [17597]
 	elseif args:IsSpellID(132226) then
+		if args:IsPlayer() then
+			timerDestabilized:Cancel()
+		end
 		if self.Options.SetIconOnDestabilized then
 			self:SetIcon(args.destName, 0)--Sometimes this doesn't work, no idea why?
 		end
@@ -204,6 +212,7 @@ function mod:SPELL_CAST_START(args)
 		stunIcon = 8
 		warnTotalAnnihilation:Show()
 		specWarnTotalAnnihilation:Show()
+		timerTotalAnnihilation:Start()
 		timerArcingEnergyCD:Cancel(args.sourceGUID)--add is dying, so this add is done casting arcing Energy
 	elseif args:IsSpellID(117949) then
 		closedCircuitTargets[#closedCircuitTargets + 1] = args.destName
