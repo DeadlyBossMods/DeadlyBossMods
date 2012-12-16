@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60410)--Energy Charge (60913), Emphyreal Focus (60776), Cosmic Spark (62618), Celestial Protector (60793)
 mod:SetModelID(41399)
 mod:SetZone()
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3)
+mod:SetUsedIcons(8, 7, 6)
 
 mod:RegisterCombat("combat")
 
@@ -23,7 +23,7 @@ local warnProtector					= mod:NewCountAnnounce(117954, 3)
 local warnArcingEnergy				= mod:NewSpellAnnounce(117945, 2)--Cast randomly at 2 players, it is avoidable.
 local warnClosedCircuit				= mod:NewTargetAnnounce(117949, 3, nil, mod:IsHealer())--what happens if you fail to avoid the above
 local warnTotalAnnihilation			= mod:NewCastAnnounce(129711, 4)--Protector dying(exploding)
-local warnStunned					= mod:NewTargetAnnounce(132226, 3, nil, mod:IsHealer())--Heroic / 132222 is stun debuff, 132226 is 2 min debuff. 
+local warnStunned					= mod:NewTargetAnnounce(132222, 3, nil, mod:IsHealer())--Heroic / 132222 is stun debuff, 132226 is 2 min debuff. 
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)--124967 Draw Power
 local warnDrawPower					= mod:NewCountAnnounce(119387, 4)
 local warnPhase3					= mod:NewPhaseAnnounce(3, 3)--116994 Unstable Energy Starting
@@ -46,8 +46,7 @@ local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5
 
 local berserkTimer					= mod:NewBerserkTimer(570)
 
-mod:AddBoolOption("SetIconOnDestabilized", false)--Does not work correctly (applies but RARELY removes). refer to comment on SPELL_AURA_REMOVED.
-mod:AddBoolOption("SetIconOnCreature", false)--Does not work
+mod:AddBoolOption("SetIconOnDestabilized", true)
 mod:AddBoolOption("HealthFrame", false)
 
 local phase2Started = false
@@ -116,10 +115,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRadiatingEnergies:Show()
 		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.
 	elseif args:IsSpellID(132226) then
-		stunTargets[#stunTargets + 1] = args.destName
 		if args:IsPlayer() then
 			timerDestabilized:Start()
 		end
+	elseif args:IsSpellID(132222) then
+		stunTargets[#stunTargets + 1] = args.destName
 		if self.Options.SetIconOnDestabilized then
 			self:SetIcon(args.destName, stunIcon)
 			stunIcon = stunIcon - 1
@@ -133,30 +133,16 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(116994) then--phase 3 end
 		warnPhase1:Show()
-	--"<104.1 22:25:29> [CLEU] SPELL_AURA_REMOVED#false#0x040000000479BEA6#Settesh#1298#16#0x040000000479BEA6#Settesh#1298#16#132226#Destabilized#1#DEBUFF", -- [17597]
 	elseif args:IsSpellID(132226) then
 		if args:IsPlayer() then
 			timerDestabilized:Cancel()
 		end
+	elseif args:IsSpellID(132222) then
 		if self.Options.SetIconOnDestabilized then
-			self:SetIcon(args.destName, 0)--Sometimes this doesn't work. Event fires, i verify in my own combat log, dbm doesn't remove icon, no idea why. There is literally no logical explanation for it.
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
-
-mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnCreature and DBM:GetRaidRank() > 0 and not iconsSet == 6 then
-		for i = 1, DBM:GetGroupMembers() do
-			local uId = "raid"..i.."target"
-			local guid = UnitGUID(uId)
-			if creatureIcons[guid] then
-				SetRaidTarget(uId, creatureIcons[guid])
-				iconsSet = iconsSet + 1
-				creatureIcons[guid] = nil
-			end
-		end
-	end
-end, 1)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(116598, 132265) then--Cast when these are activated
@@ -166,22 +152,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		focusActivated = focusActivated + 1
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
-		end
-		--[[
-			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D05#Empyreal Focus#2632#0#0xF130ED6800001D08#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13961]
-			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D06#Empyreal Focus#2632#0#0xF130ED6800001D09#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13962]
-			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D07#Empyreal Focus#2632#0#0xF130ED6800001D0A#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13963]
-			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D08#Empyreal Focus#2632#0#0xF130ED6800001D05#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13964]
-			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D09#Empyreal Focus#2632#0#0xF130ED6800001D06#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13965]
-			"<78.9 22:25:03> [CLEU] SPELL_CAST_SUCCESS#false#0xF130ED6800001D0A#Empyreal Focus#2632#0#0xF130ED6800001D07#Empyreal Focus#2632#0#116598#Energy Conduit#1", -- [13966]
-
-			"<80.7 22:25:05> [PLAYER_TARGET_CHANGED] 90 Hostile (elite Mechanical) - Empyreal Focus # 0xF130ED6800001D09 # 60776", -- [14237]
-			"<83.7 22:25:08> [PLAYER_TARGET_CHANGED] 90 Hostile (elite Mechanical) - Empyreal Focus # 0xF130ED6800001D0A # 60776", -- [14567]
-		--]]
-		--Icons not working using source or destguid. Makes no sense both methods should work really. they cross cast on eachother. but as long as both boss health and icons are using same code (source, or dest). there should be no mismatches
-		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
-			creatureIcons[args.sourceGUID] = creatureIcon
-			creatureIcon = creatureIcon - 1
 		end
 		if focusActivated == 6 then
 			timerDespawnFloor:Start()
