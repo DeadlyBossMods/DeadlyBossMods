@@ -20,7 +20,7 @@ local specWarnGustingWinds	= mod:NewSpecialWarningSpell(121282, nil, nil, nil, t
 local specWarnResin			= mod:NewSpecialWarningYou(121447)
 local specWarnCausticPitch	= mod:NewSpecialWarningMove(121443)
 
-local timerResinCD			= mod:NewCDTimer(14, 121447)
+local timerResinCD			= mod:NewCDTimer(20, 121447)--20-25 sec variation
 
 local windsActive = false
 
@@ -50,6 +50,6 @@ end
 function mod:SPELL_INTERRUPT(args)
 	if (type(args.extraSpellId) == "number" and args.extraSpellId == 121282) and self:AntiSpam() then
 		windsActive = false
-		timerResinCD:Start(10)--10-14sec after?
+		timerResinCD:Start(10)
 	end
 end

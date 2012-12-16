@@ -21,7 +21,7 @@ local warnBulwark			= mod:NewSpellAnnounce(119476, 3)
 local specWarnTempest		= mod:NewSpecialWarningSpell(119875, mod:IsHealer())
 local specWarnBulwark		= mod:NewSpecialWarningSpell(119476, nil, nil, nil, true)
 
-local timerBladeRushCD		= mod:NewCDTimer(12, 124283)
+local timerBladeRushCD		= mod:NewCDTimer(12, 124283)--12-20sec variation
 local timerTempestCD		= mod:NewCDTimer(43, 119875)--Tempest has a higher cast priority than blade rush, if it's do, it'll delay blade rush.
 
 mod:AddBoolOption("HealthFrame", true)
