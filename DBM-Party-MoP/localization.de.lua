@@ -179,7 +179,7 @@ L= DBM:GetModLocalization(693)
 L= DBM:GetModLocalization(738)
 
 L:SetTimerLocalization({
-	TimerWave	= "Angriffsbefehl an: %s"
+	TimerWave	= "Sendet: %s"
 })
 
 L:SetOptionLocalization({
