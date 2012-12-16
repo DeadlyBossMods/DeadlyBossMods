@@ -178,7 +178,7 @@ L= DBM:GetModLocalization(693)
 L= DBM:GetModLocalization(738)
 
 L:SetTimerLocalization({
-	TimerWave	= "적 등장 : %s"
+	TimerWave	= "적 : %s"
 })
 
 L:SetOptionLocalization({
