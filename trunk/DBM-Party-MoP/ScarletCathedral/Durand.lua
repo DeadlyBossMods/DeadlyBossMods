@@ -19,16 +19,18 @@ local warnFlashofSteel			= mod:NewSpellAnnounce(115627, 3)
 local warnDashingStrike			= mod:NewSpellAnnounce(115676, 3)
 local warnMassRes				= mod:NewCastAnnounce(113134, 4)
 local warnDeepSleep				= mod:NewSpellAnnounce(9256, 2)
-local warnHeal					= mod:NewCastAnnounce(12039, 4)
+local warnHeal					= mod:NewCastAnnounce(12039, 3)
+local warnMC					= mod:NewCastAnnounce(130857, 4)--Challenge mode only ability
 
 local specWarnMassRes			= mod:NewSpecialWarningInterrupt(113134, true)
 local specWarnHeal				= mod:NewSpecialWarningInterrupt(12039, true)
+local specWarnMC				= mod:NewSpecialWarningInterrupt(130857, true)
 
 local timerFlashofSteel			= mod:NewCDTimer(26, 115627)--not confirmed.
 local timerDashingStrike		= mod:NewCDTimer(26, 115676)--not confirmed.
--- At 15799 build, Whitemaine seems to be do not cast Mass Res.
-local timerMassResCD			= mod:NewCDTimer(14, 113134)--every 14-17 seconds? (new heroic log doesn't show it cast this often, but i'll leave it for now)
+local timerMassResCD			= mod:NewCDTimer(21, 113134)--21-24sec variation. Earlier if phase transitions
 local timerDeepSleep			= mod:NewBuffFadesTimer(10, 9256)
+local timerMCCD					= mod:NewCDTimer(19, 130857)
 
 local phase = 1
 
@@ -36,13 +38,6 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	timerFlashofSteel:Start(9-delay)
 	timerDashingStrike:Start(24-delay)
-	--Only need these in phase 1 so no sense in wasting cpu in phase 2 and 3.
---[[	self:RegisterShortTermEvents(
-		"SPELL_DAMAGE",
-		"SWING_DAMAGE",
-		"SPELL_PERIODIC_DAMAGE",
-		"RANGE_DAMAGE"
-	)--]]
 end
 
 function mod:SPELL_CAST_START(args)
@@ -53,6 +48,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(12039) then
 		warnHeal:Show()
 		specWarnHeal:Show(args.sourceName)
+	elseif args:IsSpellID(130857) then
+		warnMC:Show()
+		specWarnMC:Show(args.sourceName)
 	end
 end
 
@@ -64,25 +62,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		phase = 3
 		warnDeepSleep:Show()
 		timerDeepSleep:Start()
-	end
-end
-
---[[
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if (overkill or 0) > 0 then
-		local cid = self:GetCIDFromGUID(destGUID)
-		if cid == 60040 then--Phase 1 ends when he dies first time, but he doesn't UNIT_DIED first time, there is no other usuable event.
-			self:UnregisterShortTermEvents()
-			phase = 2
-			timerMassResCD:Start()
-			timerFlashofSteel:Cancel()
-			timerDashingStrike:Cancel()
+		timerMassResCD:Start(18)--Limited Sample size
+		if self:IsDifficulty("challenge5") then
+			timerMCCD:Start(19)--Pretty much immediately after first mas res, unless mass res isn't interrupted then it'll delay MC
 		end
 	end
 end
-mod.SWING_DAMAGE = mod.SPELL_DAMAGE
-mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
-mod.RANGE_DAMAGE = mod.SPELL_DAMAGE--]]
+
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 115627 and self:AntiSpam(2, 1) then
@@ -100,7 +86,10 @@ function mod:UNIT_DIED(args)
 			DBM:EndCombat(self)
 		else--it's first death, he's down and whiteman is taking over
 			phase = 2
-			timerMassResCD:Start()
+			timerMassResCD:Start(13)
+			if self:IsDifficulty("challenge5") then
+				timerMCCD:Start(14)
+			end
 			timerFlashofSteel:Cancel()
 			timerDashingStrike:Cancel()
 		end

@@ -22,7 +22,7 @@ local specWarnFlyingKick	= mod:NewSpecialWarningSpell(113764, nil, nil, nil, tru
 local specWarnScorchedEarth	= mod:NewSpecialWarningMove(114460)
 local specWarnBlazingFists	= mod:NewSpecialWarningMove(114807, mod:IsTank()) -- Everything is dangerous in challenge mode, entry level heriocs will also be dangerous when they aren't overtuning your gear with an ilvl buff.if its avoidable, you should avoid it, in good practice, to create good habit for challenge modes.
 
-local timerFlyingKickCD		= mod:NewNextTimer(25, 113764)
+local timerFlyingKickCD		= mod:NewCDTimer(25, 113764)--25-30 second variation
 local timerFirestormKick	= mod:NewBuffActiveTimer(6, 113764)
 local timerBlazingFistsCD	= mod:NewNextTimer(30, 114807)
 
