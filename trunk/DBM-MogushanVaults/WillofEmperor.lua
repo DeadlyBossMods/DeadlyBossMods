@@ -73,9 +73,9 @@ mod:AddBoolOption("CountOutCombo")
 mod:AddBoolOption("InfoFrame", false)
 mod:AddBoolOption("ArrowOnCombo", mod:IsTank())--Very accurate for tank, everyone else not so much (tanks always in front, and boss always faces tank, so if he spins around on you, you expect it, melee on other hand have backwards arrows if you spun him around.
 
-local comboWarned = false
-local sparkCount = 0
+local comboMob = nil
 local comboCount = 0
+local expectedComboCount = 5
 local titanGasCast = 0
 local courageCount = 0
 local strengthCount = 0
@@ -101,18 +101,19 @@ local rageTimers = {
 }
 
 function mod:OnCombatStart(delay)
-	comboWarned = false
-	sparkCount = 0
+	comboMob = nil
 	comboCount = 0
 	titanGasCast = 0
 	rageCount = 0
 	strengthCount = 0
 	courageCount = 0
 	if self:IsDifficulty("heroic10", "heroic25") then--Heroic trigger is shorter, everything comes about 6 seconds earlier
+		expectedComboCount = 10
 		timerStrengthActivates:Start(35-delay, 1)
 		timerCourageActivates:Start(69-delay, 1)
 		timerBossesActivates:Start(101-delay)
 	else
+		expectedComboCount = 5
 		timerStrengthActivates:Start(42-delay, 1)
 		timerCourageActivates:Start(75-delay, 1)
 		timerBossesActivates:Start(-delay)
@@ -224,79 +225,85 @@ function mod:RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if not (uId == "target" or uId == "targettarget") then return end
-	if spellId == 116556 then
-		warnEnergizingSmash:Show()
-	elseif spellId == 116968 then--Arc Left
-		comboCount = comboCount + 1
-		if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
-			else
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+	if ((uId == "target" or uId == "targettarget" or uId == "focus") or comboMob) and not UnitIsFriend(uId, "player") then
+		if spellId == 116556 then
+			warnEnergizingSmash:Show()
+		end
+		if comboMob then
+			local castMob = UnitName(uId)
+			if spellId == 116968 and castMob == comboMob and self:AntiSpam(1, 1) then--Arc Left
+				comboCount = comboCount + 1
+				if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+					if DBM.Options.UseMasterVolume then
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+					else
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+					end
+				end
+				warnArcLeft:Show(comboCount)
+				if self.Options.ArrowOnCombo then
+					if self:IsTank() then--Assume tank is in front of the boss
+						DBM.Arrow:ShowStatic(90, 3)
+					else--Assume anyone else is behind the boss
+						DBM.Arrow:ShowStatic(270, 3)
+					end
+				end
+			elseif spellId == 116971 and castMob == comboMob and self:AntiSpam(1, 2) then--Arc Right
+				comboCount = comboCount + 1
+				if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+					if DBM.Options.UseMasterVolume then
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+					else
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+					end
+				end
+				warnArcRight:Show(comboCount)
+				if self.Options.ArrowOnCombo then
+					if self:IsTank() then--Assume tank is in front of the boss
+						DBM.Arrow:ShowStatic(270, 3)
+					else--Assume anyone else is behind the boss
+						DBM.Arrow:ShowStatic(90, 3)
+					end
+				end
+			elseif spellId == 116972 and castMob == comboMob and self:AntiSpam(1, 3) then--Arc Center
+				comboCount = comboCount + 1
+				if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+					if DBM.Options.UseMasterVolume then
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+					else
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+					end
+				end
+				warnArcCenter:Show(comboCount)
+				if self.Options.ArrowOnCombo then
+					if self:IsTank() then--Assume tank is in front of the boss
+						DBM.Arrow:ShowStatic(0, 3)
+					end
+				end
+			elseif (spellId == 116969 or spellId == 132425) and castMob == comboMob and self:AntiSpam(1, 4) then--Stomp
+				comboCount = comboCount + 1
+				if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
+					if DBM.Options.UseMasterVolume then
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
+					else
+						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
+					end
+				end
+				warnStomp:Show(comboCount)
+			end
+			if comboCount == expectedComboCount then
+				comboMob = nil
+				comboCount = 0
 			end
 		end
-		warnArcLeft:Show(comboCount)
-		if self.Options.ArrowOnCombo then
-			if self:IsTank() then--Assume tank is in front of the boss
-				DBM.Arrow:ShowStatic(90, 3)
-			else--Assume anyone else is behind the boss
-				DBM.Arrow:ShowStatic(270, 3)
-			end
-		end
-	elseif spellId == 116971 then--Arc Right
-		comboCount = comboCount + 1
-		if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
-			else
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
-			end
-		end
-		warnArcRight:Show(comboCount)
-		if self.Options.ArrowOnCombo then
-			if self:IsTank() then--Assume tank is in front of the boss
-				DBM.Arrow:ShowStatic(270, 3)
-			else--Assume anyone else is behind the boss
-				DBM.Arrow:ShowStatic(90, 3)
-			end
-		end
-	elseif spellId == 116972 then--Arc Center
-		comboCount = comboCount + 1
-		if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
-			else
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
-			end
-		end
-		warnArcCenter:Show(comboCount)
-		if self.Options.ArrowOnCombo then
-			if self:IsTank() then--Assume tank is in front of the boss
-				DBM.Arrow:ShowStatic(0, 3)
-			end
-		end
-	elseif (spellId == 116969 or spellId == 132425) then--Stomp
-		comboCount = comboCount + 1
-		if self.Options.CountOutCombo and comboCount < 11 then--Male voice count past 5 yet. still waiting on him to do it. So female voice is only option for now.
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg", "Master")
-			else
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..comboCount..".ogg")
-			end
-		end
-		warnStomp:Show(comboCount)
 	end
 end
 
 function mod:UNIT_POWER(uId)
-	if (uId == "target" or uId == "targettarget") and not UnitIsFriend(uId, "player") then
-		if UnitPower(uId) == 18 and not comboWarned then
-			comboCount = 0
-			comboWarned = true
+	if (uId == "target" or uId == "targettarget" or uId == "focus") and not UnitIsFriend(uId, "player") and not comboMob then
+		if UnitPower(uId) == 18 then
+			comboMob = UnitName(uId)
 			specWarnCombo:Show()
-		elseif UnitPower(uId) < 12 and comboWarned then
-			comboWarned = false
 		end
 	end
 end
