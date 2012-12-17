@@ -29,14 +29,14 @@ local specWarnGetAway					= mod:NewSpecialWarningSpell(123461, nil, nil, nil, tr
 local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 6)
 local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())
 
-local timerSpecialCD					= mod:NewTimer(22, "timerSpecialCD", 123250)--Not even this is 100% reliable. it's iffy at best, but she seems to use specials about 22-25 seconds after last one ended, except when last one was protect, then next one is used IMMEDIATELY upon protect ending. Timers for this fight are just jacked.
+local timerSpecialCD					= mod:NewTimer(50, "timerSpecialCD", 123250)--Variable, 50-55 seconds
 local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
 local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("SetIconOnGuard", false) -- More people with it on, the better (ensures if your latency blows or fps low someone else with faster responding computer sets icons sooner). It's speed is also dependant on raid. it's only slow if your raiders are slow. it sets icons on them the instant ANYONE in raid targets them. in my 25 man guild we get icons on all 5 of them fast
+mod:AddBoolOption("SetIconOnGuard", false)--Still giving problems. hopefully new sync features work to prevent users reusing icons that are already up.
 
 local hideActive = false
 
@@ -87,7 +87,7 @@ function mod:OnCombatStart(delay)
 	end
 	resetguardstate()
 	hideActive = false
---	timerSpecialCD:Start(42.5-delay)--FIRST special not match if your party is high DPS. 
+	timerSpecialCD:Start(34-delay)--Variable, 34-37 (or aborted if 80% protect happens first)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(420-delay)
 	else
@@ -104,6 +104,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123250) then
+		timerSpecialCD:Cancel()--Protect interrupts next special.
 		warnProtect:Show()
 		specWarnAnimatedProtector:Show()
 	elseif args:IsSpellID(123505) and self.Options.SetIconOnGuard then
@@ -118,6 +119,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnGetAway:Show()
 		specWarnGetAway:Show()
 		timerGetAway:Start()
+		timerSpecialCD:Start()
 	elseif args:IsSpellID(123121) then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then--Only want sprays that are on tanks, not bads standing on tanks.
@@ -138,13 +140,15 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(123250) and self.Options.SetIconOnGuard then
-		guardActivated = 0
+	if args:IsSpellID(123250) then
+		timerSpecialCD:Start(5)--next special is always 5 seconds aftere protect ends.
+		if self.Options.SetIconOnGuard then
+			guardActivated = 0
+		end
 	elseif args:IsSpellID(123121) then
 		timerSpray:Cancel(args.destName)
 	elseif args:IsSpellID(123461) then
 		timerGetAway:Cancel()
---		timerSpecialCD:Start()--Probably wrong so disabled. i still can't find this fights true pattern since it's all over the place and never matches up.
 	end
 end
 
@@ -159,6 +163,7 @@ mod:RegisterOnUpdateHandler(function(self)
 					local icon = getAvailableIcons()
 					SetRaidTarget(uId, icon)
 					iconsSet[icon] = true
+					self:SendSync("iconSet", icon)
 				elseif existingIcons then
 					iconsSet[existingIcons] = true
 				end
@@ -172,19 +177,27 @@ mod:RegisterOnUpdateHandler(function(self)
 				local icon = getAvailableIcons()
 				SetRaidTarget("mouseover", icon)
 				iconsSet[icon] = true
+				self:SendSync("iconSet", icon)
 			elseif existingIcons then
 				iconsSet[existingIcons] = true
 			end
 			guards[guid2] = nil
 		end
 	end
-end, 0.2) -- this will be more faster, but leggy and waste cpu. 
+end, 0.05)
+
+function mod:OnSync(msg, icon)
+	if msg == "iconSet" and icon then
+		iconsSet[icon] = true
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(123244) then
 		hideActive = true
 		warnHide:Show()
 		specWarnHide:Show()
+		timerSpecialCD:Start()
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
 		)
