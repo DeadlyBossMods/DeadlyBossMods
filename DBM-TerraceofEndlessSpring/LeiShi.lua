@@ -82,7 +82,9 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	DBM.RangeCheck:Show(3, bossTank)
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(3, bossTank)
+	end
 	resetguardstate()
 	hideActive = false
 --	timerSpecialCD:Start(42.5-delay)--FIRST special not match if your party is high DPS. 
@@ -95,6 +97,9 @@ end
 
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
