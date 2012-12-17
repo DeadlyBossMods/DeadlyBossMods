@@ -150,6 +150,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOminousCackleYou:Show()
 			countdownBreathOfFear:Cancel()
 			timerBreathOfFearCD:Cancel()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
 		end
 		self:Unschedule(warnOminousCackleTargets)
 		self:Schedule(2, warnOminousCackleTargets)--this actually staggers a bit, so wait the full 2 seconds to get em all in one table
@@ -169,6 +172,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if shaPower < 28 then--Don't bother recovery if breath is in 5 or less seconds, we'll get a new one when it's cast.
 			timerBreathOfFearCD:Start(33.3-shaPower)
 			countdownBreathOfFear:Start(33.3-shaPower)
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(2)
 		end
 	elseif args:IsSpellID(131996) and not onPlatform then
 		warnThrash:Show()
