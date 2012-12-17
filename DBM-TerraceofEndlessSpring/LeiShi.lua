@@ -33,11 +33,12 @@ local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())
 local timerSpecialCD					= mod:NewTimer(49.5, "timerSpecialCD", 123250)--Variable, 49.5-55 seconds
 local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
 local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
+local timerScaryFogCD					= mod:NewNextTimer(10, 123705)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("SetIconOnGuard", false)--Still giving problems. hopefully new sync features work to prevent users reusing icons that are already up.
+mod:AddBoolOption("SetIconOnGuard", true)
 
 local specialsCast = 0
 local hideActive = false
@@ -128,8 +129,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specialsCast = specialsCast + 1
 		warnGetAway:Show(specialsCast)
 		specWarnGetAway:Show()
-		timerGetAway:Start()
 		timerSpecialCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerGetAway:Start(45)
+		else
+			timerGetAway:Start()
+		end
 	elseif args:IsSpellID(123121) then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then--Only want sprays that are on tanks, not bads standing on tanks.
@@ -145,6 +150,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+	elseif args:IsSpellID(123705) and self:AntiSpam() then
+		timerScaryFogCD:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -223,10 +230,6 @@ end
 
 function mod:CHAT_MSG_TARGETICONS(msg)
 	--TARGET_ICON_SET = "|Hplayer:%s|h[%s]|h sets |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t on %s.";
-	--if msg == TARGET_ICON_SET then
-		--Insert fancy code that pulls icon number out of here somehow
-		--iconsSet[icon] = true--Then sets it to true
-	--end
 	local icon = tonumber(string.sub(string.match(msg, "RaidTargetingIcon_%d"), -1))
 	if icon then
 		iconsSet[icon] = true
@@ -239,5 +242,4 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	hideActive = false
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
---	timerSpecialCD:Start()--Probably wrong so disabled. i still can't find this fights true pattern since it's all over the place and never matches up.
 end
