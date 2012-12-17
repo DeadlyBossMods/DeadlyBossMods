@@ -35,7 +35,8 @@ local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("SetIconOnGuard", true) -- More people with it on, the better (ensures if your latency blows or fps low someone else with faster responding computer sets icons sooner). It's speed is also dependant on raid. it's only slow if your raiders are slow. it sets icons on them the instant ANYONE in raid targets them. in my 25 man guild we get icons on all 5 of them fast
+mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("SetIconOnGuard", false) -- More people with it on, the better (ensures if your latency blows or fps low someone else with faster responding computer sets icons sooner). It's speed is also dependant on raid. it's only slow if your raiders are slow. it sets icons on them the instant ANYONE in raid targets them. in my 25 man guild we get icons on all 5 of them fast
 
 local hideActive = false
 
@@ -73,7 +74,15 @@ local function isTank(unit)
 	return false
 end
 
+local bossTank
+do
+	bossTank = function(uId)
+		return isTank(uId)
+	end
+end
+
 function mod:OnCombatStart(delay)
+	DBM.RangeCheck:Show(3, bossTank)
 	resetguardstate()
 	hideActive = false
 --	timerSpecialCD:Start(42.5-delay)--FIRST special not match if your party is high DPS. 
