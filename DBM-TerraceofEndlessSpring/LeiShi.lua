@@ -30,7 +30,7 @@ local specWarnGetAway					= mod:NewSpecialWarningSpell(123461, nil, nil, nil, tr
 local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 6)
 local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())
 
-local timerSpecialCD					= mod:NewTimer(50, "timerSpecialCD", 123250)--Variable, 50-55 seconds
+local timerSpecialCD					= mod:NewTimer(49.5, "timerSpecialCD", 123250)--Variable, 49.5-55 seconds
 local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
 local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 
@@ -91,7 +91,7 @@ function mod:OnCombatStart(delay)
 	hideActive = false
 	lastProtect = 0
 	specialRemaining = 0
-	timerSpecialCD:Start(34-delay)--Variable, 34-37 (or aborted if 80% protect happens first)
+	timerSpecialCD:Start(32.5-delay)--Variable, 32.5-37 (or aborted if 80% protect happens first)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(420-delay)
 	else
