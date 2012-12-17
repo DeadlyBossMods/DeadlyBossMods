@@ -153,7 +153,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnGuard and guardActivated > 0 and DBM:GetRaidRank() > 1 then -- only raid leader can set icons to prevent conflict.
+	if self.Options.SetIconOnGuard and guardActivated > 0 then
 		for i = 1, DBM:GetGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
