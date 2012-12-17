@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"CHAT_MSG_TARGETICONS",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -213,6 +214,14 @@ function mod:SPELL_CAST_START(args)
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
 		)
+	end
+end
+
+function mod:CHAT_MSG_TARGETICONS(msg)
+	--TARGET_ICON_SET = "|Hplayer:%s|h[%s]|h sets |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t on %s.";
+	if msg == TARGET_ICON_SET then
+		--Insert fancy code that pulls icon number out of here somehow
+--		iconsSet[icon] = true--Then sets it to true
 	end
 end
 
