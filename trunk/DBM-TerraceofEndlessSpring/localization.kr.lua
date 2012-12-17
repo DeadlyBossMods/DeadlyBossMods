@@ -30,18 +30,18 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "특수 공격 대기시간"
+	timerSpecialCD			= "숨기/저리 가! 대기시간"
 })
 
 L:SetOptionLocalization({
 	warnHideOver			= "$spell:123244 종료 알림 보기",
-	timerSpecialCD			= "특수 공격 대기시간 바 표시",
+	timerSpecialCD			= "$spell:123244 또는 $spell:123461 대기시간 바 표시",
 	SetIconOnGuard			= "$journal:6224에 전술 목표 아이콘 설정",
 	RangeFrame				= "$spell:123121 주문에 대한 거리 프레임 표시(3m/방어전담만)"
 })
 
 L:SetMiscLocalization{
-	Victory	= "아... 앗! 내가 무슨...? 혹시...? 너무... 흐릿해."--wtb alternate and less crappy victory event.
+	Victory	= "아... 앗! 내가 무슨...? 혹시...? 너무... 흐릿해."
 }
 
 ----------------------
