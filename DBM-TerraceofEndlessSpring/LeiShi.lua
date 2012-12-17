@@ -19,9 +19,9 @@ mod:RegisterEventsInCombat(
 )
 
 local warnProtect						= mod:NewSpellAnnounce(123250, 2)
-local warnHide							= mod:NewSpellAnnounce(123244, 3)
+local warnHide							= mod:NewCountAnnounce(123244, 3)
 local warnHideOver						= mod:NewAnnounce("warnHideOver", 2, 123244)--Because we can. with creativeness, the boss returning is detectable a full 1-2 seconds before even visible. A good signal to stop aoe and get ready to return norm DPS
-local warnGetAway						= mod:NewSpellAnnounce(123461, 3)
+local warnGetAway						= mod:NewCountAnnounce(123461, 3)
 local warnSpray							= mod:NewStackAnnounce(123121, 3, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnAnimatedProtector			= mod:NewSpecialWarningSwitch("ej6224", not mod:IsHealer())
@@ -39,6 +39,7 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnGuard", false)--Still giving problems. hopefully new sync features work to prevent users reusing icons that are already up.
 
+local specialsCast = 0
 local hideActive = false
 local lastProtect = 0
 local specialRemaining = 0
@@ -88,6 +89,7 @@ function mod:OnCombatStart(delay)
 		DBM.RangeCheck:Show(3, bossTank)
 	end
 	resetguardstate()
+	specialsCast = 0
 	hideActive = false
 	lastProtect = 0
 	specialRemaining = 0
@@ -123,7 +125,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			guards[args.destGUID] = true
 		end
 	elseif args:IsSpellID(123461) then
-		warnGetAway:Show()
+		specialsCast = specialsCast + 1
+		warnGetAway:Show(specialsCast)
 		specWarnGetAway:Show()
 		timerGetAway:Start()
 		timerSpecialCD:Start()
@@ -207,8 +210,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(123244) then
+		specialsCast = specialsCast + 1
 		hideActive = true
-		warnHide:Show()
+		warnHide:Show(specialsCast)
 		specWarnHide:Show()
 		timerSpecialCD:Start()
 		self:RegisterShortTermEvents(
