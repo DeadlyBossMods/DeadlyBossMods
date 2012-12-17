@@ -39,7 +39,8 @@ mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnGuard", false)--Still giving problems. hopefully new sync features work to prevent users reusing icons that are already up.
 
 local hideActive = false
-
+local lastProtect = 0
+local specialRemaining = 0
 local guards = {}
 local guardActivated = 0
 local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
@@ -87,6 +88,8 @@ function mod:OnCombatStart(delay)
 	end
 	resetguardstate()
 	hideActive = false
+	lastProtect = 0
+	specialRemaining = 0
 	timerSpecialCD:Start(34-delay)--Variable, 34-37 (or aborted if 80% protect happens first)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(420-delay)
@@ -104,7 +107,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123250) then
-		timerSpecialCD:Cancel()--Protect interrupts next special.
+		local elapsed, total = timerSpecialCD:GetTime()
+		specialRemaining = total - elapsed
+		lastProtect = GetTime()
+		timerSpecialCD:Cancel()
 		warnProtect:Show()
 		specWarnAnimatedProtector:Show()
 	elseif args:IsSpellID(123505) and self.Options.SetIconOnGuard then
@@ -141,7 +147,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(123250) then
-		timerSpecialCD:Start(5)--next special is always 5 seconds aftere protect ends.
+		local protectElapsed = GetTime() - lastProtect
+		local specialCD = specialRemaining - protectElapsed
+		if specialCD < 5 then
+			timerSpecialCD:Start(5)
+		else
+			timerSpecialCD:Start(specialCD)
+		end
 		if self.Options.SetIconOnGuard then
 			guardActivated = 0
 		end
@@ -153,7 +165,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnGuard and guardActivated > 0 then
+	if self.Options.SetIconOnGuard and guardActivated > 0 and DBM:GetRaidRank() > 0 then
 		for i = 1, DBM:GetGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
