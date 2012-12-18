@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 DBM_CORE_NEED_SUPPORT				= "Vous êtes bon en programmation ou en langues ? Si oui, l'équipe de DBM a besoin de votre aide pour que DBM reste le meilleur boss mod de WoW. Rejoignez l'équipe en visitant www.deadlybossmods.com ou en envoyant un message à tandanu@deadlybossmods.com ou à nitram@deadlybossmods.com."
 DBM_HOW_TO_USE_MOD					= "Bienvenue sur DBM. Tapez /dbm help pour une liste des commandes supportées. Pour accédez aux options, tapez /dbm dans la fenêtre de discussion pour commencer la configuration. Chargez des zones spécifiques manuellement pour configurer tous les paramètres spécifiques aux boss selon vos envies. DBM essaie de le faire pour vous en analysant votre spécialisation au premier lancement, mais nous savons que de toute façon certaines personnes souhaitent activer d'autres options."
 
@@ -196,7 +196,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run 		= "Alerte spéciale concernant $spell:%s",
 	cast 		= "Alerte spéciale quand $spell:%s est incanté",
 	stack 		= "Alerte spéciale quand >=%d cumuls de $spell:%s",
-	switch 		= "Show special warning to switch targets for \n $spell:%s"
+	switch 		= "Alerte spéciale de changement de cible pour\n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
