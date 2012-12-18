@@ -10,5 +10,22 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
+local warnRockets				= mod:NewCastAnnounce(133212, 4)
+
+local timerRockets				= mod:NewBuffActiveTimer(9, 133212)
+
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+
+local brawlersMod = DBM:GetModByName("Brawlers")
+
+function mod:SPELL_CAST_START(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
+	if args:IsSpellID(133212) then
+		warnRockets:Show()
+		timerRockets:Start()--First one is 5 seconds after combat start
+		if brawlersMod:PlayerFighting() then
+			specWarnFireWall:Show()
+		end
+	end
+end

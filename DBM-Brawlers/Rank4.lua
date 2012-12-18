@@ -12,3 +12,5 @@ mod:RegisterEvents(
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+
+local brawlersMod = DBM:GetModByName("Brawlers")
