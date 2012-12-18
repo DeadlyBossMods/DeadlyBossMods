@@ -65,6 +65,7 @@ local timerReinforcementsCD				= mod:NewNextCountTimer(50, "ej6554")--EJ says it
 local timerImpalingSpear				= mod:NewTargetTimer(50, 122224)--Filtered to only show your own target, may change to a popup option later that lets you pick whether you show ALL of them or your own (all will be spammy)
 local timerAmberPrisonCD				= mod:NewCDTimer(36, 121876)--each add has their own CD. This is on by default since it concerns everyone.
 local timerCorrosiveResinCD				= mod:NewCDTimer(36, 122064)--^^
+local timerResidue						= mod:NewBuffActiveTimer(120, 122055)
 local timerMendingCD					= mod:NewNextTimer(36, 122193, nil, false)--To reduce bar spam, only those dealing with this should turn CD bar on, off by default
 local timerQuickeningCD					= mod:NewNextTimer(36, 122149, nil, false)--^^
 local timerKorthikStrikeCD				= mod:NewCDTimer(32, 123963)--^^
@@ -145,6 +146,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCorrosiveResin:Show()
 			yellCorrosiveResin:Yell()
 		end
+	elseif args:IsSpellID(122055) and args:IsPlayer() then
+		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
+		timerResidue:Start(expires-GetTime())
 	elseif args:IsSpellID(125873) then
 		addsCount = addsCount + 1
 		warnRecklessness:Show(args.destName)

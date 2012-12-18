@@ -83,7 +83,7 @@ local timerShieldOfDarknessCD  	= mod:NewNextTimer(42.5, 117697)
 local timerMaddeningShoutCD		= mod:NewCDTimer(47, 117708)--47-50 sec variation. So a CD timer instead of next.
 local timerDeliriousCD			= mod:NewCDTimer(20.5, 117837, nil, mod:CanRemoveEnrage())
 --Qiang
-local timerMassiveAttackCD		= mod:NewCDTimer(5, 117921, nil, mod:IsTank())
+local timerMassiveAttackCD		= mod:NewCDTimer(5, 117921)--This timer needed for all players to figure out Flanking Orders moves.
 local timerAnnihilateCD			= mod:NewNextTimer(39, 117948)
 local timerFlankingOrdersCD		= mod:NewCDTimer(40, 117910)--Every 40 seconds on normal, but on heroic it has a 40-50 second variation so has to be a CD bar instead of next
 local timerImperviousShieldCD	= mod:NewCDTimer(42, 117961)
