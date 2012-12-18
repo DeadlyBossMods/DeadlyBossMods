@@ -13,6 +13,8 @@ mod:RegisterEvents(
 
 local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
 
+local berserkTimer				= mod:NewBerserkTimer(120)
+
 mod:AddBoolOption("SpectatorMode", true)
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -70,11 +72,13 @@ end
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
 		matchActive = true
+		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
 		matchActive = false
-		local mod = DBM:GetModByName("BrawlRank" .. currentRank)
-		if mod then
-			mod:Stop()--Stop all timers and warnings
+		self:Stop()
+		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
+		if mod2 then
+			mod2:Stop()--Stop all timers and warnings
 		end
 	end
 end
