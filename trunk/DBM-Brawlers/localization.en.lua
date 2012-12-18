@@ -47,7 +47,7 @@ L:SetMiscLocalization({
 	Lost5			= "you're gonna have to break a few eggs",
 	Lost6			= "try not to die so much",
 	Lost7			= "what a mess",
-	Lost8			= "His name was",--LoL at fight club reference here
+	Lost8			= "name was",--LoL at fight club reference here
 	Lost9			= "did not end well"
 })
 
