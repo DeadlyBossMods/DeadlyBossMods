@@ -24,8 +24,5 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(133212) then
 		warnRockets:Show()
 		timerRockets:Start()--First one is 5 seconds after combat start
-		if brawlersMod:PlayerFighting() then
-			specWarnFireWall:Show()
-		end
 	end
 end
