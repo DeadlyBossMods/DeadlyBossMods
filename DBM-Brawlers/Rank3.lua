@@ -10,7 +10,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warnPyroblast				= mod:NewCastAnnounce(132666, 3)--Hits fairly hard, interruptable, not make or break though. So no special warning. If it hits you you won't wipe.
+local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Hits fairly hard, interruptable, not make or break though. So no special warning. If it hits you you won't wipe.
 local warnFireWall				= mod:NewSpellAnnounce(132666, 4)
 local warnDevastatingThrust		= mod:NewSpellAnnounce(134777, 4)--1.5 second cast, does 2 million damage. pretty brutal
 
