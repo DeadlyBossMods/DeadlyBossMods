@@ -5,6 +5,7 @@
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mogu'shangewölbe|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Подземелья Могу'шан|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0魔古山宝库|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Caveaux Mogu’shan|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -18,6 +19,7 @@
 ## X-DBM-Mod-Name-ruRU: Дворец Могу'шан
 ## X-DBM-Mod-Name-zhTW: 魔古山寶庫
 ## X-DBM-Mod-Name-zhCN: 魔古山宝库
+## X-DBM-Mod-Name-frFR: Caveaux Mogu’shan
 ## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZoneID: 896
 localization.en.lua
@@ -28,6 +30,7 @@ localization.de.lua
 localization.ru.lua
 localization.tw.lua
 localization.cn.lua
+localization.fr.lua
 MapSizes.lua
 StoneGuard.lua
 Feng.lua
