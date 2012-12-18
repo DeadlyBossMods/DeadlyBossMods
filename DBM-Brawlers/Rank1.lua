@@ -49,6 +49,9 @@ function mod:SPELL_CAST_START(args)
 		if brawlersMod:PlayerFighting() then
 			specWarnHeatedPokers:Show()
 		end
+	elseif args:IsSpellID(134740) then
+		warnVolatileFlames:Show()
+		timerVolatileFlamesCD:Start()
 	elseif args:IsSpellID(133607) then
 		warnFireLine:Show()
 		timerFireLineCD:Start()--First one is 9-10 seconds after combat start
