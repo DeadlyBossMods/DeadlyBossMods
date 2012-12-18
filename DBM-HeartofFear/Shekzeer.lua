@@ -19,8 +19,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
-local warnScreech				= mod:NewSpellAnnounce(123735, 3, nil, mod:IsRanged())
-local warnCryOfTerror			= mod:NewTargetAnnounce(123788, 3, nil, mod:IsHealer())
+local warnScreech				= mod:NewSpellAnnounce(123735, 3, nil, false)--Not useful.
+local warnCryOfTerror			= mod:NewTargetAnnounce(123788, 3)
 local warnEyes					= mod:NewStackAnnounce(123707, 2, nil, mod:IsTank())
 local warnSonicDischarge		= mod:NewSoonAnnounce(123504, 4)--Iffy reliability but better then nothing i suppose.
 local warnRetreat				= mod:NewSpellAnnounce(125098, 4)
