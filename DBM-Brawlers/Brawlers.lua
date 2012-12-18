@@ -71,6 +71,7 @@ end
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
+		self:Stop()--Sometimes bizmo doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		matchActive = true
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
