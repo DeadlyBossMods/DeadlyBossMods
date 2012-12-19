@@ -19,7 +19,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	Bizmo			= "Bizmo",
+	Bizmo			= "Bizmo",--Alliance
+	Bazzelflange	= "Boss Bazzelflange",--Horde
 	--I wish there was a better way to do this....so much localizing. :(
 --	Rank			= "Rank (%d+)",--Experimental "Entering arena" detection by scanning for Rank plus number
 --	EnteringArena1	= "Now entering the arena",

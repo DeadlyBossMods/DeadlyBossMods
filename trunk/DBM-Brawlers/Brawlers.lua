@@ -58,10 +58,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank8) then
 		currentFighter = target
 		currentRank = 8
-	elseif target then--we have a target but it's not a match start yell, this means it's a match end yell.(he only targets players on begin and end, not mid fight yells)
+	elseif (npc == L.Bizmo or npc == L.Bazzelflange) and target then--we have a target but it's not a match start yell, this means it's a match end yell.(he only targets players on begin and end, not mid fight yells)
+		print(target, "No Rank Text, likely a match end")
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
 	else
+		print("Yell with no target. Useless yell we ignore.")
 		isMatchBegin = false
 	end
 	if isMatchBegin then
