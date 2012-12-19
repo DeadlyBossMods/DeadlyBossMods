@@ -37,7 +37,8 @@ L:SetOptionLocalization({
 	warnHideOver			= "$spell:123244 종료 알림 보기",
 	timerSpecialCD			= "$spell:123244 또는 $spell:123461 대기시간 바 표시",
 	SetIconOnGuard			= "$journal:6224에 전술 목표 아이콘 설정",
-	RangeFrame				= "$spell:123121 주문에 대한 거리 프레임 표시(3m/방어전담만)"
+	RangeFrame				= "$spell:123121 주문에 대한 거리 프레임 표시(3m/방어전담만)",
+	GWHealthFrame			= "$spell:123461 주문 사라짐까지 남은 체력을 체력 프레임에 표시"
 })
 
 L:SetMiscLocalization{

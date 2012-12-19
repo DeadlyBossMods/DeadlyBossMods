@@ -38,8 +38,11 @@ local timerScaryFogCD					= mod:NewNextTimer(10, 123705)
 local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("HealthFrame", true)
+mod:AddBoolOption("GWHealthFrame", true)
 mod:AddBoolOption("SetIconOnGuard", true)
 
+local getAwayHP = 0 -- because max health is different between Asian and US 25-man encounter. Calculate manually.
 local specialsCast = 0
 local hideActive = false
 local lastProtect = 0
@@ -85,11 +88,49 @@ do
 	end
 end
 
+local showDamagedHealthBar, hideDamagedHealthBar
+do
+	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
+	local damagedMob
+	local hpRemaining = 0
+	local maxhp = 0
+	local function getDamagedHP()
+		return math.max(1, math.floor(hpRemaining / maxhp * 100))
+	end
+	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, _, _, _, _, _, destGUID, _, _, _, ...)
+		if damagedMob == destGUID then
+			local damage
+			if subEvent == "SWING_DAMAGE" then 
+				damage = select( 1, ... ) 
+			elseif subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then 
+				damage = select( 4, ... )
+			end
+			if damage then
+				hpRemaining = hpRemaining - damage
+			end
+		end
+	end)
+	
+	function showDamagedHealthBar(self, mob, spellName, health)
+		damagedMob = mob
+		hpRemaining = health
+		maxhp = health
+		DBM.BossHealth:RemoveBoss(getDamagedHP)
+		DBM.BossHealth:AddBoss(getDamagedHP, spellName)
+	end
+	
+	function hideDamagedHealthBar()
+		DBM.BossHealth:RemoveBoss(getDamagedHP)
+	end
+end
+
 function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)
 	end
 	resetguardstate()
+	getAwayHP = 0
 	specialsCast = 0
 	hideActive = false
 	lastProtect = 0
@@ -113,10 +154,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123250) then
 		local elapsed, total = timerSpecialCD:GetTime()
 		specialRemaining = total - elapsed
-		lastProtect = GetTime()
-		timerSpecialCD:Cancel()
+		lastProtect = GetTime()		
 		warnProtect:Show()
 		specWarnAnimatedProtector:Show()
+		self:Schedule(0.2, function()
+			timerSpecialCD:Cancel()
+		end)
 	elseif args:IsSpellID(123505) and self.Options.SetIconOnGuard then
 		if guardActivated == 0 then
 			resetguardstate()
@@ -134,6 +177,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerGetAway:Start(45)
 		else
 			timerGetAway:Start()
+		end
+		if self.Options.GWHealthFrame then
+			local getAwayHealth = math.floor(UnitHealthMax("boss1") * 0.04)
+			showDamagedHealthBar(self, args.sourceGUID, args.spellName, getAwayHealth)
 		end
 	elseif args:IsSpellID(123121) then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -172,6 +219,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSpray:Cancel(args.destName)
 	elseif args:IsSpellID(123461) then
 		timerGetAway:Cancel()
+		if self.Options.GWHealthFrame then
+			hideDamagedHealthBar()
+		end
 	end
 end
 
