@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/2/2012
+-- Last update: 12/19/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -41,7 +41,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "特殊警报：$spell:123244效果结束时",
 	timerSpecialCD			= "计时条：下一次特殊能力",
-	SetIconOnGuard			= "为$journal:6224的目标添加团队标记"
+	SetIconOnGuard			= "为$journal:6224的目标添加团队标记",
+	RangeFrame				= "距离监视（3码）：应对$spell:123121（仅显示坦克位置）"
 })
 
 
@@ -55,3 +56,6 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetOptionLocalization({
+	RangeFrame			= "距离监视（2码）：应对$spell:119519"
+})
