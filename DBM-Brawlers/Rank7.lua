@@ -23,6 +23,6 @@ function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args:IsSpellID(133212) then
 		warnRockets:Show()
-		timerRockets:Schedule(4)--First one is 5 seconds after combat start
+		timerRockets:Schedule(4)
 	end
 end
