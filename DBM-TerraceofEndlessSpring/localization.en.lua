@@ -39,7 +39,7 @@ L:SetOptionLocalization({
 	timerSpecialCD			= "Show timer for when next special ability will be cast",
 	SetIconOnGuard			= "Set icons on $journal:6224",
 	RangeFrame				= "Show range frame (3) for $spell:123121\n(Only shows tanks)",
-	GWHealthFrame			= "Show remaning health frame for $spell:123461 fades" -- maybe bad wording, needs review
+	GWHealthFrame			= "Show remaining health frame for $spell:123461 fades\n(Requires boss health frame enabled)" -- maybe bad wording, needs review
 })
 
 L:SetMiscLocalization{
