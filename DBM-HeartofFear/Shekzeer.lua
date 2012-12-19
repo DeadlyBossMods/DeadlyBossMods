@@ -62,7 +62,7 @@ local timerPhase2				= mod:NewNextTimer(151, 125098)--152 until trigger, but pro
 local timerCalamityCD			= mod:NewCDTimer(6, 124845, nil, mod:IsHealer())
 local timerVisionsCD			= mod:NewCDTimer(19.5, 124862)
 local timerConsumingTerrorCD	= mod:NewCDTimer(32, 124849, nil, not mod:IsTank())
-local timerHeartOfFear			= mod:NewBuffActiveTimer(6, 125638)
+local timerHeartOfFear			= mod:NewBuffFadesTimer(6, 125638)
 
 local berserkTimer				= mod:NewBerserkTimer(900)
 
