@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/13/2012
+-- Last update: 12/19/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -51,7 +51,8 @@ L:SetMiscLocalization({
 	Lost5			= "想要收获，你就得先付出。",
 	Lost6			= "拜托你下回别再死那么多次了。",
 	Lost7			= "呃……真是一团糟",
-	Lost8			= "他的名字是",--LoL at fight club reference here
+	Lost8			= "的名字是",--LoL at fight club reference here
+	Lost9			= "did not end well"
 })
 
 ------------

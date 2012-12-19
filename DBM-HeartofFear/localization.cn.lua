@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/12/2012
+-- Last update: 12/19/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -10,10 +10,14 @@ local L
 L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
+	warnAttenuation		= "%s：%s (%s)",
+	specwarnAttenuation	= "%s：%s (%s)",
 	specwarnPlatform	= "换平台"
 })
 
 L:SetOptionLocalization({
+	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
+	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
 	specwarnPlatform	= "特殊警报：改变平台",
 	ArrowOnAttenuation	= "DBM箭头：在$spell:127834阶段指示移动方向",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
@@ -21,7 +25,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "%s朝他其中一个平台飞去了！",
-	Defeat				= "我们不会向黑暗虚空的绝望屈服。如果女皇要我们去死，我们便照做。"
+	Defeat				= "我们不会向黑暗虚空的绝望屈服。如果女皇要我们去死，我们便照做。",
+	Left				= "左",
+	Right				= "右"
 })
 
 
