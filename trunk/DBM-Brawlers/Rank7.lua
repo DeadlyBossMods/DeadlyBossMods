@@ -39,11 +39,12 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
 	if args:IsSpellID(133015) then
+		remainingMines = 8
 		warnMinesSpawning:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnMinesSpawning:Show()
 		end
-	elseif args:IsSpellID(133018) then
-		remainingMines = 8
+--[[	elseif args:IsSpellID(133018) then
+		remainingMines = 8--]]
 	end
 end
