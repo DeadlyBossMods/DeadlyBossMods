@@ -12,17 +12,17 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local warnThrowNet				= mod:NewSpellAnnounce(133308, 3)--Pretty dangerous but probably no need for special warning.
-local warnGoblinDevice			= mod:NewSpellAnnounce(133227, 4)
 local warnSummonTwister			= mod:NewSpellAnnounce(132670, 3)
 local warnStormCloud			= mod:NewSpellAnnounce(135234, 3)--Can be interrupted
+local warnThrowNet				= mod:NewSpellAnnounce(133308, 3)--Pretty dangerous but probably no need for special warning.
+local warnGoblinDevice			= mod:NewSpellAnnounce(133227, 4)
 
-local specWarnGoblinDevice		= mod:NewSpecialWarningSpell(133227)--This is debuff cast, it makes YOU drop mines 3-4 seconds later. you can drop these where you want.
 local specWarnStormCloud		= mod:NewSpecialWarningInterrupt(135234)
+local specWarnGoblinDevice		= mod:NewSpecialWarningSpell(133227)--This is debuff cast, it makes YOU drop mines 3-4 seconds later. you can drop these where you want.
 
+local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670)--15-17 sec variation
 local timerThrowNetCD			= mod:NewCDTimer(20, 133308)
 local timerGoblinDeviceCD		= mod:NewCDTimer(22, 133227)
-local timerSummonTwisterCD		= mod:NewCDTimer(15, 132670)--15-17 sec variation
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
