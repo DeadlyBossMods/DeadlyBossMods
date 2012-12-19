@@ -1,4 +1,4 @@
--- Last update: 12/17/2012 (17/12/2012 in french format)
+﻿-- Last update: 12/19/2012 (19/12/2012 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -42,7 +42,8 @@ L:SetOptionLocalization({
 	warnHideOver			= "Alerte quand $spell:123244 est fini",
 	timerSpecialCD			= "Afficher le temps avant que la prochaine capacité spécial ne sois lancé",
 	SetIconOnGuard			= "Mettre un icone sur les $journal:6224",
-	RangeFrame				= "Afficher le cadre de distance (3m) pour $spell:123121\n(Ne montre que les Tank)"
+	RangeFrame				= "Afficher le cadre de distance (3m) pour $spell:123121\n(Ne montre que les Tank)",
+	GWHealthFrame			= "Afficher le cadre de la vie restante avant que $spell:123461 soit fini\n(Nécessite que le cadre de vie des Boss sois activé)"
 })
 
 L:SetMiscLocalization{
