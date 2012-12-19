@@ -57,6 +57,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank8) then
 		currentFighter = target
 		currentRank = 8
+	--this only works if currentFighter is correct target, if it's not, then this fails
 	elseif currentFighter and target == currentFighter and (npc == L.Bizmo or npc == L.Bazzelflange) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
 --		print(target, "No Rank Text, likely a match end")
 		self:SendSync("MatchEnd")
@@ -71,13 +72,15 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			playerIsFighting = true
 		end
 		self:SendSync("MatchBegin")
---[[	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8) or msg:find(L.Lost9)) then
-		self:SendSync("MatchEnd")--]]
+	--And we STILL need these as backup cause sometimes the announcers do not target the player on match begin making currentFighter invalid
+	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8) or msg:find(L.Lost9)) then
+		self:SendSync("MatchEnd")
 	end
 end
 
 --TODO: Maybe add a PLAYE_REGEN_DISABLED event that checks current target for deciding what special bars to start on engage.
 function mod:PLAYER_REGEN_ENABLED()
+	--Yet another backup for failed match end detection. this only works if you're grouped with the fighter.
 	if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
 		playerIsFighting = false
 		self:SendSync("MatchEnd")
@@ -85,7 +88,9 @@ function mod:PLAYER_REGEN_ENABLED()
 end
 
 function mod:UNIT_DIED(args)
-	if currentFighter and currentFighter == DBM:GetUnitFullName(args.destName) then--They wiped.
+	--Another backup wipe mechanic that only works if player is on same realm as you. Cannot use fullname check cause if they aren't in group we don't have a GUID for them
+	--Plus, if currentFighter is invalid, it's also useless, which is about 1/3 fights
+	if currentFighter and currentFighter == args.destName then--They wiped.
 		self:SendSync("MatchEnd")
 	end
 end
