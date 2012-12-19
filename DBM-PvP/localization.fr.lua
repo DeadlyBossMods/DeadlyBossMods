@@ -1,8 +1,7 @@
-﻿if GetLocale() ~= "frFR" then return end
-
+﻿-- Last update: 12/20/2012 (20/12/2012 in french format)
+-- By Edoz (stephanelc35@msn.com)
+if GetLocale() ~= "frFR" then return end
 local L
-
--- Last update: 01/19/2011 (by Sasmira)
 
 ----------------------------
 --  General BG functions  --
@@ -20,7 +19,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ColorByClass	= "Met le nom en couleur en fonction de la classe dans le tableau des scores",
 	ShowInviteTimer	= "Affiche le temps restant pour rejoindre le Champ de bataille",
-	AutoSpirit		= "Auto-rez à un Ange"
+	AutoSpirit		= "Auto-rez à un Ange",
+	HideBossEmoteFrame	= "Masquez les cadres d'émotes de boss de raid"
 })
 
 L:SetMiscLocalization({
@@ -190,13 +190,15 @@ L:SetOptionLocalization({
 	TimerPOI			= "Montre le timer pour les captures",
 	TimerSiegeEngine	= "Montre le timer de la construction des Engins de Siège",
 	WarnSiegeEngine		= "Alerter lorsque l'Engin de Siège est prêt",
-	WarnSiegeEngineSoon	= "Alerter lorsque l'Engin de Siège est presque prêt"
+	WarnSiegeEngineSoon	= "Alerter lorsque l'Engin de Siège est presque prêt",
+	ShowGatesHealth		= "Afficher la vie des portes endommagées (les valeurs peuvent être fausses après avoir rejoint un champ de bataille déjà en cours !))"
 })
 
 L:SetMiscLocalization({
 	BgStart60				= "Début de la bataille dans 60 secondes.",
 	BgStart30				= "Début de la bataille dans 30 secondes.",
 	BgStart15				= "Début de la bataille dans 15 secondes.",
+	GatesHealthFrame		= "Portes endommagées",
 	SiegeEngine				= "Engin de Siège",
 	GoblinStartAlliance	= "Regarder ces Bombes d'hydroglycérine ? Utilisez-les sur les portes alors que je répare l'engin de siège !",
 	GoblinStartHorde		= "Je travaillerai sur l'engin de siège, regarde juste mon dos. Utilse ces  Bombes d'hydroglycérine sur les portes si tu en as besoin !",
@@ -230,7 +232,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "Le Drapeau (%w+) a été renvoyé à la base par (.+) !",
 	FlagAlliance			= "Drapeau Alliance: ",
 	FlagHorde			= "Drapeau Horde: ",
-	FlagBase			= "Base"
+	FlagBase			= "Base",
+	Vulnerable1		= "Le porteur du drapeau est vulnérable aux attaques !",
+	Vulnerable2		= "Le porteur du drapeau devient encore plus vulnérable aux attaques !"
 })
 
 L:SetTimerLocalization({
@@ -242,7 +246,7 @@ L:SetOptionLocalization({
 	TimerStart  				= "Voir: Temps de départ du BG",
 	TimerFlag 					= "Montre le timer du respawn du drapeau",
 	ShowFlagCarrier				= "Montre le porteur du drapeau",
-	ShowFlagCarrierErrorNote 		= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat",
+	ShowFlagCarrierErrorNote 	= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat",
 
 })
 
