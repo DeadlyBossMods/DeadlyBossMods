@@ -38,7 +38,8 @@ L:SetOptionLocalization({
 	warnHideOver			= "Show warning when $spell:123244 has ended",
 	timerSpecialCD			= "Show timer for when next special ability will be cast",
 	SetIconOnGuard			= "Set icons on $journal:6224",
-	RangeFrame				= "Show range frame (3) for $spell:123121\n(Only shows tanks)"
+	RangeFrame				= "Show range frame (3) for $spell:123121\n(Only shows tanks)",
+	GWHealthFrame			= "Show remaning health frame for $spell:123461 fades" -- maybe bad wording, needs review
 })
 
 L:SetMiscLocalization{
