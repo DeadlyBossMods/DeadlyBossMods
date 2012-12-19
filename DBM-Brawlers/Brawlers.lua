@@ -58,6 +58,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank8) then
 		currentFighter = target
 		currentRank = 8
+	elseif target then--we have a target but it's not a match start yell, this means it's a match end yell.(he only targets players on begin and end, not mid fight yells)
+		self:SendSync("MatchEnd")
+		isMatchBegin = false
 	else
 		isMatchBegin = false
 	end
@@ -67,8 +70,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			playerIsFighting = true
 		end
 		self:SendSync("MatchBegin")
-	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8) or msg:find(L.Lost9)) then
-		self:SendSync("MatchEnd")
+--[[	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8) or msg:find(L.Lost9)) then
+		self:SendSync("MatchEnd")--]]
 	end
 end
 
