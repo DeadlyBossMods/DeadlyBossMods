@@ -49,6 +49,7 @@ local timerSummonUnstableShaCD			= mod:NewCDTimer(18, "ej6320", nil, nil,nil, "I
 local timerSummonEmbodiedTerrorCD		= mod:NewCDTimer(41, "ej6316", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local timerTerrorizeCD					= mod:NewNextTimer(14, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
 local timerSunBreathCD					= mod:NewCDTimer(29, 122855)
+local timerBathedinLight				= mod:NewBuffFadesTimer(6, 122858, nil, mod:IsHealer())
 --local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, heroic logs i was sent always wiped VERY early in light phase.
 
 local berserkTimer						= mod:NewBerserkTimer(490)--a little over 8 min, basically 3rd dark phase is auto berserk.
@@ -134,6 +135,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(123012) and args:GetDestCreatureID() == 62442 then
 		warnTerrorize:Show(args.destName)
 		specWarnTerrorize:Show(args.destName)
+	elseif args:IsSpellID(122858) and args:IsPlayer() then
+		timerBathedinLight:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

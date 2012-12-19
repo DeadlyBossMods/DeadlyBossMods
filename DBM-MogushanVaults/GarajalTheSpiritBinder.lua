@@ -136,7 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			self:SendSync("VoodooTargets", args.destGUID)
 		end
 	elseif args:IsSpellID(116161, 116260) then -- 116161 is normal and heroic, 116260 is lfr.
-		if args:IsPlayer() then
+		if args:IsPlayer() and self:AntiSpam(2, 3) then
 			warnSuicide:Schedule(25)
 			countdownCrossedOver:Start(29)
 			timerCrossedOver:Start(29)
@@ -152,8 +152,14 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			countdownCrossedOver:Start(29)
 			warnSuicide:Schedule(25)
 		end
-	elseif args:IsSpellID(117543, 117549) and args:IsPlayer() then -- 117543 is healer spell, 117549 is dps spell
+	elseif args:IsSpellID(117543) and args:IsPlayer() then -- 117543 is healer spell, 117549 is dps spell
 		timerSpiritualInnervation:Start()
+	elseif args:IsSpellID(117549) and args:IsPlayer() then -- 117543 is healer spell, 117549 is dps spell
+		if self:IsDifficulty("lfr25") then
+			timerSpiritualInnervation:Start(40)
+		else
+			timerSpiritualInnervation:Start()
+		end
 	elseif args:IsSpellID(117723) and args:IsPlayer() then
 		timerFrailSoul:Start()
 	end
@@ -164,7 +170,7 @@ function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actua
 	if args:IsSpellID(116161, 116260) and args:IsPlayer() then
 		warnSuicide:Cancel()
 		countdownCrossedOver:Cancel()
-		timerCrossedOver:Cancel()	
+		timerCrossedOver:Cancel()
 	elseif args:IsSpellID(116278) and args:IsPlayer() then
 		timerSoulSever:Cancel()
 		warnSuicide:Cancel()

@@ -97,7 +97,7 @@ local timerArcaneShock				= mod:NewTargetTimer(20, 131790, nil, mod:IsTank())
 local timerArcaneShockCD			= mod:NewCDTimer(9, 131790, nil, mod:IsTank())--not comfirmed
 local timerArcaneResonanceCD		= mod:NewCDTimer(15, 116417)--CD is also duration, it's just cast back to back to back.
 local timerArcaneVelocityCD			= mod:NewCDCountTimer(18, 116364)--18 seconds after last ended.
-local timerArcaneVelocity			= mod:NewCastTimer(8, 116364)
+local timerArcaneVelocity			= mod:NewBuffActiveTimer(8, 116364)
 
 --Shadow/Shield (Heroic Only)
 local timerShadowBurn				= mod:NewTargetTimer(20, 131792, nil, mod:IsTank())
@@ -179,6 +179,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		sparkCount = 0
 		specialCount = specialCount + 1
 		warnDrawFlame:Show(specialCount)
+		timerDrawFlame:Start()
 		specWarnDrawFlame:Show()
 	elseif args:IsSpellID(116821) then
 		wildfireCount = 1
