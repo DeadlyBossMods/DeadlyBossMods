@@ -57,7 +57,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank8) then
 		currentFighter = target
 		currentRank = 8
-	elseif (npc == L.Bizmo or npc == L.Bazzelflange) and target ~= "" then--we have a target but it's not a match start yell, this means it's a match end yell.(he only targets players on begin and end, not mid fight yells)
+	elseif currentFighter and target == currentFighter and (npc == L.Bizmo or npc == L.Bazzelflange) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
 --		print(target, "No Rank Text, likely a match end")
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
@@ -97,6 +97,7 @@ function mod:OnSync(msg)
 		matchActive = true
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
+		currentFighter = nil
 		matchActive = false
 		self:Stop()
 		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
