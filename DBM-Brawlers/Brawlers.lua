@@ -9,7 +9,8 @@ mod:SetZone()
 mod:RegisterEvents(
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_DIED"
 )
 
 local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
@@ -23,6 +24,7 @@ mod:RemoveOption("SpeedKillTimer")
 
 local matchActive = false
 local playerIsFighting = false
+local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
 
 function mod:PlayerFighting() -- for external mods
@@ -33,20 +35,28 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 --	"<17.2 15:06:00> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Now entering the arena: a Rank 1 human warrior, Omegal! Omegal is pretty new around here, so go easy!#Bizmo###Omegal##0#0##0#988##0#false#false"
 	local isMatchBegin = true
 	if msg:find(L.Rank1) then
+		currentFighter = target
 		currentRank = 1
 	elseif msg:find(L.Rank2) then
+		currentFighter = target
 		currentRank = 2
 	elseif msg:find(L.Rank3) then
+		currentFighter = target
 		currentRank = 3
 	elseif msg:find(L.Rank4) then
+		currentFighter = target
 		currentRank = 4
 	elseif msg:find(L.Rank5) then
+		currentFighter = target
 		currentRank = 5
 	elseif msg:find(L.Rank6) then
+		currentFighter = target
 		currentRank = 6
 	elseif msg:find(L.Rank7) then
+		currentFighter = target
 		currentRank = 7
 	elseif msg:find(L.Rank8) then
+		currentFighter = target
 		currentRank = 8
 	else
 		isMatchBegin = false
@@ -76,6 +86,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
 			playerIsFighting = false
 		end
+		self:SendSync("MatchEnd")
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if currentFighter and currentFighter == args.destName then--They wiped.
 		self:SendSync("MatchEnd")
 	end
 end
