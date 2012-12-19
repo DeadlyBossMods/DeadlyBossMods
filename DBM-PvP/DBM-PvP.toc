@@ -9,6 +9,7 @@
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
 ## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
 ## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0JxJ|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -25,9 +26,10 @@
 ## X-DBM-Mod-SubCategories-esES: Arena,Campos de Batallas
 ## X-DBM-Mod-SubCategories-esMX: Arena,Campos de Batallas
 ## X-DBM-Mod-SubCategories-ptBR: Arena,Campos de Batalha
+## X-DBM-Mod-SubCategories-frFR: Arène,Champs de Bataille
 ## X-DBM-Mod-Name: PvP
 ## X-DBM-Mod-Name-deDE: PvP
-## X-DBM-Mod-Name-frFR: Champs de bataille
+## X-DBM-Mod-Name-frFR: PvP
 ## X-DBM-Mod-Name-ruRU: Игрок против игрока
 ## X-DBM-Mod-Name-zhTW: PvP
 ## X-DBM-Mod-Name-zhCN: PvP

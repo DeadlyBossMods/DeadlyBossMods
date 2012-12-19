@@ -1,4 +1,4 @@
-﻿-- Last update: 12/17/2012 (17/12/2012 in french format)
+﻿-- Last update: 12/20/2012 (20/12/2012 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -19,17 +19,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "Alerte spéciale quand c'est à vous de combattre",
-	SpectatorMode		= "Voir l'alerte/temps lorsque vous êtes en mode spectateur"
+	SpectatorMode		= "Voir les alertes/délais lorsque vous êtes en mode spectateur"
 })
 
 L:SetMiscLocalization({
---	Bizmo			= "Bizmo",
+	Bizmo			= "Bizmo",--Alliance
+	Bazzelflange	= "Boss Bazzelflange",--Horde
 	--I wish there was a better way to do this....so much localizing. :(
---	Rank			= "Rank (%d+)",--Experimental "Entering arena" detection by scanning for Rank plus number
---	EnteringArena1	= "Now entering the arena",
---	EnteringArena2	= "Here's our challenger",
---	EnteringArena3	= "Look out... here comes",
---	EnteringArena4	= "Put your hands together",
 	Rank1			= "rang 1",
 	Rank2			= "rang 2",
 	Rank3			= "rang 3",
