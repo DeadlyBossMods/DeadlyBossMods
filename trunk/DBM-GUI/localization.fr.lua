@@ -4,7 +4,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 			= "Psyco/Sasmira/Pettigrow"
+L.TranslationBy 			= "Psyco/Sasmira/Pettigrow/Edoz@EU-Ysondre"
 
 L.OTabBosses	= "Boss"
 L.OTabOptions	= "Options"

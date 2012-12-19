@@ -49,7 +49,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "%d joueurs trouvés avec Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Votre version de Deadly Boss Mods est périmée. Veuillez vous rendre sur www.deadlybossmods.com pour obtenir la dernière version."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\nLa version %s (r%d) est disponible au téléchargement ici:"
-DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites la combinaison Ctrl-C pour copier le lien de téléchargement dans votre presse-papier."
+DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites la combinaison " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " pour copier le lien de téléchargement dans votre presse-papier."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Afficher un popup quand une nouvelle version est disponible"
 
 DBM_CORE_MOVABLE_BAR				= "Bougez-moi !"
@@ -174,7 +174,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target		= "Alerte indiquant le(s) cible(s) de $spell:%s",
 	targetcount	= "Alerte indiquant le(s) cible(s) de $spell:%s",
 	spell		= "Alerte concernant $spell:%s",
-	adds		= "Announce how many $spell:%s remain",
+	adds		= "Alerte indiquant le nombre restant de : $spell:%s",
 	cast		= "Alerte quand $spell:%s est incanté",
 	soon		= prewarnOption,
 	prewarn		= prewarnOption,
