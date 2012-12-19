@@ -23,7 +23,7 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
-local remainingMines = 7
+local remainingMines = 8
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
@@ -44,6 +44,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMinesSpawning:Show()
 		end
 	elseif args:IsSpellID(133018) then
-		remainingMines = 7
+		remainingMines = 8
 	end
 end

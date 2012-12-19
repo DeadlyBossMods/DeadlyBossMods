@@ -20,6 +20,7 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 local matchActive = false
+local lastMatch = 0
 local playerIsFighting = false
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
 
@@ -69,17 +70,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
 			playerIsFighting = false
 		end
-		self:SendSync("MatchEnd")
+		if GetTime() - lastMatch < 10 then
+			self:SendSync("MatchEnd", "T")
+		end
 	end
 end
 
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
-function mod:OnSync(msg)
+function mod:OnSync(msg, source)
 	if msg == "MatchBegin" then
+		lastMatch = GetTime()
 		self:Stop()--Sometimes bizmo doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		matchActive = true
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
+		if source == "T" and GetTime() - lastMatch < 10 then return end--Try to ignore teleport casts from player/monster porting into ring on match start
 		matchActive = false
 		self:Stop()
 		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
