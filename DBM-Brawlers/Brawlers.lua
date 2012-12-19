@@ -7,6 +7,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
+	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -20,7 +21,6 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 local matchActive = false
-local lastMatch = 0
 local playerIsFighting = false
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
 
@@ -61,30 +61,31 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	end
 end
 
---Only fires for target, focus, mouseover. So we still need all the yells for the average user not targeting player.
---None the less, this rendency should catch more match ends if "player" casting it is in a buff group with us.
+--TODO: Maybe add a PLAYE_REGEN_DISABLED event that checks current target for deciding what special bars to start on engage.
+function mod:PLAYER_REGEN_ENABLED()
+	if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
+		playerIsFighting = false
+		self:SendSync("MatchEnd")
+	end
+end
+
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--"<43.1 01:41:37> [UNIT_SPELLCAST_SUCCEEDED] All›nnar [[focus:General Trigger 1::0:136195]]", -- [251]
 	if spellId == 136195 and self:AntiSpam() then
-		print("Brawlers: Teleport Detected")
 		if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
 			playerIsFighting = false
 		end
-		if GetTime() - lastMatch < 10 then
-			self:SendSync("MatchEnd", "T")
-		end
+		self:SendSync("MatchEnd")
 	end
 end
 
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
-function mod:OnSync(msg, source)
+function mod:OnSync(msg)
 	if msg == "MatchBegin" then
-		lastMatch = GetTime()
 		self:Stop()--Sometimes bizmo doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		matchActive = true
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
-		if source == "T" and GetTime() - lastMatch < 10 then return end--Try to ignore teleport casts from player/monster porting into ring on match start
 		matchActive = false
 		self:Stop()
 		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
