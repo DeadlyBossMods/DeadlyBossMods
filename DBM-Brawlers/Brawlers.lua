@@ -14,6 +14,7 @@ mod:RegisterEvents(
 
 local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
 
+--need to add a custom beserk to the only boss that isn't 2 minutes. 68252 (Proboskus). Need a good berserk log that has combat regen or chat yell time.
 local berserkTimer				= mod:NewBerserkTimer(120)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
 
 mod:AddBoolOption("SpectatorMode", true)
