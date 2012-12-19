@@ -40,7 +40,7 @@ local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
 local timerTotalAnnihilation		= mod:NewCastTimer(4, 129711)
-local timerDestabilized				= mod:NewBuffActiveTimer(120, 132226)
+local timerDestabilized				= mod:NewBuffFadesTimer(120, 132226)
 local timerFocusPower				= mod:NewCastTimer(16, 119358)
 local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5-7.5 variation. 6.5 is safed to use so you don't fall and die.
 
