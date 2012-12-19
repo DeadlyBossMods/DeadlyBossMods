@@ -9,7 +9,6 @@ mod:SetZone()
 mod:RegisterEvents(
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
 )
 
@@ -82,17 +81,6 @@ function mod:PLAYER_REGEN_ENABLED()
 	if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
 		playerIsFighting = false
 		self:SendSync("MatchEnd")
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	--"<43.1 01:41:37> [UNIT_SPELLCAST_SUCCEEDED] All›nnar [[focus:General Trigger 1::0:136195]]", -- [251]
-	if spellId == 136195 and self:AntiSpam() then
-		print("Teleport Detected", uId, DBM:GetUnitFullName(uId))
---		if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
---			playerIsFighting = false
---		end
---		self:SendSync("MatchEnd")
 	end
 end
 
