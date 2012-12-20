@@ -21,7 +21,6 @@ mod:AddBoolOption("SpectatorMode", true)
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
-local matchActive = false
 local playerIsFighting = false
 local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
@@ -112,11 +111,9 @@ end
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
 		self:Stop()--Sometimes bizmo doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
-		matchActive = true
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
 		currentFighter = nil
-		matchActive = false
 		self:Stop()
 		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
 		if mod2 then
