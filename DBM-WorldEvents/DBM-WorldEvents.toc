@@ -23,6 +23,7 @@
 ## X-DBM-Mod-SubCategories-esES: Fiestas,Feria de la Luna Negra,Quests
 ## X-DBM-Mod-SubCategories-esMX: Holidays,Darkmoon Faire,Quests
 ## X-DBM-Mod-SubCategories-ptBR: Holidays,Darkmoon Faire,Quests
+## X-DBM-Mod-SubCategories-frFR: Vacances,Foire de Sombrelune,Quêtes
 ## X-DBM-Mod-Name: World Events
 ## X-DBM-Mod-Name-esES: Eventos del Mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события

@@ -9,7 +9,7 @@ local L
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "Options: Champs de bataille"
+	name = "Options générale"
 })
 
 L:SetTimerLocalization({
@@ -34,7 +34,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name = "Arène"
+	name = "Arenas"
 })
 
 L:SetTimerLocalization({
