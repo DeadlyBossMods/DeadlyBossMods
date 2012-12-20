@@ -18,7 +18,7 @@ local warnSolarBeam				= mod:NewSpellAnnounce(129888, 3)
 
 local timerChargingCD			= mod:NewCDTimer(20, 133253)--20-24 sec variation.
 local timerEarthSeedCD			= mod:NewNextTimer(15.5, 134743)
-local timerSolarBeamCD			= mod:NewNextTimer(25.5, 129888)
+local timerSolarBeamCD			= mod:NewCDTimer(18.5, 129888)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
