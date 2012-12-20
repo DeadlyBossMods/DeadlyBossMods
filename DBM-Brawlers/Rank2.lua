@@ -38,7 +38,7 @@ function mod:SPELL_CAST_START(args)
 		warnStormCloud:Show()
 		--CD seems to be 32 seconds usually but sometimes only 16? no timer for now
 		if brawlersMod:PlayerFighting() then
-			specWarnStormCloud:Show()
+			specWarnStormCloud:Show(args.sourceName)
 		end
 	end
 end

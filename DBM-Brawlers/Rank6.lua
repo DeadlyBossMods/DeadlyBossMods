@@ -42,7 +42,7 @@ function mod:SPELL_CAST_START(args)
 		warnChainLightning:Show()
 		timerChainLightningCD:Start()
 		if brawlersMod:PlayerFighting() then
-			specWarnChainLightning:Show()
+			specWarnChainLightning:Show(args.sourceName)
 		end
 	end
 end
