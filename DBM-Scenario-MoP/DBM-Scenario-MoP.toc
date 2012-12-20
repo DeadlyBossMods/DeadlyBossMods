@@ -4,6 +4,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0시나리오-판다리아의 안개|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Szenarien-MoP|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0场景战役|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Scénario-MoP|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMScenarioMoP_SavedVars, DBMScenarioMoP_SavedStats
@@ -15,6 +16,7 @@
 ## X-DBM-Mod-Name-deDE: Szenarien (MoP)
 ## X-DBM-Mod-Name-zhTW: 情境模式(潘達利亞之謎)
 ## X-DBM-Mod-Name-zhCN: 场景战役 (熊猫人之谜)
+## X-DBM-Mod-Name-frFR: Scénario (MoP)
 ## X-DBM-Mod-Sort: 35
 ## X-DBM-Mod-LoadZoneID: 906, 851, 899
 localization.en.lua
@@ -22,6 +24,7 @@ localization.kr.lua
 localization.de.lua
 localization.tw.lua
 localization.cn.lua
+localization.fr.lua
 TheramoresFall\MapSizes.lua
 TheramoresFall\Theramore.lua
 ArenaOfAnnihilation\MapSizes.lua
