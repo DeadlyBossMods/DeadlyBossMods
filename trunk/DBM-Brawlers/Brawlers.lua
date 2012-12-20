@@ -9,7 +9,8 @@ mod:SetZone()
 mod:RegisterEvents(
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
@@ -25,6 +26,7 @@ local matchActive = false
 local playerIsFighting = false
 local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
+local modsStopped = false
 
 function mod:PlayerFighting() -- for external mods
 	return playerIsFighting
@@ -88,6 +90,20 @@ function mod:UNIT_DIED(args)
 	if currentFighter and currentFighter == thingThatDied then--They wiped.
 		self:SendSync("MatchEnd")
 	end
+end
+
+function mod:ZONE_CHANGED_NEW_AREA()
+	local currentZoneID = GetCurrentMapAreaID()
+	if currentZoneID == 922 or currentZoneID == 925 then modsStopped = false return end--We returned to pug, reset variable
+	if modsStopped then return end--Don't need this to fire every time you change zones after the first.
+	self:Stop()
+	for i = 1, 8 do
+		local mod2 = DBM:GetModByName("BrawlRank" .. i)
+		if mod2 then
+			mod2:Stop()--Stop all timers and warnings
+		end
+	end
+	modsStopped = true
 end
 
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
