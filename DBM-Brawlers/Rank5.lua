@@ -23,7 +23,8 @@ local specWarnTorrent		= mod:NewSpecialWarningInterrupt(124935)
 
 local timerPolymorphCD		= mod:NewCDTimer(35, 133362)--Small sample size, may need tweaking.
 local timerDarkZoneCD		= mod:NewNextTimer(29, 133346)
-local timerTorrentCD		= mod:NewCDTimer(18, 124935)--Small sample size, may need tweaking.
+local timerRainDanceCD		= mod:NewCDTimer(18, 124860)--18-25 sec variation
+local timerTorrentCD		= mod:NewCDTimer(18, 124935)--18-22 sec variation
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -46,6 +47,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(124860) then
 		warnRainDance:Show()
+		timerRainDanceCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnRainDance:Show()
 		end
