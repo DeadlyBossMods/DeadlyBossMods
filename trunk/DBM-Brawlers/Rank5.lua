@@ -55,7 +55,7 @@ function mod:SPELL_CAST_START(args)
 		warnTorrent:Show()
 		timerTorrentCD:Start()
 		if brawlersMod:PlayerFighting() then
-			specWarnTorrent:Show()
+			specWarnTorrent:Show(args.sourceName)
 		end
 	end
 end
