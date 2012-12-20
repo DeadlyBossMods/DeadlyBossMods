@@ -28,7 +28,7 @@ local timerEvilGlareCD			= mod:NewNextTimer(6, 133208)
 local timerPowerCrystalCD		= mod:NewCDTimer(13, 133398)--13-17 second variation
 local timerBlueCrushCD			= mod:NewNextTimer(30, 133262)
 local timerDestructolaserCD		= mod:NewNextTimer(30, 133250)
-local timerStaticChargeCD		= mod:NewCDTimer(24, 135621)--24-33 second variation (maybe health based?)
+--local timerStaticChargeCD		= mod:NewCDTimer(24, 135621)--24-33 second variation (maybe health based?)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
