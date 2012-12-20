@@ -15,7 +15,6 @@ mod:RegisterEvents(
 
 local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
 
---need to add a custom beserk to the only boss that isn't 2 minutes. 68252 (Proboskus). Need a good berserk log that has combat regen or chat yell time.
 local berserkTimer				= mod:NewBerserkTimer(120)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
 
 mod:AddBoolOption("SpectatorMode", true)
@@ -70,8 +69,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			playerIsFighting = true
 		end
 		self:SendSync("MatchBegin")
---[[	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Victory7) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8)) then
-		self:SendSync("MatchEnd")--]]
+	end
+	--Only boss with a custom berserk timer. His is 1 minute, but starts at different yell than 2 min berserk, so it's not actually 60 sec shorter but more like 50-55 sec shorter
+	if msg == L.Proboskus or msg:find(L.Proboskus) then
+		berserkTimer:Cancel()
+		berserkTimer:Start(60)
 	end
 end
 
