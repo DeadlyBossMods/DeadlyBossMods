@@ -107,13 +107,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnPungency:Show(args.destName, args.amount)
 		end
 		if args:IsPlayer() then
-			if self:IsDifficulty("normal25", "heroic25") then--Is it also 4 min on LFR?
-				timerPungency:Start(240)
-			elseif self:IsDifficulty("lfr25") then
-				timerPungency:Start(20)
-			else
-				timerPungency:Start()
-			end
+			local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
+			timerPungency:Start(expires-GetTime())
 		end
 	end
 end

@@ -96,6 +96,23 @@ local function warnHuddleInTerrorTargets()
 	table.wipe(huddleInTerrorTargets)
 end
 
+local function leavePlatform()
+	if onPlatform then
+		onPlatform = false
+		platformMob = nil
+		--Breath of fear timer recovery
+		local shaPower = UnitPower("boss1") --Get Boss Power
+		shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
+		if shaPower < 28 then--Don't bother recovery if breath is in 5 or less seconds, we'll get a new one when it's cast.
+			timerBreathOfFearCD:Start(33.3-shaPower)
+			countdownBreathOfFear:Start(33.3-shaPower)
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(2)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 		timerOminousCackleCD:Start(40-delay)
@@ -165,20 +182,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDreadSprayCD:Start()
 	elseif args:IsSpellID(119888) and platformMob and args.sourceName == platformMob then
 		timerDeathBlossom:Show()
-	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform
-		onPlatform = false
-		platformMob = nil
+	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform 
+		leavePlatform()
 		timerFearless:Start()
-		--Breath of fear timer recovery
-		local shaPower = UnitPower("boss1") --Get Boss Power
-		shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
-		if shaPower < 28 then--Don't bother recovery if breath is in 5 or less seconds, we'll get a new one when it's cast.
-			timerBreathOfFearCD:Start(33.3-shaPower)
-			countdownBreathOfFear:Start(33.3-shaPower)
-		end
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(2)
-		end
 	elseif args:IsSpellID(131996) and not onPlatform then
 		warnThrash:Show()
 		specWarnThrash:Show()
@@ -270,6 +276,8 @@ function mod:UNIT_DIED(args)
 	if cid == 61042 or cid == 61046 or cid == 61038 then
 		timerDreadSpray:Cancel(args.destGUID)
 		timerDreadSprayCD:Cancel(args.destGUID)
+		-- If you die on platform, and revived after platform mob die, Fearless will not be applied on you. This stuff will be slove this.
+		self:Schedule(10, leavePlatform)
 	end
 end
 

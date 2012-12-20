@@ -68,8 +68,13 @@ L:SetWarningLocalization({
 	DarknessSoon		= "Shield of Darkness in %ds"
 })
 
+L:SetTimerLocalization({
+	timerUSRevive		= "Undying Shadow Reform"
+})
+
 L:SetOptionLocalization({
 	DarknessSoon		= "Show pre-warning countdown for $spell:117697 (5s before)",
+	timerUSRevive		= "Show timer for $spell:117506 reform",
 	RangeFrame			= "Show range frame (8)"
 })
 
