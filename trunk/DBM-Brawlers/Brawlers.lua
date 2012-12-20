@@ -120,5 +120,13 @@ function mod:OnSync(msg)
 		if mod2 then
 			mod2:Stop()--Stop all timers and warnings
 		end
+		if currentRank == 0 then--We walked in on an in progress match and didn't capture what rank it is, so lets make sure when match ends we stop ALL mods
+			for i = 1, 8 do
+				local mod2 = DBM:GetModByName("BrawlRank" .. i)
+				if mod2 then
+					mod2:Stop()--Stop all timers and warnings
+				end
+			end
+		end
 	end
 end
