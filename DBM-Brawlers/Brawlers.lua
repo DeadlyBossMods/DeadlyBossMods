@@ -31,7 +31,6 @@ function mod:PlayerFighting() -- for external mods
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
---	"<17.2 15:06:00> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Now entering the arena: a Rank 1 human warrior, Omegal! Omegal is pretty new around here, so go easy!#Bizmo###Omegal##0#0##0#988##0#false#false"
 	local isMatchBegin = true
 	if msg:find(L.Rank1) then
 		currentFighter = target
@@ -57,13 +56,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank8) then
 		currentFighter = target
 		currentRank = 8
-	--this only works if currentFighter is correct target, if it's not, then this fails
 	elseif currentFighter and target == currentFighter and (npc == L.Bizmo or npc == L.Bazzelflange) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
---		print(target, "No Rank Text, likely a match end")
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
 	else
---		print("Yell with no target. Useless yell we ignore.")
 		isMatchBegin = false
 	end
 	if isMatchBegin then
@@ -72,7 +68,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			playerIsFighting = true
 		end
 		self:SendSync("MatchBegin")
-	--And we STILL need these as backup cause sometimes the announcers do not target the player on match begin making currentFighter invalid
 --[[	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8) or msg:find(L.Lost9)) then
 		self:SendSync("MatchEnd")--]]
 	end
@@ -80,7 +75,7 @@ end
 
 --TODO: Maybe add a PLAYE_REGEN_DISABLED event that checks current target for deciding what special bars to start on engage.
 function mod:PLAYER_REGEN_ENABLED()
-	--Yet another backup for failed match end detection. this only works if you're grouped with the fighter.
+	--Backup for failed match end detection. this only works if you're grouped with the fighter. This is for when npc doesn't yell on victory or wipe.
 	if playerIsFighting then--We check playerIsFighting to filter bar brawls, this should only be true if we were ported into ring.
 		playerIsFighting = false
 		self:SendSync("MatchEnd")
@@ -88,6 +83,7 @@ function mod:PLAYER_REGEN_ENABLED()
 end
 
 function mod:UNIT_DIED(args)
+	--Another backup for when npc doesn't yell. This is a way to detect a wipe at least.
 	local thingThatDied = string.split("-", args.destName)--currentFighter never has realm name, so we need to strip it from combat log for CRZ support
 	if currentFighter and currentFighter == thingThatDied then--They wiped.
 		self:SendSync("MatchEnd")
