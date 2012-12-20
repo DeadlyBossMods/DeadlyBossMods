@@ -44,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 		if brawlersMod:PlayerFighting() then
 			specWarnDarkZone:Show()
 		end
-	elseif args:IsSpellID(124935) then
+	elseif args:IsSpellID(124860) then
 		warnRainDance:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnRainDance:Show()
