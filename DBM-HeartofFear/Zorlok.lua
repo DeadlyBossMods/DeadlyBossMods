@@ -14,9 +14,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
---	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS",
 	"RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_DIED"
 )
 
 --[[WoL Reg expression
@@ -36,16 +37,15 @@ local specwarnConvert		= mod:NewSpecialWarningSwitch(122740, not mod:IsHealer())
 local specwarnExhale		= mod:NewSpecialWarningTarget(122761, mod:IsHealer() or mod:IsTank())
 local specwarnAttenuation	= mod:NewSpecialWarning("specwarnAttenuation", nil, nil, nil, true)
 
---Timers aren't worth a crap, at all, this is a timerless fight and will probably stay that way unless blizz redesigns it.
+--Timers aren't worth a crap, at all, but added anyways. if people complain about how inaccurate they are tell them to go to below thread or get bent.
 --http://us.battle.net/wow/en/forum/topic/7004456927 for more info on lack of timers.
---local timerExhaleCD			= mod:NewCDTimer(41, 122761)
 local timerExhale				= mod:NewTargetTimer(6, 122761)
---local timerForceCD			= mod:NewCDTimer(48, 122713)--Phase 1, every 41 seconds since exhale keeps resetting it, phase 2, 48 seconds or as wildly high as 76 seconds if exhale resets it late in it's natural CD
+local timerForceCD				= mod:NewCDTimer(35, 122713)--35-50 second variation
 local timerForceCast			= mod:NewCastTimer(4, 122713)
 local timerForce				= mod:NewBuffActiveTimer(12.5, 122713)
---local timerAttenuationCD		= mod:NewCDTimer(34, 127834)--34-41 second variations, when not triggered off exhale. It's ALWAYS 11 seconds after exhale.
+local timerAttenuationCD		= mod:NewCDTimer(32.5, 127834)--32.5-41 second variations, when not triggered off exhale. It's ALWAYS 11 seconds after exhale.
 local timerAttenuation			= mod:NewBuffActiveTimer(14, 127834)
---local timerConvertCD			= mod:NewCDTimer(41, 122740)--totally don't know this CD, but it's probably 41 like other specials in phase 1.
+local timerConvertCD			= mod:NewCDTimer(40, 122740)--40-50 second variations
 
 local berserkTimer				= mod:NewBerserkTimer(660)
 
@@ -54,14 +54,19 @@ mod:AddBoolOption("ArrowOnAttenuation", true)
 
 local MCTargets = {}
 local MCIcon = 8
+local platform = 0
+local EchoAlive = false--Will be used for the very accurate phase 2 timers when an echo is left up on purpose. when convert is disabled the other 2 abilities trigger failsafes that make them predictable. it's the ONLY time phase 2 timers are possible. otherwise they are too variable to be useful
 
 local function showMCWarning()
 	warnConvert:Show(table.concat(MCTargets, "<, >"))
+	timerConvertCD:Start()
 	table.wipe(MCTargets)
 	MCIcon = 8
 end
 
 function mod:OnCombatStart(delay)
+	platform = 0
+	EchoAlive = false
 	table.wipe(MCTargets)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
@@ -77,9 +82,9 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(122852) then
+	if args:IsSpellID(122852) and UnitName("target") == args.sourceName then
 		warnInhale:Show(args.destName, args.amount or 1)
-	elseif args:IsSpellID(122761) then
+	elseif args:IsSpellID(122761) and UnitName("target") == args.sourceName then--probalby won't work for healers but oh well. On heroic if i'm tanking echo i don't want this spam. I only care if i'm tanking boss.
 		warnExhale:Show(args.destName)
 		specwarnExhale:Show(args.destName)
 		timerExhale:Start(args.destName)
@@ -112,6 +117,17 @@ function mod:SPELL_CAST_START(args)
 		warnAttenuation:Show(args.spellName, args.sourceName, L.Left)
 		specwarnAttenuation:Show(args.spellName, args.sourceName, L.Left)
 		timerAttenuation:Start()
+		if platform < 4 then
+			timerAttenuationCD:Start()
+		else
+			if EchoAlive then--if echo isn't active don't do any timers
+				if args:GetSrcCreatureID() == 65173 then--Echo
+					timerAttenuationCD:Start(28, args.sourceGUID)--Because both echo and boss can use it in final phase and we want 2 bars
+				else--Boss
+					timerAttenuationCD:Start(54, args.sourceGUID)
+				end
+			end
+		end
 		if self.Options.ArrowOnAttenuation then
 			DBM.Arrow:ShowStatic(90, 12)
 		end
@@ -125,16 +141,57 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:RAID_BOSS_EMOTE(msg)
-	if msg == L.Platform or msg:find(L.Platform) then
-		specwarnPlatform:Show()
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(124018) then
+		platform = 4--He moved to middle, it's phase 2, although platform "4" is better then adding an extra variable.
+		timerConvertCD:Cancel()
 	end
 end
 
+function mod:RAID_BOSS_EMOTE(msg)
+	if msg == L.Platform or msg:find(L.Platform) then
+		platform = platform + 1
+		specwarnPlatform:Show()
+		timerForceCD:Cancel()
+		timerAttenuationCD:Cancel()
+	end
+end
+
+--"<55.0 21:38:55> [CLEU] UNIT_DIED#true#0x0000000000000000#nil#-2147483648#-2147483648#0xF130FE9600003072#Echo of Force and Verve#68168#0", -- [10971]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 122933 and self:AntiSpam(2, 1) then--Clear Throat (4 seconds before force and verve)
 		warnForceandVerve:Show()
 		specwarnForce:Show()
 		timerForceCast:Start()
+		if platform < 4 then
+			timerForceCD:Start()
+		else
+			if EchoAlive then
+				timerForceCD:Start(54)
+			end
+		end
+	elseif (spellId == 130297 or spellId == 127541) and not EchoAlive then--Echo of Zor'lok
+		EchoAlive = true
+		if platform == 2 then--Boss flew off from first platform to 2nd, and this means the echo that spawned is an Echo of Force and Verve
+--			timerForceCD:Start()
+		elseif platform == 3 then--Boss flew to 3rd platform and left an Echo of Attenuation behind on 2nd.
+--			timerAttenuationCD:Start()
+		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 68168 then--Echo of Force and Verve
+		EchoAlive = false
+		timerForceCD:Cancel()
+	elseif cid == 65173 then--Echo of Attenuation
+		EchoAlive = false
+		if platform < 4 then
+			timerAttenuationCD:Cancel()
+		else--No echo left up in final phase, cancel al timers because they are going to go back to clusterfuck random (as in may weave convert in but may not, and delay other abilities by as much as 30-50 seconds)
+			timerAttenuationCD:Cancel()
+			timerForceCD:Cancel()
+		end
 	end
 end
