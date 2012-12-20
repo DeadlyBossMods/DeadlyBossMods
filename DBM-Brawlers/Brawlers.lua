@@ -73,8 +73,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 		end
 		self:SendSync("MatchBegin")
 	--And we STILL need these as backup cause sometimes the announcers do not target the player on match begin making currentFighter invalid
-	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8) or msg:find(L.Lost9)) then
-		self:SendSync("MatchEnd")
+--[[	elseif matchActive and (msg:find(L.Victory1) or msg:find(L.Victory2) or msg:find(L.Victory3) or msg:find(L.Victory4) or msg:find(L.Victory5) or msg:find(L.Victory6) or msg:find(L.Lost1) or msg:find(L.Lost2) or msg:find(L.Lost3) or msg:find(L.Lost4) or msg:find(L.Lost5) or msg:find(L.Lost6) or msg:find(L.Lost7) or msg:find(L.Lost8) or msg:find(L.Lost9)) then
+		self:SendSync("MatchEnd")--]]
 	end
 end
 
@@ -88,9 +88,8 @@ function mod:PLAYER_REGEN_ENABLED()
 end
 
 function mod:UNIT_DIED(args)
-	--Another backup wipe mechanic that only works if player is on same realm as you. Cannot use fullname check cause if they aren't in group we don't have a GUID for them
-	--Plus, if currentFighter is invalid, it's also useless, which is about 1/3 fights
-	if currentFighter and currentFighter == args.destName then--They wiped.
+	local thingThatDied = string.split("-", args.destName)--currentFighter never has realm name, so we need to strip it from combat log for CRZ support
+	if currentFighter and currentFighter == thingThatDied then--They wiped.
 		self:SendSync("MatchEnd")
 	end
 end
