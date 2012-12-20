@@ -72,8 +72,13 @@ L:SetWarningLocalization({
 	DarknessSoon		= "Bouclier des ténèbres sur %ds"
 })
 
+L:SetTimerLocalization({
+	timerUSRevive		= "Ombres éternelles reconstitué"
+})
+
 L:SetOptionLocalization({
 	DarknessSoon		= "Alerte préventive pour $spell:117697 (5s avant) ",
+	timerUSRevive		= "Délai avec que $spell:117506 ne se reconstitue",
 	RangeFrame			= "Afficher le cadre de distance (8m)"
 })
 
