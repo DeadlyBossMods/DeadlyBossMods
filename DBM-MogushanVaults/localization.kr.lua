@@ -69,8 +69,13 @@ L:SetWarningLocalization({
 	DarknessSoon		= "%d초 후 암흑의 방패"
 })
 
+L:SetTimerLocalization({
+	timerUSRevive		= "불멸의 어둠 재형성"
+})
+
 L:SetOptionLocalization({
 	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 경고 보기(5초 전부터)",
+	timerUSRevive		= "$spell:117506 재형성까지 남은 시간 바 표시",
 	RangeFrame			= "거리 프레임 표시 (8m)"
 })
 
