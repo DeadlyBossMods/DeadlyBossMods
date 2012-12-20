@@ -53,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(135621) then
 		warnStaticCharge:Show()
-		timerStaticChargeCD:Start()
+--		timerStaticChargeCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnStaticCharge:Show(args.sourceName)
 		end
