@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 local warnChomp					= mod:NewSpellAnnounce(135342, 4)
 local warnVolatileFlames		= mod:NewSpellAnnounce(134740, 3)
-local warnFireLine				= mod:NewCastAnnounce(133607, 4)
+local warnFireLine				= mod:NewCastAnnounce(133607, 4, 2)
 local warnLumberingCharge		= mod:NewSpellAnnounce(134527, 4)
 local warnHeatedPokers			= mod:NewSpellAnnounce(133286, 4)
 
