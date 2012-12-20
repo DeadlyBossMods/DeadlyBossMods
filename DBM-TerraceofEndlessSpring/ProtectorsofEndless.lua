@@ -53,7 +53,7 @@ local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, ni
 local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 9)--Amount may need adjusting depending on what becomes an accepted strategy
 
 --Elder Asani
-local timerCleansingWatersCD		= mod:NewNextTimer(32.5, 117309)
+local timerCleansingWatersCD		= mod:NewCDTimer(32.5, 117309)
 local timerCorruptingWatersCD		= mod:NewNextTimer(42, 117227)
 --Elder Regail
 local timerLightningPrisonCD		= mod:NewCDTimer(25, 111850)
