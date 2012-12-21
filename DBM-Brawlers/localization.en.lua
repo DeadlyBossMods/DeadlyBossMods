@@ -15,7 +15,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "Show special warning when it's your match",
-	SpectatorMode		= "Show warnings/timers when spectating fights\n(Personal'Special Warning' messages not shown to spectators)"
+	SpectatorMode		= "Show warnings/timers when spectating fights\n(Personal 'Special Warning' messages not shown to spectators)"
 })
 
 L:SetMiscLocalization({
