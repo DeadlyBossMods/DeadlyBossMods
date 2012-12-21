@@ -15,7 +15,7 @@ local warnRockets				= mod:NewCastAnnounce(133212, 4)
 local warnShadowbolt			= mod:NewSpellAnnounce(125212, 3)
 local warnGhost					= mod:NewSpellAnnounce(133465, 4)
 local warnMines					= mod:NewCountAnnounce(133018, 3)
-local warnMinesSpawning			= mod:NewSpellAnnounce(133018, 4)
+local warnMinesSpawning			= mod:NewSpellAnnounce(133015, 4)
 
 local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for
 local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)
