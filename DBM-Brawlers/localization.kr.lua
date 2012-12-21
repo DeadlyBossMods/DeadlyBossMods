@@ -16,7 +16,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "당신 차례가 오면 특수 경고 보기",
-	SpectatorMode		= "관전자 일때도 알림/바 보기"
+	SpectatorMode		= "관전중 일때도 알림/바 보기\n(개인별 특수 경고는 관전자에게 보이지 않습니다.)"
 })
 
 L:SetMiscLocalization({

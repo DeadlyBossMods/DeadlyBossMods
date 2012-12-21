@@ -37,9 +37,9 @@ local timerScaryFogCD					= mod:NewNextTimer(10, 123705)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("GWHealthFrame", true)
+mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("SetIconOnGuard", false)
 
 local getAwayHP = 0 -- because max health is different between Asian and US 25-man encounter. Calculate manually.
