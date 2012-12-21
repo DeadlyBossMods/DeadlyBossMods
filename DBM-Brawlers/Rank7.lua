@@ -12,12 +12,18 @@ mod:RegisterEvents(
 )
 
 local warnRockets				= mod:NewCastAnnounce(133212, 4)
+local warnShadowbolt			= mod:NewSpellAnnounce(125212, 3)
+local warnGhost					= mod:NewSpellAnnounce(133465, 4)
 local warnMines					= mod:NewCountAnnounce(133018, 3)
 local warnMinesSpawning			= mod:NewSpellAnnounce(133018, 4)
 
+local specWarnShadowbolt		= mod:NewSpecialWarningSpell(125212, false)--Let you choose which one is important to warn for
+local specWarnGhost				= mod:NewSpecialWarningSpell(133465, false)
 local specWarnMinesSpawning		= mod:NewSpecialWarningSpell(133015)
 
 local timerRockets				= mod:NewBuffActiveTimer(9, 133212)
+local timerShadowboltCD			= mod:NewCDTimer(12, 125212)
+local timerGhostCD				= mod:NewNextTimer(13, 133465)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -30,6 +36,18 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(133212) then
 		warnRockets:Show()
 		timerRockets:Schedule(4)
+	elseif args:IsSpellID(125212) then
+		warnShadowbolt:Show()
+		timerShadowboltCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnShadowbolt:Show()
+		end
+	elseif args:IsSpellID(133465) then
+		warnGhost:Show()
+		timerGhostCD:Start()
+		if brawlersMod:PlayerFighting() then
+			specWarnGhost:Show()
+		end
 	elseif args:IsSpellID(133017) then
 		remainingMines = remainingMines - 1
 		warnMines:Show(remainingMines)
