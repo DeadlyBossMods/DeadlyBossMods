@@ -20,27 +20,33 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	Bizmo			= "Bizmo",
+	Bizmo			= "Bizmo",--Alliance
+	Bazzelflange	= "Boss Bazzelflange",--Horde
 	--I wish there was a better way to do this....so much localizing. :(
-	Rank			= "Rank (%d+)",--Experimental "Entering arena" detection by scanning for Rank plus number
---	EnteringArena1	= "Now entering the arena",
---	EnteringArena2	= "Here's our challenger",
---	EnteringArena3	= "Look out... here comes",
---	EnteringArena4	= "Put your hands together",
-	Victory1		= "is our victor",
+	Rank1			= "Rank 1",
+	Rank2			= "Rank 2",
+	Rank3			= "Rank 3",
+	Rank4			= "Rank 4",
+	Rank5			= "Rank 5",
+	Rank6			= "Rank 6",
+	Rank7			= "Rank 7",
+	Rank8			= "Rank 8",
+--[[	Victory1		= "is our victor",
 	Victory2		= "Congratulations",
 	Victory3		= "Brilliant victory",
 	Victory4		= "wins",
 	Victory5		= "Keep 'em comin'",
 	Victory6		= "Great job not dying",
+	Victory7		= "So much blood! Nice",
 	Lost1			= "were you even trying",
 	Lost2			= "Now would you kindly remove your corpse",
-	Lost3			= "So much blood! Nice",
-	Lost4			= "Get back in line and try again",
-	Lost5			= "you're gonna have to break a few eggs",
-	Lost6			= "try not to die so much",
-	Lost7			= "what a mess",
-	Lost8			= "His name was",--LoL at fight club reference here
+	Lost3			= "Get back in line and try again",
+	Lost4			= "you're gonna have to break a few eggs",
+	Lost5			= "try not to die so much",
+	Lost6			= "what a mess",
+	Lost7			= "name was",--LoL at fight club reference here
+	Lost8			= "did not end well",--]]
+	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus."--This boss is only boss out of 32 that has a custom berserk, so we need a chat yell to detect when he specificly is pulled to adjust berserk timer--
 })
 
 ------------
