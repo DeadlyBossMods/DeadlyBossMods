@@ -21,7 +21,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Platform			= "%s飛向他的其中一個露臺!",
+	Platform			= "飛向他的其中一個露臺!",
 	Defeat				= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。",
 	Left				= "往左",
 	Right				= "往右"
@@ -88,7 +88,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s冷卻:%s"
+	timerAmberExplosionAMCD		= "%s冷卻:琥珀巨怪"
 })
 
 L:SetOptionLocalization({

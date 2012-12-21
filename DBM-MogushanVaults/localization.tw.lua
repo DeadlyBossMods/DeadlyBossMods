@@ -69,8 +69,13 @@ L:SetWarningLocalization({
 	DarknessSoon		= "黑暗之盾在%d秒"
 })
 
+L:SetTimerLocalization({
+	timerUSRevive		= "不死黑影重新成形"
+})
+
 L:SetOptionLocalization({
 	DarknessSoon		= "為$spell:117697提示施放前五秒倒數",
+	timerUSRevive		= "為$spell:117506重新成形顯示計時器",
 	RangeFrame			= "顯示距離框(8碼)"
 })
 
@@ -91,7 +96,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "為地板消失之前顯示特別警告",
 	timerDespawnFloor			= "為地板消失顯示計時器",
-	SetIconOnCreature			= "為$journal:6193標示團隊圖示",
 	SetIconOnDestabilized		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
 })
 
@@ -103,7 +107,7 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "為受到$spell:116525的玩家顯示訊息框",
-	CountOutCombo	= "數出$journal:5673連擊數\n注:這目前僅只有女性音效.",
+	CountOutCombo	= "數出$journal:5673連擊數\n註:這目前僅只有女性音效.",
 	ArrowOnCombo	= "為$journal:5673顯示DBM箭頭\n注:這是假設坦克在前方而其他人在後方"
 })
 
