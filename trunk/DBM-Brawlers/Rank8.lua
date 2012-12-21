@@ -24,7 +24,7 @@ local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262)
 local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250)
 local specWarnStaticCharge		= mod:NewSpecialWarningInterrupt(135621)
 
-local timerEvilGlareCD			= mod:NewNextTimer(6, 133208)
+--local timerEvilGlareCD			= mod:NewNextTimer(6, 133208)--This sometimes comes early, most of time it is 6 second next timer though.
 local timerPowerCrystalCD		= mod:NewCDTimer(13, 133398)--13-17 second variation
 local timerBlueCrushCD			= mod:NewNextTimer(30, 133262)
 local timerDestructolaserCD		= mod:NewNextTimer(30, 133250)
@@ -64,7 +64,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args:IsSpellID(133208) then
 		warnEvilGlare:Show()
-		timerEvilGlareCD:Start()
+--		timerEvilGlareCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnEvilGlare:Show()
 		end
