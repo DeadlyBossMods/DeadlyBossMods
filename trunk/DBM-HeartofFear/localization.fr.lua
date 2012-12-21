@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Platform			= "%s s'envole vers l'une de ses plateformes !",
+	Platform			= "s'envole vers l'une de ses plateformes !",
 	Defeat				= "Nous ne nous laisserons pas aller au désespoir du vide. Si Sa volonté est de nous faire périr, il en sera ainsi.",
 	Left				= "Gauche",
 	Right				= "Droite"
