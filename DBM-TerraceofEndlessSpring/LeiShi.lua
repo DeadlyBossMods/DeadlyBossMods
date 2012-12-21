@@ -275,6 +275,9 @@ function mod:SPELL_CAST_START(args)
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
 		)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(3)--Show everyone during hide
+		end
 	end
 end
 
@@ -292,4 +295,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	hideActive = false
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(3, bossTank)--Go back to showing only tanks
+	end
 end
