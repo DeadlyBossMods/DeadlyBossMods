@@ -150,6 +150,13 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Platform or msg:find(L.Platform) then
+		if platform == 0 and self:IsDifficulty("heroic10", "heroic25") then--Always flies right on heroic
+			timerForceCD:Start(24)
+		elseif platform == 1 and self:IsDifficulty("heroic10", "heroic25") then--Which means left is always 2nd platform
+			timerAttenuationCD:Start(23)
+		elseif platform == 2 then--This platform is same in all modes
+			timerConvertCD:Start(22.5)
+		end
 		platform = platform + 1
 		specwarnPlatform:Show()
 		timerForceCD:Cancel()
