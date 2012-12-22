@@ -15,7 +15,11 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"CHAT_MSG_TARGETICONS",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED"
 )
 
 local warnProtect						= mod:NewSpellAnnounce(123250, 2)
@@ -49,6 +53,8 @@ local lastProtect = 0
 local specialRemaining = 0
 local guards = {}
 local guardActivated = 0
+local hideDebug = 0
+local damageDebug = 0
 local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
 
 local function resetguardstate()
@@ -129,6 +135,8 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)
 	end
+	hideDebug = 0
+	damageDebug = 0
 	resetguardstate()
 	getAwayHP = 0
 	specialsCast = 0
@@ -267,6 +275,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(123244) then
+		hideDebug = 0
+		damageDebug = 0
 		specialsCast = specialsCast + 1
 		hideActive = true
 		warnHide:Show(specialsCast)
@@ -288,6 +298,20 @@ function mod:CHAT_MSG_TARGETICONS(msg)
 		iconsSet[icon] = true
 	end
 end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, spellDamage)
+	local cid = self:GetCIDFromGUID(destGUID)
+	if cid == 63099 then--Custom CID lei shi only uses while hiding
+		damageDebug = damageDebug + spellDamage--To see if it's amount of damage
+		hideDebug = hideDebug + 1--To see if it's number of hits
+		--Spam the fuck out of chat (sorry)
+		print("Spell Hit Lei Shi: ", hideDebug)
+		print("Total Damage: ", damageDebug)
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_DAMAGE
 
 --Fires twice when boss returns, once BEFORE visible (and before we can detect unitID, so it flags unknown), then once a 2nd time after visible
 --"<233.9> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#nil#Unknown#0xF130F6070000006C#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [14168]
