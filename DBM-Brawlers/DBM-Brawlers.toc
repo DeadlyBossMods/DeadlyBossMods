@@ -29,6 +29,7 @@ localization.cn.lua
 localization.tw.lua
 localization.es.lua
 localization.fr.lua
+localization.ru.lua
 MapSizes.lua
 Brawlers.lua
 Rank1.lua
