@@ -301,7 +301,9 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, spellDamage)
 	local cid = self:GetCIDFromGUID(destGUID)
 	if cid == 63099 then--Custom CID lei shi only uses while hiding
-		damageDebug = damageDebug + spellDamage--To see if it's amount of damage
+		if type(spellDamage) == "number" then--Fix a rare error when spellDamage is a string? In 200 debug prints it only happened once but better safe than sorry
+			damageDebug = damageDebug + spellDamage--To see if it's amount of damage
+		end
 		hideDebug = hideDebug + 1--To see if it's number of hits
 		warnHideProgress:Cancel()
 		warnHideProgress:Schedule(2, hideDebug, damageDebug)
