@@ -13,7 +13,7 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 -- Also, you can enter combat while boss fights (not 100% health). 
 -- On this situration, block OnCombatStart() function will be better (+ do not record kill time)
 mod:RegisterCombat("combat")
-mod:SetWipeTime(180)
+mod:SetWipeTime(120)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
