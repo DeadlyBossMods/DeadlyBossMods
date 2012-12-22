@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/19/2012
+-- Last update: 12/23/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -19,7 +19,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "特殊警报：轮到玩家登场",
-	SpectatorMode		= "在观看比赛时显示警报与计时条"
+	SpectatorMode		= "在观看比赛时显示警报与计时条\n（特殊警报不会同步给其他观众）"
 })
 
 L:SetMiscLocalization({
