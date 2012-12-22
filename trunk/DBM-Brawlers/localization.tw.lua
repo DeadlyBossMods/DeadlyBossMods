@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization("Brawlers")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部"
+	name = "鬥陣俱樂部:一般"
 })
 
 L:SetWarningLocalization({
@@ -16,21 +16,21 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "輪到你上時顯示特別警告",
-	SpectatorMode		= "當旁觀戰鬥時顯示警告/計時器"
+	SpectatorMode		= "當旁觀戰鬥時顯示警告/計時器(旁觀者不會顯示個人的特別警告訊息)"
 })
 
 L:SetMiscLocalization({
-	Bizmo			= "Bizmo",--Alliance
-	Bazzelflange	= "Boss Bazzelflange",--Horde
+	Bizmo			= "畢茲摩",--Alliance
+	Bazzelflange	= "老闆貝索佛蘭吉",--Horde
 	--I wish there was a better way to do this....so much localizing. :(
-	Rank1			= "Rank 1",
-	Rank2			= "Rank 2",
-	Rank3			= "Rank 3",
-	Rank4			= "Rank 4",
-	Rank5			= "Rank 5",
-	Rank6			= "Rank 6",
-	Rank7			= "Rank 7",
-	Rank8			= "Rank 8",
+	Rank1			= "第1階",
+	Rank2			= "第2階",
+	Rank3			= "第3階",
+	Rank4			= "第4階",
+	Rank5			= "第5階",
+	Rank6			= "第6階",
+	Rank7			= "第7階",
+	Rank8			= "第8階",
 --[[	Victory1		= "is our victor",
 	Victory2		= "Congratulations",
 	Victory3		= "Brilliant victory",
@@ -55,7 +55,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization("BrawlRank1")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 1"
+	name = "鬥陣俱樂部:第1階"
 })
 
 ------------
@@ -64,7 +64,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank2")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 2"
+	name = "鬥陣俱樂部:第2階"
 })
 
 ------------
@@ -73,7 +73,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank3")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 3"
+	name = "鬥陣俱樂部:第3階"
 })
 
 ------------
@@ -82,7 +82,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank4")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 4"
+	name = "鬥陣俱樂部:第4階"
 })
 
 ------------
@@ -91,7 +91,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank5")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 5"
+	name = "鬥陣俱樂部:第5階"
 })
 
 ------------
@@ -100,7 +100,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank6")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 6"
+	name = "鬥陣俱樂部:第6階"
 })
 
 ------------
@@ -109,7 +109,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank7")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 7"
+	name = "鬥陣俱樂部:第7階"
 })
 
 ------------
@@ -118,5 +118,5 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRank8")
 
 L:SetGeneralLocalization({
-	name = "鬥陣俱樂部: Rank 8"
+	name = "鬥陣俱樂部:第8階"
 })
