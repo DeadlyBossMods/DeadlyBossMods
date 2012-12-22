@@ -16,7 +16,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "Zeige Spezialwarnung, wenn es dein Kampf ist",
-	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe"
+	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe\n(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)"
 })
 
 L:SetMiscLocalization({
@@ -31,7 +31,7 @@ L:SetMiscLocalization({
 	Rank6			= "sechsten Ranges",
 	Rank7			= "siebten Ranges",
 	Rank8			= "achten Ranges",
-	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus."
+	Proboskus		= "Was habt Ihr auch für ein Pech! Es ist Proboskus!"
 })
 
 ------------
