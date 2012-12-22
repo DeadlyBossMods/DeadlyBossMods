@@ -17,13 +17,12 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_TARGETICONS",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED"
+	"SPELL_PERIODIC_DAMAGE"
 )
 
 local warnProtect						= mod:NewSpellAnnounce(123250, 2)
 local warnHide							= mod:NewCountAnnounce(123244, 3)
+local warnHideProgress					= mod:NewAnnounce("warnHideProgress", 1, 123244)--Probably not perm, but less spammy debug solution
 local warnHideOver						= mod:NewAnnounce("warnHideOver", 2, 123244)--Because we can. with creativeness, the boss returning is detectable a full 1-2 seconds before even visible. A good signal to stop aoe and get ready to return norm DPS
 local warnGetAway						= mod:NewCountAnnounce(123461, 3)
 local warnSpray							= mod:NewStackAnnounce(123121, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -304,14 +303,17 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, s
 	if cid == 63099 then--Custom CID lei shi only uses while hiding
 		damageDebug = damageDebug + spellDamage--To see if it's amount of damage
 		hideDebug = hideDebug + 1--To see if it's number of hits
-		--Spam the fuck out of chat (sorry)
-		print("Spell Hit Lei Shi: ", hideDebug)
-		print("Total Damage: ", damageDebug)
+		warnHideProgress:Cancel()
+		warnHideProgress:Schedule(2, hideDebug, damageDebug)
 	end
 end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_DAMAGE
+mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
+--NOTE: It breaks early if protect phase is triggered (ie boss hits 80 60 40 or 20 during hide)
+--Results (may need to do LFR results with RANGE_DAMAGE flag)
+---LFR1 (that didn't break early from protect)
+----Spell Hit Lei Shi: 74
+----Total Damage: 1174176
 
 --Fires twice when boss returns, once BEFORE visible (and before we can detect unitID, so it flags unknown), then once a 2nd time after visible
 --"<233.9> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#nil#Unknown#0xF130F6070000006C#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [14168]
