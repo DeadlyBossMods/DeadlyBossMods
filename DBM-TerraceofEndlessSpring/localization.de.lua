@@ -39,7 +39,7 @@ L:SetOptionLocalization({
 	warnHideOver			= "Zeige Warnung, wenn $spell:123244 beendet ist",
 	timerSpecialCD			= "Zeige Zeit bis nächste Spezialfähigkeit gewirkt wird",
 	SetIconOnGuard			= "Setze Zeichen auf $journal:6224",
-	RangeFrame				= "Zeige Abstandsfenster (3m) für $spell:123121 (zeigt nur die Tanks)",
+	RangeFrame				= "Zeige Abstandsfenster (3m) für $spell:123121\n(zeigt jeden während $spell:123244, sonst nur die Tanks)",
 	GWHealthFrame			= "Zeige Lebensanzeige für den benötigten Schaden bis $spell:123461 endet\n(benötigt aktivierte Lebensanzeige)"
 })
 
