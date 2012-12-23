@@ -306,7 +306,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, s
 		end
 		hideDebug = hideDebug + 1--To see if it's number of hits
 		warnHideProgress:Cancel()
-		warnHideProgress:Schedule(2, hideDebug, damageDebug)
+		warnHideProgress:Schedule(5, hideDebug, damageDebug)
 	end
 end
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
