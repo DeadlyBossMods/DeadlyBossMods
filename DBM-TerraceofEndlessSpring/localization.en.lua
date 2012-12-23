@@ -28,7 +28,7 @@ L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
 	warnHideOver			= "%s has ended",
-	warnHideProgress		= "Hide Hits: %s. Hide Damage: %s"
+	warnHideProgress		= "Hits: %s. Damage: %s. Time: %s"
 })
 
 L:SetTimerLocalization({
