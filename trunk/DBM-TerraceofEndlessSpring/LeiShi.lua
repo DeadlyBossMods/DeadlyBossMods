@@ -17,7 +17,8 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_TARGETICONS",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"SPELL_DAMAGE",
-	"SPELL_PERIODIC_DAMAGE"
+	"SPELL_PERIODIC_DAMAGE",
+	"RANGE_DAMAGE"
 )
 
 local warnProtect						= mod:NewSpellAnnounce(123250, 2)
