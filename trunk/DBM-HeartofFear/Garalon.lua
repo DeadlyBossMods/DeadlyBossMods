@@ -48,6 +48,7 @@ local timerMendLegCD			= mod:NewCDTimer(30, 123495)
 local timerFury					= mod:NewBuffActiveTimer(30, 122754)
 local timerPungency				= mod:NewBuffFadesTimer(120, 123081)
 
+local countdownCrush			= mod:NewCountdown(37, 122774, nil, L.countdownCrush)
 local berserkTimer				= mod:NewBerserkTimer(420)
 
 --mod:AddBoolOption("InfoFrame", true)--Not sure how to do yet, i need to see 25 man first to get a real feel for number of people with debuff at once.
@@ -60,6 +61,7 @@ function mod:OnCombatStart(delay)
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerCrushCD:Start(30.5-delay)
+		countdownCrush:Start(30.5-delay)
 	end
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
@@ -161,6 +163,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		timerCrush:Start()
 		if self:IsDifficulty("heroic10", "heroic25") and not msg:find(L.UnderHim) then--unconfirmed
 			timerCrushCD:Start()--unconfirmed, assumed by video
+			countdownCrush:Start()
 		end
 		if msg:find(L.UnderHim) and target == UnitName("player") then
 			specwarnUnder:Show()--it's a bit of a too little too late warning, but hopefully it'll help people in LFR understand it's not place to be and less likely to repeat it, eventually thining out LFR failure rate to this.
