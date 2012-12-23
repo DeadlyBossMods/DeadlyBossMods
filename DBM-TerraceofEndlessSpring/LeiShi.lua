@@ -54,6 +54,8 @@ local guards = {}
 local guardActivated = 0
 local hideDebug = 0
 local damageDebug = 0
+local timeDebug = 0
+local hideTime = 0
 local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
 
 local function resetguardstate()
@@ -136,6 +138,8 @@ function mod:OnCombatStart(delay)
 	end
 	hideDebug = 0
 	damageDebug = 0
+	timeDebug = 0
+	hideTime = 0
 	resetguardstate()
 	getAwayHP = 0
 	specialsCast = 0
@@ -276,6 +280,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(123244) then
 		hideDebug = 0
 		damageDebug = 0
+		hideTime = GetTime()
 		specialsCast = specialsCast + 1
 		hideActive = true
 		warnHide:Show(specialsCast)
@@ -305,8 +310,9 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, s
 			damageDebug = damageDebug + spellDamage--To see if it's amount of damage
 		end
 		hideDebug = hideDebug + 1--To see if it's number of hits
+		timeDebug = GetTime() - hideTime
 		warnHideProgress:Cancel()
-		warnHideProgress:Schedule(5, hideDebug, damageDebug)
+		warnHideProgress:Schedule(5, hideDebug, damageDebug, timeDebug)
 	end
 end
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
@@ -323,6 +329,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	hideActive = false
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
+	warnHideProgress:Cancel()
+	warnHideProgress:Show(hideDebug, damageDebug, timeDebug)--Show right away instead of waiting out the schedule
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)--Go back to showing only tanks
 	end
