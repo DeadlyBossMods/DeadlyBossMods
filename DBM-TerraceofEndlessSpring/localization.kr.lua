@@ -27,7 +27,7 @@ L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
 	warnHideOver			= "%s 종료",
-	warnHideProgress		= "숨기 진행상황 - 공격회수 : %s, 피해량: %s, 시간: %s초"
+	warnHideProgress		= "공격횟수 : %s, 피해량: %s, 경과시간: %s초"
 })
 
 L:SetTimerLocalization({
@@ -36,7 +36,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "$spell:123244 종료 알림 보기",
-	warnHideProgress		= "$spell:123244 진행 상황 알림 보기",
+	warnHideProgress		= "$spell:123244 도중 또는 종료 후 공격 내용에 대한 알림 보기",
 	timerSpecialCD			= "$spell:123244 또는 $spell:123461 대기시간 바 표시",
 	SetIconOnGuard			= "$journal:6224에 전술 목표 아이콘 설정",
 	RangeFrame				= "$spell:123121 주문에 대한 거리 프레임 표시(3m)\n(숨기 중일때는 모든 공격대원 보임, 그 외에는 방어전담만 보임)",
