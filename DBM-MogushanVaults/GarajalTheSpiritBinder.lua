@@ -29,6 +29,7 @@ local warnVoodooDolls				= mod:NewTargetAnnounce(122151, 3)
 local warnCrossedOver				= mod:NewTargetAnnounce(116161, 3)
 local warnBanishment				= mod:NewTargetAnnounce(116272, 3)
 local warnSuicide					= mod:NewPreWarnAnnounce(116325, 5, 4)--Pre warn 5 seconds before you die so you take whatever action you need to, to prevent. (this is effect that happens after 30 seconds of Soul Sever
+local warnFrenzy					= mod:NewSpellAnnounce(117752, 4)
 
 local specWarnTotem					= mod:NewSpecialWarningSpell(116174, false)
 local specWarnBanishment			= mod:NewSpecialWarningYou(116272)
@@ -162,6 +163,11 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		end
 	elseif args:IsSpellID(117723) and args:IsPlayer() then
 		timerFrailSoul:Start()
+	elseif args:IsSpellID(117752) then
+		warnFrenzy:Show()
+		if not self:IsDifficulty("lfr25") then--lfr continuing summon totem below 20%
+			timerTotemCD:Cancel()
+		end
 	end
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED

@@ -281,6 +281,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerWildSpark:Cancel(args.destName)
 	elseif args:IsSpellID(116711) then
 		timerDrawFlameCD:Start(nil, specialCount + 1)
+	elseif args:IsSpellID(116417) then
+		if self.Options.SetIconOnAR then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif args:IsSpellID(116364) then
 		timerArcaneVelocity:Cancel()
 		timerArcaneVelocityCD:Start(nil, specialCount + 1)
