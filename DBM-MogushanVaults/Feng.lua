@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60009)--60781 Soul Fragment
 mod:SetModelID(41192)
 mod:SetZone()
+mod:SetUsedIcons(8, 7, 6)
 
 mod:RegisterCombat("combat")
 
@@ -95,7 +96,7 @@ local timerDrawFlameCD				= mod:NewNextCountTimer(30, 116711)--30 seconds after 
 --Arcane/Staff
 local timerArcaneShock				= mod:NewTargetTimer(20, 131790, nil, mod:IsTank())
 local timerArcaneShockCD			= mod:NewCDTimer(9, 131790, nil, mod:IsTank())--not comfirmed
-local timerArcaneResonanceCD		= mod:NewCDTimer(15, 116417)--CD is also duration, it's just cast back to back to back.
+local timerArcaneResonanceCD		= mod:NewCDTimer(15.5, 116417)
 local timerArcaneVelocityCD			= mod:NewCDCountTimer(18, 116364)--18 seconds after last ended.
 local timerArcaneVelocity			= mod:NewBuffActiveTimer(8, 116364)
 
@@ -113,9 +114,12 @@ local timerNullBarriorCD			= mod:NewCDTimer(55, 115817)
 local soundEpicenter				= mod:NewSound(116018)
 local soundWildSpark				= mod:NewSound(116784)
 
+mod:AddBoolOption("SetIconOnWS", true)
+mod:AddBoolOption("SetIconOnAR", true)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
 local phase = 0
+local arIcon = 8
 local wildfireCount = 0
 local sparkCount = 0
 local fragmentCount = 5
@@ -134,6 +138,7 @@ end
 
 function mod:OnCombatStart(delay)
 	phase = 0
+	arIcon = 8
 	wildfireCount = 0
 	sparkCount = 0
 	specialCount = 0
@@ -170,6 +175,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		sparkCount = sparkCount + 1
 		warnWildSpark:Show(sparkCount, args.destName)
 		timerWildSpark:Start(args.destName)
+		if self.Options.SetIconOnWS then
+			self:SetIcon(args.destName, 8, 5)
+		end
 		if args:IsPlayer() then
 			specWarnWildSpark:Show()
 			soundWildSpark:Play()
@@ -185,9 +193,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		wildfireCount = 1
 		warnWildfire()
 	elseif args:IsSpellID(116417) then
-		-- seems that affects 2 players in 25man lfr. so use multiple target warning.
 		arcaneResonanceTargets[#arcaneResonanceTargets + 1] = args.destName
-		timerArcaneResonanceCD:Start()
+		if self.Options.SetIconOnAR then
+			self:SetIcon(args.destName, arIcon)
+			arIcon = arIcon - 1
+		end
 		self:Unschedule(warnArcaneResonanceTargets)
 		self:Schedule(0.3, warnArcaneResonanceTargets)
 		if args:IsPlayer() then
@@ -304,6 +314,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerNullBarriorCD:Start()
 		end
+	elseif args:IsSpellID(116417) then
+		arIcon = 8
+		timerArcaneResonanceCD:Start()
 	end
 end
 

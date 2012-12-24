@@ -66,8 +66,8 @@ local timerImpalingSpear				= mod:NewTargetTimer(50, 122224)--Filtered to only s
 local timerAmberPrisonCD				= mod:NewCDTimer(36, 121876)--each add has their own CD. This is on by default since it concerns everyone.
 local timerCorrosiveResinCD				= mod:NewCDTimer(36, 122064)--^^
 local timerResidue						= mod:NewBuffFadesTimer(120, 122055)
-local timerMendingCD					= mod:NewNextTimer(36, 122193, nil, false)--To reduce bar spam, only those dealing with this should turn CD bar on, off by default
-local timerQuickeningCD					= mod:NewNextTimer(36, 122149, nil, false)--^^
+local timerMendingCD					= mod:NewNextTimer(37, 122193, nil, false)--To reduce bar spam, only those dealing with this should turn CD bar on, off by default / 37~37.5 sec
+local timerQuickeningCD					= mod:NewNextTimer(37.3, 122149, nil, false)--^^37.3~37.6sec.
 local timerKorthikStrikeCD				= mod:NewCDTimer(32, 123963)--^^
 local timerWindBombCD					= mod:NewCDTimer(6, 131830)--^^
 
@@ -180,14 +180,14 @@ function mod:SPELL_CAST_START(args)
 		timerCorrosiveResinCD:Start(36, args.sourceGUID)
 	elseif args:IsSpellID(122193) then
 		warnMending:Show()
-		timerMendingCD:Start(36, args.sourceGUID)
+		timerMendingCD:Start(nil, args.sourceGUID)
 		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
 			specWarnMending:Show(args.sourceName)
 		end
 	elseif args:IsSpellID(122149) then
 		warnQuickening:Show()
 		specWarnQuickening:Show(args.sourceName)
-		timerQuickeningCD:Start(36, args.sourceGUID)
+		timerQuickeningCD:Start(nil, args.sourceGUID)
 	end
 end
 
