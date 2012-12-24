@@ -166,7 +166,7 @@ function mod:RAID_BOSS_EMOTE(msg)
 		timerForceCD:Cancel()
 		timerAttenuationCD:Cancel()
 		if platform == 1 then
-			timerForceCD:Start(24)
+			timerForceCD:Start(22)
 		elseif platform == 2 then
 			timerAttenuationCD:Start(23)
 		elseif platform == 3 then
