@@ -176,7 +176,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--If any are missing that actually ALTER during a phase 2 or 3 transition they will be updated here.
 		if phase == 2 then
 			if args:GetDestCreatureID() == 60585 then--Elder Regail
-				timerLightningStormCD:Start(20)
+				timerLightningStormCD:Start(25.5)--Starts 25.5~27
 			elseif args:GetDestCreatureID() == 60586 then--Elder Asani
 				timerCorruptingWatersCD:Start(10)
 			elseif args:GetDestCreatureID() == 60583 then--Protector Kaolan
