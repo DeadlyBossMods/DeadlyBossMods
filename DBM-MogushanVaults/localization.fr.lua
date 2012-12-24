@@ -1,4 +1,4 @@
-﻿-- Last update: 12/17/2012 (17/12/2012 in french format)
+﻿-- Last update: 12/24/2012 (24/12/2012 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -37,7 +37,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "Annoncer la transition de Phase",
-	RangeFrame	= "Afficher le cadre de distance (6m) durant la phase d'arcane"
+	RangeFrame	= "Afficher le cadre de distance (6m) durant la phase d'arcane",
+	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
+	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
 
 L:SetMiscLocalization({
