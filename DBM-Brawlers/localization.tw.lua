@@ -31,7 +31,7 @@ L:SetMiscLocalization({
 	Rank6			= "第6階",
 	Rank7			= "第7階",
 	Rank8			= "第8階",
-	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus."--This boss is only boss out of 32 that has a custom berserk, so we need a chat yell to detect when he specificly is pulled to adjust berserk timer--
+	Proboskus		= "哈哈哈!你的運氣真的有夠背的!是普羅伯斯庫!"--This boss is only boss out of 32 that has a custom berserk, so we need a chat yell to detect when he specificly is pulled to adjust berserk timer--
 })
 
 ------------

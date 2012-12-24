@@ -50,6 +50,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnUnder		= "當你在紫色圓圈範圍內顯示特別警告",
+	countdownCrush		= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (只有英雄模式)",
 	PheromonesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
 })
 
@@ -88,7 +89,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s冷卻:琥珀巨怪"
+	timerAmberExplosionAMCD		= "琥珀爆炸冷卻:琥珀巨怪"
 })
 
 L:SetOptionLocalization({
