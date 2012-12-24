@@ -135,6 +135,17 @@ function mod:SPELL_CAST_START(args)
 		warnAttenuation:Show(args.spellName, args.sourceName, L.Right)
 		specwarnAttenuation:Show(args.spellName, args.sourceName, L.Right)
 		timerAttenuation:Start()
+		if platform < 4 then
+			timerAttenuationCD:Start()
+		else
+			if EchoAlive then--if echo isn't active don't do any timers
+				if args:GetSrcCreatureID() == 65173 then--Echo
+					timerAttenuationCD:Start(28, args.sourceGUID)--Because both echo and boss can use it in final phase and we want 2 bars
+				else--Boss
+					timerAttenuationCD:Start(54, args.sourceGUID)
+				end
+			end
+		end
 		if self.Options.ArrowOnAttenuation then
 			DBM.Arrow:ShowStatic(270, 12)
 		end
