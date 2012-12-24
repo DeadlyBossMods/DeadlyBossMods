@@ -87,7 +87,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s 대기시간: 호박석 괴수"
+	timerAmberExplosionAMCD		= "폭발 가능: 호박석 괴수"
 })
 
 L:SetOptionLocalization({
