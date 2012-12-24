@@ -1,4 +1,4 @@
--- Last update: 12/17/2012 (17/12/2012 in french format)
+-- Last update: 12/24/2012 (24/12/2012 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -88,11 +88,11 @@ L:SetWarningLocalization({
 	specwarnWillPower			= "Volonté faible ! - 5s restante",
 	specwarnAmberExplosionYou	= "Interrompez VOTRE %s !",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Interrompt %s !",--Amber Montrosity
-	specwarnAmberExplosionOther	= "%s: Interrompt %s !"--Amber Montrosity
+	specwarnAmberExplosionOther	= "%s: Interrompt %s !"--Mutated Construct
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s CD: Monstruosité"
+	timerAmberExplosionAMCD		= "Explosion CD: Monstruosité"
 })
 
 L:SetOptionLocalization({
