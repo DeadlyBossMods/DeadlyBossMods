@@ -34,7 +34,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "단계 전환 알림 보기",
-	RangeFrame	= "지팡이의 혼 단계에서 거리 프레임 표시 (6m)"
+	RangeFrame	= "지팡이의 혼 단계에서 거리 프레임 표시 (6m)",
+	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
+	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
 
 L:SetMiscLocalization({

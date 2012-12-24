@@ -34,7 +34,7 @@ local specWarnGetAway					= mod:NewSpecialWarningSpell(123461, nil, nil, nil, tr
 local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 6)
 local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())
 
-local timerSpecialCD					= mod:NewTimer(49.5, "timerSpecialCD", 123250)--Variable, 49.5-55 seconds
+local timerSpecialCD					= mod:NewTimer(50, "timerSpecialCD", 123250)--Variable, 49.5-55 seconds
 local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
 local timerGetAway						= mod:NewBuffActiveTimer(30, 123461)
 local timerScaryFogCD					= mod:NewNextTimer(10, 123705)
