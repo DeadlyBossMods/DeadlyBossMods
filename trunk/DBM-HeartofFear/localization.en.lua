@@ -84,11 +84,11 @@ L:SetWarningLocalization({
 	specwarnWillPower			= "Low Will Power! - 5s remaining",
 	specwarnAmberExplosionYou	= "Interrupt YOUR %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Interrupt %s!",--Amber Montrosity
-	specwarnAmberExplosionOther	= "%s: Interrupt %s!"--Amber Montrosity
+	specwarnAmberExplosionOther	= "%s: Interrupt %s!"--Mutated Construct
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s CD: Monstrosity"
+	timerAmberExplosionAMCD		= "Explosion CD: Monstrosity"
 })
 
 L:SetOptionLocalization({
