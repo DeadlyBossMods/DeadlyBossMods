@@ -32,7 +32,7 @@ L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
 	warnHideOver			= "%s est fini",
-	warnHideProgress		= "Touchés $spell:123244 : %s. Dommages $spell:123244 : %s"
+	warnHideProgress		= "Touchés : %s. Dommages : %s. Temps : %s."
 })
 
 L:SetTimerLocalization({
