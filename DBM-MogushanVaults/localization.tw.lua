@@ -34,7 +34,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "提示轉換階段",
-	RangeFrame	= "在祕法階段時顯示距離框(6碼)"
+	RangeFrame	= "在祕法階段時顯示距離框(6碼)",
+	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
+	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
 
 L:SetMiscLocalization({
