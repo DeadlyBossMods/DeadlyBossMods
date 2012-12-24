@@ -2931,20 +2931,27 @@ end
 
 do
 	local function requestTimers()
-		local uId = (IsInRaid() and "raid") or "party"
-		for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
-			local id = (i == 0 and "player") or uId..i
-			if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+		if #inCombat == 0 then
+			if IsEncounterInProgress() then
 				DBM:RequestTimers()
-				break
+			else
+				local uId = (IsInRaid() and "raid") or "party"
+				for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
+					local id = (i == 0 and "player") or uId..i
+					if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+						DBM:RequestTimers()
+						break
+					end
+				end
 			end
 		end
 	end
 
 	function DBM:PLAYER_ENTERING_WORLD()
-		if #inCombat == 0 then
-			DBM:Schedule(3.5, requestTimers) -- not sure how late or early PLAYER_ENTERING_WORLD fires. Since boss mod loading takes 3 sec after entering zone, delays more will be good?
-		end
+		DBM:Schedule(6, requestTimers) -- Time recovery. 3.5 sec too early if you have slow machine. try multiple check
+		DBM:Schedule(10, requestTimers)
+		DBM:Schedule(14, requestTimers)
+		DBM:Schedule(18, requestTimers)
 --		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true DBM:AddMsg(DBM_HOW_TO_USE_MOD) end end)
@@ -3416,34 +3423,32 @@ function bossModPrototype:GetCIDFromGUID(guid)
 	return (guid and (tonumber(guid:sub(6, 10), 16))) or 0
 end
 
+local bossTargetuIds = {
+	[1] = "target",
+	[2] = "focus",
+	[3] = "boss1",
+	[4] = "boss2",
+	[5] = "boss3",
+	[6] = "boss4",
+	[7] = "boss5"
+}
+
 function bossModPrototype:GetBossTarget(cid)
 	cid = cid or self.creatureId
-	local name, realm, uid
-	if self:GetUnitCreatureId("target") == cid then
-		name, realm = UnitName("targettarget")
-		uid = "targettarget"
-	elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
-		name, realm = UnitName("focustarget")
-		uid = "focustarget"
-	elseif self:GetUnitCreatureId("boss1") == cid then
-		name, realm = UnitName("boss1target")
-		uid = "boss1target"
-	elseif self:GetUnitCreatureId("boss2") == cid then
-		name, realm = UnitName("boss2target")
-		uid = "boss2target"
-	elseif self:GetUnitCreatureId("boss3") == cid then
-		name, realm = UnitName("boss3target")
-		uid = "boss3target"
-	elseif self:GetUnitCreatureId("boss4") == cid then
-		name, realm = UnitName("boss4target")
-		uid = "boss4target"
-	elseif self:GetUnitCreatureId("boss5") == cid then
-		name, realm = UnitName("boss5target")
-		uid = "boss5target"
-	elseif IsInRaid() then
+	local name, uid
+	for i, uId in ipairs(bossTargetuIds) do
+		if self:GetUnitCreatureId(uId) == cid then
+			name = DBM:GetUnitFullName(uId.."target")
+			uid = uId.."target"
+			break
+		end
+	end
+	if name and uid then return name, uid end
+	-- failed to detect from default uIds, scan all group members's target.
+	if IsInRaid() then
 		for i = 1, GetNumGroupMembers() do
 			if self:GetUnitCreatureId("raid"..i.."target") == cid then
-				name, realm = UnitName("raid"..i.."targettarget")
+				name = DBM:GetUnitFullName("raid"..i.."targettarget")
 				uid = "raid"..i.."targettarget"
 				break
 			end
@@ -3451,16 +3456,13 @@ function bossModPrototype:GetBossTarget(cid)
 	elseif IsInGroup() then
 		for i = 1, GetNumSubgroupMembers() do
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
-				name, realm = UnitName("party"..i.."targettarget")
+				name = DBM:GetUnitFullName("party"..i.."targettarget")
 				uid = "party"..i.."targettarget"
 				break
 			end
 		end
 	end
-	if name and realm then
-		name = name.."-"..realm
-	end
-	return name, uid	
+	return name, uid
 end
 
 function bossModPrototype:GetThreatTarget(cid)

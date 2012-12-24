@@ -313,7 +313,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, s
 		hideDebug = hideDebug + 1--To see if it's number of hits
 		timeDebug = GetTime() - hideTime
 		warnHideProgress:Cancel()
-		warnHideProgress:Schedule(5, hideDebug, damageDebug, timeDebug)
+		warnHideProgress:Schedule(5, hideDebug, damageDebug, tostring(format("%.1f", timeDebug)))
 	end
 end
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
@@ -331,7 +331,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
 	warnHideProgress:Cancel()
-	warnHideProgress:Show(hideDebug, damageDebug, timeDebug)--Show right away instead of waiting out the schedule
+	warnHideProgress:Show(hideDebug, damageDebug, tostring(format("%.1f", timeDebug)))--Show right away instead of waiting out the schedule
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)--Go back to showing only tanks
 	end
