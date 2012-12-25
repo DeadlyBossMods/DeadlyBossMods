@@ -5,10 +5,12 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(60491)
 mod:SetModelID(28115)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"UNIT_TARGET",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -22,8 +24,10 @@ local timerSolarBeamCD			= mod:NewCDTimer(18.5, 129888)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+mod:AddBoolOption("SetIconOnDominika", true)
 
 local brawlersMod = DBM:GetModByName("Brawlers")
+local DominikaGUID = 0
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
@@ -38,6 +42,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(129888) and self:AntiSpam() then
 		warnSolarBeam:Show()
 		timerSolarBeamCD:Start()
+	elseif args:IsSpellID(133129) then
+		DominikaGUID = args.destGUID
+	end
+end
+
+function mod:UNIT_TARGET()
+	if self.Options.SetIconOnDominika and UnitGUID("target") == DominikaGUID then
+		SetRaidTarget("target", 8)
 	end
 end
 
