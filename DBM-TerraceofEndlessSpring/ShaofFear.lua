@@ -107,7 +107,7 @@ local function leavePlatform()
 			timerBreathOfFearCD:Start(33.3-shaPower)
 			countdownBreathOfFear:Start(33.3-shaPower)
 		end
-		if self.Options.RangeFrame then
+		if mod.Options.RangeFrame then
 			DBM.RangeCheck:Show(2)
 		end
 	end
