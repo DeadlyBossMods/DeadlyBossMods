@@ -5,9 +5,11 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(60491)
 mod:SetModelID(28649)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"UNIT_TARGET"
 )
 
 local warnPyroblast				= mod:NewCastAnnounce(33975, 3)--Hits fairly hard, interruptable, not make or break though. So no special warning. If it hits you you won't wipe.
@@ -22,8 +24,10 @@ local timerDevastatingThrustCD	= mod:NewCDTimer(12, 134777)--Need more data to v
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+mod:AddBoolOption("SetIconOnBlat", true)
 
 local brawlersMod = DBM:GetModByName("Brawlers")
+local blatGUID = 0
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
@@ -41,5 +45,13 @@ function mod:SPELL_CAST_START(args)
 		if brawlersMod:PlayerFighting() then
 			specWarnDevastatingThrust:Show()
 		end
+	elseif args:IsSpellID(133302) then--Blat splitting
+		blatGUID = args.sourceGUID
+	end
+end
+
+function mod:UNIT_TARGET()
+	if self.Options.SetIconOnBlat and UnitGUID("target") == blatGUID then
+		SetRaidTarget("target", 8)
 	end
 end
