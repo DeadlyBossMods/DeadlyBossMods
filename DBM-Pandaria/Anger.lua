@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60491)
 mod:SetModelID(41448)
-mod:SetZone(809)--Kun-Lai Summit (zoneid not yet known)
+mod:SetZone(809)--Kun-Lai Summit
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 
 -- TODO: This is field boss, if you die while combat, you can go tomb and revive as you wish.
@@ -73,7 +73,7 @@ do
 			self:SetIcon(v, mcIcon)
 			mcIcon = mcIcon - 1
 		end
-		self:Schedule(10, clearMCTargets)--delay 10 sec. (mc sperad takes 2~3 sec, and dead players do not get the SPELL_AURA_REMOVED event)
+		self:Schedule(10, clearMCTargets)--delay 10 sec. (mc spread takes 2~3 sec, and dead players do not get the SPELL_AURA_REMOVED event)
 	end
 end
 

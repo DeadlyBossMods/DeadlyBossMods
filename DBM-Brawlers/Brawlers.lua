@@ -7,15 +7,21 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
-	"PLAYER_REGEN_ENABLED",
+	"SPELL_CAST_START",
 	"CHAT_MSG_MONSTER_YELL",
+	"PLAYER_REGEN_ENABLED",
 	"UNIT_DIED",
 	"ZONE_CHANGED_NEW_AREA"
 )
 
-local specWarnYourTurn			= mod:NewSpecialWarning("specWarnYourTurn")
+local warnOrgPortal			= mod:NewCastAnnounce(135385, 1)--These are rare casts and linked to achievement.
+local warnStormPortal		= mod:NewCastAnnounce(135386, 1)--So warn for them being cast
 
-local berserkTimer				= mod:NewBerserkTimer(120)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
+local specWarnOrgPortal		= mod:NewSpecialWarningSpell(135385)
+local specWarnStormPortal	= mod:NewSpecialWarningSpell(135386)
+local specWarnYourTurn		= mod:NewSpecialWarning("specWarnYourTurn")
+
+local berserkTimer			= mod:NewBerserkTimer(120)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
 
 mod:AddBoolOption("SpectatorMode", true)
 mod:RemoveOption("HealthFrame")
@@ -28,6 +34,20 @@ local modsStopped = false
 
 function mod:PlayerFighting() -- for external mods
 	return playerIsFighting
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(135385) then
+		warnOrgPortal:Show()
+		if not playerIsFighting then--Do not distract player in arena with special warning
+			specWarnOrgPortal:Show()
+		end
+	elseif args:IsSpellID(135386) then
+		warnStormPortal:Show()
+		if not playerIsFighting then--Do not distract player in arena with special warning
+			specWarnStormPortal:Show()
+		end
+	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
