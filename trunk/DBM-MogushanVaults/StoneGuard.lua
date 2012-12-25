@@ -38,9 +38,9 @@ local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
 local yellAmethystPool				= mod:NewYell(130774, nil, false)
 local specWarnPowerDown				= mod:NewSpecialWarningSpell(116529, not mod:IsTank())
 
-local timerCobaltMineCD				= mod:NewNextTimer(8.5, 129424)--12-15second variations
 local timerPetrification			= mod:NewNextTimer(76, 125091)
-local timerJadeShardsCD				= mod:NewNextTimer(20.5, 116223, nil, false)--Always 20.5 seconds
+local timerCobaltMineCD				= mod:NewNextTimer(8.5, 129424)
+local timerJadeShardsCD				= mod:NewCDTimer(9, 116223, nil, false)--9~12
 local timerJasperChainsCD			= mod:NewCDTimer(12, 130395)--11-13
 local timerAmethystPoolCD			= mod:NewCDTimer(6, 130774, nil, false)
 
@@ -168,6 +168,25 @@ function mod:ScanHandler(ScansCompleted)
 end
 --]]
 
+function mod:ThreeBossStart(delay)
+	for i = 1, 5 do
+		local id = self:GetUnitCreatureId("boss"..i)
+		if id == 60051 then -- cobalt
+			if self:IsDifficulty("lfr25") then
+				timerCobaltMineCD:Start(10.5-delay-1)
+			else
+				timerCobaltMineCD:Start(-delay-1)
+			end
+		elseif id == 60043 then -- jade
+			timerJadeShardsCD:Start(-delay-1)
+		elseif id == 59915 then -- jasper
+			timerJasperChainsCD:Start(-delay-1)
+		elseif id == 60047 then -- amethyst
+			timerAmethystPoolCD:Start(-delay-1)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	activePetrification = nil
 --	scansDone = 0
@@ -183,22 +202,7 @@ function mod:OnCombatStart(delay)
 		expectedBosses = 4--Only fight all 4 at once on 25man (excluding LFR)
 	else
 		expectedBosses = 3--Else you get a random set of 3/4
-		for i = 1, 4 do
-			local id = self:GetUnitCreatureId("boss" .. i)
-			if id == 60051 then -- cobalt
-				if self:IsDifficulty("lfr25") then
-					timerCobaltMineCD:Start(10.5-delay)
-				else
-					timerCobaltMineCD:Start(-delay)
-				end
-			elseif id == 60043 then -- jade
-				timerJadeShardsCD:Start(-delay)
-			elseif id == 59915 then -- jasper
-				timerJasperChainsCD:Start(-delay)
-			elseif id == 60047 then -- amethyst
-				timerAmethystPoolCD:Start(-delay)
-			end
-		end
+		self:ScheduleMethod(1, "ThreeBossStart", delay)
 	end
 end
 
