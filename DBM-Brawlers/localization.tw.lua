@@ -61,6 +61,10 @@ L:SetGeneralLocalization({
 	name = "鬥陣俱樂部:第3階"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "在真正的吞齧怪上設置圖示(骷髏)"
+})
+
 ------------
 -- Rank 4 --
 ------------
@@ -69,6 +73,11 @@ L= DBM:GetModLocalization("BrawlRank4")
 L:SetGeneralLocalization({
 	name = "鬥陣俱樂部:第4階"
 })
+
+L:SetOptionLocalization({
+	SetIconOnDominika	= "在真正的幻術師多明妮卡上設置圖示(骷髏)"
+})
+
 
 ------------
 -- Rank 5 --
