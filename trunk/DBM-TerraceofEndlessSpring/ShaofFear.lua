@@ -273,7 +273,8 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 61042 or cid == 61046 or cid == 61038 then
+	if platformGUIDs[args.destGUID] then
+		platformGUIDs[args.destGUID] = nil
 		timerDreadSpray:Cancel(args.destGUID)
 		timerDreadSprayCD:Cancel(args.destGUID)
 		-- If you die on platform, and revived after platform mob die, Fearless will not be applied on you. This stuff will be slove this.
