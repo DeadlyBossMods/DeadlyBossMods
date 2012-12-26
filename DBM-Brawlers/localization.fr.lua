@@ -1,4 +1,4 @@
-﻿-- Last update: 12/20/2012 (20/12/2012 in french format)
+﻿-- Last update: 12/26/2012 (26/12/2012 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -64,6 +64,10 @@ L:SetGeneralLocalization({
 	name = "Bastonneurs : Rang 3"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Met un symbole (crâne) sur le vrai Blat"
+})
+
 ------------
 -- Rank 4 --
 ------------
@@ -73,6 +77,9 @@ L:SetGeneralLocalization({
 	name = "Bastonneurs : Rang 4"
 })
 
+L:SetOptionLocalization({
+	SetIconOnDominika	= "Met un symbole (crâne) sur la vrai Dominika l’illusionniste"
+})
 ------------
 -- Rank 5 --
 ------------
