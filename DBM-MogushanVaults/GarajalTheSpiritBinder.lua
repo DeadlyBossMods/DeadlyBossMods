@@ -8,9 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(5, 6, 7, 8)
 mod:SetMinSyncRevision(7751)
 
--- Sometimes it fails combat detection on "combat". Use yell instead until the problem being founded.
---seems that combat detection fails only in lfr. (like DS Zonozz Void of Unmaking summon event.)
-mod:RegisterCombat("yell", L.Pull)
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
@@ -20,6 +18,9 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
 --NOTES
 --Syncing is used for all warnings because the realms don't share combat events. You won't get warnings for other realm any other way.
 --Voodoo dolls do not have a CD, they are linked to banishment (or player deaths), when he banishes current tank, he reapplies voodoo dolls to new tank and new players. If tank dies, he just recasts voodoo on a new current threat target.
@@ -249,5 +250,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self:LatencyCheck() then
 			self:SendSync("SummonTotem")
 		end
+	end
+end
+
+--Secondary pull trigger. (leave it for lfr combat detection bug)
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if (msg == L.Pull or msg:find(L.Pull)) and not self:IsInCombat() then
+		DBM:StartCombat(self, 0)
 	end
 end
