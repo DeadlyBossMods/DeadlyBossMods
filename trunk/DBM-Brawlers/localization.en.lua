@@ -30,7 +30,8 @@ L:SetMiscLocalization({
 	Rank6			= "Rank 6",
 	Rank7			= "Rank 7",
 	Rank8			= "Rank 8",
-	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus."
+	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus.",--Alliance
+	Proboskus2		= "Ha ha ha! What bad luck you have! It's Proboskus! Ahhh ha ha ha! I've got twenty five gold that says you die in the fire!"--Horde
 })
 
 ------------
