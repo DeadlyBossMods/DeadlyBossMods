@@ -32,7 +32,7 @@ L:SetMiscLocalization({
 	Rank7			= "7계급",
 	Rank8			= "8계급",
 	Proboskus		= "프로보스쿠스와",--Alliance
-	Proboskus		= "하하! 정말 운이 없군요! 프로보스쿠스입니다! 아하하하! 당신이 불길 속에서 죽는다에 25골드를 걸었어요!"--Horde
+	Proboskus2		= "하하! 정말 운이 없군요! 프로보스쿠스입니다! 아하하하! 당신이 불길 속에서 죽는다에 25골드를 걸었어요!"--Horde
 })
 
 --[등장 메세지]
