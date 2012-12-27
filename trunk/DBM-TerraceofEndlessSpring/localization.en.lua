@@ -32,13 +32,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "Next Special"
+	timerSpecialCD			= "Special CD"
 })
 
 L:SetOptionLocalization({
 	warnHideOver			= "Show warning when $spell:123244 has ended",
-	warnHideProgress		= "Show warning debug for $spell:123244 progress",
-	timerSpecialCD			= "Show timer for when next special ability will be cast",
+	warnHideProgress		= "Show statistics for $spell:123244 when it ends",
+	timerSpecialCD			= "Show timer for special ability CD",
 	SetIconOnGuard			= "Set icons on $journal:6224",
 	RangeFrame				= "Show range frame (3) for $spell:123121\n(Shows everyone during Hide, otherwise, only shows tanks)",
 	GWHealthFrame			= "Show remaining health frame for $spell:123461 fades\n(Requires boss health frame enabled)" -- maybe bad wording, needs review
