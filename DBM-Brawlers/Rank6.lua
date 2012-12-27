@@ -62,7 +62,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShadowStrikes:Show()
 		timerShadowStrikes:Start()
 		if brawlersMod:PlayerFighting() then
-			specWarnShadowStrikes:Show()
+			specWarnShadowStrikes:Show(args.destName)
 		end
 	end
 end
