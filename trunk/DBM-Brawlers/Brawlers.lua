@@ -87,7 +87,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			specWarnYourTurn:Show()
 			playerIsFighting = true
 		end
-		if self:LatencyCheck() then
+		if self:LatencyCheck() or not IsInGroup() then--If not in group always send sync regardless of latency, better to start match late then never start it at all.
 			self:SendSync("MatchBegin")
 		end
 	end
@@ -119,7 +119,7 @@ end
 
 function mod:ZONE_CHANGED_NEW_AREA()
 	local currentZoneID = GetCurrentMapAreaID()
-	if currentZoneID == 922 or currentZoneID == 925 then modsStopped = false return end--We returned to pug, reset variable
+	if currentZoneID == 922 or currentZoneID == 925 then modsStopped = false return end--We returned to arena, reset variable
 	if modsStopped then return end--Don't need this to fire every time you change zones after the first.
 	self:Stop()
 	for i = 1, 8 do
@@ -135,7 +135,7 @@ end
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
 		if currentZoneID and (currentZoneID ~= 922 or currentZoneID ~= 925) then return end
-		self:Stop()--Sometimes bizmo doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
+		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
 		if currentZoneID and (currentZoneID ~= 922 or currentZoneID ~= 925) then return end
