@@ -87,12 +87,16 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 			specWarnYourTurn:Show()
 			playerIsFighting = true
 		end
-		self:SendSync("MatchBegin")
+		if self:LatencyCheck() then
+			self:SendSync("MatchBegin")
+		end
 	end
 	--Only boss with a custom berserk timer. His is 1 minute, but starts at different yell than 2 min berserk, so it's not actually 60 sec shorter but more like 50-55 sec shorter
 	if msg == L.Proboskus or msg:find(L.Proboskus) or msg == L.Proboskus2 or msg:find(L.Proboskus2) then
-		berserkTimer:Cancel()
-		berserkTimer:Start(60)
+		self:Schedule(2, function()
+			berserkTimer:Cancel()
+			berserkTimer:Start(58)
+		end)
 	end
 end
 
@@ -130,11 +134,11 @@ end
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
-		if currentZoneID and (not (currentZoneID == 922 or currentZoneID == 925)) then return end
+		if currentZoneID and (currentZoneID ~= 922 or currentZoneID ~= 925) then return end
 		self:Stop()--Sometimes bizmo doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
-		if currentZoneID and (not (currentZoneID == 922 or currentZoneID == 925)) then return end
+		if currentZoneID and (currentZoneID ~= 922 or currentZoneID ~= 925) then return end
 		currentFighter = nil
 		self:Stop()
 		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
