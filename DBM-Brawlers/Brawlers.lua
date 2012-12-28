@@ -30,6 +30,7 @@ mod:RemoveOption("SpeedKillTimer")
 local playerIsFighting = false
 local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
+local currentZoneID = 0
 local modsStopped = false
 
 function mod:PlayerFighting() -- for external mods
@@ -118,7 +119,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	local currentZoneID = GetCurrentMapAreaID()
+	currentZoneID = GetCurrentMapAreaID()
 	if currentZoneID == 922 or currentZoneID == 925 then modsStopped = false return end--We returned to arena, reset variable
 	if modsStopped then return end--Don't need this to fire every time you change zones after the first.
 	self:Stop()
@@ -134,11 +135,11 @@ end
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
-		if currentZoneID and (currentZoneID ~= 922 or currentZoneID ~= 925) then return end
+		if currentZoneID ~= 922 and currentZoneID ~= 925 then return end
 		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
-		if currentZoneID and (currentZoneID ~= 922 or currentZoneID ~= 925) then return end
+		if currentZoneID ~= 922 and currentZoneID ~= 925 then return end
 		currentFighter = nil
 		self:Stop()
 		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
