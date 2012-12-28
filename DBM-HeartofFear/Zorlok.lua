@@ -56,6 +56,7 @@ local MCTargets = {}
 local MCIcon = 8
 local platform = 0
 local EchoAlive = false--Will be used for the very accurate phase 2 timers when an echo is left up on purpose. when convert is disabled the other 2 abilities trigger failsafes that make them predictable. it's the ONLY time phase 2 timers are possible. otherwise they are too variable to be useful
+local lastDirection = 0
 
 local function showMCWarning()
 	warnConvert:Show(table.concat(MCTargets, "<, >"))
@@ -65,6 +66,7 @@ local function showMCWarning()
 end
 
 function mod:OnCombatStart(delay)
+	lastDirection = 0
 	platform = 0
 	EchoAlive = false
 	table.wipe(MCTargets)
@@ -113,27 +115,15 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122713) then
 		timerForce:Start()
-	elseif args:IsSpellID(122474, 122496, 123721) then
-		warnAttenuation:Show(args.spellName, args.sourceName, L.Left)
-		specwarnAttenuation:Show(args.spellName, args.sourceName, L.Left)
-		timerAttenuation:Start()
-		if platform < 4 then
-			timerAttenuationCD:Start()
-		else
-			if EchoAlive then--if echo isn't active don't do any timers
-				if args:GetSrcCreatureID() == 65173 then--Echo
-					timerAttenuationCD:Start(28, args.sourceGUID)--Because both echo and boss can use it in final phase and we want 2 bars
-				else--Boss
-					timerAttenuationCD:Start(54, args.sourceGUID)
-				end
-			end
-		end
-		if self.Options.ArrowOnAttenuation then
-			DBM.Arrow:ShowStatic(90, 12)
-		end
-	elseif args:IsSpellID(122479, 122497, 123722) then
-		warnAttenuation:Show(args.spellName, args.sourceName, L.Right)
-		specwarnAttenuation:Show(args.spellName, args.sourceName, L.Right)
+	elseif args:IsSpellID(122474, 122496, 123721) then--All direction IDs are cast by an invisible version of Vizier.
+		lastDirection = L.Left
+	elseif args:IsSpellID(122479, 122497, 123722) then--We monitor direction, but we need to announce off non invisible mob
+		lastDirection = L.Right
+	elseif args:IsSpellID(127834) then--This is only id that properly identifies CORRECT boss source
+		--Example
+		--http://worldoflogs.com/reports/rt-g8ncl718wga0jbuj/xe/?enc=bosses&boss=66791&x=%28spellid+%3D+127834+or+spellid+%3D+122496+or+spellid+%3D+122497%29+and+fulltype+%3D+SPELL_CAST_START
+		warnAttenuation:Show(args.spellName, args.sourceName, lastDirection)
+		specwarnAttenuation:Show(args.spellName, args.sourceName, lastDirection)
 		timerAttenuation:Start()
 		if platform < 4 then
 			timerAttenuationCD:Start()
@@ -162,7 +152,9 @@ end
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Platform or msg:find(L.Platform) then
 		platform = platform + 1
-		specwarnPlatform:Show()
+		if platform > 1 then--Don't show for first platform, it's pretty obvious
+			specwarnPlatform:Show()
+		end
 		timerForceCD:Cancel()
 		timerAttenuationCD:Cancel()
 		if platform == 1 then
@@ -190,9 +182,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif (spellId == 130297 or spellId == 127541) and not EchoAlive then--Echo of Zor'lok
 		EchoAlive = true
-		if platform == 2 then--Boss flew off from first platform to 2nd, and this means the echo that spawned is an Echo of Force and Verve
+		if platform == 1 then--Boss flew off from first platform to 2nd, and this means the echo that spawned is an Echo of Force and Verve
 --			timerForceCD:Start()
-		elseif platform == 3 then--Boss flew to 3rd platform and left an Echo of Attenuation behind on 2nd.
+		elseif platform == 2 then--Boss flew to 3rd platform and left an Echo of Attenuation behind on 2nd.
 --			timerAttenuationCD:Start()
 		end
 	end
