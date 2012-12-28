@@ -135,11 +135,11 @@ end
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
-		if currentZoneID == 922 or currentZoneID == 925 then return end
+		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
 	elseif msg == "MatchEnd" then
-		if currentZoneID == 922 or currentZoneID == 925 then return end
+		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		currentFighter = nil
 		self:Stop()
 		local mod2 = DBM:GetModByName("BrawlRank" .. currentRank)
