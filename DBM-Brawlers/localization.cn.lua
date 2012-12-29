@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/23/2012
+-- Last update: 12/29/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -34,7 +34,8 @@ L:SetMiscLocalization({
 	Rank6			= "6级",
 	Rank7			= "7级",
 	Rank8			= "8级",
-	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus."
+	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus.",--Alliance
+	Proboskus2		= "Ha ha ha! What bad luck you have! It's Proboskus! Ahhh ha ha ha! I've got twenty five gold that says you die in the fire!"--Horde
 })
 
 ------------

@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/19/2012
+-- Last update: 12/29/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -54,6 +54,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnUnder	= "特殊警报：当你在首领身体下方时",
+	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."（仅英雄难度）",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
 })
 
@@ -88,11 +89,11 @@ L:SetWarningLocalization({
 	specwarnWillPower			= "意志低下！- 还剩5秒",
 	specwarnAmberExplosionYou	= "打断%s！",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s：打断 %s!",--Amber Montrosity
-	specwarnAmberExplosionOther	= "%s：打断 %s!"--Amber Montrosity
+	specwarnAmberExplosionOther	= "%s：打断 %s!"--Mutated Construct
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "下一次%s：琥珀畸怪"
+	timerAmberExplosionAMCD		= "爆炸冷却：琥珀畸怪"
 })
 
 L:SetOptionLocalization({
