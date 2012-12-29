@@ -80,7 +80,7 @@ mod:AddBoolOption("AmberPrisonIcons", true)
 
 local addsCount = 0
 local amberPrisonIcon = 2
-local firstStrike = false
+local firstStriked = false
 local strikeSpell = GetSpellInfo(123963)
 local strikeTarget = nil
 local amberPrisonTargets = {}
@@ -100,7 +100,7 @@ end
 function mod:OnCombatStart(delay)
 	addsCount = 0
 	amberPrisonIcon = 2
-	firstStrike = false
+	firstStriked = false
 	strikeTarget = nil
 	table.wipe(amberPrisonTargets)
 	table.wipe(windBombTargets)
@@ -236,10 +236,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC8#Kor'thik Elite Blademaster#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10535]
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC7#Kor'thik Elite Blademaster#2632#8#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10536]
 	elseif spellId == 123963 and self:AntiSpam(2, 2) then--Kor'thik Strike Trigger, only triggered once, then all non CCed Kor'thik cast the strike about 2 sec later
-		if firstStrike then--first Strike 32~33 sec cd. after 2nd strike 50~51 sec cd.
-			timerKorthikStrikeCD:Start(32)
-		else
+		if firstStriked then--first Strike 32~33 sec cd. after 2nd strike 50~51 sec cd.
 			timerKorthikStrikeCD:Start()
+		else
+			firstStriked = true
+			timerKorthikStrikeCD:Start(32)
 		end
 	end
 end
