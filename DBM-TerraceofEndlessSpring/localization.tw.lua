@@ -38,9 +38,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "為$spell:123244結束顯示警告",
-	warnHideProgress		= "為$spell:123244進度顯示除錯警告",
-	timerSpecialCD			= "為下次特別技能顯示計時器",
-	timerSpecialCD			= "為下一次特別技能顯示計時器",
+	warnHideProgress		= "當$spell:123244結束後顯示統計",
+	timerSpecialCD			= "為下一次特別技能冷卻顯示計時器",
 	SetIconOnGuard			= "為$journal:6224標示團隊圖示",
 	RangeFrame				= "為$spell:123121顯示距離框(3碼)(只有顯示坦)",
 	GWHealthFrame			= "為$spell:123461顯示需求血量框架\n(首領血量框架需要開啟)" -- maybe bad wording, needs review
@@ -49,6 +48,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization{
 	Victory	= "我...啊..喔!我曾經...?我是不是...?這一切...都太...模糊了。"--wtb alternate and less crappy victory event.
 }
+
 
 ----------------------
 -- Sha of Fear --
