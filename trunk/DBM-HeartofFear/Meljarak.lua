@@ -60,6 +60,7 @@ local yellWindBomb						= mod:NewYell(131830)
 
 --local timerWhirlingBladeCD				= mod:NewCDTimer(30, 121896)--30~60 sec. very large variable. timer useless?
 local timerRainOfBladesCD				= mod:NewCDTimer(48, 122406)--48-64 sec variation now. so much for it being a precise timer.
+local timerRainOfBlades					= mod:NewBuffActiveTimer(7.5, 122406)
 local timerRecklessness					= mod:NewBuffActiveTimer(30, 125873)--Heroic recklessness
 local timerReinforcementsCD				= mod:NewNextCountTimer(50, "ej6554")--EJ says it's 45 seconds after adds die but it's actually 50 in logs. EJ is not updated for current tuning.
 local timerImpalingSpear				= mod:NewTargetTimer(50, 122224)--Filtered to only show your own target, may change to a popup option later that lets you pick whether you show ALL of them or your own (all will be spammy)
@@ -68,7 +69,7 @@ local timerCorrosiveResinCD				= mod:NewCDTimer(36, 122064, nil, false)--^^
 local timerResidue						= mod:NewBuffFadesTimer(120, 122055)
 local timerMendingCD					= mod:NewNextTimer(37, 122193, nil, false)--To reduce bar spam, only those dealing with this should turn CD bar on, off by default / 37~37.5 sec
 local timerQuickeningCD					= mod:NewNextTimer(37.3, 122149, nil, false)--^^37.3~37.6sec.
-local timerKorthikStrikeCD				= mod:NewCDTimer(32, 123963)--^^
+local timerKorthikStrikeCD				= mod:NewCDTimer(50, 123963)--^^
 local timerWindBombCD					= mod:NewCDTimer(6, 131830)--^^
 
 local berserkTimer						= mod:NewBerserkTimer(480)
@@ -79,18 +80,11 @@ mod:AddBoolOption("AmberPrisonIcons", true)
 
 local addsCount = 0
 local amberPrisonIcon = 2
-local strikeTarget = GetSpellInfo(123963)
-local strikeWarned = false
+local firstStrike = false
+local strikeSpell = GetSpellInfo(123963)
+local strikeTarget = nil
 local amberPrisonTargets = {}
 local windBombTargets = {}
-local guids = {}
-local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
-local function buildGuidTable()
-	table.wipe(guids)
-	for i = 1, DBM:GetGroupMembers() do
-		guids[UnitGUID("raid"..i) or "none"] = GetRaidRosterInfo(i)
-	end
-end
 
 local function warnAmberPrisonTargets()
 	warnAmberPrison:Show(table.concat(amberPrisonTargets, "<, >"))
@@ -106,10 +100,12 @@ end
 function mod:OnCombatStart(delay)
 	addsCount = 0
 	amberPrisonIcon = 2
-	strikeWarned = false
+	firstStrike = false
+	strikeTarget = nil
 	table.wipe(amberPrisonTargets)
 	table.wipe(windBombTargets)
 	--timerWhirlingBladeCD:Start(35.5-delay)
+	timerKorthikStrikeCD:Start(18-delay)
 	timerRainOfBladesCD:Start(60-delay)
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
@@ -173,6 +169,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122406) then
 		warnRainOfBlades:Show()
 		specWarnRainOfBlades:Show()
+		timerRainOfBlades:Start()
 		timerRainOfBladesCD:Start()
 	elseif args:IsSpellID(121876) then
 		timerAmberPrisonCD:Start(36, args.sourceGUID)
@@ -239,32 +236,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC8#Kor'thik Elite Blademaster#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10535]
 --	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC7#Kor'thik Elite Blademaster#2632#8#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10536]
 	elseif spellId == 123963 and self:AntiSpam(2, 2) then--Kor'thik Strike Trigger, only triggered once, then all non CCed Kor'thik cast the strike about 2 sec later
-		timerKorthikStrikeCD:Start()
+		if firstStrike then--first Strike 32~33 sec cd. after 2nd strike 50~51 sec cd.
+			timerKorthikStrikeCD:Start(32)
+		else
+			timerKorthikStrikeCD:Start()
+		end
 	end
 end
 
 function mod:UNIT_AURA(uId)
-	if uId ~= "player" then return end
-	if UnitDebuff("player", strikeTarget) and not strikeWarned then--Warn you that you have a meteor
-		specWarnKorthikStrike:Show()
-		yellKorthikStrike:Yell()
-		strikeWarned = true
-		self:SendSync("KorthikStrikeTarget", UnitGUID("player"))--Screw target scanning, this way is much better, never wrong.
-	elseif not UnitDebuff("player", strikeTarget) and strikeWarned then--reset warned status if you don't have debuff
-		strikeWarned = false
-	end
-end
-
-function mod:OnSync(msg, guid)
-	--Make sure we build a table if we DCed mid fight, before we try comparing any syncs to that table.
-	if not guidTableBuilt then
-		buildGuidTable()
-		guidTableBuilt = true
-	end
-	if msg == "KorthikStrikeTarget" and guids[guid] then
-		warnKorthikStrike:Show(guids[guid])
-		if guid ~= UnitGUID("player") then--make sure YOU aren't target before warning "other"
-			specWarnKorthikStrikeOther:Show(guids[guid])
+	if UnitDebuff(uId, strikeSpell) and not strikeTarget then
+		strikeTarget = uId
+		local name = DBM:GetUnitFullName(uId)
+		warnKorthikStrike:Show(name)
+		if name == UnitName("player") then
+			specWarnKorthikStrike:Show()
+			yellKorthikStrike:Yell()
+		else
+			specWarnKorthikStrikeOther:Show(name)
 		end
+	elseif strikeTarget and strikeTarget == uId and not UnitDebuff(uId, strikeSpell) then
+		strikeTarget = nil
 	end
 end

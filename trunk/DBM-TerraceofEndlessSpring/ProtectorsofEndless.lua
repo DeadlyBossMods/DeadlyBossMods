@@ -17,6 +17,16 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS"
 )
 
+local Kaolan = EJ_GetSectionInfo(5789)
+local Regail = EJ_GetSectionInfo(5793)
+local Asani = EJ_GetSectionInfo(5794)
+
+mod:SetBossHealthInfo(
+	60583, Kaolan,
+	60585, Regail,
+	60586, Asani
+)
+
 --[[
 --Both Elders use Overhwelming Corruption as their phase 3 ability. It's not worth warning for since it's just a periodic aoe you can't do anything about with stacking damage.
 spellid = 117309 or spellid = 117227 or spellid = 111850 or spellid = 117519 and not(fulltype = SPELL_PERIODIC_DAMAGE) or spellid = 117986 or spellid = 117975 or spellid = 118077
