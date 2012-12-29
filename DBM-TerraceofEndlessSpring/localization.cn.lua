@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/23/2012
+-- Last update: 12/29/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -32,17 +32,17 @@ L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
 	warnHideOver			= "%s 结束",
-	warnHideProgress		= "隐藏命中：%s，伤害：%s"
+	warnHideProgress		= "命中：%s，伤害：%s，时间：%s"
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "下一次特殊能力"
+	timerSpecialCD			= "特殊能力冷却"
 })
 
 L:SetOptionLocalization({
 	warnHideOver			= "特殊警报：$spell:123244效果结束时",
-	warnHideProgress		= "Debug警报：$spell:123244的过程",
-	timerSpecialCD			= "计时条：下一次特殊能力",
+	warnHideProgress		= "警报：$spell:123244阶段的战斗统计",
+	timerSpecialCD			= "计时条：特殊能力冷却",
 	SetIconOnGuard			= "为$journal:6224的目标添加团队标记",
 	RangeFrame				= "距离监视（3码）：应对$spell:123121（隐藏阶段时显示所有人，其余时仅显示坦克位置）",
 	GWHealthFrame			= "生命值监视：移除$spell:123461还需要的伤害"

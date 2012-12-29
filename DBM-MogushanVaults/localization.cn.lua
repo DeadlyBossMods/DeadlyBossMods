@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/19/2012
+-- Last update: 12/29/2012
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -37,7 +37,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "警报：阶段转换",
-	RangeFrame	= "距离监视（6码）：应对奥术阶段"
+	RangeFrame	= "距离监视（6码）：应对奥术阶段",
+	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
+	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
 
 L:SetMiscLocalization({
