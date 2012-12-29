@@ -34,7 +34,8 @@ L:SetMiscLocalization({
 	Rank6			= "rang 6",
 	Rank7			= "rang 7",
 	Rank8			= "rang 8",
-	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus."--This boss is only boss out of 32 that has a custom berserk, so we need a chat yell to detect when he specificly is pulled to adjust berserk timer
+	Proboskus		= "Bonté divine... Navré, mais on dirait quue vous allez devoir affronter Proboskus.",--Alliance
+	Proboskus2		= "Ha ha ha ! Vous avez vraiment pas de chance ! C’est Proboskus ! Aaaah ha ha ha !! J’ai vingt-cinq pièces d’or qui disent que vous allez mourir dans les flammes !"--Horde
 })
 
 ------------
