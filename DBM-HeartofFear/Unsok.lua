@@ -16,7 +16,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
-	"SPELL_MISSED"
+	"SPELL_MISSED",
+	"UNIT_SPELLCAST_STOP",
+	"UNIT_POWER"
 )
 
 --[[WoL Reg Expression
@@ -80,6 +82,7 @@ local timerStruggleForControl	= mod:NewTargetTimer(5, 122395, nil, false)
 local timerMassiveStompCD		= mod:NewCDTimer(18, 122408, nil, mod:IsHealer() or mod:IsMelee())--18-25 seconds variation
 local timerFlingCD				= mod:NewCDTimer(25, 122413, nil, mod:IsTank())--25-40sec variation.
 local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
+local timerAmberExplosion		= mod:NewCastTimer(2.5, 122402)
 
 local countdownAmberExplosion	= mod:NewCountdown(49, 122398)
 
@@ -354,7 +357,8 @@ function mod:SPELL_CAST_START(args)
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(41)
-		timerAmberExplosionAMCD:Start(46, args.spellName)
+		timerAmberExplosion:Start()
+		timerAmberExplosionAMCD:Start(nil, args.spellName)
 		self:Unschedule(warnAmberExplosionCast)
 		self:Schedule(0.5, warnAmberExplosionCast, 122402)--Always check available interrupts and special warn if not
 	elseif args:IsSpellID(122408) then
@@ -420,6 +424,12 @@ function mod:UNIT_POWER(uId)
 	elseif playerWill == 5 and willNumber > 5 then--Doesn't work? A mystery
 		willNumber = 5
 		warnWillPower:Show(willNumber)
+	end
+end
+
+function mod:UNIT_SPELLCAST_STOP(uId, _, _, _, spellId)
+	if spellId == 122402 then--SPELL_INTERRUPT not always fires, so use UNIT_SPELLCAST_STOP
+		timerAmberExplosion:Cancel()
 	end
 end
 
