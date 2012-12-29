@@ -1,4 +1,4 @@
--- Last update: 12/17/2012 (17/12/2012 in french format)
+-- Last update: 12/29/2012 (29/12/2012 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -58,7 +58,7 @@ L= DBM:GetModLocalization(669)
 L= DBM:GetModLocalization(670)
 
 L:SetWarningLocalization({
-	SpecWarnFizzyBubbles	= "Prenez une Bulles de gaz et volé !"
+	SpecWarnFizzyBubbles	= "Prenez une Bulles de gaz et volez !"
 })
 
 L:SetOptionLocalization({
