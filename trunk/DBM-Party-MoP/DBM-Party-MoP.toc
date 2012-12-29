@@ -24,7 +24,7 @@
 ## X-DBM-Mod-Name-esMX: Mazmorras (MoP)
 ## X-DBM-Mod-Name-ptBR: Masmorras (MoP)
 ## X-DBM-Mod-Name-zhTW: 隊伍首領 (潘達利亞之謎)
-## X-DBM-Mod-Name-zhCN: 5人副本 (熊猫人之谜)a
+## X-DBM-Mod-Name-zhCN: 5人副本 (熊猫人之谜)
 ## X-DBM-Mod-Name-frFR: Groupe (MoP)
 ## X-DBM-Mod-Sort: 25
 ## X-DBM-Mod-LoadZoneID: 867, 876, 877, 875, 885, 887, 898, 871, 874
