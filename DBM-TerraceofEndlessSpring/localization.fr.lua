@@ -58,6 +58,14 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetWarningLocalization({
+	specWarnBreathOfFearSoon	= "Souffle de peur bientôt - Allez dans le mur !",
+})
+
+L:SetOptionLocalization({
+	specWarnBreathOfFearSoon	= "Alerte spécial préventive pour $spell:119414 si vous n'avez pas le buff $spell:117964",
+})
+
 L:SetOptionLocalization({
 	RangeFrame			= "Afficher le cadre de distance (2m) pour $spell:119519"
 })
