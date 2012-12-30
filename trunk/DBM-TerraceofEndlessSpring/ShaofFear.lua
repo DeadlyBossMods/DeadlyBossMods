@@ -33,6 +33,7 @@ local warnSubmerge						= mod:NewSpellAnnounce(120455)
 local warnEmerge						= mod:NewSpellAnnounce(120458)
 
 -- Normal and heroic Phase 1
+local specWarnBreathOfFearSoon			= mod:NewSpecialWarning("specWarnBreathOfFearSoon")
 local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
 --local specWarnOminousCackle				= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
@@ -72,6 +73,7 @@ local countdownBreathOfFear			= mod:NewCountdown(33.3, 119414, nil, nil, 10)
 
 mod:AddBoolOption("RangeFrame")--For Eerie Skull (2 yards)
 
+local wallLight = GetSpellInfo(117964)
 local ominousCackleTargets = {}
 local platformGUIDs = {}
 local waterspoutTargets = {}
@@ -96,16 +98,29 @@ local function warnHuddleInTerrorTargets()
 	table.wipe(huddleInTerrorTargets)
 end
 
+function mod:CheckWall()
+	local fearlessTime = timerFearless:GetTime()
+	if not UnitBuff("player", wallLight) and (fearlessTime == 0 or fearlessTime > 21.5) then
+		specWarnBreathOfFearSoon:Show()
+	end
+end
+
 local function leavePlatform()
 	if onPlatform then
 		onPlatform = false
 		platformMob = nil
 		--Breath of fear timer recovery
+		local fearlessTime = timerFearless:GetTime()
 		local shaPower = UnitPower("boss1") --Get Boss Power
 		shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
-		if shaPower < 28 then--Don't bother recovery if breath is in 5 or less seconds, we'll get a new one when it's cast.
+		if (fearlessTime == 0 and shaPower < 30.3) or shaPower < 5 then--If you have no fearless and breath timer less then 3s, you may not reach to wall. So ignore below 3 sec. Also if you have fearless and breath timer less then 28.3s, not need to warn breath.
 			timerBreathOfFearCD:Start(33.3-shaPower)
 			countdownBreathOfFear:Start(33.3-shaPower)
+			if shaPower < 26.3 then
+				self:ScheduleMethod(26.3-shaPower, "CheckWall")
+			elseif fearlessTime == 0 then
+				specWarnBreathOfFearSoon:Show()
+			end
 		end
 		if mod.Options.RangeFrame then
 			DBM.RangeCheck:Show(2)
@@ -123,6 +138,7 @@ function mod:OnCombatStart(delay)
 --	self:ScheduleMethod(25.5-delay, "TerrorSpawns")
 	warnBreathOfFearSoon:Schedule(23.3-delay)
 	timerBreathOfFearCD:Start(-delay)
+	self:ScheduleMethod(26.3-delay-shaPower, "CheckWall")
 	countdownBreathOfFear:Start(33.3-delay)
 	onPlatform = false
 	platformMob = nil
@@ -159,6 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not onPlatform then--not in middle, not your problem
 			timerBreathOfFearCD:Start()
 			countdownBreathOfFear:Start(33.3)
+			self:ScheduleMethod(26.3, "CheckWall")--check before 7s, 5s is too late.
 		end
 		warnBreathOfFearSoon:Schedule(23.3)
 	elseif args:IsSpellID(129147) then
@@ -168,6 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnOminousCackleYou:Show()
 			countdownBreathOfFear:Cancel()
 			timerBreathOfFearCD:Cancel()
+			self:UnscheduleMethod("CheckWall")
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
@@ -184,8 +202,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(119888) and platformMob and args.sourceName == platformMob then
 		timerDeathBlossom:Show()
 	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform 
-		leavePlatform()
 		timerFearless:Start()
+		leavePlatform()
 	elseif args:IsSpellID(131996) and not onPlatform then
 		warnThrash:Show()
 		specWarnThrash:Show()
@@ -257,6 +275,10 @@ function mod:SPELL_CAST_START(args)
 		platformGUIDs[args.sourceGUID] = true
 		platformMob = args.sourceName--Get name of your platform mob so we can determine which mob you have engaged
 		timerDreadSprayCD:Start(10.5, args.sourceGUID)--We can accurately start perfectly accurate spray cd bar off their first shoot cast.
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(cid, platformMob)
+		end
 	elseif args:IsSpellID(119888) and platformMob and args.sourceName == platformMob then
 		specWarnDeathBlossom:Show()
 	elseif args:IsSpellID(120672) then -- Implacable Strike
@@ -273,13 +295,16 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
 	if platformGUIDs[args.destGUID] then
 		platformGUIDs[args.destGUID] = nil
 		timerDreadSpray:Cancel(args.destGUID)
 		timerDreadSprayCD:Cancel(args.destGUID)
 		-- If you die on platform, and revived after platform mob die, Fearless will not be applied on you. This stuff will be slove this.
 		self:Schedule(10, leavePlatform)
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(cid)
+		end
 	end
 end
 
@@ -295,6 +320,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		berserkTimer:Cancel() -- berserk timer seems restarts on heroic phase 2.
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
+		end
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(61038)
+			DBM.BossHealth:RemoveBoss(61042)
+			DBM.BossHealth:RemoveBoss(61046)
 		end
 	end
 end
