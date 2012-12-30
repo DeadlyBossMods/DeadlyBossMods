@@ -138,7 +138,7 @@ function mod:OnCombatStart(delay)
 --	self:ScheduleMethod(25.5-delay, "TerrorSpawns")
 	warnBreathOfFearSoon:Schedule(23.3-delay)
 	timerBreathOfFearCD:Start(-delay)
-	self:ScheduleMethod(26.3-delay-shaPower, "CheckWall")
+	self:ScheduleMethod(26.3-delay, "CheckWall")
 	countdownBreathOfFear:Start(33.3-delay)
 	onPlatform = false
 	platformMob = nil

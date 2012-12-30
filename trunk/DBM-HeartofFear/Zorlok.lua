@@ -202,7 +202,7 @@ function mod:UNIT_DIED(args)
 		EchoAlive = false
 		if platform < 4 then
 			timerAttenuationCD:Cancel()
-		else--No echo left up in final phase, cancel al timers because they are going to go back to clusterfuck random (as in may weave convert in but may not, and delay other abilities by as much as 30-50 seconds)
+		else--No echo left up in final phase, cancel all timers because they are going to go back to clusterfuck random (as in may weave convert in but may not, and delay other abilities by as much as 30-50 seconds)
 			timerAttenuationCD:Cancel()
 			timerForceCD:Cancel()
 		end
