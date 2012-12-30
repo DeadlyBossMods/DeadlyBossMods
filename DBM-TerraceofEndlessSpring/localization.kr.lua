@@ -52,6 +52,14 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetWarningLocalization({
+	specWarnBreathOfFearSoon	= "곧 공포 숨결 - 장벽 안으로 이동하세요!",
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "$spell:119519 주문에 대한 거리 프레임 표시(2m)"
+	specWarnBreathOfFearSoon	= "$spell:119414 시전 전에 $spell:117964 효과가 없을 경우 특수 경고 보기",
+})
+
+L:SetOptionLocalization({
+	RangeFrame					= "$spell:119519 주문에 대한 거리 프레임 표시(2m)"
 })

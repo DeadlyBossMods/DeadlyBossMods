@@ -144,7 +144,9 @@ function mod:OnCombatStart(delay)
 	else
 		timerTouchOfShaCD:Start(15-delay)
 	end
-	berserkTimer:Start(-delay)
+	if not self:IsDifficulty("lfr25") then--lfr not berserks or more than 8m 10sec.
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
