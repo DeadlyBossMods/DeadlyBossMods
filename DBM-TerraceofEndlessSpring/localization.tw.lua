@@ -46,7 +46,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Victory	= "我...啊..喔!我曾經...?我是不是...?這一切...都太...模糊了。"--wtb alternate and less crappy victory event.
+	Victory					= "我...啊..喔!我曾經...?我是不是...?這一切...都太...模糊了。"--wtb alternate and less crappy victory event.
 }
 
 
@@ -55,6 +55,14 @@ L:SetMiscLocalization{
 ----------------------
 L= DBM:GetModLocalization(709)
 
+L:SetWarningLocalization({
+	specWarnBreathOfFearSoon	= "恐懼之息來臨 - 移動到光牆裡!",
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "為$spell:119519顯示距離框(8碼)"
+	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
+})
+
+L:SetOptionLocalization({
+	RangeFrame					= "為$spell:119519顯示距離框(8碼)"
 })

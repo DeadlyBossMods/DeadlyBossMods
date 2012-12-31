@@ -237,7 +237,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(666)
 
 L:SetMiscLocalization({
-	Kill	= "什麼?!"
+	Kill	= "受死吧，死靈法師!"
 })
 
 -----------------------
