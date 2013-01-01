@@ -151,17 +151,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnGameOverQuest	= "게임 종료. 획득 점수 %d 점, 획득 가능한 최대 점수 : %d 점",
-	warnGameOverNoQuest	= "게임 종료. 획득 가능한 최대 점수 : %d 점",
+	warnGameOverQuest	= "게임 종료. 점수 %d 점, 이 게임의 최대 점수 : %d 점",
+	warnGameOverNoQuest	= "게임 종료. 이 게임의 최대 점수 : %d 점",
 	warnGnoll			= "놀 등장",
 	warnHogger			= "들창코 놀 등장",
 	specWarnHogger		= "들창코 놀 등장!"
 })
 
 L:SetOptionLocalization({
-	warnGameOver	= "획득 가능한 최대 점수에 대해 알림",
-	warnGnoll		= "놀 등장 알림",
-	warnHogger		= "들창코 놀 등장 알림",
+	warnGameOver	= "진행 게임의 최대 점수 알림 보기",
+	warnGnoll		= "놀 등장 알림 보기",
+	warnHogger		= "들창코 놀 등장 알림 보기",
 	specWarnHogger	= "들창코 놀 득장 특수 경고 보기"
 })
 

@@ -140,7 +140,7 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	Alliance = "얼라이언스",
 	Horde = "호드",	
-	InfoErrorText 		= "현재 전투가 종료되면 깃발 운반자 추적이 가능합니다.",
+	InfoErrorText 		= "시스템상 한계로 전투 중에는 깃발 운반자 추적이 불가능합니다. 현재 전투가 종료된 후 깃발 운반자 추적 기능이 복구됩니다.",
 	ExprFlagPickUp 		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",	
 	ExprFlagCaptured 	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
 	ExprFlagReturn 		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
@@ -156,7 +156,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerFlag 					= "깃발 재생성 바 표시",
 	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
-	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 표시 기능에 대한 알림 보기"
+	ShowFlagCarrierErrorNote	= "전투가 진행 중이어서 깃발 운반자 표시 기능이 제한될 때 알림 보기"
 })
 
 ------------------------
@@ -213,7 +213,7 @@ L:SetMiscLocalization({
 	ZoneName 			= "쌍둥이 봉우리",
 	Alliance 			= "얼라이언스",
 	Horde 				= "호드",	
-	InfoErrorText 		= "현재 전투가 종료되면 깃발 운반자 추적이 가능합니다.",
+	InfoErrorText 		= "시스템상 한계로 전투 중에는 깃발 운반자 추적이 불가능합니다. 현재 전투가 종료된 후 깃발 운반자 추적 기능이 복구됩니다.",
 	ExprFlagPickUp		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",
 	ExprFlagCaptured	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
 	ExprFlagReturn		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
@@ -231,7 +231,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerFlag 					= "깃발 재생성 바 표시",
 	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
-	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 표시 기능에 대한 알림 보기"
+	ShowFlagCarrierErrorNote	= "전투가 진행 중이어서 깃발 운반자 표시 기능이 제한될 때 알림 보기"
 })
 
 
