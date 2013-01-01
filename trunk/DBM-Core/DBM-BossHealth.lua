@@ -208,11 +208,11 @@ do
 		local cType = bit.band(guid:sub(0, 5), 0x00F)
 		return (cType == 3 or cType == 5) and tonumber(guid:sub(6, 10), 16) or -1
 	end
-	
+
 --	local function compareBars(b1, b2)
 --		return b1.value > b2.value
 --	end
-	
+
 	-- gets the health and unit id of the given creature id, returns nil if the target could not be found
 	local function getHealth(cId)
 		local id = targetCache[cId] -- ask the cache if we already know where the mob is
@@ -250,7 +250,7 @@ do
 			return UnitHealth(id) / UnitHealthMax(id) * 100, id
 		end
 	end
-	
+
 	-- gets the health and unit id of the given GUID, returns nil if the target could not be found
 	-- TODO: mostly copy & paste from getHealth, these functions should probably be merged somehow...
 	local function getHealthByGuid(guid)

@@ -1,6 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 
-
 	<Button name="DBM_GUI_OptionsFramePanelButtonTemplate" virtual="true">
 		<ButtonText name="$parentText">
 			<Anchors>
@@ -21,71 +20,71 @@
 	</Button>
 
 	<Button name="DBM_GUI_OptionsFrameTabButtonTemplate" virtual="true">
-        <Size>
-            <AbsDimension x="85" y="24"/>
-        </Size>
-        <Layers>
+		<Size>
+			<AbsDimension x="85" y="24"/>
+		</Size>
+		<Layers>
 		<Layer level="BORDER">
-        		<Texture name="$parentLeftDisabled" file="Interface\OptionsFrame\UI-OptionsFrame-ActiveTab">
-        			<Size>
-        				<AbsDimension x="20" y="24"/>
-        			</Size>
-        			<Anchors>
-        				<Anchor point="BOTTOMLEFT">
-        					<Offset>
-        						<AbsDimension x="0" y="-3"/>
-        					</Offset>
-        				</Anchor>
-        			</Anchors>
+				<Texture name="$parentLeftDisabled" file="Interface\OptionsFrame\UI-OptionsFrame-ActiveTab">
+					<Size>
+						<AbsDimension x="20" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
 				<TexCoords left="0" right="0.15625" top="0" bottom="1.0"/>
-        		</Texture>
+				</Texture>
 			<Texture name="$parentMiddleDisabled" file="Interface\OptionsFrame\UI-OptionsFrame-ActiveTab">
-        			<Size>
-        				<AbsDimension x="47" y="24"/>
-        			</Size>
-        			<Anchors>
-        				<Anchor point="LEFT" relativeTo="$parentLeftDisabled" relativePoint="RIGHT"/>
-        			</Anchors>
+					<Size>
+						<AbsDimension x="47" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeftDisabled" relativePoint="RIGHT"/>
+					</Anchors>
 				<TexCoords left="0.15625" right="0.84375" top="0" bottom="1.0"/>
-        		</Texture>
+				</Texture>
 			<Texture name="$parentRightDisabled" file="Interface\OptionsFrame\UI-OptionsFrame-ActiveTab">
-        			<Size>
-        				<AbsDimension x="20" y="24"/>
-        			</Size>
-        			<Anchors>
-        				<Anchor point="LEFT" relativeTo="$parentMiddleDisabled" relativePoint="RIGHT"/>
-        			</Anchors>
+					<Size>
+						<AbsDimension x="20" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddleDisabled" relativePoint="RIGHT"/>
+					</Anchors>
 				<TexCoords left="0.84375" right="1.0" top="0" bottom="1.0"/>
-        		</Texture>
+				</Texture>
 			<Texture name="$parentLeft" file="Interface\OptionsFrame\UI-OptionsFrame-InActiveTab">
-        			<Size>
-        				<AbsDimension x="20" y="24"/>
-        			</Size>
-        			<Anchors>
-        				<Anchor point="TOPLEFT"/>
-        			</Anchors>
+					<Size>
+						<AbsDimension x="20" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
 				<TexCoords left="0" right="0.15625" top="0" bottom="1.0"/>
-        		</Texture>
+				</Texture>
 			<Texture name="$parentMiddle" file="Interface\OptionsFrame\UI-OptionsFrame-InActiveTab">
-        			<Size>
-        				<AbsDimension x="47" y="24"/>
-        			</Size>
-        			<Anchors>
-        				<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+					<Size>
+						<AbsDimension x="47" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
 				</Anchors>
 				<TexCoords left="0.15625" right="0.84375" top="0" bottom="1.0"/>
-        		</Texture>
+				</Texture>
 			<Texture name="$parentRight" file="Interface\OptionsFrame\UI-OptionsFrame-InActiveTab">
-        			<Size>
-        				<AbsDimension x="20" y="24"/>
-        			</Size>
-        			<Anchors>
-        				<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
-        			</Anchors>
+					<Size>
+						<AbsDimension x="20" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+					</Anchors>
 				<TexCoords left="0.84375" right="1.0" top="0" bottom="1.0"/>
 			</Texture>
-        	</Layer>
-        </Layers>
+			</Layer>
+		</Layers>
 		<ButtonText name="$parentText">
 			<Anchors>
 				<Anchor point="CENTER">
@@ -167,7 +166,7 @@
 			<TexCoords left="0.25" right="0.75" top="0.125" bottom="0.875"/>
 		</ThumbTexture>
 	</Slider>
-	
+
 	<Frame name="DBM_GUI_OptionsFrameListTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -276,7 +275,7 @@
 					<BackgroundInsets>
 						<AbsInset left="0" right="0" top="5" bottom="5"/>
 					</BackgroundInsets>
-				</Backdrop>				
+				</Backdrop>
 				<Scripts>
 					<OnLoad>
 						self:SetBackdropBorderColor(.6, .6, .6, .6)
@@ -286,13 +285,13 @@
 						local scrollbar = _G[self:GetName().."ScrollBar"]
 						scrollbar:SetMinMaxValues(0, 0)
 						scrollbar:SetValue(0)
-						self.offset = 0	
+						self.offset = 0
 					</OnLoad>
 					<OnVerticalScroll>
 						local scrollbar = _G[self:GetName().."ScrollBar"]
 						scrollbar:SetValue(offset)
 						self.offset = floor((offset / 18) + 0.5)
-						DBM_GUI_OptionsFrame:UpdateMenuFrame(self:GetParent())						
+						DBM_GUI_OptionsFrame:UpdateMenuFrame(self:GetParent())
 					</OnVerticalScroll>
 				</Scripts>
 				<Frames>
@@ -307,7 +306,7 @@
 								<Offset>
 									<AbsDimension x="0" y="19"/>
 								</Offset>
-							</Anchor>	
+							</Anchor>
 						</Anchors>
 					</Slider>
 					<Frame name="$parentScrollChildFrame" hidden="true"/>
@@ -322,7 +321,7 @@
 				else
 					scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2))
 				end
-				DBM_GUI_OptionsFrame:UpdateMenuFrame(self)	
+				DBM_GUI_OptionsFrame:UpdateMenuFrame(self)
 			</OnMouseWheel>
 		</Scripts>
 	</Frame>
@@ -511,7 +510,7 @@
 								</Offset>
 							</Anchor>
 						</Anchors>
-						<Frames>		
+						<Frames>
 							<Slider name="$parentScrollBar" inherits="DBM_GUI_PanelScrollBarTemplate">
 								<Anchors>
 									<Anchor point="TOPRIGHT">
@@ -523,13 +522,13 @@
 										<Offset>
 											<AbsDimension x="15" y="13"/>
 										</Offset>
-									</Anchor>	
+									</Anchor>
 								</Anchors>
 								<Scripts>
 									<OnLoad>
 										self:SetMinMaxValues(0, 0)
 										self:SetValue(0)
-										self.offset = 0	
+										self.offset = 0
 									</OnLoad>
 									<OnVerticalScroll>
 										self:SetValue(offset);
@@ -618,7 +617,7 @@
 						_G[self:GetName().."BossMods"]:Show()
 						_G[self:GetName().."DBMOptions"]:Hide()
 
-					else 
+					else
 						_G[self:GetName().."Tab1Left"]:Show()
 						_G[self:GetName().."Tab1Right"]:Show()
 						_G[self:GetName().."Tab1Middle"]:Show()
@@ -662,7 +661,7 @@
 			</OnDragStop>
 		</Scripts>
 	</Frame>
-	
+
 	<Button name="DBM_GUI_FrameButtonTemplate" virtual="true">
 		<Size>
 			<AbsDimension x="185" y="18"/>
@@ -708,12 +707,12 @@
 		<HighlightFont style="GameFontHighlight"/>
 		<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD">
 			<Anchors>
-				<Anchor point="TOPLEFT">	
+				<Anchor point="TOPLEFT">
 					<Offset>
 						<AbsDimension x="0" y="1"/>
 					</Offset>
 				</Anchor>
-				<Anchor point="BOTTOMRIGHT">	
+				<Anchor point="BOTTOMRIGHT">
 					<Offset>
 						<AbsDimension x="0" y="1"/>
 					</Offset>
@@ -727,12 +726,12 @@
 			<Layer level="BACKGROUND">
 				<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
 					<Size>
-						<AbsDimension x="32" y="32"/> 
+						<AbsDimension x="32" y="32"/>
 					</Size>
 					<Anchors>
 						<Anchor point="LEFT">
 							<Offset>
-								<AbsDimension x="-14" y="0"/> 
+								<AbsDimension x="-14" y="0"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -740,12 +739,12 @@
 				</Texture>
 				<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
 					<Size>
-						<AbsDimension x="32" y="32"/> 
+						<AbsDimension x="32" y="32"/>
 					</Size>
 					<Anchors>
 						<Anchor point="RIGHT">
 							<Offset>
-								<AbsDimension x="6" y="0" /> 
+								<AbsDimension x="6" y="0" />
 							</Offset>
 						</Anchor>
 					</Anchors>
