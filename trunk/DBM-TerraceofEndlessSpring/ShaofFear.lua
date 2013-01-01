@@ -35,7 +35,7 @@ local warnEmerge						= mod:NewSpellAnnounce(120458)
 -- Normal and heroic Phase 1
 local specWarnBreathOfFearSoon			= mod:NewSpecialWarning("specWarnBreathOfFearSoon")
 local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
---local specWarnOminousCackle				= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
+--local specWarnOminousCackle			= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
 --local specWarnTerrorSpawn				= mod:NewSpecialWarningSwitch("ej6088",  mod:IsDps())
 local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, true)--Platform ability, particularly nasty damage, and fear.
@@ -61,19 +61,20 @@ local timerFearless						= mod:NewBuffFadesTimer(30, 118977)
 -- Heroic Phase 2
 local timerDreadTrashCD					= mod:NewCDTimer(9, 132007)--Share Trash CD.
 local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669)-- EJ says that debuff duration 25 sec.
---local timerNakedAndAfraidCD				= mod:NewCDTimer(25, 120669)-- unconfirmed.
---local timerWaterspoutCD					= mod:NewCDTimer(30, 120519)--unconfirmed.
---local timerHuddleInTerrorCD				= mod:NewCDTimer(30, 120629)--unconfirmed.
+--local timerNakedAndAfraidCD			= mod:NewCDTimer(25, 120669)-- unconfirmed.
+--local timerWaterspoutCD				= mod:NewCDTimer(30, 120519)--unconfirmed.
+--local timerHuddleInTerrorCD			= mod:NewCDTimer(30, 120629)--unconfirmed.
 --local timerImplacableStrikeCD			= mod:NewCDTimer(30, 120672)--unconfirmed.
 local timerSubmergeCD					= mod:NewCDTimer(50, 120455)--guessed (by video).
 
 local berserkTimer						= mod:NewBerserkTimer(900)
 
-local countdownBreathOfFear			= mod:NewCountdown(33.3, 119414, nil, nil, 10)
+local countdownBreathOfFear				= mod:NewCountdown(33.3, 119414, nil, nil, 10)
 
 mod:AddBoolOption("RangeFrame")--For Eerie Skull (2 yards)
 
 local wallLight = GetSpellInfo(117964)
+local fearless = GetSpellInfo(118977)
 local ominousCackleTargets = {}
 local platformGUIDs = {}
 local waterspoutTargets = {}
@@ -110,15 +111,15 @@ local function leavePlatform()
 		onPlatform = false
 		platformMob = nil
 		--Breath of fear timer recovery
-		local fearlessTime = timerFearless:GetTime()
+		local fearlessApplied = UnitBuff("player", fearless)
 		local shaPower = UnitPower("boss1") --Get Boss Power
 		shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
-		if (fearlessTime == 0 and shaPower < 30.3) or shaPower < 5 then--If you have no fearless and breath timer less then 3s, you may not reach to wall. So ignore below 3 sec. Also if you have fearless and breath timer less then 28.3s, not need to warn breath.
+		if (not fearlessApplied and shaPower < 30.3) or (fearlessApplied and shaPower < 5) then--If you have no fearless and breath timer less then 3s, you may not reach to wall. So ignore below 3 sec. Also if you have fearless and breath timer less then 28.3s, not need to warn breath.
 			timerBreathOfFearCD:Start(33.3-shaPower)
 			countdownBreathOfFear:Start(33.3-shaPower)
 			if shaPower < 26.3 then
-				self:ScheduleMethod(26.3-shaPower, "CheckWall")
-			elseif fearlessTime == 0 then
+				mod:ScheduleMethod(26.3-shaPower, "CheckWall")
+			elseif not fearlessApplied then
 				specWarnBreathOfFearSoon:Show()
 			end
 		end
@@ -256,6 +257,8 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(120047) then
 		timerDreadSpray:Cancel(args.sourceGUID)
+	elseif args:IsSpellID(118977) and args:IsPlayer() then
+		timerFearless:Cancel()
 	end
 end
 

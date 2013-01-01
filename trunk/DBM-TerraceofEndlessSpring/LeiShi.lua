@@ -144,7 +144,7 @@ function mod:OnCombatStart(delay)
 	hideActive = false
 	lastProtect = 0
 	specialRemaining = 0
-	timerSpecialCD:Start(32.5-delay)--Variable, 32.5-37 (or aborted if 80% protect happens first)
+	timerSpecialCD:Start(32.5-delay, 1)--Variable, 32.5-37 (or aborted if 80% protect happens first)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(420-delay)
 	else
@@ -161,9 +161,9 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(123250) then
-		local elapsed, total = timerSpecialCD:GetTime()
+		local elapsed, total = timerSpecialCD:GetTime(specialsCast+1)
 		specialRemaining = total - elapsed
-		lastProtect = GetTime()		
+		lastProtect = GetTime()	
 		warnProtect:Show()
 		specWarnAnimatedProtector:Show()
 		self:Schedule(0.2, function()
@@ -181,7 +181,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specialsCast = specialsCast + 1
 		warnGetAway:Show(specialsCast)
 		specWarnGetAway:Show()
-		timerSpecialCD:Start()
+		timerSpecialCD:Start(nil, specialsCast+1)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerGetAway:Start(45)
 		else
@@ -217,9 +217,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		local protectElapsed = GetTime() - lastProtect
 		local specialCD = specialRemaining - protectElapsed
 		if specialCD < 5 then
-			timerSpecialCD:Start(5)
+			timerSpecialCD:Start(5, specialsCast+1)
 		else
-			timerSpecialCD:Start(specialCD)
+			timerSpecialCD:Start(specialCD, specialsCast+1)
 		end
 		if self.Options.SetIconOnGuard then
 			guardActivated = 0
@@ -283,7 +283,7 @@ function mod:SPELL_CAST_START(args)
 		hideActive = true
 		warnHide:Show(specialsCast)
 		specWarnHide:Show()
-		timerSpecialCD:Start()
+		timerSpecialCD:Start(specialsCast+1)
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT",--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
 			"SPELL_DAMAGE",

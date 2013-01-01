@@ -25,7 +25,7 @@ local warnNightmares					= mod:NewTargetAnnounce(122770, 4)--Target scanning wil
 local warnDarkOfNight					= mod:NewSpellAnnounce("ej6550", 4, 130013)--Heroic
 local warnDay							= mod:NewSpellAnnounce("ej6315", 2, 122789)
 local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
-local warnSummonEmbodiedTerror			= mod:NewSpellAnnounce("ej6316", 4, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
+local warnSummonEmbodiedTerror			= mod:NewCountAnnounce("ej6316", 4, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnTerrorize						= mod:NewTargetAnnounce(123012, 4, nil, mod:IsHealer())
 local warnSunBreath						= mod:NewSpellAnnounce(122855, 3)
 local warnLightOfDay					= mod:NewSpellAnnounce("ej6551", 4, 123716, mod:IsHealer())--Heroic
@@ -45,9 +45,9 @@ local timerShadowBreathCD				= mod:NewCDTimer(28, 122752, nil, mod:IsTank() or m
 local timerNightmaresCD					= mod:NewNextTimer(15.5, 122770)
 local timerDarkOfNightCD				= mod:NewCDTimer(30.5, "ej6550", nil, nil, nil, 130013)
 local timerDayCD						= mod:NewNextTimer(121, "ej6315", nil, nil, nil, 122789)
-local timerSummonUnstableShaCD			= mod:NewCDTimer(18, "ej6320", nil, nil,nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
-local timerSummonEmbodiedTerrorCD		= mod:NewCDTimer(41, "ej6316", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
-local timerTerrorizeCD					= mod:NewCDTimer(14, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
+local timerSummonUnstableShaCD			= mod:NewNextTimer(18, "ej6320", nil, nil,nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
+local timerSummonEmbodiedTerrorCD		= mod:NewNextCountTimer(41, "ej6316", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
+local timerTerrorizeCD					= mod:NewCDTimer(13.5, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
 local timerSunBreathCD					= mod:NewNextTimer(29, 122855)
 local timerBathedinLight				= mod:NewBuffFadesTimer(6, 122858, nil, mod:IsHealer())
 --local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, heroic logs i was sent always wiped VERY early in light phase.
@@ -57,6 +57,7 @@ local countdownNightmares				= mod:NewCountdown(15.5, 122770, false)
 local berserkTimer						= mod:NewBerserkTimer(490)--a little over 8 min, basically 3rd dark phase is auto berserk.
 
 local terrorName = EJ_GetSectionInfo(6316)
+local terrorCount = 0
 local targetScansDone = 0
 
 local function isTank(unit)
@@ -148,7 +149,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122855) then
 		warnSunBreath:Show()
-		timerSunBreathCD:Start()
+		if timerNightCD:GetTime() < 100 then
+			timerSunBreathCD:Start()
+		end
 	end
 end
 
@@ -156,7 +159,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(122752) then
 		warnShadowBreath:Show()
 		specWarnShadowBreath:Show()
-		timerShadowBreathCD:Start()
+		if timerNightCD:GetTime() < 93 then
+			timerShadowBreathCD:Start()
+		end
 --"<267.3 22:12:00> [CLEU] SPELL_CAST_SUCCESS#false#0xF150F3EA00000157#Tsulong#68168#0#0x0000000000000000#nil#-2147483648#-2147483648#124176#Gold Active#1", -- [44606]
 --"<267.4 22:12:01> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#I thank you, strangers. I have been freed.#Tsulong#####0#0##0#4654##0#false#false", -- [44649]
 -- 124176 seems not always fires. 123630 seems that followed by after kill events?
@@ -167,11 +172,16 @@ end
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:122789") then
-		timerSunbeamCD:Start()
+		if timerDayCD:GetTime() < 60 then
+			timerSunbeamCD:Start()
+		end
 	elseif msg:find(terrorName) then
+		terrorCount = terrorCount + 1
 		timerTerrorizeCD:Start()--always cast 14-15 seconds after one spawns (Unless stunned, if you stun the mob you can delay the cast, using this timer)
-		warnSummonEmbodiedTerror:Show()
-		timerSummonEmbodiedTerrorCD:Start()
+		warnSummonEmbodiedTerror:Show(terrorCount)
+		if terrorCount < 3 then
+			timerSummonEmbodiedTerrorCD:Start(nil, terrorCount+1)
+		end
 	end
 end
 
@@ -184,6 +194,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownNightmares:Start(15.5)
 		end
 	elseif spellId == 123252 and self:AntiSpam(2, 2) then--Dread Shadows Cancel (Sun Phase)
+		terrorCount = 0
 		timerShadowBreathCD:Cancel()
 		timerSunbeamCD:Cancel()
 		timerNightmaresCD:Cancel()
@@ -194,7 +205,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerNightCD:Start()
 	elseif spellId == 122953 and self:AntiSpam(2, 1) then--Summon Unstable Sha (122946 is another ID, but it always triggers at SAME time as Dread Shadows Cancel so can just trigger there too without additional ID scanning.
 		warnSummonUnstableSha:Show()
-		timerSummonUnstableShaCD:Start()
+		if timerNightCD:GetTime() < 103 then
+			timerSummonUnstableShaCD:Start()
+		end
 	elseif spellId == 122767 and self:AntiSpam(2, 2) then--Dread Shadows (Night Phase)
 		timerSummonUnstableShaCD:Cancel()
 		timerSummonEmbodiedTerrorCD:Cancel()
