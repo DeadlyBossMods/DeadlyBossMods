@@ -31,7 +31,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "숨기/저리 가! 대기시간"
+	timerSpecialCD			= "숨기/저리 가! 가능 (%d)"
 })
 
 L:SetOptionLocalization({

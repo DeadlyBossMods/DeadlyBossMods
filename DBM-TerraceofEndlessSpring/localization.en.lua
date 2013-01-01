@@ -32,7 +32,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "Special CD"
+	timerSpecialCD			= "Special CD (%d)"
 })
 
 L:SetOptionLocalization({
