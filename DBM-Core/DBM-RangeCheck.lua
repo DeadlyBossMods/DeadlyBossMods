@@ -99,7 +99,7 @@ do
 	local function setRange(self, range)
 		rangeCheck:Show(range)
 	end
-	
+
 	local sound0 = "none"
 	local sound1 = "Interface\\AddOns\\DBM-Core\\Sounds\\blip_8.ogg"
 	local sound2 = "Interface\\AddOns\\DBM-Core\\Sounds\\alarmclockbeeps.ogg"
@@ -113,7 +113,7 @@ do
 			end
 		end
 	end
-	
+
 	local function setFrames(self, option)
 		DBM.Options.RangeFrameFrames = option
 		radarFrame:Hide()
@@ -138,7 +138,7 @@ do
 			radarFrame:Hide()
 		end
 	end
-	
+
 	function initializeDropdown(dropdownFrame, level, menu)
 		local info
 		if level == 1 then
@@ -322,7 +322,7 @@ do
 			info.arg2 = sound0
 			info.checked = (DBM.Options[option] == sound0)
 			UIDropDownMenu_AddButton(info, 3)
-			
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_SOUND_1
 			info.func = setSound
@@ -330,7 +330,7 @@ do
 			info.arg2 = sound1
 			info.checked = (DBM.Options[option] == sound1)
 			UIDropDownMenu_AddButton(info, 3)
-			
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_SOUND_2
 			info.func = setSound
@@ -426,7 +426,7 @@ function createRadarFrame()
 	local elapsed = 0
 	local radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
 	radarFrame:SetFrameStrata("DIALOG")
-	
+
 	radarFrame:SetPoint(DBM.Options.RangeFrameRadarPoint, UIParent, DBM.Options.RangeFrameRadarPoint, DBM.Options.RangeFrameRadarX, DBM.Options.RangeFrameRadarY)
 	radarFrame:SetHeight(128)
 	radarFrame:SetWidth(128)
@@ -466,7 +466,7 @@ function createRadarFrame()
 	bg:SetBlendMode("BLEND")
 	bg:SetTexture(0, 0, 0, 0.3)
 	radarFrame.background = bg
-	
+
 	local circle = radarFrame:CreateTexture(nil, "ARTWORK")
 	circle:SetPoint("CENTER")
 	circle:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\radar_circle.blp")
@@ -538,7 +538,7 @@ function onUpdate(self, elapsed)
 					if j >= 5 then
 						break
 					end
-				end	
+				end
 			end
 		elseif GetNumSubgroupMembers() > 0 then
 			for i = 1, GetNumSubgroupMembers() do
@@ -552,7 +552,7 @@ function onUpdate(self, elapsed)
 					if j >= 5 then
 						break
 					end
-				end	
+				end
 			end
 		end
 	else
@@ -588,7 +588,7 @@ do
 			BLIP_TEX_COORDS[class][3],
 			BLIP_TEX_COORDS[class][4]
 		)
-		dots[id].class = class		
+		dots[id].class = class
 	end
 
 	local function setDot(id, icon, filtered)
@@ -639,7 +639,7 @@ do
 			dots[id].tooClose = true
 		else
 			dots[id].tooClose = false
-		end			
+		end
 	end
 
 	function onUpdateRadar(self, elapsed)
@@ -662,7 +662,7 @@ do
 					v.dot:Hide()
 				end
 				for i = 1, 8 do
-					charms[i]:Hide()	
+					charms[i]:Hide()
 				end
 			else
 				isInSupportedArea = true
@@ -687,7 +687,7 @@ do
 						end
 					end
 					for i=1, 8 do
-						charms[i]:Hide()	
+						charms[i]:Hide()
 					end
 				end
 				prevNumPlayers = numPlayers
@@ -747,7 +747,7 @@ do
 					v.dot:Hide()
 				end
 				for i = 1, 8 do
-					charms[i]:Hide()	
+					charms[i]:Hide()
 				end
 			end
 		end
@@ -775,7 +775,7 @@ end
 local getDistanceBetween
 do
 	local mapSizes = DBM.MapSizes
-	
+
 	function getDistanceBetween(uId, x, y)
 		local startX, startY = GetPlayerMapPosition(uId)
 		local mapName = GetMapInfo()
@@ -791,7 +791,7 @@ do
 	local function mapRangeCheck(uId, range)
 		return getDistanceBetween(uId, GetPlayerMapPosition("player")) < range
 	end
-	
+
 	function initRangeCheck(range)
 		if checkFuncs[range] ~= mapRangeCheck then
 			return true
@@ -817,7 +817,7 @@ do
 		end
 		return true -- everything ok!
 	end
-	
+
 	setmetatable(checkFuncs, {
 		__index = function(t, k)
 			return mapRangeCheck

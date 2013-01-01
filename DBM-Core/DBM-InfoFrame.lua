@@ -57,7 +57,7 @@ local onUpdate
 local dropdownFrame
 local initializeDropdown
 local maxlines
-local infoFrameThreshold 
+local infoFrameThreshold
 local pIndex
 local extraPIndex
 local lowestFirst
@@ -81,7 +81,7 @@ do
 	local function toggleShowSelf()
 		DBM.Options.InfoFrameShowSelf = not DBM.Options.InfoFrameShowSelf
 	end
-	
+
 	function initializeDropdown(dropdownFrame, level, menu)
 		local info
 		if level == 1 then
@@ -99,7 +99,7 @@ do
 				info.checked = true
 			end
 			info.func = toggleShowSelf
-			UIDropDownMenu_AddButton(info, 1)		
+			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_INFOFRAME_HIDE
@@ -358,7 +358,7 @@ local function updatePlayerBuffStacks()
 				if iconModifier then
 					icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
 				end
-			end			
+			end
 		end
 	elseif IsInGroup() then
 		for i = 1, GetNumSubgroupMembers() do
@@ -478,7 +478,7 @@ function onUpdate(self, elapsed)
 		local name = sortedLines[i]
 		local power = lines[name]
 		local icon = icons[name]
-		-- work-around for the player bug, "name" should actually be called "displayName" or something as it might contain the icon in addition to the name 
+		-- work-around for the player bug, "name" should actually be called "displayName" or something as it might contain the icon in addition to the name
 		-- so we need playerName if we just want the raw name
 		local playerName = name
 		if icon then
@@ -542,10 +542,10 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 	elseif currentEvent == "playertargets" then
 		updatePlayerTargets()
 	elseif currentEvent == "test" then
-	else		
+	else
 		error("DBM-InfoFrame: Unsupported event", 2)
 	end
-	
+
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame, 0)
@@ -559,7 +559,7 @@ function infoFrame:Hide()
 	infoFrameThreshold = nil
 	pIndex = nil
 	currentEvent = nil
-	if frame then 
+	if frame then
 		frame:Hide()
 	end
 end

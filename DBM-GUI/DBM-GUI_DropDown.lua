@@ -36,17 +36,17 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 
-do 
+do
 	local MAX_BUTTONS = 10
 	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent)
 	TabFrame1:SetBackdrop({
-		bgFile="Interface\\DialogFrame\\UI-DialogBox-Background", 
-		edgeFile="Interface\\DialogFrame\\UI-DialogBox-Border", 
-		tile=1, tileSize=32, edgeSize=32, 
+		bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",
+		edgeFile="Interface\\DialogFrame\\UI-DialogBox-Border",
+		tile=1, tileSize=32, edgeSize=32,
 		insets={left=11, right=12, top=12, bottom=11}
 	});
 	TabFrame1:EnableMouseWheel(1)
-	TabFrame1:SetScript("OnMouseWheel", function(self, delta) 
+	TabFrame1:SetScript("OnMouseWheel", function(self, delta)
 		if delta > 0 then  -- scroll up
 			self.offset = self.offset - 1
 			if self.offset < 0 then
@@ -54,7 +54,7 @@ do
 			end
 		else		  -- scroll down
 			self.offset = self.offset + 1
-		end	
+		end
 		self:Refresh()
 	end)
 	TabFrame1:Hide()
@@ -76,7 +76,7 @@ do
 				PlaySoundFile(self.entry.value)
 			end
 		end
-		
+
 		if self.entry.func then
 			self.entry.func(self.entry.value)
 		end
@@ -178,7 +178,7 @@ do
 	function DBM_GUI:CreateDropdown(title, values, selected, callfunc, width)
 		-- Check Values
 		self:CheckValues(values)
-	
+
 		-- Create the Dropdown Frame
 		local dropdown = CreateFrame("Frame", FrameTitle..self:GetNewID(), self.frame, "DBM_GUI_DropDownMenuTemplate")
 		dropdown.creator = self
@@ -202,7 +202,7 @@ do
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
 				TabFrame1.dropdown = nil
-			else	
+			else
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
 				TabFrame1.dropdown = self:GetParent()
