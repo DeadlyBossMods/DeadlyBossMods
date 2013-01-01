@@ -216,8 +216,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 주문의 영향을 받은 경우 별도 경고음 듣기"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 주문의 초읽기 소리 듣기(5,4,3,2,1)"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 주문의 진행 시간 소리 듣기(1,2,3,...)"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 주문의 초읽기 소리 듣기"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 주문의 진행 시간 소리 듣기"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 주문의 영향을 받은 경우 대화로 알리기"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "나에게 %s!"
 

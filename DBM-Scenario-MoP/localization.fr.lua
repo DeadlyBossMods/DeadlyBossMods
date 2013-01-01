@@ -1,4 +1,5 @@
-﻿local L
+﻿if GetLocale() ~= "frFR" then return end
+local L
 
 ----------------------
 -- Theramore's Fall --
