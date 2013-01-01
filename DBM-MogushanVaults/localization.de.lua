@@ -34,7 +34,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "Verkünde Phasenwechsel",
-	RangeFrame	= "Zeige Abstandsfenster (6m) während Arkanphase"
+	RangeFrame	= "Zeige Abstandsfenster (6m) während Arkanphase",
+	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
+	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
 
 L:SetMiscLocalization({

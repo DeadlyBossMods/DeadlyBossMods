@@ -50,6 +50,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnUnder	= "Zeige Spezialwarnung, wenn du dich unter dem Boss befindest",
+	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (nur heroischer Schwierigkeitsgrad)",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
 })
 
@@ -84,11 +85,11 @@ L:SetWarningLocalization({
 	specwarnWillPower			= "Geringer Willen!",
 	specwarnAmberExplosionYou	= "Unterbreche DEINE %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Unterbreche %s!",--Amber Montrosity
-	specwarnAmberExplosionOther	= "%s: Unterbreche %s!"--Amber Montrosity
+	specwarnAmberExplosionOther	= "%s: Unterbreche %s!"--Mutated Construct
 })
 
 L:SetTimerLocalization({
-	timerAmberExplosionAMCD		= "%s CD: Monstrosität"
+	timerAmberExplosionAMCD		= "Explosion CD: Monstrosität"
 })
 
 L:SetOptionLocalization({

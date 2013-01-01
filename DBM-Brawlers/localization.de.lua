@@ -31,7 +31,8 @@ L:SetMiscLocalization({
 	Rank6			= "sechsten Ranges",
 	Rank7			= "siebten Ranges",
 	Rank8			= "achten Ranges",
-	Proboskus		= "Was habt Ihr auch für ein Pech! Es ist Proboskus!"
+	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus.",--translate (trigger) (Alliance)
+	Proboskus2		= "Ha ha ha! Was habt Ihr auch für ein Pech! Es ist Proboskus! Ahhh ha ha ha! Ich hab fünfundzwanzig Goldstücke darauf gesetzt, dass Ihr im Feuer draufgeht!"--Horde
 })
 
 ------------
@@ -61,6 +62,10 @@ L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 3"
 })
 
+L:SetOptionLocalization({
+	SetIconOnBlat	= "Setze Zeichen auf echten \"Blat\" (Totenkopf)"
+})
+
 ------------
 -- Rank 4 --
 ------------
@@ -68,6 +73,10 @@ L= DBM:GetModLocalization("BrawlRank4")
 
 L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 4"
+})
+
+L:SetOptionLocalization({
+	SetIconOnDominika	= "Setze Zeichen auf echte \"Dominika die Illusionistin\" (Totenkopf)"
 })
 
 ------------
