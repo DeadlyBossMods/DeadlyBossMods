@@ -33,7 +33,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "下一次特別技能"
+	timerSpecialCD			= "特別技能冷卻(%d)"
 })
 
 L:SetOptionLocalization({
