@@ -6,7 +6,7 @@
 -- This addon is written and copyrighted by:
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
--- 
+--
 -- The localizations are written by:
 --    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
 --    * deDE: Tandanu					http://www.deadlybossmods.com
@@ -23,7 +23,7 @@
 --    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --
--- 
+--
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
 -- All included textures and sounds are copyrighted by their respective owners.
 --
@@ -72,7 +72,7 @@ options = {
 	BarXOffset = {
 		type = "number",
 		default = 0,
-	},	
+	},
 	BarYOffset = {
 		type = "number",
 		default = 0,
@@ -80,7 +80,7 @@ options = {
 	HugeBarXOffset = {
 		type = "number",
 		default = 0,
-	},	
+	},
 	HugeBarYOffset = {
 		type = "number",
 		default = 0,
@@ -297,7 +297,7 @@ do
 			end
 		end
 	}
-	
+
 	function DBT:New()
 		local obj = setmetatable(
 			{
@@ -326,7 +326,7 @@ do
 		table.insert(instances, obj)
 		return obj
 	end
-	
+
 	function DBT:LoadOptions(id)
 		DBT_SavedOptions[id] = DBT_SavedOptions[id] or {}
 		self.options = setmetatable(DBT_SavedOptions[id], optionMT)
@@ -382,9 +382,9 @@ do
 		end
 		frame:EnableMouse(not self.options.ClickThrough or self.movable)
 		return frame
-	end	
+	end
 	local mt = {__index = barPrototype}
-	
+
 	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 and not isDummy then return end
@@ -488,7 +488,7 @@ end
 --	local function iterator(self, frame)
 --		return not frame and self.mainFirstBar or frame and frame.next
 --	end
---	
+--
 --	local function reverseIterator(self, frame)
 --		return (not frame and self.mainLastBar) or frame and frame.prev
 --	end
@@ -619,7 +619,7 @@ function barPrototype:Update(elapsed)
 	elseif self.fadingIn then
 		self.fadingIn = nil
 	end
-	
+
 	if self.timer <= 7.75 and not self.flashing and obj.options.Flash then
 		self.flashing = true
 		self.ftimer = 0
@@ -709,7 +709,7 @@ do
 		updateClickThrough(self, self:GetOption("ClickThrough"))
 		self.movable = false
 	end
-	
+
 	function DBT:ShowMovableBar(small, large)
 		if small or small == nil then
 			local bar1 = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode", nil, true)
@@ -827,7 +827,7 @@ function updateClickThrough(self, newValue)
 		end
 	end
 end
-	
+
 options.ClickThrough.onChange = updateClickThrough
 
 --------------------
@@ -853,7 +853,7 @@ do
 		obj.defaults = {}
 		return obj
 	end
-	
+
 	function DBT:SetSkin(id)
 		local skin = skins[id]
 		if not skin then
