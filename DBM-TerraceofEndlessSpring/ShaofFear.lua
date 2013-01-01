@@ -23,14 +23,15 @@ local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 4)
 local warnOminousCackle					= mod:NewTargetAnnounce(129147, 3)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
 local warnDreadSpray					= mod:NewSpellAnnounce(120047, 2)
 -- Heroic Phase 2
+local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnDreadThrash					= mod:NewSpellAnnounce(132007, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnNakedAndAfraid				= mod:NewTargetAnnounce(120669, 2, nil, mod:IsTank())
 local warnWaterspout					= mod:NewTargetAnnounce(120519, 3)
 local warnHuddleInTerror				= mod:NewTargetAnnounce(120629, 3)
-local warnImplacableStrike				= mod:NewTargetAnnounce(120672, 3)
-local warnChampionOfTheLight			= mod:NewTargetAnnounce(120268, 4)
+local warnImplacableStrike				= mod:NewSpellAnnounce(120672, 4)
+local warnChampionOfTheLight			= mod:NewTargetAnnounce(120268, 3, nil, false)--seems spammy.
 local warnSubmerge						= mod:NewSpellAnnounce(120455)
-local warnEmerge						= mod:NewSpellAnnounce(120458)
+--local warnEmerge						= mod:NewSpellAnnounce(120458)--do not match he actually emerges.
 
 -- Normal and heroic Phase 1
 local specWarnBreathOfFearSoon			= mod:NewSpecialWarning("specWarnBreathOfFearSoon")
@@ -65,7 +66,7 @@ local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669)-- EJ says that deb
 --local timerWaterspoutCD				= mod:NewCDTimer(30, 120519)--unconfirmed.
 --local timerHuddleInTerrorCD			= mod:NewCDTimer(30, 120629)--unconfirmed.
 --local timerImplacableStrikeCD			= mod:NewCDTimer(30, 120672)--unconfirmed.
-local timerSubmergeCD					= mod:NewCDTimer(50, 120455)--guessed (by video).
+local timerSubmergeCD					= mod:NewCDTimer(51.5, 120455)--update from video. need combatlog.
 
 local berserkTimer						= mod:NewBerserkTimer(900)
 
@@ -292,8 +293,8 @@ function mod:SPELL_CAST_START(args)
 		warnSubmerge:Show()
 		specWarnSubmerge:Show()
 		timerSubmergeCD:Start()
-	elseif args:IsSpellID(120458) then
-		warnEmerge:Show()
+	--elseif args:IsSpellID(120458) then
+		--warnEmerge:Show()
 	end
 end
 
@@ -321,6 +322,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDreadSpray:Cancel()
 		timerDreadSprayCD:Cancel()
 		berserkTimer:Cancel() -- berserk timer seems restarts on heroic phase 2.
+		warnBreathOfFearSoon:Cancel()
+		self:UnscheduleMethod("CheckWall")
+		warnPhase2:Show()
+		berserkTimer:Start() -- currently, seems phase 2 berserk also 15 min.
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
