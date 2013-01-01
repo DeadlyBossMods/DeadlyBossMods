@@ -1,4 +1,4 @@
-﻿-- Last update: 12/19/2012 (19/12/2012 in french format)
+﻿-- Last update: 01/01/2013 (01/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -36,7 +36,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerSpecialCD			= "Délai capacité spécial"
+	timerSpecialCD			= "Délai capacité spécial (%d)"
 })
 
 L:SetOptionLocalization({
