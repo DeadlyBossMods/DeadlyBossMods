@@ -18,7 +18,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_SPELLCAST_STOP",
+	"UNIT_SPELLCAST_CHANNEL_STOP"
 )
 --Phase order is controlled by players. it is only pre determined order in LFR and LFR only.
 --Heroic a player can do ANY phase first. It even says this in encounter journal.
@@ -406,3 +408,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerChainsOfShadowCD:Cancel()
 	end
 end
+
+function mod:UNIT_SPELLCAST_STOP(uId, _, _, _, spellId)
+	if spellId == 116018 then
+		timerEpicenter:Cancel()
+	end
+end
+mod.UNIT_SPELLCAST_CHANNEL_STOP = mod.UNIT_SPELLCAST_STOP
