@@ -139,7 +139,9 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		end
 	elseif args:IsSpellID(116161, 116260) then -- 116161 is normal and heroic, 116260 is lfr.
 		if args:IsPlayer() and self:AntiSpam(2, 3) then
-			warnSuicide:Schedule(25)
+			if not self:IsDifficulty("lfr25") then -- lfr do not suicide even you not press the extra button.
+				warnSuicide:Schedule(25)
+			end
 			countdownCrossedOver:Start(29)
 			timerCrossedOver:Start(29)
 		end
@@ -175,12 +177,14 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(116161, 116260) and args:IsPlayer() then
-		warnSuicide:Cancel()
-		countdownCrossedOver:Cancel()
+		if not self:IsDifficulty("lfr25") then
+			warnSuicide:Cancel()
+		end
 		timerCrossedOver:Cancel()
+		countdownCrossedOver:Cancel()
 	elseif args:IsSpellID(116278) and args:IsPlayer() then
-		timerSoulSever:Cancel()
 		warnSuicide:Cancel()
+		timerSoulSever:Cancel()
 		countdownCrossedOver:Cancel()
 	elseif args:IsSpellID(122151) then
 		self:SendSync("VoodooGoneTargets", args.destGUID)
