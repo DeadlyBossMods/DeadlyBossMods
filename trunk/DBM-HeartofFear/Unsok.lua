@@ -94,6 +94,7 @@ local Phase = 1
 local Puddles = 0
 local Constructs = 0
 local constructCount = 0--NOT same as Constructs variable above. this is one is for counting them mainly in phase 1
+local reshapeElapsed = 0
 local playerIsConstruct = false
 local warnedWill = false
 local willNumber = 100--Last warned player will power number (not same as actual player will power)
@@ -147,6 +148,14 @@ function mod:ScalpelTarget()
 	end
 end
 
+function mod:ReshapeTimerRestart()
+	if Phase == 3 and (reshapeElapsed > 35.2 or reshapeElapsed == 0) then -- Not comfirmed. It's estimation
+		timerReshapeLifeCD:Update(35.2, 50, 1)
+	else
+		timerReshapeLifeCD:Update(reshapeElapsed-0.2, 50, 1)
+	end
+end
+
 local function warnAmberExplosionCast(spellId)
 	if #canInterrupt == 0 then--This will never happen if fired by "InterruptAvailable" sync since it should always be 1 or greater. This is just a fallback if contructs > 0 and we scheduled "warnAmberExplosionCast" there
 		specwarnAmberExplosion:Show(spellId == 122402 and Monstrosity or MutatedConstruct)--No interupts, warn the raid to prep for aoe damage with beware! alert.
@@ -168,7 +177,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(canInterrupt)
 	playerIsConstruct = false
 	timerAmberScalpelCD:Start(9-delay)
-	timerReshapeLifeCD:Start(20-delay)
+	timerReshapeLifeCD:Start(20-delay, 1)
 	timerParasiticGrowthCD:Start(23.5-delay)
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
@@ -245,16 +254,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerParasiticGrowth:Start(args.destName)
 		timerParasiticGrowthCD:Start()
 	elseif args:IsSpellID(122540) then
-		constructCount = 0
 		Phase = 2
+		reshapeElapsed = timerReshapeLifeCD:GetTime(constructCount+1)
+		timerReshapeLifeCD:Cancel()
+		constructCount = 0
 		warnAmberCarapace:Show(args.destName)
 		if not playerIsConstruct then
 			specwarnAmberMonstrosity:Show()
 		end
+		self:ScheduleMethod(0.2, "ReshapeTimerRestart")
 		timerMassiveStompCD:Start(20)
 		timerFlingCD:Start(33)
 		warnAmberExplosionSoon:Schedule(50.5)
 		timerAmberExplosionAMCD:Start(55.5, amberExplosion)
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(62711, Monstrosity)
+		end
 	elseif args:IsSpellID(122395) and Phase < 3 and not playerIsConstruct then
 		warnStruggleForControl:Show(args.destName)
 		timerStruggleForControl:Start(args.destName)
@@ -317,13 +332,19 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(121949) then
 		timerParasiticGrowth:Cancel(args.destName)
 	elseif args:IsSpellID(122540) then--Phase 3
-		constructCount = 0
 		Phase = 3
+		reshapeElapsed = timerReshapeLifeCD:GetTime(constructCount+1)
+		timerReshapeLifeCD:Cancel()
 		timerMassiveStompCD:Cancel()
 		timerFlingCD:Cancel()
 		timerAmberExplosionAMCD:Cancel()
+		constructCount = 0
 		timerDestabalize:Cancel(Monstrosity)
 		warnAmberExplosionSoon:Cancel()
+		self:ScheduleMethod(0.2, "ReshapeTimerRestart")
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(62711)
+		end
 		--He does NOT reset reshape live cd here, he finishes out last CD first, THEN starts using new one.
 	end
 end
