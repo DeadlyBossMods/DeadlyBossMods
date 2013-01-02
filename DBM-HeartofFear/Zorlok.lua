@@ -84,9 +84,9 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(122852) and UnitName("target") == args.sourceName then
+	if args:IsSpellID(122852) and args:GetSrcCreatureID() == 62980 then--only warn boss, ignore echo
 		warnInhale:Show(args.destName, args.amount or 1)
-	elseif args:IsSpellID(122761) and UnitName("target") == args.sourceName then--probalby won't work for healers but oh well. On heroic if i'm tanking echo i don't want this spam. I only care if i'm tanking boss.
+	elseif args:IsSpellID(122761) and args:GetSrcCreatureID() == 62980 then--only warn boss, ignore echo
 		warnExhale:Show(args.destName)
 		specwarnExhale:Show(args.destName)
 		timerExhale:Start(args.destName)
