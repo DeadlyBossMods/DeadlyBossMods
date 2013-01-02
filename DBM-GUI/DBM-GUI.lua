@@ -1410,7 +1410,7 @@ local function CreateOptionsMenu()
 		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 200, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
-		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
+		local ShowFakedRaidWarnings = raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
 		local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft,  true, nil, "WarningIconLeft")
 		local WarningIconRight 		= raidwarnoptions:CreateCheckButton(L.WarningIconRight,  true, nil, "WarningIconRight")
 
@@ -1419,7 +1419,7 @@ local function CreateOptionsMenu()
 			{	text	= L.NoSound,	value	= "" },
 			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 		sound=true },
 			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true },
-			{	text	= "Ding",	value 	= "Sound\\interface\\AlarmClockWarning3.wav", 	sound=true }
+			{	text	= "Ding",		value 	= "Sound\\interface\\AlarmClockWarning3.wav", 	sound=true }
 		}
 		if GetSharedMedia3() then
 			for k,v in next, GetSharedMedia3():HashTable("sound") do

@@ -84,12 +84,22 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(122852) and args:GetSrcCreatureID() == 62980 then--only warn boss, ignore echo
+	if args:IsSpellID(122852) and UnitName("target") == args.sourceName then--probalby won't work for healers but oh well. On heroic if i'm tanking echo i don't want this spam. I only care if i'm tanking zorlok. Healers won't miss this one anyways
 		warnInhale:Show(args.destName, args.amount or 1)
-	elseif args:IsSpellID(122761) and args:GetSrcCreatureID() == 62980 then--only warn boss, ignore echo
-		warnExhale:Show(args.destName)
-		specwarnExhale:Show(args.destName)
-		timerExhale:Start(args.destName)
+	elseif args:IsSpellID(122761) then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if not uId then return end
+		local x, y = GetPlayerMapPosition(uId)
+		if x == 0 and y == 0 then
+			SetMapToCurrentZone()
+			x, y = GetPlayerMapPosition(uId)
+		end
+		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+		if inRange and inRange < 40 then--Only show exhale warning if the target is near you (ie on same platform as you). Otherwise, we ignore it since we are likely with the echo somewhere else and this doesn't concern us
+			warnExhale:Show(args.destName)
+			specwarnExhale:Show(args.destName)
+			timerExhale:Start(args.destName)
+		end
 	elseif args:IsSpellID(122740) then
 		MCTargets[#MCTargets + 1] = args.destName
 		if self.Options.MindControlIcon then
