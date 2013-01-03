@@ -1,6 +1,7 @@
 ﻿## Interface: 50200
 ## X-Min-Interface: 50200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Throne of Thunder|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0천둥의 왕좌|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -9,9 +10,11 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 1
 ## X-DBM-Mod-Name: Throne of Thunder
+## X-DBM-Mod-Name-koKR: 천둥의 왕좌
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZoneID: 930
 localization.en.lua
+localization.kr.lua
 MapSizes.lua
 Jinrokh.lua
 Horridon.lua
