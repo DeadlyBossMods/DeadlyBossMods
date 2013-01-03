@@ -15,3 +15,17 @@ L:SetOptionLocalization({
 -- Salyis --
 -----------------------
 L= DBM:GetModLocalization(725)
+
+--------------
+-- Oondasta --
+--------------
+L= DBM:GetModLocalization(826)
+
+L:SetOptionLocalization({
+	RangeFrame			= "$spell:137511 주문에 대한 거리 프레임 표시"
+})
+
+---------------------------
+-- Nalak, The Storm Lord --
+---------------------------
+L= DBM:GetModLocalization(814)
