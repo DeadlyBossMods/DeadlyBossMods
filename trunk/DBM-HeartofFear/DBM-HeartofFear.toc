@@ -22,7 +22,7 @@
 ## X-DBM-Mod-Name-zhCN: 恐惧之心
 ## X-DBM-Mod-Name-esES: Corazón del Miedoa
 ## X-DBM-Mod-Name-frFR: Cœur de la Peur
-## X-DBM-Mod-Sort: 2
+## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZoneID: 897
 localization.en.lua
 localization.kr.lua

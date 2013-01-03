@@ -20,7 +20,7 @@
 ## X-DBM-Mod-Name-zhTW: 潘達利亞
 ## X-DBM-Mod-Name-zhCN: 潘达利亚
 ## X-DBM-Mod-Name-frFR: Pandarie
-## X-DBM-Mod-Sort: 4
+## X-DBM-Mod-Sort: 5
 localization.en.lua
 localization.de.lua
 localization.es.lua

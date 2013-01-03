@@ -20,7 +20,7 @@
 ## X-DBM-Mod-Name-zhTW: 魔古山寶庫
 ## X-DBM-Mod-Name-zhCN: 魔古山宝库
 ## X-DBM-Mod-Name-frFR: Caveaux Mogu’shan
-## X-DBM-Mod-Sort: 3
+## X-DBM-Mod-Sort: 4
 ## X-DBM-Mod-LoadZoneID: 896
 localization.en.lua
 localization.es.lua
