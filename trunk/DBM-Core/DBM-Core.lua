@@ -3572,6 +3572,7 @@ function bossModPrototype:IsManaUser()--Similar to ranged, but includes all pala
 	or class == "PALADIN"
     or class == "SHAMAN"
 	or (class == "DRUID" and not IsSpellKnown(84840))--Vengeance Check (False)
+	or (class == "MONK" and IsSpellKnown(121278))
 end
 
 function bossModPrototype:IsDps()--For features that simply should only be on for dps and not healers or tanks and without me having to use "not is heal or not is tank" rules :)
