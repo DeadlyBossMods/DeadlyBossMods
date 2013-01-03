@@ -162,11 +162,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		end
 		timerCrush:Start()
 		if self:IsDifficulty("heroic10", "heroic25") and not msg:find(L.UnderHim) then--unconfirmed
-			timerCrushCD:Start()--unconfirmed, assumed by video
+			timerCrushCD:Start()
 			countdownCrush:Start()
 		end
 		if msg:find(L.UnderHim) and target == UnitName("player") then
 			specwarnUnder:Show()--it's a bit of a too little too late warning, but hopefully it'll help people in LFR understand it's not place to be and less likely to repeat it, eventually thining out LFR failure rate to this.
 		end
+	elseif msg:find(L.Phase2) then
+		timerCrushCD:Cancel()
+		countdownCrush:Cancel()
 	end
 end

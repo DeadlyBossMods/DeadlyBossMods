@@ -138,9 +138,24 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(127834) then--This is only id that properly identifies CORRECT boss source
 		--Example
 		--http://worldoflogs.com/reports/rt-g8ncl718wga0jbuj/xe/?enc=bosses&boss=66791&x=%28spellid+%3D+127834+or+spellid+%3D+122496+or+spellid+%3D+122497%29+and+fulltype+%3D+SPELL_CAST_START
-		warnAttenuation:Show(args.spellName, args.sourceName, lastDirection)
-		specwarnAttenuation:Show(args.spellName, args.sourceName, lastDirection)
-		timerAttenuation:Start()
+		local bossCID = args:GetSrcCreatureID()--Figure out CID because GetBossTarget expects a CID.
+		local _, uId = self:GetBossTarget(bossCID)--Now lets get a uId. We can't simply just use boss1target and boss2target because echos do not have BossN ID. This is why we use GetBossTarget
+		warnAttenuation:Show(args.spellName, args.sourceName, lastDirection)--Always give basic warning. we don't need special warning to run in circles but on heroic green orbs go MUCH further than discs, we still need to be aware of them somewhat.
+		if uId then--Now we know who is tanking that boss
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
+			if inRange and inRange < 60 then--Only show warning if we are near the boss casting it (or rathor, the player tanking that boss). I realize orbs go very far, but the special warning is for the dance, not stray discs, that's what normal warning is for
+				specwarnAttenuation:Show(args.spellName, args.sourceName, lastDirection)
+				timerAttenuation:Start()
+			end
+		else--Could not get unitID off boss target. We give warn old special warning behavior of just showing it anyways.
+			specwarnAttenuation:Show(args.spellName, args.sourceName, lastDirection)
+			timerAttenuation:Start()
+		end
 		if platform < 4 then
 			timerAttenuationCD:Start()
 		else
