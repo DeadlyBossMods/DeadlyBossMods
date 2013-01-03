@@ -53,7 +53,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	UnderHim	= "있는 것을 감지하고"
+	UnderHim	= "있는 것을 감지하고",
+	Phase2		= "장갑이 갈라지면서 쪼개지기"
 })
 
 ----------------------

@@ -30,6 +30,7 @@ local warnFury					= mod:NewStackAnnounce(122754, 3)
 local warnBrokenLeg				= mod:NewStackAnnounce(122786, 2)
 local warnMendLeg				= mod:NewSpellAnnounce(123495, 1)
 local warnCrush					= mod:NewSpellAnnounce(122774, 3)--On normal, only cast if you do fight wrong (be it on accident or actually on purpose. however, on heroic, this might have a CD)
+local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPungency				= mod:NewStackAnnounce(123081, 4)
 
 local specwarnUnder				= mod:NewSpecialWarning("specwarnUnder")
@@ -171,5 +172,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	elseif msg:find(L.Phase2) then
 		timerCrushCD:Cancel()
 		countdownCrush:Cancel()
+		warnPhase2:Show()
 	end
 end
