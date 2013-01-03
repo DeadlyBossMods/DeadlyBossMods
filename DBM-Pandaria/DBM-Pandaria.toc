@@ -33,3 +33,5 @@ localization.br.lua
 MapSizes.lua
 Anger.lua
 Salyis.lua
+Oondasta.lua
+Nalak.lua
