@@ -72,12 +72,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerUSRevive		= "불멸의 어둠 재형성"
+	timerUSRevive		= "불멸의 어둠 재형성",
+	timerRainOfArrowsCD	= "%s"
 })
 
 L:SetOptionLocalization({
 	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 경고 보기(5초 전부터)",
 	timerUSRevive		= "$spell:117506 재형성까지 남은 시간 바 표시",
+	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "거리 프레임 표시 (8m)"
 })
 
