@@ -70,6 +70,14 @@ L:SetOptionLocalization({
 -----------------------
 L= DBM:GetModLocalization(673)
 
+L:SetWarningLocalization({
+	warnStaticField	= "%s"
+})
+
+L:SetOptionLocalization({
+	warnStaticField	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(106923)
+})
+
 -----------------------
 -- Snowdrift --
 -----------------------
