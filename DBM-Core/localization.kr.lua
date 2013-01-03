@@ -87,7 +87,7 @@ DBM_CORE_RANGERADAR_HEADER			= "거리 레이더 (%d 미터)"
 
 DBM_CORE_INFOFRAME_LOCK				= "프레임 잠금"
 DBM_CORE_INFOFRAME_HIDE				= "숨기기"
-DBM_CORE_INFOFRAME_SHOW_SELF		= "자신의 정보 항상 보기"		-- Always show your own power value even if you are below the threshold
+DBM_CORE_INFOFRAME_SHOW_SELF		= "자신의 정보 항상 보기"
 
 DBM_LFG_INVITE						= "던전 입장"
 
@@ -202,7 +202,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell 		= "%s!",
 	dispel 		= "%s : %%s - 해제!",
-	interrupt 	= "%s : %%s - 차단!",	
+	interrupt 	= "%s : %%s - 차단!",
 	you 		= "당신에게 %s",
 	target 		= "%s : %%s",
 	close 		= "당신 근처에 %s (%%s)!",
