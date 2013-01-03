@@ -1,4 +1,4 @@
--- Last update: 12/24/2012 (24/12/2012 in french format)
+-- Last update: 01/03/2013 (03/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -58,7 +58,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	UnderHim	= "Sous lui" -- Pas sûr.
+	UnderHim	= "sous lui", -- Pas sûr.
+	Phase2		= "commence à se fendiller !"
 })
 
 ----------------------
