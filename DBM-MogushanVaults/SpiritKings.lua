@@ -89,7 +89,7 @@ local timerFlankingOrdersCD		= mod:NewCDTimer(40, 117910)--Every 40 seconds on n
 local timerImperviousShieldCD	= mod:NewCDTimer(42, 117961)
 --Subetai
 local timerVolleyCD				= mod:NewNextTimer(41, 118094)
-local timerRainOfArrowsCD		= mod:NewNextTimer(41, 118122)
+local timerRainOfArrowsCD		= mod:NewTimer(50.5, "timerRainOfArrowsCD", 118122)--heroic 41s fixed cd. normal and lfr 50.5~60.5 variable cd.
 local timerPillageCD			= mod:NewNextTimer(41, 118047)
 local timerSleightOfHandCD		= mod:NewCDTimer(42, 118162)
 local timerSleightOfHand		= mod:NewBuffActiveTimer(11, 118162)--2+9 (cast+duration)
@@ -107,6 +107,7 @@ local Zian = EJ_GetSectionInfo(5852)
 local Meng = EJ_GetSectionInfo(5835)
 local Qiang = EJ_GetSectionInfo(5841)
 local Subetai = EJ_GetSectionInfo(5846)
+local rainTimerText = DBM_CORE_AUTO_TIMER_TEXTS.cd:format(GetSpellInfo(118122))
 local bossesActivated = {}
 local zianActive = false
 local mengActive = false
@@ -133,9 +134,12 @@ function mod:OnCombatStart(delay)
 	timerAnnihilateCD:Start(10.5)
 	timerFlankingOrdersCD:Start(25)
 	if self:IsDifficulty("heroic10", "heroic25") then
+		rainTimerText = DBM_CORE_AUTO_TIMER_TEXTS.next:format(GetSpellInfo(118122))
 		timerImperviousShieldCD:Start(40.7)
 		countdownImperviousShield:Start(40.7)
 		warnImperviousShieldSoon:Schedule(35.7)
+	else
+		rainTimerText = DBM_CORE_AUTO_TIMER_TEXTS.cd:format(GetSpellInfo(118122))
 	end
 	if DBM.BossHealth:IsShown() then
 		DBM.BossHealth:Clear()
@@ -278,7 +282,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnVolley:Show()
 		timerVolleyCD:Start()
 	elseif spellId == 118121 and self:AntiSpam(2, 2) then--Rain of Arrows
-		timerRainOfArrowsCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerRainOfArrowsCD:Start(41, rainTimerText)
+		else
+			timerRainOfArrowsCD:Start(nil, rainTimerText)
+		end
 --	"<63.5 21:23:16> [UNIT_SPELLCAST_SUCCEEDED] Qiang the Merciless [[boss1:Inactive Visual::0:118205]]", -- [14066]
 --	"<63.5 21:23:16> [UNIT_SPELLCAST_SUCCEEDED] Qiang the Merciless [[boss1:Cancel Activation::0:118219]]", -- [14068]
 	elseif spellId == 118205 and self:AntiSpam(2, 3) then--Inactive Visual
