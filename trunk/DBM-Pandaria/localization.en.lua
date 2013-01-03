@@ -14,3 +14,17 @@ L:SetOptionLocalization({
 -- Salyis --
 -----------------------
 L= DBM:GetModLocalization(725)
+
+--------------
+-- Oondasta --
+--------------
+L= DBM:GetModLocalization(826)
+
+L:SetOptionLocalization({
+	RangeFrame			= "Show range frame for $spell:137511"
+})
+
+---------------------------
+-- Nalak, The Storm Lord --
+---------------------------
+L= DBM:GetModLocalization(814)
