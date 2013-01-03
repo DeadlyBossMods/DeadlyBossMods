@@ -7,9 +7,9 @@ DBM:RegisterMapSize("ValleyoftheFourWinds",
 )
 
 DBM:RegisterMapSize("IsleOfGiants",
-	0, 1787.5009765625,1191.666015625
+	0, 1787.5009765625, 1191.666015625
 )
 
 DBM:RegisterMapSize("IsleoftheThunderKing",
-	0, 4135.416015625,2756.25
+	0, 4135.416015625, 2756.25
 )
