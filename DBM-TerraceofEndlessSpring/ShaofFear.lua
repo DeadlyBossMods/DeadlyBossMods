@@ -66,7 +66,7 @@ local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669)-- EJ says that deb
 --local timerWaterspoutCD				= mod:NewCDTimer(30, 120519)--unconfirmed.
 --local timerHuddleInTerrorCD			= mod:NewCDTimer(30, 120629)--unconfirmed.
 --local timerImplacableStrikeCD			= mod:NewCDTimer(30, 120672)--unconfirmed.
-local timerSubmergeCD					= mod:NewCDTimer(51.5, 120455)--update from video. need combatlog.
+local timerSubmergeCD					= mod:NewCDCountTimer(51.5, 120455)--update from video. need combatlog.
 
 local berserkTimer						= mod:NewBerserkTimer(900)
 
@@ -84,6 +84,7 @@ local onPlatform = false--Used to determine when YOU are sent to a platform, so 
 local platformMob = nil--Use this so we can filter platform events and show you only ones for YOUR platform while ignoring other platforms events.
 local phase2 = false
 local thrashCount = 0
+local submergeCount = 0
 
 local function warnOminousCackleTargets()
 	warnOminousCackle:Show(table.concat(ominousCackleTargets, "<, >"))
@@ -146,6 +147,7 @@ function mod:OnCombatStart(delay)
 	platformMob = nil
 	phase2 = false
 	thrashCount = 0
+	submergeCount = 0
 	table.wipe(ominousCackleTargets)
 	table.wipe(platformGUIDs)
 	table.wipe(waterspoutTargets)
@@ -290,9 +292,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnImplacableStrike:Show()
 		--timerImplacableStrikeCD:Start()
 	elseif args:IsSpellID(120455) then
-		warnSubmerge:Show()
+		submergeCount = submergeCount + 1
+		warnSubmerge:Show(submergeCount)
 		specWarnSubmerge:Show()
-		timerSubmergeCD:Start()
+		timerSubmergeCD:Start(nil, submergeCount+1)
 	--elseif args:IsSpellID(120458) then
 		--warnEmerge:Show()
 	end
@@ -316,6 +319,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 114936 then--Heroic Phase 2
 		phase2 = true
 		onPlatform = false
+		submergeCount = 0
 		timerThrashCD:Cancel()
 		timerBreathOfFearCD:Cancel()
 		timerOminousCackleCD:Cancel()
@@ -325,6 +329,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnBreathOfFearSoon:Cancel()
 		self:UnscheduleMethod("CheckWall")
 		warnPhase2:Show()
+		--timerSubmergeCD:Start(nil, 1) -- not known
 		berserkTimer:Start() -- currently, seems phase 2 berserk also 15 min.
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
