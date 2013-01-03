@@ -30,7 +30,7 @@ local warnWaterspout					= mod:NewTargetAnnounce(120519, 3)
 local warnHuddleInTerror				= mod:NewTargetAnnounce(120629, 3)
 local warnImplacableStrike				= mod:NewSpellAnnounce(120672, 4)
 local warnChampionOfTheLight			= mod:NewTargetAnnounce(120268, 3, nil, false)--seems spammy.
-local warnSubmerge						= mod:NewSpellAnnounce(120455)
+local warnSubmerge						= mod:NewCountAnnounce(120455)
 --local warnEmerge						= mod:NewSpellAnnounce(120458)--do not match he actually emerges.
 
 -- Normal and heroic Phase 1
