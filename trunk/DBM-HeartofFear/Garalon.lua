@@ -29,7 +29,7 @@ local warnPheromones			= mod:NewTargetAnnounce(122835, 4)
 local warnFury					= mod:NewStackAnnounce(122754, 3)
 local warnBrokenLeg				= mod:NewStackAnnounce(122786, 2)
 local warnMendLeg				= mod:NewSpellAnnounce(123495, 1)
-local warnCrush					= mod:NewSpellAnnounce(122774, 3)--On normal, only cast if you do fight wrong (be it on accident or actually on purpose. however, on heroic, this might have a CD)
+local warnCrush					= mod:NewAnnounce("warnCrush", 3, 122774)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPungency				= mod:NewStackAnnounce(123081, 4)
 
@@ -43,7 +43,7 @@ local specwarnLeg				= mod:NewSpecialWarningSwitch("ej6270", mod:IsMelee())--If 
 local specwarnPheromoneTrail	= mod:NewSpecialWarningMove(123120)--Because this starts doing damage BEFORE the visual is there.
 
 local timerCrush				= mod:NewCastTimer(3.5, 122774)--Was 3 second, hotfix went live after my kill log, don't know what new hotfixed cast time is, 3.5, 4? Needs verification.
-local timerCrushCD				= mod:NewNextTimer(37, 122774)
+local timerCrushCD				= mod:NewNextCountTimer(37, 122774)
 local timerFuriousSwipeCD		= mod:NewCDTimer(8, 122735)
 local timerMendLegCD			= mod:NewCDTimer(30, 123495)
 local timerFury					= mod:NewBuffActiveTimer(30, 122754)
@@ -55,13 +55,17 @@ local berserkTimer				= mod:NewBerserkTimer(420)
 --mod:AddBoolOption("InfoFrame", true)--Not sure how to do yet, i need to see 25 man first to get a real feel for number of people with debuff at once.
 mod:AddBoolOption("PheromonesIcon", true)
 
+local crushWarnText = GetSpellInfo(122774)
+local crushCountWarnText = GetSpellInfo(122774).." (%d)"
 local brokenLegs = 0
+local crushCount = 0
 
 function mod:OnCombatStart(delay)
 	brokenLegs = 0
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerCrushCD:Start(30.5-delay)
+		crushCount = 0
+		timerCrushCD:Start(30.5-delay, 1)
 		countdownCrush:Start(30.5-delay)
 	end
 	if not self:IsDifficulty("lfr25") then
@@ -157,14 +161,16 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:122774") then
-		if self:AntiSpam(3, 2) then
-			warnCrush:Show()
-			specwarnCrush:Show()
-		end
 		timerCrush:Start()
-		if self:IsDifficulty("heroic10", "heroic25") and not msg:find(L.UnderHim) then--unconfirmed
-			timerCrushCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") and not msg:find(L.UnderHim) then
+			crushCount = crushCount + 1
+			warnCrush:Show(crushCountWarnText:format(crushCount))
+			specwarnCrush:Show()
+			timerCrushCD:Start(nil, crushCount+1)
 			countdownCrush:Start()
+		elseif self:AntiSpam(3, 2) then
+			warnCrush:Show(crushWarnText)
+			specwarnCrush:Show()
 		end
 		if msg:find(L.UnderHim) and target == UnitName("player") then
 			specwarnUnder:Show()--it's a bit of a too little too late warning, but hopefully it'll help people in LFR understand it's not place to be and less likely to repeat it, eventually thining out LFR failure rate to this.
