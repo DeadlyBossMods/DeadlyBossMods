@@ -75,6 +75,7 @@ local timerTouchOfShaCD				= mod:NewCDTimer(29, 117519)--Need new heroic data, t
 local timerDefiledGroundCD			= mod:NewNextTimer(15.5, 117986, nil, mod:IsMelee())
 local timerExpelCorruptionCD		= mod:NewNextTimer(38.5, 117975)--It's a next timer, except first cast. that one variates.
 
+local countdownLightningStorm		= mod:NewCountdown(42, 118077, false)
 local countdownExpelCorruption		= mod:NewCountdown(38.5, 117975)
 
 local berserkTimer					= mod:NewBerserkTimer(490)
@@ -192,6 +193,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if phase == 2 then
 			if args:GetDestCreatureID() == 60585 then--Elder Regail
 				timerLightningStormCD:Start(25.5)--Starts 25.5~27
+				countdownLightningStorm:Start(25.5)
 			elseif args:GetDestCreatureID() == 60586 then--Elder Asani
 				timerCorruptingWatersCD:Start(10)
 			elseif args:GetDestCreatureID() == 60583 then--Protector Kaolan
@@ -200,6 +202,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif phase == 3 then
 			if args:GetDestCreatureID() == 60583 then--Elder Regail
 				timerLightningStormCD:Start(9.5)--His LS cd seems to reset in phase 3 since the CD actually changes.
+				countdownLightningStorm:Start(9.5)
 			elseif args:GetDestCreatureID() == 60583 then--Protector Kaolan
 				timerExpelCorruptionCD:Start(5)--5-10 second variation for first cast.
 --				countdownExpelCorruption:Start(5)--There seems to be a variation on when he casts first one, but ONLY first one has variation
@@ -248,8 +251,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnLightningStorm:Show()
 		if phase == 3 then
 			timerLightningStormCD:Start(32)
+			countdownLightningStorm:Start(32)
 		else
 			timerLightningStormCD:Start(41)
+			countdownLightningStorm:Start(41)
 		end
 	elseif args:IsSpellID(118312) then--Asani water bolt
 		if asaniCasts == 3 then asaniCasts = 0 end
@@ -271,6 +276,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:GetSrcCreatureID() == 60585 then--Elder Regail
 			timerLightningPrisonCD:Cancel()
 			timerLightningStormCD:Cancel()
+			countdownLightningStorm:Cancel()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
