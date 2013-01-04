@@ -27,7 +27,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "각 보스별 활성화 바 표시"
+	TrioActiveTimer		= "각 우두머리별 활성화 바 표시"
 })
 
 L:SetMiscLocalization({
@@ -58,7 +58,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	Submerged		= "잠수 알림 보기",
 	Emerged			= "등장 알림 보기",
-	specWarnAttack	= "보스 약화시 특수 경보 보기",
+	specWarnAttack	= "아훈 약화시 특수 경고 보기",
 	SubmergTimer	= "잠수 바 표시",
 	EmergeTimer		= "등장 바 표시",
 	TimerCombat		= "전투 시작 바 표시",

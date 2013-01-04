@@ -91,7 +91,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetIconOnBlat	= "브랏 본체에 전술 목표 아이콘 설정 (해골)"
+	SetIconOnBlat	= "브랏 본체에 전술 목표 아이콘 설정(해골)"
 })
 
 ------------
@@ -104,7 +104,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetIconOnDominika	= "환영술사 도미니카 본체에 전술 목표 아이콘 설정 (해골)"
+	SetIconOnDominika	= "환영술사 도미니카 본체에 전술 목표 아이콘 설정(해골)"
 })
 
 ------------

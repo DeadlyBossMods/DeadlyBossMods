@@ -16,10 +16,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ColorByClass		= "전장 점수판 캐릭터명에 직업 색상 사용하기",
+	ColorByClass		= "전장 점수판 캐릭터명에 직업 색상 사용",
 	ShowInviteTimer		= "전장 입장까지 남은시간 바 표시",
-	AutoSpirit			= "전장에서 사망시 자동으로 무덤 이동하기",
-	HideBossEmoteFrame	= "화면 가운데 나타나는 전장 메세지 숨기기"
+	AutoSpirit			= "전장에서 사망시 자동으로 무덤 이동",
+	HideBossEmoteFrame	= "화면 가운데 나타나는 전장 메세지 숨김"
 })
 
 L:SetMiscLocalization({
@@ -184,7 +184,7 @@ L:SetOptionLocalization({
 	TimerSiegeEngine		= "공성 전차 제작 바 표시",
 	WarnSiegeEngine			= "공성 전차 제작 완료 알림 보기",
 	WarnSiegeEngineSoon		= "공성 전차 제작 완료 사전 알림 보기",
-	ShowGatesHealth			= "관문의 체력 바 보기 (진행 중인 전장에서는 맞지 않을 수도 있습니다!)"
+	ShowGatesHealth			= "관문 체력 바 보기 (진행 중인 전장에서는 맞지 않을 수도 있습니다.)"
 })
 
 L:SetMiscLocalization({

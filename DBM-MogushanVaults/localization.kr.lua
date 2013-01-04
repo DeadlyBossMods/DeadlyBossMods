@@ -7,15 +7,15 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon		= "곧 %s - 생존기 준비 또는 보스 이동!",
+	SpecWarnOverloadSoon		= "곧 %s - 생존기 준비 또는 수호자 이동!",
 	specWarnBreakJasperChains	= "벽옥 석화 푸세요!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon		= "석화중이지 않은 보스가 과부화되려고 할 때 특수 경고 보기",
+	SpecWarnOverloadSoon		= "석화중이지 않은 수호자가 과부화되려고 할 때 특수 경고 보기",
 	specWarnBreakJasperChains	= "$spell:130395 주문을 안전하게 해제할 수 있을 때 특수 경고 보기",
 	ArrowOnJasperChains			= "$spell:130395 주문의 영향을 받은 경우 DBM 화살표 보기",
-	InfoFrame					= "보스 기력, 석화상태, 석화 진행중인 보스에 대한 정보 프레임 보기"
+	InfoFrame					= "수호자 기력, 현재 석화상태, 석화 진행중인 수호자에 대한 정보 창 보기"
 })
 
 L:SetMiscLocalization({
@@ -34,7 +34,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "단계 전환 알림 보기",
-	RangeFrame	= "지팡이의 혼 단계에서 거리 프레임 표시 (6m)",
+	RangeFrame	= "지팡이의 혼 단계에서 거리 창 보기(6m)",
 	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
 	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
@@ -53,7 +53,6 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(682)
 
 L:SetOptionLocalization({
-	RangeFrame			= "거리 프레임 표시 (8m)",
 	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
 })
 
@@ -77,10 +76,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 경고 보기(5초 전부터)",
-	timerUSRevive		= "$spell:117506 재형성까지 남은 시간 바 표시",
+	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 알림 보기(5초 전부터)",
+	timerUSRevive		= "$spell:117506 재형성까지 남은시간 바 표시",
 	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
-	RangeFrame			= "쑤베타이와 쯔안 단계에서 거리 프레임 표시 (8m)"
+	RangeFrame			= "쑤베타이와 쯔안 단계에서 거리 창 보기(8m)"
 })
 
 
@@ -110,9 +109,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "$spell:116525 주문의 영향을 받은 플레이어를 정보 프레임에 표시",
+	InfoFrame		= "$spell:116525 주문의 영향을 받은 대상을 정보 창에서 보기",
 	CountOutCombo	= "$journal:5673 시전 횟수를 초읽기 소리로 읽기\n알림: 초 읽기 소리가 Corsica (Female)로 설정되어 있을때만 작동합니다.",
-	ArrowOnCombo	= "$journal:5673 도중 DBM 화살표 표시\n알림: 방어전담이 보스 앞에 있고 나머지 공격대원이 뒤에 있을때를 기준으로 합니다."
+	ArrowOnCombo	= "$journal:5673 도중 이동해야 할 방향을 DBM 화살표로 보기\n알림: 방어전담이 우두머리 앞에 있고 나머지 공격대원이 뒤에 있을때를 기준으로 합니다."
 })
 
 L:SetMiscLocalization({
