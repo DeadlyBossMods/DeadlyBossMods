@@ -72,12 +72,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerUSRevive		= "不死黑影重新成形"
+	timerUSRevive		= "不死黑影重新成形",
+	timerRainOfArrowsCD	= "%s"
 })
 
 L:SetOptionLocalization({
 	DarknessSoon		= "為$spell:117697提示施放前五秒倒數",
 	timerUSRevive		= "為$spell:117506重新成形顯示計時器",
+	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "顯示距離框(8碼)"
 })
 

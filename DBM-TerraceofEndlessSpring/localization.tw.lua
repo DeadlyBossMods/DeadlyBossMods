@@ -56,7 +56,17 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	specWarnBreathOfFearSoon	= "恐懼之息來臨 - 移動到光牆裡!",
+	MoveWarningForward			= "向前穿過去",
+	MoveWarningRight			= "向右移動",
+	MoveWarningBack				= "回到原本位置",
+	specWarnBreathOfFearSoon	= "恐懼之息來臨 - 移動到光牆裡!"
+})
+
+L:SetTimerLocalization({
+	timerSpecialAbilityCD		= "下一次特別技能",
+	timerSpoHudCD				= "恐懼畏縮/水魄冷卻",
+	timerSpoStrCD				= "水魄/嚴厲襲擊冷卻",
+	timerHudStrCD				= "恐懼畏縮/嚴厲襲擊冷卻"
 })
 
 L:SetOptionLocalization({
@@ -64,5 +74,12 @@ L:SetOptionLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame					= "為$spell:119519顯示距離框(8碼)"
+	RangeFrame					= "為$spell:119519顯示距離框(8碼)",
+	MoveWarningForward			= "當$spell:120047施放時顯示向前穿過去的特別警告",
+	MoveWarningRight			= "當$spell:120047施放時顯示向右移動的特別警告",
+	MoveWarningBack				= "當$spell:120047結束時顯示回到原本位置的特別警告",
+	timerSpecialAbilityCD		= "為下一次特別技能施放顯示計時器",
+	timerSpoHudCD				= "為下一次$spell:120629或$spell:120519施放顯示計時器",
+	timerSpoStrCD				= "為下一次$spell:120519或$spell:120672施放顯示計時器",
+	timerHudStrCD				= "為下一次$spell:120629或$spell:120672施放顯示計時器"
 })
