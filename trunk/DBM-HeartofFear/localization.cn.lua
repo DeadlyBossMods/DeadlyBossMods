@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 12/29/2012
+-- Last update: 1/4/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -48,18 +48,21 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(713)
 
 L:SetWarningLocalization({
+	warnCrush		= "%s",
 	specwarnUnder	= "远离紫圈！"
 })
 
 
 L:SetOptionLocalization({
+	warnCrush		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(122774),
 	specwarnUnder	= "特殊警报：当你在首领身体下方时",
 	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."（仅英雄难度）",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
 })
 
 L:SetMiscLocalization({
-	UnderHim	= "在它下方"
+	UnderHim	= "在它下方",
+	Phase2		= "巨型盔甲开始碎裂了"
 })
 
 ----------------------
