@@ -1,4 +1,4 @@
--- Last update: 01/03/2013 (03/01/2013 in french format)
+-- Last update: 01/04/2013 (04/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -48,17 +48,19 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(713)
 
 L:SetWarningLocalization({
+	warnCrush		= "%s",
 	specwarnUnder	= "Sortez du cercle violet !"
 })
 
 L:SetOptionLocalization({
+	warnCrush		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(122774),
 	specwarnUnder	= "Alerte spécial quand vous êtes sous le Boss",
 	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (Difficulté héroïque seulement)",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
 })
 
 L:SetMiscLocalization({
-	UnderHim	= "sous lui", -- Pas sûr.
+	UnderHim	= "sous lui",
 	Phase2		= "commence à se fendiller !"
 })
 
