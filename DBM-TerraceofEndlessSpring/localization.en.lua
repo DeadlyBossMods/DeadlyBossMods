@@ -55,7 +55,17 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	specWarnBreathOfFearSoon	= "Breath of Fear soon - MOVE into wall!",
+	MoveWarningForward			= "Move Through",
+	MoveWarningRight			= "Move Right",
+	MoveWarningBack				= "Move To Old Position",
+	specWarnBreathOfFearSoon	= "Breath of Fear soon - MOVE into wall!"
+})
+
+L:SetTimerLocalization({
+	timerSpecialAbilityCD		= "Next Special Ability",
+	timerSpoHudCD				= "Fear / Waterspout CD",
+	timerSpoStrCD				= "Waterspout / Strike CD",
+	timerHudStrCD				= "Fear / Strike CD"
 })
 
 L:SetOptionLocalization({
@@ -63,5 +73,12 @@ L:SetOptionLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame					= "Show range frame (2) for $spell:119519"
+	RangeFrame					= "Show range frame (2) for $spell:119519",
+	MoveWarningForward			= "Show special warning to move trough when $spell:120047 is being fired",
+	MoveWarningRight			= "Show special warning to move right when $spell:120047 is being fired",
+	MoveWarningBack				= "Show special warning to move back to old position when $spell:120047 has ended",
+	timerSpecialAbilityCD		= "Show timer for when next special ability will be cast",
+	timerSpoHudCD				= "Show timer for next possible $spell:120629 or $spell:120519 cast",
+	timerSpoStrCD				= "Show timer for next possible $spell:120519 or $spell:120672 cast",
+	timerHudStrCD				= "Show timer for next possible $spell:120629 or $spell:120672 cast"
 })
