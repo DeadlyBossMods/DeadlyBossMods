@@ -149,7 +149,7 @@ end
 
 local function findGroupNumber()
 	for i=1, MAX_RAID_MEMBERS do
-		name, _, subgroup = GetRaidRosterInfo(i);
+		local name, _, subgroup = GetRaidRosterInfo(i);
 		if name == UnitName("player") then
 			myGroup = subgroup
 		end
@@ -317,8 +317,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			findGroupNumber()
 		end
 		corruptedCount = corruptedCount + 1
-		--25 man 5 2 2 2, 1 2 2 2, 1 2 2 2, 1 2 2 2, 1 1 1 1 strat.
 		if self:IsDifficulty("heroic25") then
+			--25 man 5 2 2 2, 1 2 2 2, 1 2 2 2, 1 2 2 2, 1 1 1 1 strat.
 			if corruptedCount == 5 or corruptedCount == 12 or corruptedCount == 19 or corruptedCount == 26 or corruptedCount == 33 then
 				warnGroupOrder:Show(2)
 				if myGroup == 2 then
