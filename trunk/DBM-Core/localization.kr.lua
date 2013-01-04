@@ -1,7 +1,7 @@
 ﻿if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_SUPPORT				= "버그/건의사항은 법사세린-아즈샤라(everfinale@gmail.com) 또는 인벤 닉네임 다시날아 로 보내주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주시기 바랍니다."
-DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 표시되는 창에서 각 보스에 대한 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
+DBM_CORE_NEED_SUPPORT				= "오류/건의사항은 법사세린-아즈샤라(everfinale@gmail.com) 또는 인벤 닉네임 다시날아 로 보내주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주시기 바랍니다."
+DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 표시되는 창에서 각 우두머리에 대한 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 경보를 불러오는 중 오류 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다 !"
@@ -11,8 +11,8 @@ DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_BOSS_DOWN					= "%s 전투에서 승리하였습니다! (전투 시간: %s)"
 DBM_CORE_BOSS_DOWN_L				= "%s 전투에서 승리하였습니다! (전투 시간: %s, 최종 전투 기록: %s, 가장 빨랐던 기록: %s, 처치: %d회)"
 DBM_CORE_BOSS_DOWN_NR				= "%s 전투에서 승리하였습니다! (전투 시간: %s) 이 기록은 새로운 기록이군요! (과거 기록: %s, 처치: %d회)"
-DBM_CORE_COMBAT_ENDED_AT			= "%s 전투가 종료되었습니다. (전투 종료시 보스 체력: %s, 전투 시간: %s)"
-DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s 전투가 종료되었습니다. (전투 종료시 보스 체력: %s, 전투 시간: %s, 전멸: %d회)"
+DBM_CORE_COMBAT_ENDED_AT			= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s)"
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s, 전멸: %d회)"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s 전에 시작되었습니다. 바를 복구 중입니다..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d|4초:초;"
@@ -29,7 +29,7 @@ DBM_CORE_OK							= "수락"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "%s %s 후에 광폭화"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "광폭화"
 DBM_CORE_OPTION_TIMER_BERSERK		= "광폭화 시간 바 표시"
-DBM_CORE_OPTION_HEALTH_FRAME		= "보스 체력 프레임 보기"
+DBM_CORE_OPTION_HEALTH_FRAME		= "우두머리 체력 바 보기"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "바"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "알림"
@@ -40,13 +40,13 @@ DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d 명이 생존해 있습니다."
 DBM_CORE_AUTO_RESPOND_WHISPER				= "%s 님은 현재 바쁩니다. %s 전투가 진행중입니다. (%s, %d/%d 명 생존중) 전투 종료후 다시 알림 메세지가 표시됩니다."
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s 님의 %s 전투가 끝났습니다!"
 DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s 님의 %s 전투가 끝났습니다! (처치: %d회)"
-DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 보스의 체력은 %s 입니다."
-DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 보스의 체력은 %s 입니다. (현재 난이도에서 전멸: %d회)"
+DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 우두머리의 체력은 %s 입니다."
+DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 우두머리의 체력은 %s 입니다. (현재 난이도에서 전멸: %d회)"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 죽이는 보스 모드가 설치 되어있지 않습니다."
-DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명의 플레이어가 설치되어 있는 것을 찾았습니다."
+DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명이 설치되어 있는 것을 찾았습니다."
 DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 DBM 버전이 오래되었습니다!\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
@@ -64,7 +64,7 @@ DBM_CORE_ERROR_DBMV3_LOADED			= "DBMv3와 DBMv4가 동시에 실행중 입니다
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "죽이는 보스 모드"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+클릭 또는 오른쪽 클릭으로 움직이세요.\nAlt+Shift+클릭으로 움직이면 자유롭게 배치할 수 있습니다."
 
-DBM_CORE_RANGECHECK_HEADER			= "거리 체크 (%d m)"
+DBM_CORE_RANGECHECK_HEADER			= "거리 확인 (%dm)"
 DBM_CORE_RANGECHECK_SETRANGE		= "거리 지정"
 DBM_CORE_RANGECHECK_SOUNDS			= "소리"
 DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "지정 거리 이내 사람이 1명 있을 경우 소리"
@@ -74,20 +74,20 @@ DBM_CORE_RANGECHECK_SOUND_1			= "기본 소리"
 DBM_CORE_RANGECHECK_SOUND_2			= "짜증나는 소리(-_-;)"
 DBM_CORE_RANGECHECK_HIDE			= "숨기기"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
-DBM_CORE_RANGECHECK_LOCK			= "프레임 잠금"
-DBM_CORE_RANGECHECK_OPTION_FRAMES	= "프레임 표시 방법"
-DBM_CORE_RANGECHECK_OPTION_RADAR	= "원형 레이더로 표시"
+DBM_CORE_RANGECHECK_LOCK			= "창 잠금"
+DBM_CORE_RANGECHECK_OPTION_FRAMES	= "창 표시 방법"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "아이콘으로 표시"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "글자로 표시"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 표시"
 DBM_CORE_RANGECHECK_OPTION_SPEED	= "갱신 주기 (UI재시작 필요)"
 DBM_CORE_RANGECHECK_OPTION_SLOW		= "낮음 (CPU 소모량 낮음)"
 DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "보통"
 DBM_CORE_RANGECHECK_OPTION_FAST		= "빠름 (실시간)"
-DBM_CORE_RANGERADAR_HEADER			= "거리 레이더 (%d 미터)"
+DBM_CORE_RANGERADAR_HEADER			= "거리 확인 (%dm)"
 
-DBM_CORE_INFOFRAME_LOCK				= "프레임 잠금"
+DBM_CORE_INFOFRAME_LOCK				= "창 잠금"
 DBM_CORE_INFOFRAME_HIDE				= "숨기기"
-DBM_CORE_INFOFRAME_SHOW_SELF		= "자신의 정보 항상 보기"
+DBM_CORE_INFOFRAME_SHOW_SELF		= "내 정보 항상 보기"
 
 DBM_LFG_INVITE						= "던전 입장"
 
@@ -107,7 +107,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
 
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "보스 체력 프레임 닫기"
+DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "우두머리 체력 바 닫기"
 
 DBM_CORE_ALLIANCE					= "얼라이언스"
 DBM_CORE_HORDE						= "호드"
@@ -132,9 +132,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cast 		= "%s",
 	active		= "%s 종료",--Buff/Debuff/event on boss
 	fades		= "%s 사라짐",--Buff/Debuff on players
-	cd 			= "%s 대기시간",
-	cdcount		= "%s 대기시간 (%%d)",
-	cdsource	= "%s 대기시간: %%s",
+	cd 			= "%s 가능",
+	cdcount		= "%s 가능 (%%d)",
+	cdsource	= "%s 가능: %%s",
 	next 		= "다음 %s",
 	nextcount 	= "다음 %s (%%d)",
 	nextsource	= "다음 %s: %%s",
@@ -189,7 +189,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell 		= "$spell:%s 특수 경고 보기",
 	dispel 		= "$spell:%s 특수 경고 보기(해제/마법훔치기)",
 	interrupt	= "$spell:%s 특수 경고 보기(차단)",	
-	you 		= "$spell:%s 주문의 대상이 자신일 경우 특수 경고 보기",
+	you 		= "$spell:%s 주문의 대상이 당신일 경우 특수 경고 보기",
 	target 		= "$spell:%s 주문의 영향을 누군가 받은 경우 특수 경고 보기",
 	close 		= "$spell:%s 대상이 근처에 있을 경우 특수 경고 보기",
 	move 		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기(이동)",
@@ -234,28 +234,28 @@ DBM_ARROW_NO_RAIDGROUP					= "이 기능은 공격대에 속해 있고, 공격�
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 사용법:",
 	"/dbm arrow <x> <y>  특정 좌표(X/Y)에 화살표를 만듭니다.(0 < x/y < 100)",
-	"/dbm arrow <player>  현재 파티 또는 공격대의 특정 플레이어를 가리키는 화살표를 만듭니다.",
+	"/dbm arrow <player>  현재 파티 또는 공격대의 특정 대상을 가리키는 화살표를 만듭니다.",
 	"/dbm arrow hide  화살표를 숨깁니다.",
 	"/dbm arrow move  화살표를 움직이도록 합니다.",
 	"/dbm arrow target 대상을 가리키는 화살표를 만듭니다.",
 	"/dbm arrow focus  주시대상을 가리키는 화살표를 만듭니다.",
 }
 
-DBM_SPEED_KILL_TIMER_TEXT	= "가장 빨랐던 보스 전투"
-DBM_SPEED_KILL_TIMER_OPTION	= "가장 빨랐던 보스 전투 시간을 바로 표시"
+DBM_SPEED_KILL_TIMER_TEXT	= "가장 빨랐던 전투"
+DBM_SPEED_KILL_TIMER_OPTION	= "가장 빨랐던 전투 시간을 바로 표시"
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s 님이 당신의 공격대 귀속 정보를 요청합니다.\n%s 님의 요청을 수락하시겠습니까? 정보 확인을 위해 이 메세지가 여러번 표시 될 수도 있습니다."
 DBM_ERROR_NO_RAID					= "이 기능을 사용하기 위해서는 공격대에 속해 있어야 합니다."
 DBM_INSTANCE_INFO_REQUESTED			= "공격대원의 귀속 정보를 요청합니다.\n모든 공격대원이 요청 메세지에 응답하기 전까지 약간의 시간이 소요됩니다."
-DBM_INSTANCE_INFO_STATUS_UPDATE		= "%d명의 플레이어가 응답했습니다. (총 %d명): %d명이 요청을 수락했으며, %d명은 요청을 거부했습니다. (응답 대기 시간 %d초 남음)"
+DBM_INSTANCE_INFO_STATUS_UPDATE		= "%d명이 응답했습니다. (총 %d명): %d명이 요청을 수락했으며, %d명은 요청을 거부했습니다. (응답 대기 시간 %d초 남음)"
 DBM_INSTANCE_INFO_ALL_RESPONSES		= "현재 공격대원의 귀속 정보"
-DBM_INSTANCE_INFO_DETAIL_DEBUG		= "플레이어: %s, 응답타입: %s, 공격대명: %s, 공격대ID: %s, 난이도: %d, 인원: %d, 킬수: %s"
+DBM_INSTANCE_INFO_DETAIL_DEBUG		= "공격대원: %s, 응답타입: %s, 공격대명: %s, 공격대ID: %s, 난이도: %d, 인원: %d, 킬수: %s"
 DBM_INSTANCE_INFO_DETAIL_HEADER		= "%s (%d), 난이도 %d:"
 DBM_INSTANCE_INFO_DETAIL_INSTANCE	= "    ID %s, 킬수 %d: %s"
 DBM_INSTANCE_INFO_STATS_DENIED		= "요청거부: %s"
 DBM_INSTANCE_INFO_STATS_AWAY		= "자리비움: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "DBM 구버전 사용중: %s"
 DBM_INSTANCE_INFO_RESULTS			= "공격대 귀속 정보 확인 결과입니다. 만약 공격대원이 다른 언어의 WoW 클라이언트를 사용 중이라면 결과가 올바르게 보이지 않을 수도 있습니다."
-DBM_INSTANCE_INFO_SHOW_RESULTS		= "아직 응답하지 않은 플레이어 : %s\n|HDBM:showRaidIdResults|h|cff3588ff[지금 결과 보기]|r|h"
+DBM_INSTANCE_INFO_SHOW_RESULTS		= "아직 응답하지 않은 공격대원: %s\n|HDBM:showRaidIdResults|h|cff3588ff[지금 결과 보기]|r|h"
 
 end
