@@ -261,7 +261,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(120629) then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
 		self:Unschedule(warnHuddleInTerrorTargets)
-		self:Schedule(0.3, warnHuddleInTerrorTargets)
+		self:Schedule(0.5, warnHuddleInTerrorTargets)
 		huddle = 1
 		if huddle == 1 and spout == 1 and strike == 0 then
 			timerImplacableStrikeCD:Start()
