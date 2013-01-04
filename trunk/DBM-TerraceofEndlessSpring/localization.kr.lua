@@ -6,7 +6,14 @@ local L
 ------------
 L= DBM:GetModLocalization(683)
 
+L:SetWarningLocalization({
+	warnGroupOrder		= "타락한 정수 순번 : %s 파티",
+	specWarnYourGroup	= "타락한 정수 받을 차례입니다. 준비하세요!"
+})
+
 L:SetOptionLocalization({
+	warnGroupOrder		= "$spell:118191 파티 순서 알림 보기(현재 25인만 지원합니다.)\n참고: 1파-5번/2파-2번/3파-2번/4파-2번, 그 후 1/2/2/2 순서대로 알립니다.",
+	specWarnYourGroup	= "$spell:118191 효과를 받을 차례가 된 경우 특수 경고 보기(25인 전용)",
 	RangeFrame			= "$spell:111850 주문에 대한 거리 창 보기(8m)\n(영향을 받은 경우 모든 공격대원을 표시, 그 외에는 대상자만 표시)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
