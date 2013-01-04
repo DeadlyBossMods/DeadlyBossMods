@@ -320,25 +320,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--25 man 5 2 2 2, 1 2 2 2, 1 2 2 2, 1 2 2 2, 1 1 1 1 strat.
 		if self:IsDifficulty("heroic25") then
 			if corruptedCount == 5 or corruptedCount == 12 or corruptedCount == 19 or corruptedCount == 26 or corruptedCount == 33 then
-				warnGroupOrder:Show(1)
-				if myGroup == 1 then
-					specWarnYourGroup:Show()
-				end
-			elseif corruptedCount == 7 or corruptedCount == 14 or corruptedCount == 21 or corruptedCount == 28 or corruptedCount == 34 then
 				warnGroupOrder:Show(2)
 				if myGroup == 2 then
 					specWarnYourGroup:Show()
 				end
-			elseif corruptedCount == 9 or corruptedCount == 16 or corruptedCount == 23 or corruptedCount == 30 or corruptedCount == 35 then
+			elseif corruptedCount == 7 or corruptedCount == 14 or corruptedCount == 21 or corruptedCount == 28 or corruptedCount == 34 then
 				warnGroupOrder:Show(3)
 				if myGroup == 3 then
 					specWarnYourGroup:Show()
 				end
-			elseif corruptedCount == 11 or corruptedCount == 18 or corruptedCount == 25 or corruptedCount == 32 or corruptedCount == 36 then
+			elseif corruptedCount == 9 or corruptedCount == 16 or corruptedCount == 23 or corruptedCount == 30 or corruptedCount == 35 then
 				warnGroupOrder:Show(4)
 				if myGroup == 4 then
 					specWarnYourGroup:Show()
 				end
+			elseif corruptedCount == 11 or corruptedCount == 18 or corruptedCount == 25 or corruptedCount == 32 then
+				warnGroupOrder:Show(1)
+				if myGroup == 1 then
+					specWarnYourGroup:Show()
+				end
+			elseif corruptedCount == 36 then--Groups 1-4 are all at 9 stacks, boss not dead yet (low dps?) you send healer group in so you don't wipe.
+				warnGroupOrder:Show(5)
 			end
 		--TODO, give 10 man some kind of rotation helper. Blue? I do not raid 10 man and cannot test this
 		end
