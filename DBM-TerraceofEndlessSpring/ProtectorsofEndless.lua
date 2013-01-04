@@ -48,9 +48,11 @@ local warnLightningStorm			= mod:NewSpellAnnounce(118077, 4)--Phase 2+ ability.
 local warnTouchofSha				= mod:NewTargetAnnounce(117519, 3, nil, mod:IsHealer())--Phase 1+ ability. He stops casting it when everyone in raid has it then ceases. If someone dies and is brezed, he casts it on them again.
 local warnDefiledGround				= mod:NewSpellAnnounce(117986, 3, nil, mod:IsMelee())--Phase 2+ ability.
 local warnExpelCorruption			= mod:NewSpellAnnounce(117975, 4)--Phase 3 ability.
+--Heroic
+local warnGroupOrder				= mod:NewAnnounce("warnGroupOrder", 1, 118191, false)--25 man for now, unless someone codes a 10 man version of it into code then it can be both.
 
 --Elder Asani
-local specWarnCleansingWaters		= mod:NewSpecialWarningTarget(117309, mod:IsTank())--It's being cast on the boss, move the boss
+local specWarnCleansingWaters		= mod:NewSpecialWarningTarget(117309, false)--This is if you want to move the boss out of waters before they can even gain it. Many strats don't ever move boss and just dispel it
 local specWarnCleansingWatersDispel	= mod:NewSpecialWarningDispel(117309, isDispeller)--The boss wasn't moved in time, now he needs to be dispelled.
 local specWarnCorruptingWaters		= mod:NewSpecialWarningSwitch("ej5821", mod:IsDps())
 --Elder Regail
@@ -61,7 +63,8 @@ local specWarnLightningStorm		= mod:NewSpecialWarningSpell(118077, nil, nil, nil
 local specWarnDefiledGround			= mod:NewSpecialWarningMove(117986, mod:IsTank())
 local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, nil, true)--Entire raid needs to move.
 --Minions of Fear
-local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 9)--Amount may need adjusting depending on what becomes an accepted strategy
+local specWarnYourGroup				= mod:NewSpecialWarning("specWarnYourGroup", false)
+local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 9)--You cannot get more than 9, if you get 9 you need to GTFO or you do big damage to raid
 
 --Elder Asani
 local timerCleansingWatersCD		= mod:NewCDTimer(32.5, 117309)
@@ -91,11 +94,20 @@ local prisonIcon = 1--Will try to start from 1 and work up, to avoid using icons
 local prisonDebuff = GetSpellInfo(79339)
 local prisonCount = 0
 local asaniCasts = 0
+local corruptedCount = 0
+local myGroup = nil
 
 local DebuffFilter
 do
 	DebuffFilter = function(uId)
 		return UnitDebuff(uId, prisonDebuff)
+	end
+end
+
+local function resetPrisonStatus()
+	prisonCount = 0
+	if mod.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -111,6 +123,7 @@ local function warnPrisonTargets()
 	timerLightningPrisonCD:Start()
 	table.wipe(prisonTargets)
 	prisonIcon = 1
+	mod:Schedule(11, resetPrisonStatus)--Because if a mage or paladin bubble/iceblock debuff, they do not get the stun, and it messes up prisonCount
 end
 
 function mod:WatersTarget()
@@ -134,12 +147,22 @@ function mod:WatersTarget()
 	end
 end
 
+local function findGroupNumber()
+	for i=1, MAX_RAID_MEMBERS do
+		name, _, subgroup = GetRaidRosterInfo(i);
+		if name == UnitName("player") then
+			myGroup = subgroup
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	phase = 1
 	totalTouchOfSha = 0
 	prisonCount = 0
 	scansDone = 0
 	asaniCasts = 0
+	corruptedCount = 0
 	table.wipe(prisonTargets)
 	timerCleansingWatersCD:Start(10-delay)
 	timerLightningPrisonCD:Start(15.5-delay)
@@ -151,6 +174,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsDifficulty("lfr25") then--lfr not berserks or more than 8m 10sec.
 		berserkTimer:Start(-delay)
 	end
+	findGroupNumber()
 end
 
 function mod:OnCombatEnd()
@@ -286,6 +310,37 @@ function mod:SPELL_CAST_SUCCESS(args)
 		elseif args:GetSrcCreatureID() == 60583 then--Protector Kaolan
 			timerTouchOfShaCD:Cancel()
 			timerDefiledGroundCD:Cancel()
+		end
+	elseif args:IsSpellID(118191) then--Corrupted Essence
+		--You dced, rebuild group number. Not sure how to recover corruptedCount though. Sync maybe, but then it may get screwed up by similtanious events like getting a sync .1 sec before this event and then being off by +1
+		if not myGroup then
+			findGroupNumber()
+		end
+		corruptedCount = corruptedCount + 1
+		--25 man 5 2 2 2, 1 2 2 2, 1 2 2 2, 1 2 2 2, 1 1 1 1 strat.
+		if self:IsDifficulty("heroic25") then
+			if corruptedCount == 5 or corruptedCount == 12 or corruptedCount == 19 or corruptedCount == 26 or corruptedCount == 33 then
+				warnGroupOrder:Show(1)
+				if myGroup == 1 then
+					specWarnYourGroup:Show()
+				end
+			elseif corruptedCount == 7 or corruptedCount == 14 or corruptedCount == 21 or corruptedCount == 28 or corruptedCount == 34 then
+				warnGroupOrder:Show(2)
+				if myGroup == 2 then
+					specWarnYourGroup:Show()
+				end
+			elseif corruptedCount == 9 or corruptedCount == 16 or corruptedCount == 23 or corruptedCount == 30 or corruptedCount == 35 then
+				warnGroupOrder:Show(3)
+				if myGroup == 3 then
+					specWarnYourGroup:Show()
+				end
+			elseif corruptedCount == 11 or corruptedCount == 18 or corruptedCount == 25 or corruptedCount == 32 or corruptedCount == 36 then
+				warnGroupOrder:Show(4)
+				if myGroup == 4 then
+					specWarnYourGroup:Show()
+				end
+			end
+		--TODO, give 10 man some kind of rotation helper. Blue? I do not raid 10 man and cannot test this
 		end
 	end
 end
