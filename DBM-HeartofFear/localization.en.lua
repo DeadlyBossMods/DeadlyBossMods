@@ -44,10 +44,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(713)
 
 L:SetWarningLocalization({
+	warnCrush		= "%s",
 	specwarnUnder	= "Move out of purple ring!"
 })
 
 L:SetOptionLocalization({
+	warnCrush		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(122774),
 	specwarnUnder	= "Show special warning when you are under boss",
 	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (Heroic difficulty only)",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
