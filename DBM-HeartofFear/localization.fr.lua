@@ -16,8 +16,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
-	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834, GetSpellInfo(127834)),
+	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
+	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "Alerte indiquant quand le Boss change de platforme",
 	ArrowOnAttenuation	= "Afficher la flêche DBM pendant $spell:127834 \npour indiquer dans quelle direction bouger",
 	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
@@ -97,7 +97,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784, GetSpellInfo(122784)),
+	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "Voir l'aperçu des compétences de l'Assemblage muté",
 	warnAmberExplosion			= "Alerte (avec la source)\nquand $spell:122398 est incanté",
 	warnInterruptsAvailable		= "Annoncer qui a Frappe d'ambre disponible pour interrompre \n $spell:122402",

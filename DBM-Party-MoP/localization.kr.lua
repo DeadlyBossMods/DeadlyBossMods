@@ -23,7 +23,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnIntensity	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS["stack"]:format(6, 113315)
+	SpecWarnIntensity	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(6, 113315)
 })
 
 -----------------------
@@ -60,7 +60,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnFizzyBubbles	= "$spell:114459 효과가 없을 경우 특수 경고 보기",
-	RangeFrame				= "$spell:106546 주문의 영향을 받은 경우 거리 프레임 표시(10m)"
+	RangeFrame				= "$spell:106546 주문의 영향을 받은 경우 거리 창 보기(10m)"
 })
 
 -----------------------
@@ -112,7 +112,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(686)
 
 L:SetOptionLocalization({
-	InfoFrame			= "$journal:5827 정보 프레임 보기"
+	InfoFrame			= "$journal:5827 정보 창 보기"
 })
 
 -----------------------
@@ -231,7 +231,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnGetBoned	= "$spell:113996 효과가 없을 경우 특수 경고 보기",
-	InfoFrame			= "$spell:113996 효과 없음에 대한 정보 프레임 보기"
+	InfoFrame			= "$spell:113996 효과 없음에 대한 정보 창 보기"
 })
 
 L:SetMiscLocalization({
