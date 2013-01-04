@@ -11,13 +11,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 -- Normal and heroic Phase 1
 local warnThrash						= mod:NewSpellAnnounce(131996, 4, nil, mod:IsTank() or mod:IsHealer())
---local warnConjureTerrorSpawns			= mod:NewSpellAnnounce(119108, 3)
 local warnBreathOfFearSoon				= mod:NewPreWarnAnnounce(119414, 10, 3)
 local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 4)
 local warnOminousCackle					= mod:NewTargetAnnounce(129147, 3)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
@@ -36,11 +36,12 @@ local warnSubmerge						= mod:NewCountAnnounce(120455)
 -- Normal and heroic Phase 1
 local specWarnBreathOfFearSoon			= mod:NewSpecialWarning("specWarnBreathOfFearSoon")
 local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
---local specWarnOminousCackle			= mod:NewSpecialWarningSpell(119693, nil, nil, nil, true)--Cast, warns the entire raid.
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
---local specWarnTerrorSpawn				= mod:NewSpecialWarningSwitch("ej6088",  mod:IsDps())
-local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, true)--Platform ability, particularly nasty damage, and fear.
+local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, true)--Platform ability, particularly nasty damage, and fear.
 local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
+local MoveWarningForward				= mod:NewSpecialWarning("MoveWarningForward", false)--Warning to switch sites on platform
+local MoveWarningRight					= mod:NewSpecialWarning("MoveWarningRight", false)--Warning to move one eighth to the right
+local MoveWarningBack					= mod:NewSpecialWarning("MoveWarningBack", false)--Move back to starting position
 -- Heroic Phase 2
 local specWarnDreadThrash				= mod:NewSpecialWarningSpell(132007, mod:IsTank())
 local specWarnNakedAndAfraidOther		= mod:NewSpecialWarningTarget(120669, mod:IsTank())
@@ -63,10 +64,14 @@ local timerFearless						= mod:NewBuffFadesTimer(30, 118977)
 local timerDreadTrashCD					= mod:NewCDTimer(9, 132007)--Share Trash CD.
 local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669)-- EJ says that debuff duration 25 sec.
 --local timerNakedAndAfraidCD			= mod:NewCDTimer(25, 120669)-- unconfirmed.
---local timerWaterspoutCD				= mod:NewCDTimer(30, 120519)--unconfirmed.
---local timerHuddleInTerrorCD			= mod:NewCDTimer(30, 120629)--unconfirmed.
---local timerImplacableStrikeCD			= mod:NewCDTimer(30, 120672)--unconfirmed.
-local timerSubmergeCD					= mod:NewCDCountTimer(51.5, 120455)--update from video. need combatlog.
+local timerWaterspoutCD					= mod:NewCDTimer(10, 120519)
+local timerHuddleInTerrorCD				= mod:NewCDTimer(10, 120629)
+local timerImplacableStrikeCD			= mod:NewCDTimer(10, 120672)
+local timerSubmergeCD					= mod:NewCDCountTimer(51.5, 120455)
+local timerSpecialAbilityCD				= mod:NewTimer(12, "timerSpecialAbilityCD", 1449)--1st Ability 12sec after Submerge
+local timerSpoHudCD						= mod:NewTimer(10, "timerSpoHudCD", 64044)--Waterspout or Huddle in Terror next
+local timerSpoStrCD						= mod:NewTimer(10, "timerSpoStrCD", 1953)--Waterspout or Implacable Strike next
+local timerHudStrCD						= mod:NewTimer(10, "timerHudStrCD", 64044)-- Huddle in Terror or Implacable Strike next
 
 local berserkTimer						= mod:NewBerserkTimer(900)
 
@@ -80,11 +85,15 @@ local ominousCackleTargets = {}
 local platformGUIDs = {}
 local waterspoutTargets = {}
 local huddleInTerrorTargets = {}
-local onPlatform = false--Used to determine when YOU are sent to a platform, so we know to activate platformMob on next shoot
-local platformMob = nil--Use this so we can filter platform events and show you only ones for YOUR platform while ignoring other platforms events.
+local onPlatform = false--Used to determine when YOU are sent to a platform, so we know to activate MobID on next shoot
 local phase2 = false
 local thrashCount = 0
 local submergeCount = 0
+local dreadSprayCounter = 0
+local MobID = 0
+local huddle = 0
+local spout = 0
+local strike = 0
 
 local function warnOminousCackleTargets()
 	warnOminousCackle:Show(table.concat(ominousCackleTargets, "<, >"))
@@ -111,7 +120,7 @@ end
 local function leavePlatform()
 	if onPlatform then
 		onPlatform = false
-		platformMob = nil
+		MobID = nil
 		--Breath of fear timer recovery
 		local fearlessApplied = UnitBuff("player", fearless)
 		local shaPower = UnitPower("boss1") --Get Boss Power
@@ -137,16 +146,18 @@ function mod:OnCombatStart(delay)
 	else
 		timerOminousCackleCD:Start(25.5-delay)
 	end
---	timerTerrorSpawnCD:Start(25.5-delay)--still not perfect, it's hard to do yells when you're always the tank sent out of range of them. I need someone else to do /yell when they spawn and give me timing
---	self:ScheduleMethod(25.5-delay, "TerrorSpawns")
 	warnBreathOfFearSoon:Schedule(23.3-delay)
 	timerBreathOfFearCD:Start(-delay)
 	self:ScheduleMethod(26.3-delay, "CheckWall")
 	countdownBreathOfFear:Start(33.3-delay)
 	onPlatform = false
-	platformMob = nil
 	phase2 = false
 	thrashCount = 0
+	dreadSprayCounter = 0
+	MobID = nil
+	huddle = 0
+	spout = 0
+	strike = 0
 	submergeCount = 0
 	table.wipe(ominousCackleTargets)
 	table.wipe(platformGUIDs)
@@ -163,15 +174,6 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 end
-
---This may now be depricated, i think blizz synced these up to omninous cackle.
---[[function mod:TerrorSpawns()
-	if self:IsInCombat() then
-		timerTerrorSpawnCD:Start()
-		self:UnscheduleMethod("TerrorSpawns")
-		self:ScheduleMethod(60, "TerrorSpawns")
-	end
-end--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(119414) and self:AntiSpam(5, 1) then--using this with antispam is still better then registering SPELL_CAST_SUCCESS for a single event when we don't have to. Less cpu cause mod won't have to check every SPELL_CAST_SUCCESS event.
@@ -196,14 +198,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnOminousCackleTargets)
 		self:Schedule(2, warnOminousCackleTargets)--this actually staggers a bit, so wait the full 2 seconds to get em all in one table
-		--"<76.6> [CLEU] SPELL_AURA_APPLIED#false#0x0100000000181B61#Lycanx#1298#0#0x0100000000181B61#Lycanx#1298#0#129147#Ominous Cackle#32#DEBUFF", -- [12143]
-		--"<78.3> [CLEU] SPELL_AURA_APPLIED#false#0x0100000000011E0F#Derevka#1300#0#0x0100000000011E0F#Derevka#1300#0#129147#Ominous Cackle#32#DEBUFF", -- [12440]
-	elseif args:IsSpellID(120047) and platformMob and args.sourceName == platformMob then--might change
+	elseif args:IsSpellID(120047) and MobID and MobID == args:GetSrcCreatureID() then--might change
 		warnDreadSpray:Show()
 		specWarnDreadSpray:Show()
 		timerDreadSpray:Start(args.sourceGUID)
 		timerDreadSprayCD:Start(args.sourceGUID)
-	elseif args:IsSpellID(119888) and platformMob and args.sourceName == platformMob then
+	elseif args:IsSpellID(119888) and MobID and MobID == args:GetSrcCreatureID() then
 		timerDeathBlossom:Show()
 	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform 
 		timerFearless:Start()
@@ -232,23 +232,55 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerNakedAndAfraid:Start(args.destName)
 		--timerNakedAndAfraidCD:Start()--unconfirmed yet.
 	elseif args:IsSpellID(120519) then--Waterspout
-		if self:AntiSpam(3, 2) then
-			--timerWaterspoutCD:Start()
-		end
 		waterspoutTargets[#waterspoutTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnWaterspout:Show()
 			yellWaterspout:Yell()
 		end
 		self:Unschedule(warnWaterspoutTargets)
-		self:Schedule(0.3, warnWaterspoutTargets)--guessed.
-	elseif args:IsSpellID(120629) then-- Huddle In Terror
-		if self:AntiSpam(3, 2) then
-			--timerHuddleInTerrorCD:Start()
+		self:Schedule(0.3, warnWaterspoutTargets)
+		spout = 1
+		if huddle == 1 and spout == 1 and strike == 0 then
+			timerImplacableStrikeCD:Start()
 		end
+		if huddle == 1 and spout == 0 and strike == 1 then
+			timerWaterspoutCD:Start()
+		end
+		if huddle == 0 and spout == 1 and strike == 1 then
+			timerHuddleInTerrorCD:Start()
+		end	
+		if huddle == 1 and spout == 0 and strike == 0 then
+			timerSpoStrCD:Start()
+		end
+		if huddle == 0 and spout == 1 and strike == 0 then
+			timerHudStrCD:Start()
+		end
+		if huddle == 0 and spout == 0 and strike == 1 then
+			timerSpoHudCD:Start()
+		end
+	elseif args:IsSpellID(120629) then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
 		self:Unschedule(warnHuddleInTerrorTargets)
-		self:Schedule(0.3, warnHuddleInTerrorTargets)--guessed.
+		self:Schedule(0.3, warnHuddleInTerrorTargets)
+		huddle = 1
+		if huddle == 1 and spout == 1 and strike == 0 then
+			timerImplacableStrikeCD:Start()
+		end
+		if huddle == 1 and spout == 0 and strike == 1 then
+			timerWaterspoutCD:Start()
+		end
+		if huddle == 0 and spout == 1 and strike == 1 then
+			timerHuddleInTerrorCD:Start()
+		end	
+		if huddle == 1 and spout == 0 and strike == 0 then
+			timerSpoStrCD:Start()
+		end
+		if huddle == 0 and spout == 1 and strike == 0 then
+			timerHudStrCD:Start()
+		end
+		if huddle == 0 and spout == 0 and strike == 1 then
+			timerSpoHudCD:Start()
+		end
 	elseif args:IsSpellID(120268) then -- Champion Of The Light
 		warnChampionOfTheLight:Show(args.destName)
 		if args:IsPlayer() then
@@ -260,6 +292,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(120047) then
 		timerDreadSpray:Cancel(args.sourceGUID)
+		dreadSprayCounter = 0
 	elseif args:IsSpellID(118977) and args:IsPlayer() then
 		timerFearless:Cancel()
 	end
@@ -267,37 +300,79 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(119593, 119692, 119693) then--This seems to have multiple spellids, depending on which platform he's going to send you to. TODO, figure out which is which platform and add additional warnings
---		specWarnOminousCackle:Show()
 		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 			timerOminousCackleCD:Start(90.5)--Far less often on LFR
 		else
 			timerOminousCackleCD:Start()
 		end
---		if not onPlatform then--Can't switch to them if you aren't in middle.
---			specWarnTerrorSpawn:Show()
---		end
---		warnConjureTerrorSpawns:Show()
 	elseif args:IsSpellID(119862) and onPlatform and not platformGUIDs[args.sourceGUID] then--Best way to track engaging one of the side adds, they cast this instantly.
 		platformGUIDs[args.sourceGUID] = true
-		platformMob = args.sourceName--Get name of your platform mob so we can determine which mob you have engaged
+		MobID = self:GetCIDFromGUID(args.sourceGUID)
 		timerDreadSprayCD:Start(10.5, args.sourceGUID)--We can accurately start perfectly accurate spray cd bar off their first shoot cast.
-		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:AddBoss(cid, platformMob)
+			DBM.BossHealth:AddBoss(MobID, args.sourceName)
 		end
-	elseif args:IsSpellID(119888) and platformMob and args.sourceName == platformMob then
+	elseif args:IsSpellID(119888) and MobID and MobID == args:GetSrcCreatureID() then
 		specWarnDeathBlossom:Show()
 	elseif args:IsSpellID(120672) then -- Implacable Strike
 		warnImplacableStrike:Show()
 		specWarnImplacableStrike:Show()
-		--timerImplacableStrikeCD:Start()
+		strike = 1
+		if huddle == 1 and spout == 1 and strike == 0 then
+			timerImplacableStrikeCD:Start()
+		end
+		if huddle == 1 and spout == 0 and strike == 1 then
+			timerWaterspoutCD:Start()
+		end
+		if huddle == 0 and spout == 1 and strike == 1 then
+			timerHuddleInTerrorCD:Start()
+		end	
+		if huddle == 1 and spout == 0 and strike == 0 then
+			timerSpoStrCD:Start()
+		end
+		if huddle == 0 and spout == 1 and strike == 0 then
+			timerHudStrCD:Start()
+		end
+		if huddle == 0 and spout == 0 and strike == 1 then
+			timerSpoHudCD:Start()
+		end
 	elseif args:IsSpellID(120455) then
 		submergeCount = submergeCount + 1
 		warnSubmerge:Show(submergeCount)
 		specWarnSubmerge:Show()
 		timerSubmergeCD:Start(nil, submergeCount+1)
+		huddle = 0
+		spout = 0
+		strike = 0
+		timerSpecialAbilityCD:Start()
 	--elseif args:IsSpellID(120458) then
 		--warnEmerge:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)--Handling Dread Sprays
+	if args:IsSpellID(120047) and onPlatform then
+		dreadSprayCounter = 0
+	elseif args:IsSpellID(119983) and onPlatform then
+		dreadSprayCounter = dreadSprayCounter+1
+		if MobID == 61046 then
+			if dreadSprayCounter == 6 then
+				MoveWarningForward:Show()
+			end
+		end	
+		if MobID == 61042 then
+			if dreadSprayCounter == 6 then
+				MoveWarningForward:Show()
+			end
+		end	
+		if MobID == 61038 then
+			if dreadSprayCounter == 3 then
+				MoveWarningRight:Show()
+			end
+		end
+		if dreadSprayCounter == 16 then
+			MoveWarningBack:Show()
+		end
 	end
 end
 
