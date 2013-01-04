@@ -74,7 +74,7 @@ L:SetOptionLocalization({
 
 L:SetOptionLocalization({
 	RangeFrame					= "Show range frame (2) for $spell:119519",
-	MoveWarningForward			= "Show special warning to move trough when $spell:120047 is being fired",
+	MoveWarningForward			= "Show special warning to move through when $spell:120047 is being fired",
 	MoveWarningRight			= "Show special warning to move right when $spell:120047 is being fired",
 	MoveWarningBack				= "Show special warning to move back to old position when $spell:120047 has ended",
 	timerSpecialAbilityCD		= "Show timer for when next special ability will be cast",
