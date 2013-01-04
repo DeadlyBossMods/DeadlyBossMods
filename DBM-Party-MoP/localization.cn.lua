@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 11/18/2012
+-- Last update: 1/4/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -73,6 +73,14 @@ L:SetOptionLocalization({
 -- Gu Cloudstrike --
 -----------------------
 L= DBM:GetModLocalization(673)
+
+L:SetWarningLocalization({
+	warnStaticField	= "%s"
+})
+
+L:SetOptionLocalization({
+	warnStaticField	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(106923)
+})
 
 -----------------------
 -- Snowdrift --

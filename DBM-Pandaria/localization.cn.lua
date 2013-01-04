@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 9/27/2012
+-- Last update: 1/4/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -18,3 +18,17 @@ L:SetOptionLocalization({
 -- Salyis --
 -----------------------
 L= DBM:GetModLocalization(725)
+
+--------------
+-- Oondasta --
+--------------
+L= DBM:GetModLocalization(826)
+
+L:SetOptionLocalization({
+	RangeFrame			= "距离监视：$spell:137511"
+})
+
+---------------------------
+-- Nalak, The Storm Lord --
+---------------------------
+L= DBM:GetModLocalization(814)
