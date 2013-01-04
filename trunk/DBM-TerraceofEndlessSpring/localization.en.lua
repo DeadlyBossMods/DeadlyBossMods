@@ -5,7 +5,14 @@ local L
 ------------
 L= DBM:GetModLocalization(683)
 
+L:SetWarningLocalization({
+	warnGroupOrder		= "Rotate In: Group %s",
+	specWarnYourGroup	= "Your Group - Rotate In!"
+})
+
 L:SetOptionLocalization({
+	warnGroupOrder		= "Announce group rotation for $spell:118191\n(Currently only supports 25 man 5,2,2,2, etc... strat)",
+	specWarnYourGroup	= "Show special warning when it's your group's turn for $spell:118191\n(25 man only)",
 	RangeFrame			= "Show range frame (8) for $spell:111850\n(Shows everyone if you have debuff, only players with debuff if not)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
