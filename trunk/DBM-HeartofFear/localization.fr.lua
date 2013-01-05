@@ -1,4 +1,4 @@
--- Last update: 01/04/2013 (04/01/2013 in french format)
+-- Last update: 01/05/2013 (05/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -103,7 +103,7 @@ L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Voir l'aperçu des compétences de l'Assemblage muté",
 	warnAmberExplosion			= "Alerte (avec la source)\nquand $spell:122398 est incanté",
 	warnInterruptsAvailable		= "Annoncer qui a Frappe d'ambre disponible pour interrompre \n $spell:122402",
-	warnWillPower				= "Annonce la Volonté actuelle à 75, 50, 25, 10, et 5.",
+	warnWillPower				= "Annonce la Volonté actuelle à 80, 50, 30, 10, et 4.",
 	specwarnWillPower			= "Alerte spéciale quand la Volonté est faible dans l'Assemblage muté",
 	specwarnAmberExplosionYou	= "Alerte spéciale pour interrompre\nvotre propre $spell:122398",
 	specwarnAmberExplosionAM	= "Alerte spéciale pour interrompre\n$spell:122402 de la Monstruosité d’ambre",
