@@ -279,7 +279,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnReshapeLife:Show(args.spellName, args.destName, constructCount)
 		if args:IsPlayer() then
 			self:RegisterShortTermEvents(
-				"UNIT_POWER_FREQUENT"
+				"UNIT_POWER"
 			)
 			playerIsConstruct = true
 			warnedWill = true -- fix bad low will special warning on entering Construct. After entering vehicle, this will be return to false. (on alt.power changes)
@@ -420,7 +420,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
-function mod:UNIT_POWER_FREQUENT(uId)
+function mod:UNIT_POWER(uId)
 	if uId ~= "player" then return end
 	local playerWill = UnitPower(uId, ALTERNATE_POWER_INDEX)
 	if playerWill > willNumber then willNumber = playerWill end--Will power has gone up since last warning so reset that warning.
@@ -430,8 +430,8 @@ function mod:UNIT_POWER_FREQUENT(uId)
 	elseif playerWill == 50 and willNumber > 50 then--Works
 		willNumber = 50
 		warnWillPower:Show(willNumber)
-	elseif playerWill == 25 and willNumber > 25 then--Doesn't work? A mystery
-		willNumber = 25
+	elseif playerWill == 30 and willNumber > 30 then
+		willNumber = 30
 		warnWillPower:Show(willNumber)
 	elseif playerWill >= 22 and warnedWill then
 		warnedWill = false
@@ -441,8 +441,8 @@ function mod:UNIT_POWER_FREQUENT(uId)
 	elseif playerWill == 10 and willNumber > 10 then--Works
 		willNumber = 10
 		warnWillPower:Show(willNumber)
-	elseif playerWill == 5 and willNumber > 5 then--Doesn't work? A mystery
-		willNumber = 5
+	elseif playerWill == 4 and willNumber > 4 then
+		willNumber = 4
 		warnWillPower:Show(willNumber)
 	end
 end
