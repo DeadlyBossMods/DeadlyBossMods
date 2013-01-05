@@ -112,7 +112,7 @@ end
 
 function mod:CheckWall()
 	local fearlessTime = timerFearless:GetTime()
-	if not UnitBuff("player", wallLight) and (fearlessTime == 0 or fearlessTime > 21.5) then
+	if not UnitBuff("player", wallLight) and (fearlessTime == 0 or fearlessTime > 21.5) and not UnitIsDeadOrGhost("player") then
 		specWarnBreathOfFearSoon:Show()
 	end
 end
@@ -381,12 +381,11 @@ function mod:UNIT_DIED(args)
 		platformGUIDs[args.destGUID] = nil
 		timerDreadSpray:Cancel(args.destGUID)
 		timerDreadSprayCD:Cancel(args.destGUID)
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(MobID)
+		end
 		-- If you die on platform, and revived after platform mob die, Fearless will not be applied on you. This stuff will be slove this.
 		self:Schedule(10, leavePlatform)
-		local cid = self:GetCIDFromGUID(args.destGUID)
-		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:RemoveBoss(cid)
-		end
 	end
 end
 
