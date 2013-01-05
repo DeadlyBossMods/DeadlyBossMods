@@ -99,7 +99,7 @@ L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Display ability purpose rundown of Mutated Construct abilities",
 	warnAmberExplosion			= "Show warning (with source) when $spell:122398 is cast",
 	warnInterruptsAvailable		= "Announce who has Amber Strike interrupts available for\n $spell:122402",
-	warnWillPower				= "Announce current will power at 75, 50, 25, 10, and 5.",
+	warnWillPower				= "Announce current will power at 80, 50, 30, 10, and 4.",
 	specwarnWillPower			= "Show special warning when will power is low in construct",
 	specwarnAmberExplosionYou	= "Show special warning to interrupt your own $spell:122398",
 	specwarnAmberExplosionAM	= "Show special warning to interrupt Amber Montrosity's\n $spell:122402",
