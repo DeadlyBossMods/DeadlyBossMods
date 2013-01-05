@@ -45,17 +45,20 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(713)
 
 L:SetWarningLocalization({
+	warnCrush		= "%s",
 	specwarnUnder	= "Raus aus dem violetten Kreis!"
 })
 
 L:SetOptionLocalization({
+	warnCrush		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(122774),
 	specwarnUnder	= "Zeige Spezialwarnung, wenn du dich unter dem Boss befindest",
 	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (nur heroischer Schwierigkeitsgrad)",
 	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
 })
 
 L:SetMiscLocalization({
-	UnderHim	= "Unter ihm"
+	UnderHim	= "Unter ihm",
+	Phase2		= "Plattenrüstung reißt und platzt auf" --needs to be verified (video-captured translation, hero only)
 })
 
 ----------------------
@@ -68,7 +71,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!" --translate (trigger)
+	Reinforcements		= "Windfürst Mel'jarak ruft Verstärkung herbei!" --needs to be verified (video-captured translation, hero only)
 })
 
 ------------
@@ -82,7 +85,7 @@ L:SetWarningLocalization({
 	warnAmberExplosion			= ">%s< wirkt %s",
 	warnInterruptsAvailable		= "Unterbrechungen verfügbar für %s: >%s<",
 	warnWillPower				= "Aktueller Willen: %s",
-	specwarnWillPower			= "Geringer Willen!",
+	specwarnWillPower			= "Geringer Willen! - 5 Sekunden verbleibend",
 	specwarnAmberExplosionYou	= "Unterbreche DEINE %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Unterbreche %s!",--Amber Montrosity
 	specwarnAmberExplosionOther	= "%s: Unterbreche %s!"--Mutated Construct
@@ -96,13 +99,13 @@ L:SetOptionLocalization({
 	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "Zeige Überblick über den Zweck der Fähigkeiten Mutierter Konstrukte",
 	warnAmberExplosion			= "Zeige Warnung (mit Quelle), wenn $spell:122398 gewirkt wird",
-	warnInterruptsAvailable		= "Verkünde bei wem Amberstoß-Unterbrechungen für $spell:122402\nverfügbar sind",
+	warnInterruptsAvailable		= "Verkünde bei wem Bernstoß-Unterbrechungen für $spell:122402\nverfügbar sind",
 	warnWillPower				= "Verkünde aktuellen Willen bei 75, 50, 25, 10 und 5",
 	specwarnWillPower			= "Zeige Spezialwarnung bei geringem Willen als Mutiertes Konstrukt",
 	specwarnAmberExplosionYou	= "Zeige Spezialwarnung zum Unterbrechen deiner eigenen $spell:122398",
-	specwarnAmberExplosionAM	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nder Ambermonstrosität",
-	specwarnAmberExplosionOther	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nunkontrollierter Mutierter Konstrukte",
-	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Ambermonstrosität",
+	specwarnAmberExplosionAM	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nder Bernmonstrosität",
+	specwarnAmberExplosionOther	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122398\nunkontrollierter Mutierter Konstrukte",
+	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Bernmonstrosität",
 	InfoFrame					= "Zeige Infofenster für Willen der Spieler",
 	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten als Konstrukt\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
 })
@@ -117,7 +120,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetWarningLocalization({
-	warnAmberTrap		= "Amberfallenbau: %d/5",
+	warnAmberTrap		= "Bernfallenbau: %d/5",
 })
 
 L:SetOptionLocalization({

@@ -43,7 +43,7 @@ L:SetMiscLocalization({
 	Fire		= "Oh, Erhabener! Durch mich sollt Ihr das Fleisch von den Knochen schmelzen!",
 	Arcane		= "Oh, Weiser der Zeitalter! Vertraut mir Euer arkanes Wissen an!",
 	Nature		= "Oh, großer Geist! Gewährt mir die Macht der Erde!",
-	Shadow		= "Great soul of champions past! Bear to me your shield!" --translate (trigger, hero only)
+	Shadow		= "Große Seele vergangener Helden! Gewährt mir Euren Schild!" --needs to be verified (wowhead-captured translation, hero only)
 })
 
 
@@ -71,12 +71,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerUSRevive		= "Unsterblicher Schatten Neuformung"
+	timerUSRevive		= "Unsterblicher Schatten Neuformung",
+	timerRainOfArrowsCD	= "%s"
 })
 
 L:SetOptionLocalization({
 	DarknessSoon		= "Zeige Vorwarnungscountdown für $spell:117697 (5s zuvor)",
 	timerUSRevive		= "Zeige Zeit bis sich $spell:117506 neu formen",
+	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "Zeige Abstandsfenster (8m)"
 })
 
@@ -97,7 +99,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "Zeige Spezialwarnung bevor der Boden (Energievortex) verschwindet",
 	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet",
-	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
+	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132222)
 })
 
 
