@@ -4,6 +4,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0천둥의 왕좌|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0雷电王座|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trône du tonnerre|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Thron des Donners|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -15,12 +16,14 @@
 ## X-DBM-Mod-Name-koKR: 천둥의 왕좌
 ## X-DBM-Mod-Name-zhCN: 雷电王座
 ## X-DBM-Mod-Name-frFR: Trône du tonnerre
+## X-DBM-Mod-Name-deDE: Thron des Donners
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZoneID: 930
 localization.en.lua
 localization.kr.lua
 localization.cn.lua
 localization.fr.lua
+localization.de.lua
 MapSizes.lua
 Jinrokh.lua
 Horridon.lua
