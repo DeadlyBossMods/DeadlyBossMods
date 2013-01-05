@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 local warnScreech				= mod:NewSpellAnnounce(123735, 3, nil, false)--Not useful.
 local warnCryOfTerror			= mod:NewTargetAnnounce(123788, 3, nil, mod:IsRanged())
 local warnEyes					= mod:NewStackAnnounce(123707, 2, nil, mod:IsTank())
+local warnDissonanceField		= mod:NewCountAnnounce(123255, 3)
 local warnSonicDischarge		= mod:NewSoonAnnounce(123504, 4)--Iffy reliability but better then nothing i suppose.
 local warnRetreat				= mod:NewSpellAnnounce(125098, 4)
 local warnAmberTrap				= mod:NewAnnounce("warnAmberTrap", 2, 125826)
@@ -42,7 +43,7 @@ local specwarnCryOfTerror		= mod:NewSpecialWarningYou(123788)
 local specWarnRetreat			= mod:NewSpecialWarningSpell(125098)
 local specwarnAmberTrap			= mod:NewSpecialWarningSpell(125826, false)
 local specwarnStickyResin		= mod:NewSpecialWarningYou(124097)
-local yellStickyResin			= mod:NewYell(124097)
+local yellStickyResin			= mod:NewYell(124097, nil, false)
 local specwarnFixate			= mod:NewSpecialWarningYou(125390, false)--Could be spammy, make optional, will use info frame to display this more constructively
 local specWarnDispatch			= mod:NewSpecialWarningInterrupt(124077, mod:IsMelee())
 local specWarnAdvance			= mod:NewSpecialWarningSpell(125304)
@@ -57,6 +58,7 @@ local timerCryOfTerror			= mod:NewTargetTimer(20, 123788, nil, mod:IsHealer())
 local timerCryOfTerrorCD		= mod:NewCDTimer(25, 123788)
 local timerEyes					= mod:NewTargetTimer(30, 123707, nil, mod:IsTank())
 local timerEyesCD				= mod:NewNextTimer(11, 123707, nil, mod:IsTank())
+local timerDissonanceFieldCD	= mod:NewNextCountTimer(66, 123255)
 local timerPhase1				= mod:NewNextTimer(156.4, 125304)--156.4 til ENGAGE fires and boss is out, 157.4 until "advance" fires though. But 156.4 is more accurate timer
 local timerPhase2				= mod:NewNextTimer(151, 125098)--152 until trigger, but probalby 150 or 151 til adds are targetable.
 local timerCalamityCD			= mod:NewCDTimer(6, 124845, nil, mod:IsHealer())
@@ -77,6 +79,7 @@ local resinTargets = {}
 local resinIcon = 2
 local shaName = EJ_GetEncounterInfo(709)
 local phase3Started = false
+local fieldCount = 0
 
 local function warnVisionsTargets()
 	warnVisions:Show(table.concat(visonsTargets, "<, >"))
@@ -87,8 +90,10 @@ end
 function mod:OnCombatStart(delay)
 	phase3Started = false
 	resinIcon = 2
+	fieldCount = 0
 	timerScreechCD:Start(-delay)
 	timerEyesCD:Start(-delay)
+	timerDissonanceFieldCD:Start(22-delay, 1)
 	timerPhase2:Start(-delay)
 	berserkTimer:Start(-delay)
 	table.wipe(sentLowHP)
@@ -218,6 +223,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerVisionsCD:Start(4)
 		timerCalamityCD:Start(9)
 		timerConsumingTerrorCD:Start(11)
+	elseif args:IsSpellID(123255) and self:AntiSpam(2, 3) then
+		fieldCount = fieldCount + 1
+		warnDissonanceField:Show(fieldCount)
+		if fieldCount < 3 then
+			timerDissonanceFieldCD:Start(nil, fieldCount+1)
+		end
 	end
 end
 
@@ -269,9 +280,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.RangeCheck:Hide()
 		end
 	elseif spellId == 125304 and self:AntiSpam(2, 1) then
+		fieldCount = 0
 		timerPhase1:Cancel()--If you kill everything it should end early.
 		warnAdvance:Show()
 		specWarnAdvance:Show()
+		timerDissonanceFieldCD:Start(22, 1)--Assumed same as pull, may very well be wrong Needs to be verified with transcriptor tomorrow
 		timerPhase2:Start()--Assumed same as pull
 		if self.Options.InfoFrame then--Will do this more accurately when i have an accurate count of mobs for all difficulties and then i can hide it when mobcount reaches 0
 			DBM.InfoFrame:Hide()
