@@ -47,7 +47,6 @@ local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5
 local berserkTimer					= mod:NewBerserkTimer(570)
 
 mod:AddBoolOption("SetIconOnDestabilized", true)
-mod:AddBoolOption("HealthFrame", false)
 
 local phase2Started = false
 local protectorCount = 0
