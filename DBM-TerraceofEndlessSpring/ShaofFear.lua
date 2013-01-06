@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60999)--61042 Cheng Kang, 61046 Jinlun Kun, 61038 Yang Guoshi, 61034 Terror Spawn
 mod:SetModelID(41772)
+mod:SetUsedIcons(8, 7, 6, 5, 4)
 
 mod:RegisterCombat("combat")
 
@@ -78,6 +79,7 @@ local berserkTimer						= mod:NewBerserkTimer(900)
 local countdownBreathOfFear				= mod:NewCountdown(33.3, 119414, nil, nil, 10)
 
 mod:AddBoolOption("RangeFrame")--For Eerie Skull (2 yards)
+mod:AddBoolOption("SetIconOnHuddle")
 
 local wallLight = GetSpellInfo(117964)
 local fearless = GetSpellInfo(118977)
@@ -87,9 +89,10 @@ local waterspoutTargets = {}
 local huddleInTerrorTargets = {}
 local onPlatform = false--Used to determine when YOU are sent to a platform, so we know to activate MobID on next shoot
 local phase2 = false
+local dreadSprayCounter = 0
 local thrashCount = 0
 local submergeCount = 0
-local dreadSprayCounter = 0
+local huddleIcon = 8
 local MobID = 0
 local huddle = 0
 local spout = 0
@@ -108,6 +111,7 @@ end
 local function warnHuddleInTerrorTargets()
 	warnHuddleInTerror:Show(table.concat(huddleInTerrorTargets, "<, >"))
 	table.wipe(huddleInTerrorTargets)
+	huddleIcon = 8
 end
 
 function mod:CheckWall()
@@ -152,13 +156,14 @@ function mod:OnCombatStart(delay)
 	countdownBreathOfFear:Start(33.3-delay)
 	onPlatform = false
 	phase2 = false
-	thrashCount = 0
 	dreadSprayCounter = 0
+	thrashCount = 0
+	submergeCount = 0
+	huddleIcon = 8
 	MobID = nil
 	huddle = 0
 	spout = 0
 	strike = 0
-	submergeCount = 0
 	table.wipe(ominousCackleTargets)
 	table.wipe(platformGUIDs)
 	table.wipe(waterspoutTargets)
@@ -260,6 +265,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(120629) then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
+		if self.Options.SetIconOnHuddle then
+			self:SetIcon(args.destName, huddleIcon)
+			huddleIcon = huddleIcon - 1
+		end
 		self:Unschedule(warnHuddleInTerrorTargets)
 		self:Schedule(0.5, warnHuddleInTerrorTargets)
 		huddle = 1
@@ -295,6 +304,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		dreadSprayCounter = 0
 	elseif args:IsSpellID(118977) and args:IsPlayer() then
 		timerFearless:Cancel()
+	elseif args:IsSpellID(120629) and self.Options.SetIconOnHuddle then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
