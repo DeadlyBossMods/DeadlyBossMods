@@ -77,6 +77,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreathOfFearSoon	= "Show pre-special warning for $spell:119414 if you not have a $spell:117964 buff",
+	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
 })
 
 L:SetOptionLocalization({
