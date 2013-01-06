@@ -2821,12 +2821,16 @@ DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 do
 	local requestedFrom = nil
 	local requestTime = 0
+	local clientUsed = {}
 
 	function DBM:RequestTimers()
 		local bestClient
 		for i, v in pairs(raid) do
-			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > ((bestClient and bestClient.revision) or 0) then
+			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all. 
+			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
+			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > ((bestClient and bestClient.revision) or 0) and not select(2, UnitName(v.id)) and not clientUsed[v.name] then
 				bestClient = v
+				clientUsed[v.name] = true
 			end
 		end
 		if not bestClient then return end
@@ -2841,14 +2845,54 @@ do
 			if not mod.combatInfo then return end
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(mod.combatInfo.name, strFromTime(time + lag)))
 			table.insert(inCombat, mod)
-			mod.inCombat = true
-			mod.blockSyncs = nil
-			mod.combatInfo.pull = GetTime() - time + lag
+			lowestBossHealth = 1
+			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 				mod.inCombatOnlyEventsRegistered = 1
 				mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
 			end
-			self:Schedule(3, checkWipe)
+			if C_Scenario.IsInScenario() then
+				mod.inScenario = true
+			end
+			mod.inCombat = true
+			mod.blockSyncs = nil
+			mod.combatInfo.pull = GetTime() - time + lag
+			if mod.minCombatTime then
+				self:Schedule(math.max((mod.minCombatTime - time - lag), 3), checkWipe)
+			else
+				self:Schedule(3, checkWipe)
+			end
+			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not C_Scenario.IsInScenario() and mod.Options.Enabled then
+				DBM.BossHealth:Show(mod.localization.general.name)
+				if mod.bossHealthInfo then
+					for i = 1, #mod.bossHealthInfo, 2 do
+						DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
+					end
+				else
+					DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
+				end
+			end
+			if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
+				local bestTime
+				local elapsed = time + lag
+				if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
+					bestTime = mod.stats.lfr25BestTime
+				elseif mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime then
+					bestTime = mod.stats.normalBestTime
+				elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
+					bestTime = mod.stats.heroicBestTime
+				elseif mod:IsDifficulty("challenge5") and mod.stats.challengeBestTime then
+					bestTime = mod.stats.challengeBestTime
+				elseif mod:IsDifficulty("normal25") and mod.stats.normal25BestTime then
+					bestTime = mod.stats.normal25BestTime
+				elseif mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime then
+					bestTime = mod.stats.heroic25BestTime
+				end
+				if bestTime and bestTime > 0 and elapsed < bestTime then	-- only start if you already have a bestTime :)
+					local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+					speedTimer:Update(time + lag, bestTime)
+				end
+			end
 		end
 	end
 
