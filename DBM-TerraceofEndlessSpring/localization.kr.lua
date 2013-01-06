@@ -75,6 +75,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreathOfFearSoon	= "$spell:119414 시전 전에 $spell:117964 효과가 없을 경우 특수 경고 보기",
+	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
 })
 
 L:SetOptionLocalization({
