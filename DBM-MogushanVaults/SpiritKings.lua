@@ -410,9 +410,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		timerPillageCD:Start(25)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerSleightOfHandCD:Start(40.7)
-			timerRainOfArrowsCD:Start(40)
+			timerRainOfArrowsCD:Start(40, rainTimerText)
 		else
-			timerRainOfArrowsCD:Start(15)
+			timerRainOfArrowsCD:Start(15, rainTimerText)
 		end
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
