@@ -98,7 +98,7 @@ L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "돌연변이 피조물 탑승시 피조물 주문에 대한 설명 보기",
 	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
 	warnInterruptsAvailable		= "누가 $spell:122402 주문을 차단할 수 있는지에 대한 알림 보기",
-	warnWillPower				= "의지력이 75, 50, 25, 10, 5 일때 알림 보기",
+	warnWillPower				= "의지력이 80, 50, 30, 10, 4 일때 알림 보기",
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
 	specwarnAmberExplosionYou	= "당신의 피조물이 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
