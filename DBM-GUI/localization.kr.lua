@@ -68,7 +68,7 @@ L.ModelSoundLong			= "긴 음성"
 
 L.Button_RangeFrame			= "거리 창 보기(문자형)"
 L.Button_RangeRadar			= "거리 창 보기(아이콘형)"
-L.Button_InfoFrame			= "설정용 정보 창 보기"
+L.Button_InfoFrame			= "정보 창 이동"
 L.Button_TestBars			= "시험 경보 시작"
 
 L.PizzaTimer_Headline 		= '사용자 지정 바 만들기'
