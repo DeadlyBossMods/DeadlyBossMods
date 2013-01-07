@@ -58,7 +58,7 @@ local timerCryOfTerror			= mod:NewTargetTimer(20, 123788, nil, mod:IsHealer())
 local timerCryOfTerrorCD		= mod:NewCDTimer(25, 123788, nil, mod:IsRanged())
 local timerEyes					= mod:NewTargetTimer(30, 123707, nil, mod:IsTank())
 local timerEyesCD				= mod:NewNextTimer(11, 123707, nil, mod:IsTank())
-local timerDissonanceFieldCD	= mod:NewNextCountTimer(66, 123255)
+local timerDissonanceFieldCD	= mod:NewNextCountTimer(65, 123255)
 local timerPhase1				= mod:NewNextTimer(156.4, 125304)--156.4 til ENGAGE fires and boss is out, 157.4 until "advance" fires though. But 156.4 is more accurate timer
 local timerPhase2				= mod:NewNextTimer(151, 125098)--152 until trigger, but probalby 150 or 151 til adds are targetable.
 local timerCalamityCD			= mod:NewCDTimer(6, 124845, nil, mod:IsHealer())
@@ -93,7 +93,7 @@ function mod:OnCombatStart(delay)
 	fieldCount = 0
 	timerScreechCD:Start(-delay)
 	timerEyesCD:Start(-delay)
-	timerDissonanceFieldCD:Start(22-delay, 1)
+	timerDissonanceFieldCD:Start(20.5-delay, 1)
 	timerPhase2:Start(-delay)
 	berserkTimer:Start(-delay)
 	table.wipe(sentLowHP)
@@ -285,7 +285,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerPhase1:Cancel()--If you kill everything it should end early.
 		warnAdvance:Show()
 		specWarnAdvance:Show()
-		timerDissonanceFieldCD:Start(22, 1)--Assumed same as pull, may very well be wrong Needs to be verified with transcriptor tomorrow
+		timerDissonanceFieldCD:Start(20, 1)
 		timerPhase2:Start()--Assumed same as pull
 		if self.Options.InfoFrame then--Will do this more accurately when i have an accurate count of mobs for all difficulties and then i can hide it when mobcount reaches 0
 			DBM.InfoFrame:Hide()
