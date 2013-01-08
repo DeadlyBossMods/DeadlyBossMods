@@ -42,6 +42,7 @@ local warnBurningAmber			= mod:NewCountAnnounce("ej6567", 2, nil, false)--Keep t
 local warnAmberCarapace			= mod:NewTargetAnnounce(122540, 4)--Monstrosity Shielding Boss (phase 2 start)
 local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3, nil, nil, mod:IsHealer() or mod:IsMelee())
 local warnAmberExplosionSoon	= mod:NewSoonAnnounce(122402, 3)
+local warnAmberExplosionAM		= mod:NewAnnounce("warnAmberExplosionAM", 4, 122398)
 local warnFling					= mod:NewSpellAnnounce(122413, 3, nil, mod:IsTank())--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
 local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
@@ -100,6 +101,7 @@ local warnedWill = false
 local willNumber = 100--Last warned player will power number (not same as actual player will power)
 local lastStrike = 0
 local scansDone = 0
+local amWarnCount = 0
 local Totems = nil
 local Guardians = nil
 local Pets = nil
@@ -145,6 +147,14 @@ function mod:ScalpelTarget()
 		if scansDone < 6 then
 			self:ScheduleMethod(0.2, "ScalpelTarget")
 		end
+	end
+end
+
+function mod:AmberExplosionAMWarning()
+	amWarnCount = amWarnCount + 1
+	if amWarnCount < 6 then
+		warnAmberExplosionAM:Show()
+		self:ScheduleMethod(0.4, "AmberExplosionAMWarning")
 	end
 end
 
@@ -353,7 +363,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122398) then
 		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		if args:GetSrcCreatureID() == 62701 then--Cast by a wild construct not controlled by player
-			if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
+			if playerIsConstruct and GetTime() - lastStrike >= 3.5 then--Player is construct and Amber Strike will be available before cast ends.
 				specwarnAmberExplosionOther:Show(args.spellName, args.sourceName)
 				if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
 					self:SendSync("InterruptAvailable", UnitGUID("player")..":122398")
@@ -368,13 +378,16 @@ function mod:SPELL_CAST_START(args)
 			countdownAmberExplosion:Start(13)
 		end
 	elseif args:IsSpellID(122402) then--Amber Monstrosity
-		if playerIsConstruct and GetTime() - lastStrike >= 4 then--Player is construct and Amber Strike will be available before cast ends.
+		if playerIsConstruct and GetTime() - lastStrike >= 3.5 then--Player is construct and Amber Strike will be available before cast ends.
+			amWarnCount = 0
+			self:AmberExplosionAMWarning()
 			specwarnAmberExplosionAM:Show(args.spellName, args.sourceName)--On heroic, not interrupting amber montrosity is an auto wipe. this is single handedly the most important special warning of all!!!!!!
 			if self:LatencyCheck() then--if you're too laggy we don't want you telling us you can interrupt it 2-3 seconds from now. we only care if you can interrupt it NOW
 				self:SendSync("InterruptAvailable", UnitGUID("player")..":122402")
 			end
+		else
+			warnAmberExplosion:Show(args.sourceName, args.spellName)
 		end
-		warnAmberExplosion:Show(args.sourceName, args.spellName)
 		warnAmberExplosionSoon:Cancel()
 		warnAmberExplosionSoon:Schedule(41)
 		timerAmberExplosion:Start()
@@ -450,6 +463,8 @@ end
 function mod:UNIT_SPELLCAST_STOP(uId, _, _, _, spellId)
 	if spellId == 122402 then--SPELL_INTERRUPT not always fires, so use UNIT_SPELLCAST_STOP
 		timerAmberExplosion:Cancel()
+		self:UnscheduleMethod("AmberExplosionAMWarning")
+		amWarnCount = 6
 	end
 end
 
