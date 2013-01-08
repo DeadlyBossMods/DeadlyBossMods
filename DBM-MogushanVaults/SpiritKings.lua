@@ -138,11 +138,11 @@ function mod:OnCombatStart(delay)
 		if self:IsDifficulty("heroic10") then
 			timerImperviousShieldCD:Start(60.7)
 			countdownImperviousShield:Start(60.7)
-			arnImperviousShieldSoon:Schedule(55.7)
+			warnImperviousShieldSoon:Schedule(55.7)
 		else
 			timerImperviousShieldCD:Start(40.7)
 			countdownImperviousShield:Start(40.7)
-			arnImperviousShieldSoon:Schedule(35.7)
+			warnImperviousShieldSoon:Schedule(35.7)
 		end
 	else
 		rainTimerText = DBM_CORE_AUTO_TIMER_TEXTS.cd:format(GetSpellInfo(118122))
