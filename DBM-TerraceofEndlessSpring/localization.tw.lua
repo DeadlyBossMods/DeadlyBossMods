@@ -6,7 +6,14 @@ local L
 ------------
 L= DBM:GetModLocalization(683)
 
+L:SetWarningLocalization({
+	warnGroupOrder		= "輪到小隊:%s",
+	specWarnYourGroup	= "輪到你的小隊!"
+})
+
 L:SetOptionLocalization({
+	warnGroupOrder		= "提示$spell:118191的隊伍輪班\n(目前只支援25人5,2,2,2,戰術)",
+	specWarnYourGroup	= "為$spell:118191顯示特別警告當輪到你的隊伍時\n(只適用於25人)",
 	RangeFrame			= "為$spell:111850顯示距離框(8碼)\n(當你有debuff時只顯示其他沒有debuff的玩家)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
@@ -18,7 +25,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(742)
 
 L:SetMiscLocalization{
-	Victory	= "謝謝你，陌生人。我重獲自由了。"
+	Victory					= "謝謝你，陌生人。我重獲自由了。"
 }
 
 
@@ -71,6 +78,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
+	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
 })
 
 L:SetOptionLocalization({
@@ -83,3 +91,4 @@ L:SetOptionLocalization({
 	timerSpoStrCD				= "為下一次$spell:120519或$spell:120672施放顯示計時器",
 	timerHudStrCD				= "為下一次$spell:120629或$spell:120672施放顯示計時器"
 })
+

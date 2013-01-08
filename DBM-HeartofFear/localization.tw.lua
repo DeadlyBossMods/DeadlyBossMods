@@ -98,7 +98,7 @@ L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "顯示突變魁儡的能力說明效果",
 	warnAmberExplosion			= "為$spell:122398施放顯示警告(以及來源)",
 	warnInterruptsAvailable		= "提示誰有琥珀打擊可使用以中斷$spell:122402",
-	warnWillPower				= "提示目前意志力在75,50,25,10,和5.",
+	warnWillPower				= "提示目前意志力在80,50,30,10,和4.",
 	specwarnWillPower			= "為在傀儡裡時意志力低落顯示特別警告",
 	specwarnAmberExplosionYou	= "為中斷你自己的$spell:122398顯示特別警告",
 	specwarnAmberExplosionAM	= "為中斷琥珀巨怪的$spell:122402顯示特別警告",
