@@ -86,6 +86,7 @@ L:SetWarningLocalization({
 	warnReshapeLife				= "%s sur >%s< (%d)",--Localized because i like class colors on warning and shoving a number into targetname broke it using the generic.
 	warnReshapeLifeTutor		= "1: Interrompt/debuff la cible, 2: Vous faites une pause, 3: Regen Vie/Volonté, 4: Sortir du véhicule",
 	warnAmberExplosion			= ">%s< lance %s",-- à vérifier.
+	warnAmberExplosionAM		= "Monstruosité d’ambre à lancé Explosion d'ambre - Interrompez Maintenant !",--personal warning.
 	warnInterruptsAvailable		= "Interruption disponible pour %s: >%s<",
 	warnWillPower				= "Volonté actuelle: %s",
 	specwarnWillPower			= "Volonté faible ! - 5s restante",
@@ -101,14 +102,15 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "Voir l'aperçu des compétences de l'Assemblage muté",
-	warnAmberExplosion			= "Alerte (avec la source)\nquand $spell:122398 est incanté",
+	warnAmberExplosion			= "Alerte (avec la source) quand $spell:122398 est incanté",
+	warnAmberExplosionAM		= "Alerte personnelle quand la Monstruosité d’ambre à lancé\n $spell:122398 (pour interrompre)",
 	warnInterruptsAvailable		= "Annoncer qui a Frappe d'ambre disponible pour interrompre \n $spell:122402",
 	warnWillPower				= "Annonce la Volonté actuelle à 80, 50, 30, 10, et 4.",
 	specwarnWillPower			= "Alerte spéciale quand la Volonté est faible dans l'Assemblage muté",
-	specwarnAmberExplosionYou	= "Alerte spéciale pour interrompre\nvotre propre $spell:122398",
-	specwarnAmberExplosionAM	= "Alerte spéciale pour interrompre\n$spell:122402 de la Monstruosité d’ambre",
-	specwarnAmberExplosionOther	= "Alerte spéciale pour interrompre le\n$spell:122398 de l'Assemblage muté",-- à vérifier
-	timerAmberExplosionAMCD		= "Afficher le temps avant la prochaine \n$spell:122402 de la Monstruosité d'ambre",
+	specwarnAmberExplosionYou	= "Alerte spéciale pour interrompre votre propre $spell:122398",
+	specwarnAmberExplosionAM	= "Alerte spéciale pour interrompre $spell:122402\nde la Monstruosité d’ambre",
+	specwarnAmberExplosionOther	= "Alerte spéciale pour interrompre le $spell:122398\nde l'Assemblage muté",-- à vérifier
+	timerAmberExplosionAMCD		= "Afficher le temps avant la prochaine $spell:122402\nde la Monstruosité d'ambre",
 	InfoFrame					= "Afficher le cadre d'information de la Volonté des joueurs",
 	FixNameplates				= "Désactiver les barres d'info quand vous êtes en Assemblage muté\n(Restaure les paramètres en quittant le combat)"
 })
@@ -127,7 +129,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnAmberTrap		= "Alerte préventive (avec progression)\nquand $spell:125826 est créé", -- maybe bad translation.
+	warnAmberTrap		= "Alerte préventive (avec progression) quand $spell:125826 est créé", -- maybe bad translation.
 	InfoFrame			= "Afficher le cadre d'informations pour les joueurs touché par $spell:125390",
 	RangeFrame			= "Afficher le cadre de distance (5m) pour $spell:123735",
 	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
