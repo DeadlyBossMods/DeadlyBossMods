@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pandaria|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0판다리아|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pandaria|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Пандария|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0潘达利亚|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pandarie|r
 ## LoadOnDemand: 1
@@ -14,6 +15,7 @@
 ## X-DBM-Mod-Name: Pandaria
 ## X-DBM-Mod-Name-koKR: 판다리아
 ## X-DBM-Mod-Name-deDE: Pandaria
+## X-DBM-Mod-Name-ruRU: Пандария
 ## X-DBM-Mod-Name-esES: Pandaria
 ## X-DBM-Mod-Name-esMX: Pandaria
 ## X-DBM-Mod-Name-ptBR: Pandaria
