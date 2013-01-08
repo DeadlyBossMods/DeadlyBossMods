@@ -83,6 +83,7 @@ L:SetWarningLocalization({
 	warnReshapeLife				= "%s на >%s< (%d)",
 	warnReshapeLifeTutor		= "1: Сбить каст/продебаффать цель, 2: Сбить каст себе, 3: Восстановить здоровье/энергию, 4: Выйти",
 	warnAmberExplosion			= ">%s< кастует %s",
+	warnAmberExplosionAM		= "Янтарное чудовище кастует ВЗРЫВ - СБЕЙТЕ!",--personal warning.
 	warnInterruptsAvailable		= "Сбить %s могут: %s",
 	warnWillPower				= "Текущая сила воли: %s",
 	specwarnWillPower			= "Низкая сила воли! - осталось 5 секунд",
@@ -103,9 +104,9 @@ L:SetOptionLocalization({
 	warnWillPower				= "Предупреждать об уровне силы воли на 80, 50, 30, 10 и 4.",
 	specwarnWillPower			= "Спец-предупреждение, когда уровень силы воли слишком низок",
 	specwarnAmberExplosionYou	= "Спец-предупреждение для прерывания своего $spell:122398",
-	timerAmberExplosionAMCD		= "Отсчет времени до следующего $spell:122402 у Янтарного чудовища",
 	specwarnAmberExplosionAM	= "Спец-предупреждение для прерывания $spell:122402 у Янтарного чудовища",
 	specwarnAmberExplosionOther	= "Спец-предупреждение для прерываения $spell:122398 у Мутировавшего организма",	
+	timerAmberExplosionAMCD		= "Отсчет времени до следующего $spell:122402 у Янтарного чудовища",
 	InfoFrame					= "Информационное окно для игроков с низким уровнем силы воли",
 	FixNameplates				= "Автоматически отключать полоски здоровья у дружественных целей, когда вы в мутировавшем организме\n(восстанавливает настройку после выхода из боя)"	
 })
