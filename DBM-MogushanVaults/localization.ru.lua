@@ -7,17 +7,20 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon	= "%s через 7 секунд!"
+	SpecWarnOverloadSoon		= "%s скоро!", -- prepare survival ablility or move boss. need more specific message.
+	specWarnBreakJasperChains	= "Рвите цепи!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "Спец-предупреждение перед перенасыщением",
+	SpecWarnOverloadSoon		= "Спец-предупреждение перед насыщением", -- need to change this, i can not translate this with good grammer. please help.
+	specWarnBreakJasperChains	= "Спец-предупреждение, когда можно разорвать $spell:130395",
+	ArrowOnJasperChains			= "Показывать стрелку DBM, когда на вас $spell:130395",
+	InfoFrame					= "Показывать информационное окно с энергией боссов"
 })
 
 L:SetMiscLocalization({
 	Overload	= "%s вот-вот перенасытится!"
 })
-
 
 ------------
 -- Feng the Accursed --
@@ -29,7 +32,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "Объявлять смену фаз"
+	WarnPhase	= "Объявлять смену фаз",
+	RangeFrame	= "Показывать окно проверки дистанции (6 м) во время аркан-фазы",
+	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
+	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
 
 L:SetMiscLocalization({
@@ -59,8 +65,20 @@ L:SetMiscLocalization({
 ----------------------
 L = DBM:GetModLocalization(687)
 
+L:SetWarningLocalization({
+	DarknessSoon		= "Щить тьмы через %ds"
+})
+
+L:SetTimerLocalization({
+	timerUSRevive		= "Бессмертные тени",
+	timerRainOfArrowsCD	= "%s"
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "Показывать окно проверки дистанции (8м)"
+	DarknessSoon		= "Производить 5-секундный отсчет для $spell:117697",
+	timerUSRevive		= "Отсчет времени до формирования $spell:117506",
+	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
+	RangeFrame			= "Показывать окно проверки дистанции (8 м)"
 })
 
 
@@ -79,7 +97,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "Спец-предупреждение перед исчезновением пола",
-	timerDespawnFloor			= "Отсчет времени до исчезновения пола"
+	timerDespawnFloor			= "Отсчет времени до исчезновения пола",
+	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132222)
 })
 
 
@@ -89,7 +108,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Показывать игроков под $spell:116525"
+	InfoFrame		= "Показывать игроков под $spell:116525",
+	CountOutCombo	= "Отсчитывать количество кастов $journal:5673",
+	ArrowOnCombo	= "Показывать стрелку DBM во время $journal:5673\nПодразумевается, что танк стоит перед боссом, а все остальные - позади."
 })
 
 L:SetMiscLocalization({

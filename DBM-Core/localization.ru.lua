@@ -9,9 +9,11 @@ DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)";
 DBM_CORE_BOSS_DOWN					= "%s погибает спустя %s!"
-DBM_CORE_BOSS_DOWN_LONG				= "%s погибает спустя %s! Последний бой длился %s, лучший бой длился %s."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s погибает спустя %s! Это новая запись! (Предшествующая запись была %s)"
-DBM_CORE_COMBAT_ENDED				= "Бой с %s длился %s"
+DBM_CORE_BOSS_DOWN_L				= "%s погибает спустя %s! Последний бой длился %s, лучший бой длился %s."
+DBM_CORE_BOSS_DOWN_NR				= "%s погибает спустя %s! Это новый рекорд! (Предыдущий рекорд был %s)"
+DBM_CORE_COMBAT_ENDED_AT			= "Бой с %s длился %s"
+DBM_CORE_COMBAT_ENDED_AT_LONG		= "Бой с %s (%s) длился %s. На этом уровне сложности вы вайпнулись уже %d раз."
+DBM_CORE_COMBAT_STATE_RECOVERED		= "%s был атакован %s назад, восстанавливаю таймеры..."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d сек"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d мин"
@@ -36,8 +38,10 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "Прочее"
 DBM_CORE_AUTO_RESPONDED				= "Авто-ответ."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d человек живые"
 DBM_CORE_AUTO_RESPOND_WHISPER		= "%s сейчас не может ответить, в бою с %s (%s, %d/%d человек живые)"
-DBM_CORE_WHISPER_COMBAT_END_KILL	= "%s одержал победу над %s!"
-DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s потерпел поражение от %s"
+DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s одержал победу над %s!"
+DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s одержал победу над %s! Общее количество побед у него - %d."
+DBM_CORE_WHISPER_COMBAT_END_WIPE			= "%s потерпел поражение от %s"
+DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s потерпел поражение на %s от %s. Общее количество вайпов у него - %d."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - версии"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
@@ -83,6 +87,7 @@ DBM_CORE_RANGERADAR_HEADER			= "Радар (%d ярдов)"
 
 DBM_CORE_INFOFRAME_HIDE				= "Скрыть"
 DBM_CORE_INFOFRAME_LOCK				= "Закрепить окно"
+DBM_CORE_INFOFRAME_SHOW_SELF		= "Всегда показывать вашу энергию"		-- Always show your own power value even if you are below the threshold
 
 DBM_LFG_INVITE						= "Приглашение в подземелье"
 
@@ -100,7 +105,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm help: вывод этой справки",
 }
 
-DBM_ERROR_NO_PERMISSION				= "У вас недостаточно прав, для выполнение этой операции."
+DBM_ERROR_NO_PERMISSION				= "У вас недостаточно прав для выполнения этой операции."
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Скрыть"
 
@@ -192,7 +197,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run 		= "Спец-предупреждение для $spell:%s",
 	cast 		= "Спец-предупреждение о применении заклинания \n$spell:%s",
 	stack 		= "Спец-предупреждение для >=%d стаков $spell:%s",
-	switch		= "Show special warning to switch targets for \n $spell:%s"
+	switch		= "Спец-предупреждение о смене цели для \n $spell:%s"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
@@ -225,7 +230,7 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Специальное предупреж�
 
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Проверка дистанции %d м. недоступна в этой зоне.\nДоступные дистанции - 10, 11, 15 и 28 м."
 
-DBM_ARROW_MOVABLE					= "Стрелку можно перемещать"
+DBM_ARROW_MOVABLE					= "Индикатор стрелки"
 DBM_ARROW_NO_RAIDGROUP				= "Данная функция работает только в рейд-группах и внутри рейдовых подземелий."
 DBM_ARROW_ERROR_USAGE	= {
 	"Использование DBM-Arrow:",
