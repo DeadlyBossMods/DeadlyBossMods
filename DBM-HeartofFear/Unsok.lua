@@ -42,7 +42,7 @@ local warnBurningAmber			= mod:NewCountAnnounce("ej6567", 2, nil, false)--Keep t
 local warnAmberCarapace			= mod:NewTargetAnnounce(122540, 4)--Monstrosity Shielding Boss (phase 2 start)
 local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3, nil, nil, mod:IsHealer() or mod:IsMelee())
 local warnAmberExplosionSoon	= mod:NewSoonAnnounce(122402, 3)
-local warnAmberExplosionAM		= mod:NewAnnounce("warnAmberExplosionAM", 4, 122398)
+local warnAmberExplosionAM		= mod:NewAnnounce("warnAmberExplosionAM", 4, 122398, mod:IsTank())--most strats have a two construct strat. 1 which has NOTHING to do with this and 1 which is assigned only to this. Often the tank is one on monstrosty and the rotating dps/healers roll stacks on boss into phase 3.
 local warnFling					= mod:NewSpellAnnounce(122413, 3, nil, mod:IsTank())--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
 local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
