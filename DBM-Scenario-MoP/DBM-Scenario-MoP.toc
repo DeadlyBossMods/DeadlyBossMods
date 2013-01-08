@@ -1,6 +1,7 @@
 ﻿## Interface: 50100
 ## X-Min-Interface: 50001
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Scenario-MoP|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Сценарии-MoP|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0시나리오-판다리아의 안개|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Szenarien-MoP|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0场景战役|r
@@ -13,6 +14,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Scenario (MoP)
+## X-DBM-Mod-Name-ruRU: Сценарии (MoP)
 ## X-DBM-Mod-Name-koKR: 시나리오 (판다리아의 안개)
 ## X-DBM-Mod-Name-deDE: Szenarien (MoP)
 ## X-DBM-Mod-Name-zhTW: 情境模式(潘達利亞之謎)
@@ -26,6 +28,7 @@ localization.de.lua
 localization.tw.lua
 localization.cn.lua
 localization.fr.lua
+localization.ru.lua
 TheramoresFall\MapSizes.lua
 TheramoresFall\Theramore.lua
 ArenaOfAnnihilation\MapSizes.lua
