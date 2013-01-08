@@ -123,6 +123,10 @@ end
 
 local function leavePlatform()
 	if onPlatform then
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:RemoveBoss(MobID)
+		end
+		table.wipe(platformGUIDs)
 		onPlatform = false
 		MobID = nil
 		--Breath of fear timer recovery
@@ -388,13 +392,10 @@ function mod:SPELL_CAST_SUCCESS(args)--Handling Dread Sprays
 end
 
 function mod:UNIT_DIED(args)
+	-- sometimes UNIT_DIED not fires for Jinlun Kun. bliz bug.
 	if platformGUIDs[args.destGUID] then
-		platformGUIDs[args.destGUID] = nil
 		timerDreadSpray:Cancel(args.destGUID)
 		timerDreadSprayCD:Cancel(args.destGUID)
-		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:RemoveBoss(MobID)
-		end
 		-- If you die on platform, and revived after platform mob die, Fearless will not be applied on you. This stuff will be slove this.
 		self:Schedule(10, leavePlatform)
 	end
