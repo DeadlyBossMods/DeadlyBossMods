@@ -117,8 +117,8 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Pull		= "這台機器啟動了!到下一層去!",--Emote
 	Rage		= "大帝之怒響徹群山。",--Yell
-	Strength	= "帝王之力出現在壁龜裡!",--Emote
-	Courage		= "帝王之勇出現在壁龜裡!",--Emote
-	Boss		= "兩個泰坦魁儡出現在大壁龜裡!"--Emote
+	Strength	= "帝王之力出現在壁龕裡!",--Emote
+	Courage		= "帝王之勇出現在壁龕裡!",--Emote
+	Boss		= "兩個泰坦魁儡出現在大壁龕裡!"--Emote
 })
 
