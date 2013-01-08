@@ -1,6 +1,7 @@
 ﻿## Interface: 50200
 ## X-Min-Interface: 50200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Throne of Thunder|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Throne of Thunder|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0천둥의 왕좌|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0雷电王座|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trône du tonnerre|r
@@ -13,6 +14,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Heroic-Mode: 1
 ## X-DBM-Mod-Name: Throne of Thunder
+## X-DBM-Mod-Name-ruRU: Throne of Thunder
 ## X-DBM-Mod-Name-koKR: 천둥의 왕좌
 ## X-DBM-Mod-Name-zhCN: 雷电王座
 ## X-DBM-Mod-Name-frFR: Trône du tonnerre
@@ -24,6 +26,7 @@ localization.kr.lua
 localization.cn.lua
 localization.fr.lua
 localization.de.lua
+localization.ru.lua
 MapSizes.lua
 Jinrokh.lua
 Horridon.lua
