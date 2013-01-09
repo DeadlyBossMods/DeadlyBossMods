@@ -37,7 +37,7 @@ local specWarnDespawnFloor			= mod:NewSpecialWarning("specWarnDespawnFloor", nil
 local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, nil, true)
 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
-local timerProtectorCD				= mod:NewCDTimer(35.5, 117954)
+local timerProtectorCD				= mod:NewCDTimer(41, 117954)
 local timerArcingEnergyCD			= mod:NewCDTimer(11.5, 117945)
 local timerTotalAnnihilation		= mod:NewCastTimer(4, 129711)
 local timerDestabilized				= mod:NewBuffFadesTimer(120, 132226)
