@@ -59,6 +59,7 @@ local timerCryOfTerrorCD		= mod:NewCDTimer(25, 123788, nil, mod:IsRanged())
 local timerEyes					= mod:NewTargetTimer(30, 123707, nil, mod:IsTank())
 local timerEyesCD				= mod:NewNextTimer(11, 123707, nil, mod:IsTank())
 local timerDissonanceFieldCD	= mod:NewNextCountTimer(65, 123255)
+local timerCorruptedDissonance	= mod:NewNextTimer(20, 126122)--10 seconds after first and 20 seconds after
 local timerPhase1				= mod:NewNextTimer(156.4, 125304)--156.4 til ENGAGE fires and boss is out, 157.4 until "advance" fires though. But 156.4 is more accurate timer
 local timerPhase2				= mod:NewNextTimer(151, 125098)--152 until trigger, but probalby 150 or 151 til adds are targetable.
 local timerCalamityCD			= mod:NewCDTimer(6, 124845, nil, mod:IsHealer())
@@ -228,6 +229,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDissonanceField:Show(fieldCount)
 		if fieldCount < 2 then
 			timerDissonanceFieldCD:Start(nil, fieldCount+1)
+		end
+		if self:IsDifficulty("heroic10", "heroic25") then
+			if fieldCount == 1 then
+				timerCorruptedDissonance:Start(10)
+			else
+				timerCorruptedDissonance:Start()
+			end
 		end
 	end
 end
