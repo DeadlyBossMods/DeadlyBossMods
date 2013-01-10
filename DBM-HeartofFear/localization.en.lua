@@ -8,6 +8,7 @@ L= DBM:GetModLocalization(745)
 L:SetWarningLocalization({
 	warnAttenuation		= "%s on %s (%s)",
 	warnEcho			= "Echo has spawned",
+	warnEchoDown		= "Echo defeated",
 	specwarnAttenuation	= "%s on %s (%s)",
 	specwarnPlatform	= "Platform change"
 })
@@ -15,6 +16,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
 	warnEcho			= "Announce when an Echo spawns",
+	warnEchoDown		= "Announce when an Echo is defeated",
 	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "Show special warning when boss changes platforms",
 	ArrowOnAttenuation	= "Show DBM Arrow during $spell:127834 to indicate which direction to move",
