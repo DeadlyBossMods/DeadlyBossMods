@@ -31,6 +31,7 @@ local warnForceandVerve		= mod:NewCastAnnounce(122713, 4, 4)
 local warnAttenuation		= mod:NewAnnounce("warnAttenuation", 4, 127834)
 local warnConvert			= mod:NewTargetAnnounce(122740, 4)
 local warnEcho				= mod:NewAnnounce("warnEcho", 4, 127834)--Maybe come up with better icon later then just using attenuation icon
+local warnEchoDown			= mod:NewAnnounce("warnEchoDown", 1, 127834)--Maybe come up with better icon later then just using attenuation icon
 
 local specwarnPlatform		= mod:NewSpecialWarning("specwarnPlatform")
 local specwarnForce			= mod:NewSpecialWarningSpell(122713)
@@ -209,7 +210,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				timerForceCD:Start(54)
 			end
 		end
-	elseif (spellId == 130297 or spellId == 127541) and not EchoAlive then--Echo of Zor'lok
+	elseif (spellId == 127542 or spellId == 127541 or spellId == 130297) and not EchoAlive then--Echo of Zor'lok (127542 is platform 1 echo spawn, 127541 is platform 2 echo spawn, 130297 is phase 2 echos)
 		EchoAlive = true
 		warnEcho:Show()
 		if platform == 1 then--Boss flew off from first platform to 2nd, and this means the echo that spawned is an Echo of Force and Verve
@@ -224,13 +225,14 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 68168 then--Echo of Force and Verve
 		EchoAlive = false
+		warnEchoDown:Show()
 		timerForceCD:Cancel()
 	elseif cid == 65173 then--Echo of Attenuation
 		EchoAlive = false
-		if platform < 4 then
-			timerAttenuationCD:Cancel()
-		else--No echo left up in final phase, cancel all timers because they are going to go back to clusterfuck random (as in may weave convert in but may not, and delay other abilities by as much as 30-50 seconds)
-			timerAttenuationCD:Cancel()
+		warnEchoDown:Show()
+		timerAttenuationCD:Cancel()--Always cancel this
+		if platform == 4 then
+			--No echo left up in final phase, cancel all timers because they are going to go back to clusterfuck random (as in may weave convert in but may not, and delay other abilities by as much as 30-50 seconds)
 			timerForceCD:Cancel()
 		end
 	end
