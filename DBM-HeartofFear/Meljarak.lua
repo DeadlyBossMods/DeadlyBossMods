@@ -35,14 +35,13 @@ local warnImpalingSpear					= mod:NewPreWarnAnnounce(122224, 10, 3)--Pre warn yo
 local warnAmberPrison					= mod:NewTargetAnnounce(121881, 3)
 local warnCorrosiveResin				= mod:NewTargetAnnounce(122064, 3)
 local warnMending						= mod:NewCastAnnounce(122193, 4)
-local warnQuickening					= mod:NewCastAnnounce(122149, 4)
+local warnQuickening					= mod:NewCountAnnounce(122149, 4)--for Mass Dispel
 local warnKorthikStrike					= mod:NewTargetAnnounce(123963, 3)
 local warnWindBomb						= mod:NewTargetAnnounce(131830, 4)
 
 local specWarnWhirlingBlade				= mod:NewSpecialWarningSpell(121896, nil, nil, nil, true)
 local specWarnRainOfBlades				= mod:NewSpecialWarningSpell(122406, nil, nil, nil, true)
 local specWarnRecklessness				= mod:NewSpecialWarningTarget(125873)
-local specWarnReinforcements			= mod:NewSpecialWarningSpell("ej6554", not mod:IsHealer())--Also important to dps. (Espcially CC classes)
 local specWarnAmberPrison				= mod:NewSpecialWarningYou(121881)
 local yellAmberPrison					= mod:NewYell(121881)
 local specWarnAmberPrisonOther			= mod:NewSpecialWarningSpell(121881, false)--Only people who are freeing these need to know this.
@@ -57,6 +56,7 @@ local yellKorthikStrike					= mod:NewYell(123963)
 local specWarnWindBomb					= mod:NewSpecialWarningMove(131830)
 local specWarnWhirlingBladeMove			= mod:NewSpecialWarningMove(121898)
 local yellWindBomb						= mod:NewYell(131830)
+local specWarnReinforcements			= mod:NewSpecialWarningTarget("ej6554", not mod:IsHealer())--Also important to dps. (Espcially CC classes)
 
 --local timerWhirlingBladeCD				= mod:NewCDTimer(30, 121896)--30~60 sec. very large variable. timer useless?
 local timerRainOfBladesCD				= mod:NewCDTimer(48, 122406)--48-64 sec variation now. so much for it being a precise timer.
@@ -71,6 +71,7 @@ local timerMendingCD					= mod:NewNextTimer(37, 122193, nil, false)--To reduce b
 local timerQuickeningCD					= mod:NewNextTimer(37.3, 122149, nil, false)--^^37.3~37.6sec.
 local timerKorthikStrikeCD				= mod:NewCDTimer(50, 123963)--^^
 local timerWindBombCD					= mod:NewCDTimer(6, 131830)--^^
+local timerReinforcementsCD				= mod:NewNextCountTimer(50, "ej6554")--EJ says it's 45 seconds after adds die but it's actually 50 in logs. EJ is not updated for current tuning.
 
 local berserkTimer						= mod:NewBerserkTimer(480)
 
@@ -78,13 +79,21 @@ local countdownImpalingSpear			= mod:NewCountdown(49, 122224, nil, nil, 10) -- l
 
 mod:AddBoolOption("AmberPrisonIcons", true)
 
+local Reinforcement = EJ_GetSectionInfo(6554)
+local Srathik = EJ_GetSectionInfo(6300)
+local Zarthik = EJ_GetSectionInfo(6305)
+local Korthik = EJ_GetSectionInfo(6334)
 local addsCount = 0
+local reinforcementCast = 0
 local amberPrisonIcon = 2
+local zarthikCount = 0
 local firstStriked = false
 local strikeSpell = GetSpellInfo(123963)
 local strikeTarget = nil
 local amberPrisonTargets = {}
 local windBombTargets = {}
+local zarthikGUIDS = {}
+local reinforcementMob = {}
 
 local function warnAmberPrisonTargets()
 	warnAmberPrison:Show(table.concat(amberPrisonTargets, "<, >"))
@@ -99,11 +108,15 @@ end
 
 function mod:OnCombatStart(delay)
 	addsCount = 0
+	reinforcementCast = 0
 	amberPrisonIcon = 2
+	zarthikCount = 0
 	firstStriked = false
 	strikeTarget = nil
 	table.wipe(amberPrisonTargets)
 	table.wipe(windBombTargets)
+	table.wipe(zarthikGUIDS)
+	table.wipe(reinforcementMob)
 	--timerWhirlingBladeCD:Start(35.5-delay)
 	timerKorthikStrikeCD:Start(18-delay)
 	timerRainOfBladesCD:Start(60-delay)
@@ -146,7 +159,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
 		timerResidue:Start(expires-GetTime())
 	elseif args:IsSpellID(125873) then
+		local cid = self:GetCIDFromGUID(args.sourceGUID)
 		addsCount = addsCount + 1
+		reinforcementMob[addsCount] = cid
 		warnRecklessness:Show(args.destName)
 		specWarnRecklessness:Show(args.destName)
 		timerRecklessness:Start()
@@ -182,8 +197,12 @@ function mod:SPELL_CAST_START(args)
 			specWarnMending:Show(args.sourceName)
 		end
 	elseif args:IsSpellID(122149) then
-		warnQuickening:Show()
-		specWarnQuickening:Show(args.sourceName)
+		if not zarthikGUIDS[args.sourceGUID] then
+			zarthikCount = zarthikCount + 1
+			zarthikGUIDS[args.sourceGUID] = zarthikCount
+		end
+		warnQuickening:Show(zarthikGUIDS[args.sourceGUID] or 0)--maybe better to warn when spell applied?
+		specWarnQuickening:Show(args.sourceName.." ("..(zarthikGUIDS[args.sourceGUID] or 0)..")")
 		timerQuickeningCD:Start(nil, args.sourceGUID)
 	end
 end
@@ -211,7 +230,8 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_DAMAGE
 
 function mod:RAID_BOSS_EMOTE(msg)
 	if msg == L.Reinforcements or msg:find(L.Reinforcements) then
-		specWarnReinforcements:Show()
+		reinforcementCast = reinforcementCast + 1
+		specWarnReinforcements:Show(reinforcementMob[reinforcementCast] == 62405 and Srathik or reinforcementMob[reinforcementCast] == 62408 and Zarthik or Korthik)
 	end
 end
 
@@ -223,8 +243,13 @@ function mod:UNIT_DIED(args)
 	elseif cid == 62408 then--Zar'thik Battle-Mender
 		timerMendingCD:Cancel(args.destGUID)
 		timerQuickeningCD:Cancel(args.destGUID)
+		zarthikCount = 0
+		table.wipe(zarthikGUIDS)
 	elseif cid == 62402 then--The Kor'thik
 		timerKorthikStrikeCD:Cancel()--No need for GUID cancelation, this ability seems to be off a timed trigger and they all do it together, unlike other mob sets.
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerKorthikStrikeCD:Start(79)
+		end
 	end
 end
 

@@ -8,12 +8,16 @@ L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
 	warnAttenuation		= "%s : %s (%s)",
+	warnEcho			= "메아리 생성",
+	warnEchoDown		= "메아리 처치",
 	specwarnAttenuation	= "%s : %s (%s)",
 	specwarnPlatform	= "단상 이동!"
 })
 
 L:SetOptionLocalization({
 	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
+	warnEcho			= "메아리 생성시 알림 보기",
+	warnEchoDown		= "메아리 처치시 알림 보기",
 	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "조르로크가 단상 이동시 특수 경고 보기",
 	ArrowOnAttenuation	= "$spell:127834 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
