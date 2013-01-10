@@ -96,6 +96,7 @@ local prisonCount = 0
 local asaniCasts = 0
 local corruptedCount = 0
 local myGroup = nil
+local notARaid = false
 
 local DebuffFilter
 do
@@ -148,11 +149,11 @@ function mod:WatersTarget()
 end
 
 local function findGroupNumber()
-	for i=1, MAX_RAID_MEMBERS do
-		local name, _, subgroup = GetRaidRosterInfo(i);
-		if name == UnitName("player") then
-			myGroup = subgroup
-		end
+	if UnitInRaid("player") then
+		local name, _, subgroup = GetRaidRosterInfo(UnitInRaid("player"))
+		myGroup = subgroup
+	else--Probably next expansion and you're soloing or undermanning this shit not in a raid group.
+		notARaid = true
 	end
 end
 
@@ -163,6 +164,7 @@ function mod:OnCombatStart(delay)
 	scansDone = 0
 	asaniCasts = 0
 	corruptedCount = 0
+	notARaid = false
 	table.wipe(prisonTargets)
 	timerCleansingWatersCD:Start(10-delay)
 	timerLightningPrisonCD:Start(15.5-delay)
@@ -316,6 +318,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if not myGroup then
 			findGroupNumber()
 		end
+		if notARaid then return end
 		corruptedCount = corruptedCount + 1
 		if self:IsDifficulty("heroic25") then
 			--25 man 5 2 2 2, 1 2 2 2, 1 2 2 2, 1 2 2 2, 1 1 1 1 strat.

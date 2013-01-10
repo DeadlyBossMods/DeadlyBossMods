@@ -34,16 +34,38 @@ local timerFrillBlastCD			= mod:NewCDTimer(25, 137505, nil, mod:IsTank() or mod:
 
 mod:AddBoolOption("RangeFrame", true)
 
-local numberTanks = 2
+local numberTanks = 0
+
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	-- 3. check boss1's highest threat target
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
+		return true
+	end
+	return false
+end
+
+local function findTanks()
+	for i=1, MAX_RAID_MEMBERS do
+		if isTank(i) then
+			numberTanks = numberTanks + 1
+		end
+	end
+	--If we could not find at least 2, set it to 2
+	if numberTanks < 2 then
+		numberTanks = 2
+	end
+end
 
 function mod:OnCombatStart(delay)
---TODO, insert some raid roster crap to figure out how many tanks we have, if we cannot determine tanks, assume 2
---[[
-if SomeFunction then
-	numberTanks = 3
-else
-	numberTanks = 2
-end--]]
+	findTanks()
 --	timerCrushCD:Start(-delay)
 --	timerPiercingRoarCD:Start(-delay)
 --	timerSpiritfireBeamCD:Start(-delay)
@@ -79,6 +101,9 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(137504) then
+		if numberTanks == 0 then--We DCed and need to check again
+			findTanks()
+		end
 		warnCrush:Show(args.destName, args.amount or 1)
 		timerCrush:Start(args.destName)
 		timerCrushCD:Start()
