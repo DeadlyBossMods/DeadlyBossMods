@@ -8,12 +8,16 @@ L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
 	warnAttenuation		= "%s在%s(%s)",
+	warnEcho			= "回聲重生",
+	warnEchoDown		= "回聲已擊殺",
 	specwarnAttenuation	= "%s在%s(%s)",
 	specwarnPlatform	= "轉換露臺"
 })
 
 L:SetOptionLocalization({
 	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
+	warnEcho			= "提示回聲重生",
+	warnEchoDown		= "提示回聲已擊殺",
 	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "為首領轉換露臺顯示特別警告",
 	ArrowOnAttenuation	= "為$spell:127834指示DBM箭頭移動方向",
