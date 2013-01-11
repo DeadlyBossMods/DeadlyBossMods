@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"CHAT_MSG_TARGETICONS",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_HEALTH"--UNIT_HEALTH_FREQUENT maybe not needed. It's too high cpu usage.
 )
 
 local warnProtect						= mod:NewSpellAnnounce(123250, 2)
@@ -50,6 +50,7 @@ local lastProtect = 0
 local specialRemaining = 0
 local guards = {}
 local guardActivated = 0
+local lostHealth = 0
 local hideDebug = 0
 local damageDebug = 0
 local timeDebug = 0
@@ -130,6 +131,14 @@ do
 	end
 end
 
+function mod:ScaryFogRepeat()
+	timerScaryFogCD:Cancel()
+	self:UnscheduleMethod("ScaryFogRepeat")
+	local interval = 10 * (1/(1+(lostHealth*0.8)))--Seems that Scray Fog interval reduced by her casting speed.
+	timerScaryFogCD:Start(interval)
+	self:ScheduleMethod(interval, "ScaryFogRepeat")
+end
+
 function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)
@@ -144,6 +153,7 @@ function mod:OnCombatStart(delay)
 	hideActive = false
 	lastProtect = 0
 	specialRemaining = 0
+	lostHealth = 0
 	timerSpecialCD:Start(32.5-delay, 1)--Variable, 32.5-37 (or aborted if 80% protect happens first)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(420-delay)
@@ -207,7 +217,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(123705) and self:AntiSpam() then
-		timerScaryFogCD:Start()
+		self:ScaryFogRepeat()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -283,6 +293,8 @@ function mod:SPELL_CAST_START(args)
 		hideTime = GetTime()
 		specialsCast = specialsCast + 1
 		hideActive = true
+		timerScaryFogCD:Cancel()
+		self:UnscheduleMethod("ScaryFogRepeat")
 		warnHide:Show(specialsCast)
 		specWarnHide:Show()
 		timerSpecialCD:Start(nil, specialsCast+1)
@@ -295,6 +307,8 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(3)--Show everyone during hide
 		end
+	elseif args:IsSpellID(123705) then
+		self:ScaryFogRepeat()
 	end
 end
 
@@ -303,6 +317,12 @@ function mod:CHAT_MSG_TARGETICONS(msg)
 	local icon = tonumber(string.sub(string.match(msg, "RaidTargetingIcon_%d"), -1))
 	if icon then
 		iconsSet[icon] = true
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if uId == "boss1" then
+		lostHealth = 1 - (UnitHealth(uId) / UnitHealthMax(uId))
 	end
 end
 
@@ -332,6 +352,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	warnHideOver:Show(GetSpellInfo(123244))
 	warnHideProgress:Cancel()
 	warnHideProgress:Show(hideDebug, damageDebug, tostring(format("%.1f", timeDebug)))--Show right away instead of waiting out the schedule
+	self:ScaryFogRepeat()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)--Go back to showing only tanks
 	end
