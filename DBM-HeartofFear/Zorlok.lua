@@ -129,14 +129,8 @@ function mod:SPELL_CAST_START(args)
 		timerForce:Start()
 	elseif args:IsSpellID(122474, 122496, 123721) then--All direction IDs are cast by an invisible version of Vizier.
 		lastDirection = L.Left
-		if self.Options.ArrowOnAttenuation then
-			DBM.Arrow:ShowStatic(90, 12)
-		end
 	elseif args:IsSpellID(122479, 122497, 123722) then--We monitor direction, but we need to announce off non invisible mob
 		lastDirection = L.Right
-		if self.Options.ArrowOnAttenuation then
-			DBM.Arrow:ShowStatic(270, 12)
-		end
 	elseif args:IsSpellID(127834) then--This is only id that properly identifies CORRECT boss source
 		--Example
 		--http://worldoflogs.com/reports/rt-g8ncl718wga0jbuj/xe/?enc=bosses&boss=66791&x=%28spellid+%3D+127834+or+spellid+%3D+122496+or+spellid+%3D+122497%29+and+fulltype+%3D+SPELL_CAST_START
@@ -151,6 +145,9 @@ function mod:SPELL_CAST_START(args)
 			end
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
 			if inRange and inRange < 60 then--Only show warning if we are near the boss casting it (or rathor, the player tanking that boss). I realize orbs go very far, but the special warning is for the dance, not stray discs, that's what normal warning is for
+				if self.Options.ArrowOnAttenuation then
+					DBM.Arrow:ShowStatic(lastDirection == L.Left and 90 or 270, 12)
+				end
 				specwarnAttenuation:Show(args.spellName, args.sourceName, lastDirection)
 				timerAttenuation:Start()
 			end
