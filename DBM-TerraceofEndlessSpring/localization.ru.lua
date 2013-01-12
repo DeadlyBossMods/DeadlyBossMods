@@ -47,7 +47,7 @@ L:SetOptionLocalization({
 	warnHideOver			= "Предупреждение о появлении босса после $spell:123244",
 	warnHideProgress		= "Показывать статистику после завершения $spell:123244",
 	timerSpecialCD			= "Отсчет времени до следующей спец-способности",
-	SetIconOnGuard			= "Ставить метки на $journal:6224",
+	SetIconOnProtector		= "Ставить метки на $journal:6224",
 	RangeFrame				= "Показывать окно проверки дистанции (3 м) для $spell:123121\n(Показывает всех во время $spell:123244, иначе только танков)",
 	GWHealthFrame			= "Показывать полоску здоровья босса для $spell:123461" -- maybe bad wording, needs review
 })

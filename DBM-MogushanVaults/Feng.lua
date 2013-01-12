@@ -301,7 +301,7 @@ function mod:SPELL_CAST_START(args)
 		soundEpicenter:Play()
 		timerEpicenter:Start()
 		timerEpicenterCD:Start(nil, specialCount + 1)
-	elseif args:IsSpellID(116157) then
+	elseif args:IsSpellID(116157, 116295) then
 		warnLightningFists:Show()
 		timerLightningFistsCD:Start()
 	end
