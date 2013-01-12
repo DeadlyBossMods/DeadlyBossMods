@@ -51,7 +51,7 @@ L:SetOptionLocalization({
 	warnHideOver			= "Alerte quand $spell:123244 est fini",
 	warnHideProgress		= "Alerte des statistiques quand $spell:123244 est fini",
 	timerSpecialCD			= "Délai avant la prochaine capacité spécial", -- revoir
-	SetIconOnGuard			= "Mettre un icone sur les $journal:6224",
+	SetIconOnProtector		= "Mettre un icone sur les $journal:6224",
 	RangeFrame				= "Afficher le cadre de distance (3m) pour $spell:123121\n(Affiche tout le monde pendant $spell:123244, sinon, ne montre que les Tank)",
 	GWHealthFrame			= "Afficher le cadre de la vie restante avant que $spell:123461 soit fini\n(Nécessite que le cadre de vie des Boss sois activé)"
 })

@@ -46,7 +46,7 @@ L:SetOptionLocalization({
 	warnHideOver			= "Show warning when $spell:123244 has ended",
 	warnHideProgress		= "Show statistics for $spell:123244 when it ends",
 	timerSpecialCD			= "Show timer for special ability CD",
-	SetIconOnGuard			= "Set icons on $journal:6224",
+	SetIconOnProtector		= "Set icons on $journal:6224\n(Not Reliable if more than 1 person with assist enables)",
 	RangeFrame				= "Show range frame (3) for $spell:123121\n(Shows everyone during Hide, otherwise, only shows tanks)",
 	GWHealthFrame			= "Show remaining health frame for $spell:123461 fades\n(Requires boss health frame enabled)" -- maybe bad wording, needs review
 })

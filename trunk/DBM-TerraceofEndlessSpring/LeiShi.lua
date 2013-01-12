@@ -41,7 +41,7 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("GWHealthFrame", true)
 mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("SetIconOnGuard", false)
+mod:AddBoolOption("SetIconOnProtector", false)--Just not reliable if more than 1 person uses no matter how many hacks are added, but I don't want to restrict it to raid leader only as he may not be the first person to target/mouseover stuff.
 
 local getAwayHP = 0 -- because max health is different between Asian and US 25-man encounter. Calculate manually.
 local specialsCast = 0
@@ -179,7 +179,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.2, function()
 			timerSpecialCD:Cancel()
 		end)
-	elseif args:IsSpellID(123505) and self.Options.SetIconOnGuard then
+	elseif args:IsSpellID(123505) and self.Options.SetIconOnProtector then
 		if guardActivated == 0 then
 			resetguardstate()
 		end
@@ -224,7 +224,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(123250) then
-		if self.Options.SetIconOnGuard then
+		if self.Options.SetIconOnProtector then
 			guardActivated = 0
 		end
 		if timerSpecialCD:GetTime(specialsCast+1) == 0 then -- failsafe. (i.e : 79.8% hide -> protect... bar remains)
@@ -247,7 +247,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnGuard and guardActivated > 0 and DBM:GetRaidRank() > 0 then
+	if self.Options.SetIconOnProtector and guardActivated > 0 and DBM:GetRaidRank() > 0 then
 		for i = 1, DBM:GetGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
