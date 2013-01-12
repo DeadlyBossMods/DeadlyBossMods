@@ -35,7 +35,6 @@ local yellJasperChains				= mod:NewYell(130395, nil, false)
 local specWarnCobaltMineNear		= mod:NewSpecialWarningClose(129424)
 --local yellCobaltMine				= mod:NewYell(129424)
 local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
-local yellAmethystPool				= mod:NewYell(130774, nil, false)
 local specWarnPowerDown				= mod:NewSpecialWarningSpell(116529, not mod:IsTank())
 
 local timerPetrification			= mod:NewNextTimer(76, 125091)
@@ -233,7 +232,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			playerHasChains = true
 			specWarnJasperChains:Show()
-			yellJasperChains:Yell()
+			if not self:IsDifficulty("lfr25") then
+				yellJasperChains:Yell()
+			end
 			local uId = getBossuId(Jasper)
 			if uId and UnitPower(uId) <= 50 and activePetrification == "Jasper" then--Make sure his energy isn't already high, otherwise breaking chains when jasper will only be active for a few seconds is bad
 				specWarnBreakJasperChains:Show()
