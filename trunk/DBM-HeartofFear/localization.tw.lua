@@ -60,7 +60,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	UnderHim			= "在他下面",
-	Phase2				= "巨大的裝甲開始破碎並粉碎!"
+	Phase2				= "巨大的裝甲開始破裂並粉碎!"
 })
 
 ----------------------
