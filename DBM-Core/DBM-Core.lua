@@ -3913,6 +3913,7 @@ do
 			timer = timer < 2 and self.timer or timer
 			count = count or self.count or 5
 			if timer <= count then count = floor(timer) end
+			if DBM.Options.CountdownVoice == "None" then return end
 			if DBM.Options.CountdownVoice == "Mosh" then
 				for i = count, 1, -1 do
 					if i <= 5 then
@@ -3987,6 +3988,7 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer <= 5 and self.timer or timer
+			if DBM.Options.CountdownVoice == "None" then return end
 			if DBM.Options.CountdownVoice == "Mosh" and timer == 5 then--Don't have 6-10 for him yet.
 				for i = 1, timer do
 					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")

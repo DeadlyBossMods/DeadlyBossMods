@@ -58,7 +58,6 @@ local specWarnWhirlingBladeMove			= mod:NewSpecialWarningMove(121898)
 local yellWindBomb						= mod:NewYell(131830)
 local specWarnReinforcements			= mod:NewSpecialWarningTarget("ej6554", not mod:IsHealer())--Also important to dps. (Espcially CC classes)
 
---local timerWhirlingBladeCD				= mod:NewCDTimer(30, 121896)--30~60 sec. very large variable. timer useless?
 local timerRainOfBladesCD				= mod:NewCDTimer(48, 122406)--48-64 sec variation now. so much for it being a precise timer.
 local timerRainOfBlades					= mod:NewBuffActiveTimer(7.5, 122406)
 local timerRecklessness					= mod:NewBuffActiveTimer(30, 125873)--Heroic recklessness
@@ -117,7 +116,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(windBombTargets)
 	table.wipe(zarthikGUIDS)
 	table.wipe(reinforcementMob)
-	--timerWhirlingBladeCD:Start(35.5-delay)
 	timerKorthikStrikeCD:Start(18-delay)
 	timerRainOfBladesCD:Start(60-delay)
 	if not self:IsDifficulty("lfr25") then
@@ -256,10 +254,6 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 124850 and self:AntiSpam(2, 1) then--Whirling Blade (Throw Cast spellid)
 		specWarnWhirlingBlade:Show()
-		--timerWhirlingBladeCD:Start()
---	"<173.1> [UNIT_SPELLCAST_SUCCEEDED] The Kor'thik [[boss4:Kor'thik Strike::0:123963]]", -- [10366]
---	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC8#Kor'thik Elite Blademaster#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10535]
---	"<175.6> [CLEU] SPELL_CAST_START#false#0xF130F3C200000FC7#Kor'thik Elite Blademaster#2632#8#0x0000000000000000#nil#-2147483648#-2147483648#122409#Kor'thik Strike#1", -- [10536]
 	elseif spellId == 123963 and self:AntiSpam(2, 2) then--Kor'thik Strike Trigger, only triggered once, then all non CCed Kor'thik cast the strike about 2 sec later
 		if firstStriked then--first Strike 32~33 sec cd. after 2nd strike 50~51 sec cd.
 			timerKorthikStrikeCD:Start()
