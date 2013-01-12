@@ -49,7 +49,7 @@ local specWarnCorrosiveResin			= mod:NewSpecialWarningRun(122064)
 local yellCorrosiveResin				= mod:NewYell(122064, nil, false)
 local specWarnCorrosiveResinPool		= mod:NewSpecialWarningMove(122125)
 local specWarnMending					= mod:NewSpecialWarningInterrupt(122193)--Whoever is doing this or feels responsible should turn it on.
-local specWarnQuickening				= mod:NewSpecialWarningSpell(122149, false)--^^
+local specWarnQuickening				= mod:NewSpecialWarningTarget(122149, false)--^^
 local specWarnKorthikStrike				= mod:NewSpecialWarningYou(123963)
 local specWarnKorthikStrikeOther		= mod:NewSpecialWarningTarget(123963, mod:IsHealer())
 local yellKorthikStrike					= mod:NewYell(123963)
@@ -202,7 +202,7 @@ function mod:SPELL_CAST_START(args)
 			zarthikGUIDS[args.sourceGUID] = zarthikCount
 		end
 		warnQuickening:Show(zarthikGUIDS[args.sourceGUID] or 0)--maybe better to warn when spell applied?
-		specWarnQuickening:Show(args.sourceName.." ("..(zarthikGUIDS[args.sourceGUID] or 0)..")")
+		specWarnQuickening:Show("("..(zarthikGUIDS[args.sourceGUID] or 0)..") - "..args.sourceName)
 		timerQuickeningCD:Start(nil, args.sourceGUID)
 	end
 end
