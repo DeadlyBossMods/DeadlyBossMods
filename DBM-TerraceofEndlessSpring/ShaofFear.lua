@@ -116,15 +116,26 @@ end
 
 function mod:CheckWall()
 	local fearlessTime = timerFearless:GetTime()
-	if not UnitBuff("player", wallLight) and (fearlessTime == 0 or fearlessTime > 21.5) and not UnitIsDeadOrGhost("player") then
+	if not onPlatform and not UnitBuff("player", wallLight) and (fearlessTime == 0 or fearlessTime > 21.5) and not UnitIsDeadOrGhost("player") then
 		specWarnBreathOfFearSoon:Show()
 	end
 end
 
-local function leavePlatform()
+function mod:CheckPlatformLeaved()--Check you are leaved platform by Wall of Light buff. Failsafe for some siturations./
+	if UnitBuff("player", wallLight) then
+		self:UnscheduleMethod("CheckPlatformLeaved")
+		self:LeavePlatform()
+	else
+		self:ScheduleMethod(3, "CheckPlatformLeaved")
+	end
+end
+
+function mod:LeavePlatform()
 	if onPlatform then
 		if DBM.BossHealth:IsShown() then
-			DBM.BossHealth:RemoveBoss(MobID)
+			DBM.BossHealth:RemoveBoss(61038)
+			DBM.BossHealth:RemoveBoss(61042)
+			DBM.BossHealth:RemoveBoss(61046)
 		end
 		table.wipe(platformGUIDs)
 		onPlatform = false
@@ -216,7 +227,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDeathBlossom:Show()
 	elseif args:IsSpellID(118977) and args:IsPlayer() then--Fearless, you're leaving platform 
 		timerFearless:Start()
-		leavePlatform()
+		self:UnscheduleMethod("CheckPlatformLeaved")
+		self:LeavePlatform()
 	elseif args:IsSpellID(131996) and not onPlatform then
 		warnThrash:Show()
 		specWarnThrash:Show()
@@ -329,6 +341,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(119888) and MobID and MobID == args:GetSrcCreatureID() then
 		specWarnDeathBlossom:Show()
+		self:ScheduleMethod(40, "CheckPlatformLeaved")--you may leave platform soon after Death Blossom casted. failsafe for UNIT_DIED not fire, and fearless fails.
 	elseif args:IsSpellID(120672) then -- Implacable Strike
 		warnImplacableStrike:Show()
 		specWarnImplacableStrike:Show()
@@ -392,12 +405,13 @@ function mod:SPELL_CAST_SUCCESS(args)--Handling Dread Sprays
 end
 
 function mod:UNIT_DIED(args)
-	-- sometimes UNIT_DIED not fires for Jinlun Kun. bliz bug.
+	-- sometimes UNIT_DIED not fires for Platform mobs. bliz bug.
 	if platformGUIDs[args.destGUID] then
 		timerDreadSpray:Cancel(args.destGUID)
 		timerDreadSprayCD:Cancel(args.destGUID)
-		-- If you die on platform, and revived after platform mob die, Fearless will not be applied on you. This stuff will be slove this.
-		self:Schedule(10, leavePlatform)
+		-- Failsafe for Fearless is not applyed to you.
+		self:UnscheduleMethod("CheckPlatformLeaved")
+		self:ScheduleMethod(7, "CheckPlatformLeaved")
 	end
 end
 
@@ -414,6 +428,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		berserkTimer:Cancel() -- berserk timer seems restarts on heroic phase 2.
 		warnBreathOfFearSoon:Cancel()
 		self:UnscheduleMethod("CheckWall")
+		self:UnscheduleMethod("CheckPlatformLeaved")
 		warnPhase2:Show()
 		--timerSubmergeCD:Start(nil, 1) -- not known
 		berserkTimer:Start() -- currently, seems phase 2 berserk also 15 min.
