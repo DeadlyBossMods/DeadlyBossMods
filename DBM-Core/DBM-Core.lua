@@ -140,6 +140,8 @@ DBM.DefaultOptions = {
 	DontSendBossAnnounces = false,
 	DontSendBossWhispers = false,
 	DontSetIcons = false,
+	DontShowRangeFrame = false,
+	DontShowInfoFrame = false,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
@@ -919,9 +921,9 @@ SlashCmdList["DBMRANGE"] = function(msg)
 	else
 		local r = tonumber(msg)
 		if r and (r == 10 or r == 11 or r == 15 or r == 28 or r == 3 or r == 4 or r == 5 or r == 6 or r == 8 or r == 12 or r == 20) then
-			DBM.RangeCheck:Show(r)
+			DBM.RangeCheck:Show(r, nil, true)
 		else
-			DBM.RangeCheck:Show(10)
+			DBM.RangeCheck:Show(10, nil, true)
 		end
 	end
 end
