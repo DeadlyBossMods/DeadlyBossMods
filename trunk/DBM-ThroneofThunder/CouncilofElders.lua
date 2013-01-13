@@ -75,6 +75,7 @@ local boltCasts = 0
 local scansDone = 0
 local SulsName = EJ_GetSectionInfo(7049)
 local kazraPossessed = false
+local sandBoltName = GetSpellInfo(136189)
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -100,7 +101,7 @@ function mod:BoltTarget()
 		if isTank(uId) and scansDone < 15 then--Make sure no infinite loop.
 			self:ScheduleMethod(0.1, "BoltTarget")--Check multiple times to find a target that isn't a player.
 		else
-			warnSandBolt:Show(targetname, boltCasts)
+			warnSandBolt:Show(sandBoltName, targetname, boltCasts)
 			local targetedClass = UnitClass(uId)
 			--Todo, add hybrid melee class checks somehow? Inspect throttling won't allow that here though, too often. Maybe on pull inspect just those classes and cache their specs?
 			if targetedClass == "WARRIOR" or targetedClass == "DEATHKNIGHT" or targetedClass == "MONK" or targetedClass == "ROGUE" then--This bolt is targeting a melee, it is a priority interrupt
@@ -166,14 +167,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Swap timers. While possessed 
 			local elapsed, total = timerBlessedLoaSpiritCD:GetTime()
 			timerBlessedLoaSpiritCD:Cancel()
-			if elapsed and total then--If for some reason it was nil, like it JUSt came off cd, do nothing, he should cast frost bite right away.
+			if elapsed and total then--If for some reason it was nil, like it JUST came off cd, do nothing, she should cast loa spirit right away.
 				timerShadowedLoaSpiritCD:Update(elapsed, total)
 			end
 		elseif args:GetDestCreatureID() == 69131 then--Frost King Malakk
 			--Swap timers. While possessed 
 			local elapsed, total = timerBitingColdCD:GetTime()
 			timerBitingColdCD:Cancel()
-			if elapsed and total then--If for some reason it was nil, like it JUSt came off cd, do nothing, he should cast frost bite right away.
+			if elapsed and total then--If for some reason it was nil, like it JUST came off cd, do nothing, he should cast frost bite right away.
 				timerFrostBiteCD:Update(elapsed, total)
 			end
 		elseif args:GetDestCreatureID() == 69134 then--Kazra'jin
