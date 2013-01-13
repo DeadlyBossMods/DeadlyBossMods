@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/4/2013
+-- Last update: 1/13/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -9,7 +9,14 @@ local L
 ------------
 L= DBM:GetModLocalization(683)
 
+L:SetWarningLocalization({
+	warnGroupOrder		= "循环：小队Group %s",
+	specWarnYourGroup	= "轮到你的小对了！"
+})
+
 L:SetOptionLocalization({
+	warnGroupOrder		= "警报：针对$spell:118191的小队循环\n（当前仅支持25人模式的5/2/2/2战术）",
+	specWarnYourGroup	= "特殊警报：当轮到你的小队需要应对$spell:118191时\n（仅25人模式）",
 	RangeFrame			= "距离监视（8码）：$spell:111850\n当你受到效果影响时会显示其他所有没有受到效果影响的队友",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
@@ -43,7 +50,7 @@ L:SetOptionLocalization({
 	warnHideOver			= "特殊警报：$spell:123244效果结束时",
 	warnHideProgress		= "警报：$spell:123244阶段的战斗统计",
 	timerSpecialCD			= "计时条：特殊能力冷却",
-	SetIconOnProtector		= "为$journal:6224的目标添加团队标记",
+	SetIconOnProtector		= "为$journal:6224的目标添加团队标记\n（当有多名团队助理时该功能不可靠）",
 	RangeFrame				= "距离监视（3码）：应对$spell:123121\n（隐藏阶段时显示所有人，其余时仅显示坦克位置）",
 	GWHealthFrame			= "生命值监视：移除$spell:123461还需要的伤害"
 })
@@ -75,6 +82,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreathOfFearSoon	= "特殊警报：当没有$spell:117964效果需要躲避$spell:119414时",
+	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
 })
 
 L:SetOptionLocalization({
