@@ -1280,7 +1280,7 @@ local function CreateOptionsMenu()
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
 			else
-				DBM.RangeCheck:Show()
+				DBM.RangeCheck:Show(nil, nil, true)
 			end
 		end)
 
@@ -1290,7 +1290,7 @@ local function CreateOptionsMenu()
 			if DBMRangeCheckRadar and DBMRangeCheckRadar:IsShown() then
 				DBMRangeCheckRadar:Hide()
 			else
-				DBM.RangeCheck:Show()
+				DBM.RangeCheck:Show(nil, nil, true)
 				DBMRangeCheckRadar:Show()
 			end
 		end)
@@ -1963,11 +1963,13 @@ local function CreateOptionsMenu()
 
 	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
-		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 120, true)
+		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 150, true)
 		spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSendAnnounce, true, nil, "DontSendBossAnnounces")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSendWhisper, true, nil, "DontSendBossWhispers")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoInfoFrame, true, nil, "DontShowInfoFrame")
 
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 135, true)
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")

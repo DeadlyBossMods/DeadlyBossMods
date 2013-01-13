@@ -172,7 +172,8 @@ L.SpamBlockNoShowAnnounce		= "Do not show announces or play warning sounds"
 L.SpamBlockNoSendAnnounce		= "Do not send announces to raid chat"
 L.SpamBlockNoSendWhisper		= "Do not send whispers to other players"
 L.SpamBlockNoSetIcon			= "Do not set icons on targets"
-
+L.SpamBlockNoRangeFrame			= "Do not show range frame"
+L.SpamBlockNoInfoFrame			= "Do not show info frame"
 
 -- Misc
 L.FontHeight	= 16

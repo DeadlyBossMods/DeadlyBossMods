@@ -842,7 +842,8 @@ end
 ---------------
 --  Methods  --
 ---------------
-function rangeCheck:Show(range, filter)
+function rangeCheck:Show(range, filter, forceshow)
+	if DBM.Options.DontShowRangeFrame and not forceshow then return end
 	SetMapToCurrentZone()--Set map to current zone before checking other stuff, work around annoying bug i hope?
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
