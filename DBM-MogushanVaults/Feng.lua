@@ -113,7 +113,7 @@ local timerReversalLightningFists	= mod:NewBuffFadesTimer(20, 118302)
 local timerNullBarrior				= mod:NewBuffFadesTimer(6, 115817)
 local timerNullBarriorCD			= mod:NewCDTimer(55, 115817)
 
-local soundEpicenter				= mod:NewSound(116018)
+local soundEpicenter				= mod:NewSound(116018, nil, false)
 local soundWildSpark				= mod:NewSound(116784)
 
 mod:AddBoolOption("SetIconOnWS", true)
