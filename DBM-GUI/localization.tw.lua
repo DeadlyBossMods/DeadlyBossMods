@@ -173,7 +173,8 @@ L.SpamBlockNoShowAnnounce		= "不顯示提示或播放警告音效"
 L.SpamBlockNoSendAnnounce		= "不發送提示到團隊頻道"
 L.SpamBlockNoSendWhisper		= "不發送密語給其他玩家"
 L.SpamBlockNoSetIcon			= "不設置標記在目標上"
-
+L.SpamBlockNoRangeFrame			= "不顯示距離框架"
+L.SpamBlockNoInfoFrame			= "不顯示訊息框架"
 
 -- Misc
 L.FontHeight	= 18

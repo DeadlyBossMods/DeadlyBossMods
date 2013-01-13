@@ -47,7 +47,7 @@ L:SetOptionLocalization({
 	warnHideOver			= "為$spell:123244結束顯示警告",
 	warnHideProgress		= "當$spell:123244結束後顯示統計",
 	timerSpecialCD			= "為下一次特別技能冷卻顯示計時器",
-	SetIconOnProtector		= "為$journal:6224標示團隊圖示",
+	SetIconOnProtector		= "為$journal:6224標示團隊圖示\n(超過一名以上的團隊助理時不可靠)",
 	RangeFrame				= "為$spell:123121顯示距離框(3碼)(只有顯示坦)",
 	GWHealthFrame			= "為$spell:123461顯示需求血量框架\n(首領血量框架需要開啟)" -- maybe bad wording, needs review
 })
