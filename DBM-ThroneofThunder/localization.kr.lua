@@ -16,6 +16,11 @@ L= DBM:GetModLocalization(819)
 ---------------------------
 L= DBM:GetModLocalization(816)
 
+L:SetOptionLocalization({
+	warnSandBolt			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
+	RangeFrame				= "거리 창 보기"
+})
+
 ------------
 -- Tortos --
 ------------
