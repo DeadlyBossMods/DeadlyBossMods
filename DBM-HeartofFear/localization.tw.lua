@@ -86,6 +86,7 @@ L:SetWarningLocalization({
 	warnReshapeLifeTutor		= "1:中斷/易傷,, 2:中斷自己, 3:回復體力/意志力, 4:脫離魁儡",
 	warnAmberExplosion			= ">%s<正在施放%s",
 	warnInterruptsAvailable		= "可使用中斷%s:>%s<",
+	warnAmberExplosionAM		= "琥珀巨怪正在施放琥珀爆炸 - 快中斷!",--personal warning.
 	warnWillPower				= "目前的意志力:%s",
 	specwarnWillPower			= "意志力低落! - 剩下五秒",
 	specwarnAmberExplosionYou	= "中斷你自己的%s!",--Struggle for Control interrupt.
@@ -101,6 +102,7 @@ L:SetOptionLocalization({
 	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "顯示突變魁儡的能力說明效果",
 	warnAmberExplosion			= "為$spell:122398施放顯示警告(以及來源)",
+	warnAmberExplosionAM		= "為琥珀巨怪的$spell:122398顯示個人警告(為了中斷)",
 	warnInterruptsAvailable		= "提示誰有琥珀打擊可使用以中斷$spell:122402",
 	warnWillPower				= "提示目前意志力在80,50,30,10,和4.",
 	specwarnWillPower			= "為在傀儡裡時意志力低落顯示特別警告",
