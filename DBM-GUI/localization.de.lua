@@ -169,7 +169,8 @@ L.SpamBlockNoShowAnnounce		= "Zeige keine Mitteilungen und spiele keine Warnungs
 L.SpamBlockNoSendAnnounce		= "Sende keine Mitteilungen an den Schlachtzugchat"
 L.SpamBlockNoSendWhisper		= "Sende keine Flüstermitteilungen an andere Spieler"
 L.SpamBlockNoSetIcon			= "Setze keine Zeichen auf Ziele"
-
+L.SpamBlockNoRangeFrame			= "Zeige kein Abstandsfenster/-radar an"
+L.SpamBlockNoInfoFrame			= "Zeige kein Infofenster an"
 
 -- Misc
 L.FontHeight	= 16
