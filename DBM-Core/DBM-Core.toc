@@ -4,7 +4,7 @@
 ## Title-zhCN: |cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
 ## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Основной|r
 ## Title-zhTW:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
-## Title-koKR:|cffffd200Deadly Boss Mods|r |cff69ccf0핵심 모듈|r
+## Title-koKR:|cffffd200Deadly Boss Mods|r |cff69ccf0핵심 경고|r
 ## Title-esES:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r
 ## Title-esMX:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r
 ## Title-frFR:|cffffd200Deadly Boss Mods|r |cff69ccf0Noyau|r
