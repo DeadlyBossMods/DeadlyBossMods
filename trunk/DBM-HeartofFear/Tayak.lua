@@ -43,6 +43,7 @@ local timerIntensifyCD					= mod:NewNextTimer(60, 123471)
 local timerBladeTempest					= mod:NewBuffActiveTimer(9, 125310)
 local timerBladeTempestCD				= mod:NewNextTimer(60, 125310)--Always cast after immediately intensify since they essencially have same CD
 
+local countdownTempest					= mod:NewCountdown(60, 125310)
 local berserkTimer						= mod:NewBerserkTimer(490)
 
 local soundBladeTempest					= mod:NewSound(125310)
@@ -50,26 +51,10 @@ local soundBladeTempest					= mod:NewSound(125310)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())--For Wind Step
 mod:AddBoolOption("UnseenStrikeArrow")
 
-local emoteFired = false
 local intensifyCD = 60
 local phase2 = false
 
-local function checkUnseenEmote()
-	if not emoteFired then
-		warnUnseenStrike = mod:NewSpellAnnounce(123017, 4)
-		specWarnUnseenStrike = mod:NewSpecialWarningSpell(122949)
-		warnUnseenStrike:Show()
-		specWarnUnseenStrike:Show()
-		timerUnseenStrike:Start(4.2)
-		timerUnseenStrikeCD:Start(54.2)
-		-- recover Unseen Strike Target Warning
-		warnUnseenStrike = mod:NewTargetAnnounce(123017, 4)
-		specWarnUnseenStrike = mod:NewSpecialWarningTarget(122949)
-	end
-end
-
 function mod:OnCombatStart(delay)
-	emoteFired = false
 	intensifyCD = 60
 	phase2 = false
 	timerTempestSlashCD:Start(10-delay)
@@ -82,6 +67,7 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerBladeTempestCD:Start(-delay)
+		countdownTempest:Start(-delay)
 	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
@@ -132,6 +118,7 @@ function mod:SPELL_CAST_START(args)
 		soundBladeTempest:Play()
 		timerBladeTempest:Start()
 		timerBladeTempestCD:Start()
+		countdownTempest:Start()
 	end
 end
 
@@ -150,7 +137,6 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:122949") then--Does not show in combat log except for after it hits. IT does fire a UNIT_SPELLCAST event but has no target info. You can get target 1 sec faster with UNIT_AURA but it's more cpu and not worth the trivial gain IMO
-		emoteFired = true
 		warnUnseenStrike:Show(target)
 		specWarnUnseenStrike:Show(target)
 		timerUnseenStrike:Start()
@@ -161,9 +147,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if self.Options.UnseenStrikeArrow then
 			DBM.Arrow:ShowRunTo(target, 3, 3, 5)
 		end
-		self:Schedule(5, function()
-			emoteFired = false
-		end)
 	end
 end
 
@@ -175,8 +158,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		else
 			timerTempestSlashCD:Start()
 		end
-	elseif spellId == 122949 and self:AntiSpam(2, 3) then-- sometimes Unseen Strike emote not fires. bliz bug.
-		self:Schedule(0.8, checkUnseenEmote)
 	elseif spellId == 123814 and self:AntiSpam(2, 2) then--Do not add other spellids here either. 123814 is only cast once, it starts the channel. everything else is cast every 1-2 seconds as periodic triggers.
 		phase2 = true
 		intensifyCD = 10
@@ -189,6 +170,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerUnseenStrikeCD:Cancel()
 		timerIntensifyCD:Cancel()
 		timerBladeTempestCD:Cancel()
+		countdownTempest:Cancel()
 		warnStormUnleashed:Show()
 		specWarnStormUnleashed:Show()
 	end
