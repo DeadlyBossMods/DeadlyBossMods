@@ -855,7 +855,6 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
 		local channel = (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT") or (IsInRaid() and "RAID_WARNING") or "PARTY"
-		DBM:CreatePizzaTimer(timer, DBM_CORE_TIMER_PULL, true)
 		DBM:Unschedule(SendChatMessage)
 		SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)
 		for i = 1, 5 do
@@ -1848,6 +1847,7 @@ do
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
 			dummyMod.countdown = dummyMod:NewCountdown(0, 0)
 		end
+		DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		dummyMod.countdown:Start(timer)
 	end
 
