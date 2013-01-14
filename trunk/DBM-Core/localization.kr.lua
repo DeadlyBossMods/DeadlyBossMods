@@ -117,12 +117,12 @@ DBM_CORE_UNKNOWN					= "알 수 없음"
 DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s 분 남았습니다!"
 DBM_CORE_BREAK_MIN					= "%s 분 후 쉬는 시간이 끝납니다!"
 DBM_CORE_BREAK_SEC					= "%s 초 후 쉬는 시간이 끝납니다!"
-DBM_CORE_TIMER_BREAK				= "쉬는 시간!"
+DBM_CORE_TIMER_BREAK				= "쉬는 시간"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 종료되었습니다."
 
-DBM_CORE_TIMER_PULL					= "풀링 중"
-DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 풀링 합니다."
-DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
+DBM_CORE_TIMER_PULL					= "전투 시작 예정"
+DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 시작 합니다."
+DBM_CORE_ANNOUNCE_PULL_NOW			= "시작했습니다. 긴장하세요.!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"
 
@@ -226,7 +226,7 @@ DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "나에게 %s!"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 
-DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "%dm 거리 체크를 지원하지 않는 지역입니다. 10, 11, 15, 28m를 지원합니다."
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "%dm 거리 확인을 지원하지 않는 지역입니다. 10, 11, 15, 28m를 지원합니다."
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
 DBM_ARROW_NO_RAIDGROUP					= "이 기능은 공격대에 속해 있고, 공격대 던전 내부에 있을때만 사용 가능합니다."
