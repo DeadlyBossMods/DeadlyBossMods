@@ -8,12 +8,16 @@ L= DBM:GetModLocalization(745)
 
 L:SetWarningLocalization({
 	warnAttenuation		= "%s auf %s (%s)",
+	warnEcho			= "Echo erschienen",
+	warnEchoDown		= "Echo besiegt",
 	specwarnAttenuation	= "%s auf %s (%s)",
 	specwarnPlatform	= "Plattformwechsel"
 })
 
 L:SetOptionLocalization({
 	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
+	warnEcho			= "Verkünde das Erscheinen eines Echos",
+	warnEchoDown		= "Verkünde den Sieg über ein Echo",
 	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "Zeige Spezialwarnung bei Plattformwechsel des Bosses",
 	ArrowOnAttenuation	= "Zeige DBM-Pfeil während $spell:127834 zur Anzeige der Ausweichrichtung",
@@ -83,6 +87,7 @@ L:SetWarningLocalization({
 	warnReshapeLife				= "%s auf >%s< (%d)",
 	warnReshapeLifeTutor		= "1: Unterbreche/Debuffe Ziel, 2: Unterbreche dich selbst, 3: Regeneriere Gesundheit/Willen, 4: Verlasse Konstrukt",
 	warnAmberExplosion			= ">%s< wirkt %s",
+	warnAmberExplosionAM		= "Bernmonstrosität wirkt Bernexplosion - Jetzt unterbrechen!",
 	warnInterruptsAvailable		= "Unterbrechungen verfügbar für %s: >%s<",
 	warnWillPower				= "Aktueller Willen: %s",
 	specwarnWillPower			= "Geringer Willen! - 5 Sekunden verbleibend",
@@ -99,6 +104,7 @@ L:SetOptionLocalization({
 	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "Zeige Überblick über den Zweck der Fähigkeiten Mutierter Konstrukte",
 	warnAmberExplosion			= "Zeige Warnung (mit Quelle), wenn $spell:122398 gewirkt wird",
+	warnAmberExplosionAM		= "Zeige persönliche Warnung, wenn Bernmonstrosität $spell:122398 wirkt\n(zum Unterbrechen)",
 	warnInterruptsAvailable		= "Verkünde bei wem Bernstoß-Unterbrechungen für $spell:122402\nverfügbar sind",
 	warnWillPower				= "Verkünde aktuellen Willen bei 80, 50, 30, 10 und 4",
 	specwarnWillPower			= "Zeige Spezialwarnung bei geringem Willen als Mutiertes Konstrukt",
