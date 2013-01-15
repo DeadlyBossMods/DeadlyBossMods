@@ -95,6 +95,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerDestabalize			= "動搖 (%2$d):%1$s",
 	timerAmberExplosionAMCD		= "琥珀爆炸冷卻:琥珀巨怪"
 })
 
@@ -109,6 +110,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionYou	= "為中斷你自己的$spell:122398顯示特別警告",
 	specwarnAmberExplosionAM	= "為中斷琥珀巨怪的$spell:122402顯示特別警告",
 	specwarnAmberExplosionOther	= "為中斷突變傀儡的$spell:122398顯示特別警告",
+	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "為琥珀巨怪下一次的$spell:122402顯示計時器",
 	InfoFrame					= "為玩家的意志力顯示訊息框架",
 	FixNameplates				= "開戰後自動禁用擾人的名字血條\n(離開戰鬥後恢復設定)"
