@@ -76,7 +76,7 @@ local timerParasiticGrowthCD	= mod:NewCDTimer(35, 121949, nil, mod:IsHealer())--
 local timerParasiticGrowth		= mod:NewTargetTimer(30, 121949, nil, mod:IsHealer())
 --Construct
 local timerAmberExplosionCD		= mod:NewNextSourceTimer(13, 122398)--13 second cd on player controled units, 18 seconds on non player controlled constructs
-local timerDestabalize			= mod:NewTargetTimer(15, 123059, nil, false)
+local timerDestabalize			= mod:NewTimer(15, "timerDestabalize", 123059)--timer Enables for all players. It's very importantant for heroic. (espcially on phase 2)
 local timerStruggleForControl	= mod:NewTargetTimer(5, 122395, nil, false)
 --Amber Monstrosity
 local timerMassiveStompCD		= mod:NewCDTimer(18, 122408, nil, mod:IsHealer() or mod:IsMelee())--18-25 seconds variation
@@ -101,6 +101,7 @@ local warnedWill = false
 local willNumber = 100--Last warned player will power number (not same as actual player will power)
 local lastStrike = 0
 local scansDone = 0
+local amDestabalizeStack = 0
 local amWarnCount = 0
 local Totems = nil
 local Guardians = nil
@@ -184,6 +185,7 @@ function mod:OnCombatStart(delay)
 	Constructs = 0
 	constructCount = 0
 	lastStrike = 0
+	amDestabalizeStack = 0
 	table.wipe(canInterrupt)
 	playerIsConstruct = false
 	timerAmberScalpelCD:Start(9-delay)
@@ -246,14 +248,19 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(123059) and Phase < 3 then -- ignore phase3, not useful and super spammy.
+	if args:IsSpellID(123059) then
 		local cid = args:GetDestCreatureID()
-		if cid == 62511 or cid == 62701 or cid == 62711 then -- Destabalize can be applid player's pet. so filter only boss, constructs, or monstrosity
-			warnDestabalize:Show(args.destName, args.amount or 1)
+		if cid == 62511 or cid == 62711 then -- Only boss or monstrosity (most raids do not care about to construct)
+			if Phase < 3 then -- ignore phase3, not useful and super spammy.
+				warnDestabalize:Show(args.destName, args.amount or 1)
+			end
 			if self:IsDifficulty("lfr25") then
-				timerDestabalize:Start(60, args.destName)
+				timerDestabalize:Start(60, args.destName, args.amount or 1)
 			else
-				timerDestabalize:Start(args.destName)
+				timerDestabalize:Start(nil, args.destName, args.amount or 1)
+			end
+			if cid == 62711 then 
+				amDestabalizeStack = args.amount or 1 -- save for timer canceling.
 			end
 		end
 	elseif args:IsSpellID(121949) then
@@ -323,9 +330,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(122754) then
-		timerDestabalize:Cancel(args.destName)
-	elseif args:IsSpellID(122370) then
+	if args:IsSpellID(122370) then
 		Constructs = Constructs - 1
 		if args:IsPlayer() then
 			self:UnregisterShortTermEvents()
@@ -352,7 +357,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFlingCD:Cancel()
 		timerAmberExplosionAMCD:Cancel()
 		constructCount = 0
-		timerDestabalize:Cancel(Monstrosity)
+		timerDestabalize:Cancel(Monstrosity, amDestabalizeStack)
 		warnAmberExplosionSoon:Cancel()
 		self:ScheduleMethod(0.2, "ReshapeTimerRestart")
 		if DBM.BossHealth:IsShown() then
