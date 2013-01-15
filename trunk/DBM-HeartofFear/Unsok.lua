@@ -254,6 +254,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if Phase < 3 then -- ignore phase3, not useful and super spammy.
 				warnDestabalize:Show(args.destName, args.amount or 1)
 			end
+			if args.amount then
+				timerDestabalize:Cancel(args.destName, args.amount - 1)
+			end
 			if self:IsDifficulty("lfr25") then
 				timerDestabalize:Start(60, args.destName, args.amount or 1)
 			else
