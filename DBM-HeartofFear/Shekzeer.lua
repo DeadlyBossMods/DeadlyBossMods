@@ -175,7 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(124077) then
 		specWarnDispatch:Show(args.sourceName)
-		if self:IsDifficulty("normal25", "heroic25") then
+		if self:IsDifficulty("normal25", "heroic25", "lfr25") then
 			timerDispatchCD:Start()--25 is about 12-15 variation
 		else
 			timerDispatchCD:Start(21)--Longer Cd on 10 man (21-24 variation)

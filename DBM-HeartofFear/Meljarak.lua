@@ -22,7 +22,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_MISSED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
-	"RAID_BOSS_EMOTE",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_AURA"
@@ -79,11 +78,7 @@ local countdownImpalingSpear			= mod:NewCountdown(49, 122224, nil, nil, 10) -- l
 mod:AddBoolOption("AmberPrisonIcons", true)
 
 local Reinforcement = EJ_GetSectionInfo(6554)
-local Srathik = EJ_GetSectionInfo(6300)
-local Zarthik = EJ_GetSectionInfo(6305)
-local Korthik = EJ_GetSectionInfo(6334)
 local addsCount = 0
-local reinforcementCast = 0
 local amberPrisonIcon = 2
 local zarthikCount = 0
 local firstStriked = false
@@ -92,7 +87,6 @@ local strikeTarget = nil
 local amberPrisonTargets = {}
 local windBombTargets = {}
 local zarthikGUIDS = {}
-local reinforcementMob = {}
 
 local function warnAmberPrisonTargets()
 	warnAmberPrison:Show(table.concat(amberPrisonTargets, "<, >"))
@@ -107,7 +101,6 @@ end
 
 function mod:OnCombatStart(delay)
 	addsCount = 0
-	reinforcementCast = 0
 	amberPrisonIcon = 2
 	zarthikCount = 0
 	firstStriked = false
@@ -115,7 +108,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(amberPrisonTargets)
 	table.wipe(windBombTargets)
 	table.wipe(zarthikGUIDS)
-	table.wipe(reinforcementMob)
 	timerKorthikStrikeCD:Start(18-delay)
 	timerRainOfBladesCD:Start(60-delay)
 	if not self:IsDifficulty("lfr25") then
@@ -156,14 +148,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(122055) and args:IsPlayer() then
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
 		timerResidue:Start(expires-GetTime())
-	elseif args:IsSpellID(125873) then
-		local cid = self:GetCIDFromGUID(args.sourceGUID)
-		addsCount = addsCount + 1
-		reinforcementMob[addsCount] = cid
-		warnRecklessness:Show(args.destName)
-		specWarnRecklessness:Show(args.destName)
-		timerRecklessness:Start()
-		timerReinforcementsCD:Start(50, addsCount)--We count them cause some groups may elect to kill a 2nd group of adds and start a second bar to form before first ends.
 	end
 end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
@@ -226,13 +210,6 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_DAMAGE
 
-function mod:RAID_BOSS_EMOTE(msg)
-	if msg == L.Reinforcements or msg:find(L.Reinforcements) then
-		reinforcementCast = reinforcementCast + 1
-		specWarnReinforcements:Show(reinforcementMob[reinforcementCast] == 62405 and Srathik or reinforcementMob[reinforcementCast] == 62408 and Zarthik or Korthik)
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 62405 then--Sra'thik Amber-Trapper
@@ -261,6 +238,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			firstStriked = true
 			timerKorthikStrikeCD:Start(32)
 		end
+	elseif spellId == 125873 then -- If adds die before Recklessness fades, CLEU not firing at all. To prevent fail, changes Recklessness check to UNIT_SPELLCAST_SUCCEEDED.
+		local mobname = UnitName(uId)
+		addsCount = addsCount + 1
+		warnRecklessness:Show(L.name)
+		specWarnRecklessness:Show(L.name)
+		timerRecklessness:Start()
+		timerReinforcementsCD:Start(50, addsCount)--We count them cause some groups may elect to kill a 2nd group of adds and start a second bar to form before first ends.
+		specWarnReinforcements:Schedule(50, mobname)
 	end
 end
 
