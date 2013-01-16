@@ -72,10 +72,6 @@ L:SetOptionLocalization({
 	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
 })
 
-L:SetMiscLocalization({
-	Reinforcements		= "원군"
-})
-
 ------------
 -- Amber-Shaper Un'sok --
 ------------
