@@ -77,10 +77,6 @@ L:SetOptionLocalization({
 	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
 })
 
-L:SetMiscLocalization({
-	Reinforcements		= "Le seigneur du Vent Mel'jarak appelle des renforts !"
-})
-
 ------------
 -- Amber-Shaper Un'sok --
 ------------
@@ -100,6 +96,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerDestabalize			= "Déstabiliser (%2$d) : %1$s",
 	timerAmberExplosionAMCD		= "Explosion CD: Monstruosité"
 })
 
@@ -114,6 +111,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionYou	= "Alerte spéciale pour interrompre votre propre $spell:122398",
 	specwarnAmberExplosionAM	= "Alerte spéciale pour interrompre $spell:122402\nde la Monstruosité d’ambre",
 	specwarnAmberExplosionOther	= "Alerte spéciale pour interrompre le $spell:122398\nde l'Assemblage muté",-- à vérifier
+	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "Afficher le temps avant la prochaine $spell:122402\nde la Monstruosité d'ambre",
 	InfoFrame					= "Afficher le cadre d'information de la Volonté des joueurs",
 	FixNameplates				= "Désactiver les barres d'info quand vous êtes en Assemblage muté\n(Restaure les paramètres en quittant le combat)"
