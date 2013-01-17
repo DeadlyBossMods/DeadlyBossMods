@@ -10,14 +10,19 @@ L= DBM:GetModLocalization(827)
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetMiscLocalization({
+	newForces		= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget	= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+})
+
 ---------------------------
 -- The Council of Elders --
 ---------------------------
 L= DBM:GetModLocalization(816)
 
 L:SetOptionLocalization({
-	warnSandBolt			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
-	RangeFrame				= "Show range frame"
+	warnSandBolt	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
+	RangeFrame		= "Show range frame"
 })
 
 ------------
