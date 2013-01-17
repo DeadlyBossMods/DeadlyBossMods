@@ -208,7 +208,6 @@ else
 		--5.2 mods are disabled for horde since they tried their hardest to prevent them from being developed
 		--This will be removed when PTR is over. But as long as horde is going WAY out of way to hinder bossmod development on PTR, they won't be allowed to use it there either.
 		"DBM-ThroneofThunder",
-		"DBM-Pandaria",
 	}
 end
 
