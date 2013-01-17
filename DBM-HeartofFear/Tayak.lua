@@ -70,7 +70,7 @@ function mod:OnCombatStart(delay)
 		countdownTempest:Start(-delay)
 	end
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(8)
+		DBM.RangeCheck:Show(10)
 	end
 end
 

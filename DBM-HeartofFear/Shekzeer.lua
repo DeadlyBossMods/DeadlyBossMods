@@ -44,7 +44,7 @@ local specWarnRetreat			= mod:NewSpecialWarningSpell(125098)
 local specwarnAmberTrap			= mod:NewSpecialWarningSpell(125826, false)
 local specwarnStickyResin		= mod:NewSpecialWarningYou(124097)
 local yellStickyResin			= mod:NewYell(124097, nil, false)
-local specwarnFixate			= mod:NewSpecialWarningYou(125390, false)--Could be spammy, make optional, will use info frame to display this more constructively
+local specwarnFixate			= mod:NewSpecialWarningYou(125390)
 local specWarnDispatch			= mod:NewSpecialWarningInterrupt(124077, mod:IsMelee())
 local specWarnAdvance			= mod:NewSpecialWarningSpell(125304)
 local specwarnVisions			= mod:NewSpecialWarningYou(124862)
@@ -69,6 +69,8 @@ local timerCorruptedDissonance	= mod:NewNextTimer(20, 126122)--10 seconds after 
 local timerHeartOfFear			= mod:NewBuffFadesTimer(6, 125638)
 
 local berserkTimer				= mod:NewBerserkTimer(900)
+
+local soundFixate				= mod:NewSound(125390)
 
 mod:AddBoolOption("InfoFrame")--On by default because these do more then just melee, they interrupt spellcasting (bad for healers)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
@@ -147,6 +149,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFixate:Show(args.destName)
 		if args:IsPlayer() then
 			specwarnFixate:Show()
+			soundFixate:Play()
 		end
 	elseif args:IsSpellID(124862) then
 		visonsTargets[#visonsTargets + 1] = args.destName
