@@ -10,6 +10,14 @@ L= DBM:GetModLocalization(827)
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetTimerLocalization({
+	timerAddsCD		= "Adds CD",
+})
+
+L:SetOptionLocalization({
+	timerAddsCD		= "Show timer for Adds cooldown",
+})
+
 L:SetMiscLocalization({
 	newForces		= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
 	chargeTarget	= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
