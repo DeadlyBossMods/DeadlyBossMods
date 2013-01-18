@@ -1,4 +1,4 @@
--- Last update: 01/05/2013 (05/01/2013 in french format)
+-- Last update: 01/18/2013 (18/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -42,7 +42,7 @@ L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
 	UnseenStrikeArrow	= "Afficher la flêche DBM quand quelqu'un est touché par $spell:122949",
-	RangeFrame			= "Afficher le cadre de distance (8m) pour $spell:123175"
+	RangeFrame			= "Afficher le cadre de distance (10m) pour $spell:123175"
 })
 
 
