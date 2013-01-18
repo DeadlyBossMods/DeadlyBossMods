@@ -268,3 +268,33 @@ L:SetOptionLocalization({
 	ShowGilneasEstimatedPoints		= "Show estimated points on win/loss",
 	ShowGilneasBasesToWin			= "Show bases required to win"
 })
+
+-------------------------
+--  Silvershard Mines  --
+-------------------------
+L = DBM:GetModLocalization("SilvershardMines")
+
+L:SetGeneralLocalization({
+	name = "Silvershard Mines"
+})
+
+L:SetMiscLocalization({
+	Capture = "has captured"
+})
+
+L:SetTimerLocalization({
+	TimerCart	= "Cart respawn"
+})
+
+L:SetOptionLocalization({
+	TimerCart	= "Show cart respawn timer"
+})
+
+-------------------------
+--  Temple of Kotmogu  --
+-------------------------
+L = DBM:GetModLocalization("Kotmogu")
+
+L:SetGeneralLocalization({
+	name = "Temple of Kotmogu"
+})
