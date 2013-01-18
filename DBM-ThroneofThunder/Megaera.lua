@@ -4,7 +4,8 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(62983)
---mod:SetModelID(42811)
+mod:SetModelID(47414)--Hydra Fire Head, 47415 Frost Head, 47416 Poison Head
+
 
 mod:RegisterCombat("combat")
 
