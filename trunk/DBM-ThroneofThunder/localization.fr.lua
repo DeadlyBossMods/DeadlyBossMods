@@ -1,4 +1,4 @@
-﻿-- Last update: 01/13/2013 (13/01/2013 in french format)
+﻿-- Last update: 01/18/2013 (18/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -14,14 +14,27 @@ L= DBM:GetModLocalization(827)
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetTimerLocalization({
+	timerAddsCD		= "Prochaine Porte Tribale",
+})
+
+L:SetOptionLocalization({
+	timerAddsCD		= "Afficher le temps pour la prochain phase de Porte Tribale",
+})
+
+L:SetMiscLocalization({
+	newForces		= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget	= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+})
+
 ---------------------------
 -- The Council of Elders --
 ---------------------------
 L= DBM:GetModLocalization(816)
 
 L:SetOptionLocalization({
-	warnSandBolt			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
-	RangeFrame				= "Afficher le cadre de distance"
+	warnSandBolt		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
+	RangeFrame			= "Afficher le cadre de distance"
 })
 
 
