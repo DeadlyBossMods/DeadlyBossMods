@@ -11,11 +11,11 @@ L= DBM:GetModLocalization(827)
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "Adds CD",
+	timerAddsCD		= "Next Tribal Door",
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Show timer for Adds cooldown",
+	timerAddsCD		= "Show timer for next Tribal Door phase",
 })
 
 L:SetMiscLocalization({

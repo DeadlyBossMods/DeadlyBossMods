@@ -13,6 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
@@ -21,23 +23,53 @@ local warnPuncture				= mod:NewStackAnnounce(136767, 3, nil, mod:IsTank() or mod
 
 local specWarnCharge			= mod:NewSpecialWarningYou(136769)--Maybe add a near warning later. person does have 3.4 seconds to react though and just move out of group.
 local yellCharge				= mod:NewYell(136769)
+local specWarnDoubleSwipe		= mod:NewSpecialWarningSpell(136741, nil, nil, nil, true)
 local specWarnPuncture			= mod:NewSpecialWarningStack(136767, mod:IsTank(), 10)--10 seems like a good number, we'll start with that. Timing wise the swap typically comes when switching gates though.
 local specWarnPunctureOther		= mod:NewSpecialWarningTarget(136767, mod:IsTank())
+local specWarnSandTrap			= mod:NewSpecialWarningMove(136723)
+local specWarnFrozenBolt		= mod:NewSpecialWarningMove(136573)--Debuff used by Frozen Orbs
 
 local timerAddsCD				= mod:NewTimer(114, "timerAddsCD")--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
 local timerCharge				= mod:NewCastTimer(3.4, 136769)
 local timerChargeCD				= mod:NewCDTimer(50, 136769)--50-60 second depending on i he's casting other stuff or stunned
+local timerDoubleSwipeCD		= mod:NewCDTimer(18, 136741)--18 second cd unless delayed by a charge triggered double swipe, then it's extended by failsafe code
 local timerPuncture				= mod:NewTargetTimer(90, 136767, nil, mod:IsTank() or mod:IsHealer())
+local timerPunctureCD			= mod:NewCDTimer(11, 136767, nil, mod:IsTank() or mod:IsHealer())
 
 function mod:OnCombatStart(delay)
+	timerPunctureCD:Start(-delay)
 	timerAddsCD:Start(17-delay)
 	timerChargeCD:Start(31-delay)--31-35sec variation
+end
+
+--[[
+Back to backs, as expected
+"<244.6 15:11:23> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#68168#0##nil#-2147483648#-2147483648#136741#Double Swipe#1", -- [17383]
+"<262.7 15:11:42> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#68168#0##nil#-2147483648#-2147483648#136741#Double Swipe#1", -- [19036]
+Delayed by Charge version
+"<59.8 15:08:19> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#68168#0##nil#-2147483648#-2147483648#136741#Double Swipe#1", -- [4747]
+"<70.7 15:08:30> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#68168#0##nil#-2147483648#-2147483648#136769#Charge#1", -- [5273]
+"<74.8 15:08:34> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#68168#0##nil#-2147483648#-2147483648#136770#Double Swipe#1", -- [5452]
+"<86.4 15:08:45> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#2632#0##nil#-2147483648#-2147483648#136741#Double Swipe#1", -- [6003]
+--]]
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(136741) then--Regular double swipe
+		specWarnDoubleSwipe:Show()
+		--The only flaw is charge is sometimes delayed by unexpected events like using an orb, we may fail to start timer once in a while when it DOES come before a charge.
+		if timerChargeCD:GetTime() < 32 then--Check if charge is less than 18 seconds away, if it is, double swipe is going tobe delayed by quite a bit and we'll trigger timer after charge
+			timerDoubleSwipeCD:Start()
+		end
+	elseif args:IsSpellID(136770) then--Double swipe that follows a charge (136769)
+		specWarnDoubleSwipe:Show()
+		timerDoubleSwipeCD:Start(11.5)--Hard coded failsafe. If 
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136767) then
 		warnPuncture:Show(args.destName, args.amount or 1)
 		timerPuncture:Start(args.destName)
+		timerPunctureCD:Start()
 		if args:IsPlayer() then
 			if (args.amount or 1) >= 10 then
 				specWarnPuncture:Show(args.amount)
@@ -61,6 +93,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerPuncture:Cancel(args.destName)
 	end
 end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 136723 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+		specWarnSandTrap:Show()
+	elseif spellId == 136573 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+		specWarnFrozenBolt:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.chargeTarget) then--Does not show in combat log except for after it hits. IT does fire a UNIT_SPELLCAST event but has no target info. You can get target 1 sec faster with UNIT_AURA but it's more cpu and not worth the trivial gain IMO
