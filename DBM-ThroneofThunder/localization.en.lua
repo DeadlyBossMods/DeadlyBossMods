@@ -68,6 +68,10 @@ L= DBM:GetModLocalization(824)
 --------------
 L= DBM:GetModLocalization(817)
 
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame"
+})
+
 -------------------
 -- Twin Consorts --
 -------------------
