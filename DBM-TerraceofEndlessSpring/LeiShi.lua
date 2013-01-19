@@ -51,6 +51,7 @@ local specialRemaining = 0
 local guards = {}
 local guardActivated = 0
 local lostHealth = 0
+local prevlostHealth = 0
 local hideDebug = 0
 local damageDebug = 0
 local timeDebug = 0
@@ -134,7 +135,7 @@ end
 function mod:ScaryFogRepeat()
 	timerScaryFogCD:Cancel()
 	self:UnscheduleMethod("ScaryFogRepeat")
-	local interval = 10 * (1/(1+(lostHealth*0.8)))--Seems that Scray Fog interval reduced by her casting speed.
+	local interval = 10 * (1/(1+lostHealth))--Seems that Scray Fog interval reduced by her casting speed. / EJ lies? seems on heroic, her casting speed increases by 1% per 1% health lost. (lfr: 0.8, normal: 0.9, heroic: 1.0?)
 	timerScaryFogCD:Start(interval)
 	self:ScheduleMethod(interval, "ScaryFogRepeat")
 end
@@ -154,6 +155,7 @@ function mod:OnCombatStart(delay)
 	lastProtect = 0
 	specialRemaining = 0
 	lostHealth = 0
+	prevlostHealth = 0
 	timerSpecialCD:Start(32.5-delay, 1)--Variable, 32.5-37 (or aborted if 80% protect happens first)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(420-delay)
@@ -322,7 +324,11 @@ end
 
 function mod:UNIT_HEALTH(uId)
 	if uId == "boss1" then
-		lostHealth = 1 - (UnitHealth(uId) / UnitHealthMax(uId))
+		local currentHealth = 1 - (UnitHealth(uId) / UnitHealthMax(uId))
+		if currentHealth and currentHealth < 1 and currentHealth > prevlostHealth then -- Failsafe.
+			lostHealth = currentHealth
+			prevlostHealth = currentHealth
+		end
 	end
 end
 
@@ -352,9 +358,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	warnHideOver:Show(GetSpellInfo(123244))
 	warnHideProgress:Cancel()
 	warnHideProgress:Show(hideDebug, damageDebug, tostring(format("%.1f", timeDebug)))--Show right away instead of waiting out the schedule
-	if self:IsDifficulty("heroic10", "heroic25") then
-		self:ScaryFogRepeat()
-	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)--Go back to showing only tanks
 	end
