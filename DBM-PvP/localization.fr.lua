@@ -1,4 +1,4 @@
-﻿-- Last update: 12/20/2012 (20/12/2012 in french format)
+﻿-- Last update: 01/19/2013 (19/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 if GetLocale() ~= "frFR" then return end
 local L
@@ -278,4 +278,34 @@ L:SetOptionLocalization({
 	TimerCap 				= "Montre le timer de capture",
 	ShowGilneasEstimatedPoints	= "Montre l'estimation de points pour gagner / perdre",
 	ShowGilneasBasesToWin	= "Montre les bases à avoir pour gagner"
+})
+
+-------------------------
+--  Silvershard Mines  --
+-------------------------
+L = DBM:GetModLocalization("SilvershardMines")
+
+L:SetGeneralLocalization({
+	name = "Mines d'Éclargent"
+})
+
+L:SetMiscLocalization({
+	Capture = "pris le contrôle"
+})
+
+L:SetTimerLocalization({
+	TimerCart	= "Chariot respawn"
+})
+
+L:SetOptionLocalization({
+	TimerCart	= "Afficher le temps de respawn des chariots"
+})
+
+-------------------------
+--  Temple of Kotmogu  --
+-------------------------
+L = DBM:GetModLocalization("Kotmogu")
+
+L:SetGeneralLocalization({
+	name = "Temple de Kotmogu"
 })
