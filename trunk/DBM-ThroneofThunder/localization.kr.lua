@@ -12,11 +12,11 @@ L= DBM:GetModLocalization(827)
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "추가병력 가능",
+	timerAddsCD		= "다음 부족의 문 열림",
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "추가병력 대기시간 바 표시",
+	timerAddsCD		= "다음 부족의 문 열림 바 표시",
 })
 
 L:SetMiscLocalization({
