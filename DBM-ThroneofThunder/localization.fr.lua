@@ -1,4 +1,4 @@
-﻿-- Last update: 01/18/2013 (18/01/2013 in french format)
+﻿-- Last update: 01/19/2013 (19/01/2013 in french format)
 -- By Edoz (stephanelc35@msn.com)
 
 if GetLocale() ~= "frFR" then return end
@@ -72,6 +72,11 @@ L= DBM:GetModLocalization(824)
 -- Iron Qon --
 --------------
 L= DBM:GetModLocalization(817)
+
+L:SetOptionLocalization({
+	RangeFrame		= "Afficher le cadre de distance"
+})
+
 
 -------------------
 -- Twin Consorts --
