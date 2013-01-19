@@ -263,3 +263,33 @@ L:SetOptionLocalization({
 	ShowGilneasEstimatedPoints 	= "전투 종료시 승/패 진영 예상 점수 표시",
 	ShowGilneasBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 개수 표시"
 })
+
+-------------------------
+--  Silvershard Mines  --
+-------------------------
+L = DBM:GetModLocalization("SilvershardMines")
+
+L:SetGeneralLocalization({
+	name = "은빛수정 광산"
+})
+
+L:SetMiscLocalization({
+	Capture = "수레를 차지"
+})
+
+L:SetTimerLocalization({
+	TimerCart	= "수레 재생성"
+})
+
+L:SetOptionLocalization({
+	TimerCart	= "수레 재생성 바 표시"
+})
+
+-------------------------
+--  Temple of Kotmogu  --
+-------------------------
+L = DBM:GetModLocalization("Kotmogu")
+
+L:SetGeneralLocalization({
+	name = "코트모구의 사원"
+})

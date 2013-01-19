@@ -207,10 +207,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(129147) then
 		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
-			onPlatform = true
 			specWarnOminousCackleYou:Show()
 			countdownBreathOfFear:Cancel()
 			timerBreathOfFearCD:Cancel()
+			self:UnscheduleMethod("CheckPlatformLeaved")
 			self:UnscheduleMethod("CheckWall")
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
@@ -315,7 +315,9 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(120047) then
+	if args:IsSpellID(129147) and args:IsPlayer() then -- Move onPlatform check when Ominous Cackle debuff removes (actually reachs platform). Because on 25 man, you can see other platform warning and timer while flying to platform. (not actually reachs platform). This causes health frame error and etc error. 
+		onPlatform = true
+	elseif args:IsSpellID(120047) then
 		timerDreadSpray:Cancel(args.sourceGUID)
 		dreadSprayCounter = 0
 	elseif args:IsSpellID(118977) and args:IsPlayer() then
