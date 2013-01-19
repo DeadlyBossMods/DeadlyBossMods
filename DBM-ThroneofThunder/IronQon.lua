@@ -104,14 +104,14 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 68168 then--Ro'shak
+	if cid == 68079 then--Ro'shak
 		--Only one log, but i looks like spear cd from phase 1 remains intact
 		phase = 2
 		timerUnleashedFlameCD:Cancel()
 		timerMoltenOverload:Cancel()
 		timerLightningStormCD:Start(17)
 		print("Mod beyond phase 1 incomplete. You can thank horde grieving instance portal for that")
-	elseif cid == 68168 then--Quet'zal
+	elseif cid == 68080 then--Quet'zal
 		phase = 3
 		timerLightningStormCD:Cancel()
 	elseif cid == 68081 then--Dam'ren
