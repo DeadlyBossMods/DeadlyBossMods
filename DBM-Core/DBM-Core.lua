@@ -3152,7 +3152,7 @@ end
 do
 	local old = RaidBossEmoteFrame:GetScript("OnEvent")
 	RaidBossEmoteFrame:SetScript("OnEvent", function(...)
-		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then
+		if DBM.Options.HideBossEmoteFrame and IsInInstance() then--Function doesn't work, AT ALL. Table returns nil here, so try it a different way
 			return
 		end
 		return old(...)
