@@ -1848,7 +1848,7 @@ do
 
 	local dummyMod -- dummy mod for the pull sound effect
 	syncHandlers["PT"] = function(sender, timer)
-		if not DBM.Options.CountdownPullTimer or select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 then
+		if not DBM.Options.CountdownPullTimer or select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
 			return
 		end
 		timer = tonumber(timer or 0)
