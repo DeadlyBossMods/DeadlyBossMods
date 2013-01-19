@@ -54,6 +54,8 @@ Battlegrounds\Arathi.lua
 Battlegrounds\Gilneas.lua
 Battlegrounds\EyeOfTheStorm.lua
 Battlegrounds\IsleOfConquest.lua
+Battlegrounds\SilvershardMines.lua
+Battlegrounds\TempleOfKotmogu.lua
 Battlegrounds\TwinPeaks.lua
 Battlegrounds\Warsong.lua
 Arenas\Arenas.lua
