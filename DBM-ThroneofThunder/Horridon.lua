@@ -16,7 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+	"UNIT_DIED"
 )
 
 local warnCharge				= mod:NewTargetAnnounce(136769, 4)
@@ -147,5 +148,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		end
 	elseif msg:find(L.newForces) then
 		timerAddsCD:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 69374 then
+		timerBestialCryCD:Cancel()
 	end
 end
