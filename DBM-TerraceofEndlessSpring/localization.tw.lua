@@ -12,9 +12,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnGroupOrder		= "提示$spell:118191的隊伍輪班\n(目前只支援25人5,2,2,2,戰術)",
+	warnGroupOrder		= "提示$spell:118191的隊伍輪班(目前只支援25人5,2,2,2,戰術)",
 	specWarnYourGroup	= "為$spell:118191顯示特別警告當輪到你的隊伍時\n(只適用於25人)",
-	RangeFrame			= "為$spell:111850顯示距離框(8碼)\n(當你有debuff時只顯示其他沒有debuff的玩家)",
+	RangeFrame			= "為$spell:111850顯示距離框(8碼)(當你有debuff時只顯示其他沒有debuff的玩家)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
 
@@ -47,9 +47,9 @@ L:SetOptionLocalization({
 	warnHideOver			= "為$spell:123244結束顯示警告",
 	warnHideProgress		= "當$spell:123244結束後顯示統計",
 	timerSpecialCD			= "為下一次特別技能冷卻顯示計時器",
-	SetIconOnProtector		= "為$journal:6224標示團隊圖示\n(超過一名以上的團隊助理時不可靠)",
+	SetIconOnProtector		= "為$journal:6224標示團隊圖示(超過一名以上的團隊助理時不可靠)",
 	RangeFrame				= "為$spell:123121顯示距離框(3碼)(只有顯示坦)",
-	GWHealthFrame			= "為$spell:123461顯示需求血量框架\n(首領血量框架需要開啟)" -- maybe bad wording, needs review
+	GWHealthFrame			= "為$spell:123461顯示需求血量框架(首領血量框架需要開啟)" -- maybe bad wording, needs review
 })
 
 L:SetMiscLocalization{

@@ -72,10 +72,6 @@ L:SetOptionLocalization({
 	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
 })
 
-L:SetMiscLocalization({
-	Reinforcements		= "風領主瑪爾加拉克召喚增援!"
-})
-
 ------------
 -- Amber-Shaper Un'sok --
 ------------
@@ -113,7 +109,7 @@ L:SetOptionLocalization({
 	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "為琥珀巨怪下一次的$spell:122402顯示計時器",
 	InfoFrame					= "為玩家的意志力顯示訊息框架",
-	FixNameplates				= "開戰後自動禁用擾人的名字血條\n(離開戰鬥後恢復設定)"
+	FixNameplates				= "開戰後自動禁用擾人的名字血條(離開戰鬥後恢復設定)"
 })
 
 L:SetMiscLocalization({
