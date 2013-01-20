@@ -870,7 +870,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	end
 	local mapName = GetMapInfo()
 	range = range or 10
-	redCircleNumPlayers = redCircleNumPlayers or 0
+	redCircleNumPlayers = redCircleNumPlayers or 1
 	frame = frame or createFrame()
 	radarFrame = radarFrame or createRadarFrame()
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
