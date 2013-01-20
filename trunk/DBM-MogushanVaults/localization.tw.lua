@@ -110,8 +110,8 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "為受到$spell:116525的玩家顯示訊息框",
-	CountOutCombo	= "數出$journal:5673連擊數\n註:這目前僅只有女性音效.",
-	ArrowOnCombo	= "為$journal:5673顯示DBM箭頭\n注:這是假設坦克在前方而其他人在後方"
+	CountOutCombo	= "數出$journal:5673連擊數 註:這目前僅只有女性音效.",
+	ArrowOnCombo	= "為$journal:5673顯示DBM箭頭 註:這是假設坦克在前方而其他人在後方"
 })
 
 L:SetMiscLocalization({
