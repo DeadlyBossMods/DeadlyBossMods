@@ -69,7 +69,7 @@ L= DBM:GetModLocalization(824)
 L= DBM:GetModLocalization(817)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Show range frame"
+	RangeFrame		= "Show dynamic range frame\n(This is a smart range frame that shows when too many are too close)"
 })
 
 -------------------
