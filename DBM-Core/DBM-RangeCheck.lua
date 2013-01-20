@@ -479,15 +479,22 @@ function createRadarFrame()
 	player:SetBlendMode("ADD")
 	player:SetPoint("CENTER")
 
-	local text = radarFrame:CreateFontString(nil, "OVERLAY","GameTooltipText")
+	local text = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
 	text:SetWidth(128)
 	text:SetHeight(15)
 	text:SetPoint("BOTTOMLEFT", radarFrame, "TOPLEFT", 0,0)
---	text:SetFont("Fonts\\FRIZQT__.TTF", 11)
 	text:SetTextColor(1, 1, 1, 1)
 	text:Show()
 	radarFrame.text = text
 
+	local inRangeText = radarFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
+	inRangeText:SetWidth(128)
+	inRangeText:SetHeight(15)
+	inRangeText:SetPoint("TOPLEFT", radarFrame, "BOTTOMLEFT", 0,0)
+	inRangeText:SetTextColor(1, 1, 1, 1)
+	inRangeText:Hide()
+	radarFrame.inRangeText = inRangeText
+	
 --	for i=1, 40 do
 --		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..i, radarFrame, "WorldMapPartyUnitTemplate")
 --		dot:SetWidth(24)
@@ -567,7 +574,7 @@ function onUpdate(self, elapsed)
 end
 
 do
-	local rotation, pixelsperyard, prevNumPlayers, range, isInSupportedArea
+	local rotation, pixelsperyard, prevNumPlayers, range, isInSupportedArea, prevNumPlayersTooClose
 	local function createDot(id)
 		local dot = CreateFrame("Frame", "DBMRangeCheckRadarDot"..id, radarFrame, "WorldMapPartyUnitTemplate")
 		dot:SetFrameStrata("TOOLTIP")
@@ -720,16 +727,29 @@ do
 					end
 				end
 
-				local playerTooClose = false
+				local exceedsPlayersTooClose = false
+				local numPlayersTooClose = 0
 				for i,v in pairs(dots) do
 					if v.tooClose then
-						playerTooClose = true
-						break;
+						numPlayersTooClose = numPlayersTooClose + 1
+						if numPlayersTooClose >= frame.redCircleNumPlayers then
+							exceedsPlayersTooClose = true
+						end
 					end
 				end
+				if numPlayersTooClose ~= (prevNumPlayersTooClose or 0) then
+					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(numPlayersTooClose))
+					if exceedsPlayersTooClose then	-- only show the text if the circle is red
+						radarFrame.inRangeText:Show()
+					else
+						radarFrame.inRangeText:Hide()
+					end
+				end
+				prevNumPlayersTooClose = numPlayersTooClose
+				
 				if UnitIsDeadOrGhost("player") then
 					radarFrame.circle:SetVertexColor(1,1,1)
-				elseif playerTooClose then
+				elseif exceedsPlayersTooClose then
 					radarFrame.circle:SetVertexColor(1,0,0)
 				else
 					radarFrame.circle:SetVertexColor(0,1,0)
@@ -842,7 +862,7 @@ end
 ---------------
 --  Methods  --
 ---------------
-function rangeCheck:Show(range, filter, forceshow)
+function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	if DBM.Options.DontShowRangeFrame and not forceshow then return end
 	SetMapToCurrentZone()--Set map to current zone before checking other stuff, work around annoying bug i hope?
 	if type(range) == "function" then -- the first argument is optional
@@ -850,11 +870,13 @@ function rangeCheck:Show(range, filter, forceshow)
 	end
 	local mapName = GetMapInfo()
 	range = range or 10
+	redCircleNumPlayers = redCircleNumPlayers or 0
 	frame = frame or createFrame()
 	radarFrame = radarFrame or createRadarFrame()
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
 	frame.range = range
 	frame.filter = filter
+	frame.redCircleNumPlayers = redCircleNumPlayers
 	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or DBM.MapSizes[mapName] == nil or (DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()] == nil) then
 		frame:Show()
 		frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
