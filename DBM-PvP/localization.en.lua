@@ -298,3 +298,20 @@ L = DBM:GetModLocalization("Kotmogu")
 L:SetGeneralLocalization({
 	name = "Temple of Kotmogu"
 })
+
+L:SetMiscLocalization({
+	OrbTaken 	= "(%S+) has taken the (%S+) orb!",
+	OrbReturn 	= "The (%S+) orb has been returned!",
+	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "Alliance",
+	Horde		= "Horde",
+	WinBarText	= "Estimate %s wins",
+	OrbsToWin	= "Orbs to win: %d"
+})
+
+
+L:SetOptionLocalization({
+	TimerWin			= "Show win timer",
+	ShowKotmoguEstimatedPoints	= "Show estimated points on win/loss",
+	ShowKotmoguOrbsToWin		= "Show orbs required to win"
+})
