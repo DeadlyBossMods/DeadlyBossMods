@@ -94,9 +94,7 @@ local thrashCount = 0
 local submergeCount = 0
 local huddleIcon = 8
 local MobID = 0
-local huddle = 0
-local spout = 0
-local strike = 0
+local specialsCast = 000--Huddle(100), Spout(10), Strike(1)
 
 local function warnOminousCackleTargets()
 	warnOminousCackle:Show(table.concat(ominousCackleTargets, "<, >"))
@@ -112,6 +110,27 @@ local function warnHuddleInTerrorTargets()
 	warnHuddleInTerror:Show(table.concat(huddleInTerrorTargets, "<, >"))
 	table.wipe(huddleInTerrorTargets)
 	huddleIcon = 8
+end
+
+local function startSpecialTimers()
+	if specialsCast == 110 then
+		timerImplacableStrikeCD:Start()
+	end
+	if specialsCast == 101 then
+		timerWaterspoutCD:Start()
+	end
+	if specialsCast == 011 then
+		timerHuddleInTerrorCD:Start()
+	end	
+	if specialsCast == 100 then
+		timerSpoStrCD:Start()
+	end
+	if specialsCast == 010 then
+		timerHudStrCD:Start()
+	end
+	if specialsCast == 001 then
+		timerSpoHudCD:Start()
+	end
 end
 
 function mod:CheckWall()
@@ -148,12 +167,12 @@ function mod:LeavePlatform()
 			timerBreathOfFearCD:Start(33.3-shaPower)
 			countdownBreathOfFear:Start(33.3-shaPower)
 			if shaPower < 26.3 then
-				mod:ScheduleMethod(26.3-shaPower, "CheckWall")
+				self:ScheduleMethod(26.3-shaPower, "CheckWall")
 			elseif not fearlessApplied then
 				specWarnBreathOfFearSoon:Show()
 			end
 		end
-		if mod.Options.RangeFrame then
+		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(2)
 		end
 	end
@@ -176,9 +195,7 @@ function mod:OnCombatStart(delay)
 	submergeCount = 0
 	huddleIcon = 8
 	MobID = nil
-	huddle = 0
-	spout = 0
-	strike = 0
+	specialsCast = 000
 	table.wipe(ominousCackleTargets)
 	table.wipe(platformGUIDs)
 	table.wipe(waterspoutTargets)
@@ -260,25 +277,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnWaterspoutTargets)
 		self:Schedule(0.3, warnWaterspoutTargets)
-		spout = 1
-		if huddle == 1 and spout == 1 and strike == 0 then
-			timerImplacableStrikeCD:Start()
-		end
-		if huddle == 1 and spout == 0 and strike == 1 then
-			timerWaterspoutCD:Start()
-		end
-		if huddle == 0 and spout == 1 and strike == 1 then
-			timerHuddleInTerrorCD:Start()
-		end	
-		if huddle == 1 and spout == 0 and strike == 0 then
-			timerSpoStrCD:Start()
-		end
-		if huddle == 0 and spout == 1 and strike == 0 then
-			timerHudStrCD:Start()
-		end
-		if huddle == 0 and spout == 0 and strike == 1 then
-			timerSpoHudCD:Start()
-		end
+		specialsCast = specialsCast + 10--Huddle (100), Spout(10), Strike(1)
+		startSpecialTimers()
 	elseif args:IsSpellID(120629) then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
 		if self.Options.SetIconOnHuddle then
@@ -287,25 +287,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnHuddleInTerrorTargets)
 		self:Schedule(0.5, warnHuddleInTerrorTargets)
-		huddle = 1
-		if huddle == 1 and spout == 1 and strike == 0 then
-			timerImplacableStrikeCD:Start()
-		end
-		if huddle == 1 and spout == 0 and strike == 1 then
-			timerWaterspoutCD:Start()
-		end
-		if huddle == 0 and spout == 1 and strike == 1 then
-			timerHuddleInTerrorCD:Start()
-		end	
-		if huddle == 1 and spout == 0 and strike == 0 then
-			timerSpoStrCD:Start()
-		end
-		if huddle == 0 and spout == 1 and strike == 0 then
-			timerHudStrCD:Start()
-		end
-		if huddle == 0 and spout == 0 and strike == 1 then
-			timerSpoHudCD:Start()
-		end
+		specialsCast = specialsCast + 100--Huddle (100), Spout(10), Strike(1)
+		startSpecialTimers()
 	elseif args:IsSpellID(120268) then -- Champion Of The Light
 		warnChampionOfTheLight:Show(args.destName)
 		if args:IsPlayer() then
@@ -347,33 +330,14 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(120672) then -- Implacable Strike
 		warnImplacableStrike:Show()
 		specWarnImplacableStrike:Show()
-		strike = 1
-		if huddle == 1 and spout == 1 and strike == 0 then
-			timerImplacableStrikeCD:Start()
-		end
-		if huddle == 1 and spout == 0 and strike == 1 then
-			timerWaterspoutCD:Start()
-		end
-		if huddle == 0 and spout == 1 and strike == 1 then
-			timerHuddleInTerrorCD:Start()
-		end	
-		if huddle == 1 and spout == 0 and strike == 0 then
-			timerSpoStrCD:Start()
-		end
-		if huddle == 0 and spout == 1 and strike == 0 then
-			timerHudStrCD:Start()
-		end
-		if huddle == 0 and spout == 0 and strike == 1 then
-			timerSpoHudCD:Start()
-		end
+		specialsCast = specialsCast + 1--Huddle (100), Spout(10), Strike(1)
+		startSpecialTimers()
 	elseif args:IsSpellID(120455) then
 		submergeCount = submergeCount + 1
 		warnSubmerge:Show(submergeCount)
 		specWarnSubmerge:Show()
 		timerSubmergeCD:Start(nil, submergeCount+1)
-		huddle = 0
-		spout = 0
-		strike = 0
+		specialsCast = 000
 		timerSpecialAbilityCD:Start()
 	--elseif args:IsSpellID(120458) then
 		--warnEmerge:Show()
