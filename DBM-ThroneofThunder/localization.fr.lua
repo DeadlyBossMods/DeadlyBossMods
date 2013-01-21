@@ -74,7 +74,7 @@ L= DBM:GetModLocalization(824)
 L= DBM:GetModLocalization(817)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Afficher le cadre de distance"
+	RangeFrame		= "Afficher le cadre de distance dynamique\n(Un cadre de distance intelligent qui indique quand trop de joueurs sont trop proches)"
 })
 
 
