@@ -83,6 +83,7 @@ DBM_CORE_RANGECHECK_OPTION_SLOW		= "Lente (faible utilisation du CPU)"
 DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "Moyenne"
 DBM_CORE_RANGECHECK_OPTION_FAST		= "Rapide (plus proche du temps réel)"
 DBM_CORE_RANGERADAR_HEADER			= "Radar de portée (%d m)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d joueurs à portée"
 
 DBM_CORE_INFOFRAME_LOCK				= "Verrouiller le cadre"
 DBM_CORE_INFOFRAME_HIDE				= "Masquer"
