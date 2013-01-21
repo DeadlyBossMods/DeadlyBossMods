@@ -114,25 +114,6 @@ do
 	end
 end
 
-
-
-
-
-
-
-
-local function ReportOrbs()
-	local a,h,t = GetNumOrbs()
-	print("Total orbs picked up: "..t.."\nAlliance ("..a..") - ("..h..") Horde")
-end
-
-
-
-
-
-
-
-
 function Kotmogu:OnInitialize()
 	if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 856 then
 		bgzone = true
@@ -175,8 +156,6 @@ function Kotmogu:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
 	if msg==L.OrbReturn or msg:find(L.OrbReturn) then
 		local color = msg:match(L.OrbReturn)
 		RemoveOrb(color)
-
-		ReportOrbs()
 	end
 end
 Kotmogu.CHAT_MSG_RAID_BOSS_EMOTE = Kotmogu.CHAT_MSG_BG_SYSTEM_NEUTRAL
