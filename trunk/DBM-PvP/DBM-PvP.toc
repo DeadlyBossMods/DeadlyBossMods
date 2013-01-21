@@ -38,7 +38,7 @@
 ## X-DBM-Mod-Name-esMX: JcJ
 ## X-DBM-Mod-Name-ptBR: JxJ
 ## X-DBM-Mod-Sort: 75
-## X-DBM-Mod-LoadZoneID: 461,443,401,540,482
+## X-DBM-Mod-LoadZoneID: 461,443,401,540,482,856,860
 localization.en.lua
 localization.de.lua
 localization.tw.lua
