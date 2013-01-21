@@ -1047,8 +1047,6 @@ function DBM:ShowPizzaInfo(id, sender)
 	end
 end
 
-
-
 ------------------
 --  Hyperlinks  --
 ------------------
@@ -1129,6 +1127,30 @@ do
 	end
 end
 
+--invoke using /script DBM:TaintTest()
+--This will taint all 4 indexes
+--Once done, just try to change a glyph. ;)
+--This seems fixed in 5.2, but i'm trying to use this debug to SOMEHOW find a way around problem in 5.1
+local indexChanger = 0
+function DBM:TaintTest()
+	indexChanger = indexChanger + 1
+	StaticPopupDialogs["DBM_TAINT_TEST"] = {
+		preferredIndex = indexChanger,
+		text = "I am tainting your UI. ".."index: "..indexChanger,
+		button1 = DBM_CORE_OK,
+		OnAccept = function()
+			if indexChanger < 4 then
+				DBM:TaintTest()
+			else
+				indexChanger = 0
+			end
+		end,
+		timeout = 0,
+		exclusive = 1,
+		whileDead = 1
+	}
+	StaticPopup_Show("DBM_TAINT_TEST")
+end
 
 ----------------------
 --  Minimap Button  --
