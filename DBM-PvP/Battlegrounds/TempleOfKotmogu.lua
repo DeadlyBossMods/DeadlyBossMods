@@ -128,7 +128,8 @@ function Kotmogu:OnInitialize()
 	else
 		bgzone = false
 		table.wipe(orbs)
-		
+		winTimer:Stop()
+
 		if Kotmogu.Options.ShowKotmoguEstimatedPoints then
 			Kotmogu:HideEstimatedPoints()
 		end
