@@ -76,6 +76,17 @@ L:SetGeneralLocalization({
 	name = "아라시 분지"
 })
 
+L:SetTimerLocalization({
+	TimerCap 				= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerWin 				= "전장 승리까지 남은시간 바 표시",
+	TimerCap 				= "거점 점령 바 표시",
+	ShowAbEstimatedPoints 	= "전장 종료 순간 승/패 진영 예상 점수 표시",
+	ShowAbBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 수 표시"
+})
+
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "얼라이언스",
@@ -85,17 +96,6 @@ L:SetMiscLocalization({
 	Flag 			= "깃발"
 })
 
-L:SetTimerLocalization({
-	TimerCap 				= "%s"
-})
-
-L:SetOptionLocalization({
-	TimerWin 				= "전투 승리까지 남은시간 바 표시",
-	TimerCap 				= "거점 점령 바 표시",
-	ShowAbEstimatedPoints 	= "전투 종료시 승/패 진영 예상 점수 표시",
-	ShowAbBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 개수 표시"
-})
-
 -----------------------
 --  Eye of the Storm --
 -----------------------
@@ -103,6 +103,16 @@ L = DBM:GetModLocalization("EyeoftheStorm")
 
 L:SetGeneralLocalization({
 	name = "폭풍의 눈"
+})
+
+L:SetTimerLocalization({
+	TimerFlag		= "깃발 재생성"
+})
+
+L:SetOptionLocalization({
+	TimerWin 		= "전장 승리까지 남은시간 바 표시",
+	TimerFlag 		= "깃발 재생성 바 표시",
+	ShowPointFrame 	= "전장 종료 순간 승/패 진영 예상 점수 및 깃발 운반자 표시"
 })
 
 L:SetMiscLocalization({
@@ -118,16 +128,6 @@ L:SetMiscLocalization({
 
 })
 
-L:SetTimerLocalization({
-	TimerFlag		= "깃발 재생성"
-})
-
-L:SetOptionLocalization({
-	TimerWin 		= "전투 승리까지 남은시간 바 표시",
-	TimerFlag 		= "깃발 재생성 바 표시",
-	ShowPointFrame 	= "전투 종료시 승/패 진영 예상 점수 및 깃발 운반자 표시"
-})
-
 --------------------
 --  Warsong Gulch --
 --------------------
@@ -135,6 +135,16 @@ L = DBM:GetModLocalization("WarsongGulch")
 
 L:SetGeneralLocalization({
 	name = "전쟁노래 협곡"
+})
+
+L:SetTimerLocalization({
+	TimerFlag 			= "깃발 재생성",
+})
+
+L:SetOptionLocalization({
+	TimerFlag 					= "깃발 재생성 바 표시",
+	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
+	ShowFlagCarrierErrorNote	= "전투가 진행 중이어서 깃발 운반자 표시 기능이 제한될 때 알림 보기"
 })
 
 L:SetMiscLocalization({
@@ -147,16 +157,6 @@ L:SetMiscLocalization({
 	FlagAlliance 		= "얼라이언스 깃발 :",
 	FlagHorde 			= "호드 깃발 :",
 	FlagBase 			= "기지"
-})
-
-L:SetTimerLocalization({
-	TimerFlag 			= "깃발 재생성",
-})
-
-L:SetOptionLocalization({
-	TimerFlag 					= "깃발 재생성 바 표시",
-	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
-	ShowFlagCarrierErrorNote	= "전투가 진행 중이어서 깃발 운반자 표시 기능이 제한될 때 알림 보기"
 })
 
 ------------------------
@@ -184,7 +184,7 @@ L:SetOptionLocalization({
 	TimerSiegeEngine		= "공성 전차 제작 바 표시",
 	WarnSiegeEngine			= "공성 전차 제작 완료 알림 보기",
 	WarnSiegeEngineSoon		= "공성 전차 제작 완료 사전 알림 보기",
-	ShowGatesHealth			= "관문 체력 바 보기 (진행 중인 전장에서는 맞지 않을 수도 있습니다.)"
+	ShowGatesHealth			= "관문 체력 바 보기(진행 중인 전장에서는 맞지 않을 수도 있습니다.)"
 })
 
 L:SetMiscLocalization({
@@ -209,6 +209,16 @@ L:SetGeneralLocalization({
 	name = "쌍둥이 봉우리"
 })
 
+L:SetTimerLocalization({
+	TimerFlag	= "깃발 재생성"
+})
+
+L:SetOptionLocalization({
+	TimerFlag 					= "깃발 재생성 바 표시",
+	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
+	ShowFlagCarrierErrorNote	= "전투가 진행 중이어서 깃발 운반자 표시 기능이 제한될 때 알림 보기"
+})
+
 L:SetMiscLocalization({
 	ZoneName 			= "쌍둥이 봉우리",
 	Alliance 			= "얼라이언스",
@@ -224,17 +234,6 @@ L:SetMiscLocalization({
 	Vulnerable2			= "약해져서"
 })
 
-L:SetTimerLocalization({
-	TimerFlag	= "깃발 재생성"
-})
-
-L:SetOptionLocalization({
-	TimerFlag 					= "깃발 재생성 바 표시",
-	ShowFlagCarrier 	 	 	= "깃발 운반자 표시",
-	ShowFlagCarrierErrorNote	= "전투가 진행 중이어서 깃발 운반자 표시 기능이 제한될 때 알림 보기"
-})
-
-
 --------------------------
 --  Battle for Gilneas  --
 --------------------------
@@ -242,6 +241,17 @@ L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
 	name = "길니아스 전투지"	-- translate
+})
+
+L:SetTimerLocalization({
+	TimerCap 				= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerWin 					= "전장 승리까지 남은시간 바 표시",
+	TimerCap 					= "거점 점령 바 표시",
+	ShowGilneasEstimatedPoints 	= "전장 종료 순간 승/패 진영 예상 점수 표시",
+	ShowGilneasBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 수 표시"
 })
 
 L:SetMiscLocalization({
@@ -253,17 +263,6 @@ L:SetMiscLocalization({
 	Flag 			= "깃발"
 })
 
-L:SetTimerLocalization({
-	TimerCap 				= "%s"
-})
-
-L:SetOptionLocalization({
-	TimerWin 					= "전투 승리까지 남은시간 바 표시",
-	TimerCap 					= "거점 점령 바 표시",
-	ShowGilneasEstimatedPoints 	= "전투 종료시 승/패 진영 예상 점수 표시",
-	ShowGilneasBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 개수 표시"
-})
-
 -------------------------
 --  Silvershard Mines  --
 -------------------------
@@ -271,10 +270,6 @@ L = DBM:GetModLocalization("SilvershardMines")
 
 L:SetGeneralLocalization({
 	name = "은빛수정 광산"
-})
-
-L:SetMiscLocalization({
-	Capture = "수레를 차지"
 })
 
 L:SetTimerLocalization({
@@ -285,6 +280,10 @@ L:SetOptionLocalization({
 	TimerCart	= "수레 재생성 바 표시"
 })
 
+L:SetMiscLocalization({
+	Capture = "수레를 차지"
+})
+
 -------------------------
 --  Temple of Kotmogu  --
 -------------------------
@@ -292,4 +291,21 @@ L = DBM:GetModLocalization("Kotmogu")
 
 L:SetGeneralLocalization({
 	name = "코트모구의 사원"
+})
+
+L:SetMiscLocalization({
+	OrbTaken 	= "차지했습니다!",
+	OrbReturn 	= "공이 돌아왔습니다!",
+	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "얼라이언스",
+	Horde		= "호드",
+	WinBarText	= "%s 승리",
+	OrbsToWin	= "승리 필요 구슬: %d"
+})
+
+
+L:SetOptionLocalization({
+	TimerWin					= "전투 승리까지 남은시간 바 표시",
+	ShowKotmoguEstimatedPoints	= "전투 종료 순간 승/패 진영 예상 점수 표시",
+	ShowKotmoguOrbsToWin		= "뒤지고 있을 경우 승리에 필요한 구슬 수 표시"
 })

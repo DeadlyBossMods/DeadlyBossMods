@@ -46,6 +46,8 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	for i, v in ipairs(DBM:GetModByName("IsleofConquest").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("Gilneas").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("TwinPeaks").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("SilvershardMines").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("Kotmogu").timers) do v:Stop() end
 	DBM:GetModByName("AlteracValley"):Unschedule()
 	DBM:GetModByName("EyeoftheStorm"):Unschedule()
 	DBM:GetModByName("WarsongGulch"):Unschedule()
@@ -53,6 +55,8 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	DBM:GetModByName("IsleofConquest"):Unschedule()
 	DBM:GetModByName("Gilneas"):Unschedule()
 	DBM:GetModByName("TwinPeaks"):Unschedule()
+	DBM:GetModByName("SilvershardMines"):Unschedule()
+	DBM:GetModByName("Kotmogu"):Unschedule()
 end
 mod.PLAYER_ENTERING_WORLD = mod.ZONE_CHANGED_NEW_AREA
 mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
