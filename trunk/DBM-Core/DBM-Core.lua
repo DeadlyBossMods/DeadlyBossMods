@@ -1130,7 +1130,6 @@ end
 --invoke using /script DBM:TaintTest()
 --This will taint all 4 indexes
 --Once done, just try to change a glyph. ;)
---This seems fixed in 5.2, but i'm trying to use this debug to SOMEHOW find a way around problem in 5.1
 local indexChanger = 0
 function DBM:TaintTest()
 	indexChanger = indexChanger + 1
@@ -1151,6 +1150,7 @@ function DBM:TaintTest()
 	}
 	StaticPopup_Show("DBM_TAINT_TEST")
 end
+
 
 ----------------------
 --  Minimap Button  --
@@ -2603,6 +2603,7 @@ function DBM:StartCombat(mod, delay, synced)
 				BigBrother:ConsumableCheck("SELF")
 			end
 		end
+		DBM:ToggleRaidBossEmoteFrame(1)
 	end
 end
 
@@ -2779,6 +2780,7 @@ function DBM:EndCombat(mod, wipe)
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		DBM.BossHealth:Hide()
 		DBM.Arrow:Hide(true)
+		DBM:ToggleRaidBossEmoteFrame(0)
 	end
 end
 
@@ -3171,18 +3173,24 @@ do
 	end)
 end
 
---Will probably delete this hack and do it properly once i run more tests. it's better cpu to just unregister events from frame then to hijack it. Less likely to fail at working. This does NOT work for me on 5.1
---We dont waste cpu and the blizz frame doesn't either if the frame just have events unregistered Maybe check option on StartCombat function, and if not toggled since last combat, do not. if option diff from last combat or login, register/unregister events
---RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_EMOTE")
---RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
-do
-	local old = RaidBossEmoteFrame:GetScript("OnEvent")
-	RaidBossEmoteFrame:SetScript("OnEvent", function(...)
-		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then
-			return
-		end
-		return old(...)
-	end)
+--Raid Boss Emote frame handler for core and BG mods.
+--This completely unregisteres or registers event so frame simply does or doesn't show events
+--No dirty hooking. Least invasive way to do it. Uses lowest CPU
+--Toggle is for if we are turning off or on.
+--Custom is for exterior mods to call function without needing global option turned on (such as BG mods option)
+--All also handled by core so both core AND pvp mods aren't trying to hook/hide it. Should all be done HERE
+local unRegistered = false
+function DBM:ToggleRaidBossEmoteFrame(toggle, custom)
+	if not DBM.Options.HideBossEmoteFrame and not custom then return end
+	if toggle == 1 and not unRegistered then
+		unRegistered = true
+		RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_EMOTE")
+		RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
+	elseif toggle == 0 and unRegistered then
+		unRegistered = false
+		RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_EMOTE")
+		RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_WHISPER")
+	end
 end
 
 
