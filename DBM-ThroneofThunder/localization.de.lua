@@ -11,14 +11,27 @@ L= DBM:GetModLocalization(827)
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetTimerLocalization({
+	timerAddsCD		= "Nächste Tribal Door",--translate
+})
+
+L:SetOptionLocalization({
+	timerAddsCD		= "Zeige Zeit bis nächste Tribal Door Phase",--translate
+})
+
+L:SetMiscLocalization({
+	newForces		= "forces pour from the",--translate (trigger) Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget	= "stamps his tail!"--translate (trigger) Horridon sets his eyes on Eraeshio and stamps his tail!
+})
+
 ---------------------------
 -- The Council of Elders --
 ---------------------------
 L= DBM:GetModLocalization(816)
 
 L:SetOptionLocalization({
-	warnSandBolt			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
-	RangeFrame				= "Zeige Abstandsfenster"
+	warnSandBolt	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
+	RangeFrame		= "Zeige Abstandsfenster"
 })
 
 ------------
@@ -55,6 +68,10 @@ L= DBM:GetModLocalization(824)
 -- Iron Qon --
 --------------
 L= DBM:GetModLocalization(817)
+
+L:SetOptionLocalization({
+	RangeFrame		= "Zeige dynamisches Abstandsfenster\n(mit Indikator für zuviele Spieler in Reichweite)"
+})
 
 -------------------
 -- Twin Consorts --
