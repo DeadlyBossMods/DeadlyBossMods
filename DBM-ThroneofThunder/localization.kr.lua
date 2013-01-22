@@ -69,6 +69,10 @@ L= DBM:GetModLocalization(824)
 --------------
 L= DBM:GetModLocalization(817)
 
+L:SetOptionLocalization({
+	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 표시되는 똑똑한 거리 창 입니다.)"
+})
+
 -------------------
 -- Twin Consorts --
 -------------------
