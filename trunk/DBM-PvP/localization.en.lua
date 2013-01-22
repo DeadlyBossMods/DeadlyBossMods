@@ -74,15 +74,6 @@ L:SetGeneralLocalization({
 	name = "Arathi Basin"
 })
 
-L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "Alliance",
-	Horde		= "Horde",
-	WinBarText	= "%s wins",
-	BasesToWin	= "Bases to win: %d",
-	Flag		= "Flag"
-})
-
 L:SetTimerLocalization({
 	TimerCap	= "%s"
 })
@@ -94,6 +85,15 @@ L:SetOptionLocalization({
 	ShowAbBasesToWin		= "Show bases required to win"
 })
 
+L:SetMiscLocalization({
+	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "Alliance",
+	Horde		= "Horde",
+	WinBarText	= "%s wins",
+	BasesToWin	= "Bases to win: %d",
+	Flag		= "Flag"
+})
+
 ------------------------
 --  Eye of the Storm  --
 ------------------------
@@ -101,6 +101,16 @@ L = DBM:GetModLocalization("EyeoftheStorm")
 
 L:SetGeneralLocalization({
 	name = "Eye of the Storm"
+})
+
+L:SetTimerLocalization({
+	TimerFlag	= "Flag respawn"
+})
+
+L:SetOptionLocalization({
+	TimerWin 		= "Show win timer",
+	TimerFlag 		= "Show flag respawn timer",
+	ShowPointFrame	= "Show flag carrier and estimated points"
 })
 
 L:SetMiscLocalization({
@@ -116,16 +126,6 @@ L:SetMiscLocalization({
 
 })
 
-L:SetTimerLocalization({
-	TimerFlag	= "Flag respawn"
-})
-
-L:SetOptionLocalization({
-	TimerWin 		= "Show win timer",
-	TimerFlag 		= "Show flag respawn timer",
-	ShowPointFrame	= "Show flag carrier and estimated points"
-})
-
 ---------------------
 --  Warsong Gulch  --
 ---------------------
@@ -133,6 +133,18 @@ L = DBM:GetModLocalization("WarsongGulch")
 
 L:SetGeneralLocalization({
 	name = "Warsong Gulch"
+})
+
+L:SetTimerLocalization({
+	TimerStart	= "Game starts", 
+	TimerFlag	= "Flag respawn"
+})
+
+L:SetOptionLocalization({
+	TimerStart					= "Show start timer",
+	TimerFlag					= "Show flag respawn timer",
+	ShowFlagCarrier				= "Show flag carrier",
+	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
 })
 
 L:SetMiscLocalization({
@@ -147,18 +159,6 @@ L:SetMiscLocalization({
 	FlagAlliance		= "Alliance Flag: ",
 	FlagHorde			= "Horde Flag: ",
 	FlagBase			= "Base"
-})
-
-L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
-	TimerFlag	= "Flag respawn"
-})
-
-L:SetOptionLocalization({
-	TimerStart					= "Show start timer",
-	TimerFlag					= "Show flag respawn timer",
-	ShowFlagCarrier				= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
 })
 
 ------------------------
@@ -210,6 +210,18 @@ L:SetGeneralLocalization({
 	name = "Twin Peaks"
 })
 
+L:SetTimerLocalization({
+	TimerStart	= "Game starts", 
+	TimerFlag	= "Flag respawn"
+})
+
+L:SetOptionLocalization({
+	TimerStart					= "Show start timer",
+	TimerFlag					= "Show flag respawn timer",
+	ShowFlagCarrier				= "Show flag carrier",
+	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
+})
+
 L:SetMiscLocalization({
 	BgStart60 			= "The battle begins in 1 minute.",
 	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
@@ -227,19 +239,6 @@ L:SetMiscLocalization({
 	Vulnerable2		= "The flag carriers have become increasingly vulnerable to attack!"
 })
 
-L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
-	TimerFlag	= "Flag respawn"
-})
-
-L:SetOptionLocalization({
-	TimerStart					= "Show start timer",
-	TimerFlag					= "Show flag respawn timer",
-	ShowFlagCarrier				= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
-})
-
-
 -------------------------
 --  Battle of Gilneas  --
 -------------------------
@@ -247,15 +246,6 @@ L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
 	name = "Battle for Gilneas"
-})
-
-L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/2000",
-	Alliance	= "Alliance",
-	Horde		= "Horde",
-	WinBarText	= "%s wins",
-	BasesToWin	= "Bases to win: %d",
-	Flag		= "Flag"
 })
 
 L:SetTimerLocalization({
@@ -269,6 +259,15 @@ L:SetOptionLocalization({
 	ShowGilneasBasesToWin			= "Show bases required to win"
 })
 
+L:SetMiscLocalization({
+	ScoreExpr	= "(%d+)/2000",
+	Alliance	= "Alliance",
+	Horde		= "Horde",
+	WinBarText	= "%s wins",
+	BasesToWin	= "Bases to win: %d",
+	Flag		= "Flag"
+})
+
 -------------------------
 --  Silvershard Mines  --
 -------------------------
@@ -278,16 +277,16 @@ L:SetGeneralLocalization({
 	name = "Silvershard Mines"
 })
 
-L:SetMiscLocalization({
-	Capture = "has captured"
-})
-
 L:SetTimerLocalization({
 	TimerCart	= "Cart respawn"
 })
 
 L:SetOptionLocalization({
 	TimerCart	= "Show cart respawn timer"
+})
+
+L:SetMiscLocalization({
+	Capture = "has captured"
 })
 
 -------------------------
@@ -299,6 +298,12 @@ L:SetGeneralLocalization({
 	name = "Temple of Kotmogu"
 })
 
+L:SetOptionLocalization({
+	TimerWin			= "Show win timer",
+	ShowKotmoguEstimatedPoints	= "Show estimated points on win/loss",
+	ShowKotmoguOrbsToWin		= "Show orbs required to win"
+})
+
 L:SetMiscLocalization({
 	OrbTaken 	= "(%S+) has taken the (%S+) orb!",
 	OrbReturn 	= "The (%S+) orb has been returned!",
@@ -307,11 +312,4 @@ L:SetMiscLocalization({
 	Horde		= "Horde",
 	WinBarText	= "Estimate %s wins",
 	OrbsToWin	= "Orbs to win: %d"
-})
-
-
-L:SetOptionLocalization({
-	TimerWin			= "Show win timer",
-	ShowKotmoguEstimatedPoints	= "Show estimated points on win/loss",
-	ShowKotmoguOrbsToWin		= "Show orbs required to win"
 })
