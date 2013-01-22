@@ -84,7 +84,7 @@ L:SetOptionLocalization({
 	TimerWin 				= "전장 승리까지 남은시간 바 표시",
 	TimerCap 				= "거점 점령 바 표시",
 	ShowAbEstimatedPoints 	= "전장 종료 순간 승/패 진영 예상 점수 표시",
-	ShowAbBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 수 표시"
+	ShowAbBasesToWin 		= "뒤지고 있을 경우 역전에 필요한 거점 수 표시"
 })
 
 L:SetMiscLocalization({
@@ -92,7 +92,7 @@ L:SetMiscLocalization({
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
 	WinBarText 		= "%s 승리",
-	BasesToWin		= "승리 필요 거점 : %d",
+	BasesToWin		= "역전하기 위해 필요한 거점 수: %d",
 	Flag 			= "깃발"
 })
 
@@ -251,7 +251,7 @@ L:SetOptionLocalization({
 	TimerWin 					= "전장 승리까지 남은시간 바 표시",
 	TimerCap 					= "거점 점령 바 표시",
 	ShowGilneasEstimatedPoints 	= "전장 종료 순간 승/패 진영 예상 점수 표시",
-	ShowGilneasBasesToWin 		= "뒤지고 있을 경우 승리에 필요한 거점 수 표시"
+	ShowGilneasBasesToWin 		= "뒤지고 있을 경우 역전에 필요한 거점 수 표시"
 })
 
 L:SetMiscLocalization({
@@ -259,7 +259,7 @@ L:SetMiscLocalization({
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
 	WinBarText 		= "%s 승리",
-	BasesToWin		= "승리 필요 거점 : %d",
+	BasesToWin		= "역전하기 위해 필요한 거점 수: %d",
 	Flag 			= "깃발"
 })
 
@@ -300,12 +300,12 @@ L:SetMiscLocalization({
 	Alliance	= "얼라이언스",
 	Horde		= "호드",
 	WinBarText	= "%s 승리",
-	OrbsToWin	= "승리 필요 구슬: %d"
+	OrbsToWin	= "역전하기 위해 필요한 공 수: %d"
 })
 
 
 L:SetOptionLocalization({
 	TimerWin					= "전투 승리까지 남은시간 바 표시",
 	ShowKotmoguEstimatedPoints	= "전투 종료 순간 승/패 진영 예상 점수 표시",
-	ShowKotmoguOrbsToWin		= "뒤지고 있을 경우 승리에 필요한 구슬 수 표시"
+	ShowKotmoguOrbsToWin		= "뒤지고 있을 경우 역전에 필요한 공 개수 표시"
 })
