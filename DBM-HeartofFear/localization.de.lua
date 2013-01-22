@@ -39,7 +39,7 @@ L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
 	UnseenStrikeArrow	= "Zeige DBM-Pfeil, wenn jemand von $spell:122949 betroffen ist",
-	RangeFrame			= "Zeige Abstandsfenster (8m) für $spell:123175"
+	RangeFrame			= "Zeige Abstandsfenster (10m) für $spell:123175"
 })
 
 
@@ -74,10 +74,6 @@ L:SetOptionLocalization({
 	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
 })
 
-L:SetMiscLocalization({
-	Reinforcements		= "Windfürst Mel'jarak ruft Verstärkung herbei!" --needs to be verified (video-captured translation, hero only)
-})
-
 ------------
 -- Amber-Shaper Un'sok --
 ------------
@@ -97,6 +93,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerDestabalize			= "Destabilisieren (%2$d) : %1$s",
 	timerAmberExplosionAMCD		= "Explosion CD: Monstrosität"
 })
 
@@ -111,6 +108,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionYou	= "Zeige Spezialwarnung zum Unterbrechen deiner eigenen $spell:122398",
 	specwarnAmberExplosionAM	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nder Bernmonstrosität",
 	specwarnAmberExplosionOther	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122398\nunkontrollierter Mutierter Konstrukte",
+	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Bernmonstrosität",
 	InfoFrame					= "Zeige Infofenster für Willen der Spieler",
 	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten als Konstrukt\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
