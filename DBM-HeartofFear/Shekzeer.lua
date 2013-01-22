@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 
 local warnScreech				= mod:NewSpellAnnounce(123735, 3, nil, false)--Not useful.
 local warnCryOfTerror			= mod:NewTargetAnnounce(123788, 3, nil, mod:IsRanged())
-local warnEyes					= mod:NewStackAnnounce(123707, 2, nil, mod:IsTank())
+local warnEyes					= mod:NewStackAnnounce(123707, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnDissonanceField		= mod:NewCountAnnounce(123255, 3)
 local warnSonicDischarge		= mod:NewSoonAnnounce(123504, 4)--Iffy reliability but better then nothing i suppose.
 local warnRetreat				= mod:NewSpellAnnounce(125098, 4)
@@ -37,7 +37,7 @@ local warnConsumingTerror		= mod:NewSpellAnnounce(124849, 4, nil, not mod:IsTank
 local warnHeartOfFear			= mod:NewTargetAnnounce(125638, 4)
 
 local specwarnSonicDischarge	= mod:NewSpecialWarningSpell(123504, nil, nil, nil, true)
-local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 4)
+local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 4)--4 is max, 2 is actually the smartest time to taunt though. i may change it to 2 at some point
 local specWarnEyesOther			= mod:NewSpecialWarningTarget(123707, mod:IsTank())
 local specwarnCryOfTerror		= mod:NewSpecialWarningYou(123788)
 local specWarnRetreat			= mod:NewSpecialWarningSpell(125098)
