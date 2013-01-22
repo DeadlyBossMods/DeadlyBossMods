@@ -3171,10 +3171,14 @@ do
 	end)
 end
 
+--Will probably delete this hack and do it properly once i run more tests. it's better cpu to just unregister events from frame then to hijack it. Less likely to fail at working. This does NOT work for me on 5.1
+--We dont waste cpu and the blizz frame doesn't either if the frame just have events unregistered Maybe check option on StartCombat function, and if not toggled since last combat, do not. if option diff from last combat or login, register/unregister events
+--RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_EMOTE")
+--RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
 do
 	local old = RaidBossEmoteFrame:GetScript("OnEvent")
 	RaidBossEmoteFrame:SetScript("OnEvent", function(...)
-		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then--#inCombat returns correct value. I cannot found error on this function on live server.
+		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then
 			return
 		end
 		return old(...)
