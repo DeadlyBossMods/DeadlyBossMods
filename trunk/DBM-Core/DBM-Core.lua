@@ -3175,8 +3175,10 @@ do
 	local old = RaidBossEmoteFrame:GetScript("OnEvent")
 	RaidBossEmoteFrame:SetScript("OnEvent", function(...)
 		if DBM.Options.HideBossEmoteFrame and IsEncounterInProgress() then--Function doesn't work, AT ALL. Table returns nil here, so try it a different way
+			print("Emote Frame hidden")
 			return
 		end
+		print("Emote frame not hidden")
 		return old(...)
 	end)
 end
