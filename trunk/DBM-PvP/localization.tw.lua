@@ -267,3 +267,49 @@ L:SetOptionLocalization({
 	ShowGilneasEstimatedPoints	= "顯示戰鬥結束時雙方資源預計值",
 	ShowGilneasBasesToWin		= "顯示勝利需要的基地數量"
 })
+
+------------------------
+--  Silvershard Mines  --
+-------------------------
+L = DBM:GetModLocalization("SilvershardMines")
+
+L:SetGeneralLocalization({
+	name	    = "碎銀礦坑"
+})
+
+L:SetTimerLocalization({
+	TimerCart	= "礦坑推車重生"
+})
+
+L:SetOptionLocalization({
+	TimerCart	= "顯示礦坑推車重生計時器"
+})
+
+L:SetMiscLocalization({
+	Capture 	= "奪走了"
+})
+
+-------------------------
+--  Temple of Kotmogu  --
+-------------------------
+L = DBM:GetModLocalization("Kotmogu")
+
+L:SetGeneralLocalization({
+	name		 = "科特魔古神廟"
+})
+
+L:SetOptionLocalization({
+	TimerWin					= "顯示勝利計時器",
+	ShowKotmoguEstimatedPoints	= "顯示戰鬥結束時雙方資源預計值",
+	ShowKotmoguOrbsToWin		= "顯示需要多少異能球才能贏"
+})
+
+L:SetMiscLocalization({
+	OrbTaken 	= "(%S+)奪走了(%S+)異能球!",
+	OrbReturn 	= "The (%S+)異能球已回到初始位置!",
+	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "聯盟",
+	Horde		= "部落",
+	WinBarText	= "預計%s勝利",
+	OrbsToWin	= "獲勝異能球數量: %d"
+})
