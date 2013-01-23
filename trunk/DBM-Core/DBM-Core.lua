@@ -2944,6 +2944,7 @@ do
 					speedTimer:Update(time + lag, bestTime)
 				end
 			end
+			DBM:ToggleRaidBossEmoteFrame(1)
 		end
 	end
 
