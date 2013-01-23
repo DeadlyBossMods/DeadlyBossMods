@@ -44,6 +44,7 @@ local warnMCTargets = {}
 local mcTargetIcons = {}
 local mcIcon = 8
 local bitterThought = GetSpellInfo(119601)
+local playerMCed = false
 
 local function debuffFilter(uId)
 	return UnitDebuff(uId, GetSpellInfo(119622))
@@ -102,6 +103,7 @@ local function showMC()
 end
 
 function mod:OnCombatStart(delay)
+	playerMCed = false
 	table.wipe(warnpreMCTargets)
 	table.wipe(warnMCTargets)
 	mcIcon = 8
@@ -150,12 +152,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMCTargets[#warnMCTargets + 1] = args.destName
 		self:Unschedule(showMC)
 		self:Schedule(2.5, showMC)--These can be vastly spread out, not even need to use 3, depends on what more data says. As well as spread failures.
+		if args:IsPlayer() then
+			playerMCed = true
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(119626) and self.Options.SetIconOnMC then--Remove them after the MCs break.
 		removeIcon(args.destName)
+		if args:IsPlayer() then
+			playerMCed = false
+		end
 	elseif args:IsSpellID(119488) then
 		timerUnleashedWrathCD:Start()
 	end
@@ -163,7 +171,7 @@ end
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
-	if UnitDebuff("player", bitterThought) and self:AntiSpam(2) then
+	if UnitDebuff("player", bitterThought) and self:AntiSpam(2) and not playerMCed then
 		specWarnBitterThoughts:Show()
 	end
 end
