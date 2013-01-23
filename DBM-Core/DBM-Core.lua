@@ -148,6 +148,7 @@ DBM.DefaultOptions = {
 	AlwaysShowSpeedKillTimer = true,
 	DisableCinematics = false,
 	DisableCinematicsOutside = false,
+	DisableUIFrameFlash = false,
 --	HelpMessageShown = false,
 	MoviesSeen = {},
 	MovieFilters = {},
@@ -1582,6 +1583,9 @@ do
 					end
 				end
 			end)
+		end
+		if DBM.Options.DisableUIFrameFlash then
+			UIFrameFlash = function() end--Yes, this is very bad, tainting a broken blizzard function to avoid it tainting other shit.
 		end
 	end
 end
