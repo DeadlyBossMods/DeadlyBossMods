@@ -7,7 +7,7 @@ mod:SetModelID(42060)	-- 42059=Ming the Cunning | 42058=Kuai the Brute | 42060=H
 mod:SetZone()
 
 --http://www.wowpedia.org/Clan_Leaders_of_the_Mogu
-mod:RegisterCombat("yell", L.Pull)
+mod:RegisterCombat("yell", L.Pull, L.Kuai, L.Ming, L.Haiyan) -- Common pull not fires if you've wiped. Other trigger is backup.
 mod:RegisterKill("yell", L.Defeat)--Defeat off first line said after all are defeated.
 mod:SetWipeTime(30)--Based on data, phase transitions are 10-16 seconds, 20 should be enough, but can raise if needed.
 
