@@ -14,6 +14,8 @@ Kotmogu:RegisterEvents(
 
 local winTimer 		= Kotmogu:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 
+local bgzone = false
+local orbs = {}
 Kotmogu:AddBoolOption("ShowKotmoguEstimatedPoints", true, nil, function()
 	if Kotmogu.Options.ShowKotmoguEstimatedPoints and bgzone then
 		Kotmogu:ShowEstimatedPoints()
@@ -28,9 +30,6 @@ Kotmogu:AddBoolOption("ShowKotmoguOrbsToWin", false, nil, function()
 		Kotmogu:HideOrbsToWin()
 	end
 end)
-
-local bgzone = false
-local orbs = {}
 
 Kotmogu:RemoveOption("HealthFrame")
 Kotmogu:RemoveOption("SpeedKillTimer")
