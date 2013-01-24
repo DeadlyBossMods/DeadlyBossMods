@@ -65,8 +65,8 @@ function mod:OnCombatStart(delay)
 	timerFuriousSwipeCD:Start(-delay)--8-11 sec on pull
 	if self:IsDifficulty("heroic10", "heroic25") then
 		crushCount = 0
-		timerCrushCD:Start(30.5-delay, 1)
-		countdownCrush:Start(30.5-delay)
+		timerCrushCD:Start(25.5-delay, 1)
+		countdownCrush:Start(25.5-delay)
 	end
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
