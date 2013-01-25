@@ -863,6 +863,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if timer > 30 then DBM:Schedule(timer - 30, SendChatMessage, DBM_CORE_BREAK_SEC:format(30), channel) end
 		DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_BREAK_OVER, channel)
 	elseif cmd:sub(1, 4) == "pull" then
+		if IsEncounterInProgress() then return end
 		if DBM:GetRaidRank() == 0 then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
