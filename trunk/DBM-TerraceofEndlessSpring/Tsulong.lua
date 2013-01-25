@@ -22,12 +22,13 @@ local warnNight							= mod:NewSpellAnnounce("ej6310", 2, 108558)
 local warnSunbeam						= mod:NewSpellAnnounce(122789, 3)
 local warnShadowBreath					= mod:NewSpellAnnounce(122752, 3)
 local warnNightmares					= mod:NewTargetAnnounce(122770, 4)--Target scanning will only work on 1 target on 25 man (only is 1 target on 10 man so they luck out)
-local warnDarkOfNight					= mod:NewSpellAnnounce("ej6550", 4, 130013)--Heroic
+local warnDarkOfNight					= mod:NewCountAnnounce("ej6550", 4, 130013)--Heroic
 local warnDay							= mod:NewSpellAnnounce("ej6315", 2, 122789)
 local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnSummonEmbodiedTerror			= mod:NewCountAnnounce("ej6316", 4, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnTerrorize						= mod:NewTargetAnnounce(123012, 4, nil, mod:IsHealer())
 local warnSunBreath						= mod:NewSpellAnnounce(122855, 3)
+local warnLightOfDay					= mod:NewStackAnnounce(123716, 1, nil, mod:IsHealer(), "warnLightOfDay")
 
 local specWarnShadowBreath				= mod:NewSpecialWarningSpell(122752, mod:IsTank())
 local specWarnDreadShadows				= mod:NewSpecialWarningStack(122768, nil, 9)--For heroic, 10 is unhealable, and it stacks pretty fast so adaquate warning to get over there would be abou 5-6
@@ -48,6 +49,7 @@ local timerSummonEmbodiedTerrorCD		= mod:NewNextCountTimer(41, "ej6316", nil, ni
 local timerTerrorizeCD					= mod:NewCDTimer(13.5, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
 local timerSunBreathCD					= mod:NewNextTimer(29, 122855)
 local timerBathedinLight				= mod:NewBuffFadesTimer(6, 122858, nil, mod:IsHealer())
+local timerLightOfDay					= mod:NewTargetTimer(6, 123716, nil, mod:IsHealer())
 
 local countdownNightmares				= mod:NewCountdown(15.5, 122770, false)
 
@@ -56,6 +58,8 @@ local berserkTimer						= mod:NewBerserkTimer(490)--a little over 8 min, basical
 local terrorName = EJ_GetSectionInfo(6316)
 local terrorCount = 0
 local targetScansDone = 0
+local darkOfNightCount = 0
+local lightOfDayCount = 0
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -126,6 +130,8 @@ function mod:OnCombatStart(delay)
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerDarkOfNightCD:Start(10-delay)
+		darkOfNightCount = 0
+		lightOfDayCount = 0
 	end
 end
 
@@ -139,6 +145,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnTerrorize:Show(args.destName)
 	elseif args:IsSpellID(122858) and args:IsPlayer() then
 		timerBathedinLight:Start()
+	elseif args:IsSpellID(123716) then
+		lightOfDayCount = lightOfDayCount + 1
+		warnLightOfDay:Show(args.destName, lightOfDayCount)
+		timerLightOfDay:Start(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -191,6 +201,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			countdownNightmares:Start(15.5)
 		end
 	elseif spellId == 123252 and self:AntiSpam(2, 2) then--Dread Shadows Cancel (Sun Phase)
+		lightOfDayCount = 0
 		terrorCount = 0
 		timerShadowBreathCD:Cancel()
 		timerSunbeamCD:Cancel()
@@ -216,9 +227,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDayCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerDarkOfNightCD:Start(10-delay)
+			darkOfNightCount = 0
 		end
 	elseif spellId == 123813 and self:AntiSpam(2, 3) then--The Dark of Night (Night Phase)
-		warnDarkOfNight:Show()
+		darkOfNightCount = darkOfNightCount + 1
+		warnDarkOfNight:Show(darkOfNightCount)
 		specWarnDarkOfNight:Show()
 		timerDarkOfNightCD:Start()
 	end
