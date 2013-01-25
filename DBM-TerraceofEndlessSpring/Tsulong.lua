@@ -50,7 +50,7 @@ local timerSummonEmbodiedTerrorCD		= mod:NewNextCountTimer(41, "ej6316", nil, ni
 local timerTerrorizeCD					= mod:NewCDTimer(13.5, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
 local timerSunBreathCD					= mod:NewNextTimer(29, 122855)
 local timerBathedinLight				= mod:NewBuffFadesTimer(6, 122858, nil, mod:IsHealer())
---local timerLightOfDayCD					= mod:NewCDTimer(30.5, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, heroic logs i was sent always wiped VERY early in light phase.
+--local timerLightOfDayCD					= mod:NewCDTimer(10, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, heroic logs i was sent always wiped VERY early in light phase.
 
 local countdownNightmares				= mod:NewCountdown(15.5, 122770, false)
 
@@ -201,6 +201,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownNightmares:Cancel()
 		timerDarkOfNightCD:Cancel()
 		warnDay:Show()
+--		timerLightOfDayCD:Start()
 		timerSunBreathCD:Start()
 		timerNightCD:Start()
 	elseif spellId == 122953 and self:AntiSpam(2, 1) then--Summon Unstable Sha (122946 is another ID, but it always triggers at SAME time as Dread Shadows Cancel so can just trigger there too without additional ID scanning.
@@ -212,12 +213,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSummonUnstableShaCD:Cancel()
 		timerSummonEmbodiedTerrorCD:Cancel()
 		timerSunBreathCD:Cancel()
---		timerLightOfDayCD:Cancel()
+		timerLightOfDayCD:Cancel()
 		warnNight:Show()
 		timerShadowBreathCD:Start(10)
 		timerNightmaresCD:Start()
 		countdownNightmares:Start(15.5)
 		timerDayCD:Start()
+--		timerDarkOfNightCD
 		if self:IsDifficulty("heroic10", "heroic25") then
 --			timerDarkOfNightCD:Start(10-delay)--Not enough information yet, no logs of this phase starting anywhere but combat start, and those timers differ. This might have first cast IMMEDIATELY on phase start like day does
 		end
