@@ -28,7 +28,6 @@ local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, "Interface\\I
 local warnSummonEmbodiedTerror			= mod:NewCountAnnounce("ej6316", 4, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnTerrorize						= mod:NewTargetAnnounce(123012, 4, nil, mod:IsHealer())
 local warnSunBreath						= mod:NewSpellAnnounce(122855, 3)
-local warnLightOfDay					= mod:NewSpellAnnounce("ej6551", 4, 123716, mod:IsHealer())--Heroic
 
 local specWarnShadowBreath				= mod:NewSpecialWarningSpell(122752, mod:IsTank())
 local specWarnDreadShadows				= mod:NewSpecialWarningStack(122768, nil, 9)--For heroic, 10 is unhealable, and it stacks pretty fast so adaquate warning to get over there would be abou 5-6
@@ -37,7 +36,6 @@ local specWarnNightmaresNear			= mod:NewSpecialWarningClose(122770)
 local yellNightmares					= mod:NewYell(122770)
 local specWarnDarkOfNight				= mod:NewSpecialWarningSwitch("ej6550", mod:IsDps())
 local specWarnTerrorize					= mod:NewSpecialWarningDispel(123012, mod:IsHealer())
-local specWarnLightOfDay				= mod:NewSpecialWarningSpell("ej6551", mod:IsHealer())
 
 local timerNightCD						= mod:NewNextTimer(121, "ej6310", nil, nil, nil, 130013)
 local timerSunbeamCD					= mod:NewCDTimer(41, 122789)
@@ -50,7 +48,6 @@ local timerSummonEmbodiedTerrorCD		= mod:NewNextCountTimer(41, "ej6316", nil, ni
 local timerTerrorizeCD					= mod:NewCDTimer(13.5, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
 local timerSunBreathCD					= mod:NewNextTimer(29, 122855)
 local timerBathedinLight				= mod:NewBuffFadesTimer(6, 122858, nil, mod:IsHealer())
---local timerLightOfDayCD					= mod:NewCDTimer(10, "ej6551", nil, mod:IsHealer(), nil, 123716)--Don't have timing for this yet, heroic logs i was sent always wiped VERY early in light phase.
 
 local countdownNightmares				= mod:NewCountdown(15.5, 122770, false)
 
@@ -201,7 +198,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownNightmares:Cancel()
 		timerDarkOfNightCD:Cancel()
 		warnDay:Show()
---		timerLightOfDayCD:Start()
 		timerSunBreathCD:Start()
 		timerNightCD:Start()
 	elseif spellId == 122953 and self:AntiSpam(2, 1) then--Summon Unstable Sha (122946 is another ID, but it always triggers at SAME time as Dread Shadows Cancel so can just trigger there too without additional ID scanning.
@@ -213,23 +209,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSummonUnstableShaCD:Cancel()
 		timerSummonEmbodiedTerrorCD:Cancel()
 		timerSunBreathCD:Cancel()
-		timerLightOfDayCD:Cancel()
 		warnNight:Show()
 		timerShadowBreathCD:Start(10)
 		timerNightmaresCD:Start()
 		countdownNightmares:Start(15.5)
 		timerDayCD:Start()
---		timerDarkOfNightCD
 		if self:IsDifficulty("heroic10", "heroic25") then
---			timerDarkOfNightCD:Start(10-delay)--Not enough information yet, no logs of this phase starting anywhere but combat start, and those timers differ. This might have first cast IMMEDIATELY on phase start like day does
+			timerDarkOfNightCD:Start(10-delay)
 		end
 	elseif spellId == 123813 and self:AntiSpam(2, 3) then--The Dark of Night (Night Phase)
 		warnDarkOfNight:Show()
 		specWarnDarkOfNight:Show()
 		timerDarkOfNightCD:Start()
-	elseif spellId == 123816 and self:AntiSpam(2, 3) then--The Light of Day (Day Phase)
-		warnLightOfDay:Show()
-		specWarnLightOfDay:Show()
---		timerLightOfDayCD:Start()
 	end
 end
