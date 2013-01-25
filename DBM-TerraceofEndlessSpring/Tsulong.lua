@@ -41,7 +41,7 @@ local specWarnLightOfDay				= mod:NewSpecialWarningSpell("ej6551", mod:IsHealer(
 
 local timerNightCD						= mod:NewNextTimer(121, "ej6310", nil, nil, nil, 130013)
 local timerSunbeamCD					= mod:NewCDTimer(41, 122789)
-local timerShadowBreathCD				= mod:NewCDTimer(28, 122752, nil, mod:IsTank() or mod:IsHealer())
+local timerShadowBreathCD				= mod:NewCDTimer(26, 122752, nil, mod:IsTank() or mod:IsHealer())
 local timerNightmaresCD					= mod:NewNextTimer(15.5, 122770)
 local timerDarkOfNightCD				= mod:NewCDTimer(30.5, "ej6550", nil, nil, nil, 130013)
 local timerDayCD						= mod:NewNextTimer(121, "ej6315", nil, nil, nil, 122789)
