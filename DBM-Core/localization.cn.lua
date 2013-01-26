@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 11/22/2012
+-- Last update: 1/26/2013
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -88,6 +88,7 @@ DBM_CORE_RANGECHECK_OPTION_SLOW		= "慢（适用于低端CPU）"
 DBM_CORE_RANGECHECK_OPTION_AVERAGE	= "中"
 DBM_CORE_RANGECHECK_OPTION_FAST		= "快（几乎实时）"
 DBM_CORE_RANGERADAR_HEADER			= "距离雷达（%d码）"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d名玩家在监视距离内"
 
 DBM_CORE_INFOFRAME_LOCK				= "锁定框体"
 DBM_CORE_INFOFRAME_HIDE				= "隐藏"

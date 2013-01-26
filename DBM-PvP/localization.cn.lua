@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 9/27/2012
+-- Last update: 1/26/2013
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -271,4 +271,51 @@ L:SetOptionLocalization({
 	TimerCap = "计时条：占领",
 	ShowGilneasEstimatedPoints = "显示战斗结束时双方资源统计",
 	ShowGilneasBasesToWin = "显示获胜需要占领的资源点"
+})
+
+
+-------------------------
+--  Silvershard Mines  --
+-------------------------
+L = DBM:GetModLocalization("SilvershardMines")
+
+L:SetGeneralLocalization({
+	name = "碎银矿脉"
+})
+
+L:SetTimerLocalization({
+	TimerCart	= "矿车刷新"
+})
+
+L:SetOptionLocalization({
+	TimerCart	= "计时条：矿车刷新"
+})
+
+L:SetMiscLocalization({
+	Capture = "控制了"
+})
+
+-------------------------
+--  Temple of Kotmogu  --
+-------------------------
+L = DBM:GetModLocalization("Kotmogu")
+
+L:SetGeneralLocalization({
+	name = "寇魔古寺"
+})
+
+L:SetOptionLocalization({
+	TimerWin			= "计时条：获胜",
+	ShowKotmoguEstimatedPoints	= "显示战斗结束时双方资源统计",
+	ShowKotmoguOrbsToWin		= "显示获胜需要控制的宝珠数量"
+})
+
+L:SetMiscLocalization({
+	OrbTaken 	= "(%S+)取走了(%S+)的球！",
+	OrbReturn 	= "(%S+)宝珠被放回了！",
+	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "联盟",
+	Horde		= "部落",
+	WinBarText	= "预计：%s获胜",
+	OrbsToWin	= "胜利需要控制宝珠：%d"
 })

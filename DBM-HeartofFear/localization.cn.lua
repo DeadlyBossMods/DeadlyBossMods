@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/18/2013
+-- Last update: 1/26/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -42,7 +42,7 @@ L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
 	UnseenStrikeArrow	= "DBM箭头：当有人受到$spell:122949影响时",
-	RangeFrame			= "距离监视（8码）：$spell:123175"
+	RangeFrame			= "距离监视（10码）：$spell:123175"
 })
 
 
@@ -139,11 +139,11 @@ L:SetOptionLocalization({
 	warnAmberTrap		= "警报：$spell:125826的生成，并提示进度", -- maybe bad translation.
 	InfoFrame			= "信息框：受$spell:125390效果影响的玩家",
 	RangeFrame			= "距离监视（5码）：$spell:123735",
-	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
+	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097),
+	HeartOfFearIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(123845)
 })
 
 L:SetMiscLocalization({
 	PlayerDebuffs		= "凝视",
 	YellPhase3			= "别找借口了，女皇！消灭这些傻瓜，否则我会亲手杀了你！"
-
 })
