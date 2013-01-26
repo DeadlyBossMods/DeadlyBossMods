@@ -45,13 +45,16 @@ local specWarnDecapitateOther			= mod:NewSpecialWarningTarget(135000, mod:IsTank
 local specWarnThunderstruck				= mod:NewSpecialWarningSpell(135095, nil, nil, nil, true)
 
 --Conduits
----No timers, since we rotated platforms so often in our strat, we never learned any ability cooldown.
+local timerStaticchargeCD				= mod:NewCDTimer(50, 135695)--Unknown actual cd, besides when first one is in intermission
+local timerDiffusionChainCD				= mod:NewCDTimer(50, 135991)--Unknown actual cd, besides when first one is in intermission
+local timerOverchargeCD					= mod:NewCDTimer(50, 136295)--Unknown actual cd, besides when first one is in intermission
+local timerBouncingBoltCD				= mod:NewCDTimer(50, 136395)--Unknown actual cd, besides when first one is in intermission
 
 --Phase 1
 local timerDecapitateCD					= mod:NewCDTimer(50, 135000)
 local timerThunderstruckCD				= mod:NewCDTimer(46, 135095)
 
-local timerSuperChargedConduits			= mod:NewBuffActiveTimer(45, 137146)
+local timerSuperChargedConduits			= mod:NewBuffActiveTimer(50, 137146)
 
 local intermission = 0
 local phase = 1
@@ -148,7 +151,6 @@ end--]]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:137176") then--Overloaded Circuits (Intermission ending and next phase beginning)
 		phase = phase + 1
-		timerSuperChargedConduits:Start()
 		--"<174.8 20:38:26> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\spell_nature_unrelentingstorm.blp:20|t The |cFFFF0000|Hspell:135683|h[West Conduit]|h|r has burned out and caused |cFFFF0000|Hspell:137176|h[Overloaded Circuits]|h|r!#Bouncing Bolt Conduit
 		if msg:find("spell:135680") then--North (Static Shock)
 			conduitsDestroyed = conduitsDestroyed + 1000--NESW(North, East, South, West)
@@ -167,14 +169,34 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
+--"<128.1 20:37:39> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit [[boss2:Supercharge Conduits::0:137146]]", -- [9562]
+--"<178.8 20:38:30> [CLEU] SPELL_AURA_REMOVED#false#0xF1310B2D00008052#Lei Shen#2632#0#0xF1310B2D00008052#Lei Shen#2632#0#137045#Supercharge Conduits#8#BUFF#0xF1310B2D00008052#183111986#1284#66#1#1#0", -- [11497]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 137146 and self:AntiSpam(2, 1) then--Supercharge Conduits
+	if spellId == 137146 and self:AntiSpam(2, 1) then--Supercharge Conduits (comes earlier than other events so we use this one)
 		intermission = intermission + 1
 		if intermission == 1 then--Cancel Phase 1 timers
 			timerThunderstruckCD:Cancel()
 			timerDecapitateCD:Cancel()
 		elseif intermission == 2 then--Cancel Phase 2 timers
 		
+		end
+		timerSuperChargedConduits:Start()
+		timerStaticchargeCD:Start(6)
+		timerDiffusionChainCD:Start(11)--Does not show in combat log, but have a pretty good idea on timing maybe off 1 second (could be 10)
+		timerOverchargeCD:Start(15)
+		timerBouncingBoltCD:Start(30)--This is probably off 1-2 seconds. need to do a /yell and log it later
+		--Now check if any of pillars were destroyed in a previous intermission and cancel timers for them (pretty up this code later)
+		if conduitsDestroyed >= 1000 then
+			timerStaticchargeCD:Cancel()
+		end
+		if conduitsDestroyed == 0100 or conduitsDestroyed == 0101 or conduitsDestroyed == 0110 or conduitsDestroyed == 1100 then
+			timerDiffusionChainCD:Cancel()
+		end
+		if conduitsDestroyed == 0010 or conduitsDestroyed == 0011 or conduitsDestroyed == 1010 or conduitsDestroyed == 0110 then
+			timerOverchargeCD:Cancel()
+		end
+		if conduitsDestroyed == 0001 or conduitsDestroyed == 0011 or conduitsDestroyed == 0101 or conduitsDestroyed == 1001 then
+			timerBouncingBoltCD:Cancel()
 		end
 	elseif spellId == 136395 and self:AntiSpam(2, 2) then--Bouncing Bolt
 		warnBouncingBolt:Show()
