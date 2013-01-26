@@ -23,6 +23,10 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(742)
 
+L:SetOptionLocalization({
+	warnLightOfDay	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(123716)
+})
+
 L:SetMiscLocalization{
 	Victory	= "고맙다, 이방인이여. 날 자유롭게 해줘서."
 }
