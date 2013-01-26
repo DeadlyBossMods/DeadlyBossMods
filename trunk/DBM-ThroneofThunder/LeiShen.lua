@@ -58,7 +58,10 @@ local timerSuperChargedConduits			= mod:NewBuffActiveTimer(50, 137146)
 
 local intermission = 0
 local phase = 1
-local conduitsDestroyed = 0000--NESW(North, East, South, West)
+local northDestroyed = false
+local eastDestroyed = false
+local southDestroyed = false
+local westDestroyed = false
 local staticshockTargets = {}
 local overchargeTarget = {}
 
@@ -77,7 +80,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(overchargeTarget)
 	intermission = 0
 	phase = 1
-	conduitsDestroyed = 0000
+	northDestroyed = false
+	eastDestroyed = false
+	southDestroyed = false
+	westDestroyed = false
 	timerThunderstruckCD:Start(25-delay)
 	timerDecapitateCD:Start(45-delay)--Either it comes earlier than reg cd on rare occasions, or i have CD wrong.
 end
@@ -153,13 +159,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		phase = phase + 1
 		--"<174.8 20:38:26> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\spell_nature_unrelentingstorm.blp:20|t The |cFFFF0000|Hspell:135683|h[West Conduit]|h|r has burned out and caused |cFFFF0000|Hspell:137176|h[Overloaded Circuits]|h|r!#Bouncing Bolt Conduit
 		if msg:find("spell:135680") then--North (Static Shock)
-			conduitsDestroyed = conduitsDestroyed + 1000--NESW(North, East, South, West)
+			northDestroyed = true
 		elseif msg:find("spell:135681") then--East (Diffusion Chain)
-			conduitsDestroyed = conduitsDestroyed + 0100--NESW(North, East, South, West)
+			eastDestroyed = true
 		elseif msg:find("spell:135682") then--South (Overcharge)
-			conduitsDestroyed = conduitsDestroyed + 0010--NESW(North, East, South, West)
+			southDestroyed = true
 		elseif msg:find("spell:135683") then--West (Bouncing Bolt)
-			conduitsDestroyed = conduitsDestroyed + 0001--NESW(North, East, South, West)
+			westDestroyed = true
 		end
 		if phase == 2 then--Start Phase 2 timers
 		
@@ -181,22 +187,17 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		
 		end
 		timerSuperChargedConduits:Start()
-		timerStaticchargeCD:Start(6)
-		timerDiffusionChainCD:Start(11)--Does not show in combat log, but have a pretty good idea on timing maybe off 1 second (could be 10)
-		timerOverchargeCD:Start(15)
-		timerBouncingBoltCD:Start(30)--This is probably off 1-2 seconds. need to do a /yell and log it later
-		--Now check if any of pillars were destroyed in a previous intermission and cancel timers for them (pretty up this code later)
-		if conduitsDestroyed >= 1000 then
-			timerStaticchargeCD:Cancel()
+		if not northDestroyed then
+			timerStaticchargeCD:Start(6)
 		end
-		if conduitsDestroyed == 0100 or conduitsDestroyed == 0101 or conduitsDestroyed == 0110 or conduitsDestroyed == 1100 then
-			timerDiffusionChainCD:Cancel()
+		if not eastDestroyed then
+			timerDiffusionChainCD:Start(11)--Does not show in combat log, but have a pretty good idea on timing maybe off 1 second (could be 10)
 		end
-		if conduitsDestroyed == 0010 or conduitsDestroyed == 0011 or conduitsDestroyed == 1010 or conduitsDestroyed == 0110 then
-			timerOverchargeCD:Cancel()
+		if not southDestroyed then
+			timerOverchargeCD:Start(15)
 		end
-		if conduitsDestroyed == 0001 or conduitsDestroyed == 0011 or conduitsDestroyed == 0101 or conduitsDestroyed == 1001 then
-			timerBouncingBoltCD:Cancel()
+		if not westDestroyed then
+			timerBouncingBoltCD:Start(30)--This is probably off 1-2 seconds. need to do a /yell and log it later
 		end
 	elseif spellId == 136395 and self:AntiSpam(2, 2) then--Bouncing Bolt
 		warnBouncingBolt:Show()
