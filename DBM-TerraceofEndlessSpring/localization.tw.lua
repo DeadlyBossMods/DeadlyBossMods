@@ -24,6 +24,10 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(742)
 
+L:SetOptionLocalization({
+	warnLightOfDay	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(123716)
+})
+
 L:SetMiscLocalization{
 	Victory					= "謝謝你，陌生人。我重獲自由了。"
 }

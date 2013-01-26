@@ -129,7 +129,8 @@ L:SetOptionLocalization({
 	warnAmberTrap		= "為$spell:125826的製作進度顯示警告", -- maybe bad translation.
 	InfoFrame			= "為受到$spell:125390的玩家顯示訊息框架",
 	RangeFrame			= "為$spell:123735顯示距離框架(5碼)",
-	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
+	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097),
+	HeartOfFearIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(123845)
 })
 
 L:SetMiscLocalization({
