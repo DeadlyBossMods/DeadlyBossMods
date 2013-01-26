@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/13/2013
+-- Last update: 1/26/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -26,6 +26,10 @@ L:SetOptionLocalization({
 -- Tsulong --
 ------------
 L= DBM:GetModLocalization(742)
+
+L:SetOptionLocalization({
+	warnLightOfDay	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(123716)
+})
 
 L:SetMiscLocalization{
 	Victory	= "谢谢你，陌生人。我自由了。"
