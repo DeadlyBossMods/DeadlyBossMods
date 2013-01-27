@@ -82,6 +82,10 @@ L= DBM:GetModLocalization(829)
 --------------
 L= DBM:GetModLocalization(832)
 
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame"--For two different spells
+})
+
 ------------
 -- Ra-den --
 ------------
