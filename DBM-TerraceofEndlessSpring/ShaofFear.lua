@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 local warnThrash						= mod:NewSpellAnnounce(131996, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnBreathOfFearSoon				= mod:NewPreWarnAnnounce(119414, 10, 3)
 local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 4)
+mod:AddBoolOption("BreathWarnOnPlatform", false, "announce")
 local warnOminousCackle					= mod:NewTargetAnnounce(129147, 3)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
 local warnDreadSpray					= mod:NewSpellAnnounce(120047, 2)
 -- Heroic Phase 2
@@ -161,16 +162,18 @@ function mod:LeavePlatform()
 		onPlatform = false
 		MobID = nil
 		--Breath of fear timer recovery
-		local fearlessApplied = UnitBuff("player", fearless)
-		local shaPower = UnitPower("boss1") --Get Boss Power
-		shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
-		if (not fearlessApplied and shaPower < 30.3) or (fearlessApplied and shaPower < 5) then--If you have no fearless and breath timer less then 3s, you may not reach to wall. So ignore below 3 sec. Also if you have fearless and breath timer less then 28.3s, not need to warn breath.
-			timerBreathOfFearCD:Start(33.3-shaPower)
-			countdownBreathOfFear:Start(33.3-shaPower)
-			if shaPower < 26.3 then
-				self:ScheduleMethod(26.3-shaPower, "CheckWall")
-			elseif not fearlessApplied then
-				specWarnBreathOfFearSoon:Show()
+		if not self.Options.BreathWarnOnPlatform then
+			local fearlessApplied = UnitBuff("player", fearless)
+			local shaPower = UnitPower("boss1") --Get Boss Power
+			shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
+			if (not fearlessApplied and shaPower < 30.3) or (fearlessApplied and shaPower < 5) then--If you have no fearless and breath timer less then 3s, you may not reach to wall. So ignore below 3 sec. Also if you have fearless and breath timer less then 28.3s, not need to warn breath.
+				timerBreathOfFearCD:Start(33.3-shaPower)
+				countdownBreathOfFear:Start(33.3-shaPower)
+				if shaPower < 26.3 then
+					self:ScheduleMethod(26.3-shaPower, "CheckWall")
+				elseif not fearlessApplied then
+					specWarnBreathOfFearSoon:Show()
+				end
 			end
 		end
 		if self.Options.RangeFrame then
@@ -216,7 +219,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(119414) and self:AntiSpam(5, 1) then--using this with antispam is still better then registering SPELL_CAST_SUCCESS for a single event when we don't have to. Less cpu cause mod won't have to check every SPELL_CAST_SUCCESS event.
 		warnBreathOfFear:Show()
-		if not onPlatform then--not in middle, not your problem
+		if not onPlatform or self.Options.BreathWarnOnPlatform then--not in middle, not your problem
 			timerBreathOfFearCD:Start()
 			countdownBreathOfFear:Start(33.3)
 			self:ScheduleMethod(26.3, "CheckWall")--check before 7s, 5s is too late.
@@ -226,10 +229,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnOminousCackleYou:Show()
-			countdownBreathOfFear:Cancel()
-			timerBreathOfFearCD:Cancel()
-			self:UnscheduleMethod("CheckPlatformLeaved")
-			self:UnscheduleMethod("CheckWall")
+			if not self.Options.BreathWarnOnPlatform then
+				countdownBreathOfFear:Cancel()
+				timerBreathOfFearCD:Cancel()
+				self:UnscheduleMethod("CheckPlatformLeaved")
+				self:UnscheduleMethod("CheckWall")
+			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Hide()
 			end
@@ -301,6 +306,12 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(129147) and args:IsPlayer() then -- Move onPlatform check when Ominous Cackle debuff removes (actually reachs platform). Because on 25 man, you can see other platform warning and timer while flying to platform. (not actually reachs platform). This causes health frame error and etc error. 
 		onPlatform = true
+		if not self.Options.BreathWarnOnPlatform then--Cancel again if timer started during flying
+			countdownBreathOfFear:Cancel()
+			timerBreathOfFearCD:Cancel()
+			self:UnscheduleMethod("CheckPlatformLeaved")
+			self:UnscheduleMethod("CheckWall")
+		end
 	elseif args:IsSpellID(120047) then
 		timerDreadSpray:Cancel(args.sourceGUID)
 		dreadSprayCounter = 0

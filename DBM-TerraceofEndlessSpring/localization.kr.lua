@@ -79,7 +79,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnBreathOfFearSoon	= "$spell:119414 시전 전에 $spell:117964 효과가 없을 경우 특수 경고 보기",
-	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
+	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629),
+	BreathWarnOnPlatform		= "외부 정자에 있을 때도 $spell:119414 경고 보기\n(가급적 설정하지 않기를 권장합니다. 공격대 진행자용 설정입니다.)"
 })
 
 L:SetOptionLocalization({
