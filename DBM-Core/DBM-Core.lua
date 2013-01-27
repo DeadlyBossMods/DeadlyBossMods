@@ -846,13 +846,13 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, true)
 	elseif cmd:sub(0,5) == "break" then
-		if DBM:GetRaidRank() == 0 then
+		if DBM:GetRaidRank() == 0 or IsInGroup(LE_PARTY_CATEGORY_INSTANCE) or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 			return
 		end
 		local timer = tonumber(cmd:sub(6)) or 5
 		local timer = timer * 60
-		local channel = (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT") or (IsInRaid() and "RAID_WARNING") or "PARTY"
+		local channel = (IsInRaid() and "RAID_WARNING") or "PARTY"
 		DBM:CreatePizzaTimer(timer, DBM_CORE_TIMER_BREAK, true)
 		DBM:Unschedule(SendChatMessage)
 		SendChatMessage(DBM_CORE_BREAK_START:format(timer/60), channel)
@@ -862,20 +862,19 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if timer > 30 then DBM:Schedule(timer - 30, SendChatMessage, DBM_CORE_BREAK_SEC:format(30), channel) end
 		DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_BREAK_OVER, channel)
 	elseif cmd:sub(1, 4) == "pull" then
-		if IsEncounterInProgress() then return end
-		if DBM:GetRaidRank() == 0 then
+		if DBM:GetRaidRank() == 0 or IsEncounterInProgress() then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
 		local channel = (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT") or (IsInRaid() and "RAID_WARNING") or "PARTY"
 		DBM:Unschedule(SendChatMessage)
-		SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)
+		SendChatMessage(("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL:format(timer)), channel)--Sent mainly for those who have no boss mod (bigwigs or DBM)
 		for i = 1, 5 do
 			if timer > i then
-				DBM:Schedule(timer - i, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(i), channel)
+				DBM:Schedule(timer - i, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL:format(i)), channel)
 			end
 		end
-		DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_PULL_NOW, channel)
+		DBM:Schedule(timer, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL_NOW), channel)
 		sendSync("PT", timer)
 	elseif cmd:sub(1, 5) == "arrow" then
 		if not DBM:IsInRaid() then
@@ -1884,6 +1883,9 @@ do
 		end
 		DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		dummyMod.countdown:Start(timer)
+		if timer > 3 or timer < 11 then
+			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, 10)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
+		end
 	end
 
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
