@@ -102,6 +102,12 @@ function mod:OnCombatStart(delay)
 	timerDecapitateCD:Start(45-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
 end
 
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(135095) then
 		warnThunderstruck:Show()
