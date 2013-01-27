@@ -83,6 +83,10 @@ L= DBM:GetModLocalization(829)
 --------------
 L= DBM:GetModLocalization(832)
 
+L:SetOptionLocalization({
+	RangeFrame		= "거리 창 보기"
+})
+
 ------------
 -- Ra-den --
 ------------
