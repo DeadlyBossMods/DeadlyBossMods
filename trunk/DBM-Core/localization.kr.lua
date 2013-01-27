@@ -35,7 +35,7 @@ DBM_CORE_OPTION_CATEGORY_TIMERS		= "바"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "알림"
 DBM_CORE_OPTION_CATEGORY_MISC		= "기타 추가 기능"
 
-DBM_CORE_AUTO_RESPONDED						= "전투중 받은 귓속말을 자동 응답합니다."
+DBM_CORE_AUTO_RESPONDED						= "전투중 받은 귓속말에 자동 응답합니다."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d 명이 생존해 있습니다."
 DBM_CORE_AUTO_RESPOND_WHISPER				= "%s 님은 현재 바쁩니다. %s 전투가 진행중입니다. (%s, %d/%d 명 생존중) 전투 종료후 다시 알림 메세지가 표시됩니다."
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s 님의 %s 전투가 끝났습니다!"
