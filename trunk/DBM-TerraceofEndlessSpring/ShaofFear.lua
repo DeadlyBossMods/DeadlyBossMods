@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 local warnThrash						= mod:NewSpellAnnounce(131996, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnBreathOfFearSoon				= mod:NewPreWarnAnnounce(119414, 10, 3)
 local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 4)
-mod:AddBoolOption("BreathWarnOnPlatform", false, "announce")
+mod:AddBoolOption("warnBreathOnPlatform", false, "announce")
 local warnOminousCackle					= mod:NewTargetAnnounce(129147, 3)--129147 is debuff, 119693 is cast. We do not reg warn cast cause we reg warn the actual targets instead. We special warn cast to give a little advanced heads up though.
 local warnDreadSpray					= mod:NewSpellAnnounce(120047, 2)
 -- Heroic Phase 2
@@ -91,6 +91,7 @@ local ominousCackleTargets = {}
 local platformGUIDs = {}
 local waterspoutTargets = {}
 local huddleInTerrorTargets = {}
+local platformSent = false
 local onPlatform = false--Used to determine when YOU are sent to a platform, so we know to activate MobID on next shoot
 local phase2 = false
 local dreadSprayCounter = 0
@@ -162,10 +163,11 @@ function mod:LeavePlatform()
 			DBM.BossHealth:RemoveBoss(61046)
 		end
 		table.wipe(platformGUIDs)
+		platformSent = false
 		onPlatform = false
 		MobID = nil
 		--Breath of fear timer recovery
-		if not self.Options.BreathWarnOnPlatform then
+		if not self.Options.warnBreathOnPlatform then
 			local fearlessApplied = UnitBuff("player", fearless)
 			local shaPower = UnitPower("boss1") --Get Boss Power
 			shaPower = shaPower / 3 --Divide it by 3 (cause he gains 3 power per second and we need to know how many seconds to subtrack from fear CD)
@@ -195,6 +197,7 @@ function mod:OnCombatStart(delay)
 	timerBreathOfFearCD:Start(-delay)
 	self:ScheduleMethod(26.3-delay, "CheckWall")
 	countdownBreathOfFear:Start(33.3-delay)
+	platformSent = false
 	onPlatform = false
 	phase2 = false
 	dreadSprayCounter = 0
@@ -222,7 +225,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(119414) and self:AntiSpam(5, 1) then--using this with antispam is still better then registering SPELL_CAST_SUCCESS for a single event when we don't have to. Less cpu cause mod won't have to check every SPELL_CAST_SUCCESS event.
 		warnBreathOfFear:Show()
-		if not onPlatform or self.Options.BreathWarnOnPlatform then--not in middle, not your problem
+		if not platformSent or self.Options.warnBreathOnPlatform then--not in middle, not your problem
 			timerBreathOfFearCD:Start()
 			countdownBreathOfFear:Start(33.3)
 			self:ScheduleMethod(26.3, "CheckWall")--check before 7s, 5s is too late.
@@ -231,8 +234,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(129147) then
 		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
+			platformSent = true
 			specWarnOminousCackleYou:Show()
-			if not self.Options.BreathWarnOnPlatform then
+			if not self.Options.warnBreathOnPlatform then
 				countdownBreathOfFear:Cancel()
 				timerBreathOfFearCD:Cancel()
 				self:UnscheduleMethod("CheckPlatformLeaved")
@@ -255,7 +259,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFearless:Start()
 		self:UnscheduleMethod("CheckPlatformLeaved")
 		self:LeavePlatform()
-	elseif args:IsSpellID(131996) and not onPlatform then
+	elseif args:IsSpellID(131996) and not platformSent then
 		warnThrash:Show()
 		specWarnThrash:Show()
 		if phase2 then
@@ -309,12 +313,6 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(129147) and args:IsPlayer() then -- Move onPlatform check when Ominous Cackle debuff removes (actually reachs platform). Because on 25 man, you can see other platform warning and timer while flying to platform. (not actually reachs platform). This causes health frame error and etc error. 
 		onPlatform = true
-		if not self.Options.BreathWarnOnPlatform then--Cancel again if timer started during flying
-			countdownBreathOfFear:Cancel()
-			timerBreathOfFearCD:Cancel()
-			self:UnscheduleMethod("CheckPlatformLeaved")
-			self:UnscheduleMethod("CheckWall")
-		end
 	elseif args:IsSpellID(120047) then
 		timerDreadSpray:Cancel(args.sourceGUID)
 		dreadSprayCounter = 0
@@ -402,6 +400,7 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 114936 then--Heroic Phase 2
 		phase2 = true
+		platformSent = false
 		onPlatform = false
 		submergeCount = 0
 		timerThrashCD:Cancel()
