@@ -66,9 +66,9 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	MoveWarningForward			= "Move Through",
-	MoveWarningRight			= "Move Right",
-	MoveWarningBack				= "Move To Old Position",
+	MoveForward					= "Move Through",
+	MoveRight					= "Move Right",
+	MoveBack					= "Move To Old Position",
 	specWarnBreathOfFearSoon	= "Breath of Fear soon - MOVE into wall!"
 })
 
