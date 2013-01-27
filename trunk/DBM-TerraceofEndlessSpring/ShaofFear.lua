@@ -42,9 +42,10 @@ local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
 local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, true)--Platform ability, particularly nasty damage, and fear.
 local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
-local MoveWarningForward				= mod:NewSpecialWarning("MoveWarningForward", false)--Warning to switch sites on platform
-local MoveWarningRight					= mod:NewSpecialWarning("MoveWarningRight", false)--Warning to move one eighth to the right
-local MoveWarningBack					= mod:NewSpecialWarning("MoveWarningBack", false)--Move back to starting position
+mod:AddBoolOption("specWarnMovement", true, "announce")
+local MoveWarningForward				= mod:NewSpecialWarning("MoveWarningForward", false, false)--Warning to switch sites on platform
+local MoveWarningRight					= mod:NewSpecialWarning("MoveWarningRight", false, false)--Warning to move one eighth to the right
+local MoveWarningBack					= mod:NewSpecialWarning("MoveWarningBack", false, false)--Move back to starting position
 -- Heroic Phase 2
 local specWarnDreadThrash				= mod:NewSpecialWarningSpell(132007, mod:IsTank())
 local specWarnNakedAndAfraidOther		= mod:NewSpecialWarningTarget(120669, mod:IsTank())
@@ -67,14 +68,15 @@ local timerFearless						= mod:NewBuffFadesTimer(30, 118977)
 local timerDreadTrashCD					= mod:NewCDTimer(9, 132007)--Share Trash CD.
 local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669)-- EJ says that debuff duration 25 sec.
 --local timerNakedAndAfraidCD			= mod:NewCDTimer(25, 120669)-- unconfirmed.
-local timerWaterspoutCD					= mod:NewCDTimer(10, 120519)
-local timerHuddleInTerrorCD				= mod:NewCDTimer(10, 120629)
-local timerImplacableStrikeCD			= mod:NewCDTimer(10, 120672)
 local timerSubmergeCD					= mod:NewCDCountTimer(51.5, 120455)
-local timerSpecialAbilityCD				= mod:NewTimer(12, "timerSpecialAbilityCD", 1449)--1st Ability 12sec after Submerge
-local timerSpoHudCD						= mod:NewTimer(10, "timerSpoHudCD", 64044)--Waterspout or Huddle in Terror next
-local timerSpoStrCD						= mod:NewTimer(10, "timerSpoStrCD", 1953)--Waterspout or Implacable Strike next
-local timerHudStrCD						= mod:NewTimer(10, "timerHudStrCD", 64044)-- Huddle in Terror or Implacable Strike next
+mod:AddBoolOption("timerSpecialAbility", true, "timer")--Better to have one option for his shared special timer than 7
+local timerWaterspoutCD					= mod:NewCDTimer(10, 120519, nil, nil, false)
+local timerHuddleInTerrorCD				= mod:NewCDTimer(10, 120629, nil, nil, false)
+local timerImplacableStrikeCD			= mod:NewCDTimer(10, 120672, nil, nil, false)
+local timerSpecialAbilityCD				= mod:NewTimer(12, "timerSpecialAbilityCD", 1449, nil, false)--1st Ability 12sec after Submerge
+local timerSpoHudCD						= mod:NewTimer(10, "timerSpoHudCD", 64044, nil, false)--Waterspout or Huddle in Terror next
+local timerSpoStrCD						= mod:NewTimer(10, "timerSpoStrCD", 1953, nil, false)--Waterspout or Implacable Strike next
+local timerHudStrCD						= mod:NewTimer(10, "timerHudStrCD", 64044, nil, false)-- Huddle in Terror or Implacable Strike next
 
 local berserkTimer						= mod:NewBerserkTimer(900)
 
@@ -115,6 +117,7 @@ local function warnHuddleInTerrorTargets()
 end
 
 local function startSpecialTimers()
+	if not mod.Options.timerSpecialAbility then return end
 	if specialsCast == 110 then
 		timerImplacableStrikeCD:Start()
 	end
@@ -350,7 +353,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnSubmerge:Show()
 		timerSubmergeCD:Start(nil, submergeCount+1)
 		specialsCast = 000
-		timerSpecialAbilityCD:Start()
+		if self.Options.timerSpecialAbility then
+			timerSpecialAbilityCD:Start()
+		end
 	--elseif args:IsSpellID(120458) then
 		--warnEmerge:Show()
 	end
@@ -360,6 +365,7 @@ function mod:SPELL_CAST_SUCCESS(args)--Handling Dread Sprays
 	if args:IsSpellID(120047) and onPlatform then
 		dreadSprayCounter = 0
 	elseif args:IsSpellID(119983) and onPlatform then
+		if not self.Options.specWarnMovement then return end
 		dreadSprayCounter = dreadSprayCounter+1
 		if MobID == 61046 then
 			if dreadSprayCounter == 6 then
