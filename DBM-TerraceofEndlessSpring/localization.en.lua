@@ -80,13 +80,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnBreathOnPlatform		= "Show $spell:119414 warning when you are on platform\n(not recommanded, for raid leader)",
 	specWarnBreathOfFearSoon	= "Show pre-special warning for $spell:119414 if you not have a $spell:117964 buff",
-	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629),
-	BreathWarnOnPlatform		= "Show $spell:119414 warning when you are on platform\n(not recommanded, for raid leader)"
-})
-
-L:SetOptionLocalization({
-	RangeFrame					= "Show range frame (2) for $spell:119519",
 	specWarnMovement			= "Show special warning to move when $spell:120047 is being fired",
-	timerSpecialAbility			= "Show timer for when next special ability will be cast"
+	timerSpecialAbility			= "Show timer for when next special ability will be cast",
+	RangeFrame					= "Show range frame (2) for $spell:119519",
+	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
 })

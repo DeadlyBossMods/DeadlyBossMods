@@ -64,9 +64,9 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	MoveWarningForward			= "건너편으로 이동!",
-	MoveWarningRight			= "오른쪽으로 이동!",
-	MoveWarningBack				= "이전 위치로 이동!",
+	MoveForward					= "건너편으로 이동!",
+	MoveRight					= "오른쪽으로 이동!",
+	MoveBack					= "이전 위치로 이동!",
 	specWarnBreathOfFearSoon	= "곧 공포 숨결 - 장벽 안으로 이동하세요!",
 })
 
@@ -78,18 +78,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnBreathOnPlatform		= "외부 정자에 있을 때도 $spell:119414 경고 보기\n(가급적 설정하지 않기를 권장합니다. 공격대 진행자용 설정입니다.)",
 	specWarnBreathOfFearSoon	= "$spell:119414 시전 전에 $spell:117964 효과가 없을 경우 특수 경고 보기",
+	specWarnMovement			= "$spell:120047 주문 시전 중에 이동 관련 경고 보기\n(최초 시전시 ShaOfFearAssist 애드온의 녹색 원 안에 있으셔야 합니다.)",
+	timerSpecialAbility			= "다음 $spell:120519 또는 $spell:120629 또는 $spell:120672 바 표시",
 	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629),
-	BreathWarnOnPlatform		= "외부 정자에 있을 때도 $spell:119414 경고 보기\n(가급적 설정하지 않기를 권장합니다. 공격대 진행자용 설정입니다.)"
-})
-
-L:SetOptionLocalization({
 	RangeFrame					= "$spell:119519 주문에 대한 거리 창 보기(2m)",
-	MoveWarningForward			= "$spell:120047 시전 도중 건너편으로 이동 특수 경고 보기",
-	MoveWarningRight			= "$spell:120047 시전 도중 오른쪽으로 이동 특수 경고 보기",
-	MoveWarningBack				= "$spell:120047 종료 후 원래 위치로 이동 특수 경고 보기",
-	timerSpecialAbilityCD		= "다음 $spell:120519 또는 $spell:120629 또는 $spell:120672 바 표시",
-	timerSpoHudCD				= "$spell:120629 또는 $spell:120519 대기시간 바 표시",
-	timerSpoStrCD				= "$spell:120519 또는 $spell:120672 대기시간 바 표시",
-	timerHudStrCD				= "$spell:120629 또는 $spell:120672 대기시간 바 표시"
 })
