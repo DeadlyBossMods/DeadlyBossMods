@@ -42,10 +42,10 @@ local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
 local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, true)--Platform ability, particularly nasty damage, and fear.
 local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
-mod:AddBoolOption("specWarnMovement", true, "announce")
-local MoveWarningForward				= mod:NewSpecialWarning("MoveWarningForward", false, false)--Warning to switch sites on platform
-local MoveWarningRight					= mod:NewSpecialWarning("MoveWarningRight", false, false)--Warning to move one eighth to the right
-local MoveWarningBack					= mod:NewSpecialWarning("MoveWarningBack", false, false)--Move back to starting position
+mod:AddBoolOption("specWarnMovement", false, "announce")
+local MoveWarningForward				= mod:NewSpecialWarning("MoveWarningForward", nil, false)--Warning to switch sites on platform
+local MoveWarningRight					= mod:NewSpecialWarning("MoveWarningRight", nil, false)--Warning to move one eighth to the right
+local MoveWarningBack					= mod:NewSpecialWarning("MoveWarningBack", nil, false)--Move back to starting position
 -- Heroic Phase 2
 local specWarnDreadThrash				= mod:NewSpecialWarningSpell(132007, mod:IsTank())
 local specWarnNakedAndAfraidOther		= mod:NewSpecialWarningTarget(120669, mod:IsTank())
