@@ -131,7 +131,8 @@ L:SetOptionLocalization({
 	warnAmberTrap		= "Verkünde den Fortschritt beim Bau einer $spell:125826",
 	InfoFrame			= "Zeige Infofenster für Spieler, welche von $spell:125390 betroffen sind",
 	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:123735",
-	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
+	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097),
+	HeartOfFearIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(123845)
 })
 
 L:SetMiscLocalization({
