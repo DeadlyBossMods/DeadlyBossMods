@@ -176,9 +176,9 @@ L.SpamBlockNoRangeFrame			= "Do not show range frame"
 L.SpamBlockNoInfoFrame			= "Do not show info frame"
 
 L.Area_PullTimer				= "Pull Timer Filter Options"
-L.ShowPT						= "Show Pull Timer bar"
-L.ShowPTCountdownText			= "Show Pull Timer countdown text"
-L.PlayPTCountdown				= "Play Pull Timer countdown audio"
+L.DontShowPT					= "Do not show Pull Timer bar"
+L.DontShowPTCountdownText		= "Do not show Pull Timer countdown text"
+L.DontPlayPTCountdown			= "Do not play Pull Timer countdown audio"
 
 -- Misc
 L.FontHeight	= 16
