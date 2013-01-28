@@ -67,9 +67,9 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	MoveWarningForward			= "向前穿過去",
-	MoveWarningRight			= "向右移動",
-	MoveWarningBack				= "回到原本位置",
+	MoveForward					= "向前穿過去",
+	MoveRight					= "向右移動",
+	MoveBack					= "回到原本位置",
 	specWarnBreathOfFearSoon	= "恐懼之息來臨 - 移動到光牆裡!"
 })
 
@@ -81,18 +81,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告(不建議使用，給團隊隊長)",
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
+	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告",
+	timerSpecialAbility 		= "為下一次特別技能施放顯示計時器",
+	RangeFrame					= "為$spell:119519顯示距離框(2碼)",
 	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
 })
-
-L:SetOptionLocalization({
-	RangeFrame					= "為$spell:119519顯示距離框(8碼)",
-	MoveWarningForward			= "當$spell:120047施放時顯示向前穿過去的特別警告",
-	MoveWarningRight			= "當$spell:120047施放時顯示向右移動的特別警告",
-	MoveWarningBack				= "當$spell:120047結束時顯示回到原本位置的特別警告",
-	timerSpecialAbilityCD		= "為下一次特別技能施放顯示計時器",
-	timerSpoHudCD				= "為下一次$spell:120629或$spell:120519施放顯示計時器",
-	timerSpoStrCD				= "為下一次$spell:120519或$spell:120672施放顯示計時器",
-	timerHudStrCD				= "為下一次$spell:120629或$spell:120672施放顯示計時器"
-})
-
