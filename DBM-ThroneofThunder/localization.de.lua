@@ -83,6 +83,10 @@ L= DBM:GetModLocalization(829)
 --------------
 L= DBM:GetModLocalization(832)
 
+L:SetOptionLocalization({
+	RangeFrame		= "Zeige Abstandsfenster"--For two different spells
+})
+
 ------------
 -- Ra-den --
 ------------
