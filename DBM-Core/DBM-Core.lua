@@ -873,13 +873,13 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		local channel = (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT") or (IsInRaid() and "RAID_WARNING") or "PARTY"
 		DBM:Unschedule(SendChatMessage)
 		if IsInGroup() then
-			SendChatMessage(("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL:format(timer)), channel)--Sent mainly for those who have no boss mod (bigwigs or DBM)
+			SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)--Still give everyone first raid warning (but only that one)
 			for i = 1, 5 do
 				if timer > i then
-					DBM:Schedule(timer - i, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL:format(i)), channel)
+					DBM:Schedule(timer - i, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL:format(i)), channel)--Filter the raid warning based countdown though. These are mainly for those who have no boss mod (bigwigs or DBM). Boss mod users don't need a raid warning countdown, they have a local one
 				end
 			end
-			DBM:Schedule(timer, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL_NOW), channel)
+			DBM:Schedule(timer, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL_NOW), channel)--^
 		end
 		sendSync("PT", timer)
 	elseif cmd:sub(1, 5) == "arrow" then
@@ -1893,8 +1893,8 @@ do
 		if not DBM.Options.DontPlayPTCountdown then
 			dummyMod.countdown:Start(timer)
 		end
-		if not DBM.Options.DontShowPTCountdownText and (timer > 3 and timer < 11) then
-			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, 10)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
+		if not DBM.Options.DontShowPTCountdownText then
+			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
 		end
 	end
 
