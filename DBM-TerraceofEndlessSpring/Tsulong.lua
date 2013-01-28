@@ -226,7 +226,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownNightmares:Start(15.5)
 		timerDayCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerDarkOfNightCD:Start(10-delay)
+			timerDarkOfNightCD:Start(10)
 			darkOfNightCount = 0
 		end
 	elseif spellId == 123813 and self:AntiSpam(2, 3) then--The Dark of Night (Night Phase)
