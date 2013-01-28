@@ -38,6 +38,14 @@ else
 	landfall = "Domination Point"
 end
 
-L:SetGeneralLocalization{
+L:SetGeneralLocalization({
 	name = landfall
-}
+})
+
+L:SetWarningLocalization({
+	WarnAchFiveAlive	= "Achievement \"Number Five Is Alive\" failed"
+})
+
+L:SetOptionLocalization({
+	WarnAchFiveAlive	= "Show warning if achievement \"Number Five Is Alive\" failed."
+})
