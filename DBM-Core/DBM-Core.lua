@@ -1887,13 +1887,13 @@ do
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
 			dummyMod.countdown = dummyMod:NewCountdown(0, 0)
 		end
-		if not DBM.options.DontShowPT then
+		if not DBM.Options.DontShowPT then
 			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 		end
-		if not DBM.options.DontPlayPTCountdown then
+		if not DBM.Options.DontPlayPTCountdown then
 			dummyMod.countdown:Start(timer)
 		end
-		if not DBM.options.DontShowPTCountdownText and (timer > 3 and timer < 11) then
+		if not DBM.Options.DontShowPTCountdownText and (timer > 3 and timer < 11) then
 			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, 10)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
 		end
 	end
