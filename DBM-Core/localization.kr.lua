@@ -59,7 +59,7 @@ DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 DBM 바 �
 DBM_PIZZA_CONFIRM_IGNORE			= "현재 공격대에서 %s님이 보낸 DBM 바를 무시하도록 하겠습니까?"
 DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <글자>"
 
-DBM_CORE_ERROR_DBMV3_LOADED			= "DBMv3와 DBMv4가 동시에 실행중 입니다.\n\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n또한, 애드온 폴더내에 존재하고 있는 DBMv3 폴더를 삭제하시길 권장합니다."
+DBM_CORE_ERROR_DBMV3_LOADED			= "DBMv3와 DBMv4가 동시에 실행중 입니다.\n\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n이후, 애드온 폴더 내에서 DBMv3 폴더를 삭제하시길 권장합니다."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "죽이는 보스 모드"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+클릭 또는 오른쪽 클릭으로 움직이세요.\nAlt+Shift+클릭으로 움직이면 자유롭게 배치할 수 있습니다."
