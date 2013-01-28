@@ -24,3 +24,13 @@ L= DBM:GetModLocalization("ArenaAnnihilation")
 L:SetGeneralLocalization{
 	name = "Arena Of Annihilation"
 }
+
+--------------------
+-- Lion's Landing --
+--------------------
+
+L = DBM:GetModLocalization("LionsLanding")
+
+L:SetGeneralLocalization{
+	name = "Lion's Landing"
+}
