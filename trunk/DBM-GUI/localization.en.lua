@@ -175,5 +175,10 @@ L.SpamBlockNoSetIcon			= "Do not set icons on targets"
 L.SpamBlockNoRangeFrame			= "Do not show range frame"
 L.SpamBlockNoInfoFrame			= "Do not show info frame"
 
+L.Area_PullTimer				= "Pull Timer Filter Options"
+L.ShowPT						= "Show Pull Timer bar"
+L.ShowPTCountdownText			= "Show Pull Timer countdown text"
+L.PlayPTCountdown				= "Play Pull Timer countdown audio"
+
 -- Misc
 L.FontHeight	= 16
