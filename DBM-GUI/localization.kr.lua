@@ -176,6 +176,11 @@ L.SpamBlockNoSetIcon			= "전술 목표 아이콘 설정하지 않기"
 L.SpamBlockNoRangeFrame			= "거리 창 표시하지 않기"
 L.SpamBlockNoInfoFrame			= "정보 창 표시하지 않기"
 
+L.Area_PullTimer				= "전투 시작 예정 설정"
+L.DontShowPT					= "전투 시작 예정 바 숨기기"
+L.DontShowPTCountdownText		= "전투 시작 예정 초읽기 글자 숨기기"
+L.DontPlayPTCountdown			= "전투 시작 예정 초읽기 소리 숨기기"
+
 -- Misc
 L.FontHeight = 16
 
