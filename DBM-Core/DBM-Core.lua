@@ -73,7 +73,6 @@ DBM.DefaultOptions = {
 	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav",
 	ModelSoundValue = "Short",
 	CountdownVoice = "Corsica",
-	CountdownPullTimer = true,
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
@@ -142,6 +141,9 @@ DBM.DefaultOptions = {
 	DontSetIcons = false,
 	DontShowRangeFrame = false,
 	DontShowInfoFrame = false,
+	ShowPT = true,
+	ShowPTCountdownText = true,
+	PlayPTCountdown = true,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
@@ -1874,7 +1876,7 @@ do
 
 	local dummyMod -- dummy mod for the pull sound effect
 	syncHandlers["PT"] = function(sender, timer)
-		if not DBM.Options.CountdownPullTimer or select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
+		if select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
 			return
 		end
 		timer = tonumber(timer or 0)
@@ -1885,9 +1887,13 @@ do
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
 			dummyMod.countdown = dummyMod:NewCountdown(0, 0)
 		end
-		DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-		dummyMod.countdown:Start(timer)
-		if timer > 3 or timer < 11 then
+		if DBM.options.ShowPT then
+			DBM.Bars:CreateBar(timer, DBM_CORE_TIMER_PULL, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+		end
+		if DBM.options.PlayPTCountdown then
+			dummyMod.countdown:Start(timer)
+		end
+		if DBM.options.ShowPTCountdownText and (timer > 3 and timer < 11) then
 			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, 10)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
 		end
 	end
