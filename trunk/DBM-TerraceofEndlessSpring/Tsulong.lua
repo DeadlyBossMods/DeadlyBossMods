@@ -124,6 +124,7 @@ function mod:OnCombatStart(delay)
 	timerNightmaresCD:Start(15-delay)
 	countdownNightmares:Cancel() -- sometimes it doubles OnCombatStart, wtf?..
 	countdownNightmares:Start(15-delay)
+	timerSunbeamCD:Start(43-delay)--Sometimes he doesn't emote first cast, so we start a bar for SECOND cast on pull, if we does cast it though, we'll update bar off first cast
 	timerDayCD:Start(-delay)
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
