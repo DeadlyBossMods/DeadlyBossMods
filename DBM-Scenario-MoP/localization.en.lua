@@ -25,12 +25,19 @@ L:SetGeneralLocalization{
 	name = "Arena Of Annihilation"
 }
 
---------------------
--- Lion's Landing --
---------------------
+--------------
+-- Landfall --
+--------------
 
-L = DBM:GetModLocalization("LionsLanding")
+L = DBM:GetModLocalization("Landfall")
+
+local landfall
+if UnitFactionGroup("player") == "Alliance" then
+	landfall = "Lion's Landing"
+else
+	landfall = "Domination Point"
+end
 
 L:SetGeneralLocalization{
-	name = "Lion's Landing"
+	name = landfall
 }
