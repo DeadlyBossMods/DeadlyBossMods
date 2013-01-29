@@ -69,5 +69,3 @@ function mod:OnSync(msg, str)
 		warnAchFiveAlive:Show()
 	end
 end
-		
-		
