@@ -59,7 +59,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerInvokeLightningCD:Start(-delay)
-	timerStaticFieldCD:Start(24-delay)
+	timerStaticFieldCD:Start(18-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
