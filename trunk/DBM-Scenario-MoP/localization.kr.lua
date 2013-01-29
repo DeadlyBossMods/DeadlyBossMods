@@ -34,6 +34,14 @@ else
 	landfall = "지배령 거점"
 end
 
-L:SetGeneralLocalization{
+L:SetGeneralLocalization({
 	name = landfall
-}
+})
+
+L:SetWarningLocalization({
+	WarnAchFiveAlive	= "\"불사전설\" 업적 실패"
+})
+
+L:SetOptionLocalization({
+	WarnAchFiveAlive	= "\"불사전설\" 업적 실패시 알림 보기"
+})
