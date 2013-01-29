@@ -872,7 +872,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		local timer = tonumber(cmd:sub(5)) or 10
 		local channel = (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE_CHAT") or (IsInRaid() and "RAID_WARNING") or "PARTY"
 		DBM:Unschedule(SendChatMessage)
-		if IsInGroup() then
+		if IsInGroup() and timer > 1 then
 			SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)--Still give everyone first raid warning (but only that one)
 			for i = 1, 5 do
 				if timer > i then
