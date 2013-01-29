@@ -398,7 +398,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 114936 then--Heroic Phase 2
+	if spellId == 114936 and self:AntiSpam(10, 2) then--Heroic Phase 2
 		phase2 = true
 		platformSent = false
 		onPlatform = false
