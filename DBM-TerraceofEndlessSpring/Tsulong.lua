@@ -27,7 +27,7 @@ local warnDay							= mod:NewSpellAnnounce("ej6315", 2, 122789)
 local warnSummonUnstableSha				= mod:NewSpellAnnounce("ej6320", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnSummonEmbodiedTerror			= mod:NewCountAnnounce("ej6316", 4, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnTerrorize						= mod:NewTargetAnnounce(123012, 4, nil, mod:IsHealer())
-local warnSunBreath						= mod:NewSpellAnnounce(122855, 3)
+local warnSunBreath						= mod:NewCountAnnounce(122855, 3)
 local warnLightOfDay					= mod:NewStackAnnounce(123716, 1, nil, mod:IsHealer(), "warnLightOfDay")
 
 local specWarnShadowBreath				= mod:NewSpecialWarningSpell(122752, mod:IsTank())
@@ -47,11 +47,12 @@ local timerDayCD						= mod:NewNextTimer(121, "ej6315", nil, nil, nil, 122789)
 local timerSummonUnstableShaCD			= mod:NewNextTimer(18, "ej6320", nil, nil,nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local timerSummonEmbodiedTerrorCD		= mod:NewNextCountTimer(41, "ej6316", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local timerTerrorizeCD					= mod:NewCDTimer(13.5, 123012)--Besides being cast 14 seconds after they spawn, i don't know if they recast it if they live too long, their health was too undertuned to find out.
-local timerSunBreathCD					= mod:NewNextTimer(29, 122855)
+local timerSunBreathCD					= mod:NewNextCountTimer(29, 122855)
 local timerBathedinLight				= mod:NewBuffFadesTimer(6, 122858, nil, mod:IsHealer())
 local timerLightOfDay					= mod:NewTargetTimer(6, 123716, nil, mod:IsHealer())
 
 local countdownNightmares				= mod:NewCountdown(15.5, 122770, false)
+local countdownSunBreath				= mod:NewCountdown(29, 122855, mod:IsHealer())
 
 local berserkTimer						= mod:NewBerserkTimer(490)--a little over 8 min, basically 3rd dark phase is auto berserk.
 
@@ -60,6 +61,7 @@ local terrorCount = 0
 local targetScansDone = 0
 local darkOfNightCount = 0
 local lightOfDayCount = 0
+local breathCount = 0
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -156,9 +158,11 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(122855) then
-		warnSunBreath:Show()
+		breathCount = breathCount + 1
+		warnSunBreath:Show(breathCount)
 		if timerNightCD:GetTime() < 100 then
-			timerSunBreathCD:Start()
+			timerSunBreathCD:Start(29, breathCount+1)
+			countdownSunBreath:Start(29)
 		end
 	end
 end
@@ -204,13 +208,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 123252 and self:AntiSpam(2, 2) then--Dread Shadows Cancel (Sun Phase)
 		lightOfDayCount = 0
 		terrorCount = 0
+		breathCount = 0
 		timerShadowBreathCD:Cancel()
 		timerSunbeamCD:Cancel()
 		timerNightmaresCD:Cancel()
 		countdownNightmares:Cancel()
 		timerDarkOfNightCD:Cancel()
 		warnDay:Show()
-		timerSunBreathCD:Start()
+		timerSunBreathCD:Start(29, 1)
+		countdownSunBreath:Start(29)
 		timerNightCD:Start()
 	elseif spellId == 122953 and self:AntiSpam(2, 1) then--Summon Unstable Sha (122946 is another ID, but it always triggers at SAME time as Dread Shadows Cancel so can just trigger there too without additional ID scanning.
 		warnSummonUnstableSha:Show()
@@ -221,6 +227,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSummonUnstableShaCD:Cancel()
 		timerSummonEmbodiedTerrorCD:Cancel()
 		timerSunBreathCD:Cancel()
+		countdownSunBreath:Cancel()
 		warnNight:Show()
 		timerShadowBreathCD:Start(10)
 		timerNightmaresCD:Start()
