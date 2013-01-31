@@ -11,3 +11,19 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START"
 )
+
+local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
+
+local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
+
+function mod:OnCombatStart(delay)
+
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(133939) then
+		warnStoneBreath:Show()
+		specWarnStoneBreath:Show(args.sourceName)
+	end
+end
+
