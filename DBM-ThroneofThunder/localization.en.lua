@@ -63,6 +63,14 @@ L= DBM:GetModLocalization(820)
 -----------------
 L= DBM:GetModLocalization(824)
 
+L:SetWarningLocalization({
+	warnMatterSwapped	= "%s: >%s< and >%s< swapped"--Maybe tweak wording later
+})
+
+L:SetOptionLocalization({
+	warnMatterSwapped	= "Announce targets swapped by $spell:138618"
+})
+
 --------------
 -- Iron Qon --
 --------------
