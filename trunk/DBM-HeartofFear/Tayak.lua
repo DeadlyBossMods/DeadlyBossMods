@@ -69,7 +69,7 @@ function mod:OnCombatStart(delay)
 		timerBladeTempestCD:Start(-delay)
 		countdownTempest:Start(-delay)
 	end
-	if self.Options.RangeFrame then
+	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Show(10)
 	end
 end
