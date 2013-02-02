@@ -2656,7 +2656,7 @@ function DBM:EndCombat(mod, wipe)
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
-				mod:UnregisterInCombatEvents()
+				DBM:Schedule(3, mod:UnregisterInCombatEvents())--Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
