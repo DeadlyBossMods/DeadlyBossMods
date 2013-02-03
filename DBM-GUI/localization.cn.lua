@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 1/13/2013
+-- Last update: 2/4/2013
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -178,6 +178,11 @@ L.SpamBlockNoSendWhisper		= "不发送悄悄话提示给其他玩家"
 L.SpamBlockNoSetIcon			= "不设定标记在目标上"
 L.SpamBlockNoRangeFrame			= "不显示距离监视器"
 L.SpamBlockNoInfoFrame			= "不显示信息监视器"
+
+L.Area_PullTimer				= "开怪倒计时过滤设置"
+L.DontShowPT					= "不显示开怪倒计时条"
+L.DontShowPTCountdownText		= "不显示开怪倒计时文字"
+L.DontPlayPTCountdown			= "不播放开怪倒计时语音"
 
 -- Misc
 L.FontHeight	= 20
