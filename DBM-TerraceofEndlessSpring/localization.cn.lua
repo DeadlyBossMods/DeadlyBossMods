@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 1/26/2013
+-- Last update: 2/4/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -71,9 +71,9 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	MoveWarningForward			= "穿过金莲之影",
-	MoveWarningRight			= "向右",
-	MoveWarningBack				= "返回原位",
+	MoveForward					= "穿过金莲之影",
+	MoveRight					= "向右移动",
+	MoveBack					= "返回原位",
 	specWarnBreathOfFearSoon	= "即将恐惧吐息 - 快到光墙内！"
 })
 
@@ -85,17 +85,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnBreathOnPlatform		= "警报：当你在平台时的$spell:119414\n（不推荐，为团长准备）",
 	specWarnBreathOfFearSoon	= "特殊警报：当没有$spell:117964效果需要躲避$spell:119414时",
-	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
-})
-
-L:SetOptionLocalization({
+	specWarnMovement			= "特殊警报：$spell:120047时的移动",
+	timerSpecialAbility			= "计时条：下一次特殊能力",
 	RangeFrame					= "距离监视（2码）：应对$spell:119519",
-	MoveWarningForward			= "特殊警报：被$spell:120047命中需要穿过金莲之影",
-	MoveWarningRight			= "特殊警报：被$spell:120047命中需要向右移动",
-	MoveWarningBack				= "特殊警报：$spell:120047阶段结束需要返回原位",
-	timerSpecialAbilityCD		= "计时条：下一次特殊能力",
-	timerSpoHudCD				= "计时条：下一次可能的$spell:120629或$spell:120519",
-	timerSpoStrCD				= "计时条：下一次可能的$spell:120519或$spell:120672",
-	timerHudStrCD				= "计时条：下一次可能的$spell:120629或$spell:120672"
+	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
 })
