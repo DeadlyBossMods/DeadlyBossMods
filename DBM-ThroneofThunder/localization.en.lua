@@ -85,6 +85,10 @@ L:SetOptionLocalization({
 -------------------
 L= DBM:GetModLocalization(829)
 
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame (8)"
+})
+
 --------------
 -- Lei Shen --
 --------------
