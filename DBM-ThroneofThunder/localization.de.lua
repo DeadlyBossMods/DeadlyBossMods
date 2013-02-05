@@ -64,6 +64,14 @@ L= DBM:GetModLocalization(820)
 -----------------
 L= DBM:GetModLocalization(824)
 
+L:SetWarningLocalization({
+	warnMatterSwapped	= "%s: >%s< und >%s< getauscht"--Maybe tweak wording later
+})
+
+L:SetOptionLocalization({
+	warnMatterSwapped	= "Verkünde getauschte Ziele durch $spell:138618"
+})
+
 --------------
 -- Iron Qon --
 --------------
@@ -77,6 +85,10 @@ L:SetOptionLocalization({
 -- Twin Consorts --
 -------------------
 L= DBM:GetModLocalization(829)
+
+L:SetOptionLocalization({
+	RangeFrame		= "Zeige Abstandsfenster (8m)"
+})
 
 --------------
 -- Lei Shen --
