@@ -99,6 +99,7 @@ L.RaidWarnSound				= "Play sound on raid warning"
 L.CountdownVoice			= "Set voice for countdown and countout sounds"
 L.SpecialWarnSound			= "Set sound for special warnings affecting you or your specific role"
 L.SpecialWarnSound2			= "Set sound for special warnings affecting everyone"
+L.SpecialWarnSound3			= "Set sound for VERY important special warnings affecting you"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "General Messages"
