@@ -221,6 +221,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(2)
 	end
+	warnThrash = mod:NewSpellAnnounce(131996, 3)
 end
 
 function mod:OnCombatEnd()
@@ -267,16 +268,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:UnscheduleMethod("CheckPlatformLeaved")
 		self:LeavePlatform()
 	elseif args:IsSpellID(131996) and not platformSent then
-		warnThrash:Show()
 		specWarnThrash:Show()
 		if phase2 then
 			thrashCount = thrashCount + 1
+			warnThrash:Show(thrashCount)
 			if thrashCount == 3 then
 				timerDreadTrashCD:Start()
 			else
 				timerThrashCD:Start()
 			end
 		else
+			warnThrash:Show()
 			timerThrashCD:Start()
 		end
 	elseif args:IsSpellID(132007) then
@@ -410,6 +412,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		platformSent = false
 		onPlatform = false
 		submergeCount = 0
+		thrashCount = 0
 		timerThrashCD:Cancel()
 		timerBreathOfFearCD:Cancel()
 		timerOminousCackleCD:Cancel()
@@ -430,5 +433,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.BossHealth:RemoveBoss(61042)
 			DBM.BossHealth:RemoveBoss(61046)
 		end
+		warnThrash = mod:NewCountAnnounce(131996, 3)
 	end
 end
