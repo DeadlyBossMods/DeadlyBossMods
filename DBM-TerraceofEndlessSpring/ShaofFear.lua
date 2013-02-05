@@ -119,23 +119,29 @@ end
 
 local function startSpecialTimers()
 	if not mod.Options.timerSpecialAbility then return end
+	--Huddle(100), Spout(10), Strike(1)
 	if specialsCast == 110 then
 		timerImplacableStrikeCD:Start()
 	end
 	if specialsCast == 101 then
 		timerWaterspoutCD:Start()
 	end
-	if specialsCast == 011 then
+	if specialsCast == 011 then--Should never happen but leaving in case.
 		timerHuddleInTerrorCD:Start()
+		print("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
+		print("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
+		print("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
 	end	
 	if specialsCast == 100 then
 		timerSpoStrCD:Start()
 	end
-	if specialsCast == 010 then
-		timerHudStrCD:Start()
+	if specialsCast == 010 then--It is believed and backed that huddle is NEVER cast 3rd. Good evidence suggests this is true so changing timers a bit
+--		timerHudStrCD:Start()
+		timerHuddleInTerrorCD:Start()
 	end
 	if specialsCast == 001 then
-		timerSpoHudCD:Start()
+--		timerSpoHudCD:Start()
+		timerHuddleInTerrorCD:Start()
 	end
 end
 
