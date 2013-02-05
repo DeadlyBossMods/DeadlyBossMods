@@ -43,7 +43,7 @@ L:SetMiscLocalization({
 	Fire		= "Oh, Erhabener! Durch mich sollt Ihr das Fleisch von den Knochen schmelzen!",
 	Arcane		= "Oh, Weiser der Zeitalter! Vertraut mir Euer arkanes Wissen an!",
 	Nature		= "Oh, großer Geist! Gewährt mir die Macht der Erde!",
-	Shadow		= "Große Seele vergangener Helden! Gewährt mir Euren Schild!" --needs to be verified (wowhead-captured translation, hero only)
+	Shadow		= "Große Seele vergangener Helden! Gewährt mir Euren Schild!"
 })
 
 
