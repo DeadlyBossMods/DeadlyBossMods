@@ -71,6 +71,7 @@ DBM.DefaultOptions = {
 	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.wav",
 	SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.wav",
 	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav",
+	SpecialWarningSound3 = "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav",--A bit long for a default. I need to find something better
 	ModelSoundValue = "Short",
 	CountdownVoice = "Corsica",
 	RaidWarningPosition = {
@@ -3263,6 +3264,7 @@ do
 	local testTimer
 	local testSpecialWarning1
 	local testSpecialWarning2
+	local testSpecialWarning3
 	function DBM:DemoMode()
 		if not testMod then
 			testMod = DBM:NewMod("TestMod")
@@ -3272,6 +3274,7 @@ do
 			testTimer = testMod:NewTimer(20, "%s")
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s")
 			testSpecialWarning2 = testMod:NewSpecialWarning("%s", nil, nil, nil, true)
+			testSpecialWarning3 = testMod:NewSpecialWarning("%s", nil, nil, nil, 3)
 		end
 		testTimer:Start(20, "Pew Pew Pew...")
 		testTimer:UpdateIcon("Interface\\Icons\\Spell_Nature_Starfall", "Pew Pew Pew...")
@@ -3286,6 +3289,7 @@ do
 		testWarning3:Cancel()
 		testSpecialWarning1:Cancel()
 		testSpecialWarning2:Cancel()
+		testSpecialWarning3:Cancel()
 		testWarning1:Show("Test-mode started...")
 		testWarning1:Schedule(62, "Test-mode finished!")
 		testWarning3:Schedule(50, "Boom in 10 sec!")
@@ -3293,7 +3297,8 @@ do
 		testWarning2:Schedule(38, "Evil Spell in 5 sec!")
 		testWarning2:Schedule(43, "Evil Spell!")
 		testWarning1:Schedule(10, "Test bar expired!")
-		testSpecialWarning1:Schedule(43, "Evil Spell!")
+		testSpecialWarning1:Schedule(20, "Pew Pew Laser Owl")
+		testSpecialWarning3:Schedule(43, "Evil Spell!")
 		testSpecialWarning2:Schedule(60, "Boom!")
 	end
 end
@@ -4246,10 +4251,11 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
+				if self.runSound == true then self.runSound = 2 end--Hack to make old mods using "true" to be 2 instead so compatability isn't broken.
 				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(self.runSound and DBM.Options.SpecialWarningSound2 or DBM.Options.SpecialWarningSound, "Master")
+					PlaySoundFile(self.runSound == 2 and DBM.Options.SpecialWarningSound2 or self.runSound == 3 and DBM.Options.SpecialWarningSound3 or DBM.Options.SpecialWarningSound, "Master")
 				else
-					PlaySoundFile(self.runSound and DBM.Options.SpecialWarningSound2 or DBM.Options.SpecialWarningSound)
+					PlaySoundFile(self.runSound == 2 and DBM.Options.SpecialWarningSound2 or self.runSound == 3 and DBM.Options.SpecialWarningSound3 or DBM.Options.SpecialWarningSound)
 				end
 			end
 		end

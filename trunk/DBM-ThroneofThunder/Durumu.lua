@@ -11,3 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START"
 )
+
+function mod:OnCombatStart(delay)
+
+end
