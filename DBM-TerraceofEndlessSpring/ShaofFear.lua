@@ -47,7 +47,7 @@ local MoveWarningForward				= mod:NewSpecialWarning("MoveForward", nil, false)--
 local MoveWarningRight					= mod:NewSpecialWarning("MoveRight", nil, false)--Warning to move one eighth to the right
 local MoveWarningBack					= mod:NewSpecialWarning("MoveBack", nil, false)--Move back to starting position
 -- Heroic Phase 2
-local specWarnDreadThrash				= mod:NewSpecialWarningSpell(132007, mod:IsTank())
+local specWarnDreadThrash				= mod:NewSpecialWarningSpell(132007, mod:IsTank(), nil, nil, 3)--Extra emphesis special warning.
 local specWarnNakedAndAfraidOther		= mod:NewSpecialWarningTarget(120669, mod:IsTank())
 local specWarnWaterspout				= mod:NewSpecialWarningYou(120519)
 local yellWaterspout					= mod:NewYell(120519)
