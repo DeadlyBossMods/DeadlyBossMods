@@ -84,6 +84,8 @@ L:SetOptionLocalization({
 	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告(不建議使用，給團隊隊長)",
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
 	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告",
+	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
+	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbility 		= "為下一次特別技能施放顯示計時器",
 	RangeFrame					= "為$spell:119519顯示距離框(2碼)",
 	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)

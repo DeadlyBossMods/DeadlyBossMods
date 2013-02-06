@@ -29,8 +29,8 @@ local warnDreadSpray					= mod:NewSpellAnnounce(120047, 2)
 local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnDreadThrash					= mod:NewSpellAnnounce(132007, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnNakedAndAfraid				= mod:NewTargetAnnounce(120669, 2, nil, mod:IsTank())
-local warnWaterspout					= mod:NewTargetAnnounce(120519, 3)
-local warnHuddleInTerror				= mod:NewTargetAnnounce(120629, 3)
+local warnWaterspout					= mod:NewStackAnnounce(120519, 3, nil, false, "warnWaterspout")
+local warnHuddleInTerror				= mod:NewStackAnnounce(120629, 3, nil, false, "warnHuddleInTerror")
 local warnImplacableStrike				= mod:NewSpellAnnounce(120672, 4)
 local warnChampionOfTheLight			= mod:NewTargetAnnounce(120268, 3, nil, false)--seems spammy.
 local warnSubmerge						= mod:NewCountAnnounce(120455)
@@ -40,8 +40,8 @@ local warnSubmerge						= mod:NewCountAnnounce(120455)
 local specWarnBreathOfFearSoon			= mod:NewSpecialWarning("specWarnBreathOfFearSoon")
 local specWarnThrash					= mod:NewSpecialWarningSpell(131996, mod:IsTank())
 local specWarnOminousCackleYou			= mod:NewSpecialWarningYou(129147)--You have debuff, just warns you.
-local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, true)--Platform ability, particularly nasty damage, and fear.
-local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, true)--Cast, warns the entire raid.
+local specWarnDreadSpray				= mod:NewSpecialWarningSpell(120047, nil, nil, nil, 2)--Platform ability, particularly nasty damage, and fear.
+local specWarnDeathBlossom				= mod:NewSpecialWarningSpell(119888, nil, nil, nil, 2)--Cast, warns the entire raid.
 mod:AddBoolOption("specWarnMovement", false, "announce")
 local MoveWarningForward				= mod:NewSpecialWarning("MoveForward", nil, false)--Warning to switch sites on platform
 local MoveWarningRight					= mod:NewSpecialWarning("MoveRight", nil, false)--Warning to move one eighth to the right
@@ -53,7 +53,7 @@ local specWarnWaterspout				= mod:NewSpecialWarningYou(120519)
 local yellWaterspout					= mod:NewYell(120519)
 local specWarnImplacableStrike			= mod:NewSpecialWarningSpell(120672)
 local specWarnChampionOfTheLight		= mod:NewSpecialWarningYou(120268)
-local specWarnSubmerge					= mod:NewSpecialWarningSpell(120455, nil, nil, nil, true)
+local specWarnSubmerge					= mod:NewSpecialWarningSpell(120455, nil, nil, nil, 2)
 
 -- Normal and heroic Phase 1
 local timerThrashCD						= mod:NewCDTimer(9, 131996, nil, mod:IsTank() or mod:IsHealer())--Every 9-12 seconds.
@@ -67,7 +67,7 @@ local timerFearless						= mod:NewBuffFadesTimer(30, 118977)
 -- Heroic Phase 2
 local timerDreadTrashCD					= mod:NewCDTimer(9, 132007)--Share Trash CD.
 local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669)-- EJ says that debuff duration 25 sec.
---local timerNakedAndAfraidCD			= mod:NewCDTimer(25, 120669)-- unconfirmed.
+local timerNakedAndAfraidCD				= mod:NewCDTimer(30, 120669)-- unconfirmed.
 local timerSubmergeCD					= mod:NewCDCountTimer(51.5, 120455)
 mod:AddBoolOption("timerSpecialAbility", true, "timer")--Better to have one option for his shared special timer than 7
 local timerWaterspoutCD					= mod:NewCDTimer(10, 120519, nil, nil, false)
@@ -97,6 +97,7 @@ local phase2 = false
 local dreadSprayCounter = 0
 local thrashCount = 0
 local submergeCount = 0
+local specialCount = 0
 local huddleIcon = 8
 local MobID = 0
 local specialsCast = 000--Huddle(100), Spout(10), Strike(1)
@@ -107,12 +108,12 @@ local function warnOminousCackleTargets()
 end
 
 local function warnWaterspoutTargets()
-	warnWaterspout:Show(table.concat(waterspoutTargets, "<, >"))
+	warnWaterspout:Show(table.concat(waterspoutTargets, "<, >"), specialCount)
 	table.wipe(waterspoutTargets)
 end
 
 local function warnHuddleInTerrorTargets()
-	warnHuddleInTerror:Show(table.concat(huddleInTerrorTargets, "<, >"))
+	warnHuddleInTerror:Show(table.concat(huddleInTerrorTargets, "<, >"), specialCount)
 	table.wipe(huddleInTerrorTargets)
 	huddleIcon = 8
 end
@@ -297,9 +298,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnWaterspout:Show()
 			yellWaterspout:Yell()
 		end
+		if self:AntiSpam(5, 3) then
+			if specialCount == 3 then specialCount = 0 end
+			specialCount = specialCount + 1
+			specialsCast = specialsCast + 10--Huddle (100), Spout(10), Strike(1)
+		end
 		self:Unschedule(warnWaterspoutTargets)
 		self:Schedule(0.3, warnWaterspoutTargets)
-		specialsCast = specialsCast + 10--Huddle (100), Spout(10), Strike(1)
 		startSpecialTimers()
 	elseif args:IsSpellID(120629) then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
@@ -307,9 +312,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, huddleIcon)
 			huddleIcon = huddleIcon - 1
 		end
+		if self:AntiSpam(5, 3) then
+			if specialCount == 3 then specialCount = 0 end
+			specialCount = specialCount + 1
+			specialsCast = specialsCast + 100--Huddle (100), Spout(10), Strike(1)
+		end
 		self:Unschedule(warnHuddleInTerrorTargets)
 		self:Schedule(0.5, warnHuddleInTerrorTargets)
-		specialsCast = specialsCast + 100--Huddle (100), Spout(10), Strike(1)
 		startSpecialTimers()
 	elseif args:IsSpellID(120268) then -- Champion Of The Light
 		warnChampionOfTheLight:Show(args.destName)
@@ -350,9 +359,11 @@ function mod:SPELL_CAST_START(args)
 		specWarnDeathBlossom:Show()
 		self:ScheduleMethod(40, "CheckPlatformLeaved")--you may leave platform soon after Death Blossom casted. failsafe for UNIT_DIED not fire, and fearless fails.
 	elseif args:IsSpellID(120672) then -- Implacable Strike
-		warnImplacableStrike:Show()
-		specWarnImplacableStrike:Show()
+		if specialCount == 3 then specialCount = 0 end
+		specialCount = specialCount + 1
 		specialsCast = specialsCast + 1--Huddle (100), Spout(10), Strike(1)
+		warnImplacableStrike:Show(specialCount)
+		specWarnImplacableStrike:Show()
 		startSpecialTimers()
 	elseif args:IsSpellID(120455) then
 		submergeCount = submergeCount + 1
@@ -413,6 +424,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		onPlatform = false
 		submergeCount = 0
 		thrashCount = 0
+		specialCount = 0
 		timerThrashCD:Cancel()
 		timerBreathOfFearCD:Cancel()
 		timerOminousCackleCD:Cancel()
