@@ -86,6 +86,8 @@ L:SetOptionLocalization({
 	MoveWarningForward			= "Предупреждать, когда нужно пробежать через босса во время $spell:120047",
 	MoveWarningRight			= "Предупреждать, когда нужно перейти направо, во время $spell:120047",
 	MoveWarningBack				= "Предупреждать, когда нужно вернуть назад, во время $spell:120047",
+	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
+	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbilityCD		= "Отсчет времени до следующей спец-способности на второй фазе",
 	timerSpoHudCD				= "Отсчет времени до следующих возможных $spell:120629 или $spell:120519",
 	timerSpoStrCD				= "Отсчет времени до следующих возможных $spell:120519 или $spell:120672",
