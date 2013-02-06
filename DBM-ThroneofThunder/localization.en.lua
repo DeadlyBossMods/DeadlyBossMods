@@ -52,6 +52,10 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(828)
 
+L:SetMiscLocalization({
+	eggsHatch	= "The eggs in one of the lower nests begin to hatch!"
+})
+
 --------------------------
 -- Durumu the Forgotten --
 --------------------------
