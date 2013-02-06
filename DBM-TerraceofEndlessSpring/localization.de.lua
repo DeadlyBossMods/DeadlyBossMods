@@ -67,6 +67,8 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
+	warnWaterspout				= "%s (%d) : %s",
+	warnHuddleInTerror			= "%s (%d) : %s",
 	MoveWarningForward			= "Lauf durch",
 	MoveWarningRight			= "Lauf nach rechts",
 	MoveWarningBack				= "Lauf in alte Position",
@@ -81,6 +83,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	warnBreathOnPlatform		= "Zeige Warnung für $spell:119414, falls du auf einem der äußeren Schreine\nbist (nicht allgemein empfohlen, gedacht für Schlachtzugsleiter)",
 	specWarnBreathOfFearSoon	= "Zeige Spezialvorwarn. für $spell:119414, falls dir der $spell:117964 Buff fehlt",
 	specWarnMovement			= "Zeige Spezialwarnung zum Laufen bei $spell:120047",

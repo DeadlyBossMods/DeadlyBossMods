@@ -19,7 +19,9 @@ mod:RegisterEventsInCombat(
 )
 
 -- Normal and heroic Phase 1
-local warnThrash						= mod:NewSpellAnnounce(131996, 3, nil, mod:IsTank() or mod:IsHealer())
+mod:AddBoolOption("warnThrash", mod:IsTank() or mod:IsHealer(), "announce")
+local warnThrashNormal					= mod:NewSpellAnnounce(131996, 3, nil, true, false)
+local warnThrashHeroic					= mod:NewCountAnnounce(131996, 3, nil, true, false)
 local warnBreathOfFearSoon				= mod:NewPreWarnAnnounce(119414, 10, 3)
 local warnBreathOfFear					= mod:NewSpellAnnounce(119414, 4)
 mod:AddBoolOption("warnBreathOnPlatform", false, "announce")
@@ -29,9 +31,9 @@ local warnDreadSpray					= mod:NewSpellAnnounce(120047, 2)
 local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnDreadThrash					= mod:NewSpellAnnounce(132007, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnNakedAndAfraid				= mod:NewTargetAnnounce(120669, 2, nil, mod:IsTank())
-local warnWaterspout					= mod:NewStackAnnounce(120519, 3, nil, false, "warnWaterspout")
-local warnHuddleInTerror				= mod:NewStackAnnounce(120629, 3, nil, false, "warnHuddleInTerror")
-local warnImplacableStrike				= mod:NewSpellAnnounce(120672, 4)
+local warnWaterspout					= mod:NewAnnounce("warnWaterspout", 3, 120519)
+local warnHuddleInTerror				= mod:NewAnnounce("warnHuddleInTerror", 3, 120629)
+local warnImplacableStrike				= mod:NewCountAnnounce(120672, 4)
 local warnChampionOfTheLight			= mod:NewTargetAnnounce(120268, 3, nil, false)--seems spammy.
 local warnSubmerge						= mod:NewCountAnnounce(120455)
 --local warnEmerge						= mod:NewSpellAnnounce(120458)--do not match he actually emerges.
@@ -87,6 +89,8 @@ mod:AddBoolOption("SetIconOnHuddle")
 
 local wallLight = GetSpellInfo(117964)
 local fearless = GetSpellInfo(118977)
+local waterspout = GetSpellInfo(120519)
+local huddleinterror = GetSpellInfo(120629)
 local ominousCackleTargets = {}
 local platformGUIDs = {}
 local waterspoutTargets = {}
@@ -108,12 +112,12 @@ local function warnOminousCackleTargets()
 end
 
 local function warnWaterspoutTargets()
-	warnWaterspout:Show(table.concat(waterspoutTargets, "<, >"), specialCount)
+	warnWaterspout:Show(waterspout, specialCount, table.concat(waterspoutTargets, "<, >"))
 	table.wipe(waterspoutTargets)
 end
 
 local function warnHuddleInTerrorTargets()
-	warnHuddleInTerror:Show(table.concat(huddleInTerrorTargets, "<, >"), specialCount)
+	warnHuddleInTerror:Show(huddleinterror, specialCount, table.concat(huddleInTerrorTargets, "<, >"))
 	table.wipe(huddleInTerrorTargets)
 	huddleIcon = 8
 end
@@ -222,7 +226,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(2)
 	end
-	warnThrash = mod:NewSpellAnnounce(131996, 3)
 end
 
 function mod:OnCombatEnd()
@@ -272,14 +275,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnThrash:Show()
 		if phase2 then
 			thrashCount = thrashCount + 1
-			warnThrash:Show(thrashCount)
+			if self.Options.warnThrash then
+				warnThrashHeroic:Show(thrashCount)
+			end
 			if thrashCount == 3 then
 				timerDreadTrashCD:Start()
 			else
 				timerThrashCD:Start()
 			end
 		else
-			warnThrash:Show()
+			if self.Options.warnThrash then
+				warnThrashNormal:Show()
+			end
 			timerThrashCD:Start()
 		end
 	elseif args:IsSpellID(132007) then
@@ -445,6 +452,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.BossHealth:RemoveBoss(61042)
 			DBM.BossHealth:RemoveBoss(61046)
 		end
-		warnThrash = mod:NewCountAnnounce(131996, 3)
 	end
 end
