@@ -66,6 +66,8 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
+	warnWaterspout				= "%s (%d) : %s",
+	warnHuddleInTerror			= "%s (%d) : %s",
 	MoveForward					= "Move Through",
 	MoveRight					= "Move Right",
 	MoveBack					= "Move To Old Position",
@@ -80,6 +82,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	warnBreathOnPlatform		= "Show $spell:119414 warning when you are on platform\n(not recommanded, for raid leader)",
 	specWarnBreathOfFearSoon	= "Show pre-special warning for $spell:119414 if you not have a $spell:117964 buff",
 	specWarnMovement			= "Show special warning to move when $spell:120047 is being fired",

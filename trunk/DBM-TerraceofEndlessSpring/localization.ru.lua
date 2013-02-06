@@ -63,6 +63,8 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
+	warnWaterspout				= "%s (%d) : %s",
+	warnHuddleInTerror			= "%s (%d) : %s",
 	MoveWarningForward			= "Пробегите через босса",
 	MoveWarningRight			= "Перейдите направо",
 	MoveWarningBack				= "Вернитесь назад",
@@ -82,6 +84,7 @@ L:SetOptionLocalization({
 })
 
 L:SetOptionLocalization({
+	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	RangeFrame					= "Показывать окно проверки дистанции (2 м) для $spell:119519",
 	MoveWarningForward			= "Предупреждать, когда нужно пробежать через босса во время $spell:120047",
 	MoveWarningRight			= "Предупреждать, когда нужно перейти направо, во время $spell:120047",

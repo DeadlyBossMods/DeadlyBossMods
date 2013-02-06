@@ -67,6 +67,8 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
+	warnWaterspout				= "%s (%d) : %s",
+	warnHuddleInTerror			= "%s (%d) : %s",
 	MoveWarningForward			= "Allez de l'autre côté !",
 	MoveWarningRight			= "Allez vers la droite !",
 	MoveWarningBack				= "Allez à la position précédente !",
@@ -86,6 +88,7 @@ L:SetOptionLocalization({
 })
 
 L:SetOptionLocalization({
+	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	RangeFrame					= "Afficher le cadre de distance (2m) pour $spell:119519",
 	MoveWarningForward			= "Alerte spécial pour aller de l'autre côté quand $spell:120047 est lancé",
 	MoveWarningRight			= "Alerte spécial pour aller à droite quand $spell:120047 est lancé",
