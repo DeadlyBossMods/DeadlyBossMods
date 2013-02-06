@@ -67,6 +67,8 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
+	warnWaterspout				= "%s (%d) : %s",
+	warnHuddleInTerror			= "%s (%d) : %s",
 	MoveForward					= "向前穿過去",
 	MoveRight					= "向右移動",
 	MoveBack					= "回到原本位置",
@@ -81,6 +83,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告(不建議使用，給團隊隊長)",
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
 	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告",

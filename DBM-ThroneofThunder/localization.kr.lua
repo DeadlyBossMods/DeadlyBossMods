@@ -64,6 +64,14 @@ L= DBM:GetModLocalization(820)
 -----------------
 L= DBM:GetModLocalization(824)
 
+L:SetWarningLocalization({
+	warnMatterSwapped	= "%s: >%s< 와 >%s< 교체됨"--추후 변경 필요
+})
+
+L:SetOptionLocalization({
+	warnMatterSwapped	= "$spell:138618 교체 대상 알림"--추후 변경 필요
+})
+
 --------------
 -- Iron Qon --
 --------------
@@ -77,6 +85,10 @@ L:SetOptionLocalization({
 -- Twin Consorts --
 -------------------
 L= DBM:GetModLocalization(829)
+
+L:SetOptionLocalization({
+	RangeFrame		= "거리 창 보기(8m)"
+})
 
 --------------
 -- Lei Shen --
