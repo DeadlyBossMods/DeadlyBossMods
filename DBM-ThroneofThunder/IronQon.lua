@@ -22,19 +22,23 @@ mod:RegisterEventsInCombat(
 
 local warnThrowSpear					= mod:NewSpellAnnounce(134926, 3)--TODO, TEST target scanning here. It's probably touchy as shannox SPELL_SUMMON target scanning so will probably use same code
 local warnLightningStorm				= mod:NewSpellAnnounce(136192, 3)
+local warnDeadZone						= mod:NewAnnounce("warnDeadZone", 3, 137229)
 
 local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, true)
 local specWarnBurningCinders			= mod:NewSpecialWarningMove(137668)
 local specWarnMoltenOverload			= mod:NewSpecialWarningSpell(137221, nil, nil, nil, true)
 local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, true)
 local specWarnStormCloud				= mod:NewSpecialWarningMove(137669)
+local specWarnFrozenBlood				= mod:NewSpecialWarningMove(136520)
 
 local timerThrowSpearCD					= mod:NewCDTimer(30, 134926)--30-36 second variation observed (at last in phase 1)
 local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
 local timerMoltenOverload				= mod:NewBuffActiveTimer(10, 137221)
 local timerLightningStormCD				= mod:NewCDTimer(20, 136192)--Very well may be wrong, super small sample size thanks to horde
-local timerWindStormCD					= mod:NewCDTimer(50, 136577)--Actual cd is not known, just know the first one is 50 seconds after phase 1
+local timerWindStormCD					= mod:NewCDTimer(90, 136577)--Actual cd is not known, just know the first one is 50 seconds after phase 1
+local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
+
 
 mod:AddBoolOption("RangeFrame", true)--One tooltip says 8 yards, other says 10. Confirmed it's 10 during testing though. Ignore the 8 on spellid 134611
 
@@ -88,6 +92,31 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(136192) then
 		warnLightningStorm:Show()
 		timerLightningStormCD:Start()
+	--Dead zone IDs, each dead zone has two shields and two openings. Each spellid identifies those openings.
+	elseif args:IsSpellID(137226) then--Front, Right Shielded
+		warnDeadZone:Show(args.spellName, L.Front, L.Right)
+		timerDeadZoneCD:Start()
+		--Attack left or Behind (maybe add special warning that says where you can attack, for dps?)
+	elseif args:IsSpellID(137227) then--Left, Right Shielded
+		warnDeadZone:Show(args.spellName, L.Left, L.Right)
+		timerDeadZoneCD:Start()
+		--Attack Front or Behind
+	elseif args:IsSpellID(137228) then--Left, Front Shielded
+		warnDeadZone:Show(args.spellName, L.Left, L.Front)
+		timerDeadZoneCD:Start()
+		--Attack Right or Behind
+	elseif args:IsSpellID(137229) then--Back, Front Shielded
+		warnDeadZone:Show(args.spellName, L.Back, L.Front)
+		timerDeadZoneCD:Start()
+		--Attack left or Right
+	elseif args:IsSpellID(137230) then--Back, Left Shielded
+		warnDeadZone:Show(args.spellName, L.Back, L.Left)
+		timerDeadZoneCD:Start()
+		--Attack Front or Right
+	elseif args:IsSpellID(137231) then--Back, Right Shielded
+		warnDeadZone:Show(args.spellName, L.Back, L.Right)
+		timerDeadZoneCD:Start()
+		--Attack Front or Left
 	end
 end
 
@@ -108,12 +137,14 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnBurningCinders:Show()
 	elseif spellId == 137669 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnStormCloud:Show()
+	elseif spellId == 136520 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+		
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 134611 and self:AntiSpam(2, 4) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
+	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
 		timerUnleashedFlameCD:Start()
 	end
 end
@@ -139,6 +170,7 @@ function mod:UNIT_DIED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif cid == 68081 then--Dam'ren
+		timerDeadZoneCD:Cancel()
 		phase = 4
 	end
 end

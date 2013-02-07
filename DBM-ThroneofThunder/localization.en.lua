@@ -72,7 +72,7 @@ L= DBM:GetModLocalization(820)
 L= DBM:GetModLocalization(824)
 
 L:SetWarningLocalization({
-	warnMatterSwapped	= "%s: >%s< and >%s< swapped"--Maybe tweak wording later
+	warnMatterSwapped	= "%s: >%s< and >%s< swapped"
 })
 
 L:SetOptionLocalization({
@@ -84,8 +84,20 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(817)
 
+L:SetWarningLocalization({
+	warnDeadZone	= "%s: %s and %s shielded"
+})
+
 L:SetOptionLocalization({
+	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "Show dynamic range frame\n(This is a smart range frame that shows when too many are too close)"
+})
+
+L:SetMiscLocalization({
+	Left	= "Left",
+	Right	= "Right",
+	Front	= "Front",
+	Back	= "Back"
 })
 
 -------------------
