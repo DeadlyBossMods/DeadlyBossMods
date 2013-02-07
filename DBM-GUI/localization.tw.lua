@@ -100,6 +100,7 @@ L.RaidWarnSound				= "發出團隊警告時播放音效"
 L.CountdownVoice			= "設置倒計時聲音"
 L.SpecialWarnSound			= "設定只作用於你或你的角色天賦的特別警告的音效"
 L.SpecialWarnSound2			= "設定作用於全團的特別警告的音效"
+L.SpecialWarnSound3			= "設定作用於你極度重要的特別警告的音效"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "綜合訊息"
