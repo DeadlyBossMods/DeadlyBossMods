@@ -66,6 +66,10 @@ L= DBM:GetModLocalization(818)
 ----------------
 L= DBM:GetModLocalization(820)
 
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame (5/2)"
+})
+
 -----------------
 -- Dark Animus --
 -----------------
