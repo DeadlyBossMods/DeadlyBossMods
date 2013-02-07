@@ -44,10 +44,18 @@ L= DBM:GetModLocalization(825)
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetMiscLocalization({
+	rampageEnds	= "Megaera's rage subsides."
+})
+
 ------------
 -- Ji-Kun --
 ------------
 L= DBM:GetModLocalization(828)
+
+L:SetMiscLocalization({
+	eggsHatch	= "The eggs in one of the lower nests begin to hatch!"
+})
 
 --------------------------
 -- Durumu the Forgotten --
@@ -64,13 +72,33 @@ L= DBM:GetModLocalization(820)
 -----------------
 L= DBM:GetModLocalization(824)
 
+L:SetWarningLocalization({
+	warnMatterSwapped	= "%s: >%s< 和 >%s< 交換"
+})
+
+L:SetOptionLocalization({
+	warnMatterSwapped	= "提示目標被$spell:138618交換"
+})
+
 --------------
 -- Iron Qon --
 --------------
 L= DBM:GetModLocalization(817)
 
+L:SetWarningLocalization({
+	warnDeadZone	= "%s: %s and %s shielded"
+})
+
 L:SetOptionLocalization({
+	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "顯示動態距離框架(當太多人太接近時會動態顯示)"
+})
+
+L:SetMiscLocalization({
+	Left	= "Left",
+	Right	= "Right",
+	Front	= "Front",
+	Back	= "Back"
 })
 
 -------------------
@@ -78,10 +106,18 @@ L:SetOptionLocalization({
 -------------------
 L= DBM:GetModLocalization(829)
 
+L:SetOptionLocalization({
+	RangeFrame		= "顯示距離框架(8碼)"
+})
+
 --------------
 -- Lei Shen --
 --------------
 L= DBM:GetModLocalization(832)
+
+L:SetOptionLocalization({
+	RangeFrame		= "顯示距離框架"--For two different spells
+})
 
 ------------
 -- Ra-den --

@@ -25,3 +25,28 @@ L= DBM:GetModLocalization("ArenaAnnihilation")
 L:SetGeneralLocalization{
 	name = "殲滅競技場"
 }
+
+--------------
+-- Landfall --
+--------------
+
+L = DBM:GetModLocalization("Landfall")
+
+local landfall
+if UnitFactionGroup("player") == "Alliance" then
+	landfall = "雄獅灘"
+else
+	landfall = "制霸岬"
+end
+
+L:SetGeneralLocalization({
+	name = landfall
+})
+
+L:SetWarningLocalization({
+	WarnAchFiveAlive	= "成就\"五小福\"失敗"
+})
+
+L:SetOptionLocalization({
+	WarnAchFiveAlive	= "為成就\"五小福\"失敗顯示警告."
+})
