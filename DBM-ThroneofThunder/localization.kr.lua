@@ -44,10 +44,18 @@ L= DBM:GetModLocalization(825)
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetMiscLocalization({
+	rampageEnds	= "Megaera's rage subsides."
+})
+
 ------------
 -- Ji-Kun --
 ------------
 L= DBM:GetModLocalization(828)
+
+L:SetMiscLocalization({
+	eggsHatch	= "The eggs in one of the lower nests begin to hatch!"
+})
 
 --------------------------
 -- Durumu the Forgotten --
