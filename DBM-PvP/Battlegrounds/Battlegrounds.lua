@@ -91,7 +91,7 @@ hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players 
 	local isArena = IsActiveBattlefieldArena()
 	for i = 1, MAX_WORLDSTATE_SCORE_BUTTONS do
 		local index = (FauxScrollFrame_GetOffset(WorldStateScoreScrollFrame) or 0) + i
-		local name, _, _, _, _, faction, _, _, classToken = GetBattlefieldScore(i)
+		local name, _, _, _, _, faction, _, _, classToken = GetBattlefieldScore(index)
 		if (name ~= UnitName("player")) and classToken and RAID_CLASS_COLORS[classToken] and _G["WorldStateScoreButton"..i.."NameText"] then
 			_G["WorldStateScoreButton"..i.."NameText"]:SetTextColor(RAID_CLASS_COLORS[classToken].r, RAID_CLASS_COLORS[classToken].g, RAID_CLASS_COLORS[classToken].b)
 			local playerName = _G["WorldStateScoreButton"..i.."NameText"]:GetText()
