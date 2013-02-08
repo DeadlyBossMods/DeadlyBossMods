@@ -63,8 +63,6 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	warnWaterspout				= "%s (%d) : %s",
-	warnHuddleInTerror			= "%s (%d) : %s",
 	MoveWarningForward			= "Пробегите через босса",
 	MoveWarningRight			= "Перейдите направо",
 	MoveWarningBack				= "Вернитесь назад",
