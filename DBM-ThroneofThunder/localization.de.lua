@@ -44,10 +44,18 @@ L= DBM:GetModLocalization(825)
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetMiscLocalization({
+	rampageEnds	= "Megaera's rage subsides."--translate (trigger)
+})
+
 ------------
 -- Ji-Kun --
 ------------
 L= DBM:GetModLocalization(828)
+
+L:SetMiscLocalization({
+	eggsHatch	= "The eggs in one of the lower nests begin to hatch!"--translate (trigger)
+})
 
 --------------------------
 -- Durumu the Forgotten --
@@ -58,6 +66,10 @@ L= DBM:GetModLocalization(818)
 -- Primordius --
 ----------------
 L= DBM:GetModLocalization(820)
+
+L:SetOptionLocalization({
+	RangeFrame		= "Zeige Abstandsfenster (5m/2m)"
+})
 
 -----------------
 -- Dark Animus --
@@ -77,8 +89,20 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(817)
 
+L:SetWarningLocalization({
+	warnDeadZone	= "%s: %s und %s abgeschirmt"
+})
+
 L:SetOptionLocalization({
+	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "Zeige dynamisches Abstandsfenster\n(mit Indikator für zuviele Spieler in Reichweite)"
+})
+
+L:SetMiscLocalization({
+	Left	= "Links",
+	Right	= "Rechts",
+	Front	= "Vorne",
+	Back	= "Hinten"
 })
 
 -------------------
