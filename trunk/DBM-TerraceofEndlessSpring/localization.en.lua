@@ -85,7 +85,7 @@ L:SetOptionLocalization({
 	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	warnBreathOnPlatform		= "Show $spell:119414 warning when you are on platform\n(not recommanded, for raid leader)",
 	specWarnBreathOfFearSoon	= "Show pre-special warning for $spell:119414 if you not have a $spell:117964 buff",
-	specWarnMovement			= "Show special warning to move when $spell:120047 is being fired",
+	specWarnMovement			= "Show special warning to move when $spell:120047 is being fired\n(http://mysticalos.com/terraceofendlesssprings.jpg)",
 	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
 	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbility			= "Show timer for when next special ability will be cast",
