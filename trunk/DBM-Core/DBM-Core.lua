@@ -769,6 +769,9 @@ do
 	end)
 
 	function schedule(t, f, mod, ...)
+		if type(f) ~= "function" then
+			error("usage: schedule(time, func, [mod, args...])", 2)
+		end
 		local v
 		if numChachedTables > 0 and select("#", ...) <= 4 then -- a cached table is available and all arguments fit into an array with four slots
 			v = popCachedTable()
@@ -790,6 +793,9 @@ do
 end
 
 function DBM:Schedule(t, f, ...)
+	if type(f) ~= "function" then
+		error("usage: DBM:Schedule(time, func, [args...])", 2)
+	end
 	return schedule(t, f, nil, ...)
 end
 
@@ -2657,8 +2663,8 @@ function DBM:EndCombat(mod, wipe)
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
-				mod:UnregisterInCombatEvents()
-				--DBM:Schedule(3, mod:UnregisterInCombatEvents())--Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
+				--mod:UnregisterInCombatEvents()
+				DBM:Schedule(3, mod.UnregisterInCombatEvents, mod) -- Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
