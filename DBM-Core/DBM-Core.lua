@@ -194,24 +194,12 @@ local queuedBattlefield = {}
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
-local bannedMods = {} -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
-if UnitFactionGroup("player") == "Alliance" then
-	bannedMods = { 
-		"DBM-Battlegrounds", --replaced by DBM-PvP
-		-- ZG and ZA are now part of the party mods for Cataclysm
-		"DBM-ZulAman",
-		"DBM-ZG",
-	}
-else
-	bannedMods = {
-		"DBM-Battlegrounds",
-		"DBM-ZulAman",
-		"DBM-ZG",
-		--5.2 mods are disabled for horde since they tried their hardest to prevent them from being developed
-		--This will be removed when PTR is over. But as long as horde is going WAY out of way to hinder bossmod development on PTR, they won't be allowed to use it there either.
-		"DBM-ThroneofThunder",
-	}
-end
+local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
+	"DBM-Battlegrounds", --replaced by DBM-PvP
+	-- ZG and ZA are now part of the party mods for Cataclysm
+	"DBM-ZulAman",
+	"DBM-ZG",
+}
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
