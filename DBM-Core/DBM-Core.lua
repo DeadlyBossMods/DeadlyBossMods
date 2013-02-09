@@ -1233,12 +1233,11 @@ do
 end
 
 
----------------------------
---  Raid/Party Handling  --
----------------------------
+-------------------------------------------------
+--  Raid/Party Handling and Unit ID Utilities  --
+-------------------------------------------------
 do
 	local inRaid = false
-	local playerRank = 0
 
 	local function updateAllRoster()
 		if IsInRaid() then
@@ -1335,76 +1334,88 @@ do
 	function DBM:IsInRaid()
 		return inRaid
 	end
+end
 	
-	do
-		-- yes, we still do avoid memory allocations during fights; so we don't use a closure around a counter here
-		-- this seems to be the easiest way to write an iterator that returns the unit id *string* as first argument without a memory allocation
-		local function raidIterator(groupMembers, uId)
-			local a, b = uId:byte(-2, -1)
-			local i = (a >= 0x30 and a <= 0x39 and (a - 0x30) * 10 or 0) + b - 0x30
+do
+	-- yes, we still do avoid memory allocations during fights; so we don't use a closure around a counter here
+	-- this seems to be the easiest way to write an iterator that returns the unit id *string* as first argument without a memory allocation
+	local function raidIterator(groupMembers, uId)
+		local a, b = uId:byte(-2, -1)
+		local i = (a >= 0x30 and a <= 0x39 and (a - 0x30) * 10 or 0) + b - 0x30
+		if i < groupMembers then
+			return "raid" .. i + 1, i + 1
+		end
+	end
+
+	local function partyIterator(groupMembers, uId)
+		if not uId then
+			return "player", 0
+		elseif uId == "player" then
+			if groupMembers > 0 then
+				return "party1", 1
+			end
+		else
+			local i = uId:byte(-1) - 0x30
 			if i < groupMembers then
-				return "raid" .. i + 1, i + 1
-			end
-		end
-
-		local function partyIterator(groupMembers, uId)
-			if not uId then
-				return "player", 0
-			elseif uId == "player" then
-				if groupMembers > 0 then
-					return "party1", 1
-				end
-			else
-				local i = uId:byte(-1) - 0x30
-				if i < groupMembers then
-					return "party" .. i + 1, i + 1
-				end
-			end
-		end
-
-		-- returns the unit ids of all raid or party members, including the player's own id
-		-- limitations: will break if there are ever raids with more than 99 players or partys with more than 10
-		function DBM:GetGroupMembers()
-			if IsInRaid() then
-				return raidIterator, GetNumGroupMembers(), "raid0"
-			else
-				return partyIterator, GetNumSubgroupMembers(), nil
+				return "party" .. i + 1, i + 1
 			end
 		end
 	end
 
-	function DBM:GetNumGroupMembers()
-		return math.max(GetNumGroupMembers(), GetNumSubgroupMembers())
-	end
-
-	function DBM:GetRaidRank(name)
-		name = name or UnitName("player")
-		return (raid[name] and raid[name].rank) or 0
-	end
-
-	function DBM:GetRaidSubgroup(name)
-		name = name or UnitName("player")
-		return (raid[name] and raid[name].subgroup) or 0
-	end
-
-	function DBM:GetRaidClass(name)
-		name = name or UnitName("player")
-		return (raid[name] and raid[name].class) or "UNKNOWN"
-	end
-
-	function DBM:GetRaidUnitId(name)
-		name = name or UnitName("player")
-		return (raid[name] and raid[name].id) or "none"
-	end
-
-	function DBM:GetUnitFullName(uId)
-		uId = uId or "player"
-		local name, realm = UnitName(uId)
-		if realm then name = name.."-"..realm end
-		return name
+	-- returns the unit ids of all raid or party members, including the player's own id
+	-- limitations: will break if there are ever raids with more than 99 players or partys with more than 10
+	function DBM:GetGroupMembers()
+		if IsInRaid() then
+			return raidIterator, GetNumGroupMembers(), "raid0"
+		else
+			return partyIterator, GetNumSubgroupMembers(), nil
+		end
 	end
 end
 
+function DBM:GetNumGroupMembers()
+	return math.max(GetNumGroupMembers(), GetNumSubgroupMembers())
+end
+
+function DBM:GetRaidRank(name)
+	name = name or UnitName("player")
+	return (raid[name] and raid[name].rank) or 0
+end
+
+function DBM:GetRaidSubgroup(name)
+	name = name or UnitName("player")
+	return (raid[name] and raid[name].subgroup) or 0
+end
+
+function DBM:GetRaidClass(name)
+	name = name or UnitName("player")
+	return (raid[name] and raid[name].class) or "UNKNOWN"
+end
+
+function DBM:GetRaidUnitId(name)
+	name = name or UnitName("player")
+	return (raid[name] and raid[name].id) or "none"
+end
+
+function DBM:GetUnitFullName(uId)
+	uId = uId or "player"
+	local name, realm = UnitName(uId)
+	if realm then name = name.."-"..realm end
+	return name
+end
+
+function DBM:GetBossUnitId(name)
+	for i = 1, 4 do
+		if UnitName("boss" .. i) == name then
+			return "boss" .. i
+		end
+	end
+	for uId in DBM:GetGroupMembers() do
+		if UnitName(uId .. "target") == name and not UnitIsPlayer(uId .. "target") then
+			return uId .. "target"
+		end			
+	end
+end
 
 ---------------
 --  Options  --
@@ -3624,19 +3635,6 @@ function bossModPrototype:GetBossTarget(cid)
 		end
 	end
 	return name, uid
-end
-
-function bossModPrototype:GetBossUnitId(name)
-	for i = 1, 4 do
-		if UnitName("boss" .. i) == name then
-			return "boss" .. i
-		end
-	end
-	for uId in DBM:GetGroupMembers() do
-		if UnitName(uId .. "target") == name and not UnitIsPlayer(uId .. "target") then
-			return uId .. "target"
-		end			
-	end
 end
 
 function bossModPrototype:GetThreatTarget(cid)
