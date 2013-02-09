@@ -126,7 +126,7 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(137419) then
 		warnIceCommet:Show()
 		specWarnIceCommet:Show()
-		timerIceCommetD:Start()
+		timerIceCommetCD:Start()
 	end
 end
 
@@ -149,7 +149,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start()
 		timerFlamesOfPassionCD:Start(12.5)
-		timerIceCommetD:Start()
+		timerIceCommetCD:Start()
 	elseif spellId == 138823 and self:AntiSpam(2, 3) then
 		warnLightOfDay:Show()
 		timerLightOfDayCD:Start()
