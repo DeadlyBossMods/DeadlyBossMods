@@ -74,7 +74,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 				if inRange and inRange < 6 then--Guessed range.
-					specWarnForceOfWillNear:Show(targetname)
+					specWarnForceOfWillNear:Show(args.destName)
 				end
 			end
 		end
