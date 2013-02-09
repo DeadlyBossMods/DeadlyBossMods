@@ -87,26 +87,6 @@ local function warnJasperChainsTargets()
 	table.wipe(jasperChainsTargets)
 end
 
-local function getBossuId(Boss)
-	local uId
-	if UnitExists("boss1") or UnitExists("boss2") or UnitExists("boss3") or UnitExists("boss4") then
-		for i = 1, 4 do
-			if UnitName("boss"..i) == Boss then
-				uId = "boss"..i
-				break
-			end
-		end
-	else
-		for i = 1, DBM:GetGroupMembers() do
-			if UnitName("raid"..i.."target") == Boss and not UnitIsPlayer("raid"..i.."target") then
-				uId = "raid"..i.."target"
-				break
-			end			
-		end
-	end
-	return uId
-end
-
 local function isTank(unit)
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
@@ -114,7 +94,7 @@ local function isTank(unit)
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
-	local uId = getBossuId(Cobalt)
+	local uId = DBM:GetBossUnitId(Cobalt)
 	if uId and UnitExists(uId.."target") and UnitDetailedThreatSituation(unit, uId) then
 		return true
 	end
@@ -235,7 +215,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if not self:IsDifficulty("lfr25") then
 				yellJasperChains:Yell()
 			end
-			local uId = getBossuId(Jasper)
+			local uId = DBM:GetBossUnitId(Jasper)
 			if uId and UnitPower(uId) <= 50 and activePetrification == "Jasper" then--Make sure his energy isn't already high, otherwise breaking chains when jasper will only be active for a few seconds is bad
 				specWarnBreakJasperChains:Show()
 				DBM.Arrow:Hide()
@@ -341,7 +321,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.InfoFrame:Show(5, "enemypower", 1, nil, nil, ALTERNATE_POWER_INDEX)
 		end
 		if playerHasChains then
-			local uId = getBossuId(Jasper)
+			local uId = DBM:GetBossUnitId(Jasper)
 			if uId and UnitPower(uId) <= 50 then--Make sure his energy isn't already high, otherwise breaking chains when jasper will only be active for a few seconds is bad
 				specWarnBreakJasperChains:Show()
 				DBM.Arrow:Hide()
