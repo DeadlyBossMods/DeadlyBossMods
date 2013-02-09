@@ -44,7 +44,7 @@ local heroes = {
 local achievementFailed = false
 
 function mod:OnCombatStart(delay)
-	achivementFailed = false
+	achievementFailed = false
 end
 
 function mod:SPELL_CAST_START(args)
