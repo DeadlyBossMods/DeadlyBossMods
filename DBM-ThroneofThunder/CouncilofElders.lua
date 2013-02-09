@@ -25,6 +25,7 @@ local warnQuicksand					= mod:NewSpellAnnounce(136521, 2)
 local warnSandstorm					= mod:NewSpellAnnounce(136894, 3)
 --High Prestess Mar'li
 local warnBlessedLoaSpirit			= mod:NewSpellAnnounce(137203, 4)
+local warnShadowedLoaSpirit			= mod:NewSpellAnnounce(137350, 4)
 local warnMarkedSoul				= mod:NewTargetAnnounce(137359, 4)--Shadowed Loa Spirit fixate target, no need to warn for Shadowed Loa Spirit AND this, so we just warn for this
 --Frost King Malak
 local warnBitingCold				= mod:NewTargetAnnounce(136992, 3)--136917 is cast ID version, 136992 is player debuff
