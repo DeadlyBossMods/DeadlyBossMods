@@ -438,6 +438,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specialCount = 0
 		timerThrashCD:Cancel()
 		timerBreathOfFearCD:Cancel()
+		countdownBreathOfFear:Cancel()
 		timerOminousCackleCD:Cancel()
 		timerDreadSpray:Cancel()
 		timerDreadSprayCD:Cancel()
