@@ -67,13 +67,17 @@ L= DBM:GetModLocalization(818)
 ----------------
 L= DBM:GetModLocalization(820)
 
+L:SetOptionLocalization({
+	RangeFrame		= "거리 창 보기(5m/2m)"
+})
+
 -----------------
 -- Dark Animus --
 -----------------
 L= DBM:GetModLocalization(824)
 
 L:SetWarningLocalization({
-	warnMatterSwapped	= "%s: >%s< 와 >%s< 교체됨"--추후 변경 필요
+	warnMatterSwapped	= "%s: >%s<, >%s< 교체됨"--추후 변경 필요
 })
 
 L:SetOptionLocalization({
@@ -85,8 +89,20 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(817)
 
+L:SetWarningLocalization({
+	warnDeadZone	= "%s: %s, %s 보호됨"
+})
+
 L:SetOptionLocalization({
+	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 표시되는 똑똑한 거리 창 입니다.)"
+})
+
+L:SetMiscLocalization({
+	Left	= "Left",
+	Right	= "Right",
+	Front	= "Front",
+	Back	= "Back"
 })
 
 -------------------
