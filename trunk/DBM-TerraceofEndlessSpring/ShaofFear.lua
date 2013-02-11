@@ -74,7 +74,7 @@ local timerSubmergeCD					= mod:NewCDCountTimer(51.5, 120455)
 mod:AddBoolOption("timerSpecialAbility", true, "timer")--Better to have one option for his shared special timer than 7
 local timerWaterspoutCD					= mod:NewCDTimer(10, 120519, nil, nil, false)
 local timerHuddleInTerrorCD				= mod:NewCDTimer(10, 120629, nil, nil, false)
-local timerImplacableStrikeCD			= mod:NewCDTimer(10, 120672, nil, nil, false)
+local timerImplacableStrikeCD			= mod:NewCDTimer(9.5, 120672, nil, nil, false)
 local timerSpecialAbilityCD				= mod:NewTimer(12, "timerSpecialAbilityCD", 1449, nil, false)--1st Ability 12sec after Submerge
 local timerSpoHudCD						= mod:NewTimer(10, "timerSpoHudCD", 64044, nil, false)--Waterspout or Huddle in Terror next
 local timerSpoStrCD						= mod:NewTimer(10, "timerSpoStrCD", 1953, nil, false)--Waterspout or Implacable Strike next
@@ -84,7 +84,7 @@ local berserkTimer						= mod:NewBerserkTimer(900)
 
 local countdownBreathOfFear				= mod:NewCountdown(33.3, 119414, nil, nil, 10)
 
-mod:AddBoolOption("RangeFrame")--For Eerie Skull (2 yards)
+mod:AddBoolOption("RangeFrame")--For Eerie Skull (2 yards) and Unstable Bolt (3 yards)
 mod:AddBoolOption("SetIconOnHuddle")
 
 local wallLight = GetSpellInfo(117964)
@@ -95,6 +95,7 @@ local ominousCackleTargets = {}
 local platformGUIDs = {}
 local waterspoutTargets = {}
 local huddleInTerrorTargets = {}
+local huddleInTerrorIcons = {}
 local platformSent = false
 local onPlatform = false--Used to determine when YOU are sent to a platform, so we know to activate MobID on next shoot
 local phase2 = false
@@ -105,6 +106,14 @@ local specialCount = 0
 local huddleIcon = 8
 local MobID = 0
 local specialsCast = 000--Huddle(100), Spout(10), Strike(1)
+local guids = {}
+local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
+local function buildGuidTable()
+	table.wipe(guids)
+	for uId, i in DBM:GetGroupMembers() do
+		guids[UnitGUID(uId) or "none"] = GetRaidRosterInfo(i)
+	end
+end
 
 local function warnOminousCackleTargets()
 	warnOminousCackle:Show(table.concat(ominousCackleTargets, "<, >"))
@@ -194,12 +203,14 @@ function mod:LeavePlatform()
 			end
 		end
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(2)
+			DBM.RangeCheck:Show(3)
 		end
 	end
 end
 
 function mod:OnCombatStart(delay)
+	buildGuidTable()
+	guidTableBuilt = true
 	if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 		timerOminousCackleCD:Start(40-delay)
 	else
@@ -222,9 +233,32 @@ function mod:OnCombatStart(delay)
 	table.wipe(platformGUIDs)
 	table.wipe(waterspoutTargets)
 	table.wipe(huddleInTerrorTargets)
+	table.wipe(huddleInTerrorIcons)
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(2)
+		DBM.RangeCheck:Show(3)
+	end
+end
+
+local function ClearHuddleTargets()
+	table.wipe(huddleInTerrorIcons)
+end
+
+do
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+	end
+	function mod:SetHuddleIcons()
+		table.sort(huddleInTerrorIcons, sort_by_group)
+		local huddleIcon = 8
+		for i, v in ipairs(huddleInTerrorIcons) do
+			-- DBM:SetIcon() is used because of follow reasons
+			--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
+			--2. It checks global dbm option "DontSetIcons"
+			self:SetIcon(v, huddleIcon)
+			huddleIcon = huddleIcon - 1
+		end
+		self:Schedule(1.5, ClearHuddleTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 end
 
@@ -319,9 +353,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		startSpecialTimers()
 	elseif args:IsSpellID(120629) then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
+		if not guidTableBuilt then
+			buildGuidTable()
+			guidTableBuilt = true
+		end
 		if self.Options.SetIconOnHuddle then
-			self:SetIcon(args.destName, huddleIcon)
-			huddleIcon = huddleIcon - 1
+			table.insert(huddleInTerrorIcons, DBM:GetRaidUnitId(guids[args.destGUID]))
+			self:UnscheduleMethod("SetHuddleIcons")
+			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				self:ScheduleMethod(0.3, "SetHuddleIcons")--Timing may need tweaks
+			end
 		end
 		if self:AntiSpam(5, 3) then
 			if specialCount == 3 then specialCount = 0 end
