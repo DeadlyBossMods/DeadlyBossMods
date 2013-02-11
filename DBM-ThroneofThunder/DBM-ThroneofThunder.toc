@@ -19,7 +19,7 @@
 ## X-DBM-Mod-Name-zhCN: 雷电王座
 ## X-DBM-Mod-Name-frFR: Trône du tonnerre
 ## X-DBM-Mod-Name-deDE: Thron des Donners
-## X-DBM-Mod-Name-zhTW: 雷電王座
+## X-DBM-Mod-Name-zhTW: 雷霆王座
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZoneID: 930
 localization.en.lua
