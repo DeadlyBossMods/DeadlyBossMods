@@ -12,16 +12,16 @@ L= DBM:GetModLocalization(827)
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "Next Tribal Door",
+	timerAddsCD		= "下一個部族的門",
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Show timer for next Tribal Door phase",
+	timerAddsCD		= "為下一個部族的門顯示計時器",
 })
 
 L:SetMiscLocalization({
-	newForces		= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces		= "的門蜂擁而出!",--Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget	= "用力拍動尾巴!"--Horridon sets his eyes on Eraeshio and stamps his tail!
 })
 
 ---------------------------
@@ -66,6 +66,10 @@ L= DBM:GetModLocalization(818)
 -- Primordius --
 ----------------
 L= DBM:GetModLocalization(820)
+
+L:SetOptionLocalization({
+	RangeFrame		= "顯示距離框架(2碼/5碼)"
+})
 
 -----------------
 -- Dark Animus --
