@@ -42,6 +42,7 @@ end
 
 function mod:OnCombatStart(delay)
 	buildGuidTable()
+	guidTableBuilt = true
 end
 
 function mod:SPELL_AURA_APPLIED(args)

@@ -180,6 +180,7 @@ function mod:OnCombatStart(delay)
 	warnedWill = true--avoid wierd bug on pull
 	willNumber = 100
 	buildGuidTable()
+	guidTableBuilt = true
 	Phase = 1
 	Puddles = 0
 	Constructs = 0

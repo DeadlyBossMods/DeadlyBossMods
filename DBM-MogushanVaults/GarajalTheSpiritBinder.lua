@@ -112,6 +112,7 @@ end
 function mod:OnCombatStart(delay)
 	totemCount = 0
 	buildGuidTable()
+	guidTableBuilt = true
 	table.wipe(voodooDollTargets)
 	table.wipe(crossedOverTargets)
 	table.wipe(voodooDollTargetIcons)
