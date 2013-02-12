@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS"
 )
@@ -18,35 +19,49 @@ local warnRockfall					= mod:NewSpellAnnounce(134476, 2)
 local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
-local warnCrystalShell				= mod:NewSpellAnnounce(137552, 4)
-local warnCrystalShellVictom		= mod:NewTargetAnnounce(137633, 4)--Someone that attacks the above shell
 --maybe look for 140701 in combat log as well (Crystal Shell: Full Capacity!)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, true)
 local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
-local specWarnCrystalShell			= mod:NewSpecialWarningSpell(137552)--Not sure how it works yet so this is a dry code
+local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", not mod:IsTank())--Tanks need it too, but they don't just blindly grab it any time it's gone like dps do, they must be at full health whent hey do or it REALLY messes up bats, so a tank needs to often ignore this warning until timing is right
 
-local timerRockfallCD				= mod:NewCDTimer(14, 134476)
+local timerRockfallCD				= mod:NewCDTimer(10, 134476)
 local timerCallTortosCD				= mod:NewCDTimer(60.5, 136294)
 local timerStompCD					= mod:NewCDTimer(49, 134920)
 local timerBreathCD					= mod:NewCDTimer(49, 133939)
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration of the rapid caveins
---local timerCrystalShellCD			= mod:NewCDTimer(49, 137552)
+
+mod:AddBoolOption("InfoFrame")
 
 local stompActive = false
+local firstRockfall = false--First rockfall after a stomp
+local shelldName = GetSpellInfo(137633)
+local rockRemaining = 0
 
 local function clearStomp()
 	stompActive = false
+	firstRockfall = false--First rockfall after a stomp
 	timerRockfallCD:Start(5)--Resume normal CDs, first should be 5 seconds after stomp spammed ones
 end
 
 function mod:OnCombatStart(delay)
 	stompActive = false
-	timerRockfallCD:Start(20-delay)
+	firstRockfall = false--First rockfall after a stomp
+	timerRockfallCD:Start(15-delay)
 	timerCallTortosCD:Start(21-delay)
 	timerStompCD:Start(30-delay)
 	timerBreathCD:Start(-delay)
+	if self.Options.InfoFrame and self:IsDifficulty("heroic10", "heroic25") then
+		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
+		DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -64,7 +79,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnQuakeStomp:Show()
 		timerStompActive:Show()
 		timerStompCD:Start()
-		self:Schedule(10.8, clearStomp)
 	end
 end
 
@@ -74,14 +88,25 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(137633) and args:IsPlayer() then
+		specWarnCrystalShell:Show(shelldName)
+	end
+end
+
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(134476) and not stompActive then--14 second cd normally, but for 9 seconds after stomp, cd is 1 second and it is cast about 8 times in that 9 seconds
-		warnRockfall:Show()
-		timerRockfallCD:Start()
-	elseif args:IsSpellID(137552) then
-		warnCrystalShell:Show()
-		specWarnCrystalShell:Show()
---		timerCrystalShellCD:Start()
+	if args:IsSpellID(134476) then
+		if stompActive then--10 second cd normally, but cd is disabled when stomp active
+			if not firstRockfall then--But not until last cd finishes out.
+				warnRockfall:Show()
+				timerRockfallCD:Start()
+				firstRockfall = true
+				self:Schedule(9, clearStomp)
+			end
+		else
+			warnRockfall:Show()
+			timerRockfallCD:Start()
+		end
 	end
 end
 
