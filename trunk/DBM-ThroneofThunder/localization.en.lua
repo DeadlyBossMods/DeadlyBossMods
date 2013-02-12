@@ -39,6 +39,19 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(825)
 
+L:SetWarningLocalization({
+	specWarnCrystalShell	= "Get %s"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalShell	= "Show special warning when you are missing $spell:137633 debuff",
+	InfoFrame				= "Show info frame for players without $spell:137633"
+})
+
+L:SetMiscLocalization({
+	WrongDebuff		= "No %s"
+})
+
 -------------
 -- Megaera --
 -------------
