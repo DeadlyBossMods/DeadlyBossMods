@@ -26,6 +26,7 @@ local warnLingeringGaze				= mod:NewSpellAnnounce(138467, 3)--Seems highly varia
 local warnBlueBeam					= mod:NewTargetAnnounce(134122, 2)
 local warnRedBeam					= mod:NewTargetAnnounce(134123, 2)
 local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
 
 local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 4)--This we will use debuff on though.
 local specWarnSeriousWoundOther		= mod:NewSpecialWarningTarget(133767, mod:IsTank())
@@ -42,6 +43,8 @@ local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHea
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
 local timerForceOfWillCD			= mod:NewCDTimer(60, 136932)
 local timerLightSpectrumCD			= mod:NewCDTimer(60, "ej6891")--Don't know when 2nd one is cast.
+local timerDarkParasite				= mod:NewTargetTimer(30, 136932, mod:IsHealer())--Only healer/dispeler needs to know this.
+--local timerDarkPlague				= mod:NewTargetTimer(30, 136932)--EVERYONE needs to know this, if dispeler fucked up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 
 function mod:OnCombatStart(delay)
 	timerHardStareCD:Start(5-delay)
@@ -96,6 +99,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSeriousWoundOther:Show(args.destName)
 			end
 		end
+	elseif args:IsSpellID(133597) then--Dark Parasite
+		warnDarkParasite:Show(args.destName)
+		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
+		timerDarkParasite:Start(duration)
+--[[	elseif args:IsSpellID(133597) then--Dark Plague
+		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
+		--maybe add a warning/special warning for everyone if duration is too high and many adds expected
+		timerDarkPlague:Start(duration)--]]
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
