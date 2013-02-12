@@ -44,7 +44,7 @@ local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:
 local timerForceOfWillCD			= mod:NewCDTimer(60, 136932)
 local timerLightSpectrumCD			= mod:NewCDTimer(60, "ej6891")--Don't know when 2nd one is cast.
 local timerDarkParasite				= mod:NewTargetTimer(30, 136932, mod:IsHealer())--Only healer/dispeler needs to know this.
---local timerDarkPlague				= mod:NewTargetTimer(30, 136932)--EVERYONE needs to know this, if dispeler fucked up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
+local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler fucked up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 
 function mod:OnCombatStart(delay)
 	timerHardStareCD:Start(5-delay)
@@ -103,10 +103,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDarkParasite:Show(args.destName)
 		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration)
---[[	elseif args:IsSpellID(133597) then--Dark Plague
+	elseif args:IsSpellID(133598) then--Dark Plague
 		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
 		--maybe add a warning/special warning for everyone if duration is too high and many adds expected
-		timerDarkPlague:Start(duration)--]]
+		timerDarkPlague:Start(duration)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
