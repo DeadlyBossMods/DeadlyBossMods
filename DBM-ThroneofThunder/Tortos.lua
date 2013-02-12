@@ -9,6 +9,7 @@ mod:SetModelID(46559)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS"
 )
@@ -17,16 +18,21 @@ local warnRockfall					= mod:NewSpellAnnounce(134476, 2)
 local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
+local warnCrystalShell				= mod:NewSpellAnnounce(137552, 4)
+local warnCrystalShellVictom		= mod:NewTargetAnnounce(137633, 4)--Someone that attacks the above shell
+--maybe look for 140701 in combat log as well (Crystal Shell: Full Capacity!)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, true)
 local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
+local specWarnCrystalShell			= mod:NewSpecialWarningSpell(137552)--Not sure how it works yet so this is a dry code
 
 local timerRockfallCD				= mod:NewCDTimer(14, 134476)
 local timerCallTortosCD				= mod:NewCDTimer(60.5, 136294)
 local timerStompCD					= mod:NewCDTimer(49, 134920)
 local timerBreathCD					= mod:NewCDTimer(49, 133939)
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration of the rapid caveins
+--local timerCrystalShellCD			= mod:NewCDTimer(49, 137552)
 
 local stompActive = false
 
@@ -62,10 +68,20 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(137633) then
+		warnCrystalShellVictom:Show(args.destName)
+	end
+end
+
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(134476) and not stompActive then--14 second cd normally, but for 9 seconds after stomp, cd is 1 second and it is cast about 8 times in that 9 seconds
 		warnRockfall:Show()
 		timerRockfallCD:Start()
+	elseif args:IsSpellID(137552) then
+		warnCrystalShell:Show()
+		specWarnCrystalShell:Show()
+--		timerCrystalShellCD:Start()
 	end
 end
 
