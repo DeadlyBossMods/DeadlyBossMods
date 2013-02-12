@@ -17,7 +17,8 @@ mod:RegisterEventsInCombat(
 )
 
 --All
-local warnPossessed					= mod:NewTargetAnnounce(136442, 2)
+local warnPossessed					= mod:NewStackAnnounce(136442, 2, nil, nil, "warnPossessed")
+--local warnSoulFragment				= mod:NewTargetAnnounce(137359, 3)--Could find no spellid in either wowhead or wowdb, so i'll need logs
 
 --Sul the Sandcrawler
 local warnSandBolt					= mod:NewStackAnnounce(136189, 3, nil, false, "warnSandBolt")--Spammy but important for heroic (and even normal if very melee heavy)
@@ -27,6 +28,7 @@ local warnSandstorm					= mod:NewSpellAnnounce(136894, 3)
 local warnBlessedLoaSpirit			= mod:NewSpellAnnounce(137203, 4)
 local warnShadowedLoaSpirit			= mod:NewSpellAnnounce(137350, 4)
 local warnMarkedSoul				= mod:NewTargetAnnounce(137359, 4)--Shadowed Loa Spirit fixate target, no need to warn for Shadowed Loa Spirit AND this, so we just warn for this
+local warnTwistedSoul				= mod:NewTargetAnnounce(137891, 4)--Heroic Only
 --Frost King Malak
 local warnBitingCold				= mod:NewTargetAnnounce(136992, 3)--136917 is cast ID version, 136992 is player debuff
 local warnFrostBite					= mod:NewTargetAnnounce(136922, 4)--136990 is cast ID version, 136922 is player debuff
@@ -44,6 +46,7 @@ local specWarnQuickSand				= mod:NewSpecialWarningMove(136860)
 local specWarnBlessedLoaSpirit		= mod:NewSpecialWarningSwitch(137203, mod:IsRanged())--Ranged should handle this, melee chasing it around is huge dps loss for possessed. On 10 man 2 ranged was enough. If you do not have 2 ranged, 1 or 2 melee will have to help and probably turn this on manually
 local specWarnShadowedLoaSpirit		= mod:NewSpecialWarningSwitch(137350, mod:IsRanged())
 local specWarnMarkedSoul			= mod:NewSpecialWarningRun(137359)
+local specWarnTwistedSoul			= mod:NewSpecialWarningYou(137891)
 --Frost King Malak
 local specWarnBitingCold			= mod:NewSpecialWarningYou(136992)
 local yellBitingCold				= mod:NewYell(136992)--This one you just avoid so chat bubble is useful
@@ -59,6 +62,7 @@ local timerQuickSandCD				= mod:NewCDTimer(35, 136521)
 local timerBlessedLoaSpiritCD		= mod:NewNextTimer(34, 137203)
 local timerShadowedLoaSpiritCD		= mod:NewNextTimer(34, 137350)
 local timerMarkedSoul				= mod:NewTargetTimer(20, 137359)
+--local timerTwistedSoulCD			= mod:NewCDTimer(30, 137891)
 --Frost King Malak
 local timerBitingColdCD				= mod:NewCDTimer(45, 136917)--10 man Cds (and probably LFR), i have no doubt on 25 man this will either have a shorter cd or affect 3 targets with same CD. Watch for timer diffs though
 local timerFrostBiteCD				= mod:NewCDTimer(45, 136990)--^same comment as above
@@ -76,11 +80,15 @@ local SulsName = EJ_GetSectionInfo(7049)
 local boltCasts = 0
 local scansDone = 0
 local kazraPossessed = false
+local possessesDone = 0
+local twistedSoulTargets = {}
+
+local function warnTwistedSoulTargets()
+	warnTwistedSoul:Show(table.concat(twistedSoulTargets, "<, >"))
+	table.wipe(twistedSoulTargets)
+end
 
 local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check shannox's highest threat target
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
@@ -116,7 +124,9 @@ function mod:BoltTarget()
 end
 
 function mod:OnCombatStart(delay)
+	table.wipe(twistedSoulTargets)
 	kazraPossessed = false
+	possessesDone = 0
 	boltCasts = 0
 	timerQuickSandCD:Start(8-delay)
 	timerRecklessChargeCD:Start(10-delay)--the trigger is 6 seconds from pull, charge will happen at 10. I like timer ending at cast finish for this one though vs tryng to have TWO timers for something that literally only has 6 second cd
@@ -159,7 +169,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136442) then--Possessed
-		warnPossessed:Show(args.destName)
+		possessesDone = possessesDone + 1
+		warnPossessed:Show(args.destName, possessesDone)
 		specWarnPossessed:Show(args.destName)
 		if args:GetDestCreatureID() == 69078 then--Sul the Sandcrawler
 			--Do nothing. He just casts sand storm right away and continues his quicksand cd as usual
@@ -219,6 +230,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMarkedSoul:Show()
 			soundMarkedSoul:Play()
 		end
+	elseif args:IsSpellID(137891) then--DRYCODE, it may not be right spellid, there are MANY
+		twistedSoulTargets[#twistedSoulTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnTwistedSoul:Show()
+		end
+		self:Unschedule(warnTwistedSoulTargets)
+		self:Schedule(0.3, warnTwistedSoulTargets)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
