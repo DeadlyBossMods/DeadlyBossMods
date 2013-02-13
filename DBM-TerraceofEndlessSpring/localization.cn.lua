@@ -71,6 +71,8 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
+	warnWaterspout				= "%s (%d)：> %s <",
+	warnHuddleInTerror			= "%s (%d)：> %s <",
 	MoveForward					= "穿过金莲之影",
 	MoveRight					= "向右移动",
 	MoveBack					= "返回原位",
@@ -88,6 +90,7 @@ L:SetOptionLocalization({
 	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	warnBreathOnPlatform		= "警报：当你在平台时的$spell:119414\n（不推荐，为团长准备）",
 	specWarnBreathOfFearSoon	= "特殊警报：当没有$spell:117964效果需要躲避$spell:119414时",
+	specWarnMovement			= "特殊警报：$spell:120047时的移动\n（详见：http://mysticalos.com/terraceofendlesssprings.jpg）",
 	specWarnMovement			= "特殊警报：$spell:120047时的移动",
 	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
 	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
