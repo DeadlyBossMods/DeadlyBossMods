@@ -23,6 +23,7 @@ local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, true)
+local specWarnRockfall				= mod:NewSpecialWarningSpell(134476, false, nil, nil, true)
 local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
 local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", not mod:IsTank())--Tanks need it too, but they don't just blindly grab it any time it's gone like dps do, they must be at full health whent hey do or it REALLY messes up bats, so a tank needs to often ignore this warning until timing is right
 
@@ -99,6 +100,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if stompActive then--10 second cd normally, but cd is disabled when stomp active
 			if not firstRockfall then--But not until last cd finishes out.
 				warnRockfall:Show()
+				specWarnRockfall:Show()--To warn of massive incoming for the 9 back to back rockfalls that are incoming
 				timerRockfallCD:Start()
 				firstRockfall = true
 				self:Schedule(9, clearStomp)
