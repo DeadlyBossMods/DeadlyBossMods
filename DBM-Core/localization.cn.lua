@@ -118,6 +118,8 @@ DBM_CORE_ALLIANCE					= "联盟"
 DBM_CORE_HORDE						= "部落"
 
 DBM_CORE_UNKNOWN					= "未知"
+DBM_CORE_LEFT						= "左"
+DBM_CORE_RIGHT						= "右"
 
 DBM_CORE_BREAK_START				= "开始休息 - %s分钟！"
 DBM_CORE_BREAK_MIN					= "%s分钟后休息结束！"
