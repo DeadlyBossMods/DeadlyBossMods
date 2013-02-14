@@ -361,7 +361,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(huddleInTerrorIcons, DBM:GetRaidUnitId(guids[args.destGUID]))
 			self:UnscheduleMethod("SetHuddleIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.3, "SetHuddleIcons")--Timing may need tweaks
+				if #huddleInTerrorIcons >= 5 and self:IsDifficulty("heroic25") or #huddleInTerrorIcons >= 3 and self:IsDifficulty("heroic10") then
+					self:SetHuddleIcons()
+				else
+					self:ScheduleMethod(0.5, "SetHuddleIcons")
+				end
 			end
 		end
 		if self:AntiSpam(5, 3) then
