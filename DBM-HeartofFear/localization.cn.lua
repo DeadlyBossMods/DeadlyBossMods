@@ -29,9 +29,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "%s朝他其中一个平台飞去了！",
-	Defeat				= "我们不会向黑暗虚空的绝望屈服。如果女皇要我们去死，我们便照做。",
-	Left				= "左",
-	Right				= "右"
+	Defeat				= "我们不会向黑暗虚空的绝望屈服。如果女皇要我们去死，我们便照做。"
 })
 
 

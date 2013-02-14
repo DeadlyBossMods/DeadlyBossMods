@@ -113,6 +113,10 @@ DBM_CORE_ALLIANCE					= "Alliance"
 DBM_CORE_HORDE						= "Horde"
 
 DBM_CORE_UNKNOWN					= "unknown"
+DBM_CORE_LEFT						= "Left"
+DBM_CORE_RIGHT						= "Right"
+DBM_CORE_BACK						= "Back"
+DBM_CORE_FRONT						= "Front"
 
 DBM_CORE_BREAK_START				= "Break starting now -- you have %s minute(s)!"
 DBM_CORE_BREAK_MIN					= "Break ends in %s minute(s)!"
