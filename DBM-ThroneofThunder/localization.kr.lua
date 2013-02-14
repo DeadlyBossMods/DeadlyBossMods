@@ -40,6 +40,19 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(825)
 
+L:SetWarningLocalization({
+	specWarnCrystalShell	= "%s 받으세요!"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalShell	= "$spell:137633 효과가 없을 경우 특수 경고 보기",
+	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기"
+})
+
+L:SetMiscLocalization({
+	WrongDebuff		= "%s 없음"
+})
+
 -------------
 -- Megaera --
 -------------
@@ -63,6 +76,14 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(818)
 
+L:SetWarningLocalization({
+	specWarnDisintegrationBeam	= "%s (%s)"
+})
+
+L:SetOptionLocalization({
+	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(133775)
+})
+
 ----------------
 -- Primordius --
 ----------------
@@ -78,11 +99,11 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(824)
 
 L:SetWarningLocalization({
-	warnMatterSwapped	= "%s: >%s<, >%s< 교체됨"--추후 변경 필요
+	warnMatterSwapped	= "%s: >%s<, >%s< 자리바뀜"
 })
 
 L:SetOptionLocalization({
-	warnMatterSwapped	= "$spell:138618 교체 대상 알림"--추후 변경 필요
+	warnMatterSwapped	= "$spell:138618 대상 알림"
 })
 
 --------------
@@ -91,19 +112,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(817)
 
 L:SetWarningLocalization({
-	warnDeadZone	= "%s: %s, %s 보호됨"
+	warnDeadZone	= "%s: %s, %s 봉쇄됨"
 })
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 표시되는 똑똑한 거리 창 입니다.)"
-})
-
-L:SetMiscLocalization({
-	Left	= "Left",
-	Right	= "Right",
-	Front	= "Front",
-	Back	= "Back"
 })
 
 -------------------

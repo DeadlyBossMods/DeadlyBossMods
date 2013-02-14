@@ -26,9 +26,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "황실 장로 조르로크가 단상으로 날아갑니다!",
-	Defeat				= "우리는 어두운 공허의 절망에 지지 않으리라. 우리가 죽는 것이 그분의 뜻이라면, 그대로 따르리라.",
-	Left				= "왼쪽",
-	Right				= "오른쪽"
+	Defeat				= "우리는 어두운 공허의 절망에 지지 않으리라. 우리가 죽는 것이 그분의 뜻이라면, 그대로 따르리라."
 })
 
 ------------
