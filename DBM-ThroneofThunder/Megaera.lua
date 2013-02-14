@@ -25,6 +25,7 @@ local warnRampage				= mod:NewTargetAnnounce(139458, 3)
 local warnArcticFreeze			= mod:NewStackAnnounce(139843, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnIgniteFlesh			= mod:NewStackAnnounce(137731, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnRotArmor				= mod:NewStackAnnounce(139840, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnArcaneDiffusion		= mod:NewStackAnnounce(139991, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnCinders				= mod:NewTargetAnnounce(139822, 4)
 local warnTorrentofIce			= mod:NewSpellAnnounce(139822, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
 
@@ -32,6 +33,7 @@ local specWarnRampage			= mod:NewSpecialWarningSpell(139458, nil, nil, nil, true
 local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
 local specWarnIgniteFlesh		= mod:NewSpecialWarningStack(137731, mod:IsTank(), 2)
 local specWarnRotArmor			= mod:NewSpecialWarningStack(139840, mod:IsTank(), 2)
+local specWarnArcaneDiffusion	= mod:NewSpecialWarningStack(139991, mod:IsTank(), 2)
 local specWarnCinders			= mod:NewSpecialWarningYou(139822)
 local yellCinders				= mod:NewYell(139822)
 local specWarnTorrentofIceYou	= mod:NewSpecialWarningRun(139889)
@@ -42,6 +44,7 @@ local timerRampage				= mod:NewBuffActiveTimer(20, 139458)
 local timerArcticFreezeCD		= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHealer())--breath cds are very often syncronized, but not always, sometimes if mobs not engaged same time they go off sync.
 local timerIgniteFleshCD		= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
 local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
+local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139991, mod:IsTank() or mod:IsHealer())
 local timerCinderCD				= mod:NewCDTimer(10, 139822)--10-20sec variation observed with 2 fire heads in back. mostly 10 though.
 local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
 local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
@@ -68,6 +71,34 @@ local frozenHead = EJ_GetSectionInfo(7002)
 local flamingHead = EJ_GetSectionInfo(6998)
 local venomousHead = EJ_GetSectionInfo(7004)
 local arcaneHead = EJ_GetSectionInfo(7005)
+
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	-- 3. check boss1's highest threat target
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
+		return true
+	end
+	if UnitExists("boss2target") and UnitDetailedThreatSituation(unit, "boss2") then
+		return true
+	end
+	if UnitExists("boss3target") and UnitDetailedThreatSituation(unit, "boss3") then
+		return true
+	end
+	if UnitExists("boss4target") and UnitDetailedThreatSituation(unit, "boss4") then
+		return true
+	end
+	if UnitExists("boss5target") and UnitDetailedThreatSituation(unit, "boss5") then
+		return true
+	end
+	return false
+end
 
 function mod:OnCombatStart(delay)
 	table.wipe(activeHeadGUIDS)
@@ -100,27 +131,47 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(139843) then
-		warnArcticFreeze:Show(args.destName, args.amount or 1)
-		timerArcticFreezeCD:Start(args.sourceGUID)
-		if args:IsPlayer() then
-			if (args.amount or 1) >= 2 then
-				specWarnArcticFreeze:Show(args.amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if isTank(uId) then
+			warnArcticFreeze:Show(args.destName, args.amount or 1)
+			timerArcticFreezeCD:Start(args.sourceGUID)
+			if args:IsPlayer() then
+				if (args.amount or 1) >= 2 then
+					specWarnArcticFreeze:Show(args.amount)
+				end
 			end
 		end
 	elseif args:IsSpellID(137731) then
-		warnIgniteFlesh:Show(args.destName, args.amount or 1)
-		timerIgniteFleshCD:Start(args.sourceGUID)
-		if args:IsPlayer() then
-			if (args.amount or 1) >= 2 then
-				specWarnIgniteFlesh:Show(args.amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if isTank(uId) then
+			warnIgniteFlesh:Show(args.destName, args.amount or 1)
+			timerIgniteFleshCD:Start(args.sourceGUID)
+			if args:IsPlayer() then
+				if (args.amount or 1) >= 2 then
+					specWarnIgniteFlesh:Show(args.amount)
+				end
 			end
 		end
 	elseif args:IsSpellID(139840) then
-		warnRotArmor:Show(args.destName, args.amount or 1)
-		timerRotArmorCD:Start(args.sourceGUID)
-		if args:IsPlayer() then
-			if (args.amount or 1) >= 2 then
-				specWarnRotArmor:Show(args.amount)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if isTank(uId) then
+			warnRotArmor:Show(args.destName, args.amount or 1)
+			timerRotArmorCD:Start(args.sourceGUID)
+			if args:IsPlayer() then
+				if (args.amount or 1) >= 2 then
+					specWarnRotArmor:Show(args.amount)
+				end
+			end
+		end
+	elseif args:IsSpellID(139991) then
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if isTank(uId) then
+			warnArcaneDiffusion:Show(args.destName, args.amount or 1)
+			timerArcaneDiffusionCD:Start(args.sourceGUID)
+			if args:IsPlayer() then
+				if (args.amount or 1) >= 2 then
+					specWarnArcaneDiffusion:Show(args.amount)
+				end
 			end
 		end
 	elseif args:IsSpellID(139822) then
