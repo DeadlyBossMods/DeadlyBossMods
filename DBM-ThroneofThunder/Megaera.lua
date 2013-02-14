@@ -200,6 +200,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 					venomBehind = venomBehind - 1
 				end
 			end
+			print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront)
+			print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceInBehind.." Venom: "..venomBehind)
 		end
 	end
 end
