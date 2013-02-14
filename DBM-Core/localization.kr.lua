@@ -114,6 +114,10 @@ DBM_CORE_ALLIANCE					= "얼라이언스"
 DBM_CORE_HORDE						= "호드"
 
 DBM_CORE_UNKNOWN					= "알 수 없음"
+DBM_CORE_LEFT						= "왼쪽"
+DBM_CORE_RIGHT						= "오른쪽"
+DBM_CORE_BACK						= "뒤쪽"
+DBM_CORE_FRONT						= "앞쪽"
 
 DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s 분 남았습니다!"
 DBM_CORE_BREAK_MIN					= "%s 분 후 쉬는 시간이 끝납니다!"
