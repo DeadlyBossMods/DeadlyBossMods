@@ -188,7 +188,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 139850 and self:AntiSpam(2, 1) then
 		timerAcidRainCD:Start(13.5)--TODO, it should be cast more often more heads there are. this is timing with two heads in back. Find out timing with 1 head, or 3 or 4
-	elseif spellId == 139889 and self:AntiSpam(2, 2) then
+	elseif spellId == 139889 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnTorrentofIce:Show()
 	end
 end
