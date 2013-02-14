@@ -21,11 +21,11 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
-local warnRampage				= mod:NewTargetAnnounce(139458, 3)
+local warnRampage				= mod:NewSpellAnnounce(139458, 3)
 local warnArcticFreeze			= mod:NewStackAnnounce(139843, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnIgniteFlesh			= mod:NewStackAnnounce(137731, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnRotArmor				= mod:NewStackAnnounce(139840, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnArcaneDiffusion		= mod:NewStackAnnounce(139991, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnArcaneDiffusion		= mod:NewStackAnnounce(139993, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnCinders				= mod:NewTargetAnnounce(139822, 4)
 local warnTorrentofIce			= mod:NewSpellAnnounce(139822, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
 
@@ -33,7 +33,7 @@ local specWarnRampage			= mod:NewSpecialWarningSpell(139458, nil, nil, nil, true
 local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
 local specWarnIgniteFlesh		= mod:NewSpecialWarningStack(137731, mod:IsTank(), 2)
 local specWarnRotArmor			= mod:NewSpecialWarningStack(139840, mod:IsTank(), 2)
-local specWarnArcaneDiffusion	= mod:NewSpecialWarningStack(139991, mod:IsTank(), 2)
+local specWarnArcaneDiffusion	= mod:NewSpecialWarningStack(139993, mod:IsTank(), 2)
 local specWarnCinders			= mod:NewSpecialWarningYou(139822)
 local yellCinders				= mod:NewYell(139822)
 local specWarnTorrentofIceYou	= mod:NewSpecialWarningRun(139889)
@@ -44,7 +44,7 @@ local timerRampage				= mod:NewBuffActiveTimer(20, 139458)
 local timerArcticFreezeCD		= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHealer())--breath cds are very often syncronized, but not always, sometimes if mobs not engaged same time they go off sync.
 local timerIgniteFleshCD		= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
 local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
-local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139991, mod:IsTank() or mod:IsHealer())
+local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139993, mod:IsTank() or mod:IsHealer())
 local timerCinderCD				= mod:NewCDTimer(10, 139822)--10-20sec variation observed with 2 fire heads in back. mostly 10 though.
 local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
 local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
@@ -163,7 +163,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(139991) then
+	elseif args:IsSpellID(139993) then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
 			warnArcaneDiffusion:Show(args.destName, args.amount or 1)
@@ -241,8 +241,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	end
 end
 
---Only real way to detect heads moving from back to front.
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+local function CheckHeads(GUID)
 	for i = 1, 5 do
 		if UnitExists("boss"..i) and not activeHeadGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
 			activeHeadGUIDS[UnitGUID("boss"..i)] = true
@@ -272,6 +271,12 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	end
 end
 
+--Only real way to detect heads moving from back to front.
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	self:Unschedule(CheckHeads)
+	self:Schedule(2, CheckHeads)--Delay check to make sure dying heads are cleared before accidentally adding them back in after they cast "feign death" but before they actually die"
+end
+
 --Unfortunately we need to update the counts sooner than UNIT_DIED fires because we need those counts BEFORE CHAT_MSG_RAID_BOSS_EMOTE fires.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 70628 and self:AntiSpam(2, 3) then--Permanent Feign Death
@@ -292,16 +297,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
+local function clearHeadGUID(GUID)
+	activeHeadGUIDS[GUID] = nil
+end
+
 --Nil out front boss GUIDs and cancel timers for correct died unit so those units can activate again later
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 70235 then--Frozen
-		activeHeadGUIDS[args.destGUID] = nil
+		self:Schedule(5, clearHeadGUID, args.destGUID)
 	elseif cid == 70212 then--Flaming
-		activeHeadGUIDS[args.destGUID] = nil
+		self:Schedule(5, clearHeadGUID, args.destGUID)
 	elseif cid == 70247 then--Venomous
-		activeHeadGUIDS[args.destGUID] = nil
+		self:Schedule(5, clearHeadGUID, args.destGUID)
 	elseif cid == 70248 then--Arcane
-		activeHeadGUIDS[args.destGUID] = nil
+		self:Schedule(5, clearHeadGUID, args.destGUID)
 	end
 end
