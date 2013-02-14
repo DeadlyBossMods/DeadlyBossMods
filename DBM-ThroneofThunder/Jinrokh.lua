@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -36,6 +37,8 @@ local timerThrowCD					= mod:NewCDTimer(30, 137175)--90-93 variable (but always 
 local timerStormCD					= mod:NewNextTimer(60, 137313)--90-93 variable (but ALWAYS 60 seconds after throw, so we use throw as trigger point)
 
 local soundFocusedLightning			= mod:NewSound(137422)
+
+mod:AddBoolOption("RangeFrame")
 
 local scansDone = 0
 
@@ -80,6 +83,12 @@ function mod:OnCombatStart(delay)
 	timerThrowCD:Start(30-delay)--30-33 variable
 end
 
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(137399) then
 		scansDone = 0
@@ -98,6 +107,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnIonization:Show()
 			yellIonization:Yell()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(8)
+			end
+		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(139997) then
+		if args:IsPlayer() and self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	end
 end
