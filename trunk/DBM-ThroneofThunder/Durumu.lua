@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -26,8 +27,10 @@ local warnLingeringGaze				= mod:NewSpellAnnounce(138467, 3)--Seems highly varia
 local warnBlueBeam					= mod:NewTargetAnnounce(134122, 2)
 local warnRedBeam					= mod:NewTargetAnnounce(134123, 2)
 local warnYellowBeam				= mod:NewTargetAnnounce(134124, 2)
+local warnCrimsonLeft				= mod:NewAddsLeftAnnounce("ej6892", 2, 134123)
 local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
+local warnIceWall					= mod:NewSpellAnnounce(134587, 3)
 
 local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 4)--This we will use debuff on though.
 local specWarnSeriousWoundOther		= mod:NewSpecialWarningTarget(133767, mod:IsTank())
@@ -48,14 +51,19 @@ local timerForceOfWillCD			= mod:NewCDTimer(60, 136932)
 local timerLightSpectrumCD			= mod:NewCDTimer(60, "ej6891")--Don't know when 2nd one is cast.
 local timerDarkParasite				= mod:NewTargetTimer(30, 136932, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler fucked up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
+local timerDisintegrationBeamCD		= mod:NewNextTimer(135, 133775)
+
+local crimsonFogs = 3
 
 mod:AddBoolOption("ArrowOnBeam", true)
 
 function mod:OnCombatStart(delay)
+	crimsonFogs = 3
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15-delay)
 	timerForceOfWillCD:Start(30.5-delay)
 	timerLightSpectrumCD:Start(42-delay)
+	timerDisintegrationBeamCD:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -71,6 +79,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(138467) then
 		warnLingeringGaze:Show()
 		timerLingeringGazeCD:Start()
+	elseif args:IsSpellID(134587) and self:AntiSpam(3, 3) then
+		warnIceWall:Show()
 	end
 end
 
@@ -94,7 +104,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(136932) then
+	elseif args:IsSpellID(133795) then
 		warnLifeDrain:Show(args.destName)
 		specWarmLifeDrain:Show(args.destName)
 	end
@@ -155,6 +165,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		warnYellowBeam:Show(target)
 		if target == UnitName("player") then
 			specWarnYellowBeam:Show()
+		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 69050 then--Crimson Fog
+		crimsonFogs = crimsonFogs - 1
+		if crimsonFogs >= 1 then
+			warnCrimsonLeft:Show(crimsonFogs)
+		else
+			--Do something? Does anything trigger here?
 		end
 	end
 end
