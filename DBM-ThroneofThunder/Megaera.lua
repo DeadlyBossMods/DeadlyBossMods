@@ -58,13 +58,16 @@ local soundTorrentofIce			= mod:NewSound(139889)
 local fireInFront = 0
 local venomInFront = 0
 local iceInFront = 0
+local arcaneInFront = 0
 local fireBehind = 0
 local venomBehind = 0
 local iceInBehind = 0
+local arcaneInBehind = 0
 local activeHeadGUIDS = {}
 local frozenHead = EJ_GetSectionInfo(7002)
 local flamingHead = EJ_GetSectionInfo(6998)
 local venomousHead = EJ_GetSectionInfo(7004)
+local arcaneHead = EJ_GetSectionInfo(7005)
 
 function mod:OnCombatStart(delay)
 	table.wipe(activeHeadGUIDS)
@@ -74,6 +77,11 @@ function mod:OnCombatStart(delay)
 	fireBehind = 0
 	venomBehind = 0
 	iceInBehind = 0
+	if self:IsDifficulty("heroic10", "heroic25") then
+		arcaneInBehind = 1
+		fireBehind = 1
+		arcaneInFront = 0
+	end
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
 	)
@@ -168,6 +176,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if venomBehind > 0 then
 			timerAcidRainCD:Start(23)
 		end
+		if arcaneBehind > 0 then
+
+		end
 	end
 end
 
@@ -199,17 +210,20 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 				if venomBehind > 0 then
 					venomBehind = venomBehind - 1
 				end
+			elseif UnitName("boss"..i) == arcaneHead then
+				arcaneInFront = arcaneInFront + 1
+				if arcaneBehind > 0 then
+					arcaneBehind = arcaneBehind - 1
+				end
 			end
-			print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront)
-			print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceInBehind.." Venom: "..venomBehind)
+			print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
 		end
 	end
 end
 
 --Unfortunately we need to update the counts sooner than UNIT_DIED fires because we need those counts BEFORE CHAT_MSG_RAID_BOSS_EMOTE fires.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	--"<84.1 20:31:16> [UNIT_SPELLCAST_SUCCEEDED] Venomous Head [[boss4:Damage Body::0:134258]]", -- [7057]
-	if spellId == 134258 and self:AntiSpam(2, 3) then--Damage Body (Head Dying)
+	if spellId == 70628 and self:AntiSpam(2, 3) then--Permanent Feign Death
 		if UnitName(uId) == frozenHead then
 			iceInFront = iceInFront - 1
 			iceInBehind = iceInBehind + 2
@@ -219,7 +233,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		elseif UnitName(uId) == venomousHead then
 			venomInFront = venomInFront - 1
 			venomBehind = venomBehind + 2
+		elseif UnitName(uId) == arcaneHead then
+			arcaneInFront = arcaneInFront - 1
+			arcaneBehind = arcaneBehind + 2
 		end
+		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceInBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 	end
 end
 
@@ -231,6 +249,8 @@ function mod:UNIT_DIED(args)
 	elseif cid == 70212 then--Flaming
 		activeHeadGUIDS[args.destGUID] = nil
 	elseif cid == 70247 then--Venomous
+		activeHeadGUIDS[args.destGUID] = nil
+	elseif cid == 70248 then--Arcane
 		activeHeadGUIDS[args.destGUID] = nil
 	end
 end
