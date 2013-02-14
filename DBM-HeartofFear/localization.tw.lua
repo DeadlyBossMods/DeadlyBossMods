@@ -26,9 +26,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "飛向他的其中一個露臺!",
-	Defeat				= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。",
-	Left				= "往左",
-	Right				= "往右"
+	Defeat				= "我們不會居服於黑暗虛空的絕望之下。如果她的意志要我們滅亡，那麼我們就該滅亡。"
 })
 
 

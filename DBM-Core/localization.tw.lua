@@ -113,7 +113,11 @@ DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "關閉血量框架"
 DBM_CORE_ALLIANCE				= "聯盟"
 DBM_CORE_HORDE					= "部落"
 
-DBM_CORE_UNKNOWN				= "未知"
+DBM_CORE_UNKNOWN					= "未知"
+DBM_CORE_LEFT						= "左"
+DBM_CORE_RIGHT						= "右"
+DBM_CORE_BACK						= "後"
+DBM_CORE_FRONT						= "前"
 
 DBM_CORE_BREAK_START				= "現在開始休息-你有%s分鐘!"
 DBM_CORE_BREAK_MIN					= "%s分鐘後休息時間結束!"
