@@ -30,6 +30,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(816)
 
 L:SetOptionLocalization({
+	warnPossessed	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
 	warnSandBolt	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
 	RangeFrame		= "顯示距離框架"
 })
@@ -39,13 +40,26 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(825)
 
+L:SetWarningLocalization({
+	specWarnCrystalShell	= "取得%s"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalShell	= "當你沒有$spell:137633減益時顯示特別警告",
+	InfoFrame				= "為玩家沒有$spell:137633顯示訊息框架"
+})
+
+L:SetMiscLocalization({
+	WrongDebuff		= "沒有%s"
+})
+
 -------------
 -- Megaera --
 -------------
 L= DBM:GetModLocalization(821)
 
 L:SetMiscLocalization({
-	rampageEnds	= "Megaera's rage subsides."
+	rampageEnds	= "梅賈拉的怒氣平息了。"
 })
 
 ------------
@@ -61,6 +75,14 @@ L:SetMiscLocalization({
 -- Durumu the Forgotten --
 --------------------------
 L= DBM:GetModLocalization(818)
+
+L:SetWarningLocalization({
+	specWarnDisintegrationBeam	= "%s (%s)"
+})
+
+L:SetOptionLocalization({
+	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(133775)
+})
 
 ----------------
 -- Primordius --
@@ -90,19 +112,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(817)
 
 L:SetWarningLocalization({
-	warnDeadZone	= "%s: %s and %s shielded"
+	warnDeadZone	= "%s:%s跟%s開盾"
 })
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "顯示動態距離框架(當太多人太接近時會動態顯示)"
-})
-
-L:SetMiscLocalization({
-	Left	= "Left",
-	Right	= "Right",
-	Front	= "Front",
-	Back	= "Back"
 })
 
 -------------------
