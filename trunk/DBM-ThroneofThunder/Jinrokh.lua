@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -19,6 +20,7 @@ mod:RegisterEventsInCombat(
 local warnFocusedLightning			= mod:NewTargetAnnounce(137399, 4)
 local warnThrow						= mod:NewTargetAnnounce(137175, 2)
 local warnStorm						= mod:NewSpellAnnounce(137313, 3)
+local warnIonizsation				= mod:NewTargetAnnounce(139997, 4)
 
 local specWarnFocusedLightning		= mod:NewSpecialWarningRun(137422)
 local yellFocusedLightning			= mod:NewYell(137422)
@@ -26,6 +28,8 @@ local specWarnThrow					= mod:NewSpecialWarningYou(137175, mod:IsTank())
 local specWarnThrowOther			= mod:NewSpecialWarningTarget(137175, mod:IsTank())
 local specWarnStorm					= mod:NewSpecialWarningSpell(137313, nil, nil, nil, true)
 local specWarnElectrifiedWaters		= mod:NewSpecialWarningMove(138006)
+local specWarnIonization			= mod:NewSpecialWarningRun(139997)
+local yellIonization				= mod:NewYell(139997)
 
 local timerFocusedLightningCD		= mod:NewCDTimer(10, 137399)--10-18 second variation, tends to lean toward 11-12 except when delayed by other casts such as throw or storm. Pull one also seems to variate highly
 local timerThrowCD					= mod:NewCDTimer(30, 137175)--90-93 variable (but always 30-33 seconds after storm)
@@ -85,6 +89,16 @@ function mod:SPELL_CAST_START(args)
 		warnStorm:Show()
 		specWarnStorm:Show()
 		timerThrowCD:Start()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(139997) then
+		warnIonizsation:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnIonization:Show()
+			yellIonization:Yell()
+		end
 	end
 end
 
