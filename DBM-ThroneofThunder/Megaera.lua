@@ -64,8 +64,8 @@ local iceInFront = 0
 local arcaneInFront = 0
 local fireBehind = 0
 local venomBehind = 0
-local iceInBehind = 0
-local arcaneInBehind = 0
+local iceBehind = 0
+local arcaneBehind = 0
 local activeHeadGUIDS = {}
 local frozenHead = EJ_GetSectionInfo(7002)
 local flamingHead = EJ_GetSectionInfo(6998)
@@ -107,9 +107,9 @@ function mod:OnCombatStart(delay)
 	iceInFront = 0
 	fireBehind = 0
 	venomBehind = 0
-	iceInBehind = 0
+	iceBehind = 0
 	if self:IsDifficulty("heroic10", "heroic25") then
-		arcaneInBehind = 1
+		arcaneBehind = 1
 		fireBehind = 1
 		arcaneInFront = 0
 	end
@@ -197,7 +197,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:139458") then
 		warnRampage:Show()
-		if fireInFront + venomInFront + iceInFront < 2 then--This basically filters pull rampage., any other time boss rampages, it will be when 
+		if fireInFront + venomInFront + iceInFront + arcaneInFront < 2 then--This basically filters pull rampage., any other time boss rampages, it will be when 
 			timerArcticFreezeCD:Cancel()
 			timerIgniteFleshCD:Cancel()
 			timerRotArmorCD:Cancel()
@@ -218,7 +218,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if venomInFront > 0 then
 			timerRotArmorCD:Start(10)
 		end
-		if iceInBehind > 0 then
+		if iceBehind > 0 then
 			timerTorrentofIceCD:Start(20)
 		end
 		if fireBehind > 0 then
@@ -248,8 +248,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 			activeHeadGUIDS[UnitGUID("boss"..i)] = true
 			if UnitName("boss"..i) == frozenHead then
 				iceInFront = iceInFront + 1
-				if iceInBehind > 0 then
-					iceInBehind = iceInBehind - 1
+				if iceBehind > 0 then
+					iceBehind = iceBehind - 1
 				end
 			elseif UnitName("boss"..i) == flamingHead then
 				fireInFront = fireInFront + 1
@@ -277,7 +277,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 70628 and self:AntiSpam(2, 3) then--Permanent Feign Death
 		if UnitName(uId) == frozenHead then
 			iceInFront = iceInFront - 1
-			iceInBehind = iceInBehind + 2
+			iceBehind = iceBehind + 2
 		elseif UnitName(uId) == flamingHead then
 			fireInFront = fireInFront - 1
 			fireBehind = fireBehind + 2
@@ -288,7 +288,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			arcaneInFront = arcaneInFront - 1
 			arcaneBehind = arcaneBehind + 2
 		end
-		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceInBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
+		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 	end
 end
 
