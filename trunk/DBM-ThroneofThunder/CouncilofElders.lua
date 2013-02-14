@@ -53,6 +53,7 @@ local yellBitingCold				= mod:NewYell(136992)--This one you just avoid so chat b
 local specWarnFrostBite				= mod:NewSpecialWarningYou(136922)--This one you do not avoid you clear it hugging people so no chat bubble
 local specWarnFrigidAssault			= mod:NewSpecialWarningStack(136903, mod:IsTank(), 8)
 local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTank())
+local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
 --Kazra'jin
 local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122)
 --Sul the Sandcrawler
@@ -174,6 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnPossessed:Show(args.destName)
 		if args:GetDestCreatureID() == 69078 then--Sul the Sandcrawler
 			--Do nothing. He just casts sand storm right away and continues his quicksand cd as usual
+			self:UnregisterShortTermEvents()
 		elseif args:GetDestCreatureID() == 69132 then--High Prestess Mar'li
 			--Swap timers. While possessed 
 			local elapsed, total = timerBlessedLoaSpiritCD:GetTime()
@@ -181,6 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			if elapsed and total then--If for some reason it was nil, like it JUST came off cd, do nothing, she should cast loa spirit right away.
 				timerShadowedLoaSpiritCD:Update(elapsed, total)
 			end
+			self:UnregisterShortTermEvents()
 		elseif args:GetDestCreatureID() == 69131 then--Frost King Malakk
 			--Swap timers. While possessed 
 			local elapsed, total = timerBitingColdCD:GetTime()
@@ -188,8 +191,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			if elapsed and total then--If for some reason it was nil, like it JUST came off cd, do nothing, he should cast frost bite right away.
 				timerFrostBiteCD:Update(elapsed, total)
 			end
+			self:RegisterShortTermEvents(
+				"UNIT_AURA"
+			)
 		elseif args:GetDestCreatureID() == 69134 then--Kazra'jin
 			kazraPossessed = true
+			self:UnregisterShortTermEvents()
 		end
 	elseif args:IsSpellID(136903) then--Player Debuff version, not cast version
 		timerFrigidAssault:Start(args.destName)
@@ -273,6 +280,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(137359) then
 		timerMarkedSoul:Cancel(args.destName)
+	end
+end
+
+function mod:UNIT_AURA(uId)
+	if uId ~= "player" then return end
+	if UnitDebuff("player", chilldedDebuff) and not chilledWarned then--Warn you that you have a meteor
+		specWarnChilled:Show()
+		chilledWarned = true
+	elseif not UnitDebuff("player", meteorTarget) and chilledWarned then--reset warned status if you don't have debuff
+		chilledWarned = false
 	end
 end
 

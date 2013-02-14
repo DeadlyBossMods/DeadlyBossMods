@@ -16,32 +16,37 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
 )
 
-local warnRampage			= mod:NewTargetAnnounce(139458, 3)
-local warnArcticFreeze		= mod:NewStackAnnounce(139843, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnIgniteFlesh		= mod:NewStackAnnounce(137731, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnRotArmor			= mod:NewStackAnnounce(139840, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnCinders			= mod:NewTargetAnnounce(139822, 4)
-local warnTorrentofIce		= mod:NewSpellAnnounce(139822, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
+local warnRampage				= mod:NewTargetAnnounce(139458, 3)
+local warnArcticFreeze			= mod:NewStackAnnounce(139843, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnIgniteFlesh			= mod:NewStackAnnounce(137731, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnRotArmor				= mod:NewStackAnnounce(139840, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnCinders				= mod:NewTargetAnnounce(139822, 4)
+local warnTorrentofIce			= mod:NewSpellAnnounce(139822, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
 
-local specWarnRampage		= mod:NewSpecialWarningSpell(139458, nil, nil, nil, true)
-local specWarnArcticFreeze	= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
-local specWarnIgniteFlesh	= mod:NewSpecialWarningStack(137731, mod:IsTank(), 2)
-local specWarnRotArmor		= mod:NewSpecialWarningStack(139840, mod:IsTank(), 2)
-local specWarnCinders		= mod:NewSpecialWarningYou(139822)
-local yellCinders			= mod:NewYell(139822)
-local specWarnTorrentofIce	= mod:NewSpecialWarningMove(139889)
+local specWarnRampage			= mod:NewSpecialWarningSpell(139458, nil, nil, nil, true)
+local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
+local specWarnIgniteFlesh		= mod:NewSpecialWarningStack(137731, mod:IsTank(), 2)
+local specWarnRotArmor			= mod:NewSpecialWarningStack(139840, mod:IsTank(), 2)
+local specWarnCinders			= mod:NewSpecialWarningYou(139822)
+local yellCinders				= mod:NewYell(139822)
+local specWarnTorrentofIceYou	= mod:NewSpecialWarningRun(139889)
+local yellTorrentofIce			= mod:NewYell(139889)
+local specWarnTorrentofIce		= mod:NewSpecialWarningMove(139889)
 
-local timerRampage			= mod:NewBuffActiveTimer(20, 139458)
-local timerArcticFreezeCD	= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHealer())--breath cds are very often syncronized, but not always, sometimes if mobs not engaged same time they go off sync.
-local timerIgniteFleshCD	= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
-local timerRotArmorCD		= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
-local timerCinderCD			= mod:NewCDTimer(10, 139822)--10-20sec variation observed with 2 fire heads in back. mostly 10 though.
-local timerTorrentofIceCD	= mod:NewCDTimer(16, 139866)
-local timerAcidRainCD		= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
+local timerRampage				= mod:NewBuffActiveTimer(20, 139458)
+local timerArcticFreezeCD		= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHealer())--breath cds are very often syncronized, but not always, sometimes if mobs not engaged same time they go off sync.
+local timerIgniteFleshCD		= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
+local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
+local timerCinderCD				= mod:NewCDTimer(10, 139822)--10-20sec variation observed with 2 fire heads in back. mostly 10 though.
+local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
+local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
+
+local soundTorrentofIce			= mod:NewSound(139889)
 
 --count will go to hell fast on a DC though. Need to figure out some kind of head status recovery to get active/inactive head counts.
 --Maybe add an info frame that shows head status too would be cool such as
@@ -163,6 +168,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if venomBehind > 0 then
 			timerAcidRainCD:Start(23)
 		end
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:139866") then
+		specWarnTorrentofIceYou:Show()
+		yellTorrentofIce:Yell()
+		soundTorrentofIce:Play()
 	end
 end
 

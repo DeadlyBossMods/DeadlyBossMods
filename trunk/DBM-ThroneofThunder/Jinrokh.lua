@@ -20,8 +20,8 @@ local warnFocusedLightning			= mod:NewTargetAnnounce(137399, 4)
 local warnThrow						= mod:NewTargetAnnounce(137175, 2)
 local warnStorm						= mod:NewSpellAnnounce(137313, 3)
 
-local specWarnFocusedLightning		= mod:NewSpecialWarningYou(137399)
-local yellFocusedLightning			= mod:NewYell(137399)
+local specWarnFocusedLightning		= mod:NewSpecialWarningRun(137422)
+local yellFocusedLightning			= mod:NewYell(137422)
 local specWarnThrow					= mod:NewSpecialWarningYou(137175, mod:IsTank())
 local specWarnThrowOther			= mod:NewSpecialWarningTarget(137175, mod:IsTank())
 local specWarnStorm					= mod:NewSpecialWarningSpell(137313, nil, nil, nil, true)
@@ -30,6 +30,8 @@ local specWarnElectrifiedWaters		= mod:NewSpecialWarningMove(138006)
 local timerFocusedLightningCD		= mod:NewCDTimer(10, 137399)--10-18 second variation, tends to lean toward 11-12 except when delayed by other casts such as throw or storm. Pull one also seems to variate highly
 local timerThrowCD					= mod:NewCDTimer(30, 137175)--90-93 variable (but always 30-33 seconds after storm)
 local timerStormCD					= mod:NewNextTimer(60, 137313)--90-93 variable (but ALWAYS 60 seconds after throw, so we use throw as trigger point)
+
+local soundFocusedLightning			= mod:NewSound(137422)
 
 local scansDone = 0
 
@@ -110,5 +112,6 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:137422") then--In case target scanning fails, personal warnings still always go off. Target scanning is just so everyone else in raid knows who it's on (since only target sees this emote)
 		specWarnFocusedLightning:Show()
 		yellFocusedLightning:Yell()
+		soundFocusedLightning:Play()
 	end
 end

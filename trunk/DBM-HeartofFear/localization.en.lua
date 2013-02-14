@@ -25,9 +25,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "flies to one of his platforms!",
-	Defeat				= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so.",
-	Left				= "Left",
-	Right				= "Right"
+	Defeat				= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
 })
 
 

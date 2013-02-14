@@ -75,6 +75,14 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(818)
 
+L:SetWarningLocalization({
+	specWarnDisintegrationBeam	= "%s (%s)"
+})
+
+L:SetOptionLocalization({
+	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(133775)
+})
+
 ----------------
 -- Primordius --
 ----------------
@@ -109,13 +117,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "Show dynamic range frame\n(This is a smart range frame that shows when too many are too close)"
-})
-
-L:SetMiscLocalization({
-	Left	= "Left",
-	Right	= "Right",
-	Front	= "Front",
-	Back	= "Back"
 })
 
 -------------------
