@@ -5,6 +5,10 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame (8) for $spell:139997"
+})
+
 --------------
 -- Horridon --
 --------------
