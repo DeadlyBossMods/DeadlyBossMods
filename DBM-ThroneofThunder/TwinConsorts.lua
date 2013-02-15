@@ -9,6 +9,7 @@ mod:SetModelID(46975)--Lu'lin, 46974 Suen
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -28,6 +29,7 @@ local warnLightOfDay					= mod:NewSpellAnnounce(138823, 2, nil, false)--Spammy, 
 local warnFanOfFlames					= mod:NewStackAnnounce(137408, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check target scanning
 local warnIceCommet						= mod:NewSpellAnnounce(137419, 2)
+local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4)--Heroic
 --Dusk
 ---No logs for this :(
 
@@ -39,6 +41,7 @@ local specWarnBeastOfNightmares			= mod:NewSpecialWarningSpell(137375, mod:IsTan
 local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, mod:IsTank(), 2)
 local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTarget(137408, mod:IsTank())
 local specWarnIceCommet					= mod:NewSpecialWarningSpell(137419, false)
+local specWarnNuclearInferno			= mod:NewSpecialWarningSpell(137491, nil, nil, nil, true)--Heroic
 
 --Dusk
 ---:(
@@ -50,12 +53,13 @@ local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
 local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
 --Light
-local timerNightCD						= mod:NewNextTimer(184, "ej7641", nil, nil, nil, 130013)
+local timerDuskCD						= mod:NewNextTimer(184, "ej7633", nil, nil, nil, 130013)
 local timerLightOfDayCD					= mod:NewCDTimer(6, 138823)--In this phase we do track it so we can time shadows usage, although it's still highly variable. Plus in this phase since boss isn't hiding we can detect it without SPELL_DAMAGE
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
 local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)
-local timerIceCommetCD					= mod:NewNextTimer(25, 137419)
+local timerIceCommetCD					= mod:NewNextTimer(15, 137419)
+local timerNuclearInfernoCD				= mod:NewCDTimer(55.5, 137491)
 --Dusk
 ---:(
 
@@ -70,6 +74,14 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(137491) then
+		warnNuclearInferno:Show()
+		specWarnNuclearInferno:Show()
+		timerNuclearInfernoCD:Start()
 	end
 end
 
@@ -149,7 +161,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start()
 		timerFlamesOfPassionCD:Start(12.5)
-		timerIceCommetCD:Start()
+		timerIceCommetCD:Start(17)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerNuclearInfernoCD:Start(52)
+		end
 	elseif spellId == 138823 and self:AntiSpam(2, 3) then
 		warnLightOfDay:Show()
 		timerLightOfDayCD:Start()
