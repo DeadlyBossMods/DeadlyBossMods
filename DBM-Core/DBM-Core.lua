@@ -191,6 +191,7 @@ local _, class = UnitClass("player")
 local LastZoneText = ""
 local LastZoneMapID = -1
 local queuedBattlefield = {}
+local combatDelay = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -1582,6 +1583,7 @@ do
 				"GROUP_ROSTER_UPDATE",
 				"CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
+				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
@@ -1645,6 +1647,13 @@ end
 
 function DBM:LFG_PROPOSAL_SUCCEEDED()
 	DBM.Bars:CancelBar(DBM_LFG_INVITE)
+end
+
+function DBM:PLAYER_REGEN_ENABLED()
+	if combatDelay then
+		combatDelay = false
+		collectgarbage("collect")
+	end
 end
 
 function DBM:UPDATE_BATTLEFIELD_STATUS()
@@ -1841,7 +1850,12 @@ function DBM:LoadMod(mod)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
-		collectgarbage("collect")
+		local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
+		if InCombatLockdown() and difficulty == 1 or difficulty == 2 then--In combat in a 5 man. the garbage collect on 5 man party mods is too big to do in combat and causes "script ran too long"
+			combatDelay = true
+		else
+			collectgarbage("collect")
+		end
 		return true
 	end
 end
