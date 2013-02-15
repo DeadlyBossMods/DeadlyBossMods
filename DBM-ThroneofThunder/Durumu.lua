@@ -152,6 +152,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 --Beams wildly jump targets and don't give new target a warning at all nor does it even show in damn combat log.
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:134122") then--Blue Rays
+		timerForceOfWillCD:Cancel()
 		warnBlueBeam:Show(target)
 		if target == UnitName("player") then
 			warnBlueBeam:Show()
