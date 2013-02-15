@@ -20,10 +20,13 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+local warnImpale						= mod:NewStackAnnounce(134691, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnThrowSpear					= mod:NewSpellAnnounce(134926, 3)--TODO, TEST target scanning here. It's probably touchy as shannox SPELL_SUMMON target scanning so will probably use same code
 local warnLightningStorm				= mod:NewSpellAnnounce(136192, 3)
 local warnDeadZone						= mod:NewAnnounce("warnDeadZone", 3, 137229)
 
+local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 4)--Assumed value drycode, won't know until cd is observed
+local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
 local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, true)
 local specWarnBurningCinders			= mod:NewSpecialWarningMove(137668)
 local specWarnMoltenOverload			= mod:NewSpecialWarningSpell(137221, nil, nil, nil, true)
@@ -31,6 +34,8 @@ local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, 
 local specWarnStormCloud				= mod:NewSpecialWarningMove(137669)
 local specWarnFrozenBlood				= mod:NewSpecialWarningMove(136520)
 
+local timerImpale						= mod:NewTargetTimer(40, 134691, mod:IsTank() or mod:IsHealer())
+--local timerImpaleCD						= mod:NewCDTimer(10, 134691, mod:IsTank() or mod:IsHealer())
 local timerThrowSpearCD					= mod:NewCDTimer(30, 134926)--30-36 second variation observed (at last in phase 1)
 local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
@@ -66,7 +71,19 @@ end
 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(134647) then
+	if args:IsSpellID(134691) then
+		warnImpale:Show(args.destName, args.amount or 1)
+--		timerImpaleCD:Start()
+		if args:IsPlayer() then
+			if (args.amount or 1) >= 4 then
+				specWarnImpale:Show(args.amount)
+			end
+		else
+			if (args.amount or 1) >= 3 and not UnitDebuff("player", GetSpellInfo(134691)) and not UnitIsDeadOrGhost("player") then
+				specWarnImpaleOther:Show(args.destName)
+			end
+		end
+	elseif args:IsSpellID(134647) then
 		--Once more strats are formed, maybe insert some rotation stuff here
 		if args:IsPlayer() then
 			timerScorched:Start()
