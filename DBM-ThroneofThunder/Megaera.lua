@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_DAMAGE",
@@ -25,9 +26,10 @@ local warnRampage				= mod:NewSpellAnnounce(139458, 3)
 local warnArcticFreeze			= mod:NewStackAnnounce(139843, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnIgniteFlesh			= mod:NewStackAnnounce(137731, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnRotArmor				= mod:NewStackAnnounce(139840, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnArcaneDiffusion		= mod:NewStackAnnounce(139993, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnArcaneDiffusion		= mod:NewStackAnnounce(139993, 3, nil, mod:IsTank() or mod:IsHealer())--Heroic
 local warnCinders				= mod:NewTargetAnnounce(139822, 4)
 local warnTorrentofIce			= mod:NewSpellAnnounce(139822, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
+local warnNetherTear			= mod:NewSpellAnnounce(140138, 3)--Heroic
 
 local specWarnRampage			= mod:NewSpecialWarningSpell(139458, nil, nil, nil, true)
 local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
@@ -39,8 +41,9 @@ local yellCinders				= mod:NewYell(139822)
 local specWarnTorrentofIceYou	= mod:NewSpecialWarningRun(139889)
 local yellTorrentofIce			= mod:NewYell(139889)
 local specWarnTorrentofIce		= mod:NewSpecialWarningMove(139889)
+local specWarnNetherTear		= mod:NewSpecialWarningSwitch("ej7816", mod:IsDps())
 
-local timerRampage				= mod:NewBuffActiveTimer(20, 139458)
+local timerRampage				= mod:NewBuffActiveTimer(21, 139458)
 local timerArcticFreezeCD		= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHealer())--breath cds are very often syncronized, but not always, sometimes if mobs not engaged same time they go off sync.
 local timerIgniteFleshCD		= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
 local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
@@ -48,6 +51,7 @@ local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139993, mod:IsTank() or mod:Is
 local timerCinderCD				= mod:NewCDTimer(10, 139822)--10-20sec variation observed with 2 fire heads in back. mostly 10 though.
 local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
 local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
+local timerNetherTearCD			= mod:NewCDTimer(30, 140138)--Heroic
 
 local soundTorrentofIce			= mod:NewSound(139889)
 
@@ -112,6 +116,8 @@ function mod:OnCombatStart(delay)
 		arcaneBehind = 1
 		fireBehind = 1
 		arcaneInFront = 0
+		timerCinderCD:Start(18)--Debuff application, not cast
+		timerNetherTearCD:Start()
 	end
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
@@ -126,6 +132,14 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(139866) then
 		warnTorrentofIce:Show()
 		timerTorrentofIceCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(140138) then
+		warnNetherTear:Show()
+		specWarnNetherTear:Show()
+		timerNetherTearCD:Start()--TODO: see if cast more often if more than 1 arcane head.
 	end
 end
 
@@ -205,6 +219,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerCinderCD:Cancel()
 			timerTorrentofIceCD:Cancel()
 			timerAcidRainCD:Cancel()
+			timerNetherTearCD:Cancel()
 			specWarnRampage:Show()
 			timerRampage:Start()
 		end
@@ -228,7 +243,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerAcidRainCD:Start(23)
 		end
 		if arcaneBehind > 0 then
-
+			timerNetherTearCD:Start()
 		end
 	end
 end
