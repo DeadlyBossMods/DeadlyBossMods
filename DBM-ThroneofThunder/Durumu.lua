@@ -188,10 +188,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(90)
 		end
+		print("Mod beyond this point is incomplete and most timers will be unavailable")
 	elseif spellId == 136316 and self:AntiSpam(2, 2) then--Disintegration Beam (counter-clockwise)
 		specWarnDisintegrationBeam:Show(spellName, DBM_CORE_RIGHT)
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(270)
 		end
+		print("Mod beyond this point is incomplete and most timers will be unavailable")
 	end
 end
