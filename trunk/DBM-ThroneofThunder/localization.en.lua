@@ -109,6 +109,10 @@ L:SetOptionLocalization({
 	warnMatterSwapped	= "Announce targets swapped by $spell:138618"
 })
 
+L:SetMiscLocalization({
+	Pull		= "The orb explodes!"
+})
+
 --------------
 -- Iron Qon --
 --------------
