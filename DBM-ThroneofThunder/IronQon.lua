@@ -141,6 +141,7 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(134926) then
 		warnThrowSpear:Show()
 		specWarnThrowSpear:Show()
+		timerThrowSpearCD:Start()
 	end
 end
 
