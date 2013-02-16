@@ -16,33 +16,43 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_SPELLCAST_SUCCEEDED",
-	"UNIT_DIED"
+	"UNIT_SPELLCAST_SUCCEEDED"
+--	"UNIT_DIED"
 )
 
 local warnImpale						= mod:NewStackAnnounce(134691, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnThrowSpear					= mod:NewSpellAnnounce(134926, 3)--TODO, TEST target scanning here. It's probably touchy as shannox SPELL_SUMMON target scanning so will probably use same code
-local warnLightningStorm				= mod:NewSpellAnnounce(136192, 3)
+local warnLightningStorm				= mod:NewTargetAnnounce(136192, 3)
 local warnDeadZone						= mod:NewAnnounce("warnDeadZone", 3, 137229)
+local warnFreeze						= mod:NewTargetAnnounce(135145, 3)
+local warnWhirlingWinds					= mod:NewSpellAnnounce(139172, 3)--Heroic Phase 1
+local warnFrostSpike					= mod:NewSpellAnnounce(139181, 3)--Heroic Phase 2
 
-local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 4)--Assumed value drycode, won't know until cd is observed
+local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 3)
 local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
 local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, true)
 local specWarnBurningCinders			= mod:NewSpecialWarningMove(137668)
 local specWarnMoltenOverload			= mod:NewSpecialWarningSpell(137221, nil, nil, nil, true)
 local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, true)
 local specWarnStormCloud				= mod:NewSpecialWarningMove(137669)
+local specWarnLightningStorm			= mod:NewSpecialWarningYou(136192)
+local yellLightningStorm				= mod:NewYell(136192)
+local specWarnFreeze					= mod:NewSpecialWarningYou(135145)--Maybe not useful? may toss this warning but keep only yell to help OTHER players keep away from it. Not sure person it's cast on can do anything about it in 1 second
+local yellFreeze						= mod:NewYell(135145)
 local specWarnFrozenBlood				= mod:NewSpecialWarningMove(136520)
 
 local timerImpale						= mod:NewTargetTimer(40, 134691, mod:IsTank() or mod:IsHealer())
---local timerImpaleCD						= mod:NewCDTimer(10, 134691, mod:IsTank() or mod:IsHealer())
+local timerImpaleCD						= mod:NewCDTimer(20, 134691, mod:IsTank() or mod:IsHealer())
 local timerThrowSpearCD					= mod:NewCDTimer(30, 134926)--30-36 second variation observed (at last in phase 1)
 local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
 local timerMoltenOverload				= mod:NewBuffActiveTimer(10, 137221)
-local timerLightningStormCD				= mod:NewCDTimer(20, 136192)--Very well may be wrong, super small sample size thanks to horde
+local timerLightningStormCD				= mod:NewCDTimer(20, 136192)
 local timerWindStormCD					= mod:NewCDTimer(90, 136577)--Actual cd is not known, just know the first one is 50 seconds after phase 1
+local timerFreezeCD						= mod:NewCDTimer(20, 135145)
 local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
+local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139172)--Heroic Phase 1
+local timerFrostSpikeCD					= mod:NewCDTimer(12, 139181)--Heroic Phase 2
 
 
 mod:AddBoolOption("RangeFrame", true)--One tooltip says 8 yards, other says 10. Confirmed it's 10 during testing though. Ignore the 8 on spellid 134611
@@ -51,15 +61,17 @@ local phase = 1--Not sure this is useful yet, coding it in, in case spear cd is 
 
 function mod:OnCombatStart(delay)
 	phase = 1
-	timerThrowSpearCD:Start(13-delay)
-	if self:IsDifficulty("normal10", "heroic10") then
-		if self.Options.RangeFrame then
+	timerThrowSpearCD:Start(-delay)
+	if self.Options.RangeFrame then
+		if self:IsDifficulty("normal10", "heroic10") then
 			DBM.RangeCheck:Show(10, nil, nil, 2)--You can have 1 person in range safely. Frame goes red at 2
-		end
-	else
-		if self.Options.RangeFrame then
+		else
 			DBM.RangeCheck:Show(10, nil, nil, 4)--You can have 3 others near you, frame goes red at 4
 		end
+	end
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerWhirlingWindsCD:Start(20-delay)
+		timerLightningStormCD:Start(22-delay)
 	end
 end
 
@@ -73,13 +85,13 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(134691) then
 		warnImpale:Show(args.destName, args.amount or 1)
---		timerImpaleCD:Start()
+		timerImpaleCD:Start()
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 4 then
+			if (args.amount or 1) >= 3 then
 				specWarnImpale:Show(args.amount)
 			end
 		else
-			if (args.amount or 1) >= 3 and not UnitDebuff("player", GetSpellInfo(134691)) and not UnitIsDeadOrGhost("player") then
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(134691)) and not UnitIsDeadOrGhost("player") then
 				specWarnImpaleOther:Show(args.destName)
 			end
 		end
@@ -92,9 +104,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMoltenOverload:Show()
 		timerMoltenOverload:Start()
 	--"<255.6 20:41:32> [CLEU] SPELL_AURA_APPLIED#true##nil#2632#0#0x0100000000003591#Shiramune#1298#0#136577#Wind Storm#8#DEBUFF", -- [18923]
-	elseif args:IsSpellID(136577) and self:AntiSpam(30, 1) then--No idea what cd is, when we find out, will need to adjust anti spam to prevent it from activating from players walking into old one
+	elseif args:IsSpellID(136577) and self:AntiSpam(30, 1) and not self:IsDifficulty("lfr25") then--No idea what cd is, when we find out, will need to adjust anti spam to prevent it from activating from players walking into old one
 		specWarnWindStorm:Show()
 --		timerWindStormCD:Start()
+	elseif args:IsSpellID(136192) then
+		warnLightningStorm:Show(args.destName)
+		if phase == 1 then--Heroic
+			timerLightningStormCD:Start(38)
+		else
+			timerLightningStormCD:Start()
+		end
+		if args:IsPlayer() then
+			specWarnLightningStorm:Show()
+			yellLightningStorm:Yell()
+		end
+	elseif args:IsSpellID(135145) then
+		warnFreeze:Show(args.destName)
+		if phase == 2 then--Heroic
+			timerFreezeCD:Start(36)
+		else
+			timerFreezeCD:Start()
+		end
+		if args:IsPlayer() then
+			specWarnFreeze:Show()
+			yellFreeze:Yell()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -106,11 +140,8 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(136192) then
-		warnLightningStorm:Show()
-		timerLightningStormCD:Start()
 	--Dead zone IDs, each dead zone has two shields and two openings. Each spellid identifies those openings.
-	elseif args:IsSpellID(137226) then--Front, Right Shielded
+	if args:IsSpellID(137226) then--Front, Right Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_FRONT, DBM_CORE_RIGHT)
 		timerDeadZoneCD:Start()
 		--Attack left or Behind (maybe add special warning that says where you can attack, for dps?)
@@ -156,7 +187,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	elseif spellId == 137669 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnStormCloud:Show()
 	elseif spellId == 136520 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
-		
+		specWarnFrozenBlood:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -164,9 +195,57 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
 		timerUnleashedFlameCD:Start()
+	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (have to use this because they don't die on heroic
+		local cid = self:GetCIDFromGUID(UnitGUID(uId))
+		timerThrowSpearCD:Start(39)--TODO: Verify this is consistent
+		if cid == 68079 then--Ro'shak
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10, nil, nil, 1)--Switch range frame back to 1. Range is assumed 10, no spell info
+			end
+			--Only one log, but i looks like spear cd from phase 1 remains intact
+			phase = 2
+			timerUnleashedFlameCD:Cancel()
+			timerMoltenOverload:Cancel()
+			timerWhirlingWindsCD:Cancel()
+			if self:IsDifficulty("heroic10", "heroic25") then
+				timerFreezeCD:Start(13)
+				timerFrostSpikeCD:Start(18)
+			end
+			timerLightningStormCD:Start()
+			timerWindStormCD:Start(52)
+			print("Mod beyond this point is incomplete and most timers will be unavailable")
+		elseif cid == 68080 then--Quet'zal
+			phase = 3
+			timerLightningStormCD:Cancel()
+			timerWindStormCD:Cancel()
+			timerFrostSpikeCD:Cancel()
+			if self:IsDifficulty("heroic10", "heroic25") then--On heroic, the fire guy returns and attacks clumps again
+				if self.Options.RangeFrame then--So on heroic we need to restore the grouping range frame
+					if self:IsDifficulty("heroic25") then
+						DBM.RangeCheck:Show(10, nil, nil, 4)--You can have 1 person in range safely. Frame goes red at 4
+					else
+						DBM.RangeCheck:Show(10, nil, nil, 2)--You can have 1 person in range safely. Frame goes red at 2
+					end
+				end
+			else
+				if self.Options.RangeFrame then--On normal we hide range frame though, it's done being used.
+					DBM.RangeCheck:Hide()
+				end
+			end
+		elseif cid == 68081 then--Dam'ren
+			timerDeadZoneCD:Cancel()
+			phase = 4
+		end
+	elseif spellId == 139172 and self:AntiSpam(2, 7) then--Whirling Winds (Phase 1 Heroic)
+		warnWhirlingWinds:Show()
+		timerWhirlingWindsCD:Start()
+	elseif spellId == 139181 and self:AntiSpam(2, 7) then--Frost Spike (Phase 2 Heroic)
+		warnFrostSpike:Show()
+		timerFrostSpikeCD:Start()
 	end
 end
 
+--[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 68079 then--Ro'shak
@@ -192,3 +271,4 @@ function mod:UNIT_DIED(args)
 		phase = 4
 	end
 end
+--]]
