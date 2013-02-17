@@ -6,6 +6,10 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetOptionLocalization({
+	RangeFrame		= "$spell:139997 주문에 대한 거리 창 보기(8m)"
+})
+
 --------------
 -- Horridon --
 --------------
@@ -104,6 +108,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnMatterSwapped	= "$spell:138618 대상 알림"
+})
+
+L:SetMiscLocalization({
+	Pull		= "The orb explodes!"
 })
 
 --------------
