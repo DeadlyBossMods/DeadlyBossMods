@@ -281,6 +281,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		ominousCackleTargets[#ominousCackleTargets + 1] = args.destName
 		if args:IsPlayer() then
 			platformSent = true
+			timerThrashCD:Cancel()
 			specWarnOminousCackleYou:Show()
 			if not self.Options.warnBreathOnPlatform then
 				countdownBreathOfFear:Cancel()
