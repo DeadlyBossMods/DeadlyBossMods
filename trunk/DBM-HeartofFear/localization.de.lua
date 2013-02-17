@@ -26,9 +26,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Platform			= "fliegt zu einer seiner Plattformen!",
-	Defeat				= "Wir werden der Verzweiflung der dunklen Leere nicht nachgeben. Wenn es Ihr Wille ist, dass wir dahinscheiden, dann soll es so sein.",
-	Left				= "Links",
-	Right				= "Rechts"
+	Defeat				= "Wir werden der Verzweiflung der dunklen Leere nicht nachgeben. Wenn es Ihr Wille ist, dass wir dahinscheiden, dann soll es so sein."
 })
 
 
