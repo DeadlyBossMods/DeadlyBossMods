@@ -63,9 +63,12 @@ local timerNuclearInfernoCD				= mod:NewCDTimer(55.5, 137491)
 --Dusk
 ---:(
 
+local berserkTimer						= mod:NewBerserkTimer(600)
+
 mod:AddBoolOption("RangeFrame")--For various abilities that target even melee. SO yes, even melee need to spread out or not come.
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
