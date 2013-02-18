@@ -6,6 +6,10 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetOptionLocalization({
+	RangeFrame		= "為$spell:139997顯示距離框(8碼)"
+})
+
 --------------
 -- Horridon --
 --------------
@@ -104,6 +108,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnMatterSwapped	= "提示目標被$spell:138618交換"
+})
+
+L:SetMiscLocalization({
+	Pull	= "The orb explodes!"
 })
 
 --------------

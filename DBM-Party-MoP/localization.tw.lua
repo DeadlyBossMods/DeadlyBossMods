@@ -94,8 +94,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	NovicesPulled	= "你!在煞沉眠了這麼多年之後，你竟然讓它甦醒了!",
-	NovicesDefeated = "你打贏了我資歷最淺的徒弟。現在你要面對我最資深的兩個徒弟。",
---	Defeat			= "I am bested.  Give me a moment and we will venture forth together to face the Sha."
+	NovicesDefeated = "你打贏了我資歷最淺的徒弟。現在你要面對我最資深的兩個徒弟。"
 })
 
 -----------------------
