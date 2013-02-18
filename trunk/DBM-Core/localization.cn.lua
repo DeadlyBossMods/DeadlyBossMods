@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
 -- merge traslation by bigfoot team  - yleaf 9-10-2010
--- Last update: 2/4/2013
+-- Last update: 2/18/2013
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -120,6 +120,8 @@ DBM_CORE_HORDE						= "部落"
 DBM_CORE_UNKNOWN					= "未知"
 DBM_CORE_LEFT						= "左"
 DBM_CORE_RIGHT						= "右"
+DBM_CORE_BACK						= "后"
+DBM_CORE_FRONT						= "前"
 
 DBM_CORE_BREAK_START				= "开始休息 - %s分钟！"
 DBM_CORE_BREAK_MIN					= "%s分钟后休息结束！"
