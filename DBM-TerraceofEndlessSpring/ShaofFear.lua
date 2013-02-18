@@ -36,6 +36,7 @@ local warnHuddleInTerror				= mod:NewAnnounce("warnHuddleInTerror", 3, 120629)
 local warnImplacableStrike				= mod:NewCountAnnounce(120672, 4)
 local warnChampionOfTheLight			= mod:NewTargetAnnounce(120268, 3, nil, false)--seems spammy.
 local warnSubmerge						= mod:NewCountAnnounce(120455)
+local warnDreadSpawns					= mod:NewCountAnnounce(132018)
 --local warnEmerge						= mod:NewSpellAnnounce(120458)--do not match he actually emerges.
 
 -- Normal and heroic Phase 1
@@ -447,7 +448,8 @@ function mod:SPELL_CAST_START(args)
 		startSpecialTimers()
 	elseif args:IsSpellID(120455) then
 		submergeCount = submergeCount + 1
-		warnSubmerge:Show(submergeCount..", "..Spawns[submergeCount])
+		warnSubmerge:Show(submergeCount)
+		warnDreadSpawns:Schedule(5, Spawns[submergeCount])
 		specWarnSubmerge:Show()
 		timerSubmergeCD:Start(nil, submergeCount+1)
 		specialsCast = 000
