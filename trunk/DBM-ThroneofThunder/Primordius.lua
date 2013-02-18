@@ -40,6 +40,8 @@ local timerCausticGasCD				= mod:NewCDTimer(14, 136216)
 local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136248, nil, false)
 local timerVolatilePathogenCD		= mod:NewCDTimer(28, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
 
+local berserkTimer					= mod:NewBerserkTimer(480)
+
 mod:AddBoolOption("RangeFrame", true)--Right now, EVERYTHING targets melee. If blizz listens to feedback, it may change to just ranged.
 
 local metabolicBoost = false
@@ -50,6 +52,7 @@ function mod:OnCombatStart(delay)
 	metabolicBoost = false
 	acidSpinesActive = false
 	postulesActive = false
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
