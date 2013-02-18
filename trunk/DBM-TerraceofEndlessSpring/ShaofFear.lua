@@ -115,6 +115,29 @@ local function buildGuidTable()
 	end
 end
 
+local Spawns = {
+	[1] = 1,
+	[2] = 2,
+	[3] = 2,
+	[4] = 3,--no idea, maybe this one is just random 33-40, rest are dead on though.
+	[5] = 3,
+	[6] = 4,
+	[7] = 4,
+	[8] = 5,
+	[9] = 5,
+	[10]= 6,
+	[11]= 6,
+	[12]= 7,
+	[13]= 7,
+	[14]= 8,
+	[15]= 8,
+	[16]= 9,
+	[17]= 9,
+	[18]= 10,
+	[19]= 10,
+	[20]= 11,
+}
+
 local function warnOminousCackleTargets()
 	warnOminousCackle:Show(table.concat(ominousCackleTargets, "<, >"))
 	table.wipe(ominousCackleTargets)
@@ -424,7 +447,7 @@ function mod:SPELL_CAST_START(args)
 		startSpecialTimers()
 	elseif args:IsSpellID(120455) then
 		submergeCount = submergeCount + 1
-		warnSubmerge:Show(submergeCount)
+		warnSubmerge:Show(submergeCount..", "..Spawns[submergeCount])
 		specWarnSubmerge:Show()
 		timerSubmergeCD:Start(nil, submergeCount+1)
 		specialsCast = 000
