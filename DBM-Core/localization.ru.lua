@@ -113,6 +113,10 @@ DBM_CORE_ALLIANCE					= "Альянс"
 DBM_CORE_HORDE						= "Орда"
 
 DBM_CORE_UNKNOWN					= "неизвестно"
+DBM_CORE_LEFT						= "Налево"
+DBM_CORE_RIGHT						= "Направо"
+DBM_CORE_BACK						= "Back"--Translate
+DBM_CORE_FRONT						= "Front"--Translate
 
 DBM_CORE_BREAK_START				= "Перерыв начинается -- у вас есть %s мин.!"
 DBM_CORE_BREAK_MIN					= "Перерыв заканчивается через %s мин.!"
