@@ -35,7 +35,7 @@ local specWarnExplosiveSlam			= mod:NewSpecialWarningStack(138569, mod:IsTank(),
 local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTank())
 --Boss
 local specWarnAnimaRing				= mod:NewSpecialWarningYou(136954)
-local specWarnAnimaRingOther		= mod:NewSpecialWarningOther(136954, false)
+local specWarnAnimaRingOther		= mod:NewSpecialWarningTarget(136954, false)
 local yellAnimaRing					= mod:NewYell(136954)
 local specWarnInterruptingJolt		= mod:NewSpecialWarningSpell(138763, nil, nil, nil, 2)
 
