@@ -113,6 +113,10 @@ DBM_CORE_ALLIANCE					= "Alliance"
 DBM_CORE_HORDE						= "Horde"
 
 DBM_CORE_UNKNOWN					= "inconnu"
+DBM_CORE_LEFT						= "Gauche"
+DBM_CORE_RIGHT						= "Droite"
+DBM_CORE_BACK						= "Back"--Translate
+DBM_CORE_FRONT						= "Front"--Translate
 
 DBM_CORE_BREAK_START				= "La pause commence maintenant -- vous avez %s minute(s)!"
 DBM_CORE_BREAK_MIN					= "Fin de la pause dans %s minute(s) !"
