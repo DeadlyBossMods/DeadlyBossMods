@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com)
--- Last update: 2/4/2013
+-- Last update: 2/18/2013
 
 if GetLocale() ~= "zhCN" then return end
 local L
@@ -88,7 +88,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
-	warnBreathOnPlatform		= "警报：当你在平台时的$spell:119414\n（不推荐，为团长准备）",
+	warnBreathOnPlatform		= "警报：当你在平台时的$spell:119414（不推荐，为团长准备）",
 	specWarnBreathOfFearSoon	= "特殊警报：当没有$spell:117964效果需要躲避$spell:119414时",
 	specWarnMovement			= "特殊警报：$spell:120047时的移动\n（详见：http://mysticalos.com/terraceofendlesssprings.jpg）",
 	specWarnMovement			= "特殊警报：$spell:120047时的移动",
