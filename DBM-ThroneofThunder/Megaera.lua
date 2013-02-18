@@ -71,10 +71,6 @@ local venomBehind = 0
 local iceBehind = 0
 local arcaneBehind = 0
 local activeHeadGUIDS = {}
-local frozenHead = EJ_GetSectionInfo(7002)
-local flamingHead = EJ_GetSectionInfo(6998)
-local venomousHead = EJ_GetSectionInfo(7004)
-local arcaneHead = EJ_GetSectionInfo(7005)
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -260,22 +256,23 @@ local function CheckHeads(GUID)
 	for i = 1, 5 do
 		if UnitExists("boss"..i) and not activeHeadGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
 			activeHeadGUIDS[UnitGUID("boss"..i)] = true
-			if UnitName("boss"..i) == frozenHead then
+			local cid = self:GetCIDFromGUID(UnitGUID("boss"..i))
+			if cid == 70235 then--Frozen
 				iceInFront = iceInFront + 1
 				if iceBehind > 0 then
 					iceBehind = iceBehind - 1
 				end
-			elseif UnitName("boss"..i) == flamingHead then
+			elseif cid == 70212 then--Flaming
 				fireInFront = fireInFront + 1
 				if fireBehind > 0 then
 					fireBehind = fireBehind - 1
 				end
-			elseif UnitName("boss"..i) == venomousHead then
+			elseif cid == 70247 then--Venomous
 				venomInFront = venomInFront + 1
 				if venomBehind > 0 then
 					venomBehind = venomBehind - 1
 				end
-			elseif UnitName("boss"..i) == arcaneHead then
+			elseif cid == 70248 then--Arcane
 				arcaneInFront = arcaneInFront + 1
 				if arcaneBehind > 0 then
 					arcaneBehind = arcaneBehind - 1
@@ -295,16 +292,17 @@ end
 --Unfortunately we need to update the counts sooner than UNIT_DIED fires because we need those counts BEFORE CHAT_MSG_RAID_BOSS_EMOTE fires.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 70628 and self:AntiSpam(2, 3) then--Permanent Feign Death
-		if UnitName(uId) == frozenHead then
+		local cid = self:GetCIDFromGUID(UnitGUID(uId))
+		if cid == 70235 then--Frozen
 			iceInFront = iceInFront - 1
 			iceBehind = iceBehind + 2
-		elseif UnitName(uId) == flamingHead then
+		elseif cid == 70212 then--Flaming
 			fireInFront = fireInFront - 1
 			fireBehind = fireBehind + 2
-		elseif UnitName(uId) == venomousHead then
+		elseif cid == 70247 then--Venomous
 			venomInFront = venomInFront - 1
 			venomBehind = venomBehind + 2
-		elseif UnitName(uId) == arcaneHead then
+		elseif cid == 70248 then--Arcane
 			arcaneInFront = arcaneInFront - 1
 			arcaneBehind = arcaneBehind + 2
 		end
