@@ -24,8 +24,8 @@ local warnMatterSwapped				= mod:NewAnnounce("warnMatterSwapped", 3, 138618)--Ac
 local warnExplosiveSlam				= mod:NewStackAnnounce(138569, 2, nil, mod:IsTank() or mod:IsHealer())
 --Boss
 local warnAnimaRing					= mod:NewTargetAnnounce(136954, 3)
-local warnEmpowerGolem				= mod:NewTargetAnnounce(138780, 3)
 local warnInterruptingJolt			= mod:NewSpellAnnounce(138763, 4)
+local warnEmpowerGolem				= mod:NewTargetAnnounce(138780, 3)
 
 local specWarnCrimsonWakeYou		= mod:NewSpecialWarningRun(138480)--Kiter
 local specWarnCrimsonWake			= mod:NewSpecialWarningMove(138485)--Standing in stuff left behind by kiter
@@ -43,7 +43,7 @@ local timerMatterSwap				= mod:NewTargetTimer(12, 138609)--If not dispelled, it 
 --Boss
 local timerSiphonAnimaCD			= mod:NewNextTimer(30, 138644)
 local timerAnimaRingCD				= mod:NewCDTimer(30.5, 136954)
-local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)
+local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--TODO, this wasn't cast as often on normal. Find out if they actually have different CDs or if it was buffed since normal was tested.
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
@@ -118,7 +118,7 @@ function mod:SPELL_CAST_START(args)
 		scansDone = 0
 		self:TargetScanner()
 		timerAnimaRingCD:Start()
-	elseif args:IsSpellID(138763) then
+	elseif args:IsSpellID(138763, 139867) then--Normal version is 2.2 sec cast. Heroic is 1.4 second cast (thus why it has different spellid)
 		warnInterruptingJolt:Show()
 		specWarnInterruptingJolt:Show()
 	end

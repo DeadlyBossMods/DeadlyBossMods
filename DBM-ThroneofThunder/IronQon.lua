@@ -17,11 +17,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED"
---	"UNIT_DIED"
 )
 
 local warnImpale						= mod:NewStackAnnounce(134691, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnThrowSpear					= mod:NewSpellAnnounce(134926, 3)--TODO, TEST target scanning here. It's probably touchy as shannox SPELL_SUMMON target scanning so will probably use same code
+local warnMoltenOverload				= mod:NewSpellAnnounce(137221, 4)
+local warnWindStorm						= mod:NewSpellAnnounce(136577, 4)
 local warnLightningStorm				= mod:NewTargetAnnounce(136192, 3)
 local warnDeadZone						= mod:NewAnnounce("warnDeadZone", 3, 137229)
 local warnFreeze						= mod:NewTargetAnnounce(135145, 3)
@@ -72,10 +73,15 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerWhirlingWindsCD:Start(20-delay)
 		timerLightningStormCD:Start(22-delay)
+	else
+		self:RegisterShortTermEvents(
+			"UNIT_DIED"--Alternate phase detection for normal (not sure if needed, but just in case, i deleted my normal mode log and don't remember if they fired "eject all passengers" there.
+		)
 	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -101,12 +107,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerScorched:Start()
 		end
 	elseif args:IsSpellID(137221) then
+		warnMoltenOverload:Show()
 		specWarnMoltenOverload:Show()
 		timerMoltenOverload:Start()
-	--"<255.6 20:41:32> [CLEU] SPELL_AURA_APPLIED#true##nil#2632#0#0x0100000000003591#Shiramune#1298#0#136577#Wind Storm#8#DEBUFF", -- [18923]
-	elseif args:IsSpellID(136577) and self:AntiSpam(30, 1) and not self:IsDifficulty("lfr25") then--No idea what cd is, when we find out, will need to adjust anti spam to prevent it from activating from players walking into old one
-		specWarnWindStorm:Show()
---		timerWindStormCD:Start()
 	elseif args:IsSpellID(136192) then
 		warnLightningStorm:Show(args.destName)
 		if phase == 1 then--Heroic
@@ -195,7 +198,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
 		timerUnleashedFlameCD:Start()
-	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (have to use this because they don't die on heroic
+	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (have to use this because they don't die on heroic)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		timerThrowSpearCD:Start(39)--TODO: Verify this is consistent
 		if cid == 68079 then--Ro'shak
@@ -242,10 +245,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 139181 and self:AntiSpam(2, 7) then--Frost Spike (Phase 2 Heroic)
 		warnFrostSpike:Show()
 		timerFrostSpikeCD:Start()
+	--"<168.1 19:53:31> [UNIT_SPELLCAST_SUCCEEDED] Quet'zal [[boss3:Rushing Winds::0:137656]]", -- [13876]
+	--"<170.1 19:29:36> [CLEU] SPELL_MISSED#true##nil#2632#0#0x010000000003A244#Oxey#1300#8#136577#Wind Storm#8#MISS#nil", -- [11314]
+	elseif spellId == 137656 and self:AntiSpam(2, 1) then--Rushing Winds (Wind Storm pre trigger)
+		warnWindStorm:Show()
+		specWarnWindStorm:Show()
+--		timerWindStormCD:Start()
 	end
 end
 
---[[
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 68079 then--Ro'shak
@@ -258,7 +266,7 @@ function mod:UNIT_DIED(args)
 		timerMoltenOverload:Cancel()
 		timerLightningStormCD:Start(17)
 		timerWindStormCD:Start(49.5)
-		print("Mod beyond phase 1 incomplete. You can thank horde grieving instance portal for that")
+		print("Mod beyond this point is incomplete and some timers will be unavailable")
 	elseif cid == 68080 then--Quet'zal
 		phase = 3
 		timerLightningStormCD:Cancel()
@@ -267,8 +275,9 @@ function mod:UNIT_DIED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif cid == 68081 then--Dam'ren
+		self:UnregisterShortTermEvents()
 		timerDeadZoneCD:Cancel()
 		phase = 4
 	end
 end
---]]
+
