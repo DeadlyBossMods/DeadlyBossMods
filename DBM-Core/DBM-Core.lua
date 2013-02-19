@@ -155,7 +155,7 @@ DBM.DefaultOptions = {
 	MoviesSeen = {},
 	MovieFilters = {},
 	LastRevision = 0,
-	FilterSayAndYell = GetCVarBool("ChatBubbles")
+	FilterSayAndYell = not not GetCVarBool("ChatBubbles") -- convert to boolean (function returns 1/nil) as we need to distinguish between 'setting not present' and 'disabled'
 }
 
 DBM.Bars = DBT:New()
