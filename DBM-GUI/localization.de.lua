@@ -164,6 +164,7 @@ L.SpamBlockBossWhispers			= "Aktiviere Filter für <DBM>-Flüstermitteilungen im
 L.BlockVersionUpdateNotice		= "Zeige Update-Meldung im Chat statt als Popup"
 L.ShowBigBrotherOnCombatStart	= "Führe Big-Brother-Buffprüfung bei Kampfbeginn durch"
 L.BigBrotherAnnounceToRaid		= "Verkünde Ergebnis der Big-Brother-Buffprüfung zum Schlachtzug"
+L.SpamBlockSayYell				= "Sprechblasen-Ansagen im Chat Frame ausblenden"
 
 L.Area_SpamFilter_Outgoing		= "globale Filtereinstellungen"
 L.SpamBlockNoShowAnnounce		= "Zeige keine Mitteilungen und spiele keine Warnungssounds"
