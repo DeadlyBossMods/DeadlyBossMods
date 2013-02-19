@@ -167,6 +167,8 @@ L.SpamBlockBossWhispers			= "Filter <DBM> warning whispers while fighting"
 L.BlockVersionUpdateNotice		= "Disable update notification popup"
 L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
 L.BigBrotherAnnounceToRaid		= "Announce Big Brother results to raid"
+L.SpamBlockSayYell				= "Hide chat bubbles announces from the chat frame"
+
 
 L.Area_SpamFilter_Outgoing		= "Global Filter Options"
 L.SpamBlockNoShowAnnounce		= "Do not show announces or play warning sounds"
