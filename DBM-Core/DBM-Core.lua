@@ -154,7 +154,8 @@ DBM.DefaultOptions = {
 --	HelpMessageShown = false,
 	MoviesSeen = {},
 	MovieFilters = {},
-	LastRevision = 0
+	LastRevision = 0,
+	FilterSayAndYell = GetCVarBool("ChatBubbles")
 }
 
 DBM.Bars = DBT:New()
@@ -3249,6 +3250,10 @@ do
 		return DBM.Options.SpamBlockRaidWarning and type(msg) == "string" and (not not msg:match("^%s*%*%*%*")), ...
 	end
 
+	local function filterSayYell(self, event, ...)
+		return DBM.Options.FilterSayAndYell and #inCombat > 0, ...
+	end
+
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
@@ -3256,6 +3261,8 @@ do
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterRaidWarning)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", filterRaidWarning)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", filterRaidWarning)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", filterSayYell)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", filterSayYell)
 end
 
 
