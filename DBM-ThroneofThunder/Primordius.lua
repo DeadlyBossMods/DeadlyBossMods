@@ -27,6 +27,7 @@ local warnVolatilePathogen			= mod:NewTargetAnnounce(136228, 4)
 local warnMetabolicBoost			= mod:NewTargetAnnounce(136245, 3)--Makes Malformed Blood, Primordial Strike and melee 50% more often
 local warnVentralSacs				= mod:NewTargetAnnounce(136210, 2)--This one is a joke, if you get it, be happy.
 local warnAcidicSpines				= mod:NewTargetAnnounce(136218, 3)
+local warnBlackBlood				= mod:NewStackAnnounce(137000, 2, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnFullyMutated			= mod:NewSpecialWarningYou(140546)
 local specWarnCausticGas			= mod:NewSpecialWarningSpell(136216, nil, nil, nil, 2)--All must be in front for this.
@@ -34,11 +35,12 @@ local specWarnPustuleEruption		= mod:NewSpecialWarningSpell(136248, false, nil, 
 local specWarnVolatilePathogen		= mod:NewSpecialWarningRun(136228)
 local yellVolatilePathogen			= mod:NewYell(136228)
 
-local timerMalformedBlood			= mod:NewTargetTimer(60, 136050)
+local timerMalformedBlood			= mod:NewTargetTimer(60, 136050, nil, mod:IsTank() or mod:IsHealer())
 local timerPrimordialStrikeCD		= mod:NewCDTimer(30, 136037)
 local timerCausticGasCD				= mod:NewCDTimer(14, 136216)
 local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136248, nil, false)
 local timerVolatilePathogenCD		= mod:NewCDTimer(28, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
+local timerBlackBlood				= mod:NewTargetTimer(60, 137000, nil, mod:IsTank() or mod:IsHealer())
 
 local berserkTimer					= mod:NewBerserkTimer(480)
 
@@ -84,6 +86,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136050) then
 		warnMalformedBlood:Show(args.destName, args.amount or 1)
 		timerMalformedBlood:Start(args.destName)
+	elseif args:IsSpellID(137000) then
+		warnBlackBlood:Show(args.destName, args.amount or 1)
+		timerBlackBlood:Start(args.destName)
 	elseif args:IsSpellID(136215) then
 		warnGasBladder:Show(args.destName)
 	elseif args:IsSpellID(136246) then
