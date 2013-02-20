@@ -69,8 +69,8 @@ local timerDeathBlossom					= mod:NewBuffActiveTimer(5, 119888)
 local timerFearless						= mod:NewBuffFadesTimer(30, 118977)
 -- Heroic Phase 2
 local timerDreadTrashCD					= mod:NewCDTimer(9, 132007)--Share Trash CD.
-local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669)--25 on 10 man, 50 on 25 (requiring 3 tanks)
-local timerNakedAndAfraidCD				= mod:NewCDTimer(30, 120669)-- varies, but mostly 30. can get delayed upwards of 15 seconds though between submerge and specials
+local timerNakedAndAfraid				= mod:NewTargetTimer(25, 120669, nil, mod:IsTank() or mod:IsHealer())--25 on 10 man, 50 on 25 (requiring 3 tanks)
+local timerNakedAndAfraidCD				= mod:NewCDTimer(30, 120669, nil, mod:IsTank() or mod:IsHealer())-- varies, but mostly 30. can get delayed upwards of 15 seconds though between submerge and specials
 local timerSubmergeCD					= mod:NewCDCountTimer(51.5, 120455)
 mod:AddBoolOption("timerSpecialAbility", true, "timer")--Better to have one option for his shared special timer than 7
 local timerWaterspoutCD					= mod:NewCDTimer(10, 120519, nil, nil, false)
