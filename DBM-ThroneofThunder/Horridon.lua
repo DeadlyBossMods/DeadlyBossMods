@@ -26,6 +26,7 @@ local warnDoubleSwipe			= mod:NewSpellAnnounce(136741, 3)
 local warnMending				= mod:NewSpellAnnounce(136797, 4)
 local warnBestialCry			= mod:NewStackAnnounce(136817, 3)
 local warnRampage				= mod:NewTargetAnnounce(136821, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnDisorientingRoar		= mod:NewTargetAnnounce(137458, 4)
 
 local specWarnCharge			= mod:NewSpecialWarningYou(136769)--Maybe add a near warning later. person does have 3.4 seconds to react though and just move out of group.
 local yellCharge				= mod:NewYell(136769)
@@ -37,6 +38,7 @@ local specWarnMending			= mod:NewSpecialWarningInterrupt(136797, mod:IsDps())--H
 local specWarnFrozenBolt		= mod:NewSpecialWarningMove(136573)--Debuff used by Frozen Orbs
 local specWarnJalak				= mod:NewSpecialWarningSwitch("ej7087", mod:IsTank())--To pick him up
 local specWarnRampage			= mod:NewSpecialWarningTarget(136821, mod:IsTank() or mod:IsHealer())--Dog is pissed master died, need more heals and cooldowns. Maybe warn dps too? his double swipes and charges will be 100% worse too.
+local specWarnDisorientingRoar	= mod:NewSpecialWarningSpell(137458, nil, nil, nil, 2)--Heroic
 
 local timerAddsCD				= mod:NewTimer(114, "timerAddsCD")--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
 local timerCharge				= mod:NewCastTimer(3.4, 136769)
@@ -46,6 +48,7 @@ local timerPuncture				= mod:NewTargetTimer(90, 136767, nil, mod:IsTank() or mod
 local timerPunctureCD			= mod:NewCDTimer(11, 136767, nil, mod:IsTank() or mod:IsHealer())
 local timerJalakCD				= mod:NewNextTimer(10, "ej7087")--Maybe it's time for a better worded spawn timer than "Next mobname". Maybe NewSpawnTimer with "mobname activates" or something.
 local timerBestialCryCD			= mod:NewNextCountTimer(10, 136817)
+--local timerDisorientingRoarCD	= mod:NewCDTimer(18, 137458)--Heroic
 
 local jalakEngaged = false
 
@@ -79,6 +82,10 @@ function mod:SPELL_CAST_START(args)
 		warnDoubleSwipe:Show()
 		specWarnDoubleSwipe:Show()
 		timerDoubleSwipeCD:Start(11.5)--Hard coded failsafe. 136741 version is always 11.5 seconds after 136770 version
+	elseif args:IsSpellID(137458) then
+		warnDisorientingRoar:Show()
+		specWarnDisorientingRoar:Show()
+--		timerDisorientingRoarCD:Start()
 	end
 end
 
