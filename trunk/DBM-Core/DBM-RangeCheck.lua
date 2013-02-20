@@ -163,13 +163,6 @@ do
 			info.menuList = "frames"
 			UIDropDownMenu_AddButton(info, 1)
 
---[[			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_OPTION_SPEED
-			info.notCheckable = true
-			info.hasArrow = true
-			info.menuList = "speed"
-			UIDropDownMenu_AddButton(info, 1)]]
-
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_LOCK
 			if DBM.Options.RangeFrameLocked then
@@ -187,33 +180,6 @@ do
 
 		elseif level == 2 then
 			if menu == "range" then
-				if initRangeCheck() then
-					info = UIDropDownMenu_CreateInfo()
-					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(3)
-					info.func = setRange
-					info.arg1 = 3
-					info.checked = (frame.range == 3)
-					UIDropDownMenu_AddButton(info, 2)
-				end
-
-				if initRangeCheck() then
-					info = UIDropDownMenu_CreateInfo()
-					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(4)
-					info.func = setRange
-					info.arg1 = 4
-					info.checked = (frame.range == 4)
-					UIDropDownMenu_AddButton(info, 2)
-				end
-
-				if initRangeCheck() then
-					info = UIDropDownMenu_CreateInfo()
-					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(5)
-					info.func = setRange
-					info.arg1 = 5
-					info.checked = (frame.range == 5)
-					UIDropDownMenu_AddButton(info, 2)
-				end
-
 				if initRangeCheck() then
 					info = UIDropDownMenu_CreateInfo()
 					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
@@ -373,14 +339,6 @@ end
 ------------------------
 function createFrame()
 	local elapsed = 0
---[[	local updateRate
-	if DBM.Options.RangeFrameUpdates == "Slow" then
-		updateRate = 0.5
-	elseif DBM.Options.RangeFrameUpdates == "Average" then
-		updateRate = 0.25
-	elseif DBM.Options.RangeFrameUpdates == "Fast" then
-		updateRate = 0.05
-	end]]
 	local frame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
 	dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", frame, "UIDropDownMenuTemplate")
 	frame:SetFrameStrata("DIALOG")
@@ -782,7 +740,6 @@ checkFuncs[11] = function(uId)
 	return CheckInteractDistance(uId, 2)
 end
 
-
 checkFuncs[10] = function(uId)
 	return CheckInteractDistance(uId, 3)
 end
@@ -882,7 +839,7 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 		frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 		onUpdate(frame, 0)
 	end
-	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and (DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()] ~= nil) then
+	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and (DBM.MapSizes[GetMapInfo()] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()] ~= nil) then
 		onUpdateRadar(radarFrame, 1)
 	end
 end
