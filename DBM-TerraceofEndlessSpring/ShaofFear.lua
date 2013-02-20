@@ -53,6 +53,7 @@ local MoveWarningBack					= mod:NewSpecialWarning("MoveBack", nil, false)--Move 
 local specWarnDreadThrash				= mod:NewSpecialWarningSpell(132007, mod:IsTank(), nil, nil, 3)--Extra emphesis special warning.
 local specWarnNakedAndAfraidOther		= mod:NewSpecialWarningTarget(120669, mod:IsTank())
 local specWarnWaterspout				= mod:NewSpecialWarningYou(120519)
+local specWarnWaterspoutNear			= mod:NewSpecialWarningClose(120519)
 local yellWaterspout					= mod:NewYell(120519)
 local specWarnImplacableStrike			= mod:NewSpecialWarningSpell(120672)
 local specWarnChampionOfTheLight		= mod:NewSpecialWarningYou(120268)
@@ -367,6 +368,19 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnWaterspout:Show()
 			yellWaterspout:Yell()
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 7 then
+					specWarnWaterspoutNear:Show(args.destName)
+				end
+			end
 		end
 		if self:AntiSpam(5, 3) then
 			if specialCount == 3 then specialCount = 0 end
