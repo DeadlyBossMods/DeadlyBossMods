@@ -48,7 +48,6 @@ local timerPuncture				= mod:NewTargetTimer(90, 136767, nil, mod:IsTank() or mod
 local timerPunctureCD			= mod:NewCDTimer(11, 136767, nil, mod:IsTank() or mod:IsHealer())
 local timerJalakCD				= mod:NewNextTimer(10, "ej7087")--Maybe it's time for a better worded spawn timer than "Next mobname". Maybe NewSpawnTimer with "mobname activates" or something.
 local timerBestialCryCD			= mod:NewNextCountTimer(10, 136817)
---local timerDisorientingRoarCD	= mod:NewCDTimer(18, 137458)--Heroic
 
 local jalakEngaged = false
 
@@ -85,7 +84,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(137458) then
 		warnDisorientingRoar:Show()
 		specWarnDisorientingRoar:Show()
---		timerDisorientingRoarCD:Start()
 	end
 end
 
