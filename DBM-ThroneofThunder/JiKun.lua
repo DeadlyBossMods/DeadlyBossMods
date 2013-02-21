@@ -21,22 +21,26 @@ local warnQuills			= mod:NewSpellAnnounce(134380, 4)
 local warnFlock				= mod:NewSpellAnnounce("ej7348", 3, 15746)--Some random egg icon
 local warnLayEgg			= mod:NewSpellAnnounce(134367, 3)
 local warnTalonRake			= mod:NewStackAnnounce(134366, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnDowndraft			= mod:NewSpellAnnounce(134370, 3)
 
 local specWarnQuills		= mod:NewSpecialWarningSpell(134380, nil, nil, nil, true)
 local specWarnFlock			= mod:NewSpecialWarningSwitch("ej7348", false)--For those assigned in egg/bird killing group to enable on their own (and tank on heroic)
 local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 3)--Might change to 2 if blizz fixes timing issues with it
 local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
+local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, true)
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuillsCD			= mod:NewCDTimer(60, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 60-67 seconds usually after channel of some other spell ends
 local timerFlockCD	 		= mod:NewNextTimer(30, "ej7348", nil, nil, nil, 15746)
---local timerTalonRakeCD		= mod:NewCDTimer(10, 134366, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
+--local timerTalonRakeCD	= mod:NewCDTimer(10, 134366, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerTalonRake		= mod:NewTargetTimer(60, 134366, mod:IsTank() or mod:IsHealer())
+local timerDowndraftCD		= mod:NewCDTimer(110, 134370)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
 function mod:OnCombatStart(delay)
 	timerQuillsCD:Start(50-delay)
+	timerDowndraftCD:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -76,6 +80,14 @@ function mod:SPELL_CAST_START(args)
 		warnQuills:Show()
 		specWarnQuills:Show()
 		timerQuillsCD:Start()
+	elseif args:IsSpellID(134370) then
+		warnDowndraft:Show()
+		specWarnDowndraft:Show()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerDowndraftCD:Start(90)
+		else
+			timerDowndraftCD:Start()--Todo, confirm they didn't just change normal to 90 as well. in my normal logs this had a 110 second cd on normal
+		end
 	elseif args:IsSpellID(134380) and self:AntiSpam(2, 1) then--Maybe adjust anti spam a bit or find a different way to go about this. It is important information though.
 		warnLayEgg:Show()
 	end
