@@ -168,6 +168,8 @@ L.SpamBlockBossWhispers			= "전투 중 다른 공격대원 또는 파티원이 
 L.BlockVersionUpdateNotice		= "업데이트 알림 창 끄기"
 L.ShowBigBrotherOnCombatStart	= "전투 시작시 BigBrother 버프 체크 실행하기"
 L.BigBrotherAnnounceToRaid		= "Big Brother 버프 체크 결과를 공격대에 알리기"
+L.SpamBlockSayYell				= "전투 중 대화 말풍선 숨기기"
+
 
 L.Area_SpamFilter_Outgoing		= "공통 설정(각 우두머리별 설정 무시)"
 L.SpamBlockNoShowAnnounce		= "알림 또는 경고 소리 끄기"
