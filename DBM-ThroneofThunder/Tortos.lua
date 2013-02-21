@@ -18,8 +18,8 @@ mod:RegisterEventsInCombat(
 local warnRockfall					= mod:NewSpellAnnounce(134476, 2)
 local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
+local warnKickShell					= mod:NewTargetAnnounce(134031, 2)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
---maybe look for 140701 in combat log as well (Crystal Shell: Full Capacity!)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, true)
@@ -38,20 +38,22 @@ mod:AddBoolOption("InfoFrame")
 local stompActive = false
 local firstRockfall = false--First rockfall after a stomp
 local shelldName = GetSpellInfo(137633)
-local rockRemaining = 0
+local shellsRemaining = 0
 
 local function clearStomp()
 	stompActive = false
 	firstRockfall = false--First rockfall after a stomp
-	timerRockfallCD:Start(5)--Resume normal CDs, first should be 5 seconds after stomp spammed ones
+	warnRockfall:Show()
+	timerRockfallCD:Start()--Resume normal CDs, first should be 5 seconds after stomp spammed ones
 end
 
 function mod:OnCombatStart(delay)
 	stompActive = false
 	firstRockfall = false--First rockfall after a stomp
+	shellsRemaining = 0
 	timerRockfallCD:Start(15-delay)
 	timerCallTortosCD:Start(21-delay)
-	timerStompCD:Start(30-delay)
+	timerStompCD:Start(29-delay)
 	timerBreathCD:Start(-delay)
 	if self.Options.InfoFrame and self:IsDifficulty("heroic10", "heroic25") then
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
@@ -79,6 +81,7 @@ function mod:SPELL_CAST_START(args)
 		warnQuakeStomp:Show()
 		specWarnQuakeStomp:Show()
 		timerStompActive:Show()
+		timerRockfallCD:Start(7.4)--When the spam of rockfalls start
 		timerStompCD:Start()
 	end
 end
@@ -86,6 +89,8 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(137633) then
 		warnCrystalShellVictom:Show(args.destName)
+	elseif args:IsSpellID(133971) then--Shell Block (turtles dying and becoming kickable)
+		shellsRemaining = shellsRemaining + 1
 	end
 end
 
@@ -98,17 +103,21 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(134476) then
 		if stompActive then--10 second cd normally, but cd is disabled when stomp active
-			if not firstRockfall then--But not until last cd finishes out.
+			if not firstRockfall then--Announce first one only and ignore the next ones spammed for about 9-10 seconds
+				firstRockfall = true
 				warnRockfall:Show()
 				specWarnRockfall:Show()--To warn of massive incoming for the 9 back to back rockfalls that are incoming
-				timerRockfallCD:Start()
-				firstRockfall = true
-				self:Schedule(9, clearStomp)
+				self:Schedule(10, clearStomp)
 			end
 		else
-			warnRockfall:Show()
-			timerRockfallCD:Start()
+			if self:AntiSpam(9, 1) then--sometimes clearstomp doesn't work? i can't find reason cause all logs match this system exactly.
+				warnRockfall:Show()
+				timerRockfallCD:Start()
+			end
 		end
+	elseif args:IsSpellID(134031) then--Kick Shell
+		shellsRemaining = shellsRemaining - 1
+		warnKickShell:Show(args.sourceName)
 	end
 end
 
