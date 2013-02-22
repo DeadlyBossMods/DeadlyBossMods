@@ -285,10 +285,10 @@ end
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
-	if UnitDebuff("player", chilldedDebuff) and not chilledWarned then--Warn you that you have a meteor
+	if UnitDebuff("player", chilldedDebuff) and not chilledWarned then
 		specWarnChilled:Show()
 		chilledWarned = true
-	elseif not UnitDebuff("player", meteorTarget) and chilledWarned then--reset warned status if you don't have debuff
+	elseif not UnitDebuff("player", meteorTarget) and chilledWarned then
 		chilledWarned = false
 	end
 end
