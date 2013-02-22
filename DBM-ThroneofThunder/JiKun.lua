@@ -19,14 +19,14 @@ mod:RegisterEventsInCombat(
 
 local warnCaws				= mod:NewSpellAnnounce(138923, 2)
 local warnQuills			= mod:NewSpellAnnounce(134380, 4)
-local warnFlock				= mod:NewCountAnnounce("ej7348", 3, 15746)--Some random egg icon
+local warnFlock				= mod:NewAnnounce("warnFlock", 3, 15746)--Some random egg icon
 local warnLayEgg			= mod:NewSpellAnnounce(134367, 3)
 local warnTalonRake			= mod:NewStackAnnounce(134366, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnDowndraft			= mod:NewSpellAnnounce(134370, 3)
 local warnFeedYoung			= mod:NewSpellAnnounce(137528, 3)--No Cd because it variable based on triggering from eggs, it's cast when one of young call out and this varies too much
 
 local specWarnQuills		= mod:NewSpecialWarningSpell(134380, nil, nil, nil, true)
-local specWarnFlock			= mod:NewSpecialWarningSwitch("ej7348", false)--For those assigned in egg/bird killing group to enable on their own (and tank on heroic)
+local specWarnFlock			= mod:NewSpecialWarning("specWarnFlock", false)--For those assigned in egg/bird killing group to enable on their own (and tank on heroic)
 local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 3)--Might change to 2 if blizz fixes timing issues with it
 local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
 local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, true)
@@ -42,6 +42,8 @@ local timerDowndraftCD		= mod:NewCDTimer(110, 134370)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
 local flockCount = 0
+local lastFlock = 0
+local flockName = EJ_GetSectionInfo(7348)
 
 function mod:OnCombatStart(delay)
 	flockCount = 0
@@ -109,17 +111,40 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
+--10 man does 3 down 3 up
+--25 man is a clusterfuck of random L, L, L, L, Both(5 and 6), U, U, Both (9 and 10), Both (11 & 12), L, ... (more data and higher counts needed)
+--[[
+"<7.8 19:02:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#500#nil#0#false#false", -- [1]
+"<37.7 19:02:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#502#nil#0#false#false", -- [2]
+"<67.6 19:03:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#504#nil#0#false#false", -- [3]
+"<97.8 19:03:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#505#nil#0#false#false", -- [4]
+"<127.6 19:04:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#509#nil#0#false#false", -- [5]
+"<127.6 19:04:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#510#nil#0#false#false", -- [6]
+"<157.8 19:04:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#512#nil#0#false#false", -- [7]
+"<187.6 19:05:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#514#nil#0#false#false", -- [8]
+"<217.8 19:05:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#524#nil#0#false#false", -- [9]
+"<217.8 19:05:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#525#nil#0#false#false", -- [10]
+"<247.7 19:06:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#529#nil#0#false#false", -- [11]
+"<247.7 19:06:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#530#nil#0#false#false", -- [12]
+"<277.8 19:06:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#536#nil#0#false#false", -- [13]
+--]]
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
-	if msg == L.eggsHatch or msg:find(L.eggsHatch) then
+	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
 		flockCount = flockCount + 1
-		warnFlock:Show(flockCount)
-		if self:AntiSpam(2, 1) then--On 25 man, every 3rd flock is two at same time after the first 4. it goes 1, 2, 3, 4, 5/6, 7, 8, 9/10, 11, 12, 13/14, etc
-			specWarnFlock:Show()
+		local messageText = msg:find(L.eggsHatchL) and L.Lower or L.Upper
+		if GetTime() - lastFlock < 5 then--On 25 man, you get two at same time sometimes, we detect that here and revise message
+			messageText = L.UpperAndLower
 		end
+		warnFlock:Cancel()
+		specWarnFlock:Cancel()
+		timerFlockCD:Cancel()
+		warnFlock:Schedule(0.5, messageText, flockName, flockCount)
+		specWarnFlock:Schedule(0.5, messageText, flockName, flockCount)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFlockCD:Show(40, flockCount+1)--TODO: confirm this isn't just a 10 man change. it was 40sec on heroic 10 man, 30  on 10 normal and 25 normal. but they coulda changed 10 normal after testing it.
 		else
 			timerFlockCD:Show(30, flockCount+1)
 		end
+		lastFlock = GetTime()
 	end
 end
