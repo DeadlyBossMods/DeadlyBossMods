@@ -255,7 +255,7 @@ local function CheckHeads(GUID)
 	for i = 1, 5 do
 		if UnitExists("boss"..i) and not activeHeadGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
 			activeHeadGUIDS[UnitGUID("boss"..i)] = true
-			local cid = self:GetCIDFromGUID(UnitGUID("boss"..i))
+			local cid = mod:GetCIDFromGUID(UnitGUID("boss"..i))
 			if cid == 70235 then--Frozen
 				iceInFront = iceInFront + 1
 				if iceBehind > 0 then
