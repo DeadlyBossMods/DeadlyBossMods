@@ -70,8 +70,22 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(828)
 
+L:SetWarningLocalization({
+	warnFlock		= "%s %s (%d)",
+	specWarnFlock	= "%s %s (%d)"
+})
+
+L:SetOptionLocalization({
+	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
+	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348")
+})
+
 L:SetMiscLocalization({
-	eggsHatch	= "nests begin to hatch!"
+	eggsHatchL		= "The eggs in one of the lower nests begin to hatch!",
+	eggsHatchU		= "The eggs in one of the upper nests begin to hatch!",
+	Upper			= "Upper",
+	Lower			= "Lower",
+	UpperAndLower	= "Upper & Lower"
 })
 
 --------------------------
