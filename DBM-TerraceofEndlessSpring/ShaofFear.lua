@@ -371,13 +371,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-				if inRange and inRange < 7 then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
 					specWarnWaterspoutNear:Show(args.destName)
 				end
 			end
