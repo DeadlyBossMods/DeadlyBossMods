@@ -28,7 +28,7 @@ local warnIgniteFlesh			= mod:NewStackAnnounce(137731, 3, nil, mod:IsTank() or m
 local warnRotArmor				= mod:NewStackAnnounce(139840, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnArcaneDiffusion		= mod:NewStackAnnounce(139993, 3, nil, mod:IsTank() or mod:IsHealer())--Heroic
 local warnCinders				= mod:NewTargetAnnounce(139822, 4)
-local warnTorrentofIce			= mod:NewSpellAnnounce(139822, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
+local warnTorrentofIce			= mod:NewTargetAnnounce(139889, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
 local warnNetherTear			= mod:NewSpellAnnounce(140138, 3)--Heroic
 
 local specWarnRampage			= mod:NewSpecialWarningSpell(139458, nil, nil, nil, true)
@@ -48,7 +48,7 @@ local timerArcticFreezeCD		= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHe
 local timerIgniteFleshCD		= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
 local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
 local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139993, mod:IsTank() or mod:IsHealer())
-local timerCinderCD				= mod:NewCDTimer(10, 139822)--10-20sec variation observed with 2 fire heads in back. mostly 10 though.
+local timerCinderCD				= mod:NewCDTimer(20, 139822)--Honestly not sure if this is doable with accuracy, the number of heads in back affects it and they don't always sync up
 local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
 local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
 local timerNetherTearCD			= mod:NewCDTimer(30, 140138)--Heroic
@@ -71,6 +71,14 @@ local venomBehind = 0
 local iceBehind = 0
 local arcaneBehind = 0
 local activeHeadGUIDS = {}
+local guids = {}
+local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
+local function buildGuidTable()
+	table.wipe(guids)
+	for uId, i in DBM:GetGroupMembers() do
+		guids[UnitGUID(uId) or "none"] = GetRaidRosterInfo(i)
+	end
+end
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -101,6 +109,8 @@ local function isTank(unit)
 end
 
 function mod:OnCombatStart(delay)
+	buildGuidTable()
+	guidTableBuilt = true
 	table.wipe(activeHeadGUIDS)
 	fireInFront = 0
 	venomInFront = 0
@@ -108,10 +118,10 @@ function mod:OnCombatStart(delay)
 	fireBehind = 1
 	venomBehind = 0
 	iceBehind = 0
+	timerCinderCD:Start(42)--Debuff application, not cast (TODO, check to see if heroic is still 19 seconds)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
 		arcaneInFront = 0
-		timerCinderCD:Start(18)--Debuff application, not cast
 		timerNetherTearCD:Start()
 	end
 	self:RegisterShortTermEvents(
@@ -125,7 +135,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(139866) then
-		warnTorrentofIce:Show()
 		timerTorrentofIceCD:Start()
 	end
 end
@@ -185,7 +194,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(139822) then
 		warnCinders:Show(args.destName)
-		timerCinderCD:Start()--TODO: See if Cd is affected by number of backrow heads.
+		timerCinderCD:Start()
 		if args:IsPlayer() then
 			specWarnCinders:Show()
 			yellCinders:Yell()
@@ -229,10 +238,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerRotArmorCD:Start(10)
 		end
 		if iceBehind > 0 then
-			timerTorrentofIceCD:Start(20)
+			timerTorrentofIceCD:Start(40)--40-45
 		end
 		if fireBehind > 0 then
-			timerCinderCD:Start()
+			timerCinderCD:Start(30)--30-35
 		end
 		if venomBehind > 0 then
 			timerAcidRainCD:Start(23)
@@ -248,6 +257,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnTorrentofIceYou:Show()
 		yellTorrentofIce:Yell()
 		soundTorrentofIce:Play()
+		self:SendSync("IceTarget", UnitGUID("player"))
 	end
 end
 
@@ -277,9 +287,10 @@ local function CheckHeads(GUID)
 					arcaneBehind = arcaneBehind - 1
 				end
 			end
-			print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
 		end
 	end
+	print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
+	print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 end
 
 --Only real way to detect heads moving from back to front.
@@ -305,6 +316,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			arcaneInFront = arcaneInFront - 1
 			arcaneBehind = arcaneBehind + 2
 		end
+		print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
 		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 	end
 end
@@ -324,5 +336,16 @@ function mod:UNIT_DIED(args)
 		self:Schedule(5, clearHeadGUID, args.destGUID)
 	elseif cid == 70248 then--Arcane
 		self:Schedule(5, clearHeadGUID, args.destGUID)
+	end
+end
+
+--TODO, check for an aura method instead?
+function mod:OnSync(msg, guid)
+	if not guidTableBuilt then
+		buildGuidTable()
+		guidTableBuilt = true
+	end
+	if msg == "IceTarget" and guids[guid] then
+		warnTorrentofIce:Show(guids[guid])
 	end
 end
