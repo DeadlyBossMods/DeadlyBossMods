@@ -13,7 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_EMOTE"
 )
 
 local warnCaws				= mod:NewSpellAnnounce(138923, 2)
@@ -38,7 +39,10 @@ local timerDowndraftCD		= mod:NewCDTimer(110, 134370)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
+local flockCount = 0
+
 function mod:OnCombatStart(delay)
+	flockCount = 0
 	timerQuillsCD:Start(50-delay)
 	timerDowndraftCD:Start(-delay)
 	if self.Options.RangeFrame then
@@ -97,9 +101,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:138923") then--Caws (does not show in combat log, like a lot of stuff this tier) Fortunately easy to detect this way without localizing
 		warnCaws:Show()
 		--timerCawsCD
-	elseif msg == L.eggsHatch or msg:find(L.eggsHatch) then
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
+	if msg == L.eggsHatch or msg:find(L.eggsHatch) then
+		flockCount = flockCount + 1
 		warnFlock:Show()
 		specWarnFlock:Show()
-		timerFlockCD:Show()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerFlockCD:Show(40)
+		else
+			timerFlockCD:Show()
+		end
 	end
 end

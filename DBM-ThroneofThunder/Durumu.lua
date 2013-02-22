@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_EMOTE",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -150,7 +150,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 --Blizz doesn't like combat log anymore
 --Currently very bugged too so warnings aren't working right (since fight isn't working right)
 --Beams wildly jump targets and don't give new target a warning at all nor does it even show in damn combat log.
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
+function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:134122") then--Blue Rays
 		timerForceOfWillCD:Cancel()
 		warnBlueBeam:Show(target)
@@ -176,20 +176,18 @@ function mod:UNIT_DIED(args)
 		crimsonFogs = crimsonFogs - 1
 		if crimsonFogs >= 1 then
 			warnCrimsonLeft:Show(crimsonFogs)
-		else
-			--Do something? Does anything trigger here?
 		end
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-	if spellId == 133775 and self:AntiSpam(2, 2) then--Disintegration Beam (clockwise)
+	if spellId == 136316 and self:AntiSpam(2, 2) then--Disintegration Beam (clockwise)
 		specWarnDisintegrationBeam:Show(spellName, DBM_CORE_LEFT)
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(90)
 		end
 		print("Mod beyond this point is incomplete and most timers will be unavailable")
-	elseif spellId == 136316 and self:AntiSpam(2, 2) then--Disintegration Beam (counter-clockwise)
+	elseif spellId == 133775 and self:AntiSpam(2, 2) then--Disintegration Beam (counter-clockwise)
 		specWarnDisintegrationBeam:Show(spellName, DBM_CORE_RIGHT)
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(270)
