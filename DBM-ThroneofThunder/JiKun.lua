@@ -19,20 +19,22 @@ mod:RegisterEventsInCombat(
 
 local warnCaws				= mod:NewSpellAnnounce(138923, 2)
 local warnQuills			= mod:NewSpellAnnounce(134380, 4)
-local warnFlock				= mod:NewSpellAnnounce("ej7348", 3, 15746)--Some random egg icon
+local warnFlock				= mod:NewCountAnnounce("ej7348", 3, 15746)--Some random egg icon
 local warnLayEgg			= mod:NewSpellAnnounce(134367, 3)
 local warnTalonRake			= mod:NewStackAnnounce(134366, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnDowndraft			= mod:NewSpellAnnounce(134370, 3)
+local warnFeedYoung			= mod:NewSpellAnnounce(137528, 3)--No Cd because it variable based on triggering from eggs, it's cast when one of young call out and this varies too much
 
 local specWarnQuills		= mod:NewSpecialWarningSpell(134380, nil, nil, nil, true)
 local specWarnFlock			= mod:NewSpecialWarningSwitch("ej7348", false)--For those assigned in egg/bird killing group to enable on their own (and tank on heroic)
 local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 3)--Might change to 2 if blizz fixes timing issues with it
 local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
 local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, true)
+local specWarnFeedYoung		= mod:NewSpecialWarningSpell(137528)
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuillsCD			= mod:NewCDTimer(60, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 60-67 seconds usually after channel of some other spell ends
-local timerFlockCD	 		= mod:NewNextTimer(30, "ej7348", nil, nil, nil, 15746)
+local timerFlockCD	 		= mod:NewNextCountTimer(30, "ej7348", nil, nil, nil, 15746)
 --local timerTalonRakeCD	= mod:NewCDTimer(10, 134366, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerTalonRake		= mod:NewTargetTimer(60, 134366, mod:IsTank() or mod:IsHealer())
 local timerDowndraftCD		= mod:NewCDTimer(110, 134370)
@@ -69,6 +71,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnTalonRakeOther:Show(args.destName)
 			end
 		end
+	elseif args:IsSpellID(137528) then
+		warnFeedYoung:Show()
+		specWarnFeedYoung:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -88,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 		warnDowndraft:Show()
 		specWarnDowndraft:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerDowndraftCD:Start(90)
+			timerDowndraftCD:Start(93)
 		else
 			timerDowndraftCD:Start()--Todo, confirm they didn't just change normal to 90 as well. in my normal logs this had a 110 second cd on normal
 		end
@@ -107,12 +112,14 @@ end
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg == L.eggsHatch or msg:find(L.eggsHatch) then
 		flockCount = flockCount + 1
-		warnFlock:Show()
-		specWarnFlock:Show()
+		warnFlock:Show(flockCount)
+		if self:AntiSpam(2, 1) then--On 25 man, every 3rd flock is two at same time after the first 4. it goes 1, 2, 3, 4, 5/6, 7, 8, 9/10, 11, 12, 13/14, etc
+			specWarnFlock:Show()
+		end
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerFlockCD:Show(40)
+			timerFlockCD:Show(40, flockCount+1)--TODO: confirm this isn't just a 10 man change. it was 40sec on heroic 10 man, 30  on 10 normal and 25 normal. but they coulda changed 10 normal after testing it.
 		else
-			timerFlockCD:Show()
+			timerFlockCD:Show(30, flockCount+1)
 		end
 	end
 end
