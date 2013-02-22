@@ -238,6 +238,8 @@ function mod:UNIT_DIED(args)
 		crimsonFogs = crimsonFogs - 1
 		if crimsonFogs >= 1 and not self:IsDifficulty("lfr25") then--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 			warnCrimsonLeft:Show(crimsonFogs)
+		else--No adds left, force ability is re-enabled
+			timerForceOfWillCD:Start()
 		end
 	end
 end
