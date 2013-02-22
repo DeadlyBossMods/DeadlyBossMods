@@ -105,12 +105,11 @@ function mod:OnCombatStart(delay)
 	fireInFront = 0
 	venomInFront = 0
 	iceInFront = 0
-	fireBehind = 0
+	fireBehind = 1
 	venomBehind = 0
 	iceBehind = 0
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
-		fireBehind = 1
 		arcaneInFront = 0
 		timerCinderCD:Start(18)--Debuff application, not cast
 		timerNetherTearCD:Start()
