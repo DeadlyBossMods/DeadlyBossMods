@@ -31,7 +31,6 @@ L.Button_OK 				= '確定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '載入模組'
 L.Mod_Enabled				= "啟用首領模組"
-L.Mod_EnableAnnounce		= "團隊廣播 (需要隊長)"
 L.Reset 					= "重置"
 
 L.Enable  					= "啟用"
@@ -163,7 +162,6 @@ L.BarWidth					= "寬度: %d"
 L.Panel_SpamFilter				= "整體及垃圾過濾"
 L.Area_SpamFilter				= "垃圾過濾選項"
 L.HideBossEmoteFrame			= "隱藏團隊首領表情框"
-L.SpamBlockRaidWarning			= "過濾其他首領模組的警告" 
 L.SpamBlockBossWhispers			= "當戰鬥時過濾 <DBM> 密語警告"
 L.BlockVersionUpdateNotice		= "禁用彈出的更新通知"
 L.ShowBigBrotherOnCombatStart	= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
@@ -171,7 +169,6 @@ L.BigBrotherAnnounceToRaid		= "通告BigBrother的結果給團隊"
 
 L.Area_SpamFilter_Outgoing		= "整體過濾選項"
 L.SpamBlockNoShowAnnounce		= "不顯示提示或播放警告音效"
-L.SpamBlockNoSendAnnounce		= "不發送提示到團隊頻道"
 L.SpamBlockNoSendWhisper		= "不發送密語給其他玩家"
 L.SpamBlockNoSetIcon			= "不設置標記在目標上"
 L.SpamBlockNoRangeFrame			= "不顯示距離框架"

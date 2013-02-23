@@ -30,7 +30,6 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Annuler'
 L.Button_LoadMod 			= 'Charger l\'AddOn'
 L.Mod_Enabled				= "Activer ce module"
-L.Mod_EnableAnnounce		= "Annoncer au raid (nécessite d'être le chef)"
 L.Reset 					= "Réinit."
 
 L.Enable  					= "Activer"
@@ -161,7 +160,6 @@ L.BarWidth					= "Largeur des barres : %d"
 L.Panel_SpamFilter				= "Filtres globaux et de spam"
 L.Area_SpamFilter				= "Options des filtres de spam"
 L.HideBossEmoteFrame			= "Masquer le cadre des émotes des boss de raid"
-L.SpamBlockRaidWarning			= "Filtrer les annonces des autres boss mods" 
 L.SpamBlockBossWhispers			= "Filtrer les chuchotements d'alerte <DBM> pendant les rencontres"
 L.BlockVersionUpdateNotice		= "Désactiver le popup de notification de mise à jour"
 L.ShowBigBrotherOnCombatStart	= "Effectuer une vérif. des buffs Big Brother au début du combat"
@@ -169,7 +167,6 @@ L.BigBrotherAnnounceToRaid		= "Annoncer les résultats de Big Brother au raid"
 
 L.Area_SpamFilter_Outgoing		= "Options des filtres globaux"
 L.SpamBlockNoShowAnnounce		= "Ne pas afficher d'annonces ou jouer de sons d'alerte"
-L.SpamBlockNoSendAnnounce		= "Ne pas envoyer d'annonces au canal Raid"
 L.SpamBlockNoSendWhisper		= "Ne pas envoyer de chuchotements aux autres joueurs"
 L.SpamBlockNoSetIcon			= "Ne pas placer d'icônes sur les cibles"
 L.SpamBlockNoRangeFrame			= "Ne pas afficher le cadre de distance"

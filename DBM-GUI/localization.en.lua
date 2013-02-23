@@ -30,7 +30,6 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Cancel'
 L.Button_LoadMod 			= 'Load AddOn'
 L.Mod_Enabled				= "Enable boss mod"
-L.Mod_EnableAnnounce		= "Announce to raid (Leader required)"
 L.Reset 					= "Reset"
 
 L.Enable  					= "Enable"
@@ -162,17 +161,14 @@ L.BarWidth					= "Bar width: %d"
 L.Panel_SpamFilter				= "Global and Spam Filters"
 L.Area_SpamFilter				= "Spam Filter Options"
 L.HideBossEmoteFrame			= "Hide raid boss emote frame"
-L.SpamBlockRaidWarning			= "Filter announces from other boss mods" 
 L.SpamBlockBossWhispers			= "Filter <DBM> warning whispers while fighting"
 L.BlockVersionUpdateNotice		= "Disable update notification popup"
 L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
 L.BigBrotherAnnounceToRaid		= "Announce Big Brother results to raid"
 L.SpamBlockSayYell				= "Hide chat bubbles announces from the chat frame"
 
-
 L.Area_SpamFilter_Outgoing		= "Global Filter Options"
 L.SpamBlockNoShowAnnounce		= "Do not show announces or play warning sounds"
-L.SpamBlockNoSendAnnounce		= "Do not send announces to raid chat"
 L.SpamBlockNoSendWhisper		= "Do not send whispers to other players"
 L.SpamBlockNoSetIcon			= "Do not set icons on targets"
 L.SpamBlockNoRangeFrame			= "Do not show range frame"
