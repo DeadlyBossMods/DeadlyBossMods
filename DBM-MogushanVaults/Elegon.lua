@@ -30,11 +30,11 @@ local warnPhase3					= mod:NewPhaseAnnounce(3, 3)--116994 Unstable Energy Starti
 local warnRadiatingEnergies			= mod:NewSpellAnnounce(118310, 4)
 
 local specWarnOvercharged			= mod:NewSpecialWarningStack(117878, nil, 6)
-local specWarnTotalAnnihilation		= mod:NewSpecialWarningSpell(129711, nil, nil, nil, true)
+local specWarnTotalAnnihilation		= mod:NewSpecialWarningSpell(129711, nil, nil, nil, 2)
 local specWarnProtector				= mod:NewSpecialWarningSwitch("ej6178", mod:IsDps() or mod:IsTank())
 local specWarnDrawPower				= mod:NewSpecialWarningStack(119387, nil, 1)
-local specWarnDespawnFloor			= mod:NewSpecialWarning("specWarnDespawnFloor", nil, nil, nil, true)
-local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, nil, true)
+local specWarnDespawnFloor			= mod:NewSpecialWarning("specWarnDespawnFloor", nil, nil, nil, 3)
+local specWarnRadiatingEnergies		= mod:NewSpecialWarningSpell(118310, nil, nil, nil, 2)
 
 local timerBreathCD					= mod:NewCDTimer(18, 117960)
 local timerProtectorCD				= mod:NewCDTimer(41, 117954)

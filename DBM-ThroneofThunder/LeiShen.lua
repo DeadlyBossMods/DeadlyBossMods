@@ -45,11 +45,11 @@ local specWarnBouncingBolt				= mod:NewSpecialWarningSpell(136395, false)
 --Phase 1
 local specWarnDecapitate				= mod:NewSpecialWarningRun(135000, mod:IsTank())
 local specWarnDecapitateOther			= mod:NewSpecialWarningTarget(135000, mod:IsTank())
-local specWarnThunderstruck				= mod:NewSpecialWarningSpell(135095, nil, nil, nil, true)
+local specWarnThunderstruck				= mod:NewSpecialWarningSpell(135095, nil, nil, nil, 2)
 --Phase 2
-local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank())--Cast (394514 is debuff. We warn for cast though because it knocks you off platform if not careful)
-local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, nil, true)
-local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil, nil, true)
+local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank(), nil, nil, 3)--Cast (394514 is debuff. We warn for cast though because it knocks you off platform if not careful)
+local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, nil, 2)
+local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil, nil, 2)
 --Phase 3
 
 --Conduits (All phases)
