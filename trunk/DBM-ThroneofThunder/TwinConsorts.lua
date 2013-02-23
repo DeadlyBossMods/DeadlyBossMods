@@ -34,14 +34,14 @@ local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4)--Heroic
 ---No logs for this :(
 
 --Darkness
-local specWarnCosmicBarrage				= mod:NewSpecialWarningSpell(136752, false, nil, nil, true)
-local specWarnTearsOfSun				= mod:NewSpecialWarningSpell(137404, nil, nil, nil, true)
+local specWarnCosmicBarrage				= mod:NewSpecialWarningSpell(136752, false, nil, nil, 2)
+local specWarnTearsOfSun				= mod:NewSpecialWarningSpell(137404, nil, nil, nil, 2)
 local specWarnBeastOfNightmares			= mod:NewSpecialWarningSpell(137375, mod:IsTank())
 --Light
 local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, mod:IsTank(), 2)
 local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTarget(137408, mod:IsTank())
 local specWarnIceCommet					= mod:NewSpecialWarningSpell(137419, false)
-local specWarnNuclearInferno			= mod:NewSpecialWarningSpell(137491, nil, nil, nil, true)--Heroic
+local specWarnNuclearInferno			= mod:NewSpecialWarningSpell(137491, nil, nil, nil, 2)--Heroic
 
 --Dusk
 ---:(

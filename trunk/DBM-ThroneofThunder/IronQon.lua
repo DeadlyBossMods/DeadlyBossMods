@@ -31,10 +31,10 @@ local warnFrostSpike					= mod:NewSpellAnnounce(139181, 3)--Heroic Phase 2
 
 local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 3)
 local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
-local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, true)
+local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, 2)
 local specWarnBurningCinders			= mod:NewSpecialWarningMove(137668)
-local specWarnMoltenOverload			= mod:NewSpecialWarningSpell(137221, nil, nil, nil, true)
-local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, true)
+local specWarnMoltenOverload			= mod:NewSpecialWarningSpell(137221, nil, nil, nil, 2)
+local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, 2)
 local specWarnStormCloud				= mod:NewSpecialWarningMove(137669)
 local specWarnLightningStorm			= mod:NewSpecialWarningYou(136192)
 local yellLightningStorm				= mod:NewYell(136192)

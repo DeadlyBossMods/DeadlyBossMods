@@ -66,7 +66,7 @@ function mod:TargetScanner(Force)
 		else--He's not targeting highest threat target (or isTank was set to true after 12 scans) so this has to be right target.
 			self:UnscheduleMethod("TargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			warnJadeFire:Show(targetname)
-			if targetname == UnitName("player") and self:AntiSpam(2, 1) then
+			if UnitGUID(uId) == UnitGUID("player") and self:AntiSpam(2, 1) then
 				specWarnJadeFire:Show()
 			end
 		end

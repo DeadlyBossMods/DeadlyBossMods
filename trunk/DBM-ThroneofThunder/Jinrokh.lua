@@ -29,9 +29,9 @@ local specWarnStaticBurst			= mod:NewSpecialWarningYou(137162, mod:IsTank())
 local specWarnStaticBurstOther		= mod:NewSpecialWarningTarget(137162, mod:IsTank())
 local specWarnThrow					= mod:NewSpecialWarningYou(137175, mod:IsTank())
 local specWarnThrowOther			= mod:NewSpecialWarningTarget(137175, mod:IsTank())
-local specWarnStorm					= mod:NewSpecialWarningSpell(137313, nil, nil, nil, true)
+local specWarnStorm					= mod:NewSpecialWarningSpell(137313, nil, nil, nil, 2)
 local specWarnElectrifiedWaters		= mod:NewSpecialWarningMove(138006)
-local specWarnIonization			= mod:NewSpecialWarningSpell(138732, not mod:IsTank(), nil, nil, true)
+local specWarnIonization			= mod:NewSpecialWarningSpell(138732, not mod:IsTank(), nil, nil, 2)
 
 local timerFocusedLightningCD		= mod:NewCDTimer(10, 137399)--10-18 second variation, tends to lean toward 11-12 except when delayed by other casts such as throw or storm. Pull one also seems to variate highly
 local timerStaticBurstCD			= mod:NewCDTimer(19, 137162, mod:IsTank())

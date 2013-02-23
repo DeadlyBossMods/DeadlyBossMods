@@ -27,7 +27,7 @@ local warnJasperChains				= mod:NewTargetAnnounce(130395, 4)
 local warnAmethystPool				= mod:NewTargetAnnounce(130774, 3, nil, false)
 local warnPowerDown					= mod:NewSpellAnnounce(116529, 4, nil, not mod:IsTank())
 
-local specWarnOverloadSoon			= mod:NewSpecialWarning("SpecWarnOverloadSoon", nil, nil, nil, true)
+local specWarnOverloadSoon			= mod:NewSpecialWarning("SpecWarnOverloadSoon", nil, nil, nil, 2)
 local specWarnJasperChains			= mod:NewSpecialWarningYou(130395)
 local specWarnBreakJasperChains		= mod:NewSpecialWarning("specWarnBreakJasperChains", false)
 local yellJasperChains				= mod:NewYell(130395, nil, false)

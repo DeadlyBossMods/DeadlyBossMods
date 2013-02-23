@@ -30,7 +30,7 @@ local warnDisorientingRoar		= mod:NewTargetAnnounce(137458, 4)
 
 local specWarnCharge			= mod:NewSpecialWarningYou(136769)--Maybe add a near warning later. person does have 3.4 seconds to react though and just move out of group.
 local yellCharge				= mod:NewYell(136769)
-local specWarnDoubleSwipe		= mod:NewSpecialWarningSpell(136741, nil, nil, nil, true)
+local specWarnDoubleSwipe		= mod:NewSpecialWarningSpell(136741, nil, nil, nil, 2)
 local specWarnPuncture			= mod:NewSpecialWarningStack(136767, mod:IsTank(), 10)--10 seems like a good number, we'll start with that. Timing wise the swap typically comes when switching gates though.
 local specWarnPunctureOther		= mod:NewSpecialWarningTarget(136767, mod:IsTank())
 local specWarnSandTrap			= mod:NewSpecialWarningMove(136723)

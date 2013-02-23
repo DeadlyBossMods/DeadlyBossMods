@@ -31,7 +31,7 @@ local warnCinders				= mod:NewTargetAnnounce(139822, 4)
 local warnTorrentofIce			= mod:NewTargetAnnounce(139889, 4)--Cannot get target, no debuff. Maybe they get an emote? i was tank so I don't know. can't target scan because back heads aren't targetable
 local warnNetherTear			= mod:NewSpellAnnounce(140138, 3)--Heroic
 
-local specWarnRampage			= mod:NewSpecialWarningSpell(139458, nil, nil, nil, true)
+local specWarnRampage			= mod:NewSpecialWarningSpell(139458, nil, nil, nil, 2)
 local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
 local specWarnIgniteFlesh		= mod:NewSpecialWarningStack(137731, mod:IsTank(), 2)
 local specWarnRotArmor			= mod:NewSpecialWarningStack(139840, mod:IsTank(), 2)
@@ -215,18 +215,16 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:139458") then
 		warnRampage:Show()
-		if fireInFront + venomInFront + iceInFront + arcaneInFront < 2 then--This basically filters pull rampage., any other time boss rampages, it will be when 
-			timerArcticFreezeCD:Cancel()
-			timerIgniteFleshCD:Cancel()
-			timerRotArmorCD:Cancel()
-			--Not if back ones always cancel here, they seem too
-			timerCinderCD:Cancel()
-			timerTorrentofIceCD:Cancel()
-			timerAcidRainCD:Cancel()
-			timerNetherTearCD:Cancel()
-			specWarnRampage:Show()
-			timerRampage:Start()
-		end
+		timerArcticFreezeCD:Cancel()
+		timerIgniteFleshCD:Cancel()
+		timerRotArmorCD:Cancel()
+		--Not if back ones always cancel here, they seem too
+		timerCinderCD:Cancel()
+		timerTorrentofIceCD:Cancel()
+		timerAcidRainCD:Cancel()
+		timerNetherTearCD:Cancel()
+		specWarnRampage:Show()
+		timerRampage:Start()
 	elseif msg == L.rampageEnds or msg:find(L.rampageEnds) then
 		if iceInFront > 0 then
 			timerArcticFreezeCD:Start(10)

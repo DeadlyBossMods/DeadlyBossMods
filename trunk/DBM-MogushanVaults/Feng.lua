@@ -32,24 +32,20 @@ local warnPhase						= mod:NewAnnounce("WarnPhase", 1, "Interface\\Icons\\Spell_
 local warnLightningLash				= mod:NewStackAnnounce(131788, 3, nil, mod:IsTank())
 local warnLightningFists			= mod:NewSpellAnnounce(116157, 3)
 local warnEpicenter					= mod:NewCountAnnounce(116018, 4)
-
 --Fire/Spear
 local warnFlamingSpear				= mod:NewStackAnnounce(116942, 3, nil, mod:IsTank())
 local warnWildSpark					= mod:NewTargetCountAnnounce(116784, 4)
 local yellWildSpark					= mod:NewYell(116784)
 local warnDrawFlame					= mod:NewCountAnnounce(116711, 4)
 local warnWildfireInfusion			= mod:NewStackAnnounce(116821, 3, nil, mod:IsHealer())
-
 --Arcane/Staff
 local warnArcaneShock				= mod:NewStackAnnounce(131790, 3, nil, mod:IsTank())
 local warnArcaneResonance			= mod:NewTargetAnnounce(116417, 4)
 local warnArcaneVelocity			= mod:NewCountAnnounce(116364, 4)
-
 --Shadow/Shield (Heroic Only)
 local warnShadowBurn				= mod:NewStackAnnounce(131792, 3, nil, mod:IsTank())
 local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
 local warnSiphoningShield			= mod:NewCountAnnounce(117203, 4)
-
 --Tank Abilities
 local warnReversalLightningFists	= mod:NewTargetAnnounce(118302, 2)--this spell can interrupt Epicenter, so needs to warn.
 local warnNullBarrior				= mod:NewSpellAnnounce(115817, 2)
@@ -58,26 +54,22 @@ local warnNullBarrior				= mod:NewSpellAnnounce(115817, 2)
 local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 2)
 local specWarnLightningLashOther	= mod:NewSpecialWarningTarget(131788, mod:IsTank())
 local specWarnEpicenter				= mod:NewSpecialWarningRun(116018, nil, nil, nil, true)
-
 --Fire/Spear
 local specWarnFlamingSpear			= mod:NewSpecialWarningStack(116942, mod:IsTank(), 2)
 local specWarnFlamingSpearOther		= mod:NewSpecialWarningTarget(116942, mod:IsTank())
 local specWarnWildSpark				= mod:NewSpecialWarningYou(116784)
 local specWarnWildfire				= mod:NewSpecialWarningMove(116793)
-local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, true)
-
+local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, 2)
 --Arcane/Staff
 local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 2)
 local specWarnArcaneShockOther		= mod:NewSpecialWarningTarget(131790, mod:IsTank())
 local specWarnArcaneResonance		= mod:NewSpecialWarningYou(116417)
 local yellArcaneResonance			= mod:NewYell(116417)
-local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, true)
-
+local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, 2)
 --Shadow/Shield (Heroic Only)
 local specWarnShadowBurn			= mod:NewSpecialWarningStack(131792, mod:IsTank(), 2)
 local specWarnShadowBurnOther		= mod:NewSpecialWarningTarget(131792, mod:IsTank())
 local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
-
 --Tank Abilities
 local specWarnNullBarrior			= mod:NewSpecialWarningSpell(115817) -- Null Barrier is important all members, espcially Earth and Arcane Phase.
 
@@ -87,27 +79,23 @@ local timerLightningLashCD			= mod:NewCDTimer(9, 131788, nil, mod:IsTank())--9-2
 local timerLightningFistsCD			= mod:NewCDTimer(14, 116157)
 local timerEpicenterCD				= mod:NewCDCountTimer(30, 116018)
 local timerEpicenter				= mod:NewBuffActiveTimer(10, 116018)
-
 --Fire/Spear
 local timerFlamingSpear				= mod:NewTargetTimer(20, 116942, nil, mod:IsTank())
 local timerFlamingSpearCD			= mod:NewCDTimer(9, 116942, nil, mod:IsTank())--8-11second variation, usually 10 though.
 local timerWildSpark				= mod:NewTargetTimer(5, 116784)
 local timerDrawFlame				= mod:NewBuffActiveTimer(6, 116711)
 local timerDrawFlameCD				= mod:NewNextCountTimer(30, 116711)--30 seconds after last ended.
-
 --Arcane/Staff
 local timerArcaneShock				= mod:NewTargetTimer(20, 131790, nil, mod:IsTank())
 local timerArcaneShockCD			= mod:NewCDTimer(9, 131790, nil, mod:IsTank())--not comfirmed
 local timerArcaneResonanceCD		= mod:NewCDTimer(15.5, 116417)
 local timerArcaneVelocityCD			= mod:NewCDCountTimer(18, 116364)--18 seconds after last ended.
 local timerArcaneVelocity			= mod:NewBuffActiveTimer(8, 116364)
-
 --Shadow/Shield (Heroic Only)
 local timerShadowBurn				= mod:NewTargetTimer(20, 131792, nil, mod:IsTank())
 local timerShadowBurnCD				= mod:NewCDTimer(9, 131792, nil, mod:IsTank())
 local timerChainsOfShadowCD			= mod:NewCDTimer(6, 118783, nil, false)--6-10sec variation noted
 local timerSiphoningShieldCD		= mod:NewCDCountTimer(35, 117203)--35-38sec variation noted
-
 --Tank Abilities
 local timerReversalLightningFists	= mod:NewBuffFadesTimer(20, 118302)
 local timerNullBarrior				= mod:NewBuffFadesTimer(6, 115817)
