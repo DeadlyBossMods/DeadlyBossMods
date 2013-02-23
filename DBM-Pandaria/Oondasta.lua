@@ -39,14 +39,16 @@ local numberTanks = 0
 local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
+	-- 3. check boss's current target
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
+	--Since this is checked on pull, it will fail if someone other than tank facepulls it (or rathor think that dps is a tank
+	local targetname, uId = mod:GetBossTarget(69161)
+	if targetname and UnitIsUnit(unit, uId) then
 		return true
 	end
 	return false
