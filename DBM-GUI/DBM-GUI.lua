@@ -1972,7 +1972,7 @@ local function CreateOptionsMenu()
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
 		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 150, true)
 		spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
-		spamOutArea:CreateCheckButton(L.SpamBlockNoSendAnnounce, true, nil, "DontSendBossAnnounces")
+		--spamOutArea:CreateCheckButton(L.SpamBlockNoSendAnnounce, true, nil, "DontSendBossAnnounces") -- removed feature (r8749)
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSendWhisper, true, nil, "DontSendBossWhispers")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetIcons")
 		spamOutArea:CreateCheckButton(L.SpamBlockNoRangeFrame, true, nil, "DontShowRangeFrame")
@@ -1980,7 +1980,7 @@ local function CreateOptionsMenu()
 
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 135, true)
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
-		spamArea:CreateCheckButton(L.SpamBlockRaidWarning, true, nil, "SpamBlockRaidWarning")
+		--spamArea:CreateCheckButton(L.SpamBlockRaidWarning, true, nil, "SpamBlockRaidWarning") -- removed feature (r8749)
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
 		spamArea:CreateCheckButton(L.SpamBlockSayYell, true, nil, "FilterSayAndYell")
 		spamArea:CreateCheckButton(L.BlockVersionUpdateNotice, true, nil, "BlockVersionUpdateNotice")
@@ -2273,9 +2273,10 @@ do
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
 		button:SetScript("OnClick", function(self) mod:Toggle()	end)
 
-		local button = panel:CreateCheckButton(L.Mod_EnableAnnounce, true)
-		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Announce) end)
-		button:SetScript("OnClick", function(self) mod.Options.Announce = not not self:GetChecked() end)
+		-- removed feature (r8749)
+		--local button = panel:CreateCheckButton(L.Mod_EnableAnnounce, true)
+		--button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Announce) end)
+		--button:SetScript("OnClick", function(self) mod.Options.Announce = not not self:GetChecked() end)
 
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
