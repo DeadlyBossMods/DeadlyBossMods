@@ -3,13 +3,14 @@ local mod	= DBM:NewMod(820, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(69017)
+mod:SetCreatureID(69017)--69070 Viscous Horror
 mod:SetModelID(47009)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -32,11 +33,10 @@ local warnBlackBlood				= mod:NewStackAnnounce(137000, 2, nil, mod:IsTank() or m
 local specWarnFullyMutated			= mod:NewSpecialWarningYou(140546)
 local specWarnCausticGas			= mod:NewSpecialWarningSpell(136216, nil, nil, nil, 2)--All must be in front for this.
 local specWarnPustuleEruption		= mod:NewSpecialWarningSpell(136248, false, nil, nil, 2)--off by default since every 5 sec, very spammy for special warning
-local specWarnVolatilePathogen		= mod:NewSpecialWarningRun(136228)
-local yellVolatilePathogen			= mod:NewYell(136228)
+local specWarnVolatilePathogen		= mod:NewSpecialWarningYou(136228)
 
 local timerMalformedBlood			= mod:NewTargetTimer(60, 136050, nil, mod:IsTank() or mod:IsHealer())
-local timerPrimordialStrikeCD		= mod:NewCDTimer(30, 136037)
+local timerPrimordialStrikeCD		= mod:NewCDTimer(24, 136037)
 local timerCausticGasCD				= mod:NewCDTimer(14, 136216)
 local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136248, nil, false)
 local timerVolatilePathogenCD		= mod:NewCDTimer(28, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
@@ -105,7 +105,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerVolatilePathogenCD:Start()
 		if args:IsPlayer() then
 			specWarnVolatilePathogen:Show()
-			yellVolatilePathogen:Yell()
 		end
 	elseif args:IsSpellID(136245) then
 		metabolicBoost = true
@@ -155,5 +154,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPustuleEruption:Show()
 		specWarnPustuleEruption:Show()
 		timerPustuleEruptionCD:Start()
+	elseif spellId == 136050 and self:AntiSpam(2, 2) then--Malformed Blood
+		
 	end
 end
