@@ -58,10 +58,10 @@ local specWarnCorruptingWaters		= mod:NewSpecialWarningSwitch("ej5821", mod:IsDp
 --Elder Regail
 local specWarnLightningPrison		= mod:NewSpecialWarningYou(111850)--Debuff you gain before you are hit with it.
 local yellLightningPrison			= mod:NewYell(111850)
-local specWarnLightningStorm		= mod:NewSpecialWarningSpell(118077, nil, nil, nil, true)--Since it's multiple targets, will just use spell instead of dispel warning.
+local specWarnLightningStorm		= mod:NewSpecialWarningSpell(118077, nil, nil, nil, 2)--Since it's multiple targets, will just use spell instead of dispel warning.
 --Protector Kaolan
 local specWarnDefiledGround			= mod:NewSpecialWarningMove(117986, mod:IsTank())
-local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, nil, true)--Entire raid needs to move.
+local specWarnExpelCorruption		= mod:NewSpecialWarningSpell(117975, nil, nil, nil, 2)--Entire raid needs to move.
 --Minions of Fear
 local specWarnYourGroup				= mod:NewSpecialWarning("specWarnYourGroup", false)
 local specWarnCorruptedEssence		= mod:NewSpecialWarningStack(118191, true, 9)--You cannot get more than 9, if you get 9 you need to GTFO or you do big damage to raid

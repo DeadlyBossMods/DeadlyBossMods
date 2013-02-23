@@ -54,7 +54,7 @@ local specWarnFocusedEnergy		= mod:NewSpecialWarningYou(116829)
 --Jan-xi and Qin-xi
 local specWarnBossesActivated	= mod:NewSpecialWarningSwitch("ej5726", mod:IsTank())
 local specWarnCombo				= mod:NewSpecialWarningSpell("ej5672", mod:IsMelee())
-local specWarnTitanGas			= mod:NewSpecialWarningSpell(116779, nil, nil, nil, true)
+local specWarnTitanGas			= mod:NewSpecialWarningSpell(116779, nil, nil, nil, 2)
 
 --Rage
 local timerRageActivates		= mod:NewNextCountTimer(30, "ej5678", nil, nil, nil, 116525)

@@ -57,18 +57,18 @@ local specWarnFixate			= mod:NewSpecialWarningYou(118303)
 local yellFixate				= mod:NewYell(118303)
 local specWarnCoalescingShadows	= mod:NewSpecialWarningMove(117558)
 local specWarnShadowBlast		= mod:NewSpecialWarningInterrupt(117628, false)--very spammy. better to optional use
-local specWarnShieldOfDarkness	= mod:NewSpecialWarningTarget(117697, nil, nil, nil, true)--Heroic Ability
+local specWarnShieldOfDarkness	= mod:NewSpecialWarningTarget(117697, nil, nil, nil, 3)--Heroic Ability
 local specWarnShieldOfDarknessD	= mod:NewSpecialWarningDispel(117697, isDispeller)--Heroic Ability
 --Meng
-local specWarnMaddeningShout	= mod:NewSpecialWarningSpell(117708, nil, nil, nil, true)
+local specWarnMaddeningShout	= mod:NewSpecialWarningSpell(117708, nil, nil, nil, 2)
 local specWarnCrazyThought		= mod:NewSpecialWarningInterrupt(117833, false)--At discretion of whoever to enable. depending on strat, you may NOT want to interrupt these (or at least not all of them)
 local specWarnDelirious			= mod:NewSpecialWarningDispel(117837, mod:CanRemoveEnrage() or mod:IsTank())--Heroic Ability
 --Qiang
 local specWarnAnnihilate		= mod:NewSpecialWarningSpell(117948)--Maybe tweak options later or add a bool for it, cause on heroic, it's not likely ranged will be in front of Qiang if Zian or Subetai are up.
-local specWarnFlankingOrders	= mod:NewSpecialWarningSpell(117910, nil, nil, nil, true)
+local specWarnFlankingOrders	= mod:NewSpecialWarningSpell(117910, nil, nil, nil, 2)
 local specWarnImperviousShield	= mod:NewSpecialWarningTarget(117961)--Heroic Ability
 --Subetai
-local specWarnVolley			= mod:NewSpecialWarningSpell(118094, nil, nil, nil, true)
+local specWarnVolley			= mod:NewSpecialWarningSpell(118094, nil, nil, nil, 2)
 local specWarnPinningArrow		= mod:NewSpecialWarningSwitch("ej5861", mod:IsDps())
 local specWarnPillage			= mod:NewSpecialWarningMove(118047)--Works as both a You and near warning
 local specWarnSleightOfHand		= mod:NewSpecialWarningTarget(118162)--Heroic Ability

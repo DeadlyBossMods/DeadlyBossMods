@@ -25,11 +25,11 @@ local warnTalonRake			= mod:NewStackAnnounce(134366, 3, nil, mod:IsTank() or mod
 local warnDowndraft			= mod:NewSpellAnnounce(134370, 3)
 local warnFeedYoung			= mod:NewSpellAnnounce(137528, 3)--No Cd because it variable based on triggering from eggs, it's cast when one of young call out and this varies too much
 
-local specWarnQuills		= mod:NewSpecialWarningSpell(134380, nil, nil, nil, true)
+local specWarnQuills		= mod:NewSpecialWarningSpell(134380, nil, nil, nil, 2)
 local specWarnFlock			= mod:NewSpecialWarning("specWarnFlock", false)--For those assigned in egg/bird killing group to enable on their own (and tank on heroic)
 local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 3)--Might change to 2 if blizz fixes timing issues with it
 local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
-local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, true)
+local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, 2)
 local specWarnFeedYoung		= mod:NewSpecialWarningSpell(137528)
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
