@@ -31,7 +31,6 @@ L.Button_OK 		= 'Aceptar'
 L.Button_Cancel 	= 'Cancelar'
 L.Button_LoadMod 	= 'Cargar Modulo'
 L.Mod_Enabled		= "Habilitar modulo de este boss"
-L.Mod_EnableAnnounce	= "Avisar a banda (Se necesita ser líder)"
 L.Reset 		= "resetear"
 
 L.Enable  		= "habilitar"
@@ -163,7 +162,6 @@ L.BarWidth					= "Ancho de la barra: %d"
 L.Panel_SpamFilter		= "Filtro de Spam"
 L.Area_SpamFilter		= "Opciones de spam"
 L.HideBossEmoteFrame		= "Esconder lo que dice el boss"
-L.SpamBlockRaidWarning		= "Filtrar anuncios de otros Boss Mods" 
 L.SpamBlockBossWhispers		= "Filtrar los avisos de <DBM> mientras estas en combate"
 L.BlockVersionUpdateNotice	= "Desabilitar avisos de actualizaciones"
 L.ShowBigBrotherOnCombatStart	= "Comprobar los bufos con Big Brother al inicio del combate"
@@ -171,7 +169,6 @@ L.BigBrotherAnnounceToRaid		= "Anunciar los resultados de Big Brother a la banda
 
 L.Area_SpamFilter_Outgoing		= "Opciones de Filtro Global"
 L.SpamBlockNoShowAnnounce		= "No mostrar avisos o reproducir sonidos"
-L.SpamBlockNoSendAnnounce		= "No poner mensajes en el chat de banda"
 L.SpamBlockNoSendWhisper		= "No enviar susurros a otros jugadores"
 L.SpamBlockNoSetIcon			= "No poner iconos en objetivos"
 

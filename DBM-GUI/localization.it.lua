@@ -30,7 +30,6 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Cancella'
 L.Button_LoadMod 			= 'Carica AddOn'
 L.Mod_Enabled				= "Abilita boss mod"
-L.Mod_EnableAnnounce		= "Annuncia all'Incursione (richiede CapoIncursione)"
 L.Reset 					= "Resetta"
 
 L.Enable  					= "Abilita"
@@ -160,7 +159,6 @@ L.BarWidth					= "Larghezza Barra: %d"
 L.Panel_SpamFilter				= "Filtri globali e di Spam"
 L.Area_SpamFilter				= "Filtri di Spam - Opzioni"
 L.HideBossEmoteFrame			= "Nascondi la finestra con i messaggi dei boss"
-L.SpamBlockRaidWarning			= "Filtra i messaggi degli altri Boss Mod" 
 L.SpamBlockBossWhispers			= "Filtra i sussurri di <DBM> durante i combattimenti"
 L.BlockVersionUpdateNotice		= "Disabilita il popup di notifica"
 L.ShowBigBrotherOnCombatStart	= "Fai un Check dei Benefici con Big Brother quando inizia un combattimento"
@@ -168,7 +166,6 @@ L.BigBrotherAnnounceToRaid		= "Annuncia i risultati di Big Brother all'incursion
 
 L.Area_SpamFilter_Outgoing		= "Filtri Globali - Opzioni"
 L.SpamBlockNoShowAnnounce		= "Non visualizzare annunci o suoni"
-L.SpamBlockNoSendAnnounce		= "Non annunciare nulla in chat"
 L.SpamBlockNoSendWhisper		= "Non mandare sussurri ad altri giocatori"
 L.SpamBlockNoSetIcon			= "Non impostare icone sui giocatori"
 
