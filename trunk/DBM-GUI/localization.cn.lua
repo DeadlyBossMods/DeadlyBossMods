@@ -34,7 +34,6 @@ L.Button_OK 				= '确定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '加载插件'
 L.Mod_Enabled				= "开启模块"
-L.Mod_EnableAnnounce		= "团队广播（需要领袖权限）"
 L.Reset 					= "重置"
 
 L.Enable  					= "开启"
@@ -166,7 +165,6 @@ L.BarWidth					= "计量条宽度: %d"
 L.Panel_SpamFilter				= "全局及信息过滤"
 L.Area_SpamFilter				= "信息过滤设置"
 L.HideBossEmoteFrame			= "隐藏团队首领表情框体"
-L.SpamBlockRaidWarning			= "过滤其他首领预警插件警报" 
 L.SpamBlockBossWhispers			= "战斗中过滤DBM密语警报"
 L.BlockVersionUpdateNotice		= "禁用升级提示"
 L.ShowBigBrotherOnCombatStart	= "战斗开始时使用Big Brother检测增益情况"
@@ -174,7 +172,6 @@ L.BigBrotherAnnounceToRaid		= "报告Big Brother的检测结果给团队"
 
 L.Area_SpamFilter_Outgoing		= "全局过滤设置"
 L.SpamBlockNoShowAnnounce		= "不显示警报或播放警报音效"
-L.SpamBlockNoSendAnnounce		= "不发送警报到团队频道"
 L.SpamBlockNoSendWhisper		= "不发送悄悄话提示给其他玩家"
 L.SpamBlockNoSetIcon			= "不设定标记在目标上"
 L.SpamBlockNoRangeFrame			= "不显示距离监视器"
