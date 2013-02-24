@@ -95,7 +95,7 @@ L.RaidWarnSound				= "Spiele Sound bei Schlachtzugwarnung"
 L.CountdownVoice			= "Setze Stimme für Countdown- und Countout-Sounds"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
-L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen, die dich betreffen"
+L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen (tödlich für dich/Schlachtzug)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Allgemeine Meldungen"
