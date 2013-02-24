@@ -16,16 +16,16 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "Nächste Tribal Door",--translate
+	timerAddsCD		= "Nächstes Stammesportal"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Zeige Zeit bis nächste Tribal Door Phase",--translate
+	timerAddsCD		= "Zeige Zeit bis nächste Stammesportalphase"
 })
 
 L:SetMiscLocalization({
-	newForces		= "forces pour from the",--translate (trigger) Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "stamps his tail!"--translate (trigger) Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces		= "stürmen aus dem Stammesportal", --needs to be verified (PTR video-captured translation)
+	chargeTarget	= "schlägt mit dem Schwanz auf den Boden!" --needs to be verified (PTR video-captured translation)
 })
 
 ---------------------------
@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(821)
 
 L:SetMiscLocalization({
-	rampageEnds	= "Megaera's rage subsides."--translate (trigger)
+	rampageEnds	= "Megaeras Wut lässt nach." --needs to be verified (PTR screenshot-captured translation)
 })
 
 ------------
@@ -82,8 +82,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "The eggs in one of the lower nests begin to hatch!",--translate (trigger)
-	eggsHatchU		= "The eggs in one of the upper nests begin to hatch!",--translate (trigger)
+	eggsHatchL		= "Die Eier in den unteren Nestern beginnen zu schlüpfen!", --needs to be verified (PTR video-captured translation)
+	eggsHatchU		= "Die Eier in den oberen Nestern beginnen zu schlüpfen!", --needs to be verified (guessed)
 	Upper			= "Obere",
 	Lower			= "Untere",
 	UpperAndLower	= "Obere & Untere"
@@ -117,7 +117,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(824)
 
 L:SetWarningLocalization({
-	warnMatterSwapped	= "%s: >%s< und >%s< getauscht"--Maybe tweak wording later
+	warnMatterSwapped	= "%s: >%s< und >%s< getauscht"
 })
 
 L:SetOptionLocalization({
@@ -125,7 +125,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The orb explodes!"--translate (trigger)
+	Pull		= "Die Kugel explodiert!" --needs to be verified (PTR video-captured translation)
 })
 
 --------------
@@ -157,7 +157,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Zeige Abstandsfenster"--For two different spells
+	RangeFrame		= "Zeige Abstandsfenster"
 })
 
 ------------
