@@ -42,7 +42,7 @@ local specWarnRampage			= mod:NewSpecialWarningTarget(136821, mod:IsTank() or mo
 local specWarnDisorientingRoar	= mod:NewSpecialWarningSpell(137458, nil, nil, nil, 2)--Heroic
 
 local timerAddsCD				= mod:NewTimer(113.5, "timerAddsCD", 2457)--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
-local timerDinoCD				= mod:NewNextTimer(55, "ej7086", nil, nil, nil, 137237)--It's between 55 and 60 seconds, I will need a more thorough log to verify by yelling when they spawn
+local timerDinoCD				= mod:NewNextTimer(56.75, "ej7086", nil, nil, nil, 137237)--It's between 55 and 60 seconds, I will need a more thorough log to verify by yelling when they spawn
 local timerCharge				= mod:NewCastTimer(3.4, 136769)
 local timerChargeCD				= mod:NewCDTimer(50, 136769)--50-60 second depending on i he's casting other stuff or stunned
 local timerDoubleSwipeCD		= mod:NewCDTimer(18, 136741)--18 second cd unless delayed by a charge triggered double swipe, then it's extended by failsafe code
@@ -168,8 +168,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		end
 	elseif msg:find(L.newForces) then
 		timerDinoCD:Start()
-		warnDino:Schedule(55)
-		specWarnDino:Schedule(55)
+		warnDino:Schedule(56.75)
+		specWarnDino:Schedule(56.75)
 		timerAddsCD:Start()
 	end
 end
