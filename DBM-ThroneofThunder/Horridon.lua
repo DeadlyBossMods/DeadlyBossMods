@@ -16,13 +16,13 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 	"UNIT_DIED"
 )
 
 local warnCharge				= mod:NewTargetAnnounce(136769, 4)
 local warnPuncture				= mod:NewStackAnnounce(136767, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnDoubleSwipe			= mod:NewSpellAnnounce(136741, 3)
+local warnDino					= mod:NewSpellAnnounce("ej7086", 3, 137237)
 local warnMending				= mod:NewSpellAnnounce(136797, 4)
 local warnBestialCry			= mod:NewStackAnnounce(136817, 3)
 local warnRampage				= mod:NewTargetAnnounce(136821, 4, nil, mod:IsTank() or mod:IsHealer())
@@ -31,22 +31,24 @@ local warnDisorientingRoar		= mod:NewTargetAnnounce(137458, 4)
 local specWarnCharge			= mod:NewSpecialWarningYou(136769)--Maybe add a near warning later. person does have 3.4 seconds to react though and just move out of group.
 local yellCharge				= mod:NewYell(136769)
 local specWarnDoubleSwipe		= mod:NewSpecialWarningSpell(136741, nil, nil, nil, 2)
-local specWarnPuncture			= mod:NewSpecialWarningStack(136767, mod:IsTank(), 10)--10 seems like a good number, we'll start with that. Timing wise the swap typically comes when switching gates though.
+local specWarnPuncture			= mod:NewSpecialWarningStack(136767, mod:IsTank(), 9)--9 seems like a good number, we'll start with that. Timing wise the swap typically comes when switching gates though.
 local specWarnPunctureOther		= mod:NewSpecialWarningTarget(136767, mod:IsTank())
 local specWarnSandTrap			= mod:NewSpecialWarningMove(136723)
+local specWarnDino				= mod:NewSpecialWarningSwitch("ej7086", not mod:IsHealer())
 local specWarnMending			= mod:NewSpecialWarningInterrupt(136797, mod:IsDps())--High priority interrupt. All dps needs warning because boss heals 1% per second it's not interrupted.
 local specWarnFrozenBolt		= mod:NewSpecialWarningMove(136573)--Debuff used by Frozen Orbs
 local specWarnJalak				= mod:NewSpecialWarningSwitch("ej7087", mod:IsTank())--To pick him up
 local specWarnRampage			= mod:NewSpecialWarningTarget(136821, mod:IsTank() or mod:IsHealer())--Dog is pissed master died, need more heals and cooldowns. Maybe warn dps too? his double swipes and charges will be 100% worse too.
 local specWarnDisorientingRoar	= mod:NewSpecialWarningSpell(137458, nil, nil, nil, 2)--Heroic
 
-local timerAddsCD				= mod:NewTimer(114, "timerAddsCD")--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
+local timerAddsCD				= mod:NewTimer(113.5, "timerAddsCD", 2457)--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
+local timerDinoCD				= mod:NewNextTimer(55, "ej7086", nil, nil, nil, 137237)--It's between 55 and 60 seconds, I will need a more thorough log to verify by yelling when they spawn
 local timerCharge				= mod:NewCastTimer(3.4, 136769)
 local timerChargeCD				= mod:NewCDTimer(50, 136769)--50-60 second depending on i he's casting other stuff or stunned
 local timerDoubleSwipeCD		= mod:NewCDTimer(18, 136741)--18 second cd unless delayed by a charge triggered double swipe, then it's extended by failsafe code
 local timerPuncture				= mod:NewTargetTimer(90, 136767, nil, mod:IsTank() or mod:IsHealer())
 local timerPunctureCD			= mod:NewCDTimer(11, 136767, nil, mod:IsTank() or mod:IsHealer())
-local timerJalakCD				= mod:NewNextTimer(10, "ej7087")--Maybe it's time for a better worded spawn timer than "Next mobname". Maybe NewSpawnTimer with "mobname activates" or something.
+local timerJalakCD				= mod:NewNextTimer(10, "ej7087", nil, nil, nil, 2457)--Maybe it's time for a better worded spawn timer than "Next mobname". Maybe NewSpawnTimer with "mobname activates" or something.
 local timerBestialCryCD			= mod:NewNextCountTimer(10, 136817)
 local timerDisorientingRoarCD	= mod:NewCDTimer(55, 137458)--Heroic
 
@@ -56,11 +58,18 @@ function mod:OnCombatStart(delay)
 	jalakEngaged = false
 	timerPunctureCD:Start(-delay)
 	timerDoubleSwipeCD:Start(16-delay)--16-17 second variation
-	timerAddsCD:Start(17-delay)
+	timerAddsCD:Start(16.5-delay)
 	timerChargeCD:Start(31-delay)--31-35sec variation
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerDisorientingRoarCD:Start(-delay)
 	end
+	self:RegisterShortTermEvents(
+		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
+	)
+end
+
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 end
 
 --[[
@@ -98,11 +107,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPuncture:Start(args.destName)
 		timerPunctureCD:Start()
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 10 then
+			if (args.amount or 1) >= 9 then
 				specWarnPuncture:Show(args.amount)
 			end
 		else
-			if (args.amount or 1) >= 10 and not UnitDebuff("player", GetSpellInfo(136767)) and not UnitIsDeadOrGhost("player") then--Other tank has at least one stack and you have none
+			if (args.amount or 1) >= 9 and not UnitDebuff("player", GetSpellInfo(136767)) and not UnitIsDeadOrGhost("player") then--Other tank has at least one stack and you have none
 				specWarnPunctureOther:Show(args.destName)--So nudge you to taunt it off other tank already.
 			end
 		end
@@ -144,6 +153,7 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 		jalakEngaged = true--Set this so we know not to concern with 4th door anymore (plus so we don't fire extra warnings when we wipe and ENGAGE fires more)
 		specWarnJalak:Show()
 		timerBestialCryCD:Start(5, 1)
+		self:UnregisterShortTermEvents()--TODO, maybe add unit health checks to warn dog is close to 40% if we aren't done with doors yet. If it's added, we can unregister health here as well
 	end
 end
 
@@ -157,6 +167,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			yellCharge:Yell()
 		end
 	elseif msg:find(L.newForces) then
+		timerDinoCD:Start()
+		warnDino:Schedule(55)
+		specWarnDino:Schedule(55)
 		timerAddsCD:Start()
 	end
 end
