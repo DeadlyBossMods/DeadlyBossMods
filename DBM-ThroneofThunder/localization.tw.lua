@@ -45,10 +45,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(825)
 
 L:SetWarningLocalization({
+	warnKickShell			= "%s被>%s<使用 (還剩餘%d)",
 	specWarnCrystalShell	= "取得%s"
 })
 
 L:SetOptionLocalization({
+	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "當你沒有$spell:137633減益時顯示特別警告",
 	InfoFrame				= "為玩家沒有$spell:137633顯示訊息框架"
 })
@@ -71,8 +73,22 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(828)
 
+L:SetWarningLocalization({
+	warnFlock		= "%s %s (%d)",
+	specWarnFlock	= "%s %s (%d)"
+})
+
+L:SetOptionLocalization({
+	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
+	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348")
+})
+
 L:SetMiscLocalization({
-	eggsHatch	= "The eggs in one of the lower nests begin to hatch!"
+	eggsHatchL		= "The eggs in one of the lower nests begin to hatch!",
+	eggsHatchU		= "The eggs in one of the upper nests begin to hatch!",
+	Upper			= "Upper",
+	Lower			= "Lower",
+	UpperAndLower	= "Upper & Lower"
 })
 
 --------------------------
