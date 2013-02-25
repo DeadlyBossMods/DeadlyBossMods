@@ -44,10 +44,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(825)
 
 L:SetWarningLocalization({
+	warnKickShell			= "%s used by >%s< (%d remaining)",
 	specWarnCrystalShell	= "Get %s"
 })
 
 L:SetOptionLocalization({
+	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "Show special warning when you are missing $spell:137633 debuff",
 	InfoFrame				= "Show info frame for players without $spell:137633"
 })
