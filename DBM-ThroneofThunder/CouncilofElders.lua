@@ -82,6 +82,8 @@ local boltCasts = 0
 local scansDone = 0
 local kazraPossessed = false
 local possessesDone = 0
+local chilledWarned = false
+local chilledDebuff = GetSpellInfo(137085)
 local twistedSoulTargets = {}
 
 local function warnTwistedSoulTargets()
@@ -127,6 +129,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(twistedSoulTargets)
 	kazraPossessed = false
+	chilledWarned = false
 	possessesDone = 0
 	boltCasts = 0
 	timerQuickSandCD:Start(8-delay)
@@ -188,7 +191,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			--Swap timers. While possessed 
 			local elapsed, total = timerBitingColdCD:GetTime()
 			timerBitingColdCD:Cancel()
-			if elapsed and total then--If for some reason it was nil, like it JUST came off cd, do nothing, he should cast frost bite right away.
+			if elapsed and total and total ~= 0 then--If for some reason it was nil, like it JUST came off cd, do nothing, he should cast frost bite right away.
 				timerFrostBiteCD:Update(elapsed, total)
 			end
 			self:RegisterShortTermEvents(
@@ -254,9 +257,9 @@ function mod:SPELL_AURA_REMOVED(args)
 --			timerSandStormCD:Cancel()
 		elseif args:GetDestCreatureID() == 69132 then--High Prestess Mar'li
 			--Swap timer back
-			local elapsed, total  = timerShadowedLoaSpiritCD:GetTime()
+			local elapsed, total = timerShadowedLoaSpiritCD:GetTime()
 			timerShadowedLoaSpiritCD:Cancel()
-			if elapsed and total then
+			if elapsed and total and total ~= 0 then
 				timerBlessedLoaSpiritCD:Update(elapsed, total)
 			end
 		elseif args:GetDestCreatureID() == 69131 then--Frost King Malakk
@@ -285,10 +288,10 @@ end
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
-	if UnitDebuff("player", chilldedDebuff) and not chilledWarned then
+	if UnitDebuff("player", chilledDebuff) and not chilledWarned then
 		specWarnChilled:Show()
 		chilledWarned = true
-	elseif not UnitDebuff("player", meteorTarget) and chilledWarned then
+	elseif not UnitDebuff("player", chilledDebuff) and chilledWarned then
 		chilledWarned = false
 	end
 end
