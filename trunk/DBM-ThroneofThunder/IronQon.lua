@@ -65,9 +65,9 @@ function mod:OnCombatStart(delay)
 	timerThrowSpearCD:Start(-delay)
 	if self.Options.RangeFrame then
 		if self:IsDifficulty("normal10", "heroic10") then
-			DBM.RangeCheck:Show(10, nil, nil, 2)--You can have 1 person in range safely. Frame goes red at 2
+			DBM.RangeCheck:Show(10, nil, nil, 2)
 		else
-			DBM.RangeCheck:Show(10, nil, nil, 4)--You can have 3 others near you, frame goes red at 4
+			DBM.RangeCheck:Show(10, nil, nil, 6)
 		end
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
