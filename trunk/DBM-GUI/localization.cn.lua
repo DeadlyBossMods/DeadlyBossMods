@@ -1,5 +1,5 @@
 ﻿-- Simplified Chinese by Diablohu(diablohudream@gmail.com) & yleaf(yaroot@gmail.com)
--- Last update: 2/13/2013
+-- Last update: 2/25/2013
 
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
@@ -102,7 +102,7 @@ L.RaidWarnSound				= "发出团队警报时播放声音"
 L.CountdownVoice			= "倒数时播放语音"
 L.SpecialWarnSound			= "针对你或你的角色发出特殊警报时播放声音"
 L.SpecialWarnSound2			= "针对所有人发出特殊警报时播放声音"
-L.SpecialWarnSound3			= "针对非常重要事件的特殊警报播放声音"
+L.SpecialWarnSound3			= "针对非常重要事件的特殊警报播放声音，这些事件若不注意往往会造成灭团"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "综合信息"
@@ -169,6 +169,7 @@ L.SpamBlockBossWhispers			= "战斗中过滤DBM密语警报"
 L.BlockVersionUpdateNotice		= "禁用升级提示"
 L.ShowBigBrotherOnCombatStart	= "战斗开始时使用Big Brother检测增益情况"
 L.BigBrotherAnnounceToRaid		= "报告Big Brother的检测结果给团队"
+L.SpamBlockSayYell				= "隐藏聊天窗口中的使用聊天泡泡的警报信息"
 
 L.Area_SpamFilter_Outgoing		= "全局过滤设置"
 L.SpamBlockNoShowAnnounce		= "不显示警报或播放警报音效"
