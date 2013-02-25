@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 local warnRockfall					= mod:NewSpellAnnounce(134476, 2)
 local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
-local warnKickShell					= mod:NewTargetAnnounce(134031, 2)
+local warnKickShell					= mod:NewAnnounce("warnKickShell", 2, 134031)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
@@ -117,7 +117,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(134031) then--Kick Shell
 		shellsRemaining = shellsRemaining - 1
-		warnKickShell:Show(args.sourceName)
+		warnKickShell:Show(args.spellName, args.sourceName, shellsRemaining)
 	end
 end
 
