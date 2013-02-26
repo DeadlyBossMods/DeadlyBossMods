@@ -524,7 +524,7 @@ function onUpdate(self, elapsed)
 		self:AddLine(DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED:format(self.range))
 	end
 	soundUpdate = soundUpdate + elapsed
-	if soundUpdate >= 5 and j > 0 then
+	if soundUpdate >= 5 and j >= self.redCircleNumPlayers then
 		updateSound(j)
 		soundUpdate = 0
 	end

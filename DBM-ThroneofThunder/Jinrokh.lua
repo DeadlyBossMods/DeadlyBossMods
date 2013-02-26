@@ -41,8 +41,6 @@ local timerIonizationCD				= mod:NewCDTimer(60, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
 
-mod:AddBoolOption("RangeFrame")
-
 local scansDone = 0
 
 local function isTank(unit)
@@ -87,12 +85,6 @@ function mod:OnCombatStart(delay)
 	timerThrowCD:Start(30-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerIonizationCD:Start(60-delay)
-	end
-end
-
-function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
 	end
 end
 
