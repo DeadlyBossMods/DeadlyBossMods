@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -40,6 +41,8 @@ local timerStormCD					= mod:NewNextTimer(60, 137313)--90-93 variable (but ALWAY
 local timerIonizationCD				= mod:NewCDTimer(60, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
+
+mod:AddBoolOption("RangeFrame")
 
 local scansDone = 0
 
@@ -88,6 +91,12 @@ function mod:OnCombatStart(delay)
 	end
 end
 
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(137399) then
 		scansDone = 0
@@ -115,6 +124,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStaticBurst:Show(args.destName)
 		else
 			specWarnStaticBurstOther:Show(args.destName)
+		end
+	elseif args:IsSpellID(138732) and args:IsPlayer() then
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(4)
+		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(138732) and args:IsPlayer() then
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	end
 end
@@ -144,5 +165,21 @@ function mod:RAID_BOSS_WHISPER(msg)
 		specWarnFocusedLightning:Show()
 		yellFocusedLightning:Yell()
 		soundFocusedLightning:Play()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
+		self:RegisterShortTermEvents(
+			"UNIT_AURA"--Does not show in combat log, at all, so we have to use hack to detect removal
+		)
+	end
+end
+
+function mod:UNIT_AURA(uId)
+	if uId ~= "player" then return end
+	if not UnitDebuff("player", GetSpellInfo(137422)) then
+		self:UnregisterShortTermEvents()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
