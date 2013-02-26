@@ -29,3 +29,7 @@ L:SetOptionLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
+
+L:SetOptionLocalization({
+	RangeFrame			= "Zeige Abstandsfenster (10m) für $spell:136340"
+})
