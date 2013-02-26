@@ -7,20 +7,28 @@ local L
 L= DBM:GetModLocalization(827)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Zeige Abstandsfenster (8m) für $spell:139997"
+	RangeFrame		= "Zeige Abstandsfenster"
 })
+
 
 --------------
 -- Horridon --
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetWarningLocalization({
+	warnAdds	= "%s"
+})
+
 L:SetTimerLocalization({
-	timerDoor		= "Nächstes Stammesportal"
+	timerDoor		= "Nächstes Stammesportal",
+	timerAdds		= "Nächster %s"
 })
 
 L:SetOptionLocalization({
-	timerDoor		= "Zeige Zeit bis nächste Stammesportalphase"
+	warnAdds		= "Verkünde das Herunterspringen neuer Gegner",
+	timerDoor		= "Zeige Zeit bis nächste Stammesportalphase",
+	timerAdds		= "Zeige Zeit bis der nächste Gegner herunterspringt"
 })
 
 L:SetMiscLocalization({
@@ -45,10 +53,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(825)
 
 L:SetWarningLocalization({
+	warnKickShell			= "%s genutzt von >%s< (%d verbleibend)",
 	specWarnCrystalShell	= "Hole %s"
 })
 
 L:SetOptionLocalization({
+	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "Zeige Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633"
 })
@@ -78,12 +88,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
-	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348")
+	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	RangeFrame		= "Zeige Abstandsfenster (8m) für $spell:138923"
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "Die Eier in den unteren Nestern beginnen zu schlüpfen!", --needs to be verified (PTR video-captured translation)
-	eggsHatchU		= "Die Eier in den oberen Nestern beginnen zu schlüpfen!", --needs to be verified (guessed)
+	eggsHatchL		= "Die Eier in den unteren Nestern beginnen zu schlüpfen!", --needs to be verified (PTR video-captured translation), maybe "Die Eier in einem der unteren Nester beginnen, aufzubrechen!" instead
+	eggsHatchU		= "Die Eier in den oberen Nestern beginnen zu schlüpfen!", --needs to be verified (guessed), maybe "Die Eier in einem der oberen Nester beginnen, aufzubrechen!" instead
 	Upper			= "Obere",
 	Lower			= "Untere",
 	UpperAndLower	= "Obere & Untere"
@@ -99,7 +110,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(133775)
+	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
+	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung"
 })
 
 ----------------
@@ -151,6 +163,10 @@ L:SetOptionLocalization({
 	RangeFrame		= "Zeige Abstandsfenster (8m)"
 })
 
+L:SetMiscLocalization({
+	DuskPhase		= "Lu'lin! Lend me your strength!"--translate (trigger) (not in use)
+})
+
 --------------
 -- Lei Shen --
 --------------
@@ -165,3 +181,11 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("ToTTrash")
+
+L:SetGeneralLocalization({
+	name =	"Trash des Thron des Donners"
+})
