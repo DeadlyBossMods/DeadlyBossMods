@@ -16,11 +16,11 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "下一個部族的門",
+	timerDoor		= "下一個部族的門",
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "為下一個部族的門顯示計時器",
+	timerDoor		= "為下一個部族的門顯示計時器",
 })
 
 L:SetMiscLocalization({
