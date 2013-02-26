@@ -5,6 +5,11 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame"
+})
+
+
 --------------
 -- Horridon --
 --------------
