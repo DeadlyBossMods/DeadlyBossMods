@@ -15,12 +15,19 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetWarningLocalization({
+	warnAdds	= "%s"
+})
+
 L:SetTimerLocalization({
-	timerAddsCD		= "Next Tribal Door",
+	timerDoor		= "Next Tribal Door",
+	timerAdds		= "Next %s"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Show timer for next Tribal Door phase",
+	warnAdds		= "Announce when new adds jump down",
+	timerDoor		= "Show timer for next Tribal Door phase",
+	timerAdds		= "Show timer for when next add jumps down"
 })
 
 L:SetMiscLocalization({
@@ -153,6 +160,10 @@ L= DBM:GetModLocalization(829)
 
 L:SetOptionLocalization({
 	RangeFrame		= "Show range frame (8)"
+})
+
+L:SetMiscLocalization({
+	DuskPhase		= "Lu'lin! Lend me your strength!"--Not in use, but a backup just in case, so translate in case it's switched to on moments notice on live or next PTR test
 })
 
 --------------

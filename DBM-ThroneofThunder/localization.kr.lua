@@ -12,11 +12,11 @@ L= DBM:GetModLocalization(827)
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "다음 부족의 문 열림",
+	timerDoor		= "다음 부족의 문 열림",
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "다음 부족의 문 열림 바 표시",
+	timerDoor		= "다음 부족의 문 열림 바 표시",
 })
 
 L:SetMiscLocalization({
