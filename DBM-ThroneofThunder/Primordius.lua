@@ -22,7 +22,7 @@ local warnPrimordialStrike			= mod:NewSpellAnnounce(136037, 3, nil, mod:IsTank()
 local warnGasBladder				= mod:NewTargetAnnounce(136215, 4)--Stack up in front for (but not too close or cleave will get you)
 local warnCausticGas				= mod:NewCastAnnounce(136216, 3)
 local warnEruptingPustules			= mod:NewTargetAnnounce(136246, 4)
-local warnPustuleEruption			= mod:NewSpellAnnounce(136248, 3, nil, false)--Spammy
+local warnPustuleEruption			= mod:NewSpellAnnounce(136247, 3, nil, false)--Spammy
 local warnPathogenGlands			= mod:NewTargetAnnounce(136225, 3)
 local warnVolatilePathogen			= mod:NewTargetAnnounce(136228, 4)
 local warnMetabolicBoost			= mod:NewTargetAnnounce(136245, 3)--Makes Malformed Blood, Primordial Strike and melee 50% more often
@@ -32,13 +32,13 @@ local warnBlackBlood				= mod:NewStackAnnounce(137000, 2, nil, mod:IsTank() or m
 
 local specWarnFullyMutated			= mod:NewSpecialWarningYou(140546)
 local specWarnCausticGas			= mod:NewSpecialWarningSpell(136216, nil, nil, nil, 2)--All must be in front for this.
-local specWarnPustuleEruption		= mod:NewSpecialWarningSpell(136248, false, nil, nil, 2)--off by default since every 5 sec, very spammy for special warning
+local specWarnPustuleEruption		= mod:NewSpecialWarningSpell(136247, false, nil, nil, 2)--off by default since every 5 sec, very spammy for special warning
 local specWarnVolatilePathogen		= mod:NewSpecialWarningYou(136228)
 
 local timerMalformedBlood			= mod:NewTargetTimer(60, 136050, nil, mod:IsTank() or mod:IsHealer())
 local timerPrimordialStrikeCD		= mod:NewCDTimer(24, 136037)
 local timerCausticGasCD				= mod:NewCDTimer(14, 136216)
-local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136248, nil, false)
+local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136247, nil, false)
 local timerVolatilePathogenCD		= mod:NewCDTimer(28, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
 local timerBlackBlood				= mod:NewTargetTimer(60, 137000, nil, mod:IsTank() or mod:IsHealer())
 

@@ -25,7 +25,7 @@ local warnTearsOfSun					= mod:NewSpellAnnounce(137404, 3)
 local warnBeastOfNightmares				= mod:NewTargetAnnounce(137375, 3, nil, mod:IsTank() or mod:IsHealer())
 --Light
 local warnDay							= mod:NewSpellAnnounce("ej7645", 2, 122789)
-local warnLightOfDay					= mod:NewSpellAnnounce(138823, 2, nil, false)--Spammy, but leave it as an option at least
+local warnLightOfDay					= mod:NewSpellAnnounce(137403, 2, nil, false)--Spammy, but leave it as an option at least
 local warnFanOfFlames					= mod:NewStackAnnounce(137408, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check target scanning
 local warnIceCommet						= mod:NewSpellAnnounce(137419, 2)
@@ -48,19 +48,20 @@ local specWarnNuclearInferno			= mod:NewSpecialWarningSpell(137491, nil, nil, ni
 
 --Darkness
 --Light of Day (137403) has a HIGHLY variable cd variation, every 6-14 seconds. Not to mention it requires using SPELL_DAMAGE and SPELL_MISSED. for now i'm excluding it on purpose
-local timerDayCD						= mod:NewNextTimer(184, "ej7645", nil, nil, nil, 122789)--Probably just need localizing, no short text version.
+local timerDayCD						= mod:NewNextTimer(184, "ej7645", nil, nil, nil, 122789)--Probably just need localizing, no short text version. 
 local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
 local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
 --Light
-local timerDuskCD						= mod:NewNextTimer(184, "ej7633", nil, nil, nil, 130013)
-local timerLightOfDayCD					= mod:NewCDTimer(6, 138823)--In this phase we do track it so we can time shadows usage, although it's still highly variable. Plus in this phase since boss isn't hiding we can detect it without SPELL_DAMAGE
+local timerNightCD						= mod:NewNextTimer(184, "ej7641", nil, nil, nil, 130013)
+local timerLightOfDayCD					= mod:NewCDTimer(6, 137403)--In this phase we do track it so we can time shadows usage, although it's still highly variable. Plus in this phase since boss isn't hiding we can detect it without SPELL_DAMAGE
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
 local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)
 local timerIceCommetCD					= mod:NewNextTimer(15, 137419)
 local timerNuclearInfernoCD				= mod:NewCDTimer(55.5, 137491)
 --Dusk
+--local timerDuskCD						= mod:NewNextTimer(184, "ej7633", nil, nil, nil, 130013)
 ---:(
 
 local berserkTimer						= mod:NewBerserkTimer(600)

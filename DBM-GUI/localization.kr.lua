@@ -99,7 +99,7 @@ L.RaidWarnSound				= "알림 소리"
 L.CountdownVoice			= "초읽기 및 지속시간 읽기 소리 설정"
 L.SpecialWarnSound			= "특수 경고 소리(주로 당신이나 특정 직업군이 영향을 받는 주문)"
 L.SpecialWarnSound2			= "특수 경고 소리(주로 공격대원 전체가 영향을 받는 주문)"
-L.SpecialWarnSound3			= "특수 경고 소리(당신에게 영향을 미치는 매우 중요한 주문)"
+L.SpecialWarnSound3			= "특수 경고 소리(당신 또는 공격대의 전멸을 불러 올 수 있는 주문)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "메세지 설정"
