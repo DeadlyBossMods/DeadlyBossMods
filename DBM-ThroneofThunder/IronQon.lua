@@ -49,7 +49,7 @@ local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
 local timerMoltenOverload				= mod:NewBuffActiveTimer(10, 137221)
 local timerLightningStormCD				= mod:NewCDTimer(20, 136192)
-local timerWindStormCD					= mod:NewCDTimer(90, 136577)--Actual cd is not known, just know the first one is 50 seconds after phase 1
+local timerWindStormCD					= mod:NewCDTimer(90, 136577)
 local timerFreezeCD						= mod:NewCDTimer(20, 135145)
 local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139172)--Heroic Phase 1
@@ -250,7 +250,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 137656 and self:AntiSpam(2, 1) then--Rushing Winds (Wind Storm pre trigger)
 		warnWindStorm:Show()
 		specWarnWindStorm:Show()
---		timerWindStormCD:Start()
+		timerWindStormCD:Start()
 	end
 end
 
