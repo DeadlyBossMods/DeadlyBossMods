@@ -180,3 +180,11 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("ToTTrash")
+
+L:SetGeneralLocalization({
+	name =	"Throne of Thunder Trash"
+})

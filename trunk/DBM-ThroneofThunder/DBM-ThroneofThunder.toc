@@ -43,3 +43,4 @@ IronQon.lua
 TwinConsorts.lua
 LeiShen.lua
 Raden.lua
+ToTTrash.lua
