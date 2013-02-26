@@ -53,7 +53,7 @@ local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
 local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
 --Light
-local timerNightCD						= mod:NewNextTimer(184, "ej7641", nil, nil, nil, 130013)
+local timerDuskCD						= mod:NewNextTimer(184, "ej7633", nil, nil, nil, 130013)
 local timerLightOfDayCD					= mod:NewCDTimer(6, 137403)--In this phase we do track it so we can time shadows usage, although it's still highly variable. Plus in this phase since boss isn't hiding we can detect it without SPELL_DAMAGE
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
@@ -61,7 +61,6 @@ local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)
 local timerIceCommetCD					= mod:NewNextTimer(15, 137419)
 local timerNuclearInfernoCD				= mod:NewCDTimer(55.5, 137491)
 --Dusk
---local timerDuskCD						= mod:NewNextTimer(184, "ej7633", nil, nil, nil, 130013)
 ---:(
 
 local berserkTimer						= mod:NewBerserkTimer(600)
