@@ -57,7 +57,7 @@ local timerStaticchargeCD				= mod:NewCDTimer(50, 135695)--Unknown actual cd, be
 local timerDiffusionChainCD				= mod:NewCDTimer(50, 135991)--Unknown actual cd, besides when first one is in intermission
 local timerOverchargeCD					= mod:NewCDTimer(50, 136295)--Unknown actual cd, besides when first one is in intermission
 local timerBouncingBoltCD				= mod:NewCDTimer(50, 136361)--Unknown actual cd, besides when first one is in intermission
-local timerSuperChargedConduits			= mod:NewBuffActiveTimer(50, 137045)--Actually intermission only, but it fits best with conduits
+local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually intermission only, but it fits best with conduits
 --Phase 1
 local timerDecapitateCD					= mod:NewCDTimer(50, 135000)--Cooldown with some variation. 50-57ish or so.
 local timerThunderstruckCD				= mod:NewNextTimer(46, 135095)--Seems like an exact bar
@@ -69,9 +69,8 @@ local timerSummonBallLightningCD		= mod:NewCDTimer(46, 136543)--VERY variable, a
 
 mod:AddBoolOption("RangeFrame")
 
-
-local intermission = 0
 local phase = 1
+local intermissionActive = false--Not in use yet, but will be. This will be used (once we have CD bars for regular phases mapped out) to prevent those cd bars from starting during intermissions and messing up the custom intermission bars
 local northDestroyed = false
 local eastDestroyed = false
 local southDestroyed = false
@@ -92,8 +91,8 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(staticshockTargets)
 	table.wipe(overchargeTarget)
-	intermission = 0
 	phase = 1
+	intermissionActive = false
 	northDestroyed = false
 	eastDestroyed = false
 	southDestroyed = false
@@ -126,7 +125,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(135000) then
+	if args:IsSpellID(135000, 134912) then--Is 135000 still used on 10 man?
 		warnDecapitate:Show(args.destName)
 		timerDecapitateCD:Start()
 		if args:IsPlayer() then
@@ -195,7 +194,11 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:137176") then--Overloaded Circuits (Intermission ending and next phase beginning)
+		intermissionActive = false
 		phase = phase + 1
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 		--"<174.8 20:38:26> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\spell_nature_unrelentingstorm.blp:20|t The |cFFFF0000|Hspell:135683|h[West Conduit]|h|r has burned out and caused |cFFFF0000|Hspell:137176|h[Overloaded Circuits]|h|r!#Bouncing Bolt Conduit
 		if msg:find("spell:135680") then--North (Static Shock)
 			northDestroyed = true
@@ -219,43 +222,65 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
-local function rangeFrameDelay()
-	if mod.Options.RangeFrame then--Both melee and ranged need to spread until Diffusion Chain is cast or we get too many adds.
-		DBM.RangeCheck:Hide()
+local function LoopIntermission()
+	if not eastDestroyed then
+		timerDiffusionChainCD:Start(13.5)
+	end
+	if not southDestroyed then
+		timerOverchargeCD:Start(13.5)
+	end
+	if not northDestroyed then
+		timerStaticchargeCD:Start(21.5)
+	end
+	if not westDestroyed then
+		timerBouncingBoltCD:Start(21.5)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
 	end
 end
 
---"<128.1 20:37:39> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit [[boss2:Supercharge Conduits::0:137146]]", -- [9562]
---"<178.8 20:38:30> [CLEU] SPELL_AURA_REMOVED#false#0xF1310B2D00008052#Lei Shen#2632#0#0xF1310B2D00008052#Lei Shen#2632#0#137045#Supercharge Conduits#8#BUFF#0xF1310B2D00008052#183111986#1284#66#1#1#0", -- [11497]
+--[[
+"<175.9 21:21:38> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit boss2:Supercharge Conduits::0:137146",
+--First Wave
+"<182.7 21:21:45> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000E8E87#Cougarhunter#1300#0#135991#Diffusion Chain#8",
+"<183.9 21:21:46> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x0100000000047A51#Kaisers#1300#0#136295#Overcharged#8#DEBUFF",
+"<184.0 21:21:46> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000816EC#Minimerlinx#1300#0#136295#Overcharged#8#DEBUFF",
+"<190.8 21:21:53> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000B1AF6#Anafiele#1300#0#135695#Static Shock#1#DEBUFF",
+"<190.8 21:21:53> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x010000000003570D#Dayani#1300#0#135695#Static Shock#1#DEBUFF",
+"<192.4 21:21:54> [CLEU] SPELL_DAMAGE#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D0D65#Rohroh#1300#0#136366#Bouncing Bolt#8#210737#-1#8#nil#nil#nil#nil#nil#nil#nil",
+--Second Wave
+"<207.7 21:22:10> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D4102#Zaythan#1300#0#135991#Diffusion Chain#8",
+"<209.3 21:22:11> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D6D1B#Bellagraces#1300#0#136295#Overcharged#8#DEBUFF",
+"<209.3 21:22:11> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D2296#Torima#1298#0#136295#Overcharged#8#DEBUFF",
+"<216.5 21:22:19> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000E253D#Ilyakimin#1300#0#135695#Static Shock#1#DEBUFF",
+"<216.5 21:22:19> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000B1AF6#Anafiele#1300#0#135695#Static Shock#1#DEBUFF",
+"<217.3 21:22:19> [CLEU] SPELL_DAMAGE#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x0100000000047A51#Kaisers#1300#0#136366#Bouncing Bolt#8#131250#-1#8#nil#nil#53145#nil#nil#nil#nil",
+"<223.1 21:22:25> [CLEU] SPELL_AURA_REMOVED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0xF1310B2D000087B6#Lei Shen#2632#0#137045#Supercharge Conduits#8#BUFF",
+--]]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 137146 and self:AntiSpam(2, 2) then--Supercharge Conduits (comes earlier than other events so we use this one)
-		intermission = intermission + 1
-		if intermission == 1 then--Cancel Phase 1 timers
-			timerThunderstruckCD:Cancel()
-			timerDecapitateCD:Cancel()
-		elseif intermission == 2 then--Cancel Phase 2 timers
-			timerFussionSlashCD:Cancel()
-			timerLightningWhipCD:Cancel()
-			timerSummonBallLightningCD:Cancel()
-		end
+		intermissionActive = true
+		timerThunderstruckCD:Cancel()
+		timerDecapitateCD:Cancel()
+		timerFussionSlashCD:Cancel()
+		timerLightningWhipCD:Cancel()
+		timerSummonBallLightningCD:Cancel()
 		timerSuperChargedConduits:Start()
-		if not northDestroyed then--This is a dirty trick. Evil Blizzard
-			timerStaticchargeCD:Start(6)--This is cast first, BUT, you absoslutely DO NOT GROUP UP FOR THIS or you'll wipe to Diffusion Chain spread. Debuff last 8 seconds so it's really 6+8
-		end--In other words, you SPREAD for diffusion chain and ignore this debuff until after, then group up for staticcharge debuff within last 3 seconds.
 		if not eastDestroyed then
-			timerDiffusionChainCD:Start(11)--Does not show in combat log, but have a pretty good idea on timing. maybe off 1 second (timer could be 10)
-			if self.Options.RangeFrame then--Both melee and ranged need to spread until Diffusion Chain is cast or we get too many adds.
-				DBM.RangeCheck:Show(10)--Range not known for this one, assumed 10, may only be 6 though, like the other similar mechanic Summon Lightning Orb
-				self:Schedule(15, rangeFrameDelay)--Hide it after it's no longer useful
+			timerDiffusionChainCD:Start(7)
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
 			end
 		end
 		if not southDestroyed then
-			timerOverchargeCD:Start(15)
+			timerOverchargeCD:Start(7)
+		end
+		if not northDestroyed then
+			timerStaticchargeCD:Start(15)
 		end
 		if not westDestroyed then
-			timerBouncingBoltCD:Start(30)--This is probably off 1-2 seconds. need to do a /yell and log it later
+			timerBouncingBoltCD:Start(15)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
 		end
-	elseif spellId == 136395 and self:AntiSpam(2, 3) then--Bouncing Bolt (think it's right trigger, could be wrong though)
+		self:Schedule(18, LoopIntermission)--Fire function to start second wave of specials timers
+	elseif spellId == 136395 and self:AntiSpam(2, 3) then--Bouncing Bolt (think it's right trigger, could be wrong though). Does NOT work in intermission phases though :\
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
 	end
