@@ -19,9 +19,15 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+--[[
+TODO: See if this has some target scanning. On heroic these can one shot non tanks
+"<431.7 15:32:55> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310E38000020EE#Amani'shi Beast Shaman#2632#128##Unknown#-2147483648#-2147483648#136487#Lightning Nova Totem#1", -- [67956]
+"<431.7 15:32:55> [CLEU] SPELL_SUMMON#false#0xF1310E38000020EE#Amani'shi Beast Shaman#2632#128#0xF1310E5F00002779#Lightning Nova Totem#2600#0#136487#Lightning Nova Totem#1", -- [67957]
+--]]
 local warnCharge				= mod:NewTargetAnnounce(136769, 4)
 local warnPuncture				= mod:NewStackAnnounce(136767, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnDoubleSwipe			= mod:NewSpellAnnounce(136741, 3)
+local warnAdds					= mod:NewAnnounce("warnAdds", 2, 43712)--Some random troll icon
 local warnDino					= mod:NewSpellAnnounce("ej7086", 3, 137237)
 local warnMending				= mod:NewSpellAnnounce(136797, 4)
 local warnBestialCry			= mod:NewStackAnnounce(136817, 3)
@@ -37,11 +43,13 @@ local specWarnSandTrap			= mod:NewSpecialWarningMove(136723)
 local specWarnDino				= mod:NewSpecialWarningSwitch("ej7086", not mod:IsHealer())
 local specWarnMending			= mod:NewSpecialWarningInterrupt(136797, mod:IsDps())--High priority interrupt. All dps needs warning because boss heals 1% per second it's not interrupted.
 local specWarnFrozenBolt		= mod:NewSpecialWarningMove(136573)--Debuff used by Frozen Orbs
-local specWarnJalak				= mod:NewSpecialWarningSwitch("ej7087", mod:IsTank())--To pick him up
+local specWarnLightningNova		= mod:NewSpecialWarningMove(136490)--Mainly for LFR or normal. On heroic you're going to die.
+local specWarnJalak				= mod:NewSpecialWarningSwitch("ej7087", mod:IsTank())--To pick him up (and maybe dps to switch, depending on strat)
 local specWarnRampage			= mod:NewSpecialWarningTarget(136821, mod:IsTank() or mod:IsHealer())--Dog is pissed master died, need more heals and cooldowns. Maybe warn dps too? his double swipes and charges will be 100% worse too.
 local specWarnDisorientingRoar	= mod:NewSpecialWarningSpell(137458, nil, nil, nil, 2)--Heroic
 
-local timerAddsCD				= mod:NewTimer(113.5, "timerAddsCD", 2457)--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
+local timerDoor					= mod:NewTimer(113.5, "timerDoor", 2457)--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
+local timerAdds					= mod:NewTimer(18.91, "timerAdds", 43712)
 local timerDinoCD				= mod:NewNextTimer(56.75, "ej7086", nil, nil, nil, 137237)--It's between 55 and 60 seconds, I will need a more thorough log to verify by yelling when they spawn
 local timerCharge				= mod:NewCastTimer(3.4, 136769)
 local timerChargeCD				= mod:NewCDTimer(50, 136769)--50-60 second depending on i he's casting other stuff or stunned
@@ -54,13 +62,19 @@ local timerDisorientingRoarCD	= mod:NewCDTimer(55, 137458)--Heroic
 
 local berserkTimer				= mod:NewBerserkTimer(720)
 
+local doorNumber = 0
 local jalakEngaged = false
+local Farraki	= EJ_GetSectionInfo(7081)
+local Gurubashi	= EJ_GetSectionInfo(7082)
+local Drakkari	= EJ_GetSectionInfo(7083)
+local Amani		= EJ_GetSectionInfo(7084)
 
 function mod:OnCombatStart(delay)
+	doorNumber = 0
 	jalakEngaged = false
 	timerPunctureCD:Start(-delay)
 	timerDoubleSwipeCD:Start(16-delay)--16-17 second variation
-	timerAddsCD:Start(16.5-delay)
+	timerDoor:Start(16.5-delay)
 	timerChargeCD:Start(31-delay)--31-35sec variation
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -122,7 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	--"<327.0 15:12:46> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Horridon#0xF1310B7C0000383C#elite#261178058#1#1#War-God Jalak <--War-God Jalak jumps down
 	--He jumps down 10 seconds after 4th door is smashed, or when Horridon reaches 30%
 	elseif args:IsSpellID(137240) and (args.amount or 1) == 4 and not jalakEngaged then--We check door smashes and whether or not jalak has jumped down yet
-		timerJalakCD:Start(10)
+--		timerJalakCD:Start(59.5)--was this changed? he doesn't come down after 4th door is destroyed anymore. he seemed to ONLY come down based on horridons health now?
 	elseif args:IsSpellID(136817) then
 		warnBestialCry:Show(args.destName, args.amount or 1)
 		timerBestialCryCD:Start(5, (args.amount or 1)+1)
@@ -147,6 +161,8 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnSandTrap:Show()
 	elseif spellId == 136573 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnFrozenBolt:Show()
+	elseif spellId == 136490 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+		specWarnLightningNova:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -160,6 +176,11 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	end
 end
 
+local function addsDelay(addsType)
+	timerAdds:Start(18.9, addsType)
+	warnAdds:Schedule(18.9, addsType)
+end
+
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.chargeTarget) then
 		warnCharge:Show(target)
@@ -169,11 +190,35 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			specWarnCharge:Show()
 			yellCharge:Yell()
 		end
+	--Doors spawn every 131.5 seconds
+	--Halfway through it (literlaly exact center) Dinomancers spawn at 56.75
+	--Then, before the dinomancer, lesser adds spawn twice splitting that timer into 3rds
+	--So it goes, door, 18.91 seconds later, 1 add jumps down. 18.91 seconds later, next 2 drop down. 18.91 seconds later, dinomancer drops down, then 56.75 seconds later, next door starts.
 	elseif msg:find(L.newForces) then
+		doorNumber = doorNumber + 1
 		timerDinoCD:Start()
 		warnDino:Schedule(56.75)
 		specWarnDino:Schedule(56.75)
-		timerAddsCD:Start()
+		if doorNumber == 1 then
+			timerAdds:Start(18.9, Farraki)
+			warnAdds:Schedule(18.9, Farraki)
+			self:Schedule(18.9, addsDelay, Farraki)
+		elseif doorNumber == 2 then
+			timerAdds:Start(18.9, Gurubashi)
+			warnAdds:Schedule(18.9, Gurubashi)
+			self:Schedule(18.9, addsDelay, Gurubashi)
+		elseif doorNumber == 3 then
+			timerAdds:Start(18.91, Drakkari)
+			warnAdds:Schedule(18.9, Drakkari)
+			self:Schedule(18.9, addsDelay, Drakkari)
+		elseif doorNumber == 4 then
+			timerAdds:Start(18.9, Amani)
+			warnAdds:Schedule(18.9, Amani)
+			self:Schedule(18.9, addsDelay, Amani)
+		end
+		if doorNumber < 4 then
+			timerDoor:Start()
+		end
 	end
 end
 

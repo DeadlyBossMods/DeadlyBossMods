@@ -16,11 +16,11 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "Nächstes Stammesportal"
+	timerDoor		= "Nächstes Stammesportal"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Zeige Zeit bis nächste Stammesportalphase"
+	timerDoor		= "Zeige Zeit bis nächste Stammesportalphase"
 })
 
 L:SetMiscLocalization({
