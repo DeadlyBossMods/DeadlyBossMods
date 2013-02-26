@@ -37,7 +37,7 @@ local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTan
 local specWarnAnimaRing				= mod:NewSpecialWarningYou(136954)
 local specWarnAnimaRingOther		= mod:NewSpecialWarningTarget(136954, false)
 local yellAnimaRing					= mod:NewYell(136954)
-local specWarnInterruptingJolt		= mod:NewSpecialWarningSpell(138763, nil, nil, nil, 2)
+local specWarnInterruptingJolt		= mod:NewSpecialWarningCast(138763, nil, nil, nil, 2)
 
 local timerMatterSwap				= mod:NewTargetTimer(12, 138609)--If not dispelled, it ends after 12 seconds regardless
 --Boss
