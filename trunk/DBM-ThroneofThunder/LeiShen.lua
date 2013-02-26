@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 local warnStaticShock					= mod:NewTargetAnnounce(135695, 4)
 local warnDiffusionChain				= mod:NewTargetAnnounce(135991, 3)--More informative than actually preventative. (you need to just spread out, and that's it. can't control who it targets only that it doesn't spread)
 local warnOvercharged					= mod:NewTargetAnnounce(136295, 3)
-local warnBouncingBolt					= mod:NewSpellAnnounce(136395, 3)
+local warnBouncingBolt					= mod:NewSpellAnnounce(136361, 3)
 --Phase 1
 local warnDecapitate					= mod:NewTargetAnnounce(135000, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnThunderstruck					= mod:NewSpellAnnounce(135095, 3)--Target scanning seems to not work
@@ -41,7 +41,7 @@ local warnSummonBallLightning			= mod:NewSpellAnnounce(136543, 3)--This seems to
 local specWarnStaticShock				= mod:NewSpecialWarningYou(135695)
 local yellOvercharged					= mod:NewYell(136295)--Person it's on is snared and can't move. Personal Special warning not useful since they don't react to it, everyone else does
 local specWarnOvercharged				= mod:NewSpecialWarningSpell(136295, false)--Maybe this though to alert everyone else it was cast.
-local specWarnBouncingBolt				= mod:NewSpecialWarningSpell(136395, false)
+local specWarnBouncingBolt				= mod:NewSpecialWarningSpell(136361, false)
 --Phase 1
 local specWarnDecapitate				= mod:NewSpecialWarningRun(135000, mod:IsTank())
 local specWarnDecapitateOther			= mod:NewSpecialWarningTarget(135000, mod:IsTank())
@@ -56,8 +56,8 @@ local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil
 local timerStaticchargeCD				= mod:NewCDTimer(50, 135695)--Unknown actual cd, besides when first one is in intermission
 local timerDiffusionChainCD				= mod:NewCDTimer(50, 135991)--Unknown actual cd, besides when first one is in intermission
 local timerOverchargeCD					= mod:NewCDTimer(50, 136295)--Unknown actual cd, besides when first one is in intermission
-local timerBouncingBoltCD				= mod:NewCDTimer(50, 136395)--Unknown actual cd, besides when first one is in intermission
-local timerSuperChargedConduits			= mod:NewBuffActiveTimer(50, 137146)--Actually intermission only, but it fits best with conduits
+local timerBouncingBoltCD				= mod:NewCDTimer(50, 136361)--Unknown actual cd, besides when first one is in intermission
+local timerSuperChargedConduits			= mod:NewBuffActiveTimer(50, 137045)--Actually intermission only, but it fits best with conduits
 --Phase 1
 local timerDecapitateCD					= mod:NewCDTimer(50, 135000)--Cooldown with some variation. 50-57ish or so.
 local timerThunderstruckCD				= mod:NewNextTimer(46, 135095)--Seems like an exact bar

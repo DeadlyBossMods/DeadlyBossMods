@@ -5,7 +5,8 @@ DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm he
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 경보를 불러오는 중 오류 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다 !"
-DBM_CORE_LOAD_GUI_ERROR				= "그래픽 설정 기능을 불러올 수 없습니다: %s"
+DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
+DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 단, 전투 종료 후 설정창을 불러오고 난 이후에는 UI 재시작 또는 재접속전까지 전투 중에도 설정창을 불러올 수 있습니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_BOSS_DOWN					= "%s 전투에서 승리하였습니다! (전투 시간: %s)"

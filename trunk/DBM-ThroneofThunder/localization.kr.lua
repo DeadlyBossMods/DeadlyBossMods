@@ -6,10 +6,6 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
-L:SetOptionLocalization({
-	RangeFrame		= "$spell:139997 주문에 대한 거리 창 보기(8m)"
-})
-
 --------------
 -- Horridon --
 --------------
@@ -45,10 +41,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(825)
 
 L:SetWarningLocalization({
+	warnKickShell			= "%s 사용 : >%s< (%d 남음)",
 	specWarnCrystalShell	= "%s 받으세요!"
 })
 
 L:SetOptionLocalization({
+	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "$spell:137633 효과가 없을 경우 특수 경고 보기",
 	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기"
 })
@@ -71,8 +69,23 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(828)
 
+L:SetWarningLocalization({
+	warnFlock		= "%2$ : %1$ (%3$d)",
+	specWarnFlock	= "%2$ : %1$ (%3$d)",
+})
+
+L:SetOptionLocalization({
+	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
+	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	RangeFrame		= "$spell:138923 주문에 대한 거리 창 보기(8m)"
+})
+
 L:SetMiscLocalization({
-	eggsHatch	= "The eggs in one of the lower nests begin to hatch!"
+	eggsHatchL		= "The eggs in one of the lower nests begin to hatch!",
+	eggsHatchU		= "The eggs in one of the upper nests begin to hatch!",
+	Upper			= "상층",
+	Lower			= "하층",
+	UpperAndLower	= "상층 & 하층"
 })
 
 --------------------------
@@ -85,7 +98,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(133775)
+	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
+	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
 })
 
 ----------------

@@ -5,10 +5,6 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
-L:SetOptionLocalization({
-	RangeFrame		= "Show range frame (8) for $spell:139997"
-})
-
 --------------
 -- Horridon --
 --------------
@@ -79,7 +75,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
-	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348")
+	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	RangeFrame		= "Show range frame (8) for $spell:138923"
 })
 
 L:SetMiscLocalization({
@@ -100,7 +97,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(133775)
+	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
+	ArrowOnBeam					= "Show DBM Arrow during $journal:6882 to indicate which direction to move",
 })
 
 ----------------

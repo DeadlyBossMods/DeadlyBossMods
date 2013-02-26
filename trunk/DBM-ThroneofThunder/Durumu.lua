@@ -22,28 +22,28 @@ mod:RegisterEventsInCombat(
 )
 
 local warnHardStare					= mod:NewSpellAnnounce(133765, 3, nil, mod:IsTank() or mod:IsHealer())--Announce CAST not debuff, cause it misses a lot, plus we have 1 sec to hit an active mitigation
-local warnForceOfWill				= mod:NewSpellAnnounce(136932, 4)
+local warnForceOfWill				= mod:NewSpellAnnounce(136413, 4)
 local warnLingeringGaze				= mod:NewTargetAnnounce(138467, 3)--Seems highly variable Cd so no timer for this yet
-local warnBlueBeam					= mod:NewTargetAnnounce(134122, 2)
-local warnRedBeam					= mod:NewTargetAnnounce(134123, 2)
-local warnYellowBeam				= mod:NewTargetAnnounce(134124, 2)
+local warnBlueBeam					= mod:NewTargetAnnounce(133677, 2)
+local warnRedBeam					= mod:NewTargetAnnounce(133732, 2)
+local warnYellowBeam				= mod:NewTargetAnnounce(133738, 2)
 local warnCrimsonLeft				= mod:NewAddsLeftAnnounce("ej6892", 2, 134123)
-local warnDisintegrationBeam		= mod:NewSpellAnnounce(133775, 4, 134169)
+local warnDisintegrationBeam		= mod:NewSpellAnnounce("ej6882", 4)
 local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
 local warnIceWall					= mod:NewSpellAnnounce(134587, 3)
 
 local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 4)--This we will use debuff on though.
 local specWarnSeriousWoundOther		= mod:NewSpecialWarningTarget(133767, mod:IsTank())
-local specWarnForceOfWill			= mod:NewSpecialWarningYou(136932, nil, nil, nil, 3)--VERY important, if you get hit by this you are out of fight for rest of pull.
-local specWarnForceOfWillNear		= mod:NewSpecialWarningClose(136932, nil, nil, nil, 3)
-local yellForceOfWill				= mod:NewYell(136932)
+local specWarnForceOfWill			= mod:NewSpecialWarningYou(136413, nil, nil, nil, 3)--VERY important, if you get hit by this you are out of fight for rest of pull.
+local specWarnForceOfWillNear		= mod:NewSpecialWarningClose(136413, nil, nil, nil, 3)
+local yellForceOfWill				= mod:NewYell(136413)
 local specWarnLingeringGaze			= mod:NewSpecialWarningYou(134044)
 local yellLingeringGaze				= mod:NewYell(134044, nil, false)
 local specWarnLingeringGazeMove		= mod:NewSpecialWarningMove(134044)
-local specWarnBlueBeam				= mod:NewSpecialWarningYou(134122)
-local specWarnRedBeam				= mod:NewSpecialWarningYou(134123)
-local specWarnYellowBeam			= mod:NewSpecialWarningYou(134124)
+local specWarnBlueBeam				= mod:NewSpecialWarningYou(133677)
+local specWarnRedBeam				= mod:NewSpecialWarningYou(133732)
+local specWarnYellowBeam			= mod:NewSpecialWarningYou(133738)
 local specWarnDisintegrationBeam	= mod:NewSpecialWarning("specWarnDisintegrationBeam", nil, nil, nil, 2)
 local specWarnEyeSore				= mod:NewSpecialWarningMove(140502)
 local specWarmLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())--Pretty much exhale all over again from zorlok. Tank intercepts beam to take damage instead
@@ -51,12 +51,12 @@ local specWarmLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())--
 local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
 local timerLingeringGazeCD			= mod:NewCDTimer(45, 138467)
-local timerForceOfWillCD			= mod:NewCDTimer(20, 136932)--Actually has a 20 second cd but rarely cast more than once per phase because of how short the phases are (both beams phases cancel this ability)
+local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 second cd but rarely cast more than once per phase because of how short the phases are (both beams phases cancel this ability)
 local timerLightSpectrumCD			= mod:NewCDTimer(60, "ej6891")--Don't know when 2nd one is cast.
-local timerDarkParasite				= mod:NewTargetTimer(30, 136932, mod:IsHealer())--Only healer/dispeler needs to know this.
+local timerDarkParasite				= mod:NewTargetTimer(30, 136413, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
-local timerDisintegrationBeam		= mod:NewBuffActiveTimer(60, 133775)--use 134169 for icon later
-local timerDisintegrationBeamCD		= mod:NewNextTimer(131, 133775)--use 134169 for icon later
+local timerDisintegrationBeam		= mod:NewBuffActiveTimer(60, "ej6882")
+local timerDisintegrationBeamCD		= mod:NewNextTimer(131, "ej6882")
 
 local crimsonFogs = 3
 local lingeringGazeTargets = {}
