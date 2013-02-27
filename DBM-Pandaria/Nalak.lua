@@ -39,7 +39,7 @@ local function warnStormcloudTargets()
 end
 
 local function warnTetherTargets()
-	warnLightningTetherShow(table.concat(tetherTargets, "<, >"))
+	warnLightningTether:Show(table.concat(tetherTargets, "<, >"))
 	table.wipe(tetherTargets)
 end
 
