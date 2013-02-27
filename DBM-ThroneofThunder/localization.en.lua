@@ -188,3 +188,7 @@ L = DBM:GetModLocalization("ToTTrash")
 L:SetGeneralLocalization({
 	name =	"Throne of Thunder Trash"
 })
+
+L:SetOptionLocalization({
+	RangeFrame		= "Show range frame (10)"--For 3 different spells
+})

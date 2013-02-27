@@ -121,7 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnStaticBurst:Show(args.destName)
 		timerStaticBurstCD:Start()
 		if args:IsPlayer() then
-			specWarnStaticBurst:Show(args.destName)
+			specWarnStaticBurst:Show()
 		else
 			specWarnStaticBurstOther:Show(args.destName)
 		end
