@@ -7,15 +7,35 @@ mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED",
 	"UNIT_DIED"
 )
 
+local warnStormEnergy		= mod:NewTargetAnnounce(139322, 4)
 local warnSpiritFire		= mod:NewTargetAnnounce(139895, 3)--This is morchok entryway trash that throws rocks at random poeple.
+local warnStormCloud		= mod:NewTargetAnnounce(139900, 4)
+
+local specWarnStormEnergy	= mod:NewSpecialWarningYou(139322)
+local specWarnStormCloud	= mod:NewSpecialWarningYou(139900)
 
 local timerSpiritfireCD		= mod:NewCDTimer(12, 139895)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+mod:AddBoolOption("RangeFrame")
+
+local stormEnergyTargets = {}
+local stormCloudTargets = {}
+
+local function warnStormEnergyTargets()
+	warnStormEnergy:Show(table.concat(stormEnergyTargets, "<, >"))
+	table.wipe(stormEnergyTargets)
+end
+
+local function warnStormCloudTargets()
+	warnStormCloud:Show(table.concat(stormCloudTargets, "<, >"))
+	table.wipe(stormCloudTargets)
+end
 
 function mod:SpiritFireTarget(sGUID)
 	local targetname = nil
@@ -40,10 +60,42 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(137162) then--Or 139559, not sure which
+		stormEnergyTargets[#stormEnergyTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnStormEnergy:Show()
+		end
+		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
+			DBM.RangeCheck:Show(10)
+		end
+		self:Unschedule(warnStormEnergyTargets)
+		self:Schedule(0.3, warnStormEnergyTargets)
+	elseif args:IsSpellID(139900) then
+		stormCloudTargets[#stormCloudTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnStormCloud:Show()
+		end
+		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
+			DBM.RangeCheck:Show(10)
+		end
+		self:Unschedule(warnStormCloudTargets)
+		self:Schedule(0.3, warnStormCloudTargets)
+	end
+end
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 70308 then--Soul-Fed Construct
 		timerSpiritfireCD:Cancel()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+	elseif cid == 70236 then--Zandalari Storm-Caller
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+	elseif cid == 70445 then--Stormbringer Draz'kil
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
