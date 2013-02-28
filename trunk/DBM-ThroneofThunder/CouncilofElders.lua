@@ -28,7 +28,7 @@ local warnSandstorm					= mod:NewSpellAnnounce(136894, 3)
 local warnBlessedLoaSpirit			= mod:NewSpellAnnounce(137203, 4)
 local warnShadowedLoaSpirit			= mod:NewSpellAnnounce(137350, 4)
 local warnMarkedSoul				= mod:NewTargetAnnounce(137359, 4)--Shadowed Loa Spirit fixate target, no need to warn for Shadowed Loa Spirit AND this, so we just warn for this
-local warnTwistedSoul				= mod:NewTargetAnnounce(137891, 4)--Heroic Only
+local warnTwistedFate				= mod:NewSpellAnnounce(137891, 4)--Heroic Only
 --Frost King Malak
 local warnBitingCold				= mod:NewTargetAnnounce(136992, 3)--136917 is cast ID version, 136992 is player debuff
 local warnFrostBite					= mod:NewTargetAnnounce(136922, 4)--136990 is cast ID version, 136922 is player debuff
@@ -46,7 +46,7 @@ local specWarnQuickSand				= mod:NewSpecialWarningMove(136860)
 local specWarnBlessedLoaSpirit		= mod:NewSpecialWarningSwitch(137203, mod:IsRanged())--Ranged should handle this, melee chasing it around is huge dps loss for possessed. On 10 man 2 ranged was enough. If you do not have 2 ranged, 1 or 2 melee will have to help and probably turn this on manually
 local specWarnShadowedLoaSpirit		= mod:NewSpecialWarningSwitch(137350, mod:IsRanged())
 local specWarnMarkedSoul			= mod:NewSpecialWarningRun(137359)
-local specWarnTwistedSoul			= mod:NewSpecialWarningYou(137891)
+local specWarnTwistedFate			= mod:NewSpecialWarningSwitch(137891)
 --Frost King Malak
 local specWarnBitingCold			= mod:NewSpecialWarningYou(136992)
 local yellBitingCold				= mod:NewYell(136992)--This one you just avoid so chat bubble is useful
@@ -60,10 +60,10 @@ local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122)
 local timerQuickSandCD				= mod:NewCDTimer(35, 136521)
 --local timerSandStormCD			= mod:NewCDTimer(35, 136894)--insufficent data to determine CD. it does not seem to be tied to quick sand though. on contrary he casts this first time the instant he's possessed.
 --High Prestess Mar'li
-local timerBlessedLoaSpiritCD		= mod:NewNextTimer(34, 137203)
-local timerShadowedLoaSpiritCD		= mod:NewNextTimer(34, 137350)
+local timerBlessedLoaSpiritCD		= mod:NewCDTimer(33, 137203)--Every 33-35 seconds.
+local timerShadowedLoaSpiritCD		= mod:NewCDTimer(33, 137350)--Possessed version of above, shared CD
+local timerTwistedFateCD			= mod:NewCDTimer(33, 137891)--On heroic, this replaces shadowed loa spirit
 local timerMarkedSoul				= mod:NewTargetTimer(20, 137359)
---local timerTwistedSoulCD			= mod:NewCDTimer(30, 137891)
 --Frost King Malak
 local timerBitingColdCD				= mod:NewCDTimer(45, 136917)--10 man Cds (and probably LFR), i have no doubt on 25 man this will either have a shorter cd or affect 3 targets with same CD. Watch for timer diffs though
 local timerFrostBiteCD				= mod:NewCDTimer(45, 136990)--^same comment as above
@@ -84,12 +84,6 @@ local kazraPossessed = false
 local possessesDone = 0
 local chilledWarned = false
 local chilledDebuff = GetSpellInfo(137085)
-local twistedSoulTargets = {}
-
-local function warnTwistedSoulTargets()
-	warnTwistedSoul:Show(table.concat(twistedSoulTargets, "<, >"))
-	table.wipe(twistedSoulTargets)
-end
 
 local function isTank(unit)
 	if GetPartyAssignment("MAINTANK", unit, 1) then
@@ -127,7 +121,6 @@ function mod:BoltTarget()
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(twistedSoulTargets)
 	kazraPossessed = false
 	chilledWarned = false
 	possessesDone = 0
@@ -168,6 +161,10 @@ function mod:SPELL_CAST_START(args)
 		warnShadowedLoaSpirit:Show()
 		specWarnShadowedLoaSpirit:Show()
 		timerShadowedLoaSpiritCD:Start()
+	elseif args:IsSpellID(137891) then
+		warnTwistedFate:Show()
+		specWarnTwistedFate:Show()
+		timerTwistedFateCD:Start()
 	end
 end
 
@@ -184,7 +181,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			local elapsed, total = timerBlessedLoaSpiritCD:GetTime()
 			timerBlessedLoaSpiritCD:Cancel()
 			if elapsed and total then--If for some reason it was nil, like it JUST came off cd, do nothing, she should cast loa spirit right away.
-				timerShadowedLoaSpiritCD:Update(elapsed, total)
+				if self:IsDifficulty("heroic10", "heroic25") then
+					timerTwistedFateCD:Update(elapsed, total)
+				else
+					timerShadowedLoaSpiritCD:Update(elapsed, total)
+				end
 			end
 			self:UnregisterShortTermEvents()
 		elseif args:GetDestCreatureID() == 69131 then--Frost King Malakk
@@ -225,7 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(4)--To be honest i'm not even sure this CAN target melee, code is here just in case.
 			end
 		end
-	elseif args:IsSpellID(136922) then--Player Debuff version, not cast version
+	elseif args:IsSpellID(136922) and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
 		warnFrostBite:Show(args.destName)
 		timerFrostBiteCD:Start()
 		if args:IsPlayer() then
@@ -240,13 +241,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMarkedSoul:Show()
 			soundMarkedSoul:Play()
 		end
-	elseif args:IsSpellID(137891) then--DRYCODE, it may not be right spellid, there are MANY
-		twistedSoulTargets[#twistedSoulTargets + 1] = args.destName
-		if args:IsPlayer() then
-			specWarnTwistedSoul:Show()
-		end
-		self:Unschedule(warnTwistedSoulTargets)
-		self:Schedule(0.3, warnTwistedSoulTargets)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -257,7 +251,13 @@ function mod:SPELL_AURA_REMOVED(args)
 --			timerSandStormCD:Cancel()
 		elseif args:GetDestCreatureID() == 69132 then--High Prestess Mar'li
 			--Swap timer back
-			local elapsed, total = timerShadowedLoaSpiritCD:GetTime()
+			local elapsed, total
+			if self:IsDifficulty("heroic10", "heroic25") then
+				elapsed, total = timerTwistedFateCD:GetTime()
+			else
+				elapsed, total = timerShadowedLoaSpiritCD:GetTime()
+			end
+			timerTwistedFateCD:Cancel()
 			timerShadowedLoaSpiritCD:Cancel()
 			if elapsed and total and total ~= 0 then
 				timerBlessedLoaSpiritCD:Update(elapsed, total)
