@@ -111,8 +111,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---10 man does 3 down 3 up
+--10 man does 3 down 3 up on N and H
 --25 man is a clusterfuck of random L, L, L, L, Both(5 and 6), U, U, Both (9 and 10), Both (11 & 12), L, ... (more data and higher counts needed)
+--25H is lower, lower, lower, lower & upper, lower & upper, upper with guardian at 2 and 6 (needs more data to go beyond 8 :\)
 --[[
 "<7.8 19:02:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#500#nil#0#false#false", -- [1]
 "<37.7 19:02:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#502#nil#0#false#false", -- [2]
@@ -140,10 +141,10 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		timerFlockCD:Cancel()
 		warnFlock:Schedule(0.5, messageText, flockName, flockCount)
 		specWarnFlock:Schedule(0.5, messageText, flockName, flockCount)
-		if self:IsDifficulty("heroic10", "heroic25") then
-			timerFlockCD:Show(40, flockCount+1)--TODO: confirm this isn't just a 10 man change. it was 40sec on heroic 10 man, 30  on 10 normal and 25 normal. but they coulda changed 10 normal after testing it.
+		if self:IsDifficulty("normal10", "heroic10") then
+			timerFlockCD:Show(40, flockCount+1)--TODO, confirm this is still true
 		else
-			timerFlockCD:Show(30, flockCount+1)
+			timerFlockCD:Show(30, flockCount+1)--]]
 		end
 		lastFlock = GetTime()
 	end
