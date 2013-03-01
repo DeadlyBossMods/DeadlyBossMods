@@ -31,6 +31,7 @@ local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 3)--
 local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
 local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, 2)
 local specWarnFeedYoung		= mod:NewSpecialWarningSpell(137528)
+local specWarnBigBird		= mod:NewSpecialWarningSwitch("ej7827", mod:IsTank())
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuillsCD			= mod:NewCDTimer(60, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 60-67 seconds usually after channel of some other spell ends
@@ -114,21 +115,6 @@ end
 --10 man does 3 down 3 up on N and H
 --25 man is a clusterfuck of random L, L, L, L, Both(5 and 6), U, U, Both (9 and 10), Both (11 & 12), L, ... (more data and higher counts needed)
 --25H is lower, lower, lower, lower & upper, lower & upper, upper with guardian at 2 and 6 (needs more data to go beyond 8 :\)
---[[
-"<7.8 19:02:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#500#nil#0#false#false", -- [1]
-"<37.7 19:02:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#502#nil#0#false#false", -- [2]
-"<67.6 19:03:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#504#nil#0#false#false", -- [3]
-"<97.8 19:03:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#505#nil#0#false#false", -- [4]
-"<127.6 19:04:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#509#nil#0#false#false", -- [5]
-"<127.6 19:04:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#510#nil#0#false#false", -- [6]
-"<157.8 19:04:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#512#nil#0#false#false", -- [7]
-"<187.6 19:05:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#514#nil#0#false#false", -- [8]
-"<217.8 19:05:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#524#nil#0#false#false", -- [9]
-"<217.8 19:05:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#525#nil#0#false#false", -- [10]
-"<247.7 19:06:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#529#nil#0#false#false", -- [11]
-"<247.7 19:06:09> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the upper nests begin to hatch!#Incubater###Incubater##0#0##0#530#nil#0#false#false", -- [12]
-"<277.8 19:06:39> CHAT_MSG_MONSTER_EMOTE#The eggs in one of the lower nests begin to hatch!#Incubater###Incubater##0#0##0#536#nil#0#false#false", -- [13]
---]]
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
 		flockCount = flockCount + 1
@@ -147,5 +133,8 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			timerFlockCD:Show(30, flockCount+1)--]]
 		end
 		lastFlock = GetTime()
+		if self:IsDifficulty("heroic10") and flockCount % 2 == 0 or self:IsDifficulty("heroic25") and (flockCount == 2 or flockCount == 6) then
+			specWarnBigBird:Show()
+		end
 	end
 end
