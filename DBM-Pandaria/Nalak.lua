@@ -25,8 +25,9 @@ local specWarnStormcloud			= mod:NewSpecialWarningYou(136340)
 local specWarnLightningTether		= mod:NewSpecialWarningYou(136339)--Is this important enough?
 local specWarnArcNova				= mod:NewSpecialWarningSpell(136338, nil, nil, nil, 2)--3 second cast enough time to run out? should this be a run warning for melee? (will have to guage his hitbox and how far you can stand back to start with)
 
-local timerStormcloudCD				= mod:NewCDTimer(30, 136340)--CD not known
---local timerArcNovaCD				= mod:NewCDTimer(30, 136338)--CD not known
+local timerStormcloudCD				= mod:NewCDTimer(24, 136340)
+local timerLightningTetherCD		= mod:NewNextTimer(40, 136339)
+local timerArcNovaCD				= mod:NewNextTimer(42, 136338)
 
 mod:AddBoolOption("RangeFrame")--For Stormcloud, might tweek to not show all the time with actual better logs than me facepulling it and dying with 20 seconds
 
@@ -46,7 +47,9 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(stormcloudTargets)
 	table.wipe(tetherTargets)
-	timerStormcloudCD:Start(15-delay)
+	timerStormcloudCD:Start(15-delay)--15-17 variation noted
+	timerLightningTetherCD:Start(28-delay)
+	timerArcNovaCD:Start(39-delay)--Not a large sample size
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
@@ -61,11 +64,13 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(136340) then
 		specWarnStormcloudCast:Show()
-		--timerStormcloudCD:Start()
+		timerStormcloudCD:Start()
 	elseif args:IsSpellID(136338) then
 		warnArcNova:Show()
 		specWarnArcNova:Show()
-		--timerStormcloudCD:Start()
+		timerArcNovaCD:Start()
+	elseif args:IsSpellID(136339) then
+		timerLightningTetherCD:Start()
 	end
 end
 
