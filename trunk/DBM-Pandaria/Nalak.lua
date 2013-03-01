@@ -26,7 +26,7 @@ local specWarnLightningTether		= mod:NewSpecialWarningYou(136339)--Is this impor
 local specWarnArcNova				= mod:NewSpecialWarningSpell(136338, nil, nil, nil, 2)--3 second cast enough time to run out? should this be a run warning for melee? (will have to guage his hitbox and how far you can stand back to start with)
 
 local timerStormcloudCD				= mod:NewCDTimer(24, 136340)
-local timerLightningTetherCD		= mod:NewNextTimer(40, 136339)
+local timerLightningTetherCD		= mod:NewCDTimer(35, 136339)--Needs more data, they may have tweaked it some.
 local timerArcNovaCD				= mod:NewNextTimer(42, 136338)
 
 mod:AddBoolOption("RangeFrame")--For Stormcloud, might tweek to not show all the time with actual better logs than me facepulling it and dying with 20 seconds
