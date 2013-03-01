@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS"
 )
 
+local warnBite						= mod:NewSpellAnnounce(135251, 3, nil, mod:IsTank())
 local warnRockfall					= mod:NewSpellAnnounce(134476, 2)
 local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
@@ -27,6 +28,7 @@ local specWarnRockfall				= mod:NewSpecialWarningSpell(134476, false, nil, nil, 
 local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
 local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", not mod:IsTank())--Tanks need it too, but they don't just blindly grab it any time it's gone like dps do, they must be at full health whent hey do or it REALLY messes up bats, so a tank needs to often ignore this warning until timing is right
 
+local timerBiteCD					= mod:NewCDTimer(8, 135251, nil, mod:IsTank())
 local timerRockfallCD				= mod:NewCDTimer(10, 134476)
 local timerCallTortosCD				= mod:NewCDTimer(60.5, 136294)
 local timerStompCD					= mod:NewCDTimer(49, 134920)
@@ -76,6 +78,9 @@ function mod:SPELL_CAST_START(args)
 		warnCallofTortos:Show()
 		specWarnCallofTortos:Show()
 		timerCallTortosCD:Start()
+	elseif args:IsSpellID(135251) then
+		warnBite:Show()
+		timerBiteCD:Start()
 	elseif args:IsSpellID(134920) then
 		stompActive = true
 		warnQuakeStomp:Show()
