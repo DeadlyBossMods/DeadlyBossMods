@@ -10,7 +10,7 @@ mod:SetModelID(47414)--Hydra Fire Head, 47415 Frost Head, 47416 Poison Head
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
+--	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -48,10 +48,10 @@ local timerArcticFreezeCD		= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHe
 local timerIgniteFleshCD		= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
 local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
 local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139993, mod:IsTank() or mod:IsHealer())
-local timerCinderCD				= mod:NewCDTimer(20, 139822)--Honestly not sure if this is doable with accuracy, the number of heads in back affects it and they don't always sync up
-local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
-local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
-local timerNetherTearCD			= mod:NewCDTimer(30, 140138)--Heroic
+--local timerCinderCD				= mod:NewCDTimer(20, 139822)--Honestly not sure if this is doable with accuracy, the number of heads in back affects it and they don't always sync up
+--local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
+--local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
+--local timerNetherTearCD			= mod:NewCDTimer(30, 140138)--Heroic
 
 local soundTorrentofIce			= mod:NewSound(139889)
 
@@ -118,11 +118,11 @@ function mod:OnCombatStart(delay)
 	fireBehind = 1
 	venomBehind = 0
 	iceBehind = 0
-	timerCinderCD:Start(42)--Debuff application, not cast (TODO, check to see if heroic is still 19 seconds)
+--	timerCinderCD:Start(42)--Debuff application, not cast (TODO, check to see if heroic is still 19 seconds)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
 		arcaneInFront = 0
-		timerNetherTearCD:Start()
+--		timerNetherTearCD:Start()
 	end
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
@@ -135,7 +135,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(139866) then
-		timerTorrentofIceCD:Start()
+--		timerTorrentofIceCD:Start()
 	end
 end
 
@@ -194,7 +194,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(139822) then
 		warnCinders:Show(args.destName)
-		timerCinderCD:Start()
+--		timerCinderCD:Start()
 		if args:IsPlayer() then
 			specWarnCinders:Show()
 			yellCinders:Yell()
@@ -219,10 +219,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		timerIgniteFleshCD:Cancel()
 		timerRotArmorCD:Cancel()
 		--Not if back ones always cancel here, they seem too
-		timerCinderCD:Cancel()
-		timerTorrentofIceCD:Cancel()
-		timerAcidRainCD:Cancel()
-		timerNetherTearCD:Cancel()
+--		timerCinderCD:Cancel()
+--		timerTorrentofIceCD:Cancel()
+--		timerAcidRainCD:Cancel()
+--		timerNetherTearCD:Cancel()
 		specWarnRampage:Show()
 		timerRampage:Start()
 	elseif msg == L.rampageEnds or msg:find(L.rampageEnds) then
@@ -236,16 +236,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerRotArmorCD:Start(10)
 		end
 		if iceBehind > 0 then
-			timerTorrentofIceCD:Start(40)--40-45
+--			timerTorrentofIceCD:Start(40)--40-45
 		end
 		if fireBehind > 0 then
-			timerCinderCD:Start(30)--30-35
+--			timerCinderCD:Start(30)--30-35
 		end
 		if venomBehind > 0 then
-			timerAcidRainCD:Start(23)
+--			timerAcidRainCD:Start(23)
 		end
 		if arcaneBehind > 0 then
-			timerNetherTearCD:Start()
+--			timerNetherTearCD:Start()
 		end
 	end
 end
@@ -287,14 +287,14 @@ local function CheckHeads(GUID)
 			end
 		end
 	end
-	print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
-	print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
+--	print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
+--	print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 end
 
 --Only real way to detect heads moving from back to front.
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	self:Unschedule(CheckHeads)
-	self:Schedule(2, CheckHeads)--Delay check to make sure dying heads are cleared before accidentally adding them back in after they cast "feign death" but before they actually die"
+	self:Schedule(1, CheckHeads)--Delay check to make sure dying heads are cleared before accidentally adding them back in after they cast "feign death" but before they actually die"
 end
 
 --Unfortunately we need to update the counts sooner than UNIT_DIED fires because we need those counts BEFORE CHAT_MSG_RAID_BOSS_EMOTE fires.
@@ -314,8 +314,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			arcaneInFront = arcaneInFront - 1
 			arcaneBehind = arcaneBehind + 2
 		end
-		print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
-		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
+--		print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
+--		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 	end
 end
 
