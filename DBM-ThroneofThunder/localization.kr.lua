@@ -6,17 +6,28 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetOptionLocalization({
+	RangeFrame		= "거리 창 보기"
+})
+
 --------------
 -- Horridon --
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetWarningLocalization({
+	warnAdds		= "%s"
+})
+
 L:SetTimerLocalization({
-	timerDoor		= "다음 부족의 문 열림",
+	timerDoor		= "다음 부족의 문",--번역 재확인
+	timerAdds		= "다음 %s"
 })
 
 L:SetOptionLocalization({
-	timerDoor		= "다음 부족의 문 열림 바 표시",
+	warnAdds		= "추가 병력 알림 보기",--번역 재확인
+	timerDoor		= "다음 부족의 문 바 표시",--번역 재확인
+	timerAdds		= "다음 추가 병력 바 표시"--번역 재확인
 })
 
 L:SetMiscLocalization({
@@ -139,7 +150,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
-	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 표시되는 똑똑한 거리 창 입니다.)"
+	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)"
 })
 
 -------------------
@@ -149,6 +160,10 @@ L= DBM:GetModLocalization(829)
 
 L:SetOptionLocalization({
 	RangeFrame		= "거리 창 보기(8m)"
+})
+
+L:SetMiscLocalization({
+	DuskPhase		= "Lu'lin! Lend me your strength!"
 })
 
 --------------
@@ -165,3 +180,15 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("ToTTrash")
+
+L:SetGeneralLocalization({
+	name =	"천둥의 왕좌 일반구간"
+})
+
+L:SetOptionLocalization({
+	RangeFrame		= "거리 창 보기(10m)"
+})
