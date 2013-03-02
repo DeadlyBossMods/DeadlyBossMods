@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(827)
 
 L:SetOptionLocalization({
-	RangeFrame		= "為$spell:139997顯示距離框(8碼)"
+	RangeFrame		= "顯示距離框架"
 })
 
 --------------
@@ -15,12 +15,19 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(819)
 
+L:SetWarningLocalization({
+	warnAdds	= "%s"
+})
+
 L:SetTimerLocalization({
 	timerDoor		= "下一個部族的門",
+	timerAdds		= "下一波%s"
 })
 
 L:SetOptionLocalization({
+	warnAdds		= "提示小怪跳下",
 	timerDoor		= "為下一個部族的門顯示計時器",
+	timerAdds		= "為下一次小怪跳下顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -80,7 +87,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
-	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348")
+	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	RangeFrame		= "為$spell:138923顯示距離框架(8碼)"
 })
 
 L:SetMiscLocalization({
@@ -101,7 +109,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(133775)
+	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
+	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向"
 })
 
 ----------------
@@ -153,6 +162,10 @@ L:SetOptionLocalization({
 	RangeFrame		= "顯示距離框架(8碼)"
 })
 
+L:SetMiscLocalization({
+	DuskPhase		= "Lu'lin! Lend me your strength!"--Not in use, but a backup just in case, so translate in case it's switched to on moments notice on live or next PTR test
+})
+
 --------------
 -- Lei Shen --
 --------------
@@ -167,3 +180,15 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("ToTTrash")
+
+L:SetGeneralLocalization({
+	name =	"雷霆王座小怪"
+})
+
+L:SetOptionLocalization({
+	RangeFrame		= "顯示距離框架(10碼)"--For 3 different spells
+})
