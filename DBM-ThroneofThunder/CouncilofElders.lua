@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -58,7 +59,7 @@ local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
 local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122)
 --Sul the Sandcrawler
 local timerQuickSandCD				= mod:NewCDTimer(35, 136521)
---local timerSandStormCD			= mod:NewCDTimer(35, 136894)--insufficent data to determine CD. it does not seem to be tied to quick sand though. on contrary he casts this first time the instant he's possessed.
+local timerSandStormCD				= mod:NewCDTimer(35, 136894)
 --High Prestess Mar'li
 local timerBlessedLoaSpiritCD		= mod:NewCDTimer(33, 137203)--Every 33-35 seconds.
 local timerShadowedLoaSpiritCD		= mod:NewCDTimer(33, 137350)--Possessed version of above, shared CD
@@ -75,7 +76,7 @@ local soundMarkedSoul				= mod:NewSound(137359)
 
 --local berserkTimer				= mod:NewBerserkTimer(490)
 
-mod:AddBoolOption("RangeFrame")--For Sand Bolt and charge
+mod:AddBoolOption("RangeFrame")--For Sand Bolt and charge and biting cold
 
 local SulsName = EJ_GetSectionInfo(7049)
 local boltCasts = 0
@@ -129,7 +130,7 @@ function mod:OnCombatStart(delay)
 	timerRecklessChargeCD:Start(10-delay)--the trigger is 6 seconds from pull, charge will happen at 10. I like timer ending at cast finish for this one though vs tryng to have TWO timers for something that literally only has 6 second cd
 	timerBitingColdCD:Start(15-delay)--15 seconds until debuff, 13 til cast.
 	timerBlessedLoaSpiritCD:Start(25-delay)
-	if self.Options.RangeFrame and self:IsRanged() then--Melee don't need it right now(maybe on heroic melee will use i anyways and split into 2 groups to reduce sand bolt damage, but is suspect most will use an interrupt strategy.
+	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
 end
@@ -152,7 +153,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(136894) then
 		warnSandstorm:Show()
 		specWarnSandStorm:Show()
---		timerSandStormCD:Start()
+		timerSandStormCD:Start()
 	elseif args:IsSpellID(137203) then
 		warnBlessedLoaSpirit:Show()
 		specWarnBlessedLoaSpirit:Show()
@@ -222,9 +223,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBitingCold:Show()
 			yellBitingCold:Yell()
-			if self.Options.RangeFrame and self:IsMelee() then--Ranged are already spreading range 5 for sand bolt so no reason to change their frame.
-				DBM.RangeCheck:Show(4)--To be honest i'm not even sure this CAN target melee, code is here just in case.
-			end
 		end
 	elseif args:IsSpellID(136922) and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
 		warnFrostBite:Show(args.destName)
@@ -248,7 +246,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(136442) then--Possessed
 		if args:GetDestCreatureID() == 69078 then--Sul the Sandcrawler
---			timerSandStormCD:Cancel()
+			timerSandStormCD:Cancel()
 		elseif args:GetDestCreatureID() == 69132 then--High Prestess Mar'li
 			--Swap timer back
 			local elapsed, total
@@ -277,10 +275,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFrigidAssault:Cancel(args.destName)
 	elseif args:IsSpellID(136904) then
 		timerFrigidAssaultCD:Start()
-	elseif args:IsSpellID(136992) and args:IsPlayer() then--Player Debuff version, not cast version
-		if self.Options.RangeFrame and self:IsMelee() then--Ranged want to keep frame open
-			DBM.RangeCheck:Hide()
-		end
 	elseif args:IsSpellID(137359) then
 		timerMarkedSoul:Cancel(args.destName)
 	end
@@ -293,6 +287,23 @@ function mod:UNIT_AURA(uId)
 		chilledWarned = true
 	elseif not UnitDebuff("player", chilledDebuff) and chilledWarned then
 		chilledWarned = false
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 69078 then--Sul the Sandcrawler
+		timerSandStormCD:Cancel()
+	elseif cid == 69132 then--High Prestess Mar'li
+		timerTwistedFateCD:Cancel()
+		timerBlessedLoaSpiritCD:Cancel()
+		timerShadowedLoaSpiritCD:Cancel()
+	elseif cid == 69131 then--Frost King Malakk
+		timerFrostBiteCD:Cancel()
+		timerBitingColdCD:Cancel()
+		timerFrigidAssaultCD:Cancel()
+	elseif cid == 69134 then--Kazra'jin
+		timerRecklessChargeCD:Cancel()
 	end
 end
 
