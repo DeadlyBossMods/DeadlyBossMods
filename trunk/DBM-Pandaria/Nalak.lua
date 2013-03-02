@@ -47,9 +47,9 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(stormcloudTargets)
 	table.wipe(tetherTargets)
-	timerStormcloudCD:Start(15-delay)--15-17 variation noted
-	timerLightningTetherCD:Start(28-delay)
-	timerArcNovaCD:Start(39-delay)--Not a large sample size
+--	timerStormcloudCD:Start(15-delay)--15-17 variation noted
+--	timerLightningTetherCD:Start(28-delay)
+--	timerArcNovaCD:Start(39-delay)--Not a large sample size
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
