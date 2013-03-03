@@ -50,8 +50,8 @@ local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHeale
 local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139993, mod:IsTank() or mod:IsHealer())
 --local timerCinderCD				= mod:NewCDTimer(20, 139822)--Honestly not sure if this is doable with accuracy, the number of heads in back affects it and they don't always sync up
 --local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
---local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
---local timerNetherTearCD			= mod:NewCDTimer(30, 140138)--Heroic
+local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
+local timerNetherTearCD			= mod:NewCDTimer(30, 140138)--Heroic
 
 local soundTorrentofIce			= mod:NewSound(139889)
 
