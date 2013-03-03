@@ -3270,7 +3270,7 @@ end
 do
 	local old = RaidWarningFrame:GetScript("OnEvent")
 	RaidWarningFrame:SetScript("OnEvent", function(self, event, msg, ...)
-		if msg:find("^%s*%*%*%*") then
+		if msg:find("%*%*%* .* %*%*%*") then
 			return
 		end
 		return old(self, event, msg, ...)
