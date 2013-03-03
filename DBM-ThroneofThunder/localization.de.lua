@@ -106,12 +106,21 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
+	warnAddsLeft				= "Nebel verbleibend: %d",
+	specWarnFogRevealed			= "%s offenbart!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
 
 L:SetOptionLocalization({
+	warnAddsLeft				= "Verkünde die Anzahl der verbleibenden Nebel",
+	specWarnFogRevealed			= "Zeige Spezialwarnung, wenn ein Nebel offenbart wird",
 	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
-	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung"
+	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung",
+	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+})
+
+L:SetMiscLocalization({
+	Eye		= "Auge" --needs to be verified (guessed)
 })
 
 ----------------
@@ -188,4 +197,8 @@ L = DBM:GetModLocalization("ToTTrash")
 
 L:SetGeneralLocalization({
 	name =	"Trash des Thron des Donners"
+})
+
+L:SetOptionLocalization({
+	RangeFrame		= "Zeige Abstandsfenster (10m)"
 })
