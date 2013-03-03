@@ -21,6 +21,7 @@ local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
 local warnKickShell					= mod:NewAnnounce("warnKickShell", 2, 134031)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
+local warnCrystalShellVictim		= mod:NewTargetAnnounce(137633, 1)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, 2)
@@ -93,7 +94,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(137633) then
-		warnCrystalShellVictom:Show(args.destName)
+		warnCrystalShellVictim:Show(args.destName)
 	elseif args:IsSpellID(133971) then--Shell Block (turtles dying and becoming kickable)
 		shellsRemaining = shellsRemaining + 1
 	end
