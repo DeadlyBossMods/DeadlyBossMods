@@ -105,12 +105,21 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
+	warnAddsLeft				= "안개도깨비 남음 : %d",
+	specWarnFogRevealed			= "%s 드러남!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
 
 L:SetOptionLocalization({
+	warnAddsLeft				= "안개도깨비 남은 횟수 알림 보기",
+	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
 	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
 	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
+	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+})
+
+L:SetMiscLocalization({
+	Eye		= "눈"--확인 필요, "<72.0 20:04:19> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Bright  Light reveals an Amber Fog!#Amber Fog###--------->Yellow Eye<---------##0#0##0#309#nil#0#false#false", -- [13413]
 })
 
 ----------------
