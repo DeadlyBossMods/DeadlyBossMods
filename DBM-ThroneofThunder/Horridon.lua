@@ -32,7 +32,8 @@ local warnDino					= mod:NewSpellAnnounce("ej7086", 3, 137237)
 local warnMending				= mod:NewSpellAnnounce(136797, 4)
 local warnBestialCry			= mod:NewStackAnnounce(136817, 3)
 local warnRampage				= mod:NewTargetAnnounce(136821, 4, nil, mod:IsTank() or mod:IsHealer())
-local warnDisorientingRoar		= mod:NewTargetAnnounce(137458, 4)
+local warnDireCall				= mod:NewSpellAnnounce(137458, 3)
+local warnDireFixate			= mod:NewTargetAnnounce(140946, 4)
 
 local specWarnCharge			= mod:NewSpecialWarningYou(136769)--Maybe add a near warning later. person does have 3.4 seconds to react though and just move out of group.
 local yellCharge				= mod:NewYell(136769)
@@ -46,7 +47,8 @@ local specWarnFrozenBolt		= mod:NewSpecialWarningMove(136573)--Debuff used by Fr
 local specWarnLightningNova		= mod:NewSpecialWarningMove(136490)--Mainly for LFR or normal. On heroic you're going to die.
 local specWarnJalak				= mod:NewSpecialWarningSwitch("ej7087", mod:IsTank())--To pick him up (and maybe dps to switch, depending on strat)
 local specWarnRampage			= mod:NewSpecialWarningTarget(136821, mod:IsTank() or mod:IsHealer())--Dog is pissed master died, need more heals and cooldowns. Maybe warn dps too? his double swipes and charges will be 100% worse too.
-local specWarnDisorientingRoar	= mod:NewSpecialWarningSpell(137458, nil, nil, nil, 2)--Heroic
+local specWarnDireCall			= mod:NewSpecialWarningSpell(137458, nil, nil, nil, 2)--Heroic
+local specWarnDireFixate		= mod:NewSpecialWarningRun(140946)--Heroic
 
 local timerDoor					= mod:NewTimer(113.5, "timerDoor", 2457)--They seem to be timed off last door start, not last door end. They MAY come earlier if you kill off all first doors adds though not sure yet. If they do, we'll just start new timer anyways
 local timerAdds					= mod:NewTimer(18.91, "timerAdds", 43712)
@@ -58,9 +60,11 @@ local timerPuncture				= mod:NewTargetTimer(90, 136767, nil, mod:IsTank() or mod
 local timerPunctureCD			= mod:NewCDTimer(11, 136767, nil, mod:IsTank() or mod:IsHealer())
 local timerJalakCD				= mod:NewNextTimer(10, "ej7087", nil, nil, nil, 2457)--Maybe it's time for a better worded spawn timer than "Next mobname". Maybe NewSpawnTimer with "mobname activates" or something.
 local timerBestialCryCD			= mod:NewNextCountTimer(10, 136817)
-local timerDisorientingRoarCD	= mod:NewCDTimer(55, 137458)--Heroic
+local timerDireCallCD			= mod:NewCDTimer(55, 137458)--Heroic
 
 local berserkTimer				= mod:NewBerserkTimer(720)
+
+local soundDireFixate			= mod:NewSound(140946)
 
 local doorNumber = 0
 local jalakEngaged = false
@@ -78,7 +82,7 @@ function mod:OnCombatStart(delay)
 	timerChargeCD:Start(31-delay)--31-35sec variation
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerDisorientingRoarCD:Start(-delay)
+		timerDireCallCD:Start(-delay)
 	end
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
@@ -112,9 +116,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnDoubleSwipe:Show()
 		timerDoubleSwipeCD:Start(11.5)--Hard coded failsafe. 136741 version is always 11.5 seconds after 136770 version
 	elseif args:IsSpellID(137458) then
-		warnDisorientingRoar:Show()
-		specWarnDisorientingRoar:Show()
-		timerDisorientingRoarCD:Start()--CD is reset when he breaks a door though.
+		warnDireCall:Show()
+		specWarnDireCall:Show()
+		timerDireCallCD:Start()--CD is reset when he breaks a door though.
 	end
 end
 
@@ -146,6 +150,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(136797) then
 		warnMending:Show()
 		specWarnMending:Show(args.sourceName)
+	elseif args:IsSpellID(140946) then
+		warnDireFixate:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnDireFixate:Show()
+			soundDireFixate:Play()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

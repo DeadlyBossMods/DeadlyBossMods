@@ -75,6 +75,16 @@ local function isTank(unit)
 	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
 		return true
 	end
+	--Even though boss 1 throws spear, boss2-4 are the threat target most of time.
+ 	if UnitExists("boss2target") and UnitDetailedThreatSituation(unit, "boss2") then
+		return true
+	end
+ 	if UnitExists("boss3target") and UnitDetailedThreatSituation(unit, "boss3") then
+		return true
+	end
+ 	if UnitExists("boss4target") and UnitDetailedThreatSituation(unit, "boss4") then
+		return true
+	end
 	return false
 end
 

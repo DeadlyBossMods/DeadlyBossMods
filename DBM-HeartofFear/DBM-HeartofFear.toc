@@ -1,4 +1,4 @@
-﻿## Interface: 50100
+﻿## Interface: 50200
 ## X-Min-Interface: 50001
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Heart of Fear|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Сердце Страха|r
@@ -7,7 +7,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0恐惧之心|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Corazón del miedo|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Cœur de la Peur|r
-## Author: Nitram/Tandanu
+## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMHeartofFear_SavedVars, DBMHeartofFear_SavedStats
