@@ -112,28 +112,29 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---10 man does 3 down 3 up on N and H
---25 man is a clusterfuck of random L, L, L, L, Both(5 and 6), U, U, Both (9 and 10), Both (11 & 12), L, ... (more data and higher counts needed)
---25H is lower, lower, lower, lower & upper, lower & upper, upper with guardian at 2 and 6 (needs more data to go beyond 8 :\)
+--10N/H: L, L, L, U, U, U
+--25N: L, L, L, L, L & U, U, U, L & U, L & U, L, U, U, L & U -- 25 N
+--25H: L, L, L, L & U, L & U, U, L & U, L & U, L, U & L, U & L -- 25 H (credits to caleb for some of 25 man nests, my transcriptor only got up to 13)
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
 		flockCount = flockCount + 1
-		local messageText = msg:find(L.eggsHatchL) and L.Lower or L.Upper
+		local messageText = msg:find(L.eggsHatchL) and L.L or L.U
 		if GetTime() - lastFlock < 5 then--On 25 man, you get two at same time sometimes, we detect that here and revise message
-			messageText = L.UpperAndLower
+			messageText = L.UAndL
 		end
 		warnFlock:Cancel()
 		specWarnFlock:Cancel()
 		timerFlockCD:Cancel()
 		warnFlock:Schedule(0.5, messageText, flockName, flockCount)
 		specWarnFlock:Schedule(0.5, messageText, flockName, flockCount)
-		if self:IsDifficulty("normal10", "heroic10") then
+		--TODO, once verifying nest orders are same on live, and that 25H isn't new 25N numbers, add what next nest is.
+		if self:IsDifficulty("normal10", "heroic10") then--TODO, see if LFR is also 40
 			timerFlockCD:Show(40, flockCount+1)--TODO, confirm this is still true
 		else
-			timerFlockCD:Show(30, flockCount+1)--]]
+			timerFlockCD:Show(30, flockCount+1)
 		end
 		lastFlock = GetTime()
-		if self:IsDifficulty("heroic10") and flockCount % 2 == 0 or self:IsDifficulty("heroic25") and (flockCount == 2 or flockCount == 6) then
+		if self:IsDifficulty("heroic10") and flockCount % 2 == 0 or self:IsDifficulty("heroic25") and (flockCount == 2 or flockCount == 6 or flockCount == 12) then--TODO, find a pattern to this, or if no pattern, find out what's after 12(+2 +4 +6 +8?)
 			specWarnBigBird:Show()
 		end
 	end
