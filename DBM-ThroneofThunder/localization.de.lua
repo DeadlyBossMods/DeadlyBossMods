@@ -21,19 +21,19 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerDoor		= "Nächstes Stammesportal",
+	timerDoor		= "Nächstes Stammestor",
 	timerAdds		= "Nächster %s"
 })
 
 L:SetOptionLocalization({
 	warnAdds		= "Verkünde das Herunterspringen neuer Gegner",
-	timerDoor		= "Zeige Zeit bis nächste Stammesportalphase",
+	timerDoor		= "Zeige Zeit bis nächste Stammestorphase",
 	timerAdds		= "Zeige Zeit bis der nächste Gegner herunterspringt"
 })
 
 L:SetMiscLocalization({
-	newForces		= "stürmen aus dem Stammesportal", --needs to be verified (PTR video-captured translation)
-	chargeTarget	= "schlägt mit dem Schwanz auf den Boden!" --needs to be verified (PTR video-captured translation)
+	newForces		= "stürmen aus dem Stammestor",
+	chargeTarget	= "schlägt mit dem Schwanz auf den Boden!"
 })
 
 ---------------------------
@@ -86,9 +86,14 @@ L:SetWarningLocalization({
 	specWarnFlock	= "%s %s (%d)"
 })
 
+L:SetTimerLocalization({
+	timerFlockCD	= "Nest (%d): %s"
+})
+
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
 	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "Zeige Abstandsfenster (8m) für $spell:138923"
 })
 
