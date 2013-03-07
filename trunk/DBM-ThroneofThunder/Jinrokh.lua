@@ -42,6 +42,8 @@ local timerIonizationCD				= mod:NewCDTimer(60, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
 
+local berserkTimer					= mod:NewBerserkTimer(540)
+
 mod:AddBoolOption("RangeFrame")
 
 local scansDone = 0
@@ -89,6 +91,7 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerIonizationCD:Start(60-delay)
 	end
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
