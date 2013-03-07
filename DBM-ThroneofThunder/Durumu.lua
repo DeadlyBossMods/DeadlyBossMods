@@ -46,7 +46,7 @@ local specWarnBlueBeam				= mod:NewSpecialWarningYou(133677)
 local specWarnRedBeam				= mod:NewSpecialWarningYou(133732)
 local specWarnYellowBeam			= mod:NewSpecialWarningYou(133738)
 local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed")
-local specWarnDisintegrationBeam	= mod:NewSpecialWarning("specWarnDisintegrationBeam", nil, nil, nil, 2)
+local specWarnDisintegrationBeam	= mod:NewSpecialWarningSpell(134169, nil, nil, nil, 2)
 local specWarnEyeSore				= mod:NewSpecialWarningMove(140502)
 local specWarmLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())
 
@@ -61,7 +61,7 @@ local timerDisintegrationBeam		= mod:NewBuffActiveTimer(60, "ej6882")
 local timerDisintegrationBeamCD		= mod:NewNextTimer(131, "ej6882")
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
-mod:AddBoolOption("ArrowOnBeam", true)
+--mod:AddBoolOption("ArrowOnBeam", true)
 mod:AddBoolOption("SetIconRays", true)
 
 local totalFogs = 3
@@ -96,9 +96,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.ArrowOnBeam then
+--[[	if self.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
-	end
+	end--]]
 	if self.Options.SetIconRays and lastRed then
 		self:SetIcon(lastRed, 0)
 		self:SetIcon(lastBlue, 0)
@@ -260,6 +260,12 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	--Seems the easiest way to localize this is to just scan for npc with "eye" in it and npc for mobname in the announce. Better than localizing 3 msg variations (one of which has a typo that may get fixed)
 	elseif target:find(L.Eye) then--Untested, but should work if I don't have args backwards. Looks like Fog name is npc and target is revealing eye
 		specWarnFogRevealed:Show(npc)
+	elseif msg:find("spell:134169") then
+		timerLingeringGazeCD:Cancel()
+		warnDisintegrationBeam:Show()
+		specWarnDisintegrationBeam:Show()
+		timerDisintegrationBeam:Start()
+		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
 	end
 end
 
@@ -318,6 +324,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
+As of live, they removed ability to detect this thus ability to detect beam direction also gone.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	if spellId == 136316 and self:AntiSpam(2, 2) then--Disintegration Beam (clockwise)
 		timerLingeringGazeCD:Cancel()
@@ -339,3 +347,4 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
 	end
 end
+--]]

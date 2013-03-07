@@ -128,7 +128,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		warnFlock:Schedule(0.5, messageText, flockName, flockCount)
 		specWarnFlock:Schedule(0.5, messageText, flockName, flockCount)
 		--TODO, once verifying nest orders are same on live, and that 25H isn't new 25N numbers, add what next nest is.
-		if self:IsDifficulty("normal10", "heroic10") then--TODO, see if LFR is also 40
+		if self:IsDifficulty("heroic10") then--TODO, see if this is even true at all for heroic? just verified it's not for 10 man normal
 			timerFlockCD:Show(40, flockCount+1)--TODO, confirm this is still true
 		else
 			timerFlockCD:Show(30, flockCount+1)
