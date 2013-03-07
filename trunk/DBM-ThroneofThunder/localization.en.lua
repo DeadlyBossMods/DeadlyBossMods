@@ -133,7 +133,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Show range frame (5/2)"
+	RangeFrame			= "Show range frame (5/2)",
+	SetIconOnBadOoze	= "Set icon on Living Fluid that drops $spell:140506"
 })
 
 -----------------
