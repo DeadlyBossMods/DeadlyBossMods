@@ -139,8 +139,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	--"<317.2 15:12:36> [CLEU] SPELL_AURA_APPLIED_DOSE#false#0xF1310B7C0000383C#Horridon#68168#0#0xF1310B7C0000383C#Horridon#68168#0#137240#Cracked Shell#1#BUFF#4", -- [21950]
 	--"<327.0 15:12:46> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Horridon#0xF1310B7C0000383C#elite#261178058#1#1#War-God Jalak <--War-God Jalak jumps down
 	--He jumps down 10 seconds after 4th door is smashed, or when Horridon reaches 30%
-	elseif args:IsSpellID(137240) and (args.amount or 1) == 4 and not jalakEngaged then--We check door smashes and whether or not jalak has jumped down yet
---		timerJalakCD:Start(59.5)--was this changed? he doesn't come down after 4th door is destroyed anymore. he seemed to ONLY come down based on horridons health now?
 	elseif args:IsSpellID(136817) then
 		warnBestialCry:Show(args.destName, args.amount or 1)
 		timerBestialCryCD:Start(5, (args.amount or 1)+1)
@@ -177,9 +175,13 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
+
+--"<372.2 21:39:53> [RAID_BOSS_EMOTE] RAID_BOSS_EMOTE#Amani forces pour from the Amani Tribal Door!#War-God Jalak#0#false", -- [77469]
+--"<515.3 21:42:16> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Horridon#0xF1310B7C0000467C#elite#522686397#1#1#War-God Jalak
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	if UnitExists("boss2") and tonumber(UnitGUID("boss2"):sub(6, 10), 16) == 69374 and not jalakEngaged then--Jalak is jumping down
 		jalakEngaged = true--Set this so we know not to concern with 4th door anymore (plus so we don't fire extra warnings when we wipe and ENGAGE fires more)
+		timerJalakCD:Cancel()
 		specWarnJalak:Show()
 		timerBestialCryCD:Start(5, 1)
 		self:UnregisterShortTermEvents()--TODO, maybe add unit health checks to warn dog is close to 40% if we aren't done with doors yet. If it's added, we can unregister health here as well
@@ -228,6 +230,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		end
 		if doorNumber < 4 then
 			timerDoor:Start()
+		else
+			if not jalakEngaged then
+				timerJalakCD:Start(143)
+			end
 		end
 	end
 end
