@@ -36,9 +36,9 @@ local specWarnBigBird		= mod:NewSpecialWarningSwitch("ej7827", mod:IsTank())
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuillsCD			= mod:NewCDTimer(60, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 60-67 seconds usually after channel of some other spell ends
 local timerFlockCD	 		= mod:NewTimer(30, "timerFlockCD", 15746)
---local timerTalonRakeCD	= mod:NewCDTimer(10, 134366, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
+local timerTalonRakeCD		= mod:NewCDTimer(20, 134366, mod:IsTank() or mod:IsHealer())--20-30 second variation
 local timerTalonRake		= mod:NewTargetTimer(60, 134366, mod:IsTank() or mod:IsHealer())
-local timerDowndraftCD		= mod:NewCDTimer(110, 134370)
+local timerDowndraftCD		= mod:NewCDTimer(97, 134370)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
@@ -48,8 +48,8 @@ local flockName = EJ_GetSectionInfo(7348)
 
 function mod:OnCombatStart(delay)
 	flockC = 0
-	timerQuillsCD:Start(50-delay)
-	timerDowndraftCD:Start(-delay)
+	timerQuillsCD:Start(42.5-delay)
+	timerDowndraftCD:Start(91-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -65,6 +65,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(134366) then
 		warnTalonRake:Show(args.destName, args.amount or 1)
 		timerTalonRake:Start(args.destName)
+		timerTalonRakeCD:Start()
 		if args:IsPlayer() then
 			if (args.amount or 1) >= 2 then
 				specWarnTalonRake:Show(args.amount)
