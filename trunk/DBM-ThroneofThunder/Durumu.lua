@@ -72,9 +72,7 @@ local lingeringGazeTargets = {}
 local lastRed = nil
 local lastBlue = nil
 local blueTracking = GetSpellInfo(139202)
-local blueTarget = nil
 local redTracking = GetSpellInfo(139204)
-local redTarget = nil
 
 local function warnLingeringGazeTargets()
 	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
@@ -94,8 +92,6 @@ end
 function mod:OnCombatStart(delay)
 	lastRed = nil
 	lastBlue = nil
-	blueTarget = nil
-	redTarget = nil
 	table.wipe(lingeringGazeTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
@@ -231,7 +227,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 				end
 			end
 		end
---[[elseif msg:find("spell:134122") then--Blue Rays
+	elseif msg:find("spell:134122") then--Blue Rays
 		warnBlueBeam:Show(target)
 		if target == UnitName("player") then
 			specWarnBlueBeam:Show()
@@ -248,7 +244,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		if self.Options.SetIconRays then
 			self:SetIcon(target, 7)--Cross
 			lastRed = target
-		end--]]
+		end
 	elseif msg:find("spell:134124") then--useful only on heroic and LFR since there are only amber adds in them. Normal 10 and normal 25 do not have amber adds (why LFR does is beyond me)
 		totalFogs = 3
 		timerForceOfWillCD:Cancel()
@@ -281,32 +277,25 @@ end
 
 --Because blizz sucks and these do NOT show in combat log AND the emote only fires for initial application, but not for when a player dies and beam jumps.
 function mod:UNIT_AURA(uId)
-	if UnitDebuff(uId, blueTracking) and not blueTarget then
-		blueTarget = uId
-		local name = DBM:GetUnitFullName(uId)
+	local name = DBM:GetUnitFullName(uId)
+	if UnitDebuff(uId, blueTracking) and lastBlue ~= name then
+		lastBlue = name
 		warnBlueBeam:Show(name)
 		if name == UnitName("player") then
 			specWarnBlueBeam:Show()
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(name, 6)--Square
-			lastBlue = name
 		end
-	elseif blueTarget and blueTarget == uId and not UnitDebuff(uId, blueTracking) then
-		blueTarget = nil
-	elseif UnitDebuff(uId, redTracking) and not redTarget then
-		redTarget = uId
-		local name = DBM:GetUnitFullName(uId)
+	elseif UnitDebuff(uId, redTracking) and lastRed ~= name then
+		lastRed = name
 		warnRedBeam:Show(name)
 		if name == UnitName("player") then
 			specWarnRedBeam:Show()
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(name, 7)--Cross
-			lastRed = name
 		end
-	elseif redTarget and redTarget == uId and not UnitDebuff(uId, redTracking) then
-		redTarget = nil
 	end
 end
 
