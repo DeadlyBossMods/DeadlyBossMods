@@ -56,6 +56,7 @@ local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139167)--Heroic Phase 1
 local timerFrostSpikeCD					= mod:NewCDTimer(12, 139180)--Heroic Phase 2
 
+local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("RangeFrame", true)--One tooltip says 8 yards, other says 10. Confirmed it's 10 during testing though. Ignore the 8 on spellid 134611
 
@@ -126,6 +127,7 @@ function mod:OnCombatStart(delay)
 			"UNIT_DIED"--Alternate phase detection for normal (not sure if needed, but just in case, i deleted my normal mode log and don't remember if they fired "eject all passengers" there.
 		)
 	end
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
