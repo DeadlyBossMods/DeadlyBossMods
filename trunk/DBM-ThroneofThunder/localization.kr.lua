@@ -85,9 +85,14 @@ L:SetWarningLocalization({
 	specWarnFlock	= "%2$ : %1$ (%3$d)",
 })
 
+L:SetTimerLocalization({
+	timerFlockCD	= "둥지 (%d): %s"
+})
+
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
 	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "$spell:138923 주문에 대한 거리 창 보기(8m)"
 })
 
