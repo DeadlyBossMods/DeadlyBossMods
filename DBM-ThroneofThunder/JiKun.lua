@@ -35,19 +35,19 @@ local specWarnBigBird		= mod:NewSpecialWarningSwitch("ej7827", mod:IsTank())
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuillsCD			= mod:NewCDTimer(60, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 60-67 seconds usually after channel of some other spell ends
-local timerFlockCD	 		= mod:NewNextCountTimer(30, "ej7348", nil, nil, nil, 15746)
+local timerFlockCD	 		= mod:NewTimer(30, "timerFlockCD", 15746)
 --local timerTalonRakeCD	= mod:NewCDTimer(10, 134366, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerTalonRake		= mod:NewTargetTimer(60, 134366, mod:IsTank() or mod:IsHealer())
 local timerDowndraftCD		= mod:NewCDTimer(110, 134370)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
-local flockCount = 0
+local flockC = 0
 local lastFlock = 0
 local flockName = EJ_GetSectionInfo(7348)
 
 function mod:OnCombatStart(delay)
-	flockCount = 0
+	flockC = 0
 	timerQuillsCD:Start(50-delay)
 	timerDowndraftCD:Start(-delay)
 	if self.Options.RangeFrame then
@@ -112,29 +112,55 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---10N/H: L, L, L, U, U, U
---25N: L, L, L, L, L & U, U, U, L & U, L & U, L, U, U, L & U -- 25 N
---25H: L, L, L, L & U, L & U, U, L & U, L & U, L, U & L, U & L -- 25 H (credits to caleb for some of 25 man nests, my transcriptor only got up to 13)
+--10N/H: L, L, L, U, U, U (Repeating)
+--25N: Lower (1), Lower (2), Lower (3), Lower (4), Lower & Upper (5+6), Upper (7), Upper (8), Lower & Upper (9+10), Lower & Upper (11+12), Lower (13), Lower (14), Lower & Upper (15+16), Upper (17), Lower & Upper (18+19), Lower & Upper (20+21), Lower & Upper (22+23), Lower (24), Lower & Upper (25+26), Lower & Upper (27+28)
+--25H: L (1), L (2), L (3), L & U (4+5), L & U (6+7), U (8), L & U (9+10), L & U (11+12), L (13), U & L (14+15), U & L (16+17) -- 25 H (credits to caleb for some of 25 man nest)
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
-		flockCount = flockCount + 1
+		flockC = flockC + 1
 		local messageText = msg:find(L.eggsHatchL) and L.L or L.U
 		if GetTime() - lastFlock < 5 then--On 25 man, you get two at same time sometimes, we detect that here and revise message
 			messageText = L.UAndL
 		end
 		warnFlock:Cancel()
 		specWarnFlock:Cancel()
-		timerFlockCD:Cancel()
-		warnFlock:Schedule(0.5, messageText, flockName, flockCount)
-		specWarnFlock:Schedule(0.5, messageText, flockName, flockCount)
+		timerFlockCD:Cancel()--So we don't get two timers on the double nests on 25 man
+		warnFlock:Schedule(0.5, messageText, flockName, flockC)
+		specWarnFlock:Schedule(0.5, messageText, flockName, flockC)
 		--TODO, once verifying nest orders are same on live, and that 25H isn't new 25N numbers, add what next nest is.
-		if self:IsDifficulty("heroic10") then--TODO, see if this is even true at all for heroic? just verified it's not for 10 man normal
-			timerFlockCD:Show(40, flockCount+1)--TODO, confirm this is still true
-		else
-			timerFlockCD:Show(30, flockCount+1)
+		if self:IsDifficulty("normal10", "heroic10") then--TODO, see if heroic 10 is still 40 seconds in between for some reason (also, see if LFR is same pattern)
+			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
+				timerFlockCD:Show(30, flockC+1, L.L)
+			elseif flockC == 3 or flockC == 4 or flockC == 5 or flockC == 9 or flockC == 10 or flockC == 11 or flockC == 15 or flockC == 16 or flockC == 17 or flockC == 21 or flockC == 22 or flockC == 23 or flockC == 27 or flockC == 28 or flockC == 29 or flockC == 33 or flockC == 34 or flockC == 35 then--Upper is next
+				timerFlockCD:Show(30, flockC+1, L.U)
+			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
+				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
+			end
+		elseif self:IsDifficulty("normal25") then
+			if flockC == 1 or flockC == 2 or flockC == 3 or flockC == 12 or flockC == 13 or flockC == 23 then--Lower is next
+				timerFlockCD:Show(30, flockC+1, L.L)
+			elseif flockC == 6 or flockC == 7 or flockC == 16 then--Upper is next
+				timerFlockCD:Show(30, flockC+1, L.U)
+			elseif flockC == 4 or flockC == 8 or flockC == 10 or flockC == 14 or flockC == 17 or flockC == 19 or flockC == 21 or flockC == 24 or flockC == 26 then--Both are next
+				timerFlockCD:Show(30, flockC+1, L.UAndL)
+			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
+				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
+			end
+		elseif self:IsDifficulty("heroic25") then
+			if flockC == 1 or flockC == 2 or flockC == 12 then--Lower is next
+				timerFlockCD:Show(30, flockC+1, L.L)
+			elseif flockC == 7 then--Upper is next
+				timerFlockCD:Show(30, flockC+1, L.U)
+			elseif flockC == 3 or flockC == 5 or flockC == 8 or flockC == 10 or flockC == 13 or flockC == 15 then--Both are next
+				timerFlockCD:Show(30, flockC+1, L.UAndL)
+			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
+				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
+			end
+		else--LFR, which we have no data for yet.
+			timerFlockCD:Show(30, flockC+1)
 		end
 		lastFlock = GetTime()
-		if self:IsDifficulty("heroic10") and flockCount % 2 == 0 or self:IsDifficulty("heroic25") and (flockCount == 2 or flockCount == 6 or flockCount == 12) then--TODO, find a pattern to this, or if no pattern, find out what's after 12(+2 +4 +6 +8?)
+		if self:IsDifficulty("heroic10") and flockC % 2 == 0 or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12) then--TODO, find a pattern to this, or if no pattern, find out what's after 12(+2 +4 +6 +8?)
 			specWarnBigBird:Show()
 		end
 	end
