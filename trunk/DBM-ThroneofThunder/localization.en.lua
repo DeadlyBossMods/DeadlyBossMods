@@ -85,9 +85,14 @@ L:SetWarningLocalization({
 	specWarnFlock	= "%s %s (%d)"
 })
 
+L:SetTimerLocalization({
+	timerFlockCD	= "Nest (%d): %s"
+})
+
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
 	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "Show range frame (8) for $spell:138923"
 })
 
