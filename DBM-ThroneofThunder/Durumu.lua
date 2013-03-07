@@ -17,17 +17,20 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISS",
 	"CHAT_MSG_MONSTER_EMOTE",
 	"UNIT_DIED",
+	"UNIT_AURA",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnHardStare					= mod:NewSpellAnnounce(133765, 3, nil, mod:IsTank() or mod:IsHealer())--Announce CAST not debuff, cause it misses a lot, plus we have 1 sec to hit an active mitigation
-local warnForceOfWill				= mod:NewSpellAnnounce(136413, 4)
+local warnForceOfWill				= mod:NewTargetAnnounce(136413, 4)
 local warnLingeringGaze				= mod:NewTargetAnnounce(138467, 3)--Seems highly variable Cd so no timer for this yet
-local warnBlueBeam					= mod:NewTargetAnnounce(133677, 2)
-local warnRedBeam					= mod:NewTargetAnnounce(133732, 2)
-local warnYellowBeam				= mod:NewTargetAnnounce(133738, 2)
+local warnBlueBeam					= mod:NewTargetAnnounce(139202, 2)
+local warnRedBeam					= mod:NewTargetAnnounce(139204, 2)
+local warnYellowBeam				= mod:NewTargetAnnounce(133738, 2)--Cannot find a tracking ID for this one
 local warnAddsLeft					= mod:NewAnnounce("warnAddsLeft", 2, 134123)
 local warnDisintegrationBeam		= mod:NewSpellAnnounce("ej6882", 4)
 local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -42,8 +45,8 @@ local yellForceOfWill				= mod:NewYell(136413)
 local specWarnLingeringGaze			= mod:NewSpecialWarningYou(134044)
 local yellLingeringGaze				= mod:NewYell(134044, nil, false)
 local specWarnLingeringGazeMove		= mod:NewSpecialWarningMove(134044)
-local specWarnBlueBeam				= mod:NewSpecialWarningYou(133677)
-local specWarnRedBeam				= mod:NewSpecialWarningYou(133732)
+local specWarnBlueBeam				= mod:NewSpecialWarningYou(139202)
+local specWarnRedBeam				= mod:NewSpecialWarningYou(139204)
 local specWarnYellowBeam			= mod:NewSpecialWarningYou(133738)
 local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed")
 local specWarnDisintegrationBeam	= mod:NewSpecialWarningSpell(134169, nil, nil, nil, 2)
@@ -68,6 +71,10 @@ local totalFogs = 3
 local lingeringGazeTargets = {}
 local lastRed = nil
 local lastBlue = nil
+local blueTracking = GetSpellInfo(139202)
+local blueTarget = nil
+local redTracking = GetSpellInfo(139204)
+local redTarget = nil
 
 local function warnLingeringGazeTargets()
 	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
@@ -87,6 +94,8 @@ end
 function mod:OnCombatStart(delay)
 	lastRed = nil
 	lastBlue = nil
+	blueTarget = nil
+	redTarget = nil
 	table.wipe(lingeringGazeTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
@@ -110,7 +119,6 @@ function mod:SPELL_CAST_START(args)
 		warnHardStare:Show()
 		timerHardStareCD:Start()
 	elseif args:IsSpellID(138467) then
-		warnLingeringGaze:Show()
 		timerLingeringGazeCD:Start()
 	elseif args:IsSpellID(134587) and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
@@ -218,38 +226,40 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 					x, y = GetPlayerMapPosition(uId)
 				end
 				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-				if inRange and inRange < 11 then--Guessed range.
+				if inRange and inRange < 13 then--Guessed range.
 					specWarnForceOfWillNear:Show(target)
 				end
 			end
 		end
-	elseif msg:find("spell:134122") then--Blue Rays
-		timerForceOfWillCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") then
-			timerObliterateCD:Start()
-		end
+--[[elseif msg:find("spell:134122") then--Blue Rays
 		warnBlueBeam:Show(target)
 		if target == UnitName("player") then
-			warnBlueBeam:Show()
+			specWarnBlueBeam:Show()
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(target, 6)--Square
 			lastBlue = target
 		end
 	elseif msg:find("spell:134123") then--Infrared Light (red)
-		totalFogs = 3
 		warnRedBeam:Show(target)
 		if target == UnitName("player") then
-			warnRedBeam:Show()
+			specWarnRedBeam:Show()
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(target, 7)--Cross
 			lastRed = target
+		end--]]
+	elseif msg:find("spell:134124") then--useful only on heroic and LFR since there are only amber adds in them. Normal 10 and normal 25 do not have amber adds (why LFR does is beyond me)
+		totalFogs = 3
+		timerForceOfWillCD:Cancel()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerObliterateCD:Start()
 		end
-	elseif msg:find("spell:134124") and self:IsDifficulty("heroic10", "heroic25", "lfr25") then--useful only on heroic and LFR since there are only amber adds in them. Normal 10 and normal 25 do not have amber adds (why LFR does is beyond me)
-		warnYellowBeam:Show(target)
-		if target == UnitName("player") then
-			specWarnYellowBeam:Show()
+		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
+			warnYellowBeam:Show(target)
+			if target == UnitName("player") then
+				specWarnYellowBeam:Show()
+			end
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(target, 1, 10)--Star (auto remove after 10 seconds because this beam untethers one initial person positions it.
@@ -266,6 +276,37 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		specWarnDisintegrationBeam:Show()
 		timerDisintegrationBeam:Start()
 		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
+	end
+end
+
+--Because blizz sucks and these do NOT show in combat log AND the emote only fires for initial application, but not for when a player dies and beam jumps.
+function mod:UNIT_AURA(uId)
+	if UnitDebuff(uId, blueTracking) and not blueTarget then
+		blueTarget = uId
+		local name = DBM:GetUnitFullName(uId)
+		warnBlueBeam:Show(name)
+		if name == UnitName("player") then
+			specWarnBlueBeam:Show()
+		end
+		if self.Options.SetIconRays then
+			self:SetIcon(name, 6)--Square
+			lastBlue = name
+		end
+	elseif blueTarget and blueTarget == uId and not UnitDebuff(uId, blueTracking) then
+		blueTarget = nil
+	elseif UnitDebuff(uId, redTracking) and not redTarget then
+		redTarget = uId
+		local name = DBM:GetUnitFullName(uId)
+		warnRedBeam:Show(name)
+		if name == UnitName("player") then
+			specWarnRedBeam:Show()
+		end
+		if self.Options.SetIconRays then
+			self:SetIcon(name, 7)--Cross
+			lastRed = name
+		end
+	elseif redTarget and redTarget == uId and not UnitDebuff(uId, redTracking) then
+		redTarget = nil
 	end
 end
 
@@ -324,27 +365,27 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
-As of live, they removed ability to detect this thus ability to detect beam direction also gone.
+--As of live, they removed ability to detect this thus ability to detect beam direction also gone.
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 	if spellId == 136316 and self:AntiSpam(2, 2) then--Disintegration Beam (clockwise)
-		timerLingeringGazeCD:Cancel()
+--[[		timerLingeringGazeCD:Cancel()
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show(spellName, DBM_CORE_LEFT)
 		timerDisintegrationBeam:Start()
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(90)
 		end
-		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
+		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
+		print("DBM Debug: Clockwise beam spellid re-enabled by blizzard.")
 	elseif spellId == 133775 and self:AntiSpam(2, 2) then--Disintegration Beam (counter-clockwise)
-		timerLingeringGazeCD:Cancel()
+--[[		timerLingeringGazeCD:Cancel()
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show(spellName, DBM_CORE_RIGHT)
 		timerDisintegrationBeam:Start()
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(270)
 		end
-		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
+		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
+		print("DBM Debug: Counter-Clockwise beam spellid re-enabled by blizzard.")
 	end
 end
---]]
