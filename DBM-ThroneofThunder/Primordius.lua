@@ -5,6 +5,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69017)--69070 Viscous Horror
 mod:SetModelID(47009)
+mod:SetUsedIcons(3)
 
 mod:RegisterCombat("combat")
 
@@ -14,7 +15,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_TARGET",
+	"UPDATE_MOUSEOVER_UNIT"
 )
 
 local warnMalformedBlood			= mod:NewStackAnnounce(136050, 2, nil, mod:IsTank() or mod:IsHealer())--No cd bars for this because it's HIGHLY variable (lowest priority spell so varies wildly depending on bosses 3 buffs)
@@ -47,6 +50,7 @@ local timerViscousHorrorCD			= mod:NewNextTimer(30, "ej6969", nil, nil, nil, 137
 local berserkTimer					= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("RangeFrame", true)--Right now, EVERYTHING targets melee. If blizz listens to feedback, it may change to just ranged.
+mod:AddBoolOption("SetIconOnBadOoze", true)
 
 local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
@@ -168,5 +172,28 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerPustuleEruptionCD:Start()
 	elseif spellId == 136050 and self:AntiSpam(2, 2) then--Malformed Blood
 		
+	end
+end
+
+function mod:TrySetTarget()
+	for i = 1, DBM:GetNumGroupMembers() do
+		local cid = self:GetCIDFromGUID(UnitGUID("raid"..i.."target"))
+		if cid == 70579 then
+			SetRaidTarget("raid"..i.."target", 3)
+		end
+	end
+end
+
+function mod:UNIT_TARGET()
+	local cid = self:GetCIDFromGUID(UnitGUID("target"))
+	if DBM:GetRaidRank() >= 1 and self.Options.SetIconOnBadOoze and (cid == 70579 or cid == 69069) then--Because not everyone has assist, lets just fire a check of all raid targets if EITHER ooze ID is up and targeted to see if someone else is targeting the bad one
+		self:TrySetTarget()
+	end
+end
+
+function mod:UPDATE_MOUSEOVER_UNIT()
+	local cid = self:GetCIDFromGUID(UnitGUID("mouseover"))
+	if DBM:GetRaidRank() >= 1 and self.Options.SetIconOnBadOoze and cid == 70579 then--Because not everyone has assist, lets just fire a check of all raid targets if EITHER ooze ID is up and targeted to see if someone else is targeting the bad one
+		SetRaidTarget("mouseover", 3)
 	end
 end
