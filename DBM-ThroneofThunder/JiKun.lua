@@ -27,7 +27,7 @@ local warnFeedYoung			= mod:NewSpellAnnounce(137528, 3)--No Cd because it variab
 
 local specWarnQuills		= mod:NewSpecialWarningSpell(134380, nil, nil, nil, 2)
 local specWarnFlock			= mod:NewSpecialWarning("specWarnFlock", false)--For those assigned in egg/bird killing group to enable on their own (and tank on heroic)
-local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 3)--Might change to 2 if blizz fixes timing issues with it
+local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 2)--Might change to 2 if blizz fixes timing issues with it
 local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
 local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, 2)
 local specWarnFeedYoung		= mod:NewSpecialWarningSpell(137528)
@@ -66,11 +66,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTalonRake:Show(args.destName, args.amount or 1)
 		timerTalonRake:Start(args.destName)
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 3 then
+			if (args.amount or 1) >= 2 then
 				specWarnTalonRake:Show(args.amount)
 			end
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(134366)) and not UnitIsDeadOrGhost("player") then
+			if (args.amount or 1) >= 1 and not UnitDebuff("player", GetSpellInfo(134366)) and not UnitIsDeadOrGhost("player") then
 				specWarnTalonRakeOther:Show(args.destName)
 			end
 		end
