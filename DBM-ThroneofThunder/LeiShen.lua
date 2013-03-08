@@ -237,7 +237,7 @@ local function LoopIntermission()
 		timerDiffusionChainCD:Start(13)
 	end
 	if not southDestroyed then
-		timerOverchargeCD:Start(20)
+		timerOverchargeCD:Start(13)
 	end
 	if not northDestroyed then
 		timerStaticchargeCD:Start(25)
@@ -283,7 +283,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 		end
 		if not southDestroyed then
-			timerOverchargeCD:Start(14)
+			timerOverchargeCD:Start(7)
 		end
 		if not northDestroyed then
 			timerStaticchargeCD:Start(19)
