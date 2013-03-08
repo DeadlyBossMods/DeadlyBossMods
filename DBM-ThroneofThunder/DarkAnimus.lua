@@ -31,7 +31,7 @@ local specWarnCrimsonWakeYou		= mod:NewSpecialWarningRun(138480)--Kiter
 local specWarnCrimsonWake			= mod:NewSpecialWarningMove(138485)--Standing in stuff left behind by kiter
 local yellCrimsonWake				= mod:NewYell(138480)
 local specWarnMatterSwap			= mod:NewSpecialWarningYou(138609)
-local specWarnExplosiveSlam			= mod:NewSpecialWarningStack(138569, mod:IsTank(), 2)--Assumed value drycode, won't know until cd is observed
+local specWarnExplosiveSlam			= mod:NewSpecialWarningStack(138569, mod:IsTank(), 4)--Assumed value drycode, won't know until cd is observed
 local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTank())
 --Boss
 local specWarnAnimaRing				= mod:NewSpecialWarningYou(136954)
@@ -40,9 +40,10 @@ local yellAnimaRing					= mod:NewYell(136954)
 local specWarnInterruptingJolt		= mod:NewSpecialWarningCast(138763, nil, nil, nil, 2)
 
 local timerMatterSwap				= mod:NewTargetTimer(12, 138609)--If not dispelled, it ends after 12 seconds regardless
+local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or mod:IsHealer())
 --Boss
 local timerSiphonAnimaCD			= mod:NewNextTimer(30, 138644)
-local timerAnimaRingCD				= mod:NewCDTimer(30.5, 136954)
+local timerAnimaRingCD				= mod:NewCDTimer(22, 136954)
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--TODO, this wasn't cast as often on normal. Find out if they actually have different CDs or if it was buffed since normal was tested.
 
 local soundCrimsonWake				= mod:NewSound(138480)
@@ -126,15 +127,18 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(138569) then
-		warnExplosiveSlam:Show(args.destName, args.amount or 1)
---		timerImpaleCD:Start()
-		if args:IsPlayer() then
-			if (args.amount or 1) >= 2 then
-				specWarnExplosiveSlam:Show(args.amount)
-			end
-		else
-			if (args.amount or 1) >= 1 and not UnitDebuff("player", GetSpellInfo(138569)) and not UnitIsDeadOrGhost("player") then
-				specWarnExplosiveSlamOther:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if isTank(uId) then--Only want sprays that are on tanks, not bads standing on tanks.
+			warnExplosiveSlam:Show(args.destName, args.amount or 1)
+			timerExplosiveSlam:Start(args.destName)
+			if args:IsPlayer() then
+				if (args.amount or 1) >= 4 then
+					specWarnExplosiveSlam:Show(args.amount)
+				end
+			else
+				if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(138569)) and not UnitIsDeadOrGhost("player") then
+					specWarnExplosiveSlamOther:Show(args.destName)
+				end
 			end
 		end
 	elseif args:IsSpellID(138609) then
@@ -153,13 +157,18 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(138609) then
 		timerMatterSwap:Cancel(args.destName)
+	elseif args:IsSpellID(138569) then
+		timerExplosiveSlam:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 138485 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnCrimsonWake:Show()
+--"<84.3 22:50:19> [CLEU] SPELL_DAMAGE#false#0x040000000587A80F#Crones#1300#0#0x040000000587A80F#Crones#1300#0#138618#Matter Swap#64#187086#-1#64#nil#nil#51355#nil#nil#nil#nil", -- [9602]
+--"<84.3 22:50:19> [CLEU] SPELL_DAMAGE#false#0x040000000587A80F#Crones#1300#0#0x04000000060845B3#Rvst#1300#0#138618#Matter Swap#64#52388#-1#64#nil#nil#162209#nil#nil#nil#nil", -- [9604]
 	elseif spellId == 138618 then
+		if sourceGUID == destGUID then return end--Filter first event then grab both targets from second event, as seen from log example above
 		if not guidTableBuilt then
 			buildGuidTable()
 			guidTableBuilt = true
