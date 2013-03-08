@@ -129,7 +129,15 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		warnFlock:Schedule(0.5, messageText, flockName, flockC)
 		specWarnFlock:Schedule(0.5, messageText, flockName, flockC)
 		--TODO, once verifying nest orders are same on live, and that 25H isn't new 25N numbers, add what next nest is.
-		if self:IsDifficulty("normal10", "heroic10") then--TODO, see if heroic 10 is still 40 seconds in between for some reason (also, see if LFR is same pattern)
+		if self:IsDifficulty("normal10") then
+			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
+				timerFlockCD:Show(40, flockC+1, L.Lower)
+			elseif flockC == 3 or flockC == 4 or flockC == 5 or flockC == 9 or flockC == 10 or flockC == 11 or flockC == 15 or flockC == 16 or flockC == 17 or flockC == 21 or flockC == 22 or flockC == 23 or flockC == 27 or flockC == 28 or flockC == 29 or flockC == 33 or flockC == 34 or flockC == 35 then--Upper is next
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
+				timerFlockCD:Show(40, flockC+1, DBM_CORE_UNKNOWN)
+			end
+		elseif self:IsDifficulty("heroic10") then--TODO, see if heroic 10 is still 40 seconds in between for some reason (also, see if LFR is same pattern)
 			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
 				timerFlockCD:Show(30, flockC+1, L.Lower)
 			elseif flockC == 3 or flockC == 4 or flockC == 5 or flockC == 9 or flockC == 10 or flockC == 11 or flockC == 15 or flockC == 16 or flockC == 17 or flockC == 21 or flockC == 22 or flockC == 23 or flockC == 27 or flockC == 28 or flockC == 29 or flockC == 33 or flockC == 34 or flockC == 35 then--Upper is next
