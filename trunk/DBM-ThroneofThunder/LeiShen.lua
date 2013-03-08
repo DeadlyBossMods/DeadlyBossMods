@@ -234,21 +234,23 @@ end
 
 local function LoopIntermission()
 	if not eastDestroyed then
-		timerDiffusionChainCD:Start(13.5)
+		timerDiffusionChainCD:Start(13)
 	end
 	if not southDestroyed then
-		timerOverchargeCD:Start(13.5)
+		timerOverchargeCD:Start(20)
 	end
 	if not northDestroyed then
-		timerStaticchargeCD:Start(21.5)
+		timerStaticchargeCD:Start(25)
 	end
 	if not westDestroyed then
-		timerBouncingBoltCD:Start(21.5)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
+		timerBouncingBoltCD:Start(25)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
 	end
 end
 
---[[
+--[[PTR Data (Live needed)
 "<175.9 21:21:38> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit boss2:Supercharge Conduits::0:137146",
+"<176.1 21:21:38> [CLEU] SPELL_CAST_START#false#0xF1310B2D000087B6#Lei Shen#2632#0##Unknown#-2147483648#-2147483648#137045#Supercharge Conduits#8", -- [38181]
+"<181.5 21:21:44> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0xF1310B2D000087B6#Lei Shen#2632#0#137045#Supercharge Conduits#8#BUFF", -- [38715]
 --First Wave
 "<182.7 21:21:45> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000E8E87#Cougarhunter#1300#0#135991#Diffusion Chain#8",
 "<183.9 21:21:46> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x0100000000047A51#Kaisers#1300#0#136295#Overcharged#8#DEBUFF",
@@ -281,15 +283,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 		end
 		if not southDestroyed then
-			timerOverchargeCD:Start(7)
+			timerOverchargeCD:Start(14)
 		end
 		if not northDestroyed then
-			timerStaticchargeCD:Start(15)
+			timerStaticchargeCD:Start(19)
 		end
 		if not westDestroyed then
-			timerBouncingBoltCD:Start(15)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
+			timerBouncingBoltCD:Start(19)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
 		end
-		self:Schedule(18, LoopIntermission)--Fire function to start second wave of specials timers
+		self:Schedule(19, LoopIntermission)--Fire function to start second wave of specials timers
 	elseif spellId == 136395 and self:AntiSpam(2, 3) then--Bouncing Bolt (think it's right trigger, could be wrong though). Does NOT work in intermission phases though :\
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
