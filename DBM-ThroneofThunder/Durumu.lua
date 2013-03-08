@@ -60,8 +60,8 @@ local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 secon
 local timerLightSpectrumCD			= mod:NewCDTimer(60, "ej6891")--Don't know when 2nd one is cast.
 local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
-local timerDisintegrationBeam		= mod:NewBuffActiveTimer(60, "ej6882")
-local timerDisintegrationBeamCD		= mod:NewNextTimer(131, "ej6882")
+local timerDisintegrationBeam		= mod:NewBuffActiveTimer(65, "ej6882")
+local timerDisintegrationBeamCD		= mod:NewNextTimer(127, "ej6882")
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 --mod:AddBoolOption("ArrowOnBeam", true)
@@ -83,9 +83,9 @@ local function BeamEnded()
 	if mod.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
 	end
-	timerForceOfWillCD:Start(19)
-	timerLingeringGazeCD:Start(25)
-	timerLightSpectrumCD:Start(37)
+	timerForceOfWillCD:Start(14)
+	timerLingeringGazeCD:Start(21)
+	timerLightSpectrumCD:Start(32)
 	timerDisintegrationBeamCD:Start()
 end
 
@@ -271,7 +271,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show()
 		timerDisintegrationBeam:Start()
-		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
+		self:Schedule(65, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
 	end
 end
 
@@ -364,7 +364,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(90)
 		end
-		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
+		self:Schedule(65, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
 		print("DBM Debug: Clockwise beam spellid re-enabled by blizzard.")
 	elseif spellId == 133775 and self:AntiSpam(2, 2) then--Disintegration Beam (counter-clockwise)
 --[[		timerLingeringGazeCD:Cancel()
@@ -374,7 +374,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
 		if self.Options.ArrowOnBeam then
 			DBM.Arrow:ShowStatic(270)
 		end
-		self:Schedule(60, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
+		self:Schedule(65, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
 		print("DBM Debug: Counter-Clockwise beam spellid re-enabled by blizzard.")
 	end
 end
