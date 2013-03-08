@@ -39,8 +39,6 @@ local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, 
 local specWarnStormCloud				= mod:NewSpecialWarningMove(137669)
 local specWarnLightningStorm			= mod:NewSpecialWarningYou(136192)
 local yellLightningStorm				= mod:NewYell(136192)
-local specWarnFreeze					= mod:NewSpecialWarningYou(135145)--Maybe not useful? may toss this warning but keep only yell to help OTHER players keep away from it. Not sure person it's cast on can do anything about it in 1 second
-local yellFreeze						= mod:NewYell(135145)
 local specWarnFrozenBlood				= mod:NewSpecialWarningMove(136520)
 
 local timerImpale						= mod:NewTargetTimer(40, 134691, mod:IsTank() or mod:IsHealer())
@@ -50,7 +48,7 @@ local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
 local timerMoltenOverload				= mod:NewBuffActiveTimer(10, 137221)
 local timerLightningStormCD				= mod:NewCDTimer(20, 136192)
-local timerWindStormCD					= mod:NewCDTimer(90, 136577)
+local timerWindStormCD					= mod:NewCDTimer(70, 136577)
 local timerFreezeCD						= mod:NewCDTimer(20, 135145)
 local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139167)--Heroic Phase 1
@@ -59,53 +57,29 @@ local timerFrostSpikeCD					= mod:NewCDTimer(12, 139180)--Heroic Phase 2
 local berserkTimer						= mod:NewBerserkTimer(720)
 
 mod:AddBoolOption("RangeFrame", true)--One tooltip says 8 yards, other says 10. Confirmed it's 10 during testing though. Ignore the 8 on spellid 134611
+mod:AddBoolOption("InfoFrame")
 
 local phase = 1--Not sure this is useful yet, coding it in, in case spear cd is different in different phases
-local scansDone = 0
+local arcingName = GetSpellInfo(136193)
 
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
+local function checkArcing()
+	local arcingDebuffs = 0
+	for i = 1, GetNumGroupMembers() do
+		local uId = "raid"..i
+		if UnitDebuff(uId, arcingName) then
+			arcingDebuffs = arcingDebuffs + 1
+		end
 	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
-		return true
-	end
-	--Even though boss 1 throws spear, boss2-4 are the threat target most of time.
- 	if UnitExists("boss2target") and UnitDetailedThreatSituation(unit, "boss2") then
-		return true
-	end
- 	if UnitExists("boss3target") and UnitDetailedThreatSituation(unit, "boss3") then
-		return true
-	end
- 	if UnitExists("boss4target") and UnitDetailedThreatSituation(unit, "boss4") then
-		return true
-	end
-	return false
-end
-
-function mod:TargetScanner(Force)
-	scansDone = scansDone + 1
-	local targetname, uId = self:GetBossTarget(68078)
-	if UnitExists(targetname) then
-		if isTank(uId) and not Force then
-			if scansDone < 12 then
-				self:ScheduleMethod(0.025, "TargetScanner")
-			else
-				self:TargetScanner(true)
-			end
-		else
-			print("DBM Debug: Spear on ", targetname)
+	if arcingDebuffs == 0 then
+		self:Unschedule(checkArcing)
+		if mod.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
+		if mod.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
 		end
 	else
-		if scansDone < 12 then
-			self:ScheduleMethod(0.025, "TargetScanner")
-		end
+		self:Schedule(5, checkArcing)
 	end
 end
 
@@ -122,6 +96,10 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerWhirlingWindsCD:Start(20-delay)
 		timerLightningStormCD:Start(22-delay)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(136193))
+			DBM.InfoFrame:Show(5, "playerbaddebuff", 136193)
+		end
 	else
 		self:RegisterShortTermEvents(
 			"UNIT_DIED"--Alternate phase detection for normal (not sure if needed, but just in case, i deleted my normal mode log and don't remember if they fired "eject all passengers" there.
@@ -135,8 +113,10 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
-
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(134691) then
@@ -177,10 +157,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerFreezeCD:Start(36)
 		else
 			timerFreezeCD:Start()
-		end
-		if args:IsPlayer() then
-			specWarnFreeze:Show()
-			yellFreeze:Yell()
 		end
 	end
 end
@@ -223,8 +199,6 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(134926) then
-		scansDone = 0
-		self:TargetScanner()
 		warnThrowSpear:Show()
 		specWarnThrowSpear:Show()
 		timerThrowSpearCD:Start()
@@ -250,7 +224,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
 		timerUnleashedFlameCD:Start()
-	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (have to use this because they don't die on heroic)
+	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (heroic phase change trigger)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		timerThrowSpearCD:Start(39)--TODO: Verify this is consistent
 		if cid == 68079 then--Ro'shak
@@ -267,8 +241,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				timerFrostSpikeCD:Start(18)
 			end
 			timerLightningStormCD:Start()
+			warnWindStorm:Schedule(52)
+			specWarnWindStorm:Schedule(52)
 			timerWindStormCD:Start(52)
-			print("Mod beyond this point is incomplete and most timers will be unavailable")
+			print("DBM: Mod beyond this point is incomplete and most timers will be unavailable")
 		elseif cid == 68080 then--Quet'zal
 			phase = 3
 			timerLightningStormCD:Cancel()
@@ -282,11 +258,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 						DBM.RangeCheck:Show(10, nil, nil, 2)--You can have 1 person in range safely. Frame goes red at 2
 					end
 				end
-			else
-				if self.Options.RangeFrame then--On normal we hide range frame though, it's done being used.
-					DBM.RangeCheck:Hide()
-				end
 			end
+			checkArcing()
 		elseif cid == 68081 then--Dam'ren
 			timerDeadZoneCD:Cancel()
 			phase = 4
@@ -300,8 +273,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--"<168.1 19:53:31> [UNIT_SPELLCAST_SUCCEEDED] Quet'zal [[boss3:Rushing Winds::0:137656]]", -- [13876]
 	--"<170.1 19:29:36> [CLEU] SPELL_MISSED#true##nil#2632#0#0x010000000003A244#Oxey#1300#8#136577#Wind Storm#8#MISS#nil", -- [11314]
 	elseif spellId == 137656 and self:AntiSpam(2, 1) then--Rushing Winds (Wind Storm pre trigger)
-		warnWindStorm:Show()
-		specWarnWindStorm:Show()
+		warnWindStorm:Cancel()
+		specWarnWindStorm:Cancel()
+		warnWindStorm:Schedule(70)
+		specWarnWindStorm:Schedule(70)
 		timerWindStormCD:Start()
 	end
 end
@@ -312,20 +287,26 @@ function mod:UNIT_DIED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10, nil, nil, 1)--Switch range frame back to 1. Range is assumed 10, no spell info
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(arcingName)
+			DBM.InfoFrame:Show(5, "playerbaddebuff", 136193)
+		end
 		--Only one log, but i looks like spear cd from phase 1 remains intact
 		phase = 2
 		timerUnleashedFlameCD:Cancel()
 		timerMoltenOverload:Cancel()
 		timerLightningStormCD:Start(17)
+		warnWindStorm:Schedule(49.5)
+		specWarnWindStorm:Schedule(49.5)
 		timerWindStormCD:Start(49.5)
-		print("Mod beyond this point is incomplete and some timers will be unavailable")
+		print("DBM: Mod beyond this point is incomplete and some timers will be unavailable")
 	elseif cid == 68080 then--Quet'zal
 		phase = 3
 		timerLightningStormCD:Cancel()
+		warnWindStorm:Cancel()
+		specWarnWindStorm:Cancel()
 		timerWindStormCD:Cancel()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
-		end
+		checkArcing()
 	elseif cid == 68081 then--Dam'ren
 		self:UnregisterShortTermEvents()
 		timerDeadZoneCD:Cancel()
