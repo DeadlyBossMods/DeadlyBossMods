@@ -165,7 +165,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
-	RangeFrame		= "Show dynamic range frame\n(This is a smart range frame that shows when too many are too close)"
+	RangeFrame		= "Show dynamic range frame\n(This is a smart range frame that shows when too many are too close)",
+	InfoFrame		= "Show info frame for players with $spell:136193"
 })
 
 -------------------
