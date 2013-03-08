@@ -116,7 +116,7 @@ function mod:OnCombatStart(delay)
 		if self:IsDifficulty("normal10", "heroic10") then
 			DBM.RangeCheck:Show(10, nil, nil, 2)
 		else
-			DBM.RangeCheck:Show(10, nil, nil, 6)
+			DBM.RangeCheck:Show(10, nil, nil, 4)
 		end
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
