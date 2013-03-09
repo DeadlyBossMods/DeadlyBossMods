@@ -205,7 +205,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerNightmaresCD:Start()
 			countdownNightmares:Start(15.5)
 		end
-	elseif spellId == 123252 and self:AntiSpam(2, 2) then--Dread Shadows Cancel (Sun Phase)
+	elseif spellId == 123252 and self:AntiSpam(2, 2) and self:IsInCombat() then--Dread Shadows Cancel (Sun Phase)
 		lightOfDayCount = 0
 		terrorCount = 0
 		breathCount = 0
