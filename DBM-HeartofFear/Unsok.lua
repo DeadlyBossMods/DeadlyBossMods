@@ -28,7 +28,7 @@ mod:RegisterEventsInCombat(
 local warnReshapeLifeTutor		= mod:NewAnnounce("warnReshapeLifeTutor", 1, 122784)--Another LFR focused warning really.
 local warnReshapeLife			= mod:NewAnnounce("warnReshapeLife", 4, 122784)
 local warnWillPower				= mod:NewAnnounce("warnWillPower", 3, 63050)
-local warnAmberScalpel			= mod:NewTargetAnnounce(121994, 3)
+local warnAmberScalpel			= mod:NewSpellAnnounce(121994, 3)
 local warnParasiticGrowth		= mod:NewTargetAnnounce(121949, 4, nil, mod:IsHealer())
 local warnAmberGlob				= mod:NewTargetAnnounce(125502, 4)--Heroic drycode, might need some tweaks
 --Construct
@@ -47,9 +47,9 @@ local warnFling					= mod:NewSpellAnnounce(122413, 3, nil, mod:IsTank())--think 
 local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 122398)
 
 --Boss
-local specwarnAmberScalpel			= mod:NewSpecialWarningYou(121994)
-local yellAmberScalpel				= mod:NewYell(121994)
-local specwarnAmberScalpelNear		= mod:NewSpecialWarningClose(121994)
+local specwarnAmberScalpel			= mod:NewSpecialWarningSpell(121994, nil, nil, nil, 2)
+--local yellAmberScalpel				= mod:NewYell(121994)
+--local specwarnAmberScalpelNear		= mod:NewSpecialWarningClose(121994)
 local specwarnReshape				= mod:NewSpecialWarningYou(122784)
 local specwarnParasiticGrowth		= mod:NewSpecialWarningTarget(121949, mod:IsHealer())
 local specwarnParasiticGrowthYou	= mod:NewSpecialWarningYou(121949) -- This warn will be needed at player is clustered together. Especially on Phase 3.
@@ -100,7 +100,7 @@ local playerIsConstruct = false
 local warnedWill = false
 local willNumber = 100--Last warned player will power number (not same as actual player will power)
 local lastStrike = 0
-local scansDone = 0
+--local scansDone = 0
 local amDestabalizeStack = 0
 local amWarnCount = 0
 local Totems = nil
@@ -120,6 +120,7 @@ local function buildGuidTable()
 	end
 end
 
+--[[
 function mod:ScalpelTarget()
 	if playerIsConstruct then return end--Don't need this info as a construct
 	scansDone = scansDone + 1
@@ -149,7 +150,7 @@ function mod:ScalpelTarget()
 			self:ScheduleMethod(0.2, "ScalpelTarget")
 		end
 	end
-end
+end--]]
 
 function mod:AmberExplosionAMWarning()
 	amWarnCount = amWarnCount + 1
@@ -425,8 +426,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(122348) then
 		warnLivingAmber:Show()
 	elseif args:IsSpellID(121994) then
-		scansDone = 0
-		self:ScheduleMethod(0.2, "ScalpelTarget")
+		warnAmberScalpel:Show()
+		specwarnAmberScalpel:Show()
+--		scansDone = 0
+--		self:ScheduleMethod(0.2, "ScalpelTarget")
 	elseif args:IsSpellID(122532) then
 		Puddles = Puddles + 1
 		warnBurningAmber:Show(Puddles)
