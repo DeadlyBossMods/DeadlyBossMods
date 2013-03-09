@@ -133,7 +133,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetOptionLocalization({
-	RangeFrame		= "거리 창 보기(5m/2m)"
+	RangeFrame			= "거리 창 보기(5m/2m)",
+	SetIconOnBadOoze	= "$spell:140506를 생성하는 살아있는 점액에 전술 목표 아이콘 설정"
 })
 
 -----------------
@@ -164,7 +165,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
-	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)"
+	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)",
+	InfoFrame		= "$spell:136193 주문에 영향을 받은 대상을 정보 창에서 보기"
 })
 
 -------------------
