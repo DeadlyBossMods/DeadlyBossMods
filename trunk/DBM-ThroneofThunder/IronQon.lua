@@ -26,7 +26,9 @@ local warnMoltenOverload				= mod:NewSpellAnnounce(137221, 4)
 local warnWindStorm						= mod:NewSpellAnnounce(136577, 4)
 local warnLightningStorm				= mod:NewTargetAnnounce(136192, 3)
 local warnDeadZone						= mod:NewAnnounce("warnDeadZone", 3, 137229)
-local warnFreeze						= mod:NewTargetAnnounce(135145, 3)
+local warnFreeze						= mod:NewTargetAnnounce(135145, 3, nil, false)--Spammy, more of a duh type warning I think
+local warnRisingAnger					= mod:NewStackAnnounce(136323, 2, nil, false)
+local warnFistSmash						= mod:NewSpellAnnounce(136146, 3)
 local warnWhirlingWinds					= mod:NewSpellAnnounce(139167, 3)--Heroic Phase 1
 local warnFrostSpike					= mod:NewSpellAnnounce(139180, 3)--Heroic Phase 2
 
@@ -40,6 +42,7 @@ local specWarnStormCloud				= mod:NewSpecialWarningMove(137669)
 local specWarnLightningStorm			= mod:NewSpecialWarningYou(136192)
 local yellLightningStorm				= mod:NewYell(136192)
 local specWarnFrozenBlood				= mod:NewSpecialWarningMove(136520)
+local specWarnFistSmash					= mod:NewSpecialWarningSpell(136146, nil, nil, nil, 2)
 
 local timerImpale						= mod:NewTargetTimer(40, 134691, mod:IsTank() or mod:IsHealer())
 local timerImpaleCD						= mod:NewCDTimer(20, 134691, mod:IsTank() or mod:IsHealer())
@@ -48,9 +51,11 @@ local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
 local timerMoltenOverload				= mod:NewBuffActiveTimer(10, 137221)
 local timerLightningStormCD				= mod:NewCDTimer(20, 136192)
-local timerWindStormCD					= mod:NewCDTimer(70, 136577)
-local timerFreezeCD						= mod:NewCDTimer(20, 135145)
+local timerWindStormCD					= mod:NewNextTimer(70, 136577)
+local timerFreezeCD						= mod:NewCDTimer(7, 135145, nil, false)
 local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
+local timerRisingAngerCD				= mod:NewNextTimer(10, 136323, nil, false)
+local timerFistSmashCD					= mod:NewNextTimer(20, 136146)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139167)--Heroic Phase 1
 local timerFrostSpikeCD					= mod:NewCDTimer(12, 139180)--Heroic Phase 2
 
@@ -79,6 +84,7 @@ local function checkArcing()
 			DBM.InfoFrame:Hide()
 		end
 	else
+		print("DBM Debug: "..arcingDebuffs.." debuffs remaining.")--To figure out why this isn't working, because i thought the code was pretty solid
 		self:Schedule(5, checkArcing)
 	end
 end
@@ -158,6 +164,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerFreezeCD:Start()
 		end
+	elseif args:IsSpellID(136323) then
+		warnRisingAnger:Show(args.destName, args.amount or 1)
+		timerRisingAngerCD:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -250,6 +259,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerLightningStormCD:Cancel()
 			timerWindStormCD:Cancel()
 			timerFrostSpikeCD:Cancel()
+			timerDeadZoneCD:Start(8.5)
 			if self:IsDifficulty("heroic10", "heroic25") then--On heroic, the fire guy returns and attacks clumps again
 				if self.Options.RangeFrame then--So on heroic we need to restore the grouping range frame
 					if self:IsDifficulty("heroic25") then
@@ -262,6 +272,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			checkArcing()
 		elseif cid == 68081 then--Dam'ren
 			timerDeadZoneCD:Cancel()
+			timerFreezeCD:Cancel()
+			timerRisingAngerCD:Start(12.5)
+			timerFistSmashCD:Start(25)
 			phase = 4
 		end
 	elseif spellId == 139172 and self:AntiSpam(2, 7) then--Whirling Winds (Phase 1 Heroic)
@@ -278,6 +291,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnWindStorm:Schedule(70)
 		specWarnWindStorm:Schedule(70)
 		timerWindStormCD:Start()
+	elseif spellId == 136146 and self:AntiSpam(2, 5) then
+		warnFistSmash:Show()
+		specWarnFistSmash:Show()
+		timerFistSmashCD:Start()
 	end
 end
 
@@ -299,17 +316,20 @@ function mod:UNIT_DIED(args)
 		warnWindStorm:Schedule(49.5)
 		specWarnWindStorm:Schedule(49.5)
 		timerWindStormCD:Start(49.5)
-		print("DBM: Mod beyond this point is incomplete and some timers will be unavailable")
 	elseif cid == 68080 then--Quet'zal
 		phase = 3
 		timerLightningStormCD:Cancel()
 		warnWindStorm:Cancel()
 		specWarnWindStorm:Cancel()
 		timerWindStormCD:Cancel()
+		timerDeadZoneCD:Start(6)
 		checkArcing()
 	elseif cid == 68081 then--Dam'ren
 		self:UnregisterShortTermEvents()
 		timerDeadZoneCD:Cancel()
+		timerFreezeCD:Cancel()
+		timerRisingAngerCD:Start()
+		timerFistSmashCD:Start(22.5)
 		phase = 4
 	end
 end
