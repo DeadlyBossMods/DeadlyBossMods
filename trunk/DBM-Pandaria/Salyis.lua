@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnCannonBarrage			= mod:NewSpellAnnounce(121600, 3)
-local warnStomp					= mod:NewCastAnnounce(121787, 3)
+local warnStomp					= mod:NewCastAnnounce(121787, 3, 3)
 local warnWarmonger				= mod:NewSpellAnnounce("ej6200", 2, 121747)
 
 local specWarnCannonBarrage		= mod:NewSpecialWarningSpell(121600, mod:IsTank())

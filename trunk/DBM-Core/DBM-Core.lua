@@ -2715,8 +2715,9 @@ function DBM:EndCombat(mod, wipe)
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
-				--mod:UnregisterInCombatEvents()
-				DBM:Schedule(3, mod.UnregisterInCombatEvents, mod) -- Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
+				mod:UnregisterInCombatEvents()
+				--If delays unregister events, sometime timer starts even boss died. (espcially ToES Tsulong, MV Will of Emperor). Yeah, I know this can solve icon removing issue, but this produces another timer and warning issues. I think timer issue is more important than icon issue, so disable this hack until timer and warning issues solves.
+				--DBM:Schedule(3, mod.UnregisterInCombatEvents, mod) -- Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
