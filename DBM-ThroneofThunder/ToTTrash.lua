@@ -61,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(137162) then--Or 139559, not sure which
+	if args:IsSpellID(139322) then--Or 139559, not sure which
 		stormEnergyTargets[#stormEnergyTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnStormEnergy:Show()
