@@ -1131,30 +1131,6 @@ do
 	end
 end
 
---invoke using /script DBM:TaintTest()
---This will taint all 4 indexes
---Once done, just try to change a glyph. ;)
-local indexChanger = 0
-function DBM:TaintTest()
-	indexChanger = indexChanger + 1
-	StaticPopupDialogs["DBM_TAINT_TEST"] = {
-		preferredIndex = indexChanger,
-		text = "I am tainting your UI. ".."index: "..indexChanger,
-		button1 = DBM_CORE_OK,
-		OnAccept = function()
-			if indexChanger < 4 then
-				DBM:TaintTest()
-			else
-				indexChanger = 0
-			end
-		end,
-		timeout = 0,
-		exclusive = 1,
-		whileDead = 1
-	}
-	StaticPopup_Show("DBM_TAINT_TEST")
-end
-
 
 ----------------------
 --  Minimap Button  --
@@ -2715,9 +2691,8 @@ function DBM:EndCombat(mod, wipe)
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
-				mod:UnregisterInCombatEvents()
-				--If delays unregister events, sometime timer starts even boss died. (espcially ToES Tsulong, MV Will of Emperor). Yeah, I know this can solve icon removing issue, but this produces another timer and warning issues. I think timer issue is more important than icon issue, so disable this hack until timer and warning issues solves.
-				--DBM:Schedule(3, mod.UnregisterInCombatEvents, mod) -- Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
+				--mod:UnregisterInCombatEvents()
+				DBM:Schedule(1.5, mod.UnregisterInCombatEvents, mod) -- Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
