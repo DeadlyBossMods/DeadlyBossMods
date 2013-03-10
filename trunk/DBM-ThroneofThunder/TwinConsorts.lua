@@ -31,7 +31,7 @@ local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check targ
 local warnIceComet						= mod:NewSpellAnnounce(137419, 2)
 local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4)--Heroic
 --Dusk
-local warnTidalForce					= mod:NewCastAnnounce(137531, 2)
+local warnTidalForce					= mod:NewCastAnnounce(137531, 3)
 
 --Darkness
 local specWarnCosmicBarrage				= mod:NewSpecialWarningSpell(136752, false, nil, nil, 2)
@@ -81,23 +81,15 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(137491) then
-		warnNuclearInferno:Show()
-		specWarnNuclearInferno:Show()
-		timerNuclearInfernoCD:Start()
+		self:SendSync("Inferno")
 	elseif args:IsSpellID(137531) then
-		warnTidalForce:Show()
-		specWarnTidalForce:Show()
-		timerTidalForceCD:Start()
+		self:SendSync("TidalForce")
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136752) then
-		warnCosmicBarrage:Show()
-		specWarnCosmicBarrage:Show()
-		if timerDayCD:GetTime() < 165 then
-			timerCosmicBarrageCD:Start()
-		end
+		self:SendSync("CosmicBarrage")
 	elseif args:IsSpellID(137404) then
 		warnTearsOfSun:Show()
 		specWarnTearsOfSun:Show()
@@ -158,11 +150,7 @@ end
 --"<339.3 18:38:02> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Suen#0xF1310D2800005863#worldboss#410952978#nil#1#Unknown#0xF1310D2900005864#worldboss#310232488
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	if UnitExists("boss2") and tonumber(UnitGUID("boss2"):sub(6, 10), 16) == 68905 then--Make sure we don't trigger it off another engage such as wipe engage event
-		self:UnregisterShortTermEvents()
-		timerFanOfFlamesCD:Cancel()
-		timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
-		timerTidalForceCD:Start(20)
-		timerCosmicBarrageCD:Start(48)
+		self:SendSync("Phase3")
 	end
 end
 
@@ -191,6 +179,15 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerTearsOfTheSunCD:Start(23)
 		timerBeastOfNightmaresCD:Start()
 	elseif spellId == 137187 and self:AntiSpam(2, 2) then--Lu'lin Ports away (Day Phase)
+		self:SendSync("Phase2")
+	elseif spellId == 138823 and self:AntiSpam(2, 3) then
+		warnLightOfDay:Show()
+		timerLightOfDayCD:Start()
+	end
+end
+
+function mod:OnSync(msg, guid)
+	if msg == "Phase2" then
 		timerCosmicBarrageCD:Cancel()
 		timerTearsOfTheSunCD:Cancel()
 		timerBeastOfNightmaresCD:Cancel()
@@ -208,9 +205,25 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 		)
-	elseif spellId == 138823 and self:AntiSpam(2, 3) then
-		warnLightOfDay:Show()
-		timerLightOfDayCD:Start()
+	elseif msg == "Phase3" then
+		self:UnregisterShortTermEvents()
+		timerFanOfFlamesCD:Cancel()
+		timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
+		timerTidalForceCD:Start(20)
+		timerCosmicBarrageCD:Start(48)
+	elseif msg == "TidalForce" then
+		warnTidalForce:Show()
+		specWarnTidalForce:Show()
+		timerTidalForceCD:Start()
+	elseif msg == "CosmicBarrage" then
+		warnCosmicBarrage:Show()
+		specWarnCosmicBarrage:Show()
+		if timerDayCD:GetTime() < 165 then
+			timerCosmicBarrageCD:Start()
+		end
+	elseif msg == "Inferno" then
+		warnNuclearInferno:Show()
+		specWarnNuclearInferno:Show()
+		timerNuclearInfernoCD:Start()
 	end
 end
-
