@@ -40,8 +40,11 @@ local warnSummonBallLightning			= mod:NewSpellAnnounce(136543, 3)--This seems to
 
 --Conduits (All phases)
 local specWarnStaticShock				= mod:NewSpecialWarningYou(135695)
-local yellOvercharged					= mod:NewYell(136295)--Person it's on is snared and can't move. Personal Special warning not useful since they don't react to it, everyone else does
-local specWarnOvercharged				= mod:NewSpecialWarningSpell(136295, false)--Maybe this though to alert everyone else it was cast.
+local yellStaticShock					= mod:NewYell(135695)
+local specWarnStaticShockNear			= mod:NewSpecialWarningClose(135695)
+local specWarnOvercharged				= mod:NewSpecialWarningYou(136295)
+local yellOvercharged					= mod:NewYell(136295)
+local specWarnOverchargedNear			= mod:NewSpecialWarningClose(136295)
 local specWarnBouncingBolt				= mod:NewSpecialWarningSpell(136361, false)
 --Phase 1
 local specWarnDecapitate				= mod:NewSpecialWarningRun(135000, mod:IsTank())
@@ -55,10 +58,10 @@ local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil
 --Phase 3
 
 --Conduits (All phases)
-local timerStaticShockCD				= mod:NewCDTimer(40, 135695)--Confirmed
-local timerDiffusionChainCD				= mod:NewCDTimer(40, 135991)--Assumed, not confirmed
-local timerOverchargeCD					= mod:NewCDTimer(40, 136295)--Assumed, not confirmed
-local timerBouncingBoltCD				= mod:NewCDTimer(40, 136361)--Confirmed
+local timerStaticShockCD				= mod:NewCDTimer(40, 135695)
+local timerDiffusionChainCD				= mod:NewCDTimer(40, 135991)
+local timerOverchargeCD					= mod:NewCDTimer(40, 136295)
+local timerBouncingBoltCD				= mod:NewCDTimer(40, 136361)
 local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually intermission only, but it fits best with conduits
 --Phase 1
 local timerDecapitateCD					= mod:NewCDTimer(50, 135000)--Cooldown with some variation. 50-57ish or so.
@@ -70,6 +73,8 @@ local timerSummonBallLightningCD		= mod:NewCDTimer(46, 136543)--VERY variable, a
 --Phase 3
 
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("OverchargeArrow")--On by default because the overcharge target is always pinned and unable to run away. You must always run to them, so everyone will want this arrow on
+mod:AddBoolOption("StaticShockArrow", false)--Off by default as most static shock stack points are pre defined and not based on running to player, but rathor running to a raid flare on ground
 
 local phase = 1
 local intermissionActive = false--Not in use yet, but will be. This will be used (once we have CD bars for regular phases mapped out) to prevent those cd bars from starting during intermissions and messing up the custom intermission bars
@@ -107,6 +112,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.OverchargeArrow or self.Options.StaticShockArrow then
+		DBM.Arrow:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -141,6 +149,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStaticShockCD:Start()
 		if args:IsPlayer() then
 			specWarnStaticShock:Show()
+			yellStaticShock:Yell()
+		else
+			if not intermissionActive and self:IsMelee() then return end--Melee do not help soak these during normal phases, only during intermissions
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 31 then
+					specWarnStaticShockNear:Show(args.destName)
+					if self.Options.StaticShockArrow then
+						DBM.Arrow:ShowRunTo(args.destName, 3, 3, 8)
+					end
+				end
+			end
 		end
 		self:Unschedule(warnStaticShockTargets)
 		self:Schedule(0.3, warnStaticShockTargets)
@@ -148,7 +174,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		overchargeTarget[#overchargeTarget + 1] = args.destName
 		timerOverchargeCD:Start()
 		if args:IsPlayer() then
+			specWarnOvercharged:Show()
 			yellOvercharged:Yell()
+		else
+			if not intermissionActive and self:IsMelee() then return end--Melee do not help soak these during normal phases, only during intermissions
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 31 then
+					specWarnOverchargedNear:Show(args.destName)
+					if self.Options.OverchargeArrow then
+						DBM.Arrow:ShowRunTo(args.destName, 3, 3, 6)
+					end
+				end
+			end
 		end
 		self:Unschedule(warnOverchargeTargets)
 		self:Schedule(0.3, warnOverchargeTargets)
@@ -246,6 +290,8 @@ local function LoopIntermission()
 		timerStaticShockCD:Start(20)
 	end
 	if not westDestroyed then
+		warnBouncingBolt:Schedule(23)
+		specWarnBouncingBolt:Schedule(23)
 		timerBouncingBoltCD:Start(23)
 	end
 end
@@ -308,6 +354,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerOverchargeCD:Start(6)
 		end
 		if not westDestroyed then
+			warnBouncingBolt:Schedule(18)
+			specWarnBouncingBolt:Schedule(18)
 			timerBouncingBoltCD:Start(18)
 		end
 		if not northDestroyed then
