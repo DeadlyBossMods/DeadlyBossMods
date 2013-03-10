@@ -1273,6 +1273,10 @@ local function CreateOptionsMenu()
 		local DisableCinematics			= generaloptions:CreateCheckButton(L.DisableCinematics, true, nil, "DisableCinematics")
 		local DisableCinematicsOutside	= generaloptions:CreateCheckButton(L.DisableCinematicsOutside, true, nil, "DisableCinematicsOutside")
 		generaloptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
+		generaloptions:CreateCheckButton(L.AutologBosses, true, nil, "AutologBosses")
+		if Transcriptor then
+			generaloptions:CreateCheckButton(L.AdvancedAutologBosses, true, nil, "AdvancedAutologBosses")
+		end
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
 		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -100)
@@ -1375,6 +1379,9 @@ local function CreateOptionsMenu()
 
 		-- END Pizza Timer
 		--
+		generaloptions:AutoSetDimension()
+		modelarea:AutoSetDimension()
+		pizzaarea:AutoSetDimension()
 		DBM_GUI_Frame:SetMyOwnHeight()
 	end
 
