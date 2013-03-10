@@ -101,6 +101,8 @@ DBM.DefaultOptions = {
 	ShowLHFrame = true,
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
+	AutologBosses = false,
+	AdvancedAutologBosses = false,
 	UseMasterVolume = true,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
@@ -2658,6 +2660,7 @@ function DBM:StartCombat(mod, delay, synced)
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
 		end
 		fireEvent("pull", mod, delay, synced)
+		DBM:ToggleRaidBossEmoteFrame(1)
 		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			if DBM.Options.BigBrotherAnnounceToRaid then
 				BigBrother:ConsumableCheck("RAID")
@@ -2665,7 +2668,12 @@ function DBM:StartCombat(mod, delay, synced)
 				BigBrother:ConsumableCheck("SELF")
 			end
 		end
-		DBM:ToggleRaidBossEmoteFrame(1)
+		if DBM.Options.AutologBosses and not LoggingCombat() then
+			LoggingCombat(1)
+		end
+		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+			Transcriptor:StartLog()
+		end
 	end
 end
 
@@ -2857,6 +2865,12 @@ function DBM:EndCombat(mod, wipe)
 		DBM.BossHealth:Hide()
 		DBM.Arrow:Hide(true)
 		DBM:ToggleRaidBossEmoteFrame(0)
+		if DBM.Options.AutologBosses and LoggingCombat() then
+			LoggingCombat(0)
+		end
+		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+			Transcriptor:StopLog()
+		end
 	end
 end
 
