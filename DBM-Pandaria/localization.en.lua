@@ -24,6 +24,10 @@ L:SetOptionLocalization({
 	RangeFrame			= "Show range frame for $spell:137511"
 })
 
+L:SetMiscLocalization({
+	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!"
+})
+
 ---------------------------
 -- Nalak, The Storm Lord --
 ---------------------------
