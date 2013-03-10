@@ -1868,6 +1868,15 @@ end
 --  Handle Incoming Syncs  --
 -----------------------------
 do
+	local function checkForActualPull()
+		if DBM.Options.AutologBosses and LoggingCombat() and #inCombat == 0 then
+			LoggingCombat(0)
+		end
+		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+			Transcriptor:StopLog()
+		end
+	end
+
 	local syncHandlers = {}
 	local whisperSyncHandlers = {}
 
@@ -1943,6 +1952,16 @@ do
 		end
 		if not DBM.Options.DontShowPTCountdownText then
 			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
+		end
+		if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
+			LoggingCombat(1)
+			DBM:Unschedule(checkForActualPull)
+			DBM:Schedule(timer+3, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 3 seconds of pull timer ending, abort log
+		end
+		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+			Transcriptor:StopLog()
+			DBM:Unschedule(checkForActualPull)
+			DBM:Schedule(timer+3, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 3 seconds of pull timer ending, abort log
 		end
 	end
 
