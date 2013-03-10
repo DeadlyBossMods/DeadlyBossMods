@@ -1255,7 +1255,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 250, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 300, true)
 
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1279,7 +1279,7 @@ local function CreateOptionsMenu()
 		end
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -100)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -150)
 		bmrange:SetScript("OnClick", function(self)
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
@@ -1379,9 +1379,6 @@ local function CreateOptionsMenu()
 
 		-- END Pizza Timer
 		--
-		generaloptions:AutoSetDimension()
-		modelarea:AutoSetDimension()
-		pizzaarea:AutoSetDimension()
 		DBM_GUI_Frame:SetMyOwnHeight()
 	end
 
