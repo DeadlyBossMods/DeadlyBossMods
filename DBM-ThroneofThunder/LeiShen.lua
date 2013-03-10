@@ -1,4 +1,3 @@
-if select(4, GetBuildInfo()) < 50200 then return end--Don't load on live
 local mod	= DBM:NewMod(832, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
@@ -233,39 +232,58 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 local function LoopIntermission()
-	if not eastDestroyed then
-		timerDiffusionChainCD:Start(13)
-	end
 	if not southDestroyed then
-		timerOverchargeCD:Start(13)
+		timerOverchargeCD:Start(10.5)
+	end
+	if not eastDestroyed then
+		timerDiffusionChainCD:Start(12)
 	end
 	if not northDestroyed then
-		timerStaticchargeCD:Start(25)
+		timerStaticchargeCD:Start(20)
 	end
 	if not westDestroyed then
-		timerBouncingBoltCD:Start(25)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
+		timerBouncingBoltCD:Start(23)
 	end
 end
 
---[[PTR Data (Live needed)
-"<175.9 21:21:38> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit boss2:Supercharge Conduits::0:137146",
-"<176.1 21:21:38> [CLEU] SPELL_CAST_START#false#0xF1310B2D000087B6#Lei Shen#2632#0##Unknown#-2147483648#-2147483648#137045#Supercharge Conduits#8", -- [38181]
-"<181.5 21:21:44> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0xF1310B2D000087B6#Lei Shen#2632#0#137045#Supercharge Conduits#8#BUFF", -- [38715]
---First Wave
-"<182.7 21:21:45> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000E8E87#Cougarhunter#1300#0#135991#Diffusion Chain#8",
-"<183.9 21:21:46> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x0100000000047A51#Kaisers#1300#0#136295#Overcharged#8#DEBUFF",
-"<184.0 21:21:46> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000816EC#Minimerlinx#1300#0#136295#Overcharged#8#DEBUFF",
-"<190.8 21:21:53> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000B1AF6#Anafiele#1300#0#135695#Static Shock#1#DEBUFF",
-"<190.8 21:21:53> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x010000000003570D#Dayani#1300#0#135695#Static Shock#1#DEBUFF",
-"<192.4 21:21:54> [CLEU] SPELL_DAMAGE#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D0D65#Rohroh#1300#0#136366#Bouncing Bolt#8#210737#-1#8#nil#nil#nil#nil#nil#nil#nil",
+--[[Live Data (25N at least)
+"<171.7 00:17:37> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit boss2:Supercharge Conduits::0:137146", -- [37836]
+"<171.9 00:17:38> [CLEU] SPELL_CAST_START#false#0xF1310B2D000066BE#Lei Shen#2632#0##nil#-2147483648#-2147483648#137045#Supercharge Conduits#8", -- [37862]
+"<178.5 00:17:44> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x040000000479BEA6#Settesh#1300#0#135991#Diffusion Chain#8", -- [38360] +6.8
+"<178.6 00:17:44> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x040000000479C5C4#Prys#1300#0#136295#Overcharged#8#DEBUFF", -- [38366] +6.9
+"<190.6 00:17:56> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x0400000006055740#Rotund#1298#0#135695#Static Shock#1#DEBUFF", -- [39237] +18.9
+"<191.5 00:17:57> [CLEU] SPELL_DAMAGE#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x040000000479BDA2#Oxey#1300#0#136366#Bouncing Bolt#8#209665#-1#8#nil#nil#nil#nil#nil#nil#nil", -- [39291] +19.8 (damage, so cast is more like 17.8)
 --Second Wave
-"<207.7 21:22:10> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D4102#Zaythan#1300#0#135991#Diffusion Chain#8",
-"<209.3 21:22:11> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D6D1B#Bellagraces#1300#0#136295#Overcharged#8#DEBUFF",
-"<209.3 21:22:11> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000D2296#Torima#1298#0#136295#Overcharged#8#DEBUFF",
-"<216.5 21:22:19> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000E253D#Ilyakimin#1300#0#135695#Static Shock#1#DEBUFF",
-"<216.5 21:22:19> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x01000000000B1AF6#Anafiele#1300#0#135695#Static Shock#1#DEBUFF",
-"<217.3 21:22:19> [CLEU] SPELL_DAMAGE#false#0xF1310B2D000087B6#Lei Shen#2632#0#0x0100000000047A51#Kaisers#1300#0#136366#Bouncing Bolt#8#131250#-1#8#nil#nil#53145#nil#nil#nil#nil",
-"<223.1 21:22:25> [CLEU] SPELL_AURA_REMOVED#false#0xF1310B2D000087B6#Lei Shen#2632#0#0xF1310B2D000087B6#Lei Shen#2632#0#137045#Supercharge Conduits#8#BUFF",
+"<201.9 00:18:08> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x0400000004A6518D#Esoth#1300#0#136295#Overcharged#8#DEBUFF", -- [40207] +30.2 (11.2)
+"<203.6 00:18:09> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x04000000062A79A0#Gemchihiro#1300#0#135991#Diffusion Chain#8", -- [40298] +31.9 (12.9)
+"<210.8 00:18:16> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x04000000062A79F6#Daltin#1300#0#135695#Static Shock#1#DEBUFF", -- [41408] +39.1 (20.1)
+"<215.6 00:18:21> [CLEU] SPELL_MISSED#false#0xF1310B2D000066BE#Lei Shen#2632#0#0x0400000006145709#Lifesqt#1300#0#136366#Bouncing Bolt#8#IMMUNE#nil", -- [42324] +43.9 (24.9)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+"<160.0 01:00:36> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit boss2:Supercharge Conduits::0:137146", -- [34700]
+"<160.1 01:00:36> [CLEU] SPELL_CAST_START#false#0xF1310B2D00007501#Lei Shen#2632#0##nil#-2147483648#-2147483648#137045#Supercharge Conduits#8", -- [34724]
+"<165.7 01:00:42> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D00007501#Lei Shen#2632#0#0x0400000005487636#Eyliria#1300#0#135991#Diffusion Chain#8", -- [35136] +5.7
+"<165.9 01:00:42> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D00007501#Lei Shen#2632#0#0x040000000569CD33#Brandonian#1300#0#136295#Overcharged#8#DEBUFF", -- [35154] +5.9
+"<178.8 01:00:55> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D00007501#Lei Shen#2632#0##nil#-2147483648#-2147483648#135695#Static Shock#1", -- [35995] +18.8
+"<179.7 01:00:56> [CLEU] SPELL_DAMAGE#false#0xF1310B2D00007501#Lei Shen#2632#0#0x040000000479BEA6#Settesh#1300#0#136366#Bouncing Bolt#8#15097#-1#8#nil#nil#69375#nil#nil#nil#nil", -- [36067] +19.7
+--Second Wave
+"<189.3 01:01:06> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D00007501#Lei Shen#2632#0#0x040000000479BEA6#Settesh#1300#0#136295#Overcharged#8#DEBUFF", -- [36842] +29.3 (10.9)
+"<190.9 01:01:07> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D00007501#Lei Shen#2632#0#0x0400000006145709#Lifesqt#1300#0#135991#Diffusion Chain#8", -- [37073] +30.9 (11.9)
+"<199.4 01:01:16> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D00007501#Lei Shen#2632#0#0x0400000005434EF9#Zaythan#1300#0#135695#Static Shock#1#DEBUFF", -- [37650] +39.4 (20.4)
+"<203.9 01:01:20> [CLEU] SPELL_DAMAGE#false#0xF1310B2D00007501#Lei Shen#2632#0#0x040000000479BDA2#Oxey#1300#0#136366#Bouncing Bolt#8#107881#-1#8#nil#nil#nil#nil#nil#nil#nil", -- [37866] +43.9 (24.9)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+"<157.4 00:54:40> [UNIT_SPELLCAST_SUCCEEDED] Static Shock Conduit boss2:Supercharge Conduits::0:137146", -- [35636]
+"<157.7 00:54:41> [CLEU] SPELL_CAST_START#false#0xF1310B2D000072DF#Lei Shen#2632#0##nil#-2147483648#-2147483648#137045#Supercharge Conduits#8", -- [35654]
+"<163.2 00:54:46> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000072DF#Lei Shen#2632#0#0x04000000051261FC#Bellagraced#1300#0#135991#Diffusion Chain#8", -- [36058] +5.8
+"<163.5 00:54:47> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000072DF#Lei Shen#2632#0#0x0400000004DCB8F1#Anafielle#1300#0#136295#Overcharged#8#DEBUFF", -- [36074] +6.1
+"<176.2 00:54:59> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000072DF#Lei Shen#2632#0##nil#-2147483648#-2147483648#135695#Static Shock#1", -- [36898] +18.8
+"<177.2 00:55:00> [CLEU] SPELL_DAMAGE#false#0xF1310B2D000072DF#Lei Shen#2632#0#0x0400000004DCB8F1#Anafielle#1300#0#136366#Bouncing Bolt#8#37686#-1#8#nil#nil#35110#nil#nil#nil#nil", -- [36968] +19.8
+--Second Wave
+"<186.8 00:55:10> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000072DF#Lei Shen#2632#0#0x040000000479C5C4#Prys#1300#0#136295#Overcharged#8#DEBUFF", -- [38051] +29.4 (10.4)
+"<188.4 00:55:11> [CLEU] SPELL_CAST_SUCCESS#false#0xF1310B2D000072DF#Lei Shen#2632#0#0x040000000479BFAE#Moshne#1300#0#135991#Diffusion Chain#8", -- [38176] +31 (12)
+"<196.9 00:55:20> [CLEU] SPELL_AURA_APPLIED#false#0xF1310B2D000072DF#Lei Shen#2632#0#0x04000000062A79F6#Daltin#1300#0#135695#Static Shock#1#DEBUFF", -- [39007] +39.5 (20.5)
+"<201.3 00:55:24> [CLEU] SPELL_DAMAGE#false#0xF1310B2D000072DF#Lei Shen#2632#0#0x04000000051261FC#Bellagraced#1300#0#136366#Bouncing Bolt#8#180443#-1#8#nil#nil#nil#nil#nil#nil#nil", -- [39422] +43.9 (24.9)
 --]]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 137146 and self:AntiSpam(2, 2) then--Supercharge Conduits (comes earlier than other events so we use this one)
@@ -277,19 +295,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSummonBallLightningCD:Cancel()
 		timerSuperChargedConduits:Start()
 		if not eastDestroyed then
-			timerDiffusionChainCD:Start(7)
+			timerDiffusionChainCD:Start(6)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
 		end
 		if not southDestroyed then
-			timerOverchargeCD:Start(7)
+			timerOverchargeCD:Start(6)
+		end
+		if not westDestroyed then
+			timerBouncingBoltCD:Start(18)
 		end
 		if not northDestroyed then
 			timerStaticchargeCD:Start(19)
-		end
-		if not westDestroyed then
-			timerBouncingBoltCD:Start(19)--This is probably off 1-2 seconds. Does not have a log event. need to do a /yell and log it later
 		end
 		self:Schedule(19, LoopIntermission)--Fire function to start second wave of specials timers
 	elseif spellId == 136395 and self:AntiSpam(2, 3) then--Bouncing Bolt (think it's right trigger, could be wrong though). Does NOT work in intermission phases though :\

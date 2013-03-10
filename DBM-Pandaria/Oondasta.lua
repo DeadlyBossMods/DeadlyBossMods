@@ -1,4 +1,3 @@
-if select(4, GetBuildInfo()) < 50200 then return end--Don't load on live
 local mod	= DBM:NewMod(826, "DBM-Pandaria", nil, 322)
 local L		= mod:GetLocalizedStrings()
 
