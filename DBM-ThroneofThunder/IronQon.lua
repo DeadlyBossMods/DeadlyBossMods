@@ -206,7 +206,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(134926) then
+	if args:IsSpellID(134926) and phase < 4 then
 		warnThrowSpear:Show()
 		specWarnThrowSpear:Show()
 		timerThrowSpearCD:Start()
