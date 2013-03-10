@@ -55,10 +55,10 @@ local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil
 --Phase 3
 
 --Conduits (All phases)
-local timerStaticchargeCD				= mod:NewCDTimer(50, 135695)--Unknown actual cd, besides when first one is in intermission
-local timerDiffusionChainCD				= mod:NewCDTimer(50, 135991)--Unknown actual cd, besides when first one is in intermission
-local timerOverchargeCD					= mod:NewCDTimer(50, 136295)--Unknown actual cd, besides when first one is in intermission
-local timerBouncingBoltCD				= mod:NewCDTimer(50, 136361)--Unknown actual cd, besides when first one is in intermission
+local timerStaticShockCD				= mod:NewCDTimer(40, 135695)--Confirmed
+local timerDiffusionChainCD				= mod:NewCDTimer(40, 135991)--Assumed, not confirmed
+local timerOverchargeCD					= mod:NewCDTimer(40, 136295)--Assumed, not confirmed
+local timerBouncingBoltCD				= mod:NewCDTimer(40, 136361)--Confirmed
 local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually intermission only, but it fits best with conduits
 --Phase 1
 local timerDecapitateCD					= mod:NewCDTimer(50, 135000)--Cooldown with some variation. 50-57ish or so.
@@ -100,7 +100,7 @@ function mod:OnCombatStart(delay)
 	southDestroyed = false
 	westDestroyed = false
 	timerThunderstruckCD:Start(25-delay)
-	timerDecapitateCD:Start(45-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
+	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
 end
 
 function mod:OnCombatEnd()
@@ -138,6 +138,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	--Conduit activations
 	elseif args:IsSpellID(135695) then
 		staticshockTargets[#staticshockTargets + 1] = args.destName
+		timerStaticShockCD:Start()
 		if args:IsPlayer() then
 			specWarnStaticShock:Show()
 		end
@@ -145,6 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnStaticShockTargets)
 	elseif args:IsSpellID(136295) then
 		overchargeTarget[#overchargeTarget + 1] = args.destName
+		timerOverchargeCD:Start()
 		if args:IsPlayer() then
 			yellOvercharged:Yell()
 		end
@@ -166,6 +168,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(135991) then
 		warnDiffusionChain:Show(args.destName)
+		timerDiffusionChainCD:Start()
 	elseif args:IsSpellID(136543) and self:AntiSpam(2, 1) then
 		warnSummonBallLightning:Show()
 		specWarnSummonBallLightning:Show()
@@ -177,8 +180,9 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	--Conduit deactivations
 	if args:IsSpellID(135680) and args:GetDestCreatureID() == 68397 then--North (Static Shock)
-		--Cancel timers here when we have them
+		timerStaticShockCD:Cancel()
 	elseif args:IsSpellID(135681) and args:GetDestCreatureID() == 68397 then--East (Diffusion Chain)
+		timerDiffusionChainCD:Cancel()
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			if phase == 1 then
 				DBM.RangeCheck:Hide()
@@ -187,9 +191,9 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif args:IsSpellID(135682) and args:GetDestCreatureID() == 68397 then--South (Overcharge)
-	
+		timerOverchargeCD:Cancel()
 	elseif args:IsSpellID(135683) and args:GetDestCreatureID() == 68397 then--West (Bouncing Bolt)
-		
+		timerBouncingBoltCD:Cancel()
 	--Conduit deactivations
 	end
 end
@@ -239,7 +243,7 @@ local function LoopIntermission()
 		timerDiffusionChainCD:Start(12)
 	end
 	if not northDestroyed then
-		timerStaticchargeCD:Start(20)
+		timerStaticShockCD:Start(20)
 	end
 	if not westDestroyed then
 		timerBouncingBoltCD:Start(23)
@@ -307,11 +311,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerBouncingBoltCD:Start(18)
 		end
 		if not northDestroyed then
-			timerStaticchargeCD:Start(19)
+			timerStaticShockCD:Start(19)
 		end
 		self:Schedule(19, LoopIntermission)--Fire function to start second wave of specials timers
 	elseif spellId == 136395 and self:AntiSpam(2, 3) then--Bouncing Bolt (think it's right trigger, could be wrong though). Does NOT work in intermission phases though :\
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
+		timerBouncingBoltCD:Start()
 	end
 end
