@@ -188,7 +188,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Show range frame"--For two different spells
+	RangeFrame			= "Show range frame",--For two different spells
+	StaticShockArrow	= "Show DBM Arrow when someone is affected by $spell:135695",
+	OverchargeArrow		= "Show DBM Arrow when someone is affected by $spell:136295"
 })
 
 ------------
