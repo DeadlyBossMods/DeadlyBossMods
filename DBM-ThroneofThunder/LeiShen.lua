@@ -67,9 +67,9 @@ local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually
 local timerDecapitateCD					= mod:NewCDTimer(50, 135000)--Cooldown with some variation. 50-57ish or so.
 local timerThunderstruckCD				= mod:NewNextTimer(46, 135095)--Seems like an exact bar
 --Phase 2
-local timerFussionSlashCD				= mod:NewCDTimer(50, 136478)--Clearly blizz messed up. Debuff lasts 45 seconds but cd is 50. This makes it a one tank fight despite debuff. I fully expect this to be shortened or debuff increased
-local timerLightningWhipCD				= mod:NewNextTimer(46, 136850)--Also an exact bar
-local timerSummonBallLightningCD		= mod:NewCDTimer(46, 136543)--VERY variable, also need more data. but so far i've observed 46-64 second variation :\
+local timerFussionSlashCD				= mod:NewCDTimer(42.5, 136478)
+local timerLightningWhipCD				= mod:NewNextTimer(45.5, 136850)--Also an exact bar
+local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact on live, versus the variable it was on PTR
 --Phase 3
 
 mod:AddBoolOption("RangeFrame")
@@ -267,9 +267,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			westDestroyed = true
 		end
 		if phase == 2 then--Start Phase 2 timers
-			timerSummonBallLightningCD:Start(18)--18-29 second variation. This spell blows for timing. Hopefully they refine it somewhat.
-			timerLightningWhipCD:Start(32)
-			timerFussionSlashCD:Start(45)--Just like decapitate, first one is 45 sec, rest are 50. It's also a "CD" bar, not a "next" bar
+			timerSummonBallLightningCD:Start(15)
+			timerLightningWhipCD:Start(30)
+			timerFussionSlashCD:Start(44)
 			if self.Options.RangeFrame and self:IsRanged() then--Only ranged need it in phase 2 and 3
 				DBM.RangeCheck:Show(6)--Needed for phase 2 AND phase 3
 			end
