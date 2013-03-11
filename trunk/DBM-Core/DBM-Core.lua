@@ -1956,12 +1956,12 @@ do
 		if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
 			LoggingCombat(1)
 			DBM:Unschedule(checkForActualPull)
-			DBM:Schedule(timer+3, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 3 seconds of pull timer ending, abort log
+			DBM:Schedule(timer+5, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 5 seconds of pull timer ending, abort log
 		end
 		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
 			Transcriptor:StartLog()
 			DBM:Unschedule(checkForActualPull)
-			DBM:Schedule(timer+3, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 3 seconds of pull timer ending, abort log
+			DBM:Schedule(timer+5, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 5 seconds of pull timer ending, abort log
 		end
 	end
 
