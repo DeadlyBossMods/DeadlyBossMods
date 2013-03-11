@@ -188,7 +188,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
-	RangeFrame		= "거리 창 보기"
+	RangeFrame			= "거리 창 보기",
+	StaticShockArrow	= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
+	OverchargeArrow		= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
 })
 
 ------------
