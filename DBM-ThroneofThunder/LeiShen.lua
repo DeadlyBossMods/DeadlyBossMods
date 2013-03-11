@@ -146,7 +146,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	--Conduit activations
 	elseif args:IsSpellID(135695) then
 		staticshockTargets[#staticshockTargets + 1] = args.destName
-		timerStaticShockCD:Start()
+		if not intermissionActive then
+			timerStaticShockCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnStaticShock:Show()
 			yellStaticShock:Yell()
@@ -172,7 +174,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnStaticShockTargets)
 	elseif args:IsSpellID(136295) then
 		overchargeTarget[#overchargeTarget + 1] = args.destName
-		timerOverchargeCD:Start()
+		if not intermissionActive then
+			timerOverchargeCD:Start()
+		end
 		if args:IsPlayer() then
 			specWarnOvercharged:Show()
 			yellOvercharged:Yell()
@@ -212,7 +216,9 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(135991) then
 		warnDiffusionChain:Show(args.destName)
-		timerDiffusionChainCD:Start()
+		if not intermissionActive then
+			timerDiffusionChainCD:Start()
+		end
 	elseif args:IsSpellID(136543) and self:AntiSpam(2, 1) then
 		warnSummonBallLightning:Show()
 		specWarnSummonBallLightning:Show()
@@ -365,6 +371,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 136395 and self:AntiSpam(2, 3) then--Bouncing Bolt (think it's right trigger, could be wrong though). Does NOT work in intermission phases though :\
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
-		timerBouncingBoltCD:Start()
+		if not intermissionActive then
+			timerBouncingBoltCD:Start()
+		end
 	end
 end
