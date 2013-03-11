@@ -25,6 +25,10 @@ L:SetOptionLocalization({
 	RangeFrame			= "$spell:137511 주문에 대한 거리 창 보기"
 })
 
+L:SetMiscLocalization({
+	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!"
+})
+
 ---------------------------
 -- Nalak, The Storm Lord --
 ---------------------------
