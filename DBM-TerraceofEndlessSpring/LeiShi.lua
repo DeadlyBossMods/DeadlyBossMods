@@ -157,7 +157,7 @@ function mod:OnCombatStart(delay)
 	specialRemaining = 0
 	lostHealth = 0
 	prevlostHealth = 0
-	timerSpecialCD:Start(32.5-delay, 1)--Variable, 32.5-37 (or aborted if 80% protect happens first)
+	timerSpecialCD:Start(30.5-delay, 1)--Variable, 30.5-37 (or aborted if 80% protect happens first)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(420-delay)
 	else
