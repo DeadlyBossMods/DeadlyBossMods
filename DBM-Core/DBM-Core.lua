@@ -1959,7 +1959,7 @@ do
 			DBM:Schedule(timer+3, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 3 seconds of pull timer ending, abort log
 		end
 		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			Transcriptor:StopLog()
+			Transcriptor:StartLog()
 			DBM:Unschedule(checkForActualPull)
 			DBM:Schedule(timer+3, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 3 seconds of pull timer ending, abort log
 		end
