@@ -20,19 +20,19 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerDoor		= "다음 부족의 문",--번역 재확인
+	timerDoor		= "다음 부족의 문 열림",
 	timerAdds		= "다음 %s"
 })
 
 L:SetOptionLocalization({
-	warnAdds		= "추가 병력 알림 보기",--번역 재확인
-	timerDoor		= "다음 부족의 문 바 표시",--번역 재확인
-	timerAdds		= "다음 추가 병력 바 표시"--번역 재확인
+	warnAdds		= "병력 등장시 알림 보기",
+	timerDoor		= "다음 부족의 문 열림 바 표시",
+	timerAdds		= "다음 추가 병력 바 표시"
 })
 
 L:SetMiscLocalization({
-	newForces		= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces		= "병력들이 쏟아져",
+	chargeTarget	= "꼬리를 바닥에 쿵쿵 내려칩니다!"
 })
 
 ---------------------------
@@ -72,7 +72,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(821)
 
 L:SetMiscLocalization({
-	rampageEnds	= "Megaera's rage subsides."
+	rampageEnds	= "분노가 가라앉습니다."
 })
 
 ------------
@@ -97,11 +97,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "The eggs in one of the lower nests begin to hatch!",
-	eggsHatchU		= "The eggs in one of the upper nests begin to hatch!",
-	Upper			= "상층",
-	Lower			= "하층",
-	UpperAndLower	= "상층 & 하층"
+	eggsHatchL		= "아랫둥지에 있는 알들이 부화하기 시작합니다!",
+	eggsHatchU		= "위쪽 둥지에 있는 알들이 부화하기 시작합니다!",
+	Upper			= "위쪽",
+	Lower			= "아래쪽",
+	UpperAndLower	= "윗쪽 & 아래쪽"
 })
 
 --------------------------
@@ -151,7 +151,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "The orb explodes!"
+	Pull		= "구슬이 폭발합니다!"
 })
 
 --------------
