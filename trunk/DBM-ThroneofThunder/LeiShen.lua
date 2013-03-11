@@ -204,7 +204,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		--start timers here when we have em
 	elseif args:IsSpellID(135681) and args:GetDestCreatureID() == 68397 then--East (Diffusion Chain)
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
-			DBM.RangeCheck:Show(10)--Assume 10 since spell tooltip has no info
+			DBM.RangeCheck:Show(8)--Assume 8 since spell tooltip has no info
 		end
 	elseif args:IsSpellID(135682) and args:GetDestCreatureID() == 68397 then--South (Overcharge)
 	
@@ -353,7 +353,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if not eastDestroyed then
 			timerDiffusionChainCD:Start(6)
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)
+				DBM.RangeCheck:Show(8)
 			end
 		end
 		if not southDestroyed then
