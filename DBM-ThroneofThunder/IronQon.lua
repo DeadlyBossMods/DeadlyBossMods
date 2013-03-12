@@ -53,7 +53,7 @@ local timerLightningStormCD				= mod:NewCDTimer(20, 136192)
 local timerWindStormCD					= mod:NewNextTimer(70, 136577)
 local timerFreezeCD						= mod:NewCDTimer(7, 135145, nil, false)
 local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
-local timerRisingAngerCD				= mod:NewNextTimer(10, 136323, nil, false)
+local timerRisingAngerCD				= mod:NewNextTimer(15, 136323, nil, false)
 local timerFistSmashCD					= mod:NewNextTimer(20, 136146)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139167)--Heroic Phase 1
 local timerFrostSpikeCD					= mod:NewCDTimer(12, 139180)--Heroic Phase 2
@@ -272,7 +272,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		elseif cid == 68081 then--Dam'ren
 			timerDeadZoneCD:Cancel()
 			timerFreezeCD:Cancel()
-			timerRisingAngerCD:Start(12.5)
+			timerRisingAngerCD:Start(15)
 			timerFistSmashCD:Start(25)
 			phase = 4
 		end
