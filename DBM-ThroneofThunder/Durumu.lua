@@ -197,7 +197,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 140502 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then
+	if spellId == 134755 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnEyeSore:Show()
 	end
 end
