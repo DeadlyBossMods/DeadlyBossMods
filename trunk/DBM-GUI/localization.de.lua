@@ -54,6 +54,8 @@ L.UseMasterVolume			= "Benutze Master-Audiokanal um Sounddateien abzuspielen."
 L.DisableCinematics			= "Deaktiviere Videosequenzen innerhalb von Instanzen"
 L.DisableCinematicsOutside	= "Deaktiviere Videosequenzen außerhalb von Instanzen"
 L.SKT_Enabled				= "Zeige immer Timer für schnellsten Sieg (ignoriert Boss-spezifische Einstellung)"
+L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog"
+L.AdvancedAutologBosses		= "Automatische Aufzeichnung von Bosskämpfen mit Addon \"Transcriptor\""
 L.Latency_Text				= "Maximale Synchronisierungslatenz: %d"
 
 L.ModelOptions				= "Einstellungen für 3D-Modellanzeige"
