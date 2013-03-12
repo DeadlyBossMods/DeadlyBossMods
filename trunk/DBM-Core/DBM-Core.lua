@@ -434,15 +434,17 @@ do
 		end
 	end
 
-	function DBM:UnregisterInCombatEvents()
+	function DBM:UnregisterInCombatEvents(ignore)
 		for event, mods in pairs(registeredEvents) do
-			for i = #mods, 1, -1 do
-				if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event)  then
-					tremove(mods, i)
+			if event ~= ignore then
+				for i = #mods, 1, -1 do
+					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event)  then
+						tremove(mods, i)
+					end
 				end
-			end
-			if #mods == 0 then
-				unregisterEvent(event)
+				if #mods == 0 then
+					unregisterEvent(event)
+				end
 			end
 		end
 	end
@@ -2723,11 +2725,9 @@ function DBM:EndCombat(mod, wipe)
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
-				--Timer issues not super rare (At lease for me). It causes every time for me at lfr Tsulong (if we kill him at night, he changes to day phase on die. This fires UNIT_SPELLCAST_SUCCEEDED/spellid 123532 event. If this evert fires after he yells (die trigger), this can cause bad timer starts.)
-				--mod:UnregisterInCombatEvents()
-				DBM:Schedule(1.5, mod.UnregisterInCombatEvents, mod) -- Delay unregister events to make sure icon clear functions get to run their course. We want to catch some SPELL_AURA_REMOVED events that fire after boss death and get those icons cleared
-				--Remove bad started timer after boss dies.
-				DBM:Schedule(1.6, mod.Stop, mod)
+				-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
+				mod:UnregisterInCombatEvents("SPELL_AURA_REMOVED")
+				DBM:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
