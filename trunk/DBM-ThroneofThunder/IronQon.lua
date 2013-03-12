@@ -75,7 +75,7 @@ local function checkArcing()
 		end
 	end
 	if arcingDebuffs == 0 then
-		self:Unschedule(checkArcing)
+		mod:Unschedule(checkArcing)
 		if mod.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
@@ -84,7 +84,7 @@ local function checkArcing()
 		end
 	else
 		print("DBM Debug: "..arcingDebuffs.." debuffs remaining.")--To figure out why this isn't working, because i thought the code was pretty solid
-		self:Schedule(5, checkArcing)
+		mod:Schedule(5, checkArcing)
 	end
 end
 
