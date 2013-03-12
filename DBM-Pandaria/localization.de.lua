@@ -25,6 +25,10 @@ L:SetOptionLocalization({
 	RangeFrame			= "Zeige Abstandsfenster für $spell:137511"
 })
 
+L:SetMiscLocalization({
+	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!"--translate (trigger)
+})
+
 ---------------------------
 -- Nalak, The Storm Lord --
 ---------------------------
