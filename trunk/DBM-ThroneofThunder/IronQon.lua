@@ -83,7 +83,6 @@ local function checkArcing()
 			DBM.InfoFrame:Hide()
 		end
 	else
-		print("DBM Debug: "..arcingDebuffs.." debuffs remaining.")--To figure out why this isn't working, because i thought the code was pretty solid
 		mod:Schedule(5, checkArcing)
 	end
 end
