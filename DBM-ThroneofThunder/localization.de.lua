@@ -134,7 +134,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Zeige Abstandsfenster (5m/2m)"
+	RangeFrame			= "Zeige Abstandsfenster (5m/2m)"
 })
 
 -----------------
@@ -165,7 +165,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
-	RangeFrame		= "Zeige dynamisches Abstandsfenster\n(mit Indikator für zuviele Spieler in Reichweite)"
+	RangeFrame		= "Zeige dynamisches Abstandsfenster\n(mit Indikator für zuviele Spieler in Reichweite)",
+	InfoFrame		= "Zeige Infofenster für Spieler mit $spell:136193"
 })
 
 -------------------
@@ -187,7 +188,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
-	RangeFrame		= "Zeige Abstandsfenster"
+	RangeFrame			= "Zeige Abstandsfenster",
+	StaticShockArrow	= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
+	OverchargeArrow		= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist",
+	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
+	SetIconOnStaticShock= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
 })
 
 ------------
