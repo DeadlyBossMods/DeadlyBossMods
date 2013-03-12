@@ -29,6 +29,9 @@ local warnDoubleSwipe			= mod:NewSpellAnnounce(136741, 3)
 local warnAdds					= mod:NewAnnounce("warnAdds", 2, 43712)--Some random troll icon
 local warnDino					= mod:NewSpellAnnounce("ej7086", 3, 137237)
 local warnMending				= mod:NewSpellAnnounce(136797, 4)
+local warnVenomBolt				= mod:NewSpellAnnounce(136587, 3, nil, false)
+local warnChainLightning		= mod:NewSpellAnnounce(136480, 3, nil, false)
+local warnFireball				= mod:NewSpellAnnounce(136465, 3, nil, false)
 local warnBestialCry			= mod:NewStackAnnounce(136817, 3)
 local warnRampage				= mod:NewTargetAnnounce(136821, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnDireCall				= mod:NewSpellAnnounce(137458, 3)
@@ -42,6 +45,10 @@ local specWarnPunctureOther		= mod:NewSpecialWarningTarget(136767, mod:IsTank())
 local specWarnSandTrap			= mod:NewSpecialWarningMove(136723)
 local specWarnDino				= mod:NewSpecialWarningSwitch("ej7086", not mod:IsHealer())
 local specWarnMending			= mod:NewSpecialWarningInterrupt(136797, mod:IsDps())--High priority interrupt. All dps needs warning because boss heals 1% per second it's not interrupted.
+local specWarnVenomBolt			= mod:NewSpecialWarningInterrupt(136587)--Can be on for all since it only triggers off target/focus
+local specWarnChainLightning	= mod:NewSpecialWarningInterrupt(136480)--Can be on for all since it only triggers off target/focus
+local specWarnFireball			= mod:NewSpecialWarningInterrupt(136465)--Can be on for all since it only triggers off target/focus
+local specWarnLivingPoison		= mod:NewSpecialWarningMove(136646)
 local specWarnFrozenBolt		= mod:NewSpecialWarningMove(136573)--Debuff used by Frozen Orbs
 local specWarnLightningNova		= mod:NewSpecialWarningMove(136490)--Mainly for LFR or normal. On heroic you're going to die.
 local specWarnJalak				= mod:NewSpecialWarningSwitch("ej7087", mod:IsTank())--To pick him up (and maybe dps to switch, depending on strat)
@@ -147,6 +154,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(136797) then
 		warnMending:Show()
 		specWarnMending:Show(args.sourceName)
+	elseif args:IsSpellID(136587) then
+		warnVenomBolt:Show()
+		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
+			specWarnVenomBolt:Show(args.sourceName)
+		end
+	elseif args:IsSpellID(136480) then
+		warnChainLightning:Show()
+		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
+			specWarnChainLightning:Show(args.sourceName)
+		end
+	elseif args:IsSpellID(136465) then
+		warnFireball:Show()
+		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
+			specWarnFireball:Show(args.sourceName)
+		end
 	elseif args:IsSpellID(140946) then
 		warnDireFixate:Show(args.destName)
 		if args:IsPlayer() then
@@ -166,6 +188,8 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 136723 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnSandTrap:Show()
+	elseif spellId == 136646 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
+		specWarnLivingPoison:Show()
 	elseif spellId == 136573 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnFrozenBolt:Show()
 	elseif spellId == 136490 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
