@@ -2,9 +2,8 @@ local mod	= DBM:NewMod(820, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(69017)--69070 Viscous Horror, 69069 good ooze, 70579 bad ooze
+mod:SetCreatureID(69017)--69070 Viscous Horror, 69069 good ooze, 70579 bad ooze (patched out of game, :\)
 mod:SetModelID(47009)
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 
 mod:RegisterCombat("combat")
 
@@ -14,10 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_SUCCEEDED",
-	"CHAT_MSG_TARGETICONS",
-	"UNIT_TARGET",
-	"UPDATE_MOUSEOVER_UNIT"
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnMalformedBlood			= mod:NewStackAnnounce(136050, 2, nil, mod:IsTank() or mod:IsHealer())--No cd bars for this because it's HIGHLY variable (lowest priority spell so varies wildly depending on bosses 3 buffs)
@@ -50,13 +46,10 @@ local timerViscousHorrorCD			= mod:NewNextTimer(30, "ej6969", nil, nil, nil, 137
 local berserkTimer					= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("RangeFrame", true)--Right now, EVERYTHING targets melee. If blizz listens to feedback, it may change to just ranged.
-mod:AddBoolOption("SetIconOnBadOoze", true)
 
 local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
 local postulesActive = false
-local oozeGUIDS = {}
-local oozeIcon = 8
 
 function mod:BigOoze()
 	specWarnViscousHorror:Show()
@@ -65,7 +58,6 @@ function mod:BigOoze()
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(oozeGUIDS)
 	metabolicBoost = false
 	acidSpinesActive = false
 	postulesActive = false
@@ -77,7 +69,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	table.wipe(oozeGUIDS)--Table may get large, so lets wipe it on kill/wipe too to clear memory
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -176,53 +167,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerPustuleEruptionCD:Start()
 	elseif spellId == 136050 and self:AntiSpam(2, 2) then--Malformed Blood
 		
-	end
-end
-
---This function will have issues with people running old version of mod spamming icon 3.
-function mod:CHAT_MSG_TARGETICONS(msg)
-	--TARGET_ICON_SET = "|Hplayer:%s|h[%s]|h sets |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t on %s.";
-	local icon = tonumber(string.sub(string.match(msg, "RaidTargetingIcon_%d"), -1))
-	if icon then
-		oozeIcon = icon - 1--Try to sync up to what others oozeIcon are at to do our best job to keep all mods on same page
-	end
-end
-
-function mod:TrySetTarget()
-	for i = 1, DBM:GetNumGroupMembers() do
-		local guid = UnitGUID("raid"..i.."target")
-		local cid = self:GetCIDFromGUID(guid)
-		if cid == 70579 and not oozeGUIDS[guid] then
-			SetRaidTarget("raid"..i.."target", oozeIcon)
-			oozeGUIDS[guid] = true
-			self:SendSync("iconSet", guid)
-			oozeIcon = oozeIcon - 1
-			if oozeIcon == 0 then oozeIcon = 8 end
-		end
-	end
-end
-
-function mod:UNIT_TARGET()
-	local cid = self:GetCIDFromGUID(UnitGUID("target"))
-	if DBM:GetRaidRank() >= 1 and self.Options.SetIconOnBadOoze and (cid == 70579 or cid == 69069) then--Because not everyone has assist, lets just fire a check of all raid targets if EITHER ooze ID is up and targeted to see if someone else is targeting the bad one
-		self:TrySetTarget()
-	end
-end
-
-function mod:UPDATE_MOUSEOVER_UNIT()
-	local guid = UnitGUID("mouseover")
-	local cid = self:GetCIDFromGUID(guid)
-	if DBM:GetRaidRank() >= 1 and self.Options.SetIconOnBadOoze and cid == 70579 and not oozeGUIDS[guid] then--Because not everyone has assist, lets just fire a check of all raid targets if EITHER ooze ID is up and targeted to see if someone else is targeting the bad one
-		SetRaidTarget("mouseover", oozeIcon)
-		oozeGUIDS[guid] = true
-		self:SendSync("iconSet", guid)
-		oozeIcon = oozeIcon - 1
-		if oozeIcon == 0 then oozeIcon = 8 end
-	end
-end
-
-function mod:OnSync(msg, guid)
-	if msg == "iconSet" and guid then
-		oozeGUIDS[guid] = true--Again, try to avoid setting icons on mobs others already set icons on by adding it to our ignore list through sync
 	end
 end
