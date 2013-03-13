@@ -18,6 +18,7 @@ local warnConductiveShield		= mod:NewTargetAnnounce(140296, 4)
 
 local specWarnStormEnergy		= mod:NewSpecialWarningYou(139322)
 local specWarnStormCloud		= mod:NewSpecialWarningYou(139900)
+local specWarnSonicScreech		= mod:NewSpecialWarningInterrupt(136751)
 local specWarnConductiveShield	= mod:NewSpecialWarningTarget(140296)
 
 local timerSpiritfireCD			= mod:NewCDTimer(12, 139895)
@@ -60,6 +61,8 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(3)
 		end
+	elseif args:IsSpellID(136751) and (args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus")) then
+		specWarnSonicScreech:Show(args.sourceName)
 	end
 end
 
