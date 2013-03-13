@@ -86,7 +86,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerFlockCD	= "Nest (%d): %s"
+	timerFlockCD	= "蛋巢 (%d): %s"
 })
 
 L:SetOptionLocalization({
@@ -97,8 +97,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "上層巢裡的蛋開始孵化了!",
-	eggsHatchU		= "下層巢裡的蛋開始孵化了!",
+	eggsHatchL		= "下層巢裡的蛋開始孵化了!",
+	eggsHatchU		= "上層巢裡的蛋開始孵化了!",
 	Upper			= "上層",
 	Lower			= "下層",
 	UpperAndLower	= "上層和下層"
@@ -110,21 +110,21 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
-	warnAddsLeft				= "Fogs remaining: %d",
-	specWarnFogRevealed			= "%s revealed!",
+	warnAddsLeft				= "霧獸剩餘: %d",
+	specWarnFogRevealed			= "照出%s了!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
 
 L:SetOptionLocalization({
-	warnAddsLeft				= "Announce how many Fogs remain",
-	specWarnFogRevealed			= "Show special warning when a fog is revealed",
+	warnAddsLeft				= "提示還剩餘多少霧獸",
+	specWarnFogRevealed			= "為照出霧獸顯示特別警告",
 	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
 	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向",
 	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
 })
 
 L:SetMiscLocalization({
-	Eye		= "Eye"--What to localize here, "<72.0 20:04:19> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Bright  Light reveals an Amber Fog!#Amber Fog###--------->Yellow Eye<---------##0#0##0#309#nil#0#false#false", -- [13413]
+	Eye		= "魔眼"--What to localize here, "<72.0 20:04:19> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Bright  Light reveals an Amber Fog!#Amber Fog###--------->Yellow Eye<---------##0#0##0#309#nil#0#false#false", -- [13413]
 })
 
 ----------------
@@ -150,7 +150,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull	= "The orb explodes!"
+	Pull	= "寶珠爆炸了!"
 })
 
 --------------
@@ -165,7 +165,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "顯示動態距離框架(當太多人太接近時會動態顯示)",
-	InfoFrame		= "Show info frame for players with $spell:136193"
+	InfoFrame		= "為玩家有$spell:136193顯示訊息框架"
 })
 
 -------------------
@@ -178,7 +178,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	DuskPhase		= "Lu'lin! Lend me your strength!"--Not in use, but a backup just in case, so translate in case it's switched to on moments notice on live or next PTR test
+	DuskPhase		= "盧凜!借本宮力量!"--Not in use, but a backup just in case, so translate in case it's switched to on moments notice on live or next PTR test
 })
 
 --------------
