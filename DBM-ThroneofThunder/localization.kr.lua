@@ -133,8 +133,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetOptionLocalization({
-	RangeFrame			= "거리 창 보기(5m/2m)",
-	SetIconOnBadOoze	= "$spell:140506를 생성하는 살아있는 점액에 전술 목표 아이콘 설정"
+	RangeFrame			= "거리 창 보기(5m/2m)"
 })
 
 -----------------
