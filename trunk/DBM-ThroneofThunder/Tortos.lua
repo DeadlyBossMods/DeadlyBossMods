@@ -11,7 +11,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_AURA"
 )
 
 local warnBite						= mod:NewSpellAnnounce(135251, 3, nil, mod:IsTank())
@@ -20,6 +21,7 @@ local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
 local warnKickShell					= mod:NewAnnounce("warnKickShell", 2, 134031)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
+local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, 2)
@@ -29,29 +31,36 @@ local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", not
 
 local timerBiteCD					= mod:NewCDTimer(8, 135251, nil, mod:IsTank())
 local timerRockfallCD				= mod:NewCDTimer(10, 134476)
-local timerCallTortosCD				= mod:NewCDTimer(60.5, 136294)
-local timerStompCD					= mod:NewCDTimer(49, 134920)
-local timerBreathCD					= mod:NewCDTimer(49, 133939)
-local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration of the rapid caveins
+local timerCallTortosCD				= mod:NewNextTimer(60.5, 136294)
+local timerStompCD					= mod:NewNextTimer(49, 134920)
+local timerBreathCD					= mod:NewNextTimer(47, 133939)
+local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration f the rapid caveins??
+local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
 mod:AddBoolOption("InfoFrame")
 
+local shelldName = GetSpellInfo(137633)
+local shellConcussion = GetSpellInfo(136431)
 local stompActive = false
 local firstRockfall = false--First rockfall after a stomp
-local shelldName = GetSpellInfo(137633)
 local shellsRemaining = 0
+local kickedShells = {}
 
 local function clearStomp()
 	stompActive = false
 	firstRockfall = false--First rockfall after a stomp
-	warnRockfall:Show()
-	timerRockfallCD:Start()--Resume normal CDs, first should be 5 seconds after stomp spammed ones
+	if mod:AntiSpam(9, 1) then--prevent double warn.
+		warnRockfall:Show()
+		specWarnRockfall:Show()
+		timerRockfallCD:Start()--Resume normal CDs, first should be 5 seconds after stomp spammed ones
+	end
 end
 
 function mod:OnCombatStart(delay)
 	stompActive = false
 	firstRockfall = false--First rockfall after a stomp
 	shellsRemaining = 0
+	table.wipe(kickedShells)
 	timerRockfallCD:Start(15-delay)
 	timerCallTortosCD:Start(21-delay)
 	timerStompCD:Start(29-delay)
@@ -84,7 +93,7 @@ function mod:SPELL_CAST_START(args)
 		stompActive = true
 		warnQuakeStomp:Show()
 		specWarnQuakeStomp:Show()
-		timerStompActive:Show()
+		timerStompActive:Start()
 		timerRockfallCD:Start(7.4)--When the spam of rockfalls start
 		timerStompCD:Start()
 	end
@@ -114,12 +123,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			if self:AntiSpam(9, 1) then--sometimes clearstomp doesn't work? i can't find reason cause all logs match this system exactly.
 				warnRockfall:Show()
+				specWarnRockfall:Show()
 				timerRockfallCD:Start()
 			end
 		end
-	elseif args:IsSpellID(134031) then--Kick Shell
+	elseif args:IsSpellID(134031) and not kickedShells[args.destGUID] then--Kick Shell
+		kickedShells[args.destGUID] = true
 		shellsRemaining = shellsRemaining - 1
 		warnKickShell:Show(args.spellName, args.sourceName, shellsRemaining)
 	end
 end
 
+function mod:UNIT_AURA(uId)
+	if uId ~= "boss1" then return end
+	if UnitDebuff(uId, shellConcussion) then
+		timerShellConcussion:Start()
+		if self:AntiSpam(3, 2) then
+			warnShellConcussion:Show(L.name)
+		end
+	end
+end
