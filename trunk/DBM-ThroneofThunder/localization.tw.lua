@@ -85,18 +85,23 @@ L:SetWarningLocalization({
 	specWarnFlock	= "%s %s (%d)"
 })
 
+L:SetTimerLocalization({
+	timerFlockCD	= "Nest (%d): %s"
+})
+
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
 	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "為$spell:138923顯示距離框架(8碼)"
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "The eggs in one of the lower nests begin to hatch!",
-	eggsHatchU		= "The eggs in one of the upper nests begin to hatch!",
-	Upper			= "Upper",
-	Lower			= "Lower",
-	UpperAndLower	= "Upper & Lower"
+	eggsHatchL		= "上層巢裡的蛋開始孵化了!",
+	eggsHatchU		= "下層巢裡的蛋開始孵化了!",
+	Upper			= "上層",
+	Lower			= "下層",
+	UpperAndLower	= "上層和下層"
 })
 
 --------------------------
@@ -105,12 +110,21 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
+	warnAddsLeft				= "Fogs remaining: %d",
+	specWarnFogRevealed			= "%s revealed!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
 
 L:SetOptionLocalization({
+	warnAddsLeft				= "Announce how many Fogs remain",
+	specWarnFogRevealed			= "Show special warning when a fog is revealed",
 	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
-	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向"
+	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向",
+	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+})
+
+L:SetMiscLocalization({
+	Eye		= "Eye"--What to localize here, "<72.0 20:04:19> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Bright  Light reveals an Amber Fog!#Amber Fog###--------->Yellow Eye<---------##0#0##0#309#nil#0#false#false", -- [13413]
 })
 
 ----------------
@@ -119,7 +133,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetOptionLocalization({
-	RangeFrame		= "顯示距離框架(2碼/5碼)"
+	RangeFrame		= "顯示距離框架(2碼/5碼)",
 })
 
 -----------------
@@ -150,7 +164,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
-	RangeFrame		= "顯示動態距離框架(當太多人太接近時會動態顯示)"
+	RangeFrame		= "顯示動態距離框架(當太多人太接近時會動態顯示)",
+	InfoFrame		= "Show info frame for players with $spell:136193"
 })
 
 -------------------
@@ -172,7 +187,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
-	RangeFrame		= "顯示距離框架"--For two different spells
+	RangeFrame			= "顯示距離框架",--For two different spells
+	StaticShockArrow	= "Show DBM Arrow when someone is affected by $spell:135695",
+	OverchargeArrow		= "Show DBM Arrow when someone is affected by $spell:136295",
+	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
+	SetIconOnStaticShock= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
 })
 
 ------------
