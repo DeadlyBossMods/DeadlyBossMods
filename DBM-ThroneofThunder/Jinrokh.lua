@@ -43,6 +43,8 @@ local soundFocusedLightning			= mod:NewSound(137422)
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
+local countdownIonization			= mod:NewCountdown(60, 138732)
+
 mod:AddBoolOption("RangeFrame")
 
 local scansDone = 0
@@ -89,6 +91,7 @@ function mod:OnCombatStart(delay)
 	timerThrowCD:Start(30-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerIonizationCD:Start(60-delay)
+		countdownIonization:Start(60-delay)
 	end
 	berserkTimer:Start(-delay)
 end
@@ -111,6 +114,7 @@ function mod:SPELL_CAST_START(args)
 		timerThrowCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerIonizationCD:Start(61.5)
+			countdownIonization:Start(61.5)
 		end
 	elseif args:IsSpellID(138732) then
 		warnIonization:Show()
