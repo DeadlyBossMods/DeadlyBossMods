@@ -76,7 +76,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.RangeCheck:Show(10)
 		end
 		self:Unschedule(warnStormEnergyTargets)
-		self:Schedule(0.3, warnStormEnergyTargets)
+		self:Schedule(0.5, warnStormEnergyTargets)
 	elseif args:IsSpellID(139900) then
 		stormCloudTargets[#stormCloudTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -86,7 +86,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.RangeCheck:Show(10)
 		end
 		self:Unschedule(warnStormCloudTargets)
-		self:Schedule(0.3, warnStormCloudTargets)
+		self:Schedule(0.5, warnStormCloudTargets)
 	elseif args:IsSpellID(140296) then
 		warnConductiveShield:Show(args.destName)
 		specWarnConductiveShield:Show(args.destName)
