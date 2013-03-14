@@ -35,9 +35,9 @@ local specWarnIonization			= mod:NewSpecialWarningSpell(138732, not mod:IsTank()
 
 local timerFocusedLightningCD		= mod:NewCDTimer(10, 137399)--10-18 second variation, tends to lean toward 11-12 except when delayed by other casts such as throw or storm. Pull one also seems to variate highly
 local timerStaticBurstCD			= mod:NewCDTimer(19, 137162, mod:IsTank())
-local timerThrowCD					= mod:NewCDTimer(26, 137175)--90-93 variable (26~27 seconds after storm. needs more logs.)
-local timerStorm					= mod:NewBuffActiveTimer(15, 137313)
-local timerStormCD					= mod:NewCDTimer(63, 137313)--90-93 variable (63~67 seconds after throw)
+local timerThrowCD					= mod:NewCDTimer(26, 137175)--90-93 variable (26-30 seconds after storm. verified in well over 50 logs)
+local timerStorm					= mod:NewBuffActiveTimer(17, 137313)--2 second cast, 15 second duration
+local timerStormCD					= mod:NewCDTimer(60.5, 137313)--90-93 variable (60.5~67 seconds after throw)
 local timerIonizationCD				= mod:NewNextTimer(60, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
