@@ -35,9 +35,10 @@ local specWarnIonization			= mod:NewSpecialWarningSpell(138732, not mod:IsTank()
 
 local timerFocusedLightningCD		= mod:NewCDTimer(10, 137399)--10-18 second variation, tends to lean toward 11-12 except when delayed by other casts such as throw or storm. Pull one also seems to variate highly
 local timerStaticBurstCD			= mod:NewCDTimer(19, 137162, mod:IsTank())
-local timerThrowCD					= mod:NewNextTimer(33, 137175)--90-93 variable (but always 33 seconds after storm, the only variation is between first and second one really)
-local timerStormCD					= mod:NewNextTimer(60, 137313)--90-93 variable (but ALWAYS 60 seconds after throw, so we use throw as trigger point)
-local timerIonizationCD				= mod:NewCDTimer(60, 138732)
+local timerThrowCD					= mod:NewCDTimer(26, 137175)--90-93 variable (26~27 seconds after storm. needs more logs.)
+local timerStorm					= mod:NewBuffActiveTimer(15, 137313)
+local timerStormCD					= mod:NewCDTimer(63, 137313)--90-93 variable (63~67 seconds after throw)
+local timerIonizationCD				= mod:NewNextTimer(60, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
 
@@ -110,6 +111,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(137313) then
 		warnStorm:Show()
 		specWarnStorm:Show()
+		timerStorm:Start()
 		timerStaticBurstCD:Start(22.5)--May need tweaking
 		timerThrowCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
