@@ -1965,7 +1965,9 @@ do
 			DBM:Schedule(timer+10, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
 		end
 		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			Transcriptor:StartLog()
+			if not Transcriptor:IsLogging() then
+				Transcriptor:StartLog()
+			end
 			DBM:Unschedule(checkForActualPull)
 			DBM:Schedule(timer+10, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
 		end
@@ -2698,7 +2700,9 @@ function DBM:StartCombat(mod, delay, synced)
 			print(COMBATLOGENABLED)
 		end
 		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			Transcriptor:StartLog()
+			if not Transcriptor:IsLogging() then
+				Transcriptor:StartLog()
+			end
 		end
 	end
 end
