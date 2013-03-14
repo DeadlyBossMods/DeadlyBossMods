@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame		 = "Deadly Boss Mods"
 
-L.TranslationBy 		= "Whyv@巴納札爾,Nightkiller@日落沼澤(Azael Poon)"
+L.TranslationBy 		= "Imbav@聖光之願、Nightkiller@日落沼澤(Azael Poon)"
 
 L.OTabBosses	= "首領模組"
 L.OTabOptions	= "選項"
@@ -57,6 +57,8 @@ L.UseMasterVolume			= "使用主要聲音頻道來播放音效檔。"
 L.DisableCinematics			= "禁用遊戲中副本裡的過場動畫"
 L.DisableCinematicsOutside	= "禁用遊戲中副本以外的過場動畫"
 L.SKT_Enabled				= "永遠顯示快速擊殺計時器 (覆蓋首領特定的選項)"
+L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥"
+L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄首領戰鬥"
 L.Latency_Text				= "設定最高延遲同步門檻:%d"
 
 L.ModelOptions				= "3D模型預覽選項"
