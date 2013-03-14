@@ -188,8 +188,8 @@ L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
 	RangeFrame			= "顯示距離框架",--For two different spells
-	StaticShockArrow	= "Show DBM Arrow when someone is affected by $spell:135695",
-	OverchargeArrow		= "Show DBM Arrow when someone is affected by $spell:136295",
+	StaticShockArrow	= "當某人中了$spell:135695顯示DBM箭頭",
+	OverchargeArrow		= "當某人中了$spell:136295顯示DBM箭頭",
 	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
 	SetIconOnStaticShock= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
 })
