@@ -87,7 +87,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(136294) then
 		warnCallofTortos:Show()
 		specWarnCallofTortos:Show()
-		timerCallTortosCD:Start()
+		if self:AntiSpam(59, 3) then -- On below 10%, he casts Call of Tortos always. This cast ignores cooldown, so filter below 10% cast.
+			timerCallTortosCD:Start()
+		end
 	elseif args:IsSpellID(135251) then
 		warnBite:Show()
 		timerBiteCD:Start()
