@@ -80,9 +80,9 @@ local function warnLingeringGazeTargets()
 end
 
 local function BeamEnded()
-	if mod.Options.ArrowOnBeam then
+--[[	if mod.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
-	end
+	end--]]
 	timerForceOfWillCD:Start(18)
 	timerLingeringGazeCD:Start(21)
 	timerLightSpectrumCD:Start(32)
@@ -184,7 +184,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:136932") then--Force of Will
 		warnForceOfWill:Show(target)
-		timerForceOfWillCD:Start()
+		if timerLightSpectrumCD:GetTime() > 22 or timerDisintegrationBeamCD:GetTime() > 108 then--Don't start timer if either beam or spectrum will come first (cause both disable force ability)
+			timerForceOfWillCD:Start()
+		end
 		if target == UnitName("player") then
 			specWarnForceOfWill:Show()
 			yellForceOfWill:Yell()
