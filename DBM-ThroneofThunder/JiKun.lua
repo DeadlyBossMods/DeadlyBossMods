@@ -38,6 +38,7 @@ local timerFlockCD	 		= mod:NewTimer(30, "timerFlockCD", 15746)
 local timerTalonRakeCD		= mod:NewCDTimer(20, 134366, mod:IsTank() or mod:IsHealer())--20-30 second variation
 local timerTalonRake		= mod:NewTargetTimer(60, 134366, mod:IsTank() or mod:IsHealer())
 local timerDowndraftCD		= mod:NewCDTimer(97, 134370)
+local timerFlight			= mod:NewBuffFadesTimer(10, 133755)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
@@ -77,6 +78,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(137528) then
 		warnFeedYoung:Show()
 		specWarnFeedYoung:Show()
+	elseif args:IsSpellID(133755) and args:IsPlayer() then
+		timerFlight:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -119,14 +122,16 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
 		flockC = flockC + 1
 		local messageText = msg:find(L.eggsHatchL) and L.Lower or L.Upper
+		local flockText = tostring(flockC)
 		if GetTime() - lastFlock < 5 then--On 25 man, you get two at same time sometimes, we detect that here and revise message
 			messageText = L.UpperAndLower
+			flockText = tostring(flockC - 1)..", "..tostring(flockC)
 		end
 		warnFlock:Cancel()
 		specWarnFlock:Cancel()
 		timerFlockCD:Cancel()--So we don't get two timers on the double nests on 25 man
-		warnFlock:Schedule(0.5, messageText, flockName, flockC)
-		specWarnFlock:Schedule(0.5, messageText, flockName, flockC)
+		warnFlock:Schedule(0.5, messageText, flockName, flockText)
+		specWarnFlock:Schedule(0.5, messageText, flockName, flockText)
 		--TODO, once verifying nest orders are same on live, and that 25H isn't new 25N numbers, add what next nest is.
 		if self:IsDifficulty("normal10") then
 			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next

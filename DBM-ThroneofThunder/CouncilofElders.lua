@@ -16,6 +16,18 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+local Sul = EJ_GetSectionInfo(7049)
+local Malakk = EJ_GetSectionInfo(7047)
+local Marli = EJ_GetSectionInfo(7050)
+local Kazrajin = EJ_GetSectionInfo(7048)
+
+mod:SetBossHealthInfo(
+	69078, Sul,
+	69131, Malakk,
+	69132, Marli,
+	69134, Kazrajin
+)
+
 --All
 local warnPossessed					= mod:NewStackAnnounce(136442, 2, nil, nil, "warnPossessed")
 --local warnSoulFragment				= mod:NewTargetAnnounce(137359, 3)--Could find no spellid in either wowhead or wowdb, so i'll need logs
@@ -37,7 +49,7 @@ local warnFrigidAssault				= mod:NewStackAnnounce(136903, 3, nil, mod:IsTank() o
 local warnRecklessCharge			= mod:NewCastAnnounce(137122, 3, 2)
 
 --All
-local specWarnPossessed				= mod:NewSpecialWarningSwitch(136442, mod:IsDps())
+local specWarnPossessed				= mod:NewSpecialWarning("specWarnPossessed", mod:IsDps())
 --Sul the Sandcrawler
 local specWarnSandBolt				= mod:NewSpecialWarningInterrupt(136189, false)--When it's targeting a melee, damage is pretty big. More important to interrupt than ones targeting ranged that SHOULD be spread out. Maybe add a bool menu option to choose ALL or melee only for heroic
 local specWarnSandStorm				= mod:NewSpecialWarningSpell(136894, nil, nil, nil, 2)
@@ -75,6 +87,8 @@ local soundMarkedSoul				= mod:NewSound(137359)
 
 --local berserkTimer				= mod:NewBerserkTimer(490)
 
+mod:AddBoolOption("HealthFrame", true)
+mod:AddBoolOption("PHealthFrame", true)
 mod:AddBoolOption("RangeFrame")--For Sand Bolt and charge and biting cold
 
 local SulsName = EJ_GetSectionInfo(7049)
@@ -97,6 +111,43 @@ local function isTank(unit)
 		return true
 	end
 	return false
+end
+
+local showDamagedHealthBar, hideDamagedHealthBar
+do
+	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
+	local damagedMob
+	local hpRemaining = 0
+	local maxhp = 0
+	local function getDamagedHP()
+		return math.max(1, math.floor(hpRemaining / maxhp * 100))
+	end
+	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, _, _, _, _, _, destGUID, _, _, _, ...)
+		if damagedMob == destGUID then
+			local damage
+			if subEvent == "SWING_DAMAGE" then 
+				damage = select( 1, ... ) 
+			elseif subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then 
+				damage = select( 4, ... )
+			end
+			if damage then
+				hpRemaining = hpRemaining - damage
+			end
+		end
+	end)
+	
+	function showDamagedHealthBar(self, mob, spellName, health)
+		damagedMob = mob
+		hpRemaining = health
+		maxhp = health
+		DBM.BossHealth:RemoveBoss(getDamagedHP)
+		DBM.BossHealth:AddBoss(getDamagedHP, spellName)
+	end
+	
+	function hideDamagedHealthBar()
+		DBM.BossHealth:RemoveBoss(getDamagedHP)
+	end
 end
 
 function mod:BoltTarget()
@@ -172,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136442) then--Possessed
 		possessesDone = possessesDone + 1
 		warnPossessed:Show(args.destName, possessesDone)
-		specWarnPossessed:Show(args.destName)
+		specWarnPossessed:Show(args.spellName, args.destName)
 		if args:GetDestCreatureID() == 69078 then--Sul the Sandcrawler
 			--Do nothing. He just casts sand storm right away and continues his quicksand cd as usual
 			self:UnregisterShortTermEvents()
@@ -201,6 +252,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		elseif args:GetDestCreatureID() == 69134 then--Kazra'jin
 			kazraPossessed = true
 			self:UnregisterShortTermEvents()
+		end
+		if self.Options.HealthFrame and self.Options.PHealthFrame then
+			local bossHealth = math.floor(UnitHealthMax("boss1") * 0.25) -- All boss health are same. So use boss1's health.
+			showDamagedHealthBar(self, args.destGUID, args.spellName, bossHealth)
 		end
 	elseif args:IsSpellID(136903) then--Player Debuff version, not cast version
 		timerFrigidAssault:Start(args.destName)
@@ -269,6 +324,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		elseif args:GetDestCreatureID() == 69134 then--Kazra'jin
 			kazraPossessed = false
 			timerRecklessChargeCD:Cancel()--Because it's not going to be 25 sec anymore. It'll go back to 6 seconds. He'll probably do it right away since more than likely it'll be off CD
+		end
+		if self.Options.HealthFrame and self.Options.PHealthFrame then
+			hideDamagedHealthBar()
 		end
 	elseif args:IsSpellID(136903) then
 		timerFrigidAssault:Cancel(args.destName)
