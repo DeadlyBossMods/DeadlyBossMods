@@ -11,8 +11,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
---	"UNIT_AURA"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_AURA"
 )
 
 local warnBite						= mod:NewSpellAnnounce(135251, 3, nil, mod:IsTank())
@@ -21,7 +21,7 @@ local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
 local warnKickShell					= mod:NewAnnounce("warnKickShell", 2, 134031)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
---local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
+local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, 2)
@@ -35,7 +35,7 @@ local timerCallTortosCD				= mod:NewNextTimer(60.5, 136294)
 local timerStompCD					= mod:NewNextTimer(49, 134920)
 local timerBreathCD					= mod:NewNextTimer(47, 133939)
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration f the rapid caveins??
---local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
+local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
 mod:AddBoolOption("InfoFrame")
 
@@ -44,6 +44,7 @@ local shellConcussion = GetSpellInfo(136431)
 local stompActive = false
 local firstRockfall = false--First rockfall after a stomp
 local shellsRemaining = 0
+local lastConcussion = 0
 local kickedShells = {}
 
 local function clearStomp()
@@ -60,6 +61,7 @@ function mod:OnCombatStart(delay)
 	stompActive = false
 	firstRockfall = false--First rockfall after a stomp
 	shellsRemaining = 0
+	lastConcussion = 0
 	table.wipe(kickedShells)
 	timerRockfallCD:Start(15-delay)
 	timerCallTortosCD:Start(21-delay)
@@ -136,7 +138,9 @@ end
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "boss1" then return end
-	if UnitDebuff(uId, shellConcussion) then
+	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)
+	if lastConcussion ~= expires then
+		lastConcussion = expires
 		timerShellConcussion:Start()
 		if self:AntiSpam(3, 2) then
 			warnShellConcussion:Show(L.name)
