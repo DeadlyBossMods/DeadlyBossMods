@@ -321,6 +321,13 @@ function mod:CHAT_MSG_TARGETICONS(msg)
 	local icon = tonumber(string.sub(string.match(msg, "RaidTargetingIcon_%d"), -1))
 	if icon then
 		iconsSet[icon] = true
+		local additionalIcons = 8 - icon--Lets say we get a chat message a user used icon 6. we already set 6 to true, but now we do 8-6 to find out there are two other icons above 6 that we should also set to true (just in case)
+		if additionalIcons > 0 then--Icon used by someone else is less than 8 which which means we should assume the icons above this number are also already used
+			for i = 1, additionalIcons do--So now we take those 2 remaining icons, adds + 1, set that to true, do it one more time, set that to true.
+				icon = icon + 1
+				iconsSet[icon] = true--Now 6 7 and 8 should all be true if the chat icon sent was 6. This should make sure even after a DC icon setters SHOULD in theory be on same page
+			end
+		end
 	end
 end
 
