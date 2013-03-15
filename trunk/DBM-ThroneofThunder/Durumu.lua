@@ -10,7 +10,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -47,21 +46,23 @@ local specWarnLingeringGazeMove		= mod:NewSpecialWarningMove(134044)
 local specWarnBlueBeam				= mod:NewSpecialWarningYou(139202)
 local specWarnRedBeam				= mod:NewSpecialWarningYou(139204)
 local specWarnYellowBeam			= mod:NewSpecialWarningYou(133738)
-local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed")
-local specWarnDisintegrationBeam	= mod:NewSpecialWarningSpell(134169, nil, nil, nil, 2)
+local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed", nil, nil, nil, 2)--Use another "Be Aware!" sound because Lingering Gaze comes on Spectrum phase.
+local specWarnDisintegrationBeam	= mod:NewSpecialWarningSpell("ej6882", nil, nil, nil, 2)
 local specWarnEyeSore				= mod:NewSpecialWarningMove(140502)
-local specWarmLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())
+local specWarnLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())
 
 local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
-local timerLingeringGazeCD			= mod:NewCDTimer(45, 138467)
+local timerLingeringGazeCD			= mod:NewCDTimer(25, 138467)
 local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 second cd but rarely cast more than once per phase because of how short the phases are (both beams phases cancel this ability)
-local timerLightSpectrumCD			= mod:NewCDTimer(60, "ej6891")--Don't know when 2nd one is cast.
+local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")--Don't know when 2nd one is cast.
 local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 local timerDisintegrationBeam		= mod:NewBuffActiveTimer(65, "ej6882")
 local timerDisintegrationBeamCD		= mod:NewNextTimer(127, "ej6882")
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
+
+local berserkTimer					= mod:NewBerserkTimer(600)
 
 --mod:AddBoolOption("ArrowOnBeam", true)
 mod:AddBoolOption("SetIconRays", true)
@@ -82,7 +83,7 @@ local function BeamEnded()
 	if mod.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
 	end
-	timerForceOfWillCD:Start(14)
+	timerForceOfWillCD:Start(18)
 	timerLingeringGazeCD:Start(21)
 	timerLightSpectrumCD:Start(32)
 	timerDisintegrationBeamCD:Start()
@@ -94,9 +95,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(lingeringGazeTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
-	timerForceOfWillCD:Start(30.5-delay)
+	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(41-delay)
 	timerDisintegrationBeamCD:Start(135-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -117,33 +119,6 @@ function mod:SPELL_CAST_START(args)
 		timerLingeringGazeCD:Start()
 	elseif args:IsSpellID(134587) and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(133795) then
-		warnLifeDrain:Show(args.destName)
-		specWarmLifeDrain:Show(args.destName)
---[[Blizz disabled this from combat log in latest build, wtf? so now we HAVE to use emote for it
-	elseif args:IsSpellID(136932) then--Force of Will Precast
-		warnForceOfWill:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnForceOfWill:Show()
-			yellForceOfWill:Yell()
-		else
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-				if inRange and inRange < 11 then--Guessed range.
-					specWarnForceOfWillNear:Show(args.destName)
-				end
-			end
-		end--]]
 	end
 end
 
@@ -209,6 +184,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:136932") then--Force of Will
 		warnForceOfWill:Show(target)
+		timerForceOfWillCD:Start()
 		if target == UnitName("player") then
 			specWarnForceOfWill:Show()
 			yellForceOfWill:Yell()
@@ -228,6 +204,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		end
 	elseif msg:find("spell:134122") then--Blue Rays
 		warnBlueBeam:Show(target)
+		timerLingeringGazeCD:Start(21)
 		if target == UnitName("player") then
 			specWarnBlueBeam:Show()
 		end
@@ -265,6 +242,9 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	--Seems the easiest way to localize this is to just scan for npc with "eye" in it and npc for mobname in the announce. Better than localizing 3 msg variations (one of which has a typo that may get fixed)
 	elseif target:find(L.Eye) then--Untested, but should work if I don't have args backwards. Looks like Fog name is npc and target is revealing eye
 		specWarnFogRevealed:Show(npc)
+	elseif msg:find("spell:133795") then
+		warnLifeDrain:Show(target)
+		specWarnLifeDrain:Show(target)
 	elseif msg:find("spell:134169") then
 		timerLingeringGazeCD:Cancel()
 		warnDisintegrationBeam:Show()
