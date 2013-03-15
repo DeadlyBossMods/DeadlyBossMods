@@ -84,9 +84,9 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
-	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告(不建議使用，給團隊隊長)",
+	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告(不建議使用，團隊隊長使用)",
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
-	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告(http://mysticalos.com/terraceofendlesssprings.jpg)",
+	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告\n(http://mysticalos.com/terraceofendlesssprings.jpg)",
 	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
 	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbility 		= "為下一次特別技能施放顯示計時器",
