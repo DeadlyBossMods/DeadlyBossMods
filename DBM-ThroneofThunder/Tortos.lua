@@ -11,8 +11,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"UNIT_AURA"
+	"SPELL_CAST_SUCCESS"
+--	"UNIT_AURA"
 )
 
 local warnBite						= mod:NewSpellAnnounce(135251, 3, nil, mod:IsTank())
@@ -21,13 +21,13 @@ local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
 local warnKickShell					= mod:NewAnnounce("warnKickShell", 2, 134031)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
-local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
+--local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, 2)
 local specWarnRockfall				= mod:NewSpecialWarningSpell(134476, false, nil, nil, 2)
 local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
-local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", not mod:IsTank())--Tanks need it too, but they don't just blindly grab it any time it's gone like dps do, they must be at full health whent hey do or it REALLY messes up bats, so a tank needs to often ignore this warning until timing is right
+local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", false)
 
 local timerBiteCD					= mod:NewCDTimer(8, 135251, nil, mod:IsTank())
 local timerRockfallCD				= mod:NewCDTimer(10, 134476)
@@ -35,7 +35,7 @@ local timerCallTortosCD				= mod:NewNextTimer(60.5, 136294)
 local timerStompCD					= mod:NewNextTimer(49, 134920)
 local timerBreathCD					= mod:NewNextTimer(47, 133939)
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration f the rapid caveins??
-local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
+--local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
 mod:AddBoolOption("InfoFrame")
 
