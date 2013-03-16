@@ -642,7 +642,7 @@ do
 					numPlayers = GetNumSubgroupMembers()
 				end
 				if numPlayers < (prevNumPlayers or 0) then
-					for i=numPlayers, prevNumPlayers do
+					for i = numPlayers, prevNumPlayers do
 						if dots[i] then
 							if dots[i].dot then
 								dots[i].dot:Hide()		-- Hide dots when people leave the group
@@ -681,6 +681,7 @@ do
 					else
 						if dots[i] and dots[i].dot then
 							dots[i].dot:Hide()
+							dots[i].tooClose = false
 						end
 					end
 				end
