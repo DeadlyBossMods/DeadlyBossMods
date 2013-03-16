@@ -2734,6 +2734,7 @@ function DBM:EndCombat(mod, wipe)
 				-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
 				mod:UnregisterInCombatEvents("SPELL_AURA_REMOVED")
 				DBM:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
+				DBM:Schedule(2.1, mod.Stop, mod) -- Remove accident started timers.
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
