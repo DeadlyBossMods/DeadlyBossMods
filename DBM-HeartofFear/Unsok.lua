@@ -40,7 +40,7 @@ local warnLivingAmber			= mod:NewSpellAnnounce("ej6261", 2, nil, false)--122348 
 local warnBurningAmber			= mod:NewCountAnnounce("ej6567", 2, nil, false)--Keep track of Burning Amber Puddles. Spammy, but nessesary for heroic for someone managing them.
 --Amber Monstrosity
 local warnAmberCarapace			= mod:NewTargetAnnounce(122540, 4)--Monstrosity Shielding Boss (phase 2 start)
-local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3, nil, nil, mod:IsHealer() or mod:IsMelee())
+local warnMassiveStomp			= mod:NewCastAnnounce(122408, 3, nil, nil, mod:IsMelee())
 local warnAmberExplosionSoon	= mod:NewSoonAnnounce(122402, 3)
 local warnAmberExplosionAM		= mod:NewAnnounce("warnAmberExplosionAM", 4, 122398)-- in koKR, even 25 man, most starts have only 1 construct. So this warning needs to be enabled by default on koKR. 10 man also uses 1 construct start.
 local warnFling					= mod:NewSpellAnnounce(122413, 3, nil, mod:IsTank())--think this always does his aggro target but not sure. If it does random targets it will need target scanning.
@@ -66,7 +66,7 @@ local specwarnBurningAmber		= mod:NewSpecialWarningMove(122504)--Standing in a p
 --Amber Monstrosity
 local specwarnAmberMonstrosity	= mod:NewSpecialWarningSwitch("ej6254", not mod:IsHealer())
 local specwarnFling				= mod:NewSpecialWarningSpell(122413, mod:IsTank())
-local specwarnMassiveStomp		= mod:NewSpecialWarningSpell(122408, nil, nil, nil, true)
+local specwarnMassiveStomp		= mod:NewSpecialWarningSpell(122408, mod:IsMelee(), nil, nil, 2)
 
 --Boss
 local timerReshapeLifeCD		= mod:NewNextCountTimer(50, 122784)--50 second cd in phase 1-2, 15 second in phase 3. if no construct is up, cd is ignored and boss casts it anyways to make sure 1 is always up.
@@ -79,7 +79,7 @@ local timerAmberExplosionCD		= mod:NewNextSourceTimer(13, 122398)--13 second cd 
 local timerDestabalize			= mod:NewTimer(15, "timerDestabalize", 123059)--timer Enables for all players. It's very importantant for heroic. (espcially on phase 2)
 local timerStruggleForControl	= mod:NewTargetTimer(5, 122395, nil, false)
 --Amber Monstrosity
-local timerMassiveStompCD		= mod:NewCDTimer(18, 122408, nil, mod:IsHealer() or mod:IsMelee())--18-25 seconds variation
+local timerMassiveStompCD		= mod:NewCDTimer(18, 122408, nil, mod:IsMelee())--18-25 seconds variation
 local timerFlingCD				= mod:NewCDTimer(25, 122413, nil, mod:IsTank())--25-40sec variation.
 local timerAmberExplosionAMCD	= mod:NewTimer(46, "timerAmberExplosionAMCD", 122402)--Special timer just for amber monstrosity. easier to cancel, easier to tell apart. His bar is the MOST important and needs to be seperate from any other bar option.
 local timerAmberExplosion		= mod:NewCastTimer(2.5, 122402)
