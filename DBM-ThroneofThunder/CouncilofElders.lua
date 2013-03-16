@@ -46,7 +46,7 @@ local warnBitingCold				= mod:NewTargetAnnounce(136992, 3)--136917 is cast ID ve
 local warnFrostBite					= mod:NewTargetAnnounce(136922, 4)--136990 is cast ID version, 136922 is player debuff
 local warnFrigidAssault				= mod:NewStackAnnounce(136903, 3, nil, mod:IsTank() or mod:IsHealer())
 --Kazra'jin
-local warnRecklessCharge			= mod:NewCastAnnounce(137122, 3, 2)
+local warnRecklessCharge			= mod:NewCastAnnounce(137122, 3, 2, nil, false)
 
 --All
 local specWarnPossessed				= mod:NewSpecialWarning("specWarnPossessed", mod:IsDps())
@@ -55,8 +55,8 @@ local specWarnSandBolt				= mod:NewSpecialWarningInterrupt(136189, false)--When 
 local specWarnSandStorm				= mod:NewSpecialWarningSpell(136894, nil, nil, nil, 2)
 local specWarnQuickSand				= mod:NewSpecialWarningMove(136860)
 --High Prestess Mar'li
-local specWarnBlessedLoaSpirit		= mod:NewSpecialWarningSwitch(137203, mod:IsRanged())--Ranged should handle this, melee chasing it around is huge dps loss for possessed. On 10 man 2 ranged was enough. If you do not have 2 ranged, 1 or 2 melee will have to help and probably turn this on manually
-local specWarnShadowedLoaSpirit		= mod:NewSpecialWarningSwitch(137350, mod:IsRanged())
+local specWarnBlessedLoaSpirit		= mod:NewSpecialWarningSwitch(137203, mod:IsRangedDps())--Ranged should handle this, melee chasing it around is huge dps loss for possessed. On 10 man 2 ranged was enough. If you do not have 2 ranged, 1 or 2 melee will have to help and probably turn this on manually
+local specWarnShadowedLoaSpirit		= mod:NewSpecialWarningSwitch(137350, mod:IsRangedDps())
 local specWarnMarkedSoul			= mod:NewSpecialWarningRun(137359)
 local specWarnTwistedFate			= mod:NewSpecialWarningSwitch(137891)
 --Frost King Malak
@@ -67,7 +67,7 @@ local specWarnFrigidAssault			= mod:NewSpecialWarningStack(136903, mod:IsTank(),
 local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTank())
 local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
 --Kazra'jin
-local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122)
+local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122, nil, false)
 --Sul the Sandcrawler
 local timerQuickSandCD				= mod:NewCDTimer(35, 136521)
 local timerSandStormCD				= mod:NewCDTimer(35, 136894)
@@ -221,13 +221,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136442) then--Possessed
+		local cid = args:GetDestCreatureID()
 		possessesDone = possessesDone + 1
 		warnPossessed:Show(args.destName, possessesDone)
 		specWarnPossessed:Show(args.spellName, args.destName)
-		if args:GetDestCreatureID() == 69078 then--Sul the Sandcrawler
+		if cid == 69078 then--Sul the Sandcrawler
 			--Do nothing. He just casts sand storm right away and continues his quicksand cd as usual
 			self:UnregisterShortTermEvents()
-		elseif args:GetDestCreatureID() == 69132 then--High Prestess Mar'li
+		elseif cid == 69132 then--High Prestess Mar'li
 			--Swap timers. While possessed 
 			local elapsed, total = timerBlessedLoaSpiritCD:GetTime()
 			timerBlessedLoaSpiritCD:Cancel()
@@ -239,7 +240,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 			self:UnregisterShortTermEvents()
-		elseif args:GetDestCreatureID() == 69131 then--Frost King Malakk
+		elseif cid == 69131 then--Frost King Malakk
 			--Swap timers. While possessed 
 			local elapsed, total = timerBitingColdCD:GetTime()
 			timerBitingColdCD:Cancel()
@@ -249,12 +250,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:RegisterShortTermEvents(
 				"UNIT_AURA"
 			)
-		elseif args:GetDestCreatureID() == 69134 then--Kazra'jin
+		elseif cid == 69134 then--Kazra'jin
 			kazraPossessed = true
 			self:UnregisterShortTermEvents()
 		end
 		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.PHealthFrame then
-			local bossHealth = math.floor(UnitHealthMax("boss1") * 0.25) -- All boss health are same. So use boss1's health.
+			local boss1cid = tonumber(UnitGUID("boss1"):sub(6, 10), 16)
+			local bossHealth
+			if (boss1cid == 69078 or boss1cid == 69132 or boss1cid == 69131 or boss1cid == 69134) then
+				bossHealth = math.floor(UnitHealthMax("boss1") * 0.25)
+			else
+				bossHealth = math.floor(UnitHealthMax("boss2") * 0.25) 
+			end
 			showDamagedHealthBar(self, args.destGUID, args.spellName, bossHealth)
 		end
 	elseif args:IsSpellID(136903) then--Player Debuff version, not cast version
