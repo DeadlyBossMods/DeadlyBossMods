@@ -66,7 +66,7 @@ L:SetOptionLocalization({
 	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "Show special warning when you are missing $spell:137633 debuff",
 	InfoFrame				= "Show info frame for players without $spell:137633",
-	SetIconOnTurtles		= "Set icons on $spell:136294 \n(May not be reliable if more than 1 person with assist enables)",
+	SetIconOnTurtles		= "Set icons on $journal:7129 \n(May not be reliable if more than 1 person with assist enables)",
 })
 
 L:SetMiscLocalization({
