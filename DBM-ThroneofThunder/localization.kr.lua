@@ -65,7 +65,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "$spell:137633 효과가 없을 경우 특수 경고 보기",
-	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기"
+	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기",
+	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정\n(승급자가 1명 이상일 경우에는 오작동 할 수 있습니다.)",
 })
 
 L:SetMiscLocalization({
