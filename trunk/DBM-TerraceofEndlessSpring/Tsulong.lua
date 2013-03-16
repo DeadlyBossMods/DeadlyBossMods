@@ -32,7 +32,8 @@ local warnLightOfDay					= mod:NewStackAnnounce(123716, 1, nil, mod:IsHealer(), 
 
 local specWarnShadowBreath				= mod:NewSpecialWarningSpell(122752, mod:IsTank())
 local specWarnDreadShadows				= mod:NewSpecialWarningStack(122768, nil, 9)--For heroic, 10 is unhealable, and it stacks pretty fast so adaquate warning to get over there would be abou 5-6
-local specWarnNightmares				= mod:NewSpecialWarningYou(122770)
+local specWarnNightmares				= mod:NewSpecialWarningSpell(122770, nil, nil, nil, 2)
+local specWarnNightmaresYou				= mod:NewSpecialWarningYou(122770)
 local specWarnNightmaresNear			= mod:NewSpecialWarningClose(122770)
 local yellNightmares					= mod:NewYell(122770)
 local specWarnDarkOfNight				= mod:NewSpecialWarningSwitch("ej6550", mod:IsDps())
@@ -82,7 +83,7 @@ end
 function mod:ShadowsTarget(targetname)
 	warnNightmares:Show(targetname)
 	if targetname == UnitName("player") then
-		specWarnNightmares:Show()
+		specWarnNightmaresYou:Show()
 		yellNightmares:Yell()
 	else
 		local uId = DBM:GetRaidUnitId(targetname)
@@ -95,6 +96,8 @@ function mod:ShadowsTarget(targetname)
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 			if inRange and inRange < 10 then
 				specWarnNightmaresNear:Show(targetname)
+			elseif self:IsDifficulty("normal25", "heroic25", "lfr25") then -- On 25 man, he casts nightmare to 3 men, but target warning works with only 1 man. (like Putricide in ICC Marble Goo). So 25 man shows generic special warning for safety.
+				specWarnNightmares:Show()
 			end
 		end
 	end
