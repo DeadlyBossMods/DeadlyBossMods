@@ -1877,7 +1877,9 @@ do
 				print(COMBATLOGDISABLED)
 			end
 			if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-				Transcriptor:StopLog()
+				if Transcriptor:IsLogging() then
+					Transcriptor:StopLog()
+				end
 			end
 		end
 	end
@@ -2898,7 +2900,9 @@ function DBM:EndCombat(mod, wipe)
 			print(COMBATLOGDISABLED)
 		end
 		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			Transcriptor:StopLog()
+			if Transcriptor:IsLogging() then
+				Transcriptor:StopLog()
+			end
 		end
 	end
 end
@@ -3766,21 +3770,40 @@ function bossModPrototype:IsMelee()
 	return class == "ROGUE"
 	or class == "WARRIOR"
 	or class == "DEATHKNIGHT"
-	or class == "MONK"--Monk always melee, including healer
-	or (class == "PALADIN" and not IsSpellKnown(112859))--Meditation Check (False)
-    or (class == "SHAMAN" and IsSpellKnown(86629))--Dual Wield Check (True)
-	or (class == "DRUID" and IsSpellKnown(84840))--Vengeance Check (True)
+	or class == "MONK"--Iffy slope, monk healers will be ranged and melee. :\
+	or (class == "PALADIN" and (GetSpecialization() ~= 1))
+    or (class == "SHAMAN" and (GetSpecialization() == 2))
+	or (class == "DRUID" and (GetSpecialization() == 2 or GetSpecialization() == 3))
 end
 
-function bossModPrototype:IsRanged()
+function bossModPrototype:IsMeleeDps()
+	return class == "ROGUE"
+	or (class == "WARRIOR" and (GetSpecialization() ~= 3))
+	or (class == "DEATHKNIGHT" and (GetSpecialization() ~= 1))
+	or (class == "MONK" and (GetSpecialization() == 3))
+	or (class == "PALADIN" and (GetSpecialization() == 3))
+    or (class == "SHAMAN" and (GetSpecialization() == 2))
+	or (class == "DRUID" and (GetSpecialization() == 2))
+end
+
+function bossModPrototype:IsRanged()--Including healer
 	return class == "MAGE"
 	or class == "HUNTER"
 	or class == "WARLOCK"
 	or class == "PRIEST"
-	or (class == "PALADIN" and IsSpellKnown(112859))--Meditation Check (True)
-    or (class == "SHAMAN" and not IsSpellKnown(86629))--Dual Wield Check (False)
-	or (class == "DRUID" and not IsSpellKnown(84840))--Vengeance Check (False)
-	or (class == "MONK" and IsSpellKnown(121278))--Iffy slope, monk healers will be ranged and melee. :\
+	or (class == "PALADIN" and (GetSpecialization() == 1))
+    or (class == "SHAMAN" and (GetSpecialization() ~= 2))
+	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 4))
+	or (class == "MONK" and (GetSpecialization() == 2))--Iffy slope, monk healers will be ranged and melee. :\
+end
+
+function bossModPrototype:IsRangedDps()
+	return class == "MAGE"
+	or class == "HUNTER"
+	or class == "WARLOCK"
+	or (class == "PRIEST" and (GetSpecialization() == 3))
+    or (class == "SHAMAN" and (GetSpecialization() == 1))
+	or (class == "DRUID" and (GetSpecialization() == 1))
 end
 
 function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shaman
@@ -3789,41 +3812,38 @@ function bossModPrototype:IsManaUser()--Similar to ranged, but includes all pala
 	or class == "PRIEST"
 	or class == "PALADIN"
     or class == "SHAMAN"
-	or (class == "DRUID" and not IsSpellKnown(84840))--Vengeance Check (False)
-	or (class == "MONK" and IsSpellKnown(121278))
+	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 4))
+	or (class == "MONK" and (GetSpecialization() == 2))
 end
 
 function bossModPrototype:IsDps()--For features that simply should only be on for dps and not healers or tanks and without me having to use "not is heal or not is tank" rules :)
-	return (class == "WARRIOR" and not IsSpellKnown(93098))--Veangeance Check (false)
-	or (class == "DEATHKNIGHT" and not IsSpellKnown(93099))--Veangeance Check (false)
-	or (class == "PALADIN" and IsSpellKnown(53503))--Sheath of Light (true)
-	or (class == "DRUID" and not IsSpellKnown(85101))--Vengeance Check (False)
-    or (class == "SHAMAN" and not IsSpellKnown(95862))--Meditation Check (False)
-   	or (class == "PRIEST" and IsSpellKnown(95740))--Shadow Orbs Check (true)
-	or class == "WARLOCK"
+	return class == "WARLOCK"
 	or class == "MAGE"
 	or class == "HUNTER"
 	or class == "ROGUE"
-	or (class == "MONK" and IsSpellKnown(113656))--Fists of Fury (True)
+	or (class == "WARRIOR" and (GetSpecialization() ~= 3))
+	or (class == "DEATHKNIGHT" and (GetSpecialization() ~= 1))
+	or (class == "PALADIN" and (GetSpecialization() == 3))
+	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 2))
+	or (class == "SHAMAN" and (GetSpecialization() ~= 3))
+   	or (class == "PRIEST" and (GetSpecialization() == 3))
+	or (class == "MONK" and (GetSpecialization() == 3))
 end
 
-
---A simple check to see if these classes know "Vengeance".
 function bossModPrototype:IsTank()
-	return (class == "WARRIOR" and IsSpellKnown(93098))
-	or (class == "DEATHKNIGHT" and IsSpellKnown(93099))
-	or (class == "PALADIN" and IsSpellKnown(84839))
-	or (class == "DRUID" and IsSpellKnown(84840))
-	or (class == "MONK" and IsSpellKnown(120267))
+	return (class == "WARRIOR" and (GetSpecialization() == 3))
+	or (class == "DEATHKNIGHT" and (GetSpecialization() == 1))
+	or (class == "PALADIN" and (GetSpecialization() == 2))
+	or (class == "DRUID" and (GetSpecialization() == 3))
+	or (class == "MONK" and (GetSpecialization() == 1))
 end
 
---A simple check to see if these classes know "Meditation".
 function bossModPrototype:IsHealer()
-	return (class == "PALADIN" and IsSpellKnown(112859))
-	or (class == "SHAMAN" and IsSpellKnown(95862))
-	or (class == "DRUID" and IsSpellKnown(85101))
-	or (class == "PRIEST" and (IsSpellKnown(95860) or IsSpellKnown(95861)))
-	or (class == "MONK" and IsSpellKnown(121278))
+	return (class == "PALADIN" and (GetSpecialization() == 1))
+	or (class == "SHAMAN" and (GetSpecialization() == 3))
+	or (class == "DRUID" and (GetSpecialization() == 4))
+	or (class == "PRIEST" and (GetSpecialization() ~= 3))
+	or (class == "MONK" and (GetSpecialization() == 2))
 end
 
 --These don't matter since they don't check talents
