@@ -16,23 +16,27 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(819)
 
 L:SetWarningLocalization({
-	warnAdds		= "%s"
+	warnAdds				= "%s",
+	warnOrbofControl		= "조종의 구슬 떨어짐",
+	specWarnOrbofControl	= "조종의 구슬 떨어짐!"
 })
 
 L:SetTimerLocalization({
-	timerDoor		= "다음 부족의 문 열림",
-	timerAdds		= "다음 %s"
+	timerDoor				= "다음 부족의 문 열림",
+	timerAdds				= "다음 %s"
 })
 
 L:SetOptionLocalization({
-	warnAdds		= "병력 등장시 알림 보기",
-	timerDoor		= "다음 부족의 문 열림 바 표시",
-	timerAdds		= "다음 추가 병력 바 표시"
+	warnAdds				= "병력 등장시 알림 보기",
+	warnOrbofControl		= "$journal:7092 떨어짐시 알림 보기",
+	specWarnOrbofControl	= "$journal:7092 떨어짐시 특수 경고 보기",
+	timerDoor				= "다음 부족의 문 열림 바 표시",
+	timerAdds				= "다음 추가 병력 바 표시"
 })
 
 L:SetMiscLocalization({
-	newForces		= "병력들이 쏟아져",
-	chargeTarget	= "꼬리를 바닥에 쿵쿵 내려칩니다!"
+	newForces				= "병력들이 쏟아져",
+	chargeTarget			= "꼬리를 바닥에 쿵쿵 내려칩니다!"
 })
 
 ---------------------------
