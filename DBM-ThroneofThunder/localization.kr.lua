@@ -180,12 +180,28 @@ L:SetOptionLocalization({
 -------------------
 L= DBM:GetModLocalization(829)
 
+L:SetWarningLocalization({
+	warnNight		= "밤 단계",
+	warnDay			= "낮 단계",
+	warnDusk		= "황혼 단계"
+})
+
+L:SetTimerLocalization({
+	timerDayCD		= "낮 단계",
+	timerDuskCD		= "황혼 단계",
+})
+
 L:SetOptionLocalization({
+	warnNight		= "밤 단계 알림 보기",
+	warnDay			= "낮 단계 알림 보기",
+	warnDusk		= "황혼 단계 알림 보기",
+	timerDayCD		= "낮 단계 바 표시",
+	timerDuskCD		= "황혼 단계 바 표시",
 	RangeFrame		= "거리 창 보기(8m)"
 })
 
 L:SetMiscLocalization({
-	DuskPhase		= "Lu'lin! Lend me your strength!"
+	DuskPhase		= "루린! 힘을 빌려다오!"
 })
 
 --------------
