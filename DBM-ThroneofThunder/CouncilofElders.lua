@@ -12,6 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -50,6 +52,7 @@ local warnRecklessCharge			= mod:NewCastAnnounce(137122, 3, 2, nil, false)
 
 --All
 local specWarnPossessed				= mod:NewSpecialWarning("specWarnPossessed", mod:IsDps())
+local specWarnDarkPower				= mod:NewSpecialWarningSpell(136507, nil, nil, nil, 2)
 --Sul the Sandcrawler
 local specWarnSandBolt				= mod:NewSpecialWarningInterrupt(136189, false)--When it's targeting a melee, damage is pretty big. More important to interrupt than ones targeting ranged that SHOULD be spread out. Maybe add a bool menu option to choose ALL or melee only for heroic
 local specWarnSandStorm				= mod:NewSpecialWarningSpell(136894, nil, nil, nil, 2)
@@ -66,6 +69,9 @@ local specWarnFrostBite				= mod:NewSpecialWarningYou(136922)--This one you do n
 local specWarnFrigidAssault			= mod:NewSpecialWarningStack(136903, mod:IsTank(), 8)
 local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTank())
 local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
+
+--All
+local timerDarkPowerCD				= mod:NewCDTimer(73, 136507) -- needs review.
 --Kazra'jin
 local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122, nil, false)
 --Sul the Sandcrawler
@@ -92,12 +98,14 @@ mod:AddBoolOption("PHealthFrame", true)
 mod:AddBoolOption("RangeFrame")--For Sand Bolt and charge and biting cold
 
 local SulsName = EJ_GetSectionInfo(7049)
+local lingeringPresence = GetSpellInfo(136467)
+local chilledDebuff = GetSpellInfo(137085)
 local boltCasts = 0
 local scansDone = 0
 local kazraPossessed = false
 local possessesDone = 0
 local chilledWarned = false
-local chilledDebuff = GetSpellInfo(137085)
+local darkPowerWarned = false
 
 local function isTank(unit)
 	if GetPartyAssignment("MAINTANK", unit, 1) then
@@ -174,6 +182,7 @@ end
 function mod:OnCombatStart(delay)
 	kazraPossessed = false
 	chilledWarned = false
+	darkPowerWarned = false
 	possessesDone = 0
 	boltCasts = 0
 	timerQuickSandCD:Start(8-delay)
@@ -222,9 +231,29 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136442) then--Possessed
 		local cid = args:GetDestCreatureID()
+		local uid
+		local darkPowerCD = 73 -- calculated in 25man normal.
+		for i = 1, 5 do
+			if UnitName("boss"..i) == args.destName then
+				uid = "boss"..i
+				break
+			end
+		end
 		possessesDone = possessesDone + 1
 		warnPossessed:Show(args.destName, possessesDone)
 		specWarnPossessed:Show(args.spellName, args.destName)
+		if uid and UnitBuff(uid, lingeringPresence) then
+			local _, _, _, stack = UnitBuff(uid, lingeringPresence)
+			if self:IsDifficulty("heroic10", "heroic25") then
+				timerDarkPowerCD:Start(darkPowerCD * (1/(1+(stack*0.15))))
+			elseif self:IsDifficulty("normal10", "normal25") then
+				timerDarkPowerCD:Start(darkPowerCD * (1/(1+(stack*0.1))))
+			else -- lfr
+				timerDarkPowerCD:Start(darkPowerCD * (1/(1+(stack*0.05))))
+			end
+		else
+			timerDarkPowerCD:Start(darkPowerCD)
+		end
 		if cid == 69078 then--Sul the Sandcrawler
 			--Do nothing. He just casts sand storm right away and continues his quicksand cd as usual
 			self:UnregisterShortTermEvents()
@@ -255,13 +284,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:UnregisterShortTermEvents()
 		end
 		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.PHealthFrame then
-			local boss1cid = tonumber(UnitGUID("boss1"):sub(6, 10), 16)
-			local bossHealth
-			if (boss1cid == 69078 or boss1cid == 69132 or boss1cid == 69131 or boss1cid == 69134) then
-				bossHealth = math.floor(UnitHealthMax("boss1") * 0.25)
-			else
-				bossHealth = math.floor(UnitHealthMax("boss2") * 0.25) 
-			end
+			local bossHealth = math.floor(UnitHealthMax(uid or "boss4") * 0.25)
 			showDamagedHealthBar(self, args.destGUID, args.spellName.." : "..args.destName, bossHealth)
 		end
 	elseif args:IsSpellID(136903) then--Player Debuff version, not cast version
@@ -306,6 +329,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(136442) then--Possessed
+		darkPowerWarned = false
 		if args:GetDestCreatureID() == 69078 then--Sul the Sandcrawler
 			timerSandStormCD:Cancel()
 		elseif args:GetDestCreatureID() == 69132 then--High Prestess Mar'li
@@ -343,6 +367,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMarkedSoul:Cancel(args.destName)
 	end
 end
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 136507 and not darkPowerWarned then
+		darkPowerWarned = true
+		specWarnDarkPower:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end

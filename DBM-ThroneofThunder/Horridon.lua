@@ -29,6 +29,7 @@ local warnDoubleSwipe			= mod:NewSpellAnnounce(136741, 3)
 local warnAdds					= mod:NewAnnounce("warnAdds", 2, 43712)--Some random troll icon
 local warnDino					= mod:NewSpellAnnounce("ej7086", 3, 137237)
 local warnMending				= mod:NewSpellAnnounce(136797, 4)
+local warnOrbofControl			= mod:NewAnnounce("warnOrbofControl", 4, "INTERFACE\\ICONS\\INV_MISC_ORB_01.BLP")
 local warnVenomBolt				= mod:NewSpellAnnounce(136587, 3, nil, false)
 local warnChainLightning		= mod:NewSpellAnnounce(136480, 3, nil, false)
 local warnFireball				= mod:NewSpellAnnounce(136465, 3, nil, false)
@@ -45,6 +46,7 @@ local specWarnPunctureOther		= mod:NewSpecialWarningTarget(136767, mod:IsTank())
 local specWarnSandTrap			= mod:NewSpecialWarningMove(136723)
 local specWarnDino				= mod:NewSpecialWarningSwitch("ej7086", not mod:IsHealer())
 local specWarnMending			= mod:NewSpecialWarningInterrupt(136797, mod:IsDps())--High priority interrupt. All dps needs warning because boss heals 1% per second it's not interrupted.
+local specWarnOrbofControl		= mod:NewSpecialWarning("specWarnOrbofControl")
 local specWarnVenomBolt			= mod:NewSpecialWarningInterrupt(136587)--Can be on for all since it only triggers off target/focus
 local specWarnChainLightning	= mod:NewSpecialWarningInterrupt(136480)--Can be on for all since it only triggers off target/focus
 local specWarnFireball			= mod:NewSpecialWarningInterrupt(136465)--Can be on for all since it only triggers off target/focus
@@ -154,6 +156,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(136797) then
 		warnMending:Show()
 		specWarnMending:Show(args.sourceName)
+	elseif args:IsSpellID(137237) then
+		warnOrbofControl:Show()
+		specWarnOrbofControl:Show()
 	elseif args:IsSpellID(136587) then
 		warnVenomBolt:Show()
 		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
