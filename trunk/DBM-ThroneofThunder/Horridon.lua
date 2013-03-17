@@ -218,6 +218,21 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.chargeTarget) then
+		self:SendSync("Charge", target)
+	elseif msg:find(L.newForces) then
+		self:SendSync("Door")
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 69374 then
+		timerBestialCryCD:Cancel()
+	end
+end
+
+function mod:OnSync(msg, target)
+	if msg == "Phase2" then
 		warnCharge:Show(target)
 		timerCharge:Start()
 		timerChargeCD:Start()
@@ -225,11 +240,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			specWarnCharge:Show()
 			yellCharge:Yell()
 		end
+	elseif msg == "Door" then
 	--Doors spawn every 131.5 seconds
 	--Halfway through it (literlaly exact center) Dinomancers spawn at 56.75
 	--Then, before the dinomancer, lesser adds spawn twice splitting that timer into 3rds
 	--So it goes, door, 18.91 seconds later, 1 add jumps down. 18.91 seconds later, next 2 drop down. 18.91 seconds later, dinomancer drops down, then 56.75 seconds later, next door starts.
-	elseif msg:find(L.newForces) then
 		doorNumber = doorNumber + 1
 		timerDinoCD:Start()
 		warnDino:Schedule(56.75)
@@ -258,12 +273,5 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				timerJalakCD:Start(143)
 			end
 		end
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 69374 then
-		timerBestialCryCD:Cancel()
 	end
 end
