@@ -218,7 +218,8 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.chargeTarget) then
-		self:SendSync("Charge", target)
+		local uId = DBM:GetRaidUnitId(target)
+		self:SendSync("Charge", UnitGUID(uId))
 	elseif msg:find(L.newForces) then
 		self:SendSync("Door")
 	end
@@ -231,12 +232,12 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:OnSync(msg, target)
-	if msg == "Phase2" then
-		warnCharge:Show(target)
+function mod:OnSync(msg, guid)
+	if msg == "Charge" and guid then
+		warnCharge:Show(UnitName(guid))
 		timerCharge:Start()
 		timerChargeCD:Start()
-		if target == UnitName("player") then
+		if guid == UnitGUID("player") then
 			specWarnCharge:Show()
 			yellCharge:Yell()
 		end
