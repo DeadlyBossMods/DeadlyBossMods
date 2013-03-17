@@ -262,7 +262,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				bossHealth = math.floor(UnitHealthMax("boss2") * 0.25) 
 			end
-			showDamagedHealthBar(self, args.destGUID, args.spellName, bossHealth)
+			showDamagedHealthBar(self, args.destGUID, args.spellName.." : "..args.destName, bossHealth)
 		end
 	elseif args:IsSpellID(136903) then--Player Debuff version, not cast version
 		timerFrigidAssault:Start(args.destName)
