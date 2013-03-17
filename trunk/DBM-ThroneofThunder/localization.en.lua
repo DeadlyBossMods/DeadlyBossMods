@@ -16,23 +16,28 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(819)
 
 L:SetWarningLocalization({
-	warnAdds	= "%s"
+	warnAdds				= "%s",
+	warnOrbofControl		= "Orb of Control dropped",
+	specWarnOrbofControl	= "Orb of Control dropped!"
 })
 
 L:SetTimerLocalization({
-	timerDoor		= "Next Tribal Door",
-	timerAdds		= "Next %s"
+	timerDoor				= "Next Tribal Door",
+	timerAdds				= "Next %s"
 })
 
 L:SetOptionLocalization({
-	warnAdds		= "Announce when new adds jump down",
-	timerDoor		= "Show timer for next Tribal Door phase",
-	timerAdds		= "Show timer for when next add jumps down"
+	warnAdds				= "Announce when new adds jump down",
+	warnOrbofControl		= "Announce when $journal:7092 dropped",
+	specWarnOrbofControl	= "Show special warning when $journal:7092 dropped",
+	timerDoor				= "Show timer for next Tribal Door phase",
+	timerAdds				= "Show timer for when next add jumps down",
+	
 })
 
 L:SetMiscLocalization({
-	newForces		= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces				= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget			= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
 })
 
 ---------------------------
