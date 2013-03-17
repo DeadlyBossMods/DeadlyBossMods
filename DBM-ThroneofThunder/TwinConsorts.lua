@@ -19,18 +19,19 @@ mod:RegisterEventsInCombat(
 )
 
 --Darkness
-local warnNight							= mod:NewSpellAnnounce("ej7641", 2, 108558)
+local warnNight							= mod:NewAnnounce("warnNight", 1, 108558)
 local warnCosmicBarrage					= mod:NewSpellAnnounce(136752, 2)
 local warnTearsOfSun					= mod:NewSpellAnnounce(137404, 3)
 local warnBeastOfNightmares				= mod:NewTargetAnnounce(137375, 3, nil, mod:IsTank() or mod:IsHealer())
 --Light
-local warnDay							= mod:NewSpellAnnounce("ej7645", 2, 122789)
+local warnDay							= mod:NewAnnounce("warnDay", 1, 122789)
 local warnLightOfDay					= mod:NewSpellAnnounce(137403, 2, nil, false)--Spammy, but leave it as an option at least
 local warnFanOfFlames					= mod:NewStackAnnounce(137408, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check target scanning
 local warnIceComet						= mod:NewSpellAnnounce(137419, 2)
 local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4)--Heroic
 --Dusk
+local warnDusk							= mod:NewAnnounce("warnDusk", 1, 130013)
 local warnTidalForce					= mod:NewCastAnnounce(137531, 3)
 
 --Darkness
@@ -47,12 +48,12 @@ local specWarnTidalForce				= mod:NewSpecialWarningSpell(137531, nil, nil, nil, 
 
 --Darkness
 --Light of Day (137403) has a HIGHLY variable cd variation, every 6-14 seconds. Not to mention it requires using SPELL_DAMAGE and SPELL_MISSED. for now i'm excluding it on purpose
-local timerDayCD						= mod:NewNextTimer(184, "ej7645", nil, nil, nil, 122789)--Probably just need localizing, no short text version. 
+local timerDayCD						= mod:NewTimer(184, "timerDayCD", 122789)--Probably just need localizing, no short text version. 
 local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
 local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
 --Light
-local timerDuskCD						= mod:NewNextTimer(179, "ej7633", nil, nil, nil, 130013)
+local timerDuskCD						= mod:NewTimer(179, "timerDuskCD", 130013)
 local timerLightOfDayCD					= mod:NewCDTimer(6, 137403, nil, false)--Trackable in day phase using UNIT event since boss1 can be used in this phase. Might be useful for heroic to not run behind in shadows too early preparing for a special
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
@@ -207,6 +208,7 @@ function mod:OnSync(msg, guid)
 		)
 	elseif msg == "Phase3" then
 		self:UnregisterShortTermEvents()
+		warnDusk:Show()
 		timerFanOfFlamesCD:Cancel()
 		timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 		timerTidalForceCD:Start(20)

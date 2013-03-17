@@ -180,7 +180,23 @@ L:SetOptionLocalization({
 -------------------
 L= DBM:GetModLocalization(829)
 
+L:SetWarningLocalization({
+	warnNight		= "Night phase",
+	warnDay			= "Day phase",
+	warnDusk		= "Dusk phase"
+})
+
+L:SetTimerLocalization({
+	timerDayCD		= "Next night phase",
+	timerDuskCD		= "Next dusk phase",
+})
+
 L:SetOptionLocalization({
+	warnNight		= "Announce night phase",
+	warnDay			= "Announce day phase",
+	warnDusk		= "Announce dusk phase",
+	timerDayCD		= "Show timer for next day phase",
+	timerDuskCD		= "Show timer for next dusk phase",
 	RangeFrame		= "Show range frame (8)"
 })
 
