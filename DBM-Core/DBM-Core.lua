@@ -2642,9 +2642,6 @@ function DBM:StartCombat(mod, delay, synced)
 		elseif mod:IsDifficulty("heroic25") then
 			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
 		end
-		if DBM.Options.ShowEngageMessage then
-			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
-		end
 		if C_Scenario.IsInScenario() then
 			mod.inScenario = true
 		end
@@ -2706,6 +2703,9 @@ function DBM:StartCombat(mod, delay, synced)
 				Transcriptor:StartLog()
 			end
 		end
+		if DBM.Options.ShowEngageMessage then
+			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+		end
 	end
 end
 
@@ -2744,6 +2744,15 @@ function DBM:EndCombat(mod, wipe)
 		if mod.combatInfo.killMobs then
 			for i, v in pairs(mod.combatInfo.killMobs) do
 				mod.combatInfo.killMobs[i] = true
+			end
+		end
+		if DBM.Options.AutologBosses and LoggingCombat() then
+			LoggingCombat(0)
+			print(COMBATLOGDISABLED)
+		end
+		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+			if Transcriptor:IsLogging() then
+				Transcriptor:StopLog()
 			end
 		end
 		if not savedDifficulty or not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
@@ -2896,15 +2905,6 @@ function DBM:EndCombat(mod, wipe)
 		DBM.BossHealth:Hide()
 		DBM.Arrow:Hide(true)
 		DBM:ToggleRaidBossEmoteFrame(0)
-		if DBM.Options.AutologBosses and LoggingCombat() then
-			LoggingCombat(0)
-			print(COMBATLOGDISABLED)
-		end
-		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			if Transcriptor:IsLogging() then
-				Transcriptor:StopLog()
-			end
-		end
 	end
 end
 
