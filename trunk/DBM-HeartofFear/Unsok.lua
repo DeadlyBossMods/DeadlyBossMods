@@ -100,7 +100,6 @@ local playerIsConstruct = false
 local warnedWill = false
 local willNumber = 100--Last warned player will power number (not same as actual player will power)
 local lastStrike = 0
---local scansDone = 0
 local amDestabalizeStack = 0
 local amWarnCount = 0
 local Totems = nil
@@ -111,46 +110,6 @@ local amberExplosion = GetSpellInfo(122402)
 local Monstrosity = EJ_GetSectionInfo(6254)
 local MutatedConstruct = EJ_GetSectionInfo(6249)
 local canInterrupt = {}
-local guids = {}
-local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
-local function buildGuidTable()
-	table.wipe(guids)
-	for uId, i in DBM:GetGroupMembers() do
-		guids[UnitGUID(uId) or "none"] = GetRaidRosterInfo(i)
-	end
-end
-
---[[
-function mod:ScalpelTarget()
-	if playerIsConstruct then return end--Don't need this info as a construct
-	scansDone = scansDone + 1
-	local targetname = DBM:GetUnitFullName("boss1targettarget")--Not a mistake, just clever use of available api to get the target of an invisible mob the boss is targeting ;)
-	if UnitExists("boss1targettarget") and not UnitIsUnit("boss1", "boss1targettarget") then
-		warnAmberScalpel:Show(targetname)
-		if targetname == UnitName("player") then
-			specwarnAmberScalpel:Show()
-			yellAmberScalpel:Yell()
-			timerAmberScalpel:Start()
-		else
-			local uId = DBM:GetRaidUnitId(targetname)
-			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-				if inRange and inRange < 5 then--Guessed range
-					specwarnAmberScalpelNear:Show(targetname)
-				end
-			end
-		end
-	else--He failed sanity check (ie boss1targettarget was himself, so he was obviously still targeting tank, reschedule check)
-		if scansDone < 6 then
-			self:ScheduleMethod(0.2, "ScalpelTarget")
-		end
-	end
-end--]]
 
 function mod:AmberExplosionAMWarning()
 	amWarnCount = amWarnCount + 1
@@ -180,8 +139,6 @@ end
 function mod:OnCombatStart(delay)
 	warnedWill = true--avoid wierd bug on pull
 	willNumber = 100
-	buildGuidTable()
-	guidTableBuilt = true
 	Phase = 1
 	Puddles = 0
 	Constructs = 0
@@ -428,8 +385,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(121994) then
 		warnAmberScalpel:Show()
 		specwarnAmberScalpel:Show()
---		scansDone = 0
---		self:ScheduleMethod(0.2, "ScalpelTarget")
 	elseif args:IsSpellID(122532) then
 		Puddles = Puddles + 1
 		warnBurningAmber:Show(Puddles)
@@ -484,17 +439,13 @@ function mod:UNIT_SPELLCAST_STOP(uId, _, _, _, spellId)
 end
 
 function mod:OnSync(msg, str)
-	if not guidTableBuilt then
-		buildGuidTable()
-		guidTableBuilt = true
-	end
 	local guid, spellId
 	if str then
 		guid, spellId = string.split(":", str)
 		spellId = tonumber(spellId or "")
 	end
-	if msg == "InterruptAvailable" and guids[guid] and spellId then
-		canInterrupt[#canInterrupt + 1] = guids[guid]
+	if msg == "InterruptAvailable" and guid and spellId then
+		canInterrupt[#canInterrupt + 1] = DBM:GetFullPlayerNameByGUID(guid)
 		self:Unschedule(warnAmberExplosionCast)
 		self:Schedule(0.5, warnAmberExplosionCast, spellId)
 	end
