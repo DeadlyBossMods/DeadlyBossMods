@@ -239,7 +239,7 @@ end
 
 function mod:OnSync(msg, guid)
 	if msg == "Charge" and guid then
-		warnCharge:Show(UnitName(guid))
+		warnCharge:Show(DBM:GetFullPlayerNameByGUID(guid))
 		timerCharge:Start()
 		timerChargeCD:Start()
 		if guid == UnitGUID("player") then

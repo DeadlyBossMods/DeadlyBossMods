@@ -1329,8 +1329,12 @@ do
 		return inRaid
 	end
 
-	function DBM:GetUnitFullNameByGUID(guid)
+	function DBM:GetFullPlayerNameByGUID(guid)
 		return raidGuids[guid]
+	end
+
+	function DBM:GetPlayerNameByGUID(guid)
+		return raidGuids[guid] and raidGuids[guid]:gsub("%-.*$", "")
 	end
 end
 	
