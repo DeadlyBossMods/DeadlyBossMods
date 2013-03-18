@@ -31,7 +31,7 @@ local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check targ
 local warnIceComet						= mod:NewSpellAnnounce(137419, 2)
 local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4)--Heroic
 --Dusk
-local warnDusk							= mod:NewAnnounce("warnDusk", 1, 130013)
+local warnDusk							= mod:NewAnnounce("warnDusk", 1, "Interface\\Icons\\achievement_zone_easternplaguelands")--"achievement_zone_easternplaguelands" (best Dusk icon i could find)
 local warnTidalForce					= mod:NewCastAnnounce(137531, 3)
 
 --Darkness
@@ -48,12 +48,12 @@ local specWarnTidalForce				= mod:NewSpecialWarningSpell(137531, nil, nil, nil, 
 
 --Darkness
 --Light of Day (137403) has a HIGHLY variable cd variation, every 6-14 seconds. Not to mention it requires using SPELL_DAMAGE and SPELL_MISSED. for now i'm excluding it on purpose
-local timerDayCD						= mod:NewTimer(184, "timerDayCD", 122789)--Probably just need localizing, no short text version. 
+local timerDayCD						= mod:NewTimer(184, "timerDayCD", 122789)
 local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
 local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
 --Light
-local timerDuskCD						= mod:NewTimer(179, "timerDuskCD", 130013)
+local timerDuskCD						= mod:NewTimer(179, "timerDuskCD", "Interface\\Icons\\achievement_zone_easternplaguelands")
 local timerLightOfDayCD					= mod:NewCDTimer(6, 137403, nil, false)--Trackable in day phase using UNIT event since boss1 can be used in this phase. Might be useful for heroic to not run behind in shadows too early preparing for a special
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
