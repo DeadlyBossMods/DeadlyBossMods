@@ -130,7 +130,7 @@ DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d Sek"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull jetzt!"
 
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill (Erfolg)"
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Zeit für Erfolg"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
@@ -246,7 +246,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow move  macht den Pfeil beweglich",
 }
 
-DBM_SPEED_KILL_TIMER_TEXT	= "Speed Kill"
+DBM_SPEED_KILL_TIMER_TEXT	= "Rekordzeit"
 DBM_SPEED_KILL_TIMER_OPTION	= "Zeige einen Timer zur Verbesserung deines schnellsten Siegs"
 
 
