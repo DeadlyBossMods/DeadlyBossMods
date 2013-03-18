@@ -134,16 +134,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill (Erfolg)"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: %%s",
+	target		= "%s: >%%s<",
 	cast		= "%s",
 	active		= "%s endet",--Buff/Debuff/event on boss
 	fades		= "%s schwindet",--Buff/Debuff on players
 	cd			= "%s CD",
 	cdcount		= "%s CD (%%d)",
-	cdsource	= "%s CD: %%s",
+	cdsource	= "%s CD: >%%s<",
 	next		= "Nächster %s",
 	nextcount	= "Nächster %s (%%d)",
-	nextsource	= "Nächster %s: %%s",
+	nextsource	= "Nächster %s: >%%s<",
 	achievement	= "%s"
 }
 
@@ -208,16 +208,16 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s!",
-	dispel = "%s auf %%s - jetzt reinigen",
-	interrupt = "%s - unterbreche %%s!",
+	dispel = "%s auf >%%s< - jetzt reinigen",
+	interrupt = "%s - unterbreche >%%s<!",
 	you = "%s auf dir",
-	target = "%s auf %%s",
-	close = "%s auf %%s in deiner Nähe",
+	target = "%s auf >%%s<",
+	close = "%s auf >%%s< in deiner Nähe",
 	move = "%s - geh weg",
 	run = "%s - lauf weg",
 	cast = "%s - stoppe Zauber",
 	stack = "%s (%%d)",
-	switch = "%s - Ziel wechseln"
+	switch = ">%s< - Ziel wechseln"
 }
 
 

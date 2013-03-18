@@ -128,16 +128,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Matar rapido"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: %%s",
+	target		= "%s: >%%s<",
 	cast		= "%s",
 	active		= "%s finaliza",
 	fades		= "%s se disipa",
 	cd 			= "%s CD",
 	cdcount		= "%s CD (%%d)",
-	cdsource	= "%s CD: %%s",
+	cdsource	= "%s CD: >%%s<",
 	next		= "Siguiente %s",
 	nextcount	= "Siguiente %s (%%d)",
-	nextsource	= "Siguiente %s: %%s",
+	nextsource	= "Siguiente %s: >%%s<",
 	achievement = "%s"
 }
 
@@ -203,15 +203,15 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s",
 	dispel = "%s ¡dispelea ahora!",
-	interrupt = "%s ¡interrumpe %%s!",
+	interrupt = "%s ¡interrumpe >%%s<!",
 	you = "%s en ti!",
-	target = "%s en %%s",
-	close = "%s en %%s cerca de ti",
+	target = "%s en >%%s<",
+	close = "%s en >%%s< cerca de ti",
 	move = "%s ¡muévete!",
 	run = "%s ¡corre!",
 	cast = "%s ¡para de castear!",
 	stack = "%s (%%d)",
-	switch = "%s - cambio de objetivos"
+	switch = ">%s< - cambio de objetivos"
 }
 
 

@@ -134,16 +134,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Быстрая победа"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target 		= "%s: %%s",
+	target 		= "%s: >%%s<",
 	cast 		= "%s",
 	active		= "%s заканчивается",--Buff/Debuff/event on boss
 	fades		= "%s рассеивается",--Buff/Debuff on players
 	cd 			= "Восст. %s",
 	cdcount		= "Восст. %s (%%d)",
-	cdsource	= "Восст. %s: %%s",
+	cdsource	= "Восст. %s: >%%s<",
 	next 		= "След. %s",
 	nextcount	= "След. %s (%%d)",
-	nextsource	= "След. %s: %%s",
+	nextsource	= "След. %s: >%%s<",
 	achievement = "%s"
 }
 
@@ -208,16 +208,16 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s!",
-	dispel = "%s на |3-5(%%s) - рассейте заклинание",
+	dispel = "%s на |3-5(>%%s<) - рассейте заклинание",
 	interrupt = "%s - прервите",
 	you = "%s на вас",
-	target = "%s на |3-5(%%s)",
-	close = "%s на |3-5(%%s) около вас",
+	target = "%s на |3-5(>%%s<)",
+	close = "%s на |3-5(>%%s<) около вас",
 	move = "%s - отбегите",
 	run = "%s - бегите",
 	cast = "%s - прекратите чтение заклинаний",
 	stack = "%s (%%d)",
-	switch = "%s - переключитесь"
+	switch = ">%s< - переключитесь"
 }
 
 

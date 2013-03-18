@@ -128,16 +128,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Morte rápida." -- This will do, but fa
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: %%s",
+	target		= "%s: >%%s<",
 	cast		= "%s",
 	active		= "%s acaba",--Buff/Debuff/event on boss
 	fades		= "%s desvanece",--Buff/Debuff on players
 	cd			= "%s recarrega",
 	cdcount		= "%s recarrega (%%d)",
-	cdsource	= "%s recarrega: %%s",
+	cdsource	= "%s recarrega: >%%s<",
 	next		= "Próx. %s",
 	nextcount	= "Próx. %s (%%d)",
-	nextsource	= "Próx %s: %%s",
+	nextsource	= "Próx %s: >%%s<",
 	achievement	= "%s"
 }
 
@@ -202,16 +202,16 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s!",
-	dispel = "%s em %%s - remova agora",
-	interrupt = "%s - interrompa %%s",
+	dispel = "%s em >%%s< - remova agora",
+	interrupt = "%s - interrompa >%%s<",
 	you = "%s em você",
-	target = "%s em %%s",
-	close = "%s em %%s perto de você",
+	target = "%s em >%%s<",
+	close = "%s em >%%s< perto de você",
 	move = "%s - saia de perto",
 	run = "%s - corra para longe",
 	cast = "%s - pare de lançar",
 	stack = "%s (%%d)",
-	switch = "%s - mude de alvo"
+	switch = ">%s< - mude de alvo"
 }
 
 
