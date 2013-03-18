@@ -49,14 +49,6 @@ local soundCrimsonWake				= mod:NewSound(138480)
 
 local scansDone = 0
 local crimsonWake = GetSpellInfo(138485)--Debuff ID I believe, not cast one. Same spell name though
-local guids = {}
-local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
-local function buildGuidTable()
-	table.wipe(guids)
-	for uId, i in DBM:GetGroupMembers() do
-		guids[UnitGUID(uId) or "none"] = GetRaidRosterInfo(i)
-	end
-end
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -101,9 +93,7 @@ function mod:TargetScanner(Force)
 end
 
 function mod:OnCombatStart(delay)
-	buildGuidTable()
 	scansDone = 0
-	guidTableBuilt = true
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
 	)
@@ -168,11 +158,7 @@ function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId, spell
 --"<84.3 22:50:19> [CLEU] SPELL_DAMAGE#false#0x040000000587A80F#Crones#1300#0#0x04000000060845B3#Rvst#1300#0#138618#Matter Swap#64#52388#-1#64#nil#nil#162209#nil#nil#nil#nil", -- [9604]
 	elseif spellId == 138618 then
 		if sourceGUID == destGUID then return end--Filter first event then grab both targets from second event, as seen from log example above
-		if not guidTableBuilt then
-			buildGuidTable()
-			guidTableBuilt = true
-		end
-		warnMatterSwapped:Show(spellName, guids[sourceGUID], guids[destGUID])
+		warnMatterSwapped:Show(spellName, DBM:GetFullPlayerNameByGUID(sourceGUID), DBM:GetFullPlayerNameByGUID(destGUID))
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -203,12 +189,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 function mod:OnSync(msg, guid)
-	if not guidTableBuilt then
-		buildGuidTable()
-		guidTableBuilt = true
-	end
-	if msg == "WakeTarget" and guids[guid] then
-		warnCrimsonWake:Show(guids[guid])
+	if msg == "WakeTarget" and guid then
+		warnCrimsonWake:Show(DBM:GetFullPlayerNameByGUID(guid))
 	end
 end
 
