@@ -134,16 +134,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: %%s",
+	target		= "%s: >%%s<",
 	cast 		= "%s",
 	active		= "%s 종료",--Buff/Debuff/event on boss
 	fades		= "%s 사라짐",--Buff/Debuff on players
 	cd 			= "%s 가능",
 	cdcount		= "%s 가능 (%%d)",
-	cdsource	= "%s 가능: %%s",
+	cdsource	= "%s 가능: >%%s<",
 	next 		= "다음 %s",
 	nextcount 	= "다음 %s (%%d)",
-	nextsource	= "다음 %s: %%s",
+	nextsource	= "다음 %s: >%%s<",
 	achievement	= "%s"
 }
 
@@ -207,16 +207,16 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell 		= "%s!",
-	dispel 		= "%s : %%s - 해제!",
-	interrupt 	= "%s : %%s - 차단!",
+	dispel 		= "%s : >%%s< - 해제!",
+	interrupt 	= "%s : >%%s< - 차단!",
 	you 		= "당신에게 %s",
-	target 		= "%s : %%s",
-	close 		= "당신 근처에 %s (%%s)!",
+	target 		= "%s : >%%s<",
+	close 		= "당신 근처에 %s (>%%s<)!",
 	move 		= "%s - 이동하세요!",
 	run 		= "%s - 도망치세요!",
 	cast 		= "%s - 시전 중지",
 	stack 		= "%s (%%d)",
-	switch		= "%s - 대상 전환!"
+	switch		= ">%s< - 대상 전환!"
 }
 
 

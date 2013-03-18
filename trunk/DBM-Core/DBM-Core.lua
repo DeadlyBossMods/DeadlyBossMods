@@ -84,6 +84,7 @@ DBM.DefaultOptions = {
 	ShowFakedRaidWarnings = false,
 	WarningIconLeft = true,
 	WarningIconRight = true,
+	StripServerName = true,
 	ShowLoadMessage = true,
 	ShowPizzaMessage = true,
 	ShowEngageMessage = true,
@@ -3910,6 +3911,9 @@ do
 						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or color
 						cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
 					end
+					if DBM.Options.StripServerName then
+						cap = cap:gsub("%-.*$", "")
+					end
 					return cap
 				end
 			end
@@ -4354,7 +4358,16 @@ do
 
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
-			font:SetText(pformat(self.text, ...))
+			local msg = pformat(self.text, ...)
+			local stripName = function(cap)
+				cap = cap:sub(2, -2)
+				if DBM.Options.StripServerName then
+					cap = cap:gsub("%-.*$", "")
+				end
+				return cap
+			end
+			msg = msg:gsub(">.-<", stripName)
+			font:SetText(msg)
 			if DBM.Options.ShowLHFrame and not UnitIsDeadOrGhost("player") then
 				LowHealthFrame:Show()
 				LowHealthFrame:SetAlpha(1)
@@ -4575,11 +4588,21 @@ do
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
+			local msg = ""
 			if self.type and not self.text then
-				bar:SetText(pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...))
+				msg = pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...)
 			else
-				bar:SetText(pformat(self.text, ...))
+				msg = pformat(self.text, ...)
 			end
+			local stripName = function(cap)
+				cap = cap:sub(2, -2)
+				if DBM.Options.StripServerName then
+					cap = cap:gsub("%-.*$", "")
+				end
+				return cap
+			end
+			msg = msg:gsub(">.-<", stripName)
+			bar:SetText(msg)
 			table.insert(self.startedTimers, id)
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
