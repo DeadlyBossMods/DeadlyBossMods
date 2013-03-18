@@ -1872,15 +1872,7 @@ end
 do
 	local function checkForActualPull()
 		if #inCombat == 0 then
-			if DBM.Options.AutologBosses and LoggingCombat() then
-				LoggingCombat(0)
-				print(COMBATLOGDISABLED)
-			end
-			if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-				if Transcriptor:IsLogging() then
-					Transcriptor:StopLog()
-				end
-			end
+			DBM:StopLogging()
 		end
 	end
 
@@ -1960,19 +1952,7 @@ do
 		if not DBM.Options.DontShowPTCountdownText then
 			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
 		end
-		if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
-			LoggingCombat(1)
-			print(COMBATLOGENABLED)
-			DBM:Unschedule(checkForActualPull)
-			DBM:Schedule(timer+10, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
-		end
-		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			if not Transcriptor:IsLogging() then
-				Transcriptor:StartLog()
-			end
-			DBM:Unschedule(checkForActualPull)
-			DBM:Schedule(timer+10, checkForActualPull)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
-		end
+		DBM:StartLogging(timer, checkForActualPull)
 	end
 
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
@@ -2694,15 +2674,7 @@ function DBM:StartCombat(mod, delay, synced)
 				BigBrother:ConsumableCheck("SELF")
 			end
 		end
-		if DBM.Options.AutologBosses and not LoggingCombat() then
-			LoggingCombat(1)
-			print(COMBATLOGENABLED)
-		end
-		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			if not Transcriptor:IsLogging() then
-				Transcriptor:StartLog()
-			end
-		end
+		DBM:StartLogging(0, nil)
 		if DBM.Options.ShowEngageMessage then
 			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
 		end
@@ -2746,15 +2718,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.combatInfo.killMobs[i] = true
 			end
 		end
-		if DBM.Options.AutologBosses and LoggingCombat() then
-			LoggingCombat(0)
-			print(COMBATLOGDISABLED)
-		end
-		if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
-			if Transcriptor:IsLogging() then
-				Transcriptor:StopLog()
-			end
-		end
+		DBM:Schedule(3, DBM.StopLogging)--small delay to catch kill/died combatlog events
 		if not savedDifficulty or not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		end
@@ -2934,6 +2898,38 @@ function DBM:OnMobKill(cId, synced)
 				sendSync("K", cId)
 			end
 			self:EndCombat(v)
+		end
+	end
+end
+
+function DBM:StartLogging(timer, checkFunc)
+	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
+		LoggingCombat(1)
+		print(COMBATLOGENABLED)
+		if checkFunc then
+			DBM:Unschedule(checkFunc)
+			DBM:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
+		end
+	end
+	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+		if not Transcriptor:IsLogging() then
+			Transcriptor:StartLog()
+		end
+		if checkFunc then
+			DBM:Unschedule(checkFunc)
+			DBM:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
+		end
+	end
+end
+
+function DBM:StopLogging()
+	if DBM.Options.AutologBosses and LoggingCombat() then
+		LoggingCombat(0)
+		print(COMBATLOGDISABLED)
+	end
+	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+		if Transcriptor:IsLogging() then
+			Transcriptor:StopLog()
 		end
 	end
 end
