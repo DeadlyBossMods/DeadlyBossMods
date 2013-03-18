@@ -17,23 +17,27 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(819)
 
 L:SetWarningLocalization({
-	warnAdds	= "%s"
+	warnAdds				= "%s",
+	warnOrbofControl		= "Kugel der Kontrolle fallen gelassen",
+	specWarnOrbofControl	= "Kugel der Kontrolle fallen gelassen!"
 })
 
 L:SetTimerLocalization({
-	timerDoor		= "Nächstes Stammestor",
-	timerAdds		= "Nächster %s"
+	timerDoor				= "Nächstes Stammestor",
+	timerAdds				= "Nächster %s"
 })
 
 L:SetOptionLocalization({
-	warnAdds		= "Verkünde das Herunterspringen neuer Gegner",
-	timerDoor		= "Zeige Zeit bis nächste Stammestorphase",
-	timerAdds		= "Zeige Zeit bis der nächste Gegner herunterspringt"
+	warnAdds				= "Verkünde das Herunterspringen neuer Gegner",
+	warnOrbofControl		= "Verkünde das Fallenlassen einer $journal:7092",
+	specWarnOrbofControl	= "Zeige Spezialwarnung beim Fallenlassen einer $journal:7092",
+	timerDoor				= "Zeige Zeit bis nächste Stammestorphase",
+	timerAdds				= "Zeige Zeit bis der nächste Gegner herunterspringt"
 })
 
 L:SetMiscLocalization({
-	newForces		= "stürmen aus dem Stammestor",
-	chargeTarget	= "schlägt mit dem Schwanz auf den Boden!"
+	newForces				= "stürmen aus dem Stammestor",
+	chargeTarget			= "schlägt mit dem Schwanz auf den Boden!"
 })
 
 ---------------------------
@@ -41,10 +45,16 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(816)
 
+L:SetWarningLocalization({
+	specWarnPossessed		= "%s auf %s - Ziel wechseln"
+})
+
 L:SetOptionLocalization({
-	warnPossessed	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
-	warnSandBolt	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
-	RangeFrame		= "Zeige Abstandsfenster"
+	warnPossessed		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
+	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
+	warnSandBolt		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
+	PHealthFrame		= "Zeige in Lebensanzeige den benötigten Schaden bis $spell:136442 endet\n(benötigt aktivierte Lebensanzeige)",
+	RangeFrame			= "Zeige Abstandsfenster"
 })
 
 ------------
@@ -60,7 +70,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "Zeige Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
-	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633"
+	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
+	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129 (mglw. nicht zuverlässig falls mehr als\nein Spieler mit Leiter-/Assistentenstatus diese Einstellung aktiviert)",
 })
 
 L:SetMiscLocalization({
@@ -82,8 +93,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s %s (%d)",
-	specWarnFlock	= "%s %s (%d)"
+	warnFlock		= "%s %s (%s)",
+	specWarnFlock	= "%s %s (%s)"
 })
 
 L:SetTimerLocalization({
@@ -174,7 +185,23 @@ L:SetOptionLocalization({
 -------------------
 L= DBM:GetModLocalization(829)
 
+L:SetWarningLocalization({
+	warnNight		= "Nachtphase",
+	warnDay			= "Tagphase",
+	warnDusk		= "Dämmerungsphase"
+})
+
+L:SetTimerLocalization({
+	timerDayCD		= "Nächste Tagphase",
+	timerDuskCD		= "Nächste Dämmerungsphase",
+})
+
 L:SetOptionLocalization({
+	warnNight		= "Verkünde Nachtphase",
+	warnDay			= "Verkünde Tagphase",
+	warnDusk		= "Verkünde Dämmerungsphase",
+	timerDayCD		= "Zeige Zeit bis nächste Tagphase",
+	timerDuskCD		= "Zeige Zeit bis nächste Dämmerungsphase",
 	RangeFrame		= "Zeige Abstandsfenster (8m)"
 })
 
