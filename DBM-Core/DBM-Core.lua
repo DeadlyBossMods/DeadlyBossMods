@@ -1221,6 +1221,8 @@ end
 -------------------------------------------------
 do
 	local inRaid = false
+	
+	local raidGuids = {}
 
 	local function updateAllRoster()
 		if IsInRaid() then
@@ -1239,12 +1241,17 @@ do
 					if (not raid[name]) and inRaid then
 						fireEvent("raidJoin", name)
 					end
+					do
+					    local name, realm = UnitName("raid" .. i)
+						raidGuids[UnitGUID("raid" .. i) or ""] = realm and realm ~= "" and name .. "-" .. realm or name
+					end
 					raid[name] = raid[name] or {}
 					raid[name].name = name
 					raid[name].rank = rank
 					raid[name].subgroup = subgroup
 					raid[name].class = fileName
-					raid[name].id = "raid"..i
+					raid[name].id = "raid" .. i
+					raid[name].guid = UnitGUID("raid" .. i) or ""
 					raid[name].updated = true
 					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].version and raid[name].version > tonumber(DBM.Version) then
 						playerWithHigherVersionPromoted = true
@@ -1255,6 +1262,7 @@ do
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raid[i] = nil
+					raidGuids[v.guid] = nil
 					fireEvent("raidLeave", i)
 				else
 					v.updated = nil
@@ -1283,8 +1291,10 @@ do
 				if (not raid[name]) and inRaid then
 					fireEvent("partyJoin", name)
 				end
+				raidGuids[UnitGUID(id) or ""] = name
 				raid[name] = raid[name] or {}
 				raid[name].name = name
+				raid[name].guid = UnitGUID(id) or ""
 				if rank then
 					raid[name].rank = 2
 				else
@@ -1297,6 +1307,7 @@ do
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raid[i] = nil
+					raidGuids[v.guid] = nil
 					fireEvent("partyLeave", i)
 				else
 					v.updated = nil
@@ -1316,6 +1327,10 @@ do
 
 	function DBM:IsInRaid()
 		return inRaid
+	end
+
+	function DBM:GetUnitFullNameByGUID(guid)
+		return raidGuids[guid]
 	end
 end
 	
@@ -1386,6 +1401,7 @@ function DBM:GetUnitFullName(uId)
 	if realm then name = name.."-"..realm end
 	return name
 end
+
 
 function DBM:GetBossUnitId(name)
 	for i = 1, 4 do
