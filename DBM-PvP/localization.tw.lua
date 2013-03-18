@@ -306,7 +306,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	OrbTaken 	= "(%S+)奪走了(%S+)異能球!",
-	OrbReturn 	= "The (%S+)異能球已回到初始位置!",
+	OrbReturn 	= "(%S+)異能球已回到初始位置!",
 	ScoreExpr	= "(%d+)/1600",
 	Alliance	= "聯盟",
 	Horde		= "部落",
