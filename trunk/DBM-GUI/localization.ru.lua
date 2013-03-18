@@ -11,6 +11,7 @@ L.OTabBosses	= "Боссы"
 L.OTabOptions	= "Настройки"
 
 L.TabCategory_Options	 	= "Общие параметры"
+L.TabCategory_MOP	 		= "Туманы Пандарии"
 L.TabCategory_CATA	 		= "Катаклизм"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
 L.TabCategory_BC 			= "The Burning Crusade"
@@ -56,6 +57,8 @@ L.UseMasterVolume			= "Использовать общий аудио канал
 L.DisableCinematics			= "Отключить внутриигровые ролики в подземельях"
 L.DisableCinematicsOutside	= "Отключить внутриигровые ролики вне подземелий"
 L.SKT_Enabled				= "Всегда отображать таймер быстрого убийства\n(имеет приоритет над параметром в настройках каждого босса)"
+L.AutologBosses				= "Автоматически записывать бои с боссами используя журнал боя Blizzard"
+L.AdvancedAutologBosses			= "Автоматически записывать бои с боссами используя Transcriptor"
 L.Latency_Text				= "Макс. задержка для синхронизации: %d"
 
 L.ModelOptions				= "Настройки 3D моделей на странице боссов"
@@ -98,6 +101,7 @@ L.RaidWarnSound				= "Звук рейд-предупреждения"
 L.CountdownVoice			= "Голос для звукового отсчета"
 L.SpecialWarnSound			= "Звук спец-предупреждения для вас или для вашей роли"
 L.SpecialWarnSound2			= "Звук рейдового спец-предупреждения"
+L.SpecialWarnSound3			= "Звук очень важного спец-предупреждения (убийственно для Вас или рейда)"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Общие сообщения"
@@ -164,11 +168,19 @@ L.SpamBlockBossWhispers			= "Фильтрация <DBM> предупрежден
 L.BlockVersionUpdateNotice		= "Отключить всплывающее сообщение об устаревшей версии"
 L.ShowBigBrotherOnCombatStart	= "Выполнять проверку положительных эффектов Big Brother в начале боя"
 L.BigBrotherAnnounceToRaid		= "Объявлять результаты проверки Big Brother в рейд"
+L.SpamBlockSayYell				= "Скрыть текст оповещений в облачках из окна чата"
 
 L.Area_SpamFilter_Outgoing		= "Параметры общего фильтра"
 L.SpamBlockNoShowAnnounce		= "Не объявлять или предупреждать звуком игрока"
 L.SpamBlockNoSendWhisper		= "Не отправлять предупреждения шепотом другим игрокам"
 L.SpamBlockNoSetIcon			= "Не устанавливать метки на цели"
+L.SpamBlockNoRangeFrame			= "Не отображать окно проверки дистанции"
+L.SpamBlockNoInfoFrame			= "Не отображать информационное окно"
+
+L.Area_PullTimer				= "Параметры фильтра таймера пулла"
+L.DontShowPT					= "Не отображать таймер пулла"
+L.DontShowPTCountdownText		= "Не отображать текст отсчета таймера пулла"
+L.DontPlayPTCountdown			= "Не воспроизводить звук отсчета таймера пулла"
 
 
 -- Misc
