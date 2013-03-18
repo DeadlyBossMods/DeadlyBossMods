@@ -191,7 +191,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerDayCD		= "Следущая ночная фаза",
+	timerDayCD		= "Следущая дневная фаза",
 	timerDuskCD		= "Следущая фаза сумерек"
 })
 
