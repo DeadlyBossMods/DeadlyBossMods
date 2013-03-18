@@ -134,16 +134,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL 		= "最速勝利"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target					= "%s:%%s",
+	target					= "%s:>%%s<",
 	cast					= "%s",
 	active					= "%s結束",
 	fades					= "%s消散",
 	cd						= "%s冷卻",
 	cdcount					= "%s冷卻 (%%d)",
-	cdsource				= "%s冷卻: %%s",
+	cdsource				= "%s冷卻: >%%s<",
 	next 					= "下一次%s",
 	nextcount 				= "下一次%s (%%d)",
-	nextsource				= "下一次%s: %%s",
+	nextsource				= "下一次%s: >%%s<",
 	achievement 			= "%s"
 }
 
@@ -208,16 +208,16 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell					= "%s!",
-	dispel					= "%%s中了%s - 現在驅散",
-	interrupt				= "%s - 快中斷%%s !",
+	dispel					= ">%%s<中了%s - 現在驅散",
+	interrupt				= "%s - 快中斷>%%s< !",
 	you						= "你中了%s",
-	target					= "%%s中了%s",
-	close					= "你附近的%%s中了%s",
+	target					= ">%%s<中了%s",
+	close					= "你附近的>%%s<中了%s",
 	move					= "%s - 快移動",
 	run						= "%s - 快跑開",
 	cast					= "%s - 停止施法",
 	stack					= "%s(%%d)",
-	switch					= "%s - 快更換目標!"
+	switch					= ">%s< - 快更換目標!"
 }
 
 

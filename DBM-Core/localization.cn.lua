@@ -138,16 +138,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "成就：快速击杀"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: %%s",
+	target		= "%s: >%%s<",
 	cast		= "%s",
 	active		= "%s结束",--Buff/Debuff/event on boss
 	fades		= "%s消失",--Buff/Debuff on players
 	cd			= "%s冷却",
 	cdcount		= "%s冷却（%%d）",
-	cdsource	= "%s冷却: %%s",
+	cdsource	= "%s冷却: >%%s<",
 	next 		= "下一次%s",
 	nextcount	= "下一次%s（%%d）",
-	nextsource	= "下一次%s: %%s",
+	nextsource	= "下一次%s: >%%s<",
 	achievement = "%s",
 }
 
@@ -212,16 +212,16 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell					= "%s!",
-	dispel					= "%%s中了%s - 快驱散",
+	dispel					= ">%%s<中了%s - 快驱散",
 	interrupt				= "%s - 快打断",
 	you						= "你中了%s",
-	target					= "%%s中了%s",
-	close					= "你附近的%%s中了%s",
+	target					= ">%%s<中了%s",
+	close					= "你附近的>%%s<中了%s",
 	move					= "%s - 快躲开",
 	run						= "%s - 快跑",
 	cast					= "%s - 停止施法",
 	stack					= "%s (%%d)",
-	switch					= "%s - 转换目标"
+	switch					= ">%s< - 转换目标"
 }
 
 

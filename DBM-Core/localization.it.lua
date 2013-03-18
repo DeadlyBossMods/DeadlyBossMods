@@ -131,16 +131,16 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Uccisione Rapida"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: %%s",
+	target		= "%s: >%%s<",
 	cast		= "%s",
 	active		= "%s finisce",--Buff/Debuff/event on boss
 	fades		= "%s svanisce",--Buff/Debuff on players
 	cd			= "%s CD",
 	cdcount		= "%s CD (%%d)",
-	cdsource	= "%s CD: %%s",
+	cdsource	= "%s CD: >%%s<",
 	next		= "Prossimo %s",
 	nextcount	= "Prossimo %s (%%d)",
-	nextsource	= "Prossimo %s: %%s",
+	nextsource	= "Prossimo %s: >%%s<",
 	achievement	= "%s"
 }
 
@@ -205,16 +205,16 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s!",
-	dispel = "%s su %%s - rimuovilo ora!",
-	interrupt = "%s - interrompi %%s!",
+	dispel = "%s su >%%s< - rimuovilo ora!",
+	interrupt = "%s - interrompi >%%s<!",
 	you = "%s su di te",
-	target = "%s su %%s",
-	close = "%s su %%s vicino a te",
+	target = "%s su >%%s<",
+	close = "%s su >%%s< vicino a te",
 	move = "%s - Spostati",
 	run = "%s - Corri Via!",
 	cast = "%s - Smetti di Attaccare!",
 	stack = "%s (%%d)",
-	switch = "%s - Cambia Bersaglio"
+	switch = ">%s< - Cambia Bersaglio"
 }
 
 

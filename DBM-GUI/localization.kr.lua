@@ -161,13 +161,14 @@ L.HP_ShowDemo				= "체력 바 표시"
 L.BarWidth					= "바 길이: %d"
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter				= "숨김 설정"
+L.Panel_SpamFilter				= "기타 설정"
 L.Area_SpamFilter				= "일반 설정"
 L.HideBossEmoteFrame			= "블리자드 기본 레이드 경보 숨기기"
+L.StripServerName				= "알림 및 바에서 서버명 보이지 않기"
 L.SpamBlockBossWhispers			= "전투 중 다른 공격대원 또는 파티원이 보내는 <DBM> 귓속말 감추기"
 L.BlockVersionUpdateNotice		= "업데이트 알림 창 끄기"
 L.ShowBigBrotherOnCombatStart	= "전투 시작시 BigBrother 버프 체크 실행하기"
-L.BigBrotherAnnounceToRaid		= "Big Brother 버프 체크 결과를 공격대에 알리기"
+L.BigBrotherAnnounceToRaid		= "BigBrother 버프 체크 결과를 공격대에 알리기"
 L.SpamBlockSayYell				= "전투 중 대화 말풍선 숨기기"
 
 
