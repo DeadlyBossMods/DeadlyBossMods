@@ -56,14 +56,6 @@ local totemCount = 0
 local voodooDollTargets = {}
 local crossedOverTargets = {}
 local voodooDollTargetIcons = {}
-local guids = {}
-local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
-local function buildGuidTable()
-	table.wipe(guids)
-	for uId, i in DBM:GetGroupMembers() do
-		guids[UnitGUID(uId) or "none"] = GetRaidRosterInfo(i)
-	end
-end
 
 local function warnVoodooDollTargets()
 	warnVoodooDolls:Show(table.concat(voodooDollTargets, "<, >"))
@@ -111,8 +103,6 @@ end
 
 function mod:OnCombatStart(delay)
 	totemCount = 0
-	buildGuidTable()
-	guidTableBuilt = true
 	table.wipe(voodooDollTargets)
 	table.wipe(crossedOverTargets)
 	table.wipe(voodooDollTargetIcons)
@@ -210,10 +200,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:OnSync(msg, guid)
-	--Make sure we build a table if we DCed mid fight, before we try comparing any syncs to that table.
-	if not guidTableBuilt then
-		buildGuidTable()
-		guidTableBuilt = true
+	local targetname
+	if guid then
+		targetname = DBM:GetFullPlayerNameByGUID(guid)
 	end
 	if msg == "SummonTotem" then
 		totemCount = totemCount + 1
@@ -226,12 +215,12 @@ function mod:OnSync(msg, guid)
 		else
 			timerTotemCD:Start(36, totemCount+1)
 		end
-	elseif msg == "VoodooTargets" and guids[guid] then
-		voodooDollTargets[#voodooDollTargets + 1] = guids[guid]
+	elseif msg == "VoodooTargets" and targetname then
+		voodooDollTargets[#voodooDollTargets + 1] = targetname
 		self:Unschedule(warnVoodooDollTargets)
 		self:Schedule(0.3, warnVoodooDollTargets)
 		if self.Options.SetIconOnVoodoo then
-			table.insert(voodooDollTargetIcons, DBM:GetRaidUnitId(guids[guid]))
+			table.insert(voodooDollTargetIcons, DBM:GetRaidUnitId(targetname))
 			self:UnscheduleMethod("SetVoodooIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
 				if #voodooDollTargetIcons >= 4 and self:IsDifficulty("normal25", "heroic25") or #voodooDollTargetIcons >= 3 and self:IsDifficulty("normal10", "heroic10") then
@@ -241,13 +230,13 @@ function mod:OnSync(msg, guid)
 				end
 			end
 		end
-	elseif msg == "VoodooGoneTargets" and guids[guid] and self.Options.SetIconOnVoodoo then
-		removeIcon(DBM:GetRaidUnitId(guids[guid]))
-	elseif msg == "BanishmentTarget" and guids[guid] then
-		warnBanishment:Show(guids[guid])
+	elseif msg == "VoodooGoneTargets" and targetname and self.Options.SetIconOnVoodoo then
+		removeIcon(DBM:GetRaidUnitId(targetname))
+	elseif msg == "BanishmentTarget" and targetname then
+		warnBanishment:Show(targetname)
 		timerBanishmentCD:Start()
 		if guid ~= UnitGUID("player") then--make sure YOU aren't target before warning "other"
-			specWarnBanishmentOther:Show(guids[guid])
+			specWarnBanishmentOther:Show(targetname)
 		end
 	end
 end

@@ -109,14 +109,6 @@ local specialCount = 0
 local huddleIcon = 8
 local MobID = 0
 local specialsCast = 000--Huddle(100), Spout(10), Strike(1)
-local guids = {}
-local guidTableBuilt = false--Entirely for DCs, so we don't need to reset between pulls cause it doesn't effect building table on combat start and after a DC then it will be reset to false always
-local function buildGuidTable()
-	table.wipe(guids)
-	for uId, i in DBM:GetGroupMembers() do
-		guids[UnitGUID(uId) or "none"] = GetRaidRosterInfo(i)
-	end
-end
 
 local Spawns = {
 	[1] = 1,
@@ -235,8 +227,6 @@ function mod:LeavePlatform()
 end
 
 function mod:OnCombatStart(delay)
-	buildGuidTable()
-	guidTableBuilt = true
 	if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 		timerOminousCackleCD:Start(40-delay)
 	else
@@ -388,12 +378,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		startSpecialTimers()
 	elseif args:IsSpellID(120629) then-- Huddle In Terror
 		huddleInTerrorTargets[#huddleInTerrorTargets + 1] = args.destName
-		if not guidTableBuilt then
-			buildGuidTable()
-			guidTableBuilt = true
-		end
 		if self.Options.SetIconOnHuddle then
-			table.insert(huddleInTerrorIcons, DBM:GetRaidUnitId(guids[args.destGUID]))
+			table.insert(huddleInTerrorIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
 			self:UnscheduleMethod("SetHuddleIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
 				if #huddleInTerrorIcons >= 5 and self:IsDifficulty("heroic25") or #huddleInTerrorIcons >= 3 and self:IsDifficulty("heroic10") then

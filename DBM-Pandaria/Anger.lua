@@ -26,7 +26,7 @@ local warnUnleashedWrath		= mod:NewSpellAnnounce(119488, 3)--Big aoe damage aura
 local warnGrowingAnger			= mod:NewTargetAnnounce(119622, 4)--Mind control trigger
 local warnAggressiveBehavior	= mod:NewTargetAnnounce(119626, 4)--Actual mind control targets
 
-local specWarnUnleashedWrath	= mod:NewSpecialWarningSpell(119488, mod:IsTank() or mod:IsHealer())--Defaults to tank and healers cause tank probalby want to Cd through this and healers have to heal it, dps just do what they always do and kill stuff.
+local specWarnUnleashedWrath	= mod:NewSpecialWarningSpell(119488, nil, nil, nil, 2)--Defaults to tank and healers cause tank probalby want to Cd through this and healers have to heal it, dps just do what they always do and kill stuff.
 local specWarnGrowingAnger		= mod:NewSpecialWarningYou(119622)
 local specWarnBitterThoughts	= mod:NewSpecialWarningMove(119610)
 
