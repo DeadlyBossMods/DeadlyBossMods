@@ -228,7 +228,7 @@ end
 function mod:UNIT_AURA(uId)
 	if uId ~= "boss1" then return end
 	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)
-	if lastConcussion ~= expires then
+	if expires and lastConcussion ~= expires then
 		lastConcussion = expires
 		timerShellConcussion:Start()
 		if self:AntiSpam(3, 2) then
