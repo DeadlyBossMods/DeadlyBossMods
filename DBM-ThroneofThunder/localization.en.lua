@@ -31,8 +31,7 @@ L:SetOptionLocalization({
 	warnOrbofControl		= "Announce when $journal:7092 dropped",
 	specWarnOrbofControl	= "Show special warning when $journal:7092 dropped",
 	timerDoor				= "Show timer for next Tribal Door phase",
-	timerAdds				= "Show timer for when next add jumps down",
-	
+	timerAdds				= "Show timer for when next add jumps down"
 })
 
 L:SetMiscLocalization({
@@ -192,7 +191,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerDayCD		= "Next night phase",
+	timerDayCD		= "Next day phase",
 	timerDuskCD		= "Next dusk phase",
 })
 

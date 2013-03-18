@@ -16,7 +16,9 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(819)
 
 L:SetWarningLocalization({
-	warnAdds	= "%s"
+	warnAdds				= "%s",
+	warnOrbofControl		= "控獸寶珠掉落",
+	specWarnOrbofControl	= "控獸寶珠掉落!"
 })
 
 L:SetTimerLocalization({
@@ -26,6 +28,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnAdds		= "提示小怪跳下",
+	warnOrbofControl		= "提示$journal:7092掉落",
+	specWarnOrbofControl	= "為$journal:7092掉落顯示特別警告",
 	timerDoor		= "為下一個部族的門顯示計時器",
 	timerAdds		= "為下一次小怪跳下顯示計時器"
 })
@@ -176,7 +180,23 @@ L:SetOptionLocalization({
 -------------------
 L= DBM:GetModLocalization(829)
 
+L:SetWarningLocalization({
+	warnNight		= "黑夜階段",
+	warnDay			= "白天階段",
+	warnDusk		= "黃昏階段"
+})
+
+L:SetTimerLocalization({
+	timerDayCD		= "白天階段",
+	timerDuskCD		= "黃昏階段",
+})
+
 L:SetOptionLocalization({
+	warnNight		= "提示黑夜階段",
+	warnDay			= "提示白天階段",
+	warnDusk		= "提示黃昏階段",
+	timerDayCD		= "為白天階段顯示計時器",
+	timerDuskCD		= "為黃昏階段顯示計時器",
 	RangeFrame		= "顯示距離框架(8碼)"
 })
 
