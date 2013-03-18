@@ -129,7 +129,7 @@ DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
 
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Fastest Victory"
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Achievement"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
