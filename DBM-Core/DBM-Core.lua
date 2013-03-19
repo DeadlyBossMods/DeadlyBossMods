@@ -3856,6 +3856,19 @@ function bossModPrototype:IsTank()
 	or (class == "MONK" and (GetSpecialization() == 1))
 end
 
+function bossModPrototype:IsTanking(unit, boss)
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitExists(boss) and UnitDetailedThreatSituation(unit, boss) then
+		return true
+	end
+	return false
+end
+
 function bossModPrototype:IsHealer()
 	return (class == "PALADIN" and (GetSpecialization() == 1))
 	or (class == "SHAMAN" and (GetSpecialization() == 3))
