@@ -190,7 +190,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(123121) then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if isTank(uId) then--Only want sprays that are on tanks, not bads standing on tanks.
+		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
 			timerSpray:Start(args.destName)
 			if (args.amount or 1) % 3 == 0 then
 				warnSpray:Show(args.destName, args.amount)
