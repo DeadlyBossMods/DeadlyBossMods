@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69078, 69132, 69134, 69131)--69078 Sul the Sandcrawler, 69132 High Prestess Mar'li, 69131 Frost King Malakk, 69134 Kazra'jin --Adds: 69548 Shadowed Loa Spirit,
 mod:SetModelID(47229)--Kazra'jin, 47505 Sul the Sandcrawler, 47506 Frost King Malakk, 47730 High Priestes Mar'li
+mod:SetUsedIcons(7, 6)
 
 mod:RegisterCombat("combat")
 
@@ -96,6 +97,8 @@ local soundMarkedSoul				= mod:NewSound(137359)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("PHealthFrame", true)
 mod:AddBoolOption("RangeFrame")--For Sand Bolt and charge and biting cold
+mod:AddBoolOption("SetIconOnBitingCold", true)
+mod:AddBoolOption("SetIconOnFrostBite", true)
 
 local SulsName = EJ_GetSectionInfo(7049)
 local lingeringPresence = GetSpellInfo(136467)
@@ -303,6 +306,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(136992) then--Player Debuff version, not cast version
 		warnBitingCold:Show(args.destName)
+		if self.Options.SetIconOnBitingCold then
+			self:SetIcon(args.destName, 7, 30)--Cross
+		end
 		timerBitingColdCD:Start()
 		if args:IsPlayer() then
 			specWarnBitingCold:Show()
@@ -310,6 +316,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(136922) and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
 		warnFrostBite:Show(args.destName)
+		if self.Options.SetIconOnFrostBite then
+			self:SetIcon(args.destName, 6, 30)--Square
+		end
 		timerFrostBiteCD:Start()
 		if args:IsPlayer() then
 			specWarnFrostBite:Show()
