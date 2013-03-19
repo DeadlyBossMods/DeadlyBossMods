@@ -135,7 +135,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Eye		= "눈"--확인 필요, "<72.0 20:04:19> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Bright  Light reveals an Amber Fog!#Amber Fog###--------->Yellow Eye<---------##0#0##0#309#nil#0#false#false", -- [13413]
+	Eye		= "눈"
 })
 
 ----------------
