@@ -307,7 +307,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(136992) then--Player Debuff version, not cast version
 		warnBitingCold:Show(args.destName)
 		if self.Options.SetIconOnBitingCold then
-			self:SetIcon(args.destName, 7, 30)--Cross
+			self:SetIcon(args.destName, 7)--Cross
 		end
 		timerBitingColdCD:Start()
 		if args:IsPlayer() then
@@ -317,7 +317,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(136922) and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
 		warnFrostBite:Show(args.destName)
 		if self.Options.SetIconOnFrostBite then
-			self:SetIcon(args.destName, 6, 30)--Square
+			self:SetIcon(args.destName, 6)--Square
 		end
 		timerFrostBiteCD:Start()
 		if args:IsPlayer() then
@@ -375,6 +375,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFrigidAssaultCD:Start()
 	elseif args:IsSpellID(137359) then
 		timerMarkedSoul:Cancel(args.destName)
+	elseif args:IsSpellID(136992) and self.Options.SetIconOnBitingCold then
+		self:SetIcon(args.destName, 0)
+	elseif args:IsSpellID(136922) and self.Options.SetIconOnFrostBite then
+		self:SetIcon(args.destName, 0)--Square
 	end
 end
 
