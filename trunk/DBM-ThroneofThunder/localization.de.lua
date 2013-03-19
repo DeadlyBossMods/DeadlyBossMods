@@ -54,7 +54,9 @@ L:SetOptionLocalization({
 	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	warnSandBolt		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
 	PHealthFrame		= "Zeige in Lebensanzeige den benötigten Schaden bis $spell:136442 endet\n(benötigt aktivierte Lebensanzeige)",
-	RangeFrame			= "Zeige Abstandsfenster"
+	RangeFrame			= "Zeige Abstandsfenster",
+	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
+	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
 })
 
 ------------
@@ -206,7 +208,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	DuskPhase		= "Lu'lin! Lend me your strength!"--translate (trigger) (not in use)
+	DuskPhase		= "Lu'lin! Lend me your strength!"--translate (trigger)
 })
 
 --------------
