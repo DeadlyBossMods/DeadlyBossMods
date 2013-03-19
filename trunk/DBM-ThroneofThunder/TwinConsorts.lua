@@ -50,6 +50,7 @@ local specWarnBeastOfNightmares			= mod:NewSpecialWarningSpell(137375, mod:IsTan
 --Light
 local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, mod:IsTank(), 2)
 local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTarget(137408, mod:IsTank())
+local specWarnFlamesofPassionMove		= mod:NewSpecialWarningMove(137417)
 local specWarnIceComet					= mod:NewSpecialWarningSpell(137419, false)
 local specWarnNuclearInferno			= mod:NewSpecialWarningSpell(137491, nil, nil, nil, 2)--Heroic
 --Dusk
@@ -80,7 +81,7 @@ mod:AddBoolOption("RangeFrame")--For various abilities that target even melee. U
 local phase3started = false
 
 function mod:OnCombatStart(delay)
-	local phase3started = false
+	phase3started = false
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
@@ -129,6 +130,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFanOfFlamesOther:Show(args.destName)
 			end
 		end
+	elseif args:IsSpellID(137417) and args:IsPlayer() and self:AntiSpam(3, 4) then
+		specWarnFlamesofPassionMove:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -180,6 +183,9 @@ function mod:UNIT_DIED(args)
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start(19)
 		--She also does Flames of passion, but this is done 3 seconds after Lu'lin dies, is a 3 second timer worth it?
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif cid == 68904 then--Suen
 		timerFlamesOfPassionCD:Cancel()
 --		timerBeastOfNightmaresCD:Start()--My group kills Lu'lin first. Need log of Suen being killed first to get first beast timer value

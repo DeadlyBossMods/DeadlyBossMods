@@ -35,7 +35,7 @@ local warnDeadZone						= mod:NewAnnounce("warnDeadZone", 3, 137229)
 local warnFreeze						= mod:NewTargetAnnounce(135145, 3, nil, false)--Spammy, more of a duh type warning I think
 local warnPhase4						= mod:NewPhaseAnnounce(4)
 local warnRisingAnger					= mod:NewStackAnnounce(136323, 2, nil, false)
-local warnFistSmash						= mod:NewSpellAnnounce(136146, 3)
+local warnFistSmash						= mod:NewCountAnnounce(136146, 3)
 
 local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 3)
 local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
@@ -61,7 +61,7 @@ local timerWindStormCD					= mod:NewNextTimer(70, 136577)
 local timerFreezeCD						= mod:NewCDTimer(7, 135145, nil, false)
 local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
 local timerRisingAngerCD				= mod:NewNextTimer(15, 136323, nil, false)
-local timerFistSmashCD					= mod:NewNextTimer(20, 136146)
+local timerFistSmashCD					= mod:NewNextCountTimer(20, 136146)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139167)--Heroic Phase 1
 local timerFrostSpikeCD					= mod:NewCDTimer(12, 139180)--Heroic Phase 2
 
@@ -75,6 +75,7 @@ local Quetzal = select(2, EJ_GetCreatureInfo(3, 817))
 local Damren = select(2, EJ_GetCreatureInfo(4, 817))
 local arcingName = GetSpellInfo(136193)
 local phase = 1--Not sure this is useful yet, coding it in, in case spear cd is different in different phases
+local fistSmashCount = 0
 
 local function updateHealthFrame()
 	if DBM.BossHealth:IsShown() then
@@ -114,6 +115,7 @@ end
 
 function mod:OnCombatStart(delay)
 	phase = 1
+	fistSmashCount = 0
 	updateHealthFrame()
 	warnPhase1:Show()
 	timerThrowSpearCD:Start(-delay)
@@ -309,7 +311,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerFreezeCD:Cancel()
 			warnPhase4:Show()
 			timerRisingAngerCD:Start(15)
-			timerFistSmashCD:Start(25)
+			timerFistSmashCD:Start(25, 1)
 		end
 	elseif spellId == 139172 and self:AntiSpam(2, 7) then--Whirling Winds (Phase 1 Heroic)
 		warnWhirlingWinds:Show()
@@ -326,9 +328,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnWindStorm:Schedule(70)
 		timerWindStormCD:Start()
 	elseif spellId == 136146 and self:AntiSpam(2, 5) then
-		warnFistSmash:Show()
+		fistSmashCount = fistSmashCount + 1
+		warnFistSmash:Show(fistSmashCount)
 		specWarnFistSmash:Show()
-		timerFistSmashCD:Start()
+		timerFistSmashCD:Start(nil, fistSmashCount+1)
 	end
 end
 
@@ -370,8 +373,12 @@ function mod:UNIT_DIED(args)
 		self:UnregisterShortTermEvents()
 		timerDeadZoneCD:Cancel()
 		timerFreezeCD:Cancel()
-		warnPhase3:Show()
+		warnPhase4:Show()
 		timerRisingAngerCD:Start()
-		timerFistSmashCD:Start(31.5)
+		if self:IsDifficulty("normal25", "lfr25") then --lfr not comfirms
+			timerFistSmashCD:Start(22.5, 1)
+		else
+			timerFistSmashCD:Start(31.5, 1)
+		end
 	end
 end
