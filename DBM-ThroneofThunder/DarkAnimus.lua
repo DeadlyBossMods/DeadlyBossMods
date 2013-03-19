@@ -41,6 +41,8 @@ local specWarnInterruptingJolt		= mod:NewSpecialWarningCast(138763, nil, nil, ni
 local timerMatterSwap				= mod:NewTargetTimer(12, 138609)--If not dispelled, it ends after 12 seconds regardless
 local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or mod:IsHealer())
 --Boss
+--Dark Animus will now use its abilities at more consistent intervals. (March 19 hotfix)
+--As such, all of these timers need re-verification and updating.
 local timerSiphonAnimaCD			= mod:NewNextTimer(30, 138644)
 local timerAnimaRingCD				= mod:NewCDTimer(22, 136954)
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--TODO, this wasn't cast as often on normal. Find out if they actually have different CDs or if it was buffed since normal was tested.
