@@ -64,22 +64,6 @@ local darkOfNightCount = 0
 local lightOfDayCount = 0
 local breathCount = 0
 
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
-		return true
-	end
-	return false
-end
-
 function mod:ShadowsTarget(targetname)
 	warnNightmares:Show(targetname)
 	if targetname == UnitName("player") then
@@ -107,7 +91,7 @@ function mod:TargetScanner(ScansDone)
 	targetScansDone = targetScansDone + 1
 	local targetname, uId = self:GetBossTarget(62442)
 	if UnitExists(targetname) then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a warning.
-		if isTank(uId) and not ScansDone then--He's targeting his highest threat target.
+		if self:IsTanking(uId, "boss1") and not ScansDone then--He's targeting his highest threat target.
 			if targetScansDone < 16 then--Make sure no infinite loop.
 				self:ScheduleMethod(0.05, "TargetScanner")--Check multiple times to be sure it's not on something other then tank.
 			else

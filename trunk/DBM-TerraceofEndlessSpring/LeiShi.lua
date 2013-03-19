@@ -73,26 +73,10 @@ local function getAvailableIcons()
 	return 8
 end
 
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
-		return true
-	end
-	return false
-end
-
 local bossTank
 do
 	bossTank = function(uId)
-		return isTank(uId)
+		return mod:IsTanking(uId, "boss1")
 	end
 end
 

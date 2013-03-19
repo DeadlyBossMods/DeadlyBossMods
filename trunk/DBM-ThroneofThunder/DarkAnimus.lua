@@ -50,27 +50,11 @@ local soundCrimsonWake				= mod:NewSound(138480)
 local scansDone = 0
 local crimsonWake = GetSpellInfo(138485)--Debuff ID I believe, not cast one. Same spell name though
 
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	if UnitExists("boss1target") and UnitDetailedThreatSituation(unit, "boss1") then
-		return true
-	end
-	return false
-end
-
 function mod:TargetScanner(Force)
 	scansDone = scansDone + 1
 	local targetname, uId = self:GetBossTarget(69427)
 	if UnitExists(targetname) then
-		if isTank(uId) and not Force then--This will USUALLY target tank but sometimes it does target a DPS like a mage on pull so we still do a tank check to be certain
+		if self:IsTanking(uId, "boss1") and not Force then--This will USUALLY target tank but sometimes it does target a DPS like a mage on pull so we still do a tank check to be certain
 			if scansDone < 12 then
 				self:ScheduleMethod(0.02, "TargetScanner")
 			else
