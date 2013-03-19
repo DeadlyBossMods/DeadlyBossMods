@@ -56,11 +56,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(137457) then
+	if args.spellId == 137457 then
 		warnPiercingRoar:Show()
 		specWarnPiercingRoar:Show()
 		timerPiercingRoarCD:Start()
-	elseif args:IsSpellID(137505) then
+	elseif args.spellId == 137505 then
 		warnFrillBlast:Show()
 		specWarnFrillBlast:Show()
 		timerFrillBlastCD:Start()
@@ -75,7 +75,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(137504) then
+	if args.spellId == 137504 then
 		warnCrush:Show(args.destName, args.amount or 1)
 		timerCrush:Start(args.destName)
 		timerCrushCD:Start()
@@ -91,7 +91,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED--<--if this happens you're doing fight wrong. But we announce it anyways to identify the problem
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(137504) then
+	if args.spellId == 137504 then
 		timerCrush:Cancel(args.destName)
 	end
 end
