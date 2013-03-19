@@ -101,7 +101,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(138569) then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if isTank(uId) then--Only want sprays that are on tanks, not bads standing on tanks.
+		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
 			warnExplosiveSlam:Show(args.destName, args.amount or 1)
 			timerExplosiveSlam:Start(args.destName)
 			if args:IsPlayer() then
