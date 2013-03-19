@@ -14,8 +14,17 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
+	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED"
+)
+
+local Lulin = EJ_GetSectionInfo(7629)
+local Suen = EJ_GetSectionInfo(7642)
+
+mod:SetBossHealthInfo(
+	68905, Lulin,
+	68904, Suen
 )
 
 --Darkness
@@ -48,12 +57,12 @@ local specWarnTidalForce				= mod:NewSpecialWarningSpell(137531, nil, nil, nil, 
 
 --Darkness
 --Light of Day (137403) has a HIGHLY variable cd variation, every 6-14 seconds. Not to mention it requires using SPELL_DAMAGE and SPELL_MISSED. for now i'm excluding it on purpose
-local timerDayCD						= mod:NewTimer(184, "timerDayCD", 122789)
+local timerDayCD						= mod:NewTimer(183, "timerDayCD", 122789) -- timer is 183 or 190 (confirmed in 10 man. variable)
 local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
 local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
 --Light
-local timerDuskCD						= mod:NewTimer(179, "timerDuskCD", "Interface\\Icons\\achievement_zone_easternplaguelands")
+local timerDuskCD						= mod:NewTimer(360, "timerDuskCD", "Interface\\Icons\\achievement_zone_easternplaguelands")--it seems always 360s after combat entered. (day timer is variables, so not reliable to day phase)
 local timerLightOfDayCD					= mod:NewCDTimer(6, 137403, nil, false)--Trackable in day phase using UNIT event since boss1 can be used in this phase. Might be useful for heroic to not run behind in shadows too early preparing for a special
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
@@ -61,13 +70,17 @@ local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)
 local timerIceCometCD					= mod:NewCDTimer(19, 137419)--Every 19-25 seconds on normal. On heroic it's every 15 seconds almost precisely (i suspect heroic gets them more often to ensure RNG doesn't wipe you to Nuclear Inferno)
 local timerNuclearInfernoCD				= mod:NewCDTimer(55.5, 137491)
 --Dusk
+local timerTidalForce					= mod:NewBuffActiveTimer(18 ,137531)
 local timerTidalForceCD					= mod:NewCDTimer(74, 137531)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("RangeFrame")--For various abilities that target even melee. UPDATE, cosmic barrage (worst of the 3 abilities) no longer target melee. However, light of day and tears of teh sun still do. melee want to split into 2-3 groups (depending on how many) but no longer have to stupidly spread about all crazy and out of range of boss during cosmic barrage to avoid dying. On that note, MAYBE change this to ranged default instead of all.
 
+local phase3started = false
+
 function mod:OnCombatStart(delay)
+	local phase3started = false
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
@@ -149,7 +162,13 @@ end
 --If we do switch to yell, we'll still want to delay it by 6 seconds since timers don't actually cancel until port in (ie she may cast another fan of flames for example
 --"<333.5 18:37:56> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lu'lin! Lend me your strength!#Suen#####0#0##0#247#nil#0#false#false", -- [71265]
 --"<339.3 18:38:02> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Suen#0xF1310D2800005863#worldboss#410952978#nil#1#Unknown#0xF1310D2900005864#worldboss#310232488
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
+function mod:CHAT_MSG_MONSTER_YELL(msg) -- Switch to yell. INSTANCE_ENCOUNTER_ENGAGE_UNIT fires too late. also yell ranage covers all rooms. Not need sync.
+	if (msg == L.DuskPhase or msg:find(L.DuskPhase)) then
+		self:SendSync("Phase3Yell")
+	end
+end
+
+function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event) -- still remains backup trigger for phase3.
 	if UnitExists("boss2") and tonumber(UnitGUID("boss2"):sub(6, 10), 16) == 68905 then--Make sure we don't trigger it off another engage such as wipe engage event
 		self:SendSync("Phase3")
 	end
@@ -176,6 +195,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFlamesOfPassionCD:Cancel()
 		warnNight:Show()
 		timerDayCD:Start()
+		timerDuskCD:Start()
 		timerCosmicBarrageCD:Start(17)
 		timerTearsOfTheSunCD:Start(23)
 		timerBeastOfNightmaresCD:Start()
@@ -187,13 +207,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
-function mod:OnSync(msg, guid)
+function mod:OnSync(msg)
 	if msg == "Phase2" then
 		timerCosmicBarrageCD:Cancel()
 		timerTearsOfTheSunCD:Cancel()
 		timerBeastOfNightmaresCD:Cancel()
 		warnDay:Show()
-		timerDuskCD:Start()
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start()
 		timerFlamesOfPassionCD:Start(12.5)
@@ -206,7 +225,16 @@ function mod:OnSync(msg, guid)
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
 		)
-	elseif msg == "Phase3" then
+	elseif msg == "Phase3Yell" and not phase3Started then -- Split from phase3 sync to prevent who running older version not to show bad timers.
+		phase3Started = true
+		self:UnregisterShortTermEvents()
+		warnDusk:Show()
+		timerFanOfFlamesCD:Cancel()
+		timerIceCometCD:Start(17)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
+		timerTidalForceCD:Start(26)
+		timerCosmicBarrageCD:Start(54)
+	elseif msg == "Phase3" and not phase3Started then
+		phase3Started = true
 		self:UnregisterShortTermEvents()
 		warnDusk:Show()
 		timerFanOfFlamesCD:Cancel()
@@ -216,6 +244,7 @@ function mod:OnSync(msg, guid)
 	elseif msg == "TidalForce" then
 		warnTidalForce:Show()
 		specWarnTidalForce:Show()
+		timerTidalForce:Start()
 		timerTidalForceCD:Start()
 	elseif msg == "CosmicBarrage" then
 		warnCosmicBarrage:Show()
