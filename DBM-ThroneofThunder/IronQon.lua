@@ -20,10 +20,10 @@ mod:RegisterEventsInCombat(
 )
 
 local warnImpale						= mod:NewStackAnnounce(134691, 2, nil, mod:IsTank() or mod:IsHealer())
-local warnThrowSpear					= mod:NewSpellAnnounce(134926, 3)--TODO, TEST target scanning here. It's probably touchy as shannox SPELL_SUMMON target scanning so will probably use same code
+local warnThrowSpear					= mod:NewSpellAnnounce(134926, 3)--Target scanning does not work for this.
 local warnPhase1						= mod:NewPhaseAnnounce(1)
 local warnMoltenInferno					= mod:NewSpellAnnounce(134664, 2, nil, false)--highly variables cd, also can be spammy. disbled by default.
-local warnUnleashedFlame				= mod:NewSpellAnnounce(134611, 3)
+local warnUnleashedFlame				= mod:NewSpellAnnounce(134611, 3, nil, false)--Spammy and unnesssary. Every 6 seconds is too often for a non important warning. people can turn it on if they want.
 local warnMoltenOverload				= mod:NewSpellAnnounce(137221, 4)
 local warnWhirlingWinds					= mod:NewSpellAnnounce(139167, 3)--Heroic Phase 1
 local warnPhase2						= mod:NewPhaseAnnounce(2)
@@ -40,7 +40,7 @@ local warnFistSmash						= mod:NewSpellAnnounce(136146, 3)
 local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 3)
 local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
 local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, 2)
-local specWarnScorched					= mod:NewSpecialWarningStack(134647, nil, 3)
+local specWarnScorched					= mod:NewSpecialWarningStack(134647, false, 3)--We do a 4 and 2 strat (4 melee 2 ranged). 3 is not an everyone strat.
 local specWarnBurningCinders			= mod:NewSpecialWarningMove(137668)
 local specWarnMoltenOverload			= mod:NewSpecialWarningSpell(137221, nil, nil, nil, 2)
 local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, 2)
