@@ -21,19 +21,26 @@ mod:RegisterEventsInCombat(
 
 local warnImpale						= mod:NewStackAnnounce(134691, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnThrowSpear					= mod:NewSpellAnnounce(134926, 3)--TODO, TEST target scanning here. It's probably touchy as shannox SPELL_SUMMON target scanning so will probably use same code
+local warnPhase1						= mod:NewPhaseAnnounce(1)
+local warnMoltenInferno					= mod:NewSpellAnnounce(134664, 2, nil, false)--highly variables cd, also can be spammy. disbled by default.
+local warnUnleashedFlame				= mod:NewSpellAnnounce(134611, 3)
 local warnMoltenOverload				= mod:NewSpellAnnounce(137221, 4)
+local warnWhirlingWinds					= mod:NewSpellAnnounce(139167, 3)--Heroic Phase 1
+local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnWindStorm						= mod:NewSpellAnnounce(136577, 4)
 local warnLightningStorm				= mod:NewTargetAnnounce(136192, 3)
+local warnFrostSpike					= mod:NewSpellAnnounce(139180, 3)--Heroic Phase 2
+local warnPhase3						= mod:NewPhaseAnnounce(3)
 local warnDeadZone						= mod:NewAnnounce("warnDeadZone", 3, 137229)
 local warnFreeze						= mod:NewTargetAnnounce(135145, 3, nil, false)--Spammy, more of a duh type warning I think
+local warnPhase4						= mod:NewPhaseAnnounce(4)
 local warnRisingAnger					= mod:NewStackAnnounce(136323, 2, nil, false)
 local warnFistSmash						= mod:NewSpellAnnounce(136146, 3)
-local warnWhirlingWinds					= mod:NewSpellAnnounce(139167, 3)--Heroic Phase 1
-local warnFrostSpike					= mod:NewSpellAnnounce(139180, 3)--Heroic Phase 2
 
 local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 3)
 local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
 local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, 2)
+local specWarnScorched					= mod:NewSpecialWarningStack(134647, nil, 3)
 local specWarnBurningCinders			= mod:NewSpecialWarningMove(137668)
 local specWarnMoltenOverload			= mod:NewSpecialWarningSpell(137221, nil, nil, nil, 2)
 local specWarnWindStorm					= mod:NewSpecialWarningSpell(136577, nil, nil, nil, 2)
@@ -63,8 +70,26 @@ local berserkTimer						= mod:NewBerserkTimer(720)
 mod:AddBoolOption("RangeFrame", true)--One tooltip says 8 yards, other says 10. Confirmed it's 10 during testing though. Ignore the 8 on spellid 134611
 mod:AddBoolOption("InfoFrame")
 
-local phase = 1--Not sure this is useful yet, coding it in, in case spear cd is different in different phases
+local Roshak = select(2, EJ_GetCreatureInfo(2, 817))
+local Quetzal = select(2, EJ_GetCreatureInfo(3, 817))
+local Damren = select(2, EJ_GetCreatureInfo(4, 817))
 local arcingName = GetSpellInfo(136193)
+local phase = 1--Not sure this is useful yet, coding it in, in case spear cd is different in different phases
+
+local function updateHealthFrame()
+	if DBM.BossHealth:IsShown() then
+		DBM.BossHealth:Clear()
+		if phase == 1 then
+			DBM.BossHealth:AddBoss(68079, Roshak)
+		elseif phase == 2 then
+			DBM.BossHealth:AddBoss(68080, Quetzal)
+		elseif phase == 3 then
+			DBM.BossHealth:AddBoss(68081, Damren)
+		elseif phase == 4 then
+			DBM.BossHealth:AddBoss(68078, L.name)
+		end
+	end
+end
 
 local function checkArcing()
 	local arcingDebuffs = 0
@@ -89,6 +114,8 @@ end
 
 function mod:OnCombatStart(delay)
 	phase = 1
+	updateHealthFrame()
+	warnPhase1:Show()
 	timerThrowSpearCD:Start(-delay)
 	if self.Options.RangeFrame then
 		if self:IsDifficulty("normal10", "heroic10") then
@@ -135,10 +162,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnImpaleOther:Show(args.destName)
 			end
 		end
-	elseif args:IsSpellID(134647) then
-		--Once more strats are formed, maybe insert some rotation stuff here
-		if args:IsPlayer() then
-			timerScorched:Start()
+	elseif args:IsSpellID(134647) and args:IsPlayer() then
+		timerScorched:Start()
+		if (args.amount or 1) > 2 then
+			specWarnScorched:Show(args.amount or 1)
 		end
 	elseif args:IsSpellID(137221) then
 		warnMoltenOverload:Show()
@@ -176,8 +203,10 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(134664) then
+		warnMoltenInferno:Show()
 	--Dead zone IDs, each dead zone has two shields and two openings. Each spellid identifies those openings.
-	if args:IsSpellID(137226) then--Front, Right Shielded
+	elseif args:IsSpellID(137226) then--Front, Right Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_FRONT, DBM_CORE_RIGHT)
 		timerDeadZoneCD:Start()
 		--Attack left or Behind (maybe add special warning that says where you can attack, for dps?)
@@ -230,6 +259,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
+		warnUnleashedFlame:Show()
 		timerUnleashedFlameCD:Start()
 	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (heroic phase change trigger)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
@@ -240,9 +270,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 			--Only one log, but i looks like spear cd from phase 1 remains intact
 			phase = 2
+			updateHealthFrame()
 			timerUnleashedFlameCD:Cancel()
 			timerMoltenOverload:Cancel()
 			timerWhirlingWindsCD:Cancel()
+			warnPhase2:Show()
 			if self:IsDifficulty("heroic10", "heroic25") then
 				timerFreezeCD:Start(13)
 				timerFrostSpikeCD:Start(18)
@@ -254,9 +286,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			print("DBM: Mod beyond this point is incomplete and most timers will be unavailable")
 		elseif cid == 68080 then--Quet'zal
 			phase = 3
+			updateHealthFrame()
 			timerLightningStormCD:Cancel()
 			timerWindStormCD:Cancel()
 			timerFrostSpikeCD:Cancel()
+			warnPhase3:Show()
 			timerDeadZoneCD:Start(8.5)
 			if self:IsDifficulty("heroic10", "heroic25") then--On heroic, the fire guy returns and attacks clumps again
 				if self.Options.RangeFrame then--So on heroic we need to restore the grouping range frame
@@ -269,11 +303,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 			checkArcing()
 		elseif cid == 68081 then--Dam'ren
+			phase = 4
+			updateHealthFrame()
 			timerDeadZoneCD:Cancel()
 			timerFreezeCD:Cancel()
+			warnPhase4:Show()
 			timerRisingAngerCD:Start(15)
 			timerFistSmashCD:Start(25)
-			phase = 4
 		end
 	elseif spellId == 139172 and self:AntiSpam(2, 7) then--Whirling Winds (Phase 1 Heroic)
 		warnWhirlingWinds:Show()
@@ -308,28 +344,34 @@ function mod:UNIT_DIED(args)
 		end
 		--Only one log, but i looks like spear cd from phase 1 remains intact
 		phase = 2
+		updateHealthFrame()
 		timerUnleashedFlameCD:Cancel()
 		timerMoltenOverload:Cancel()
 		timerLightningStormCD:Start(17)
 		timerThrowSpearCD:Start()
+		warnPhase2:Show()
 		warnWindStorm:Schedule(49.5)
 		specWarnWindStorm:Schedule(49.5)
 		timerWindStormCD:Start(49.5)
 	elseif cid == 68080 then--Quet'zal
 		phase = 3
+		updateHealthFrame()
 		timerLightningStormCD:Cancel()
 		warnWindStorm:Cancel()
 		specWarnWindStorm:Cancel()
 		timerWindStormCD:Cancel()
+		warnPhase3:Show()
 		timerDeadZoneCD:Start(6)
 		timerThrowSpearCD:Start()
 		checkArcing()
 	elseif cid == 68081 then--Dam'ren
+		phase = 4
+		updateHealthFrame()
 		self:UnregisterShortTermEvents()
 		timerDeadZoneCD:Cancel()
 		timerFreezeCD:Cancel()
+		warnPhase3:Show()
 		timerRisingAngerCD:Start()
-		timerFistSmashCD:Start(22.5)
-		phase = 4
+		timerFistSmashCD:Start(31.5)
 	end
 end
