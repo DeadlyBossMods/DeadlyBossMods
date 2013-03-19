@@ -158,8 +158,6 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
---If this turns out unreliable, we can switch to yell, which is why I want it localized for now, in case it IS needed
---If we do switch to yell, we'll still want to delay it by 6 seconds since timers don't actually cancel until port in (ie she may cast another fan of flames for example
 --"<333.5 18:37:56> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lu'lin! Lend me your strength!#Suen#####0#0##0#247#nil#0#false#false", -- [71265]
 --"<339.3 18:38:02> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Suen#0xF1310D2800005863#worldboss#410952978#nil#1#Unknown#0xF1310D2900005864#worldboss#310232488
 function mod:CHAT_MSG_MONSTER_YELL(msg) -- Switch to yell. INSTANCE_ENCOUNTER_ENGAGE_UNIT fires too late. also yell ranage covers all rooms. Not need sync.
@@ -227,20 +225,20 @@ function mod:OnSync(msg)
 		)
 	elseif msg == "Phase3Yell" and not phase3Started then -- Split from phase3 sync to prevent who running older version not to show bad timers.
 		phase3Started = true
-		self:UnregisterShortTermEvents()
 		warnDusk:Show()
-		timerFanOfFlamesCD:Cancel()
 		timerIceCometCD:Start(17)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 		timerTidalForceCD:Start(26)
 		timerCosmicBarrageCD:Start(54)
-	elseif msg == "Phase3" and not phase3Started then
-		phase3Started = true
+	elseif msg == "Phase3" then
 		self:UnregisterShortTermEvents()
-		warnDusk:Show()
-		timerFanOfFlamesCD:Cancel()
-		timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
-		timerTidalForceCD:Start(20)
-		timerCosmicBarrageCD:Start(48)
+		timerFanOfFlamesCD:Cancel()--DO NOT CANCEL THIS ON YELL
+		if not phase3Started then
+			warnDusk:Show()
+			phase3Started = true
+			timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
+			timerTidalForceCD:Start(20)
+			timerCosmicBarrageCD:Start(48)
+		end
 	elseif msg == "TidalForce" then
 		warnTidalForce:Show()
 		specWarnTidalForce:Show()
