@@ -205,7 +205,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	--DuskPhase		= "Lu'lin! Lend me your strength!"--Not in use, but a backup just in case, so translate in case it's switched to on moments notice on live or next PTR test
+	DuskPhase		= "Мне нужна твоя сила, Лу'линь!"
 })
 
 --------------
