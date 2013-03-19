@@ -524,17 +524,6 @@
 										</Offset>
 									</Anchor>
 								</Anchors>
-								<Scripts>
-									<OnLoad>
-										self:SetMinMaxValues(0, 0)
-										self:SetValue(0)
-										self.offset = 0
-									</OnLoad>
-									<OnVerticalScroll>
-										self:SetValue(offset);
-										self.offset = floor((offset / 10) + 0.5)
-									</OnVerticalScroll>
-								</Scripts>
 							</Slider>
 						</Frames>
 						<Scripts>
