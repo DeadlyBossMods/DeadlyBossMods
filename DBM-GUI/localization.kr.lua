@@ -31,6 +31,7 @@ L.Button_OK 				= '확인'
 L.Button_Cancel 			= '취소'
 L.Button_LoadMod 			= '불러오기'
 L.Mod_Enabled				= "우두머리 경보 사용"
+L.Mod_Reset					= "이 우두머리의 기본 설정 불러오기(테스트중)"
 L.Reset 					= "초기화"
 
 L.Enable  					= "켜기"

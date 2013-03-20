@@ -2252,13 +2252,13 @@ do
 		local category
 
 		local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons"..mod.localization.general.name, "ARTWORK")
-		iconstat:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -16, -16)
+		iconstat:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -16, -24)
 		iconstat:SetFontObject(GameFontNormal)
 		iconstat:SetText(L.IconsInUse)
 		for i=1, 8, 1 do
 			local icon = panel.frame:CreateTexture()
 			icon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp")
-			icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", 2-(i*18), -32)
+			icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", 2-(i*18), -40)
 			icon:SetWidth(16)
 			icon:SetHeight(16)
 			if not mod.usedIcons or not mod.usedIcons[i] then		icon:SetAlpha(0.25)		end
@@ -2273,8 +2273,24 @@ do
 			end
 		end
 
+		local reset  = panel:CreateButton(L.Mod_Reset, 300)--button ugly.
+		reset:SetPoint('TOPRIGHT', panel.frame, "TOPRIGHT", -14, -2)
+		reset:SetScript("OnClick", function(self)
+			local savedOptions = _G[mod.modId:gsub("-", "").."_SavedVars"][mod.id] or {}
+			table.wipe(savedOptions)
+			for i, v in ipairs(DBM.Mods) do
+				if v.id == mod.id then
+					for option, optionValue in pairs(v.DefaultOptions) do
+						savedOptions[option] = optionValue
+					end
+					v.Options = savedOptions or {}
+				end
+			end
+			_G[mod.modId:gsub("-", "").."_SavedVars"][mod.id] = savedOptions
+		end)
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
+		button:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 8, -24)
 		button:SetScript("OnClick", function(self) mod:Toggle()	end)
 
 		for _, catident in pairs(mod.categorySort) do
