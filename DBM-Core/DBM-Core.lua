@@ -3965,21 +3965,24 @@ do
 
 	-- old constructor (no auto-localize)
 	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName, noSound)
+		if not text then
+			error("NewAnnounce: you must provide announce text", 2)
+			return
+		end
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
-				option = optionName or text,
 				sound = not noSound,
 				mod = self,
 				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon or "Interface\\Icons\\Spell_Nature_WispSplode",
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(optionName or text, optionDefault, "announce")
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "announce")
+		elseif not (optionName == false) then
+			self:AddBoolOption(text, optionDefault, "announce")
 		end
 		table.insert(self.announces, obj)
 		return obj
@@ -3987,6 +3990,10 @@ do
 
 	-- new constructor (auto-localized warnings and options, yay!)
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound)
+		if not spellId then
+			error("newAnnounce: you must provide spellId", 2)
+			return
+		end
 		local unparsedId = spellId
 		local spellName
 		if type(spellId) == "string" and spellId:match("ej%d+") then
@@ -4017,20 +4024,19 @@ do
 				text = text,
 				announceType = announceType,
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
-				option = optionName or text,
 				mod = self,
 				icon = (type(icon) == "string" and icon:match("ej%d+") and select(4, EJ_GetSectionInfo(string.sub(icon, 3))) ~= "" and select(4, EJ_GetSectionInfo(string.sub(icon, 3)))) or (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon or "Interface\\Icons\\Spell_Nature_WispSplode",
 				sound = not noSound,
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(optionName or text, optionDefault, "announce")
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "announce")
+		elseif not (optionName == false) then
+			self:AddBoolOption("Announce"..unparsedId..announceType, optionDefault, "announce")
+			self.localization.options["Announce"..unparsedId..announceType] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		end
 		table.insert(self.announces, obj)
-		self.localization.options[text] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		return obj
 	end
 
@@ -4087,18 +4093,22 @@ do
 	local soundPrototype = {}
 	local mt = { __index = soundPrototype }
 	function bossModPrototype:NewSound(spellId, optionName, optionDefault)
+		if not spellId and not optionName then
+			error("NewSound: you must provide either spellId or optionName", 2)
+			return
+		end
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
 			{
-				option = optionName or DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId),
 				mod = self,
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "misc")
+		elseif not (optionName == false) then
+			self:AddBoolOption("Sound"..spellId, optionDefault, "misc")
+			self.localization.options["Sound"..spellId] = DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId)
 		end
 		return obj
 	end
@@ -4166,6 +4176,10 @@ do
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
 	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count)
+		if not spellId and not optionName then
+			error("NewCountdown: you must provide either spellId or optionName", 2)
+			return
+		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
 		local sound3 = self:NewSound(3, false, true)
@@ -4173,9 +4187,6 @@ do
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
 		count = count or 5
-		if not spellId and not optionName then
-			error("NewCountdown: you must provide either spellId or optionName", 2)
-		end
 		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
@@ -4186,15 +4197,15 @@ do
 				sound5 = sound5,
 				timer = timer,
 				count = count,
-				option = optionName or DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId),
 				mod = self
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "misc")
+		elseif not (optionName == false) then
+			self:AddBoolOption("Countdown"..spellId, optionDefault, "misc")
+			self.localization.options["Countdown"..spellId] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
 		end
 		return obj
 	end
@@ -4240,15 +4251,16 @@ do
 	countoutProtoType.Stop = countoutProtoType.Cancel
 
 	function bossModPrototype:NewCountout(timer, spellId, optionDefault, optionName)
+		if not spellId and not optionName then
+			error("NewCountout: you must provide either spellId or optionName", 2)
+			return
+		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
 		local sound3 = self:NewSound(3, false, true)
 		local sound2 = self:NewSound(2, false, true)
 		local sound1 = self:NewSound(1, false, true)
 		timer = timer or 10
-		if not spellId and not optionName then
-			error("NewCountout: you must provide either spellId or optionName", 2)
-		end
 		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
@@ -4258,15 +4270,15 @@ do
 				sound4 = sound4,
 				sound5 = sound5,
 				timer = timer,
-				option = optionName or DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId),
 				mod = self
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(obj.option, optionDefault, "misc")
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "misc")
+		elseif not (optionName == false) then
+			self:AddBoolOption("Countout"..spellId, optionDefault, "misc")
+			self.localization.options["Countout"..spellId] = DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId)
 		end
 		return obj
 	end
@@ -4279,26 +4291,31 @@ do
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
 	function bossModPrototype:NewYell(spellId, yellText, optionDefault, optionName, chatType)
-		if yellText == nil then
+		if not spellId and not yellText then
+			error("NewYell: you must provide either spellId or yellText", 2)
+			return
+		end
+		local displayText
+		if not yellText then
 			if type(spellId) == "string" and spellId:match("ej%d+") then
-				yellText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(EJ_GetSectionInfo(string.sub(spellId, 3)) or DBM_CORE_UNKNOWN)
+				displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(EJ_GetSectionInfo(string.sub(spellId, 3)) or DBM_CORE_UNKNOWN)
 			else
-				yellText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(GetSpellInfo(spellId) or DBM_CORE_UNKNOWN)
+				displayText = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(GetSpellInfo(spellId) or DBM_CORE_UNKNOWN)
 			end
 		end
 		local obj = setmetatable(
 			{
-				option = optionName or DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId),
-				text = yellText,
+				text = displayText or yellText,
 				mod = self,
 				chatType = chatType
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(obj.option, optionDefault, "announce")
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "announce")
+		elseif not (optionName == false) then
+			self:AddBoolOption("Yell"..(yellText or spellId), optionDefault, "announce")
+			self.localization.options["Yell"..(yellText or spellId)] = DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId)
 		end
 		return obj
 	end
@@ -4411,26 +4428,33 @@ do
 	end
 
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound)
+		if not text then
+			error("NewSpecialWarning: you must provide special warning text", 2)
+			return
+		end
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
-				option = optionName or text,
 				mod = self,
 				sound = not noSound,
 				runSound = runSound,
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(optionName or text, optionDefault, "announce")
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "announce")
+		elseif not (optionName == false) then
+			self:AddBoolOption(text, optionDefault, "announce")
 		end
 		table.insert(self.specwarns, obj)
 		return obj
 	end
 
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
+		if not spellId then
+			error("newSpecialWarning: you must provide spellId", 2)
+			return
+		end
 		local spellName
 		if type(spellId) == "string" and spellId:match("ej%d+") then
 			spellName = EJ_GetSectionInfo(string.sub(spellId, 3)) or DBM_CORE_UNKNOWN
@@ -4442,24 +4466,23 @@ do
 			{
 				text = text,
 				announceType = announceType,
-				option = optionName or text,
 				mod = self,
 				sound = not noSound,
 				runSound = runSound,
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(optionName or text, optionDefault, "announce")		-- todo cleanup core code from that indexing type using options[text] is very bad!!! ;)
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault, "announce")
+		elseif not (optionName == false) then
+			self:AddBoolOption("SpecWarn"..spellId..announceType, optionDefault, "announce")
+			if announceType == "stack" then
+				self.localization.options["SpecWarn"..spellId..announceType] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
+			else
+				self.localization.options["SpecWarn"..spellId..announceType] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId)
+			end
 		end
 		table.insert(self.specwarns, obj)
-		if announceType == "stack" then
-			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
-		else
-			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId)
-		end
 		return obj
 	end
 
