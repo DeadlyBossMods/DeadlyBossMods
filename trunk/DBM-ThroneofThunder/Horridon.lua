@@ -76,10 +76,10 @@ local soundDireFixate			= mod:NewSound(140946)
 
 local doorNumber = 0
 local jalakEngaged = false
-local Farraki	= EJ_GetSectionInfo(7081)
-local Gurubashi	= EJ_GetSectionInfo(7082)
-local Drakkari	= EJ_GetSectionInfo(7083)
-local Amani		= EJ_GetSectionInfo(7084)
+local Farraki	= EJ_GetSectionInfo(7098)
+local Gurubashi	= EJ_GetSectionInfo(7100)
+local Drakkari	= EJ_GetSectionInfo(7103)
+local Amani		= EJ_GetSectionInfo(7106)
 
 function mod:OnCombatStart(delay)
 	doorNumber = 0
