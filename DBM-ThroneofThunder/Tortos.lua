@@ -48,6 +48,7 @@ local firstRockfall = false--First rockfall after a stomp
 local shellsRemaining = 0
 local lastConcussion = 0
 local kickedShells = {}
+local addsActivated = 0
 local adds = {}
 local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
 
@@ -125,6 +126,7 @@ function mod:OnCombatStart(delay)
 	firstRockfall = false--First rockfall after a stomp
 	shellsRemaining = 0
 	lastConcussion = 0
+	addsActivated = 0
 	table.wipe(adds)
 	table.wipe(kickedShells)
 	timerRockfallCD:Start(15-delay)
