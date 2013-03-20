@@ -3983,8 +3983,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "announce")
 		elseif not (optionName == false) then
+			obj.option = text
 			self:AddBoolOption(text, optionDefault, "announce")
 		end
 		table.insert(self.announces, obj)
@@ -4034,8 +4036,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "announce")
 		elseif not (optionName == false) then
+			obj.option = "Announce"..unparsedId..announceType
 			self:AddBoolOption("Announce"..unparsedId..announceType, optionDefault, "announce")
 			self.localization.options["Announce"..unparsedId..announceType] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		end
@@ -4108,8 +4112,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "misc")
 		elseif not (optionName == false) then
+			obj.option = "Sound"..spellId
 			self:AddBoolOption("Sound"..spellId, optionDefault, "misc")
 			self.localization.options["Sound"..spellId] = DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId)
 		end
@@ -4205,8 +4211,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "misc")
 		elseif not (optionName == false) then
+			obj.option = "Countdown"..spellId
 			self:AddBoolOption("Countdown"..spellId, optionDefault, "misc")
 			self.localization.options["Countdown"..spellId] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
 		end
@@ -4278,8 +4286,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "misc")
 		elseif not (optionName == false) then
+			obj.option = "Countout"..spellId
 			self:AddBoolOption("Countout"..spellId, optionDefault, "misc")
 			self.localization.options["Countout"..spellId] = DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId)
 		end
@@ -4315,8 +4325,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "announce")
 		elseif not (optionName == false) then
+			obj.option = "Yell"..(yellText or spellId)
 			self:AddBoolOption("Yell"..(yellText or spellId), optionDefault, "announce")
 			self.localization.options["Yell"..(yellText or spellId)] = DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId)
 		end
@@ -4445,8 +4457,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "announce")
 		elseif not (optionName == false) then
+			obj.option = text
 			self:AddBoolOption(text, optionDefault, "announce")
 		end
 		table.insert(self.specwarns, obj)
@@ -4476,8 +4490,10 @@ do
 			mt
 		)
 		if optionName then
+			obj.option = optionName
 			self:AddBoolOption(optionName, optionDefault, "announce")
 		elseif not (optionName == false) then
+			obj.option = "SpecWarn"..spellId..announceType
 			self:AddBoolOption("SpecWarn"..spellId..announceType, optionDefault, "announce")
 			if announceType == "stack" then
 				self.localization.options["SpecWarn"..spellId..announceType] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
