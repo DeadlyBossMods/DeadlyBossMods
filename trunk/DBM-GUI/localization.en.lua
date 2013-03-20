@@ -30,6 +30,7 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Cancel'
 L.Button_LoadMod 			= 'Load AddOn'
 L.Mod_Enabled				= "Enable boss mod"
+L.Mod_Reset					= "Load deafult option for this boss (WIP)"
 L.Reset 					= "Reset"
 
 L.Enable  					= "Enable"
