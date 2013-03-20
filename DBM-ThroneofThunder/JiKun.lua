@@ -169,8 +169,8 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
 				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 			end
-		else--LFR, which we have no data for yet.
-			timerFlockCD:Show(30, flockC+1)
+		else--Shouldn't be an else, but just failsafe code
+			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 		end
 		lastFlock = GetTime()
 		if self:IsDifficulty("heroic10") and flockC % 2 == 0 or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12) then--TODO, find a pattern to this, or if no pattern, find out what's after 12(+2 +4 +6 +8?)

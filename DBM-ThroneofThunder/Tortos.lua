@@ -38,6 +38,8 @@ local timerBreathCD					= mod:NewNextTimer(47, 133939)
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration f the rapid caveins??
 local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
+local berserkTimer					= mod:NewBerserkTimer(780)
+
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetIconOnTurtles", false)
 
@@ -133,6 +135,7 @@ function mod:OnCombatStart(delay)
 	timerCallTortosCD:Start(21-delay)
 	timerStompCD:Start(29-delay)
 	timerBreathCD:Start(-delay)
+	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame and self:IsDifficulty("heroic10", "heroic25") then
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
 		DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
