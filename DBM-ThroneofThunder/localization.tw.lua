@@ -22,21 +22,21 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerDoor		= "下一個部族的門",
-	timerAdds		= "下一波%s"
+	timerDoor				= "下一個部族的門",
+	timerAdds				= "下一波%s"
 })
 
 L:SetOptionLocalization({
-	warnAdds		= "提示小怪跳下",
+	warnAdds				= "提示小怪跳下",
 	warnOrbofControl		= "提示$journal:7092掉落",
 	specWarnOrbofControl	= "為$journal:7092掉落顯示特別警告",
-	timerDoor		= "為下一個部族的門顯示計時器",
-	timerAdds		= "為下一次小怪跳下顯示計時器"
+	timerDoor				= "為下一個部族的門顯示計時器",
+	timerAdds				= "為下一次小怪跳下顯示計時器"
 })
 
 L:SetMiscLocalization({
-	newForces		= "的門蜂擁而出!",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "用力拍動尾巴!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces				= "的門蜂擁而出!",--Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget			= "用力拍動尾巴!"--Horridon sets his eyes on Eraeshio and stamps his tail!
 })
 
 ---------------------------
@@ -44,12 +44,18 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(816)
 
+L:SetWarningLocalization({
+	specWarnPossessed		= "%s附身%s - 變換目標"
+})
+
 L:SetOptionLocalization({
 	warnPossessed		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
 	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	warnSandBolt		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
 	PHealthFrame		= "為$spell:136442消散顯示剩餘血量框架(需要首領血量框架開啟)",
-	RangeFrame			= "顯示距離框架"
+	RangeFrame			= "顯示距離框架",
+	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
+	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
 })
 
 ------------
@@ -201,7 +207,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	DuskPhase		= "盧凜!借本宮力量!"--Not in use, but a backup just in case, so translate in case it's switched to on moments notice on live or next PTR test
+	DuskPhase		= "盧凜!借本宮力量!"
 })
 
 --------------
