@@ -1481,6 +1481,7 @@ do
 				end
 				savedOptions[v.id] = savedOptions[v.id] or v.Options
 				for option, optionValue in pairs(v.Options) do
+					v.DefaultOptions[option] = optionValue
 					if savedOptions[v.id][option] == nil then
 						savedOptions[v.id][option] = optionValue
 					end
@@ -3508,7 +3509,9 @@ do
 			{
 				Options = {
 					Enabled = true,
-					Announce = false,
+				},
+				DefaultOptions = {
+					Enabled = true,
 				},
 				subTab = modSubTab,
 				optionCategories = {
