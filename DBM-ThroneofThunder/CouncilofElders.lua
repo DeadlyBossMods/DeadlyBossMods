@@ -72,7 +72,7 @@ local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTan
 local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
 
 --All
-local timerDarkPowerCD				= mod:NewCDTimer(73, 136507) -- needs review.
+local timerDarkPowerCD				= mod:NewCDTimer(68, 136507) -- needs review.
 --Kazra'jin
 local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122, nil, false)
 --Sul the Sandcrawler
@@ -235,7 +235,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(136442) then--Possessed
 		local cid = args:GetDestCreatureID()
 		local uid
-		local darkPowerCD = 73 -- calculated in 25man normal.
+		local darkPowerCD = 68 -- calculated in 25man normal.
 		for i = 1, 5 do
 			if UnitName("boss"..i) == args.destName then
 				uid = "boss"..i
