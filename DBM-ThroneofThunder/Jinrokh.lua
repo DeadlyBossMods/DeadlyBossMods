@@ -39,13 +39,13 @@ local timerStaticBurstCD			= mod:NewCDTimer(19, 137162, mod:IsTank())
 local timerThrowCD					= mod:NewCDTimer(26, 137175)--90-93 variable (26-30 seconds after storm. verified in well over 50 logs)
 local timerStorm					= mod:NewBuffActiveTimer(17, 137313)--2 second cast, 15 second duration
 local timerStormCD					= mod:NewCDTimer(60.5, 137313)--90-93 variable (60.5~67 seconds after throw)
-local timerIonizationCD				= mod:NewNextTimer(60, 138732)
+local timerIonizationCD				= mod:NewNextTimer(60.5, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
-local countdownIonization			= mod:NewCountdown(60, 138732)
+local countdownIonization			= mod:NewCountdown(60.5, 138732)
 
 mod:AddBoolOption("RangeFrame")
 
@@ -76,8 +76,8 @@ function mod:OnCombatStart(delay)
 	timerStaticBurstCD:Start(13-delay)
 	timerThrowCD:Start(30-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerIonizationCD:Start(60-delay)
-		countdownIonization:Start(60-delay)
+		timerIonizationCD:Start(-delay)
+		countdownIonization:Start(-delay)
 	end
 	berserkTimer:Start(-delay)
 end
@@ -100,8 +100,8 @@ function mod:SPELL_CAST_START(args)
 		timerStaticBurstCD:Start(22.5)--May need tweaking
 		timerThrowCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerIonizationCD:Start(61.5)
-			countdownIonization:Start(61.5)
+			timerIonizationCD:Start()
+			countdownIonization:Start()
 		end
 	elseif args:IsSpellID(138732) then
 		warnIonization:Show()
