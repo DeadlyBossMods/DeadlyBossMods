@@ -18,8 +18,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces		= "irrompono",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "posa il suo sguardo"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces		= "irrompono",--Le forze Farraki irrompono dalla loro porta!
+	chargeTarget	= "posa il suo sguardo"--Horridon posa il suo sguardo su Slevint e sbatte la coda!
 })
 
 ---------------------------
