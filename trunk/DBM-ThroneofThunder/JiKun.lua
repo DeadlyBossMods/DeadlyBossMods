@@ -44,10 +44,12 @@ mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
 local flockC = 0
 local lastFlock = 0
+local trippleNest = false
 local flockName = EJ_GetSectionInfo(7348)
 
 function mod:OnCombatStart(delay)
 	flockC = 0
+	trippleNest = false
 	timerQuillsCD:Start(42.5-delay)
 	timerDowndraftCD:Start(91-delay)
 	if self.Options.RangeFrame then
@@ -115,9 +117,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---10N/H: L, L, L, U, U, U (Repeating)
---25N: Lower (1), Lower (2), Lower (3), Lower (4), Lower & Upper (5+6), Upper (7), Upper (8), Lower & Upper (9+10), Lower & Upper (11+12), Lower (13), Lower (14), Lower & Upper (15+16), Upper (17), Lower & Upper (18+19), Lower & Upper (20+21), Lower & Upper (22+23), Lower (24), Lower & Upper (25+26), Lower & Upper (27+28)
---25H: L (1), L (2), L (3), L & U (4+5), L & U (6+7), U (8), L & U (9+10), L & U (11+12), L (13), U & L (14+15), U & L (16+17) -- 25 H (credits to caleb for some of 25 man nest)
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
 		flockC = flockC + 1
@@ -126,13 +125,24 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		if GetTime() - lastFlock < 5 then--On 25 man, you get two at same time sometimes, we detect that here and revise message
 			messageText = L.UpperAndLower
 			flockText = tostring(flockC - 1)..", "..tostring(flockC)
+			if trippleNest then--If this is true it means we had a 2nd nest message already and this is a 3rd nest message
+				flockText = tostring(flockC - 2)..", "..tostring(flockC - 1)..", "..tostring(flockC)
+				if flockC == 24 or flockC == 29 then
+					messageText = L.TrippleU
+				else
+					messageText = L.TrippleD
+				end
+			end
+			trippleNest = true--This will be set to true on 2nd nest message
+		else
+			trippleNest = false--We reset variable cause it's obviously a first nest message
 		end
 		warnFlock:Cancel()
 		specWarnFlock:Cancel()
 		timerFlockCD:Cancel()--So we don't get two timers on the double nests on 25 man
 		warnFlock:Schedule(0.5, messageText, flockName, flockText)
 		specWarnFlock:Schedule(0.5, messageText, flockName, flockText)
-		--TODO, once verifying nest orders are same on live, and that 25H isn't new 25N numbers, add what next nest is.
+		--10N/10H/LFR: L, L, L, U, U, U (Repeating)
 		if self:IsDifficulty("normal10") then
 			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
 				timerFlockCD:Show(40, flockC+1, L.Lower)
@@ -149,6 +159,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
 				timerFlockCD:Show(40, flockC+1, DBM_CORE_UNKNOWN)
 			end
+		--25N: Lower (1), Lower (2), Lower (3), Lower (4), Lower & Upper (5+6), Upper (7), Upper (8), Lower & Upper (9+10), Lower & Upper (11+12), Lower (13), Lower (14), Lower & Upper (15+16), Upper (17), Lower & Upper (18+19), Lower & Upper (20+21), Lower & Upper (22+23), Lower (24), Lower & Upper (25+26), Lower & Upper (27+28)
 		elseif self:IsDifficulty("normal25") then
 			if flockC == 1 or flockC == 2 or flockC == 3 or flockC == 12 or flockC == 13 or flockC == 23 then--Lower is next
 				timerFlockCD:Show(30, flockC+1, L.Lower)
@@ -159,13 +170,18 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
 				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 			end
+		--25H: Lower (1), Lower (2), Lower (3), Lower & Upper (4, 5), Lower & Upper (6, 7), Upper (8), Upper & Lower (9, 10), Upper & Lower (11, 12), Lower (13), Upper & Lower (14, 15), Upper & Lower (16, 17), Upper & Lower (18, 19), Upper & Lower (20, 21), Upper & Lower & Upper (22, 23, 24), Upper & Lower (25, 26), Lower & Upper & Lower (27, 28, 29), Upper & Lower & Upper (30, 31, 32), Lower & Upper (33, 34), Lower & Upper & Lower (35, 36, 37)
 		elseif self:IsDifficulty("heroic25") then
 			if flockC == 1 or flockC == 2 or flockC == 12 then--Lower is next
 				timerFlockCD:Show(30, flockC+1, L.Lower)
 			elseif flockC == 7 then--Upper is next
 				timerFlockCD:Show(30, flockC+1, L.Upper)
-			elseif flockC == 3 or flockC == 5 or flockC == 8 or flockC == 10 or flockC == 13 or flockC == 15 then--Both are next
+			elseif flockC == 3 or flockC == 5 or flockC == 8 or flockC == 10 or flockC == 13 or flockC == 15 or flockC == 17 or flockC == 19 or flockC == 24 or flockC == 32 then--Both are next
 				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 21 or flockC == 29 then--Tripple is next (2 upper 1 lower)
+				timerFlockCD:Show(30, flockC+1, L.TrippleU)
+			elseif flockC == 26 or flockC == 34 then--Tripple is next (2 lower 1 upper)
+				timerFlockCD:Show(30, flockC+1, L.TrippleD)
 			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
 				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 			end
@@ -173,7 +189,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 		end
 		lastFlock = GetTime()
-		if self:IsDifficulty("heroic10") and flockC % 2 == 0 or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12) then--TODO, find a pattern to this, or if no pattern, find out what's after 12(+2 +4 +6 +8?)
+		if self:IsDifficulty("heroic10") and flockC % 2 == 0 or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12 or flockC == 23) then--TODO, nest 12 is only one that's an upper, all others on 25H are lower.
 			specWarnBigBird:Show()
 		end
 	end
