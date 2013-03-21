@@ -17,8 +17,8 @@ L= DBM:GetModLocalization(819)
 
 L:SetWarningLocalization({
 	warnAdds		= "%s",
-	warnOrbofControl	= "Сфера контроля упала",
-	specWarnOrbofControl	= "Сфера контроля упала!"
+	warnOrbofControl	= "Появилась сфера контроля",
+	specWarnOrbofControl	= "Появилась сфера контроля!"
 })
 
 L:SetTimerLocalization({
@@ -28,10 +28,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnAdds		= "Объявлять когда спрыгивают новые адды",
-	warnOrbofControl	= "Объявлять когда падает $journal:7092",
+	warnOrbofControl	= "Предупреждение о появлении $journal:7092",
 	specWarnOrbofControl	= "Спец-предупреждение когда падает $journal:7092",
-	timerDoor		= "Отображать таймер до следующей фазы ворот племени",
-	timerAdds		= "Отображать таймер до спрыгивания следующих аддов"
+	timerDoor		= "Отсчёт времени до следующей фазы ворот племени",
+	timerAdds		= "Отсчёт времени до спрыгивания следующих аддов"
 })
 
 L:SetMiscLocalization({
@@ -62,15 +62,15 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(825)
 
 L:SetWarningLocalization({
-	warnKickShell		= "%s использован >%s< (осталось %d)",
+	warnKickShell			= "%s использован >%s< (осталось %d)",
 	specWarnCrystalShell	= "Получите %s"
 })
 
 L:SetOptionLocalization({
-	warnKickShell		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
-	specWarnCrystalShell	= "Спец-предупреждение когда на Вас нет дебаффа $spell:137633",
-	InfoFrame		= "Информационное окно для игроков без $spell:137633",
-	SetIconOnTurtles	= "Ставить метки на $journal:7129 \n(Может быть не надежно, если помощник более чем у 1 человека)"
+	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
+	specWarnCrystalShell	= "Спец-предупреждение, когда на Вас нет дебаффа $spell:137633",
+	InfoFrame				= "Информационное окно для игроков без $spell:137633",
+	SetIconOnTurtles		= "Устанавливать метки на $journal:7129 \n(Может быть не надежно, если помощник более чем у 1 человека)"
 })
 
 L:SetMiscLocalization({
@@ -92,7 +92,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s %s (%s)",
+	warnFlock			= "%s %s (%s)",
 	specWarnFlock		= "%s %s (%s)"
 })
 
@@ -101,10 +101,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
+	warnFlock			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
 	specWarnFlock		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
 	timerFlockCD		= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
-	RangeFrame		= "Показывать окно проверки дистанции (8 м) для $spell:138923"
+	RangeFrame			= "Показывать окно проверки дистанции (8 м) для $spell:138923"
 })
 
 L:SetMiscLocalization({
@@ -112,7 +112,9 @@ L:SetMiscLocalization({
 	eggsHatchU		= "Яйца в одном из верхних гнезд начинают проклевываться!",
 	Upper			= "Верхний",
 	Lower			= "Нижний",
-	UpperAndLower		= "Верхний и Нижний"
+	UpperAndLower	= "Верхний и Нижний",
+	TrippleD		= "Тройной (2 нижних)",
+	TrippleU		= "Тройной (2 верхних)"
 })
 
 --------------------------
@@ -128,10 +130,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnAddsLeft			= "Объявлять сколько осталось туманов",
-	specWarnFogRevealed		= "Спец-предупреждение когда обнаружен туман",
+	specWarnFogRevealed		= "Спец-предупреждение при обнаружении туман",
 	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
-	ArrowOnBeam			= "Показывать стрелку DBM во время $journal:6882, чтобы указать, в каком направлении двигаться",
-	SetIconRays			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+	ArrowOnBeam				= "Показывать стрелку DBM во время $journal:6882, чтобы указать, в каком направлении двигаться",
+	SetIconRays				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
 })
 
 L:SetMiscLocalization({
@@ -191,16 +193,16 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerDayCD		= "Следущая дневная фаза",
-	timerDuskCD		= "Следущая фаза сумерек"
+	timerDayCD		= "След. дневная фаза",
+	timerDuskCD		= "След. фаза сумерек"
 })
 
 L:SetOptionLocalization({
 	warnNight		= "Объявлять ночную фазу",
 	warnDay			= "Объявлять дневную фазу",
 	warnDusk		= "Объявлять фазу сумерек",
-	timerDayCD		= "Отображать таймер до следующей дневной фазы",
-	timerDuskCD		= "Отображать таймер до следующей фазы сумерек",
+	timerDayCD		= "Отсчёт времени до следующей дневной фазы",
+	timerDuskCD		= "Отсчёт времени до следующей фазы сумерек",
 	RangeFrame		= "Показывать окно проверки дистанции (8 м)"
 })
 
@@ -215,8 +217,8 @@ L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
 	RangeFrame		= "Показывать окно проверки дистанции",--Для двух разных спеллов
-	StaticShockArrow	= "Показывать стрелку DBM когда на ком-то $spell:135695",
-	OverchargeArrow		= "Показывать стрелку DBM когда на ком-то $spell:136295",
+	StaticShockArrow	= "Показывать стрелку DBM, когда на ком-то $spell:135695",
+	OverchargeArrow		= "Показывать стрелку DBM, когда на ком-то $spell:136295",
 	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
 	SetIconOnStaticShock	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
 })
