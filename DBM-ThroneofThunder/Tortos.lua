@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 local warnBite						= mod:NewSpellAnnounce(135251, 3, nil, mod:IsTank())
 local warnRockfall					= mod:NewSpellAnnounce(134476, 2)
 local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
-local warnQuakeStomp				= mod:NewSpellAnnounce(134920, 3)
+local warnQuakeStomp				= mod:NewCountAnnounce(134920, 3)
 local warnKickShell					= mod:NewAnnounce("warnKickShell", 2, 134031)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
 local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
@@ -33,7 +33,7 @@ local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", fal
 local timerBiteCD					= mod:NewCDTimer(8, 135251, nil, mod:IsTank())
 local timerRockfallCD				= mod:NewCDTimer(10, 134476)
 local timerCallTortosCD				= mod:NewNextTimer(60.5, 136294)
-local timerStompCD					= mod:NewNextTimer(49, 134920)
+local timerStompCD					= mod:NewNextCountTimer(49, 134920)
 local timerBreathCD					= mod:NewNextTimer(47, 133939)
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration f the rapid caveins??
 local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
@@ -46,6 +46,7 @@ mod:AddBoolOption("SetIconOnTurtles", false)
 local shelldName = GetSpellInfo(137633)
 local shellConcussion = GetSpellInfo(136431)
 local stompActive = false
+local stompCount = 0
 local firstRockfall = false--First rockfall after a stomp
 local shellsRemaining = 0
 local lastConcussion = 0
@@ -125,6 +126,7 @@ end
 
 function mod:OnCombatStart(delay)
 	stompActive = false
+	stompCount = 0
 	firstRockfall = false--First rockfall after a stomp
 	shellsRemaining = 0
 	lastConcussion = 0
@@ -133,7 +135,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(kickedShells)
 	timerRockfallCD:Start(15-delay)
 	timerCallTortosCD:Start(21-delay)
-	timerStompCD:Start(29-delay)
+	timerStompCD:Start(29-delay, 1)
 	timerBreathCD:Start(-delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame and self:IsDifficulty("heroic10", "heroic25") then
@@ -164,11 +166,12 @@ function mod:SPELL_CAST_START(args)
 		timerBiteCD:Start()
 	elseif args:IsSpellID(134920) then
 		stompActive = true
-		warnQuakeStomp:Show()
+		stompCount = stompCount + 1
+		warnQuakeStomp:Show(stompCount)
 		specWarnQuakeStomp:Show()
 		timerStompActive:Start()
 		timerRockfallCD:Start(7.4)--When the spam of rockfalls start
-		timerStompCD:Start()
+		timerStompCD:Start(49, stompCount+1)
 	end
 end
 

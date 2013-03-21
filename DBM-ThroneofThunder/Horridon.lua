@@ -35,7 +35,7 @@ local warnChainLightning		= mod:NewSpellAnnounce(136480, 3, nil, false)
 local warnFireball				= mod:NewSpellAnnounce(136465, 3, nil, false)
 local warnBestialCry			= mod:NewStackAnnounce(136817, 3)
 local warnRampage				= mod:NewTargetAnnounce(136821, 4, nil, mod:IsTank() or mod:IsHealer())
-local warnDireCall				= mod:NewSpellAnnounce(137458, 3)
+local warnDireCall				= mod:NewCountAnnounce(137458, 3)
 local warnDireFixate			= mod:NewTargetAnnounce(140946, 4)
 
 local specWarnCharge			= mod:NewSpecialWarningYou(136769)--Maybe add a near warning later. person does have 3.4 seconds to react though and just move out of group.
@@ -53,6 +53,7 @@ local specWarnFireball			= mod:NewSpecialWarningInterrupt(136465)--Can be on for
 local specWarnLivingPoison		= mod:NewSpecialWarningMove(136646)
 local specWarnFrozenBolt		= mod:NewSpecialWarningMove(136573)--Debuff used by Frozen Orbs
 local specWarnLightningNova		= mod:NewSpecialWarningMove(136490)--Mainly for LFR or normal. On heroic you're going to die.
+local specWarnHex				= mod:NewSpecialWarningYou(136512)
 local specWarnJalak				= mod:NewSpecialWarningSwitch("ej7087", mod:IsTank())--To pick him up (and maybe dps to switch, depending on strat)
 local specWarnRampage			= mod:NewSpecialWarningTarget(136821, mod:IsTank() or mod:IsHealer())--Dog is pissed master died, need more heals and cooldowns. Maybe warn dps too? his double swipes and charges will be 100% worse too.
 local specWarnDireCall			= mod:NewSpecialWarningSpell(137458, nil, nil, nil, 2)--Heroic
@@ -75,6 +76,7 @@ local berserkTimer				= mod:NewBerserkTimer(720)
 local soundDireFixate			= mod:NewSound(140946)
 
 local doorNumber = 0
+local direNumber = 0
 local jalakEngaged = false
 local Farraki	= EJ_GetSectionInfo(7098)
 local Gurubashi	= EJ_GetSectionInfo(7100)
@@ -83,6 +85,7 @@ local Amani		= EJ_GetSectionInfo(7106)
 
 function mod:OnCombatStart(delay)
 	doorNumber = 0
+	direNumber = 0
 	jalakEngaged = false
 	timerPunctureCD:Start(-delay)
 	timerDoubleSwipeCD:Start(16-delay)--16-17 second variation
@@ -124,9 +127,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnDoubleSwipe:Show()
 		timerDoubleSwipeCD:Start(11.5)--Hard coded failsafe. 136741 version is always 11.5 seconds after 136770 version
 	elseif args:IsSpellID(137458) then
-		warnDireCall:Show()
+		direNumber = direNumber + 1
+		warnDireCall:Show(direNumber)
 		specWarnDireCall:Show()
-		timerDireCallCD:Start()--CD is reset when he breaks a door though.
+		timerDireCallCD:Start()--CD still reset when he breaks a door?
 	end
 end
 
@@ -180,6 +184,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnDireFixate:Show()
 			soundDireFixate:Play()
 		end
+	elseif args:IsSpellID(136512) and args:IsPlayer() then
+		specWarnHex:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
