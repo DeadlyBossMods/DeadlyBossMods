@@ -114,7 +114,9 @@ L:SetMiscLocalization({
 	eggsHatchU		= "The eggs in one of the upper nests begin to hatch!",
 	Upper			= "Upper",
 	Lower			= "Lower",
-	UpperAndLower	= "Upper & Lower"
+	UpperAndLower	= "Upper & Lower",
+	TrippleD		= "Tripple (2xDwn)",
+	TrippleU		= "Tripple (2xUp)"
 })
 
 --------------------------
