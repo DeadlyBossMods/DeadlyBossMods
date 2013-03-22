@@ -30,6 +30,7 @@ local warnAdds					= mod:NewAnnounce("warnAdds", 2, 43712)--Some random troll ic
 local warnDino					= mod:NewSpellAnnounce("ej7086", 3, 137237)
 local warnMending				= mod:NewSpellAnnounce(136797, 4)
 local warnOrbofControl			= mod:NewAnnounce("warnOrbofControl", 4, "INTERFACE\\ICONS\\INV_MISC_ORB_01.BLP")
+local warnCrackedShell			= mod:NewStackAnnounce(137240, 2)
 local warnVenomBolt				= mod:NewSpellAnnounce(136587, 3, nil, false)
 local warnChainLightning		= mod:NewSpellAnnounce(136480, 3, nil, false)
 local warnFireball				= mod:NewSpellAnnounce(136465, 3, nil, false)
@@ -163,6 +164,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 137237 then
 		warnOrbofControl:Show()
 		specWarnOrbofControl:Show()
+	elseif args.spellId == 137240 then
+		warnCrackedShell:Show(args.destName, args.amount or 1)
 	elseif args.spellId == 136587 then
 		warnVenomBolt:Show()
 		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
