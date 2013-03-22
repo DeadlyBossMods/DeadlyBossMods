@@ -131,6 +131,7 @@ function mod:OnCombatStart(delay)
 	shellsRemaining = 0
 	lastConcussion = 0
 	addsActivated = 0
+	resetaddstate()
 	table.wipe(adds)
 	table.wipe(kickedShells)
 	timerRockfallCD:Start(15-delay)
