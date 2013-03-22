@@ -84,6 +84,11 @@ L:SetMiscLocalization({
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetOptionLocalization({
+	SetIconOnCinders		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
+	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889)
+})
+
 L:SetMiscLocalization({
 	rampageEnds	= "Megaera's rage subsides."
 })

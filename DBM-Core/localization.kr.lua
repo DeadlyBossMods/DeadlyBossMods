@@ -15,6 +15,8 @@ DBM_CORE_BOSS_DOWN_NR				= "%s 전투에서 승리하였습니다! (전투 시�
 DBM_CORE_COMBAT_ENDED_AT			= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s)"
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s 전투가 종료되었습니다. (전투 종료시 우두머리 체력: %s, 전투 시간: %s, 전멸: %d회)"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s 전투가 %s 전에 시작되었습니다. 바를 복구 합니다."
+DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor 기록을 시작합니다."
+DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor 기록을 중단합니다."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d|4초:초;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d|4분:분;"
@@ -27,6 +29,7 @@ DBM_CORE_SEC_FMT					= "%d초"
 DBM_CORE_DEAD						= "죽음"
 DBM_CORE_OK							= "수락"
 
+DBM_CORE_GENERIC_WARNING_DUPLICATE	= "%s 중 1명"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "%s %s 후에 광폭화"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "광폭화"
 DBM_CORE_OPTION_TIMER_BERSERK		= "광폭화 시간 바 표시"

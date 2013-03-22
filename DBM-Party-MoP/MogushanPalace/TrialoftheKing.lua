@@ -93,6 +93,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg == L.Meteor or msg:find(L.Meteor) then
+		local target = DBM:GetFullNameByShortName(target)
 		warnMeteor:Show(target)
 		specWarnMeteor:Show(target)
 		timerMeteorCD:Start()

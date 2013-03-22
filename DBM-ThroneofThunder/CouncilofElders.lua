@@ -72,7 +72,7 @@ local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTan
 local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
 
 --All
-local timerDarkPowerCD				= mod:NewCDTimer(68, 136507) -- needs review.
+local timerDarkPowerCD				= mod:NewCDTimer(68, 136507)
 --Kazra'jin
 local timerRecklessChargeCD			= mod:NewCDTimer(6, 137122, nil, false)
 --Sul the Sandcrawler
@@ -235,7 +235,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 136442 then--Possessed
 		local cid = args:GetDestCreatureID()
 		local uid
-		local darkPowerCD = 68 -- calculated in 25man normal.
 		for i = 1, 5 do
 			if UnitName("boss"..i) == args.destName then
 				uid = "boss"..i
@@ -248,14 +247,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		if uid and UnitBuff(uid, lingeringPresence) then
 			local _, _, _, stack = UnitBuff(uid, lingeringPresence)
 			if self:IsDifficulty("heroic10", "heroic25") then
-				timerDarkPowerCD:Start(darkPowerCD * (1/(1+(stack*0.15))))
+				timerDarkPowerCD:Start(math.floor(68 * (1-(stack*0.15))))--need review
 			elseif self:IsDifficulty("normal10", "normal25") then
-				timerDarkPowerCD:Start(darkPowerCD * (1/(1+(stack*0.1))))
+				timerDarkPowerCD:Start(math.floor(73 * (1-(stack*0.1))))--need review
 			else -- lfr
-				timerDarkPowerCD:Start(darkPowerCD * (1/(1+(stack*0.05))))
+				timerDarkPowerCD:Start(math.floor(97 * (1-(stack*0.05))))--need review
 			end
 		else
-			timerDarkPowerCD:Start(darkPowerCD)
+			if self:IsDifficulty("heroic10", "heroic25") then
+				timerDarkPowerCD:Start(68)
+			elseif self:IsDifficulty("normal10", "normal25") then
+				timerDarkPowerCD:Start(73)
+			else
+				timerDarkPowerCD:Start(97)
+			end
 		end
 		if cid == 69078 then--Sul the Sandcrawler
 			--Do nothing. He just casts sand storm right away and continues his quicksand cd as usual
