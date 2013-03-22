@@ -50,7 +50,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 135403 then
 		warnDivineLight:Show()
-		specWarnDivineLight:Show(args.soruceName)
+		specWarnDivineLight:Show(args.sourceName)
 	elseif args.spellId == 135404 then
 		warnDivineStorm:Show()
 	end
