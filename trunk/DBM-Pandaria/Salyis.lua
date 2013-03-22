@@ -26,9 +26,9 @@ local timerStompCD				= mod:NewNextTimer(60, 121787)
 local timerStomp				= mod:NewCastTimer(3, 121787)
 local timerWarmongerCD			= mod:NewNextTimer(10, "ej6200", nil, nil, nil, 121747)--Comes after Stomp. (Also every 60 sec.)
 
-function mod:OnCombatStart(delay)
-	timerCannonBarrageCD:Start(24-delay)
-	timerStompCD:Start(50-delay)
+function mod:OnCombatStart(delay)--disable start timer for world boss because combat can be entered while other people fighting.
+	--timerCannonBarrageCD:Start(24-delay)
+	--timerStompCD:Start(50-delay)
 end
 
 function mod:RAID_BOSS_EMOTE(msg)

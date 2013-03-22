@@ -339,6 +339,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:118047") then
+		local target = DBM:GetFullNameByShortName(target)
 		if subetaiActive then
 			timerPillageCD:Start()
 		else
@@ -348,6 +349,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			warnPillage:Show(target)
 			if target == UnitName("player") then
 				specWarnPillage:Show()
+			else
 				local uId = DBM:GetRaidUnitId(target)
 				if uId then
 					local x, y = GetPlayerMapPosition(uId)

@@ -64,7 +64,7 @@ local timerAdds					= mod:NewTimer(18.91, "timerAdds", 43712)
 local timerDinoCD				= mod:NewNextTimer(56.75, "ej7086", nil, nil, nil, 137237)--It's between 55 and 60 seconds, I will need a more thorough log to verify by yelling when they spawn
 local timerCharge				= mod:NewCastTimer(3.4, 136769)
 local timerChargeCD				= mod:NewCDTimer(50, 136769)--50-60 second depending on i he's casting other stuff or stunned
-local timerDoubleSwipeCD		= mod:NewCDTimer(18, 136741)--18 second cd unless delayed by a charge triggered double swipe, then it's extended by failsafe code
+local timerDoubleSwipeCD		= mod:NewCDTimer(17, 136741)--17 second cd unless delayed by a charge triggered double swipe, then it's extended by failsafe code
 local timerPuncture				= mod:NewTargetTimer(90, 136767, nil, mod:IsTank() or mod:IsHealer())
 local timerPunctureCD			= mod:NewCDTimer(11, 136767, nil, mod:IsTank() or mod:IsHealer())
 local timerJalakCD				= mod:NewNextTimer(10, "ej7087", nil, nil, nil, 2457)--Maybe it's time for a better worded spawn timer than "Next mobname". Maybe NewSpawnTimer with "mobname activates" or something.
@@ -87,7 +87,7 @@ function mod:OnCombatStart(delay)
 	doorNumber = 0
 	direNumber = 0
 	jalakEngaged = false
-	timerPunctureCD:Start(-delay)
+	timerPunctureCD:Start(10-delay)
 	timerDoubleSwipeCD:Start(16-delay)--16-17 second variation
 	timerDoor:Start(16.5-delay)
 	timerChargeCD:Start(31-delay)--31-35sec variation
@@ -229,8 +229,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.chargeTarget) then
-		local uId = DBM:GetRaidUnitId(target)
-		self:SendSync("Charge", UnitGUID(uId))
+		self:SendSync("ChargeTo", target)
 	elseif msg:find(L.newForces) then
 		self:SendSync("Door")
 	end
@@ -243,12 +242,13 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:OnSync(msg, guid)
-	if msg == "Charge" and guid then
-		warnCharge:Show(DBM:GetFullPlayerNameByGUID(guid))
+function mod:OnSync(msg, target)
+	if msg == "ChargeTo" and target then
+		local target = DBM:GetFullNameByShortName(target)
+		warnCharge:Show(target)
 		timerCharge:Start()
 		timerChargeCD:Start()
-		if guid == UnitGUID("player") then
+		if target == UnitName("player") then
 			specWarnCharge:Show()
 			yellCharge:Yell()
 		end

@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(68065, 70212, 70235, 70247)--flaming 70212. Frozen 70235, Venomous 70247
 mod:SetModelID(47414)--Hydra Fire Head, 47415 Frost Head, 47416 Poison Head
-
+mod:SetUsedIcons(7, 6)
 
 mod:RegisterCombat("combat")
 
@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -43,16 +44,19 @@ local specWarnTorrentofIce		= mod:NewSpecialWarningMove(139889)
 local specWarnNetherTear		= mod:NewSpecialWarningSwitch("ej7816", mod:IsDps())
 
 local timerRampage				= mod:NewBuffActiveTimer(21, 139458)
-local timerArcticFreezeCD		= mod:NewCDTimer(17, 139843, mod:IsTank() or mod:IsHealer())--breath cds are very often syncronized, but not always, sometimes if mobs not engaged same time they go off sync.
-local timerIgniteFleshCD		= mod:NewCDTimer(17, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
-local timerRotArmorCD			= mod:NewCDTimer(17, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
-local timerArcaneDiffusionCD	= mod:NewCDTimer(17, 139993, mod:IsTank() or mod:IsHealer())
+local timerArcticFreezeCD		= mod:NewCDTimer(16, 139843, mod:IsTank() or mod:IsHealer())--breath cds are very often syncronized, but not always, sometimes if mobs not engaged same time they go off sync.
+local timerIgniteFleshCD		= mod:NewCDTimer(16, 137731, mod:IsTank() or mod:IsHealer())--So must start cd bars for both in case of engage delays
+local timerRotArmorCD			= mod:NewCDTimer(16, 139840, mod:IsTank() or mod:IsHealer())--This may have been PTR bug, if they stay synce don live, i will combine these 3 timers into 1
+local timerArcaneDiffusionCD	= mod:NewCDTimer(16, 139993, mod:IsTank() or mod:IsHealer())
 --local timerCinderCD				= mod:NewCDTimer(20, 139822)--Honestly not sure if this is doable with accuracy, the number of heads in back affects it and they don't always sync up
 --local timerTorrentofIceCD		= mod:NewCDTimer(16, 139866)
 --local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Maybe use some scheduling to pre warn. Although might be VERY spammy if you have many venomous up
 local timerNetherTearCD			= mod:NewCDTimer(30, 140138)--Heroic
 
 local soundTorrentofIce			= mod:NewSound(139889)
+
+mod:AddBoolOption("SetIconOnCinders", true)
+mod:AddBoolOption("SetIconOnTorrentofIce", true)
 
 --count will go to hell fast on a DC though. Need to figure out some kind of head status recovery to get active/inactive head counts.
 --Maybe add an info frame that shows head status too would be cool such as
@@ -190,9 +194,18 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnCinders:Show()
 			yellCinders:Yell()
 		end
+		if self.Options.SetIconOnCinders then
+			self:SetIcon(args.destName, 7)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 139822 and self.Options.SetIconOnCinders then
+		self:SetIcon(args.destName, 0)
+	end
+end
 
 function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 139850 and self:AntiSpam(2, 1) then
@@ -332,6 +345,10 @@ end
 --TODO, check for an aura method instead?
 function mod:OnSync(msg, guid)
 	if msg == "IceTarget" and guid then
-		warnTorrentofIce:Show(DBM:GetFullPlayerNameByGUID(guid))
+		local target = DBM:GetFullPlayerNameByGUID(guid)
+		warnTorrentofIce:Show(target)
+		if self.Options.SetIconOnTorrentofIce then
+			self:SetIcon(args.destName, 6, 8)--do not have cleu, so use scheduler.
+		end
 	end
 end
