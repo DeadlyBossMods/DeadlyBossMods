@@ -348,7 +348,7 @@ function mod:OnSync(msg, guid)
 		local target = DBM:GetFullPlayerNameByGUID(guid)
 		warnTorrentofIce:Show(target)
 		if self.Options.SetIconOnTorrentofIce then
-			self:SetIcon(args.destName, 6, 8)--do not have cleu, so use scheduler.
+			self:SetIcon(target, 6, 8)--do not have cleu, so use scheduler.
 		end
 	end
 end
