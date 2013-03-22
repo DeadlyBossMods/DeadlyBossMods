@@ -189,6 +189,7 @@ local loadOptions
 local loadModOptions
 local checkWipe
 local fireEvent
+local playerName = UnitName("player")
 local _, class = UnitClass("player")
 local LastZoneText = ""
 local LastZoneMapID = -1
@@ -1216,44 +1217,64 @@ do
 	end
 end
 
-
 -------------------------------------------------
 --  Raid/Party Handling and Unit ID Utilities  --
 -------------------------------------------------
 do
 	local inRaid = false
 	
+	local raidUIds = {}
 	local raidGuids = {}
+	local raidShortNames = {}
+
+	--save playerinfo into raid table on load. (for solo raid)
+	raid[playerName] = {}
+	raid[playerName].name = playerName
+	raid[playerName].shortname = playerName
+	raid[playerName].guid = UnitGUID("player")
+	raid[playerName].rank = 0
+	raid[playerName].class = class
+	raid[playerName].id = "player"
+	raidUIds["player"] = playerName
+	raidGuids[UnitGUID("player")] = playerName
+	raidShortNames[playerName] = playerName
 
 	local function updateAllRoster()
 		if IsInRaid() then
+			table.wipe(raidShortNames)
 			local playerWithHigherVersionPromoted = false
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
 				DBM:Schedule(2, DBM.RequestTimers, DBM)
-				fireEvent("raidJoin", UnitName("player"))
+				fireEvent("raidJoin", playerName)
 			end
 			for i = 1, GetNumGroupMembers() do
-				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
+				local name, rank, subgroup, _, _, className = GetRaidRosterInfo(i)
 				-- Maybe GetNumGroupMembers() bug? Seems that GetNumGroupMembers() rarely returns bad value, causing GetRaidRosterInfo() returns to nil.
 				-- Filter name = nil to prevent nil table error.
 				if name then
+					local id = "raid" .. i
+					local shortname = UnitName(id)
 					if (not raid[name]) and inRaid then
 						fireEvent("raidJoin", name)
 					end
-					do
-					    local name, realm = UnitName("raid" .. i)
-						raidGuids[UnitGUID("raid" .. i) or ""] = realm and realm ~= "" and name .. "-" .. realm or name
-					end
 					raid[name] = raid[name] or {}
 					raid[name].name = name
+					raid[name].shortname = shortname
 					raid[name].rank = rank
 					raid[name].subgroup = subgroup
-					raid[name].class = fileName
-					raid[name].id = "raid" .. i
-					raid[name].guid = UnitGUID("raid" .. i) or ""
+					raid[name].class = className
+					raid[name].id = id
+					raid[name].guid = UnitGUID(id) or ""
 					raid[name].updated = true
+					raidUIds[id] = name
+					raidGuids[UnitGUID(id) or ""] = name
+					if not raidShortNames[shortname] then
+						raidShortNames[shortname] = name
+					else
+						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
+					end
 					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].version and raid[name].version > tonumber(DBM.Version) then
 						playerWithHigherVersionPromoted = true
 					end
@@ -1262,20 +1283,23 @@ do
 			enableIcons = not playerWithHigherVersionPromoted
 			for i, v in pairs(raid) do
 				if not v.updated then
-					raid[i] = nil
+					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
+					raidShortNames[v.shortname] = nil
+					raid[i] = nil
 					fireEvent("raidLeave", i)
 				else
 					v.updated = nil
 				end
 			end
 		elseif IsInGroup() then
+			table.wipe(raidShortNames)
 			if not inRaid then
 				-- joined a new party
 				inRaid = true
 				sendSync("H")
 				DBM:Schedule(2, DBM.RequestTimers, DBM)
-				fireEvent("partyJoin", UnitName("player"))
+				fireEvent("partyJoin", playerName)
 			end
 			for i = 0, GetNumSubgroupMembers() do
 				local id
@@ -1285,6 +1309,7 @@ do
 					id = "party"..i
 				end
 				local name, server = UnitName(id)
+				local shortname = name
 				local rank, _, fileName = UnitIsGroupLeader(id), UnitClass(id)
 				if server and server ~= ""  then
 					name = name.."-"..server
@@ -1292,9 +1317,9 @@ do
 				if (not raid[name]) and inRaid then
 					fireEvent("partyJoin", name)
 				end
-				raidGuids[UnitGUID(id) or ""] = name
 				raid[name] = raid[name] or {}
 				raid[name].name = name
+				raid[name].shortname = shortname
 				raid[name].guid = UnitGUID(id) or ""
 				if rank then
 					raid[name].rank = 2
@@ -1304,11 +1329,20 @@ do
 				raid[name].class = fileName
 				raid[name].id = id
 				raid[name].updated = true
+				raidUIds[id] = name
+				raidGuids[UnitGUID(id) or ""] = name
+				if not raidShortNames[shortname] then
+					raidShortNames[shortname] = name
+				else
+					raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
+				end
 			end
 			for i, v in pairs(raid) do
 				if not v.updated then
-					raid[i] = nil
+					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
+					raidShortNames[v.shortname] = nil
+					raid[i] = nil
 					fireEvent("partyLeave", i)
 				else
 					v.updated = nil
@@ -1318,7 +1352,19 @@ do
 			-- left the current group/raid
 			inRaid = false
 			enableIcons = true
-			fireEvent("raidLeave", UnitName("player"))
+			raidHasDuplicateShortName = false
+			fireEvent("raidLeave", playerName)
+			-- restore playerinfo into raid table on raidleave. (for solo raid)
+			raid[playerName] = {}
+			raid[playerName].name = playerName
+			raid[playerName].shortname = playerName
+			raid[playerName].guid = UnitGUID("player")
+			raid[playerName].rank = 0
+			raid[playerName].class = class
+			raid[playerName].id = "player"
+			raidUIds["player"] = playerName
+			raidGuids[UnitGUID("player")] = playerName
+			raidShortNames[playerName] = playerName
 		end
 	end
 
@@ -1330,6 +1376,30 @@ do
 		return inRaid
 	end
 
+	function DBM:GetRaidRank(name)
+		return (raid[name] and raid[name].rank) or 0
+	end
+
+	function DBM:GetRaidSubgroup(name)
+		return (raid[name] and raid[name].subgroup) or 0
+	end
+
+	function DBM:GetRaidClass(name)
+		return (raid[name] and raid[name].class) or "UNKNOWN"
+	end
+
+	function DBM:GetRaidUnitId(name)
+		return raid[name] and raid[name].id
+	end
+
+	function DBM:GetFullNameByShortName(name)
+		return raidShortNames[name]
+	end
+
+	function DBM:GetUnitFullName(uId)
+		return raidUIds[uId]
+	end
+
 	function DBM:GetFullPlayerNameByGUID(guid)
 		return raidGuids[guid]
 	end
@@ -1338,7 +1408,7 @@ do
 		return raidGuids[guid] and raidGuids[guid]:gsub("%-.*$", "")
 	end
 end
-	
+
 do
 	-- yes, we still do avoid memory allocations during fights; so we don't use a closure around a counter here
 	-- this seems to be the easiest way to write an iterator that returns the unit id *string* as first argument without a memory allocation
@@ -1380,36 +1450,8 @@ function DBM:GetNumGroupMembers()
 	return math.max(GetNumGroupMembers(), GetNumSubgroupMembers())
 end
 
-function DBM:GetRaidRank(name)
-	name = name or UnitName("player")
-	return (raid[name] and raid[name].rank) or 0
-end
-
-function DBM:GetRaidSubgroup(name)
-	name = name or UnitName("player")
-	return (raid[name] and raid[name].subgroup) or 0
-end
-
-function DBM:GetRaidClass(name)
-	name = name or UnitName("player")
-	return (raid[name] and raid[name].class) or "UNKNOWN"
-end
-
-function DBM:GetRaidUnitId(name)
-	name = name or UnitName("player")
-	return (raid[name] and raid[name].id) or "none"
-end
-
-function DBM:GetUnitFullName(uId)
-	uId = uId or "player"
-	local name, realm = UnitName(uId)
-	if realm then name = name.."-"..realm end
-	return name
-end
-
-
 function DBM:GetBossUnitId(name)
-	for i = 1, 4 do
+	for i = 1, 5 do
 		if UnitName("boss" .. i) == name then
 			return "boss" .. i
 		end
@@ -1417,7 +1459,7 @@ function DBM:GetBossUnitId(name)
 	for uId in DBM:GetGroupMembers() do
 		if UnitName(uId .. "target") == name and not UnitIsPlayer(uId .. "target") then
 			return uId .. "target"
-		end			
+		end
 	end
 end
 
@@ -2019,7 +2061,7 @@ do
 	syncHandlers["U"] = function(sender, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
 		if DBM:GetRaidRank(sender) == 0 then return end
-		if sender == UnitName("player") then return end
+		if sender == playerName then return end
 		time = tonumber(time or 0)
 		text = tostring(text)
 		if time and text then
@@ -2053,7 +2095,7 @@ do
 		}
 
 		syncHandlers["IR"] = function(sender)
-			if DBM:GetRaidRank(sender) == 0 or sender == UnitName("player") then
+			if DBM:GetRaidRank(sender) == 0 or sender == playerName then
 				return
 			end
 			accessList = accessList or {}
@@ -2206,7 +2248,7 @@ do
 		local function getNumDBMUsers() -- without ourselves
 			local r = 0
 			for i, v in pairs(raid) do
-				if v.revision and v.name ~= UnitName("player") and UnitIsConnected(DBM:GetRaidUnitId(v.name)) then
+				if v.revision and v.name ~= playerName and UnitIsConnected(DBM:GetRaidUnitId(v.name)) then
 					r = r + 1
 				end
 			end
@@ -2775,9 +2817,9 @@ function DBM:EndCombat(mod, wipe)
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), wipeHP, totalPulls - totalKills)
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP, totalPulls - totalKills)
 				else
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), wipeHP)
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP)
 				end
 				sendWhisper(k, msg)
 			end
@@ -2878,9 +2920,9 @@ function DBM:EndCombat(mod, wipe)
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL_STATS:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), totalKills)
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalKills)
 				else
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""))
+					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(playerName, difficultyText..(mod.combatInfo.name or ""))
 				end
 				sendWhisper(k, msg)
 			end
@@ -2927,7 +2969,7 @@ end
 function DBM:StartLogging(timer, checkFunc)
 	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
 		LoggingCombat(1)
-		print(COMBATLOGENABLED)
+		DBM:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
 		if checkFunc then
 			DBM:Unschedule(checkFunc)
 			DBM:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
@@ -2935,7 +2977,8 @@ function DBM:StartLogging(timer, checkFunc)
 	end
 	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
 		if not Transcriptor:IsLogging() then
-			Transcriptor:StartLog()
+			DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
+			Transcriptor:StartLog(1)
 		end
 		if checkFunc then
 			DBM:Unschedule(checkFunc)
@@ -2947,11 +2990,12 @@ end
 function DBM:StopLogging()
 	if DBM.Options.AutologBosses and LoggingCombat() then
 		LoggingCombat(0)
-		print(COMBATLOGDISABLED)
+		DBM:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
 	end
 	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
 		if Transcriptor:IsLogging() then
-			Transcriptor:StopLog()
+			DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
+			Transcriptor:StopLog(1)
 		end
 	end
 end
@@ -3008,7 +3052,7 @@ do
 		for i, v in pairs(raid) do
 			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all. 
 			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
-			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > ((bestClient and bestClient.revision) or 0) and not select(2, UnitName(v.id)) and not clientUsed[v.name] then
+			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > ((bestClient and bestClient.revision) or 0) and not select(2, UnitName(v.id)) and not clientUsed[v.name] then
 				bestClient = v
 				clientUsed[v.name] = true
 			end
@@ -3244,7 +3288,7 @@ do
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumGroupMembers(), GetNumSubgroupMembers() + 1)))
+				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumGroupMembers(), GetNumSubgroupMembers() + 1)))
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
@@ -3941,7 +3985,7 @@ do
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
 						if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
-							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 99, UnitGUID("player"))
+							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, playerName, GetDefaultLanguage("player"), "", playerName, "", 0, 0, "", 0, 99, UnitGUID("player"))
 						end
 					end
 				else

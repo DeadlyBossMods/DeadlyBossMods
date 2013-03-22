@@ -183,6 +183,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --Beams wildly jump targets and don't give new target a warning at all nor does it even show in damn combat log.
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:136932") then--Force of Will
+		local target = DBM:GetFullNameByShortName(target)
 		warnForceOfWill:Show(target)
 		if timerLightSpectrumCD:GetTime() > 22 or timerDisintegrationBeamCD:GetTime() > 108 then--Don't start timer if either beam or spectrum will come first (cause both disable force ability)
 			timerForceOfWillCD:Start()
@@ -205,6 +206,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			end
 		end
 	elseif msg:find("spell:134122") then--Blue Rays
+		local target = DBM:GetFullNameByShortName(target)
 		warnBlueBeam:Show(target)
 		timerLingeringGazeCD:Start(21)
 		if target == UnitName("player") then
@@ -215,6 +217,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			lastBlue = target
 		end
 	elseif msg:find("spell:134123") then--Infrared Light (red)
+		local target = DBM:GetFullNameByShortName(target)
 		warnRedBeam:Show(target)
 		if target == UnitName("player") then
 			specWarnRedBeam:Show()
@@ -224,6 +227,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			lastRed = target
 		end
 	elseif msg:find("spell:134124") then--useful only on heroic and LFR since there are only amber adds in them. Normal 10 and normal 25 do not have amber adds (why LFR does is beyond me)
+		local target = DBM:GetFullNameByShortName(target)
 		totalFogs = 3
 		timerForceOfWillCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -245,6 +249,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	elseif target:find(L.Eye) then--Untested, but should work if I don't have args backwards. Looks like Fog name is npc and target is revealing eye
 		specWarnFogRevealed:Show(npc)
 	elseif msg:find("spell:133795") then
+		local target = DBM:GetFullNameByShortName(target)
 		warnLifeDrain:Show(target)
 		specWarnLifeDrain:Show(target)
 	elseif msg:find("spell:134169") then
