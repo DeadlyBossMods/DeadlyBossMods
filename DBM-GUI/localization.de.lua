@@ -28,6 +28,7 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Abbrechen'
 L.Button_LoadMod 			= 'Lade Boss Mod'
 L.Mod_Enabled				= "Aktiviere Boss Mod"
+L.Mod_Reset					= "Lade Standardeinstellungen für diese Seite (IN ENTWICKLUNG!)"
 L.Reset 					= "Zurücksetzen"
 
 L.Enable  					= "Aktiviere"
