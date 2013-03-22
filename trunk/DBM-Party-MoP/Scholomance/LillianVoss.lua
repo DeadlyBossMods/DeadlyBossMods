@@ -45,14 +45,14 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(111585) and args:IsPlayer() and self:AntiSpam() then
+	if args.spellId == 111585 and args:IsPlayer() and self:AntiSpam() then
 		specWarnDarkBlaze:Show()
-	elseif args:IsSpellID(111649) then--Soul released and body becomes inactive, phase 2.
+	elseif args.spellId == 111649 then--Soul released and body becomes inactive, phase 2.
 		timerShadowShivCD:Cancel()
 		timerDeathsGraspCD:Cancel()
 		warnUnleashedAnguish:Show()
 		timerFixateAngerCD:Start()
-	elseif args:IsSpellID(115350) then
+	elseif args.spellId == 115350 then
 		warnFixateAnger:Show(args.destName)
 		timerFixateAnger:Start(args.destName)
 		timerFixateAngerCD:Start()
@@ -64,7 +64,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(111570) then
+	if args.spellId == 111570 then
 		warnDeathsGrasp:Show()
 		specWarnDeathsGrasp:Show()
 		timerDeathsGraspCD:Start()
@@ -72,7 +72,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(111775, 115362) then
 		warnShadowShiv:Show()
 		timerShadowShivCD:Start()
-	elseif args:IsSpellID(114262) then--Phase 3, body rezzed and you have soul and body up together.
+	elseif args.spellId == 114262 then--Phase 3, body rezzed and you have soul and body up together.
 		warnReanimateCorpse:Show()
 		timerDeathsGraspCD:Start(9)
 		timerShadowShivCD:Start(20.5)
@@ -80,7 +80,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(111585) then
+	if args.spellId == 111585 then
 		timerDarkBlaze:Start()
 	end
 end

@@ -91,33 +91,33 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(124967) and not phase2Started then--Phase 2 begin/Phase 1 end
+	if args.spellId == 124967 and not phase2Started then--Phase 2 begin/Phase 1 end
 		phase2Started = true--because if you aren't fucking up, you should get more then one draw power.
 		protectorCount = 0
 		powerCount = 0
 		warnPhase2:Show()
 		timerBreathCD:Cancel()
 		timerProtectorCD:Cancel()	
-	elseif args:IsSpellID(116994) then--Phase 3 begin/Phase 2 end
+	elseif args.spellId == 116994 then--Phase 3 begin/Phase 2 end
 		focusActivated = 0
 		phase2Started = false
 		warnPhase3:Show()
-	elseif args:IsSpellID(117878) and args:IsPlayer() then
+	elseif args.spellId == 117878 and args:IsPlayer() then
 		if (args.amount or 1) >= 6 and args.amount % 3 == 0 then--Warn every 3 stacks at 6 and above.
 			specWarnOvercharged:Show(args.amount)
 		end
-	elseif args:IsSpellID(119387) then -- do not add other spellids.
+	elseif args.spellId == 119387 then -- do not add other spellids.
 		powerCount = powerCount + 1
 		warnDrawPower:Show(powerCount)
 		specWarnDrawPower:Show(powerCount)
-	elseif args:IsSpellID(118310) then--Below 50% health
+	elseif args.spellId == 118310 then--Below 50% health
 		warnRadiatingEnergies:Show()
 		specWarnRadiatingEnergies:Show()--Give a good warning so people standing outside barrior don't die.
-	elseif args:IsSpellID(132226) then
+	elseif args.spellId == 132226 then
 		if args:IsPlayer() then
 			timerDestabilized:Start()
 		end
-	elseif args:IsSpellID(132222) then
+	elseif args.spellId == 132222 then
 		stunTargets[#stunTargets + 1] = args.destName
 		if self.Options.SetIconOnDestabilized then
 			self:SetIcon(args.destName, stunIcon)
@@ -130,13 +130,13 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(116994) then--phase 3 end
+	if args.spellId == 116994 then--phase 3 end
 		warnPhase1:Show()
-	elseif args:IsSpellID(132226) then
+	elseif args.spellId == 132226 then
 		if args:IsPlayer() then
 			timerDestabilized:Cancel()
 		end
-	elseif args:IsSpellID(132222) then
+	elseif args.spellId == 132222 then
 		if self.Options.SetIconOnDestabilized then
 			self:SetIcon(args.destName, 0)
 		end
@@ -156,16 +156,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDespawnFloor:Start()
 			specWarnDespawnFloor:Show()
 		end
-	elseif args:IsSpellID(116989) then--Cast when defeated (or rathor 1 HP)
+	elseif args.spellId == 116989 then--Cast when defeated (or rathor 1 HP)
 		DBM.BossHealth:RemoveBoss(args.sourceGUID)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(117960) then
+	if args.spellId == 117960 then
 		warnBreath:Show()
 		timerBreathCD:Start()
-	elseif args:IsSpellID(117954) then
+	elseif args.spellId == 117954 then
 		protectorCount = protectorCount + 1
 		warnProtector:Show(protectorCount)
 		specWarnProtector:Show()
@@ -174,20 +174,20 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerProtectorCD:Start()--35-37 on normal
 		end
-	elseif args:IsSpellID(117945) then
+	elseif args.spellId == 117945 then
 		warnArcingEnergy:Show()
 		timerArcingEnergyCD:Start(args.sourceGUID)
-	elseif args:IsSpellID(129711) then
+	elseif args.spellId == 129711 then
 		stunIcon = 8
 		warnTotalAnnihilation:Show()
 		specWarnTotalAnnihilation:Show()
 		timerTotalAnnihilation:Start()
 		timerArcingEnergyCD:Cancel(args.sourceGUID)--add is dying, so this add is done casting arcing Energy
-	elseif args:IsSpellID(117949) then
+	elseif args.spellId == 117949 then
 		closedCircuitTargets[#closedCircuitTargets + 1] = args.destName
 		self:Unschedule(warnClosedCircuitTargets)
 		self:Schedule(0.3, warnClosedCircuitTargets)
-	elseif args:IsSpellID(119358) then
+	elseif args.spellId == 119358 then
 		local _, _, _, _, startTime, endTime = UnitCastingInfo("boss1")
 		local castTime
 		if startTime and endTime then

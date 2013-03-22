@@ -33,7 +33,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(111606) then
+	if args.spellId == 111606 then
 		warnTouchGrave:Show()
 	end
 end

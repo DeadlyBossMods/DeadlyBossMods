@@ -47,16 +47,16 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106653) and args:IsPlayer() and self:AntiSpam(4, 1) then
+	if args.spellId == 106653 and args:IsPlayer() and self:AntiSpam(4, 1) then
 		specWarnShaResidue:Show()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(106526) then--Call Water
+	if args.spellId == 106526 then--Call Water
 		timerLivingWater:Start()
 		specWarnLivingWater:Schedule(5.5)
-	elseif args:IsSpellID(106612) then--Bubble Burst (phase 2)
+	elseif args.spellId == 106612 then--Bubble Burst (phase 2)
 		warnBubbleBurst:Show()
 		timerWashAway:Start()
 	end

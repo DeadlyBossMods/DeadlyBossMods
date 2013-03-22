@@ -26,19 +26,19 @@ local timerDisarm			= mod:NewCastTimer(4, 47310)
 mod:AddBoolOption("YellOnBarrel", mod:IsTank(), "announce")
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(47310) then
+	if args.spellId == 47310 then
 		warnDisarm:Show()
 		timerDisarm:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(47376) then											-- Brew
+	if args.spellId == 47376 then											-- Brew
 		timerBrew:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnBrew:Show()
 		end
-	elseif args:IsSpellID(47340) then										-- Brew Stun
+	elseif args.spellId == 47340 then										-- Brew Stun
 		timerBrewStun:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnBrewStun:Show()
@@ -53,9 +53,9 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(47376) then											-- Brew
+	if args.spellId == 47376 then											-- Brew
 		timerBrew:Cancel(args.destName)
-	elseif args:IsSpellID(47340) then										-- Brew Stun
+	elseif args.spellId == 47340 then										-- Brew Stun
 		timerBrewStun:Cancel(args.destName)
 	elseif args:IsSpellID(47442, 51413) then								-- Barreled!
 		timerBarrel:Cancel(args.destName)

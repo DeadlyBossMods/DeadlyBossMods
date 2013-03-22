@@ -63,36 +63,36 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(110945) then
+	if args.spellId == 110945 then
 		warnChargingSoul:Show()
 		warnInvokeLightning:Cancel()
 		timerStaticFieldCD:Cancel()
 		timerLightningBreathCD:Start()
 		timerMagneticShroudCD:Start(20)
-	elseif args:IsSpellID(110852) then
+	elseif args.spellId == 110852 then
 		warnOverchargedSoul:Show()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(110945) then
+	if args.spellId == 110945 then
 		warnInvokeLightning:Cancel()
 		timerStaticFieldCD:Cancel()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(106923) then
+	if args.spellId == 106923 then
 --		warnStaticField:Show()
 		self:ScheduleMethod(0.1, "StaticFieldTarget")--Timing might not be right but target scanning will definitely work with correct timing.
 		timerStaticFieldCD:Start()
-	elseif args:IsSpellID(106984) then
+	elseif args.spellId == 106984 then
 		warnInvokeLightning:Show()
 		timerInvokeLightningCD:Start()
-	elseif args:IsSpellID(102573) then
+	elseif args.spellId == 102573 then
 		warnLightningBreath:Show()
 		timerLightningBreathCD:Start()
-	elseif args:IsSpellID(107140) then
+	elseif args.spellId == 107140 then
 		warnMagneticShroud:Show()
 		specWarnMagneticShroud:Show()
 		timerMagneticShroudCD:Start()

@@ -47,22 +47,22 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(113690) then
+	if args.spellId == 113690 then
 		warnPyroblast:Show()
 		specWarnPyroblast:Show(args.sourceName)
 		timerPyroblastCD:Start()
-	elseif args:IsSpellID(113691) then
+	elseif args.spellId == 113691 then
 		warnFireballVolley:Show()
 		specWarnFireballVolley:Show(args.sourceName)
 --		timerFireballVolleyCD:Start()
-	elseif args:IsSpellID(113364) then
+	elseif args.spellId == 113364 then
 		warnBookBurner:Show()
 		timerBookBurnerCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(113626) then--Teleport, cast before dragons breath. Provides an earlier warning by almost 1 sec.
+	if args.spellId == 113626 then--Teleport, cast before dragons breath. Provides an earlier warning by almost 1 sec.
 		timerPyroblastCD:Cancel()--Will just cast it instantly when dragon breath ends, Cd is irrelevant at this point.
 		warnDragonsBreath:Show()
 		specWarnDragonsBreath:Show()
@@ -71,17 +71,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(113682) and not args:IsDestTypePlayer() then
+	if args.spellId == 113682 and not args:IsDestTypePlayer() then
 		specWarnQuickenedMind:Show(args.destName)
 --		timerQuickenedMindCD:Start()
-	elseif args:IsSpellID(113641) then--Actual dragons breath buff, don't want to give a dispel warning too early
+	elseif args.spellId == 113641 then--Actual dragons breath buff, don't want to give a dispel warning too early
 --		specWarnDragonsBreath:Show(args.destName)
 		timerDragonsBreath:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(113641) then
+	if args.spellId == 113641 then
 		timerDragonsBreath:Cancel()
 	end
 end

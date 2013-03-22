@@ -90,7 +90,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(136954) then
+	if args.spellId == 136954 then
 		scansDone = 0
 		self:TargetScanner()
 		timerAnimaRingCD:Start()
@@ -101,7 +101,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(138569) then
+	if args.spellId == 138569 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
 			warnExplosiveSlam:Show(args.destName, args.amount or 1)
@@ -116,13 +116,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(138609) then
+	elseif args.spellId == 138609 then
 		warnMatterSwap:Show(args.destName)
 		timerMatterSwap:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnMatterSwap:Show()
 		end
-	elseif args:IsSpellID(138780) then
+	elseif args.spellId == 138780 then
 		warnEmpowerGolem:Show(args.destName)
 		timerEmpowerGolemCD:Start()
 	end
@@ -130,9 +130,9 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(138609) then
+	if args.spellId == 138609 then
 		timerMatterSwap:Cancel(args.destName)
-	elseif args:IsSpellID(138569) then
+	elseif args.spellId == 138569 then
 		timerExplosiveSlam:Cancel(args.destName)
 	end
 end

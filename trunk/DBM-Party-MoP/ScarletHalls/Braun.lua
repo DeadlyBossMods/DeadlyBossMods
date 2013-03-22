@@ -56,7 +56,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(114021) then
+	if args.spellId == 114021 then
 --		throwCount = throwCount + 1
 		warnPiercingThrow:Show()
 --		if throwCount < 2 then
@@ -64,10 +64,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		else
 --			timerDeathBlossomCD:Start()
 --		end
-	elseif args:IsSpellID(114242) then
+	elseif args.spellId == 114242 then
 		warnDeathBlossom:Show()
 --		timerPiercingThrowCD:Start()
-	elseif args:IsSpellID(114259) then--Call Dog
+	elseif args.spellId == 114259 then--Call Dog
 		warnCallDog:Show()
 --[[
 		if timerPiercingThrowCD:IsStarted() then--When this is cast, it extend the current CD of throw/blossom from 6 to 12
@@ -78,7 +78,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDeathBlossomCD:Update(12 - barProgress, 12)
 		end
 ]]
-	elseif args:IsSpellID(116140) then--Blood Rage(done calling dogs)
+	elseif args.spellId == 116140 then--Blood Rage(done calling dogs)
 --		throwCount = 0
 		warnBloodyRage:Show()
 		timerPiercingThrowCD:Start(13.5)

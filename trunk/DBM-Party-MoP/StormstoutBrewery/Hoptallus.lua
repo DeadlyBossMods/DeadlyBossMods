@@ -38,13 +38,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(112992) then
+	if args.spellId == 112992 then
 		warnFurlwind:Show()
 		specWarnFurlwind:Show()
 		soundFurlwind:Play()
 		timerFurlwind:Start()
 		timerBreathCD:Start()--Always 18 seconds after Furlwind
-	elseif args:IsSpellID(112944) then
+	elseif args.spellId == 112944 then
 		warnCarrotBreath:Show()
 		specWarnCarrotBreath:Show()
 		timerBreath:Start()

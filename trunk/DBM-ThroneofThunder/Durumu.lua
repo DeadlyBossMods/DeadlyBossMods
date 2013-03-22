@@ -112,18 +112,18 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(133765) then
+	if args.spellId == 133765 then
 		warnHardStare:Show()
 		timerHardStareCD:Start()
-	elseif args:IsSpellID(138467) then
+	elseif args.spellId == 138467 then
 		timerLingeringGazeCD:Start()
-	elseif args:IsSpellID(134587) and self:AntiSpam(3, 3) then
+	elseif args.spellId == 134587 and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(133767) then
+	if args.spellId == 133767 then
 		timerSeriousWound:Start(args.destName)
 		if args:IsPlayer() then
 			if (args.amount or 1) >= 4 then
@@ -134,15 +134,15 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSeriousWoundOther:Show(args.destName)
 			end
 		end
-	elseif args:IsSpellID(133597) then--Dark Parasite
+	elseif args.spellId == 133597 then--Dark Parasite
 		warnDarkParasite:Show(args.destName)
 		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration)
-	elseif args:IsSpellID(133598) then--Dark Plague
+	elseif args.spellId == 133598 then--Dark Plague
 		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
 		--maybe add a warning/special warning for everyone if duration is too high and many adds expected
 		timerDarkPlague:Start(duration)
-	elseif args:IsSpellID(134626) then
+	elseif args.spellId == 134626 then
 		lingeringGazeTargets[#lingeringGazeTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnLingeringGaze:Show()
@@ -159,7 +159,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(133767) then
+	if args.spellId == 133767 then
 		timerSeriousWound:Cancel(args.destName)
 	end
 end

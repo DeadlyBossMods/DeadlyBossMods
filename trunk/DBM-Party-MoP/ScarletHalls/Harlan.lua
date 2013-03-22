@@ -38,14 +38,14 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(111217) then
+	if args.spellId == 111217 then
 		warnDragonsReach:Show()
 		timerDragonsReachCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(111216) then
+	if args.spellId == 111216 then
 		warnBladesofLight:Show()
 		specWarnBladesofLight:Show()
 		timerDragonsReachCD:Cancel()
@@ -53,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(111216) then
+	if args.spellId == 111216 then
 		timerBladesofLightCD:Start()
 	end
 end

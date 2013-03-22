@@ -31,7 +31,7 @@ local DominikaGUID = 0
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(134743) then
+	if args.spellId == 134743 then
 		warnEarthSeed:Show()
 		timerEarthSeedCD:Start()
 	end
@@ -39,10 +39,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(129888) and self:AntiSpam() then
+	if args.spellId == 129888 and self:AntiSpam() then
 		warnSolarBeam:Show()
 		timerSolarBeamCD:Start()
-	elseif args:IsSpellID(133129) then
+	elseif args.spellId == 133129 then
 		DominikaGUID = args.destGUID
 	end
 end

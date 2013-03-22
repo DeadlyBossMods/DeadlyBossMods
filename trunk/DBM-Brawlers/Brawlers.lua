@@ -38,12 +38,12 @@ function mod:PlayerFighting() -- for external mods
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(135385) then
+	if args.spellId == 135385 then
 		warnOrgPortal:Show()
 		if not playerIsFighting then--Do not distract player in arena with special warning
 			specWarnOrgPortal:Show()
 		end
-	elseif args:IsSpellID(135386) then
+	elseif args.spellId == 135386 then
 		warnStormPortal:Show()
 		if not playerIsFighting then--Do not distract player in arena with special warning
 			specWarnStormPortal:Show()

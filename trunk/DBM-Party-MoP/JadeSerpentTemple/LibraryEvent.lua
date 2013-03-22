@@ -33,9 +33,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(113315) then
+	if args.spellId == 113315 then
 		warnIntensity:Show(args.destName, args.amount or 1)
-	elseif args:IsSpellID(113309) then
+	elseif args.spellId == 113309 then
 		warnUltimatePower:Show(args.destName)
 		specWarnUltimatePower:Show(args.destName)
 		timerUltimatePower:Start(args.destName)
@@ -43,7 +43,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(113315) then
+	if args.spellId == 113315 then
 		if args.amount % 2 == 0 then--only warn every 2
 			warnIntensity:Show(args.destName, args.amount)
 			if args.amount >= 6 then--Start point of special warnings subject to adjustment based on live tuning.

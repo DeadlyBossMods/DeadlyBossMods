@@ -25,7 +25,7 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(102341) and UnitGUID("pet") == args.destGUID and self:AntiSpam() then
+	if args.spellId == 102341 and UnitGUID("pet") == args.destGUID and self:AntiSpam() then
 		warnMarked:Show()
 		specWarnMarked:Show()
 		soundMarked:Play()

@@ -204,27 +204,27 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(136189) then
+	if args.spellId == 136189 then
 		scansDone = 0
 		if boltCasts == 3 then boltCasts = 0 end
 		boltCasts = boltCasts + 1
 		self:BoltTarget()
-	elseif args:IsSpellID(136521) and args:GetSrcCreatureID() == 69078 then--Filter the ones cast by adds dying.
+	elseif args.spellId == 136521 and args:GetSrcCreatureID() == 69078 then--Filter the ones cast by adds dying.
 		warnQuicksand:Show()
 		timerQuickSandCD:Start()
-	elseif args:IsSpellID(136894) then
+	elseif args.spellId == 136894 then
 		warnSandstorm:Show()
 		specWarnSandStorm:Show()
 		timerSandStormCD:Start()
-	elseif args:IsSpellID(137203) then
+	elseif args.spellId == 137203 then
 		warnBlessedLoaSpirit:Show()
 		specWarnBlessedLoaSpirit:Show()
 		timerBlessedLoaSpiritCD:Start()
-	elseif args:IsSpellID(137350) then
+	elseif args.spellId == 137350 then
 		warnShadowedLoaSpirit:Show()
 		specWarnShadowedLoaSpirit:Show()
 		timerShadowedLoaSpiritCD:Start()
-	elseif args:IsSpellID(137891) then
+	elseif args.spellId == 137891 then
 		warnTwistedFate:Show()
 		specWarnTwistedFate:Show()
 		timerTwistedFateCD:Start()
@@ -232,7 +232,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(136442) then--Possessed
+	if args.spellId == 136442 then--Possessed
 		local cid = args:GetDestCreatureID()
 		local uid
 		local darkPowerCD = 68 -- calculated in 25man normal.
@@ -290,7 +290,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local bossHealth = math.floor(UnitHealthMax(uid or "boss4") * 0.25)
 			showDamagedHealthBar(self, args.destGUID, args.spellName.." : "..args.destName, bossHealth)
 		end
-	elseif args:IsSpellID(136903) then--Player Debuff version, not cast version
+	elseif args.spellId == 136903 then--Player Debuff version, not cast version
 		timerFrigidAssault:Start(args.destName)
 		if self:AntiSpam(3, 1) then--Might need to adjust slightly to 2 or 4.
 			warnFrigidAssault:Show(args.destName, args.amount or 1)
@@ -304,7 +304,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(136992) then--Player Debuff version, not cast version
+	elseif args.spellId == 136992 then--Player Debuff version, not cast version
 		warnBitingCold:Show(args.destName)
 		if self.Options.SetIconOnBitingCold then
 			self:SetIcon(args.destName, 7)--Cross
@@ -314,7 +314,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBitingCold:Show()
 			yellBitingCold:Yell()
 		end
-	elseif args:IsSpellID(136922) and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
+	elseif args.spellId == 136922 and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
 		warnFrostBite:Show(args.destName)
 		if self.Options.SetIconOnFrostBite then
 			self:SetIcon(args.destName, 6)--Square
@@ -325,7 +325,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(136860, 136878) and args:IsPlayer() and self:AntiSpam(2, 3) then--Trigger off initial quicksand debuff and ensnared stacks. much less cpu them registering damage events and just as effective.
 		specWarnQuickSand:Show()
-	elseif args:IsSpellID(137359) then
+	elseif args.spellId == 137359 then
 		warnMarkedSoul:Show(args.destName)
 		timerMarkedSoul:Start(args.destName)
 		if args:IsPlayer() then
@@ -337,7 +337,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(136442) then--Possessed
+	if args.spellId == 136442 then--Possessed
 		darkPowerWarned = false
 		timerDarkPowerCD:Cancel()
 		if args:GetDestCreatureID() == 69078 then--Sul the Sandcrawler
@@ -369,15 +369,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.PHealthFrame then
 			hideDamagedHealthBar()
 		end
-	elseif args:IsSpellID(136903) then
+	elseif args.spellId == 136903 then
 		timerFrigidAssault:Cancel(args.destName)
-	elseif args:IsSpellID(136904) then
+	elseif args.spellId == 136904 then
 		timerFrigidAssaultCD:Start()
-	elseif args:IsSpellID(137359) then
+	elseif args.spellId == 137359 then
 		timerMarkedSoul:Cancel(args.destName)
-	elseif args:IsSpellID(136992) and self.Options.SetIconOnBitingCold then
+	elseif args.spellId == 136992 and self.Options.SetIconOnBitingCold then
 		self:SetIcon(args.destName, 0)
-	elseif args:IsSpellID(136922) and self.Options.SetIconOnFrostBite then
+	elseif args.spellId == 136922 and self.Options.SetIconOnFrostBite then
 		self:SetIcon(args.destName, 0)--Square
 	end
 end

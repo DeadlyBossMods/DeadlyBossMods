@@ -157,20 +157,20 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(133939) then
+	if args.spellId == 133939 then
 		warnStoneBreath:Show()
 		specWarnStoneBreath:Show(args.sourceName)
 		timerBreathCD:Start()
-	elseif args:IsSpellID(136294) then
+	elseif args.spellId == 136294 then
 		warnCallofTortos:Show()
 		specWarnCallofTortos:Show()
 		if self:AntiSpam(59, 3) then -- On below 10%, he casts Call of Tortos always. This cast ignores cooldown, so filter below 10% cast.
 			timerCallTortosCD:Start()
 		end
-	elseif args:IsSpellID(135251) then
+	elseif args.spellId == 135251 then
 		warnBite:Show()
 		timerBiteCD:Start()
-	elseif args:IsSpellID(134920) then
+	elseif args.spellId == 134920 then
 		stompActive = true
 		stompCount = stompCount + 1
 		warnQuakeStomp:Show(stompCount)
@@ -182,10 +182,10 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(133971) then--Shell Block (turtles dying and becoming kickable)
+	if args.spellId == 133971 then--Shell Block (turtles dying and becoming kickable)
 		shellsRemaining = shellsRemaining + 1
 		addsActivated = addsActivated - 1
-	elseif args:IsSpellID(133974) and self.Options.SetIconOnTurtles then--Spinning Shell
+	elseif args.spellId == 133974 and self.Options.SetIconOnTurtles then--Spinning Shell
 		resetaddstate()
 		addsActivated = addsActivated + 1
 		if not adds[args.sourceGUID] then
@@ -195,13 +195,13 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(137633) and args:IsPlayer() then
+	if args.spellId == 137633 and args:IsPlayer() then
 		specWarnCrystalShell:Show(shelldName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(134476) then
+	if args.spellId == 134476 then
 		if stompActive then--10 second cd normally, but cd is disabled when stomp active
 			if not firstRockfall then--Announce first one only and ignore the next ones spammed for about 9-10 seconds
 				firstRockfall = true
@@ -216,7 +216,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				timerRockfallCD:Start()
 			end
 		end
-	elseif args:IsSpellID(134031) and not kickedShells[args.destGUID] then--Kick Shell
+	elseif args.spellId == 134031 and not kickedShells[args.destGUID] then--Kick Shell
 		kickedShells[args.destGUID] = true
 		shellsRemaining = shellsRemaining - 1
 		warnKickShell:Show(args.spellName, args.sourceName, shellsRemaining)

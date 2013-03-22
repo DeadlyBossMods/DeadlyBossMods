@@ -31,10 +31,10 @@ local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(133308) then
+	if args.spellId == 133308 then
 		warnThrowNet:Show()
 		timerThrowNetCD:Start()
-	elseif args:IsSpellID(135234) then
+	elseif args.spellId == 135234 then
 		warnStormCloud:Show()
 		--CD seems to be 32 seconds usually but sometimes only 16? no timer for now
 		if brawlersMod:PlayerFighting() then
@@ -45,13 +45,13 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args:IsSpellID(133227) then
+	if args.spellId == 133227 then
 		warnGoblinDevice:Show()
 		timerGoblinDeviceCD:Start()--6 seconds after combat start, if i do that kind of detection later
 		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
 			specWarnGoblinDevice:Show()
 		end
-	elseif args:IsSpellID(132670) then
+	elseif args.spellId == 132670 then
 		warnSummonTwister:Show()
 		timerSummonTwisterCD:Start()--22 seconds after combat start?
 	end

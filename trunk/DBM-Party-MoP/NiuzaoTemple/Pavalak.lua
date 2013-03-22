@@ -71,7 +71,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(119476) then
+	if args.spellId == 119476 then
 		local shieldname = GetSpellInfo(119476)
 		showShieldHealthBar(self, args.destGUID, shieldname, 1500000)
 		phase = phase + 1
@@ -83,16 +83,16 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(119476) then--When bullwark breaks, he will instantly cast either tempest or blade rush, need more logs to determine if it's random or set.
+	if args.spellId == 119476 then--When bullwark breaks, he will instantly cast either tempest or blade rush, need more logs to determine if it's random or set.
 		hideShieldHealthBar()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(124283) then--he do not target anything. so can't use target scan.
+	if args.spellId == 124283 then--he do not target anything. so can't use target scan.
 		warnBladeRush:Show()
 		timerBladeRushCD:Start()
-	elseif args:IsSpellID(119875) then
+	elseif args.spellId == 119875 then
 		warnTempest:Show()
 		specWarnTempest:Show()
 		timerBladeRushCD:Start(7)--always 7-7.5 seconds after tempest.

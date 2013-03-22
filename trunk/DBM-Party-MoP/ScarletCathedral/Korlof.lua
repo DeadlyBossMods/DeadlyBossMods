@@ -38,7 +38,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(113764) then
+	if args.spellId == 113764 then
 		--[[if args:IsPlayer() then
 			specWarnFlyingKick:Show()
 			yellFlyingKick:Yell()
@@ -63,7 +63,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnFlyingKick:Show()
 		timerFirestormKick:Start()
 		timerFlyingKickCD:Start()
-	elseif args:IsSpellID(114807) then
+	elseif args.spellId == 114807 then
 		warnBlazingFists:Show()
 		specWarnBlazingFists:Show()
 		timerBlazingFistsCD:Start()
@@ -71,7 +71,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(114460) then
+	if args.spellId == 114460 then
 		self:RegisterShortTermEvents(
 			"SPELL_DAMAGE",
 			"SPELL_MISSED"

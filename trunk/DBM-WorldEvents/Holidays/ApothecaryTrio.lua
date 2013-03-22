@@ -25,7 +25,7 @@ mod:AddBoolOption("TrioActiveTimer", true, "timer")
 local timerChainReaction		= mod:NewCastTimer(3, 68821)
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(68821) then
+	if args.spellId == 68821 then
 		warnChainReaction:Show()
 		timerChainReaction:Start()
 	end

@@ -157,7 +157,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(123250) then
+	if args.spellId == 123250 then
 		local elapsed, total = timerSpecialCD:GetTime(specialsCast+1)
 		specialRemaining = total - elapsed
 		lastProtect = GetTime()	
@@ -166,7 +166,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.2, function()
 			timerSpecialCD:Cancel()
 		end)
-	elseif args:IsSpellID(123505) and self.Options.SetIconOnProtector then
+	elseif args.spellId == 123505 and self.Options.SetIconOnProtector then
 		if guardActivated == 0 then
 			resetguardstate()
 		end
@@ -174,7 +174,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not guards[args.sourceGUID] then
 			guards[args.destGUID] = true
 		end
-	elseif args:IsSpellID(123461) then
+	elseif args.spellId == 123461 then
 		specialsCast = specialsCast + 1
 		warnGetAway:Show(specialsCast)
 		specWarnGetAway:Show()
@@ -188,7 +188,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			local getAwayHealth = math.floor(UnitHealthMax("boss1") * 0.04)
 			showDamagedHealthBar(self, args.sourceGUID, args.spellName, getAwayHealth)
 		end
-	elseif args:IsSpellID(123121) then
+	elseif args.spellId == 123121 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
 			timerSpray:Start(args.destName)
@@ -203,14 +203,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(123705) and self:AntiSpam() then
+	elseif args.spellId == 123705 and self:AntiSpam() then
 		self:ScaryFogRepeat()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(123250) then
+	if args.spellId == 123250 then
 		if self.Options.SetIconOnProtector then
 			guardActivated = 0
 		end
@@ -223,9 +223,9 @@ function mod:SPELL_AURA_REMOVED(args)
 				timerSpecialCD:Start(specialCD, specialsCast+1)
 			end
 		end
-	elseif args:IsSpellID(123121) then
+	elseif args.spellId == 123121 then
 		timerSpray:Cancel(args.destName)
-	elseif args:IsSpellID(123461) then
+	elseif args.spellId == 123461 then
 		timerGetAway:Cancel()
 		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.GWHealthFrame then
 			hideDamagedHealthBar()
@@ -274,7 +274,7 @@ function mod:OnSync(msg, icon)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(123244) then
+	if args.spellId == 123244 then
 		hideDebug = 0
 		damageDebug = 0
 		hideTime = GetTime()
@@ -295,7 +295,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(3)--Show everyone during hide
 		end
-	elseif args:IsSpellID(123705) then
+	elseif args.spellId == 123705 then
 		self:ScaryFogRepeat()
 	end
 end
