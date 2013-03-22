@@ -30,7 +30,7 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101612) and args:IsPlayer() then
+	if args.spellId == 101612 and args:IsPlayer() then
 		gameEarnedPoints = 0
 		gameMaxPoints = 0
 		timerGame:Start()
@@ -39,7 +39,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(101612) and args:IsPlayer() then
+	if args.spellId == 101612 and args:IsPlayer() then
 		timerGame:Cancel()
 		countdownGame:Cancel()
 		if self.Options.warnGameOver then

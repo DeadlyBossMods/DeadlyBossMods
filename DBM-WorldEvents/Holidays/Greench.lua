@@ -34,21 +34,21 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(101907) then
+	if args.spellId == 101907 then
 		warnSnowCrash:Show()
 		timerSnowCrash:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(101873) then
+	if args.spellId == 101873 then
 		warnShrinkHeart:Show()
 		timerShrinkHeartCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(101860) and args:IsPlayer() and self:AntiSpam(2) then
+	if args.spellId == 101860 and args:IsPlayer() and self:AntiSpam(2) then
 		specWarnShrinkHeart:Show()
 	end
 end

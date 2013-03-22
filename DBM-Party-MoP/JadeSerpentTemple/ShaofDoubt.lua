@@ -35,34 +35,34 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(106736) then
+	if args.spellId == 106736 then
 		warnWitherWill:Show()
 		timerWitherWillCD:Start()
-	elseif args:IsSpellID(106113) then--Start Cd here in case it's resisted
+	elseif args.spellId == 106113 then--Start Cd here in case it's resisted
 		timerTouchofNothingnessCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(117665) then
+	if args.spellId == 117665 then
 		warnBoundsOfReality:Show()
 		timerWitherWillCD:Cancel()
 		timerTouchofNothingnessCD:Cancel()
 		timerBoundsOfReality:Start()
 		timerBoundsOfRealityCD:Start()
-	elseif args:IsSpellID(106113) then
+	elseif args.spellId == 106113 then
 		warnTouchofNothingness:Show(args.destName)
 		specWarnTouchOfNothingness:Show(args.destName)
 		timerTouchofNothingness:Start(args.destName)
-	elseif args:IsSpellID(110099) and args:IsPlayer() then
+	elseif args.spellId == 110099 and args:IsPlayer() then
 		specWarnShadowsOfDoubt:Show()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(117665) then
+	if args.spellId == 117665 then
 		timerBoundsOfReality:Cancel()
-	elseif args:IsSpellID(106113) then
+	elseif args.spellId == 106113 then
 		timerTouchofNothingness:Cancel(args.destName)
 	end
 end

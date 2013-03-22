@@ -76,7 +76,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(136216) then
+	if args.spellId == 136216 then
 		warnCausticGas:Show()
 		specWarnCausticGas:Show()
 		timerCausticGasCD:Start()
@@ -84,7 +84,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(136037) then
+	if args.spellId == 136037 then
 		warnPrimordialStrike:Show()
 		if metabolicBoost then--Only issue is updating current bar when he gains buff in between CDs, it does seem to affect it to a degree
 			timerPrimordialStrikeCD:Start(20)
@@ -95,40 +95,40 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(136050) then
+	if args.spellId == 136050 then
 		warnMalformedBlood:Show(args.destName, args.amount or 1)
 		timerMalformedBlood:Start(args.destName)
-	elseif args:IsSpellID(137000) then
+	elseif args.spellId == 137000 then
 		warnBlackBlood:Show(args.destName, args.amount or 1)
 		timerBlackBlood:Start(args.destName)
-	elseif args:IsSpellID(136215) then
+	elseif args.spellId == 136215 then
 		warnGasBladder:Show(args.destName)
-	elseif args:IsSpellID(136246) then
+	elseif args.spellId == 136246 then
 		postulesActive = true
 		warnEruptingPustules:Show(args.destName)
 		timerPustuleEruptionCD:Start()--not affected by metabolicBoost?
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, we should already have range 5 up
 			DBM.RangeCheck:Show(2)
 		end
-	elseif args:IsSpellID(136225) then
+	elseif args.spellId == 136225 then
 		warnPathogenGlands:Show(args.destName)
-	elseif args:IsSpellID(136228) then
+	elseif args.spellId == 136228 then
 		warnVolatilePathogen:Show(args.destName)
 		timerVolatilePathogenCD:Start()
 		if args:IsPlayer() then
 			specWarnVolatilePathogen:Show()
 		end
-	elseif args:IsSpellID(136245) then
+	elseif args.spellId == 136245 then
 		metabolicBoost = true
 		warnMetabolicBoost:Show(args.destName)
-	elseif args:IsSpellID(136210) then
+	elseif args.spellId == 136210 then
 		warnVentralSacs:Show(args.destName)
-	elseif args:IsSpellID(136218) then
+	elseif args.spellId == 136218 then
 		acidSpinesActive = true
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
-	elseif args:IsSpellID(140546) and args:IsPlayer() then
+	elseif args.spellId == 140546 and args:IsPlayer() then
 		specWarnFullyMutated:Show()
 		timerFullyMutated:Start()
 	end
@@ -136,21 +136,21 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(136050) then
+	if args.spellId == 136050 then
 		timerMalformedBlood:Cancel(args.destName)
-	elseif args:IsSpellID(136215) then
+	elseif args.spellId == 136215 then
 		timerCausticGasCD:Cancel()
-	elseif args:IsSpellID(136246) then
+	elseif args.spellId == 136246 then
 		postulesActive = false
 		timerPustuleEruptionCD:Cancel()
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, leave range frame alone
 			DBM.RangeCheck:Hide()
 		end
-	elseif args:IsSpellID(136225) then
+	elseif args.spellId == 136225 then
 		timerVolatilePathogenCD:Cancel()
-	elseif args:IsSpellID(136245) then
+	elseif args.spellId == 136245 then
 		metabolicBoost = false
-	elseif args:IsSpellID(136218) then
+	elseif args.spellId == 136218 then
 		acidSpinesActive = false
 		if self.Options.RangeFrame then
 			if postulesActive then

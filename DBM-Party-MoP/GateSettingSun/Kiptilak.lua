@@ -33,7 +33,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(107268) then
+	if args.spellId == 107268 then
 		warnSabotage:Show(args.destName)
 		timerSabotage:Start(args.destName)
 		timerSabotageCD:Start()
@@ -60,7 +60,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(107268) then
+	if args.spellId == 107268 then
 		timerSabotage:Cancel(args.destName)
 		if self.Options.IconOnSabotage then
 			self:SetIcon(args.destName, 0)

@@ -55,19 +55,19 @@ function mod:SpiritFireTarget(sGUID)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(139895) then
+	if args.spellId == 139895 then
 		self:ScheduleMethod(0.2, "SpiritFireTarget", args.sourceGUID)--Untested scan timing (don't even know if scanning works
 		timerSpiritfireCD:Start()
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(3)
 		end
-	elseif args:IsSpellID(136751) and (args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus")) then
+	elseif args.spellId == 136751 and (args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus")) then
 		specWarnSonicScreech:Show(args.sourceName)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(139322) then--Or 139559, not sure which
+	if args.spellId == 139322 then--Or 139559, not sure which
 		stormEnergyTargets[#stormEnergyTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnStormEnergy:Show()
@@ -77,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnStormEnergyTargets)
 		self:Schedule(1, warnStormEnergyTargets)
-	elseif args:IsSpellID(139900) then
+	elseif args.spellId == 139900 then
 		stormCloudTargets[#stormCloudTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnStormCloud:Show()
@@ -87,7 +87,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnStormCloudTargets)
 		self:Schedule(0.5, warnStormCloudTargets)
-	elseif args:IsSpellID(140296) then
+	elseif args.spellId == 140296 then
 		warnConductiveShield:Show(args.destName)
 		specWarnConductiveShield:Show(args.destName)
 		timerConductiveShieldCD:Start(20, args.destName, args.sourceGUID)

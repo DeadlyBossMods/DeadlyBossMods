@@ -28,10 +28,10 @@ local timerConflag				= mod:NewTargetTimer(4, 42380)
 local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(42380) then					-- Conflagration
+	if args.spellId == 42380 then					-- Conflagration
 		warnConflag:Show(args.destName)
 		timerConflag:Start(args.destName)
-	elseif args:IsSpellID(42514) then				-- Squash Soul
+	elseif args.spellId == 42514 then				-- Squash Soul
 		warnSquashSoul:Show(args.destName)
 		timerSquashSoul:Start(args.destName)
 	end

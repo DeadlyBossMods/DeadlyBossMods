@@ -30,16 +30,16 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(121447) then
+	if args.spellId == 121447 then
 		warnResin:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnResin:Show()
 		end
-	elseif args:IsSpellID(121443) then
+	elseif args.spellId == 121443 then
 		if args:IsPlayer() then
 			specWarnCausticPitch:Show()
 		end
-	elseif args:IsSpellID(121282) and not windsActive then
+	elseif args.spellId == 121282 and not windsActive then
 		windsActive = true
 		timerResinCD:Cancel()
 		warnGustingWinds:Show()

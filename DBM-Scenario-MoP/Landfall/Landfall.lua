@@ -48,10 +48,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(135403) then
+	if args.spellId == 135403 then
 		warnDivineLight:Show()
 		specWarnDivineLight:Show()
-	elseif args:IsSpellID(135404) then
+	elseif args.spellId == 135404 then
 		warnDivineStorm:Show()
 	end
 end

@@ -26,14 +26,14 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(45954) then				-- Ahunes Shield
+	if args.spellId == 45954 then				-- Ahunes Shield
 		warnEmerged:Show()
 		timerSubmerge:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(45954) then				-- Ahunes Shield
+	if args.spellId == 45954 then				-- Ahunes Shield
 		warnSubmerged:Show()
 		timerEmerge:Start()
 		specWarnAttack:Show()

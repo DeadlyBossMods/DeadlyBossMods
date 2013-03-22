@@ -95,29 +95,29 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(137491) then
+	if args.spellId == 137491 then
 		self:SendSync("Inferno")
-	elseif args:IsSpellID(137531) then
+	elseif args.spellId == 137531 then
 		self:SendSync("TidalForce")
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(136752) then
+	if args.spellId == 136752 then
 		self:SendSync("CosmicBarrage")
-	elseif args:IsSpellID(137404) then
+	elseif args.spellId == 137404 then
 		warnTearsOfSun:Show()
 		specWarnTearsOfSun:Show()
 		if timerDayCD:GetTime() < 145 then
 			timerTearsOfTheSunCD:Start()
 		end
-	elseif args:IsSpellID(137375) then
+	elseif args.spellId == 137375 then
 		warnBeastOfNightmares:Show(args.destName)
 		specWarnBeastOfNightmares:Show()
 		if timerDayCD:GetTime() < 135 then
 			timerBeastOfNightmaresCD:Start()
 		end
-	elseif args:IsSpellID(137408) then
+	elseif args.spellId == 137408 then
 		warnFanOfFlames:Show(args.destName, args.amount or 1)
 		timerFanOfFlames:Start(args.destName)
 		timerFanOfFlamesCD:Start()
@@ -130,27 +130,27 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFanOfFlamesOther:Show(args.destName)
 			end
 		end
-	elseif args:IsSpellID(137417) and args:IsPlayer() and self:AntiSpam(3, 4) then
+	elseif args.spellId == 137417 and args:IsPlayer() and self:AntiSpam(3, 4) then
 		specWarnFlamesofPassionMove:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(137408) then
+	if args.spellId == 137408 then
 		timerFanOfFlames:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(137414) then
+	if args.spellId == 137414 then
 		warnFlamesOfPassion:Show()
 		timerFlamesOfPassionCD:Start()
 	end
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(137419) then
+	if args.spellId == 137419 then
 		warnIceComet:Show()
 		specWarnIceComet:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then

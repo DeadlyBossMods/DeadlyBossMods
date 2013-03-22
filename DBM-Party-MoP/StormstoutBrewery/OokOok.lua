@@ -27,7 +27,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106651) then
+	if args.spellId == 106651 then
 		warnBananas:Show(args.destName, args.amount or 1)
 	end
 end
@@ -47,7 +47,7 @@ I'd like more data to decide on if it has pattern
 12.1
 --]]
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(106807) then
+	if args.spellId == 106807 then
 		warnGroundPound:Show()
 		specWarnGroundPound:Show()
 		timerGroundPoundCD:Start()

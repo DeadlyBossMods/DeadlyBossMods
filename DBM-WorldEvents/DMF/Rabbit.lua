@@ -18,7 +18,7 @@ local warnTeeth				= mod:NewTargetAnnounce(114078, 4)
 local yellTeeth				= mod:NewYell(114078)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(114078) then
+	if args.spellId == 114078 then
 		warnTeeth:Show(args.destName)
 		if args:IsPlayer() then
 			yellTeeth:Yell()

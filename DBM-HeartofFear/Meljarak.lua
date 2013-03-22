@@ -120,13 +120,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(122224) and args.sourceName == UnitName("player") then
+	if args.spellId == 122224 and args.sourceName == UnitName("player") then
 		warnImpalingSpear:Cancel()
 		warnImpalingSpear:Schedule(40)
 		countdownImpalingSpear:Cancel()
 		countdownImpalingSpear:Start()
 		timerImpalingSpear:Start(args.destName)
-	elseif args:IsSpellID(121881) then--Not a mistake, 121881 is targeting spellid.
+	elseif args.spellId == 121881 then--Not a mistake, 121881 is targeting spellid.
 		amberPrisonTargets[#amberPrisonTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnAmberPrison:Show()
@@ -143,13 +143,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				amberPrisonIcon = 2
 			end
 		end
-	elseif args:IsSpellID(122064) then
+	elseif args.spellId == 122064 then
 		warnCorrosiveResin:Show(args.destName)
 		if args:IsPlayer() and self:AntiSpam(3, 5) then
 			specWarnCorrosiveResin:Show()
 			yellCorrosiveResin:Yell()
 		end
-	elseif args:IsSpellID(122055) and args:IsPlayer() then
+	elseif args.spellId == 122055 and args:IsPlayer() then
 		local _, _, _, _, _, duration, expires, _, _ = UnitDebuff("player", args.spellName)
 		timerResidue:Start(expires-GetTime())
 	end
@@ -157,32 +157,32 @@ end
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(122224) and args.sourceName == UnitName("player") then
+	if args.spellId == 122224 and args.sourceName == UnitName("player") then
 		warnImpalingSpear:Cancel()
 		countdownImpalingSpear:Cancel()
 		timerImpalingSpear:Cancel(args.destName)
-	elseif args:IsSpellID(121885) and self.Options.AmberPrisonIcons then--Not a mistake, 121885 is frozon spellid
+	elseif args.spellId == 121885 and self.Options.AmberPrisonIcons then--Not a mistake, 121885 is frozon spellid
 		self:SetIcon(args.destName, 0)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(122406) then
+	if args.spellId == 122406 then
 		warnRainOfBlades:Show()
 		specWarnRainOfBlades:Show()
 		timerRainOfBlades:Start()
 		timerRainOfBladesCD:Start()
-	elseif args:IsSpellID(121876) then
+	elseif args.spellId == 121876 then
 		timerAmberPrisonCD:Start(36, args.sourceGUID)
-	elseif args:IsSpellID(122064) then
+	elseif args.spellId == 122064 then
 		timerCorrosiveResinCD:Start(36, args.sourceGUID)
-	elseif args:IsSpellID(122193) then
+	elseif args.spellId == 122193 then
 		warnMending:Show()
 		timerMendingCD:Start(nil, args.sourceGUID)
 		if args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus") then
 			specWarnMending:Show(args.sourceName)
 		end
-	elseif args:IsSpellID(122149) then
+	elseif args.spellId == 122149 then
 		if not zarthikGUIDS[args.sourceGUID] then
 			zarthikCount = zarthikCount + 1
 			zarthikGUIDS[args.sourceGUID] = zarthikCount

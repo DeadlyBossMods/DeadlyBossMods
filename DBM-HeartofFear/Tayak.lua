@@ -84,7 +84,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(123474) then
+	if args.spellId == 123474 then
 		warnOverwhelmingAssault:Show(args.destName, args.amount or 1)
 		timerOverwhelmingAssault:Start(args.destName)
 		if args:IsPlayer() then
@@ -96,7 +96,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnOverwhelmingAssaultOther:Show(args.destName)--So nudge you to taunt it off other tank already.
 			end
 		end
-	elseif args:IsSpellID(123471) then
+	elseif args.spellId == 123471 then
 		if phase2 and (args.amount or 1) % 3 == 0 or not phase2 then
 			warnIntensify:Show(args.destName, args.amount or 1)
 		end
@@ -106,13 +106,13 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(123474) then
+	if args.spellId == 123474 then
 		timerOverwhelmingAssault:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(125310) then
+	if args.spellId == 125310 then
 		warnBladeTempest:Show()
 		specWarnBladeTempest:Show()
 		soundBladeTempest:Play()
@@ -123,9 +123,9 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(123474) then
+	if args.spellId == 123474 then
 		timerOverwhelmingAssaultCD:Start()--Start CD here, since this might miss.
-	elseif args:IsSpellID(123175) then
+	elseif args.spellId == 123175 then
 		warnWindStep:Show(args.destName)
 		if self:IsDifficulty("lfr25") then
 			timerWindStepCD:Start(30)

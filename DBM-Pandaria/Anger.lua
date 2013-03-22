@@ -119,17 +119,17 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(119488) then
+	if args.spellId == 119488 then
 		warnUnleashedWrath:Show()
 		specWarnUnleashedWrath:Show()
 		timerUnleashedWrath:Start()
-	elseif args:IsSpellID(119622) then
+	elseif args.spellId == 119622 then
 		timerGrowingAngerCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(119622) then
+	if args.spellId == 119622 then
 		warnpreMCTargets[#warnpreMCTargets + 1] = args.destName
 		if self.Options.SetIconOnMC then--Set icons on first debuff to get an earlier spread out.
 			table.insert(mcTargetIcons, DBM:GetRaidUnitId(args.destName))
@@ -147,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(1.2, showpreMC)
 		end
-	elseif args:IsSpellID(119626) then
+	elseif args.spellId == 119626 then
 		--Maybe add in function to update icons here in case of a spread that results in more then the original 3 getting the final MC debuff.
 		warnMCTargets[#warnMCTargets + 1] = args.destName
 		self:Unschedule(showMC)
@@ -159,12 +159,12 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(119626) and self.Options.SetIconOnMC then--Remove them after the MCs break.
+	if args.spellId == 119626 and self.Options.SetIconOnMC then--Remove them after the MCs break.
 		removeIcon(args.destName)
 		if args:IsPlayer() then
 			playerMCed = false
 		end
-	elseif args:IsSpellID(119488) then
+	elseif args.spellId == 119488 then
 		timerUnleashedWrathCD:Start()
 	end
 end

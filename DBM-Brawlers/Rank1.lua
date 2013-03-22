@@ -37,22 +37,22 @@ local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(135342) then
+	if args.spellId == 135342 then
 		warnChomp:Show()--Give reg warnings for spectators
 		timerChompCD:Start()--And timers (first one is after 6 seconds)
 		if brawlersMod:PlayerFighting() then--Only give special warnings if you're in arena though.
 			specWarnChomp:Show()
 		end
-	elseif args:IsSpellID(133286) then
+	elseif args.spellId == 133286 then
 		warnHeatedPokers:Show()
 		timerHeatedPokersCD:Start()
 		if brawlersMod:PlayerFighting() then
 			specWarnHeatedPokers:Show()
 		end
-	elseif args:IsSpellID(134740) then
+	elseif args.spellId == 134740 then
 		warnVolatileFlames:Show()
 		timerVolatileFlamesCD:Start()
-	elseif args:IsSpellID(133607) then
+	elseif args.spellId == 133607 then
 		warnFireLine:Show()
 		timerFireLineCD:Start()--First one is 9-10 seconds after combat start
 		if brawlersMod:PlayerFighting() then
@@ -63,7 +63,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args:IsSpellID(133286) then
+	if args.spellId == 133286 then
 		timerHeatedPokers:Start()
 	end
 end

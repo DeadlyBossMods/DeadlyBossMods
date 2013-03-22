@@ -61,27 +61,27 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(136340) then
+	if args.spellId == 136340 then
 		specWarnStormcloudCast:Show()
 		timerStormcloudCD:Start()
-	elseif args:IsSpellID(136338) then
+	elseif args.spellId == 136338 then
 		warnArcNova:Show()
 		specWarnArcNova:Show()
 		timerArcNovaCD:Start()
-	elseif args:IsSpellID(136339) then
+	elseif args.spellId == 136339 then
 		timerLightningTetherCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(136340) then
+	if args.spellId == 136340 then
 		stormcloudTargets[#stormcloudTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnStormcloud:Show()
 		end
 		self:Unschedule(warnStormcloudTargets)
 		self:Schedule(0.3, warnStormcloudTargets)
-	elseif args:IsSpellID(136339) then
+	elseif args.spellId == 136339 then
 		tetherTargets[#tetherTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnLightningTether:Show()

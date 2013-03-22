@@ -36,17 +36,17 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(107146) then
+	if args.spellId == 107146 then
 		warnBrokenCarapace:Show()
 		specWarnBrokenCarapace:Show()
 		timerHeadbuttCD:Cancel()
 		timerFixateCD:Start(5.5)--Timing for target pick, not cast start.
 		timerStompCD:Start(20.5, 1)
-	elseif args:IsSpellID(111723) then
+	elseif args.spellId == 111723 then
 		warnFixate:Show(args.destName)
 		timerFixate:Start(args.destName)
 		timerFixateCD:Start()
-	elseif args:IsSpellID(111600) then
+	elseif args.spellId == 111600 then
 		warnScreechingSwarm:Show(args.destName)
 		specWarnScreechingSwarm:Show(args.destName)
 		timerScreechingSwarm:Start(args.destName)
@@ -54,18 +54,18 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(111723) then
+	if args.spellId == 111723 then
 		timerFixate:Cancel(args.destName)
-	elseif args:IsSpellID(111600) then
+	elseif args.spellId == 111600 then
 		timerScreechingSwarm:Cancel(args.destname)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(111668) then
+	if args.spellId == 111668 then
 		warnHeadbutt:Show()
 		timerHeadbuttCD:Start()
-	elseif args:IsSpellID(111728) then
+	elseif args.spellId == 111728 then
 		stompCount = stompCount + 1
 		warnStomp:Show(stompCount)
 		timerStompCD:Start(20.5, stompCount+1)

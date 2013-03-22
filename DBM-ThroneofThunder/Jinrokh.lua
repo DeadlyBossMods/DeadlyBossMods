@@ -89,11 +89,11 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(137399) then
+	if args.spellId == 137399 then
 		scansDone = 0
 		self:TargetScanner()
 		timerFocusedLightningCD:Start()
-	elseif args:IsSpellID(137313) then
+	elseif args.spellId == 137313 then
 		warnStorm:Show()
 		specWarnStorm:Show()
 		timerStorm:Start()
@@ -103,27 +103,27 @@ function mod:SPELL_CAST_START(args)
 			timerIonizationCD:Start()
 			countdownIonization:Start()
 		end
-	elseif args:IsSpellID(138732) then
+	elseif args.spellId == 138732 then
 		warnIonization:Show()
 		specWarnIonization:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(137162) then
+	if args.spellId == 137162 then
 		timerStaticBurstCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(137162) then
+	if args.spellId == 137162 then
 		warnStaticBurst:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnStaticBurst:Show()
 		else
 			specWarnStaticBurstOther:Show(args.destName)
 		end
-	elseif args:IsSpellID(138732) and args:IsPlayer() then
+	elseif args.spellId == 138732 and args:IsPlayer() then
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(4)
 		end
@@ -131,11 +131,11 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(138732) and args:IsPlayer() then
+	if args.spellId == 138732 and args:IsPlayer() then
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-	elseif args:IsSpellID(137422) and args:IsPlayer() then
+	elseif args.spellId == 137422 and args:IsPlayer() then
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end

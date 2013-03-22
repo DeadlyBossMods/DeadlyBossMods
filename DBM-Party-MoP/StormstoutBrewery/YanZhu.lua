@@ -49,7 +49,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106546) then
+	if args.spellId == 106546 then
 		warnBloat:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBloat:Show()
@@ -58,14 +58,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.RangeCheck:Show(10)
 			end
 		end
-	elseif args:IsSpellID(106851) and args:IsPlayer() and (args.amount or 3) >= 3 and self:AntiSpam() then
+	elseif args.spellId == 106851 and args:IsPlayer() and (args.amount or 3) >= 3 and self:AntiSpam() then
 		specWarnBlackoutBrew:Show()--Basically special warn any time you gain a stack over 3, if stack is nil, then it's initial application and stack count is 3.
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(106546) and args:IsPlayer() then
+	if args.spellId == 106546 and args:IsPlayer() then
 		timerBloat:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -74,15 +74,15 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(106546) then
+	if args.spellId == 106546 then
 		timerBloatCD:Start()
-	elseif args:IsSpellID(106851) then
+	elseif args.spellId == 106851 then
 		warnBlackoutBrew:Show()
 		timerBlackoutBrewCD:Start()
-	elseif args:IsSpellID(106563) then
+	elseif args.spellId == 106563 then
 		warnBubbleShield:Show()
 		timerBubbleShieldCD:Start()
-	elseif args:IsSpellID(115003) then
+	elseif args.spellId == 115003 then
 		warnCarbonation:Show()
 		timerCarbonation:Start()
 		timerCarbonationCD:Start()
@@ -91,7 +91,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(114459) then
+	if args.spellId == 114459 then
 		timerFizzyBubbles:Start()
 	end
 end

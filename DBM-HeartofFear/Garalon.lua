@@ -76,17 +76,17 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(122754) and args:GetDestCreatureID() == 63191 then--It applies to both creatureids, so we antispam it
+	if args.spellId == 122754 and args:GetDestCreatureID() == 63191 then--It applies to both creatureids, so we antispam it
 		warnFury:Show(args.destName, args.amount or 1)
 		if self:IsDifficulty("lfr25") then
 			timerFury:Start(15)
 		else
 			timerFury:Start()
 		end
-	elseif args:IsSpellID(122786) and args:GetDestCreatureID() == 63191 then--This one also hits both the leg and the boss, so filter second one here as well.
+	elseif args.spellId == 122786 and args:GetDestCreatureID() == 63191 then--This one also hits both the leg and the boss, so filter second one here as well.
 		-- this warn seems not works? needs review.
 		warnBrokenLeg:Show(args.destName, args.amount or 1)
-	elseif args:IsSpellID(122835) then
+	elseif args.spellId == 122835 then
 		warnPheromones:Show(args.destName)
 		specwarnPheromonesTarget:Show(args.destName)
 		if args:IsPlayer() then
@@ -109,7 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.PheromonesIcon then
 			self:SetIcon(args.destName, 2)
 		end
-	elseif args:IsSpellID(123081) and not self:IsDifficulty("lfr25") then
+	elseif args.spellId == 123081 and not self:IsDifficulty("lfr25") then
 		if (args.amount or 1) >= 9 and (args.amount or 1) % 3 == 0 then
 			warnPungency:Show(args.destName, args.amount)
 		end
@@ -122,28 +122,28 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(122786) and args:GetDestCreatureID() == 63191 then
+	if args.spellId == 122786 and args:GetDestCreatureID() == 63191 then
 		brokenLegs = (args.amount or 0)
 		warnBrokenLeg:Show(args.destName, brokenLegs)
-	elseif args:IsSpellID(122835) then
+	elseif args.spellId == 122835 then
 		if self.Options.PheromonesIcon then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(123081) and args:IsPlayer() then
+	elseif args.spellId == 123081 and args:IsPlayer() then
 		timerPungency:Cancel()
 	end
 end
 mod.SPELL_AURA_REMOVED_DOSE = mod.SPELL_AURA_REMOVED
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(122735) then
+	if args.spellId == 122735 then
 		warnFuriousSwipe:Show()
 		timerFuriousSwipeCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(123495) then
+	if args.spellId == 123495 then
 		warnMendLeg:Show()
 		timerMendLegCD:Start()
 		if brokenLegs == 4 then--all his legs were broken when heal was cast, which means dps was on body.

@@ -34,20 +34,20 @@ function mod:ShaSpikeTarget()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(38166) then
+	if args.spellId == 38166 then
 		warnEnrage:Show()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(106877) then
+	if args.spellId == 106877 then
 		self:ScheduleMethod(0.2, "ShaSpikeTarget")
 		timerShaSpikeCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(106872) then
+	if args.spellId == 106872 then
 		warnDisorientingSmash:Show(args.destName)
 		timerDisorientingSmashCD:Start()
 	end

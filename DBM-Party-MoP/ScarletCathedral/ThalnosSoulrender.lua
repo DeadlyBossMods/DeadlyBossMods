@@ -48,13 +48,13 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(115297) then--Trigger CD off success, since we can resist it. do NOT add ID 115548, it's a similcast to 115297
+	if args.spellId == 115297 then--Trigger CD off success, since we can resist it. do NOT add ID 115548, it's a similcast to 115297
 		timerEvictSoulCD:Start()
-	elseif args:IsSpellID(115147) then--Summon Empowering Spirits
+	elseif args.spellId == 115147 then--Summon Empowering Spirits
 		warnSummonSpirits:Show()
 		specWarnEmpoweredSpirit:Show()
 		timerRaiseCrusadeCD:Start(20)--Raise crusaders always 20 seconds after spirits in all modes
-	elseif args:IsSpellID(115139) then--Raise Fallen Crusade
+	elseif args.spellId == 115139 then--Raise Fallen Crusade
 		warnRaiseCrusade:Show()
 		specWarnFallenCrusader:Show()
 		if self:IsDifficulty("challenge5") then
@@ -66,7 +66,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(115250) then--Empower Zombie (used by empowering Spirits on fallen Crusaders to make them hulking hard hitting zombies)
+	if args.spellId == 115250 then--Empower Zombie (used by empowering Spirits on fallen Crusaders to make them hulking hard hitting zombies)
 		warnEmpowerZombie:Show()
 	end
 end

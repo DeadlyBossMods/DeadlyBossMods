@@ -35,13 +35,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(114062) then
+	if args.spellId == 114062 then
 		timerWondrousRapidityCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(114062) then
+	if args.spellId == 114062 then
 		warnWondrousRapidity:Show()
 		specWarnWondrousRapdity:Show()
 		timerWondrousRapidity:Start()
