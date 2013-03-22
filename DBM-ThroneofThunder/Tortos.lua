@@ -35,7 +35,7 @@ local timerBiteCD					= mod:NewCDTimer(8, 135251, nil, mod:IsTank())
 local timerRockfallCD				= mod:NewCDTimer(10, 134476)
 local timerCallTortosCD				= mod:NewNextTimer(60.5, 136294)
 local timerStompCD					= mod:NewNextCountTimer(49, 134920)
-local timerBreathCD					= mod:NewNextTimer(47, 133939)
+local timerBreathCD					= mod:NewCDTimer(46, 133939)
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration f the rapid caveins??
 local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
