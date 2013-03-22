@@ -27,7 +27,7 @@ mod:RemoveOption("HealthFrame")
 --]]
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(123966) then
+	if args.spellId == 123966 then
 		warnFlameWall:Show()
 		specWarnFlameWall:Show()
 	end
@@ -35,7 +35,7 @@ end
 
 --[[
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(123966) then
+	if args.spellId == 123966 then
 
 	end
 end

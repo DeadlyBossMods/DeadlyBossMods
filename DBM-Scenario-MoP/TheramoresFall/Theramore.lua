@@ -18,7 +18,7 @@ local yellWarEnginesSights		= mod:NewYell(114570)
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(114570) then
+	if args.spellId == 114570 then
 		warnWarEnginesSights:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnWarEnginesSights:Show()

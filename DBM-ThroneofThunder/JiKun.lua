@@ -64,7 +64,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(134366) then
+	if args.spellId == 134366 then
 		warnTalonRake:Show(args.destName, args.amount or 1)
 		timerTalonRake:Start(args.destName)
 		timerTalonRakeCD:Start()
@@ -77,27 +77,27 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnTalonRakeOther:Show(args.destName)
 			end
 		end
-	elseif args:IsSpellID(137528) then
+	elseif args.spellId == 137528 then
 		warnFeedYoung:Show()
 		specWarnFeedYoung:Show()
-	elseif args:IsSpellID(133755) and args:IsPlayer() then
+	elseif args.spellId == 133755 and args:IsPlayer() then
 		timerFlight:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(134366) then
+	if args.spellId == 134366 then
 		timerTalonRake:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(134380) then
+	if args.spellId == 134380 then
 		warnQuills:Show()
 		specWarnQuills:Show()
 		timerQuillsCD:Start()
-	elseif args:IsSpellID(134370) then
+	elseif args.spellId == 134370 then
 		warnDowndraft:Show()
 		specWarnDowndraft:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -105,7 +105,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerDowndraftCD:Start()--Todo, confirm they didn't just change normal to 90 as well. in my normal logs this had a 110 second cd on normal
 		end
-	elseif args:IsSpellID(134380) and self:AntiSpam(2, 1) then--Maybe adjust anti spam a bit or find a different way to go about this. It is important information though.
+	elseif args.spellId == 134380 and self:AntiSpam(2, 1) then--Maybe adjust anti spam a bit or find a different way to go about this. It is important information though.
 		warnLayEgg:Show()
 	end
 end

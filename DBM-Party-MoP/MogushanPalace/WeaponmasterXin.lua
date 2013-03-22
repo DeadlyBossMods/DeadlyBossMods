@@ -36,7 +36,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(119684) then
+	if args.spellId == 119684 then
 		warnGroundSmash:Show()
 		specWarnSmash:Show()
 		timerSmashCD:Start()
@@ -44,7 +44,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(122959) then
+	if args.spellId == 122959 then
 		warnRoar:Show()
 --		timerRoarCD:Start()
 	end

@@ -44,22 +44,22 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(131521) then
+	if args.spellId == 131521 then
 		warnRingofMalice:Show()
 		timerRingofMalice:Start()
-	elseif args:IsSpellID(107087) then
+	elseif args.spellId == 107087 then
 		warnHazeofHate:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnHazeofHate:Show()
 		end
-	elseif args:IsSpellID(107356) then
+	elseif args.spellId == 107356 then
 		warnRisingHate:Show()
 		specWarnRisingHate:Show(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(115002) and self:AntiSpam(5, 2) then
+	if args.spellId == 115002 and self:AntiSpam(5, 2) then
 		warnGrippingHatred:Show()
 		specWarnGrippingHatred:Show()
 	end

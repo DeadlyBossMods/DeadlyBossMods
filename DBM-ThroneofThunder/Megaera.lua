@@ -125,13 +125,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(139866) then
+	if args.spellId == 139866 then
 --		timerTorrentofIceCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(140138) then
+	if args.spellId == 140138 then
 		warnNetherTear:Show()
 		specWarnNetherTear:Show()
 --		timerNetherTearCD:Start()--TODO: see if cast more often if more than 1 arcane head.
@@ -139,7 +139,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(139843) then
+	if args.spellId == 139843 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
 			warnArcticFreeze:Show(args.destName, args.amount or 1)
@@ -150,7 +150,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(137731) then
+	elseif args.spellId == 137731 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
 			warnIgniteFlesh:Show(args.destName, args.amount or 1)
@@ -161,7 +161,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(139840) then
+	elseif args.spellId == 139840 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
 			warnRotArmor:Show(args.destName, args.amount or 1)
@@ -172,7 +172,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(139993) then
+	elseif args.spellId == 139993 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
 			warnArcaneDiffusion:Show(args.destName, args.amount or 1)
@@ -183,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(139822) then
+	elseif args.spellId == 139822 then
 		warnCinders:Show(args.destName)
 --		timerCinderCD:Start()
 		if args:IsPlayer() then

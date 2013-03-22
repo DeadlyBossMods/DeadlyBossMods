@@ -25,7 +25,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(113143) then
+	if args.spellId == 113143 then
 		warnRise:Show()
 		timerRiseCD:Start()
 	end

@@ -195,7 +195,7 @@ function mod:OnCombatEnd()
 end 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(130395) then
+	if args.spellId == 130395 then
 		jasperChainsTargets[#jasperChainsTargets + 1] = args.destName
 		timerJasperChainsCD:Start()
 		self:Unschedule(warnJasperChainsTargets)
@@ -221,13 +221,13 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.Arrow:Hide()
 			end
 		end
-	elseif args:IsSpellID(130774) and args:IsPlayer() then
+	elseif args.spellId == 130774 and args:IsPlayer() then
 		specWarnAmethystPool:Show()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(130395) and args:IsPlayer() then
+	if args.spellId == 130395 and args:IsPlayer() then
 		playerHasChains = false
 		if self.Options.ArrowOnJasperChains then
 			DBM.Arrow:Hide()
@@ -236,31 +236,31 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(115840) then -- Cobalt
+	if args.spellId == 115840 then -- Cobalt
 		warnCobaltOverload:Show()
 		if activePetrification == "Cobalt" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args:IsSpellID(115842) then -- Jade
+	elseif args.spellId == 115842 then -- Jade
 		warnJadeOverload:Show()
 		if activePetrification == "Jade" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args:IsSpellID(115843) then -- Jasper
+	elseif args.spellId == 115843 then -- Jasper
 		warnJasperOverload:Show()
 		if activePetrification == "Jasper" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args:IsSpellID(115844) then -- Amethyst
+	elseif args.spellId == 115844 then -- Amethyst
 		warnAmethystOverload:Show()
 		if activePetrification == "Amethyst" then
 			timerPetrification:Cancel()
 		end
 		activePetrification = nil
-	elseif args:IsSpellID(116223) then
+	elseif args.spellId == 116223 then
 		warnJadeShards:Show()
 		timerJadeShardsCD:Start()
 	elseif args:IsSpellID(116235, 130774) then--is 116235 still used? my logs show ONLY 130774 being used.

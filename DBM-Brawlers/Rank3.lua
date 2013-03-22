@@ -31,21 +31,21 @@ local blatGUID = 0
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args:IsSpellID(33975) then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
+	if args.spellId == 33975 then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
 		warnPyroblast:Show()
-	elseif args:IsSpellID(132666) then
+	elseif args.spellId == 132666 then
 		warnFireWall:Show()
 		timerFirewallCD:Start()--First one is 5 seconds after combat start
 		if brawlersMod:PlayerFighting() then
 			specWarnFireWall:Show()
 		end
-	elseif args:IsSpellID(134777) then
+	elseif args.spellId == 134777 then
 		warnDevastatingThrust:Show()
 		timerDevastatingThrustCD:Start()--First one is 7-8 seconds after combat start
 		if brawlersMod:PlayerFighting() then
 			specWarnDevastatingThrust:Show()
 		end
-	elseif args:IsSpellID(133302) then--Blat splitting
+	elseif args.spellId == 133302 then--Blat splitting
 		blatGUID = args.sourceGUID
 	end
 end

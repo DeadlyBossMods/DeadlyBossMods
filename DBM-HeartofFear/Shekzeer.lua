@@ -123,7 +123,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(123707) then
+	if args.spellId == 123707 then
 		warnEyes:Show(args.destName, args.amount or 1)
 		timerEyes:Start(args.destName)
 		timerEyesCD:Start()
@@ -134,25 +134,25 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnEyesOther:Show(args.destName)
 			end
 		end
-	elseif args:IsSpellID(123788) then
+	elseif args.spellId == 123788 then
 		warnCryOfTerror:Show(args.destName)
 		timerCryOfTerror:Start(args.destName)
 		timerCryOfTerrorCD:Start()
 		if args:IsPlayer() then
 			specwarnCryOfTerror:Show()
 		end
-	elseif args:IsSpellID(124748) then
+	elseif args.spellId == 124748 then
 		warnAmberTrap:Show(args.amount or 1)
 		table.wipe(resinTargets)
-	elseif args:IsSpellID(125822) then
+	elseif args.spellId == 125822 then
 		warnTrapped:Show(args.destName)
-	elseif args:IsSpellID(125390) then
+	elseif args.spellId == 125390 then
 		warnFixate:Show(args.destName)
 		if args:IsPlayer() then
 			specwarnFixate:Show()
 			soundFixate:Play()
 		end
-	elseif args:IsSpellID(124862) then
+	elseif args.spellId == 124862 then
 		visonsTargets[#visonsTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specwarnVisions:Show()
@@ -162,7 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnVisionsTargets)
 		self:Schedule(0.3, warnVisionsTargets)
-	elseif args:IsSpellID(124097) then
+	elseif args.spellId == 124097 then
 		if args:IsPlayer() and self:AntiSpam(5, 2) then --prevent spam in heroic
 			specwarnStickyResin:Show()
 			yellStickyResin:Yell()
@@ -179,14 +179,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args:IsSpellID(124077) then
+	elseif args.spellId == 124077 then
 		specWarnDispatch:Show(args.sourceName)
 		if self:IsDifficulty("normal25", "heroic25", "lfr25") then
 			timerDispatchCD:Start()--25 is about 12-15 variation
 		else
 			timerDispatchCD:Start(21)--Longer Cd on 10 man (21-24 variation)
 		end
-	elseif args:IsSpellID(123845) then
+	elseif args.spellId == 123845 then
 		warnHeartOfFear:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnHeartOfFear:Show()
@@ -201,13 +201,13 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(123788) then
+	if args.spellId == 123788 then
 		timerCryOfTerror:Cancel(args.destName)
-	elseif args:IsSpellID(124097) then
+	elseif args.spellId == 124097 then
 		if self.Options.StickyResinIcons then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(123845) then
+	elseif args.spellId == 123845 then
 		if self.Options.HeartOfFearIcon then
 			self:SetIcon(args.destName, 0)
 		end
@@ -215,18 +215,18 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(123735) then
+	if args.spellId == 123735 then
 		warnScreech:Show()
 		timerScreechCD:Start()
-	elseif args:IsSpellID(125826) then
+	elseif args.spellId == 125826 then
 		specwarnAmberTrap:Show()
-	elseif args:IsSpellID(124845) then
+	elseif args.spellId == 124845 then
 		warnCalamity:Show()
 		timerCalamityCD:Start()
 	--"<33.5 22:57:49> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#No more excuses, Empress! Eliminate these cretins or I will kill you myself!#Sha of Fear###Grand Empress Shek'zeer
 	--"<36.8 22:57:52> [CLEU] SPELL_CAST_SUCCESS#false#0xF130F9C600007497#Sha of Fear#2632#0#0x0000000000000000#nil#-2147483648#-2147483648#125451#Ultimate Corruption#1", -- [7436]
 	--backup phase 3 trigger for unlocalized languages
-	elseif args:IsSpellID(125451) and not phase3Started then
+	elseif args.spellId == 125451 and not phase3Started then
 		phase3Started = true
 		self:UnregisterShortTermEvents()
 		if self.Options.RangeFrame then
@@ -240,7 +240,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerVisionsCD:Start(4)
 		timerCalamityCD:Start(9)
 		timerConsumingTerrorCD:Start(11)
-	elseif args:IsSpellID(123255) and self:AntiSpam(2, 3) then
+	elseif args.spellId == 123255 and self:AntiSpam(2, 3) then
 		fieldCount = fieldCount + 1
 		warnDissonanceField:Show(fieldCount)
 		if fieldCount < 2 then
@@ -257,7 +257,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(124849) then
+	if args.spellId == 124849 then
 		warnConsumingTerror:Show()
 		specWarnConsumingTerror:Show()
 		timerConsumingTerrorCD:Start()

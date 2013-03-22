@@ -152,7 +152,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(134691) then
+	if args.spellId == 134691 then
 		warnImpale:Show(args.destName, args.amount or 1)
 		timerImpaleCD:Start()
 		if args:IsPlayer() then
@@ -164,16 +164,16 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnImpaleOther:Show(args.destName)
 			end
 		end
-	elseif args:IsSpellID(134647) and args:IsPlayer() then
+	elseif args.spellId == 134647 and args:IsPlayer() then
 		timerScorched:Start()
 		if (args.amount or 1) > 2 then
 			specWarnScorched:Show(args.amount or 1)
 		end
-	elseif args:IsSpellID(137221) then
+	elseif args.spellId == 137221 then
 		warnMoltenOverload:Show()
 		specWarnMoltenOverload:Show()
 		timerMoltenOverload:Start()
-	elseif args:IsSpellID(136192) then
+	elseif args.spellId == 136192 then
 		warnLightningStorm:Show(args.destName)
 		if phase == 1 then--Heroic
 			timerLightningStormCD:Start(38)
@@ -184,14 +184,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnLightningStorm:Show()
 			yellLightningStorm:Yell()
 		end
-	elseif args:IsSpellID(135145) then
+	elseif args.spellId == 135145 then
 		warnFreeze:Show(args.destName)
 		if phase == 2 then--Heroic
 			timerFreezeCD:Start(36)
 		else
 			timerFreezeCD:Start()
 		end
-	elseif args:IsSpellID(136323) then
+	elseif args.spellId == 136323 then
 		warnRisingAnger:Show(args.destName, args.amount or 1)
 		timerRisingAngerCD:Start()
 	end
@@ -199,36 +199,36 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(134647) and args:IsPlayer() then
+	if args.spellId == 134647 and args:IsPlayer() then
 		timerScorched:Cancel()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(134664) then
+	if args.spellId == 134664 then
 		warnMoltenInferno:Show()
 	--Dead zone IDs, each dead zone has two shields and two openings. Each spellid identifies those openings.
-	elseif args:IsSpellID(137226) then--Front, Right Shielded
+	elseif args.spellId == 137226 then--Front, Right Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_FRONT, DBM_CORE_RIGHT)
 		timerDeadZoneCD:Start()
 		--Attack left or Behind (maybe add special warning that says where you can attack, for dps?)
-	elseif args:IsSpellID(137227) then--Left, Right Shielded
+	elseif args.spellId == 137227 then--Left, Right Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_LEFT, DBM_CORE_RIGHT)
 		timerDeadZoneCD:Start()
 		--Attack Front or Behind
-	elseif args:IsSpellID(137228) then--Left, Front Shielded
+	elseif args.spellId == 137228 then--Left, Front Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_LEFT, DBM_CORE_FRONT)
 		timerDeadZoneCD:Start()
 		--Attack Right or Behind
-	elseif args:IsSpellID(137229) then--Back, Front Shielded
+	elseif args.spellId == 137229 then--Back, Front Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_BACK, DBM_CORE_FRONT)
 		timerDeadZoneCD:Start()
 		--Attack left or Right
-	elseif args:IsSpellID(137230) then--Back, Left Shielded
+	elseif args.spellId == 137230 then--Back, Left Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_BACK, DBM_CORE_LEFT)
 		timerDeadZoneCD:Start()
 		--Attack Front or Right
-	elseif args:IsSpellID(137231) then--Back, Right Shielded
+	elseif args.spellId == 137231 then--Back, Right Shielded
 		warnDeadZone:Show(args.spellName, DBM_CORE_BACK, DBM_CORE_RIGHT)
 		timerDeadZoneCD:Start()
 		--Attack Front or Left
@@ -236,7 +236,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(134926) and phase < 4 then
+	if args.spellId == 134926 and phase < 4 then
 		warnThrowSpear:Show()
 		specWarnThrowSpear:Show()
 		timerThrowSpearCD:Start()

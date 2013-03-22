@@ -43,7 +43,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(118961) then
+	if args.spellId == 118961 then
 		warnChaseDown:Show(args.destName)
 		timerChaseDown:Start(args.destName)
 --		timerChaseDownCD:Start()
@@ -54,17 +54,17 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(118961) then
+	if args.spellId == 118961 then
 		timerChaseDown:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(106853) then
+	if args.spellId == 106853 then
 		warnFistsOfFury:Show()
 		specWarnFists:Show()
 		timerFistsOfFuryCD:Start()
-	elseif args:IsSpellID(106434) then
+	elseif args.spellId == 106434 then
 		warnTornadoKick:Show()
 		timerTornadoKickCD:Start()
 	end

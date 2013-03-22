@@ -23,7 +23,7 @@ local function wingsRemoved()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(102120) and args:IsPlayer() then
+	if args.spellId == 102120 and args:IsPlayer() then
 		MagicWingsCountdown:Cancel()
 		timerMagicWings:Cancel()
 	end

@@ -28,10 +28,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(104903) then
+	if args.spellId == 104903 then
 		warnCleave:Show()
 		timerCleaveCD:Start()
-	elseif args:IsSpellID(26540) then
+	elseif args.spellId == 26540 then
 		warnStarfall:Show()
 		timerStarfallCD:Start()
 	end

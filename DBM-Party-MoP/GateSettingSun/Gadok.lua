@@ -35,7 +35,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(106933) then
+	if args.spellId == 106933 then
 		warnPreyTime:Show(args.destName)
 		timerPreyTime:Start(args.destName)
 		timerPreyTimeCD:Start()
@@ -43,13 +43,13 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(106933) then
+	if args.spellId == 106933 then
 		timerPreyTime:Start(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(107047) then
+	if args.spellId == 107047 then
 		warnImpalingStrike:Show(args.destName)
 		timerImpalingStrikeCD:Start()
 	end
