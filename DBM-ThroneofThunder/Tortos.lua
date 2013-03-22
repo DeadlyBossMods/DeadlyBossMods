@@ -58,10 +58,15 @@ local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = fals
 local function resetaddstate()
 	table.wipe(adds)
 	iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
-	if shellsRemaining == 0 then--if no shells are dead, make sure we don't mess with any add marked skull that is still up when setting icons on next set
+	if addsActivated == 1 then--if no shells are dead, make sure we don't mess with any add marked skull that is still up when setting icons on next set
 		iconsSet[8] = true
-	elseif shellsRemaining == 1 then--Do same for X (maybe just go all the way down line? for now will just see how skull and x works out)
+	elseif addsActivated == 2 then--Do same for X (maybe just go all the way down line? for now will just see how skull and x works out)
+		iconsSet[8] = true
 		iconsSet[7] = true
+	elseif addsActivated == 3 then--Do same for squre (maybe just go all the way down line? for now will just see how skull and x works out)
+		iconsSet[8] = true
+		iconsSet[7] = true
+		iconsSet[6] = true
 	end
 end
 
