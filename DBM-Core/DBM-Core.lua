@@ -1494,7 +1494,6 @@ do
 			-- left the current group/raid
 			inRaid = false
 			enableIcons = true
---			raidHasDuplicateShortName = false -- ?
 			fireEvent("raidLeave", playerName)
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
