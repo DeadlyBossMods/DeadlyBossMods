@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(67977)
 mod:SetModelID(46559)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3)
 
 mod:RegisterCombat("combat")
 
@@ -52,22 +53,30 @@ local shellsRemaining = 0
 local lastConcussion = 0
 local kickedShells = {}
 local addsActivated = 0
+local checkIcons = false
+local alternateSet = false
 local adds = {}
 local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
 
 local function resetaddstate()
 	table.wipe(adds)
 	iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
-	if addsActivated == 1 then--if no shells are dead, make sure we don't mess with any add marked skull that is still up when setting icons on next set
-		iconsSet[8] = true
-	elseif addsActivated == 2 then--Do same for X (maybe just go all the way down line? for now will just see how skull and x works out)
-		iconsSet[8] = true
-		iconsSet[7] = true
-	elseif addsActivated == 3 then--Do same for squre (maybe just go all the way down line? for now will just see how skull and x works out)
-		iconsSet[8] = true
-		iconsSet[7] = true
-		iconsSet[6] = true
+	if addsActivated >= 1 then--at least one add is up, we'll alternate between skull x and square and other 3 icons.
+		if alternateSet then--We will set icons 8 7 and 6 in use and use alternate icons for this set
+			iconsSet[8] = true
+			iconsSet[7] = true
+			iconsSet[6] = true
+			alternateSet = false
+		else--Not an alternet set so we set next set to alternate set
+			alternateSet = true
+		end
+	else--No adds are up, we're going to start with skull anyways and set next as an alternate set, even if it wasn't originally going to be one.
+		alternateSet = true
 	end
+end
+
+local function resetIconcheck()
+	checkIcons = false
 end
 
 local function getAvailableIcons()
@@ -80,7 +89,7 @@ local function getAvailableIcons()
 end
 
 mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnTurtles and addsActivated > 0 and DBM:GetRaidRank() > 0 then
+	if self.Options.SetIconOnTurtles and checkIcons and DBM:GetRaidRank() > 0 then
 		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
@@ -136,7 +145,7 @@ function mod:OnCombatStart(delay)
 	shellsRemaining = 0
 	lastConcussion = 0
 	addsActivated = 0
-	resetaddstate()
+	alternateSet = false
 	table.wipe(adds)
 	table.wipe(kickedShells)
 	timerRockfallCD:Start(15-delay)
@@ -186,10 +195,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		shellsRemaining = shellsRemaining + 1
 		addsActivated = addsActivated - 1
 	elseif args.spellId == 133974 and self.Options.SetIconOnTurtles then--Spinning Shell
-		resetaddstate()
+		if self:AntiSpam(5, 2) then
+			checkIcons = true
+			resetaddstate()
+			self:Schedule(8, resetIconcheck)
+		end
 		addsActivated = addsActivated + 1
 		if not adds[args.sourceGUID] then
-			adds[args.destGUID] = true
+			adds[args.sourceGUID] = true
 		end
 	end
 end
