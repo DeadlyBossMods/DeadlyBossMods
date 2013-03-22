@@ -576,6 +576,143 @@ do
 	mainFrame:SetScript("OnEvent", handleEvent)
 end
 
+--------------
+--  OnLoad  --
+--------------
+do
+	local function showOldVerWarning()
+		StaticPopupDialogs["DBM_OLD_VERSION"] = {
+			preferredIndex = STATICPOPUP_NUMDIALOGS,
+			text = DBM_CORE_ERROR_DBMV3_LOADED,
+			button1 = DBM_CORE_OK,
+			OnAccept = function()
+				DisableAddOn("DBM_API")
+				ReloadUI()
+			end,
+			timeout = 0,
+			exclusive = 1,
+			whileDead = 1
+		}
+		StaticPopup_Show("DBM_OLD_VERSION")
+	end
+	
+	local isLoaded = false
+	local onLoadCallbacks = {}
+	
+	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
+	function DBM:RegisterOnLoadCallback(cb)
+		if isLoaded then
+			cb()
+		else
+			onLoadCallbacks[#onLoadCallbacks + 1] = cb
+		end
+	end
+
+	function DBM:ADDON_LOADED(modname)
+		if modname == "DBM-Core" and not isLoaded then
+			isLoaded = true
+			for i, v in ipairs(onLoadCallbacks) do
+				xpcall(v, geterrorhandler())
+			end
+			onLoadCallbacks = nil
+			loadOptions()
+			DBM.Bars:LoadOptions("DBM")
+			DBM.Arrow:LoadPosition()
+			if not DBM.Options.ShowMinimapButton then DBM:HideMinimapButton() end
+			self.AddOns = {}
+			for i = 1, GetNumAddOns() do
+				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
+					table.insert(self.AddOns, {
+						sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
+						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
+						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
+						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "BogusZone")},--workaround, so mods with zoneids and no zonetext don't get loaded by default before zoneids even checked
+						zoneId		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
+						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
+						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
+						modId		= GetAddOnInfo(i),
+					})
+					for k, v in ipairs(self.AddOns[#self.AddOns].zone) do
+						self.AddOns[#self.AddOns].zone[k] = (self.AddOns[#self.AddOns].zone[k]):trim()
+					end
+					for i = #self.AddOns[#self.AddOns].zoneId, 1, -1 do
+						local id = tonumber(self.AddOns[#self.AddOns].zoneId[i])
+						if id then
+							self.AddOns[#self.AddOns].zoneId[i] = id
+						else
+							table.remove(self.AddOns[#self.AddOns].zoneId, i)
+						end
+					end
+					if self.AddOns[#self.AddOns].subTabs then
+						for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
+							self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+						end
+					end
+				end
+			end
+			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
+			self:RegisterEvents(
+				"COMBAT_LOG_EVENT_UNFILTERED",
+				"ZONE_CHANGED_NEW_AREA",
+				"GROUP_ROSTER_UPDATE",
+				"CHAT_MSG_ADDON",
+				"PLAYER_REGEN_DISABLED",
+				"PLAYER_REGEN_ENABLED",
+				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+				"UNIT_DIED",
+				"UNIT_DESTROYED",
+				"UNIT_HEALTH",
+				"CHAT_MSG_WHISPER",
+				"CHAT_MSG_BN_WHISPER",
+				"CHAT_MSG_MONSTER_YELL",
+				"CHAT_MSG_MONSTER_EMOTE",
+				"CHAT_MSG_MONSTER_SAY",
+				"CHAT_MSG_RAID_BOSS_EMOTE",
+				"RAID_BOSS_EMOTE",
+				"PLAYER_ENTERING_WORLD",
+				"LFG_PROPOSAL_SHOW",
+				"LFG_PROPOSAL_FAILED",
+				"LFG_PROPOSAL_SUCCEEDED",
+				"UPDATE_BATTLEFIELD_STATUS",
+				"UPDATE_MOUSEOVER_UNIT",
+				"PLAYER_TARGET_CHANGED"	,
+				"CINEMATIC_START",
+				"LFG_COMPLETION_REWARD"
+			)
+			self:ZONE_CHANGED_NEW_AREA()
+			self:GROUP_ROSTER_UPDATE()
+			DBM:Schedule(1.5, function()
+        		combatInitialized = true
+			end)
+			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
+			if enabled and loadable then showOldVerWarning() end
+			-- setup MovieFrame hook (TODO: replace this by a proper filtering function that only filters certain movie IDs (which requires some API for boss mods to specify movie IDs and default actions)))
+			-- do not use HookScript here, the movie must not even be started to prevent a strange WoW crash bug on OS X with some movies
+			local oldMovieEventHandler = MovieFrame:GetScript("OnEvent")
+			MovieFrame:SetScript("OnEvent", function(self, event, movieId, ...)
+				if event == "PLAY_MOVIE" and (DBM.Options.DisableCinematics and IsInInstance() or (DBM.Options.DisableCinematicsOutside and not IsInInstance())) then
+					-- you still have to call OnMovieFinished, even if you never actually told the movie frame to start the movie, otherwise you will end up in a weird state (input stops working)
+					MovieFrame_OnMovieFinished(MovieFrame)
+					return
+				else
+					-- other event or cinematics enabled
+					return oldMovieEventHandler and oldMovieEventHandler(self, event, movieId, ...)
+				end
+			end)
+		elseif modname == "DBM-BurningCrusade" then
+			-- workaround to ban really old ZA/ZG mods that are still loaded through the compatibility layer. These mods should be excluded by the compatibility layer by design, however they are no longer loaded through the compatibility layer.
+			-- that means this is unnecessary if you are using a recent version of DBM-BC. However, if you are still on an old version of DBM-BC then filtering ZA/ZG through DBM-Core wouldn't be possible and no one really ever updates DBM-BC
+			DBM:Schedule(0, function()
+				for i = #self.AddOns, 1, -1 do
+					if checkEntry(bannedMods, self.AddOns[i].modId) then -- DBM-BC loads mods directly into this table and doesn't respect the bannedMods list of DBM-Core (just its own list of banned mods) (design fail)
+						table.remove(self.AddOns, i)
+					end
+				end
+			end)
+		end
+	end
+end
+
 
 -----------------
 --  Callbacks  --
@@ -1226,18 +1363,21 @@ do
 	local raidUIds = {}
 	local raidGuids = {}
 	local raidShortNames = {}
+	
 
-	--save playerinfo into raid table on load. (for solo raid)
-	raid[playerName] = {}
-	raid[playerName].name = playerName
-	raid[playerName].shortname = playerName
-	raid[playerName].guid = UnitGUID("player")
-	raid[playerName].rank = 0
-	raid[playerName].class = class
-	raid[playerName].id = "player"
-	raidUIds["player"] = playerName
-	raidGuids[UnitGUID("player")] = playerName
-	raidShortNames[playerName] = playerName
+	--	save playerinfo into raid table on load. (for solo raid)
+	DBM:RegisterOnLoadCallback(function()
+		raid[playerName] = {}
+		raid[playerName].name = playerName
+		raid[playerName].shortname = playerName
+		raid[playerName].guid = UnitGUID("player")
+		raid[playerName].rank = 0
+		raid[playerName].class = class
+		raid[playerName].id = "player"
+		raidUIds["player"] = playerName
+		raidGuids[UnitGUID("player")] = playerName
+		raidShortNames[playerName] = playerName
+	end)
 
 	local function updateAllRoster()
 		if IsInRaid() then
@@ -1352,7 +1492,7 @@ do
 			-- left the current group/raid
 			inRaid = false
 			enableIcons = true
-			raidHasDuplicateShortName = false
+--			raidHasDuplicateShortName = false -- ?
 			fireEvent("raidLeave", playerName)
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
@@ -1560,128 +1700,6 @@ do
 	end
 end
 
-
---------------
---  OnLoad  --
---------------
-do
-	local function showOldVerWarning()
-		StaticPopupDialogs["DBM_OLD_VERSION"] = {
-			preferredIndex = STATICPOPUP_NUMDIALOGS,
-			text = DBM_CORE_ERROR_DBMV3_LOADED,
-			button1 = DBM_CORE_OK,
-			OnAccept = function()
-				DisableAddOn("DBM_API")
-				ReloadUI()
-			end,
-			timeout = 0,
-			exclusive = 1,
-			whileDead = 1
-		}
-		StaticPopup_Show("DBM_OLD_VERSION")
-	end
-
-	local function setCombatInitialized()
-		combatInitialized = true
-	end
-
-	function DBM:ADDON_LOADED(modname)
-		if modname == "DBM-Core" then
-			loadOptions()
-			DBM.Bars:LoadOptions("DBM")
-			DBM.Arrow:LoadPosition()
-			if not DBM.Options.ShowMinimapButton then DBM:HideMinimapButton() end
-			self.AddOns = {}
-			for i = 1, GetNumAddOns() do
-				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
-					table.insert(self.AddOns, {
-						sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
-						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "BogusZone")},--workaround, so mods with zoneids and no zonetext don't get loaded by default before zoneids even checked
-						zoneId		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
-						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
-						modId		= GetAddOnInfo(i),
-					})
-					for k, v in ipairs(self.AddOns[#self.AddOns].zone) do
-						self.AddOns[#self.AddOns].zone[k] = (self.AddOns[#self.AddOns].zone[k]):trim()
-					end
-					for i = #self.AddOns[#self.AddOns].zoneId, 1, -1 do
-						local id = tonumber(self.AddOns[#self.AddOns].zoneId[i])
-						if id then
-							self.AddOns[#self.AddOns].zoneId[i] = id
-						else
-							table.remove(self.AddOns[#self.AddOns].zoneId, i)
-						end
-					end
-					if self.AddOns[#self.AddOns].subTabs then
-						for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
-							self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
-						end
-					end
-				end
-			end
-			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
-			self:RegisterEvents(
-				"COMBAT_LOG_EVENT_UNFILTERED",
-				"ZONE_CHANGED_NEW_AREA",
-				"GROUP_ROSTER_UPDATE",
-				"CHAT_MSG_ADDON",
-				"PLAYER_REGEN_DISABLED",
-				"PLAYER_REGEN_ENABLED",
-				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-				"UNIT_DIED",
-				"UNIT_DESTROYED",
-				"UNIT_HEALTH",
-				"CHAT_MSG_WHISPER",
-				"CHAT_MSG_BN_WHISPER",
-				"CHAT_MSG_MONSTER_YELL",
-				"CHAT_MSG_MONSTER_EMOTE",
-				"CHAT_MSG_MONSTER_SAY",
-				"CHAT_MSG_RAID_BOSS_EMOTE",
-				"RAID_BOSS_EMOTE",
-				"PLAYER_ENTERING_WORLD",
-				"LFG_PROPOSAL_SHOW",
-				"LFG_PROPOSAL_FAILED",
-				"LFG_PROPOSAL_SUCCEEDED",
-				"UPDATE_BATTLEFIELD_STATUS",
-				"UPDATE_MOUSEOVER_UNIT",
-				"PLAYER_TARGET_CHANGED"	,
-				"CINEMATIC_START",
-				"LFG_COMPLETION_REWARD"
-			)
-			self:ZONE_CHANGED_NEW_AREA()
-			self:GROUP_ROSTER_UPDATE()
-			DBM:Schedule(1.5, setCombatInitialized)
-			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
-			if enabled and loadable then showOldVerWarning() end
-			-- setup MovieFrame hook (TODO: replace this by a proper filtering function that only filters certain movie IDs (which requires some API for boss mods to specify movie IDs and default actions)))
-			-- do not use HookScript here, the movie must not even be started to prevent a strange WoW crash bug on OS X with some movies
-			local oldMovieEventHandler = MovieFrame:GetScript("OnEvent")
-			MovieFrame:SetScript("OnEvent", function(self, event, movieId, ...)
-				if event == "PLAY_MOVIE" and (DBM.Options.DisableCinematics and IsInInstance() or (DBM.Options.DisableCinematicsOutside and not IsInInstance())) then
-					-- you still have to call OnMovieFinished, even if you never actually told the movie frame to start the movie, otherwise you will end up in a weird state (input stops working)
-					MovieFrame_OnMovieFinished(MovieFrame)
-					return
-				else
-					-- other event or cinematics enabled
-					return oldMovieEventHandler and oldMovieEventHandler(self, event, movieId, ...)
-				end
-			end)
-		elseif modname == "DBM-BurningCrusade" then
-			-- workaround to ban really old ZA/ZG mods that are still loaded through the compatibility layer. These mods should be excluded by the compatibility layer by design, however they are no longer loaded through the compatibility layer.
-			-- that means this is unnecessary if you are using a recent version of DBM-BC. However, if you are still on an old version of DBM-BC then filtering ZA/ZG through DBM-Core wouldn't be possible and no one really ever updates DBM-BC
-			DBM:Schedule(0, function()
-				for i = #self.AddOns, 1, -1 do
-					if checkEntry(bannedMods, self.AddOns[i].modId) then -- DBM-BC loads mods directly into this table and doesn't respect the bannedMods list of DBM-Core (just its own list of banned mods) (design fail)
-						table.remove(self.AddOns, i)
-					end
-				end
-			end)
-		end
-	end
-end
 
 function DBM:LFG_PROPOSAL_SHOW()
 	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
