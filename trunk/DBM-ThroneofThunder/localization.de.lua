@@ -86,7 +86,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(821)
 
 L:SetMiscLocalization({
-	rampageEnds	= "Megaeras Wut lässt nach." --needs to be verified (PTR screenshot-captured translation)
+	rampageEnds	= "Megaeras Wut lässt nach."
 })
 
 ------------
@@ -95,8 +95,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s %s (%s)",
-	specWarnFlock	= "%s %s (%s)"
+	warnFlock		= "%s - %s (%s)",
+	specWarnFlock	= "%s - %s (%s)"
 })
 
 L:SetTimerLocalization({
@@ -111,11 +111,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "Die Eier in den unteren Nestern beginnen zu schlüpfen!", --needs to be verified (PTR video-captured translation), maybe "Die Eier in einem der unteren Nester beginnen, aufzubrechen!" instead
-	eggsHatchU		= "Die Eier in den oberen Nestern beginnen zu schlüpfen!", --needs to be verified (guessed), maybe "Die Eier in einem der oberen Nester beginnen, aufzubrechen!" instead
-	Upper			= "Obere",
-	Lower			= "Untere",
-	UpperAndLower	= "Obere & Untere"
+	eggsHatchL		= "Die Eier in einem der unteren Nester beginnen, aufzubrechen!",
+	eggsHatchU		= "Die Eier in einem der oberen Nester beginnen, aufzubrechen!",
+	Upper			= "Oben",
+	Lower			= "Unten",
+	UpperAndLower	= "Oben & Unten",
+	TrippleD		= "Dreifach (2xUnten)",
+	TrippleU		= "Dreifach (2xOben)"
 })
 
 --------------------------
