@@ -187,8 +187,8 @@ function mod:SPELL_CAST_START(args)
 			zarthikCount = zarthikCount + 1
 			zarthikGUIDS[args.sourceGUID] = zarthikCount
 		end
-		warnQuickening:Show(zarthikGUIDS[args.sourceGUID] or 0)--maybe better to warn when spell applied?
-		specWarnQuickening:Show("("..(zarthikGUIDS[args.sourceGUID] or 0)..") - "..args.sourceName)--This should be redone to spam every 2 seconds above 5 stacks. above 10 stacks it should ignore option default. above 15 stacks it should post a chat message every 0.5 seconds. MAYBE lFR will stop wiping to this then
+		warnQuickening:Show(args.sourceName)--maybe better to warn when spell applied?
+		specWarnQuickening:Show(args.sourceName)
 		timerQuickeningCD:Start(nil, args.sourceGUID)
 	end
 end
