@@ -2688,7 +2688,7 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		if mod:IsDifficulty("lfr25") then
 			mod.stats.lfr25Pulls = mod.stats.lfr25Pulls + 1
-		elseif mod:IsDifficulty("normal5") then
+		elseif mod:IsDifficulty("normal5", "worldboss") then
 			mod.stats.normalPulls = mod.stats.normalPulls + 1
 		elseif mod:IsDifficulty("heroic5") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
@@ -2722,14 +2722,15 @@ function DBM:StartCombat(mod, delay, synced)
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 			end
 		end
-		if difficultyText == DBM_CORE_WORLD_BOSS and mod:GetHP() < 97 then--Boss was not full health when engaged, disable stats and best times
+		local starthp = mod:GetHP():gsub("%%$", "")
+		if mod:IsDifficulty("worldboss") and tonumber(starthp) < 97 then--Boss was not full health when engaged, disable stats and best times
 			ignoreBestkill = true
 		end
 		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
 			local bestTime
 			if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
 				bestTime = mod.stats.lfr25BestTime
-			elseif mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime then
+			elseif mod:IsDifficulty("normal5", "normal10", "worldboss") and mod.stats.normalBestTime then
 				bestTime = mod.stats.normalBestTime
 			elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
 				bestTime = mod.stats.heroicBestTime
@@ -2863,7 +2864,7 @@ function DBM:EndCombat(mod, wipe)
 				else
 					mod.stats.lfr25BestTime = math.min(bestTime or math.huge, thisTime)
 				end
-			elseif savedDifficulty == "normal5" then
+			elseif savedDifficulty == "normal5" or savedDifficulty == "worldboss" then
 				if not mod.stats.normalKills or mod.stats.normalKills < 0 then mod.stats.normalKills = 0 end
 				if mod.stats.normalKills > mod.stats.normalPulls then mod.stats.normalKills = mod.stats.normalPulls end
 				mod.stats.normalKills = mod.stats.normalKills + 1
@@ -3052,7 +3053,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
 		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	else--Returned 0, likely a world boss
-		return "normal5", DBM_CORE_WORLD_BOSS
+		return "worldboss", DBM_CORE_WORLD_BOSS.." - "
 	end
 end
 
@@ -3126,7 +3127,7 @@ do
 				local elapsed = time + lag
 				if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
 					bestTime = mod.stats.lfr25BestTime
-				elseif mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime then
+				elseif mod:IsDifficulty("normal5", "normal10", "worldboss") and mod.stats.normalBestTime then
 					bestTime = mod.stats.normalBestTime
 				elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
 					bestTime = mod.stats.heroicBestTime
