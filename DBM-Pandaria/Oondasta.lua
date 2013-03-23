@@ -39,11 +39,15 @@ local timerFrillBlastCD			= mod:NewCDTimer(25, 137505)--25-30sec variation
 
 mod:AddBoolOption("RangeFrame", true)
 
+local yellTriggered = false
+
 function mod:OnCombatStart(delay)
---	timerCrushCD:Start(-delay)--There was no tank, so he pretty much never cast this, just ran like a wild animal around area while corpse cannoned
---	timerSpiritfireBeamCD:Start(15-delay)
-	timerPiercingRoarCD:Start(20-delay)
-	timerFrillBlastCD:Start(40-delay)
+	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
+--		timerCrushCD:Start(-delay)--There was no tank, so he pretty much never cast this, just ran like a wild animal around area while corpse cannoned
+--		timerSpiritfireBeamCD:Start(15-delay)
+		timerPiercingRoarCD:Start(20-delay)
+		timerFrillBlastCD:Start(40-delay)
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)--range is guessed. spell tooltip and EJ do not save what range is right now.
 	end
@@ -53,6 +57,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -98,6 +103,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Pull and not self:IsInCombat() then
+		yellTriggered = true
 		DBM:StartCombat(self, 0)
 	end
 end
