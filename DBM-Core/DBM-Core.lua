@@ -618,7 +618,7 @@ do
 			loadOptions()
 			DBM.Bars:LoadOptions("DBM")
 			DBM.Arrow:LoadPosition()
-			if not DBM.Options.ShowMinimapButton then DBM:HideMinimapButton() end
+			if not DBM.Options.ShowMinimapButton then self:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
 				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
@@ -681,7 +681,7 @@ do
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:GROUP_ROSTER_UPDATE()
-			DBM:Schedule(1.5, function()
+			self:Schedule(1.5, function()
         		combatInitialized = true
 			end)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
@@ -702,7 +702,7 @@ do
 		elseif modname == "DBM-BurningCrusade" then
 			-- workaround to ban really old ZA/ZG mods that are still loaded through the compatibility layer. These mods should be excluded by the compatibility layer by design, however they are no longer loaded through the compatibility layer.
 			-- that means this is unnecessary if you are using a recent version of DBM-BC. However, if you are still on an old version of DBM-BC then filtering ZA/ZG through DBM-Core wouldn't be possible and no one really ever updates DBM-BC
-			DBM:Schedule(0, function()
+			self:Schedule(0, function()
 				for i = #self.AddOns, 1, -1 do
 					if checkEntry(bannedMods, self.AddOns[i].modId) then -- DBM-BC loads mods directly into this table and doesn't respect the bannedMods list of DBM-Core (just its own list of banned mods) (design fail)
 						table.remove(self.AddOns, i)
@@ -1176,7 +1176,7 @@ do
 		if broadcast and self:GetRaidRank(playerName) >= 1 then
 			sendSync("U", ("%s\t%s"):format(time, text))
 		end
-		if sender then DBM:ShowPizzaInfo(text, sender) end
+		if sender then self:ShowPizzaInfo(text, sender) end
 	end
 
 	function DBM:AddToPizzaIgnore(name)
@@ -1744,28 +1744,28 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 		if (cId == 17711 or cId == 18728) and not IsAddOnLoaded("DBM-Outlands") then--Burning Crusade World Bosses: Doomwalker and Kazzak
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Outlands" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
 		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not IsAddOnLoaded("DBM-Party-Cataclysm") then--Cataclysm World Bosses: Akamhat, Garr, Julak, Mobus, Xariona
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-Cataclysm" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
 		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099) and not IsAddOnLoaded("DBM-Pandaria") then--Mists of Pandaria World Bosses: Anger, Salyis
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Pandaria" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
 		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466 or cId == 49687) and not IsAddOnLoaded("DBM-WorldEvents") then--The Abominable Greench & his helpers (Winter Veil world boss), Omen & his minions (Lunar Festival world boss), Plants vs Zombie npc
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
@@ -1781,28 +1781,28 @@ function DBM:PLAYER_TARGET_CHANGED()
 		if (cId == 17711 or cId == 18728) and not IsAddOnLoaded("DBM-Outlands") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Outlands" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
 		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not IsAddOnLoaded("DBM-Party-Cataclysm") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Party-Cataclysm" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
 		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099) and not IsAddOnLoaded("DBM-Pandaria") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Pandaria" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
 		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466 or cId == 49687) and not IsAddOnLoaded("DBM-WorldEvents") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-WorldEvents" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
@@ -1821,7 +1821,7 @@ function DBM:LFG_COMPLETION_REWARD()
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if v.inScenario then
-				DBM:EndCombat(v)
+				self:EndCombat(v)
 			end
 		end
 	end
@@ -1849,28 +1849,28 @@ do
 			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
 			LastZoneText = GetRealZoneText() --Do same with zone name.
 		end
---		DBM:AddMsg(LastZoneMapID)--Debug
+--		self:AddMsg(LastZoneMapID)--Debug
 		for i, v in ipairs(self.AddOns) do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, LastZoneText) or (checkEntry(v.zoneId, LastZoneMapID))) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
 				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
 				-- TODO: is this still necessary? this was a WotLK beta bug A: loading stuff during a loading screen seems to bug sometimes as of 4.1
 --				if firstZoneChangedEvent then
 --					firstZoneChangedEvent = false
-					DBM:Unschedule(DBM.LoadMod, DBM, v)
-					DBM:Schedule(3, DBM.LoadMod, DBM, v)
+					self:Unschedule(DBM.LoadMod, DBM, v)
+					self:Schedule(3, DBM.LoadMod, DBM, v)
 					--Lets try multiple checks, cause quite frankly this has been failinga bout 50% of time with just one check.
-					DBM:Schedule(4, DBM.ScenarioCheck)
-					DBM:Schedule(8, DBM.ScenarioCheck)
-					DBM:Schedule(12, DBM.ScenarioCheck)
+					self:Schedule(4, DBM.ScenarioCheck)
+					self:Schedule(8, DBM.ScenarioCheck)
+					self:Schedule(12, DBM.ScenarioCheck)
 --				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
---					DBM:LoadMod(v)
+--					self:LoadMod(v)
 --				end
 			end
 		end
-		if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
+		if select(2, IsInInstance()) == "pvp" and not self:GetModByName("AlteracValley") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-PvP" then
-					DBM:LoadMod(v)
+					self:LoadMod(v)
 					break
 				end
 			end
@@ -1879,11 +1879,11 @@ do
 end
 
 function DBM:ScenarioCheck()
-	DBM:Unschedule(DBM.ScenarioCheck)
+	self:Unschedule(DBM.ScenarioCheck)
 	if combatInfo[LastZoneMapID] then
 		for i, v in ipairs(combatInfo[LastZoneMapID]) do
 			if v.type == "scenario" and checkEntry(v.msgs, LastZoneMapID) then
-				DBM:StartCombat(v.mod, 0)
+				self:StartCombat(v.mod, 0)
 			end
 		end
 	end
@@ -2242,8 +2242,8 @@ do
 			if not results then -- check if we are currently querying raid IDs, results will be nil if we don't
 				return
 			end
-			DBM:Unschedule(updateInstanceInfo)
-			DBM:Unschedule(showResults)
+			self:Unschedule(updateInstanceInfo)
+			self:Unschedule(showResults)
 			showResults() -- sets results to nil after the results are displayed, ending the current id request; future incoming data will be discarded
 			sendSync("IRE")
 		end
@@ -2308,7 +2308,7 @@ do
 		end
 
 		function DBM:RequestInstanceInfo()
-			DBM:AddMsg(DBM_INSTANCE_INFO_REQUESTED)
+			self:AddMsg(DBM_INSTANCE_INFO_REQUESTED)
 			lastRequest = GetTime()
 			allResponded = false
 			results = {
@@ -2320,12 +2320,12 @@ do
 			numResponses = 0
 			expectedResponses = getNumDBMUsers()
 			sendSync("IR")
-			DBM:Unschedule(updateInstanceInfo)
-			DBM:Unschedule(showResults)
-			DBM:Schedule(17, updateInstanceInfo, 45, true)
-			DBM:Schedule(32, updateInstanceInfo, 30)
-			DBM:Schedule(48, updateInstanceInfo, 15)
-			DBM:Schedule(62, showResults)
+			self:Unschedule(updateInstanceInfo)
+			self:Unschedule(showResults)
+			self:Schedule(17, updateInstanceInfo, 45, true)
+			self:Schedule(32, updateInstanceInfo, 30)
+			self:Schedule(48, updateInstanceInfo, 15)
+			self:Schedule(62, showResults)
 		end
 	end
 
@@ -2550,7 +2550,7 @@ do
 		if combatInfo[LastZoneText] then
 			for i, v in ipairs(combatInfo[LastZoneText]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
-					DBM:StartCombat(v.mod, 0)
+					self:StartCombat(v.mod, 0)
 				end
 			end
 		end
@@ -2558,7 +2558,7 @@ do
 		if combatInfo[LastZoneMapID] then
 			for i, v in ipairs(combatInfo[LastZoneMapID]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
-					DBM:StartCombat(v.mod, 0)
+					self:StartCombat(v.mod, 0)
 				end
 			end
 		end
@@ -2753,7 +2753,7 @@ function DBM:StartCombat(mod, delay, synced)
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
 		end
 		fireEvent("pull", mod, delay, synced)
-		DBM:ToggleRaidBossEmoteFrame(1)
+		self:ToggleRaidBossEmoteFrame(1)
 		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			if DBM.Options.BigBrotherAnnounceToRaid then
 				BigBrother:ConsumableCheck("RAID")
@@ -2761,7 +2761,7 @@ function DBM:StartCombat(mod, delay, synced)
 				BigBrother:ConsumableCheck("SELF")
 			end
 		end
-		DBM:StartLogging(0, nil)
+		self:StartLogging(0, nil)
 		if DBM.Options.ShowEngageMessage then
 			if ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
@@ -2796,8 +2796,8 @@ function DBM:EndCombat(mod, wipe)
 			if mod.inCombatOnlyEvents then
 				-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
 				mod:UnregisterInCombatEvents("SPELL_AURA_REMOVED")
-				DBM:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
-				DBM:Schedule(2.1, mod.Stop, mod) -- Remove accident started timers.
+				self:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
+				self:Schedule(2.1, mod.Stop, mod) -- Remove accident started timers.
 				mod.inCombatOnlyEventsRegistered = nil
 			end
 		end
@@ -2809,7 +2809,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.combatInfo.killMobs[i] = true
 			end
 		end
-		DBM:Schedule(3, DBM.StopLogging)--small delay to catch kill/died combatlog events
+		self:Schedule(3, DBM.StopLogging)--small delay to catch kill/died combatlog events
 		if not savedDifficulty or not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		end
@@ -2959,7 +2959,7 @@ function DBM:EndCombat(mod, wipe)
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		DBM.BossHealth:Hide()
 		DBM.Arrow:Hide(true)
-		DBM:ToggleRaidBossEmoteFrame(0)
+		self:ToggleRaidBossEmoteFrame(0)
 	end
 end
 
@@ -2996,20 +2996,20 @@ end
 function DBM:StartLogging(timer, checkFunc)
 	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
 		LoggingCombat(1)
-		DBM:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
+		self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
 		if checkFunc then
-			DBM:Unschedule(checkFunc)
-			DBM:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
+			self:Unschedule(checkFunc)
+			self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
 		end
 	end
 	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
 		if not Transcriptor:IsLogging() then
-			DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
+			self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
 			Transcriptor:StartLog(1)
 		end
 		if checkFunc then
-			DBM:Unschedule(checkFunc)
-			DBM:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
+			self:Unschedule(checkFunc)
+			self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
 		end
 	end
 end
@@ -3017,11 +3017,11 @@ end
 function DBM:StopLogging()
 	if DBM.Options.AutologBosses and LoggingCombat() then
 		LoggingCombat(0)
-		DBM:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
+		self:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
 	end
 	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
 		if Transcriptor:IsLogging() then
-			DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
+			self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
 			Transcriptor:StopLog(1)
 		end
 	end
@@ -3145,7 +3145,7 @@ do
 					speedTimer:Update(time + lag, bestTime)
 				end
 			end
-			DBM:ToggleRaidBossEmoteFrame(1)
+			self:ToggleRaidBossEmoteFrame(1)
 		end
 	end
 
@@ -3177,7 +3177,7 @@ do
 		end
 		spamProtection[target] = GetTime()
 		if UnitInBattleground("player") then
-			DBM:SendBGTimers(target)
+			self:SendBGTimers(target)
 			return
 		end
 		if #inCombat < 1 then return end
@@ -3245,16 +3245,16 @@ do
 	end
 
 	function DBM:PLAYER_ENTERING_WORLD()
-		DBM:Schedule(6, requestTimers) -- Time recovery. 3.5 sec too early if you have slow machine. try multiple check
-		DBM:Schedule(10, requestTimers)
-		DBM:Schedule(14, requestTimers)
-		DBM:Schedule(18, requestTimers)
+		self:Schedule(6, requestTimers) -- Time recovery. 3.5 sec too early if you have slow machine. try multiple check
+		self:Schedule(10, requestTimers)
+		self:Schedule(14, requestTimers)
+		self:Schedule(18, requestTimers)
 --		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
-		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true DBM:AddMsg(DBM_HOW_TO_USE_MOD) end end)
+		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
-				DBM:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
 		end
 	end
@@ -3451,7 +3451,7 @@ do
 	local testSpecialWarning3
 	function DBM:DemoMode()
 		if not testMod then
-			testMod = DBM:NewMod("TestMod")
+			testMod = self:NewMod("TestMod")
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
@@ -4650,7 +4650,7 @@ do
 				texture:SetHeight(32)
 				anchorFrame:SetScript("OnDragStart", function()
 					frame:StartMoving()
-					DBM:Unschedule(moveEnd)
+					self:Unschedule(moveEnd)
 					DBM.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
 				end)
 				anchorFrame:SetScript("OnDragStop", function()
@@ -4659,7 +4659,7 @@ do
 					DBM.Options.SpecialWarningPoint = point
 					DBM.Options.SpecialWarningX = xOfs
 					DBM.Options.SpecialWarningY = yOfs
-					DBM:Schedule(15, moveEnd)
+					self:Schedule(15, moveEnd)
 					DBM.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
 				end)
 			end
