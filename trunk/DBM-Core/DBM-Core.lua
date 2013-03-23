@@ -3938,7 +3938,7 @@ function bossModPrototype:IsTanking(unit, boss)
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
-	if UnitExists(boss) and UnitDetailedThreatSituation(unit, boss) then
+	if UnitExists(boss.."target") and UnitDetailedThreatSituation(unit, boss) then
 		return true
 	end
 	return false
