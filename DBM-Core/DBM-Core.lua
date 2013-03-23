@@ -2722,8 +2722,9 @@ function DBM:StartCombat(mod, delay, synced)
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 			end
 		end
-		-- (this may break on old bosses one lower below 95% within first 3 seconds of combat detection) For this reason, it's not yet enabled until i evaluate solutions to this
---		if mod:GetHP() < 95 then ignoreBestkill = true end--Boss was not full health when engaged, disable stats and best times
+		if difficultyText == DBM_CORE_WORLD_BOSS and mod:GetHP() < 97 then--Boss was not full health when engaged, disable stats and best times
+			ignoreBestkill = true
+		end
 		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
 			local bestTime
 			if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
@@ -2759,7 +2760,11 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		DBM:StartLogging(0, nil)
 		if DBM.Options.ShowEngageMessage then
-			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+			if ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
+				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
+			else
+				self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+			end
 		end
 	end
 end
@@ -3023,10 +3028,11 @@ function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
 	if not instanceType then--It's a scenario and blizzard reports these really goofy. Only place instanceType is nil
 		return "normal5", GUILD_CHALLENGE_TYPE4.." - "--Just treat these like 5 man normals, for stat purposes.
+		--5.3, heroic scenarios added, they can be heroic5 GUILD_CHALLENGE_TYPE4
 	elseif difficulty == 1 then
 		if instanceType == "party" then
 			return "normal5", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
-		else--Likely an outdoor boss
+		else--Should never happen anymore, now that outdoor areas return 0 instead of 1 like they used to, but we leave just in case
 			return "normal5", ""
 		end
 	elseif difficulty == 2 then
@@ -3045,8 +3051,8 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "challenge5", CHALLENGE_MODE.." - "
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
 		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
-	else
-		return "normal5", ""
+	else--Returned 0, likely a world boss
+		return "normal5", DBM_CORE_WORLD_BOSS
 	end
 end
 
