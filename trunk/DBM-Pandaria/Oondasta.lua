@@ -32,7 +32,7 @@ local specWarnPiercingRoar		= mod:NewSpecialWarningCast(137457, mod:IsRanged() o
 local specWarnFrillBlast		= mod:NewSpecialWarningSpell(137505, nil, nil, nil, 2)
 
 local timerCrush				= mod:NewTargetTimer(60, 137504, nil, mod:IsTank() or mod:IsHealer())
-local timerCrushCD				= mod:NewCDTimer(32, 137504)
+local timerCrushCD				= mod:NewCDTimer(26, 137504)
 local timerPiercingRoarCD		= mod:NewCDTimer(25, 137457)--25-60sec variation (i'm going to guess like all the rest of the variations, the timers are all types of fucked up when the boss is running around untanked, which delays casts of crush and frill blast, but makes him cast spitfire twice as often)
 --local timerSpiritfireBeamCD		= mod:NewCDTimer(25, 137511)--25-30sec variation (disabled because he also seems to spam it far more often if there is no tank, making it difficult to find an ACTUAL cd when fight is done incorrectly
 local timerFrillBlastCD			= mod:NewCDTimer(25, 137505)--25-30sec variation

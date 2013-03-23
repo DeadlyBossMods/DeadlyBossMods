@@ -9,6 +9,7 @@ DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 단, 전투 종료 후 설정창을 불러오고 난 이후에는 UI 재시작 또는 재접속전까지 전투 중에도 설정창을 불러올 수 있습니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
+DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가하였습니다. 행운을 빕니다! :)"
 DBM_CORE_BOSS_DOWN					= "%s 전투에서 승리하였습니다! (전투 시간: %s)"
 DBM_CORE_BOSS_DOWN_L				= "%s 전투에서 승리하였습니다! (전투 시간: %s, 최종 전투 기록: %s, 가장 빨랐던 기록: %s, 처치: %d회)"
 DBM_CORE_BOSS_DOWN_NR				= "%s 전투에서 승리하였습니다! (전투 시간: %s) 이 기록은 새로운 기록이군요! (과거 기록: %s, 처치: %d회)"
@@ -117,6 +118,7 @@ DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "우두머리 체력 바 닫기"
 DBM_CORE_ALLIANCE					= "얼라이언스"
 DBM_CORE_HORDE						= "호드"
 
+DBM_CORE_WORLD_BOSS					= "야외 우두머리"
 DBM_CORE_UNKNOWN					= "알 수 없음"
 DBM_CORE_LEFT						= "왼쪽"
 DBM_CORE_RIGHT						= "오른쪽"
