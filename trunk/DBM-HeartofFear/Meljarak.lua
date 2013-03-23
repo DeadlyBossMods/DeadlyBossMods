@@ -187,7 +187,7 @@ function mod:SPELL_CAST_START(args)
 			zarthikCount = zarthikCount + 1
 			zarthikGUIDS[args.sourceGUID] = zarthikCount
 		end
-		warnQuickening:Show(args.sourceName)--maybe better to warn when spell applied?
+		warnQuickening:Show(args.sourceName, zarthikCount)--maybe better to warn when spell applied?
 		specWarnQuickening:Show(args.sourceName)
 		timerQuickeningCD:Start(nil, args.sourceGUID)
 	end
