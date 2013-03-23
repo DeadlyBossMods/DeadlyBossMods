@@ -19,6 +19,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
+L:SetMiscLocalization({
+	Pull				= "Bring me their corpses!"
+})
+
 --------------
 -- Oondasta --
 --------------

@@ -13,6 +13,10 @@ mod:RegisterEventsInCombat(
 	"RAID_BOSS_EMOTE"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 local warnCannonBarrage			= mod:NewSpellAnnounce(121600, 3)
 local warnStomp					= mod:NewCastAnnounce(121787, 3, 3)
 local warnWarmonger				= mod:NewSpellAnnounce("ej6200", 2, 121747)
@@ -26,9 +30,17 @@ local timerStompCD				= mod:NewNextTimer(60, 121787)
 local timerStomp				= mod:NewCastTimer(3, 121787)
 local timerWarmongerCD			= mod:NewNextTimer(10, "ej6200", nil, nil, nil, 121747)--Comes after Stomp. (Also every 60 sec.)
 
-function mod:OnCombatStart(delay)--disable start timer for world boss because combat can be entered while other people fighting.
-	--timerCannonBarrageCD:Start(24-delay)
-	--timerStompCD:Start(50-delay)
+local yellTriggered = false
+
+function mod:OnCombatStart(delay)
+	if yellTriggered then
+		timerCannonBarrageCD:Start(24-delay)
+		timerStompCD:Start(50-delay)
+	end
+end
+
+function mod:OnCombatEnd()
+	yellTriggered = false
 end
 
 function mod:RAID_BOSS_EMOTE(msg)
@@ -44,5 +56,14 @@ function mod:RAID_BOSS_EMOTE(msg)
 		timerStomp:Start()
 		timerWarmongerCD:Start()
 		timerStompCD:Start()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Pull and not self:IsInCombat() then
+		if self:GetCIDFromGUID(UnitGUID("target")) == 62346 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 62346 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
+			yellTriggered = true
+			DBM:StartCombat(self, 0)
+		end
 	end
 end
