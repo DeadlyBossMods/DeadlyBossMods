@@ -969,7 +969,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:CreatePizzaTimer(time, text)
 	elseif cmd:sub(1, 15) == "broadcast timer" then
 		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
-		if DBM:GetRaidRank() == 0 then
+		if DBM:GetRaidRank(playerName) == 0 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		if not (time and text) then
@@ -986,7 +986,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, true)
 	elseif cmd:sub(0,5) == "break" then
-		if DBM:GetRaidRank() == 0 or IsInGroup(LE_PARTY_CATEGORY_INSTANCE) or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
+		if DBM:GetRaidRank(playerName) == 0 or IsInGroup(LE_PARTY_CATEGORY_INSTANCE) or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 			return
 		end
@@ -1003,7 +1003,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_BREAK_OVER, channel)
 		end
 	elseif cmd:sub(1, 4) == "pull" then
-		if DBM:GetRaidRank() == 0 or IsEncounterInProgress() then
+		if DBM:GetRaidRank(playerName) == 0 or IsEncounterInProgress() then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
@@ -1055,7 +1055,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			end
 		end
 	elseif cmd:sub(1, 7) == "lockout" or cmd:sub(1, 3) == "ids" then
-		if DBM:GetRaidRank() == 0 then
+		if DBM:GetRaidRank(playerName) == 0 then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		if not IsInRaid() then
@@ -1173,7 +1173,7 @@ do
 		text = text:sub(1, 16)
 		text = text:gsub("%%t", UnitName("target") or "<no target>")
 		self.Bars:CreateBar(time, text, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-		if broadcast and self:GetRaidRank() >= 1 then
+		if broadcast and self:GetRaidRank(playerName) >= 1 then
 			sendSync("U", ("%s\t%s"):format(time, text))
 		end
 		if sender then DBM:ShowPizzaInfo(text, sender) end
@@ -5397,7 +5397,7 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 function bossModPrototype:SetIcon(target, icon, timer)
-	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank() == 0 then
+	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank(playerName) == 0 then
 		return
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
