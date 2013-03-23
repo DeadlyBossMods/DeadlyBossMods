@@ -45,7 +45,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(816)
 
 L:SetWarningLocalization({
-	specWarnPossessed		= "%s附身%s - 變換目標"
+	specWarnPossessed		= "%s在%s - 變換目標"
 })
 
 L:SetOptionLocalization({
@@ -83,6 +83,11 @@ L:SetMiscLocalization({
 -- Megaera --
 -------------
 L= DBM:GetModLocalization(821)
+
+L:SetOptionLocalization({
+	SetIconOnCinders		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
+	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889)
+})
 
 L:SetMiscLocalization({
 	rampageEnds	= "梅賈拉的怒氣平息了。"
