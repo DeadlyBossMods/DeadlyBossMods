@@ -219,7 +219,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 123705 and self:AntiSpam() then
+	elseif args.spellId == 123705 and self:AntiSpam(2.5, 1) then
 		self:ScaryFogRepeat()
 	end
 end
@@ -325,7 +325,7 @@ end
 
 function mod:OnSync(msg, guid, ver)
 	if msg == "IconCheck" and guid and ver then
-		if ver > highestVersion then
+		if tonumber(ver) > highestVersion then
 			highestVersion = tonumber(ver)--Keep bumping highest version to highest we recieve from the icon setters
 			if guid == UnitGUID("player") then--Check if that highest version was from ourself
 				hasHighestVersion = true
@@ -336,12 +336,14 @@ function mod:OnSync(msg, guid, ver)
 				hasHighestVersion = false
 			end
 		end
-	elseif msg == "FastestPerson" and guid and self:AntiSpam(10) then--Whoever sends this sync first wins all. They have highest version and fastest computer
+	elseif msg == "FastestPerson" and guid and self:AntiSpam(10, 2) then--Whoever sends this sync first wins all. They have highest version and fastest computer
 		self:Unschedule(FindFastestHighestVersion)
 		if guid == UnitGUID("player") then
 			hasHighestVersion = true
+			print("DBM Debug: You have highest DBM version with icons enabled and fastest computer. You designated icon setter.")
 		else
 			hasHighestVersion = false
+			print("DBM Debug: You will not be setting icons since your DBM version is out of date or your computer is slower")
 		end
 	end
 end
