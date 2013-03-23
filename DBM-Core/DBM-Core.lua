@@ -3932,7 +3932,6 @@ function bossModPrototype:IsTank()
 end
 
 function bossModPrototype:IsTanking(unit, boss)
-	if not unit then return false end
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
