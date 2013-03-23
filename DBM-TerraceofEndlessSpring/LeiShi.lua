@@ -14,7 +14,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"CHAT_MSG_TARGETICONS",
 	"UNIT_HEALTH",--UNIT_HEALTH_FREQUENT maybe not needed. It's too high cpu usage.
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -42,13 +41,15 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("GWHealthFrame", true)
 mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("SetIconOnProtector", false)--Just not reliable if more than 1 person uses no matter how many hacks are added, but I don't want to restrict it to raid leader only as he may not be the first person to target/mouseover stuff.
+mod:AddBoolOption("SetIconOnProtector", true)
 
 local getAwayHP = 0 -- because max health is different between Asian and US 25-man encounter. Calculate manually.
 local specialsCast = 0
 local hideActive = false
 local lastProtect = 0
 local specialRemaining = 0
+local AddIcon = 8
+local iconsSet = 0
 local guards = {}
 local guardActivated = 0
 local lostHealth = 0
@@ -57,21 +58,8 @@ local hideDebug = 0
 local damageDebug = 0
 local timeDebug = 0
 local hideTime = 0
-local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
-
-local function resetguardstate()
-	table.wipe(guards)
-	iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
-end
-
-local function getAvailableIcons()
-	for i = 8, 1, -1 do
-		if not iconsSet[i] then
-			return i
-		end
-	end
-	return 8
-end
+local highestVersion = 0
+local hasHighestVersion = false
 
 local bossTank
 do
@@ -133,11 +121,13 @@ function mod:OnCombatStart(delay)
 	damageDebug = 0
 	timeDebug = 0
 	hideTime = 0
-	resetguardstate()
 	getAwayHP = 0
 	specialsCast = 0
 	hideActive = false
 	lastProtect = 0
+	table.wipe(guards)
+	AddIcon = 8
+	guardActivated = 0
 	specialRemaining = 0
 	lostHealth = 0
 	prevlostHealth = 0
@@ -147,6 +137,9 @@ function mod:OnCombatStart(delay)
 	else
 		berserkTimer:Start(-delay)
 	end
+	if self:GetRaidRank() > 0 and self.Options.SetIconOnProtector then--You can set marks and you have icons turned on
+		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
+	end
 end
 
 function mod:OnCombatEnd()
@@ -155,6 +148,33 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 end
+
+local function resetguardstate()
+	table.wipe(guards)
+	AddIcon = 8
+	iconsSet = 0
+	guardActivated = 0
+end
+	
+mod:RegisterOnUpdateHandler(function(self)
+	if hasHighestVersion and not iconsSet == guardActivated then
+		for i = 1, DBM:GetNumGroupMembers() do
+			local uId = "raid"..i.."target"
+			local guid = UnitGUID(uId)
+			if guards[guid] then
+				SetRaidTarget(uId, guards[guid])
+				iconsSet = iconsSet + 1
+				guards[guid] = nil
+			end
+			local guid2 = UnitGUID("mouseover")
+			if guards[guid2] then
+				SetRaidTarget(uId, guards[guid2])
+				iconsSet = iconsSet + 1
+				guards[guid2] = nil
+			end
+		end
+	end
+end, 0.05)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 123250 then
@@ -166,14 +186,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.2, function()
 			timerSpecialCD:Cancel()
 		end)
-	elseif args.spellId == 123505 and self.Options.SetIconOnProtector then
-		if guardActivated == 0 then
-			resetguardstate()
-		end
+	elseif args.spellId == 123505 and hasHighestVersion then
+		guards[args.destGUID] = AddIcon
+		AddIcon = AddIcon - 1
 		guardActivated = guardActivated + 1
-		if not guards[args.sourceGUID] then
-			guards[args.destGUID] = true
-		end
 	elseif args.spellId == 123461 then
 		specialsCast = specialsCast + 1
 		warnGetAway:Show(specialsCast)
@@ -211,8 +227,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 123250 then
-		if self.Options.SetIconOnProtector then
-			guardActivated = 0
+		if hasHighestVersion then
+			resetguardstate()
 		end
 		if timerSpecialCD:GetTime(specialsCast+1) == 0 then -- failsafe. (i.e : 79.8% hide -> protect... bar remains)
 			local protectElapsed = GetTime() - lastProtect
@@ -230,46 +246,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.GWHealthFrame then
 			hideDamagedHealthBar()
 		end
-	end
-end
-
-mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnProtector and guardActivated > 0 and DBM:GetRaidRank() > 0 then
-		for i = 1, DBM:GetNumGroupMembers() do
-			local uId = "raid"..i.."target"
-			local guid = UnitGUID(uId)
-			if guards[guid] then
-				local existingIcons = GetRaidTargetIndex(uId)
-				if not existingIcons then
-					local icon = getAvailableIcons()
-					SetRaidTarget(uId, icon)
-					iconsSet[icon] = true
-					self:SendSync("iconSet", icon)
-				elseif existingIcons then
-					iconsSet[existingIcons] = true
-				end
-				guards[guid] = nil
-			end
-		end
-		local guid2 = UnitGUID("mouseover")
-		if guards[guid2] then
-			local existingIcons = GetRaidTargetIndex("mouseover")
-			if not existingIcons then
-				local icon = getAvailableIcons()
-				SetRaidTarget("mouseover", icon)
-				iconsSet[icon] = true
-				self:SendSync("iconSet", icon)
-			elseif existingIcons then
-				iconsSet[existingIcons] = true
-			end
-			guards[guid2] = nil
-		end
-	end
-end, 0.05)
-
-function mod:OnSync(msg, icon)
-	if msg == "iconSet" and icon then
-		iconsSet[icon] = true
 	end
 end
 
@@ -297,21 +273,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args.spellId == 123705 then
 		self:ScaryFogRepeat()
-	end
-end
-
-function mod:CHAT_MSG_TARGETICONS(msg)
-	--TARGET_ICON_SET = "|Hplayer:%s|h[%s]|h sets |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t on %s.";
-	local icon = tonumber(string.sub(string.match(msg, "RaidTargetingIcon_%d"), -1))
-	if icon then
-		iconsSet[icon] = true
-		local additionalIcons = 8 - icon--Lets say we get a chat message a user used icon 6. we already set 6 to true, but now we do 8-6 to find out there are two other icons above 6 that we should also set to true (just in case)
-		if additionalIcons > 0 then--Icon used by someone else is less than 8 which which means we should assume the icons above this number are also already used
-			for i = 1, additionalIcons do--So now we take those 2 remaining icons, adds + 1, set that to true, do it one more time, set that to true.
-				icon = icon + 1
-				iconsSet[icon] = true--Now 6 7 and 8 should all be true if the chat icon sent was 6. This should make sure even after a DC icon setters SHOULD in theory be on same page
-			end
-		end
 	end
 end
 
@@ -343,11 +304,6 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, s
 end
 mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
 mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
---NOTE: It breaks early if protect phase is triggered (ie boss hits 80 60 40 or 20 during hide)
---Results (may need to do LFR results with RANGE_DAMAGE flag)
----LFR1 (that didn't break early from protect)
-----Spell Hit Lei Shi: 74
-----Total Damage: 1174176
 
 --Fires twice when boss returns, once BEFORE visible (and before we can detect unitID, so it flags unknown), then once a 2nd time after visible
 --"<233.9> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#nil#Unknown#0xF130F6070000006C#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [14168]
@@ -360,5 +316,32 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	warnHideProgress:Show(hideDebug, damageDebug, tostring(format("%.1f", timeDebug)))--Show right away instead of waiting out the schedule
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)--Go back to showing only tanks
+	end
+end
+
+local function FindFastestHighestVersion()
+	DBM:SendSync("FastestPerson", UnitGUID("player"))
+end
+
+function mod:OnSync(msg, guid, ver)
+	if msg == "IconCheck" and guid and ver then
+		if ver > highestVersion then
+			highestVersion = tonumber(ver)--Keep bumping highest version to highest we recieve from the icon setters
+			if guid == UnitGUID("player") then--Check if that highest version was from ourself
+				hasHighestVersion = true
+				self:Unschedule(FindFastestHighestVersion)
+				self:Schedule(5, FindFastestHighestVersion)
+			else--Not from self, it means someone with a higher version than us probably sent it
+				self:Unschedule(FindFastestHighestVersion)
+				hasHighestVersion = false
+			end
+		end
+	elseif msg == "FastestPerson" and guid and self:AntiSpam(10) then--Whoever sends this sync first wins all. They have highest version and fastest computer
+		self:Unschedule(FindFastestHighestVersion)
+		if guid == UnitGUID("player") then
+			hasHighestVersion = true
+		else
+			hasHighestVersion = false
+		end
 	end
 end
