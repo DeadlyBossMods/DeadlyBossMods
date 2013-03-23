@@ -31,6 +31,7 @@ L.Button_OK 				= '確定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '載入模組'
 L.Mod_Enabled				= "啟用首領模組"
+L.Mod_Reset					= "為此模組讀取預設值(未完成)"
 L.Reset 					= "重置"
 
 L.Enable  					= "啟用"
