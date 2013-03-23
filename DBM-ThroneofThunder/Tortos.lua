@@ -13,7 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_TARGETICONS",
 	"UNIT_AURA"
 )
 
@@ -42,7 +41,7 @@ local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 local berserkTimer					= mod:NewBerserkTimer(780)
 
 mod:AddBoolOption("InfoFrame")
-mod:AddBoolOption("SetIconOnTurtles", false)
+mod:AddBoolOption("SetIconOnTurtles", true)
 
 local shelldName = GetSpellInfo(137633)
 local shellConcussion = GetSpellInfo(136431)
@@ -53,80 +52,49 @@ local shellsRemaining = 0
 local lastConcussion = 0
 local kickedShells = {}
 local addsActivated = 0
-local checkIcons = false
 local alternateSet = false
 local adds = {}
-local iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
+local AddIcon = 8
+local iconsSet = 0
+local highestVersion = 0
+local hasHighestVersion = false
 
 local function resetaddstate()
 	table.wipe(adds)
-	iconsSet = {[1] = false, [2] = false, [3] = false, [4] = false, [5] = false, [6] = false, [7] = false, [8] = false}
-	if addsActivated >= 1 then--at least one add is up, we'll alternate between skull x and square and other 3 icons.
-		if alternateSet then--We will set icons 8 7 and 6 in use and use alternate icons for this set
-			iconsSet[8] = true
-			iconsSet[7] = true
-			iconsSet[6] = true
+	if addsActivated >= 1 then--1 or more add is up from last set
+		if alternateSet then--We check whether we started with skull last time or moon
+			AddIcon = 5--Start with moon if we used skull last time
 			alternateSet = false
-		else--Not an alternet set so we set next set to alternate set
+		else
+			AddIcon = 8--Start with skull if we used moon last time
 			alternateSet = true
 		end
-	else--No adds are up, we're going to start with skull anyways and set next as an alternate set, even if it wasn't originally going to be one.
-		alternateSet = true
+	else--No turtles are up at all
+		AddIcon = 8--Always start with skull
+		alternateSet = true--And reset alternate status so we use moon next time (unless all are dead again, then re always reset to skull)
 	end
+	iconsSet = 0
 end
-
-local function resetIconcheck()
-	checkIcons = false
-end
-
-local function getAvailableIcons()
-	for i = 8, 1, -1 do
-		if not iconsSet[i] then
-			return i
-		end
-	end
-	return 8
-end
-
+	
 mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnTurtles and checkIcons and DBM:GetRaidRank() > 0 then
+	if hasHighestVersion and not iconsSet == 3 then
 		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
 			if adds[guid] then
-				local existingIcons = GetRaidTargetIndex(uId)
-				if not existingIcons then
-					local icon = getAvailableIcons()
-					SetRaidTarget(uId, icon)
-					iconsSet[icon] = true
-					self:SendSync("iconSet", icon)
-				elseif existingIcons then
-					iconsSet[existingIcons] = true
-				end
+				SetRaidTarget(uId, adds[guid])
+				iconsSet = iconsSet + 1
 				adds[guid] = nil
 			end
-		end
-		local guid2 = UnitGUID("mouseover")
-		if adds[guid2] then
-			local existingIcons = GetRaidTargetIndex("mouseover")
-			if not existingIcons then
-				local icon = getAvailableIcons()
-				SetRaidTarget("mouseover", icon)
-				iconsSet[icon] = true
-				self:SendSync("iconSet", icon)
-			elseif existingIcons then
-				iconsSet[existingIcons] = true
+			local guid2 = UnitGUID("mouseover")
+			if adds[guid2] then
+				SetRaidTarget(uId, adds[guid2])
+				iconsSet = iconsSet + 1
+				adds[guid2] = nil
 			end
-			adds[guid2] = nil
 		end
 	end
-end, 1)
-
-function mod:OnSync(msg, icon)
-	if msg == "iconSet" and icon then
-		iconsSet[icon] = true
-	end
-end
+end, 0.2)
 
 local function clearStomp()
 	stompActive = false
@@ -145,6 +113,8 @@ function mod:OnCombatStart(delay)
 	shellsRemaining = 0
 	lastConcussion = 0
 	addsActivated = 0
+	AddIcon = 8
+	iconsSet = 0
 	alternateSet = false
 	table.wipe(adds)
 	table.wipe(kickedShells)
@@ -156,6 +126,9 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame and self:IsDifficulty("heroic10", "heroic25") then
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
 		DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
+	end
+	if self:GetRaidRank() > 0 and self.Options.SetIconOnTurtles then--You can set marks and you have icons turned on
+		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
 	end
 end
 
@@ -196,14 +169,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		addsActivated = addsActivated - 1
 	elseif args.spellId == 133974 and self.Options.SetIconOnTurtles then--Spinning Shell
 		if self:AntiSpam(5, 2) then
-			checkIcons = true
 			resetaddstate()
-			self:Schedule(8, resetIconcheck)
 		end
+		adds[args.destGUID] = AddIcon
+		AddIcon = AddIcon - 1
 		addsActivated = addsActivated + 1
-		if not adds[args.sourceGUID] then
-			adds[args.sourceGUID] = true
-		end
 	end
 end
 
@@ -236,21 +206,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:CHAT_MSG_TARGETICONS(msg)
-	--TARGET_ICON_SET = "|Hplayer:%s|h[%s]|h sets |TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t on %s.";
-	local icon = tonumber(string.sub(string.match(msg, "RaidTargetingIcon_%d"), -1))
-	if icon then
-		iconsSet[icon] = true
-		local additionalIcons = 8 - icon--Lets say we get a chat message a user used icon 6. we already set 6 to true, but now we do 8-6 to find out there are two other icons above 6 that we should also set to true (just in case)
-		if additionalIcons > 0 then--Icon used by someone else is less than 8 which which means we should assume the icons above this number are also already used
-			for i = 1, additionalIcons do--So now we take those 2 remaining icons, adds + 1, set that to true, do it one more time, set that to true.
-				icon = icon + 1
-				iconsSet[icon] = true--Now 6 7 and 8 should all be true if the chat icon sent was 6. This should make sure even after a DC icon setters SHOULD in theory be on same page
-			end
-		end
-	end
-end
-
 function mod:UNIT_AURA(uId)
 	if uId ~= "boss1" then return end
 	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)
@@ -259,6 +214,35 @@ function mod:UNIT_AURA(uId)
 		timerShellConcussion:Start()
 		if self:AntiSpam(3, 2) then
 			warnShellConcussion:Show(L.name)
+		end
+	end
+end
+
+local function FindFastestHighestVersion()
+	DBM:SendSync("FastestPerson", UnitGUID("player"))
+end
+
+function mod:OnSync(msg, guid, ver)
+	if msg == "IconCheck" and guid and ver then
+		if tonumber(ver) > highestVersion then
+			highestVersion = tonumber(ver)--Keep bumping highest version to highest we recieve from the icon setters
+			if guid == UnitGUID("player") then--Check if that highest version was from ourself
+				hasHighestVersion = true
+				self:Unschedule(FindFastestHighestVersion)
+				self:Schedule(5, FindFastestHighestVersion)
+			else--Not from self, it means someone with a higher version than us probably sent it
+				self:Unschedule(FindFastestHighestVersion)
+				hasHighestVersion = false
+			end
+		end
+	elseif msg == "FastestPerson" and guid and self:AntiSpam(10, 4) then--Whoever sends this sync first wins all. They have highest version and fastest computer
+		self:Unschedule(FindFastestHighestVersion)
+		if guid == UnitGUID("player") then
+			hasHighestVersion = true
+			print("DBM Debug: You have highest DBM version with icons enabled and fastest computer. You designated icon setter.")
+		else
+			hasHighestVersion = false
+			print("DBM Debug: You will not be setting icons since your DBM version is out of date or your computer is slower")
 		end
 	end
 end
