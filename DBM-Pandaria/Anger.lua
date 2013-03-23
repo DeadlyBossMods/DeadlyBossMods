@@ -22,6 +22,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_AURA"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 local warnUnleashedWrath		= mod:NewSpellAnnounce(119488, 3)--Big aoe damage aura when at 100 rage
 local warnGrowingAnger			= mod:NewTargetAnnounce(119622, 4)--Mind control trigger
 local warnAggressiveBehavior	= mod:NewTargetAnnounce(119626, 4)--Actual mind control targets
@@ -34,10 +38,10 @@ local timerGrowingAngerCD		= mod:NewCDTimer(32, 119622)--Min 32.6~ Max 67.8
 local timerUnleashedWrathCD		= mod:NewCDTimer(53, 119488)--Based on rage, but timing is consistent enough to use a CD bar, might require some perfecting later, similar to xariona's special, if rage doesn't reset after wipes, etc.
 local timerUnleashedWrath		= mod:NewBuffActiveTimer(24, 119488, nil, mod:IsTank() or mod:IsHealer())
 
---local berserkTimer				= mod:NewBerserkTimer(900)--he did not seems to berserk. my combat lasts 20 min, not berserks at all.
-
 mod:AddBoolOption("RangeFrame", true)--For Mind control spreading.
 mod:AddBoolOption("SetIconOnMC", true)
+
+local yellTriggered = false
 
 local warnpreMCTargets = {}
 local warnMCTargets = {}
@@ -107,15 +111,17 @@ function mod:OnCombatStart(delay)
 	table.wipe(warnpreMCTargets)
 	table.wipe(warnMCTargets)
 	mcIcon = 8
---	timerUnleashedWrathCD:Start(-delay)
---	timerGrowingAngerCD:Start(-delay)
---	berserkTimer:Start(-delay)
+	if yellTriggered then
+		timerUnleashedWrathCD:Start(-delay)
+		timerGrowingAngerCD:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -173,5 +179,14 @@ function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
 	if UnitDebuff("player", bitterThought) and self:AntiSpam(2) and not playerMCed then
 		specWarnBitterThoughts:Show()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Pull and not self:IsInCombat() then
+		if self:GetCIDFromGUID(UnitGUID("target")) == 60491 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 60491 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
+			yellTriggered = true
+			DBM:StartCombat(self, 0)
+		end
 	end
 end
