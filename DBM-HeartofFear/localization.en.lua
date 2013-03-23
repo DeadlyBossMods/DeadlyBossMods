@@ -71,6 +71,10 @@ L:SetOptionLocalization({
 	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
 })
 
+L:SetMiscLocalization({
+	specWarnQuickening	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(122149),
+})
+
 ------------
 -- Amber-Shaper Un'sok --
 ------------

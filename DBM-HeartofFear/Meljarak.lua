@@ -38,7 +38,7 @@ local warnImpalingSpear					= mod:NewPreWarnAnnounce(122224, 10, 3)--Pre warn yo
 local warnAmberPrison					= mod:NewTargetAnnounce(121881, 3)
 local warnCorrosiveResin				= mod:NewTargetAnnounce(122064, 3)
 local warnMending						= mod:NewCastAnnounce(122193, 4)
-local warnQuickening					= mod:NewCountAnnounce(122149, 4)--for Mass Dispel
+local warnQuickening					= mod:NewTargetCountAnnounce(122149, 4)
 local warnKorthikStrike					= mod:NewTargetAnnounce(123963, 3)
 local warnWindBomb						= mod:NewTargetAnnounce(131830, 4)
 
@@ -52,7 +52,7 @@ local specWarnCorrosiveResin			= mod:NewSpecialWarningRun(122064)
 local yellCorrosiveResin				= mod:NewYell(122064, nil, false)
 local specWarnCorrosiveResinPool		= mod:NewSpecialWarningMove(122125)
 local specWarnMending					= mod:NewSpecialWarningInterrupt(122193)--Whoever is doing this or feels responsible should turn it on.
-local specWarnQuickening				= mod:NewSpecialWarningTarget(122149, isDispeller)--^^
+local specWarnQuickening				= mod:NewSpecialWarningStack(122149, isDispeller, nil, L.specWarnQuickening)--This is not stack warning. Set counter warning. Use custom localization.
 local specWarnKorthikStrike				= mod:NewSpecialWarningYou(123963)
 local specWarnKorthikStrikeOther		= mod:NewSpecialWarningTarget(123963, mod:IsHealer())
 local yellKorthikStrike					= mod:NewYell(123963)
@@ -187,8 +187,9 @@ function mod:SPELL_CAST_START(args)
 			zarthikCount = zarthikCount + 1
 			zarthikGUIDS[args.sourceGUID] = zarthikCount
 		end
-		warnQuickening:Show(args.sourceName, zarthikCount)--maybe better to warn when spell applied?
-		specWarnQuickening:Show(args.sourceName)
+		local count = zarthikGUIDS[args.sourceGUID] -- This is set counter for dispel(1, 2, 3, 1, 2, 3.. repeats). Especailly for mass dispel. Very useful for PRIEST. NO SPAM. DO NOT REMOVE THIS. 
+		warnQuickening:Show(count, args.sourceName)
+		specWarnQuickening:Show(count)
 		timerQuickeningCD:Start(nil, args.sourceGUID)
 	end
 end
