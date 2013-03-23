@@ -1879,7 +1879,7 @@ do
 end
 
 function DBM:ScenarioCheck()
-	self:Unschedule(DBM.ScenarioCheck)
+	DBM:Unschedule(DBM.ScenarioCheck)
 	if combatInfo[LastZoneMapID] then
 		for i, v in ipairs(combatInfo[LastZoneMapID]) do
 			if v.type == "scenario" and checkEntry(v.msgs, LastZoneMapID) then
