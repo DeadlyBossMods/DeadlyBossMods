@@ -8,12 +8,14 @@ mod:SetZone()
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnStormEnergy			= mod:NewTargetAnnounce(139322, 4)
 local warnSpiritFire			= mod:NewTargetAnnounce(139895, 3)--This is morchok entryway trash that throws rocks at random poeple.
 local warnStormCloud			= mod:NewTargetAnnounce(139900, 4)
+local warnFixated				= mod:NewSpellAnnounce(140306, 3)
 local warnConductiveShield		= mod:NewTargetAnnounce(140296, 4)
 
 local specWarnStormEnergy		= mod:NewSpecialWarningYou(139322)
@@ -22,6 +24,7 @@ local specWarnSonicScreech		= mod:NewSpecialWarningInterrupt(136751)
 local specWarnConductiveShield	= mod:NewSpecialWarningTarget(140296)
 
 local timerSpiritfireCD			= mod:NewCDTimer(12, 139895)
+local timerFixatedCD			= mod:NewNextTimer(15.7, 140306)
 local timerConductiveShieldCD	= mod:NewNextSourceTimer(20, 140296)
 
 mod:RemoveOption("HealthFrame")
@@ -111,5 +114,21 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 69834 or cid == 69821 then
 		timerConductiveShieldCD:Cancel(args.destName, args.destGUID)
+	elseif cid == 68220 then--Gastropod
+		timerFixatedCD:Cancel(args.destGUID)
+	end
+end
+
+--"<1.0 17:57:05> [UNIT_SPELLCAST_SUCCEEDED] Gastropod [[target:Fixated::0:140306]]", -- [23]
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 140306 and self:AntiSpam() then
+		self:SendSync("OMGSnail", UnitGUID(uId))
+	end
+end
+
+function mod:OnSync(msg, guid)
+	if msg == "OMGSnail" and guid  then
+		warnFixated:Show()
+		timerFixatedCD:Start(nil, guid)
 	end
 end
