@@ -141,7 +141,7 @@ function mod:OnCombatStart(delay)
 	else
 		berserkTimer:Start(-delay)
 	end
-	if self:GetRaidRank() > 0 and self.Options.SetIconOnProtector then--You can set marks and you have icons turned on
+	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnProtector then--You can set marks and you have icons turned on
 		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
 	end
 end
