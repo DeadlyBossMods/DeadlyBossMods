@@ -11,10 +11,18 @@ L:SetOptionLocalization({
 	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(119622)
 })
 
+L:SetMiscLocalization({
+	Pull				= "Yes, YES! Bring your rage to bear! Try to strike me down!"
+})
+
 -----------------------
 -- Salyis --
 -----------------------
 L= DBM:GetModLocalization(725)
+
+L:SetMiscLocalization({
+	Pull				= "Bring me their corpses!"
+})
 
 --------------
 -- Oondasta --
