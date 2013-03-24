@@ -1898,7 +1898,7 @@ function DBM:ScenarioCheck()
 	if combatInfo[LastZoneMapID] then
 		for i, v in ipairs(combatInfo[LastZoneMapID]) do
 			if v.type == "scenario" and checkEntry(v.msgs, LastZoneMapID) then
-				self:StartCombat(v.mod, 0)
+				DBM:StartCombat(v.mod, 0)
 			end
 		end
 	end
