@@ -195,6 +195,8 @@ local LastZoneText = ""
 local LastZoneMapID = -1
 local queuedBattlefield = {}
 local combatDelay = false
+local myRealRevision = DBM.Revision or DBM.ReleaseRevision
+local highestRealVersion = 0
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -1062,6 +1064,18 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return DBM:AddMsg(DBM_ERROR_NO_RAID)
 		end
 		DBM:RequestInstanceInfo()
+	elseif cmd:sub(1, 6) == "joshua" and DBM:GetRaidRank(playerName) > 0 then
+		if DBM.Revision == 99999 then--if it's already 99999
+			DBM.Revision = myRealRevision--Restore it
+			self:AddMsg(DBM_ABSOLUTE_MODE_OFF)
+			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))--Two syncs because we need to also disable mods that don't know what "AM" is
+			sendSync("AM", false)
+		else
+			DBM.Revision = 99999
+			self:AddMsg(DBM_ABSOLUTE_MODE_ON)
+			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
+			sendSync("AM", true)
+		end
 	else
 		DBM:LoadGUI()
 	end
@@ -2045,6 +2059,17 @@ do
 		sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 	end
 
+	syncHandlers["AM"] = function(sender, status)
+		if status == true then
+			self:AddMsg(DBM_ABSOLUTE_MODE_NOTIFY_ON:format(sender))
+		else
+			self:AddMsg(DBM_ABSOLUTE_MODE_NOTIFY_OFF:format(sender))
+			if highestRealVersion == DBM.Version then
+				enableIcons = true
+			end
+		end
+	end
+
 	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale)
 		revision, version = tonumber(revision or ""), tonumber(version or "")
 		if revision and version and displayVersion and raid[sender] then
@@ -2052,6 +2077,7 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
+			if version ~= 99999 and version > highestRealVersion then highestRealVersion = version end
 			if version > tonumber(DBM.Version) then
 				if raid[sender].rank >= 1 then
 					enableIcons = false
@@ -2064,7 +2090,7 @@ do
 							break
 						end
 					end
-					if found then
+					if found and version ~= 99999 then
 						showedUpdateReminder = true
 						if not DBM.Options.BlockVersionUpdateNotice then
 							DBM:ShowUpdateReminder(displayVersion, revision)
