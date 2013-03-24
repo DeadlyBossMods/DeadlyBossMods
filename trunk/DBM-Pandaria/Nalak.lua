@@ -7,7 +7,6 @@ mod:SetModelID(47227)
 mod:SetZone(928)--Isle of Thunder
 
 mod:RegisterCombat("combat")
-mod:SetWipeTime(120)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -46,15 +45,17 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(stormcloudTargets)
 	table.wipe(tetherTargets)
---	timerStormcloudCD:Start(15-delay)--15-17 variation noted
---	timerLightningTetherCD:Start(28-delay)
---	timerArcNovaCD:Start(39-delay)--Not a large sample size
+	timerStormcloudCD:Start(15-delay)--15-17 variation noted
+	timerLightningTetherCD:Start(28-delay)
+	timerArcNovaCD:Start(39-delay)--Not a large sample size
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
 end
 
 function mod:OnCombatEnd()
+	table.wipe(stormcloudTargets)
+	table.wipe(tetherTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end

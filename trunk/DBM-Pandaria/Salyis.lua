@@ -7,7 +7,6 @@ mod:SetModelID(42439)	--Galleon=42439, Salyis=42468 / main boss is Galleon
 mod:SetZone(807)--Valley of the Four winds
 
 mod:RegisterCombat("combat")
-mod:SetWipeTime(180)
 
 mod:RegisterEventsInCombat(
 	"RAID_BOSS_EMOTE"
