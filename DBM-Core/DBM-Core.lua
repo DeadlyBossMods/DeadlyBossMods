@@ -1046,7 +1046,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			elseif subCmd:upper() == "FOCUS" then
 				DBM.Arrow:ShowRunTo("focus")
 				success = true
-			elseif DBM:GetRaidUnitId(DBM:Capitalize(subCmd)) ~= "none" then
+			elseif DBM:GetRaidUnitId(DBM:Capitalize(subCmd)) then
 				DBM.Arrow:ShowRunTo(DBM:Capitalize(subCmd))
 				success = true
 			end
@@ -1525,6 +1525,16 @@ do
 		end
 	end
 
+	local function getUnitFullName(uId)
+		if not uId then return end
+		local name, server = UnitName(uId)
+		if not name then return end
+		if server and server ~= ""  then
+			name = name.."-"..server
+		end
+		return name
+	end
+
 	function DBM:GROUP_ROSTER_UPDATE()
 		self:Schedule(1.5, updateAllRoster)
 	end
@@ -1555,7 +1565,7 @@ do
 	end
 
 	function DBM:GetUnitFullName(uId)
-		return raidUIds[uId]
+		return raidUIds[uId] or getUnitFullName(uId)
 	end
 
 	function DBM:GetFullPlayerNameByGUID(guid)
@@ -1605,7 +1615,7 @@ do
 end
 
 function DBM:GetNumGroupMembers()
-	return math.max(GetNumGroupMembers(), GetNumSubgroupMembers())
+	return GetNumGroupMembers()
 end
 
 function DBM:GetBossUnitId(name)
@@ -2394,7 +2404,7 @@ do
 	end
 
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
-		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none") then
+		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
 			handleSync(channel, sender, strsplit("\t", msg))
 		end
 	end
@@ -2481,7 +2491,7 @@ do
 	local targetList = {}
 	local function buildTargetList()
 		local uId = (IsInRaid() and "raid") or "party"
-		for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
+		for i = 0, GetNumGroupMembers() do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
 			if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
@@ -3264,7 +3274,7 @@ do
 				DBM:RequestTimers()
 			else
 				local uId = (IsInRaid() and "raid") or "party"
-				for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
+				for i = 0, GetNumGroupMembers() do
 					local id = (i == 0 and "player") or uId..i
 					if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 						DBM:RequestTimers()
@@ -3335,9 +3345,9 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumGroupMembers(), GetNumSubgroupMembers() + 1)))
+			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), GetNumGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
-		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
+		(isRealIdMessage and (not isOnSameServer(sender) or not DBM:GetRaidUnitId(select(4, BNGetFriendInfoByID(sender)))) or not isRealIdMessage and not DBM:GetRaidUnitId(sender)) then
 			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 				difficultyText = select(2, DBM:GetCurrentInstanceDifficulty())
 			end
@@ -3347,7 +3357,7 @@ do
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumGroupMembers(), GetNumSubgroupMembers() + 1)))
+				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), GetNumGroupMembers()))
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
@@ -3963,6 +3973,9 @@ function bossModPrototype:IsTank()
 end
 
 function bossModPrototype:IsTanking(unit, boss)
+	--Why on earth remove this? DBM may get uId by DBM:GetRaidUnitId() function. But recently, this function return value is changed.
+	--That function will return nil instead of "none" if scanning failed. If unit is nil, IsTanking can cause unexpected result. So, unit == nil MUST BE FILTERED.
+	if not unit then return false end 
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
@@ -5332,7 +5345,7 @@ function bossModPrototype:GetBossHPString(cId)
 		end
 	end
 	local idType = (IsInRaid() and "raid") or "party"
-	for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
+	for i = 0, GetNumGroupMembers() do
 		local unitId = ((i == 0) and "target") or idType..i.."target"
 		local guid = UnitGUID(unitId)
 		if guid and (tonumber(guid:sub(6, 10), 16)) == cId then
@@ -5349,7 +5362,7 @@ end
 function bossModPrototype:IsWipe()
 	local wipe = true
 	local uId = (IsInRaid() and "raid") or "party"
-	for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
+	for i = 0, GetNumGroupMembers() do
 		local id = (i == 0 and "player") or uId..i
 		if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 			wipe = false
@@ -5438,8 +5451,7 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
 	local uId = DBM:GetRaidUnitId(target)
-	-- if target is uId, GetRaidUnitId returns "none". In this condition, target regards as uId.
-	if uId == "none" then uId = target end
+	if not uId then uId = target end
 	local oldIcon = self:GetIcon(uId) or 0
 	SetRaidTarget(uId, icon)
 	self:UnscheduleMethod("SetIcon", target)
