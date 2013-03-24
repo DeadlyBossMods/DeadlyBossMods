@@ -164,6 +164,7 @@ end
 function mod:BoltTarget()
 	scansDone = scansDone + 1
 	local targetname, uId = self:GetBossTarget(69078)
+	print(targetname, uId)
 	if targetname and uId then
 		if isTank(uId) and scansDone < 15 then--Make sure no infinite loop.
 			self:ScheduleMethod(0.1, "BoltTarget")--Check multiple times to find a target that isn't a player.

@@ -59,7 +59,6 @@ local Overload = {
 	["Jasper"] = GetSpellInfo(115843),
 	["Amethyst"] = GetSpellInfo(115844)
 }
---local scansDone = 0
 local activePetrification = nil
 local playerHasChains = false
 local jasperChainsTargets = {}
@@ -87,66 +86,6 @@ local function warnJasperChainsTargets()
 	table.wipe(jasperChainsTargets)
 end
 
-local function isTank(unit)
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	local uId = DBM:GetBossUnitId(Cobalt)
-	if uId and UnitExists(uId.."target") and UnitDetailedThreatSituation(unit, uId) then
-		return true
-	end
-	return false
-end
-
---[[
-function mod:ClobaltMineTarget(targetname)
-	warnCobaltMine:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnCobaltMine:Show()
-		yellCobaltMine:Yell()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 8 then
-				specWarnCobaltMineNear:Show(targetname)
-			end
-		end
-	end
-end
-
-
-function mod:ScanHandler(ScansCompleted)
-	scansDone = scansDone + 1
-	local targetname, uId = self:GetBossTarget(60051)
-	-- UnitExists also accepts not unit id but unitname. so we can use unitname as UnitExists parameter. and it also works with player controlled pet.
-	if UnitExists(targetname) then
-		if isTank(uId) and not ScansCompleted then--He's targeting a tank.
-			if scansDone < 12 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.05, "ScanHandler")--Check multiple times to be sure it's not on something other then tank.
-			else
-				self:ScanHandler(true)--It's still on tank, force true isTank and activate else rule and warn trap is on tank.
-			end
-		else--He's not targeting a tank target (or isTank was set to true after 12 scans) so this has to be right target.
-			self:UnscheduleMethod("ScanHandler")--Unschedule all checks just to be sure none are running, we are done.
-			self:ClobaltMineTarget(targetname)
-		end
-	else--target was nil, lets schedule a rescan here too.
-		if scansDone < 12 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.05, "ScanHandler")
-		end
-	end
-end
---]]
-
 function mod:ThreeBossStart(delay)
 	for i = 1, 5 do
 		local id = self:GetUnitCreatureId("boss"..i)
@@ -168,7 +107,6 @@ end
 
 function mod:OnCombatStart(delay)
 	activePetrification = nil
---	scansDone = 0
 	playerHasChains = false
 	table.wipe(jasperChainsTargets)
 	table.wipe(amethystPoolTargets)
@@ -335,8 +273,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			DBM.InfoFrame:Show(5, "enemypower", 1, nil, nil, ALTERNATE_POWER_INDEX)
 		end
 	elseif spellId == 129424 and self:AntiSpam(2, 5) then
---		scansDone = 0
---		self:ScanHandler()
 		warnCobaltMine:Show()
 		if self:IsDifficulty("lfr25") then
 			timerCobaltMineCD:Start(10.5)
