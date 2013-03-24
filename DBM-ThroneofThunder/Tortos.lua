@@ -41,7 +41,7 @@ local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 local berserkTimer					= mod:NewBerserkTimer(780)
 
 mod:AddBoolOption("InfoFrame")
-mod:AddBoolOption("SetIconOnTurtles", true)
+mod:AddBoolOption("SetIconOnTurtles", GetLocale() == "koKR" and false or true)
 
 local shelldName = GetSpellInfo(137633)
 local shellConcussion = GetSpellInfo(136431)
