@@ -1067,12 +1067,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd:sub(1, 6) == "joshua" and DBM:GetRaidRank(playerName) > 0 then
 		if DBM.Revision == 99999 then--if it's already 99999
 			DBM.Revision = myRealRevision--Restore it
-			self:AddMsg(DBM_ABSOLUTE_MODE_OFF)
+			DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
 			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))--Two syncs because we need to also disable mods that don't know what "AM" is
 			sendSync("AM", false)
 		else
 			DBM.Revision = 99999
-			self:AddMsg(DBM_ABSOLUTE_MODE_ON)
+			DBM:AddMsg(DBM_ABSOLUTE_MODE_ON)
 			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 			sendSync("AM", true)
 		end
