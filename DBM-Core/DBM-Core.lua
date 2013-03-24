@@ -2995,8 +2995,8 @@ end
 
 function DBM:StartLogging(timer, checkFunc)
 	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
-		LoggingCombat(1)
 		self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
+		LoggingCombat(1)
 		if checkFunc then
 			self:Unschedule(checkFunc)
 			self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
@@ -3016,12 +3016,12 @@ end
 
 function DBM:StopLogging()
 	if DBM.Options.AutologBosses and LoggingCombat() then
+		DBM:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
 		LoggingCombat(0)
-		self:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
 	end
 	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
 		if Transcriptor:IsLogging() then
-			self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
+			DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
 			Transcriptor:StopLog(1)
 		end
 	end
