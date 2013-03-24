@@ -130,6 +130,7 @@ end
 function mod:WatersTarget()
 	scansDone = scansDone + 1
 	local targetname, uId = self:GetBossTarget(60586)
+	print(targetname, uId)
 	if targetname and uId then
 		if UnitIsFriend("player", uId) then--He's targeting a friendly unit, he doesn't cast this on players, so it's wrong target.
 			if scansDone < 15 then--Make sure no infinite loop.

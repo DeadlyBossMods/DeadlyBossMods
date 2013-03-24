@@ -55,6 +55,7 @@ local crimsonWake = GetSpellInfo(138485)--Debuff ID I believe, not cast one. Sam
 function mod:TargetScanner(Force)
 	scansDone = scansDone + 1
 	local targetname, uId = self:GetBossTarget(69427)
+	print(targetname, uId)
 	if UnitExists(targetname) then
 		if self:IsTanking(uId, "boss1") and not Force then--This will USUALLY target tank but sometimes it does target a DPS like a mage on pull so we still do a tank check to be certain
 			if scansDone < 12 then
