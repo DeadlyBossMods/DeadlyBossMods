@@ -66,8 +66,6 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	warnWaterspout				= "%s (%d) : >%s<",
-	warnHuddleInTerror			= "%s (%d) : >%s<",
 	MoveForward					= "Move Through",
 	MoveRight					= "Move Right",
 	MoveBack					= "Move To Old Position",
@@ -86,8 +84,6 @@ L:SetOptionLocalization({
 	warnBreathOnPlatform		= "Show $spell:119414 warning when you are on platform\n(not recommanded, for raid leader)",
 	specWarnBreathOfFearSoon	= "Show pre-special warning for $spell:119414 if you not have a $spell:117964 buff",
 	specWarnMovement			= "Show special warning to move when $spell:120047 is being fired\n(http://mysticalos.com/terraceofendlesssprings.jpg)",
-	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
-	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbility			= "Show timer for when next special ability will be cast",
 	RangeFrame					= "Show range frame (2) for $spell:119519",
 	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
