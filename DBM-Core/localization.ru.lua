@@ -8,6 +8,11 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для \"%s\". Для доп
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "GUI не может быть изначально загружено в бою. Пожалуйста сначала загрузите GUI/измените настройки вне боя, затем оно будет доступно и в бою."
 
+DBM_ABSOLUTE_MODE_ON				= "Активирован абсолютный режим."
+DBM_ABSOLUTE_MODE_OFF				= "Абсолютный режим отключен."
+DBM_ABSOLUTE_MODE_NOTIFY_ON			= "%s активировал абсолютный режим. Только его DBM сможет ставить метки."
+DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "%s отключил абсолютный режим. Метки вновь могут ставить все игроки с рейд-ассистом."
+
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s вступает в бой (в процессе). Удачи! :)"
 DBM_CORE_BOSS_DOWN					= "%s погибает спустя %s!"
@@ -207,6 +212,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Спец-предупреждение, когда на вас $spell:%s",
 	run 		= "Спец-предупреждение для $spell:%s",
 	cast 		= "Спец-предупреждение о применении заклинания \n$spell:%s",
+	count 		= "Спец-предупреждение для $spell:%s",
 	stack 		= "Спец-предупреждение для >=%d стаков $spell:%s",
 	switch		= "Спец-предупреждение о смене цели для \n $spell:%s"
 }
@@ -221,7 +227,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move = "%s - отбегите",
 	run = "%s - бегите",
 	cast = "%s - прекратите чтение заклинаний",
-	stack = "%s (%%d)",
+	count = "%s! (%%d)",
+	stack = "На вас %%d стаков от %s",--too long?	
 	switch = ">%s< - переключитесь"
 }
 
