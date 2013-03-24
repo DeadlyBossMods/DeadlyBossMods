@@ -1526,12 +1526,13 @@ do
 	end
 
 	local function getUnitFullName(uId)
-		if not uId then return end
+		if not uId then print("DBM Debug: getUnitFullName invalid uId") return end
 		local name, server = UnitName(uId)
 		if not name then return end
 		if server and server ~= ""  then
 			name = name.."-"..server
 		end
+		print(name, server)
 		return name
 	end
 
@@ -3789,12 +3790,13 @@ local bossTargetuIds = {
 	"target", "focus", "boss1", "boss2", "boss3", "boss4", "boss5"
 }
 
+--This function had 0 changes recently
 function bossModPrototype:GetBossTarget(cid)
 	cid = cid or self.creatureId
 	local name, uid
 	for i, uId in ipairs(bossTargetuIds) do
 		if self:GetUnitCreatureId(uId) == cid then
-			name = DBM:GetUnitFullName(uId.."target")
+			name = DBM:GetUnitFullName(uId.."target")--But this one did
 			uid = uId.."target"
 			break
 		end
@@ -3975,6 +3977,10 @@ end
 function bossModPrototype:IsTanking(unit, boss)
 	--Why on earth remove this? DBM may get uId by DBM:GetRaidUnitId() function. But recently, this function return value is changed.
 	--That function will return nil instead of "none" if scanning failed. If unit is nil, IsTanking can cause unexpected result. So, unit == nil MUST BE FILTERED.
+	--No, the problem is fucking with GetRaidUnitId when it wasn't broken. THIS code is same as it was in ALL mods that ever used it, INCLUDING Lei shi, literally IDENTICAL and it worked for months. you change one thing and broke target scanning in ALL mods
+	--I had no targets on ANY boss in all of ToT, HOF, and TOES because unit was ALWAYS false because unit was always nil. AGAIN including Lei shi. It coudln'te even recognize tanks
+	--The problem is NOT this function, unit should NEVER be NIL. When changing core functions, you need to consider what mods actually use those functions and how, and what output they are used to expecting.
+	--Can't just change how things work and expect mods coded for the way they USED to work to agree with it.
 	if not unit then return false end 
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
