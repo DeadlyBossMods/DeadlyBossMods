@@ -12,7 +12,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "Yes, YES! Bring your rage to bear! Try to strike me down!"
+	Pull				= "그래... 그래! 네 분노를 행동으로 보여줘! 덤벼봐!"
 })
 
 -----------------------
@@ -21,7 +21,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(725)
 
 L:SetMiscLocalization({
-	Pull				= "Bring me their corpses!"
+	Pull				= "놈들의 시체를 가져와라!"
 })
 
 --------------
