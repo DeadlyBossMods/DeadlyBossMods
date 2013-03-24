@@ -2662,16 +2662,25 @@ end
 ---------------------------
 --  Kill/Wipe Detection  --
 ---------------------------
+local lowestBossHealth = 1 -- lowest health the boss had in the current fight
+local savedDifficulty
+local difficultyText
+
 function checkWipe(confirm)
 	if #inCombat > 0 then
+		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
+			savedDifficulty, difficultyText = DBM:GetCurrentInstanceDifficulty()
+		end
 		local wipe = true
-		if IsInScenarioGroup() then -- prevent wipe on ghost in Scenario Group.
+		if IsInScenarioGroup() then -- do not wipe in Scenario Group even player is ghot.
 			wipe = false
 		elseif IsEncounterInProgress() then
 			wipe = false
+		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- do not wipe on player dead or ghost while worldboss encounter.
+			wipe = false
 		else
 			local uId = (IsInRaid() and "raid") or "party"
-			for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
+			for i = 0, GetNumGroupMembers() do
 				local id = (i == 0 and "player") or uId..i
 				if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 					wipe = false
@@ -2686,7 +2695,7 @@ function checkWipe(confirm)
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
-			local maxDelayTime = 5
+			local maxDelayTime = (savedDifficulty == "worldboss" and 10) or 5 --wait 5s more on worldboss do actual wipe.
 			for i, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
@@ -2694,12 +2703,6 @@ function checkWipe(confirm)
 		end
 	end
 end
-
-
-local lowestBossHealth = 1 -- lowest health the boss had in the current fight
-local savedDifficulty
-local difficultyText
-local ignoreBestkill = false -- for bosses we enter combat with that aren't full health (likely a world boss)
 
 function DBM:StartCombat(mod, delay, synced)
 	if not checkEntry(inCombat, mod) then
@@ -2742,7 +2745,7 @@ function DBM:StartCombat(mod, delay, synced)
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		self:Schedule(mod.minCombatTime or 3, checkWipe)
-		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not C_Scenario.IsInScenario() and mod.Options.Enabled then
+		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario and mod.Options.Enabled then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
@@ -2753,10 +2756,10 @@ function DBM:StartCombat(mod, delay, synced)
 			end
 		end
 		local starthp = mod:GetHP():gsub("%%$", "")
-		if mod:IsDifficulty("worldboss") and tonumber(starthp) < 97 then--Boss was not full health when engaged, disable stats and best times
-			ignoreBestkill = true
+		if mod:IsDifficulty("worldboss") and tonumber(starthp) < 98 then--Boss was not full health when engaged, disable combat start timer and kill record. (regards full health : 98, 99, 100)
+			mod.ignoreBestkill = true
 		end
-		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
+		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled and not mod.ignoreBestkill then
 			local bestTime
 			if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
 				bestTime = mod.stats.lfr25BestTime
@@ -2771,12 +2774,12 @@ function DBM:StartCombat(mod, delay, synced)
 			elseif mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime then
 				bestTime = mod.stats.heroic25BestTime
 			end
-			if bestTime and bestTime > 0 and not ignoreBestkill then	-- only start if you already have a bestTime :)
+			if bestTime and bestTime > 0 then
 				local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 				speedTimer:Start()
 			end
 		end
-		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
+		if mod.OnCombatStart and mod.Options.Enabled and not mod.ignoreBestkill then mod:OnCombatStart(delay or 0) end
 		if not synced then
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
 		end
@@ -2791,7 +2794,7 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		self:StartLogging(0, nil)
 		if DBM.Options.ShowEngageMessage then
-			if ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
+			if mod.ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
 			else
 				self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
@@ -2838,7 +2841,7 @@ function DBM:EndCombat(mod, wipe)
 			end
 		end
 		self:Schedule(3, DBM.StopLogging)--small delay to catch kill/died combatlog events
-		if not savedDifficulty or not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
+		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		end
 		if wipe then
@@ -2887,7 +2890,7 @@ function DBM:EndCombat(mod, wipe)
 				if not mod.stats.lfr25Kills or mod.stats.lfr25Kills < 0 then mod.stats.lfr25Kills = 0 end
 				if mod.stats.lfr25Kills > mod.stats.lfr25Pulls then mod.stats.lfr25Kills = mod.stats.lfr25Pulls end--Fix logical error i've seen where for some reason we have more kills then pulls for boss as seen by - stats for wipe messages.
 				mod.stats.lfr25Kills = mod.stats.lfr25Kills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.lfr25LastTime = thisTime
 				if bestTime and bestTime > 0 and bestTime < 10 then--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
 					mod.stats.lfr25BestTime = thisTime
@@ -2898,28 +2901,28 @@ function DBM:EndCombat(mod, wipe)
 				if not mod.stats.normalKills or mod.stats.normalKills < 0 then mod.stats.normalKills = 0 end
 				if mod.stats.normalKills > mod.stats.normalPulls then mod.stats.normalKills = mod.stats.normalPulls end
 				mod.stats.normalKills = mod.stats.normalKills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.normalLastTime = thisTime
 				mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
 			elseif savedDifficulty == "heroic5" then
 				if not mod.stats.heroicKills or mod.stats.heroicKills < 0 then mod.stats.heroicKills = 0 end
 				if mod.stats.heroicKills > mod.stats.heroicPulls then mod.stats.heroicKills = mod.stats.heroicPulls end
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.heroicLastTime = thisTime
 				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
 			elseif savedDifficulty == "challenge5" then
 				if not mod.stats.challengeKills or mod.stats.challengeKills < 0 then mod.stats.challengeKills = 0 end
 				if mod.stats.challengeKills > mod.stats.challengePulls then mod.stats.challengeKills = mod.stats.challengePulls end
 				mod.stats.challengeKills = mod.stats.challengeKills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.challengeLastTime = thisTime
 				mod.stats.challengeBestTime = math.min(bestTime or math.huge, thisTime)
 			elseif savedDifficulty == "normal10" then
 				if not mod.stats.normalKills or mod.stats.normalKills < 0 then mod.stats.normalKills = 0 end
 				if mod.stats.normalKills > mod.stats.normalPulls then mod.stats.normalKills = mod.stats.normalPulls end
 				mod.stats.normalKills = mod.stats.normalKills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.normalLastTime = thisTime
 				if bestTime and bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in one global CD. (all level 60 raids report as instance difficulty 1 which means this time has to be ridiculously low. It's more or less only gonna fix kill times of 0.)
 					mod.stats.normalBestTime = thisTime
@@ -2930,7 +2933,7 @@ function DBM:EndCombat(mod, wipe)
 				if not mod.stats.heroicKills or mod.stats.heroicKills < 0 then mod.stats.heroicKills = 0 end
 				if mod.stats.heroicKills > mod.stats.heroicPulls then mod.stats.heroicKills = mod.stats.heroicPulls end
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.heroicLastTime = thisTime
 				if bestTime and bestTime > 0 and bestTime < 10 then
 					mod.stats.heroicBestTime = thisTime
@@ -2941,7 +2944,7 @@ function DBM:EndCombat(mod, wipe)
 				if not mod.stats.normal25Kills or mod.stats.normal25Kills < 0 then mod.stats.normal25Kills = 0 end
 				if mod.stats.normal25Kills > mod.stats.normal25Pulls then mod.stats.normal25Kills = mod.stats.normal25Pulls end
 				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.normal25LastTime = thisTime
 				if bestTime and bestTime > 0 and bestTime < 10 then
 					mod.stats.normal25BestTime = thisTime
@@ -2952,7 +2955,7 @@ function DBM:EndCombat(mod, wipe)
 				if not mod.stats.heroic25Kills or mod.stats.heroic25Kills < 0 then mod.stats.heroic25Kills = 0 end
 				if mod.stats.heroic25Kills > mod.stats.heroic25Pulls then mod.stats.heroic25Kills = mod.stats.heroic25Pulls end
 				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
-				if ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
+				if mod.ignoreBestkill then return end--Save kill count, hault the time saving if it was a bad pull health
 				mod.stats.heroic25LastTime = thisTime
 				if bestTime and bestTime > 0 and bestTime < 10 then
 					mod.stats.heroic25BestTime = thisTime
