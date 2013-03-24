@@ -41,7 +41,7 @@ local berserkTimer						= mod:NewBerserkTimer(600)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("GWHealthFrame", true)
 mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("SetIconOnProtector", true)
+mod:AddBoolOption("SetIconOnProtector", GetLocale() == "koKR" and false or true)
 
 local getAwayHP = 0 -- because max health is different between Asian and US 25-man encounter. Calculate manually.
 local specialsCast = 0
