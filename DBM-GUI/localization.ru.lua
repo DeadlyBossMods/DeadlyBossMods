@@ -29,8 +29,9 @@ L.PosY						= 'Позиция Y'
 L.MoveMe 					= 'Передвинь меня'
 L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Отмена'
-L.Button_LoadMod 			= 'Загрузить надстройку'
+L.Button_LoadMod			= 'Загрузить модуль'
 L.Mod_Enabled				= "Включить DBM"
+L.Mod_Reset					= "Загрузить настройки по умолчания для этого модуля (WIP)"
 L.Reset 					= "Сброс"
 
 L.Enable  					= "вкл."

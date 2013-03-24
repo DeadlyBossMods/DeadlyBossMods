@@ -131,7 +131,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
 		DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
 	end
-	if self:GetRaidRank() > 0 and self.Options.SetIconOnTurtles then--You can set marks and you have icons turned on
+	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnTurtles then--You can set marks and you have icons turned on
 		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
 	end
 end

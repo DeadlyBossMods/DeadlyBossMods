@@ -1534,6 +1534,7 @@ do
 	end
 
 	function DBM:GetRaidRank(name)
+		local name = name or playerName
 		return (raid[name] and raid[name].rank) or 0
 	end
 
