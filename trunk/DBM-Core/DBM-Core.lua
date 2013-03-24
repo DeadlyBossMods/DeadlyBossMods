@@ -4613,6 +4613,10 @@ do
 		return newSpecialWarning(self, "cast", text, nil, optionDefault, ...)
 	end
 
+	function bossModPrototype:NewSpecialWarningCount(text, optionDefault, ...)
+		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
+	end
+
 	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, ...)
 		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
 	end

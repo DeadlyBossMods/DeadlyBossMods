@@ -200,12 +200,13 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell 		= "$spell:%s 특수 경고 보기",
 	dispel 		= "$spell:%s 특수 경고 보기(해제/마법훔치기)",
 	interrupt	= "$spell:%s 특수 경고 보기(차단)",	
-	you 		= "$spell:%s 주문의 대상이 당신일 경우 특수 경고 보기",
+	you 		= "$spell:%s 대상이 될 경우 특수 경고 보기",
 	target 		= "$spell:%s 주문의 영향을 누군가 받은 경우 특수 경고 보기",
 	close 		= "$spell:%s 대상이 근처에 있을 경우 특수 경고 보기",
 	move 		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기(이동)",
 	run 		= "$spell:%s 특수 경고 보기(빠른 이동)",
 	cast 		= "$spell:%s 시전을 시작할 경우 특수 경고 보기",
+	count 		= "$spell:%s 특수 경고 보기",
 	stack 		= "$spell:%2$d 주문이 %1$d 중첩 이상시 특수 경고 보기",
 	switch		= "$spell:%s 특수 경고 보기(대상 전환)"
 }
@@ -219,17 +220,18 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	close 		= "당신 근처에 %s (>%%s<)!",
 	move 		= "%s - 이동하세요!",
 	run 		= "%s - 도망치세요!",
-	cast 		= "%s - 시전 중지",
-	stack 		= "%s (%%d)",
+	cast 		= "%s - 시전 중지!",
+	count 		= "%s! (%%d)",
+	stack 		= "당신에게 %s (%%d 중첩)",
 	switch		= ">%s< - 대상 전환!"
 }
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 주문의 영향을 받은 경우 별도 경고음 듣기"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 대상이 될 경우 별도 경고음 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 주문의 초읽기 소리 듣기"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 주문의 진행 시간 소리 듣기"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 주문의 영향을 받은 경우 대화로 알리기"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 될 경우 대화로 알리기"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "나에게 %s!"
 
 
