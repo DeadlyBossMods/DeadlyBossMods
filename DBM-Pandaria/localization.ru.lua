@@ -12,10 +12,18 @@ L:SetOptionLocalization({
 	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(119622)
 })
 
+L:SetMiscLocalization({
+	Pull				= "Да! Пусти в ход свою ярость! Попробуй совладать со мной!"
+})
+
 -----------------------
 -- Salyis --
 -----------------------
 L= DBM:GetModLocalization(725)
+
+L:SetMiscLocalization({
+	Pull				= "Принесите мне их трупы!"
+})
 
 --------------
 -- Oondasta --

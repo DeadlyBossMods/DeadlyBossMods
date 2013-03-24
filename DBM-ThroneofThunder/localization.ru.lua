@@ -10,6 +10,7 @@ L:SetOptionLocalization({
 	RangeFrame		= "Показывать окно проверки дистанции"
 })
 
+
 --------------
 -- Horridon --
 --------------
@@ -70,7 +71,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnKickShell		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
-	specWarnCrystalShell	= "Спец-предупреждение когда на Вас нет дебаффа $spell:137633",
+	specWarnCrystalShell	= "Спец-предупреждение, когда на Вас нет дебаффа $spell:137633",
 	InfoFrame		= "Информационное окно для игроков без $spell:137633",
 	SetIconOnTurtles	= "Устанавливать метки на $journal:7129 \n(Может быть не надежно, если помощник более чем у 1 человека)"
 })
@@ -224,8 +225,8 @@ L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
 	RangeFrame		= "Показывать окно проверки дистанции",--Для двух разных спеллов
-	StaticShockArrow	= "Показывать стрелку DBM когда на ком-то $spell:135695",
-	OverchargeArrow		= "Показывать стрелку DBM когда на ком-то $spell:136295",
+	StaticShockArrow	= "Показывать стрелку DBM, когда на ком-то $spell:135695",
+	OverchargeArrow		= "Показывать стрелку DBM, когда на ком-то $spell:136295",
 	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
 	SetIconOnStaticShock	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
 })
