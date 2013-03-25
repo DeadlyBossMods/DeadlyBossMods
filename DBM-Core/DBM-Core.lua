@@ -3979,32 +3979,6 @@ function bossModPrototype:IsTank()
 	or (class == "MONK" and (GetSpecialization() == 1))
 end
 
---REMOVE ALL COMMENTS AFTER ALL BUGS ARE FIXED.
-
---Why on earth remove this? DBM may get uId by DBM:GetRaidUnitId() function. But recently, this function return value is changed.
---That function will return nil instead of "none" if scanning failed. If unit is nil, IsTanking can cause unexpected result. So, unit == nil MUST BE FILTERED.
-
---No, the problem is fucking with GetRaidUnitId when it wasn't broken. THIS code is same as it was in ALL mods that ever used it, INCLUDING Lei shi, literally IDENTICAL and it worked for months. you change one thing and broke target scanning in ALL mods
---I had no targets on ANY boss in all of ToT, HOF, and TOES because unit was ALWAYS false because unit was always nil. AGAIN including Lei shi. It coudln'te even recognize tanks
---The problem is NOT this function, unit should NEVER be NIL. When changing core functions, you need to consider what mods actually use those functions and how, and what output they are used to expecting.
---Can't just change how things work and expect mods coded for the way they USED to work to agree with it.
-
---No. Target scanning is broken when GetUnitFullName changed. The reason why change that function to speed up and save cpu usage.
---But I missed that GetUnitFullName parameter can be "target" or "raid1target", if uId == "target" that finction will broken.
---I've found problem and fixed it yesterday. So, GetBossTarget works for now. Note that, broken target scanning not related with GetRaidUnitId changes. This problem is already fixed.
---Also, The reason to GetRaidUnitId change is simple. Almost boss mods uses like this statement. "local GetRaidUnitId(args.destName) = uId / if uId then ...."
---But in past, GetRaidUnitId always returing value ("none") if bad destName inputed.
---So, in following statement "if uId then" can't works as a filter.
---Now, GetRaidUnitId(name) function return nil if bad name or name that have not uId (like summoned pet)
---This is more reasonable returning I think.
---One more thing, hunter pet summoned by Stampede have no name. (they have nil as name)
---So, if target is Stampede pet(can be SPELL_AURA_APPLIED event), past GetRaidUnitId returns "player"
---Although this is super rare situration, can be BUGGED and unexpected returning.
-
---Generally, we can get target by CLEU or target scanning. But both method can return target as nil (Stampede pet).
---Old funtion is returning player's value if target is nil. This is obviously BUG. Unexpected returning.
---So, This is true reason that recent internal function changes.
-
 function bossModPrototype:IsTanking(unit, boss)
 	if not unit then return false end 
 	if GetPartyAssignment("MAINTANK", unit, 1) then
