@@ -3849,6 +3849,7 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 			targetScanCount = 0--Reset count for later use.
 			self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
+				local targetuid = DBM:GetRaidUnitId(targetname) or targetuid--overrride target uid because GetBossTarget always returns uid+"target" uids. This is variable uid, so if script delayed, can cause unexcepted result.
 				self:ScheduleMethod(0, returnFunc, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 			end
 		end
