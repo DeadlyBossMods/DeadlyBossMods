@@ -171,6 +171,7 @@ DBM_OPTION_SPACER = newproxy(false)
 --------------
 --  Locals  --
 --------------
+local enabled = true
 local inCombat = {}
 local combatInfo = {}
 local updateFunctions = {}
@@ -369,13 +370,15 @@ do
 	end
 
 	local function handleEvent(self, event, ...)
-		if self == mainFrame and (event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
-			event = event .. "_UNFILTERED"
+		if self == mainFrame and event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT" then
+			event = event == "UNIT_HEALTH" and "UNIT_HEALTH_UNFILTERED" or "UNIT_HEALTH_FREQUENT_UNFILTERED"
 		end
-		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
+		if not registeredEvents[event] or not enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
-			if type(v[event]) == "function" and (not v.zones or v.zones[LastZoneText] or v.zones[LastZoneMapID]) and (not v.Options or v.Options.Enabled) then
-				v[event](v, ...)
+			local zones = v.zones
+			local handler = v[event]
+			if handler and (not zones or zones[LastZoneText] or zones[LastZoneMapID]) and v.Options.Enabled then
+				handler(v, ...)
 			end
 		end
 	end
@@ -502,7 +505,7 @@ do
 		-- process some high volume events without building the whole table which is somewhat faster
 		-- this prevents work-around with mods that used to have their own event handler to prevent this overhead
 		if noArgTableEvents[event] then
-			handleEvent(nil, event, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
+			return handleEvent(nil, event, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
 		else
 			twipe(args)
 			args.timestamp = timestamp
@@ -1663,6 +1666,7 @@ do
 
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
+		enabled = DBM.Options.Enabled
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
 		-- load special warning options
 		migrateSavedOptions()
@@ -3464,10 +3468,12 @@ end
 --------------------------
 function DBM:Disable()
 	unschedule()
+	enabled = false
 	self.Options.Enabled = false
 end
 
 function DBM:Enable()
+	enabled = true
 	self.Options.Enabled = true
 end
 
