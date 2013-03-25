@@ -14,8 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"RAID_BOSS_WHISPER"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnFocusedLightning			= mod:NewTargetAnnounce(137399, 4)
@@ -63,6 +62,13 @@ function mod:TargetScanner(Force)
 			end
 		else
 			warnFocusedLightning:Show(targetname)
+			if targetname == UnitName("player") then
+				specWarnFocusedLightning:Show()
+				yellFocusedLightning:Yell()
+				if self.Options.RangeFrame then
+					DBM.RangeCheck:Show(8)
+				end
+			end
 		end
 	else
 		if scansDone < 12 then
@@ -124,7 +130,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStaticBurstOther:Show(args.destName)
 		end
 	elseif args.spellId == 138732 and args:IsPlayer() then
-		if self.Options.RangeFrame then
+		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 then you have range 8 open and we don't want to make it 4
 			DBM.RangeCheck:Show(4)
 		end
 	end
@@ -132,12 +138,16 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 138732 and args:IsPlayer() then
-		if self.Options.RangeFrame then
+		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 we don't want to hide it either.
 			DBM.RangeCheck:Hide()
 		end
 	elseif args.spellId == 137422 and args:IsPlayer() then
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			if UnitDebuff("player", GetSpellInfo(138732)) then--if you have 138732 then switch to 4 yards
+				DBM.RangeCheck:Show(4)
+			else
+				DBM.RangeCheck:Hide()
+			end
 		end
 	end
 end
@@ -158,18 +168,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			specWarnThrow:Show()
 		else
 			specWarnThrowOther:Show(target)
-		end
-	end
-end
-
---"<294.8 20:14:02> [RAID_BOSS_WHISPER] RAID_BOSS_WHISPER#|TInterface\\Icons\\ability_vehicle_electrocharge:20|t%s's |cFFFF0000|Hspell:137422|h[Focused Lightning]|h|r fixates on you. Run!#Jin'rokh the Breaker#0#false", -- [12425]
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:137422") then--In case target scanning fails, personal warnings still always go off. Target scanning is just so everyone else in raid knows who it's on (since only target sees this emote)
-		specWarnFocusedLightning:Show()
-		yellFocusedLightning:Yell()
-		soundFocusedLightning:Play()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(8)
 		end
 	end
 end
