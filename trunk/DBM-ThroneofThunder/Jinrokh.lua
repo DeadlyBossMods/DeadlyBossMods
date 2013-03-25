@@ -51,6 +51,13 @@ mod:AddBoolOption("RangeFrame")
 
 function mod:FocusedLightningTarget(targetname)
 	warnFocusedLightning:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnFocusedLightning:Show()
+		yellFocusedLightning:Yell()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
