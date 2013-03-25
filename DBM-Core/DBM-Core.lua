@@ -377,7 +377,7 @@ do
 		for i, v in ipairs(registeredEvents[event]) do
 			local zones = v.zones
 			local handler = v[event]
-			if handler and (not zones or zones[LastZoneText] or zones[LastZoneMapID]) and v.Options.Enabled then
+			if handler and (not zones or zones[LastZoneText] or zones[LastZoneMapID]) and enabled then
 				handler(v, ...)
 			end
 		end
