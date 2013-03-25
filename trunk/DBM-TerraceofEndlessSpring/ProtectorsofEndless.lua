@@ -88,7 +88,6 @@ mod:AddBoolOption("SetIconOnPrison", true)--For Lightning Prison (icons don't go
 
 local phase = 1
 local totalTouchOfSha = 0
-local scansDone = 0
 local prisonTargets = {}
 local prisonIcon = 1--Will try to start from 1 and work up, to avoid using icons you are probalby putting on bosses (unless you really fail at spreading).
 local prisonDebuff = GetSpellInfo(79339)
@@ -127,24 +126,11 @@ local function warnPrisonTargets()
 	mod:Schedule(11, resetPrisonStatus)--Because if a mage or paladin bubble/iceblock debuff, they do not get the stun, and it messes up prisonCount
 end
 
-function mod:WatersTarget()
-	scansDone = scansDone + 1
-	local targetname, uId = self:GetBossTarget(60586)
-	if targetname and uId then
-		if UnitIsFriend("player", uId) then--He's targeting a friendly unit, he doesn't cast this on players, so it's wrong target.
-			if scansDone < 15 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.1, "WatersTarget")--Check multiple times to find a target that isn't a player.
-			end
-		else--He's not targeting a player, it's definitely right target
-			warnCleansingWaters:Show(targetname)
-			if targetname == UnitName("target") then--You are targeting the target of this spell.
-				specWarnCleansingWaters:Show(targetname)
-			end
-		end
-	else--target was nil, lets schedule a rescan here too.
-		if scansDone < 15 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.1, "WatersTarget")
-		end
+function mod:WatersTarget(targetname)
+	if not targetname then return end
+	warnCleansingWaters:Show(targetname)
+	if targetname == UnitName("target") then--You are targeting the target of this spell.
+		specWarnCleansingWaters:Show(targetname)
 	end
 end
 
@@ -161,7 +147,6 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	totalTouchOfSha = 0
 	prisonCount = 0
-	scansDone = 0
 	asaniCasts = 0
 	corruptedCount = 0
 	notARaid = false
@@ -260,8 +245,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 117309 then
-		scansDone = 0
-		self:WatersTarget()
+		self:BossTargetScanner(60586, "WatersTarget", 0.1, 15, true)
 		timerCleansingWatersCD:Start()
 	elseif args.spellId == 117975 then
 		warnExpelCorruption:Show()

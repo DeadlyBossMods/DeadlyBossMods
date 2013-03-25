@@ -59,51 +59,28 @@ local berserkTimer						= mod:NewBerserkTimer(490)--a little over 8 min, basical
 
 local terrorName = EJ_GetSectionInfo(6316)
 local terrorCount = 0
-local targetScansDone = 0
 local darkOfNightCount = 0
 local lightOfDayCount = 0
 local breathCount = 0
 
-function mod:ShadowsTarget(targetname)
+function mod:ShadowsTarget(targetname, uId)
+	if not targetname then return end
 	warnNightmares:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnNightmaresYou:Show()
 		yellNightmares:Yell()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 10 then
-				specWarnNightmaresNear:Show(targetname)
-			elseif self:IsDifficulty("normal25", "heroic25", "lfr25") then -- On 25 man, he casts nightmare to 3 men, but target warning works with only 1 man. (like Putricide in ICC Marble Goo). So 25 man shows generic special warning for safety.
-				specWarnNightmares:Show()
-			end
-		end
 	end
-end
-
-function mod:TargetScanner(ScansDone)
-	targetScansDone = targetScansDone + 1
-	local targetname, uId = self:GetBossTarget(62442)
-	if UnitExists(targetname) then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a warning.
-		if self:IsTanking(uId, "boss1") and not ScansDone then--He's targeting his highest threat target.
-			if targetScansDone < 16 then--Make sure no infinite loop.
-				self:ScheduleMethod(0.05, "TargetScanner")--Check multiple times to be sure it's not on something other then tank.
-			else
-				self:TargetScanner(true)--It's still on tank, force true isTank and activate else rule and warn target is on tank.
-			end
-		else--He's not targeting highest threat target (or isTank was set to true after 16 scans) so this has to be right target.
-			self:UnscheduleMethod("TargetScanner")--Unschedule all checks just to be sure none are running, we are done.
-			self:ShadowsTarget(targetname)
+	if uId then
+		local x, y = GetPlayerMapPosition(uId)
+		if x == 0 and y == 0 then
+			SetMapToCurrentZone()
+			x, y = GetPlayerMapPosition(uId)
 		end
-	else--target was nil, lets schedule a rescan here too.
-		if targetScansDone < 16 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.05, "TargetScanner")
+		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+		if inRange and inRange < 10 then
+			specWarnNightmaresNear:Show(targetname)
+		elseif self:IsDifficulty("normal25", "heroic25", "lfr25") then -- On 25 man, he casts nightmare to 3 men, but target warning works with only 1 man. (like Putricide in ICC Marble Goo). So 25 man shows generic special warning for safety.
+			specWarnNightmares:Show()
 		end
 	end
 end
@@ -186,8 +163,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 122770 and self:AntiSpam(2, 1) then--Nightmares (Night Phase)
-		targetScansDone = 0
-		self:TargetScanner()
+		self:BossTargetScanner(62442, "ShadowsTarget")
 		if timerDayCD:GetTime() < 106 then
 			timerNightmaresCD:Start()
 			countdownNightmares:Start(15.5)
