@@ -1380,7 +1380,7 @@ do
 
 	--	save playerinfo into raid table on load. (for solo raid)
 	DBM:RegisterOnLoadCallback(function()
-		DBM:Schedule(30, function()
+		DBM:Schedule(5, function()
 			if not raid[playerName] then
 				raid[playerName] = {}
 				raid[playerName].name = playerName
@@ -1389,6 +1389,10 @@ do
 				raid[playerName].rank = 0
 				raid[playerName].class = class
 				raid[playerName].id = "player"
+				raid[playerName].revision = DBM.Revision
+				raid[playerName].version = DBM.Version
+				raid[playerName].displayVersion = DBM.DisplayVersion
+				raid[playerName].locale = GetLocale()
 				raidUIds["player"] = playerName
 				raidGuids[UnitGUID("player")] = playerName
 				raidShortNames[playerName] = playerName
@@ -1518,6 +1522,10 @@ do
 			raid[playerName].rank = 0
 			raid[playerName].class = class
 			raid[playerName].id = "player"
+			raid[playerName].revision = DBM.Revision
+			raid[playerName].version = DBM.Version
+			raid[playerName].displayVersion = DBM.DisplayVersion
+			raid[playerName].locale = GetLocale()
 			raidUIds["player"] = playerName
 			raidGuids[UnitGUID("player")] = playerName
 			raidShortNames[playerName] = playerName
@@ -1545,7 +1553,11 @@ do
 
 	function DBM:GetRaidRank(name)
 		local name = name or playerName
-		return (raid[name] and raid[name].rank) or 0
+		if name == playerName then--If name is player, try to get actual rank. Because raid[name].rank sometimes seems returning 0 even player is promoted.
+			return UnitIsGroupLeader("player") and 2 or UnitIsGroupAssistant("player") and 1 or 0
+		else
+			return (raid[name] and raid[name].rank) or 0
+		end
 	end
 
 	function DBM:GetRaidSubgroup(name)
