@@ -8,6 +8,11 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen. Für weitere Einstel
 DBM_CORE_LOAD_GUI_ERROR				= "Konnte die grafische Benutzeroberfläche nicht laden: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Kampf geladen werden. Zur Vornahme von Einstellungen bitte diese zunächst außerhalb des Kampfes laden. Danach steht sie auch im Kampf zur Verfügung."
 
+DBM_ABSOLUTE_MODE_ON				= "Absoluter Modus aktiviert."
+DBM_ABSOLUTE_MODE_OFF				= "Absoluter Modus deaktiviert. Meldung der korrekten DBM-Version wiederhergestellt."
+DBM_ABSOLUTE_MODE_NOTIFY_ON			= "%s hat den absoluten Modus aktiviert. Nur das DBM dieses Spielers wird automatisch Schlachtzugzeichen setzen."
+DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "%s hat den absoluten Modus deaktiviert. Es werdem wieder die normalen Regeln für das automatische Setzen von Schlachtzugzeichen durch DBM angewendet."
+
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Du wurdest in den laufenden Kampf gegen %s verwickelt. Viel Glück! :)"
 DBM_CORE_BOSS_DOWN					= "%s tot nach %s!"
@@ -207,7 +212,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Zeige Spezialwarnung, wenn du von $spell:%s betroffen bist",
 	run 		= "Zeige Spezialwarnung zum Weglaufen vor $spell:%s",
 	cast 		= "Zeige Spezialwarnung zum Zauberstopp bei $spell:%s",
-	stack 		= "Zeige Spezialwarnung für >=%d Stapel von $spell:%s",
+	count 		= "Zeige Spezialwarnung für $spell:%s",
+	stack 		= "Zeige Spezialwarnung für >=%d Stapel von $spell:%s auf dir",
 	switch 		= "Zeige Spezialwarnung für Zielwechsel auf $spell:%s"
 }
 
@@ -221,6 +227,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move = "%s - geh weg",
 	run = "%s - lauf weg",
 	cast = "%s - stoppe Zauber",
+	count = "%s! (%%d)",
 	stack = "%s (%%d)",
 	switch = ">%s< - Ziel wechseln"
 }

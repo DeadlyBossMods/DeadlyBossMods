@@ -67,8 +67,6 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	warnWaterspout				= "%s (%d) : >%s<",
-	warnHuddleInTerror			= "%s (%d) : >%s<",
 	MoveWarningForward			= "Lauf durch",
 	MoveWarningRight			= "Lauf nach rechts",
 	MoveWarningBack				= "Lauf in alte Position",
@@ -87,8 +85,6 @@ L:SetOptionLocalization({
 	warnBreathOnPlatform		= "Zeige Warnung für $spell:119414, falls du auf einem der äußeren Schreine\nbist (nicht allgemein empfohlen, gedacht für Schlachtzugsleiter)",
 	specWarnBreathOfFearSoon	= "Zeige Spezialvorwarn. für $spell:119414, falls dir der $spell:117964 Buff fehlt",
 	specWarnMovement			= "Zeige Spezialwarnung zum Laufen bei $spell:120047\n(http://mysticalos.com/terraceofendlesssprings.jpg)",
-	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
-	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbility			= "Zeige Zeit bis nächste Spezialfähigkeit gewirkt wird",
 	RangeFrame					= "Zeige Abstandsfenster (2m) für $spell:119519",
 	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
