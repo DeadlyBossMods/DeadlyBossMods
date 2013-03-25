@@ -44,8 +44,9 @@ local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or
 --Dark Animus will now use its abilities at more consistent intervals. (March 19 hotfix)
 --As such, all of these timers need re-verification and updating.
 local timerSiphonAnimaCD			= mod:NewNextTimer(30, 138644)
-local timerAnimaRingCD				= mod:NewCDTimer(22, 136954)
-local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--TODO, this wasn't cast as often on normal. Find out if they actually have different CDs or if it was buffed since normal was tested.
+local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
+local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
+--local timerInterruptingJoltCD		= mod:NewCDTimer(24, 138763)--Still need a log where he actually reaches 75 anima, my guild kills too fast
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
@@ -78,6 +79,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(138763, 139867) then--Normal version is 2.2 sec cast. Heroic is 1.4 second cast (thus why it has different spellid)
 		warnInterruptingJolt:Show()
 		specWarnInterruptingJolt:Show()
+--		timerInterruptingJoltCD:Start()
 	end
 end
 
