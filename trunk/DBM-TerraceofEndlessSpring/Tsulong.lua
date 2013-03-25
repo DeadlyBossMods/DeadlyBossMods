@@ -90,7 +90,6 @@ end
 function mod:TargetScanner(ScansDone)
 	targetScansDone = targetScansDone + 1
 	local targetname, uId = self:GetBossTarget(62442)
-	print(targetname, uId)
 	if UnitExists(targetname) then--Better way to check if target exists and prevent nil errors at same time, without stopping scans from starting still. so even if target is nil, we stil do more checks instead of just blowing off a warning.
 		if self:IsTanking(uId, "boss1") and not ScansDone then--He's targeting his highest threat target.
 			if targetScansDone < 16 then--Make sure no infinite loop.

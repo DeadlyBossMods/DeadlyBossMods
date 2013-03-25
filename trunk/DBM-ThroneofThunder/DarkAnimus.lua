@@ -55,7 +55,6 @@ local crimsonWake = GetSpellInfo(138485)--Debuff ID I believe, not cast one. Sam
 function mod:TargetScanner(Force)
 	scansDone = scansDone + 1
 	local targetname, uId = self:GetBossTarget(69427)
-	print(targetname, uId)
 	if UnitExists(targetname) then
 		if self:IsTanking(uId, "boss1") and not Force then--This will USUALLY target tank but sometimes it does target a DPS like a mage on pull so we still do a tank check to be certain
 			if scansDone < 12 then
@@ -102,7 +101,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 138569 and args:IsDestTypePlayer() then
+	if args.spellId == 138569 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
 			warnExplosiveSlam:Show(args.destName, args.amount or 1)

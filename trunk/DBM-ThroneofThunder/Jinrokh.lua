@@ -54,7 +54,6 @@ local scansDone = 0
 function mod:TargetScanner(Force)
 	scansDone = scansDone + 1
 	local targetname, uId = self:GetBossTarget(69465)
-	print(targetname, uId)
 	if UnitExists(targetname) then
 		if self:IsTanking(uId, "boss1") and not Force then
 			if scansDone < 12 then
