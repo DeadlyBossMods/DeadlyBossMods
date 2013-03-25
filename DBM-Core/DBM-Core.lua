@@ -3799,7 +3799,7 @@ function bossModPrototype:GetBossTarget(cid)
 		if self:GetUnitCreatureId(uId) == cid then
 			bossuid = uId
 			name = DBM:GetUnitFullName(uId.."target")
-			uid = uId.."target"
+			uid = DBM:GetRaidUnitId(name) or uId.."target"--overrride target uid because uid+"target" is variable uid.
 			break
 		end
 	end
@@ -3810,7 +3810,7 @@ function bossModPrototype:GetBossTarget(cid)
 			if self:GetUnitCreatureId("raid"..i.."target") == cid then
 				bossuid = "raid"..i.."target"
 				name = DBM:GetUnitFullName("raid"..i.."targettarget")
-				uid = "raid"..i.."targettarget"
+				uid = DBM:GetRaidUnitId(name) or "raid"..i.."targettarget"--overrride target uid because uid+"target" is variable uid.
 				break
 			end
 		end
@@ -3819,7 +3819,7 @@ function bossModPrototype:GetBossTarget(cid)
 			if self:GetUnitCreatureId("party"..i.."target") == cid then
 				bossuid = "party"..i.."target"
 				name = DBM:GetUnitFullName("party"..i.."targettarget")
-				uid = "party"..i.."targettarget"
+				uid = DBM:GetRaidUnitId(name) or "party"..i.."targettarget"--overrride target uid because uid+"target" is variable uid.
 				break
 			end
 		end
@@ -3849,7 +3849,6 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 			targetScanCount = 0--Reset count for later use.
 			self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
-				local targetuid = DBM:GetRaidUnitId(targetname) or targetuid--overrride target uid because GetBossTarget always returns uid+"target" uids. This is variable uid, so if script delayed, can cause unexcepted result.
 				self:ScheduleMethod(0, returnFunc, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 			end
 		end
