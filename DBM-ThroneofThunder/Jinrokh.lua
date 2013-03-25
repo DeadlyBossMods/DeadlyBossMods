@@ -48,33 +48,9 @@ local countdownIonization			= mod:NewCountdown(60.5, 138732)
 
 mod:AddBoolOption("RangeFrame")
 
-local scansDone = 0
 
-function mod:TargetScanner(Force)
-	scansDone = scansDone + 1
-	local targetname, uId = self:GetBossTarget(69465)
-	if UnitExists(targetname) then
-		if self:IsTanking(uId, "boss1") and not Force then
-			if scansDone < 12 then
-				self:ScheduleMethod(0.025, "TargetScanner")
-			else
-				self:TargetScanner(true)
-			end
-		else
-			warnFocusedLightning:Show(targetname)
-			if targetname == UnitName("player") then
-				specWarnFocusedLightning:Show()
-				yellFocusedLightning:Yell()
-				if self.Options.RangeFrame then
-					DBM.RangeCheck:Show(8)
-				end
-			end
-		end
-	else
-		if scansDone < 12 then
-			self:ScheduleMethod(0.025, "TargetScanner")
-		end
-	end
+function mod:FocusedLightningTarget(targetname)
+	warnFocusedLightning:Show(targetname)
 end
 
 function mod:OnCombatStart(delay)
@@ -96,8 +72,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 137399 then
-		scansDone = 0
-		self:TargetScanner()
+		self:BossTargetScanner(69465, "FocusedLightningTarget", 0.025, 12)
 		timerFocusedLightningCD:Start()
 	elseif args.spellId == 137313 then
 		warnStorm:Show()

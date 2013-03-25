@@ -49,37 +49,19 @@ local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--TODO, this wasn't cast
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
-local scansDone = 0
 local crimsonWake = GetSpellInfo(138485)--Debuff ID I believe, not cast one. Same spell name though
 
-function mod:TargetScanner(Force)
-	scansDone = scansDone + 1
-	local targetname, uId = self:GetBossTarget(69427)
-	if UnitExists(targetname) then
-		if self:IsTanking(uId, "boss1") and not Force then--This will USUALLY target tank but sometimes it does target a DPS like a mage on pull so we still do a tank check to be certain
-			if scansDone < 12 then
-				self:ScheduleMethod(0.02, "TargetScanner")
-			else
-				self:TargetScanner(true)
-			end
-		else
-			warnAnimaRing:Show(targetname)
-			if targetname == UnitName("player") then
-				specWarnAnimaRing:Show()
-				yellAnimaRing:Yell()
-			else
-				specWarnAnimaRingOther:Show(targetname)
-			end
-		end
+function mod:AnimaRingTarget(targetname)
+	warnAnimaRing:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnAnimaRing:Show()
+		yellAnimaRing:Yell()
 	else
-		if scansDone < 12 then
-			self:ScheduleMethod(0.02, "TargetScanner")
-		end
+		specWarnAnimaRingOther:Show(targetname)
 	end
 end
 
 function mod:OnCombatStart(delay)
-	scansDone = 0
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
 	)
@@ -91,8 +73,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 136954 then
-		scansDone = 0
-		self:TargetScanner()
+		self:BossTargetScanner(69427, "AnimaRingTarget", 0.02, 12)
 		timerAnimaRingCD:Start()
 	elseif args:IsSpellID(138763, 139867) then--Normal version is 2.2 sec cast. Heroic is 1.4 second cast (thus why it has different spellid)
 		warnInterruptingJolt:Show()
