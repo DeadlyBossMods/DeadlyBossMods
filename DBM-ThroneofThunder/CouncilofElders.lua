@@ -33,10 +33,9 @@ mod:SetBossHealthInfo(
 
 --All
 local warnPossessed					= mod:NewStackAnnounce(136442, 2, nil, nil, "warnPossessed")
---local warnSoulFragment				= mod:NewTargetAnnounce(137359, 3)--Could find no spellid in either wowhead or wowdb, so i'll need logs
 
 --Sul the Sandcrawler
-local warnSandBolt					= mod:NewStackAnnounce(136189, 3, nil, false, "warnSandBolt")--Spammy but important for heroic (and even normal if very melee heavy)
+local warnSandBolt					= mod:NewCountAnnounce(136189, 3, nil, false)--Spammy but important for heroic for internet rotation.
 local warnQuicksand					= mod:NewSpellAnnounce(136521, 2)
 local warnSandstorm					= mod:NewSpellAnnounce(136894, 3)
 --High Prestess Mar'li
@@ -55,7 +54,7 @@ local warnRecklessCharge			= mod:NewCastAnnounce(137122, 3, 2, nil, false)
 local specWarnPossessed				= mod:NewSpecialWarning("specWarnPossessed", mod:IsDps())
 local specWarnDarkPower				= mod:NewSpecialWarningSpell(136507, nil, nil, nil, 2)
 --Sul the Sandcrawler
-local specWarnSandBolt				= mod:NewSpecialWarningInterrupt(136189, false)--When it's targeting a melee, damage is pretty big. More important to interrupt than ones targeting ranged that SHOULD be spread out. Maybe add a bool menu option to choose ALL or melee only for heroic
+local specWarnSandBolt				= mod:NewSpecialWarningInterrupt(136189, false)
 local specWarnSandStorm				= mod:NewSpecialWarningSpell(136894, nil, nil, nil, 2)
 local specWarnQuickSand				= mod:NewSpecialWarningMove(136860)
 --High Prestess Mar'li
@@ -100,29 +99,13 @@ mod:AddBoolOption("RangeFrame")--For Sand Bolt and charge and biting cold
 mod:AddBoolOption("SetIconOnBitingCold", true)
 mod:AddBoolOption("SetIconOnFrostBite", true)
 
-local SulsName = EJ_GetSectionInfo(7049)
 local lingeringPresence = GetSpellInfo(136467)
 local chilledDebuff = GetSpellInfo(137085)
 local boltCasts = 0
-local scansDone = 0
 local kazraPossessed = false
 local possessesDone = 0
 local chilledWarned = false
 local darkPowerWarned = false
-
-local function isTank(unit)
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	local uId = DBM:GetBossUnitId()
-	if uId and UnitExists(uId.."target") and UnitDetailedThreatSituation(unit, uId) then
-		return true
-	end
-	return false
-end
 
 local showDamagedHealthBar, hideDamagedHealthBar
 do
@@ -161,27 +144,6 @@ do
 	end
 end
 
-function mod:BoltTarget()
-	scansDone = scansDone + 1
-	local targetname, uId = self:GetBossTarget(69078)
-	if targetname and uId then
-		if isTank(uId) and scansDone < 15 then--Make sure no infinite loop.
-			self:ScheduleMethod(0.1, "BoltTarget")--Check multiple times to find a target that isn't a player.
-		else
-			warnSandBolt:Show(targetname, boltCasts)
-			local targetedClass = UnitClass(uId)
-			--Todo, add hybrid melee class checks somehow? Inspect throttling won't allow that here though, too often. Maybe on pull inspect just those classes and cache their specs?
-			if targetedClass == "WARRIOR" or targetedClass == "DEATHKNIGHT" or targetedClass == "MONK" or targetedClass == "ROGUE" then--This bolt is targeting a melee, it is a priority interrupt
-				specWarnSandBolt:Show(SulsName)
-			end
-		end
-	else--target was nil, lets schedule a rescan here too.
-		if scansDone < 15 then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(0.1, "BoltTarget")
-		end
-	end
-end
-
 function mod:OnCombatStart(delay)
 	kazraPossessed = false
 	chilledWarned = false
@@ -205,10 +167,10 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 136189 then
-		scansDone = 0
 		if boltCasts == 3 then boltCasts = 0 end
 		boltCasts = boltCasts + 1
-		self:BoltTarget()
+		warnSandBolt:Show(boltCasts)
+		specWarnSandBolt:Show(args.sourceName)
 	elseif args.spellId == 136521 and args:GetSrcCreatureID() == 69078 then--Filter the ones cast by adds dying.
 		warnQuicksand:Show()
 		timerQuickSandCD:Start()

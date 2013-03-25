@@ -33,7 +33,6 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(816)
 
 L:SetOptionLocalization({
-	warnSandBolt		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136189),
 	RangeFrame			= "Afficher le cadre de distance"
 })
 
