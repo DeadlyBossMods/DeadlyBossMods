@@ -230,7 +230,7 @@ function mod:UNIT_AURA(uId)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 136685 and self:AntiSpam(2, 5) and not UnitIsUnit("player", "boss1target") then --ignore bat warning if you are tanking boss. (by TOM_RUS)
+	if spellId == 136685 and self:AntiSpam(2, 5) then --Don't filter main tank, bat tank often taunts boss just before bats for vengeance, otherwise we lose threat to dps. Then main tank taunts back after bats spawn and we go get them, fully vengeanced (if you try to pick up bats without vengeance you will not hold aggro for shit)
 		warnSummonBats:Show()
 		specWarnSummonBats:Show()
 		timerSummonBatsCD:Start()
