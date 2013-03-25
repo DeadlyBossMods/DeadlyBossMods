@@ -74,6 +74,7 @@ DBM.DefaultOptions = {
 	SpecialWarningSound3 = "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav",
 	ModelSoundValue = "Short",
 	CountdownVoice = "Corsica",
+	ShowCountdownText = false,
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
@@ -2040,7 +2041,7 @@ do
 		end
 		if not dummyMod then
 			dummyMod = DBM:NewMod("PullTimerCountdownDummy")
-			dummyMod.countdown = dummyMod:NewCountdown(0, 0)
+			dummyMod.countdown = dummyMod:NewCountdown(0, 0, nil, nil, nil, true)
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is inp rogress)
 		if not DBM.Options.DontShowPT and DBM.Bars:GetBar(DBM_CORE_TIMER_PULL) then
@@ -4300,6 +4301,14 @@ end
 do
 	local countdownProtoType = {}
 	local mt = {__index = countdownProtoType}
+	
+	local function showCountdown(timer)
+		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+	end
+	
+	local function stopCountdown(timer)
+		TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
+	end
 
 	function countdownProtoType:Start(timer, count)
 		if not self.option or self.mod.Options[self.option] then
@@ -4307,6 +4316,13 @@ do
 			timer = timer < 2 and self.timer or timer
 			count = count or self.count or 5
 			if timer <= count then count = floor(timer) end
+			if DBM.Options.ShowCountdownText and not self.disableText then
+				if timer >= count then 
+					DBM:Schedule(timer-count, showCountdown, count)
+				else
+					DBM:Schedule(timer%1, showCountdown, floor(timer))
+				end
+			end
 			if DBM.Options.CountdownVoice == "None" then return end
 			if DBM.Options.CountdownVoice == "Mosh" then
 				for i = count, 1, -1 do
@@ -4321,6 +4337,7 @@ do
 			end
 		end
 	end
+	countdownProtoType.Show = countdownProtoType.Start
 
 	function countdownProtoType:Schedule(t)
 		return schedule(t, self.Start, self.mod, self)
@@ -4333,10 +4350,14 @@ do
 		self.sound3:Cancel()
 		self.sound4:Cancel()
 		self.sound5:Cancel()
+		if DBM.Options.ShowCountdownText and not self.disableText then
+			DBM:Unschedule(showCountdown)
+			stopCountdown()
+		end
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count)
+	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count, disableText)
 		if not spellId and not optionName then
 			error("NewCountdown: you must provide either spellId or optionName", 2)
 			return
@@ -4358,6 +4379,7 @@ do
 				sound5 = sound5,
 				timer = timer,
 				count = count,
+				disableText = disableText,
 				mod = self
 			},
 			mt
