@@ -223,7 +223,7 @@ function mod:UNIT_AURA(uId)
 end
 
 local function FindFastestHighestVersion()
-	DBM:SendSync("FastestPerson", UnitGUID("player"))
+	mod:SendSync("FastestPerson", UnitGUID("player"))
 end
 
 function mod:OnSync(msg, guid, ver)
