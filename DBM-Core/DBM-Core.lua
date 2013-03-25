@@ -1016,12 +1016,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:Unschedule(SendChatMessage)
 		if IsInGroup() and timer > 1 then
 			SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)--Still give everyone first raid warning (but only that one)
-			for i = 1, 5 do
-				if timer > i then
-					DBM:Schedule(timer - i, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL:format(i)), channel)--Filter the raid warning based countdown though. These are mainly for those who have no boss mod (bigwigs or DBM). Boss mod users don't need a raid warning countdown, they have a local one
-				end
-			end
-			DBM:Schedule(timer, SendChatMessage, ("*** %s ***"):format(DBM_CORE_ANNOUNCE_PULL_NOW), channel)--^
+			DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_PULL_NOW, channel)
 		end
 		sendSync("PT", timer)
 	elseif cmd:sub(1, 5) == "arrow" then
