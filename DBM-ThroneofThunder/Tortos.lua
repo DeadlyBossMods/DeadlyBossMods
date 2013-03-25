@@ -23,7 +23,7 @@ local warnCallofTortos				= mod:NewSpellAnnounce(136294, 3)
 local warnQuakeStomp				= mod:NewCountAnnounce(134920, 3)
 local warnKickShell					= mod:NewAnnounce("warnKickShell", 2, 134031)
 local warnStoneBreath				= mod:NewCastAnnounce(133939, 4)
-local warnSummonBats				= mod:NewSpellAnnounce(136685, 3)
+local warnSummonBats				= mod:NewSpellAnnounce("ej7140", 3, 136685)
 local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
@@ -31,14 +31,14 @@ local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, 2
 local specWarnRockfall				= mod:NewSpecialWarningSpell(134476, false, nil, nil, 2)
 local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
 local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", false)
-local specWarnSummonBats			= mod:NewSpecialWarningSwitch(136685, mod:IsTank())--Dps can turn it on too, but not on by default for dps cause quite frankly dps should NOT switch right away, tank needs to get aggro first and where they spawn is semi random.
+local specWarnSummonBats			= mod:NewSpecialWarningSwitch("ej7140", mod:IsTank())--Dps can turn it on too, but not on by default for dps cause quite frankly dps should NOT switch right away, tank needs to get aggro first and where they spawn is semi random.
 
 local timerBiteCD					= mod:NewCDTimer(8, 135251, nil, mod:IsTank())
 local timerRockfallCD				= mod:NewCDTimer(10, 134476)
 local timerCallTortosCD				= mod:NewNextTimer(60.5, 136294)
 local timerStompCD					= mod:NewNextCountTimer(49, 134920)
 local timerBreathCD					= mod:NewCDTimer(46, 133939)--TODO, adjust timer when Growing Anger is cast, so we can use a Next bar more accurately
-local timerSummonBatsCD				= mod:NewCDTimer(45, 136685)--45-47. This doesn't always sync up to furious stone breath. Longer fight goes on more out of sync they get. So both bars needed I suppose
+local timerSummonBatsCD				= mod:NewCDTimer(45, "ej7140", nil, nil, nil, 136685)--45-47. This doesn't always sync up to furious stone breath. Longer fight goes on more out of sync they get. So both bars needed I suppose
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration of the rapid caveins
 local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
@@ -230,7 +230,7 @@ function mod:UNIT_AURA(uId)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 136685 and self:AntiSpam(2, 5) then
+	if spellId == 136685 and self:AntiSpam(2, 5) and not UnitIsUnit("player", "boss1target") then --ignore bat warning if you are tanking boss. (by TOM_RUS)
 		warnSummonBats:Show()
 		specWarnSummonBats:Show()
 		timerSummonBatsCD:Start()
