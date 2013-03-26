@@ -7,22 +7,34 @@ mod:SetZone()
 mod:RegisterCombat("scenario", 934)
 
 mod:RegisterEventsInCombat(
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_CAST_START",
+	"UNIT_AURA"
 )
 
+local warnStoneSmash		= mod:NewCastAnnounce(139777, 3, nil, nil, false)
+
 local timerEvent			= mod:NewBuffFadesTimer(300, 140000)
+local timerStoneSmash		= mod:NewCastTimer(3, 139777, nil, false)
 
 mod:RemoveOption("HealthFrame")
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 140000 then
-		timerEvent:Start()
+local timerDebuff = GetSpellInfo(140000)
+local timerStarted = false
+
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 139777 then
+		warnStoneSmash:Show()
+		timerStoneSmash:Start(3, args.sourceGUID)
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 140000 then
-		timerEvent:Cancel()
+--Apparently this doesn't fire in combat log, have to use UNIT_AURA instead.
+function mod:UNIT_AURA(uId)
+	if uId ~= "player" then return end
+	if UnitDebuff("player", timerDebuff) and not timerStarted then
+		timerEvent:Start()
+		timerStarted = true
+	elseif not UnitDebuff("player", timerDebuff) and timerStarted then
+		timerStarted = false
 	end
 end
