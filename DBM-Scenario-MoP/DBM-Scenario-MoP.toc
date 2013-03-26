@@ -21,7 +21,7 @@
 ## X-DBM-Mod-Name-zhCN: 场景战役 (熊猫人之谜)
 ## X-DBM-Mod-Name-frFR: Scénario (MoP)
 ## X-DBM-Mod-Sort: 35
-## X-DBM-Mod-LoadZoneID: 906, 851, 899, 911, 920, 934
+## X-DBM-Mod-LoadZoneID: 906, 851, 899, 911, 920, 934, 919
 localization.en.lua
 localization.kr.lua
 localization.de.lua
@@ -37,3 +37,5 @@ TheramoresFall\MapSizes.lua
 TheramoresFall\Theramore.lua
 TrovesThunderKing\MapSizes.lua
 TrovesThunderKing\Troves.lua
+WarlockSolo\MapSizes.lua
+WarlockSolo\GreenFire.lua
