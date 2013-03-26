@@ -45,3 +45,14 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnAchFiveAlive	= "\"불사전설\" 업적 실패시 알림 보기"
 })
+
+
+--------------------------------
+-- Troves of the Thunder King --
+--------------------------------
+
+L= DBM:GetModLocalization("Troves")
+
+L:SetGeneralLocalization{
+	name = "천둥왕의 보물"
+}
