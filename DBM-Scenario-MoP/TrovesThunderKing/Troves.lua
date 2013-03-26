@@ -11,7 +11,11 @@ mod:RegisterEventsInCombat(
 	"UNIT_AURA"
 )
 
+--Todo, get luck enough to have a treasure goblin spawn and capture event for it so we can special warn for it.
 local warnStoneSmash		= mod:NewCastAnnounce(139777, 3, nil, nil, false)
+local warnMightyCrash		= mod:NewCastAnnounce(136844, 3)
+
+local specWarnMightycrash	= mod:NewSpecialWarningMove(136844)
 
 local timerEvent			= mod:NewBuffFadesTimer(299, 140000)
 local timerStoneSmash		= mod:NewCastTimer(3, 139777, nil, false)
@@ -27,6 +31,9 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 139777 then
 		warnStoneSmash:Show()
 		timerStoneSmash:Start(3, args.sourceGUID)
+	elseif args.spellId == 136844 then
+		warnMightyCrash:Show()
+		specWarnMightycrash:Show()
 	end
 end
 
@@ -42,6 +49,6 @@ function mod:UNIT_AURA(uId)
 		timerEvent:Cancel()
 		countdownEvent:Cancel()
 --		DBM:EndCombat(self)--Maybe consider it a victory if you do a loot run and not boss run?
---		Or maybe just only delcare it a victory when you defeat end boss and reach end and fire scenario completed event?
+--		Or maybe just only declare it a victory when you defeat end boss and reach end and fire scenario completed event?
 	end
 end
