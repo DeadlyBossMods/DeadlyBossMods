@@ -1916,6 +1916,8 @@ do
 	end
 end
 
+--LFG_IsHeroicScenario(dungeonID)--5.3
+--Going to have to stop neglecting scenario mods. in fact, we should get all the current scenarios finished now, they all have heroics in 5.3
 function DBM:ScenarioCheck()
 	DBM:Unschedule(DBM.ScenarioCheck)
 	if combatInfo[LastZoneMapID] then
