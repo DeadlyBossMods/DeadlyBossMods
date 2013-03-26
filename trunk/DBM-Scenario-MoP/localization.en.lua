@@ -49,3 +49,13 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnAchFiveAlive	= "Show warning if achievement \"Number Five Is Alive\" failed."
 })
+
+--------------------------------
+-- Troves of the Thunder King --
+--------------------------------
+
+L= DBM:GetModLocalization("Troves")
+
+L:SetGeneralLocalization{
+	name = "Troves of the Thunder King"
+}
