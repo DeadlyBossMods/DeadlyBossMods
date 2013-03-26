@@ -255,7 +255,7 @@ function mod:OnSync(msg, target)
 			specWarnCharge:Show()
 			yellCharge:Yell()
 		end
-	elseif msg == "Door" then
+	elseif msg == "Door" and self:AntiSpam(60, 4) then--prevent bad doorNumber increase if very late sync received.
 	--Doors spawn every 131.5 seconds
 	--Halfway through it (literlaly exact center) Dinomancers spawn at 56.75
 	--Then, before the dinomancer, lesser adds spawn twice splitting that timer into 3rds
