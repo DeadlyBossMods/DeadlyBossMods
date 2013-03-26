@@ -13,10 +13,10 @@ mod:RegisterEventsInCombat(
 
 local warnStoneSmash		= mod:NewCastAnnounce(139777, 3, nil, nil, false)
 
-local timerEvent			= mod:NewBuffFadesTimer(300, 140000)
+local timerEvent			= mod:NewBuffFadesTimer(299, 140000)
 local timerStoneSmash		= mod:NewCastTimer(3, 139777, nil, false)
 
-local countdownEvent		= mod:NewCountdown(300, 140000, nil, nil, 10)
+local countdownEvent		= mod:NewCountdown(299, 140000, nil, nil, 10)
 
 mod:RemoveOption("HealthFrame")
 
@@ -41,5 +41,7 @@ function mod:UNIT_AURA(uId)
 		timerStarted = false
 		timerEvent:Cancel()
 		countdownEvent:Cancel()
+--		DBM:EndCombat(self)--Maybe consider it a victory if you do a loot run and not boss run?
+--		Or maybe just only delcare it a victory when you defeat end boss and reach end and fire scenario completed event?
 	end
 end
