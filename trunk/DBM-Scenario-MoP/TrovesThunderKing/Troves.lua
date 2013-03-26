@@ -16,6 +16,8 @@ local warnStoneSmash		= mod:NewCastAnnounce(139777, 3, nil, nil, false)
 local timerEvent			= mod:NewBuffFadesTimer(300, 140000)
 local timerStoneSmash		= mod:NewCastTimer(3, 139777, nil, false)
 
+local countdownEvent		= mod:NewCountdown(300, 140000, nil, nil, 10)
+
 mod:RemoveOption("HealthFrame")
 
 local timerDebuff = GetSpellInfo(140000)
@@ -32,9 +34,12 @@ end
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
 	if UnitDebuff("player", timerDebuff) and not timerStarted then
-		timerEvent:Start()
 		timerStarted = true
+		timerEvent:Start()
+		countdownEvent:Start()
 	elseif not UnitDebuff("player", timerDebuff) and timerStarted then
 		timerStarted = false
+		timerEvent:Cancel()
+		countdownEvent:Cancel()
 	end
 end
