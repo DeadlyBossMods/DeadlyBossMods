@@ -41,6 +41,10 @@ mod:AddBoolOption("RangeFrame", true)
 local yellTriggered = false
 
 function mod:OnCombatStart(delay)
+	local weekday, month, day, year = CalendarGetDate()--Must be called after PLAYER_ENTERING_WORLD
+	if month == 4 and day == 1 then
+		PlaySoundFile("Interface\\AddOns\\DBM-Pandaria\\dino_barking.mp3", "Master")
+	end
 	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
 --		timerCrushCD:Start(-delay)--There was no tank, so he pretty much never cast this, just ran like a wild animal around area while corpse cannoned
 --		timerSpiritfireBeamCD:Start(15-delay)
