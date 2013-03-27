@@ -67,45 +67,6 @@ local iconsSet = 3
 local highestVersion = 0
 local hasHighestVersion = false
 
-local function resetaddstate()
-	table.wipe(adds)
-	print("DBM Debug: "..addsActivated.." adds active")
-	if addsActivated >= 1 then--1 or more add is up from last set
-		if alternateSet then--We check whether we started with skull last time or moon
-			AddIcon = 5--Start with moon if we used skull last time
-			alternateSet = false
-		else
-			AddIcon = 8--Start with skull if we used moon last time
-			alternateSet = true
-		end
-	else--No turtles are up at all
-		AddIcon = 8--Always start with skull
-		alternateSet = true--And reset alternate status so we use moon next time (unless all are dead again, then re always reset to skull)
-	end
-	iconsSet = 0
-end
-	
-mod:RegisterOnUpdateHandler(function(self)
-	if hasHighestVersion and not iconsSet == 3 then
---		print("DBM Debug: A LOT OF SPAM")--Check to see if this is firing at all
-		for i = 1, DBM:GetNumGroupMembers() do
-			local uId = "raid"..i.."target"
-			local guid = UnitGUID(uId)
-			if adds[guid] then
-				SetRaidTarget(uId, adds[guid])
-				iconsSet = iconsSet + 1
-				adds[guid] = nil
-			end
-			local guid2 = UnitGUID("mouseover")
-			if adds[guid2] then
-				SetRaidTarget("mouseover", adds[guid2])
-				iconsSet = iconsSet + 1
-				adds[guid2] = nil
-			end
-		end
-	end
-end, 0.2)
-
 local function clearStomp()
 	stompActive = false
 	firstRockfall = false--First rockfall after a stomp
@@ -177,14 +138,55 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+local function resetaddstate()
+	iconsSet = 0
+	table.wipe(adds)
+	print("DBM Debug: "..addsActivated.." adds active")
+	if addsActivated >= 1 then--1 or more add is up from last set
+		if alternateSet then--We check whether we started with skull last time or moon
+			AddIcon = 5--Start with moon if we used skull last time
+			alternateSet = false
+		else
+			AddIcon = 8--Start with skull if we used moon last time
+			alternateSet = true
+		end
+	else--No turtles are up at all
+		AddIcon = 8--Always start with skull
+		alternateSet = true--And reset alternate status so we use moon next time (unless all are dead again, then re always reset to skull)
+	end
+end
+
+--The problem is without a doubt here, but why?
+mod:RegisterOnUpdateHandler(function(self)
+--	print("DBM Debug: A LOT OF SPAM")--Check to see if this is firing at all
+	if hasHighestVersion and not iconsSet == 3 then--Both of these conditions were correct in last test, so only thing left to do is to even see if handler is even running AT ALL
+		for i = 1, DBM:GetNumGroupMembers() do
+			local uId = "raid"..i.."target"
+			local guid = UnitGUID(uId)
+			if adds[guid] then
+				SetRaidTarget(uId, adds[guid])
+				iconsSet = iconsSet + 1
+				adds[guid] = nil
+				print("DBM Debug: Found an add in targets, setting icon")
+			end
+			local guid2 = UnitGUID("mouseover")
+			if adds[guid2] then
+				SetRaidTarget("mouseover", adds[guid2])
+				iconsSet = iconsSet + 1
+				adds[guid2] = nil
+				print("DBM Debug: Found an add in mouseover, setting icon")
+			end
+		end
+	end
+end, 0.2)
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 133971 then--Shell Block (turtles dying and becoming kickable)
 		shellsRemaining = shellsRemaining + 1
 		addsActivated = addsActivated - 1
 	elseif args.spellId == 133974 and self.Options.SetIconOnTurtles then--Spinning Shell
-		if self:AntiSpam(5, 2) then
+		if self:AntiSpam(5, 6) then
 			resetaddstate()
-			print("DBM Debug: Resetting Icon state")--Check to see if state is resetting.
 		end
 		adds[args.destGUID] = AddIcon
 		print("DBM Debug: GUID "..args.destGUID.." is icon "..adds[args.destGUID])--Check to see if table is working.
@@ -250,7 +252,6 @@ function mod:OnSync(msg, guid, ver)
 	if msg == "IconCheck" and guid and ver then
 		if tonumber(ver) > highestVersion then
 			highestVersion = tonumber(ver)--Keep bumping highest version to highest we recieve from the icon setters
-			print("DBM Debug: highest version is "..highestVersion)
 			if guid == UnitGUID("player") then--Check if that highest version was from ourself
 				hasHighestVersion = true
 				self:Unschedule(FindFastestHighestVersion)
