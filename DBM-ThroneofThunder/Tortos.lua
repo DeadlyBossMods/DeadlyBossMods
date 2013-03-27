@@ -29,7 +29,7 @@ local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
 local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, 2)
 local specWarnRockfall				= mod:NewSpecialWarningSpell(134476, false, nil, nil, 2)
-local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939)
+local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939, not mod:IsTank())
 local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", false)
 local specWarnSummonBats			= mod:NewSpecialWarningSwitch("ej7140", mod:IsTank())--Dps can turn it on too, but not on by default for dps cause quite frankly dps should NOT switch right away, tank needs to get aggro first and where they spawn is semi random.
 
@@ -141,7 +141,7 @@ function mod:OnCombatStart(delay)
 	end
 	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnTurtles then--You can set marks and you have icons turned on
 		print("DBM Debug: Promoted and icon option turned on")
-		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
+		self:SendSync("IconCheck", UnitGUID("player")..":"..tostring(DBM.Revision))
 	end
 end
 
@@ -244,10 +244,15 @@ local function FindFastestHighestVersion()
 	mod:SendSync("FastestPerson", UnitGUID("player"))
 end
 
-function mod:OnSync(msg, guid, ver)
+function mod:OnSync(msg, str)
+	local guid, ver
+	if str then
+		guid, ver = string.split(":", str)
+		ver = tonumber(ver or 0)
+	end
 	if msg == "IconCheck" and guid and ver then
-		if tonumber(ver) > highestVersion then
-			highestVersion = tonumber(ver)--Keep bumping highest version to highest we recieve from the icon setters
+		if ver > highestVersion then
+			highestVersion = ver--Keep bumping highest version to highest we recieve from the icon setters
 			print("DBM Debug: highest version is "..highestVersion)
 			if guid == UnitGUID("player") then--Check if that highest version was from ourself
 				hasHighestVersion = true
