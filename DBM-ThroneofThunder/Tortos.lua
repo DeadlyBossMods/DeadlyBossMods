@@ -158,8 +158,7 @@ end
 
 --The problem is without a doubt here, but why?
 mod:RegisterOnUpdateHandler(function(self)
---	print("DBM Debug: A LOT OF SPAM")--Check to see if this is firing at all
-	if hasHighestVersion and not iconsSet == 3 then--Both of these conditions were correct in last test, so only thing left to do is to even see if handler is even running AT ALL
+	if hasHighestVersion and not (iconsSet == 3) then--Both of these conditions were correct in last test, so only thing left to do is to even see if handler is even running AT ALL
 		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
