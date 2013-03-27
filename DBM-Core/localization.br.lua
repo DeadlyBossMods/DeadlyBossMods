@@ -220,7 +220,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Tocar som \"Fuja garotinha\" para $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Tocar som de contagem regressiva para $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Tocar som de contagem regressiva para duração de $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Gritar quando você é afetado por $spell:%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s em mim!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s em " .. UnitName("player") .. "!"
 
 
 -- New special warnings

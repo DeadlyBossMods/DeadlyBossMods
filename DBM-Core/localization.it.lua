@@ -223,7 +223,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Fai il suono \"muoviti\" per $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Esegui il conto alla rovescia per $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Esegui il conteggio per la durata di $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Urla quando sei afflitto da $spell:%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s su di me!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s su di " .. UnitName("player") .. "!"
 
 
 -- New special warnings
