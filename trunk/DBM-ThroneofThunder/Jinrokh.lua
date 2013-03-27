@@ -54,6 +54,7 @@ function mod:FocusedLightningTarget(targetname)
 	if targetname == UnitName("player") then
 		specWarnFocusedLightning:Show()
 		yellFocusedLightning:Yell()
+		soundFocusedLightning:Play()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
