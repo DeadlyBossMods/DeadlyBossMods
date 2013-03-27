@@ -47,6 +47,7 @@ local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5
 local berserkTimer					= mod:NewBerserkTimer(570)
 
 mod:AddBoolOption("SetIconOnDestabilized", true)
+mod:AddBoolOption("SetIconOnPillar", true)
 
 local phase2Started = false
 local protectorCount = 0
@@ -57,7 +58,7 @@ local stunIcon = 8
 local focusActivated = 0
 local creatureIcons = {}
 local creatureIcon = 8
-local iconsSet = 0
+local iconsSet = 6
 
 local function warnClosedCircuitTargets()
 	warnClosedCircuit:Show(table.concat(closedCircuitTargets, "<, >"))
@@ -81,7 +82,7 @@ function mod:OnCombatStart(delay)
 	focusActivated = 0
 	powerCount = 0
 	creatureIcon = 8
-	iconsSet = 0
+	iconsSet = 6
 	table.wipe(closedCircuitTargets)
 	table.wipe(stunTargets)
 	table.wipe(creatureIcons)
@@ -143,6 +144,20 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+mod:RegisterOnUpdateHandler(function(self)
+	if self.Options.SetIconOnCreature and DBM:GetRaidRank() > 0 and not (iconsSet == 6) then
+		for i = 1, DBM:GetGroupMembers() do
+			local uId = "raid"..i.."target"
+			local guid = UnitGUID(uId)
+			if creatureIcons[guid] then
+				SetRaidTarget(uId, creatureIcons[guid])
+				iconsSet = iconsSet + 1
+				creatureIcons[guid] = nil
+			end
+		end
+	end
+end, 1)
+
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(116598, 132265) then--Cast when these are activated
 		if focusActivated == 0 then
@@ -151,6 +166,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		focusActivated = focusActivated + 1
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
+		end
+		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
+			creatureIcons[args.sourceGUID] = creatureIcon
+			creatureIcon = creatureIcon - 1
 		end
 		if focusActivated == 6 then
 			timerDespawnFloor:Start()
