@@ -141,7 +141,6 @@ end
 local function resetaddstate()
 	iconsSet = 0
 	table.wipe(adds)
-	print("DBM Debug: "..addsActivated.." adds active")
 	if addsActivated >= 1 then--1 or more add is up from last set
 		if alternateSet then--We check whether we started with skull last time or moon
 			AddIcon = 5--Start with moon if we used skull last time
@@ -166,14 +165,12 @@ mod:RegisterOnUpdateHandler(function(self)
 				SetRaidTarget(uId, adds[guid])
 				iconsSet = iconsSet + 1
 				adds[guid] = nil
-				print("DBM Debug: Found an add in targets, setting icon")
 			end
 			local guid2 = UnitGUID("mouseover")
 			if adds[guid2] then
 				SetRaidTarget("mouseover", adds[guid2])
 				iconsSet = iconsSet + 1
 				adds[guid2] = nil
-				print("DBM Debug: Found an add in mouseover, setting icon")
 			end
 		end
 	end
@@ -188,7 +185,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			resetaddstate()
 		end
 		adds[args.destGUID] = AddIcon
-		print("DBM Debug: GUID "..args.destGUID.." is icon "..adds[args.destGUID])--Check to see if table is working.
 		AddIcon = AddIcon - 1
 		addsActivated = addsActivated + 1
 	end
@@ -264,10 +260,8 @@ function mod:OnSync(msg, guid, ver)
 		self:Unschedule(FindFastestHighestVersion)
 		if guid == UnitGUID("player") then
 			hasHighestVersion = true
-			print("DBM Debug: You have highest DBM version with icons enabled and fastest computer. You're designated icon setter.")
 		else
 			hasHighestVersion = false
-			print("DBM Debug: You will not be setting icons since your DBM version is out of date or your computer is slower")
 		end
 	end
 end
