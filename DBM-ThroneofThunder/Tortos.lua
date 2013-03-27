@@ -141,7 +141,7 @@ function mod:OnCombatStart(delay)
 	end
 	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnTurtles then--You can set marks and you have icons turned on
 		print("DBM Debug: Promoted and icon option turned on")
-		self:SendSync("IconCheck", UnitGUID("player")..":"..tostring(DBM.Revision))
+		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
 	end
 end
 
@@ -244,12 +244,8 @@ local function FindFastestHighestVersion()
 	mod:SendSync("FastestPerson", UnitGUID("player"))
 end
 
-function mod:OnSync(msg, str)
-	local guid, ver
-	if str then
-		guid, ver = string.split(":", str)
-		ver = tonumber(ver or 0)
-	end
+function mod:OnSync(msg, guid, ver)
+	ver = tonumber(ver or "")
 	if msg == "IconCheck" and guid and ver then
 		if ver > highestVersion then
 			highestVersion = ver--Keep bumping highest version to highest we recieve from the icon setters
