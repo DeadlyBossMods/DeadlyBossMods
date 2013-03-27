@@ -172,7 +172,7 @@ mod:RegisterOnUpdateHandler(function(self)
 			end
 			local guid2 = UnitGUID("mouseover")
 			if guards[guid2] then
-				SetRaidTarget(uId, guards[guid2])
+				SetRaidTarget("mouseover", guards[guid2])
 				iconsSet = iconsSet + 1
 				guards[guid2] = nil
 			end
