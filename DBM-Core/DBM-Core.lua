@@ -2031,14 +2031,15 @@ do
 		end
 	end
 
-	syncHandlers["C"] = function(sender, delay, mod, revision)
+	syncHandlers["C"] = function(sender, delay, mod, revision, startHp)
 		if select(2, IsInInstance()) == "pvp" then return end
 		local lag = select(4, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
 		mod = DBM:GetModByName(mod or "")
 		revision = tonumber(revision or 0) or 0
+		startHp = tonumber(startHp or -1) or -1
 		if mod and delay and (not mod.zones or mod.zones[LastZoneText] or mod.zones[LastZoneMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
-			DBM:StartCombat(mod, delay + lag, true)
+			DBM:StartCombat(mod, delay + lag, true, startHp)
 		end
 	end
 
@@ -2733,7 +2734,7 @@ function checkWipe(confirm)
 	end
 end
 
-function DBM:StartCombat(mod, delay, synced)
+function DBM:StartCombat(mod, delay, synced, syncedStartHp)
 	if not checkEntry(inCombat, mod) then
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
 		if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 10) then return end
@@ -2784,8 +2785,8 @@ function DBM:StartCombat(mod, delay, synced)
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 			end
 		end
-		local starthp = mod:GetHP():gsub("%%$", "")
-		if mod:IsDifficulty("worldboss") and tonumber(starthp) < 98 then--Boss was not full health when engaged, disable combat start timer and kill record. (regards full health : 98, 99, 100)
+		local startHp = tonumber(mod:GetHP():gsub("%%$", "")) or syncedStartHp or -1
+		if mod:IsDifficulty("worldboss") and startHp < 98 then--Boss was not full health when engaged, disable combat start timer and kill record. (regards full health : 98, 99, 100)
 			mod.ignoreBestkill = true
 		end
 		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled and not mod.ignoreBestkill then
@@ -2810,9 +2811,9 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		if mod.OnCombatStart and mod.Options.Enabled and not mod.ignoreBestkill then mod:OnCombatStart(delay or 0) end
 		if not synced then
-			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
+			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp)
 		end
-		fireEvent("pull", mod, delay, synced)
+		fireEvent("pull", mod, delay, synced, startHp)
 		self:ToggleRaidBossEmoteFrame(1)
 		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			if DBM.Options.BigBrotherAnnounceToRaid then
