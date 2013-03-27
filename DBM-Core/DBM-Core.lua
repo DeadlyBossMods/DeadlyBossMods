@@ -1529,6 +1529,10 @@ do
 			raidUIds["player"] = playerName
 			raidGuids[UnitGUID("player")] = playerName
 			raidShortNames[playerName] = playerName
+			if DBM.Revision == 99999 then--if it's already 99999 when we leave raid, turn it back off
+				DBM.Revision = myRealRevision
+				DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
+			end
 		end
 	end
 
