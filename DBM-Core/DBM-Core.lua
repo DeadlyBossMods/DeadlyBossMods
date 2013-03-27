@@ -2785,7 +2785,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp)
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 			end
 		end
-		local startHp = tonumber(mod:GetHP():gsub("%%$", "")) or syncedStartHp or -1
+		local startHp = tonumber((mod:GetHP():gsub("%%$", ""))) or syncedStartHp or -1
 		if mod:IsDifficulty("worldboss") and startHp < 98 then--Boss was not full health when engaged, disable combat start timer and kill record. (regards full health : 98, 99, 100)
 			mod.ignoreBestkill = true
 		end
