@@ -5,6 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetModelID(39378)
 mod:SetZone()
 
+mod.isTrashMod = true
+
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
