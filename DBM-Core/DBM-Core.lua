@@ -1436,7 +1436,7 @@ do
 					else
 						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 					end
-					print("DBM: Debug:", raid[name].version, rank, tonumber(DBM.Version))
+					print("DBM: Debug:", playerWithHigherVersionPromoted, rank, name, raid[name].version)
 					--46x DBM-Core\DBM-Core-5.2.1-170-gea8e833.lua:1439: attempt to compare number with string
 					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].version and raid[name].version > tonumber(DBM.Version) then--Why the fuck is this line erroring every time i join a raid? it hasn't changed?
 						playerWithHigherVersionPromoted = true
