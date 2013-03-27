@@ -63,12 +63,13 @@ local addsActivated = 0
 local alternateSet = false
 local adds = {}
 local AddIcon = 8
-local iconsSet = 0
+local iconsSet = 3
 local highestVersion = 0
 local hasHighestVersion = false
 
 local function resetaddstate()
 	table.wipe(adds)
+	print("DBM Debug: "..addsActivated.." adds active")
 	if addsActivated >= 1 then--1 or more add is up from last set
 		if alternateSet then--We check whether we started with skull last time or moon
 			AddIcon = 5--Start with moon if we used skull last time
@@ -86,6 +87,7 @@ end
 	
 mod:RegisterOnUpdateHandler(function(self)
 	if hasHighestVersion and not iconsSet == 3 then
+--		print("DBM Debug: A LOT OF SPAM")--Check to see if this is firing at all
 		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
@@ -96,7 +98,7 @@ mod:RegisterOnUpdateHandler(function(self)
 			end
 			local guid2 = UnitGUID("mouseover")
 			if adds[guid2] then
-				SetRaidTarget(uId, adds[guid2])
+				SetRaidTarget("mouseover", adds[guid2])
 				iconsSet = iconsSet + 1
 				adds[guid2] = nil
 			end
@@ -123,7 +125,7 @@ function mod:OnCombatStart(delay)
 	addsActivated = 0
 	highestVersion = 0
 	AddIcon = 8
-	iconsSet = 0
+	iconsSet = 3
 	alternateSet = false
 	table.wipe(adds)
 	table.wipe(kickedShells)
@@ -140,7 +142,6 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 	end
 	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnTurtles then--You can set marks and you have icons turned on
-		print("DBM Debug: Promoted and icon option turned on")
 		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
 	end
 end
@@ -183,8 +184,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 133974 and self.Options.SetIconOnTurtles then--Spinning Shell
 		if self:AntiSpam(5, 2) then
 			resetaddstate()
+			print("DBM Debug: Resetting Icon state")--Check to see if state is resetting.
 		end
 		adds[args.destGUID] = AddIcon
+		print("DBM Debug: GUID "..args.destGUID.." is icon "..adds[args.destGUID])--Check to see if table is working.
 		AddIcon = AddIcon - 1
 		addsActivated = addsActivated + 1
 	end
@@ -240,25 +243,21 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 local function FindFastestHighestVersion()
-	print("Sending highest version sync")
 	mod:SendSync("FastestPerson", UnitGUID("player"))
 end
 
 function mod:OnSync(msg, guid, ver)
-	ver = tonumber(ver or "")
 	if msg == "IconCheck" and guid and ver then
-		if ver > highestVersion then
-			highestVersion = ver--Keep bumping highest version to highest we recieve from the icon setters
+		if tonumber(ver) > highestVersion then
+			highestVersion = tonumber(ver)--Keep bumping highest version to highest we recieve from the icon setters
 			print("DBM Debug: highest version is "..highestVersion)
 			if guid == UnitGUID("player") then--Check if that highest version was from ourself
 				hasHighestVersion = true
-				print("DBM Debug: You have highest version")
 				self:Unschedule(FindFastestHighestVersion)
 				self:Schedule(5, FindFastestHighestVersion)
 			else--Not from self, it means someone with a higher version than us probably sent it
 				self:Unschedule(FindFastestHighestVersion)
 				hasHighestVersion = false
-				print("DBM Debug: You no longer have highest version")
 			end
 		end
 	elseif msg == "FastestPerson" and guid and self:AntiSpam(10, 4) then--Whoever sends this sync first wins all. They have highest version and fastest computer
