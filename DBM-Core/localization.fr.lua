@@ -225,7 +225,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Jouer le son \"run away\" pour $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Compte à rebours sonore pour $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Compte à rebours sonore pour ka durée de $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Cri quand vous subissez $spell:%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s sur moi !"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s sur " .. UnitName("player") .. " !"
 
 
 -- New special warnings

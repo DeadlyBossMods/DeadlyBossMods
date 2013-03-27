@@ -238,7 +238,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele Countdown-Sound für $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Spiele Countout-Sound für Dauer von $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie, wenn du von $spell:%s betroffen bist"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s auf mir!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s auf " .. UnitName("player") .. "!"
 
 
 -- New special warnings
