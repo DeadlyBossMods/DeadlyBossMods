@@ -121,6 +121,7 @@ function mod:OnCombatStart(delay)
 	shellsRemaining = 0
 	lastConcussion = 0
 	addsActivated = 0
+	highestVersion = 0
 	AddIcon = 8
 	iconsSet = 0
 	alternateSet = false
@@ -139,6 +140,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 	end
 	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnTurtles then--You can set marks and you have icons turned on
+		print("DBM Debug: Promoted and icon option turned on")
 		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
 	end
 end
@@ -238,6 +240,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 local function FindFastestHighestVersion()
+	print("Sending highest version sync")
 	mod:SendSync("FastestPerson", UnitGUID("player"))
 end
 
@@ -245,20 +248,23 @@ function mod:OnSync(msg, guid, ver)
 	if msg == "IconCheck" and guid and ver then
 		if tonumber(ver) > highestVersion then
 			highestVersion = tonumber(ver)--Keep bumping highest version to highest we recieve from the icon setters
+			print("DBM Debug: highest version is "..highestVersion)
 			if guid == UnitGUID("player") then--Check if that highest version was from ourself
 				hasHighestVersion = true
+				print("DBM Debug: You have highest version")
 				self:Unschedule(FindFastestHighestVersion)
 				self:Schedule(5, FindFastestHighestVersion)
 			else--Not from self, it means someone with a higher version than us probably sent it
 				self:Unschedule(FindFastestHighestVersion)
 				hasHighestVersion = false
+				print("DBM Debug: You no longer have highest version")
 			end
 		end
 	elseif msg == "FastestPerson" and guid and self:AntiSpam(10, 4) then--Whoever sends this sync first wins all. They have highest version and fastest computer
 		self:Unschedule(FindFastestHighestVersion)
 		if guid == UnitGUID("player") then
 			hasHighestVersion = true
-			print("DBM Debug: You have highest DBM version with icons enabled and fastest computer. You designated icon setter.")
+			print("DBM Debug: You have highest DBM version with icons enabled and fastest computer. You're designated icon setter.")
 		else
 			hasHighestVersion = false
 			print("DBM Debug: You will not be setting icons since your DBM version is out of date or your computer is slower")
