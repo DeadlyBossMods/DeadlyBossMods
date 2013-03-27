@@ -161,7 +161,7 @@ local function resetguardstate()
 end
 	
 mod:RegisterOnUpdateHandler(function(self)
-	if hasHighestVersion and not iconsSet == guardActivated then
+	if hasHighestVersion and not (iconsSet == guardActivated) then
 		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
