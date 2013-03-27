@@ -220,7 +220,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Reproducir sonido \"huye pequeña\" en $spe
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Reproducir sonido de cuenta atrás para $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Reproducir sonido de la duración de $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Gritar cuando tengas $spell:%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "¡%s en mi!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "¡%s en " .. UnitName("player") .. "!"
 
 
 -- New special warnings
