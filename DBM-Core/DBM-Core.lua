@@ -1390,7 +1390,7 @@ do
 				raid[playerName].class = class
 				raid[playerName].id = "player"
 				raid[playerName].revision = DBM.Revision
-				raid[playerName].version = DBM.Version
+				raid[playerName].version = tonumber(DBM.Version)
 				raid[playerName].displayVersion = DBM.DisplayVersion
 				raid[playerName].locale = GetLocale()
 				raidUIds["player"] = playerName
@@ -1436,9 +1436,7 @@ do
 					else
 						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 					end
-					print("DBM: Debug:", playerWithHigherVersionPromoted, rank, name, raid[name].version)
-					--46x DBM-Core\DBM-Core-5.2.1-170-gea8e833.lua:1439: attempt to compare number with string
-					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].version and raid[name].version > tonumber(DBM.Version) then--Why the fuck is this line erroring every time i join a raid? it hasn't changed?
+					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].version and raid[name].version > tonumber(DBM.Version) then
 						playerWithHigherVersionPromoted = true
 					end
 				end
@@ -1525,7 +1523,7 @@ do
 			raid[playerName].class = class
 			raid[playerName].id = "player"
 			raid[playerName].revision = DBM.Revision
-			raid[playerName].version = DBM.Version
+			raid[playerName].version = tonumber(DBM.Version)
 			raid[playerName].displayVersion = DBM.DisplayVersion
 			raid[playerName].locale = GetLocale()
 			raidUIds["player"] = playerName
