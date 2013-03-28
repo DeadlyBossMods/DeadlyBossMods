@@ -8,6 +8,11 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組。輸入/dbm或/dbm help有�
 DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。請先在於戰鬥外讀取圖形介面，這樣就能夠在戰鬥中使用。"
 
+DBM_ABSOLUTE_MODE_ON				= "專制模式開啟。"
+DBM_ABSOLUTE_MODE_OFF				= "專制模式關閉。再次廣播模組版本。"
+DBM_ABSOLUTE_MODE_NOTIFY_ON			= "專制模式被%s開啟。只有他們的DBM能夠設置團隊圖示。"
+DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "專制模式被%s關閉。還原一般圖示權限。"
+
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "開戰%s已進行的戰鬥。祝好運與盡興! :)"
 DBM_CORE_BOSS_DOWN					= "擊敗%s，經過%s!"
@@ -16,6 +21,8 @@ DBM_CORE_BOSS_DOWN_NR				= "擊敗%s!經過%s! 這是一個新記錄! (舊紀錄
 DBM_CORE_COMBAT_ENDED_AT			= "%s(%s)的戰鬥經過%s結束。"
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "%s(%s)的戰鬥經過%s結束。你在這個難度總共滅團了%d次。"
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s的戰鬥在%s前開始，恢復計時器中..."
+DBM_CORE_TRANSCRIPTOR_LOG_START		= "Transcriptor開始記錄."
+DBM_CORE_TRANSCRIPTOR_LOG_END		= "Transcriptor結束紀錄."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d秒"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
@@ -228,7 +235,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%s時播放音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為$spell:%s播放倒數計時音效"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為$spell:%s的持續時間播放倒數計時音效"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%s時大喊"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "" .. UnitName("player") .. "中了%s!"
 
 
 -- New special warnings

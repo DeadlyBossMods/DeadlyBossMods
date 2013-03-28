@@ -57,7 +57,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Victory					= "我...啊..喔!我曾經...?我是不是...?這一切...都太...模糊了。"--wtb alternate and less crappy victory event.
+	Victory					= "我...啊..喔!我曾經...?我是不是...?這一切...都太...模糊了。"
 }
 
 
@@ -67,8 +67,6 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(709)
 
 L:SetWarningLocalization({
-	warnWaterspout				= "%s (%d) : >%s<",
-	warnHuddleInTerror			= "%s (%d) : >%s<",
 	MoveForward					= "向前穿過去",
 	MoveRight					= "向右移動",
 	MoveBack					= "回到原本位置",
@@ -87,8 +85,6 @@ L:SetOptionLocalization({
 	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告(不建議使用，團隊隊長使用)",
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
 	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告\n(http://mysticalos.com/terraceofendlesssprings.jpg)",
-	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
-	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbility 		= "為下一次特別技能施放顯示計時器",
 	RangeFrame					= "為$spell:119519顯示距離框(2碼)",
 	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
