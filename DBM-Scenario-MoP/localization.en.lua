@@ -67,7 +67,7 @@ L:SetGeneralLocalization{
 L= DBM:GetModLocalization("GreenFire")
 
 L:SetGeneralLocalization{
-	name = "Warlock Green Fire"--No idea what real name is. It's not something i can test or verify.
+	name = "Pursuing the Black Harvest"
 }
 
 L:SetWarningLocalization({

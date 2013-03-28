@@ -32,7 +32,8 @@ L:SetOptionLocalization({
 	warnOrbofControl		= "Verkünde das Fallenlassen einer $journal:7092",
 	specWarnOrbofControl	= "Zeige Spezialwarnung beim Fallenlassen einer $journal:7092",
 	timerDoor				= "Zeige Zeit bis nächste Stammestorphase",
-	timerAdds				= "Zeige Zeit bis der nächste Gegner herunterspringt"
+	timerAdds				= "Zeige Zeit bis der nächste Gegner herunterspringt",
+	RangeFrame				= "Zeige Abstandsfenster (5m) für $spell:136480"
 })
 
 L:SetMiscLocalization({
