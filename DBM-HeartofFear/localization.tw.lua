@@ -15,13 +15,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
 	warnEcho			= "提示回聲出現",
 	warnEchoDown		= "提示回聲已擊殺",
-	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "為首領轉換露臺顯示特別警告",
-	ArrowOnAttenuation	= "為$spell:127834指示DBM箭頭移動方向",
-	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+	ArrowOnAttenuation	= "為$spell:127834指示DBM箭頭移動方向"
 })
 
 L:SetMiscLocalization({
@@ -52,8 +49,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnUnder		= "當你在紫色圓圈範圍內顯示特別警告",
-	countdownCrush		= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (只有英雄模式)",
-	PheromonesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+	countdownCrush		= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (只有英雄模式)"
 })
 
 L:SetMiscLocalization({
@@ -65,10 +61,6 @@ L:SetMiscLocalization({
 -- Wind Lord Mel'jarak --
 ----------------------
 L= DBM:GetModLocalization(741)
-
-L:SetOptionLocalization({
-	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
-})
 
 ------------
 -- Amber-Shaper Un'sok --
@@ -94,7 +86,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "顯示突變魁儡的能力說明效果",
 	warnAmberExplosion			= "為$spell:122398施放顯示警告(以及來源)",
 	warnAmberExplosionAM		= "為琥珀巨怪的$spell:122398顯示個人警告(為了中斷)",
@@ -104,7 +95,6 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionYou	= "為中斷你自己的$spell:122398顯示特別警告",
 	specwarnAmberExplosionAM	= "為中斷琥珀巨怪的$spell:122402顯示特別警告",
 	specwarnAmberExplosionOther	= "為中斷突變傀儡的$spell:122398顯示特別警告",
-	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "為琥珀巨怪下一次的$spell:122402顯示計時器",
 	InfoFrame					= "為玩家的意志力顯示訊息框架",
 	FixNameplates				= "開戰後自動禁用擾人的名字血條(離開戰鬥後恢復設定)"
@@ -126,9 +116,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAmberTrap		= "為$spell:125826的製作進度顯示警告", -- maybe bad translation.
 	InfoFrame			= "為受到$spell:125390的玩家顯示訊息框架",
-	RangeFrame			= "為$spell:123735顯示距離框架(5碼)",
-	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097),
-	HeartOfFearIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(123845)
+	RangeFrame			= "為$spell:123735顯示距離框架(5碼)"
 })
 
 L:SetMiscLocalization({

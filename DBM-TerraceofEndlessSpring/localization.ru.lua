@@ -14,8 +14,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnGroupOrder		= "Объявлять ротацию для $spell:118191\n(Опция расчитана на стратегию для 25-ппл: 5,2,2,2, и т.д.)",
 	specWarnYourGroup	= "Спец-предупреждение, когда ваша группа должна получить $spell:118191\n(только для 25-ппл)",
-	RangeFrame			= "Показывать окно проверки дистанции (8 м) для $spell:111850\n(Показывает всех, если на вас дебафф, иначе только игроков с дебаффом)",
-	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
+	RangeFrame			= "Показывать окно проверки дистанции (8 м) для $spell:111850\n(Показывает всех, если на вас дебафф, иначе только игроков с дебаффом)"
 })
 
 
@@ -77,18 +76,14 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBreathOfFearSoon	= "Предупреждать заранее о $spell:119414 (если на вас нет $spell:117964)",
-	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
+	specWarnBreathOfFearSoon	= "Предупреждать заранее о $spell:119414 (если на вас нет $spell:117964)"
 })
 
 L:SetOptionLocalization({
-	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	RangeFrame					= "Показывать окно проверки дистанции (2 м) для $spell:119519",
 	MoveWarningForward			= "Предупреждать, когда нужно пробежать через босса во время $spell:120047",
 	MoveWarningRight			= "Предупреждать, когда нужно перейти направо, во время $spell:120047",
 	MoveWarningBack				= "Предупреждать, когда нужно вернуть назад, во время $spell:120047",
-	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
-	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbilityCD		= "Отсчет времени до следующей спец-способности на второй фазе",
 	timerSpoHudCD				= "Отсчет времени до следующих возможных $spell:120629 или $spell:120519",
 	timerSpoStrCD				= "Отсчет времени до следующих возможных $spell:120519 или $spell:120672",

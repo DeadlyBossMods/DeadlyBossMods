@@ -18,8 +18,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnGroupOrder		= "Annoncer une rotation de groupe pour $spell:118191\n(À l'heure actuelle ne supporte que le raid 25 | 5,2,2,2, etc...)",
 	specWarnYourGroup	= "Alerte spécial quand votre groupe doit faire rotation pour $spell:118191\n(Raid 25 seulement)",
-	RangeFrame			= "Afficher le cadre de distance (8m) pour $spell:111850\n(Affiche tout le monde si vous avez le debuff, sinon ceux avec le debuff)",
-	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
+	RangeFrame			= "Afficher le cadre de distance (8m) pour $spell:111850\n(Affiche tout le monde si vous avez le debuff, sinon ceux avec le debuff)"
 })
 
 
@@ -81,18 +80,14 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBreathOfFearSoon	= "Alerte spécial préventive pour $spell:119414 si vous n'avez pas le buff $spell:117964",
-	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
+	specWarnBreathOfFearSoon	= "Alerte spécial préventive pour $spell:119414 si vous n'avez pas le buff $spell:117964"
 })
 
 L:SetOptionLocalization({
-	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	RangeFrame					= "Afficher le cadre de distance (2m) pour $spell:119519",
 	MoveWarningForward			= "Alerte spécial pour aller de l'autre côté quand $spell:120047 est lancé",
 	MoveWarningRight			= "Alerte spécial pour aller à droite quand $spell:120047 est lancé",
 	MoveWarningBack				= "Alerte spécial pour aller à la position précédente quand \n$spell:120047 est fini",
-	warnWaterspout				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120519),
-	warnHuddleInTerror			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(120629),
 	timerSpecialAbilityCD		= "Délai pour la prochaine fois que la capacité spéciale est lancé",
 	timerSpoHudCD				= "Délai pour le prochain lancé de $spell:120629 ou $spell:120519",
 	timerSpoStrCD				= "Délai pour le prochain lancé de $spell:120519 ou $spell:120672",

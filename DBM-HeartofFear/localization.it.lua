@@ -11,8 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnPlatform	= "Visualizza un avviso speciale quando il boss cambia piattaforme.",
-	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+	specwarnPlatform	= "Visualizza un avviso speciale quando il boss cambia piattaforme."
 })
 
 L:SetMiscLocalization({
@@ -37,18 +36,10 @@ L:SetOptionLocalization({
 -------------------------------
 L= DBM:GetModLocalization(713)
 
-L:SetOptionLocalization({
-	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
-})
-
 ----------------------
 -- Wind Lord Mel'jarak --
 ----------------------
 L= DBM:GetModLocalization(741)
-
-L:SetOptionLocalization({
-	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
-})
 
 L:SetMiscLocalization({
 	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"

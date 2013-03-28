@@ -27,10 +27,6 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(816)
 
-L:SetOptionLocalization({
-})
-
-
 ------------
 -- Tortos --
 ------------
