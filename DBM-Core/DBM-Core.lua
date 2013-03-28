@@ -3664,6 +3664,7 @@ do
 				announces = {},
 				specwarns = {},
 				timers = {},
+				countdowns = {},
 				modId = modId,
 				instanceId = instanceId,
 				encounterId = encounterId,
@@ -3919,6 +3920,9 @@ end
 
 function bossModPrototype:Stop(cid)
 	for i, v in ipairs(self.timers) do
+		v:Stop()
+	end
+	for i, v in ipairs(self.countdowns) do
 		v:Stop()
 	end
 	self:Unschedule()
@@ -4333,7 +4337,7 @@ do
 		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 	end
 	
-	local function stopCountdown(timer)
+	local function stopCountdown()
 		TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 	end
 
@@ -4343,7 +4347,7 @@ do
 			timer = timer < 2 and self.timer or timer
 			count = count or self.count or 5
 			if timer <= count then count = floor(timer) end
-			if DBM.Options.ShowCountdownText and not self.disableText then
+			if DBM.Options.ShowCountdownText and not self.textDisabled then
 				if timer >= count then 
 					DBM:Schedule(timer-count, showCountdown, count)
 				else
@@ -4371,20 +4375,20 @@ do
 	end
 
 	function countdownProtoType:Cancel()
+		if DBM.Options.ShowCountdownText and not self.textDisabled then
+			DBM:Unschedule(showCountdown)
+			stopCountdown()
+		end
 		self.mod:Unschedule(self.Start, self)
 		self.sound1:Cancel()
 		self.sound2:Cancel()
 		self.sound3:Cancel()
 		self.sound4:Cancel()
 		self.sound5:Cancel()
-		if DBM.Options.ShowCountdownText and not self.disableText then
-			DBM:Unschedule(showCountdown)
-			stopCountdown()
-		end
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count, disableText)
+	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count, textDisabled)
 		if not spellId and not optionName then
 			error("NewCountdown: you must provide either spellId or optionName", 2)
 			return
@@ -4399,6 +4403,7 @@ do
 		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
+				id = optionName or "Countdown"..spellId,
 				sound1 = sound1,
 				sound2 = sound2,
 				sound3 = sound3,
@@ -4406,19 +4411,20 @@ do
 				sound5 = sound5,
 				timer = timer,
 				count = count,
-				disableText = disableText,
+				textDisabled = textDisabled,
 				mod = self
 			},
 			mt
 		)
 		if optionName then
-			obj.option = optionName
+			obj.option = obj.id
 			self:AddBoolOption(optionName, optionDefault, "misc")
 		elseif not (optionName == false) then
-			obj.option = "Countdown"..spellId
-			self:AddBoolOption("Countdown"..spellId, optionDefault, "misc")
-			self.localization.options["Countdown"..spellId] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
+			obj.option = obj.id
+			self:AddBoolOption(obj.id, optionDefault, "misc")
+			self.localization.options[obj.id] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
 		end
+		table.insert(self.countdowns, obj)
 		return obj
 	end
 end
