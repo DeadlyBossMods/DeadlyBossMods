@@ -38,6 +38,7 @@ local timerStaticBurstCD			= mod:NewCDTimer(19, 137162, mod:IsTank())
 local timerThrowCD					= mod:NewCDTimer(26, 137175)--90-93 variable (26-30 seconds after storm. verified in well over 50 logs)
 local timerStorm					= mod:NewBuffActiveTimer(17, 137313)--2 second cast, 15 second duration
 local timerStormCD					= mod:NewCDTimer(60.5, 137313)--90-93 variable (60.5~67 seconds after throw)
+local timerIonization				= mod:NewBuffActiveTimer(24, 138732)
 local timerIonizationCD				= mod:NewNextTimer(60.5, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
@@ -113,6 +114,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStaticBurstOther:Show(args.destName)
 		end
 	elseif args.spellId == 138732 and args:IsPlayer() then
+		timerIonization:Start()
 		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 then you have range 8 open and we don't want to make it 4
 			DBM.RangeCheck:Show(4)
 		end
@@ -125,6 +127,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif args.spellId == 137422 and args:IsPlayer() then
+		timerIonization:Cancel()
 		if self.Options.RangeFrame then
 			if UnitDebuff("player", GetSpellInfo(138732)) then--if you have 138732 then switch to 4 yards
 				DBM.RangeCheck:Show(4)

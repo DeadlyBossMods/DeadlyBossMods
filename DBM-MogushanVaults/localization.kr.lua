@@ -91,7 +91,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "가운데 바닥이 무너지기 전에 특수 경고 보기",
-	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 표시"
+	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 표시",
+	SetIconOnCreature			= "$journal:6193에 전술 목표 아이콘 설정"
 })
 
 
