@@ -1538,9 +1538,9 @@ do
 
 	--This local function called if uId is not player's uId. (like target, raid1traget)
 	local function getUnitFullName(uId)
-		if not uId then print("DBM Debug: DBM:GetUnitFullName nil uid") return end
+		if not uId then return end
 		local name, server = UnitName(uId)
-		if not name then print("DBM Debug: DBM:GetUnitFullName invalid uId: "..(uId or "")) return end
+		if not name then return end
 		if server and server ~= ""  then
 			name = name.."-"..server
 		end
