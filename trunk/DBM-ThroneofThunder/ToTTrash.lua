@@ -16,16 +16,19 @@ mod:RegisterEvents(
 
 local warnStormEnergy			= mod:NewTargetAnnounce(139322, 4)
 local warnSpiritFire			= mod:NewTargetAnnounce(139895, 3)--This is morchok entryway trash that throws rocks at random poeple.
+local warnShadowNova			= mod:NewCastAnnounce(139899, 4)
 local warnStormCloud			= mod:NewTargetAnnounce(139900, 4)
 local warnFixated				= mod:NewSpellAnnounce(140306, 3)
 local warnConductiveShield		= mod:NewTargetAnnounce(140296, 4)
 
 local specWarnStormEnergy		= mod:NewSpecialWarningYou(139322)
+local specWarnShadowNova		= mod:NewSpecialWarningSpell(139899, nil, nil, nil, 3)--This hurls you pretty damn far. If you aren't careful you're as good as gone.
 local specWarnStormCloud		= mod:NewSpecialWarningYou(139900)
 local specWarnSonicScreech		= mod:NewSpecialWarningInterrupt(136751)
 local specWarnConductiveShield	= mod:NewSpecialWarningTarget(140296)
 
 local timerSpiritfireCD			= mod:NewCDTimer(12, 139895)
+local timerShadowNovaCD			= mod:NewCDTimer(12, 139899)
 local timerFixatedCD			= mod:NewNextTimer(15.7, 140306)
 local timerConductiveShieldCD	= mod:NewNextSourceTimer(20, 140296)
 
@@ -68,6 +71,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args.spellId == 136751 and (args.sourceGUID == UnitGUID("target") or args.sourceGUID == UnitGUID("focus")) then
 		specWarnSonicScreech:Show(args.sourceName)
+	elseif args.spellId == 139899 then
+		warnShadowNova:Show()
+		specWarnShadowNova:Show()
+		timerShadowNovaCD:Start()
 	end
 end
 
@@ -106,6 +113,8 @@ function mod:UNIT_DIED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
+	elseif cid == 70440 then--Monara
+		timerShadowNovaCD:Cancel()
 	elseif cid == 70236 then--Zandalari Storm-Caller
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
