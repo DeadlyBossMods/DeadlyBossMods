@@ -340,14 +340,15 @@ function mod:OnSync(msg, guid, ver)
 				hasHighestVersion = false
 			end
 		end
-	elseif msg == "FastestPerson" and guid and self:AntiSpam(10, 2) then--Whoever sends this sync first wins all. They have highest version and fastest computer
+	elseif msg == "FastestPerson" and guid and self:AntiSpam(10, 2) then--Whoever sends this sync first wins all. They have highest version and probably the lowest ping
+		-- note: this assumes that everyone sees chat/addon-messages in the same order which seems to be true at the moment; can be changed to use GetNetStats() if this changes
 		self:Unschedule(FindFastestHighestVersion)
 		if guid == UnitGUID("player") then
 			hasHighestVersion = true
-			print("DBM Debug: You have highest DBM version with icons enabled and fastest computer. You designated icon setter.")
+			print("DBM Debug: You have highest DBM version with icons enabled and the lowest ping. You designated icon setter.")
 		else
 			hasHighestVersion = false
-			print("DBM Debug: You will not be setting icons since your DBM version is out of date or your computer is slower")
+			print("DBM Debug: You will not be setting icons since your DBM version is out of date or your ping is too high")
 		end
 	end
 end
