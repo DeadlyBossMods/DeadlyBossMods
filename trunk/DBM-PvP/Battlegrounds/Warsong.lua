@@ -33,6 +33,7 @@ local vulnerableTimer	= Warsong:NewNextTimer(60, 46392)
 Warsong:AddBoolOption("ShowFlagCarrier", true, nil, function()
 	if Warsong.Options.ShowFlagCarrier and bgzone then
 		Warsong:ShowFlagCarrier()
+		Warsong:CreateFlagCarrierButton()
 	else
 		Warsong:HideFlagCarrier()
 	end	
@@ -128,6 +129,9 @@ end
 
 function Warsong:CheckFlagCarrier()
 	if not UnitAffectingCombat("player") then
+		if not self.FlagCarrierFrame1Button or not self.FlagCarrierFrame2Button then
+			self:CreateFlagCarrierButton()
+		end
 		if FlagCarrier[1] and self.FlagCarrierFrame1 then
 			self.FlagCarrierFrame1Button:SetAttribute("macrotext", "/targetexact " .. FlagCarrier[1])
 		end
