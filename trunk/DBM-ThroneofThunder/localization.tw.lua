@@ -49,12 +49,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPossessed		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
-	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	PHealthFrame		= "為$spell:136442消散顯示剩餘血量框架(需要首領血量框架開啟)",
-	RangeFrame			= "顯示距離框架",
-	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
-	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
+	RangeFrame			= "顯示距離框架"
 })
 
 ------------
@@ -68,7 +64,6 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "當你沒有$spell:137633減益時顯示特別警告",
 	InfoFrame				= "為玩家沒有$spell:137633顯示訊息框架",
 	SetIconOnTurtles		= "為$journal:7129標示團隊圖示(超過一名以上的團隊助理時不可靠)",
@@ -82,11 +77,6 @@ L:SetMiscLocalization({
 -- Megaera --
 -------------
 L= DBM:GetModLocalization(821)
-
-L:SetOptionLocalization({
-	SetIconOnCinders		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
-	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889)
-})
 
 L:SetMiscLocalization({
 	rampageEnds	= "梅賈拉的怒氣平息了。"
@@ -107,9 +97,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
-	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
-	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "為$spell:138923顯示距離框架(8碼)"
 })
 
@@ -135,9 +122,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAddsLeft				= "提示還剩餘多少霧獸",
 	specWarnFogRevealed			= "為照出霧獸顯示特別警告",
-	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
-	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向",
-	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向"
 })
 
 L:SetMiscLocalization({
@@ -180,7 +165,6 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "顯示動態距離框架(當太多人太接近時會動態顯示)",
 	InfoFrame		= "為玩家有$spell:136193顯示訊息框架"
 })
@@ -222,9 +206,7 @@ L= DBM:GetModLocalization(832)
 L:SetOptionLocalization({
 	RangeFrame			= "顯示距離框架",--For two different spells
 	StaticShockArrow	= "當某人中了$spell:135695顯示DBM箭頭",
-	OverchargeArrow		= "當某人中了$spell:136295顯示DBM箭頭",
-	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
-	SetIconOnStaticShock= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
+	OverchargeArrow		= "當某人中了$spell:136295顯示DBM箭頭"
 })
 
 ------------

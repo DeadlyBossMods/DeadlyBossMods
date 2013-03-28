@@ -50,12 +50,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPossessed		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
-	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	PHealthFrame		= "Показывать оставшееся здоровье босса до спадения $spell:136442\n(Требуется включить окно отображения здоровья босса)",
-	RangeFrame		= "Показывать окно проверки дистанции",
-	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
-	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
+	RangeFrame		= "Показывать окно проверки дистанции"
 })
 
 ------------
@@ -69,7 +65,6 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnKickShell		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "Спец-предупреждение, когда на Вас нет дебаффа $spell:137633",
 	InfoFrame		= "Информационное окно для игроков без $spell:137633",
 	SetIconOnTurtles	= "Устанавливать метки на $journal:7129 \n(Может быть не надежно, если помощник более чем у 1 человека)"
@@ -83,11 +78,6 @@ L:SetMiscLocalization({
 -- Megaera --
 -------------
 L= DBM:GetModLocalization(821)
-
-L:SetOptionLocalization({
-	SetIconOnCinders	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
-	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889)
-})
 
 L:SetMiscLocalization({
 	rampageEnds		= "Ярость Мегеры идет на убыль."
@@ -108,9 +98,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
-	specWarnFlock		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
-	timerFlockCD		= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "Показывать окно проверки дистанции (8 м) для $spell:138923"
 })
 
@@ -138,7 +125,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAddsLeft			= "Объявлять сколько осталось туманов",
 	specWarnFogRevealed		= "Спец-предупреждение при обнаружении тумана",
-	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
 	ArrowOnBeam			= "Показывать стрелку DBM во время $journal:6882, чтобы указать, в каком направлении двигаться",
 	SetIconRays			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
 })
@@ -183,7 +169,6 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDeadZone		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "Показывать динамическое окно проверки дистанции",
 	InfoFrame		= "Информационное окно для игроков с $spell:136193"
 })
@@ -225,9 +210,7 @@ L= DBM:GetModLocalization(832)
 L:SetOptionLocalization({
 	RangeFrame		= "Показывать окно проверки дистанции",--Для двух разных спеллов
 	StaticShockArrow	= "Показывать стрелку DBM, когда на ком-то $spell:135695",
-	OverchargeArrow		= "Показывать стрелку DBM, когда на ком-то $spell:136295",
-	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
-	SetIconOnStaticShock	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
+	OverchargeArrow		= "Показывать стрелку DBM, когда на ком-то $spell:136295"
 })
 
 ------------

@@ -34,9 +34,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "Verkünde Phasenwechsel",
-	RangeFrame	= "Zeige Abstandsfenster (6m) während Arkanphase",
-	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
-	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
+	RangeFrame	= "Zeige Abstandsfenster (6m) während Arkanphase"
 })
 
 L:SetMiscLocalization({
@@ -51,10 +49,6 @@ L:SetMiscLocalization({
 -- Gara'jal the Spiritbinder --
 -------------------------------
 L= DBM:GetModLocalization(682)
-
-L:SetOptionLocalization({
-	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
-})
 
 L:SetMiscLocalization({
 	Pull		= "Jetzt is' Sterbenszeit!"
@@ -78,7 +72,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "Zeige Vorwarnungscountdown für $spell:117697 (5s zuvor)",
 	timerUSRevive		= "Zeige Zeit bis sich $spell:117506 neu formen",
-	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "Zeige Abstandsfenster (8m)"
 })
 
@@ -98,8 +91,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "Zeige Spezialwarnung bevor der Boden (Energievortex) verschwindet",
-	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet",
-	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132222)
+	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet"
 })
 
 

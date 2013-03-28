@@ -34,9 +34,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "단계 전환 알림 보기",
-	RangeFrame	= "지팡이의 혼 단계에서 거리 창 보기(6m)",
-	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
-	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
+	RangeFrame	= "지팡이의 혼 단계에서 거리 창 보기(6m)"
 })
 
 L:SetMiscLocalization({
@@ -51,10 +49,6 @@ L:SetMiscLocalization({
 -- Gara'jal the Spiritbinder --
 -------------------------------
 L= DBM:GetModLocalization(682)
-
-L:SetOptionLocalization({
-	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
-})
 
 L:SetMiscLocalization({
 	Pull		= "죽을 시간이다!"
@@ -78,7 +72,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 알림 보기(5초 전부터)",
 	timerUSRevive		= "$spell:117506 재형성까지 남은시간 바 표시",
-	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "쑤베타이와 쯔안 단계에서 거리 창 보기(8m)"
 })
 
@@ -98,8 +91,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "가운데 바닥이 무너지기 전에 특수 경고 보기",
-	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 표시",
-	SetIconOnDestabilized		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
+	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 표시"
 })
 
 

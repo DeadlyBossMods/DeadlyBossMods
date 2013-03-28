@@ -15,13 +15,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
 	warnEcho			= "Verkünde das Erscheinen eines Echos",
 	warnEchoDown		= "Verkünde den Sieg über ein Echo",
-	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "Zeige Spezialwarnung bei Plattformwechsel des Bosses",
-	ArrowOnAttenuation	= "Zeige DBM-Pfeil während $spell:127834 zur Anzeige der Ausweichrichtung",
-	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+	ArrowOnAttenuation	= "Zeige DBM-Pfeil während $spell:127834 zur Anzeige der Ausweichrichtung"
 })
 
 L:SetMiscLocalization({
@@ -52,10 +49,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnCrush		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(122774),
 	specwarnUnder	= "Zeige Spezialwarnung, wenn du dich unter dem Boss befindest",
-	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (nur heroischer Schwierigkeitsgrad)",
-	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (nur heroischer Schwierigkeitsgrad)"
 })
 
 L:SetMiscLocalization({
@@ -67,10 +62,6 @@ L:SetMiscLocalization({
 -- Wind Lord Mel'jarak --
 ----------------------
 L= DBM:GetModLocalization(741)
-
-L:SetOptionLocalization({
-	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
-})
 
 ------------
 -- Amber-Shaper Un'sok --
@@ -96,7 +87,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "Zeige Überblick über den Zweck der Fähigkeiten Mutierter Konstrukte",
 	warnAmberExplosion			= "Zeige Warnung (mit Quelle), wenn $spell:122398 gewirkt wird",
 	warnAmberExplosionAM		= "Zeige persönliche Warnung, wenn Bernmonstrosität $spell:122398 wirkt\n(zum Unterbrechen)",
@@ -106,7 +96,6 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionYou	= "Zeige Spezialwarnung zum Unterbrechen deiner eigenen $spell:122398",
 	specwarnAmberExplosionAM	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nder Bernmonstrosität",
 	specwarnAmberExplosionOther	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122398\nunkontrollierter Mutierter Konstrukte",
-	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Bernmonstrosität",
 	InfoFrame					= "Zeige Infofenster für Willen der Spieler",
 	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten als Konstrukt\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
@@ -128,9 +117,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAmberTrap		= "Verkünde den Fortschritt beim Bau einer $spell:125826",
 	InfoFrame			= "Zeige Infofenster für Spieler, welche von $spell:125390 betroffen sind",
-	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:123735",
-	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097),
-	HeartOfFearIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(123845)
+	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:123735"
 })
 
 L:SetMiscLocalization({

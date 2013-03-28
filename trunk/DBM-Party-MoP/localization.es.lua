@@ -10,10 +10,6 @@ local L
 -----------------------
 L= DBM:GetModLocalization(672)
 
-L:SetOptionLocalization({
-	SetIconOnAdds	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej5616")
-})
-
 -----------------------
 -- Lorewalker Stonestep --
 -----------------------
@@ -21,10 +17,6 @@ L= DBM:GetModLocalization(664)
 
 L:SetWarningLocalization({
 	SpecWarnIntensity	= "%s en %s (%d)"
-})
-
-L:SetOptionLocalization({
-	SpecWarnIntensity	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack:format(6, 113315)
 })
 
 -----------------------
@@ -117,10 +109,6 @@ L:SetOptionLocalization({
 -- Kiptilak --
 ---------------------
 L= DBM:GetModLocalization(655)
-
-L:SetOptionLocalization({
-	IconOnSabotage	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(107268)
-})
 
 -------------
 -- Gadok --

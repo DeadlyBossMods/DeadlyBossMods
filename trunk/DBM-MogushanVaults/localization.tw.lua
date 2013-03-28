@@ -34,9 +34,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "提示轉換階段",
-	RangeFrame	= "在祕法階段時顯示距離框(6碼)",
-	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
-	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
+	RangeFrame	= "在祕法階段時顯示距離框(6碼)"
 })
 
 L:SetMiscLocalization({
@@ -51,10 +49,6 @@ L:SetMiscLocalization({
 -- Gara'jal the Spiritbinder --
 -------------------------------
 L= DBM:GetModLocalization(682)
-
-L:SetOptionLocalization({
-	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
-})
 
 L:SetMiscLocalization({
 	Pull				= "受死吧，你們!"
@@ -78,7 +72,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "為$spell:117697提示施放前五秒倒數",
 	timerUSRevive		= "為$spell:117506重新成形顯示計時器",
-	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "顯示距離框(8碼)"
 })
 
@@ -99,7 +92,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "為地板消失之前顯示特別警告",
 	timerDespawnFloor			= "為地板消失顯示計時器",
-	SetIconOnDestabilized		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226),
 	SetIconOnCreature			= "Set icons on $journal:6193"
 })
 

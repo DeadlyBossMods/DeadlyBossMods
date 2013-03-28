@@ -46,10 +46,6 @@ L:SetMiscLocalization({
 -------------------------------
 L= DBM:GetModLocalization(682)
 
-L:SetOptionLocalization({
-	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
-})
-
 L:SetMiscLocalization({
 	Pull		= "È giunta l'ora di schiattare!" -- ChatLog
 })

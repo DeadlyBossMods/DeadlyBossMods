@@ -15,13 +15,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnAttenuation		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(127834),
 	warnEcho			= "메아리 생성시 알림 보기",
 	warnEchoDown		= "메아리 처치시 알림 보기",
-	specwarnAttenuation	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(127834),
 	specwarnPlatform	= "조르로크가 단상 이동시 특수 경고 보기",
-	ArrowOnAttenuation	= "$spell:127834 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
-	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+	ArrowOnAttenuation	= "$spell:127834 시전 중에 이동해야 될 방향을 DBM 화살표로 보기"
 })
 
 L:SetMiscLocalization({
@@ -50,10 +47,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnCrush		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(122774),
 	specwarnUnder	= "가랄론의 보라색 원 안에 있을때 특수 경고 보기",
-	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."(영웅 난이도만)",
-	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."(영웅 난이도만)"
 })
 
 L:SetMiscLocalization({
@@ -65,10 +60,6 @@ L:SetMiscLocalization({
 -- Wind Lord Mel'jarak --
 ----------------------
 L= DBM:GetModLocalization(741)
-
-L:SetOptionLocalization({
-	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
-})
 
 ------------
 -- Amber-Shaper Un'sok --
@@ -94,7 +85,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "돌연변이 피조물 탑승시 피조물 주문에 대한 설명 보기",
 	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
 	warnAmberExplosionAM		= "호박석 괴수가 $spell:122402 주문을 시전할 때 개별 알림 보기(차단)",
@@ -104,7 +94,6 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionYou	= "당신의 피조물이 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 특수 경고 보기(차단)",
 	specwarnAmberExplosionOther	= "탑승자가 없는 피조물이 $spell:122398 주문을 시전할때 특수 경고 보기(차단)",
-	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
 	InfoFrame					= "의지력 정보 창 보기",
 	FixNameplates				= "피조물 탑승시 이름표 겹침 기능 끄기\n(전투 종료시에 원래 설정대로 돌아감)"
@@ -126,9 +115,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAmberTrap		= "$spell:125826 생성 과정 알림 보기", 
 	InfoFrame			= "$spell:125390 주문의 영향을 받은 대상을 정보 창에서 보기",
-	RangeFrame			= "$spell:123735 주문에 대한 거리 창 보기(5m)",
-	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097),
-	HeartOfFearIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(123845)
+	RangeFrame			= "$spell:123735 주문에 대한 거리 창 보기(5m)"
 })
 
 L:SetMiscLocalization({

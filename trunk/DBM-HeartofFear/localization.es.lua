@@ -12,8 +12,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnPlatform	= "Mostrar aviso especial cuando el boss cambia de plataforma",
-	ArrowOnAttenuation	= "Mostrar flecha durante $spell:127834 indicando donde hay que moverse",
-	MindControlIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122740)
+	ArrowOnAttenuation	= "Mostrar flecha durante $spell:127834 indicando donde hay que moverse"
 })
 
 L:SetMiscLocalization({
@@ -43,8 +42,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnUnder	= "Mostrar aviso especial cuando estás debajo del boss",
-	PheromonesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122835)
+	specwarnUnder	= "Mostrar aviso especial cuando estás debajo del boss"
 })
 
 L:SetMiscLocalization({
@@ -55,10 +53,6 @@ L:SetMiscLocalization({
 -- Wind Lord Mel'jarak --
 ----------------------
 L= DBM:GetModLocalization(741)
-
-L:SetOptionLocalization({
-	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
-})
 
 L:SetMiscLocalization({
 	Reinforcements		= "Wind Lord Mel'jarak calls for reinforcements!"--translate
@@ -113,8 +107,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAmberTrap		= "Mostrar aviso (con progreso) cuando se está creando $spell:125826",
 	InfoFrame		= "Mostrar información de jugadores a los que les afecta $spell:125390",
-	RangeFrame		= "Mostrar distancia (5) para $spell:123735",
-	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097)
+	RangeFrame		= "Mostrar distancia (5) para $spell:123735"
 })
 
 L:SetMiscLocalization({
