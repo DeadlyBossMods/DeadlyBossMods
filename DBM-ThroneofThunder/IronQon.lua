@@ -285,7 +285,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			warnWindStorm:Schedule(52)
 			specWarnWindStorm:Schedule(52)
 			timerWindStormCD:Start(52)
-			print("DBM: Mod beyond this point is incomplete and most timers will be unavailable")
 		elseif cid == 68080 then--Quet'zal
 			phase = 3
 			updateHealthFrame()
