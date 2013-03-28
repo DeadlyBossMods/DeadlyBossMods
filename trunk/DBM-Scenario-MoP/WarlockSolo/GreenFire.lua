@@ -11,6 +11,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_PERIODIC_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_DIED"
 )
@@ -20,6 +21,9 @@ local warnSpellFlame			= mod:NewSpellAnnounce(134234, 3)
 local warnHellfire				= mod:NewSpellAnnounce(134225, 3)
 --Kanrethad Ebonlocke
 local warnSummonPitLord			= mod:NewCastAnnounce(138789, 4, 10)
+local warnSummonImpSwarm		= mod:NewCastAnnounce(138685, 3, 10)
+local warnSummonDoomlord		= mod:NewCastAnnounce(138755, 3, 10)
+local warnSummonFelhunter		= mod:NewCastAnnounce(138751, 3, 10)
 
 --Essence of Order
 local specWarnSpellFlame		= mod:NewSpecialWarningMove(134234)
@@ -27,6 +31,9 @@ local specWarnHellfire			= mod:NewSpecialWarningInterrupt(134225)
 local specWarnLostSouls			= mod:NewSpecialWarning("specWarnLostSouls", nil, nil, nil, 2)
 --Kanrethad Ebonlocke
 local specWarnEnslavePitLord	= mod:NewSpecialWarning("specWarnEnslavePitLord")
+local specWarnCataclysm			= mod:NewSpecialWarningInterrupt(138564)
+local specWarnRainOfFire		= mod:NewSpecialWarningMove(138561)
+local specWarnChaosBolt			= mod:NewSpecialWarningSpell(138559, nil, nil, nil, 2)--Is this interruptable? user submitted it as a spell announce and not interrupt so assume no for now?
 
 --Essence of Order
 --Todo, maybe register COMBAT_REGEN_DISABLED and check warlocks target (basically what dbm core normally does) for combat start timers?
@@ -34,7 +41,11 @@ local timerSpellFlameCD			= mod:NewNextTimer(11, 134234)--(6 seconds after engag
 local timerHellfireCD			= mod:NewNextTimer(33, 134225)--(15 after engage)
 local timerLostSoulsCD			= mod:NewTimer(43, "timerLostSoulsCD", 51788)--43-50 second variation. (engage is same as cd, 43)
 --Kanrethad Ebonlocke
+--local timerCombatStarts			= mod:NewTimer(34, "timerCombatStarts", 2457)--Unverified, user submitted.
 local timerPitLordCast			= mod:NewCastTimer(10, 138789)
+local timerSummonImpSwarmCast 	= mod:NewCastTimer(10, 138685)
+local timerSummonFelhunterCast	= mod:NewCastTimer(9, 138751)
+local timerSummonDoomlordCast	= mod:NewCastTimer(10, 138755)
 local timerEnslaveDemon			= mod:NewTargetTimer(300, 1098)
 
 mod:RemoveOption("HealthFrame")
@@ -50,15 +61,30 @@ function mod:SPELL_CAST_START(args)
 		warnHellfire:Show()
 		specWarnHellfire:Show(args.sourceName)
 		timerHellfireCD:Start()
+	elseif args.spellId == 138559 then
+		specWarnChaosBolt:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 138789 then
+	if args.spellId == 138680 then
+--		timerCombatStarts:Start()
 		kanrathadAlive = true--Reset this here
+	elseif args.spellId == 138789 then
 		warnSummonPitLord:Show()
 		timerPitLordCast:Start()
 		specWarnEnslavePitLord:Schedule(10)
+	elseif args.spellId == 138685 then
+		warnSummonImpSwarm:Show()
+		timerSummonImpSwarmCast:Start(10)
+	elseif args.spellId == 138755 then
+		warnSummonDoomlord:Show()
+		timerSummonDoomlordCast:Start(10)
+	elseif args.spellId == 138751 then
+		warnSummonFelhunter:Show()
+		timerSummonFelhunterCast:Start(9)
+	elseif args.spellId == 138564 then
+		specWarnCataclysm:Show(args.sourceName)
 	end
 end
 
@@ -72,6 +98,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 1098 and args:GetDestCreatureID() == 70075 and kanrathadAlive then
 		timerEnslaveDemon:Cancel(args.destName)
 		specWarnEnslavePitLord:Show()
+	end
+end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 138561 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnRainOfFire:Show()
 	end
 end
 
