@@ -99,7 +99,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "為地板消失之前顯示特別警告",
 	timerDespawnFloor			= "為地板消失顯示計時器",
-	SetIconOnDestabilized		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
+	SetIconOnDestabilized		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226),
+	SetIconOnCreature			= "Set icons on $journal:6193"
 })
 
 
