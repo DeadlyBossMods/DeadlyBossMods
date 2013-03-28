@@ -33,9 +33,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "Объявлять смену фаз",
-	RangeFrame	= "Показывать окно проверки дистанции (6 м) во время аркан-фазы",
-	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
-	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
+	RangeFrame	= "Показывать окно проверки дистанции (6 м) во время аркан-фазы"
 })
 
 L:SetMiscLocalization({
@@ -50,10 +48,6 @@ L:SetMiscLocalization({
 -- Gara'jal the Spiritbinder --
 -------------------------------
 L= DBM:GetModLocalization(682)
-
-L:SetOptionLocalization({
-	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
-})
 
 L:SetMiscLocalization({
 	Pull		= "Пора умирать!"
@@ -77,7 +71,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "Производить 5-секундный отсчет для $spell:117697",
 	timerUSRevive		= "Отсчет времени до формирования $spell:117506",
-	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "Показывать окно проверки дистанции (8 м)"
 })
 
@@ -97,8 +90,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "Спец-предупреждение перед исчезновением пола",
-	timerDespawnFloor			= "Отсчет времени до исчезновения пола",
-	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132222)
+	timerDespawnFloor			= "Отсчет времени до исчезновения пола"
 })
 
 

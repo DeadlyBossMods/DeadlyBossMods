@@ -10,8 +10,7 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "距离监视（动态）：$spell:119622",
-	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(119622)
+	RangeFrame			= "距离监视（动态）：$spell:119622"
 })
 
 -----------------------

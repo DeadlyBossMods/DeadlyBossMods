@@ -37,9 +37,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "警报：阶段转换",
-	RangeFrame	= "距离监视（6码）：应对奥术阶段",
-	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
-	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
+	RangeFrame	= "距离监视（6码）：应对奥术阶段"
 })
 
 L:SetMiscLocalization({
@@ -54,10 +52,6 @@ L:SetMiscLocalization({
 -- Gara'jal the Spiritbinder --
 -------------------------------
 L= DBM:GetModLocalization(682)
-
-L:SetOptionLocalization({
-	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
-})
 
 L:SetMiscLocalization({
 	Pull		= "死亡时间到！"
@@ -81,7 +75,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "预警：$spell:117697（提前5秒倒计时）",
 	timerUSRevive		= "计时条：$spell:117506复活",
-	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "距离监视（8码）"
 })
 
@@ -99,8 +92,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "特殊警报：平台消失预警",
-	timerDespawnFloor		= "计时条：平台消失",
-	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132226)
+	timerDespawnFloor		= "计时条：平台消失"
 })
 
 

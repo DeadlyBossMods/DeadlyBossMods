@@ -37,9 +37,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "Annoncer la transition de Phase",
-	RangeFrame	= "Afficher le cadre de distance (6m) durant la phase d'arcane",
-	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
-	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
+	RangeFrame	= "Afficher le cadre de distance (6m) durant la phase d'arcane"
 })
 
 L:SetMiscLocalization({
@@ -54,10 +52,6 @@ L:SetMiscLocalization({
 -- Gara'jal the Spiritbinder --
 -------------------------------
 L= DBM:GetModLocalization(682)
-
-L:SetOptionLocalization({
-	SetIconOnVoodoo		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(122151)
-})
 
 L:SetMiscLocalization({
 	Pull		= "L'heure de mourir elle est arrivée maintenant !"
@@ -81,7 +75,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "Alerte préventive pour $spell:117697 (5s avant) ",
 	timerUSRevive		= "Délai avec que $spell:117506 ne se reconstitue",
-	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
 	RangeFrame			= "Afficher le cadre de distance (8m)"
 })
 
@@ -101,8 +94,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "Alerte spéciale avant que le sol ne disparaisse",
-	timerDespawnFloor		= "Afficher le temps avant que le sol disparaît",
-	SetIconOnDestabilized	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(132222)
+	timerDespawnFloor		= "Afficher le temps avant que le sol disparaît"
 })
 
 

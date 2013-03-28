@@ -49,12 +49,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPossessed		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
-	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	PHealthFrame		= "우두머리 체력 바 사용시 $spell:136442 사라짐까지 남은 체력도 함께 보기",
-	RangeFrame			= "거리 창 보기",
-	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
-	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
+	RangeFrame			= "거리 창 보기"
 })
 
 ------------
@@ -68,7 +64,6 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "$spell:137633 효과가 없을 경우 특수 경고 보기",
 	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기",
 	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정\n(승급자가 1명 이상일 경우에는 오작동 할 수 있습니다.)",
@@ -82,11 +77,6 @@ L:SetMiscLocalization({
 -- Megaera --
 -------------
 L= DBM:GetModLocalization(821)
-
-L:SetOptionLocalization({
-	SetIconOnCinders		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
-	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889)
-})
 
 L:SetMiscLocalization({
 	rampageEnds	= "분노가 가라앉습니다."
@@ -107,9 +97,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
-	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
-	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "$spell:138923 주문에 대한 거리 창 보기(8m)"
 })
 
@@ -137,9 +124,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAddsLeft				= "안개도깨비 남은 횟수 알림 보기",
 	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
-	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
-	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
-	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기"
 })
 
 L:SetMiscLocalization({
@@ -182,7 +167,6 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
 	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)",
 	InfoFrame		= "$spell:136193 주문에 영향을 받은 대상을 정보 창에서 보기"
 })
@@ -224,9 +208,7 @@ L= DBM:GetModLocalization(832)
 L:SetOptionLocalization({
 	RangeFrame			= "거리 창 보기",
 	StaticShockArrow	= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
-	OverchargeArrow		= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
-	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
-	SetIconOnStaticShock= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
+	OverchargeArrow		= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
 })
 
 ------------

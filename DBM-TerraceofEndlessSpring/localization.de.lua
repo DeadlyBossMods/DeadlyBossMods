@@ -14,8 +14,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnGroupOrder		= "Verkünde Gruppenrotation für $spell:118191\n(unterstützt derzeit nur 25-Spieler, Strategie: 5222 1222 1222 1222 1111)",
 	specWarnYourGroup	= "Zeige Spezialwarnung, wenn deine Gruppe bei $spell:118191 dran ist\n(unterstützt derzeit nur 25-Spieler, siehe oben)",
-	RangeFrame			= "Zeige Abstandsfenster (8m) für $spell:111850\n(zeigt jeden, falls du den Debuff hast; sonst nur betroffene Spieler)",
-	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
+	RangeFrame			= "Zeige Abstandsfenster (8m) für $spell:111850\n(zeigt jeden, falls du den Debuff hast; sonst nur betroffene Spieler)"
 })
 
 
@@ -23,10 +22,6 @@ L:SetOptionLocalization({
 -- Tsulong --
 ------------
 L= DBM:GetModLocalization(742)
-
-L:SetOptionLocalization({
-	warnLightOfDay	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(123716)
-})
 
 L:SetMiscLocalization{
 	Victory	= "Ich danke Euch, Fremdlinge. Ich wurde befreit."
@@ -81,11 +76,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
 	warnBreathOnPlatform		= "Zeige Warnung für $spell:119414, falls du auf einem der äußeren Schreine\nbist (nicht allgemein empfohlen, gedacht für Schlachtzugsleiter)",
 	specWarnBreathOfFearSoon	= "Zeige Spezialvorwarn. für $spell:119414, falls dir der $spell:117964 Buff fehlt",
 	specWarnMovement			= "Zeige Spezialwarnung zum Laufen bei $spell:120047\n(http://mysticalos.com/terraceofendlesssprings.jpg)",
 	timerSpecialAbility			= "Zeige Zeit bis nächste Spezialfähigkeit gewirkt wird",
-	RangeFrame					= "Zeige Abstandsfenster (2m) für $spell:119519",
-	SetIconOnHuddle				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(120629)
+	RangeFrame					= "Zeige Abstandsfenster (2m) für $spell:119519"
 })
