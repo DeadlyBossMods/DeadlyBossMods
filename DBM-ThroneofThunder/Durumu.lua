@@ -265,7 +265,6 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerForceOfWillCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerObliterateCD:Start()
-			timerIceWallCD:Start(87)
 		end
 		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
 			warnYellowBeam:Show(target)

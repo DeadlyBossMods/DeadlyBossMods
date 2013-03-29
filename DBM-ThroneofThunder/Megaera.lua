@@ -80,7 +80,7 @@ local activeHeadGUIDS = {}
 local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
-	-- 3. check boss1's highest threat target
+	-- 3. check boss' highest threat target
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
@@ -224,7 +224,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		timerArcticFreezeCD:Cancel()
 		timerIgniteFleshCD:Cancel()
 		timerRotArmorCD:Cancel()
-		--Not if back ones always cancel here, they seem too
+		--Not sure if back ones always cancel here, they seem too
 --		timerCinderCD:Cancel()
 --		timerTorrentofIceCD:Cancel()
 --		timerAcidRainCD:Cancel()
