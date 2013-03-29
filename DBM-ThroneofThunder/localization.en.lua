@@ -143,7 +143,8 @@ L:SetOptionLocalization({
 	specWarnFogRevealed			= "Show special warning when a fog is revealed",
 	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
 	ArrowOnBeam					= "Show DBM Arrow during $journal:6882 to indicate which direction to move",
-	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891"),
+	InfoFrame					= "Show info frame for $spell:133795 stacks"
 })
 
 L:SetMiscLocalization({

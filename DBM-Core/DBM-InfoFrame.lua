@@ -390,6 +390,51 @@ local function updatePlayerBuffStacks()
 	updateLines()
 end
 
+local function updatePlayerDebuffStacks()
+	table.wipe(lines)
+	updateIcons()	-- update Icons first in case of an "icon modifier"
+	if IsInRaid() then
+		for i = 1, GetNumGroupMembers() do
+			local uId = "raid"..i
+			if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) then
+				lines[UnitName(uId)] = select(4, UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)))
+			elseif UnitDebuff(uId, GetSpellInfo(pIndex)) then
+				lines[UnitName(uId)] = lastStacks[UnitName(uId)] or 0			-- is always 0 ?
+				if iconModifier then
+					icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
+				end
+			end
+		end
+	elseif IsInGroup() then
+		for i = 1, GetNumSubgroupMembers() do
+			local uId = "party"..i
+			if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) then
+				lines[UnitName(uId)] = select(4, UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)))
+			elseif UnitDebuff(uId, GetSpellInfo(pIndex)) then
+				lines[UnitName(uId)] = lastStacks[UnitName(uId)] or 0
+				if iconModifier then
+					icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
+				end
+			end
+		end
+		if UnitDebuff("player", GetSpellInfo(infoFrameThreshold)) then
+			lines[UnitName("player")] = select(4, UnitDebuff("player", GetSpellInfo(infoFrameThreshold)))
+		elseif UnitDebuff("player", GetSpellInfo(pIndex)) then
+			lines[UnitName("player")] = lastStacks[UnitName("player")]
+			if iconModifier then
+				icons[UnitName("player")] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(iconModifier)
+			end
+		end
+	end
+
+	table.wipe(lastStacks)		-- 'Erase' the old table, and copy the current values into it
+	for k,v in pairs(lines) do
+		lastStacks[k] = v
+	end
+
+	updateLines()
+end
+
 local function updatePlayerAggro()
 	table.wipe(lines)
 	if IsInRaid() then
@@ -540,6 +585,8 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 		updatePlayerAggro()
 	elseif currentEvent == "playerbuffstacks" then
 		updatePlayerBuffStacks()
+	elseif currentEvent == "playerdebuffstacks" then
+		updatePlayerDebuffStacks()
 	elseif currentEvent == "playertargets" then
 		updatePlayerTargets()
 	elseif currentEvent == "test" then
