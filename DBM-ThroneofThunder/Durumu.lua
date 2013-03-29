@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(68036)--Crimson Fog 69050, 
 mod:SetModelID(47189)
-mod:SetUsedIcons(7, 6, 1)
+mod:SetUsedIcons(8, 7, 6, 1)
 
 mod:RegisterCombat("combat")
 
@@ -31,7 +31,7 @@ local warnRedBeam					= mod:NewTargetAnnounce(139204, 2)
 local warnYellowBeam				= mod:NewTargetAnnounce(133738, 2)--Cannot find a tracking ID for this one
 local warnAddsLeft					= mod:NewAnnounce("warnAddsLeft", 2, 134123)
 local warnDisintegrationBeam		= mod:NewSpellAnnounce("ej6882", 4)
-local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3)--Some times needs to block this even dps. So warn for everyone.
 local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
 local warnIceWall					= mod:NewSpellAnnounce(134587, 3)
 
@@ -72,6 +72,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 --mod:AddBoolOption("ArrowOnBeam", true)
 mod:AddBoolOption("SetIconRays", true)
+mod:AddBoolOption("SetIconLifeDrain", true)
 mod:AddBoolOption("InfoFrame", true) -- may be need special warning or generic warning high stack player? or do not needed at all?
 
 local totalFogs = 3
@@ -120,9 +121,6 @@ function mod:OnCombatStart(delay)
 	timerLingeringGazeCD:Start(15.5-delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(41-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
-		timerIceWallCD:Start(128-delay)
-	end
 	timerDisintegrationBeamCD:Start(135-delay)
 	berserkTimer:Start(-delay)
 end
@@ -184,6 +182,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, warnLingeringGazeTargets)
 		end
+	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target. If target warning needed, insert into this block. (maybe very spammy)
+		self:SetIcon(args.destName, 8)--Skull
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -191,6 +191,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 133767 then
 		timerSeriousWound:Cancel(args.destName)
+	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target.
+		self:SetIcon(args.destName, 0)
 	end
 end
 
@@ -289,6 +291,9 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		lifeDrained = true
 		if target == UnitName("player") then
 			yellLifeDrain:Yell()
+		end
+		if self.Options.SetIconLifeDrain then
+			self:SetIcon(target, 8) -- Skull
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(133795))
