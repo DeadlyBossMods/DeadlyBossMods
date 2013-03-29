@@ -5,10 +5,13 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
-L:SetOptionLocalization({
-	RangeFrame		= "Show range frame"
+L:SetWarningLocalization({
+	specWarnWaterMove	= "%s soon - get out from Conductive Water!"
 })
 
+L:SetOptionLocalization({
+	RangeFrame			= "Show range frame"
+})
 
 --------------
 -- Horridon --

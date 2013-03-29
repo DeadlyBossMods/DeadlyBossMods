@@ -61,6 +61,7 @@ local specWarnTidalForce				= mod:NewSpecialWarningSpell(137531, nil, nil, nil, 
 local timerDayCD						= mod:NewTimer(183, "timerDayCD", 122789) -- timer is 183 or 190 (confirmed in 10 man. variable)
 local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
 local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
+local timerTearsOfTheSun				= mod:NewBuffActiveTimer(10, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
 --Light
 local timerDuskCD						= mod:NewTimer(360, "timerDuskCD", "Interface\\Icons\\achievement_zone_easternplaguelands")--it seems always 360s after combat entered. (day timer is variables, so not reliable to day phase)
@@ -108,6 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 137404 then
 		warnTearsOfSun:Show()
 		specWarnTearsOfSun:Show()
+		timerTearsOfTheSun:Start()
 		if timerDayCD:GetTime() < 145 then
 			timerTearsOfTheSunCD:Start()
 		end

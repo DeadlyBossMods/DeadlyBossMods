@@ -29,6 +29,7 @@ local specWarnStaticBurst			= mod:NewSpecialWarningYou(137162, mod:IsTank())
 local specWarnStaticBurstOther		= mod:NewSpecialWarningTarget(137162, mod:IsTank())
 local specWarnThrow					= mod:NewSpecialWarningYou(137175, mod:IsTank())
 local specWarnThrowOther			= mod:NewSpecialWarningTarget(137175, mod:IsTank())
+local specWarnWaterMove				= mod:NewSpecialWarning("specWarnWaterMove")
 local specWarnStorm					= mod:NewSpecialWarningSpell(137313, nil, nil, nil, 2)
 local specWarnElectrifiedWaters		= mod:NewSpecialWarningMove(138006)
 local specWarnIonization			= mod:NewSpecialWarningSpell(138732, not mod:IsTank(), nil, nil, 2)
@@ -38,17 +39,22 @@ local timerStaticBurstCD			= mod:NewCDTimer(19, 137162, mod:IsTank())
 local timerThrowCD					= mod:NewCDTimer(26, 137175)--90-93 variable (26-30 seconds after storm. verified in well over 50 logs)
 local timerStorm					= mod:NewBuffActiveTimer(17, 137313)--2 second cast, 15 second duration
 local timerStormCD					= mod:NewCDTimer(60.5, 137313)--90-93 variable (60.5~67 seconds after throw)
-local timerIonization				= mod:NewBuffActiveTimer(24, 138732)
-local timerIonizationCD				= mod:NewNextTimer(60.5, 138732)
+local timerIonization				= mod:NewBuffFadesTimer(24, 138732)
+local timerIonizationCD				= mod:NewNextTimer(61.5, 138732)
 
 local soundFocusedLightning			= mod:NewSound(137422)
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
-local countdownIonization			= mod:NewCountdown(60.5, 138732)
+local countdownIonization			= mod:NewCountdown(61.5, 138732)
 
 mod:AddBoolOption("RangeFrame")
 
+local function checkWater(force)
+	if UnitDebuff("player", GetSpellInfo(138470)) and not UnitIsDeadOrGhost("player") and (UnitDebuff("player", GetSpellInfo(138732)) or force) then
+		specWarnWaterMove:Show()
+	end
+end
 
 function mod:FocusedLightningTarget(targetname)
 	warnFocusedLightning:Show(targetname)
@@ -67,7 +73,7 @@ function mod:OnCombatStart(delay)
 	timerStaticBurstCD:Start(13-delay)
 	timerThrowCD:Start(30-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerIonizationCD:Start(-delay)
+		timerIonizationCD:Start(60-delay)
 		countdownIonization:Start(-delay)
 	end
 	berserkTimer:Start(-delay)
@@ -115,6 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 138732 and args:IsPlayer() then
 		timerIonization:Start()
+		self:Schedule(19, checkWater)--Extremely dangerous. (if conducted, then auto wipe). So check before 5 sec.
 		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 then you have range 8 open and we don't want to make it 4
 			DBM.RangeCheck:Show(4)
 		end
@@ -123,11 +130,12 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 138732 and args:IsPlayer() then
+		timerIonization:Cancel()
+		self:Unschedule(checkWater)
 		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 we don't want to hide it either.
 			DBM.RangeCheck:Hide()
 		end
 	elseif args.spellId == 137422 and args:IsPlayer() then
-		timerIonization:Cancel()
 		if self.Options.RangeFrame then
 			if UnitDebuff("player", GetSpellInfo(138732)) then--if you have 138732 then switch to 4 yards
 				DBM.RangeCheck:Show(4)
@@ -150,6 +158,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		local target = DBM:GetFullNameByShortName(target)
 		warnThrow:Show(target)
 		timerStormCD:Start()
+		self:Schedule(57.5, checkWater, true)--check before 3 sec.
 		if target == UnitName("player") then
 			specWarnThrow:Show()
 		else

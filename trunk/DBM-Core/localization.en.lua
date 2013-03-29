@@ -15,6 +15,7 @@ DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "Absolute mode diabled by %s. Normal icon permis
 DBM_CORE_COMBAT_STARTED				= "%s engaged. Good luck and have fun! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Engaged an in progress fight against %s. Good luck and have fun! :)"
 DBM_CORE_BOSS_DOWN					= "%s down after %s!"
+DBM_CORE_BOSS_DOWN_I				= "%s down! You have %d total victories."
 DBM_CORE_BOSS_DOWN_L				= "%s down after %s! Your last kill took %s and your fastest kill took %s. You have %d total victories."
 DBM_CORE_BOSS_DOWN_NR				= "%s down after %s! This is a new record! (Old record was %s). You have %d total victories."
 DBM_CORE_COMBAT_ENDED_AT			= "Combat against %s (%s) ended after %s."
