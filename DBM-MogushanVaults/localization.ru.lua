@@ -7,20 +7,21 @@ local L
 L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
-	SpecWarnOverloadSoon		= "%s скоро!", -- prepare survival ablility or move boss. need more specific message.
-	specWarnBreakJasperChains	= "Рвите цепи!"
+	SpecWarnOverloadSoon		= "Скоро %s!",
+	specWarnBreakJasperChains	= "Рвите яшмовые цепи!"
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon		= "Спец-предупреждение перед насыщением", -- need to change this, i can not translate this with good grammer. please help.
+	SpecWarnOverloadSoon		= "Спец-предупреждение перед насыщением",
 	specWarnBreakJasperChains	= "Спец-предупреждение, когда можно разорвать $spell:130395",
-	ArrowOnJasperChains			= "Показывать стрелку DBM, когда на вас $spell:130395",
-	InfoFrame					= "Показывать информационное окно с энергией боссов"
+	ArrowOnJasperChains		= "Показывать стрелку DBM, когда на вас $spell:130395",
+	InfoFrame			= "Показывать информационное окно с энергией боссов, окаменением игроков и какой босс кастует окаменение"
 })
 
 L:SetMiscLocalization({
 	Overload	= "%s вот-вот перенасытится!"
 })
+
 
 ------------
 -- Feng the Accursed --
@@ -39,7 +40,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Fire		= "О, превозносимый! Моими руками ты отделишь их плоть от костей!",
 	Arcane		= "О, великий мыслитель! Да снизойдет на меня твоя древняя мудрость!",
-	Nature		= "О, великий дух! Даруй мне силу земли!",--I did not log this one, text is probably not right
+	Nature		= "О, великий дух! Даруй мне силу земли!",
 	Shadow		= "Great soul of champions past! Bear to me your shield!"
 })
 
@@ -50,7 +51,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(682)
 
 L:SetMiscLocalization({
-	Pull		= "Пора умирать!"
+	Pull			= "Пора умирать!"
 })
 
 
@@ -60,18 +61,18 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization(687)
 
 L:SetWarningLocalization({
-	DarknessSoon		= "Щить тьмы через %ds"
+	DarknessSoon		= "Щит тьмы через %d сек."
 })
 
 L:SetTimerLocalization({
-	timerUSRevive		= "Бессмертные тени",
+	timerUSRevive		= "Бессмертные тени формируются",
 	timerRainOfArrowsCD	= "%s"
 })
 
 L:SetOptionLocalization({
 	DarknessSoon		= "Производить 5-секундный отсчет для $spell:117697",
 	timerUSRevive		= "Отсчет времени до формирования $spell:117506",
-	RangeFrame			= "Показывать окно проверки дистанции (8 м)"
+	RangeFrame		= "Показывать окно проверки дистанции (8 м)"
 })
 
 
@@ -85,12 +86,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerDespawnFloor			= "Пол исчезает!"
+	timerDespawnFloor		= "Пол исчезает!"
 })
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "Спец-предупреждение перед исчезновением пола",
-	timerDespawnFloor			= "Отсчет времени до исчезновения пола"
+	timerDespawnFloor		= "Отсчет времени до исчезновения пола",
+	SetIconOnCreature		= "Устанавливать метки на $journal:6193"
 })
 
 
@@ -100,15 +102,15 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "Показывать игроков под $spell:116525",
+	InfoFrame	= "Показывать информационное окно для игроков с $spell:116525",
 	CountOutCombo	= "Отсчитывать количество кастов $journal:5673",
 	ArrowOnCombo	= "Показывать стрелку DBM во время $journal:5673\nПодразумевается, что танк стоит перед боссом, а все остальные - позади."
 })
 
 L:SetMiscLocalization({
-	Pull		= "Машина гудит, возвращаясь к жизни! Надо спуститься на нижний уровень!",--Emote
-	Rage		= "Ярость Императора эхом звучит среди холмов.",--Yell
-	Strength	= "Сила Императора сжимает эти земли в железных тисках.",--Emote
-	Courage		= "Смелость Императора безгранична.",--Emote
-	Boss		= "Бессмертная армия сокрушит врагов Императора."--Emote
+	Pull		= "Машина гудит, возвращаясь к жизни. Спуститесь на нижний уровень!",--Emote
+	Rage		= "Ярость императора эхом звучит среди холмов.",--Yell
+	Strength	= "Сила императора сжимает эти земли в железных тисках.",--Emote
+	Courage		= "Смелость императора безгранична.",--Emote
+	Boss		= "Бессмертная армия сокрушит врагов императора."--Emote
 })
