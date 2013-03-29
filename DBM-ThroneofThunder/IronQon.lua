@@ -374,10 +374,6 @@ function mod:UNIT_DIED(args)
 		timerFreezeCD:Cancel()
 		warnPhase4:Show()
 		timerRisingAngerCD:Start()
-		if self:IsDifficulty("normal25", "lfr25") then --lfr not comfirms
-			timerFistSmashCD:Start(22.5, 1)
-		else
-			timerFistSmashCD:Start(31.5, 1)
-		end
+		timerFistSmashCD:Start(22.5, 1)--fist smash cd is random. (22.5 or 31.5)
 	end
 end

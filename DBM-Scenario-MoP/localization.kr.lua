@@ -64,24 +64,24 @@ L:SetGeneralLocalization{
 L= DBM:GetModLocalization("GreenFire")
 
 L:SetGeneralLocalization{
-	name = "Warlock Green Fire"--No idea what real name is. It's not something i can test or verify.
+	name = "암흑의 수확을 쫓아서"
 }
 
 L:SetWarningLocalization({
-	specWarnLostSouls		= "Lost Souls!",
-	specWarnEnslavePitLord	= "Pit Lord - Enslave Now!"
+	specWarnLostSouls		= "길 잃은 영혼!",
+	specWarnEnslavePitLord	= "지옥의 군주 - 지배하세요!"
 })
 
 L:SetTimerLocalization({
-	timerLostSoulsCD		= "Lost Souls CD"
+	timerLostSoulsCD		= "길 잃은 영혼 가능"
 })
 
 L:SetOptionLocalization({
-	specWarnLostSouls		= "Show special warning when Lost Souls spawn",
-	specWarnEnslavePitLord	= "Show special warning to enslave demon when Pit Lord activates/breaks free",
-	timerLostSoulsCD		= "Show cooldown timer for next Lost Souls spawn"
+	specWarnLostSouls		= "긹 잃은 영혼 소환시 특수 경고 보기",
+	specWarnEnslavePitLord	= "지옥의 군주 활성화 또는 지배 해제시 특수 경고 보기",
+	timerLostSoulsCD		= "길 잃은 영혼 대기시간 바 표시"
 })
 
 L:SetMiscLocalization({
-	LostSouls				= "Face the souls of those your kind doomed to perish, Warlock!"
+	LostSouls				= "이곳의 힘은 너 따위의 것이 아니다. 흑마법사!"
 })

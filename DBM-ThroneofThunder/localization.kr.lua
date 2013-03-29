@@ -6,8 +6,12 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetWarningLocalization({
+	specWarnWaterMove	= "곧 %s - 전도성 물에서 빠지세요!"
+})
+
 L:SetOptionLocalization({
-	RangeFrame		= "거리 창 보기"
+	RangeFrame			= "거리 창 보기"
 })
 
 --------------
@@ -146,7 +150,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(824)
 
 L:SetWarningLocalization({
-	warnMatterSwapped	= "%s: >%s<, >%s< 자리바뀜"
+	warnMatterSwapped	= "%s 자리바꿈 : >%s<, >%s<"
 })
 
 L:SetOptionLocalization({
