@@ -54,13 +54,16 @@ local yellLifeDrain					= mod:NewYell(133795, nil, false)
 
 local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
-local timerLingeringGazeCD			= mod:NewCDTimer(25, 138467)
+local timerLingeringGazeCD			= mod:NewCDTimer(46, 138467)
 local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 second cd but rarely cast more than once per phase because of how short the phases are (both beams phases cancel this ability)
 local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")--Don't know when 2nd one is cast.
 local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 local timerDisintegrationBeam		= mod:NewBuffActiveTimer(65, "ej6882")
 local timerDisintegrationBeamCD		= mod:NewNextTimer(127, "ej6882")
+local timerLifeDrainCD				= mod:NewCDTimer(40, 133795)
+local timerLifeDrain				= mod:NewBuffActiveTimer(18, 133795)
+local timerIceWallCD				= mod:NewNextTimer(120, 134587)
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 local soundLingeringGaze			= mod:NewSound(134044)
@@ -69,11 +72,15 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 --mod:AddBoolOption("ArrowOnBeam", true)
 mod:AddBoolOption("SetIconRays", true)
+mod:AddBoolOption("InfoFrame", true) -- may be need special warning or generic warning high stack player? or do not needed at all?
 
 local totalFogs = 3
 local lingeringGazeTargets = {}
+local lingeringGazeCD = 46
 local lastRed = nil
 local lastBlue = nil
+local spectrumStarted = false
+local lifeDrained = false
 local blueTracking = GetSpellInfo(139202)
 local redTracking = GetSpellInfo(139204)
 
@@ -82,24 +89,40 @@ local function warnLingeringGazeTargets()
 	table.wipe(lingeringGazeTargets)
 end
 
-local function BeamEnded()--spell cd seems longer after first bean ended. but after second beam ended, spells seems to have normal cd.
+local function BeamEnded()
 --[[	if mod.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
 	end--]]
+	timerLingeringGazeCD:Start(16)
 	timerForceOfWillCD:Start(18)
-	timerLingeringGazeCD:Start(21)
 	timerLightSpectrumCD:Start(32)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerIceWallCD:Start(24)
+	end
 	timerDisintegrationBeamCD:Start()
+	--Life Drain comes after beamended 1~3 sec.
+end
+
+local function HideInfoFrame()
+	if mod.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:OnCombatStart(delay)
+	lingeringGazeCD = 46
 	lastRed = nil
 	lastBlue = nil
+	spectrumStarted = false
+	lifeDrained = false
 	table.wipe(lingeringGazeTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(41-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerIceWallCD:Start(128-delay)
+	end
 	timerDisintegrationBeamCD:Start(135-delay)
 	berserkTimer:Start(-delay)
 end
@@ -112,6 +135,9 @@ function mod:OnCombatEnd()
 		self:SetIcon(lastRed, 0)
 		self:SetIcon(lastBlue, 0)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -119,7 +145,7 @@ function mod:SPELL_CAST_START(args)
 		warnHardStare:Show()
 		timerHardStareCD:Start()
 	elseif args.spellId == 138467 then
-		timerLingeringGazeCD:Start()
+		timerLingeringGazeCD:Start(lingeringGazeCD)
 	elseif args.spellId == 134587 and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
 	end
@@ -211,8 +237,9 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		end
 	elseif msg:find("spell:134122") then--Blue Rays
 		local target = DBM:GetFullNameByShortName(target)
+		lingeringGazeCD = not spectrumStarted and 25 or 40 -- First spectrum Lingering Gaze CD = 25, second = 40
+		spectrumStarted = true
 		warnBlueBeam:Show(target)
-		timerLingeringGazeCD:Start(21)
 		if target == UnitName("player") then
 			specWarnBlueBeam:Show()
 		end
@@ -236,6 +263,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerForceOfWillCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerObliterateCD:Start()
+			timerIceWallCD:Start(87)
 		end
 		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
 			warnYellowBeam:Show(target)
@@ -256,15 +284,28 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		local target = DBM:GetFullNameByShortName(target)
 		warnLifeDrain:Show(target)
 		specWarnLifeDrain:Show(target)
+		timerLifeDrain:Start()
+		timerLifeDrainCD:Start(not lifeDrained and 50 or nil)--first is 50, 2nd and later is 40 
+		lifeDrained = true
 		if target == UnitName("player") then
 			yellLifeDrain:Yell()
 		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(133795))
+			DBM.InfoFrame:Show(5, "playerdebuffstacks", 133798)
+		end
+		self:Schedule(18, HideInfoFrame)
 	elseif msg:find("spell:134169") then
+		lingeringGazeCD = 46 -- Return to Original CD.
 		timerLingeringGazeCD:Cancel()
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show()
 		timerDisintegrationBeam:Start()
+		self:Unschedule(HideInfoFrame)
 		self:Schedule(65, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end
 	end
 end
 

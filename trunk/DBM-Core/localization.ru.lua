@@ -238,7 +238,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал \"бегите
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT	= "Звуковой отсчет для $spell:%s"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT	= "Звуковой отсчет во время действия $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Кричать, когда на вас $spell:%s"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "На МНЕ - %s!"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s на " .. UnitName("player") .. "!"
 
 
 -- New special warnings
