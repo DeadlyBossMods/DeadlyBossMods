@@ -50,6 +50,7 @@ local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed", nil, 
 local specWarnDisintegrationBeam	= mod:NewSpecialWarningSpell("ej6882", nil, nil, nil, 2)
 local specWarnEyeSore				= mod:NewSpecialWarningMove(140502)
 local specWarnLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())
+local yellLifeDrain					= mod:NewYell(133795, nil, false)
 
 local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
@@ -61,6 +62,8 @@ local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to kno
 local timerDisintegrationBeam		= mod:NewBuffActiveTimer(65, "ej6882")
 local timerDisintegrationBeamCD		= mod:NewNextTimer(127, "ej6882")
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
+
+local soundLingeringGaze			= mod:NewSound(134044)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -79,7 +82,7 @@ local function warnLingeringGazeTargets()
 	table.wipe(lingeringGazeTargets)
 end
 
-local function BeamEnded()
+local function BeamEnded()--spell cd seems longer after first bean ended. but after second beam ended, spells seems to have normal cd.
 --[[	if mod.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
 	end--]]
@@ -147,6 +150,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnLingeringGaze:Show()
 			yellLingeringGaze:Yell()
+			soundLingeringGaze:Play()
 		end
 		self:Unschedule(warnLingeringGazeTargets)
 		if #lingeringGazeTargets >= 5 and self:IsDifficulty("normal25", "heroic25") or #lingeringGazeTargets >= 2 and self:IsDifficulty("normal10", "heroic10") then--TODO, add LFR number of targets
@@ -252,6 +256,9 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		local target = DBM:GetFullNameByShortName(target)
 		warnLifeDrain:Show(target)
 		specWarnLifeDrain:Show(target)
+		if target == UnitName("player") then
+			yellLifeDrain:Yell()
+		end
 	elseif msg:find("spell:134169") then
 		timerLingeringGazeCD:Cancel()
 		warnDisintegrationBeam:Show()
