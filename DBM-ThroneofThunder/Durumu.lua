@@ -121,6 +121,15 @@ function mod:OnCombatStart(delay)
 	timerLingeringGazeCD:Start(15.5-delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(41-delay)
+--[[
+"<4.6 20:00:50> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Durumu the Forgotten
+"<128.6 20:02:54> [CLEU] UNIT_DIED#true##nil#-2147483648#-2147483648#0xF1310DBA00006166#Crimson Fog#8776#0", -- [9268]
+"<130.8 20:02:56> [CLEU] SPELL_CAST_START#false#0xF131090E00006089#Blue Eye#2632#0##nil#-2147483648#-2147483648#134587#Ice Wall#1", -- [9313] +125.5 (+2.2 after 3rd fog)
+
+"<3.1 19:52:21> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Durumu the Forgotten
+"<109.0 19:54:07> [CLEU] UNIT_DIED#true##nil#-2147483648#-2147483648#0xF1310DBA00005EB8#Crimson Fog#8776#0", -- [8989]
+"<111.2 19:54:10> [CLEU] SPELL_CAST_START#false#0xF131090E00005DE8#Blue Eye#2632#0##nil#-2147483648#-2147483648#134587#Ice Wall#1", -- [9104] +108 (+2.2 after 3rd fog)
+--]]
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerIceWallCD:Start(127-delay)
 	end
