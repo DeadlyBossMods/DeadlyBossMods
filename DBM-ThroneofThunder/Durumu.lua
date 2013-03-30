@@ -43,7 +43,7 @@ local yellForceOfWill				= mod:NewYell(136413)
 local specWarnLingeringGaze			= mod:NewSpecialWarningYou(134044)
 local yellLingeringGaze				= mod:NewYell(134044, nil, false)
 local specWarnLingeringGazeMove		= mod:NewSpecialWarningMove(134044)
-local specWarnBlueBeam				= mod:NewSpecialWarningYou(139202)
+local specWarnBlueBeam				= mod:NewSpecialWarning("specWarnBlueBeam", nil, nil, nil, 3)
 local specWarnRedBeam				= mod:NewSpecialWarningYou(139204)
 local specWarnYellowBeam			= mod:NewSpecialWarningYou(133738)
 local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed", nil, nil, nil, 2)--Use another "Be Aware!" sound because Lingering Gaze comes on Spectrum phase.
@@ -98,7 +98,7 @@ local function BeamEnded()
 	timerForceOfWillCD:Start(18)
 	timerLightSpectrumCD:Start(32)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerIceWallCD:Start(24)
+		timerIceWallCD:Start(25)
 	end
 	timerDisintegrationBeamCD:Start()
 	--Life Drain comes after beamended 1~3 sec.
