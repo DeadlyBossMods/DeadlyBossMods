@@ -63,6 +63,7 @@ function mod:SpiritFireTarget(sGUID)
 end
 
 function mod:SPELL_CAST_START(args)
+	if not mod.Options.Enabled then return end
 	if args.spellId == 139895 then
 		self:ScheduleMethod(0.2, "SpiritFireTarget", args.sourceGUID)--Untested scan timing (don't even know if scanning works
 		timerSpiritfireCD:Start()
@@ -79,6 +80,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
+	if not mod.Options.Enabled then return end
 	if args.spellId == 139322 then--Or 139559, not sure which
 		stormEnergyTargets[#stormEnergyTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -107,6 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:UNIT_DIED(args)
+	if not mod.Options.Enabled then return end
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 70308 then--Soul-Fed Construct
 		timerSpiritfireCD:Cancel()
@@ -132,6 +135,7 @@ end
 
 --"<1.0 17:57:05> [UNIT_SPELLCAST_SUCCEEDED] Gastropod [[target:Fixated::0:140306]]", -- [23]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if not mod.Options.Enabled then return end
 	if spellId == 140306 and self:AntiSpam() then
 		self:SendSync("OMGSnail", UnitGUID(uId))
 	end
