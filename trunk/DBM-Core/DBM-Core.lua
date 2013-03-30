@@ -4089,7 +4089,7 @@ end
 -----------------------
 do
 	local textureCode = " |T%s:12:12|t "
-	local textureExp = " |T(%S+):12:12|t "
+	local textureExp = " |T(%S+......%S+):12:12|t "--Fix texture file including blank not strips(example: Interface\\Icons\\Spell_Frost_Ring of Frost). But this have limitations. Since I'm poor at regular expressions, this is not good fix. Do you have another good regular expression, tandanu?
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
 
