@@ -16,6 +16,7 @@ DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "%s отключил абсолютный реж
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s вступает в бой (в процессе). Удачи! :)"
 DBM_CORE_BOSS_DOWN					= "%s погибает спустя %s!"
+DBM_CORE_BOSS_DOWN_I				= "%s погибает! Общее количество побед у Вас %d."
 DBM_CORE_BOSS_DOWN_L				= "%s погибает спустя %s! Ваш последний бой длился %s, а лучший бой длился %s. Общее количество побед у Вас %d."
 DBM_CORE_BOSS_DOWN_NR				= "%s погибает спустя %s! Это новый рекорд! (Предыдущий рекорд был %s). Общее количество побед у Вас %d."
 DBM_CORE_COMBAT_ENDED_AT			= "Бой с %s (%s) закончился спустя %s."
