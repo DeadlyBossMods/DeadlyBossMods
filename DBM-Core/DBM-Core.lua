@@ -2776,7 +2776,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp)
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		self:Schedule(mod.minCombatTime or 3, checkWipe)
-		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario and mod.Options.Enabled then
+		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
@@ -2790,7 +2790,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp)
 		if mod:IsDifficulty("worldboss") and startHp < 98 then--Boss was not full health when engaged, disable combat start timer and kill record. (regards full health : 98, 99, 100)
 			mod.ignoreBestkill = true
 		end
-		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled and not mod.ignoreBestkill then
+		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and not mod.ignoreBestkill then
 			local bestTime
 			if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
 				bestTime = mod.stats.lfr25BestTime
@@ -2810,7 +2810,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp)
 				speedTimer:Start()
 			end
 		end
-		if mod.OnCombatStart and mod.Options.Enabled and not mod.ignoreBestkill then mod:OnCombatStart(delay or 0) end
+		if mod.OnCombatStart and not mod.ignoreBestkill then mod:OnCombatStart(delay or 0) end
 		if not synced then
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp)
 		end
@@ -3187,7 +3187,7 @@ do
 			else
 				self:Schedule(3, checkWipe)
 			end
-			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not C_Scenario.IsInScenario() and mod.Options.Enabled then
+			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inSecnario then
 				DBM.BossHealth:Show(mod.localization.general.name)
 				if mod.bossHealthInfo then
 					for i = 1, #mod.bossHealthInfo, 2 do
@@ -3197,7 +3197,7 @@ do
 					DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 				end
 			end
-			if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
+			if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) then
 				local bestTime
 				local elapsed = time + lag
 				if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
@@ -4111,12 +4111,13 @@ do
 				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
 				cachedColorFunctions[color] = function(cap)
 					cap = cap:sub(2, -2)
-					if DBM:GetRaidClass(cap) then
-						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or color
-						cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
-					end
+					local name = cap
 					if DBM.Options.StripServerName then
 						cap = cap:gsub("%-.*$", "")
+					end
+					if DBM:GetRaidClass(name) then
+						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(name)] or color
+						cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
 					end
 					return cap
 				end
