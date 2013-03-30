@@ -51,13 +51,13 @@ local countdownIonization			= mod:NewCountdown(61.5, 138732)
 mod:AddBoolOption("RangeFrame")
 
 local function checkWaterIonization()
-	if UnitDebuff("player", GetSpellInfo(138470)) and UnitDebuff("player", GetSpellInfo(138732)) and not UnitIsDeadOrGhost("player") then
+	if UnitDebuff("player", GetSpellInfo(138002)) and UnitDebuff("player", GetSpellInfo(138732)) and not UnitIsDeadOrGhost("player") then
 		specWarnWaterMove:Show(GetSpellInfo(138732))
 	end
 end
 
 local function checkWaterStorm()
-	if UnitDebuff("player", GetSpellInfo(138470)) and not UnitIsDeadOrGhost("player") then
+	if UnitDebuff("player", GetSpellInfo(138002)) and not UnitIsDeadOrGhost("player") then
 		specWarnWaterMove:Show(GetSpellInfo(137313))
 	end
 end
