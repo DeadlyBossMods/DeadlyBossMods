@@ -2120,7 +2120,7 @@ do
 				boss25value2:SetPoint("TOPLEFT", boss25stat2, "TOPLEFT", 80, 0)
 				boss25value3:SetPoint("TOPLEFT", boss25stat3, "TOPLEFT", 80, 0)
 
-				if mod.modId:sub(1,9) == "DBM-Party" or mod.modId:sub(1,9) == "DBM-World" then
+				if mod.modId:sub(1,9) == "DBM-Party" or mod.modId:sub(1,9) == "DBM-World" or mod.modId:sub(1,12) == "DBM-Scenario" then
 					party = true
 					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*(bossstats-1)))
 					Boss10:Hide()
