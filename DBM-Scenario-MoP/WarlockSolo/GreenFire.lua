@@ -41,7 +41,7 @@ local timerSpellFlameCD			= mod:NewNextTimer(11, 134234)--(6 seconds after engag
 local timerHellfireCD			= mod:NewNextTimer(33, 134225)--(15 after engage)
 local timerLostSoulsCD			= mod:NewTimer(43, "timerLostSoulsCD", 51788)--43-50 second variation. (engage is same as cd, 43)
 --Kanrethad Ebonlocke
---local timerCombatStarts			= mod:NewTimer(34, "timerCombatStarts", 2457)--Unverified, user submitted.
+local timerCombatStarts			= mod:NewTimer(34, "timerCombatStarts", 2457)--Honestly i'm tired of localizing this, but last time i tried to add a generic "NewCombatTimer" it didn't work, at all. Maybe someone else can do this, since we have about 20 mods that could use it
 local timerPitLordCast			= mod:NewCastTimer(10, 138789)
 local timerSummonImpSwarmCast 	= mod:NewCastTimer(10, 138685)
 local timerSummonFelhunterCast	= mod:NewCastTimer(9, 138751)
@@ -68,7 +68,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 138680 then
---		timerCombatStarts:Start()
+		timerCombatStarts:Start()
 		kanrathadAlive = true--Reset this here
 	elseif args.spellId == 138789 then
 		warnSummonPitLord:Show()
@@ -76,13 +76,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnEnslavePitLord:Schedule(10)
 	elseif args.spellId == 138685 then
 		warnSummonImpSwarm:Show()
-		timerSummonImpSwarmCast:Start(10)
+		timerSummonImpSwarmCast:Start()
 	elseif args.spellId == 138755 then
 		warnSummonDoomlord:Show()
-		timerSummonDoomlordCast:Start(10)
+		timerSummonDoomlordCast:Start()
 	elseif args.spellId == 138751 then
 		warnSummonFelhunter:Show()
-		timerSummonFelhunterCast:Start(9)
+		timerSummonFelhunterCast:Start()
 	elseif args.spellId == 138564 then
 		specWarnCataclysm:Show(args.sourceName)
 	end
@@ -115,12 +115,15 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:UNIT_DIED(args)
-	--TODO, verify this. Do bosses reset on player death if warlock uses soulstone and pops right away?
 	if args.destGUID == UnitGUID("player") then--Solo scenario, a player death is a wipe
 		timerSpellFlameCD:Cancel()
 		timerHellfireCD:Cancel()
 		timerLostSoulsCD:Cancel()
 		timerEnslaveDemon:Cancel()
+		timerPitLordCast:Cancel()
+		timerSummonImpSwarmCast:Cancel()
+		timerSummonFelhunterCast:Cancel()
+		timerSummonDoomlordCast:Cancel()
 	end
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 68151 then--Essence of Order

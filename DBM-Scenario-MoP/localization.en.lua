@@ -76,12 +76,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerCombatStarts		= "Combat starts",
 	timerLostSoulsCD		= "Lost Souls CD"
 })
 
 L:SetOptionLocalization({
 	specWarnLostSouls		= "Show special warning when Lost Souls spawn",
 	specWarnEnslavePitLord	= "Show special warning to enslave demon when Pit Lord activates/breaks free",
+	timerCombatStarts		= "Show time for start of combat",
 	timerLostSoulsCD		= "Show cooldown timer for next Lost Souls spawn"
 })
 
