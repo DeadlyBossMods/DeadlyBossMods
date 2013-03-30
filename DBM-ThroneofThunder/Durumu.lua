@@ -60,7 +60,7 @@ local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")--Don't know when 2
 local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 local timerDisintegrationBeam		= mod:NewBuffActiveTimer(65, "ej6882")
-local timerDisintegrationBeamCD		= mod:NewNextTimer(127, "ej6882")
+local timerDisintegrationBeamCD		= mod:NewNextTimer(126, "ej6882")
 local timerLifeDrainCD				= mod:NewCDTimer(40, 133795)
 local timerLifeDrain				= mod:NewBuffActiveTimer(18, 133795)
 local timerIceWallCD				= mod:NewNextTimer(120, 134587)
@@ -122,7 +122,7 @@ function mod:OnCombatStart(delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(41-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerIceWallCD:Start(127-delay)
+		timerIceWallCD:Start(128-delay)
 	end
 	timerDisintegrationBeamCD:Start(135-delay)
 	berserkTimer:Start(-delay)
