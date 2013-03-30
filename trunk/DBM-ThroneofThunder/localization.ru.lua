@@ -6,6 +6,10 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetWarningLocalization({
+	specWarnWaterMove	= "Скоро %s - выйдите из Проводящей воды!"
+})
+
 L:SetOptionLocalization({
 	RangeFrame		= "Показывать окно проверки дистанции"
 })
@@ -32,7 +36,8 @@ L:SetOptionLocalization({
 	warnOrbofControl	= "Предупреждение о появлении $journal:7092",
 	specWarnOrbofControl	= "Спец-предупреждение о появлении $journal:7092",
 	timerDoor		= "Отсчёт времени до следующей фазы ворот племени",
-	timerAdds		= "Отсчёт времени до спрыгивания следующих аддов"
+	timerAdds		= "Отсчёт времени до спрыгивания следующих аддов",
+	RangeFrame		= "Показывать окно проверки дистанции (5 м) для $spell:136480"
 })
 
 L:SetMiscLocalization({
@@ -126,7 +131,7 @@ L:SetOptionLocalization({
 	warnAddsLeft			= "Объявлять сколько осталось туманов",
 	specWarnFogRevealed		= "Спец-предупреждение при обнаружении тумана",
 	ArrowOnBeam			= "Показывать стрелку DBM во время $journal:6882, чтобы указать, в каком направлении двигаться",
-	SetIconRays			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891")
+	InfoFrame			= "Информационное окно для кол-ва стаков $spell:133795"
 })
 
 L:SetMiscLocalization({

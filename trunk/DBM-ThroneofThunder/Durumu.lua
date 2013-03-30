@@ -121,6 +121,9 @@ function mod:OnCombatStart(delay)
 	timerLingeringGazeCD:Start(15.5-delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(41-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerIceWallCD:Start(127-delay)
+	end
 	timerDisintegrationBeamCD:Start(135-delay)
 	berserkTimer:Start(-delay)
 end
@@ -265,6 +268,9 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerForceOfWillCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerObliterateCD:Start()
+			if lifeDrained then -- Check 1st Beam ended.
+				timerIceWallCD:Start(87)--NO, Ice wall always comes before 8s do phase change(only igroned first spectrum). So it is not duplicate timer. Ice wall has nothing to do with 3rd red.
+			end
 		end
 		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
 			warnYellowBeam:Show(target)
@@ -302,6 +308,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	elseif msg:find("spell:134169") then
 		lingeringGazeCD = 46 -- Return to Original CD.
 		timerLingeringGazeCD:Cancel()
+		timerLifeDrainCD:Cancel()
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show()
 		timerDisintegrationBeam:Start()
