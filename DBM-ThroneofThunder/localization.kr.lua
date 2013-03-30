@@ -122,6 +122,7 @@ L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
 	warnAddsLeft				= "안개도깨비 남음 : %d",
+	specWarnBlueBeam			= "당신에게 청색 광선 - 절대 이동 금지!",
 	specWarnFogRevealed			= "%s 드러남!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
