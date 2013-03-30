@@ -50,9 +50,15 @@ local countdownIonization			= mod:NewCountdown(61.5, 138732)
 
 mod:AddBoolOption("RangeFrame")
 
-local function checkWater(force)
-	if UnitDebuff("player", GetSpellInfo(138470)) and not UnitIsDeadOrGhost("player") and (UnitDebuff("player", GetSpellInfo(138732)) or force) then
-		specWarnWaterMove:Show()
+local function checkWaterIonization()
+	if UnitDebuff("player", GetSpellInfo(138470)) and UnitDebuff("player", GetSpellInfo(138732)) and not UnitIsDeadOrGhost("player") then
+		specWarnWaterMove:Show(GetSpellInfo(138732))
+	end
+end
+
+local function checkWaterStorm()
+	if UnitDebuff("player", GetSpellInfo(138470)) and not UnitIsDeadOrGhost("player") then
+		specWarnWaterMove:Show(GetSpellInfo(137313))
 	end
 end
 
@@ -121,7 +127,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 138732 and args:IsPlayer() then
 		timerIonization:Start()
-		self:Schedule(19, checkWater)--Extremely dangerous. (if conducted, then auto wipe). So check before 5 sec.
+		self:Schedule(19, checkWaterIonization)--Extremely dangerous. (if conducted, then auto wipe). So check before 5 sec.
 		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 then you have range 8 open and we don't want to make it 4
 			DBM.RangeCheck:Show(4)
 		end
@@ -131,7 +137,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 138732 and args:IsPlayer() then
 		timerIonization:Cancel()
-		self:Unschedule(checkWater)
+		self:Unschedule(checkWaterIonization)
 		if self.Options.RangeFrame and not UnitDebuff("player", GetSpellInfo(137422)) then--if you have 137422 we don't want to hide it either.
 			DBM.RangeCheck:Hide()
 		end
@@ -158,7 +164,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		local target = DBM:GetFullNameByShortName(target)
 		warnThrow:Show(target)
 		timerStormCD:Start()
-		self:Schedule(57.5, checkWater, true)--check before 3 sec.
+		self:Schedule(57.5, checkWaterStorm)--check before 3 sec.
 		if target == UnitName("player") then
 			specWarnThrow:Show()
 		else
