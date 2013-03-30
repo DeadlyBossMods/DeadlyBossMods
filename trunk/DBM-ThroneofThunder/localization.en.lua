@@ -10,10 +10,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "Show special warning to get out from $spell:138470"
-})
-
-L:SetOptionLocalization({
+	specWarnWaterMove	= "Show special warning to get out from $spell:138470",
 	RangeFrame			= "Show range frame"
 })
 
