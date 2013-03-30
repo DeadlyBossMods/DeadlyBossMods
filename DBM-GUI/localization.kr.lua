@@ -43,8 +43,9 @@ L.IconsInUse				= "현재 우두머리에서 사용 되는 전술 목표 아이�
 
 -- Tab: Boss Statistics
 L.BossStatistics			= "공략 상황"
-L.Statistic_Kills			= "처치:"
+L.Statistic_Kills			= "승리:"
 L.Statistic_Wipes			= "전멸:"
+L.Statistic_Incompletes		= "미완료:"
 L.Statistic_BestKill		= "최고 기록:"
 L.Statistic_Heroic			= "영웅"
 L.Statistic_10Man			= "10인"

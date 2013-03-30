@@ -34,7 +34,7 @@ local specWarnBigBird		= mod:NewSpecialWarningSwitch("ej7827", mod:IsTank())
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuills			= mod:NewBuffActiveTimer(10, 134380)
-local timerQuillsCD			= mod:NewCDTimer(60, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 60-67 seconds usually after channel of some other spell ends
+local timerQuillsCD			= mod:NewCDTimer(62.5, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 62.5-67 seconds usually after channel of some other spell ends
 local timerFlockCD	 		= mod:NewTimer(30, "timerFlockCD", 15746)
 local timerFeedYoungCD	 	= mod:NewCDTimer(30, 137528)--30-40 seconds (always 30 unless delayed by other channeled spells)
 local timerTalonRakeCD		= mod:NewCDTimer(20, 134366, mod:IsTank() or mod:IsHealer())--20-30 second variation
@@ -84,7 +84,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 137528 then
 		warnFeedYoung:Show()
 		specWarnFeedYoung:Show()
-		timerFeedYoungCD:Start()
+		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
+			timerFeedYoungCD:Start(40)
+		else
+			timerFeedYoungCD:Start()
+		end
 	elseif args.spellId == 133755 and args:IsPlayer() then
 		timerFlight:Start()
 	elseif args.spellId == 140741 and args:IsPlayer() then
@@ -104,7 +108,11 @@ function mod:SPELL_CAST_START(args)
 		warnQuills:Show()
 		specWarnQuills:Show()
 		timerQuills:Start()
-		timerQuillsCD:Start()
+		if self:IsDifficulty("lfr25") then
+			timerQuillsCD:Start(81)--exactly 81 sec in lfr
+		else
+			timerQuillsCD:Start()
+		end
 	elseif args.spellId == 134370 then
 		warnDowndraft:Show()
 		specWarnDowndraft:Show()
