@@ -11,10 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "$spell:138470 이동 관련 특수 경고 보기"
-})
-
-L:SetOptionLocalization({
+	specWarnWaterMove	= "$spell:138470 이동 관련 특수 경고 보기",
 	RangeFrame			= "거리 창 보기"
 })
 
