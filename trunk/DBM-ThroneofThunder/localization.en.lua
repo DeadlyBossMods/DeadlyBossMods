@@ -135,6 +135,7 @@ L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
 	warnAddsLeft				= "Fogs remaining: %d",
+	specWarnBlueBeam			= "Blue Beam on you - DO NOT MOVE!!",
 	specWarnFogRevealed			= "%s revealed!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
@@ -142,6 +143,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAddsLeft				= "Announce how many Fogs remain",
 	specWarnFogRevealed			= "Show special warning when a fog is revealed",
+	specWarnBlueBeam			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(139202),
 	specWarnDisintegrationBeam	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6882"),
 	ArrowOnBeam					= "Show DBM Arrow during $journal:6882 to indicate which direction to move",
 	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891"),
