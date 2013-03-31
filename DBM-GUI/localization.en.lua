@@ -46,7 +46,6 @@ L.Statistic_Kills			= "Victories:"
 L.Statistic_Wipes			= "Wipes:"
 L.Statistic_Incompletes		= "Incompletes:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill		= "Best Victory:"
-L.Statistic_Heroic			= "Heroic"
 L.Statistic_10Man			= "10man raid"
 L.Statistic_25Man			= "25man raid"
 

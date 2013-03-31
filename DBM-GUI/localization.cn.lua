@@ -48,7 +48,6 @@ L.BossStatistics			= "首领统计"
 L.Statistic_Kills			= "击杀："
 L.Statistic_Wipes			= "失败："
 L.Statistic_BestKill		= "最好成绩："
-L.Statistic_Heroic			= "英雄模式"
 L.Statistic_10Man			= "10人"
 L.Statistic_25Man			= "25人"
 
