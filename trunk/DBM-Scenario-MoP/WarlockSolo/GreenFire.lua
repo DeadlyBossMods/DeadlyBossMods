@@ -41,7 +41,7 @@ local timerSpellFlameCD			= mod:NewNextTimer(11, 134234)--(6 seconds after engag
 local timerHellfireCD			= mod:NewNextTimer(33, 134225)--(15 after engage)
 local timerLostSoulsCD			= mod:NewTimer(43, "timerLostSoulsCD", 51788)--43-50 second variation. (engage is same as cd, 43)
 --Kanrethad Ebonlocke
-local timerCombatStarts			= mod:NewTimer(34, "timerCombatStarts", 2457)--Honestly i'm tired of localizing this, but last time i tried to add a generic "NewCombatTimer" it didn't work, at all. Maybe someone else can do this, since we have about 20 mods that could use it
+local timerCombatStarts			= mod:NewTimer(33, "timerCombatStarts", 2457)--Honestly i'm tired of localizing this, but last time i tried to add a generic "NewCombatTimer" it didn't work, at all. Maybe someone else can do this, since we have about 20 mods that could use it
 local timerPitLordCast			= mod:NewCastTimer(10, 138789)
 local timerSummonImpSwarmCast 	= mod:NewCastTimer(10, 138685)
 local timerSummonFelhunterCast	= mod:NewCastTimer(9, 138751)
