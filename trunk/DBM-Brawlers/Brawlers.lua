@@ -7,10 +7,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"CHAT_MSG_MONSTER_YELL",
-	"PLAYER_REGEN_ENABLED",
-	"UNIT_DIED",
 	"ZONE_CHANGED_NEW_AREA"
 )
 
@@ -121,9 +117,19 @@ end
 
 function mod:ZONE_CHANGED_NEW_AREA()
 	currentZoneID = GetCurrentMapAreaID()
-	if currentZoneID == 922 or currentZoneID == 925 then modsStopped = false return end--We returned to arena, reset variable
+	if currentZoneID == 922 or currentZoneID == 925 then
+		modsStopped = false
+		self:RegisterShortTermEvents(
+			"SPELL_CAST_START",
+			"CHAT_MSG_MONSTER_YELL",
+			"PLAYER_REGEN_ENABLED",
+			"UNIT_DIED"
+		)
+		return
+	end--We returned to arena, reset variable
 	if modsStopped then return end--Don't need this to fire every time you change zones after the first.
 	self:Stop()
+	self:UnregisterShortTermEvents()
 	for i = 1, 8 do
 		local mod2 = DBM:GetModByName("BrawlRank" .. i)
 		if mod2 then
