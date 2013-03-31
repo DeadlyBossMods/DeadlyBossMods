@@ -6,8 +6,13 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
+L:SetWarningLocalization({
+	specWarnWaterMove	= "%s即將到來 - 離開導電水池!"
+})
+
 L:SetOptionLocalization({
-	RangeFrame		= "顯示距離框架"
+	specWarnWaterMove	= "為$spell:137313施放前或$spell:138732效果消失前前顯示特別警告",
+	RangeFrame			= "顯示距離框架"
 })
 
 --------------
@@ -31,7 +36,8 @@ L:SetOptionLocalization({
 	warnOrbofControl		= "提示$journal:7092掉落",
 	specWarnOrbofControl	= "為$journal:7092掉落顯示特別警告",
 	timerDoor				= "為下一個部族的門顯示計時器",
-	timerAdds				= "為下一次小怪跳下顯示計時器"
+	timerAdds				= "為下一次小怪跳下顯示計時器",
+	RangeFrame				= "為$spell:136480顯示距離框架(5碼)"
 })
 
 L:SetMiscLocalization({
@@ -67,6 +73,7 @@ L:SetOptionLocalization({
 	specWarnCrystalShell	= "當你沒有$spell:137633減益時顯示特別警告",
 	InfoFrame				= "為玩家沒有$spell:137633顯示訊息框架",
 	SetIconOnTurtles		= "為$journal:7129標示團隊圖示(超過一名以上的團隊助理時不可靠)",
+	ClearIconOnTurtles		= "當$journal:7129中了$spell:133971清除團隊圖示"
 })
 
 L:SetMiscLocalization({
@@ -105,7 +112,9 @@ L:SetMiscLocalization({
 	eggsHatchU		= "上層巢裡的蛋開始孵化了!",
 	Upper			= "上層",
 	Lower			= "下層",
-	UpperAndLower	= "上層和下層"
+	UpperAndLower	= "上層和下層",
+	TrippleD		= "Tripple (2xDwn)",
+	TrippleU		= "Tripple (2xUp)"
 })
 
 --------------------------
@@ -115,6 +124,7 @@ L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
 	warnAddsLeft				= "霧獸剩餘: %d",
+	specWarnBlueBeam			= "你中了藍光射線 - 不要移動!!",
 	specWarnFogRevealed			= "照出%s了!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
@@ -122,7 +132,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAddsLeft				= "提示還剩餘多少霧獸",
 	specWarnFogRevealed			= "為照出霧獸顯示特別警告",
-	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向"
+	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向",
+	InfoFrame					= "為$spell:133795堆疊顯示訊息框架"
 })
 
 L:SetMiscLocalization({
@@ -144,7 +155,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(824)
 
 L:SetWarningLocalization({
-	warnMatterSwapped	= "%s: >%s< 和 >%s< 交換"
+	warnMatterSwapped	= "%s:>%s<和>%s<交換"
 })
 
 L:SetOptionLocalization({

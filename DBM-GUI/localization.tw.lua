@@ -43,8 +43,9 @@ L.IconsInUse				= "此模組已使用的標記"
 
 -- Tab: Boss Statistics
 L.BossStatistics			= "首領狀態"
-L.Statistic_Kills			= "擊殺："
+L.Statistic_Kills			= "勝利："
 L.Statistic_Wipes			= "失敗："
+L.Statistic_Incompletes		= "未完成："
 L.Statistic_BestKill		= "最快記錄："
 L.Statistic_10Man			= "10人團隊"
 L.Statistic_25Man			= "25人團隊"
