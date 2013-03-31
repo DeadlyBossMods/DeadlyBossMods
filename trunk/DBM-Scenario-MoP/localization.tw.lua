@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization("Troves")
 
 L:SetGeneralLocalization{
-	name = "Troves of the Thunder King"
+	name = "雷王的珍寶"
 }
 
 ------------------------
@@ -63,22 +63,22 @@ L:SetGeneralLocalization{
 L= DBM:GetModLocalization("GreenFire")
 
 L:SetGeneralLocalization{
-	name = "Warlock Green Fire"--No idea what real name is. It's not something i can test or verify.
+	name = "追擊黑穫議會"
 }
 
 L:SetWarningLocalization({
-	specWarnLostSouls		= "Lost Souls!",
-	specWarnEnslavePitLord	= "Pit Lord - Enslave Now!"
+	specWarnLostSouls		= "靈魂迷失!",
+	specWarnEnslavePitLord	= "深淵領主 - 快奴役惡魔!"
 })
 
 L:SetTimerLocalization({
-	timerLostSoulsCD		= "Lost Souls CD"
+	timerLostSoulsCD		= "靈魂迷失冷卻"
 })
 
 L:SetOptionLocalization({
-	specWarnLostSouls		= "Show special warning when Lost Souls spawn",
-	specWarnEnslavePitLord	= "Show special warning to enslave demon when Pit Lord activates/breaks free",
-	timerLostSoulsCD		= "Show cooldown timer for next Lost Souls spawn"
+	specWarnLostSouls		= "為靈魂迷失重生顯示特別警告",
+	specWarnEnslavePitLord	= "為需對深淵領主使用奴役惡魔時顯示特別警告",
+	timerLostSoulsCD		= "為下一次靈魂迷失重生顯示冷卻計時器"
 })
 
 L:SetMiscLocalization({
