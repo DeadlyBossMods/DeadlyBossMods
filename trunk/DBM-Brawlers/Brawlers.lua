@@ -111,6 +111,7 @@ function mod:PLAYER_REGEN_ENABLED()
 end
 
 function mod:UNIT_DIED(args)
+	if not args.destName then return end
 	--Another backup for when npc doesn't yell. This is a way to detect a wipe at least.
 	local thingThatDied = string.split("-", args.destName)--currentFighter never has realm name, so we need to strip it from combat log for CRZ support
 	if currentFighter and currentFighter == thingThatDied then--They wiped.
