@@ -30,6 +30,7 @@ local warnAcidicSpines				= mod:NewTargetAnnounce(136218, 3)
 local warnBlackBlood				= mod:NewStackAnnounce(137000, 2, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnFullyMutated			= mod:NewSpecialWarningYou(140546)
+local specWarnFullyMutatedFaded		= mod:NewSpecialWarning("specWarnFullyMutatedFaded")
 local specWarnCausticGas			= mod:NewSpecialWarningSpell(136216, nil, nil, nil, 2)--All must be in front for this.
 local specWarnPustuleEruption		= mod:NewSpecialWarningSpell(136247, false, nil, nil, 2)--off by default since every 5 sec, very spammy for special warning
 local specWarnVolatilePathogen		= mod:NewSpecialWarningYou(136228)
@@ -51,11 +52,19 @@ mod:AddBoolOption("RangeFrame", true)--Right now, EVERYTHING targets melee. If b
 local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
 local postulesActive = false
+--TODO, make an infoframe that shows players with > 0 debufs and sorts them highest amount of debuffs to lowest. This will show raid leaders or healers who's messing up or who needs to be dispelled.
+local positiveDebuffs = { GetSpellInfo(136184), GetSpellInfo(136186), GetSpellInfo(136182), GetSpellInfo(136180) }
+local failDebuffs  = { GetSpellInfo(136185), GetSpellInfo(136187), GetSpellInfo(136183), GetSpellInfo(136181) }
 
 function mod:BigOoze()
 	specWarnViscousHorror:Show()
 	timerViscousHorrorCD:Start()
 	self:ScheduleMethod(30, "BigOoze")
+end
+
+function mod:DebuffTest()
+	print(positiveDebuffs)
+	print(failDebuffs)
 end
 
 function mod:OnCombatStart(delay)
@@ -159,6 +168,8 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
+	elseif args.spellId == 140546 and args:IsPlayer() then
+		specWarnFullyMutatedFaded:Show(args.spellName)
 	end
 end
 
