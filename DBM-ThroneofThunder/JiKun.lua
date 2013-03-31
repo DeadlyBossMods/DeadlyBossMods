@@ -54,7 +54,11 @@ local flockName = EJ_GetSectionInfo(7348)
 function mod:OnCombatStart(delay)
 	flockC = 0
 	trippleNest = false
-	timerQuillsCD:Start(42.5-delay)
+	if self:IsDifficulty("lfr25") then
+		timerQuillsCD:Start(60-delay)
+	else
+		timerQuillsCD:Start(42.5-delay)
+	end
 	timerDowndraftCD:Start(91-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
