@@ -12,7 +12,7 @@
 ## SavedVariablesPerCharacter: DBMPandaria_SavedVars, DBMPandaria_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-Name: Pandaria
 ## X-DBM-Mod-Name-koKR: 판다리아
 ## X-DBM-Mod-Name-deDE: Pandaria

@@ -14,7 +14,7 @@
 ## SavedVariablesPerCharacter: DBMWorldEvents_SavedVars, DBMWorldEvents_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire,Quests
 ## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt,Quests
 ## X-DBM-Mod-SubCategories-ruRU: Holidays,Darkmoon Faire,Quests

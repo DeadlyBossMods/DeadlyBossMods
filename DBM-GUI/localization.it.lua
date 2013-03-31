@@ -44,7 +44,6 @@ L.BossStatistics			= "Statistiche del Boss"
 L.Statistic_Kills			= "Uccisioni:"
 L.Statistic_Wipes			= "Sconfitte:"
 L.Statistic_BestKill		= "Miglior Kill:"
-L.Statistic_Heroic			= "Eroica"
 L.Statistic_10Man			= "Incursione da 10"
 L.Statistic_25Man			= "Incursione da 25"
 

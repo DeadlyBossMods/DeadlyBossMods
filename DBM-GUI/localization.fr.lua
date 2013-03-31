@@ -44,7 +44,6 @@ L.BossStatistics			= "Boss Statistics"
 L.Statistic_Kills			= "Victoires :"
 L.Statistic_Wipes			= "Échecs :"
 L.Statistic_BestKill		= "Meilleur :"
-L.Statistic_Heroic			= "Héroïque"
 L.Statistic_10Man			= "Raid à 10"
 L.Statistic_25Man			= "Raid à 25"
 

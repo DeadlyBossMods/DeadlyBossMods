@@ -46,7 +46,6 @@ L.BossStatistics			= "首領狀態"
 L.Statistic_Kills			= "擊殺："
 L.Statistic_Wipes			= "失敗："
 L.Statistic_BestKill		= "最快記錄："
-L.Statistic_Heroic			= "英雄模式"
 L.Statistic_10Man			= "10人團隊"
 L.Statistic_25Man			= "25人團隊"
 

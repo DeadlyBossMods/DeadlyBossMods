@@ -636,6 +636,7 @@ do
 						zoneId		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
 						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
+						oneFormat	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
 						modId		= GetAddOnInfo(i),
 					})
 					for k, v in ipairs(self.AddOns[#self.AddOns].zone) do
@@ -1953,9 +1954,10 @@ function DBM:LoadMod(mod)
 			self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		end
 		loadModOptions(mod.modId)
-		for i, v in ipairs(DBM.Mods) do -- load the hasHeroic attribute from the toc into all boss mods as required by the GetDifficulty() method
+		for i, v in ipairs(DBM.Mods) do -- load the hasHeroic/oneFormat attributes from the toc into all boss mods as required by the GetDifficulty() method
 			if v.modId == mod.modId then
 				v.hasHeroic = mod.hasHeroic
+				v.oneFormat = mod.oneFormat
 			end
 		end
 		if DBM_GUI then
