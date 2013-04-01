@@ -345,10 +345,8 @@ function mod:OnSync(msg, guid, ver)
 		self:Unschedule(FindFastestHighestVersion)
 		if guid == UnitGUID("player") then
 			hasHighestVersion = true
-			print("DBM Debug: You have highest DBM version with icons enabled and the lowest ping. You designated icon setter.")
 		else
 			hasHighestVersion = false
-			print("DBM Debug: You will not be setting icons since your DBM version is out of date or your ping is too high")
 		end
 	end
 end
