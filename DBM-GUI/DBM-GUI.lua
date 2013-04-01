@@ -2010,7 +2010,7 @@ end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
 do
-	local function OnShowGetStats(stats, scenario, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6, lfr25value1, lfr25value2, lfr25value3, challenge5value1, challenge5value2, challenge5value3)
+	local function OnShowGetStats(stats, hack, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6, lfr25value1, lfr25value2, lfr25value3, challenge5value1, challenge5value2, challenge5value3)
 		return function(self)
 			bossvalue1:SetText( stats.normalKills )
 			bossvalue2:SetText( stats.normalPulls - stats.normalKills )
@@ -2027,13 +2027,17 @@ do
 			lfr25value1:SetText( stats.lfr25Kills )
 			lfr25value2:SetText( stats.lfr25Pulls-stats.lfr25Kills )
 			lfr25value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(math.floor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
-			challenge5value1:SetText( stats.challengeKills )
-			challenge5value2:SetText( stats.challengePulls-stats.challengeKills )
-			challenge5value3:SetText( stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-" )
-			if scenario then
+			if hack == 1 then--Party
 				boss25value1:SetText( stats.heroicKills )
 				boss25value2:SetText( stats.heroicPulls-stats.heroicKills )
 				boss25value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+				lfr25value1:SetText( stats.challengeKills )
+				lfr25value2:SetText( stats.challengePulls-stats.challengeKills )
+				lfr25value3:SetText( stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-" )
+			elseif hack == 2 then--Scenario
+				lfr25value1:SetText( stats.heroicKills )
+				lfr25value2:SetText( stats.heroicPulls-stats.heroicKills )
+				lfr25value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
 			end
 		end
 	end
@@ -2054,29 +2058,29 @@ do
 
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
-				local Scenario = false
+				local hack = 0
 				bossstats = bossstats + 1
 				local Boss 				= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
-				local Boss10			= area:CreateText(L.Statistic_10Man, nil, nil, GameFontHighlightSmall, "LEFT")
+				local Boss10			= area:CreateText(L.Statistic_10Man, nil, nil, GameFontHighlightSmall, "LEFT")--Row 1 header
 				local bossstat1			= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat2			= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat3			= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
-				local Heroic10			= area:CreateText(PLAYER_DIFFICULTY2, nil, nil, GameFontDisableSmall, "LEFT")
+				local Heroic10			= area:CreateText(PLAYER_DIFFICULTY2, nil, nil, GameFontDisableSmall, "LEFT")--row 1 2nd difficulty header
 				local bossstat4			= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat5			= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat6			= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
 
-				local Heroic	 		= area:CreateText(PLAYER_DIFFICULTY2, nil, nil, GameFontDisableSmall, "LEFT")
-				local Boss25			= area:CreateText(L.Statistic_25Man, nil, nil, GameFontHighlightSmall, "LEFT")
+				local Heroic	 		= area:CreateText(PLAYER_DIFFICULTY2, nil, nil, GameFontDisableSmall, "LEFT")--Used only by scenario
+				local Boss25			= area:CreateText(L.Statistic_25Man, nil, nil, GameFontHighlightSmall, "LEFT")--Row 2 header
 				local boss25stat1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local boss25stat2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local boss25stat3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
-				local Heroic25			= area:CreateText(PLAYER_DIFFICULTY2, nil, nil, GameFontDisableSmall, "LEFT")
+				local Heroic25			= area:CreateText(PLAYER_DIFFICULTY2, nil, nil, GameFontDisableSmall, "LEFT")--Row 2nd difficulty header
 				local boss25stat4		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local boss25stat5		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local boss25stat6		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
 
-				local Lfr25				= area:CreateText(PLAYER_DIFFICULTY3, nil, nil, GameFontHighlightSmall, "LEFT")
+				local Lfr25				= area:CreateText(PLAYER_DIFFICULTY3, nil, nil, GameFontHighlightSmall, "LEFT")--Row 3 header
 				local lfr25stat1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local lfr25stat2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local lfr25stat3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
@@ -2115,21 +2119,16 @@ do
 				local lfr25value2		= area:CreateText((mod.stats.lfr25Pulls-mod.stats.lfr25Kills), nil, nil, GameFontNormalSmall, "LEFT")
 				local lfr25value3		= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
 
-				local challenge5value1	= area:CreateText(mod.stats.challengeKills, nil, nil, GameFontNormalSmall, "LEFT")
-				local challenge5value2	= area:CreateText((mod.stats.challengePulls-mod.stats.challengeKills), nil, nil, GameFontNormalSmall, "LEFT")
-				local challenge5value3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
-
 				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
 				Boss10:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
 				bossstat1:SetPoint("TOPLEFT", Boss10, "BOTTOMLEFT", 20, -5)
 				bossstat2:SetPoint("TOPLEFT", bossstat1, "BOTTOMLEFT", 0, -5)
 				bossstat3:SetPoint("TOPLEFT", bossstat2, "BOTTOMLEFT", 0, -5)
 
-				Heroic:SetPoint("LEFT", Boss, "LEFT", 220, 0)
-				Boss25:SetPoint("LEFT", Boss10, "LEFT", 220, 0)
-				boss25stat1:SetPoint("LEFT", bossstat1, "LEFT", 220, 0)
-				boss25stat2:SetPoint("LEFT", bossstat2, "LEFT", 220, 0)
-				boss25stat3:SetPoint("LEFT", bossstat3, "LEFT", 220, 0)
+				Boss25:SetPoint("LEFT", Boss10, "LEFT", 150, 0)
+				boss25stat1:SetPoint("LEFT", bossstat1, "LEFT", 150, 0)
+				boss25stat2:SetPoint("LEFT", bossstat2, "LEFT", 150, 0)
+				boss25stat3:SetPoint("LEFT", bossstat3, "LEFT", 150, 0)
 
 				bossvalue1:SetPoint("TOPLEFT", bossstat1, "TOPLEFT", 80, 0)
 				bossvalue2:SetPoint("TOPLEFT", bossstat2, "TOPLEFT", 80, 0)
@@ -2139,39 +2138,45 @@ do
 				boss25value2:SetPoint("TOPLEFT", boss25stat2, "TOPLEFT", 80, 0)
 				boss25value3:SetPoint("TOPLEFT", boss25stat3, "TOPLEFT", 80, 0)
 
-				if mod.modId:sub(1,9) == "DBM-Party" then--Use new hack to support 3 modes (2 mode 5 man hack now used for scenarios)
-					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
-					Heroic:Hide()
+				if mod.modId:sub(1,9) == "DBM-Party" then--Use rows 1 2 and 3 (top only)
+					hack = 1
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
 					Boss10:SetText(PLAYER_DIFFICULTY1)
-					Boss25:SetText(CHALLENGE_MODE)
-					boss25value1:Hide()
-					boss25value2:Hide()
-					boss25value3:Hide()
-					Heroic10:SetPoint("TOPLEFT", bossstat3, "BOTTOMLEFT", -20, -5)
-					bossstat4:SetPoint("TOPLEFT", Heroic10, "BOTTOMLEFT", 20, -5)
-					bossstat5:SetPoint("TOPLEFT", bossstat4, "BOTTOMLEFT", 0, -5)
-					bossstat6:SetPoint("TOPLEFT", bossstat5, "BOTTOMLEFT", 0, -5)
-					bossvalue4:SetPoint("TOPLEFT", bossstat4, "TOPLEFT", 80, 0)
-					bossvalue5:SetPoint("TOPLEFT", bossstat5, "TOPLEFT", 80, 0)
-					bossvalue6:SetPoint("TOPLEFT", bossstat6, "TOPLEFT", 80, 0)
-					challenge5value1:SetPoint("TOPLEFT", boss25stat1, "TOPLEFT", 80, 0)
-					challenge5value2:SetPoint("TOPLEFT", boss25stat2, "TOPLEFT", 80, 0)
-					challenge5value3:SetPoint("TOPLEFT", boss25stat3, "TOPLEFT", 80, 0)
-					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
-				elseif mod.modId:sub(1,12) == "DBM-Scenario" then--Use old 5 man hack
-					scenario = true
+					Boss25:SetText(PLAYER_DIFFICULTY2)
+					Lfr25:SetText(CHALLENGE_MODE)
+					Lfr25:SetPoint("LEFT", Boss25, "LEFT", 150, 0)
+					lfr25stat1:SetPoint("LEFT", boss25stat1, "LEFT", 150, 0)
+					lfr25stat2:SetPoint("LEFT", boss25stat2, "LEFT", 150, 0)
+					lfr25stat3:SetPoint("LEFT", boss25stat3, "LEFT", 150, 0)
+					lfr25value1:SetPoint("TOPLEFT", lfr25stat1, "TOPLEFT", 80, 0)
+					lfr25value2:SetPoint("TOPLEFT", lfr25stat2, "TOPLEFT", 80, 0)
+					lfr25value3:SetPoint("TOPLEFT", lfr25stat3, "TOPLEFT", 80, 0)
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
+				elseif mod.modId:sub(1,12) == "DBM-Scenario" then--Use rows 1 and 3 (top only)
+					hack = 2
 					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*(bossstats-1)))
 					Boss10:Hide()
 					Boss25:Hide()
-					bossstat2:SetText(L.Statistic_Incompletes)
-					boss25stat2:SetText(L.Statistic_Incompletes)
+					boss25stat1:Hide()
+					boss25stat2:Hide()
+					boss25stat3:Hide()
+					boss25value1:Hide()
+					boss25value2:Hide()
+					boss25value3:Hide()
 					bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
+					Heroic:SetPoint("LEFT", Boss, "LEFT", 300, 0)
+					lfr25stat1:SetPoint("LEFT", boss25stat1, "LEFT", 150, 0)
+					lfr25stat2:SetPoint("LEFT", boss25stat2, "LEFT", 150, 0)
+					lfr25stat3:SetPoint("LEFT", boss25stat3, "LEFT", 150, 0)
+					lfr25value1:SetPoint("TOPLEFT", lfr25stat1, "TOPLEFT", 80, 0)
+					lfr25value2:SetPoint("TOPLEFT", lfr25stat2, "TOPLEFT", 80, 0)
+					lfr25value3:SetPoint("TOPLEFT", lfr25stat3, "TOPLEFT", 80, 0)
+					bossstat2:SetText(L.Statistic_Incompletes)
+					lfr25stat2:SetText(L.Statistic_Incompletes)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
-				elseif not mod.hasHeroic then
-					Heroic:Hide()
+				elseif not mod.hasHeroic then--Maybe time to phase out and move into scenario format
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif mod.oneFormat then
-					Heroic:Hide()
+				elseif mod.oneFormat then--Uses row 1 top only
 					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*(bossstats-1)))
 					Boss10:Hide()
 					Boss25:Hide()
@@ -2183,13 +2188,8 @@ do
 					boss25value3:Hide()
 					bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
-				else
+				else--Uses everything
 					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
-					Heroic:Hide()
-					Boss25:SetPoint("LEFT", Boss10, "LEFT", 150, 0)
-					boss25stat1:SetPoint("LEFT", bossstat1, "LEFT", 150, 0)
-					boss25stat2:SetPoint("LEFT", bossstat2, "LEFT", 150, 0)
-					boss25stat3:SetPoint("LEFT", bossstat3, "LEFT", 150, 0)
 					Heroic10:SetPoint("TOPLEFT", bossstat3, "BOTTOMLEFT", -20, -5)
 					bossstat4:SetPoint("TOPLEFT", Heroic10, "BOTTOMLEFT", 20, -5)
 					bossstat5:SetPoint("TOPLEFT", bossstat4, "BOTTOMLEFT", 0, -5)
@@ -2214,7 +2214,7 @@ do
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 				end
 
-				table.insert(area.onshowcall, OnShowGetStats(mod.stats, scenario, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6, lfr25value1, lfr25value2, lfr25value3, challenge5value1, challenge5value2, challenge5value3))
+				table.insert(area.onshowcall, OnShowGetStats(mod.stats, hack, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6, lfr25value1, lfr25value2, lfr25value3, challenge5value1, challenge5value2, challenge5value3))
 			end
 		end
 		area.frame:SetScript("OnShow", function(self)
