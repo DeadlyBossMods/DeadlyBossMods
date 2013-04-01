@@ -6,6 +6,7 @@ mod:SetCreatureID(56541)
 mod:SetModelID(39887)
 mod:SetZone()
 mod:SetMinSyncRevision(7888)
+mod:SetReCombatTime(60)
 
 -- pre-bosswave. Novice -> Black Sash (Fragrant Lotus, Flying Snow). this runs automaticially.
 -- maybe we need Black Sash wave warns.
