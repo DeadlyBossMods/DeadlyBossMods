@@ -5,7 +5,7 @@ DBM_HOW_TO_USE_MOD					= "Welcome to DBM. Type /dbm help for a list of supported
 DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' mods. For more options, type /dbm or /dbm help in your chat."
 DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
-DBM_CORE_LOAD_GUI_COMBAT			= "GUI cannot be initially loaded in combat. Please load GUI/configure options out of combat first, then it will be available in combat after that."
+DBM_CORE_LOAD_GUI_COMBAT			= "GUI cannot be initially loaded in combat. GUI will be loaded out of combat. After GUI loaded, you can load GUI in combat."
 
 DBM_ABSOLUTE_MODE_ON				= "Absolute mode enabled."
 DBM_ABSOLUTE_MODE_OFF				= "Absolute mode disabled. Broadcasting propper mod version again"
