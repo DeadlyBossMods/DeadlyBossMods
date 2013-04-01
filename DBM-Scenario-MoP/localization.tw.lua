@@ -72,12 +72,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerCombatStarts		= "戰鬥開始",
 	timerLostSoulsCD		= "靈魂迷失冷卻"
 })
 
 L:SetOptionLocalization({
 	specWarnLostSouls		= "為靈魂迷失重生顯示特別警告",
 	specWarnEnslavePitLord	= "為需對深淵領主使用奴役惡魔時顯示特別警告",
+	timerCombatStarts		= "為戰鬥開始顯示時間",
 	timerLostSoulsCD		= "為下一次靈魂迷失重生顯示冷卻計時器"
 })
 

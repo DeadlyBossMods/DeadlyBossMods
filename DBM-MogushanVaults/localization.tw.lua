@@ -92,7 +92,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "為地板消失之前顯示特別警告",
 	timerDespawnFloor			= "為地板消失顯示計時器",
-	SetIconOnCreature			= "Set icons on $journal:6193"
+	SetIconOnCreature			= "為$journal:6193設置團隊圖示"
 })
 
 
@@ -108,10 +108,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "這台機器啟動了!到下一層去!",--Emote
-	Rage		= "大帝之怒響徹群山。",--Yell
-	Strength	= "帝王之力出現在壁龕裡!",--Emote
-	Courage		= "帝王之勇出現在壁龕裡!",--Emote
-	Boss		= "兩個泰坦魁儡出現在大壁龕裡!"--Emote
+	Pull		= "這台機器啟動了!到下一層去!",
+	Rage		= "大帝之怒響徹群山。",
+	Strength	= "帝王之力出現在壁龕裡!",
+	Courage		= "帝王之勇出現在壁龕裡!",
+	Boss		= "兩個泰坦魁儡出現在大壁龕裡!"
 })
 
