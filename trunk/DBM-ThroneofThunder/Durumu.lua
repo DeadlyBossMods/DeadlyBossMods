@@ -300,35 +300,10 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		if self.Options.SetIconLifeDrain then
 			self:SetIcon(target, 4) -- Triangle
 		end
-		--[[
-3x DBM-Core-5.2.2-31-gebbfc17\DBM-InfoFrame.lua:401: Usage: UnitDebuff("unit", [index] or ["name", "rank"][, "filter"])
-<in C code>
-DBM-Core-5.2.2-31-gebbfc17\DBM-InfoFrame.lua:401: in function <DBM-Core\DBM-InfoFrame.lua:393>
-DBM-Core-5.2.2-31-gebbfc17\DBM-InfoFrame.lua:589: in function "Show"
-DBM-ThroneofThunder-5.2.2-31-gebbfc17\Durumu.lua:305: in function "handler"
-DBM-Core\DBM-Core-5.2.2-31-gebbfc17.lua:382: in function <DBM-Core\DBM-Core.lua:373>
-
-Locals:
-(for index) = 1
-(for limit) = 26
-(for step) = 1
-i = 1
-uId = "raid1"
-lines = <table> {}
-updateIcons = <func> @DBM-Core\DBM-InfoFrame.lua:184
-infoFrameThreshold = 133798
-pIndex = nil
-lastStacks = <table> {}
-iconModifier = nil
-icons = <table> {
- Shiramune = "|TTargetingFrame\UI-RaidTargetingIcon_2:0|t"
-}
-updateLines = <func> @DBM-Core\DBM-InfoFrame.lua:172
---]]
---[[		if self.Options.InfoFrame then
+		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(133795))
-			DBM.InfoFrame:Show(5, "playerdebuffstacks", 133798)
-		end--]]
+			DBM.InfoFrame:Show(5, "playerdebuffstacks", 133798, 133798, 4)
+		end
 		self:Schedule(18, HideInfoFrame)
 	elseif msg:find("spell:134169") then
 		lingeringGazeCD = 46 -- Return to Original CD.
