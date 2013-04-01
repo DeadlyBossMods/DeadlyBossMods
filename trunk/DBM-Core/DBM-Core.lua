@@ -201,6 +201,7 @@ local myRealRevision = DBM.Revision or DBM.ReleaseRevision
 local highestRealVersion = 0
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
+local guiRequested = false
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
@@ -1260,6 +1261,7 @@ do
 	function DBM:LoadGUI()
 		if not IsAddOnLoaded("DBM-GUI") then
 			if InCombatLockdown() then
+				guiRequested = true
 				self:AddMsg(DBM_CORE_LOAD_GUI_COMBAT)
 				return
 			end
@@ -1763,6 +1765,10 @@ function DBM:PLAYER_REGEN_ENABLED()
 	if combatDelay then
 		combatDelay = false
 		collectgarbage("collect")
+	end
+	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
+		guiRequested = false
+		DBM:LoadGUI()
 	end
 end
 

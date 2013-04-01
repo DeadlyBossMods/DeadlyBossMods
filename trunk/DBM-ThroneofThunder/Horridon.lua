@@ -77,6 +77,7 @@ local berserkTimer				= mod:NewBerserkTimer(720)
 local soundDireFixate			= mod:NewSound(140946)
 
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("SetIconOnCharge")
 
 local doorNumber = 0
 local direNumber = 0
@@ -268,6 +269,9 @@ function mod:OnSync(msg, target)
 		if target == UnitName("player") then
 			specWarnCharge:Show()
 			yellCharge:Yell()
+		end
+		if UnitExists(target) and self.Options.SetIconOnCharge then
+			self:SetIcon(name, 7, 5)--Cross
 		end
 	elseif msg == "Door" and self:AntiSpam(60, 4) then--prevent bad doorNumber increase if very late sync received.
 	--Doors spawn every 131.5 seconds
