@@ -13,7 +13,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnGroupOrder		= "提示$spell:118191的隊伍輪班(目前只支援25人5,2,2,2,戰術)",
-	specWarnYourGroup	= "為$spell:118191顯示特別警告當輪到你的隊伍時\n(只適用於25人)",
+	specWarnYourGroup	= "為$spell:118191顯示特別警告當輪到你的隊伍時(只適用於25人)",
 	RangeFrame			= "為$spell:111850顯示距離框(8碼)(當你有debuff時只顯示其他沒有debuff的玩家)"
 })
 

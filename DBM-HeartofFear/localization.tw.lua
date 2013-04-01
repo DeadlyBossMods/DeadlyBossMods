@@ -33,7 +33,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "當某人受到$spell:122949影響時顯示DBM箭頭",
+	UnseenStrikeArrow	= "當某人中了$spell:122949時顯示DBM箭頭",
 	RangeFrame			= "為$spell:123175顯示距離框架(8碼)"
 })
 
@@ -71,13 +71,13 @@ L:SetWarningLocalization({
 	warnReshapeLife				= "%s在>%s<(%d)",
 	warnReshapeLifeTutor		= "1:中斷/易傷,, 2:中斷自己, 3:回復體力/意志力, 4:脫離魁儡",
 	warnAmberExplosion			= ">%s<正在施放%s",
-	warnInterruptsAvailable		= "可使用中斷%s:>%s<",
-	warnAmberExplosionAM		= "琥珀巨怪正在施放琥珀爆炸 - 快中斷!",--personal warning.
+	warnInterruptsAvailable		= "可為%s使用中斷:>%s<",
+	warnAmberExplosionAM		= "琥珀巨怪正在施放琥珀爆炸 - 快中斷!",
 	warnWillPower				= "目前的意志力:%s",
 	specwarnWillPower			= "意志力低落! - 剩下五秒",
-	specwarnAmberExplosionYou	= "中斷你自己的%s!",--Struggle for Control interrupt.
-	specwarnAmberExplosionAM	= "%s:中斷%s!",--Amber Montrosity
-	specwarnAmberExplosionOther	= "%s:中斷%s!"--Amber Montrosity
+	specwarnAmberExplosionYou	= "中斷你自己的%s!",
+	specwarnAmberExplosionAM	= "%s:中斷%s!",
+	specwarnAmberExplosionOther	= "%s:中斷%s!"
 })
 
 L:SetTimerLocalization({
@@ -114,7 +114,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnAmberTrap		= "為$spell:125826的製作進度顯示警告", -- maybe bad translation.
+	warnAmberTrap		= "為$spell:125826的製作進度顯示警告",
 	InfoFrame			= "為受到$spell:125390的玩家顯示訊息框架",
 	RangeFrame			= "為$spell:123735顯示距離框架(5碼)"
 })

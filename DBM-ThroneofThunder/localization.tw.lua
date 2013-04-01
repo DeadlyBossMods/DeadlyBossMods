@@ -41,8 +41,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces				= "的門蜂擁而出!",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget			= "用力拍動尾巴!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces				= "的門蜂擁而出!",
+	chargeTarget			= "用力拍動尾巴!"
 })
 
 ---------------------------
@@ -51,7 +51,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(816)
 
 L:SetWarningLocalization({
-	specWarnPossessed		= "%s在%s - 變換目標"
+	specWarnPossessed		= "%s在%s - 快換目標"
 })
 
 L:SetOptionLocalization({
@@ -145,8 +145,15 @@ L:SetMiscLocalization({
 ----------------
 L= DBM:GetModLocalization(820)
 
+L:SetWarningLocalization({
+	warnDebuffCount				= "太多突變: %有益& %有害",
+	specWarnFullyMutatedFaded	= "%s結束"
+})
+
 L:SetOptionLocalization({
-	RangeFrame		= "顯示距離框架(2碼/5碼)",
+	warnDebuffCount				= "當你吃太多池水時顯示減益計算警告",
+	specWarnFullyMutatedFaded	= "當$spell:140546結束時顯示特別警告",
+	RangeFrame					= "顯示距離框架(2碼/5碼)",
 })
 
 -----------------
@@ -215,7 +222,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetOptionLocalization({
-	RangeFrame			= "顯示距離框架",--For two different spells
+	RangeFrame			= "顯示距離框架",
 	StaticShockArrow	= "當某人中了$spell:135695顯示DBM箭頭",
 	OverchargeArrow		= "當某人中了$spell:136295顯示DBM箭頭"
 })
@@ -235,5 +242,5 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "顯示距離框架(10碼)"--For 3 different spells
+	RangeFrame		= "顯示距離框架(10碼)"
 })
