@@ -6,10 +6,14 @@ local L
 --------------------------
 L= DBM:GetModLocalization(827)
 
-L:SetOptionLocalization({
-	RangeFrame		= "Zeige Abstandsfenster"
+L:SetWarningLocalization({
+	specWarnWaterMove	= "%s bald - Raus aus dem leitfähigen Wasser!"
 })
 
+L:SetOptionLocalization({
+	specWarnWaterMove	= "Zeige Spezialwarnung, falls du in $spell:138470 stehst (warnt bevor\n$spell:137313 gewirkt wird und kurz bevor $spell:138732 ausläuft)",
+	RangeFrame			= "Zeige Abstandsfenster"
+})
 
 --------------
 -- Horridon --
@@ -68,7 +72,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "Zeige Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
-	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129 (mglw. nicht zuverlässig falls mehr als\nein Spieler mit Leiter-/Assistentenstatus diese Einstellung aktiviert)",
+	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
+	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971"
 })
 
 L:SetMiscLocalization({
@@ -119,6 +124,7 @@ L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
 	warnAddsLeft				= "Nebel verbleibend: %d",
+	specWarnBlueBeam			= "Blaue Strahlen auf dir - BLEIB STEHEN!",
 	specWarnFogRevealed			= "%s offenbart!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
@@ -126,7 +132,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAddsLeft				= "Verkünde die Anzahl der verbleibenden Nebel",
 	specWarnFogRevealed			= "Zeige Spezialwarnung, wenn ein Nebel offenbart wird",
-	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung"
+	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung",
+	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel"
 })
 
 L:SetMiscLocalization({
@@ -138,8 +145,15 @@ L:SetMiscLocalization({
 ----------------
 L= DBM:GetModLocalization(820)
 
+L:SetWarningLocalization({
+	warnDebuffCount				= "Zu viele Mutationen: %d gute, %d schlechte",
+	specWarnFullyMutatedFaded	= "%s ist beendet"
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "Zeige Abstandsfenster (5m/2m)"
+	warnDebuffCount				= "Zeige Warnung für die Debuffanzahl, wenn du zu viele Mutagenpfützen absorbierst",
+	specWarnFullyMutatedFaded	= "Zeige Spezialwarnung, wenn $spell:140546 beendet ist",
+	RangeFrame					= "Zeige Abstandsfenster (5m/2m)"
 })
 
 -----------------
