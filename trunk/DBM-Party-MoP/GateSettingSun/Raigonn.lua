@@ -57,7 +57,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 111723 then
 		timerFixate:Cancel(args.destName)
 	elseif args.spellId == 111600 then
-		timerScreechingSwarm:Cancel(args.destname)
+		timerScreechingSwarm:Cancel(args.destName)
 	end
 end
 

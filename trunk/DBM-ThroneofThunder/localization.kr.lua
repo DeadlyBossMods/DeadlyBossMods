@@ -144,8 +144,15 @@ L:SetMiscLocalization({
 ----------------
 L= DBM:GetModLocalization(820)
 
+L:SetWarningLocalization({
+	warnDebuffCount				= "변형 진행 : 이로운 효과 - %d개, 해로운 효과 - %d개",
+	specWarnFullyMutatedFaded	= "%s 사라짐!"
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "거리 창 보기(5m/2m)"
+	warnDebuffCount				= "웅덩이를 흡수할 때 변형 상태에 대한 알림 보기",
+	specWarnFullyMutatedFaded	= "$spell:140546 효과가 사라질 때 특수 경고 보기",
+	RangeFrame					= "거리 창 보기(5m/2m)"
 })
 
 -----------------

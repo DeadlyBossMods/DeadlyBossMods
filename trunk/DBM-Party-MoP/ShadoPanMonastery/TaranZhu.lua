@@ -21,11 +21,11 @@ local warnRisingHate		= mod:NewCastAnnounce(107356, 4, 5)
 
 local specWarnGrippingHatred= mod:NewSpecialWarningSwitch("ej5817")
 local specWarnHazeofHate	= mod:NewSpecialWarningYou(107087)
-local specWarnRisingHate	= mod:NewSpecialWarningInterrupt(107356)
+local specWarnRisingHate	= mod:NewSpecialWarningInterrupt(107356, not mod:IsHealer())
 
 local timerRingofMalice		= mod:NewBuffActiveTimer(15, 131521)
+local timerGrippingHartedCD	= mod:NewNextTimer(45.5, 115002)
 
--- info frame stuff not confirmed
 mod:AddBoolOption("InfoFrame", true)
 
 local Hate = EJ_GetSectionInfo(5827)
@@ -62,6 +62,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 115002 and self:AntiSpam(5, 2) then
 		warnGrippingHatred:Show()
 		specWarnGrippingHatred:Show()
+		timerGrippingHartedCD:Start()
 	end
 end
 
