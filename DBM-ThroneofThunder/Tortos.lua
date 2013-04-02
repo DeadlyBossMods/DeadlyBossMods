@@ -116,7 +116,9 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 133939 then
 		warnStoneBreath:Show()
-		specWarnStoneBreath:Show(args.sourceName)
+		if not self:IsDifficulty("lfr25") then
+			specWarnStoneBreath:Show(args.sourceName)
+		end
 		timerBreathCD:Start()
 	elseif args.spellId == 136294 then
 		warnCallofTortos:Show()

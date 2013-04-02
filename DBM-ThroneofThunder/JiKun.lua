@@ -60,7 +60,7 @@ function mod:OnCombatStart(delay)
 		timerQuillsCD:Start(42.5-delay)
 	end
 	timerDowndraftCD:Start(91-delay)
-	if self.Options.RangeFrame then
+	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Show(8)
 	end
 end
