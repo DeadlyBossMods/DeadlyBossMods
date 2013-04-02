@@ -6,7 +6,7 @@ DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm he
 DBM_CORE_LOAD_MOD_ERROR				= "%s 경보를 불러오는 중 오류 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다 !"
 DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
-DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 전투가 종료되면 설정창이 열릴 것입니다. 이 후에는 전투 중이라도 설정창을 불러 올 수 있습니다."
+DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 전투가 종료되면 설정창이 열릴 것입니다. 이후에는 전투 중이라도 설정창을 불러 올 수 있습니다."
 
 DBM_ABSOLUTE_MODE_ON				= "무제한 모드가 활성화 되었습니다."
 DBM_ABSOLUTE_MODE_OFF				= "무제한 모드가 비활성화 되었습니다. 공격대에 원래 버전을 알립니다."
