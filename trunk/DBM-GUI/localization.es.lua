@@ -45,9 +45,6 @@ L.BossStatistics	= "Estadisticas de Boss"
 L.Statistic_Kills	= "Muertes:"
 L.Statistic_Wipes	= "Wipes:"
 L.Statistic_BestKill	= "Mejor muerte:"
-L.Statistic_10Man		= "Banda de 10"
-L.Statistic_25Man		= "Banda de 25"
-
 
 -- Tab: General Options
 L.General 		= "Opciones de DBM"

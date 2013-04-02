@@ -11,8 +11,9 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMThroneofThunder_SavedVars, DBMThroneofThunder_SavedStats
 ## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 1
+## X-DBM-Mod-Has-LFR : 1
 ## X-DBM-Mod-Name: Throne of Thunder
 ## X-DBM-Mod-Name-ruRU: Престол Гроз
 ## X-DBM-Mod-Name-koKR: 천둥의 왕좌

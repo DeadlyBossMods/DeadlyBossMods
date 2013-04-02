@@ -12,8 +12,9 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMHeartofFear_SavedVars, DBMHeartofFear_SavedStats
 ## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 1
+## X-DBM-Mod-Has-LFR : 1
 ## X-DBM-Mod-Name: Heart of Fear
 ## X-DBM-Mod-Name-ruRU: Сердце Страха
 ## X-DBM-Mod-Name-koKR: 공포의 심장

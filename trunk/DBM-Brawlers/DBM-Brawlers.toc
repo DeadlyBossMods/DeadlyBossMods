@@ -13,8 +13,9 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMBrawlers_SavedVars, DBMBrawlers_SavedStats
 ## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-No-Statistics: 1
 ## X-DBM-Mod-Name: Brawlers
 ## X-DBM-Mod-Name-koKR: 싸움꾼 조합
 ## X-DBM-Mod-Name-deDE: Kampfgilde

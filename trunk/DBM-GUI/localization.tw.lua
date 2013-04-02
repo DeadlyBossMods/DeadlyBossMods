@@ -47,8 +47,6 @@ L.Statistic_Kills			= "勝利："
 L.Statistic_Wipes			= "失敗："
 L.Statistic_Incompletes		= "未完成："
 L.Statistic_BestKill		= "最快記錄："
-L.Statistic_10Man			= "10人團隊"
-L.Statistic_25Man			= "25人團隊"
 
 -- Tab: General Options
 L.General 					= "DBM綜合設置"

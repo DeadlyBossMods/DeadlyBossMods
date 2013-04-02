@@ -46,8 +46,6 @@ L.BossStatistics			= "Статистика босса"
 L.Statistic_Kills			= "Убийства:"
 L.Statistic_Wipes			= "Поражения:"
 L.Statistic_BestKill		= "Лучший бой:"
-L.Statistic_10Man			= "10ппл рейд"
-L.Statistic_25Man			= "25ппл рейд"
 
 -- Tab: General Options
 L.General 					= "Общие параметры DBM"

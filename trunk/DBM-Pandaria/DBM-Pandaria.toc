@@ -11,6 +11,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPandaria_SavedVars, DBMPandaria_SavedStats
 ## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-Name: Pandaria

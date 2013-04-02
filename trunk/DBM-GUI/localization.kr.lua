@@ -47,8 +47,6 @@ L.Statistic_Kills			= "승리:"
 L.Statistic_Wipes			= "전멸:"
 L.Statistic_Incompletes		= "미완료:"
 L.Statistic_BestKill		= "최고 기록:"
-L.Statistic_10Man			= "10인"
-L.Statistic_25Man			= "25인"
 
 -- Tab: General Options
 L.General 					= "일반 DBM 설정"
