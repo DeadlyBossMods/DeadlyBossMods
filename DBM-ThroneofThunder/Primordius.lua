@@ -27,6 +27,7 @@ local warnVolatilePathogen			= mod:NewTargetAnnounce(136228, 4)
 local warnMetabolicBoost			= mod:NewTargetAnnounce(136245, 3)--Makes Malformed Blood, Primordial Strike and melee 50% more often
 local warnVentralSacs				= mod:NewTargetAnnounce(136210, 2)--This one is a joke, if you get it, be happy.
 local warnAcidicSpines				= mod:NewTargetAnnounce(136218, 3)
+local warnViscousHorror				= mod:NewCountAnnounce("ej6969", mod:IsTank())
 local warnBlackBlood				= mod:NewStackAnnounce(137000, 2, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnFullyMutated			= mod:NewSpecialWarningYou(140546)
@@ -34,7 +35,7 @@ local specWarnFullyMutatedFaded		= mod:NewSpecialWarning("specWarnFullyMutatedFa
 local specWarnCausticGas			= mod:NewSpecialWarningSpell(136216, nil, nil, nil, 2)--All must be in front for this.
 local specWarnPustuleEruption		= mod:NewSpecialWarningSpell(136247, false, nil, nil, 2)--off by default since every 5 sec, very spammy for special warning
 local specWarnVolatilePathogen		= mod:NewSpecialWarningYou(136228)
-local specWarnViscousHorror			= mod:NewSpecialWarningSwitch("ej6969", mod:IsTank())
+local specWarnViscousHorror			= mod:NewSpecialWarningCount("ej6969", mod:IsTank())
 
 local timerFullyMutated				= mod:NewBuffFadesTimer(120, 140546)
 local timerMalformedBlood			= mod:NewTargetTimer(60, 136050, nil, mod:IsTank() or mod:IsHealer())
@@ -52,12 +53,15 @@ mod:AddBoolOption("RangeFrame", true)--Right now, EVERYTHING targets melee. If b
 local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
 local postulesActive = false
+local bigOozeCount = 0
 --TODO, make an infoframe that shows players with > 0 debufs and sorts them highest amount of debuffs to lowest. This will show raid leaders or healers who's messing up or who needs to be dispelled.
 local positiveDebuffs = { GetSpellInfo(136184), GetSpellInfo(136186), GetSpellInfo(136182), GetSpellInfo(136180) }
 local failDebuffs  = { GetSpellInfo(136185), GetSpellInfo(136187), GetSpellInfo(136183), GetSpellInfo(136181) }
 
 function mod:BigOoze()
-	specWarnViscousHorror:Show()
+	bigOozeCount = bigOozeCount + 1
+	warnViscousHorror:Show(bigOozeCount)
+	specWarnViscousHorror:Show(bigOozeCount)
 	timerViscousHorrorCD:Start()
 	self:ScheduleMethod(30, "BigOoze")
 end
@@ -71,6 +75,7 @@ function mod:OnCombatStart(delay)
 	metabolicBoost = false
 	acidSpinesActive = false
 	postulesActive = false
+	bigOozeCount = 0
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerViscousHorrorCD:Start(12-delay)
