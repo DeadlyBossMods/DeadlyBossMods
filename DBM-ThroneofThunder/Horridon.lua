@@ -299,7 +299,7 @@ function mod:OnSync(msg, target)
 			timerAdds:Start(18.9, Amani)
 			warnAdds:Schedule(18.9, Amani)
 			self:Schedule(18.9, addsDelay, Amani)
-			if self.Options.RangeFrame then
+			if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 				DBM.RangeCheck:Show(5)
 			end
 		end

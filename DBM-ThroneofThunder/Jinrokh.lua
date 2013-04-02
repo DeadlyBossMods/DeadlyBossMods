@@ -68,7 +68,7 @@ function mod:FocusedLightningTarget(targetname)
 		specWarnFocusedLightning:Show()
 		yellFocusedLightning:Yell()
 		soundFocusedLightning:Play()
-		if self.Options.RangeFrame then
+		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			DBM.RangeCheck:Show(8)
 		end
 	end
