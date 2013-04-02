@@ -11,6 +11,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMScenarioMoP_SavedVars, DBMScenarioMoP_SavedStats
 ## X-DBM-Mod: 1
+## X-DBM-Mod-Type: SCENARIO
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Name: Scenario (MoP)
 ## X-DBM-Mod-Name-ruRU: Сценарии (MoP)

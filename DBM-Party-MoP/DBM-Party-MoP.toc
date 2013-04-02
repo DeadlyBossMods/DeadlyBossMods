@@ -10,8 +10,9 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPartyMoP_SavedVars, DBMPartyMoP_SavedStats
 ## X-DBM-Mod: 1
+## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: MOP
-## X-DBM-Mod-Has-Heroic-Mode: 1
+## X-DBM-Mod-Has-Challenge: 1
 ## X-DBM-Mod-SubCategories: Temple of the Jade Serpent, Stormstout Brewery, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, Scholomance, Scarlet Halls, Scarlet Cathedral
 ## X-DBM-Mod-SubCategories-ruRU: Храм Нефритовой Змеи, Хмелеварня Буйных Портеров, Монастырь Шадо-Пан, Врата Заходящего Солнца, Дворец Могу'шан (5 ппл), Осада храма Нюцзао, Некроситет, Залы Алого ордена, Монастырь Алого ордена
 ## X-DBM-Mod-SubCategories-deDE: Tempel der Jadeschlange, Die Brauerei Sturmbräu, Das Shado-Pan-Kloster, Tor der Untergehenden Sonne, Mogu'shanpalast, Belagerung des Niuzaotempels, Scholomance, Scharlachrote Hallen, Das Scharlachrote Kloster
