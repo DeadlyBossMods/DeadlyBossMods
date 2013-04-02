@@ -44,7 +44,7 @@ local timerCausticGasCD				= mod:NewCDTimer(14, 136216)
 local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136247, nil, false)
 local timerVolatilePathogenCD		= mod:NewCDTimer(28, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
 local timerBlackBlood				= mod:NewTargetTimer(60, 137000, nil, mod:IsTank() or mod:IsHealer())
-local timerViscousHorrorCD			= mod:NewNextTimer(30, "ej6969", nil, nil, nil, 137000)
+local timerViscousHorrorCD			= mod:NewNextCountTimer(30, "ej6969", nil, nil, nil, 137000)
 
 local berserkTimer					= mod:NewBerserkTimer(480)
 
@@ -62,7 +62,7 @@ function mod:BigOoze()
 	bigOozeCount = bigOozeCount + 1
 	warnViscousHorror:Show(bigOozeCount)
 	specWarnViscousHorror:Show(bigOozeCount)
-	timerViscousHorrorCD:Start()
+	timerViscousHorrorCD:Start(30, bigOozeCount)
 	self:ScheduleMethod(30, "BigOoze")
 end
 
@@ -78,7 +78,7 @@ function mod:OnCombatStart(delay)
 	bigOozeCount = 0
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerViscousHorrorCD:Start(12-delay)
+		timerViscousHorrorCD:Start(12-delay, 1)
 		self:ScheduleMethod(12-delay, "BigOoze")
 	end
 end
