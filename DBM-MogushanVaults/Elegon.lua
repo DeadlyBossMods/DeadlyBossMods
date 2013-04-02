@@ -146,7 +146,7 @@ end
 
 mod:RegisterOnUpdateHandler(function(self)
 	if self.Options.SetIconOnCreature and DBM:GetRaidRank() > 0 and not (iconsSet == 6) then
-		for i = 1, DBM:GetGroupMembers() do
+		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
 			if creatureIcons[guid] then
