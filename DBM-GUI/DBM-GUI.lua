@@ -2010,38 +2010,31 @@ end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
 do
-	local function OnShowGetStats(stats, hack, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3)
+	local function OnShowGetStats(stats, statsType, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3)
 		return function(self)
 			top1value1:SetText( stats.normalKills )
 			top1value2:SetText( stats.normalPulls - stats.normalKills )
 			top1value3:SetText( stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
-			top2value1:SetText( stats.normal25Kills )
-			top2value2:SetText( stats.normal25Pulls - stats.normal25Kills )
-			top2value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
-			top3value1:SetText( stats.lfr25Kills )
-			top3value2:SetText( stats.lfr25Pulls-stats.lfr25Kills )
-			top3value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(math.floor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
-			bottom1value1:SetText( stats.heroicKills )
-			bottom1value2:SetText( stats.heroicPulls-stats.heroicKills )
-			bottom1value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
-			bottom2value1:SetText( stats.heroic25Kills )
-			bottom2value2:SetText( stats.heroic25Pulls-stats.heroic25Kills )
-			bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
-			if hack == 1 then--Scenario and Pre MoP Party
-				top3value1:SetText( stats.heroicKills )
-				top3value2:SetText( stats.heroicPulls-stats.heroicKills )
-				top3value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
-			elseif hack == 2 then--MoP Party
+			if statsType == 1 then--Party instance
 				top2value1:SetText( stats.heroicKills )
 				top2value2:SetText( stats.heroicPulls-stats.heroicKills )
 				top2value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
 				top3value1:SetText( stats.challengeKills )
 				top3value2:SetText( stats.challengePulls-stats.challengeKills )
 				top3value3:SetText( stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-" )
-			elseif hack == 3 then--Naxx and Ulduar
-				top3value1:SetText( stats.normal25Kills )
-				top3value2:SetText( stats.normal25Pulls - stats.normal25Kills )
-				top3value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
+			else
+				top2value1:SetText( stats.normal25Kills )
+				top2value2:SetText( stats.normal25Pulls - stats.normal25Kills )
+				top2value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
+				top3value1:SetText( stats.lfr25Kills )
+				top3value2:SetText( stats.lfr25Pulls-stats.lfr25Kills )
+				top3value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(math.floor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
+				bottom1value1:SetText( stats.heroicKills )
+				bottom1value2:SetText( stats.heroicPulls-stats.heroicKills )
+				bottom1value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+				bottom2value1:SetText( stats.heroic25Kills )
+				bottom2value2:SetText( stats.heroic25Pulls-stats.heroic25Kills )
+				bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
 			end
 		end
 	end
@@ -2050,7 +2043,8 @@ do
 		if not panel then
 			error("Panel is nil", 2)
 		end
-		if addon.modId == "DBM-PvP" or addon.modId == "DBM-Brawlers" then return end -- no need to create a stats page for PvP or Brawlers modules
+		
+		if addon.noStatistics then return end
 
 		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, GameFontNormal)
 		ptext:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 10, -10)
@@ -2062,8 +2056,7 @@ do
 
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
-				local hack = 0
-				local modname = mod.modId
+				local statsType = 0
 				bossstats = bossstats + 1
 				if not mod.stats then
 					mod.stats = { }
@@ -2123,7 +2116,6 @@ do
 				local bottom2value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 
 				--Set default position
-				Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
 				top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 				top1text1:SetPoint("TOPLEFT", top1header, "BOTTOMLEFT", 20, -5)
 				top1text2:SetPoint("TOPLEFT", top1text1, "BOTTOMLEFT", 0, -5)
@@ -2131,92 +2123,115 @@ do
 				top1value1:SetPoint("TOPLEFT", top1text1, "TOPLEFT", 80, 0)
 				top1value2:SetPoint("TOPLEFT", top1text2, "TOPLEFT", 80, 0)
 				top1value3:SetPoint("TOPLEFT", top1text3, "TOPLEFT", 80, 0)
-				top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
-				top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
-				top2text2:SetPoint("LEFT", top1text2, "LEFT", 150, 0)
-				top2text3:SetPoint("LEFT", top1text3, "LEFT", 150, 0)
-				top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
-				top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
-				top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
-				top3header:SetPoint("LEFT", top2header, "LEFT", 150, 0)
-				top3text1:SetPoint("LEFT", top2text1, "LEFT", 150, 0)
-				top3text2:SetPoint("LEFT", top2text2, "LEFT", 150, 0)
-				top3text3:SetPoint("LEFT", top2text3, "LEFT", 150, 0)
-				top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
-				top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
-				top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
 
 				--Set enable or disable per mods.
-				if modname:sub(1,9) == "DBM-Party" then--Use rows 1 2 and 3 (top only)
-					top1header:SetText(PLAYER_DIFFICULTY1)
-					if modname == "DBM-Party-BC" or modname == "DBM-Party-WotLK" or modname == "DBM-Party-Cataclysm" then--This mod do not have challenge mode.
-						--Do not use top2 area.
-						hack = 1
-						top2header:Hide()
-						top2text1:Hide()
-						top2text2:Hide()
-						top2text3:Hide()
-						top2value1:Hide()
-						top2value2:Hide()
-						top2value3:Hide()
-						top3header:SetText(PLAYER_DIFFICULTY2)
-					else--MoP, and maybe later.
-						hack = 2
-						top2header:SetText(PLAYER_DIFFICULTY2)
-						top3header:SetText(CHALLENGE_MODE)
-					end
-					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif modname:sub(1,12) == "DBM-Scenario" then--Use rows 1 and 3 (top only)
-					hack = 1
-					--Do not use top2 area.
-					top2header:Hide()
-					top2text1:Hide()
-					top2text2:Hide()
-					top2text3:Hide()
-					top2value1:Hide()
-					top2value2:Hide()
-					top2value3:Hide()
-					top1header:SetText(PLAYER_DIFFICULTY1)
-					top3header:SetText(PLAYER_DIFFICULTY2)
-					top1text2:SetText(L.Statistic_Incompletes)
-					top3text2:SetText(L.Statistic_Incompletes)
-					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				elseif mod.oneFormat then--Uses row 1 top only
+				if mod.oneFormat then
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*(bossstats-1)))
-					--Do not use top2 area.
-					top2header:Hide()
-					top2text1:Hide()
-					top2text2:Hide()
-					top2text3:Hide()
-					top2value1:Hide()
-					top2value2:Hide()
-					top2value3:Hide()
-					--Do not use top3 area.
-					top3header:Hide()
-					top3text1:Hide()
-					top3text2:Hide()
-					top3text3:Hide()
-					top3value1:Hide()
-					top3value2:Hide()
-					top3value3:Hide()
 					--Do not use top1 header.
 					top1text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*5 )
-				elseif not mod.hasHeroic then--Use rows 1 and 3 (top only) (Naxx and Ulduar)
-					hack = 3
-					--Do not use top2 area.
-					top2header:Hide()
-					top2text1:Hide()
-					top2text2:Hide()
-					top2text3:Hide()
-					top2value1:Hide()
-					top2value2:Hide()
-					top2value3:Hide()
-					top1header:SetText(RAID_DIFFICULTY1)
-					top3header:SetText(RAID_DIFFICULTY2)
+				elseif mod.type == "PARTY" or mod.type == "SCENARIO" then--If party or scenario instance have no heroic, we should use oneFormat.
+					statsType = 1
+					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
+					if mod.hasChallenge then
+						--Use top1, top2 and top3 area.
+						top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
+						top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
+						top2text2:SetPoint("LEFT", top1text2, "LEFT", 150, 0)
+						top2text3:SetPoint("LEFT", top1text3, "LEFT", 150, 0)
+						top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+						top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+						top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+						top3header:SetPoint("LEFT", top2header, "LEFT", 150, 0)
+						top3text1:SetPoint("LEFT", top2text1, "LEFT", 150, 0)
+						top3text2:SetPoint("LEFT", top2text2, "LEFT", 150, 0)
+						top3text3:SetPoint("LEFT", top2text3, "LEFT", 150, 0)
+						top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
+						top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
+						top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
+						--Set header text.
+						top3header:SetText(CHALLENGE_MODE)
+						if mod.type == "SCENARIO" then
+							top3text2:SetText(L.Statistic_Incompletes)
+						end
+					else
+						--Use top1 and top2 area.
+						top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
+						top2text1:SetPoint("LEFT", top1text1, "LEFT", 220, 0)
+						top2text2:SetPoint("LEFT", top1text2, "LEFT", 220, 0)
+						top2text3:SetPoint("LEFT", top1text3, "LEFT", 220, 0)
+						top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+						top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+						top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+					end
+					--Set header text.
+					top1header:SetText(PLAYER_DIFFICULTY1)
+					top2header:SetText(PLAYER_DIFFICULTY2)
+					if mod.type == "SCENARIO" then
+						top1text2:SetText(L.Statistic_Incompletes)
+						top2text2:SetText(L.Statistic_Incompletes)
+					end
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
-				else --Uses everything
+				elseif mod.type == "RAID" and mod.noHeroic then
+					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*6*(bossstats-1)))
+					--Use top1 and top2 area.
+					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
+					top2text1:SetPoint("LEFT", top1text1, "LEFT", 220, 0)
+					top2text2:SetPoint("LEFT", top1text2, "LEFT", 220, 0)
+					top2text3:SetPoint("LEFT", top1text3, "LEFT", 220, 0)
+					top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+					top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+					top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+					--Set header text.
+					top1header:SetText(RAID_DIFFICULTY1)
+					top2header:SetText(RAID_DIFFICULTY2)
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*6 )
+				elseif mod.type == "RAID" and not mod.hasLFR then
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
+					--Use top1, top2, bottom1 and bottom2 area.
+					top2header:SetPoint("LEFT", top1header, "LEFT", 220, 0)
+					top2text1:SetPoint("LEFT", top1text1, "LEFT", 220, 0)
+					top2text2:SetPoint("LEFT", top1text2, "LEFT", 220, 0)
+					top2text3:SetPoint("LEFT", top1text3, "LEFT", 220, 0)
+					top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+					top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+					top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+					bottom1header:SetPoint("TOPLEFT", top1text3, "BOTTOMLEFT", -20, -5)
+					bottom1text1:SetPoint("TOPLEFT", bottom1header, "BOTTOMLEFT", 20, -5)
+					bottom1text2:SetPoint("TOPLEFT", bottom1text1, "BOTTOMLEFT", 0, -5)
+					bottom1text3:SetPoint("TOPLEFT", bottom1text2, "BOTTOMLEFT", 0, -5)
+					bottom1value1:SetPoint("TOPLEFT", bottom1text1, "TOPLEFT", 80, 0)
+					bottom1value2:SetPoint("TOPLEFT", bottom1text2, "TOPLEFT", 80, 0)
+					bottom1value3:SetPoint("TOPLEFT", bottom1text3, "TOPLEFT", 80, 0)
+					bottom2header:SetPoint("LEFT", bottom1header, "LEFT", 220, 0)
+					bottom2text1:SetPoint("LEFT", bottom1text1, "LEFT", 220, 0)
+					bottom2text2:SetPoint("LEFT", bottom1text2, "LEFT", 220, 0)
+					bottom2text3:SetPoint("LEFT", bottom1text3, "LEFT", 220, 0)
+					bottom2value1:SetPoint("TOPLEFT", bottom2text1, "TOPLEFT", 80, 0)
+					bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
+					bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
+					--Set header text.
+					top1header:SetText(RAID_DIFFICULTY1)
+					top2header:SetText(RAID_DIFFICULTY2)
+					bottom1header:SetText(PLAYER_DIFFICULTY2)
+					bottom2header:SetText(PLAYER_DIFFICULTY2)
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
+				else--Uses everything
+					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
+					top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
+					top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
+					top2text2:SetPoint("LEFT", top1text2, "LEFT", 150, 0)
+					top2text3:SetPoint("LEFT", top1text3, "LEFT", 150, 0)
+					top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+					top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+					top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+					top3header:SetPoint("LEFT", top2header, "LEFT", 150, 0)
+					top3text1:SetPoint("LEFT", top2text1, "LEFT", 150, 0)
+					top3text2:SetPoint("LEFT", top2text2, "LEFT", 150, 0)
+					top3text3:SetPoint("LEFT", top2text3, "LEFT", 150, 0)
+					top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
+					top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
+					top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
 					bottom1header:SetPoint("TOPLEFT", top1text3, "BOTTOMLEFT", -20, -5)
 					bottom1text1:SetPoint("TOPLEFT", bottom1header, "BOTTOMLEFT", 20, -5)
 					bottom1text2:SetPoint("TOPLEFT", bottom1text1, "BOTTOMLEFT", 0, -5)
@@ -2239,7 +2254,7 @@ do
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 				end
 
-				table.insert(area.onshowcall, OnShowGetStats(mod.stats, hack, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3))
+				table.insert(area.onshowcall, OnShowGetStats(mod.stats, statsType, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3))
 			end
 		end
 		area.frame:SetScript("OnShow", function(self)

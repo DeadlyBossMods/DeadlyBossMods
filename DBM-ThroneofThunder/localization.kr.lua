@@ -178,7 +178,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(817)
 
 L:SetWarningLocalization({
-	warnDeadZone	= "%s: %s, %s 봉쇄됨"
+	warnDeadZone	= "%s : %s, %s"
 })
 
 L:SetOptionLocalization({

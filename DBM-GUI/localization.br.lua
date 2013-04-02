@@ -45,8 +45,6 @@ L.BossStatistics			= "Estatísticas do Chefe"
 L.Statistic_Kills			= "Vitórias:"
 L.Statistic_Wipes			= "Derrotas:"
 L.Statistic_BestKill		= "Melhor vítória:"
-L.Statistic_10Man			= "Raide 10 jogadores"
-L.Statistic_25Man			= "Raide 25 jogadores"
 
 -- Tab: General Options
 L.General 					= "Opções gerais do DBM"
