@@ -321,9 +321,14 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 end
 
 --Because blizz sucks and these do NOT show in combat log AND the emote only fires for initial application, but not for when a player dies and beam jumps.
+--Reports are this is majorly fucked up in LFR, because the antispam in name doesn't work with server names (wtf? maybe only happens if server name strip is turned on?)
+--I will not be able to debug for several hours but commenting in case someone else runs LFR before I do in 5 hours
 function mod:UNIT_AURA(uId)
+	print("DBM Debug - UnitName(): "..UnitName(uId))
 	local name = DBM:GetUnitFullName(uId)
+	print("DBM Debug - DBM:GetUnitFullName: "..DBM:GetUnitFullName(uId))
 	if UnitDebuff(uId, blueTracking) and lastBlue ~= name then
+		print("DBM Debug - lastBlue: "..lastBlue)
 		lastBlue = name
 		warnBlueBeam:Show(name)
 		if name == UnitName("player") then
