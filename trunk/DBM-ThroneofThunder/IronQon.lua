@@ -279,7 +279,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			warnPhase2:Show()
 			if self:IsDifficulty("heroic10", "heroic25") then
 				timerFreezeCD:Start(13)
-				timerFrostSpikeCD:Start(18)
+				timerFrostSpikeCD:Start(15)
 			end
 			timerLightningStormCD:Start()
 			warnWindStorm:Schedule(52)
@@ -310,7 +310,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerFreezeCD:Cancel()
 			warnPhase4:Show()
 			timerRisingAngerCD:Start(15)
-			timerFistSmashCD:Start(25, 1)
+			timerFistSmashCD:Start(62, 1)
 		end
 	elseif spellId == 139172 and self:AntiSpam(2, 7) then--Whirling Winds (Phase 1 Heroic)
 		warnWhirlingWinds:Show()
@@ -330,7 +330,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		fistSmashCount = fistSmashCount + 1
 		warnFistSmash:Show(fistSmashCount)
 		specWarnFistSmash:Show()
-		timerFistSmashCD:Start(nil, fistSmashCount+1)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerFistSmashCD:Start(30, fistSmashCount+1) -- heroic cd longer.
+		else
+			timerFistSmashCD:Start(nil, fistSmashCount+1)
+		end
 	end
 end
 
