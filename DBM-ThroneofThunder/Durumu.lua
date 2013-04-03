@@ -327,9 +327,9 @@ end
 function mod:UNIT_AURA(uId)
 	local name = DBM:GetUnitFullName(uId)
 	if UnitDebuff(uId, blueTracking) and lastBlue ~= name then
-		print("DBM Debug - UnitName(): "..UnitName(uId))
-		print("DBM Debug - DBM:GetUnitFullName: "..DBM:GetUnitFullName(uId))
-		print("DBM Debug - lastBlue: "..lastBlue)
+--		print("DBM Debug - UnitName(): "..UnitName(uId))
+--		print("DBM Debug - DBM:GetUnitFullName: "..DBM:GetUnitFullName(uId))
+--		print("DBM Debug - lastBlue: "..lastBlue)
 		lastBlue = name
 		warnBlueBeam:Show(name)
 		if name == UnitName("player") then
