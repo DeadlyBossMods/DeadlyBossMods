@@ -273,6 +273,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			end
 		end
 		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
+--			local target = DBM:GetFullNameByShortName(target)
 			warnYellowBeam:Show(target)
 			if target == UnitName("player") then
 				specWarnYellowBeam:Show()
@@ -324,10 +325,10 @@ end
 --Reports are this is majorly fucked up in LFR, because the antispam in name doesn't work with server names (wtf? maybe only happens if server name strip is turned on?)
 --I will not be able to debug for several hours but commenting in case someone else runs LFR before I do in 5 hours
 function mod:UNIT_AURA(uId)
-	print("DBM Debug - UnitName(): "..UnitName(uId))
 	local name = DBM:GetUnitFullName(uId)
-	print("DBM Debug - DBM:GetUnitFullName: "..DBM:GetUnitFullName(uId))
 	if UnitDebuff(uId, blueTracking) and lastBlue ~= name then
+		print("DBM Debug - UnitName(): "..UnitName(uId))
+		print("DBM Debug - DBM:GetUnitFullName: "..DBM:GetUnitFullName(uId))
 		print("DBM Debug - lastBlue: "..lastBlue)
 		lastBlue = name
 		warnBlueBeam:Show(name)
