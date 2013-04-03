@@ -272,7 +272,7 @@ function mod:OnSync(msg, target)
 			yellCharge:Yell()
 		end
 		if UnitExists(target) and self.Options.SetIconOnCharge then
-			self:SetIcon(name, 1, 5)--Cross
+			self:SetIcon(target, 1, 5)--star
 		end
 	elseif msg == "Door" and self:AntiSpam(60, 4) then--prevent bad doorNumber increase if very late sync received.
 	--Doors spawn every 131.5 seconds
