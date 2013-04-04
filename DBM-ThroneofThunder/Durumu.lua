@@ -86,6 +86,7 @@ local spectrumStarted = false
 local lifeDrained = false
 local lfrCrimsonFogRevealed = false
 local lfrAmberFogRevealed = false
+local lfrAzureFogRevealed = false
 local lfrEngaged = false
 local blueTracking = GetSpellInfo(139202)
 local redTracking = GetSpellInfo(139204)
@@ -140,6 +141,7 @@ function mod:OnCombatStart(delay)
 	lifeDrained = false
 	lfrCrimsonFogRevealed = false
 	lfrAmberFogRevealed = false
+	lfrAzureFogRevealed = false
 	table.wipe(lingeringGazeTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
@@ -178,7 +180,7 @@ function mod:SPELL_CAST_START(args)
 		timerHardStareCD:Start()
 	elseif args.spellId == 138467 then
 		timerLingeringGazeCD:Start(lingeringGazeCD)
-	elseif args.spellId == 136154 and self:IsDifficulty("lfr25") and lfrCrimsonFogRevealed then--Only use in lfr.
+	elseif args.spellId == 136154 and self:IsDifficulty("lfr25") and not lfrCrimsonFogRevealed then--Only use in lfr.
 		lfrCrimsonFogRevealed = true
 		specWarnFogRevealed:Show(crimsonFog)
 	elseif args.spellId == 134587 and self:AntiSpam(3, 3) then
@@ -315,6 +317,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		totalFogs = 3
 		lfrCrimsonFogRevealed = false
 		lfrAmberFogRevealed = false
+		lfrAzureFogRevealed = false
 		timerForceOfWillCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerObliterateCD:Start()
@@ -331,7 +334,12 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			self:SetIcon(target, 1, 10)--Star (auto remove after 10 seconds because this beam untethers one initial person positions it.
 		end
 	elseif npc == crimsonFog or npc == amberFog or npc == azureFog then
-		specWarnFogRevealed:Show(npc)
+		if self:IsDifficulty("lfr25") and npc == azureFog and not lfrAzureFogRevealed then
+			lfrAzureFogRevealed = true
+			specWarnFogRevealed:Show(npc)
+		else
+			specWarnFogRevealed:Show(npc)
+		end
 	elseif msg:find("spell:133795") then
 		local target = DBM:GetFullNameByShortName(target)
 		warnLifeDrain:Show(target)
