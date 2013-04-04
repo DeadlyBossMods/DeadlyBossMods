@@ -223,6 +223,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target. If target warning needed, insert into this block. (maybe very spammy)
 		self:SetIcon(args.destName, 4)--Triangle
+	elseif args.spellId == 133798 and self.Options.InfoFrame then -- Force update
+		DBM.InfoFrame:Update("playerdebuffstacks")
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -357,7 +359,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			DBM.InfoFrame:SetHeader(GetSpellInfo(133795))
 			DBM.InfoFrame:Show(5, "playerdebuffstacks", 133798)
 		end
-		self:Schedule(18, HideInfoFrame)
+		self:Schedule(21, HideInfoFrame)
 	elseif msg:find("spell:134169") then
 		lingeringGazeCD = 46 -- Return to Original CD.
 		timerForceOfWillCD:Cancel()
@@ -366,7 +368,6 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show()
 		timerDisintegrationBeam:Start()
-		self:Unschedule(HideInfoFrame)
 		self:Schedule(65, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
 	end
 end
