@@ -54,9 +54,6 @@ local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
 local postulesActive = false
 local bigOozeCount = 0
---TODO, make an infoframe that shows players with > 0 debufs and sorts them highest amount of debuffs to lowest. This will show raid leaders or healers who's messing up or who needs to be dispelled.
-local positiveDebuffs = { GetSpellInfo(136184), GetSpellInfo(136186), GetSpellInfo(136182), GetSpellInfo(136180) }
-local failDebuffs  = { GetSpellInfo(136185), GetSpellInfo(136187), GetSpellInfo(136183), GetSpellInfo(136181) }
 
 function mod:BigOoze()
 	bigOozeCount = bigOozeCount + 1
@@ -64,11 +61,6 @@ function mod:BigOoze()
 	specWarnViscousHorror:Show(bigOozeCount)
 	timerViscousHorrorCD:Start(30, bigOozeCount)
 	self:ScheduleMethod(30, "BigOoze")
-end
-
-function mod:DebuffTest()
-	print(positiveDebuffs)
-	print(failDebuffs)
 end
 
 function mod:OnCombatStart(delay)
