@@ -48,8 +48,6 @@ local warnInterruptsAvailable	= mod:NewAnnounce("warnInterruptsAvailable", 1, 12
 
 --Boss
 local specwarnAmberScalpel			= mod:NewSpecialWarningSpell(121994, nil, nil, nil, 2)
---local yellAmberScalpel				= mod:NewYell(121994)
---local specwarnAmberScalpelNear		= mod:NewSpecialWarningClose(121994)
 local specwarnReshape				= mod:NewSpecialWarningYou(122784)
 local specwarnParasiticGrowth		= mod:NewSpecialWarningTarget(121949, mod:IsHealer())
 local specwarnParasiticGrowthYou	= mod:NewSpecialWarningYou(121949) -- This warn will be needed at player is clustered together. Especially on Phase 3.
