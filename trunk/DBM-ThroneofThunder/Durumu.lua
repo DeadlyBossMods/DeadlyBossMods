@@ -26,9 +26,9 @@ mod:RegisterEventsInCombat(
 local warnHardStare					= mod:NewSpellAnnounce(133765, 3, nil, mod:IsTank() or mod:IsHealer())--Announce CAST not debuff, cause it misses a lot, plus we have 1 sec to hit an active mitigation
 local warnForceOfWill				= mod:NewTargetAnnounce(136413, 4)
 local warnLingeringGaze				= mod:NewTargetAnnounce(138467, 3)--Seems highly variable Cd so no timer for this yet
-local warnBlueBeam					= mod:NewTargetAnnounce(139202, 2)
-local warnRedBeam					= mod:NewTargetAnnounce(139204, 2)
-local warnYellowBeam				= mod:NewTargetAnnounce(133738, 2)--Cannot find a tracking ID for this one
+mod:AddBoolOption("warnBeam", nil, "announce")
+local warnBeamNormal				= mod:NewAnnounce("warnBeamNormal", 4, 139204, true, false)
+local warnBeamHeroic				= mod:NewAnnounce("warnBeamHeroic", 4, 139204, true, false)
 local warnAddsLeft					= mod:NewAnnounce("warnAddsLeft", 2, 134123)
 local warnDisintegrationBeam		= mod:NewSpellAnnounce("ej6882", 4)
 local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3)--Some times needs to block this even dps. So warn for everyone.
@@ -44,6 +44,7 @@ local specWarnLingeringGaze			= mod:NewSpecialWarningYou(134044)
 local yellLingeringGaze				= mod:NewYell(134044, nil, false)
 local specWarnLingeringGazeMove		= mod:NewSpecialWarningMove(134044)
 local specWarnBlueBeam				= mod:NewSpecialWarning("specWarnBlueBeam", nil, nil, nil, 3)
+local specWarnBlueBeamLFR			= mod:NewSpecialWarningYou(139202, true, false)
 local specWarnRedBeam				= mod:NewSpecialWarningYou(139204)
 local specWarnYellowBeam			= mod:NewSpecialWarningYou(133738)
 local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed", nil, nil, nil, 2)--Use another "Be Aware!" sound because Lingering Gaze comes on Spectrum phase.
@@ -80,6 +81,7 @@ local lingeringGazeTargets = {}
 local lingeringGazeCD = 46
 local lastRed = nil
 local lastBlue = nil
+local lastYellow = nil
 local spectrumStarted = false
 local lifeDrained = false
 local blueTracking = GetSpellInfo(139202)
@@ -90,17 +92,30 @@ local function warnLingeringGazeTargets()
 	table.wipe(lingeringGazeTargets)
 end
 
+local function warnBeam()
+	if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
+		warnBeamHeroic:Show(lastRed, lastBlue, lastYellow)
+	else
+		warnBeamNormal:Show(lastRed, lastBlue)
+	end
+end
+
 local function BeamEnded()
 --[[	if mod.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
 	end--]]
 	timerLingeringGazeCD:Start(16)
 	timerForceOfWillCD:Start(18)
-	timerLightSpectrumCD:Start(32)
 	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerIceWallCD:Start(25)
 	end
-	timerDisintegrationBeamCD:Start()
+	if mod:IsDifficulty("lfr25") then
+		timerLightSpectrumCD:Start(55)
+		timerDisintegrationBeamCD:Start(152)--unconfirmed
+	else
+		timerLightSpectrumCD:Start(32)
+		timerDisintegrationBeamCD:Start()
+	end
 	--Life Drain comes after beamended 1~3 sec.
 end
 
@@ -114,6 +129,7 @@ function mod:OnCombatStart(delay)
 	lingeringGazeCD = 46
 	lastRed = nil
 	lastBlue = nil
+	lastYellow = nil
 	spectrumStarted = false
 	lifeDrained = false
 	table.wipe(lingeringGazeTargets)
@@ -124,7 +140,12 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerIceWallCD:Start(128-delay)
 	end
-	timerDisintegrationBeamCD:Start(135-delay)
+	if mod:IsDifficulty("lfr25") then
+		timerLifeDrainCD:Start(151)
+		timerDisintegrationBeamCD:Start(161-delay)
+	else
+		timerDisintegrationBeamCD:Start(135-delay)
+	end
 	berserkTimer:Start(-delay)
 end
 
@@ -244,26 +265,30 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		local target = DBM:GetFullNameByShortName(target)
 		lingeringGazeCD = not spectrumStarted and 25 or 40 -- First spectrum Lingering Gaze CD = 25, second = 40
 		spectrumStarted = true
-		warnBlueBeam:Show(target)
+		lastBlue = target
 		if target == UnitName("player") then
-			specWarnBlueBeam:Show()
+			if self:IsDifficulty("lfr25") and self.Options.specWarnBlueBeam then
+				specWarnBlueBeamLFR:Show()
+			else
+				specWarnBlueBeam:Show()
+			end
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(target, 6)--Square
-			lastBlue = target
 		end
+		self:Schedule(0.5, warnBeam)
 	elseif msg:find("spell:134123") then--Infrared Light (red)
 		local target = DBM:GetFullNameByShortName(target)
-		warnRedBeam:Show(target)
+		lastRed = target
 		if target == UnitName("player") then
 			specWarnRedBeam:Show()
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(target, 7)--Cross
-			lastRed = target
 		end
 	elseif msg:find("spell:134124") then--useful only on heroic and LFR since there are only amber adds in them. Normal 10 and normal 25 do not have amber adds (why LFR does is beyond me)
 		local target = DBM:GetFullNameByShortName(target)
+		lastYellow = target
 		totalFogs = 3
 		timerForceOfWillCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -273,8 +298,6 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			end
 		end
 		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
---			local target = DBM:GetFullNameByShortName(target)
-			warnYellowBeam:Show(target)
 			if target == UnitName("player") then
 				specWarnYellowBeam:Show()
 			end
@@ -303,11 +326,12 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(133795))
-			DBM.InfoFrame:Show(5, "playerdebuffstacks", 133798, 133798, 4)
+			DBM.InfoFrame:Show(5, "playerdebuffstacks", 133798)
 		end
 		self:Schedule(18, HideInfoFrame)
 	elseif msg:find("spell:134169") then
 		lingeringGazeCD = 46 -- Return to Original CD.
+		timerForceOfWillCD:Cancel()
 		timerLingeringGazeCD:Cancel()
 		timerLifeDrainCD:Cancel()
 		warnDisintegrationBeam:Show()
@@ -315,9 +339,6 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerDisintegrationBeam:Start()
 		self:Unschedule(HideInfoFrame)
 		self:Schedule(65, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
-		if self.Options.InfoFrame then
-			DBM.InfoFrame:Hide()
-		end
 	end
 end
 
@@ -331,16 +352,18 @@ function mod:UNIT_AURA(uId)
 --		print("DBM Debug - DBM:GetUnitFullName: "..DBM:GetUnitFullName(uId))
 --		print("DBM Debug - lastBlue: "..lastBlue)
 		lastBlue = name
-		warnBlueBeam:Show(name)
 		if name == UnitName("player") then
-			specWarnBlueBeam:Show()
+			if self:IsDifficulty("lfr25") and self.Options.specWarnBlueBeam then
+				specWarnBlueBeamLFR:Show()
+			else
+				specWarnBlueBeam:Show()
+			end
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(name, 6)--Square
 		end
 	elseif UnitDebuff(uId, redTracking) and lastRed ~= name then
 		lastRed = name
-		warnRedBeam:Show(name)
 		if name == UnitName("player") then
 			specWarnRedBeam:Show()
 		end
@@ -357,13 +380,14 @@ function mod:UNIT_DIED(args)
 		if totalFogs >= 1 then
 			warnAddsLeft:Show(totalFogs)
 		else--No adds left, force ability is re-enabled
+			lastRed = nil
+			lastBlue = nil
+			lastYellow = nil
 			timerObliterateCD:Cancel()
 			timerForceOfWillCD:Start()
 			if self.Options.SetIconRays and lastRed then
 				self:SetIcon(lastRed, 0)
 				self:SetIcon(lastBlue, 0)
-				lastRed = nil
-				lastBlue = nil
 			end
 		end
 	elseif cid == 69051 then--Amber Fog
@@ -374,13 +398,14 @@ function mod:UNIT_DIED(args)
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 				warnAddsLeft:Show(totalFogs)
 			else--No adds left, force ability is re-enabled
+				lastRed = nil
+				lastBlue = nil
+				lastYellow = nil
 				timerObliterateCD:Cancel()
 				timerForceOfWillCD:Start()
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
 					self:SetIcon(lastBlue, 0)
-					lastRed = nil
-					lastBlue = nil
 				end
 			end
 		end
@@ -392,13 +417,14 @@ function mod:UNIT_DIED(args)
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 				warnAddsLeft:Show(totalFogs)
 			else--No adds left, force ability is re-enabled
+				lastRed = nil
+				lastBlue = nil
+				lastYellow = nil
 				timerObliterateCD:Cancel()
 				timerForceOfWillCD:Start()
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
 					self:SetIcon(lastBlue, 0)
-					lastRed = nil
-					lastBlue = nil
 				end
 			end
 		end
