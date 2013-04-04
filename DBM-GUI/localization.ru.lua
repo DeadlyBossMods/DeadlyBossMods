@@ -45,6 +45,7 @@ L.IconsInUse				= "Используемые метки"
 L.BossStatistics			= "Статистика босса"
 L.Statistic_Kills			= "Убийства:"
 L.Statistic_Wipes			= "Поражения:"
+L.Statistic_Incompletes		= "Не завершено:"
 L.Statistic_BestKill		= "Лучший бой:"
 
 -- Tab: General Options
