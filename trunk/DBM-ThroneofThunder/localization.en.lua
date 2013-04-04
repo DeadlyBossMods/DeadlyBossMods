@@ -90,7 +90,12 @@ L:SetMiscLocalization({
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetTimerLocalization({
+	timerBreathsCD			= "Next Breath"
+})
+
 L:SetOptionLocalization({
+	timerBreaths			= "Show timer for next breath",
 	SetIconOnCinders		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
 	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889)
 })
