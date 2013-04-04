@@ -2886,7 +2886,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.combatInfo.killMobs[i] = true
 			end
 		end
-		self:Schedule(3, DBM.StopLogging)--small delay to catch kill/died combatlog events
+		self:Schedule(4, DBM.StopLogging)--small delay to catch kill/died combatlog events
 		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		end
