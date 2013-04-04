@@ -164,7 +164,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		local target = DBM:GetFullNameByShortName(target)
 		warnThrow:Show(target)
 		timerStormCD:Start()
-		self:Schedule(57.5, checkWaterStorm)--check before 3 sec.
+		self:Schedule(55.5, checkWaterStorm)--check before 5 sec.
 		if target == UnitName("player") then
 			specWarnThrow:Show()
 		else

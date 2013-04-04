@@ -11,7 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "Предупреждать заранее о $spell:137313, если вы стоите в $spell:138470",
+	specWarnWaterMove	= "Спец-предупреждение, если вы стоите в $spell:138470\n(В случае, если скоро $spell:137313 или спадает дебафф $spell:138732)",
 	RangeFrame			= "Показывать окно проверки дистанции"
 })
 
@@ -72,7 +72,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "Спец-предупреждение, когда на Вас нет дебаффа $spell:137633",
 	InfoFrame				= "Информационное окно для игроков без $spell:137633",
-	SetIconOnTurtles		= "Устанавливать метки на $journal:7129 \n(Может быть не надежно, если помощник более чем у 1 человека)"
+	SetIconOnTurtles		= "Устанавливать метки на $journal:7129",
+	ClearIconOnTurtles		= "Убирать метки с $journal:7129, когда активируется $spell:133971"
 })
 
 L:SetMiscLocalization({
@@ -144,8 +145,15 @@ L:SetMiscLocalization({
 ----------------
 L= DBM:GetModLocalization(820)
 
+L:SetWarningLocalization({
+	warnDebuffCount				= "Слишком много мутаций: % хороших и % плохих",
+	specWarnFullyMutatedFaded	= "%s спала"
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "Показывать окно проверки дистанции (5/2 м)"
+	warnDebuffCount				= "Показывать предупреждения о числе дебаффов, когда Вы поглощаете слишком много луж",
+	specWarnFullyMutatedFaded	= "Спец-предупреждение, когда спала $spell:140546",
+	RangeFrame					= "Показывать окно проверки дистанции (5/2 м)"
 })
 
 -----------------
