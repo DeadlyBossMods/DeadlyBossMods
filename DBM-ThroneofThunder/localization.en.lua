@@ -136,6 +136,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
+	warnBeamNormal				= "Beam targets - Red : >%s<, Blue >%s<",
+	warnBeamHeroic				= "Beam targets - Red : >%s<, Blue >%s<, Yellow >%s<",
 	warnAddsLeft				= "Fogs remaining: %d",
 	specWarnBlueBeam			= "Blue Beam on you - DO NOT MOVE!!",
 	specWarnFogRevealed			= "%s revealed!",
@@ -143,6 +145,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	warnBeam					= "Announce beam targets",
 	warnAddsLeft				= "Announce how many Fogs remain",
 	specWarnFogRevealed			= "Show special warning when a fog is revealed",
 	specWarnBlueBeam			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format(139202),
