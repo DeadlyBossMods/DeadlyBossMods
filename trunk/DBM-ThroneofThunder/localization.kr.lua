@@ -122,8 +122,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
-	warnBeamNormal				= "광선 대상 - 적색 : >%s<, 청색 >%s<",
-	warnBeamHeroic				= "광선 대상 - 적색 : >%s<, 청색 >%s<, 황색 >%s<",
+	warnBeamNormal				= "광선 - 적색 : >%s<, 청색 : >%s<",
+	warnBeamHeroic				= "광선 - 적색 : >%s<, 청색 : >%s<, 황색 : >%s<",
 	warnAddsLeft				= "안개도깨비 남음 : %d",
 	specWarnBlueBeam			= "당신에게 청색 광선 - 절대 이동 금지!",
 	specWarnFogRevealed			= "%s 드러남!",
@@ -136,10 +136,6 @@ L:SetOptionLocalization({
 	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
 	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
 	InfoFrame					= "$spell:133795 중첩 정보 창 보기"
-})
-
-L:SetMiscLocalization({
-	Eye		= "눈"
 })
 
 ----------------

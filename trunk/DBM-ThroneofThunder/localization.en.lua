@@ -136,8 +136,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
-	warnBeamNormal				= "Beam targets - Red : >%s<, Blue >%s<",
-	warnBeamHeroic				= "Beam targets - Red : >%s<, Blue >%s<, Yellow >%s<",
+	warnBeamNormal				= "Beam - Red : >%s<, Blue : >%s<",
+	warnBeamHeroic				= "Beam - Red : >%s<, Blue : >%s<, Yellow : >%s<",
 	warnAddsLeft				= "Fogs remaining: %d",
 	specWarnBlueBeam			= "Blue Beam on you - DO NOT MOVE!!",
 	specWarnFogRevealed			= "%s revealed!",
@@ -154,10 +154,6 @@ L:SetOptionLocalization({
 	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891"),
 	SetIconLifeDrain			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(133795),
 	InfoFrame					= "Show info frame for $spell:133795 stacks"
-})
-
-L:SetMiscLocalization({
-	Eye		= "Eye"--What to localize here, "<72.0 20:04:19> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Bright  Light reveals an Amber Fog!#Amber Fog###--------->Yellow Eye<---------##0#0##0#309#nil#0#false#false", -- [13413]
 })
 
 ----------------

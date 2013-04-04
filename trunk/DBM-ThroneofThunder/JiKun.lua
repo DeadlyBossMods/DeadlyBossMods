@@ -54,7 +54,7 @@ local flockName = EJ_GetSectionInfo(7348)
 function mod:OnCombatStart(delay)
 	flockC = 0
 	trippleNest = false
-	if self:IsDifficulty("lfr25") then
+	if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 		timerQuillsCD:Start(60-delay)
 	else
 		timerQuillsCD:Start(42.5-delay)
@@ -112,8 +112,8 @@ function mod:SPELL_CAST_START(args)
 		warnQuills:Show()
 		specWarnQuills:Show()
 		timerQuills:Start()
-		if self:IsDifficulty("lfr25") then
-			timerQuillsCD:Start(81)--exactly 81 sec in lfr
+		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
+			timerQuillsCD:Start(81)--81 sec normal, sometimes 91s?
 		else
 			timerQuillsCD:Start()
 		end
