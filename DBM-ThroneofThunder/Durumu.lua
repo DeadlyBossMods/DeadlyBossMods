@@ -84,8 +84,14 @@ local lastBlue = nil
 local lastYellow = nil
 local spectrumStarted = false
 local lifeDrained = false
+local lfrCrimsonFogRevealed = false
+local lfrAmberFogRevealed = false
+local lfrEngaged = false
 local blueTracking = GetSpellInfo(139202)
 local redTracking = GetSpellInfo(139204)
+local crimsonFog = EJ_GetSectionInfo(6892)
+local amberFog = EJ_GetSectionInfo(6895)
+local azureFog = EJ_GetSectionInfo(6898)
 
 local function warnLingeringGazeTargets()
 	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
@@ -93,7 +99,7 @@ local function warnLingeringGazeTargets()
 end
 
 local function warnBeam()
-	if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
+	if mod:IsDifficulty("heroic10", "heroic25", "lfr25") then
 		warnBeamHeroic:Show(lastRed, lastBlue, lastYellow)
 	else
 		warnBeamNormal:Show(lastRed, lastBlue)
@@ -111,7 +117,7 @@ local function BeamEnded()
 	end
 	if mod:IsDifficulty("lfr25") then
 		timerLightSpectrumCD:Start(55)
-		timerDisintegrationBeamCD:Start(152)--unconfirmed
+		timerDisintegrationBeamCD:Start(176)
 	else
 		timerLightSpectrumCD:Start(32)
 		timerDisintegrationBeamCD:Start()
@@ -132,6 +138,8 @@ function mod:OnCombatStart(delay)
 	lastYellow = nil
 	spectrumStarted = false
 	lifeDrained = false
+	lfrCrimsonFogRevealed = false
+	lfrAmberFogRevealed = false
 	table.wipe(lingeringGazeTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
@@ -141,6 +149,7 @@ function mod:OnCombatStart(delay)
 		timerIceWallCD:Start(128-delay)
 	end
 	if mod:IsDifficulty("lfr25") then
+		lfrEngaged = true
 		timerLifeDrainCD:Start(151)
 		timerDisintegrationBeamCD:Start(161-delay)
 	else
@@ -153,6 +162,7 @@ function mod:OnCombatEnd()
 --[[	if self.Options.ArrowOnBeam then
 		DBM.Arrow:Hide()
 	end--]]
+	lfrEngaged = false
 	if self.Options.SetIconRays and lastRed then
 		self:SetIcon(lastRed, 0)
 		self:SetIcon(lastBlue, 0)
@@ -168,6 +178,9 @@ function mod:SPELL_CAST_START(args)
 		timerHardStareCD:Start()
 	elseif args.spellId == 138467 then
 		timerLingeringGazeCD:Start(lingeringGazeCD)
+	elseif args.spellId == 136154 and self:IsDifficulty("lfr25") and lfrCrimsonFogRevealed then--Only use in lfr.
+		lfrCrimsonFogRevealed = true
+		specWarnFogRevealed:Show(crimsonFog)
 	elseif args.spellId == 134587 and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
 	end
@@ -220,12 +233,22 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
+	if spellId == 134044 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then
+		specWarnLingeringGazeMove:Show()
+	end
+	if not lfrEngaged or lfrAmberFogRevealed then return end -- To reduce cpu usage normal and heroic.
+	if destName == amberFog and not lfrAmberFogRevealed then -- Lfr Amger fog do not have CLEU, no unit events and no emote.
+		lfrAmberFogRevealed = true
+		specWarnFogRevealed:Show(amberFog)
+	end
+end
+
+function mod:SPELL_MISSED(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 134044 and destGUID == UnitGUID("player") and self:AntiSpam(3, 1) then
 		specWarnLingeringGazeMove:Show()
 	end
 end
-mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 134755 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
@@ -290,6 +313,8 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		local target = DBM:GetFullNameByShortName(target)
 		lastYellow = target
 		totalFogs = 3
+		lfrCrimsonFogRevealed = false
+		lfrAmberFogRevealed = false
 		timerForceOfWillCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerObliterateCD:Start()
@@ -305,11 +330,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		if self.Options.SetIconRays then
 			self:SetIcon(target, 1, 10)--Star (auto remove after 10 seconds because this beam untethers one initial person positions it.
 		end
-	--"<55.5 20:06:45> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Infrared Light reveals a Crimson Fog!#Crimson Fog###Red Eye##0#0##0#218#nil#0#false#false", -- [10446]
-	--"<72.0 20:04:19> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Bright  Light reveals an Amber Fog!#Amber Fog###Yellow Eye##0#0##0#309#nil#0#false#false", -- [13413]
-	--"<102.2 20:07:32> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#The Blue Rays reveal an Azure Fog!#Azure Fog###Blue Eye##0#0##0#225#nil#0#false#false", -- [20262]
-	--Seems the easiest way to localize this is to just scan for npc with "eye" in it and npc for mobname in the announce. Better than localizing 3 msg variations (one of which has a typo that may get fixed)
-	elseif target:find(L.Eye) then--Untested, but should work if I don't have args backwards. Looks like Fog name is npc and target is revealing eye
+	elseif npc == crimsonFog or npc == amberFog or npc == azureFog then
 		specWarnFogRevealed:Show(npc)
 	elseif msg:find("spell:133795") then
 		local target = DBM:GetFullNameByShortName(target)
