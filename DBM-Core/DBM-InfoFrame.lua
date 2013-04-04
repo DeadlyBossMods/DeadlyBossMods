@@ -582,6 +582,32 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 	onUpdate(frame, 0)
 end
 
+function infoFrame:Update(event)
+	if event == "health" then
+		updateHealth()
+	elseif event == "playerpower" then
+		updatePlayerPower()
+	elseif event == "enemypower" then
+		updateEnemyPower()
+	elseif event == "playerbuff" then
+		updatePlayerBuffs()
+	elseif event == "playergooddebuff" then
+		updateGoodPlayerDebuffs()
+	elseif event == "playerbaddebuff" then
+		updateBadPlayerDebuffs()
+	elseif event == "playeraggro" then
+		updatePlayerAggro()
+	elseif event == "playerbuffstacks" then
+		updatePlayerBuffStacks()
+	elseif event == "playerdebuffstacks" then
+		updatePlayerDebuffStacks()
+	elseif event == "playertargets" then
+		updatePlayerTargets()
+	else
+		error("DBM-InfoFrame: Unsupported event", 2)
+	end
+end
+
 function infoFrame:Hide()
 	table.wipe(lines)
 	table.wipe(sortedLines)
