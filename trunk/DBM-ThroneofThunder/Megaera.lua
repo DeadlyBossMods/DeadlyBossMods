@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(68065, 70212, 70235, 70247)--flaming 70212. Frozen 70235, Venomous 70247
 mod:SetMainBossID(68065)
 mod:SetModelID(47414)--Hydra Fire Head, 47415 Frost Head, 47416 Poison Head
-mod:SetUsedIcons(7, 6)
+mod:SetUsedIcons(7, 6, 4, 2)
 
 mod:RegisterCombat("combat")
 
@@ -78,6 +78,8 @@ local venomBehind = 0
 local iceBehind = 0
 local arcaneBehind = 0
 local rampageCast = 0
+local cinderIcon = 7
+local iceIcon = 6
 local activeHeadGUIDS = {}
 
 local function isTank(unit)
@@ -117,6 +119,8 @@ function mod:OnCombatStart(delay)
 	fireBehind = 1
 	venomBehind = 0
 	iceBehind = 0
+	cinderIcon = 7
+	iceIcon = 6
 --	timerCinderCD:Start(42)--Debuff application, not cast (TODO, check to see if heroic is still 19 seconds)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
@@ -199,7 +203,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellCinders:Yell()
 		end
 		if self.Options.SetIconOnCinders then
-			self:SetIcon(args.destName, 7)
+			self:SetIcon(args.destName, cinderIcon)
+			if cinderIcon == 7 then--Alternate cinder icons because you can have two at once in later fight.
+				cinderIcon = 2--orange is closest match to red for a fire like color
+			else
+				cinderIcon = 7
+			end
 		end
 	end
 end
@@ -359,7 +368,12 @@ function mod:OnSync(msg, guid)
 		local target = DBM:GetFullPlayerNameByGUID(guid)
 		warnTorrentofIce:Show(target)
 		if self.Options.SetIconOnTorrentofIce then
-			self:SetIcon(target, 6, 8)--do not have cleu, so use scheduler.
+			self:SetIcon(target, iceIcon, 8)--do not have cleu, so use scheduler.
+			if iceIcon == 6 then--Alternate cinder icons because you can have two at once in later fight.
+				iceIcon = 4--green is closest match to blue for a cold like color
+			else
+				iceIcon = 6
+			end
 		end
 	end
 end
