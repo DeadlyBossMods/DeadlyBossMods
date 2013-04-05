@@ -85,6 +85,14 @@ L:SetMiscLocalization({
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetTimerLocalization({
+	timerBreathsCD			= "Nächster Atem"
+})
+
+L:SetOptionLocalization({
+	timerBreaths			= "Zeige Zeit bis nächster Atem\n($spell:139843 / $spell:137731 / $spell:139840 / $spell:139993)",
+})
+
 L:SetMiscLocalization({
 	rampageEnds	= "Megaeras Wut lässt nach."
 })
@@ -96,7 +104,8 @@ L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
 	warnFlock		= "%s - %s (%s)",
-	specWarnFlock	= "%s - %s (%s)"
+	specWarnFlock	= "%s - %s (%s)",
+	specWarnBigBird	= "Nestwächter %s"
 })
 
 L:SetTimerLocalization({
@@ -114,7 +123,13 @@ L:SetMiscLocalization({
 	Lower			= "Unten",
 	UpperAndLower	= "Oben & Unten",
 	TrippleD		= "Dreifach (2xUnten)",
-	TrippleU		= "Dreifach (2xOben)"
+	TrippleU		= "Dreifach (2xOben)",
+	SouthWest		= "SW",
+	SouthEast		= "SO",
+	NorthWest		= "NW",
+	NorthEast		= "NO",
+	West			= "W",
+	Middle			= "Mitte"
 })
 
 --------------------------
@@ -123,6 +138,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
+	warnBeamNormal				= "Strahlen - |cffff0000Rot|r : >%s<, |cff0000ffBlau|r : >%s<",
+	warnBeamHeroic				= "Strahlen - |cffff0000Rot|r : >%s<, |cff0000ffBlau|r : >%s<, |cffffff00Gelb|r : >%s<",
 	warnAddsLeft				= "Nebel verbleibend: %d",
 	specWarnBlueBeam			= "Blaue Strahlen auf dir - BLEIB STEHEN!",
 	specWarnFogRevealed			= "%s offenbart!",
@@ -130,14 +147,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	warnBeam					= "Verkünde Ziele der Farbstrahlen",
 	warnAddsLeft				= "Verkünde die Anzahl der verbleibenden Nebel",
 	specWarnFogRevealed			= "Zeige Spezialwarnung, wenn ein Nebel offenbart wird",
 	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung",
 	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel"
-})
-
-L:SetMiscLocalization({
-	Eye		= "Auge" --needs to be verified (guessed)
 })
 
 ----------------
@@ -213,7 +227,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	DuskPhase		= "Lu'lin! Lend me your strength!"--translate (trigger)
+	DuskPhase		= "Lu'lin, leiht mir Eure Kraft!"--needs to be verified (wowhead-captured translation)
 })
 
 --------------
