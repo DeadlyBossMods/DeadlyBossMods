@@ -168,7 +168,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnArcticFreeze:Show(args.amount)
 				end
 			end
-			if not self.Options.timerBreathsCD then return end
+			if not self.Options.timerBreaths then return end
 			if rampageCast == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
 				timerArcticFreezeCD:Start()
 			else
@@ -184,7 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnIgniteFlesh:Show(args.amount)
 				end
 			end
-			if not self.Options.timerBreathsCD then return end
+			if not self.Options.timerBreaths then return end
 			timerBreathsCD:Start()
 		end
 	elseif args.spellId == 139840 then
@@ -196,7 +196,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnRotArmor:Show(args.amount)
 				end
 			end
-			if not self.Options.timerBreathsCD then return end
+			if not self.Options.timerBreaths then return end
 			if rampageCast == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
 				timerRotArmorCD:Start()
 			else
@@ -212,7 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 					specWarnArcaneDiffusion:Show(args.amount)
 				end
 			end
-			if not self.Options.timerBreathsCD then return end
+			if not self.Options.timerBreaths then return end
 			timerBreathsCD:Start()
 		end
 	elseif args.spellId == 139822 then
@@ -271,7 +271,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		specWarnRampage:Show(rampageCast)
 		timerRampage:Start()
 	elseif msg == L.rampageEnds or msg:find(L.rampageEnds) then
-		if self.Options.timerBreathsCD then
+		if self.Options.timerBreaths then
 			timerBreathsCD:Start(10)
 		end
 		--timers below may need adjusting by 1-2 seconds as I had to substitute last rampage SPELL_DAMAGE event for rampage ends emote when i reg expressioned these timers on WoL
