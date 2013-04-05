@@ -164,15 +164,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		warnFlock:Schedule(0.5, messageText, flockName, flockText)
 		specWarnFlock:Schedule(0.5, messageText, flockName, flockText)
 		--10N/10H/LFR: L, L, L, U, U, U (Repeating)
-		if self:IsDifficulty("normal10") then
-			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
-				timerFlockCD:Show(40, flockC+1, L.Lower)
-			elseif flockC == 3 or flockC == 4 or flockC == 5 or flockC == 9 or flockC == 10 or flockC == 11 or flockC == 15 or flockC == 16 or flockC == 17 or flockC == 21 or flockC == 22 or flockC == 23 or flockC == 27 or flockC == 28 or flockC == 29 or flockC == 33 or flockC == 34 or flockC == 35 then--Upper is next
-				timerFlockCD:Show(40, flockC+1, L.Upper)
-			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
-				timerFlockCD:Show(40, flockC+1, DBM_CORE_UNKNOWN)
-			end
-		elseif self:IsDifficulty("heroic10", "lfr25") then--LFR is same as 10 heroic
+		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
 				timerFlockCD:Show(40, flockC+1, L.Lower)
 			elseif flockC == 3 or flockC == 4 or flockC == 5 or flockC == 9 or flockC == 10 or flockC == 11 or flockC == 15 or flockC == 16 or flockC == 17 or flockC == 21 or flockC == 22 or flockC == 23 or flockC == 27 or flockC == 28 or flockC == 29 or flockC == 33 or flockC == 34 or flockC == 35 then--Upper is next
@@ -210,7 +202,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 		end
 		lastFlock = GetTime()
-		if self:IsDifficulty("heroic10") and flockC % 2 == 0 or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12 or flockC == 23) then--TODO, nest 12 is only one that's an upper, all others on 25H are lower.
+		if self:IsDifficulty("heroic10") and (flockC == 2 or flockC == 4 or flockC == 8 or flockC == 12 or flockC == 14) or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12 or flockC == 23) then--TODO, nest 12 is only one that's an upper, all others on 25H are lower.
 			specWarnBigBird:Show()
 		end
 	end

@@ -81,8 +81,10 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerIonizationCD:Start(60-delay)
 		countdownIonization:Start(-delay)
+		berserkTimer:Start(360-delay)
+	else
+		berserkTimer:Start(-delay)
 	end
-	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
