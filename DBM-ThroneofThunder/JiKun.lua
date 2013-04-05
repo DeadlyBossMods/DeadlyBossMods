@@ -202,7 +202,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 		end
 		lastFlock = GetTime()
-		if self:IsDifficulty("heroic10") and (flockC == 2 or flockC == 4 or flockC == 8 or flockC == 12 or flockC == 14) or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12 or flockC == 23) then--TODO, nest 12 is only one that's an upper, all others on 25H are lower.
+		if self:IsDifficulty("heroic10") and (flockC == 2 or flockC == 4 or flockC == 8 or flockC == 12 or flockC == 14) or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12 or flockC == 16 or flockC == 23) then--TODO, nest 12/16 are upper, all others on 25H are lower.
 			specWarnBigBird:Show()
 		end
 	end
