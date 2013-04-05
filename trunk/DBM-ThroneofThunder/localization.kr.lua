@@ -104,6 +104,7 @@ L= DBM:GetModLocalization(828)
 L:SetWarningLocalization({
 	warnFlock		= "%2$s : %1$s (%3$s)",
 	specWarnFlock	= "%2$s : %1$s (%3$s)",
+	specWarnBigBird	= "둥지 수호자 : %s"
 })
 
 L:SetTimerLocalization({
@@ -121,7 +122,13 @@ L:SetMiscLocalization({
 	Lower			= "아래쪽",
 	UpperAndLower	= "윗쪽 + 아래쪽",
 	TrippleD		= "윗쪽 + 아래쪽 + 아래쪽",
-	TrippleU		= "윗쪽 + 윗쪽 + 아래쪽"
+	TrippleU		= "윗쪽 + 윗쪽 + 아래쪽",
+	SouthWest		= "남서쪽",
+	SouthEast		= "남동쪽",
+	NorthWest		= "북서쪽",
+	NorthEast		= "북동쪽",
+	West			= "서쪽",
+	Middle			= "중앙"
 })
 
 --------------------------
