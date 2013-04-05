@@ -105,6 +105,7 @@ DBM.DefaultOptions = {
 	ShowBigBrotherOnCombatStart = false,
 	AutologBosses = false,
 	AdvancedAutologBosses = false,
+	LogOnlyRaidBosses = false,
 	UseMasterVolume = true,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
@@ -3081,6 +3082,8 @@ function DBM:OnMobKill(cId, synced)
 end
 
 function DBM:StartLogging(timer, checkFunc)
+	local difficulty = self:GetCurrentInstanceDifficulty()
+	if DBM.Options.LogOnlyRaidBosses and difficulty ~= "normal10" and difficulty ~= "normal25" and difficulty ~= "heroic10" and difficulty ~= "heroic25" then return end
 	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
 		self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
 		LoggingCombat(1)
