@@ -55,7 +55,7 @@ local specWarnTorrentofIce		= mod:NewSpecialWarningMove(139909)--Ice left on gro
 local specWarnNetherTear		= mod:NewSpecialWarningSwitch("ej7816", mod:IsDps())
 
 local timerRampage				= mod:NewBuffActiveTimer(21, 139458)
-mod:AddBoolOption("timerBreaths", mod:IsTank(), "timer")--Better to have one option for breaths than 4
+mod:AddBoolOption("timerBreaths", mod:IsTank() or mod:IsHealer(), "timer")--Better to have one option for breaths than 4
 local timerArcticFreezeCD		= mod:NewCDTimer(16, 139843, nil, nil, false)--We keep timers for artic and freeze for engage, since the breaths might be out of sync until after first rampage
 local timerRotArmorCD			= mod:NewCDTimer(16, 139840, nil, nil, false)--^
 local timerBreathsCD			= mod:NewTimer(16, "timerBreathsCD", 137731, nil, false)--Rest of breaths after first rampage consolidated into one timer instead of 2
@@ -68,8 +68,8 @@ local timerTorrentofIceCD		= mod:NewCDTimer(25, 139866, nil, not mod:IsTank())--
 --local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850, nil, false)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Also seems not possible to separate heads on this one. In my log every cast came from same head GUID
 local timerNetherTearCD			= mod:NewCDTimer(25, 140138)--Heroic. Also either 25 or 28. On by default since these require more pre planning than fire and ice.
 
-local soundTorrentofIce			= mod:NewSound(139889)
 local soundCinders				= mod:NewSound(139822)
+local soundTorrentofIce			= mod:NewSound(139889)
 
 mod:AddBoolOption("SetIconOnCinders", true)
 mod:AddBoolOption("SetIconOnTorrentofIce", true)
