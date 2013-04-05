@@ -138,6 +138,93 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
+--[[25H Nest locations
+Nest1: 1, Lower NE
+
+Nest2: 2, Lower SE
+
+Nest3: 3, Lower SW
+
+Nest4: 4, Lower W
+Nest5: 1, Upper NE
+
+Nest6: 5, Lower NW
+Nest7: 2, Upper SE
+
+Nest8: 3, Upper SW
+
+Nest9: 1, Upper NE
+Nest10: 4, Lower W
+
+Nest11: 2, Lower SE
+Nest12: 5, Upper NW
+
+Nest13: 3, Lower SW
+
+Nest14: 1, Upper NE
+Nest15: 4, Lower W
+
+Nest16: 2, Upper SE
+Nest17: 5, Lower NW
+
+Nest18: 1, Upper NE
+Nest19: 3, Lower SW
+
+Nest20: 2, Upper SE
+Nest21: 4, Lower W
+
+Nest22: 1, Upper NE
+Nest23: 3, Lower SW
+Nest24: 5, Upper NW
+
+Nest25: 2, Upper SE
+Nest26: 4, Lower W
+
+Nest27: 1, Lower NE
+Nest28: 3, Upper SW
+Nest29: 5, Lower NW
+
+Nest30: 2, Upper SE
+Nest31: 4, Lower W
+Nest32: 5, Upper NW
+
+Nest33: 3, Lower SW
+Nest34: 1, Upper NE
+
+Nest35: 4, Lower W
+Nest36: 2, Upper SE
+Nest37: 5, Lower NW
+--]]
+--[[10H
+Nest1: 1, Lower NE
+Nest2: 2, Lower SE
+Nest3: 3, Lower SW
+Nest4: 4, Upper W
+Nest5: 5, Upper NW
+Nest6: 1, Upper NE
+Nest7: 2, Lower SE
+Nest8: 3, Lower SW
+Nest9: 1, Lower NE
+Nest10: 4, Upper W
+Nest11: 2, Upper SE
+Nest12: 5, Upper NW
+Nest13: 3, Lower SW
+Nest14: 4, Lower W
+Nest15 5, Lower NW
+Nest16: 1, Upper NE
+Nest17: 2, Upper SE
+Nest18: 1, Upper NE
+Nest19: 3, Lower SW
+Nest20: 2, Lower SE
+Nest21: 1, Lower NE
+Nest22: 3, Upper SW
+Nest23: 2, Upper SE
+Nest24: 4, Upper W
+Nest25: 5, Lower NW
+Nest26: 3, Lower SW
+Nest27: 1, Lower NE
+Nest28: 4, Upper W
+--]]
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
 		flockC = flockC + 1
@@ -173,8 +260,18 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 				timerFlockCD:Show(40, flockC+1, DBM_CORE_UNKNOWN)
 			end
 			--TODO, find out locations for these to improve the warnings.
-			if self:IsDifficulty("heroic10") and (flockC == 2 or flockC == 4 or flockC == 8 or flockC == 12 or flockC == 14) then
-				specWarnBigBird:Show("")
+			if self:IsDifficulty("heroic10") then
+				if flockC == 2 then
+					specWarnBigBird:Show(" ("..L.Lower..L.SouthEast..")")
+				elseif flockC == 4 then
+					specWarnBigBird:Show(" ("..L.Upper..L.West..")")
+				elseif flockC == 8 then
+					specWarnBigBird:Show(" ("..L.Lower..L.SouthWest..")")
+				elseif flockC == 12 then
+					specWarnBigBird:Show(" ("..L.Upper..L.NorthWest..")")
+				elseif flockC == 14 then
+					specWarnBigBird:Show(" ("..L.Lower..L.West..")")
+				end
 			end
 		--25N: Lower (1), Lower (2), Lower (3), Lower (4), Lower & Upper (5+6), Upper (7), Upper (8), Lower & Upper (9+10), Lower & Upper (11+12), Lower (13), Lower (14), Lower & Upper (15+16), Upper (17), Lower & Upper (18+19), Lower & Upper (20+21), Lower & Upper (22+23), Lower (24), Lower & Upper (25+26), Lower & Upper (27+28)
 		elseif self:IsDifficulty("normal25") then
@@ -203,15 +300,15 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 			end
 			if flockC == 2 then
-				specWarnBigBird:Show(" ("..Lower..SouthEast..")")
+				specWarnBigBird:Show(" ("..L.Lower..L.SouthEast..")")
 			elseif flockC == 6 then
-				specWarnBigBird:Show(" ("..Lower..NorthWest..")")
+				specWarnBigBird:Show(" ("..L.Lower..L.NorthWest..")")
 			elseif flockC == 23 then
-				specWarnBigBird:Show(" ("..Lower..SouthWest..")")
+				specWarnBigBird:Show(" ("..L.Lower..L.SouthWest..")")
 			elseif flockC == 12 then
-				specWarnBigBird:Show(" ("..Upper..NorthWest..")")
+				specWarnBigBird:Show(" ("..L.Upper..L.NorthWest..")")
 			elseif flockC == 16 then
-				specWarnBigBird:Show(" ("..Upper..SouthEast..")")
+				specWarnBigBird:Show(" ("..L.Upper..L.SouthEast..")")
 			end
 		else--Shouldn't be an else, but just failsafe code
 			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
