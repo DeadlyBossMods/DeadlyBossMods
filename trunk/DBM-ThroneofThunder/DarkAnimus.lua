@@ -46,7 +46,7 @@ local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or
 local timerSiphonAnimaCD			= mod:NewNextTimer(30, 138644)
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
---local timerInterruptingJoltCD		= mod:NewCDTimer(24, 138763)--Still need a log where he actually reaches 75 anima, my guild kills too fast
+local timerInterruptingJoltCD		= mod:NewCDTimer(23, 138763)--seems 23~24 normal and lfr.
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
@@ -76,10 +76,10 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 136954 then
 		self:BossTargetScanner(69427, "AnimaRingTarget", 0.02, 12)
 		timerAnimaRingCD:Start()
-	elseif args:IsSpellID(138763, 139867, 139869) then--Normal version is 2.2 sec cast. Heroic is 1.4 second cast (thus why it has different spellid)
+	elseif args:IsSpellID(138763, 139867, 139869) then--Normal version is 2.2 sec cast. Heroic is 1.4 second cast. LFR is 3.8 sec cast (thus why it has different spellid)
 		warnInterruptingJolt:Show()
 		specWarnInterruptingJolt:Show()
---		timerInterruptingJoltCD:Start()
+		timerInterruptingJoltCD:Start()
 	end
 end
 

@@ -35,7 +35,7 @@ local warnFusionSlash					= mod:NewSpellAnnounce(136478, 4, nil, mod:IsTank() or
 local warnLightningWhip					= mod:NewSpellAnnounce(136850, 3)
 local warnSummonBallLightning			= mod:NewSpellAnnounce(136543, 3)--This seems to be VERY important to spread for. It spawns an orb for every person who takes damage. MUST range 6 this.
 --Phase 3
-local warnViolentGaleWinds				= mod:NewSpellAnnounce(136869, 3)
+local warnViolentGaleWinds				= mod:NewSpellAnnounce(136889, 3)
 local warnElectricalShock				= mod:NewStackAnnounce(136914, 3, nil, mod:IsTank())
 
 --Conduits (All phases)
@@ -67,13 +67,15 @@ local timerBouncingBoltCD				= mod:NewCDTimer(40, 136361)
 local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually intermission only, but it fits best with conduits
 --Phase 1
 local timerDecapitateCD					= mod:NewCDTimer(50, 134912)--Cooldown with some variation. 50-57ish or so.
+local timerThunderstruck				= mod:NewCastTimer(4.8, 135095)--4 sec cast. + landing 0.8~1.3 sec.
 local timerThunderstruckCD				= mod:NewNextTimer(46, 135095)--Seems like an exact bar
 --Phase 2
 local timerFussionSlashCD				= mod:NewCDTimer(42.5, 136478)
 local timerLightningWhipCD				= mod:NewNextTimer(45.5, 136850)--Also an exact bar
 local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact on live, versus the variable it was on PTR
 --Phase 3
-local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136869)
+local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
+local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("OverchargeArrow")--On by default because the overcharge target is always pinned and unable to run away. You must always run to them, so everyone will want this arrow on
@@ -132,6 +134,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 135095 then
 		warnThunderstruck:Show()
 		specWarnThunderstruck:Show()
+		timerThunderstruck:Start()
 		if phase < 3 then
 			timerThunderstruckCD:Start()
 		else
@@ -432,6 +435,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 136869 and self:AntiSpam(2, 4) then--Violent Gale Winds
 		warnViolentGaleWinds:Show()
+		timerViolentGaleWinds:Start()
 		timerViolentGaleWindsCD:Start()
 	end
 end
