@@ -76,7 +76,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	WrongDebuff		= "%s 없음"
+	WrongDebuff				= "%s 없음"
 })
 
 -------------
@@ -84,8 +84,16 @@ L:SetMiscLocalization({
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetTimerLocalization({
+	timerBreathsCD			= "다음 숨결"
+})
+
+L:SetOptionLocalization({
+	timerBreaths			= "다음 숨결 바 표시"
+})
+
 L:SetMiscLocalization({
-	rampageEnds	= "분노가 가라앉습니다."
+	rampageEnds				= "분노가 가라앉습니다."
 })
 
 ------------
@@ -122,8 +130,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
-	warnBeamNormal				= "광선 - 적색 : >%s<, 청색 : >%s<",
-	warnBeamHeroic				= "광선 - 적색 : >%s<, 청색 : >%s<, 황색 : >%s<",
+	warnBeamNormal				= "광선 - |cffff0000적색|r : >%s<, |cff0000ff청색|r : >%s<",
+	warnBeamHeroic				= "광선 - |cffff0000적색|r : >%s<, |cff0000ff청색|r : >%s<, |cffffff00황색|r : >%s<",
 	warnAddsLeft				= "안개도깨비 남음 : %d",
 	specWarnBlueBeam			= "당신에게 청색 광선 - 절대 이동 금지!",
 	specWarnFogRevealed			= "%s 드러남!",
@@ -168,7 +176,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "구슬이 폭발합니다!"
+	Pull				= "구슬이 폭발합니다!"
 })
 
 --------------
@@ -236,7 +244,7 @@ L= DBM:GetModLocalization(831)
 L = DBM:GetModLocalization("ToTTrash")
 
 L:SetGeneralLocalization({
-	name =	"천둥의 왕좌 일반구간"
+	name = "천둥의 왕좌 일반구간"
 })
 
 L:SetOptionLocalization({

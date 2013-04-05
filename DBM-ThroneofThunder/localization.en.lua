@@ -141,8 +141,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
-	warnBeamNormal				= "Beam - Red : >%s<, Blue : >%s<",
-	warnBeamHeroic				= "Beam - Red : >%s<, Blue : >%s<, Yellow : >%s<",
+	warnBeamNormal				= "Beam - |cffff0000Red|r : >%s<, |cff0000ffBlue|r : >%s<",
+	warnBeamHeroic				= "Beam - |cffff0000Red|r : >%s<, |cff0000ffBlue|r : >%s<, |cffffff00Yellow|r : >%s<",
 	warnAddsLeft				= "Fogs remaining: %d",
 	specWarnBlueBeam			= "Blue Beam on you - DO NOT MOVE!!",
 	specWarnFogRevealed			= "%s revealed!",
