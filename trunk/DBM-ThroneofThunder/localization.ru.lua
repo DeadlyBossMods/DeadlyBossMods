@@ -112,7 +112,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "Показывать окно проверки дистанции (8 м) для $spell:138923"
+	RangeFrame		= "Показывать окно проверки дистанции (10 м) для $spell:138923"
 })
 
 L:SetMiscLocalization({

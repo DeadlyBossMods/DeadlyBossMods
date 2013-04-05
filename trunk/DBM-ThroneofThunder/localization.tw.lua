@@ -104,7 +104,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "為$spell:138923顯示距離框架(8碼)"
+	RangeFrame		= "為$spell:138923顯示距離框架(10碼)"
 })
 
 L:SetMiscLocalization({
