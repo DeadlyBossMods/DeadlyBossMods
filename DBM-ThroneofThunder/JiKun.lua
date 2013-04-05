@@ -151,7 +151,7 @@ Nest5: Upper NE
 Nest6: Lower NW
 Nest7: Upper SE
 
-Nest8: Upper SW
+Nest8: Upper Middle
 
 Nest9: Upper NE
 Nest10: Lower W
@@ -167,8 +167,8 @@ Nest15: Lower W
 Nest16: Upper SE
 Nest17: Lower NW
 
-Nest18: Upper NE
-Nest19: Lower SW
+Nest18: Lower NE
+Nest19: Upper Middle
 
 Nest20: Upper SE
 Nest21: Lower W
@@ -181,7 +181,7 @@ Nest25: Upper SE
 Nest26: Lower W
 
 Nest27: Lower NE
-Nest28: Upper SW
+Nest28: Upper Middle
 Nest29: Lower NW
 
 Nest30: Upper SE
