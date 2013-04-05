@@ -111,7 +111,8 @@ L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
 	warnFlock		= "%s %s (%s)",
-	specWarnFlock	= "%s %s (%s)"
+	specWarnFlock	= "%s %s (%s)",
+	specWarnBigBird	= "Nest Guardian %s"
 })
 
 L:SetTimerLocalization({
@@ -121,6 +122,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
 	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	specWarnBigBird	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7827"),
 	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
 	RangeFrame		= "Show range frame (8) for $spell:138923"
 })
@@ -132,7 +134,13 @@ L:SetMiscLocalization({
 	Lower			= "Lower",
 	UpperAndLower	= "Upper & Lower",
 	TrippleD		= "Tripple (2xDwn)",
-	TrippleU		= "Tripple (2xUp)"
+	TrippleU		= "Tripple (2xUp)",
+	SouthWest		= "SW",
+	SouthEast		= "SE",
+	NorthWest		= "NW",
+	NorthEast		= "NE",
+	West			= "W",
+	Middle			= "M"
 })
 
 --------------------------

@@ -30,7 +30,7 @@ local specWarnTalonRake		= mod:NewSpecialWarningStack(134366, mod:IsTank(), 2)--
 local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
 local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, 2)
 local specWarnFeedYoung		= mod:NewSpecialWarningSpell(137528)
-local specWarnBigBird		= mod:NewSpecialWarningSwitch("ej7827", mod:IsTank())
+local specWarnBigBird		= mod:NewSpecialWarning("specWarnBigBird", mod:IsTank())
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuills			= mod:NewBuffActiveTimer(10, 134380)
@@ -172,6 +172,10 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
 				timerFlockCD:Show(40, flockC+1, DBM_CORE_UNKNOWN)
 			end
+			--TODO, find out locations for these to improve the warnings.
+			if self:IsDifficulty("heroic10") and (flockC == 2 or flockC == 4 or flockC == 8 or flockC == 12 or flockC == 14) then
+				specWarnBigBird:Show("")
+			end
 		--25N: Lower (1), Lower (2), Lower (3), Lower (4), Lower & Upper (5+6), Upper (7), Upper (8), Lower & Upper (9+10), Lower & Upper (11+12), Lower (13), Lower (14), Lower & Upper (15+16), Upper (17), Lower & Upper (18+19), Lower & Upper (20+21), Lower & Upper (22+23), Lower (24), Lower & Upper (25+26), Lower & Upper (27+28)
 		elseif self:IsDifficulty("normal25") then
 			if flockC == 1 or flockC == 2 or flockC == 3 or flockC == 12 or flockC == 13 or flockC == 23 then--Lower is next
@@ -198,12 +202,20 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
 				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 			end
+			if flockC == 2 then
+				specWarnBigBird:Show(" ("..Lower..SouthEast..")")
+			elseif flockC == 6 then
+				specWarnBigBird:Show(" ("..Lower..NorthWest..")")
+			elseif flockC == 23 then
+				specWarnBigBird:Show(" ("..Lower..SouthWest..")")
+			elseif flockC == 12 then
+				specWarnBigBird:Show(" ("..Upper..NorthWest..")")
+			elseif flockC == 16 then
+				specWarnBigBird:Show(" ("..Upper..SouthEast..")")
+			end
 		else--Shouldn't be an else, but just failsafe code
 			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 		end
 		lastFlock = GetTime()
-		if self:IsDifficulty("heroic10") and (flockC == 2 or flockC == 4 or flockC == 8 or flockC == 12 or flockC == 14) or self:IsDifficulty("heroic25") and (flockC == 2 or flockC == 6 or flockC == 12 or flockC == 16 or flockC == 23) then--TODO, nest 12/16 are upper, all others on 25H are lower.
-			specWarnBigBird:Show()
-		end
 	end
 end
