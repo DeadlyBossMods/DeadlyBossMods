@@ -124,7 +124,7 @@ L:SetOptionLocalization({
 	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
 	specWarnBigBird	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7827"),
 	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
-	RangeFrame		= "Show range frame (8) for $spell:138923"
+	RangeFrame		= "Show range frame (10) for $spell:138923"
 })
 
 L:SetMiscLocalization({

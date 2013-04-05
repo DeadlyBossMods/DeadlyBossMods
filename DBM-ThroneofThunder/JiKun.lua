@@ -139,91 +139,91 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 --[[25H Nest locations
-Nest1: 1, Lower NE
+Nest1: Lower NE
 
-Nest2: 2, Lower SE
+Nest2: Lower SE
 
-Nest3: 3, Lower SW
+Nest3: Lower SW
 
-Nest4: 4, Lower W
-Nest5: 1, Upper NE
+Nest4: Lower W
+Nest5: Upper NE
 
-Nest6: 5, Lower NW
-Nest7: 2, Upper SE
+Nest6: Lower NW
+Nest7: Upper SE
 
-Nest8: 3, Upper SW
+Nest8: Upper SW
 
-Nest9: 1, Upper NE
-Nest10: 4, Lower W
+Nest9: Upper NE
+Nest10: Lower W
 
-Nest11: 2, Lower SE
-Nest12: 5, Upper NW
+Nest11: Lower SE
+Nest12: Upper NW
 
-Nest13: 3, Lower SW
+Nest13: Lower SW
 
-Nest14: 1, Upper NE
-Nest15: 4, Lower W
+Nest14: Upper NE
+Nest15: Lower W
 
-Nest16: 2, Upper SE
-Nest17: 5, Lower NW
+Nest16: Upper SE
+Nest17: Lower NW
 
-Nest18: 1, Upper NE
-Nest19: 3, Lower SW
+Nest18: Upper NE
+Nest19: Lower SW
 
-Nest20: 2, Upper SE
-Nest21: 4, Lower W
+Nest20: Upper SE
+Nest21: Lower W
 
-Nest22: 1, Upper NE
-Nest23: 3, Lower SW
-Nest24: 5, Upper NW
+Nest22: Upper NE
+Nest23: Lower SW
+Nest24: Upper NW
 
-Nest25: 2, Upper SE
-Nest26: 4, Lower W
+Nest25: Upper SE
+Nest26: Lower W
 
-Nest27: 1, Lower NE
-Nest28: 3, Upper SW
-Nest29: 5, Lower NW
+Nest27: Lower NE
+Nest28: Upper SW
+Nest29: Lower NW
 
-Nest30: 2, Upper SE
-Nest31: 4, Lower W
-Nest32: 5, Upper NW
+Nest30: Upper SE
+Nest31: Lower W
+Nest32: Upper NW
 
-Nest33: 3, Lower SW
-Nest34: 1, Upper NE
+Nest33: Lower SW
+Nest34: Upper NE
 
-Nest35: 4, Lower W
-Nest36: 2, Upper SE
-Nest37: 5, Lower NW
+Nest35: Lower W
+Nest36: Upper SE
+Nest37: Lower NW
 --]]
 --[[10H
-Nest1: 1, Lower NE
-Nest2: 2, Lower SE
-Nest3: 3, Lower SW
-Nest4: 4, Upper W
-Nest5: 5, Upper NW
-Nest6: 1, Upper NE
-Nest7: 2, Lower SE
-Nest8: 3, Lower SW
-Nest9: 1, Lower NE
-Nest10: 4, Upper W
-Nest11: 2, Upper SE
-Nest12: 5, Upper NW
-Nest13: 3, Lower SW
-Nest14: 4, Lower W
-Nest15 5, Lower NW
-Nest16: 1, Upper NE
-Nest17: 2, Upper SE
-Nest18: 1, Upper NE
-Nest19: 3, Lower SW
-Nest20: 2, Lower SE
-Nest21: 1, Lower NE
-Nest22: 3, Upper SW
-Nest23: 2, Upper SE
-Nest24: 4, Upper W
-Nest25: 5, Lower NW
-Nest26: 3, Lower SW
-Nest27: 1, Lower NE
-Nest28: 4, Upper W
+Nest1: Lower NE
+Nest2: Lower SE
+Nest3: Lower SW
+Nest4: Upper W
+Nest5: Upper NW
+Nest6: Upper NE
+Nest7: Lower SE
+Nest8: Lower SW
+Nest9: Lower NE
+Nest10: Upper W
+Nest11: Upper SE
+Nest12: Upper NW
+Nest13: Lower SW
+Nest14: Lower W
+Nest15: Lower NW
+Nest16: Upper NE
+Nest17: Upper SE
+Nest18: Upper NE
+Nest19: Lower SW
+Nest20: Lower SE
+Nest21: Lower NE
+Nest22: Upper SW
+Nest23: Upper SE
+Nest24: Upper W
+Nest25: Lower NW
+Nest26: Lower SW
+Nest27: Lower NE
+Nest28: Upper W
 --]]
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then

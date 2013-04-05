@@ -111,7 +111,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "$spell:138923 주문에 대한 거리 창 보기(8m)"
+	RangeFrame		= "$spell:138923 주문에 대한 거리 창 보기(10m)"
 })
 
 L:SetMiscLocalization({

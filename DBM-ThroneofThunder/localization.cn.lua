@@ -87,7 +87,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "Show range frame (8) for $spell:138923"
+	RangeFrame		= "Show range frame (10) for $spell:138923"
 })
 
 L:SetMiscLocalization({
