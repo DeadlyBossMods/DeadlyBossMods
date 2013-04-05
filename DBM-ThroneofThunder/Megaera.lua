@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"RAID_BOSS_WHISPER",
 	"UNIT_AURA",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
@@ -299,15 +298,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
-function mod:RAID_BOSS_WHISPER(msg)
-	if msg:find("spell:139866") then
-		specWarnTorrentofIceYou:Show()
-		yellTorrentofIce:Yell()
-		soundTorrentofIce:Play()
-		self:SendSync("IceTarget", UnitGUID("player"))
-	end
-end
-
 local function CheckHeads(GUID)
 	for i = 1, 5 do
 		if UnitExists("boss"..i) and not activeHeadGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
@@ -386,11 +376,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---TODO, check for an aura method instead?
---[[ UNCONFIRMED YET.
 function mod:UNIT_AURA(uId)
 	if UnitDebuff(uId, iceTorrent) then
-		print("ice Torrent detected")
 		local _, _, _, _, _, duration, expires = UnitDebuff(uId, iceTorrent)
 		if lastTorrent ~= expires then
 			lastTorrent = expires
@@ -400,6 +387,7 @@ function mod:UNIT_AURA(uId)
 				specWarnTorrentofIceYou:Show()
 				timerTorrentofIce:Start()
 				yellTorrentofIce:Yell()
+				self:SendSync("IceTarget", UnitGUID("player")) -- Remain sync stuff for older version.
 			end
 			if self.Options.SetIconOnTorrentofIce then
 				self:SetIcon(uId, iceIcon, 11)--do not have cleu, so use scheduler.
@@ -408,22 +396,6 @@ function mod:UNIT_AURA(uId)
 				else
 					iceIcon = 6
 				end
-			end
-		end
-	end
-end
-]]
-
-function mod:OnSync(msg, guid)
-	if msg == "IceTarget" and guid then
-		local target = DBM:GetFullPlayerNameByGUID(guid)
-		warnTorrentofIce:Show(target)
-		if self.Options.SetIconOnTorrentofIce then
-			self:SetIcon(target, iceIcon, 8)--do not have cleu, so use scheduler.
-			if iceIcon == 6 then--Alternate cinder icons because you can have two at once in later fight.
-				iceIcon = 4--green is closest match to blue for a cold like color
-			else
-				iceIcon = 6
 			end
 		end
 	end
