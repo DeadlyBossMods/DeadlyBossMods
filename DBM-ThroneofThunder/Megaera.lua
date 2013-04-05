@@ -20,6 +20,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"RAID_BOSS_WHISPER",
+	"UNIT_AURA",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
 )
@@ -62,6 +63,7 @@ local timerBreathsCD			= mod:NewTimer(16, "timerBreathsCD", 137731, nil, false)-
 --TODO, maybe monitor length since last cast and if it's 28 instead of 25, make next timer also 28 for remainder of that head phase (then return to 25 after rampage unless we detect another 28)
 --TODO, Verify timers on normal. WoL bugs out and combines GUIDs making it hard to determine actual CDs in my logs.
 local timerCinderCD				= mod:NewCDTimer(25, 139822, nil, not mod:IsTank())--The cd is either 25 or 28 (either or apparently, no in between). it can even swap between teh two in SAME pull
+local timerTorrentofIce			= mod:NewBuffFadesTimer(11, 139866)
 local timerTorrentofIceCD		= mod:NewCDTimer(25, 139866, nil, not mod:IsTank())--Same as bove, either 25 or 28
 --local timerAcidRainCD			= mod:NewCDTimer(13.5, 139850, nil, false)--Can only give time for next impact, no cast trigger so cannot warn cast very effectively. Also seems not possible to separate heads on this one. In my log every cast came from same head GUID
 local timerNetherTearCD			= mod:NewCDTimer(25, 140138)--Heroic. Also either 25 or 28. On by default since these require more pre planning than fire and ice.
@@ -91,6 +93,8 @@ local rampageCast = 0
 local cinderIcon = 7
 local iceIcon = 6
 local activeHeadGUIDS = {}
+local iceTorrent = GetSpellInfo(139857)
+local lastTorrent = 0
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -131,6 +135,7 @@ function mod:OnCombatStart(delay)
 	iceBehind = 0
 	cinderIcon = 7
 	iceIcon = 6
+	lastTorrent = 0
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
 		arcaneInFront = 0
@@ -380,6 +385,33 @@ function mod:UNIT_DIED(args)
 		self:Schedule(5, clearHeadGUID, args.destGUID)
 	end
 end
+
+--TODO, check for an aura method instead?
+--[[ UNCONFIRMED YET.
+function mod:UNIT_AURA(uId)
+	if UnitDebuff(uId, iceTorrent) then
+		print("ice Torrent detected")
+		local _, _, _, _, _, duration, expires = UnitDebuff(uId, iceTorrent)
+		if expires ~= lastTorrent then
+			local name = DBM:GetUnitFullName(uId)
+			warnTorrentofIce:Show(name)
+			if name == UnitName("player") then
+				specWarnTorrentofIceYou:Show()
+				timerTorrentofIce:Start()
+				yellTorrentofIce:Yell()
+			end
+			if self.Options.SetIconOnTorrentofIce then
+				self:SetIcon(uId, iceIcon, 11)--do not have cleu, so use scheduler.
+				if iceIcon == 6 then--Alternate cinder icons because you can have two at once in later fight.
+					iceIcon = 4--green is closest match to blue for a cold like color
+				else
+					iceIcon = 6
+				end
+			end
+		end
+	end
+end
+]]
 
 function mod:OnSync(msg, guid)
 	if msg == "IceTarget" and guid then
