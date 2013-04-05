@@ -392,7 +392,8 @@ function mod:UNIT_AURA(uId)
 	if UnitDebuff(uId, iceTorrent) then
 		print("ice Torrent detected")
 		local _, _, _, _, _, duration, expires = UnitDebuff(uId, iceTorrent)
-		if expires ~= lastTorrent then
+		if lastTorrent ~= expires then
+			lastTorrent = expires
 			local name = DBM:GetUnitFullName(uId)
 			warnTorrentofIce:Show(name)
 			if name == UnitName("player") then
