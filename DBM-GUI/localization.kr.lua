@@ -58,6 +58,7 @@ L.DisableCinematicsOutside	= "게임내 동영상 재생 기능 끄기(인스턴
 L.SKT_Enabled				= "각 우두머리 설정에서 끈 상태라도 가장 빨랐던 전투시간 바 표시(강제)"
 L.AutologBosses				= "우두머리 전투시 블리자드 전투 기록 자동 활성화"
 L.AdvancedAutologBosses		= "우두머리 전투시 Transcriptor 기록 자동 활성화"
+L.LogOnlyRaidBosses			= "공격대 우두머리 전투만 기록하기(공격대 찾기 제외)"
 L.Latency_Text				= "동기화를 사용 할 최대 지연시간 설정 : %d"
 
 L.ModelOptions				= "3D 초상화 배경 설정"

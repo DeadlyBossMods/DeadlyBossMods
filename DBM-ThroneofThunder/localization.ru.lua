@@ -85,8 +85,16 @@ L:SetMiscLocalization({
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetTimerLocalization({
+	timerBreathsCD			= "Следующее дыхание"
+})
+
+L:SetOptionLocalization({
+	timerBreaths			= "Отсчёт времени до следующего дыхания"
+})
+
 L:SetMiscLocalization({
-	rampageEnds		= "Ярость Мегеры идет на убыль."
+	rampageEnds				= "Ярость Мегеры идет на убыль."
 })
 
 ------------
@@ -123,6 +131,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
+	warnBeamNormal				= "Лучи - |cffff0000Красный|r : >%s<, |cff0000ffСиний|r : >%s<",
+	warnBeamHeroic				= "Лучи - |cffff0000Красный|r : >%s<, |cff0000ffСиний|r : >%s<, |cffffff00Желтый|r : >%s<",
 	warnAddsLeft				= "Туманов осталось: %d",
 	specWarnBlueBeam			= "Синий луч на Вас - НЕ ДВИГАЙТЕСЬ!",
 	specWarnFogRevealed			= "%s обнаружен!",
@@ -130,14 +140,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	warnBeam					= "Объявлять цели лучей",
 	warnAddsLeft				= "Объявлять сколько осталось туманов",
 	specWarnFogRevealed			= "Спец-предупреждение при обнаружении тумана",
 	ArrowOnBeam					= "Показывать стрелку DBM во время $journal:6882, чтобы указать, в каком направлении двигаться",
 	InfoFrame					= "Информационное окно для кол-ва стаков $spell:133795"
-})
-
-L:SetMiscLocalization({
-	Eye							= "глаз"
 })
 
 ----------------
