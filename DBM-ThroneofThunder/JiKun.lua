@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 	end
 	timerDowndraftCD:Start(91-delay)
 	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
-		DBM.RangeCheck:Show(8)
+		DBM.RangeCheck:Show(10)
 	end
 end
 
