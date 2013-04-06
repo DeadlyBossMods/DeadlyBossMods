@@ -152,7 +152,7 @@ L:SetWarningLocalization({
 	warnBeamNormal				= "Beam - |cffff0000Red|r : >%s<, |cff0000ffBlue|r : >%s<",
 	warnBeamHeroic				= "Beam - |cffff0000Red|r : >%s<, |cff0000ffBlue|r : >%s<, |cffffff00Yellow|r : >%s<",
 	warnAddsLeft				= "Fogs remaining: %d",
-	specWarnBlueBeam			= "Blue Beam on you - DO NOT MOVE!!",
+	specWarnBlueBeam			= "Blue Beam on you - Avoid Moving",
 	specWarnFogRevealed			= "%s revealed!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
