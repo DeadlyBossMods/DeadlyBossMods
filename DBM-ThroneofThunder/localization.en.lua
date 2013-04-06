@@ -175,12 +175,12 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "Too many mutations: % good & % bad",
+	warnDebuffCount				= "Mutate progress : %d/5 good & %d bad",
 	specWarnFullyMutatedFaded	= "%s faded"
 })
 
 L:SetOptionLocalization({
-	warnDebuffCount				= "Show debuff count warnings when you absorb too many pools",
+	warnDebuffCount				= "Show debuff count warnings when you absorb pools",
 	specWarnFullyMutatedFaded	= "Show special warning when $spell:140546 has faded",
 	RangeFrame					= "Show range frame (5/2)"
 })

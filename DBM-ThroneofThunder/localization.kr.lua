@@ -159,7 +159,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "변형 진행 : 이로운 효과 - %d개, 해로운 효과 - %d개",
+	warnDebuffCount				= "변형 정보 : 이로운 효과 - %d/5개, 해로운 효과 - %d개",
 	specWarnFullyMutatedFaded	= "%s 사라짐!"
 })
 

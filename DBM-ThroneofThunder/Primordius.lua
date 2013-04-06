@@ -16,6 +16,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
+local warnDebuffCount				= mod:NewAnnounce("warnDebuffCount", 1, 140546)
 local warnMalformedBlood			= mod:NewStackAnnounce(136050, 2, nil, mod:IsTank() or mod:IsHealer())--No cd bars for this because it's HIGHLY variable (lowest priority spell so varies wildly depending on bosses 3 buffs)
 local warnPrimordialStrike			= mod:NewSpellAnnounce(136037, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnGasBladder				= mod:NewTargetAnnounce(136215, 4)--Stack up in front for (but not too close or cleave will get you)
@@ -53,6 +54,8 @@ mod:AddBoolOption("RangeFrame", true)--Right now, EVERYTHING targets melee. If b
 local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
 local postulesActive = false
+local goodCount = 0
+local badCount = 0
 local bigOozeCount = 0
 
 function mod:BigOoze()
@@ -67,6 +70,8 @@ function mod:OnCombatStart(delay)
 	metabolicBoost = false
 	acidSpinesActive = false
 	postulesActive = false
+	goodCount = 0
+	badCount = 0
 	bigOozeCount = 0
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -167,6 +172,35 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args.spellId == 140546 and args:IsPlayer() then
 		specWarnFullyMutatedFaded:Show(args.spellName)
+	end
+end
+
+local good1 = GetSpellInfo(136180)
+local good2 = GetSpellInfo(136182)
+local good2 = GetSpellInfo(136184)
+local good3 = GetSpellInfo(136186)
+local bad1 = GetSpellInfo(136181)
+local bad2 = GetSpellInfo(136183)
+local bad3 = GetSpellInfo(136185)
+local bad4 = GetSpellInfo(136187)
+
+function mod:UNIT_AURA(uId)
+	if uId ~= "player" then return end
+	local gcnt, gcnt1, gcnt2, gcnt3, gcnt4, bcnt, bcnt1, bcnt2, bcnt3, bcnt4
+	gcnt1 = select(4, UnitDebuff("player", good1)) or 0
+	gcnt2 = select(4, UnitDebuff("player", good2)) or 0
+	gcnt3 = select(4, UnitDebuff("player", good3)) or 0
+	gcnt4 = select(4, UnitDebuff("player", good4)) or 0
+	bcnt1 = select(4, UnitDebuff("player", bad1)) or 0
+	bcnt2 = select(4, UnitDebuff("player", bad2)) or 0
+	bcnt3 = select(4, UnitDebuff("player", bad3)) or 0
+	bcnt4 = select(4, UnitDebuff("player", bad4)) or 0
+	gcnt = gcnt1 + gcnt2 + gcnt3 + gcnt4
+	bcnt = bcnt1 + bcnt2 + bcnt3 + bcnt4
+	if goodCount ~= gcnt or badCount ~= bcnt then
+		goodCount = gcnt
+		badCount = bcnt
+		warnDebuffCount:Show(goodCount, badCount)
 	end
 end
 
