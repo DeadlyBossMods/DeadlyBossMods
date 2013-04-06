@@ -142,53 +142,54 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 --[[25H Nest locations
-Nest1: Lower
+--http://www.youtube.com/watch?feature=player_detailpage&v=nMSbQJBlKwM
+Nest1: Lower NE
 
-Nest2: Lower SE
+Nest2: Lower SE--Verified
 
-Nest3: Lower
+Nest3: Lower SW
 
-Nest4: Lower
-Nest5: Upper
+Nest4: Lower W
+Nest5: Upper NE
 
-Nest6: Lower NW
-Nest7: Upper
+Nest6: Lower NW--Verified
+Nest7: Upper SE
 
-Nest8: Upper
+Nest8: Upper Middle
 
-Nest9: Lower
-Nest10: Upper
+Nest9: Lower NE
+Nest10: Upper SW
 
-Nest11: Lower
-Nest12: Upper NW
+Nest11: Lower SE
+Nest12: Upper NW--Verified
 
-Nest13: Lower
+Nest13: Lower SW
 
-Nest14: Upper
-Nest15: Lower
+Nest14: Upper NE
+Nest15: Lower W
 
-Nest16: Upper SE
-Nest17: Lower
+Nest16: Upper SE--Verified
+Nest17: Lower NW
 
-Nest18: Lower
-Nest19: Upper
+Nest18: Lower NE
+Nest19: Upper Middle
 
-Nest20: Lower
-Nest21: Upper
+Nest20: Lower SE
+Nest21: Upper SW
 
-Nest22: Upper
-Nest23: Lower SW
-Nest24: Upper
+Nest22: Upper NE--22 & 24 may be flip flopped, hard to say which is which (doesn't really matter though)
+Nest23: Lower SW--Verified
+Nest24: Upper NW
 
-Nest25: Upper
-Nest26: Lower
+Nest25: Upper SE
+Nest26: Lower W
 
-Nest27: Lower
-Nest28: Upper
-Nest29: Lower
+Nest27: Lower NE--27 & 29 could be flipped
+Nest28: Upper Middle
+Nest29: Lower NW
 
-Nest30: Upper
-Nest31: Lower
+Nest30: Upper SE
+Nest31: Lower SW
 
 Nest32: Upper
 Nest33: Lower
@@ -251,8 +252,6 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		warnFlock:Cancel()
 		specWarnFlock:Cancel()
 		timerFlockCD:Cancel()--So we don't get two timers on the double nests on 25 man
-		warnFlock:Schedule(0.5, messageText, flockName, flockText)
-		specWarnFlock:Schedule(0.5, messageText, flockName, flockText)
 		--10N/10H/LFR: L, L, L, U, U, U (Repeating)
 		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
 			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
@@ -316,6 +315,8 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		else--Shouldn't be an else, but just failsafe code
 			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 		end
+		warnFlock:Schedule(0.5, messageText, flockName, flockText)
+		specWarnFlock:Schedule(0.5, messageText, flockName, flockText)
 		lastFlock = GetTime()
 	end
 end
