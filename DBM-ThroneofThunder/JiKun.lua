@@ -188,11 +188,11 @@ Nest27: Lower NE--27 & 29 could be flipped
 Nest28: Upper Middle
 Nest29: Lower NW
 
-Nest30: Upper SE
-Nest31: Lower SW
+Nest30: Upper SW
+Nest31: Lower SE
 
-Nest32: Upper
-Nest33: Lower
+Nest32: Upper NE
+Nest33: Lower SW
 Nest34: Upper
 
 Nest35: Lower

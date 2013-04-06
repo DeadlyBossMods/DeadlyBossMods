@@ -209,10 +209,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMoltenOverload:Start()
 	elseif args.spellId == 136192 then
 		warnLightningStorm:Show(args.destName)
-		if phase == 1 then--Heroic
-			timerLightningStormCD:Start(38)
-		else
+		if phase == 2 then
 			timerLightningStormCD:Start()
+		else--Heroic phase 1 or 4
+			timerLightningStormCD:Start(38)
 		end
 		if args:IsPlayer() then
 			specWarnLightningStorm:Show()
@@ -220,10 +220,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 135145 then
 		warnFreeze:Show(args.destName)
-		if phase == 2 then--Heroic
-			timerFreezeCD:Start(36)
-		else
+		if phase == 3 then
 			timerFreezeCD:Start()
+		else--Heroic phase 2 or 4
+			timerFreezeCD:Start(36)
 		end
 	elseif args.spellId == 136323 then
 		warnRisingAnger:Show(args.destName, args.amount or 1)
@@ -300,7 +300,11 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
 		warnUnleashedFlame:Show()
-		timerUnleashedFlameCD:Start()
+		if phase == 1 then
+			timerUnleashedFlameCD:Start()
+		else--heroic phase 3 or 4
+			timerUnleashedFlameCD:Start(30)--30-33 second variation
+		end
 	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (heroic phase change trigger)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		timerThrowSpearCD:Start()
