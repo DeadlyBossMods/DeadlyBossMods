@@ -251,12 +251,17 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(832)
 
+L:SetWarningLocalization({
+	specWarnIntermissionSoon	= "Intermission soon"
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "Show range frame",--For two different spells
-	StaticShockArrow	= "Show DBM Arrow when someone is affected by $spell:135695",
-	OverchargeArrow		= "Show DBM Arrow when someone is affected by $spell:136295",
-	SetIconOnOvercharge	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
-	SetIconOnStaticShock= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
+	specWarnIntermissionSoon	= "Show pre-special warning before Intermission",
+	RangeFrame					= "Show range frame",--For two different spells
+	StaticShockArrow			= "Show DBM Arrow when someone is affected by $spell:135695",
+	OverchargeArrow				= "Show DBM Arrow when someone is affected by $spell:136295",
+	SetIconOnOvercharge			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),
+	SetIconOnStaticShock		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
 })
 
 ------------

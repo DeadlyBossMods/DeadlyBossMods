@@ -51,6 +51,7 @@ local specWarnDecapitate				= mod:NewSpecialWarningRun(134912, mod:IsTank())
 local specWarnDecapitateOther			= mod:NewSpecialWarningTarget(134912, mod:IsTank())
 local specWarnThunderstruck				= mod:NewSpecialWarningSpell(135095, nil, nil, nil, 2)
 local specWarnCrashingThunder			= mod:NewSpecialWarningMove(135150)
+local specWarnIntermissionSoon			= mod:NewSpecialWarning("specWarnIntermissionSoon")
 --Phase 2
 local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank(), nil, nil, 3)--Cast (394514 is debuff. We warn for cast though because it knocks you off platform if not careful)
 local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, nil, 2)
@@ -88,6 +89,7 @@ mod:AddBoolOption("SetIconOnOvercharge", true)
 mod:AddBoolOption("SetIconOnStaticShock", true)
 
 local phase = 1
+local warnedCount = 0
 local intermissionActive = false--Not in use yet, but will be. This will be used (once we have CD bars for regular phases mapped out) to prevent those cd bars from starting during intermissions and messing up the custom intermission bars
 local northDestroyed = false
 local eastDestroyed = false
@@ -114,6 +116,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(staticshockTargets)
 	table.wipe(overchargeTarget)
 	phase = 1
+	warnedCount = 0
 	staticIcon = 8
 	overchargeIcon = 1
 	intermissionActive = false
@@ -123,6 +126,9 @@ function mod:OnCombatStart(delay)
 	westDestroyed = false
 	timerThunderstruckCD:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
+	self:RegisterShortTermEvents(
+		"UNIT_HEALTH_FREQUENT"
+	)-- Do not use on phase 3.
 end
 
 function mod:OnCombatEnd()
@@ -132,6 +138,7 @@ function mod:OnCombatEnd()
 	if self.Options.OverchargeArrow or self.Options.StaticShockArrow then
 		DBM.Arrow:Hide()
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -362,6 +369,20 @@ local function LoopIntermission()
 	end
 	if not northDestroyed then
 		timerStaticShockCD:Start(16)
+	end
+end
+
+function mod:UNIT_HEALTH_FREQUENT(uId)
+	if uId == "boss1" then
+		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		if hp > 65 and hp < 66.5 and warnedCount == 0 then
+			warnedCount = 1
+			specWarnIntermissionSoon:Show()
+		elseif hp > 30 and hp < 31.5 and warnedCount == 1 then
+			warnedCount = 2
+			specWarnIntermissionSoon:Show()
+			self:UnregisterShortTermEvents()
+		end
 	end
 end
 
