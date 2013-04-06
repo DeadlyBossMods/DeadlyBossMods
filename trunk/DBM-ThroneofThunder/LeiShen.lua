@@ -368,9 +368,9 @@ local function LoopIntermission()
 			specWarnBouncingBolt:Schedule(15)
 			timerBouncingBoltCD:Start(15)
 		else
-			warnBouncingBolt:Schedule(19)
-			specWarnBouncingBolt:Schedule(19)
-			timerBouncingBoltCD:Start(19)
+			warnBouncingBolt:Schedule(18.5)
+			specWarnBouncingBolt:Schedule(18.5)
+			timerBouncingBoltCD:Start(18.5)
 		end
 	end
 	if not northDestroyed then
@@ -459,9 +459,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				specWarnBouncingBolt:Schedule(14)
 				timerBouncingBoltCD:Start(14)
 			else
-				warnBouncingBolt:Schedule(18)
-				specWarnBouncingBolt:Schedule(18)
-				timerBouncingBoltCD:Start(18)
+				warnBouncingBolt:Schedule(17.5)
+				specWarnBouncingBolt:Schedule(17.5)
+				timerBouncingBoltCD:Start(17.5)
 			end
 		end
 		if not northDestroyed then
