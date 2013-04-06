@@ -60,10 +60,12 @@ local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
 local timerMoltenOverload				= mod:NewBuffActiveTimer(10, 137221)
 local timerLightningStormCD				= mod:NewCDTimer(20, 136192)
+local timerWindStorm					= mod:NewBuffActiveTimer(19.8, 136577)--19.8~21.7sec variables
 local timerWindStormCD					= mod:NewNextTimer(70, 136577)
 local timerFreezeCD						= mod:NewCDTimer(7, 135145, nil, false)
 local timerDeadZoneCD					= mod:NewCDTimer(15, 137229)
 local timerRisingAngerCD				= mod:NewNextTimer(15, 136323, nil, false)
+local timerFistSmash					= mod:NewBuffActiveTimer(8, 136146)
 local timerFistSmashCD					= mod:NewNextCountTimer(20, 136146)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139167)--Heroic Phase 1
 local timerFrostSpikeCD					= mod:NewCDTimer(12, 139180)--Heroic Phase 2
@@ -277,7 +279,7 @@ end
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 134926 and phase < 4 then
 --		warnThrowSpear:Show()
-		if AntiSpam(15, 8) then--Basically, if the target scanning failed, we do an aoe warning on the actual summon.
+		if self:AntiSpam(15, 8) then--Basically, if the target scanning failed, we do an aoe warning on the actual summon.
 			specWarnThrowSpear:Show()
 		end
 		timerThrowSpearCD:Start()
@@ -331,11 +333,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerLightningStormCD:Start()
 			warnWindStorm:Schedule(52)
 			specWarnWindStorm:Schedule(52)
+			timerWindStorm:Schedule(52)
 			timerWindStormCD:Start(52)
 		elseif cid == 68080 then--Quet'zal
 			phase = 3
 			updateHealthFrame()
 			timerLightningStormCD:Cancel()
+			timerWindStorm:Cancel()
 			timerWindStormCD:Cancel()
 			timerFrostSpikeCD:Cancel()
 			warnPhase3:Show()
@@ -372,11 +376,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnWindStorm:Cancel()
 		warnWindStorm:Schedule(70)
 		specWarnWindStorm:Schedule(70)
+		timerWindStorm:Schedule(70)
 		timerWindStormCD:Start()
 	elseif spellId == 136146 and self:AntiSpam(2, 5) then
 		fistSmashCount = fistSmashCount + 1
 		warnFistSmash:Show(fistSmashCount)
 		specWarnFistSmash:Show()
+		timerFistSmash:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerFistSmashCD:Start(30, fistSmashCount+1) -- heroic cd longer.
 		else
@@ -408,6 +414,7 @@ function mod:UNIT_DIED(args)
 			warnPhase2:Show()
 			warnWindStorm:Schedule(49.5)
 			specWarnWindStorm:Schedule(49.5)
+			timerWindStorm:Schedule(49.5)
 			timerWindStormCD:Start(49.5)
 		end
 	elseif cid == 68080 then--Quet'zal
@@ -419,6 +426,7 @@ function mod:UNIT_DIED(args)
 			timerLightningStormCD:Cancel()
 			warnWindStorm:Cancel()
 			specWarnWindStorm:Cancel()
+			timerWindStorm:Cancel()
 			timerWindStormCD:Cancel()
 			warnPhase3:Show()
 			timerDeadZoneCD:Start(6)
