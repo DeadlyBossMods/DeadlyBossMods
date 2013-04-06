@@ -30,7 +30,8 @@ local specWarnConductiveShield	= mod:NewSpecialWarningTarget(140296)
 local timerSpiritfireCD			= mod:NewCDTimer(12, 139895)
 local timerShadowNovaCD			= mod:NewCDTimer(12, 139899)
 local timerFixatedCD			= mod:NewNextTimer(15.7, 140306)
-local timerConductiveShieldCD	= mod:NewNextSourceTimer(20, 140296)
+local timerConductiveShield		= mod:NewTargetTimer(10, 140296)
+local timerConductiveShieldCD	= mod:NewCDSourceTimer(20, 140296)--On 25 man, it always 20, But 10 man, it variables.
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -103,8 +104,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.5, warnStormCloudTargets)
 	elseif args.spellId == 140296 then
 		warnConductiveShield:Show(args.destName)
-		specWarnConductiveShield:Show(args.destName)
+		timerConductiveShield:Start(nil, args.destName)
 		timerConductiveShieldCD:Start(20, args.destName, args.sourceGUID)
+		if self:AntiSpam(3, 2) then
+			specWarnConductiveShield:Show(args.destName)
+		end
 	end
 end
 
@@ -127,6 +131,7 @@ function mod:UNIT_DIED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif cid == 69834 or cid == 69821 then
+		timerConductiveShield:Cancel(args.destName)
 		timerConductiveShieldCD:Cancel(args.destName, args.destGUID)
 	elseif cid == 68220 then--Gastropod
 		timerFixatedCD:Cancel(args.destGUID)
@@ -136,7 +141,7 @@ end
 --"<1.0 17:57:05> [UNIT_SPELLCAST_SUCCEEDED] Gastropod [[target:Fixated::0:140306]]", -- [23]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if not mod.Options.Enabled then return end
-	if spellId == 140306 and self:AntiSpam() then
+	if spellId == 140306 and self:AntiSpam(3, 2) then
 		self:SendSync("OMGSnail", UnitGUID(uId))
 	end
 end

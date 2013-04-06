@@ -55,13 +55,16 @@ local specWarnCrashingThunder			= mod:NewSpecialWarningMove(135150)
 local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank(), nil, nil, 3)--Cast (394514 is debuff. We warn for cast though because it knocks you off platform if not careful)
 local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, nil, 2)
 local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil, nil, 2)
+local specWarnOverloadedCircuits		= mod:NewSpecialWarningMove(137176)
 --Phase 3
 local specWarnElectricalShock			= mod:NewSpecialWarningStack(136914, mod:IsTank(), 12)--You get about 12 stacks in 8 seconds, which is about how often you'll swap
 local specWarnElectricalShockOther		= mod:NewSpecialWarningTarget(136914, mod:IsTank())
 
 --Conduits (All phases)
+local timerStaticShock					= mod:NewBuffFadesTimer(8, 135695)
 local timerStaticShockCD				= mod:NewCDTimer(40, 135695)
 local timerDiffusionChainCD				= mod:NewCDTimer(40, 135991)
+local timerOvercharge					= mod:NewCastTimer(6, 136295)
 local timerOverchargeCD					= mod:NewCDTimer(40, 136295)
 local timerBouncingBoltCD				= mod:NewCDTimer(40, 136361)
 local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually intermission only, but it fits best with conduits
@@ -71,6 +74,7 @@ local timerThunderstruck				= mod:NewCastTimer(4.8, 135095)--4 sec cast. + landi
 local timerThunderstruckCD				= mod:NewNextTimer(46, 135095)--Seems like an exact bar
 --Phase 2
 local timerFussionSlashCD				= mod:NewCDTimer(42.5, 136478)
+local timerLightningWhip				= mod:NewCastTimer(4, 136850)
 local timerLightningWhipCD				= mod:NewNextTimer(45.5, 136850)--Also an exact bar
 local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact on live, versus the variable it was on PTR
 --Phase 3
@@ -144,6 +148,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 136850 then
 		warnLightningWhip:Show()
 		specWarnLightningWhip:Show()
+		timerLightningWhip:Start()
 		if phase < 3 then
 			timerLightningWhipCD:Start()
 		else
@@ -178,6 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnStaticShock:Show()
 			yellStaticShock:Yell()
+			timerStaticShock:Start()
 		else
 			if not intermissionActive and self:IsMelee() then return end--Melee do not help soak these during normal phases, only during intermissions
 			local uId = DBM:GetRaidUnitId(args.destName)
@@ -200,6 +206,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnStaticShockTargets)
 	elseif args.spellId == 136295 then
 		overchargeTarget[#overchargeTarget + 1] = args.destName
+		timerOvercharge:Start()
 		if self.Options.SetIconOnOvercharge then
 			self:SetIcon(args.destName, overchargeIcon)
 			overchargeIcon = overchargeIcon + 1
@@ -236,10 +243,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			DBM.RangeCheck:Show(8)--Assume 8 since spell tooltip has no info
 		end
-	elseif args.spellId == 135682 and args:GetDestCreatureID() == 68397 then--South (Overcharge)
-	
-	elseif args.spellId == 135683 and args:GetDestCreatureID() == 68397 then--West (Bouncing Bolt)
-
 	elseif args.spellId == 136914 and (args.amount or 1) % 3 == 0 then
 		warnElectricalShock:Show(args.destName, args.amount or 1)
 		if (args.amount or 1) >= 12 then
@@ -251,6 +254,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+	elseif args.spellId == 137176 and self:AntiSpam(3, 5) and args:IsPlayer() then
+		specWarnOverloadedCircuits:Show()
 	end
 end
 
@@ -271,12 +276,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-
 function mod:SPELL_AURA_REMOVED(args)
 	--Conduit deactivations
-	if args.spellId == 135680 and args:GetDestCreatureID() == 68397 then--North (Static Shock)
+	if args.spellId == 135680 and args:GetDestCreatureID() == 68397 and not intermissionActive then--North (Static Shock)
 		timerStaticShockCD:Cancel()
-	elseif args.spellId == 135681 and args:GetDestCreatureID() == 68397 then--East (Diffusion Chain)
+	elseif args.spellId == 135681 and args:GetDestCreatureID() == 68397 and not intermissionActive then--East (Diffusion Chain)
 		timerDiffusionChainCD:Cancel()
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			if phase == 1 then
@@ -285,9 +289,9 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Show(6)--Switch back to Summon Lightning Orb spell range
 			end
 		end
-	elseif args.spellId == 135682 and args:GetDestCreatureID() == 68397 then--South (Overcharge)
+	elseif args.spellId == 135682 and args:GetDestCreatureID() == 68397 and not intermissionActive then--South (Overcharge)
 		timerOverchargeCD:Cancel()
-	elseif args.spellId == 135683 and args:GetDestCreatureID() == 68397 then--West (Bouncing Bolt)
+	elseif args.spellId == 135683 and args:GetDestCreatureID() == 68397 and not intermissionActive then--West (Bouncing Bolt)
 		timerBouncingBoltCD:Cancel()
 	--Conduit deactivations
 	elseif args.spellId == 135695 and self.Options.SetIconOnStaticShock then
@@ -351,13 +355,13 @@ local function LoopIntermission()
 	if not eastDestroyed then
 		timerDiffusionChainCD:Start(8)
 	end
+	if not westDestroyed then
+		warnBouncingBolt:Schedule(15)
+		specWarnBouncingBolt:Schedule(15)
+		timerBouncingBoltCD:Start(15)
+	end
 	if not northDestroyed then
 		timerStaticShockCD:Start(16)
-	end
-	if not westDestroyed then
-		warnBouncingBolt:Schedule(19)
-		specWarnBouncingBolt:Schedule(19)
-		timerBouncingBoltCD:Start(19)
 	end
 end
 
@@ -370,6 +374,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerLightningWhipCD:Cancel()
 		timerSummonBallLightningCD:Cancel()
 		timerSuperChargedConduits:Start()
+		timerStaticShockCD:Cancel()
+		timerDiffusionChainCD:Cancel()
+		timerOverchargeCD:Cancel()
+		timerBouncingBoltCD:Cancel()
 		if not eastDestroyed then
 			timerDiffusionChainCD:Start(6)
 			if self.Options.RangeFrame then
@@ -380,20 +388,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerOverchargeCD:Start(6)
 		end
 		if not westDestroyed then
-			warnBouncingBolt:Schedule(18)
-			specWarnBouncingBolt:Schedule(18)
-			timerBouncingBoltCD:Start(18)
+			warnBouncingBolt:Schedule(14)
+			specWarnBouncingBolt:Schedule(14)
+			timerBouncingBoltCD:Start(14)
 		end
 		if not northDestroyed then
 			timerStaticShockCD:Start(19)
 		end
 		self:Schedule(23, LoopIntermission)--Fire function to start second wave of specials timers
-	elseif spellId == 136395 and self:AntiSpam(2, 3) then--Bouncing Bolt (Does NOT work in intermission phases though :\)
+	elseif spellId == 136395 and self:AntiSpam(2, 3) and not intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
-		if not intermissionActive then
-			timerBouncingBoltCD:Start()
-		end
+		timerBouncingBoltCD:Start()
 	elseif spellId == 136869 and self:AntiSpam(2, 4) then--Violent Gale Winds
 		warnViolentGaleWinds:Show()
 		timerViolentGaleWinds:Start()
