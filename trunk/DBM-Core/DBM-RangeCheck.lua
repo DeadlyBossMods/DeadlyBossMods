@@ -65,6 +65,15 @@ local initRangeCheck -- initializes the range check for a specific range (if nec
 local dots = {}
 local charms = {}
 
+--------------------------------------------------------
+--  Cache frequently used global variables in locals  --
+--------------------------------------------------------
+local GetPlayerMapPosition = GetPlayerMapPosition
+local GetPlayerFacing = GetPlayerFacing
+local UnitIsUnit = UnitIsUnit
+local GetCurrentMapDungeonLevel = GetCurrentMapDungeonLevel
+local GetRaidTargetIndex = GetRaidTargetIndex
+
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 local BLIP_TEX_COORDS = {

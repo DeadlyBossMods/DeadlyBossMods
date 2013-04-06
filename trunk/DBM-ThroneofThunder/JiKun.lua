@@ -188,8 +188,8 @@ Nest27: Lower NE--27 & 29 could be flipped
 Nest28: Upper Middle
 Nest29: Lower NW
 
-Nest30: Upper SW
-Nest31: Lower SE
+Nest30: Lower SE
+Nest31: Upper SW
 
 Nest32: Upper NE
 Nest33: Lower SW
@@ -203,13 +203,13 @@ Nest37: Lower
 Nest1: Lower NE
 Nest2: Lower SE
 Nest3: Lower SW
-Nest4: Upper W
+Nest4: Upper Middle
 Nest5: Upper NW
 Nest6: Upper NE
 Nest7: Lower SE
 Nest8: Lower SW
 Nest9: Lower NE
-Nest10: Upper W
+Nest10: Upper Middle
 Nest11: Upper SE
 Nest12: Upper NW
 Nest13: Lower SW
@@ -223,11 +223,11 @@ Nest20: Lower SE
 Nest21: Lower NE
 Nest22: Upper SW
 Nest23: Upper SE
-Nest24: Upper W
+Nest24: Upper Middle
 Nest25: Lower NW
 Nest26: Lower SW
 Nest27: Lower NE
-Nest28: Upper W
+Nest28: Upper Middle
 --]]
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
