@@ -142,61 +142,61 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 --[[25H Nest locations
-Nest1: Lower NE
+Nest1: Lower
 
 Nest2: Lower SE
 
-Nest3: Lower SW
+Nest3: Lower
 
-Nest4: Lower W
-Nest5: Upper NE
+Nest4: Lower
+Nest5: Upper
 
 Nest6: Lower NW
-Nest7: Upper SE
+Nest7: Upper
 
-Nest8: Upper Middle
+Nest8: Upper
 
-Nest9: Upper NE
-Nest10: Lower W
+Nest9: Lower
+Nest10: Upper
 
-Nest11: Lower SE
+Nest11: Lower
 Nest12: Upper NW
 
-Nest13: Lower SW
+Nest13: Lower
 
-Nest14: Upper NE
-Nest15: Lower W
+Nest14: Upper
+Nest15: Lower
 
 Nest16: Upper SE
-Nest17: Lower NW
+Nest17: Lower
 
-Nest18: Lower NE
-Nest19: Upper Middle
+Nest18: Lower
+Nest19: Upper
 
-Nest20: Upper SE
-Nest21: Lower W
+Nest20: Lower
+Nest21: Upper
 
-Nest22: Upper NE
+Nest22: Upper
 Nest23: Lower SW
-Nest24: Upper NW
+Nest24: Upper
 
-Nest25: Upper SE
-Nest26: Lower W
+Nest25: Upper
+Nest26: Lower
 
-Nest27: Lower NE
-Nest28: Upper Middle
-Nest29: Lower NW
+Nest27: Lower
+Nest28: Upper
+Nest29: Lower
 
-Nest30: Upper SE
-Nest31: Lower W
-Nest32: Upper NW
+Nest30: Upper
+Nest31: Lower
 
-Nest33: Lower SW
-Nest34: Upper NE
+Nest32: Upper
+Nest33: Lower
+Nest34: Upper
 
-Nest35: Lower W
-Nest36: Upper SE
-Nest37: Lower NW
+Nest35: Lower
+Nest36: Upper
+Nest37: Lower
 --]]
 --[[10H
 Nest1: Lower NE
