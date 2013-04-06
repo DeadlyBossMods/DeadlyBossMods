@@ -134,7 +134,7 @@ L:SetWarningLocalization({
 	warnBeamNormal				= "Лучи - |cffff0000Красный|r : >%s<, |cff0000ffСиний|r : >%s<",
 	warnBeamHeroic				= "Лучи - |cffff0000Красный|r : >%s<, |cff0000ffСиний|r : >%s<, |cffffff00Желтый|r : >%s<",
 	warnAddsLeft				= "Туманов осталось: %d",
-	specWarnBlueBeam			= "Синий луч на Вас - НЕ ДВИГАЙТЕСЬ!",
+	specWarnBlueBeam			= "Синий луч на Вас - СТАРАЙТЕСЬ НЕ ДВИГАТЬСЯ!",
 	specWarnFogRevealed			= "%s обнаружен!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
@@ -142,7 +142,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnBeam					= "Объявлять цели лучей",
 	warnAddsLeft				= "Объявлять сколько осталось туманов",
-	specWarnFogRevealed			= "Спец-предупреждение при обнаружении тумана",
+	specWarnFogRevealed			= "Спец-предупреждение при обнаружении туманов",
 	ArrowOnBeam					= "Показывать стрелку DBM во время $journal:6882, чтобы указать, в каком направлении двигаться",
 	InfoFrame					= "Информационное окно для кол-ва стаков $spell:133795"
 })
@@ -153,13 +153,13 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "Слишком много мутаций: % хороших и % плохих",
+	warnDebuffCount				= "Прогресс мутации: % хороших и % плохих",
 	specWarnFullyMutatedFaded	= "%s спала"
 })
 
 L:SetOptionLocalization({
-	warnDebuffCount				= "Показывать предупреждения о числе дебаффов, когда Вы поглощаете слишком много луж",
-	specWarnFullyMutatedFaded	= "Спец-предупреждение, когда спала $spell:140546",
+	warnDebuffCount				= "Показывать предупреждения о числе дебаффов, когда Вы поглощаете лужи",
+	specWarnFullyMutatedFaded	= "Спец-предупреждение, когда спадает $spell:140546",
 	RangeFrame					= "Показывать окно проверки дистанции (5/2 м)"
 })
 
@@ -228,10 +228,16 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(832)
 
+L:SetWarningLocalization({
+	specWarnIntermissionSoon	= "Скоро смена фаз"
+})
+
+
 L:SetOptionLocalization({
-	RangeFrame			= "Показывать окно проверки дистанции",--Для двух разных спеллов
-	StaticShockArrow	= "Показывать стрелку DBM, когда на ком-то $spell:135695",
-	OverchargeArrow		= "Показывать стрелку DBM, когда на ком-то $spell:136295"
+	specWarnIntermissionSoon	= "Спец-предупреждение, перед началом промежуточной фазы",
+	RangeFrame					= "Показывать окно проверки дистанции",--Для двух разных спеллов
+	StaticShockArrow			= "Показывать стрелку DBM, когда на ком-то $spell:135695",
+	OverchargeArrow				= "Показывать стрелку DBM, когда на ком-то $spell:136295"
 })
 
 ------------
