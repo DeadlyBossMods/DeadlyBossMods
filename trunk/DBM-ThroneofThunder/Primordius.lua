@@ -175,7 +175,5 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnPustuleEruption:Show()
 		specWarnPustuleEruption:Show()
 		timerPustuleEruptionCD:Start()
-	elseif spellId == 136050 and self:AntiSpam(2, 2) then--Malformed Blood
-		
 	end
 end
