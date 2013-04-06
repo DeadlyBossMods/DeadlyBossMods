@@ -49,7 +49,7 @@ local function warnStormCloudTargets()
 	table.wipe(stormCloudTargets)
 end
 
-function mod:SpiritFireTarget(sGUID)
+local function SpiritFireTarget(sGUID)
 	local targetname = nil
 	for i=1, DBM:GetNumGroupMembers() do
 		if UnitGUID("raid"..i.."target") == sGUID then
@@ -57,7 +57,7 @@ function mod:SpiritFireTarget(sGUID)
 			break
 		end
 	end
-	if targetname and self:AntiSpam(2, targetname) then--Anti spam using targetname as an identifier, will prevent same target being announced double/tripple but NOT prevent multiple targets being announced at once :)
+	if targetname and mod:AntiSpam(2, targetname) then--Anti spam using targetname as an identifier, will prevent same target being announced double/tripple but NOT prevent multiple targets being announced at once :)
 		warnSpiritFire:Show(targetname)
 	end
 end
@@ -65,7 +65,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if not mod.Options.Enabled then return end
 	if args.spellId == 139895 then
-		self:ScheduleMethod(0.2, "SpiritFireTarget", args.sourceGUID)--Untested scan timing (don't even know if scanning works
+		self:Schedule(0.2, SpiritFireTarget, args.sourceGUID)
 		timerSpiritfireCD:Start()
 		if self.Options.RangeFrame and not DBM.RangeCheck:IsShown() then
 			DBM.RangeCheck:Show(3)
