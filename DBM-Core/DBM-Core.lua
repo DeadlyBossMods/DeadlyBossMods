@@ -222,6 +222,9 @@ local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 local type = type
 local select = select
 local floor = math.floor
+local UnitAffectingCombat = UnitAffectingCombat
+local UnitExists = UnitExists
+local GetSpellInfo = GetSpellInfo
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
