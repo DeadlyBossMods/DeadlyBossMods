@@ -32,6 +32,7 @@ mod:RegisterEventsInCombat(
 --http://worldoflogs.com/reports/t4bwnbajfwm9gsbv/xe/?s=2435&e=2856&x=spell+%3D+%22Icy+Touch%22+or+%28spellid+%3D+139850+or+spell+%3D+%22Rampage%22%29+and+targetname+%3D+%22Omegal%22+or+%28spellid+%3D+139822+or+spellid+%3D+139866%29+and+fulltype+%3D+SPELL_CAST_SUCCESS
 
 local warnRampage				= mod:NewCountAnnounce(139458, 3)
+local warnRampageFaded			= mod:NewFadesAnnounce(139458, 2)
 local warnArcticFreeze			= mod:NewStackAnnounce(139843, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnIgniteFlesh			= mod:NewStackAnnounce(137731, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnRotArmor				= mod:NewStackAnnounce(139840, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -41,6 +42,7 @@ local warnTorrentofIce			= mod:NewTargetAnnounce(139889, 4)
 local warnNetherTear			= mod:NewSpellAnnounce(140138, 3)--Heroic
 
 local specWarnRampage			= mod:NewSpecialWarningCount(139458, nil, nil, nil, 2)
+local specWarnRampageFaded		= mod:NewSpecialWarningFades(139458)--Spread back out quickly (plus for tanks to get back to heads and face them correctly)
 local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
 local specWarnIgniteFlesh		= mod:NewSpecialWarningStack(137731, mod:IsTank(), 2)
 local specWarnRotArmor			= mod:NewSpecialWarningStack(139840, mod:IsTank(), 2)
@@ -275,6 +277,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		specWarnRampage:Show(rampageCast)
 		timerRampage:Start()
 	elseif msg == L.rampageEnds or msg:find(L.rampageEnds) then
+		warnRampageFaded:Show()
+		specWarnRampageFaded:Show()
 		if self.Options.timerBreaths then
 			timerBreathsCD:Start(10)
 		end
