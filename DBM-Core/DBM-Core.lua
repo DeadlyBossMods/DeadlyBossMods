@@ -1074,18 +1074,6 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return DBM:AddMsg(DBM_ERROR_NO_RAID)
 		end
 		DBM:RequestInstanceInfo()
-	elseif cmd:sub(1, 6) == "joshua" and DBM:GetRaidRank(playerName) > 0 then
-		if DBM.Revision == 99999 then--if it's already 99999
-			DBM.Revision = myRealRevision--Restore it
-			DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
-			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))--Two syncs because we need to also disable mods that don't know what "AM" is
-			sendSync("AM", "false")
-		else
-			DBM.Revision = 99999
-			DBM:AddMsg(DBM_ABSOLUTE_MODE_ON)
-			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
-			sendSync("AM", "true")
-		end
 	else
 		DBM:LoadGUI()
 	end
@@ -1138,9 +1126,19 @@ do
 		end
 	end
 
+	--[[
 	function DBM:ElectMaster()
 		-- FIXME: Add Zonecheck for raidmates. This is a big problem. My guild raids with 33 people in raid. if highest version is sitting outside, again, big problem.
 		-- FIXME: This doesn't check if person actually has icons turned on. many are off by default. If RL turns icon on, but his version out of date, we have problem
+		--Scenarios that need fixing
+		--1. highest revision in raid has a boss specific icon option turned off. example, say they turned off horridon charge. they are ONLY person they can set icons on ANY fight, so there will be ZERO charge icons because the people who have it on, are disabled. raid leader RARELY has latest version in my guild, and he wants that icon.
+		--2. Highest person sitting outside, no icons on any fight.
+		--3. Global DBM.Options.DontSetIcons is turned on, no icons.
+		--TODO.
+		--1. this function honestly needs a complete rewrite with a ton of syncing, it needs to ask all users on RAID_ROSTER_UPDATE the value of DBM.Options.DontSetIcons to an excludes table for elect mode.
+		--2. it even needs to sync individual boss mods....yeah, that's shitty.
+		
+		--honestly, scrap this, restore old icon, but switch it to using DBM.Revision instead of release version, just have multiple setters and have them all be latest alpha, probelm fixed. if all same alpha, no issue, even if multiple.
 		local elect_player = nil
 		local elect_revision = tonumber(DBM.Revision)
 		local elect_raidlead = false
@@ -1187,6 +1185,7 @@ do
 			enableicons = false
 		end
 	end
+	--]]
 end
 
 -------------------
@@ -1417,6 +1416,7 @@ do
 	local function updateAllRoster()
 		if IsInRaid() then
 			table.wipe(raidShortNames)
+			local playerWithHigherVersionPromoted = false
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
@@ -1449,9 +1449,12 @@ do
 					else
 						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 					end
+					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].revision and raid[name].revision > tonumber(DBM.Revision) then
+						playerWithHigherVersionPromoted = true
+					end
 				end
 			end
-			DBM:ElectMaster()
+			enableIcons = not playerWithHigherVersionPromoted
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
@@ -1540,10 +1543,6 @@ do
 			raidUIds["player"] = playerName
 			raidGuids[UnitGUID("player")] = playerName
 			raidShortNames[playerName] = playerName
-			if DBM.Revision == 99999 then--if it's already 99999 when we leave raid, turn it back off
-				DBM.Revision = myRealRevision
-				DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
-			end
 		end
 	end
 
@@ -2109,17 +2108,6 @@ do
 		sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 	end
 
-	syncHandlers["AM"] = function(sender, status)
-		if sender == playerName then return end
-		if status == "true" then
-			DBM:AddMsg(DBM_ABSOLUTE_MODE_NOTIFY_ON:format(sender))
-			enableIcons = false
-		else
-			DBM:AddMsg(DBM_ABSOLUTE_MODE_NOTIFY_OFF:format(sender))
-			DBM:ElectMaster()
-		end
-	end
-
 	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale)
 		revision, version = tonumber(revision or ""), tonumber(version or "")
 		if revision and version and displayVersion and raid[sender] then
@@ -2127,6 +2115,11 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
+			if revision ~= 99999 and revision > tonumber(DBM.Revision) then
+				if raid[sender].rank >= 1 then
+					enableIcons = false
+				end
+			end
 			if version > tonumber(DBM.Version) and version ~= 99999 then -- Update reminder
 				if not showedUpdateReminder then
 					local found = false
