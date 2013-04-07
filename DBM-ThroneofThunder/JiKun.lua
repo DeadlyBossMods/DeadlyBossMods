@@ -47,7 +47,6 @@ local timerPrimalNutriment	= mod:NewBuffFadesTimer(30, 140741)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
 local flockC = 0
-local lastFlock = 0
 local quillsCount = 0
 local trippleNest = false
 local flockName = EJ_GetSectionInfo(7348)
@@ -141,119 +140,47 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---[[25H Nest locations
---http://www.youtube.com/watch?feature=player_detailpage&v=nMSbQJBlKwM
-Nest1: Lower NE
-
-Nest2: Lower SE--Verified
-
-Nest3: Lower SW
-
-Nest4: Lower W
-Nest5: Upper NE
-
-Nest6: Lower NW--Verified
-Nest7: Upper SE
-
-Nest8: Upper Middle
-
-Nest9: Lower NE
-Nest10: Upper SW
-
-Nest11: Lower SE
-Nest12: Upper NW--Verified
-
-Nest13: Lower SW
-
-Nest14: Upper NE
-Nest15: Lower W
-
-Nest16: Upper SE--Verified
-Nest17: Lower NW
-
-Nest18: Lower NE
-Nest19: Upper Middle
-
-Nest20: Lower SE
-Nest21: Upper SW
-
-Nest22: Upper NE--22 & 24 may be flip flopped, hard to say which is which (doesn't really matter though)
-Nest23: Lower SW--Verified
-Nest24: Upper NW
-
-Nest25: Upper SE
-Nest26: Lower W
-
-Nest27: Lower NE--27 & 29 could be flipped
-Nest28: Upper Middle
-Nest29: Lower NW
-
-Nest30: Lower SE
-Nest31: Upper SW
-
-Nest32: Upper NE
-Nest33: Lower SW
-Nest34: Upper
-
-Nest35: Lower
-Nest36: Upper
-Nest37: Lower
---]]
---[[10H
-Nest1: Lower NE
-Nest2: Lower SE
-Nest3: Lower SW
-Nest4: Upper Middle
-Nest5: Upper NW
-Nest6: Upper NE
-Nest7: Lower SE
-Nest8: Lower SW
-Nest9: Lower NE
-Nest10: Upper Middle
-Nest11: Upper SE
-Nest12: Upper NW
-Nest13: Lower SW
-Nest14: Lower W
-Nest15: Lower NW
-Nest16: Upper NE
-Nest17: Upper SE
-Nest18: Upper NE
-Nest19: Lower SW
-Nest20: Lower SE
-Nest21: Lower NE
-Nest22: Upper SW
-Nest23: Upper SE
-Nest24: Upper Middle
-Nest25: Lower NW
-Nest26: Lower SW
-Nest27: Lower NE
-Nest28: Upper Middle
+--[[10H (are 10N and LFR the same?), Locations were wrong so removed.
+--10man/LFR just won't have locations feature as i don't run those formats and can never verify them
+--Not that there is much to get confused about on 10 man anyways, only one nest at a time
+Nest1: Lower
+Nest2: Lower
+Nest3: Lower
+Nest4: Upper
+Nest5: Upper
+Nest6: Upper
+Nest7: Lower
+Nest8: Lower
+Nest9: Lower
+Nest10: Upper
+Nest11: Upper
+Nest12: Upper
+Nest13: Lower
+Nest14: Lower
+Nest15: Lower
+Nest16: Upper
+Nest17: Upper
+Nest18: Upper
+Nest19: Lower
+Nest20: Lower
+Nest21: Lower
+Nest22: Upper
+Nest23: Upper
+Nest24: Upper
+Nest25: Lower
+Nest26: Lower
+Nest27: Lower
+Nest28: Upper
 --]]
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
-	if msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU) then
-		flockC = flockC + 1
-		local messageText = msg:find(L.eggsHatchL) and L.Lower or L.Upper
+	if (msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU)) and self:AntiSpam(5, 2) then
+		flockC = flockC + 1--Now flock set number instead of nest number (at least for 25, for 10man/LFR it's both)
+		local messageText = msg:find(L.eggsHatchL) and L.Lower or L.Upper--For 10man/LFR
+		local locationText = ""--Set to "" so if location is nil we don't alter mods older message functionality
 		local flockText = tostring(flockC)
-		if GetTime() - lastFlock < 5 then--On 25 man, you get two at same time sometimes, we detect that here and revise message
-			messageText = L.UpperAndLower
-			flockText = tostring(flockC - 1)..", "..tostring(flockC)
-			if trippleNest then--If this is true it means we had a 2nd nest message already and this is a 3rd nest message
-				flockText = tostring(flockC - 2)..", "..tostring(flockC - 1)..", "..tostring(flockC)
-				if flockC == 24 or flockC == 29 then
-					messageText = L.TrippleU
-				else
-					messageText = L.TrippleD
-				end
-			end
-			trippleNest = true--This will be set to true on 2nd nest message
-		else
-			trippleNest = false--We reset variable cause it's obviously a first nest message
-		end
-		warnFlock:Cancel()
-		specWarnFlock:Cancel()
-		timerFlockCD:Cancel()--So we don't get two timers on the double nests on 25 man
 		--10N/10H/LFR: L, L, L, U, U, U (Repeating)
 		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
+			--Timer code will probably always stay the same, locations in timer is too much text for a timer.
 			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
 				timerFlockCD:Show(40, flockC+1, L.Lower)
 			elseif flockC == 3 or flockC == 4 or flockC == 5 or flockC == 9 or flockC == 10 or flockC == 11 or flockC == 15 or flockC == 16 or flockC == 17 or flockC == 21 or flockC == 22 or flockC == 23 or flockC == 27 or flockC == 28 or flockC == 29 or flockC == 33 or flockC == 34 or flockC == 35 then--Upper is next
@@ -264,59 +191,166 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			--TODO, find out locations for these to improve the warnings.
 			if self:IsDifficulty("heroic10") then
 				if flockC == 2 then
-					specWarnBigBird:Show(" ("..L.Lower..L.SouthEast..")")
+					--locationText = L.SouthEast
+					specWarnBigBird:Show(messageText)
 				elseif flockC == 4 then
-					specWarnBigBird:Show(" ("..L.Upper..L.West..")")
+					--locationText = L.West
+					specWarnBigBird:Show(messageText)
 				elseif flockC == 8 then
-					specWarnBigBird:Show(" ("..L.Lower..L.SouthWest..")")
+					--locationText = L.SouthWest
+					specWarnBigBird:Show(messageText)
 				elseif flockC == 12 then
-					specWarnBigBird:Show(" ("..L.Upper..L.NorthWest..")")
+					--locationText = L.NorthWest
+					specWarnBigBird:Show(messageText)
 				elseif flockC == 14 then
-					specWarnBigBird:Show(" ("..L.Lower..L.West..")")
+					--locationText = L.West
+					specWarnBigBird:Show(messageText)
 				end
 			end
-		--25N: Lower (1), Lower (2), Lower (3), Lower (4), Lower & Upper (5+6), Upper (7), Upper (8), Lower & Upper (9+10), Lower & Upper (11+12), Lower (13), Lower (14), Lower & Upper (15+16), Upper (17), Lower & Upper (18+19), Lower & Upper (20+21), Lower & Upper (22+23), Lower (24), Lower & Upper (25+26), Lower & Upper (27+28)
 		elseif self:IsDifficulty("normal25") then
-			if flockC == 1 or flockC == 2 or flockC == 3 or flockC == 12 or flockC == 13 or flockC == 23 then--Lower is next
+			--http://www.youtube.com/watch?v=jo0BKuuh5xw
+			if flockC == 1 then--Lower NE
+				messageText, locationText = L.Lower, L.NorthEast
 				timerFlockCD:Show(30, flockC+1, L.Lower)
-			elseif flockC == 6 or flockC == 7 or flockC == 16 then--Upper is next
-				timerFlockCD:Show(30, flockC+1, L.Upper)
-			elseif flockC == 4 or flockC == 8 or flockC == 10 or flockC == 14 or flockC == 17 or flockC == 19 or flockC == 21 or flockC == 24 or flockC == 26 then--Both are next
+			elseif flockC == 2 then--Lower SE
+				messageText, locationText = L.Lower, L.SouthEast
+				timerFlockCD:Show(30, flockC+1, L.Lower)
+			elseif flockC == 3 then--Lower SW
+				messageText, locationText = L.Lower, L.SouthWest
+				timerFlockCD:Show(30, flockC+1, L.Lower)
+			elseif flockC == 4 then--Lower W
+				messageText, locationText = L.Lower, L.West
 				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
-			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
+			elseif flockC == 5 then--Lower NW, Upper NE
+				messageText, locationText = L.UpperAndLower, L.NorthWest..", "..L.NorthEast
+				timerFlockCD:Show(30, flockC+1, L.Upper)
+			elseif flockC == 6 then--Upper SE
+				messageText, locationText = L.Upper, L.SouthEast
+				timerFlockCD:Show(30, flockC+1, L.Upper)
+			elseif flockC == 7 then--Upper Middle
+				messageText, locationText = L.Upper, L.Middle
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 8 then--Lower NE & Upper SW
+				messageText, locationText = L.UpperAndLower, L.NorthEast..", "..L.SouthWest
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 9 then--Lower SE & Upper NW
+				messageText, locationText = L.UpperAndLower, L.SouthEast..", "..L.NorthWest
+				timerFlockCD:Show(30, flockC+1, L.Lower)
+			elseif flockC == 10 then--Lower SW
+				messageText, locationText = L.Lower, L.SouthWest
+				timerFlockCD:Show(30, flockC+1, L.Lower)
+			elseif flockC == 11 then--Lower W
+				messageText, locationText = L.Lower, L.West
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 12 then--Lower NW & Upper NE
+				messageText, locationText = L.UpperAndLower, L.NorthWest..", "..L.NorthEast
+				timerFlockCD:Show(30, flockC+1, L.Upper)
+			elseif flockC == 13 then--Upper SE
+				messageText, locationText = L.Upper, L.SouthEast
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 14 then--Lower NE & Upper Middle
+				messageText, locationText = L.UpperAndLower, L.NorthEast..", "..L.Middle
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 15 then--Lower SE & Upper SW
+				messageText, locationText = L.UpperAndLower, L.SouthEast..", "..L.SouthWest
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 16 then--Lower SW & Upper ?
+				messageText, locationText = L.UpperAndLower, L.SouthWest..", "..DBM_CORE_UNKNOWN
+				timerFlockCD:Show(30, flockC+1, L.Lower)
+			elseif flockC == 17 then--Lower W
+				messageText, locationText = L.Lower, L.West
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 18 then--Lower ? & Upper NE
+				messageText, locationText = L.UpperAndLower, DBM_CORE_UNKNOWN..", "..L.NorthEast
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 19 then--Lower ? & Upper SE
+				messageText, locationText = L.UpperAndLower, DBM_CORE_UNKNOWN..", "..L.SouthEast
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 20 then--Lower ? & Upper SE
+				messageText, locationText = L.UpperAndLower, L.Southeast..", "..L.Middle
+				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
+			else
+				messageText, locationText = DBM_CORE_UNKNOWN, ""
 				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 			end
-		--25H: Lower (1), Lower (2), Lower (3), Lower & Upper (4, 5), Lower & Upper (6, 7), Upper (8), Upper & Lower (9, 10), Upper & Lower (11, 12), Lower (13), Upper & Lower (14, 15), Upper & Lower (16, 17), Upper & Lower (18, 19), Upper & Lower (20, 21), Upper & Lower & Upper (22, 23, 24), Upper & Lower (25, 26), Lower & Upper & Lower (27, 28, 29), Upper & Lower & Upper (30, 31, 32), Lower & Upper (33, 34), Lower & Upper & Lower (35, 36, 37)
 		elseif self:IsDifficulty("heroic25") then
-			if flockC == 1 or flockC == 2 or flockC == 12 then--Lower is next
+			--maybe rework it still so the locationText itself include upper/lower in each location. i just couldn't think of a clean way of doing it at the moment without completely breaking other difficulties or making message text REALLY long
+			--http://www.youtube.com/watch?feature=player_detailpage&v=nMSbQJBlKwM
+			if flockC == 1 then--Lower NE
+				messageText, locationText = L.Lower, L.NorthEast
 				timerFlockCD:Show(30, flockC+1, L.Lower)
-			elseif flockC == 7 then--Upper is next
-				timerFlockCD:Show(30, flockC+1, L.Upper)
-			elseif flockC == 3 or flockC == 5 or flockC == 8 or flockC == 10 or flockC == 13 or flockC == 15 or flockC == 17 or flockC == 19 or flockC == 24 or flockC == 32 then--Both are next
+			elseif flockC == 2 then--Lower SE
+				messageText, locationText = L.Lower, L.SouthEast
+				specWarnBigBird:Show(messageText.." ("..locationText..")")
+				timerFlockCD:Show(30, flockC+1, L.Lower)
+			elseif flockC == 3 then--Lower SW
+				messageText, locationText = L.Lower, L.SouthWest
 				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
-			elseif flockC == 21 or flockC == 29 then--Tripple is next (2 upper 1 lower)
+			elseif flockC == 4 then--Lower W, Upper NE
+				messageText, locationText = L.UpperAndLower, L.West..", "..L.NorthEast
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 5 then--Lower NW, Upper SE
+				messageText, locationText = L.UpperAndLower, L.NorthWest..", "..L.SouthEast
+				specWarnBigBird:Show(L.Lower.." ("..L.NorthWest..")")
+				timerFlockCD:Show(30, flockC+1, L.Upper)
+			elseif flockC == 6 then--Upper Middle
+				messageText, locationText = L.Upper, L.Middle
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 7 then--Lower NE, Upper SW
+				messageText, locationText = L.UpperAndLower, L.NorthEast..", "..L.SouthWest
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 8 then--Lower SE, Upper NW
+				messageText, locationText = L.UpperAndLower, L.SouthEast..", "..L.NorthWest
+				specWarnBigBird:Show(L.Upper.." ("..L.NorthWest..")")
+				timerFlockCD:Show(30, flockC+1, L.Lower)
+			elseif flockC == 9 then--Lower SW
+				messageText, locationText = L.Upper, L.SouthWest
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 10 then--Upper NE, Lower W
+				messageText, locationText = L.UpperAndLower, L.NorthEast..", "..L.West
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 11 then--Upper SE, Lower NW
+				messageText, locationText = L.UpperAndLower, L.SouthEast..", "..L.NorthWest
+				specWarnBigBird:Show(L.Upper.." ("..L.SouthEast..")")
+				timerFlockCD:Show(30, flockC+1, L.Upper)
+			elseif flockC == 12 then--Lower NE, Upper Middle
+				messageText, locationText = L.UpperAndLower, L.NorthEast..", "..L.Middle
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 13 then--Lower SE, Upper SW
+				messageText, locationText = L.UpperAndLower, L.SouthEast..", "..L.SouthWest
 				timerFlockCD:Show(30, flockC+1, L.TrippleU)
-			elseif flockC == 26 or flockC == 34 then--Tripple is next (2 lower 1 upper)
+			elseif flockC == 14 then--Upper NE, Lower SW, Upper NW
+				messageText, locationText = L.TrippleU, L.NorthEast..", "..L.SouthWest..", "..L.NorthWest
+				specWarnBigBird:Show(L.Lower.." ("..L.SouthWest..")")
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 15 then--Upper SE, Lower W
+				messageText, locationText = L.UpperAndLower, L.SouthEast..", "..L.West
 				timerFlockCD:Show(30, flockC+1, L.TrippleD)
-			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
+			elseif flockC == 16 then--Lower NE, Upper Middle, Lower NW
+				messageText, locationText = L.TrippleD, L.NorthEast..", "..L.Middle..", "..L.NorthWest
+				timerFlockCD:Show(30, flockC+1, L.UpperAndLower)
+			elseif flockC == 17 then--Lower SE, Upper SW
+				messageText, locationText = L.UpperAndLower, L.SouthEast..", "..L.SouthWest
+				timerFlockCD:Show(30, flockC+1, L.TrippleU)
+			elseif flockC == 18 then--Lower SE, Upper SW
+				messageText, locationText = L.TrippleU, L.NorthEast..", "..L.SouthWest..", "..L.NorthWest
+				timerFlockCD:Show(30, flockC+1, L.TrippleD)
+			elseif flockC == 19 then--Unknown locations
+				messageText, locationText = L.TrippleD, ""
 				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
-			end
-			if flockC == 2 then
-				specWarnBigBird:Show(" ("..L.Lower..L.SouthEast..")")
-			elseif flockC == 6 then
-				specWarnBigBird:Show(" ("..L.Lower..L.NorthWest..")")
-			elseif flockC == 23 then
-				specWarnBigBird:Show(" ("..L.Lower..L.SouthWest..")")
-			elseif flockC == 12 then
-				specWarnBigBird:Show(" ("..L.Upper..L.NorthWest..")")
-			elseif flockC == 16 then
-				specWarnBigBird:Show(" ("..L.Upper..L.SouthEast..")")
+			else
+				messageText, locationText = DBM_CORE_UNKNOWN, ""
+				timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 			end
 		else--Shouldn't be an else, but just failsafe code
 			timerFlockCD:Show(30, flockC+1, DBM_CORE_UNKNOWN)
 		end
-		warnFlock:Schedule(0.5, messageText, flockName, flockText)
-		specWarnFlock:Schedule(0.5, messageText, flockName, flockText)
-		lastFlock = GetTime()
+		if locationText ~= "" then
+			warnFlock:Show(messageText, flockName, flockText.." ("..locationText..")")
+			specWarnFlock:Show(messageText, flockName, flockText.." ("..locationText..")")
+		else
+			warnFlock:Show(messageText, flockName, flockText)
+			specWarnFlock:Show(messageText, flockName, flockText)
+		end
 	end
 end
