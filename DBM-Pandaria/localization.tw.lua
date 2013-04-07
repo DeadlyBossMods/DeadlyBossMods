@@ -33,7 +33,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!"
+	Pull				= "你們竟敢打擾我們的準備工作!贊達拉這次不會再被阻止了!"
 })
 
 ---------------------------
