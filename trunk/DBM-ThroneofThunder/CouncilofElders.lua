@@ -226,7 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			elseif self:IsDifficulty("normal10", "normal25") then
 				timerDarkPowerCD:Start(math.floor(68/(0.10*stack+1.0)+0.5))--need review (68, 62, 57, 52)
 			else -- lfr
-				timerDarkPowerCD:Start(math.floor(97/(0.05*stack+1.0)+0.5))--need review (97, 92, 88, 74)
+				timerDarkPowerCD:Start(math.floor(97/(0.05*stack+1.0)+0.5))--need review (97, 92, 88, 84)
 			end
 		else
 			if self:IsDifficulty("heroic10", "heroic25") then
