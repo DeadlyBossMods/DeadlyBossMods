@@ -268,7 +268,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	if msg:find("spell:136932") then--Force of Will
 		local target = DBM:GetFullNameByShortName(target)
 		warnForceOfWill:Show(target)
-		if timerLightSpectrumCD:GetTime() > 22 or timerDisintegrationBeamCD:GetTime() > 108 then--Don't start timer if either beam or spectrum will come first (cause both disable force ability)
+		if timerLightSpectrumCD:GetTime() > 22 or timerDisintegrationBeamCD:GetTime() > 110 then--Don't start timer if either beam or spectrum will come first (cause both disable force ability)
 			timerForceOfWillCD:Start()
 		end
 		if target == UnitName("player") then
@@ -414,7 +414,7 @@ function mod:UNIT_DIED(args)
 			lastBlue = nil
 			lastYellow = nil
 			timerObliterateCD:Cancel()
-			timerForceOfWillCD:Start()
+			timerForceOfWillCD:Start(15)
 			if self.Options.SetIconRays and lastRed then
 				self:SetIcon(lastRed, 0)
 				self:SetIcon(lastBlue, 0)
@@ -432,7 +432,7 @@ function mod:UNIT_DIED(args)
 				lastBlue = nil
 				lastYellow = nil
 				timerObliterateCD:Cancel()
-				timerForceOfWillCD:Start()
+				timerForceOfWillCD:Start(15)
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
 					self:SetIcon(lastBlue, 0)
@@ -451,7 +451,7 @@ function mod:UNIT_DIED(args)
 				lastBlue = nil
 				lastYellow = nil
 				timerObliterateCD:Cancel()
-				timerForceOfWillCD:Start()
+				timerForceOfWillCD:Start(15)
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
 					self:SetIcon(lastBlue, 0)
