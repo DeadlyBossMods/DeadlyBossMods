@@ -1137,7 +1137,8 @@ do
 	end
 
 	function DBM:ElectMaster()
-		-- FIXME: Add Zonecheck for raidmates
+		-- FIXME: Add Zonecheck for raidmates. This is a big problem. My guild raids with 33 people in raid. if highest version is sitting outside, again, big problem.
+		-- FIXME: This doesn't check if person actually has icons turned on. many are off by default. If RL turns icon on, but his version out of date, we have problem
 		local elect_player = nil
 		local elect_revision = tonumber(DBM.Revision)
 		local elect_raidlead = false
