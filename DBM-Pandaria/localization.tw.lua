@@ -11,7 +11,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "Yes, YES! Bring your rage to bear! Try to strike me down!"
+	Pull				= "沒錯...沒錯!釋放你的怒火!試著擊敗我!"
 })
 
 -----------------------
@@ -20,7 +20,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(725)
 
 L:SetMiscLocalization({
-	Pull				= "Bring me their corpses!"
+	Pull				= "把他們的屍體帶給我!"
 })
 
 --------------
