@@ -1450,7 +1450,6 @@ do
 					raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 				end
 			end
-			DBM:ElectMaster()
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
