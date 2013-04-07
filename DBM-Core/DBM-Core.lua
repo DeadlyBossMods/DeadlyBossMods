@@ -1154,6 +1154,8 @@ do
 		--2. 5 promoted person. they are all same revision. Only 1 person turned on icons, rest 4 person turned off. But on your think, if one person turned on icon, icon will be seted. Is this clean way?
 
 		I think THAT icons should be throttled with one person. Multiple person, can be cause many unexpected result. Especially set multiple icons at same time.
+		
+		NOTE: In koKR, almost user uses DBM. (likely that 80% of all users) On Sha of Anger encounter, at least 10 person(in koKR, Worldboss prefer to use all person promoted.) try to set icons, this causes icon function useless ;)
 
 		local elect_player = nil
 		local elect_revision = tonumber(DBM.Revision)
