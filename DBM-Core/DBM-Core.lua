@@ -51,11 +51,7 @@ DBM = {
 
 -- Legacy crap; that stupid "Version" field was never a good idea.
 -- Some functions that should be using ReleaseRevision still use this one, so we will just keep it and set to ReleaseRevision
-if DBM.DisplayVersion == "5.2.3 alpha" then--Revert this hack on 5.2.4 release
-	DBM.Version = tostring(99999)--Prevent update alert on 5.2.3 release (9085) user. joshua changed to 999999.
-else
-	DBM.Version = tostring(DBM.ReleaseRevision)
-end
+DBM.Version = tostring(DBM.ReleaseRevision)
 
 -- support for git svn which doesn't support svn keyword expansion
 if not DBM.Revision then
@@ -1077,13 +1073,13 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		DBM:RequestInstanceInfo()
 	elseif cmd:sub(1, 6) == "joshua" and DBM:GetRaidRank(playerName) > 0 then
-		if DBM.Revision == 999999 then--if it's already 999999
+		if DBM.Revision == 99999 then--if it's already 99999
 			DBM.Revision = myRealRevision--Restore it
 			DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
 			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))--Two syncs because we need to also disable mods that don't know what "AM" is
 			sendSync("AM", "false")
 		else
-			DBM.Revision = 999999
+			DBM.Revision = 99999
 			DBM:AddMsg(DBM_ABSOLUTE_MODE_ON)
 			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 			sendSync("AM", "true")
@@ -1541,7 +1537,7 @@ do
 			raidUIds["player"] = playerName
 			raidGuids[UnitGUID("player")] = playerName
 			raidShortNames[playerName] = playerName
-			if DBM.Revision == 999999 then--if it's already 999999 when we leave raid, turn it back off
+			if DBM.Revision == 99999 then--if it's already 99999 when we leave raid, turn it back off
 				DBM.Revision = myRealRevision
 				DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
 			end
@@ -2128,7 +2124,7 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
-			if version > tonumber(DBM.Version) and version ~= 999999 then -- Update reminder
+			if version > tonumber(DBM.Version) and version ~= 99999 then -- Update reminder
 				if not showedUpdateReminder then
 					local found = false
 					for i, v in pairs(raid) do
