@@ -164,7 +164,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDebuffCount				= "Zeige Warnung für die Debuffanzahl, wenn du Mutagenpfützen absorbierst",
+	warnDebuffCount				= "Zeige Warnung für die Debuffanzahl, wenn du Pfützen absorbierst",
 	RangeFrame					= "Zeige Abstandsfenster (5m/2m)"
 })
 
@@ -182,7 +182,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "Die Kugel explodiert!" --needs to be verified (PTR video-captured translation)
+	Pull		= "Die Kugel explodiert!"
 })
 
 --------------
