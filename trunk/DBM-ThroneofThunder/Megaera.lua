@@ -140,7 +140,7 @@ function mod:OnCombatStart(delay)
 		arcaneInFront = 0
 		timerCinderCD:Start(13)
 		timerNetherTearCD:Start()
-	else
+	elseif self:IsDifficulty("normal10", "normal25") then -- lfr seems first Cinder not comes
 		timerCinderCD:Start()
 	end
 	self:RegisterShortTermEvents(
@@ -287,7 +287,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			end
 		end
 		if fireBehind > 0 then
-			timerCinderCD:Start(5)--5-8 second variation
+			if self:IsDifficulty("lfr25") then
+				timerCinderCD:Start(11)--11-14 second variatio
+			else
+				timerCinderCD:Start(5)--5-8 second variatio
+			end
 		end
 --[[		if venomBehind > 0 then
 			timerAcidRainCD:Start(15)--15-20 seconds after rampage ends, unknown heroic value, this number is from normal log.
