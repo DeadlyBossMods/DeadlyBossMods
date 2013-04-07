@@ -15,7 +15,7 @@
 --    * ruRU: Vampik					admin@vampik.ru
 --    * zhTW: Hman						herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
---    * koKR: nBlueWiz/BlueNyx			everfinale@gmail.com
+--    * koKR: nBlueWiz					everfinale@gmail.com
 --    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --
 -- Special thanks to:
@@ -4199,6 +4199,14 @@ do
 		return newAnnounce(self, "spell", spellId, color or 3, ...)
 	end
 
+	function bossModPrototype:NewEndAnnounce(spellId, color, ...)
+		return newAnnounce(self, "ends", spellId, color or 3, ...)
+	end
+
+	function bossModPrototype:NewFadesAnnounce(spellId, color, ...)
+		return newAnnounce(self, "fades", spellId, color or 3, ...)
+	end
+
 	function bossModPrototype:NewAddsLeftAnnounce(spellId, color, ...)
 		return newAnnounce(self, "adds", spellId, color or 2, ...)
 	end
@@ -4670,6 +4678,18 @@ do
 
 	function bossModPrototype:NewSpecialWarningSpell(text, optionDefault, ...)
 		return newSpecialWarning(self, "spell", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningEnd(text, optionDefault, ...)
+		return newSpecialWarning(self, "ends", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningFades(text, optionDefault, ...)
+		return newSpecialWarning(self, "fades", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningSoon(text, optionDefault, ...)
+		return newSpecialWarning(self, "soon", text, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningDispel(text, optionDefault, ...)
