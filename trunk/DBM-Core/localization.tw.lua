@@ -8,11 +8,6 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組。輸入/dbm或/dbm help有�
 DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 DBM_CORE_LOAD_GUI_COMBAT			= "圖形介面不能在戰鬥中初始化。請先在於戰鬥外讀取圖形介面，這樣就能夠在戰鬥中使用。"
 
-DBM_ABSOLUTE_MODE_ON				= "專制模式開啟。"
-DBM_ABSOLUTE_MODE_OFF				= "專制模式關閉。再次廣播模組版本。"
-DBM_ABSOLUTE_MODE_NOTIFY_ON			= "專制模式被%s開啟。只有他們的DBM能夠設置團隊圖示。"
-DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "專制模式被%s關閉。還原一般圖示權限。"
-
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "開戰%s已進行的戰鬥。祝好運與盡興! :)"
 DBM_CORE_SCENARIO_STARTED			= "%s開始。祝好運與盡興! :)"

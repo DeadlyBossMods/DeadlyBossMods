@@ -8,11 +8,6 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен модуль для '%s'. Для
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "GUI не может быть изначально загружено в бою. GUI будет загружено вне боя. После загрузки GUI вы сможете загружать его в бою."
 
-DBM_ABSOLUTE_MODE_ON				= "Активирован абсолютный режим."
-DBM_ABSOLUTE_MODE_OFF				= "Абсолютный режим отключен."
-DBM_ABSOLUTE_MODE_NOTIFY_ON			= "%s активировал абсолютный режим. Только его DBM сможет ставить метки."
-DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "%s отключил абсолютный режим. Метки вновь могут ставить все игроки с рейд-ассистом."
-
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s вступает в бой (в процессе). Удачи! :)"
 DBM_CORE_SCENARIO_STARTED			= "%s начат. Удачи! :)"
