@@ -141,7 +141,7 @@ L:SetWarningLocalization({
 	warnBeamNormal				= "Strahlen - |cffff0000Rot|r : >%s<, |cff0000ffBlau|r : >%s<",
 	warnBeamHeroic				= "Strahlen - |cffff0000Rot|r : >%s<, |cff0000ffBlau|r : >%s<, |cffffff00Gelb|r : >%s<",
 	warnAddsLeft				= "Nebel verbleibend: %d",
-	specWarnBlueBeam			= "Blaue Strahlen auf dir - BLEIB STEHEN!",
+	specWarnBlueBeam			= "Blaue Strahlen auf dir - Bleib möglichst stehen",
 	specWarnFogRevealed			= "%s offenbart!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
@@ -160,13 +160,11 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "Zu viele Mutationen: %d gute, %d schlechte",
-	specWarnFullyMutatedFaded	= "%s ist beendet"
+	warnDebuffCount				= "Mutationen: %d/5 gute, %d schlechte",
 })
 
 L:SetOptionLocalization({
-	warnDebuffCount				= "Zeige Warnung für die Debuffanzahl, wenn du zu viele Mutagenpfützen absorbierst",
-	specWarnFullyMutatedFaded	= "Zeige Spezialwarnung, wenn $spell:140546 beendet ist",
+	warnDebuffCount				= "Zeige Warnung für die Debuffanzahl, wenn du Mutagenpfützen absorbierst",
 	RangeFrame					= "Zeige Abstandsfenster (5m/2m)"
 })
 
@@ -235,10 +233,15 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(832)
 
+L:SetWarningLocalization({
+	specWarnIntermissionSoon	= "Unterbrechung bald"
+})
+
 L:SetOptionLocalization({
-	RangeFrame			= "Zeige Abstandsfenster",
-	StaticShockArrow	= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
-	OverchargeArrow		= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist"
+	specWarnIntermissionSoon	= "Zeige Spezialvorwarnung für Unterbrechung",
+	RangeFrame					= "Zeige Abstandsfenster",
+	StaticShockArrow			= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
+	OverchargeArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist"
 })
 
 ------------
