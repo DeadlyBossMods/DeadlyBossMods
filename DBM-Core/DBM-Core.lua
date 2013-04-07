@@ -1137,8 +1137,24 @@ do
 		--TODO.
 		--1. this function honestly needs a complete rewrite with a ton of syncing, it needs to ask all users on RAID_ROSTER_UPDATE the value of DBM.Options.DontSetIcons to an excludes table for elect mode.
 		--2. it even needs to sync individual boss mods....yeah, that's shitty.
-		
+
 		--honestly, scrap this, restore old icon, but switch it to using DBM.Revision instead of release version, just have multiple setters and have them all be latest alpha, probelm fixed. if all same alpha, no issue, even if multiple.
+
+		--by BlueWIz:
+		--Anyway, icon conflict caused in multiple promoted raid. (ex: LFR - at least 2 person promoted (2 TANKs) / WorldBoss - Normally, all person promoted)
+		--If you turned on icon settings chat msg, you can see flooded chat msg by this.
+		--I think icon setting permission throttled strictly. If raid leader or promoted persons want no icon, that will do.
+		--No needed to check individual mods, even global icon settings. I think only one will be need just filter unwanted person to be elected (ex: outside instance,,,)
+		--Elected person takes all. This will be more clean way. At least I think.
+
+		--My Question
+		--1. 5 promoted person. they are all same revision. All turned on icons(default). In Megaera, person A applied by Cinder. All promoted person will set icons, this caused 5 chat msgs for some person, isn't it spam? 
+		     And one promoted persion reload client during combat, recovery worked. But unfortunely, cinderIcon varibles do not match with other promoted person. This will cause icon override. This is not big problem?
+		     And if promoted preson set multiple icon on same time, all promoted person will set icons in same order? Or if 1 person laggy?
+		--2. 5 promoted person. they are all same revision. Only 1 person turned on icons, rest 4 person turned off. But on your think, if one person turned on icon, icon will be seted. Is this clean way?
+
+		I think THAT icons should be throttled with one person. Multiple person, can be cause many unexpected result. Especially set multiple icons at same time.
+
 		local elect_player = nil
 		local elect_revision = tonumber(DBM.Revision)
 		local elect_raidlead = false
