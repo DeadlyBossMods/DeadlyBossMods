@@ -20,7 +20,7 @@
 --
 -- Special thanks to:
 --    * Arta
---    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
+--    * Omegal @ US-Whisperwind (continuing mod support for 3.2+) Contact: mysticalosx@gmail.com
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --    * nbluewiz (a lot of fixes in the koKR localization as well as boss mod work)
 --
@@ -1155,7 +1155,12 @@ do
 
 		I think THAT icons should be throttled with one person. Multiple person, can be cause many unexpected result. Especially set multiple icons at same time.
 		
+		Wrong, i play with chat message turned on, chat messages only fire when the icon changes. if 5 people set same icon, only ONE chat message. i can video this if you want. multiple chat message fire if conflict (user setting one icon user 2 setting different icon). this is how i always know who is making conflict.
+		Example, meg, i made change to alternate icons, user on old version not have new alpha. Their version setting square on all, mine trying to alternate square and triangle, i see chat message that user changed my triangle every time i set it, to square. However, my fix, no conflict, my alpha > theirs, my version set, theirs does not. but if their version same as mine, both us set triangle, still one chat message, no conflict.
+		First person to set icon gets chat message, no further chat message from others trying to set SAME icon.
+		
 		NOTE: In koKR, almost user uses DBM. (likely that 80% of all users) On Sha of Anger encounter, at least 10 person(in koKR, Worldboss prefer to use all person promoted.) try to set icons, this causes icon function useless ;)
+		This is a sha of fear issue actually. When combat logs disagree with order debufs applied for multi target debufs, icons get assigned different by each person. person A for one client may be person b by other. Should probably recode all multi icon functions to use group sort function so always agree? Maybe add group sort code to core for reuse in all mods? sounds like good idea
 
 		local elect_player = nil
 		local elect_revision = tonumber(DBM.Revision)
