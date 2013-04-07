@@ -1153,11 +1153,11 @@ do
 		if not #sortMe then return nil end	-- no raid, no election
 
 		local p = sortMe[1]
-		if p.revision >= tonumber(DBM.Revision) then	-- first we check the latest revision
+		if (p.revision or 0) > elect_revision then	-- first we check the latest revision
 			elect_revision = tonumber(p.revision)
 		end
 		for i, v in ipairs(sortMe) do	-- now we kick all assists with a revision lower than the hightest
-			if tonumber(v.revision) < elect_revision then
+			if (tonumber(v.revision) or 0) < elect_revision then
 				table.remove(sortMe, i)
 			end
 		end
@@ -5554,7 +5554,7 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 function bossModPrototype:SetIcon(target, icon, timer)
-	if DBM.Options.DontSetIcons or not enableIcons then -- You can set icon if in 5-man party even not leader. Also you can set icon in solo raid.
+	if DBM.Options.DontSetIcons or not enableIcons or (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) then -- Can set icon in solo raid.
 		return
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
