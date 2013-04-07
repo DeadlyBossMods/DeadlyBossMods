@@ -31,10 +31,12 @@ local warnBouncingBolt					= mod:NewSpellAnnounce(136361, 3)
 local warnDecapitate					= mod:NewTargetAnnounce(134912, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnThunderstruck					= mod:NewSpellAnnounce(135095, 3)--Target scanning seems to not work
 --Phase 2
+local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnFusionSlash					= mod:NewSpellAnnounce(136478, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnLightningWhip					= mod:NewSpellAnnounce(136850, 3)
 local warnSummonBallLightning			= mod:NewSpellAnnounce(136543, 3)--This seems to be VERY important to spread for. It spawns an orb for every person who takes damage. MUST range 6 this.
 --Phase 3
+local warnPhase3						= mod:NewPhaseAnnounce(3)
 local warnViolentGaleWinds				= mod:NewSpellAnnounce(136889, 3)
 local warnElectricalShock				= mod:NewStackAnnounce(136914, 3, nil, mod:IsTank())
 
@@ -340,6 +342,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			westDestroyed = true
 		end
 		if phase == 2 then--Start Phase 2 timers
+			warnPhase2:Show()
 			timerSummonBallLightningCD:Start(15)
 			timerLightningWhipCD:Start(30)
 			timerFussionSlashCD:Start(44)
@@ -347,6 +350,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				DBM.RangeCheck:Show(6)--Needed for phase 2 AND phase 3
 			end
 		elseif phase == 3 then--Start Phase 3 timers
+			warnPhase3:Show()
 			timerViolentGaleWindsCD:Start(20)
 			timerLightningWhipCD:Start(21.5)
 			timerThunderstruckCD:Start(36)
