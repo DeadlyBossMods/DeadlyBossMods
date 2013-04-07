@@ -7,11 +7,6 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' mods. For more options, type /dbm or 
 DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "GUI cannot be initially loaded in combat. GUI will be loaded out of combat. After GUI loaded, you can load GUI in combat."
 
-DBM_ABSOLUTE_MODE_ON				= "Absolute mode enabled."
-DBM_ABSOLUTE_MODE_OFF				= "Absolute mode disabled. Broadcasting propper mod version again"
-DBM_ABSOLUTE_MODE_NOTIFY_ON			= "Absolute mode enabled by %s. Only their DBM can set raid icons."
-DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "Absolute mode diabled by %s. Normal icon permissions restored."
-
 DBM_CORE_COMBAT_STARTED				= "%s engaged. Good luck and have fun! :)"
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Engaged an in progress fight against %s. Good luck and have fun! :)"
 DBM_CORE_SCENARIO_STARTED			= "%s started. Good luck and have fun! :)"

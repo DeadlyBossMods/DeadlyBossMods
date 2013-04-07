@@ -8,11 +8,6 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다 !"
 DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 전투가 종료되면 설정창이 열릴 것입니다. 이후에는 전투 중이라도 설정창을 불러 올 수 있습니다."
 
-DBM_ABSOLUTE_MODE_ON				= "무제한 모드가 활성화 되었습니다."
-DBM_ABSOLUTE_MODE_OFF				= "무제한 모드가 비활성화 되었습니다. 공격대에 원래 버전을 알립니다."
-DBM_ABSOLUTE_MODE_NOTIFY_ON			= "%s|1이;가; 무제한 모드를 활성화 하였습니다. 이 사용자의 DBM만이 전술 목표 아이콘을 설정할 수 있습니다."
-DBM_ABSOLUTE_MODE_NOTIFY_OFF		= "%s|1이;가; 무제한 모드를 비활성화 하였습니다. 아이콘 설정 기능이 원래대로 돌아갑니다."
-
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가하였습니다. 행운을 빕니다! :)"
 DBM_CORE_SCENARIO_STARTED			= "%s 시작됨. 행운을 빕니다! :)";
