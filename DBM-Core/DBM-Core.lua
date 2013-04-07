@@ -51,7 +51,11 @@ DBM = {
 
 -- Legacy crap; that stupid "Version" field was never a good idea.
 -- Some functions that should be using ReleaseRevision still use this one, so we will just keep it and set to ReleaseRevision
-DBM.Version = tostring(DBM.ReleaseRevision)
+if DBM.DisplayVersion == "5.2.3 alpha" then--Revert this hack on 5.2.4 release
+	DBM.Version = tostring(99999)--Prevent update alert on 5.2.3 release (9085) user. joshua changed to 999999.
+else
+	DBM.Version = tostring(DBM.ReleaseRevision)
+end
 
 -- support for git svn which doesn't support svn keyword expansion
 if not DBM.Revision then
@@ -199,7 +203,6 @@ local LastZoneMapID = -1
 local queuedBattlefield = {}
 local combatDelay = false
 local myRealRevision = DBM.Revision or DBM.ReleaseRevision
-local highestRealVersion = 0
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -1074,13 +1077,13 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		DBM:RequestInstanceInfo()
 	elseif cmd:sub(1, 6) == "joshua" and DBM:GetRaidRank(playerName) > 0 then
-		if DBM.Revision == 99999 then--if it's already 99999
+		if DBM.Revision == 999999 then--if it's already 999999
 			DBM.Revision = myRealRevision--Restore it
 			DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
 			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))--Two syncs because we need to also disable mods that don't know what "AM" is
 			sendSync("AM", "false")
 		else
-			DBM.Revision = 99999
+			DBM.Revision = 999999
 			DBM:AddMsg(DBM_ABSOLUTE_MODE_ON)
 			sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 			sendSync("AM", "true")
@@ -1136,12 +1139,12 @@ do
 			sortMe[i] = nil
 		end
 	end
-	--[[ hmm don't think that this is realy good, so disabled for the moment
+
 	function DBM:ElectMaster()
 		-- FIXME: Add Zonecheck for raidmates
 		local elect_player = nil
 		local elect_revision = tonumber(DBM.Revision)
-		local electd_raidlead = false
+		local elect_raidlead = false
 
 		-- first of all, we only import the ranked mates
 		for i, v in pairs(raid) do
@@ -1154,7 +1157,6 @@ do
 
 		local p = sortMe[1]
 		if p.revision >= tonumber(DBM.Revision) then	-- first we check the latest revision
-			DBM:AddMsg("Newest Version seems to be Revision of "..p.name.." r"..p.revision.." - local revision = r"..DBM.Revision)
 			elect_revision = tonumber(p.revision)
 		end
 		for i, v in ipairs(sortMe) do	-- now we kick all assists with a revision lower than the hightest
@@ -1164,7 +1166,6 @@ do
 		end
 		for i, v in ipairs(sortMe) do	-- we prefere to elect the Raidleader so we try this
 			if v.rank >= 2 then
-				DBM:AddMsg("Revision of "..v.name.." is "..v.revision.." and thats the RaidLeader")
 				elect_player = v.name
 				elect_revision = tonumber(v.revision)
 				elect_raidlead = true
@@ -1174,16 +1175,19 @@ do
 			table.sort(sortMe, function(v1, v2) return v1.name > v2.name end)	-- order by Name
 			if sortMe[#sortMe] then
 				p = sortMe[#sortMe]
-				DBM:AddMsg("Elected "..p.name.." is assist and best name")
 				elect_player = p.name
 				elect_revision = tonumber(p.revision)
 			end
 		end
 
 		table.wipe(sortMe)
-		return elect_player, elect_revision, elect_raidlead
+		
+		if elect_player == playerName then
+			enableicons = true
+		else
+			enableicons = false
+		end
 	end
-	--]]
 end
 
 -------------------
@@ -1414,7 +1418,6 @@ do
 	local function updateAllRoster()
 		if IsInRaid() then
 			table.wipe(raidShortNames)
-			local playerWithHigherVersionPromoted = false
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
@@ -1447,12 +1450,9 @@ do
 					else
 						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 					end
-					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].version and raid[name].version > tonumber(DBM.Version) then
-						playerWithHigherVersionPromoted = true
-					end
 				end
 			end
-			enableIcons = not playerWithHigherVersionPromoted
+			DBM:ElectMaster()
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
@@ -1482,7 +1482,7 @@ do
 				end
 				local name, server = UnitName(id)
 				local shortname = name
-				local rank, _, fileName = UnitIsGroupLeader(id), UnitClass(id)
+				local rank, _, className = UnitIsGroupLeader(id), UnitClass(id)
 				if server and server ~= ""  then
 					name = name.."-"..server
 				end
@@ -1498,7 +1498,7 @@ do
 				else
 					raid[name].rank = 0
 				end
-				raid[name].class = fileName
+				raid[name].class = className
 				raid[name].id = id
 				raid[name].updated = true
 				raidUIds[id] = name
@@ -1509,6 +1509,7 @@ do
 					raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 				end
 			end
+			DBM:ElectMaster()
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
@@ -1540,7 +1541,7 @@ do
 			raidUIds["player"] = playerName
 			raidGuids[UnitGUID("player")] = playerName
 			raidShortNames[playerName] = playerName
-			if DBM.Revision == 99999 then--if it's already 99999 when we leave raid, turn it back off
+			if DBM.Revision == 999999 then--if it's already 999999 when we leave raid, turn it back off
 				DBM.Revision = myRealRevision
 				DBM:AddMsg(DBM_ABSOLUTE_MODE_OFF)
 			end
@@ -2113,11 +2114,10 @@ do
 		if sender == playerName then return end
 		if status == "true" then
 			DBM:AddMsg(DBM_ABSOLUTE_MODE_NOTIFY_ON:format(sender))
+			enableIcons = false
 		else
 			DBM:AddMsg(DBM_ABSOLUTE_MODE_NOTIFY_OFF:format(sender))
-			if highestRealVersion == DBM.Version then
-				enableIcons = true
-			end
+			DBM:ElectMaster()
 		end
 	end
 
@@ -2128,11 +2128,7 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
-			if version ~= 99999 and version > highestRealVersion then highestRealVersion = version end
-			if version > tonumber(DBM.Version) then
-				if raid[sender].rank >= 1 then
-					enableIcons = false
-				end
+			if version > tonumber(DBM.Version) and version ~= 999999 then -- Update reminder
 				if not showedUpdateReminder then
 					local found = false
 					for i, v in pairs(raid) do
@@ -2141,14 +2137,14 @@ do
 							break
 						end
 					end
-					if found and version ~= 99999 then
+					if found then
 						showedUpdateReminder = true
 						if not DBM.Options.BlockVersionUpdateNotice then
 							DBM:ShowUpdateReminder(displayVersion, revision)
 						else
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
-							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
-							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://dev.deadlybossmods.com]"):format(displayVersion, revision))
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
+							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://dev.deadlybossmods.com]"):format(displayVersion, version))
 						end
 					end
 				end
@@ -5566,7 +5562,7 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 function bossModPrototype:SetIcon(target, icon, timer)
-	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank(playerName) == 0 then
+	if DBM.Options.DontSetIcons or not enableIcons then -- You can set icon if in 5-man party even not leader. Also you can set icon in solo raid.
 		return
 	end
 	icon = icon and icon >= 0 and icon <= 8 and icon or 8
