@@ -84,5 +84,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	LostSouls				= "Face the souls of those your kind doomed to perish, Warlock!"
+	LostSouls				= "面對注定滅亡的同儕靈魂，術士!"
 })

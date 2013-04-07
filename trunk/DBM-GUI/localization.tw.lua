@@ -58,6 +58,7 @@ L.DisableCinematicsOutside	= "禁用遊戲中副本以外的過場動畫"
 L.SKT_Enabled				= "永遠顯示快速擊殺計時器 (覆蓋首領特定的選項)"
 L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥"
 L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄首領戰鬥"
+L.LogOnlyRaidBosses			= "只記錄團隊首領的戰鬥(除了隨機團隊/隨機隊伍/隨機事件)"
 L.Latency_Text				= "設定最高延遲同步門檻:%d"
 
 L.ModelOptions				= "3D模型預覽選項"

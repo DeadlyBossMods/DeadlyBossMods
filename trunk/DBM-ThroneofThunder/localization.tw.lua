@@ -85,6 +85,14 @@ L:SetMiscLocalization({
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetTimerLocalization({
+	timerBreathsCD			= "下一次吐息"
+})
+
+L:SetOptionLocalization({
+	timerBreaths			= "為下一次吐息顯示計時器"
+})
+
 L:SetMiscLocalization({
 	rampageEnds	= "梅賈拉的怒氣平息了。"
 })
@@ -96,7 +104,8 @@ L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
 	warnFlock		= "%s %s (%s)",
-	specWarnFlock	= "%s %s (%s)"
+	specWarnFlock	= "%s %s (%s)",
+	specWarnBigBird	= "巢穴守護者%s"
 })
 
 L:SetTimerLocalization({
@@ -114,7 +123,13 @@ L:SetMiscLocalization({
 	Lower			= "下層",
 	UpperAndLower	= "上層和下層",
 	TrippleD		= "Tripple (2xDwn)",
-	TrippleU		= "Tripple (2xUp)"
+	TrippleU		= "Tripple (2xUp)",
+	SouthWest		= "西南",
+	SouthEast		= "東南",
+	NorthWest		= "西北",
+	NorthEast		= "西南",
+	West			= "西邊",
+	Middle			= "中間"
 })
 
 --------------------------
@@ -123,21 +138,20 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
+	warnBeamNormal				= "射線 - |cffff0000紅光|r : >%s<, |cff0000ff藍光|r : >%s<",
+	warnBeamHeroic				= "射線 - |cffff0000紅光|r : >%s<, |cff0000ff藍光|r : >%s<, |cffffff00黃光|r : >%s<",
 	warnAddsLeft				= "霧獸剩餘: %d",
-	specWarnBlueBeam			= "你中了藍光射線 - 不要移動!!",
+	specWarnBlueBeam			= "你中了藍光射線 - 避免移動!!",
 	specWarnFogRevealed			= "照出%s了!",
 	specWarnDisintegrationBeam	= "%s (%s)"
 })
 
 L:SetOptionLocalization({
+	warnBeam					= "提示射線目標",
 	warnAddsLeft				= "提示還剩餘多少霧獸",
 	specWarnFogRevealed			= "為照出霧獸顯示特別警告",
 	ArrowOnBeam					= "為$journal:6882指示DBM箭頭移動方向",
 	InfoFrame					= "為$spell:133795堆疊顯示訊息框架"
-})
-
-L:SetMiscLocalization({
-	Eye		= "魔眼"
 })
 
 ----------------
@@ -146,13 +160,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "太多突變: %有益& %有害",
-	specWarnFullyMutatedFaded	= "%s結束"
+	warnDebuffCount				= "突變: %d/5有益& %有害",
 })
 
 L:SetOptionLocalization({
-	warnDebuffCount				= "當你吃太多池水時顯示減益計算警告",
-	specWarnFullyMutatedFaded	= "當$spell:140546結束時顯示特別警告",
+	warnDebuffCount				= "當你吃池水時顯示減益計算警告",
 	RangeFrame					= "顯示距離框架(2碼/5碼)",
 })
 
@@ -221,10 +233,16 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(832)
 
+L:SetWarningLocalization({
+	specWarnIntermissionSoon	= "中場階段即將到來"
+})
+
+
 L:SetOptionLocalization({
-	RangeFrame			= "顯示距離框架",
-	StaticShockArrow	= "當某人中了$spell:135695顯示DBM箭頭",
-	OverchargeArrow		= "當某人中了$spell:136295顯示DBM箭頭"
+	specWarnIntermissionSoon	= "在中場階段前顯示預先特別警告",
+	RangeFrame					= "顯示距離框架",
+	StaticShockArrow			= "當某人中了$spell:135695顯示DBM箭頭",
+	OverchargeArrow				= "當某人中了$spell:136295顯示DBM箭頭"
 })
 
 ------------
