@@ -28,7 +28,7 @@ local warnVolatilePathogen			= mod:NewTargetAnnounce(136228, 4)
 local warnMetabolicBoost			= mod:NewTargetAnnounce(136245, 3)--Makes Malformed Blood, Primordial Strike and melee 50% more often
 local warnVentralSacs				= mod:NewTargetAnnounce(136210, 2)--This one is a joke, if you get it, be happy.
 local warnAcidicSpines				= mod:NewTargetAnnounce(136218, 3)
-local warnViscousHorror				= mod:NewCountAnnounce("ej6969", mod:IsTank())
+local warnViscousHorror				= mod:NewCountAnnounce("ej6969", mod:IsTank(), 137000)
 local warnBlackBlood				= mod:NewStackAnnounce(137000, 2, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnFullyMutated			= mod:NewSpecialWarningYou(140546)
