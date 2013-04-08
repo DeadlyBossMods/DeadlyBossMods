@@ -365,6 +365,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerFrostSpikeCD:Cancel()
 			warnPhase3:Show()
 			timerDeadZoneCD:Start(8.5)
+			--Maybe remove this range frame. in heroic phase 3-4, he only targets melee and no one else, and cd is 31 so ALL melee just soak entire phase and never move for it. does mindless need a range checker?
 			if self:IsDifficulty("heroic10", "heroic25") then--On heroic, the fire guy returns and attacks clumps again
 				if self.Options.RangeFrame then--So on heroic we need to restore the grouping range frame
 					if self:IsDifficulty("heroic25") then
@@ -378,8 +379,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		elseif cid == 68081 then--Dam'ren
 			phase = 4
 			updateHealthFrame()
-			timerDeadZoneCD:Cancel()
-			timerFreezeCD:Cancel()
+			timerDeadZoneCD:Cancel()--Todo, find out what they change to in phase 4 since Dam'ren still casts them
+			timerFreezeCD:Cancel()--Todo, find out what they change to in phase 4 since Dam'ren still casts them
 			warnPhase4:Show()
 			timerRisingAngerCD:Start(15)
 			timerFistSmashCD:Start(62, 1)
@@ -416,6 +417,8 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 68079 then--Ro'shak
+		timerUnleashedFlameCD:Cancel()
+		timerMoltenOverload:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
@@ -429,8 +432,6 @@ function mod:UNIT_DIED(args)
 			--Only one log, but i looks like spear cd from phase 1 remains intact
 			phase = 2
 			updateHealthFrame()
-			timerUnleashedFlameCD:Cancel()
-			timerMoltenOverload:Cancel()
 			timerLightningStormCD:Start(17)
 			self:Unschedule(checkSpear)
 			self:Schedule(25, checkSpear)
@@ -442,16 +443,16 @@ function mod:UNIT_DIED(args)
 			timerWindStormCD:Start(49.5)
 		end
 	elseif cid == 68080 then--Quet'zal
+		timerLightningStormCD:Cancel()
+		timerWindStormCD:Cancel()
+		warnWindStorm:Cancel()
+		specWarnWindStorm:Cancel()
+		timerWindStorm:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
 			phase = 3
 			updateHealthFrame()
-			timerLightningStormCD:Cancel()
-			warnWindStorm:Cancel()
-			specWarnWindStorm:Cancel()
-			timerWindStorm:Cancel()
-			timerWindStormCD:Cancel()
 			warnPhase3:Show()
 			timerDeadZoneCD:Start(6)
 			self:Unschedule(checkSpear)
@@ -460,6 +461,8 @@ function mod:UNIT_DIED(args)
 			checkArcing()
 		end
 	elseif cid == 68081 then--Dam'ren
+		timerDeadZoneCD:Cancel()
+		timerFreezeCD:Cancel()
 		if self:IsDifficulty("heroic10", "heroic25") then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
@@ -468,8 +471,6 @@ function mod:UNIT_DIED(args)
 			self:Unschedule(checkSpear)
 			timerThrowSpearCD:Cancel()
 			self:UnregisterShortTermEvents()
-			timerDeadZoneCD:Cancel()
-			timerFreezeCD:Cancel()
 			warnPhase4:Show()
 			timerRisingAngerCD:Start()
 			timerFistSmashCD:Start(22.5, 1)--fist smash cd is random. (22.5 or 31.5)
