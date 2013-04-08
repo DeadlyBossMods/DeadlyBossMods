@@ -103,9 +103,9 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s - %s (%s)",
-	specWarnFlock	= "%s - %s (%s)",
-	specWarnBigBird	= "Nestwächter %s"
+	warnFlock		= "%s - %s %s",
+	specWarnFlock	= "%s - %s %s",
+	specWarnBigBird	= "Nestwächter: %s"
 })
 
 L:SetTimerLocalization({
