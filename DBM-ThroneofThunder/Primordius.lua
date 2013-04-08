@@ -177,8 +177,8 @@ end
 
 local good1 = GetSpellInfo(136180)
 local good2 = GetSpellInfo(136182)
-local good2 = GetSpellInfo(136184)
-local good3 = GetSpellInfo(136186)
+local good3 = GetSpellInfo(136184)
+local good4 = GetSpellInfo(136186)
 local bad1 = GetSpellInfo(136181)
 local bad2 = GetSpellInfo(136183)
 local bad3 = GetSpellInfo(136185)
