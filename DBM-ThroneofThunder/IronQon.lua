@@ -103,12 +103,30 @@ local function updateHealthFrame()
 	end
 end
 
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	-- 3. check boss' highest threat target
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	if UnitDetailedThreatSituation(unit, "boss1") then
+		return true
+	end
+	if UnitExists("boss2target") and UnitDetailedThreatSituation(unit, "boss2") then
+		return true
+	end
+	return false
+end
+
 --Spear target happens BEFORE cast, so we have to pre schedule scan it to grab target
 --This will fail if the spear target actually IS his highest threat
 --In that case the aoe failsafe warning will just be used, so 1/10 or 1/25 odds in phase 1.
---Should not fail in phase 2+ cause tank will be highest threat then (assuming after he dismounts first mount the tank taunts/hits him before he grabs second.
 local function checkSpear()
-	if UnitExists("boss1target") and not UnitDetailedThreatSituation("boss1target", "boss1") then--Boss 1 is looking at someone that isn't his highest threat (not a bug, i know bigwigs filters boss2 and that's wrong way to do it. boss2 threat ~= boss 1 threat. my debug printed healers in phase 1 every pull as boss1 threat, tank in phase 2+)
+	if UnitExists("boss1target") and not isTank("boss1target") then--Boss 1 is looking at someone that isn't his highest threat or a tank (have to filter tanks cause he looks at them to cast impale, have to filter his highest threat in case it's not a tank, ie a healer)
 		mod:Unschedule(checkSpear)
 		local targetname = DBM:GetUnitFullName("boss1target")
 		warnThrowSpear:Show(targetname)
@@ -129,7 +147,7 @@ local function checkSpear()
 			end
 		end
 	else
-		mod:Schedule(0.3, checkSpear)
+		mod:Schedule(0.2, checkSpear)
 	end
 end
 
@@ -315,6 +333,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (heroic phase change trigger)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
+		self:Unschedule(checkSpear)
+		self:Schedule(25, checkSpear)
 		timerThrowSpearCD:Start()
 		if cid == 68079 then--Ro'shak
 			if self.Options.RangeFrame then
@@ -412,6 +432,8 @@ function mod:UNIT_DIED(args)
 			timerUnleashedFlameCD:Cancel()
 			timerMoltenOverload:Cancel()
 			timerLightningStormCD:Start(17)
+			self:Unschedule(checkSpear)
+			self:Schedule(25, checkSpear)
 			timerThrowSpearCD:Start()
 			warnPhase2:Show()
 			warnWindStorm:Schedule(49.5)
@@ -432,6 +454,8 @@ function mod:UNIT_DIED(args)
 			timerWindStormCD:Cancel()
 			warnPhase3:Show()
 			timerDeadZoneCD:Start(6)
+			self:Unschedule(checkSpear)
+			self:Schedule(25, checkSpear)
 			timerThrowSpearCD:Start()
 			checkArcing()
 		end
@@ -441,6 +465,8 @@ function mod:UNIT_DIED(args)
 		else
 			phase = 4
 			updateHealthFrame()
+			self:Unschedule(checkSpear)
+			timerThrowSpearCD:Cancel()
 			self:UnregisterShortTermEvents()
 			timerDeadZoneCD:Cancel()
 			timerFreezeCD:Cancel()
