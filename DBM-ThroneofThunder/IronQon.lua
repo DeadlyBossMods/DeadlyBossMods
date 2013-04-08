@@ -124,7 +124,7 @@ local function checkSpear()
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 			if inRange and inRange < 10 then
 				specWarnThrowSpearNear:Show(targetname)--Near spear target
-			elseif AntiSpam(15, 8) then--Smart way to do a failsafe in case we never get a valid target
+			elseif mod:AntiSpam(15, 8) then--Smart way to do a failsafe in case we never get a valid target
 				specWarnThrowSpear:Show()--not spear target or near spear target, generic aoe warning (for the lines and stuff)
 			end
 		end
