@@ -62,7 +62,7 @@ function mod:BigOoze()
 	bigOozeCount = bigOozeCount + 1
 	warnViscousHorror:Show(bigOozeCount)
 	specWarnViscousHorror:Show(bigOozeCount)
-	timerViscousHorrorCD:Start(30, bigOozeCount)
+	timerViscousHorrorCD:Start(30, bigOozeCount+1)
 	self:ScheduleMethod(30, "BigOoze")
 end
 
@@ -75,8 +75,8 @@ function mod:OnCombatStart(delay)
 	bigOozeCount = 0
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerViscousHorrorCD:Start(12-delay, 1)
-		self:ScheduleMethod(12-delay, "BigOoze")
+		timerViscousHorrorCD:Start(11.5-delay, 1)
+		self:ScheduleMethod(11.5-delay, "BigOoze")
 	end
 end
 

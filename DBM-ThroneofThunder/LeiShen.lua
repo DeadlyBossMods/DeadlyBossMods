@@ -84,6 +84,8 @@ local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact 
 local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
 local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
 
+local soundDecapitate					= mod:NewSound(134912)
+
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("OverchargeArrow")--On by default because the overcharge target is always pinned and unable to run away. You must always run to them, so everyone will want this arrow on
 mod:AddBoolOption("StaticShockArrow", false)--Off by default as most static shock stack points are pre defined and not based on running to player, but rathor running to a raid flare on ground
@@ -176,6 +178,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDecapitateCD:Start()
 		if args:IsPlayer() then
 			specWarnDecapitate:Show()
+			soundDecapitate:Play()
 		else
 			specWarnDecapitateOther:Show(args.destName)
 		end
