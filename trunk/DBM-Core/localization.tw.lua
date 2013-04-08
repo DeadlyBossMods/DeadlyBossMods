@@ -269,8 +269,8 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow move  可移動箭頭",
 }
 
-DBM_SPEED_KILL_TIMER_TEXT			= "記錄擊敗"
-DBM_SPEED_KILL_TIMER_OPTION			= "顯示一個計時器來打敗你上次的最快擊敗"
+DBM_SPEED_KILL_TIMER_TEXT			= "勝利紀錄"
+DBM_SPEED_KILL_TIMER_OPTION			= "顯示一個計時器來打敗你上次的最快勝利"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s想要查看你的副本ID和進度鎖定情況。\n你想發送該訊息給%s嗎? 在你的當前進程（除非你下線）他可以一直查閱該訊息。"
