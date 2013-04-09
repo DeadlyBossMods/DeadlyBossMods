@@ -75,6 +75,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	elseif msg:find(L.Rank8) then
 		currentFighter = target
 		currentRank = 8
+	elseif msg:find(L.Rank9) then
+		currentFighter = target
+		currentRank = 9
+	elseif msg:find(L.Rank10) then
+		currentFighter = target
+		currentRank = 10
 	elseif currentFighter and target == currentFighter and (npc == L.Bizmo or npc == L.Bazzelflange) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
 		self:SendSync("MatchEnd")
 		isMatchBegin = false
@@ -133,7 +139,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	self:Stop()
 	self:UnregisterShortTermEvents()
 	eventsRegistered = false
-	for i = 1, 8 do
+	for i = 0, 9 do
 		local mod2 = DBM:GetModByName("BrawlRank" .. i)
 		if mod2 then
 			mod2:Stop()--Stop all timers and warnings
@@ -165,7 +171,7 @@ function mod:OnSync(msg)
 			mod2:Stop()--Stop all timers and warnings
 		end
 		if currentRank == 0 then--We walked in on an in progress match and didn't capture what rank it is, so lets make sure when match ends we stop ALL mods
-			for i = 1, 8 do
+			for i = 0, 9 do
 				local mod2 = DBM:GetModByName("BrawlRank" .. i)
 				if mod2 then
 					mod2:Stop()--Stop all timers and warnings
