@@ -103,8 +103,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s %s (%s)",
-	specWarnFlock	= "%s %s (%s)",
+	warnFlock		= "%s %s %s",
+	specWarnFlock	= "%s %s %s",
 	specWarnBigBird	= "Страж гнезда: %s"
 })
 
