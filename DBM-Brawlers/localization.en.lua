@@ -119,7 +119,7 @@ L:SetGeneralLocalization({
 ------------
 -- Rank 9 --
 ------------
-L= DBM:GetModLocalization("BrawlRank8")
+L= DBM:GetModLocalization("BrawlRank9")
 
 L:SetGeneralLocalization({
 	name = "Brawlers: Rank 9"
@@ -137,7 +137,7 @@ L:SetGeneralLocalization({
 -------------
 -- Rares 2 --
 -------------
-L= DBM:GetModLocalization("BrawlRare1")
+L= DBM:GetModLocalization("BrawlRare2")
 
 L:SetGeneralLocalization({
 	name = "Brawlers: Rares 2"

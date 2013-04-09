@@ -31,7 +31,9 @@ L:SetMiscLocalization({
 	Rank6			= "sechsten Ranges",
 	Rank7			= "siebten Ranges",
 	Rank8			= "achten Ranges",
-	Proboskus		= "Oh dear... I'm sorry, but it looks like you're going to have to fight Proboskus.",--translate (trigger) (Alliance)
+	Rank9			= "neunten Ranges",--needs to be verified (guessed)
+	Rank10			= "zehnten Ranges",--needs to be verified (guessed)
+	Proboskus		= "Oje... tut mir leid, aber Ihr werdet wohl gegen Proboskus antreten müssen.",--Alliance - needs to be verified (wowhead-captured translation)
 	Proboskus2		= "Ha ha ha! Was habt Ihr auch für ein Pech! Es ist Proboskus! Ahhh ha ha ha! Ich hab fünfundzwanzig Goldstücke darauf gesetzt, dass Ihr im Feuer draufgeht!"--Horde
 })
 
@@ -113,4 +115,31 @@ L= DBM:GetModLocalization("BrawlRank8")
 
 L:SetGeneralLocalization({
 	name = "Kampfgilde: Rang 8"
+})
+
+------------
+-- Rank 9 --
+------------
+L= DBM:GetModLocalization("BrawlRank9")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Rang 9"
+})
+
+-------------
+-- Rares 1 --
+-------------
+L= DBM:GetModLocalization("BrawlRare1")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Seltene Gegner 1"
+})
+
+-------------
+-- Rares 2 --
+-------------
+L= DBM:GetModLocalization("BrawlRare2")
+
+L:SetGeneralLocalization({
+	name = "Kampfgilde: Seltene Gegner 2"
 })
