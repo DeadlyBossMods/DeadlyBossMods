@@ -177,7 +177,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnMatterSwapped	= "$spell:138618 대상 알림"
+	warnMatterSwapped	= "$spell:138618 자리바꿈 알림 보기"
 })
 
 L:SetMiscLocalization({

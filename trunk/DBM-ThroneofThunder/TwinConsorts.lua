@@ -29,7 +29,7 @@ mod:SetBossHealthInfo(
 
 --Darkness
 local warnNight							= mod:NewAnnounce("warnNight", 1, 108558)
-local warnCosmicBarrage					= mod:NewSpellAnnounce(136752, 2)
+local warnCrashingStarSoon				= mod:NewSoonAnnounce(137129, 2)
 local warnTearsOfSun					= mod:NewSpellAnnounce(137404, 3)
 local warnBeastOfNightmares				= mod:NewTargetAnnounce(137375, 3, nil, mod:IsTank() or mod:IsHealer())
 --Light
@@ -44,7 +44,7 @@ local warnDusk							= mod:NewAnnounce("warnDusk", 1, "Interface\\Icons\\achieve
 local warnTidalForce					= mod:NewCastAnnounce(137531, 3)
 
 --Darkness
-local specWarnCosmicBarrage				= mod:NewSpecialWarningSpell(136752, false, nil, nil, 2)
+local specWarnCrashingStarSoon			= mod:NewSpecialWarningSoon(137129, false, nil, nil, 2)
 local specWarnTearsOfSun				= mod:NewSpecialWarningSpell(137404, nil, nil, nil, 2)
 local specWarnBeastOfNightmares			= mod:NewSpecialWarningSpell(137375, mod:IsTank())
 --Light
@@ -59,18 +59,19 @@ local specWarnTidalForce				= mod:NewSpecialWarningSpell(137531, nil, nil, nil, 
 --Darkness
 --Light of Day (137403) has a HIGHLY variable cd variation, every 6-14 seconds. Not to mention it requires using SPELL_DAMAGE and SPELL_MISSED. for now i'm excluding it on purpose
 local timerDayCD						= mod:NewTimer(183, "timerDayCD", 122789) -- timer is 183 or 190 (confirmed in 10 man. variable)
-local timerCosmicBarrageCD				= mod:NewCDTimer(23, 136752)
-local timerTearsOfTheSunCD				= mod:NewCDTimer(40, 137404)
+local timerCrashingStar					= mod:NewNextTimer(5.5, 137129)
+--local timerCosmicBarrageCD				= mod:NewCDTimer(22, 136752)--Very high variation. (22~38s) Changed to Crashing Star stuff.
+local timerTearsOfTheSunCD				= mod:NewCDTimer(41, 137404)
 local timerTearsOfTheSun				= mod:NewBuffActiveTimer(10, 137404)
-local timerBeastOfNightmaresCD			= mod:NewCDTimer(50, 137375)
+local timerBeastOfNightmaresCD			= mod:NewCDTimer(51, 137375)
 --Light
 local timerDuskCD						= mod:NewTimer(360, "timerDuskCD", "Interface\\Icons\\achievement_zone_easternplaguelands")--it seems always 360s after combat entered. (day timer is variables, so not reliable to day phase)
 local timerLightOfDayCD					= mod:NewCDTimer(6, 137403, nil, false)--Trackable in day phase using UNIT event since boss1 can be used in this phase. Might be useful for heroic to not run behind in shadows too early preparing for a special
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
-local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)
-local timerIceCometCD					= mod:NewCDTimer(19, 137419)--Every 19-25 seconds on normal. On heroic it's every 15 seconds almost precisely (i suspect heroic gets them more often to ensure RNG doesn't wipe you to Nuclear Inferno)
-local timerNuclearInfernoCD				= mod:NewCDTimer(55.5, 137491)
+--local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)--Also very high variation. (31~65). Can be confuse, no use.
+local timerIceCometCD					= mod:NewCDTimer(20.5, 137419)--Every 20.5-25 seconds on normal. On 10 heroic, variables 20.5~41s. Maybe 25 heroic same?
+local timerNuclearInfernoCD				= mod:NewCDTimer(49.5, 137491)
 --Dusk
 local timerTidalForce					= mod:NewBuffActiveTimer(18 ,137531)
 local timerTidalForceCD					= mod:NewCDTimer(74, 137531)
@@ -147,7 +148,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 137414 then
 		warnFlamesOfPassion:Show()
-		timerFlamesOfPassionCD:Start()
+		--timerFlamesOfPassionCD:Start()
 	end
 end
 
@@ -155,11 +156,7 @@ function mod:SPELL_SUMMON(args)
 	if args.spellId == 137419 then
 		warnIceComet:Show()
 		specWarnIceComet:Show()
-		if self:IsDifficulty("heroic10", "heroic25") then
-			timerIceCometCD:Start(15)
-		else
-			timerIceCometCD:Start()
-		end
+		timerIceCometCD:Start()
 	end
 end
 
@@ -180,7 +177,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 68905 then--Lu'lin
-		timerCosmicBarrageCD:Cancel()
+		--timerCosmicBarrageCD:Cancel()
 		timerTidalForceCD:Cancel()
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start(19)
@@ -189,8 +186,8 @@ function mod:UNIT_DIED(args)
 			DBM.RangeCheck:Hide()
 		end
 	elseif cid == 68904 then--Suen
-		timerFlamesOfPassionCD:Cancel()
---		timerBeastOfNightmaresCD:Start()--My group kills Lu'lin first. Need log of Suen being killed first to get first beast timer value
+		--timerFlamesOfPassionCD:Cancel()
+		--timerBeastOfNightmaresCD:Start()--My group kills Lu'lin first. Need log of Suen being killed first to get first beast timer value
 	end
 end
 
@@ -198,12 +195,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 137105 and self:AntiSpam(2, 1) then--Suen Ports away (Night Phase)
 		timerLightOfDayCD:Cancel()
 		timerFanOfFlamesCD:Cancel()
-		timerFlamesOfPassionCD:Cancel()
+		--timerFlamesOfPassionCD:Cancel()
 		warnNight:Show()
 		timerDayCD:Start()
 		timerDuskCD:Start()
-		timerCosmicBarrageCD:Start(17)
-		timerTearsOfTheSunCD:Start(23)
+		--timerCosmicBarrageCD:Start(17)
+		timerTearsOfTheSunCD:Start(28.5)
 		timerBeastOfNightmaresCD:Start()
 	elseif spellId == 137187 and self:AntiSpam(2, 2) then--Lu'lin Ports away (Day Phase)
 		self:SendSync("Phase2")
@@ -215,18 +212,16 @@ end
 
 function mod:OnSync(msg)
 	if msg == "Phase2" then
-		timerCosmicBarrageCD:Cancel()
+		--timerCosmicBarrageCD:Cancel()
 		timerTearsOfTheSunCD:Cancel()
 		timerBeastOfNightmaresCD:Cancel()
 		warnDay:Show()
 		timerLightOfDayCD:Start()
+		timerIceCometCD:Start()
 		timerFanOfFlamesCD:Start()
-		timerFlamesOfPassionCD:Start(12.5)
+		--timerFlamesOfPassionCD:Start(12.5)
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerIceCometCD:Start(15)
-			timerNuclearInfernoCD:Start(52)
-		else
-			timerIceCometCD:Start()
+			timerNuclearInfernoCD:Start(50)
 		end
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
@@ -236,7 +231,7 @@ function mod:OnSync(msg)
 		warnDusk:Show()
 		timerIceCometCD:Start(17)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 		timerTidalForceCD:Start(26)
-		timerCosmicBarrageCD:Start(54)
+		--timerCosmicBarrageCD:Start(54)
 	elseif msg == "Phase3" then
 		self:UnregisterShortTermEvents()
 		timerFanOfFlamesCD:Cancel()--DO NOT CANCEL THIS ON YELL
@@ -245,7 +240,7 @@ function mod:OnSync(msg)
 			phase3Started = true
 			timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 			timerTidalForceCD:Start(20)
-			timerCosmicBarrageCD:Start(48)
+			--timerCosmicBarrageCD:Start(48)
 		end
 	elseif msg == "TidalForce" then
 		warnTidalForce:Show()
@@ -253,11 +248,12 @@ function mod:OnSync(msg)
 		timerTidalForce:Start()
 		timerTidalForceCD:Start()
 	elseif msg == "CosmicBarrage" then
-		warnCosmicBarrage:Show()
-		specWarnCosmicBarrage:Show()
-		if timerDayCD:GetTime() < 165 then
-			timerCosmicBarrageCD:Start()
-		end
+		warnCrashingStarSoon:Show()
+		specWarnCrashingStarSoon:Show()
+		timerCrashingStar:Start()
+		--if timerDayCD:GetTime() < 165 then
+			--timerCosmicBarrageCD:Start()
+		--end
 	elseif msg == "Inferno" then
 		warnNuclearInferno:Show()
 		specWarnNuclearInferno:Show()
