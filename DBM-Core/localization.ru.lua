@@ -149,8 +149,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target 		= "%s на |3-5(>%%s<)",
 	targetcount	= "%s (%%d) на |3-5(>%%s<)",
 	spell 		= "%s",
-	ends 		= "%s закончился",
-	fades		= "%s спал",
+	ends		= "%s заканчивается",
+	fades		= "%s спадает",
 	adds		= "Осталось %s: %%d",
 	cast 		= "Применение заклинания %s: %.1f сек",
 	soon 		= "Скоро %s",
@@ -179,9 +179,9 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell = "%s!",
-	ends		= "%s закончился",
-	fades		= "%s спал",
+	spell		= "%s!",
+	ends		= "%s заканчивается",
+	fades		= "%s спадает",
 	soon		= "Скоро %s",
 	dispel 		= "%s на |3-5(>%%s<) - рассейте заклинание",
 	interrupt	= "%s - прервите",
