@@ -352,8 +352,8 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			warnFlock:Show(messageText, flockName, flockText.." ("..locationText..")")
 			specWarnFlock:Show(messageText, flockName, flockText.." ("..locationText..")")
 		else
-			warnFlock:Show(messageText, flockName, flockText)
-			specWarnFlock:Show(messageText, flockName, flockText)
+			warnFlock:Show(messageText, flockName, "("..flockText..")")
+			specWarnFlock:Show(messageText, flockName, "("..flockText..")")
 		end
 	end
 end
