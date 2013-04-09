@@ -63,7 +63,7 @@ local kickedShells = {}
 local addsActivated = 0
 local alternateSet = false
 local adds = {}
-local AddIcon = 8
+local AddIcon = 6
 local iconsSet = 3
 local highestVersion = 0
 local hasHighestVersion = false
@@ -86,7 +86,7 @@ function mod:OnCombatStart(delay)
 	lastConcussion = 0
 	addsActivated = 0
 	highestVersion = 0
-	AddIcon = 8
+	AddIcon = 6
 	iconsSet = 3
 	alternateSet = false
 	table.wipe(adds)
@@ -145,14 +145,14 @@ local function resetaddstate()
 	table.wipe(adds)
 	if addsActivated >= 1 then--1 or more add is up from last set
 		if alternateSet then--We check whether we started with skull last time or moon
-			AddIcon = 5--Start with moon if we used skull last time
+			AddIcon = 3--Start with moon if we used skull last time
 			alternateSet = false
 		else
-			AddIcon = 8--Start with skull if we used moon last time
+			AddIcon = 6--Start with skull if we used moon last time
 			alternateSet = true
 		end
 	else--No turtles are up at all
-		AddIcon = 8--Always start with skull
+		AddIcon = 6--Always start with skull
 		alternateSet = true--And reset alternate status so we use moon next time (unless all are dead again, then re always reset to skull)
 	end
 end
@@ -196,7 +196,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			resetaddstate()
 		end
 		adds[args.destGUID] = AddIcon
-		AddIcon = AddIcon - 1
+		AddIcon = AddIcon + 1
 		addsActivated = addsActivated + 1
 	end
 end
