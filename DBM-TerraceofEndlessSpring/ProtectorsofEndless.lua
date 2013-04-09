@@ -6,6 +6,7 @@ mod:SetCreatureID(60585, 60586, 60583)--60583 Protector Kaolan, 60585 Elder Rega
 mod:SetModelID(41503)--Protector Kaolan, 41502 and 41504 are elders
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
+mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 

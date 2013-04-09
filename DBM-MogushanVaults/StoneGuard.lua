@@ -281,12 +281,3 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	end
 end
-
--- overload this to handle the 10-men version (which only has 3 of the bosses) properly
-function mod:GetHP()
-	-- shared health pool, we only need to find one of these mobs, reporting all of them would be pointless
-	local cobaltHp = self:GetBossHPString(60051)
-	local jadeHp = self:GetBossHPString(60043)
-	return cobaltHp ~= DBM_CORE_UNKNOWN and cobaltHp or jadeHp
-end
-
