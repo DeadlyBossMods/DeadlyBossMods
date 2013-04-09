@@ -127,92 +127,80 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "Puxando agora!"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Morte rápida." -- This will do, but far from perfect
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: >%%s<",
-	cast		= "%s",
-	active		= "%s acaba",--Buff/Debuff/event on boss
-	fades		= "%s desvanece",--Buff/Debuff on players
-	cd			= "%s recarrega",
-	cdcount		= "%s recarrega (%%d)",
-	cdsource	= "%s recarrega: >%%s<",
-	next		= "Próx. %s",
-	nextcount	= "Próx. %s (%%d)",
-	nextsource	= "Próx %s: >%%s<",
-	achievement	= "%s"
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.cast			= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s acaba" --Buff/Debuff/event on boss
+DBM_CORE_AUTO_TIMER_TEXTS.fades			= "%s desvanece" --Buff/Debuff on players
+DBM_CORE_AUTO_TIMER_TEXTS.cd			= "%s recarrega"
+DBM_CORE_AUTO_TIMER_TEXTS.cdcount		= "%s recarrega (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.cdsource		= "%s recarrega: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.next			= "Próx. %s"
+DBM_CORE_AUTO_TIMER_TEXTS.nextcount		= "Próx. %s (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "Próx %s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target		= "Exibir cronógrafo para a penalidade $spell:%s",
-	cast		= "Exibir cronógrafo para lançar $spell:%s",
-	active		= "Exibir cronógrafo para a duração de $spell:%s",
-	fades		= "Exibir cronógrafo para quando $spell:%s desvanecerá dos jogadores",
-	cd			= "Exibir cronógrafo para recarga de $spell:%s",
-	cdcount		= "Exibir cronógrafo para recarga de $spell:%s",
-	cdsource	= "Exibir cronógrafo para recarga de $spell:%s",
-	next		= "Exibir cronógrafo para o próximo $spell:%s",
-	nextcount	= "Exibir cronógrafo para o próximo $spell:%s",
-	nextsource	= "Exibir cronógrafo para o próximo $spell:%s",
-	achievement	= "Exibir cronógrafo para %s"
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target		= "Exibir cronógrafo para a penalidade $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.cast		= "Exibir cronógrafo para lançar $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.active		= "Exibir cronógrafo para a duração de $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.fades		= "Exibir cronógrafo para quando $spell:%s desvanecerá dos jogadores"
+DBM_CORE_AUTO_TIMER_OPTIONS.cd			= "Exibir cronógrafo para recarga de $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdcount		= "Exibir cronógrafo para recarga de $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdsource	= "Exibir cronógrafo para recarga de $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.next		= "Exibir cronógrafo para o próximo $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextcount	= "Exibir cronógrafo para o próximo $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextsource	= "Exibir cronógrafo para o próximo $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Exibir cronógrafo para %s"
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target	= "%s em >%%s<",
-	targetcount	= "%s (%%d) em >%%s<",
-	spell	= "%s",
-	adds		= "%s restantes: %%d",
-	cast	= "Lançando %s: %.1f seg",
-	soon	= "%s em breve",
-	prewarn = "%s em %s",
-	phase	= "Fase %s",
-	prephase= "Fase %s em breve",
-	count	= "%s (%%d)",
-	stack	= "%s em >%%s< (%%d)"
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s em >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%d) em >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "%s restantes: %%d"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "Lançando %s: %.1f seg"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "%s em breve"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%s em %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase			= "Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase		= "Fase %s em breve"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s em >%%s< (%%d)"
 
 local prewarnOption = "Exibir aviso antecipado para $spell:%s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "Anunciar alvos de $spell:%s",
-	targetcount	= "Anunciar alvos de $spell:%s",
-	spell	= "Exibir aviso para $spell:%s",
-	adds		= "Announce how many $spell:%s remain",
-	cast	= "Exibir aviso quando $spell:%s está sendo lançado",
-	soon	= prewarnOption,
-	prewarn = prewarnOption,
-	phase	= "Anunciar Fase %s",
-	prephase= "Mostrar aviso antecipado para a Fase %s",
-	count	= "Exibir aviso para $spell:%s",
-	stack	= "Anunciar empilhamento de $spell:%s"
-}
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target		= "Anunciar alvos de $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "Anunciar alvos de $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell		= "Exibir aviso para $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "Announce how many $spell:%s remain"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "Exibir aviso quando $spell:%s está sendo lançado"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= prewarnOption
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn		= prewarnOption
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "Anunciar Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase		= "Mostrar aviso antecipado para a Fase %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "Exibir aviso para $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "Anunciar empilhamento de $spell:%s"
 
 -- Auto-generated Special Warning Localizations
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "Exibir aviso especial para $spell:%s",
-	dispel 		= "Exibir aviso especial para remover/roubar \n $spell:%s",
-	interrupt	= "Exibir aviso especial para interromper $spell:%s",
-	you 		= "Exibir aviso especial quando você é afetado por \n $spell:%s",
-	target 		= "Exibir aviso especial quando alguém é afetador por \n $spell:%s",
-	close 		= "Exibir aviso especial quando alguém próximo de você é \n afetado por $spell:%s",
-	move 		= "Exibir aviso especial quando você é afetado por \n $spell:%s",
-	run 		= "Exibir aviso especial para $spell:%s",
-	cast 		= "Exibir aviso especial para o lançamento de $spell:%s",
-	stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%s",
-	switch		= "Exibir aviso especial para mudar de alvo para \n $spell:%s"
-}
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 		= "Exibir aviso especial para $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel 		= "Exibir aviso especial para remover/roubar \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "Exibir aviso especial para interromper $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Exibir aviso especial quando você é afetado por \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Exibir aviso especial quando alguém é afetador por \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Exibir aviso especial quando alguém próximo de você é \n afetado por $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Exibir aviso especial quando você é afetado por \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Exibir aviso especial para $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Exibir aviso especial para o lançamento de $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Exibir aviso especial para pilha >=%d de \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Exibir aviso especial para mudar de alvo para \n $spell:%s"
 
-DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell = "%s!",
-	dispel = "%s em >%%s< - remova agora",
-	interrupt = "%s - interrompa >%%s<",
-	you = "%s em você",
-	target = "%s em >%%s<",
-	close = "%s em >%%s< perto de você",
-	move = "%s - saia de perto",
-	run = "%s - corra para longe",
-	cast = "%s - pare de lançar",
-	stack = "%s (%%d)",
-	switch = ">%s< - mude de alvo"
-}
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel	= "%s em >%%s< - remova agora"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - interrompa >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.you		= "%s em você"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.target	= "%s em >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.close		= "%s em >%%s< perto de você"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.move		= "%s - saia de perto"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.run		= "%s - corra para longe"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast		= "%s - pare de lançar"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack		= "%s (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch	= ">%s< - mude de alvo"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Colocar ícones nos alvos de $spell:%s"

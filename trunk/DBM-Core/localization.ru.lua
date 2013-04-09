@@ -145,104 +145,92 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Достижение"
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target 		= "%s на |3-5(>%%s<)",
-	targetcount	= "%s (%%d) на |3-5(>%%s<)",
-	spell 		= "%s",
-	ends		= "%s заканчивается",
-	fades		= "%s спадает",
-	adds		= "Осталось %s: %%d",
-	cast 		= "Применение заклинания %s: %.1f сек",
-	soon 		= "Скоро %s",
-	prewarn 	= "%s через %s",
-	phase 		= "Фаза %s",
-	prephase 	= "Скоро фаза %s",
-	count 		= "%s (%%d)",
-	stack 		= "%s на |3-5(>%%s<) (%%d)"
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target 		= "%s на |3-5(>%%s<)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%d) на |3-5(>%%s<)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell 			= "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends			= "%s заканчивается"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.fades			= "%s спадает"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "Осталось %s: %%d"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast 			= "Применение заклинания %s: %.1f сек"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon 			= "Скоро %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn 		= "%s через %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 			= "Фаза %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase 		= "Скоро фаза %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count 			= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack 			= "%s на |3-5(>%%s<) (%%d)"
 
 local prewarnOption = "Предупреждать заранее о $spell:%s"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target 		= "Объявлять цели заклинания $spell:%s",
-	targetcount	= "Объявлять цели заклинания $spell:%s",
-	spell 		= "Предупреждение для $spell:%s",
-	ends		= "Предупреждать об окончании $spell:%s",
-	fades		= "Предупреждать о спадении $spell:%s",
-	adds		= "Объявлять сколько осталось $spell:%s",
-	cast 		= "Предупреждать о применении заклинания $spell:%s",
-	soon 		= prewarnOption,
-	prewarn 	= prewarnOption,
-	phase 		= "Объявлять фазу %s",
-	prephase 	= "Предупреждать заранее о фазе %s",
-	count 		= "Предупреждение для $spell:%s",
-	stack 		= "Объявлять количество стаков $spell:%s"
-}
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target 		= "Объявлять цели заклинания $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "Объявлять цели заклинания $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell 		= "Предупреждение для $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends			= "Предупреждать об окончании $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.fades		= "Предупреждать о спадении $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "Объявлять сколько осталось $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast 		= "Предупреждать о применении заклинания $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 		= prewarnOption
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn 		= prewarnOption
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 		= "Объявлять фазу %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase 	= "Предупреждать заранее о фазе %s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count 		= "Предупреждение для $spell:%s"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack 		= "Объявлять количество стаков $spell:%s"
 
-DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell		= "%s!",
-	ends		= "%s заканчивается",
-	fades		= "%s спадает",
-	soon		= "Скоро %s",
-	dispel 		= "%s на |3-5(>%%s<) - рассейте заклинание",
-	interrupt	= "%s - прервите",
-	you 		= "%s на вас",
-	target 		= "%s на |3-5(>%%s<)",
-	close 		= "%s на |3-5(>%%s<) около вас",
-	move 		= "%s - отбегите",
-	run 		= "%s - бегите",
-	cast 		= "%s - прекратите чтение заклинаний",
-	count 		= "%s! (%%d)",
-	stack 		= "На вас %%d стаков от %s",--too long?	
-	switch 		= ">%s< - переключитесь"
-}
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell		= "%s!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.ends		= "%s заканчивается"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.fades		= "%s спадает"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.soon		= "Скоро %s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel 	= "%s на |3-5(>%%s<) - рассейте заклинание"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt	= "%s - прервите"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.you 		= "%s на вас"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.target 	= "%s на |3-5(>%%s<)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.close 	= "%s на |3-5(>%%s<) около вас"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.move 		= "%s - отбегите"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.run 		= "%s - бегите"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast 		= "%s - прекратите чтение заклинаний"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.count 	= "%s! (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack 	= "На вас %%d стаков от %s" --too long?	
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch 	= ">%s< - переключитесь"
 
 -- Auto-generated Special Warning Localizations
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "Спец-предупреждение для $spell:%s",
-	ends 		= "Спец-предупреждение об окончании $spell:%s",
-	fades 		= "Спец-предупреждение о спадении $spell:%s",
-	soon 		= "Спец-предупреждение что скоро $spell:%s",
-	dispel 		= "Спец-предупреждение для рассеивания/похищения заклинания \n $spell:%s",
-	interrupt	= "Спец-предупреждение для прерывания заклинания $spell:%s",
-	you 		= "Спец-предупреждение, когда на вас \n $spell:%s",
-	target 		= "Спец-предупреждение, когда на ком-то \n $spell:%s",
-	close 		= "Спец-предупреждение, когда на ком-то рядом с вами \n $spell:%s",
-	move 		= "Спец-предупреждение, когда на вас \n $spell:%s",
-	run 		= "Спец-предупреждение для $spell:%s",
-	cast 		= "Спец-предупреждение о применении заклинания $spell:%s",
-	count 		= "Спец-предупреждение для $spell:%s",
-	stack 		= "Спец-предупреждение, когда на вас >=%d стаков \n $spell:%s",
-	switch		= "Спец-предупреждение о смене цели для \n $spell:%s"
-}
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell 		= "Спец-предупреждение для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends 		= "Спец-предупреждение об окончании $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.fades 		= "Спец-предупреждение о спадении $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon 		= "Спец-предупреждение что скоро $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel 		= "Спец-предупреждение для рассеивания/похищения заклинания \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "Спец-предупреждение для прерывания заклинания $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Спец-предупреждение, когда на вас \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Спец-предупреждение, когда на ком-то \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Спец-предупреждение, когда на ком-то рядом с вами \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Спец-предупреждение, когда на вас \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Спец-предупреждение для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Спец-предупреждение о применении заклинания $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "Спец-предупреждение для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Спец-предупреждение, когда на вас >=%d стаков \n $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "Спец-предупреждение о смене цели для \n $spell:%s"
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target 		= "%s: >%%s<",
-	cast 		= "%s",
-	active		= "%s заканчивается",--Buff/Debuff/event on boss
-	fades		= "%s спадает",--Buff/Debuff on players
-	cd 			= "Восст. %s",
-	cdcount		= "Восст. %s (%%d)",
-	cdsource	= "Восст. %s: >%%s<",
-	next 		= "След. %s",
-	nextcount	= "След. %s (%%d)",
-	nextsource	= "След. %s: >%%s<",
-	achievement = "%s"
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target 		= "%s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.cast 			= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s заканчивается" --Buff/Debuff/event on boss
+DBM_CORE_AUTO_TIMER_TEXTS.fades			= "%s спадает" --Buff/Debuff on players
+DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "Восст. %s"
+DBM_CORE_AUTO_TIMER_TEXTS.cdcount		= "Восст. %s (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.cdsource		= "Восст. %s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.next 			= "След. %s"
+DBM_CORE_AUTO_TIMER_TEXTS.nextcount		= "След. %s (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.nextsource	= "След. %s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target 		= "Отсчет времени действия дебаффа $spell:%s",
-	cast 		= "Отсчет времени применения заклинания $spell:%s",
-	active 		= "Отсчет времени действия $spell:%s",
-	fades		= "Отсчет времени до спадения $spell:%s с игроков",
-	cd 			= "Отсчет времени до восстановления $spell:%s",
-	cdcount 	= "Отсчет времени до восстановления $spell:%s",
-	cdsource	= "Отсчет времени до восстановления $spell:%s",
-	next 		= "Отсчет времени до следующего $spell:%s",
-	nextcount 	= "Отсчет времени до следующего $spell:%s",
-	nextsource	= "Отсчет времени до следующего $spell:%s",
-	achievement = "Отсчет времени для %s"
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "Отсчет времени действия дебаффа $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "Отсчет времени применения заклинания $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.active 		= "Отсчет времени действия $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.fades		= "Отсчет времени до спадения $spell:%s с игроков"
+DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "Отсчет времени до восстановления $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdcount 	= "Отсчет времени до восстановления $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdsource	= "Отсчет времени до восстановления $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "Отсчет времени до следующего $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextcount 	= "Отсчет времени до следующего $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextsource	= "Отсчет времени до следующего $spell:%s"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Отсчет времени для %s"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Устанавливать метки на цели заклинания $spell:%s"
