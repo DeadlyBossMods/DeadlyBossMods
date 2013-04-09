@@ -125,11 +125,20 @@ L:SetGeneralLocalization({
 	name = "싸움꾼: 9 계급"
 })
 
-------------
--- Rares --
-------------
+-------------
+-- Rares 1 --
+-------------
 L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
-	name = "싸움꾼: 희귀"
+	name = "싸움꾼: 희귀 1"
+})
+
+-------------
+-- Rares 2 --
+-------------
+L= DBM:GetModLocalization("BrawlRare2")
+
+L:SetGeneralLocalization({
+	name = "싸움꾼: 희귀 2"
 })
