@@ -51,34 +51,34 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, npc, _, _, target)
 	local isMatchBegin = true
-	if msg:find(L.Rank1) then
+	if msg:find(L.Rank1, 1, true) then -- fix for ruRU clients.
 		currentFighter = target
 		currentRank = 1
-	elseif msg:find(L.Rank2) then
+	elseif msg:find(L.Rank2, 1, true) then
 		currentFighter = target
 		currentRank = 2
-	elseif msg:find(L.Rank3) then
+	elseif msg:find(L.Rank3, 1, true) then
 		currentFighter = target
 		currentRank = 3
-	elseif msg:find(L.Rank4) then
+	elseif msg:find(L.Rank4, 1, true) then
 		currentFighter = target
 		currentRank = 4
-	elseif msg:find(L.Rank5) then
+	elseif msg:find(L.Rank5, 1, true) then
 		currentFighter = target
 		currentRank = 5
-	elseif msg:find(L.Rank6) then
+	elseif msg:find(L.Rank6, 1, true) then
 		currentFighter = target
 		currentRank = 6
-	elseif msg:find(L.Rank7) then
+	elseif msg:find(L.Rank7, 1, true) then
 		currentFighter = target
 		currentRank = 7
-	elseif msg:find(L.Rank8) then
+	elseif msg:find(L.Rank8, 1, true) then
 		currentFighter = target
 		currentRank = 8
-	elseif msg:find(L.Rank9) then
+	elseif msg:find(L.Rank9, 1, true) then
 		currentFighter = target
 		currentRank = 9
-	elseif msg:find(L.Rank10) then
+	elseif msg:find(L.Rank10, 1, true) then
 		currentFighter = target
 		currentRank = 10
 	elseif currentFighter and target == currentFighter and (npc == L.Bizmo or npc == L.Bazzelflange) then--He's targeting current fighter but it's not a match begin yell, the only other time this happens is on match end.
