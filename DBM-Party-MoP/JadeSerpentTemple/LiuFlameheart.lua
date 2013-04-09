@@ -19,14 +19,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
---This fight has more abilities not implimented yet do to no combat log or emote/yell triggers at all
---Will likely need to transcribe this fight with transcriptor to complete this mod
---Probably only things worth adding would be Serpant wave and Jade Serpant wave
 local warnDragonStrike			= mod:NewSpellAnnounce(106823, 2)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnJadeDragonStrike		= mod:NewSpellAnnounce(106841, 3)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
---local warnJadeFire				= mod:NewTargetAnnounce(107045, 4, nil, false)-- spammy
 
 local specWarnJadeDragonWave	= mod:NewSpecialWarningMove(118540)
 local specWarnJadeFire			= mod:NewSpecialWarningMove(107110)
@@ -69,7 +65,6 @@ function mod:SPELL_CAST_START(args)
 		timerDragonStrikeCD:Cancel()
 	elseif args.spellId == 107045 then
 		timerJadeFireCD:Start()
-		--self:BossTargetScanner(56762, "JadeFireTarget", 0.02, 20)
 	end
 end
 
