@@ -7,7 +7,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA"
+	"ZONE_CHANGED_NEW_AREA",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnOrgPortal			= mod:NewCastAnnounce(135385, 1)--These are rare casts and linked to achievement.
@@ -28,6 +29,7 @@ local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
 local currentZoneID = 0
 local modsStopped = false
+local eventsRegistered = false
 
 function mod:PlayerFighting() -- for external mods
 	return playerIsFighting
@@ -119,9 +121,9 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	currentZoneID = GetCurrentMapAreaID()
 	if currentZoneID == 922 or currentZoneID == 925 then
 		modsStopped = false
+		eventsRegistered = true
 		self:RegisterShortTermEvents(
 			"SPELL_CAST_START",
-			"CHAT_MSG_MONSTER_YELL",
 			"PLAYER_REGEN_ENABLED",
 			"UNIT_DIED"
 		)
@@ -130,6 +132,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	if modsStopped then return end--Don't need this to fire every time you change zones after the first.
 	self:Stop()
 	self:UnregisterShortTermEvents()
+	eventsRegistered = false
 	for i = 1, 8 do
 		local mod2 = DBM:GetModByName("BrawlRank" .. i)
 		if mod2 then
@@ -142,6 +145,14 @@ end
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
+		if not eventsRegistered then
+			eventsRegistered = true
+			self:RegisterShortTermEvents(
+				"SPELL_CAST_START",
+				"PLAYER_REGEN_ENABLED",
+				"UNIT_DIED"
+			)
+		end
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
