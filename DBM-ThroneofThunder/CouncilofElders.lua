@@ -83,7 +83,9 @@ local timerShadowedLoaSpiritCD		= mod:NewCDTimer(33, 137350)--Possessed version 
 local timerTwistedFateCD			= mod:NewCDTimer(33, 137891)--On heroic, this replaces shadowed loa spirit
 local timerMarkedSoul				= mod:NewTargetTimer(20, 137359)
 --Frost King Malak
+local timerBitingCold				= mod:NewBuffFadesTimer(30, 136917)
 local timerBitingColdCD				= mod:NewCDTimer(45, 136917)--10 man Cds (and probably LFR), i have no doubt on 25 man this will either have a shorter cd or affect 3 targets with same CD. Watch for timer diffs though
+local timerFrostBite				= mod:NewBuffFadesTimer(30, 136990)
 local timerFrostBiteCD				= mod:NewCDTimer(45, 136990)--^same comment as above
 local timerFrigidAssault			= mod:NewTargetTimer(15, 136903)
 local timerFrigidAssaultCD			= mod:NewCDTimer(30, 136904)--30 seconds after last one ended (maybe even a next timer, i'll change it with more logs.)
@@ -292,6 +294,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBitingColdCD:Start()
 		if args:IsPlayer() then
 			specWarnBitingCold:Show()
+			timerBitingCold:Start()
 			yellBitingCold:Yell()
 		end
 	elseif args.spellId == 136922 and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
@@ -302,6 +305,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFrostBiteCD:Start()
 		if args:IsPlayer() then
 			specWarnFrostBite:Show()
+			timerFrostBite:Start()
 		end
 	elseif args:IsSpellID(136860, 136878) and args:IsPlayer() and self:AntiSpam(2, 3) then--Trigger off initial quicksand debuff and ensnared stacks. much less cpu them registering damage events and just as effective.
 		specWarnQuickSand:Show()
@@ -357,8 +361,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMarkedSoul:Cancel(args.destName)
 	elseif args.spellId == 136992 and self.Options.SetIconOnBitingCold then
 		self:SetIcon(args.destName, 0)
+		if args:IsPlayer() then
+			timerBitingCold:Cancel()
+		end
 	elseif args.spellId == 136922 and self.Options.SetIconOnFrostBite then
-		self:SetIcon(args.destName, 0)--Square
+		self:SetIcon(args.destName, 0)
+		if args:IsPlayer() then
+			timerFrostBite:Cancel()
+		end
 	end
 end
 
