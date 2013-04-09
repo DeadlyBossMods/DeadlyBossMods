@@ -45,4 +45,5 @@ Rank6.lua
 Rank7.lua
 Rank8.lua
 Rank9.lua
-Rares.lua
+Rares1.lua
+Rares2.lua

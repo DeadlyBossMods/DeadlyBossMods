@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("BrawlRank0", "DBM-Brawlers")
+local mod	= DBM:NewMod("BrawlRare1", "DBM-Brawlers")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -11,6 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
+--Boss Key
+--http://mysticalos.com/images/MoP/new_brawlers/rares1.jpeg
 local warnEvilGlare				= mod:NewSpellAnnounce(133208, 4)
 local warnPowerCrystal			= mod:NewSpellAnnounce(133398, 3)
 local warnDoom					= mod:NewSpellAnnounce(133650, 4)
@@ -24,7 +26,6 @@ local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262)
 local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250)
 local specWarnStaticCharge		= mod:NewSpecialWarningInterrupt(135621)
 
---local timerEvilGlareCD			= mod:NewNextTimer(6, 133208)--This sometimes comes early, most of time it is 6 second next timer though.
 local timerPowerCrystalCD		= mod:NewCDTimer(13, 133398)--13-17 second variation
 local timerBlueCrushCD			= mod:NewNextTimer(30, 133262)
 local timerDestructolaserCD		= mod:NewNextTimer(30, 133250)
