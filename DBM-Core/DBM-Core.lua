@@ -593,21 +593,6 @@ end
 --  OnLoad  --
 --------------
 do
-	local function showOldVerWarning()
-		StaticPopupDialogs["DBM_OLD_VERSION"] = {
-			preferredIndex = STATICPOPUP_NUMDIALOGS,
-			text = DBM_CORE_ERROR_DBMV3_LOADED,
-			button1 = DBM_CORE_OK,
-			OnAccept = function()
-				DisableAddOn("DBM_API")
-				ReloadUI()
-			end,
-			timeout = 0,
-			exclusive = 1,
-			whileDead = 1
-		}
-		StaticPopup_Show("DBM_OLD_VERSION")
-	end
 	
 	local isLoaded = false
 	local onLoadCallbacks = {}
@@ -705,8 +690,6 @@ do
 			self:Schedule(20, function()--Delay UNIT_HEALTH combat start for 20 sec. (to not break Timer Recovery stuff)
         		healthCombatInitialized = true
 			end)
-			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
-			if enabled and loadable then showOldVerWarning() end
 			-- setup MovieFrame hook (TODO: replace this by a proper filtering function that only filters certain movie IDs (which requires some API for boss mods to specify movie IDs and default actions)))
 			-- do not use HookScript here, the movie must not even be started to prevent a strange WoW crash bug on OS X with some movies
 			local oldMovieEventHandler = MovieFrame:GetScript("OnEvent")
