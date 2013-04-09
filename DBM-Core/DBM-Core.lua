@@ -2693,7 +2693,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 			return
 		end
 		table.insert(inCombat, mod)
-		bossHealth[mod.combatInfo.mob] = 1
+		bossHealth[mod.combatInfo.mob or -1] = 1
 		if mod.multiMobPullDetection then
 			for _, mob in ipairs(mod.multiMobPullDetection) do
 				if not bossHealth[mob] then bossHealth[mob] = 1 end
@@ -3161,7 +3161,7 @@ do
 			if not mod.combatInfo then return end
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(mod.combatInfo.name, strFromTime(time + lag)))
 			table.insert(inCombat, mod)
-			bossHealth[mod.combatInfo.mob] = 1
+			bossHealth[mod.combatInfo.mob or -1] = 1
 			if mod.multiMobPullDetection then
 				for _, mob in ipairs(mod.multiMobPullDetection) do
 					if not bossHealth[mob] then bossHealth[mob] = 1 end
