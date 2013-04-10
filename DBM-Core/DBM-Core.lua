@@ -1093,11 +1093,15 @@ do
 		table.sort(sortMe, sort)
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
-			if v.displayVersion then
+			if v.displayVersion and not v.bwrevision then--DBM, no BigWigs
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
 				if notify and v.revision < DBM.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
+			elseif v.displayVersion and v.bwrevision then--DBM & BigWigs
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, v.displayVersion, v.revision, BIG_WIGS, v.bwrevision))
+			elseif not v.displayVersion and v.bwrevision then--BigWigs, No DBM
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, BIG_WIGS, v.bwrevision))
 			else
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
 			end
@@ -2037,6 +2041,18 @@ do
 		sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 	end
 
+	syncHandlers["VR"] = function(sender, bwrevision)--Sent by bigwigs releases
+		if bwrevision and raid[sender] then
+			raid[sender].bwrevision = bwrevision
+		end
+	end
+	
+	syncHandlers["VRA"] = function(sender, bwrevision)--Sent by bigwigs Alphas
+		if bwrevision and raid[sender] then
+			raid[sender].bwrevision = bwrevision
+		end
+	end
+
 	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale)
 		revision, version = tonumber(revision or ""), tonumber(version or "")
 		if revision and version and displayVersion and raid[sender] then
@@ -2362,6 +2378,11 @@ do
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
 			handleSync(channel, sender, strsplit("\t", msg))
+		elseif prefix == "BigWigs" and msg and (channel == "PARTY" or channel == "RAID" or channel == "INSTANCE_CHAT" or channel == "WHISPER" and self:GetRaidUnitId(sender)) then
+			local bwPrefix, bwMsg = msg:match("^(%u-):(.+)")
+			if bwPrefix and (bwPrefix == "VR" or bwPrefix == "VRA") then--We only care about version prefixes so only pass those prefixes on
+				handleSync(channel, sender, bwPrefix, bwMsg)
+			end
 		end
 	end
 end
@@ -3311,6 +3332,9 @@ do
 		if type(RegisterAddonMessagePrefix) == "function" then
 			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+			end
+			if not RegisterAddonMessagePrefix("BigWigs") then
+			
 			end
 		end
 	end
