@@ -57,10 +57,12 @@ DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s has wiped on %s at %s"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s has wiped on %s at %s. They have %d total wipes on this difficulty."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
-DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM not installed"
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Bosss mod
+DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Boss Mod not installed"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d players with Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Your version of Deadly Boss Mods is out-of-date. Please visit http://dev.deadlybossmods.com to get the latest version."
+BIG_WIGS							= "BigWigs"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is out-of-date.\n Version %s (r%d) is available for download here:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Press " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " to copy the download link to your clipboard."
