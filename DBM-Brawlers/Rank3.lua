@@ -51,7 +51,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:UNIT_TARGET()
-	if self.Options.SetIconOnBlat and UnitGUID("target") == blatGUID then
+	if self.Options.SetIconOnBlat and not DBM.Options.DontSetIcons and UnitGUID("target") == blatGUID then
 		SetRaidTarget("target", 8)
 	end
 end

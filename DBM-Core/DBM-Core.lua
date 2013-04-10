@@ -1375,7 +1375,7 @@ do
 					else
 						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 					end
-					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].revision and raid[name].revision > tonumber(DBM.Revision) then
+					if not playerWithHigherVersionPromoted and rank >= 1 and (raid[name].revision and raid[name].revision > tonumber(DBM.Revision) or IsAddOnLoaded("BigWigs")) then
 						playerWithHigherVersionPromoted = true
 					end
 				end
