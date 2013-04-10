@@ -1453,6 +1453,7 @@ do
 			inRaid = false
 			enableIcons = true
 			fireEvent("raidLeave", playerName)
+			table.wipe(raid)
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
 			raid[playerName].name = playerName
