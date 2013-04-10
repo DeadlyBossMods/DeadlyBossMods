@@ -144,104 +144,89 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "시작합니다. 긴장하세요.!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"
 
--- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target 		= "%s : >%%s<",
-	targetcount = "%s (%%d) : >%%s<",
-	spell 		= "%s",
-	ends 		= "%s 종료",
-	fades		= "%s 사라짐",
-	adds		= "%s : %%d 남음",
-	cast 		= "주문시전 %s : %.1f 초",
-	soon 		= "곧 %s",
-	prewarn		= "%2$s 후 %1$s",
-	phase 		= "%s 단계",
-	prephase	= "곧 %s 단계",
-	count 		= "%s (%%d)",
-	stack 		= "%s : >%%s< (%%d)"
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target			= "%s : >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.targetcount	= "%s (%%d) : >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends			= "%s 종료"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.fades			= "%s 사라짐"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "%s : %%d 남음"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "주문시전 %s : %.1f 초"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "곧 %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%2$s 후 %1$s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase			= "%s 단계"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase		= "곧 %s 단계"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count			= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack			= "%s : >%%s< (%%d)"
 
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target		= "$spell:%s 대상 알림 보기",
-	targetcount	= "$spell:%s 대상 알림 보기",
-	spell 		= "$spell:%s 알림 보기",
-	ends 		= "$spell:%s 종료 알림 보기",
-	fades		= "$spell:%s 사라짐 알림 보기",
-	adds		= "$spell:%s 남은 횟수 알림 보기",
-	cast 		= "$spell:%s 시전시 알림 보기",
-	soon 		= "$spell:%s 사전 알림 보기",
-	prewarn		= "$spell:%s 사전 알림 보기",
-	phase 		= "%s 단계 알림 보기",
-	prephase	= "%s 단계 사전 알림 보기",
-	count 		= "$spell:%s 알림 보기",
-	stack		= "$spell:%s 중첩 알림 보기"
-}
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target		= "$spell:%s 대상 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "$spell:%s 대상 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell		= "$spell:%s 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends			= "$spell:%s 종료 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.fades		= "$spell:%s 사라짐 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "$spell:%s 남은 횟수 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전시 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= "$spell:%s 사전 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn		= "$spell:%s 사전 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "%s 단계 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase		= "%s 단계 사전 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "$spell:%s 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "$spell:%s 중첩 알림 보기"
 
-DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell 		= "%s!",
-	ends 		= "%s 종료!",
-	fades 		= "%s 사라짐!",
-	soon 		= "곧 %s!",
-	dispel 		= "%s : >%%s< - 해제!",
-	interrupt 	= "%s : >%%s< - 차단!",
-	you 		= "당신에게 %s",
-	target 		= "%s : >%%s<",
-	close 		= "당신 근처에 %s (>%%s<)!",
-	move 		= "%s - 이동하세요!",
-	run 		= "%s - 도망치세요!",
-	cast 		= "%s - 시전 중지!",
-	count 		= "%s! (%%d)",
-	stack 		= "당신에게 %s (%%d 중첩)",
-	switch		= ">%s< - 대상 전환!"
-}
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.spell			= "%s!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.ends			= "%s 종료!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.fades			= "%s 사라짐!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.soon			= "곧 %s!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= "%s : >%%s< - 해제!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s : >%%s< - 차단!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "당신에게 %s"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= "%s : >%%s<"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "당신 근처에 %s (>%%s<)!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 이동하세요!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.run			= "%s - 도망치세요!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast			= "%s - 시전 중지!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.count			= "%s! (%%d)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack			= "당신에게 %s (%%d 중첩)"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch		= ">%s< - 대상 전환!"
 
--- Auto-generated Special Warning Localizations
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "$spell:%s 특수 경고 보기",
-	ends 		= "$spell:%s 종료 특수 경고 보기",
-	fades 		= "$spell:%s 사라짐 특수 경고 보기",
-	soon 		= "$spell:%s 사전 특수 경고 보기",
-	dispel 		= "$spell:%s 특수 경고 보기(해제/마법훔치기)",
-	interrupt	= "$spell:%s 특수 경고 보기(차단)",	
-	you 		= "$spell:%s 대상이 될 경우 특수 경고 보기",
-	target 		= "$spell:%s 주문의 영향을 누군가 받은 경우 특수 경고 보기",
-	close 		= "$spell:%s 대상이 근처에 있을 경우 특수 경고 보기",
-	move 		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기(이동)",
-	run 		= "$spell:%s 특수 경고 보기(빠른 이동)",
-	cast 		= "$spell:%s 시전을 시작할 경우 특수 경고 보기",
-	count 		= "$spell:%s 특수 경고 보기",
-	stack 		= "$spell:%2$d 주문이 %1$d 중첩 이상시 특수 경고 보기",
-	switch		= "$spell:%s 특수 경고 보기(대상 전환)"
-}
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell		= "$spell:%s 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.ends		= "$spell:%s 종료 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.fades		= "$spell:%s 사라짐 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon		= "$spell:%s 사전 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel		= "$spell:%s 특수 경고 보기(해제/마법훔치기)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "$spell:%s 특수 경고 보기(차단)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you			= "$spell:%s 대상이 될 경우 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target		= "$spell:%s 주문의 영향을 누군가 받은 경우 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close		= "$spell:%s 대상이 근처에 있을 경우 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move		= "$spell:%s 주문의 영향을 받은 경우 특수 경고 보기(이동)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run			= "$spell:%s 특수 경고 보기(빠른 이동)"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast		= "$spell:%s 시전을 시작할 경우 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count		= "$spell:%s 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack		= "$spell:%2$d 주문이 %1$d 중첩 이상시 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "$spell:%s 특수 경고 보기(대상 전환)"
 
--- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target		= "%s: >%%s<",
-	cast 		= "%s",
-	active		= "%s 종료",--Buff/Debuff/event on boss
-	fades		= "%s 사라짐",--Buff/Debuff on players
-	cd 			= "%s 가능",
-	cdcount		= "%s 가능 (%%d)",
-	cdsource	= "%s 가능: >%%s<",
-	next 		= "다음 %s",
-	nextcount 	= "다음 %s (%%d)",
-	nextsource	= "다음 %s: >%%s<",
-	achievement	= "%s"
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.cast				= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active			= "%s 종료"
+DBM_CORE_AUTO_TIMER_TEXTS.fades				= "%s 사라짐"
+DBM_CORE_AUTO_TIMER_TEXTS.cd				= "%s 가능"
+DBM_CORE_AUTO_TIMER_TEXTS.cdcount			= "%s 가능 (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.cdsource			= "%s 가능: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.next				= "다음 %s"
+DBM_CORE_AUTO_TIMER_TEXTS.nextcount			= "다음 %s (%%d)"
+DBM_CORE_AUTO_TIMER_TEXTS.nextsource		= "다음 %s: >%%s<"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target 		= "$spell:%s 약화효과 바 표시",
-	cast 		= "$spell:%s 시전 바 표시",
-	active		= "$spell:%s 유지시간 바 표시",
-	fades		= "$spell:%s 효과가 사라지기 전까지 남은시간 바 표시",
-	cd 			= "$spell:%s 대기시간 바 표시",
-	cdcount		= "$spell:%s 대기시간 바 표시",
-	cdsource	= "$spell:%s 대기시간 바 표시",
-	next 		= "다음 $spell:%s 바 표시",
-	nextcount 	= "다음 $spell:%s 바 표시",
-	nextsource	= "다음 $spell:%s 바 표시",
-	achievement = "%s 업적을 위한 남은시간 바 표시"
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target			= "$spell:%s 약화효과 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.cast			= "$spell:%s 시전 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.active			= "$spell:%s 유지시간 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.fades			= "$spell:%s 효과가 사라지기 전까지 남은시간 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.cd				= "$spell:%s 대기시간 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdcount			= "$spell:%s 대기시간 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.cdsource		= "$spell:%s 대기시간 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.next			= "다음 $spell:%s 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextcount		= "다음 $spell:%s 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.nextsource		= "다음 $spell:%s 바 표시"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적을 위한 남은시간 바 표시"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
