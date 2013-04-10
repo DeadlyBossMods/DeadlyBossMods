@@ -48,7 +48,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:UNIT_TARGET()
-	if self.Options.SetIconOnDominika and UnitGUID("target") == DominikaGUID then
+	if self.Options.SetIconOnDominika and not DBM.Options.DontSetIcons and UnitGUID("target") == DominikaGUID then
 		SetRaidTarget("target", 8)
 	end
 end

@@ -36,7 +36,7 @@ local addsRemaining = 4--Also 4 on heroic?
 local addsName = EJ_GetSectionInfo(5616)
 
 function mod:UNIT_TARGET()
-	if self.Options.SetIconOnAdds and UnitName("target") == addsName then
+	if self.Options.SetIconOnAdds and not DBM.Options.DontSetIcons and UnitName("target") == addsName then
 		SetRaidTarget("target", 8)
 	end
 end

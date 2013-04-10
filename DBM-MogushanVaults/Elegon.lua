@@ -145,7 +145,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnCreature and DBM:GetRaidRank() > 0 and not (iconsSet == 6) then
+	if self.Options.SetIconOnCreature and not DBM.Options.DontSetIcons and DBM:GetRaidRank() > 0 and not (iconsSet == 6) then
 		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
@@ -167,7 +167,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
 		end
-		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
+		if self.Options.SetIconOnCreature and not DBM.Options.DontSetIcons and not creatureIcons[args.sourceGUID] then
 			creatureIcons[args.sourceGUID] = creatureIcon
 			creatureIcon = creatureIcon - 1
 		end
