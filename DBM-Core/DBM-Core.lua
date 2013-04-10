@@ -107,6 +107,7 @@ DBM.DefaultOptions = {
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
 	UseMasterVolume = true,
+	SetPlayerRole = true,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
 	RangeFrameUpdates = "Average",
@@ -680,7 +681,8 @@ do
 				"UPDATE_MOUSEOVER_UNIT",
 				"PLAYER_TARGET_CHANGED"	,
 				"CINEMATIC_START",
-				"LFG_COMPLETION_REWARD"
+				"LFG_COMPLETION_REWARD",
+				"ACTIVE_TALENT_GROUP_CHANGED"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:GROUP_ROSTER_UPDATE()
@@ -1099,9 +1101,9 @@ do
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			elseif v.displayVersion and v.bwrevision then--DBM & BigWigs
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, v.displayVersion, v.revision, BIG_WIGS, v.bwrevision))
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, v.displayVersion, v.revision, DBM_BIG_WIGS, v.bwrevision))
 			elseif not v.displayVersion and v.bwrevision then--BigWigs, No DBM
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, BIG_WIGS, v.bwrevision))
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, DBM_BIG_WIGS, v.bwrevision))
 			else
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
 			end
@@ -1351,6 +1353,7 @@ do
 				inRaid = true
 				sendSync("H")
 				DBM:Schedule(2, DBM.RequestTimers, DBM)
+				DBM:Schedule(2, DBM.RoleCheck, DBM)
 				fireEvent("raidJoin", playerName)
 				if BigWigs and BigWigs.db.profile.raidicon and not DBM.Options.DontSetIcons then--Both DBM and bigwigs have raid icon marking turned on.
 					DBM:AddMsg(DBM_CORE_BIGWIGS_ICON_CONFLICT)--Warn that one of them should be turned off to prevent conflict (which they turn off is obviously up to raid leaders preference, dbm accepts either ore turned off to stop this alert)
@@ -1406,6 +1409,7 @@ do
 				inRaid = true
 				sendSync("H")
 				DBM:Schedule(2, DBM.RequestTimers, DBM)
+				DBM:Schedule(2, DBM.RoleCheck, DBM)
 				fireEvent("partyJoin", playerName)
 			end
 			for i = 0, GetNumSubgroupMembers() do
@@ -1699,6 +1703,10 @@ end
 
 function DBM:LFG_PROPOSAL_SUCCEEDED()
 	DBM.Bars:CancelBar(DBM_LFG_INVITE)
+end
+
+function DBM:ACTIVE_TALENT_GROUP_CHANGED()
+	DBM:RoleCheck()
 end
 
 function DBM:PLAYER_REGEN_ENABLED()
@@ -3594,6 +3602,21 @@ function DBM:Capitalize(str)
 		numBytes = 2
 	end
 	return str:sub(1, numBytes):upper()..str:sub(numBytes + 1):lower()
+end
+
+function DBM:RoleCheck()
+	if not DBM.Options.SetPlayerRole then return end
+	if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
+		local spec = GetSpecialization()
+		local role = GetSpecializationRole(spec)
+		if role == "TANK" and UnitGroupRolesAssigned("player") ~= "TANK" then
+			UnitSetRole("player", "TANK")
+		elseif role == "HEALER" and UnitGroupRolesAssigned("player") ~= "HEALER" then
+			UnitSetRole("player", "HEALER")
+		elseif role == "DAMAGER" and UnitGroupRolesAssigned("player") ~= "DAMAGER" then
+			UnitSetRole("player", "DAMAGER")
+		end
+	end
 end
 
 -----------------
