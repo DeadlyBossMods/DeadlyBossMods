@@ -1352,7 +1352,7 @@ do
 				sendSync("H")
 				DBM:Schedule(2, DBM.RequestTimers, DBM)
 				fireEvent("raidJoin", playerName)
-				if IsAddOnLoaded("BigWigs") and BigWigs.db.profile.raidicon and not DBM.Options.DontSetIcons then--Both DBM and bigwigs have raid icon marking turned on.
+				if BigWigs and BigWigs.db.profile.raidicon and not DBM.Options.DontSetIcons then--Both DBM and bigwigs have raid icon marking turned on.
 					DBM:AddMsg(DBM_CORE_BIGWIGS_ICON_CONFLICT)--Warn that one of them should be turned off to prevent conflict (which they turn off is obviously up to raid leaders preference, dbm accepts either ore turned off to stop this alert)
 				end
 			end
