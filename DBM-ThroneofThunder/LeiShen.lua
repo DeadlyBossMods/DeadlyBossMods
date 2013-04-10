@@ -84,6 +84,8 @@ local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact 
 local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
 local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
 
+local countdownThunderstruck			= mod:NewCountdown(46, 135095)
+
 local soundDecapitate					= mod:NewSound(134912)
 
 mod:AddBoolOption("RangeFrame")
@@ -129,6 +131,7 @@ function mod:OnCombatStart(delay)
 	southDestroyed = false
 	westDestroyed = false
 	timerThunderstruckCD:Start(25-delay)
+	countdownThunderstruck:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
 	self:RegisterShortTermEvents(
 		"UNIT_HEALTH_FREQUENT"
@@ -152,8 +155,10 @@ function mod:SPELL_CAST_START(args)
 		timerThunderstruck:Start()
 		if phase < 3 then
 			timerThunderstruckCD:Start()
+			countdownThunderstruck:Start()
 		else
 			timerThunderstruckCD:Start(30)
+			countdownThunderstruck:Start()
 		end
 	--"<206.2 20:38:58> [UNIT_SPELLCAST_SUCCEEDED] Lei Shen [[boss1:Lightning Whip::0:136845]]", -- [13762] --This event comes about .5 seconds earlier than SPELL_CAST_START. Maybe worth using?
 	elseif args.spellId == 136850 then
@@ -357,6 +362,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerViolentGaleWindsCD:Start(20)
 			timerLightningWhipCD:Start(21.5)
 			timerThunderstruckCD:Start(36)
+			countdownThunderstruck:Start(36)
 			timerSummonBallLightningCD:Start(41.5)
 		end
 	end
@@ -397,6 +403,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 137146 and self:AntiSpam(2, 2) then--Supercharge Conduits (comes earlier than other events so we use this one)
 		intermissionActive = true
 		timerThunderstruckCD:Cancel()
+		countdownThunderstruck:Cancel()
 		timerDecapitateCD:Cancel()
 		timerFussionSlashCD:Cancel()
 		timerLightningWhipCD:Cancel()
