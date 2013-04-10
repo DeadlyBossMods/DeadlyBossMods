@@ -95,7 +95,8 @@ local cinderIcon = 7
 local iceIcon = 6
 local activeHeadGUIDS = {}
 local iceTorrent = GetSpellInfo(139857)
-local lastTorrent = 0
+local torrentTarget1 = nil
+local torrentTarget2 = nil
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -136,7 +137,8 @@ function mod:OnCombatStart(delay)
 	iceBehind = 0
 	cinderIcon = 7
 	iceIcon = 6
-	lastTorrent = 0
+	torrentTarget1 = nil
+	torrentTarget2 = nil
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
 		arcaneInFront = 0
@@ -386,27 +388,41 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+local function warnTorrent(name)
+	if not name then return end
+	warnTorrentofIce:Show(name)
+	if name == UnitName("player") then
+		specWarnTorrentofIceYou:Show()
+		timerTorrentofIce:Start()
+		yellTorrentofIce:Yell()
+		mod:SendSync("IceTarget", UnitGUID("player")) -- Remain sync stuff for older version.
+	end
+end
+
 function mod:UNIT_AURA(uId)
-	if UnitDebuff(uId, iceTorrent) then
-		local _, _, _, _, _, duration, expires = UnitDebuff(uId, iceTorrent)
-		if lastTorrent ~= expires then
-			lastTorrent = expires
-			local name = DBM:GetUnitFullName(uId)
-			warnTorrentofIce:Show(name)
-			if name == UnitName("player") then
-				specWarnTorrentofIceYou:Show()
-				timerTorrentofIce:Start()
-				yellTorrentofIce:Yell()
-				self:SendSync("IceTarget", UnitGUID("player")) -- Remain sync stuff for older version.
-			end
-			if self.Options.SetIconOnTorrentofIce then
-				self:SetIcon(uId, iceIcon, 11)--do not have cleu, so use scheduler.
-				if iceIcon == 6 then--Alternate cinder icons because you can have two at once in later fight.
-					iceIcon = 4--green is closest match to blue for a cold like color
-				else
-					iceIcon = 6
-				end
-			end
+	if UnitDebuff(uId, iceTorrent) and not torrentTarget1 and (torrentTarget2 or "") ~= uId then
+		torrentTarget1 = uId
+		local name = DBM:GetUnitFullName(uId)
+		warnTorrent(name)
+		if self.Options.SetIconOnTorrentofIce then
+			self:SetIcon(uId, 6)
+		end
+	elseif UnitDebuff(uId, iceTorrent) and not torrentTarget2 and (torrentTarget1 or "") ~= uId then
+		torrentTarget2 = uId
+		local name = DBM:GetUnitFullName(uId)
+		warnTorrent(name)
+		if self.Options.SetIconOnTorrentofIce then
+			self:SetIcon(uId, 4)
+		end
+	elseif torrentTarget1 and torrentTarget1 == uId and not UnitDebuff(uId, iceTorrent) then
+		torrentTarget1 = nil
+		if self.Options.SetIconOnTorrentofIce then
+			self:SetIcon(uId, 0)
+		end
+	elseif torrentTarget2 and torrentTarget2 == uId and not UnitDebuff(uId, iceTorrent) then
+		torrentTarget2 = nil
+		if self.Options.SetIconOnTorrentofIce then
+			self:SetIcon(uId, 0)
 		end
 	end
 end
