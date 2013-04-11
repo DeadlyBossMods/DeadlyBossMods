@@ -67,8 +67,6 @@ function mod:OnCombatStart(delay)
 		crushCount = 0
 		timerCrushCD:Start(25.5-delay, 1)
 		countdownCrush:Start(25.5-delay)
-	end
-	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
 	else
 		berserkTimer:Start(720-delay)
