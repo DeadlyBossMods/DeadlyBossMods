@@ -8,6 +8,8 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다 !"
 DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 전투가 종료되면 설정창이 열릴 것입니다. 이후에는 전투 중이라도 설정창을 불러 올 수 있습니다."
 
+DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM의 전술 목표 아이콘 설정이 모두 활성화 된것을 발견했습니다. 아이콘 충돌을 방지하기 위해 둘 중 하나의 아이콘 설정을 비활성화 해주시기 바랍니다."
+
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "%s 전투 진행 도중 참가하였습니다. 행운을 빕니다! :)"
 DBM_CORE_SCENARIO_STARTED			= "%s 시작됨. 행운을 빕니다! :)";
@@ -56,10 +58,12 @@ DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s 님이 %s 전투에서 전멸하였�
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 우두머리의 체력은 %s 입니다. (현재 난이도에서 전멸: %d회)"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버전"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
-DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 죽이는 보스 모드가 설치 되어있지 않습니다."
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Bosss mod
+DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 공격대 경보 애드온이 설치되어 있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명이 설치되어 있는 것을 찾았습니다."
 DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
+DBM_BIG_WIGS						= "BigWigs"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 DBM 버전이 오래되었습니다!\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 다운로드 주소를 복사하실 수 있습니다."
