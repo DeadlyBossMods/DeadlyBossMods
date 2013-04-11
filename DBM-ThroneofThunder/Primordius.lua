@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"UNIT_AURA",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -42,7 +43,7 @@ local timerMalformedBlood			= mod:NewTargetTimer(60, 136050, nil, mod:IsTank() o
 local timerPrimordialStrikeCD		= mod:NewCDTimer(24, 136037)
 local timerCausticGasCD				= mod:NewCDTimer(14, 136216)
 local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136247, nil, false)
-local timerVolatilePathogenCD		= mod:NewCDTimer(28, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
+local timerVolatilePathogenCD		= mod:NewCDTimer(27, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
 local timerBlackBlood				= mod:NewTargetTimer(60, 137000, nil, mod:IsTank() or mod:IsHealer())
 local timerViscousHorrorCD			= mod:NewNextCountTimer(30, "ej6969", nil, nil, nil, 137000)
 
@@ -170,6 +171,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			end
 		end
 	elseif args.spellId == 140546 and args:IsPlayer() then
+		timerFullyMutated:Cancel()--Can be dispeled
 		specWarnFullyMutatedFaded:Show(args.spellName)
 	end
 end

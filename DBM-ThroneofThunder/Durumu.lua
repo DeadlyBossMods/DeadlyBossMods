@@ -117,13 +117,12 @@ local function BeamEnded()
 		timerIceWallCD:Start(26)
 	end
 	if mod:IsDifficulty("lfr25") then
-		timerLightSpectrumCD:Start(56)
-		timerDisintegrationBeamCD:Start(177)
+		timerLightSpectrumCD:Start(66)
+		timerDisintegrationBeamCD:Start(186)
 	else
 		timerLightSpectrumCD:Start(33)
 		timerDisintegrationBeamCD:Start()
 	end
-	--Life Drain comes beam ended after 1~3 sec.
 end
 
 local function HideInfoFrame()
@@ -367,8 +366,14 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerLifeDrainCD:Cancel()
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show()
-		timerDisintegrationBeam:Start()
-		self:Schedule(64, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
+		--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
+		if self:IsDifficulty("lfr25") then
+			timerDisintegrationBeam:Start(55)
+			self:Schedule(55, BeamEnded)
+		else
+			timerDisintegrationBeam:Start()
+			self:Schedule(64, BeamEnded)
+		end
 	end
 end
 
