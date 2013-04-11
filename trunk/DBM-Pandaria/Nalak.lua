@@ -18,8 +18,8 @@ local warnStormcloud				= mod:NewTargetAnnounce(136340, 3)
 local warnLightningTether			= mod:NewTargetAnnounce(136339, 3)
 local warnArcNova					= mod:NewCastAnnounce(136338, 3)
 
-local specWarnStormcloudCast		= mod:NewSpecialWarningSpell(136340, nil, nil, nil, 2)--Needed?
 local specWarnStormcloud			= mod:NewSpecialWarningYou(136340)
+local yellStormcloud				= mod:NewYell(136340)
 local specWarnLightningTether		= mod:NewSpecialWarningYou(136339)--Is this important enough?
 local specWarnArcNova				= mod:NewSpecialWarningRun(136338, mod:IsMelee())
 
@@ -65,7 +65,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 136340 then
-		specWarnStormcloudCast:Show()
 		timerStormcloudCD:Start()
 	elseif args.spellId == 136338 then
 		warnArcNova:Show()
@@ -82,6 +81,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		stormcloudTargets[#stormcloudTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnStormcloud:Show()
+			yellStormcloud:Yell()
 		end
 		self:Unschedule(warnStormcloudTargets)
 		self:Schedule(0.3, warnStormcloudTargets)
