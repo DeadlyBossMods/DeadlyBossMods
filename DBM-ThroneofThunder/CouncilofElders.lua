@@ -201,19 +201,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
--- Dark Power lfr25 samples:
---   07 Apr 2013, 14:46:39.203 SPELL_AURA_APPLIED(136442), 14:48:16.468 SPELL_MISSED(136507), 14:48:21.671 SPELL_AURA_REMOVED(136442) - Kazra'jin (0) : 97.265
--- Dark Power normal10 samples:
---   27 Mar 2013, 21:29:02.625 SPELL_AURA_APPLIED(136442), 21:30:10.750 SPELL_DAMAGE(136507), 21:30:19.187 SPELL_AURA_REMOVED(136442) - Malakk    (0) : 68.126
---   27 Mar 2013, 21:30:24.843 SPELL_AURA_APPLIED(136442), 21:31:32.984 SPELL_MISSED(136507), 21:31:45.484 SPELL_AURA_REMOVED(136442) - Kazra'jin (0) : 68.141
---   27 Mar 2013, 21:31:50.734 SPELL_AURA_APPLIED(136442), 21:32:58.796 SPELL_DAMAGE(136507), 21:32:59.203 SPELL_AURA_REMOVED(136442) - Mar'li    (0) : 68.062
---   03 Apr 2013, 21:57:56.250 SPELL_AURA_APPLIED(136442), 21:59:04.265 SPELL_MISSED(136507), 21:59:08.781 SPELL_AURA_REMOVED(136442) - Malakk    (0) : 68.015
---   03 Apr 2013, 21:59:13.656 SPELL_AURA_APPLIED(136442), 22:00:21.734 SPELL_DAMAGE(136507), 22:00:30.218 SPELL_AURA_REMOVED(136442) - Mar'li    (0) : 68.078
---   03 Apr 2013, 22:00:34.687 SPELL_AURA_APPLIED(136442), 22:01:42.843 SPELL_DAMAGE(136507), 22:01:47.281 SPELL_AURA_REMOVED(136442) - Kazra'jin (0) : 68.156
---   27 Mar 2013, 21:35:04.171 SPELL_AURA_APPLIED(136442), 21:36:06.265 SPELL_MISSED(136507), 21:36:07.843 SPELL_AURA_REMOVED(136442) - Mar'li    (1) : 62.094
---   03 Apr 2013, 22:03:37.328 SPELL_AURA_APPLIED(136442), 22:04:39.421 SPELL_DAMAGE(136507), 22:04:39.796 SPELL_AURA_REMOVED(136442) - Kazra'jin (1) : 62.468
---   27 Mar 2013, 21:36:11.890 SPELL_AURA_APPLIED(136442), 21:37:09.156 SPELL_MISSED(136507), 21:37:10.390 SPELL_AURA_REMOVED(136442) - Kazra'jin (2) : 57.266
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 136442 then--Possessed
 		local cid = args:GetDestCreatureID()
@@ -230,19 +217,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if uid and UnitBuff(uid, lingeringPresence) then
 			local _, _, _, stack = UnitBuff(uid, lingeringPresence)
 			if self:IsDifficulty("heroic10", "heroic25") then
-				timerDarkPowerCD:Start(math.floor(68/(0.15*stack+1.0)+0.5))--need review (68, 59, 52, 47)
+				timerDarkPowerCD:Start(math.floor(68/(0.15*stack+1.0)+0.5))--(68, 59, 52, 47)
 			elseif self:IsDifficulty("normal10", "normal25") then
-				timerDarkPowerCD:Start(math.floor(68/(0.10*stack+1.0)+0.5))--need review (68, 62, 57, 52)
+				timerDarkPowerCD:Start(math.floor(68/(0.10*stack+1.0)+0.5))--(68, 62, 57, 52)
 			else -- lfr
-				timerDarkPowerCD:Start(math.floor(97/(0.05*stack+1.0)+0.5))--need review (97, 92, 88, 84)
+				timerDarkPowerCD:Start(math.floor(97/(0.05*stack+1.0)+0.5))--(97, 92, 88, 84)
 			end
 		else
-			if self:IsDifficulty("heroic10", "heroic25") then
-				timerDarkPowerCD:Start(68)
-			elseif self:IsDifficulty("normal10", "normal25") then
-				timerDarkPowerCD:Start(68)
-			else
+			if self:IsDifficulty("lfr25") then
 				timerDarkPowerCD:Start(97)
+			else
+				timerDarkPowerCD:Start(68)
 			end
 		end
 		if cid == 69078 then--Sul the Sandcrawler
