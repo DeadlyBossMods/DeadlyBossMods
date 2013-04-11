@@ -1348,7 +1348,8 @@ do
 	local function updateAllRoster()
 		if IsInRaid() then
 			table.wipe(raidShortNames)
-			local playerWithHigherVersionPromoted = false
+			enableIcons = false
+			local latestRevision = tonumber(DBM.Revision)
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
@@ -1386,12 +1387,15 @@ do
 						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 					end
 					--Something is wrong here, need to investigate. I watched MULTIPLE revisions OLDER than mine setting icons, revisions that HAVE this change. it is NOT disabling icons for revisions. I am seeing 5.2.3 release set icons when i have 5.2.4 alpha, even some 5.2.2 alphas setting icons when there is a 5.2.3 and 5.2.4 alpha in raid. this should not happen!
-					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].revision and raid[name].revision > tonumber(DBM.Revision) then
-						playerWithHigherVersionPromoted = true
+					--Maybe this improve wrong icon setting? (but, older verison also to be updated)
+					if raid[name].revision and raid[name].revision > tonumber(DBM.Revision) then
+						latestRevision = raid[name].revision
 					end
 				end
 			end
-			enableIcons = not playerWithHigherVersionPromoted
+			if latestRevision == tonumber(DBM.Revision) and DBM:GetRaidRank(playerName) > 0 then
+				enableIcons = true
+			end
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
@@ -2086,7 +2090,7 @@ do
 					if found then
 						showedUpdateReminder = true
 						if not DBM.Options.BlockVersionUpdateNotice then
-							DBM:ShowUpdateReminder(displayVersion, revision)
+							DBM:ShowUpdateReminder(displayVersion, version)
 						else
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
@@ -2096,6 +2100,7 @@ do
 				end
 			end
 		end
+		DBM:GROUP_ROSTER_UPDATE()
 	end
 
 	syncHandlers["U"] = function(sender, time, text)
