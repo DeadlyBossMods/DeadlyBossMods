@@ -50,10 +50,12 @@ local warnFrostBite					= mod:NewTargetAnnounce(136922, 4)--136990 is cast ID ve
 local warnFrigidAssault				= mod:NewStackAnnounce(136903, 3, nil, mod:IsTank() or mod:IsHealer())
 --Kazra'jin
 local warnRecklessCharge			= mod:NewCastAnnounce(137122, 3, 2, nil, false)
+local warnDischarge					= mod:NewCountAnnounce(137166, 3)
 
 --All
 local specWarnPossessed				= mod:NewSpecialWarning("specWarnPossessed", mod:IsDps())
 local specWarnDarkPower				= mod:NewSpecialWarningSpell(136507, nil, nil, nil, 2)
+local specWarnSoulFragment			= mod:NewSpecialWarningYou(137641)
 --Sul the Sandcrawler
 local specWarnSandBolt				= mod:NewSpecialWarningInterrupt(136189, false)
 local specWarnSandStorm				= mod:NewSpecialWarningSpell(136894, nil, nil, nil, 2)
@@ -70,6 +72,8 @@ local specWarnFrostBite				= mod:NewSpecialWarningYou(136922)--This one you do n
 local specWarnFrigidAssault			= mod:NewSpecialWarningStack(136903, mod:IsTank(), 8)
 local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTank())
 local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
+--Kazra'jin
+local specWarnDischarge				= mod:NewSpecialWarningCount(137166, nil, nil, nil, 2)
 
 --All
 local timerDarkPowerCD				= mod:NewCDTimer(68, 136507)
@@ -107,6 +111,7 @@ local chilledDebuff = GetSpellInfo(137085)
 local boltCasts = 0
 local kazraPossessed = false
 local possessesDone = 0
+local dischargeCount = 0
 local chilledWarned = false
 local darkPowerWarned = false
 
@@ -266,6 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				"UNIT_AURA"
 			)
 		elseif cid == 69134 then--Kazra'jin
+			dischargeCount = 0
 			kazraPossessed = true
 			self:UnregisterShortTermEvents()
 		end
@@ -275,7 +281,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 136903 then--Player Debuff version, not cast version
 		timerFrigidAssault:Start(args.destName)
-		if self:AntiSpam(3, 1) then--Might need to adjust slightly to 2 or 4.
+		if self:AntiSpam(2.5, 1) then
 			warnFrigidAssault:Show(args.destName, args.amount or 1)
 			if args:IsPlayer() then
 				if (args.amount or 1) >= 8 then
@@ -317,6 +323,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMarkedSoul:Show()
 			soundMarkedSoul:Play()
 		end
+	elseif args.spellId == 137166 then
+		dischargeCount = dischargeCount + 1
+		warnDischarge:Show(dischargeCount)
+		specWarnDischarge:Show(dischargeCount)
+	elseif args.spellId == 137641 and args:IsPlayer() then
+		specWarnSoulFragment:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
