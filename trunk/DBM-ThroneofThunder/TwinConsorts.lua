@@ -121,15 +121,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerBeastOfNightmaresCD:Start()
 		end
 	elseif args.spellId == 137408 then
-		warnFanOfFlames:Show(args.destName, args.amount or 1)
+		local amount = args.amount or 1
+		warnFanOfFlames:Show(args.destName, amount)
 		timerFanOfFlames:Start(args.destName)
 		timerFanOfFlamesCD:Start()
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 2 then
-				specWarnFanOfFlames:Show(args.amount)
+			if amount >= 2 then
+				specWarnFanOfFlames:Show(amount)
 			end
 		else
-			if (args.amount or 1) >= 1 and not UnitDebuff("player", GetSpellInfo(137408)) and not UnitIsDeadOrGhost("player") then
+			if amount >= 2 and not UnitDebuff("player", GetSpellInfo(137408)) and not UnitIsDeadOrGhost("player") then
 				specWarnFanOfFlamesOther:Show(args.destName)
 			end
 		end

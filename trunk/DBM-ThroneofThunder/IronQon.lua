@@ -39,7 +39,7 @@ local warnPhase4						= mod:NewPhaseAnnounce(4)
 local warnRisingAnger					= mod:NewStackAnnounce(136323, 2, nil, false)
 local warnFistSmash						= mod:NewCountAnnounce(136146, 3)
 
-local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 3)
+local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 2)
 local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
 local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, 2)
 local specWarnThrowSpearYou				= mod:NewSpecialWarningYou(134926)
@@ -214,14 +214,15 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 134691 then
-		warnImpale:Show(args.destName, args.amount or 1)
+		local amount = args.amount or 1
+		warnImpale:Show(args.destName, amount)
 		timerImpaleCD:Start()
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 3 then
+			if amount >= 2 then
 				specWarnImpale:Show(args.amount)
 			end
 		else
-			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(134691)) and not UnitIsDeadOrGhost("player") then
+			if amount >= 2 and not UnitDebuff("player", GetSpellInfo(134691)) and not UnitIsDeadOrGhost("player") then
 				specWarnImpaleOther:Show(args.destName)
 			end
 		end

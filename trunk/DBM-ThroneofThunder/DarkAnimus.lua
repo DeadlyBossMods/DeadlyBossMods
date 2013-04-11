@@ -94,14 +94,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 138569 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if self:IsTanking(uId, "boss1") then--Only want sprays that are on tanks, not bads standing on tanks.
-			warnExplosiveSlam:Show(args.destName, args.amount or 1)
+			local amount = args.amount or 1
+			warnExplosiveSlam:Show(args.destName, amount)
 			timerExplosiveSlam:Start(args.destName)
 			if args:IsPlayer() then
-				if (args.amount or 1) >= 4 then
-					specWarnExplosiveSlam:Show(args.amount)
+				if amount >= 4 then
+					specWarnExplosiveSlam:Show(amount)
 				end
 			else
-				if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(138569)) and not UnitIsDeadOrGhost("player") then
+				if amount >= 4 and not UnitDebuff("player", GetSpellInfo(138569)) and not UnitIsDeadOrGhost("player") then
 					specWarnExplosiveSlamOther:Show(args.destName)
 				end
 			end
