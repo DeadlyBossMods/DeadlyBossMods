@@ -1095,15 +1095,15 @@ do
 		table.sort(sortMe, sort)
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
-			if v.displayVersion and not v.bwrevision then--DBM, no BigWigs
+			if v.displayVersion and not (v.bwrevision or v.bwarevision) then--DBM, no BigWigs
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, "DBM "..v.displayVersion, v.revision))
 				if notify and v.revision < DBM.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
-			elseif v.displayVersion and v.bwrevision then--DBM & BigWigs
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, "DBM "..v.displayVersion, v.revision, DBM_BIG_WIGS, v.bwrevision))
-			elseif not v.displayVersion and v.bwrevision then--BigWigs, No DBM
-				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, DBM_BIG_WIGS, v.bwrevision))
+			elseif v.displayVersion and (v.bwrevision or v.bwarevision) then--DBM & BigWigs
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_TWO:format(v.name, "DBM "..v.displayVersion, v.revision, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision))
+			elseif not v.displayVersion and (v.bwrevision or v.bwarevision) then--BigWigs, No DBM
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.bwarevision and DBM_BIG_WIGS_ALPHA or DBM_BIG_WIGS, v.bwarevision or v.bwrevision))
 			else
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
 			end
@@ -2060,9 +2060,9 @@ do
 		end
 	end
 	
-	syncHandlers["VRA"] = function(sender, bwrevision)--Sent by bigwigs Alphas
+	syncHandlers["VRA"] = function(sender, bwarevision)--Sent by bigwigs Alphas
 		if bwrevision and raid[sender] then
-			raid[sender].bwrevision = bwrevision
+			raid[sender].bwarevision = bwarevision
 		end
 	end
 
@@ -3615,12 +3615,8 @@ function DBM:RoleCheck()
 	if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
 		local spec = GetSpecialization()
 		local role = GetSpecializationRole(spec)
-		if role == "TANK" and UnitGroupRolesAssigned("player") ~= "TANK" then
-			UnitSetRole("player", "TANK")
-		elseif role == "HEALER" and UnitGroupRolesAssigned("player") ~= "HEALER" then
-			UnitSetRole("player", "HEALER")
-		elseif role == "DAMAGER" and UnitGroupRolesAssigned("player") ~= "DAMAGER" then
-			UnitSetRole("player", "DAMAGER")
+		if UnitGroupRolesAssigned("player") ~= role then
+			UnitSetRole("player", role)
 		end
 	end
 end
