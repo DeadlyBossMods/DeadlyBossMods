@@ -1385,6 +1385,7 @@ do
 					else
 						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
 					end
+					--Something is wrong here, need to investigate. I watched MULTIPLE revisions OLDER than mine setting icons, revisions that HAVE this change. it is NOT disabling icons for revisions. I am seeing 5.2.3 release set icons when i have 5.2.4 alpha, even some 5.2.2 alphas setting icons when there is a 5.2.3 and 5.2.4 alpha in raid. this should not happen!
 					if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].revision and raid[name].revision > tonumber(DBM.Revision) then
 						playerWithHigherVersionPromoted = true
 					end
