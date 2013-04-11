@@ -218,8 +218,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, stack = UnitBuff(uid, lingeringPresence)
 			if self:IsDifficulty("heroic10", "heroic25") then
 				timerDarkPowerCD:Start(math.floor(68/(0.15*stack+1.0)+0.5))--(68, 59, 52, 47)
-			elseif self:IsDifficulty("normal10", "normal25") then
+			elseif self:IsDifficulty("normal25") then--This is now 25man normal only
 				timerDarkPowerCD:Start(math.floor(68/(0.10*stack+1.0)+0.5))--(68, 62, 57, 52)
+			elseif self:IsDifficulty("normal10") then--Updaetd 10 man data post hotfix as seen in this log here http://worldoflogs.com/reports/8sy56hojz9x3ej7j/xe/?s=6609&e=7296&x=spellid+%3D+136442+or+spellid+%3D+136507+and+targetname+%3D+%22Slayhoof%22
+				timerDarkPowerCD:Start(math.floor(76/(0.10*stack+1.0)+0.5))--(76, 68, 62, x)
 			else -- lfr
 				timerDarkPowerCD:Start(math.floor(97/(0.05*stack+1.0)+0.5))--(97, 92, 88, 84)
 			end
