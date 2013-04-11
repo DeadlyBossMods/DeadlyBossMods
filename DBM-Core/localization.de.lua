@@ -8,6 +8,8 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen. Für weitere Einstel
 DBM_CORE_LOAD_GUI_ERROR				= "Konnte die grafische Benutzeroberfläche nicht laden: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Kampf geladen werden. Zur Vornahme von Einstellungen bitte diese zunächst außerhalb des Kampfes laden. Danach steht sie auch im Kampf zur Verfügung."
 
+DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM hat festgestellt, dass du das Setzen von Schlachtzugzeichen in \"BigWigs\" und in \"DBM\" aktiviert hast. Bitte deaktiviere das Setzen von Zeichen in einem der beiden Addons um Konflikte zu vermeiden."
+
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
 DBM_CORE_COMBAT_STARTED_IN_PROGRESS	= "Du wurdest in den laufenden Kampf gegen %s verwickelt. Viel Glück! :)"
 DBM_CORE_SCENARIO_STARTED			= "%s gestartet. Viel Glück! :)"
@@ -57,9 +59,11 @@ DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s war %s bei %s unterlegen. Das wa
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versionen"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
-DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM nicht installiert"
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) und %s (r%d)"
+DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Kein Boss Mod installiert"
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d Spieler mit Deadly Boss Mods gefunden"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Deine Version von Deadly Boss Mods ist veraltet! Bitte besuche http://dev.deadlybossmods.com um die neueste Version herunterzuladen."
+
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Deine Version von Deadly Boss Mods ist veraltet.\n Version %s (r%d) ist hier zum Download verfügbar:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Drücke  " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Downloadlink in die Zwischenablage zu kopieren."
