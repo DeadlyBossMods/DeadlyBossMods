@@ -57,9 +57,9 @@ DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s 님의 %s 전투가 끝났습니�
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 우두머리의 체력은 %s 입니다."
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s 님이 %s 전투에서 전멸하였습니다. 전투 종료시 우두머리의 체력은 %s 입니다. (현재 난이도에서 전멸: %d회)"
 
-DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버전"
-DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
-DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"--Two Bosss mod
+DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - 버전"
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
+DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 공격대 경보 애드온이 설치되어 있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명이 설치되어 있는 것을 찾았습니다."
 DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
@@ -77,7 +77,7 @@ DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <글자>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "DBMv3와 DBMv4가 동시에 실행중 입니다.\n\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n이후, 애드온 폴더 내에서 DBMv3 폴더를 삭제하시길 권장합니다."
 
-DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "죽이는 보스 모드"
+DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+클릭 또는 오른쪽 클릭으로 움직이세요.\nAlt+Shift+클릭으로 움직이면 자유롭게 배치할 수 있습니다."
 
 DBM_CORE_RANGECHECK_HEADER			= "거리 확인 (%dm)"
