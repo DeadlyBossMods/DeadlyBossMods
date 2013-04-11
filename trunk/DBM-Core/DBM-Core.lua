@@ -4141,7 +4141,7 @@ function bossModPrototype:GetBossHP(cId)
 	for i = 1, 5 do
 		local guid = UnitGUID("boss"..i)
 		if guid and tonumber(guid:sub(6, 10), 16) == cId then
-			return UnitHealth("boss"..i) / UnitHealthMax("boss"..i) * 100
+			return UnitHealth("boss"..i) / UnitHealthMax("boss"..i)
 		end
 	end
 	local idType = (IsInRaid() and "raid") or "party"
@@ -4149,7 +4149,7 @@ function bossModPrototype:GetBossHP(cId)
 		local unitId = ((i == 0) and "target") or idType..i.."target"
 		local guid = UnitGUID(unitId)
 		if guid and (tonumber(guid:sub(6, 10), 16)) == cId then
-			return UnitHealth(unitId) / UnitHealthMax(unitId) * 100
+			return UnitHealth(unitId) / UnitHealthMax(unitId)
 		end
 	end
 	return nil
