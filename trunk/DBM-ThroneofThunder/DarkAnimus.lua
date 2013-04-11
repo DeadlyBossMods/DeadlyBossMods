@@ -43,7 +43,6 @@ local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or
 --Boss
 --Dark Animus will now use its abilities at more consistent intervals. (March 19 hotfix)
 --As such, all of these timers need re-verification and updating.
-local timerSiphonAnimaCD			= mod:NewNextTimer(30, 138644)
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
 local timerInterruptingJoltCD		= mod:NewCDTimer(23, 138763)--seems 23~24 normal and lfr.
@@ -149,11 +148,6 @@ end
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	if UnitExists("boss1") and tonumber(UnitGUID("boss1"):sub(6, 10), 16) == 69427 then
 		self:UnregisterShortTermEvents()--Once boss is out, unregister event, since we need it no longer.
-		if self:IsDifficulty("heroic10", "heroic25") then
-			--Maybe do some stuff here later.
-		else
-			timerSiphonAnimaCD:Start()--Seems only 30 seconds after engage on normal. On heroic he works differently
-		end
 	end
 end
 
