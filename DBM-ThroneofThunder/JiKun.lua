@@ -74,15 +74,16 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 134366 then
-		warnTalonRake:Show(args.destName, args.amount or 1)
+		local amount = args.amount or 1
+		warnTalonRake:Show(args.destName, amount)
 		timerTalonRake:Start(args.destName)
 		timerTalonRakeCD:Start()
 		if args:IsPlayer() then
-			if (args.amount or 1) >= 2 then
-				specWarnTalonRake:Show(args.amount)
+			if amount >= 2 then
+				specWarnTalonRake:Show(amount)
 			end
 		else
-			if (args.amount or 1) >= 1 and not UnitDebuff("player", GetSpellInfo(134366)) and not UnitIsDeadOrGhost("player") then
+			if amount >= 1 and not UnitDebuff("player", GetSpellInfo(134366)) and not UnitIsDeadOrGhost("player") then
 				specWarnTalonRakeOther:Show(args.destName)
 			end
 		end

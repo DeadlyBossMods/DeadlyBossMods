@@ -172,11 +172,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 139843 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
-			warnArcticFreeze:Show(args.destName, args.amount or 1)
-			if args:IsPlayer() then
-				if (args.amount or 1) >= 2 then
-					specWarnArcticFreeze:Show(args.amount)
-				end
+			local amount = args.amount or 1
+			warnArcticFreeze:Show(args.destName, amount)
+			if args:IsPlayer() and amount >= 2 then
+				specWarnArcticFreeze:Show(amount)
 			end
 			if not self.Options.timerBreaths then return end
 			if rampageCast == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
@@ -188,11 +187,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 137731 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
-			warnIgniteFlesh:Show(args.destName, args.amount or 1)
-			if args:IsPlayer() then
-				if (args.amount or 1) >= 2 then
-					specWarnIgniteFlesh:Show(args.amount)
-				end
+			local amount = args.amount or 1
+			warnIgniteFlesh:Show(args.destName, amount)
+			if args:IsPlayer() and amount >= 2 then
+				specWarnIgniteFlesh:Show(amount)
 			end
 			if not self.Options.timerBreaths then return end
 			timerBreathsCD:Start()
@@ -200,11 +198,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 139840 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
-			warnRotArmor:Show(args.destName, args.amount or 1)
-			if args:IsPlayer() then
-				if (args.amount or 1) >= 2 then
-					specWarnRotArmor:Show(args.amount)
-				end
+			local amount = args.amount or 1
+			warnRotArmor:Show(args.destName, amount)
+			if args:IsPlayer() and amount >= 2 then
+				specWarnRotArmor:Show(amount)
 			end
 			if not self.Options.timerBreaths then return end
 			if rampageCast == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
@@ -216,11 +213,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 139993 then
 		local uId = DBM:GetRaidUnitId(args.destName)
 		if isTank(uId) then
-			warnArcaneDiffusion:Show(args.destName, args.amount or 1)
-			if args:IsPlayer() then
-				if (args.amount or 1) >= 2 then
-					specWarnArcaneDiffusion:Show(args.amount)
-				end
+			local amount = args.amount or 1
+			warnArcaneDiffusion:Show(args.destName, amount)
+			if args:IsPlayer() and amount >= 2 then
+				specWarnArcaneDiffusion:Show(amount)
 			end
 			if not self.Options.timerBreaths then return end
 			timerBreathsCD:Start()
