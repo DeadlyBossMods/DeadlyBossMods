@@ -9,6 +9,7 @@ mod:RegisterCombat("emote", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -43,6 +44,7 @@ local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or
 --Boss
 --Dark Animus will now use its abilities at more consistent intervals. (March 19 hotfix)
 --As such, all of these timers need re-verification and updating.
+local timerSiphonAnimaCD			= mod:NewNextTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
 local timerInterruptingJoltCD		= mod:NewCDTimer(23, 138763)--seems 23~24 normal and lfr.
@@ -79,6 +81,12 @@ function mod:SPELL_CAST_START(args)
 		warnInterruptingJolt:Show()
 		specWarnInterruptingJolt:Show()
 		timerInterruptingJoltCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
+		timerSiphonAnimaCD:Start()
 	end
 end
 
@@ -148,6 +156,11 @@ end
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	if UnitExists("boss1") and tonumber(UnitGUID("boss1"):sub(6, 10), 16) == 69427 then
 		self:UnregisterShortTermEvents()--Once boss is out, unregister event, since we need it no longer.
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerSiphonAnimaCD:Start(120)--VERY important on heroic. boss activaet on pull, you have 2 minutes to do as much with adds as you can before he starts using siphon anima
+		else
+			timerSiphonAnimaCD:Start(30)--Still useful on normal for first 30 second timer depending on how many adds you have up, cause he may gain enough anima to activate new abilities instant he casts this
+		end
 	end
 end
 
