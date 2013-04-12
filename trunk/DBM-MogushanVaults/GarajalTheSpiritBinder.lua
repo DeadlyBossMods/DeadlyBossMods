@@ -78,11 +78,6 @@ local function removeIcon(target)
 	end
 end
 
---[[
-local function ClearVoodooTargets()
-	table.wipe(voodooDollTargetIcons)
-end--]]
-
 do
 	local function sort_by_group(v1, v2)
 		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
@@ -220,10 +215,20 @@ function mod:OnSync(msg, guid)
 		self:Unschedule(warnVoodooDollTargets)
 		self:Schedule(0.3, warnVoodooDollTargets)
 		if self.Options.SetIconOnVoodoo then
-			table.insert(voodooDollTargetIcons, DBM:GetRaidUnitId(targetname))
+			local targetUnitID = DBM:GetRaidUnitId(targetname)
+			--Added to fix a bug with duplicate entries of same person in icon table more than once
+			local foundDuplicate = false
+			for i = #voodooDollTargetIcons, 1, -1 do
+				if not voodooDollTargetIcons[i].targetUnitID then--make sure they aren't in table before inserting into table again. (not sure why this happens in LFR but it does, probably someone really high ping that cranked latency check way up)
+					foundDuplicate = true
+				end
+			end
+			if not foundDuplicate then
+				table.insert(voodooDollTargetIcons, targetUnitID)
+			end
 			self:UnscheduleMethod("SetVoodooIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				if #voodooDollTargetIcons >= 4 and self:IsDifficulty("normal25", "heroic25") or #voodooDollTargetIcons >= 3 and self:IsDifficulty("normal10", "heroic10") then
+				if #voodooDollTargetIcons >= 4 and self:IsDifficulty("normal25", "heroic25", "lfr25") or #voodooDollTargetIcons >= 3 and self:IsDifficulty("normal10", "heroic10") then
 					self:SetVoodooIcons()
 				else
 					self:ScheduleMethod(1, "SetVoodooIcons")
