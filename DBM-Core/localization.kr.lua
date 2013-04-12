@@ -61,7 +61,7 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 공격대 경보 애드온이 설치되어 있지 않습니다."
-DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명이 설치되어 있는 것을 찾았습니다."
+DBM_CORE_VERSIONCHECK_FOOTER		= "DBM 설치 : %d명, BigWigs 설치 : %d명이 확인되었습니다."
 DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 DBM 버전이 오래되었습니다!\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
