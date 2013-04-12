@@ -61,8 +61,8 @@ DBM_CORE_VERSIONCHECK_ENTRY_TWO			= "%s: %s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM		= "%s：尚未安裝任何團隊首領模組"
 DBM_CORE_VERSIONCHECK_FOOTER			= "找到有%d玩家正在使用DBM且有%d玩家正在使用Bigwigs"
 DBM_CORE_YOUR_VERSION_OUTDATED			= "你的 Deadly Boss Mod 已經過期。請到 www.deadlybossmods.com 下載最新版本。"
-DBM_BIG_WIGS							= "BigWigs"
-DBM_BIG_WIGS_ALPHA						= "BigWigs Alpha"
+--DBM_BIG_WIGS (Same as English locales)
+--DBM_BIG_WIGS_ALPHA (Same as English locales)
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "你的 Deadly Boss Mod 已經過期。\n你可以在此網址下載到新版本%s(r%d)："
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Ctrl-C：複製下載網址到剪貼簿。"
@@ -76,7 +76,7 @@ DBM_PIZZA_ERROR_USAGE				= "命令：/dbm [broadcast] timer <時間（秒）> <�
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "目前有2個版本的Deadly Boss Mods正在運行：DBMv3和DBMv4。\n按一下“確定”按鈕可將DBMv3關閉並重載插件。\n我們建議將插件目錄下的DBMv3刪除。"
 
-DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
+--DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+左鍵或右鍵點擊即可移動，Alt+Shift+點擊即可拖放"
 
 DBM_CORE_RANGECHECK_HEADER			= "距離監視（%d碼）"
