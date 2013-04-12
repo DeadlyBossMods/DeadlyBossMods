@@ -176,13 +176,11 @@ mod:RegisterOnUpdateHandler(function(self)
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
 			if adds[guid] then
-				if alternateSet then--It's not an alternaet set (backwards here since it's set to true when we set addicon to 6
-					for g,i in pairs(adds) do
-						if i == 8 and g ~= guid then -- always set skull on first we see
-							adds[g] = adds[guid]
-							adds[guid] = 8
-							break
-						end
+				for g,i in pairs(adds) do
+					if i == 8 and g ~= guid then -- always set skull on first we see
+						adds[g] = adds[guid]
+						adds[guid] = 8
+						break
 					end
 				end
 				SetRaidTarget(uId, adds[guid])
@@ -192,13 +190,11 @@ mod:RegisterOnUpdateHandler(function(self)
 		end
 		local guid2 = UnitGUID("mouseover")
 		if adds[guid2] then
-			if alternateSet then--It's not an alternaet set (backwards here since it's set to true when we set addicon to 6
-				for g,i in pairs(adds) do
-					if i == 8 and g ~= guid2 then -- always set skull on first we see
-						adds[g] = adds[guid2]
-						adds[guid2] = 8
-						break
-					end
+			for g,i in pairs(adds) do
+				if i == 8 and g ~= guid2 then -- always set skull on first we see
+					adds[g] = adds[guid2]
+					adds[guid2] = 8
+					break
 				end
 			end
 			SetRaidTarget("mouseover", adds[guid2])
