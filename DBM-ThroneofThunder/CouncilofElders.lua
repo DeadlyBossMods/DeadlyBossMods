@@ -105,6 +105,7 @@ mod:AddBoolOption("PHealthFrame", true)
 mod:AddBoolOption("RangeFrame")--For Sand Bolt and charge and biting cold
 mod:AddBoolOption("SetIconOnBitingCold", true)
 mod:AddBoolOption("SetIconOnFrostBite", true)
+mod:AddBoolOption("AnnounceCooldowns", mod:HasRaidCooldown())
 
 local lingeringPresence = GetSpellInfo(136467)
 local chilledDebuff = GetSpellInfo(137085)
@@ -316,6 +317,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		dischargeCount = dischargeCount + 1
 		warnDischarge:Show(dischargeCount)
 		specWarnDischarge:Show(dischargeCount)
+		if self.Options.AnnounceCooldowns then
+			if DBM.Options.UseMasterVolume then
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..dischargeCount..".ogg", "Master")
+			else
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..dischargeCount..".ogg")
+			end
+		end
 	elseif args.spellId == 137641 and args:IsPlayer() then
 		specWarnSoulFragment:Show()
 	end

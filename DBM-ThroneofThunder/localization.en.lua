@@ -59,6 +59,7 @@ L:SetOptionLocalization({
 	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	PHealthFrame		= "Show remaining health frame for $spell:136442 fades\n(Requires boss health frame enabled)",
 	RangeFrame			= "Show range frame",
+	AnnounceCooldowns	= "Count out which $spell:137166 cast it is for raid cooldowns",
 	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
 	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
 })
@@ -78,7 +79,8 @@ L:SetOptionLocalization({
 	specWarnCrystalShell	= "Show special warning when you are missing $spell:137633 debuff",
 	InfoFrame				= "Show info frame for players without $spell:137633",
 	SetIconOnTurtles		= "Set icons on $journal:7129",
-	ClearIconOnTurtles		= "Clear icons on $journal:7129 when affected by $spell:133971"
+	ClearIconOnTurtles		= "Clear icons on $journal:7129 when affected by $spell:133971",
+	AnnounceCooldowns		= "Count out which $spell:134920 cast it is for raid cooldowns"
 })
 
 L:SetMiscLocalization({
@@ -97,7 +99,12 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerBreaths			= "Show timer for next breath",
 	SetIconOnCinders		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
-	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889)
+	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889),
+	AnnounceCooldowns		= "Count out which $spell:139458 cast it is for raid cooldowns",
+	EveryTwo				= "Cooldown order of 2",
+	EveryThree				= "Cooldown order of 3",
+	EveryTwoExcludeDiff		= "Cooldown order of 2 (Exluding Diffusion)",
+	EveryThreeExcludeDiff	= "Cooldown order of 3 (Exluding Diffusion)"
 })
 
 L:SetMiscLocalization({

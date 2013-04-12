@@ -75,6 +75,9 @@ local soundTorrentofIce			= mod:NewSound(139889)
 mod:AddBoolOption("SetIconOnCinders", true)
 mod:AddBoolOption("SetIconOnTorrentofIce", true)
 
+mod:AddDropdownOption("AnnounceCooldowns", {"Never", "EveryTwo", "EveryThree", "EveryTwoExcludeDiff", "EveryThreeExcludeDiff"}, "Never", "misc")
+--CD order options that change based on raid dps and diffusion strat. With high dps, you need 3 groups, with lower dps (and typically heroic) you need 3. Also, on heroic, many don't cd rampage when high stack diffusion tank can be healed off of to heal raid.
+
 --count will go to hell fast on a DC though. Need to figure out some kind of head status recovery to get active/inactive head counts.
 --Maybe add an info frame that shows head status too would be cool such as
 ---------------------------
@@ -90,6 +93,7 @@ local fireBehind = 0
 local venomBehind = 0
 local iceBehind = 0
 local arcaneBehind = 0
+local rampageCount = 0
 local rampageCast = 0
 local cinderIcon = 7
 local iceIcon = 6
@@ -97,6 +101,7 @@ local activeHeadGUIDS = {}
 local iceTorrent = GetSpellInfo(139857)
 local torrentTarget1 = nil
 local torrentTarget2 = nil
+local arcaneRecent = false
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -128,6 +133,7 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(activeHeadGUIDS)
+	rampageCount = 0
 	rampageCast = 0
 	fireInFront = 0
 	venomInFront = 0
@@ -142,6 +148,7 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
 		arcaneInFront = 0
+		arcaneRecent = false
 		timerCinderCD:Start(13)
 		timerNetherTearCD:Start()
 	elseif self:IsDifficulty("normal10", "normal25") then
@@ -178,7 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnArcticFreeze:Show(amount)
 			end
 			if not self.Options.timerBreaths then return end
-			if rampageCast == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
+			if rampageCount == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
 				timerArcticFreezeCD:Start()
 			else
 				timerBreathsCD:Start()
@@ -204,7 +211,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnRotArmor:Show(amount)
 			end
 			if not self.Options.timerBreaths then return end
-			if rampageCast == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
+			if rampageCount == 0 then--In first phase, the breaths aren't at same time because the cds don't start until the specific head is engaged, thus, they can be desynced 1-3 seconds, so we want each breath to use it's own timer until after first rampage
 				timerRotArmorCD:Start()
 			else
 				timerBreathsCD:Start()
@@ -265,8 +272,9 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:139458") then
-		rampageCast = rampageCast + 1
-		warnRampage:Show(rampageCast)
+		rampageCount = rampageCount + 1
+		warnRampage:Show(rampageCount)
+		specWarnRampage:Show(rampageCount)
 		timerArcticFreezeCD:Cancel()
 		timerRotArmorCD:Cancel()
 		timerBreathsCD:Cancel()
@@ -274,9 +282,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		timerTorrentofIceCD:Cancel()
 --		timerAcidRainCD:Cancel()
 		timerNetherTearCD:Cancel()
-		specWarnRampage:Show(rampageCast)
 		timerRampage:Start()
+		if self.Options.AnnounceCooldowns == "Never" or (arcaneInFront > 0 or arcaneRecent) and (self.Options.AnnounceCooldowns == "EveryTwoExcludeDiff" or self.Options.AnnounceCooldowns == "EveryThreeExcludeDiff") then return end--You have a diffused player, don't call out cds
+		if (self.Options.AnnounceCooldowns == "EveryTwoExcludeDiff" or self.Options.AnnounceCooldowns == "EveryTwo") and rampageCast == 2 then rampageCast = 0 end--Option is set to one of the twos and we're already at 2, reset cast count
+		if rampageCast == 3 then rampageCast = 0 end--We already checked and know option isn't set to 2 or never, so it's definitely set to 3, no need to check option.
+		rampageCast = rampageCast + 1
+		if DBM.Options.UseMasterVolume then
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..rampageCast..".ogg", "Master")
+		else
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..rampageCast..".ogg")
+		end
 	elseif msg == L.rampageEnds or msg:find(L.rampageEnds) then
+		arcaneRecent = false
 		warnRampageFaded:Show()
 		specWarnRampageFaded:Show()
 		if self.Options.timerBreaths then
@@ -360,6 +377,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		elseif cid == 70248 then--Arcane
 			arcaneInFront = arcaneInFront - 1
 			arcaneBehind = arcaneBehind + 2
+			arcaneRecent = true
 		end
 --		print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
 --		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)

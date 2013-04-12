@@ -4113,8 +4113,15 @@ function bossModPrototype:IsHealer()
 	return (class == "PALADIN" and (GetSpecialization() == 1))
 	or (class == "SHAMAN" and (GetSpecialization() == 3))
 	or (class == "DRUID" and (GetSpecialization() == 4))
-	or (class == "PRIEST" and (GetSpecialization() ~= 3))
 	or (class == "MONK" and (GetSpecialization() == 2))
+end
+
+function bossModPrototype:HasRaidCooldown()
+	return class == "WARRIOR"--Rallying Cry/Demoralizing Banner
+	or class == "PALADIN"--Aura Mastery
+	or class == "ROGUE"--Smoke Bomb
+	or (class == "PRIEST" and (GetSpecialization() == 1))--Power Word: Barrier
+	or (class == "SHAMAN" and (GetSpecialization() == 3))--Spirit Link Totem
 end
 
 --These don't matter since they don't check talents
