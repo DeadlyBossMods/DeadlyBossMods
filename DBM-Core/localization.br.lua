@@ -61,7 +61,7 @@ DBM_PIZZA_ERROR_USAGE				= "Uso: /dbm [broadcast] timer <tempo> <texto>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Dois Deadly Boss Mods estão sendo executados porque você tem ambos o DBMv3 e o DBMv4 instalados e habilitados!\nClique \"Ok\" para desabilitar o DBMv3 e recarregar a interface.\nVocê também deve limpar sua pasta de AddOns, apagando os antigos diretórios do DBMv3."
 
-DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
+--DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Use shift+click ou clique com o botão direito para mover\nUse alt+shift+click para arrastar livremente"
 
 DBM_CORE_RANGECHECK_HEADER			= "Medir distância: (%d m)"
