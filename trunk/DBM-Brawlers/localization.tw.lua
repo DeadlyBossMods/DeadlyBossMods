@@ -115,3 +115,30 @@ L= DBM:GetModLocalization("BrawlRank8")
 L:SetGeneralLocalization({
 	name = "鬥陣俱樂部:第8階"
 })
+
+------------
+-- Rank 9 --
+------------
+L= DBM:GetModLocalization("BrawlRank9")
+
+L:SetGeneralLocalization({
+	name = "鬥陣俱樂部:第9階"
+})
+
+-------------
+-- Rares 1 --
+-------------
+L= DBM:GetModLocalization("BrawlRare1")
+
+L:SetGeneralLocalization({
+	name = "鬥陣俱樂部:稀有1"
+})
+
+-------------
+-- Rares 2 --
+-------------
+L= DBM:GetModLocalization("BrawlRare2")
+
+L:SetGeneralLocalization({
+	name = "鬥陣俱樂部:稀有2"
+})
