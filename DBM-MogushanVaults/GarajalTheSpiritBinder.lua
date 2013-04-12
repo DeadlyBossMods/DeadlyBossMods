@@ -50,7 +50,7 @@ local berserkTimer					= mod:NewBerserkTimer(360)
 
 local countdownCrossedOver			= mod:NewCountdown(29, 116161)
 
-mod:AddBoolOption("SetIconOnVoodoo", true)
+mod:AddBoolOption("SetIconOnVoodoo", false)
 
 local totemCount = 0
 local voodooDollTargets = {}
