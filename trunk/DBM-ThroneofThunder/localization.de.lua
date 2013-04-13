@@ -56,7 +56,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "Zeige in Lebensanzeige den benötigten Schaden bis $spell:136442 endet\n(benötigt aktivierte Lebensanzeige)",
-	RangeFrame			= "Zeige Abstandsfenster"
+	RangeFrame			= "Zeige Abstandsfenster",
+	AnnounceCooldowns	= "Zähle akkustisch die Anzahl der $spell:137166 Wirkungen (für \"Raid-Cooldowns\")"
 })
 
 ------------
@@ -73,7 +74,8 @@ L:SetOptionLocalization({
 	specWarnCrystalShell	= "Zeige Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
 	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
-	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971"
+	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971",
+	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der $spell:134920 Wirkungen\n(für \"Raid-Cooldowns\")"
 })
 
 L:SetMiscLocalization({
@@ -91,6 +93,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerBreaths			= "Zeige Zeit bis nächster Atem\n($spell:139843 / $spell:137731 / $spell:139840 / $spell:139993)",
+	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der \"Toben\"-Wirkungen (für \"Raid-Cooldowns\")",
+	Never					= "Nie",
+	Every					= "Jede (fortlaufende Zählung)",
+	EveryTwo				= "Neustart der Zählung in 2er-Gruppen",
+	EveryThree				= "Neustart der Zählung in 3er-Gruppen",
+	EveryTwoExcludeDiff		= "Neustart der Zählung in 2er-Gruppen (ohne Diffusion)",
+	EveryThreeExcludeDiff	= "Neustart der Zählung in 3er-Gruppen (ohne Diffusion)"
 })
 
 L:SetMiscLocalization({
