@@ -211,12 +211,12 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	interrupt	= "Zeige Spezialwarnung zum Unterbrechen von $spell:%s",
 	you 		= "Zeige Spezialwarnung, wenn du von $spell:%s betroffen bist",
 	target 		= "Zeige Spezialwarnung, wenn jemand von $spell:%s betroffen ist",
-	close 		= "Zeige Spezialwarnung, wenn jemand in deiner Nähe von\n$spell:%s betroffen ist",
-	move 		= "Zeige Spezialwarnung, wenn du von $spell:%s betroffen bist",
+	close 		= "Zeige Spezialwarnung bei $spell:%s auf jemand in deiner Nähe",
+	move 		= "Zeige Spezialwarnung zum Herausgehen aus $spell:%s",
 	run 		= "Zeige Spezialwarnung zum Weglaufen vor $spell:%s",
 	cast 		= "Zeige Spezialwarnung zum Zauberstopp bei $spell:%s",
 	count 		= "Zeige Spezialwarnung für $spell:%s",
-	stack 		= "Zeige Spezialwarnung für >=%d Stapel von $spell:%s auf dir",
+	stack 		= "Zeige Spezialwarnung bei >=%d Stapel von $spell:%s auf dir",
 	switch		= "Zeige Spezialwarnung für Zielwechsel auf $spell:%s"
 }
 
