@@ -101,6 +101,7 @@ L:SetOptionLocalization({
 	SetIconOnCinders		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139822),
 	SetIconOnTorrentofIce	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(139889),
 	AnnounceCooldowns		= "Count out which Rampage cast it is for raid cooldowns",
+	Never					= "Never",
 	EveryTwo				= "Cooldown order of 2",
 	EveryThree				= "Cooldown order of 3",
 	EveryTwoExcludeDiff		= "Cooldown order of 2 (Exluding Diffusion)",

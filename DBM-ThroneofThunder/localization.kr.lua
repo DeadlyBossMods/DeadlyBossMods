@@ -55,7 +55,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "우두머리 체력 바 사용시 $spell:136442 사라짐까지 남은 체력도 함께 보기",
-	RangeFrame			= "거리 창 보기"
+	RangeFrame			= "거리 창 보기",
+	AnnounceCooldowns	= "공격대 생존기 사용을 위해 $spell:137166 시전 횟수 음성으로 알리기\n(카즈라진의 빙의가 풀리면 초기화됨)"
 })
 
 ------------
@@ -72,7 +73,8 @@ L:SetOptionLocalization({
 	specWarnCrystalShell	= "$spell:137633 효과가 없을 경우 특수 경고 보기",
 	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기",
 	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정",
-	ClearIconOnTurtles		= "$journal:7129이 $spell:133971의 영향을 받은 경우 전술 목표 아이콘 지우기"
+	ClearIconOnTurtles		= "$journal:7129이 $spell:133971의 영향을 받은 경우 전술 목표 아이콘 지우기",
+	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 시전 횟수 음성으로 알리기\n(3번 시전후 초기화됨)"
 })
 
 L:SetMiscLocalization({
@@ -89,7 +91,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerBreaths			= "다음 숨결 바 표시"
+	timerBreaths			= "다음 숨결 바 표시",
+	AnnounceCooldowns		= "공격대 생존기 사용을 위해 광란/확산 시전 횟수 음성으로 알리기",
+	Never					= "알리지 않음",
+	EveryTwo				= "2번 시전후 초기화",
+	EveryThree				= "3번 시전후 초기화",
+	EveryTwoExcludeDiff		= "2번 시전후 초기화(확산 제외)",
+	EveryThreeExcludeDiff	= "3번 시전후 초기화(확산 제외)"
 })
 
 L:SetMiscLocalization({

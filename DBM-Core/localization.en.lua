@@ -211,8 +211,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	you 		= "Show special warning when you are affected by \n $spell:%s",
 	target 		= "Show special warning when someone is affected by \n $spell:%s",
 	close 		= "Show special warning when someone close to you is \n affected by $spell:%s",
-	move 		= "Show special warning when you are affected by \n $spell:%s",
-	run 		= "Show special warning for $spell:%s",
+	move 		= "Show special warning to move out from $spell:%s",
+	run 		= "Show special warning to run away from $spell:%s",
 	cast 		= "Show special warning for $spell:%s cast",
 	count 		= "Show special warning for $spell:%s",
 	stack 		= "Show special warning when you are affected by >=%d stacks of \n $spell:%s",--too long?

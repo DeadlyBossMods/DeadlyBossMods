@@ -50,6 +50,8 @@ local countdownIonization			= mod:NewCountdown(61.5, 138732)
 
 mod:AddBoolOption("RangeFrame")
 
+local scanFailed = false
+
 local function checkWaterIonization()
 	if UnitDebuff("player", GetSpellInfo(138002)) and UnitDebuff("player", GetSpellInfo(138732)) and not UnitIsDeadOrGhost("player") then
 		specWarnWaterMove:Show(GetSpellInfo(138732))
@@ -62,19 +64,25 @@ local function checkWaterStorm()
 	end
 end
 
-function mod:FocusedLightningTarget(targetname)
-	warnFocusedLightning:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnFocusedLightning:Show()
-		yellFocusedLightning:Yell()
-		soundFocusedLightning:Play()
-		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
-			DBM.RangeCheck:Show(8)
+function mod:FocusedLightningTarget(targetname, uId)
+	if not targetname then return end
+	if self:IsTanking(uId) then--Focused Lightning never target tanks, so if target is tank, that means scanning failed.
+		scanFailed = true
+	else
+		warnFocusedLightning:Show(targetname)
+		if targetname == UnitName("player") then
+			specWarnFocusedLightning:Show()
+			yellFocusedLightning:Yell()
+			soundFocusedLightning:Play()
+			if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
+				DBM.RangeCheck:Show(8)
+			end
 		end
 	end
 end
 
 function mod:OnCombatStart(delay)
+	scanFailed = false
 	timerFocusedLightningCD:Start(8-delay)
 	timerStaticBurstCD:Start(13-delay)
 	timerThrowCD:Start(30-delay)
@@ -127,6 +135,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnStaticBurstOther:Show(args.destName)
 		end
+	elseif args.spellId == 137422 and scanFailed then--Use cleu target if scanning is failed (slower than target scanning)
+		scanFailed = false
+		self:FocusedLightningTarget(args.destName)
 	elseif args.spellId == 138732 and args:IsPlayer() then
 		timerIonization:Start()
 		self:Schedule(19, checkWaterIonization)--Extremely dangerous. (if conducted, then auto wipe). So check before 5 sec.

@@ -4113,6 +4113,7 @@ function bossModPrototype:IsHealer()
 	return (class == "PALADIN" and (GetSpecialization() == 1))
 	or (class == "SHAMAN" and (GetSpecialization() == 3))
 	or (class == "DRUID" and (GetSpecialization() == 4))
+	or (class == "PRIEST" and (GetSpecialization() ~= 3))
 	or (class == "MONK" and (GetSpecialization() == 2))
 end
 
