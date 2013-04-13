@@ -218,7 +218,7 @@ function mod:OnSync(msg, guid)
 			--Added to fix a bug with duplicate entries of same person in icon table more than once
 			local foundDuplicate = false
 			for i = #voodooDollTargetIcons, 1, -1 do
-				if not voodooDollTargetIcons[i].targetUnitID then--make sure they aren't in table before inserting into table again. (not sure why this happens in LFR but it does, probably someone really high ping that cranked latency check way up)
+				if voodooDollTargetIcons[i].targetUnitID then--make sure they aren't in table before inserting into table again. (not sure why this happens in LFR but it does, probably someone really high ping that cranked latency check way up)
 					foundDuplicate = true
 				end
 			end
