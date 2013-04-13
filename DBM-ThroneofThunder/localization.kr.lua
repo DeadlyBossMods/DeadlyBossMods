@@ -94,6 +94,7 @@ L:SetOptionLocalization({
 	timerBreaths			= "다음 숨결 바 표시",
 	AnnounceCooldowns		= "공격대 생존기 사용을 위해 광란/확산 시전 횟수 음성으로 알리기",
 	Never					= "알리지 않음",
+	Every					= "횟수 초기화 하지 않음",
 	EveryTwo				= "2번 시전후 초기화",
 	EveryThree				= "3번 시전후 초기화",
 	EveryTwoExcludeDiff		= "2번 시전후 초기화(확산 제외)",
