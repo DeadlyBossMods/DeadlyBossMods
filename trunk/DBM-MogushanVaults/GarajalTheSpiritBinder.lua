@@ -92,7 +92,6 @@ do
 			self:SetIcon(v, voodooIcon)
 			voodooIcon = voodooIcon - 1
 		end
---		self:Schedule(1.5, ClearVoodooTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 	end
 end
 
