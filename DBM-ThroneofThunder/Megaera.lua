@@ -75,8 +75,9 @@ local soundTorrentofIce			= mod:NewSound(139889)
 mod:AddBoolOption("SetIconOnCinders", true)
 mod:AddBoolOption("SetIconOnTorrentofIce", true)
 
-mod:AddDropdownOption("AnnounceCooldowns", {"Never", "EveryTwo", "EveryThree", "EveryTwoExcludeDiff", "EveryThreeExcludeDiff"}, "Never", "misc")
+mod:AddDropdownOption("AnnounceCooldowns", {"Never", "Every", "EveryTwo", "EveryThree", "EveryTwoExcludeDiff", "EveryThreeExcludeDiff"}, "Never", "misc")
 --CD order options that change based on raid dps and diffusion strat. With high dps, you need 3 groups, with lower dps (and typically heroic) you need 3. Also, on heroic, many don't cd rampage when high stack diffusion tank can be healed off of to heal raid.
+--"Every": for groups that prefer to assign certain rampage numbers to players (e.g. for CD at the 4th rampage only) (maybe "Every" should even be the default option for everyone, beside of any cooldowns?)
 
 --count will go to hell fast on a DC though. Need to figure out some kind of head status recovery to get active/inactive head counts.
 --Maybe add an info frame that shows head status too would be cool such as
@@ -283,10 +284,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 --		timerAcidRainCD:Cancel()
 		timerNetherTearCD:Cancel()
 		timerRampage:Start()
-		if self.Options.AnnounceCooldowns == "Never" or (arcaneInFront > 0 or arcaneRecent) and (self.Options.AnnounceCooldowns == "EveryTwoExcludeDiff" or self.Options.AnnounceCooldowns == "EveryThreeExcludeDiff") then return end--You have a diffused player, don't call out cds
-		if (self.Options.AnnounceCooldowns == "EveryTwoExcludeDiff" or self.Options.AnnounceCooldowns == "EveryTwo") and rampageCast == 2 then rampageCast = 0 end--Option is set to one of the twos and we're already at 2, reset cast count
-		if rampageCast == 3 then rampageCast = 0 end--We already checked and know option isn't set to 2 or never, so it's definitely set to 3, no need to check option.
+		if not self.Options.AnnounceCooldowns == "Every" then
+			if self.Options.AnnounceCooldowns == "Never" or (arcaneInFront > 0 or arcaneRecent) and (self.Options.AnnounceCooldowns == "EveryTwoExcludeDiff" or self.Options.AnnounceCooldowns == "EveryThreeExcludeDiff") then return end--You have a diffused player, don't call out cds
+			if (self.Options.AnnounceCooldowns == "EveryTwoExcludeDiff" or self.Options.AnnounceCooldowns == "EveryTwo") and rampageCast == 2 then rampageCast = 0 end--Option is set to one of the twos and we're already at 2, reset cast count
+			if rampageCast == 3 then rampageCast = 0 end--We already checked and know option isn't set to 2 or never, so it's definitely set to 3, no need to check option.
+		end
 		rampageCast = rampageCast + 1
+		if rampageCast > 10 then return end --failsafe
 		if DBM.Options.UseMasterVolume then
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..rampageCast..".ogg", "Master")
 		else
