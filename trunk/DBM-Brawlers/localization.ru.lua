@@ -139,7 +139,7 @@ L:SetGeneralLocalization({
 -------------
 -- Rares 2 --
 -------------
-L= DBM:GetModLocalization("BrawlRare1")
+L= DBM:GetModLocalization("BrawlRare2")
 
 L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: Редкие 2"
