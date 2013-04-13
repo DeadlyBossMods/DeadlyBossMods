@@ -222,9 +222,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			elseif self:IsDifficulty("normal25") then--This is now 25man normal only
 				timerDarkPowerCD:Start(math.floor(68/(0.10*stack+1.0)+0.5))--(68, 62, 57, 52)
 			elseif self:IsDifficulty("normal10") then--Updated 10 man data post hotfix as seen in this log here http://worldoflogs.com/reports/8sy56hojz9x3ej7j/xe/?s=6609&e=7296&x=spellid+%3D+136442+or+spellid+%3D+136507+and+targetname+%3D+%22Slayhoof%22
-				timerDarkPowerCD:Start(math.floor(68/(0.10*(stack-1.0)+1.0)+0.5))--(76, 68, 62, x)
-			else -- lfr
-				timerDarkPowerCD:Start(math.floor(97/(0.05*stack+1.0)+0.5))--(97, 92, 88, 84)
+				timerDarkPowerCD:Start(math.floor(68/(0.10*(stack-1)+1.0)+0.5))--(76, 68, 62, x)
+			else -- lfr (13 Apr 2013: 11:54:49.500->11:56:26.609 => 97.109 [0 stacks] | 70/100 after ~63.9 => ~91 [1 stack] | 11:59:44.515->12:01:09.593 => 85.078 [2 stacks])
+				timerDarkPowerCD:Start(math.floor(68/(0.05*(stack-6)+1.0)+0.5))--(97, 91, 85, x)
 			end
 		else
 			if self:IsDifficulty("lfr25") then
