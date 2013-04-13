@@ -415,15 +415,15 @@ function mod:UNIT_DIED(args)
 		if totalFogs >= 1 then
 			warnAddsLeft:Show(totalFogs)
 		else--No adds left, force ability is re-enabled
-			lastRed = nil
-			lastBlue = nil
-			lastYellow = nil
 			timerObliterateCD:Cancel()
 			timerForceOfWillCD:Start(15)
 			if self.Options.SetIconRays and lastRed then
 				self:SetIcon(lastRed, 0)
 				self:SetIcon(lastBlue, 0)
 			end
+			lastRed = nil
+			lastBlue = nil
+			lastYellow = nil
 		end
 	elseif cid == 69051 then--Amber Fog
 		--Maybe do something for heroic here too, if timers for the crap this thing does gets added.
@@ -433,15 +433,15 @@ function mod:UNIT_DIED(args)
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 				warnAddsLeft:Show(totalFogs)
 			else--No adds left, force ability is re-enabled
-				lastRed = nil
-				lastBlue = nil
-				lastYellow = nil
 				timerObliterateCD:Cancel()
 				timerForceOfWillCD:Start(15)
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
 					self:SetIcon(lastBlue, 0)
 				end
+				lastRed = nil
+				lastBlue = nil
+				lastYellow = nil
 			end
 		end
 	elseif cid == 69052 then--Azure Fog (endlessly respawn in all but LFR, so we ignore them dying anywhere else)
@@ -452,15 +452,15 @@ function mod:UNIT_DIED(args)
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 				warnAddsLeft:Show(totalFogs)
 			else--No adds left, force ability is re-enabled
-				lastRed = nil
-				lastBlue = nil
-				lastYellow = nil
 				timerObliterateCD:Cancel()
 				timerForceOfWillCD:Start(15)
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
 					self:SetIcon(lastBlue, 0)
 				end
+				lastRed = nil
+				lastBlue = nil
+				lastYellow = nil
 			end
 		end
 	end
