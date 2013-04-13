@@ -66,7 +66,7 @@ end
 
 function mod:FocusedLightningTarget(targetname, uId)
 	if not targetname then return end
-	if self:IsTanking(uId) then--Focused Lightning never target tanks, so if target is tank, that means scanning failed.
+	if self:IsTanking(uId, "boss1") then--Focused Lightning never target tanks, so if target is tank, that means scanning failed.
 		scanFailed = true
 	else
 		warnFocusedLightning:Show(targetname)
