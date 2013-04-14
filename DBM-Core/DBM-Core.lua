@@ -228,6 +228,7 @@ local floor = math.floor
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitExists = UnitExists
 local GetSpellInfo = GetSpellInfo
+local EJ_GetSectionInfo = EJ_GetSectionInfo
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -703,16 +704,6 @@ do
 				else
 					-- other event or cinematics enabled
 					return oldMovieEventHandler and oldMovieEventHandler(self, event, movieId, ...)
-				end
-			end)
-		elseif modname == "DBM-BurningCrusade" then
-			-- workaround to ban really old ZA/ZG mods that are still loaded through the compatibility layer. These mods should be excluded by the compatibility layer by design, however they are no longer loaded through the compatibility layer.
-			-- that means this is unnecessary if you are using a recent version of DBM-BC. However, if you are still on an old version of DBM-BC then filtering ZA/ZG through DBM-Core wouldn't be possible and no one really ever updates DBM-BC
-			self:Schedule(0, function()
-				for i = #self.AddOns, 1, -1 do
-					if checkEntry(bannedMods, self.AddOns[i].modId) then -- DBM-BC loads mods directly into this table and doesn't respect the bannedMods list of DBM-Core (just its own list of banned mods) (design fail)
-						table.remove(self.AddOns, i)
-					end
 				end
 			end)
 		end
@@ -3348,7 +3339,6 @@ do
 		self:Schedule(10, requestTimers)
 		self:Schedule(14, requestTimers)
 		self:Schedule(18, requestTimers)
---		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 		if type(RegisterAddonMessagePrefix) == "function" then
@@ -3356,7 +3346,7 @@ do
 				self:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
 			end
 			if not RegisterAddonMessagePrefix("BigWigs") then
-			
+				self:AddMsg("Error: unable to register BigWigs addon message prefix (reached client side addon message filter limit), BigWigs version checks will be unavailable")
 			end
 		end
 	end
@@ -3910,7 +3900,6 @@ function bossModPrototype:GetBossTarget(cid)
 end
 
 local targetScanCount = 0
-
 function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, isFinalScan)
 	--Increase scan count
 	targetScanCount = targetScanCount + 1
@@ -3937,36 +3926,6 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	else--target was nil, lets schedule a rescan here too.
 		if targetScanCount < scanTimes then--Make sure not to infinite loop here as well.
 			self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan)
-		end
-	end
-end
-
-function bossModPrototype:GetThreatTarget(cid)
-	cid = cid or self.creatureId
-	local name, realm, uid
-	if self:GetUnitCreatureId("target") == cid then
-		if UnitDetailedThreatSituation("player", "target") == 1 then
-			return "player"
-		end
-	elseif IsInRaid() then
-		for i = 1, GetNumGroupMembers() do
-			if self:GetUnitCreatureId("raid"..i.."target") == cid then
-				for x = 1, GetNumGroupMembers() do
-					if UnitDetailedThreatSituation("raid"..x, "raid"..i.."target") == 1 then
-						return "raid"..x
-					end
-				end
-			end
-		end
-	elseif IsInGroup() then
-		for i = 1, GetNumSubgroupMembers() do
-			if self:GetUnitCreatureId("party"..i.."target") == cid then
-				for x = 1, GetNumSubgroupMembers() do
-					if UnitDetailedThreatSituation("party"..x, "party"..i.."target") == 1 then
-						return "party"..x
-					end
-				end
-			end
 		end
 	end
 end
@@ -4020,9 +3979,7 @@ function bossModPrototype:AntiSpam(time, id)
 	end
 end
 
---Simple talent checker.
---It checks for key skills in spellbook, without having to do in dept talent point checks.
-
+--Simple spec stuff
 function bossModPrototype:IsMelee()
 	return class == "ROGUE"
 	or class == "WARRIOR"
