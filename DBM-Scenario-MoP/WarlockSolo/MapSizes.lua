@@ -1,3 +1,4 @@
+if select(2, UnitClass("player")) ~= "WARLOCK" then return end
 --Same mapsizes as real Black Temple
 DBM:RegisterMapSize("BlackTempleScenario",
 	1, 1252.24957847595, 834.8330078125,
