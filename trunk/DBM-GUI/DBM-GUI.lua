@@ -51,6 +51,12 @@ local L = DBM_GUI_Translations
 
 local usemodelframe = true		-- very beta
 
+--------------------------------------------------------
+--  Cache frequently used global variables in locals  --
+--------------------------------------------------------
+local GetSpellInfo = GetSpellInfo
+local EJ_GetSectionInfo = EJ_GetSectionInfo
+
 function DBM_GUI:ShowHide(forceshow)
 	if forceshow == true then
 		self:UpdateModList()
