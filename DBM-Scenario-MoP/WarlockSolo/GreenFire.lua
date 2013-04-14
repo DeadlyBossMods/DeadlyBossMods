@@ -1,3 +1,4 @@
+if select(2, UnitClass("player")) ~= "WARLOCK" then return end
 local mod	= DBM:NewMod("GreenFire", "DBM-Scenario-MoP")
 local L		= mod:GetLocalizedStrings()
 
