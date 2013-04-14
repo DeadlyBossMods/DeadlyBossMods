@@ -21,8 +21,8 @@ local warnSmolderingHeat			= mod:NewTargetAnnounce(142400, 4)--A real cute troll
 local warnCooled					= mod:NewTargetAnnounce(141371, 1)
 local warnOnFire					= mod:NewTargetAnnounce(141388, 4)
 
-local specWarnIntensifyingAssault	= mod:NewSpecialWarningStack(141396, true, 30)--Maybe tweak stack amount some
-local specWarnPrecisionArtillery	= mod:NewSpecialWarningStack(141401, true, 30)
+local specWarnIntensifyingAssault	= mod:NewSpecialWarningStack(141396, true, 10)
+local specWarnPrecisionArtillery	= mod:NewSpecialWarningStack(141401, true, 10)
 local specWarnSmolderingHeat		= mod:NewSpecialWarningYou(142400)
 
 local timerSmolderingHeatCD			= mod:NewCDTimer(20, 142400)--20-23sec variation
@@ -54,7 +54,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount % 5 == 0 then
 			warnIntensifyingAssault:Show(args.destName, amount)
-			if amount >= 30 then
+			if amount >= 10 then
 				specWarnIntensifyingAssault:Show(amount)
 			end
 		end
@@ -62,7 +62,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		if amount % 5 == 0 then
 			warnPrecisionArtillery:Show(args.destName, amount)
-			if amount >= 30 then
+			if amount >= 10 then
 				specWarnPrecisionArtillery:Show(amount)
 			end
 		end
