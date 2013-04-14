@@ -21,7 +21,7 @@
 ## X-DBM-Mod-Name-zhCN: 场景战役 (熊猫人之谜)
 ## X-DBM-Mod-Name-frFR: Scénario (MoP)
 ## X-DBM-Mod-Sort: 35
-## X-DBM-Mod-LoadZoneID: 906, 851, 899, 911, 920, 934, 919, 900
+## X-DBM-Mod-LoadZoneID: 906, 851, 899, 911, 920, 934, 919, 900, 878
 localization.en.lua
 localization.kr.lua
 localization.de.lua
@@ -29,6 +29,8 @@ localization.tw.lua
 localization.cn.lua
 localization.fr.lua
 localization.ru.lua
+ABrewingStorm\MapSizes.lua
+ABrewingStorm\BrewingStorm.lua
 ArenaOfAnnihilation\MapSizes.lua
 ArenaOfAnnihilation\ArenaOfAnnihilation.lua
 CryptofForgotenKings\MapSizes.lua
