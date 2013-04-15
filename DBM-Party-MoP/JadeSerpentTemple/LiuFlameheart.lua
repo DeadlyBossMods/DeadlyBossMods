@@ -32,7 +32,6 @@ local timerJadeDragonStrikeCD	= mod:NewNextTimer(10.5, 106841)
 local timerJadeFireCD			= mod:NewNextTimer(3.5, 107045)
 
 function mod:JadeFireTarget(targetname)
-	warnJadeFire:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnJadeFire:Show()
 	end
