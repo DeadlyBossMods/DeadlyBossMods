@@ -262,7 +262,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 136914 then
 		local amount = args.amount or 1
-		if not amount % 3 == 0 then return end
+		if not (amount % 3 == 0) then return end
 		warnElectricalShock:Show(args.destName, amount)
 		if amount >= 12 then
 			if args:IsPlayer() then

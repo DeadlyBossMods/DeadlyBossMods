@@ -417,35 +417,87 @@ local function warnTorrent(name)
 	end
 end
 
---This is VERY broken, i'm going to drastically change it when done raiding unless you can fix it.
---Following problems
---People are yelling 10 times, literally. it spams chat yells when it's on you
---It's announcing every target twice
---it's using both icons on every target.
 function mod:UNIT_AURA(uId)
-	if UnitDebuff(uId, iceTorrent) and not torrentTarget1 and (torrentTarget2 or "") ~= uId then
-		torrentTarget1 = uId
-		local name = DBM:GetUnitFullName(uId)
+	local name = DBM:GetUnitFullName(uId)
+	if not name then return end
+	if UnitDebuff(uId, iceTorrent) and not torrentTarget1 and (torrentTarget2 or "") ~= name then
+		torrentTarget1 = name
 		warnTorrent(name)
 		if self.Options.SetIconOnTorrentofIce then
 			self:SetIcon(uId, 6)
 		end
-	elseif UnitDebuff(uId, iceTorrent) and not torrentTarget2 and (torrentTarget1 or "") ~= uId then
-		torrentTarget2 = uId
-		local name = DBM:GetUnitFullName(uId)
+	elseif UnitDebuff(uId, iceTorrent) and not torrentTarget2 and (torrentTarget1 or "") ~= name then
+		torrentTarget2 = name
 		warnTorrent(name)
 		if self.Options.SetIconOnTorrentofIce then
 			self:SetIcon(uId, 4)
 		end
-	elseif torrentTarget1 and torrentTarget1 == uId and not UnitDebuff(uId, iceTorrent) then
+	elseif torrentTarget1 and torrentTarget1 == name and not UnitDebuff(uId, iceTorrent) then
 		torrentTarget1 = nil
 		if self.Options.SetIconOnTorrentofIce then
 			self:SetIcon(uId, 0)
 		end
-	elseif torrentTarget2 and torrentTarget2 == uId and not UnitDebuff(uId, iceTorrent) then
+	elseif torrentTarget2 and torrentTarget2 == name and not UnitDebuff(uId, iceTorrent) then
 		torrentTarget2 = nil
 		if self.Options.SetIconOnTorrentofIce then
 			self:SetIcon(uId, 0)
 		end
 	end
 end
+
+--There is not logical problem, maybe. issues on other way. This is test code.
+--[[
+function mod:Test(uId, torrentActive)
+	if torrentActive and not torrentTarget1 and (torrentTarget2 or "") ~= uId then
+		torrentTarget1 = uId
+		print("1st : "..uId)
+	elseif torrentActive and not torrentTarget2 and (torrentTarget1 or "") ~= uId then
+		torrentTarget2 = uId
+		print("2nd : "..uId)
+	elseif torrentTarget1 and torrentTarget1 == uId and not torrentActive then
+		torrentTarget1 = nil
+		print("1st removed")
+	elseif torrentTarget2 and torrentTarget2 == uId and not torrentActive then
+		torrentTarget2 = nil
+		print("2nd removed")
+	end
+end
+
+
+mod:ScheduleMethod(3.0, "Test", "raid1", true)
+mod:ScheduleMethod(3.5, "Test", "raid1", true)
+mod:ScheduleMethod(4.0, "Test", "raid1", true)
+mod:ScheduleMethod(4.5, "Test", "raid1", true)
+mod:ScheduleMethod(5.0, "Test", "raid2", true)
+mod:ScheduleMethod(5.5, "Test", "raid1", true)
+mod:ScheduleMethod(6.0, "Test", "raid2", true)
+mod:ScheduleMethod(6.5, "Test", "raid1", true)
+mod:ScheduleMethod(7.0, "Test", "raid2", true)
+mod:ScheduleMethod(7.5, "Test", "raid1", true)
+mod:ScheduleMethod(8.0, "Test", "raid2", true)
+mod:ScheduleMethod(8.5, "Test", "raid1", true)
+mod:ScheduleMethod(9.0, "Test", "raid2", true)
+mod:ScheduleMethod(9.5, "Test", "raid1", false)
+mod:ScheduleMethod(10.0, "Test", "raid1", true)
+mod:ScheduleMethod(10.5, "Test", "raid2", true)
+mod:ScheduleMethod(11.0, "Test", "raid2", true)
+mod:ScheduleMethod(11.5, "Test", "raid1", true)
+mod:ScheduleMethod(12.0, "Test", "raid1", true)
+mod:ScheduleMethod(12.5, "Test", "raid2", true)
+mod:ScheduleMethod(13.0, "Test", "raid2", true)
+mod:ScheduleMethod(13.5, "Test", "raid2", true)
+mod:ScheduleMethod(14.0, "Test", "raid2", true)
+mod:ScheduleMethod(14.5, "Test", "raid1", true)
+mod:ScheduleMethod(15.0, "Test", "raid1", true)
+mod:ScheduleMethod(15.5, "Test", "raid1", false)
+mod:ScheduleMethod(16.0, "Test", "raid2", true)
+mod:ScheduleMethod(16.5, "Test", "raid1", false)
+mod:ScheduleMethod(17.0, "Test", "raid2", true)
+mod:ScheduleMethod(17.5, "Test", "raid1", false)
+mod:ScheduleMethod(18.0, "Test", "raid1", false)
+mod:ScheduleMethod(18.5, "Test", "raid2", false)
+mod:ScheduleMethod(19.0, "Test", "raid1", false)
+mod:ScheduleMethod(19.5, "Test", "raid1", false)
+mod:ScheduleMethod(20.0, "Test", "raid1", false)
+mod:ScheduleMethod(20.5, "Test", "raid1", false)
+]]
