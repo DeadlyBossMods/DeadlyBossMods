@@ -445,6 +445,7 @@ function mod:UNIT_AURA(uId)
 	end
 end
 
+--We have at least 4 frost heads in back, debuffs going out very often, often 2 back to back within 2 seconds of one another, this causes problems because name 2 resets name 1. also, Spell name for getting hit by beam applies a different and SAME name aura and also fires UNIT_aura event. i'll upload screen shots later but this method VERY inaccurate and spammed icons all over place, tons of chat bubbles, and multiple announces "torrent on name1, torrent on name1"
 --There is not logical problem, maybe. issues on other way. This is test code.
 --[[
 function mod:Test(uId, torrentActive)
