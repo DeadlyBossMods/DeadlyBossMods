@@ -52,11 +52,7 @@ L:SetMiscLocalization({
 ---------------
 --  Alterac  --
 ---------------
-L = DBM:GetModLocalization("AlteracValley")
-
-L:SetGeneralLocalization({
-	name = "Vallée d'Alterac"
-})
+L = DBM:GetModLocalization("z30")
 
 L:SetTimerLocalization({
 	TimerTower		= "%s",
@@ -72,11 +68,7 @@ L:SetOptionLocalization({
 ---------------
 --  Arathi  --
 ---------------
-L = DBM:GetModLocalization("ArathiBasin")
-
-L:SetGeneralLocalization({
-	name = "Bassin d'Arathi"
-})
+L = DBM:GetModLocalization("z529")
 
 L:SetMiscLocalization({
 	ScoreExpr 				= "(%d+)/1600",
@@ -101,11 +93,7 @@ L:SetOptionLocalization({
 -----------------------
 --  Eye of the Storm --
 -----------------------
-L = DBM:GetModLocalization("EyeoftheStorm")
-
-L:SetGeneralLocalization({
-	name = "L'Œil du cyclone"
-})
+L = DBM:GetModLocalization("z566")
 
 L:SetMiscLocalization({
 	ZoneName			= "L'Œil du cyclone",
@@ -133,11 +121,7 @@ L:SetOptionLocalization({
 --------------------
 --  Warsong Gulch --
 --------------------
-L = DBM:GetModLocalization("WarsongGulch")
-
-L:SetGeneralLocalization({
-	name = "Goulet des Chanteguerres"
-})
+L = DBM:GetModLocalization("z489")
 
 L:SetMiscLocalization({
 	BgStart60 					= "Début de la bataille pour le goulet des Chanteguerres dans 1 minute.",
@@ -168,11 +152,7 @@ L:SetOptionLocalization({
 ------------------------
 --  Isle of Conquest  --
 ------------------------
-L = DBM:GetModLocalization("IsleofConquest")
-
-L:SetGeneralLocalization({
-	name = "Île des Conquérants"
-})
+L = DBM:GetModLocalization("z628")
 
 L:SetWarningLocalization({
 	WarnSiegeEngine		= "Engins de Siège prêt!",
@@ -214,11 +194,7 @@ L:SetMiscLocalization({
 ------------------
 --  Twin Peaks  --
 ------------------
-L = DBM:GetModLocalization("TwinPeaks")
-
-L:SetGeneralLocalization({
-	name = "Pics-Jumeaux"
-})
+L = DBM:GetModLocalization("z726")
 
 L:SetMiscLocalization({
 	BgStart60 			= "Début de la bataille dans 60 secondes.",
@@ -254,11 +230,7 @@ L:SetOptionLocalization({
 --------------------------
 --  Battle for Gilneas  --
 --------------------------
-L = DBM:GetModLocalization("Gilneas")
-
-L:SetGeneralLocalization({
-	name = "Bataille de Gilnéas"
-})
+L = DBM:GetModLocalization("z761")
 
 L:SetMiscLocalization({
 	ScoreExpr 				= "(%d+)/2000",
@@ -283,11 +255,7 @@ L:SetOptionLocalization({
 -------------------------
 --  Silvershard Mines  --
 -------------------------
-L = DBM:GetModLocalization("SilvershardMines")
-
-L:SetGeneralLocalization({
-	name = "Mines d'Éclargent"
-})
+L = DBM:GetModLocalization("z727")
 
 L:SetMiscLocalization({
 	Capture = "pris le contrôle"
@@ -304,8 +272,4 @@ L:SetOptionLocalization({
 -------------------------
 --  Temple of Kotmogu  --
 -------------------------
-L = DBM:GetModLocalization("Kotmogu")
-
-L:SetGeneralLocalization({
-	name = "Temple de Kotmogu"
-})
+L = DBM:GetModLocalization("z998")

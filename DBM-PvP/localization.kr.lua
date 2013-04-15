@@ -40,7 +40,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShadow 	= "어둠의 시야 바 표시"	
+	TimerShadow 	= "어둠의 시야 바 표시"
 })
 
 L:SetMiscLocalization({
@@ -50,11 +50,7 @@ L:SetMiscLocalization({
 ---------------
 --  Alterac  --
 ---------------
-L = DBM:GetModLocalization("AlteracValley")
-
-L:SetGeneralLocalization({
-	name = "알터랙 계곡"
-})
+L = DBM:GetModLocalization("z30")
 
 L:SetTimerLocalization({
 	TimerTower	= "%s",
@@ -70,11 +66,7 @@ L:SetOptionLocalization({
 ---------------
 --  Arathi  --
 ---------------
-L = DBM:GetModLocalization("ArathiBasin")
-
-L:SetGeneralLocalization({
-	name = "아라시 분지"
-})
+L = DBM:GetModLocalization("z529")
 
 L:SetTimerLocalization({
 	TimerCap 				= "%s"
@@ -99,11 +91,7 @@ L:SetMiscLocalization({
 -----------------------
 --  Eye of the Storm --
 -----------------------
-L = DBM:GetModLocalization("EyeoftheStorm")
-
-L:SetGeneralLocalization({
-	name = "폭풍의 눈"
-})
+L = DBM:GetModLocalization("z566")
 
 L:SetTimerLocalization({
 	TimerFlag		= "깃발 재생성"
@@ -131,11 +119,7 @@ L:SetMiscLocalization({
 --------------------
 --  Warsong Gulch --
 --------------------
-L = DBM:GetModLocalization("WarsongGulch")
-
-L:SetGeneralLocalization({
-	name = "전쟁노래 협곡"
-})
+L = DBM:GetModLocalization("z489")
 
 L:SetTimerLocalization({
 	TimerFlag 			= "깃발 재생성",
@@ -149,9 +133,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Alliance = "얼라이언스",
-	Horde = "호드",	
+	Horde = "호드",
 	InfoErrorText 		= "시스템상 한계로 전투 중에는 깃발 운반자 추적이 불가능합니다. 현재 전투가 종료된 후 깃발 운반자 추적 기능이 복구됩니다.",
-	ExprFlagPickUp 		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",	
+	ExprFlagPickUp 		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",
 	ExprFlagCaptured 	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
 	ExprFlagReturn 		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
 	FlagAlliance 		= "얼라이언스 깃발 :",
@@ -163,11 +147,7 @@ L:SetMiscLocalization({
 --  Isle of Conquest  --
 ------------------------
 
-L = DBM:GetModLocalization("IsleofConquest")
-
-L:SetGeneralLocalization({
-	name = "정복의 섬"
-})
+L = DBM:GetModLocalization("z628")
 
 L:SetWarningLocalization({
 	WarnSiegeEngine			= "공성 전차 준비!",
@@ -176,7 +156,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerPOI				= "%s",
-	TimerSiegeEngine		= "공성 전차 준비"	
+	TimerSiegeEngine		= "공성 전차 준비"
 })
 
 L:SetOptionLocalization({
@@ -203,11 +183,7 @@ L:SetMiscLocalization({
 ------------------
 --  Twin Peaks  --
 ------------------
-L = DBM:GetModLocalization("TwinPeaks")
-
-L:SetGeneralLocalization({
-	name = "쌍둥이 봉우리"
-})
+L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
 	TimerFlag	= "깃발 재생성"
@@ -222,7 +198,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ZoneName 			= "쌍둥이 봉우리",
 	Alliance 			= "얼라이언스",
-	Horde 				= "호드",	
+	Horde 				= "호드",
 	InfoErrorText 		= "시스템상 한계로 전투 중에는 깃발 운반자 추적이 불가능합니다. 현재 전투가 종료된 후 깃발 운반자 추적 기능이 복구됩니다.",
 	ExprFlagPickUp		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",
 	ExprFlagCaptured	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
@@ -237,11 +213,7 @@ L:SetMiscLocalization({
 --------------------------
 --  Battle for Gilneas  --
 --------------------------
-L = DBM:GetModLocalization("Gilneas")
-
-L:SetGeneralLocalization({
-	name = "길니아스 전투지"	-- translate
-})
+L = DBM:GetModLocalization("z761")
 
 L:SetTimerLocalization({
 	TimerCap 				= "%s"
@@ -266,11 +238,7 @@ L:SetMiscLocalization({
 -------------------------
 --  Silvershard Mines  --
 -------------------------
-L = DBM:GetModLocalization("SilvershardMines")
-
-L:SetGeneralLocalization({
-	name = "은빛수정 광산"
-})
+L = DBM:GetModLocalization("z727")
 
 L:SetTimerLocalization({
 	TimerCart	= "수레 재생성"
@@ -287,11 +255,7 @@ L:SetMiscLocalization({
 -------------------------
 --  Temple of Kotmogu  --
 -------------------------
-L = DBM:GetModLocalization("Kotmogu")
-
-L:SetGeneralLocalization({
-	name = "코트모구의 사원"
-})
+L = DBM:GetModLocalization("z998")
 
 L:SetMiscLocalization({
 	OrbTaken 	= "차지했습니다!",

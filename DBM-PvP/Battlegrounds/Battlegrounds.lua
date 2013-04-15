@@ -38,24 +38,24 @@ function mod:ZONE_CHANGED_NEW_AREA()
 			DBM:ToggleRaidBossEmoteFrame(0, true)
 		end
 	end
-	for i, v in ipairs(DBM:GetModByName("AlteracValley").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("EyeoftheStorm").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("WarsongGulch").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("ArathiBasin").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("IsleofConquest").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("Gilneas").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("TwinPeaks").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("SilvershardMines").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("Kotmogu").timers) do v:Stop() end
-	DBM:GetModByName("AlteracValley"):Unschedule()
-	DBM:GetModByName("EyeoftheStorm"):Unschedule()
-	DBM:GetModByName("WarsongGulch"):Unschedule()
-	DBM:GetModByName("ArathiBasin"):Unschedule()
-	DBM:GetModByName("IsleofConquest"):Unschedule()
-	DBM:GetModByName("Gilneas"):Unschedule()
-	DBM:GetModByName("TwinPeaks"):Unschedule()
-	DBM:GetModByName("SilvershardMines"):Unschedule()
-	DBM:GetModByName("Kotmogu"):Unschedule()
+	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z489").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z529").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
+	DBM:GetModByName("z30"):Unschedule()
+	DBM:GetModByName("z489"):Unschedule()
+	DBM:GetModByName("z529"):Unschedule()
+	DBM:GetModByName("z566"):Unschedule()
+	DBM:GetModByName("z628"):Unschedule()
+	DBM:GetModByName("z726"):Unschedule()
+	DBM:GetModByName("z727"):Unschedule()
+	DBM:GetModByName("z761"):Unschedule()
+	DBM:GetModByName("z998"):Unschedule()
 end
 mod.PLAYER_ENTERING_WORLD = mod.ZONE_CHANGED_NEW_AREA
 mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA

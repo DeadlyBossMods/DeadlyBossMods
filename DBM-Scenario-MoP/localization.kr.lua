@@ -1,6 +1,41 @@
 ﻿if GetLocale() ~= "koKR" then return end
 local L
 
+--------------------------------
+-- A Brewing Storm --
+--------------------------------
+
+L= DBM:GetModLocalization("BrewingStorm")
+
+L:SetGeneralLocalization{
+	name = "A Brewing Storm"
+}
+
+L:SetTimerLocalization{
+	timerEvent			= "Brew Done (Aprox)"
+}
+
+L:SetOptionLocalization{
+	timerEvent			= "Show timer for approximate brew completion"
+}
+
+L:SetMiscLocalization{
+	BrewStart			= "The storm is starting! Get ready.",
+	BrewFinish			= "You did it! Let's get this brew to the Monastery...",--Maybe switch to UPDATE_WORLD_STATES 100 progress instead in a more polished version of mod.
+	BorokhulaPull		= "Last call, you fork-tongued dip-slithers!",
+	BorokhulaAdds		= "calls out for reinforcements!"--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
+}
+
+--------------------------------
+-- Crypt of Forgotten Kings --
+--------------------------------
+
+L= DBM:GetModLocalization("CryptofKings")
+
+L:SetGeneralLocalization{
+	name = "Crypt of Forgotten Kings"
+}
+
 ----------------------
 -- Theramore's Fall --
 ----------------------

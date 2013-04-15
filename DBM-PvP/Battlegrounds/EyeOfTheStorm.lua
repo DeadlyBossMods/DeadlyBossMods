@@ -3,7 +3,7 @@
 --
 -- thanks DiabloHu
 
-local EyeOfTheStorm	= DBM:NewMod("EyeoftheStorm", "DBM-PvP", 2)
+local EyeOfTheStorm	= DBM:NewMod("z566", "DBM-PvP", 2)
 local L				= EyeOfTheStorm:GetLocalizedStrings()
 
 EyeOfTheStorm:RemoveOption("HealthFrame")

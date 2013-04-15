@@ -50,11 +50,7 @@ L:SetMiscLocalization({
 ----------------------
 --  Alterac Valley  --
 ----------------------
-L = DBM:GetModLocalization("AlteracValley")
-
-L:SetGeneralLocalization({
-	name = "Альтеракская долина"
-})
+L = DBM:GetModLocalization("z30")
 
 L:SetTimerLocalization({
 	TimerTower	= "%s",
@@ -70,11 +66,7 @@ L:SetOptionLocalization({
 --------------------
 --  Arathi Basin  --
 --------------------
-L = DBM:GetModLocalization("ArathiBasin")
-
-L:SetGeneralLocalization({
-	name = "Низина Арати"
-})
+L = DBM:GetModLocalization("z529")
 
 L:SetTimerLocalization({
 	TimerCap	= "%s"
@@ -99,11 +91,7 @@ L:SetMiscLocalization({
 ------------------------
 --  Eye of the Storm  --
 ------------------------
-L = DBM:GetModLocalization("EyeoftheStorm")
-
-L:SetGeneralLocalization({
-	name = "Око Бури"
-})
+L = DBM:GetModLocalization("z566")
 
 L:SetTimerLocalization({
 	TimerFlag		= "Восстановление флага"
@@ -131,11 +119,7 @@ L:SetMiscLocalization({
 ---------------------
 --  Warsong Gulch  --
 ---------------------
-L = DBM:GetModLocalization("WarsongGulch")
-
-L:SetGeneralLocalization({
-	name = "Ущелье Песни Войны"
-})
+L = DBM:GetModLocalization("z489")
 
 L:SetTimerLocalization({
 	TimerStart	= "Битва начнется через", 
@@ -167,11 +151,7 @@ L:SetMiscLocalization({
 ------------------------
 --  Isle of Conquest  --
 ------------------------
-L = DBM:GetModLocalization("IsleofConquest")
-
-L:SetGeneralLocalization({
-	name = "Остров Завоеваний"
-})
+L = DBM:GetModLocalization("z628")
 
 L:SetWarningLocalization({
 	WarnSiegeEngine		= "Осадная машина готова!",
@@ -207,11 +187,7 @@ L:SetMiscLocalization({
 ------------------
 --  Twin Peaks  --
 ------------------
-L = DBM:GetModLocalization("TwinPeaks")
-
-L:SetGeneralLocalization({
-	name = "Два Пика"
-})
+L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
 	TimerStart	= "Битва начнется через", 
@@ -245,11 +221,7 @@ L:SetMiscLocalization({
 ------------------------------
 --  The Battle for Gilneas  --
 ------------------------------
-L = DBM:GetModLocalization("Gilneas")
-
-L:SetGeneralLocalization({
-	name = "Битва за Гилнеас"
-})
+L = DBM:GetModLocalization("z761")
 
 L:SetTimerLocalization({
 	TimerCap	= "%s"
@@ -274,11 +246,7 @@ L:SetMiscLocalization({
 -------------------------
 --  Silvershard Mines  --
 -------------------------
-L = DBM:GetModLocalization("SilvershardMines")
-
-L:SetGeneralLocalization({
-	name = "Сверкающие копи"
-})
+L = DBM:GetModLocalization("z727")
 
 L:SetTimerLocalization({
 	TimerCart	= "Восстановление вагонетки"
@@ -295,11 +263,7 @@ L:SetMiscLocalization({
 -------------------------
 --  Temple of Kotmogu  --
 -------------------------
-L = DBM:GetModLocalization("Kotmogu")
-
-L:SetGeneralLocalization({
-	name = "Храм Котмогу"
-})
+L = DBM:GetModLocalization("z998")
 
 L:SetOptionLocalization({
 	TimerWin					= "Отсчет времени до победы",

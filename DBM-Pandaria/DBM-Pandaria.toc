@@ -15,16 +15,8 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-Name: Pandaria
-## X-DBM-Mod-Name-koKR: 판다리아
-## X-DBM-Mod-Name-deDE: Pandaria
-## X-DBM-Mod-Name-ruRU: Пандария
-## X-DBM-Mod-Name-esES: Pandaria
-## X-DBM-Mod-Name-esMX: Pandaria
-## X-DBM-Mod-Name-ptBR: Pandaria
-## X-DBM-Mod-Name-zhTW: 潘達利亞
-## X-DBM-Mod-Name-zhCN: 潘达利亚
-## X-DBM-Mod-Name-frFR: Pandarie
 ## X-DBM-Mod-Sort: 5
+## X-DBM-Mod-MapID: 870
 localization.en.lua
 localization.de.lua
 localization.es.lua

@@ -189,10 +189,10 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.you 		= "%s на вас"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target 	= "%s на |3-5(>%%s<)"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.close 	= "%s на |3-5(>%%s<) около вас"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move 		= "%s - отбегите"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.run 		= "%s - бегите"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.run 		= "%s - убегайте"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast 		= "%s - прекратите чтение заклинаний"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count 	= "%s! (%%d)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack 	= "На вас %%d стаков от %s" --too long?	
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack 	= "На вас %%d стаков от %s" --too long?
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch 	= ">%s< - переключитесь"
 
 -- Auto-generated Special Warning Localizations
@@ -205,8 +205,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "Спец-предупреждени
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you 		= "Спец-предупреждение, когда на вас \n $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target 		= "Спец-предупреждение, когда на ком-то \n $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close 		= "Спец-предупреждение, когда на ком-то рядом с вами \n $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Спец-предупреждение, когда на вас \n $spell:%s"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Спец-предупреждение для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move 		= "Спец-предупреждение \"отбегите\" для $spell:%s"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run 		= "Спец-предупреждение \"убегайте\" для $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast 		= "Спец-предупреждение о применении заклинания $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count 		= "Спец-предупреждение для $spell:%s"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack 		= "Спец-предупреждение, когда на вас >=%d стаков \n $spell:%s"

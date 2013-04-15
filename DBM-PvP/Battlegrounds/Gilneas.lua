@@ -1,4 +1,4 @@
-local Gilneas	= DBM:NewMod("Gilneas", "DBM-PvP", 2)
+local Gilneas	= DBM:NewMod("z761", "DBM-PvP", 2)
 local L			= Gilneas:GetLocalizedStrings()
 
 Gilneas:SetZone(DBM_DISABLE_ZONE_DETECTION)

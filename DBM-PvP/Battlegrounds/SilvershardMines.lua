@@ -1,4 +1,4 @@
-local Silvershard	= DBM:NewMod("SilvershardMines", "DBM-PvP", 2)
+local Silvershard	= DBM:NewMod("z727", "DBM-PvP", 2)
 local L			= Silvershard:GetLocalizedStrings()
 
 Silvershard:SetZone(DBM_DISABLE_ZONE_DETECTION)

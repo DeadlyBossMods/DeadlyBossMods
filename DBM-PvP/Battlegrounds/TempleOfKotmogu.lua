@@ -1,4 +1,4 @@
-local Kotmogu	= DBM:NewMod("Kotmogu", "DBM-PvP", 2)
+local Kotmogu	= DBM:NewMod("z998", "DBM-PvP", 2)
 local L			= Kotmogu:GetLocalizedStrings()
 
 Kotmogu:SetZone(DBM_DISABLE_ZONE_DETECTION)

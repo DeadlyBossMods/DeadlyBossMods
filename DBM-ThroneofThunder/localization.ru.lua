@@ -94,10 +94,12 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerBreaths			= "Отсчёт времени до следующего дыхания",
 	AnnounceCooldowns		= "Отсчитавать какой сейчас каст Буйство для рейдовых кулдаунов",
-	EveryTwo				= "Порядок кулдаунов 2",
-	EveryThree				= "Порядок кулдаунов 3",
-	EveryTwoExcludeDiff		= "Порядок кулдаунов 2 (искл. Диффузия)",
-	EveryThreeExcludeDiff	= "Порядок кулдаунов 3 (искл. Диффузия)"
+	Never					= "Никогда",
+	Every					= "Каждый (последовательно)",
+	EveryTwo				= "Кулдауны каждый 2",
+	EveryThree				= "Кулдауны каждый 3",
+	EveryTwoExcludeDiff		= "Кулдауны каждый 2 (искл. Диффузия)",
+	EveryThreeExcludeDiff	= "Кулдауны каждый 3 (искл. Диффузия)"
 })
 
 L:SetMiscLocalization({
