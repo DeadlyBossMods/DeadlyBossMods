@@ -417,6 +417,11 @@ local function warnTorrent(name)
 	end
 end
 
+--This is VERY broken, i'm going to drastically change it when done raiding unless you can fix it.
+--Following problems
+--People are yelling 10 times, literally. it spams chat yells when it's on you
+--It's announcing every target twice
+--it's using both icons on every target.
 function mod:UNIT_AURA(uId)
 	if UnitDebuff(uId, iceTorrent) and not torrentTarget1 and (torrentTarget2 or "") ~= uId then
 		torrentTarget1 = uId
