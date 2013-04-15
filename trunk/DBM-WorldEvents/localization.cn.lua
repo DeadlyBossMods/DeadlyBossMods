@@ -17,11 +17,7 @@ L:SetGeneralLocalization({
 -----------------------
 --  Apothecary Trio  --
 -----------------------
-L = DBM:GetModLocalization("ApothecaryTrio")
-
-L:SetGeneralLocalization({
-	name 			= "皇冠药剂公司"
-})
+L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization({
 	HummelActive		= "汉摩尔加入战斗",
@@ -40,11 +36,7 @@ L:SetMiscLocalization({
 -------------
 --  Ahune  --
 -------------
-L = DBM:GetModLocalization("Ahune")
-
-L:SetGeneralLocalization({
-	name 			= "埃霍恩"
-})
+L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
 	Submerged		= "埃霍恩已隐没",
@@ -74,11 +66,7 @@ L:SetMiscLocalization({
 ----------------------
 --  Coren Direbrew  --
 ----------------------
-L = DBM:GetModLocalization("CorenDirebrew")
-
-L:SetGeneralLocalization({
-	name 			= "科林·烈酒"
-})
+L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
 	specWarnBrew		= "在他再丢你一个前喝掉酒！",
@@ -98,11 +86,7 @@ L:SetMiscLocalization({
 -------------------------
 --  Headless Horseman  --
 -------------------------
-L = DBM:GetModLocalization("HeadlessHorseman")
-
-L:SetGeneralLocalization({
-	name 			= "无头骑士"
-})
+L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
 	WarnPhase				= "第%d阶段",

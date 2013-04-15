@@ -14,11 +14,7 @@ L:SetGeneralLocalization({
 -----------------------
 --  Apothecary Trio  --
 -----------------------
-L = DBM:GetModLocalization("ApothecaryTrio")
-
-L:SetGeneralLocalization({
-	name = "Los Tres Boticarios"
-})
+L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization{
 	HummelActive	= "Hummel se activa",
@@ -37,11 +33,7 @@ L:SetMiscLocalization({
 -----------------------
 --  Lord Ahune  --
 -----------------------
-L = DBM:GetModLocalization("Ahune")
-
-L:SetGeneralLocalization({
-	name = "Ahune"
-})
+L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
 	Submerged		= "Ahune se sumerge",
@@ -71,11 +63,7 @@ L:SetMiscLocalization({
 -------------------
 -- Coren Direbrew --
 -------------------
-L = DBM:GetModLocalization("CorenDirebrew")
-
-L:SetGeneralLocalization({
-	name = "Coren Cerveza Temible"
-})
+L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
 	specWarnBrew		= "¡Bebete la cerveza antes de que lanze otra!",
@@ -95,11 +83,7 @@ L:SetMiscLocalization({
 -------------------
 -- Headless Horseman --
 -------------------
-L = DBM:GetModLocalization("HeadlessHorseman")
-
-L:SetGeneralLocalization({
-	name = "El Jinete decapitado"
-})
+L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
 	WarnPhase				= "Fase %d",

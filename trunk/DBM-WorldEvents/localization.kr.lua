@@ -14,11 +14,7 @@ L:SetGeneralLocalization({
 -----------------------
 --  Apothecary Trio  --
 -----------------------
-L = DBM:GetModLocalization("ApothecaryTrio")
-
-L:SetGeneralLocalization({
-	name = "화학회사 삼인방"
-})
+L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization{
 	HummelActive	= "훔멜 활성화",
@@ -37,11 +33,7 @@ L:SetMiscLocalization({
 -------------
 --  Ahune  --
 -------------
-L = DBM:GetModLocalization("Ahune")
-
-L:SetGeneralLocalization({
-	name = "아훈"
-})
+L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
 	Submerged		= "아훈 잠수",
@@ -71,11 +63,7 @@ L:SetMiscLocalization({
 --------------------
 -- Coren Direbrew --
 --------------------
-L = DBM:GetModLocalization("CorenDirebrew")
-
-L:SetGeneralLocalization({
-	name = "코렌 다이어브루"
-})
+L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
 	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 맥주를 마셔버리세요!",
@@ -95,11 +83,7 @@ L:SetMiscLocalization{
 -------------------
 -- Headless Horseman --
 -------------------
-L = DBM:GetModLocalization("HeadlessHorseman")
-
-L:SetGeneralLocalization({
-	name = "저주받은 기사"
-})
+L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
 	WarnPhase				= "%d 단계",

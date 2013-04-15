@@ -15,11 +15,7 @@ L:SetGeneralLocalization({
 -----------------------
 --  Apothecary Trio  --
 -----------------------
-L = DBM:GetModLocalization("ApothecaryTrio")
-
-L:SetGeneralLocalization({
-	name = "Trio d'Apothicaire"
-})
+L = DBM:GetModLocalization("d288")
 
 L:SetWarningLocalization({
 })
@@ -41,11 +37,7 @@ L:SetMiscLocalization({
 -------------
 --  Ahune  --
 -------------
-L = DBM:GetModLocalization("Ahune")
-
-L:SetGeneralLocalization({
-	name = "Ahune"
-})
+L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
 	Submerged		= "Ahune est immergé",
@@ -75,11 +67,7 @@ L:SetMiscLocalization({
 -------------------
 -- Coren Direbrew --
 -------------------
-L = DBM:GetModLocalization("CorenDirebrew")
-
-L:SetGeneralLocalization({
-	name = "Coren Navrebière"
-})
+L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
 	specWarnBrew		= "Débarrassez-vous de la bière avant qu'elle ne vous en lance une autre !",
@@ -99,11 +87,7 @@ L:SetMiscLocalization({
 -------------------
 -- Headless Horseman --
 -------------------
-L = DBM:GetModLocalization("HeadlessHorseman")
-
-L:SetGeneralLocalization({
-	name = "Cavalier sans tête"
-})
+L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
 	WarnPhase				= "Phase %d",

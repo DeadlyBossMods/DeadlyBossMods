@@ -3726,10 +3726,10 @@ do
 			local t = EJ_GetEncounterInfo(tonumber(name))
 			obj.localization.general.name = string.split(",", t)
 		elseif name:match("z%d+") then
-			local t = GetRealZoneText(string.sub(name, 2)):gsub(" %(.*$", "")
+			local t = GetRealZoneText(string.sub(name, 2))
 			obj.localization.general.name = string.split(",", t)
 		elseif name:match("d%d+") then
-			local t = GetDungeonInfo(string.sub(name, 2)):gsub(" %(.*$", "")
+			local t = GetDungeonInfo(string.sub(name, 2))
 			obj.localization.general.name = string.split(",", t)
 		end
 		table.insert(self.Mods, obj)
