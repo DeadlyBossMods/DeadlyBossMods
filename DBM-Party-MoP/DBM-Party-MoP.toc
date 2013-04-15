@@ -13,13 +13,7 @@
 ## X-DBM-Mod-Type: PARTY
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Challenge: 1
-## X-DBM-Mod-SubCategories: Temple of the Jade Serpent, Stormstout Brewery, Shado-Pan Monastery, The Gate of the Setting Sun, Mogu'Shan Palace, Siege of Niuzao Temple, Scholomance, Scarlet Halls, Scarlet Cathedral
-## X-DBM-Mod-SubCategories-ruRU: Храм Нефритовой Змеи, Хмелеварня Буйных Портеров, Монастырь Шадо-Пан, Врата Заходящего Солнца, Дворец Могу'шан (5 ппл), Осада храма Нюцзао, Некроситет, Залы Алого ордена, Монастырь Алого ордена
-## X-DBM-Mod-SubCategories-deDE: Tempel der Jadeschlange, Die Brauerei Sturmbräu, Das Shado-Pan-Kloster, Tor der Untergehenden Sonne, Mogu'shanpalast, Belagerung des Niuzaotempels, Scholomance, Scharlachrote Hallen, Das Scharlachrote Kloster
-## X-DBM-Mod-SubCategories-koKR: 옥룡사, 스톰스타우트 양조장, 음영파 수도원, 석양문, 모구샨 궁전, 니우짜오 사원 공성전투, 스칼로맨스, 붉은십자군 전당, 붉은십자군 수도원
-## X-DBM-Mod-SubCategories-zhTW: 玉蛟寺, 風暴烈酒酒坊, 影潘僧寺, 落陽關, 魔古山宮, 圍攻怒兆寺, 通靈學院, 血色大廳, 血色修道院
-## X-DBM-Mod-SubCategories-zhCN: 青龙寺, 风暴烈酒酿造厂, 影踪禅院, 残阳关, 魔古山宫殿, 围攻砮皂寺, 通灵学院, 血色大厅, 血色修道院
-## X-DBM-Mod-SubCategories-frFR: Temple du Serpent de jade, Brasserie Brune d'Orage, Monastère des Pandashan, Porte du Soleil couchant, Palais Mogu'shan, Siège du temple de Niuzao, Scholomance, Salles Écarlates, Monastère Écarlate
+## X-DBM-Mod-SubCategoriesID: 960, 961, 959, 962, 994, 1011, 1007, 1001, 1004
 ## X-DBM-Mod-Name: Party (MoP)
 ## X-DBM-Mod-Name-koKR: 5인 던전 (판다리아의 안개)
 ## X-DBM-Mod-Name-deDE: Gruppe (MoP)

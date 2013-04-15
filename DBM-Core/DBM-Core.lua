@@ -631,10 +631,10 @@ do
 						sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 						type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 						category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
+						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MapID"))) or "",
 						zone			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "BogusZone")},--workaround, so mods with zoneids and no zonetext don't get loaded by default before zoneids even checked
 						zoneId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
-						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
+						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
 						hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
 						hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
@@ -655,7 +655,12 @@ do
 					end
 					if self.AddOns[#self.AddOns].subTabs then
 						for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
-							self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+							local id = tonumber(self.AddOns[#self.AddOns].subTabs[k])
+							if id then
+								self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim()
+							else
+								self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+							end
 						end
 					end
 				end
@@ -685,7 +690,7 @@ do
 				"LFG_PROPOSAL_SUCCEEDED",
 				"UPDATE_BATTLEFIELD_STATUS",
 				"UPDATE_MOUSEOVER_UNIT",
-				"PLAYER_TARGET_CHANGED"	,
+				"PLAYER_TARGET_CHANGED",
 				"CINEMATIC_START",
 				"LFG_COMPLETION_REWARD",
 				"ACTIVE_TALENT_GROUP_CHANGED"
@@ -3683,10 +3688,7 @@ do
 	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
-	function DBM:NewMod(name, modId, modSubTab, instanceId, encounterId)
-		if type(name) == "number" then
-			encounterId = name
-		end
+	function DBM:NewMod(name, modId, modSubTab, instanceId)
 		name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
@@ -3708,7 +3710,6 @@ do
 				countdowns = {},
 				modId = modId,
 				instanceId = instanceId,
-				encounterId = encounterId,
 				revision = 0,
 				localization = self:GetModLocalization(name)
 			},
@@ -3721,13 +3722,15 @@ do
 			end
 		end
 
-		if obj.localization.general.name == "name" then
-			if encounterId then
-				local t = EJ_GetEncounterInfo(encounterId)
-				obj.localization.general.name = string.split(",", t)
-			else
-				obj.localization.general.name = name
-			end
+		if tonumber(name) then
+			local t = EJ_GetEncounterInfo(tonumber(name))
+			obj.localization.general.name = string.split(",", t)
+		elseif name:match("z%d+") then
+			local t = GetRealZoneText(string.sub(name, 2)):gsub(" %(.*$", "")
+			obj.localization.general.name = string.split(",", t)
+		elseif name:match("d%d+") then
+			local t = GetDungeonInfo(string.sub(name, 2)):gsub(" %(.*$", "")
+			obj.localization.general.name = string.split(",", t)
 		end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj

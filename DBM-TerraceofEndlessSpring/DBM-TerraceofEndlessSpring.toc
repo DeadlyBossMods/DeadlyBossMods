@@ -15,15 +15,8 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-LFR : 1
-## X-DBM-Mod-Name: Terrace of Endless Spring
-## X-DBM-Mod-Name-koKR: 영원한 봄의 정원
-## X-DBM-Mod-Name-deDE: Terrasse des Endlosen Frühlings
-## X-DBM-Mod-Name-zhTW: 豐泉台
-## X-DBM-Mod-Name-zhCN: 永春台
-## X-DBM-Mod-Name-esES: Veranda de la Primavera Eterna
-## X-DBM-Mod-Name-frFR: Terrasse Printanière
-## X-DBM-Mod-Name-ruRU: Терраса Вечной Весны
 ## X-DBM-Mod-Sort: 2
+## X-DBM-Mod-MapID: 996
 ## X-DBM-Mod-LoadZoneID: 886
 localization.en.lua
 localization.kr.lua

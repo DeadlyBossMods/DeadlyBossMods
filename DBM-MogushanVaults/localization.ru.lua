@@ -14,8 +14,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	SpecWarnOverloadSoon		= "Спец-предупреждение перед насыщением",
 	specWarnBreakJasperChains	= "Спец-предупреждение, когда можно разорвать $spell:130395",
-	ArrowOnJasperChains		= "Показывать стрелку DBM, когда на вас $spell:130395",
-	InfoFrame			= "Показывать информационное окно с энергией боссов, окаменением игроков и какой босс кастует окаменение"
+	ArrowOnJasperChains			= "Показывать стрелку DBM, когда на вас $spell:130395",
+	InfoFrame					= "Показывать информационное окно с энергией боссов, окаменением игроков и какой босс кастует окаменение"
 })
 
 L:SetMiscLocalization({
@@ -72,7 +72,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "Производить 5-секундный отсчет для $spell:117697",
 	timerUSRevive		= "Отсчет времени до формирования $spell:117506",
-	RangeFrame		= "Показывать окно проверки дистанции (8 м)"
+	RangeFrame			= "Показывать окно проверки дистанции (8 м)"
 })
 
 
@@ -82,7 +82,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "Смотрите под ноги!"
+	specWarnDespawnFloor	= "Смотрите под ноги!"
 })
 
 L:SetTimerLocalization({
@@ -90,7 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "Спец-предупреждение перед исчезновением пола",
+	specWarnDespawnFloor	= "Спец-предупреждение перед исчезновением пола",
 	timerDespawnFloor		= "Отсчет времени до исчезновения пола",
 	SetIconOnCreature		= "Устанавливать метки на $journal:6193"
 })
@@ -102,7 +102,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame	= "Показывать информационное окно для игроков с $spell:116525",
+	InfoFrame		= "Показывать информационное окно для игроков с $spell:116525",
 	CountOutCombo	= "Отсчитывать количество кастов $journal:5673",
 	ArrowOnCombo	= "Показывать стрелку DBM во время $journal:5673\nПодразумевается, что танк стоит перед боссом, а все остальные - позади."
 })
