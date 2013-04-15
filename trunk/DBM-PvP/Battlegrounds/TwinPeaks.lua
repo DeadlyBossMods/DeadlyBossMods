@@ -3,7 +3,7 @@
 -- Thanks to Samira (EU-Thrall)
 
 
-local TwinPeaks		= DBM:NewMod("TwinPeaks", "DBM-PvP", 2)
+local TwinPeaks		= DBM:NewMod("z726", "DBM-PvP", 2)
 local L			= TwinPeaks:GetLocalizedStrings()
 
 TwinPeaks:RemoveOption("HealthFrame")

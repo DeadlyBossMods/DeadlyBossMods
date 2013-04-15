@@ -74,7 +74,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기",
 	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정",
 	ClearIconOnTurtles		= "$journal:7129이 $spell:133971의 영향을 받은 경우 전술 목표 아이콘 지우기",
-	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 시전 횟수 음성으로 알리기\n(3번 시전후 초기화됨)"
+	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 시전 횟수 음성으로 알리기\n(4번 시전후 초기화됨)"
 })
 
 L:SetMiscLocalization({

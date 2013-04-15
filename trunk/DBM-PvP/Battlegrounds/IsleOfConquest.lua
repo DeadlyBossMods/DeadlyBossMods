@@ -1,4 +1,4 @@
-local IsleOfConquest	= DBM:NewMod("IsleofConquest", "DBM-PvP", 2)
+local IsleOfConquest	= DBM:NewMod("z628", "DBM-PvP", 2)
 local L					= IsleOfConquest:GetLocalizedStrings()
 
 IsleOfConquest:SetZone(DBM_DISABLE_ZONE_DETECTION)
