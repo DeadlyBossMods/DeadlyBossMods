@@ -141,46 +141,49 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---[[10H (are 10N and LFR the same?), Locations were wrong so removed.
---10man/LFR just won't have locations feature as i don't run those formats and can never verify them
---Not that there is much to get confused about on 10 man anyways, only one nest at a time
+--[[10H
 Nest1: Lower
+
 Nest2: Lower
+
 Nest3: Lower
+
 Nest4: Upper
+
 Nest5: Upper
+
 Nest6: Upper
+
 Nest7: Lower
+
 Nest8: Lower
+
 Nest9: Lower
 Nest10: Upper
+
 Nest11: Upper
+
 Nest12: Upper
+
 Nest13: Lower
+
 Nest14: Lower
+
 Nest15: Lower
 Nest16: Upper
+
 Nest17: Upper
+
 Nest18: Upper
-Nest19: Lower
-Nest20: Lower
-Nest21: Lower
-Nest22: Upper
-Nest23: Upper
-Nest24: Upper
-Nest25: Lower
-Nest26: Lower
-Nest27: Lower
-Nest28: Upper
 --]]
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if (msg:find(L.eggsHatchL) or msg:find(L.eggsHatchU)) and self:AntiSpam(5, 2) then
 		flockC = flockC + 1--Now flock set number instead of nest number (at least for 25, for 10man/LFR it's both)
-		local messageText = msg:find(L.eggsHatchL) and L.Lower or L.Upper--For 10man/LFR
+		local messageText = msg:find(L.eggsHatchL) and L.Lower or L.Upper--For 10man normal/LFR
 		local locationText = ""--Set to "" so if location is nil we don't alter mods older message functionality
 		local flockText = tostring(flockC)
 		--10N/10H/LFR: L, L, L, U, U, U (Repeating)
-		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
+		if self:IsDifficulty("normal10", "lfr25") then
 			--Timer code will probably always stay the same, locations in timer is too much text for a timer.
 			if flockC == 1 or flockC == 2 or flockC == 6 or flockC == 7 or flockC == 8 or flockC == 12 or flockC == 13 or flockC == 14 or flockC == 18 or flockC == 19 or flockC == 20 or flockC == 24 or flockC == 25 or flockC == 26 or flockC == 30 or flockC == 31 or flockC == 32 then--Lower is next
 				timerFlockCD:Show(40, flockC+1, L.Lower)
@@ -189,24 +192,50 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			else--Logic Failsafe, if we don't know what next one is we just say unknown and at least start a timer
 				timerFlockCD:Show(40, flockC+1, DBM_CORE_UNKNOWN)
 			end
-			--TODO, find out locations for these to improve the warnings.
-			if self:IsDifficulty("heroic10") then
-				if flockC == 2 then
-					--locationText = L.SouthEast
-					specWarnBigBird:Show(messageText)
-				elseif flockC == 4 then
-					--locationText = L.West
-					specWarnBigBird:Show(messageText)
-				elseif flockC == 8 then
-					--locationText = L.SouthWest
-					specWarnBigBird:Show(messageText)
-				elseif flockC == 12 then
-					--locationText = L.NorthWest
-					specWarnBigBird:Show(messageText)
-				elseif flockC == 14 then
-					--locationText = L.West
-					specWarnBigBird:Show(messageText)
-				end
+		--TODO, find out locations for these to improve the warnings.
+		elseif self:IsDifficulty("heroic10") then
+			if flockC == 1 then
+				timerFlockCD:Show(40, flockC+1, L.Lower)
+			elseif flockC == 2 then
+				--locationText = L.SouthEast
+				specWarnBigBird:Show(messageText)
+				timerFlockCD:Show(40, flockC+1, L.Lower)
+			elseif flockC == 3 then
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			elseif flockC == 4 then
+				--locationText = L.West
+				specWarnBigBird:Show(messageText)
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			elseif flockC == 5 then
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			elseif flockC == 6 then
+				timerFlockCD:Show(40, flockC+1, L.Lower)
+			elseif flockC == 7 then
+				timerFlockCD:Show(40, flockC+1, L.Lower)
+			elseif flockC == 8 then
+				--locationText = L.SouthWest
+				specWarnBigBird:Show(messageText)
+				timerFlockCD:Show(40, flockC+1, L.UpperAndLower)
+			elseif flockC == 9 then--9-10
+				messageText = L.UpperAndLower
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			elseif flockC == 10 then--11
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			elseif flockC == 11 then--12
+				--locationText = L.NorthWest
+				specWarnBigBird:Show(messageText)
+				timerFlockCD:Show(40, flockC+1, L.Lower)
+			elseif flockC == 12 then--13
+				timerFlockCD:Show(40, flockC+1, L.Lower)
+			elseif flockC == 13 then--14
+				timerFlockCD:Show(40, flockC+1, L.UpperAndLower)
+			elseif flockC == 14 then--15-16
+				messageText = L.UpperAndLower
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			elseif flockC == 15 then--17
+				timerFlockCD:Show(40, flockC+1, L.Upper)
+			else
+				timerFlockCD:Show(40, flockC+1, DBM_CORE_UNKNOWN)
 			end
 		elseif self:IsDifficulty("normal25") then
 			--Nest Data Sources:
