@@ -100,8 +100,7 @@ local cinderIcon = 7
 local iceIcon = 6
 local activeHeadGUIDS = {}
 local iceTorrent = GetSpellInfo(139857)
-local torrentTarget1 = nil
-local torrentTarget2 = nil
+local torrentExpires = {}
 local arcaneRecent = false
 
 local function isTank(unit)
@@ -144,8 +143,7 @@ function mod:OnCombatStart(delay)
 	iceBehind = 0
 	cinderIcon = 7
 	iceIcon = 6
-	torrentTarget1 = nil
-	torrentTarget2 = nil
+	table.wipe(torrentExpires)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		arcaneBehind = 1
 		arcaneInFront = 0
@@ -417,88 +415,22 @@ local function warnTorrent(name)
 	end
 end
 
+--We have at least 4 frost heads in back, debuffs going out very often, often 2 back to back within 2 seconds of one another, this causes problems because name 2 resets name 1. also, Spell name for getting hit by beam applies a different and SAME name aura and also fires UNIT_aura event. i'll upload screen shots later but this method VERY inaccurate and spammed icons all over place, tons of chat bubbles, and multiple announces "torrent on name1, torrent on name1"
 function mod:UNIT_AURA(uId)
 	local name = DBM:GetUnitFullName(uId)
 	if not name then return end
-	if UnitDebuff(uId, iceTorrent) and not torrentTarget1 and (torrentTarget2 or "") ~= name then
-		torrentTarget1 = name
+	local expires = select(7, UnitDebuff(uId, iceTorrent)) or 0
+	local spellId = select(11, UnitDebuff(uId, iceTorrent)) or 0
+	if spellId == 139857 and expires > 0 and not torrentExpires[expires] then
+		torrentExpires[expires] = true
 		warnTorrent(name)
 		if self.Options.SetIconOnTorrentofIce then
-			self:SetIcon(uId, 6)
-		end
-	elseif UnitDebuff(uId, iceTorrent) and not torrentTarget2 and (torrentTarget1 or "") ~= name then
-		torrentTarget2 = name
-		warnTorrent(name)
-		if self.Options.SetIconOnTorrentofIce then
-			self:SetIcon(uId, 4)
-		end
-	elseif torrentTarget1 and torrentTarget1 == name and not UnitDebuff(uId, iceTorrent) then
-		torrentTarget1 = nil
-		if self.Options.SetIconOnTorrentofIce then
-			self:SetIcon(uId, 0)
-		end
-	elseif torrentTarget2 and torrentTarget2 == name and not UnitDebuff(uId, iceTorrent) then
-		torrentTarget2 = nil
-		if self.Options.SetIconOnTorrentofIce then
-			self:SetIcon(uId, 0)
+			self:SetIcon(uId, iceIcon, 11)
+			if iceIcon == 6 then
+				iceIcon = 4
+			else
+				iceIcon = 6
+			end
 		end
 	end
 end
-
---We have at least 4 frost heads in back, debuffs going out very often, often 2 back to back within 2 seconds of one another, this causes problems because name 2 resets name 1. also, Spell name for getting hit by beam applies a different and SAME name aura and also fires UNIT_aura event. i'll upload screen shots later but this method VERY inaccurate and spammed icons all over place, tons of chat bubbles, and multiple announces "torrent on name1, torrent on name1"
---There is not logical problem, maybe. issues on other way. This is test code.
---[[
-function mod:Test(uId, torrentActive)
-	if torrentActive and not torrentTarget1 and (torrentTarget2 or "") ~= uId then
-		torrentTarget1 = uId
-		print("1st : "..uId)
-	elseif torrentActive and not torrentTarget2 and (torrentTarget1 or "") ~= uId then
-		torrentTarget2 = uId
-		print("2nd : "..uId)
-	elseif torrentTarget1 and torrentTarget1 == uId and not torrentActive then
-		torrentTarget1 = nil
-		print("1st removed")
-	elseif torrentTarget2 and torrentTarget2 == uId and not torrentActive then
-		torrentTarget2 = nil
-		print("2nd removed")
-	end
-end
-
-
-mod:ScheduleMethod(3.0, "Test", "raid1", true)
-mod:ScheduleMethod(3.5, "Test", "raid1", true)
-mod:ScheduleMethod(4.0, "Test", "raid1", true)
-mod:ScheduleMethod(4.5, "Test", "raid1", true)
-mod:ScheduleMethod(5.0, "Test", "raid2", true)
-mod:ScheduleMethod(5.5, "Test", "raid1", true)
-mod:ScheduleMethod(6.0, "Test", "raid2", true)
-mod:ScheduleMethod(6.5, "Test", "raid1", true)
-mod:ScheduleMethod(7.0, "Test", "raid2", true)
-mod:ScheduleMethod(7.5, "Test", "raid1", true)
-mod:ScheduleMethod(8.0, "Test", "raid2", true)
-mod:ScheduleMethod(8.5, "Test", "raid1", true)
-mod:ScheduleMethod(9.0, "Test", "raid2", true)
-mod:ScheduleMethod(9.5, "Test", "raid1", false)
-mod:ScheduleMethod(10.0, "Test", "raid1", true)
-mod:ScheduleMethod(10.5, "Test", "raid2", true)
-mod:ScheduleMethod(11.0, "Test", "raid2", true)
-mod:ScheduleMethod(11.5, "Test", "raid1", true)
-mod:ScheduleMethod(12.0, "Test", "raid1", true)
-mod:ScheduleMethod(12.5, "Test", "raid2", true)
-mod:ScheduleMethod(13.0, "Test", "raid2", true)
-mod:ScheduleMethod(13.5, "Test", "raid2", true)
-mod:ScheduleMethod(14.0, "Test", "raid2", true)
-mod:ScheduleMethod(14.5, "Test", "raid1", true)
-mod:ScheduleMethod(15.0, "Test", "raid1", true)
-mod:ScheduleMethod(15.5, "Test", "raid1", false)
-mod:ScheduleMethod(16.0, "Test", "raid2", true)
-mod:ScheduleMethod(16.5, "Test", "raid1", false)
-mod:ScheduleMethod(17.0, "Test", "raid2", true)
-mod:ScheduleMethod(17.5, "Test", "raid1", false)
-mod:ScheduleMethod(18.0, "Test", "raid1", false)
-mod:ScheduleMethod(18.5, "Test", "raid2", false)
-mod:ScheduleMethod(19.0, "Test", "raid1", false)
-mod:ScheduleMethod(19.5, "Test", "raid1", false)
-mod:ScheduleMethod(20.0, "Test", "raid1", false)
-mod:ScheduleMethod(20.5, "Test", "raid1", false)
-]]
