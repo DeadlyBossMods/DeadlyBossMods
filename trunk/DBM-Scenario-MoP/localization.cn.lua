@@ -7,39 +7,17 @@ local L
 ----------------------
 -- Theramore's Fall --
 ----------------------
-
-L= DBM:GetModLocalization("TheramoreFall")
-
-L:SetGeneralLocalization{
-	name = "塞拉摩的沦陷"
-}
+L= DBM:GetModLocalization("d566")
 
 ---------------------------
 -- Arena Of Annihilation --
 ---------------------------
-
-L= DBM:GetModLocalization("ArenaAnnihilation")
-
-L:SetGeneralLocalization{
-	name = "破军比武场"
-}
+L= DBM:GetModLocalization("d511")
 
 --------------
 -- Landfall --
 --------------
-
 L = DBM:GetModLocalization("Landfall")
-
-local landfall
-if UnitFactionGroup("player") == "Alliance" then
-	landfall = "雄狮港"
-else
-	landfall = "统御岗哨"
-end
-
-L:SetGeneralLocalization({
-	name = landfall
-})
 
 L:SetWarningLocalization({
 	WarnAchFiveAlive	= "成就“五号还活着”失败"

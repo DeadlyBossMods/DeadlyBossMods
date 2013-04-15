@@ -4,8 +4,7 @@ local L
 --------------------------------
 -- A Brewing Storm --
 --------------------------------
-
-L= DBM:GetModLocalization("BrewingStorm")
+L= DBM:GetModLocalization("d517")
 
 L:SetGeneralLocalization{
 	name = "Ein Sturm braut sich zusammen"
@@ -29,49 +28,22 @@ L:SetMiscLocalization{
 --------------------------------
 -- Crypt of Forgotten Kings --
 --------------------------------
-
-L= DBM:GetModLocalization("CryptofKings")
-
-L:SetGeneralLocalization{
-	name = "Krypta der Vergessenen Könige"
-}
+L= DBM:GetModLocalization("d504")
 
 ----------------------
 -- Theramore's Fall --
 ----------------------
-
-L= DBM:GetModLocalization("TheramoreFall")
-
-L:SetGeneralLocalization{
-	name = "Theramores Sturz"
-}
+L= DBM:GetModLocalization("d566")
 
 ---------------------------
 -- Arena Of Annihilation --
 ---------------------------
-
-L= DBM:GetModLocalization("ArenaAnnihilation")
-
-L:SetGeneralLocalization{
-	name = "Arena der Auslöschung"
-}
+L= DBM:GetModLocalization("d511")
 
 --------------
 -- Landfall --
 --------------
-
 L = DBM:GetModLocalization("Landfall")
-
-local landfall
-if UnitFactionGroup("player") == "Alliance" then
-	landfall = "Löwenlandung"
-else
-	landfall = "Herrschaftsfeste"
-end
-
-L:SetGeneralLocalization{
-	name = landfall
-}
 
 L:SetWarningLocalization{
 	WarnAchFiveAlive	= "Erfolg \"Nummer 5 lebt!\" fehlgeschlagen!"
@@ -84,22 +56,12 @@ L:SetOptionLocalization{
 --------------------------------
 -- Troves of the Thunder King --
 --------------------------------
-
-L= DBM:GetModLocalization("Troves")
-
-L:SetGeneralLocalization{
-	name = "Zitadelle des Donnerkönigs"
-}
+L= DBM:GetModLocalization("d620")
 
 ------------------------
 -- Warlock Green Fire --
 ------------------------
-
-L= DBM:GetModLocalization("GreenFire")
-
-L:SetGeneralLocalization{
-	name = "Jagd auf die Schwarze Ernte"
-}
+L= DBM:GetModLocalization("d594")
 
 L:SetWarningLocalization{
 	specWarnLostSouls		= "Verirrte Seelen!",

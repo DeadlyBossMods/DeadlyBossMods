@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Landfall", "DBM-Scenario-MoP")
+local mod	= DBM:NewMod("Landfall", "DBM-Scenario-MoP")--Alliance : 590, Horde : 595
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
