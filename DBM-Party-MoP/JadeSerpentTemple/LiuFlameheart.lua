@@ -31,12 +31,6 @@ local timerDragonStrikeCD		= mod:NewNextTimer(10.5, 106823)
 local timerJadeDragonStrikeCD	= mod:NewNextTimer(10.5, 106841)
 local timerJadeFireCD			= mod:NewNextTimer(3.5, 107045)
 
-function mod:JadeFireTarget(targetname)
-	if targetname == UnitName("player") then
-		specWarnJadeFire:Show()
-	end
-end
-
 function mod:OnCombatStart(delay)
 --	timerDragonStrikeCD:Start(-delay)--Unknown, tank pulled before i could start a log to get an accurate first timer.
 end
