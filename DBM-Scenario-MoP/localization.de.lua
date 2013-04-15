@@ -6,10 +6,6 @@ local L
 --------------------------------
 L= DBM:GetModLocalization("d517")
 
-L:SetGeneralLocalization{
-	name = "Ein Sturm braut sich zusammen"
-}
-
 L:SetTimerLocalization{
 	timerEvent			= "Bräu fertig (ca.)"
 }

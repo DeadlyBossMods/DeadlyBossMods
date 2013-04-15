@@ -119,10 +119,6 @@ L:SetMiscLocalization({
 ---------------------
 L = DBM:GetModLocalization("z489")
 
-L:SetGeneralLocalization({
-	name = "Warsong Gulch"
-})
-
 L:SetTimerLocalization({
 	TimerStart	= "Game starts", 
 	TimerFlag	= "Flag respawn"
