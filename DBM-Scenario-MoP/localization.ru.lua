@@ -1,47 +1,45 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 local L
 
-----------------------
--- Theramore's Fall --
-----------------------
+--------------------------------
+-- A Brewing Storm --
+--------------------------------
+L= DBM:GetModLocalization("d517")
 
-L= DBM:GetModLocalization("TheramoreFall")
+L:SetTimerLocalization{
+	timerEvent			= "Brew Done (Aprox)"
+}
 
-L:SetGeneralLocalization{
-	name = "Падение Терамора"
+L:SetOptionLocalization{
+	timerEvent			= "Show timer for approximate brew completion"
 }
 
 L:SetMiscLocalization{
---	AllianceVictory = "All of you have my deepest thanks. With the Focusing Iris removed, this lifeless bomb is merely a sickening testament to Garrosh's brutality. The winds of change blow fiercely; Azeroth is on the brink of war. My apologies, but you must excuse me... I have much to consider. Farewell.",
---	HordeVictory	= "My thanks! Shall we make our way off this miserable little island?"
+	BrewStart			= "The storm is starting! Get ready.",
+	BrewFinish			= "You did it! Let's get this brew to the Monastery...",--Maybe switch to UPDATE_WORLD_STATES 100 progress instead in a more polished version of mod.
+	BorokhulaPull		= "Last call, you fork-tongued dip-slithers!",
+	BorokhulaAdds		= "calls out for reinforcements!"--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
 }
+
+--------------------------------
+-- Crypt of Forgotten Kings --
+--------------------------------
+L= DBM:GetModLocalization("d504")
+
+----------------------
+-- Theramore's Fall --
+----------------------
+L= DBM:GetModLocalization("d566")
 
 ---------------------------
 -- Arena Of Annihilation --
 ---------------------------
-
-L= DBM:GetModLocalization("ArenaAnnihilation")
-
-L:SetGeneralLocalization{
-	name = "Арена испытаний"
-}
+L= DBM:GetModLocalization("d511")
 
 --------------
 -- Landfall --
 --------------
-
 L = DBM:GetModLocalization("Landfall")
-
-local landfall
-if UnitFactionGroup("player") == "Alliance" then
-	landfall = "Львиный лагерь"
-else
-	landfall = "Крепость Покорителей"
-end
-
-L:SetGeneralLocalization({
-	name = landfall
-})
 
 L:SetWarningLocalization({
 	WarnAchFiveAlive	= "Достижение \"Неубиваемая пятерка\" провалено"
@@ -54,22 +52,12 @@ L:SetOptionLocalization({
 --------------------------------
 -- Troves of the Thunder King --
 --------------------------------
-
-L= DBM:GetModLocalization("Troves")
-
-L:SetGeneralLocalization{
-	name = "Сокровищница Властелина Грома"
-}
+L= DBM:GetModLocalization("d620")
 
 ------------------------
 -- Warlock Green Fire --
 ------------------------
-
-L= DBM:GetModLocalization("GreenFire")
-
-L:SetGeneralLocalization{
-	name = "В погоне за Мрачной Жатвой"
-}
+L= DBM:GetModLocalization("d594")
 
 L:SetWarningLocalization({
 	specWarnLostSouls		= "Заблудшие души!",

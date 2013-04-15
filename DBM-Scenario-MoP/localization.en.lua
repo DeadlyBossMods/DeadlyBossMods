@@ -3,12 +3,7 @@ local L
 --------------------------------
 -- A Brewing Storm --
 --------------------------------
-
-L= DBM:GetModLocalization("BrewingStorm")
-
-L:SetGeneralLocalization{
-	name = "A Brewing Storm"
-}
+L= DBM:GetModLocalization("d517")
 
 L:SetTimerLocalization{
 	timerEvent			= "Brew Done (Aprox)"
@@ -28,44 +23,28 @@ L:SetMiscLocalization{
 --------------------------------
 -- Crypt of Forgotten Kings --
 --------------------------------
-
-L= DBM:GetModLocalization("CryptofKings")
-
-L:SetGeneralLocalization{
-	name = "Crypt of Forgotten Kings"
-}
+L= DBM:GetModLocalization("d504")
 
 ----------------------
 -- Theramore's Fall --
 ----------------------
-
-L= DBM:GetModLocalization("TheramoreFall")
-
-L:SetGeneralLocalization{
-	name = "Theramore's Fall"
-}
+L= DBM:GetModLocalization("d566")
 
 ---------------------------
 -- Arena Of Annihilation --
 ---------------------------
-
-L= DBM:GetModLocalization("ArenaAnnihilation")
-
-L:SetGeneralLocalization{
-	name = "Arena Of Annihilation"
-}
+L= DBM:GetModLocalization("d511")
 
 --------------
 -- Landfall --
 --------------
-
 L = DBM:GetModLocalization("Landfall")
 
 local landfall
 if UnitFactionGroup("player") == "Alliance" then
-	landfall = "Lion's Landing"
+	landfall = GetDungeonInfo(590)
 else
-	landfall = "Domination Point"
+	landfall = GetDungeonInfo(595)
 end
 
 L:SetGeneralLocalization{
@@ -83,22 +62,12 @@ L:SetOptionLocalization{
 --------------------------------
 -- Troves of the Thunder King --
 --------------------------------
-
-L= DBM:GetModLocalization("Troves")
-
-L:SetGeneralLocalization{
-	name = "Troves of the Thunder King"
-}
+L= DBM:GetModLocalization("d620")
 
 ------------------------
 -- Warlock Green Fire --
 ------------------------
-
-L= DBM:GetModLocalization("GreenFire")
-
-L:SetGeneralLocalization{
-	name = "Pursuing the Black Harvest"
-}
+L= DBM:GetModLocalization("d594")
 
 L:SetWarningLocalization{
 	specWarnLostSouls		= "Lost Souls!",

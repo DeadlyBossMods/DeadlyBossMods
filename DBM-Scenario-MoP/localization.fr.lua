@@ -4,19 +4,9 @@ local L
 ----------------------
 -- Theramore's Fall --
 ----------------------
-
-L= DBM:GetModLocalization("TheramoreFall")
-
-L:SetGeneralLocalization{
-	name = "La chute de Theramore"
-}
+L= DBM:GetModLocalization("d566")
 
 ---------------------------
 -- Arena Of Annihilation --
 ---------------------------
-
-L= DBM:GetModLocalization("ArenaAnnihilation")
-
-L:SetGeneralLocalization{
-	name = "Arène de l'Annihilation"
-}
+L= DBM:GetModLocalization("d511")

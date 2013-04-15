@@ -14,7 +14,6 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Single-Format: 1
-## X-DBM-Mod-Name: Pandaria
 ## X-DBM-Mod-Sort: 5
 ## X-DBM-Mod-MapID: 870
 localization.en.lua
