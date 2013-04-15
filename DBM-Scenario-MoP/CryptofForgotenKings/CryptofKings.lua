@@ -31,7 +31,7 @@ local specWarnDarkforce		= mod:NewSpecialWarningRun(120215)
 
 --Jin Ironfist
 local timerRelentless		= mod:NewTargetTimer(10, 120817)
-local timerEnrage			= mod:NewTargetTimer(10, 127823)
+local timerEnrage			= mod:NewBuffActiveTimer(10, 127823)
 --local timerRelentlessCD		= mod:NewCDTimer(10, 120817)
 --Abomination of Anger
 local timerBreathCD			= mod:NewCDTimer(21.5, 120929)--Limited sample size, may be shorter
@@ -56,7 +56,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 127823 then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
-		timerEnrage:Start(args.destName)
+		timerEnrage:Start()
 	elseif args.spellId == 120929 then
 		warnBreathofHate:Show()
 		timerBreathCD:Start()

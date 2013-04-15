@@ -134,7 +134,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 134920 then
 		stompActive = true
 		stompCount = stompCount + 1
-		if stompCast == 3 then stompCast = 0 end
+		if stompCast == 4 then stompCast = 0 end
 		stompCast = stompCast + 1
 		warnQuakeStomp:Show(stompCount)
 		specWarnQuakeStomp:Show()
