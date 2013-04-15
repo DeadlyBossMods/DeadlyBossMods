@@ -50,8 +50,9 @@ local specWarnArcaneDiffusion	= mod:NewSpecialWarningStack(139993, mod:IsTank(),
 local specWarnCinders			= mod:NewSpecialWarningYou(139822)
 local specWarnCindersMove		= mod:NewSpecialWarningMove(139836)--Fire left on ground after the fact
 local yellCinders				= mod:NewYell(139822)
-local specWarnTorrentofIceYou	= mod:NewSpecialWarningRun(139889)
-local yellTorrentofIce			= mod:NewYell(139889)
+local specWarnTorrentofIceYou	= mod:NewSpecialWarningRun(139857)
+local yellTorrentofIce			= mod:NewYell(139857)
+local specWarnTorrentofIceNear	= mod:NewSpecialWarningClose(139889)
 local specWarnTorrentofIce		= mod:NewSpecialWarningMove(139909)--Ice left on ground by the beam
 local specWarnNetherTear		= mod:NewSpecialWarningSwitch("ej7816", mod:IsDps())
 
@@ -412,10 +413,22 @@ local function warnTorrent(name)
 		timerTorrentofIce:Start()
 		yellTorrentofIce:Yell()
 		mod:SendSync("IceTarget", UnitGUID("player")) -- Remain sync stuff for older version.
+	else
+		local uId = DBM:GetRaidUnitId(name)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 6 then
+				specWarnTorrentofIceNear:Show(name)
+			end
+		end
 	end
 end
 
---We have at least 4 frost heads in back, debuffs going out very often, often 2 back to back within 2 seconds of one another, this causes problems because name 2 resets name 1. also, Spell name for getting hit by beam applies a different and SAME name aura and also fires UNIT_aura event. i'll upload screen shots later but this method VERY inaccurate and spammed icons all over place, tons of chat bubbles, and multiple announces "torrent on name1, torrent on name1"
 function mod:UNIT_AURA(uId)
 	local name = DBM:GetUnitFullName(uId)
 	if not name then return end
