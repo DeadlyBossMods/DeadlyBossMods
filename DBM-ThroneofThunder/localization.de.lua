@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
 	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
 	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971",
-	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der $spell:134920 Wirkungen\n(für \"Raid-Cooldowns\")"
+	AnnounceCooldowns		= "Zähle akkustisch (zyklisch bis 4) die Anzahl der $spell:134920 Wirkungen\n(für \"Raid-Cooldowns\")"
 })
 
 L:SetMiscLocalization({
@@ -96,10 +96,10 @@ L:SetOptionLocalization({
 	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der \"Toben\"-Wirkungen (für \"Raid-Cooldowns\")",
 	Never					= "Nie",
 	Every					= "Jede (fortlaufende Zählung)",
-	EveryTwo				= "Neustart der Zählung in 2er-Gruppen",
-	EveryThree				= "Neustart der Zählung in 3er-Gruppen",
-	EveryTwoExcludeDiff		= "Neustart der Zählung in 2er-Gruppen (ohne Diffusion)",
-	EveryThreeExcludeDiff	= "Neustart der Zählung in 3er-Gruppen (ohne Diffusion)"
+	EveryTwo				= "Jede (zyklisch bis 2)",
+	EveryThree				= "Jede (zyklisch bis 3)",
+	EveryTwoExcludeDiff		= "Ohne Diffusion (zyklisch bis 2)",
+	EveryThreeExcludeDiff	= "Ohne Diffusion (zyklisch bis 3)"
 })
 
 L:SetMiscLocalization({
