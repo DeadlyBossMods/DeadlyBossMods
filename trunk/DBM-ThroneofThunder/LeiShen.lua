@@ -158,7 +158,7 @@ function mod:SPELL_CAST_START(args)
 			countdownThunderstruck:Start()
 		else
 			timerThunderstruckCD:Start(30)
-			countdownThunderstruck:Start()
+			countdownThunderstruck:Start(30)
 		end
 	--"<206.2 20:38:58> [UNIT_SPELLCAST_SUCCEEDED] Lei Shen [[boss1:Lightning Whip::0:136845]]", -- [13762] --This event comes about .5 seconds earlier than SPELL_CAST_START. Maybe worth using?
 	elseif args.spellId == 136850 then
@@ -388,7 +388,7 @@ local function LoopIntermission()
 end
 
 function mod:UNIT_HEALTH_FREQUENT(uId)
-	if uId == "boss1" then
+	if UnitName(uId) == L.name then
 		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		if hp > 65 and hp < 66.5 and warnedCount == 0 then
 			warnedCount = 1
