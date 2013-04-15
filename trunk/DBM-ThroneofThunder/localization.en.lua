@@ -59,7 +59,7 @@ L:SetOptionLocalization({
 	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	PHealthFrame		= "Show remaining health frame for $spell:136442 fades\n(Requires boss health frame enabled)",
 	RangeFrame			= "Show range frame",
-	AnnounceCooldowns	= "Count out which $spell:137166 cast it is for raid cooldowns",
+	AnnounceCooldowns	= "Count out (up to 3) which $spell:137166 cast it is for raid cooldowns",
 	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
 	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
 })
@@ -80,7 +80,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "Show info frame for players without $spell:137633",
 	SetIconOnTurtles		= "Set icons on $journal:7129",
 	ClearIconOnTurtles		= "Clear icons on $journal:7129 when affected by $spell:133971",
-	AnnounceCooldowns		= "Count out which $spell:134920 cast it is for raid cooldowns"
+	AnnounceCooldowns		= "Count (up to 4) out which $spell:134920 cast it is for raid cooldowns"
 })
 
 L:SetMiscLocalization({
