@@ -11,7 +11,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnWaterMove	= "Show special warning if you standing in $spell:138470\n(Warns at $spell:137313 pre-cast or $spell:138732 debuff fades shortly)",
-	RangeFrame			= "Show range frame"
+	RangeFrame			= "Show range frame (8/4)"
 })
 
 --------------
@@ -220,7 +220,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
-	RangeFrame		= "Show dynamic range frame\n(This is a smart range frame that shows when too many are too close)",
+	RangeFrame		= "Show dynamic range frame (10)\n(This is a smart range frame that shows when too many are too close)",
 	InfoFrame		= "Show info frame for players with $spell:136193"
 })
 
@@ -264,7 +264,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Show pre-special warning before Intermission",
-	RangeFrame					= "Show range frame",--For two different spells
+	RangeFrame					= "Show range frame (8/6)",--For two different spells
 	StaticShockArrow			= "Show DBM Arrow when someone is affected by $spell:135695",
 	OverchargeArrow				= "Show DBM Arrow when someone is affected by $spell:136295",
 	SetIconOnOvercharge			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136295),

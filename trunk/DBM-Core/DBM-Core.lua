@@ -3618,6 +3618,7 @@ function DBM:Capitalize(str)
 	return str:sub(1, numBytes):upper()..str:sub(numBytes + 1):lower()
 end
 
+--Credits to Funkeh`
 function DBM:RoleCheck()
 	if not DBM.Options.SetPlayerRole then return end
 	if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
