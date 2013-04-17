@@ -84,6 +84,8 @@ local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact 
 local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
 local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
 
+local berserkTimer						= mod:NewBerserkTimer(900)--Confirmed in LFR, probably the same in all modes though?
+
 local countdownThunderstruck			= mod:NewCountdown(46, 135095)
 
 local soundDecapitate					= mod:NewSound(134912)
@@ -133,6 +135,7 @@ function mod:OnCombatStart(delay)
 	timerThunderstruckCD:Start(25-delay)
 	countdownThunderstruck:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
+	berserkTimer:Start(-delay)
 	self:RegisterShortTermEvents(
 		"UNIT_HEALTH_FREQUENT"
 	)-- Do not use on phase 3.

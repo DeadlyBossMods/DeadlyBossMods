@@ -42,9 +42,9 @@ local timerStormCD					= mod:NewCDTimer(60.5, 137313)--90-93 variable (60.5~67 s
 local timerIonization				= mod:NewBuffFadesTimer(24, 138732)
 local timerIonizationCD				= mod:NewNextTimer(61.5, 138732)
 
-local soundFocusedLightning			= mod:NewSound(137422)
-
 local berserkTimer					= mod:NewBerserkTimer(540)
+
+local soundFocusedLightning			= mod:NewSound(137422)
 
 local countdownIonization			= mod:NewCountdown(61.5, 138732)
 
