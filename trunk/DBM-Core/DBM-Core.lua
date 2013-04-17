@@ -1372,6 +1372,7 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
+				SendAddonMessage("BigWigs", "VQ:0")--Basically "H" to bigwigs. Tell Bigwigs users we joined raid. Send revision of 0 so bigwigs ignores revision but still replies with their version information
 				DBM:Schedule(2, DBM.RequestTimers, DBM)
 				DBM:Schedule(2, DBM.RoleCheck, DBM)
 				fireEvent("raidJoin", playerName)
@@ -2068,9 +2069,14 @@ do
 		DBM:StartLogging(timer, checkForActualPull)
 	end
 
+	local function SendVersion()
+		sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
+	end
+
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
 	syncHandlers["H"] = function(sender)
-		sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
+		DBM:Unschedule(SendVersion)--Throttle so we don't needlessly send tons of comms during initial raid invites
+		DBM:Schedule(3, SendVersion)--Send version if 3 seconds have past since last "Hi" sync
 	end
 
 	syncHandlers["VR"] = function(sender, bwrevision)--Sent by bigwigs releases
