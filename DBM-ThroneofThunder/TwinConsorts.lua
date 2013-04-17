@@ -181,6 +181,8 @@ function mod:UNIT_DIED(args)
 	if cid == 68905 then--Lu'lin
 		--timerCosmicBarrageCD:Cancel()
 		timerTidalForceCD:Cancel()
+		timerDayCD:Cancel()
+		timerDuskCD:Cancel()
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start(19)
 		--She also does Flames of passion, but this is done 3 seconds after Lu'lin dies, is a 3 second timer worth it?
