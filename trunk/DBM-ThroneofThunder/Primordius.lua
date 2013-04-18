@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69017)--69070 Viscous Horror, 69069 good ooze, 70579 bad ooze (patched out of game, :\)
 mod:SetModelID(47009)
+mod:SetUsedIcons(6)
 
 mod:RegisterCombat("combat")
 
@@ -49,7 +50,8 @@ local timerViscousHorrorCD			= mod:NewNextCountTimer(30, "ej6969", nil, nil, nil
 
 local berserkTimer					= mod:NewBerserkTimer(480)
 
-mod:AddBoolOption("RangeFrame", true)--Right now, EVERYTHING targets melee. If blizz listens to feedback, it may change to just ranged.
+mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("SetIconOnBigOoze", true)--These very hard to see when spawn. rooms red, boss is red, damn ooze is red. If ooze hits boss, auto wipe. This option will try to mark ooze with a big obvious square soon as anyone in raid targets/mouses over a new one
 
 local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
@@ -57,6 +59,7 @@ local postulesActive = false
 local goodCount = 0
 local badCount = 0
 local bigOozeCount = 0
+local bigOozeGUIDS = {}
 
 function mod:BigOoze()
 	bigOozeCount = bigOozeCount + 1
@@ -64,6 +67,37 @@ function mod:BigOoze()
 	specWarnViscousHorror:Show(bigOozeCount)
 	timerViscousHorrorCD:Start(30, bigOozeCount+1)
 	self:ScheduleMethod(30, "BigOoze")
+	--This is a means to try and do it without using lots of cpu on an already cpu bad fight. If it's not fast enough or doesn't work well (ie people with assist aren't doing this fast enough). may still have to scan all targets
+	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnBigOoze then--Only register event if option is turned on, otherwise no waste cpu
+		self:RegisterShortTermEvents(
+			"PLAYER_TARGET_CHANGED",
+			"UPDATE_MOUSEOVER_UNIT"
+		)
+	end
+end
+
+function mod:PLAYER_TARGET_CHANGED()
+	local guid = UnitGUID("target")
+	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
+		local cId = tonumber(guid:sub(6, 10), 16)
+		if cId == 69070 and not bigOozeGUIDS[guid] then
+			bigOozeGUIDS[guid] = true
+			self:UnregisterShortTermEvents()--Add is marked, unregister events until next ooze spawns
+			SetRaidTarget("target", 6)
+		end
+	end
+end
+
+function mod:UPDATE_MOUSEOVER_UNIT()
+	local guid = UnitGUID("mouseover")
+	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
+		local cId = tonumber(guid:sub(6, 10), 16)
+		if cId == 69070 and not bigOozeGUIDS[guid] then
+			bigOozeGUIDS[guid] = true
+			self:UnregisterShortTermEvents()--Add is marked, unregister events until next ooze spawns
+			SetRaidTarget("mouseover", 6)
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -73,6 +107,7 @@ function mod:OnCombatStart(delay)
 	goodCount = 0
 	badCount = 0
 	bigOozeCount = 0
+	table.wipe(bigOozeGUIDS)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerViscousHorrorCD:Start(11.5-delay, 1)
@@ -81,6 +116,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
