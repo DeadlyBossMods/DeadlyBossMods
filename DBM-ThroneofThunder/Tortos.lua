@@ -43,6 +43,7 @@ local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration of th
 local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
 local countdownStomp				= mod:NewCountdown(49, 134920, mod:IsHealer())
+local countdownBreath				= mod:NewCountdown(46, 133939, false) -- Coundown for the kicker. mod:IsRanged() and mod:IsDps()
 
 local berserkTimer					= mod:NewBerserkTimer(780)
 
@@ -95,6 +96,7 @@ function mod:OnCombatStart(delay)
 	timerStompCD:Start(29-delay, 1)
 	countdownStomp:Start(29-delay)
 	timerBreathCD:Start(-delay)
+	countdownBreath:Start(-delay)
 	if self.Options.InfoFrame and self:IsDifficulty("heroic10", "heroic25") then
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
 		DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
@@ -120,6 +122,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnStoneBreath:Show(args.sourceName)
 		end
 		timerBreathCD:Start()
+		countdownBreath:Start()
 	elseif args.spellId == 136294 then
 		warnCallofTortos:Show()
 		specWarnCallofTortos:Show()
