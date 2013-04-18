@@ -55,7 +55,6 @@ local shelldName = GetSpellInfo(137633)
 local shellConcussion = GetSpellInfo(136431)
 local stompActive = false
 local stompCount = 0
-local stompCast = 0--The one we reset every 3
 local firstRockfall = false--First rockfall after a stomp
 local shellsRemaining = 0
 local lastConcussion = 0
@@ -81,7 +80,6 @@ end
 function mod:OnCombatStart(delay)
 	stompActive = false
 	stompCount = 0
-	stompCast = 0
 	firstRockfall = false--First rockfall after a stomp
 	shellsRemaining = 0
 	lastConcussion = 0
@@ -134,19 +132,17 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 134920 then
 		stompActive = true
 		stompCount = stompCount + 1
-		if stompCast == 4 then stompCast = 0 end
-		stompCast = stompCast + 1
 		warnQuakeStomp:Show(stompCount)
 		specWarnQuakeStomp:Show()
 		timerStompActive:Start()
 		timerRockfallCD:Start(7.4)--When the spam of rockfalls start
 		timerStompCD:Start(nil, stompCount+1)
 		countdownStomp:Start()
-		if self.Options.AnnounceCooldowns then
+		if self.Options.AnnounceCooldowns and stompCount < 11 then
 			if DBM.Options.UseMasterVolume then
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..stompCast..".ogg", "Master")
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..stompCount..".ogg", "Master")
 			else
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..stompCast..".ogg")
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..stompCount..".ogg")
 			end
 		end
 	end
