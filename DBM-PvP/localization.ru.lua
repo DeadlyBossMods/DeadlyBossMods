@@ -122,7 +122,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z489")
 
 L:SetTimerLocalization({
-	TimerStart	= "Битва начнется через", 
+	TimerStart	= "Битва начнется через",
 	TimerFlag	= "Восстановление флага"
 })
 
@@ -190,7 +190,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
-	TimerStart	= "Битва начнется через", 
+	TimerStart	= "Битва начнется через",
 	TimerFlag	= "Восстановление флага"
 })
 

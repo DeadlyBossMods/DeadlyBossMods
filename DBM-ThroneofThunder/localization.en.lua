@@ -189,7 +189,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "Show debuff count warnings when you absorb pools",
-	RangeFrame					= "Show range frame (5/2)"
+	RangeFrame					= "Show range frame (5/2)",
+	SetIconOnBigOoze			= "Set icon on $journal:6969"
 })
 
 -----------------

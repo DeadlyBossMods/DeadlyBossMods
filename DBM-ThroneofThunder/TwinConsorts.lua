@@ -183,6 +183,7 @@ function mod:UNIT_DIED(args)
 		timerTidalForceCD:Cancel()
 		timerDayCD:Cancel()
 		timerDuskCD:Cancel()
+		timerNuclearInfernoCD:Cancel()
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start(19)
 		--She also does Flames of passion, but this is done 3 seconds after Lu'lin dies, is a 3 second timer worth it?
@@ -192,6 +193,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 68904 then--Suen
 		--timerFlamesOfPassionCD:Cancel()
 		--timerBeastOfNightmaresCD:Start()--My group kills Lu'lin first. Need log of Suen being killed first to get first beast timer value
+		timerTidalForceCD:Cancel()
 	end
 end
 

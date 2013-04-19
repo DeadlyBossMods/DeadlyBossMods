@@ -12,7 +12,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnWaterMove	= "$spell:138470 위에 있을 때 특수 경고 보기\n($spell:137313 시전 직전 또는 $spell:138732 약화 효과 시간이 얼마 안 남았을때)",
-	RangeFrame			= "거리 창 보기"
+	RangeFrame			= "거리 창 보기(8/4m)"
 })
 
 --------------
@@ -74,7 +74,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기",
 	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정",
 	ClearIconOnTurtles		= "$journal:7129이 $spell:133971의 영향을 받은 경우 전술 목표 아이콘 지우기",
-	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 시전 횟수 음성으로 알리기\n(4번 시전후 초기화됨)"
+	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 시전 횟수 음성으로 알리기"
 })
 
 L:SetMiscLocalization({
@@ -173,7 +173,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "웅덩이를 흡수할 때 변형 상태에 대한 알림 보기",
-	RangeFrame					= "거리 창 보기(5m/2m)"
+	RangeFrame					= "거리 창 보기(5m/2m)",
+	SetIconOnBigOoze			= "$journal:6969에 전술 목표 아이콘 설정"
 })
 
 -----------------
@@ -203,7 +204,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "전투 진영에 따라 거리 창 보기\n(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)",
+	RangeFrame		= "전투 진영에 따라 거리 창 보기(10m)\n(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)",
 	InfoFrame		= "$spell:136193 주문에 영향을 받은 대상을 정보 창에서 보기"
 })
 
@@ -247,7 +248,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "사잇단계 진입 전에 특수 경고 보기",
-	RangeFrame					= "거리 창 보기",
+	RangeFrame					= "거리 창 보기(8/6m)",
 	StaticShockArrow			= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
 	OverchargeArrow				= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
 })
