@@ -12,7 +12,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnWaterMove	= "Zeige Spezialwarnung, falls du in $spell:138470 stehst (warnt bevor\n$spell:137313 gewirkt wird und kurz bevor $spell:138732 ausläuft)",
-	RangeFrame			= "Zeige Abstandsfenster"
+	RangeFrame			= "Zeige Abstandsfenster (8m/4m)"
 })
 
 --------------
@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
 	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
 	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971",
-	AnnounceCooldowns		= "Zähle akkustisch (zyklisch bis 4) die Anzahl der $spell:134920 Wirkungen\n(für \"Raid-Cooldowns\")"
+	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der $spell:134920 Wirkungen\n(für \"Raid-Cooldowns\")"
 })
 
 L:SetMiscLocalization({
@@ -174,7 +174,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "Zeige Warnung für die Debuffanzahl, wenn du Pfützen absorbierst",
-	RangeFrame					= "Zeige Abstandsfenster (5m/2m)"
+	RangeFrame					= "Zeige Abstandsfenster (5m/2m)",
+	SetIconOnBigOoze			= "Setze Zeichen auf $journal:6969"
 })
 
 -----------------
@@ -204,7 +205,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "Zeige dynamisches Abstandsfenster\n(mit Indikator für zuviele Spieler in Reichweite)",
+	RangeFrame		= "Zeige dynamisches Abstandsfenster (10m)\n(mit Indikator für zuviele Spieler in Reichweite)",
 	InfoFrame		= "Zeige Infofenster für Spieler mit $spell:136193"
 })
 
@@ -234,7 +235,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	DuskPhase		= "Lu'lin, leiht mir Eure Kraft!"--needs to be verified (wowhead-captured translation)
+	DuskPhase		= "Lu'lin, leiht mir Eure Kraft!"
 })
 
 --------------
@@ -248,7 +249,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Zeige Spezialvorwarnung für Unterbrechung",
-	RangeFrame					= "Zeige Abstandsfenster",
+	RangeFrame					= "Zeige Abstandsfenster (8m/6m)",
 	StaticShockArrow			= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
 	OverchargeArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist"
 })

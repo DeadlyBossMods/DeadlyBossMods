@@ -216,9 +216,9 @@ L:SetMiscLocalization({
 	Vulnerable2		= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
 })
 
--------------------------
---  Battle of Gilneas  --
--------------------------
+------------------------------
+--  The Battle for Gilneas  --
+------------------------------
 L = DBM:GetModLocalization("z761")
 
 L:SetTimerLocalization({

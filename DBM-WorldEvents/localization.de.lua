@@ -10,9 +10,9 @@ L:SetGeneralLocalization({
 	name = "Omen"
 })
 
------------------------
---  Apothecary Trio  --
------------------------
+------------------------------
+--  The Crown Chemical Co.  --
+------------------------------
 L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization{
@@ -29,9 +29,9 @@ L:SetMiscLocalization({
 	SayCombatStart		= "Haben sie sich die Mühe gemacht und Euch gesagt, wer ich bin und warum ich das hier tue?"
 })
 
--------------
---  Ahune  --
--------------
+----------------------------
+--  The Frost Lord Ahune  --
+----------------------------
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
@@ -79,9 +79,9 @@ L:SetMiscLocalization({
 	YellBarrel			= "Stecke im Fass!"
 })
 
--------------------------
---  Headless Horseman  --
--------------------------
+-----------------------------
+--  The Headless Horseman  --
+-----------------------------
 L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
