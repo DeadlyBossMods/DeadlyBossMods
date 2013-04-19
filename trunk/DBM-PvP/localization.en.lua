@@ -120,7 +120,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z489")
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
+	TimerStart	= "Game starts",
 	TimerFlag	= "Flag respawn"
 })
 
@@ -135,7 +135,7 @@ L:SetMiscLocalization({
 	BgStart60 			= "The battle begins in 1 minute.",
 	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
 	Alliance 			= "Alliance",
-	Horde 				= "Horde",	
+	Horde 				= "Horde",
 	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
 	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
@@ -187,7 +187,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts", 
+	TimerStart	= "Game starts",
 	TimerFlag	= "Flag respawn"
 })
 
@@ -203,7 +203,7 @@ L:SetMiscLocalization({
 	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
 	ZoneName 			= "Twin",
 	Alliance 			= "Alliance",
-	Horde 				= "Horde",	
+	Horde 				= "Horde",
 	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
 	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
@@ -215,9 +215,9 @@ L:SetMiscLocalization({
 	Vulnerable2		= "The flag carriers have become increasingly vulnerable to attack!"
 })
 
--------------------------
---  Battle of Gilneas  --
--------------------------
+------------------------------
+--  The Battle for Gilneas  --
+------------------------------
 L = DBM:GetModLocalization("z761")
 
 L:SetTimerLocalization({

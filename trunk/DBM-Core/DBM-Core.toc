@@ -1,8 +1,8 @@
 ﻿## Interface: 50200
 ## X-Min-Interface: 50001
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
-## Title-zhCN: |cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
-## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Основной|r
+## Title-zhCN:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
+## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Ядро|r
 ## Title-zhTW:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
 ## Title-koKR:|cffffd200Deadly Boss Mods|r |cff69ccf0핵심 모듈|r
 ## Title-esES:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r

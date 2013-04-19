@@ -121,7 +121,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z489")
 
 L:SetTimerLocalization({
-	TimerStart	= "Kampfbeginn", 
+	TimerStart	= "Kampfbeginn",
 	TimerFlag	= "Flaggen-Respawn"
 })
 
@@ -136,10 +136,10 @@ L:SetMiscLocalization({
 	BgStart60 			= "Die Schlacht beginnt in 1 Minute.",
 	BgStart30 			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
 	Alliance 			= "Allianz",
-	Horde 				= "Horde",	
+	Horde 				= "Horde",
 	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
 	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
-	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!", 
+	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
 	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
 	FlagAlliance		= "Allianz-Flagge: ",
 	FlagHorde			= "Horde-Flagge: ",
@@ -188,7 +188,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
-	TimerStart	= "Kampfbeginn", 
+	TimerStart	= "Kampfbeginn",
 	TimerFlag	= "Flaggen-Respawn"
 })
 
@@ -204,7 +204,7 @@ L:SetMiscLocalization({
 	BgStart30 			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
 	ZoneName 			= "Zwillingsgipfel",
 	Alliance 			= "Allianz",
-	Horde 				= "Horde",	
+	Horde 				= "Horde",
 	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
 	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
 	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
