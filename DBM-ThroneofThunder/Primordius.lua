@@ -265,5 +265,6 @@ end
 function mod:OnSync(msg, guid)
 	if msg == "BigOozeGUID" and guid then
 		bigOozeGUIDS[guid] = true
+		self:UnregisterShortTermEvents()
 	end
 end
