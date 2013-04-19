@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69017)--69070 Viscous Horror, 69069 good ooze, 70579 bad ooze (patched out of game, :\)
 mod:SetModelID(47009)
-mod:SetUsedIcons(6)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Although if you have 8 viscous horrors up, you are probably doing fight wrong.
 
 mod:RegisterCombat("combat")
 
@@ -15,7 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"UNIT_AURA",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_DIED"
 )
 
 local warnDebuffCount				= mod:NewAnnounce("warnDebuffCount", 1, 140546)
@@ -51,7 +52,7 @@ local timerViscousHorrorCD			= mod:NewNextCountTimer(30, "ej6969", nil, nil, nil
 local berserkTimer					= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("SetIconOnBigOoze", true)--These very hard to see when spawn. rooms red, boss is red, damn ooze is red. If ooze hits boss, auto wipe. This option will try to mark ooze with a big obvious square soon as anyone in raid targets/mouses over a new one
+mod:AddBoolOption("SetIconOnBigOoze", true)--These very hard to see when spawn. rooms red, boss is red, damn ooze is red.
 
 local metabolicBoost = false
 local acidSpinesActive = false--Spread of 5 yards
@@ -81,9 +82,12 @@ function mod:PLAYER_TARGET_CHANGED()
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
 		if cId == 69070 and not bigOozeGUIDS[guid] then
-			bigOozeGUIDS[guid] = true
+			local oozesAlive = #bigOozeGUIDS or 0--Number of oozes that are already up
+			local icon = 8 - oozesAlive--Start with skull for big ooze then subtrack from it based on number of oozes up to choose an unused icon
+			bigOozeGUIDS[guid] = true--NOW we add this ooze to the table now that we're done counting old ones
 			self:UnregisterShortTermEvents()--Add is marked, unregister events until next ooze spawns
-			SetRaidTarget("target", 6)
+			SetRaidTarget("target", icon)
+			self:SendSync("BigOozeGUID", guid)--Make sure we keep everynoes ooze guid ignore list/counts up to date.
 		end
 	end
 end
@@ -93,9 +97,12 @@ function mod:UPDATE_MOUSEOVER_UNIT()
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
 		if cId == 69070 and not bigOozeGUIDS[guid] then
-			bigOozeGUIDS[guid] = true
+			local oozesAlive = #bigOozeGUIDS or 0--Number of oozes that are already up
+			local icon = 8 - oozesAlive--Start with skull for big ooze then subtrack from it based on number of oozes up to choose an unused icon
+			bigOozeGUIDS[guid] = true--NOW we add this ooze to the table now that we're done counting old ones
 			self:UnregisterShortTermEvents()--Add is marked, unregister events until next ooze spawns
-			SetRaidTarget("mouseover", 6)
+			SetRaidTarget("mouseover", icon)
+			self:SendSync("BigOozeGUID", guid)
 		end
 	end
 end
@@ -245,5 +252,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 136248 and self:AntiSpam(2, 1) then--Pustule Eruption
 		warnPustuleEruption:Show()
 		timerPustuleEruptionCD:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cId == 69070 and bigOozeGUIDS[args.destGUID] then
+		bigOozeGUIDS[guid] = nil
+	end
+end
+
+function mod:OnSync(msg, guid)
+	if msg == "BigOozeGUID" and guid then
+		bigOozeGUIDS[guid] = true
 	end
 end
