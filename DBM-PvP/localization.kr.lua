@@ -210,9 +210,9 @@ L:SetMiscLocalization({
 	Vulnerable2			= "약해져서"
 })
 
---------------------------
---  Battle for Gilneas  --
---------------------------
+------------------------------
+--  The Battle for Gilneas  --
+------------------------------
 L = DBM:GetModLocalization("z761")
 
 L:SetTimerLocalization({

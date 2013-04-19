@@ -116,7 +116,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnAmberTrap	= "Отображать прогресс создания $spell:125826", -- maybe bad translation.
+	warnAmberTrap	= "Отображать прогресс создания $spell:125826",
 	InfoFrame		= "Информационное окно для игроков с $spell:125390",
 	RangeFrame		= "Окно проверки дистанции (5м) для $spell:123735"
 })

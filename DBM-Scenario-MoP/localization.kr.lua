@@ -1,10 +1,9 @@
 ﻿if GetLocale() ~= "koKR" then return end
 local L
 
---------------------------------
+---------------------
 -- A Brewing Storm --
---------------------------------
-
+---------------------
 L= DBM:GetModLocalization("d517")
 
 L:SetTimerLocalization{
@@ -22,9 +21,9 @@ L:SetMiscLocalization{
 	BorokhulaAdds		= "calls out for reinforcements!"--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
 }
 
---------------------------------
+------------------------------
 -- Crypt of Forgotten Kings --
---------------------------------
+------------------------------
 L= DBM:GetModLocalization("d504")
 
 ----------------------

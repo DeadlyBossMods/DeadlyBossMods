@@ -126,7 +126,7 @@ L:SetMiscLocalization({
 	BgStart60 			= "La batalla comienza en 1 minuto.",
 	BgStart30 			= "La batalla comienza en 30 segundos. ¡Preparaos!",
 	Alliance 			= "Alianza",
-	Horde 				= "Horda",	
+	Horde 				= "Horda",
 	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp 			= "¡(.+) ha cogido la bandera de la (%w+)!",
 	ExprFlagCaptured 		= "¡(.+) ha capturado la bandera de la (%w+)!",
@@ -137,7 +137,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "La batalla va comenzar", 
+	TimerStart 			= "La batalla va comenzar",
 	TimerFlag 			= "La bandera se resetea en"
 })
 
@@ -194,7 +194,7 @@ L:SetMiscLocalization({
 	BgStart30 			= "La batalla comienza en 30 segundos. ¡Preparaos!",
 	ZoneName 			= "Twin",	-- translate
 	Alliance 			= "Alianza",
-	Horde 				= "Horda",	
+	Horde 				= "Horda",
 	InfoErrorText		= "La función de targetear al portador de la bandera se restaurará cuando estés fuera de combate.",
 	ExprFlagPickUp		= "¡(.+) ha cogido la bandera de la (%w+)!",
 	ExprFlagCaptured	= "¡(.+) ha capturado la bandera de la (%w+)!",
@@ -207,7 +207,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Empieza la batalla", 
+	TimerStart	= "Empieza la batalla",
 	TimerFlag	= "Reaparición de la bandera"
 })
 

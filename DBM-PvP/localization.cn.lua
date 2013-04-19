@@ -128,7 +128,7 @@ L:SetMiscLocalization({
 	BgStart60 = "战歌峡谷战斗将在1分钟内开始。",
 	BgStart30 = "战歌峡谷战斗将在30秒钟内开始。做好准备！",
 	Alliance = "联盟",
-	Horde = "部落",	
+	Horde = "部落",
 	InfoErrorText = "携带旗帜者目标功能会在你脱离战斗后恢复。",
 	ExprFlagPickUp = "(.+)的旗帜被(.+)拔起了！",
 	ExprFlagCaptured = "(.+)夺取了(.+)的旗帜！",
@@ -139,7 +139,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "战斗即将开始", 
+	TimerStart = "战斗即将开始",
 	TimerFlag = "旗帜重置",
 })
 
@@ -196,7 +196,7 @@ L:SetMiscLocalization({
 	BgStart30 = "战斗将在30秒钟内开始。做好准备！",
 	ZoneName 			= "双子峰",
 	Alliance 			= "联盟",
-	Horde 				= "部落",	
+	Horde 				= "部落",
 	InfoErrorText		= "携带旗帜者目标功能会在你脱离战斗后恢复。",
 	ExprFlagPickUp = "(.+)的旗帜被(.+)拔起了！",
 	ExprFlagCaptured = "(.+)夺取了(.+)的旗帜！",
@@ -209,7 +209,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "战斗即将开始", 
+	TimerStart = "战斗即将开始",
 	TimerFlag = "旗帜重置",
 })
 

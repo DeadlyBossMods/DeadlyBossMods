@@ -124,7 +124,7 @@ L:SetMiscLocalization({
 	BgStart60 			= "A batalha começará em 1 minuto.",
 	BgStart30 			= "A batalha começará em 30 segundos. Preparem-se!",
 	Alliance 			= "Aliança",
-	Horde 				= "Horda",	
+	Horde 				= "Horda",
 	InfoErrorText		= "A funcionalidade de mirar portador da bandeira será restaurada quando você sair de combate.",
 	ExprFlagPickUp		= "(.+) pegou a Bandeira da ([%wç]+)!",
 	ExprFlagCaptured	= "(.+) capturou a bandeira da ([%wç]+)!",
@@ -135,7 +135,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Início da partida", 
+	TimerStart	= "Início da partida",
 	TimerFlag	= "Bandeira reaparece"
 })
 
@@ -162,7 +162,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "Exibir cronógrafo para início da partida", 
+	TimerStart			= "Exibir cronógrafo para início da partida",
 	TimerPOI			= "Exibir cronógrafo para captura",
 	TimerSiegeEngine	= "Exibir cronógrafo para construção de Siege Engine",
 	WarnSiegeEngine		= "Exibir aviso quando Siege Engine estiver pronto",
@@ -192,7 +192,7 @@ L:SetMiscLocalization({
 	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
 	ZoneName 			= "Montes Gêmeos",
 	Alliance 			= "Aliança",
-	Horde 				= "Horda",	
+	Horde 				= "Horda",
 	InfoErrorText		= "A funcionalidade de portador de bandeira será restaurada quando você sair de combate.",
 	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
 	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
@@ -205,7 +205,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Partida inicia", 
+	TimerStart	= "Partida inicia",
 	TimerFlag	= "Bandeira reaparece"
 })
 
