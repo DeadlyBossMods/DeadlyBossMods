@@ -1,9 +1,9 @@
 ﻿if GetLocale() ~= "deDE" then return end
 local L
 
---------------------------------
+---------------------
 -- A Brewing Storm --
---------------------------------
+---------------------
 L= DBM:GetModLocalization("d517")
 
 L:SetTimerLocalization{
@@ -21,9 +21,9 @@ L:SetMiscLocalization{
 	BorokhulaAdds		= "ruft Verstärkung!"
 }
 
---------------------------------
+------------------------------
 -- Crypt of Forgotten Kings --
---------------------------------
+------------------------------
 L= DBM:GetModLocalization("d504")
 
 ----------------------
