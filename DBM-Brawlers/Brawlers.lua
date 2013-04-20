@@ -172,7 +172,7 @@ function mod:OnSync(msg)
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		currentFighter = nil
 		self:Stop()
-		--Boss from any rank can be faught by any rank at max level, so we just need to always cancel them all
+		--Boss from any rank can be fought by any rank at max level, so we just need to always cancel them all
 		for i = 1, 9 do
 			local mod2 = DBM:GetModByName("BrawlRank" .. i)
 			if mod2 then
