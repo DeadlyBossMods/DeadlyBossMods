@@ -201,7 +201,8 @@ local _, class = UnitClass("player")
 local LastZoneText = ""
 local LastZoneMapID = -1
 local queuedBattlefield = {}
-local combatDelay = false
+local garbageDelay = false
+local loadDelay = nil
 local myRealRevision = DBM.Revision or DBM.ReleaseRevision
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
@@ -1736,8 +1737,12 @@ function DBM:ACTIVE_TALENT_GROUP_CHANGED()
 end
 
 function DBM:PLAYER_REGEN_ENABLED()
-	if combatDelay then
-		combatDelay = false
+	if loadDelay then
+		DBM:LoadMod(loadDelay)
+		loadDelay = nil
+	end
+	if garbageDelay then
+		garbageDelay = false
 		collectgarbage("collect")
 	end
 	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
@@ -1916,6 +1921,14 @@ end
 
 function DBM:LoadMod(mod)
 	if type(mod) ~= "table" then return false end
+	--In combat and it's not a raid boss. We'll just delay mod load until we leave combat to avoid "script ran to long errors"
+	--This should avoid most load problems (especially in LFR) When zoning in while in combat which causes the mod to fail to load/work correctly
+	--IF we are fighting a boss, we don't have much of a choice but to try and load anyways since script ran too long isn't actually a guarentee.
+	--it's mainly for slower computers that fail to load mods in combat. Most can load in combat if we delay the garbage collect
+	if InCombatLockdown() and not IsEncounterInProgress() then
+		loadDelay = mod
+		return
+	end
 	local _, _, _, enabled = GetAddOnInfo(mod.modId)
 	if not enabled then
 		EnableAddOn(mod.modId)
@@ -1947,8 +1960,8 @@ function DBM:LoadMod(mod)
 			DBM_GUI:UpdateModList()
 		end
 		local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
-		if InCombatLockdown() and difficulty == 1 or difficulty == 2 then--In combat in a 5 man. the garbage collect on 5 man party mods is too big to do in combat and causes "script ran too long"
-			combatDelay = true
+		if InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
+			garbageDelay = true
 		else
 			collectgarbage("collect")
 		end
