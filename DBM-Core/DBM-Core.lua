@@ -1925,7 +1925,7 @@ function DBM:LoadMod(mod)
 	--This should avoid most load problems (especially in LFR) When zoning in while in combat which causes the mod to fail to load/work correctly
 	--IF we are fighting a boss, we don't have much of a choice but to try and load anyways since script ran too long isn't actually a guarentee.
 	--it's mainly for slower computers that fail to load mods in combat. Most can load in combat if we delay the garbage collect
-	if InCombatLockdown() and not IsEncounterInProgress() then
+	if InCombatLockdown() and IsInInstance() and not IsEncounterInProgress() then
 		loadDelay = mod
 		return
 	end
