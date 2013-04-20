@@ -2102,13 +2102,13 @@ do
 
 	syncHandlers["VR"] = function(sender, bwrevision)--Sent by bigwigs releases
 		if bwrevision and raid[sender] then
-			raid[sender].bwrevision = bwrevision
+			raid[sender].bwrevision = tonumber(bwrevision)
 		end
 	end
 	
 	syncHandlers["VRA"] = function(sender, bwarevision)--Sent by bigwigs Alphas
 		if bwarevision and raid[sender] then
-			raid[sender].bwarevision = bwarevision
+			raid[sender].bwarevision = tonumber(bwarevision)
 		end
 	end
 
