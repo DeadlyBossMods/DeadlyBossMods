@@ -196,7 +196,9 @@ end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 131830 then
-		windBombTargets[#windBombTargets + 1] = destName
+		if #windBombTargets < 6 then -- prevent target warning spam.
+			windBombTargets[#windBombTargets + 1] = destName
+		end
 		self:Unschedule(warnWindBombTargets)
 		self:Schedule(0.3, warnWindBombTargets)
 		if destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
