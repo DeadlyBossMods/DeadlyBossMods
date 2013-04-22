@@ -23,6 +23,7 @@ local warnMatterSwap				= mod:NewTargetAnnounce(138609, 3)--Debuff.
 local warnMatterSwapped				= mod:NewAnnounce("warnMatterSwapped", 3, 138618)--Actual swap(caused by dispel)
 local warnExplosiveSlam				= mod:NewStackAnnounce(138569, 2, nil, mod:IsTank() or mod:IsHealer())
 --Boss
+local warnActivation				= mod:NewCastAnnounce(139537, 3, 60)
 local warnAnimaRing					= mod:NewTargetAnnounce(136954, 3)
 local warnInterruptingJolt			= mod:NewSpellAnnounce(138763, 4)
 local warnEmpowerGolem				= mod:NewTargetAnnounce(138780, 3)
@@ -44,10 +45,15 @@ local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or
 --Boss
 --Dark Animus will now use its abilities at more consistent intervals. (March 19 hotfix)
 --As such, all of these timers need re-verification and updating.
+local timerAnimusActivation			= mod:NewCastTimer(60, 139537)--LFR only
 local timerSiphonAnimaCD			= mod:NewNextTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
 local timerInterruptingJoltCD		= mod:NewCDTimer(23, 138763)--seems 23~24 normal and lfr.
+
+local berserkTimer					= mod:NewBerserkTimer(600)
+
+local countdownActivation			= mod:NewCountdown(60, 139537)
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
@@ -64,6 +70,7 @@ function mod:AnimaRingTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
 	)
@@ -116,6 +123,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 138780 then
 		warnEmpowerGolem:Show(args.destName)
 		timerEmpowerGolemCD:Start()
+	elseif args.spellId == 139537 then
+		warnActivation:Show()
+		timerAnimusActivation:Start()
+		countdownActivation:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
