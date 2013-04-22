@@ -58,8 +58,8 @@ local specWarnFistSmash					= mod:NewSpecialWarningSpell(136146, nil, nil, nil, 
 
 local timerImpale						= mod:NewTargetTimer(40, 134691, mod:IsTank() or mod:IsHealer())
 local timerImpaleCD						= mod:NewCDTimer(20, 134691, mod:IsTank() or mod:IsHealer())
-local timerThrowSpearCD					= mod:NewCDTimer(30, 134926)--30-36 second variation observed (at last in phase 1)
-local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611)
+local timerThrowSpearCD					= mod:NewCDTimer(30, 134926)--30-42 second variation observed
+local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611, nil, false)--CD for the periodic trigger, not when he'll actually be at 30 energy and use it.
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)
 local timerMoltenOverload				= mod:NewBuffActiveTimer(10, 137221)
 local timerLightningStormCD				= mod:NewCDTimer(20, 136192)
@@ -71,7 +71,7 @@ local timerRisingAngerCD				= mod:NewNextTimer(15, 136323, nil, false)
 local timerFistSmash					= mod:NewBuffActiveTimer(8, 136146)
 local timerFistSmashCD					= mod:NewNextCountTimer(20, 136146)
 local timerWhirlingWindsCD				= mod:NewCDTimer(30, 139167)--Heroic Phase 1
-local timerFrostSpikeCD					= mod:NewCDTimer(12, 139180)--Heroic Phase 2
+local timerFrostSpikeCD					= mod:NewCDTimer(11, 139180)--Heroic Phase 2
 
 local berserkTimer						= mod:NewBerserkTimer(720)
 
@@ -149,7 +149,7 @@ local function checkSpear()
 			end
 		end
 	else
-		mod:Schedule(0.2, checkSpear)
+		mod:Schedule(0.25, checkSpear)
 	end
 end
 
@@ -236,7 +236,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if phase == 2 then
 			timerLightningStormCD:Start()
 		else--Heroic phase 1 or 4
-			timerLightningStormCD:Start(38)
+			timerLightningStormCD:Start(37.5)
 		end
 		if args:IsPlayer() then
 			specWarnLightningStorm:Show()
@@ -324,11 +324,10 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
 		warnUnleashedFlame:Show()
-		if phase == 1 then
-			timerUnleashedFlameCD:Start()
-		else--heroic phase 3 or 4
-			timerUnleashedFlameCD:Start(30)--30-33 second variation
-		end
+		timerUnleashedFlameCD:Start()
+		--NOTE, on heroic phase 3-4, trigger still fires every 6 seconds but energy gain is slower so it won't actually go off often like it does in phase 1.
+		--None the less, this timer is accurate on heroic as 6 seconds as it indicates when the next POSSIBLE cast is. in other words, if he reaches enough energy during this cd, he won't cast it until 6 second cd ends
+		--This cast is the periodic trigger that checks whether or not boss has 30 energy, nothing more.
 	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (heroic phase change trigger)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		self:Unschedule(checkSpear)
@@ -377,10 +376,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 			checkArcing()
 		elseif cid == 68081 then--Dam'ren
+			--confirmed, dam'ren's abilities do NOT reset in phase 4, cds from phase 3 carry over.
 			phase = 4
 			updateHealthFrame()
-			timerDeadZoneCD:Cancel()--Todo, find out what they change to in phase 4 since Dam'ren still casts them
-			timerFreezeCD:Cancel()--Todo, find out what they change to in phase 4 since Dam'ren still casts them
 			warnPhase4:Show()
 			timerRisingAngerCD:Start(15)
 			timerFistSmashCD:Start(62, 1)
@@ -391,9 +389,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 139181 and self:AntiSpam(2, 7) then--Frost Spike (Phase 2 Heroic)
 		warnFrostSpike:Show()
 		timerFrostSpikeCD:Start()
-	--"<168.1 19:53:31> [UNIT_SPELLCAST_SUCCEEDED] Quet'zal [[boss3:Rushing Winds::0:137656]]", -- [13876]
-	--"<170.1 19:29:36> [CLEU] SPELL_MISSED#true##nil#2632#0#0x010000000003A244#Oxey#1300#8#136577#Wind Storm#8#MISS#nil", -- [11314]
-	elseif spellId == 137656 and self:AntiSpam(2, 1) then--Rushing Winds (Wind Storm pre trigger)
+	elseif spellId == 137656 and self:AntiSpam(2, 1) then--Rushing Winds (Wind Storm end trigger)
 		warnWindStorm:Cancel()
 		specWarnWindStorm:Cancel()
 		warnWindStormEnd:Show()
