@@ -264,6 +264,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.RangeCheck:Show(8)--Assume 8 since spell tooltip has no info
 		end
 	elseif args.spellId == 136914 then
+		--TODO add prints to figure out how this remotely doesn't work, when it's impossible.
+		--http://worldoflogs.com/reports/rt-gankfbp409i7qpvw/xe/?s=13273&e=13760&x=spellid+%3D+136914
+		--In above log, with warnings turned on, never saw a single one. not warnElectricalShock, not specWarnElectricalShock and certainly not specWarnElectricalShockOther
 		local amount = args.amount or 1
 		if not (amount % 3 == 0) then return end
 		warnElectricalShock:Show(args.destName, amount)

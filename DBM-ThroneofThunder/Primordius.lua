@@ -60,10 +60,12 @@ local postulesActive = false
 local goodCount = 0
 local badCount = 0
 local bigOozeCount = 0
+local bigOozeAlive = 0
 local bigOozeGUIDS = {}
 
 function mod:BigOoze()
 	bigOozeCount = bigOozeCount + 1
+	bigOozeAlive = bigOozeAlive + 1
 	warnViscousHorror:Show(bigOozeCount)
 	specWarnViscousHorror:Show(bigOozeCount)
 	timerViscousHorrorCD:Start(30, bigOozeCount+1)
@@ -82,8 +84,7 @@ function mod:PLAYER_TARGET_CHANGED()
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
 		if cId == 69070 and not bigOozeGUIDS[guid] then
-			local oozesAlive = #bigOozeGUIDS or 0--Number of oozes that are already up
-			local icon = 8 - oozesAlive--Start with skull for big ooze then subtrack from it based on number of oozes up to choose an unused icon
+			local icon = 9 - bigOozeAlive--Start with skull for big ooze then subtrack from it based on number of oozes up to choose an unused icon
 			bigOozeGUIDS[guid] = true--NOW we add this ooze to the table now that we're done counting old ones
 			self:UnregisterShortTermEvents()--Add is marked, unregister events until next ooze spawns
 			SetRaidTarget("target", icon)
@@ -97,8 +98,7 @@ function mod:UPDATE_MOUSEOVER_UNIT()
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
 		if cId == 69070 and not bigOozeGUIDS[guid] then
-			local oozesAlive = #bigOozeGUIDS or 0--Number of oozes that are already up
-			local icon = 8 - oozesAlive--Start with skull for big ooze then subtrack from it based on number of oozes up to choose an unused icon
+			local icon = 9 - bigOozeAlive--Start with skull for big ooze then subtrack from it based on number of oozes up to choose an unused icon
 			bigOozeGUIDS[guid] = true--NOW we add this ooze to the table now that we're done counting old ones
 			self:UnregisterShortTermEvents()--Add is marked, unregister events until next ooze spawns
 			SetRaidTarget("mouseover", icon)
@@ -114,6 +114,7 @@ function mod:OnCombatStart(delay)
 	goodCount = 0
 	badCount = 0
 	bigOozeCount = 0
+	bigOozeAlive = 0
 	table.wipe(bigOozeGUIDS)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
@@ -258,6 +259,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cId == 69070 and bigOozeGUIDS[args.destGUID] then
+		bigOozeAlive = bigOozeAlive - 1
 		bigOozeGUIDS[guid] = nil
 	end
 end

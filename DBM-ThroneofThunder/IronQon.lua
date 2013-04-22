@@ -213,12 +213,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnImpale:Show(args.destName, amount)
 		timerImpaleCD:Start()
-		if args:IsPlayer() then
-			if amount >= 2 then
+		if amount >= 2 then
+			if args:IsPlayer() then
 				specWarnImpale:Show(args.amount)
-			end
-		else
-			if amount >= 2 and not UnitDebuff("player", GetSpellInfo(134691)) and not UnitIsDeadOrGhost("player") then
+			else
 				specWarnImpaleOther:Show(args.destName)
 			end
 		end
