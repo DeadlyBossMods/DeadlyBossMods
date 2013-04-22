@@ -189,7 +189,7 @@ function mod:OnCombatStart(delay)
 		end
 	end
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerWhirlingWindsCD:Start(20-delay)
+		timerWhirlingWindsCD:Start(15-delay)
 		timerLightningStormCD:Start(22-delay)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(136193))
@@ -360,6 +360,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerLightningStormCD:Cancel()
 			timerWindStorm:Cancel()
 			timerWindStormCD:Cancel()
+			warnWindStorm:Cancel()
+			specWarnWindStorm:Cancel()
 			timerFrostSpikeCD:Cancel()
 			warnPhase3:Show()
 			timerDeadZoneCD:Start(8.5)
