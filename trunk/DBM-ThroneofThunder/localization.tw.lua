@@ -12,7 +12,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnWaterMove	= "為$spell:137313施放前或$spell:138732效果消失前前顯示特別警告",
-	RangeFrame			= "顯示距離框架"
+	RangeFrame			= "顯示距離框架(8碼/4碼)"
 })
 
 --------------
@@ -66,7 +66,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(825)
 
 L:SetWarningLocalization({
-	warnKickShell			= "%s被>%s<使用 (還剩餘%d)",
+	warnKickShell			= ">%s<使用了%s(還剩餘%d)",
 	specWarnCrystalShell	= "取得%s"
 })
 
@@ -169,12 +169,13 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "突變: %d/5有益& %有害",
+	warnDebuffCount				= "突變:%d/5有益&%有害",
 })
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "當你吃池水時顯示減益計算警告",
 	RangeFrame					= "顯示距離框架(2碼/5碼)",
+	SetIconOnBigOoze			= "為$journal:6969設定團隊圖示"
 })
 
 -----------------
@@ -249,7 +250,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "在中場階段前顯示預先特別警告",
-	RangeFrame					= "顯示距離框架",
+	RangeFrame					= "顯示距離框架(8碼/6碼)",
 	StaticShockArrow			= "當某人中了$spell:135695顯示DBM箭頭",
 	OverchargeArrow				= "當某人中了$spell:136295顯示DBM箭頭"
 })
