@@ -201,7 +201,6 @@ local _, class = UnitClass("player")
 local LastZoneText = ""
 local LastZoneMapID = -1
 local queuedBattlefield = {}
-local garbageDelay = false
 local loadDelay = nil
 local myRealRevision = DBM.Revision or DBM.ReleaseRevision
 
@@ -233,6 +232,7 @@ local IsInGroup = IsInGroup
 local IsInInstance = IsInInstance
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitExists = UnitExists
+local UnitIsDead = UnitIsDead
 local GetSpellInfo = GetSpellInfo
 local EJ_GetSectionInfo = EJ_GetSectionInfo
 
@@ -270,7 +270,7 @@ end
 local function sendSync(prefix, msg)
 	local zoneType = select(2, IsInInstance())
 	msg = msg or ""
-	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting osmething outside like sha, it'll sync in "RAID" instead)
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and IsInInstance() then--For BGs, LFR and LFG (we also check IsInInstance() so if you're in queue but fighting something outside like a world boss, it'll sync in "RAID" instead)
 		SendAddonMessage("D4", prefix .. "\t" .. msg, "INSTANCE_CHAT")
 	else
 		if IsInRaid() then
@@ -1882,19 +1882,12 @@ do
 --		self:AddMsg(LastZoneMapID)--Debug
 		for i, v in ipairs(self.AddOns) do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, LastZoneText) or (checkEntry(v.zoneId, LastZoneMapID))) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
-				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
-				-- TODO: is this still necessary? this was a WotLK beta bug A: loading stuff during a loading screen seems to bug sometimes as of 4.1
---				if firstZoneChangedEvent then
---					firstZoneChangedEvent = false
-					self:Unschedule(DBM.LoadMod, DBM, v)
-					self:Schedule(3, DBM.LoadMod, DBM, v)
-					--Lets try multiple checks, cause quite frankly this has been failinga bout 50% of time with just one check.
-					self:Schedule(4, DBM.ScenarioCheck)
-					self:Schedule(8, DBM.ScenarioCheck)
-					self:Schedule(12, DBM.ScenarioCheck)
---				else -- just the first event seems to be broken and loading stuff during the ZONE_CHANGED event is slightly better as it doesn't add a short lag just after the loading screen (instead the loading screen is a few ms longer, no one notices that, but a 100 ms lag a few seconds after the loading screen sucks)
---					self:LoadMod(v)
---				end
+				self:Unschedule(DBM.LoadMod, DBM, v)
+				self:Schedule(3, DBM.LoadMod, DBM, v)
+				--Depending on speed of computer, scenario check needs to run multiple times to ensure it fires properly (it will fail if it tries to start in a loading screen)
+				self:Schedule(4, DBM.ScenarioCheck)
+				self:Schedule(8, DBM.ScenarioCheck)
+				self:Schedule(12, DBM.ScenarioCheck)
 			end
 		end
 		if select(2, IsInInstance()) == "pvp" and not self:GetModByName("AlteracValley") then
@@ -1909,7 +1902,6 @@ do
 end
 
 --LFG_IsHeroicScenario(dungeonID)--5.3
---Going to have to stop neglecting scenario mods. in fact, we should get all the current scenarios finished now, they all have heroics in 5.3
 function DBM:ScenarioCheck()
 	DBM:Unschedule(DBM.ScenarioCheck)
 	if combatInfo[LastZoneMapID] then
