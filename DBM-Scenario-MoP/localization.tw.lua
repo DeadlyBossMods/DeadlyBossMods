@@ -1,6 +1,31 @@
 ﻿if GetLocale() ~= "zhTW" then return end
 local L
 
+---------------------
+-- A Brewing Storm --
+---------------------
+L= DBM:GetModLocalization("d517")
+
+L:SetTimerLocalization{
+	timerEvent			= "釀酒完成(大約的時間)"
+}
+
+L:SetOptionLocalization{
+	timerEvent			= "為釀酒完成顯示大約時間的計時器"
+}
+
+L:SetMiscLocalization{
+	BrewStart			= "風暴開始了!準備好。",
+	BrewFinish			= "你成功了!讓我們把這酒帶去靜修居...",
+	BorokhulaPull		= "該死了，你這個舌頭分岔的滑溜爬蟲!",
+	BorokhulaAdds		= "呼叫援助!"
+}
+
+------------------------------
+-- Crypt of Forgotten Kings --
+------------------------------
+L= DBM:GetModLocalization("d504")
+
 ----------------------
 -- Theramore's Fall --
 ----------------------

@@ -11,9 +11,9 @@ L:SetGeneralLocalization({
 	name = "年獸"
 })
 
------------------------
---  Apothecary Trio  --
------------------------
+------------------------------
+--  The Crown Chemical Co.  --
+------------------------------
 L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization({
@@ -30,9 +30,9 @@ L:SetMiscLocalization({
 	SayCombatStart		= "他們有告訴你我是誰還有我為什麼這麼做嗎?"
 })
 
--------------
---  Ahune  --
--------------
+----------------------------
+--  The Frost Lord Ahune  --
+----------------------------
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
@@ -80,9 +80,9 @@ L:SetMiscLocalization({
 	YellBarrel			= "我中了空桶(暈)"
 })
 
--------------------------
---  Headless Horseman  --
--------------------------
+-----------------------------
+--  The Headless Horseman  --
+-----------------------------
 L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
