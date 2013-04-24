@@ -21,6 +21,24 @@ L:SetMiscLocalization{
 	BorokhulaAdds		= "ruft Verstärkung!"
 }
 
+-----------------------
+-- A Little Patience --
+-----------------------
+L= DBM:GetModLocalization("d589")
+
+L:SetMiscLocalization{
+	ScargashPull		= "Your Alliance is WEAK!"--translate (trigger)
+}
+
+-------------------------
+-- Assault of Zan'vess --
+-------------------------
+L= DBM:GetModLocalization("d593")
+
+L:SetMiscLocalization{
+	TelvrakPull			= "Zan'vess will never fall!"--translate (trigger)
+}
+
 ------------------------------
 -- Crypt of Forgotten Kings --
 ------------------------------
