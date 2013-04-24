@@ -2387,7 +2387,7 @@ do
 			end
 		end
 		
-		--NOTE, blizzard bug, IsQuestFlaggedCompleted sometimes returns nil even when quest IS complete.
+		--NOTE, blizzard bug, IsQuestFlaggedCompleted always returns nil after a ReloadUI. They work on a fresh login
 		--Nothing we can do about this bug, the icon will be wrong when it happens.
 		if mod.questId then
 			local icon = panel.frame:CreateTexture()
