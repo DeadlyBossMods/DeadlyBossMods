@@ -20,13 +20,22 @@ L:SetMiscLocalization{
 	BorokhulaAdds		= "calls out for reinforcements!"--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
 }
 
----------------------
+-----------------------
 -- A Little Patience --
----------------------
+-----------------------
 L= DBM:GetModLocalization("d589")
 
 L:SetMiscLocalization{
-	ScargashPull		= "Your Alliance is WEAK!"
+	ScargashPull		= "Your Alliance is WEAK!"--Not yet in use but could be with more logs and combat start timers
+}
+
+-------------------------
+-- Assault of Zan'vess --
+-------------------------
+L= DBM:GetModLocalization("d593")
+
+L:SetMiscLocalization{
+	TelvrakPull			= "Zan'vess will never fall!"
 }
 
 ------------------------------
