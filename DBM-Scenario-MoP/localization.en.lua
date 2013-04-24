@@ -82,6 +82,15 @@ L:SetOptionLocalization{
 --------------------------------
 L= DBM:GetModLocalization("d620")
 
+----------------
+-- Unga Ingoo --
+----------------
+L= DBM:GetModLocalization("d499")
+
+L:SetMiscLocalization{
+	Stage2	= "Well! This looks like as good a place to brew as any."
+}
+
 ------------------------
 -- Warlock Green Fire --
 ------------------------
