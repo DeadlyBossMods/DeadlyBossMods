@@ -209,12 +209,12 @@ Nest18: Upper
 local function GetNestPositions(flockC)
 	local dir = DBM_CORE_UNKNOWN --direction
 	local loc = "" --location
-	if self:IsDifficulty("lfr25") then
+	if mod:IsDifficulty("lfr25") then
 		--LFR: L, L, L, U, U, U (Repeating)
 		if ((flockC-1) % 6) < 3 then dir = L.Lower -- 1,2,3,7,8,9,...
 		else                         dir = L.Upper -- 6,7,8,10,11,12,...
 		end
-	elseif self:IsDifficulty("normal10", "heroic10") then
+	elseif mod:IsDifficulty("normal10", "heroic10") then
 		--TODO, find out locations for these to improve the warnings.
 		if     flockC ==  1 then dir = L.Lower			--01
 		elseif flockC ==  2 then dir = L.Lower			--02    loc = L.SouthEast
@@ -233,7 +233,7 @@ local function GetNestPositions(flockC)
 		elseif flockC == 15 then dir = L.Upper			--17
 		elseif flockC == 16 then dir = L.Upper			--18
 		end
-	elseif self:IsDifficulty("normal25") then
+	elseif mod:IsDifficulty("normal25") then
 		--Nest Data Sources:
 		--http://www.youtube.com/watch?v=jo0BKuuh5xw
 		--http://www.youtube.com/watch?feature=player_detailpage&v=F0bxpAwdOnk#t=471s
@@ -259,7 +259,7 @@ local function GetNestPositions(flockC)
 		elseif flockC == 19 then dir, loc = L.UpperAndLower, "27-"..DBM_CORE_UNKNOWN..", 28-"..L.SouthEast	--Lower ? & Upper SE
 		elseif flockC == 20 then dir, loc = L.UpperAndLower, "29-"..L.Southeast..", 30-"..L.Middle			--Lower ? & Upper SE
 		end
-	elseif self:IsDifficulty("heroic25") then
+	elseif mod:IsDifficulty("heroic25") then
 		--maybe rework it still so the loc itself include upper/lower in each location. i just couldn't think of a clean way of doing it at the moment without completely breaking other difficulties or making message text REALLY long
 		--http://www.youtube.com/watch?feature=player_detailpage&v=nMSbQJBlKwM
 		if     flockC ==  1 then dir, loc = L.Lower,          "1-"..L.NorthEast												--Lower NE
