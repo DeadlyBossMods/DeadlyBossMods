@@ -142,8 +142,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---[[10N/LFR
-Nest4: Lower NE
+--[[LFR. I think LFR only uses 3 nest locations repeating, NE, SE, SW. but hard to confirm when boss dies within 5 nests.
+Nest1: Lower NE
+
+Nest2: Lower SE
+
+Nest3: Lower SW
+
+Nest4: Upper NE
 
 Nest5: Upper SE
 --]]
