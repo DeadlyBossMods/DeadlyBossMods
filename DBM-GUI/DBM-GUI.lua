@@ -2386,7 +2386,20 @@ do
 			elseif	i == 8 then		icon:SetTexCoord(0.75,	1,		0.25,	0.5)
 			end
 		end
-
+		
+		--NOTE, blizzard bug, IsQuestFlaggedCompleted sometimes returns nil even when quest IS complete.
+		--Nothing we can do about this bug, the icon will be wrong when it happens.
+		if mod.questId then
+			local icon = panel.frame:CreateTexture()
+			if IsQuestFlaggedCompleted(mod.questId) then
+				icon:SetTexture(READY_CHECK_NOT_READY_TEXTURE)--Not non normal/heroic loot /rep/legendary eligable
+			else
+				icon:SetTexture(READY_CHECK_READY_TEXTURE)--normal/heroic loot/rep/legendary eligable
+			end
+			icon:SetPoint("TOPLEFT", panel.frame, "TOPRIGHT", -14, -20)--Meh, it's not ugly, but probably not right place or even coordinates for it, i plugged in random numbers and it looked ok!
+			icon:SetWidth(16)
+			icon:SetHeight(16)
+		end
 		local reset  = panel:CreateButton(L.Mod_Reset, 300)--button ugly.
 		reset:SetPoint('TOPRIGHT', panel.frame, "TOPRIGHT", -14, -2)
 		reset:SetScript("OnClick", function(self)
