@@ -50,6 +50,10 @@ local function warnStormCloudTargets()
 	table.wipe(stormCloudTargets)
 end
 
+local function hideRangeFrame()
+	DBM.RangeCheck:Hide()
+end
+
 local function SpiritFireTarget(sGUID)
 	local targetname = nil
 	for i=1, DBM:GetNumGroupMembers() do
@@ -118,17 +122,17 @@ function mod:UNIT_DIED(args)
 	if cid == 70308 then--Soul-Fed Construct
 		timerSpiritfireCD:Cancel()
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			self:Schedule(3, hideRangeFrame)
 		end
 	elseif cid == 70440 then--Monara
 		timerShadowNovaCD:Cancel()
 	elseif cid == 70236 then--Zandalari Storm-Caller
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			self:Schedule(3, hideRangeFrame)
 		end
 	elseif cid == 70445 then--Stormbringer Draz'kil
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			self:Schedule(3, hideRangeFrame)
 		end
 	elseif cid == 69834 or cid == 69821 then
 		timerConductiveShield:Cancel(args.destName)
