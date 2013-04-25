@@ -1738,14 +1738,15 @@ end
 
 function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
-		if type(loadDelay) == "table" then
-			for i, v in ipairs(loadDelay) do
+		local modsToLoad = loadDelay
+		loadDelay = nil
+		if type(modsToLoad) == "table" then
+			for i, v in ipairs(modsToLoad) do
 				DBM:LoadMod(v)
 			end
 		else
-			DBM:LoadMod(loadDelay)
+			DBM:LoadMod(modsToLoad)
 		end
-		loadDelay = nil
 	end
 	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
 		guiRequested = false
