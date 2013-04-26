@@ -281,7 +281,7 @@ local function sendSync(prefix, msg)
 	end
 end
 
---
+
 local function strFromTime(time)
 	if type(time) ~= "number" then time = 0 end
 	time = math.floor(time)
