@@ -2851,7 +2851,11 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 			if mod.ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
 			else
-				self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+				if mod.type == "scenario" then
+					self:AddMsg(DBM_CORE_SCENARIO_STARTED:format(difficultyText..mod.combatInfo.name))
+				else
+					self:AddMsg(DBM_CORE_COMBAT_STARTED:format(difficultyText..mod.combatInfo.name))
+				end
 			end
 		end
 	end
@@ -2907,6 +2911,10 @@ end
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
+		local scenario = false
+		if mod.type == "scenario" then
+			scenario = true
+		end
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
@@ -2954,20 +2962,36 @@ function DBM:EndCombat(mod, wipe)
 					mod.stats.normalPulls = mod.stats.normalPulls - 1
 				end
 				if DBM.Options.ShowWipeMessage then
-					self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
+					if scenario then
+						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
+					else
+						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime)))
+					end
 				end
 			else
 				if DBM.Options.ShowWipeMessage then
-					self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+					if scenario then
+						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), totalPulls - totalKills))
+					else
+						self:AddMsg(DBM_CORE_COMBAT_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, wipeHP, strFromTime(thisTime), totalPulls - totalKills))
+					end
 				end
 			end
 
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP, totalPulls - totalKills)
+					if scenario then
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalPulls - totalKills)
+					else
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP, totalPulls - totalKills)
+					end
 				else
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP)
+					if scenario then
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(mod.combatInfo.name or ""))
+					else
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP)
+					end
 				end
 				sendWhisper(k, msg)
 			end
@@ -3064,23 +3088,47 @@ function DBM:EndCombat(mod, wipe)
 			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "challenge5" and mod.stats.challengeKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
 			if DBM.Options.ShowKillMessage then
 				if not thisTime then--was a bad pull so we ignored thisTime
-					self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, DBM_CORE_UNKNOWN))
-				elseif mod.ignoreBestkill then
+					if scenario then
+						self:AddMsg(DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..mod.combatInfo.name, DBM_CORE_UNKNOWN))
+					else
+						self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, DBM_CORE_UNKNOWN))
+					end
+				elseif mod.ignoreBestkill then--Should never happen in a scenario so no need for scenario check.
 					self:AddMsg(DBM_CORE_BOSS_DOWN_I:format(difficultyText..mod.combatInfo.name, totalKills))
 				elseif not lastTime then
-					self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
+					if scenario then
+						self:AddMsg(DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
+					else
+						self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
+					end
 				elseif thisTime < (bestTime or math.huge) then
-					self:AddMsg(DBM_CORE_BOSS_DOWN_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills))
+					if scenario then
+						self:AddMsg(DBM_CORE_SCENARIO_COMPLETE_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills))
+					else
+						self:AddMsg(DBM_CORE_BOSS_DOWN_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills))
+					end
 				else
-					self:AddMsg(DBM_CORE_BOSS_DOWN_L:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills))
+					if scenario then
+						self:AddMsg(DBM_CORE_SCENARIO_COMPLETE_L:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills))
+					else
+						self:AddMsg(DBM_CORE_BOSS_DOWN_L:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime), totalKills))
+					end
 				end
 			end
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				if DBM.Options.WhisperStats then
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalKills)
+					if scenario then
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_KILL_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalKills)
+					else
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalKills)
+					end
 				else
-					msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(playerName, difficultyText..(mod.combatInfo.name or ""))
+					if scenario then
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_KILL:format(playerName, difficultyText..(mod.combatInfo.name or ""))
+					else
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(playerName, difficultyText..(mod.combatInfo.name or ""))
+					end
 				end
 				sendWhisper(k, msg)
 			end
@@ -3442,6 +3490,7 @@ do
 			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 				difficultyText = select(2, DBM:GetCurrentInstanceDifficulty())
 			end
+			if difficultyText == CHALLENGETYPE4 then return end--status not really useful on scenario mods since there is no way to report progress as a percent. We just ignore it.
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
@@ -3461,7 +3510,11 @@ do
 			mod = mod or inCombat[1]
 			local hp = ("%d%%"):format((mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
 			if not autoRespondSpam[sender] then
-				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), hp or DBM_CORE_UNKNOWN, getNumAlivePlayers(), GetNumGroupMembers()))
+				if difficultyText == CHALLENGETYPE4 then
+					sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficultyText..(mod.combatInfo.name or ""), getNumAlivePlayers(), GetNumGroupMembers()))
+				else
+					sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), hp or DBM_CORE_UNKNOWN, getNumAlivePlayers(), GetNumGroupMembers()))
+				end
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
