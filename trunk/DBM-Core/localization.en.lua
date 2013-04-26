@@ -51,11 +51,18 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "Miscellaneous"
 
 DBM_CORE_AUTO_RESPONDED						= "Auto-responded."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d people alive"
+--Bosses
 DBM_CORE_AUTO_RESPOND_WHISPER				= "%s is busy fighting against %s (%s, %d/%d people alive)"
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s has defeated %s!"
 DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s has defeated %s! They have %d total victories."
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s has wiped on %s at %s"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s has wiped on %s at %s. They have %d total wipes on this difficulty."
+--Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
+DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO		= "%s is busy in %s (%d/%d people alive)"
+DBM_CORE_WHISPER_SCENARIO_END_KILL			= "%s has completed %s!"
+DBM_CORE_WHISPER_SCENARIO_END_KILL_STATS	= "%s has completed %s! They have %d total victories."
+DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s did not complete %s"
+DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s did not complete %s. They have %d total incompletes on this difficulty."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mod - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
