@@ -261,7 +261,7 @@ end
 function mod:UNIT_DIED(args)
 	if bigOozeGUIDS[args.destGUID] then
 		bigOozeAlive = bigOozeAlive - 1
-		bigOozeGUIDS[guid] = nil
+		bigOozeGUIDS[args.destGUID] = nil
 --		print("DBM Debug Died: ", bigOozeAlive)
 	end
 end
