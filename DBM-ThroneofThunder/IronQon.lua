@@ -106,10 +106,11 @@ local function updateHealthFrame()
 	end
 end
 
-local function isTank(unit)
+local function notEligable(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
 	-- 3. check boss' highest threat target
+	-- 4. Check monks
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
@@ -122,6 +123,12 @@ local function isTank(unit)
 	if UnitExists("boss2target") and UnitDetailedThreatSituation(unit, "boss2") then
 		return true
 	end
+	--He CAN spear monks that are not in melee (I seen our mistweaver get many spears at ranged).
+	--However, if he targets a monk that IS in melee, he switches to a different target (again, i've seen him target our mistweaver in melee range, then instantly switched to ANOTHER target because the mistweaver was in melee).
+	--So for now, we just flat ignore monks. TODO, if "unit" is a monk, check distance between that unit and the tank. if unit < 15 yards, assume they are in melee? this way we can restore mistweaver's at range target scanning.
+	if select(2, UnitClass(unit)) == "MONK" then
+		return true
+	end
 	return false
 end
 
@@ -129,7 +136,7 @@ end
 --This will fail if the spear target actually IS his highest threat
 --In that case the aoe failsafe warning will just be used, so 1/10 or 1/25 odds in phase 1.
 local function checkSpear()
-	if UnitExists("boss1target") and not isTank("boss1target") then--Boss 1 is looking at someone that isn't his highest threat or a tank (have to filter tanks cause he looks at them to cast impale, have to filter his highest threat in case it's not a tank, ie a healer)
+	if UnitExists("boss1target") and not notEligable("boss1target") then--Boss 1 is looking at someone that isn't his highest threat or a tank (have to filter tanks cause he looks at them to cast impale, have to filter his highest threat in case it's not a tank, ie a healer)
 		mod:Unschedule(checkSpear)
 		local targetname = DBM:GetUnitFullName("boss1target")
 		warnThrowSpear:Show(targetname)
@@ -330,7 +337,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (heroic phase change trigger)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		self:Unschedule(checkSpear)
-		self:Schedule(25, checkSpear)
 		timerThrowSpearCD:Start()
 		if cid == 68079 then--Ro'shak
 			if self.Options.RangeFrame then
@@ -343,6 +349,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerMoltenOverload:Cancel()
 			timerWhirlingWindsCD:Cancel()
 			warnPhase2:Show()
+			self:Schedule(25, checkSpear)
 			if self:IsDifficulty("heroic10", "heroic25") then
 				timerFreezeCD:Start(13)
 				timerFrostSpikeCD:Start(15)
@@ -362,17 +369,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			specWarnWindStorm:Cancel()
 			timerFrostSpikeCD:Cancel()
 			warnPhase3:Show()
+			self:Schedule(25, checkSpear)
 			timerDeadZoneCD:Start(8.5)
-			--Maybe remove this range frame. in heroic phase 3-4, he only targets melee and no one else, and cd is 31 so ALL melee just soak entire phase and never move for it. does mindless need a range checker?
-			if self:IsDifficulty("heroic10", "heroic25") then--On heroic, the fire guy returns and attacks clumps again
-				if self.Options.RangeFrame then--So on heroic we need to restore the grouping range frame
-					if self:IsDifficulty("heroic25") then
-						DBM.RangeCheck:Show(10, nil, nil, 4)--You can have 1 person in range safely. Frame goes red at 4
-					else
-						DBM.RangeCheck:Show(10, nil, nil, 2)--You can have 1 person in range safely. Frame goes red at 2
-					end
-				end
-			end
 			checkArcing()
 		elseif cid == 68081 then--Dam'ren
 			--confirmed, dam'ren's abilities do NOT reset in phase 4, cds from phase 3 carry over.
@@ -381,6 +379,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			warnPhase4:Show()
 			timerRisingAngerCD:Start(15)
 			timerFistSmashCD:Start(62, 1)
+			self:Unschedule(checkArcing)--Phase 4, new arcings start going out again so no need to do waste time on this check until  quet'zal dies
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10, nil, nil, 1)--Switch range frame back to 1. Range is assumed 10, no spell info
+			end
+			if self.Options.InfoFrame then
+				DBM.InfoFrame:SetHeader(arcingName)
+				DBM.InfoFrame:Show(5, "playerbaddebuff", 136193)
+			end
 		end
 	elseif spellId == 139172 and self:AntiSpam(2, 7) then--Whirling Winds (Phase 1 Heroic)
 		warnWhirlingWinds:Show()
@@ -443,6 +449,7 @@ function mod:UNIT_DIED(args)
 		warnWindStorm:Cancel()
 		specWarnWindStorm:Cancel()
 		timerWindStorm:Cancel()
+		checkArcing()
 		if self:IsDifficulty("heroic10", "heroic25") then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
@@ -453,7 +460,6 @@ function mod:UNIT_DIED(args)
 			self:Unschedule(checkSpear)
 			self:Schedule(25, checkSpear)
 			timerThrowSpearCD:Start()
-			checkArcing()
 		end
 	elseif cid == 68081 then--Dam'ren
 		timerDeadZoneCD:Cancel()
