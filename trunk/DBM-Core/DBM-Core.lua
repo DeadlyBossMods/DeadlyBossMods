@@ -2911,10 +2911,7 @@ end
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
-		local scenario = false
-		if mod.type == "scenario" then
-			scenario = true
-		end
+		local scenario = mod.type == "scenario"
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
