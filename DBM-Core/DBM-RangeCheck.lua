@@ -764,6 +764,10 @@ do
 	local mapSizes = DBM.MapSizes
 
 	function getDistanceBetween(uId, x, y)
+		-- alternative arguments: uId, uId2
+		if type(x) == "string" then
+			x, y = GetPlayerMapPosition(x)
+		end
 		local startX, startY = GetPlayerMapPosition(uId)
 		local mapName = GetMapInfo()
 		local dims  = mapSizes[mapName] and mapSizes[mapName][GetCurrentMapDungeonLevel()]
@@ -863,6 +867,9 @@ function rangeCheck:IsShown()
 	return frame and frame:IsShown() or radarFrame and radarFrame:IsShown()
 end
 
+-- GetDistance(uId) -- distance between you and the given uId
+-- GetDistance(uId, x, y) -- distance between uId and the coordinates
+-- GetDistance(uId, uId2) -- distance between the two uIds
 function rangeCheck:GetDistance(...)
 	if initRangeCheck() then
 		return getDistanceBetween(...)
