@@ -125,8 +125,9 @@ local function notEligable(unit)
 	end
 	--He CAN spear monks that are not in melee (I seen our mistweaver get many spears at ranged).
 	--However, if he targets a monk that IS in melee, he switches to a different target (again, i've seen him target our mistweaver in melee range, then instantly switched to ANOTHER target because the mistweaver was in melee).
-	--So for now, we just flat ignore monks. TODO, if "unit" is a monk, check distance between that unit and the tank. if unit < 15 yards, assume they are in melee? this way we can restore mistweaver's at range target scanning.
-	if select(2, UnitClass(unit)) == "MONK" then
+	--We assume any monk within 15 yards of tank is in melee range, may be wrong once in a blue moon.
+	--Should fairly accurately allow the mod to announce spears on monks outside melee range while ignoring monk targets in melee range
+	if (select(2, UnitClass(unit)) == "MONK") and (GetDistance(unit, "boss2target") <= 15) then
 		return true
 	end
 	return false
