@@ -66,7 +66,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(825)
 
 L:SetWarningLocalization({
-	warnKickShell			= ">%s<使用了%s(還剩餘%d)",
+	warnKickShell			= "%s被>%s<使用(還剩餘%d)",
 	specWarnCrystalShell	= "取得%s"
 })
 
