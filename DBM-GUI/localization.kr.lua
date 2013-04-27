@@ -39,7 +39,10 @@ L.Disable					= "끄기"
 
 L.NoSound					= "끄기"
 
-L.IconsInUse				= "현재 우두머리에서 사용 되는 전술 목표 아이콘:"
+L.IconsInUse				= "현재 전투에서 사용 되는 전술 목표 아이콘:"
+
+L.QuestComplete				= "이 전투를 이미 완료했습니다."
+L.QuestIncomplete			= "이 전투를 아직 완료하지 않았습니다. 참고: 이미 완료한 전투라도 UI 재시작 직후나, 또는 전투가 끝난 후 얼마 지나지 않아 재접속을 한 경우라면 미완료로 표시될 수 있습니다."
 
 -- Tab: Boss Statistics
 L.BossStatistics			= "공략 상황"
