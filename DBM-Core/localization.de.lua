@@ -52,11 +52,18 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "Verschiedenes"
 
 DBM_CORE_AUTO_RESPONDED						= "Automatisch geantwortet."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d Spieler am Leben"
+--Bosses
 DBM_CORE_AUTO_RESPOND_WHISPER				= "%s ist damit beschäftigt gegen %s zu kämpfen! (%s, %d/%d Spieler am Leben)"
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s hat %s besiegt!"
 DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s hat %s besiegt! Das war der %d. Sieg."
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s war %s bei %s unterlegen."
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s war %s bei %s unterlegen. Das war die %d. Niederlage auf diesem Schwierigkeitsgrad."
+--Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
+DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO		= "%s ist beschäftigt in %s (%d/%d Spieler am Leben)"
+DBM_CORE_WHISPER_SCENARIO_END_KILL			= "%s hat %s abgeschlossen!"
+DBM_CORE_WHISPER_SCENARIO_END_KILL_STATS	= "%s hat %s abgeschlossen! Das war der %d. Abschluss."
+DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s hat %s abgebrochen."
+DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s hat %s abgebrochen. Das war der %d. Abbruch auf diesem Schwierigkeitsgrad."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mod - Versionen"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
