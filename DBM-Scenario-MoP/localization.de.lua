@@ -39,6 +39,26 @@ L:SetMiscLocalization{
 	TelvrakPull			= "Zan'vess will never fall!"--translate (trigger)
 }
 
+-----------------------
+-- Brewmoon Festival --
+-----------------------
+L= DBM:GetModLocalization("d539")
+
+L:SetTimerLocalization{
+	timerBossCD		= "%s kommt"
+}
+
+L:SetOptionLocalization{
+	timerBossCD		= "Zeige Zeit bis zum Erscheinen des nächsten Bosses"
+}
+
+L:SetMiscLocalization{
+	RatEngage	= "Das ist die Höhlenmutter! Passt auf",
+	BeginAttack	= "Wir müssen die Dorfbewohner verteidigen!",
+	Yeti		= "Kriegsyeti der Bataari",
+	Qobi		= "Kriegshetzer Qobi"
+}
+
 ------------------------------
 -- Crypt of Forgotten Kings --
 ------------------------------
@@ -71,6 +91,15 @@ L:SetOptionLocalization{
 -- Troves of the Thunder King --
 --------------------------------
 L= DBM:GetModLocalization("d620")
+
+----------------
+-- Unga Ingoo --
+----------------
+L= DBM:GetModLocalization("d499")
+
+L:SetMiscLocalization{
+	Stage2	= "Nun, dieser Ort gibt eine genauso gute Braustätte ab wie jeder andere."
+}
 
 ------------------------
 -- Warlock Green Fire --
