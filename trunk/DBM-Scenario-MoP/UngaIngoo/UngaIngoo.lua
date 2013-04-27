@@ -8,7 +8,7 @@ mod:RegisterCombat("scenario", 882)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"UNIT_DIED",
+--	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_SAY",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -49,7 +49,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 68168 then--Captain Ook
+	if cid == 62465 then--Captain Ook
 
 	end
 end
