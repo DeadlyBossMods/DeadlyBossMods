@@ -20,6 +20,8 @@ L.TabCategory_OTHER    		= "Sonstige Boss Mods"
 L.BossModLoaded 			= "Statistiken von %s"
 L.BossModLoad_now 			= [[Dieses Boss Mod ist nicht geladen. Es wird automatisch geladen, wenn du die Instanz betrittst. Du kannst auch auf den Button klicken um das Boss Mod manuell zu laden.]]
 
+
+
 L.PosX						= 'Position X'
 L.PosY						= 'Position Y'
 
@@ -37,6 +39,9 @@ L.Disable					= "Deaktiviere"
 L.NoSound					= "Kein Sound"
 
 L.IconsInUse				= "Von diesem Mod benutzte Zeichen"
+
+L.QuestComplete				= "Dieser Boss wurde in dieser Woche bereits besiegt."
+L.QuestIncomplete			= "Dieser Boss wurde in dieser Woche noch nicht besiegt. HINWEIS: Falls du nach Abfrage des Status zu schnell /reload ausführst oder dich neu einloggst werden Bosse fälschlicherweise als \"nicht besiegt\" angezeigt."
 
 -- Tab: Boss Statistics
 L.BossStatistics			= "Boss Statistiken"
@@ -86,7 +91,8 @@ L.RaidWarnColor_1 			= "Farbe 1"
 L.RaidWarnColor_2 			= "Farbe 2"
 L.RaidWarnColor_3		 	= "Farbe 3"
 L.RaidWarnColor_4 			= "Farbe 4"
-L.InfoRaidWarning			= [[Hier wird die Position und die Farben für das Fenster für Schlachtzugwarnungen festgelegt. Dieses Fenster wird für Nachrichten wie "Player X ist betroffen von Y" verwendet.]]
+L.InfoRaidWarning			= [[Hier werden Position und Farben des Fensters für Schlachtzugwarnungen festgelegt. Dieses Fenster wird für Nachrichten wie "Spieler X ist betroffen von Y" verwendet.]]
+
 L.ColorResetted 			= "Diese Farbeinstellung wurde zurückgesetzt."
 L.ShowWarningsInChat 		= "Zeige Warnungen im Chatfenster"
 L.ShowFakedRaidWarnings 	= "Zeige Warnungen als künstliche Schlachtzugwarnungen"
@@ -95,8 +101,8 @@ L.WarningIconRight 			= "Zeige Symbol rechts an"
 L.ShowCountdownText			= "Zeige Countdown-Text"
 L.RaidWarnMessage 			= "Danke, dass du Deadly Boss Mods verwendest"
 L.BarWhileMove 				= "bewegbare Schlachtzugwarnung"
-L.RaidWarnSound				= "Spiele Sound bei Schlachtzugwarnung"
-L.CountdownVoice			= "Setze Stimme für Countdown- und Countout-Sounds"
+L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
+L.CountdownVoice			= "Stimme für Countdown- und Countout-Sounds"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
 L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen (tödlich für dich/Schlachtzug)"
@@ -122,12 +128,12 @@ L.BarTexture 				= "Balkentextur"
 L.BarStartColor				= "Startfarbe"
 L.BarEndColor 				= "Endfarbe"
 L.ExpandUpwards				= "Erweitere Balken nach oben"
-L.Bar_Font					= "Schrift für Balken"
+L.Bar_Font					= "Schriftart für Balken"
 L.Bar_FontSize				= "Schriftgröße"
 L.Slider_BarOffSetX 		= "Abstand X: %d"
 L.Slider_BarOffSetY 		= "Abstand Y: %d"
-L.Slider_BarWidth 			= "Balkenbreite: %d"
-L.Slider_BarScale 			= "Balkenskalierung: %0.2f"
+L.Slider_BarWidth 			= "Breite: %d"
+L.Slider_BarScale 			= "Skalierung: %0.2f"
 L.AreaTitle_BarSetup		= "Allgemeine Balkeneinstellungen"
 L.AreaTitle_BarSetupSmall 	= "Einstellungen für kleine Balken"
 L.AreaTitle_BarSetupHuge	= "Einstellungen für große Balken"
@@ -142,12 +148,12 @@ L.Panel_SpecWarnFrame		= "Spezialwarnungen"
 L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
 L.SpecWarn_Enabled			= "Zeige Spezialwarnungen für Bossfähigkeiten"
 L.SpecWarn_LHFrame			= "Aktiviere aufblinkenden Bildschirm bei Spezialwarnungen"
-L.SpecWarn_Font				= "Schrift für Spezialwarnungen"
+L.SpecWarn_Font				= "Schriftart für Spezialwarnungen" --unused
 L.SpecWarn_DemoButton		= "Zeige Beispiel"
 L.SpecWarn_MoveMe			= "Positionieren"
 L.SpecWarn_FontSize			= "Schriftgröße"
 L.SpecWarn_FontColor		= "Schriftfarbe"
-L.SpecWarn_FontType			= "Wähle Schriftart"
+L.SpecWarn_FontType			= "Schriftart für Spezialwarnungen"
 L.SpecWarn_ResetMe			= "Auf Standard zurücksetzen"
 
 -- Tab: HealthFrame
