@@ -152,6 +152,10 @@ Nest3: Lower SW
 Nest4: Upper NE
 
 Nest5: Upper SE
+
+Nest6: Upper Middle
+
+Nest7: Lower NE
 --]]
 
 --[[10N

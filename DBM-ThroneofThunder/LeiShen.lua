@@ -379,18 +379,36 @@ end
 
 local function LoopIntermission()
 	if not southDestroyed then
-		timerOverchargeCD:Start(6.5)
+		if mod:IsDifficulty("lfr25") then
+			timerOverchargeCD:Start(17.5)
+		else
+			timerOverchargeCD:Start(6.5)
+		end
 	end
 	if not eastDestroyed then
-		timerDiffusionChainCD:Start(8)
+		if mod:IsDifficulty("lfr25") then
+			timerDiffusionChainCD:Start(17.5)
+		else
+			timerDiffusionChainCD:Start(8)
+		end
 	end
 	if not westDestroyed then
-		warnBouncingBolt:Schedule(15)
-		specWarnBouncingBolt:Schedule(15)
-		timerBouncingBoltCD:Start(15)
+		if mod:IsDifficulty("lfr25") then
+			warnBouncingBolt:Schedule(9)
+			specWarnBouncingBolt:Schedule(9)
+			timerBouncingBoltCD:Start(9)
+		else
+			warnBouncingBolt:Schedule(15)
+			specWarnBouncingBolt:Schedule(15)
+			timerBouncingBoltCD:Start(15)
+		end
 	end
 	if not northDestroyed then
-		timerStaticShockCD:Start(16)
+		if mod:IsDifficulty("lfr25") then
+			--Don't know LFR timer for this yet, best not to show it since this one is wrong.
+		else
+			timerStaticShockCD:Start(16)
+		end
 	end
 end
 
@@ -423,21 +441,33 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerOverchargeCD:Cancel()
 		timerBouncingBoltCD:Cancel()
 		if not eastDestroyed then
-			timerDiffusionChainCD:Start(6)
+			if self:IsDifficulty("lfr25") then
+				timerDiffusionChainCD:Start(10)
+			else
+				timerDiffusionChainCD:Start(6)
+			end
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)
 			end
 		end
 		if not southDestroyed then
-			timerOverchargeCD:Start(6)
+			if self:IsDifficulty("lfr25") then
+				timerOverchargeCD:Start(10)
+			else
+				timerOverchargeCD:Start(6)
+			end
 		end
-		if not westDestroyed then
+		if not westDestroyed and not self:IsDifficulty("lfr25") then--Doesn't get cast in first wave in LFR, only second
 			warnBouncingBolt:Schedule(14)
 			specWarnBouncingBolt:Schedule(14)
 			timerBouncingBoltCD:Start(14)
 		end
 		if not northDestroyed then
-			timerStaticShockCD:Start(19)
+			if self:IsDifficulty("lfr25") then
+				--Still need LFR timing on this. Forgot to log first transition and we blew up static shock first so it not up in second transition log
+			else
+				timerStaticShockCD:Start(19)
+			end
 		end
 		self:Schedule(23, LoopIntermission)--Fire function to start second wave of specials timers
 	elseif spellId == 136395 and self:AntiSpam(2, 3) and not intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
