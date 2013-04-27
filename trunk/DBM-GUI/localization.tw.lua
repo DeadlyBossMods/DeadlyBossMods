@@ -41,6 +41,9 @@ L.NoSound					= "靜音"
 
 L.IconsInUse				= "此模組已使用的標記"
 
+L.QuestComplete				= "你已經完成這個首領的每周聲望/隨機團隊/傳奇任務的取得權。"
+L.QuestIncomplete			= "你尚未取得這個首領的每周聲望/隨機團隊/傳奇任務的取得權。注意:在開戰後重載UI或是重登太快可能會導致結果顯示尚未取得。"
+
 -- Tab: Boss Statistics
 L.BossStatistics			= "首領狀態"
 L.Statistic_Kills			= "勝利："
