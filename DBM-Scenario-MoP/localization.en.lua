@@ -38,6 +38,26 @@ L:SetMiscLocalization{
 	TelvrakPull			= "Zan'vess will never fall!"
 }
 
+-----------------------
+-- Brewmoon Festival --
+-----------------------
+L= DBM:GetModLocalization("d539")
+
+L:SetTimerLocalization{
+	timerBossCD		= "%s Incoming"
+}
+
+L:SetOptionLocalization{
+	timerBossCD		= "Show timer for next boss spawn"
+}
+
+L:SetMiscLocalization{
+	RatEngage	= "It's the Den Mother! Look out",
+	BeginAttack	= "We must defend the villagers!",
+	Yeti		= "Bataari War Yeti",
+	Qobi		= "Warbringer Qobi"
+}
+
 ------------------------------
 -- Crypt of Forgotten Kings --
 ------------------------------
@@ -74,7 +94,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnAchFiveAlive	= "Show warning if achievement \"Number Five Is Alive\" failed."
+	WarnAchFiveAlive	= "Show warning if achievement \"Number Five Is Alive\" failed"
 }
 
 --------------------------------
