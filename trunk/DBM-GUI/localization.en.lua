@@ -41,7 +41,7 @@ L.NoSound					= "No sound"
 L.IconsInUse				= "Icons used by this mod"
 
 L.QuestComplete				= "Already completed weekly rep/LFR/legendary credit on this encounter."
-L.QuestIncomplete			= "Still eligable for weekly rep/LFR/legendary credit on this encounter. NOTE: If you reloaded UI any point after login, this information cannot be trusted."
+L.QuestIncomplete			= "Still eligable for weekly rep/LFR/legendary credit on this encounter. NOTE: Reloaded UI or relog too soon after pulling complete status will result in invalid return of not complete"
 
 -- Tab: Boss Statistics
 L.BossStatistics			= "Boss Statistics"
