@@ -21,6 +21,44 @@ L:SetMiscLocalization{
 	BorokhulaAdds		= "calls out for reinforcements!"--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
 }
 
+-----------------------
+-- A Little Patience --
+-----------------------
+L= DBM:GetModLocalization("d589")
+
+L:SetMiscLocalization{
+	ScargashPull		= "Your Alliance is WEAK!"--Not yet in use but could be with more logs and combat start timers
+}
+
+-------------------------
+-- Assault of Zan'vess --
+-------------------------
+L= DBM:GetModLocalization("d593")
+
+L:SetMiscLocalization{
+	TelvrakPull			= "Zan'vess will never fall!"
+}
+
+-----------------------
+-- Brewmoon Festival --
+-----------------------
+L= DBM:GetModLocalization("d539")
+
+L:SetTimerLocalization{
+	timerBossCD		= "다음 %s"
+}
+
+L:SetOptionLocalization{
+	timerBossCD		= "다음 우두머리 소환 바 표시"
+}
+
+L:SetMiscLocalization{
+	RatEngage	= "It's the Den Mother! Look out",
+	BeginAttack	= "We must defend the villagers!",
+	Yeti		= "Bataari War Yeti",
+	Qobi		= "Warbringer Qobi"
+}
+
 ------------------------------
 -- Crypt of Forgotten Kings --
 ------------------------------
@@ -53,6 +91,15 @@ L:SetOptionLocalization{
 -- Troves of the Thunder King --
 --------------------------------
 L= DBM:GetModLocalization("d620")
+
+----------------
+-- Unga Ingoo --
+----------------
+L= DBM:GetModLocalization("d499")
+
+L:SetMiscLocalization{
+	Stage2	= "Well! This looks like as good a place to brew as any."
+}
 
 ------------------------
 -- Warlock Green Fire --
