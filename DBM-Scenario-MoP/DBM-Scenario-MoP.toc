@@ -21,7 +21,7 @@
 ## X-DBM-Mod-Name-zhCN: 场景战役 (熊猫人之谜)
 ## X-DBM-Mod-Name-frFR: Scénario (MoP)
 ## X-DBM-Mod-Sort: 35
-## X-DBM-Mod-LoadZoneID: 906, 851, 899, 911, 920, 934, 919, 900, 878, 912, 883, 822, 884, 914
+## X-DBM-Mod-LoadZoneID: 906, 851, 899, 911, 920, 934, 919, 900, 878, 912, 883, 822, 884, 914, 880
 localization.en.lua
 localization.kr.lua
 localization.de.lua
@@ -43,6 +43,8 @@ CryptofForgotenKings\MapSizes.lua
 CryptofForgotenKings\CryptofKings.lua
 DaggerInDark\MapSizes.lua
 DaggerInDark\DaggerInDark.lua
+GreenstoneVillage\MapSizes.lua
+GreenstoneVillage\GreenstoneVillage.lua
 Landfall\MapSizes.lua
 Landfall\Landfall.lua
 TheramoresFall\MapSizes.lua
