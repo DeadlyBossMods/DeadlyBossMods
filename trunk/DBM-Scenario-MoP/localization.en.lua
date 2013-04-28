@@ -29,6 +29,11 @@ L:SetMiscLocalization{
 	ScargashPull		= "Your Alliance is WEAK!"--Not yet in use but could be with more logs and combat start timers
 }
 
+---------------------------
+-- Arena Of Annihilation --
+---------------------------
+L= DBM:GetModLocalization("d511")
+
 -------------------------
 -- Assault of Zan'vess --
 -------------------------
@@ -80,15 +85,10 @@ L:SetMiscLocalization{
 	LizardLord		= "Dem Saurok be guardin de cave.  Let's take care of 'em."
 }
 
-----------------------
--- Theramore's Fall --
-----------------------
-L= DBM:GetModLocalization("d566")
-
----------------------------
--- Arena Of Annihilation --
----------------------------
-L= DBM:GetModLocalization("d511")
+------------------------
+-- Greenstone Village --
+------------------------
+L= DBM:GetModLocalization("d492")
 
 --------------
 -- Landfall --
@@ -113,6 +113,11 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAchFiveAlive	= "Show warning if achievement \"Number Five Is Alive\" failed"
 }
+
+----------------------
+-- Theramore's Fall --
+----------------------
+L= DBM:GetModLocalization("d566")
 
 --------------------------------
 -- Troves of the Thunder King --
