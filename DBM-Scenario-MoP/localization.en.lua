@@ -63,6 +63,23 @@ L:SetMiscLocalization{
 ------------------------------
 L= DBM:GetModLocalization("d504")
 
+-----------------------
+-- Dagger in the Dark --
+-----------------------
+L= DBM:GetModLocalization("d616")
+
+L:SetTimerLocalization{
+	timerAddsCD		= "Summon Adds CD"
+}
+
+L:SetOptionLocalization{
+	timerAddsCD		= "Show timer for Lizard-Lord's Summon Adds cooldown"
+}
+
+L:SetMiscLocalization{
+	LizardLord		= "Dem Saurok be guardin de cave.  Let's take care of 'em."
+}
+
 ----------------------
 -- Theramore's Fall --
 ----------------------
