@@ -244,7 +244,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find(L.chargeTarget) then
 		self:SendSync("ChargeTo", target)
-	elseif msg:find(L.newForces) then
+	elseif msg:find(L.newForces, 1, true) then
 		self:SendSync("Door")
 	end
 end
