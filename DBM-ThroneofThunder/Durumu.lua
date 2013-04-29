@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(68036)--Crimson Fog 69050, 
 mod:SetModelID(47189)
 mod:SetQuestID(32750)
+mod:SetZone()
 mod:SetUsedIcons(7, 6, 4, 1)
 
 mod:RegisterCombat("combat")
