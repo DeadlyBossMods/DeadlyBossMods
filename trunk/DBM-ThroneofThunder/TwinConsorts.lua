@@ -72,7 +72,7 @@ local timerLightOfDayCD					= mod:NewCDTimer(6, 137403, nil, false)--Trackable i
 local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
 --local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)--Also very high variation. (31~65). Can be confuse, no use.
-local timerIceCometCD					= mod:NewCDTimer(20.5, 137419)--Every 20.5-25 seconds on normal. On 10 heroic, variables 20.5~41s. Maybe 25 heroic same?
+local timerIceCometCD					= mod:NewCDTimer(20.5, 137419)--Every 20.5-25 seconds on normal. On 10 heroic, variables 20.5~41s. 25 heroic vary 20.5-27.
 local timerNuclearInferno				= mod:NewBuffActiveTimer(12, 137491)
 local timerNuclearInfernoCD				= mod:NewCDTimer(49.5, 137491)
 --Dusk
@@ -228,8 +228,11 @@ function mod:OnSync(msg)
 		timerIceCometCD:Start()
 		timerFanOfFlamesCD:Start()
 		--timerFlamesOfPassionCD:Start(12.5)
+		--Hard coded failsafe is in place on this fight. cooldown IS 45 seconds, BUT if a 2nd comet spawns before first inferno.
+		--I want to analyze more logs before coding in something fancy for this failsafe cause i want to verify it more first.
+		--For now, i'll just set it to 45. it is a cooldown timer.
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerNuclearInfernoCD:Start(50)
+			timerNuclearInfernoCD:Start(45)--45-50 second variation (cd is 45, but there is  hard code failsafe that if a commet has spawned recently it's extended
 		end
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
