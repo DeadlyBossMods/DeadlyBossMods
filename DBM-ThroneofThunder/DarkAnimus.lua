@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69427)
 mod:SetModelID(47527)
 mod:SetQuestID(32752)
+mod:SetZone()
 
 mod:RegisterCombat("emote", L.Pull)
 
