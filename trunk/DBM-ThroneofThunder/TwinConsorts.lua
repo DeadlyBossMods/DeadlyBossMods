@@ -242,7 +242,7 @@ function mod:OnSync(msg)
 			timerNuclearInfernoCD:Start(63)
 		end
 		--timerCosmicBarrageCD:Start(54)--I want to analyze a few logs and readd this once I know for certain this IS the minimum time.
-	elseif msg == "Phase3" then
+	elseif msg == "Phase3" and GetTime() - self.combatInfo.pull >= 5 then
 		self:UnregisterShortTermEvents()
 		timerFanOfFlamesCD:Cancel()--DO NOT CANCEL THIS ON YELL
 		if not phase3Started then

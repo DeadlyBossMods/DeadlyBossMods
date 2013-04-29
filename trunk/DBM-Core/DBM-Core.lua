@@ -2710,7 +2710,7 @@ function checkWipe(confirm)
 			savedDifficulty, difficultyText = DBM:GetCurrentInstanceDifficulty()
 		end
 		local wipe = true
-		if IsInScenarioGroup() then -- do not wipe in Scenario Group even player is ghot.
+		if IsInScenarioGroup() then -- do not wipe in Scenario Group even player is ghost.
 			wipe = false
 		elseif IsEncounterInProgress() then
 			wipe = false
