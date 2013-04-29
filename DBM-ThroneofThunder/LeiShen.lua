@@ -39,7 +39,6 @@ local warnSummonBallLightning			= mod:NewSpellAnnounce(136543, 3)--This seems to
 --Phase 3
 local warnPhase3						= mod:NewPhaseAnnounce(3)
 local warnViolentGaleWinds				= mod:NewSpellAnnounce(136889, 3)
-local warnElectricalShock				= mod:NewStackAnnounce(136914, 3, nil, mod:IsTank())
 
 --Conduits (All phases)
 local specWarnStaticShock				= mod:NewSpecialWarningYou(135695)
@@ -60,9 +59,6 @@ local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank(), 
 local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, nil, 2)
 local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil, nil, 2)
 local specWarnOverloadedCircuits		= mod:NewSpecialWarningMove(137176)
---Phase 3
-local specWarnElectricalShock			= mod:NewSpecialWarningStack(136914, mod:IsTank(), 12)--You get about 12 stacks in 8 seconds, which is about how often you'll swap
-local specWarnElectricalShockOther		= mod:NewSpecialWarningTarget(136914, mod:IsTank())
 
 --Conduits (All phases)
 local timerStaticShock					= mod:NewBuffFadesTimer(8, 135695)
@@ -263,22 +259,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 135681 and args:GetDestCreatureID() == 68397 then--East (Diffusion Chain)
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			DBM.RangeCheck:Show(8)--Assume 8 since spell tooltip has no info
-		end
-	elseif args.spellId == 136914 then
-		--TODO add prints to figure out how this remotely doesn't work, when it's impossible.
-		--http://worldoflogs.com/reports/rt-gankfbp409i7qpvw/xe/?s=13273&e=13760&x=spellid+%3D+136914
-		--In above log, with warnings turned on, never saw a single one. not warnElectricalShock, not specWarnElectricalShock and certainly not specWarnElectricalShockOther
-		local amount = args.amount or 1
-		if not (amount % 3 == 0) then return end
-		warnElectricalShock:Show(args.destName, amount)
-		if amount >= 12 then
-			if args:IsPlayer() then
-				specWarnElectricalShock:Show(amount)
-			else
-				if not UnitDebuff("player", GetSpellInfo(136914)) and not UnitIsDeadOrGhost("player") then
-					specWarnElectricalShockOther:Show(args.destName)
-				end
-			end
 		end
 	elseif args.spellId == 137176 and self:AntiSpam(3, 5) and args:IsPlayer() then
 		specWarnOverloadedCircuits:Show()

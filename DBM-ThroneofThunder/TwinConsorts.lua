@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(68905, 68904)--Lu'lin 68905, Suen 68904
 mod:SetModelID(46975)--Lu'lin, 46974 Suen
 mod:SetQuestID(32755)
+mod:SetZone()
 
 mod:RegisterCombat("combat")
 
