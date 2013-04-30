@@ -3209,9 +3209,7 @@ end
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
 	if instanceType == "scenario" and difficulty == 1 then
-		return "normal5", GUILD_CHALLENGE_TYPE4.." - "--Just treat these like 5 man normals, for stat purposes.
-	elseif instanceType == "scenario" and difficulty == 2 then
-		return "heroic5", GUILD_CHALLENGE_TYPE4.." - "--Just treat these like 5 man heroics, for stat purposes.
+		return "normal5", GUILD_CHALLENGE_TYPE4.." - "--Just treat these like 5 man normals, for stat purposes. 5.2 compat code, diff index is still 1 for scenarios, 10 and 11 in 5.3
 	elseif difficulty == 1 then
 		if instanceType == "party" then
 			return "normal5", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
@@ -3234,6 +3232,10 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "challenge5", CHALLENGE_MODE.." - "
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
 		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
+	elseif difficulty == 10 then--5.3 normal scenario
+		return "normal5", GUILD_CHALLENGE_TYPE4.." - "
+	elseif difficulty == 11 then--5.3 heroic scenario
+		return "heroic5", HEROIC_SCENARIO.." - "
 	else--Returned 0, likely a world boss
 		return "worldboss", DBM_CORE_WORLD_BOSS.." - "
 	end
