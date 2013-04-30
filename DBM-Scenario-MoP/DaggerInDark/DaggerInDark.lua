@@ -82,10 +82,8 @@ function mod:UNIT_DIED(args)
 	end
 end
 
---[[
-"<78.3 22:22:54> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#The Darkhatched Lizard-Lord calls for help!#Darkhatched Lizard-Lord#####0#0##0#987#nil#0#false#false"]
-"<78.3 22:22:54> [UNIT_SPELLCAST_SUCCEEDED] Darkhatched Lizard-Lord [[target:Summon Adds Dummy::0:133091]]
---]]
+--"<78.3 22:22:54> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#The Darkhatched Lizard-Lord calls for help!#Darkhatched Lizard-Lord#####0#0##0#987#nil#0#false#false"]
+--"<78.3 22:22:54> [UNIT_SPELLCAST_SUCCEEDED] Darkhatched Lizard-Lord [[target:Summon Adds Dummy::0:133091]]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 133091 and self:AntiSpam() then
 		self:SendSync("LizardAdds")

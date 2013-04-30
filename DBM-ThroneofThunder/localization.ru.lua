@@ -12,7 +12,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnWaterMove	= "Спец-предупреждение, если вы стоите в $spell:138470\n(В случае, если скоро $spell:137313 или спадает дебафф $spell:138732)",
-	RangeFrame			= "Показывать окно проверки дистанции"
+	RangeFrame			= "Показывать окно проверки дистанции (8/4 м)"
 })
 
 --------------
@@ -205,7 +205,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame			= "Показывать динамическое окно проверки дистанции",
+	RangeFrame			= "Показывать динамическое окно проверки дистанции (10 м)",
 	InfoFrame			= "Информационное окно для игроков с $spell:136193"
 })
 
@@ -249,7 +249,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Спец-предупреждение перед началом промежуточной фазы",
-	RangeFrame					= "Показывать окно проверки дистанции",--Для двух разных спеллов
+	RangeFrame					= "Показывать окно проверки дистанции (8/6 м)",--Для двух разных спеллов
 	StaticShockArrow			= "Показывать стрелку DBM, когда на ком-то $spell:135695",
 	OverchargeArrow				= "Показывать стрелку DBM, когда на ком-то $spell:136295"
 })

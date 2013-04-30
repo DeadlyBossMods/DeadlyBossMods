@@ -7,18 +7,61 @@ local L
 L= DBM:GetModLocalization("d517")
 
 L:SetTimerLocalization{
-	timerEvent			= "Хмеля приготовлено (приблиз.)"
+	timerEvent			= "Варка хмеля (приблиз.)"
 }
 
 L:SetOptionLocalization{
-	timerEvent			= "Отсчет времени до примерного приготовления хмеля"
+	timerEvent			= "Отсчет времени до окончания варки хмеля"
 }
 
 L:SetMiscLocalization{
-	BrewStart			= "The storm is starting! Get ready.",
-	BrewFinish			= "You did it! Let's get this brew to the Monastery...",--Maybe switch to UPDATE_WORLD_STATES 100 progress instead in a more polished version of mod.
-	BorokhulaPull		= "Last call, you fork-tongued dip-slithers!",
-	BorokhulaAdds		= "calls out for reinforcements!"--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
+	BrewStart			= "Гроза начинается! Готовьтесь.",
+	BrewFinish			= "Получилось! А теперь отнесем его в монастырь...",--Maybe switch to UPDATE_WORLD_STATES 100 progress instead in a more polished version of mod.
+	BorokhulaPull		= "Последний шанс, червяки вы гнилозубые!",
+	BorokhulaAdds		= "просит подкрепления."--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
+}
+
+-----------------------
+-- A Little Patience --
+-----------------------
+L= DBM:GetModLocalization("d589")
+
+L:SetMiscLocalization{
+	ScargashPull		= "Вы – слабы!"--Not yet in use but could be with more logs and combat start timers
+}
+
+---------------------------
+-- Arena Of Annihilation --
+---------------------------
+L= DBM:GetModLocalization("d511")
+
+-------------------------
+-- Assault of Zan'vess --
+-------------------------
+L= DBM:GetModLocalization("d593")
+
+L:SetMiscLocalization{
+	TelvrakPull			= "Зан'весс никогда не падет!"
+}
+
+-----------------------
+-- Brewmoon Festival --
+-----------------------
+L= DBM:GetModLocalization("d539")
+
+L:SetTimerLocalization{
+	timerBossCD		= "Прибытие: %s"
+}
+
+L:SetOptionLocalization{
+	timerBossCD		= "Отсчет времени до появления следующего босса"
+}
+
+L:SetMiscLocalization{
+	RatEngage	= "Это же мать логова!",
+	BeginAttack	= "Мы должны защитить жителей деревни!",
+	Yeti		= "Батаарский боевой йети",
+	Qobi		= "Воитель Коби"
 }
 
 ------------------------------
@@ -26,15 +69,27 @@ L:SetMiscLocalization{
 ------------------------------
 L= DBM:GetModLocalization("d504")
 
-----------------------
--- Theramore's Fall --
-----------------------
-L= DBM:GetModLocalization("d566")
+-----------------------
+-- Dagger in the Dark --
+-----------------------
+L= DBM:GetModLocalization("d616")
 
----------------------------
--- Arena Of Annihilation --
----------------------------
-L= DBM:GetModLocalization("d511")
+L:SetTimerLocalization{
+	timerAddsCD		= "Восст. Призыв Аддов"
+}
+
+L:SetOptionLocalization{
+	timerAddsCD		= "Отсчет времени до восстановления призыва аддов у Чешуйчатого повелителя"
+}
+
+L:SetMiscLocalization{
+	LizardLord		= "Пещеру сторожат сауроки. Займемся ими."
+}
+
+------------------------
+-- Greenstone Village --
+------------------------
+L= DBM:GetModLocalization("d492")
 
 --------------
 -- Landfall --
@@ -46,13 +101,27 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnAchFiveAlive	= "Показывать предупреждение, если достижение \"Неубиваемая пятерка\" провалено."
+	WarnAchFiveAlive	= "Показывать предупреждение, если достижение \"Неубиваемая пятерка\" провалено"
 }
+
+----------------------
+-- Theramore's Fall --
+----------------------
+L= DBM:GetModLocalization("d566")
 
 --------------------------------
 -- Troves of the Thunder King --
 --------------------------------
 L= DBM:GetModLocalization("d620")
+
+----------------
+-- Unga Ingoo --
+----------------
+L= DBM:GetModLocalization("d499")
+
+L:SetMiscLocalization{
+	Stage2	= "Ну что ж, вполне подходящее место для варки хмеля."
+}
 
 ------------------------
 -- Warlock Green Fire --
