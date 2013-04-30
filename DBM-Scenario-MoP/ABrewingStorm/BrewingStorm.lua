@@ -113,19 +113,8 @@ function mod:OnSync(msg)
 	end
 end
 
-function IsCriteriaCompleted(criteriaIDToCheck)
-	local _, _, numCriteria = C_Scenario.GetStepInfo()
-	for i = 1, numCriteria do
-		local _, _, criteriaCompleted, _, _, _, _, _, criteriaID = C_Scenario.GetCriteriaInfo(i)
-		if criteriaID == criteriaIDToCheck and criteriaCompleted then
-			return true
-		end
-	end
-	return false
-end
-
 function mod:SCENARIO_CRITERIA_UPDATE(criteriaID)
-	if criteriaID == CRITERIA_DEFEND_THE_BREW and IsCriteriaCompleted(criteriaID) then
+	if criteriaID == CRITERIA_DEFEND_THE_BREW and self:IsCriteriaCompleted(criteriaID) then
 		self:SendSync("BrewEnded")
 	end
 end
