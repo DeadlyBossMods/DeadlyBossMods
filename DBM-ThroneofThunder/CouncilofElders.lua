@@ -100,7 +100,7 @@ local timerFrigidAssaultCD			= mod:NewCDTimer(30, 136904)--30 seconds after last
 
 local soundMarkedSoul				= mod:NewSound(137359)
 
---local berserkTimer				= mod:NewBerserkTimer(490)
+local berserkTimer				= mod:NewBerserkTimer(720)
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("PHealthFrame", true)
@@ -165,6 +165,7 @@ function mod:OnCombatStart(delay)
 	timerRecklessChargeCD:Start(10-delay)--the trigger is 6 seconds from pull, charge will happen at 10. I like timer ending at cast finish for this one though vs tryng to have TWO timers for something that literally only has 6 second cd
 	timerBitingColdCD:Start(15-delay)--15 seconds until debuff, 13 til cast.
 	timerBlessedLoaSpiritCD:Start(25-delay)
+	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Show(5)
 	end
