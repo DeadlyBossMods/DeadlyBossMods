@@ -4083,6 +4083,21 @@ function bossModPrototype:AntiSpam(time, id)
 	end
 end
 
+function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
+	if not criteriaIDToCheck then
+		print("DBM Debug: Bad check to IsCriteriaCompleted. Please add criteriaIDToCheck")
+		return false
+	end
+	local _, _, numCriteria = C_Scenario.GetStepInfo()
+	for i = 1, numCriteria do
+		local _, _, criteriaCompleted, _, _, _, _, _, criteriaID = C_Scenario.GetCriteriaInfo(i)
+		if criteriaID == criteriaIDToCheck and criteriaCompleted then
+			return true
+		end
+	end
+	return false
+end
+
 --Simple spec stuff
 function bossModPrototype:IsMelee()
 	return class == "ROGUE"
