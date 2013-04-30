@@ -204,7 +204,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	run			= "%s - run away",
 	cast		= "%s - stop casting",
 	count		= "%s! (%%d)",
-	stack		= "%%d stacks of %s on you",--too long?
+	stack		= "%%d stacks of %s on you",
 	switch		= ">%s< - switch targets"
 }
 
