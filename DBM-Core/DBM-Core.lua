@@ -1884,13 +1884,10 @@ do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, LastZoneText) or (checkEntry(v.zoneId, LastZoneMapID))) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
 				self:Unschedule(DBM.LoadMod, DBM, v)
 				self:Schedule(3, DBM.LoadMod, DBM, v)
-				--Depending on speed of computer, scenario check needs to run multiple times to ensure it fires properly (it will fail if it tries to start in a loading screen)
-				self:Schedule(4, DBM.ScenarioCheck)
-				self:Schedule(8, DBM.ScenarioCheck)
-				self:Schedule(12, DBM.ScenarioCheck)
 			end
 		end
-		if select(2, IsInInstance()) == "pvp" and not self:GetModByName("AlteracValley") then
+		local _, instanceType = IsInInstance()
+		if instanceType == "pvp" and not self:GetModByName("AlteracValley") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-PvP" then
 					self:LoadMod(v)
@@ -1898,10 +1895,15 @@ do
 				end
 			end
 		end
+		if instanceType == "scenario" then
+			--Depending on speed of computer, scenario check needs to run multiple times to ensure it fires properly (it will fail if it tries to start in a loading screen)
+			self:Schedule(4, DBM.ScenarioCheck)
+			self:Schedule(8, DBM.ScenarioCheck)
+			self:Schedule(12, DBM.ScenarioCheck)
+		end
 	end
 end
 
---LFG_IsHeroicScenario(dungeonID)--5.3
 function DBM:ScenarioCheck()
 	DBM:Unschedule(DBM.ScenarioCheck)
 	if combatInfo[LastZoneMapID] then
