@@ -16,7 +16,6 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	BrewStart			= "The storm is starting! Get ready.",
-	BrewFinish			= "You did it! Let's get this brew to the Monastery...",--Maybe switch to UPDATE_WORLD_STATES 100 progress instead in a more polished version of mod.
 	BorokhulaPull		= "Last call, you fork-tongued dip-slithers!",
 	BorokhulaAdds		= "calls out for reinforcements!"--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
 }
@@ -29,6 +28,11 @@ L= DBM:GetModLocalization("d589")
 L:SetMiscLocalization{
 	ScargashPull		= "Your Alliance is WEAK!"--Not yet in use but could be with more logs and combat start timers
 }
+
+---------------------------
+-- Arena Of Annihilation --
+---------------------------
+L= DBM:GetModLocalization("d511")
 
 -------------------------
 -- Assault of Zan'vess --
@@ -64,15 +68,29 @@ L:SetMiscLocalization{
 ------------------------------
 L= DBM:GetModLocalization("d504")
 
-----------------------
--- Theramore's Fall --
-----------------------
-L= DBM:GetModLocalization("d566")
+-----------------------
+-- Dagger in the Dark --
+-----------------------
+L= DBM:GetModLocalization("d616")
 
----------------------------
--- Arena Of Annihilation --
----------------------------
-L= DBM:GetModLocalization("d511")
+L:SetTimerLocalization{
+	timerAddsCD		= "추가병력 가능"
+}
+
+L:SetOptionLocalization{
+	timerAddsCD		= "도마뱀군주의 추가 병력 가능 바 표시"
+}
+
+L:SetMiscLocalization{
+	LizardLord		= "Dem Saurok be guardin de cave.  Let's take care of 'em."
+}
+
+------------------------
+-- Greenstone Village --
+------------------------
+L= DBM:GetModLocalization("d492")
+
+
 
 --------------
 -- Landfall --
@@ -86,6 +104,11 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAchFiveAlive	= "\"불사전설\" 업적 실패시 알림 보기"
 }
+
+----------------------
+-- Theramore's Fall --
+----------------------
+L= DBM:GetModLocalization("d566")
 
 --------------------------------
 -- Troves of the Thunder King --

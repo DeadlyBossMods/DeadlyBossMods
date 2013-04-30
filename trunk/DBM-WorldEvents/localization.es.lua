@@ -97,7 +97,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	WarnPhase				= "Mostrar un aviso para cada cambio de fase",
-	TimerCombatStart		= "Mostrar tiempo para inicio del combate",	
+	TimerCombatStart		= "Mostrar tiempo para inicio del combate",
 	warnHorsemanSoldiers	= "Mostrar aviso a la llegada de Calabazas con pulso",
 	warnHorsemanHead		= "Mostrar un aviso para torbellino (2ª i posteriores apariciones de cabeza)"
 })
