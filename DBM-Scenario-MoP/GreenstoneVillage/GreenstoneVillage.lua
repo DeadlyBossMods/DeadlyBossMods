@@ -7,89 +7,71 @@ mod:SetZone()
 mod:RegisterCombat("scenario", 880)
 
 mod:RegisterEventsInCombat(
-	"CHAT_MSG_MONSTER_SAY",
+	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED"
+--	"SPELL_CAST_SUCCESS",
+	"UNIT_DIED"
 )
---[[
---Darkhatched Lizard-Lord
-local warnWaterJets			= mod:NewCastAnnounce(133121, 2, 3)
---Broodmaster Noshi
-local warnDeathNova			= mod:NewCastAnnounce(133804, 4, 20)
---Rak'gor Bloodrazor
-local warnFixate			= mod:NewSpellAnnounce(132984, 3)
 
---Darkhatched Lizard-Lord
-local specWarnWaterJets		= mod:NewSpecialWarningSpell(133121, false)--For achievement primarily
---Broodmaster Noshi
-local specWarnDeathNova		= mod:NewSpecialWarningSpell(133804, nil, nil, nil, 2)--For achievement primarily
---Rak'gor Bloodrazor
-local specWarnGasBomb		= mod:NewSpecialWarningMove(133001)--For achievement primarily
+--Cursed Brew
+local warnBrewBubble			= mod:NewTargetAnnounce(131143, 3)
+--Beast of Jade
+local warnJadeStatue			= mod:NewSpellAnnounce(119364, 4)
+--Vengeful Hui
+local warnSummonSeedlings		= mod:NewSpellAnnounce(117664, 2)
 
---Darkhatched Lizard-Lord
-local timerAddsCD			= mod:NewTimer(60, "timerAddsCD", 2457)
---Broodmaster Noshi
-local timerDeathNova		= mod:NewCastTimer(20, 133804)
---Rak'gor Bloodrazor
-local timerFixateCD			= mod:NewNextTimer(20, 132984)
+--Cursed Brew
+local specWarnBrewBubble		= mod:NewSpecialWarningSwitch(131143, mod:IsDps())
+--Beast of Jade
+local specWarnJadeStatue		= mod:NewSpecialWarningInterrupt(119364)
 
+--Cursed Brew
+local timerBrewBubbleCD			= mod:NewCDTimer(15, 131143)
+--Beast of Jade
+local timerJadeStatueCD			= mod:NewCDTimer(18, 119364)--Small sample size. May be incorrect.
+--Vengeful Hui
+local timerSummonSeedlingsCD	= mod:NewNextTimer(14.4, 117664)
 
 mod:RemoveOption("HealthFrame")
 
-function mod:CHAT_MSG_MONSTER_SAY(msg)
-	if msg == L.LizardLord or msg:find(L.LizardLord) then
-		self:SendSync("LizardPulled")
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 131143 then
+		warnBrewBubble:Show(args.destName)
+		timerBrewBubbleCD:Start()
+		if not args:IsPlayer() then--Only those not trapped in bubble can help
+			specWarnBrewBubble:Show()
+		end
+	elseif args.spellId == 119364 then
+		warnJadeStatue:Show()
+		specWarnJadeStatue:Show()
+		timerJadeStatueCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 133121 then
-		warnWaterJets:Show()
-		specWarnWaterJets:Show()
-	elseif args.spellId == 133804 then
-		warnDeathNova:Show()
-		specWarnDeathNova:Show()
-		timerDeathNova:Start()
+	if args.spellId == 117664 then
+		warnSummonSeedlings:Show()
+		timerSummonSeedlingsCD:Start()
 	end
 end
 
+--[[TODO, verify consistency in this
+"<214.6 21:21:15> [CLEU] SPELL_CAST_SUCCESS#false#0xF13104D400005C84#Beast of Jade#2632#0#0x0400000001D0EE70#Moonianna#1298#0#131209#Jade Pounce#1", -- [1924]
+"<229.2 21:21:30> [CLEU] SPELL_AURA_APPLIED#false#0xF13104D400005C84#Beast of Jade#68168#0#0xF13104D400005C84#Beast of Jade#68168#0#119364#Jade Statue#8#BUFF#10#10000000", -- [2082]
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 133121 then
-		warnFixate:Show()
-		timerFixateCD:Start()
+	if args.spellId == 131209 then
+		
 	end
 end
-
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 133001 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specWarnGasBomb:Show()
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+--]]
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 67263 then--Darkhatched Lizard-Lord
-		timerAddsCD:Cancel()
-	elseif cid == 67264 then--Broodmaster Noshi
-		timerDeathNova:Cancel()
-	elseif cid == 67266 then--Rak'gor Bloodrazor
-		timerFixateCD:Cancel()
+	if cid == 62637 then--Cursed Brew
+		timerBrewBubbleCD:Cancel()
+	elseif cid == 66772 then--Beast of Jade
+		timerJadeStatueCD:Cancel()
+	elseif cid == 61156 then--Vengeful Hui
+		timerSummonSeedlingsCD:Cancel()
 	end
 end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 133091 and self:AntiSpam() then
-		self:SendSync("LizardAdds")
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "LizardPulled" then
-		timerAddsCD:Start(5)
-	elseif msg == "LizardAdds" then
-		timerAddsCD:Start()
-	end
-end--]]
