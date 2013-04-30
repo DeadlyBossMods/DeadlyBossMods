@@ -4,13 +4,13 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
-mod:RegisterCombat("scenario", 822)
+mod:RegisterCombat("scenario", 882)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 --	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_SAY",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"SCENARIO_UPDATE"
 )
 
 --Captain Ook
@@ -37,16 +37,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
---[[
-"<225.5 22:39:05> [CHAT_MSG_MONSTER_SAY] CHAT_MSG_MONSTER_SAY#Well! This looks like as good a place to brew as any.#Brewmaster Bo#####0#0##0#1201#nil#0#false#false", -- [1729]
-"<225.7 22:39:05> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#WIKKETS!!!#Unga Brewstealer#####0#0##0#1202#nil#0#false#false", -- [1730]
---]]
-function mod:CHAT_MSG_MONSTER_SAY(msg)
-	if msg == L.Stage2 or msg:find(L.Stage2) then
-		self:SendSync("Phase2")
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 62465 then--Captain Ook
@@ -61,9 +51,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:OnSync(msg)
-	if msg == "Phase2" then
-		timerKegRunner:Start()
-	elseif msg == "Phase3" then
+	if msg == "Phase3" then
 		timerKegRunner:Cancel()
 --		timerOrangeCD:Start()
 	elseif msg == "Orange" then
@@ -72,3 +60,9 @@ function mod:OnSync(msg)
 	end
 end
 
+function mod:SCENARIO_UPDATE(newStep)
+	local _, currentStage = C_Scenario.GetInfo()
+	if currentStage == 2 then
+		timerKegRunner:Start()
+	end
+end

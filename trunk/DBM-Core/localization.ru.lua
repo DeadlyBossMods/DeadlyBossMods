@@ -7,6 +7,7 @@ DBM_CORE_LOAD_MOD_ERROR				= "Ошибка при загрузке босс мо
 DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен модуль для '%s'. Для дополнительных настроек введите /dbm или /dbm help в чате."
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "GUI не может быть изначально загружено в бою. GUI будет загружено после боя. После загрузки GUI вы сможете загружать его в бою."
+DBM_CORE_BAD_LOAD					= "DBM обнаружил, что не удалось полностью загрузить модуль для этого подземелья из-за режима боя. Как только вы выйдите из боя, пожалуйста сделайте /console reloadui как можно скорее."
 
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM обнаружил, что у Вас включена установка меток в Bigwigs и DBM одновременно. Пожалуйста отключите метки в одном из них, чтобы избежать конфликта с лидером вашей группы"
 
@@ -23,7 +24,7 @@ DBM_CORE_SCENARIO_COMPLETE_NR		= "%s завершен спустя %s! Это н
 DBM_CORE_COMBAT_ENDED_AT			= "Бой с %s (%s) закончился спустя %s."
 DBM_CORE_COMBAT_ENDED_AT_LONG		= "Бой с %s (%s) закончился спустя %s. На этом уровне сложности вы вайпнулись уже %d раз."
 DBM_CORE_SCENARIO_ENDED_AT			= "%s закончился спустя %s."
-DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s закончился спустя %s. На этом уровне сложности вы не прошли до конца уже %d раз."
+DBM_CORE_SCENARIO_ENDED_AT_LONG		= "%s закончился спустя %s. На этом уровне сложности вы не завершили сценарий уже %d раз."
 DBM_CORE_COMBAT_STATE_RECOVERED		= "%s был атакован %s назад, восстанавливаю таймеры..."
 DBM_CORE_TRANSCRIPTOR_LOG_START		= "Логирование с помощью Transcriptor начато."
 DBM_CORE_TRANSCRIPTOR_LOG_END		= "Логирование с помощью Transcriptor окончено."
@@ -51,11 +52,18 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "Прочее"
 
 DBM_CORE_AUTO_RESPONDED				= "Авто-ответ."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d человек живые"
-DBM_CORE_AUTO_RESPOND_WHISPER		= "%s сейчас не может ответить, в бою с %s (%s, %d/%d человек живые)"
+--Bosses
+DBM_CORE_AUTO_RESPOND_WHISPER		= "%s сейчас занят, в бою против %s (%s, %d/%d человек живые)"
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s одержал победу над %s!"
 DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s одержал победу над %s! Общее количество побед у них - %d."
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s потерпел поражение от %s на %s"
 DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT	= "%s потерпел поражение от %s на %s. Общее количество вайпов у них - %d."
+--Scenarios (no percents. words like "fighting" or "wipe" changed to better fit scenarios)
+DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO		= "%s сейчас занят в %s (%d/%d человек живые)"
+DBM_CORE_WHISPER_SCENARIO_END_KILL			= "%s завершил %s!"
+DBM_CORE_WHISPER_SCENARIO_END_KILL_STATS	= "%s завершил %s! Общее количество побед у них - %d."
+DBM_CORE_WHISPER_SCENARIO_END_WIPE			= "%s не завершил %s"
+DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s не завершил %s. Общее количество незавершенных у них - %d."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mod - Версии"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod

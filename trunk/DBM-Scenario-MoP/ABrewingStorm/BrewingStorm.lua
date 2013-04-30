@@ -10,7 +10,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_SAY",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"SCENARIO_CRITERIA_UPDATE"
 )
 
 --[[First event
@@ -60,6 +61,8 @@ local timerEarthShatteringCD	= mod:NewNextTimer(25, 122142)--Limited sample size
 
 mod:RemoveOption("HealthFrame")
 
+local CRITERIA_DEFEND_THE_BREW = 22197
+
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 115013 then
 		warnSwampSmash:Show()
@@ -78,8 +81,6 @@ end
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.BrewStart or msg:find(L.BrewStart) then
 		self:SendSync("BrewStarted")
-	elseif msg == L.BrewFinish or msg:find(L.BrewFinish) then
-		self:SendSync("BrewEnded")
 	elseif msg == L.BorokhulaPull or msg:find(L.BorokhulaPull) then
 		self:SendSync("BorokhulaPulled")
 	elseif msg == L.BorokhulaAdds or msg:find(L.BorokhulaAdds) then
@@ -109,5 +110,22 @@ function mod:OnSync(msg)
 "<396.4 19:39:27> RAID_BOSS_EMOTE#%s calls out for reinforcements!#Borokhula the Destroyer#0#true", -- [3]
 "<409.6 19:39:40> RAID_BOSS_EMOTE#%s calls out for reinforcements!#Borokhula the Destroyer#0#true", -- [4]
 --]]
+	end
+end
+
+function IsCriteriaCompleted(criteriaIDToCheck)
+	local _, _, numCriteria = C_Scenario.GetStepInfo()
+	for i = 1, numCriteria do
+		local _, _, criteriaCompleted, _, _, _, _, _, criteriaID = C_Scenario.GetCriteriaInfo(i)
+		if criteriaID == criteriaIDToCheck and criteriaCompleted then
+			return true
+		end
+	end
+	return false
+end
+
+function mod:SCENARIO_CRITERIA_UPDATE(criteriaID)
+	if criteriaID == CRITERIA_DEFEND_THE_BREW and IsCriteriaCompleted(criteriaID) then
+		self:SendSync("BrewEnded")
 	end
 end
