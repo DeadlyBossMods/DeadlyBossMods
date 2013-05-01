@@ -1897,6 +1897,9 @@ do
 				end
 			end
 		end
+		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
+			self:Schedule(1, DBM.ScenarioCheck)
+		end
 	end
 end
 
