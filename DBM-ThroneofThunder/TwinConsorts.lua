@@ -90,7 +90,7 @@ local invokeSerpent = GetSpellInfo(138267)
 local invokeOx = GetSpellInfo(138254)
 
 local function isRunner(unit)
-	if UnitDebuff(unit, invokeTiger) or nitDebuff(unit, invokeCrane) or nitDebuff(unit, invokeSerpent) or nitDebuff(unit, invokeOx) then
+	if UnitDebuff(unit, invokeTiger) or UnitDebuff(unit, invokeCrane) or UnitDebuff(unit, invokeSerpent) or UnitDebuff(unit, invokeOx) then
 		return true
 	end
 	return false
