@@ -108,6 +108,7 @@ DBM.DefaultOptions = {
 	LogOnlyRaidBosses = false,
 	UseMasterVolume = true,
 	SetPlayerRole = true,
+	HideWatchFrame = true,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
 	RangeFrameUpdates = "Average",
@@ -203,6 +204,7 @@ local LastZoneMapID = -1
 local queuedBattlefield = {}
 local loadDelay = nil
 local myRealRevision = DBM.Revision or DBM.ReleaseRevision
+local watchFrameRestore = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2859,6 +2861,10 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				end
 			end
 		end
+		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not mod.type == "SCENARIO" then
+			WatchFrame:Hide()
+			watchFrameRestore = true
+		end
 	end
 end
 
@@ -3138,6 +3144,10 @@ function DBM:EndCombat(mod, wipe)
 		DBM.BossHealth:Hide()
 		DBM.Arrow:Hide(true)
 		self:ToggleRaidBossEmoteFrame(0)
+		if DBM.Options.HideWatchFrame and watchFrameRestore and not mod.type == "SCENARIO" then
+			WatchFrame:Show()
+			watchFrameRestore = false
+		end
 	end
 end
 
