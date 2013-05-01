@@ -16,7 +16,6 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	BrewStart			= "Гроза начинается! Готовьтесь.",
-	BrewFinish			= "Получилось! А теперь отнесем его в монастырь...",--Maybe switch to UPDATE_WORLD_STATES 100 progress instead in a more polished version of mod.
 	BorokhulaPull		= "Последний шанс, червяки вы гнилозубые!",
 	BorokhulaAdds		= "просит подкрепления."--In case useful/important on heroic. On normal just zerg boss and ignore these unless you want achievement.
 }
@@ -118,10 +117,6 @@ L= DBM:GetModLocalization("d620")
 -- Unga Ingoo --
 ----------------
 L= DBM:GetModLocalization("d499")
-
-L:SetMiscLocalization{
-	Stage2	= "Ну что ж, вполне подходящее место для варки хмеля."
-}
 
 ------------------------
 -- Warlock Green Fire --

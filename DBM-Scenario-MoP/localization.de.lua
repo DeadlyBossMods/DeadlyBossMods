@@ -97,10 +97,6 @@ L= DBM:GetModLocalization("d620")
 ----------------
 L= DBM:GetModLocalization("d499")
 
-L:SetMiscLocalization{
-	Stage2	= "Nun, dieser Ort gibt eine genauso gute Braustätte ab wie jeder andere."
-}
-
 ------------------------
 -- Warlock Green Fire --
 ------------------------
