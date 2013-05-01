@@ -112,9 +112,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s - %s %s",
-	specWarnFlock	= "%s - %s %s",
-	specWarnBigBird	= "Nestwächter: %s"
+	warnFlock			= "%s - %s %s",
+	specWarnFlock		= "%s - %s %s",
+	specWarnBigBird		= "Nestwächter: %s",
+	specWarnBigBirdSoon	= "Nestwächter bald: %s"
 })
 
 L:SetTimerLocalization({
@@ -122,7 +123,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "Zeige Abstandsfenster (10m) für $spell:138923"
+	RangeFrame			= "Zeige Abstandsfenster (10m) für $spell:138923"
 })
 
 L:SetMiscLocalization({
@@ -205,8 +206,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "Zeige dynamisches Abstandsfenster (10m)\n(mit Indikator für zuviele Spieler in Reichweite)",
-	InfoFrame		= "Zeige Infofenster für Spieler mit $spell:136193"
+	RangeFrame				= "Zeige dynamisches Abstandsfenster (10m)\n(mit Indikator für zuviele Spieler in Reichweite)",
+	InfoFrame				= "Zeige Infofenster für Spieler mit $spell:136193"
 })
 
 -------------------
