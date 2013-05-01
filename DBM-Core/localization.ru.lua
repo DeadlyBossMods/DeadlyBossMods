@@ -200,7 +200,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.move 		= "%s - отбегите"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run 		= "%s - убегайте"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast 		= "%s - прекратите чтение заклинаний"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.count 	= "%s! (%%d)"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack 	= "На вас %%d стаков от %s" --too long?
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.stack 	= "На вас %%d стаков от %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.switch 	= ">%s< - переключитесь"
 
 -- Auto-generated Special Warning Localizations
