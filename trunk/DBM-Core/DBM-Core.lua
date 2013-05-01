@@ -3144,7 +3144,7 @@ function DBM:EndCombat(mod, wipe)
 		DBM.BossHealth:Hide()
 		DBM.Arrow:Hide(true)
 		self:ToggleRaidBossEmoteFrame(0)
-		if DBM.Options.HideWatchFrame and watchFrameRestore and not (mod.type == "SCENARIO") then
+		if DBM.Options.HideWatchFrame and watchFrameRestore and not scenario then
 			WatchFrame:Show()
 			watchFrameRestore = false
 		end
@@ -3184,7 +3184,7 @@ end
 function DBM:StartLogging(timer, checkFunc)
 	self:Unschedule(DBM.StopLogging)
 	local difficulty = self:GetCurrentInstanceDifficulty()
-	if DBM.Options.LogOnlyRaidBosses and difficulty ~= "normal10" and difficulty ~= "normal25" and difficulty ~= "heroic10" and difficulty ~= "heroic25" then return end
+	if DBM.Options.LogOnlyRaidBosses and difficulty ~= "normal10" and difficulty ~= "normal25" and difficulty ~= "heroic10" and difficulty ~= "heroic25" and difficulty ~= "lfr25" then return end
 	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
 		self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
 		LoggingCombat(1)

@@ -119,9 +119,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s %s %s",
-	specWarnFlock	= "%s %s %s",
-	specWarnBigBird	= "Nest Guardian: %s"
+	warnFlock			= "%s %s %s",
+	specWarnFlock		= "%s %s %s",
+	specWarnBigBird		= "Nest Guardian: %s",
+	specWarnBigBirdSoon	= "Nest Guardian Soon: %s"
 })
 
 L:SetTimerLocalization({
@@ -129,11 +130,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnFlock		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
-	specWarnFlock	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
-	specWarnBigBird	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7827"),
-	timerFlockCD	= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
-	RangeFrame		= "Show range frame (10) for $spell:138923"
+	warnFlock			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count:format("ej7348"),
+	specWarnFlock		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7348"),
+	specWarnBigBird		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format("ej7827"),
+	specWarnBigBirdSoon	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon:format("ej7827"),
+	timerFlockCD		= DBM_CORE_AUTO_TIMER_OPTIONS.nextcount:format("ej7348"),
+	RangeFrame			= "Show range frame (10) for $spell:138923"
 })
 
 L:SetMiscLocalization({
@@ -220,9 +222,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDeadZone	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
-	RangeFrame		= "Show dynamic range frame (10)\n(This is a smart range frame that shows when too many are too close)",
-	InfoFrame		= "Show info frame for players with $spell:136193"
+	warnDeadZone			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(137229),
+	SetIconOnLightningStorm	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136192),
+	RangeFrame				= "Show dynamic range frame (10)\n(This is a smart range frame that shows when too many are too close)",
+	InfoFrame				= "Show info frame for players with $spell:136193"
 })
 
 -------------------

@@ -77,6 +77,7 @@ local timerFrostSpikeCD					= mod:NewCDTimer(11, 139180)--Heroic Phase 2
 
 local berserkTimer						= mod:NewBerserkTimer(720)
 
+mod:AddBoolOption("SetIconOnLightningStorm")
 mod:AddBoolOption("RangeFrame", true)--One tooltip says 8 yards, other says 10. Confirmed it's 10 during testing though. Ignore the 8 on spellid 134611
 mod:AddBoolOption("InfoFrame")
 
@@ -231,9 +232,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args.spellId == 134647 and args:IsPlayer() then
+		local amount = args.amount or 1
 		timerScorched:Start()
-		if (args.amount or 1) > 2 then
-			specWarnScorched:Show(args.amount or 1)
+		if amount > 2 then
+			specWarnScorched:Show(amount)
 		end
 	elseif args.spellId == 137221 then
 		warnMoltenOverload:Show()
@@ -245,6 +247,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerLightningStormCD:Start()
 		else--Heroic phase 1 or 4
 			timerLightningStormCD:Start(37.5)
+		end
+		if self.Options.SetIconOnLightningStorm and not self:IsDifficulty("lfr25") then
+			self:SetIcon(args.destName, 8)
 		end
 		if args:IsPlayer() then
 			specWarnLightningStorm:Show()
@@ -267,6 +272,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 134647 and args:IsPlayer() then
 		timerScorched:Cancel()
+	elseif args.spellId == 136192 and self.Options.SetIconOnLightningStorm and not self:IsDifficulty("lfr25") then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
