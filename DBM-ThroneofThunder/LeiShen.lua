@@ -384,12 +384,8 @@ local function LoopIntermission()
 			timerBouncingBoltCD:Start(15)
 		end
 	end
-	if not northDestroyed then
-		if mod:IsDifficulty("lfr25") then
-			--Don't know LFR timer for this yet, best not to show it since this one is wrong.
-		else
-			timerStaticShockCD:Start(16)
-		end
+	if not mod:IsDifficulty("lfr25") and not northDestroyed then--Doesn't cast a 2nd one in LFR
+		timerStaticShockCD:Start(16)
 	end
 end
 
@@ -445,7 +441,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 		if not northDestroyed then
 			if self:IsDifficulty("lfr25") then
-				--Still need LFR timing on this. Forgot to log first transition and we blew up static shock first so it not up in second transition log
+				timerStaticShockCD:Start(21)
 			else
 				timerStaticShockCD:Start(19)
 			end
