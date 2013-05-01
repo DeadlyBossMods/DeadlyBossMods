@@ -1994,6 +1994,7 @@ local function CreateOptionsMenu()
 
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 150, true)
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
+		spamArea:CreateCheckButton(L.HideWatchFrame, true, nil, "HideWatchFrame")
 		spamArea:CreateCheckButton(L.StripServerName, true, nil, "StripServerName")
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
 		spamArea:CreateCheckButton(L.SpamBlockSayYell, true, nil, "FilterSayAndYell")
