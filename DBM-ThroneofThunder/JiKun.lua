@@ -33,6 +33,7 @@ local specWarnTalonRakeOther= mod:NewSpecialWarningTarget(134366, mod:IsTank())
 local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, 2)
 local specWarnFeedYoung		= mod:NewSpecialWarningSpell(137528)
 local specWarnBigBird		= mod:NewSpecialWarning("specWarnBigBird", mod:IsTank())
+local specWarnBigBirdSoon	= mod:NewSpecialWarning("specWarnBigBirdSoon", false)
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuills			= mod:NewBuffActiveTimer(10, 134380)
@@ -301,11 +302,18 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			timerFlockCD:Show(30, flockCount+1, nextDirection)
 		end
 		if self:IsDifficulty("heroic10") then
-			if flockCount == 2 or flockCount == 4 or flockCount == 8 or flockCount == 11 then
+			if flockCount == 1 or flockCount == 3 or flockCount == 7 or flockCount == 10 then
+				specWarnBigBirdSoon:Schedule(30, nextDirection)
+			elseif flockCount == 2 or flockCount == 4 or flockCount == 8 or flockCount == 11 then
 				specWarnBigBird:Show(currentDirection)
 			end
 		elseif self:IsDifficulty("heroic25") then
-			if     flockCount ==  2 then specWarnBigBird:Show(L.Lower.." ("..L.SouthEast..")")
+			if     flockCount ==  1 then specWarnBigBirdSoon:Schedule(20, L.Lower.." ("..L.SouthEast..")")
+			elseif flockCount ==  4 then specWarnBigBirdSoon:Schedule(20, L.Lower.." ("..L.NorthWest..")")
+			elseif flockCount ==  7 then specWarnBigBirdSoon:Schedule(20, L.Upper.." ("..L.NorthWest..")")
+			elseif flockCount == 10 then specWarnBigBirdSoon:Schedule(20, L.Upper.." ("..L.SouthEast..")")
+			elseif flockCount == 13 then specWarnBigBirdSoon:Schedule(20, L.Lower.." ("..L.SouthWest..")")
+			elseif flockCount ==  2 then specWarnBigBird:Show(L.Lower.." ("..L.SouthEast..")")
 			elseif flockCount ==  5 then specWarnBigBird:Show(L.Lower.." ("..L.NorthWest..")")
 			elseif flockCount ==  8 then specWarnBigBird:Show(L.Upper.." ("..L.NorthWest..")")
 			elseif flockCount == 11 then specWarnBigBird:Show(L.Upper.." ("..L.SouthEast..")")
