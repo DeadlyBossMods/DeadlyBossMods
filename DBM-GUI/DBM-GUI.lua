@@ -2410,7 +2410,7 @@ do
 			icon:SetWidth(16)
 			icon:SetHeight(16)
 		end
-		local reset  = panel:CreateButton(L.Mod_Reset, 300)--button ugly.
+		local reset  = panel:CreateButton(L.Mod_Reset, 150, nil, nil, GameFontNormalSmall)
 		reset:SetPoint('TOPRIGHT', panel.frame, "TOPRIGHT", -14, -2)
 		reset:SetScript("OnClick", function(self)
 			local savedOptions = _G[mod.modId:gsub("-", "").."_SavedVars"][mod.id] or {}
@@ -2421,9 +2421,9 @@ do
 						savedOptions[option] = optionValue
 					end
 					v.Options = savedOptions or {}
+					break
 				end
 			end
-			_G[mod.modId:gsub("-", "").."_SavedVars"][mod.id] = savedOptions
 		end)
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
