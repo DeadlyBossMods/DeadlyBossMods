@@ -11,7 +11,7 @@ mod:RegisterEvents(
 
 local timerMagicWings				= mod:NewBuffFadesTimer(8.5, 102116)
 
-local MagicWingsCountdown			= mod:NewCountdown(7.5, 102116)
+local MagicWingsCountdown			= mod:NewCountdownFades(7.5, 102116)
 
 local markWings = false
 

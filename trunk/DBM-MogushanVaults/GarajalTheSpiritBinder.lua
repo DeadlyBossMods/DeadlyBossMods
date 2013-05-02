@@ -48,7 +48,7 @@ local timerFrailSoul				= mod:NewBuffFadesTimer(30, 117723)
 
 local berserkTimer					= mod:NewBerserkTimer(360)
 
-local countdownCrossedOver			= mod:NewCountdown(29, 116161)
+local countdownCrossedOver			= mod:NewCountdownFades(29, 116161)
 
 mod:AddBoolOption("SetIconOnVoodoo", false)
 

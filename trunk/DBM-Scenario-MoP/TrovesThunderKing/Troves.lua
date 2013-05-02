@@ -23,7 +23,7 @@ local specWarnSaurok		= mod:NewSpecialWarningSpell(140009)
 local timerEvent			= mod:NewBuffFadesTimer(299, 140000)
 local timerStoneSmash		= mod:NewCastTimer(3, 139777, nil, false)
 
-local countdownEvent		= mod:NewCountdown(299, 140000, nil, nil, 10)
+local countdownEvent		= mod:NewCountdownFades(299, 140000, nil, nil, 10)
 
 mod:RemoveOption("HealthFrame")
 

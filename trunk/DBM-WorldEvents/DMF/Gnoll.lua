@@ -21,7 +21,7 @@ local specWarnHogger			= mod:NewSpecialWarning("specWarnHogger")
 
 local timerGame					= mod:NewBuffActiveTimer(60, 101612)
 
-local countdownGame				= mod:NewCountdown(60, 101612)
+local countdownGame				= mod:NewCountdownFades(60, 101612)
 
 local gameEarnedPoints = 0
 local gameMaxPoints = 0

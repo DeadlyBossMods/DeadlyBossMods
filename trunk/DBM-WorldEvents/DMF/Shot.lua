@@ -13,7 +13,7 @@ mod:RegisterEvents(
 
 local timerGame		= mod:NewBuffActiveTimer(60, 101871)
 
-local countdownGame	= mod:NewCountdown(60, 101871)
+local countdownGame	= mod:NewCountdownFades(60, 101871)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
