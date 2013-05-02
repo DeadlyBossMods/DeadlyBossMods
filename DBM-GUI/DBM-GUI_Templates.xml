@@ -328,7 +328,7 @@
 
 	<Frame name="DBM_GUI_OptionsFrame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true">
 		<Size>
-			<AbsDimension x="800" y="500"/>
+			<AbsDimension x="800" y="510"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER"/>
@@ -371,7 +371,7 @@
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
 							<Offset>
-								<AbsDimension x="20" y="35"/>
+								<AbsDimension x="20" y="18"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -385,11 +385,11 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentAuthors" inherits="GameFontDisableSmall" text="">
+				<FontString name="$parentWebsite" inherits="GameFontNormal" text="">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentRevision" relativePoint="TOPLEFT">
 							<Offset>
-								<AbsDimension x="20" y="20"/>
+								<AbsDimension x="0" y="15"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -397,20 +397,40 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="OKAY">
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="CLOSE">
 				<Size>
 					<AbsDimension x="96" y="22"/>
 				</Size>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT">
 						<Offset>
-							<AbsDimension x="-16" y="16"/>
+							<AbsDimension x="-16" y="14"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
 						self:GetParent():Hide()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentWebsiteButton" inherits="UIPanelButtonTemplate" text="">
+				<Size>
+					<AbsDimension x="96" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativeTo="$parentOkay" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="-20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnShow>
+						self:SetText(DBM_GUI_Translations.WebsiteButton)
+					</OnShow>
+					<OnClick>
+						DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG)
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -635,11 +655,6 @@
 					self:CreateButtons( _G[self:GetName().."BossMods"] )
 					self:CreateButtons( _G[self:GetName().."DBMOptions"] )
 					self:UpdateMenuFrame( _G[self:GetName().."BossMods"] )
-				end
-				if math.random(1,2) == 1 then	-- who is first? hmm lets do it random :)
-					_G[self:GetName().."Authors"]:SetText("DBMv4 by Nitram@EU-Azshara and Tandanu@EU-Aegwynn - visit www.deadlybossmods.com")
-				else
-					_G[self:GetName().."Authors"]:SetText("DBMv4 by Tandanu@EU-Aegwynn and Nitram@EU-Azshara - visit www.deadlybossmods.com")
 				end
 			</OnShow>
 			<OnDragStart>
