@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 
-	<Button name="DBM_GUI_OptionsFramePanelButtonTemplate" virtual="true">
+<!--<Button name="DBM_GUI_OptionsFramePanelButtonTemplate" virtual="true">
 		<ButtonText name="$parentText">
 			<Anchors>
 				<Anchor point="CENTER">
@@ -17,7 +17,8 @@
 		<PushedTexture inherits="UIPanelButtonDownTexture"/>
 		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
 		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
-	</Button>
+	</Button>-->
+	<Button name="DBM_GUI_OptionsFramePanelButtonTemplate" virtual="true" inherits="UIPanelButtonTemplate"/>
 
 	<Button name="DBM_GUI_OptionsFrameTabButtonTemplate" virtual="true">
 		<Size>
