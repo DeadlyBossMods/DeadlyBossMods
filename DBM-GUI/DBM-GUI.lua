@@ -2014,8 +2014,14 @@ local function CreateOptionsMenu()
 	end
 
 	-- Set Revision // please don't translate this!
-	DBM_GUI_OptionsFrameRevision:SetText("Version: "..DBM.DisplayVersion.." - Core: r"..DBM.Revision.." - Gui: r"..revision)
-	DBM_GUI_OptionsFrameTranslation:SetText("Translated by: "..L.TranslationBy)
+	DBM_GUI_OptionsFrameRevision:SetText("Deadly Boss Mods "..DBM.DisplayVersion.." (r"..DBM.Revision..")")
+	if L.TranslationBy then
+		DBM_GUI_OptionsFrameTranslation:SetText(L.TranslationByPrefix .. L.TranslationBy)
+	end
+	DBM_GUI_OptionsFrameWebsite:SetText(L.Website)
+	local frame = CreateFrame("Frame", nil, DBM_GUI_OptionsFrame)
+	frame:SetAllPoints(DBM_GUI_OptionsFrameWebsite)
+	frame:SetScript("OnMouseUp", function(...) DBM:ShowUpdateReminder(nil, nil, DBM_FORUMS_COPY_URL_DIALOG) end)
 end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
