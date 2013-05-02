@@ -4,7 +4,10 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 			= "Nitram, Tandanu & Tennberg"
+L.TranslationByPrefix		= "Translated by "
+L.TranslationBy 			= nil -- your name here, localizers!
+L.Website					= "Visit our new discussion and support forums at |cFF73C2FBwww.deadlybossmods.com|r (hosted by Elitist Jerks!)"
+L.WebsiteButton				= "Forums"
 
 L.OTabBosses	= "Bosses"
 L.OTabOptions	= "Options"
