@@ -4635,6 +4635,46 @@ do
 		table.insert(self.countdowns, obj)
 		return obj
 	end
+
+	function bossModPrototype:NewCountdownFades(timer, spellId, optionDefault, optionName, count, textDisabled)
+		if not spellId and not optionName then
+			error("NewCountdownFades: you must provide either spellId or optionName", 2)
+			return
+		end
+		local sound5 = self:NewSound(5, false, true)
+		local sound4 = self:NewSound(4, false, true)
+		local sound3 = self:NewSound(3, false, true)
+		local sound2 = self:NewSound(2, false, true)
+		local sound1 = self:NewSound(1, false, true)
+		timer = timer or 10
+		count = count or 5
+		spellId = spellId or 39505
+		local obj = setmetatable(
+			{
+				id = optionName or "CountdownFades"..spellId,
+				sound1 = sound1,
+				sound2 = sound2,
+				sound3 = sound3,
+				sound4 = sound4,
+				sound5 = sound5,
+				timer = timer,
+				count = count,
+				textDisabled = textDisabled,
+				mod = self
+			},
+			mt
+		)
+		if optionName then
+			obj.option = obj.id
+			self:AddBoolOption(optionName, optionDefault, "misc")
+		elseif not (optionName == false) then
+			obj.option = obj.id
+			self:AddBoolOption(obj.id, optionDefault, "misc")
+			self.localization.options[obj.id] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2:format(spellId)
+		end
+		table.insert(self.countdowns, obj)
+		return obj
+	end	
 end
 
 ------------------------
