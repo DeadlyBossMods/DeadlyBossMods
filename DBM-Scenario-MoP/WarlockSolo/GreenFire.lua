@@ -50,7 +50,7 @@ local timerSummonDoomlordCast	= mod:NewCastTimer(10, 138755)
 local timerEnslaveDemon			= mod:NewTargetTimer(300, 1098)
 local timerDoom					= mod:NewBuffFadesTimer(419, 138558)
 
-local countdownDoom				= mod:NewCountdown(419, 138558, nil, nil, 10)
+local countdownDoom				= mod:NewCountdownFades(419, 138558, nil, nil, 10)
 
 mod:RemoveOption("HealthFrame")
 
