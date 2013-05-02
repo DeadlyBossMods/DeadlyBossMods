@@ -85,6 +85,7 @@ local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
 local berserkTimer						= mod:NewBerserkTimer(900)--Confirmed in LFR, probably the same in all modes though?
 
 local countdownThunderstruck			= mod:NewCountdown(46, 135095)
+local countdownStaticShockFades			= mod:NewCountdownFades(7, 135695, false)--May confuse with thundershock option default so off as default.
 
 local soundDecapitate					= mod:NewSound(134912)
 
@@ -202,6 +203,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStaticShock:Show()
 			yellStaticShock:Yell()
 			timerStaticShock:Start()
+			countdownStaticShockFades:Start()
 		else
 			if not intermissionActive and self:IsMelee() then return end--Melee do not help soak these during normal phases, only during intermissions
 			local uId = DBM:GetRaidUnitId(args.destName)
