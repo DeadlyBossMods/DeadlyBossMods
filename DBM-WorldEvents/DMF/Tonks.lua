@@ -17,7 +17,7 @@ local specWarnMarked			= mod:NewSpecialWarningRun(102341)
 
 local timerGame					= mod:NewBuffActiveTimer(60, 102178)
 
-local countdownGame				= mod:NewCountdown(60, 102178)
+local countdownGame				= mod:NewCountdownFades(60, 102178)
 
 local soundMarked				= mod:NewSound(102341)
 
