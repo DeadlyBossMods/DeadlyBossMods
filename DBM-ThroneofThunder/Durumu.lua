@@ -59,7 +59,7 @@ local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHea
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
 local timerLingeringGazeCD			= mod:NewCDTimer(46, 138467)
 local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 second cd but rarely cast more than once per phase because of how short the phases are (both beams phases cancel this ability)
-local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")--Don't know when 2nd one is cast.
+local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")
 local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 local timerDisintegrationBeam		= mod:NewBuffActiveTimer(64, "ej6882")
@@ -70,6 +70,7 @@ local timerIceWallCD				= mod:NewNextTimer(120, 134587)
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 local soundLingeringGaze			= mod:NewSound(134044)
+local countdownLightSpectrum		= mod:NewCountdown(60, "ej6891")
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -81,6 +82,7 @@ mod:AddBoolOption("InfoFrame", true) -- may be need special warning or generic w
 local totalFogs = 3
 local lingeringGazeTargets = {}
 local lingeringGazeCD = 46
+local darkParasiteTargets = {}
 local lastRed = nil
 local lastBlue = nil
 local lastYellow = nil
@@ -102,6 +104,11 @@ local function warnLingeringGazeTargets()
 	table.wipe(lingeringGazeTargets)
 end
 
+local function warnDarkParasiteTargets()
+	warnDarkParasite:Show(table.concat(darkParasiteTargets, "<, >"))
+	table.wipe(darkParasiteTargets)
+end
+
 local function warnBeam()
 	if mod:IsDifficulty("heroic10", "heroic25", "lfr25") then
 		warnBeamHeroic:Show(lastRed, lastBlue, lastYellow)
@@ -121,9 +128,11 @@ local function BeamEnded()
 	end
 	if mod:IsDifficulty("lfr25") then
 		timerLightSpectrumCD:Start(66)
+		countdownLightSpectrum:Start(66)
 		timerDisintegrationBeamCD:Start(186)
 	else
 		timerLightSpectrumCD:Start(33)
+		countdownLightSpectrum:Start(33)
 		timerDisintegrationBeamCD:Start()
 	end
 end
@@ -145,10 +154,12 @@ function mod:OnCombatStart(delay)
 	lfrAmberFogRevealed = false
 	lfrAzureFogRevealed = false
 	table.wipe(lingeringGazeTargets)
+	table.wipe(darkParasiteTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(41-delay)
+	countdownLightSpectrum:Start(41-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerIceWallCD:Start(128-delay)
 	end
@@ -205,9 +216,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args.spellId == 133597 then--Dark Parasite
-		warnDarkParasite:Show(args.destName)
+		darkParasiteTargets[#darkParasiteTargets + 1] = args.destName
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration, args.destName)
+		self:Unschedule(warnLingeringGazeTargets)
+		if #darkParasiteTargets >= 3 and self:IsDifficulty("heroic25") or self:IsDifficulty("heroic10") then
+			warnDarkParasiteTargets()
+		else
+			self:Schedule(0.5, warnDarkParasiteTargets)
+		end
 	elseif args.spellId == 133598 then--Dark Plague
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		--maybe add a warning/special warning for everyone if duration is too high and many adds expected
