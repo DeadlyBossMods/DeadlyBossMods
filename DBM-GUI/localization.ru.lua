@@ -5,7 +5,10 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
+L.TranslationByPrefix		= "Перевод "
 L.TranslationBy 			= "Swix"
+L.Website					= "Посетите наши новые форумы обсуждения и поддержки на |cFF73C2FBwww.deadlybossmods.com|r (организовано Elitist Jerks!)"
+L.WebsiteButton				= "Форумы"
 
 L.OTabBosses				= "Боссы"
 L.OTabOptions				= "Настройки"
@@ -31,7 +34,7 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Отмена'
 L.Button_LoadMod			= 'Загрузить модуль'
 L.Mod_Enabled				= "Включить модуль"
-L.Mod_Reset					= "Восстановить настройки по умолчанию для этого модуля"
+L.Mod_Reset					= "Восстановить настройки по умолчанию"
 L.Reset 					= "Сброс"
 
 L.Enable  					= "Вкл."
@@ -55,7 +58,7 @@ L.Statistic_BestKill		= "Лучший бой:"
 L.General 					= "Общие параметры DBM"
 L.EnableDBM 				= "Включить DBM"
 L.EnableMiniMapIcon			= "Отображать кнопку на мини-карте"
-L.SetPlayerRole				= "Автоматически устанавливать роль игрока"
+L.SetPlayerRole				= "Автоматически устанавливать роль игрока (рекомендуется включить)"
 L.UseMasterVolume			= "Использовать общий аудио канал для проигрывания звуковых файлов"
 L.DisableCinematics			= "Отключить внутриигровые ролики в подземельях"
 L.DisableCinematicsOutside	= "Отключить внутриигровые ролики вне подземелий"
@@ -168,10 +171,11 @@ L.BarWidth					= "Ширина индикатора: %d"
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Общие и спам-фильтры"
 L.Area_SpamFilter				= "Параметры спам-фильтра"
-L.HideBossEmoteFrame			= "Скрывать эмоции рейдового босса"
+L.HideBossEmoteFrame			= "Скрывать окно эмоций рейдового босса во время боя с боссом"
+L.HideWatchFrame				= "Скрывать окно отслеживания заданий во время боя с боссом"
 L.StripServerName				= "Удалять имя сервера в предупреждениях и таймерах"
 L.SpamBlockBossWhispers			= "Фильтрация <DBM> предупреждений шепотом в бою"
-L.BlockVersionUpdateNotice		= "Отключить уведомление о доступном обновлении"
+L.BlockVersionUpdateNotice		= "Отключить уведомление о доступном обновлении (не рекомендуется)"
 L.ShowBigBrotherOnCombatStart	= "Выполнять проверку положительных эффектов Big Brother в начале боя"
 L.BigBrotherAnnounceToRaid		= "Объявлять результаты проверки Big Brother в рейд"
 L.SpamBlockSayYell				= "Скрыть текст оповещений в облачках из окна чата"
