@@ -5,7 +5,10 @@ local L = DBM_GUI_Translations
 
 L.MainFrame		 = "Deadly Boss Mods"
 
-L.TranslationBy 		= "Imbav@聖光之願、Nightkiller@日落沼澤(Azael Poon)"
+L.TranslationByPrefix		= "翻譯:"
+L.TranslationBy 			= "Imbav@聖光之願、Nightkiller@日落沼澤"
+L.Website					= "拜訪我們新的討論與支援論壇:|cFF73C2FBwww.deadlybossmods.com|r (代管於Elitist Jerks!)"
+L.WebsiteButton				= "論壇"
 
 L.OTabBosses	= "首領模組"
 L.OTabOptions	= "選項"
@@ -31,7 +34,7 @@ L.Button_OK 				= '確定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '載入模組'
 L.Mod_Enabled				= "啟用首領模組"
-L.Mod_Reset					= "為此模組讀取預設值(未完成)"
+L.Mod_Reset					= "讀取預設值"
 L.Reset 					= "重置"
 
 L.Enable  					= "啟用"
@@ -55,7 +58,7 @@ L.Statistic_BestKill		= "最快記錄："
 L.General 					= "DBM綜合設置"
 L.EnableDBM 				= "啟用DBM"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
-L.SetPlayerRole				= "自動的設定玩家角色"
+L.SetPlayerRole				= "自動的設定玩家角色(建議啟用)"
 L.UseMasterVolume			= "使用主要聲音頻道來播放音效檔。"
 L.DisableCinematics			= "禁用遊戲中副本裡的過場動畫"
 L.DisableCinematicsOutside	= "禁用遊戲中副本以外的過場動畫"
@@ -168,7 +171,8 @@ L.BarWidth					= "寬度: %d"
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "整體及垃圾過濾"
 L.Area_SpamFilter				= "垃圾過濾選項"
-L.HideBossEmoteFrame			= "隱藏團隊首領表情框"
+L.HideBossEmoteFrame			= "在首領戰鬥時隱藏團隊首領表情框"
+L.HideWatchFrame				= "在首領戰鬥時隱藏監看(目標)框架"
 L.StripServerName				= "隱藏警告和計時器的玩家伺服器名稱"
 L.SpamBlockBossWhispers			= "當戰鬥時過濾 <DBM> 密語警告"
 L.BlockVersionUpdateNotice		= "禁用彈出的更新通知"
