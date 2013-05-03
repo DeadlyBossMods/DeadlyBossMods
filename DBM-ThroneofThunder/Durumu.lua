@@ -228,7 +228,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 133798 and self.Options.InfoFrame then -- Force update
 		DBM.InfoFrame:Update("playerdebuffstacks")
 		if args:IsPlayer() and not self:IsDifficulty("lfr25") then
-			yellLifeDrain:Yell(playerNameargs.amount or 1)
+			yellLifeDrain:Yell(playerName, args.amount or 1)
 		end
 	end
 end
