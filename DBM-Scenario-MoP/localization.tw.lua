@@ -16,7 +16,6 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	BrewStart			= "風暴開始了!準備好。",
-	BrewFinish			= "你成功了!讓我們把這酒帶去靜修居...",
 	BorokhulaPull		= "該死了，你這個舌頭分岔的滑溜爬蟲!",
 	BorokhulaAdds		= "呼叫援助!"
 }
@@ -27,16 +26,41 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization("d589")
 
 L:SetMiscLocalization{
-	ScargashPull		= "Your Alliance is WEAK!"--Not yet in use but could be with more logs and combat start timers
+	ScargashPull		= "你們這些聯盟太弱了!"
 }
 
+---------------------------
+-- Arena Of Annihilation --
+---------------------------
+L= DBM:GetModLocalization("d511")
+
 -------------------------
--- Assault of Zan'vess --
+-- Assault on Zan'vess --
 -------------------------
 L= DBM:GetModLocalization("d593")
 
 L:SetMiscLocalization{
-	TelvrakPull			= "Zan'vess will never fall!"
+	TelvrakPull			= "贊斐斯永遠不會倒下!"
+}
+
+-----------------------
+-- Brewmoon Festival --
+-----------------------
+L= DBM:GetModLocalization("d539")
+
+L:SetTimerLocalization{
+	timerBossCD		= "%s接近"
+}
+
+L:SetOptionLocalization{
+	timerBossCD		= "為下一次首領重生顯示計時器"
+}
+
+L:SetMiscLocalization{
+	RatEngage	= "小心，",
+	BeginAttack	= "我們必須保衛村莊!",
+	Yeti		= "巴塔利戰爭雪人",
+	Qobi		= "戰爭使者闊畢"
 }
 
 ------------------------------
@@ -44,20 +68,43 @@ L:SetMiscLocalization{
 ------------------------------
 L= DBM:GetModLocalization("d504")
 
-----------------------
--- Theramore's Fall --
-----------------------
-L= DBM:GetModLocalization("d566")
+-----------------------
+-- Dagger in the Dark --
+-----------------------
+L= DBM:GetModLocalization("d616")
 
----------------------------
--- Arena Of Annihilation --
----------------------------
-L= DBM:GetModLocalization("d511")
+L:SetTimerLocalization{
+	timerAddsCD		= "呼叫小兵冷卻"
+}
+
+L:SetOptionLocalization{
+	timerAddsCD		= "為暗孵蜥蜴王呼叫小兵顯示冷卻計時器"
+}
+
+L:SetMiscLocalization{
+	LizardLord		= "那些薩烏洛克在守護洞穴，我們來對付他們。"
+}
+
+------------------------
+-- Greenstone Village --
+------------------------
+L= DBM:GetModLocalization("d492")
 
 --------------
 -- Landfall --
 --------------
 L = DBM:GetModLocalization("Landfall")
+
+local landfall
+if UnitFactionGroup("player") == "Alliance" then
+	landfall = GetDungeonInfo(590)
+else
+	landfall = GetDungeonInfo(595)
+end
+
+L:SetGeneralLocalization{
+	name = landfall
+}
 
 L:SetWarningLocalization({
 	WarnAchFiveAlive	= "成就\"五小福\"失敗"
@@ -67,10 +114,20 @@ L:SetOptionLocalization({
 	WarnAchFiveAlive	= "為成就\"五小福\"失敗顯示警告."
 })
 
+----------------------
+-- Theramore's Fall --
+----------------------
+L= DBM:GetModLocalization("d566")
+
 --------------------------------
 -- Troves of the Thunder King --
 --------------------------------
 L= DBM:GetModLocalization("d620")
+
+----------------
+-- Unga Ingoo --
+----------------
+L= DBM:GetModLocalization("d499")
 
 ------------------------
 -- Warlock Green Fire --

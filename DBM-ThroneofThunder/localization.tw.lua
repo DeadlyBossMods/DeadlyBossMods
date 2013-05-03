@@ -112,9 +112,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%s %s %s",
-	specWarnFlock	= "%s %s %s",
-	specWarnBigBird	= "巢穴守護者:%s"
+	warnFlock			= "%s %s %s",
+	specWarnFlock		= "%s %s %s",
+	specWarnBigBird		= "巢穴守護者:%s",
+	specWarnBigBirdSoon	= "巢穴守護者即將出現:%s"
 })
 
 L:SetTimerLocalization({
