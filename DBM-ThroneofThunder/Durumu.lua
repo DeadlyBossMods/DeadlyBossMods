@@ -53,7 +53,7 @@ local specWarnFogRevealed			= mod:NewSpecialWarning("specWarnFogRevealed", nil, 
 local specWarnDisintegrationBeam	= mod:NewSpecialWarningSpell("ej6882", nil, nil, nil, 2)
 local specWarnEyeSore				= mod:NewSpecialWarningMove(140502)
 local specWarnLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())
-local yellLifeDrain					= mod:NewYell(133795, nil, false)
+local yellLifeDrain					= mod:NewYell(133795, L.LifeYell)
 
 local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
@@ -95,6 +95,7 @@ local redTracking = GetSpellInfo(139204)
 local crimsonFog = EJ_GetSectionInfo(6892)
 local amberFog = EJ_GetSectionInfo(6895)
 local azureFog = EJ_GetSectionInfo(6898)
+local playerName = UnitName("player")
 
 local function warnLingeringGazeTargets()
 	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
@@ -203,12 +204,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 133597 then--Dark Parasite
 		warnDarkParasite:Show(args.destName)
-		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
-		timerDarkParasite:Start(duration)
+		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
+		timerDarkParasite:Start(duration, args.destName)
 	elseif args.spellId == 133598 then--Dark Plague
-		local _, _, _, _, _, duration, expires = UnitDebuff(args.destName, args.spellName)
+		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		--maybe add a warning/special warning for everyone if duration is too high and many adds expected
-		timerDarkPlague:Start(duration)
+		timerDarkPlague:Start(duration, args.destName)
 	elseif args.spellId == 134626 then
 		lingeringGazeTargets[#lingeringGazeTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -226,6 +227,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:SetIcon(args.destName, 4)--Triangle
 	elseif args.spellId == 133798 and self.Options.InfoFrame then -- Force update
 		DBM.InfoFrame:Update("playerdebuffstacks")
+		if args:IsPlayer() and not self:IsDifficulty("lfr25") then
+			yellLifeDrain:Yell(playerNameargs.amount or 1)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -351,7 +355,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerLifeDrainCD:Start(not lifeDrained and 50 or nil)--first is 50, 2nd and later is 40 
 		lifeDrained = true
 		if target == UnitName("player") then
-			yellLifeDrain:Yell()
+			yellLifeDrain:Yell(target, 1)
 		end
 		if self.Options.SetIconLifeDrain then
 			self:SetIcon(target, 4) -- Triangle
