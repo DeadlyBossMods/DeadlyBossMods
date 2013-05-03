@@ -169,6 +169,8 @@ function mod:OnCombatEnd()
 	lfrEngaged = false
 	if self.Options.SetIconRays and lastRed then
 		self:SetIcon(lastRed, 0)
+	end
+	if self.Options.SetIconRays and lastBlue then
 		self:SetIcon(lastBlue, 0)
 	end
 	if self.Options.InfoFrame then
@@ -425,6 +427,8 @@ function mod:UNIT_DIED(args)
 			timerForceOfWillCD:Start(15)
 			if self.Options.SetIconRays and lastRed then
 				self:SetIcon(lastRed, 0)
+			end
+			if self.Options.SetIconRays and lastBlue then
 				self:SetIcon(lastBlue, 0)
 			end
 			lastRed = nil
