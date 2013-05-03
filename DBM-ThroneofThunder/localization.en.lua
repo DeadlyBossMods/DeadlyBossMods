@@ -180,6 +180,10 @@ L:SetOptionLocalization({
 	InfoFrame					= "Show info frame for $spell:133795 stacks"
 })
 
+L:SetMiscLocalization({
+	LifeYell		= "Life Drain on %s (%d)"
+})
+
 ----------------
 -- Primordius --
 ----------------
