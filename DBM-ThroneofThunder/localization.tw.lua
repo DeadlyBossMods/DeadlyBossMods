@@ -164,6 +164,10 @@ L:SetOptionLocalization({
 	InfoFrame					= "為$spell:133795堆疊顯示訊息框架"
 })
 
+L:SetMiscLocalization({
+	LifeYell		= "%s中了生命吸取(%d)"
+})
+
 ----------------
 -- Primordius --
 ----------------
