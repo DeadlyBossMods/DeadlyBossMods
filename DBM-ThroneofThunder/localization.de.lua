@@ -164,6 +164,10 @@ L:SetOptionLocalization({
 	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel"
 })
 
+L:SetMiscLocalization({
+	LifeYell		= "Lebensentzug auf %s (%d)"
+})
+
 ----------------
 -- Primordius --
 ----------------
