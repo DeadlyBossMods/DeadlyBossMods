@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 local warnGuidedMissle		= mod:NewCastAnnounce(135546, 3, 5)
 local warnImpale			= mod:NewSpellAnnounce(133942, 2)
 
-local specWarnGuidedMissle	= mod:NewSpecialWarningSpell(135546)--So you can use Force field and not get weapons disabled.
+local specWarnGuidedMissle	= mod:NewSpecialWarningPreWarn(135546, nil, 5)--So you can use Force field and not get weapons disabled.
 
 local timerGuidedMissle		= mod:NewCastTimer(5, 135546)--Time until impact
 local timerImpaleCD			= mod:NewNextTimer(6, 133942)
