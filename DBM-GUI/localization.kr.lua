@@ -5,7 +5,10 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
+L.TranslationByPrefix		= "번역: "
 L.TranslationBy 			= "법사세린-아즈샤라(everfinale@gmail.com)"
+L.Website					= "|cFF73C2FBwww.deadlybossmods.com|r에 있는 게시판을 방문해 보세요. (Elitist Jerks에서 서비스를 제공합니다!)"
+L.WebsiteButton				= "게시판"
 
 L.OTabBosses	= "우두머리"
 L.OTabOptions	= "설정"
@@ -30,8 +33,8 @@ L.MoveMe 					= '위치 이동'
 L.Button_OK 				= '확인'
 L.Button_Cancel 			= '취소'
 L.Button_LoadMod 			= '불러오기'
-L.Mod_Enabled				= "우두머리 경보 사용"
-L.Mod_Reset					= "이 우두머리의 기본 설정 불러오기(테스트중)"
+L.Mod_Enabled				= "경보 사용"
+L.Mod_Reset					= "이 전투의 기본 설정 불러오기"
 L.Reset 					= "초기화"
 
 L.Enable  					= "켜기"
@@ -55,7 +58,7 @@ L.Statistic_BestKill		= "최고 기록:"
 L.General 					= "일반 DBM 설정"
 L.EnableDBM 				= "DBM 사용"
 L.EnableMiniMapIcon			= "미니맵 버튼 사용"
-L.SetPlayerRole				= "파티 또는 공격대 참여시 역할 자동 설정"
+L.SetPlayerRole				= "파티 또는 공격대 참여시 역할 자동 설정(추천)"
 L.UseMasterVolume			= "기본 오디오 채널로 애드온 소리 듣기"
 L.DisableCinematics			= "게임내 동영상 재생 기능 끄기(인스턴스 내부)"
 L.DisableCinematicsOutside	= "게임내 동영상 재생 기능 끄기(인스턴스 외부)"
@@ -168,10 +171,11 @@ L.BarWidth					= "바 길이: %d"
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "기타 설정"
 L.Area_SpamFilter				= "일반 설정"
-L.HideBossEmoteFrame			= "블리자드 기본 레이드 경보 숨기기"
+L.HideBossEmoteFrame			= "우두머리 전투 중 블리자드 기본 레이드 경보 숨기기"
+L.HideWatchFrame				= "우두머리 전투 중 퀘스트 추척 창 숨기기"
 L.StripServerName				= "알림 및 바에서 서버명 보이지 않기"
 L.SpamBlockBossWhispers			= "전투 중 다른 공격대원 또는 파티원이 보내는 <DBM> 귓속말 감추기"
-L.BlockVersionUpdateNotice		= "업데이트 알림 창 끄기"
+L.BlockVersionUpdateNotice		= "업데이트 알림 창 끄기(추천하지 않음)"
 L.ShowBigBrotherOnCombatStart	= "전투 시작시 BigBrother 버프 체크 실행하기"
 L.BigBrotherAnnounceToRaid		= "BigBrother 버프 체크 결과를 공격대에 알리기"
 L.SpamBlockSayYell				= "전투 중 대화 말풍선 숨기기"

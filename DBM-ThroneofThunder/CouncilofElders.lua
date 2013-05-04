@@ -100,7 +100,7 @@ local timerFrigidAssaultCD			= mod:NewCDTimer(30, 136904)--30 seconds after last
 
 local soundMarkedSoul				= mod:NewSound(137359)
 
-local berserkTimer				= mod:NewBerserkTimer(720)
+local berserkTimer					= mod:NewBerserkTimer(720)
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("PHealthFrame", true)

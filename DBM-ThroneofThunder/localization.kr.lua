@@ -36,7 +36,8 @@ L:SetOptionLocalization({
 	warnOrbofControl		= "$journal:7092 떨어짐시 알림 보기",
 	specWarnOrbofControl	= "$journal:7092 떨어짐시 특수 경고 보기",
 	timerDoor				= "다음 부족의 문 열림 바 표시",
-	timerAdds				= "다음 추가 병력 바 표시"
+	timerAdds				= "다음 추가 병력 바 표시",
+	RangeFrame				= "$spell:136480 주문에 대한 거리 창 보기(5m)",
 })
 
 L:SetMiscLocalization({
@@ -111,9 +112,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(828)
 
 L:SetWarningLocalization({
-	warnFlock		= "%2$s : %1$s %3$s",
-	specWarnFlock	= "%2$s : %1$s %3$s",
-	specWarnBigBird	= "둥지 수호자 : %s"
+	warnFlock			= "%2$s : %1$s %3$s",
+	specWarnFlock		= "%2$s : %1$s %3$s",
+	specWarnBigBird		= "곧 둥지 수호자 : %s",
+	specWarnBigBird		= "둥지 수호자 : %s"
 })
 
 L:SetTimerLocalization({
@@ -160,6 +162,10 @@ L:SetOptionLocalization({
 	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
 	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
 	InfoFrame					= "$spell:133795 중첩 정보 창 보기"
+})
+
+L:SetMiscLocalization({
+	LifeYell					= "%s에게 생명력 흡수! (%d)"
 })
 
 ----------------
