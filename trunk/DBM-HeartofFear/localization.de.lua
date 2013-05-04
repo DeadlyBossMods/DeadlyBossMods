@@ -50,7 +50,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnUnder	= "Zeige Spezialwarnung, wenn du dich unter dem Boss befindest",
-	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).." (nur heroischer Schwierigkeitsgrad)"
+	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."\n(nur heroischer Schwierigkeitsgrad)"
 })
 
 L:SetMiscLocalization({
