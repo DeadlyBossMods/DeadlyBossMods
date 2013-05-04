@@ -4,7 +4,10 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 			= "Nitram & Tandanu"
+L.TranslationByPrefix		= "Übersetzt von "
+L.TranslationBy 			= "Ebmor@EU-Malorne"
+L.Website					= "Besuche unsere neuen Diskussions- und Support-Foren: |cFF73C2FBwww.deadlybossmods.com|r (gehostet von Elitist Jerks!)"
+L.WebsiteButton				= "Foren"
 
 L.OTabBosses	= "Bosse"
 L.OTabOptions	= "Optionen"
@@ -30,7 +33,7 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Abbrechen'
 L.Button_LoadMod 			= 'Lade Boss Mod'
 L.Mod_Enabled				= "Aktiviere Boss Mod"
-L.Mod_Reset					= "Lade Standardeinstellungen für diese Seite (IN ENTWICKLUNG!)"
+L.Mod_Reset					= "Lade Standardeinstellungen"
 L.Reset 					= "Zurücksetzen"
 
 L.Enable  					= "Aktiviere"
