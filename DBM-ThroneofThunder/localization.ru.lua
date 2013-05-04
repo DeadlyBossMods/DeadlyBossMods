@@ -164,6 +164,10 @@ L:SetOptionLocalization({
 	InfoFrame					= "Информационное окно для кол-ва стаков $spell:133795"
 })
 
+L:SetMiscLocalization({
+	LifeYell		= "Похищение жизни на %s (%d)"
+})
+
 ----------------
 -- Primordius --
 ----------------
