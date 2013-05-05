@@ -1026,7 +1026,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), channel)--Still give everyone first raid warning (but only that one)
 			DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_PULL_NOW, channel)
 		end
-		sendSync("PT", timer)
+		sendSync("PT", timer, LastZoneMapID)
 	elseif cmd:sub(1, 5) == "arrow" then
 		if not DBM:IsInRaid() then
 			DBM:AddMsg(DBM_ARROW_NO_RAIDGROUP)
@@ -2088,10 +2088,11 @@ do
 	end
 
 	local dummyMod -- dummy mod for the pull sound effect
-	syncHandlers["PT"] = function(sender, timer)
+	syncHandlers["PT"] = function(sender, timer, mapid)
 		if select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
 			return
 		end
+		if mapid and mapid ~= LastZoneMapID then return end
 		timer = tonumber(timer or 0)
 		if timer > 60 then
 			return
