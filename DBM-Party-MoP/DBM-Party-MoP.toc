@@ -40,6 +40,7 @@ JadeSerpentTemple\WiseMari.lua
 JadeSerpentTemple\LibraryEvent.lua
 JadeSerpentTemple\LiuFlameheart.lua
 JadeSerpentTemple\ShaofDoubt.lua
+JadeSerpentTemple\TJSGeneral.lua
 StormstoutBrewery\MapSizes.lua
 StormstoutBrewery\OokOok.lua
 StormstoutBrewery\Hoptallus.lua
@@ -54,6 +55,7 @@ GateSettingSun\Kiptilak.lua
 GateSettingSun\Gadok.lua
 GateSettingSun\Rimok.lua
 GateSettingSun\Raigonn.lua
+GateSettingSun\GSSGeneral.lua
 MogushanPalace\MapSizes.lua
 MogushanPalace\TrialoftheKing.lua
 MogushanPalace\Gekkan.lua
