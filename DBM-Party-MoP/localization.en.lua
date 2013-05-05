@@ -35,6 +35,15 @@ L= DBM:GetModLocalization(658)
 -----------------------
 L= DBM:GetModLocalization(335)
 
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("TJSGeneral")
+
+L:SetGeneralLocalization({
+	name =	"TJS: Challenge Timer"
+})
+
 -----------------------
 -- <<<Stormstout Brewery>>> --
 -----------------------
@@ -118,11 +127,6 @@ L:SetOptionLocalization({
 -----------------------
 -- <<<The Gate of the Setting Sun>>> --
 -----------------------
-L = DBM:GetModLocalization("GSSTimer")
-
-L:SetGeneralLocalization({
-	name =	"Gate of the Setting Sun Instance"
-})
 
 ---------------------
 -- Kiptilak --
@@ -151,6 +155,15 @@ L= DBM:GetModLocalization(676)
 -- Raigonn --
 -----------------------------
 L= DBM:GetModLocalization(649)
+
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("GSSGeneral")
+
+L:SetGeneralLocalization({
+	name =	"GSS: Challenge Timer"
+})
 
 -----------------------
 -- <<<Mogu'Shan Palace>>> --
