@@ -29,6 +29,15 @@ L= DBM:GetModLocalization(658)
 -----------------------
 L= DBM:GetModLocalization(335)
 
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("TJSGeneral")
+
+L:SetGeneralLocalization({
+	name =	"ХНЗ: Таймер испытания"
+})
+
 -----------------------
 -- <<<Stormstout Brewery>>> --
 -----------------------
@@ -78,7 +87,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnRemainingNovice	= "Показывать сколько осталось учеников"
+	warnRemainingNovice	= "Показывать количество оставшихся учеников"
 })
 
 L:SetMiscLocalization({
@@ -132,6 +141,16 @@ L= DBM:GetModLocalization(676)
 -----------------------------
 L= DBM:GetModLocalization(649)
 
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("GSSGeneral")
+
+L:SetGeneralLocalization({
+	name =	"ВЗС: Таймер испытания"
+})
+
+
 -----------------------
 -- <<<Mogu'Shan Palace>>> --
 -----------------------
@@ -176,7 +195,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWave	= "Отсчет времени до следующей волны подкреплений"
+	TimerWave	= "Отсчёт времени до следующей волны подкреплений"
 })
 
 L:SetMiscLocalization({
