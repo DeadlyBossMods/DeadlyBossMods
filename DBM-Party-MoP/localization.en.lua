@@ -118,6 +118,12 @@ L:SetOptionLocalization({
 -----------------------
 -- <<<The Gate of the Setting Sun>>> --
 -----------------------
+L = DBM:GetModLocalization("GSSTimer")
+
+L:SetGeneralLocalization({
+	name =	"Gate of the Setting Sun Instance"
+})
+
 ---------------------
 -- Kiptilak --
 ---------------------

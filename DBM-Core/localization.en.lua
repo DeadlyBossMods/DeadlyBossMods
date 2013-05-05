@@ -288,8 +288,9 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow move  makes the arrow movable",
 }
 
-DBM_SPEED_KILL_TIMER_TEXT	= "Record Victory"
+DBM_SPEED_KILL_TIMER_TEXT	= "Record Victory/Clear"
 DBM_SPEED_KILL_TIMER_OPTION	= "Show a timer to beat your fastest victory"
+DBM_SPEED_CLEAR_TIMER_TEXT	= "Record Clear"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s requested to see your current instance IDs and progress.\nDo you want to send this information to %s? He or she will be able to request this information during your current session (i. e. until you relog)."
