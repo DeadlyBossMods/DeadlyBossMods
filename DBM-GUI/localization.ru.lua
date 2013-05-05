@@ -5,8 +5,8 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationByPrefix		= "Перевод "
-L.TranslationBy 			= "Swix"
+L.TranslationByPrefix		= "Перевод на русский язык - "
+L.TranslationBy 			= "Swix, tomrus"
 L.Website					= "Посетите наши новые форумы обсуждения и поддержки на |cFF73C2FBwww.deadlybossmods.com|r (организовано Elitist Jerks!)"
 L.WebsiteButton				= "Форумы"
 
