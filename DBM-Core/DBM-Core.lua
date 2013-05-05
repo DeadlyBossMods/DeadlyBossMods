@@ -205,6 +205,7 @@ local LastZoneText = ""
 local LastZoneMapID = -1
 local queuedBattlefield = {}
 local loadDelay = nil
+local stopDelay = nil
 local myRealRevision = DBM.Revision or DBM.ReleaseRevision
 local watchFrameRestore = false
 
@@ -697,6 +698,7 @@ do
 				"PLAYER_TARGET_CHANGED",
 				"CINEMATIC_START",
 				"LFG_COMPLETION_REWARD",
+				"CHALLENGE_MODE_COMPLETED",
 				"ACTIVE_TALENT_GROUP_CHANGED"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
@@ -1872,6 +1874,17 @@ function DBM:LFG_COMPLETION_REWARD()
 	end
 end
 
+function DBM:CHALLENGE_MODE_COMPLETED()
+	if #inCombat > 0 then
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			if v.inChallenge then
+				self:EndCombat(v)
+			end
+		end
+	end
+end
+
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -1910,17 +1923,28 @@ do
 				end
 			end
 		end
-		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
-			self:Schedule(1, DBM.ScenarioCheck)
+		if (instanceType == "scenario" and self:GetModByName("d511")) or instanceType == "party" and self:GetModByName("675") then--mod already loaded
+			self:Schedule(1, DBM.InstanceCheck)
+		end
+		if clearDelay then
+			local modsToClear = clearDelay
+			clearDelay = nil
+			if type(modsToClear) == "table" then
+				for i, v in ipairs(modsToClear) do
+					self:EndCombat(modsToClear, true)
+				end
+			else
+				self:EndCombat(modsToClear, true)
+			end
 		end
 	end
 end
 
-function DBM:ScenarioCheck()
-	DBM:Unschedule(DBM.ScenarioCheck)
+--Scenario mods or challenge mode "best run" timer mods
+function DBM:InstanceCheck()
 	if combatInfo[LastZoneMapID] then
 		for i, v in ipairs(combatInfo[LastZoneMapID]) do
-			if v.type == "scenario" and checkEntry(v.msgs, LastZoneMapID) then
+			if (v.type == "scenario" or v.type == "challenge") and checkEntry(v.msgs, LastZoneMapID) then
 				DBM:StartCombat(v.mod, 0)
 			end
 		end
@@ -1975,8 +1999,8 @@ function DBM:LoadMod(mod)
 			DBM_GUI:UpdateModList()
 		end
 		local _, instanceType = GetInstanceInfo()
-		if instanceType == "scenario" then
-			self:Schedule(1, DBM.ScenarioCheck)
+		if (instanceType == "scenario") or (instanceType == "party") then
+			self:Schedule(1, DBM.InstanceCheck)
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -2794,6 +2818,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 			end
 		end
 		savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
+		local challengeMod = mod.type == "CHALLENGE"
 		if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 			mod.inCombatOnlyEventsRegistered = 1
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -2807,10 +2832,15 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				mod.stats.lfr25Pulls = mod.stats.lfr25Pulls + 1
 			elseif mod:IsDifficulty("normal5", "worldboss") then
 				mod.stats.normalPulls = mod.stats.normalPulls + 1
+				if challengeMod then mod.ignoreBestkill = true end--Disable the best 
 			elseif mod:IsDifficulty("heroic5") then
 				mod.stats.heroicPulls = mod.stats.heroicPulls + 1
+				if challengeMod then mod.ignoreBestkill = true end
 			elseif mod:IsDifficulty("challenge5") then
 				mod.stats.challengePulls = mod.stats.challengePulls + 1
+				if challengeMod then
+					mod.inChallenge = true
+				end
 			elseif mod:IsDifficulty("normal10") then
 				mod.stats.normalPulls = mod.stats.normalPulls + 1
 				local _, _, _, _, maxPlayers = GetInstanceInfo()
@@ -2829,8 +2859,18 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
-		self:Schedule(mod.minCombatTime or 3, checkWipe)
-		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
+		if not challengeMod then--Don't schedule check for wipe in challenge mode speed run timer mods
+			self:Schedule(mod.minCombatTime or 3, checkWipe)
+			if clearDelay then
+				if type(clearDelay) ~= "table" then
+					clearDelay = { clearDelay }
+				end
+				clearDelay[#loadDelay + 1] = mod
+			else
+				clearDelay = mod
+			end
+		end
+		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario and not mod.inChallenge then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
@@ -2862,7 +2902,12 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				bestTime = mod.stats.heroic25BestTime
 			end
 			if bestTime and bestTime > 0 then
-				local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+				local speedTimer
+				if mod.inChallenge then
+					speedTimer = mod:NewTimer(bestTime, DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+				else
+					speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+				end
 				speedTimer:Start()
 			end
 		end
@@ -2880,7 +2925,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 			end
 		end
 		self:StartLogging(0, nil)
-		if DBM.Options.ShowEngageMessage then
+		if DBM.Options.ShowEngageMessage and not challengeMod then
 			if mod.ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
 			else
@@ -2891,7 +2936,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				end
 			end
 		end
-		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
+		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") and not challengeMod then
 			WatchFrame:Hide()
 			watchFrameRestore = true
 		end
