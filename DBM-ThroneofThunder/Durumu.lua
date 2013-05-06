@@ -35,7 +35,7 @@ local warnAddsLeft					= mod:NewAnnounce("warnAddsLeft", 2, 134123)
 local warnDisintegrationBeam		= mod:NewSpellAnnounce("ej6882", 4)
 local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3)--Some times needs to block this even dps. So warn for everyone.
 local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
-local warnIceWall					= mod:NewSpellAnnounce(134587, 3)
+local warnIceWall					= mod:NewSpellAnnounce(134587, 3, 111231)
 
 local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 4)--This we will use debuff on though.
 local specWarnSeriousWoundOther		= mod:NewSpecialWarningTarget(133767, mod:IsTank())
@@ -66,7 +66,7 @@ local timerDisintegrationBeam		= mod:NewBuffActiveTimer(64, "ej6882")
 local timerDisintegrationBeamCD		= mod:NewNextTimer(127, "ej6882")
 local timerLifeDrainCD				= mod:NewCDTimer(40, 133795)
 local timerLifeDrain				= mod:NewBuffActiveTimer(18, 133795)
-local timerIceWallCD				= mod:NewNextTimer(120, 134587)
+local timerIceWallCD				= mod:NewNextTimer(120, 134587, nil, nil, nil, 111231)
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 local soundLingeringGaze			= mod:NewSound(134044)
