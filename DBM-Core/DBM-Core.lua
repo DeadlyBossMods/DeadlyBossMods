@@ -2777,7 +2777,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 			end
 		end
 		savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
-		local challengeMod = mod.type == "CHALLENGE"
+		local challengeMod = mod.type == "challenge"
 		if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 			mod.inCombatOnlyEventsRegistered = 1
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -2946,6 +2946,7 @@ end
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		local scenario = mod.type == "SCENARIO"
+		local challenge = mod.type == "challenge"
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
@@ -2992,7 +2993,7 @@ function DBM:EndCombat(mod, wipe)
 				else
 					mod.stats.normalPulls = mod.stats.normalPulls - 1
 				end
-				if DBM.Options.ShowWipeMessage then
+				if DBM.Options.ShowWipeMessage and not challenge then
 					if scenario then
 						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
 					else
@@ -3000,7 +3001,7 @@ function DBM:EndCombat(mod, wipe)
 					end
 				end
 			else
-				if DBM.Options.ShowWipeMessage then
+				if DBM.Options.ShowWipeMessage and not challenge then
 					if scenario then
 						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), totalPulls - totalKills))
 					else
