@@ -12,6 +12,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -62,11 +63,12 @@ local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 secon
 local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")
 local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
-local timerDisintegrationBeam		= mod:NewBuffActiveTimer(64, "ej6882")
-local timerDisintegrationBeamCD		= mod:NewNextTimer(127, "ej6882")
+local timerDisintegrationBeam		= mod:NewBuffActiveTimer(55, "ej6882")
+local timerDisintegrationBeamCD		= mod:NewNextTimer(136, "ej6882")
 local timerLifeDrainCD				= mod:NewCDTimer(40, 133795)
 local timerLifeDrain				= mod:NewBuffActiveTimer(18, 133795)
 local timerIceWallCD				= mod:NewNextTimer(120, 134587, nil, nil, nil, 111231)
+local timerDarkParasiteCD			= mod:NewCDTimer(60.5, 133597)--Heroic (60-74 sec variation, except the combat start and one after disintigration beam. those 2 are always dead on. it's possible others are dead on too if i can find better trigger points)
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 local soundLingeringGaze			= mod:NewSound(134044)
@@ -108,6 +110,7 @@ end
 
 local function warnDarkParasiteTargets()
 	warnDarkParasite:Show(table.concat(darkParasiteTargets, "<, >"))
+	timerDarkParasiteCD:Start()
 	table.wipe(darkParasiteTargets)
 end
 
@@ -126,15 +129,16 @@ local function BeamEnded()
 	timerLingeringGazeCD:Start(17)
 	timerForceOfWillCD:Start(19)
 	if mod:IsDifficulty("heroic10", "heroic25") then
-		timerIceWallCD:Start(26)
+		timerDarkParasiteCD:Start(10)
+		timerIceWallCD:Start(35)
 	end
 	if mod:IsDifficulty("lfr25") then
 		timerLightSpectrumCD:Start(66)
 		countdownLightSpectrum:Start(66)
 		timerDisintegrationBeamCD:Start(186)
 	else
-		timerLightSpectrumCD:Start(33)
-		countdownLightSpectrum:Start(33)
+		timerLightSpectrumCD:Start(39)
+		countdownLightSpectrum:Start(39)
 		timerDisintegrationBeamCD:Start()
 	end
 end
@@ -160,12 +164,13 @@ function mod:OnCombatStart(delay)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
 	timerForceOfWillCD:Start(33.5-delay)
-	timerLightSpectrumCD:Start(41-delay)
-	countdownLightSpectrum:Start(41-delay)
+	timerLightSpectrumCD:Start(40-delay)
+	countdownLightSpectrum:Start(40-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
+		timerDarkParasiteCD:Start(-delay)
 		timerIceWallCD:Start(128-delay)
 	end
-	if mod:IsDifficulty("lfr25") then
+	if self:IsDifficulty("lfr25") then
 		lfrEngaged = true
 		timerLifeDrainCD:Start(151)
 		timerDisintegrationBeamCD:Start(161-delay)
@@ -224,6 +229,76 @@ function mod:SPELL_CAST_START(args)
 		specWarnFogRevealed:Show(crimsonFog)
 	elseif args.spellId == 134587 and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 136932 then--Force of Will Precast
+		warnForceOfWill:Show(args.destName)
+		if timerLightSpectrumCD:GetTime() > 22 or timerDisintegrationBeamCD:GetTime() > 110 then--Don't start timer if either beam or spectrum will come first (cause both disable force ability)
+			timerForceOfWillCD:Start()
+		end
+		if args:IsPlayer() then
+			specWarnForceOfWill:Show()
+			yellForceOfWill:Yell()
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				if inRange and inRange < 21 then--Range hard to get perfect, a player 30 yards away might still be in it. I say 15 is probably good middle ground to catch most of the "near"
+					specWarnForceOfWillNear:Show(args.destName)
+				end
+			end
+		end
+	elseif args.spellId == 134122 then--Blue Beam Precas
+		lingeringGazeCD = not spectrumStarted and 25 or 40 -- First spectrum Lingering Gaze CD = 25, second = 40
+		spectrumStarted = true
+		lastBlue = args.destName
+		if args:IsPlayer() then
+			if self:IsDifficulty("lfr25") and self.Options.specWarnBlueBeam then
+				specWarnBlueBeamLFR:Show()
+			else
+				specWarnBlueBeam:Show()
+			end
+		end
+		if self.Options.SetIconRays then
+			self:SetIcon(args.destName, 6)--Square
+		end
+		self:Schedule(0.5, warnBeam)
+	elseif args.spellId == 134123 then--Red Beam Precast
+		lastRed = args.destName
+		if args:IsPlayer() then
+			specWarnRedBeam:Show()
+		end
+		if self.Options.SetIconRays then
+			self:SetIcon(args.destName, 7)--Cross
+		end
+	elseif args.spellId == 134124 then--Yellow Beam Precast
+		lastYellow = args.destName
+		totalFogs = 3
+		lfrCrimsonFogRevealed = false
+		lfrAmberFogRevealed = false
+		lfrAzureFogRevealed = false
+		timerForceOfWillCD:Cancel()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerObliterateCD:Start()
+			if lifeDrained then -- Check 1st Beam ended.
+				timerIceWallCD:Start(87)
+			end
+		end
+		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
+			if args:IsPlayer() then
+				specWarnYellowBeam:Show()
+			end
+		end
+		if self.Options.SetIconRays then
+			self:SetIcon(args.destName, 1, 10)--Star (auto remove after 10 seconds because this beam untethers one initial person positions it.
+		end
 	end
 end
 
@@ -328,77 +403,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --Currently very bugged too so warnings aren't working right (since fight isn't working right)
 --Beams wildly jump targets and don't give new target a warning at all nor does it even show in damn combat log.
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
-	if msg:find("spell:136932") then--Force of Will
-		local target = DBM:GetFullNameByShortName(target)
-		warnForceOfWill:Show(target)
-		if timerLightSpectrumCD:GetTime() > 22 or timerDisintegrationBeamCD:GetTime() > 110 then--Don't start timer if either beam or spectrum will come first (cause both disable force ability)
-			timerForceOfWillCD:Start()
-		end
-		if target == UnitName("player") then
-			specWarnForceOfWill:Show()
-			yellForceOfWill:Yell()
-		else
-			local uId = DBM:GetRaidUnitId(target)
-			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-				if inRange and inRange < 21 then--Range hard to get perfect, a player 30 yards away might still be in it. I say 15 is probably good middle ground to catch most of the "near"
-					specWarnForceOfWillNear:Show(target)
-				end
-			end
-		end
-	elseif msg:find("spell:134122") then--Blue Rays
-		local target = DBM:GetFullNameByShortName(target)
-		lingeringGazeCD = not spectrumStarted and 25 or 40 -- First spectrum Lingering Gaze CD = 25, second = 40
-		spectrumStarted = true
-		lastBlue = target
-		if target == UnitName("player") then
-			if self:IsDifficulty("lfr25") and self.Options.specWarnBlueBeam then
-				specWarnBlueBeamLFR:Show()
-			else
-				specWarnBlueBeam:Show()
-			end
-		end
-		if self.Options.SetIconRays then
-			self:SetIcon(target, 6)--Square
-		end
-		self:Schedule(0.5, warnBeam)
-	elseif msg:find("spell:134123") then--Infrared Light (red)
-		local target = DBM:GetFullNameByShortName(target)
-		lastRed = target
-		if target == UnitName("player") then
-			specWarnRedBeam:Show()
-		end
-		if self.Options.SetIconRays then
-			self:SetIcon(target, 7)--Cross
-		end
-	elseif msg:find("spell:134124") then--useful only on heroic and LFR since there are only amber adds in them. Normal 10 and normal 25 do not have amber adds (why LFR does is beyond me)
-		local target = DBM:GetFullNameByShortName(target)
-		lastYellow = target
-		totalFogs = 3
-		lfrCrimsonFogRevealed = false
-		lfrAmberFogRevealed = false
-		lfrAzureFogRevealed = false
-		timerForceOfWillCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") then
-			timerObliterateCD:Start()
-			if lifeDrained then -- Check 1st Beam ended.
-				timerIceWallCD:Start(87)
-			end
-		end
-		if self:IsDifficulty("heroic10", "heroic25", "lfr25") then
-			if target == UnitName("player") then
-				specWarnYellowBeam:Show()
-			end
-		end
-		if self.Options.SetIconRays then
-			self:SetIcon(target, 1, 10)--Star (auto remove after 10 seconds because this beam untethers one initial person positions it.
-		end
-	elseif npc == crimsonFog or npc == amberFog or npc == azureFog then
+	if npc == crimsonFog or npc == amberFog or npc == azureFog then
 		if self:IsDifficulty("lfr25") and npc == azureFog and not lfrAzureFogRevealed then
 			lfrAzureFogRevealed = true
 			specWarnFogRevealed:Show(npc)
@@ -428,16 +433,12 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerForceOfWillCD:Cancel()
 		timerLingeringGazeCD:Cancel()
 		timerLifeDrainCD:Cancel()
+		timerDarkParasiteCD:Cancel()
 		warnDisintegrationBeam:Show()
 		specWarnDisintegrationBeam:Show()
 		--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
-		if self:IsDifficulty("lfr25") then
-			timerDisintegrationBeam:Start(55)
-			self:Schedule(55, BeamEnded)
-		else
-			timerDisintegrationBeam:Start()
-			self:Schedule(64, BeamEnded)
-		end
+		timerDisintegrationBeam:Start()
+		self:Schedule(55, BeamEnded)
 	end
 end
 
@@ -503,6 +504,8 @@ function mod:UNIT_DIED(args)
 				timerForceOfWillCD:Start(15)
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
+				end
+				if self.Options.SetIconRays and lastBlue then
 					self:SetIcon(lastBlue, 0)
 				end
 				lastRed = nil
@@ -522,6 +525,8 @@ function mod:UNIT_DIED(args)
 				timerForceOfWillCD:Start(15)
 				if self.Options.SetIconRays and lastRed then
 					self:SetIcon(lastRed, 0)
+				end
+				if self.Options.SetIconRays and lastBlue then
 					self:SetIcon(lastBlue, 0)
 				end
 				lastRed = nil
