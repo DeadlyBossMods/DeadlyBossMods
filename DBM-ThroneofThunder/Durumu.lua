@@ -293,6 +293,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSeriousWound:Cancel(args.destName)
 	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target.
 		self:SetIcon(args.destName, 0)
+	elseif args.spellId == 133597 then--Dark Parasite
+		if self.Options.SetIconOnParasite then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
