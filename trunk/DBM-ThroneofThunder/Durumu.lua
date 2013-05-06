@@ -78,11 +78,13 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 mod:AddBoolOption("SetIconRays", true)
 mod:AddBoolOption("SetIconLifeDrain", true)
 mod:AddBoolOption("InfoFrame", true) -- may be need special warning or generic warning high stack player? or do not needed at all?
+mod:AddBoolOption("SetIconOnParasite", false)
 
 local totalFogs = 3
 local lingeringGazeTargets = {}
 local lingeringGazeCD = 46
 local darkParasiteTargets = {}
+local darkParasiteTargetsIcons = {}
 local lastRed = nil
 local lastBlue = nil
 local lastYellow = nil
@@ -189,6 +191,28 @@ function mod:OnCombatEnd()
 	end
 end
 
+local function ClearParasiteTargets()
+	table.wipe(darkParasiteTargetsIcons)
+end
+
+do
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+	end
+	function mod:SetParasiteIcons()
+		table.sort(darkParasiteTargetsIcons, sort_by_group)
+		local parasiteIcon = 5
+		for i, v in ipairs(huddleInTerrorIcons) do
+			-- DBM:SetIcon() is used because of follow reasons
+			--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
+			--2. It checks global dbm option "DontSetIcons"
+			self:SetIcon(v, parasiteIcon)
+			parasiteIcon = parasiteIcon - 1
+		end
+		self:Schedule(1.5, ClearParasiteTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 133765 then
 		warnHardStare:Show()
@@ -224,6 +248,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDarkParasiteTargets()
 		else
 			self:Schedule(0.5, warnDarkParasiteTargets)
+		end
+		if self.Options.SetIconOnParasite then
+			table.insert(darkParasiteTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
+			self:UnscheduleMethod("SetParasiteIcons")
+			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				if #huddleInTerrorIcons >= 3 and self:IsDifficulty("heroic25") or self:IsDifficulty("heroic10") then
+					self:SetParasiteIcons()
+				else
+					self:ScheduleMethod(0.5, "SetParasiteIcons")
+				end
+			end
 		end
 	elseif args.spellId == 133598 then--Dark Plague
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
