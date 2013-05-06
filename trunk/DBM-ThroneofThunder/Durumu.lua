@@ -68,7 +68,7 @@ local timerDisintegrationBeamCD		= mod:NewNextTimer(136, "ej6882")
 local timerLifeDrainCD				= mod:NewCDTimer(40, 133795)
 local timerLifeDrain				= mod:NewBuffActiveTimer(18, 133795)
 local timerIceWallCD				= mod:NewNextTimer(120, 134587, nil, nil, nil, 111231)
-local timerDarkParasiteCD			= mod:NewCDTimer(60.5, 133597)--Heroic (60-74 sec variation, except the combat start and one after disintigration beam. those 2 are always dead on. it's possible others are dead on too if i can find better trigger points)
+local timerDarkParasiteCD			= mod:NewCDTimer(60.5, 133597)--Heroic 60-62. (the timer is tricky and looks far more variable but it really isn't, it just doesn't get to utilize it's true cd timer more than twice per fight)
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 local soundLingeringGaze			= mod:NewSound(134044)
@@ -102,6 +102,7 @@ local crimsonFog = EJ_GetSectionInfo(6892)
 local amberFog = EJ_GetSectionInfo(6895)
 local azureFog = EJ_GetSectionInfo(6898)
 local playerName = UnitName("player")
+local firstIcewall = false
 
 local function warnLingeringGazeTargets()
 	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
@@ -110,7 +111,9 @@ end
 
 local function warnDarkParasiteTargets()
 	warnDarkParasite:Show(table.concat(darkParasiteTargets, "<, >"))
-	timerDarkParasiteCD:Start()
+	if not lifeDrained then--Only time spell ever gets to use it's true 60 second cd without one of the two failsafes altering it. very first phase
+		timerDarkParasiteCD:Start()
+	end
 	table.wipe(darkParasiteTargets)
 end
 
@@ -131,6 +134,7 @@ local function BeamEnded()
 	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerDarkParasiteCD:Start(10)
 		timerIceWallCD:Start(32)
+		firstIcewall = true
 	end
 	if mod:IsDifficulty("lfr25") then
 		timerLightSpectrumCD:Start(66)
@@ -169,6 +173,7 @@ function mod:OnCombatStart(delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerDarkParasiteCD:Start(-delay)
 		timerIceWallCD:Start(127-delay)
+		firstIcewall = false--On pull, we only get one icewall and the CD behavior of parasite unaltered so we make sure to treat first icewall like a 2nd
 	end
 	if self:IsDifficulty("lfr25") then
 		lfrEngaged = true
@@ -229,8 +234,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnFogRevealed:Show(crimsonFog)
 	elseif args.spellId == 134587 and self:AntiSpam(3, 3) then
 		warnIceWall:Show()
-		if timerDarkParasiteCD:GetTime() > 10 then--if less than 50 seconds remaining on cd when ice wall goes up
-			timerDarkParasiteCD:Start(50)--it gets extended to 50 seconds remaining (Just a theory)
+		if firstIcewall then--if it's first icewall of a two icewall phase, it alters CD of dark parasite to be 50 seconds after this cast (thus preventing it from ever being a 60 second cd between casts for rest of fight do to beam and ice altering it)
+			firstIcewall = false
+			timerDarkParasiteCD:Start(50)--50-52.5
 		end
 	end
 end
