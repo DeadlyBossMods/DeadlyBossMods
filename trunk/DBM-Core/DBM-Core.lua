@@ -2820,11 +2820,12 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		if not challengeMod then--Don't schedule check for wipe in challenge mode speed run timer mods
 			self:Schedule(mod.minCombatTime or 3, checkWipe)
+		else
 			if clearDelay then
 				if type(clearDelay) ~= "table" then
 					clearDelay = { clearDelay }
 				end
-				clearDelay[#loadDelay + 1] = mod
+				clearDelay[#clearDelay + 1] = mod
 			else
 				clearDelay = mod
 			end
