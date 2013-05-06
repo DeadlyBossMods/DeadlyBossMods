@@ -416,7 +416,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 			yellLifeDrain:Yell(target, 1)
 		end
 		if self.Options.SetIconLifeDrain then
-			self:SetIcon(target, 4) -- Triangle
+			self:SetIcon(target, 8)--Skull
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(133795))
