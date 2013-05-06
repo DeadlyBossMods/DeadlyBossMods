@@ -202,7 +202,7 @@ do
 	function mod:SetParasiteIcons()
 		table.sort(darkParasiteTargetsIcons, sort_by_group)
 		local parasiteIcon = 5
-		for i, v in ipairs(huddleInTerrorIcons) do
+		for i, v in ipairs(darkParasiteTargetsIcons) do
 			-- DBM:SetIcon() is used because of follow reasons
 			--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
 			--2. It checks global dbm option "DontSetIcons"
@@ -253,7 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(darkParasiteTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
 			self:UnscheduleMethod("SetParasiteIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				if #huddleInTerrorIcons >= 3 and self:IsDifficulty("heroic25") or self:IsDifficulty("heroic10") then
+				if #darkParasiteTargetsIcons >= 3 and self:IsDifficulty("heroic25") or self:IsDifficulty("heroic10") then
 					self:SetParasiteIcons()
 				else
 					self:ScheduleMethod(0.5, "SetParasiteIcons")
