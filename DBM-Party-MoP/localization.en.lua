@@ -71,6 +71,15 @@ L:SetOptionLocalization({
 	RangeFrame				= "Show range frame (10) for $spell:106546"
 })
 
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("SSBGeneral")
+
+L:SetGeneralLocalization({
+	name =	"SSB: Challenge Timer"
+})
+
 -----------------------
 -- <<<Shado-Pan Monastery>>> --
 -----------------------
@@ -122,6 +131,15 @@ L= DBM:GetModLocalization(686)
 
 L:SetOptionLocalization({
 	InfoFrame			= "Show info frame for $journal:5827"
+})
+
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("SPMGeneral")
+
+L:SetGeneralLocalization({
+	name =	"SPM: Challenge Timer"
 })
 
 -----------------------
@@ -191,6 +209,15 @@ L= DBM:GetModLocalization(690)
 -----------------------
 L= DBM:GetModLocalization(698)
 
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("MoguPGeneral")
+
+L:SetGeneralLocalization({
+	name =	"MoguP: Challenge Timer"
+})
+
 -----------------------
 -- <<<Siege of Niuzao Temple>>> --
 -----------------------
@@ -225,6 +252,15 @@ L= DBM:GetModLocalization(692)
 -- Neronok --
 -----------------------
 L= DBM:GetModLocalization(727)
+
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("NiTGeneral")
+
+L:SetGeneralLocalization({
+	name =	"NiT: Challenge Timer"
+})
 
 -----------------------
 -- <<<Scholomance>>> --
@@ -271,6 +307,15 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(684)
 
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("ShMGeneral")
+
+L:SetGeneralLocalization({
+	name =	"ShM: Challenge Timer"
+})
+
 -----------------------
 -- <<<Scarlet Halls>>> --
 -----------------------
@@ -293,6 +338,15 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(656)
 
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("ScarHGeneral")
+
+L:SetGeneralLocalization({
+	name =	"ScarH: Challenge Timer"
+})
+
 -----------------------
 -- <<<Scarlet Cathedral>>> --
 -----------------------
@@ -314,3 +368,12 @@ L:SetOptionLocalization({
 -- Durand/High Inquisitor Whitemane --
 -----------------------
 L= DBM:GetModLocalization(674)
+
+--------------------------------
+-- General options/zone timer --
+--------------------------------
+L = DBM:GetModLocalization("ScarCGeneral")
+
+L:SetGeneralLocalization({
+	name =	"ScarC: Challenge Timer"
+})
