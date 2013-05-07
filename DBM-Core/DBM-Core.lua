@@ -1904,19 +1904,8 @@ do
 				end
 			end
 		end
-		if (instanceType == "scenario" and self:GetModByName("d511")) or instanceType == "party" and self:GetModByName("675") then--mod already loaded
+		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
 			self:Schedule(1, DBM.InstanceCheck)
-		end
-		if clearDelay then
-			local modsToClear = clearDelay
-			clearDelay = nil
-			if type(modsToClear) == "table" then
-				for i, v in ipairs(modsToClear) do
-					self:EndCombat(modsToClear, true)
-				end
-			else
-				self:EndCombat(modsToClear, true)
-			end
 		end
 	end
 end
@@ -1980,7 +1969,7 @@ function DBM:LoadMod(mod)
 			DBM_GUI:UpdateModList()
 		end
 		local _, instanceType = GetInstanceInfo()
-		if (instanceType == "scenario") or (instanceType == "party") then
+		if instanceType == "scenario" then
 			self:Schedule(1, DBM.InstanceCheck)
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
