@@ -23,8 +23,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces		= "forces pour from the",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "stamps his tail!"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces		= "surgissent de la porte",--Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget	= "fait battre sa queue"--Horridon sets his eyes on Eraeshio and stamps his tail!
 })
 
 ---------------------------
