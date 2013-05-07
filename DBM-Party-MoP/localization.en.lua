@@ -35,15 +35,6 @@ L= DBM:GetModLocalization(658)
 -----------------------
 L= DBM:GetModLocalization(335)
 
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("TJSGeneral")
-
-L:SetGeneralLocalization({
-	name =	"TJS: Challenge Timer"
-})
-
 -----------------------
 -- <<<Stormstout Brewery>>> --
 -----------------------
@@ -69,15 +60,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	SpecWarnFizzyBubbles	= "Show special warning when you are missing $spell:114459 debuff",
 	RangeFrame				= "Show range frame (10) for $spell:106546"
-})
-
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("SSBGeneral")
-
-L:SetGeneralLocalization({
-	name =	"SSB: Challenge Timer"
 })
 
 -----------------------
@@ -133,15 +115,6 @@ L:SetOptionLocalization({
 	InfoFrame			= "Show info frame for $journal:5827"
 })
 
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("SPMGeneral")
-
-L:SetGeneralLocalization({
-	name =	"SPM: Challenge Timer"
-})
-
 -----------------------
 -- <<<The Gate of the Setting Sun>>> --
 -----------------------
@@ -174,15 +147,6 @@ L= DBM:GetModLocalization(676)
 -----------------------------
 L= DBM:GetModLocalization(649)
 
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("GSSGeneral")
-
-L:SetGeneralLocalization({
-	name =	"GSS: Challenge Timer"
-})
-
 -----------------------
 -- <<<Mogu'Shan Palace>>> --
 -----------------------
@@ -208,15 +172,6 @@ L= DBM:GetModLocalization(690)
 -- Weaponmaster Xin --
 -----------------------
 L= DBM:GetModLocalization(698)
-
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("MoguPGeneral")
-
-L:SetGeneralLocalization({
-	name =	"MoguP: Challenge Timer"
-})
 
 -----------------------
 -- <<<Siege of Niuzao Temple>>> --
@@ -252,15 +207,6 @@ L= DBM:GetModLocalization(692)
 -- Neronok --
 -----------------------
 L= DBM:GetModLocalization(727)
-
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("NiTGeneral")
-
-L:SetGeneralLocalization({
-	name =	"NiT: Challenge Timer"
-})
 
 -----------------------
 -- <<<Scholomance>>> --
@@ -307,15 +253,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(684)
 
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("ShMGeneral")
-
-L:SetGeneralLocalization({
-	name =	"ShM: Challenge Timer"
-})
-
 -----------------------
 -- <<<Scarlet Halls>>> --
 -----------------------
@@ -338,15 +275,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(656)
 
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("ScarHGeneral")
-
-L:SetGeneralLocalization({
-	name =	"ScarH: Challenge Timer"
-})
-
 -----------------------
 -- <<<Scarlet Cathedral>>> --
 -----------------------
@@ -368,12 +296,3 @@ L:SetOptionLocalization({
 -- Durand/High Inquisitor Whitemane --
 -----------------------
 L= DBM:GetModLocalization(674)
-
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("ScarCGeneral")
-
-L:SetGeneralLocalization({
-	name =	"ScarC: Challenge Timer"
-})
