@@ -277,7 +277,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow move: разрешает перемещение стрелки",
 }
 
-DBM_SPEED_KILL_TIMER_TEXT	= "Рекордная победа/прохождение"
+DBM_SPEED_KILL_TIMER_TEXT	= "Рекордная победа"
 DBM_SPEED_KILL_TIMER_OPTION	= "Отсчёт времени вашей самой быстрой победы"
 
 
