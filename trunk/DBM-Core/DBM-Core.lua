@@ -73,6 +73,7 @@ DBM.DefaultOptions = {
 	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav",
 	SpecialWarningSound3 = "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav",
 	ModelSoundValue = "Short",
+	ChallengeBest = "Personal",
 	CountdownVoice = "Corsica",
 	ShowCountdownText = false,
 	RaidWarningPosition = {
@@ -693,6 +694,8 @@ do
 				"PLAYER_TARGET_CHANGED",
 				"CINEMATIC_START",
 				"LFG_COMPLETION_REWARD",
+				"WORLD_STATE_TIMER_START",
+				"WORLD_STATE_TIMER_STOP",
 				"ACTIVE_TALENT_GROUP_CHANGED"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
@@ -1868,6 +1871,35 @@ function DBM:LFG_COMPLETION_REWARD()
 	end
 end
 
+function DBM:WORLD_STATE_TIMER_START()
+	if DBM.Options.ChallengeBest == "None" or not C_Scenario.IsChallengeMode() then return end
+	local maps = { }
+	GetChallengeModeMapTable(maps)
+	local _, _, _, _, _, _, _, currentrzti = GetInstanceInfo()
+	for i = 1, 9 do
+		local zoneName, rzti = GetChallengeModeMapInfo(maps[i])
+		if currentrzti == rzti then
+			local guildBest, realmBest = GetChallengeBestTime(rzti)
+			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
+			if DBM.Options.ChallengeBest == "Personal" then
+				DBM.Bars:CreateBar(ceil(bestTime / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			elseif DBM.Options.ChallengeBest == "Guild" then
+				DBM.Bars:CreateBar(ceil(guildBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			elseif DBM.Options.ChallengeBest == "Realm" then
+				DBM.Bars:CreateBar(ceil(realmBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
+			end
+		end
+	end
+end
+
+function DBM:WORLD_STATE_TIMER_STOP()
+	if DBM.Options.ChallengeBest == "None" or not C_Scenario.IsChallengeMode() then return end
+	if not C_Scenario.IsChallengeMode() then return end
+	if DBM.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
+		DBM.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
+	end
+end
+
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -1906,6 +1938,9 @@ do
 		end
 		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
 			self:Schedule(1, DBM.InstanceCheck)
+		end
+		if instanceType == "party" and not self:GetModByName("675") then
+			RequestChallengeModeMapInfo()--Make server send challenge mode stats first time we enter 5 man instance
 		end
 	end
 end
