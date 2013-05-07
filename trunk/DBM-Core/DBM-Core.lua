@@ -693,7 +693,6 @@ do
 				"PLAYER_TARGET_CHANGED",
 				"CINEMATIC_START",
 				"LFG_COMPLETION_REWARD",
-				"CHALLENGE_MODE_COMPLETED",
 				"ACTIVE_TALENT_GROUP_CHANGED"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
@@ -1869,17 +1868,6 @@ function DBM:LFG_COMPLETION_REWARD()
 	end
 end
 
-function DBM:CHALLENGE_MODE_COMPLETED()
-	if #inCombat > 0 then
-		for i = #inCombat, 1, -1 do
-			local v = inCombat[i]
-			if v.inChallenge then
-				self:EndCombat(v)
-			end
-		end
-	end
-end
-
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -1900,7 +1888,7 @@ do
 			SetMapToCurrentZone()
 			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
 		end
---		self:AddMsg(LastZoneMapID)--Debug
+--		self:AddMsg(GetZoneText()..", "..LastZoneMapID)--Debug
 		for i, v in ipairs(self.AddOns) do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zoneId, LastZoneMapID)) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
 				self:Unschedule(DBM.LoadMod, DBM, v)
@@ -1933,11 +1921,11 @@ do
 	end
 end
 
---Scenario mods or challenge mode "best run" timer mods
+--Scenario mods
 function DBM:InstanceCheck()
 	if combatInfo[LastZoneMapID] then
 		for i, v in ipairs(combatInfo[LastZoneMapID]) do
-			if (v.type == "scenario" or v.type == "challenge") and checkEntry(v.msgs, LastZoneMapID) then
+			if (v.type == "scenario") and checkEntry(v.msgs, LastZoneMapID) then
 				DBM:StartCombat(v.mod, 0)
 			end
 		end
@@ -2777,7 +2765,6 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 			end
 		end
 		savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
-		local challengeMod = mod.type == "challenge"
 		if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 			mod.inCombatOnlyEventsRegistered = 1
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -2791,15 +2778,10 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				mod.stats.lfr25Pulls = mod.stats.lfr25Pulls + 1
 			elseif mod:IsDifficulty("normal5", "worldboss") then
 				mod.stats.normalPulls = mod.stats.normalPulls + 1
-				if challengeMod then mod.ignoreBestkill = true end--Disable the best 
 			elseif mod:IsDifficulty("heroic5") then
 				mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-				if challengeMod then mod.ignoreBestkill = true end
 			elseif mod:IsDifficulty("challenge5") then
 				mod.stats.challengePulls = mod.stats.challengePulls + 1
-				if challengeMod then
-					mod.inChallenge = true
-				end
 			elseif mod:IsDifficulty("normal10") then
 				mod.stats.normalPulls = mod.stats.normalPulls + 1
 				local _, _, _, _, maxPlayers = GetInstanceInfo()
@@ -2818,19 +2800,8 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
-		if not challengeMod then--Don't schedule check for wipe in challenge mode speed run timer mods
-			self:Schedule(mod.minCombatTime or 3, checkWipe)
-		else
-			if clearDelay then
-				if type(clearDelay) ~= "table" then
-					clearDelay = { clearDelay }
-				end
-				clearDelay[#clearDelay + 1] = mod
-			else
-				clearDelay = mod
-			end
-		end
-		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario and not mod.inChallenge then
+		self:Schedule(mod.minCombatTime or 3, checkWipe)
+		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
@@ -2862,12 +2833,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				bestTime = mod.stats.heroic25BestTime
 			end
 			if bestTime and bestTime > 0 then
-				local speedTimer
-				if mod.inChallenge then
-					speedTimer = mod:NewTimer(bestTime, DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-				else
-					speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-				end
+				local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 				speedTimer:Start()
 			end
 		end
@@ -2885,7 +2851,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 			end
 		end
 		self:StartLogging(0, nil)
-		if DBM.Options.ShowEngageMessage and not challengeMod then
+		if DBM.Options.ShowEngageMessage then
 			if mod.ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
 			else
@@ -2896,7 +2862,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				end
 			end
 		end
-		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") and not challengeMod then
+		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
 			WatchFrame:Hide()
 			watchFrameRestore = true
 		end
@@ -2946,7 +2912,6 @@ end
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		local scenario = mod.type == "SCENARIO"
-		local challenge = mod.type == "challenge"
 		if not wipe then
 			mod.lastKillTime = GetTime()
 			if mod.inCombatOnlyEvents then
@@ -2993,7 +2958,7 @@ function DBM:EndCombat(mod, wipe)
 				else
 					mod.stats.normalPulls = mod.stats.normalPulls - 1
 				end
-				if DBM.Options.ShowWipeMessage and not challenge then
+				if DBM.Options.ShowWipeMessage then
 					if scenario then
 						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
 					else
@@ -3001,7 +2966,7 @@ function DBM:EndCombat(mod, wipe)
 					end
 				end
 			else
-				if DBM.Options.ShowWipeMessage and not challenge then
+				if DBM.Options.ShowWipeMessage then
 					if scenario then
 						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT_LONG:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), totalPulls - totalKills))
 					else
