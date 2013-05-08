@@ -192,7 +192,8 @@ end
 ----------------------
 local function show(runAway, x, y, distance, time)
 	local player
-	SetMapToCurrentZone()
+	SetMapToCurrentZone()--Set map to current zone before checking other stuff
+	DBM:UpdateMapSizes()--Force a mapsize update after SetMapToCurrentZone to ensure our information is current
 	if type(x) == "string" then
 		player, hideDistance, hideTime = x, y, hideDistance
 	end

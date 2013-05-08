@@ -812,7 +812,8 @@ end
 ---------------
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	if DBM.Options.DontShowRangeFrame and not forceshow then return end
-	SetMapToCurrentZone()--Set map to current zone before checking other stuff, work around annoying bug i hope?
+	SetMapToCurrentZone()--Set map to current zone before checking other stuff
+	DBM:UpdateMapSizes()--Force a mapsize update after SetMapToCurrentZone to ensure our information is current
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
 	end
