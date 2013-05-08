@@ -53,19 +53,25 @@ L.Statistic_Wipes			= "Wipes:"
 L.Statistic_Incompletes		= "Incompletes:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill		= "Best Victory:"
 
--- Tab: General Options
-L.General 					= "General DBM Options"
+-- Tab: General Core Options
+L.General 					= "General DBM Core Options"
 L.EnableDBM 				= "Enable DBM"
 L.EnableMiniMapIcon			= "Show minimap button"
 L.SetPlayerRole				= "Automatically set player role (Enabled recommended)"
 L.UseMasterVolume			= "Use Master audio channel to play sound files"
 L.DisableCinematics			= "Disable in-game cinematics in instances"
 L.DisableCinematicsOutside	= "Disable in-game cinematics outside instances"
-L.SKT_Enabled				= "Always show speed kill timer (Overrides boss-specific option)"
 L.AutologBosses				= "Automatically record boss encounters using blizzard combat log"
 L.AdvancedAutologBosses		= "Automatically record boss encounters with Transcriptor"
 L.LogOnlyRaidBosses			= "Only record raid boss encounters (exclude Raid Finder/party/scenario)"
 L.Latency_Text				= "Set max latency sync threshold: %d"
+-- Tab: General Timer Options
+L.TimerGeneral 				= "General DBM Timer Options"
+L.SKT_Enabled				= "Always show speed kill timer (Overrides boss-specific option)"
+L.ChallengeTimerOptions		= "Set option for challenge mode best clear timer"
+L.ChallengeTimerPersonal	= "Personal"
+L.ChallengeTimerGuild		= "Guild"
+L.ChallengeTimerRealm		= "Realm"
 
 L.ModelOptions				= "3D Model Viewer Options"
 L.EnableModels				= "Enable 3D models in boss options"
