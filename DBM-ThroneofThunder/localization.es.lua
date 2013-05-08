@@ -7,8 +7,8 @@ local L
 L= DBM:GetModLocalization(827)
 
 L:SetMiscLocalization({
-	newForces		= "fuerzas pour",--Farraki forces pour from the Farraki Tribal Door! (needs verified, may be wrong)
-	chargeTarget	= "fija la vista"--Horridon sets his eyes on Eraeshio and stamps his tail! (needs verified, may be wrong)
+	newForces		= "salen en tropel desde la puerta",--Farraki forces pour from the Farraki Tribal Door! (needs verified, may be wrong)
+	chargeTarget	= "golpea con su cola"--Horridon sets his eyes on Eraeshio and stamps his tail! (needs verified, may be wrong)
 })
 
 ---------------------------
