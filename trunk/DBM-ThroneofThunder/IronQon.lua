@@ -87,6 +87,10 @@ local Damren = select(2, EJ_GetCreatureInfo(4, 817))
 local arcingName = GetSpellInfo(136193)
 local phase = 1--Not sure this is useful yet, coding it in, in case spear cd is different in different phases
 local fistSmashCount = 0
+--Spear method called VERY often, so cache these globals locally
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local UnitExists = UnitExists
+local UnitClass = UnitClass
 
 local function updateHealthFrame()
 	if DBM.BossHealth:IsShown() then
