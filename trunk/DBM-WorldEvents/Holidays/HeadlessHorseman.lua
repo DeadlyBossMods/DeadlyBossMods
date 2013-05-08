@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(23682, 23775)
 --mod:SetModelID(22351)--Model doesn't work/render for some reason.
+mod:SetReCombatTime(10)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(

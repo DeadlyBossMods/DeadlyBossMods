@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(23872)
 mod:SetModelID(21824)
+mod:SetReCombatTime(10)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(

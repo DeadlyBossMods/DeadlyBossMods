@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15467)
 mod:SetModelID(15879)
+mod:SetReCombatTime(10)
 mod:SetZone(241)--Moonglade
 
 mod:RegisterCombat("combat")
