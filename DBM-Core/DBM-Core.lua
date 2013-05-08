@@ -285,7 +285,6 @@ local function sendSync(prefix, msg)
 	end
 end
 
-
 local function strFromTime(time)
 	if type(time) ~= "number" then time = 0 end
 	time = math.floor(time)
@@ -1079,7 +1078,7 @@ SlashCmdList["DBMRANGE"] = function(msg)
 		DBM.RangeCheck:Hide()
 	else
 		local r = tonumber(msg)
-		if r and ((r == 10 or r == 11 or r == 15 or r == 28) or (DBM.MapSizes[GetMapInfo()] and r < 31)) then
+		if r and ((r == 10 or r == 11 or r == 15 or r == 28) or (DBM:GetMapSizes() and r < 31)) then
 			DBM.RangeCheck:Show(r, nil, true)
 		else
 			DBM.RangeCheck:Show(10, nil, true)
@@ -1873,11 +1872,10 @@ end
 
 function DBM:WORLD_STATE_TIMER_START()
 	if DBM.Options.ChallengeBest == "None" or not C_Scenario.IsChallengeMode() then return end
-	local maps = { }
-	GetChallengeModeMapTable(maps)
+	local maps = GetChallengeModeMapTable()
 	local _, _, _, _, _, _, _, currentrzti = GetInstanceInfo()
 	for i = 1, 9 do
-		local zoneName, rzti = GetChallengeModeMapInfo(maps[i])
+		local _, rzti = GetChallengeModeMapInfo(maps[i])
 		if currentrzti == rzti then
 			local guildBest, realmBest = GetChallengeBestTime(rzti)
 			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
@@ -2000,10 +1998,11 @@ function DBM:LoadMod(mod)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
+		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
 		if mod.type == "PARTY" then
 			RequestChallengeModeMapInfo()
+			RequestChallengeModeLeaders(mapID)
 		end
-		local _, instanceType = GetInstanceInfo()
 		if instanceType == "scenario" then
 			self:Schedule(1, DBM.InstanceCheck)
 		end
@@ -3772,6 +3771,24 @@ function DBM:RegisterMapSize(zone, ...)
 	end
 end
 
+function DBM:GetMapSizes()
+	SetMapToCurrentZone()
+	-- try custom map size first
+	local mapName = GetMapInfo()
+	local floor, a1, b1, c1, d1 = GetCurrentMapDungeonLevel()
+	local dims = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][floor]
+	if dims then return dims end 
+
+	-- failed, try Blizzard's map size
+	if not (a1 and b1 and c1 and d1) then
+		local zoneIndex, a2, b2, c2, d2 = GetCurrentMapZone()
+		a1, b1, c1, d1 = a2, b2, c2, d2
+	end
+
+	if not (a1 and b1 and c1 and d1) then return end
+
+	return {abs(c1-a1), abs(d1-b1)}
+end
 
 -------------------
 --  Movie Filter --
@@ -3852,6 +3869,7 @@ do
 		if tonumber(name) then
 			local t = EJ_GetEncounterInfo(tonumber(name))
 			obj.localization.general.name = string.split(",", t)
+			obj.modelId = select(4, EJ_GetCreatureInfo(1, tonumber(name)))
 		elseif name:match("z%d+") then
 			local t = GetRealZoneText(string.sub(name, 2))
 			obj.localization.general.name = string.split(",", t)

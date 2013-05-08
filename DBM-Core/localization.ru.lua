@@ -59,7 +59,7 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "Прочее"
 DBM_CORE_AUTO_RESPONDED				= "Авто-ответ."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d человек живые"
 --Bosses
-DBM_CORE_AUTO_RESPOND_WHISPER		= "%s сейчас занят, в бою против %s (%s, %d/%d человек живые)"
+DBM_CORE_AUTO_RESPOND_WHISPER				= "%s сейчас занят, в бою против %s (%s, %d/%d человек живые)"
 DBM_CORE_WHISPER_COMBAT_END_KILL			= "%s одержал победу над %s!"
 DBM_CORE_WHISPER_COMBAT_END_KILL_STATS		= "%s одержал победу над %s! Общее количество побед у них - %d."
 DBM_CORE_WHISPER_COMBAT_END_WIPE_AT			= "%s потерпел поражение от %s на %s"
@@ -279,7 +279,7 @@ DBM_ARROW_ERROR_USAGE	= {
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Рекордная победа"
 DBM_SPEED_KILL_TIMER_OPTION	= "Отсчёт времени вашей самой быстрой победы"
-DBM_SPEED_CLEAR_TIMER_TEXT	= "Рекордное прохождение"
+DBM_SPEED_CLEAR_TIMER_TEXT	= "Лучшее прохождение"
 
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s запрашивает разрешение на просмотр ваших текущих сохранений подземелий.\nВы хотите предоставить %s такое право? Этот игрок получит возможность запрашивать эту информацию без уведомления в течение вашей текущей игровой сессии."

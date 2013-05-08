@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60009)--60781 Soul Fragment
-mod:SetModelID(41192)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6)
 

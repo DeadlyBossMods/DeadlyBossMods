@@ -626,8 +626,7 @@ do
 				radarFrame.text:SetText(DBM_CORE_RANGERADAR_HEADER:format(range))
 			end
 
-			local mapName = GetMapInfo()
-			local dims  = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()]
+			local dims = DBM:GetMapSizes()
 			if not dims then -- This ALWAYS happens when leaving a zone that has a map and moving into one that does not.
 				if select(3, radarFrame.circle:GetVertexColor()) < 0.5 then
 					radarFrame.circle:SetVertexColor(1,1,1)
@@ -761,16 +760,13 @@ end
 
 local getDistanceBetween
 do
-	local mapSizes = DBM.MapSizes
-
 	function getDistanceBetween(uId, x, y)
 		-- alternative arguments: uId, uId2
 		if type(x) == "string" then
 			x, y = GetPlayerMapPosition(x)
 		end
 		local startX, startY = GetPlayerMapPosition(uId)
-		local mapName = GetMapInfo()
-		local dims  = mapSizes[mapName] and mapSizes[mapName][GetCurrentMapDungeonLevel()]
+		local dims = DBM:GetMapSizes()
 		if not dims then
 			return
 		end
@@ -787,26 +783,7 @@ do
 		if checkFuncs[range] ~= mapRangeCheck then
 			return true
 		end
-		local pX, pY = GetPlayerMapPosition("player")
-		if pX == 0 and pY == 0 then
-			SetMapToCurrentZone()
-			pX, pY = GetPlayerMapPosition("player")
-		end
-		local levels = mapSizes[GetMapInfo()]
-		if not levels then
-			return false
-		end
-		local dims = levels[GetCurrentMapDungeonLevel()]
-		if not dims and levels and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
-			SetMapToCurrentZone() -- fixes the dungeon level
-			dims = levels[GetCurrentMapDungeonLevel()] -- try again
-			if not dims then -- there is actually a level 0 in this zone but we don't know about it...too bad :(
-				return false
-			end
-		elseif not dims then
-			return false
-		end
-		return true -- everything ok!
+		return DBM:GetMapSizes() and true or false
 	end
 
 	setmetatable(checkFuncs, {
@@ -848,12 +825,12 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	frame.range = range
 	frame.filter = filter
 	frame.redCircleNumPlayers = redCircleNumPlayers
-	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or DBM.MapSizes[mapName] == nil or (DBM.MapSizes[mapName] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()] == nil) then
+	if DBM.Options.RangeFrameFrames == "text" or DBM.Options.RangeFrameFrames == "both" or DBM:GetMapSizes() == nil then
 		frame:Show()
 		frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 		onUpdate(frame, 0)
 	end
-	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and (DBM.MapSizes[GetMapInfo()] and DBM.MapSizes[mapName][GetCurrentMapDungeonLevel()] ~= nil) then
+	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and DBM:GetMapSizes() then
 		onUpdateRadar(radarFrame, 1)
 	end
 end

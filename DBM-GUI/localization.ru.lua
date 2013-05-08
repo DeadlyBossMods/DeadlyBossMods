@@ -54,7 +54,7 @@ L.Statistic_Wipes			= "Поражения:"
 L.Statistic_Incompletes		= "Не завершено:"
 L.Statistic_BestKill		= "Лучший бой:"
 
--- Tab: General Options
+-- Tab: General Core Options
 L.General 					= "Общие параметры DBM"
 L.EnableDBM 				= "Включить DBM"
 L.EnableMiniMapIcon			= "Отображать кнопку на мини-карте"
@@ -62,11 +62,17 @@ L.SetPlayerRole				= "Автоматически устанавливать ро
 L.UseMasterVolume			= "Использовать общий аудио канал для проигрывания звуковых файлов"
 L.DisableCinematics			= "Отключить внутриигровые ролики в подземельях"
 L.DisableCinematicsOutside	= "Отключить внутриигровые ролики вне подземелий"
-L.SKT_Enabled				= "Всегда отображать таймер быстрого убийства\n(переопределяет настройку для конкретного босса)"
 L.AutologBosses				= "Автоматически записывать бои с боссами используя журнал боя Blizzard"
 L.AdvancedAutologBosses		= "Автоматически записывать бои с боссами используя Transcriptor"
 L.LogOnlyRaidBosses			= "Записывать только бои с рейдовыми боссами (искл. Поиск Рейдов/5 ппл/сценарии)"
 L.Latency_Text				= "Макс. задержка для синхронизации: %d"
+-- Tab: General Timer Options
+L.TimerGeneral 				= "Общие параметры таймера"
+L.SKT_Enabled				= "Всегда отображать таймер быстрого убийства\n(переопределяет настройку для конкретного босса)"
+L.ChallengeTimerOptions		= "Отображать таймер лучшего прохождения для режима испытаний"
+L.ChallengeTimerPersonal	= "Персональный"
+L.ChallengeTimerGuild		= "Гильдия"
+L.ChallengeTimerRealm		= "Сервер"
 
 L.ModelOptions				= "Настройки 3D моделей на странице боссов"
 L.EnableModels				= "Показывать 3D модели боссов"

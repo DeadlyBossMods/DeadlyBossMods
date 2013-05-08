@@ -1,4 +1,4 @@
--- Areanas mod v3.0
+-- Arenas mod v3.0
 -- rewrite by Tandanu
 --
 

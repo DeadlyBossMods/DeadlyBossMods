@@ -60,19 +60,9 @@ end
 
 local calculateDistance
 do
-	local mapSizes = DBM.MapSizes
 	function calculateDistance(x1, y1, x2, y2)
-		local mapName = GetMapInfo()
-		local floors = mapSizes[mapName]
-		if not floors then
-			return
-		end
-		local dims = floors[GetCurrentMapDungeonLevel()]
-		if not dims and floors and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
-			SetMapToCurrentZone() -- fixes the dungeon level (if it was wrong for some reason)
-			dims = floors[GetCurrentMapDungeonLevel()] -- try again
-		end
-		if not dims then -- we are in an unknown dungeon :(
+		local dims = DBM:GetMapSizes()
+		if not dims then
 			return
 		end
 		local dX = (x1 - x2) * dims[1]

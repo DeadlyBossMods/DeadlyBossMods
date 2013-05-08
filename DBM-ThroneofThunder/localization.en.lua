@@ -177,7 +177,7 @@ L:SetOptionLocalization({
 	ArrowOnBeam					= "Show DBM Arrow during $journal:6882 to indicate which direction to move",
 	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891"),
 	SetIconLifeDrain			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(133795),
-	SetIconOnParasite		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(133597),
+	SetIconOnParasite			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(133597),
 	InfoFrame					= "Show info frame for $spell:133795 stacks"
 })
 
