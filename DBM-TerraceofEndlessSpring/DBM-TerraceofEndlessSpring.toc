@@ -26,7 +26,6 @@ localization.cn.lua
 localization.es.lua
 localization.fr.lua
 localization.ru.lua
-MapSizes.lua
 ProtectorsofEndless.lua
 Tsulong.lua
 LeiShi.lua
