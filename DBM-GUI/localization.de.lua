@@ -53,19 +53,25 @@ L.Statistic_Wipes			= "Niederlagen:"
 L.Statistic_Incompletes		= "Abgebrochen:"
 L.Statistic_BestKill		= "Schnellster:"
 
--- Tab: General Options
-L.General 					= "Allgemeine DBM-Einstellungen"
+-- Tab: General Core Options
+L.General 					= "Allgemeine Grundeinstellungen"
 L.EnableDBM 				= "Aktiviere DBM"
 L.EnableMiniMapIcon			= "Aktiviere Minimap-Symbol"
 L.SetPlayerRole				= "Automatisch eigene Rolle (Schutz/Heilung/Schaden) setzen (empfohlen)"
 L.UseMasterVolume			= "Benutze Master-Audiokanal um Sounddateien abzuspielen"
 L.DisableCinematics			= "Deaktiviere Videosequenzen innerhalb von Instanzen"
 L.DisableCinematicsOutside	= "Deaktiviere Videosequenzen außerhalb von Instanzen"
-L.SKT_Enabled				= "Zeige immer Timer für schnellsten Sieg (ignoriert Boss-spezifische Einstellung)"
 L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog"
 L.AdvancedAutologBosses		= "Automatische Aufzeichnung von Bosskämpfen mit Addon \"Transcriptor\""
 L.LogOnlyRaidBosses			= "Nur Schlachtzugbosskämpfe aufzeichnen\n(ohne Schlachtzugsbrowser-/Dungeon-/Szenarien-/Weltbosskämpfe)"
 L.Latency_Text				= "Maximale Synchronisierungslatenz: %d"
+-- Tab: General Timer Options
+L.TimerGeneral 				= "Allgemeine Einstellungen für Timer"
+L.SKT_Enabled				= "Zeige immer Timer für schnellsten Sieg (ignoriert Boss-spezifische Einstellung)"
+L.ChallengeTimerOptions		= "Timer für den schnellsten Abschluss im Herausforderungsmodus"
+L.ChallengeTimerPersonal	= "Persönliche Bestzeit"
+L.ChallengeTimerGuild		= "Bestzeit der Gilde"
+L.ChallengeTimerRealm		= "Bestzeit des Realms"
 
 L.ModelOptions				= "Einstellungen für 3D-Modellanzeige"
 L.EnableModels				= "Aktiviere 3D-Modelle in den Bosseinstellungen"
