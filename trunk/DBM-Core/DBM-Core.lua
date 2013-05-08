@@ -1881,11 +1881,11 @@ function DBM:WORLD_STATE_TIMER_START()
 		if currentrzti == rzti then
 			local guildBest, realmBest = GetChallengeBestTime(rzti)
 			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
-			if DBM.Options.ChallengeBest == "Personal" then
+			if bestTime and DBM.Options.ChallengeBest == "Personal" then
 				DBM.Bars:CreateBar(ceil(bestTime / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-			elseif DBM.Options.ChallengeBest == "Guild" then
+			elseif guildBest and DBM.Options.ChallengeBest == "Guild" then
 				DBM.Bars:CreateBar(ceil(guildBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-			elseif DBM.Options.ChallengeBest == "Realm" then
+			elseif realmBest and DBM.Options.ChallengeBest == "Realm" then
 				DBM.Bars:CreateBar(ceil(realmBest / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 			end
 		end
