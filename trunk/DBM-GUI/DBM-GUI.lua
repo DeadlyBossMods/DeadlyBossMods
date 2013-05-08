@@ -1326,7 +1326,7 @@ local function CreateOptionsMenu()
      	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 
-		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 200, true)
+		local generaltimeroptions = DBM_GUI_Frame:CreateArea(L.TimerGeneral, nil, 85)
 		generaltimeroptions.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 
 		local SKT_Enabled	= generaltimeroptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
@@ -1342,7 +1342,7 @@ local function CreateOptionsMenu()
 			DBM.Options.ChallengeBest = value
 		end
 		)
-		ModelSoundDropDown:SetPoint("TOPLEFT", modelarea.frame, "TOPLEFT", 0, -50)
+		ChallengeTimerDropDown:SetPoint("TOPLEFT", generaltimeroptions.frame, "TOPLEFT", 0, -50)
 
 		--Model viewer options
 		local modelarea = DBM_GUI_Frame:CreateArea(L.ModelOptions, nil, 85)
