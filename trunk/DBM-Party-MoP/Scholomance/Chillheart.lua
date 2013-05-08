@@ -7,7 +7,6 @@ mod:SetCreatureID(58633, 58664)--58633 is boss, 58664 is Phylactery. We register
 --THIS is why we also register 58664, so end combat does not fire until the boss is actually dead
 --that said, the way dbm works, registering UNIT_DIED was overkill in original code
 --Just adding both CIDs to combat table will suffice, 58633 will be removed in phase 1 sure, but 58664 stays in table until boss actually dies completely so all is good.
-mod:SetModelID(40301)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
