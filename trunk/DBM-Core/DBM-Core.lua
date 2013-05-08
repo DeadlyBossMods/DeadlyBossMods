@@ -1939,9 +1939,6 @@ do
 		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
 			self:Schedule(1, DBM.InstanceCheck)
 		end
-		if instanceType == "party" and not self:GetModByName("675") then
-			RequestChallengeModeMapInfo()--Make server send challenge mode stats first time we enter 5 man instance
-		end
 	end
 end
 
@@ -2002,6 +1999,9 @@ function DBM:LoadMod(mod)
 		end
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
+		end
+		if mod.type == "PARTY" then
+			RequestChallengeModeMapInfo()
 		end
 		local _, instanceType = GetInstanceInfo()
 		if instanceType == "scenario" then
