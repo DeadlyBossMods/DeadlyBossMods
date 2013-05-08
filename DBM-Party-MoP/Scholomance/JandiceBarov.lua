@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(59184)--59220 seem to be her mirror images
-mod:SetModelID(40639)
 mod:SetZone()
 
 mod:RegisterCombat("combat")

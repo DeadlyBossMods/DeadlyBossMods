@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(61442, 61444, 61445)--61442 (Kuai the Brute), 61453 (Mu'Shiba, Kuai's Add), 61444 (Ming the Cunning), 61445 (Haiyan the Unstoppable)
-mod:SetModelID(42060)	-- 42059=Ming the Cunning | 42058=Kuai the Brute | 42060=Haiyan the Unstoppable
 mod:SetZone()
 
 --http://www.wowpedia.org/Clan_Leaders_of_the_Mogu
