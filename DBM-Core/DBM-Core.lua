@@ -3764,7 +3764,13 @@ function DBM:Capitalize(str)
 	return str:sub(1, numBytes):upper()..str:sub(numBytes + 1):lower()
 end
 
---copied from big wigs with permission from funkydude
+--copied from big wigs with permission from funkydude. Modified by MysticalOS
+hooksecurefunc("RolePollPopup_Show",function(...)
+	--Because of damn idiots that spam roll checks
+	if DBM.Options.SetPlayerRole then--We have auto role setting on so assume we already our role and hide this spam
+		StaticPopupSpecial_Hide(RolePollPopup)
+	end
+end)
 function DBM:RoleCheck()
 	if not DBM.Options.SetPlayerRole then return end
 	if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
