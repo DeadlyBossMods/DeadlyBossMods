@@ -235,6 +235,10 @@ function DBM.Arrow:ShowStatic(angle, time)
 	frame:Show()
 end
 
+function DBM.Arrow:IsShown()
+	return frame and frame:IsShown()
+end
+
 function DBM.Arrow:Hide(autoHide)
 	frame:Hide()
 end

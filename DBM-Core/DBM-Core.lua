@@ -673,6 +673,8 @@ do
 			self:RegisterEvents(
 				"COMBAT_LOG_EVENT_UNFILTERED",
 				"ZONE_CHANGED_NEW_AREA",
+				"ZONE_CHANGED",
+				"ZONE_CHANGED_INDOORS",
 				"GROUP_ROSTER_UPDATE",
 				"CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
@@ -1902,6 +1904,20 @@ function DBM:WORLD_STATE_TIMER_STOP()
 	end
 end
 
+function DBM:ZONE_CHANGED()
+	if DBM.RangeCheck:IsShown() or DBM.Arrow:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
+		SetMapToCurrentZone()
+	end
+	DBM:UpdateMapSizes()
+end
+
+function DBM:ZONE_CHANGED_INDOORS()
+	if DBM.RangeCheck:IsShown() or DBM.Arrow:IsShown() then
+		SetMapToCurrentZone()
+	end
+	DBM:UpdateMapSizes()
+end
+
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
@@ -1941,6 +1957,7 @@ do
 		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
 			self:Schedule(1, DBM.InstanceCheck)
 		end
+		DBM:UpdateMapSizes()
 	end
 end
 
@@ -3775,14 +3792,15 @@ function DBM:RegisterMapSize(zone, ...)
 	end
 end
 
-function DBM:GetMapSizes()
-	SetMapToCurrentZone()--As stupid and annoying as this is, seems to be only way to ensure radar/arrows always work when changing floors/areas with radar open
+function DBM:UpdateMapSizes()
 	-- try custom map size first
 	local mapName = GetMapInfo()
 	local floor, a1, b1, c1, d1 = GetCurrentMapDungeonLevel()
-	if floor == 0 then SetMapToCurrentZone() end
 	local dims = DBM.MapSizes[mapName] and DBM.MapSizes[mapName][floor]
-	if dims then return dims end 
+	if dims then
+		currentSizes = dims
+--		print(DBM.MapSizes[mapName][floor][1], DBM.MapSizes[mapName][floor][2])
+	return end 
 
 	-- failed, try Blizzard's map size
 	if not (a1 and b1 and c1 and d1) then
@@ -3791,8 +3809,12 @@ function DBM:GetMapSizes()
 	end
 
 	if not (a1 and b1 and c1 and d1) then return end
+	currentSizes = {abs(c1-a1), abs(d1-b1)}
+--	print(abs(c1-a1), abs(d1-b1))
+end
 
-	return {abs(c1-a1), abs(d1-b1)}
+function DBM:GetMapSizes()
+	return currentSizes
 end
 
 -------------------
