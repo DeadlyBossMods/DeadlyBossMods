@@ -26,7 +26,6 @@ localization.fr.lua
 localization.de.lua
 localization.ru.lua
 localization.tw.lua
-MapSizes.lua
 Jinrokh.lua
 Horridon.lua
 CouncilofElders.lua

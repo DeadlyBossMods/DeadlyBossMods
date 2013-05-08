@@ -26,7 +26,6 @@ localization.ru.lua
 localization.tw.lua
 localization.cn.lua
 localization.fr.lua
-MapSizes.lua
 StoneGuard.lua
 Feng.lua
 GarajalTheSpiritbinder.lua

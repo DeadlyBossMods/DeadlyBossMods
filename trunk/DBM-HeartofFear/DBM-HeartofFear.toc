@@ -26,7 +26,6 @@ localization.tw.lua
 localization.cn.lua
 localization.es.lua
 localization.fr.lua
-MapSizes.lua
 Zorlok.lua
 Tayak.lua
 Garalon.lua
