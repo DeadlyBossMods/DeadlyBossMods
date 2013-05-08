@@ -240,6 +240,8 @@ local UnitExists = UnitExists
 local UnitIsDead = UnitIsDead
 local GetSpellInfo = GetSpellInfo
 local EJ_GetSectionInfo = EJ_GetSectionInfo
+local GetCurrentMapDungeonLevel = GetCurrentMapDungeonLevel
+local GetMapInfo = GetMapInfo
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
