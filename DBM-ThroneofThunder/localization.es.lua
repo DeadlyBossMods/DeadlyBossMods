@@ -36,8 +36,7 @@ L:SetOptionLocalization({
 	specWarnOrbofControl	= "Mostrar aviso especial cuando un $journal:7092 está disponible",
 	timerDoor				= "Mostrar temporizador para la siguiente fase de puerta tribal",
 	timerAdds				= "Mostrar temporizador cuando aparecen nuevos adds",
-	RangeFrame				= "Mostrar distancia (5) para $spell:136480",
-	SetIconOnCharge			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136769)
+	RangeFrame				= "Mostrar distancia (5) para $spell:136480"
 })
 
 L:SetMiscLocalization({
@@ -55,13 +54,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPossessed		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(136442),
-	specWarnPossessed	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:format(136442),
 	PHealthFrame		= "Mostrar salud restante para que $spell:136442 desaparezca\n(Requiere barra de vida del boss)",
 	RangeFrame			= "Mostrar radar de rango",
-	AnnounceCooldowns	= "Mostrar cuenta de $spell:137166 (hasta 3) para uso de cooldowns de banda",
-	SetIconOnBitingCold	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136992),
-	SetIconOnFrostBite	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136922)
+	AnnounceCooldowns	= "Mostrar cuenta de $spell:137166 (hasta 3) para uso de cooldowns de banda"
 })
 
 
@@ -77,7 +72,6 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "Mostrar aviso especial cuando te falta $spell:137633",
 	InfoFrame				= "Mostrar cuadro de información para los jugadores sin $spell:137633",
 	SetIconOnTurtles		= "Poner iconos en $journal:7129",
