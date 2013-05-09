@@ -80,6 +80,7 @@ mod:AddBoolOption("SetIconRays", true)
 mod:AddBoolOption("SetIconLifeDrain", true)
 mod:AddBoolOption("InfoFrame", true) -- may be need special warning or generic warning high stack player? or do not needed at all?
 mod:AddBoolOption("SetIconOnParasite", false)
+mod:AddBoolOption("SetParticle", false)
 
 local totalFogs = 3
 local lingeringGazeTargets = {}
@@ -102,6 +103,7 @@ local amberFog = EJ_GetSectionInfo(6895)
 local azureFog = EJ_GetSectionInfo(6898)
 local playerName = UnitName("player")
 local firstIcewall = false
+local CVAR = nil
 
 local function warnLingeringGazeTargets()
 	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
@@ -162,6 +164,7 @@ function mod:OnCombatStart(delay)
 	lfrCrimsonFogRevealed = false
 	lfrAmberFogRevealed = false
 	lfrAzureFogRevealed = false
+	CVAR = nil
 	table.wipe(lingeringGazeTargets)
 	table.wipe(darkParasiteTargets)
 	timerHardStareCD:Start(5-delay)
@@ -182,6 +185,10 @@ function mod:OnCombatStart(delay)
 		timerDisintegrationBeamCD:Start(135-delay)
 	end
 	berserkTimer:Start(-delay)
+	if self.Options.SetParticle and GetCVar("particleDensity") then
+		CVAR = GetCVar("particleDensity")--Cvar was true on pull so we remember that.
+		SetCVar("particleDensity", 10)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -197,6 +204,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if CVAR then--CVAR was set on pull which means we changed it, cahnge it back
+		SetCVar("particleDensity", CVAR)
 	end
 end
 
