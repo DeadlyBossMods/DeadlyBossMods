@@ -1908,15 +1908,15 @@ end
 function DBM:ZONE_CHANGED()
 	if DBM.RangeCheck:IsShown() or DBM.Arrow:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
 		SetMapToCurrentZone()
+		DBM:UpdateMapSizes()
 	end
-	DBM:UpdateMapSizes()
 end
 
 function DBM:ZONE_CHANGED_INDOORS()
 	if DBM.RangeCheck:IsShown() or DBM.Arrow:IsShown() then
 		SetMapToCurrentZone()
+		DBM:UpdateMapSizes()
 	end
-	DBM:UpdateMapSizes()
 end
 
 --------------------------------
@@ -3765,20 +3765,25 @@ function DBM:Capitalize(str)
 end
 
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
-hooksecurefunc("RolePollPopup_Show",function(...)
-	--Because of damn idiots that spam roll checks
-	if DBM.Options.SetPlayerRole then--We have auto role setting on so assume we already our role and hide this spam
-		StaticPopupSpecial_Hide(RolePollPopup)
-	end
-end)
+local roleEventUnregistered = false
 function DBM:RoleCheck()
-	if not DBM.Options.SetPlayerRole then return end
-	if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
-		local spec = GetSpecialization()
-		if not spec then return end
-		local role = GetSpecializationRole(spec)
-		if UnitGroupRolesAssigned("player") ~= role then
-			UnitSetRole("player", role)
+	if DBM.Options.SetPlayerRole then
+		if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
+			local spec = GetSpecialization()
+			if not spec then return end
+			local role = GetSpecializationRole(spec)
+			if UnitGroupRolesAssigned("player") ~= role then
+				UnitSetRole("player", role)
+			end
+			if not roleEventUnregistered then
+				roleEventUnregistered = true
+				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
+			end
+		end
+	else
+		if roleEventUnregistered then
+			roleEventUnregistered = false
+			RolePollPopup:RegisterEvent("ROLE_POLL_BEGIN")
 		end
 	end
 end
@@ -3821,6 +3826,10 @@ function DBM:UpdateMapSizes()
 end
 
 function DBM:GetMapSizes()
+	if not currentSizes then
+		SetMapToCurrentZone()
+		DBM:UpdateMapSizes()
+	end
 	return currentSizes
 end
 
