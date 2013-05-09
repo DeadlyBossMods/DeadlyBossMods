@@ -417,27 +417,38 @@ function onUpdate(self, elapsed)
 		updatePlayerTargets()
 	end
 --	updateIcons()
-	for i = 1, math.min(#sortedLines, maxlines) do
-		local name = sortedLines[i]
-		local power = lines[name]
-		local icon = icons[name]
-		-- work-around for the player bug, "name" should actually be called "displayName" or something as it might contain the icon in addition to the name
-		-- so we need playerName if we just want the raw name
-		local playerName = name
-		if icon then
-			name = icons[name]..name
+	local playerZone = GetRealZoneText()
+	local linesShown = 0
+	for i = 1, #sortedLines do
+		if linesShown >= maxlines then
+			break
 		end
-		if playerName == UnitName("player") then
-			addedSelf = true
-			if currentEvent == "playerbuff" or currentEvent == "playerbaddebuff" or currentEvent == "playergooddebuff" or currentEvent == "health" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and infoFrameThreshold == 3) then--Player name on frame bad a thing make it red.
-				self:AddDoubleLine(name, power, 255, 0, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-			elseif currentEvent == "playerbuffstacks" or (currentEvent == "playeraggro" and infoFrameThreshold == 0) or currentEvent == "enemypower" then--Player name on frame is a good thing, make it green
-				self:AddDoubleLine(name, power, 0, 255, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-			else--it's not defined a color, so default to white.
+		local name = sortedLines[i]
+		-- filter players who are not in the current zone (i.e. just idling/watching while being in the raid)
+		local unitId = DBM:GetRaidUnitId(DBM:GetFullNameByShortName(name))
+		local raidId = unitId and unitId:sub(0, 4) == "raid" and (tonumber(unitId:sub(5) or 0) or 0)
+		if not raidId or select(7, GetRaidRosterInfo(raidId)) == playerZone then
+			linesShown = linesShown + 1
+			local power = lines[name]
+			local icon = icons[name]
+			-- work-around for the player bug, "name" should actually be called "displayName" or something as it might contain the icon in addition to the name
+			-- so we need playerName if we just want the raw name
+			local playerName = name
+			if icon then
+				name = icons[name]..name
+			end
+			if playerName == UnitName("player") then
+				addedSelf = true
+				if currentEvent == "playerbuff" or currentEvent == "playerbaddebuff" or currentEvent == "playergooddebuff" or currentEvent == "health" or currentEvent == "playertargets" or (currentEvent == "playeraggro" and infoFrameThreshold == 3) then--Player name on frame bad a thing make it red.
+					self:AddDoubleLine(name, power, 255, 0, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+				elseif currentEvent == "playerbuffstacks" or (currentEvent == "playeraggro" and infoFrameThreshold == 0) or currentEvent == "enemypower" then--Player name on frame is a good thing, make it green
+					self:AddDoubleLine(name, power, 0, 255, 0, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+				else--it's not defined a color, so default to white.
+					self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+				end
+			else--It's not player, do nothing special with it. Ordinary white text.
 				self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 			end
-		else--It's not player, do nothing special with it. Ordinary white text.
-			self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
 		end
 	end					 						-- Add a method to color the power value?
 	if not addedSelf and DBM.Options.InfoFrameShowSelf and currentEvent == "playerpower" then 	-- Don't show self on health/enemypower/playerdebuff/playeraggro
