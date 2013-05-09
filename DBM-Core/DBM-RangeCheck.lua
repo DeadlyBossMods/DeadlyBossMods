@@ -850,6 +850,8 @@ end
 -- GetDistance(uId, uId2) -- distance between the two uIds
 function rangeCheck:GetDistance(...)
 	if initRangeCheck() then
+		SetMapToCurrentZone()--Set map to current zone before checking other stuff
+		DBM:UpdateMapSizes()--Force a mapsize update after SetMapToCurrentZone to ensure our information is current
 		return getDistanceBetween(...)
 	end
 end
