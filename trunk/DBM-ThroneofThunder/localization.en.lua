@@ -178,7 +178,8 @@ L:SetOptionLocalization({
 	SetIconRays					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format("ej6891"),
 	SetIconLifeDrain			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(133795),
 	SetIconOnParasite			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(133597),
-	InfoFrame					= "Show info frame for $spell:133795 stacks"
+	InfoFrame					= "Show info frame for $spell:133795 stacks",
+	SetParticle					= "Automatically set particle density to low on pull\n(Restores previous setting on combat end)"
 })
 
 L:SetMiscLocalization({
