@@ -27,7 +27,7 @@ mod:RegisterEventsInCombat(
 
 local warnHardStare					= mod:NewSpellAnnounce(133765, 3, nil, mod:IsTank() or mod:IsHealer())--Announce CAST not debuff, cause it misses a lot, plus we have 1 sec to hit an active mitigation
 local warnForceOfWill				= mod:NewTargetAnnounce(136413, 4)
-local warnLingeringGaze				= mod:NewTargetAnnounce(138467, 3)--Seems highly variable Cd so no timer for this yet
+local warnLingeringGaze				= mod:NewTargetAnnounce(138467, 3)
 mod:AddBoolOption("warnBeam", nil, "announce")
 local warnBeamNormal				= mod:NewAnnounce("warnBeamNormal", 4, 139204, true, false)
 local warnBeamHeroic				= mod:NewAnnounce("warnBeamHeroic", 4, 139204, true, false)
@@ -37,7 +37,7 @@ local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3)--Some times needs to 
 local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
 local warnIceWall					= mod:NewSpellAnnounce(134587, 3, 111231)
 
-local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 4)--This we will use debuff on though.
+local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 5)--This we will use debuff on though.
 local specWarnSeriousWoundOther		= mod:NewSpecialWarningTarget(133767, mod:IsTank())
 local specWarnForceOfWill			= mod:NewSpecialWarningYou(136413, nil, nil, nil, 3)--VERY important, if you get hit by this you are out of fight for rest of pull.
 local specWarnForceOfWillNear		= mod:NewSpecialWarningClose(136413, nil, nil, nil, 3)
@@ -55,19 +55,19 @@ local specWarnEyeSore				= mod:NewSpecialWarningMove(140502)
 local specWarnLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())
 local yellLifeDrain					= mod:NewYell(133795, L.LifeYell)
 
-local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())--10 second cd but delayed by everything else. Example variation, 12, 15, 9, 25, 31
+local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())
 local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
 local timerLingeringGazeCD			= mod:NewCDTimer(46, 138467)
 local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 second cd but rarely cast more than once per phase because of how short the phases are (both beams phases cancel this ability)
 local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")
-local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
-local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 local timerDisintegrationBeam		= mod:NewBuffActiveTimer(55, "ej6882")
 local timerDisintegrationBeamCD		= mod:NewNextTimer(136, "ej6882")
 local timerLifeDrainCD				= mod:NewCDTimer(40, 133795)
 local timerLifeDrain				= mod:NewBuffActiveTimer(18, 133795)
 local timerIceWallCD				= mod:NewNextTimer(120, 134587, nil, nil, nil, 111231)
-local timerDarkParasiteCD			= mod:NewCDTimer(60.5, 133597)--Heroic 60-62. (the timer is tricky and looks far more variable but it really isn't, it just doesn't get to utilize it's true cd timer more than twice per fight)
+local timerDarkParasiteCD			= mod:NewCDTimer(60.5, 133597, mod:IsHealer())--Heroic 60-62. (the timer is tricky and looks far more variable but it really isn't, it just doesn't get to utilize it's true cd timer more than twice per fight)
+local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
+local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 local soundLingeringGaze			= mod:NewSound(134044)
@@ -435,9 +435,9 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerLifeDrain:Start()
 		timerLifeDrainCD:Start(not lifeDrained and 50 or nil)--first is 50, 2nd and later is 40 
 		lifeDrained = true
-		if target == UnitName("player") then
-			yellLifeDrain:Yell(target, 1)
-		end
+--[[		if target == UnitName("player") then
+			yellLifeDrain:Yell(target, 0)--This is pre cast, so player isn't technically at 1 stack for another 3 seconds. we want them to get at least one stack before taking beam
+		end--]]
 		if self.Options.SetIconLifeDrain then
 			self:SetIcon(target, 8)--Skull
 		end
