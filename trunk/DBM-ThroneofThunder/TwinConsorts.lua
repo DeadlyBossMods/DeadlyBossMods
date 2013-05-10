@@ -212,7 +212,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 68904 then--Suen
 		--timerFlamesOfPassionCD:Cancel()
 		--timerBeastOfNightmaresCD:Start()--My group kills Lu'lin first. Need log of Suen being killed first to get first beast timer value
-		timerTidalForceCD:Cancel()
+		timerNuclearInfernoCD:Cancel()
 	end
 end
 
