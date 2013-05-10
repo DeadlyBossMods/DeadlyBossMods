@@ -87,6 +87,8 @@ local UnitBuff = UnitBuff
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local GetSpellInfo = GetSpellInfo
 local UnitThreatSituation = UnitThreatSituation
+local GetRaidRosterInfo = GetRaidRosterInfo
+local GetRealZoneText = GetRealZoneText
 
 ---------------------
 --  Dropdown Menu  --
@@ -461,16 +463,16 @@ end
 ---------------
 --  Methods  --
 ---------------
-function infoFrame:Show(maxLines, event, threshold, pIndex, iconModifier, extraPIndex, lowestFirst, ...)
+function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPowerIndex, sortLowest, ...)
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
 	maxLines = maxLines or 5
-
+	
 	infoFrameThreshold = threshold
 	maxlines = maxLines
-	pIndex = pIndex		-- used as 'filter' for player buff stacks
-	iconModifier = iconModifier
-	extraPIndex = extraPIndex
-	lowestFirst = lowestFirst
+	pIndex = powerIndex		-- used as 'filter' for player buff stacks
+	iconModifier = iconMod
+	extraPIndex = extraPowerIndex
+	lowestFirst = sortLowest
 	currentEvent = event
 	frame = frame or createFrame()
 
