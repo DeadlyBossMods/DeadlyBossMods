@@ -54,7 +54,7 @@ L.Statistic_Wipes			= "失敗："
 L.Statistic_Incompletes		= "未完成："
 L.Statistic_BestKill		= "最快記錄："
 
--- Tab: General Options
+-- Tab: General Core Options
 L.General 					= "DBM綜合設置"
 L.EnableDBM 				= "啟用DBM"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
@@ -62,11 +62,17 @@ L.SetPlayerRole				= "自動的設定玩家角色(建議啟用)"
 L.UseMasterVolume			= "使用主要聲音頻道來播放音效檔。"
 L.DisableCinematics			= "禁用遊戲中副本裡的過場動畫"
 L.DisableCinematicsOutside	= "禁用遊戲中副本以外的過場動畫"
-L.SKT_Enabled				= "永遠顯示快速戰勝計時器 (覆蓋首領特定的選項)"
 L.AutologBosses				= "自動使用暴雪戰鬥日誌記錄首領戰鬥"
 L.AdvancedAutologBosses		= "自動使用Transcriptor紀錄首領戰鬥"
 L.LogOnlyRaidBosses			= "只記錄團隊首領的戰鬥(除了隨機團隊/隨機隊伍/隨機事件)"
 L.Latency_Text				= "設定最高延遲同步門檻:%d"
+-- Tab: General Timer Options
+L.TimerGeneral 				= "綜合DBM計時器選項"
+L.SKT_Enabled				= "永遠顯示快速戰勝計時器 (覆蓋首領特定的選項)"
+L.ChallengeTimerOptions		= "為挑戰模式設定最佳紀錄計時器"
+L.ChallengeTimerPersonal	= "個人"
+L.ChallengeTimerGuild		= "公會"
+L.ChallengeTimerRealm		= "伺服器"
 
 L.ModelOptions				= "3D模型預覽選項"
 L.EnableModels				= "在首領選項中啟用3D模型預覽"
