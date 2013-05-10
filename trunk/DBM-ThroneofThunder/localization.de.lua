@@ -161,7 +161,8 @@ L:SetOptionLocalization({
 	warnAddsLeft				= "Verkünde die Anzahl der verbleibenden Nebel",
 	specWarnFogRevealed			= "Zeige Spezialwarnung, wenn ein Nebel offenbart wird",
 	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung",
-	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel"
+	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel",
+	SetParticle					= "Grafikeinstellung 'Partikeldichte' automatisch auf 'Niedrig' setzen\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
 })
 
 L:SetMiscLocalization({
