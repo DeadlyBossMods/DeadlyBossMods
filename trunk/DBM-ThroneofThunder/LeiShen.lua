@@ -44,10 +44,12 @@ local warnViolentGaleWinds				= mod:NewSpellAnnounce(136889, 3)
 local specWarnStaticShock				= mod:NewSpecialWarningYou(135695)
 local yellStaticShock					= mod:NewYell(135695)
 local specWarnStaticShockNear			= mod:NewSpecialWarningClose(135695)
+local specWarnDiffusionChainSoon		= mod:NewSpecialWarningPreWarn(135991, nil, 4)
 local specWarnOvercharged				= mod:NewSpecialWarningYou(136295)
 local yellOvercharged					= mod:NewYell(136295)
 local specWarnOverchargedNear			= mod:NewSpecialWarningClose(136295)
-local specWarnBouncingBolt				= mod:NewSpecialWarningSpell(136361, false)
+local specWarnBouncingBoltSoon			= mod:NewSpecialWarningPreWarn(136361, nil, 4)
+local specWarnBouncingBolt				= mod:NewSpecialWarningSpell(136361)
 --Phase 1
 local specWarnDecapitate				= mod:NewSpecialWarningRun(134912, mod:IsTank())
 local specWarnDecapitateOther			= mod:NewSpecialWarningTarget(134912, mod:IsTank())
@@ -272,6 +274,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDiffusionChain:Show(args.destName)
 		if not intermissionActive then
 			timerDiffusionChainCD:Start()
+			specWarnDiffusionChainSoon:Schedule(16)
 		end
 	elseif args.spellId == 136543 and self:AntiSpam(2, 1) then
 		warnSummonBallLightning:Show()
@@ -290,6 +293,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerStaticShockCD:Cancel()
 	elseif args.spellId == 135681 and args:GetDestCreatureID() == 68397 and not intermissionActive then--East (Diffusion Chain)
 		timerDiffusionChainCD:Cancel()
+		specWarnDiffusionChainSoon:Cancel()
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			if phase == 1 then
 				DBM.RangeCheck:Hide()
@@ -301,6 +305,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerOverchargeCD:Cancel()
 	elseif args.spellId == 135683 and args:GetDestCreatureID() == 68397 and not intermissionActive then--West (Bouncing Bolt)
 		timerBouncingBoltCD:Cancel()
+		specWarnBouncingBoltSoon:Cancel()
 	--Conduit deactivations
 	elseif args.spellId == 135695 and self.Options.SetIconOnStaticShock then
 		self:SetIcon(args.destName, 0)
@@ -452,6 +457,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
 		timerBouncingBoltCD:Start()
+		specWarnBouncingBoltSoon:Schedule(16)
 	elseif spellId == 136869 and self:AntiSpam(2, 4) then--Violent Gale Winds
 		warnViolentGaleWinds:Show()
 		timerViolentGaleWinds:Start()
