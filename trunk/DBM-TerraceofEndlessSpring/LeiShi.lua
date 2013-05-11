@@ -161,16 +161,30 @@ mod:RegisterOnUpdateHandler(function(self)
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
 			if guards[guid] then
+				for g,i in pairs(guards) do
+					if i == 8 and g ~= guid then -- always set skull on first we see
+						guards[g] = adds[guid]
+						guards[guid] = 8
+						break
+					end
+				end
 				SetRaidTarget(uId, guards[guid])
 				iconsSet = iconsSet + 1
 				guards[guid] = nil
 			end
-			local guid2 = UnitGUID("mouseover")
-			if guards[guid2] then
-				SetRaidTarget("mouseover", guards[guid2])
-				iconsSet = iconsSet + 1
-				guards[guid2] = nil
+		end
+		local guid2 = UnitGUID("mouseover")
+		if guards[guid2] then
+			for g,i in pairs(adds) do
+				if i == 8 and g ~= guid2 then -- always set skull on first we see
+					adds[g] = adds[guid2]
+					adds[guid2] = 8
+					break
+				end
 			end
+			SetRaidTarget("mouseover", guards[guid2])
+			iconsSet = iconsSet + 1
+			guards[guid2] = nil
 		end
 	end
 end, 0.05)
