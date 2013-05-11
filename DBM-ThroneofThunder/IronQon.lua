@@ -438,7 +438,7 @@ function mod:UNIT_DIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10, nil, nil, 1)--Switch range frame back to 1. Range is assumed 10, no spell info
 			end
-			if self.Options.InfoFrame then
+			if self.Options.InfoFrame and not self:IsDifficulty("lfr25") then
 				DBM.InfoFrame:SetHeader(arcingName)
 				DBM.InfoFrame:Show(5, "playerbaddebuff", 136193)
 			end
@@ -461,7 +461,13 @@ function mod:UNIT_DIED(args)
 		warnWindStorm:Cancel()
 		specWarnWindStorm:Cancel()
 		timerWindStorm:Cancel()
-		checkArcing()
+		if not self:IsDifficulty("lfr25") then--LFR has no concept of clearing arcing, they certainly don't use info/range frames
+			checkArcing()
+		else--So just hide range frame when quet'zal dies
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Hide()
+			end
+		end
 		if self:IsDifficulty("heroic10", "heroic25") then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
