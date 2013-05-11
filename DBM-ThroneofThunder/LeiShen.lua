@@ -39,6 +39,8 @@ local warnSummonBallLightning			= mod:NewSpellAnnounce(136543, 3)--This seems to
 --Phase 3
 local warnPhase3						= mod:NewPhaseAnnounce(3)
 local warnViolentGaleWinds				= mod:NewSpellAnnounce(136889, 3)
+--Heroic
+local warnHelmOfCommand					= mod:NewTargetAnnounce(139011, 3)
 
 --Conduits (All phases)
 local specWarnStaticShock				= mod:NewSpecialWarningYou(135695)
@@ -61,6 +63,8 @@ local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank(), 
 local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, nil, 2)
 local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil, nil, 2)
 local specWarnOverloadedCircuits		= mod:NewSpecialWarningMove(137176)
+--Herioc
+local specWarnHelmOfCommand				= mod:NewSpecialWarningYou(139011)
 
 --Conduits (All phases)
 local timerStaticShock					= mod:NewBuffFadesTimer(8, 135695)
@@ -82,6 +86,8 @@ local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact 
 --Phase 3
 local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
 local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
+--Heroic
+--local timerHelmOfCommand				= mod:NewCDTimer(18, 139011)
 
 local berserkTimer						= mod:NewBerserkTimer(900)--Confirmed in LFR, probably the same in all modes though?
 
@@ -104,9 +110,10 @@ local eastDestroyed = false
 local southDestroyed = false
 local westDestroyed = false
 local staticshockTargets = {}
+local staticIcon = 8--Start high and count down
 local overchargeTarget = {}
 local overchargeIcon = 1--Start low and count up
-local staticIcon = 8--Start high and count down
+local helmOfCommandTarget = {}
 
 local function warnStaticShockTargets()
 	warnStaticShock:Show(table.concat(staticshockTargets, "<, >"))
@@ -118,6 +125,11 @@ local function warnOverchargeTargets()
 	warnOvercharged:Show(table.concat(overchargeTarget, "<, >"))
 	table.wipe(overchargeTarget)
 	overchargeIcon = 1
+end
+
+local function warnHelmOfCommandTargets()
+	warnHelmOfCommand:Show(table.concat(helmOfCommandTarget, "<, >"))
+	table.wipe(helmOfCommandTarget)
 end
 
 function mod:OnCombatStart(delay)
@@ -266,6 +278,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 137176 and self:AntiSpam(3, 5) and args:IsPlayer() then
 		specWarnOverloadedCircuits:Show()
+	elseif args.spellId == 139011 then
+		helmOfCommandTarget[#helmOfCommandTarget + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnHelmOfCommand:Show()
+		end
+		self:Unschedule(warnHelmOfCommandTargets)
+		self:Schedule(0.3, warnHelmOfCommandTargets)
 	end
 end
 
@@ -332,6 +351,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:137176") then--Overloaded Circuits (Intermission ending and next phase beginning)
 		intermissionActive = false
 		phase = phase + 1
+		--timerHelmOfCommand:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
@@ -453,6 +473,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 		end
 		self:Schedule(23, LoopIntermission)--Fire function to start second wave of specials timers
+--[[		if self:IsDifficulty("heroic10", "heroic25") then
+			timerHelmOfCommand:Start()--Timing not known
+		end--]]
 	elseif spellId == 136395 and self:AntiSpam(2, 3) and not intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
