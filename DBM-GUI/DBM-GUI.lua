@@ -2455,6 +2455,12 @@ do
 				if v == DBM_OPTION_SPACER then
 					addSpacer = true
 				elseif type(mod.Options[v]) == "boolean" then
+					if mod.Options[v .. "SpecialWarningSound"] then -- it's a special warning setting, add a sound selection thing
+						catpanel:CreateButton("Sound!", 100)
+						button:SetScript("OnClick", function(self)
+							print("stuff")
+						end)
+					end
 					lastButton = button
 					button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 					if addSpacer then
