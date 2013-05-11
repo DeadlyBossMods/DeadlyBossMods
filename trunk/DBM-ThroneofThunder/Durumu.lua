@@ -80,7 +80,7 @@ mod:AddBoolOption("SetIconRays", true)
 mod:AddBoolOption("SetIconLifeDrain", true)
 mod:AddBoolOption("InfoFrame", true) -- may be need special warning or generic warning high stack player? or do not needed at all?
 mod:AddBoolOption("SetIconOnParasite", false)
-mod:AddBoolOption("SetParticle", false)
+mod:AddBoolOption("SetParticle", true)
 
 local totalFogs = 3
 local lingeringGazeTargets = {}
