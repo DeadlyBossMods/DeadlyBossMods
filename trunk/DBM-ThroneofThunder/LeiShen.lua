@@ -87,7 +87,7 @@ local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact 
 local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
 local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
 --Heroic
---local timerHelmOfCommand				= mod:NewCDTimer(18, 139011)
+local timerHelmOfCommand				= mod:NewCDTimer(14, 139011)
 
 local berserkTimer						= mod:NewBerserkTimer(900)--Confirmed in LFR, probably the same in all modes though?
 
@@ -293,7 +293,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDiffusionChain:Show(args.destName)
 		if not intermissionActive then
 			timerDiffusionChainCD:Start()
-			specWarnDiffusionChainSoon:Schedule(16)
+			specWarnDiffusionChainSoon:Schedule(36)
 		end
 	elseif args.spellId == 136543 and self:AntiSpam(2, 1) then
 		warnSummonBallLightning:Show()
@@ -351,7 +351,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:137176") then--Overloaded Circuits (Intermission ending and next phase beginning)
 		intermissionActive = false
 		phase = phase + 1
-		--timerHelmOfCommand:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
@@ -364,6 +363,23 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			southDestroyed = true
 		elseif msg:find("spell:135683") then--West (Bouncing Bolt)
 			westDestroyed = true
+		end
+		if self:IsDifficulty("heroic10", "heroic25") then
+			--On heroic he gains ability perm when pillar dies.
+			--it will be cast 14 seconds later unless you get him to cast one of other ones first then it may be at 15-16 right after the other one
+			--not sure how it works after second intermission, probably up in air which one he casts first and other right after. thats why these are CD timers.
+			if northDestroyed then
+				timerStaticShockCD:Start(14)
+			end
+			if eastDestroyed then
+				timerDiffusionChainCD:Start(14)
+			end
+			if southDestroyed then
+				timerOverchargeCD:Start(14)
+			end
+			if westDestroyed then
+				timerBouncingBoltCD:Start(14)
+			end
 		end
 		if phase == 2 then--Start Phase 2 timers
 			warnPhase2:Show()
@@ -412,6 +428,9 @@ local function LoopIntermission()
 	end
 	if not mod:IsDifficulty("lfr25") and not northDestroyed then--Doesn't cast a 2nd one in LFR
 		timerStaticShockCD:Start(16)
+	end
+	if mod:IsDifficulty("heroic10", "heroic25") then
+		timerHelmOfCommand:Start(15)
 	end
 end
 
@@ -473,14 +492,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			end
 		end
 		self:Schedule(23, LoopIntermission)--Fire function to start second wave of specials timers
---[[		if self:IsDifficulty("heroic10", "heroic25") then
-			timerHelmOfCommand:Start()--Timing not known
-		end--]]
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerHelmOfCommand:Start(14)
+		end
 	elseif spellId == 136395 and self:AntiSpam(2, 3) and not intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
 		timerBouncingBoltCD:Start()
-		specWarnBouncingBoltSoon:Schedule(16)
+		specWarnBouncingBoltSoon:Schedule(36)
 	elseif spellId == 136869 and self:AntiSpam(2, 4) then--Violent Gale Winds
 		warnViolentGaleWinds:Show()
 		timerViolentGaleWinds:Start()
