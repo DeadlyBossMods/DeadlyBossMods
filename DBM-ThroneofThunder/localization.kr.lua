@@ -161,7 +161,8 @@ L:SetOptionLocalization({
 	warnAddsLeft				= "안개도깨비 남은 횟수 알림 보기",
 	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
 	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
-	InfoFrame					= "$spell:133795 중첩 정보 창 보기"
+	InfoFrame					= "$spell:133795 중첩 정보 창 보기",
+	SetParticle					= "전투 시작시 입자 밀도를 최저로 설정하기\n(전투 종료후 원래 설정이 복구됩니다.)"
 })
 
 L:SetMiscLocalization({

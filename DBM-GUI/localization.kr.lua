@@ -54,19 +54,25 @@ L.Statistic_Wipes			= "전멸:"
 L.Statistic_Incompletes		= "미완료:"
 L.Statistic_BestKill		= "최고 기록:"
 
--- Tab: General Options
-L.General 					= "일반 DBM 설정"
+-- Tab: General Core Options
+L.General 					= "기본 DBM 설정"
 L.EnableDBM 				= "DBM 사용"
 L.EnableMiniMapIcon			= "미니맵 버튼 사용"
 L.SetPlayerRole				= "파티 또는 공격대 참여시 역할 자동 설정(추천)"
 L.UseMasterVolume			= "기본 오디오 채널로 애드온 소리 듣기"
 L.DisableCinematics			= "게임내 동영상 재생 기능 끄기(인스턴스 내부)"
 L.DisableCinematicsOutside	= "게임내 동영상 재생 기능 끄기(인스턴스 외부)"
-L.SKT_Enabled				= "각 우두머리 설정에서 끈 상태라도 가장 빨랐던 전투시간 바 표시(강제)"
 L.AutologBosses				= "우두머리 전투시 블리자드 전투 기록 자동 활성화"
 L.AdvancedAutologBosses		= "우두머리 전투시 Transcriptor 기록 자동 활성화"
 L.LogOnlyRaidBosses			= "공격대 우두머리 전투만 기록하기(공격대 찾기 제외)"
 L.Latency_Text				= "동기화를 사용 할 최대 지연시간 설정 : %d"
+-- Tab: General Timer Options
+L.TimerGeneral 				= "DBM 바 설정"
+L.SKT_Enabled				= "각 우두머리 설정에서 끈 상태라도 가장 빨랐던 전투시간 바 표시(강제)"
+L.ChallengeTimerOptions		= "도전 모드 최고 기록 바 설정"
+L.ChallengeTimerPersonal	= "개인 기록으로 표시"
+L.ChallengeTimerGuild		= "길드 기록으로 표시"
+L.ChallengeTimerRealm		= "서버 기록으로 표시"
 
 L.ModelOptions				= "3D 초상화 배경 설정"
 L.EnableModels				= "각 우두머리 설정에 3D 초상화 배경 사용"

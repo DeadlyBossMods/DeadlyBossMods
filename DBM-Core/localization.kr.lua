@@ -275,8 +275,10 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow focus  주시대상을 가리키는 화살표를 만듭니다.",
 }
 
-DBM_SPEED_KILL_TIMER_TEXT	= "가장 빨랐던 기록"
-DBM_SPEED_KILL_TIMER_OPTION	= "가장 빨랐던 기록을 바로 표시"
+DBM_SPEED_KILL_TIMER_TEXT	= "최고 기록"
+DBM_SPEED_KILL_TIMER_OPTION	= "최고 기록을 바로 표시"
+DBM_SPEED_CLEAR_TIMER_TEXT	= "최고 기록"
+
 
 DBM_REQ_INSTANCE_ID_PERMISSION		= "%s 님이 당신의 공격대 귀속 정보를 요청합니다.\n%s 님의 요청을 수락하시겠습니까? 정보 확인을 위해 이 메세지가 여러번 표시 될 수도 있습니다."
 DBM_ERROR_NO_RAID					= "이 기능을 사용하기 위해서는 공격대에 속해 있어야 합니다."
