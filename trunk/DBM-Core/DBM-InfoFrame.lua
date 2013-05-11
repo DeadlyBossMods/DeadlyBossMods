@@ -544,7 +544,7 @@ function infoFrame:Hide()
 	infoFrameThreshold = nil
 	pIndex = nil
 	currentEvent = nil
-	maxPlayers = nil
+	maxlines = nil
 	if frame then
 		frame:Hide()
 	end
