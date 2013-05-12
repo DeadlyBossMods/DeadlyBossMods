@@ -337,9 +337,9 @@ do
 		local dropdown
 		if soundVal then
 			local sounds = {
-				{       text    = "SW 1",        value   = 1 },
-				{       text    = "SW 2",        value   = 2 },
-				{       text    = "SW 3",        value   = 3 },
+				{       text    = "Special Warning 1",        value   = 1 },
+				{       text    = "Special Warning 2",        value   = 2 },
+				{       text    = "Special Warning 3",        value   = 3 },
 			}
 			if GetSharedMedia3() then
 				for k,v in next, GetSharedMedia3():HashTable("sound") do
