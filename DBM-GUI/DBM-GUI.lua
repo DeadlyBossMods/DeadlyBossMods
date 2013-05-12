@@ -2458,6 +2458,9 @@ do
 					lastButton = button
 					button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 					if mod.Options[v .. "SpecialWarningSound"] then -- it's a special warning setting, add a sound selection thing
+					--Neither me or tandanu could get this to work. :\. DBM will support custom sounds in all special warnings if this pain in ass GUI can be made working
+					--Here is a concept idea
+					--http://mysticalos.com/concept.png
 		--				local soundButton = catpanel:CreateButton("Sound!", 100)
 		--				soundButton:SetScript("OnClick", function(self)
 		--					print("Option: " .. v)
