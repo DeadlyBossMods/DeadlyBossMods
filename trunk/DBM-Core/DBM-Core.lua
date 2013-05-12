@@ -3704,13 +3704,14 @@ do
 	function DBM:DemoMode()
 		if not testMod then
 			testMod = self:NewMod("TestMod")
+			DBM:GetModLocalization("TestMod"):SetGeneralLocalization{ name = "Test Mod" }
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
 			testTimer = testMod:NewTimer(20, "%s")
 			testSpecialWarning1 = testMod:NewSpecialWarning("%s")
-			testSpecialWarning2 = testMod:NewSpecialWarning("%s", nil, nil, nil, true)
-			testSpecialWarning3 = testMod:NewSpecialWarning("%s", nil, nil, nil, 3)
+			testSpecialWarning2 = testMod:NewSpecialWarning(" %s ", nil, nil, nil, true)
+			testSpecialWarning3 = testMod:NewSpecialWarning("  %s  ", nil, nil, nil, 3) -- hack: non auto-generated special warnings need distinct names (we could go ahead and give them proper names with proper localization entries, but this is much easier)
 		end
 		testTimer:Start(20, "Pew Pew Pew...")
 		testTimer:UpdateIcon("Interface\\Icons\\Spell_Nature_Starfall", "Pew Pew Pew...")
@@ -3734,8 +3735,8 @@ do
 		testWarning2:Schedule(43, "Evil Spell!")
 		testWarning1:Schedule(10, "Test bar expired!")
 		testSpecialWarning1:Schedule(20, "Pew Pew Laser Owl")
-		testSpecialWarning3:Schedule(43, "Evil Spell!")
-		testSpecialWarning2:Schedule(60, "Boom!")
+		testSpecialWarning2:Schedule(43, "Evil Spell!")
+		testSpecialWarning3:Schedule(60, "Boom!")
 	end
 end
 
@@ -4935,8 +4936,6 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
-				--This code breaks TestMod (testmod always plays sound 3)
-				--TODO, does it break on other mods if GUI hasn't been loaded yet to populate options with default values?
 				local soundId = self.mod.Options[self.option .. "SpecialWarningSound"]
 				local sound = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or DBM.Options.SpecialWarningSound
 				if DBM.Options.UseMasterVolume then
@@ -4961,6 +4960,11 @@ do
 			error("NewSpecialWarning: you must provide special warning text", 2)
 			return
 		end
+        if runSound == true then
+			runSound = 2
+		elseif not runSound then
+			runSound = 1
+		end
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
@@ -4972,7 +4976,7 @@ do
 		local optionId = optionName or optionName ~= false and text
 		if optionId then
 			obj.option = optionId
-			self:AddSpecialWarningOption(optionId, optionDefault, runSound or 1, "announce")
+			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
 		end
 		table.insert(self.specwarns, obj)
 		return obj
@@ -4982,6 +4986,11 @@ do
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
+		end
+		if runSound == true then
+			runSound = 2
+		elseif not runSound then
+			runSound = 1
 		end
 		local spellName
 		if type(spellId) == "string" and spellId:match("ej%d+") then
@@ -5022,7 +5031,7 @@ do
 			end
 		end
 		if optionId then
-			self:AddSpecialWarningOption(optionId, optionDefault, runSound or 1, "announce")
+			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
 		end
 		table.insert(self.specwarns, obj)
 		return obj
