@@ -1840,7 +1840,7 @@ local function CreateOptionsMenu()
 
 	do
 		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
-		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 290, true)
+		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 310, true)
 		specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
 		specArea:CreateCheckButton(L.SpecWarn_LHFrame, true, nil, "ShowLHFrame")
 		specArea:CreateCheckButton(L.SpecWarn_AdSound, true, nil, "ShowAdvSWSounds")
@@ -1858,7 +1858,7 @@ local function CreateOptionsMenu()
 		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
 
 		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 100, 1)
-		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -75)
+		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -105)
 		do
 			local firstshow = true
 			fontSizeSlider:SetScript("OnShow", function(self)
@@ -1874,7 +1874,7 @@ local function CreateOptionsMenu()
 		end
 
 		local color1 = specArea:CreateColorSelect(64)
-		color1:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -125)
+		color1:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -155)
 		local color1text = specArea:CreateText(L.SpecWarn_FontColor, 80)
 		color1text:SetPoint("BOTTOM", color1, "TOP", 5, 4)
 		local color1reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -1922,7 +1922,7 @@ local function CreateOptionsMenu()
 				DBM:ShowTestSpecialWarning()
 			end
 		)
-		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -120)
+		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -150)
 
 		-- SpecialWarn Sound
 		local Sounds = {
@@ -1945,21 +1945,21 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningSound = value
 			end
 		)
-		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -160)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -190)
 
 		local SpecialWarnSoundDropDown2 = specArea:CreateDropdown(L.SpecialWarnSound2, Sounds,
 			DBM.Options.SpecialWarningSound2, function(value)
 				DBM.Options.SpecialWarningSound2 = value
 			end
 		)
-		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -200)
+		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -230)
 		
 		local SpecialWarnSoundDropDown3 = specArea:CreateDropdown(L.SpecialWarnSound3, Sounds,
 			DBM.Options.SpecialWarningSound3, function(value)
 				DBM.Options.SpecialWarningSound3 = value
 			end
 		)
-		SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -240)
+		SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -270)
 
 
 		local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
