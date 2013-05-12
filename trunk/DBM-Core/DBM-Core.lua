@@ -4935,11 +4935,12 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
-				if self.runSound == true then self.runSound = 2 end--Hack to make old mods using "true" to be 2 instead so compatability isn't broken.
+				local soundId = self.mod.Options[self.option .. "SpecialWarningSound"]
+				local sound = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or DBM.Options.SpecialWarningSound
 				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(self.runSound == 2 and DBM.Options.SpecialWarningSound2 or self.runSound == 3 and DBM.Options.SpecialWarningSound3 or DBM.Options.SpecialWarningSound, "Master")
+					PlaySoundFile(sound, "Master")
 				else
-					PlaySoundFile(self.runSound == 2 and DBM.Options.SpecialWarningSound2 or self.runSound == 3 and DBM.Options.SpecialWarningSound3 or DBM.Options.SpecialWarningSound)
+					PlaySoundFile(sound)
 				end
 			end
 		end
@@ -4963,14 +4964,13 @@ do
 				text = self.localization.warnings[text],
 				mod = self,
 				sound = not noSound,
-				runSound = runSound,
 			},
 			mt
 		)
 		local optionId = optionName or optionName ~= false and text
 		if optionId then
 			obj.option = optionId
-			self:AddSpecialWarningOption(optionId, optionDefault, "announce")
+			self:AddSpecialWarningOption(optionId, optionDefault, runSound or 1, "announce")
 		end
 		table.insert(self.specwarns, obj)
 		return obj
@@ -5003,16 +5003,14 @@ do
 				announceType = announceType,
 				mod = self,
 				sound = not noSound,
-				runSound = runSound,
 			},
 			mt
 		)
+		local optionId = optionName or (optionName ~= false) and "SpecWarn"..spellId..announceType
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(optionName, optionDefault, "announce")
 		elseif not (optionName == false) then
 			obj.option = "SpecWarn"..spellId..announceType
-			self:AddBoolOption("SpecWarn"..spellId..announceType, optionDefault, "announce")
 			if announceType == "stack" then
 				self.localization.options["SpecWarn"..spellId..announceType] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
 			elseif announceType == "prewarn" then
@@ -5020,6 +5018,9 @@ do
 			else
 				self.localization.options["SpecWarn"..spellId..announceType] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId)
 			end
+		end
+		if optionId then
+			self:AddSpecialWarningOption(optionId, optionDefault, runSound or 1, "announce")
 		end
 		table.insert(self.specwarns, obj)
 		return obj
