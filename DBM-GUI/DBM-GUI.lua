@@ -311,6 +311,19 @@ do
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 
+	local sounds = {
+		{ text = "SW 1", value = 1 },
+		{ text = "SW 2", value = 2 },
+		{ text = "SW 3", value = 3 },
+	}
+	if GetSharedMedia3() then
+		for k,v in next, GetSharedMedia3():HashTable("sound") do
+			if k ~= "None" then
+				table.insert(sounds, {text=k, value=v})
+			end
+		end
+	end
+
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, soundVal, mod)
 		if not name then
 			return
@@ -336,20 +349,10 @@ do
 		-- as an argument to this function, not created here
 		local dropdown
 		if soundVal then
-			local sounds = {
-				{       text    = "SW 1",        value   = 1 },
-				{       text    = "SW 2",        value   = 2 },
-				{       text    = "SW 3",        value   = 3 },
-			}
-			if GetSharedMedia3() then
-				for k,v in next, GetSharedMedia3():HashTable("sound") do
-					if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
-						table.insert(sounds, {text=k, value=v})
-					end
-				end
-			end
-		   dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], 
-                                                     function(value) mod.Options[soundVal] = value end, 25, button)
+		   dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
+				mod.Options[soundVal] = value
+				DBM:PlaySpecialWarningSound(value)
+			end, 25, button)
 		end
 		local textbeside = button
 		local textpad = 0
