@@ -2459,8 +2459,11 @@ do
 					button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 					if mod.Options[v .. "SpecialWarningSound"] then -- it's a special warning setting, add a sound selection thing
 					--Neither me or tandanu could get this to work. :\. DBM will support custom sounds in all special warnings if this pain in ass GUI can be made working
-					--Here is a concept idea
-					--http://mysticalos.com/concept.png
+					--Here is a concept idea http://mysticalos.com/concept.png
+					--Additonial notes, i don't think this is right place to do it? instead i think the extra button needs to be added in CreateCheckButton in between checkbox object and html object.
+					--I had partial success adding a new arg to CreateCheckButton like "hasSound" and then calling doing button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, true)
+					--Followed with inserting a button in between button and html in the CreateCheckButton function.
+					--Unfortunately beyond that it still destroyed layout.
 		--				local soundButton = catpanel:CreateButton("Sound!", 100)
 		--				soundButton:SetScript("OnClick", function(self)
 		--					print("Option: " .. v)
