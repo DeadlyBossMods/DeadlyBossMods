@@ -213,7 +213,12 @@ do
 	end
 end
 
-
+local function GetSharedMedia3()
+	if LibStub and LibStub("LibSharedMedia-3.0", true) then
+		return LibStub("LibSharedMedia-3.0", true)
+	end
+	return false
+end
 
 -- This function creates a check box
 -- Autoplaced buttons will be placed under the last widget
@@ -306,7 +311,7 @@ do
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 
-	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, hasSound)
+	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, soundVal)
 		if not name then
 			return
 		end
@@ -330,14 +335,21 @@ do
 		-- oscarucb: prototype demo code: this dropdown object should be passed in,
 		-- as an argument to this function, not created here
 		local dropdown
-		if hasSound then
- 		   local soundvals = {
-         		{       text    = "Sound 1",        value   = "sound1" },
-         		{       text    = "Sound 2",        value   = "sound2" },
-         		{       text    = "Sound 3",        value   = "sound3" },
-  		   }
-		   dropdown = self:CreateDropdown(nil,soundvals,"sound1", 
-                                                     function(value) print((name or "")..": "..value) end, 30, button)
+		if soundVal then
+			local sounds = {
+				{       text    = "SW 1",        value   = 1 },
+				{       text    = "SW 2",        value   = 2 },
+				{       text    = "SW 3",        value   = 3 },
+			}
+			if GetSharedMedia3() then
+				for k,v in next, GetSharedMedia3():HashTable("sound") do
+					if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+						table.insert(sounds, {text=k, value=v})
+					end
+				end
+			end
+		   dropdown = self:CreateDropdown(nil,sounds,soundVal, 
+                                                     function(value) soundVal = value end, 25, button)
 		end
 		local textbeside = button
 		local textpad = 0
@@ -756,14 +768,6 @@ end
 
 DBM_GUI_Bosses = CreateNewFauxScrollFrameList()
 DBM_GUI_Options = CreateNewFauxScrollFrameList()
-
-
-local function GetSharedMedia3()
-	if LibStub and LibStub("LibSharedMedia-3.0", true) then
-		return LibStub("LibSharedMedia-3.0", true)
-	end
-	return false
-end
 
 
 local UpdateAnimationFrame
@@ -2481,14 +2485,6 @@ do
 					else
 						button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 					end
---					if mod.Options[v .. "SpecialWarningSound"] then -- it's a special warning setting, add a sound selection thing
-		--				local soundButton = catpanel:CreateButton("Sound!", 100)
-		--				soundButton:SetScript("OnClick", function(self)
-		--					print("Option: " .. v)
-		--					print("Sound: " .. tostring(mod.Options[v .. "SpecialWarningSound"]))
-		--				end)
-		--				soundButton:SetPoint("TOP", button, "BOTTOM")
---					end
 					if addSpacer then
 						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
 						addSpacer = false
