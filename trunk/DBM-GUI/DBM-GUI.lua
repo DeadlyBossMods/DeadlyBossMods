@@ -352,7 +352,7 @@ do
 		   dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
 				mod.Options[soundVal] = value
 				DBM:PlaySpecialWarningSound(value)
-			end, 25, button)
+			end, 20, button)
 		end
 		local textbeside = button
 		local textpad = 0
