@@ -306,7 +306,7 @@ do
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 
-	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
+	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, hasSound)
 		if not name then
 			return
 		end
@@ -327,22 +327,42 @@ do
 		if name:find("%$journal:") then
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
-		if name and name:find("|H") then -- ...and replace it with a SimpleHTML frame
+		-- oscarucb: prototype demo code: this dropdown object should be passed in,
+		-- as an argument to this function, not created here
+		local dropdown
+		if hasSound then
+ 		   local soundvals = {
+         		{       text    = "Sound 1",        value   = "sound1" },
+         		{       text    = "Sound 2",        value   = "sound2" },
+         		{       text    = "Sound 3",        value   = "sound3" },
+  		   }
+		   dropdown = self:CreateDropdown(nil,soundvals,"sound1", 
+                                                     function(value) print((name or "")..": "..value) end, 30, button)
+		end
+		local textbeside = button
+		local textpad = 0
+                if dropdown then
+		  	dropdown:SetPoint("LEFT", button, "RIGHT", -20, 0)
+			textbeside = dropdown
+			textpad = 35
+	        end
+		if dropdown or 
+                   (name and name:find("|H")) then -- ...and replace it with a SimpleHTML frame
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
-			local html = _G[buttonName.."Text"]
+			html = _G[buttonName.."Text"]
 			html:SetHeight(12)
 			html:SetFontObject("GameFontNormal")
-			html:SetPoint("LEFT", button, "RIGHT", 0, 1)
+			html:SetPoint("LEFT", textbeside, "RIGHT", textpad, 1)
 			html:SetScript("OnHyperlinkClick", onHyperlinkClick)
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
-		end
-		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
+                end
 		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
+		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
 
 		if textleft then
 			_G[buttonName .. 'Text']:ClearAllPoints()
-			_G[buttonName .. 'Text']:SetPoint("RIGHT", button, "LEFT", 0, 0)
+			_G[buttonName .. 'Text']:SetPoint("RIGHT", textbeside, "LEFT", 0, 0)
 			_G[buttonName .. 'Text']:SetJustifyH("RIGHT")
 		else
 			_G[buttonName .. 'Text']:SetJustifyH("LEFT")
@@ -2456,21 +2476,19 @@ do
 					addSpacer = true
 				elseif type(mod.Options[v]) == "boolean" then
 					lastButton = button
-					button = catpanel:CreateCheckButton(mod.localization.options[v], true)
-					if mod.Options[v .. "SpecialWarningSound"] then -- it's a special warning setting, add a sound selection thing
-					--Neither me or tandanu could get this to work. :\. DBM will support custom sounds in all special warnings if this pain in ass GUI can be made working
-					--Here is a concept idea http://mysticalos.com/concept.png
-					--Additonial notes, i don't think this is right place to do it? instead i think the extra button needs to be added in CreateCheckButton in between checkbox object and html object.
-					--I had partial success adding a new arg to CreateCheckButton like "hasSound" and then calling doing button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, true)
-					--Followed with inserting a button in between button and html in the CreateCheckButton function.
-					--Unfortunately beyond that it still destroyed layout.
+					if mod.Options[v .. "SpecialWarningSound"] then
+						button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod.Options[v .. "SpecialWarningSound"])
+					else
+						button = catpanel:CreateCheckButton(mod.localization.options[v], true)
+					end
+--					if mod.Options[v .. "SpecialWarningSound"] then -- it's a special warning setting, add a sound selection thing
 		--				local soundButton = catpanel:CreateButton("Sound!", 100)
 		--				soundButton:SetScript("OnClick", function(self)
 		--					print("Option: " .. v)
 		--					print("Sound: " .. tostring(mod.Options[v .. "SpecialWarningSound"]))
 		--				end)
 		--				soundButton:SetPoint("TOP", button, "BOTTOM")
-					end
+--					end
 					if addSpacer then
 						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
 						addSpacer = false
