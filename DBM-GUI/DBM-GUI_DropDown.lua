@@ -175,12 +175,12 @@ do
 
 	local FrameTitle = "DBM_GUI_DropDown"
 
-	function DBM_GUI:CreateDropdown(title, values, selected, callfunc, width)
+	function DBM_GUI:CreateDropdown(title, values, selected, callfunc, width, parent)
 		-- Check Values
 		self:CheckValues(values)
 
 		-- Create the Dropdown Frame
-		local dropdown = CreateFrame("Frame", FrameTitle..self:GetNewID(), self.frame, "DBM_GUI_DropDownMenuTemplate")
+		local dropdown = CreateFrame("Frame", FrameTitle..self:GetNewID(), parent or self.frame, "DBM_GUI_DropDownMenuTemplate")
 		dropdown.creator = self
 		dropdown.values = values
 		dropdown.callfunc = callfunc

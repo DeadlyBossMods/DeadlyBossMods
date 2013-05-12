@@ -228,7 +228,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	run 		= "Show special warning to run away from $spell:%s",
 	cast 		= "Show special warning for $spell:%s cast",
 	count 		= "Show special warning for $spell:%s",
-	stack 		= "Show special warning when you are affected by >=%d stacks of \n $spell:%s",--too long?
+	stack 		= "Show special warning when you are affected by >=%d stacks\n of $spell:%s",--too long?
 	switch		= "Show special warning to switch targets for \n $spell:%s"
 }
 
