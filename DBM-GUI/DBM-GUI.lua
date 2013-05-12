@@ -318,7 +318,7 @@ do
 	}
 	if GetSharedMedia3() then
 		for k,v in next, GetSharedMedia3():HashTable("sound") do
-			if k ~= "None" then
+			if k ~= "None" and k ~= "NPCScan" then--NPCScan is a dummy inject of a custom sound in Silverdragon, we don't want that.
 				table.insert(sounds, {text=k, value=v})
 			end
 		end
@@ -1481,7 +1481,7 @@ local function CreateOptionsMenu()
 		}
 		if GetSharedMedia3() then
 			for k,v in next, GetSharedMedia3():HashTable("sound") do
-				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+				if k ~= "None" and k ~= "NPCScan" then--NPCScan is a dummy inject of a custom sound in Silverdragon, we don't want that. then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
 					table.insert(Sounds, {text=k, value=v, sound=true})
 				end
 			end
