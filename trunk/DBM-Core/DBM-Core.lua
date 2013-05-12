@@ -4391,9 +4391,9 @@ do
 			end
 			if self.sound then
 				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(DBM.Options.RaidWarningSound, "Master")--4.0.6 arg to use master sound channel, re-enableing sound playback when effects are turned off.
+					PlaySoundFile(DBM.Options.RaidWarningSound, "Master")
 				else
-					PlaySoundFile(DBM.Options.RaidWarningSound)--not cata so we don't use the channel arg to maintain CN wow compatability.
+					PlaySoundFile(DBM.Options.RaidWarningSound)
 				end
 			end
 		end
@@ -4937,12 +4937,7 @@ do
 			frame.timer = 5
 			if self.sound then
 				local soundId = self.mod.Options[self.option .. "SpecialWarningSound"]
-				local sound = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or DBM.Options.SpecialWarningSound
-				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(sound, "Master")
-				else
-					PlaySoundFile(sound)
-				end
+				DBM:PlaySpecialWarningSound(soundId)
 			end
 		end
 	end
@@ -5099,6 +5094,15 @@ do
 
 	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
 		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
+	end
+	
+	function DBM:PlaySpecialWarningSound(soundId)
+		local sound = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or DBM.Options.SpecialWarningSound
+		if DBM.Options.UseMasterVolume then
+			PlaySoundFile(sound, "Master")
+		else
+			PlaySoundFile(sound)
+		end
 	end
 
 	do
