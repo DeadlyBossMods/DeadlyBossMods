@@ -125,7 +125,11 @@ do
 
 		for i=1, MAX_BUTTONS, 1 do
 			if i + self.offset <= #values then
-				self.buttons[i]:SetText(values[i+self.offset].text)
+				local ind = "   "
+				if values[i+self.offset].value == TabFrame1.dropdown.value then
+				  ind = "|TInterface\\Buttons\\UI-CheckBox-Check:0|t"
+				end
+				self.buttons[i]:SetText(ind..values[i+self.offset].text)
 				self.buttons[i].entry = values[i+self.offset]
 				if values[i+self.offset].texture then
 					BackDropTable.bgFile = values[i+self.offset].texture
