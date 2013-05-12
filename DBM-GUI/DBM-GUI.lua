@@ -311,7 +311,7 @@ do
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 
-	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, soundVal)
+	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, soundVal, mod)
 		if not name then
 			return
 		end
@@ -337,9 +337,9 @@ do
 		local dropdown
 		if soundVal then
 			local sounds = {
-				{       text    = "Special Warning 1",        value   = 1 },
-				{       text    = "Special Warning 2",        value   = 2 },
-				{       text    = "Special Warning 3",        value   = 3 },
+				{       text    = "SW 1",        value   = 1 },
+				{       text    = "SW 2",        value   = 2 },
+				{       text    = "SW 3",        value   = 3 },
 			}
 			if GetSharedMedia3() then
 				for k,v in next, GetSharedMedia3():HashTable("sound") do
@@ -348,8 +348,8 @@ do
 					end
 				end
 			end
-		   dropdown = self:CreateDropdown(nil,sounds,soundVal, 
-                                                     function(value) soundVal = value end, 25, button)
+		   dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], 
+                                                     function(value) mod.Options[soundVal] = value end, 25, button)
 		end
 		local textbeside = button
 		local textpad = 0
@@ -2481,7 +2481,7 @@ do
 				elseif type(mod.Options[v]) == "boolean" then
 					lastButton = button
 					if mod.Options[v .. "SpecialWarningSound"] then
-						button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, mod.Options[v .. "SpecialWarningSound"])
+						button = catpanel:CreateCheckButton(mod.localization.options[v], true, nil, nil, nil, v .. "SpecialWarningSound", mod)
 					else
 						button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 					end
