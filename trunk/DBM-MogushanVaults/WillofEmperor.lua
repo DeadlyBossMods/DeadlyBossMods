@@ -299,7 +299,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_POWER(uId)
-	if (uId == "target" or uId == "targettarget" or uId == "focus") and not UnitIsFriend(uId, "player") and not comboMob then
+	if (uId == "target" or uId == "targettarget") and not UnitIsFriend(uId, "player") and not comboMob then
+		if UnitPower(uId) == 18 then
+			comboMob = UnitName(uId)
+			specWarnCombo:Show()
+		end
+	--split because we want to prefer target over focus. IE I focus other boss while targeting one i'm tanking. previous method bugged out and gave me combo warnings for my focus and NOT my target
+	--Now target should come first and focus should be af allback IF not targeting a boss.
+	elseif (uId == "focus") and not UnitIsFriend(uId, "player") and not comboMob then
 		if UnitPower(uId) == 18 then
 			comboMob = UnitName(uId)
 			specWarnCombo:Show()
