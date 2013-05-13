@@ -27,7 +27,7 @@ local warnVita					= mod:NewSpellAnnounce(138332, 2)--Switched to vita phase
 local warnFatalStrike			= mod:NewSpellAnnounce(138334, 4, nil, mod:IsTank() or mod:IsHealer())--Tank (think thrash, like sha. Gains buff, uses on next melee attack)
 local warnUnstableVita			= mod:NewTargetAnnounce(138297, 3)
 local warnCracklingStalker		= mod:NewSpellAnnounce(138339, 3, nil, not mod:IsHealer())--Adds
---All Phases ?
+--General
 local warnCreation				= mod:NewCountAnnounce(138321)--aka Orbs/Balls
 local warnRuinBolt				= mod:NewSpellAnnounce(139087)
 
@@ -46,6 +46,8 @@ local yellUnstableVita			= mod:NewYell(138297, nil, false)
 
 --Vita
 local timerUnstableVita			= mod:NewTargetTimer(12, 138297)
+--General
+--local timerCreationCD			= mod:NewCDCountTimer(12, 138321)
 
 local countdownUnstableVita		= mod:NewCountdownFades(11, 138297)
 
@@ -65,6 +67,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 138321 then
 		creationCount = creationCount + 1
 		warnCreation:Show(creationCount)
+		--timerCreationCD:Start(nil, creationCount)
 	elseif args.spellId == 139087 then
 		warnRuinBolt:Show()
 	end
