@@ -83,7 +83,15 @@ do
 		if self:GetParent().dropdown.callfunc then
 			self:GetParent().dropdown.callfunc(self.entry.value)
 		end
-		_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)
+		_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)--Menu refresh
+		local width = self:GetParent().dropdown.width
+		if width < _G[self:GetParent().dropdown:GetName().."Text"]:GetStringWidth() then
+			local settext = self.entry.text;
+			while string.len(settext) > 4 and width < _G[self:GetParent().dropdown:GetName().."Text"]:GetStringWidth() do
+				settext = string.sub(settext,0, -2)
+				_G[self:GetParent().dropdown:GetName().."Text"]:SetText( settext )
+    		end
+		end
 	end
 
 	TabFrame1.buttons = {}
@@ -213,14 +221,22 @@ do
 				TabFrame1:ShowMenu(self:GetParent().values)
 			end
 		end)
+		dropdown.width = width
 
 		for k,v in next, dropdown.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
 				_G[dropdown:GetName().."Text"]:SetText(v.text)
-				dropdown.value = v.value
-				dropdown.text = v.text
-			end
-		end
+				if width < _G[dropdown:GetName().."Text"]:GetStringWidth() then
+					local settext = v.text;
+					while string.len(settext) > 4 and width < _G[dropdown:GetName().."Text"]:GetStringWidth() do
+						settext = string.sub(settext,0, -2)
+						_G[dropdown:GetName().."Text"]:SetText( settext )
+    				end
+				end
+                dropdown.value = v.value
+                dropdown.text = v.text
+            end
+        end
 
 		if not (not title or title == "") then
 			dropdown.titletext = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
