@@ -222,8 +222,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	prewarn 	= "Spezialvorwarnung %d Sekunden vor $spell:%s",
 	dispel 		= "Spezialwarnung zum Reinigen/Rauben von $spell:%s",
 	interrupt	= "Spezialwarnung zum Unterbrechen von $spell:%s",
-	you 		= "Spezialwarnung bei $spell:%s auf dir",
-	target 		= "Spezialwarnung bei $spell:%s auf jemand",
+	you 		= "Spezialwarnung, wenn du von $spell:%s betroffen bist",
+	target 		= "Spezialwarnung, wenn jemand von $spell:%s betroffen ist",
 	close 		= "Spezialwarnung bei $spell:%s auf jemand in deiner Nähe",
 	move 		= "Spezialwarnung zum Herausgehen aus $spell:%s",
 	run 		= "Spezialwarnung zum Weglaufen vor $spell:%s",
@@ -268,7 +268,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele Countdown-Sound bis $spell:%s gewirkt wird"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele Countdown-Sound bis $spell:%s schwindet"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Spiele Countout-Sound für Dauer von $spell:%s"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie bei $spell:%s auf dir"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie, wenn du von $spell:%s betroffen bist"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s auf " .. UnitName("player") .. "!"
 
 
