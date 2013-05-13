@@ -49,7 +49,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-local usemodelframe = true		-- very beta
+local modelFrameCreated = false
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -1027,6 +1027,9 @@ do
 		frame:Show()
 
 		if DBM.Options.EnableModels then
+			if not modelFrameCreated then
+				CreateAnimationFrame()
+			end
 			DBM_BossPreview.enabled = false
 			DBM_BossPreview:Hide()
 			for _, mod in ipairs(DBM.Mods) do
@@ -1100,6 +1103,7 @@ function UpdateAnimationFrame(mod)
 end
 
 local function CreateAnimationFrame()
+	modelFrameCreated = true
 	local mobstyle = CreateFrame('PlayerModel', "DBM_BossPreview", DBM_GUI_OptionsFramePanelContainer)
 	mobstyle:SetPoint("BOTTOMRIGHT", DBM_GUI_OptionsFramePanelContainer, "BOTTOMRIGHT", -5, 5)
 	mobstyle:SetWidth( 300 )
@@ -1283,7 +1287,7 @@ local function CreateOptionsMenu()
 
 
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
-	if usemodelframe then CreateAnimationFrame() end
+	if DBM.Options.EnableModels then CreateAnimationFrame() end
 	do
 		----------------------------------------------
 		--             General Options              --
