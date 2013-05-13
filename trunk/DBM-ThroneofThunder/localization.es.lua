@@ -42,8 +42,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces		= "salen en tropel desde",--Farraki forces pour from the Farraki Tribal Door! (needs verified, may be wrong)
-	chargeTarget	= "fija la vista"--Horridon sets his eyes on Eraeshio and stamps his tail! (needs verified, may be wrong)
+	newForces		= "salen en tropel desde",--Farraki forces pour from the Farraki Tribal Door!
+	chargeTarget	= "fija la vista"--Horridon sets his eyes on Eraeshio and stamps his tail!
 })
 
 ---------------------------
@@ -90,10 +90,59 @@ L:SetMiscLocalization({
 -------------
 L= DBM:GetModLocalization(821)
 
+L:SetTimerLocalization({
+	timerBreathsCD			= "Siguiente aliento"
+})
+
+L:SetOptionLocalization({
+	timerBreaths			= "Mostrar temporizador para el siguiente aliento",
+	AnnounceCooldowns		= "Contar Desenfrenos para el uso de cooldowns de banda",
+	Never					= "Nunca",
+	Every					= "Todos (consecutivos)",
+	EveryTwo				= "Cada 2",
+	EveryThree				= "Cada 3",
+	EveryTwoExcludeDiff		= "Cada 2 (Excluyendo Difusión)",
+	EveryThreeExcludeDiff	= "Cada 3 (Excluyendo Difusión)"
+})
+
+L:SetMiscLocalization({
+	rampageEnds	= "La ira de Megaera amaina."
+})
 ------------
 -- Ji-Kun --
 ------------
 L= DBM:GetModLocalization(828)
+
+L:SetWarningLocalization({
+	warnFlock			= "%s %s %s",
+	specWarnFlock		= "%s %s %s",
+	specWarnBigBird		= "Guardián del nido: %s",
+	specWarnBigBirdSoon	= "Guardián del nido pronto: %s"
+})
+
+L:SetTimerLocalization({
+	timerFlockCD	= "Nido (%d): %s"
+})
+
+L:SetOptionLocalization({
+	RangeFrame			= "Mostrar radar de rango (10) para $spell:138923"
+})
+
+L:SetMiscLocalization({
+	eggsHatchL		= "huevos de uno de los nidos inferiores empiezan",
+	eggsHatchU		= "huevos de uno de los nidos superiores empiezan",
+	Upper			= "Arriba",
+	Lower			= "Abajo",
+	UpperAndLower	= "Arriba y Abajo",
+	TrippleD		= "Triple (2xAbajo)",
+	TrippleU		= "Triple (2xArriba)",
+	SouthWest		= "SO",
+	SouthEast		= "SE",
+	NorthWest		= "NO",
+	NorthEast		= "NE",
+	West			= "O",
+	Middle			= "C"
+})
 
 --------------------------
 -- Durumu the Forgotten --
