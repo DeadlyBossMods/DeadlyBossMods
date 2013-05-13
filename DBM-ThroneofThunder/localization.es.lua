@@ -19,6 +19,8 @@ L:SetOptionLocalization({
 --------------
 -- Horridon --
 --------------
+L= DBM:GetModLocalization(819)
+
 L:SetWarningLocalization({
 	warnAdds				= "%s",
 	warnOrbofControl		= "Orbe de control disponible",
