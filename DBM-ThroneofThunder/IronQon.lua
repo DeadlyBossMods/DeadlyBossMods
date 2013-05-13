@@ -6,6 +6,7 @@ mod:SetCreatureID(68078, 68079, 68080, 68081)--Ro'shak 68079, Quet'zal 68080, Da
 mod:SetMainBossID(68078)
 mod:SetQuestID(32754)
 mod:SetZone()
+mod:SetUsedIcons(8)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
