@@ -345,8 +345,6 @@ do
 		if name:find("%$journal:") then
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
-		-- oscarucb: prototype demo code: this dropdown object should be passed in,
-		-- as an argument to this function, not created here
 		local dropdown
 		if soundVal and DBM.Options.ShowAdvSWSounds then
 		   dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
@@ -356,6 +354,7 @@ do
 		end
 		local textbeside = button
 		local textpad = 0
+		local html
                 if dropdown then
 		  	dropdown:SetPoint("LEFT", button, "RIGHT", -20, 0)
 			textbeside = dropdown
@@ -365,14 +364,16 @@ do
                    (name and name:find("|H")) then -- ...and replace it with a SimpleHTML frame
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
 			html = _G[buttonName.."Text"]
-			html:SetHeight(12)
 			html:SetFontObject("GameFontNormal")
-			html:SetPoint("LEFT", textbeside, "RIGHT", textpad, 1)
+			html:SetHyperlinksEnabled(true)
 			html:SetScript("OnHyperlinkClick", onHyperlinkClick)
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
+			html:SetHeight(25)
+			-- oscarucb: proper html encoding is required here for hyperlink line wrapping to work correctly
+			name = "<html><body><p>"..name.."</p></body></html>"
                 end
-		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
+		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 50 - ((dropdown and dropdown:GetWidth()) or 0))
 		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
 
 		if textleft then
@@ -381,6 +382,16 @@ do
 			_G[buttonName .. 'Text']:SetJustifyH("RIGHT")
 		else
 			_G[buttonName .. 'Text']:SetJustifyH("LEFT")
+		end
+
+		if html and not textleft then
+		  html:SetHeight(1) -- oscarucb: hack to discover wrapped height, so we can space multi-line options
+		  html:SetPoint("TOPLEFT",UIParent)
+		  local ht = select(4,html:GetBoundsRect()) or 25
+		  html:ClearAllPoints()
+		  html:SetPoint("TOPLEFT", textbeside, "TOPRIGHT", textpad, -4)
+		  html:SetHeight(ht)
+		  button.myheight = math.max(ht+12,button.myheight)
 		end
 
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -397,7 +408,7 @@ do
 			local x = self:GetLastObj()
 			if x.mytype == "checkbutton" then
 				button:ClearAllPoints()
-				button:SetPoint('TOPLEFT', self:GetLastObj(), "BOTTOMLEFT", 0, 2)
+				button:SetPoint('TOPLEFT', x, "TOPLEFT", 0, -x.myheight)
 			else
 				button:ClearAllPoints()
 				button:SetPoint('TOPLEFT', 10, -12)
