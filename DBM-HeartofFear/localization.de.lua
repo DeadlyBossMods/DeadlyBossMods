@@ -17,7 +17,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnEcho			= "Verkünde das Erscheinen eines Echos",
 	warnEchoDown		= "Verkünde den Sieg über ein Echo",
-	specwarnPlatform	= "Zeige Spezialwarnung bei Plattformwechsel des Bosses",
+	specwarnPlatform	= "Spezialwarnung bei Plattformwechsel des Bosses",
 	ArrowOnAttenuation	= "Zeige DBM-Pfeil während $spell:127834 zur Anzeige der Ausweichrichtung"
 })
 
@@ -49,7 +49,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnUnder	= "Zeige Spezialwarnung, wenn du dich unter dem Boss befindest",
+	specwarnUnder	= "Spezialwarnung, wenn du dich unter dem Boss befindest",
 	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."\n(nur heroischer Schwierigkeitsgrad)"
 })
 
@@ -92,10 +92,10 @@ L:SetOptionLocalization({
 	warnAmberExplosionAM		= "Zeige persönliche Warnung, wenn Bernmonstrosität $spell:122398 wirkt\n(zum Unterbrechen)",
 	warnInterruptsAvailable		= "Verkünde bei wem Bernstoß-Unterbrechungen für $spell:122402\nverfügbar sind",
 	warnWillPower				= "Verkünde aktuellen Willen bei 80, 50, 30, 10 und 4",
-	specwarnWillPower			= "Zeige Spezialwarnung bei geringem Willen als Mutiertes Konstrukt",
-	specwarnAmberExplosionYou	= "Zeige Spezialwarnung zum Unterbrechen deiner eigenen $spell:122398",
-	specwarnAmberExplosionAM	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122402\nder Bernmonstrosität",
-	specwarnAmberExplosionOther	= "Zeige Spezialwarnung zum Unterbrechen der $spell:122398\nunkontrollierter Mutierter Konstrukte",
+	specwarnWillPower			= "Spezialwarnung bei geringem Willen als Mutiertes Konstrukt",
+	specwarnAmberExplosionYou	= "Spezialwarnung zum Unterbrechen deiner eigenen $spell:122398",
+	specwarnAmberExplosionAM	= "Spezialwarnung zum Unterbrechen der $spell:122402\nder Bernmonstrosität",
+	specwarnAmberExplosionOther	= "Spezialwarnung zum Unterbrechen der $spell:122398\nunkontrollierter Mutierter Konstrukte",
 	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Bernmonstrosität",
 	InfoFrame					= "Zeige Infofenster für Willen der Spieler",
 	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten als Konstrukt\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"

@@ -11,7 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "Zeige Spezialwarnung, falls du in $spell:138470 stehst (warnt bevor\n$spell:137313 gewirkt wird und kurz bevor $spell:138732 ausläuft)",
+	specWarnWaterMove	= "Spezialwarnung, falls du in $spell:138470 stehst (warnt bevor\n$spell:137313 gewirkt wird und kurz bevor $spell:138732 ausläuft)",
 	RangeFrame			= "Zeige Abstandsfenster (8m/4m)"
 })
 
@@ -34,7 +34,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnAdds				= "Verkünde das Herunterspringen neuer Gegner",
 	warnOrbofControl		= "Verkünde das Fallenlassen einer $journal:7092",
-	specWarnOrbofControl	= "Zeige Spezialwarnung beim Fallenlassen einer $journal:7092",
+	specWarnOrbofControl	= "Spezialwarnung beim Fallenlassen einer $journal:7092",
 	timerDoor				= "Zeige Zeit bis nächste Stammestorphase",
 	timerAdds				= "Zeige Zeit bis der nächste Gegner herunterspringt",
 	RangeFrame				= "Zeige Abstandsfenster (5m) für $spell:136480"
@@ -71,7 +71,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalShell	= "Zeige Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
+	specWarnCrystalShell	= "Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
 	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
 	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971",
@@ -159,7 +159,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnBeam					= "Verkünde Ziele der Farbstrahlen",
 	warnAddsLeft				= "Verkünde die Anzahl der verbleibenden Nebel",
-	specWarnFogRevealed			= "Zeige Spezialwarnung, wenn ein Nebel offenbart wird",
+	specWarnFogRevealed			= "Spezialwarnung, wenn ein Nebel offenbart wird",
 	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung",
 	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel",
 	SetParticle					= "Grafikeinstellung 'Partikeldichte' automatisch auf 'Niedrig' setzen\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
@@ -254,7 +254,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnIntermissionSoon	= "Zeige Spezialvorwarnung für Unterbrechung",
+	specWarnIntermissionSoon	= "Spezialvorwarnung für Unterbrechung",
 	RangeFrame					= "Zeige Abstandsfenster (8m/6m)",
 	StaticShockArrow			= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
 	OverchargeArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist"

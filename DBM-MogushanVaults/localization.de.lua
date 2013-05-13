@@ -12,8 +12,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon		= "Zeige Spezialwarnung bevor eine Überladung gewirkt werden kann",
-	specWarnBreakJasperChains	= "Zeige Spezialwarnung, wenn es sicher ist die $spell:130395 zu sprengen",
+	SpecWarnOverloadSoon		= "Spezialwarnung bevor eine Überladung gewirkt werden kann",
+	specWarnBreakJasperChains	= "Spezialwarnung, wenn es sicher ist die $spell:130395 zu sprengen",
 	ArrowOnJasperChains			= "Zeige DBM-Pfeil, wenn du von $spell:130395 betroffen bist",
 	InfoFrame					= "Zeige Infofenster für Bossenergie, Spielerversteinerung und welcher Boss Versteinerung wirkt"
 })
@@ -90,7 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor	= "Zeige Spezialwarnung bevor der Boden (Energievortex) verschwindet",
+	specWarnDespawnFloor	= "Spezialwarnung bevor der Boden (Energievortex) verschwindet",
 	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet",
 	SetIconOnCreature		= "Setze Zeichen auf $journal:6193"
 })

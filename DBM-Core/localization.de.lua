@@ -215,22 +215,22 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	spell 		= "Zeige Spezialwarnung für $spell:%s",
-	ends 		= "Zeige Spezialwarnung, wenn $spell:%s beendet ist",
-	fades 		= "Zeige Spezialwarnung, wenn $spell:%s beendet ist",
-	soon 		= "Zeige Spezialvorwarnung für $spell:%s",
-	prewarn 	= "Zeige Spezialvorwarnung %d Sekunden vor $spell:%s",
-	dispel 		= "Zeige Spezialwarnung zum Reinigen/Rauben von $spell:%s",
-	interrupt	= "Zeige Spezialwarnung zum Unterbrechen von $spell:%s",
-	you 		= "Zeige Spezialwarnung, wenn du von $spell:%s betroffen bist",
-	target 		= "Zeige Spezialwarnung, wenn jemand von $spell:%s betroffen ist",
-	close 		= "Zeige Spezialwarnung bei $spell:%s auf jemand in deiner Nähe",
-	move 		= "Zeige Spezialwarnung zum Herausgehen aus $spell:%s",
-	run 		= "Zeige Spezialwarnung zum Weglaufen vor $spell:%s",
-	cast 		= "Zeige Spezialwarnung zum Zauberstopp bei $spell:%s",
-	count 		= "Zeige Spezialwarnung für $spell:%s",
-	stack 		= "Zeige Spezialwarnung bei >=%d Stapel von $spell:%s auf dir",
-	switch		= "Zeige Spezialwarnung für Zielwechsel auf $spell:%s"
+	spell 		= "Spezialwarnung für $spell:%s",
+	ends 		= "Spezialwarnung, wenn $spell:%s beendet ist",
+	fades 		= "Spezialwarnung, wenn $spell:%s beendet ist",
+	soon 		= "Spezialvorwarnung für $spell:%s",
+	prewarn 	= "Spezialvorwarnung %d Sekunden vor $spell:%s",
+	dispel 		= "Spezialwarnung zum Reinigen/Rauben von $spell:%s",
+	interrupt	= "Spezialwarnung zum Unterbrechen von $spell:%s",
+	you 		= "Spezialwarnung bei $spell:%s auf dir",
+	target 		= "Spezialwarnung bei $spell:%s auf jemand",
+	close 		= "Spezialwarnung bei $spell:%s auf jemand in deiner Nähe",
+	move 		= "Spezialwarnung zum Herausgehen aus $spell:%s",
+	run 		= "Spezialwarnung zum Weglaufen vor $spell:%s",
+	cast 		= "Spezialwarnung zum Zauberstopp bei $spell:%s",
+	count 		= "Spezialwarnung für $spell:%s",
+	stack 		= "Spezialwarnung bei >=%d Stapel von $spell:%s auf dir",
+	switch		= "Spezialwarnung für Zielwechsel auf $spell:%s"
 }
 
 -- Auto-generated Timer Localizations
@@ -268,7 +268,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele Countdown-Sound bis $spell:%s gewirkt wird"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele Countdown-Sound bis $spell:%s schwindet"
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Spiele Countout-Sound für Dauer von $spell:%s"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie, wenn du von $spell:%s betroffen bist"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie bei $spell:%s auf dir"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s auf " .. UnitName("player") .. "!"
 
 

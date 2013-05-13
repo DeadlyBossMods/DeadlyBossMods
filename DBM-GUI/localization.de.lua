@@ -114,7 +114,7 @@ L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
 L.CountdownVoice			= "Stimme für Countdown- und Countout-Sounds"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
-L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen (tödlich für dich/Schlachtzug)"
+L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Allgemeine Meldungen"
@@ -157,13 +157,14 @@ L.Panel_SpecWarnFrame		= "Spezialwarnungen"
 L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
 L.SpecWarn_Enabled			= "Zeige Spezialwarnungen für Bossfähigkeiten"
 L.SpecWarn_LHFrame			= "Aktiviere aufblinkenden Bildschirm bei Spezialwarnungen"
+L.SpecWarn_AdSound			= "Erweiterte Soundeinstellungen für Spezialwarnungen (benötigt /reload)"
 L.SpecWarn_Font				= "Schriftart für Spezialwarnungen" --unused
 L.SpecWarn_DemoButton		= "Zeige Beispiel"
 L.SpecWarn_MoveMe			= "Positionieren"
 L.SpecWarn_FontSize			= "Schriftgröße"
 L.SpecWarn_FontColor		= "Schriftfarbe"
 L.SpecWarn_FontType			= "Schriftart für Spezialwarnungen"
-L.SpecWarn_ResetMe			= "Auf Standard zurücksetzen"
+L.SpecWarn_ResetMe			= "Zurücksetzen"
 
 -- Tab: HealthFrame
 L.Panel_HPFrame				= "Lebensanzeige"
