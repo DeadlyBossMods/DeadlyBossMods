@@ -51,7 +51,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnFizzyBubbles	= "Zeige Spezialwarnung, falls dir der $spell:114459 Buff fehlt",
+	SpecWarnFizzyBubbles	= "Spezialwarnung, falls dir der $spell:114459 Buff fehlt",
 	RangeFrame				= "Zeige Abstandsfenster (10m) für $spell:106546"
 })
 
@@ -217,7 +217,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGetBoned	= "Zeige Spezialwarnung, falls dir der $spell:113996 Buff fehlt",
+	SpecWarnGetBoned	= "Spezialwarnung, falls dir der $spell:113996 Buff fehlt",
 	InfoFrame			= "Zeige Infofenster für Spieler, denen der $spell:113996 Buff fehlt"
 })
 
