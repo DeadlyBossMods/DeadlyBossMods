@@ -219,17 +219,17 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	fades 		= "Show special warning when $spell:%s has faded",
 	soon 		= "Show pre-special warning for $spell:%s",
 	prewarn 	= "Show pre-special warning %d seconds before $spell:%s",
-	dispel 		= "Show special warning to dispel/spellsteal \n $spell:%s",
+	dispel 		= "Show special warning to dispel/spellsteal $spell:%s",
 	interrupt	= "Show special warning to interrupt $spell:%s",
-	you 		= "Show special warning when you are affected by \n $spell:%s",
-	target 		= "Show special warning when someone is affected by \n $spell:%s",
-	close 		= "Show special warning when someone close to you is \n affected by $spell:%s",
+	you 		= "Show special warning when you are affected by $spell:%s",
+	target 		= "Show special warning when someone is affected by $spell:%s",
+	close 		= "Show special warning when someone close to you is affected by $spell:%s",
 	move 		= "Show special warning to move out from $spell:%s",
 	run 		= "Show special warning to run away from $spell:%s",
 	cast 		= "Show special warning for $spell:%s cast",
 	count 		= "Show special warning for $spell:%s",
-	stack 		= "Show special warning when you are affected by >=%d stacks\n of $spell:%s",--too long?
-	switch		= "Show special warning to switch targets for \n $spell:%s"
+	stack 		= "Show special warning when you are affected by >=%d stacks of $spell:%s",--too long?
+	switch		= "Show special warning to switch targets for $spell:%s"
 }
 
 -- Auto-generated Timer Localizations
