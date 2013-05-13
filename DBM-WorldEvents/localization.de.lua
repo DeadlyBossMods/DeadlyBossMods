@@ -49,7 +49,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	Submerged		= "Zeige Warnung, wenn Ahune abtaucht",
 	Emerged			= "Zeige Warnung, wenn Ahune auftaucht",
-	specWarnAttack	= "Zeige Spezialwarnung, wenn Ahune verwundbar wird",
+	specWarnAttack	= "Spezialwarnung, wenn Ahune verwundbar wird",
 	SubmergTimer	= "Zeige Zeit bis Abtauchen",
 	EmergeTimer		= "Zeige Zeit bis Auftauchen",
 	TimerCombat		= "Zeige Zeit bis Kampfbeginn",
@@ -70,8 +70,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBrew		= "Zeige Spezialwarnung für $spell:47376",
-	specWarnBrewStun	= "Zeige Spezialwarnung für $spell:47340",
+	specWarnBrew		= "Spezialwarnung für $spell:47376",
+	specWarnBrewStun	= "Spezialwarnung für $spell:47340",
 	YellOnBarrel		= "Schreie bei $spell:51413"
 })
 
@@ -145,7 +145,7 @@ L:SetOptionLocalization({
 	warnGameOver	= "Verkünde nach dem Spielende die insgesamt erreichbaren Punkte",
 	warnGnoll		= "Zeige Warnung, wenn ein Gnoll erscheint",
 	warnHogger		= "Zeige Warnung, wenn ein Hogger erscheint",
-	specWarnHogger	= "Zeige Spezialwarnung, wenn ein Hogger erscheint"
+	specWarnHogger	= "Spezialwarnung, wenn ein Hogger erscheint"
 })
 
 ------------------------
@@ -199,7 +199,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	warnTotalAdds	= "Verkünde die Anzahl der erschienenen Zombies zwischen jeder Riesigen Welle",
-	specWarnWave	= "Zeige Spezialwarnung, wenn eine Riesige Welle beginnt",
+	specWarnWave	= "Spezialwarnung, wenn eine Riesige Welle beginnt",
 	timerWave		= "Zeige Zeit bis nächste Riesige Welle"
 })
 
