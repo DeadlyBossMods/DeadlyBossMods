@@ -286,6 +286,10 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetMiscLocalization({
+	Defeat		= "Wait! I am... I am not your enemy."
+})
+
 -------------
 --  Trash  --
 -------------

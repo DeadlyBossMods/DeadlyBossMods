@@ -7,15 +7,14 @@ mod:SetQuestID(32753)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell_regex", L.Defeat)--Does not die, just yells
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
-
--- NO WARNINGS, PURE DRYCODE. Events are assumed from spellinfo data (cast time, obviously SPELL_CAST_START, instant cast, SPELL_CAST_SUCCESS. Aura on boss, SPELL_AURA_APPLIED)
--- To complete this mod, combatlog required..
 
 --Anima
 local warnAnima					= mod:NewSpellAnnounce(138331, 2)--Switched to anima phase
@@ -28,8 +27,8 @@ local warnFatalStrike			= mod:NewSpellAnnounce(138334, 4, nil, mod:IsTank() or m
 local warnUnstableVita			= mod:NewTargetAnnounce(138297, 3)
 local warnCracklingStalker		= mod:NewCountAnnounce(138339, 3, nil, not mod:IsHealer())--Adds
 --General
-local warnCreation				= mod:NewCountAnnounce(138321)--aka Orbs/Balls
-local warnRuinBolt				= mod:NewSpellAnnounce(139087)--Useful?
+local warnCreation				= mod:NewCountAnnounce(138321, 3)--aka Orbs/Balls
+local warnCallEssence			= mod:NewSpellAnnounce(139040, 4, 139071)
 
 --Anima
 local specWarnMurderousStrike	= mod:NewSpecialWarningSpell(138333, mod:IsTank(), nil, nil, 3)
@@ -43,16 +42,20 @@ local specWarnCracklingStalker	= mod:NewSpecialWarningSpell(138339, not mod:IsHe
 local specWarnVitaSensitive		= mod:NewSpecialWarningYou(138372)
 local specWarnUnstablVita		= mod:NewSpecialWarningYou(138297, nil, nil, nil, 3)
 local yellUnstableVita			= mod:NewYell(138297, nil, false)
+--General
+local specWarnCreation			= mod:NewSpecialWarningSpell(138321, mod:IsDps())
+local specWarnCallEssence		= mod:NewSpecialWarningSpell(139040, mod:IsDps())
 
 --Anima
 local timerMurderousStrikeCD	= mod:NewCDTimer(33, 138333, nil, mod:IsTank())--Gains 3 power per second roughly and uses special at 100 Poewr
---local timerSanguineHorrorCD	= mod:NewCDCountTimer(41, 138338)
+--local timerSanguineHorrorCD	= mod:NewCDCountTimer(41, 138338)--CD not known. No one fights him in anima phase for more than like 1-2 seconds.
 --Vita
 local timerFatalStrikeCD		= mod:NewCDTimer(10, 138334, nil, mod:IsTank())--Gains 10 power per second roughly and uses special at 100 Poewr
 local timerUnstableVita			= mod:NewTargetTimer(12, 138297)
 local timerCracklingStalkerCD	= mod:NewCDCountTimer(41, 138339)
 --General
 local timerCreationCD			= mod:NewCDCountTimer(31, 138321)--31-35second variation
+local timerCallEssenceCD		= mod:NewCDTimer(15, 139040)
 
 local countdownUnstableVita		= mod:NewCountdownFades(11, 138297)
 
@@ -65,7 +68,7 @@ function mod:OnCombatStart(delay)
 	creationCount = 0
 	stalkerCount = 0
 	horrorCount = 0
-	timerCreationCD:Start(10-delay, 1)
+	timerCreationCD:Start(11-delay, 1)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -83,9 +86,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 138321 then
 		creationCount = creationCount + 1
 		warnCreation:Show(creationCount)
+		specWarnCreation:Show()
 		timerCreationCD:Start(nil, creationCount+1)
-	elseif args.spellId == 139087 then
-		warnRuinBolt:Show()
 	end
 end
 
@@ -147,5 +149,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellUnstableVita:Yell()
 			countdownUnstableVita:Start()
 		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 139040 and self:AntiSpam(2) then--Call Essence
+		warnCallEssence:Show()
+		specWarnCallEssence:Show()
+		timerCallEssenceCD:Start()
 	end
 end
