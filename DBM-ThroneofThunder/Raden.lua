@@ -32,13 +32,13 @@ local warnCallEssence			= mod:NewSpellAnnounce(139040, 4, 139071)
 
 --Anima
 local specWarnMurderousStrike	= mod:NewSpecialWarningSpell(138333, mod:IsTank(), nil, nil, 3)
-local specWarnSanguineHorror	= mod:NewSpecialWarningSpell(138338, not mod:IsHealer())
+local specWarnSanguineHorror	= mod:NewSpecialWarningSwitch(138338, mod:IsRangedDps() or mod:IsTank())
 local specWarnAninaSensitive	= mod:NewSpecialWarningYou(139318)
 local specWarnUnstableAnima		= mod:NewSpecialWarningYou(138288, nil, nil, nil, 3)
 local yellUnstableAnima			= mod:NewYell(138288, nil, false)
 --Vita
 local specWarnFatalStrike		= mod:NewSpecialWarningSpell(138334, mod:IsTank(), nil, nil, 3)
-local specWarnCracklingStalker	= mod:NewSpecialWarningSpell(138339, not mod:IsHealer())
+local specWarnCracklingStalker	= mod:NewSpecialWarningSwitch(138339, mod:IsRangedDps() or mod:IsTank())
 local specWarnVitaSensitive		= mod:NewSpecialWarningYou(138372)
 local specWarnUnstablVita		= mod:NewSpecialWarningYou(138297, nil, nil, nil, 3)
 local yellUnstableVita			= mod:NewYell(138297, nil, false)
