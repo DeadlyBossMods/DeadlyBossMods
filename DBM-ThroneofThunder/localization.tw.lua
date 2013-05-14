@@ -266,6 +266,10 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetMiscLocalization({
+	Defeat		= "慢著!我不是你們的敵人。"
+})
+
 -------------
 --  Trash  --
 -------------
