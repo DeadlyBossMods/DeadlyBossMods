@@ -50,6 +50,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 local L = DBM_GUI_Translations
 
 local modelFrameCreated = false
+local soundsRegistered = false
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -215,6 +216,18 @@ end
 
 local function GetSharedMedia3()
 	if LibStub and LibStub("LibSharedMedia-3.0", true) then
+		if not soundsRegistered then--Register some of our own media
+			local LSM = LibStub("LibSharedMedia-3.0")
+			soundsRegistered = true
+			LSM:Register("sound", "Headless Horseman Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])
+			LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])
+			LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])
+			LSM:Register("sound", "Lady Malande: Flee", [[Sound\Creature\LadyMalande\BLCKTMPLE_LadyMal_Aggro01.ogg]])
+			LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\illhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])
+			LSM:Register("sound", "Kael: Obey Me", [[Sound\Creature\PrinceKaelThas\TEMPEST_Kael_MndCntrl01.ogg]])
+			LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])
+			LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])
+		end
 		return LibStub("LibSharedMedia-3.0", true)
 	end
 	return false
