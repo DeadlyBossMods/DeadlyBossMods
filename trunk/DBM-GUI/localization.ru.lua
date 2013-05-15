@@ -6,7 +6,7 @@ local L = DBM_GUI_Translations
 L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Перевод на русский язык - "
-L.TranslationBy 			= "Swix, tomrus"
+L.TranslationBy 			= "Swix, TOM_RUS"
 L.Website					= "Посетите наши новые форумы обсуждения и поддержки на |cFF73C2FBwww.deadlybossmods.com|r (организовано Elitist Jerks!)"
 L.WebsiteButton				= "Форумы"
 
@@ -115,7 +115,7 @@ L.RaidWarnSound				= "Звук рейд-предупреждения"
 L.CountdownVoice			= "Голос для звукового отсчета"
 L.SpecialWarnSound			= "Звук спец-предупреждения для вас или для вашей роли"
 L.SpecialWarnSound2			= "Звук спец-предупреждения для всех"
-L.SpecialWarnSound3			= "Звук очень важного спец-предупреждения (убийственно для Вас или рейда)"
+L.SpecialWarnSound3			= "Звук очень важного спец-предупреждения"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 		= "Общие сообщения"
@@ -158,6 +158,7 @@ L.Panel_SpecWarnFrame		= "Специальные предупреждения"
 L.Area_SpecWarn				= "Настройка специальных предупреждений"
 L.SpecWarn_Enabled			= "Отображать спец-предупреждения для способностей босса"
 L.SpecWarn_LHFrame			= "Мигать экраном во время специальных предупреждений"
+L.SpecWarn_AdSound			= "Включить расширенные настройки звука для спец-предупреждений\n(требуется перезагрузка UI)"
 L.SpecWarn_Font				= "Выбор шрифта для специальных предупреждений"
 L.SpecWarn_DemoButton		= "Показать пример"
 L.SpecWarn_MoveMe			= "Расположение"
