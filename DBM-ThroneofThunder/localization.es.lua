@@ -149,30 +149,121 @@ L:SetMiscLocalization({
 --------------------------
 L= DBM:GetModLocalization(818)
 
+L:SetWarningLocalization({
+	warnBeamNormal				= "Luz - |cffff0000Roja|r : >%s<, |cff0000ffAzul|r : >%s<",
+	warnBeamHeroic				= "Luz - |cffff0000Roja|r : >%s<, |cff0000ffAzul|r : >%s<, |cffffff00Amarilla|r : >%s<",
+	warnAddsLeft				= "Bestias de niebla restantes: %d",
+	specWarnBlueBeam			= "Luz azul en ti - No te muevas",
+	specWarnFogRevealed			= "¡%s descubierto!",
+	specWarnDisintegrationBeam	= "%s (%s)"
+})
+
+L:SetOptionLocalization({
+	warnBeam					= "Anunciar objetivos de las luces",
+	warnAddsLeft				= "Anunciar bestias de niebla restantes",
+	specWarnFogRevealed			= "Mostrar aviso especial cuando se descubre una bestia de niebla",
+	ArrowOnBeam					= "Mostrar flecha indicando la dirección en la que moverse durante $journal:6882",
+	InfoFrame					= "Mostrar cuadro de información para acumulaciones de $spell:133795",
+	SetParticle					= "Bajar densidad de partículas al comenzar el encuentro\n(Restaurar la configuración original al terminar)"
+})
+
+L:SetMiscLocalization({
+	LifeYell		= "Drenaje de vida en %s (%d)"
+})
+
 ----------------
 -- Primordius --
 ----------------
 L= DBM:GetModLocalization(820)
+
+L:SetWarningLocalization({
+	warnDebuffCount				= "Mutaciones: %d/5 buenas, %d malas",
+})
+
+L:SetOptionLocalization({
+	warnDebuffCount				= "Mostrar cuenta de debuffs cuando se absorbe un charco",
+	RangeFrame					= "Mostrar radar de rango (5/2)",
+	SetIconOnBigOoze			= "Poner icono en $journal:6969"
+})
+
 
 -----------------
 -- Dark Animus --
 -----------------
 L= DBM:GetModLocalization(824)
 
+L:SetWarningLocalization({
+	warnMatterSwapped	= "%s: >%s< y >%s< intercambiados"
+})
+
+L:SetOptionLocalization({
+	warnMatterSwapped	= "Anunciar objetivos intercambiados por $spell:138618"
+})
+
+L:SetMiscLocalization({
+	Pull		= "¡El orbe explota!"
+})
+
+
 --------------
 -- Iron Qon --
 --------------
 L= DBM:GetModLocalization(817)
+
+L:SetWarningLocalization({
+	warnDeadZone	= "%s: %s y %s escudados"
+})
+
+L:SetOptionLocalization({
+	RangeFrame				= "Mostrar radar de rango dinámico (10)\n(Radar inteligente que muestra cuando hay demasiados jugadores cerca)",
+	InfoFrame				= "Mostrar cuadro de información para jugadores con $spell:136193"
+})
+
 
 -------------------
 -- Twin Consorts --
 -------------------
 L= DBM:GetModLocalization(829)
 
+L:SetWarningLocalization({
+	warnNight		= "Fase de noche",
+	warnDay			= "Fase de día",
+	warnDusk		= "Fase de crepúsculo"
+})
+
+L:SetTimerLocalization({
+	timerDayCD		= "Siguiente fase de día",
+	timerDuskCD		= "Siguiente fase de crepúsculo"
+})
+
+L:SetOptionLocalization({
+	warnNight		= "Anunciar fase de noche",
+	warnDay			= "Anunciar fase de día",
+	warnDusk		= "Anunciar fase de crepúsculo",
+	timerDayCD		= "Mostrar temporizador para la siguiente fase de día",
+	timerDuskCD		= "Mostrar temporizador para la sigiente fase de crepúsculo",
+	RangeFrame		= "Mostrar radar de rango (8)"
+})
+
+L:SetMiscLocalization({
+	DuskPhase		= "¡Lu'lin! ¡Préstame tu fuerza!"
+})
+
 --------------
 -- Lei Shen --
 --------------
 L= DBM:GetModLocalization(832)
+
+L:SetWarningLocalization({
+	specWarnIntermissionSoon	= "Interfase pronto"
+})
+
+L:SetOptionLocalization({
+	specWarnIntermissionSoon	= "Mostrar aviso especial antes de cada interfase",
+	RangeFrame					= "Mostrar radar de rango (8/6)",--For two different spells
+	StaticShockArrow			= "Mostrar flecha cuando alguien está afectado por $spell:135695",
+	OverchargeArrow				= "Mostrar flecha cuando alguien está afectado por $spell:136295"
+})
 
 ------------
 -- Ra-den --
