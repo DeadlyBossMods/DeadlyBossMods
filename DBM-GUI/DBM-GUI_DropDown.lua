@@ -38,13 +38,17 @@
 
 do
 	local MAX_BUTTONS = 10
+	local BackDropTable = { bgFile = "" }
+
 	local TabFrame1 = CreateFrame("Frame", "DBM_GUI_DropDown", UIParent)
+
 	TabFrame1:SetBackdrop({
 		bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",
 		edgeFile="Interface\\DialogFrame\\UI-DialogBox-Border",
 		tile=1, tileSize=32, edgeSize=32,
 		insets={left=11, right=12, top=12, bottom=11}
 	});
+
 	TabFrame1:EnableMouseWheel(1)
 	TabFrame1:SetScript("OnMouseWheel", function(self, delta)
 		if delta > 0 then  -- scroll up
@@ -57,44 +61,40 @@ do
 		end
 		self:Refresh()
 	end)
+
 	TabFrame1:Hide()
 	TabFrame1:SetParent( DBM_GUI_OptionsFrame )
 	TabFrame1:SetFrameStrata("TOOLTIP")
 
 	TabFrame1.offset = 0
 
-	local function ButtonDefaultFunction(self)
-		self:GetParent():HideMenu()
-
-		self:GetParent().dropdown.value = self.entry.value
-		self:GetParent().dropdown.text = self.entry.text
-
-		if self.entry.sound then
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(self.entry.value, "Master")
-			else
-				PlaySoundFile(self.entry.value)
-			end
-		end
-
-		if self.entry.func then
-			self.entry.func(self.entry.value)
-		end
-		if self:GetParent().dropdown.callfunc then
-			self:GetParent().dropdown.callfunc(self.entry.value)
-		end
-		_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)--Menu refresh
-	end
-
 	TabFrame1.buttons = {}
 	for i=1, MAX_BUTTONS, 1 do
 		TabFrame1.buttons[i] = CreateFrame("Button", TabFrame1:GetName().."Button"..i, TabFrame1, "DBM_GUI_DropDownMenuButtonTemplate")
-		TabFrame1.buttons[i]:SetScript("OnClick", ButtonDefaultFunction)
 		if i == 1 then
 			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1, "TOPLEFT", 11, -13)
 		else
 			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1.buttons[i-1], "BOTTOMLEFT", 0,0)
 		end
+		TabFrame1.buttons[i]:SetScript("OnClick", function(self)
+			self:GetParent():HideMenu()
+			self:GetParent().dropdown.value = self.entry.value
+			self:GetParent().dropdown.text = self.entry.text
+			if self.entry.sound then
+				if DBM.Options.UseMasterVolume then
+					PlaySoundFile(self.entry.value, "Master")
+				else
+					PlaySoundFile(self.entry.value)
+				end
+			end
+			if self.entry.func then
+				self.entry.func(self.entry.value)
+			end
+			if self:GetParent().dropdown.callfunc then
+				self:GetParent().dropdown.callfunc(self.entry.value)
+			end
+			_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)--Menu refresh
+		end)
 	end
 	local default_button_width = TabFrame1.buttons[1]:GetWidth()
 	TabFrame1:SetWidth(default_button_width+22)
@@ -106,12 +106,10 @@ do
 	TabFrame1.text:SetText("scroll with mouse")
 	TabFrame1.text:Hide()
 
-	local BackDropTable = { bgFile = "" }
 	function TabFrame1:ShowMenu(values)
 		self:Show()
 		if self.offset > #values-MAX_BUTTONS then self.offset = #values-MAX_BUTTONS end
 		if self.offset < 0 then self.offset = 0 end
-
 		if #values > MAX_BUTTONS then
 			self:SetHeight(MAX_BUTTONS*TabFrame1.buttons[1]:GetHeight()+24)
 			self.text:Show()
@@ -122,7 +120,6 @@ do
 			self:SetHeight( #values * self.buttons[1]:GetHeight() + 24)
 			self.text:Hide()
 		end
-
 		for i=1, MAX_BUTTONS, 1 do
 			if i + self.offset <= #values then
 				local ind = "   "
@@ -145,7 +142,6 @@ do
 				self.buttons[i]:Hide()
 			end
 		end
-
 		local width = self.buttons[1]:GetWidth()
 		local bwidth = 0
 		for k, button in pairs(self.buttons) do
@@ -158,7 +154,6 @@ do
 		for k, button in pairs(self.buttons) do
 			button:SetWidth(width)
 		end
-
 	end
 
 	function TabFrame1:HideMenu()
@@ -176,13 +171,34 @@ do
 	function TabFrame1:Refresh()
 		self:ShowMenu(self.dropdown.values)
 	end
-
-	local FrameTitle = "DBM_GUI_DropDown"
-
+	
+	------------------------------------------------------------------------------------------
+	
+	local dropdownPrototype = CreateFrame("Frame")
+	
+	function dropdownPrototype:SetSelectedValue(selected)
+		if selected and self.values and type(self.values) == "table" then
+			for k,v in next, self.values do
+				if v.value ~= nil and v.value == selected or v.text == selected then
+					_G[self:GetName().."Text"]:SetText(v.text)
+					self.value = v.value
+					self.text = v.text
+				end
+			end
+		end
+	end
+	
 	function DBM_GUI:CreateDropdown(title, values, selected, callfunc, width, parent)
+		local FrameTitle = "DBM_GUI_DropDown"
+		
 		-- Check Values
-		self:CheckValues(values)
-
+		if type(values) == "table" then
+			for _,entry in next,values do
+				entry.text = entry.text or "Missing entry.text"
+				entry.value = entry.value or entry.text
+			end
+		end
+		
 		-- Create the Dropdown Frame
 		local dropdown = CreateFrame("Frame", FrameTitle..self:GetNewID(), parent or self.frame, "DBM_GUI_DropDownMenuTemplate")
 		dropdown.creator = self
@@ -215,32 +231,23 @@ do
 				TabFrame1:ShowMenu(self:GetParent().values)
 			end
 		end)
-
+		
 		for k,v in next, dropdown.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
 				_G[dropdown:GetName().."Text"]:SetText(v.text)
-                dropdown.value = v.value
-                dropdown.text = v.text
-            end
-        end
-
+				dropdown.value = v.value
+				dropdown.text = v.text
+			end
+		end
+		
 		if not (not title or title == "") then
 			dropdown.titletext = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
 			dropdown.titletext:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
 			dropdown.titletext:SetFontObject('GameFontNormalSmall')
 			dropdown.titletext:SetText(title)
 		end
-
-		return dropdown
+		
+		local obj = setmetatable(dropdown, {__index = dropdownPrototype})
+		return obj
 	end
-end
-
-function DBM_GUI:CheckValues(values)
-	if type(values) == "table" then
-		for _,entry in next,values do
-			entry.text = entry.text or "Missing entry.text"
-			entry.value = entry.value or entry.text
-		end
-	end
-	return false
 end
