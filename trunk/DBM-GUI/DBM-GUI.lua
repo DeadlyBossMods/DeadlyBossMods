@@ -121,7 +121,12 @@ do
 		panel.panelid = #self.panels
 		return setmetatable(obj, prottypemetatable)
 	end
-
+	
+	function PanelPrototype:Refresh()
+		self.frame:Hide()
+		self.frame:Show()
+	end
+	
 	-- This function don't realy destroy a window, it just hides it
 	function PanelPrototype:Destroy()
 		if self.frame.FrameTyp == 2 then
@@ -364,6 +369,9 @@ do
 				mod.Options[soundVal] = value
 				DBM:PlaySpecialWarningSound(value)
 			end, 20, button)
+			dropdown:SetScript("OnShow", function(self)
+				self:SetSelectedValue(mod.Options[soundVal])
+			end)
 		end
 		local textbeside = button
 		local textpad = 0
@@ -2000,6 +2008,9 @@ local function CreateOptionsMenu()
 		resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 		resetbutton:SetScript("OnClick", function()
 				DBM.Options.SpecialWarningFont = DBM.DefaultOptions.SpecialWarningFont
+				DBM.Options.SpecialWarningSound = DBM.DefaultOptions.SpecialWarningSound
+				DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2
+				DBM.Options.SpecialWarningSound3 = DBM.DefaultOptions.SpecialWarningSound3
 				DBM.Options.SpecialWarningFontSize = DBM.DefaultOptions.SpecialWarningFontSize
 				DBM.Options.SpecialWarningFontColor[1] = DBM.DefaultOptions.SpecialWarningFontColor[1]
 				DBM.Options.SpecialWarningFontColor[2] = DBM.DefaultOptions.SpecialWarningFontColor[2]
@@ -2007,8 +2018,12 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningPoint = DBM.DefaultOptions.SpecialWarningPoint
 				DBM.Options.SpecialWarningX = DBM.DefaultOptions.SpecialWarningX
 				DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
-				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+				FontDropDown:SetSelectedValue(DBM.Options.SpecialWarningFont)
+				SpecialWarnSoundDropDown:SetSelectedValue(DBM.Options.SpecialWarningSound)
+				SpecialWarnSoundDropDown2:SetSelectedValue(DBM.Options.SpecialWarningSound2)
+				SpecialWarnSoundDropDown3:SetSelectedValue(DBM.Options.SpecialWarningSound3)
 				fontSizeSlider:SetValue(DBM.DefaultOptions.SpecialWarningFontSize)
+				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
 				DBM:UpdateSpecialWarningOptions()
 		end)
 	end
@@ -2043,6 +2058,8 @@ local function CreateOptionsMenu()
 				DBM.Options.HPFrameY = DBM.DefaultOptions.HPFrameY
 				DBM.Options.HealthFrameGrowUp = DBM.DefaultOptions.HealthFrameGrowUp
 				DBM.Options.HealthFrameWidth = DBM.DefaultOptions.HealthFrameWidth
+				growbttn:SetChecked(DBM.Options.HealthFrameGrowUp)
+				BarWidthSlider:SetValue(DBM.Options.HealthFrameWidth)
 				DBM.BossHealth:UpdateSettings()
 		end)
 
@@ -2501,6 +2518,7 @@ do
 					break
 				end
 			end
+			panel:Refresh()
 		end)
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
@@ -2545,12 +2563,9 @@ do
 					else
 						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
 					end
---					button:SetScript("OnShow", function(self)
---						-- set the correct selected value if the mod is being loaded after the gui is loaded (hack because the dropdown menu lacks a SetSelectedValue method)
---						_G[button:GetName().."Text"]:SetText(mod.localization.options[v])
---						button.value = v
---						button.text = mod.localization.options[v]
---					end)
+					button:SetScript("OnShow", function(self)
+						self:SetSelectedValue(mod.Options[v])
+					end)
 				end
 			end
 			catpanel:AutoSetDimension()
