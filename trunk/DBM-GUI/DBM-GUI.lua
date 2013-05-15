@@ -360,7 +360,7 @@ do
 		end
 		local dropdown
 		if soundVal and DBM.Options.ShowAdvSWSounds then
-		   dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
+			dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
 				mod.Options[soundVal] = value
 				DBM:PlaySpecialWarningSound(value)
 			end, 20, button)
@@ -368,13 +368,12 @@ do
 		local textbeside = button
 		local textpad = 0
 		local html
-                if dropdown then
-		  	dropdown:SetPoint("LEFT", button, "RIGHT", -20, 0)
+		if dropdown then
+			dropdown:SetPoint("LEFT", button, "RIGHT", -20, 0)
 			textbeside = dropdown
 			textpad = 35
-	        end
-		if dropdown or 
-                   (name and name:find("|H")) then -- ...and replace it with a SimpleHTML frame
+		end
+		if dropdown or (name and name:find("|H")) then -- ...and replace it with a SimpleHTML frame
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
 			html = _G[buttonName.."Text"]
 			html:SetFontObject("GameFontNormal")
@@ -385,7 +384,7 @@ do
 			html:SetHeight(25)
 			-- oscarucb: proper html encoding is required here for hyperlink line wrapping to work correctly
 			name = "<html><body><p>"..name.."</p></body></html>"
-                end
+		end
 		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 57 - ((dropdown and dropdown:GetWidth()) or 0))
 		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
 
@@ -398,13 +397,13 @@ do
 		end
 
 		if html and not textleft then
-		  html:SetHeight(1) -- oscarucb: hack to discover wrapped height, so we can space multi-line options
-		  html:SetPoint("TOPLEFT",UIParent)
-		  local ht = select(4,html:GetBoundsRect()) or 25
-		  html:ClearAllPoints()
-		  html:SetPoint("TOPLEFT", textbeside, "TOPRIGHT", textpad, -4)
-		  html:SetHeight(ht)
-		  button.myheight = math.max(ht+12,button.myheight)
+			html:SetHeight(1) -- oscarucb: hack to discover wrapped height, so we can space multi-line options
+			html:SetPoint("TOPLEFT",UIParent)
+			local ht = select(4,html:GetBoundsRect()) or 25
+			html:ClearAllPoints()
+			html:SetPoint("TOPLEFT", textbeside, "TOPRIGHT", textpad, -4)
+			html:SetHeight(ht)
+			button.myheight = math.max(ht+12,button.myheight)
 		end
 
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
