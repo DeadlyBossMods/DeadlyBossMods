@@ -265,6 +265,10 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetMiscLocalization({
+	Defeat		= "Остановитесь! Я… не враг вам."
+})
+
 -------------
 --  Trash  --
 -------------
