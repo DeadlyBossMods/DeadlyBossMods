@@ -286,6 +286,10 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetOptionLocalization({
+	SetIconsOnVita		= "Set icons on $spell:138297 debuffed player & furthest player from them"
+})
+
 L:SetMiscLocalization({
 	Defeat		= "Wait! I am... I am not your enemy."
 })
