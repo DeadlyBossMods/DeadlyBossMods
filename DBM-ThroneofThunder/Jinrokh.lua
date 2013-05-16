@@ -119,6 +119,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 138732 then
 		warnIonization:Show()
 		specWarnIonization:Show()
+		if timerStaticBurstCD:GetTime() > 5 then
+			timerStaticBurstCD:Start(12)
+		end
 	end
 end
 
