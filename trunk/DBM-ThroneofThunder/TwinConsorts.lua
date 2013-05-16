@@ -29,19 +29,19 @@ mod:SetBossHealthInfo(
 )
 
 --Darkness
-local warnNight							= mod:NewAnnounce("warnNight", 1, 108558)
+local warnNight							= mod:NewAnnounce("warnNight", 2, 108558)
 local warnCrashingStarSoon				= mod:NewSoonAnnounce(137129, 2)
 local warnTearsOfSun					= mod:NewSpellAnnounce(137404, 3)
 local warnBeastOfNightmares				= mod:NewTargetAnnounce(137375, 3, nil, mod:IsTank() or mod:IsHealer())
 --Light
-local warnDay							= mod:NewAnnounce("warnDay", 1, 122789)
+local warnDay							= mod:NewAnnounce("warnDay", 2, 122789)
 local warnLightOfDay					= mod:NewSpellAnnounce(137403, 2, nil, false)--Spammy, but leave it as an option at least
 local warnFanOfFlames					= mod:NewStackAnnounce(137408, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check target scanning
-local warnIceComet						= mod:NewSpellAnnounce(137419, 2)
+local warnIceComet						= mod:NewSpellAnnounce(137419, 1)
 local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4, 4)--Heroic
 --Dusk
-local warnDusk							= mod:NewAnnounce("warnDusk", 1, "Interface\\Icons\\achievement_zone_easternplaguelands")--"achievement_zone_easternplaguelands" (best Dusk icon i could find)
+local warnDusk							= mod:NewAnnounce("warnDusk", 2, "Interface\\Icons\\achievement_zone_easternplaguelands")--"achievement_zone_easternplaguelands" (best Dusk icon i could find)
 local warnTidalForce					= mod:NewCastAnnounce(137531, 3, 2)
 
 --Darkness
@@ -184,7 +184,7 @@ end
 --"<333.5 18:37:56> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lu'lin! Lend me your strength!#Suen#####0#0##0#247#nil#0#false#false", -- [71265]
 --"<339.3 18:38:02> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Suen#0xF1310D2800005863#worldboss#410952978#nil#1#Unknown#0xF1310D2900005864#worldboss#310232488
 function mod:CHAT_MSG_MONSTER_YELL(msg) -- Switch to yell. INSTANCE_ENCOUNTER_ENGAGE_UNIT fires too late. also yell ranage covers all rooms. Not need sync.
-	if (msg == L.DuskPhase or msg:find(L.DuskPhase)) then
+	if msg == L.DuskPhase or msg:find(L.DuskPhase) then
 		self:SendSync("Phase3Yell")
 	end
 end
