@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69473)--69888
 mod:SetQuestID(32753)
 mod:SetZone()
+mod:SetUsedIcons(2, 1)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell_regex", L.Defeat)--Does not die, just yells
@@ -60,10 +61,34 @@ local timerCallEssenceCD		= mod:NewNextTimer(15.5, 139040)
 
 local countdownUnstableVita		= mod:NewCountdownFades(11, 138297)
 
+mod:AddBoolOption("SetIconsOnVita", false)--Both the vita target and furthest from vita target
+
 local creationCount = 0
 local stalkerCount = 0
 local horrorCount = 0
 local lastStalker = 0
+local playerWithVita = nil
+local furthestDistancePlayer = nil
+
+function mod:checkVitaDistance()
+	if not playerWithVita then--Failsafe more or less. This shouldn't happen unless combat log lag fires events out of order
+		self:UnscheduleMethod("checkVitaDistance")--So terminate loop (anima phase or phase 2 probably)
+		return
+	end
+	local furthestDistance = 0
+	for i = 1, DBM:GetNumGroupMembers() do
+		local uId = "raid"..i
+		if not UnitIsUnit(uId, playerWithVita) then
+			local distance = DBM.RangeCheck:GetDistance(uId, playerWithVita)
+			if distance > furthestDistance then
+				furthestDistance = distance
+				furthestDistancePlayer = uId
+			end
+		end
+	end
+	SetRaidTarget(furthestDistancePlayer, 2)
+	self:ScheduleMethod(1, "checkVitaDistance")
+end
 
 function mod:OnCombatStart(delay)
 	creationCount = 0
@@ -143,6 +168,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellUnstableAnima:Yell()
 		end
 	elseif args:IsSpellID(138297, 138308) then--Unstable Vita
+		if self.Options.SetIconsOnVita then
+			playerWithVita = DBM:GetRaidUnitId(args.destName)
+			self:SetIcon(args.destName, 1)
+			self:ScheduleMethod(6, "checkVitaDistance")--Wait about 6 seconds for initial. don't want to spam icons before next target actually runs out. May raise initial even higher, debuff is 12 seconds. so maybe 7-8 if 6 too soon 
+		end
 		warnUnstableVita:Show(args.destName)
 		timerUnstableVita:Start(args.destName)
 		if args:IsPlayer() then
@@ -154,9 +184,21 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 --[[
-"<299.6 01:54:51> CHAT_MSG_MONSTER_YELL#You still think victory possible? Fools!#Ra-den#####0#0##0#298#nil#0#false#false",
-"<299.9 01:54:51> [UNIT_SPELLCAST_SUCCEEDED] Ra-den [boss1:Ruin::0:139073]
+"<19.8 01:50:11> [CLEU] SPELL_AURA_APPLIED#false#0xF1310F61000091B6#Ra-den#2632#0#0x0300000007B5931A#Takeaseat#1297#0#138297#Unstable Vita#8#DEBUFF", -- [2245]
+"<31.8 01:50:23> [CLEU] SPELL_AURA_REMOVED#false#0xF1310F61000091B6#Ra-den#68168#0#0x0300000007B5931A#Takeaseat#1297#0#138297#Unstable Vita#8#DEBUFF", -- [3753]--SPELL_AURA_REMOVED should fire before jump
+"<31.9 01:50:23> [CLEU] SPELL_AURA_APPLIED#false#0x0300000007B5931A#Takeaseat#1297#0#0x0300000007764949#Ryukou#1300#0#138308#Unstable Vita#8#DEBUFF", -- [3769]--Code may break if it doesn't but i've seen no indicatino this should happen
 --]]
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(138297, 138308) and self.Options.SetIconsOnVita then--Unstable Vita
+		self:UnscheduleMethod("checkVitaDistance")
+		playerWithVita = nil
+		self:SetIcon(args.destName, 0)
+		SetRaidTarget(furthestDistancePlayer, 0)--Use SetRaidTarget because seticon expects targetname, no point in changing it twice for no reason
+	end
+end
+
+--"<299.6 01:54:51> CHAT_MSG_MONSTER_YELL#You still think victory possible? Fools!#Ra-den#####0#0##0#298#nil#0#false#false",
+--"<299.9 01:54:51> [UNIT_SPELLCAST_SUCCEEDED] Ra-den [boss1:Ruin::0:139073]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 139040 and self:AntiSpam(2) then--Call Essence
 		warnCallEssence:Show()
