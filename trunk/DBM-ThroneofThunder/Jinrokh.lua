@@ -110,7 +110,7 @@ function mod:SPELL_CAST_START(args)
 		warnStorm:Show()
 		specWarnStorm:Show()
 		timerStorm:Start()
-		timerStaticBurstCD:Start(22.5)--May need tweaking
+		timerStaticBurstCD:Start(20.5)
 		timerThrowCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerIonizationCD:Start()
