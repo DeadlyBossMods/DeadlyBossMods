@@ -96,10 +96,10 @@ function mod:SPELL_CAST_START(args)
 		specWarnInterruptingJolt:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerInterruptingJoltCD:Start(nil, jolt+1)
+			countdownInterruptingJolt:Start()
 		else
 			timerInterruptingJoltCD:Start(23, jolt+1)
 		end
-		countdownInterruptingJolt:Start()
 	end
 end
 
@@ -107,6 +107,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
 		siphon = siphon + 1
 		timerSiphonAnimaCD:Start(nil, siphon+1)
+		if UnitPower("boss1") >= 70 then
+			timerInterruptingJoltCD:Start(20, 1)
+			countdownInterruptingJolt:Start(20)
+		end
 	end
 end
 
