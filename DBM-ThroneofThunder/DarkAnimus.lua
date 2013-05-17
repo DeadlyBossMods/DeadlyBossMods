@@ -26,7 +26,7 @@ local warnExplosiveSlam				= mod:NewStackAnnounce(138569, 2, nil, mod:IsTank() o
 --Boss
 local warnActivation				= mod:NewCastAnnounce(139537, 3, 60)
 local warnAnimaRing					= mod:NewTargetAnnounce(136954, 3)
-local warnInterruptingJolt			= mod:NewSpellAnnounce(138763, 4)
+local warnInterruptingJolt			= mod:NewCountAnnounce(138763, 4)
 local warnEmpowerGolem				= mod:NewTargetAnnounce(138780, 3)
 
 local specWarnCrimsonWakeYou		= mod:NewSpecialWarningRun(138480)--Kiter
@@ -47,10 +47,10 @@ local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or
 --Dark Animus will now use its abilities at more consistent intervals. (March 19 hotfix)
 --As such, all of these timers need re-verification and updating.
 local timerAnimusActivation			= mod:NewCastTimer(60, 139537)--LFR only
-local timerSiphonAnimaCD			= mod:NewNextTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
+local timerSiphonAnimaCD			= mod:NewNextCountTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
-local timerInterruptingJoltCD		= mod:NewCDTimer(21.5, 138763)--seems 23~24 normal and lfr.
+local timerInterruptingJoltCD		= mod:NewCDCountTimer(21.5, 138763)--seems 23~24 normal and lfr. every 21.5 exactly on heroic
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -60,6 +60,8 @@ local countdownInterruptingJolt		= mod:NewCountdown(21.5, 138763)
 local soundCrimsonWake				= mod:NewSound(138480)
 
 local crimsonWake = GetSpellInfo(138485)--Debuff ID I believe, not cast one. Same spell name though
+local siphon = 0
+local jolt = 0
 
 function mod:AnimaRingTarget(targetname)
 	warnAnimaRing:Show(targetname)
@@ -72,6 +74,8 @@ function mod:AnimaRingTarget(targetname)
 end
 
 function mod:OnCombatStart(delay)
+	siphon = 0
+	jolt = 0
 	berserkTimer:Start(-delay)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
@@ -87,16 +91,22 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(69427, "AnimaRingTarget", 0.02, 12)
 		timerAnimaRingCD:Start()
 	elseif args:IsSpellID(138763, 139867, 139869) then--Normal version is 2.2 sec cast. Heroic is 1.4 second cast. LFR is 3.8 sec cast (thus why it has different spellid)
-		warnInterruptingJolt:Show()
+		jolt = jolt + 1
+		warnInterruptingJolt:Show(jolt)
 		specWarnInterruptingJolt:Show()
-		timerInterruptingJoltCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerInterruptingJoltCD:Start(nil, jolt+1)
+		else
+			timerInterruptingJoltCD:Start(23, jolt+1)
+		end
 		countdownInterruptingJolt:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
-		timerSiphonAnimaCD:Start()
+		siphon = siphon + 1
+		timerSiphonAnimaCD:Start(nil, siphon+1)
 	end
 end
 
