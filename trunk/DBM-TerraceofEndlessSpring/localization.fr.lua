@@ -38,8 +38,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s est fini",
-	warnHideProgress		= "Touchés : %s. Dommages : %s. Temps : %s."
+	warnHideOver			= "%s est fini"
 })
 
 L:SetTimerLocalization({
@@ -48,7 +47,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "Alerte quand $spell:123244 est fini",
-	warnHideProgress		= "Alerte des statistiques quand $spell:123244 est fini",
 	timerSpecialCD			= "Délai avant la prochaine capacité spécial", -- revoir
 	SetIconOnProtector		= "Mettre un icone sur les $journal:6224\n(Pas fiable si il y a des assistants(promot))",
 	RangeFrame				= "Afficher le cadre de distance (3m) pour $spell:123121\n(Affiche tout le monde pendant $spell:123244, sinon, ne montre que les Tank)",

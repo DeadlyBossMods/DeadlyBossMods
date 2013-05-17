@@ -38,8 +38,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s has ended",
-	warnHideProgress		= "Hits: %s. Damage: %s. Time: %s"
+	warnHideOver			= "%s has ended"
 })
 
 L:SetTimerLocalization({
@@ -48,7 +47,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "Show warning when $spell:123244 has ended",
-	warnHideProgress		= "Show statistics for $spell:123244 when it ends",
 	timerSpecialCD			= "Show timer for special ability CD",
 	SetIconOnProtector		= "Set icons on $journal:6224\n(Not Reliable if more than 1 person with assist enables)",
 	RangeFrame				= "Show range frame (3) for $spell:123121\n(Shows everyone during Hide, otherwise, only shows tanks)",

@@ -16,7 +16,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"UNIT_AURA",
-	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
 )
 
@@ -26,7 +25,6 @@ local warnPrimordialStrike			= mod:NewSpellAnnounce(136037, 3, nil, mod:IsTank()
 local warnGasBladder				= mod:NewTargetAnnounce(136215, 4)--Stack up in front for (but not too close or cleave will get you)
 local warnCausticGas				= mod:NewCastAnnounce(136216, 3)
 local warnEruptingPustules			= mod:NewTargetAnnounce(136246, 4)
-local warnPustuleEruption			= mod:NewSpellAnnounce(136247, 3, nil, false)--Spammy
 local warnPathogenGlands			= mod:NewTargetAnnounce(136225, 3)
 local warnVolatilePathogen			= mod:NewTargetAnnounce(136228, 4)
 local warnMetabolicBoost			= mod:NewTargetAnnounce(136245, 3)--Makes Malformed Blood, Primordial Strike and melee 50% more often
@@ -45,7 +43,6 @@ local timerFullyMutated				= mod:NewBuffFadesTimer(120, 140546)
 local timerMalformedBlood			= mod:NewTargetTimer(60, 136050, nil, mod:IsTank() or mod:IsHealer())
 local timerPrimordialStrikeCD		= mod:NewCDTimer(24, 136037)
 local timerCausticGasCD				= mod:NewCDTimer(14, 136216)
-local timerPustuleEruptionCD		= mod:NewCDTimer(5, 136247, nil, false)
 local timerVolatilePathogenCD		= mod:NewCDTimer(27, 136228)--Too cute blizzard, too cute. (those who get the 28 reference for pathogen get an A+)
 local timerBlackBlood				= mod:NewTargetTimer(60, 137000, nil, mod:IsTank() or mod:IsHealer())
 local timerViscousHorrorCD			= mod:NewNextCountTimer(30, "ej6969", nil, nil, nil, 137000)
@@ -67,7 +64,6 @@ local bigOozeGUIDS = {}
 function mod:BigOoze()
 	bigOozeCount = bigOozeCount + 1
 	bigOozeAlive = bigOozeAlive + 1
---	print("DBM Debug Spawn: ", bigOozeAlive)
 	warnViscousHorror:Show(bigOozeCount)
 	specWarnViscousHorror:Show(bigOozeCount)
 	timerViscousHorrorCD:Start(30, bigOozeCount+1)
@@ -163,7 +159,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 136246 then
 		postulesActive = true
 		warnEruptingPustules:Show(args.destName)
-		timerPustuleEruptionCD:Start()--not affected by metabolicBoost?
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, we should already have range 5 up
 			DBM.RangeCheck:Show(3)
 		end
@@ -199,7 +194,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerCausticGasCD:Cancel()
 	elseif args.spellId == 136246 then
 		postulesActive = false
-		timerPustuleEruptionCD:Cancel()
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, leave range frame alone
 			DBM.RangeCheck:Hide()
 		end
@@ -251,18 +245,10 @@ function mod:UNIT_AURA(uId)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 136248 and self:AntiSpam(2, 1) then--Pustule Eruption
-		warnPustuleEruption:Show()
-		timerPustuleEruptionCD:Start()
-	end
-end
-
 function mod:UNIT_DIED(args)
 	if bigOozeGUIDS[args.destGUID] then
 		bigOozeAlive = bigOozeAlive - 1
 		bigOozeGUIDS[args.destGUID] = nil
---		print("DBM Debug Died: ", bigOozeAlive)
 	end
 end
 

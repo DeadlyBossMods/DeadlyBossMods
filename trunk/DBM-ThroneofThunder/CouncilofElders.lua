@@ -221,11 +221,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			local _, _, _, stack = UnitBuff(uid, lingeringPresence)
 			if self:IsDifficulty("heroic10", "heroic25") then
 				timerDarkPowerCD:Start(math.floor(68/(0.15*stack+1.0)+0.5))--(68, 59, 52, 47)
-			elseif self:IsDifficulty("normal25") then--This is now 25man normal only
+			elseif self:IsDifficulty("normal25") then
 				timerDarkPowerCD:Start(math.floor(68/(0.10*stack+1.0)+0.5))--(68, 62, 57, 52)
-			elseif self:IsDifficulty("normal10") then--Updated 10 man data post hotfix as seen in this log here http://worldoflogs.com/reports/8sy56hojz9x3ej7j/xe/?s=6609&e=7296&x=spellid+%3D+136442+or+spellid+%3D+136507+and+targetname+%3D+%22Slayhoof%22
+			elseif self:IsDifficulty("normal10") then
 				timerDarkPowerCD:Start(math.floor(68/(0.10*(stack-1)+1.0)+0.5))--(76, 68, 62, x)
-			else -- lfr (13 Apr 2013: 11:54:49.500->11:56:26.609 => 97.109 [0 stacks] | 70/100 after ~63.9 => ~91 [1 stack] | 11:59:44.515->12:01:09.593 => 85.078 [2 stacks])
+			else
 				timerDarkPowerCD:Start(math.floor(68/(0.05*(stack-6)+1.0)+0.5))--(97, 91, 85, x)
 			end
 		else
@@ -238,7 +238,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if cid == 69078 then--Sul the Sandcrawler
-			--Do nothing. He just casts sand storm right away and continues his quicksand cd as usual
 			self:UnregisterShortTermEvents()
 		elseif cid == 69132 then--High Prestess Mar'li
 			--Swap timers. While possessed 

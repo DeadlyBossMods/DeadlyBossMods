@@ -37,8 +37,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s 结束",
-	warnHideProgress		= "命中：%s，伤害：%s，时间：%s"
+	warnHideOver			= "%s 结束"
 })
 
 L:SetTimerLocalization({
@@ -47,7 +46,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "特殊警报：$spell:123244效果结束时",
-	warnHideProgress		= "警报：$spell:123244阶段的战斗统计",
 	timerSpecialCD			= "计时条：特殊能力冷却",
 	SetIconOnProtector		= "为$journal:6224的目标添加团队标记\n（当有多名团队助理时该功能不可靠）",
 	RangeFrame				= "距离监视（3码）：应对$spell:123121\n（隐藏阶段时显示所有人，其余时仅显示坦克位置）",

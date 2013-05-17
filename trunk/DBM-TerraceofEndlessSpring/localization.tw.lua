@@ -34,8 +34,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s結束",
-	warnHideProgress		= "擊中:%s. 傷害:%s. 時間:%s"
+	warnHideOver			= "%s結束"
 })
 
 L:SetTimerLocalization({
@@ -44,7 +43,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "為$spell:123244結束顯示警告",
-	warnHideProgress		= "當$spell:123244結束後顯示統計",
 	timerSpecialCD			= "為下一次特別技能冷卻顯示計時器",
 	SetIconOnProtector		= "為$journal:6224標示團隊圖示(超過一名以上的團隊助理時不可靠)",
 	RangeFrame				= "為$spell:123121顯示距離框(3碼)(只有顯示坦)",
