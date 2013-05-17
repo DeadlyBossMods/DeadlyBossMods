@@ -55,6 +55,7 @@ local timerInterruptingJoltCD		= mod:NewCDTimer(23, 138763)--seems 23~24 normal 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownActivation			= mod:NewCountdown(60, 139537)
+local countdownInterruptingJolt		= mod:NewCountdown(23, 138763)
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
@@ -89,6 +90,7 @@ function mod:SPELL_CAST_START(args)
 		warnInterruptingJolt:Show()
 		specWarnInterruptingJolt:Show()
 		timerInterruptingJoltCD:Start()
+		countdownInterruptingJolt:Start()
 	end
 end
 
