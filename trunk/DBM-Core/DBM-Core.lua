@@ -1932,12 +1932,12 @@ do
 		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
 		--unless we apsolutely make sure we force it to right zone before asking for info.
 		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
-			local C, Z = GetCurrentMapContinent(), GetCurrentMapZone()--Save current map settings.
+			local openMapID = GetCurrentMapAreaID()--Save current map settings.
 			SetMapToCurrentZone()--Force to right zone
-			LastZoneMapID = GetCurrentMapAreaID() or -1 --Set accurate zone area id into cache
-			local C2, Z2 = GetCurrentMapContinent(), GetCurrentMapZone()--Get right info after we set map to right place.
-			if C2 ~= C or Z2 ~= Z then
-				SetMapZoom(C, Z)--Restore old map settings if they differed to what they were prior to forcing mapchange and user has map open.
+			local correctMapID = GetCurrentMapAreaID()--Get right info after we set map to right place.
+			LastZoneMapID = correctMapID or -1 --Set accurate zone area id into cache
+			if openMapID ~= correctMapID then
+				SetMapByID(openMapID)--Restore old map settings if they differed to what they were prior to forcing mapchange and user has map open.
 			end
 		else--Map isn't open, no reason to save/restore settings, just make sure the information is correct and that's it.
 			SetMapToCurrentZone()
