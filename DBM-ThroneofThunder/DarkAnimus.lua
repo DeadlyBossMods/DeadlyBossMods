@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"RAID_BOSS_WHISPER"
 )
 
-local warnCrimsonWake				= mod:NewTargetAnnounce(138480, 3)--Maybe target scannning will work faster, if not, i'll just sync the RAID_BOSS_WHISPER for highest accuracy (target scanning on multiple mobs with same creatureid and no bossX unit ID sucks)
+local warnCrimsonWake				= mod:NewTargetAnnounce(138480, 3)
 local warnMatterSwap				= mod:NewTargetAnnounce(138609, 3)--Debuff.
 local warnMatterSwapped				= mod:NewAnnounce("warnMatterSwapped", 3, 138618)--Actual swap(caused by dispel)
 local warnExplosiveSlam				= mod:NewStackAnnounce(138569, 2, nil, mod:IsTank() or mod:IsHealer())
@@ -44,8 +44,6 @@ local specWarnInterruptingJolt		= mod:NewSpecialWarningCast(138763, nil, nil, ni
 local timerMatterSwap				= mod:NewTargetTimer(12, 138609)--If not dispelled, it ends after 12 seconds regardless
 local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or mod:IsHealer())
 --Boss
---Dark Animus will now use its abilities at more consistent intervals. (March 19 hotfix)
---As such, all of these timers need re-verification and updating.
 local timerAnimusActivation			= mod:NewCastTimer(60, 139537)--LFR only
 local timerSiphonAnimaCD			= mod:NewNextCountTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
@@ -164,8 +162,6 @@ end
 function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId, spellName)
 	if spellId == 138485 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnCrimsonWake:Show()
---"<84.3 22:50:19> [CLEU] SPELL_DAMAGE#false#0x040000000587A80F#Crones#1300#0#0x040000000587A80F#Crones#1300#0#138618#Matter Swap#64#187086#-1#64#nil#nil#51355#nil#nil#nil#nil", -- [9602]
---"<84.3 22:50:19> [CLEU] SPELL_DAMAGE#false#0x040000000587A80F#Crones#1300#0#0x04000000060845B3#Rvst#1300#0#138618#Matter Swap#64#52388#-1#64#nil#nil#162209#nil#nil#nil#nil", -- [9604]
 	elseif spellId == 138618 then
 		if sourceGUID == destGUID then return end--Filter first event then grab both targets from second event, as seen from log example above
 		warnMatterSwapped:Show(spellName, DBM:GetFullPlayerNameByGUID(sourceGUID), DBM:GetFullPlayerNameByGUID(destGUID))
@@ -173,9 +169,7 @@ function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
---"<83.8 14:59:54> [RAID_BOSS_WHISPER] RAID_BOSS_WHISPER#%s is pursuing you!#Crimson Wake#1#false", -- [5382]
---Seems to have no debuff event on combat log. Could possibly use UNIT_AURA, but this should be less cpu and since we can do it without localizing, no harm in doing it this way.
---Now, if target scanning doesn't work, may switch to unit aura to detect it on players other than self without requiring syncing.
+--Seems to have no debuff event on combat log. Could possibly use UNIT_AURA, but this should be tremendous cpu, plus hard to code in LFR since MANY large up at once
 function mod:RAID_BOSS_WHISPER(msg, npc)
 	if npc == crimsonWake then--In case target scanning fails, personal warnings still always go off. Target scanning is just so everyone else in raid knows who it's on (since only target sees this emote)
 		if self:AntiSpam(3, 1) then--This actually doesn't spam, but we ues same antispam here so that the MOVE warning doesn't fire at same time unless you fail to move for 2 seconds

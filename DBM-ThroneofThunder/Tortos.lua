@@ -256,6 +256,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--Does not show in combat log, so UNIT_AURA must be used instead
 function mod:UNIT_AURA(uId)
 	if uId ~= "boss1" then return end
 	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)

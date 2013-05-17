@@ -19,7 +19,6 @@ mod:RegisterEventsInCombat(
 
 local warnProtect						= mod:NewSpellAnnounce(123250, 2)
 local warnHide							= mod:NewCountAnnounce(123244, 3)
-local warnHideProgress					= mod:NewAnnounce("warnHideProgress", 1, 123244)--Probably not perm, but less spammy debug solution
 local warnHideOver						= mod:NewAnnounce("warnHideOver", 2, 123244)--Because we can. with creativeness, the boss returning is detectable a full 1-2 seconds before even visible. A good signal to stop aoe and get ready to return norm DPS
 local warnGetAway						= mod:NewCountAnnounce(123461, 3)
 local warnSpray							= mod:NewStackAnnounce(123121, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -276,10 +275,7 @@ function mod:SPELL_CAST_START(args)
 		timerSpecialCD:Start(nil, specialsCast+1)
 		self:SetWipeTime(60)--If she hides at 1.6% or below, she will be killed during hide. In this situration, yell fires very slowly. This hack can prevent recording as wipe.
 		self:RegisterShortTermEvents(
-			"INSTANCE_ENCOUNTER_ENGAGE_UNIT",--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
-			"SPELL_DAMAGE",
-			"SPELL_PERIODIC_DAMAGE",
-			"RANGE_DAMAGE"
+			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register on hide, because it also fires just before hide, every time and don't want to trigger "hide over" at same time as hide.
 		)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(3)--Show everyone during hide
@@ -305,19 +301,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end	
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, _, _, spellDamage)
-	local cid = self:GetCIDFromGUID(destGUID)
-	if cid == 63099 then--Custom CID lei shi only uses while hiding
-		if type(spellDamage) == "number" then--Fix a rare error when spellDamage is a string? In 200 debug prints it only happened once but better safe than sorry
-			damageDebug = damageDebug + spellDamage--To see if it's amount of damage
-		end
-		hideDebug = hideDebug + 1--To see if it's number of hits
-		timeDebug = GetTime() - hideTime
-	end
-end
-mod.SPELL_PERIODIC_DAMAGE = mod.SPELL_DAMAGE
-mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
-
 --Fires twice when boss returns, once BEFORE visible (and before we can detect unitID, so it flags unknown), then once a 2nd time after visible
 --"<233.9> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#nil#Unknown#0xF130F6070000006C#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [14168]
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
@@ -325,8 +308,6 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
 	self:SetWipeTime(3)
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
-	warnHideProgress:Cancel()
-	warnHideProgress:Show(hideDebug, damageDebug, tostring(format("%.1f", timeDebug)))--Show right away instead of waiting out the schedule
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)--Go back to showing only tanks
 	end
