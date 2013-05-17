@@ -50,12 +50,12 @@ local timerAnimusActivation			= mod:NewCastTimer(60, 139537)--LFR only
 local timerSiphonAnimaCD			= mod:NewNextTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
-local timerInterruptingJoltCD		= mod:NewCDTimer(23, 138763)--seems 23~24 normal and lfr.
+local timerInterruptingJoltCD		= mod:NewCDTimer(21.5, 138763)--seems 23~24 normal and lfr.
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownActivation			= mod:NewCountdown(60, 139537)
-local countdownInterruptingJolt		= mod:NewCountdown(23, 138763)
+local countdownInterruptingJolt		= mod:NewCountdown(21.5, 138763)
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
