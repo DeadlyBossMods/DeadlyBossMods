@@ -34,8 +34,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s has ended",
-	warnHideProgress		= "Ударов: %s. Урон: %s. Время: %s"
+	warnHideOver			= "%s has ended"
 })
 
 L:SetTimerLocalization({
@@ -44,7 +43,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "Предупреждение о появлении босса после $spell:123244",
-	warnHideProgress		= "Показывать статистику после завершения $spell:123244",
 	timerSpecialCD			= "Отсчет времени до следующей спец-способности",
 	SetIconOnProtector		= "Ставить метки на $journal:6224",
 	RangeFrame				= "Показывать окно проверки дистанции (3 м) для $spell:123121\n(Показывает всех во время $spell:123244, иначе только танков)",

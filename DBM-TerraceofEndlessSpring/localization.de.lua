@@ -34,8 +34,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s ist beendet",
-	warnHideProgress		= "Treffer: %s. Schaden: %s. Dauer: %s"
+	warnHideOver			= "%s ist beendet"
 })
 
 L:SetTimerLocalization({
@@ -44,7 +43,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "Zeige Warnung, wenn $spell:123244 beendet ist",
-	warnHideProgress		= "Zeige Statistiken für $spell:123244, wenn es beendet ist",
 	timerSpecialCD			= "Abklingzeit der Spezialfähigkeiten anzeigen",
 	SetIconOnProtector		= "Setze Zeichen auf $journal:6224 (nicht zuverlässig falls mehr als\nein Spieler mit Leiter-/Assistentenstatus diese Einstellung aktiviert)",
 	RangeFrame				= "Zeige Abstandsfenster (3m) für $spell:123121\n(zeigt jeden während $spell:123244, sonst nur die Tanks)",
