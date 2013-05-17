@@ -119,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 138732 then
 		warnIonization:Show()
 		specWarnIonization:Show()
-		if timerStaticBurstCD:GetTime() > 5 then
+		if timerStaticBurstCD:GetTime() == 0 or timerStaticBurstCD:GetTime() > 10 then--Static Burst will be delayed
 			timerStaticBurstCD:Start(12)
 		end
 	end
