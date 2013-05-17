@@ -219,23 +219,56 @@ do
 	end
 end
 
-local function GetSharedMedia3()
-	if LibStub and LibStub("LibSharedMedia-3.0", true) then
-		if not soundsRegistered then--Register some of our own media
-			local LSM = LibStub("LibSharedMedia-3.0")
-			soundsRegistered = true
-			LSM:Register("sound", "Headless Horseman Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])
-			LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])
-			LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])
-			LSM:Register("sound", "Lady Malande: Flee", [[Sound\Creature\LadyMalande\BLCKTMPLE_LadyMal_Aggro01.ogg]])
-			LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\MillhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])
-			LSM:Register("sound", "Kael: Obey Me", [[Sound\Creature\PrinceKaelThas\TEMPEST_Kael_MndCntrl01.ogg]])
-			LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])
-			LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])
-		end
-		return LibStub("LibSharedMedia-3.0", true)
+local function MixinSharedMedia3(mediatype, mediatable)
+	if not LibStub then return mediatable end
+	if not LibStub("LibSharedMedia-3.0", true) then return mediatable end
+	-- register some of our own media
+	if not soundsRegistered then
+		local LSM = LibStub("LibSharedMedia-3.0")
+		soundsRegistered = true
+		LSM:Register("sound", "Headless Horseman Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])
+		LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])
+		LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])
+		LSM:Register("sound", "Lady Malande: Flee", [[Sound\Creature\LadyMalande\BLCKTMPLE_LadyMal_Aggro01.ogg]])
+		LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\MillhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])
+		LSM:Register("sound", "Kael: Obey Me", [[Sound\Creature\PrinceKaelThas\TEMPEST_Kael_MndCntrl01.ogg]])
+		LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])
+		LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])
 	end
-	return false
+	-- sort LibSharedMedia keys alphabetically (case-insensitive)
+	local keytable = {}
+	for k in next, LibStub("LibSharedMedia-3.0", true):HashTable(mediatype) do
+		table.insert(keytable, k)
+	end
+	table.sort(keytable, function (a, b) return a:lower() < b:lower() end);
+	-- DBM values (mediatable) first, LibSharedMedia values (sorted alphabetically) afterwards
+	local result = mediatable
+	for i=1,#keytable do
+		local k = keytable[i]
+		local v = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)[k]
+		-- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+		-- NPCScan is a dummy inject of a custom sound in Silverdragon, we don't want that.
+		if mediatype ~= "sound" or (k ~= "None" and k ~= "NPCScan") then
+			-- filter duplicates
+			local insertme = true
+			for _, v2 in next, result do
+				if v2.value == v then
+					insertme = false
+					break
+				end
+			end
+			if insertme then
+				if mediatype == "sound" then
+					table.insert(result, {text=k, value=v, sound=true})
+				elseif mediatype == "statusbar" then
+					table.insert(result, {text=k, value=v, texture=v})
+				elseif mediatype == "font" then
+					table.insert(result, {text=k, value=v, font=v})
+				end
+			end
+		end
+	end
+	return result
 end
 
 -- This function creates a check box
@@ -329,18 +362,11 @@ do
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 
-	local sounds = {
-		{ text = "SW 1", value = 1 },
-		{ text = "SW 2", value = 2 },
-		{ text = "SW 3", value = 3 },
-	}
-	if GetSharedMedia3() then
-		for k,v in next, GetSharedMedia3():HashTable("sound") do
-			if k ~= "None" and k ~= "NPCScan" then--NPCScan is a dummy inject of a custom sound in Silverdragon, we don't want that.
-				table.insert(sounds, {text=k, value=v})
-			end
-		end
-	end
+	local sounds = MixinSharedMedia3("sound", {
+		{ sound=true, text = "SW 1", value = 1 },
+		{ sound=true, text = "SW 2", value = 2 },
+		{ sound=true, text = "SW 3", value = 3 },
+	})
 
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, soundVal, mod)
 		if not name then
@@ -1513,19 +1539,13 @@ local function CreateOptionsMenu()
 		local ShowCountdownText 	= raidwarnoptions:CreateCheckButton(L.ShowCountdownText,  true, nil, "ShowCountdownText")
 
 		-- RaidWarn Sound
-		local Sounds = {
+		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,	value	= "" },
 			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 		sound=true },
 			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true },
 			{	text	= "Ding",		value 	= "Sound\\interface\\AlarmClockWarning3.wav", 	sound=true }
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("sound") do
-				if k ~= "None" and k ~= "NPCScan" then--NPCScan is a dummy inject of a custom sound in Silverdragon, we don't want that. then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
-					table.insert(Sounds, {text=k, value=v, sound=true})
-				end
-			end
-		end
+		})
+
 		local RaidWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds,
 			DBM.Options.RaidWarningSound, function(value)
 				DBM.Options.RaidWarningSound = value
@@ -1748,18 +1768,14 @@ local function CreateOptionsMenu()
 							color2text:SetTextColor(self:GetColorRGB())
 						  end)
 
-		local Textures = {
+		local Textures = MixinSharedMedia3("statusbar", {
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga", 	texture	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
 			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
 			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga"	},
 			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
 			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("statusbar") do
-				table.insert(Textures, {text=k, value=v, texture=v})
-			end
-		end
+		})
+
 		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures,
 			DBM.Bars:GetOption("Texture"), function(value)
 				DBM.Bars:SetOption("Texture", value)
@@ -1788,17 +1804,13 @@ local function CreateOptionsMenu()
 			end
 		end
 
-		local Fonts = {
+		local Fonts = MixinSharedMedia3("font", {
 			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("font") do
-				table.insert(Fonts, {text=k, value=v, font=v})
-			end
-		end
+		})
+
 		local FontDropDown = BarSetup:CreateDropdown(L.Bar_Font, Fonts, DBM.Bars:GetOption("Font"),
 			function(value)
 				DBM.Bars:SetOption("Font", value)
@@ -1944,17 +1956,13 @@ local function CreateOptionsMenu()
 			end)
 		end
 
-		local Fonts = {
+		local Fonts = MixinSharedMedia3("font", {
 			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("font") do
-				table.insert(Fonts, {text=k, value=v, font=v})
-			end
-		end
+		})
+
 		local FontDropDown = specArea:CreateDropdown(L.SpecWarn_FontType, Fonts, DBM.Options.SpecialWarningFont,
 			function(value)
 				DBM.Options.SpecialWarningFont = value
@@ -1965,30 +1973,15 @@ local function CreateOptionsMenu()
 		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -150)
 
 		-- SpecialWarn Sound
-		local Sounds = {
+		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,		value	= "" },
 			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
 			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
 			{	text	= "Destruction",	value 	= "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav", 		sound=true },
 			{	text	= "NotPrepared",	value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav", 		sound=true },--Maybe a bit long? wouldn't recommend it as a default, but good for customizing.
 			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("sound") do
-				if k ~= "None" and k ~= "NPCScan" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
-					-- duplicates should be filtered out - TODO: make a generic function for all shared media / do not copy&paste
-					local insertme = true
-					for _, v2 in next, Sounds do
-						if v2.value == v then
-							insertme = false
-						end
-					end
-					if insertme then
-						table.insert(Sounds, {text=k, value=v, sound=true})
-					end
-				end
-			end
-		end
+		})
+
 		local SpecialWarnSoundDropDown = specArea:CreateDropdown(L.SpecialWarnSound, Sounds,
 			DBM.Options.SpecialWarningSound, function(value)
 				DBM.Options.SpecialWarningSound = value
