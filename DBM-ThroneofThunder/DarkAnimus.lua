@@ -25,7 +25,8 @@ local warnMatterSwapped				= mod:NewAnnounce("warnMatterSwapped", 3, 138618)--Ac
 local warnExplosiveSlam				= mod:NewStackAnnounce(138569, 2, nil, mod:IsTank() or mod:IsHealer())
 --Boss
 local warnActivation				= mod:NewCastAnnounce(139537, 3, 60)
-local warnAnimaRing					= mod:NewTargetAnnounce(136954, 3)
+local warnAnimaRing					= mod:NewTargetAnnounce(136954, 3, nil, mod:IsTank())
+local warnAnimaFont					= mod:NewTargetAnnounce(138691, 3)
 local warnInterruptingJolt			= mod:NewCountAnnounce(138763, 4)
 local warnEmpowerGolem				= mod:NewTargetAnnounce(138780, 3)
 
@@ -39,6 +40,7 @@ local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTan
 local specWarnAnimaRing				= mod:NewSpecialWarningYou(136954)
 local specWarnAnimaRingOther		= mod:NewSpecialWarningTarget(136954, false)
 local yellAnimaRing					= mod:NewYell(136954)
+local specWarnAnimaFont				= mod:NewSpecialWarningYou(138691)
 local specWarnInterruptingJolt		= mod:NewSpecialWarningCast(138763, nil, nil, nil, 2)
 
 local timerMatterSwap				= mod:NewTargetTimer(12, 138609)--If not dispelled, it ends after 12 seconds regardless
@@ -46,9 +48,10 @@ local timerExplosiveSlam			= mod:NewTargetTimer(25, 138569, nil, mod:IsTank() or
 --Boss
 local timerAnimusActivation			= mod:NewCastTimer(60, 139537)--LFR only
 local timerSiphonAnimaCD			= mod:NewNextCountTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
-local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954)--Updated/Verified post march 19 hotfix
-local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)--Still need updated heroic log (post hotfix) to verify/update
+local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954, nil, mod:IsTank())--Updated/Verified post march 19 hotfix
+local timerAnimaFontCD				= mod:NewCDTimer(25, 138691)
 local timerInterruptingJoltCD		= mod:NewCDCountTimer(21.5, 138763)--seems 23~24 normal and lfr. every 21.5 exactly on heroic
+local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -147,6 +150,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnActivation:Show()
 		timerAnimusActivation:Start()
 		countdownActivation:Start()
+	elseif args.spellId == 138691 then
+		warnAnimaFont:Show(args.destName)
+		timerAnimaFontCD:Start()
+		if args:IsPlayer() then
+			specWarnAnimaFont:Start()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -185,6 +194,8 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	if UnitExists("boss1") and tonumber(UnitGUID("boss1"):sub(6, 10), 16) == 69427 then
 		self:UnregisterShortTermEvents()--Once boss is out, unregister event, since we need it no longer.
 		if self:IsDifficulty("heroic10", "heroic25") then
+			timerAnimaFontCD:Start(14)
+			timerAnimaRingCD:Start(23)
 			timerSiphonAnimaCD:Start(120)--VERY important on heroic. boss activaet on pull, you have 2 minutes to do as much with adds as you can before he starts using siphon anima
 		elseif self:IsDifficulty("normal10", "normal25") then
 			timerSiphonAnimaCD:Start(5.3)
