@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISS",
 	"CHAT_MSG_MONSTER_EMOTE",
-	"UNIT_DIED",
 	"UNIT_AURA"
 )
 
@@ -95,8 +94,6 @@ local lfrCrimsonFogRevealed = false
 local lfrAmberFogRevealed = false
 local lfrAzureFogRevealed = false
 local lfrEngaged = false
-local blueTracking = GetSpellInfo(139202)
-local redTracking = GetSpellInfo(139204)
 local crimsonFog = EJ_GetSectionInfo(6892)
 local amberFog = EJ_GetSectionInfo(6895)
 local azureFog = EJ_GetSectionInfo(6898)
@@ -240,6 +237,37 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+local function findBeamJump(spellName, spellId)
+	for i=1, DBM:GetNumGroupMembers() do
+		local uId = "raid"..i
+		local name = DBM:GetUnitFullName(uId)
+		if spellId == 139202 and UnitDebuff(uId, spellName) and lastBlue ~= name then
+			lastBlue = name
+			if name == UnitName("player") then
+				if mod:IsDifficulty("lfr25") and mod.Options.specWarnBlueBeam then
+					specWarnBlueBeamLFR:Show()
+				else
+					specWarnBlueBeam:Show()
+				end
+			end
+			if mod.Options.SetIconRays then
+				mod:SetIcon(name, 6)--Square
+			end
+			return
+		elseif spellId == 139204 and UnitDebuff(uId, spellName) and lastRed ~= name then
+			lastRed = name
+			if name == UnitName("player") then
+				specWarnRedBeam:Show()
+			end
+			if mod.Options.SetIconRays then
+				mod:SetIcon(name, 7)--Cross
+			end
+			return
+		end
+	end
+	mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
+end
+
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 136932 then--Force of Will Precast
 		warnForceOfWill:Show(args.destName)
@@ -307,6 +335,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconRays then
 			self:SetIcon(args.destName, 1, 10)--Star (auto remove after 10 seconds because this beam untethers one initial person positions it.
 		end
+	elseif args:IsSpellID(139202, 139204) then
+		--The SPELL_CAST_SUCCESS event works, it's the SPELL_AURA_APPLIED/REMOVED events that are busted/
+		--SUCCESS has no target. Still have to find target with UnitDebuff checks
+		self:Schedule(0.1, findBeamJump, args.spellName, args.spellId)
 	end
 end
 
@@ -443,33 +475,6 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		timerDisintegrationBeam:Start()
 		countdownDisintegrationbeam:Start()
 		self:Schedule(55, BeamEnded)
-	end
-end
-
---Because blizz sucks and these do NOT show in combatlog AND the emote only fires for initial application,
---we register high performance costing event to work around for beam jump detection
-function mod:UNIT_AURA(uId)
-	local name = DBM:GetUnitFullName(uId)
-	if UnitDebuff(uId, blueTracking) and lastBlue ~= name then
-		lastBlue = name
-		if name == UnitName("player") then
-			if self:IsDifficulty("lfr25") and self.Options.specWarnBlueBeam then
-				specWarnBlueBeamLFR:Show()
-			else
-				specWarnBlueBeam:Show()
-			end
-		end
-		if self.Options.SetIconRays then
-			self:SetIcon(name, 6)--Square
-		end
-	elseif UnitDebuff(uId, redTracking) and lastRed ~= name then
-		lastRed = name
-		if name == UnitName("player") then
-			specWarnRedBeam:Show()
-		end
-		if self.Options.SetIconRays then
-			self:SetIcon(name, 7)--Cross
-		end
 	end
 end
 

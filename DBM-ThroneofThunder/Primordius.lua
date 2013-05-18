@@ -61,16 +61,16 @@ local bigOozeCount = 0
 local bigOozeAlive = 0
 local bigOozeGUIDS = {}
 
-function mod:BigOoze()
+local function BigOoze()
 	bigOozeCount = bigOozeCount + 1
 	bigOozeAlive = bigOozeAlive + 1
 	warnViscousHorror:Show(bigOozeCount)
 	specWarnViscousHorror:Show(bigOozeCount)
 	timerViscousHorrorCD:Start(30, bigOozeCount+1)
-	self:ScheduleMethod(30, "BigOoze")
+	mod:Schedule(30, BigOoze)
 	--This is a means to try and do it without using lots of cpu on an already cpu bad fight. If it's not fast enough or doesn't work well (ie people with assist aren't doing this fast enough). may still have to scan all targets
-	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnBigOoze then--Only register event if option is turned on, otherwise no waste cpu
-		self:RegisterShortTermEvents(
+	if DBM:GetRaidRank() > 0 and mod.Options.SetIconOnBigOoze then--Only register event if option is turned on, otherwise no waste cpu
+		mod:RegisterShortTermEvents(
 			"PLAYER_TARGET_CHANGED",
 			"UPDATE_MOUSEOVER_UNIT"
 		)
@@ -117,7 +117,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerViscousHorrorCD:Start(11.5-delay, 1)
-		self:ScheduleMethod(11.5-delay, "BigOoze")
+		self:Schedule(11.5, BigOoze)
 	end
 end
 
