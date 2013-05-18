@@ -34,7 +34,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization(729)
 
 L:SetWarningLocalization({
-	warnHideOver			= "%s has ended"
+	warnHideOver			= "%s закончилось"
 })
 
 L:SetTimerLocalization({
