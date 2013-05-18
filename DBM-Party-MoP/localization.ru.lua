@@ -29,15 +29,6 @@ L= DBM:GetModLocalization(658)
 -----------------------
 L= DBM:GetModLocalization(335)
 
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("TJSGeneral")
-
-L:SetGeneralLocalization({
-	name =	"ХНЗ: Таймер испытания"
-})
-
 -----------------------
 -- <<<Stormstout Brewery>>> --
 -----------------------
@@ -61,8 +52,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnFizzyBubbles	= "Спец-предупреждение, когда на вас нет $spell:114459",
-	RangeFrame				= "Показывать окно проверки дистанции (10 м) для $spell:106546"
+	SpecWarnFizzyBubbles	= "Спец-предупреждение, когда на вас нет $spell:114459"
 })
 
 -----------------------
@@ -140,15 +130,6 @@ L= DBM:GetModLocalization(676)
 -- Raigonn --
 -----------------------------
 L= DBM:GetModLocalization(649)
-
---------------------------------
--- General options/zone timer --
---------------------------------
-L = DBM:GetModLocalization("GSSGeneral")
-
-L:SetGeneralLocalization({
-	name =	"ВЗС: Таймер испытания"
-})
 
 -----------------------
 -- <<<Mogu'Shan Palace>>> --

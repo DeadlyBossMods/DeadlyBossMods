@@ -26,17 +26,14 @@ L:SetMiscLocalization({
 	Defeat			= "Мы не погрузимся в отчаяние. Если она хочет, чтобы мы погибли – так и будет."
 })
 
-
 ------------
 -- Blade Lord Ta'yak --
 ------------
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "Показывать стрелку DBM, когда на ком-то $spell:122949 ",
-	RangeFrame			= "Окно проверки дистанции (10м) для $spell:123175"
+	UnseenStrikeArrow	= "Показывать стрелку DBM, когда на ком-то $spell:122949"
 })
-
 
 -------------------------------
 -- Garalon --
@@ -83,7 +80,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization{
 	timerDestabalize			= "Дестабилизация (%2$d) : %1$s",
-	timerAmberExplosionAMCD		= "Взрыв: Чудовище"
+	timerAmberExplosionAMCD		= "Восст. Взрыв: Чудовище"
 }
 
 L:SetOptionLocalization({
@@ -105,7 +102,6 @@ L:SetMiscLocalization({
 	WillPower					= "Сила воли"
 })
 
-
 ------------
 -- Grand Empress Shek'zeer --
 ------------
@@ -117,8 +113,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnAmberTrap	= "Отображать прогресс создания $spell:125826",
-	InfoFrame		= "Информационное окно для игроков с $spell:125390",
-	RangeFrame		= "Окно проверки дистанции (5м) для $spell:123735"
+	InfoFrame		= "Информационное окно для игроков с $spell:125390"
 })
 
 L:SetMiscLocalization({

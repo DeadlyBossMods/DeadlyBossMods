@@ -22,7 +22,6 @@ L:SetMiscLocalization({
 	Overload	= "%s вот-вот перенасытится!"
 })
 
-
 ------------
 -- Feng the Accursed --
 ------------
@@ -34,16 +33,15 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "Объявлять смену фаз",
-	RangeFrame	= "Показывать окно проверки дистанции (6 м) во время аркан-фазы"
+	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6") .. "  во время аркан-фазы"
 })
 
 L:SetMiscLocalization({
 	Fire		= "О, превозносимый! Моими руками ты отделишь их плоть от костей!",
 	Arcane		= "О, великий мыслитель! Да снизойдет на меня твоя древняя мудрость!",
 	Nature		= "О, великий дух! Даруй мне силу земли!",
-	Shadow		= "Great soul of champions past! Bear to me your shield!"
+	Shadow		= "Великие души защитников! Охраняйте меня!"
 })
-
 
 -------------------------------
 -- Gara'jal the Spiritbinder --
@@ -53,7 +51,6 @@ L= DBM:GetModLocalization(682)
 L:SetMiscLocalization({
 	Pull			= "Пора умирать!"
 })
-
 
 ----------------------
 -- The Spirit Kings --
@@ -71,10 +68,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	DarknessSoon		= "Производить 5-секундный отсчет для $spell:117697",
-	timerUSRevive		= "Отсчет времени до формирования $spell:117506",
-	RangeFrame			= "Показывать окно проверки дистанции (8 м)"
+	timerUSRevive		= "Отсчет времени до формирования $spell:117506"
 })
-
 
 ------------
 -- Elegon --
@@ -94,7 +89,6 @@ L:SetOptionLocalization({
 	timerDespawnFloor		= "Отсчет времени до исчезновения пола",
 	SetIconOnCreature		= "Устанавливать метки на $journal:6193"
 })
-
 
 ------------
 -- Will of the Emperor --
