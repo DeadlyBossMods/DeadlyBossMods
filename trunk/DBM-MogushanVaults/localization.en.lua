@@ -21,7 +21,6 @@ L:SetMiscLocalization({
 	Overload	= "%s is about to Overload!"
 })
 
-
 ------------
 -- Feng the Accursed --
 ------------
@@ -33,7 +32,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase	= "Announce Phase transition",
-	RangeFrame	= "Show range frame (6) during arcane phase",
+	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6") .. " during arcane phase",
 	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
 	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
 })
@@ -44,7 +43,6 @@ L:SetMiscLocalization({
 	Nature		= "Oh great spirit! Grant me the power of the earth!",--I did not log this one, text is probably not right
 	Shadow		= "Great soul of champions past! Bear to me your shield!"
 })
-
 
 -------------------------------
 -- Gara'jal the Spiritbinder --
@@ -58,7 +56,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Pull		= "It be dyin' time, now!"
 })
-
 
 ----------------------
 -- The Spirit Kings --
@@ -78,9 +75,8 @@ L:SetOptionLocalization({
 	DarknessSoon		= "Show pre-warning countdown for $spell:117697 (5s before)",
 	timerUSRevive		= "Show timer for $spell:117506 reform",
 	timerRainOfArrowsCD = DBM_CORE_AUTO_TIMER_OPTIONS.cd:format(118122),
-	RangeFrame			= "Show range frame (8)"
+	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("8")
 })
-
 
 ------------
 -- Elegon --
@@ -102,7 +98,6 @@ L:SetOptionLocalization({
 	SetIconOnCreature		= "Set icons on $journal:6193"
 })
 
-
 ------------
 -- Will of the Emperor --
 ------------
@@ -121,4 +116,3 @@ L:SetMiscLocalization({
 	Courage		= "The Emperor's Courage appears in the alcoves!",--Emote
 	Boss		= "Two titanic constructs appear in the large alcoves!"--Emote
 })
-
