@@ -232,11 +232,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnNight		= "Объявлять ночную фазу",
-	warnDay			= "Объявлять дневную фазу",
-	warnDusk		= "Объявлять фазу сумерек",
-	timerDayCD		= "Отсчёт времени до следующей дневной фазы",
-	timerDuskCD		= "Отсчёт времени до следующей фазы сумерек",
 	RangeFrame		= "Показывать окно проверки дистанции (8 м)"
 })
 
