@@ -237,11 +237,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnNight		= "Anunciar fase de noche",
-	warnDay			= "Anunciar fase de día",
-	warnDusk		= "Anunciar fase de crepúsculo",
-	timerDayCD		= "Mostrar temporizador para la siguiente fase de día",
-	timerDuskCD		= "Mostrar temporizador para la sigiente fase de crepúsculo",
 	RangeFrame		= "Mostrar radar de rango (8)"
 })
 

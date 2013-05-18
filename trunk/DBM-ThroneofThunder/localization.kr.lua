@@ -232,11 +232,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnNight		= "밤 단계 알림 보기",
-	warnDay			= "낮 단계 알림 보기",
-	warnDusk		= "황혼 단계 알림 보기",
-	timerDayCD		= "낮 단계 바 표시",
-	timerDuskCD		= "황혼 단계 바 표시",
 	RangeFrame		= "거리 창 보기(8m)"
 })
 

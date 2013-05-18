@@ -232,11 +232,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnNight		= "Verkünde Nachtphase",
-	warnDay			= "Verkünde Tagphase",
-	warnDusk		= "Verkünde Dämmerungsphase",
-	timerDayCD		= "Zeige Zeit bis nächste Tagphase",
-	timerDuskCD		= "Zeige Zeit bis nächste Dämmerungsphase",
 	RangeFrame		= "Zeige Abstandsfenster (8m)"
 })
 
