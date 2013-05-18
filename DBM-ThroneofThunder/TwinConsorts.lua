@@ -202,6 +202,7 @@ function mod:UNIT_DIED(args)
 		timerDayCD:Cancel()
 		timerDuskCD:Cancel()
 		timerNuclearInfernoCD:Cancel()
+		warnDay:Show()
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start(19)
 		--She also does Flames of passion, but this is done 3 seconds after Lu'lin dies, is a 3 second timer worth it?
@@ -212,6 +213,7 @@ function mod:UNIT_DIED(args)
 		--timerFlamesOfPassionCD:Cancel()
 		--timerBeastOfNightmaresCD:Start()--My group kills Lu'lin first. Need log of Suen being killed first to get first beast timer value
 		timerNuclearInfernoCD:Cancel()
+		warnNight:Show()
 	end
 end
 

@@ -4844,10 +4844,10 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(optionName, optionDefault, "announce")
+			self:AddBoolOption(optionName, optionDefault, "misc")
 		elseif not (optionName == false) then
 			obj.option = "Yell"..(yellText or spellId)
-			self:AddBoolOption("Yell"..(yellText or spellId), optionDefault, "announce")
+			self:AddBoolOption("Yell"..(yellText or spellId), optionDefault, "misc")
 			self.localization.options["Yell"..(yellText or spellId)] = DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId)
 		end
 		return obj

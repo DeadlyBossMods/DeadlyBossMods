@@ -232,11 +232,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnNight		= "提示黑夜階段",
-	warnDay			= "提示白天階段",
-	warnDusk		= "提示黃昏階段",
-	timerDayCD		= "為白天階段顯示計時器",
-	timerDuskCD		= "為黃昏階段顯示計時器",
 	RangeFrame		= "顯示距離框架(8碼)"
 })
 
