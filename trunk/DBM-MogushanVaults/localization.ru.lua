@@ -98,7 +98,7 @@ L= DBM:GetModLocalization(677)
 L:SetOptionLocalization({
 	InfoFrame		= "Показывать информационное окно для игроков с $spell:116525",
 	CountOutCombo	= "Отсчитывать количество кастов $journal:5673",
-	ArrowOnCombo	= "Показывать стрелку DBM во время $journal:5673\nПодразумевается, что танк стоит перед боссом, а все остальные - позади."
+	ArrowOnCombo	= "Показывать стрелку DBM во время $journal:5673<br/>Подразумевается, что танк стоит перед боссом, а все остальные - позади."
 })
 
 L:SetMiscLocalization({

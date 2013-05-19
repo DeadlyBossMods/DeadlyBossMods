@@ -313,6 +313,16 @@ do
 				chatWindow:Insert(msg)
 			end
 		elseif not IsShiftKeyDown() then
+			local linkType = strsplit(":", data)
+			if linkType == "http" then
+				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+				if (not ChatFrameEditBox:IsShown()) then
+					ChatEdit_ActivateChat(ChatFrameEditBox)
+				end
+				ChatFrameEditBox:Insert(link)
+				ChatFrameEditBox:HighlightText()
+				return
+			end
 			if cursorInHitBox(self:GetParent()) then
 				self:GetParent():Click()
 			end
@@ -322,6 +332,7 @@ do
 	local function onHyperlinkEnter(self, data, link)
 		GameTooltip:SetOwner(self, "ANCHOR_NONE") -- I want to anchor BOTTOMLEFT of the tooltip to the cursor... (not BOTTOM as in ANCHOR_CURSOR)
 		local linkType = strsplit(":", data)
+		if linkType == "http" then return end
 		if linkType ~= "journal" then
 			GameTooltip:SetHyperlink(data)
 		else -- "journal:contentType:contentID:difficulty"
