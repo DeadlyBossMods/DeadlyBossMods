@@ -11,7 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "Спец-предупреждение, если вы стоите в $spell:138470\n(В случае, если скоро $spell:137313 или спадает дебафф $spell:138732)"
+	specWarnWaterMove	= "Спец-предупреждение, если вы стоите в $spell:138470<br/>(В случае, если скоро $spell:137313 или спадает дебафф $spell:138732)"
 })
 
 --------------
@@ -53,7 +53,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	PHealthFrame		= "Показывать оставшееся здоровье босса до спадения $spell:136442\n(Требуется включить окно отображения здоровья босса)",
+	PHealthFrame		= "Показывать оставшееся здоровье босса до спадения $spell:136442<br/>(Требуется включить окно отображения здоровья босса)",
 	AnnounceCooldowns	= "Отсчитывать (до 3) какой сейчас каст $spell:137166 для рейдовых кулдаунов",
 })
 
@@ -248,7 +248,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetOptionLocalization({
-	SetIconsOnVita		= "Устанавливать метки на игрока с дебаффом $spell:138297 и самого дальнего от него игрока"
+	SetIconsOnVita		= "Устанавливать метки на игрока с дебаффом $spell:138297<br/>и самого дальнего от него игрока"
 })
 
 L:SetMiscLocalization({
