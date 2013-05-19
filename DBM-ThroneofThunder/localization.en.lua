@@ -36,6 +36,7 @@ L:SetOptionLocalization({
 	specWarnOrbofControl	= "Show special warning when $journal:7092 dropped",
 	timerDoor				= "Show timer for next Tribal Door phase",
 	timerAdds				= "Show timer for when next add jumps down",
+	SetIconOnAdds			= "Set icons on balcony adds",
 	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(5, 136480),
 	SetIconOnCharge			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(136769)
 })
