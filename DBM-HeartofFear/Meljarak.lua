@@ -129,7 +129,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		amberPrisonTargets[#amberPrisonTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnAmberPrison:Show()
-			yellAmberPrison:Yell()
+			if not self:IsDifficulty("lfr25") then
+				yellAmberPrison:Yell()
+			end
 		end
 		self:Unschedule(warnAmberPrisonTargets)
 		self:Schedule(0.3, warnAmberPrisonTargets)
