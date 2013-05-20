@@ -196,9 +196,9 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerAnimaFontCD:Start(14)
 			timerAnimaRingCD:Start(23)
-			timerSiphonAnimaCD:Start(120)--VERY important on heroic. boss activaet on pull, you have 2 minutes to do as much with adds as you can before he starts using siphon anima
+			timerSiphonAnimaCD:Start(120, 1)--VERY important on heroic. boss activaet on pull, you have 2 minutes to do as much with adds as you can before he starts using siphon anima
 		elseif self:IsDifficulty("normal10", "normal25") then
-			timerSiphonAnimaCD:Start(5.3)
+			timerSiphonAnimaCD:Start(5.3, 1)
 		end
 	end
 end
