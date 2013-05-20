@@ -26,17 +26,14 @@ L:SetMiscLocalization({
 	Defeat				= "Wir werden der Verzweiflung der dunklen Leere nicht nachgeben. Wenn es Ihr Wille ist, dass wir dahinscheiden, dann soll es so sein."
 })
 
-
 ------------
 -- Blade Lord Ta'yak --
 ------------
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "Zeige DBM-Pfeil, wenn jemand von $spell:122949 betroffen ist",
-	RangeFrame			= "Zeige Abstandsfenster (10m) für $spell:123175"
+	UnseenStrikeArrow	= "Zeige DBM-Pfeil, wenn jemand von $spell:122949 betroffen ist"
 })
-
 
 -------------------------------
 -- Garalon --
@@ -50,7 +47,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnUnder	= "Spezialwarnung, wenn du dich unter dem Boss befindest",
-	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."\n(nur heroischer Schwierigkeitsgrad)"
+	countdownCrush	= DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(122774).."<br/>(nur heroischer Schwierigkeitsgrad)"
 })
 
 L:SetMiscLocalization({
@@ -89,13 +86,13 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Zeige Überblick über den Zweck der Fähigkeiten Mutierter Konstrukte",
 	warnAmberExplosion			= "Zeige Warnung (mit Quelle), wenn $spell:122398 gewirkt wird",
-	warnAmberExplosionAM		= "Zeige persönliche Warnung, wenn Bernmonstrosität $spell:122398 wirkt\n(zum Unterbrechen)",
-	warnInterruptsAvailable		= "Verkünde bei wem Bernstoß-Unterbrechungen für $spell:122402\nverfügbar sind",
+	warnAmberExplosionAM		= "Zeige persönliche Warnung, wenn Bernmonstrosität $spell:122398 wirkt (zum Unterbrechen)",
+	warnInterruptsAvailable		= "Verkünde bei wem Bernstoß-Unterbrechungen für $spell:122402 verfügbar sind",
 	warnWillPower				= "Verkünde aktuellen Willen bei 80, 50, 30, 10 und 4",
 	specwarnWillPower			= "Spezialwarnung bei geringem Willen als Mutiertes Konstrukt",
 	specwarnAmberExplosionYou	= "Spezialwarnung zum Unterbrechen deiner eigenen $spell:122398",
-	specwarnAmberExplosionAM	= "Spezialwarnung zum Unterbrechen der $spell:122402\nder Bernmonstrosität",
-	specwarnAmberExplosionOther	= "Spezialwarnung zum Unterbrechen der $spell:122398\nunkontrollierter Mutierter Konstrukte",
+	specwarnAmberExplosionAM	= "Spezialwarnung zum Unterbrechen der $spell:122402 der Bernmonstrosität",
+	specwarnAmberExplosionOther	= "Spezialwarnung zum Unterbrechen der $spell:122398 unkontrollierter Mutierter Konstrukte",
 	timerAmberExplosionAMCD		= "Zeige Zeit bis nächste $spell:122402 der Bernmonstrosität",
 	InfoFrame					= "Zeige Infofenster für Willen der Spieler",
 	FixNameplates				= "Automatische Deaktivierung störender Namensplaketten als Konstrukt\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
@@ -116,8 +113,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnAmberTrap		= "Verkünde den Fortschritt beim Bau einer $spell:125826",
-	InfoFrame			= "Zeige Infofenster für Spieler, welche von $spell:125390 betroffen sind",
-	RangeFrame			= "Zeige Abstandsfenster (5m) für $spell:123735"
+	InfoFrame			= "Zeige Infofenster für Spieler, welche von $spell:125390 betroffen sind"
 })
 
 L:SetMiscLocalization({

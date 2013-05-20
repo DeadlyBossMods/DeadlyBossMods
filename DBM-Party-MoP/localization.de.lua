@@ -51,8 +51,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnFizzyBubbles	= "Spezialwarnung, falls dir der $spell:114459 Buff fehlt",
-	RangeFrame				= "Zeige Abstandsfenster (10m) für $spell:106546"
+	SpecWarnFizzyBubbles	= "Spezialwarnung, falls dir der $spell:114459 Buff fehlt"
 })
 
 -----------------------
