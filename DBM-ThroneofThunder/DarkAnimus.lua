@@ -154,7 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAnimaFont:Show(args.destName)
 		timerAnimaFontCD:Start()
 		if args:IsPlayer() then
-			specWarnAnimaFont:Start()
+			specWarnAnimaFont:Show()
 		end
 	end
 end
