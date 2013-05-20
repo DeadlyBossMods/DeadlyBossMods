@@ -296,7 +296,7 @@ function mod:SPELL_CAST_START(args)
 		timerEpicenter:Start()
 		timerEpicenterCD:Start(nil, specialCount + 1)
 		if UnitBuff(GetSpellInfo(115811), "player") and self:IsDifficulty("lfr25") then
-			specWarnBarrierNow:Show()
+			specWarnBarrierNow:Schedule(2)
 		end
 	elseif args:IsSpellID(116157, 116295) then
 		warnLightningFists:Show()
