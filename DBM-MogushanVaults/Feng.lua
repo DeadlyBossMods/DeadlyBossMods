@@ -47,7 +47,7 @@ local warnChainsOfShadow			= mod:NewSpellAnnounce(118783, 2, nil, false)
 local warnSiphoningShield			= mod:NewCountAnnounce(117203, 4)
 --Tank Abilities
 local warnReversalLightningFists	= mod:NewTargetAnnounce(118302, 2)--this spell can interrupt Epicenter, so needs to warn.
-local warnNullBarrior				= mod:NewSpellAnnounce(115817, 2)
+local warnNullBarrier				= mod:NewSpellAnnounce(115817, 2)
 
 --Nature/Fist
 local specWarnLightningLash			= mod:NewSpecialWarningStack(131788, mod:IsTank(), 2)
@@ -70,7 +70,8 @@ local specWarnShadowBurn			= mod:NewSpecialWarningStack(131792, mod:IsTank(), 2)
 local specWarnShadowBurnOther		= mod:NewSpecialWarningTarget(131792, mod:IsTank())
 local specWarnSiphoningShield		= mod:NewSpecialWarningSpell(117203)
 --Tank Abilities
-local specWarnNullBarrior			= mod:NewSpecialWarningSpell(115817) -- Null Barrier is important all members, espcially Earth and Arcane Phase.
+local specWarnBarrierNow			= mod:NewSpecialWarning("specWarnBarrierNow")--Because i'm so damn tired of tanks not having a damn clue how/when to use this in LFR
+local specWarnNullBarrier			= mod:NewSpecialWarningSpell(115817) -- Null Barrier is important all members, espcially Earth and Arcane Phase.
 
 --Nature/Fist
 local timerLightningLash			= mod:NewTargetTimer(20, 131788, nil, mod:IsTank())
@@ -97,8 +98,8 @@ local timerChainsOfShadowCD			= mod:NewCDTimer(6, 118783, nil, false)--6-10sec v
 local timerSiphoningShieldCD		= mod:NewCDCountTimer(35, 117203)--35-38sec variation noted
 --Tank Abilities
 local timerReversalLightningFists	= mod:NewBuffFadesTimer(20, 118302)
-local timerNullBarrior				= mod:NewBuffFadesTimer(6, 115817)
-local timerNullBarriorCD			= mod:NewCDTimer(55, 115817)
+local timerNullBarrier				= mod:NewBuffFadesTimer(6, 115817)
+local timerNullBarrierCD			= mod:NewCDTimer(55, 115817)
 
 local soundEpicenter				= mod:NewSound(116018, nil, false)
 local soundWildSpark				= mod:NewSound(116784)
@@ -178,6 +179,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDrawFlame:Show(specialCount)
 		timerDrawFlame:Start()
 		specWarnDrawFlame:Show()
+		if UnitBuff(GetSpellInfo(115811), "player") and self:IsDifficulty("lfr25") then
+			specWarnBarrierNow:Show()
+		end
 	elseif args.spellId == 116821 then
 		wildfireCount = 1
 		warnWildfire()
@@ -198,6 +202,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnArcaneVelocity:Show(specialCount)
 		specWarnArcaneVelocity:Show()
 		timerArcaneVelocity:Start()
+		if UnitBuff(GetSpellInfo(115811), "player") and self:IsDifficulty("lfr25") then
+			specWarnBarrierNow:Show()
+		end
 	end
 end
 
@@ -288,6 +295,9 @@ function mod:SPELL_CAST_START(args)
 		soundEpicenter:Play()
 		timerEpicenter:Start()
 		timerEpicenterCD:Start(nil, specialCount + 1)
+		if UnitBuff(GetSpellInfo(115811), "player") and self:IsDifficulty("lfr25") then
+			specWarnBarrierNow:Show()
+		end
 	elseif args:IsSpellID(116157, 116295) then
 		warnLightningFists:Show()
 		timerLightningFistsCD:Start()
@@ -299,13 +309,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnChainsOfShadow:Show()
 		timerChainsOfShadowCD:Start()
 	elseif args.spellId == 115817 then
-		warnNullBarrior:Show()
-		specWarnNullBarrior:Show()
-		timerNullBarrior:Start()
+		warnNullBarrier:Show()
+		specWarnNullBarrier:Show()
+		timerNullBarrier:Start()
 		if self:IsDifficulty("lfr25") then
-			timerNullBarriorCD:Start(25)
+			timerNullBarrierCD:Start(25)
 		else
-			timerNullBarriorCD:Start()
+			timerNullBarrierCD:Start()
 		end
 	elseif args.spellId == 116417 then
 		arIcon = 8

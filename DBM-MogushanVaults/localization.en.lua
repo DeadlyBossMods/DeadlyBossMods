@@ -27,11 +27,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(689)
 
 L:SetWarningLocalization({
-	WarnPhase	= "Phase %d"
+	WarnPhase			= "Phase %d",
+	specWarnBarrierNow	= "Use Nullification Barrier NOW!"
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "Announce Phase transition",
+	WarnPhase			= "Announce Phase transition",
+	specWarnBarrierNow	= "Show special warning when you're supposed to use $spell:115817 (only applies to LFR)",
 	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6") .. " during arcane phase",
 	SetIconOnWS	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116784),
 	SetIconOnAR	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(116417)
