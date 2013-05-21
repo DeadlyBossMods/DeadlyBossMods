@@ -76,7 +76,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnThrash					= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(131996),
-	warnBreathOnPlatform		= "Show $spell:119414 warning when you are on platform<br>(not recommended, for raid leader)",
+	warnBreathOnPlatform		= "Show $spell:119414 warning when you are on platform<br/>(not recommended, for raid leader)",
 	specWarnBreathOfFearSoon	= "Show pre-special warning for $spell:119414 if you not have a $spell:117964 buff",
 	specWarnMovement			= "Show special warning to move when $spell:120047 is being fired<br/>(Click to copy link <a href=\"http://mysticalos.com/terraceofendlesssprings.jpg\">|cff3588ffhttp://mysticalos.com/terraceofendlesssprings.jpg|r</a>)",
 	timerSpecialAbility			= "Show timer for when next special ability will be cast",
