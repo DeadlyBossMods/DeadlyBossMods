@@ -49,7 +49,8 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-local usemodelframe = true		-- very beta
+local modelFrameCreated = false
+local soundsRegistered = false
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -120,7 +121,12 @@ do
 		panel.panelid = #self.panels
 		return setmetatable(obj, prottypemetatable)
 	end
-
+	
+	function PanelPrototype:Refresh()
+		self.frame:Hide()
+		self.frame:Show()
+	end
+	
 	-- This function don't realy destroy a window, it just hides it
 	function PanelPrototype:Destroy()
 		if self.frame.FrameTyp == 2 then
@@ -213,11 +219,56 @@ do
 	end
 end
 
-local function GetSharedMedia3()
-	if LibStub and LibStub("LibSharedMedia-3.0", true) then
-		return LibStub("LibSharedMedia-3.0", true)
+local function MixinSharedMedia3(mediatype, mediatable)
+	if not LibStub then return mediatable end
+	if not LibStub("LibSharedMedia-3.0", true) then return mediatable end
+	-- register some of our own media
+	if not soundsRegistered then
+		local LSM = LibStub("LibSharedMedia-3.0")
+		soundsRegistered = true
+		LSM:Register("sound", "Headless Horseman Laugh", [[Sound\Creature\HeadlessHorseman\Horseman_Laugh_01.ogg]])
+		LSM:Register("sound", "Yogg Saron: Laugh", [[Sound\Creature\YoggSaron\UR_YoggSaron_Slay01.ogg]])
+		LSM:Register("sound", "Loatheb: I see you", [[Sound\Creature\Loathstare\Loa_Naxx_Aggro02.ogg]])
+		LSM:Register("sound", "Lady Malande: Flee", [[Sound\Creature\LadyMalande\BLCKTMPLE_LadyMal_Aggro01.ogg]])
+		LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\MillhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])
+		LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])
+		LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])
+		LSM:Register("sound", "C'Thun: You Will Die!", [[Sound\Creature\CThun\CThunYouWillDIe.wav]])
 	end
-	return false
+	-- sort LibSharedMedia keys alphabetically (case-insensitive)
+	local keytable = {}
+	for k in next, LibStub("LibSharedMedia-3.0", true):HashTable(mediatype) do
+		table.insert(keytable, k)
+	end
+	table.sort(keytable, function (a, b) return a:lower() < b:lower() end);
+	-- DBM values (mediatable) first, LibSharedMedia values (sorted alphabetically) afterwards
+	local result = mediatable
+	for i=1,#keytable do
+		local k = keytable[i]
+		local v = LibStub("LibSharedMedia-3.0", true):HashTable(mediatype)[k]
+		-- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+		-- NPCScan is a dummy inject of a custom sound in Silverdragon, we don't want that.
+		if mediatype ~= "sound" or (k ~= "None" and k ~= "NPCScan") then
+			-- filter duplicates
+			local insertme = true
+			for _, v2 in next, result do
+				if v2.value == v then
+					insertme = false
+					break
+				end
+			end
+			if insertme then
+				if mediatype == "sound" then
+					table.insert(result, {text=k, value=v, sound=true})
+				elseif mediatype == "statusbar" then
+					table.insert(result, {text=k, value=v, texture=v})
+				elseif mediatype == "font" then
+					table.insert(result, {text=k, value=v, font=v})
+				end
+			end
+		end
+	end
+	return result
 end
 
 -- This function creates a check box
@@ -262,6 +313,16 @@ do
 				chatWindow:Insert(msg)
 			end
 		elseif not IsShiftKeyDown() then
+			local linkType = strsplit(":", data)
+			if linkType == "http" then
+				local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+				if (not ChatFrameEditBox:IsShown()) then
+					ChatEdit_ActivateChat(ChatFrameEditBox)
+				end
+				ChatFrameEditBox:Insert(data)
+				ChatFrameEditBox:HighlightText()
+				return
+			end
 			if cursorInHitBox(self:GetParent()) then
 				self:GetParent():Click()
 			end
@@ -271,6 +332,7 @@ do
 	local function onHyperlinkEnter(self, data, link)
 		GameTooltip:SetOwner(self, "ANCHOR_NONE") -- I want to anchor BOTTOMLEFT of the tooltip to the cursor... (not BOTTOM as in ANCHOR_CURSOR)
 		local linkType = strsplit(":", data)
+		if linkType == "http" then return end
 		if linkType ~= "journal" then
 			GameTooltip:SetHyperlink(data)
 		else -- "journal:contentType:contentID:difficulty"
@@ -311,18 +373,11 @@ do
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
 	end
 
-	local sounds = {
-		{ text = "SW 1", value = 1 },
-		{ text = "SW 2", value = 2 },
-		{ text = "SW 3", value = 3 },
-	}
-	if GetSharedMedia3() then
-		for k,v in next, GetSharedMedia3():HashTable("sound") do
-			if k ~= "None" then
-				table.insert(sounds, {text=k, value=v})
-			end
-		end
-	end
+	local sounds = MixinSharedMedia3("sound", {
+		{ sound=true, text = "SW 1", value = 1 },
+		{ sound=true, text = "SW 2", value = 2 },
+		{ sound=true, text = "SW 3", value = 3 },
+	})
 
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar, soundVal, mod)
 		if not name then
@@ -345,34 +400,37 @@ do
 		if name:find("%$journal:") then
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
-		-- oscarucb: prototype demo code: this dropdown object should be passed in,
-		-- as an argument to this function, not created here
 		local dropdown
-		if soundVal then
-		   dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
+		if soundVal and DBM.Options.ShowAdvSWSounds then
+			dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
 				mod.Options[soundVal] = value
 				DBM:PlaySpecialWarningSound(value)
-			end, 25, button)
+			end, 20, button)
+			dropdown:SetScript("OnShow", function(self)
+				self:SetSelectedValue(mod.Options[soundVal])
+			end)
 		end
 		local textbeside = button
 		local textpad = 0
-                if dropdown then
-		  	dropdown:SetPoint("LEFT", button, "RIGHT", -20, 0)
+		local html
+		if dropdown then
+			dropdown:SetPoint("LEFT", button, "RIGHT", -20, 0)
 			textbeside = dropdown
 			textpad = 35
-	        end
-		if dropdown or 
-                   (name and name:find("|H")) then -- ...and replace it with a SimpleHTML frame
+		end
+		if dropdown or (name and name:find("|H")) then -- ...and replace it with a SimpleHTML frame
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
 			html = _G[buttonName.."Text"]
-			html:SetHeight(12)
 			html:SetFontObject("GameFontNormal")
-			html:SetPoint("LEFT", textbeside, "RIGHT", textpad, 1)
+			html:SetHyperlinksEnabled(true)
 			html:SetScript("OnHyperlinkClick", onHyperlinkClick)
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
-                end
-		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
+			html:SetHeight(25)
+			-- oscarucb: proper html encoding is required here for hyperlink line wrapping to work correctly
+			name = "<html><body><p>"..name.."</p></body></html>"
+		end
+		_G[buttonName .. 'Text']:SetWidth( self.frame:GetWidth() - 57 - ((dropdown and dropdown:GetWidth()) or 0))
 		_G[buttonName .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
 
 		if textleft then
@@ -381,6 +439,16 @@ do
 			_G[buttonName .. 'Text']:SetJustifyH("RIGHT")
 		else
 			_G[buttonName .. 'Text']:SetJustifyH("LEFT")
+		end
+
+		if html and not textleft then
+			html:SetHeight(1) -- oscarucb: hack to discover wrapped height, so we can space multi-line options
+			html:SetPoint("TOPLEFT",UIParent)
+			local ht = select(4,html:GetBoundsRect()) or 25
+			html:ClearAllPoints()
+			html:SetPoint("TOPLEFT", textbeside, "TOPRIGHT", textpad, -4)
+			html:SetHeight(ht)
+			button.myheight = math.max(ht+12,button.myheight)
 		end
 
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -397,7 +465,7 @@ do
 			local x = self:GetLastObj()
 			if x.mytype == "checkbutton" then
 				button:ClearAllPoints()
-				button:SetPoint('TOPLEFT', self:GetLastObj(), "BOTTOMLEFT", 0, 2)
+				button:SetPoint('TOPLEFT', x, "TOPLEFT", 0, -x.myheight)
 			else
 				button:ClearAllPoints()
 				button:SetPoint('TOPLEFT', 10, -12)
@@ -981,6 +1049,7 @@ do
 			return
 		end
 
+		local changed = container.displayedFrame ~= frame
 		if ( container.displayedFrame ) then
 			container.displayedFrame:Hide()
 		end
@@ -996,6 +1065,10 @@ do
 			_G[frameName.."FOV"]:Show()
 			_G[frameName.."FOV"]:SetScrollChild(frame)
 			_G[frameName.."FOVScrollBar"]:SetMinMaxValues(0, mymax)
+			local val = _G[frameName.."FOVScrollBar"]:GetValue() or 0
+			if changed then
+			  _G[frameName.."FOVScrollBar"]:SetValue(0) -- scroll to top, and ensure widget appears
+			end
 
 			if frame.isfixed then
 				frame.isfixed = nil
@@ -1027,6 +1100,9 @@ do
 		frame:Show()
 
 		if DBM.Options.EnableModels then
+			if not modelFrameCreated then
+				CreateAnimationFrame()
+			end
 			DBM_BossPreview.enabled = false
 			DBM_BossPreview:Hide()
 			for _, mod in ipairs(DBM.Mods) do
@@ -1100,6 +1176,7 @@ function UpdateAnimationFrame(mod)
 end
 
 local function CreateAnimationFrame()
+	modelFrameCreated = true
 	local mobstyle = CreateFrame('PlayerModel', "DBM_BossPreview", DBM_GUI_OptionsFramePanelContainer)
 	mobstyle:SetPoint("BOTTOMRIGHT", DBM_GUI_OptionsFramePanelContainer, "BOTTOMRIGHT", -5, 5)
 	mobstyle:SetWidth( 300 )
@@ -1283,7 +1360,7 @@ local function CreateOptionsMenu()
 
 
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
-	if usemodelframe then CreateAnimationFrame() end
+	if DBM.Options.EnableModels then CreateAnimationFrame() end
 	do
 		----------------------------------------------
 		--             General Options              --
@@ -1473,19 +1550,13 @@ local function CreateOptionsMenu()
 		local ShowCountdownText 	= raidwarnoptions:CreateCheckButton(L.ShowCountdownText,  true, nil, "ShowCountdownText")
 
 		-- RaidWarn Sound
-		local Sounds = {
+		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,	value	= "" },
 			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 		sound=true },
 			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true },
 			{	text	= "Ding",		value 	= "Sound\\interface\\AlarmClockWarning3.wav", 	sound=true }
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("sound") do
-				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
-					table.insert(Sounds, {text=k, value=v, sound=true})
-				end
-			end
-		end
+		})
+
 		local RaidWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds,
 			DBM.Options.RaidWarningSound, function(value)
 				DBM.Options.RaidWarningSound = value
@@ -1708,18 +1779,14 @@ local function CreateOptionsMenu()
 							color2text:SetTextColor(self:GetColorRGB())
 						  end)
 
-		local Textures = {
+		local Textures = MixinSharedMedia3("statusbar", {
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga", 	texture	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
 			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
 			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga"	},
 			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
 			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("statusbar") do
-				table.insert(Textures, {text=k, value=v, texture=v})
-			end
-		end
+		})
+
 		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures,
 			DBM.Bars:GetOption("Texture"), function(value)
 				DBM.Bars:SetOption("Texture", value)
@@ -1748,17 +1815,13 @@ local function CreateOptionsMenu()
 			end
 		end
 
-		local Fonts = {
+		local Fonts = MixinSharedMedia3("font", {
 			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("font") do
-				table.insert(Fonts, {text=k, value=v, font=v})
-			end
-		end
+		})
+
 		local FontDropDown = BarSetup:CreateDropdown(L.Bar_Font, Fonts, DBM.Bars:GetOption("Font"),
 			function(value)
 				DBM.Bars:SetOption("Font", value)
@@ -1840,9 +1903,10 @@ local function CreateOptionsMenu()
 
 	do
 		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
-		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 290, true)
+		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 310, true)
 		specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
 		specArea:CreateCheckButton(L.SpecWarn_LHFrame, true, nil, "ShowLHFrame")
+		specArea:CreateCheckButton(L.SpecWarn_AdSound, true, nil, "ShowAdvSWSounds")
 
 		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)
@@ -1857,7 +1921,7 @@ local function CreateOptionsMenu()
 		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
 
 		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 100, 1)
-		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -75)
+		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -105)
 		do
 			local firstshow = true
 			fontSizeSlider:SetScript("OnShow", function(self)
@@ -1873,7 +1937,7 @@ local function CreateOptionsMenu()
 		end
 
 		local color1 = specArea:CreateColorSelect(64)
-		color1:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -125)
+		color1:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -155)
 		local color1text = specArea:CreateText(L.SpecWarn_FontColor, 80)
 		color1text:SetPoint("BOTTOM", color1, "TOP", 5, 4)
 		local color1reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -1903,17 +1967,13 @@ local function CreateOptionsMenu()
 			end)
 		end
 
-		local Fonts = {
+		local Fonts = MixinSharedMedia3("font", {
 			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("font") do
-				table.insert(Fonts, {text=k, value=v, font=v})
-			end
-		end
+		})
+
 		local FontDropDown = specArea:CreateDropdown(L.SpecWarn_FontType, Fonts, DBM.Options.SpecialWarningFont,
 			function(value)
 				DBM.Options.SpecialWarningFont = value
@@ -1921,44 +1981,38 @@ local function CreateOptionsMenu()
 				DBM:ShowTestSpecialWarning()
 			end
 		)
-		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -120)
+		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -150)
 
 		-- SpecialWarn Sound
-		local Sounds = {
+		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,		value	= "" },
 			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
 			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
 			{	text	= "Destruction",	value 	= "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav", 		sound=true },
 			{	text	= "NotPrepared",	value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav", 		sound=true },--Maybe a bit long? wouldn't recommend it as a default, but good for customizing.
 			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("sound") do
-				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
-					table.insert(Sounds, {text=k, value=v, sound=true})
-				end
-			end
-		end
+		})
+
 		local SpecialWarnSoundDropDown = specArea:CreateDropdown(L.SpecialWarnSound, Sounds,
 			DBM.Options.SpecialWarningSound, function(value)
 				DBM.Options.SpecialWarningSound = value
 			end
 		)
-		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -160)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -190)
 
 		local SpecialWarnSoundDropDown2 = specArea:CreateDropdown(L.SpecialWarnSound2, Sounds,
 			DBM.Options.SpecialWarningSound2, function(value)
 				DBM.Options.SpecialWarningSound2 = value
 			end
 		)
-		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -200)
+		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -230)
 		
 		local SpecialWarnSoundDropDown3 = specArea:CreateDropdown(L.SpecialWarnSound3, Sounds,
 			DBM.Options.SpecialWarningSound3, function(value)
 				DBM.Options.SpecialWarningSound3 = value
 			end
 		)
-		SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -240)
+		SpecialWarnSoundDropDown3:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -270)
 
 
 		local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
@@ -1967,6 +2021,9 @@ local function CreateOptionsMenu()
 		resetbutton:SetHighlightFontObject(GameFontNormalSmall)
 		resetbutton:SetScript("OnClick", function()
 				DBM.Options.SpecialWarningFont = DBM.DefaultOptions.SpecialWarningFont
+				DBM.Options.SpecialWarningSound = DBM.DefaultOptions.SpecialWarningSound
+				DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2
+				DBM.Options.SpecialWarningSound3 = DBM.DefaultOptions.SpecialWarningSound3
 				DBM.Options.SpecialWarningFontSize = DBM.DefaultOptions.SpecialWarningFontSize
 				DBM.Options.SpecialWarningFontColor[1] = DBM.DefaultOptions.SpecialWarningFontColor[1]
 				DBM.Options.SpecialWarningFontColor[2] = DBM.DefaultOptions.SpecialWarningFontColor[2]
@@ -1974,8 +2031,12 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningPoint = DBM.DefaultOptions.SpecialWarningPoint
 				DBM.Options.SpecialWarningX = DBM.DefaultOptions.SpecialWarningX
 				DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
-				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+				FontDropDown:SetSelectedValue(DBM.Options.SpecialWarningFont)
+				SpecialWarnSoundDropDown:SetSelectedValue(DBM.Options.SpecialWarningSound)
+				SpecialWarnSoundDropDown2:SetSelectedValue(DBM.Options.SpecialWarningSound2)
+				SpecialWarnSoundDropDown3:SetSelectedValue(DBM.Options.SpecialWarningSound3)
 				fontSizeSlider:SetValue(DBM.DefaultOptions.SpecialWarningFontSize)
+				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
 				DBM:UpdateSpecialWarningOptions()
 		end)
 	end
@@ -2010,6 +2071,8 @@ local function CreateOptionsMenu()
 				DBM.Options.HPFrameY = DBM.DefaultOptions.HPFrameY
 				DBM.Options.HealthFrameGrowUp = DBM.DefaultOptions.HealthFrameGrowUp
 				DBM.Options.HealthFrameWidth = DBM.DefaultOptions.HealthFrameWidth
+				growbttn:SetChecked(DBM.Options.HealthFrameGrowUp)
+				BarWidthSlider:SetValue(DBM.Options.HealthFrameWidth)
 				DBM.BossHealth:UpdateSettings()
 		end)
 
@@ -2468,6 +2531,7 @@ do
 					break
 				end
 			end
+			panel:Refresh()
 		end)
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
@@ -2512,12 +2576,9 @@ do
 					else
 						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -10)
 					end
---					button:SetScript("OnShow", function(self)
---						-- set the correct selected value if the mod is being loaded after the gui is loaded (hack because the dropdown menu lacks a SetSelectedValue method)
---						_G[button:GetName().."Text"]:SetText(mod.localization.options[v])
---						button.value = v
---						button.text = mod.localization.options[v]
---					end)
+					button:SetScript("OnShow", function(self)
+						self:SetSelectedValue(mod.Options[v])
+					end)
 				end
 			end
 			catpanel:AutoSetDimension()

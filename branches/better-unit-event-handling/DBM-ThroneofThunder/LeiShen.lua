@@ -212,6 +212,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not intermissionActive then
 			timerStaticShockCD:Start()
 		end
+		self:Unschedule(warnStaticShockTargets)
+		self:Schedule(0.3, warnStaticShockTargets)
 		if args:IsPlayer() then
 			specWarnStaticShock:Show()
 			yellStaticShock:Yell()
@@ -235,8 +237,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-		self:Unschedule(warnStaticShockTargets)
-		self:Schedule(0.3, warnStaticShockTargets)
 	elseif args.spellId == 136295 then
 		overchargeTarget[#overchargeTarget + 1] = args.destName
 		timerOvercharge:Start()
@@ -247,6 +247,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not intermissionActive then
 			timerOverchargeCD:Start()
 		end
+		self:Unschedule(warnOverchargeTargets)
+		self:Schedule(0.3, warnOverchargeTargets)
 		if args:IsPlayer() then
 			specWarnOvercharged:Show()
 			yellOvercharged:Yell()
@@ -268,8 +270,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-		self:Unschedule(warnOverchargeTargets)
-		self:Schedule(0.3, warnOverchargeTargets)
 	elseif args.spellId == 135680 and args:GetDestCreatureID() == 68397 then--North (Static Shock)
 		--start timers here when we have em
 	elseif args.spellId == 135681 and args:GetDestCreatureID() == 68397 then--East (Diffusion Chain)

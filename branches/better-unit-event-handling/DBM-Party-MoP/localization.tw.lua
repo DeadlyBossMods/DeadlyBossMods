@@ -51,8 +51,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnFizzyBubbles	= "當你缺少$spell:114459時顯示特別警告",
-	RangeFrame				= "為$spell:106546顯示距離框"
+	SpecWarnFizzyBubbles	= "當你缺少$spell:114459時顯示特別警告"
 })
 
 -----------------------

@@ -6,6 +6,7 @@ mod:SetCreatureID(68078, 68079, 68080, 68081)--Ro'shak 68079, Quet'zal 68080, Da
 mod:SetMainBossID(68078)
 mod:SetQuestID(32754)
 mod:SetZone()
+mod:SetUsedIcons(8)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
@@ -86,10 +87,11 @@ local Damren = select(2, EJ_GetCreatureInfo(4, 817))
 local arcingName = GetSpellInfo(136193)
 local phase = 1--Not sure this is useful yet, coding it in, in case spear cd is different in different phases
 local fistSmashCount = 0
---Spear method called VERY often, so cache these globals locally
+--Spear/arcing methods called VERY often, so cache these globals locally
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitExists = UnitExists
 local UnitClass = UnitClass
+local UnitDebuff = UnitDebuff
 
 local function updateHealthFrame()
 	if DBM.BossHealth:IsShown() then
@@ -313,7 +315,6 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 134926 and phase < 4 then
---		warnThrowSpear:Show()
 		if self:AntiSpam(15, 8) then--Basically, if the target scanning failed, we do an aoe warning on the actual summon.
 			specWarnThrowSpear:Show()
 		end
@@ -442,7 +443,6 @@ function mod:UNIT_DIED(args)
 				DBM.InfoFrame:SetHeader(arcingName)
 				DBM.InfoFrame:Show(5, "playerbaddebuff", 136193)
 			end
-			--Only one log, but i looks like spear cd from phase 1 remains intact
 			phase = 2
 			updateHealthFrame()
 			timerLightningStormCD:Start(17)

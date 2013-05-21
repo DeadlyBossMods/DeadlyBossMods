@@ -29,10 +29,6 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(826)
 
-L:SetOptionLocalization({
-	RangeFrame			= "Показывать окно проверки дистанции для $spell:137511"
-})
-
 L:SetMiscLocalization({
 	Pull				= "Как вы смеете вмешиваться в наши планы! На этот раз зандаларов не остановить!"
 })
@@ -41,7 +37,3 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
-
-L:SetOptionLocalization({
-	RangeFrame			= "Показывать окно проверки дистанции (10) для $spell:136340"
-})

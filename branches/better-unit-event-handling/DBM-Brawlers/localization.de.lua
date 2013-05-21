@@ -15,7 +15,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnYourTurn	= "Zeige Spezialwarnung, wenn es dein Kampf ist",
+	specWarnYourTurn	= "Spezialwarnung, wenn es dein Kampf ist",
 	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe\n(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)"
 })
 

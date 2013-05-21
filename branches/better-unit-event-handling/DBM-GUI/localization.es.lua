@@ -64,7 +64,7 @@ L.ModelSoundLong			= "Largo"
 
 L.Button_RangeFrame			= "Mostrar/Ocultar cuadro de distancia"
 L.Button_RangeRadar			= "Mostrar/Ocultar radar de distancia"
-L.Button_InfoFrame			= "Mostrar/Ocultar cuado de información"
+L.Button_InfoFrame			= "Mostrar/Ocultar cuadro de información"
 L.Button_TestBars			= "Probar barras"
 
 L.PizzaTimer_Headline 	= 'Crear "Cronomentro"'

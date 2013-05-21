@@ -28,7 +28,7 @@ local warnSummonBats				= mod:NewSpellAnnounce("ej7140", 3, 136685)
 local warnShellConcussion			= mod:NewTargetAnnounce(136431, 1)
 
 local specWarnCallofTortos			= mod:NewSpecialWarningSpell(136294)
-local specWarnQuakeStomp			= mod:NewSpecialWarningSpell(134920, nil, nil, nil, 2)
+local specWarnQuakeStomp			= mod:NewSpecialWarningCount(134920, nil, nil, nil, 2)
 local specWarnRockfall				= mod:NewSpecialWarningSpell(134476, false, nil, nil, 2)
 local specWarnStoneBreath			= mod:NewSpecialWarningInterrupt(133939, not mod:IsTank())
 local specWarnCrystalShell			= mod:NewSpecialWarning("specWarnCrystalShell", false)
@@ -137,7 +137,7 @@ function mod:SPELL_CAST_START(args)
 		stompActive = true
 		stompCount = stompCount + 1
 		warnQuakeStomp:Show(stompCount)
-		specWarnQuakeStomp:Show()
+		specWarnQuakeStomp:Show(stompCount)
 		timerStompActive:Start()
 		timerRockfallCD:Start(7.4)--When the spam of rockfalls start
 		timerStompCD:Start(nil, stompCount+1)
@@ -169,9 +169,8 @@ local function resetaddstate()
 	end
 end
 
---The problem is without a doubt here, but why?
 mod:RegisterOnUpdateHandler(function(self)
-	if hasHighestVersion and not (iconsSet == 3) then--Both of these conditions were correct in last test, so only thing left to do is to even see if handler is even running AT ALL
+	if hasHighestVersion and not (iconsSet == 3) then
 		for i = 1, DBM:GetNumGroupMembers() do
 			local uId = "raid"..i.."target"
 			local guid = UnitGUID(uId)
@@ -256,6 +255,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--Does not show in combat log, so UNIT_AURA must be used instead
 function mod:UNIT_AURA(uId)
 	if uId ~= "boss1" then return end
 	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)

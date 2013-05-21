@@ -55,10 +55,10 @@ local specWarnQuickening				= mod:NewSpecialWarningCount(122149, isDispeller)--T
 local specWarnKorthikStrike				= mod:NewSpecialWarningYou(123963)
 local specWarnKorthikStrikeOther		= mod:NewSpecialWarningTarget(123963, mod:IsHealer())
 local yellKorthikStrike					= mod:NewYell(123963)
-local specWarnWindBomb					= mod:NewSpecialWarningMove(131830)
+local specWarnWindBomb					= mod:NewSpecialWarningMove(131830, nil, nil, nil, 3)
 local specWarnWhirlingBladeMove			= mod:NewSpecialWarningMove(121898)
 local yellWindBomb						= mod:NewYell(131830)
-local specWarnReinforcements			= mod:NewSpecialWarningTarget("ej6554", not mod:IsHealer())--Also important to dps. (Espcially CC classes)
+local specWarnReinforcements			= mod:NewSpecialWarningTarget("ej6554", not mod:IsHealer(), "specWarnReinforcements")--Also important to dps. (Espcially CC classes)
 
 local timerRainOfBladesCD				= mod:NewCDTimer(48, 122406)--48-64 sec variation now. so much for it being a precise timer.
 local timerRainOfBlades					= mod:NewBuffActiveTimer(7.5, 122406)
@@ -129,7 +129,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		amberPrisonTargets[#amberPrisonTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnAmberPrison:Show()
-			yellAmberPrison:Yell()
+			if not self:IsDifficulty("lfr25") then
+				yellAmberPrison:Yell()
+			end
 		end
 		self:Unschedule(warnAmberPrisonTargets)
 		self:Schedule(0.3, warnAmberPrisonTargets)

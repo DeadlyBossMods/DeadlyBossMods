@@ -28,7 +28,6 @@ L:SetMiscLocalization({
 	Defeat				= "We will not give in to the despair of the dark void. If Her will for us is to perish, then it shall be so."
 })
 
-
 ------------
 -- Blade Lord Ta'yak --
 ------------
@@ -36,9 +35,8 @@ L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
 	UnseenStrikeArrow	= "Show DBM Arrow when someone is affected by $spell:122949",
-	RangeFrame			= "Show range frame (10) for $spell:123175"
+	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 123175)
 })
-
 
 -------------------------------
 -- Garalon --
@@ -68,7 +66,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(741)
 
 L:SetOptionLocalization({
-	AmberPrisonIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885)
+	AmberPrisonIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(121885),
+	specWarnReinforcements	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.spell:format("ej6554")
 })
 
 ------------
@@ -127,7 +126,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnAmberTrap		= "Show warning (with progress) when $spell:125826 is making", -- maybe bad translation.
 	InfoFrame			= "Show info frame for players affected by $spell:125390",
-	RangeFrame			= "Show range frame (5) for $spell:123735",
+	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(5, 123735),
 	StickyResinIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(124097),
 	HeartOfFearIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(123845)
 })

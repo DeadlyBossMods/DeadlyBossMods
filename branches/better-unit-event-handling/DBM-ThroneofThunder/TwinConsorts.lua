@@ -29,19 +29,19 @@ mod:SetBossHealthInfo(
 )
 
 --Darkness
-local warnNight							= mod:NewAnnounce("warnNight", 1, 108558)
+local warnNight							= mod:NewAnnounce("warnNight", 2, 108558)
 local warnCrashingStarSoon				= mod:NewSoonAnnounce(137129, 2)
 local warnTearsOfSun					= mod:NewSpellAnnounce(137404, 3)
 local warnBeastOfNightmares				= mod:NewTargetAnnounce(137375, 3, nil, mod:IsTank() or mod:IsHealer())
 --Light
-local warnDay							= mod:NewAnnounce("warnDay", 1, 122789)
+local warnDay							= mod:NewAnnounce("warnDay", 2, 122789)
 local warnLightOfDay					= mod:NewSpellAnnounce(137403, 2, nil, false)--Spammy, but leave it as an option at least
 local warnFanOfFlames					= mod:NewStackAnnounce(137408, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check target scanning
-local warnIceComet						= mod:NewSpellAnnounce(137419, 2)
+local warnIceComet						= mod:NewSpellAnnounce(137419, 1)
 local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4, 4)--Heroic
 --Dusk
-local warnDusk							= mod:NewAnnounce("warnDusk", 1, "Interface\\Icons\\achievement_zone_easternplaguelands")--"achievement_zone_easternplaguelands" (best Dusk icon i could find)
+local warnDusk							= mod:NewAnnounce("warnDusk", 2, "Interface\\Icons\\achievement_zone_easternplaguelands")--"achievement_zone_easternplaguelands" (best Dusk icon i could find)
 local warnTidalForce					= mod:NewCastAnnounce(137531, 3, 2)
 
 --Darkness
@@ -58,7 +58,6 @@ local specWarnNuclearInferno			= mod:NewSpecialWarningSpell(137491, nil, nil, ni
 local specWarnTidalForce				= mod:NewSpecialWarningSpell(137531, nil, nil, nil, 2)--Maybe switch to a stop dps warning, or a switch to Suen?
 
 --Darkness
---Light of Day (137403) has a HIGHLY variable cd variation, every 6-14 seconds. Not to mention it requires using SPELL_DAMAGE and SPELL_MISSED. for now i'm excluding it on purpose
 local timerDayCD						= mod:NewTimer(183, "timerDayCD", 122789) -- timer is 183 or 190 (confirmed in 10 man. variable)
 local timerCrashingStar					= mod:NewNextTimer(5.5, 137129)
 local timerCosmicBarrageCD				= mod:NewCDTimer(22, 136752)--VERY IMPORTANT on heroic, do not remove. many heroic strat ignore adds and group up BEFORE day phase starts so adds come to middle at phase start. Variation is unimportant, timer isn't to see when next cast is, it's to show safety window for when no cast will happen
@@ -184,7 +183,7 @@ end
 --"<333.5 18:37:56> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Lu'lin! Lend me your strength!#Suen#####0#0##0#247#nil#0#false#false", -- [71265]
 --"<339.3 18:38:02> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Suen#0xF1310D2800005863#worldboss#410952978#nil#1#Unknown#0xF1310D2900005864#worldboss#310232488
 function mod:CHAT_MSG_MONSTER_YELL(msg) -- Switch to yell. INSTANCE_ENCOUNTER_ENGAGE_UNIT fires too late. also yell ranage covers all rooms. Not need sync.
-	if (msg == L.DuskPhase or msg:find(L.DuskPhase)) then
+	if msg == L.DuskPhase or msg:find(L.DuskPhase) then
 		self:SendSync("Phase3Yell")
 	end
 end
@@ -203,6 +202,7 @@ function mod:UNIT_DIED(args)
 		timerDayCD:Cancel()
 		timerDuskCD:Cancel()
 		timerNuclearInfernoCD:Cancel()
+		warnDay:Show()
 		timerLightOfDayCD:Start()
 		timerFanOfFlamesCD:Start(19)
 		--She also does Flames of passion, but this is done 3 seconds after Lu'lin dies, is a 3 second timer worth it?
@@ -213,6 +213,7 @@ function mod:UNIT_DIED(args)
 		--timerFlamesOfPassionCD:Cancel()
 		--timerBeastOfNightmaresCD:Start()--My group kills Lu'lin first. Need log of Suen being killed first to get first beast timer value
 		timerNuclearInfernoCD:Cancel()
+		warnNight:Show()
 	end
 end
 
@@ -245,9 +246,7 @@ function mod:OnSync(msg)
 		timerIceCometCD:Start()
 		timerFanOfFlamesCD:Start()
 		--timerFlamesOfPassionCD:Start(12.5)
-		--Hard coded failsafe is in place on this fight. cooldown IS 45 seconds, BUT if a 2nd comet spawns before first inferno.
-		--I want to analyze more logs before coding in something fancy for this failsafe cause i want to verify it more first.
-		--For now, i'll just set it to 45. it is a cooldown timer.
+		--Apparently changing in 5.3, so new logs will be needed once patch is deployed.
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerNuclearInfernoCD:Start(45)--45-50 second variation (cd is 45, but there is  hard code failsafe that if a commet has spawned recently it's extended
 		end

@@ -59,7 +59,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnFizzyBubbles	= "Show special warning when you are missing $spell:114459 debuff",
-	RangeFrame				= "Show range frame (10) for $spell:106546"
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 106546)
 })
 
 -----------------------

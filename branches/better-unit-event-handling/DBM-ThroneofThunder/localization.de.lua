@@ -11,8 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "Zeige Spezialwarnung, falls du in $spell:138470 stehst (warnt bevor\n$spell:137313 gewirkt wird und kurz bevor $spell:138732 ausläuft)",
-	RangeFrame			= "Zeige Abstandsfenster (8m/4m)"
+	specWarnWaterMove	= "Spezialwarnung, falls du in $spell:138470 stehst (warnt bevor $spell:137313 gewirkt wird und kurz bevor $spell:138732 ausläuft)"
 })
 
 --------------
@@ -34,10 +33,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnAdds				= "Verkünde das Herunterspringen neuer Gegner",
 	warnOrbofControl		= "Verkünde das Fallenlassen einer $journal:7092",
-	specWarnOrbofControl	= "Zeige Spezialwarnung beim Fallenlassen einer $journal:7092",
+	specWarnOrbofControl	= "Spezialwarnung beim Fallenlassen einer $journal:7092",
 	timerDoor				= "Zeige Zeit bis nächste Stammestorphase",
 	timerAdds				= "Zeige Zeit bis der nächste Gegner herunterspringt",
-	RangeFrame				= "Zeige Abstandsfenster (5m) für $spell:136480"
+	SetIconOnAdds			= "Setze Zeichen auf Balkongegner"
 })
 
 L:SetMiscLocalization({
@@ -55,9 +54,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	PHealthFrame		= "Zeige in Lebensanzeige den benötigten Schaden bis $spell:136442 endet\n(benötigt aktivierte Lebensanzeige)",
-	RangeFrame			= "Zeige Abstandsfenster",
-	AnnounceCooldowns	= "Zähle akkustisch die Anzahl der $spell:137166 Wirkungen (für \"Raid-Cooldowns\")"
+	PHealthFrame		= "Zeige in Lebensanzeige den benötigten Schaden bis $spell:136442 endet<br/>(benötigt aktivierte Lebensanzeige)",
+	AnnounceCooldowns	= "Zähle akkustisch die Anzahl der $spell:137166 Wirkungen<br/>(für \"Raid-Cooldowns\")"
 })
 
 ------------
@@ -71,11 +69,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalShell	= "Zeige Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
+	specWarnCrystalShell	= "Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
 	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
 	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971",
-	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der $spell:134920 Wirkungen\n(für \"Raid-Cooldowns\")"
+	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der $spell:134920 Wirkungen<br/>(für \"Raid-Cooldowns\")"
 })
 
 L:SetMiscLocalization({
@@ -92,7 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerBreaths			= "Zeige Zeit bis nächster Atem\n($spell:139843 / $spell:137731 / $spell:139840 / $spell:139993)",
+	timerBreaths			= "Zeige Zeit bis nächster Atem<br/>($spell:139843 / $spell:137731 / $spell:139840 / $spell:139993)",
 	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der \"Toben\"-Wirkungen (für \"Raid-Cooldowns\")",
 	Never					= "Nie",
 	Every					= "Jede (fortlaufende Zählung)",
@@ -120,10 +118,6 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerFlockCD	= "Nest (%d): %s"
-})
-
-L:SetOptionLocalization({
-	RangeFrame			= "Zeige Abstandsfenster (10m) für $spell:138923"
 })
 
 L:SetMiscLocalization({
@@ -159,7 +153,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnBeam					= "Verkünde Ziele der Farbstrahlen",
 	warnAddsLeft				= "Verkünde die Anzahl der verbleibenden Nebel",
-	specWarnFogRevealed			= "Zeige Spezialwarnung, wenn ein Nebel offenbart wird",
+	specWarnFogRevealed			= "Spezialwarnung, wenn ein Nebel offenbart wird",
 	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung",
 	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel",
 	SetParticle					= "Grafikeinstellung 'Partikeldichte' automatisch auf 'Niedrig' setzen\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
@@ -180,7 +174,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "Zeige Warnung für die Debuffanzahl, wenn du Pfützen absorbierst",
-	RangeFrame					= "Zeige Abstandsfenster (5m/2m)",
 	SetIconOnBigOoze			= "Setze Zeichen auf $journal:6969"
 })
 
@@ -231,15 +224,6 @@ L:SetTimerLocalization({
 	timerDuskCD		= "Nächste Dämmerungsphase",
 })
 
-L:SetOptionLocalization({
-	warnNight		= "Verkünde Nachtphase",
-	warnDay			= "Verkünde Tagphase",
-	warnDusk		= "Verkünde Dämmerungsphase",
-	timerDayCD		= "Zeige Zeit bis nächste Tagphase",
-	timerDuskCD		= "Zeige Zeit bis nächste Dämmerungsphase",
-	RangeFrame		= "Zeige Abstandsfenster (8m)"
-})
-
 L:SetMiscLocalization({
 	DuskPhase		= "Lu'lin, leiht mir Eure Kraft!"
 })
@@ -254,8 +238,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnIntermissionSoon	= "Zeige Spezialvorwarnung für Unterbrechung",
-	RangeFrame					= "Zeige Abstandsfenster (8m/6m)",
+	specWarnIntermissionSoon	= "Spezialvorwarnung für Unterbrechung",
 	StaticShockArrow			= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
 	OverchargeArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist"
 })
@@ -265,6 +248,14 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetOptionLocalization({
+	SetIconsOnVita		= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler"
+})
+
+L:SetMiscLocalization({
+	Defeat		= "Wait! I am... I am not your enemy."--translate (trigger)
+})
+
 -------------
 --  Trash  --
 -------------
@@ -272,8 +263,4 @@ L = DBM:GetModLocalization("ToTTrash")
 
 L:SetGeneralLocalization({
 	name =	"Trash des Thron des Donners"
-})
-
-L:SetOptionLocalization({
-	RangeFrame		= "Zeige Abstandsfenster (10m)"
 })

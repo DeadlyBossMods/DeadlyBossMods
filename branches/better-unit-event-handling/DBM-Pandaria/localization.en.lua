@@ -29,7 +29,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(826)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show range frame for $spell:137511"
+	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 137511)
 })
 
 L:SetMiscLocalization({
@@ -42,5 +42,5 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(814)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show range frame (10) for $spell:136340"
+	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 136340)
 })

@@ -20,9 +20,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISS",
 	"CHAT_MSG_MONSTER_EMOTE",
-	"UNIT_DIED",
-	"UNIT_AURA",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_AURA"
 )
 
 local warnHardStare					= mod:NewSpellAnnounce(133765, 3, nil, mod:IsTank() or mod:IsHealer())--Announce CAST not debuff, cause it misses a lot, plus we have 1 sec to hit an active mitigation
@@ -72,13 +70,13 @@ local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
 local soundLingeringGaze			= mod:NewSound(134044)
 local countdownLightSpectrum		= mod:NewCountdown(60, "ej6891")
+local countdownDisintegrationbeam	= mod:NewCountdownFades(55, "ej6882")
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
---mod:AddBoolOption("ArrowOnBeam", true)
 mod:AddBoolOption("SetIconRays", true)
 mod:AddBoolOption("SetIconLifeDrain", true)
-mod:AddBoolOption("InfoFrame", true) -- may be need special warning or generic warning high stack player? or do not needed at all?
+mod:AddBoolOption("InfoFrame", true)
 mod:AddBoolOption("SetIconOnParasite", false)
 mod:AddBoolOption("SetParticle", true)
 
@@ -96,8 +94,6 @@ local lfrCrimsonFogRevealed = false
 local lfrAmberFogRevealed = false
 local lfrAzureFogRevealed = false
 local lfrEngaged = false
-local blueTracking = GetSpellInfo(139202)
-local redTracking = GetSpellInfo(139204)
 local crimsonFog = EJ_GetSectionInfo(6892)
 local amberFog = EJ_GetSectionInfo(6895)
 local azureFog = EJ_GetSectionInfo(6898)
@@ -127,9 +123,6 @@ local function warnBeam()
 end
 
 local function BeamEnded()
---[[	if mod.Options.ArrowOnBeam then
-		DBM.Arrow:Hide()
-	end--]]
 	timerLingeringGazeCD:Start(17)
 	timerForceOfWillCD:Start(19)
 	if mod:IsDifficulty("heroic10", "heroic25") then
@@ -192,9 +185,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
---[[	if self.Options.ArrowOnBeam then
-		DBM.Arrow:Hide()
-	end--]]
 	lfrEngaged = false
 	if self.Options.SetIconRays and lastRed then
 		self:SetIcon(lastRed, 0)
@@ -205,7 +195,7 @@ function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
-	if CVAR then--CVAR was set on pull which means we changed it, cahnge it back
+	if CVAR then--CVAR was set on pull which means we changed it, change it back
 		SetCVar("particleDensity", CVAR)
 	end
 end
@@ -222,9 +212,6 @@ do
 		table.sort(darkParasiteTargetsIcons, sort_by_group)
 		local parasiteIcon = 5
 		for i, v in ipairs(darkParasiteTargetsIcons) do
-			-- DBM:SetIcon() is used because of follow reasons
-			--1. It checks to make sure you're on latest dbm version, if you are not, it disables icon setting so you don't screw up icons (ie example, a newer version of mod does icons differently)
-			--2. It checks global dbm option "DontSetIcons"
 			self:SetIcon(v, parasiteIcon)
 			parasiteIcon = parasiteIcon - 1
 		end
@@ -248,6 +235,37 @@ function mod:SPELL_CAST_START(args)
 			timerDarkParasiteCD:Start(50)--50-52.5
 		end
 	end
+end
+
+local function findBeamJump(spellName, spellId)
+	for i=1, DBM:GetNumGroupMembers() do
+		local uId = "raid"..i
+		local name = DBM:GetUnitFullName(uId)
+		if spellId == 139202 and UnitDebuff(uId, spellName) and lastBlue ~= name then
+			lastBlue = name
+			if name == UnitName("player") then
+				if mod:IsDifficulty("lfr25") and mod.Options.specWarnBlueBeam then
+					specWarnBlueBeamLFR:Show()
+				else
+					specWarnBlueBeam:Show()
+				end
+			end
+			if mod.Options.SetIconRays then
+				mod:SetIcon(name, 6)--Square
+			end
+			return
+		elseif spellId == 139204 and UnitDebuff(uId, spellName) and lastRed ~= name then
+			lastRed = name
+			if name == UnitName("player") then
+				specWarnRedBeam:Show()
+			end
+			if mod.Options.SetIconRays then
+				mod:SetIcon(name, 7)--Cross
+			end
+			return
+		end
+	end
+	mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -317,6 +335,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconRays then
 			self:SetIcon(args.destName, 1, 10)--Star (auto remove after 10 seconds because this beam untethers one initial person positions it.
 		end
+	elseif args:IsSpellID(139202, 139204) then
+		--The SPELL_CAST_SUCCESS event works, it's the SPELL_AURA_APPLIED/REMOVED events that are busted/
+		--SUCCESS has no target. Still have to find target with UnitDebuff checks
+		self:Schedule(0.1, findBeamJump, args.spellName, args.spellId)
 	end
 end
 
@@ -372,9 +394,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target. If target warning needed, insert into this block. (maybe very spammy)
 		self:SetIcon(args.destName, 8)--Skull
-	elseif args.spellId == 133798 and self.Options.InfoFrame then -- Force update
+	elseif args.spellId == 133798 and self.Options.InfoFrame and not self:IsDifficulty("lfr25") then -- Force update
 		DBM.InfoFrame:Update("playerdebuffstacks")
-		if args:IsPlayer() and not self:IsDifficulty("lfr25") then
+		if args:IsPlayer() then
 			yellLifeDrain:Yell(playerName, args.amount or 1)
 		end
 	end
@@ -417,9 +439,7 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---Blizz doesn't like combat log anymore
---Currently very bugged too so warnings aren't working right (since fight isn't working right)
---Beams wildly jump targets and don't give new target a warning at all nor does it even show in damn combat log.
+--Blizz doesn't like combat log anymore for some spells
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	if npc == crimsonFog or npc == amberFog or npc == azureFog then
 		if self:IsDifficulty("lfr25") and npc == azureFog and not lfrAzureFogRevealed then
@@ -428,24 +448,21 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		elseif not lfrAzureFogRevealed or not self:IsDifficulty("lfr25") then
 			specWarnFogRevealed:Show(npc)
 		end
-	elseif msg:find("spell:133795") then
+	elseif msg:find("spell:133795") then--Does show in combat log, but emote gives targetname 3 seconds earlier.
 		local target = DBM:GetFullNameByShortName(target)
 		warnLifeDrain:Show(target)
 		specWarnLifeDrain:Show(target)
 		timerLifeDrain:Start()
 		timerLifeDrainCD:Start(not lifeDrained and 50 or nil)--first is 50, 2nd and later is 40 
 		lifeDrained = true
---[[		if target == UnitName("player") then
-			yellLifeDrain:Yell(target, 0)--This is pre cast, so player isn't technically at 1 stack for another 3 seconds. we want them to get at least one stack before taking beam
-		end--]]
 		if self.Options.SetIconLifeDrain then
 			self:SetIcon(target, 8)--Skull
 		end
-		if self.Options.InfoFrame then
+		if self.Options.InfoFrame and not self:IsDifficulty("lfr25") then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(133795))
 			DBM.InfoFrame:Show(5, "playerdebuffstacks", 133798)
+			self:Schedule(21, HideInfoFrame)
 		end
-		self:Schedule(21, HideInfoFrame)
 	elseif msg:find("spell:134169") then
 		lingeringGazeCD = 46 -- Return to Original CD.
 		timerForceOfWillCD:Cancel()
@@ -456,38 +473,8 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 		specWarnDisintegrationBeam:Show()
 		--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger
 		timerDisintegrationBeam:Start()
+		countdownDisintegrationbeam:Start()
 		self:Schedule(55, BeamEnded)
-	end
-end
-
---Because blizz sucks and these do NOT show in combat log AND the emote only fires for initial application, but not for when a player dies and beam jumps.
---Reports are this is majorly fucked up in LFR, because the antispam in name doesn't work with server names (wtf? maybe only happens if server name strip is turned on?)
---I will not be able to debug for several hours but commenting in case someone else runs LFR before I do in 5 hours
-function mod:UNIT_AURA(uId)
-	local name = DBM:GetUnitFullName(uId)
-	if UnitDebuff(uId, blueTracking) and lastBlue ~= name then
---		print("DBM Debug - UnitName(): "..UnitName(uId))
---		print("DBM Debug - DBM:GetUnitFullName: "..DBM:GetUnitFullName(uId))
---		print("DBM Debug - lastBlue: "..lastBlue)
-		lastBlue = name
-		if name == UnitName("player") then
-			if self:IsDifficulty("lfr25") and self.Options.specWarnBlueBeam then
-				specWarnBlueBeamLFR:Show()
-			else
-				specWarnBlueBeam:Show()
-			end
-		end
-		if self.Options.SetIconRays then
-			self:SetIcon(name, 6)--Square
-		end
-	elseif UnitDebuff(uId, redTracking) and lastRed ~= name then
-		lastRed = name
-		if name == UnitName("player") then
-			specWarnRedBeam:Show()
-		end
-		if self.Options.SetIconRays then
-			self:SetIcon(name, 7)--Cross
-		end
 	end
 end
 
@@ -552,30 +539,5 @@ function mod:UNIT_DIED(args)
 				lastYellow = nil
 			end
 		end
-	end
-end
-
---As of live, they removed ability to detect this thus ability to detect beam direction also gone.
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellId)
-	if spellId == 136316 and self:AntiSpam(2, 2) then--Disintegration Beam (clockwise)
---[[		timerLingeringGazeCD:Cancel()
-		warnDisintegrationBeam:Show()
-		specWarnDisintegrationBeam:Show(spellName, DBM_CORE_LEFT)
-		timerDisintegrationBeam:Start()
-		if self.Options.ArrowOnBeam then
-			DBM.Arrow:ShowStatic(90)
-		end
-		self:Schedule(64, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
-		print("DBM Debug: Clockwise beam spellid re-enabled by blizzard.")
-	elseif spellId == 133775 and self:AntiSpam(2, 2) then--Disintegration Beam (counter-clockwise)
---[[		timerLingeringGazeCD:Cancel()
-		warnDisintegrationBeam:Show()
-		specWarnDisintegrationBeam:Show(spellName, DBM_CORE_RIGHT)
-		timerDisintegrationBeam:Start()
-		if self.Options.ArrowOnBeam then
-			DBM.Arrow:ShowStatic(270)
-		end
-		self:Schedule(64, BeamEnded)--Best to start next phase bars when this one ends, so artifically create a "phase end" trigger--]]
-		print("DBM Debug: Counter-Clockwise beam spellid re-enabled by blizzard.")
 	end
 end

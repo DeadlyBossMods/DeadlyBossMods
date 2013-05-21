@@ -18,7 +18,7 @@ L:SetOptionLocalization({
 	warnEcho			= "Объявлять о появлении эха",
 	warnEchoDown		= "Объявлять о смерти эха",
 	specwarnPlatform	= "Спец-предупреждение, когда босс меняет платформу",
-	ArrowOnAttenuation	= "Показывать стрелку DBM во время $spell:127834, чтобы указать в каком направлении двигаться"
+	ArrowOnAttenuation	= "Показывать стрелку DBM во время $spell:127834, чтобы<br/>указать в каком направлении двигаться"
 })
 
 L:SetMiscLocalization({
@@ -26,17 +26,14 @@ L:SetMiscLocalization({
 	Defeat			= "Мы не погрузимся в отчаяние. Если она хочет, чтобы мы погибли – так и будет."
 })
 
-
 ------------
 -- Blade Lord Ta'yak --
 ------------
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "Показывать стрелку DBM, когда на ком-то $spell:122949 ",
-	RangeFrame			= "Окно проверки дистанции (10м) для $spell:123175"
+	UnseenStrikeArrow	= "Показывать стрелку DBM, когда на ком-то $spell:122949"
 })
-
 
 -------------------------------
 -- Garalon --
@@ -83,13 +80,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization{
 	timerDestabalize			= "Дестабилизация (%2$d) : %1$s",
-	timerAmberExplosionAMCD		= "Взрыв: Чудовище"
+	timerAmberExplosionAMCD		= "Восст. Взрыв: Чудовище"
 }
 
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Показывать назначение способностей у мутировавшего организма",
 	warnAmberExplosion			= "Предупреждение (с указанием источника) о начале применения $spell:122398",
-	warnAmberExplosionAM		= "Персональное предупреждение о начале применения $spell:122398(для прерывания)",
+	warnAmberExplosionAM		= "Персональное предупреждение о начале применения $spell:122398 (для прерывания)",
 	warnInterruptsAvailable		= "Показывать кто может сбить $spell:122402",
 	warnWillPower				= "Предупреждать об уровне силы воли на 80, 50, 30, 10 и 4.",
 	specwarnWillPower			= "Спец-предупреждение, когда уровень силы воли слишком низок",
@@ -105,7 +102,6 @@ L:SetMiscLocalization({
 	WillPower					= "Сила воли"
 })
 
-
 ------------
 -- Grand Empress Shek'zeer --
 ------------
@@ -117,8 +113,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnAmberTrap	= "Отображать прогресс создания $spell:125826",
-	InfoFrame		= "Информационное окно для игроков с $spell:125390",
-	RangeFrame		= "Окно проверки дистанции (5м) для $spell:123735"
+	InfoFrame		= "Информационное окно для игроков с $spell:125390"
 })
 
 L:SetMiscLocalization({
