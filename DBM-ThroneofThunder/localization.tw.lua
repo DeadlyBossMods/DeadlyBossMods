@@ -11,8 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "為$spell:137313施放前或$spell:138732效果消失前前顯示特別警告",
-	RangeFrame			= "顯示距離框架(8碼/4碼)"
+	specWarnWaterMove	= "為$spell:137313施放前或$spell:138732效果消失前顯示特別警告"
 })
 
 --------------
@@ -37,7 +36,7 @@ L:SetOptionLocalization({
 	specWarnOrbofControl	= "為$journal:7092掉落顯示特別警告",
 	timerDoor				= "為下一個部族的門顯示計時器",
 	timerAdds				= "為下一次小怪跳下顯示計時器",
-	RangeFrame				= "為$spell:136480顯示距離框架(5碼)"
+	SetIconOnAdds			= "為台上跳下的小怪設置團隊圖示"
 })
 
 L:SetMiscLocalization({
@@ -56,7 +55,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "為$spell:136442退去前顯示剩餘血量框架(需要首領血量框架開啟)",
-	RangeFrame			= "顯示距離框架",
 	AnnounceCooldowns	= "為團隊冷卻數出哪次$spell:137166施放數出",
 })
 
@@ -75,7 +73,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "為玩家沒有$spell:137633顯示訊息框架",
 	SetIconOnTurtles		= "為$journal:7129標示團隊圖示",
 	ClearIconOnTurtles		= "當$journal:7129中了$spell:133971清除團隊圖示",
-	AnnounceCooldowns		= "為團隊冷卻數出哪次$spell:134920施放"
+	AnnounceCooldowns		= "為團隊冷卻數出哪次$spell:134920施放(數到3)"
 })
 
 L:SetMiscLocalization({
@@ -120,10 +118,6 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerFlockCD	= "蛋巢 (%d): %s"
-})
-
-L:SetOptionLocalization({
-	RangeFrame		= "為$spell:138923顯示距離框架(10碼)"
 })
 
 L:SetMiscLocalization({
@@ -175,12 +169,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "突變:%d/5有益&%有害",
+	warnDebuffCount				= "突變:%d/5有益和%d有害",
 })
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "當你吃池水時顯示減益計算警告",
-	RangeFrame					= "顯示距離框架(2碼/5碼)",
 	SetIconOnBigOoze			= "為$journal:6969設定團隊圖示"
 })
 
@@ -231,10 +224,6 @@ L:SetTimerLocalization({
 	timerDuskCD		= "黃昏階段",
 })
 
-L:SetOptionLocalization({
-	RangeFrame		= "顯示距離框架(8碼)"
-})
-
 L:SetMiscLocalization({
 	DuskPhase		= "盧凜!借本宮力量!"
 })
@@ -245,13 +234,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "中場階段即將到來"
+	specWarnIntermissionSoon	= "超級導雷管階段即將到來"
 })
 
 
 L:SetOptionLocalization({
-	specWarnIntermissionSoon	= "在中場階段前顯示預先特別警告",
-	RangeFrame					= "顯示距離框架(8碼/6碼)",
+	specWarnIntermissionSoon	= "在超級導雷管階段前顯示預先特別警告",
 	StaticShockArrow			= "當某人中了$spell:135695顯示DBM箭頭",
 	OverchargeArrow				= "當某人中了$spell:136295顯示DBM箭頭"
 })
@@ -261,8 +249,12 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetOptionLocalization({
+	SetIconsOnVita		= "為中了$spell:138297和離他最遠的玩家設置團隊圖示"
+})
+
 L:SetMiscLocalization({
-	Defeat		= "慢著!我不是你們的敵人。"
+	Defeat				= "慢著!我不是你們的敵人。"
 })
 
 -------------
@@ -271,9 +263,5 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ToTTrash")
 
 L:SetGeneralLocalization({
-	name =	"雷霆王座小怪"
-})
-
-L:SetOptionLocalization({
-	RangeFrame		= "顯示距離框架(10碼)"
+	name  	      	 ="雷霆王座小怪"
 })

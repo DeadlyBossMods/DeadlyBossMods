@@ -29,12 +29,14 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(689)
 
 L:SetWarningLocalization({
-	WarnPhase	= "階段%d"
+	WarnPhase			= "階段%d",
+	specWarnBarrierNow	= "快使用無效屏障!"
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "提示轉換階段",
-	RangeFrame	= "在祕法階段時顯示距離框(6碼)"
+	WarnPhase			= "提示轉換階段",
+	specWarnBarrierNow	= "為你應該使用$spell:115817的時候顯示特別警告(只對隨機團隊有效)",
+	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6") .. "在祕法階段時",
 })
 
 L:SetMiscLocalization({
@@ -71,8 +73,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	DarknessSoon		= "為$spell:117697提示施放前五秒倒數",
-	timerUSRevive		= "為$spell:117506重新成形顯示計時器",
-	RangeFrame			= "顯示距離框(8碼)"
+	timerUSRevive		= "為$spell:117506重新成形顯示計時器"
 })
 
 
@@ -82,7 +83,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor		= "地板將在六秒內消失!"
+	specWarnDespawnFloor		= "地板將在六秒後消失!"
 })
 
 L:SetTimerLocalization({

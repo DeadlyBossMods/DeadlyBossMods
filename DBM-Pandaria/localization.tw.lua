@@ -40,7 +40,3 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
-
-L:SetOptionLocalization({
-	RangeFrame			= "為$spell:136340顯示距離框架(10碼)"
-})

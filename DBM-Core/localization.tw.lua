@@ -269,6 +269,8 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "為$spell:%s的減益播放倒數計時�
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "為$spell:%s的持續時間播放倒數計時音效"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%s時大喊"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "" .. UnitName("player") .. "中了%s!"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "為$spell:%s顯示距離框架(%s)"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "顯示距離框架(%s)"
 
 
 -- New special warnings
