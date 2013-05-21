@@ -319,7 +319,7 @@ do
 				if (not ChatFrameEditBox:IsShown()) then
 					ChatEdit_ActivateChat(ChatFrameEditBox)
 				end
-				ChatFrameEditBox:Insert(link)
+				ChatFrameEditBox:Insert(data)
 				ChatFrameEditBox:HighlightText()
 				return
 			end

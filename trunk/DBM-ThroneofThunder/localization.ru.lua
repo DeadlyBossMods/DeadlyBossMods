@@ -35,7 +35,8 @@ L:SetOptionLocalization({
 	warnOrbofControl		= "Предупреждение о появлении $journal:7092",
 	specWarnOrbofControl	= "Спец-предупреждение о появлении $journal:7092",
 	timerDoor				= "Отсчёт времени до следующей фазы ворот племени",
-	timerAdds				= "Отсчёт времени до спрыгивания следующих аддов"
+	timerAdds				= "Отсчёт времени до спрыгивания следующих аддов",
+	SetIconOnAdds			= "Устанавливать метки на аддов, спрыгивающих с балкона"
 })
 
 L:SetMiscLocalization({
