@@ -1,3 +1,0 @@
-DBM:RegisterMapSize("ZulGurub",
-	0, 2120.83325195312, 1414.5830078125
-)
