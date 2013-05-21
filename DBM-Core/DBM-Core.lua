@@ -3864,7 +3864,7 @@ function DBM:MovieFilter(mod, ...)
 			i = i + 2
 			default = nil
 		end
-		mod:AddBoolOption(tostring(id), default == "Block", "BlockMovies")
+		mod:AddBoolOption(tostring(id), default == "OnlyFirst", "BlockMovies")
 		-- mod:AddButton
 	end
 end
