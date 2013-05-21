@@ -28,11 +28,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(689)
 
 L:SetWarningLocalization({
-	WarnPhase	= "Фаза %d"
+	WarnPhase			= "Фаза %d",
+	specWarnBarrierNow	= "Используйте Преграждающий щит СЕЙЧАС!"
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "Объявлять смену фаз",
+	WarnPhase			= "Объявлять смену фаз",
+	specWarnBarrierNow	= "Спец-предупреждение когда Вам необходимо использовать $spell:115817 (только для Поиска Рейдов)",
 	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6") .. "  во время аркан-фазы"
 })
 
