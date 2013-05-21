@@ -33,8 +33,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "當某人中了$spell:122949時顯示DBM箭頭",
-	RangeFrame			= "為$spell:123175顯示距離框架(8碼)"
+	UnseenStrikeArrow	= "當某人中了$spell:122949時顯示DBM箭頭"
 })
 
 
@@ -115,8 +114,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnAmberTrap		= "為$spell:125826的製作進度顯示警告",
-	InfoFrame			= "為受到$spell:125390的玩家顯示訊息框架",
-	RangeFrame			= "為$spell:123735顯示距離框架(5碼)"
+	InfoFrame			= "為受到$spell:125390的玩家顯示訊息框架"
 })
 
 L:SetMiscLocalization({

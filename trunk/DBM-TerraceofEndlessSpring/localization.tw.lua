@@ -12,9 +12,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnGroupOrder		= "提示$spell:118191的隊伍輪班(目前只支援25人5,2,2,2,戰術)",
+	warnGroupOrder		= "提示$spell:118191的隊伍輪班<br/>(目前只支援25人5,2,2,2,戰術)",
 	specWarnYourGroup	= "為$spell:118191顯示特別警告當輪到你的隊伍時(只適用於25人)",
-	RangeFrame			= "為$spell:111850顯示距離框(8碼)(當你有debuff時只顯示其他沒有debuff的玩家)"
+	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(8, 111850) .. "<br/>(當你有debuff時只顯示其他沒有debuff的玩家)"
 })
 
 
@@ -45,8 +45,8 @@ L:SetOptionLocalization({
 	warnHideOver			= "為$spell:123244結束顯示警告",
 	timerSpecialCD			= "為下一次特別技能冷卻顯示計時器",
 	SetIconOnProtector		= "為$journal:6224標示團隊圖示(超過一名以上的團隊助理時不可靠)",
-	RangeFrame				= "為$spell:123121顯示距離框(3碼)(只有顯示坦)",
-	GWHealthFrame			= "為$spell:123461顯示需求血量框架(首領血量框架需要開啟)" -- maybe bad wording, needs review
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(3, 123121) .. "<br/>(消失時顯示所有玩家其餘時間只有顯示坦)",
+	GWHealthFrame			= "為$spell:123461退去顯示血量框架(首領血量框架需要開啟)" -- maybe bad wording, needs review
 })
 
 L:SetMiscLocalization{
@@ -74,9 +74,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告(不建議使用，團隊隊長使用)",
+	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告<br>(不建議使用，團隊隊長使用)",
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
-	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告\n(http://mysticalos.com/terraceofendlesssprings.jpg)",
-	timerSpecialAbility 		= "為下一次特別技能施放顯示計時器",
-	RangeFrame					= "為$spell:119519顯示距離框(2碼)"
+	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告<br/>(點擊去複製連結<a href=\"http://mysticalos.com/terraceofendlesssprings.jpg\">|cff3588ffhttp://mysticalos.com/terraceofendlesssprings.jpg|r</a>)",
+	timerSpecialAbility 		= "為下一次特別技能施放顯示計時器"
 })
