@@ -3789,9 +3789,9 @@ function DBM:RoleCheck()
 				roleEventUnregistered = true
 				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 			end
-		end
-		if role ~= lootrole then
-			self:AddMsg(DBM_CORE_LOOT_SPEC_REMINDER:format(role, lootrole))
+			if role ~= lootrole then
+				self:AddMsg(DBM_CORE_LOOT_SPEC_REMINDER:format(role, lootrole))
+			end
 		end
 	else
 		if roleEventUnregistered then
