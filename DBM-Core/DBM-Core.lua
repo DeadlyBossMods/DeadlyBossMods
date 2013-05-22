@@ -3796,6 +3796,16 @@ function DBM:RoleCheck()
 	end
 end
 
+--To speed up creating new mods.
+function DBM:FindDungeonIDs()
+	for i=1, 1000 do
+		local dungeon = GetDungeonInfo(i)
+		if dungeon then
+			print(i..": "..dungeon)
+		end
+	end
+end
+
 -----------------
 --  Map Sizes  --
 -----------------

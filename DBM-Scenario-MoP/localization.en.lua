@@ -43,6 +43,11 @@ L:SetMiscLocalization{
 }
 
 -----------------------
+-- Blood in the Snow --
+-----------------------
+L= DBM:GetModLocalization("d646")
+
+-----------------------
 -- Brewmoon Festival --
 -----------------------
 L= DBM:GetModLocalization("d539")
