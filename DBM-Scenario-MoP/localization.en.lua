@@ -89,6 +89,15 @@ L:SetMiscLocalization{
 	LizardLord		= "Dem Saurok be guardin de cave.  Let's take care of 'em."
 }
 
+----------------------------
+-- Dark Heart of Pandaria --
+----------------------------
+L= DBM:GetModLocalization("d647")
+
+L:SetMiscLocalization{
+	summonElemental		= "Minions, destroy these insects!"
+}
+
 ------------------------
 -- Greenstone Village --
 ------------------------
