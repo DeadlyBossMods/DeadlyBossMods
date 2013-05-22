@@ -3775,13 +3775,13 @@ end
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 local roleEventUnregistered = false
 function DBM:RoleCheck()
-	local spec = GetSpecialization()
-	if not spec then return end
-	local role = GetSpecializationRole(spec)
-	local specID = GetLootSpecialization()
-	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
 	if DBM.Options.SetPlayerRole then
 		if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
+			local spec = GetSpecialization()
+			if not spec then return end
+			local role = GetSpecializationRole(spec)
+			local specID = GetLootSpecialization()
+			local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
 			if UnitGroupRolesAssigned("player") ~= role then
 				UnitSetRole("player", role)
 			end
