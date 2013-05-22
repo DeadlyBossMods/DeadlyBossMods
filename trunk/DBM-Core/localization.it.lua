@@ -58,8 +58,6 @@ DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h ti ha mandato un Timer DBM: '
 DBM_PIZZA_CONFIRM_IGNORE			= "Sei sicuro di voler ignorare i Timer DMB da %s per questa sessione?"
 DBM_PIZZA_ERROR_USAGE				= "Uso: /dbm [broadcast] timer <time> <text>"
 
-DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods è in esecuzione 2 volte perche' hai installato e ablitato sia DBMv3 che DBMv4 !\nClicca \"Ok\" per disabilitare DBMv3 e ricaricare la tua interfaccia.\nDovresi anche pulire la tua cartella Interface Addons cancellando le cartelle di DBMv3."
-
 --DBM_CORE_MINIMAP_TOOLTIP_HEADER (Same as English locales)
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click or right-click per muovere\nAlt+shift+click per trascinare liberamente"
 
