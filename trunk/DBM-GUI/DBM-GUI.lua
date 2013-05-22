@@ -233,7 +233,7 @@ local function MixinSharedMedia3(mediatype, mediatable)
 		LSM:Register("sound", "Milhouse: Light You Up", [[Sound\Creature\MillhouseManastorm\TEMPEST_Millhouse_Pyro01.ogg]])
 		LSM:Register("sound", "Void Reaver: Marked", [[Sound\Creature\VoidReaver\TEMPEST_VoidRvr_Aggro01.ogg]])
 		LSM:Register("sound", "Kaz'rogal: Marked", [[Sound\Creature\KazRogal\CAV_Kaz_Mark02.ogg]])
-		LSM:Register("sound", "C'Thun: You Will Die!", [[Sound\Creature\CThun\CThunYouWillDIe.wav]])
+		LSM:Register("sound", "C'Thun: You Will Die!", [[Sound\Creature\CThun\CThunYouWillDIe.ogg]])
 	end
 	-- sort LibSharedMedia keys alphabetically (case-insensitive)
 	local keytable = {}
@@ -1552,9 +1552,9 @@ local function CreateOptionsMenu()
 		-- RaidWarn Sound
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,	value	= "" },
-			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 		sound=true },
-			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true },
-			{	text	= "Ding",		value 	= "Sound\\interface\\AlarmClockWarning3.wav", 	sound=true }
+			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.ogg", 		sound=true },
+			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.ogg", 	sound=true },
+			{	text	= "Ding",		value 	= "Sound\\interface\\AlarmClockWarning3.ogg", 	sound=true }
 		})
 
 		local RaidWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds,
@@ -1986,11 +1986,11 @@ local function CreateOptionsMenu()
 		-- SpecialWarn Sound
 		local Sounds = MixinSharedMedia3("sound", {
 			{	text	= L.NoSound,		value	= "" },
-			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
-			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
-			{	text	= "Destruction",	value 	= "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav", 		sound=true },
-			{	text	= "NotPrepared",	value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav", 		sound=true },--Maybe a bit long? wouldn't recommend it as a default, but good for customizing.
-			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
+			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.ogg", 		sound=true },
+			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
+			{	text	= "Destruction",	value 	= "Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg", 		sound=true },
+			{	text	= "NotPrepared",	value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.ogg", 		sound=true },--Maybe a bit long? wouldn't recommend it as a default, but good for customizing.
+			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.ogg", 	sound=true }
 		})
 
 		local SpecialWarnSoundDropDown = specArea:CreateDropdown(L.SpecialWarnSound, Sounds,

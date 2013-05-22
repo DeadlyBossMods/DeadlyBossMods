@@ -68,10 +68,10 @@ DBM.DefaultOptions = {
 		{r = 1.00, g = 0.50, b = 0.00}, -- Color 3 - #FF8000 - Orange
 		{r = 1.00, g = 0.10, b = 0.10}, -- Color 4 - #FF1A1A - Red
 	},
-	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.wav",
-	SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.wav",
-	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav",
-	SpecialWarningSound3 = "Sound\\Creature\\KilJaeden\\KILJAEDEN02.wav",
+	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.ogg",
+	SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.ogg",
+	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.ogg",
+	SpecialWarningSound3 = "Sound\\Creature\\KilJaeden\\KILJAEDEN02.ogg",
 	ModelSoundValue = "Short",
 	ChallengeBest = "Realm",
 	CountdownVoice = "Corsica",
@@ -1745,7 +1745,7 @@ end
 
 function DBM:LFG_PROPOSAL_SHOW()
 	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-	PlaySoundFile("Sound\\interface\\levelup2.wav", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+	PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
 end
 
 function DBM:LFG_PROPOSAL_FAILED()
@@ -4582,9 +4582,9 @@ do
 	function soundPrototype:Play(file)
 		if not self.option or self.mod.Options[self.option] then
 			if DBM.Options.UseMasterVolume then
-				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav", "Master")
+				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg", "Master")
 			else
-				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.ogg")
 			end
 		end
 	end
@@ -5615,7 +5615,7 @@ end
 function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, cat)
 	cat = cat or "misc"
 	self.Options[name] = (default == nil) or default
-	self.Options[name .. "SpecialWarningSound"] = defaultSound or "Sound\\Spells\\PVPFlagTaken.wav"
+	self.Options[name .. "SpecialWarningSound"] = defaultSound or "Sound\\Spells\\PVPFlagTaken.ogg"
 	self:SetOptionCategory(name, cat)
 end
 
