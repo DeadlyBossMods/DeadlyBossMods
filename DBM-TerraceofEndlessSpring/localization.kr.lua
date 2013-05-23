@@ -73,6 +73,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnBreathOnPlatform		= "외부 정자에 있을 때도 $spell:119414 알림 보기<br/>(가급적 설정하지 않기를 권장합니다. 공격대 진행자용 설정입니다.)",
 	specWarnBreathOfFearSoon	= "$spell:119414 시전 전에 $spell:117964 효과가 없을 경우 특수 경고 보기",
-	specWarnMovement			= "$spell:120047 주문 시전 중에 이동 관련 경고 보기(주소 그림 참조)<br/>(주소를 복사하시려면 클릭하세요: <a href=\"http://mysticalos.com/terraceofendlesssprings.jpg\">|cff3588ffhttp://mysticalos.com/terraceofendlesssprings.jpg|r</a>)",
+	specWarnMovement			= "$spell:120047 주문 시전 중에 이동 관련 경고 보기(주소 또는 ShaOfFearAssist 애드온 참고)<br/>(참고: <a href=\"http://mysticalos.com/terraceofendlesssprings.jpg\">|cff3588ffhttp://mysticalos.com/terraceofendlesssprings.jpg|r</a>)",
 	timerSpecialAbility			= "다음 $spell:120519 또는 $spell:120629 또는 $spell:120672 바 표시"
 })
