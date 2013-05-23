@@ -138,12 +138,12 @@ local function warnOminousCackleTargets()
 end
 
 local function warnWaterspoutTargets()
-	warnWaterspout:Show(waterspout, specialCount, table.concat(waterspoutTargets, "<, >"))
+	warnWaterspout:Show(specialCount, table.concat(waterspoutTargets, "<, >"))
 	table.wipe(waterspoutTargets)
 end
 
 local function warnHuddleInTerrorTargets()
-	warnHuddleInTerror:Show(huddleinterror, specialCount, table.concat(huddleInTerrorTargets, "<, >"))
+	warnHuddleInTerror:Show(specialCount, table.concat(huddleInTerrorTargets, "<, >"))
 	table.wipe(huddleInTerrorTargets)
 	huddleIcon = 8
 end
