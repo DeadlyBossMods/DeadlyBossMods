@@ -13,6 +13,8 @@ DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "전투 중에는 설정창을 불러올 수 없습니다. 전투가 종료되면 설정창이 열릴 것입니다. 이후에는 전투 중이라도 설정창을 불러 올 수 있습니다."
 DBM_CORE_BAD_LOAD					= "DBM이 현재 인스턴스의 경고를 완전히 불러오지 못한 것을 발견했습니다. 전투가 종료된 후에, /console reloadui 명령어를 입력하여 경고를 다시 불러오시기 바랍니다."
 
+DBM_CORE_LOOT_SPEC_REMINDER			= "현재 전문화는 %s 입니다. 현재 선택된 전리품 전문화는 %s 입니다."
+
 DBM_CORE_BIGWIGS_ICON_CONFLICT		= "DBM이 BigWigs와 DBM의 전술 목표 아이콘 설정이 모두 활성화 된것을 발견했습니다. 아이콘 충돌을 방지하기 위해 둘 중 하나의 아이콘 설정을 비활성화 해주시기 바랍니다."
 
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
@@ -252,6 +254,8 @@ DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 효과의 남은시간 초읽�
 DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 주문의 진행시간 초읽기 소리 듣기"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 될 경우 대화로 알리기"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= UnitName("player").."에게 %s!"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%s 주문에 대한 거리 창 표시(%sm)"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 표시(%sm)"
 
 
 -- New special warnings

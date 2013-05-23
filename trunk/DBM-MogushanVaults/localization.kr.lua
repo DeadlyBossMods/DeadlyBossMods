@@ -29,12 +29,14 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(689)
 
 L:SetWarningLocalization({
-	WarnPhase	= "%d 단계"
+	WarnPhase			= "%d 단계",
+	specWarnBarrierNow	= "지금 무효화의 장벽 사용!"
 })
 
 L:SetOptionLocalization({
-	WarnPhase	= "단계 전환 알림 보기",
-	RangeFrame	= "지팡이의 혼 단계에서 거리 창 보기(6m)"
+	WarnPhase			= "단계 전환 알림 보기",
+	specWarnBarrierNow	= "$spell:115817을 사용해야 할 때 특수 경고 보기(무작위 공격대에서만)",
+	RangeFrame			= "지팡이의 혼 단계에서" .. DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6")
 })
 
 L:SetMiscLocalization({
@@ -72,7 +74,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 알림 보기(5초 전부터)",
 	timerUSRevive		= "$spell:117506 재형성까지 남은시간 바 표시",
-	RangeFrame			= "쑤베타이와 쯔안 단계에서 거리 창 보기(8m)"
 })
 
 

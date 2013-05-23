@@ -51,8 +51,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnFizzyBubbles	= "$spell:114459 효과가 없을 경우 특수 경고 보기",
-	RangeFrame				= "$spell:106546 주문의 영향을 받은 경우 거리 창 보기(10m)"
+	SpecWarnFizzyBubbles	= "$spell:114459 효과가 없을 경우 특수 경고 보기"
 })
 
 -----------------------

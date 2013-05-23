@@ -28,10 +28,6 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(826)
 
-L:SetOptionLocalization({
-	RangeFrame			= "$spell:137511 주문에 대한 거리 창 보기"
-})
-
 L:SetMiscLocalization({
 	Pull				= "감히 우릴 막겠다고? 잔달라 부족을 막을 순 없다! 이번엔 안 돼!"
 })
@@ -40,7 +36,3 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
-
-L:SetOptionLocalization({
-	RangeFrame			= "$spell:136340 주문에 대한 거리 창 보기(10m)"
-})
