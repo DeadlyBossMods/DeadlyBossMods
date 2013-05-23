@@ -74,7 +74,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告<br>(不建議使用，團隊隊長使用)",
+	warnBreathOnPlatform		= "當你在平台時顯示$spell:119414警告<br/>(不建議使用，團隊隊長使用)",
 	specWarnBreathOfFearSoon	= "為$spell:119414顯示提前特別警告如果你身上沒有$spell:117964增益",
 	specWarnMovement			= "當$spell:120047施放時顯示移動的特別警告<br/>(點擊去複製連結<a href=\"http://mysticalos.com/terraceofendlesssprings.jpg\">|cff3588ffhttp://mysticalos.com/terraceofendlesssprings.jpg|r</a>)",
 	timerSpecialAbility 		= "為下一次特別技能施放顯示計時器"
