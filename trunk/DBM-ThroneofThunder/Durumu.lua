@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISS",
 	"CHAT_MSG_MONSTER_EMOTE",
-	"UNIT_AURA"
+	"UNIT_DIED"
 )
 
 local warnHardStare					= mod:NewSpellAnnounce(133765, 3, nil, mod:IsTank() or mod:IsHealer())--Announce CAST not debuff, cause it misses a lot, plus we have 1 sec to hit an active mitigation
