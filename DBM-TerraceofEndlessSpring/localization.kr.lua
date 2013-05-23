@@ -12,9 +12,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnGroupOrder		= "$spell:118191 파티 순서 알림 보기(현재 25인만 지원합니다.)\n참고: 1파-5번/2파-2번/3파-2번/4파-2번, 그 후 1/2/2/2 순서대로 알립니다.",
+	warnGroupOrder		= "$spell:118191 파티 순서 알림 보기(현재 25인만 지원합니다.)<br/>참고: 1파-5번/2파-2번/3파-2번/4파-2번, 그 후 1/2/2/2 순서대로 알립니다.",
 	specWarnYourGroup	= "$spell:118191 효과를 받을 차례가 된 경우 특수 경고 보기(25인 전용)",
-	RangeFrame			= "$spell:111850 주문에 대한 거리 창 보기(8m)\n(영향을 받은 경우 모든 공격대원을 표시, 그 외에는 대상자만 표시)"
+	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(8, 111850) .. "<br/>(영향을 받은 경우 모든 공격대원을 표시, 그 외에는 대상자만 표시)"
 })
 
 ------------
@@ -42,8 +42,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "$spell:123244 종료 알림 보기",
 	timerSpecialCD			= "$spell:123244 또는 $spell:123461 대기시간 바 표시",
-	SetIconOnProtector		= "$journal:6224에 전술 목표 아이콘 설정\n(승급자가 1명 이상일 경우에는 오작동 할 수 있습니다.)",
-	RangeFrame				= "$spell:123121 주문에 대한 거리 창 보기(3m)\n(숨기 중일때는 모든 공격대원 보임, 그 외에는 방어전담만 보임)",
+	SetIconOnProtector		= "$journal:6224에 전술 목표 아이콘 설정<br/>(승급자가 1명 이상일 경우에는 오작동 할 수 있습니다.)",
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(3, 123121).."<br/>(숨기 중일때는 모든 공격대원 보임, 그 외에는 방어전담만 보임)",
 	GWHealthFrame			= "우두머리 체력 바 사용시 $spell:123461 사라짐까지 남은 체력도 함께 보기"
 })
 
@@ -71,9 +71,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnBreathOnPlatform		= "외부 정자에 있을 때도 $spell:119414 알림 보기\n(가급적 설정하지 않기를 권장합니다. 공격대 진행자용 설정입니다.)",
+	warnBreathOnPlatform		= "외부 정자에 있을 때도 $spell:119414 알림 보기<br/>(가급적 설정하지 않기를 권장합니다. 공격대 진행자용 설정입니다.)",
 	specWarnBreathOfFearSoon	= "$spell:119414 시전 전에 $spell:117964 효과가 없을 경우 특수 경고 보기",
-	specWarnMovement			= "$spell:120047 주문 시전 중에 이동 관련 경고 보기\n(최초 시전시 ShaOfFearAssist 애드온의 녹색 원 안에 있으셔야 합니다.)",
-	timerSpecialAbility			= "다음 $spell:120519 또는 $spell:120629 또는 $spell:120672 바 표시",
-	RangeFrame					= "$spell:119519 주문에 대한 거리 창 보기(2m)",
+	specWarnMovement			= "$spell:120047 주문 시전 중에 이동 관련 경고 보기(주소 그림 참조)<br/>(주소를 복사하시려면 클릭하세요: <a href=\"http://mysticalos.com/terraceofendlesssprings.jpg\">|cff3588ffhttp://mysticalos.com/terraceofendlesssprings.jpg|r</a>)",
+	timerSpecialAbility			= "다음 $spell:120519 또는 $spell:120629 또는 $spell:120672 바 표시"
 })

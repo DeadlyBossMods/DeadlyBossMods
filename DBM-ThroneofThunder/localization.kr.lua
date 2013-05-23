@@ -11,8 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "$spell:138470 위에 있을 때 특수 경고 보기\n($spell:137313 시전 직전 또는 $spell:138732 약화 효과 시간이 얼마 안 남았을때)",
-	RangeFrame			= "거리 창 보기(8/4m)"
+	specWarnWaterMove	= "$spell:138470 위에 있을 때 특수 경고 보기\n($spell:137313 시전 직전 또는 $spell:138732 약화 효과 시간이 얼마 안 남았을때)"
 })
 
 --------------
@@ -37,7 +36,7 @@ L:SetOptionLocalization({
 	specWarnOrbofControl	= "$journal:7092 떨어짐시 특수 경고 보기",
 	timerDoor				= "다음 부족의 문 열림 바 표시",
 	timerAdds				= "다음 추가 병력 바 표시",
-	RangeFrame				= "$spell:136480 주문에 대한 거리 창 보기(5m)",
+	SetIconOnAdds			= "추가 병력들에게 전술 목표 아이콘 설정하기"
 })
 
 L:SetMiscLocalization({
@@ -56,7 +55,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "우두머리 체력 바 사용시 $spell:136442 사라짐까지 남은 체력도 함께 보기",
-	RangeFrame			= "거리 창 보기",
 	AnnounceCooldowns	= "공격대 생존기 사용을 위해 $spell:137166 시전 횟수 음성으로 알리기\n(카즈라진의 빙의가 풀리면 초기화됨)"
 })
 
@@ -122,10 +120,6 @@ L:SetTimerLocalization({
 	timerFlockCD	= "둥지 (%d): %s"
 })
 
-L:SetOptionLocalization({
-	RangeFrame		= "$spell:138923 주문에 대한 거리 창 보기(10m)"
-})
-
 L:SetMiscLocalization({
 	eggsHatchL		= "아랫둥지에 있는 알들이 부화하기 시작합니다!",
 	eggsHatchU		= "위쪽 둥지에 있는 알들이 부화하기 시작합니다!",
@@ -180,7 +174,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "웅덩이를 흡수할 때 변형 상태에 대한 알림 보기",
-	RangeFrame					= "거리 창 보기(5m/2m)",
 	SetIconOnBigOoze			= "$journal:6969에 전술 목표 아이콘 설정"
 })
 
@@ -231,10 +224,6 @@ L:SetTimerLocalization({
 	timerDuskCD		= "황혼 단계",
 })
 
-L:SetOptionLocalization({
-	RangeFrame		= "거리 창 보기(8m)"
-})
-
 L:SetMiscLocalization({
 	DuskPhase		= "루린! 힘을 빌려다오!"
 })
@@ -250,7 +239,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "사잇단계 진입 전에 특수 경고 보기",
-	RangeFrame					= "거리 창 보기(8/6m)",
 	StaticShockArrow			= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
 	OverchargeArrow				= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
 })
@@ -260,6 +248,14 @@ L:SetOptionLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetOptionLocalization({
+	SetIconsOnVita		= "$spell:138297 대상과 그 대상에서 가장 먼 공격대원에게 전술 목표 아이콘 설정"
+})
+
+L:SetMiscLocalization({
+	Defeat				= "Wait! I am... I am not your enemy."
+})
+
 -------------
 --  Trash  --
 -------------
@@ -267,8 +263,4 @@ L = DBM:GetModLocalization("ToTTrash")
 
 L:SetGeneralLocalization({
 	name = "천둥의 왕좌 일반구간"
-})
-
-L:SetOptionLocalization({
-	RangeFrame		= "거리 창 보기(10m)"
 })
