@@ -44,6 +44,11 @@ L:SetMiscLocalization{
 }
 
 -----------------------
+-- Blood in the Snow --
+-----------------------
+L= DBM:GetModLocalization("d646")
+
+-----------------------
 -- Brewmoon Festival --
 -----------------------
 L= DBM:GetModLocalization("d539")
@@ -83,6 +88,15 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	LizardLord		= "Diese Saurok bewachen die Höhle. Räumen wir sie aus'm Weg!"
+}
+
+----------------------------
+-- Dark Heart of Pandaria --
+----------------------------
+L= DBM:GetModLocalization("d647")
+
+L:SetMiscLocalization{
+	summonElemental		= "Minions, destroy these insects!"--translate (trigger)
 }
 
 ------------------------
