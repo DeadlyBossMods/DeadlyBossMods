@@ -358,7 +358,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		darkParasiteTargets[#darkParasiteTargets + 1] = args.destName
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration, args.destName)
-		self:Unschedule(warnDarkParasiteTargets)
 		if #darkParasiteTargets >= 3 and self:IsDifficulty("heroic25") or self:IsDifficulty("heroic10") then
 			warnDarkParasiteTargets()
 		else
@@ -485,6 +484,7 @@ function mod:UNIT_DIED(args)
 		if totalFogs >= 1 then
 			warnAddsLeft:Show(totalFogs)
 		else--No adds left, force ability is re-enabled
+			self:Unschedule(findBeamJump)
 			timerObliterateCD:Cancel()
 			timerForceOfWillCD:Start(15)
 			if self.Options.SetIconRays and lastRed then
@@ -502,6 +502,7 @@ function mod:UNIT_DIED(args)
 		if self:IsDifficulty("lfr25") then
 			totalFogs = totalFogs - 1
 			if totalFogs >= 1 then
+				self:Unschedule(findBeamJump)
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 				warnAddsLeft:Show(totalFogs)
 			else--No adds left, force ability is re-enabled
@@ -521,6 +522,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 69052 then--Azure Fog (endlessly respawn in all but LFR, so we ignore them dying anywhere else)
 		--Maybe do something for heroic here too, if timers for the crap this thing does gets added.
 		if self:IsDifficulty("lfr25") then
+			self:Unschedule(findBeamJump)
 			totalFogs = totalFogs - 1
 			if totalFogs >= 1 then
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
