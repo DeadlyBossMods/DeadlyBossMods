@@ -72,7 +72,6 @@ local yellBitingCold				= mod:NewYell(136992)--This one you just avoid so chat b
 local specWarnFrostBite				= mod:NewSpecialWarningYou(136922)--This one you do not avoid you clear it hugging people so no chat bubble
 local specWarnFrigidAssault			= mod:NewSpecialWarningStack(136903, mod:IsTank(), 8)
 local specWarnFrigidAssaultOther	= mod:NewSpecialWarningTarget(136903, mod:IsTank())
-local specWarnChilled				= mod:NewSpecialWarningYou(137085, false)--Heroic
 --Kazra'jin
 local specWarnDischarge				= mod:NewSpecialWarningCount(137166, nil, nil, nil, 2)
 
@@ -258,13 +257,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if elapsed and total and total ~= 0 then--If for some reason it was nil, like it JUST came off cd, do nothing, he should cast frost bite right away.
 				timerFrostBiteCD:Update(elapsed, total)
 			end
-			self:RegisterShortTermEvents(
-				"UNIT_AURA"
-			)
 		elseif cid == 69134 then--Kazra'jin
 			dischargeCount = 0
 			kazraPossessed = true
-			self:UnregisterShortTermEvents()
 		end
 		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.PHealthFrame then
 			local bossHealth = math.floor(UnitHealthMax(uid or "boss4") * 0.25)
@@ -390,16 +385,6 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
-
-function mod:UNIT_AURA(uId)
-	if uId ~= "player" then return end
-	if UnitDebuff("player", chilledDebuff) and not chilledWarned then
-		specWarnChilled:Show()
-		chilledWarned = true
-	elseif not UnitDebuff("player", chilledDebuff) and chilledWarned then
-		chilledWarned = false
-	end
-end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
