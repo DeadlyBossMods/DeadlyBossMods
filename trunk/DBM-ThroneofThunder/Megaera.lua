@@ -20,7 +20,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_AURA",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"UNIT_DIED"
 )
@@ -267,8 +266,12 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("spell:139458") then
+		self:UnregisterShortTermEvents()--Wipe short term events
+		self:RegisterShortTermEvents(--Re-register without UNIT_AURA. UNIT_AURA during rampage is ridiculous. This saves some CPU
+			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
+		)
 		rampageCount = rampageCount + 1
 		warnRampage:Show(rampageCount)
 		specWarnRampage:Show(rampageCount)
@@ -308,9 +311,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		end
 		if fireBehind > 0 then
 			if self:IsDifficulty("lfr25") then
-				timerCinderCD:Start(12)--12-15 second variatio
+				timerCinderCD:Start(12)--12-15 second variation
 			else
-				timerCinderCD:Start(5)--5-8 second variatio
+				timerCinderCD:Start(5)--5-8 second variation
 			end
 		end
 		if arcaneBehind > 0 then
@@ -346,6 +349,13 @@ local function CheckHeads(GUID)
 				end
 			end
 		end
+	end
+	if iceBehind > 0 then--We only need UNIT_AURA if there is actually an ice head in back, so this is only time we register it
+		mod:UnregisterShortTermEvents()--Wipe old short term events
+		mod:RegisterShortTermEvents(--Update them with both IEEU and UNIT_AURA
+			"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+			"UNIT_AURA"
+		)
 	end
 --	print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
 --	print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
