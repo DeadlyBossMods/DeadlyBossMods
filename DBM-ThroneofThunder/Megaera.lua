@@ -354,7 +354,7 @@ local function CheckHeads(GUID)
 		mod:UnregisterShortTermEvents()--Wipe old short term events
 		mod:RegisterShortTermEvents(--Update them with both IEEU and UNIT_AURA
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-			"UNIT_AURA"
+			"UNIT_AURA_UNFILTERED"
 		)
 	end
 --	print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
@@ -432,7 +432,7 @@ local function warnTorrent(name)
 end
 
 --Combat log bugged, UNIT_AURA only good way to work around.
-function mod:UNIT_AURA(uId)
+function mod:UNIT_AURA_UNFILTERED(uId)
 	cpuWaste1 = cpuWaste1 + 1
 	local name = DBM:GetUnitFullName(uId)
 	if not name then return end
