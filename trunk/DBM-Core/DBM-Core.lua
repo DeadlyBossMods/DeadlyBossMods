@@ -2719,9 +2719,6 @@ do
 				DBM:EndCombat(v)
 			end
 		end
-		if LastZoneMapID == 11 then--Northern barrens caravan messages
-			PlaySoundFile("Sound\\interface\\UI_RaidBossWhisperWarning.ogg", "Master")
-		end
 	end
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg)
@@ -2729,6 +2726,9 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
+		if LastZoneMapID == 11 then--Northern barrens caravan messages
+			PlaySoundFile("Sound\\interface\\UI_RaidBossWhisperWarning.ogg", "Master")
+		end
 		return onMonsterMessage("emote", msg)
 	end
 
