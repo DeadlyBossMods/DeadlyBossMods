@@ -62,7 +62,7 @@ function mod:OnCombatStart(delay)
 		timerQuillsCD:Start(42.5-delay, 1)
 	end
 	timerDowndraftCD:Start(91-delay)
-	if self.Options.RangeFrame then
+	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 		DBM.RangeCheck:Show(10)
 	end
 end
@@ -216,7 +216,7 @@ local function GetNestPositions(flockC)
 	if mod:IsDifficulty("lfr25") then
 		--LFR: L, L, L, U, U, U (Repeating)
 		if ((flockC-1) % 6) < 3 then dir = L.Lower -- 1,2,3,7,8,9,...
-		else                         dir = L.Upper -- 4,5,6,10,11,12,...
+		else                         dir = L.Upper -- 6,7,8,10,11,12,...
 		end
 	elseif mod:IsDifficulty("normal10") then
 		--TODO, find out locations for these to improve the warnings.

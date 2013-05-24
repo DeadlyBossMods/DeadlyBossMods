@@ -346,6 +346,7 @@ local BNSendWhisper = sendWhisper
 --------------
 do
 	local registeredEvents = {}
+	local registeredUnitEventIds = {}
 	local argsMT = {__index = {}}
 	local args = setmetatable({}, argsMT)
 
@@ -399,14 +400,15 @@ do
 	end
 
 	local function handleEvent(self, event, ...)
-		if self == mainFrame and event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT" then
-			event = event == "UNIT_HEALTH" and "UNIT_HEALTH_UNFILTERED" or "UNIT_HEALTH_FREQUENT_UNFILTERED"
+		if self == mainFrame and event:sub(0, 5) == "UNIT_" then
+			-- UNIT_* events that come from mainFrame are _UNFILTERED variants and need their suffix
+			event = event .. "_UNFILTERED"
 		end
 		if not registeredEvents[event] or not enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
 			local zones = v.zones
 			local handler = v[event]
-			if handler and (not zones or zones[LastZoneMapID]) and enabled and not (v.isTrashMod and IsEncounterInProgress()) then
+			if handler and (not zones or zones[LastZoneMapID]) and not (v.isTrashMod and IsEncounterInProgress()) then
 				handler(v, ...)
 			end
 		end
@@ -414,57 +416,91 @@ do
 
 	local registerUnitEvent, unregisterUnitEvent
 	do
-		local unitEventFrame1 = CreateFrame("Frame")
-		local unitEventFrame2 = CreateFrame("Frame")
-		local unitEventFrame3 = CreateFrame("Frame")
-		local unitEventFrame4 = CreateFrame("Frame")
+		local frames = {} -- frames that are being used for unit events, one frame per unit id (this could be optimized, as it currently creates a new frame even for a different event, but that's not worth the effort as 90% of all calls are just boss1 anyways)
 
-		unitEventFrame1:SetScript("OnEvent", handleEvent)
-		unitEventFrame2:SetScript("OnEvent", handleEvent)
-		unitEventFrame3:SetScript("OnEvent", handleEvent)
-		unitEventFrame4:SetScript("OnEvent", handleEvent)
-
-		function registerUnitEvent(event)
-			unitEventFrame1:RegisterUnitEvent(event, "boss1", "boss2")
-			unitEventFrame2:RegisterUnitEvent(event, "boss3", "boss4")
-			unitEventFrame3:RegisterUnitEvent(event, "boss5", "target")
-			unitEventFrame4:RegisterUnitEvent(event, "focus", "mouseover")
+		function registerUnitEvent(event, ...)
+			for i = 1, select("#", ...) do
+				local uId = select(i, ...)
+				if not uId then break end
+				local frame = frames[uId]
+				if not frame then
+					frame = CreateFrame("Frame")
+					frame:SetScript("OnEvent", handleEvent)
+					frames[uId] = frame
+				end
+				registeredUnitEventIds[event .. uId] = (registeredUnitEventIds[event .. uId] or 0) + 1
+				frame:RegisterUnitEvent(event, uId)
+			end
 		end
 
-		function unregisterUnitEvent(event)
-			unitEventFrame1:UnregisterEvent(event)
-			unitEventFrame2:UnregisterEvent(event)
-			unitEventFrame3:UnregisterEvent(event)
-			unitEventFrame4:UnregisterEvent(event)
+		function unregisterUnitEvent(event, mod, ...)
+			for i = 1, select("#", ...) do
+				local uId = select(i, ...)
+				if not uId then break end
+				local frame = frames[uId]
+				local refs = (registeredUnitEventIds[event .. uId] or 1) - 1
+				registeredUnitEventIds[event .. uId] = refs
+				if refs <= 0 then
+					registeredUnitEventIds[event .. uId] = nil
+					if frame then
+						frame:UnregisterEvent(event)
+					end
+				end
+			end
+			for i = #registeredEvents[event], 1, -1 do
+				if registeredEvents[event][i] == mod then
+					tremove(registeredEvents[event], i)
+				end
+			end
+			if #registeredEvents[event] == 0 then
+				registeredEvents[event] = nil
+			end
 		end
 
 	end
+	
 
+	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss" which only trigger the event for the given unit ids
 	function DBM:RegisterEvents(...)
 		for i = 1, select("#", ...) do
 			local event = select(i, ...)
-			registeredEvents[event] = registeredEvents[event] or {}
-			tinsert(registeredEvents[event], self)
-			-- unit events that default to boss1-5, target, and focus only
-			-- for now: only UNIT_HEALTH(_FREQUENT), more events (and a lookup table for these events) might be added later
-			if event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT" then
-				registerUnitEvent(event)
-			elseif event == "UNIT_HEALTH_UNFILTERED" or event == "UNIT_HEALTH_FREQUENT_UNFILTERED" then
-				-- unfiltered version of these events
-				mainFrame:RegisterEvent(event:sub(0, -12))
+			local eventWithArgs = event
+			-- unit events need special care
+			if event:sub(0, 5) == "UNIT_" then
+				-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus, mouseover))
+				local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
+				event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
+				if not arg1 and event:sub(event:len() - 10) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
+					eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
+					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
+				end
+				if event:sub(event:len() - 10) == "_UNFILTERED" then
+					-- we really want *all* unit ids
+					mainFrame:RegisterEvent(event:sub(0, -12))
+				else
+					registerUnitEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+				end
 			else
 				-- normal events
 				mainFrame:RegisterEvent(event)
 			end
+			registeredEvents[eventWithArgs] = registeredEvents[eventWithArgs] or {}
+			tinsert(registeredEvents[eventWithArgs], self)
+			if event ~= eventWithArgs then
+				registeredEvents[event] = registeredEvents[event] or {}
+				tinsert(registeredEvents[event], self)
+			end
 		end
 	end
-
-	local function unregisterEvent(event)
-		registeredEvents[event] = nil
-		if event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT" then
-			unregisterUnitEvent(event)
-		elseif event == "UNIT_HEALTH_UNFILTERED" or event == "UNIT_HEALTH_FREQUENT_UNFILTERED" then
-			mainFrame:UnregisterEvent(event:sub(0, -12))
+	
+	local function unregisterEvent(event, mod)
+		if event:sub(0, 5) == "UNIT_" then
+			local event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
+			if event:sub(event:len() - 10) == "_UNFILTERED" then 
+				mainFrame:UnregisterEvent(event:sub(0, -12))
+			else
+				unregisterUnitEvent(event, mod, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+			end
 		else
 			mainFrame:UnregisterEvent(event)
 		end
@@ -473,13 +509,18 @@ do
 	function DBM:UnregisterInCombatEvents(ignore)
 		for event, mods in pairs(registeredEvents) do
 			if event ~= ignore then
+				local match = false
 				for i = #mods, 1, -1 do
 					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event)  then
 						tremove(mods, i)
+						match = true
 					end
 				end
+				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED") then -- unit events have their own reference count
+					unregisterEvent(event, self, #mods == 0)
+				end
 				if #mods == 0 then
-					unregisterEvent(event)
+					registeredEvents[event] = nil
 				end
 			end
 		end
@@ -488,13 +529,18 @@ do
 	function DBM:UnregisterShortTermEvents()
 		if self.shortTermRegisterEvents then
 			for event, mods in pairs(registeredEvents) do
+				local match = false
 				for i = #mods, 1, -1 do
 					if mods[i] == self and checkEntry(self.shortTermRegisterEvents, event)  then
 						tremove(mods, i)
+						match = true
 					end
 				end
+				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED") then
+					unregisterEvent(event, self)
+				end
 				if #mods == 0 then
-					unregisterEvent(event)
+					registeredEvents[event] = nil
 				end
 			end
 			self.shortTermEventsRegistered = nil
@@ -678,9 +724,9 @@ do
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
-				"UNIT_DIED",
-				"UNIT_DESTROYED",
-				"UNIT_HEALTH",
+				"UNIT_DIED_UNFILTERED",
+				"UNIT_DESTROYED_UNFILTERED",
+				"UNIT_HEALTH mouseover target focus boss1 boss2 boss3 boss4 boss5",
 				"CHAT_MSG_WHISPER",
 				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
@@ -1756,7 +1802,7 @@ function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
 		loadDelay = nil
 		if type(loadDelay) == "table" then
-			for i, v in ipairs(modsToLoad) do
+			for i, v in ipairs(loadDelay) do
 				DBM:LoadMod(v)
 			end
 		else
@@ -2961,7 +3007,7 @@ function DBM:EndCombat(mod, wipe)
 		local scenario = mod.type == "SCENARIO"
 		if not wipe then
 			mod.lastKillTime = GetTime()
-			if mod.inCombatOnlyEvents then
+			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
 				-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
 				mod:UnregisterInCombatEvents("SPELL_AURA_REMOVED")
 				self:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
@@ -3289,12 +3335,12 @@ function DBM:GetCurrentInstanceDifficulty()
 	end
 end
 
-function DBM:UNIT_DIED(args)
+function DBM:UNIT_DIED_UNFILTERED(args)
 	if bit.band(args.destGUID:sub(1, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(1, 5), 0x00F) == 5  then
 		self:OnMobKill(tonumber(args.destGUID:sub(6, 10), 16))
 	end
 end
-DBM.UNIT_DESTROYED = DBM.UNIT_DIED
+DBM.UNIT_DESTROYED_UNFILTERED = DBM.UNIT_DIED_UNFILTERED
 
 
 ----------------------
@@ -3974,31 +4020,35 @@ function bossModPrototype:SetZone(...)
 	end
 end
 
-
+--------------
+--  Events  --
+--------------
 function bossModPrototype:RegisterEventsInCombat(...)
-	if not self.inCombatOnlyEvents then
-		self.inCombatOnlyEvents = {...}
-	else
-		for i = 1, select("#", ...) do
-			local ev = select(i, ...)
-			tinsert(self.inCombatOnlyEvents, ev)
+	if self.inCombatOnlyEvents then
+		geterrorhandler()("combat events already set")
+	end
+	self.inCombatOnlyEvents = {...}
+	for k, v in pairs(self.inCombatOnlyEvents) do
+		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") then
+			-- legacy event, oh noes
+			self.inCombatOnlyEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
 		end
 	end
 end
 
 function bossModPrototype:RegisterShortTermEvents(...)
-	if not self.shortTermRegisterEvents then
-		self.shortTermRegisterEvents = {...}
-	else
-		for i = 1, select("#", ...) do
-			local ev = select(i, ...)
-			tinsert(self.shortTermRegisterEvents, ev)
+	if self.shortTermEventsRegistered then
+		return
+	end
+	self.shortTermRegisterEvents = {...}
+	for k, v in pairs(self.shortTermRegisterEvents) do
+		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") then
+			-- legacy event, oh noes
+			self.shortTermRegisterEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
 		end
 	end
-	if self.shortTermRegisterEvents and not self.shortTermEventsRegistered then
-		self.shortTermEventsRegistered = 1
-		self:RegisterEvents(unpack(self.shortTermRegisterEvents))
-	end
+	self.shortTermEventsRegistered = 1
+	self:RegisterEvents(unpack(self.shortTermRegisterEvents))
 end
 
 function bossModPrototype:SetCreatureID(...)
@@ -4190,7 +4240,7 @@ end
 
 function bossModPrototype:IsCriteriaCompleted(criteriaIDToCheck)
 	if not criteriaIDToCheck then
-		print("DBM Debug: Bad check to IsCriteriaCompleted. Please add criteriaIDToCheck")
+		geterrorhandler()("usage: mod:IsCriteriaComplected(criteriaId)")
 		return false
 	end
 	local _, _, numCriteria = C_Scenario.GetStepInfo()
