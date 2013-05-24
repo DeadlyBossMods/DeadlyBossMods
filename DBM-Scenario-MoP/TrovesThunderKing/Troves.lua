@@ -9,7 +9,7 @@ mod:RegisterCombat("scenario", 934)
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"UNIT_AURA_UNFILTERED"
+	"UNIT_AURA player"
 )
 
 --Todo, get luck enough to have a treasure goblin spawn and capture event for it so we can special warn for it.
@@ -50,8 +50,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 --Apparently this doesn't fire in combat log, have to use UNIT_AURA instead.
-function mod:UNIT_AURA_UNFILTERED(uId)
-	if uId ~= "player" then return end
+function mod:UNIT_AURA(uId)
 	if UnitDebuff("player", timerDebuff) and not timerStarted then
 		timerStarted = true
 		timerEvent:Start()

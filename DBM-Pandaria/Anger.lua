@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"UNIT_AURA_UNFILTERED"
+	"UNIT_AURA player"
 )
 
 mod:RegisterEvents(
@@ -176,8 +176,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:UNIT_AURA_UNFILTERED(uId)
-	if uId ~= "player" then return end
+function mod:UNIT_AURA(uId)
 	if UnitDebuff("player", bitterThought) and self:AntiSpam(2) and not playerMCed then
 		specWarnBitterThoughts:Show()
 	end
