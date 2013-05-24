@@ -1800,7 +1800,6 @@ end
 
 function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
-		loadDelay = nil
 		if type(loadDelay) == "table" then
 			for i, v in ipairs(loadDelay) do
 				DBM:LoadMod(v)
