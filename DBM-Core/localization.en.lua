@@ -5,7 +5,6 @@ DBM_HOW_TO_USE_MOD					= "Welcome to DBM. Type /dbm help for a list of supported
 DBM_FORUMS_MESSAGE					= "Found a bug or wrong timer? Do you think some mod would need an additional warning, timer or special feature?\nVisit the new Deadly Boss Mods discussion, bug report and feature request forums at |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (you can click the link to copy the URL)"
 DBM_FORUMS_COPY_URL_DIALOG			= "Come visit our new discussion and support forums\r\n(hosted by Elitist Jerks!)"
 
-
 DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' mods. For more options, type /dbm or /dbm help in your chat."
 DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
