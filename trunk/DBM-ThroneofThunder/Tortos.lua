@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_AURA",
+	"UNIT_AURA boss1",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
@@ -259,7 +259,6 @@ end
 --This needs to be switched to RegisterUnitEvent once tandanu is done wit that code.
 --that way dbm isn't checking if it's boss1 325635325 times a fight.
 function mod:UNIT_AURA(uId)
-	if uId ~= "boss1" then return end
 	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)
 	if expires and lastConcussion ~= expires then
 		lastConcussion = expires

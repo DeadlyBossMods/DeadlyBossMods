@@ -6,7 +6,7 @@ mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
-	"UNIT_AURA"
+	"UNIT_AURA_UNFILTERED"
 )
 
 local timerMagicWings				= mod:NewBuffFadesTimer(8.5, 102116)
@@ -29,7 +29,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_AURA(uId)
+function mod:UNIT_AURA_UNFILTERED(uId)
 	if uId ~= "player" then return end
 	if UnitBuff("player", GetSpellInfo(102116)) and not markWings then
 		MagicWingsCountdown:Start(7.5)--Might need to reduce it by 1 or use UnitDebuff duration arg.

@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"UNIT_AURA",
+	"UNIT_AURA player",
 	"UNIT_DIED"
 )
 
@@ -226,7 +226,6 @@ local bad3 = GetSpellInfo(136185)
 local bad4 = GetSpellInfo(136187)
 
 function mod:UNIT_AURA(uId)
-	if uId ~= "player" then return end
 	local gcnt, gcnt1, gcnt2, gcnt3, gcnt4, bcnt, bcnt1, bcnt2, bcnt3, bcnt4
 	gcnt1 = select(4, UnitDebuff("player", good1)) or 0
 	gcnt2 = select(4, UnitDebuff("player", good2)) or 0
