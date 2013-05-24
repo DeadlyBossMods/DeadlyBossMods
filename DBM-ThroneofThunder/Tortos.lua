@@ -256,6 +256,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 --Does not show in combat log, so UNIT_AURA must be used instead
+--This needs to be switched to RegisterUnitEvent once tandanu is done wit that code.
+--that way dbm isn't checking if it's boss1 325635325 times a fight.
 function mod:UNIT_AURA(uId)
 	if uId ~= "boss1" then return end
 	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)
