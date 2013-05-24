@@ -554,12 +554,7 @@ do
 					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
 				elseif event == "SPELL_EXTRA_ATTACKS" then
 					args.amount = select(4, ...)
-				elseif event == "SPELL_DISPEL_FAILED" then
-					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-				elseif event == "SPELL_AURA_DISPELLED" then
-					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
-					args.auraType = select(7, ...)
-				elseif event == "SPELL_AURA_STOLEN" then
+				elseif event == "SPELL_DISPEL" or event == "SPELL_DISPEL_FAILED" or event == "SPELL_AURA_STOLEN" then
 					args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
 					args.auraType = select(7, ...)
 				elseif event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_REFRESH" then
@@ -585,10 +580,7 @@ do
 			elseif event == "DAMAGE_SHIELD_MISSED" then
 				args.spellId, args.spellName, args.spellSchool = select(1, ...)
 				args.missType = select(4, ...)
-			elseif event == "ENCHANT_APPLIED" then
-				args.spellName = select(1,...)
-				args.itemId, args.itemName = select(2,...)
-			elseif event == "ENCHANT_REMOVED" then
+			elseif event == "ENCHANT_APPLIED" or event == "ENCHANT_REMOVED" then
 				args.spellName = select(1,...)
 				args.itemId, args.itemName = select(2,...)
 			elseif event == "UNIT_DIED" or event == "UNIT_DESTROYED" then
@@ -2904,7 +2896,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 		end
 		self:StartLogging(0, nil)
 		if DBM.Options.ShowEngageMessage then
-			if mod.ignoreBestkill then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
+			if mod.ignoreBestkill and mod:IsDifficulty("worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
 			else
 				if mod.type == "SCENARIO" then
@@ -3265,14 +3257,10 @@ end
 
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
-	if instanceType == "scenario" and difficulty == 1 then
-		return "normal5", GUILD_CHALLENGE_TYPE4.." - "--Just treat these like 5 man normals, for stat purposes. 5.2 compat code, diff index is still 1 for scenarios, 10 and 11 in 5.3
+	if difficulty == 0 then
+		return "worldboss", DBM_CORE_WORLD_BOSS.." - "
 	elseif difficulty == 1 then
-		if instanceType == "party" then
-			return "normal5", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
-		else--Should never happen anymore, now that outdoor areas return 0 instead of 1 like they used to, but we leave just in case
-			return "normal5", ""
-		end
+		return "normal5", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
 	elseif difficulty == 2 then
 		return "heroic5", PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
 	elseif difficulty == 3 then
@@ -3289,12 +3277,12 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "challenge5", CHALLENGE_MODE.." - "
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
 		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
-	elseif difficulty == 10 then--5.3 normal scenario
-		return "normal5", GUILD_CHALLENGE_TYPE4.." - "
 	elseif difficulty == 11 then--5.3 heroic scenario
-		return "heroic5", HEROIC_SCENARIO.." - "
-	else--Returned 0, likely a world boss
-		return "worldboss", DBM_CORE_WORLD_BOSS.." - "
+		return "heroic5", PLAYER_DIFFICULTY2.." - "
+	elseif difficulty == 12 then--5.3 normal scenario
+		return "normal5", PLAYER_DIFFICULTY1.." - "
+	else--failsafe
+		return "normal5", ""
 	end
 end
 
@@ -3547,7 +3535,7 @@ do
 			if not difficultyText then -- prevent error when timer recovery function worked and etc (StartCombat not called)
 				difficultyText = select(2, DBM:GetCurrentInstanceDifficulty())
 			end
-			if difficultyText == CHALLENGETYPE4 then return end--status not really useful on scenario mods since there is no way to report progress as a percent. We just ignore it.
+			if IsInScenarioGroup() then return end--status not really useful on scenario mods since there is no way to report progress as a percent. We just ignore it.
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
@@ -3567,7 +3555,7 @@ do
 			mod = mod or inCombat[1]
 			local hp = ("%d%%"):format((mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
 			if not autoRespondSpam[sender] then
-				if difficultyText == CHALLENGETYPE4 then
+				if IsInScenarioGroup() then
 					sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficultyText..(mod.combatInfo.name or ""), getNumAlivePlayers(), GetNumGroupMembers()))
 				else
 					sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(playerName, difficultyText..(mod.combatInfo.name or ""), hp or DBM_CORE_UNKNOWN, getNumAlivePlayers(), GetNumGroupMembers()))
