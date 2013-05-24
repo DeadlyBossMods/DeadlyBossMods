@@ -108,12 +108,10 @@ mod:AddBoolOption("SetIconOnFrostBite", true)
 mod:AddBoolOption("AnnounceCooldowns", mod:HasRaidCooldown())
 
 local lingeringPresence = GetSpellInfo(136467)
-local chilledDebuff = GetSpellInfo(137085)
 local boltCasts = 0
 local kazraPossessed = false
 local possessesDone = 0
 local dischargeCount = 0
-local chilledWarned = false
 local darkPowerWarned = false
 
 local showDamagedHealthBar, hideDamagedHealthBar
@@ -155,7 +153,6 @@ end
 
 function mod:OnCombatStart(delay)
 	kazraPossessed = false
-	chilledWarned = false
 	darkPowerWarned = false
 	possessesDone = 0
 	boltCasts = 0
