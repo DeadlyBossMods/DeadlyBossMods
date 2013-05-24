@@ -35,7 +35,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase			= "Объявлять смену фаз",
 	specWarnBarrierNow	= "Спец-предупреждение когда Вам необходимо использовать $spell:115817 (только для Поиска Рейдов)",
-	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6") .. "  во время аркан-фазы"
+	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6") .. " во время аркан-фазы"
 })
 
 L:SetMiscLocalization({
