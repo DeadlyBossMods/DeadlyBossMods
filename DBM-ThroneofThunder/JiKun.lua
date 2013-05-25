@@ -225,7 +225,7 @@ local function GetNestPositions(flockC)
 		elseif flockC ==  3 then dir, loc = L.Lower, "3-"..L.SouthWest	--03    loc = L.SouthWest
 		elseif flockC ==  4 then dir = L.Upper  		--04   loc = unknown
 		elseif flockC ==  5 then dir = L.Upper			--05   loc = unknown
-		elseif flockC ==  6 then dir, loc = L.Upper, "6-"..U.Middle	--06    loc = U.Middle
+		elseif flockC ==  6 then dir, loc = L.Upper, "6-"..L.Middle	--06    loc = U.Middle
 		elseif flockC ==  7 then dir, loc = L.Lower, "7-"..L.NorthEast	--07    loc = L.NorthEast
 		elseif flockC ==  8 then dir, loc = L.Lower, "8-"..L.SouthEast	--08    loc = L.SouthEast
 		elseif flockC ==  9 then dir = L.UpperAndLower	--09-10

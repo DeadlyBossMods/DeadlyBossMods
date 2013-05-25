@@ -841,7 +841,7 @@ DBM_GUI_Bosses = CreateNewFauxScrollFrameList()
 DBM_GUI_Options = CreateNewFauxScrollFrameList()
 
 
-local UpdateAnimationFrame
+local UpdateAnimationFrame, CreateAnimationFrame
 do
 	local function HideScrollBar(frame)
 		local frameName = frame:GetName()
