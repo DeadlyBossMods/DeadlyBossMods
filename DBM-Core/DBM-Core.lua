@@ -400,15 +400,18 @@ do
 	end
 
 	local function handleEvent(self, event, ...)
-		if self == mainFrame and event:sub(0, 5) == "UNIT_" then
+		local isUnitEvent = event:sub(0, 5) == "UNIT_"
+		if self == mainFrame and isUnitEvent then
 			-- UNIT_* events that come from mainFrame are _UNFILTERED variants and need their suffix
 			event = event .. "_UNFILTERED"
+			isUnitEvent = false -- not actually a real unit id for this function...
 		end
 		if not registeredEvents[event] or not enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
 			local zones = v.zones
 			local handler = v[event]
-			if handler and (not zones or zones[LastZoneMapID]) and not (v.isTrashMod and IsEncounterInProgress()) then
+			local modEvents = v.registeredUnitEvents
+			if handler and (not isUnitEvent or not modEvents or modEvents[event .. ...])  and (not zones or zones[LastZoneMapID]) and not (v.isTrashMod and IsEncounterInProgress()) then
 				handler(v, ...)
 			end
 		end
@@ -418,7 +421,8 @@ do
 	do
 		local frames = {} -- frames that are being used for unit events, one frame per unit id (this could be optimized, as it currently creates a new frame even for a different event, but that's not worth the effort as 90% of all calls are just boss1 anyways)
 
-		function registerUnitEvent(event, ...)
+		function registerUnitEvent(mod, event, ...)
+			mod.registeredUnitEvents = mod.registeredUnitEvents or {}
 			for i = 1, select("#", ...) do
 				local uId = select(i, ...)
 				if not uId then break end
@@ -429,11 +433,12 @@ do
 					frames[uId] = frame
 				end
 				registeredUnitEventIds[event .. uId] = (registeredUnitEventIds[event .. uId] or 0) + 1
+				mod.registeredUnitEvents[event .. uId] = true
 				frame:RegisterUnitEvent(event, uId)
 			end
 		end
 
-		function unregisterUnitEvent(event, mod, ...)
+		function unregisterUnitEvent(mod, event, ...)
 			for i = 1, select("#", ...) do
 				local uId = select(i, ...)
 				if not uId then break end
@@ -445,6 +450,9 @@ do
 					if frame then
 						frame:UnregisterEvent(event)
 					end
+				end
+				if mod.registeredUnitEvents and mod.registeredUnitEvents[event .. uId] then
+					mod.registeredUnitEvents[event .. uId] = nil
 				end
 			end
 			for i = #registeredEvents[event], 1, -1 do
@@ -478,7 +486,7 @@ do
 					-- we really want *all* unit ids
 					mainFrame:RegisterEvent(event:sub(0, -12))
 				else
-					registerUnitEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+					registerUnitEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 				end
 			else
 				-- normal events
@@ -493,13 +501,13 @@ do
 		end
 	end
 	
-	local function unregisterEvent(event, mod)
+	local function unregisterEvent(mod, event)
 		if event:sub(0, 5) == "UNIT_" then
 			local event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 			if event:sub(event:len() - 10) == "_UNFILTERED" then 
 				mainFrame:UnregisterEvent(event:sub(0, -12))
 			else
-				unregisterUnitEvent(event, mod, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+				unregisterUnitEvent(mod, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 			end
 		else
 			mainFrame:UnregisterEvent(event)
@@ -517,7 +525,7 @@ do
 					end
 				end
 				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED") then -- unit events have their own reference count
-					unregisterEvent(event, self, #mods == 0)
+					unregisterEvent(self, event)
 				end
 				if #mods == 0 then
 					registeredEvents[event] = nil
@@ -537,7 +545,7 @@ do
 					end
 				end
 				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED") then
-					unregisterEvent(event, self)
+					unregisterEvent(self, event)
 				end
 				if #mods == 0 then
 					registeredEvents[event] = nil
