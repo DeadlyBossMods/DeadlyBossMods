@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"UNIT_HEALTH",--UNIT_HEALTH_FREQUENT maybe not needed. It's too high cpu usage.
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 local warnProtect						= mod:NewSpellAnnounce(123250, 2)
