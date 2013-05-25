@@ -400,10 +400,7 @@ do
 	end
 
 	local function handleEvent(self, event, ...)
-		local isUnitEvent
-		if not (event == "UNIT_DIED" or event == "UNIT_DESTROYED") then
-			isUnitEvent = event:sub(0, 5) == "UNIT_"
-		end
+		local isUnitEvent = event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED"
 		if self == mainFrame and isUnitEvent then
 			-- UNIT_* events that come from mainFrame are _UNFILTERED variants and need their suffix
 			event = event .. "_UNFILTERED"
@@ -477,7 +474,7 @@ do
 			local event = select(i, ...)
 			local eventWithArgs = event
 			-- unit events need special care
-			if event:sub(0, 5) == "UNIT_" and not (event == "UNIT_DIED" or event == "UNIT_DESTROYED") then
+			if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 				-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus, mouseover))
 				local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
 				event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
@@ -505,7 +502,7 @@ do
 	end
 	
 	local function unregisterEvent(mod, event)
-		if event:sub(0, 5) == "UNIT_" and not (event == "UNIT_DIED" or event == "UNIT_DESTROYED") then
+		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 			local event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 			if event:sub(event:len() - 10) == "_UNFILTERED" then 
 				mainFrame:UnregisterEvent(event:sub(0, -12))
@@ -527,7 +524,7 @@ do
 						match = true
 					end
 				end
-				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and not (event == "UNIT_DIED" or event == "UNIT_DESTROYED")) then -- unit events have their own reference count
+				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
 					unregisterEvent(self, event)
 				end
 				if #mods == 0 then
@@ -547,7 +544,7 @@ do
 						match = true
 					end
 				end
-				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and not (event == "UNIT_DIED" or event == "UNIT_DESTROYED")) then
+				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
 					unregisterEvent(self, event)
 				end
 				if #mods == 0 then
@@ -4039,7 +4036,7 @@ function bossModPrototype:RegisterEventsInCombat(...)
 	end
 	self.inCombatOnlyEvents = {...}
 	for k, v in pairs(self.inCombatOnlyEvents) do
-		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") and not (event == "UNIT_DIED" or event == "UNIT_DESTROYED") then
+		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 			-- legacy event, oh noes
 			self.inCombatOnlyEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
 		end
@@ -4052,7 +4049,7 @@ function bossModPrototype:RegisterShortTermEvents(...)
 	end
 	self.shortTermRegisterEvents = {...}
 	for k, v in pairs(self.shortTermRegisterEvents) do
-		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") and not (event == "UNIT_DIED" or event == "UNIT_DESTROYED") then
+		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 			-- legacy event, oh noes
 			self.shortTermRegisterEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
 		end
