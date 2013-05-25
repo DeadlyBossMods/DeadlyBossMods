@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --Anima
@@ -200,11 +200,11 @@ end
 --"<299.6 01:54:51> CHAT_MSG_MONSTER_YELL#You still think victory possible? Fools!#Ra-den#####0#0##0#298#nil#0#false#false",
 --"<299.9 01:54:51> [UNIT_SPELLCAST_SUCCEEDED] Ra-den [boss1:Ruin::0:139073]
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 139040 and self:AntiSpam(2) then--Call Essence
+	if spellId == 139040 then--Call Essence
 		warnCallEssence:Show()
 		specWarnCallEssence:Show()
 		timerCallEssenceCD:Start()
-	elseif spellId == 139073 and self:AntiSpam(2) then--Phase 2 (the Ruin Trigger)
+	elseif spellId == 139073 then--Phase 2 (the Ruin Trigger)
 		self:SendSync("Phase2")
 	end
 end

@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 mod:RegisterEvents(
@@ -245,9 +245,9 @@ function mod:OnSync(msg, guid)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if (spellId == 117215 or spellId == 117218 or spellId == 117219 or spellId == 117222) and self:AntiSpam(2, 1) then--Shadowy Attacks
+	if (spellId == 117215 or spellId == 117218 or spellId == 117219 or spellId == 117222) then--Shadowy Attacks
 		timerShadowyAttackCD:Start()
-	elseif spellId == 116964 and self:AntiSpam(2, 2) then--Summon Totem
+	elseif spellId == 116964 then--Summon Totem
 		if self:LatencyCheck() then
 			self:SendSync("SummonTotem")
 		end

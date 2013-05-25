@@ -15,7 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_CAST_START",
 	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 local warnScreech				= mod:NewSpellAnnounce(123735, 3, nil, false)--Not useful.
@@ -36,7 +36,7 @@ local warnConsumingTerror		= mod:NewSpellAnnounce(124849, 4, nil, not mod:IsTank
 local warnHeartOfFear			= mod:NewTargetAnnounce(125638, 4)
 
 local specwarnSonicDischarge	= mod:NewSpecialWarningSpell(123504, nil, nil, nil, true)
-local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 4)--4 is max, 2 is actually the smartest time to taunt though. i may change it to 2 at some point
+local specWarnEyes				= mod:NewSpecialWarningStack(123707, mod:IsTank(), 3)--4 is max, 2 is actually the smartest time to taunt though. i may change it to 2 at some point
 local specWarnEyesOther			= mod:NewSpecialWarningTarget(123707, mod:IsTank())
 local specwarnCryOfTerror		= mod:NewSpecialWarningYou(123788)
 local specWarnRetreat			= mod:NewSpecialWarningSpell(125098)
@@ -126,10 +126,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEyes:Show(args.destName, args.amount or 1)
 		timerEyes:Start(args.destName)
 		timerEyesCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 4 then
+		if args:IsPlayer() and (args.amount or 1) >= 3 then
 			specWarnEyes:Show(args.amount)
 		else
-			if (args.amount or 1) >= 3 and not UnitDebuff("player", GetSpellInfo(123735)) and not UnitIsDeadOrGhost("player") then
+			if (args.amount or 1) >= 2 and not UnitDebuff("player", GetSpellInfo(123735)) and not UnitIsDeadOrGhost("player") then
 				specWarnEyesOther:Show(args.destName)
 			end
 		end
@@ -147,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTrapped:Show(args.destName)
 	elseif args.spellId == 125390 then
 		warnFixate:Show(args.destName)
-		if args:IsPlayer() then
+		if args:IsPlayer() and not self:IsDifficulty("lfr25") then--in LFR, they are not dangerous, you stack mobs up, don't want to run mobs out of clump
 			specwarnFixate:Show()
 			soundFixate:Play()
 		end
@@ -286,7 +286,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 125098 and self:AntiSpam(2, 1) then--Yell is about 1.5 seconds faster then this event, BUT, it also requires localizing. I don't think doing it this way hurts anything.
+	if spellId == 125098 then--Yell is about 1.5 seconds faster then this event, BUT, it also requires localizing. I don't think doing it this way hurts anything.
 		self:UnregisterShortTermEvents()
 		table.wipe(resinTargets)
 		timerScreechCD:Cancel()
