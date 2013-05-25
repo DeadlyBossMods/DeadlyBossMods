@@ -74,9 +74,7 @@ local lastStacks = {}
 -- Local Globals --
 -------------------
 --Entire InfoFrame is a looping onupdate function. All of these globals get used several times a second
-local IsInRaid = IsInRaid
 local IsInGroup = IsInGroup
-local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidTargetIndex = GetRaidTargetIndex
 local UnitName = UnitName
 local UnitHealth = UnitHealth
@@ -204,9 +202,7 @@ end
 local function updateIcons()
 	table.wipe(icons)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			local icon = GetRaidTargetIndex(uId)
 			if icon then
 				icons[UnitName(uId)] = ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t"):format(icon)
@@ -218,9 +214,7 @@ end
 local function updateHealth()
 	table.wipe(lines)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			local icon = GetRaidTargetIndex(uId)
 			if UnitHealth(uId) < infoFrameThreshold and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = UnitHealth(uId) - infoFrameThreshold
@@ -234,10 +228,9 @@ end
 local function updatePlayerPower()
 	table.wipe(lines)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			if not UnitIsDeadOrGhost(groupType..i) and UnitPower(groupType..i, pIndex)/UnitPowerMax(groupType..i, pIndex)*100 >= infoFrameThreshold then
-				lines[UnitName(groupType..i)] = UnitPower(groupType..i, pIndex)
+		for uId in DBM:GetGroupMembers() do
+			if not UnitIsDeadOrGhost(uId) and UnitPower(uId, pIndex)/UnitPowerMax(uId, pIndex)*100 >= infoFrameThreshold then
+				lines[UnitName(uId)] = UnitPower(uId, pIndex)
 			end
 		end
 	end
@@ -267,9 +260,7 @@ end
 local function updatePlayerBuffs()
 	table.wipe(lines)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			if not UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
@@ -283,9 +274,7 @@ end
 local function updateGoodPlayerDebuffs()
 	table.wipe(lines)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
@@ -299,9 +288,7 @@ end
 local function updateBadPlayerDebuffs()
 	table.wipe(lines)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
 				lines[UnitName(uId)] = ""
 			end
@@ -315,9 +302,7 @@ local function updatePlayerBuffStacks()
 	table.wipe(lines)
 	updateIcons()	-- update Icons first in case of an "icon modifier"
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			if UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) then
 				lines[UnitName(uId)] = select(4, UnitBuff(uId, GetSpellInfo(infoFrameThreshold)))
 			elseif UnitBuff(uId, GetSpellInfo(pIndex)) then
@@ -341,9 +326,7 @@ local function updatePlayerDebuffStacks()
 	table.wipe(lines)
 	local spell = GetSpellInfo(infoFrameThreshold)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			if UnitDebuff(uId, spell) then
 				lines[UnitName(uId)] = select(4, UnitDebuff(uId, spell))
 			end
@@ -356,9 +339,7 @@ end
 local function updatePlayerAggro()
 	table.wipe(lines)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
+		for uId in DBM:GetGroupMembers() do
 			if UnitThreatSituation(uId) == infoFrameThreshold then
 				lines[UnitName(uId)] = ""
 			end
@@ -375,10 +356,8 @@ end
 local function updatePlayerTargets()
 	table.wipe(lines)
 	if IsInGroup() then
-		local groupType = (IsInRaid() and "raid") or "party"
-		for i = 1, GetNumGroupMembers() do
-			local uId = groupType..i
-			if getUnitCreatureId(groupType..i.."target") ~= infoFrameThreshold and (UnitGroupRolesAssigned(groupType..i) == "DAMAGER" or UnitGroupRolesAssigned(groupType..i) == "NONE") then
+		for uId in DBM:GetGroupMembers() do
+			if getUnitCreatureId(uId.."target") ~= infoFrameThreshold and (UnitGroupRolesAssigned(uId) == "DAMAGER" or UnitGroupRolesAssigned(uId) == "NONE") then
 				lines[UnitName(uId)] = ""
 			end
 		end
