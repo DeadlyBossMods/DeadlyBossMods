@@ -64,7 +64,7 @@ local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, ni
 local specWarnSummonBallLightning		= mod:NewSpecialWarningSpell(136543, nil, nil, nil, 2)
 local specWarnOverloadedCircuits		= mod:NewSpecialWarningMove(137176)
 --Herioc
-local specWarnHelmOfCommand				= mod:NewSpecialWarningYou(139011)
+local specWarnHelmOfCommand				= mod:NewSpecialWarningYou(139011, nil, nil, nil, 3)
 
 --Conduits (All phases)
 local timerStaticShock					= mod:NewBuffFadesTimer(8, 135695)
@@ -75,11 +75,11 @@ local timerOverchargeCD					= mod:NewCDTimer(40, 136295)
 local timerBouncingBoltCD				= mod:NewCDTimer(40, 136361)
 local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually intermission only, but it fits best with conduits
 --Phase 1
-local timerDecapitateCD					= mod:NewCDTimer(50, 134912)--Cooldown with some variation. 50-57ish or so.
+local timerDecapitateCD					= mod:NewCDTimer(50, 134912, nil, mod:IsTank())--Cooldown with some variation. 50-57ish or so.
 local timerThunderstruck				= mod:NewCastTimer(4.8, 135095)--4 sec cast. + landing 0.8~1.3 sec.
 local timerThunderstruckCD				= mod:NewNextTimer(46, 135095)--Seems like an exact bar
 --Phase 2
-local timerFussionSlashCD				= mod:NewCDTimer(42.5, 136478)
+local timerFussionSlashCD				= mod:NewCDTimer(42.5, 136478, nil, mod:IsTank())
 local timerLightningWhip				= mod:NewCastTimer(4, 136850)
 local timerLightningWhipCD				= mod:NewNextTimer(45.5, 136850)--Also an exact bar
 local timerSummonBallLightningCD		= mod:NewNextTimer(45.5, 136543)--Seems exact on live, versus the variable it was on PTR
