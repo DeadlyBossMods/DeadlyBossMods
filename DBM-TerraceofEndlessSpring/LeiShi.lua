@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"UNIT_HEALTH",--UNIT_HEALTH_FREQUENT maybe not needed. It's too high cpu usage.
+	"UNIT_HEALTH boss1",--UNIT_HEALTH_FREQUENT maybe not needed. It's too high cpu usage.
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -286,12 +286,10 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if uId == "boss1" then
-		local currentHealth = 1 - (UnitHealth(uId) / UnitHealthMax(uId))
-		if currentHealth and currentHealth < 1 and currentHealth > prevlostHealth then -- Failsafe.
-			lostHealth = currentHealth
-			prevlostHealth = currentHealth
-		end
+	local currentHealth = 1 - (UnitHealth(uId) / UnitHealthMax(uId))
+	if currentHealth and currentHealth < 1 and currentHealth > prevlostHealth then -- Failsafe.
+		lostHealth = currentHealth
+		prevlostHealth = currentHealth
 	end
 end
 
