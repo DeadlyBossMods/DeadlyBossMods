@@ -329,7 +329,9 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:OnSync(msg, target)
+function mod:OnSync(msg, targetOrGuid, ver)
+	local target = targetOrGuid
+	local guid = targetOrGuid
 	if msg == "ChargeTo" and target then
 		local target = DBM:GetFullNameByShortName(target)
 		warnCharge:Show(target)
