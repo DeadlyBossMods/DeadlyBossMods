@@ -162,7 +162,7 @@ mod:RegisterOnUpdateHandler(function(self)
 			if guards[guid] then
 				for g,i in pairs(guards) do
 					if i == 8 and g ~= guid then -- always set skull on first we see
-						guards[g] = adds[guid]
+						guards[g] = guards[guid]
 						guards[guid] = 8
 						break
 					end
@@ -176,8 +176,8 @@ mod:RegisterOnUpdateHandler(function(self)
 		if guards[guid2] then
 			for g,i in pairs(adds) do
 				if i == 8 and g ~= guid2 then -- always set skull on first we see
-					adds[g] = adds[guid2]
-					adds[guid2] = 8
+					guards[g] = guards[guid2]
+					guards[guid2] = 8
 					break
 				end
 			end
