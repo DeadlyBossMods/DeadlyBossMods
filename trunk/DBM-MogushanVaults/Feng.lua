@@ -17,9 +17,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_SPELLCAST_SUCCEEDED",
-	"UNIT_SPELLCAST_STOP",
-	"UNIT_SPELLCAST_CHANNEL_STOP"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_SPELLCAST_STOP boss1",
+	"UNIT_SPELLCAST_CHANNEL_STOP boss1"
 )
 --Phase order is controlled by players. it is only pre determined order in LFR and LFR only.
 --Heroic a player can do ANY phase first. It even says this in encounter journal.
@@ -384,7 +384,7 @@ function mod:OnSync(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 117203 and self:AntiSpam(2, 1) then--Siphoning Shield
+	if spellId == 117203 then--Siphoning Shield
 		specialCount = specialCount + 1
 		warnSiphoningShield:Show(specialCount)
 		specWarnSiphoningShield:Show()
