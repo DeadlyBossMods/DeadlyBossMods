@@ -3819,29 +3819,28 @@ end
 --copied from big wigs with permission from funkydude. Modified by MysticalOS
 local roleEventUnregistered = false
 function DBM:RoleCheck()
-	if DBM.Options.SetPlayerRole then
-		if not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
-			local spec = GetSpecialization()
-			if not spec then return end
-			local role = GetSpecializationRole(spec)
-			local specID = GetLootSpecialization()
-			local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
-			if UnitGroupRolesAssigned("player") ~= role then
-				UnitSetRole("player", role)
-			end
-			if not roleEventUnregistered then
-				roleEventUnregistered = true
-				RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
-			end
-			if lootrole and (role ~= lootrole) then
-				self:AddMsg(DBM_CORE_LOOT_SPEC_REMINDER:format(role or DBM_CORE_UNKNOWN, lootrole))
-			end
+	local spec = GetSpecialization()
+	if not spec then return end
+	local role = GetSpecializationRole(spec)
+	local specID = GetLootSpecialization()
+	local _, _, _, _, _, lootrole = GetSpecializationInfoByID(specID)
+	if DBM.Options.SetPlayerRole and not InCombatLockdown() and IsInGroup() and not IsPartyLFG() then
+		if UnitGroupRolesAssigned("player") ~= role then
+			UnitSetRole("player", role)
+		end
+		if not roleEventUnregistered then
+			roleEventUnregistered = true
+			RolePollPopup:UnregisterEvent("ROLE_POLL_BEGIN")
 		end
 	else
 		if roleEventUnregistered then
 			roleEventUnregistered = false
 			RolePollPopup:RegisterEvent("ROLE_POLL_BEGIN")
 		end
+	end
+	--Loot reminder even if spec isn't known or we are in LFR where we have a valid for role without us being ones that set us.
+	if lootrole and (role ~= lootrole) then
+		self:AddMsg(DBM_CORE_LOOT_SPEC_REMINDER:format(role or DBM_CORE_UNKNOWN, lootrole))
 	end
 end
 
