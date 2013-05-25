@@ -7,7 +7,7 @@ mod:SetZone()
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_SPELLCAST_SUCCEEDED player",
 	"QUEST_WATCH_UPDATE"
 )
 
@@ -53,7 +53,6 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName, _, _, spellID)
-	if uId ~= "player" then return end
 	if spellID == 102044 then--Hogger
 		if gameEarnedPoints < 30 then--You earned 30 points in first game, stop counting points you didn't earn so you get more accurate depiction of hwo many you missed, not how many you ignored when you finished.
 			gameMaxPoints = gameMaxPoints + 3
