@@ -9,7 +9,7 @@ mod:SetZone()
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"UNIT_SPELLCAST_CHANNEL_START target focus mouseover"
+	"UNIT_SPELLCAST_CHANNEL_START target focus"
 )
 
 local warnChomp					= mod:NewSpellAnnounce(135342, 4)

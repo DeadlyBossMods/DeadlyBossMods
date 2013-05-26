@@ -9,7 +9,7 @@ mod:RegisterCombat("scenario", 940)
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED target focus mouseover"
+	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
 
 --Lieutenant Drak'on
