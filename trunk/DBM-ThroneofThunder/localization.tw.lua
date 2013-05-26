@@ -142,8 +142,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(818)
 
 L:SetWarningLocalization({
-	warnBeamNormal				= "射線 - |cffff0000紅光|r : >%s<, |cff0000ff藍光|r : >%s<",
-	warnBeamHeroic				= "射線 - |cffff0000紅光|r : >%s<, |cff0000ff藍光|r : >%s<, |cffffff00黃光|r : >%s<",
+	warnBeamNormal				= "|cffff0000紅|r:>%s<,|cff0000ff藍|r:>%s<",
+	warnBeamHeroic				= "|cffff0000紅|r:>%s<,|cff0000ff藍|r:>%s<,|cffffff00黃|r:>%s<",
 	warnAddsLeft				= "霧獸剩餘: %d",
 	specWarnBlueBeam			= "你中了藍光射線 - 避免移動!!",
 	specWarnFogRevealed			= "照出%s了!",
