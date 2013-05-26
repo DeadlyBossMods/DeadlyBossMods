@@ -23,6 +23,7 @@ local specWarnYourTurn		= mod:NewSpecialWarning("specWarnYourTurn")
 local berserkTimer			= mod:NewBerserkTimer(120)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
 
 mod:AddBoolOption("SpectatorMode", true)
+mod:AddBoolOption("SpeakOutQueue", true)
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
@@ -210,6 +211,13 @@ function mod:UNIT_AURA(uId)
 		warnQueuePosition:Show(currentQueueRank)
 		if currentQueueRank == 1 then
 			specWarnYourNext:Show()
+		end
+		if self.Options.SpeakOutQueue and currentQueueRank < 11 then
+			if DBM.Options.UseMasterVolume then
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..currentQueueRank..".ogg", "Master")
+			else
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..currentQueueRank..".ogg")
+			end
 		end
 	end
 end
