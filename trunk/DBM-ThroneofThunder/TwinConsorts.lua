@@ -209,11 +209,13 @@ function mod:UNIT_DIED(args)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
+		phase3Started = true
 	elseif cid == 68904 then--Suen
 		--timerFlamesOfPassionCD:Cancel()
 		timerBeastOfNightmaresCD:Start(64)
 		timerNuclearInfernoCD:Cancel()
 		warnNight:Show()
+		phase3Started = true
 	end
 end
 
