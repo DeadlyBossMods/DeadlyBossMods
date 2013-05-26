@@ -26,9 +26,9 @@ local warnFixate			= mod:NewSpellAnnounce(132984, 3)
 --Darkhatched Lizard-Lord
 local specWarnWaterJets		= mod:NewSpecialWarningSpell(133121, false)--For achievement primarily
 --Broodmaster Noshi
-local specWarnDeathNova		= mod:NewSpecialWarningSpell(133804, nil, nil, nil, 2)--For achievement primarily
+local specWarnDeathNova		= mod:NewSpecialWarningSpell(133804, nil, nil, nil, 2)
 --Rak'gor Bloodrazor
-local specWarnGasBomb		= mod:NewSpecialWarningMove(133001)--For achievement primarily
+local specWarnGasBomb		= mod:NewSpecialWarningMove(133001)
 
 --Darkhatched Lizard-Lord
 local timerAddsCD			= mod:NewTimer(60, "timerAddsCD", 2457)
@@ -58,7 +58,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 133121 then
+	if args.spellId == 132984 then
 		warnFixate:Show()
 		timerFixateCD:Start()
 	end
