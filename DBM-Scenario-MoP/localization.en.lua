@@ -42,6 +42,11 @@ L:SetMiscLocalization{
 	TelvrakPull			= "Zan'vess will never fall!"
 }
 
+------------------------------
+-- Battle on the High Seas ---
+------------------------------
+L= DBM:GetModLocalization("d652")
+
 -----------------------
 -- Blood in the Snow --
 -----------------------
