@@ -10,10 +10,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnQueuePosition	= "You're %d in queue",
+	specWarnYourNext	= "You're next!",
 	specWarnYourTurn	= "You're up!"
 })
 
 L:SetOptionLocalization({
+	warnQueuePosition	= "Announce your current position in queue whenever it changes",
+	specWarnYourNext	= "Show special warning when you're next in line",
 	specWarnYourTurn	= "Show special warning when it's your match",
 	SpectatorMode		= "Show warnings/timers when spectating fights\n(Personal 'Special Warning' messages not shown to spectators)"
 })
