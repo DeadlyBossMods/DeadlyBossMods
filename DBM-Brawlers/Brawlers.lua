@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition", 2, nil, false)
+local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition", 2, 132639, false)
 local warnOrgPortal			= mod:NewCastAnnounce(135385, 1)--These are rare casts and linked to achievement.
 local warnStormPortal		= mod:NewCastAnnounce(135386, 1)--So warn for them being cast
 
