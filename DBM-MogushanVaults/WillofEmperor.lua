@@ -11,7 +11,7 @@ mod:SetMinCombatTime(25)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
-	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 target focus mouseover",--For this boss we want target/focus/mouseover and boss1-2
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_DIED",
 	"UNIT_POWER"

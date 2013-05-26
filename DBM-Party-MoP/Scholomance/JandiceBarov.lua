@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 local warnWondrousRapidity		= mod:NewSpellAnnounce(114062, 3)
@@ -51,7 +51,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if (spellId == 114059 or spellId == 114047) and self:AntiSpam(2, 1) then -- found 2 spellids on first cast, 4 spellids total (114035, 114038, 114047, 114059). needs more logs to confirm whether spellid is correct.
 		self:ScheduleMethod(0.1, "GravityFluxTarget")
 		timerGravityFlux:Start()
---	"<330.7> Phylactery [[boss2:Summon Books::0:111669]]"
 	elseif spellId == 113808 and self:AntiSpam(2, 2) then
 		warnWhirlofIllusion:Show()
 		timerGravityFlux:Cancel()

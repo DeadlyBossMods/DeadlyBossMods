@@ -9,7 +9,7 @@ mod:RegisterCombat("scenario", 882)
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 --	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_SPELLCAST_SUCCEEDED target focus mouseover",
 	"SCENARIO_UPDATE"
 )
 

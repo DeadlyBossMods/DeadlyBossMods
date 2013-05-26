@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_SPELLCAST_STOP"
+	"UNIT_SPELLCAST_STOP boss1 boss2"
 )
 
 --[[WoL Reg Expression

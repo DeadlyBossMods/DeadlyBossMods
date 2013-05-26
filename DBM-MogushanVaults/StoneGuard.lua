@@ -12,7 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"RAID_BOSS_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4",
 	"UNIT_DIED"
 )
 
@@ -233,21 +233,21 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 115852 and self:AntiSpam(2, 1) then
+	if spellId == 115852 then
 		activePetrification = "Cobalt"
 		timerPetrification:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(Cobalt)
 			DBM.InfoFrame:Show(5, "enemypower", 1, nil, nil, ALTERNATE_POWER_INDEX)
 		end
-	elseif spellId == 116006 and self:AntiSpam(2, 2) then
+	elseif spellId == 116006 then
 		activePetrification = "Jade"
 		timerPetrification:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(Jade)
 			DBM.InfoFrame:Show(5, "enemypower", 1, nil, nil, ALTERNATE_POWER_INDEX)
 		end
-	elseif spellId == 116036 and self:AntiSpam(2, 3) then
+	elseif spellId == 116036 then
 		activePetrification = "Jasper"
 		timerPetrification:Start()
 		if self.Options.InfoFrame then
@@ -261,14 +261,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				DBM.Arrow:Hide()
 			end
 		end
-	elseif spellId == 116057 and self:AntiSpam(2, 4) then
+	elseif spellId == 116057 then
 		activePetrification = "Amethyst"
 		timerPetrification:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(Amethyst)
 			DBM.InfoFrame:Show(5, "enemypower", 1, nil, nil, ALTERNATE_POWER_INDEX)
 		end
-	elseif spellId == 129424 and self:AntiSpam(2, 5) then
+	elseif spellId == 129424 then
 		warnCobaltMine:Show()
 		if self:IsDifficulty("lfr25") then
 			timerCobaltMineCD:Start(10.5)
