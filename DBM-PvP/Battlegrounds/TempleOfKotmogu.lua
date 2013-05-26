@@ -4,12 +4,7 @@ local L			= Kotmogu:GetLocalizedStrings()
 Kotmogu:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Kotmogu:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UPDATE_WORLD_STATES"
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local winTimer 		= Kotmogu:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
@@ -116,6 +111,13 @@ end
 function Kotmogu:OnInitialize()
 	if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 856 then
 		bgzone = true
+		Kotmogu:RegisterShortTermEvents(
+			"CHAT_MSG_BG_SYSTEM_HORDE",
+			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+			"CHAT_MSG_RAID_BOSS_EMOTE",
+			"UPDATE_WORLD_STATES"
+		)
 		table.wipe(orbs)
 		update_gametime()
 		if Kotmogu.Options.ShowKotmoguEstimatedPoints then
@@ -126,6 +128,7 @@ function Kotmogu:OnInitialize()
 		end
 	else
 		bgzone = false
+		Kotmogu:UnregisterShortTermEvents()
 		table.wipe(orbs)
 		winTimer:Stop()
 

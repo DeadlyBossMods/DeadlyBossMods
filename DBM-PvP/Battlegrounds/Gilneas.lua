@@ -4,12 +4,7 @@ local L			= Gilneas:GetLocalizedStrings()
 Gilneas:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Gilneas:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UPDATE_WORLD_STATES"
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local winTimer 		= Gilneas:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
@@ -122,6 +117,13 @@ end
 local function Gilneas_Initialize()
 	if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 736 then
 		bgzone = true
+		Gilneas:RegisterShortTermEvents(
+			"CHAT_MSG_BG_SYSTEM_HORDE",
+			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+			"CHAT_MSG_RAID_BOSS_EMOTE",
+			"UPDATE_WORLD_STATES"
+		)
 		update_gametime()
 		for i=1, GetNumMapLandmarks(), 1 do
 			local name, _, textureIndex = GetMapLandmarkInfo(i)
@@ -140,6 +142,7 @@ local function Gilneas_Initialize()
 		end
 	elseif bgzone then
 		bgzone = false
+		Gilneas:UnregisterShortTermEvents()
 		if Gilneas.Options.ShowGilneasEstimatedPoints then
 			Gilneas:HideEstimatedPoints()
 		end

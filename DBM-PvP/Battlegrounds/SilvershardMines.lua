@@ -4,12 +4,7 @@ local L			= Silvershard:GetLocalizedStrings()
 Silvershard:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Silvershard:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UPDATE_WORLD_STATES"
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local cartTimer		= Silvershard:NewTimer(9.5, "TimerCart", "Interface\\Icons\\INV_Misc_PocketWatch_01")
@@ -22,8 +17,17 @@ Silvershard:RemoveOption("SpeedKillTimer")
 function Silvershard:OnInitialize()
 	if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 860 then
 		bgzone = true
+		Silvershard:RegisterShortTermEvents(
+			"CHAT_MSG_MONSTER_YELL",
+			"CHAT_MSG_BG_SYSTEM_HORDE",
+			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+			"CHAT_MSG_RAID_BOSS_EMOTE",
+			"UPDATE_WORLD_STATES"
+		)
 	elseif bgzone then
 		bgzone = false
+		Silvershard:UnregisterShortTermEvents()
 	end
 end
 Silvershard.ZONE_CHANGED_NEW_AREA = Silvershard.OnInitialize
