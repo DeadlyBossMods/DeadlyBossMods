@@ -13,7 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED target focus mouseover"
+	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
 
 --Darkhatched Lizard-Lord

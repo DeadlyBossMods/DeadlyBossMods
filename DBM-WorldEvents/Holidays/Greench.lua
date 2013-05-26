@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"UNIT_SPELLCAST_SUCCEEDED target focus mouseover"
+	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
 
 local warnShrinkHeart			= mod:NewSpellAnnounce(101873, 2)
