@@ -44,7 +44,7 @@ if currentZoneID == 922 or currentZoneID == 925 then
 		"UNIT_DIED",
 		"UNIT_AURA player"
 	)
-end--We returned to arena, reset variable
+end
 
 function mod:PlayerFighting() -- for external mods
 	return playerIsFighting
@@ -178,7 +178,8 @@ function mod:OnSync(msg)
 			self:RegisterShortTermEvents(
 				"SPELL_CAST_START",
 				"PLAYER_REGEN_ENABLED",
-				"UNIT_DIED"
+				"UNIT_DIED",
+				"UNIT_AURA player"
 			)
 		end
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
