@@ -43,6 +43,11 @@ L:SetMiscLocalization{
 	TelvrakPull			= "贊斐斯永遠不會倒下!"
 }
 
+------------------------------
+-- Battle on the High Seas ---
+------------------------------
+L= DBM:GetModLocalization("d652")
+
 -----------------------
 -- Blood in the Snow --
 -----------------------
@@ -126,6 +131,16 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAchFiveAlive	= "為成就\"五小福\"失敗顯示警告."
+}
+
+----------------------------
+-- The Secret of Ragefire --
+----------------------------
+L= DBM:GetModLocalization("d649")
+
+L:SetMiscLocalization{
+	XorenthPull		= "All lesser races are enemies of the true Horde!",
+	ElagloPull		= "Fools! The true horde cannot be stopped by the likes of you."
 }
 
 ----------------------
