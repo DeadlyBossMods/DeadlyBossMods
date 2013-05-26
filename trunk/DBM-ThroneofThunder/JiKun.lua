@@ -103,7 +103,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, _, spellId)
-	if aspellId == 137528 then
+	if spellId == 137528 then
 		warnFeedYoung:Show()
 		specWarnFeedYoung:Show()
 		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
@@ -115,7 +115,7 @@ function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, _, spellId)
 end
 
 function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
-	if aspellId == 134380 then
+	if spellId == 134380 then
 		quillsCount = quillsCount + 1
 		warnQuills:Show(quillsCount)
 		specWarnQuills:Show()
