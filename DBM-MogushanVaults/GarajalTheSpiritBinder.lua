@@ -42,7 +42,7 @@ local timerBanishmentCD				= mod:NewCDTimer(65, 116272)
 local timerSoulSever				= mod:NewBuffFadesTimer(30, 116278)--Tank version of spirit realm
 local timerCrossedOver				= mod:NewBuffFadesTimer(30, 116161)--Dps version of spirit realm
 local timerSpiritualInnervation		= mod:NewBuffFadesTimer(30, 117549)
-local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, nil, nil, 117222)
+local timerShadowyAttackCD			= mod:NewCDTimer(8, "ej6698", nil, mod:IsTank(), nil, 117222)
 local timerFrailSoul				= mod:NewBuffFadesTimer(30, 117723)
 
 local berserkTimer					= mod:NewBerserkTimer(360)
