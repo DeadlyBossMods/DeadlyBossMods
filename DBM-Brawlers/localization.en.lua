@@ -138,6 +138,10 @@ L:SetGeneralLocalization({
 	name = "Brawlers: Challenges 1"
 })
 
+L:SetOptionLocalization({
+	ArrowOnBoxing	= "Show DBM Arrow during $spell:140868 and $spell:140862 and $spell:140886"
+})
+
 -------------
 -- Rares 2 --
 -------------

@@ -37,6 +37,7 @@ local timerDestructolaserCD		= mod:NewNextTimer(30, 133250)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
+mod:AddBoolOption("ArrowOnBoxing")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 
@@ -62,6 +63,12 @@ function mod:SPELL_CAST_START(args)
 		if brawlersMod:PlayerFighting() then
 			specWarnStaticCharge:Show(args.sourceName)
 		end
+	elseif args.spellId == 140868 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Left Hook
+		DBM.Arrow:ShowStatic(270, 3)
+	elseif args.spellId == 140862 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Right Hook
+		DBM.Arrow:ShowStatic(90, 3)
+	elseif args.spellId == 140886 and self.Options.ArrowOnBoxing and brawlersMod:PlayerFighting() then--Right Hook
+		DBM.Arrow:ShowStatic(180, 3)
 	end
 end
 
