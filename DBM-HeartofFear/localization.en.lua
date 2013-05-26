@@ -135,3 +135,16 @@ L:SetMiscLocalization({
 	PlayerDebuffs		= "Fixated",
 	YellPhase3			= "No more excuses, Empress! Eliminate these cretins or I will kill you myself!"
 })
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("HoFTrash")
+
+L:SetGeneralLocalization({
+	name =	"Heart of Fear Trash"
+})
+
+L:SetOptionLocalization({
+	UnseenStrikeArrow	= "Show DBM Arrow when someone is affected by $spell:122949"
+})
