@@ -4,13 +4,7 @@ local L					= IsleOfConquest:GetLocalizedStrings()
 IsleOfConquest:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 IsleOfConquest:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA", 	-- Required for BG start
-	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_DIED",
-	"SPELL_BUILDING_DAMAGE"
+	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start
 )
 
 IsleOfConquest:RemoveOption("HealthFrame")
@@ -65,6 +59,14 @@ do
 	local function initialize(self)
 		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 540 then
 			bgzone = true
+			IsleOfConquest:RegisterShortTermEvents(
+				"CHAT_MSG_MONSTER_YELL",
+				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+				"CHAT_MSG_BG_SYSTEM_HORDE",
+				"CHAT_MSG_RAID_BOSS_EMOTE",
+				"UNIT_DIED",
+				"SPELL_BUILDING_DAMAGE"
+			)
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
@@ -76,6 +78,7 @@ do
 			gateHP = {}
 			DBM.BossHealth:Clear()
 		elseif bgzone then
+			IsleOfConquest:UnregisterShortTermEvents()
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:Hide()
 			self:Stop()

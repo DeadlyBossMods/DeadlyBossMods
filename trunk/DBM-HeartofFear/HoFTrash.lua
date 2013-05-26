@@ -33,6 +33,7 @@ local function findUnseen()
 		local uId = "raid"..i
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
+			warnUnseenStrike(name)
 			if name == UnitName("player") then
 				specWarnUnseenStrike:Show()
 				yellUnseenStrike:Yell()

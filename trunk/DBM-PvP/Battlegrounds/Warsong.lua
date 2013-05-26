@@ -17,13 +17,7 @@ local FlagCarrier = {
 	[2] = nil
 }
 Warsong:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"PLAYER_REGEN_ENABLED",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UPDATE_BATTLEFIELD_SCORE"
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 --local startTimer = Warsong:NewTimer(62, "TimerStart", 2457)
@@ -44,6 +38,14 @@ do
 	local function WSG_Initialize()
 		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 443 then
 			bgzone = true
+			Warsong:RegisterShortTermEvents(
+				"PLAYER_REGEN_ENABLED",
+				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+				"CHAT_MSG_BG_SYSTEM_HORDE",
+				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+				"CHAT_MSG_RAID_BOSS_EMOTE",
+				"UPDATE_BATTLEFIELD_SCORE"
+			)
 			if Warsong.Options.ShowFlagCarrier then
 				Warsong:ShowFlagCarrier()
 				Warsong:CreateFlagCarrierButton()
@@ -56,6 +58,7 @@ do
 
 		elseif bgzone then
 			bgzone = false
+			Warsong:UnregisterShortTermEvents()
 			if Warsong.Options.ShowFlagCarrier then
 				Warsong:HideFlagCarrier()
 			end

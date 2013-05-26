@@ -11,11 +11,7 @@ EyeOfTheStorm:RemoveOption("SpeedKillTimer")
 EyeOfTheStorm:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 EyeOfTheStorm:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"UPDATE_WORLD_STATES"
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local bgzone = false
@@ -108,6 +104,12 @@ do
 	local function initialize()
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
+			EyeOfTheStorm:RegisterShortTermEvents(
+				"CHAT_MSG_BG_SYSTEM_HORDE",
+				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+				"UPDATE_WORLD_STATES"
+			)
 			updateGametime()
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
@@ -123,6 +125,7 @@ do
 
 		elseif bgzone then
 			bgzone = false
+			EyeOfTheStorm:UnregisterShortTermEvents()
 			if EyeOfTheStorm.Options.ShowPointFrame then
 				EyeOfTheStorm:HideEstimatedPoints()
 			end
