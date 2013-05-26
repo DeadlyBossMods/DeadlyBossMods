@@ -20,12 +20,13 @@ mod:RegisterEventsInCombat(
 local warnTempestSlash					= mod:NewSpellAnnounce(125692, 2)
 local warnOverwhelmingAssault			= mod:NewStackAnnounce(123474, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnWindStep						= mod:NewTargetAnnounce(123175, 3)
-local warnUnseenStrike					= mod:NewTargetAnnounce(123017, 4)
+local warnUnseenStrike					= mod:NewTargetAnnounce(122949, 4, 123017)
 local warnIntensify						= mod:NewStackAnnounce(123471, 2)
 local warnBladeTempest					= mod:NewCastAnnounce(125310, 4)--Phase 1 heroic
 local warnStormUnleashed				= mod:NewSpellAnnounce(123815, 3)--Phase 2
 
-local specWarnUnseenStrike				= mod:NewSpecialWarningTarget(122949)--Everyone needs to know this, and run to this person.
+local specWarnUnseenStrike				= mod:NewSpecialWarningYou(122949)
+local specWarnUnseenStrikeOther			= mod:NewSpecialWarningTarget(122949)--Everyone needs to know this, and run to this person.
 local yellUnseenStrike					= mod:NewYell(122949)
 local specWarnOverwhelmingAssault		= mod:NewSpecialWarningStack(123474, mod:IsTank(), 2)
 local specWarnOverwhelmingAssaultOther	= mod:NewSpecialWarningTarget(123474, mod:IsTank())
@@ -138,13 +139,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:122949") then--Does not show in combat log except for after it hits. IT does fire a UNIT_SPELLCAST event but has no target info. You can get target 1 sec faster with UNIT_AURA but it's more cpu and not worth the trivial gain IMO
 		local target = DBM:GetFullNameByShortName(target)
 		warnUnseenStrike:Show(target)
-		specWarnUnseenStrike:Show(target)
 		timerUnseenStrike:Start()
 		timerUnseenStrikeCD:Start()
 		if target == UnitName("player") then
+			specWarnUnseenStrike:Show()
 			yellUnseenStrike:Yell()
-		elseif self.Options.UnseenStrikeArrow then
-			DBM.Arrow:ShowRunTo(target, 3, 3, 5)
+		else
+			specWarnUnseenStrikeOther:Show(target)
+			if self.Options.UnseenStrikeArrow then
+				DBM.Arrow:ShowRunTo(target, 3, 3, 5)
+			end
 		end
 	end
 end
