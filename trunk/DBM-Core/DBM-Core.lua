@@ -483,11 +483,11 @@ do
 			local eventWithArgs = event
 			-- unit events need special care
 			if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
-				-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus, mouseover))
+				-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus))
 				local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
 				event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 				if not arg1 and event:sub(event:len() - 10) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
-					eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
+					eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target focus"
 					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
 				end
 				if event:sub(event:len() - 10) == "_UNFILTERED" then
@@ -4049,7 +4049,7 @@ function bossModPrototype:RegisterEventsInCombat(...)
 	for k, v in pairs(self.inCombatOnlyEvents) do
 		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
 			-- legacy event, oh noes
-			self.inCombatOnlyEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
+			self.inCombatOnlyEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus"
 		end
 	end
 end
@@ -4062,7 +4062,7 @@ function bossModPrototype:RegisterShortTermEvents(...)
 	for k, v in pairs(self.shortTermRegisterEvents) do
 		if v:sub(0, 5) == "UNIT_" and v:sub(v:len() - 10) ~= "_UNFILTERED" and not v:find(" ") and v ~= "UNIT_DIED" and v ~= "UNIT_DESTROYED" then
 			-- legacy event, oh noes
-			self.shortTermRegisterEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus mouseover"
+			self.shortTermRegisterEvents[k] = v .. " boss1 boss2 boss3 boss4 boss5 target focus"
 		end
 	end
 	self.shortTermEventsRegistered = 1
