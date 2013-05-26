@@ -7,6 +7,7 @@ mod:SetModelID(46265)
 mod:SetZone()
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START"
 )
 
@@ -15,17 +16,27 @@ mod:RegisterEvents(
 local warnEightChomps				= mod:NewSpellAnnounce(142788, 4)
 local warnBetterStrongerFaster		= mod:NewSpellAnnounce(142795, 2)
 local warnStasisBeam				= mod:NewSpellAnnounce(142769, 3)
+local warnRockPaperScissors			= mod:NewSpellAnnounce(141206, 3)
 
 local specWarnEightChomps			= mod:NewSpecialWarningMove(142788)
 
 local timerEightChompsCD			= mod:NewCDTimer(9.5, 142788)--9-14
 local timerBetterStrongerFasterCD	= mod:NewCDTimer(20, 142795)--20-24
 local timerStasisBeamCD				= mod:NewCDTimer(20, 142769)--20-24
+local timerRockpaperScissorsCD		= mod:NewCDTimer(42, 141206)--Not a large enough sample size, maybe shorter
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 local brawlersMod = DBM:GetModByName("Brawlers")
+
+function mod:SPELL_AURA_APPLIED(args)
+	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
+	if args.spellId == 141206 then
+		warnRockPaperScissors:Show()
+		timerRockpaperScissorsCD:Start()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
