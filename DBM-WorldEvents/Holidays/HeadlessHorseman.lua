@@ -9,7 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"UNIT_SPELLCAST_SUCCEEDED target focus mouseover",
+	"UNIT_SPELLCAST_SUCCEEDED target focus",
 	"CHAT_MSG_MONSTER_SAY",
 	"CHAT_MSG_SAY"
 )
