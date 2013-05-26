@@ -19,12 +19,16 @@ local warnDoom					= mod:NewSpellAnnounce(133650, 4)
 local warnBlueCrush				= mod:NewSpellAnnounce(133262, 4)
 local warnDestructolaser		= mod:NewSpellAnnounce(133250, 4)
 local warnStaticCharge			= mod:NewCastAnnounce(135621, 4)
+local warnBoomingBoogaloo		= mod:NewSpellAnnounce(140894, 3)
+local warnDeployBoom			= mod:NewSpellAnnounce(140912, 4)
 
 local specWarnEvilGlare			= mod:NewSpecialWarningMove(133208)
 local specWarnDoom				= mod:NewSpecialWarningSpell(133650, nil, nil, nil, true)--Nothing you can do about this, it means you let him get to 100 stacks and will most likely wipe if you don't have super strong CDs to blow
 local specWarnBlueCrush			= mod:NewSpecialWarningInterrupt(133262)
 local specWarnDestructolaser	= mod:NewSpecialWarningMove(133250)
 local specWarnStaticCharge		= mod:NewSpecialWarningInterrupt(135621)
+local specWarnBoomingBoogaloo	= mod:NewSpecialWarningSpell(140894, nil, nil, nil, 2)
+local specWarnDeployBoom		= mod:NewSpecialWarningSpell(140912, nil, nil, nil, 3)
 
 local timerPowerCrystalCD		= mod:NewCDTimer(13, 133398)--13-17 second variation
 local timerBlueCrushCD			= mod:NewNextTimer(30, 133262)
@@ -75,5 +79,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if brawlersMod:PlayerFighting() then
 			specWarnDestructolaser:Show()
 		end
+	elseif args.spellId == 140894 then
+		warnBoomingBoogaloo:Show()
+		specWarnBoomingBoogaloo:Show()
+	elseif args.spellId == 140912 then
+		warnDeployBoom:Show()
+		specWarnDeployBoom:Show()
 	end
 end
