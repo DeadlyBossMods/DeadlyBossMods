@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
 local Lulin = EJ_GetSectionInfo(7629)
@@ -220,16 +220,16 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 137105 and self:AntiSpam(2, 1) then--Suen Ports away (Night Phase)
+	if spellId == 137105 then--Suen Ports away (Night Phase)
 		warnNight:Show()
 		timerDayCD:Start()
 		timerDuskCD:Start()
 		timerCosmicBarrageCD:Start(17)
 		timerTearsOfTheSunCD:Start(28.5)
 		timerBeastOfNightmaresCD:Start()
-	elseif spellId == 137187 and self:AntiSpam(2, 2) then--Lu'lin Ports away (Day Phase)
+	elseif spellId == 137187 then--Lu'lin Ports away (Day Phase)
 		self:SendSync("Phase2")
-	elseif spellId == 138823 and self:AntiSpam(2, 3) then
+	elseif spellId == 138823 then
 		warnLightOfDay:Show()
 		timerLightOfDayCD:Start()
 	end
