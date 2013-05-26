@@ -11,12 +11,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnQueuePosition	= "Du bist %d. in der Warteschlange.",
+	specWarnYourNext	= "Du bist als nächstes dran!",
 	specWarnYourTurn	= "Du bist dran!"
 })
 
 L:SetOptionLocalization({
+	warnQueuePosition	= "Verkünde deine aktuelle Position in der Warteschlange\n(bei jeder Änderung)",
+	specWarnYourNext	= "Spezialwarnung, wenn du als nächstes dran bist",
 	specWarnYourTurn	= "Spezialwarnung, wenn es dein Kampf ist",
-	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe\n(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)"
+	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe\n(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)",
+	SpeakOutQueue		= "Verkünde akkustisch deine aktuelle Position in der Warteschlange\n(bei jeder Änderung)"
 })
 
 L:SetMiscLocalization({
@@ -31,8 +36,8 @@ L:SetMiscLocalization({
 	Rank6			= "sechsten Ranges",
 	Rank7			= "siebten Ranges",
 	Rank8			= "achten Ranges",
-	Rank9			= "neunten Ranges",--needs to be verified (guessed)
-	Rank10			= "zehnten Ranges",--needs to be verified (guessed)
+	Rank9			= "9. Ranges",
+	Rank10			= "10. Ranges",--needs to be verified (guessed)
 	Proboskus		= "Oje... tut mir leid, aber Ihr werdet wohl gegen Proboskus antreten müssen.",--Alliance - needs to be verified (wowhead-captured translation)
 	Proboskus2		= "Ha ha ha! Was habt Ihr auch für ein Pech! Es ist Proboskus! Ahhh ha ha ha! Ich hab fünfundzwanzig Goldstücke darauf gesetzt, dass Ihr im Feuer draufgeht!"--Horde
 })
@@ -132,7 +137,11 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
-	name = "Kampfgilde: Seltene Gegner 1"
+	name = "Kampfgilde: Herausford. 1"
+})
+
+L:SetOptionLocalization({
+	ArrowOnBoxing	= "Zeige DBM-Pfeil während $spell:140868, $spell:140862 und $spell:140886"
 })
 
 -------------
@@ -141,5 +150,5 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare2")
 
 L:SetGeneralLocalization({
-	name = "Kampfgilde: Seltene Gegner 2"
+	name = "Kampfgilde: Herausford. 2"
 })

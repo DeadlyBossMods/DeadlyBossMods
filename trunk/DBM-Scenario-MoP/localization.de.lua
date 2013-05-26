@@ -43,6 +43,11 @@ L:SetMiscLocalization{
 	TelvrakPull			= "Zan'vess will never fall!"--translate (trigger)
 }
 
+------------------------------
+-- Battle on the High Seas ---
+------------------------------
+L= DBM:GetModLocalization("d652")
+
 -----------------------
 -- Blood in the Snow --
 -----------------------
@@ -96,7 +101,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization("d647")
 
 L:SetMiscLocalization{
-	summonElemental		= "Minions, destroy these insects!"--translate (trigger)
+	summonElemental		= "Meine Diener, vernichtet diese Insekten!"
 }
 
 ------------------------
@@ -115,6 +120,16 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAchFiveAlive	= "Zeige Warnung bei Fehlschlag des Erfolgs \"Nummer 5 lebt!\""
+}
+
+----------------------------
+-- The Secret of Ragefire --
+----------------------------
+L= DBM:GetModLocalization("d649")
+
+L:SetMiscLocalization{
+	XorenthPull		= "All lesser races are enemies of the true Horde!",--translate (trigger)
+	ElagloPull		= "Fools! The true horde cannot be stopped by the likes of you."--translate (trigger)
 }
 
 ----------------------
