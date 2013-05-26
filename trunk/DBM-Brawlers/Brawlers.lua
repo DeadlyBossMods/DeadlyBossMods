@@ -11,11 +11,13 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
+local warnQueuePosition		= mod:NewAnnounce("warnQueuePosition", 2, nil, false)
 local warnOrgPortal			= mod:NewCastAnnounce(135385, 1)--These are rare casts and linked to achievement.
 local warnStormPortal		= mod:NewCastAnnounce(135386, 1)--So warn for them being cast
 
 local specWarnOrgPortal		= mod:NewSpecialWarningSpell(135385)
 local specWarnStormPortal	= mod:NewSpecialWarningSpell(135386)
+local specWarnYourNext		= mod:NewSpecialWarning("specWarnYourNext")
 local specWarnYourTurn		= mod:NewSpecialWarning("specWarnYourTurn")
 
 local berserkTimer			= mod:NewBerserkTimer(120)--all fights have a 2 min enrage to 134545. some fights have an earlier berserk though.
@@ -30,6 +32,8 @@ local currentRank = 0--Used to stop bars for the right sub mod based on dynamic 
 local currentZoneID = 0
 local modsStopped = false
 local eventsRegistered = false
+local lastRank = 0
+local QueuedBuff = GetSpellInfo(132639)
 
 function mod:PlayerFighting() -- for external mods
 	return playerIsFighting
@@ -131,7 +135,8 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		self:RegisterShortTermEvents(
 			"SPELL_CAST_START",
 			"PLAYER_REGEN_ENABLED",
-			"UNIT_DIED"
+			"UNIT_DIED",
+			"UNIT_AURA player"
 		)
 		return
 	end--We returned to arena, reset variable
@@ -187,3 +192,15 @@ function mod:OnSync(msg)
 		end
 	end
 end
+
+function mod:UNIT_AURA(uId)
+	local currentQueueRank = select(15, UnitBuff("player", QueuedBuff))
+	if currentQueueRank and currentQueueRank ~= lastRank then
+		lastRank = currentQueueRank
+		warnQueuePosition:Show(currentQueueRank)
+		if currentQueueRank == 1 then
+			specWarnYourNext:Show()
+		end
+	end
+end
+
