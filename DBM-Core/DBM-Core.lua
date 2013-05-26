@@ -3151,7 +3151,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				if not mod.ignoreBestkill then
 					mod.stats.heroicLastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 10 then
+					if bestTime and bestTime > 0 and bestTime < 3 then
 						mod.stats.heroicBestTime = thisTime
 					else
 						mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
@@ -3163,7 +3163,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
 				if not mod.ignoreBestkill then
 					mod.stats.normal25LastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 10 then
+					if bestTime and bestTime > 0 and bestTime < 5 then
 						mod.stats.normal25BestTime = thisTime
 					else
 						mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
@@ -3175,7 +3175,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
 				if not mod.ignoreBestkill then
 					mod.stats.heroic25LastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 10 then
+					if bestTime and bestTime > 0 and bestTime < 5 then
 						mod.stats.heroic25BestTime = thisTime
 					else
 						mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
