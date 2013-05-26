@@ -11,15 +11,7 @@ Alterac:RemoveOption("HealthFrame")
 Alterac:RemoveOption("SpeedKillTimer")
 
 Alterac:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA", 	-- Required for BG start
-	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"RAID_BOSS_EMOTE",
-	"GOSSIP_SHOW",
-	"QUEST_PROGRESS",
-	"QUEST_COMPLETE"
+	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start
 )
 
 local towerTimer = Alterac:NewTimer(243, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
@@ -70,6 +62,16 @@ local bgzone = false
 do
 	local function AV_Initialize()
 		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 401 then
+			Alterac:RegisterShortTermEvents(
+				"CHAT_MSG_MONSTER_YELL",
+				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+				"CHAT_MSG_BG_SYSTEM_HORDE",
+				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+				"RAID_BOSS_EMOTE",
+				"GOSSIP_SHOW",
+				"QUEST_PROGRESS",
+				"QUEST_COMPLETE"
+			)
 			bgzone = true
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
@@ -83,6 +85,7 @@ do
 			end
 		elseif bgzone then
 			bgzone = false
+			Alterac:UnregisterShortTermEvents()
 		end
 	end
 	Alterac.OnInitialize = AV_Initialize

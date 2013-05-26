@@ -4,12 +4,7 @@ local L			= Arathi:GetLocalizedStrings()
 Arathi:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Arathi:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UPDATE_WORLD_STATES"
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local winTimer 		= Arathi:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
@@ -132,6 +127,13 @@ do
 	local function AB_Initialize()
 		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 461 then
 			bgzone = true
+			Arathi:RegisterShortTermEvents(
+				"CHAT_MSG_BG_SYSTEM_HORDE",
+				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+				"CHAT_MSG_RAID_BOSS_EMOTE",
+				"UPDATE_WORLD_STATES"
+			)
 			update_gametime()
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
@@ -152,6 +154,7 @@ do
 
 		elseif bgzone then
 			bgzone = false
+			Arathi:UnregisterShortTermEvents()
 
 			if Arathi.Options.ShowAbEstimatedPoints then
 				Arathi:HideEstimatedPoints()

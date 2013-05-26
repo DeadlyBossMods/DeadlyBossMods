@@ -11,13 +11,7 @@ TwinPeaks:RemoveOption("SpeedKillTimer")
 TwinPeaks:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 TwinPeaks:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"PLAYER_REGEN_ENABLED",
-	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UPDATE_BATTLEFIELD_SCORE"
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local bgzone = false
@@ -43,6 +37,14 @@ do
 	local function TwinPeaks_Initialize()
 		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 626 then
 			bgzone = true
+			TwinPeaks:RegisterShortTermEvents(
+				"PLAYER_REGEN_ENABLED",
+				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+				"CHAT_MSG_BG_SYSTEM_HORDE",
+				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+				"CHAT_MSG_RAID_BOSS_EMOTE",
+				"UPDATE_BATTLEFIELD_SCORE"
+			)
 			if TwinPeaks.Options.ShowFlagCarrier then
 				TwinPeaks:ShowFlagCarrier()
 				TwinPeaks:CreateFlagCarrierButton()
@@ -55,6 +57,7 @@ do
 
 		elseif bgzone then
 			bgzone = false
+			TwinPeaks:UnregisterShortTermEvents()
 			if TwinPeaks.Options.ShowFlagCarrier then
 				TwinPeaks:HideFlagCarrier()
 			end
