@@ -1968,6 +1968,10 @@ function DBM:ZONE_CHANGED_INDOORS()
 	end
 end
 
+function DBM:GetCurrentArea()
+	return LastZoneMapID
+end
+
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------

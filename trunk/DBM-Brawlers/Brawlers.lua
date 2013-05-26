@@ -29,11 +29,21 @@ mod:RemoveOption("SpeedKillTimer")
 local playerIsFighting = false
 local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
-local currentZoneID = 0
+local currentZoneID = DBM:GetCurrentArea()--As core what current area is on load, since core should know
 local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
 local QueuedBuff = GetSpellInfo(132639)
+--Fix for not registering events on reloadui or login while already inside brawlers guild.
+if currentZoneID == 922 or currentZoneID == 925 then
+	eventsRegistered = true
+	mod:RegisterShortTermEvents(
+		"SPELL_CAST_START",
+		"PLAYER_REGEN_ENABLED",
+		"UNIT_DIED",
+		"UNIT_AURA player"
+	)
+end--We returned to arena, reset variable
 
 function mod:PlayerFighting() -- for external mods
 	return playerIsFighting
