@@ -25,7 +25,7 @@ local specWarnWaterJets			= mod:NewSpecialWarningSpell(133121, false)
 --Lieutenant Fizzel
 local specWarnVolatileConcoction= mod:NewSpecialWarningSpell(141327)
 --Admiral Hagman
-local specWarnVerticalSlash		= mod:NewSpecialWarningMove(141187)
+local specWarnVerticalSlash		= mod:NewSpecialWarningSpell(141187)
 
 --Lieutenant Drak'on
 local timerSwashbucklingCD		= mod:NewNextTimer(17, 141438)
