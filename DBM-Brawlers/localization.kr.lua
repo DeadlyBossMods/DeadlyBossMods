@@ -131,7 +131,7 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
-	name = "싸움꾼: 희귀 1"
+	name = "싸움꾼: 도전 1"
 })
 
 -------------
@@ -140,5 +140,5 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare2")
 
 L:SetGeneralLocalization({
-	name = "싸움꾼: 희귀 2"
+	name = "싸움꾼: 도전 2"
 })
