@@ -9,7 +9,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
+	"UNIT_SPELLCAST_CHANNEL_START boss1",
+	"UNIT_SPELLCAST_START boss1",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
@@ -20,7 +21,6 @@ mod:RegisterEventsInCombat(
 local warnCaws				= mod:NewSpellAnnounce(138923, 2)
 local warnQuills			= mod:NewCountAnnounce(134380, 4)
 local warnFlock				= mod:NewAnnounce("warnFlock", 3, 15746)--Some random egg icon
-local warnLayEgg			= mod:NewSpellAnnounce(134367, 3)
 local warnTalonRake			= mod:NewStackAnnounce(134366, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnDowndraft			= mod:NewSpellAnnounce(134370, 3)
 local warnFeedYoung			= mod:NewSpellAnnounce(137528, 3)--No Cd because it variable based on triggering from eggs, it's cast when one of young call out and this varies too much
@@ -88,14 +88,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnTalonRakeOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 137528 then
-		warnFeedYoung:Show()
-		specWarnFeedYoung:Show()
-		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
-			timerFeedYoungCD:Start(40)
-		else
-			timerFeedYoungCD:Start()
-		end
 	elseif args.spellId == 133755 and args:IsPlayer() then
 		timerFlight:Start()
 	elseif args.spellId == 140741 and args:IsPlayer() then
@@ -110,8 +102,20 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	if args.spellId == 134380 then
+function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, _, spellId)
+	if aspellId == 137528 then
+		warnFeedYoung:Show()
+		specWarnFeedYoung:Show()
+		if self:IsDifficulty("normal10", "heroic10", "lfr25") then
+			timerFeedYoungCD:Start(40)
+		else
+			timerFeedYoungCD:Start()
+		end
+	end
+end
+
+function mod:UNIT_SPELLCAST_START(uId, _, _, _, spellId)
+	if aspellId == 134380 then
 		quillsCount = quillsCount + 1
 		warnQuills:Show(quillsCount)
 		specWarnQuills:Show()
@@ -121,7 +125,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerQuillsCD:Start(nil, quillsCount+1)
 		end
-	elseif args.spellId == 134370 then
+	elseif spellId == 134370 then
 		warnDowndraft:Show()
 		specWarnDowndraft:Show()
 		timerDowndraft:Start()
@@ -130,8 +134,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerDowndraftCD:Start()--Todo, confirm they didn't just change normal to 90 as well. in my normal logs this had a 110 second cd on normal
 		end
-	elseif args.spellId == 134380 and self:AntiSpam(2, 1) then--Maybe adjust anti spam a bit or find a different way to go about this. It is important information though.
-		warnLayEgg:Show()
 	end
 end
 

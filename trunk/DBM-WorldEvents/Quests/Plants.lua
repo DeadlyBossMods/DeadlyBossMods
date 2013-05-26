@@ -6,7 +6,7 @@ mod:SetZone(24)--Hillsbrad Foothills
 
 mod:RegisterEvents(
 	"UNIT_SPELLCAST_SUCCEEDED player",
-	"UNIT_EXITED_VEHICLE",
+--	"UNIT_EXITED_VEHICLE player",
 	"RAID_BOSS_WHISPER"
 )
 
@@ -70,8 +70,6 @@ function mod:RAID_BOSS_WHISPER(msg)
 end
 
 function mod:UNIT_EXITED_VEHICLE(uId)
-	if uId == "player" then 
---		timerWave:Cancel()
-	end
+--	timerWave:Cancel()
 end
 

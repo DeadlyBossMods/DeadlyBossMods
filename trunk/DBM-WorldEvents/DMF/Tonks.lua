@@ -8,7 +8,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"UNIT_SPELLCAST_SUCCEEDED player",
 	"UNIT_DIED",
-	"UNIT_EXITED_VEHICLE"
+	"UNIT_EXITED_VEHICLE player"
 )
 
 local warnMarked				= mod:NewSpellAnnounce(102341, 4)
@@ -48,8 +48,6 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_EXITED_VEHICLE(uId)
-	if uId == "player" then 
-		timerGame:Cancel()
-		countdownGame:Cancel()
-	end
+	timerGame:Cancel()
+	countdownGame:Cancel()
 end

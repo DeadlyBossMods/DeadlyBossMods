@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4",
 	"UNIT_DIED"
 )
 
@@ -160,7 +160,7 @@ local function checkSpear()
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 			if inRange and inRange < 10 then
 				specWarnThrowSpearNear:Show(targetname)--Near spear target
-			elseif mod:AntiSpam(15, 8) then--Smart way to do a failsafe in case we never get a valid target
+			elseif mod:AntiSpam(15, 6) then--Smart way to do a failsafe in case we never get a valid target
 				specWarnThrowSpear:Show()--not spear target or near spear target, generic aoe warning (for the lines and stuff)
 			end
 		end
@@ -315,7 +315,7 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 134926 and phase < 4 then
-		if self:AntiSpam(15, 8) then--Basically, if the target scanning failed, we do an aoe warning on the actual summon.
+		if self:AntiSpam(15, 6) then--Basically, if the target scanning failed, we do an aoe warning on the actual summon.
 			specWarnThrowSpear:Show()
 		end
 		timerThrowSpearCD:Start()
@@ -341,13 +341,13 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 134611 and self:AntiSpam(2, 5) then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
+	if spellId == 134611 then--Unleashed Flame internal CD. He cannot use more often than every 6 seconds. 137991 is ability activation on pull, before 137991 is cast, he can't use ability at all
 		warnUnleashedFlame:Show()
 		timerUnleashedFlameCD:Start()
 		--NOTE, on heroic phase 3-4, trigger still fires every 6 seconds but energy gain is slower so it won't actually go off often like it does in phase 1.
 		--None the less, this timer is accurate on heroic as 6 seconds as it indicates when the next POSSIBLE cast is. in other words, if he reaches enough energy during this cd, he won't cast it until 6 second cd ends
 		--This cast is the periodic trigger that checks whether or not boss has 30 energy, nothing more.
-	elseif spellId == 50630 and self:AntiSpam(2, 6) then--Eject All Passengers (heroic phase change trigger)
+	elseif spellId == 50630 then--Eject All Passengers (heroic phase change trigger)
 		local cid = self:GetCIDFromGUID(UnitGUID(uId))
 		self:Unschedule(checkSpear)
 		timerThrowSpearCD:Start()
@@ -401,13 +401,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				DBM.InfoFrame:Show(5, "playerbaddebuff", 136193)
 			end
 		end
-	elseif spellId == 139172 and self:AntiSpam(2, 7) then--Whirling Winds (Phase 1 Heroic)
+	elseif spellId == 139172 then--Whirling Winds (Phase 1 Heroic).
 		warnWhirlingWinds:Show()
 		timerWhirlingWindsCD:Start()
-	elseif spellId == 139181 and self:AntiSpam(2, 7) then--Frost Spike (Phase 2 Heroic)
+	elseif spellId == 139181 then--Frost Spike (Phase 2 Heroic)
 		warnFrostSpike:Show()
 		timerFrostSpikeCD:Start()
-	elseif spellId == 137656 and self:AntiSpam(2, 1) and phase == 2 then--Rushing Winds (Wind Storm end trigger)
+	elseif spellId == 137656 and phase == 2 and self:AntiSpam(2, 1) then--Rushing Winds (Wind Storm end trigger). ANTISPAM still needed, multiple get cast
 		warnWindStorm:Cancel()
 		specWarnWindStorm:Cancel()
 		warnWindStormEnd:Show()
