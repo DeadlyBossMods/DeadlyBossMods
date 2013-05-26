@@ -286,7 +286,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 125098 and self:AntiSpam(2, 4) then--Yell is about 1.5 seconds faster then this event, BUT, it also requires localizing. I don't think doing it this way hurts anything.
+	if spellId == 125098 then--Yell is about 1.5 seconds faster then this event, BUT, it also requires localizing. I don't think doing it this way hurts anything.
 		self:UnregisterShortTermEvents()
 		table.wipe(resinTargets)
 		timerScreechCD:Cancel()
@@ -303,7 +303,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-	elseif spellId == 125304 and self:AntiSpam(2, 1) then
+	elseif spellId == 125304 then
 		fieldCount = 0
 		timerPhase1:Cancel()--If you kill everything it should end early.
 		warnAdvance:Show()
