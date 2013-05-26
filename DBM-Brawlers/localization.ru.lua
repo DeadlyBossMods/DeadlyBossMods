@@ -12,12 +12,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnQueuePosition	= "Ваша позиция в очереди: %d",
+	specWarnYourNext	= "Вы следующие!",
 	specWarnYourTurn	= "Ваш выход!"
 })
 
 L:SetOptionLocalization({
+	warnQueuePosition	= "Показывать вашу текущию позицию в очереди",
+	specWarnYourNext	= "Спец-предупреждение, когда подходит ваша очередь сражаться",
 	specWarnYourTurn	= "Спец-предупреждение о начале вашего боя",
-	SpectatorMode		= "Отображать предупреждения/таймеры во время просмотра боев\n(Персональные 'спец-предупреждения' зрителям не отображаются)"
+	SpectatorMode		= "Отображать предупреждения/таймеры во время просмотра боев\n(Персональные 'спец-предупреждения' зрителям не отображаются)",
+	SpeakOutQueue		= "Объявлять голосом вашу текущую позицию в очереди"
 })
 
 L:SetMiscLocalization({
@@ -135,6 +140,11 @@ L= DBM:GetModLocalization("BrawlRare1")
 L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: Редкие 1"
 })
+
+L:SetOptionLocalization({
+	ArrowOnBoxing	= "Показывать стрелку DBM во время $spell:140868, $spell:140862 и $spell:140886"
+})
+
 
 -------------
 -- Rares 2 --
