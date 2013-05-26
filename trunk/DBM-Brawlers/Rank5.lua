@@ -8,7 +8,7 @@ mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"UNIT_SPELLCAST_INTERRUPTED target focus mouseover"
+	"UNIT_SPELLCAST_INTERRUPTED target focus"
 )
 
 local warnPolymorph			= mod:NewSpellAnnounce(133362, 4)
