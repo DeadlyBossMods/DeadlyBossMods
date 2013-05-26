@@ -38,8 +38,8 @@ local function findUnseen()
 				yellUnseenStrike:Yell()
 			else
 				specWarnUnseenStrikeOther:Show(name)
-				if self.Options.UnseenStrikeArrow then
-					DBM.Arrow:ShowRunTo(target, 3, 3, 5)
+				if mod.Options.UnseenStrikeArrow then
+					DBM.Arrow:ShowRunTo(uId, 3, 3, 5)
 				end
 			end
 			return
