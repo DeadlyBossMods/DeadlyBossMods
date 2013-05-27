@@ -71,8 +71,6 @@ L = DBM:GetModLocalization("z529")
 
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
-	Alliance 		= "Alianza",
-	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
 	BasesToWin 		= "Bases necesarias para ganar: %d",
 	Flag 			= "Bandera"
@@ -95,10 +93,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z566")
 
 L:SetMiscLocalization({
-	ZoneName		= "Ojo de la Tormenta",
 	ScoreExpr		= "(%d+)/1600",
-	Alliance 		= "Alianza",
-	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
 	FlagReset 		= "La bandera se ha restablecido.",
 	FlagTaken 		= "¡ (.+) ha tomado la bandera!",
@@ -125,8 +120,6 @@ L = DBM:GetModLocalization("z489")
 L:SetMiscLocalization({
 	BgStart60 			= "La batalla comienza en 1 minuto.",
 	BgStart30 			= "La batalla comienza en 30 segundos. ¡Preparaos!",
-	Alliance 			= "Alianza",
-	Horde 				= "Horda",
 	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp 			= "¡(.+) ha cogido la bandera de la (%w+)!",
 	ExprFlagCaptured 		= "¡(.+) ha capturado la bandera de la (%w+)!",
@@ -192,9 +185,6 @@ L = DBM:GetModLocalization("z726")
 L:SetMiscLocalization({
 	BgStart60 			= "La batalla comienza en 1 minuto.",
 	BgStart30 			= "La batalla comienza en 30 segundos. ¡Preparaos!",
-	ZoneName 			= "Twin",	-- translate
-	Alliance 			= "Alianza",
-	Horde 				= "Horda",
 	InfoErrorText		= "La función de targetear al portador de la bandera se restaurará cuando estés fuera de combate.",
 	ExprFlagPickUp		= "¡(.+) ha cogido la bandera de la (%w+)!",
 	ExprFlagCaptured	= "¡(.+) ha capturado la bandera de la (%w+)!",
@@ -225,8 +215,6 @@ L = DBM:GetModLocalization("z761")
 
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/2000",
-	Alliance 		= "Alianza",
-	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
 	BasesToWin 		= "Bases necesarias para ganar: %d",
 	Flag 			= "Bandera"

@@ -81,8 +81,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "Альянса",
-	Horde		= "Орды",
 	WinBarText	= "Победа %s",
 	BasesToWin	= "Баз для победы: %d",
 	Flag		= "Флаг"
@@ -104,10 +102,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName		= "Око Бури",
 	ScoreExpr		= "(%d+)/1600",
-	Alliance 		= "Альянс",
-	Horde 			= "Орда",
 	WinBarText 		= "Победа %s",
 	FlagReset 		= "Флаг возвращен на базу.",
 	FlagTaken 		= "(.+) захватывает флаг!",
@@ -136,8 +131,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "Битва начнется через 1 минуту.",
 	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
-	Alliance 			= "Альянса",
-	Horde 				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца будет восстановлена после выхода из режима боя.",
 	ExprFlagPickUp		= "(.+) несет флаг (%w+)!",
 	ExprFlagPickUp2		= "Флаг (%w+) у (.+)!", -- only used for Russian language
@@ -204,9 +197,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "Битва начнется через 1 минуту.",
 	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
-	ZoneName 			= "Два Пика",
-	Alliance			= "Альянса",
-	Horde				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца будет восстановлена после выхода из режима боя.",
 	ExprFlagPickUp		= "(.+) несет флаг (%w+)!", --"Флаг (%w+) у (.+)!"
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
@@ -236,8 +226,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/2000",
-	Alliance	= "Альянса",
-	Horde		= "Орды",
 	WinBarText	= "Победа %s",
 	BasesToWin	= "Баз для победы: %d",
 	Flag		= "Флаг"
@@ -275,8 +263,6 @@ L:SetMiscLocalization({
 	OrbTaken 	= "(%S+) захватывает (%S+) сферу!",
 	OrbReturn 	= "(%S+) сфера возвращена!",
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "Альянс",
-	Horde		= "Орда",
 	WinBarText	= "Предположительно %s побеждает",
 	OrbsToWin	= "Сфер для победы: %d"
 })
