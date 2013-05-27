@@ -171,8 +171,7 @@ end
 
 local function checkArcing()
 	local arcingDebuffs = 0
-	for i = 1, GetNumGroupMembers() do
-		local uId = "raid"..i
+	for uId in DBM:GetGroupMembers() do
 		if UnitDebuff(uId, arcingName) then
 			arcingDebuffs = arcingDebuffs + 1
 		end

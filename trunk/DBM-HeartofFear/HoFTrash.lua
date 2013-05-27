@@ -29,8 +29,7 @@ mod:AddBoolOption("UnseenStrikeArrow")
 local spellName = GetSpellInfo(122949)
 
 local function findUnseen()
-	for i=1, DBM:GetNumGroupMembers() do
-		local uId = "raid"..i
+	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
 			warnUnseenStrike(name)
