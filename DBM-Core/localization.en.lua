@@ -41,8 +41,6 @@ DBM_CORE_MIN						= "min"
 DBM_CORE_MIN_FMT					= "%d min"
 DBM_CORE_SEC						= "sec"
 DBM_CORE_SEC_FMT					= "%d sec"
-DBM_CORE_DEAD						= "dead"--DEAD
-DBM_CORE_OK							= "Okay"--OKAY
 
 DBM_CORE_GENERIC_WARNING_DUPLICATE	= "One of the %s"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "Berserk in %s %s"
@@ -54,7 +52,6 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "Show boss health frame"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Announces"
-DBM_CORE_OPTION_CATEGORY_MISC		= "Miscellaneous"--MISCELLANEOUS
 
 DBM_CORE_AUTO_RESPONDED						= "Auto-responded."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d people alive"
@@ -102,9 +99,7 @@ DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sound when more than one player is in rang
 DBM_CORE_RANGECHECK_SOUND_0			= "No sound"
 DBM_CORE_RANGECHECK_SOUND_1			= "Default sound"
 DBM_CORE_RANGECHECK_SOUND_2			= "Annoying beep"
-DBM_CORE_RANGECHECK_HIDE			= "Hide"--HIDE
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
-DBM_CORE_RANGECHECK_LOCK			= "Lock frame"--LOCK_FRAME
 DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Frames"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "Show radar frame"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Show text frame"
@@ -112,8 +107,6 @@ DBM_CORE_RANGECHECK_OPTION_BOTH		= "Show both frames"
 DBM_CORE_RANGERADAR_HEADER			= "Range Radar (%d yd)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d players in range"
 
-DBM_CORE_INFOFRAME_LOCK				= "Lock frame"--LOCK_FRAME
-DBM_CORE_INFOFRAME_HIDE				= "Hide"--HIDE
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Always show your power"		-- Always show your own power value even if you are below the threshold
 
 DBM_LFG_INVITE						= "LFG Invite"
@@ -135,9 +128,6 @@ DBM_CORE_SLASHCMD_HELP				= {
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Close health frame"
-
-DBM_CORE_ALLIANCE					= "Alliance"--FACTION_ALLIANCE
-DBM_CORE_HORDE						= "Horde"--FACTION_HORDE
 
 DBM_CORE_WORLD_BOSS					= "World Boss"
 DBM_CORE_UNKNOWN					= "unknown"--UNKNOWN which is "Unknown" (does u vs U matter?)

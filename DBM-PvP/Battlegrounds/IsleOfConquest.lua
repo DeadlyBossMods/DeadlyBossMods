@@ -57,7 +57,7 @@ end
 local bgzone = false
 do
 	local function initialize(self)
-		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 540 then
+		if DBM:GetCurrentArea() == 540 then
 			bgzone = true
 			IsleOfConquest:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
@@ -86,8 +86,8 @@ do
 		end
 	end
 	
-	IsleOfConquest.OnInitialize = initialize
-	IsleOfConquest.ZONE_CHANGED_NEW_AREA = initialize
+	IsleOfConquest.OnInitialize = IsleOfConquest:Schedule(1, initialize)
+	IsleOfConquest.ZONE_CHANGED_NEW_AREA = IsleOfConquest:Schedule(1, initialize)
 end
 
 do
