@@ -1816,11 +1816,14 @@ end
 
 function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
+		print("DBM Debug: Attemping to load queued mods")
 		if type(loadDelay) == "table" then
 			for i, v in ipairs(loadDelay) do
+				print("DBM Debug: loading ", v)
 				DBM:LoadMod(v)
 			end
 		else
+			print("DBM Debug: loading ", loadDelay)
 			DBM:LoadMod(loadDelay)
 		end
 	end
@@ -2041,6 +2044,7 @@ function DBM:LoadMod(mod)
 	--IF we are fighting a boss, we don't have much of a choice but to try and load anyways since script ran too long isn't actually a guarentee.
 	--it's mainly for slower computers that fail to load mods in combat. Most can load in combat if we delay the garbage collect
 	if InCombatLockdown() and IsInInstance() and not IsEncounterInProgress() then
+		print("DBM Debug: Mod load delayed because of combat: ", mod)
 		if loadDelay and loadDelay ~= mod then
 			if type(loadDelay) ~= "table" then
 				loadDelay = { loadDelay }
@@ -2067,7 +2071,6 @@ function DBM:LoadMod(mod)
 		end
 		return false
 	else
-		loadDelay = nil
 		if DBM.Options.ShowLoadMessage then--Make load option optional for advanced users, option is NOT in the GUI.
 			self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		end
@@ -2095,6 +2098,7 @@ function DBM:LoadMod(mod)
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
 		end
+		loadDelay = nil
 		return true
 	end
 end
