@@ -77,12 +77,12 @@ L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
 	warnReshapeLife				= "%s on >%s< (%d)",--Localized because i like class colors on warning and shoving a number into targetname broke it using the generic.
-	warnReshapeLifeTutor		= "1: Interrupt/debuff target, 2: Interrupt yourself, 3: Regen Health/Willpower, 4: Escape Vehicle",
+	warnReshapeLifeTutor		= "1: Interrupt/debuff target (use this on boss to build debuff stacks), 2: Interrupt yourself when casting Amber Explosion, 3: Restore Willpower when it's low (use primarily in phase 3), 4: Escape Vehicle (phase 1 & 2 only)",
 	warnAmberExplosion			= ">%s< is casting %s",
 	warnAmberExplosionAM		= "Amber Monstrosity is casting Amber Explosion - Interrupt Now!",--personal warning.
 	warnInterruptsAvailable		= "Interupts available for %s: >%s<",
 	warnWillPower				= "Current Will Power: %s",
-	specwarnWillPower			= "Low Will Power! - 5s remaining",
+	specwarnWillPower			= "Low Will Power! - Leave vehicle or consume a puddle",
 	specwarnAmberExplosionYou	= "Interrupt YOUR %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Interrupt %s!",--Amber Montrosity
 	specwarnAmberExplosionOther	= "%s: Interrupt %s!"--Mutated Construct
