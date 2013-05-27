@@ -2098,7 +2098,11 @@ function DBM:LoadMod(mod)
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
 		end
-		loadDelay = nil
+		if type(loadDelay) == "table" then
+			loadDelay[mod] = nil
+		elseif loadDelay == mod then
+			loadDelay = nil
+		end
 		return true
 	end
 end
