@@ -47,7 +47,7 @@ end
 local menu
 menu = {
 	{
-		text = DBM_CORE_RANGECHECK_LOCK,
+		text = LOCK_FRAME,
 		checked = false, -- requires DBM.Options which is not available yet
 		func = function()
 			menu[1].checked = not menu[1].checked
@@ -175,7 +175,7 @@ function updateBar(bar, percent, icon, dontShowDead)
 	local bartimer = _G[bar:GetName() .. "BarTimer"]
 	local barbar = _G[bar:GetName() .. "Bar"]
 	local barIcon = _G[bar:GetName() .. "BarIcon"]
-	bartimer:SetText((percent > 0 or dontShowDead) and math.floor(percent).."%" or DBM_CORE_DEAD)
+	bartimer:SetText((percent > 0 or dontShowDead) and math.floor(percent).."%" or DEAD)
 	barbar:SetValue(percent)
 	barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
 	if not icon or type(icon) ~= "number" or icon < 1 or icon > 8 then

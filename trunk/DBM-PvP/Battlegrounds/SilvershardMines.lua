@@ -15,7 +15,7 @@ Silvershard:RemoveOption("HealthFrame")
 Silvershard:RemoveOption("SpeedKillTimer")
 
 function Silvershard:OnInitialize()
-	if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 860 then
+	if DBM:GetCurrentArea() == 860 then
 		bgzone = true
 		Silvershard:RegisterShortTermEvents(
 			"CHAT_MSG_MONSTER_YELL",
@@ -30,7 +30,7 @@ function Silvershard:OnInitialize()
 		Silvershard:UnregisterShortTermEvents()
 	end
 end
-Silvershard.ZONE_CHANGED_NEW_AREA = Silvershard.OnInitialize
+Silvershard.ZONE_CHANGED_NEW_AREA = Silvershard:ScheduleMethod(1, "OnInitialize")
 
 
 function Silvershard:CHAT_MSG_RAID_BOSS_EMOTE(msg)
