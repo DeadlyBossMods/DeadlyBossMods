@@ -171,8 +171,8 @@ end
 
 mod:RegisterOnUpdateHandler(function(self)
 	if hasHighestVersion and not (iconsSet == 3) then
-		for i = 1, DBM:GetNumGroupMembers() do
-			local uId = "raid"..i.."target"
+		for uId in DBM:GetGroupMembers() do
+			local uId = uId.."target"
 			local guid = UnitGUID(uId)
 			if adds[guid] then
 				for g,i in pairs(adds) do
@@ -208,8 +208,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		shellsRemaining = shellsRemaining + 1
 		addsActivated = addsActivated - 1
 		if DBM:GetRaidRank() > 0 and self.Options.ClearIconOnTurtles then
-			for i = 1, DBM:GetNumGroupMembers() do
-				local uId = "raid"..i.."target"
+			for uId in DBM:GetGroupMembers() do
+				local uId = uId.."target"
 				local guid = UnitGUID(uId)
 				if args.destGUID == guid then
 					SetRaidTarget(uId, 0)

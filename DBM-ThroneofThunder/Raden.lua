@@ -76,8 +76,7 @@ function mod:checkVitaDistance()
 		return
 	end
 	local furthestDistance = 0
-	for i = 1, DBM:GetNumGroupMembers() do
-		local uId = "raid"..i
+	for uId in DBM:GetGroupMembers() do
 		if not UnitIsUnit(uId, playerWithVita) then
 			local distance = DBM.RangeCheck:GetDistance(uId, playerWithVita)
 			if distance > furthestDistance then
