@@ -6,7 +6,6 @@ DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm he
 DBM_FORUMS_MESSAGE					= "오류나 잘못된 바를 발견하셨나요? 일부 전투에서 추가 알림, 특수 경고 또는 바가 있으면 좋을텐데라고 생각하셨나요?\n새로 개설된 Deadly Boss Mods 토론, 오류 제보 및 요청 게시판을 방문해 보세요. 주소는 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r 입니다. (링크를 클릭하신 후 주소를 복사하실 수 있습니다.)"
 DBM_FORUMS_COPY_URL_DIALOG			= "새로운 게시판을 방문해보세요.\r\n(Elitist Jerks에서 서비스를 제공합니다!)"
 
-
 DBM_CORE_LOAD_MOD_ERROR				= "%s 경보를 불러오는 중 오류 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 경보를 불러왔습니다 !"
 DBM_CORE_LOAD_GUI_ERROR				= "설정창을 불러올 수 없습니다: %s"

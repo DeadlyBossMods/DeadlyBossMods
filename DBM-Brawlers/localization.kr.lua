@@ -11,12 +11,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnQueuePosition	= "현재 대기 순위 : %d번째",
+	specWarnYourNext	= "다음이 당신 차례입니다!",
 	specWarnYourTurn	= "당신 차례입니다!"
 })
 
 L:SetOptionLocalization({
+	warnQueuePosition	= "대기 인원 변경시 당신이 몇 번째 순위인지 알림 보기",
+	specWarnYourNext	= "다음 차례가 당신 일 경우 특수 경고 보기",
 	specWarnYourTurn	= "당신 차례가 오면 특수 경고 보기",
-	SpectatorMode		= "관전중 일때도 알림/바 보기\n(개인별 특수 경고는 관전자에게 보이지 않습니다.)"
+	SpectatorMode		= "관전중 일때도 알림/바 보기\n(개인별 특수 경고는 관전자에게 보이지 않습니다.)",
+	SpeakOutQueue		= "대기 인원 변경시 당신이 몇 번째 순위인지 음성으로 듣기"
 })
 
 L:SetMiscLocalization({
@@ -132,6 +137,10 @@ L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
 	name = "싸움꾼: 도전 1"
+})
+
+L:SetOptionLocalization({
+	ArrowOnBoxing	= "$spell:140868, $spell:140862, $spell:140886 주문이 시전 중일때 DBM 화살표 보기"
 })
 
 -------------
