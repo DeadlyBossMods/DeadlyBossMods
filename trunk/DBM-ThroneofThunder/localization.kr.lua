@@ -262,5 +262,5 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ToTTrash")
 
 L:SetGeneralLocalization({
-	name = "천둥의 왕좌 일반구간"
+	name = "천둥의 왕좌: 일반구간"
 })
