@@ -120,3 +120,16 @@ L:SetMiscLocalization({
 	PlayerDebuffs		= "시선 집중 대상",
 	YellPhase3			= "변명은 이제 지겹다, 여제! 당장 이 멍청이들을 쓸어버리지 않으면 내가 몸소 널 죽이겠다!"
 })
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("HoFTrash")
+
+L:SetGeneralLocalization({
+	name =	"공포의 심장: 일반구간"
+})
+
+L:SetOptionLocalization({
+	UnseenStrikeArrow	= "$spell:122949 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
+})
