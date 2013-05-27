@@ -2649,7 +2649,7 @@ do
 		button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
 		button:SetPushedTexture(button:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
 		button:SetHighlightTexture(button:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
-		button:SetText(DBM_CORE_OK)
+		button:SetText(OKAY)
 		button:SetScript("OnClick", function(self)
 			frame:Hide()
 		end)
@@ -3819,9 +3819,9 @@ end
 DBM.Bars:SetAnnounceHook(function(bar)
 	local prefix
 	if bar.color and bar.color.r == 1 and bar.color.g == 0 and bar.color.b == 0 then
-		prefix = DBM_CORE_HORDE
+		prefix = FACTION_HORDE
 	elseif bar.color and bar.color.r == 0 and bar.color.g == 0 and bar.color.b == 1 then
-		prefix = DBM_CORE_ALLIANCE
+		prefix = FACTION_ALLIANCE
 	end
 	if prefix then
 		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName().."BarName"]:GetText(), math.floor(bar.timer / 60), bar.timer % 60)
@@ -6058,7 +6058,7 @@ do
 		__index = setmetatable({
 			timer		= DBM_CORE_OPTION_CATEGORY_TIMERS,
 			announce	= DBM_CORE_OPTION_CATEGORY_WARNINGS,
-			misc		= DBM_CORE_OPTION_CATEGORY_MISC
+			misc		= MISCELLANEOUS
 		}, returnKey)
 	}
 	local defaultTimerLocalization = {

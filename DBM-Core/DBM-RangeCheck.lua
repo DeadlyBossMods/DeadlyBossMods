@@ -173,7 +173,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_LOCK
+			info.text = LOCK_FRAME
 			if DBM.Options.RangeFrameLocked then
 				info.checked = true
 			end
@@ -181,7 +181,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_HIDE
+			info.text = HIDE
 			info.notCheckable = true
 			info.func = rangeCheck.Hide
 			info.arg1 = rangeCheck

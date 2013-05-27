@@ -125,7 +125,7 @@ end
 
 do
 	local function AB_Initialize()
-		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 461 then
+		if DBM:GetCurrentArea() == 461 then
 			bgzone = true
 			Arathi:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -164,8 +164,8 @@ do
 			end
 		end
 	end
-	Arathi.OnInitialize = AB_Initialize
-	Arathi.ZONE_CHANGED_NEW_AREA = AB_Initialize
+	Arathi.OnInitialize = arathi:Schedule(1, AB_Initialize)
+	Arathi.ZONE_CHANGED_NEW_AREA = arathi:Schedule(1, AB_Initialize)
 end
 
 do
@@ -267,7 +267,7 @@ do
 			winner_is = 2
 			winTimer:Update(get_gametime(), get_gametime()+HordeTime)
 			winTimer:DisableEnlarge()
-			winTimer:UpdateName(L.WinBarText:format(L.Horde))
+			winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
 			winTimer:SetColor(hordeColor)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
 
@@ -281,7 +281,7 @@ do
 			winner_is = 1
 			winTimer:Update(get_gametime(), get_gametime()+AllyTime)
 			winTimer:DisableEnlarge()
-			winTimer:UpdateName(L.WinBarText:format(L.Alliance))
+			winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
 			winTimer:SetColor(allyColor)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
 		end

@@ -104,7 +104,7 @@ do
 		local info
 		if level == 1 then
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_INFOFRAME_LOCK
+			info.text = LOCK_FRAME
 			if DBM.Options.InfoFrameLocked then
 				info.checked = true
 			end
@@ -120,7 +120,7 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_INFOFRAME_HIDE
+			info.text = HIDE
 			info.notCheckable = true
 			info.func = infoFrame.Hide
 			info.arg1 = infoFrame
