@@ -69,8 +69,6 @@ L = DBM:GetModLocalization("z529")
 
 L:SetMiscLocalization({
 	ScoreExpr 			= "(%d+)/1600",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
 	WinBarText 			= "%s勝利",
 	BasesToWin 			= "勝利需要基地:%d",
 	Flag 				= "旗幟"
@@ -93,10 +91,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z566")
 
 L:SetMiscLocalization({
-	ZoneName			= "暴風之眼",
 	ScoreExpr			= "(%d+)/1600",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
 	WinBarText 			= "%s勝利",
 	FlagReset 			= "旗幟已重置!",
 	FlagTaken 			= "(.+)已經奪走了旗幟!",
@@ -122,8 +117,6 @@ L = DBM:GetModLocalization("z489")
 L:SetMiscLocalization({
 	BgStart60 			= "戰鬥將在1分鐘內開始。",
 	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
 	InfoErrorText			= "當你離開戰鬥後，旗幟框架將會回復。",
 	ExprFlagPickUp			= "(.+)的旗幟被(.+)拔掉了!",
 	ExprFlagCaptured		= "(.+)佔據了(.+)的旗幟!",
@@ -189,9 +182,6 @@ L = DBM:GetModLocalization("z726")
 L:SetMiscLocalization({
 	BgStart60 			= "戰鬥將在1分鐘內開始。",
 	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
-	ZoneName 			= "雙子",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
 	InfoErrorText			= "當你離開戰鬥後，旗幟框架將會回復。",
 	ExprFlagPickUp			= "(.+)的旗幟被(.+)拔\230?\142?\137?\232?\181?\183?了!", -- 掉 \230\142\137 起 \232\181\183
 	ExprFlagCaptured		= "(.+)佔據了(.+)的旗幟!",
@@ -222,8 +212,6 @@ L = DBM:GetModLocalization("z761")
 
 L:SetMiscLocalization({
 	ScoreExpr 			= "(%d+)/2000",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
 	WinBarText 			= "%s勝利",
 	BasesToWin 			= "勝利需要基地: %d",
 	Flag 				= "旗幟"
@@ -272,8 +260,6 @@ L:SetMiscLocalization({
 	OrbTaken 	= "(%S+)奪走了(%S+)異能球!",
 	OrbReturn 	= "(%S+)異能球已回到初始位置!",
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "聯盟",
-	Horde		= "部落",
 	WinBarText	= "預計%s勝利",
 	OrbsToWin	= "獲勝異能球數量: %d"
 })
