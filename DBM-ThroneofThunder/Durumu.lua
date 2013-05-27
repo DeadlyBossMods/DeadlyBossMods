@@ -238,8 +238,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 local function findBeamJump(spellName, spellId)
-	for i=1, DBM:GetNumGroupMembers() do
-		local uId = "raid"..i
+	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if spellId == 139202 and UnitDebuff(uId, spellName) and lastBlue ~= name then
 			lastBlue = name
