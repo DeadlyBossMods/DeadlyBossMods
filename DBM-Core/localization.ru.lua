@@ -6,7 +6,6 @@ DBM_HOW_TO_USE_MOD					= "Добро пожаловать в DBM. Для дос�
 DBM_FORUMS_MESSAGE					= "Нашли баг или неправильный таймер? Вы считаете что какому-то модулю требуется дополнительное предупреждение, таймер или особенность?\nПосетите новые форумы Deadly Boss Mods для обсуждений, сообщений об ошибках и запроса новых возможностей на |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r (вы можете нажать на ссылку, чтобы скопировать URL)"
 DBM_FORUMS_COPY_URL_DIALOG			= "Посетите наши новые форумы обсуждения и поддержки\r\n(организовано Elitist Jerks!)"
 
-
 DBM_CORE_LOAD_MOD_ERROR				= "Ошибка при загрузке босс модуля для %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен модуль для '%s'. Для дополнительных настроек введите /dbm или /dbm help в чате."
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
@@ -43,8 +42,6 @@ DBM_CORE_MIN						= "мин"
 DBM_CORE_MIN_FMT					= "%d мин"
 DBM_CORE_SEC						= "сек"
 DBM_CORE_SEC_FMT					= "%d сек"
-DBM_CORE_DEAD						= "мертв"
-DBM_CORE_OK							= "ОК"
 
 DBM_CORE_GENERIC_WARNING_DUPLICATE	= "Один из %s"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "Берсерк через %s %s"
@@ -56,7 +53,6 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "Отображать здоровье босс�
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Индикаторы"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Предупреждения"
-DBM_CORE_OPTION_CATEGORY_MISC		= "Прочее"
 
 DBM_CORE_AUTO_RESPONDED				= "Авто-ответ."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d человек живые"
@@ -104,9 +100,7 @@ DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Несколько человек нахо
 DBM_CORE_RANGECHECK_SOUND_0			= "Без звука"
 DBM_CORE_RANGECHECK_SOUND_1			= "По умолчанию"
 DBM_CORE_RANGECHECK_SOUND_2			= "Раздражающий звуковой сигнал"
-DBM_CORE_RANGECHECK_HIDE			= "Скрыть"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d м"
-DBM_CORE_RANGECHECK_LOCK			= "Закрепить окно"
 DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Фреймы"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "Показывать радар"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Показывать текстовый фрейм"
@@ -114,8 +108,6 @@ DBM_CORE_RANGECHECK_OPTION_BOTH		= "Показывать оба фрейма"
 DBM_CORE_RANGERADAR_HEADER			= "Радар (%d ярдов)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d игроков в радиусе"
 
-DBM_CORE_INFOFRAME_LOCK				= "Закрепить окно"
-DBM_CORE_INFOFRAME_HIDE				= "Скрыть"
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Всегда показывать вашу энергию"		-- Always show your own power value even if you are below the threshold
 
 DBM_LFG_INVITE						= "Приглашение в подземелье"
@@ -137,9 +129,6 @@ DBM_CORE_SLASHCMD_HELP				= {
 DBM_ERROR_NO_PERMISSION				= "У вас недостаточно прав для выполнения этой операции."
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Скрыть"
-
-DBM_CORE_ALLIANCE					= "Альянс"
-DBM_CORE_HORDE						= "Орда"
 
 DBM_CORE_WORLD_BOSS					= "Мировой босс"
 DBM_CORE_UNKNOWN					= "неизвестно"
