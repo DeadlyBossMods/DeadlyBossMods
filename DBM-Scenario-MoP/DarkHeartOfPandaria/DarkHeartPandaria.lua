@@ -42,13 +42,13 @@ local timerCallElementalCD	= mod:NewCDTimer(50, 141872)
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 142139 then
+	if args.spellId == 142139 and self:AntiSpam(3, 1) then
 		warnStoneRain:Show()
 		specWarnStoneRain:Show()
 	elseif args.spellId == 141421 then
 		warnSpellShatter:Show()
 		specWarnSpellShatter:Show()
-	elseif args.spellId == 141421 then
+	elseif args.spellId == 141421 and self:AntiSpam(3, 2) then
 		warnSummonFieryAnger:Show()
 		specWarnSummonFieryAnger:Show(args.sourceName)
 	elseif args.spellId == 142840 then
