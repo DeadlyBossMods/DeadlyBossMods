@@ -80,8 +80,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "Allianz",
-	Horde		= "Horde",
 	WinBarText	= "%s gewinnt",
 	BasesToWin	= "benötigte Basen für Sieg: %d",
 	Flag		= "Flagge"
@@ -104,8 +102,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1600",
-	Alliance 		= "Allianz",
-	Horde 			= "Horde",
 	WinBarText 		= "%s gewinnt",
 	FlagReset 		= "Die Flagge wurde zurückgesetzt.",
 	FlagTaken 		= "(.+) hat die Flagge aufgenommen.",
@@ -134,8 +130,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "Die Schlacht beginnt in 1 Minute.",
 	BgStart30 			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
-	Alliance 			= "Allianz",
-	Horde 				= "Horde",
 	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
 	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
 	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
@@ -201,8 +195,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "Die Schlacht beginnt in 1 Minute.",
 	BgStart30 			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
-	Alliance 			= "Allianz",
-	Horde 				= "Horde",
 	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
 	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
 	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
@@ -232,8 +224,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/2000",
-	Alliance	= "Allianz",
-	Horde		= "Horde",
 	WinBarText	= "%s gewinnt",
 	BasesToWin	= "benötigte Basen für Sieg: %d",
 	Flag		= "Flagge"
@@ -271,8 +261,6 @@ L:SetMiscLocalization({
 	OrbTaken 	= "(%S+) hat die (%S+) Kugel genommen!",
 	OrbReturn 	= "Die (%S+) Kugel wurde zurückgebracht!",
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "Allianz",
-	Horde		= "Horde",
 	WinBarText	= "%s gewinnt (geschätzt)",
 	OrbsToWin	= "benötigte Kugeln für Sieg: %d"
 })
