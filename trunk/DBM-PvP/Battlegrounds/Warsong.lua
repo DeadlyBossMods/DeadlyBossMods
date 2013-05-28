@@ -219,7 +219,7 @@ do
 					nickLong = mNick
 				end
 				
-				if mSide == FACTION_ALLIANCE then
+				if (mSide == L.Alliance) or (mSide == FACTION_ALLIANCE) then
 					FlagCarrier[2] = nickLong
 					self.FlagCarrierFrame2Text:SetText(mNick)
 					self.FlagCarrierFrame2:Show()
@@ -232,7 +232,7 @@ do
 						self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/targetexact " .. nickLong )
 					end					
 
-				elseif mSide == FACTION_HORDE then
+				elseif (mSide == L.Horde) or (mSide == FACTION_HORDE) then
 					FlagCarrier[1] = nickLong
 					self.FlagCarrierFrame1Text:SetText(mNick)
 					self.FlagCarrierFrame1:Show()
@@ -258,11 +258,11 @@ do
 					_, _, mSide =  string.find(arg1, L.ExprFlagReturn)
 				end
 				
-				if mSide == FACTION_ALLIANCE then
+				if (mSide == L.Alliance) or (mSide == FACTION_ALLIANCE) then
 					self.FlagCarrierFrame2:Hide()
 					FlagCarrier[2] = nil
 
-				elseif mSide == FACTION_HORDE then
+				elseif (mSide == L.Horde) or (mSide == FACTION_HORDE) then
 					self.FlagCarrierFrame1:Hide()
 					FlagCarrier[1] = nil
 				end

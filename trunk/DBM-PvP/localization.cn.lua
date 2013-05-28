@@ -73,6 +73,8 @@ L = DBM:GetModLocalization("z529")
 
 L:SetMiscLocalization({
 	ScoreExpr 	= "(%d+)/1600",
+	Alliance 	= "联盟",
+	Horde 		= "部落",
 	WinBarText 	= "%s 获胜",
 	BasesToWin 	= "胜利需要占领资源点: %d",
 	Flag 		= "旗帜"
@@ -96,6 +98,8 @@ L = DBM:GetModLocalization("z566")
 
 L:SetMiscLocalization({
 	ScoreExpr	 	= "(%d+)/1600",
+	Alliance 		= "联盟",
+	Horde 			= "部落",
 	WinBarText 		= "%s 获胜",
 	FlagReset 		= "旗帜被重新放置了。!",
 	FlagTaken 		= "(.+)夺走了旗帜！",
@@ -122,6 +126,8 @@ L = DBM:GetModLocalization("z489")
 L:SetMiscLocalization({
 	BgStart60 = "战歌峡谷战斗将在1分钟内开始。",
 	BgStart30 = "战歌峡谷战斗将在30秒钟内开始。做好准备！",
+	Alliance = "联盟",
+	Horde = "部落",
 	InfoErrorText = "携带旗帜者目标功能会在你脱离战斗后恢复。",
 	ExprFlagPickUp = "(.+)的旗帜被(.+)拔起了！",
 	ExprFlagCaptured = "(.+)夺取了(.+)的旗帜！",
@@ -187,6 +193,8 @@ L = DBM:GetModLocalization("z726")
 L:SetMiscLocalization({
 	BgStart60 = "战斗将在1分钟内开始。",
 	BgStart30 = "战斗将在30秒钟内开始。做好准备！",
+	Alliance 			= "联盟",
+	Horde 				= "部落",
 	InfoErrorText		= "携带旗帜者目标功能会在你脱离战斗后恢复。",
 	ExprFlagPickUp = "(.+)的旗帜被(.+)拔起了！",
 	ExprFlagCaptured = "(.+)夺取了(.+)的旗帜！",
@@ -217,6 +225,8 @@ L = DBM:GetModLocalization("z761")
 
 L:SetMiscLocalization({
 	ScoreExpr = "(%d+)/2000",
+	Alliance = "联盟",
+	Horde = "部落",
 	WinBarText = "%s 获胜",
 	BasesToWin = "胜利需要占领资源点: %d",
 	Flag = "旗帜"
@@ -266,6 +276,8 @@ L:SetMiscLocalization({
 	OrbTaken 	= "(%S+)取走了(%S+)的球！",
 	OrbReturn 	= "(%S+)宝珠被放回了！",
 	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "联盟",
+	Horde		= "部落",
 	WinBarText	= "预计：%s获胜",
 	OrbsToWin	= "胜利需要控制宝珠：%d"
 })
