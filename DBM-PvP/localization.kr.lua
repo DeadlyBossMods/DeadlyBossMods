@@ -81,8 +81,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
-	Alliance 		= "얼라이언스",
-	Horde 			= "호드",
 	WinBarText 		= "%s 승리",
 	BasesToWin		= "역전하기 위해 필요한 거점 수: %d",
 	Flag 			= "깃발"
@@ -105,8 +103,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
-	Alliance 		= "얼라이언스",
-	Horde 			= "호드",
 	WinBarText		= "%s 승리",
 	FlagReset 		= "깃발이 다시 제자리로 돌아갔습니다.",
 	FlagTaken 		= "^(.+)|1이;가; 깃발을 차지했습니다!",
@@ -131,8 +127,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Alliance = "얼라이언스",
-	Horde = "호드",
 	InfoErrorText 		= "시스템상 한계로 전투 중에는 깃발 운반자 추적이 불가능합니다. 현재 전투가 종료된 후 깃발 운반자 추적 기능이 복구됩니다.",
 	ExprFlagPickUp 		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",
 	ExprFlagCaptured 	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
@@ -195,8 +189,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Alliance 			= "얼라이언스",
-	Horde 				= "호드",
 	InfoErrorText 		= "시스템상 한계로 전투 중에는 깃발 운반자 추적이 불가능합니다. 현재 전투가 종료된 후 깃발 운반자 추적 기능이 복구됩니다.",
 	ExprFlagPickUp		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",
 	ExprFlagCaptured	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
@@ -226,8 +218,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/2000",
-	Alliance 		= "얼라이언스",
-	Horde 			= "호드",
 	WinBarText 		= "%s 승리",
 	BasesToWin		= "역전하기 위해 필요한 거점 수: %d",
 	Flag 			= "깃발"
@@ -259,8 +249,6 @@ L:SetMiscLocalization({
 	OrbTaken 	= "차지했습니다!",
 	OrbReturn 	= "공이 돌아왔습니다!",
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "얼라이언스",
-	Horde		= "호드",
 	WinBarText	= "%s 승리",
 	OrbsToWin	= "역전하기 위해 필요한 공 수: %d"
 })
