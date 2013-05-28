@@ -1670,14 +1670,23 @@ do
 			end
 		end
 	end
+	
+	local function soloIterator(_, state)
+		if not state then -- no state == first call
+			return "player", 0
+		end
+	end
 
 	-- returns the unit ids of all raid or party members, including the player's own id
 	-- limitations: will break if there are ever raids with more than 99 players or partys with more than 10
 	function DBM:GetGroupMembers()
 		if IsInRaid() then
 			return raidIterator, GetNumGroupMembers(), "raid0"
-		else
+		elseif IsInGroup() then
 			return partyIterator, GetNumSubgroupMembers(), nil
+		else
+			-- solo!
+			return soloIterator, nil, nil
 		end
 	end
 end
