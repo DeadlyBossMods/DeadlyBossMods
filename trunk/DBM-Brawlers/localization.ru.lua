@@ -138,13 +138,12 @@ L:SetGeneralLocalization({
 L= DBM:GetModLocalization("BrawlRare1")
 
 L:SetGeneralLocalization({
-	name = "Бойцовская гильдия: Редкие 1"
+	name = "Бойцовская гильдия: Вызовы 1"
 })
 
 L:SetOptionLocalization({
 	ArrowOnBoxing	= "Показывать стрелку DBM во время $spell:140868, $spell:140862 и $spell:140886"
 })
-
 
 -------------
 -- Rares 2 --
@@ -152,5 +151,5 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization("BrawlRare2")
 
 L:SetGeneralLocalization({
-	name = "Бойцовская гильдия: Редкие 2"
+	name = "Бойцовская гильдия: Вызовы 2"
 })

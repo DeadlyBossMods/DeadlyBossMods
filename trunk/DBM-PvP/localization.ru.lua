@@ -58,7 +58,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerTower	= "Отсчет времени до захвата",
+	TimerTower	= "Отсчет времени до захвата башен",
 	TimerGY		= "Отсчет времени до захвата кладбищ",
 	AutoTurnIn	= "Автоматическая сдача заданий"
 })
@@ -81,9 +81,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "Альянса",
-	Horde		= "Орды",
-	WinBarText	= "Победа %s",
+	WinBarText	= "%s побеждает",
 	BasesToWin	= "Баз для победы: %d",
 	Flag		= "Флаг"
 })
@@ -105,14 +103,11 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1600",
-	Alliance 		= "Альянс",
-	Horde 			= "Орда",
-	WinBarText 		= "Победа %s",
+	WinBarText 		= "%s побеждает",
 	FlagReset 		= "Флаг возвращен на базу.",
 	FlagTaken 		= "(.+) захватывает флаг!",
 	FlagCaptured	= "(.+) захватил флаг!", --"Орда захватила флаг!"
 	FlagDropped		= "Флаг уронили!"
-
 })
 
 ---------------------
@@ -141,7 +136,7 @@ L:SetMiscLocalization({
 	ExprFlagPickUp		= "(.+) несет флаг (%w+)!",
 	ExprFlagPickUp2		= "Флаг (%w+) у (.+)!", -- only used for Russian language
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
-	ExprFlagReturn		= "(.+) возвращает на базу .лаг (%w+)!",
+	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!",
 	FlagAlliance		= "Флаг Альянса: ",
 	FlagHorde			= "Флаг Орды: ",
 	FlagBase			= "База"
@@ -234,9 +229,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/2000",
-	Alliance	= "Альянса",
-	Horde		= "Орды",
-	WinBarText	= "Победа %s",
+	WinBarText	= "%s побеждает",
 	BasesToWin	= "Баз для победы: %d",
 	Flag		= "Флаг"
 })
@@ -273,8 +266,6 @@ L:SetMiscLocalization({
 	OrbTaken 	= "(%S+) захватывает (%S+) сферу!",
 	OrbReturn 	= "(%S+) сфера возвращена!",
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "Альянс",
-	Horde		= "Орда",
 	WinBarText	= "Предположительно %s побеждает",
 	OrbsToWin	= "Сфер для победы: %d"
 })
