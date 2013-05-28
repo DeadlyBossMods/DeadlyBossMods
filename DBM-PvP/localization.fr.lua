@@ -72,6 +72,8 @@ L = DBM:GetModLocalization("z529")
 
 L:SetMiscLocalization({
 	ScoreExpr 				= "(%d+)/1600",
+	Alliance 				= "Alliance",
+	Horde 					= "Horde",
 	WinBarText 				= "%s Gagne",
 	BasesToWin 				= "Bases pour gagner: %d",
 	Flag 					= "Drapeau"
@@ -95,6 +97,8 @@ L = DBM:GetModLocalization("z566")
 
 L:SetMiscLocalization({
 	ScoreExpr			= "(%d+)/1600",
+	Alliance 			= "Alliance",
+	Horde 				= "Horde",
 	WinBarText 			= "%s Gagne",
 	FlagReset 			= "Le drapeau a été réinitialisé.",
 	FlagTaken 			= "(.+) a pris le drapeau !",
@@ -121,6 +125,8 @@ L = DBM:GetModLocalization("z489")
 L:SetMiscLocalization({
 	BgStart60 					= "Début de la bataille pour le goulet des Chanteguerres dans 1 minute.",
 	BgStart30 					= "Début de la bataille pour le goulet des Chanteguerres dans 30 secondes. Préparez-vous !",
+	Alliance 					= "Alliance",
+	Horde 						= "Horde",
 	InfoErrorText 				= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",
 	ExprFlagPickUp 				= "Le Drapeau (%w+) a été pris par (.+) !",
 	ExprFlagCaptured 			= "(.+) a capturé le drapeau (%w+) !",
@@ -192,6 +198,8 @@ L = DBM:GetModLocalization("z726")
 L:SetMiscLocalization({
 	BgStart60 			= "Début de la bataille dans 60 secondes.",
 	BgStart30 			= "Début de la bataille dans 30 secondes. Préparez vous!",
+	Alliance 			= "Alliance",
+	Horde 				= "Horde",
 	InfoErrorText		= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",
 	ExprFlagPickUp		= "Le  Drapeau (%w+) a été pris par (.+) !",
 	ExprFlagCaptured		= "(.+) a capturé le drapeau (%w+) !",
@@ -224,6 +232,8 @@ L = DBM:GetModLocalization("z761")
 
 L:SetMiscLocalization({
 	ScoreExpr 				= "(%d+)/2000",
+	Alliance 				= "Alliance",
+	Horde 					= "Horde",
 	WinBarText 				= "%s Gagne",
 	BasesToWin 				= "Bases pour gagner: %d",
 	Flag 					= "Drapeau"
