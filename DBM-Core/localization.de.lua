@@ -42,8 +42,6 @@ DBM_CORE_MIN						= "Min"
 DBM_CORE_MIN_FMT					= "%d Min"
 DBM_CORE_SEC						= "Sek"
 DBM_CORE_SEC_FMT					= "%d Sek"
-DBM_CORE_DEAD						= "Tot"
-DBM_CORE_OK							= "Okay"
 
 DBM_CORE_GENERIC_WARNING_DUPLICATE	= "Einer der %s"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "Berserker in %s %s"
@@ -55,7 +53,6 @@ DBM_CORE_OPTION_HEALTH_FRAME		= "Zeige Lebensanzeige"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Timer"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Ansagen"
-DBM_CORE_OPTION_CATEGORY_MISC		= "Verschiedenes"
 
 DBM_CORE_AUTO_RESPONDED						= "Automatisch geantwortet."
 DBM_CORE_STATUS_WHISPER						= "%s: %s, %d/%d Spieler am Leben"
@@ -103,9 +100,7 @@ DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sound, falls mehr als ein Spieler in Reich
 DBM_CORE_RANGECHECK_SOUND_0			= "Kein Sound"
 DBM_CORE_RANGECHECK_SOUND_1			= "Standard-Sound"
 DBM_CORE_RANGECHECK_SOUND_2			= "Nerviges Piepsen"
-DBM_CORE_RANGECHECK_HIDE			= "Verstecken"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%dm"
-DBM_CORE_RANGECHECK_LOCK			= "Fenster sperren"
 DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Fenster"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "Zeige Radarfenster"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Zeige Textfenster"
@@ -113,8 +108,6 @@ DBM_CORE_RANGECHECK_OPTION_BOTH		= "Zeige beide Fenster"
 DBM_CORE_RANGERADAR_HEADER			= "Abstandsradar (%dm)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d Spieler in Reichweite"
 
-DBM_CORE_INFOFRAME_LOCK				= "Fenster sperren"
-DBM_CORE_INFOFRAME_HIDE				= "Verstecken"
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Eigene Stärke immer anzeigen" -- Always show your own power value even if you are below the threshold
 
 DBM_LFG_INVITE						= "Einladung der Gruppensuche"
@@ -136,9 +129,6 @@ DBM_CORE_SLASHCMD_HELP				= {
 DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für diesen Befehl!"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Verstecken"
-
-DBM_CORE_ALLIANCE					= "Allianz"
-DBM_CORE_HORDE						= "Horde"
 
 DBM_CORE_WORLD_BOSS					= "Weltboss"
 DBM_CORE_UNKNOWN					= "unbekannt"

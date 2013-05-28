@@ -67,15 +67,15 @@ L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
 	warnReshapeLife				= "%s auf >%s< (%d)",
-	warnReshapeLifeTutor		= "1: Unterbreche/Debuffe Ziel, 2: Unterbreche dich selbst, 3: Regeneriere Gesundheit/Willen, 4: Verlasse Konstrukt",
+	warnReshapeLifeTutor		= "1: Unterbreche/Debuffe Ziel (zum Aufbau von Debuff-Stapeln auf dem Boss benutzen), 2: Unterbreche dich selbst beim Wirken einer Bernexplosion, 3: Regeneriere Willen (primär in Phase 3 bei geringem Willen nutzen), 4: Verlasse Konstrukt (nur Phase 1 und 2)",
 	warnAmberExplosion			= ">%s< wirkt %s",
 	warnAmberExplosionAM		= "Bernmonstrosität wirkt Bernexplosion - Jetzt unterbrechen!",
 	warnInterruptsAvailable		= "Unterbrechungen verfügbar für %s: >%s<",
 	warnWillPower				= "Aktueller Willen: %s",
-	specwarnWillPower			= "Geringer Willen! - 5 Sekunden verbleibend",
-	specwarnAmberExplosionYou	= "Unterbreche DEINE %s!",--Struggle for Control interrupt.
-	specwarnAmberExplosionAM	= "%s: Unterbreche %s!",--Amber Montrosity
-	specwarnAmberExplosionOther	= "%s: Unterbreche %s!"--Mutated Construct
+	specwarnWillPower			= "Geringer Willen! - Konstrukt verlassen oder Pfütze verzehren",
+	specwarnAmberExplosionYou	= "Unterbreche DEINE %s!",
+	specwarnAmberExplosionAM	= "%s: Unterbreche %s!",
+	specwarnAmberExplosionOther	= "%s: Unterbreche %s!"
 })
 
 L:SetTimerLocalization({
