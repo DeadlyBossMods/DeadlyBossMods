@@ -157,8 +157,8 @@ end
 mod:RegisterOnUpdateHandler(function(self)
 	if hasHighestVersion and not (iconsSet == guardActivated) then
 		for uId in DBM:GetGroupMembers() do
-			local uId = uId.."target"
-			local guid = UnitGUID(uId)
+			local unitid = uId.."target"
+			local guid = UnitGUID(unitid)
 			if guards[guid] then
 				for g,i in pairs(guards) do
 					if i == 8 and g ~= guid then -- always set skull on first we see
@@ -167,7 +167,7 @@ mod:RegisterOnUpdateHandler(function(self)
 						break
 					end
 				end
-				SetRaidTarget(uId, guards[guid])
+				SetRaidTarget(unitid, guards[guid])
 				iconsSet = iconsSet + 1
 				guards[guid] = nil
 			end

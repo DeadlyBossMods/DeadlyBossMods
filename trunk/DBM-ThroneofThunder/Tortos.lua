@@ -172,8 +172,8 @@ end
 mod:RegisterOnUpdateHandler(function(self)
 	if hasHighestVersion and not (iconsSet == 3) then
 		for uId in DBM:GetGroupMembers() do
-			local uId = uId.."target"
-			local guid = UnitGUID(uId)
+			local unitid = uId.."target"
+			local guid = UnitGUID(unitid)
 			if adds[guid] then
 				for g,i in pairs(adds) do
 					if i == 8 and g ~= guid then -- always set skull on first we see
@@ -182,7 +182,7 @@ mod:RegisterOnUpdateHandler(function(self)
 						break
 					end
 				end
-				SetRaidTarget(uId, adds[guid])
+				SetRaidTarget(unitid, adds[guid])
 				iconsSet = iconsSet + 1
 				adds[guid] = nil
 			end
@@ -209,10 +209,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		addsActivated = addsActivated - 1
 		if DBM:GetRaidRank() > 0 and self.Options.ClearIconOnTurtles then
 			for uId in DBM:GetGroupMembers() do
-				local uId = uId.."target"
-				local guid = UnitGUID(uId)
+				local unitid = uId.."target"
+				local guid = UnitGUID(unitid)
 				if args.destGUID == guid then
-					SetRaidTarget(uId, 0)
+					SetRaidTarget(unitid, 0)
 				end
 			end
 		end
