@@ -32,7 +32,7 @@ local function findUnseen()
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
-			warnUnseenStrike(name)
+			warnUnseenStrike:Show()(name)
 			if name == UnitName("player") then
 				specWarnUnseenStrike:Show()
 				yellUnseenStrike:Yell()
