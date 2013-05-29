@@ -79,6 +79,18 @@ local function clearStomp()
 	end
 end
 
+local function checkCrystalShell()
+	if not UnitDebuff("player", shelldName) and not UnitIsDeadOrGhost("player") then
+		local percent = (UnitHealth("player") / UnitHealthMax("player")) * 100
+		if percent > 90 then
+			specWarnCrystalShell:Show(shelldName)
+		else
+			mod:Unschedule(checkCrystalShell)
+			mod:Schedule(5, checkCrystalShell)
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	stompActive = false
 	stompCount = 0
@@ -103,6 +115,7 @@ function mod:OnCombatStart(delay)
 			DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
 			DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
 		end
+		checkCrystalShell()
 		berserkTimer:Start(600-delay)
 	else
 		berserkTimer:Start(-delay)
@@ -230,7 +243,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 137633 and args:IsPlayer() then
-		specWarnCrystalShell:Show(shelldName)
+		checkCrystalShell()
 	end
 end
 
@@ -276,7 +289,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSummonBatsCD:Start()
 	end
 end
-
 
 function mod:OnSync(msg, guid, ver)
 	if msg == "IconCheck" and guid and ver then
