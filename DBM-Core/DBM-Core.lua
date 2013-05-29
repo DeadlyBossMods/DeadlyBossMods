@@ -207,6 +207,7 @@ local _, class = UnitClass("player")
 local LastZoneMapID = -1
 local queuedBattlefield = {}
 local loadDelay = nil
+local loadDelay2 = nil
 local stopDelay = nil
 local myRealRevision = DBM.Revision or DBM.ReleaseRevision
 local watchFrameRestore = false
@@ -1826,16 +1827,12 @@ end
 
 function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
-		print("DBM Debug: Attemping to load queued mods")
-		if type(loadDelay) == "table" then
-			for i, v in ipairs(loadDelay) do
-				print("DBM Debug Table: loading ", v)
-				DBM:LoadMod(v)
-			end
-		else
-			print("DBM Debug: loading ", loadDelay)
-			DBM:LoadMod(loadDelay)
-		end
+--		print("DBM Debug: loading ", loadDelay)
+		DBM:LoadMod(loadDelay)
+	end
+	if loadDelay2 then
+--		print("DBM Debug: loading ", loadDelay2)
+		DBM:LoadMod(loadDelay2)
 	end
 	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
 		guiRequested = false
@@ -2054,15 +2051,12 @@ function DBM:LoadMod(mod)
 	--IF we are fighting a boss, we don't have much of a choice but to try and load anyways since script ran too long isn't actually a guarentee.
 	--it's mainly for slower computers that fail to load mods in combat. Most can load in combat if we delay the garbage collect
 	if InCombatLockdown() and IsInInstance() and not IsEncounterInProgress() then
-		print("DBM Debug: Mod load delayed because of combat: ", mod)
-		if loadDelay and loadDelay ~= mod then
-			if type(loadDelay) ~= "table" then
-				loadDelay = { loadDelay }
-			end
-			if not loadDelay[mod] then
-				loadDelay[#loadDelay + 1] = mod
-			end
+--		print("DBM Debug: Mod load delayed because of combat: ", mod)
+		if loadDelay and loadDelay ~= mod then--Check if load delay exists, but make sure this isn't a loop of same mod before making a second load delay
+--			print("DBM Debug: Adding second mod to load delay: ", mod)
+			loadDelay2 = mod
 		else
+--			print("DBM Debug: Adding first mod to load delay: ", mod)
 			loadDelay = mod
 		end
 		return
@@ -2108,11 +2102,8 @@ function DBM:LoadMod(mod)
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
 		end
-		if type(loadDelay) == "table" then
-			loadDelay[mod] = nil
-			if #loadDelay == 0 then
-				loadDelay = nil
-			end
+		if loadDelay2 == mod then
+			loadDelay2 = nil
 		elseif loadDelay == mod then
 			loadDelay = nil
 		end
