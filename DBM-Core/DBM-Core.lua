@@ -1692,7 +1692,7 @@ do
 end
 
 function DBM:GetNumGroupMembers()
-	return GetNumGroupMembers()
+	return IsInGroup() and GetNumGroupMembers() or 1
 end
 
 function DBM:GetBossUnitId(name)
