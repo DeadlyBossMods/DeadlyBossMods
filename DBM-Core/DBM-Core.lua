@@ -1829,7 +1829,7 @@ function DBM:PLAYER_REGEN_ENABLED()
 		print("DBM Debug: Attemping to load queued mods")
 		if type(loadDelay) == "table" then
 			for i, v in ipairs(loadDelay) do
-				print("DBM Debug: loading ", v)
+				print("DBM Debug Table: loading ", v)
 				DBM:LoadMod(v)
 			end
 		else
@@ -2110,6 +2110,9 @@ function DBM:LoadMod(mod)
 		end
 		if type(loadDelay) == "table" then
 			loadDelay[mod] = nil
+			if #loadDelay == 0 then
+				loadDelay = nil
+			end
 		elseif loadDelay == mod then
 			loadDelay = nil
 		end
