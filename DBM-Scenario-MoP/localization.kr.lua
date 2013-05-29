@@ -101,7 +101,7 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization("d647")
 
 L:SetMiscLocalization{
-	summonElemental		= "Minions, destroy these insects!"
+	summonElemental		= "하수인들아, 이 벌레들을 없애라!"
 }
 ------------------------
 -- Greenstone Village --
