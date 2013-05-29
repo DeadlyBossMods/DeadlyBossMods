@@ -7,7 +7,6 @@ mod:SetMainBossID(68065)
 mod:SetQuestID(32748)
 mod:SetZone()
 mod:SetUsedIcons(7, 6, 4, 2)
-mod:SetBossHPInfoToHighest()--This shouldn't be nessesary but apparently SetMainBossID doesn't work. boss health is still using lowest HP head. if mainid is set in boss health it should IGNORE ALL OTHER IDs
 
 mod:RegisterCombat("combat")
 
