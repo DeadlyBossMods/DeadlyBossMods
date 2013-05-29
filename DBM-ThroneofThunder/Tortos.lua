@@ -98,9 +98,11 @@ function mod:OnCombatStart(delay)
 	countdownStomp:Start(29-delay)
 	timerBreathCD:Start(-delay)
 	countdownBreath:Start(-delay)
-	if self.Options.InfoFrame and self:IsDifficulty("heroic10", "heroic25") then
-		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
-		DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
+			DBM.InfoFrame:Show(5, "playergooddebuff", 137633)
+		end
 		berserkTimer:Start(600-delay)
 	else
 		berserkTimer:Start(-delay)
@@ -256,8 +258,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 --Does not show in combat log, so UNIT_AURA must be used instead
---This needs to be switched to RegisterUnitEvent once tandanu is done wit that code.
---that way dbm isn't checking if it's boss1 325635325 times a fight.
 function mod:UNIT_AURA(uId)
 	local _, _, _, _, _, duration, expires = UnitDebuff(uId, shellConcussion)
 	if expires and lastConcussion ~= expires then
