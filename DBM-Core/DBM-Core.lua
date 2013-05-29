@@ -3046,6 +3046,17 @@ function DBM:GetHighestBossHealth()
 	return highestBossHealth
 end
 
+function DBM:GetBossHealthByCID(cid)
+	if #bossHealth == 0 then return 1 end
+	local health
+	for i, v in pairs(bossHealth) do
+		if i == cid then
+			health = v
+		end
+	end
+	return health
+end
+
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		local scenario = mod.type == "SCENARIO"
@@ -3078,7 +3089,7 @@ function DBM:EndCombat(mod, wipe)
 		if wipe then
 			--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local wipeHP = ("%d%%"):format((mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
+			local wipeHP = ("%d%%"):format((mod.mainBossId and DBM:GetBossHealthByCID(mod.mainBossId) or mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
 			local totalPulls = (savedDifficulty == "lfr25" and mod.stats.lfr25Pulls) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicPulls) or (savedDifficulty == "challenge5" and mod.stats.challengePulls) or (savedDifficulty == "normal25" and mod.stats.normal25Pulls) or (savedDifficulty == "heroic25" and mod.stats.heroic25Pulls) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalPulls) or 0
 			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "challenge5" and mod.stats.challengeKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalKills) or 0
 			if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
@@ -3634,7 +3645,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			local hp = ("%d%%"):format((mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
+			local hp = ("%d%%"):format((mod.mainBossId and DBM:GetBossHealthByCID(mod.mainBossId) or mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
 			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), hp or DBM_CORE_UNKNOWN, getNumAlivePlayers(), GetNumGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or not DBM:GetRaidUnitId(select(4, BNGetFriendInfoByID(sender)))) or not isRealIdMessage and not DBM:GetRaidUnitId(sender)) then
@@ -3646,7 +3657,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			local hp = ("%d%%"):format((mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
+			local hp = ("%d%%"):format((mod.mainBossId and DBM:GetBossHealthByCID(mod.mainBossId) or mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
 			if not autoRespondSpam[sender] then
 				if IsInScenarioGroup() then
 					sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficultyText..(mod.combatInfo.name or ""), getNumAlivePlayers(), GetNumGroupMembers()))
