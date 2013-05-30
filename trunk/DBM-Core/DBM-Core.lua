@@ -4718,15 +4718,16 @@ do
 				end
 			end
 			if DBM.Options.CountdownVoice == "None" then return end
-			if DBM.Options.CountdownVoice == "Mosh" then
+			if DBM.Options.CountdownVoice == "Mosh" then--Voice only goes to 5
 				for i = count, 1, -1 do
 					if i <= 5 then
 						self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
 					end
 				end
 			else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
+				local voice = DBM.Options.CountdownVoice--This works, because we make sure the folder path matches the sound option name exactly
 				for i = count, 1, -1 do
-					self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..i..".ogg")
+					self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..i..".ogg")
 				end
 			end
 		end
@@ -4844,14 +4845,14 @@ do
 			timer = timer or self.timer or 10
 			timer = timer <= 5 and self.timer or timer
 			if DBM.Options.CountdownVoice == "None" then return end
-			if DBM.Options.CountdownVoice == "Mosh" and timer == 5 then--Don't have 6-10 for him yet.
+			if DBM.Options.CountdownVoice == "Mosh" and timer <= 5 then--Don't have 6-10 for him yet.
 				for i = 1, timer do
 					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
 				end
-			else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-				--Ugly as hel way to do it but i coudln't think of a different way to do it accurately
+			else--Voices that go to 10
+				local voice = DBM.Options.CountdownVoice--This works, because we make sure the folder path matches the sound option name exactly
 				for i = 1, timer do
-					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..i..".ogg")
+					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..i..".ogg")
 				end
 			end
 		end
