@@ -67,6 +67,6 @@ end
 
 function mod:OnSync(msg)
 	if msg == "UnseenTrash" then
-		self:Schedule(0.1, findUnseen)
+		findUnseen()
 	end
 end
