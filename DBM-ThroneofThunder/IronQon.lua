@@ -7,7 +7,6 @@ mod:SetMainBossID(68078)
 mod:SetQuestID(32754)
 mod:SetZone()
 mod:SetUsedIcons(8)
-mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
