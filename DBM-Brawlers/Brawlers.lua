@@ -213,11 +213,13 @@ function mod:UNIT_AURA(uId)
 		if currentQueueRank == 1 then
 			specWarnYourNext:Show()
 		end
-		if self.Options.SpeakOutQueue and currentQueueRank < 11 then
+		if self.Options.SpeakOutQueue then
+			local voice = DBM.Options.CountdownVoice
+			if (voice == "Mosh" and currentQueueRank > 5) or currentQueueRank > 10 then return end
 			if DBM.Options.UseMasterVolume then
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..currentQueueRank..".ogg", "Master")
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..currentQueueRank..".ogg", "Master")
 			else
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\Corsica_S\\"..currentQueueRank..".ogg")
+				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..currentQueueRank..".ogg")
 			end
 		end
 	end
