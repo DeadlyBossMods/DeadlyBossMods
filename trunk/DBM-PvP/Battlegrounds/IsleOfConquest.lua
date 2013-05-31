@@ -86,7 +86,7 @@ do
 		end
 	end
 	
-	IsleOfConquest.OnInitialize = initialize()
+	IsleOfConquest.OnInitialize = initialize
 	function IsleOfConquest:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, initialize)
 	end

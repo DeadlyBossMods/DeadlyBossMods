@@ -88,7 +88,7 @@ do
 			Alterac:UnregisterShortTermEvents()
 		end
 	end
-	Alterac.OnInitialize = AV_Initialize()
+	Alterac.OnInitialize = AV_Initialize
 	function Alterac:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, AV_Initialize)
 	end
