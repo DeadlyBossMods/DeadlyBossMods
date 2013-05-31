@@ -63,8 +63,8 @@ do
 			end
 		end
 	end
-	TwinPeaks.OnInitialize = TwinPeaks:Schedule(1, TwinPeaks_Initialize)
-	TwinPeaks.ZONE_CHANGED_NEW_AREA = TwinPeaks:Schedule(1, TwinPeaks_Initialize)
+	TwinPeaks.OnInitialize = TwinPeaks:Schedule(3, TwinPeaks_Initialize)
+	TwinPeaks.ZONE_CHANGED_NEW_AREA = TwinPeaks:Schedule(3, TwinPeaks_Initialize)
 end
 
 function TwinPeaks:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
