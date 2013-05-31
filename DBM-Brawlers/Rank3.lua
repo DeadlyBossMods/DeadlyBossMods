@@ -31,7 +31,7 @@ local blatGUID = 0
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
-	if args.spellId == 33975 then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
+	if args.spellId == 33975 or args.spellId == 136334 then--Spellid is used by 5 diff mobs in game, but SetZone sould filter the other 4 mobs.
 		warnPyroblast:Show()
 	elseif args.spellId == 132666 then
 		warnFireWall:Show()
