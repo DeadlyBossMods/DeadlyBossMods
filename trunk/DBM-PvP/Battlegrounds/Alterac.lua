@@ -62,7 +62,6 @@ local bgzone = false
 do
 	local function AV_Initialize()
 		if DBM:GetCurrentArea() == 401 then
-			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			Alterac:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
