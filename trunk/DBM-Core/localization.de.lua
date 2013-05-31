@@ -8,6 +8,7 @@ DBM_FORUMS_COPY_URL_DIALOG			= "Besuche unsere neuen Diskussions- und Support-Fo
 
 DBM_CORE_LOAD_MOD_ERROR				= "Fehler beim Laden der Boss Mods für %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen. Für weitere Einstellungen /dbm oder /dbm help im Chatfenster eingeben!"
+DBM_CORE_LOAD_MOD_COMBAT			= "Laden von '%s' verzögert bis du den Kampf verlässt"
 DBM_CORE_LOAD_GUI_ERROR				= "Konnte die grafische Benutzeroberfläche nicht laden: %s"
 DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Kampf geladen werden. Zur Vornahme von Einstellungen bitte diese zunächst außerhalb des Kampfes laden. Danach steht sie auch im Kampf zur Verfügung."
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
@@ -254,9 +255,9 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Setze Zeichen auf Ziele von $spell:%s"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%s"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele Countdown-Sound bis $spell:%s gewirkt wird"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele Countdown-Sound bis $spell:%s schwindet"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Spiele Countout-Sound für Dauer von $spell:%s"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele akustischen Countdown bis $spell:%s gewirkt wird"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele akustischen Countdown bis $spell:%s schwindet"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "Zähle akustisch die Dauer von $spell:%s"
 DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Schreie, wenn du von $spell:%s betroffen bist"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s auf " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "Zeige Abstandsfenster (%sm) für $spell:%s"
