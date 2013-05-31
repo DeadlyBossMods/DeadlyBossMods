@@ -3879,7 +3879,7 @@ function DBM:FindDungeonIDs()
 	for i=1, 1000 do
 		local dungeon = GetDungeonInfo(i)
 		if dungeon then
-			print(i..": "..dungeon)
+			self:AddMsg(i..": "..dungeon)
 		end
 	end
 end
