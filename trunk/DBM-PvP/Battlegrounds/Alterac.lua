@@ -62,6 +62,7 @@ local bgzone = false
 do
 	local function AV_Initialize()
 		if DBM:GetCurrentArea() == 401 then
+			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			Alterac:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -88,8 +89,10 @@ do
 			Alterac:UnregisterShortTermEvents()
 		end
 	end
-	Alterac.OnInitialize = Alterac:Schedule(3, AV_Initialize)
-	Alterac.ZONE_CHANGED_NEW_AREA = Alterac:Schedule(3, AV_Initialize)--Core is also watching ZONE_CHANGED_NEW_AREA but we want core to do it's thing before we call DBM:GetCurrentArea()
+	Alterac.OnInitialize = AV_Initialize()
+	function Alterac:ZONE_CHANGED_NEW_AREA()
+		self:Schedule(1, AV_Initialize)
+	end
 end
 
 do

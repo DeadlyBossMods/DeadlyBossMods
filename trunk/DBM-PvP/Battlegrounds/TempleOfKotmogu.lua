@@ -111,6 +111,7 @@ end
 function Kotmogu:OnInitialize()
 	if DBM:GetCurrentArea() == 856 then
 		bgzone = true
+		print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 		Kotmogu:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -140,7 +141,10 @@ function Kotmogu:OnInitialize()
 		end
 	end
 end
-Kotmogu.ZONE_CHANGED_NEW_AREA = Kotmogu:ScheduleMethod(3, "OnInitialize")
+
+function Kotmogu:ZONE_CHANGED_NEW_AREA()
+	self:ScheduleMethod(1, "OnInitialize")
+end
 
 function Kotmogu:CHAT_MSG_BG_SYSTEM_ALLIANCE(msg)
 	if not bgzone then return end
