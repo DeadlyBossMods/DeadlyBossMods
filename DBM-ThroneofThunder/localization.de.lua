@@ -55,7 +55,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "Zeige in Lebensanzeige den benötigten Schaden bis $spell:136442 endet<br/>(benötigt aktivierte Lebensanzeige)",
-	AnnounceCooldowns	= "Zähle akkustisch die Anzahl der $spell:137166 Wirkungen<br/>(für \"Raid-Cooldowns\")"
+	AnnounceCooldowns	= "Zähle akustisch die Anzahl der $spell:137166 Wirkungen<br/>(für \"Raid-Cooldowns\")"
 })
 
 ------------
@@ -70,10 +70,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
-	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633",
+	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633<br/>mit mehr als 90% Lebenspunkten",
 	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
 	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971",
-	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der $spell:134920 Wirkungen<br/>(für \"Raid-Cooldowns\")"
+	AnnounceCooldowns		= "Zähle akustisch die Anzahl der $spell:134920 Wirkungen<br/>(für \"Raid-Cooldowns\")"
 })
 
 L:SetMiscLocalization({
@@ -91,7 +91,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerBreaths			= "Zeige Zeit bis nächster Atem<br/>($spell:139843 / $spell:137731 / $spell:139840 / $spell:139993)",
-	AnnounceCooldowns		= "Zähle akkustisch die Anzahl der \"Toben\"-Wirkungen (für \"Raid-Cooldowns\")",
+	AnnounceCooldowns		= "Zähle akustisch die Anzahl der \"Toben\"-Wirkungen (für \"Raid-Cooldowns\")",
 	Never					= "Nie",
 	Every					= "Jede (fortlaufende Zählung)",
 	EveryTwo				= "Jede (zyklisch bis 2)",
@@ -241,6 +241,10 @@ L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Spezialvorwarnung für Unterbrechung",
 	StaticShockArrow			= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
 	OverchargeArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist"
+})
+
+L:SetMiscLocalization({
+	StaticYell		= "Elektroschock auf %s (%d)"
 })
 
 ------------

@@ -107,7 +107,6 @@ L:SetMiscLocalization({
 	FlagTaken 		= "(.+) hat die Flagge aufgenommen.",
 	FlagCaptured	= "Die %w+ hat die Flagge erobert!",
 	FlagDropped		= "Die Flagge wurde fallengelassen."
-
 })
 
 ---------------------

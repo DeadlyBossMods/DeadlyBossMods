@@ -99,7 +99,7 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "Zeige Infofenster für Spieler, welche von $spell:116525 betroffen sind",
-	CountOutCombo	= "Zähle akkustisch die Anzahl der $journal:5673 Wirkungen<br/>HINWEIS: Dafür ist derzeit nur die weibliche Stimme verfügbar.",
+	CountOutCombo	= "Zähle akustisch die Anzahl der $journal:5673 Wirkungen<br/>HINWEIS: Dafür ist derzeit nur die weibliche Stimme verfügbar.",
 	ArrowOnCombo	= "Zeige DBM-Pfeil während $journal:5673  HINWEIS: Nimmt an,<br/>dass sich der Tank vor dem Boss befindet und alle anderen dahinter."
 })
 
