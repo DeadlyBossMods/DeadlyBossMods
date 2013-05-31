@@ -164,7 +164,7 @@ do
 			end
 		end
 	end
-	Arathi.OnInitialize = AB_Initialize()
+	Arathi.OnInitialize = AB_Initialize
 	function Arathi:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, AB_Initialize)
 	end
