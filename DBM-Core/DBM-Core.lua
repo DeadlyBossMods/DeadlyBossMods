@@ -4696,7 +4696,12 @@ end
 do
 	local countdownProtoType = {}
 	local mt = {__index = countdownProtoType}
-	
+
+	local countdownsActive = 0
+	local function clearActive(mod)
+		countdownsActive = countdownsActive - 1
+	end
+
 	local function showCountdown(timer)
 		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 	end
@@ -4718,19 +4723,25 @@ do
 					DBM:Schedule(timer%1, showCountdown, floor(timer))
 				end
 			end
-			if DBM.Options.CountdownVoice == "None" then return end
-			if DBM.Options.CountdownVoice == "Mosh" then--Voice only goes to 5
+			local voice = DBM.Options.CountdownVoice
+			local voice2 = DBM.Options.CountdownVoice2
+			if voice == "None" then return end
+			if countdownsActive == 1 then--We already have an active countdown using primary voice, so fall back to secondary voice
+				voice = voice2
+			end
+			if voice == "Mosh" then--Voice only goes to 5
 				for i = count, 1, -1 do
 					if i <= 5 then
 						self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
 					end
 				end
-			else--When/if more voices get added we can tweak it to use elseif rules, but for now else works smarter cause then ANY value will return to a default voice.
-				local voice = DBM.Options.CountdownVoice--This works, because we make sure the folder path matches the sound option name exactly
+			else--Voice that goes to 10
 				for i = count, 1, -1 do
 					self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..i..".ogg")
 				end
 			end
+			countdownsActive = countdownsActive + 1
+			DBM:Schedule(timer, clearActive, mod)
 		end
 	end
 	countdownProtoType.Show = countdownProtoType.Start
@@ -4740,6 +4751,8 @@ do
 	end
 
 	function countdownProtoType:Cancel()
+		countdownsActive = countdownsActive - 1
+		DBM:Unschedule(clearActive, mod)
 		if DBM.Options.ShowCountdownText and not self.textDisabled then
 			DBM:Unschedule(showCountdown)
 			stopCountdown()
@@ -4845,13 +4858,13 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			timer = timer or self.timer or 10
 			timer = timer <= 5 and self.timer or timer
-			if DBM.Options.CountdownVoice == "None" then return end
-			if DBM.Options.CountdownVoice == "Mosh" and timer <= 5 then--Don't have 6-10 for him yet.
+			local voice = DBM.Options.CountdownVoice
+			if voice == "None" then return end
+			if voice == "Mosh" and timer <= 5 then--Don't have 6-10 for him yet.
 				for i = 1, timer do
 					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\Mosh\\"..i..".ogg")
 				end
 			else--Voices that go to 10
-				local voice = DBM.Options.CountdownVoice--This works, because we make sure the folder path matches the sound option name exactly
 				for i = 1, timer do
 					self.sound5:Schedule(i, "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..i..".ogg")
 				end
@@ -5197,9 +5210,16 @@ do
 	end
 	
 	function DBM:PlayCountSound(number)
-		local voice = DBM.Options.CountdownVoice
-		if number > 5 and (voice == "Mosh") then voice = DBM.Options.CountdownVoice2 end--If number is higher than 5 and users primary voice setting ismosh, fallback to secondary voice setting
 		if number > 10 then return end
+		local voice = DBM.Options.CountdownVoice
+		local voice2 = DBM.Options.CountdownVoice2
+		if number > 5 and (voice == "Mosh") then--Can't count past 5
+			if voice ~= voice2 then
+				voice = voice2--Fall back to secondary voice option if primary is mosh
+			else--Voice 1 and voice 2 were both set to "Mosh", they must really like mosh. At this point we must ignore their preference
+				voice = "Corsica"
+			end
+		end--If number is higher than 5 and users primary voice setting ismosh, fallback to secondary voice setting
 		if DBM.Options.UseMasterVolume then
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg", "Master")
 		else
