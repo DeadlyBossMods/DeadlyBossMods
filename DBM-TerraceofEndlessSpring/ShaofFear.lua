@@ -159,9 +159,9 @@ local function startSpecialTimers()
 	end
 	if specialsCast == 011 then--Should never happen but leaving in case.
 		timerHuddleInTerrorCD:Start()
-		print("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
-		print("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
-		print("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
+		mod:AddMsg("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
+		mod:AddMsg("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
+		mod:AddMsg("Huddle CAN be cast Last!, tell DBM guys to fix 001 and 010")
 	end	
 	if specialsCast == 100 then
 		timerSpoStrCD:Start()
