@@ -17,7 +17,6 @@ Silvershard:RemoveOption("SpeedKillTimer")
 function Silvershard:OnInitialize()
 	if DBM:GetCurrentArea() == 860 then
 		bgzone = true
-		print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 		Silvershard:RegisterShortTermEvents(
 			"CHAT_MSG_MONSTER_YELL",
 			"CHAT_MSG_BG_SYSTEM_HORDE",

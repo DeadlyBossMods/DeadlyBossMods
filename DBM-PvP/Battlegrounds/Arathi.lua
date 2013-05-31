@@ -127,7 +127,6 @@ do
 	local function AB_Initialize()
 		if DBM:GetCurrentArea() == 461 then
 			bgzone = true
-			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			Arathi:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",

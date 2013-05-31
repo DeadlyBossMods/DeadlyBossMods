@@ -38,7 +38,6 @@ do
 	local function WSG_Initialize()
 		if DBM:GetCurrentArea() == 443 then
 			bgzone = true
-			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			Warsong:RegisterShortTermEvents(
 				"PLAYER_REGEN_ENABLED",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",

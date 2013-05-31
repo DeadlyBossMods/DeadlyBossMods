@@ -37,7 +37,6 @@ do
 	local function TwinPeaks_Initialize()
 		if DBM:GetCurrentArea() == 626 then
 			bgzone = true
-			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			TwinPeaks:RegisterShortTermEvents(
 				"PLAYER_REGEN_ENABLED",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",

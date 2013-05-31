@@ -59,7 +59,6 @@ do
 	local function initialize(self)
 		if DBM:GetCurrentArea() == 540 then
 			bgzone = true
-			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			IsleOfConquest:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
