@@ -352,14 +352,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			if rampageCast >= 3 then rampageCast = 0 end--We already checked and know option isn't set to 2 or never, so it's definitely set to 3, no need to check option.
 		end
 		if (self.Options.AnnounceCooldowns == "Never") or (arcaneInFront > 0 or arcaneRecent) and ((self.Options.AnnounceCooldowns == "EveryTwoExcludeDiff") or (self.Options.AnnounceCooldowns == "EveryThreeExcludeDiff")) then return end--You have a diffused player, don't call out cds
-		local voice = DBM.Options.CountdownVoice
 		rampageCast = rampageCast + 1
-		if rampageCast > 10 or (rampageCast > 5 and voice == "Mosh") then return end --failsafe
-		if DBM.Options.UseMasterVolume then
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..rampageCast..".ogg", "Master")
-		else
-			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..rampageCast..".ogg")
-		end
+		DBM:PlayCountSound(rampageCast)
 	elseif msg == L.rampageEnds or msg:find(L.rampageEnds) then
 		arcaneRecent = false
 		warnRampageFaded:Show()
