@@ -152,6 +152,8 @@ local function Gilneas_Initialize()
 	end
 end
 
+Gilneas.OnInitialize = Gilneas_Initialize
+
 function Gilneas:ZONE_CHANGED_NEW_AREA()
 	self:Schedule(1, Gilneas_Initialize)
 end
