@@ -30,7 +30,7 @@ function Silvershard:OnInitialize()
 		Silvershard:UnregisterShortTermEvents()
 	end
 end
-Silvershard.ZONE_CHANGED_NEW_AREA = Silvershard:ScheduleMethod(1, "OnInitialize")
+Silvershard.ZONE_CHANGED_NEW_AREA = Silvershard:ScheduleMethod(3, "OnInitialize")
 
 
 function Silvershard:CHAT_MSG_RAID_BOSS_EMOTE(msg)

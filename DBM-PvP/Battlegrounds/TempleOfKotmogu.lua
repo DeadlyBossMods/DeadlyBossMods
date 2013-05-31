@@ -140,7 +140,7 @@ function Kotmogu:OnInitialize()
 		end
 	end
 end
-Kotmogu.ZONE_CHANGED_NEW_AREA = Kotmogu:ScheduleMethod(1, "OnInitialize")
+Kotmogu.ZONE_CHANGED_NEW_AREA = Kotmogu:ScheduleMethod(3, "OnInitialize")
 
 function Kotmogu:CHAT_MSG_BG_SYSTEM_ALLIANCE(msg)
 	if not bgzone then return end
