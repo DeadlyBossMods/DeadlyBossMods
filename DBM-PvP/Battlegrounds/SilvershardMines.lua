@@ -17,6 +17,7 @@ Silvershard:RemoveOption("SpeedKillTimer")
 function Silvershard:OnInitialize()
 	if DBM:GetCurrentArea() == 860 then
 		bgzone = true
+		print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 		Silvershard:RegisterShortTermEvents(
 			"CHAT_MSG_MONSTER_YELL",
 			"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -30,8 +31,10 @@ function Silvershard:OnInitialize()
 		Silvershard:UnregisterShortTermEvents()
 	end
 end
-Silvershard.ZONE_CHANGED_NEW_AREA = Silvershard:ScheduleMethod(3, "OnInitialize")
 
+function Silvershard:ZONE_CHANGED_NEW_AREA()
+	self:ScheduleMethod(1, "OnInitialize")
+end
 
 function Silvershard:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if not bgzone then return end

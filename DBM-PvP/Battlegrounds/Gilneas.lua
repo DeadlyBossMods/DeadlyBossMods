@@ -117,6 +117,7 @@ end
 local function Gilneas_Initialize()
 	if DBM:GetCurrentArea() == 736 then
 		bgzone = true
+		print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 		Gilneas:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -151,8 +152,10 @@ local function Gilneas_Initialize()
 		end
 	end
 end
-Gilneas.OnInitialize = Gilneas:Schedule(3, Gilneas_Initialize)
-Gilneas.ZONE_CHANGED_NEW_AREA = Gilneas:Schedule(3, Gilneas_Initialize)
+
+function Gilneas:ZONE_CHANGED_NEW_AREA()
+	self:Schedule(1, Gilneas_Initialize)
+end
 
 do
 	local function check_for_updates()
