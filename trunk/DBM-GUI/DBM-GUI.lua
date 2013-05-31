@@ -1573,6 +1573,7 @@ local function CreateOptionsMenu()
 		local CountSoundDropDown = raidwarnoptions:CreateDropdown(L.CountdownVoice, countSounds,
 		DBM.Options.CountdownVoice, function(value)
 			DBM.Options.CountdownVoice = value
+			DBM:PlayCountSound(1)
 		end
 		)
 		CountSoundDropDown:SetPoint("LEFT", RaidWarnSoundDropDown, "RIGHT", 30, 0)

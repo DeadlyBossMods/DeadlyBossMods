@@ -311,12 +311,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDischarge:Show(dischargeCount)
 		specWarnDischarge:Show(dischargeCount)
 		if self.Options.AnnounceCooldowns then
-			local voice = DBM.Options.CountdownVoice
-			if DBM.Options.UseMasterVolume then
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..dischargeCount..".ogg", "Master")
-			else
-				PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..dischargeCount..".ogg")
-			end
+			DBM:PlayCountSound(dischargeCount)
 		end
 	elseif args.spellId == 137641 and args:IsPlayer() then
 		specWarnSoulFragment:Show()
