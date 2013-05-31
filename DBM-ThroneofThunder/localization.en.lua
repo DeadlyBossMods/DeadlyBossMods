@@ -282,6 +282,10 @@ L:SetOptionLocalization({
 	SetIconOnStaticShock		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(135695)
 })
 
+L:SetMiscLocalization({
+	StaticYell		= "Static Shock on %s (%d)"
+})
+
 ------------
 -- Ra-den --
 ------------

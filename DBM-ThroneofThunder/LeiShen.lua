@@ -44,7 +44,7 @@ local warnHelmOfCommand					= mod:NewTargetAnnounce(139011, 3)
 
 --Conduits (All phases)
 local specWarnStaticShock				= mod:NewSpecialWarningYou(135695)
-local yellStaticShock					= mod:NewYell(135695)
+local yellStaticShock					= mod:NewYell(135695, L.StaticYell)
 local specWarnStaticShockNear			= mod:NewSpecialWarningClose(135695)
 local specWarnDiffusionChainSoon		= mod:NewSpecialWarningPreWarn(135991, nil, 4)
 local specWarnOvercharged				= mod:NewSpecialWarningYou(136295)
@@ -216,7 +216,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnStaticShockTargets)
 		if args:IsPlayer() then
 			specWarnStaticShock:Show()
-			yellStaticShock:Yell()
+			if not self:IsDifficulty("lfr25") then
+				yellStaticShock:Schedule(7, 1)
+				yellStaticShock:Schedule(6, 2)
+				yellStaticShock:Schedule(5, 3)
+				yellStaticShock:Schedule(4, 4)
+			end
+			yellStaticShock:Schedule(3, 5)
 			timerStaticShock:Start()
 			countdownStaticShockFades:Start()
 		else
