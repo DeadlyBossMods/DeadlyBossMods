@@ -233,13 +233,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			if spellId == 116968 and castMob == comboMob and self:AntiSpam(1, 1) then--Arc Left
 				comboCount = comboCount + 1
 				if self.Options.CountOutCombo and comboCount < 11 then
-					local voice = DBM.Options.CountdownVoice
-					if self:IsDifficulty("heroic10", "heroic25") and (voice == "Mosh") then voice = "Kolt" end--Mosh voice count past 5 yet. still waiting on him to do it. If heroic, switch to alternate male voice.
-					if DBM.Options.UseMasterVolume then
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg", "Master")
-					else
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg")
-					end
+					DBM:PlayCountSound(comboCount)
 				end
 				warnArcLeft:Show(comboCount)
 				if self.Options.ArrowOnCombo then
@@ -252,13 +246,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			elseif spellId == 116971 and castMob == comboMob and self:AntiSpam(1, 2) then--Arc Right
 				comboCount = comboCount + 1
 				if self.Options.CountOutCombo and comboCount < 11 then
-					local voice = DBM.Options.CountdownVoice
-					if self:IsDifficulty("heroic10", "heroic25") and (voice == "Mosh") then voice = "Kolt" end--Mosh voice count past 5 yet. still waiting on him to do it. If heroic, switch to alternate male voice.
-					if DBM.Options.UseMasterVolume then
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg", "Master")
-					else
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg")
-					end
+					DBM:PlayCountSound(comboCount)
 				end
 				warnArcRight:Show(comboCount)
 				if self.Options.ArrowOnCombo then
@@ -271,13 +259,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			elseif spellId == 116972 and castMob == comboMob and self:AntiSpam(1, 3) then--Arc Center
 				comboCount = comboCount + 1
 				if self.Options.CountOutCombo and comboCount < 11 then
-					local voice = DBM.Options.CountdownVoice
-					if self:IsDifficulty("heroic10", "heroic25") and (voice == "Mosh") then voice = "Kolt" end--Mosh voice count past 5 yet. still waiting on him to do it. If heroic, switch to alternate male voice.
-					if DBM.Options.UseMasterVolume then
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg", "Master")
-					else
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg")
-					end
+					DBM:PlayCountSound(comboCount)
 				end
 				warnArcCenter:Show(comboCount)
 				if self.Options.ArrowOnCombo then
@@ -288,13 +270,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			elseif (spellId == 116969 or spellId == 132425) and castMob == comboMob and self:AntiSpam(1, 4) then--Stomp
 				comboCount = comboCount + 1
 				if self.Options.CountOutCombo and comboCount < 11 then
-					local voice = DBM.Options.CountdownVoice
-					if self:IsDifficulty("heroic10", "heroic25") and (voice == "Mosh") then voice = "Kolt" end--Mosh voice count past 5 yet. still waiting on him to do it. If heroic, switch to alternate male voice.
-					if DBM.Options.UseMasterVolume then
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg", "Master")
-					else
-						PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..comboCount..".ogg")
-					end
+					DBM:PlayCountSound(comboCount)
 				end
 				warnStomp:Show(comboCount)
 			end

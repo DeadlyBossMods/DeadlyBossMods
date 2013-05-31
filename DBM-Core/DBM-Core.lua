@@ -75,6 +75,7 @@ DBM.DefaultOptions = {
 	ModelSoundValue = "Short",
 	ChallengeBest = "Realm",
 	CountdownVoice = "Corsica",
+	CountdownVoice2 = "Kolt",
 	ShowCountdownText = false,
 	RaidWarningPosition = {
 		Point = "TOP",
@@ -5193,6 +5194,17 @@ do
 
 	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
 		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
+	end
+	
+	function DBM:PlayCountSound(number)
+		local voice = DBM.Options.CountdownVoice
+		if number > 5 and (voice == "Mosh") then voice = DBM.Options.CountdownVoice2 end--If number is higher than 5 and users primary voice setting ismosh, fallback to secondary voice setting
+		if number > 10 then return end
+		if DBM.Options.UseMasterVolume then
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg", "Master")
+		else
+			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg")
+		end
 	end
 	
 	function DBM:PlaySpecialWarningSound(soundId)
