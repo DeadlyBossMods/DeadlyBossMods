@@ -131,8 +131,8 @@ do
 			end
 		end
 	end
-	EyeOfTheStorm.OnInitialize = EyeOfTheStorm:Schedule(1, initialize)
-	EyeOfTheStorm.ZONE_CHANGED_NEW_AREA = EyeOfTheStorm:Schedule(1, initialize)
+	EyeOfTheStorm.OnInitialize = EyeOfTheStorm:Schedule(3, initialize)
+	EyeOfTheStorm.ZONE_CHANGED_NEW_AREA = EyeOfTheStorm:Schedule(3, initialize)
 end
 
 do

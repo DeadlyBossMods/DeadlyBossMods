@@ -151,8 +151,8 @@ local function Gilneas_Initialize()
 		end
 	end
 end
-Gilneas.OnInitialize = Gilneas:Schedule(1, Gilneas_Initialize)
-Gilneas.ZONE_CHANGED_NEW_AREA = Gilneas:Schedule(1, Gilneas_Initialize)
+Gilneas.OnInitialize = Gilneas:Schedule(3, Gilneas_Initialize)
+Gilneas.ZONE_CHANGED_NEW_AREA = Gilneas:Schedule(3, Gilneas_Initialize)
 
 do
 	local function check_for_updates()
