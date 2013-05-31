@@ -103,6 +103,7 @@ end
 do
 	local function initialize()
 		if DBM:GetCurrentArea() == 482 then
+			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			bgzone = true
 			EyeOfTheStorm:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -131,8 +132,10 @@ do
 			end
 		end
 	end
-	EyeOfTheStorm.OnInitialize = EyeOfTheStorm:Schedule(3, initialize)
-	EyeOfTheStorm.ZONE_CHANGED_NEW_AREA = EyeOfTheStorm:Schedule(3, initialize)
+	EyeOfTheStorm.OnInitialize = initialize()
+	function EyeOfTheStorm:ZONE_CHANGED_NEW_AREA()
+		self:Schedule(1, initialize)
+	end
 end
 
 do

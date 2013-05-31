@@ -59,6 +59,7 @@ do
 	local function initialize(self)
 		if DBM:GetCurrentArea() == 540 then
 			bgzone = true
+			print("DBM Debug: Registering battleground Events", DBM:GetCurrentArea())
 			IsleOfConquest:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -86,8 +87,10 @@ do
 		end
 	end
 	
-	IsleOfConquest.OnInitialize = IsleOfConquest:Schedule(3, initialize)
-	IsleOfConquest.ZONE_CHANGED_NEW_AREA = IsleOfConquest:Schedule(3, initialize)
+	IsleOfConquest.OnInitialize = initialize()
+	function IsleOfConquest:ZONE_CHANGED_NEW_AREA()
+		self:Schedule(1, initialize)
+	end
 end
 
 do
