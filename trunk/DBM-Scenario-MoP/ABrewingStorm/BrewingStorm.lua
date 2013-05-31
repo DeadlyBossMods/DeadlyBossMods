@@ -10,8 +10,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_SAY",
-	"UNIT_DIED",
-	"SCENARIO_CRITERIA_UPDATE"
+	"UNIT_DIED"
+--	"SCENARIO_CRITERIA_UPDATE"
 )
 
 --[[First event
@@ -54,7 +54,7 @@ local warnEarthShattering		= mod:NewSpellAnnounce(122142, 3)
 local specWarnSwampSmash		= mod:NewSpecialWarningSpell(115013, nil, nil, nil, 2)
 
 --Event
-local timerEvent				= mod:NewTimer(82.8, "timerEvent", 106648)
+--local timerEvent				= mod:NewTimer(82.8, "timerEvent", 106648)
 --Borokhula the Destroyer
 local timerSwampSmashCD			= mod:NewCDTimer(18, 115013)--Limited sample size, may be shorter
 local timerEarthShatteringCD	= mod:NewNextTimer(25, 122142)--Limited sample size, may be shorter
@@ -96,11 +96,16 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
+function mod:SCENARIO_CRITERIA_UPDATE(criteriaID)
+	if criteriaID == CRITERIA_DEFEND_THE_BREW and self:IsCriteriaCompleted(criteriaID) then
+		timerEvent:Cancel()
+	end
+end--]]
+
 function mod:OnSync(msg)
 	if msg == "BrewStarted" then
-		timerEvent:Start()
-	elseif msg == "BrewEnded" then
-		timerEvent:Cancel()
+--		timerEvent:Start()
 	elseif msg == "BorokhulaPulled" then
 		timerSwampSmashCD:Start()
 		timerEarthShatteringCD:Start()
@@ -110,11 +115,5 @@ function mod:OnSync(msg)
 "<396.4 19:39:27> RAID_BOSS_EMOTE#%s calls out for reinforcements!#Borokhula the Destroyer#0#true", -- [3]
 "<409.6 19:39:40> RAID_BOSS_EMOTE#%s calls out for reinforcements!#Borokhula the Destroyer#0#true", -- [4]
 --]]
-	end
-end
-
-function mod:SCENARIO_CRITERIA_UPDATE(criteriaID)
-	if criteriaID == CRITERIA_DEFEND_THE_BREW and self:IsCriteriaCompleted(criteriaID) then
-		self:SendSync("BrewEnded")
 	end
 end
