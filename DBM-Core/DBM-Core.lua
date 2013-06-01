@@ -4721,7 +4721,7 @@ do
 			local voice = DBM.Options.CountdownVoice
 			local voice2 = DBM.Options.CountdownVoice2
 			if voice == "None" then return end
-			if alternateVoice then--We already have an active countdown using primary voice, so fall back to secondary voice
+			if self.alternateVoice then--We already have an active countdown using primary voice, so fall back to secondary voice
 				voice = voice2
 			end
 			if voice == "Mosh" then--Voice only goes to 5
