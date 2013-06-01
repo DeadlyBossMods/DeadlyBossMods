@@ -209,6 +209,10 @@ end
 function mod:OnSync(msg, guid)
 	if msg == "WakeTarget" and guid then
 		warnCrimsonWake:Show(DBM:GetFullPlayerNameByGUID(guid))
+	elseif msg == "TestFunction" then
+		countdownAnimaRing:Start(13)
+		timerAnimaRingCD:Start(13)
+		countdownInterruptingJolt:Start(11)
+		timerInterruptingJoltCD:Start(11)
 	end
 end
-
