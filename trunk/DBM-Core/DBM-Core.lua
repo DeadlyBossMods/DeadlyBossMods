@@ -4697,8 +4697,6 @@ do
 	local countdownProtoType = {}
 	local mt = {__index = countdownProtoType}
 
-	local alternateCountdown = false--TODO. quick and dirty for now, this probably isn't very accurate. But this whole object needs rewriting and integration into newtimer object.
-
 	local function showCountdown(timer)
 		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 	end
@@ -4723,11 +4721,8 @@ do
 			local voice = DBM.Options.CountdownVoice
 			local voice2 = DBM.Options.CountdownVoice2
 			if voice == "None" then return end
-			if alternateCountdown then--We already have an active countdown using primary voice, so fall back to secondary voice
+			if alternateVoice then--We already have an active countdown using primary voice, so fall back to secondary voice
 				voice = voice2
-				alternateCountdown = false
-			else
-				alternateCountdown = true
 			end
 			if voice == "Mosh" then--Voice only goes to 5
 				for i = count, 1, -1 do
@@ -4762,7 +4757,7 @@ do
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count, textDisabled)
+	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count, textDisabled, altVoice)
 		if not spellId and not optionName then
 			error("NewCountdown: you must provide either spellId or optionName", 2)
 			return
@@ -4786,6 +4781,7 @@ do
 				timer = timer,
 				count = count,
 				textDisabled = textDisabled,
+				alternateVoice = altVoice,
 				mod = self
 			},
 			mt
@@ -4802,7 +4798,7 @@ do
 		return obj
 	end
 
-	function bossModPrototype:NewCountdownFades(timer, spellId, optionDefault, optionName, count, textDisabled)
+	function bossModPrototype:NewCountdownFades(timer, spellId, optionDefault, optionName, count, textDisabled, altVoice)
 		if not spellId and not optionName then
 			error("NewCountdownFades: you must provide either spellId or optionName", 2)
 			return
@@ -4826,6 +4822,7 @@ do
 				timer = timer,
 				count = count,
 				textDisabled = textDisabled,
+				alternateVoice = altVoice,
 				mod = self
 			},
 			mt

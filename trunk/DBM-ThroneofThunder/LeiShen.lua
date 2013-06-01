@@ -92,7 +92,7 @@ local timerHelmOfCommand				= mod:NewCDTimer(14, 139011)
 local berserkTimer						= mod:NewBerserkTimer(900)--Confirmed in LFR, probably the same in all modes though?
 
 local countdownThunderstruck			= mod:NewCountdown(46, 135095)
-local countdownBouncingBolt				= mod:NewCountdown(40, 136361)--Pretty big deal on heroic, it's the one perminent ability you see in all strats. Should now play nice with thunderstruck with alternate voice code in ;)
+local countdownBouncingBolt				= mod:NewCountdown(40, 136361, nil, nil, nil, nil, true)--Pretty big deal on heroic, it's the one perminent ability you see in all strats. Should now play nice with thunderstruck with alternate voice code in ;)
 local countdownStaticShockFades			= mod:NewCountdownFades(7, 135695, false)--May confuse with thundershock option default so off as default.
 
 local soundDecapitate					= mod:NewSound(134912)
