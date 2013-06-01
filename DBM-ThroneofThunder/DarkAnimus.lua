@@ -57,7 +57,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 local countdownActivation			= mod:NewCountdown(60, 139537)
 local countdownInterruptingJolt		= mod:NewCountdown(21.5, 138763)
-local countdownAnimaRing			= mod:NewCountdown(24.2, 136954, mod:IsTank())
+local countdownAnimaRing			= mod:NewCountdown(24.2, 136954, mod:IsTank(), nil, nil, nil, true)
 
 local soundCrimsonWake				= mod:NewSound(138480)
 
