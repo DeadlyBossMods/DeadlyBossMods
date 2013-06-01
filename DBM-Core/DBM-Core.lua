@@ -4697,7 +4697,7 @@ do
 	local countdownProtoType = {}
 	local mt = {__index = countdownProtoType}
 
-	local countdownsActive = 0
+	local countdownsActive = 0--TODO. quick and dirty for now, this probably isn't very accurate. But this whole object needs rewriting and integration into newtimer object.
 	local function clearActive(mod)
 		countdownsActive = countdownsActive - 1
 	end
@@ -4726,7 +4726,7 @@ do
 			local voice = DBM.Options.CountdownVoice
 			local voice2 = DBM.Options.CountdownVoice2
 			if voice == "None" then return end
-			if countdownsActive == 1 then--We already have an active countdown using primary voice, so fall back to secondary voice
+			if countdownsActive >= 1 then--We already have an active countdown using primary voice, so fall back to secondary voice
 				voice = voice2
 			end
 			if voice == "Mosh" then--Voice only goes to 5
@@ -4751,7 +4751,9 @@ do
 	end
 
 	function countdownProtoType:Cancel()
-		countdownsActive = countdownsActive - 1
+		if countdownsActive > 0 then
+			countdownsActive = countdownsActive - 1
+		end
 		DBM:Unschedule(clearActive, mod)
 		if DBM.Options.ShowCountdownText and not self.textDisabled then
 			DBM:Unschedule(showCountdown)
