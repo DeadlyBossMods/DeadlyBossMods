@@ -4697,10 +4697,7 @@ do
 	local countdownProtoType = {}
 	local mt = {__index = countdownProtoType}
 
-	local countdownsActive = 0--TODO. quick and dirty for now, this probably isn't very accurate. But this whole object needs rewriting and integration into newtimer object.
-	local function clearActive(mod)
-		countdownsActive = countdownsActive - 1
-	end
+	local alternateCountdown = false--TODO. quick and dirty for now, this probably isn't very accurate. But this whole object needs rewriting and integration into newtimer object.
 
 	local function showCountdown(timer)
 		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
@@ -4726,8 +4723,11 @@ do
 			local voice = DBM.Options.CountdownVoice
 			local voice2 = DBM.Options.CountdownVoice2
 			if voice == "None" then return end
-			if countdownsActive >= 1 then--We already have an active countdown using primary voice, so fall back to secondary voice
+			if alternateCountdown then--We already have an active countdown using primary voice, so fall back to secondary voice
 				voice = voice2
+				alternateCountdown = false
+			else
+				alternateCountdown = true
 			end
 			if voice == "Mosh" then--Voice only goes to 5
 				for i = count, 1, -1 do
@@ -4740,8 +4740,6 @@ do
 					self.sound5:Schedule(timer-i, "Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..i..".ogg")
 				end
 			end
-			countdownsActive = countdownsActive + 1
-			DBM:Schedule(timer, clearActive, mod)
 		end
 	end
 	countdownProtoType.Show = countdownProtoType.Start
@@ -4751,10 +4749,6 @@ do
 	end
 
 	function countdownProtoType:Cancel()
-		if countdownsActive > 0 then
-			countdownsActive = countdownsActive - 1
-		end
-		DBM:Unschedule(clearActive, mod)
 		if DBM.Options.ShowCountdownText and not self.textDisabled then
 			DBM:Unschedule(showCountdown)
 			stopCountdown()
