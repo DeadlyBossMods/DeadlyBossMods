@@ -1541,7 +1541,7 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 230, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.RaidWarning_Header, nil, 220, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowFakedRaidWarnings = raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
@@ -1592,7 +1592,7 @@ local function CreateOptionsMenu()
 		CountSoundDropDown2:SetPoint("LEFT", CountSoundDropDown, "RIGHT", 60, 0)
 
 		--Raid Warning Colors
-		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
+		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150, true)
 
 		local color1 = raidwarncolors:CreateColorSelect(64)
 		local color2 = raidwarncolors:CreateColorSelect(64)
@@ -1607,7 +1607,7 @@ local function CreateOptionsMenu()
 		local color3reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
 		local color4reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
 
-		color1:SetPoint('TOPLEFT', 30, -20)
+		color1:SetPoint('TOPLEFT', 30, -10)
 		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 30, 0)
 		color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 30, 0)
 		color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 30, 0)
