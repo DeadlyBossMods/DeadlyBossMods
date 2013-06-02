@@ -69,7 +69,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalShell	= "當你沒有$spell:137633減益時顯示特別警告",
+	specWarnCrystalShell	= "當你沒有$spell:137633減益並且血量大於90%時顯示特別警告",
 	InfoFrame				= "為玩家沒有$spell:137633顯示訊息框架",
 	SetIconOnTurtles		= "為$journal:7129標示團隊圖示",
 	ClearIconOnTurtles		= "當$journal:7129中了$spell:133971清除團隊圖示",
@@ -191,7 +191,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull	= "寶珠爆炸了!"
+	Pull	= "血靈球體爆炸了!"
 })
 
 --------------
@@ -234,14 +234,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "超級導雷管階段即將到來"
+	specWarnIntermissionSoon	= "超級充能導雷管階段即將到來"
 })
 
 
 L:SetOptionLocalization({
-	specWarnIntermissionSoon	= "在超級導雷管階段前顯示預先特別警告",
+	specWarnIntermissionSoon	= "在超級充能導雷管階段前顯示預先特別警告",
 	StaticShockArrow			= "當某人中了$spell:135695顯示DBM箭頭",
 	OverchargeArrow				= "當某人中了$spell:136295顯示DBM箭頭"
+})
+
+L:SetMiscLocalization({
+	StaticYell		= "%s中了靜電震擊(%d)"
 })
 
 ------------

@@ -68,12 +68,12 @@ L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
 	warnReshapeLife				= "%s在>%s<(%d)",
-	warnReshapeLifeTutor		= "1:中斷/易傷,, 2:中斷自己, 3:回復體力/意志力, 4:脫離魁儡",
+	warnReshapeLifeTutor		= "1:中斷/易傷(使用這招堆疊易傷), 2:中斷自己所施放的琥珀爆炸, 3:回復意志力當意志力低落(主要是P3使用), 4:脫離魁儡(P1和P2使用)",
 	warnAmberExplosion			= ">%s<正在施放%s",
-	warnInterruptsAvailable		= "可為%s使用中斷:>%s<",
 	warnAmberExplosionAM		= "琥珀巨怪正在施放琥珀爆炸 - 快中斷!",
+	warnInterruptsAvailable		= "可為%s使用中斷:>%s<",
 	warnWillPower				= "目前的意志力:%s",
-	specwarnWillPower			= "意志力低落! - 剩下五秒",
+	specwarnWillPower			= "意志力低落! - 離開變身或是吃黃水",
 	specwarnAmberExplosionYou	= "中斷你自己的%s!",
 	specwarnAmberExplosionAM	= "%s:中斷%s!",
 	specwarnAmberExplosionOther	= "%s:中斷%s!"
@@ -120,4 +120,17 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	PlayerDebuffs		= "凝視",
 	YellPhase3			= "不要再找藉口了，女皇!消滅這些侏儒，否則我會親自殺了妳!"
+})
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("HoFTrash")
+
+L:SetGeneralLocalization({
+	name =	"恐懼之心小怪"
+})
+
+L:SetOptionLocalization({
+	UnseenStrikeArrow	= "當某人中了$spell:122949顯示DBM箭頭"
 })
