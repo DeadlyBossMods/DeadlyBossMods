@@ -11,14 +11,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerInvite 			= "%s"
+	TimerInvite 		= "%s"
 })
 
 L:SetOptionLocalization({
-	ColorByClass			= "在得分視窗中設置玩家名為職業顏色",
-	ShowInviteTimer			= "顯示戰場組隊計時器",
+	ColorByClass		= "在得分視窗中設置玩家名為職業顏色",
+	ShowInviteTimer		= "顯示戰場組隊計時器",
 	AutoSpirit			= "自動釋放靈魂",
-	HideBossEmoteFrame		= "隱藏團隊首領表情框架"
+	HideBossEmoteFrame	= "隱藏團隊首領表情框架"
 })
 
 L:SetMiscLocalization({
@@ -39,7 +39,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShadow 			= "顯示暗影視界計時器"
+	TimerShadow 		= "顯示暗影視界計時器"
 })
 
 L:SetMiscLocalization({
@@ -52,14 +52,14 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z30")
 
 L:SetTimerLocalization({
-	TimerTower			= "%s",
-	TimerGY				= "%s"
+	TimerTower	= "%s",
+	TimerGY		= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerTower			= "顯示奪取哨塔計時器",
-	TimerGY				= "顯示奪取墓地計時器",
-	AutoTurnIn			= "自動繳交任務物品"
+	TimerTower	= "顯示奪取哨塔計時器",
+	TimerGY		= "顯示奪取墓地計時器",
+	AutoTurnIn	= "自動繳交任務物品"
 })
 
 --------------------
@@ -67,24 +67,22 @@ L:SetOptionLocalization({
 --------------------
 L = DBM:GetModLocalization("z529")
 
-L:SetMiscLocalization({
-	ScoreExpr 			= "(%d+)/1600",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
-	WinBarText 			= "%s勝利",
-	BasesToWin 			= "勝利需要基地:%d",
-	Flag 				= "旗幟"
-})
-
 L:SetTimerLocalization({
-	TimerCap 			= "%s"
+	TimerCap 	= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerWin			= "顯示勝利計時器",
-	TimerCap			= "顯示奪取計時器",
-	ShowAbEstimatedPoints		= "顯示戰鬥結束時雙方資源預計值",
+	TimerWin		    	= "顯示勝利計時器",
+	TimerCap		    	= "顯示奪取計時器",
+	ShowAbEstimatedPoints	= "顯示戰鬥結束時雙方資源預計值",
 	ShowAbBasesToWin		= "顯示勝利需要的基地數量"
+})
+
+L:SetMiscLocalization({
+	ScoreExpr 	= "(%d+)/1600",
+	WinBarText 	= "%s勝利",
+	BasesToWin 	= "勝利需要基地:%d",
+	Flag 		= "旗幟"
 })
 
 ------------------------
@@ -92,25 +90,23 @@ L:SetOptionLocalization({
 ------------------------
 L = DBM:GetModLocalization("z566")
 
-L:SetMiscLocalization({
-	ScoreExpr			= "(%d+)/1600",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
-	WinBarText 			= "%s勝利",
-	FlagReset 			= "旗幟已重置!",
-	FlagTaken 			= "(.+)已經奪走了旗幟!",
-	FlagCaptured			= "(.+)已奪得旗幟!",
-	FlagDropped			= "旗幟已經掉落!"
-})
-
 L:SetTimerLocalization({
-	TimerFlag 			= "旗幟重生"
+	TimerFlag 	= "旗幟重生"
 })
 
 L:SetOptionLocalization({
-	TimerWin 			= "顯示勝利計時器",
-	TimerFlag 			= "顯示旗幟重生計時器",
-	ShowPointFrame			= "顯示旗幟攜帶者和預計勝利方"
+	TimerWin 		= "顯示勝利計時器",
+	TimerFlag 		= "顯示旗幟重生計時器",
+	ShowPointFrame	= "顯示旗幟攜帶者和預計勝利方"
+})
+
+L:SetMiscLocalization({
+	ScoreExpr		= "(%d+)/1600",
+	WinBarText 		= "%s勝利",
+	FlagReset 		= "旗幟已重置!",
+	FlagTaken 		= "(.+)已經奪走了旗幟!",
+	FlagCaptured	= "(.+)已奪得旗幟!",
+	FlagDropped		= "旗幟已經掉落!"
 })
 
 ---------------------
@@ -118,30 +114,28 @@ L:SetOptionLocalization({
 ---------------------
 L = DBM:GetModLocalization("z489")
 
-L:SetMiscLocalization({
-	BgStart60 			= "戰鬥將在1分鐘內開始。",
-	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
-	InfoErrorText			= "當你離開戰鬥後，旗幟框架將會回復。",
-	ExprFlagPickUp			= "(.+)的旗幟被(.+)拔掉了!",
-	ExprFlagCaptured		= "(.+)佔據了(.+)的旗幟!",
-	ExprFlagReturn			= "(.+)的旗幟被(.+)還到了它的基地",
-	FlagAlliance			= "聯盟旗幟: ",
-	FlagHorde			= "部落旗幟: ",
-	FlagBase			= "基地"
-})
-
 L:SetTimerLocalization({
-	TimerStart 			= "戰鬥開始",
-	TimerFlag 			= "旗幟重生"
+	TimerStart 	= "戰鬥開始",
+	TimerFlag 	= "旗幟重生"
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "顯示開始計時器",
-	TimerFlag			= "顯示旗幟重生計時器",
-	ShowFlagCarrier			= "顯示旗幟攜帶者",
+	TimerStart					= "顯示開始計時器",
+	TimerFlag					= "顯示旗幟重生計時器",
+	ShowFlagCarrier				= "顯示旗幟攜帶者",
 	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。"
+})
+
+L:SetMiscLocalization({
+	BgStart60 			= "戰鬥將在1分鐘內開始。",
+	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
+	InfoErrorText		= "當你離開戰鬥後，旗幟框架將會回復。",
+	ExprFlagPickUp		= "(.+)的旗幟被(.+)拔掉了!",
+	ExprFlagCaptured	= "(.+)佔據了(.+)的旗幟!",
+	ExprFlagReturn		= "(.+)的旗幟被(.+)還到了它的基地",
+	FlagAlliance		= "聯盟旗幟: ",
+	FlagHorde			= "部落旗幟: ",
+	FlagBase			= "基地"
 })
 
 ------------------------
@@ -150,21 +144,21 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z628")
 
 L:SetWarningLocalization({
-	WarnSiegeEngine			= "攻城機具準備好了!",
-	WarnSiegeEngineSoon		= "10秒後 攻城機具"
+	WarnSiegeEngine		= "攻城機具準備好了!",
+	WarnSiegeEngineSoon	= "10秒後 攻城機具"
 })
 
 L:SetTimerLocalization({
-	TimerPOI				= "%s",
-	TimerSiegeEngine		= "攻城機具修復"
+	TimerPOI			= "%s",
+	TimerSiegeEngine	= "攻城機具修復"
 })
 
 L:SetOptionLocalization({
-	TimerPOI				= "顯示奪取計時器",
-	TimerSiegeEngine		= "為攻城機具的修復顯示計時器",
-	WarnSiegeEngine			= "當攻城機具準備好時顯示警告",
-	WarnSiegeEngineSoon		= "當攻城機具接近準備好時顯示警告",
-	ShowGatesHealth			= "顯示受損大門的耐久值(當加入一個正在進行的戰場大門耐久值可能會不準確!)"
+	TimerPOI			= "顯示奪取計時器",
+	TimerSiegeEngine	= "為攻城機具的修復顯示計時器",
+	WarnSiegeEngine		= "當攻城機具準備好時顯示警告",
+	WarnSiegeEngineSoon	= "當攻城機具接近準備好時顯示警告",
+	ShowGatesHealth		= "顯示受損大門的耐久值(當加入一個正在進行的戰場大門耐久值可能會不準確!)"
 })
 
 L:SetMiscLocalization({
@@ -185,47 +179,36 @@ L:SetMiscLocalization({
 ------------------
 L = DBM:GetModLocalization("z726")
 
+L:SetTimerLocalization({
+	TimerStart 	= "戰鬥開始",
+	TimerFlag 	= "旗幟重生"
+})
+
+L:SetOptionLocalization({
+	TimerStart					= "顯示開始計時器",
+	TimerFlag					= "顯示旗幟重生計時器",
+	ShowFlagCarrier				= "顯示旗幟攜帶者",
+	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。"
+})
+
 L:SetMiscLocalization({
 	BgStart60 			= "戰鬥將在1分鐘內開始。",
 	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
-	InfoErrorText			= "當你離開戰鬥後，旗幟框架將會回復。",
-	ExprFlagPickUp			= "(.+)的旗幟被(.+)拔\230?\142?\137?\232?\181?\183?了!", -- 掉 \230\142\137 起 \232\181\183
-	ExprFlagCaptured		= "(.+)佔據了(.+)的旗幟!",
-	ExprFlagReturn			= "(.+)的旗幟被(.+)還到了它的基地",
-	FlagAlliance			= "聯盟旗幟: ",
+	InfoErrorText		= "當你離開戰鬥後，旗幟框架將會回復。",
+	ExprFlagPickUp		= "(.+)的旗幟被(.+)拔掉了!", 
+	ExprFlagCaptured	= "(.+)佔據了(.+)的旗幟!",
+	ExprFlagReturn		= "(.+)的旗幟被(.+)還到了它的基地",
+	FlagAlliance		= "聯盟旗幟: ",
 	FlagHorde			= "部落旗幟: ",
 	FlagBase			= "基地",
 	Vulnerable1			= "旗幟攜帶者變得脆弱了!",
 	Vulnerable2			= "旗幟攜帶者變得更加的脆弱了!"
 })
 
-L:SetTimerLocalization({
-	TimerStart 			= "戰鬥開始",
-	TimerFlag 			= "旗幟重生"
-})
-
-L:SetOptionLocalization({
-	TimerStart			= "顯示開始計時器",
-	TimerFlag			= "顯示旗幟重生計時器",
-	ShowFlagCarrier			= "顯示旗幟攜帶者",
-	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。"
-})
-
---------------------------
---  Battle for Gilneas  --
---------------------------
+------------------------------
+--  The Battle for Gilneas  --
+------------------------------
 L = DBM:GetModLocalization("z761")
-
-L:SetMiscLocalization({
-	ScoreExpr 			= "(%d+)/2000",
-	Alliance 			= "聯盟",
-	Horde 				= "部落",
-	WinBarText 			= "%s勝利",
-	BasesToWin 			= "勝利需要基地: %d",
-	Flag 				= "旗幟"
-})
 
 L:SetTimerLocalization({
 	TimerCap 			= "%s"
@@ -236,6 +219,13 @@ L:SetOptionLocalization({
 	TimerCap			= "顯示奪取計時器",
 	ShowGilneasEstimatedPoints	= "顯示戰鬥結束時雙方資源預計值",
 	ShowGilneasBasesToWin		= "顯示勝利需要的基地數量"
+})
+
+L:SetMiscLocalization({
+	ScoreExpr 	= "(%d+)/2000",
+	WinBarText 	= "%s勝利",
+	BasesToWin 	= "勝利需要基地: %d",
+	Flag 		= "旗幟"
 })
 
 ------------------------
@@ -270,8 +260,6 @@ L:SetMiscLocalization({
 	OrbTaken 	= "(%S+)奪走了(%S+)異能球!",
 	OrbReturn 	= "(%S+)異能球已回到初始位置!",
 	ScoreExpr	= "(%d+)/1600",
-	Alliance	= "聯盟",
-	Horde		= "部落",
 	WinBarText	= "預計%s勝利",
 	OrbsToWin	= "獲勝異能球數量: %d"
 })

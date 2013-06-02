@@ -11,7 +11,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnQueuePosition	= "你的排名順位為%d",
+	warnQueuePosition	= "你的排名順位為:%d",
 	specWarnYourNext	= "你是下一位!",
 	specWarnYourTurn	= "輪到你上場了!"
 })

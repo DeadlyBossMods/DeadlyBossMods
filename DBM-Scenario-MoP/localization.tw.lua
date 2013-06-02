@@ -139,7 +139,7 @@ L:SetOptionLocalization{
 L= DBM:GetModLocalization("d649")
 
 L:SetMiscLocalization{
-	XorenthPull		= "All lesser races are enemies of the true Horde!",
+	XorenthPull		= "所有低等種族都是正統部落的敵人。",
 	ElagloPull		= "Fools! The true horde cannot be stopped by the likes of you."
 }
 
