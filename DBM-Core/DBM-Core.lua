@@ -209,7 +209,6 @@ local queuedBattlefield = {}
 local loadDelay = nil
 local loadDelay2 = nil
 local stopDelay = nil
-local myRealRevision = DBM.Revision or DBM.ReleaseRevision
 local watchFrameRestore = false
 local currentSizes = nil
 
@@ -2275,6 +2274,12 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://www.deadlybossmods.com]"):format(displayVersion, version))
+						end
+					else--You're using at least a revision that matches latest release, but now lets check your alpha
+						local revDifference = revision - tonumber(DBM.Revision)
+						if DBM.DisplayVersion:find("alpha") and revDifference > 20 then--Running alpha version that's out of date
+							showedUpdateReminder = true
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
 						end
 					end
 				end
