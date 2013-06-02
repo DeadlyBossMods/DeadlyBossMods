@@ -2253,15 +2253,10 @@ do
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
-			if revision ~= 99999 and revision > tonumber(DBM.Revision) then
-				if raid[sender].rank >= 1 then
-					enableIcons = false
-				end
-			end
+			local revDifference = revision - tonumber(DBM.Revision)
 			if version > tonumber(DBM.Version) and version ~= 99999 then -- Update reminder
 				if not showedUpdateReminder then
 					local found = false
-					local revDifference = revision - tonumber(DBM.Revision)
 					for i, v in pairs(raid) do
 						if v.version == version and v ~= raid[sender] then
 							found = true
@@ -2277,20 +2272,21 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://www.deadlybossmods.com]"):format(displayVersion, version))
 						end
-						if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
+	--					if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
 	--						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
 	--						DBM:Disable(true)
-						end
-					else--You're using at least a revision that matches latest release, but now lets check your alpha
-						if revDifference > 20 then--Running alpha version that's out of date
-							showedUpdateReminder = true
-							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
-							if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
-	--							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
-	--							DBM:Disable(true)
-							end
-						end
+	--					end
 					end
+				end
+			end
+			if revision ~= 99999 and revision > tonumber(DBM.Revision) then
+				if raid[sender].rank >= 1 then
+					enableIcons = false
+				end
+				--Running alpha version that's out of date
+				if DBM.DisplayVersion:find("alpha") and (revDifference > 20) and not showedUpdateReminder then
+					showedUpdateReminder = true
+					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
 				end
 			end
 		end
