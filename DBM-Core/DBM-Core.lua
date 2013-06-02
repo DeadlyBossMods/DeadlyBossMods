@@ -2270,7 +2270,7 @@ do
 					end
 					if found then
 						showedUpdateReminder = true
-						if not DBM.Options.BlockVersionUpdateNotice then
+						if not DBM.Options.BlockVersionUpdateNotice or revDifference > 333 then
 							DBM:ShowUpdateReminder(displayVersion, version)
 						else
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
@@ -2278,16 +2278,16 @@ do
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://www.deadlybossmods.com]"):format(displayVersion, version))
 						end
 						if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
-							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
-							DBM:Disable(true)
+	--						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
+	--						DBM:Disable(true)
 						end
 					else--You're using at least a revision that matches latest release, but now lets check your alpha
 						if revDifference > 20 then--Running alpha version that's out of date
 							showedUpdateReminder = true
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
 							if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
-								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
-								DBM:Disable(true)
+	--							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
+	--							DBM:Disable(true)
 							end
 						end
 					end
