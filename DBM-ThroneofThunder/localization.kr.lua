@@ -69,7 +69,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalShell	= "$spell:137633 효과가 없을 경우 특수 경고 보기",
+	specWarnCrystalShell	= "$spell:137633 효과가 없고, 체력이 90% 이상인 경우 특수 경고 보기",
 	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기",
 	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정",
 	ClearIconOnTurtles		= "$journal:7129이 $spell:133971의 영향을 받은 경우 전술 목표 아이콘 지우기",
@@ -241,6 +241,10 @@ L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "사잇단계 진입 전에 특수 경고 보기",
 	StaticShockArrow			= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
 	OverchargeArrow				= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
+})
+
+L:SetMiscLocalization({
+	StaticYell		= "%s에게 전하 충격! (%d)"
 })
 
 ------------
