@@ -115,6 +115,7 @@ local staticIcon = 8--Start high and count down
 local overchargeTarget = {}
 local overchargeIcon = 1--Start low and count up
 local helmOfCommandTarget = {}
+local playerName = UnitName("player")
 
 local function warnStaticShockTargets()
 	warnStaticShock:Show(table.concat(staticshockTargets, "<, >"))
@@ -218,12 +219,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnStaticShock:Show()
 			if not self:IsDifficulty("lfr25") then
-				yellStaticShock:Schedule(7, 1)
-				yellStaticShock:Schedule(6, 2)
-				yellStaticShock:Schedule(5, 3)
-				yellStaticShock:Schedule(4, 4)
+				yellStaticShock:Schedule(7, playerName, 1)
+				yellStaticShock:Schedule(6, playerName, 2)
+				yellStaticShock:Schedule(5, playerName, 3)
+				yellStaticShock:Schedule(4, playerName, 4)
 			end
-			yellStaticShock:Schedule(3, 5)
+			yellStaticShock:Schedule(3, playerName, 5)
 			timerStaticShock:Start()
 			countdownStaticShockFades:Start()
 		else
