@@ -112,6 +112,7 @@ local function updateHealthFrame()
 	end
 end
 
+--Custom, don't use IsTanking prototype here
 local function notEligable(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second

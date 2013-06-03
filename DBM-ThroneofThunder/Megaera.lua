@@ -95,26 +95,6 @@ local activeHeadGUIDS = {}
 local iceTorrent = GetSpellInfo(139857)
 local torrentExpires = {}
 local arcaneRecent = false
-local UnitExists = UnitExists
-local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-
-local function isTank(unit)
-	-- 1. check blizzard tanks first
-	-- 2. check blizzard roles second
-	-- 3. check boss' highest threat target
-	if GetPartyAssignment("MAINTANK", unit, 1) then
-		return true
-	end
-	if UnitGroupRolesAssigned(unit) == "TANK" then
-		return true
-	end
-	for i = 1, 5 do
-		if UnitExists("boss"..i.."target") and UnitDetailedThreatSituation(unit, "boss"..i) then
-			return true
-		end
-	end
-	return false
-end
 
 local function warnTorrent(name)
 	if not name then return end
@@ -245,7 +225,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 139843 then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if isTank(uId) then
+		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			warnArcticFreeze:Show(args.destName, amount)
 			if args:IsPlayer() and amount >= 2 then
@@ -260,7 +240,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 137731 then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if isTank(uId) then
+		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			warnIgniteFlesh:Show(args.destName, amount)
 			if args:IsPlayer() and amount >= 2 then
@@ -271,7 +251,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 139840 then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if isTank(uId) then
+		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			warnRotArmor:Show(args.destName, amount)
 			if args:IsPlayer() and amount >= 2 then
@@ -286,7 +266,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 139993 then
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if isTank(uId) then
+		if self:IsTanking(uId) then
 			local amount = args.amount or 1
 			warnArcaneDiffusion:Show(args.destName, amount)
 			if args:IsPlayer() and amount >= 2 then
