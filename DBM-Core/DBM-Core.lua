@@ -2177,6 +2177,9 @@ do
 		revision = tonumber(revision or 0) or 0
 		startHp = tonumber(startHp or -1) or -1
 		if mod and delay and (not mod.zones or mod.zones[LastZoneMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
+			--Possibly check IsEncounterInProgress() if in LFR group, if IsEncounterInProgress() is false ignore startcombat syncs.
+			--Cannot always check IsEncounterInProgress() because of 5 mans or old raids. However, IsEncounterInProgress() SHOULD return true during any LFR raid boss.
+			--Will have to see how fast IsEncounterInProgress() updates and if my debug prints always return true on it when startcombat fires to ensure it's a viable fix to LFR trolling/spoofing.
 			DBM:StartCombat(mod, delay + lag, true, startHp, nil, "Sync from: "..sender)
 		end
 	end
@@ -2879,7 +2882,7 @@ end
 
 function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggerEvent)
 	--Seeing more and more bad pulls during raids. Need to track down source of this problem. Bosses "engaging" during trash that should be impossible. Trolled syncs, or a mysterious bug on our end?
-	print(triggerEvent)
+	print("DBM Combat Debug: ", "Combat started by "..triggerEvent, ". Encounter in progress: "..IsEncounterInProgress())
 	if not checkEntry(inCombat, mod) then
 		if not mod.Options.Enabled then return end
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
