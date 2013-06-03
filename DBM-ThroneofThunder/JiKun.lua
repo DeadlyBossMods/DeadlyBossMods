@@ -33,6 +33,7 @@ local specWarnDowndraft		= mod:NewSpecialWarningSpell(134370, nil, nil, nil, 2)
 local specWarnFeedYoung		= mod:NewSpecialWarningSpell(137528)
 local specWarnBigBird		= mod:NewSpecialWarning("specWarnBigBird", mod:IsTank())
 local specWarnBigBirdSoon	= mod:NewSpecialWarning("specWarnBigBirdSoon", false)
+local specWarnFeedPool		= mod:NewSpecialWarningMove(138319, false)
 
 --local timerCawsCD			= mod:NewCDTimer(15, 138923)--Variable beyond usefulness. anywhere from 18 second cd and 50.
 local timerQuills			= mod:NewBuffActiveTimer(10, 134380)
@@ -65,12 +66,19 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
+	if self.Options.SpecWarn138319move then--specWarnFeedPool is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
+		self:RegisterShortTermEvents(
+			"SPELL_PERIODIC_DAMAGE",
+			"SPELL_PERIODIC_MISSED"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -101,6 +109,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTalonRake:Cancel(args.destName)
 	end
 end
+
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 138319 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
+		specWarnFeedPool:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_CHANNEL_START(uId, _, _, _, spellId)
 	if spellId == 137528 then
