@@ -75,14 +75,16 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 공격대 경보 애드온이 설치되어 있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "DBM 설치 : %d명, BigWigs 설치 : %d명이 확인되었습니다."
-DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
 --DBM_BIG_WIGS (Same as English locales)
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "당신의 DBM 버전이 오래되었습니다!\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
+DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습니다!\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
+DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다.\n 최소 %d 버전 이상 업데이트 가능합니다. 가능한 최신 alpha 버전이나 안정화 버전으로 업데이트 하시기 바랍니다. 구 버전은 잘못되거나 미완성된 기능들이 있을 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 다운로드 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "새로운 버전이 발견되면 알림창을 표시합니다."
+DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전이 지나치게 오래되어 (%d 버전 가량) 업데이트 전까지 작동을 중지합니다. 이것은 오래되거나 호환되지 않는 기능이 작동하여 당신 또는 공격대원에게 잘못된 알림이 되지 않기 위한 조치입니다. 지금 즉시 최신 버전으로 업데이트 하여 주시기 바랍니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
