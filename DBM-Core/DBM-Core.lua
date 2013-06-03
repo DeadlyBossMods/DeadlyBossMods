@@ -4391,8 +4391,16 @@ function bossModPrototype:IsTanking(unit, boss)
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
-	if UnitExists(boss.."target") and UnitDetailedThreatSituation(unit, boss) then
-		return true
+	if boss then--Only checking one bossID as requested
+		if UnitExists(boss.."target") and UnitDetailedThreatSituation(unit, boss) then
+			return true
+		end
+	else--Check all of them if one isn't defined
+		for i = 1, 5 do
+			if UnitExists("boss"..i.."target") and UnitDetailedThreatSituation(unit, "boss"..i) then
+				return true
+			end
+		end
 	end
 	return false
 end
