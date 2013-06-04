@@ -2170,7 +2170,9 @@ do
 	end
 
 	syncHandlers["C"] = function(sender, delay, mod, revision, startHp)
-		if select(2, IsInInstance()) == "pvp" then return end
+		local _, instanceType = GetInstanceInfo()
+		if instanceType == "pvp" then return end
+		if not IsEncounterInProgress() and instanceType == "raid" and IsPartyLFG() then return end--Ignore syncs if we cannot validate IsEncounterInProgress as true
 		local lag = select(4, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
 		mod = DBM:GetModByName(mod or "")
