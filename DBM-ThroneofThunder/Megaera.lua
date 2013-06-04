@@ -98,6 +98,7 @@ local arcaneRecent = false
 
 local function warnTorrent(name)
 	if not name then return end
+	print("DBM Torrent Debug: "..name)
 	warnTorrentofIce:Show(name)
 	if name == UnitName("player") then
 		specWarnTorrentofIceYou:Show()
