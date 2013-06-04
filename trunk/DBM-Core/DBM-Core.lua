@@ -2884,7 +2884,7 @@ end
 
 function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggerEvent)
 	--Seeing more and more bad pulls during raids. Need to track down source of this problem. Bosses "engaging" during trash that should be impossible. Trolled syncs, or a mysterious bug on our end?
-	if triggerEvent then
+	if triggerEvent and not IsEncounterInProgress() then--I've concluded all genuine pulls IsEncounterInProgress is ALWAYS true, so lets refine this debug to just printing bad pulls only so we don't get spams of 25 prints in LFR when an actual boss is engaged
 		print("DBM Combat Debug: Combat started by "..triggerEvent..". Encounter in progress: "..tostring(IsEncounterInProgress()))
 	end
 	if not checkEntry(inCombat, mod) then
