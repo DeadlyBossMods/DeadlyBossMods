@@ -163,3 +163,10 @@ L:SetOptionLocalization({
 	specWarnRPS			= "Show special warning on what to use for $spell:141206",
 	SpeakOutStrikes		= "Count out number of $spell:141190 attacks"
 })
+
+L:SetMiscLocalization({
+	--Yay, duplicate locals, this shit is so dumb
+	rock			= "Rock",
+	paper			= "Paper",
+	scissors		= "Scissors"
+})
