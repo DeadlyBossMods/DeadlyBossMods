@@ -123,11 +123,15 @@ end
 local function findTorrent()
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
-		if not name then break end
+		if not name then
+			print("DBM Debug: findTorrent failed because name is nil")
+			break
+		end
 		local expires = select(7, UnitDebuff(uId, iceTorrent)) or 0
 		local spellId = select(11, UnitDebuff(uId, iceTorrent)) or 0
 		if spellId == 139857 and expires > 0 and not torrentExpires[expires] then
 			torrentExpires[expires] = true
+			print("DBM Debug: findTorrent found a valid ice torrent target, passing it to warning handler")
 			warnTorrent(name)
 			if mod.Options.SetIconOnTorrentofIce then
 				mod:SetIcon(uId, iceIcon, 11)
@@ -219,6 +223,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		timerNetherTearCD:Start(args.sourceGUID)
 	elseif args.spellId == 139866 then
 --		timerTorrentofIceCD:Start(args.sourceGUID)
+		print("DBM Debug: Torrent of Ice Cast")
 		findTorrent()
 	end
 end
