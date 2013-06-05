@@ -55,6 +55,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
+brawlersMod:OnMatchStart(function()
+	lastRPS = DBM_CORE_UNKNOWN
+end)
+
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args.spellId == 141206 then

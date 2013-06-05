@@ -170,6 +170,17 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	modsStopped = true
 end
 
+
+local startCallbacks, endCallbacks = {}, {}
+
+function mod:OnMatchStart(callback)
+	table.insert(startCallbacks, callback)
+end
+
+function mod:OnMatchEnd(callback)
+	table.insert(endCallbacks, callback)
+end
+
 --Most group up for this so they can buff eachother for matches. Syncing should greatly improve reliability, especially for match end since the person fighting definitely should detect that (probably missing yells still)
 function mod:OnSync(msg)
 	if msg == "MatchBegin" then
@@ -185,11 +196,17 @@ function mod:OnSync(msg)
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
+		for i, v in ipairs(startCallbacks) do
+			v()
+		end
 	elseif msg == "MatchEnd" then
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		currentFighter = nil
 		self:Stop()
 		--Boss from any rank can be fought by any rank now, so we just need to always cancel them all
+		for i, v in ipairs(endCallbacks) do
+			v()
+		end
 		for i = 1, 9 do
 			local mod2 = DBM:GetModByName("BrawlRank" .. i)
 			if mod2 then
