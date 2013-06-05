@@ -40,7 +40,7 @@ local lastRPS = DBM_CORE_UNKNOWN
 if currentZoneID == 922 or currentZoneID == 925 then
 	eventsRegistered = true
 	mod:RegisterShortTermEvents(
-		"CHAT_MSG_MONSTER_EMOTE",
+		"CHAT_MSG_RAID_BOSS_EMOTE",
 		"SPELL_CAST_START",
 		"PLAYER_REGEN_ENABLED",
 		"UNIT_DIED",
@@ -70,7 +70,8 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_EMOTE(msg)
+--"<39.8 01:37:33> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\inv_inscription_scroll.blp:20|t %s Chooses |cFFFF0000Paper|r! You |cFF00FF00Win|r!#Ro-Shambo
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find(L.rock) then
 		lastRPS = L.rock
 	elseif msg:find(L.paper) then
