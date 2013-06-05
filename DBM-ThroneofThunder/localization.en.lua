@@ -147,12 +147,12 @@ L:SetMiscLocalization({
 	UpperAndLower	= "Upper & Lower",
 	TrippleD		= "Tripple (2xDwn)",
 	TrippleU		= "Tripple (2xUp)",
-	SouthWest		= "SW",
-	SouthEast		= "SE",
-	NorthWest		= "NW",
-	NorthEast		= "NE",
-	West			= "W",
-	Middle			= "M"
+	NorthEast		= "|cff0000ffNE|r",--Blue
+	SouthEast		= "|cFF088A08SE|r",--Green
+	SouthWest		= "|cFF9932CDSW|r",--Purple
+	West			= "|cffff0000W|r",--Red
+	NorthWest		= "|cffffff00NW|r",--Yellow
+	Middle			= "|cffff0000M|r"--Red (Middle is just upper West)
 })
 
 --------------------------
