@@ -1827,11 +1827,9 @@ end
 
 function DBM:PLAYER_REGEN_ENABLED()
 	if loadDelay then
---		print("DBM Debug: loading ", loadDelay)
 		DBM:LoadMod(loadDelay)
 	end
 	if loadDelay2 then
---		print("DBM Debug: loading ", loadDelay2)
 		DBM:LoadMod(loadDelay2)
 	end
 	if guiRequested and not IsAddOnLoaded("DBM-GUI") then
@@ -2179,9 +2177,6 @@ do
 		revision = tonumber(revision or 0) or 0
 		startHp = tonumber(startHp or -1) or -1
 		if mod and delay and (not mod.zones or mod.zones[LastZoneMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
-			--Possibly check IsEncounterInProgress() if in LFR group, if IsEncounterInProgress() is false ignore startcombat syncs.
-			--Cannot always check IsEncounterInProgress() because of 5 mans or old raids. However, IsEncounterInProgress() SHOULD return true during any LFR raid boss.
-			--Will have to see how fast IsEncounterInProgress() updates and if my debug prints always return true on it when startcombat fires to ensure it's a viable fix to LFR trolling/spoofing.
 			DBM:StartCombat(mod, delay + lag, true, startHp, nil, "Sync from: "..sender)
 		end
 	end
@@ -2884,7 +2879,7 @@ end
 
 function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggerEvent)
 	--Seeing more and more bad pulls during raids. Need to track down source of this problem. Bosses "engaging" during trash that should be impossible. Trolled syncs, or a mysterious bug on our end?
-	if triggerEvent and not IsEncounterInProgress() and IsInInstance() then--I've concluded all genuine pulls IsEncounterInProgress is ALWAYS true, so lets refine this debug to just printing bad pulls only so we don't get spams of 25 prints in LFR when an actual boss is engaged
+	if triggerEvent and not IsEncounterInProgress() and IsInInstance() and not C_Scenario.IsInScenario() then--I've concluded all genuine RAID pulls, IsEncounterInProgress is ALWAYS true. So lets refine this debug to just printing bad pulls only so we don't get spams of 25 prints in LFR when an actual boss is engaged
 		print("DBM Combat Debug: Combat started by "..triggerEvent..". Encounter in progress: "..tostring(IsEncounterInProgress()))
 	end
 	if not checkEntry(inCombat, mod) then
