@@ -35,6 +35,7 @@ local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
 local QueuedBuff = GetSpellInfo(132639)
+local rares2Mod = DBM:GetModByName("BrawlRare2")
 --Fix for not registering events on reloadui or login while already inside brawlers guild.
 if currentZoneID == 922 or currentZoneID == 925 then
 	eventsRegistered = true
@@ -185,11 +186,12 @@ function mod:OnSync(msg)
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
+		rares2Mod:ResetRPS()--Reset Ro'Shambo (annoying to do it for ALL fights, but it's either that or localize yet another pull yell)
 	elseif msg == "MatchEnd" then
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		currentFighter = nil
 		self:Stop()
-		--Boss from any rank can be fought by any rank at max level, so we just need to always cancel them all
+		--Boss from any rank can be fought by any rank now, so we just need to always cancel them all
 		for i = 1, 9 do
 			local mod2 = DBM:GetModByName("BrawlRank" .. i)
 			if mod2 then
