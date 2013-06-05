@@ -141,8 +141,8 @@ local function findTorrent()
 					iceIcon = 6
 				end
 			end
+			return--Stop loop once found
 		end
-		return--Stop loop once found
 	end
 	mod:Schedule(0.1, findTorrent)
 end
@@ -223,7 +223,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		timerNetherTearCD:Start(args.sourceGUID)
 	elseif args.spellId == 139866 then
 --		timerTorrentofIceCD:Start(args.sourceGUID)
-		print("DBM Debug: Torrent of Ice Cast")
+		print("DBM Debug: Torrent of Ice Cast, now attempting to work around blizzard combat log bug to see who got it")
 		findTorrent()
 	end
 end
