@@ -344,7 +344,7 @@ function mod:OnSync(msg, targetOrGuid, ver)
 		if UnitExists(target) and self.Options.SetIconOnCharge then
 			self:SetIcon(target, 1, 5)--star
 		end
-	elseif msg == "Door" and self:AntiSpam(60, 4) then--prevent bad doorNumber increase if very late sync received.
+	elseif msg == "Door" and self:AntiSpam(15, 4) then--prevent bad doorNumber increase if very late sync received. (60 too high, breaks first door warnings after a quick wipe recovery since antispam carries over from previous pull)
 	--Doors spawn every 131.5 seconds
 	--Halfway through it (literlaly exact center) Dinomancers spawn at 56.75
 	--Then, before the dinomancer, lesser adds spawn twice splitting that timer into 3rds
