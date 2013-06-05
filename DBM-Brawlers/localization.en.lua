@@ -151,3 +151,7 @@ L= DBM:GetModLocalization("BrawlRare2")
 L:SetGeneralLocalization({
 	name = "Brawlers: Challenges 2"
 })
+
+L:SetOptionLocalization({
+	SpeakOutStrikes		= "Count out number of $spell:141190 attacks"
+})
