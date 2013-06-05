@@ -21,7 +21,7 @@ local warnVolatileConcoction	= mod:NewSpellAnnounce(141327, 3)
 local warnVerticalSlash			= mod:NewSpellAnnounce(141187, 4)
 
 --Lieutenant Drak'on
-local specWarnWaterJets			= mod:NewSpecialWarningSpell(133121, false)
+local specWarnSwashbuckling		= mod:NewSpecialWarningSpell(141438)
 --Lieutenant Fizzel
 local specWarnVolatileConcoction= mod:NewSpecialWarningSpell(141327)
 --Admiral Hagman
@@ -37,7 +37,11 @@ local timerVerticalSlashCD		= mod:NewCDTimer(18, 141187)--18-20 second variation
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 141327 then
+	if args.spellId == 141438 then
+		warnSwashbuckling:Show()
+		specWarnSwashbuckling:Show()
+		timerSwashbucklingCD:Start()
+	elseif args.spellId == 141327 then
 		warnVolatileConcoction:Show()
 		specWarnVolatileConcoction:Show()
 	elseif args.spellId == 141187 then
