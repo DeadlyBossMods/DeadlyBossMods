@@ -35,11 +35,12 @@ local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
 local QueuedBuff = GetSpellInfo(132639)
-local rares2Mod = DBM:GetModByName("BrawlRare2")
+local lastRPS = DBM_CORE_UNKNOWN
 --Fix for not registering events on reloadui or login while already inside brawlers guild.
 if currentZoneID == 922 or currentZoneID == 925 then
 	eventsRegistered = true
 	mod:RegisterShortTermEvents(
+		"CHAT_MSG_MONSTER_EMOTE",
 		"SPELL_CAST_START",
 		"PLAYER_REGEN_ENABLED",
 		"UNIT_DIED",
@@ -49,6 +50,10 @@ end
 
 function mod:PlayerFighting() -- for external mods
 	return playerIsFighting
+end
+
+function mod:GetRPS()
+	return lastRPS
 end
 
 function mod:SPELL_CAST_START(args)
@@ -62,6 +67,16 @@ function mod:SPELL_CAST_START(args)
 		if not playerIsFighting then--Do not distract player in arena with special warning
 			specWarnStormPortal:Show()
 		end
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_EMOTE(msg)
+	if msg:find(L.rock) then
+		lastRPS = L.rock
+	elseif msg:find(L.paper) then
+		lastRPS = L.paper
+	elseif msg:find(L.scissors) then
+		lastRPS = L.scissors
 	end
 end
 
@@ -186,7 +201,7 @@ function mod:OnSync(msg)
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
-		rares2Mod:ResetRPS()--Reset Ro'Shambo (annoying to do it for ALL fights, but it's either that or localize yet another pull yell)
+		lastRPS = DBM_CORE_UNKNOWN--Reset Ro'Shambo (annoying to do it for ALL fights, but it's either that or localize yet another pull yell)
 	elseif msg == "MatchEnd" then
 		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
 		currentFighter = nil
