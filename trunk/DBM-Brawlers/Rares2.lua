@@ -3,13 +3,13 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(60491)
-mod:SetModelID(46265)
+mod:SetModelID(48465)
 mod:SetZone()
 
 mod:RegisterEvents(
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"SPELL_CAST_START"
 )
 
 --Boss Key
@@ -42,6 +42,18 @@ mod:AddBoolOption("SpeakOutStrikes", true)
 
 local brawlersMod = DBM:GetModByName("Brawlers")
 local swiftStrike = 0
+local lastRPS = DBM_CORE_UNKNOWN
+
+--"<39.8 01:37:33> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#|TInterface\\Icons\\inv_inscription_scroll.blp:20|t %s Chooses |cFFFF0000Paper|r! You |cFF00FF00Win|r!#Ro-Shambo
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg:find(L.rock) then
+		lastRPS = L.rock
+	elseif msg:find(L.paper) then
+		lastRPS = L.paper
+	elseif msg:find(L.scissors) then
+		lastRPS = L.scissors
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
@@ -49,7 +61,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRockPaperScissors:Show()
 		timerRockpaperScissorsCD:Start()
 		if brawlersMod:PlayerFighting() then
-			local lastRPS = brawlersMod:GetRPS()
 			if lastRPS == L.rock then--he's using paper this time
 				specWarnRPS:Show(L.scissors)
 			elseif lastRPS == L.paper then--He's using scissors this time
