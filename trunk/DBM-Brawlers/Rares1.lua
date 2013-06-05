@@ -88,9 +88,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args.spellId == 140894 then
 		warnBoomingBoogaloo:Show()
-		specWarnBoomingBoogaloo:Show()
+		if brawlersMod:PlayerFighting() then
+			specWarnBoomingBoogaloo:Show()
+		end
 	elseif args.spellId == 140912 then
 		warnDeployBoom:Show()
-		specWarnDeployBoom:Show()
+		if brawlersMod:PlayerFighting() then
+			specWarnDeployBoom:Show()
+		end
 	end
 end
