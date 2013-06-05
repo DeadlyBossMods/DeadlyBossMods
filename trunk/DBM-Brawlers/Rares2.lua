@@ -8,7 +8,8 @@ mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --Boss Key
@@ -21,6 +22,7 @@ local warnBlindStrike				= mod:NewSpellAnnounce(141189, 3)
 local warnSwiftStrike				= mod:NewCountAnnounce(141190, 3)
 local warnBlindCleave				= mod:NewSpellAnnounce(141192, 4)
 
+local specWarnRPS					= mod:NewSpecialWarning("specWarnRPS")
 local specWarnEightChomps			= mod:NewSpecialWarningMove(142788)
 local specWarnBlindCleave			= mod:NewSpecialWarningRun(141192)
 
@@ -39,13 +41,37 @@ mod:RemoveOption("SpeedKillTimer")
 mod:AddBoolOption("SpeakOutStrikes", true)
 
 local brawlersMod = DBM:GetModByName("Brawlers")
+local lastRPS = L.rockorpaper
 local swiftStrike = 0
+
+function mod:ResetRPS() -- for external mods
+	lastRPS = L.rockorpaper
+end
+
+function mod:CHAT_MSG_MONSTER_EMOTE(msg)
+	if msg:find(L.rock) then
+		lastRPS = L.rock
+	elseif msg:find(L.paper) then
+		lastRPS = L.paper
+	elseif msg:find(L.scissors) then
+		lastRPS = L.scissors
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Spectator mode is disabled, do nothing.
 	if args.spellId == 141206 then
 		warnRockPaperScissors:Show()
 		timerRockpaperScissorsCD:Start()
+		if lastRPS == L.rock then--he's using paper this time
+			specWarnRPS:Show(L.scissors)
+		elseif lastRPS == L.paper then--He's using scissors this time
+			specWarnRPS:Show(L.rock)
+		elseif lastRPS == L.scissors then--he's using rock this time
+			specWarnRPS:Show(L.paper)
+		elseif lastRPS == L.rockorpaper then--It's his first cast, and he will either use Paper or Scissors
+			specWarnRPS:Show(L.rockorpaper)--this means that if you use rock, you tie or win. If you use paper, you lose or win. Rock is better Odds since tying isn't as bad as losing
+		end
 	end
 end
 

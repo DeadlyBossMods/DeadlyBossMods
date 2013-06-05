@@ -152,6 +152,15 @@ L:SetGeneralLocalization({
 	name = "Brawlers: Challenges 2"
 })
 
+L:SetWarningLocalization({
+	specWarnRPS			= "Use %s!"
+})
+
 L:SetOptionLocalization({
-	SpeakOutStrikes		= "Count out number of $spell:141190 attacks"
+	specWarnRPS			= "Show special warning on what to use for $spell:141206",
+	SpeakOutStrikes		= "Count out number of $spell:141190 attacks",
+	rock				= "Rock",
+	paper				= "Paper",
+	scissors			= "Scissors",
+	rockorpaper			= "Rock or Paper (Rock is safer)"
 })
