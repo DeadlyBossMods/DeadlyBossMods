@@ -198,6 +198,7 @@ L.Area_PullTimer				= "Pull Timer Filter Options"
 L.DontShowPT					= "Do not show Pull Timer bar"
 L.DontShowPTCountdownText		= "Do not show Pull Timer countdown text"
 L.DontPlayPTCountdown			= "Do not play Pull Timer countdown audio"
+L.DontShowPTText				= "Do not show announce text for Pull Timer"
 
 -- Misc
 L.FontHeight	= 16
