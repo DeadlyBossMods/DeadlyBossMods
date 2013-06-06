@@ -357,7 +357,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		darkParasiteTargets[#darkParasiteTargets + 1] = args.destName
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration, args.destName)
-		if #darkParasiteTargets >= 3 and self:IsDifficulty("heroic25") or self:IsDifficulty("heroic10") then
+		if (self:IsDifficulty("heroic25") and #darkParasiteTargets >= 3) or self:IsDifficulty("heroic10") then
 			warnDarkParasiteTargets()
 		else
 			self:Schedule(0.5, warnDarkParasiteTargets)
@@ -366,7 +366,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(darkParasiteTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
 			self:UnscheduleMethod("SetParasiteIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				if #darkParasiteTargetsIcons >= 3 and self:IsDifficulty("heroic25") or self:IsDifficulty("heroic10") then
+				if (self:IsDifficulty("heroic25") and #SetParasiteIcons >= 3) or self:IsDifficulty("heroic10") then
 					self:SetParasiteIcons()
 				else
 					self:ScheduleMethod(0.5, "SetParasiteIcons")
