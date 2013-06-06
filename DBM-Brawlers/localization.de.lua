@@ -152,3 +152,19 @@ L= DBM:GetModLocalization("BrawlRare2")
 L:SetGeneralLocalization({
 	name = "Kampfgilde: Herausford. 2"
 })
+
+L:SetWarningLocalization({
+	specWarnRPS			= "Benutze %s!"
+})
+
+L:SetOptionLocalization({
+	specWarnRPS			= "Spezialwarnung für die richtige Auswahl bei $spell:141206",
+	SpeakOutStrikes		= "Verkünde akustisch die Anzahl der $spell:141190 Angriffe"
+})
+
+L:SetMiscLocalization({
+	--
+	rock			= "Stein",
+	paper			= "Papier",
+	scissors		= "Schere"
+})
