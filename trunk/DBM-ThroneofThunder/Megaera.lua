@@ -11,6 +11,7 @@ mod:SetUsedIcons(7, 6, 4, 2)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
+	"RAID_BOSS_WHISPER",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -100,9 +101,11 @@ local function warnTorrent(name)
 	if not name then return end
 	warnTorrentofIce:Show(name)
 	if name == UnitName("player") then
-		specWarnTorrentofIceYou:Show()
-		timerTorrentofIce:Start()
-		yellTorrentofIce:Yell()
+		if self:AntiSpam(5, 1) then
+			specWarnTorrentofIceYou:Show()
+			timerTorrentofIce:Start()
+			yellTorrentofIce:Yell()
+		end
 	else
 		local uId = DBM:GetRaidUnitId(name)
 			if uId then
@@ -210,6 +213,15 @@ end
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:139866") and self:AntiSpam(5, 1) then
+		specWarnTorrentofIceYou:Show()
+		yellTorrentofIce:Yell()
+		soundTorrentofIce:Play()
+	end
+end
+
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 140138 then
