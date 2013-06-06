@@ -2218,7 +2218,7 @@ do
 		end
 		if not DBM.Options.DontShowPTText then
 			DBM:AddMsg(DBM_CORE_ANNOUNCE_PULL:format(timer))
-			DBM:Schedule(timer, DBM:AddMsg(DBM_CORE_ANNOUNCE_PULL_NOW))
+--			DBM:Schedule(timer, DBM:AddMsg(DBM_CORE_ANNOUNCE_PULL_NOW))--Not working at the moment?
 		end
 		DBM:StartLogging(timer, checkForActualPull)
 	end
