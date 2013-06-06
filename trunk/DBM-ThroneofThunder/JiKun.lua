@@ -159,119 +159,51 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---[[LFR. I think LFR only uses 3 nest locations repeating, NE, SE, SW. but hard to confirm when boss dies within 5 nests.
-Nest1: Lower NE
+--These need verification
+--Also need missing nests
+local nestCoords = {
+	[1] = { 57.79, 30.15 },--Lower Northeast
+	[2] = { 55.14, 60.95 },--Lower Northwest
+	[3] = { 45.89, 55.20 },--Lower Southwest
+	[4] = { 63.25, 36.04 },--Upper Northeast?
+	[5] = { 57.46, 59.61 },--upper Southwest?
+	[6] = { 47.00, 40.81 }--Upper Middle
+}
 
-Nest2: Lower SE
-
-Nest3: Lower SW
-
-Nest4: Upper NE
-
-Nest5: Upper SE
-
-Nest6: Upper Middle
-
-Nest7: Lower NE
---]]
-
---[[10N
-       01 Nest 01      : Lower
-+00:40 02 Nest 02      : Lower
-+01:20 03 Nest 03      : Lower
-+02:00 04 Nest 04      : Upper
-+02:40 05 Nest 05      : Upper
-+03:20 06 Nest 06      : Upper
-+04:00 07 Nest 07      : Lower
-+04:40 08 Nest 08      : Lower
-+05:20 09 Nest 09 & 10 : Upper & Lower
-+06:00 10 Nest 11      : Upper
-+06:40 11 Nest 12      : Upper
-+07:20 12 Nest 13      : Lower
-+08:00 13 Nest 14      : Lower
-+08:40 14 Nest 15 & 16 : Upper & Lower
---]]
-
---[[10H
-Nest1: Lower
-
-Nest2: Lower
-
-Nest3: Lower
-
-Nest4: Upper
-
-Nest5: Upper
-
-Nest6: Upper
-
-Nest7: Lower
-
-Nest8: Lower
-
-Nest9: Lower
-Nest10: Upper
-
-Nest11: Upper
-
-Nest12: Upper
-
-Nest13: Lower
-
-Nest14: Lower
-
-Nest15: Lower
-Nest16: Upper
-
-Nest17: Upper
-
-Nest18: Upper
---]]
 local function GetNestPositions(flockC)
 	local dir = DBM_CORE_UNKNOWN --direction
 	local loc = "" --location
 	if mod:IsDifficulty("lfr25") then
 		--LFR: L, L, L, U, U, U (Repeating)
-		if ((flockC-1) % 6) < 3 then dir = L.Lower -- 1,2,3,7,8,9,...
-		else                         dir = L.Upper -- 4,5,6,10,11,12,...
+		if     flockC ==  1 or flockC ==  7 or flockC ==  13 or flockC ==  19 then dir, loc = L.Lower, flockC.."-"..L.NorthEast	--01    loc = L.NorthEast
+		elseif flockC ==  2 or flockC ==  8 or flockC ==  14 or flockC ==  20 then dir, loc = L.Lower, flockC.."-"..L.SouthEast	--02    loc = L.SouthEast
+		elseif flockC ==  3 or flockC ==  9 or flockC ==  15 or flockC ==  21 then dir, loc = L.Lower, flockC.."-"..L.SouthWest	--03    loc = L.SouthWest
+		elseif flockC ==  4 or flockC ==  10 or flockC ==  16 or flockC ==  22 then dir, loc = L.Upper, flockC.."-"..L.NorthEast  --04   loc = U.NorthEast
+		elseif flockC ==  5 or flockC ==  11 or flockC ==  17 or flockC ==  23 then dir, loc = L.Upper, flockC.."-"..L.SouthEast--05   loc = U.Southeast
+		elseif flockC ==  6 or flockC ==  12 or flockC ==  18 or flockC ==  24 then dir, loc = L.Upper, flockC.."-"..L.Middle	--06    loc = U.Middle
+		else--Somehow you managed to live 16 minutes in LFR, grats, we'll fallback on old code cause i don't feel like typing out infinite minutes worth of nest locations.
+			if ((flockC-1) % 6) < 3 then dir = L.Lower -- 1,2,3,7,8,9,...
+			else                         dir = L.Upper -- 4,5,6,10,11,12,...
+			end
 		end
-	elseif mod:IsDifficulty("normal10") then
-		--TODO, find out locations for these to improve the warnings.
-		if     flockC ==  1 then dir, loc = L.Lower, "1-"..L.NorthEast	--01    loc = L.NorthEast
-		elseif flockC ==  2 then dir, loc = L.Lower, "2-"..L.SouthEast	--02    loc = L.SouthEast
-		elseif flockC ==  3 then dir, loc = L.Lower, "3-"..L.SouthWest	--03    loc = L.SouthWest
-		elseif flockC ==  4 then dir = L.Upper  		--04   loc = unknown
-		elseif flockC ==  5 then dir = L.Upper			--05   loc = unknown
-		elseif flockC ==  6 then dir, loc = L.Upper, "6-"..L.Middle	--06    loc = U.Middle
-		elseif flockC ==  7 then dir, loc = L.Lower, "7-"..L.NorthEast	--07    loc = L.NorthEast
-		elseif flockC ==  8 then dir, loc = L.Lower, "8-"..L.SouthEast	--08    loc = L.SouthEast
-		elseif flockC ==  9 then dir = L.UpperAndLower	--09-10
-		elseif flockC == 10 then dir = L.Upper			--11
-		elseif flockC == 11 then dir = L.Upper			--12    loc = L.NorthWest
-		elseif flockC == 12 then dir = L.Lower			--13
-		elseif flockC == 13 then dir = L.Lower			--14
-		elseif flockC == 14 then dir = L.UpperAndLower	--15-16
-		elseif flockC == 15 then dir = L.Upper			--17
-		elseif flockC == 16 then dir = L.Upper			--18
-		end
-	elseif mod:IsDifficulty("heroic10") then
-		--TODO, find out locations for these to improve the warnings.
-		if     flockC ==  1 then dir = L.Lower			--01
-		elseif flockC ==  2 then dir = L.Lower			--02    loc = L.SouthEast
-		elseif flockC ==  3 then dir = L.Lower			--03
-		elseif flockC ==  4 then dir = L.Upper			--04    loc = L.West
-		elseif flockC ==  5 then dir = L.Upper			--05
-		elseif flockC ==  6 then dir = L.Upper			--06
-		elseif flockC ==  7 then dir = L.Lower			--07
-		elseif flockC ==  8 then dir = L.Lower			--08    loc = L.SouthWest
-		elseif flockC ==  9 then dir = L.UpperAndLower	--09-10
-		elseif flockC == 10 then dir = L.Upper			--11
-		elseif flockC == 11 then dir = L.Upper			--12    loc = L.NorthWest
-		elseif flockC == 12 then dir = L.Lower			--13
-		elseif flockC == 13 then dir = L.Lower			--14
-		elseif flockC == 14 then dir = L.UpperAndLower	--15-16
-		elseif flockC == 15 then dir = L.Upper			--17
-		elseif flockC == 16 then dir = L.Upper			--18
+	elseif mod:IsDifficulty("normal10", "heroic10") then
+		--TODO, verify locations. 10 man loops same loop as LFR but the double nests put a spin on it.
+		if     flockC ==  1 then dir, loc = L.Lower, "1-"..L.NorthEast	--01
+		elseif flockC ==  2 then dir, loc = L.Lower, "2-"..L.SouthEast	--02
+		elseif flockC ==  3 then dir, loc = L.Lower, "3-"..L.SouthWest	--03
+		elseif flockC ==  4 then dir, loc = L.Upper, "4-"..L.NorthEast  --04
+		elseif flockC ==  5 then dir, loc = L.Upper, "5-"..L.SouthEast--05
+		elseif flockC ==  6 then dir, loc = L.Upper, "6-"..L.Middle	--06
+		elseif flockC ==  7 then dir, loc = L.Lower, "7-"..L.NorthEast	--07
+		elseif flockC ==  8 then dir, loc = L.Lower, "8-"..L.SouthEast	--08
+		elseif flockC ==  9 then dir, loc = L.UpperAndLower, "9-"..L.SouthWest..", 10-"..L.NorthEast --9-10
+		elseif flockC == 10 then dir, loc = L.Upper, "11-"..L.SouthEast --11
+		elseif flockC == 11 then dir, loc = L.Upper, "12-"..L.Middle	--12
+		elseif flockC == 12 then dir, loc = L.Lower, "13-"..L.NorthEast	--13
+		elseif flockC == 13 then dir, loc = L.Lower, "14-"..L.SouthEast	--14
+		elseif flockC == 14 then dir, loc = L.UpperAndLower, "15-"..L.SouthWest..", 16-"..L.NorthEast	--15-16
+		elseif flockC == 15 then dir, loc = L.Lower, "17-"..L.SouthEast	--17
+		elseif flockC == 16 then dir, loc = L.Upper, "18-"..L.Middle	--18
 		end
 	elseif mod:IsDifficulty("normal25") then
 		--Nest Data Sources:
@@ -297,7 +229,7 @@ local function GetNestPositions(flockC)
 		elseif flockC == 17 then dir, loc = L.Lower, "24-"..L.West											--Lower W
 		elseif flockC == 18 then dir, loc = L.UpperAndLower, "25-"..L.NorthWest..", 26-"..L.NorthEast		--Lower NW & Upper NE
 		elseif flockC == 19 then dir, loc = L.UpperAndLower, "27-"..DBM_CORE_UNKNOWN..", 28-"..L.SouthEast	--Lower ? & Upper SE
-		elseif flockC == 20 then dir, loc = L.UpperAndLower, "29-"..L.Southeast..", 30-"..L.Middle			--Lower ? & Upper SE
+		elseif flockC == 20 then dir, loc = L.UpperAndLower, "29-"..L.Southeast..", 30-"..L.Middle			--Lower SE & Upper Middle?
 		end
 	elseif mod:IsDifficulty("heroic25") then
 		--maybe rework it still so the loc itself include upper/lower in each location. i just couldn't think of a clean way of doing it at the moment without completely breaking other difficulties or making message text REALLY long
@@ -338,9 +270,9 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			timerFlockCD:Show(30, flockCount+1, nextDirection)
 		end
 		if self:IsDifficulty("heroic10") then
-			if flockCount == 1 or flockCount == 3 or flockCount == 7 or flockCount == 10 then
+			if flockCount == 1 or flockCount == 3 or flockCount == 7 or flockCount == 10 or flockCount == 12 then
 				specWarnBigBirdSoon:Schedule(30, nextDirection)
-			elseif flockCount == 2 or flockCount == 4 or flockCount == 8 or flockCount == 11 then
+			elseif flockCount == 2 or flockCount == 4 or flockCount == 8 or flockCount == 11 or flockCount == 13 then
 				specWarnBigBird:Show(currentDirection)
 			end
 		elseif self:IsDifficulty("heroic25") then
@@ -349,11 +281,16 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			elseif flockCount ==  7 then specWarnBigBirdSoon:Schedule(20, L.Upper.." ("..L.NorthWest..")")
 			elseif flockCount == 10 then specWarnBigBirdSoon:Schedule(20, L.Upper.." ("..L.SouthEast..")")
 			elseif flockCount == 13 then specWarnBigBirdSoon:Schedule(20, L.Lower.." ("..L.SouthWest..")")
+			elseif flockCount == 16 then specWarnBigBirdSoon:Schedule(20, L.Lower.." ("..DBM_CORE_UNKNOWN..")")
+			elseif flockCount == 19 then specWarnBigBirdSoon:Schedule(20, L.Upper.." ("..DBM_CORE_UNKNOWN..")")
 			elseif flockCount ==  2 then specWarnBigBird:Show(L.Lower.." ("..L.SouthEast..")")
 			elseif flockCount ==  5 then specWarnBigBird:Show(L.Lower.." ("..L.NorthWest..")")
 			elseif flockCount ==  8 then specWarnBigBird:Show(L.Upper.." ("..L.NorthWest..")")
 			elseif flockCount == 11 then specWarnBigBird:Show(L.Upper.." ("..L.SouthEast..")")
 			elseif flockCount == 14 then specWarnBigBird:Show(L.Lower.." ("..L.SouthWest..")")
+			--Reports of birds in next two nests but not precise locations
+			elseif flockCount == 17 then specWarnBigBird:Show(L.Lower.." ("..DBM_CORE_UNKNOWN..")")
+			elseif flockCount == 20 then specWarnBigBird:Show(L.Upper.." ("..DBM_CORE_UNKNOWN..")")
 			end
 		end
 		if currentLocation ~= "" then
