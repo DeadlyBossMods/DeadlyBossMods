@@ -195,9 +195,10 @@ L.SpamBlockNoRangeFrame			= "Zeige kein Abstandsfenster/-radar an"
 L.SpamBlockNoInfoFrame			= "Zeige kein Infofenster an"
 
 L.Area_PullTimer				= "Filtereinstellungen für Pull-Timer"
-L.DontShowPT					= "Zeige keinen Balken für Pull-Timer"
-L.DontShowPTCountdownText		= "Zeige keinen Countdown-Text für Pull-Timer"
-L.DontPlayPTCountdown			= "Spiele keinen Countdown-Sound für Pull-Timer"
+L.DontShowPT					= "Zeige keinen Timerbalken für Pull-Timer"
+L.DontShowPTCountdownText		= "Zeige keinen optischen Countdown für Pull-Timer"
+L.DontPlayPTCountdown			= "Spiele keinen akustischen Countdown für Pull-Timer"
+L.DontShowPTText				= "Zeige keine Mitteilungen für Pull-Timer im Chatfenster"
 
 -- Misc
 L.FontHeight	= 16
