@@ -200,6 +200,7 @@ L.Area_PullTimer				= "전투 시작 예정 설정"
 L.DontShowPT					= "전투 시작 예정 바 숨기기"
 L.DontShowPTCountdownText		= "전투 시작 예정 초읽기 글자 숨기기"
 L.DontPlayPTCountdown			= "전투 시작 예정 초읽기 소리 숨기기"
+L.DontShowPTText				= "전투 시작 예정 대화 알림 숨기기"
 
 -- Misc
 L.FontHeight = 16

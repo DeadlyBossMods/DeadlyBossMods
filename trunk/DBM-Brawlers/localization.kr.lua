@@ -151,3 +151,19 @@ L= DBM:GetModLocalization("BrawlRare2")
 L:SetGeneralLocalization({
 	name = "싸움꾼: 도전 2"
 })
+
+L:SetWarningLocalization({
+	specWarnRPS			= "%s 내세요!"
+})
+
+L:SetOptionLocalization({
+	specWarnRPS			= "$spell:141206를 진행 중일때 무엇을 내야할지 특수 경고 보기",
+	SpeakOutStrikes		= "$spell:141190 주문의 공격 횟수를 음성으로 듣기"
+})
+
+L:SetMiscLocalization({
+	--Yay, duplicate locals, this shit is so dumb
+	rock			= "바위",
+	paper			= "보",
+	scissors		= "가위"
+})
