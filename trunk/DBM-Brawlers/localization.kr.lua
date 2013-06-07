@@ -162,7 +162,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	--Yay, duplicate locals, this shit is so dumb
 	rock			= "바위",
 	paper			= "보",
 	scissors		= "가위"
