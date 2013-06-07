@@ -174,17 +174,14 @@ local function GetNestPositions(flockC)
 	local dir = DBM_CORE_UNKNOWN --direction
 	local loc = "" --location
 	if mod:IsDifficulty("lfr25") then
-		--LFR: L, L, L, U, U, U (Repeating)
-		if     flockC ==  1 or flockC ==  7 or flockC ==  13 or flockC ==  19 then dir, loc = L.Lower, flockC.."-"..L.NorthEast	--01    loc = L.NorthEast
-		elseif flockC ==  2 or flockC ==  8 or flockC ==  14 or flockC ==  20 then dir, loc = L.Lower, flockC.."-"..L.SouthEast	--02    loc = L.SouthEast
-		elseif flockC ==  3 or flockC ==  9 or flockC ==  15 or flockC ==  21 then dir, loc = L.Lower, flockC.."-"..L.SouthWest	--03    loc = L.SouthWest
-		elseif flockC ==  4 or flockC ==  10 or flockC ==  16 or flockC ==  22 then dir, loc = L.Upper, flockC.."-"..L.NorthEast  --04   loc = U.NorthEast
-		elseif flockC ==  5 or flockC ==  11 or flockC ==  17 or flockC ==  23 then dir, loc = L.Upper, flockC.."-"..L.SouthEast--05   loc = U.Southeast
-		elseif flockC ==  6 or flockC ==  12 or flockC ==  18 or flockC ==  24 then dir, loc = L.Upper, flockC.."-"..L.Middle	--06    loc = U.Middle
-		else--Somehow you managed to live 16 minutes in LFR, grats, we'll fallback on old code cause i don't feel like typing out infinite minutes worth of nest locations.
-			if ((flockC-1) % 6) < 3 then dir = L.Lower -- 1,2,3,7,8,9,...
-			else                         dir = L.Upper -- 4,5,6,10,11,12,...
-			end
+		--LFR: L (NE), L (SE), L (SW), U (NE), U (SE), U (M) [repeating]
+		local flockCm6 = flockC % 6
+		if     flockCm6 == 1 then dir, loc = L.Lower, flockC.."-"..L.NorthEast	--01,07,.. loc = L.NorthEast
+		elseif flockCm6 == 2 then dir, loc = L.Lower, flockC.."-"..L.SouthEast	--02,08,.. loc = L.SouthEast
+		elseif flockCm6 == 3 then dir, loc = L.Lower, flockC.."-"..L.SouthWest	--03,09,.. loc = L.SouthWest
+		elseif flockCm6 == 4 then dir, loc = L.Upper, flockC.."-"..L.NorthEast	--04,10,.. loc = U.NorthEast
+		elseif flockCm6 == 5 then dir, loc = L.Upper, flockC.."-"..L.SouthEast	--05,11,.. loc = U.Southeast
+		else                      dir, loc = L.Upper, flockC.."-"..L.Middle		--06,12,.. loc = U.Middle
 		end
 	elseif mod:IsDifficulty("normal10", "heroic10") then
 		--TODO, verify locations. 10 man loops same loop as LFR but the double nests put a spin on it.
@@ -202,7 +199,7 @@ local function GetNestPositions(flockC)
 		elseif flockC == 12 then dir, loc = L.Lower, "13-"..L.NorthEast	--13
 		elseif flockC == 13 then dir, loc = L.Lower, "14-"..L.SouthEast	--14
 		elseif flockC == 14 then dir, loc = L.UpperAndLower, "15-"..L.SouthWest..", 16-"..L.NorthEast	--15-16
-		elseif flockC == 15 then dir, loc = L.Lower, "17-"..L.SouthEast	--17
+		elseif flockC == 15 then dir, loc = L.Upper, "17-"..L.SouthEast	--17
 		elseif flockC == 16 then dir, loc = L.Upper, "18-"..L.Middle	--18
 		end
 	elseif mod:IsDifficulty("normal25") then
