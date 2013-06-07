@@ -64,7 +64,7 @@ do
 			end
 		end
 	end
-	Warsong.OnInitialize = WSG_Initialize()
+	Warsong.OnInitialize = WSG_Initialize
 	
 	function Warsong:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, WSG_Initialize)
