@@ -439,7 +439,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 --Blizz doesn't like combat log anymore for some spells
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
-	if npc == crimsonFog or npc == amberFog or npc == azureFog then
+	if (npc == crimsonFog or npc == amberFog or npc == azureFog) and self:AntiSpam(1, npc) then
 		if self:IsDifficulty("lfr25") and npc == azureFog and not lfrAzureFogRevealed then
 			lfrAzureFogRevealed = true
 			specWarnFogRevealed:Show(npc)
