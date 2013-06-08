@@ -2249,7 +2249,7 @@ do
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
 			local revDifference = revision - tonumber(DBM.Revision)
-			if version > tonumber(DBM.Version) and version ~= 99999 then -- Update reminder
+			if version > tonumber(DBM.Version) then -- Update reminder
 				if not showedUpdateReminder then
 					local found = false
 					for i, v in pairs(raid) do
@@ -2274,14 +2274,22 @@ do
 					end
 				end
 			end
-			if revision ~= 99999 and revision > tonumber(DBM.Revision) then
+			if revision > tonumber(DBM.Revision) then
 				if raid[sender].rank >= 1 then
 					enableIcons = false
 				end
-				--Running alpha version that's out of date
-				if DBM.DisplayVersion:find("alpha") and (revDifference > 20) and not showedUpdateReminder then
-					showedUpdateReminder = true
-					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
+				if not showedUpdateReminder and DBM.DisplayVersion:find("alpha") and (revDifference > 20) then
+					local found = false
+					for i, v in pairs(raid) do
+						if v.revision == revision and v ~= raid[sender] then
+							found = true
+							break
+						end
+					end
+					if found then--Running alpha version that's out of date
+						showedUpdateReminder = true
+						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
+					end
 				end
 			end
 		end
