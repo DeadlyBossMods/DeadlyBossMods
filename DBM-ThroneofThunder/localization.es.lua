@@ -141,7 +141,8 @@ L:SetMiscLocalization({
 	NorthWest		= "NO",
 	NorthEast		= "NE",
 	West			= "O",
-	Middle			= "C"
+	Middle10		= "C",
+	Middle25		= "C"
 })
 
 --------------------------
