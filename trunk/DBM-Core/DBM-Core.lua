@@ -1972,13 +1972,7 @@ function DBM:ZONE_CHANGED()
 		DBM:UpdateMapSizes()
 	end
 end
-
-function DBM:ZONE_CHANGED_INDOORS()
-	if DBM.RangeCheck:IsShown() or DBM.Arrow:IsShown() then
-		SetMapToCurrentZone()
-		DBM:UpdateMapSizes()
-	end
-end
+DBM.ZONE_CHANGED_INDOORS = DBM.ZONE_CHANGED
 
 function DBM:GetCurrentArea()
 	return LastZoneMapID
@@ -1988,10 +1982,8 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
---	local firstZoneChangedEvent = true
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
-		--unless we apsolutely make sure we force it to right zone before asking for info.
 		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
 			local openMapID = GetCurrentMapAreaID()--Save current map settings.
 			SetMapToCurrentZone()--Force to right zone
@@ -2007,8 +1999,7 @@ do
 --		self:AddMsg(GetZoneText()..", "..LastZoneMapID)--Debug
 		for i, v in ipairs(self.AddOns) do
 			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zoneId, LastZoneMapID)) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
-				self:Unschedule(DBM.LoadMod, DBM, v)
-				self:Schedule(3, DBM.LoadMod, DBM, v)
+				self:LoadMod(v)
 			end
 		end
 		local _, instanceType = IsInInstance()
