@@ -133,7 +133,8 @@ L:SetMiscLocalization({
 	NorthWest		= "СЗ",
 	NorthEast		= "СВ",
 	West			= "З",
-	Middle			= "Середина"
+	Middle10		= "Середина",
+	Middle25		= "Середина"
 })
 
 --------------------------

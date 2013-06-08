@@ -48,6 +48,10 @@ local timerFlight			= mod:NewBuffFadesTimer(10, 133755)
 local timerPrimalNutriment	= mod:NewBuffFadesTimer(30, 140741)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
+mod:AddDropdownOption("ShowNestArrows", {"Never", "Northeast", "Southeast", "Southwest", "West", "Northwest", "Guardians"}, "Never", "misc")
+--Southwest is inconsistent between 10 and 25 because blizz activates lower SW on 10 man but does NOT activate upper SW (middle is activated in it's place)
+--As such, the options have to be coded special so that Southwest sends 10 man to upper middle and sends 25 to actual upper southwest (option text explains this difference)
+--West and Northwest are obviously nests that 10 man/LFR never see so the options won't do anything outside of 25 man (thus the 25 man only text)
 
 local flockCount = 0
 local quillsCount = 0
@@ -159,15 +163,19 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	end
 end
 
---These need verification
---Also need missing nests
 local nestCoords = {
-	[1] = { 57.79, 30.15 },--Lower Northeast
-	[2] = { 55.14, 60.95 },--Lower Northwest
-	[3] = { 45.89, 55.20 },--Lower Southwest
-	[4] = { 63.25, 36.04 },--Upper Northeast?
-	[5] = { 57.46, 59.61 },--upper Southwest?
-	[6] = { 47.00, 40.81 }--Upper Middle
+	--Lower Nests
+	[1] = { 57.70, 30.50 },--Lower Northeast
+	[2] = { 55.00, 61.50 },--Lower Southeast
+	[3] = { 45.60, 55.00 },--Lower Southwest
+	[4] = { 40.30, 39.10 },--Lower West
+	[5] = { 46.70, 23.60 },--Lower Northwest
+	--Upper Nests
+	[6] = { 62.80, 35.50 },--Upper Northeast
+	[7] = { 57.30, 59.70 },--Upper Southeast
+	[8] = { 40.20, 58.30 },--Upper Southwest
+	[9] = { 47.20, 40.70 },--Upper Middle (aka, upper west)
+	[10] = { 43.50, 24.10 }--Upper Northwest
 }
 
 local function GetNestPositions(flockC)
@@ -176,83 +184,76 @@ local function GetNestPositions(flockC)
 	if mod:IsDifficulty("lfr25") then
 		--LFR: L (NE), L (SE), L (SW), U (NE), U (SE), U (M) [repeating]
 		local flockCm6 = flockC % 6
-		if     flockCm6 == 1 then dir, loc = L.Lower, flockC.."-"..L.NorthEast	--01,07,.. loc = L.NorthEast
-		elseif flockCm6 == 2 then dir, loc = L.Lower, flockC.."-"..L.SouthEast	--02,08,.. loc = L.SouthEast
-		elseif flockCm6 == 3 then dir, loc = L.Lower, flockC.."-"..L.SouthWest	--03,09,.. loc = L.SouthWest
-		elseif flockCm6 == 4 then dir, loc = L.Upper, flockC.."-"..L.NorthEast	--04,10,.. loc = U.NorthEast
-		elseif flockCm6 == 5 then dir, loc = L.Upper, flockC.."-"..L.SouthEast	--05,11,.. loc = U.Southeast
-		else                      dir, loc = L.Upper, flockC.."-"..L.Middle		--06,12,.. loc = U.Middle
+		if     flockCm6 == 1 then dir, loc = L.Lower, flockC.."-"..L.Lower.." "..L.NorthEast	--01,07,.. loc = L.NorthEast
+		elseif flockCm6 == 2 then dir, loc = L.Lower, flockC.."-"..L.Lower.." "..L.SouthEast	--02,08,.. loc = L.SouthEast
+		elseif flockCm6 == 3 then dir, loc = L.Lower, flockC.."-"..L.Lower.." "..L.SouthWest	--03,09,.. loc = L.SouthWest
+		elseif flockCm6 == 4 then dir, loc = L.Upper, flockC.."-"..L.Upper.." "..L.NorthEast	--04,10,.. loc = U.NorthEast
+		elseif flockCm6 == 5 then dir, loc = L.Upper, flockC.."-"..L.Upper.." "..L.SouthEast	--05,11,.. loc = U.Southeast
+		else                      dir, loc = L.Upper, flockC.."-"..L.Upper.." "..L.Middle10	--06,12,.. loc = U.Middle
 		end
 	elseif mod:IsDifficulty("normal10", "heroic10") then
-		--TODO, verify locations. 10 man loops same loop as LFR but the double nests put a spin on it.
-		if     flockC ==  1 then dir, loc = L.Lower, "1-"..L.NorthEast	--01
-		elseif flockC ==  2 then dir, loc = L.Lower, "2-"..L.SouthEast	--02
-		elseif flockC ==  3 then dir, loc = L.Lower, "3-"..L.SouthWest	--03
-		elseif flockC ==  4 then dir, loc = L.Upper, "4-"..L.NorthEast  --04
-		elseif flockC ==  5 then dir, loc = L.Upper, "5-"..L.SouthEast--05
-		elseif flockC ==  6 then dir, loc = L.Upper, "6-"..L.Middle	--06
-		elseif flockC ==  7 then dir, loc = L.Lower, "7-"..L.NorthEast	--07
-		elseif flockC ==  8 then dir, loc = L.Lower, "8-"..L.SouthEast	--08
-		elseif flockC ==  9 then dir, loc = L.UpperAndLower, "9-"..L.SouthWest..", 10-"..L.NorthEast --9-10
-		elseif flockC == 10 then dir, loc = L.Upper, "11-"..L.SouthEast --11
-		elseif flockC == 11 then dir, loc = L.Upper, "12-"..L.Middle	--12
-		elseif flockC == 12 then dir, loc = L.Lower, "13-"..L.NorthEast	--13
-		elseif flockC == 13 then dir, loc = L.Lower, "14-"..L.SouthEast	--14
-		elseif flockC == 14 then dir, loc = L.UpperAndLower, "15-"..L.SouthWest..", 16-"..L.NorthEast	--15-16
-		elseif flockC == 15 then dir, loc = L.Upper, "17-"..L.SouthEast	--17
-		elseif flockC == 16 then dir, loc = L.Upper, "18-"..L.Middle	--18
+		if     flockC ==  1 then dir, loc = L.Lower, "1-"..L.Lower.." "..L.NorthEast	--01
+		elseif flockC ==  2 then dir, loc = L.Lower, "2-"..L.Lower.." "..L.SouthEast	--02
+		elseif flockC ==  3 then dir, loc = L.Lower, "3-"..L.Lower.." "..L.SouthWest	--03
+		elseif flockC ==  4 then dir, loc = L.Upper, "4-"..L.Upper.." "..L.NorthEast  --04
+		elseif flockC ==  5 then dir, loc = L.Upper, "5-"..L.Upper.." "..L.SouthEast--05
+		elseif flockC ==  6 then dir, loc = L.Upper, "6-"..L.Upper.." "..L.Middle10	--06
+		elseif flockC ==  7 then dir, loc = L.Lower, "7-"..L.Lower.." "..L.NorthEast	--07
+		elseif flockC ==  8 then dir, loc = L.Lower, "8-"..L.Lower.." "..L.SouthEast	--08
+		elseif flockC ==  9 then dir, loc = L.UpperAndLower, "9-"..L.Lower.." "..L.SouthWest..", 10-"..L.Upper.." "..L.NorthEast --9-10
+		elseif flockC == 10 then dir, loc = L.Upper, "11-"..L.Upper.." "..L.SouthEast --11
+		elseif flockC == 11 then dir, loc = L.Upper, "12-"..L.Upper.." "..L.Middle10  --12
+		elseif flockC == 12 then dir, loc = L.Lower, "13-"..L.Lower.." "..L.NorthEast	--13
+		elseif flockC == 13 then dir, loc = L.Lower, "14-"..L.Lower.." "..L.SouthEast	--14
+		elseif flockC == 14 then dir, loc = L.UpperAndLower, "15-"..L.Lower.." "..L.SouthWest..", 16-"..L.Upper.." "..L.NorthEast	--15-16
+		elseif flockC == 15 then dir, loc = L.Upper, "17-"..L.Upper.." "..L.SouthEast	--17
+		elseif flockC == 16 then dir, loc = L.Upper, "18-"..L.Upper.." "..L.Middle10	--18
 		end
 	elseif mod:IsDifficulty("normal25") then
-		--Nest Data Sources:
-		--http://www.youtube.com/watch?v=jo0BKuuh5xw
-		--http://www.youtube.com/watch?feature=player_detailpage&v=F0bxpAwdOnk#t=471s
-		--http://www.youtube.com/watch?feature=player_detailpage&v=lNWaVd5Ur1o#t=528s
-		if     flockC ==  1 then dir, loc = L.Lower, "1-"..L.NorthEast										--Lower NE
-		elseif flockC ==  2 then dir, loc = L.Lower, "2-"..L.SouthEast										--Lower SE
-		elseif flockC ==  3 then dir, loc = L.Lower, "3-"..L.SouthWest										--Lower SW
-		elseif flockC ==  4 then dir, loc = L.Lower, "4-"..L.West											--Lower W
-		elseif flockC ==  5 then dir, loc = L.UpperAndLower, "5-"..L.NorthWest..", 6-"..L.NorthEast			--Lower NW, Upper NE
-		elseif flockC ==  6 then dir, loc = L.Upper, "7-"..L.SouthEast										--Upper SE
-		elseif flockC ==  7 then dir, loc = L.Upper, "8-"..L.Middle											--Upper Middle
-		elseif flockC ==  8 then dir, loc = L.UpperAndLower, "9-"..L.NorthEast..", 10-"..L.SouthWest		--Lower NE & Upper SW
-		elseif flockC ==  9 then dir, loc = L.UpperAndLower, "11-"..L.SouthEast..", 12-"..L.NorthWest		--Lower SE & Upper NW
-		elseif flockC == 10 then dir, loc = L.Lower, "13-"..L.SouthWest										--Lower SW
-		elseif flockC == 11 then dir, loc = L.Lower, "14-"..L.West											--Lower W
-		elseif flockC == 12 then dir, loc = L.UpperAndLower, "15-"..L.NorthWest..", 16-"..L.NorthEast		--Lower NW & Upper NE
-		elseif flockC == 13 then dir, loc = L.Upper, "17-"..L.SouthEast										--Upper SE
-		elseif flockC == 14 then dir, loc = L.UpperAndLower, "18-"..L.NorthEast..", 19-"..L.Middle			--Lower NE & Upper Middle
-		elseif flockC == 15 then dir, loc = L.UpperAndLower, "20-"..L.SouthEast..", 21-"..L.SouthWest		--Lower SE & Upper SW
-		elseif flockC == 16 then dir, loc = L.UpperAndLower, "22-"..L.SouthWest..", 23-"..L.NorthWest		--Lower SW & Upper NW
-		elseif flockC == 17 then dir, loc = L.Lower, "24-"..L.West											--Lower W
-		elseif flockC == 18 then dir, loc = L.UpperAndLower, "25-"..L.NorthWest..", 26-"..L.NorthEast		--Lower NW & Upper NE
-		elseif flockC == 19 then dir, loc = L.UpperAndLower, "27-"..DBM_CORE_UNKNOWN..", 28-"..L.SouthEast	--Lower ? & Upper SE
-		elseif flockC == 20 then dir, loc = L.UpperAndLower, "29-"..L.Southeast..", 30-"..L.Middle			--Lower SE & Upper Middle?
+		if     flockC ==  1 then dir, loc = L.Lower, "1-"..L.Lower.." "..L.NorthEast													--Lower NE
+		elseif flockC ==  2 then dir, loc = L.Lower, "2-"..L.Lower.." "..L.SouthEast													--Lower SE
+		elseif flockC ==  3 then dir, loc = L.Lower, "3-"..L.Lower.." "..L.SouthWest													--Lower SW
+		elseif flockC ==  4 then dir, loc = L.Lower, "4-"..L.Lower.." "..L.West															--Lower W
+		elseif flockC ==  5 then dir, loc = L.UpperAndLower, "5-"..L.Lower.." "..L.NorthWest..", 6-"..L.Upper.." "..L.NorthEast			--Lower NW, Upper NE
+		elseif flockC ==  6 then dir, loc = L.Upper, "7-"..L.Upper.." "..L.SouthEast													--Upper SE
+		elseif flockC ==  7 then dir, loc = L.Upper, "8-"..L.Upper.." "..L.Middle25														--Upper Middle
+		elseif flockC ==  8 then dir, loc = L.UpperAndLower, "9-"..L.Lower.." "..L.NorthEast..", 10-"..L.Upper.." "..L.SouthWest		--Lower NE & Upper SW
+		elseif flockC ==  9 then dir, loc = L.UpperAndLower, "11-"..L.Lower.." "..L.SouthEast..", 12-"..L.Upper.." "..L.NorthWest		--Lower SE & Upper NW
+		elseif flockC == 10 then dir, loc = L.Lower, "13-"..L.Lower.." "..L.SouthWest													--Lower SW
+		elseif flockC == 11 then dir, loc = L.Lower, "14-"..L.Lower.." "..L.West														--Lower W
+		elseif flockC == 12 then dir, loc = L.UpperAndLower, "15-"..L.Lower.." "..L.NorthWest..", 16-"..L.Upper.." "..L.NorthEast		--Lower NW & Upper NE
+		elseif flockC == 13 then dir, loc = L.Upper, "17-"..L.Upper.." "..L.SouthEast													--Upper SE
+		elseif flockC == 14 then dir, loc = L.UpperAndLower, "18-"..L.Lower.." "..L.NorthEast..", 19-"..L.Upper.." "..L.Middle25		--Lower NE & Upper Middle
+		elseif flockC == 15 then dir, loc = L.UpperAndLower, "20-"..L.Lower.." "..L.SouthEast..", 21-"..L.Upper.." "..L.SouthWest		--Lower SE & Upper SW
+		elseif flockC == 16 then dir, loc = L.UpperAndLower, "22-"..L.Lower.." "..L.SouthWest..", 23-"..L.Upper.." "..L.NorthWest		--Lower SW & Upper NW
+		elseif flockC == 17 then dir, loc = L.Lower, "24-"..L.Lower.." "..L.West														--Lower W
+		elseif flockC == 18 then dir, loc = L.UpperAndLower, "25-"..L.Lower.." "..L.NorthWest..", 26-"..L.Upper.." "..L.NorthEast		--Lower NW & Upper NE
+		elseif flockC == 19 then dir, loc = L.UpperAndLower, "27-"..L.Lower.." "..DBM_CORE_UNKNOWN..", 28-"..L.Upper.." "..L.SouthEast	--Lower ? & Upper SE
+		elseif flockC == 20 then dir, loc = L.UpperAndLower, "29-"..L.Lower.." "..L.Southeast..", 30-"..L.Upper.." "..L.Middle25		--Lower SE & Upper Middle?
 		end
 	elseif mod:IsDifficulty("heroic25") then
-		--maybe rework it still so the loc itself include upper/lower in each location. i just couldn't think of a clean way of doing it at the moment without completely breaking other difficulties or making message text REALLY long
-		--http://www.youtube.com/watch?feature=player_detailpage&v=nMSbQJBlKwM
-		if     flockC ==  1 then dir, loc = L.Lower,          "1-"..L.NorthEast												--Lower NE
-		elseif flockC ==  2 then dir, loc = L.Lower,          "2-"..L.SouthEast												--Lower SE
-		elseif flockC ==  3 then dir, loc = L.Lower,          "3-"..L.SouthWest												--Lower SW
-		elseif flockC ==  4 then dir, loc = L.UpperAndLower,  "4-"..L.West..", 5-"..L.NorthEast								--Lower W, Upper NE
-		elseif flockC ==  5 then dir, loc = L.UpperAndLower,  "6-"..L.NorthWest..", 7-"..L.SouthEast						--Lower NW, Upper SE
-		elseif flockC ==  6 then dir, loc = L.Upper,          "8-"..L.Middle												--Upper Middle
-		elseif flockC ==  7 then dir, loc = L.UpperAndLower,  "9-"..L.NorthEast..", 10-"..L.SouthWest						--Lower NE, Upper SW
-		elseif flockC ==  8 then dir, loc = L.UpperAndLower, "11-"..L.SouthEast..", 12-"..L.NorthWest						--Lower SE, Upper NW
-		elseif flockC ==  9 then dir, loc = L.Lower,         "13-"..L.SouthWest												--Lower SW
-		elseif flockC == 10 then dir, loc = L.UpperAndLower, "14-"..L.NorthEast..", 15-"..L.West							--Upper NE, Lower W
-		elseif flockC == 11 then dir, loc = L.UpperAndLower, "16-"..L.SouthEast..", 17-"..L.NorthWest						--Upper SE, Lower NW
-		elseif flockC == 12 then dir, loc = L.UpperAndLower, "18-"..L.NorthEast..", 19-"..L.Middle							--Lower NE, Upper Middle
-		elseif flockC == 13 then dir, loc = L.UpperAndLower, "20-"..L.SouthEast..", 21-"..L.SouthWest						--Lower SE, Upper SW
-		elseif flockC == 14 then dir, loc = L.TrippleU,      "22-"..L.NorthEast..", 23-"..L.SouthWest..", 24-"..L.NorthWest	--Upper NE, Lower SW, Upper NW
-		elseif flockC == 15 then dir, loc = L.UpperAndLower, "25-"..L.SouthEast..", 26-"..L.West							--Upper SE, Lower W
-		elseif flockC == 16 then dir, loc = L.TrippleD,      "27-"..L.NorthEast..", 28-"..L.Middle..", 29-"..L.NorthWest	--Lower NE, Upper Middle, Lower NW
-		elseif flockC == 17 then dir, loc = L.UpperAndLower, "30-"..L.SouthEast..", 31-"..L.SouthWest						--Lower SE, Upper SW
-		elseif flockC == 18 then dir, loc = L.TrippleU,      "32-"..L.NorthEast..", 33-"..L.SouthWest..", 34-"..L.NorthWest	--Upper NE, Lower SW, Upper NW
-		elseif flockC == 19 then dir, loc = L.TrippleD,      "35-"..L.NorthWest..", 36-"..L.SouthEast..", 37-"..L.NorthEast	--Lower NW, Upper SE, Lower NE
+		if     flockC ==  1 then dir, loc = L.Lower,          "1-"..L.Lower.." "..L.NorthEast																			--Lower NE
+		elseif flockC ==  2 then dir, loc = L.Lower,          "2-"..L.Lower.." "..L.SouthEast																			--Lower SE
+		elseif flockC ==  3 then dir, loc = L.Lower,          "3-"..L.Lower.." "..L.SouthWest																			--Lower SW
+		elseif flockC ==  4 then dir, loc = L.UpperAndLower,  "4-"..L.Lower.." "..L.West..", 5-"..L.Upper.." "..L.NorthEast												--Lower W, Upper NE
+		elseif flockC ==  5 then dir, loc = L.UpperAndLower,  "6-"..L.Lower.." "..L.NorthWest..", 7-"..L.Upper.." "..L.SouthEast										--Lower NW, Upper SE
+		elseif flockC ==  6 then dir, loc = L.Upper,          "8-"..L.Upper.." "..L.Middle25																			--Upper Middle
+		elseif flockC ==  7 then dir, loc = L.UpperAndLower,  "9-"..L.Lower.." "..L.NorthEast..", 10-"..L.Upper.." "..L.SouthWest										--Lower NE, Upper SW
+		elseif flockC ==  8 then dir, loc = L.UpperAndLower, "11-"..L.Lower.." "..L.SouthEast..", 12-"..L.Upper.." "..L.NorthWest										--Lower SE, Upper NW
+		elseif flockC ==  9 then dir, loc = L.Lower,         "13-"..L.Lower.." "..L.SouthWest																			--Lower SW
+		elseif flockC == 10 then dir, loc = L.UpperAndLower, "14-"..L.Upper.." "..L.NorthEast..", 15-"..L.Lower.." "..L.West											--Upper NE, Lower W
+		elseif flockC == 11 then dir, loc = L.UpperAndLower, "16-"..L.Upper.." "..L.SouthEast..", 17-"..L.Lower.." "..L.NorthWest										--Upper SE, Lower NW
+		elseif flockC == 12 then dir, loc = L.UpperAndLower, "18-"..L.Lower.." "..L.NorthEast..", 19-"..L.Upper.." "..L.Middle25										--Lower NE, Upper Middle
+		elseif flockC == 13 then dir, loc = L.UpperAndLower, "20-"..L.Lower.." "..L.SouthEast..", 21-"..L.Upper.." "..L.SouthWest										--Lower SE, Upper SW
+		elseif flockC == 14 then dir, loc = L.TrippleU,      "22-"..L.Upper.." "..L.NorthEast..", 23-"..L.Lower.." "..L.SouthWest..", 24-"..L.Upper.." "..L.NorthWest	--Upper NE, Lower SW, Upper NW
+		elseif flockC == 15 then dir, loc = L.UpperAndLower, "25-"..L.Upper.." "..L.SouthEast..", 26-"..L.Lower.." "..L.West											--Upper SE, Lower W
+		elseif flockC == 16 then dir, loc = L.TrippleD,      "27-"..L.Lower.." "..L.NorthEast..", 28-"..L.Upper.." "..L.Middle25..", 29-"..L.Lower.." "..L.NorthWest	--Lower NE, Upper Middle, Lower NW
+		elseif flockC == 17 then dir, loc = L.UpperAndLower, "30-"..L.Lower.." "..L.SouthEast..", 31-"..L.Upper.." "..L.SouthWest										--Lower SE, Upper SW
+		elseif flockC == 18 then dir, loc = L.TrippleU,      "32-"..L.Upper.." "..L.NorthEast..", 33-"..L.Lower.." "..L.SouthWest..", 34-"..L.Upper.." "..L.NorthWest	--Upper NE, Lower SW, Upper NW
+		elseif flockC == 19 then dir, loc = L.TrippleD,      "35-"..L.Lower.." "..L.NorthWest..", 36-"..L.Upper.." "..L.SouthEast..", 37-"..L.Lower.." "..L.NorthEast	--Lower NW, Upper SE, Lower NE
 		end
 	end
-	return dir, loc
+	return dir, loc--dir is now used pretty much exclusively by timers, it is now excluded from warnings and instead each location includes it's own direction
 end
 
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
@@ -267,6 +268,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			timerFlockCD:Show(30, flockCount+1, nextDirection)
 		end
 		if self:IsDifficulty("heroic10") then
+			--TODO, add locations here, they are known, but I did enough work today
 			if flockCount == 1 or flockCount == 3 or flockCount == 7 or flockCount == 10 or flockCount == 12 then
 				specWarnBigBirdSoon:Schedule(30, nextDirection)
 			elseif flockCount == 2 or flockCount == 4 or flockCount == 8 or flockCount == 11 or flockCount == 13 then
@@ -280,19 +282,79 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			elseif flockCount == 13 then specWarnBigBirdSoon:Schedule(20, L.Lower.." ("..L.SouthWest..")")
 			elseif flockCount == 16 then specWarnBigBirdSoon:Schedule(20, L.Lower.." ("..DBM_CORE_UNKNOWN..")")
 			elseif flockCount == 19 then specWarnBigBirdSoon:Schedule(20, L.Upper.." ("..DBM_CORE_UNKNOWN..")")
-			elseif flockCount ==  2 then specWarnBigBird:Show(L.Lower.." ("..L.SouthEast..")")
-			elseif flockCount ==  5 then specWarnBigBird:Show(L.Lower.." ("..L.NorthWest..")")
-			elseif flockCount ==  8 then specWarnBigBird:Show(L.Upper.." ("..L.NorthWest..")")
-			elseif flockCount == 11 then specWarnBigBird:Show(L.Upper.." ("..L.SouthEast..")")
-			elseif flockCount == 14 then specWarnBigBird:Show(L.Lower.." ("..L.SouthWest..")")
+			elseif flockCount ==  2 then
+				specWarnBigBird:Show(L.Lower.." ("..L.SouthEast..")")
+				if self.Options.ShowNestArrows == "Guardians" then
+					DBM.Arrow:ShowRunTo(nestCoords[2][1]/100, nestCoords[2][2]/100, 3, 10)
+				end
+			elseif flockCount ==  5 then
+				specWarnBigBird:Show(L.Lower.." ("..L.NorthWest..")")
+				if self.Options.ShowNestArrows == "Guardians" then
+					DBM.Arrow:ShowRunTo(nestCoords[5][1]/100, nestCoords[5][2]/100, 3, 10)
+				end
+			elseif flockCount ==  8 then
+				specWarnBigBird:Show(L.Upper.." ("..L.NorthWest..")")
+				if self.Options.ShowNestArrows == "Guardians" then
+					DBM.Arrow:ShowRunTo(nestCoords[10][1]/100, nestCoords[10][2]/100, 3, 10)
+				end
+			elseif flockCount == 11 then
+				specWarnBigBird:Show(L.Upper.." ("..L.SouthEast..")")
+				if self.Options.ShowNestArrows == "Guardians" then
+					DBM.Arrow:ShowRunTo(nestCoords[7][1]/100, nestCoords[7][2]/100, 3, 10)
+				end
+			elseif flockCount == 14 then
+				specWarnBigBird:Show(L.Lower.." ("..L.SouthWest..")")
+				if self.Options.ShowNestArrows == "Guardians" then
+					DBM.Arrow:ShowRunTo(nestCoords[3][1]/100, nestCoords[3][2]/100, 3, 10)
+				end
 			--Reports of birds in next two nests but not precise locations
 			elseif flockCount == 17 then specWarnBigBird:Show(L.Lower.." ("..DBM_CORE_UNKNOWN..")")
 			elseif flockCount == 20 then specWarnBigBird:Show(L.Upper.." ("..DBM_CORE_UNKNOWN..")")
 			end
 		end
 		if currentLocation ~= "" then
-			warnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
-			specWarnFlock:Show(currentDirection, flockName, flockCountText.." ("..currentLocation..")")
+			warnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+			if self.Options.ShowNestArrows == "Never" then--Disabled, we don't know users assignemnt
+				specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")--Show flock special warning for all of them then, if it's turned on.
+			else--Since we know persons location, in addition to arrows, we can fire specWarnFlock for only the nests they have chosen arrows for.
+				--Lower Nests
+				if currentLocation:find(L.Lower.." "..L.NorthEast) and self.Options.ShowNestArrows == "Northeast" then
+					DBM.Arrow:ShowRunTo(nestCoords[1][1]/100, nestCoords[1][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif currentLocation:find(L.Lower.." "..L.SouthEast) and self.Options.ShowNestArrows == "Southeast" then
+					DBM.Arrow:ShowRunTo(nestCoords[2][1]/100, nestCoords[2][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif currentLocation:find(L.Lower.." "..L.SouthWest) and self.Options.ShowNestArrows == "Southwest" then
+					DBM.Arrow:ShowRunTo(nestCoords[3][1]/100, nestCoords[3][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif currentLocation:find(L.Lower.." "..L.West) and self.Options.ShowNestArrows == "West" then
+					DBM.Arrow:ShowRunTo(nestCoords[4][1]/100, nestCoords[4][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif currentLocation:find(L.Lower.." "..L.NorthWest) and self.Options.ShowNestArrows == "Northwest" then
+					DBM.Arrow:ShowRunTo(nestCoords[5][1]/100, nestCoords[5][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				--Upper Nests
+				elseif currentLocation:find(L.Upper.." "..L.NorthEast) and self.Options.ShowNestArrows == "Northeast" then
+					DBM.Arrow:ShowRunTo(nestCoords[6][1]/100, nestCoords[6][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif currentLocation:find(L.Upper.." "..L.SouthEast) and self.Options.ShowNestArrows == "Southeast" then
+					DBM.Arrow:ShowRunTo(nestCoords[7][1]/100, nestCoords[7][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif (currentLocation:find(L.Middle10) or currentLocation:find(L.Upper.." "..L.SouthWest)) and self.Options.ShowNestArrows == "Southwest" then
+					if self:IsDifficulty("normal25", "heroic25") then
+						DBM.Arrow:ShowRunTo(nestCoords[8][1]/100, nestCoords[8][2]/100, 3, 10)
+					else
+						DBM.Arrow:ShowRunTo(nestCoords[9][1]/100, nestCoords[9][2]/100, 3, 10)
+					end
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif currentLocation:find(L.Middle25) and self.Options.ShowNestArrows == "West" then
+					DBM.Arrow:ShowRunTo(nestCoords[9][1]/100, nestCoords[9][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				elseif currentLocation:find(L.Upper.." "..L.NorthWest) and self.Options.ShowNestArrows == "Northwest" then
+					DBM.Arrow:ShowRunTo(nestCoords[10][1]/100, nestCoords[10][2]/100, 3, 10)
+					specWarnFlock:Show("", flockName, flockCountText.." ("..currentLocation..")")
+				end
+			end
 		else
 			warnFlock:Show(currentDirection, flockName, "("..flockCountText..")")
 			specWarnFlock:Show(currentDirection, flockName, "("..flockCountText..")")

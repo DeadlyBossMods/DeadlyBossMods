@@ -133,7 +133,8 @@ L:SetMiscLocalization({
 	NorthWest		= "西北",
 	NorthEast		= "西南",
 	West			= "西邊",
-	Middle			= "中間"
+	Middle10		= "中間",
+	Middle25		= "中間"
 })
 
 --------------------------

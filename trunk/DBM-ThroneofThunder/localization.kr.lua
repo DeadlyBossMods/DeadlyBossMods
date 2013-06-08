@@ -133,7 +133,8 @@ L:SetMiscLocalization({
 	SouthWest		= "|cFF9932CD남서쪽|r",
 	West			= "|cffff0000서쪽|r",
 	NorthWest		= "|cffffff00북서쪽|r",
-	Middle			= "|cffff0000중앙|r"
+	Middle10		= "|cFF9932CD중앙|r",
+	Middle25		= "|cffff0000중앙|r"
 })
 
 --------------------------
