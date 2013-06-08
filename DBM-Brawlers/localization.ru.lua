@@ -153,3 +153,18 @@ L= DBM:GetModLocalization("BrawlRare2")
 L:SetGeneralLocalization({
 	name = "Бойцовская гильдия: Вызовы 2"
 })
+
+L:SetWarningLocalization({
+	specWarnRPS			= "Используйте %s!"
+})
+
+L:SetOptionLocalization({
+	specWarnRPS			= "Спец-предупреждение что использовать для $spell:141206",
+	SpeakOutStrikes		= "Отсчитывать количество атак $spell:141190"
+})
+
+L:SetMiscLocalization({
+	rock			= "Камень",
+	paper			= "Бумага",
+	scissors		= "Ножницы"
+})
