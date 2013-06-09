@@ -161,7 +161,9 @@ L:SetMiscLocalization({
 	West			= "|cffff0000W|r",--Red
 	NorthWest		= "|cffffff00NW|r",--Yellow
 	Middle10		= "|cFF9932CDMiddle|r",--Purple (Middle is upper southwest on 10 man/LFR)
-	Middle25		= "|cffff0000Middle|r"--Red (Middle is upper west on 25 man)
+	Middle25		= "|cffff0000Middle|r",--Red (Middle is upper west on 25 man)
+	ArrowUpper		= " |TInterface\\Icons\\misc_arrowlup:12:12|t ",
+	ArrowLower		= " |TInterface\\Icons\\misc_arrowdown:12:12|t "
 })
 
 --------------------------
