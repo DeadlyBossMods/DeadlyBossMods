@@ -117,7 +117,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerFlockCD	= "蛋巢 (%d): %s"
+	ShowNestArrows		= "為蛋巢孵化顯示DBM箭頭",
+	Never				= "從不",
+	Northeast			= "藍 - 上層&下層 東北",
+	Southeast			= "綠 - 上層&下層 東南",
+	Southwest			= "紫 - 下層 西南 & 上層 西南(25)或上層 中間(10)",
+	West				= "紅 - 下層 西 & 上層 中間(只有25)",
+	Northwest			= "黃 - 下層 & 上層 西北(只有25)",
+	Guardians			= "巢穴守護者"
 })
 
 L:SetMiscLocalization({
@@ -128,13 +135,13 @@ L:SetMiscLocalization({
 	UpperAndLower	= "上層和下層",
 	TrippleD		= "三個巢(下層x2)",
 	TrippleU		= "三個巢(上層x2)",
-	SouthWest		= "西南",
-	SouthEast		= "東南",
-	NorthWest		= "西北",
-	NorthEast		= "西南",
-	West			= "西邊",
-	Middle10		= "中間",
-	Middle25		= "中間"
+	NorthEast		= "|cff0000ff東北|r",--Blue
+	SouthEast		= "|cFF088A08東南|r",--Green
+	SouthWest		= "|cFF9932CD西南|r",--Purple
+	West			= "|cffff0000西邊|r",--Red
+	NorthWest		= "|cffffff00西北|r",--Yellow
+	Middle10		= "|cFF9932CD中間|r",--Purple (Middle is upper southwest on 10 man/LFR)
+	Middle25		= "|cffff0000中間|r"--Red (Middle is upper west on 25 man)
 })
 
 --------------------------
