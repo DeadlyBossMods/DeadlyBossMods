@@ -116,7 +116,7 @@ L:SetWarningLocalization({
 	specWarnBigBirdSoon	= "巢穴守護者即將出現:%s"
 })
 
-L:SetTimerLocalization({
+L:SetOptionLocalization({
 	ShowNestArrows		= "為蛋巢孵化顯示DBM箭頭",
 	Never				= "從不",
 	Northeast			= "藍 - 上層&下層 東北",
