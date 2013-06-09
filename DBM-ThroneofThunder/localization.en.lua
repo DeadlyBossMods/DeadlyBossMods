@@ -139,11 +139,11 @@ L:SetOptionLocalization({
 	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 138923),
 	ShowNestArrows		= "Show DBM arrow for nest activations",
 	Never				= "Never",
-	Northeast			= "Lower & Upper NE",
-	Southeast			= "Lower & Upper SE",
-	Southwest			= "Lower SW & Upper SW(25) or Upper Middle(10)",
-	West				= "Lower W & Upper Middle (25 only)",
-	Northwest			= "Lower & Upper NW (25 only)",
+	Northeast			= "Blue - Lower & Upper NE",
+	Southeast			= "Green - Lower & Upper SE",
+	Southwest			= "Purple - Lower SW & Upper SW(25) or Upper Middle(10)",
+	West				= "Red - Lower W & Upper Middle (25 only)",
+	Northwest			= "Yellow - Lower & Upper NW (25 only)",
 	Guardians			= "Nest Guardians"
 })
 
