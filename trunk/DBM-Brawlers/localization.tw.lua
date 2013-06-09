@@ -153,3 +153,18 @@ L= DBM:GetModLocalization("BrawlRare2")
 L:SetGeneralLocalization({
 	name = "鬥陣俱樂部:挑戰2"
 })
+
+L:SetWarningLocalization({
+	specWarnRPS			= "出%s!"
+})
+
+L:SetOptionLocalization({
+	specWarnRPS			= "為$spell:141206該出什麼的時候顯示特別警告",
+	SpeakOutStrikes		= "數出$spell:141190的攻擊次數"
+})
+
+L:SetMiscLocalization({
+	rock			= "石頭",
+	paper			= "布",
+	scissors		= "剪刀"
+})
