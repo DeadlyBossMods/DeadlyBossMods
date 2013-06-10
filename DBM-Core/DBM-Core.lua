@@ -3368,33 +3368,33 @@ function DBM:StopLogging()
 end
 
 function DBM:GetCurrentInstanceDifficulty()
-	local _, instanceType, difficulty, _, maxPlayers = GetInstanceInfo()
+	local _, instanceType, difficulty, difficultyName, maxPlayers = GetInstanceInfo()
 	if difficulty == 0 then
 		return "worldboss", DBM_CORE_WORLD_BOSS.." - "
 	elseif difficulty == 1 then
-		return "normal5", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
+		return "normal5", difficultyName.." - "
 	elseif difficulty == 2 then
-		return "heroic5", PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
+		return "heroic5", difficultyName.." - "
 	elseif difficulty == 3 then
-		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
+		return "normal10", difficultyName.." - "
 	elseif difficulty == 4 then
-		return "normal25", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "
+		return "normal25", difficultyName.." - "
 	elseif difficulty == 5 then
-		return "heroic10", PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
+		return "heroic10", difficultyName.." - "
 	elseif difficulty == 6 then
-		return "heroic25", PLAYER_DIFFICULTY2.." ("..maxPlayers..") - "
+		return "heroic25", difficultyName.." - "
 	elseif difficulty == 7 then
-		return "lfr25", PLAYER_DIFFICULTY3.." - "
+		return "lfr25", difficultyName.." - "
 	elseif difficulty == 8 then
-		return "challenge5", CHALLENGE_MODE.." - "
+		return "challenge5", difficultyName.." - "
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
-		return "normal10", PLAYER_DIFFICULTY1.." ("..maxPlayers..") - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
+		return "normal10", difficultyName.." - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	elseif difficulty == 10 then--ASSUMED. Pretty safe bet this is what blizz skipped 10 for.
 		return "flex", "Flex"--Will change to whatever global = flex difficulty. Don't worry localizers
 	elseif difficulty == 11 then--5.3 heroic scenario
-		return "heroic5", PLAYER_DIFFICULTY2.." - "
+		return "heroic5", difficultyName.." - "
 	elseif difficulty == 12 then--5.3 normal scenario
-		return "normal5", PLAYER_DIFFICULTY1.." - "
+		return "normal5", difficultyName.." - "
 	else--failsafe
 		return "normal5", ""
 	end
@@ -3921,7 +3921,8 @@ function DBM:UpdateMapSizes()
 	if dims then
 		currentSizes = dims
 --		print(DBM.MapSizes[mapName][floor][1], DBM.MapSizes[mapName][floor][2])
-	return end 
+		return
+	end 
 
 	-- failed, try Blizzard's map size
 	if not (a1 and b1 and c1 and d1) then
