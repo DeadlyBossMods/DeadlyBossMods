@@ -86,7 +86,7 @@ local function checkCrystalShell()
 			specWarnCrystalShell:Show(shelldName)
 		else
 			mod:Unschedule(checkCrystalShell)
-			mod:Schedule(5, checkCrystalShell)
+			mod:Schedule(3, checkCrystalShell)
 		end
 	end
 end
@@ -181,6 +181,7 @@ local function resetaddstate()
 end
 
 mod:RegisterOnUpdateHandler(function(self)
+	if DBM:GetLowestBossHealth() * 100 < 10 then return end
 	if hasHighestVersion and not (iconsSet == 3) then
 		for uId in DBM:GetGroupMembers() do
 			local unitid = uId.."target"
