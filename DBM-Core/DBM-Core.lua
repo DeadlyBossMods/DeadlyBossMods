@@ -86,6 +86,7 @@ DBM.DefaultOptions = {
 	ShowFakedRaidWarnings = false,
 	WarningIconLeft = true,
 	WarningIconRight = true,
+	WarningIconChat = true,
 	StripServerName = true,
 	ShowLoadMessage = true,
 	ShowPizzaMessage = true,
@@ -4498,9 +4499,9 @@ do
 			text = text:gsub(">.-<", cachedColorFunctions[self.color])
 			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this (this would save some of the WTFs))
 			if DBM.Options.ShowWarningsInChat then
-				--Not seeing any issues on english client. this still an issue on other locals?
-				--This messes with my awesome on ji-kun :\
---				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
+				if not DBM.Options.WarningIconChat then
+					text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
+				end
 				if DBM.Options.ShowFakedRaidWarnings then
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
