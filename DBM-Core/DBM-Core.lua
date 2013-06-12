@@ -707,6 +707,7 @@ do
 						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
 						hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
+						hasFlex			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Flex") or 0) == 1,
 						hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
 						noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
 						noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
@@ -739,6 +740,7 @@ do
 				"ZONE_CHANGED",
 				"ZONE_CHANGED_INDOORS",
 				"GROUP_ROSTER_UPDATE",
+				--"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
@@ -1599,6 +1601,12 @@ do
 		self:Schedule(1.5, updateAllRoster)
 	end
 
+--[[
+	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
+		local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance, _, instanceGroupSize = GetInstanceInfo()
+	end
+--]]
+
 	function DBM:IsInRaid()
 		return inRaid
 	end
@@ -2068,6 +2076,7 @@ function DBM:LoadMod(mod)
 				v.type = mod.type
 				v.oneFormat = mod.oneFormat
 				v.hasLFR = mod.hasLFR
+				v.hasFlex = mod.hasFlex
 				v.hasChallenge = mod.hasChallenge
 				v.noHeroic = mod.noHeroic
 			end
@@ -3390,12 +3399,12 @@ function DBM:GetCurrentInstanceDifficulty()
 		return "challenge5", difficultyName.." - "
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
 		return "normal10", difficultyName.." - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
-	elseif difficulty == 10 then--ASSUMED. Pretty safe bet this is what blizz skipped 10 for.
-		return "flex", "Flex"--Will change to whatever global = flex difficulty. Don't worry localizers
 	elseif difficulty == 11 then--5.3 heroic scenario
 		return "heroic5", difficultyName.." - "
 	elseif difficulty == 12 then--5.3 normal scenario
 		return "normal5", difficultyName.." - "
+	elseif difficulty == 14 then
+		return "flex", RAID_DIFFICULTY5
 	else--failsafe
 		return "normal5", ""
 	end
