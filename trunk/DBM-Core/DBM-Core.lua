@@ -2005,9 +2005,9 @@ do
 	--Primarily for outdoor mods that can't load off GetInstanceInfo()
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		DBM:UpdateMapSizes()
-		if IsInInstance() then return end--Don't fire duplicate load events for instance mods, we'll let LOADING_SCREEN_DISABLED handle this
+--		if IsInInstance() then return end--TODO, get missing instance IDs for scenario mods
 		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
-		if WorldMapFrame:IsVisible() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
+		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
 			local openMapID = GetCurrentMapAreaID()--Save current map settings.
 			SetMapToCurrentZone()--Force to right zone
 			local correctMapID = GetCurrentMapAreaID()--Get right info after we set map to right place.
@@ -2027,17 +2027,17 @@ do
 	function DBM:LOADING_SCREEN_DISABLED()
 		if not IsInInstance() then return end
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
-		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
-			self:Schedule(1, DBM.InstanceCheck)
-		end
 		self:LoadModsOnDemand("mapId", mapID)
+		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
+			self:Schedule(1, DBM.InstanceCheck)--Delayed because LOADING_SCREEN_DISABLED fires before ZONE_CHANGED_NEW_AREA but requires an updated LastZoneMapID
+		end
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
 		for i, v in ipairs(DBM.AddOns) do
 			if not IsAddOnLoaded(v.modId) and checkEntry(v[checkTable], checkValue) then
 				if self:LoadMod(v) and v.type == "SCENARIO" then
-					DBM:StartCombat(v.mod, 0)
+					DBM:InstanceCheck()
 				end
 			end
 		end
