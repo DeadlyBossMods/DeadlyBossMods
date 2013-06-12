@@ -704,8 +704,8 @@ do
 						type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 						category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MapID"))) or "",
-						zoneId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
-						mapId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadMapID") or "")},
+						zoneId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},--Still used by SetZone so all mods should still have even if they load off mapId
+						mapId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")},
 						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
 						hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
@@ -2004,8 +2004,10 @@ end
 do
 	--Primarily for outdoor mods that can't load off GetInstanceInfo()
 	function DBM:ZONE_CHANGED_NEW_AREA()
+		DBM:UpdateMapSizes()
+		if IsInInstance() then return end--Don't fire duplicate load events for instance mods, we'll let LOADING_SCREEN_DISABLED handle this
 		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
-		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
+		if WorldMapFrame:IsVisible() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
 			local openMapID = GetCurrentMapAreaID()--Save current map settings.
 			SetMapToCurrentZone()--Force to right zone
 			local correctMapID = GetCurrentMapAreaID()--Get right info after we set map to right place.
@@ -2019,11 +2021,11 @@ do
 		end
 --		self:AddMsg(GetZoneText()..", "..LastZoneMapID)--Debug
 		self:LoadModsOnDemand("zoneId", LastZoneMapID)
-		DBM:UpdateMapSizes()
 	end
 	
-	--Faster and more accurate loading for instances
+	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
+		if not IsInInstance() then return end
 		local _, _, _, _, _, _, _, mapID = GetInstanceInfo()
 		self:LoadModsOnDemand("mapId", mapID)
 	end
