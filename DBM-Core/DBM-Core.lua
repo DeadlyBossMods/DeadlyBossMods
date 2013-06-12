@@ -2027,6 +2027,9 @@ do
 	function DBM:LOADING_SCREEN_DISABLED()
 		if not IsInInstance() then return end
 		local _, _, _, _, _, _, _, mapID = GetInstanceInfo()
+		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
+			self:Schedule(1, DBM.InstanceCheck)
+		end
 		self:LoadModsOnDemand("mapId", mapID)
 	end
 
@@ -2036,6 +2039,17 @@ do
 				if self:LoadMod(v) and v.type == "SCENARIO" then
 					DBM:StartCombat(v.mod, 0)
 				end
+			end
+		end
+	end
+end
+
+--Scenario mods
+function DBM:InstanceCheck()
+	if combatInfo[LastZoneMapID] then
+		for i, v in ipairs(combatInfo[LastZoneMapID]) do
+			if (v.type == "scenario") and checkEntry(v.msgs, LastZoneMapID) then
+				DBM:StartCombat(v.mod, 0)
 			end
 		end
 	end
@@ -2087,7 +2101,7 @@ function DBM:LoadMod(mod)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
-		local _, _, difficultyID, _, _, _, _, mapID = GetInstanceInfo()
+		local _, instanceType, difficultyID, _, _, _, _, mapID = GetInstanceInfo()
 		if difficultyID == 8 then
 			RequestChallengeModeMapInfo()
 			RequestChallengeModeLeaders(mapID)
