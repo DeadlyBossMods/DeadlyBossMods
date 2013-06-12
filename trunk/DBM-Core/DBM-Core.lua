@@ -2004,8 +2004,6 @@ end
 do
 	--Primarily for outdoor mods that can't load off GetInstanceInfo()
 	function DBM:ZONE_CHANGED_NEW_AREA()
-		DBM:UpdateMapSizes()
---		if IsInInstance() then return end--TODO, get missing instance IDs for scenario mods
 		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
 		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
 			local openMapID = GetCurrentMapAreaID()--Save current map settings.
@@ -2021,6 +2019,7 @@ do
 		end
 --		self:AddMsg(GetZoneText()..", "..LastZoneMapID)--Debug
 		self:LoadModsOnDemand("zoneId", LastZoneMapID)
+		DBM:UpdateMapSizes()
 	end
 	
 	--Faster and more accurate loading for instances, but useless outside of them
