@@ -1965,7 +1965,7 @@ function DBM:WORLD_STATE_TIMER_START()
 	for i = 1, 9 do
 		local _, mapID = GetChallengeModeMapInfo(maps[i])
 		if currentmapID == mapID then
-			local _, mapID = GetChallengeModeMapInfo(maps[i])
+			local guildBest, realmBest = GetChallengeBestTime(mapID)
 			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
 			if bestTime and DBM.Options.ChallengeBest == "Personal" then
 				DBM.Bars:CreateBar(ceil(bestTime / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
