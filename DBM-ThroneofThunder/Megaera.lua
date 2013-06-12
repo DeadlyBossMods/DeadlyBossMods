@@ -101,7 +101,7 @@ local function warnTorrent(name)
 	if not name then return end
 	warnTorrentofIce:Show(name)
 	if name == UnitName("player") then
-		if self:AntiSpam(5, 1) then
+		if mod:AntiSpam(5, 1) then
 			specWarnTorrentofIceYou:Show()
 			timerTorrentofIce:Start()
 			yellTorrentofIce:Yell()

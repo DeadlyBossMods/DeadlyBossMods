@@ -2028,7 +2028,7 @@ do
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
 		self:LoadModsOnDemand("mapId", mapID)
 		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
-			self:Schedule(1, DBM.InstanceCheck)--Delayed because LOADING_SCREEN_DISABLED fires before ZONE_CHANGED_NEW_AREA but requires an updated LastZoneMapID
+			self:Schedule(1, DBM.InstanceCheck, self)--Delayed because LOADING_SCREEN_DISABLED fires before ZONE_CHANGED_NEW_AREA but requires an updated LastZoneMapID
 		end
 	end
 
@@ -3076,7 +3076,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.combatInfo.killMobs[i] = true
 			end
 		end
-		self:Schedule(10, DBM.StopLogging)--small delay to catch kill/died combatlog events
+		self:Schedule(10, DBM.StopLogging, DBM)--small delay to catch kill/died combatlog events
 		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		end
