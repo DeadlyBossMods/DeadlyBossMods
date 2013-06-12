@@ -120,6 +120,17 @@ L:SetTimerLocalization({
 	timerFlockCD	= "둥지 (%d): %s"
 })
 
+L:SetOptionLocalization({
+	ShowNestArrows		= "활성화된 둥지에 화살표 표시",
+	Never				= "표시안함",
+	Northeast			= "파랑 - 아래/위 북동쪽",
+	Southeast			= "초록 - 아래/위 남동쪽",
+	Southwest			= "보라 - 아래 남서쪽 & 위 남서쪽(25인) / 위 중앙(10인)",
+	West				= "빨강 - 아래 서쪽 & 위 중앙(25인)",
+	Northwest			= "노랑 - 아래/위 북서쪽(25인)",
+	Guardians			= "둥지 수호자"
+})
+
 L:SetMiscLocalization({
 	eggsHatchL		= "아랫둥지에 있는 알들이 부화하기 시작합니다!",
 	eggsHatchU		= "위쪽 둥지에 있는 알들이 부화하기 시작합니다!",
