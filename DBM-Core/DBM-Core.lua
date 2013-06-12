@@ -697,13 +697,15 @@ do
 			if not DBM.Options.ShowMinimapButton then self:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
-				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
+				local name = GetAddOnInfo(i)
+				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, name) then
 					table.insert(self.AddOns, {
 						sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 						type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 						category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MapID"))) or "",
 						zoneId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
+						mapId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadMapID") or "")},
 						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
 						hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
@@ -711,7 +713,7 @@ do
 						hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
 						noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
 						noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
-						modId			= GetAddOnInfo(i),
+						modId			= name,
 					})
 					for i = #self.AddOns[#self.AddOns].zoneId, 1, -1 do
 						local id = tonumber(self.AddOns[#self.AddOns].zoneId[i])
@@ -719,6 +721,14 @@ do
 							self.AddOns[#self.AddOns].zoneId[i] = id
 						else
 							table.remove(self.AddOns[#self.AddOns].zoneId, i)
+						end
+					end
+					for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
+						local id = tonumber(self.AddOns[#self.AddOns].mapId[i])
+						if id then
+							self.AddOns[#self.AddOns].mapId[i] = id
+						else
+							table.remove(self.AddOns[#self.AddOns].mapId, i)
 						end
 					end
 					if self.AddOns[#self.AddOns].subTabs then
@@ -766,7 +776,8 @@ do
 				"LFG_COMPLETION_REWARD",
 				"WORLD_STATE_TIMER_START",
 				"WORLD_STATE_TIMER_STOP",
-				"ACTIVE_TALENT_GROUP_CHANGED"
+				"ACTIVE_TALENT_GROUP_CHANGED",
+				"LOADING_SCREEN_DISABLED"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:GROUP_ROSTER_UPDATE()
@@ -1950,11 +1961,11 @@ end
 function DBM:WORLD_STATE_TIMER_START()
 	if DBM.Options.ChallengeBest == "None" or not C_Scenario.IsChallengeMode() then return end
 	local maps = GetChallengeModeMapTable()
-	local _, _, _, _, _, _, _, currentrzti = GetInstanceInfo()
+	local _, _, _, _, _, _, _, currentmapID = GetInstanceInfo()
 	for i = 1, 9 do
-		local _, rzti = GetChallengeModeMapInfo(maps[i])
-		if currentrzti == rzti then
-			local guildBest, realmBest = GetChallengeBestTime(rzti)
+		local _, mapID = GetChallengeModeMapInfo(maps[i])
+		if currentmapID == mapID then
+			local _, mapID = GetChallengeModeMapInfo(maps[i])
 			local lastTime, bestTime, medal = GetChallengeModeMapPlayerStats(maps[i])
 			if bestTime and DBM.Options.ChallengeBest == "Personal" then
 				DBM.Bars:CreateBar(ceil(bestTime / 1000), DBM_SPEED_CLEAR_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
@@ -1991,6 +2002,7 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
+	--Primarily for outdoor mods that can't load off GetInstanceInfo()
 	function DBM:ZONE_CHANGED_NEW_AREA()
 		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
 		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
@@ -2006,33 +2018,22 @@ do
 			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
 		end
 --		self:AddMsg(GetZoneText()..", "..LastZoneMapID)--Debug
-		for i, v in ipairs(self.AddOns) do
-			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zoneId, LastZoneMapID)) then --To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances. -- TODO: this work-around implies that zoneID based loading is only used for instances
-				self:LoadMod(v)
-			end
-		end
-		local _, instanceType = IsInInstance()
-		if instanceType == "pvp" and not self:GetModByName("AlteracValley") then
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-PvP" then
-					self:LoadMod(v)
-					break
-				end
-			end
-		end
-		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
-			self:Schedule(1, DBM.InstanceCheck)
-		end
+		self:LoadModsOnDemand("zoneId", LastZoneMapID)
 		DBM:UpdateMapSizes()
 	end
-end
+	
+	--Faster and more accurate loading for instances
+	function DBM:LOADING_SCREEN_DISABLED()
+		local _, _, _, _, _, _, _, mapID = GetInstanceInfo()
+		self:LoadModsOnDemand("mapId", mapID)
+	end
 
---Scenario mods
-function DBM:InstanceCheck()
-	if combatInfo[LastZoneMapID] then
-		for i, v in ipairs(combatInfo[LastZoneMapID]) do
-			if (v.type == "scenario") and checkEntry(v.msgs, LastZoneMapID) then
-				DBM:StartCombat(v.mod, 0)
+	function DBM:LoadModsOnDemand(checkTable, checkValue)
+		for i, v in ipairs(DBM.AddOns) do
+			if not IsAddOnLoaded(v.modId) and checkEntry(v[checkTable], checkValue) then
+				if self:LoadMod(v) and v.type == "SCENARIO" then
+					DBM:StartCombat(v.mod, 0)
+				end
 			end
 		end
 	end
@@ -2084,13 +2085,10 @@ function DBM:LoadMod(mod)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
-		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
-		if mod.type == "PARTY" then
+		local _, _, difficultyID, _, _, _, _, mapID = GetInstanceInfo()
+		if difficultyID == 8 then
 			RequestChallengeModeMapInfo()
 			RequestChallengeModeLeaders(mapID)
-		end
-		if instanceType == "scenario" then
-			self:Schedule(1, DBM.InstanceCheck)
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -2103,29 +2101,6 @@ function DBM:LoadMod(mod)
 		return true
 	end
 end
-
-do
-	if select(4, GetAddOnInfo("DBM-PvP")) and select(5, GetAddOnInfo("DBM-PvP")) then
-		local checkBG
-		function checkBG()
-			if not DBM:GetModByName("AlteracValley") and MAX_BATTLEFIELD_QUEUES then
-				for i = 1, MAX_BATTLEFIELD_QUEUES do
-					if GetBattlefieldStatus(i) == "confirm" then
-						for i, v in ipairs(DBM.AddOns) do
-							if v.modId == "DBM-PvP" then
-								DBM:LoadMod(v)
-								return
-							end
-						end
-					end
-				end
-				DBM:Schedule(1, checkBG)
-			end
-		end
-		DBM:Schedule(1, checkBG)
-	end
-end
-
 
 
 -----------------------------

@@ -11,8 +11,8 @@
 ## X-DBM-Mod-Has-LFR : 1
 ## X-DBM-Mod-Has-Flex : 1
 ## X-DBM-Mod-Sort: 1
-## X-DBM-Mod-MapID: 9999
-## X-DBM-Mod-LoadZoneID: 9999
+## X-DBM-Mod-MapID: 1136
+## X-DBM-Mod-LoadZoneID: 953, 956
 localization.en.lua
 Immerseus.lua
 FallenProtectors.lua
