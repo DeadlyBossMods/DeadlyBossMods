@@ -1,0 +1,31 @@
+﻿## Interface: 50400
+## X-Min-Interface: 50400
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Fall of Orgrimmar|r
+## Author: MysticalOS
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMFallOfOrgrimmar_SavedVars, DBMFallOfOrgrimmar_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: RAID
+## X-DBM-Mod-Category: MOP
+## X-DBM-Mod-Has-LFR : 1
+## X-DBM-Mod-Has-Flex : 1
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-MapID: 9999
+## X-DBM-Mod-LoadZoneID: 9999
+localization.en.lua
+Immerseus.lua
+FallenProtectors.lua
+Norushen.lua
+ShaofPride.lua
+Galakras.lua
+IronJuggernaut.lua
+KorkronDarkShaman.lua
+GeneralNazgrim.lua
+Malkorok.lua
+SpoilsOfPandria.lua
+ThokTheBloodthirsty.lua
+SiegecrafterBlackfuse.lua
+ParagonsOfTheKlaxxi.lua
+GarroshHellscream.lua
+FoOTrash.lua
