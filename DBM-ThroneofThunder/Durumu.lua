@@ -357,6 +357,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		darkParasiteTargets[#darkParasiteTargets + 1] = args.destName
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration, args.destName)
+		self:Unschedule(warnDarkParasiteTargets)
 		if (self:IsDifficulty("heroic25") and #darkParasiteTargets >= 3) or self:IsDifficulty("heroic10") then
 			warnDarkParasiteTargets()
 		else
