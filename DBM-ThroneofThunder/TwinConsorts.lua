@@ -31,14 +31,14 @@ mod:SetBossHealthInfo(
 
 --Darkness
 local warnNight							= mod:NewAnnounce("warnNight", 2, 108558)
-local warnCrashingStarSoon				= mod:NewSoonAnnounce(137129, 2)
+local warnCrashingStarSoon				= mod:NewSoonAnnounce(137129, 3)
 local warnTearsOfSun					= mod:NewSpellAnnounce(137404, 3)
 local warnBeastOfNightmares				= mod:NewTargetAnnounce(137375, 3, nil, mod:IsTank() or mod:IsHealer())
 --Light
 local warnDay							= mod:NewAnnounce("warnDay", 2, 122789)
 local warnLightOfDay					= mod:NewSpellAnnounce(137403, 2, nil, false)--Spammy, but leave it as an option at least
 local warnFanOfFlames					= mod:NewStackAnnounce(137408, 2, nil, mod:IsTank() or mod:IsHealer())
-local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 3)--Todo, check target scanning
+local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 2)--Todo, check target scanning
 local warnIceComet						= mod:NewSpellAnnounce(137419, 1)
 local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4, 4)--Heroic
 --Dusk
@@ -46,7 +46,7 @@ local warnDusk							= mod:NewAnnounce("warnDusk", 2, "Interface\\Icons\\achieve
 local warnTidalForce					= mod:NewCastAnnounce(137531, 3, 2)
 
 --Darkness
-local specWarnCrashingStarSoon			= mod:NewSpecialWarningSoon(137129, false, nil, nil, 2)
+local specWarnCosmicBarrage				= mod:NewSpecialWarningCount(136752, true, nil, nil, 2)--better as a cosmic barrage warning with cast bar being stars. Also good as count warning for cooldowns
 local specWarnTearsOfSun				= mod:NewSpecialWarningSpell(137404, nil, nil, nil, 2)
 local specWarnBeastOfNightmares			= mod:NewSpecialWarningSpell(137375, mod:IsTank())
 --Light
@@ -54,14 +54,14 @@ local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, mod:IsTank(), 
 local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTarget(137408, mod:IsTank())
 local specWarnFlamesofPassionMove		= mod:NewSpecialWarningMove(137417)
 local specWarnIceComet					= mod:NewSpecialWarningSpell(137419, false)
-local specWarnNuclearInferno			= mod:NewSpecialWarningSpell(137491, nil, nil, nil, 2)--Heroic
+local specWarnNuclearInferno			= mod:NewSpecialWarningCount(137491, nil, nil, nil, 2)--Heroic
 --Dusk
 local specWarnTidalForce				= mod:NewSpecialWarningSpell(137531, nil, nil, nil, 2)--Maybe switch to a stop dps warning, or a switch to Suen?
 
 --Darkness
 local timerDayCD						= mod:NewTimer(183, "timerDayCD", 122789) -- timer is 183 or 190 (confirmed in 10 man. variable)
 local timerCrashingStar					= mod:NewNextTimer(5.5, 137129)
-local timerCosmicBarrageCD				= mod:NewCDTimer(22, 136752)--VERY IMPORTANT on heroic, do not remove. many heroic strat ignore adds and group up BEFORE day phase starts so adds come to middle at phase start. Variation is unimportant, timer isn't to see when next cast is, it's to show safety window for when no cast will happen
+local timerCosmicBarrageCD				= mod:NewCDCountTimer(22, 136752)--VERY IMPORTANT on heroic, do not remove. many heroic strat ignore adds and group up BEFORE day phase starts so adds come to middle at phase start. Variation is unimportant, timer isn't to see when next cast is, it's to show safety window for when no cast will happen
 local timerTearsOfTheSunCD				= mod:NewCDTimer(41, 137404)
 local timerTearsOfTheSun				= mod:NewBuffActiveTimer(10, 137404)
 local timerBeastOfNightmaresCD			= mod:NewCDTimer(51, 137375, nil, mod:IsTank() or mod:IsHealer())
@@ -73,7 +73,7 @@ local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
 --local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)--Also very high variation. (31~65). Can be confuse, no use.
 local timerIceCometCD					= mod:NewCDTimer(20.5, 137419)--Every 20.5-25 seconds on normal. On 10 heroic, variables 20.5~41s. 25 heroic vary 20.5-27.
 local timerNuclearInferno				= mod:NewBuffActiveTimer(12, 137491)
-local timerNuclearInfernoCD				= mod:NewCDTimer(49.5, 137491)
+local timerNuclearInfernoCD				= mod:NewCDCountTimer(49.5, 137491)
 --Dusk
 local timerTidalForce					= mod:NewBuffActiveTimer(18 ,137531)
 local timerTidalForceCD					= mod:NewCDTimer(73, 137531)
@@ -87,6 +87,8 @@ local invokeTiger = GetSpellInfo(138264)
 local invokeCrane = GetSpellInfo(138189)
 local invokeSerpent = GetSpellInfo(138267)
 local invokeOx = GetSpellInfo(138254)
+local infernoCount = 0
+local cosmicCount = 0
 
 local function isRunner(unit)
 	if UnitDebuff(unit, invokeTiger) or UnitDebuff(unit, invokeCrane) or UnitDebuff(unit, invokeSerpent) or UnitDebuff(unit, invokeOx) then
@@ -104,6 +106,8 @@ end
 
 function mod:OnCombatStart(delay)
 	phase3Started = false
+	infernoCount = 0
+	cosmicCount = 0
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8, not constellationRunner)
@@ -225,7 +229,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnNight:Show()
 		timerDayCD:Start()
 		timerDuskCD:Start()
-		timerCosmicBarrageCD:Start(17)
+		timerCosmicBarrageCD:Start(17, 1)
 		timerTearsOfTheSunCD:Start(28.5)
 		timerBeastOfNightmaresCD:Start()
 	elseif spellId == 137187 then--Lu'lin Ports away (Day Phase)
@@ -272,7 +276,7 @@ function mod:OnSync(msg)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerNuclearInfernoCD:Start(63)
 		end
-		timerCosmicBarrageCD:Start(54)--I want to analyze a few logs and readd this once I know for certain this IS the minimum time.
+		timerCosmicBarrageCD:Start(54, cosmicCount+1)--I want to analyze a few logs and readd this once I know for certain this IS the minimum time.
 	elseif msg == "Phase3" and GetTime() - self.combatInfo.pull >= 5 then
 		self:UnregisterShortTermEvents()
 		timerFanOfFlamesCD:Cancel()--DO NOT CANCEL THIS ON YELL
@@ -282,9 +286,9 @@ function mod:OnSync(msg)
 			timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 			timerTidalForceCD:Start(20)
 			if self:IsDifficulty("heroic10", "heroic25") then
-				timerNuclearInfernoCD:Start(57)
+				timerNuclearInfernoCD:Start(57, infernoCount+1)
 			end
-			timerCosmicBarrageCD:Start(48)--I want to analyze a few logs and readd this once I know for certain this IS the minimum time.
+			timerCosmicBarrageCD:Start(48, cosmicCount+1)--I want to analyze a few logs and readd this once I know for certain this IS the minimum time.
 		end
 	elseif msg == "Comet" then
 		warnIceComet:Show()
@@ -300,20 +304,22 @@ function mod:OnSync(msg)
 		timerTidalForce:Start()
 		timerTidalForceCD:Start()
 	elseif msg == "CosmicBarrage" then
+		cosmicCount = cosmicCount + 1
 		warnCrashingStarSoon:Show()
-		specWarnCrashingStarSoon:Show()
+		specWarnCosmicBarrage:Show(cosmicCount)
 		timerCrashingStar:Start()
 		if timerDayCD:GetTime() < 165 then
-			timerCosmicBarrageCD:Start()
+			timerCosmicBarrageCD:Start(nil, cosmicCount+1)
 		end
 	elseif msg == "Inferno" then
+		infernoCount = infernoCount + 1
 		warnNuclearInferno:Show()
-		specWarnNuclearInferno:Show()
+		specWarnNuclearInferno:Show(infernoCount)
 		timerNuclearInferno:Start()
 		if phase3Started then
-			timerNuclearInfernoCD:Start(73)
+			timerNuclearInfernoCD:Start(73, infernoCount+1)
 		else
-			timerNuclearInfernoCD:Start()
+			timerNuclearInfernoCD:Start(nil, infernoCount+1)
 		end
 	end
 end
