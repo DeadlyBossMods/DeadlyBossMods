@@ -12,6 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -60,6 +61,9 @@ local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, ni
 local specWarnSummonBallLightning		= mod:NewSpecialWarningCount(136543)
 local specWarnOverloadedCircuits		= mod:NewSpecialWarningMove(137176)
 local specWarnGorefiendsGrasp			= mod:NewSpecialWarningSpell(108199, false)--For heroic, gorefiends+stun timing is paramount to success
+--Phase 3
+local specWarnElectricalShock			= mod:NewSpecialWarningStack(136914, mod:IsTank(), 12)
+local specWarnElectricalShockOther		= mod:NewSpecialWarningTarget(136914, mod:IsTank())
 --Herioc
 local specWarnHelmOfCommand				= mod:NewSpecialWarningYou(139011, nil, nil, nil, 3)
 
@@ -296,8 +300,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnHelmOfCommandTargets)
 		self:Schedule(0.3, warnHelmOfCommandTargets)
+	elseif args.spellId == 136914 then
+		local amount = args.amount or 1
+		if amount >= 12 then
+			if args:IsPlayer() then
+				specWarnElectricalShock:Show(args.amount)
+			else
+				specWarnElectricalShockOther:Show(args.destName)
+			end
+		end
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 135991 then
@@ -401,7 +415,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		end--]]
 		if phase == 2 then--Start Phase 2 timers
 			warnPhase2:Show()
-			timerSummonBallLightningCD:Start(15)
+			timerSummonBallLightningCD:Start(15, 1)
 			timerLightningWhipCD:Start(30)
 			timerFussionSlashCD:Start(44)
 			if self.Options.RangeFrame and self:IsRanged() then--Only ranged need it in phase 2 and 3
@@ -413,7 +427,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerLightningWhipCD:Start(21.5)
 			timerThunderstruckCD:Start(36)
 			countdownThunderstruck:Start(36)
-			timerSummonBallLightningCD:Start(41.5)
+			timerSummonBallLightningCD:Start(41.5, ballsCount+1)
 		end
 	end
 end
