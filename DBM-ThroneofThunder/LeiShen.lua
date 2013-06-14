@@ -302,7 +302,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnHelmOfCommandTargets)
 	elseif args.spellId == 136914 then
 		local amount = args.amount or 1
-		if amount >= 12 then
+		if amount >= 12 and self:AntiSpam(2.5, 6) then
 			if args:IsPlayer() then
 				specWarnElectricalShock:Show(args.amount)
 			else
