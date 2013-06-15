@@ -52,12 +52,12 @@ local specWarnBouncingBolt				= mod:NewSpecialWarningSpell(136361)
 --Phase 1
 local specWarnDecapitate				= mod:NewSpecialWarningRun(134912, mod:IsTank())
 local specWarnDecapitateOther			= mod:NewSpecialWarningTarget(134912, mod:IsTank())
-local specWarnThunderstruck				= mod:NewSpecialWarningSpell(135095, nil, nil, nil, 2)
+local specWarnThunderstruck				= mod:NewSpecialWarningCount(135095, nil, nil, nil, 2)
 local specWarnCrashingThunder			= mod:NewSpecialWarningMove(135150)
 local specWarnIntermissionSoon			= mod:NewSpecialWarning("specWarnIntermissionSoon")
 --Phase 2
 local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank(), nil, nil, 3)--Cast (394514 is debuff. We warn for cast though because it knocks you off platform if not careful)
-local specWarnLightningWhip				= mod:NewSpecialWarningSpell(136850, nil, nil, nil, 2)
+local specWarnLightningWhip				= mod:NewSpecialWarningCount(136850, nil, nil, nil, 2)
 local specWarnSummonBallLightning		= mod:NewSpecialWarningCount(136543)
 local specWarnOverloadedCircuits		= mod:NewSpecialWarningMove(137176)
 local specWarnGorefiendsGrasp			= mod:NewSpecialWarningSpell(108199, false)--For heroic, gorefiends+stun timing is paramount to success
