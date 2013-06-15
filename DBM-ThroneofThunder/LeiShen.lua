@@ -26,11 +26,11 @@ local warnOvercharged					= mod:NewTargetAnnounce(136295, 3)
 local warnBouncingBolt					= mod:NewSpellAnnounce(136361, 3)
 --Phase 1
 local warnDecapitate					= mod:NewTargetAnnounce(134912, 4, nil, mod:IsTank() or mod:IsHealer())
-local warnThunderstruck					= mod:NewSpellAnnounce(135095, 3)--Target scanning seems to not work
+local warnThunderstruck					= mod:NewCountAnnounce(135095, 3)--Target scanning seems to not work
 --Phase 2
 local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnFusionSlash					= mod:NewSpellAnnounce(136478, 4, nil, mod:IsTank() or mod:IsHealer())
-local warnLightningWhip					= mod:NewSpellAnnounce(136850, 3)
+local warnLightningWhip					= mod:NewCountAnnounce(136850, 3)
 local warnSummonBallLightning			= mod:NewCountAnnounce(136543, 3)--This seems to be VERY important to spread for. It spawns an orb for every person who takes damage. MUST range 6 this.
 local warnGorefiendsGrasp				= mod:NewSpellAnnounce(108199, 1)
 --Phase 3
@@ -78,11 +78,11 @@ local timerSuperChargedConduits			= mod:NewBuffActiveTimer(47, 137045)--Actually
 --Phase 1
 local timerDecapitateCD					= mod:NewCDTimer(50, 134912, nil, mod:IsTank())--Cooldown with some variation. 50-57ish or so.
 local timerThunderstruck				= mod:NewCastTimer(4.8, 135095)--4 sec cast. + landing 0.8~1.3 sec.
-local timerThunderstruckCD				= mod:NewNextTimer(46, 135095)--Seems like an exact bar
+local timerThunderstruckCD				= mod:NewNextCountTimer(46, 135095)--Seems like an exact bar
 --Phase 2
 local timerFussionSlashCD				= mod:NewCDTimer(42.5, 136478, nil, mod:IsTank())
 local timerLightningWhip				= mod:NewCastTimer(4, 136850)
-local timerLightningWhipCD				= mod:NewNextTimer(45.5, 136850)--Also an exact bar
+local timerLightningWhipCD				= mod:NewNextCountTimer(45.5, 136850)--Also an exact bar
 local timerSummonBallLightningCD		= mod:NewNextCountTimer(45.5, 136543)--Seems exact on live, versus the variable it was on PTR
 --Phase 3
 local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
@@ -118,6 +118,8 @@ local overchargeIcon = 1--Start low and count up
 local helmOfCommandTarget = {}
 local playerName = UnitName("player")
 local ballsCount = 0
+local whipCount = 0
+local thunderCount = 0
 
 local function warnStaticShockTargets()
 	warnStaticShock:Show(table.concat(staticshockTargets, "<, >"))
@@ -149,7 +151,9 @@ function mod:OnCombatStart(delay)
 	southDestroyed = false
 	westDestroyed = false
 	ballsCount = 0
-	timerThunderstruckCD:Start(25-delay)
+	whipCount = 0
+	thunderCount = 0
+	timerThunderstruckCD:Start(25-delay, 1)
 	countdownThunderstruck:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
 	berserkTimer:Start(-delay)
@@ -174,25 +178,27 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 135095 then
-		warnThunderstruck:Show()
-		specWarnThunderstruck:Show()
+		thunderCount = thunderCount + 1
+		warnThunderstruck:Show(thunderCount)
+		specWarnThunderstruck:Show(thunderCount)
 		timerThunderstruck:Start()
 		if phase < 3 then
-			timerThunderstruckCD:Start()
+			timerThunderstruckCD:Start(nil, thunderCount+1)
 			countdownThunderstruck:Start()
 		else
-			timerThunderstruckCD:Start(30)
+			timerThunderstruckCD:Start(30, thunderCount+1)
 			countdownThunderstruck:Start(30)
 		end
 	--"<206.2 20:38:58> [UNIT_SPELLCAST_SUCCEEDED] Lei Shen [[boss1:Lightning Whip::0:136845]]", -- [13762] --This event comes about .5 seconds earlier than SPELL_CAST_START. Maybe worth using?
 	elseif args.spellId == 136850 then
-		warnLightningWhip:Show()
-		specWarnLightningWhip:Show()
+		whipCount = whipCount + 1
+		warnLightningWhip:Show(whipCount)
+		specWarnLightningWhip:Show(whipCount)
 		timerLightningWhip:Start()
 		if phase < 3 then
-			timerLightningWhipCD:Start()
+			timerLightningWhipCD:Start(nil, whipCount+1)
 		else
-			timerLightningWhipCD:Start(30)
+			timerLightningWhipCD:Start(30, whipCount+1)
 		end
 	elseif args.spellId == 136478 then
 		warnFusionSlash:Show()
@@ -429,18 +435,21 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if phase == 2 then--Start Phase 2 timers
 			warnPhase2:Show()
 			timerSummonBallLightningCD:Start(15, 1)
-			timerLightningWhipCD:Start(30)
+			timerLightningWhipCD:Start(30, 1)
 			timerFussionSlashCD:Start(44)
 			if self.Options.RangeFrame and self:IsRanged() then--Only ranged need it in phase 2 and 3
 				DBM.RangeCheck:Show(6)--Needed for phase 2 AND phase 3
 			end
 		elseif phase == 3 then--Start Phase 3 timers
+			ballsCount = 0
+			whipCount = 0
+			thunderCount = 0
 			warnPhase3:Show()
 			timerViolentGaleWindsCD:Start(20)
-			timerLightningWhipCD:Start(21.5)
-			timerThunderstruckCD:Start(36)
+			timerLightningWhipCD:Start(21.5, 1)
+			timerThunderstruckCD:Start(36, 1)
 			countdownThunderstruck:Start(36)
-			timerSummonBallLightningCD:Start(41.5, ballsCount+1)
+			timerSummonBallLightningCD:Start(41.5, 1)
 		end
 	end
 end
