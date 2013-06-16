@@ -2022,7 +2022,7 @@ do
 			self:LoadModsOnDemand("zoneId", LastZoneMapID)
 			DBM:UpdateMapSizes()
 		else--zone Id nil (should never happen but god knows with some of the computers people use to play wow and the obnoxious number of addons they loverload their ui with)
-			self:AddMsg("DBM Error: GetCurrentMapAreaID is nil, checking again in 3 seconds")
+			print("DBM Error: GetCurrentMapAreaID is nil, checking again in 3 seconds")
 			self:Schedule(3, DBM.ZONE_CHANGED_NEW_AREA, self)
 		end
 	end
@@ -2039,7 +2039,7 @@ do
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
 		if not checkValue and not checkTable then
-			self:AddMsg("DBM Error: LoadModsOnDemand is missing valid args")
+			print("DBM Error: LoadModsOnDemand is missing valid args")
 			return
 		end
 		for i, v in ipairs(DBM.AddOns) do
@@ -2049,7 +2049,7 @@ do
 					DBM:InstanceCheck()
 				end
 			elseif not modTable then--Maybe person has slow computer and tables not built yet on login?
-				self:AddMsg("DBM Error: mod tables not loaded yet. Retrying Mod load in 3 seconds")
+				print("DBM Error: mod tables not loaded yet. Retrying Mod load in 3 seconds")
 				self:Schedule(3, DBM.LoadModsOnDemand(checkTable, checkValue), self)
 			end
 		end
