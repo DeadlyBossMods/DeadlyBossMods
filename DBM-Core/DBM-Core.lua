@@ -2009,7 +2009,7 @@ do
 			local openMapID = GetCurrentMapAreaID()--Save current map settings.
 			SetMapToCurrentZone()--Force to right zone
 			local correctMapID = GetCurrentMapAreaID()--Get right info after we set map to right place.
-			LastZoneMapID = correctMapID or -1 --Set accurate zone area id into cache
+			LastZoneMapID = correctMapID --Set accurate zone area id into cache
 			if openMapID ~= correctMapID then
 				SetMapByID(openMapID)--Restore old map settings if they differed to what they were prior to forcing mapchange and user has map open.
 			end
@@ -2018,8 +2018,13 @@ do
 			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
 		end
 --		self:AddMsg(GetZoneText()..", "..LastZoneMapID)--Debug
-		self:LoadModsOnDemand("zoneId", LastZoneMapID)
-		DBM:UpdateMapSizes()
+		if LastZoneMapID then
+			self:LoadModsOnDemand("zoneId", LastZoneMapID)
+			DBM:UpdateMapSizes()
+		else--zone Id nil (should never happen but god knows with some of the computers people use to play wow and the obnoxious number of addons they loverload their ui with)
+			self:AddMsg("DBM Error: GetCurrentMapAreaID is nil, checking again in 3 seconds")
+			self:Schedule(3, DBM.ZONE_CHANGED_NEW_AREA, self)
+		end
 	end
 	
 	--Faster and more accurate loading for instances, but useless outside of them
@@ -2033,11 +2038,19 @@ do
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
+		if not checkValue and not checkTable then
+			self:AddMsg("DBM Error: LoadModsOnDemand is missing valid args")
+			return
+		end
 		for i, v in ipairs(DBM.AddOns) do
-			if not IsAddOnLoaded(v.modId) and checkEntry(v[checkTable], checkValue) then
+			local modTable = v[checkTable]
+			if not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if self:LoadMod(v) and v.type == "SCENARIO" then
 					DBM:InstanceCheck()
 				end
+			elseif not modTable then--Maybe person has slow computer and tables not built yet on login?
+				self:AddMsg("DBM Error: mod tables not loaded yet. Retrying Mod load in 3 seconds")
+				self:Schedule(3, DBM.LoadModsOnDemand(checkTable, checkValue), self)
 			end
 		end
 	end
