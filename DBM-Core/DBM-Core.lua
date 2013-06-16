@@ -4286,6 +4286,13 @@ function bossModPrototype:LatencyCheck()
 	return select(4, GetNetStats()) < DBM.Options.LatencyThreshold
 end
 
+function bossModPrototype:IsTrivial(level)
+	if UnitLevel("player") >= level then
+		return true
+	end
+	return false
+end
+
 -- An anti spam function to throttle spammy events (e.g. SPELL_AURA_APPLIED on all group members)
 -- @param time the time to wait between two events (optional, default 2.5 seconds)
 -- @param id the id to distinguish different events (optional, only necessary if your mod keeps track of two different spam events at the same time)
