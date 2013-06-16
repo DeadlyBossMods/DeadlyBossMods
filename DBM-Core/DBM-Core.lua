@@ -697,8 +697,8 @@ do
 			if not DBM.Options.ShowMinimapButton then self:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
-				local name = GetAddOnInfo(i)
-				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, name) then
+				local addonName = GetAddOnInfo(i)
+				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, addonName) then
 					table.insert(self.AddOns, {
 						sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 						type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
@@ -713,7 +713,7 @@ do
 						hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
 						noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
 						noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
-						modId			= name,
+						modId			= addonName,
 					})
 					for i = #self.AddOns[#self.AddOns].zoneId, 1, -1 do
 						local id = tonumber(self.AddOns[#self.AddOns].zoneId[i])
@@ -2048,9 +2048,6 @@ do
 				if self:LoadMod(v) and v.type == "SCENARIO" then
 					DBM:InstanceCheck()
 				end
-			elseif not modTable then--Maybe person has slow computer and tables not built yet on login?
-				print("DBM Error: mod tables not loaded yet. Retrying Mod load in 3 seconds")
-				self:Schedule(3, DBM.LoadModsOnDemand(checkTable, checkValue), self)
 			end
 		end
 	end
