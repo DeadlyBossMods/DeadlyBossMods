@@ -2896,6 +2896,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, trigge
 	if triggerEvent and not IsEncounterInProgress() and instanceType == "raid" then
 		print("DBM Combat Debug: Combat started by "..triggerEvent..". Encounter in progress: "..tostring(IsEncounterInProgress()))
 	end
+	if instanceType == "none" and not UnitAffectingCombat("player") then return end--Ignore world boss pulls if you aren't fighting them.
 	if not checkEntry(inCombat, mod) then
 		if not mod.Options.Enabled then return end
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
