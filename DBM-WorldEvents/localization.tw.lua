@@ -17,9 +17,9 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization({
-	HummelActive		= "胡默爾 開始活動",
-	BaxterActive		= "巴克斯特 開始活動",
-	FryeActive			= "弗萊伊 開始活動"
+	HummelActive		= "胡默爾開始活動",
+	BaxterActive		= "巴克斯特開始活動",
+	FryeActive			= "弗萊伊開始活動"
 })
 
 L:SetOptionLocalization({
@@ -38,7 +38,7 @@ L = DBM:GetModLocalization("d286")
 L:SetWarningLocalization({
 	Submerged			= "艾胡恩已隱沒",
 	Emerged				= "艾胡恩已現身",
-	specWarnAttack		= "艾胡恩擁有易傷 - 現在攻擊!"
+	specWarnAttack		= "艾胡恩變得脆弱 - 現在攻擊!"
 })
 
 L:SetTimerLocalization({
@@ -50,7 +50,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	Submerged			= "當艾胡恩隱沒時顯示警告",
 	Emerged				= "當艾胡恩現身時顯示警告",
-	specWarnAttack		= "當艾胡恩擁有易傷時顯示特別警告",
+	specWarnAttack		= "當艾胡恩變得脆弱時顯示特別警告",
 	SubmergTimer		= "為隱沒顯示計時器",
 	EmergeTimer			= "為現身顯示計時器",
 	TimerCombat			= "為戰鬥開始顯示計時器"
@@ -143,10 +143,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnGameOver		= "當遊戲結束時顯示最多可以取得的點數",
-	warnGnoll			= "為豺狼人出現顯示警告",
-	warnHogger			= "為霍格出現顯示警告",
-	specWarnHogger		= "為霍格出現顯示特別警告"
+	warnGameOver	= "當遊戲結束時顯示最多可以取得的點數",
+	warnGnoll		= "為豺狼人出現顯示警告",
+	warnHogger		= "為霍格出現顯示警告",
+	specWarnHogger	= "為霍格出現顯示特別警告"
 })
 
 ------------------------
@@ -190,7 +190,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTotalAdds	= "總共已進攻的殭屍群: %d",
+	warnTotalAdds	= "總共已進攻的殭屍群:%d",
 	specWarnWave	= "大群的殭屍!"
 })
 
