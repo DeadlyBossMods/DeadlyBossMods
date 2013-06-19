@@ -57,6 +57,8 @@ local frame
 local createFrame
 local radarFrame
 local createRadarFrame
+local dbmRadarEvents = CreateFrame("Frame")
+local radarEventsRegistered = false
 local onUpdate
 local onUpdateRadar
 local dropdownFrame
@@ -741,6 +743,14 @@ do
 	end
 end
 
+function dbmRadarEvents_OnEvent(self, event, ...)
+	if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA") then
+		if rangeCheck:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
+			SetMapToCurrentZone()
+			DBM:UpdateMapSizes()
+		end
+	end
+end
 
 -----------------------
 --  Check functions  --
@@ -834,11 +844,21 @@ function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	if (DBM.Options.RangeFrameFrames == "radar" or DBM.Options.RangeFrameFrames == "both") and DBM:GetMapSizes() then
 		onUpdateRadar(radarFrame, 1)
 	end
+	if not radarEventsRegistered then
+		radarEventsRegistered = true
+		dbmRadarEvents:RegisterEvent("ZONE_CHANGED")
+		dbmRadarEvents:RegisterEvent("ZONE_CHANGED_INDOORS")
+		dbmRadarEvents:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	end
 end
 
 function rangeCheck:Hide()
 	if frame then frame:Hide() end
 	if radarFrame then radarFrame:Hide() end
+	if radarEventsRegistered then
+		radarEventsRegistered = false
+		dbmRadarEvents:UnregisterAllEvents()
+	end
 end
 
 function rangeCheck:IsShown()
