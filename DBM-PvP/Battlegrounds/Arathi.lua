@@ -125,7 +125,7 @@ end
 
 do
 	local function AB_Initialize()
-		if DBM:GetCurrentArea() == 461 then
+		if DBM:GetCurrentArea() == 529 then
 			bgzone = true
 			Arathi:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",

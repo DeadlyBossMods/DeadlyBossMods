@@ -25,7 +25,7 @@
 ## X-DBM-Mod-Name-zhCN: 5人副本 (熊猫人之谜)
 ## X-DBM-Mod-Name-frFR: Groupe (MoP)
 ## X-DBM-Mod-Sort: 25
-## X-DBM-Mod-LoadZoneID: 867, 876, 877, 875, 885, 887, 898, 871, 874
+## X-DBM-Mod-MapID: 960,961,959,962,994,1011,1007,1001,1004
 localization.en.lua
 localization.de.lua
 localization.es.lua

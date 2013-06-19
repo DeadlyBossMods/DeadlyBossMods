@@ -57,7 +57,7 @@ end
 local bgzone = false
 do
 	local function initialize(self)
-		if DBM:GetCurrentArea() == 540 then
+		if DBM:GetCurrentArea() == 628 then
 			bgzone = true
 			IsleOfConquest:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",

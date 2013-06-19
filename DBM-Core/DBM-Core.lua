@@ -206,7 +206,7 @@ local checkWipe
 local fireEvent
 local playerName = UnitName("player")
 local _, class = UnitClass("player")
-local LastZoneMapID = -1
+local LastInstanceMapID = -1
 local queuedBattlefield = {}
 local loadDelay = nil
 local loadDelay2 = nil
@@ -414,7 +414,7 @@ do
 			local zones = v.zones
 			local handler = v[event]
 			local modEvents = v.registeredUnitEvents
-			if handler and (not isUnitEvent or not modEvents or modEvents[event .. ...])  and (not zones or zones[LastZoneMapID]) and not (v.isTrashMod and IsEncounterInProgress()) then
+			if handler and (not isUnitEvent or not modEvents or modEvents[event .. ...])  and (not zones or zones[LastInstanceMapID]) and not (v.isTrashMod and IsEncounterInProgress()) then
 				handler(v, ...)
 			end
 		end
@@ -704,7 +704,6 @@ do
 						type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 						category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MapID"))) or "",
-						zoneId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},--Still used by SetZone so all mods should still have even if they load off mapId
 						mapId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")},
 						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
@@ -715,14 +714,6 @@ do
 						noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
 						modId			= addonName,
 					})
-					for i = #self.AddOns[#self.AddOns].zoneId, 1, -1 do
-						local id = tonumber(self.AddOns[#self.AddOns].zoneId[i])
-						if id then
-							self.AddOns[#self.AddOns].zoneId[i] = id
-						else
-							table.remove(self.AddOns[#self.AddOns].zoneId, i)
-						end
-					end
 					for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
 						local id = tonumber(self.AddOns[#self.AddOns].mapId[i])
 						if id then
@@ -972,7 +963,7 @@ do
 
 		-- execute OnUpdate handlers of all modules
 		for i, v in pairs(updateFunctions) do
-			if i.Options.Enabled and (not i.zones or i.zones[LastZoneMapID]) then
+			if i.Options.Enabled and (not i.zones or i.zones[LastInstanceMapID]) then
 				i.elapsed = (i.elapsed or 0) + elapsed
 				if i.elapsed >= (i.updateInterval or 0) then
 					v(i, i.elapsed)
@@ -1097,7 +1088,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
-		sendSync("PT", timer, LastZoneMapID)
+		sendSync("PT", timer, LastInstanceMapID)
 	elseif cmd:sub(1, 5) == "arrow" then
 		if not DBM:IsInRaid() then
 			DBM:AddMsg(DBM_ARROW_NO_RAIDGROUP)
@@ -1993,47 +1984,24 @@ function DBM:ZONE_CHANGED()
 	end
 end
 DBM.ZONE_CHANGED_INDOORS = DBM.ZONE_CHANGED
+DBM.ZONE_CHANGED_NEW_AREA = DBM.ZONE_CHANGED
 
 function DBM:GetCurrentArea()
-	return LastZoneMapID
+	return LastInstanceMapID
 end
 
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
-do
-	--Primarily for outdoor mods that can't load off GetInstanceInfo()
-	function DBM:ZONE_CHANGED_NEW_AREA()
-		--Work around for the zone ID/area updating slow because the world map doesn't always have correct information on zone change
-		if WorldMapFrame:IsVisible() and not IsInInstance() then --World map is open and we're not in an instance, (such as flying from zone to zone doing archaeology)
-			local openMapID = GetCurrentMapAreaID()--Save current map settings.
-			SetMapToCurrentZone()--Force to right zone
-			local correctMapID = GetCurrentMapAreaID()--Get right info after we set map to right place.
-			LastZoneMapID = correctMapID --Set accurate zone area id into cache
-			if openMapID ~= correctMapID then
-				SetMapByID(openMapID)--Restore old map settings if they differed to what they were prior to forcing mapchange and user has map open.
-			end
-		else--Map isn't open, no reason to save/restore settings, just make sure the information is correct and that's it.
-			SetMapToCurrentZone()
-			LastZoneMapID = GetCurrentMapAreaID() --Set accurate zone area id into cache
-		end
---		self:AddMsg(GetZoneText()..", "..LastZoneMapID)--Debug
-		if LastZoneMapID then
-			self:LoadModsOnDemand("zoneId", LastZoneMapID)
-			DBM:UpdateMapSizes()
-		else--zone Id nil (should never happen but god knows with some of the computers people use to play wow and the obnoxious number of addons they loverload their ui with)
-			print("DBM Error: GetCurrentMapAreaID is nil, checking again in 3 seconds")
-			self:Schedule(3, DBM.ZONE_CHANGED_NEW_AREA, self)
-		end
-	end
-	
+do	
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
 		if not IsInInstance() then return end
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
+		LastInstanceMapID = mapID
 		self:LoadModsOnDemand("mapId", mapID)
 		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
-			self:Schedule(1, DBM.InstanceCheck, self)--Delayed because LOADING_SCREEN_DISABLED fires before ZONE_CHANGED_NEW_AREA but requires an updated LastZoneMapID
+			DBM:InstanceCheck()
 		end
 	end
 
@@ -2055,9 +2023,9 @@ end
 
 --Scenario mods
 function DBM:InstanceCheck()
-	if combatInfo[LastZoneMapID] then
-		for i, v in ipairs(combatInfo[LastZoneMapID]) do
-			if (v.type == "scenario") and checkEntry(v.msgs, LastZoneMapID) then
+	if combatInfo[LastInstanceMapID] then--Scenarios not yet moved over to LastInstanceMapID
+		for i, v in ipairs(combatInfo[LastInstanceMapID]) do
+			if (v.type == "scenario") and checkEntry(v.msgs, LastInstanceMapID) then
 				DBM:StartCombat(v.mod, 0)
 			end
 		end
@@ -2173,7 +2141,7 @@ do
 		mod = DBM:GetModByName(mod or "")
 		revision = tonumber(revision or 0) or 0
 		startHp = tonumber(startHp or -1) or -1
-		if mod and delay and (not mod.zones or mod.zones[LastZoneMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
+		if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, true, startHp, nil, "Sync from: "..sender)
 		end
 	end
@@ -2189,7 +2157,7 @@ do
 		if select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
 			return
 		end
-		if mapid and mapid ~= LastZoneMapID then return end
+		if mapid and mapid ~= LastInstanceMapID then return end
 		timer = tonumber(timer or 0)
 		if timer > 60 then
 			return
@@ -2740,8 +2708,8 @@ do
 		lastCombatStarted = GetTime()
 		healthCombatInitialized = false
 		if not combatInitialized then return end
-		if combatInfo[LastZoneMapID] then
-			for i, v in ipairs(combatInfo[LastZoneMapID]) do
+		if combatInfo[LastInstanceMapID] then
+			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == "combat" then
 					if v.multiMobPullDetection then
 						for _, mob in ipairs(v.multiMobPullDetection) do
@@ -2774,8 +2742,8 @@ do
 	end
 
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if combatInfo[LastZoneMapID] then
-			for i, v in ipairs(combatInfo[LastZoneMapID]) do
+		if combatInfo[LastInstanceMapID] then
+			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, nil, nil, nil, "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 				end
@@ -2798,8 +2766,8 @@ do
 	-- called for all mob chat events
 	local function onMonsterMessage(type, msg)
 		-- pull detection
-		if combatInfo[LastZoneMapID] then
-			for i, v in ipairs(combatInfo[LastZoneMapID]) do
+		if combatInfo[LastInstanceMapID] then
+			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == type and checkEntry(v.msgs, msg)
 				or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0, nil, nil, nil, "CHAT_MSG")
@@ -2890,12 +2858,6 @@ end
 
 function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggerEvent)
 	local _, instanceType = GetInstanceInfo()
-	--Seeing more and more bad pulls during raids. Need to track down source of this problem. Bosses "engaging" during trash that should be impossible. Trolled syncs, or a mysterious bug on our end?
-	--I've concluded all genuine RAID pulls, IsEncounterInProgress is ALWAYS true.
-	--So lets refine this debug to just printing bad pulls and only in "raid" until we know for sure there is no other cause of bad pulls except bad syncs.
-	if triggerEvent and not IsEncounterInProgress() and instanceType == "raid" then
-		print("DBM Combat Debug: Combat started by "..triggerEvent..". Encounter in progress: "..tostring(IsEncounterInProgress()))
-	end
 	if synced and instanceType == "none" and not UnitAffectingCombat("player") then return end--Ignore world boss pulls if you aren't fighting them.
 	if not checkEntry(inCombat, mod) then
 		if not mod.Options.Enabled then return end
@@ -3024,8 +2986,8 @@ function DBM:UNIT_HEALTH(uId)
 	local health = (UnitHealth(uId) or 0) / (maxhealth or 1)
 	if not cId then return end
 	if #inCombat == 0 and bossIds[cId] and InCombatLockdown() and UnitAffectingCombat(uId) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH event, for older instances.
-		if combatInfo[LastZoneMapID] then
-			for i, v in ipairs(combatInfo[LastZoneMapID]) do
+		if combatInfo[LastInstanceMapID] then
+			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if not v.mod.disableHealthCombat and (v.type == "combat" and v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
 					self:StartCombat(v.mod, health > 0.97 and 0.5 or math.min(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), nil, health, health < 0.90, "UNIT_HEALTH") -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s) / Do not record kill time below 90% (late combat detection)
 				end
@@ -4070,8 +4032,8 @@ bossModPrototype.UnregisterShortTermEvents = DBM.UnregisterShortTermEvents
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
 		self.zones = {}
-		if self.addon and self.addon.zoneId then
-			for i, v in ipairs(self.addon.zoneId) do
+		if self.addon and self.addon.mapId then
+			for i, v in ipairs(self.addon.mapId) do
 				self.zones[v] = true
 			end
 		end

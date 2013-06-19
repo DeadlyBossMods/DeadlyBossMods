@@ -109,7 +109,7 @@ do
 end
 
 function Kotmogu:OnInitialize()
-	if DBM:GetCurrentArea() == 856 then
+	if DBM:GetCurrentArea() == 998 then
 		bgzone = true
 		Kotmogu:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",
