@@ -15,7 +15,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Single-Format: 1
 ## X-DBM-Mod-Sort: 5
-## X-DBM-Mod-MapID: 870
+## X-DBM-Mod-MapID: 870,1064
 localization.en.lua
 localization.de.lua
 localization.es.lua
