@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(54499)
 mod:SetModelID(39021)
 mod:SetReCombatTime(10)
-mod:SetZone(24)--Hillsbread Foothills
 
 mod:RegisterCombat("combat")
 
