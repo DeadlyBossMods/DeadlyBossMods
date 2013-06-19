@@ -743,14 +743,14 @@ do
 	end
 end
 
-function dbmRadarEvents_OnEvent(self, event, ...)
+dbmRadarEvents:SetScript("OnEvent", function(self, event, ...)
 	if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA") then
 		if rangeCheck:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
 			SetMapToCurrentZone()
 			DBM:UpdateMapSizes()
 		end
 	end
-end
+end)
 
 -----------------------
 --  Check functions  --
