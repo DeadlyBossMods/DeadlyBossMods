@@ -36,7 +36,7 @@ local eventsRegistered = false
 local lastRank = 0
 local QueuedBuff = GetSpellInfo(132639)
 --Fix for not registering events on reloadui or login while already inside brawlers guild.
-if currentZoneID == 922 or currentZoneID == 925 then
+if currentZoneID == 369 or currentZoneID == 1043 then
 	eventsRegistered = true
 	mod:RegisterShortTermEvents(
 		"SPELL_CAST_START",
@@ -139,8 +139,8 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	currentZoneID = GetCurrentMapAreaID()
-	if currentZoneID == 922 or currentZoneID == 925 then
+	currentZoneID = DBM:GetCurrentArea()
+	if currentZoneID == 369 or currentZoneID == 1043 then
 		modsStopped = false
 		eventsRegistered = true
 		self:RegisterShortTermEvents(
@@ -193,14 +193,14 @@ function mod:OnSync(msg)
 				"UNIT_AURA player"
 			)
 		end
-		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
+		if not (currentZoneID == 369 or currentZoneID == 1043) then return end
 		self:Stop()--Sometimes NPC doesn't yell when a match ends too early, if a new match begins we stop on begin before starting new stuff
 		berserkTimer:Start()
 		for i, v in ipairs(startCallbacks) do
 			v()
 		end
 	elseif msg == "MatchEnd" then
-		if not (currentZoneID == 0 or currentZoneID == 922 or currentZoneID == 925) then return end
+		if not (currentZoneID == 369 or currentZoneID == 1043) then return end
 		currentFighter = nil
 		self:Stop()
 		--Boss from any rank can be fought by any rank now, so we just need to always cancel them all

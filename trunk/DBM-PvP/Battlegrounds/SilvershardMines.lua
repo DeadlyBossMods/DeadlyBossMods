@@ -15,7 +15,7 @@ Silvershard:RemoveOption("HealthFrame")
 Silvershard:RemoveOption("SpeedKillTimer")
 
 function Silvershard:OnInitialize()
-	if DBM:GetCurrentArea() == 860 then
+	if DBM:GetCurrentArea() == 727 then
 		bgzone = true
 		Silvershard:RegisterShortTermEvents(
 			"CHAT_MSG_MONSTER_YELL",

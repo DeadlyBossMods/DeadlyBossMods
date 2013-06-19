@@ -102,7 +102,7 @@ end
 
 do
 	local function initialize()
-		if DBM:GetCurrentArea() == 482 then
+		if DBM:GetCurrentArea() == 566 then
 			bgzone = true
 			EyeOfTheStorm:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",

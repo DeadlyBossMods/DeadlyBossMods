@@ -25,7 +25,7 @@
 ## X-DBM-Mod-Name-frFR: Bastonneurs
 ## X-DBM-Mod-Name-ruRU: Бойцовская гильдия
 ## X-DBM-Mod-Sort: 30
-## X-DBM-Mod-LoadZoneID: 922,925
+## X-DBM-Mod-MapID: 369,1043
 localization.en.lua
 localization.kr.lua
 localization.de.lua

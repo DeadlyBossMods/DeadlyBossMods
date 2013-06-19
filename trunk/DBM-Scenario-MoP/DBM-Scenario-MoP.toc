@@ -21,7 +21,7 @@
 ## X-DBM-Mod-Name-zhCN: 场景战役 (熊猫人之谜)
 ## X-DBM-Mod-Name-frFR: Scénario (MoP)
 ## X-DBM-Mod-Sort: 35
-## X-DBM-Mod-LoadZoneID: 906, 851, 899, 911, 920, 934, 919, 900, 878, 912, 883, 882, 884, 914, 880, 939, 937, 940, 938
+## X-DBM-Mod-MapID: 1000,999,1031,1103,1102,1135,1112,1030,1005,1104,1050,1048,1051,1095,1024,1130,1144,1099,1131
 localization.en.lua
 localization.kr.lua
 localization.de.lua
