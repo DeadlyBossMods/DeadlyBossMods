@@ -737,9 +737,6 @@ do
 			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 			self:RegisterEvents(
 				"COMBAT_LOG_EVENT_UNFILTERED",
-				"ZONE_CHANGED_NEW_AREA",
-				"ZONE_CHANGED",
-				"ZONE_CHANGED_INDOORS",
 				"GROUP_ROSTER_UPDATE",
 				--"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
@@ -770,7 +767,6 @@ do
 				"ACTIVE_TALENT_GROUP_CHANGED",
 				"LOADING_SCREEN_DISABLED"
 			)
-			self:ZONE_CHANGED_NEW_AREA()
 			self:GROUP_ROSTER_UPDATE()
 			self:Schedule(1.5, function()
         		combatInitialized = true
@@ -1976,15 +1972,6 @@ function DBM:WORLD_STATE_TIMER_STOP()
 		DBM.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
 	end
 end
-
-function DBM:ZONE_CHANGED()
-	if DBM.RangeCheck:IsShown() or DBM.Arrow:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
-		SetMapToCurrentZone()
-		DBM:UpdateMapSizes()
-	end
-end
-DBM.ZONE_CHANGED_INDOORS = DBM.ZONE_CHANGED
-DBM.ZONE_CHANGED_NEW_AREA = DBM.ZONE_CHANGED
 
 function DBM:GetCurrentArea()
 	return LastInstanceMapID
