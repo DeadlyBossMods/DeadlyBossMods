@@ -746,7 +746,6 @@ end
 dbmRadarEvents:SetScript("OnEvent", function(self, event, ...)
 	if (event == "ZONE_CHANGED" or event == "ZONE_CHANGED_INDOORS" or event == "ZONE_CHANGED_NEW_AREA") then
 		if rangeCheck:IsShown() then--If either arrow or range frame are shown when we change areas, force a map update
-			SetMapToCurrentZone()
 			DBM:UpdateMapSizes()
 		end
 	end
@@ -822,7 +821,6 @@ end
 ---------------
 function rangeCheck:Show(range, filter, forceshow, redCircleNumPlayers)
 	if DBM.Options.DontShowRangeFrame and not forceshow then return end
-	SetMapToCurrentZone()--Set map to current zone before checking other stuff
 	DBM:UpdateMapSizes()--Force a mapsize update after SetMapToCurrentZone to ensure our information is current
 	if type(range) == "function" then -- the first argument is optional
 		return self:Show(nil, range)
@@ -870,7 +868,6 @@ end
 -- GetDistance(uId, uId2) -- distance between the two uIds
 function rangeCheck:GetDistance(...)
 	if initRangeCheck() then
-		SetMapToCurrentZone()--Set map to current zone before checking other stuff
 		DBM:UpdateMapSizes()--Force a mapsize update after SetMapToCurrentZone to ensure our information is current
 		return getDistanceBetween(...)
 	end
