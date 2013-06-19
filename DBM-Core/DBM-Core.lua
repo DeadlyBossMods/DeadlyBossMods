@@ -699,12 +699,13 @@ do
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
 				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, addonName) then
+					local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 					table.insert(self.AddOns, {
 						sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 						type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 						category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(GetAddOnMetadata(i, "X-DBM-Mod-MapID"))) or "",
-						mapId			= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")},
+						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or "",
+						mapId			= mapIdTable,
 						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
 						hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
