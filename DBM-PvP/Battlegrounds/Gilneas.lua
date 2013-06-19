@@ -115,7 +115,7 @@ do
 end
 
 local function Gilneas_Initialize()
-	if DBM:GetCurrentArea() == 736 then
+	if DBM:GetCurrentArea() == 761 then--Two Ids? GilneasBattleground2 is one we been using, but what is BattleforGilneas (id instance id 728)
 		bgzone = true
 		Gilneas:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",

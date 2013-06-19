@@ -36,7 +36,7 @@ Warsong:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
 do
 	local function WSG_Initialize()
-		if DBM:GetCurrentArea() == 443 then
+		if DBM:GetCurrentArea() == 489 then
 			bgzone = true
 			Warsong:RegisterShortTermEvents(
 				"PLAYER_REGEN_ENABLED",

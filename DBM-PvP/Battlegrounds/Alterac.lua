@@ -61,7 +61,7 @@ end
 local bgzone = false
 do
 	local function AV_Initialize()
-		if DBM:GetCurrentArea() == 401 then
+		if DBM:GetCurrentArea() == 30 then
 			Alterac:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",

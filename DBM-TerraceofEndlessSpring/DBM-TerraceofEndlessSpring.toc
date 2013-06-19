@@ -17,7 +17,6 @@
 ## X-DBM-Mod-Has-LFR : 1
 ## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-MapID: 996
-## X-DBM-Mod-LoadZoneID: 886
 localization.en.lua
 localization.kr.lua
 localization.de.lua

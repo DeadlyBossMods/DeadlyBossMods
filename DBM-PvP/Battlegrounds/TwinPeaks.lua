@@ -35,7 +35,7 @@ TwinPeaks:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
 do
 	local function TwinPeaks_Initialize()
-		if DBM:GetCurrentArea() == 626 then
+		if DBM:GetCurrentArea() == 726 then
 			bgzone = true
 			TwinPeaks:RegisterShortTermEvents(
 				"PLAYER_REGEN_ENABLED",
