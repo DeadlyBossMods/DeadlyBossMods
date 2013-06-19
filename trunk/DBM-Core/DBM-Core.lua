@@ -1983,9 +1983,9 @@ end
 do	
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
-		if not IsInInstance() then return end
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
 		LastInstanceMapID = mapID
+		if instanceType == "none" then return end
 		self:LoadModsOnDemand("mapId", mapID)
 		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
 			DBM:InstanceCheck()
