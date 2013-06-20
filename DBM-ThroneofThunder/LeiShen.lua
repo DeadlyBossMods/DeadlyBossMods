@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 --Conduits (All phases)
 local warnStaticShock					= mod:NewTargetAnnounce(135695, 4)
 local warnDiffusionChain				= mod:NewTargetAnnounce(135991, 3)--More informative than actually preventative. (you need to just spread out, and that's it. can't control who it targets only that it doesn't spread)
+local warnDiffusionChainSpread			= mod:NewAnnounce(135991, 4, 135991, false)
 local warnOvercharged					= mod:NewTargetAnnounce(136295, 3)
 local warnBouncingBolt					= mod:NewSpellAnnounce(136361, 3)
 --Phase 1
@@ -32,7 +33,8 @@ local warnPhase2						= mod:NewPhaseAnnounce(2)
 local warnFusionSlash					= mod:NewSpellAnnounce(136478, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnLightningWhip					= mod:NewCountAnnounce(136850, 3)
 local warnSummonBallLightning			= mod:NewCountAnnounce(136543, 3)--This seems to be VERY important to spread for. It spawns an orb for every person who takes damage. MUST range 6 this.
-local warnGorefiendsGrasp				= mod:NewSpellAnnounce(108199, 1)
+local warnGorefiendsGrasp				= mod:NewCountAnnounce(108199, 1)
+local warnMassSpellReflect				= mod:NewCountAnnounce(114028, 1)
 --Phase 3
 local warnPhase3						= mod:NewPhaseAnnounce(3)
 local warnViolentGaleWinds				= mod:NewSpellAnnounce(136889, 3)
@@ -60,7 +62,8 @@ local specWarnFusionSlash				= mod:NewSpecialWarningSpell(136478, mod:IsTank(), 
 local specWarnLightningWhip				= mod:NewSpecialWarningCount(136850, nil, nil, nil, 2)
 local specWarnSummonBallLightning		= mod:NewSpecialWarningCount(136543)
 local specWarnOverloadedCircuits		= mod:NewSpecialWarningMove(137176)
-local specWarnGorefiendsGrasp			= mod:NewSpecialWarningSpell(108199, false)--For heroic, gorefiends+stun timing is paramount to success
+local specWarnGorefiendsGrasp			= mod:NewSpecialWarningCount(108199, false)--For heroic, gorefiends+stun timing is paramount to success
+local specWarnMassSpellReflect			= mod:NewSpecialWarningCount(114028, false)--For heroic, diffusion strat.
 --Phase 3
 local specWarnElectricalShock			= mod:NewSpecialWarningStack(136914, mod:IsTank(), 12)
 local specWarnElectricalShockOther		= mod:NewSpecialWarningTarget(136914, mod:IsTank())
@@ -112,6 +115,7 @@ local eastDestroyed = false
 local southDestroyed = false
 local westDestroyed = false
 local staticshockTargets = {}
+local diffusionTargets = {}
 local staticIcon = 8--Start high and count down
 local overchargeTarget = {}
 local overchargeIcon = 1--Start low and count up
@@ -120,11 +124,18 @@ local playerName = UnitName("player")
 local ballsCount = 0
 local whipCount = 0
 local thunderCount = 0
+local goreCount = 0
+local reflectCount = 0
 
 local function warnStaticShockTargets()
 	warnStaticShock:Show(table.concat(staticshockTargets, "<, >"))
 	table.wipe(staticshockTargets)
 	staticIcon = 8
+end
+
+local function warnDiffusionSpreadTargets()
+	warnDiffusionChainSpread:Show(table.concat(diffusionTargets, "<, >"))
+	table.wipe(diffusionTargets)
 end
 
 local function warnOverchargeTargets()
@@ -153,6 +164,8 @@ function mod:OnCombatStart(delay)
 	ballsCount = 0
 	whipCount = 0
 	thunderCount = 0
+	goreCount = 0
+	reflectCount = 0
 	timerThunderstruckCD:Start(25-delay, 1)
 	countdownThunderstruck:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
@@ -349,8 +362,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerSummonBallLightningCD:Start(30, ballsCount+1)
 		end
 	elseif args.spellId == 108199 and self:IsInCombat() then
-		warnGorefiendsGrasp:Show()
-		specWarnGorefiendsGrasp:Show()
+		if goreCount == 2 then goreCount = 0 end
+		goreCount = goreCount + 1
+		warnGorefiendsGrasp:Show(goreCount)
+		specWarnGorefiendsGrasp:Show(goreCount)
+	elseif args.spellId == 114028 and self:IsInCombat() then
+		if reflectCount == 2 then reflectCount = 0 end
+		reflectCount = reflectCount + 1
+		warnMassSpellReflect:Show(reflectCount)
+		specWarnMassSpellReflect:Show(reflectCount)
 	end
 end
 
@@ -385,6 +405,10 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 135150 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 4) then
 		specWarnCrashingThunder:Show()
+	elseif spellId == 135991 then
+		diffusionTargets[#diffusionTargets + 1] = args.destName
+		self:Unschedule(warnDiffusionSpreadTargets)
+		self:Schedule(0.3, warnDiffusionSpreadTargets)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -400,6 +424,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:137176") then--Overloaded Circuits (Intermission ending and next phase beginning)
 		intermissionActive = false
 		phase = phase + 1
+		goreCount = 0
+		reflectCount = 0
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
