@@ -238,11 +238,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			staticIcon = staticIcon - 1
 		end
 		if not intermissionActive then
-			if phase == 3 then--Perm abilities he retains in heroic final phase get a 5 second bump on CD
-				timerStaticShockCD:Start(45)
-			else
-				timerStaticShockCD:Start()
-			end
+			timerStaticShockCD:Start()
 		end
 		self:Unschedule(warnStaticShockTargets)
 		self:Schedule(0.3, warnStaticShockTargets)
@@ -283,11 +279,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			overchargeIcon = overchargeIcon + 1
 		end
 		if not intermissionActive then
-			if phase == 3 then--Perm abilities he retains in heroic final phase get a 5 second bump on CD
-				timerOverchargeCD:Start(45)
-			else
-				timerOverchargeCD:Start()
-			end
+			timerOverchargeCD:Start()
 		end
 		self:Unschedule(warnOverchargeTargets)
 		self:Schedule(0.3, warnOverchargeTargets)
@@ -344,13 +336,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 135991 then
 		warnDiffusionChain:Show(args.destName)
 		if not intermissionActive then
-			if phase == 3 then--Perm abilities he retains in heroic final phase get a 5 second bump on CD
-				timerDiffusionChainCD:Start(45)
-				specWarnDiffusionChainSoon:Schedule(41)
-			else
-				timerDiffusionChainCD:Start()
-				specWarnDiffusionChainSoon:Schedule(36)
-			end
+			timerDiffusionChainCD:Start()
+			specWarnDiffusionChainSoon:Schedule(36)
 		end
 	elseif args.spellId == 136543 and self:AntiSpam(2, 1) then
 		ballsCount = ballsCount + 1
@@ -581,15 +568,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 136395 and self:AntiSpam(2, 3) and not intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
-		if phase == 3 then--Perm abilities he retains in heroic final phase get a 5 second bump on CD
-			timerBouncingBoltCD:Start(45)
-			countdownBouncingBolt:Start(45)
-			specWarnBouncingBoltSoon:Schedule(41)
-		else
-			timerBouncingBoltCD:Start()
-			countdownBouncingBolt:Start()
-			specWarnBouncingBoltSoon:Schedule(36)
-		end
+		timerBouncingBoltCD:Start(40)
+		countdownBouncingBolt:Start(40)
+		specWarnBouncingBoltSoon:Schedule(36)
 	elseif spellId == 136869 and self:AntiSpam(2, 4) then--Violent Gale Winds
 		warnViolentGaleWinds:Show()
 		timerViolentGaleWinds:Start()
