@@ -5,11 +5,11 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15467)
 mod:SetModelID(15879)
 mod:SetReCombatTime(10)
-mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
+mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED"
