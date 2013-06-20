@@ -133,8 +133,8 @@ local function warnStaticShockTargets()
 	staticIcon = 8
 end
 
-local function warnDiffusionSpreadTargets()
-	warnDiffusionChainSpread:Show(table.concat(diffusionTargets, "<, >"))
+local function warnDiffusionSpreadTargets(spellName)
+	warnDiffusionChainSpread:Show(spellName, table.concat(diffusionTargets, "<, >"))
 	table.wipe(diffusionTargets)
 end
 
@@ -389,13 +389,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, spellName, spellId)
 	if spellId == 135150 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 4) then
 		specWarnCrashingThunder:Show()
 	elseif spellId == 135991 then
 		diffusionTargets[#diffusionTargets + 1] = args.destName
 		self:Unschedule(warnDiffusionSpreadTargets)
-		self:Schedule(0.3, warnDiffusionSpreadTargets)
+		self:Schedule(0.3, warnDiffusionSpreadTargets, spellName)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
