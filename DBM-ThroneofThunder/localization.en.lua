@@ -281,11 +281,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "Intermission soon"
+	specWarnIntermissionSoon	= "Intermission soon",
+	warnDiffusionChainSpread	= "%s spread on >%s<"
 })
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Show pre-special warning before Intermission",
+	warnDiffusionChainSpread	= "Announce $spell:135991 spread targets",
 	RangeFrame					= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("8/6"),--For two different spells
 	StaticShockArrow			= "Show DBM Arrow when someone is affected by $spell:135695",
 	OverchargeArrow				= "Show DBM Arrow when someone is affected by $spell:136295",
