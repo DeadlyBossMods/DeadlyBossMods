@@ -22,7 +22,7 @@ mod:RegisterEventsInCombat(
 --Conduits (All phases)
 local warnStaticShock					= mod:NewTargetAnnounce(135695, 4)
 local warnDiffusionChain				= mod:NewTargetAnnounce(135991, 3)--More informative than actually preventative. (you need to just spread out, and that's it. can't control who it targets only that it doesn't spread)
-local warnDiffusionChainSpread			= mod:NewAnnounce(135991, 4, 135991, false)
+local warnDiffusionChainSpread			= mod:NewAnnounce("warnDiffusionChainSpread", 4, 135991, false)
 local warnOvercharged					= mod:NewTargetAnnounce(136295, 3)
 local warnBouncingBolt					= mod:NewSpellAnnounce(136361, 3)
 --Phase 1
