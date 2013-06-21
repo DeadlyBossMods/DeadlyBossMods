@@ -391,11 +391,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, spellName, spellId)
+function mod:SPELL_DAMAGE(_, _, _, destName, destGUID, _, _, spellName, spellId)
 	if spellId == 135150 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 4) then
 		specWarnCrashingThunder:Show()
 	elseif spellId == 135991 then
-		diffusionTargets[#diffusionTargets + 1] = args.destName
+		diffusionTargets[#diffusionTargets + 1] = destName
 		self:Unschedule(warnDiffusionSpreadTargets)
 		self:Schedule(0.3, warnDiffusionSpreadTargets, spellName)
 	end
