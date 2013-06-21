@@ -98,6 +98,7 @@ local berserkTimer						= mod:NewBerserkTimer(900)--Confirmed in LFR, probably t
 
 local countdownThunderstruck			= mod:NewCountdown(46, 135095)
 local countdownBouncingBolt				= mod:NewCountdown(40, 136361, nil, nil, nil, nil, true)--Pretty big deal on heroic, it's the one perminent ability you see in all strats. Should now play nice with thunderstruck with alternate voice code in ;)
+local countdownDiffusionChain			= mod:NewCountdown(40, 135991, nil, nil, nil, nil, true)
 local countdownStaticShockFades			= mod:NewCountdownFades(7, 135695, false)--May confuse with thundershock option default so off as default.
 
 local timerBlahTestTimer				= mod:NewNextTimer(40, 12345)
@@ -344,6 +345,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if not intermissionActive then
 			timerBlahTestTimer:Start()
 			timerDiffusionChainCD:Start()
+			countdownDiffusionChain:Start()
 			specWarnDiffusionChainSoon:Schedule(36)
 		end
 	elseif args.spellId == 136543 and self:AntiSpam(2, 1) then
@@ -375,6 +377,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerStaticShockCD:Cancel()
 	elseif args.spellId == 135681 and args:GetDestCreatureID() == 68397 and not intermissionActive then--East (Diffusion Chain)
 		timerDiffusionChainCD:Cancel()
+		countdownDiffusionChain:Cancel()
 		specWarnDiffusionChainSoon:Cancel()
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			if phase == 1 then
@@ -534,6 +537,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerSuperChargedConduits:Start()
 		timerStaticShockCD:Cancel()
 		timerDiffusionChainCD:Cancel()
+		countdownDiffusionChain:Cancel()
 		timerOverchargeCD:Cancel()
 		timerBouncingBoltCD:Cancel()
 		countdownBouncingBolt:Cancel()
