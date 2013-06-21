@@ -100,6 +100,8 @@ local countdownThunderstruck			= mod:NewCountdown(46, 135095)
 local countdownBouncingBolt				= mod:NewCountdown(40, 136361, nil, nil, nil, nil, true)--Pretty big deal on heroic, it's the one perminent ability you see in all strats. Should now play nice with thunderstruck with alternate voice code in ;)
 local countdownStaticShockFades			= mod:NewCountdownFades(7, 135695, false)--May confuse with thundershock option default so off as default.
 
+local timerBlahTestTimer				= mod:NewNextTimer(40, 12345)
+
 local soundDecapitate					= mod:NewSound(134912)
 
 mod:AddBoolOption("RangeFrame")
@@ -170,6 +172,7 @@ function mod:OnCombatStart(delay)
 	timerThunderstruckCD:Start(25-delay, 1)
 	countdownThunderstruck:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
+	timerBlahTestTimer:Start(10-delay)
 	berserkTimer:Start(-delay)
 	self:RegisterShortTermEvents(
 		"UNIT_HEALTH_FREQUENT boss1",
@@ -240,6 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if not intermissionActive then
 			timerStaticShockCD:Start()
+			timerBlahTestTimer:Start()
 		end
 		self:Unschedule(warnStaticShockTargets)
 		self:Schedule(0.3, warnStaticShockTargets)
@@ -281,6 +285,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if not intermissionActive then
 			timerOverchargeCD:Start()
+			timerBlahTestTimer:Start()
 		end
 		self:Unschedule(warnOverchargeTargets)
 		self:Schedule(0.3, warnOverchargeTargets)
@@ -308,7 +313,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 135680 and args:GetDestCreatureID() == 68397 then--North (Static Shock)
 		--start timers here when we have em
 	elseif args.spellId == 135681 and args:GetDestCreatureID() == 68397 then--East (Diffusion Chain)
-		timerDiffusionChainCD:Start(10)
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			DBM.RangeCheck:Show(8)--Assume 8 since spell tooltip has no info
 		end
@@ -338,6 +342,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 135991 then
 		warnDiffusionChain:Show(args.destName)
 		if not intermissionActive then
+			timerBlahTestTimer:Start()
 			timerDiffusionChainCD:Start()
 			specWarnDiffusionChainSoon:Schedule(36)
 		end
@@ -392,7 +397,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, destName, destGUID, _, _, spellName, spellId)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, spellName)
 	if spellId == 135150 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 4) then
 		specWarnCrashingThunder:Show()
 	elseif spellId == 135991 then
@@ -429,25 +434,22 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		elseif msg:find("spell:135683") then--West (Bouncing Bolt)
 			westDestroyed = true
 		end
---[[		if self:IsDifficulty("heroic10", "heroic25") then
-			--Not consistent, more work needed?
-			--On heroic he gains ability perm when pillar dies.
-			--it will be cast 14 seconds later unless you get him to cast one of other ones first then it may be at 15-16 right after the other one
-			--not sure how it works after second intermission, probably up in air which one he casts first and other right after. thats why these are CD timers.
+		if self:IsDifficulty("heroic10", "heroic25") then
+			--Needs a lot more work, trying to figure it out
 			if northDestroyed then
-				timerStaticShockCD:Start(14)
+				timerStaticShockCD:Start(12)
 			end
 			if eastDestroyed then
-				timerDiffusionChainCD:Start(14)
+				timerDiffusionChainCD:Start(12)
 			end
 			if southDestroyed then
-				timerOverchargeCD:Start(14)
+				timerOverchargeCD:Start(12)
 			end
 			if westDestroyed then
-				timerBouncingBoltCD:Start(14)
-				countdownBouncingBolt:Start(14)
+				timerBouncingBoltCD:Start(12)
+				countdownBouncingBolt:Start(12)
 			end
-		end--]]
+		end
 		if phase == 2 then--Start Phase 2 timers
 			warnPhase2:Show()
 			timerSummonBallLightningCD:Start(15, 1)
@@ -571,6 +573,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 136395 and self:AntiSpam(2, 3) and not intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
+		timerBlahTestTimer:Start()
 		timerBouncingBoltCD:Start(40)
 		countdownBouncingBolt:Start(40)
 		specWarnBouncingBoltSoon:Schedule(36)
