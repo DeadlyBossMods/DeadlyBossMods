@@ -101,7 +101,7 @@ local countdownBouncingBolt				= mod:NewCountdown(40, 136361, nil, nil, nil, nil
 local countdownDiffusionChain			= mod:NewCountdown(40, 135991, nil, nil, nil, nil, true)
 local countdownStaticShockFades			= mod:NewCountdownFades(7, 135695, false)--May confuse with thundershock option default so off as default.
 
-local timerBlahTestTimer				= mod:NewNextTimer(40, 12345)
+local timerBlahTestTimer				= mod:NewNextTimer(40, 1234)
 
 local soundDecapitate					= mod:NewSound(134912)
 
