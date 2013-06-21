@@ -259,7 +259,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerDayCD		= "Next day phase",
-	timerDuskCD		= "Next dusk phase",
+	timerDuskCD		= "Next dusk phase"
 })
 
 L:SetOptionLocalization({
@@ -285,9 +285,14 @@ L:SetWarningLocalization({
 	warnDiffusionChainSpread	= "%s spread on >%s<"
 })
 
+L:SetTimerLocalization({
+	timerConduitCD				= "First Conduit CD"
+})
+
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Show pre-special warning before Intermission",
 	warnDiffusionChainSpread	= "Announce $spell:135991 spread targets",
+	timerConduitCD				= "Show timer for first conduit ability cooldown",
 	RangeFrame					= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("8/6"),--For two different spells
 	StaticShockArrow			= "Show DBM Arrow when someone is affected by $spell:135695",
 	OverchargeArrow				= "Show DBM Arrow when someone is affected by $spell:136295",

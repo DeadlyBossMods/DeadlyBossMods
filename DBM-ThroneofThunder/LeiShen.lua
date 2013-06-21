@@ -71,6 +71,7 @@ local specWarnElectricalShockOther		= mod:NewSpecialWarningTarget(136914, mod:Is
 local specWarnHelmOfCommand				= mod:NewSpecialWarningYou(139011, nil, nil, nil, 3)
 
 --Conduits (All phases)
+local timerConduitCD					= mod:NewTimer(40, "timerConduitCD", 135695)
 local timerStaticShock					= mod:NewBuffFadesTimer(8, 135695)
 local timerStaticShockCD				= mod:NewCDTimer(40, 135695)
 local timerDiffusionChainCD				= mod:NewCDTimer(40, 135991)
@@ -101,8 +102,6 @@ local countdownBouncingBolt				= mod:NewCountdown(40, 136361, nil, nil, nil, nil
 local countdownDiffusionChain			= mod:NewCountdown(40, 135991, nil, nil, nil, nil, true)
 local countdownStaticShockFades			= mod:NewCountdownFades(7, 135695, false)--May confuse with thundershock option default so off as default.
 
-local timerBlahTestTimer				= mod:NewNextTimer(40, 1234)
-
 local soundDecapitate					= mod:NewSound(134912)
 
 mod:AddBoolOption("RangeFrame")
@@ -130,6 +129,7 @@ local whipCount = 0
 local thunderCount = 0
 local goreCount = 0
 local reflectCount = 0
+local diffusionCastTarget = nil
 
 local function warnStaticShockTargets()
 	warnStaticShock:Show(table.concat(staticshockTargets, "<, >"))
@@ -173,7 +173,7 @@ function mod:OnCombatStart(delay)
 	timerThunderstruckCD:Start(25-delay, 1)
 	countdownThunderstruck:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
-	timerBlahTestTimer:Start(10-delay)
+	timerConduitCD:Start(11-delay)--First always 11 seconds after engage, unless not in range of a pillar within 11 seconds, then cast instantly after 11 sec mark the moment he is in range of pillar
 	berserkTimer:Start(-delay)
 	self:RegisterShortTermEvents(
 		"UNIT_HEALTH_FREQUENT boss1",
@@ -244,7 +244,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if not intermissionActive then
 			timerStaticShockCD:Start()
-			timerBlahTestTimer:Start()
 		end
 		self:Unschedule(warnStaticShockTargets)
 		self:Schedule(0.3, warnStaticShockTargets)
@@ -286,7 +285,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if not intermissionActive then
 			timerOverchargeCD:Start()
-			timerBlahTestTimer:Start()
 		end
 		self:Unschedule(warnOverchargeTargets)
 		self:Schedule(0.3, warnOverchargeTargets)
@@ -341,11 +339,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 135991 then
-		warnDiffusionChain:Show(args.destName)
+		diffusionCastTarget = args.destName
+		warnDiffusionChain:Show(diffusionCastTarget)
 		if not intermissionActive then
-			timerBlahTestTimer:Start()
 			timerDiffusionChainCD:Start()
-			countdownDiffusionChain:Start()
+			if not (phase == 2 and westDestroyed) then--Disable this countdown in phase 2 if using bouncing bolt strat. so they don't overlap. this is mainly for the diffusion chain strat (ie overloading DC and static shock on heroic vs bouncing and static)
+				countdownDiffusionChain:Start()
+			end
 			specWarnDiffusionChainSoon:Schedule(36)
 		end
 	elseif args.spellId == 136543 and self:AntiSpam(2, 1) then
@@ -403,10 +403,12 @@ end
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId, spellName)
 	if spellId == 135150 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 4) then
 		specWarnCrashingThunder:Show()
-	elseif spellId == 135991 then
+	elseif spellId == 135991 and destName ~= diffusionCastTarget then--Filter actual target, so we only announce SPREADS
 		diffusionTargets[#diffusionTargets + 1] = destName
 		self:Unschedule(warnDiffusionSpreadTargets)
-		self:Schedule(0.3, warnDiffusionSpreadTargets, spellName)
+		if #diffusionTargets >= 1 then
+			self:Schedule(0.3, warnDiffusionSpreadTargets, spellName)
+		end
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
@@ -437,29 +439,34 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		elseif msg:find("spell:135683") then--West (Bouncing Bolt)
 			westDestroyed = true
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
-			--Needs a lot more work, trying to figure it out
-			if northDestroyed then
-				timerStaticShockCD:Start(12)
-			end
-			if eastDestroyed then
-				timerDiffusionChainCD:Start(12)
-			end
-			if southDestroyed then
-				timerOverchargeCD:Start(12)
-			end
-			if westDestroyed then
-				timerBouncingBoltCD:Start(12)
-				countdownBouncingBolt:Start(12)
-			end
-		end
 		if phase == 2 then--Start Phase 2 timers
 			warnPhase2:Show()
+			timerConduitCD:Start(14)--min time, will cast right away unless delayed by heroic special getting cast first or because he's not in range of a conduit yet
 			timerSummonBallLightningCD:Start(15, 1)
 			timerLightningWhipCD:Start(30, 1)
 			timerFussionSlashCD:Start(44)
 			if self.Options.RangeFrame and self:IsRanged() then--Only ranged need it in phase 2 and 3
 				DBM.RangeCheck:Show(6)--Needed for phase 2 AND phase 3
+			end
+			if self:IsDifficulty("heroic10", "heroic25") then
+				--Basically a CD, may come later if delayed by other crap
+				--15-19 variation. but you need this timing to hit spell reflect at 15 (it lasts 5 seconds so covers the variation)
+				if northDestroyed then
+					timerStaticShockCD:Start(14)
+				end
+				if eastDestroyed then
+					timerDiffusionChainCD:Start(14)
+					if not westDestroyed then--Why in the fuck would you do that? Diffusion chaim & bouncing bolts? you must be nuts
+						countdownDiffusionChain:Start(14)
+					end
+				end
+				if southDestroyed then
+					timerOverchargeCD:Start(14)
+				end
+				if westDestroyed then
+					timerBouncingBoltCD:Start(14)
+					countdownBouncingBolt:Start(14)
+				end
 			end
 		elseif phase == 3 then--Start Phase 3 timers
 			ballsCount = 0
@@ -471,6 +478,26 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			timerThunderstruckCD:Start(36, 1)
 			countdownThunderstruck:Start(36)
 			timerSummonBallLightningCD:Start(41.5, 1)
+			if self:IsDifficulty("heroic10", "heroic25") then
+				--Basically a CD, may come later if delayed by other crap
+				--28-32 variation. but you need this timing to hit spell reflect at 15 (it lasts 5 seconds so covers the variation)
+				if northDestroyed then
+					timerStaticShockCD:Start(28)
+				end
+				if eastDestroyed then
+					timerDiffusionChainCD:Start(28)
+					if not westDestroyed then--Why in the fuck would you do that? Diffusion chaim & bouncing bolts? you must be nuts
+						countdownDiffusionChain:Start(28)
+					end
+				end
+				if southDestroyed then
+					timerOverchargeCD:Start(28)
+				end
+				if westDestroyed then--Technically also 28, however
+					timerBouncingBoltCD:Start(32)--Always goes second, over any of other 3 abilities, and that delays it by 4 seconds
+					countdownBouncingBolt:Start(32)
+				end
+			end
 		end
 	end
 end
@@ -577,9 +604,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 136395 and self:AntiSpam(2, 3) and not intermissionActive then--Bouncing Bolt (During intermission phases, it fires randomly, use scheduler and filter this :\)
 		warnBouncingBolt:Show()
 		specWarnBouncingBolt:Show()
-		timerBlahTestTimer:Start()
 		timerBouncingBoltCD:Start(40)
-		countdownBouncingBolt:Start(40)
+		if not (phase == 2 and eastDestroyed) then--Disable this countdown in phase 2 if using diffusion strat
+			countdownBouncingBolt:Start(40)
+		end
 		specWarnBouncingBoltSoon:Schedule(36)
 	elseif spellId == 136869 and self:AntiSpam(2, 4) then--Violent Gale Winds
 		warnViolentGaleWinds:Show()
