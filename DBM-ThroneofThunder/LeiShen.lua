@@ -92,6 +92,7 @@ local timerViolentGaleWinds				= mod:NewBuffActiveTimer(18, 136889)
 local timerViolentGaleWindsCD			= mod:NewNextTimer(30.5, 136889)
 --Heroic
 local timerHelmOfCommand				= mod:NewCDTimer(14, 139011)
+local timerMassSpellReflect				= mod:NewBuffActiveTimer(5, 114028)
 
 local berserkTimer						= mod:NewBerserkTimer(900)--Confirmed in LFR, probably the same in all modes though?
 
@@ -358,6 +359,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		reflectCount = reflectCount + 1
 		warnMassSpellReflect:Show(reflectCount)
 		specWarnMassSpellReflect:Show(reflectCount)
+		timerMassSpellReflect:Start()
 	end
 end
 
