@@ -2966,12 +2966,9 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, trigge
 end
 
 function DBM:UNIT_HEALTH(uId)
+	if not UnitExists(uId) then return end
 	local cId = UnitGUID(uId) and tonumber(UnitGUID(uId):sub(6, 10), 16)
-	--Work around for stupid on ptr with UnitHealthMax returning 0 and causing div by 0 errors.
-	local maxhealth = UnitHealthMax(uId)
-	if maxhealth == 0 then maxhealth = UnitHealth(uId) end
-	--Work around for stupid on ptr with UnitHealthMax returning 0 and causing div by 0 errors.
-	local health = (UnitHealth(uId) or 0) / (maxhealth or 1)
+	local health = (UnitHealth(uId) or 0) / (UnitHealthMax(uId) or 1)
 	if not cId then return end
 	if #inCombat == 0 and bossIds[cId] and InCombatLockdown() and UnitAffectingCombat(uId) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH event, for older instances.
 		if combatInfo[LastInstanceMapID] then
