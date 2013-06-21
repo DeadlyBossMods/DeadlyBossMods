@@ -456,8 +456,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				end
 				if eastDestroyed then
 					timerDiffusionChainCD:Start(14)
-					if not westDestroyed then--Why in the fuck would you do that? Diffusion chaim & bouncing bolts? you must be nuts
-						countdownDiffusionChain:Start(14)
+					countdownDiffusionChain:Start(14)
+					if self.Options.RangeFrame and self:IsRanged() then
+						DBM.RangeCheck:Show(8)
 					end
 				end
 				if southDestroyed then
@@ -465,7 +466,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				end
 				if westDestroyed then
 					timerBouncingBoltCD:Start(14)
-					countdownBouncingBolt:Start(14)
+					if not eastDestroyed then--Why in the hell would you do that? Diffusion chaim & bouncing bolts? you must be nuts
+						countdownBouncingBolt:Start(14)--Of the two, diffusion chains more important so we disable bouncing count
+					end
 				end
 			end
 		elseif phase == 3 then--Start Phase 3 timers
@@ -503,21 +506,21 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 end
 
 local function LoopIntermission()
-	if not southDestroyed then
+	if not southDestroyed or mod:IsDifficulty("heroic10", "heroic25") then
 		if mod:IsDifficulty("lfr25") then
 			timerOverchargeCD:Start(17.5)
 		else
 			timerOverchargeCD:Start(6.5)
 		end
 	end
-	if not eastDestroyed then
+	if not eastDestroyed or mod:IsDifficulty("heroic10", "heroic25") then
 		if mod:IsDifficulty("lfr25") then
 			timerDiffusionChainCD:Start(17.5)
 		else
 			timerDiffusionChainCD:Start(8)
 		end
 	end
-	if not westDestroyed then
+	if not westDestroyed or mod:IsDifficulty("heroic10", "heroic25") then
 		if mod:IsDifficulty("lfr25") then
 			warnBouncingBolt:Schedule(9)
 			specWarnBouncingBolt:Schedule(9)
@@ -528,7 +531,7 @@ local function LoopIntermission()
 			timerBouncingBoltCD:Start(14)
 		end
 	end
-	if not mod:IsDifficulty("lfr25") and not northDestroyed then--Doesn't cast a 2nd one in LFR
+	if (not mod:IsDifficulty("lfr25") and not northDestroyed) or mod:IsDifficulty("heroic10", "heroic25") then--Doesn't cast a 2nd one in LFR
 		timerStaticShockCD:Start(16)
 	end
 	if mod:IsDifficulty("heroic10", "heroic25") then
@@ -568,7 +571,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerOverchargeCD:Cancel()
 		timerBouncingBoltCD:Cancel()
 		countdownBouncingBolt:Cancel()
-		if not eastDestroyed then
+		if not eastDestroyed or self:IsDifficulty("heroic10", "heroic25") then
 			if self:IsDifficulty("lfr25") then
 				timerDiffusionChainCD:Start(10)
 			else
@@ -578,19 +581,19 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 				DBM.RangeCheck:Show(8)
 			end
 		end
-		if not southDestroyed then
+		if not southDestroyed or self:IsDifficulty("heroic10", "heroic25") then
 			if self:IsDifficulty("lfr25") then
 				timerOverchargeCD:Start(10)
 			else
 				timerOverchargeCD:Start(6)
 			end
 		end
-		if not westDestroyed and not self:IsDifficulty("lfr25") then--Doesn't get cast in first wave in LFR, only second
+		if (not westDestroyed and not self:IsDifficulty("lfr25")) or self:IsDifficulty("heroic10", "heroic25") then--Doesn't get cast in first wave in LFR, only second
 			warnBouncingBolt:Schedule(14)
 			specWarnBouncingBolt:Schedule(14)
 			timerBouncingBoltCD:Start(14)
 		end
-		if not northDestroyed then
+		if not northDestroyed or self:IsDifficulty("heroic10", "heroic25") then
 			if self:IsDifficulty("lfr25") then
 				timerStaticShockCD:Start(21)
 			else
