@@ -1,4 +1,4 @@
-if select(4, GetBuildInfo()) >= 50400 then return end
+if select(4, GetBuildInfo()) < 50400 then return end
 local mod	= DBM:NewMod("FoOTrash", "DBM-FallOfOrgrimmar")
 local L		= mod:GetLocalizedStrings()
 
