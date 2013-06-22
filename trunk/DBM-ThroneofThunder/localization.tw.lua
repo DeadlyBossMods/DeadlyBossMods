@@ -233,7 +233,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerDayCD	= "白天階段",
-	timerDuskCD	= "黃昏階段",
+	timerDuskCD	= "黃昏階段"
 })
 
 L:SetMiscLocalization({
@@ -246,12 +246,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "超級充能導雷管階段即將到來"
+	specWarnIntermissionSoon	= "超級充能導雷管階段即將到來",
+	warnDiffusionChainSpread	= "%s擴散在>%s<"
 })
 
+L:SetTimerLocalization({
+	timerConduitCD				= "第一次導管技能冷卻"
+})
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "在超級充能導雷管階段前顯示預先特別警告",
+	warnDiffusionChainSpread	= "提示$spell:135991擴散的目標",
+	timerConduitCD				= "為第一次導管技能冷卻顯示計時器",
 	StaticShockArrow			= "當某人中了$spell:135695顯示DBM箭頭",
 	OverchargeArrow				= "當某人中了$spell:136295顯示DBM箭頭"
 })
