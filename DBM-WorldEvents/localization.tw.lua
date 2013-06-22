@@ -36,7 +36,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
-	Submerged			= "艾胡恩已隱沒",
 	Emerged				= "艾胡恩已現身",
 	specWarnAttack		= "艾胡恩變得脆弱 - 現在攻擊!"
 })
@@ -48,7 +47,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	Submerged			= "當艾胡恩隱沒時顯示警告",
 	Emerged				= "當艾胡恩現身時顯示警告",
 	specWarnAttack		= "當艾胡恩變得脆弱時顯示特別警告",
 	SubmergTimer		= "為隱沒顯示計時器",
