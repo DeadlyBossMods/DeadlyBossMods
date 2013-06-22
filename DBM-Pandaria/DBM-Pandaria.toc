@@ -28,4 +28,9 @@ localization.br.lua
 Anger.lua
 Salyis.lua
 Oondasta.lua
+Ordos.lua
 Nalak.lua
+ChiJi.lua
+Niuzao.lua
+Xuen.lua
+Yulon.lua
