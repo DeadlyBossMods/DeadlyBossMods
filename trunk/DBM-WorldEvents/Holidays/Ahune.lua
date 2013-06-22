@@ -7,25 +7,24 @@ mod:SetModelID(23447)--Frozen Core, ahunes looks pretty bad.
 mod:SetZone()
 
 mod:SetReCombatTime(10)
-mod:RegisterCombat("say", L.Pull)
+mod:RegisterCombat("combat")
 mod:SetMinCombatTime(15)
 
-mod:RegisterEvents(
+mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
 )
 
-local warnSubmerged				= mod:NewAnnounce("Submerged", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local warnSubmerged				= mod:NewSpellAnnounce(37751, 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnEmerged				= mod:NewAnnounce("Emerged", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 local specWarnAttack			= mod:NewSpecialWarning("specWarnAttack")
 
-local timerCombatStart			= mod:NewTimer(10, "TimerCombat", 2457)--rollplay for first pull
-local timerEmerge				= mod:NewTimer(40, "EmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local timerSubmerge				= mod:NewTimer(95, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local timerEmerge				= mod:NewTimer(35.5, "EmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerSubmerge				= mod:NewTimer(92, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")--Variable, 92-96
 
 function mod:OnCombatStart(delay)
-	timerCombatStart:Start(-delay)
+	timerSubmerge:Start(95-delay)--first is 95, rest are 92
 end
 
 function mod:SPELL_AURA_APPLIED(args)
