@@ -1,4 +1,4 @@
-if select(4, GetBuildInfo()) >= 50400 then return end
+if select(4, GetBuildInfo()) < 50400 then return end
 local mod	= DBM:NewMod(851, "DBM-FallOfOrgrimmar", nil, 369)
 local L		= mod:GetLocalizedStrings()
 
