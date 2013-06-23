@@ -28,6 +28,7 @@ local warnCraneRush				= mod:NewSpellAnnounce(144470, 3)--Health based, 66% and 
 
 local specWarnInspiringSong		= mod:NewSpecialWarningInterrupt(144468)
 local specWarnBeaconOfHope		= mod:NewSpecialWarningYou(144473)
+local yellBeaconOfHope			= mod:NewYell(144473)
 local specWarnBeaconOfHopeOther	= mod:NewSpecialWarningTarget(144473)
 local specWarnBlazingSong		= mod:NewSpecialWarningSpell(144471, nil, nil, nil, 3)
 local specWarnCraneRush			= mod:NewSpecialWarningSpell(144470, nil, nil, nil, 2)--Add range frame for spreading?
@@ -77,6 +78,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --		timerBeaconOfhopeCD:Start()
 		if args:IsPlayer() then
 			specWarnBeaconOfHope:Show()
+			yellBeaconOfHope:Yell()
 		else
 			specWarnBeaconOfHopeOther:Show(args.destName)
 			if self.Options.BeaconArrow then
