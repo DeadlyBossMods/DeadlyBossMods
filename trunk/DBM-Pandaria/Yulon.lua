@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71955)
---mod:SetQuestID(32519)--Note, this is currently bugged and returns nalak's answer (ie, yes if nalak has been killed no if nalak hasn't, it doesn't reference oondasta at all until blizzard fixes it)
+--mod:SetQuestID(32519)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
@@ -12,9 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_APPLIED"
 )
 
 --[[
@@ -22,22 +20,19 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )--]]
 
-local warnCrush					= mod:NewStackAnnounce(137504, 2, nil, mod:IsTank() or mod:IsHealer())--Cast every 30 seconds roughly, lasts 1 minute. you need 3 tanks to be able to tank the boss without debuff. 2 tanks CAN do but they will always have 1 stack and take 25% more damage
-local warnPiercingRoar			= mod:NewSpellAnnounce(137457, 2, nil)
-local warnSpiritfireBeam		= mod:NewTargetAnnounce(137511, 3)
-local warnFrillBlast			= mod:NewSpellAnnounce(137505, 4)--While this SHOULD be a tank only warning, thanks to terrible blizzard design, this fight is anything but a tanked fight, so it's now an everyone warning since god knows what fucking way the boss will be facing when he casts this
+local warnJadefireBreath		= mod:NewSpellAnnounce(144530, 2, mod:IsTank())
+local warnJadefireBolt			= mod:NewSpellAnnounce(144532, 3)--Target scanning?
+local warnJadefireWall			= mod:NewSpellAnnounce(144533, 4)
 
-local specWarnCrush				= mod:NewSpecialWarningStack(137504, mod:IsTank(), 2)
-local specWarnCrushOther		= mod:NewSpecialWarningTarget(137504, mod:IsTank())--This should not go over 1 stack so don't need stack warning just a "taunt the boss" warning
-local specWarnPiercingRoar		= mod:NewSpecialWarningCast(137457, mod:IsRanged() or mod:IsHealer())
-local specWarnFrillBlast		= mod:NewSpecialWarningSpell(137505, nil, nil, nil, 2)
+local specWarnJadefireBreath	= mod:NewSpecialWarningSpell(144530, mod:IsTank())
+local specWarnJadefireBlaze		= mod:NewSpecialWarningMove(144538)
+local specWarnJadefireWall		= mod:NewSpecialWarningSpell(144533, nil, nil, nil, 2)
 
-local timerCrush				= mod:NewTargetTimer(60, 137504, nil, mod:IsTank() or mod:IsHealer())
-local timerCrushCD				= mod:NewCDTimer(26, 137504)
-local timerPiercingRoarCD		= mod:NewCDTimer(25, 137457)--25-60sec variation (i'm going to guess like all the rest of the variations, the timers are all types of fucked up when the boss is running around untanked, which delays casts of crush and frill blast, but makes him cast spitfire twice as often)
-local timerFrillBlastCD			= mod:NewCDTimer(25, 137505)--25-30sec variation
+--local timerJadefireBreathCD	= mod:NewCDTimer(26, 144530, nil, mod:IsTank())
+--local timerJadefireBoltCD		= mod:NewCDTimer(25, 144532)
+--local timerJadefireWallCD		= mod:NewCDTimer(25, 144533)
 
-mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("RangeFrame", true)--For jadefire bolt/blaze (depending how often it's cast, if it's infrequent i'll kill range finder)
 
 --local yellTriggered = false
 
@@ -47,7 +42,7 @@ function mod:OnCombatStart(delay)
 		timerFrillBlastCD:Start(40-delay)
 	end--]]
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(10)--range is guessed. spell tooltip and EJ do not save what range is right now.
+		DBM.RangeCheck:Show(11)
 	end
 end
 
@@ -59,50 +54,33 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 137457 then
-		warnPiercingRoar:Show()
-		specWarnPiercingRoar:Show()
-		timerPiercingRoarCD:Start()
-	elseif args.spellId == 137505 then
-		warnFrillBlast:Show()
-		specWarnFrillBlast:Show()
-		timerFrillBlastCD:Start()
+	if args.spellId == 144530 then
+		warnJadefireBreath:Show()
+		specWarnJadefireBreath:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(137508, 137511) then
-		warnSpiritfireBeam:Show(args.destName)
---		timerSpiritfireBeamCD:Start()
+	if args.spellId == 144532 then
+		warnJadefireBolt:Show()
+--		timerJadefireBoltCD:Start()
+	elseif args.spellId == 144533 then
+		warnJadefireWall:Show()
+		specWarnJadefireWall:Show()
+--		timerJadefireWallCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 137504 then
-		warnCrush:Show(args.destName, args.amount or 1)
-		timerCrush:Start(args.destName)
-		timerCrushCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 2 then
-			specWarnCrush:Show(args.amount)
-		else
-			if (args.amount or 1) >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(137504)) then
-				specWarnCrushOther:Show(args.destName)
-			end
-		end
-	end
-end
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 137504 then
-		timerCrush:Cancel(args.destName)
+	if args.spellId == 144537 and args:IsPlayer() then
+		specWarnJadefireBlaze:Show()
 	end
 end
 
 --[[
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Pull and not self:IsInCombat() then
-		if self:GetCIDFromGUID(UnitGUID("target")) == 72057 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 72057 then
+		if self:GetCIDFromGUID(UnitGUID("target")) == 71955 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71955 then
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
 		end

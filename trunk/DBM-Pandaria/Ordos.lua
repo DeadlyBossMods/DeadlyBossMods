@@ -88,6 +88,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 144689 then
+		timerBurningSoul:Cancel(args.destName)
 		if self.Options.SetIconOnBurningSoul then
 			self:SetIcon(args.destName, 0)
 		end
