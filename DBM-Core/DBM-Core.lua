@@ -1602,7 +1602,7 @@ do
 
 --[[
 	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
-		local _, instanceType, difficulty, _, maxPlayers, playerDifficulty, isDynamicInstance, _, instanceGroupSize = GetInstanceInfo()
+		I don't feel this will really be needed. we'll update size on combatstart. unless someone leaving group in middle of boss fight updates boss scaling WHILE ENGAGED, this is probably not nessesary but we'll see.
 	end
 --]]
 
@@ -2803,6 +2803,7 @@ end
 local bossHealth = {}
 local savedDifficulty
 local difficultyText
+local flexSize
 
 function checkWipe(confirm)
 	if #inCombat > 0 then
@@ -2844,9 +2845,7 @@ function checkWipe(confirm)
 	end
 end
 
-function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggerEvent)
-	local _, instanceType = GetInstanceInfo()
-	if synced and instanceType == "none" and not UnitAffectingCombat("player") then return end--Ignore world boss pulls if you aren't fighting them.
+function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 	if not checkEntry(inCombat, mod) then
 		if not mod.Options.Enabled then return end
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
@@ -2855,6 +2854,8 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, trigge
 		if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 			return
 		end
+		savedDifficulty, difficultyText, flexSize = self:GetCurrentInstanceDifficulty()
+		if synced and savedDifficulty == "worldboss" and not UnitAffectingCombat("player") then return end--Ignore world boss pulls if you aren't fighting them.
 		table.insert(inCombat, mod)
 		bossHealth[mod.combatInfo.mob or -1] = 1
 		if mod.multiMobPullDetection then
@@ -2862,7 +2863,6 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, trigge
 				if not bossHealth[mob] then bossHealth[mob] = 1 end
 			end
 		end
-		savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 			mod.inCombatOnlyEventsRegistered = 1
 			mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -3294,8 +3294,7 @@ end
 
 function DBM:StartLogging(timer, checkFunc)
 	self:Unschedule(DBM.StopLogging)
-	local difficulty = self:GetCurrentInstanceDifficulty()
-	if DBM.Options.LogOnlyRaidBosses and difficulty ~= "normal10" and difficulty ~= "normal25" and difficulty ~= "heroic10" and difficulty ~= "heroic25" then return end
+	if DBM.Options.LogOnlyRaidBosses and savedDifficulty ~= "normal10" and savedDifficulty ~= "normal25" and savedDifficulty ~= "heroic10" and savedDifficulty ~= "heroic25" then return end
 	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
 		self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
 		LoggingCombat(1)
@@ -3304,7 +3303,7 @@ function DBM:StartLogging(timer, checkFunc)
 			self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
 		end
 	end
-	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+	if DBM.Options.AdvancedAutologBosses and Transcriptor then
 		if not Transcriptor:IsLogging() then
 			self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
 			Transcriptor:StartLog(1)
@@ -3321,7 +3320,7 @@ function DBM:StopLogging()
 		DBM:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
 		LoggingCombat(0)
 	end
-	if DBM.Options.AdvancedAutologBosses and IsAddOnLoaded("Transcriptor") then
+	if DBM.Options.AdvancedAutologBosses and Transcriptor then
 		if Transcriptor:IsLogging() then
 			DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
 			Transcriptor:StopLog(1)
@@ -3330,7 +3329,7 @@ function DBM:StopLogging()
 end
 
 function DBM:GetCurrentInstanceDifficulty()
-	local _, instanceType, difficulty, difficultyName, maxPlayers = GetInstanceInfo()
+	local _, instanceType, difficulty, difficultyName, maxPlayers, _, _, _, instanceGroupSize = GetInstanceInfo()
 	if difficulty == 0 then
 		return "worldboss", DBM_CORE_WORLD_BOSS.." - "
 	elseif difficulty == 1 then
@@ -3356,7 +3355,7 @@ function DBM:GetCurrentInstanceDifficulty()
 	elseif difficulty == 12 then--5.3 normal scenario
 		return "normal5", difficultyName.." - "
 	elseif difficulty == 14 then
-		return "flex", RAID_DIFFICULTY5
+		return "flex", difficultyName.." - ", instanceGroupSize
 	else--failsafe
 		return "normal5", ""
 	end
@@ -3407,7 +3406,7 @@ do
 					if not bossHealth[mob] then bossHealth[mob] = 1 end
 				end
 			end
-			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
+			savedDifficulty, difficultyText, flexSize = self:GetCurrentInstanceDifficulty()
 			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 				mod.inCombatOnlyEventsRegistered = 1
 				mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -4211,16 +4210,18 @@ function bossModPrototype:Stop(cid)
 	self:Unschedule()
 end
 
-bossModPrototype.GetDifficulty = DBM.GetCurrentInstanceDifficulty
-
 function bossModPrototype:IsDifficulty(...)
-	local diff = self:GetDifficulty()
+	local diff = self:GetCurrentInstanceDifficulty()
 	for i = 1, select("#", ...) do
 		if diff == select(i, ...) then
 			return true
 		end
 	end
 	return false
+end
+
+function bossModPrototype:FlexSize()
+	return flexSize
 end
 
 function bossModPrototype:SetUsedIcons(...)
