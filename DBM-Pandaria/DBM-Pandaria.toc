@@ -27,10 +27,10 @@ localization.cn.lua
 localization.br.lua
 Anger.lua
 Salyis.lua
-Oondasta.lua
-Ordos.lua
 Nalak.lua
+Oondasta.lua
 ChiJi.lua
+Yulon.lua
 Niuzao.lua
 Xuen.lua
-Yulon.lua
+Ordos.lua
