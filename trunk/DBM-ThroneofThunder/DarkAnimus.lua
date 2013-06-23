@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69427)
 mod:SetQuestID(32752)
 mod:SetZone()
-mod:SetUsedIcons(8)
+mod:SetUsedIcons(1)
 
 mod:RegisterCombat("emote", L.Pull)
 
@@ -161,9 +161,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnAnimaFont:Show()
 		end
-                if self.Options.SetIconOnFont then
-	                self:SetIcon(args.destName, 8)--skull
-	        end
+		if self.Options.SetIconOnFont then
+			self:SetIcon(args.destName, 1)--star
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -173,6 +173,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMatterSwap:Cancel(args.destName)
 	elseif args.spellId == 138569 then
 		timerExplosiveSlam:Cancel(args.destName)
+	elseif args.spellId == 138691 and self.Options.SetIconOnFont then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
