@@ -60,22 +60,30 @@ L:SetOptionLocalization({
 ------------------------------
 L= DBM:GetModLocalization(858)
 
+L:SetOptionLocalization({
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(11, 144532)
+})
+
 --------------------------
 -- Niuzao, The Black Ox --
 --------------------------
 L= DBM:GetModLocalization(859)
-
-L:SetOptionLocalization({
-	SetIconOnBurningSoul	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(144689),
-	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(8, 144689)
-})
 
 ---------------------------
 -- Xuen, The White Tiger --
 ---------------------------
 L= DBM:GetModLocalization(860)
 
+L:SetOptionLocalization({
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(3, 144642)
+})
+
 ------------------------------------
 -- Ordos, Fire-God of the Yaungol --
 ------------------------------------
 L= DBM:GetModLocalization(861)
+
+L:SetOptionLocalization({
+	SetIconOnBurningSoul	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(144689),
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(8, 144689)
+})
