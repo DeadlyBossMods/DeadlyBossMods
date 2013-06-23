@@ -65,6 +65,11 @@ L= DBM:GetModLocalization(858)
 --------------------------
 L= DBM:GetModLocalization(859)
 
+L:SetOptionLocalization({
+	SetIconOnBurningSoul	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(144689),
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(8, 144689)
+})
+
 ---------------------------
 -- Xuen, The White Tiger --
 ---------------------------
