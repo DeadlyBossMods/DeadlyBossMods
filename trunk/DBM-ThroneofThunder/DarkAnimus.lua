@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(69427)
 mod:SetQuestID(32752)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("emote", L.Pull)
 
@@ -64,6 +65,8 @@ local soundCrimsonWake				= mod:NewSound(138480)
 local crimsonWake = GetSpellInfo(138485)--Debuff ID I believe, not cast one. Same spell name though
 local siphon = 0
 local jolt = 0
+
+mod:AddBoolOption("SetIconOnFont", true)
 
 function mod:AnimaRingTarget(targetname)
 	warnAnimaRing:Show(targetname)
@@ -158,6 +161,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnAnimaFont:Show()
 		end
+                if self.Options.SetIconOnFont then
+	                self:SetIcon(args.destName, 8)--skull
+	        end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
