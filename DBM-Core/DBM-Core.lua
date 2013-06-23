@@ -4211,7 +4211,7 @@ function bossModPrototype:Stop(cid)
 end
 
 function bossModPrototype:IsDifficulty(...)
-	local diff = self:GetCurrentInstanceDifficulty()
+	local diff = DBM:GetCurrentInstanceDifficulty()
 	for i = 1, select("#", ...) do
 		if diff == select(i, ...) then
 			return true
