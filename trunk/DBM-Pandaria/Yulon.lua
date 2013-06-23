@@ -8,7 +8,7 @@ mod:SetCreatureID(71955)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
---[[
+
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
@@ -17,9 +17,10 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED"
 )
 
+--[[
 mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
-)
+)--]]
 
 local warnCrush					= mod:NewStackAnnounce(137504, 2, nil, mod:IsTank() or mod:IsHealer())--Cast every 30 seconds roughly, lasts 1 minute. you need 3 tanks to be able to tank the boss without debuff. 2 tanks CAN do but they will always have 1 stack and take 25% more damage
 local warnPiercingRoar			= mod:NewSpellAnnounce(137457, 2, nil)
@@ -34,20 +35,17 @@ local specWarnFrillBlast		= mod:NewSpecialWarningSpell(137505, nil, nil, nil, 2)
 local timerCrush				= mod:NewTargetTimer(60, 137504, nil, mod:IsTank() or mod:IsHealer())
 local timerCrushCD				= mod:NewCDTimer(26, 137504)
 local timerPiercingRoarCD		= mod:NewCDTimer(25, 137457)--25-60sec variation (i'm going to guess like all the rest of the variations, the timers are all types of fucked up when the boss is running around untanked, which delays casts of crush and frill blast, but makes him cast spitfire twice as often)
---local timerSpiritfireBeamCD		= mod:NewCDTimer(25, 137511)--25-30sec variation (disabled because he also seems to spam it far more often if there is no tank, making it difficult to find an ACTUAL cd when fight is done incorrectly
 local timerFrillBlastCD			= mod:NewCDTimer(25, 137505)--25-30sec variation
 
 mod:AddBoolOption("RangeFrame", true)
 
-local yellTriggered = false
+--local yellTriggered = false
 
 function mod:OnCombatStart(delay)
-	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
---		timerCrushCD:Start(-delay)--There was no tank, so he pretty much never cast this, just ran like a wild animal around area while corpse cannoned
---		timerSpiritfireBeamCD:Start(15-delay)
+--[[	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
 		timerPiercingRoarCD:Start(20-delay)
 		timerFrillBlastCD:Start(40-delay)
-	end
+	end--]]
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)--range is guessed. spell tooltip and EJ do not save what range is right now.
 	end
@@ -57,7 +55,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	yellTriggered = false
+--	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -93,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED--<--if this happens you're doing fight wrong. But we announce it anyways to identify the problem
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 137504 then
@@ -101,9 +99,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Pull and not self:IsInCombat() then
-		if self:GetCIDFromGUID(UnitGUID("target")) == 69161 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 69161 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
+		if self:GetCIDFromGUID(UnitGUID("target")) == 72057 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 72057 then
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
 		end
