@@ -35,8 +35,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
-	Submerged		= "Ahune ist abgetaucht",
-	Emerged			= "Ahune ist aufgetaucht",
+	Emerged			= "Aufgetaucht",
 	specWarnAttack	= "Ahune ist verwundbar - Angriff!"
 })
 
@@ -47,7 +46,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	Submerged		= "Zeige Warnung, wenn Ahune abtaucht",
 	Emerged			= "Zeige Warnung, wenn Ahune auftaucht",
 	specWarnAttack	= "Spezialwarnung, wenn Ahune verwundbar wird",
 	SubmergTimer	= "Zeige Zeit bis Abtauchen",

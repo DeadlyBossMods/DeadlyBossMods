@@ -233,7 +233,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerDayCD		= "Nächste Tagphase",
-	timerDuskCD		= "Nächste Dämmerungsphase",
+	timerDuskCD		= "Nächste Dämmerungsphase"
 })
 
 L:SetMiscLocalization({
@@ -246,11 +246,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "Unterbrechung bald"
+	specWarnIntermissionSoon	= "Unterbrechung bald",
+	warnDiffusionChainSpread	= "%s gesprungen auf >%s<"
+})
+
+L:SetTimerLocalization({
+	timerConduitCD				= "Erste Leitung CD"
 })
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Spezialvorwarnung für Unterbrechung",
+	warnDiffusionChainSpread	= "Verkünde Sprungziele von $spell:135991",
+	timerConduitCD				= "Abklingzeit der Fähigkeit der ersten Leitung anzeigen",
 	StaticShockArrow			= "Zeige DBM-Pfeil, wenn jemand von $spell:135695 betroffen ist",
 	OverchargeArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:136295 betroffen ist"
 })
