@@ -36,9 +36,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
-	Submerged		= "아훈 잠수",
-	Emerged			= "아훈 등장",
-	specWarnAttack	= "아훈이 약해졌습니다. - 딜링 시작!"
+	Emerged			= "등장",
+	specWarnAttack	= "아훈이 약해졌습니다 - 공격 시작!"
 })
 
 L:SetTimerLocalization{
@@ -48,7 +47,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	Submerged		= "잠수 알림 보기",
 	Emerged			= "등장 알림 보기",
 	specWarnAttack	= "아훈 약화시 특수 경고 보기",
 	SubmergTimer	= "잠수 바 표시",
