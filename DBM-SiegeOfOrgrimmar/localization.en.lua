@@ -94,6 +94,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnToxicMists		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(144089),
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(4, 143990)
 })
 
 L:SetMiscLocalization({
