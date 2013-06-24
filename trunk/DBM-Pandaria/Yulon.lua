@@ -1,3 +1,4 @@
+if GetBuildInfo() ~= "5.4.0" then return end
 local mod	= DBM:NewMod(858, "DBM-Pandaria", nil, 322)
 local L		= mod:GetLocalizedStrings()
 
