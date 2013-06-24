@@ -36,3 +36,32 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
+
+---------------------------
+-- Chi-ji, The Red Crane --
+---------------------------
+L= DBM:GetModLocalization(857)
+
+L:SetOptionLocalization({
+	BeaconArrow			= "$spell:144473 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
+})
+
+------------------------------
+-- Yu'lon, The Jade Serpent --
+------------------------------
+L= DBM:GetModLocalization(858)
+
+--------------------------
+-- Niuzao, The Black Ox --
+--------------------------
+L= DBM:GetModLocalization(859)
+
+---------------------------
+-- Xuen, The White Tiger --
+---------------------------
+L= DBM:GetModLocalization(860)
+
+------------------------------------
+-- Ordos, Fire-God of the Yaungol --
+------------------------------------
+L= DBM:GetModLocalization(861)
