@@ -1,4 +1,3 @@
-if GetBuildInfo() ~= "5.4.0" then return end
 local mod	= DBM:NewMod(868, "DBM-FallOfOrgrimmar", nil, 369)
 local L		= mod:GetLocalizedStrings()
 
