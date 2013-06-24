@@ -472,6 +472,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				end
 			end
 		elseif phase == 3 then--Start Phase 3 timers
+			self:UnregisterShortTermEvents()
 			ballsCount = 0
 			whipCount = 0
 			thunderCount = 0
@@ -548,7 +549,6 @@ function mod:UNIT_HEALTH_FREQUENT(uId)
 		elseif hp > 30 and hp < 31.5 and warnedCount == 1 then
 			warnedCount = 2
 			specWarnIntermissionSoon:Show()
-			self:UnregisterShortTermEvents()
 		end
 	end
 end
