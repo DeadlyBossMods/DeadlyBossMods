@@ -85,7 +85,7 @@ function mod:SPELL_CAST_START(args)
 		local source = args.sourceName
 		warnCorruptionShock:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
-			specWarnCorruptionShock:show(source)
+			specWarnCorruptionShock:Show(source)
 		end
 	elseif args.spellId == 143330 then
 		warnGouge:Show()
