@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod(864, "DBM-FallOfOrgrimmar", nil, 369)
+local mod	= DBM:NewMod(864, "DBM-SiegeOfOrgrimmar", nil, 369)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))

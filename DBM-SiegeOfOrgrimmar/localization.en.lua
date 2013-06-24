@@ -1,4 +1,3 @@
-if select(4, GetBuildInfo()) >= 50400 then return end
 local L
 
 ---------------
