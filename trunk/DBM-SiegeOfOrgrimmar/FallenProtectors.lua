@@ -22,7 +22,7 @@ local warnClash						= mod:NewSpellAnnounce(143027, 3)--Again, see if we can fin
 local warnCorruptionShock			= mod:NewSpellAnnounce(143958, 3)--Embodied Gloom
 local warnDefiledGround				= mod:NewSpellAnnounce(143961, 3)--Embodied Misery
 --He Softfoot
-local warnGouge						= mod:NewCastAnnounce(143330, 3, nil, mod:IsTank())--The cast, so you can react and turn back to it and avoid stun.
+local warnGouge						= mod:NewCastAnnounce(143330, 3, nil, nil, mod:IsTank())--The cast, so you can react and turn back to it and avoid stun.
 local warnGougeStun					= mod:NewTargetAnnounce(143301, 3, nil, mod:IsTank())--Failed, stunned. the success ID is 143331 (knockback)
 ----He Softfoot's Desperate measures
 local warnMarked					= mod:NewTargetAnnounce(143840, 3)--Embodied Anguish			
