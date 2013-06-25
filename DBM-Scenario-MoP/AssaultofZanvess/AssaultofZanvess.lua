@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
-mod:RegisterCombat("scenario", 883)
+mod:RegisterCombat("scenario", 1050)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
