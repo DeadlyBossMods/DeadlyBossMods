@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
-mod:RegisterCombat("scenario", 938)
+mod:RegisterCombat("scenario", 1131)
 
 mod:RegisterEventsInCombat(
 	"CHAT_MSG_MONSTER_YELL",
