@@ -26,10 +26,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_AURA_UNFILTERED"
 )
 
-local isDispeller = select(2, UnitClass("player")) == "MAGE"
-	    		 or select(2, UnitClass("player")) == "PRIEST"
-	    		 or select(2, UnitClass("player")) == "SHAMAN"
-
 local warnWhirlingBlade					= mod:NewTargetAnnounce(121896, 4)--Target scanning not tested
 local warnRainOfBlades					= mod:NewSpellAnnounce(122406, 4)
 local warnRecklessness					= mod:NewTargetAnnounce(125873, 3)
@@ -51,7 +47,7 @@ local specWarnCorrosiveResin			= mod:NewSpecialWarningRun(122064)
 local yellCorrosiveResin				= mod:NewYell(122064, nil, false)
 local specWarnCorrosiveResinPool		= mod:NewSpecialWarningMove(122125)
 local specWarnMending					= mod:NewSpecialWarningInterrupt(122193)--Whoever is doing this or feels responsible should turn it on.
-local specWarnQuickening				= mod:NewSpecialWarningCount(122149, isDispeller)--This is not stack warning.
+local specWarnQuickening				= mod:NewSpecialWarningCount(122149, mod:IsMagicDispeller())--This is not stack warning.
 local specWarnKorthikStrike				= mod:NewSpecialWarningYou(123963)
 local specWarnKorthikStrikeOther		= mod:NewSpecialWarningTarget(123963, mod:IsHealer())
 local yellKorthikStrike					= mod:NewYell(123963)

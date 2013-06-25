@@ -27,14 +27,6 @@ mod:SetBossHealthInfo(
 	60586, Asani
 )
 
---[[
---Both Elders use Overhwelming Corruption as their phase 3 ability. It's not worth warning for since it's just a periodic aoe you can't do anything about with stacking damage.
-spellid = 117309 or spellid = 117227 or spellid = 111850 or spellid = 117519 and not(fulltype = SPELL_PERIODIC_DAMAGE) or spellid = 117986 or spellid = 117975 or spellid = 118077
---]]
-local isDispeller = select(2, UnitClass("player")) == "MAGE"
-	    		 or select(2, UnitClass("player")) == "PRIEST"
-	    		 or select(2, UnitClass("player")) == "SHAMAN"
-
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnPhase3					= mod:NewPhaseAnnounce(3)
 --Elder Asani
@@ -53,7 +45,7 @@ local warnGroupOrder				= mod:NewAnnounce("warnGroupOrder", 1, 118191, false)--2
 
 --Elder Asani
 local specWarnCleansingWaters		= mod:NewSpecialWarningTarget(117309, false)--This is if you want to move the boss out of waters before they can even gain it. Many strats don't ever move boss and just dispel it
-local specWarnCleansingWatersDispel	= mod:NewSpecialWarningDispel(117309, isDispeller)--The boss wasn't moved in time, now he needs to be dispelled.
+local specWarnCleansingWatersDispel	= mod:NewSpecialWarningDispel(117309, mod:IsMagicDispeller())--The boss wasn't moved in time, now he needs to be dispelled.
 local specWarnCorruptingWaters		= mod:NewSpecialWarningSwitch("ej5821", mod:IsDps())
 --Elder Regail
 local specWarnLightningPrison		= mod:NewSpecialWarningYou(111850)--Debuff you gain before you are hit with it.

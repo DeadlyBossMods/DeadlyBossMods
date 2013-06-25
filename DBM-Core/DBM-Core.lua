@@ -4393,6 +4393,10 @@ function bossModPrototype:CanRemoveEnrage()
 	return class == "HUNTER" or class == "ROGUE" or class == "DRUID"
 end
 
+function bossModPrototype:IsMagicDispeller()
+	return class == "MAGE" or class == "PRIEST" or class == "SHAMAN"
+end
+
 ----------------------------
 --  Boss Health Function  --
 ----------------------------

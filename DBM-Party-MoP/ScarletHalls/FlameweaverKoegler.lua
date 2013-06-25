@@ -13,11 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED"
 )
 
---Who can dispel what idon't actually know for MOP so this may need modifying. Also don't know a way to check for a prot warrior glyphed for shield slam.
-local isDispeller = select(2, UnitClass("player")) == "MAGE"
-	    		 or select(2, UnitClass("player")) == "PRIEST"
-	    		 or select(2, UnitClass("player")) == "SHAMAN"
-
 local warnPyroblast				= mod:NewSpellAnnounce(113690, 2, nil, false)
 local warnQuickenedMind			= mod:NewSpellAnnounce(113682, 3)--This is Magic dispelable, you can't interrupt anything if you don't dispel this.
 local warnFireballVolley		= mod:NewSpellAnnounce(113691, 3)
@@ -26,8 +21,8 @@ local warnDragonsBreath			= mod:NewSpellAnnounce(113641, 4)--This is showing Mag
 
 local specWarnFireballVolley	= mod:NewSpecialWarningInterrupt(113691, true)
 local specWarnPyroblast			= mod:NewSpecialWarningInterrupt(113690, false)
-local specWarnQuickenedMind		= mod:NewSpecialWarningDispel(113682, isDispeller)
---local specWarnDragonsBreathDispel		= mod:NewSpecialWarningDispel(113641, isDispeller)
+local specWarnQuickenedMind		= mod:NewSpecialWarningDispel(113682, mod:IsMagicDispeller())
+--local specWarnDragonsBreathDispel		= mod:NewSpecialWarningDispel(113641, mod:IsMagicDispeller())
 local specWarnDragonsBreath		= mod:NewSpecialWarningSpell(113641, nil, nil, nil, true)
 
 local timerPyroblastCD			= mod:NewCDTimer(6, 113690, nil, false)
