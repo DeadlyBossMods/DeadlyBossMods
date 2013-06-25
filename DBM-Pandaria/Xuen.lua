@@ -21,10 +21,6 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )--]]
 
-local isDispeller = select(2, UnitClass("player")) == "MAGE"
-	    		 or select(2, UnitClass("player")) == "PRIEST"
-	    		 or select(2, UnitClass("player")) == "SHAMAN"
-
 local warnSpectralSwipe				= mod:NewStackAnnounce(144638, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnAgility					= mod:NewTargetAnnounce(144631, 3)
 local warnCracklingLightning		= mod:NewSpellAnnounce(144635, 3)--According to data, spread range is 60 yards so spreading out for this seems pointless. it's just healed through
@@ -32,7 +28,7 @@ local warnChiBarrage				= mod:NewSpellAnnounce(144642, 4)
 
 local specWarnSpectralSwipe			= mod:NewSpecialWarningStack(144638, mod:IsTank(), 4)--Stack is guesswork
 local specWarnSpectralSwipeOther	= mod:NewSpecialWarningTarget(144638, mod:IsTank())
-local specWarnAgility				= mod:NewSpecialWarningDispel(144631, isDispeller)
+local specWarnAgility				= mod:NewSpecialWarningDispel(144631, mod:IsMagicDispeller())
 local specWarnChiBarrage			= mod:NewSpecialWarningSpell(144642, nil, nil, nil, 2)
 
 local timerSpectralSwipe			= mod:NewTargetTimer(60, 144638, nil, mod:IsTank() or mod:IsHealer())

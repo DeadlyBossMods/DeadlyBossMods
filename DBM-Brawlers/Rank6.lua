@@ -12,17 +12,13 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local isDispeller = select(2, UnitClass("player")) == "MAGE"
-	    		 or select(2, UnitClass("player")) == "PRIEST"
-	    		 or select(2, UnitClass("player")) == "SHAMAN"
-
 local warnFallenKin				= mod:NewStackAnnounce(134789, 3)
 local warnShadowStrikes			= mod:NewSpellAnnounce(126209, 3)
 local warnChainLightning		= mod:NewSpellAnnounce(39945, 3)
 local warnToughLuck				= mod:NewStackAnnounce(134624, 1)
 local warnShieldWaller			= mod:NewSpellAnnounce(134650, 2)
 
-local specWarnShadowStrikes		= mod:NewSpecialWarningDispel(126209, isDispeller)
+local specWarnShadowStrikes		= mod:NewSpecialWarningDispel(126209, mod:IsMagicDispeller())
 local specWarnChainLightning	= mod:NewSpecialWarningInterrupt(39945)
 
 local timerFallenKin			= mod:NewBuffActiveTimer(2, 134789)
