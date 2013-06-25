@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
-mod:RegisterCombat("scenario", 880)
+mod:RegisterCombat("scenario", 1024)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
