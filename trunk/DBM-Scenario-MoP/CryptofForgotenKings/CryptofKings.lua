@@ -52,7 +52,7 @@ mod:RemoveOption("HealthFrame")
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 142884 then
 		warnFear:Show()
-		specWarnFear:Show()
+		specWarnFear:Show(args.sourceName)
 	elseif args.spellId == 119843 then
 		warnGuardianStrike:Show()
 		specWarnGuardianStrike:Show()
