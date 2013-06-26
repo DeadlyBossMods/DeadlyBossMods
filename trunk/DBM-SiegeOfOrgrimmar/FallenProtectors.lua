@@ -13,6 +13,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
@@ -27,6 +29,7 @@ local warnClash						= mod:NewSpellAnnounce(143027, 3)--No target scanning, no e
 local warnMiserySorrowGloom			= mod:NewSpellAnnounce(143955, 2)--Activation
 local warnCorruptionShock			= mod:NewSpellAnnounce(143958, 3)--Embodied Gloom (spammy if you do it wrong, but very important everyone sees. SOMEONE needs to interrupt it if it keeps going off)
 local warnDefiledGround				= mod:NewSpellAnnounce(143961, 3, nil, mod:IsTank())--Embodied Misery
+local warnInfernoStrike				= mod:NewSpellAnnounce(143962, 3)
 --He Softfoot
 local warnGouge						= mod:NewCastAnnounce(143330, 3, nil, nil, mod:IsTank())--The cast, so you can react and turn back to it and avoid stun.
 local warnGougeStun					= mod:NewTargetAnnounce(143301, 3, nil, mod:IsTank())--Failed, stunned. the success ID is 143331 (knockback)
@@ -51,6 +54,7 @@ local specWarnDefiledGround			= mod:NewSpecialWarningMove(143959)
 --He Softfoot
 local specWarnGouge					= mod:NewSpecialWarningMove(143330, mod:IsTank())--Maybe localize it as a "turn away" warning.
 local specWarnGougeStunOther		= mod:NewSpecialWarningTarget(143301, mod:IsTank())--Tank is stunned, other tank must taunt or he'll start killing people
+local specWarnNoxiousPoison			= mod:NewSpecialWarningMove(144367)
 ----He Softfoot's Desperate measures
 local specWarnMarkOfAnquish			= mod:NewSpecialWarningSpell(143812)
 local specWarnMarked				= mod:NewSpecialWarningYou(143840)
@@ -68,6 +72,7 @@ local timerCorruptedBrewCD			= mod:NewCDTimer(11, 143019)
 local timerClashCD					= mod:NewCDTimer(46, 143027)--45-54
 ----Rook Stonetoe's Desperate Measures
 local timerDefiledGroundCD			= mod:NewCDTimer(11, 143961, nil, mod:IsTank())
+local timerInfernoStrikeCD			= mod:NewCDTimer(11, 143962)
 --He Softfoot
 local timerGougeCD					= mod:NewCDTimer(30, 143330, nil, mod:IsTank())--30-41
 local timerGorroteCD				= mod:NewCDTimer(30, 143198, nil, mod:IsHealer())--30-36
@@ -89,10 +94,6 @@ function mod:OnCombatStart(delay)
 	timerCalamityCD:Start(-delay)
 	timerClashCD:Start(-delay)
 --	berserkTimer:Start(-delay)
-end
-
-function mod:OnCombatEnd()
-	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -119,6 +120,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143961 then
 		warnDefiledGround:Show()
 		timerDefiledGroundCD:Start()
+	elseif args.spellId == 143962 then
+		warnInfernoStrike:Show()
+		timerInfernoStrikeCD:Start()
 	elseif args.spellId == 143497 then
 		warnBondGoldenLotus:Show()
 	end
@@ -175,11 +179,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerVengefulStrikesCD:Cancel()
 		timerClashCD:Cancel()
 		timerCorruptedBrewCD:Cancel()
+		timerInfernoStrikeCD:Start(7)
 		timerDefiledGroundCD:Start(9)
-		self:RegisterShortTermEvents(--Defiled ground only cast during his special phase, so no sense only need high performance events when Misery add is up
-			"SPELL_DAMAGE",
-			"SPELL_MISSED"
-		)
 	elseif args.spellId == 143812 then--Mark of Anguish
 		warnMarkOfAnguish:Show()
 		specWarnMarkOfAnquish:Show()
@@ -195,10 +196,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerCalamityCD:Start()
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
 		timerDefiledGroundCD:Cancel()
+		timerInfernoStrikeCD:Cancel()
 		timerVengefulStrikesCD:Start(7.5)
 		timerCorruptedBrewCD:Start(17)
 		timerClashCD:Start(42)
-		self:UnregisterShortTermEvents()
 	elseif args.spellId == 143812 then--Mark of Anguish
 		timerGorroteCD:Start(11)
 		timerGougeCD:Start(26)
@@ -206,8 +207,10 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 144357 and destGUID == UnitGUID("player") and self:AntiSpam() then
+	if spellId == 144357 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnDefiledGround:Show()
+	elseif spellId == 144367 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+		specWarnNoxiousPoison:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
