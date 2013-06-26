@@ -111,6 +111,14 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	newForces1				= "Warriors, on the double!",
+	newForces2				= "Defend the gate!",
+	newForces3				= "Rally the forces!",
+	newForces4				= "Kor'kron, at my side!",
+	newForces5				= "Next squad, to the front!"
+})
+
 -----------------
 -- Malkorok -----
 -----------------
