@@ -28,6 +28,7 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(826)
 
+
 L:SetMiscLocalization({
 	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!"--translate (trigger)
 })
@@ -36,3 +37,36 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
+
+
+---------------------------
+-- Chi-ji, The Red Crane --
+---------------------------
+L= DBM:GetModLocalization(857)
+
+L:SetOptionLocalization({
+	BeaconArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:144473 betroffen ist"
+})
+
+------------------------------
+-- Yu'lon, The Jade Serpent --
+------------------------------
+L= DBM:GetModLocalization(858)
+
+
+--------------------------
+-- Niuzao, The Black Ox --
+--------------------------
+L= DBM:GetModLocalization(859)
+
+---------------------------
+-- Xuen, The White Tiger --
+---------------------------
+L= DBM:GetModLocalization(860)
+
+
+------------------------------------
+-- Ordos, Fire-God of the Yaungol --
+------------------------------------
+L= DBM:GetModLocalization(861)
+
