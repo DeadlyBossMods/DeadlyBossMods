@@ -28,7 +28,7 @@ local warnAshflareTotem				= mod:NewSpellAnnounce(144290, 3)--70%
 --Earthbreaker Haromm
 local warnFroststormStrike			= mod:NewTargetAnnounce(144215, 2)--Not tank flagged, but probably tank debuff, leaving for everyone just in case though. this plus FrostStorm Bolt= one dead MF
 local warnToxicMists				= mod:NewTargetAnnounce(144089, 3)
-local warnFoulStream				= mod:NewSpellAnnounce(144090, 3)--Check if targetscanning will work here (or if spell itself has a target emote or something)
+local warnFoulStream				= mod:NewTargetAnnounce(144090, 3)--Verify if targetscanning will work here (or if spell itself has a target emote or something)
 local warnAshenWall					= mod:NewSpellAnnounce(144070, 4)
 --Wavebinder Kardris
 local warnFrostStormBolt			= mod:NewSpellAnnounce(144214, 2)--Who is this cast on? random people or active tank?
@@ -38,7 +38,9 @@ local warnFallingAsh				= mod:NewSpellAnnounce(143973, 3)
 
 --Earthbreaker Haromm
 local specWarnFroststormStrike		= mod:NewSpecialWarningSpell(144215, false)--spammy, but useful for a tank if they want to time active mitigation around it.
-local specWarnFoulStream			= mod:NewSpecialWarningSpell(144090)
+local specWarnFoulStreamYou			= mod:NewSpecialWarningYou(144090)
+local yellFoulStream				= mod:NewYell(144090)
+local specWarnFoulStream			= mod:NewSpecialWarningSpell(144090, nil, nil, nil, 2)
 local specWarnAshenWall				= mod:NewSpecialWarningSpell(144070, nil, nil, nil, 2)
 --Wavebinder Kardris
 local specWarnFrostStormBolt		= mod:NewSpecialWarningSpell(144214, false)--spammy, but useful for a tank if they want to time active mitigation around it.
@@ -65,6 +67,7 @@ mod:AddBoolOption("SetIconOnToxicMists", false)
 
 local toxicMistsTargets = {}
 local toxicMistsTargetsIcons = {}
+local scanFailed = false
 
 local function warnToxicMistTargets()
 	warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
@@ -108,8 +111,28 @@ do
 	end
 end
 
+function mod:FoulStreamTarget(targetname, uId)
+	if not targetname then return end
+	if self:IsTanking(uId) then--Never target tanks, so if target is tank, that means scanning failed.
+		scanFailed = true
+		specWarnFoulStream:Show()
+	else
+		warnFoulStream:Show(targetname)
+		timerFoulStreamCD:Start()
+		if targetname == UnitName("player") then
+			specWarnFoulStreamYou:Show()
+			yellFoulStream:Yell()
+		else
+			if checkTankDistance(71859) then
+				specWarnFoulStream:Show()
+			end
+		end
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(toxicMistsTargets)
+	scanFailed = false
 end
 
 function mod:OnCombatEnd()
@@ -130,11 +153,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnToxicStorm:Show()
 		end
 	elseif args.spellId == 144090 then
-		warnFoulStream:Show()
-		timerFoulStreamCD:Start()
-		if checkTankDistance(args:GetSrcCreatureID()) then
-			specWarnFoulStream:Show()
-		end
+		self:BossTargetScanner(71859, "FoulStreamTarget", 0.025, 12)
 	elseif args.spellId == 143990 then
 		warnFoulGeyser:Show()
 		timerFoulGeyserCD:Start()

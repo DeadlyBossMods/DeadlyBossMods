@@ -141,7 +141,7 @@ L:SetOptionLocalization({
 	Never				= "Never",
 	Northeast			= "Blue - Lower & Upper NE",
 	Southeast			= "Green - Lower & Upper SE",
-	Southwest			= "Purple - Lower SW & Upper SW(25) or Upper Middle(10)",
+	Southwest			= "Purple/Red - Lower SW & Upper SW(25) or Upper Middle(10)",
 	West				= "Red - Lower W & Upper Middle (25 only)",
 	Northwest			= "Yellow - Lower & Upper NW (25 only)",
 	Guardians			= "Nest Guardians"
