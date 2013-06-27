@@ -160,10 +160,9 @@ DBM.DefaultOptions = {
 	ForumsMessageShown = false,
 	AlwaysShowSpeedKillTimer = true,
 	DisableCinematics = false,
-	DisableCinematicsOutside = false,
 --	HelpMessageShown = false,
 	MoviesSeen = {},
-	MovieFilters = {},
+	MovieFilter = "AfterFirst",
 	LastRevision = 0,
 	FilterSayAndYell = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
@@ -774,18 +773,6 @@ do
 			end)
 			self:Schedule(20, function()--Delay UNIT_HEALTH combat start for 20 sec. (to not break Timer Recovery stuff)
         		healthCombatInitialized = true
-			end)
-			-- setup MovieFrame hook (TODO: replace this by a proper filtering function that only filters certain movie IDs (which requires some API for boss mods to specify movie IDs and default actions)))
-			local oldMovieEventHandler = MovieFrame:GetScript("OnEvent")
-			MovieFrame:SetScript("OnEvent", function(self, event, movieId, ...)
-				if event == "PLAY_MOVIE" and (DBM.Options.DisableCinematics and IsInInstance() or (DBM.Options.DisableCinematicsOutside and not IsInInstance())) then
-					-- you still have to call OnMovieFinished, even if you never actually told the movie frame to start the movie, otherwise you will end up in a weird state (input stops working)
-					MovieFrame_OnMovieFinished(MovieFrame)
-					return
-				else
-					-- other event or cinematics enabled
-					return oldMovieEventHandler and oldMovieEventHandler(self, event, movieId, ...)
-				end
 			end)
 		end
 	end
@@ -1929,9 +1916,12 @@ function DBM:PLAYER_TARGET_CHANGED()
 	end
 end
 
-function DBM:CINEMATIC_START()
-	if DBM.Options.DisableCinematics and IsInInstance() or (DBM.Options.DisableCinematicsOutside and not IsInInstance()) then--This will also kill non movie cinematics, like the bridge in firelands
+function DBM:CINEMATIC_START(id)
+	if DBM.Options.MovieFilter == "Never" then return end
+	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[id] then
 		CinematicFrame_CancelCinematic()
+	else
+		DBM.Options.MoviesSeen[id] = true
 	end
 end
 
@@ -1967,8 +1957,7 @@ function DBM:WORLD_STATE_TIMER_START()
 end
 
 function DBM:WORLD_STATE_TIMER_STOP()
-	if DBM.Options.ChallengeBest == "None" or not C_Scenario.IsChallengeMode() then return end
-	if not C_Scenario.IsChallengeMode() then return end
+	if (DBM.Options.ChallengeBest == "None") or not C_Scenario.IsChallengeMode() then return end
 	if DBM.Bars:GetBar(DBM_SPEED_CLEAR_TIMER_TEXT) then
 		DBM.Bars:CancelBar(DBM_SPEED_CLEAR_TIMER_TEXT)
 	end
@@ -1994,10 +1983,6 @@ do
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
-		if not checkValue and not checkTable then
-			print("DBM Error: LoadModsOnDemand is missing valid args")
-			return
-		end
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
 			if not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
@@ -3909,28 +3894,13 @@ end
 -------------------
 MovieFrame:HookScript("OnEvent", function(self, event, id)
 	if event == "PLAY_MOVIE" and id then
-		if DBM.Options.MovieFilters[id] == "Block" or DBM.Options.MovieFilters[id] == "OnlyFirst" and DBM.Options.MoviesSeen[id] then
+		if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[id] then
 			MovieFrame_OnMovieFinished(self)
+		else
+			DBM.Options.MoviesSeen[id] = true
 		end
 	end
 end)
-
-function DBM:MovieFilter(mod, ...)
-	local i = 1
-	while i <= select("#", ...) do
-		local id, name, default = select(i, ...)
-		if type(default) == "string" then
-			-- id, name, defaultSetting
-			i = i + 3
-		else
-			-- id, name
-			i = i + 2
-			default = nil
-		end
-		mod:AddBoolOption(tostring(id), default == "OnlyFirst", "BlockMovies")
-		-- mod:AddButton
-	end
-end
 
 
 --------------------------
