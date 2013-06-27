@@ -48,6 +48,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnMark		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(144351),
+	InfoFrame			= "Show info frame for $journal:8255"
 })
 
 L:SetMiscLocalization({
