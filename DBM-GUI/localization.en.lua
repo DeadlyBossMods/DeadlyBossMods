@@ -201,7 +201,7 @@ L.Area_HideBlizzard				= "Hide Blizzard Options"
 L.HideBossEmoteFrame			= "Hide raid boss emote frame during boss fights"
 L.HideWatchFrame				= "Hide watch (objectives) frame during boss fights"
 L.SpamBlockSayYell				= "Hide chat bubbles announces from the chat frame"
-L.DisableCinematics				= "Disable in-game cinematics"
+L.DisableCinematics				= "Hide in-game cinematics"
 L.AfterFirst					= "After each movie has played once"
 L.Always						= "Always"
 

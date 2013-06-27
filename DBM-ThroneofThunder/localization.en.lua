@@ -311,11 +311,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetOptionLocalization({
-	SetIconsOnVita		= "Set icons on $spell:138297 debuffed player and furthest player from them"
+	SetIconsOnVita		= "Set icons on $spell:138297 debuffed player and furthest player from them",
+	InfoFrame			= "Show info frame for players without $spell:138372 (excluding tanks)"
 })
 
 L:SetMiscLocalization({
-	Defeat		= "Wait! I am... I am not your enemy."
+	Defeat			= "Wait! I am... I am not your enemy.",
+	NoSensitivity	= "No Sensitivity"
 })
 
 -------------
