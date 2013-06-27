@@ -92,6 +92,14 @@ function mod:checkVitaDistance()
 	self:ScheduleMethod(1, "checkVitaDistance")
 end
 
+local function infoFrameChanged(players)
+	if players[1] == UnitName("player") then
+		specWarnVitaSoaker:Show()
+	elseif players[2] == UnitName("players") then
+		warnVitaSoakerSoon:Show()
+	end
+end
+
 function mod:OnCombatStart(delay)
 	creationCount = 0
 	stalkerCount = 0
@@ -100,7 +108,11 @@ function mod:OnCombatStart(delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(L.NoSensitivity))
 		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, nil, true)
+		DBM.InfoFrame:RegisterCallback(infoFrameChanged)
+	elseif self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
+		self:AddMsg(L.VitaSoakerOptionConflict)
 	end
+
 end
 
 function mod:OnCombatEnd()
