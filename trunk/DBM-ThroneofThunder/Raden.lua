@@ -62,6 +62,7 @@ local timerCallEssenceCD		= mod:NewNextTimer(15.5, 139040)
 local countdownUnstableVita		= mod:NewCountdownFades(11, 138297)
 
 mod:AddBoolOption("SetIconsOnVita", false)--Both the vita target and furthest from vita target
+mod:AddBoolOption("InfoFrame")
 
 local creationCount = 0
 local stalkerCount = 0
@@ -94,6 +95,10 @@ function mod:OnCombatStart(delay)
 	stalkerCount = 0
 	horrorCount = 0
 	timerCreationCD:Start(11-delay, 1)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(L.NoSensitivity))
+		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, nil, true)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
