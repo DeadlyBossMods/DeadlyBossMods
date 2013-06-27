@@ -1917,6 +1917,7 @@ function DBM:PLAYER_TARGET_CHANGED()
 end
 
 function DBM:CINEMATIC_START(id)
+	print(id)
 	if DBM.Options.MovieFilter == "Never" then return end
 	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[id] then
 		CinematicFrame_CancelCinematic()
