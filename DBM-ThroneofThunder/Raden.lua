@@ -25,7 +25,8 @@ local warnSanguineHorror		= mod:NewCountAnnounce(138338, 3, nil, not mod:IsHeale
 --Vita
 local warnVita					= mod:NewSpellAnnounce(138332, 2)--Switched to vita phase
 local warnFatalStrike			= mod:NewSpellAnnounce(138334, 4, nil, mod:IsTank() or mod:IsHealer())--Tank (think thrash, like sha. Gains buff, uses on next melee attack)
-local warnUnstableVita			= mod:NewTargetAnnounce(138297, 3)
+local warnVitaSoakerSoon		= mod:NewAnnounce("warnVitaSoakerSoon", 2, 138297)
+local warnUnstableVita			= mod:NewTargetAnnounce(138297, 4)
 local warnCracklingStalker		= mod:NewCountAnnounce(138339, 3, nil, not mod:IsHealer())--Adds
 --General
 local warnCreation				= mod:NewCountAnnounce(138321, 3)--aka Orbs/Balls
@@ -42,6 +43,7 @@ local yellUnstableAnima			= mod:NewYell(138288, nil, false)
 local specWarnFatalStrike		= mod:NewSpecialWarningSpell(138334, mod:IsTank(), nil, nil, 3)
 local specWarnCracklingStalker	= mod:NewSpecialWarningSwitch(138339, mod:IsRangedDps() or mod:IsTank())
 local specWarnVitaSensitive		= mod:NewSpecialWarningYou(138372)
+local specWarnVitaSoaker		= mod:NewSpecialWarning("specWarnVitaSoaker")
 local specWarnUnstablVita		= mod:NewSpecialWarningYou(138297, nil, nil, nil, 3)
 local yellUnstableVita			= mod:NewYell(138297, nil, false)
 --General

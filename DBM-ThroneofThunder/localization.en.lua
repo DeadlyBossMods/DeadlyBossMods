@@ -310,14 +310,21 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetWarningLocalization({
+	specWarnVitaSoaker			= "You're next Vita Soaker!",
+	warnVitaSoakerSoon			= "You're second up Vita Soaker"
+})
+
 L:SetOptionLocalization({
+	warnVitaSoakerSoon	= "Announce when you are second up Vita Soaker (Requires InfoFrame enabled)",
+	specWarnVitaSoaker	= "Show special warning when you are next $spell:138297 soaker based on infoframe position (Requires InfoFrame enabled)",
 	SetIconsOnVita		= "Set icons on $spell:138297 debuffed player and furthest player from them",
-	InfoFrame			= "Show info frame for players without $spell:138372 (excluding tanks)"
+	InfoFrame			= "Show info frame for soak order of players without $spell:138372 (excluding tanks)"
 })
 
 L:SetMiscLocalization({
 	Defeat			= "Wait! I am... I am not your enemy.",
-	NoSensitivity	= "No Sensitivity"
+	NoSensitivity	= "Vita Soak Order"
 })
 
 -------------
