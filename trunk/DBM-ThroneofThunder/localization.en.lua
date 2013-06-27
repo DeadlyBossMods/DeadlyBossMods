@@ -323,8 +323,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat			= "Wait! I am... I am not your enemy.",
-	NoSensitivity	= "Vita Soak Order"
+	Defeat						= "Wait! I am... I am not your enemy.",
+	NoSensitivity				= "Vita Soak Order",
+	VitaSoakerOptionConflict	= "Warning: You enabled the Vita Soaker warnings but disabled the Vita Soaker InfoFrame. The warnings will not work without the InfoFrame!"
 })
 
 -------------
