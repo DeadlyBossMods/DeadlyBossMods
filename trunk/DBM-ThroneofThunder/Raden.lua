@@ -95,7 +95,7 @@ end
 local function infoFrameChanged(players)
 	if players[1] == UnitName("player") then
 		specWarnVitaSoaker:Show()
-	elseif players[2] == UnitName("players") then
+	elseif players[2] == UnitName("player") then
 		warnVitaSoakerSoon:Show()
 	end
 end
