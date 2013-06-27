@@ -292,10 +292,10 @@ end
 local function updateBadPlayerDebuffs()
 	table.wipe(lines)
 	if IsInGroup() then
-		for uId in DBM:GetGroupMembers() do
+		for uId, i in DBM:GetGroupMembers() do
 			if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then break end
 			if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
-				lines[UnitName(uId)] = ""
+				lines[UnitName(uId)] = i
 			end
 		end
 	end
@@ -307,10 +307,10 @@ end
 local function updateReverseBadPlayerDebuffs()
 	table.wipe(lines)
 	if IsInGroup() then
-		for uId in DBM:GetGroupMembers() do
+		for uId, i in DBM:GetGroupMembers() do
 			if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then break end
 			if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
-				lines[UnitName(uId)] = ""
+				lines[UnitName(uId)] = i
 			end
 		end
 	end
@@ -376,9 +376,9 @@ end
 local function updatePlayerTargets()
 	table.wipe(lines)
 	if IsInGroup() then
-		for uId in DBM:GetGroupMembers() do
+		for uId, i in DBM:GetGroupMembers() do
 			if getUnitCreatureId(uId.."target") ~= infoFrameThreshold and (UnitGroupRolesAssigned(uId) == "DAMAGER" or UnitGroupRolesAssigned(uId) == "NONE") then
-				lines[UnitName(uId)] = ""
+				lines[UnitName(uId)] = i
 			end
 		end
 	end
