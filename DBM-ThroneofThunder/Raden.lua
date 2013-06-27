@@ -101,6 +101,12 @@ function mod:OnCombatStart(delay)
 	end
 end
 
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 138338 then
 		horrorCount = horrorCount + 1
@@ -222,5 +228,8 @@ function mod:OnSync(msg)
 		timerFatalStrikeCD:Cancel()
 		timerCreationCD:Cancel()
 		timerCallEssenceCD:Start()
+--[[		if self.Options.InfoFrame then
+			DBM.InfoFrame:Hide()
+		end--]]
 	end
 end
