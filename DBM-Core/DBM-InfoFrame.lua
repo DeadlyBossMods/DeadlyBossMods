@@ -188,6 +188,7 @@ end
 ------------------------
 --  Update functions  --
 ------------------------
+local updateCallbacks = {}
 local function sortFuncDesc(a, b) return lines[a] > lines[b] end
 local function sortFuncAsc(a, b) return lines[a] < lines[b] end
 local function updateLines()
@@ -199,6 +200,9 @@ local function updateLines()
 		table.sort(sortedLines, sortFuncAsc)
 	else
 		table.sort(sortedLines, sortFuncDesc)
+	end
+	for i, v in ipairs(updateCallbacks) do
+		v(sortedLines)
 	end
 end
 
@@ -514,6 +518,10 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 	onUpdate(frame, 0)
 end
 
+function infoFrame:RegisterCallback(cb)
+	updateCallbacks[#updateCallbacks + 1] = cb
+end
+
 function infoFrame:Update(event)
 	if event == "health" then
 		updateHealth()
@@ -545,6 +553,7 @@ end
 function infoFrame:Hide()
 	table.wipe(lines)
 	table.wipe(sortedLines)
+	table.wipe(updateCallbacks)
 	headerText = "DBM Info Frame"
 	sortingAsc = false
 	infoFrameThreshold = nil
