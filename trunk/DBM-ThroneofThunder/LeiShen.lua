@@ -526,6 +526,10 @@ local function LoopIntermission()
 			warnBouncingBolt:Schedule(9)
 			specWarnBouncingBolt:Schedule(9)
 			timerBouncingBoltCD:Start(9)
+		elseif mod:IsDifficulty("heroic10", "heroic25") then
+			warnBouncingBolt:Schedule(16)--Delayed by second helm of command i believe
+			specWarnBouncingBolt:Schedule(16)
+			timerBouncingBoltCD:Start(16)
 		else
 			warnBouncingBolt:Schedule(14)
 			specWarnBouncingBolt:Schedule(14)
