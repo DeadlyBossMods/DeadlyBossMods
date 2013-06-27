@@ -125,7 +125,7 @@ L:SetOptionLocalization({
 	Never				= "Nie",
 	Northeast			= "Blau - Unten NO & Oben NO",
 	Southeast			= "Grün - Unten SO & Oben SO",
-	Southwest			= "Violett - Unten SW & Oben SW/Mitte (25er/10er)",
+	Southwest			= "Violett/Rot - Unten SW & Oben SW/Mitte (25er/10er)",
 	West				= "Rot - Unten W & Oben Mitte (nur 25er)",
 	Northwest			= "Gelb - Unten NW & Oben NW (nur 25er)",
 	Guardians			= "Nestwächter"
@@ -272,11 +272,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetOptionLocalization({
-	SetIconsOnVita		= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler"
+	SetIconsOnVita		= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler",
+	InfoFrame			= "Zeige Infofenster für Spieler ohne $spell:138372 (ausgenommen Tanks)"
 })
 
 L:SetMiscLocalization({
-	Defeat		= "Wait! I am... I am not your enemy."--translate (trigger)
+	Defeat			= "Wait! I am... I am not your enemy.",--translate (trigger)
+	NoSensitivity	= "No Sensitivity"--translate (trigger)
 })
 
 -------------
