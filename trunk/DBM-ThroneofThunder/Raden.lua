@@ -94,7 +94,7 @@ end
 
 local lastsPlayerOne, lastPlayerTwo
 local function infoFrameChanged(players)
-	if lastsPlayerOne == players[1] and lastPlayerTwo == players[2] then return end
+	if (lastsPlayerOne == players[1]) and (lastPlayerTwo == players[2]) then return end
 	if players[1] == UnitName("player") then
 		specWarnVitaSoaker:Show()
 		lastsPlayerOne = players[1]
