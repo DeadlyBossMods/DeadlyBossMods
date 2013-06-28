@@ -46,6 +46,7 @@ local specWarnCracklingStalker	= mod:NewSpecialWarningSwitch(138339, mod:IsRange
 local specWarnVitaSensitive		= mod:NewSpecialWarningYou(138372)
 local specWarnVitaSoaker		= mod:NewSpecialWarning("specWarnVitaSoaker")
 local specWarnUnstablVita		= mod:NewSpecialWarningYou(138297, nil, nil, nil, 3)
+local specWarnUnstablVitaJump	= mod:NewSpecialWarningYou(138297, nil, nil, nil, 1)
 local yellUnstableVita			= mod:NewYell(138297, nil, false)
 --General
 local specWarnCreation			= mod:NewSpecialWarningSpell(138321, mod:IsDps())
@@ -63,6 +64,7 @@ local timerCreationCD			= mod:NewCDCountTimer(32.5, 138321)--32.5-35second varia
 local timerCallEssenceCD		= mod:NewNextTimer(15.5, 139040)
 
 local countdownUnstableVita		= mod:NewCountdownFades(11, 138297)
+local countdownCreation			= mod:NewCountdown(32.5, 138321, nil, nil, nil, nil, true)
 
 mod:AddBoolOption("SetIconsOnVita", false)--Both the vita target and furthest from vita target
 mod:AddBoolOption("InfoFrame")
@@ -73,6 +75,8 @@ local horrorCount = 0
 local lastStalker = 0
 local playerWithVita = nil
 local furthestDistancePlayer = nil
+local lastsPlayerOne = nil
+local lastPlayerTwo = nil
 
 function mod:checkVitaDistance()
 	if not playerWithVita then--Failsafe more or less. This shouldn't happen unless combat log lag fires events out of order
@@ -93,7 +97,6 @@ function mod:checkVitaDistance()
 	self:ScheduleMethod(1, "checkVitaDistance")
 end
 
-local lastsPlayerOne, lastPlayerTwo
 local function infoFrameChanged(players)
 	if (lastsPlayerOne == players[1]) and (lastPlayerTwo == players[2]) then return end
 	if players[1] == UnitName("player") then
@@ -109,9 +112,12 @@ function mod:OnCombatStart(delay)
 	creationCount = 0
 	stalkerCount = 0
 	horrorCount = 0
+	lastsPlayerOne = nil
+	lastPlayerTwo = nil
 	timerCreationCD:Start(11-delay, 1)
+	countdownCreation:Start(11-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(L.NoSensitivity))
+		DBM.InfoFrame:SetHeader(L.NoSensitivity)
 		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, true, true)
 		DBM.InfoFrame:RegisterCallback(infoFrameChanged)
 	elseif self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
@@ -143,6 +149,7 @@ function mod:SPELL_CAST_START(args)
 		warnCreation:Show(creationCount)
 		specWarnCreation:Show()
 		timerCreationCD:Start(nil, creationCount+1)
+		countdownCreation:Start()
 	end
 end
 
@@ -205,7 +212,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnUnstableVita:Show(args.destName)
 		timerUnstableVita:Start(args.destName)
 		if args:IsPlayer() then
-			specWarnUnstablVita:Show()
+			if args.spellId == 138297 then
+				specWarnUnstablVita:Show()
+			else
+				specWarnUnstablVitaJump:Show()
+			end
 			yellUnstableVita:Yell()
 			countdownUnstableVita:Start()
 		end
@@ -246,6 +257,7 @@ function mod:OnSync(msg)
 		timerMurderousStrikeCD:Cancel()
 		timerFatalStrikeCD:Cancel()
 		timerCreationCD:Cancel()
+		countdownCreation:Cancel()
 		timerCallEssenceCD:Start()
 --[[		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
