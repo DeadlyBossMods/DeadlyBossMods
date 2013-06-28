@@ -119,7 +119,7 @@ function mod:OnCombatStart(delay)
 	creationCount = 0
 	stalkerCount = 0
 	horrorCount = 0
-	lastsPlayerOne = nil
+	lastPlayerOne = nil
 	lastPlayerTwo = nil
 	timerCreationCD:Start(11-delay, 1)
 	countdownCreation:Start(11-delay)
