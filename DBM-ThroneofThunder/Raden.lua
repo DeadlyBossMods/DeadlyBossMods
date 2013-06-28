@@ -77,7 +77,7 @@ local lastStalker = 0
 local playerWithVita = nil
 local furthestDistancePlayer = nil
 local lastfurthestDistancePlayer = nil
-local lastsPlayerOne = nil
+local lastPlayerOne = nil
 local lastPlayerTwo = nil
 local playerName = UnitName("player")
 local vitaName = GetSpellInfo(138332)
@@ -106,12 +106,12 @@ function mod:checkVitaDistance()
 end
 
 local function infoFrameChanged(players)
-	if players[1] == playerName and playerName ~= lastsPlayerOne then
+	if players[1] == playerName and playerName ~= lastPlayerOne then
 		specWarnVitaSoaker:Show()
 	elseif players[2] == playerName and playerName ~= lastPlayerTwo  then
 		warnVitaSoakerSoon:Show()
 	end
-	lastsPlayerOne = players[1]
+	lastPlayerOne = players[1]
 	lastPlayerTwo = players[2]
 end
 
