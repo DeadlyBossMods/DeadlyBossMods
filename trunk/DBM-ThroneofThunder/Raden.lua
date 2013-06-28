@@ -99,11 +99,10 @@ function mod:checkVitaDistance()
 end
 
 local function infoFrameChanged(players)
-	if (lastsPlayerOne == players[1]) and (lastPlayerTwo == players[2]) then return end
-	if players[1] == UnitName("player") then
+	if players[1] == UnitName("player") and self:AntiSpam(players[1]) then
 		specWarnVitaSoaker:Show()
 		lastsPlayerOne = players[1]
-	elseif players[2] == UnitName("player") then
+	elseif players[2] == UnitName("player") and self:AntiSpam(players[1]) then
 		warnVitaSoakerSoon:Show()
 		lastPlayerTwo = players[2]
 	end
