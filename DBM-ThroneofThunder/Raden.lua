@@ -15,7 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1"
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"UNIT_POWER_FREQUENT boss1"
 )
 
 --Anima
@@ -159,7 +160,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnMurderousStrike:Show()
 	elseif args.spellId == 138334 then
 		warnFatalStrike:Show()
-		specWarnFatalStrike:Show()
+--		specWarnFatalStrike:Show()
 		timerFatalStrikeCD:Start()
 	end
 end
@@ -246,6 +247,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerCallEssenceCD:Start()
 	elseif spellId == 139073 then--Phase 2 (the Ruin Trigger)
 		self:SendSync("Phase2")
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT(uId)
+	local power = UnitPower(uId)
+	if power == 90 and UnitBuff(uId, GetSpellInfo(138332)) then
+		specWarnFatalStrike:Show()
 	end
 end
 
