@@ -76,8 +76,11 @@ local horrorCount = 0
 local lastStalker = 0
 local playerWithVita = nil
 local furthestDistancePlayer = nil
+local lastfurthestDistancePlayer = nil
 local lastsPlayerOne = nil
 local lastPlayerTwo = nil
+local vitaName = GetSpellInfo(138332)
+local animaName = GetSpellInfo(138331)
 
 function mod:checkVitaDistance()
 	if not playerWithVita then--Failsafe more or less. This shouldn't happen unless combat log lag fires events out of order
@@ -94,15 +97,18 @@ function mod:checkVitaDistance()
 			end
 		end
 	end
-	SetRaidTarget(furthestDistancePlayer, 2)
+	if furthestDistancePlayer ~= lastfurthestDistancePlayer then--Set icon throttling to avoid hitting blizzard throttle
+		SetRaidTarget(furthestDistancePlayer, 2)
+		lastfurthestDistancePlayer = furthestDistancePlayer
+	end
 	self:ScheduleMethod(1, "checkVitaDistance")
 end
 
 local function infoFrameChanged(players)
-	if players[1] == UnitName("player") and self:AntiSpam(5, players[1]) then
+	if players[1] == UnitName("player") and self:AntiSpam(12, players[1]) then
 		specWarnVitaSoaker:Show()
 		lastsPlayerOne = players[1]
-	elseif players[2] == UnitName("player") and self:AntiSpam(5, players[1]) then
+	elseif players[2] == UnitName("player") and self:AntiSpam(12, players[1]) then
 		warnVitaSoakerSoon:Show()
 		lastPlayerTwo = players[2]
 	end
@@ -156,10 +162,9 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 138333 then
 		warnMurderousStrike:Show()
-		specWarnMurderousStrike:Show()
+		timerMurderousStrikeCD:Start()
 	elseif args.spellId == 138334 then
 		warnFatalStrike:Show()
---		specWarnFatalStrike:Show()
 		timerFatalStrikeCD:Start()
 	end
 end
@@ -203,7 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUnstableAnima:Show()
 			yellUnstableAnima:Yell()
 		end
-	elseif args:IsSpellID(138297, 138308) then--Unstable Vita
+	elseif args:IsSpellID(138297, 138308) then--Unstable Vita (138297 cast, 138308 jump)
 		if self.Options.SetIconsOnVita then
 			playerWithVita = DBM:GetRaidUnitId(args.destName)
 			self:SetIcon(args.destName, 1)
@@ -244,20 +249,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnCallEssence:Show()
 		specWarnCallEssence:Show()
 		timerCallEssenceCD:Start()
+		countdownCreation:Start(15)
 	elseif spellId == 139073 then--Phase 2 (the Ruin Trigger)
-		self:SendSync("Phase2")
-	end
-end
-
-function mod:UNIT_POWER_FREQUENT(uId)
-	local power = UnitPower(uId)
-	if power == 90 and UnitBuff(uId, GetSpellInfo(138332)) and self:AntiSpam() then
-		specWarnFatalStrike:Show()
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Phase2" then
 		warnPhase2:Show()
 		timerCracklingStalkerCD:Cancel()
 --		timerSanguineHorrorCD:Cancel()
@@ -266,8 +259,17 @@ function mod:OnSync(msg)
 		timerCreationCD:Cancel()
 		countdownCreation:Cancel()
 		timerCallEssenceCD:Start()
---[[		if self.Options.InfoFrame then
+		if self.Options.InfoFrame then
 			DBM.InfoFrame:Hide()
-		end--]]
+		end
+	end
+end
+
+function mod:UNIT_POWER_FREQUENT(uId)
+	local power = UnitPower(uId)
+	if power == 90 and UnitBuff(uId, vitaName) and self:AntiSpam(3, 1) then
+		specWarnFatalStrike:Show()
+	elseif power == 96 and UnitBuff(uId, animaName) and self:AntiSpam(3, 2) then
+		specWarnMurderousStrike:Show()
 	end
 end
