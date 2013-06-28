@@ -197,7 +197,7 @@ L.DontPlayPTCountdown			= "不要使用開怪倒數音效"
 L.DontShowPTText				= "不要顯示開怪提示文字"
 
 L.Panel_HideBlizzard			= "隱藏遊戲內建功能"
-L.Area_HideBlizzard				= "隱藏內建功能選項"
+L.Area_HideBlizzard				= "隱藏遊戲內建功能選項"
 L.HideBossEmoteFrame			= "在首領戰鬥時隱藏團隊首領表情框架"
 L.HideWatchFrame				= "在首領戰鬥時隱藏注視(物件)框架"
 L.SpamBlockSayYell				= "從聊天頻道隱藏聊天泡泡提示"
