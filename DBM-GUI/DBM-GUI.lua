@@ -2169,7 +2169,7 @@ end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
 do
-	local function OnShowGetStats(stats, statsType, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3)
+	local function OnShowGetStats(stats, statsType, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3, bottom3value1, bottom3value2, bottom3value3)
 		return function(self)
 			top1value1:SetText( stats.normalKills )
 			top1value2:SetText( stats.normalPulls - stats.normalKills )
@@ -2194,6 +2194,9 @@ do
 				bottom2value1:SetText( stats.heroic25Kills )
 				bottom2value2:SetText( stats.heroic25Pulls-stats.heroic25Kills )
 				bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
+				bottom3value1:SetText( stats.flexKills )
+				bottom3value2:SetText( stats.flexPulls-stats.flexKills )
+				bottom3value3:SetText( stats.flexBestTime and ("%d:%02d"):format(math.floor(stats.flexBestTime / 60), stats.flexBestTime % 60) or "-" )
 			end
 		end
 	end
@@ -2275,6 +2278,13 @@ do
 				local bottom2value1		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2value2		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 				local bottom2value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
+				local bottom3header		= area:CreateText("", nil, nil, GameFontHighlightSmall, "LEFT")--Row 2, 3rd column
+				local bottom3text1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bottom3text2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local bottom3text3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+				local bottom3value1		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
+				local bottom3value2		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
+				local bottom3value3		= area:CreateText("", nil, nil, GameFontNormalSmall, "LEFT")
 
 				--Set default position
 				top1header:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
@@ -2377,7 +2387,8 @@ do
 					bottom1header:SetText(PLAYER_DIFFICULTY2)
 					bottom2header:SetText(PLAYER_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
-				else--Uses everything
+				elseif mod.type == "RAID" and not mod.hasFlex then
+					--Use top1, top2, top3, bottom1 and bottom2 area.
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
 					top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
 					top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
@@ -2413,9 +2424,53 @@ do
 					bottom1header:SetText(PLAYER_DIFFICULTY2)
 					bottom2header:SetText(PLAYER_DIFFICULTY2)
 					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
+				else--Uses everything
+					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*10*(bossstats-1)))
+					top2header:SetPoint("LEFT", top1header, "LEFT", 150, 0)
+					top2text1:SetPoint("LEFT", top1text1, "LEFT", 150, 0)
+					top2text2:SetPoint("LEFT", top1text2, "LEFT", 150, 0)
+					top2text3:SetPoint("LEFT", top1text3, "LEFT", 150, 0)
+					top2value1:SetPoint("TOPLEFT", top2text1, "TOPLEFT", 80, 0)
+					top2value2:SetPoint("TOPLEFT", top2text2, "TOPLEFT", 80, 0)
+					top2value3:SetPoint("TOPLEFT", top2text3, "TOPLEFT", 80, 0)
+					top3header:SetPoint("LEFT", top2header, "LEFT", 150, 0)
+					top3text1:SetPoint("LEFT", top2text1, "LEFT", 150, 0)
+					top3text2:SetPoint("LEFT", top2text2, "LEFT", 150, 0)
+					top3text3:SetPoint("LEFT", top2text3, "LEFT", 150, 0)
+					top3value1:SetPoint("TOPLEFT", top3text1, "TOPLEFT", 80, 0)
+					top3value2:SetPoint("TOPLEFT", top3text2, "TOPLEFT", 80, 0)
+					top3value3:SetPoint("TOPLEFT", top3text3, "TOPLEFT", 80, 0)
+					bottom1header:SetPoint("TOPLEFT", top1text3, "BOTTOMLEFT", -20, -5)
+					bottom1text1:SetPoint("TOPLEFT", bottom1header, "BOTTOMLEFT", 20, -5)
+					bottom1text2:SetPoint("TOPLEFT", bottom1text1, "BOTTOMLEFT", 0, -5)
+					bottom1text3:SetPoint("TOPLEFT", bottom1text2, "BOTTOMLEFT", 0, -5)
+					bottom1value1:SetPoint("TOPLEFT", bottom1text1, "TOPLEFT", 80, 0)
+					bottom1value2:SetPoint("TOPLEFT", bottom1text2, "TOPLEFT", 80, 0)
+					bottom1value3:SetPoint("TOPLEFT", bottom1text3, "TOPLEFT", 80, 0)
+					bottom2header:SetPoint("LEFT", bottom1header, "LEFT", 150, 0)
+					bottom2text1:SetPoint("LEFT", bottom1text1, "LEFT", 150, 0)
+					bottom2text2:SetPoint("LEFT", bottom1text2, "LEFT", 150, 0)
+					bottom2text3:SetPoint("LEFT", bottom1text3, "LEFT", 150, 0)
+					bottom2value1:SetPoint("TOPLEFT", bottom2text1, "TOPLEFT", 80, 0)
+					bottom2value2:SetPoint("TOPLEFT", bottom2text2, "TOPLEFT", 80, 0)
+					bottom2value3:SetPoint("TOPLEFT", bottom2text3, "TOPLEFT", 80, 0)
+					bottom3header:SetPoint("LEFT", bottom2header, "LEFT", 150, 0)
+					bottom3text1:SetPoint("LEFT", bottom2text1, "LEFT", 150, 0)
+					bottom3text2:SetPoint("LEFT", bottom2text2, "LEFT", 150, 0)
+					bottom3text3:SetPoint("LEFT", bottom2text3, "LEFT", 150, 0)
+					bottom3value1:SetPoint("TOPLEFT", bottom3text1, "TOPLEFT", 80, 0)
+					bottom3value2:SetPoint("TOPLEFT", bottom3text2, "TOPLEFT", 80, 0)
+					bottom3value3:SetPoint("TOPLEFT", bottom3text3, "TOPLEFT", 80, 0)
+					top1header:SetText(RAID_DIFFICULTY1)
+					top2header:SetText(RAID_DIFFICULTY2)
+					top3header:SetText(PLAYER_DIFFICULTY3)
+					bottom1header:SetText(PLAYER_DIFFICULTY2)
+					bottom2header:SetText(PLAYER_DIFFICULTY2)
+					bottom3header:SetText("Flex")--Change to global in 5.4
+					area.frame:SetHeight( area.frame:GetHeight() + L.FontHeight*10 )
 				end
 
-				table.insert(area.onshowcall, OnShowGetStats(mod.stats, statsType, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3))
+				table.insert(area.onshowcall, OnShowGetStats(mod.stats, statsType, top1value1, top1value2, top1value3, top2value1, top2value2, top2value3, top3value1, top3value2, top3value3, bottom1value1, bottom1value2, bottom1value3, bottom2value1, bottom2value2, bottom2value3, bottom3value1, bottom3value2, bottom3value3))
 			end
 		end
 		area.frame:SetScript("OnShow", function(self)
