@@ -92,11 +92,15 @@ function mod:checkVitaDistance()
 	self:ScheduleMethod(1, "checkVitaDistance")
 end
 
+local lastsPlayerOne, lastPlayerTwo
 local function infoFrameChanged(players)
+	if lastsPlayerOne == players[1] and lastPlayerTwo == players[2] then return end
 	if players[1] == UnitName("player") then
 		specWarnVitaSoaker:Show()
+		lastsPlayerOne = players[1]
 	elseif players[2] == UnitName("player") then
 		warnVitaSoakerSoon:Show()
+		lastPlayerTwo = players[2]
 	end
 end
 
@@ -107,7 +111,7 @@ function mod:OnCombatStart(delay)
 	timerCreationCD:Start(11-delay, 1)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.WrongDebuff:format(L.NoSensitivity))
-		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, nil, true)
+		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, true, true)
 		DBM.InfoFrame:RegisterCallback(infoFrameChanged)
 	elseif self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
 		self:AddMsg(L.VitaSoakerOptionConflict)
@@ -195,6 +199,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconsOnVita then
 			playerWithVita = DBM:GetRaidUnitId(args.destName)
 			self:SetIcon(args.destName, 1)
+			self:UnscheduleMethod("checkVitaDistance")
 			self:ScheduleMethod(6, "checkVitaDistance")--Wait about 6 seconds for initial. don't want to spam icons before next target actually runs out. May raise initial even higher, debuff is 12 seconds. so maybe 7-8 if 6 too soon 
 		end
 		warnUnstableVita:Show(args.destName)
