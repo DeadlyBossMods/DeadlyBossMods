@@ -22,30 +22,46 @@ local warnSwellingPride			= mod:NewSpellAnnounce(144400, 3)
 local warnMark					= mod:NewTargetAnnounce(144351, 3)
 local warnWoundedPride			= mod:NewTargetAnnounce(144358, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnSelfReflection		= mod:NewTargetAnnounce(144800, 3)
+local warnCorruptedPrison		= mod:NewTargetAnnounce(144574, 3)
 --Pride
 local warnBurstingPride			= mod:NewTargetAnnounce(144911, 2)--If this drycode works i'll be very pleased with my assumption skills :)
 local warnProjection			= mod:NewTargetAnnounce(145066, 3)--May not be right spellid
 local warnBanishment			= mod:NewTargetAnnounce(145066, 3)--May not be right spellid
 local warnOvercome				= mod:NewTargetAnnounce(144843, 3)--Damage increase version
 local warnOvercomeMC			= mod:NewTargetAnnounce(144863, 4)--Mind control version (ie applied being hit by swelling pride while you have 144843)
+--Manifestation of Pride
+--local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3)
+local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3)
 
 --Sha of Pride
 local specWarnSwellingPride		= mod:NewSpecialWarningMove(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
+local specWarnSelfReflection	= mod:NewSpecialWarningYou(144800)
+local specWarnCorruptedPrison	= mod:NewSpecialWarningYou(144574, false)--Since you can't do anything about it, might as well be off by default. but an option cause someone will want it
+local yellCorruptedPrison		= mod:NewYell(144574)--Yell useful though, they have to be freed quickly
 --Pride
 local specWarnBurstingPride		= mod:NewSpecialWarningYou(144911)
 local specWarnProjection		= mod:NewSpecialWarningYou(145066)
 local specWarnBanishment		= mod:NewSpecialWarningYou(145215, nil, nil, nil, 3)
 local specWarnOvercome			= mod:NewSpecialWarningYou(144843, nil, nil, nil, 3)--Honestly, i have a feeling your best option if this happens is to find a way to kill yourself!
+--Manifestation of Pride
+--local specWarnManifestation		= mod:NewSpecialWarningSwitch("ej8262")--Spawn warning, need trigger first
+local specWarnMockingBlast		= mod:NewSpecialWarningInterrupt(144379)
 
 --Sha of Pride
 --local timerSwellingPrideCD	= mod:NewCDTimer(33, 144400)--Energy based, like sha of fear breath, is it also 33?
 --local timerMarkCD				= mod:NewCDTimer(33, 144351)
 --local timerSelfReflectionCD	= mod:NewCDTimer(33, 144800)
+--local timerCorruptedPrisonCD	= mod:NewCDTimer(33, 144574)
+--Manifestation of Pride
+--local timerManifestationCD	= mod:NewCDTimer(33, "ej8262")
+--local timerMockingBlastCD		= mod:NewCDTimer(6, 144379)
+
 
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetIconOnMark", false)
 
+local tinsert, tconcat, twipe = table.insert, table.concat, table.wipe--Sha of tables....Might as well cache frequent table globals
 local burstingPrideTargets = {}
 local projectionTargets = {}
 local banishmentTargets = {}
@@ -54,48 +70,55 @@ local overcomeMCTargets = {}
 local markOfArroganceTargets = {}
 local markOfArroganceIcons = {}
 local selfReflectionTargets = {}
+local corruptedPrisonTargets = {}
 local prideLevel = EJ_GetSectionInfo(8255)
 local playerName = UnitName("player")
 
 local function warnBurstingPrideTargets()
-	warnBurstingPride:Show(table.concat(burstingPrideTargets, "<, >"))
-	table.wipe(burstingPrideTargets)
+	warnBurstingPride:Show(tconcat(burstingPrideTargets, "<, >"))
+	twipe(burstingPrideTargets)
 end
 
 local function warnProjectionTargets()
-	warnProjection:Show(table.concat(projectionTargets, "<, >"))
-	table.wipe(projectionTargets)
+	warnProjection:Show(tconcat(projectionTargets, "<, >"))
+	twipe(projectionTargets)
 end
 
 local function warnBanishmentTargets()
-	warnBanishment:Show(table.concat(banishmentTargets, "<, >"))
-	table.wipe(banishmentTargets)
+	warnBanishment:Show(tconcat(banishmentTargets, "<, >"))
+	twipe(banishmentTargets)
 end
 
 local function warnOvercomeTargets()
-	warnOvercome:Show(table.concat(overcomeTargets, "<, >"))
-	table.wipe(overcomeTargets)
+	warnOvercome:Show(tconcat(overcomeTargets, "<, >"))
+	twipe(overcomeTargets)
 end
 
 local function warnOvercomeMCTargets()
-	warnOvercomeMC:Show(table.concat(overcomeMCTargets, "<, >"))
-	table.wipe(overcomeMCTargets)
+	warnOvercomeMC:Show(tconcat(overcomeMCTargets, "<, >"))
+	twipe(overcomeMCTargets)
 end
 
 local function warnMarkTargets()
-	warnMark:Show(table.concat(markOfArroganceTargets, "<, >"))
+	warnMark:Show(tconcat(markOfArroganceTargets, "<, >"))
 --	timerMarkCD:Start()
-	table.wipe(markOfArroganceTargets)
+	twipe(markOfArroganceTargets)
 end
 
 local function warnSelfReflectionTargets()
-	warnSelfReflection:Show(table.concat(selfReflectionTargets, "<, >"))
+	warnSelfReflection:Show(tconcat(selfReflectionTargets, "<, >"))
 --	timerSelfReflectionCD:Start()
-	table.wipe(selfReflectionTargets)
+	twipe(selfReflectionTargets)
+end
+
+local function warnCorruptedPrisonTargets()
+	warnCorruptedPrison:Show(tconcat(corruptedPrisonTargets, "<, >"))
+--	timerCorruptedPrisonCD:Start()
+	twipe(corruptedPrisonTargets)
 end
 
 local function ClearMarkTargets()
-	table.wipe(markOfArroganceIcons)
+	twipe(markOfArroganceIcons)
 end
 
 do
@@ -114,6 +137,15 @@ do
 end
 
 function mod:OnCombatStart(delay)
+	twipe(burstingPrideTargets)
+	twipe(projectionTargets)
+	twipe(banishmentTargets)
+	twipe(overcomeTargets)
+	twipe(overcomeMCTargets)
+	twipe(markOfArroganceTargets)
+	twipe(selfReflectionTargets)
+	twipe(corruptedPrisonTargets)
+	twipe(markOfArroganceIcons)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(prideLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
@@ -131,6 +163,12 @@ function mod:SPELL_CAST_START(args)
 		warnSwellingPride:Show()
 		specWarnSwellingPride:Show()
 --		timerSwellingPrideCD:Start()
+	elseif args.spellId == 144379 then
+		local source = args.sourceName
+		warnMockingBlast:Show()
+		if source == UnitName("target") or source == UnitName("focus") then 
+			specWarnMockingBlast:Show(source)
+		end
 	end
 end
 
@@ -178,7 +216,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnMarkTargets)
 		self:Schedule(0.5, warnMarkTargets)
 		if self.Options.SetIconOnMark and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
-			table.insert(markOfArroganceIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
+			tinsert(markOfArroganceIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
 			self:UnscheduleMethod("SetMarkIcons")
 			if (self:IsDifficulty("normal25", "heroic25") and #markOfArroganceIcons >= 8) or (self:IsDifficulty("normal10", "heroic10") and #markOfArroganceIcons >= 3) then
 				self:SetMarkIcons()
@@ -195,6 +233,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		selfReflectionTargets[#selfReflectionTargets + 1] = args.destName
 		self:Unschedule(warnSelfReflectionTargets)
 		self:Schedule(0.5, warnSelfReflectionTargets)
+		if args:IsPlayer() then
+			specWarnSelfReflection:Show()
+		end
+	elseif args.spellId == 144800 then
+		corruptedPrisonTargets[#corruptedPrisonTargets + 1] = args.destName
+		self:Unschedule(warnCorruptedPrisonTargets)
+		self:Schedule(0.5, warnCorruptedPrisonTargets)
+		if args:IsPlayer() then
+			specWarnCorruptedPrison:Show()
+			yellCorruptedPrison:Yell()
+		end
 	end
 end
 --mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

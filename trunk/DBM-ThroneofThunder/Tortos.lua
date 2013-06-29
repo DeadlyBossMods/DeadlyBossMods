@@ -84,10 +84,9 @@ local function checkCrystalShell()
 		local percent = (UnitHealth("player") / UnitHealthMax("player")) * 100
 		if percent > 90 then
 			specWarnCrystalShell:Show(shelldName)
-		else
-			mod:Unschedule(checkCrystalShell)
-			mod:Schedule(3, checkCrystalShell)
 		end
+		mod:Unschedule(checkCrystalShell)
+		mod:Schedule(3, checkCrystalShell)
 	end
 end
 
