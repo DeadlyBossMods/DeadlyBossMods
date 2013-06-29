@@ -12,12 +12,19 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED"
 )
 
 --All
 local warnActivated					= mod:NewTargetAnnounce(118212, 3, 143542)
+--Kil'ruk the Wind-Reaver
+local warnExposedVeins				= mod:NewStackAnnounce(142931, 2, nil, false)
+local warnGouge						= mod:NewTargetAnnounce(143939, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnImpact					= mod:NewSpellAnnounce(142232, 3)--Check target scanning, once we even figure out which is correct ID for cast
+--Xaril the Poisoned-Mind
+local warnToxicInjection			= mod:NewSpellAnnounce(142528, 3)
 
 --All
 --NOTE, this is purely off assumption the ones that make you vunerable to eachother don't spawn at same time.
@@ -25,7 +32,17 @@ local warnActivated					= mod:NewTargetAnnounce(118212, 3, 143542)
 --Then it just means it's an anti solo tank mechanic and we don't need special warnings for it.
 local specWarnActivated				= mod:NewSpecialWarningTarget(118212)
 local specWarnActivatedVulnerable	= mod:NewSpecialWarning("specWarnActivatedVunerable", mod:IsTank())--Alternate activate warning to warn a tank not to pick up a specific boss
-
+--Kil'ruk the Wind-Reaver
+local specWarnGouge					= mod:NewSpecialWarningTarget(143939, mod:IsHealer())
+--Xaril the Poisoned-Mind
+mod:AddBoolOption("specWarnToxicInjection", true, "announce")--Combine the 7 special warnings for same spell into 1
+local specWarnToxicBlue				= mod:NewSpecialWarningYou(142532, nil, false)
+local specWarnToxicRed				= mod:NewSpecialWarningYou(142533, nil, false)
+local specWarnToxicYellow			= mod:NewSpecialWarningYou(142534, nil, false)
+local specWarnToxicOrange			= mod:NewSpecialWarningYou(142547, nil, false)--Heroic
+local specWarnToxicPurple			= mod:NewSpecialWarningYou(142548, nil, false)--Heroic
+local specWarnToxicGreen			= mod:NewSpecialWarningYou(142549, nil, false)--Heroic
+--local specWarnToxicWhite			= mod:NewSpecialWarningYou(142550, nil, false)--Not in EJ
 
 local activatedTargets = {}--A table, for the 3 on pull
 
@@ -58,18 +75,35 @@ function mod:SPELL_CAST_START(args)
 		self:BossTargetScanner(69465, "FocusedLightningTarget", 0.025, 12)
 		timerFocusedLightningCD:Start()
 	end
-end
+end--]]
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 137162 then
-		timerStaticBurstCD:Start()
+	if args.spellId == 142264 then--guessed id
+		warnImpact:Show()
+	elseif args.spellId == 142528 then
+		warnToxicInjection:Show()
 	end
-end--]]
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 143542 then
 		--A soon warning? Pull filtering needed?
 		print("DBM Debug: Activation on "..args.destName.." next")
+	elseif args.spellId == 142931 then
+		local amount = args.amount or 1
+		warnExposedVeins:Show(args.destName, amount)
+	elseif args.spellId == 142532 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+		specWarnToxicBlue:Show()
+	elseif args.spellId == 142533 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+		specWarnToxicRed:Show()
+	elseif args.spellId == 142534 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+		specWarnToxicYellow:Show()
+	elseif args.spellId == 142547 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+		specWarnToxicOrange:Show()
+	elseif args.spellId == 142548 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+		specWarnToxicPurple:Show()
+	elseif args.spellId == 142549 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+		specWarnToxicGreen:Show()
 	end
 end
 
