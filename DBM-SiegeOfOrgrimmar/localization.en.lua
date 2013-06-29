@@ -184,7 +184,12 @@ L:SetMiscLocalization({
 ----------------------------
 L= DBM:GetModLocalization(853)
 
+L:SetWarningLocalization({
+	specWarnActivatedVulnerable		= "You are vulnerable to %s - Avoid!"
+})
+
 L:SetOptionLocalization({
+	specWarnActivatedVulnerable		= "Show special warning when a paragon you are vulnerable to activates"
 })
 
 L:SetMiscLocalization({
