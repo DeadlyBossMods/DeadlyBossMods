@@ -36,7 +36,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
-	Submerged		= "Ахун исчез",
 	Emerged			= "Ахун появился",
 	specWarnAttack	= "Ахун уязвим - атакуйте сейчас!"
 })
@@ -48,7 +47,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	Submerged		= "Предупреждение, когда Ахун исчезает",
 	Emerged			= "Предупреждение, когда Ахун появляется",
 	specWarnAttack	= "Спец-предупреждение, когда Ахун становится уязвим",
 	SubmergTimer	= "Отсчет времени до исчезновения",
