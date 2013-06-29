@@ -197,6 +197,8 @@ function mod:SPELL_CAST_START(args)
 		warnTwistedFate:Show()
 		specWarnTwistedFate:Show()
 		timerTwistedFateCD:Start()
+	elseif args.spellId == 136990 then
+		timerFrostBiteCD:Schedule(1.5)
 	end
 end
 
@@ -292,7 +294,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFrostBite then
 			self:SetIcon(args.destName, 6)--Square
 		end
-		timerFrostBiteCD:Start()
 		if args:IsPlayer() then
 			specWarnFrostBite:Show()
 			timerFrostBite:Start()
