@@ -189,6 +189,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	specWarnToxicInjection			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(142528),
 	specWarnActivatedVulnerable		= "Show special warning when a paragon you are vulnerable to activates"
 })
 
