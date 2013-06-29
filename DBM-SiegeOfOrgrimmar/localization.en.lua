@@ -130,6 +130,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnDisplacedEnergy= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(142913),
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("8/5")
 })
 
 L:SetMiscLocalization({
