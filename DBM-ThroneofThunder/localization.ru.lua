@@ -125,7 +125,7 @@ L:SetOptionLocalization({
 	Never				= "Никогда",
 	Northeast			= "Синий - Низ & Верх СВ",
 	Southeast			= "Зеленый - Низ & Верх ЮВ",
-	Southwest			= "Фиолетовый - Низ ЮЗ & Верх ЮЗ(25) или Верх Центр(10)",
+	Southwest			= "Фиолетовый/Красный - Низ ЮЗ & Верх ЮЗ(25) или Верх Центр(10)",
 	West				= "Красный - Низ З & Верх Центр (только 25)",
 	Northwest			= "Желтый - Низ & Верх СЗ (только 25)",
 	Guardians			= "Стражи гнезда"
@@ -246,11 +246,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "Скоро смена фаз"
+	specWarnIntermissionSoon	= "Скоро смена фаз",
+	warnDiffusionChainSpread	= "%s распространилось на >%s<"
+})
+
+L:SetTimerLocalization({
+	timerConduitCD				= "Восст. первый проводник"
 })
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Спец-предупреждение перед началом промежуточной фазы",
+	warnDiffusionChainSpread	= "Объявлять цели распространения $spell:135991",
+	timerConduitCD				= "Отсчет времени до восстановления способности первого проводника",
 	StaticShockArrow			= "Показывать стрелку DBM, когда на ком-то $spell:135695",
 	OverchargeArrow				= "Показывать стрелку DBM, когда на ком-то $spell:136295"
 })
@@ -264,12 +271,22 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetWarningLocalization({
+	specWarnVitaSoaker			= "Нестабильная жизнь - Вы следующий!",
+	warnVitaSoakerSoon			= "Вы второй в очереди на получение Нестабильная жизнь"
+})
+
 L:SetOptionLocalization({
-	SetIconsOnVita		= "Устанавливать метки на игрока с дебаффом $spell:138297<br/>и самого дальнего от него игрока"
+	warnVitaSoakerSoon	= "Объявлять когда вы второй в очереди на получение $spell:138297 (Требуется включить информационное окно)",
+	specWarnVitaSoaker	= "Спец-предупреждение когда вы следующий в очереди на получение $spell:138297, основываясь на позиции в информационом окне (Требуется включить информационное окно)",
+	SetIconsOnVita		= "Устанавливать метки на игрока с дебаффом $spell:138297 и самого дальнего от него игрока",
+	InfoFrame			= "Информационное окно последовательности получения $spell:138297 игроками без $spell:138372 (кроме танков)"
 })
 
 L:SetMiscLocalization({
-	Defeat		= "Остановитесь! Я… не враг вам."
+	Defeat		= "Остановитесь! Я… не враг вам.",
+	NoSensitivity				= "Последовательность получения Жизни",
+	VitaSoakerOptionConflict	= "Предупреждение: Вы включили предупреждения для Нестабильная жизнь, но отключили информационное окно. Предупреждения не будут работать без информационного окна!"
 })
 
 -------------

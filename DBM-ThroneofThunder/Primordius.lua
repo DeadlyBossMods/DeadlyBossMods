@@ -38,6 +38,7 @@ local specWarnFullyMutatedFaded		= mod:NewSpecialWarningFades(140546)
 local specWarnCausticGas			= mod:NewSpecialWarningSpell(136216, nil, nil, nil, 2)--All must be in front for this.
 local specWarnVolatilePathogen		= mod:NewSpecialWarningYou(136228)
 local specWarnViscousHorror			= mod:NewSpecialWarningCount("ej6969", mod:IsTank())
+local specWarnEruptingPustules		= mod:NewSpecialWarningTarget(136246, false)
 
 local timerFullyMutated				= mod:NewBuffFadesTimer(120, 140546)
 local timerMalformedBlood			= mod:NewTargetTimer(60, 136050, nil, mod:IsTank() or mod:IsHealer())
@@ -159,6 +160,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 136246 then
 		postulesActive = true
 		warnEruptingPustules:Show(args.destName)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			specWarnEruptingPustules:Show(args.destName)
+		end
 		if self.Options.RangeFrame and not acidSpinesActive then--Check if acidSpinesActive is active, if they are, we should already have range 5 up
 			DBM.RangeCheck:Show(3)
 		end

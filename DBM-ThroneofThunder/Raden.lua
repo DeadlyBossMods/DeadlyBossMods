@@ -108,7 +108,7 @@ end
 local function infoFrameChanged(players)
 	if players[1] == playerName and playerName ~= lastPlayerOne then
 		specWarnVitaSoaker:Show()
-	elseif players[2] == playerName and playerName ~= lastPlayerTwo  then
+	elseif players[2] == playerName and playerName ~= lastPlayerTwo then
 		warnVitaSoakerSoon:Show()
 	end
 	lastPlayerOne = players[1]
