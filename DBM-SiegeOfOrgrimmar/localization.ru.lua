@@ -180,7 +180,12 @@ L:SetMiscLocalization({
 ----------------------------
 L= DBM:GetModLocalization(853)
 
+L:SetWarningLocalization({
+	specWarnActivatedVulnerable		= "Вы уязвимы к %s - Избегайте!"
+})
+
 L:SetOptionLocalization({
+	specWarnActivatedVulnerable		= "Спец-предупреждение когда активируется идеал, к которому вы уязвимы"
 })
 
 L:SetMiscLocalization({
