@@ -37,3 +37,32 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
+
+---------------------------
+-- Chi-ji, The Red Crane --
+---------------------------
+L= DBM:GetModLocalization(857)
+
+L:SetOptionLocalization({
+	BeaconArrow				= "Показывать стрелку DBM когда на ком-то $spell:144473"
+})
+
+------------------------------
+-- Yu'lon, The Jade Serpent --
+------------------------------
+L= DBM:GetModLocalization(858)
+
+--------------------------
+-- Niuzao, The Black Ox --
+--------------------------
+L= DBM:GetModLocalization(859)
+
+---------------------------
+-- Xuen, The White Tiger --
+---------------------------
+L= DBM:GetModLocalization(860)
+
+------------------------------------
+-- Ordos, Fire-God of the Yaungol --
+------------------------------------
+L= DBM:GetModLocalization(861)

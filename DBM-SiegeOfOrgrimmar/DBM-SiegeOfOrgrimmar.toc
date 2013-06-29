@@ -17,6 +17,7 @@
 ## X-DBM-Mod-MapID: 1136
 localization.en.lua
 localization.de.lua
+localization.ru.lua
 Immerseus.lua
 FallenProtectors.lua
 Norushen.lua

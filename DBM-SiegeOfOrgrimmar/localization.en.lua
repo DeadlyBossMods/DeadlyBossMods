@@ -205,7 +205,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("FoOTrash")
 
 L:SetGeneralLocalization({
-	name =	"Fall of Orgrimmar Trash"
+	name =	"Siege of Orgrimmar Trash"
 })
 
 L:SetOptionLocalization({
