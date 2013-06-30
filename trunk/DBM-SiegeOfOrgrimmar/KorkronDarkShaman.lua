@@ -113,7 +113,10 @@ do
 end
 
 function mod:FoulStreamTarget(targetname, uId)
-	if not targetname then return end
+	if not targetname then
+		print("DBM DEBUG: FoulStreamTarget Scan failed")
+		return
+	end
 	if self:IsTanking(uId) then--Never target tanks, so if target is tank, that means scanning failed.
 		scanFailed = true
 		specWarnFoulStream:Show()
