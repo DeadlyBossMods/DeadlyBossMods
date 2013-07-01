@@ -38,8 +38,6 @@ local specWarnProtectiveFrenzy			= mod:NewSpecialWarningTarget(145365, mod:IsTan
 --Automated Shredders
 --local specWarnAutomatedShredder		= mod:NewSpecialWarningSpell("ej8199", mod:IsTank())--No sense in dps switching when spawn, has damage reduction. This for tank pickup
 local specWarnDeathFromAbove			= mod:NewSpecialWarningYou(144208)
-local specWarnDeathFromAboveNear		= mod:NewSpecialWarningClose(144208)
-local yellDeathFromAbove				= mod:NewYell(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199")--i.e. It's vunerable after Death From Above. This is when everyone else switch.
 --The Assembly Line
 local specWarnReadyToGo					= mod:NewSpecialWarningTarget(145580)
@@ -59,29 +57,12 @@ local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269)--How many mines up 
 local missileCount = 0
 
 function mod:LaunchSawBladeTarget(targetname, uId)
-	if not targetname then
-		print("DBM DEBUG: LaunchSawBladeTarget Scan failed")
-		return
-	end
 	warnLaunchSawblade:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnLaunchSawblade:Show()
 		yellLaunchSawblade:Yell()
 	end
 end
-
---[[
-function mod:DeathFromAboveTarget(targetname, uId)
-	if not targetname then
-		print("DBM DEBUG: DeathFromAboveTarget Scan failed")
-		return
-	end
-	warnDeathFromAbove:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnDeathFromAbove:Show()
-		yellDeathFromAbove:Yell()
-	end
-end--]]
 
 --May be two up at once so can't use generic boss scanner.
 function mod:DeathFromAboveTarget(sGUID)
@@ -92,27 +73,9 @@ function mod:DeathFromAboveTarget(sGUID)
 			break
 		end
 	end
-	if not targetname then
-		print("DBM DEBUG: DeathFromAboveTarget Scan failed")
-		return
-	end
 	warnDeathFromAbove:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnDeathFromAbove:Show()
-		yellDeathFromAbove:Yell()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			if inRange then
-				specWarnDeathFromAboveNear:Show(targetname)
-			end
-		end
 	end
 end
 
@@ -128,8 +91,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 143265 then
 		self:BossTargetScanner(71504, "LaunchSawBladeTarget", 0.1, 16)
 	elseif args.spellId == 144208 then
---		self:BossTargetScanner(71591, "DeathFromAboveTarget", 0.025, 16)
-		self:ScheduleMethod(0.2, "DeathFromAboveTarget", args.sourceGUID)
+		self:ScheduleMethod(0.2, "DeathFromAboveTarget", args.sourceGUID)--Always targets tank, so 1 scan all needed
 		specWarnAutomatedShredderSwitch:Schedule(3)--Better here then when debuff goes up, give dps 2 seconds rampup time so spells in route when debuff goes up.
 	end
 end
