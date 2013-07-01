@@ -222,6 +222,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 144089 and self.Options.SetIconOnToxicMists then
 		self:SetIcon(args.destName, 0)
 	elseif args.spellId == 144215 then
-		timerFroststormStrike:Cancel(args.destName)
+		timerFroststormStrikeCD:Cancel(args.destName)
 	end
 end

@@ -66,7 +66,7 @@ function mod:MortarBarrageTarget(targetname, uId)
 			end
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
 			if inRange and inRange < 9 then
-				specWarnMortarBarrageNear:Show(args.destName)
+				specWarnMortarBarrageNear:Show(targetname)
 			end
 		end
 	end
