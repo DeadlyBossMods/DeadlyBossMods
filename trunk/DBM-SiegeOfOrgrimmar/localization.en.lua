@@ -136,6 +136,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	bloodRageEnds	= "subsides!"
 })
 
 ------------------------
