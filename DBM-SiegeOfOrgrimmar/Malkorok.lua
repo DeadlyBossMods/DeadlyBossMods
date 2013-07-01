@@ -35,7 +35,7 @@ local yellDisplacedEnergy				= mod:NewYell(142913)
 local specWarnArcingSmash				= mod:NewSpecialWarningSpell(142815, nil, nil, nil, 2)--if target scanning works, change it up some
 local specWarnBreathofYShaarj			= mod:NewSpecialWarningSpell(142842, nil, nil, nil, 2)
 local specWarnImplodingEnergy			= mod:NewSpecialWarningSpell(142986, nil, nil, nil, 2)--I realize all 3 are using same sound, but i hope to change 1 or 2 of above to personal/near warnings with 1 sound. plus user can change sound to custom in gui anyways
-local specWarnFatalStrike				= mod:NewSpecialWarningStack(142990, mod:IsTank(), 5)--stack guessed, based on CD
+local specWarnFatalStrike				= mod:NewSpecialWarningStack(142990, mod:IsTank(), 8)--stack guessed, based on CD
 local specWarnFatalStrikeOther			= mod:NewSpecialWarningTarget(142990, mod:IsTank())
 
 local timerBloodRage					= mod:NewBuffActiveTimer(22.5, 142879)--2.5sec cast plus 20 second duration
@@ -172,11 +172,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFatalStrike:Show(args.destName, amount)
 		timerFatalStrike:Start(args.destName)
 		if args:IsPlayer() then
-			if amount >= 5 then--At this point the other tank SHOULD be clear.
+			if amount >= 8 then--At this point the other tank SHOULD be clear.
 				specWarnFatalStrike:Show(amount)
 			end
 		else--Taunt as soon as stacks are clear, regardless of stack count.
-			if not UnitDebuff("player", GetSpellInfo(142990)) and not UnitIsDeadOrGhost("player") then
+			if amount >= 5 and not UnitDebuff("player", GetSpellInfo(142990)) and not UnitIsDeadOrGhost("player") then
 				specWarnFatalStrikeOther:Show(args.destName)
 			end
 		end
