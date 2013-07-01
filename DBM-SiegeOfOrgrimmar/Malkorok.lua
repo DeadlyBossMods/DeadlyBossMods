@@ -13,17 +13,18 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --Endless Rage
 local warnBloodRage						= mod:NewSpellAnnounce(142879, 3)
 local warnDisplacedEnergy				= mod:NewTargetAnnounce(142913, 3)
 --Might of the Kor'kron
-local warnArcingSmash					= mod:NewCastAnnounce(142815, 4)--Check for target scanning
-local warnSeismicSlam					= mod:NewSpellAnnounce(142851, 3)--or 142849 (or possibly a UNIT even since neither of these seem like cast start event)
-local warnBreathofYShaarj				= mod:NewSpellAnnounce(142842, 4)
-local warnImplodingEnergy				= mod:NewSpellAnnounce(142986, 3)--142988 cast ID?
+local warnArcingSmash					= mod:NewCountAnnounce(142815, 4)--Target scanning doesn't work, no boss1target or boss1targettarget
+local warnSeismicSlam					= mod:NewCountAnnounce(142851, 3)
+local warnBreathofYShaarj				= mod:NewCountAnnounce(142842, 4)
 local warnFatalStrike					= mod:NewStackAnnounce(142990, 2, nil, mod:IsTank())
 
 --Endless Rage
@@ -32,22 +33,19 @@ local specWarnBloodRageEnded			= mod:NewSpecialWarningFades(142879)
 local specWarnDisplacedEnergy			= mod:NewSpecialWarningRun(142913)
 local yellDisplacedEnergy				= mod:NewYell(142913)
 --Might of the Kor'kron
-local specWarnArcingSmash				= mod:NewSpecialWarningSpell(142815, nil, nil, nil, 2)--if target scanning works, change it up some
-local specWarnBreathofYShaarj			= mod:NewSpecialWarningSpell(142842, nil, nil, nil, 2)
-local specWarnImplodingEnergy			= mod:NewSpecialWarningSpell(142986, nil, nil, nil, 2)--I realize all 3 are using same sound, but i hope to change 1 or 2 of above to personal/near warnings with 1 sound. plus user can change sound to custom in gui anyways
-local specWarnFatalStrike				= mod:NewSpecialWarningStack(142990, mod:IsTank(), 8)--stack guessed, based on CD
+local specWarnArcingSmash				= mod:NewSpecialWarningCount(142815, nil, nil, nil, 2)
+local specWarnBreathofYShaarj			= mod:NewSpecialWarningCount(142842, nil, nil, nil, 2)
+local specWarnFatalStrike				= mod:NewSpecialWarningStack(142990, mod:IsTank(), 10)--stack guessed, based on CD
 local specWarnFatalStrikeOther			= mod:NewSpecialWarningTarget(142990, mod:IsTank())
 
 local timerBloodRage					= mod:NewBuffActiveTimer(22.5, 142879)--2.5sec cast plus 20 second duration
---local timerDisplacedEnergyCd			= mod:NewCDTimer(10, 142913)--2.5sec cast plus 20 second duration
---local timerBloodRageCD				= mod:NewNextTimer(50, 142879)
+local timerDisplacedEnergyCD			= mod:NewNextTimer(11, 142913)
+local timerBloodRageCD					= mod:NewNextTimer(124.7, 142879)
 --Might of the Kor'kron
---local timerArcingSmashCD				= mod:NewCDTimer(40, 142815)
---local timerSeismicSlamCD				= mod:NewCDTimer(25, 142851)
---local timerBreathofYShaarjCD			= mod:NewCDTimer(50, 142842)
---local timerImplodingEnergyCD			= mod:NewCDTimer(50, 142986)
+local timerArcingSmashCD				= mod:NewNextCountTimer(17.5, 142815)--17-18 variation (the 23 second ones are delayed by Breath of Yshaarj)
+local timerSeismicSlamCD				= mod:NewNextCountTimer(17.5, 142851)--Works exactly same as arcingsmash 18 sec unless delayed by breath. two sets of 3
+local timerBreathofYShaarjCD			= mod:NewNextCountTimer(59, 142842)
 local timerFatalStrike					= mod:NewTargetTimer(30, 142990, mod:IsTank())
---local timerFatalStrikeCD				= mod:NewCDTimer(10, 142990)
 
 local berserkTimer						= mod:NewBerserkTimer(360)
 
@@ -60,6 +58,10 @@ local displacedEnergyTargets	= {}
 local displacedEnergyTargetsIcons = {}
 local displacedEnergyDebuff = GetSpellInfo(142913)
 local playerDebuffs = 0
+local breathCast = 0
+local arcingSmashCount = 0
+local seismicSlamCount = 0
+local displacedCast = false
 
 local debuffFilter
 do
@@ -77,7 +79,10 @@ local function warnDisplacedEnergyTargets()
 		end
 	end
 	warnDisplacedEnergy:Show(table.concat(displacedEnergyTargets, "<, >"))
---	timerDisplacedEnergyCd:Start()--Probably doesn't get cast a second time? who knows, maybe it does
+	if not displacedCast then--Only cast twice, so we only start cd bar once here
+		timerDisplacedEnergyCD:Start()
+		displacedCast = true
+	end
 	table.wipe(displacedEnergyTargets)
 end
 
@@ -104,6 +109,12 @@ function mod:OnCombatStart(delay)
 	table.wipe(displacedEnergyTargets)
 	table.wipe(displacedEnergyTargetsIcons)
 	playerDebuffs = 0
+	breathCast = 0
+	arcingSmashCount = 0
+	seismicSlamCount = 0
+	timerArcingSmashCD:Start(11.5-delay, 1)
+	timerBreathofYShaarjCD:Start(-delay, 1)
+	timerBloodRageCD:Start(122-delay)
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
@@ -118,34 +129,32 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 142879 then
+		displacedCast = false
 		warnBloodRage:Show()
 		specWarnBloodRage:Show()
 		timerBloodRage:Start()
-		--timerDisplacedEnergyCd:Start()--Likely starts here
-	elseif args.spellId == 142815 then
-		warnArcingSmash:Show()
-		specWarnArcingSmash:Show()
---		timerArcingSmashCD:Start()
-		if self.Options.RangeFrame then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
-			DBM.RangeCheck:Hide()
-		end
+		timerDisplacedEnergyCD:Start(3.5)
 	elseif args.spellId == 142842 then
-		warnBreathofYShaarj:Show()
-		specWarnBreathofYShaarj:Show()
---		timerBreathofYShaarjCD:Start()
-	elseif args.spellId == 142988 then
-		warnImplodingEnergy:Show()
-		specWarnImplodingEnergy:Show()
---		timerImplodingEnergyCD:Start()
+		breathCast = breathCast + 1
+		warnBreathofYShaarj:Show(breathCast)
+		specWarnBreathofYShaarj:Show(breathCast)
+		if breathCast == 1 then
+			arcingSmashCount = 0
+			seismicSlamCount = 0
+			timerSeismicSlamCD:Start(5, 1)
+			timerArcingSmashCD:Start(11, 1)
+			timerBreathofYShaarjCD:Start(nil, 2)
+		end
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142851 then
-		warnSeismicSlam:Show()
---		timerSeismicSlamCD:Start()
-	elseif args.spellId == 142990 then--Assume it can be dodged/parried and trigger CD here
---		timerFatalStrikeCD:Start()
+		seismicSlamCount = seismicSlamCount + 1
+		warnSeismicSlam:Show(seismicSlamCount)
+		if seismicSlamCount < 3 then
+			timerSeismicSlamCD:Start(nil, seismicSlamCount+1)
+		end
 	end
 end
 
@@ -171,13 +180,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		local amount = args.amount or 1
 		warnFatalStrike:Show(args.destName, amount)
 		timerFatalStrike:Start(args.destName)
-		if args:IsPlayer() then
-			if amount >= 8 then--At this point the other tank SHOULD be clear.
+		if amount >= 10 then
+			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnFatalStrike:Show(amount)
-			end
-		else--Taunt as soon as stacks are clear, regardless of stack count.
-			if amount >= 5 and not UnitDebuff("player", GetSpellInfo(142990)) and not UnitIsDeadOrGhost("player") then
-				specWarnFatalStrikeOther:Show(args.destName)
+			else--Taunt as soon as stacks are clear, regardless of stack count.
+				if not UnitDebuff("player", GetSpellInfo(142990)) and not UnitIsDeadOrGhost("player") then
+					specWarnFatalStrikeOther:Show(args.destName)
+				end
 			end
 		end
 	end
@@ -196,33 +205,32 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnDisplacedEnergy then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args.spellId == 142879 then
+	end
+end
+
+--No CLEU, the lack of TWO spell events in combat log (SPELL_AURA_APPLIED/REMOVED) on blood rage means localizing is only way to support this phase change
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.bloodRageEnds or msg:find(L.bloodRageEnds) then
+		breathCast = 0
+		arcingSmashCount = 0
+		seismicSlamCount = 0
 		specWarnBloodRageEnded:Show()
-		if self.Options.RangeFrame then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
+		timerSeismicSlamCD:Start(5, 1)
+		timerArcingSmashCD:Start(11, 1)
+		timerBreathofYShaarjCD:Start()
+		timerBloodRageCD:Start()
+		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
 	end
 end
 
---[[
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 138006 and destGUID == UnitGUID("player") and self:AntiSpam() then
-		specWarnElectrifiedWaters:Show()
-	end
-end
-mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg:find("spell:137175") then
-		local target = DBM:GetFullNameByShortName(target)
-		warnThrow:Show(target)
-		timerStormCD:Start()
-		self:Schedule(55.5, checkWaterStorm)--check before 5 sec.
-		if target == UnitName("player") then
-			specWarnThrow:Show()
-		else
-			specWarnThrowOther:Show(target)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 142898 then--Faster than combat log
+		warnArcingSmash:Show(arcingSmashCount)
+		specWarnArcingSmash:Show(arcingSmashCount)
+		if arcingSmashCount < 3 then
+			timerArcingSmashCD:Start(nil, arcingSmashCount+1)
 		end
 	end
 end
---]]
