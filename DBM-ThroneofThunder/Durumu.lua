@@ -367,7 +367,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(darkParasiteTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
 			self:UnscheduleMethod("SetParasiteIcons")
 			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				if (self:IsDifficulty("heroic25") and #SetParasiteIcons >= 3) or self:IsDifficulty("heroic10") then
+				if (self:IsDifficulty("heroic25") and #darkParasiteTargets >= 3) or self:IsDifficulty("heroic10") then
 					self:SetParasiteIcons()
 				else
 					self:ScheduleMethod(0.5, "SetParasiteIcons")
