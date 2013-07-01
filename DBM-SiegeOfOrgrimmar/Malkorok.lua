@@ -112,7 +112,8 @@ function mod:OnCombatStart(delay)
 	breathCast = 0
 	arcingSmashCount = 0
 	seismicSlamCount = 0
-	timerArcingSmashCD:Start(11.5-delay, 1)
+	timerArcingSmashCD:Start(5-delay, 1)
+	timerArcingSmashCD:Start(11-delay, 1)
 	timerBreathofYShaarjCD:Start(-delay, 1)
 	timerBloodRageCD:Start(122-delay)
 	berserkTimer:Start(-delay)
