@@ -81,6 +81,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(6, 144154)
 })
 
 L:SetMiscLocalization({
