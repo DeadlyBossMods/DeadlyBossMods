@@ -105,6 +105,7 @@ function mod:checkVitaDistance()
 	self:ScheduleMethod(1, "checkVitaDistance")
 end
 
+local preWarnShown = false
 local function infoFrameChanged(players)
 	if players[1] == playerName and playerName ~= lastPlayerOne then
 		specWarnVitaSoaker:Show()
