@@ -84,6 +84,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnTearReality:Show()
 --		timerTearRealityCD:Start()
 	elseif args.spellId == 144479 then
+		print("DBM DEBUG: Expel corruption cast. Tell dbm guy if you're dps, tank or healer")
 --		warnExpelCorruption:Show()
 --		specWarnExpelCorruption:Show()
 
