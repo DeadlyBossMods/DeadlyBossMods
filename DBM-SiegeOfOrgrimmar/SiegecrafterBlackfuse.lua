@@ -126,7 +126,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 143265 then
-		self:BossTargetScanner(71504, "LaunchSawBladeTarget", 0.05, 16)
+		self:BossTargetScanner(71504, "LaunchSawBladeTarget", 0.1, 16)
 	elseif args.spellId == 144208 then
 --		self:BossTargetScanner(71591, "DeathFromAboveTarget", 0.025, 16)
 		self:ScheduleMethod(0.2, "DeathFromAboveTarget", args.sourceGUID)
