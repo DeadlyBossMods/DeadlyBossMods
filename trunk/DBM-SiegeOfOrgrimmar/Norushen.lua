@@ -84,8 +84,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnTearReality:Show()
 --		timerTearRealityCD:Start()
 	elseif args.spellId == 144479 then
-		warnExpelCorruption:Show()
-		specWarnExpelCorruption:Show()
+--		warnExpelCorruption:Show()
+--		specWarnExpelCorruption:Show()
+
 --		timerTearExpelCorruptionCD:Start()
 	elseif args.spellId == 144654 then
 		warnBurstOfCorruption:Show()
