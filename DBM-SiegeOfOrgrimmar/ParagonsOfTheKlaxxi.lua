@@ -181,7 +181,7 @@ local function CheckBosses(GUID)
 	for i = 1, 5 do
 		local vulnerable = false
 		if UnitExists("boss"..i) and not activeBossGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
-			activatedTargets[#activatedTargets + 1] = args.destName
+			activatedTargets[#activatedTargets + 1] = UnitName("boss"..i)
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(UnitGUID("boss"..i))
 			if cid == 71161 then--Kil'ruk the Wind-Reaver
@@ -211,7 +211,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(activatedTargets)
-	table.wipe(calculatedTargets)
+	table.wipe(whirlingTargets)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
