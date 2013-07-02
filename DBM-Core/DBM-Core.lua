@@ -2231,14 +2231,17 @@ do
 				end
 				if not showedUpdateReminder and DBM.DisplayVersion:find("alpha") and (revDifference > 20) then
 					local found = false
+					local other = nil
 					for i, v in pairs(raid) do
 						if v.revision == revision and v ~= raid[sender] then
 							found = true
+							other = i
 							break
 						end
 					end
 					if found then--Running alpha version that's out of date
 						showedUpdateReminder = true
+						print(("DBM Debug: Showing alpha update notification because %s and %s are running revision %d which is > than our reivision %d"):format(sender, other, revision, DBM.Revision))
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
 					end
 				end
