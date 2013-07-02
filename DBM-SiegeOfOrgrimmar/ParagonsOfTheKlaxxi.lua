@@ -534,40 +534,42 @@ GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(1
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg == L.calculatedTarget or msg:find(L.calculatedTarget) then
 		local target = DBM:GetFullNameByShortName(target)
-		local uId = DBM:GetRaidUnitId(target)
-		local targetShape, targetColor, targetNumber
-		local playerShape, playerColor, playerNumber
-		for _, spellname in next, Debuffs do--Scan calculated targets random debuffs
-			local name, _, _, count = UnitDebuff(uId, spellname)
-			if name and count then--Found
-				local color, shape = strsplit(" ", name)--Split name
-				targetShape, targetColor, targetNumber = color, shape, count
-				break
-			end
-		end
-		if targetShape and targetColor and targetNumber then--Found theirs, now lets compare to ours
-			for _, spellname in next, Debuffs do
-				local name, _, _, count = UnitDebuff("player", spellname)
-				if name and count then--Found
-					local color, shape = strsplit(" ", name)
-					playerShape, playerColor, playerNumber = color, shape, count
-					break
-				end
-			end
-		end
 		warnCalculated:Show(target)
 		timerCalculated:Start()
 		if target == UnitName("player") then
 			specWarnCalculated:Show()
 			yellCalculated:Yell()
-		else--Now lets process the criteria rules and see if we are linked to the picked target
-			local criteriaMatched = 0
-			if targetShape == playerShape then criteriaMatched = criteriaMatched + 1 end
-			if targetColor == playerColor then criteriaMatched = criteriaMatched + 1 end
-			if targetNumber == playerNumber then criteriaMatched = criteriaMatched + 1 end
-			if (criteriaMatched == 1 and self:IsDifficulty("lfr25")) or (criteriaMatched == 2 and self:IsDifficulty("normal10", "normal25", "flex")) or (criteriaMatched == 3 and self:IsDifficulty("heroic10", "heroic25")) then
-				specWarnCriteriaLinked:Show(target)
---				yellCalculated:Yell()
+		else--it's not us, so now lets do some some of our own "calculations"
+			local uId = DBM:GetRaidUnitId(target)
+			local targetShape, targetColor, targetNumber
+			local playerShape, playerColor, playerNumber
+			for _, spellname in next, Debuffs do--Scan calculated target's random debuffs
+				local name, _, _, count = UnitDebuff(uId, spellname)
+				if name and count then--Found
+					local color, shape = strsplit(" ", name)--Split name
+					targetShape, targetColor, targetNumber = color, shape, count
+					break
+				end
+			end
+			if targetShape and targetColor and targetNumber then--Found theirs, now lets compare to ours
+				for _, spellname in next, Debuffs do
+					local name, _, _, count = UnitDebuff("player", spellname)
+					if name and count then--Found
+						local color, shape = strsplit(" ", name)
+						playerShape, playerColor, playerNumber = color, shape, count
+						break
+					end
+				end
+			end
+			if playerShape and playerColor and playerNumber then--Victory, we have theirs and ours
+				local criteriaMatched = 0--Now to start checking matches.
+				if targetShape == playerShape then criteriaMatched = criteriaMatched + 1 end
+				if targetColor == playerColor then criteriaMatched = criteriaMatched + 1 end
+				if targetNumber == playerNumber then criteriaMatched = criteriaMatched + 1 end
+				if (criteriaMatched == 1 and self:IsDifficulty("lfr25")) or (criteriaMatched == 2 and self:IsDifficulty("normal10", "normal25", "flex")) or (criteriaMatched == 3 and self:IsDifficulty("heroic10", "heroic25")) then
+					specWarnCriteriaLinked:Show(target)
+--					yellCalculated:Yell()
+				end
 			end
 		end
 	end
