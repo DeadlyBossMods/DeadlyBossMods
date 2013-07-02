@@ -213,10 +213,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconsOnVita then
 			playerWithVita = DBM:GetRaidUnitId(args.destName)
 			self:SetIcon(args.destName, 1)
-			self:ScheduleMethod(6, "checkVitaDistance")--Wait about 6 seconds for initial. don't want to spam icons before next target actually runs out. May raise initial even higher, debuff is 12 seconds. so maybe 7-8 if 6 too soon 
 		end
 		warnUnstableVita:Show(args.destName)
-		timerUnstableVita:Start(args.destName)
+		if self:IsDifficulty("heroic25") then
+			timerUnstableVita:Start(5, args.destName)
+			self:ScheduleMethod(1, "checkVitaDistance")--4 seconds before
+		else
+			timerUnstableVita:Start(args.destName)
+			self:ScheduleMethod(8, "checkVitaDistance")--4 seconds before
+		end
 		if args:IsPlayer() then
 			if args.spellId == 138297 then
 				specWarnUnstablVita:Show()
@@ -224,7 +229,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnUnstablVitaJump:Show()
 			end
 			yellUnstableVita:Yell()
-			countdownUnstableVita:Start()
+			if self:IsDifficulty("heroic25") then
+				countdownUnstableVita:Start(5)
+			else
+				countdownUnstableVita:Start()
+			end
 		end
 	end
 end
