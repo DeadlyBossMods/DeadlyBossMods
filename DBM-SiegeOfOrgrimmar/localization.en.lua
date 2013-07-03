@@ -198,7 +198,7 @@ L:SetOptionLocalization({
 	warnToxicCatalyst				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej8036"),
 	specWarnToxicInjection			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(142528),
 	specWarnToxicCatalyst			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format("ej8036"),
-	specWarnActivatedVulnerable		= "Show special warning when a paragon you are vulnerable to activates",
+	specWarnActivatedVulnerable		= "Show special warning when a paragon you are vulnerable to activating paragons",
 	specWarnCriteriaLinked			= "Show special warning when you are linked to $spell:144095",
 	SetIconOnAim					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(142948),
 	yellToxicCatalyst				= DBM_CORE_AUTO_YELL_OPTION_TEXT:format("ej8036"),
