@@ -37,7 +37,7 @@ L:SetMiscLocalization({
 	Rank7			= "siebten Ranges",
 	Rank8			= "achten Ranges",
 	Rank9			= "9. Ranges",
-	Rank10			= "10. Ranges",--needs to be verified (guessed)
+	Rank10			= "Rang-10-Grubenkampfchampion",
 	Proboskus		= "Oje... tut mir leid, aber Ihr werdet wohl gegen Proboskus antreten müssen.",--Alliance - needs to be verified (wowhead-captured translation)
 	Proboskus2		= "Ha ha ha! Was habt Ihr auch für ein Pech! Es ist Proboskus! Ahhh ha ha ha! Ich hab fünfundzwanzig Goldstücke darauf gesetzt, dass Ihr im Feuer draufgeht!"--Horde
 })
