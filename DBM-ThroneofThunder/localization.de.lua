@@ -280,7 +280,7 @@ L:SetOptionLocalization({
 	warnVitaSoakerSoon	= "Zeige Warnung, wenn du als übernächstes Ziel für $spell:138297 eingeteilt bist (benötigt aktiviertes Infofenster)",
 	specWarnVitaSoaker	= "Spezialwarnung, wenn du als nächstes Ziel für $spell:138297 eingeteilt bist, basierend auf deiner Position im Infofenster (benötigt aktiviertes Infofenster)",
 	SetIconsOnVita		= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler",
-	InfoFrame			= "Zeige Infofenster für die Reihenfolge der Spieler ohne $spell:138372 als Ziel für $spell:138297 (ausgenommen Tanks)"
+	InfoFrame			= "Zeige Infofenster für eine automatische Einteilung der Reihenfolge der Spieler ohne $spell:138372 (ausgenommen Tanks) als Ziel für $spell:138297"
 })
 
 L:SetMiscLocalization({
