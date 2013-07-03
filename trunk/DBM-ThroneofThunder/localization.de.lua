@@ -271,14 +271,22 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetWarningLocalization({
+	specWarnVitaSoaker			= "Du bist als nächstes Vitaziel eingeteilt!",
+	warnVitaSoakerSoon			= "Du bist als übernächstes Vitaziel eingeteilt."
+})
+
 L:SetOptionLocalization({
+	warnVitaSoakerSoon	= "Zeige Warnung, wenn du als übernächstes Ziel für $spell:138297 eingeteilt bist (benötigt aktiviertes Infofenster)",
+	specWarnVitaSoaker	= "Spezialwarnung, wenn du als nächstes Ziel für $spell:138297 eingeteilt bist, basierend auf deiner Position im Infofenster (benötigt aktiviertes Infofenster)",
 	SetIconsOnVita		= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler",
-	InfoFrame			= "Zeige Infofenster für Spieler ohne $spell:138372 (ausgenommen Tanks)"
+	InfoFrame			= "Zeige Infofenster für die Reihenfolge der Spieler ohne $spell:138372 als Ziel für $spell:138297 (ausgenommen Tanks)"
 })
 
 L:SetMiscLocalization({
-	Defeat			= "Wait! I am... I am not your enemy.",--translate (trigger)
-	NoSensitivity	= "No Sensitivity"--translate (trigger)
+	Defeat						= "Wartet! Ich bin... Ich bin nicht Euer Feind.",--needs to be verified (video-captured translation)
+	NoSensitivity				= "Reihenfolge Vitaziele",
+	VitaSoakerOptionConflict	= "Achtung: Du hast die Warnungen für die Einteilung als nächstes bzw. übernächstes Ziel von Instabile Vita aktiviert, aber das Infofenster deaktiviert. Die Warnungen werden ohne das Infofenster nicht funktionieren!"
 })
 
 -------------
