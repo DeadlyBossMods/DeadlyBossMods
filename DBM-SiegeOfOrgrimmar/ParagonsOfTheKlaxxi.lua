@@ -181,6 +181,7 @@ local function CheckBosses(GUID)
 	for i = 1, 5 do
 		local vulnerable = false
 		if UnitExists("boss"..i) and not activeBossGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
+			activeBossGUIDS[UnitGUID("boss"..i)] = true
 			activatedTargets[#activatedTargets + 1] = UnitName("boss"..i)
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(UnitGUID("boss"..i))
