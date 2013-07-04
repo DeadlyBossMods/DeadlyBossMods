@@ -299,7 +299,7 @@ local function updateBadPlayerDebuffs()
 		for uId, i in DBM:GetGroupMembers() do
 			if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then break end
 			if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
-				lines[UnitName(uId)] = i
+				lines[UnitName(uId)] = ""
 			end
 		end
 	end
