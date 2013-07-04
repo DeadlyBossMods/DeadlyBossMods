@@ -68,6 +68,7 @@ local countdownUnstableVita		= mod:NewCountdownFades(11, 138297)
 local countdownCreation			= mod:NewCountdown(32.5, 138321, nil, nil, nil, nil, true)
 
 mod:AddBoolOption("SetIconsOnVita", false)--Both the vita target and furthest from vita target
+mod:AddBoolOption("AnnounceVitaSoaker", false)
 mod:AddBoolOption("InfoFrame")
 
 local creationCount = 0
@@ -106,8 +107,13 @@ function mod:checkVitaDistance()
 end
 
 local function infoFrameChanged(players)
-	if players[1] == playerName and playerName ~= lastPlayerOne then
-		specWarnVitaSoaker:Show()
+	if players[1] ~= lastPlayerOne then
+		if players[1] == playerName then
+			specWarnVitaSoaker:Show()
+		end
+		if self.Options.AnnounceVitaSoaker and DBM:GetRaidRank() > 1 then
+			SendChatMessage(L.VitaChatMessage:format(players[1]), "RAID_WARNING")
+		end
 	elseif players[2] == playerName and playerName ~= lastPlayerTwo then
 		warnVitaSoakerSoon:Show()
 	end
