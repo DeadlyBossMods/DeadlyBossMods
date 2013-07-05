@@ -18,6 +18,7 @@ localization.en.lua
 localization.de.lua
 localization.kr.lua
 localization.ru.lua
+localization.tw.lua
 Immerseus.lua
 FallenProtectors.lua
 Norushen.lua
