@@ -125,7 +125,7 @@ L:SetOptionLocalization({
 	Never				= "표시안함",
 	Northeast			= "파랑 - 아래/위 북동쪽",
 	Southeast			= "초록 - 아래/위 남동쪽",
-	Southwest			= "보라 - 아래 남서쪽 & 위 남서쪽(25인) / 위 중앙(10인)",
+	Southwest			= "보라/빨강 - 아래 남서쪽 & 위 남서쪽(25인)/위 중앙(10인)",
 	West				= "빨강 - 아래 서쪽 & 위 중앙(25인)",
 	Northwest			= "노랑 - 아래/위 북서쪽(25인)",
 	Guardians			= "둥지 수호자"
@@ -264,12 +264,24 @@ L:SetMiscLocalization({
 ------------
 L= DBM:GetModLocalization(831)
 
+L:SetWarningLocalization({
+	specWarnVitaSoaker			= "당신이 다음 불안정한 생령 전이자 입니다!",
+	warnVitaSoakerSoon			= "불안정한 생령 전이까지 2명 남음"
+})
+
 L:SetOptionLocalization({
-	SetIconsOnVita		= "$spell:138297 대상과 그 대상에서 가장 먼 공격대원에게 전술 목표 아이콘 설정"
+	warnVitaSoakerSoon			= "$spell:138297 전이 차례가 두번째 일때 알림 보기(정보 창 필요)",
+	specWarnVitaSoaker			= "다음 $spell:138297 전이 차례가 당신일 경우 특수 경고 보기(정보 창 필요)",
+	SetIconsOnVita				= "$spell:138297 대상과 그 대상에서 가장 먼 공격대원에게 전술 목표 아이콘 설정",
+	InfoFrame					= "$spell:138372 효과가 없는 대상을 정렬하여 정보 창에서 보기<br/>(방어 전담 제외, 불안정한 생령 전이 알림 사용시 반드시 활성화 되어 있어야 합니다.)",
+	AnnounceVitaSoaker			= "다음 $spell:138297 전이자를 공격대 경보 대화로 알리기(승급 권한 필요)"
 })
 
 L:SetMiscLocalization({
-	Defeat				= "Wait! I am... I am not your enemy."
+	Defeat						= "잠깐! 난... 난 적이 아니다.",
+	NoSensitivity				= "생령 전이 순서",
+	VitaSoakerOptionConflict	= "경고: 불안정한 생령 전이 알림이 설정 되어 있으나, 정보창이 꺼져 있습니다. 이 기능은 정보창 없이는 작동하지 않습니다!",
+	VitaChatMessage				= "다음 불안정한 생령 전이자 : %s"
 })
 
 -------------

@@ -60,8 +60,6 @@ L.EnableDBM 				= "DBM 사용"
 L.EnableMiniMapIcon			= "미니맵 버튼 사용"
 L.SetPlayerRole				= "파티 또는 공격대 참여시 역할 자동 설정(추천)"
 L.UseMasterVolume			= "기본 오디오 채널로 애드온 소리 듣기"
-L.DisableCinematics			= "게임내 동영상 재생 기능 끄기(인스턴스 내부)"
-L.DisableCinematicsOutside	= "게임내 동영상 재생 기능 끄기(인스턴스 외부)"
 L.AutologBosses				= "우두머리 전투시 블리자드 전투 기록 자동 활성화"
 L.AdvancedAutologBosses		= "우두머리 전투시 Transcriptor 기록 자동 활성화"
 L.LogOnlyRaidBosses			= "공격대 우두머리 전투만 기록하기(공격대 찾기 제외)"
@@ -180,15 +178,11 @@ L.BarWidth					= "바 길이: %d"
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "기타 설정"
 L.Area_SpamFilter				= "일반 설정"
-L.HideBossEmoteFrame			= "우두머리 전투 중 블리자드 기본 레이드 경보 숨기기"
-L.HideWatchFrame				= "우두머리 전투 중 퀘스트 추척 창 숨기기"
 L.StripServerName				= "알림 및 바에서 서버명 보이지 않기"
 L.SpamBlockBossWhispers			= "전투 중 다른 공격대원 또는 파티원이 보내는 <DBM> 귓속말 감추기"
 L.BlockVersionUpdateNotice		= "업데이트 알림 창 끄기(추천하지 않음)"
 L.ShowBigBrotherOnCombatStart	= "전투 시작시 BigBrother 버프 체크 실행하기"
 L.BigBrotherAnnounceToRaid		= "BigBrother 버프 체크 결과를 공격대에 알리기"
-L.SpamBlockSayYell				= "전투 중 대화 말풍선 숨기기"
-
 
 L.Area_SpamFilter_Outgoing		= "공통 설정(각 우두머리별 설정 무시)"
 L.SpamBlockNoShowAnnounce		= "알림 또는 경고 소리 끄기"
@@ -203,6 +197,14 @@ L.DontShowPTCountdownText		= "전투 시작 예정 초읽기 글자 숨기기"
 L.DontPlayPTCountdown			= "전투 시작 예정 초읽기 소리 숨기기"
 L.DontShowPTText				= "전투 시작 예정 대화 알림 숨기기"
 
+L.Panel_HideBlizzard			= "블리자드 기본 기능 숨기기"
+L.Area_HideBlizzard				= "블리자드 기본 기능 숨기기 설정"
+L.HideBossEmoteFrame			= "전투 중 블리자드 기본 레이드 경보 숨기기"
+L.HideWatchFrame				= "전투 중 퀘스트 추척 창 숨기기"
+L.SpamBlockSayYell				= "전투 중 대화 말풍선 숨기기"
+L.DisableCinematics				= "게임 내 동영상 보이지 않기"
+L.AfterFirst					= "한번 이상 본 영상만 재생하지 않음"
+L.Always						= "모든 동영상 재생하지 않음"
+
 -- Misc
 L.FontHeight = 16
-
