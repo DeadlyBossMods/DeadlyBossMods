@@ -530,7 +530,7 @@ GetSpellInfo(143605), GetSpellInfo(143606), GetSpellInfo(143607), GetSpellInfo(1
 GetSpellInfo(143610), GetSpellInfo(143611), GetSpellInfo(143612), GetSpellInfo(143613), GetSpellInfo(143614),
 GetSpellInfo(143615), GetSpellInfo(143616), GetSpellInfo(143617), GetSpellInfo(143618), GetSpellInfo(143619),
 GetSpellInfo(143620), GetSpellInfo(143621), GetSpellInfo(143622), GetSpellInfo(143623), GetSpellInfo(143624),
-GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), GetSpellInfo(143631)
+GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), (GetSpellInfo(143631))
 }
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg == L.calculatedTarget or msg:find(L.calculatedTarget) then
@@ -544,7 +544,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 			local uId = DBM:GetRaidUnitId(target)
 			local targetShape, targetColor, targetNumber
 			local playerShape, playerColor, playerNumber
-			for _, spellname in next, Debuffs do--Scan calculated target's random debuffs
+			for _, spellname in ipairs(Debuffs) do--Scan calculated target's random debuffs
 				local name, _, _, count = UnitDebuff(uId, spellname)
 				if name and count then--Found
 					local color, shape = strsplit(" ", name)--Split name
@@ -553,7 +553,7 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 				end
 			end
 			if targetShape and targetColor and targetNumber then--Found theirs, now lets compare to ours
-				for _, spellname in next, Debuffs do
+				for _, spellname in ipairs(Debuffs) do
 					local name, _, _, count = UnitDebuff("player", spellname)
 					if name and count then--Found
 						local color, shape = strsplit(" ", name)
