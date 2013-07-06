@@ -14,8 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
 --Endless Rage
@@ -146,6 +145,18 @@ function mod:SPELL_CAST_START(args)
 			timerArcingSmashCD:Start(11, 1)
 			timerBreathofYShaarjCD:Start(nil, 2)
 		end
+	elseif args.spellId == 143199 then
+		breathCast = 0
+		arcingSmashCount = 0
+		seismicSlamCount = 0
+		specWarnBloodRageEnded:Show()
+		timerSeismicSlamCD:Start(5, 1)
+		timerArcingSmashCD:Start(11, 1)
+		timerBreathofYShaarjCD:Start()
+		timerBloodRageCD:Start()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(5)
+		end
 	end
 end
 
@@ -205,23 +216,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if self.Options.SetIconOnDisplacedEnergy then
 			self:SetIcon(args.destName, 0)
-		end
-	end
-end
-
---No CLEU, the lack of TWO spell events in combat log (SPELL_AURA_APPLIED/REMOVED) on blood rage means localizing is only way to support this phase change
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.bloodRageEnds or msg:find(L.bloodRageEnds) then
-		breathCast = 0
-		arcingSmashCount = 0
-		seismicSlamCount = 0
-		specWarnBloodRageEnded:Show()
-		timerSeismicSlamCD:Start(5, 1)
-		timerArcingSmashCD:Start(11, 1)
-		timerBreathofYShaarjCD:Start()
-		timerBloodRageCD:Start()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(5)
 		end
 	end
 end

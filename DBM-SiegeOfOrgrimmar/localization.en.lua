@@ -135,10 +135,6 @@ L:SetOptionLocalization({
 	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("8/5")
 })
 
-L:SetMiscLocalization({
-	bloodRageEnds	= "subsides!"
-})
-
 ------------------------
 -- Spoils of Pandaria --
 ------------------------
