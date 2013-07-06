@@ -111,7 +111,7 @@ local function infoFrameChanged(players)
 		if players[1] == playerName then
 			specWarnVitaSoaker:Show()
 		end
-		if self.Options.AnnounceVitaSoaker and DBM:GetRaidRank() > 1 then
+		if mod.Options.AnnounceVitaSoaker and DBM:GetRaidRank() > 1 then
 			SendChatMessage(L.VitaChatMessage:format(players[1]), "RAID_WARNING")
 		end
 	elseif players[2] == playerName and playerName ~= lastPlayerTwo then
