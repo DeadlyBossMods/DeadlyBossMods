@@ -194,7 +194,9 @@ function mod:RAID_BOSS_WHISPER(msg, npc)
 		if self:AntiSpam(3, 1) then--This actually doesn't spam, but we ues same antispam here so that the MOVE warning doesn't fire at same time unless you fail to move for 2 seconds
 			specWarnCrimsonWakeYou:Show()
 		end
-		yellCrimsonWake:Yell()
+		if not self:IsDifficulty("lfr25") then
+			yellCrimsonWake:Yell()
+		end
 		soundCrimsonWake:Play()
 		self:SendSync("WakeTarget", UnitGUID("player"))
 	end
