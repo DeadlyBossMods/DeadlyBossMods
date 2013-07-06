@@ -4111,10 +4111,16 @@ local bossTargetuIds = {
 
 -- leave this function for older mods compatiblity.
 function bossModPrototype:GetBossTarget(cid)
+	local checkID--Dynamic function variable
+	if type(cid) == "string" then--This is a GUID not a CID
+		checkID = function() return UnitGUID() end
+	else--a regular ole CID
+		checkID = function() return self:GetUnitCreatureId() end
+	end
 	cid = cid or self.creatureId
 	local name, uid, bossuid
 	for i, uId in ipairs(bossTargetuIds) do
-		if self:GetUnitCreatureId(uId) == cid then
+		if checkID(uId) == cid then
 			bossuid = uId
 			name = DBM:GetUnitFullName(uId.."target")
 			uid = DBM:GetRaidUnitId(name) or uId.."target"--overrride target uid because uid+"target" is variable uid.
@@ -4125,7 +4131,7 @@ function bossModPrototype:GetBossTarget(cid)
 	-- failed to detect from default uIds, scan all group members's target.
 	if IsInRaid() then
 		for i = 1, GetNumGroupMembers() do
-			if self:GetUnitCreatureId("raid"..i.."target") == cid then
+			if checkID("raid"..i.."target") == cid then
 				bossuid = "raid"..i.."target"
 				name = DBM:GetUnitFullName("raid"..i.."targettarget")
 				uid = DBM:GetRaidUnitId(name) or "raid"..i.."targettarget"--overrride target uid because uid+"target" is variable uid.
@@ -4134,7 +4140,7 @@ function bossModPrototype:GetBossTarget(cid)
 		end
 	elseif IsInGroup() then
 		for i = 1, GetNumSubgroupMembers() do
-			if self:GetUnitCreatureId("party"..i.."target") == cid then
+			if checkID("party"..i.."target") == cid then
 				bossuid = "party"..i.."target"
 				name = DBM:GetUnitFullName("party"..i.."targettarget")
 				uid = DBM:GetRaidUnitId(name) or "party"..i.."targettarget"--overrride target uid because uid+"target" is variable uid.
@@ -4146,7 +4152,7 @@ function bossModPrototype:GetBossTarget(cid)
 end
 
 local targetScanCount = 0
-function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, isFinalScan)
+function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, isFinalScan, GUID)
 	--Increase scan count
 	targetScanCount = targetScanCount + 1
 	--Set default values
@@ -4171,7 +4177,7 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 		end
 	else--target was nil, lets schedule a rescan here too.
 		if targetScanCount < scanTimes then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan)
+			self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan, GUID)
 		end
 	end
 end
