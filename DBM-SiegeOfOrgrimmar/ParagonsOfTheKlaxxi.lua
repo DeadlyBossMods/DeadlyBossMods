@@ -561,6 +561,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefu
 		calculatedNumber = nil
 		calculatedColor = nil
 	end
+	--Yay for localizing 15 strings in 10 languages.
+	--Nothing like requiring a mod to scan for 150 possible variations of emotes to work around missing CLEU entries
 	if msg:find(L.red) then
 		calculatedColor = "Red"
 	elseif msg:find(L.purple) then
