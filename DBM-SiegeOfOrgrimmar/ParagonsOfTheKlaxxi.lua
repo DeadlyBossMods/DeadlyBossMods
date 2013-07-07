@@ -150,6 +150,9 @@ local whirlingTargets = {}
 local activeBossGUIDS = {}
 local UnitDebuff = UnitDebuff
 local GetSpellInfo = GetSpellInfo
+local calculatedShape = nil
+local calculatedNumber = nil
+local calculatedColor = nil
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -213,6 +216,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(activatedTargets)
 	table.wipe(whirlingTargets)
+	calculatedShape = nil
+	calculatedNumber = nil
+	calculatedColor = nil
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
@@ -512,7 +518,7 @@ end
 --143618 Green Bomb
 --143619 Yellow Bomb
 ----------------------
---Heroic Only?
+--25man Only?
 --143620 Red Mantid
 --143621 Purple Mantid
 --143622 Blue Mantid
@@ -525,13 +531,69 @@ end
 --143630 Green Staff
 --143631 Yellow Staff
 
-local Debuffs = {
+local RedDebuffs = {GetSpellInfo(143605), GetSpellInfo(143610), GetSpellInfo(143615), GetSpellInfo(143620), (GetSpellInfo(143627))}
+local PurpleDebuffs = {GetSpellInfo(143606), GetSpellInfo(143611), GetSpellInfo(143616), GetSpellInfo(143621), (GetSpellInfo(143628))}
+local BlueDebuffs = {GetSpellInfo(143607), GetSpellInfo(143612), GetSpellInfo(143617), GetSpellInfo(143622), (GetSpellInfo(143629))}
+local GreenDebuffs = {GetSpellInfo(143608), GetSpellInfo(143613), GetSpellInfo(143618), GetSpellInfo(143623), (GetSpellInfo(143630))}
+local YellowDebuffs = {GetSpellInfo(143610), GetSpellInfo(143614), GetSpellInfo(143619), GetSpellInfo(143624), (GetSpellInfo(143631))}
+
+local SwordDebuffs = {GetSpellInfo(143605), GetSpellInfo(143606), GetSpellInfo(143607), GetSpellInfo(143608), GetSpellInfo(143609)}
+local DrumDebuffs = {GetSpellInfo(143610), GetSpellInfo(143611), GetSpellInfo(143612), GetSpellInfo(143613), (GetSpellInfo(143614))}
+local BombDebuffs = {GetSpellInfo(143615), GetSpellInfo(143616), GetSpellInfo(143617), GetSpellInfo(143618), (GetSpellInfo(143619))}
+local MantidDebuffs = {GetSpellInfo(143620), GetSpellInfo(143621), GetSpellInfo(143622), GetSpellInfo(143623), (GetSpellInfo(143624))}
+local StaffDebuffs = {GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), (GetSpellInfo(143631))}
+
+local AllDebuffs = {
 GetSpellInfo(143605), GetSpellInfo(143606), GetSpellInfo(143607), GetSpellInfo(143608), GetSpellInfo(143609),
 GetSpellInfo(143610), GetSpellInfo(143611), GetSpellInfo(143612), GetSpellInfo(143613), GetSpellInfo(143614),
 GetSpellInfo(143615), GetSpellInfo(143616), GetSpellInfo(143617), GetSpellInfo(143618), GetSpellInfo(143619),
 GetSpellInfo(143620), GetSpellInfo(143621), GetSpellInfo(143622), GetSpellInfo(143623), GetSpellInfo(143624),
 GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), (GetSpellInfo(143631))
 }
+
+--[[
+"<33.9 19:16:49> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Every Solitary One!#Iyyokuk the Lucid###Iyyokuk the Lucid##0#0##0#329#nil#0#false#false", -- [2353]
+"<33.9 19:16:49> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#Iyyokuk the Lucid looks at Dayani with a calculating eye!#Iyyokuk the Lucid###Dayani##0#0##0#330#nil#0#false#false", -- [2355]
+--]]
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefully, so we have valid criteria to match to on monster emote message
+	if self:AntiSpam() then
+		calculatedShape = nil
+		calculatedNumber = nil
+		calculatedColor = nil
+	end
+	if msg:find(L.red) then
+		calculatedColor = "Red"
+	elseif msg:find(L.purple) then
+		calculatedColor = "Purple"
+	elseif msg:find(L.blue) then
+		calculatedColor = "Blue"
+	elseif msg:find(msg == L.green) then
+		calculatedColor = "Green"
+	elseif msg:find(L.yellow) then
+		calculatedColor = "Yellow"
+	elseif msg:find(L.sword) then
+		calculatedShape = "Sword"
+	elseif msg:find(L.drums) then
+		calculatedShape = "Drum"
+	elseif msg:find(L.bomb) then
+		calculatedShape = "Bomb"
+	elseif msg:find(L.mantid) then
+		calculatedShape = "Mantid"
+	elseif msg:find(L.staff) then
+		calculatedShape = "Staff"
+	elseif msg:find(msg == L.one) then
+		calculatedNumber = 1
+	elseif msg:find(msg == L.two) then
+		calculatedNumber = 2
+	elseif msg:find(msg == L.three) then
+		calculatedNumber = 3
+	elseif msg:find(msg == L.four) then
+		calculatedNumber = 4
+	elseif msg:find(msg == L.five) then
+		calculatedNumber = 5
+	end
+end
+
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 	if msg == L.calculatedTarget or msg:find(L.calculatedTarget) then
 		local target = DBM:GetFullNameByShortName(target)
@@ -540,37 +602,102 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
 		if target == UnitName("player") then
 			specWarnCalculated:Show()
 			yellCalculated:Yell()
-		else--it's not us, so now lets do some some of our own "calculations"
-			local uId = DBM:GetRaidUnitId(target)
-			local targetShape, targetColor, targetNumber
-			local playerShape, playerColor, playerNumber
-			for _, spellname in ipairs(Debuffs) do--Scan calculated target's random debuffs
-				local name, _, _, count = UnitDebuff(uId, spellname)
-				if name and count then--Found
-					local color, shape = strsplit(" ", name)--Split name
-					targetShape, targetColor, targetNumber = color, shape, count
-					break
+		else--it's not us, so now lets check activated criteria for target based on previous emotes
+			local criteriaMatched = false--Now to start checking matches.
+			if calculatedColor == "Red" then
+				for _, spellname in ipairs(RedDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
 				end
-			end
-			if targetShape and targetColor and targetNumber then--Found theirs, now lets compare to ours
-				for _, spellname in ipairs(Debuffs) do
-					local name, _, _, count = UnitDebuff("player", spellname)
-					if name and count then--Found
-						local color, shape = strsplit(" ", name)
-						playerShape, playerColor, playerNumber = color, shape, count
+			elseif calculatedColor == "Purple" then
+				for _, spellname in ipairs(PurpleDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Blue" then
+				for _, spellname in ipairs(BlueDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Green" then
+				for _, spellname in ipairs(GreenDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Yellow" then
+				for _, spellname in ipairs(YellowDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Sword" then
+				for _, spellname in ipairs(SwordDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Drum" then
+				for _, spellname in ipairs(DrumDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Bomb" then
+				for _, spellname in ipairs(BombDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Mantid" then
+				for _, spellname in ipairs(MantidDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedColor == "Staff" then
+				for _, spellname in ipairs(StaffDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						criteriaMatched = true
+						break
+					end
+				end
+			elseif calculatedNumber then
+				for _, spellname in ipairs(AllDebuffs) do
+					local _, _, _, count = UnitDebuff("player", spellname)
+					if count then--Found
+						if count == calculatedNumber then
+							criteriaMatched = true
+						end
 						break
 					end
 				end
 			end
-			if playerShape and playerColor and playerNumber then--Victory, we have theirs and ours
-				local criteriaMatched = 0--Now to start checking matches.
-				if targetShape == playerShape then criteriaMatched = criteriaMatched + 1 end
-				if targetColor == playerColor then criteriaMatched = criteriaMatched + 1 end
-				if targetNumber == playerNumber then criteriaMatched = criteriaMatched + 1 end
-				if (criteriaMatched == 1 and self:IsDifficulty("lfr25")) or (criteriaMatched == 2 and self:IsDifficulty("normal10", "normal25", "flex")) or (criteriaMatched == 3 and self:IsDifficulty("heroic10", "heroic25")) then
-					specWarnCriteriaLinked:Show(target)
---					yellCalculated:Yell()
-				end
+			if criteriaMatched then
+				specWarnCriteriaLinked:Show(target)
+--				yellCalculated:Yell()
 			end
 		end
 	end
