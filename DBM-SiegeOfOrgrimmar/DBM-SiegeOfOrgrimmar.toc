@@ -8,6 +8,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMSiegeOfOrgrimmar_SavedVars, DBMSiegeOfOrgrimmar_SavedStats
 ## X-DBM-Mod-Name: Siege of Orgrimmar
+## X-DBM-Mod-Name-deDE: Die Belagerung Orgrimmars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP

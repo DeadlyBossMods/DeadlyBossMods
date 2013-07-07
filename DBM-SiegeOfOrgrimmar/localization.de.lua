@@ -58,10 +58,6 @@ L:SetMiscLocalization({
 -----------------
 L= DBM:GetModLocalization(846)
 
-L:SetMiscLocalization({
-	bloodRageEnds	= "subsides!"--translate (trigger)
-})
-
 ------------------------
 -- Spoils of Pandaria --
 ------------------------
@@ -94,12 +90,39 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Show special warning when a paragon you are vulnerable to activates",--translate later
+	specWarnActivatedVulnerable		= "Show special warning when a paragon you are vulnerable to activating paragons",--translate later
 	specWarnCriteriaLinked			= "Show special warning when you are linked to $spell:144095",--translate later
 })
 
 L:SetMiscLocalization({
-	calculatedTarget	= "calculating eye!"--translate (trigger)
+	--translate later (triggers)
+	calculatedTarget	= "calculating eye!",
+	yellow				= "Yellow",
+	red					= "Red",
+	blue				= "Blue",
+	purple				= "Purple",
+	green				= "Green",
+	bomb				= "Bomb",
+	sword				= "Swords",
+	drums				= "Drums",
+	mantid				= "Mantid",--Assumed
+	staff 				= "Staff",--Assumed
+	one					= "One",
+	two					= "Pair",
+	three				= "Three",
+	four				= "Four",--Assumed
+	five				= "Five",--Assumed
+	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
+	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
+	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
+	KaztikFlavor		= "Reduced to mere kunchong treats",--http://ptr.wowhead.com/quest=31024
+	KaztikFlavor2		= "1 Mantid down, only 199 to go",--http://ptr.wowhead.com/quest=31808
+	KorvenFlavor		= "The end of an ancient empire",--http://ptr.wowhead.com/quest=31232
+	KorvenFlavor2		= "Take your Gurthani Tablets and choke on them",--http://ptr.wowhead.com/quest=31232
+	IyyokukFlavor		= "See opportunities. Exploit them!",--Does not have quests, http://ptr.wowhead.com/npc=65305
+	KarozFlavor			= "You won't be leaping anymore!",---Does not have questst, http://ptr.wowhead.com/npc=65303
+	SkeerFlavor			= "A bloody delight!",--http://ptr.wowhead.com/quest=31178
+	RikkalFlavor		= "Specimen request fulfilled"--http://ptr.wowhead.com/quest=31508
 })
 
 ------------------------
