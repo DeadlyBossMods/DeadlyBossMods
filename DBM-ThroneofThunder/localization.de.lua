@@ -280,13 +280,15 @@ L:SetOptionLocalization({
 	warnVitaSoakerSoon	= "Zeige Warnung, wenn du als übernächstes Ziel für $spell:138297 eingeteilt bist (benötigt aktiviertes Infofenster)",
 	specWarnVitaSoaker	= "Spezialwarnung, wenn du als nächstes Ziel für $spell:138297 eingeteilt bist, basierend auf deiner Position im Infofenster (benötigt aktiviertes Infofenster)",
 	SetIconsOnVita		= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler",
-	InfoFrame			= "Zeige Infofenster für eine automatische Einteilung der Reihenfolge der Spieler ohne $spell:138372 (ausgenommen Tanks) als Ziel für $spell:138297"
+	InfoFrame			= "Zeige Infofenster für eine automatische Einteilung der Reihenfolge der Spieler ohne $spell:138372 (ausgenommen Tanks) als Ziel für $spell:138297",
+	AnnounceVitaSoaker	= "Verkünde nächstes eingeteiltes Ziel für $spell:138297 als Schlachtzugwarnung (nur als Leiter)"
 })
 
 L:SetMiscLocalization({
 	Defeat						= "Wartet! Ich bin... Ich bin nicht Euer Feind.",--needs to be verified (video-captured translation)
 	NoSensitivity				= "Reihenfolge Vitaziele",
-	VitaSoakerOptionConflict	= "Achtung: Du hast die Warnungen für die Einteilung als nächstes bzw. übernächstes Ziel von Instabile Vita aktiviert, aber das Infofenster deaktiviert. Die Warnungen werden ohne das Infofenster nicht funktionieren!"
+	VitaSoakerOptionConflict	= "Achtung: Du hast die Warnungen für die Einteilung als nächstes bzw. übernächstes Ziel von Instabile Vita aktiviert, aber das Infofenster deaktiviert. Die Warnungen werden ohne das Infofenster nicht funktionieren!",
+	VitaChatMessage				= "Nächstes Vitaziel: %s"
 })
 
 -------------
