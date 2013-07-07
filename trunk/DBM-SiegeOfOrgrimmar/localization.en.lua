@@ -175,7 +175,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	mineTarget	= "A Crawler Mine has targeted you!",
 	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
 	newShredder	= "An Automated Shredder draws near!"
 })

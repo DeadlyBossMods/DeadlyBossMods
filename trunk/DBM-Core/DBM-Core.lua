@@ -102,7 +102,7 @@ DBM.DefaultOptions = {
 	ShowMinimapButton = false,
 	BlockVersionUpdateNotice = false,
 	ShowSpecialWarnings = true,
-	ShowLHFrame = true,
+	ShowFlashFrame = true,
 	ShowAdvSWSounds = false,
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
@@ -138,6 +138,7 @@ DBM.DefaultOptions = {
 	SpecialWarningFont = STANDARD_TEXT_FONT,
 	SpecialWarningFontSize = 50,
 	SpecialWarningFontColor = {0.0, 0.0, 1.0},
+	SpecialWarningFlashColor = {1.0, 0.0, 0.0},
 	HealthFrameGrowUp = false,
 	HealthFrameLocked = false,
 	HealthFrameWidth = 200,
@@ -5005,12 +5006,8 @@ do
 			end
 			msg = msg:gsub(">.-<", stripName)
 			font:SetText(msg)
-			if DBM.Options.ShowLHFrame and not UnitIsDeadOrGhost("player") then
-				LowHealthFrame:Show()
-				LowHealthFrame:SetAlpha(1)
-				frame.healthFrameHidden = nil
-			else
-				frame.healthFrameHidden = true -- to prevent bugs in the case that this option is changed while the flash effect is active (which is not that unlikely as there is a test button in the gui...)
+			if not UnitIsDeadOrGhost("player") then
+				DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], 1)
 			end
 			frame:Show()
 			frame:SetAlpha(1)
@@ -5280,6 +5277,8 @@ do
 		self:Unschedule(testWarningEnd)
 		self:Schedule(3, testWarningEnd)
 		frame.timer = 3
+		DBM:PlaySpecialWarningSound(soundId)
+		DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], 1)
 	end
 end
 
