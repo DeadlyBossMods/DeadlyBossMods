@@ -105,10 +105,6 @@ local function findLaser()
 		if UnitDebuff(uId, spellName) then
 			print("DBM DEBUG: Possible match to laser targeting using "..spellName)
 			warnLaserFixate:Show(name)
-			if name == UnitName("player") then
-				specWarnLaserFixate:Show()
-				yellLaserFixate:Yell()
-			end
 			return
 		elseif UnitDebuff(uId, spellName2) then
 			print("DBM DEBUG: Possible match to laser targeting using "..spellName2)
@@ -228,9 +224,13 @@ function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:143266") then--Target scanning works on this one, but is about 1 second slower than emote. emote is .2 seconds after SPELL_CAST_START, but target scanning can't grab right target until like 1.0 or 1.2 sec into cast
 		specWarnLaunchSawblade:Show()
 		yellLaunchSawblade:Yell()
-	elseif msg == L.mineTarget or msg:find(L.mineTarget) then--Doesn't show in combat log at all (what else is new)
+	--"<55.7 18:31:39> [RAID_BOSS_WHISPER] RAID_BOSS_WHISPER#|TInterface\\Icons\\Ability_Siege_Engineer_Detonate.blp:20|tA Crawler Mine has targeted you!#Crawler Mine#0#true", -- [4345]
+	elseif msg:find("Ability_Siege_Engineer_Detonate") then--Doesn't show in combat log at all (what else is new)
 		specWarnCrawlerMineFixate:Show()
 		yellCrawlerMineFixate:Yell()
+	elseif msg:find("Ability_Siege_Engineer_Superheated") then
+		specWarnLaserFixate:Show()
+		yellLaserFixate:Yell()
 	end
 end
 
