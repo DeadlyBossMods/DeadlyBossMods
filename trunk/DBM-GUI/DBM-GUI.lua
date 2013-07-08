@@ -1935,19 +1935,51 @@ local function CreateOptionsMenu()
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall)
 		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
 		
-		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 100, 1)
+		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 100, 1, 150)
 		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -105)
 		do
 			local firstshow = true
 			fontSizeSlider:SetScript("OnShow", function(self)
-					firstshow = true
-					self:SetValue(DBM.Options.SpecialWarningFontSize)
+				firstshow = true
+				self:SetValue(DBM.Options.SpecialWarningFontSize)
 			end)
 			fontSizeSlider:HookScript("OnValueChanged", function(self)
-					if firstshow then firstshow = false return end
-					DBM.Options.SpecialWarningFontSize = self:GetValue()
-					DBM:UpdateSpecialWarningOptions()
-					DBM:ShowTestSpecialWarning()
+				if firstshow then firstshow = false return end
+				DBM.Options.SpecialWarningFontSize = self:GetValue()
+				DBM:UpdateSpecialWarningOptions()
+				DBM:ShowTestSpecialWarning()
+			end)
+		end
+
+		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 1, 4, 1, 120)   -- (text , min_value , max_value , step , width)
+     	flashdurSlider:SetPoint('BOTTOMLEFT', fontSizeSlider, "BOTTOMLEFT", 175, -0)
+     	do
+     		local firstshow = true
+     		flashdurSlider:HookScript("OnShow", function(self)
+     			firstshow = true
+     			self:SetValue(DBM.Options.SpecialWarningFlashDur)
+     		end)
+			flashdurSlider:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.SpecialWarningFlashDur = self:GetValue()
+				--DBM:UpdateSpecialWarningOptions()
+				DBM:ShowTestSpecialWarning()
+			end)
+		end
+		
+		local flashdalphaSlider = specArea:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)   -- (text , min_value , max_value , step , width)
+     	flashdalphaSlider:SetPoint('BOTTOMLEFT', flashdurSlider, "BOTTOMLEFT", 150, -0)
+     	do
+     		local firstshow = true
+     		flashdalphaSlider:HookScript("OnShow", function(self)
+     			firstshow = true
+     			self:SetValue(DBM.Options.SpecialWarningFlashAlpha)
+     		end)
+			flashdalphaSlider:HookScript("OnValueChanged", function(self)
+				if firstshow then firstshow = false return end
+				DBM.Options.SpecialWarningFlashAlpha = self:GetValue()
+				--DBM:UpdateSpecialWarningOptions()
+				DBM:ShowTestSpecialWarning()
 			end)
 		end
 
