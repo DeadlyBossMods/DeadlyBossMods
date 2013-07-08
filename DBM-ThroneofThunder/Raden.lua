@@ -16,7 +16,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"UNIT_POWER_FREQUENT boss1"
+	"UNIT_POWER_FREQUENT boss1",
+	"UNIT_DIED"
 )
 
 --Anima
@@ -216,6 +217,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellUnstableAnima:Yell()
 		end
 	elseif args:IsSpellID(138297, 138308) then--Unstable Vita (138297 cast, 138308 jump)
+		DBM.InfoFrame:Update("reverseplayerbaddebuff")
 		if self.Options.SetIconsOnVita then
 			playerWithVita = DBM:GetRaidUnitId(args.destName)
 			self:SetIcon(args.destName, 1)
@@ -287,5 +289,11 @@ function mod:UNIT_POWER_FREQUENT(uId)
 		specWarnFatalStrike:Show()
 	elseif power == 96 and UnitBuff(uId, animaName) and self:AntiSpam(3, 2) then
 		specWarnMurderousStrike:Show()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if not args:IsDestTypeHostile() then
+		DBM.InfoFrame:Update("reverseplayerbaddebuff")--Force update so player dies it reflects this
 	end
 end
