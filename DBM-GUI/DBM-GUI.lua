@@ -1952,13 +1952,13 @@ local function CreateOptionsMenu()
 		end
 		
 		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 1, 3, 0.5, 120)   -- (text , min_value , max_value , step , width)
-     	flashdurSlider:SetPoint('BOTTOMLEFT', fontSizeSlider, "BOTTOMLEFT", 175, -0)
-     	do
-     		local firstshow = true
-     		flashdurSlider:HookScript("OnShow", function(self)
-     			firstshow = true
-     			self:SetValue(DBM.Options.SpecialWarningFlashDur)
-     		end)
+		flashdurSlider:SetPoint('BOTTOMLEFT', fontSizeSlider, "BOTTOMLEFT", 175, -0)
+		do
+			local firstshow = true
+			flashdurSlider:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.SpecialWarningFlashDur)
+			end)
 			flashdurSlider:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashDur = self:GetValue()
@@ -1968,13 +1968,13 @@ local function CreateOptionsMenu()
 		end
 		
 		local flashdalphaSlider = specArea:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)   -- (text , min_value , max_value , step , width)
-     	flashdalphaSlider:SetPoint('BOTTOMLEFT', flashdurSlider, "BOTTOMLEFT", 150, -0)
-     	do
-     		local firstshow = true
-     		flashdalphaSlider:HookScript("OnShow", function(self)
-     			firstshow = true
-     			self:SetValue(DBM.Options.SpecialWarningFlashAlpha)
-     		end)
+		flashdalphaSlider:SetPoint('BOTTOMLEFT', flashdurSlider, "BOTTOMLEFT", 150, -0)
+		do
+			local firstshow = true
+			flashdalphaSlider:HookScript("OnShow", function(self)
+				firstshow = true
+				self:SetValue(DBM.Options.SpecialWarningFlashAlpha)
+			end)
 			flashdalphaSlider:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
 				DBM.Options.SpecialWarningFlashAlpha = self:GetValue()
