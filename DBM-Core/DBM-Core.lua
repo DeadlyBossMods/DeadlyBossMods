@@ -139,6 +139,8 @@ DBM.DefaultOptions = {
 	SpecialWarningFontSize = 50,
 	SpecialWarningFontColor = {0.0, 0.0, 1.0},
 	SpecialWarningFlashColor = {1.0, 0.0, 0.0},
+	SpecialWarningFlashDur = 1,
+	SpecialWarningFlashAlpha = 0.5,
 	HealthFrameGrowUp = false,
 	HealthFrameLocked = false,
 	HealthFrameWidth = 200,
@@ -5007,7 +5009,7 @@ do
 			msg = msg:gsub(">.-<", stripName)
 			font:SetText(msg)
 			if not UnitIsDeadOrGhost("player") then
-				DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], 1)
+				DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], DBM.Options.SpecialWarningFlashDur, DBM.Options.SpecialWarningFlashAlpha)
 			end
 			frame:Show()
 			frame:SetAlpha(1)
@@ -5278,7 +5280,7 @@ do
 		self:Schedule(3, testWarningEnd)
 		frame.timer = 3
 		DBM:PlaySpecialWarningSound(soundId)
-		DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], 1)
+		DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], DBM.Options.SpecialWarningFlashDur, DBM.Options.SpecialWarningFlashAlpha)
 	end
 end
 
