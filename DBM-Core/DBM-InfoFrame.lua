@@ -1,4 +1,3 @@
--- ********************************************
 -- **             DBM Info Frame             **
 -- **     http://www.deadlybossmods.com      **
 -- ********************************************
@@ -236,7 +235,8 @@ local function updatePlayerPower()
 	table.wipe(lines)
 	if IsInGroup() then
 		for uId in DBM:GetGroupMembers() do
-			if not UnitIsDeadOrGhost(uId) and UnitPower(uId, pIndex)/UnitPowerMax(uId, pIndex)*100 >= infoFrameThreshold then
+			local maxPower = UnitPowerMax(uId, pIndex)
+			if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, pIndex) / maxPower * 100 >= infoFrameThreshold then
 				lines[UnitName(uId)] = UnitPower(uId, pIndex)
 			end
 		end
