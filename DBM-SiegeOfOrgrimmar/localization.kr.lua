@@ -129,10 +129,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 })
 
-L:SetMiscLocalization({
-	bloodRageEnds	= "subsides!"
-})
-
 ------------------------
 -- Spoils of Pandaria --
 ------------------------
@@ -173,7 +169,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	mineTarget	= "A Crawler Mine has targeted you!",
 	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
 	newShredder	= "An Automated Shredder draws near!"
 })
@@ -195,6 +190,21 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	calculatedTarget	= "calculating eye!",
+	yellow				= "Yellow",
+	red					= "Red",
+	blue				= "Blue",
+	purple				= "Purple",
+	green				= "Green",
+	bomb				= "Bomb",
+	sword				= "Swords",
+	drums				= "Drums",
+	mantid				= "Mantid",--Assumed
+	staff 				= "Staff",--Assumed
+	one					= "One",
+	two					= "Pair",
+	three				= "Three",
+	four				= "Four",--Assumed
+	five				= "Five",--Assumed
 	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
 	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
 	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
