@@ -1951,7 +1951,7 @@ local function CreateOptionsMenu()
 			end)
 		end
 
-		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 1, 4, 1, 120)   -- (text , min_value , max_value , step , width)
+		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 1, 3, 0.5, 120)   -- (text , min_value , max_value , step , width)
      	flashdurSlider:SetPoint('BOTTOMLEFT', fontSizeSlider, "BOTTOMLEFT", 175, -0)
      	do
      		local firstshow = true
