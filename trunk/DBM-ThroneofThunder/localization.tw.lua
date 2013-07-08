@@ -172,7 +172,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	LifeYell		= "%s中了生命吸取(%d)"
+	LifeYell		= "%s中了生命吸取(%d層)"
 })
 
 ----------------
