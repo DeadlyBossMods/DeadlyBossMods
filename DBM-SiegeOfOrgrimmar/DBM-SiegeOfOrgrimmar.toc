@@ -1,6 +1,7 @@
 ﻿## Interface: 50400
 ## X-Min-Interface: 50400
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Siege of Orgrimmar|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Осада Оргриммара|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Die Belagerung Orgrimmars|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0오그리마 공성전|r
 ## Author: MysticalOS
