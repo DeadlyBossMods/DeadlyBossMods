@@ -285,9 +285,9 @@ end
 
 function mod:UNIT_POWER_FREQUENT(uId)
 	local power = UnitPower(uId)
-	if power == 90 and UnitBuff(uId, vitaName) and self:AntiSpam(3, 1) then
+	if power == 80 and UnitBuff(uId, vitaName) and self:AntiSpam(3, 1) then
 		specWarnFatalStrike:Show()
-	elseif power == 96 and UnitBuff(uId, animaName) and self:AntiSpam(3, 2) then
+	elseif power == 95 and UnitBuff(uId, animaName) and self:AntiSpam(3, 2) then
 		specWarnMurderousStrike:Show()
 	end
 end
