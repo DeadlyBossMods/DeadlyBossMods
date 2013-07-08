@@ -535,7 +535,7 @@ function infoFrame:Update(event)
 		updateGoodPlayerDebuffs()
 	elseif event == "playerbaddebuff" then
 		updateBadPlayerDebuffs()
-	elseif currentEvent == "reverseplayerbaddebuff" then
+	elseif event == "reverseplayerbaddebuff" then
 		updateReverseBadPlayerDebuffs()
 	elseif event == "playeraggro" then
 		updatePlayerAggro()
