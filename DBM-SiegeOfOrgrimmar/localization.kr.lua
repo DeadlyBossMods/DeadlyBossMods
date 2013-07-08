@@ -1,4 +1,5 @@
-﻿local L
+﻿if GetLocale() ~= "koKR" then return end
+local L
 
 ---------------
 -- Immerseus --
