@@ -278,7 +278,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat						= "잠깐! 난... 난 적이 아니다.",
+	Defeat						= "잠깐",
 	NoSensitivity				= "생령 전이 순서",
 	VitaSoakerOptionConflict	= "경고: 불안정한 생령 전이 알림이 설정 되어 있으나, 정보창이 꺼져 있습니다. 이 기능은 정보창 없이는 작동하지 않습니다!",
 	VitaChatMessage				= "다음 불안정한 생령 전이자 : %s"
