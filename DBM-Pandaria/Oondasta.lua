@@ -36,6 +36,7 @@ local timerPiercingRoarCD		= mod:NewCDTimer(25, 137457)--25-60sec variation (i'm
 local timerFrillBlastCD			= mod:NewCDTimer(25, 137505)--25-30sec variation
 
 mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("ReadyCheck", false)
 
 local yellTriggered = false
 
@@ -102,6 +103,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if self:GetCIDFromGUID(UnitGUID("target")) == 69161 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 69161 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
+		elseif self.Options.ReadyCheck then
+			PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
 		end
 	end
 end
