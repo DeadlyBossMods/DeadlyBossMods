@@ -14,6 +14,12 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED"
 )
 
+--[[
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+--]]
+
 local warnStormcloud				= mod:NewTargetAnnounce(136340, 3)
 local warnLightningTether			= mod:NewTargetAnnounce(136339, 3)
 local warnArcNova					= mod:NewCastAnnounce(136338, 3)
@@ -30,9 +36,11 @@ local timerArcNovaCD				= mod:NewNextTimer(42, 136338)
 local soundArcNova					= mod:NewSound(136338, nil, mod:IsMelee())
 
 mod:AddBoolOption("RangeFrame")--For Stormcloud, might tweek to not show all the time with actual better logs than me facepulling it and dying with 20 seconds
+--mod:AddBoolOption("ReadyCheck", false)
 
 local stormcloudTargets = {}
 local tetherTargets = {}
+local yellTriggered = false
 
 local function warnStormcloudTargets()
 	warnStormcloud:Show(table.concat(stormcloudTargets, "<, >"))
@@ -47,9 +55,11 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(stormcloudTargets)
 	table.wipe(tetherTargets)
-	timerStormcloudCD:Start(15-delay)--15-17 variation noted
-	timerLightningTetherCD:Start(28-delay)
-	timerArcNovaCD:Start(39-delay)--Not a large sample size
+	if yellTriggered then
+		timerStormcloudCD:Start(15-delay)--15-17 variation noted
+		timerLightningTetherCD:Start(28-delay)
+		timerArcNovaCD:Start(39-delay)--Not a large sample size
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
@@ -61,6 +71,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -94,3 +105,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnTetherTargets)
 	end
 end
+
+--[[Need pull yell first
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Pull and not self:IsInCombat() then
+		if self:GetCIDFromGUID(UnitGUID("target")) == 69099 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 69099 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
+			yellTriggered = true
+			DBM:StartCombat(self, 0)
+		elseif self.Options.ReadyCheck then
+			PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
+		end
+	end
+end
+--]]
