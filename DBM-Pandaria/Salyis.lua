@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(725, "DBM-Pandaria", nil, 322)	-- 322 = Pandaria/Outdoor 
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(62346)--Salyis not dies. Only Galleon attackable and dies.
+mod:SetCreatureID(62346)--Salyis not die. Only Galleon attackable and dies.
 mod:SetQuestID(32098)
 mod:SetZone()
 
@@ -28,6 +28,8 @@ local timerCannonBarrageCD		= mod:NewNextTimer(60, 121600)
 local timerStompCD				= mod:NewNextTimer(60, 121787)
 local timerStomp				= mod:NewCastTimer(3, 121787)
 local timerWarmongerCD			= mod:NewNextTimer(10, "ej6200", nil, nil, nil, 121747)--Comes after Stomp. (Also every 60 sec.)
+
+mod:AddBoolOption("ReadyCheck", false)
 
 local yellTriggered = false
 
@@ -63,6 +65,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if self:GetCIDFromGUID(UnitGUID("target")) == 62346 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 62346 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
+		elseif self.Options.ReadyCheck then
+			PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
 		end
 	end
 end

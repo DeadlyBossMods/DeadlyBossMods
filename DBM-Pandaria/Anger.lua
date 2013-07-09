@@ -34,6 +34,7 @@ local timerUnleashedWrath		= mod:NewBuffActiveTimer(24, 119488, nil, mod:IsTank(
 
 mod:AddBoolOption("RangeFrame", true)--For Mind control spreading.
 mod:AddBoolOption("SetIconOnMC", true)
+mod:AddBoolOption("ReadyCheck", false)
 
 local yellTriggered = false
 
@@ -187,6 +188,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if self:GetCIDFromGUID(UnitGUID("target")) == 60491 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 60491 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
+		elseif self.Options.ReadyCheck then
+			PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
 		end
 	end
 end
