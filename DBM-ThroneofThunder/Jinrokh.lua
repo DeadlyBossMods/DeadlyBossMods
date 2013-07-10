@@ -13,8 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
@@ -100,6 +98,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -116,6 +115,11 @@ function mod:SPELL_CAST_START(args)
 			timerIonizationCD:Start()
 			countdownIonization:Start()
 		end
+		--Only register electrified waters events during storm. Avoid high cpu events during rest of fight.
+		self:RegisterShortTermEvents(
+			"SPELL_PERIODIC_DAMAGE",
+			"SPELL_PERIODIC_MISSED"
+		)
 	elseif args.spellId == 138732 then
 		warnIonization:Show()
 		specWarnIonization:Show()
@@ -166,10 +170,12 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
+	elseif args.spellId == 137313 then
+		self:UnregisterShortTermEvents()
 	end
 end
 
-function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 138006 and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnElectrifiedWaters:Show()
 	end
