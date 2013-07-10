@@ -17,7 +17,6 @@ mod:RegisterEventsInCombat(
 --Amalgam of Corruption
 local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
-local warnDespair						= mod:NewTargetAnnounce(145725, 3, nil, mod:IsTank() or mod:IsHealer())
 --Test of Serenity (DPS)
 local warnTearReality					= mod:NewCastAnnounce(144482, 3)
 --local warnExpelCorruptionDPS			= mod:NewCastAnnounce(144479, 3)--spellid probably wrong. there are 3 of them (and for a fact two diff versions of spell, dps and healer)
@@ -28,10 +27,10 @@ local warnBurstOfCorruption				= mod:NewSpellAnnounce(144654, 3)--Spammy? Also, 
 --Test of Confidence (tank)
 local warnTitanicSmash					= mod:NewSpellAnnounce(144628, 4)
 local warnHurlCorruption				= mod:NewSpellAnnounce(144649, 4)
+local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 4)
 
 --Amalgam of Corruption
 --local specWarnBlindHatred				= mod:NewSpecialWarningMove(145227)
-local specWarnDespair					= mod:NewSpecialWarningSpell(145725, mod:IsTank())
 --All tests
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningSpell(144482)
@@ -42,12 +41,11 @@ local specWarnLingeringCorruption		= mod:NewSpecialWarningDispel(144514)
 --Test of Confidence (tank)
 local specWarnTitanicSmash				= mod:NewSpecialWarningMove(144628)
 local specWarnHurlCorruption			= mod:NewSpecialWarningInterrupt(144649)
+local specWarnPiercingCorruption		= mod:NewSpecialWarningSpell(144657)
 
 --Amalgam of Corruption
 --local timerUnleashedAngerCD			= mod:NewCDTimer(10, 145216, mod:IsTank())
 --local timerBlindHatredCD				= mod:NewCDTimer(70, 145226)
-local timerDespair						= mod:NewTargetTimer(10, 145725)
-local timerDespairActive				= mod:NewBuffFadesTimer(60, 144728)
 --local timerDespairCD					= mod:NewCDTimer(70, 145725)
 --Test of Serenity (DPS)
 --local timerTearRealityCD				= mod:NewCDTimer(10, 144482)
@@ -60,16 +58,10 @@ local timerDespairActive				= mod:NewBuffFadesTimer(60, 144728)
 --local timerTitanicSmashCD				= mod:NewCDTimer(25, 144628)
 --local timerHurlCorruptionCD			= mod:NewCDTimer(25, 144649)
 
-local countdownDespair					= mod:NewCountdownFades(59, 144728)--Needed? do you die if you don't complete task like garajal?
-
-local berserkTimer						= mod:NewBerserkTimer(420)--EJ says fight has a 7 min berserk (how convinient). Should still verify it though.
+local berserkTimer						= mod:NewBerserkTimer(420)--EJ says fight has a 7 min berserk (how convinient).
 
 function mod:OnCombatStart(delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
-		berserkTimer:Start(240-delay)
-	else
-		berserkTimer:Start(-delay)
-	end
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
@@ -87,8 +79,8 @@ function mod:SPELL_CAST_START(args)
 		warnTearReality:Show()
 		specWarnTearReality:Show()
 --		timerTearRealityCD:Start()
-	elseif args.spellId == 144479 then
-		print("DBM DEBUG: Expel corruption cast. Tell dbm guy if you're dps, tank or healer")
+	elseif args.spellId == 144479 or args.spellId == 144548 or args.spellId == 145064 then
+		print("DBM DEBUG: Expel corruption cast. Tell dbm guy if you're dps, tank or healer and give them this ID: ", args.spellId)
 --		warnExpelCorruption:Show()
 --		specWarnExpelCorruption:Show()
 
@@ -103,22 +95,21 @@ function mod:SPELL_CAST_START(args)
 		warnHurlCorruption:Show()
 		specWarnHurlCorruption:Show()
 --		timerHurlCorruptionCD:Start()
+	elseif args.spellId == 144657 then
+		warnPiercingCorruption:Show()
+		specWarnPiercingCorruption:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 145725 then
-		self:SendSync("DespairTarget", args.destGUID)
-	elseif args.spellId == 144728 and args:IsPlayer() then
-		timerDespairActive:Start()
-		countdownDespair:Start()
-	elseif args.spellId == 144514 then
+	if args.spellId == 144514 then
 		warnLingeringCorruption:Show(args.destName)
 		specWarnLingeringCorruption:Show(args.destName)
 --		timerLingeringCorruptionCD:Start()
 	end
 end
 
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 145725 then
 		timerDespair:Cancel(args.destName)
@@ -126,16 +117,4 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerDespairActive:Cancel()
 		countdownDespair:Cancel()
 	end
-end
-
-function mod:OnSync(msg, guid)
-	local targetname
-	if guid then
-		targetname = DBM:GetFullPlayerNameByGUID(guid)
-	end
-	if msg == "DespairTarget" and targetname then
-		warnDespair:Show(targetname)
-		timerDespair:Start(targetname)
-		specWarnDespair:Show()
-	end
-end
+end--]]
