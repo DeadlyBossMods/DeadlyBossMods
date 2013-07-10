@@ -138,9 +138,15 @@ DBM.DefaultOptions = {
 	SpecialWarningFont = STANDARD_TEXT_FONT,
 	SpecialWarningFontSize = 50,
 	SpecialWarningFontColor = {0.0, 0.0, 1.0},
-	SpecialWarningFlashColor = {1.0, 0.0, 0.0},
-	SpecialWarningFlashDur = 1,
-	SpecialWarningFlashAlpha = 0.5,
+	SpecialWarningFlashColor1 = {1.0, 1.0, 0.0},--Yellow
+	SpecialWarningFlashColor2 = {1.0, 0.5, 0.0},--Orange
+	SpecialWarningFlashColor3 = {1.0, 0.0, 0.0},--Red
+	SpecialWarningFlashDur1 = 1,
+	SpecialWarningFlashDur2 = 1.5,
+	SpecialWarningFlashDur3 = 2,
+	SpecialWarningFlashAlpha1 = 0.5,
+	SpecialWarningFlashAlpha2 = 0.5,
+	SpecialWarningFlashAlpha3 = 0.5,
 	HealthFrameGrowUp = false,
 	HealthFrameLocked = false,
 	HealthFrameWidth = 200,
@@ -5009,8 +5015,14 @@ do
 			end
 			msg = msg:gsub(">.-<", stripName)
 			font:SetText(msg)
-			if not UnitIsDeadOrGhost("player") then
-				DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], DBM.Options.SpecialWarningFlashDur, DBM.Options.SpecialWarningFlashAlpha)
+			if not UnitIsDeadOrGhost("player") and DBM.Options.ShowFlashFrame then
+				if self.flash == 1 then
+					DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor1[1],DBM.Options.SpecialWarningFlashColor1[2], DBM.Options.SpecialWarningFlashColor1[3], DBM.Options.SpecialWarningFlashDur1, DBM.Options.SpecialWarningFlashAlpha1)
+				elseif self.flash == 2 then
+					DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor2[1],DBM.Options.SpecialWarningFlashColor2[2], DBM.Options.SpecialWarningFlashColor2[3], DBM.Options.SpecialWarningFlashDur2, DBM.Options.SpecialWarningFlashAlpha2)
+				elseif self.flash == 3 then
+					DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor3[1],DBM.Options.SpecialWarningFlashColor3[2], DBM.Options.SpecialWarningFlashColor3[3], DBM.Options.SpecialWarningFlashDur3, DBM.Options.SpecialWarningFlashAlpha3)
+				end
 			end
 			frame:Show()
 			frame:SetAlpha(1)
@@ -5040,11 +5052,13 @@ do
 		elseif not runSound then
 			runSound = 1
 		end
+		local flash
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
 				mod = self,
 				sound = not noSound,
+				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 			},
 			mt
 		)
@@ -5074,6 +5088,7 @@ do
 			spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		end
 		local text
+		local flash
 		if announceType == "prewarn" then
 			if type(stacks) == "string" then
 				text = DBM_CORE_AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName, stacks)
@@ -5089,6 +5104,7 @@ do
 				announceType = announceType,
 				mod = self,
 				sound = not noSound,
+				flash = runSound,--Set flash color to hard coded runsound (even if user sets custom sounds)
 			},
 			mt
 		)
@@ -5269,7 +5285,7 @@ do
 		frame:SetFrameStrata("HIGH")
 	end
 
-	function DBM:ShowTestSpecialWarning(text)
+	function DBM:ShowTestSpecialWarning(text, number)
 		if moving then
 			return
 		end
@@ -5280,8 +5296,16 @@ do
 		self:Unschedule(testWarningEnd)
 		self:Schedule(3, testWarningEnd)
 		frame.timer = 3
-		DBM:PlaySpecialWarningSound(soundId)
-		DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor[1],DBM.Options.SpecialWarningFlashColor[2], DBM.Options.SpecialWarningFlashColor[3], DBM.Options.SpecialWarningFlashDur, DBM.Options.SpecialWarningFlashAlpha)
+		DBM:PlaySpecialWarningSound(number)
+		if DBM.Options.ShowFlashFrame then
+			if number == 1 then
+				DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor1[1],DBM.Options.SpecialWarningFlashColor1[2], DBM.Options.SpecialWarningFlashColor1[3], DBM.Options.SpecialWarningFlashDur1, DBM.Options.SpecialWarningFlashAlpha1)
+			elseif number == 2 then
+				DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor2[1],DBM.Options.SpecialWarningFlashColor2[2], DBM.Options.SpecialWarningFlashColor2[3], DBM.Options.SpecialWarningFlashDur2, DBM.Options.SpecialWarningFlashAlpha2)
+			elseif number == 3 then
+				DBM.Flash:Show(DBM.Options.SpecialWarningFlashColor3[1],DBM.Options.SpecialWarningFlashColor3[2], DBM.Options.SpecialWarningFlashColor3[3], DBM.Options.SpecialWarningFlashDur3, DBM.Options.SpecialWarningFlashAlpha3)
+			end
+		end
 	end
 end
 
