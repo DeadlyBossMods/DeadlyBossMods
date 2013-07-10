@@ -1982,7 +1982,7 @@ do
 		LastInstanceMapID = mapID
 		if instanceType == "none" and (mapID ~= 369) and (mapID ~= 1043) and (mapID ~= 974) then return end -- instance type of brawlers guild and DMF are none
 		self:LoadModsOnDemand("mapId", mapID)
-		if instanceType == "scenario" and self:GetModByName("d511") then--mod already loaded
+		if instanceType == "scenario" and (mapID ~= 1148) and self:GetModByName("d511") then--mod already loaded (Filter 1148, which is proving grounds)
 			DBM:InstanceCheck()
 		end
 	end
@@ -2001,7 +2001,7 @@ end
 
 --Scenario mods
 function DBM:InstanceCheck()
-	if combatInfo[LastInstanceMapID] then--Scenarios not yet moved over to LastInstanceMapID
+	if combatInfo[LastInstanceMapID] then
 		for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 			if (v.type == "scenario") and checkEntry(v.msgs, LastInstanceMapID) then
 				DBM:StartCombat(v.mod, 0)
