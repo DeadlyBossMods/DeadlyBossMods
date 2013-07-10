@@ -2051,9 +2051,9 @@ local function CreateOptionsMenu()
 			end)
 			color2:SetScript("OnColorSelect", function(self)
 					if firstshow then firstshow = false return end
-					DBM.Options.SpecialWarningFlashColor1[1] = select(1, self:GetColorRGB())
-					DBM.Options.SpecialWarningFlashColor1[2] = select(2, self:GetColorRGB())
-					DBM.Options.SpecialWarningFlashColor1[3] = select(3, self:GetColorRGB())
+					DBM.Options.SpecialWarningFlashColor2[1] = select(1, self:GetColorRGB())
+					DBM.Options.SpecialWarningFlashColor2[2] = select(2, self:GetColorRGB())
+					DBM.Options.SpecialWarningFlashColor2[3] = select(3, self:GetColorRGB())
 					color2text:SetTextColor(self:GetColorRGB())
 					DBM:UpdateSpecialWarningOptions()
 					DBM:ShowTestSpecialWarning(nil, 2)
@@ -2232,9 +2232,6 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2
 				DBM.Options.SpecialWarningSound3 = DBM.DefaultOptions.SpecialWarningSound3
 				DBM.Options.SpecialWarningFontSize = DBM.DefaultOptions.SpecialWarningFontSize
-				DBM.Options.SpecialWarningFontColor[1] = DBM.DefaultOptions.SpecialWarningFontColor[1]
-				DBM.Options.SpecialWarningFontColor[2] = DBM.DefaultOptions.SpecialWarningFontColor[2]
-				DBM.Options.SpecialWarningFontColor[3] = DBM.DefaultOptions.SpecialWarningFontColor[3]
 				DBM.Options.SpecialWarningFlashColor1[1] = DBM.DefaultOptions.SpecialWarningFlashColor1[1]
 				DBM.Options.SpecialWarningFlashColor1[2] = DBM.DefaultOptions.SpecialWarningFlashColor1[2]
 				DBM.Options.SpecialWarningFlashColor1[3] = DBM.DefaultOptions.SpecialWarningFlashColor1[3]
