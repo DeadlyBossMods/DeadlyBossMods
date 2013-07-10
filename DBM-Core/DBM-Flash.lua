@@ -36,7 +36,7 @@ end
 
 function flashFrame:Show(red, green, blue, dur, alpha)
 	if not DBM.Options.ShowFlashFrame then return end
-	r, g, b, t, a = red, green, blue, dur or 1, alpha or 0.5
+	r, g, b, t, a = red or 1, green or 0, blue or 0, dur or 1, alpha or 0.5
 	t2 = t / 2
 	frame.TimeSinceLastUpdate = 0
 	frame:SetAlpha(0)
