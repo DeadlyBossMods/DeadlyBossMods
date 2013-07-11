@@ -62,10 +62,12 @@ local berserkTimer						= mod:NewBerserkTimer(420)--EJ says fight has a 7 min be
 
 mod:AddBoolOption("InfoFrame")
 
+local corruptionLevel = EJ_GetSectionInfo(8252)
+
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader("Corruption")--Will localize later, just want this in before test in a few min
+		DBM.InfoFrame:SetHeader(corruptionLevel)--Will localize later, just want this in before test in a few min
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
 end
