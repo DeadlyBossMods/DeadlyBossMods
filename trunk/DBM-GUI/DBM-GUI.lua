@@ -2131,11 +2131,11 @@ local function CreateOptionsMenu()
 			local firstshow = true
 			flashdalphaSlider:HookScript("OnShow", function(self)
 				firstshow = true
-				self:SetValue(DBM.Options.SpecialWarningFlashAlp1)
+				self:SetValue(DBM.Options.SpecialWarningFlashAlph1)
 			end)
 			flashdalphaSlider:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
-				DBM.Options.SpecialWarningFlashAlp1 = self:GetValue()
+				DBM.Options.SpecialWarningFlashAlph1 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
 				DBM:ShowTestSpecialWarning(nil, 1)
 			end)
@@ -2170,11 +2170,11 @@ local function CreateOptionsMenu()
 			local firstshow = true
 			flashdalphaSlider2:HookScript("OnShow", function(self)
 				firstshow = true
-				self:SetValue(DBM.Options.SpecialWarningFlashAlp2)
+				self:SetValue(DBM.Options.SpecialWarningFlashAlph2)
 			end)
 			flashdalphaSlider2:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
-				DBM.Options.SpecialWarningFlashAlp2 = self:GetValue()
+				DBM.Options.SpecialWarningFlashAlph2 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
 				DBM:ShowTestSpecialWarning(nil, 2)
 			end)
@@ -2209,11 +2209,11 @@ local function CreateOptionsMenu()
 			local firstshow = true
 			flashdalphaSlider3:HookScript("OnShow", function(self)
 				firstshow = true
-				self:SetValue(DBM.Options.SpecialWarningFlashAlp3)
+				self:SetValue(DBM.Options.SpecialWarningFlashAlph3)
 			end)
 			flashdalphaSlider3:HookScript("OnValueChanged", function(self)
 				if firstshow then firstshow = false return end
-				DBM.Options.SpecialWarningFlashAlp3 = self:GetValue()
+				DBM.Options.SpecialWarningFlashAlph3 = self:GetValue()
 				--DBM:UpdateSpecialWarningOptions()
 				DBM:ShowTestSpecialWarning(nil, 3)
 			end)
@@ -2245,9 +2245,9 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningFlashDura1 = DBM.DefaultOptions.SpecialWarningFlashDura1
 				DBM.Options.SpecialWarningFlashDura2 = DBM.DefaultOptions.SpecialWarningFlashDura2
 				DBM.Options.SpecialWarningFlashDura3 = DBM.DefaultOptions.SpecialWarningFlashDura3
-				DBM.Options.SpecialWarningFlashAlp1 = DBM.DefaultOptions.SpecialWarningFlashAlp1
-				DBM.Options.SpecialWarningFlashAlp2 = DBM.DefaultOptions.SpecialWarningFlashAlp2
-				DBM.Options.SpecialWarningFlashAlp3 = DBM.DefaultOptions.SpecialWarningFlashAlp3
+				DBM.Options.SpecialWarningFlashAlph1 = DBM.DefaultOptions.SpecialWarningFlashAlph1
+				DBM.Options.SpecialWarningFlashAlph2 = DBM.DefaultOptions.SpecialWarningFlashAlph2
+				DBM.Options.SpecialWarningFlashAlph3 = DBM.DefaultOptions.SpecialWarningFlashAlph3
 				DBM.Options.SpecialWarningPoint = DBM.DefaultOptions.SpecialWarningPoint
 				DBM.Options.SpecialWarningX = DBM.DefaultOptions.SpecialWarningX
 				DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
