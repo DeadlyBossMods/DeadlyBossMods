@@ -776,6 +776,7 @@ do
 				"LOADING_SCREEN_DISABLED"
 			)
 			self:GROUP_ROSTER_UPDATE()
+			self:LOADING_SCREEN_DISABLED()
 			self:Schedule(1.5, function()
         		combatInitialized = true
 			end)
