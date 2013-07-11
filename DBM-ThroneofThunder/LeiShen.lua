@@ -220,8 +220,9 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args.spellId == 136478 then
 		warnFusionSlash:Show()
-		specWarnFusionSlash:Show()
 		timerFussionSlashCD:Start()
+		if self:IsDifficulty("lfr25") then return end
+		specWarnFusionSlash:Show()
 	end
 end
 
@@ -229,6 +230,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(135000, 134912) then--Is 135000 still used on 10 man?
 		warnDecapitate:Show(args.destName)
 		timerDecapitateCD:Start()
+		if self:IsDifficulty("lfr25") then return end
 		if args:IsPlayer() then
 			specWarnDecapitate:Show()
 			soundDecapitate:Play()
