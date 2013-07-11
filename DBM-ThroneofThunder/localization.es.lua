@@ -11,8 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "Mostrar aviso especial si permaneces en $spell:138470\n(Aviso al comenzar $spell:137313 o si $spell:138732 expirará pronto)",
-	RangeFrame			= "Mostrar radar de rango (8/4)"
+	specWarnWaterMove	= "Mostrar aviso especial si permaneces en $spell:138470\n(Aviso al comenzar $spell:137313 o si $spell:138732 expirará pronto)"
 })
 
 
@@ -38,12 +37,12 @@ L:SetOptionLocalization({
 	specWarnOrbofControl	= "Mostrar aviso especial cuando un $journal:7092 está disponible",
 	timerDoor				= "Mostrar temporizador para la siguiente fase de puerta tribal",
 	timerAdds				= "Mostrar temporizador cuando aparecen nuevos adds",
-	RangeFrame				= "Mostrar distancia (5) para $spell:136480"
+	SetIconOnAdds			= "Poner iconos en los adds"
 })
 
 L:SetMiscLocalization({
-	newForces		= "salen en tropel desde",--Farraki forces pour from the Farraki Tribal Door!
-	chargeTarget	= "fija la vista"--Horridon sets his eyes on Eraeshio and stamps his tail!
+	newForces		= "salen en tropel desde",
+	chargeTarget	= "fija la vista"
 })
 
 ---------------------------
@@ -56,8 +55,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	PHealthFrame		= "Mostrar salud restante para que $spell:136442 desaparezca\n(Requiere barra de vida del boss)",
-	RangeFrame			= "Mostrar radar de rango",
+	PHealthFrame		= "Mostrar salud restante para que $spell:136442 desaparezca<br/>(Requiere barra de vida del boss)",
 	AnnounceCooldowns	= "Mostrar cuenta de $spell:137166 (hasta 3) para uso de cooldowns de banda"
 })
 
@@ -74,7 +72,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalShell	= "Mostrar aviso especial cuando te falta $spell:137633",
+	specWarnCrystalShell	= "Mostrar aviso especial cuando te falta $spell:137633 y estás por encima del 90% de salud",
 	InfoFrame				= "Mostrar cuadro de información para los jugadores sin $spell:137633",
 	SetIconOnTurtles		= "Poner iconos en $journal:7129",
 	ClearIconOnTurtles		= "Quitar iconos en $journal:7129 cuando les afecte $spell:133971",
@@ -108,6 +106,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	rampageEnds	= "La ira de Megaera amaina."
 })
+
 ------------
 -- Ji-Kun --
 ------------
@@ -125,7 +124,14 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame			= "Mostrar radar de rango (10) para $spell:138923"
+	ShowNestArrows		= "Mostrar flecha del DBM para la activación de los nidos",
+	Never				= "Nunca",
+	Northeast			= "Azul - Abajo NE y Arriba NE",
+	Southeast			= "Verde - Abajo SE y Arriba SE",
+	Southwest			= "Morado/rojo - Abajo SO y Arriba SO(25) o Arriba centro(10)",
+	West				= "Rojo - Abajo O y Arriba centro(solo en 25)",
+	Northwest			= "Amarillo - Abajo NO y Arriba NO(solo en 25)",
+	Guardians			= "Guardianes del nido"
 })
 
 L:SetMiscLocalization({
@@ -136,13 +142,13 @@ L:SetMiscLocalization({
 	UpperAndLower	= "Arriba y Abajo",
 	TrippleD		= "Triple (2xAbajo)",
 	TrippleU		= "Triple (2xArriba)",
-	SouthWest		= "SO",
-	SouthEast		= "SE",
-	NorthWest		= "NO",
-	NorthEast		= "NE",
-	West			= "O",
-	Middle10		= "C",
-	Middle25		= "C"
+	NorthEast		= "|cff0000ffNE|r",--Azul
+	SouthEast		= "|cFF088A08SE|r",--Verde
+	SouthWest		= "|cFF9932CDSO|r",--Morado
+	West			= "|cffff0000O|r",--Rojo
+	NorthWest		= "|cffffff00NO|r",--Amarillo
+	Middle10		= "|cFF9932CDCentro|r",--Morado (Centro es arriba suroeste en 10/LFR)
+	Middle25		= "|cffff0000Centro|r"--Rojo (Centro es arriba oeste en 25)
 })
 
 --------------------------
@@ -183,7 +189,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDebuffCount				= "Mostrar cuenta de debuffs cuando se absorbe un charco",
-	RangeFrame					= "Mostrar radar de rango (5/2)",
 	SetIconOnBigOoze			= "Poner icono en $journal:6969"
 })
 
@@ -237,10 +242,6 @@ L:SetTimerLocalization({
 	timerDuskCD		= "Siguiente fase de crepúsculo"
 })
 
-L:SetOptionLocalization({
-	RangeFrame		= "Mostrar radar de rango (8)"
-})
-
 L:SetMiscLocalization({
 	DuskPhase		= "¡Lu'lin! ¡Préstame tu fuerza!"
 })
@@ -251,17 +252,57 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "Interfase pronto"
+	specWarnIntermissionSoon	= "Interfase pronto",
+	warnDiffusionChainSpread	= "difusión de %s en >%s<"
+})
+
+L:SetTimerLocalization({
+	timerConduitCD				= "CD del primer conductor"
 })
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "Mostrar aviso especial antes de cada interfase",
-	RangeFrame					= "Mostrar radar de rango (8/6)",--For two different spells
+	warnDiffusionChainSpread	= "Mostrar $spell:135991 extendiendose a objetivos",
+	timerConduitCD				= "Mostrar temporizador para el cooldown del primer conductor",
 	StaticShockArrow			= "Mostrar flecha cuando alguien está afectado por $spell:135695",
 	OverchargeArrow				= "Mostrar flecha cuando alguien está afectado por $spell:136295"
+})
+
+L:SetMiscLocalization({
+	StaticYell		= "Choque estático en %s (%d)"
 })
 
 ------------
 -- Ra-den --
 ------------
 L= DBM:GetModLocalization(831)
+
+L:SetWarningLocalization({
+	specWarnVitaSoaker			= "¡Eres el siguiente en absorber Vita!",
+	warnVitaSoakerSoon			= "Eres el segundo en absorber Vita"
+})
+
+
+L:SetOptionLocalization({
+	warnVitaSoakerSoon	= "Anunciar cuando eres el segundo en absorber Vita (Requiere activar cuadro de información)",
+	specWarnVitaSoaker	= "Mostrar aviso especial cuando eres el siguiente en absorber $spell:138297 basado en tu posición en el cuadro de información (Requiere activar cuadro de información)",
+	SetIconsOnVita		= "Poner iconos en los jugadores afectados por $spell:138297 y en el jugador más alejado de ellos",
+	InfoFrame			= "Mostrar cuadro de información para el orden de absorción de jugadores sin $spell:138372 (excluyendo tanques)",
+	AnnounceVitaSoaker	= "Anunciar el siguiente absorbedor de $spell:138297 al chat de avisos de BANDA (Requiere ser líder de banda)"
+})
+
+L:SetMiscLocalization({
+	Defeat						= "¡Esperad!",--needs to be verified (voice captured from path files)
+	NoSensitivity				= "Orden de absorción de Vita",
+	VitaSoakerOptionConflict	= "Peligro: Has activado los avisos de absorción de Vita, pero has desabilitado en cuadro de información. Los avisos no funcionarán sin el cuadro.",
+	VitaChatMessage				= "Siguiente absorbedor de Vita: %s"
+})
+
+-------------
+--  Trash  --
+-------------
+L = DBM:GetModLocalization("ToTTrash")
+
+L:SetGeneralLocalization({
+	name =	"Entre-Jefes de Solio del Trueno"
+})
