@@ -16,6 +16,10 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
+L:SetOptionLocalization({
+	InfoFrame			= "Zeige Infofenster für $journal:8252"
+})
+
 ------------------
 -- Sha of Pride --
 ------------------
@@ -74,7 +78,6 @@ L= DBM:GetModLocalization(851)
 L= DBM:GetModLocalization(865)
 
 L:SetMiscLocalization({
-	mineTarget	= "A Crawler Mine has targeted you!",--translate (trigger)
 	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",--translate (trigger)
 	newShredder	= "An Automated Shredder draws near!"--translate (trigger)
 })
@@ -90,7 +93,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Show special warning when a paragon you are vulnerable to activating paragons",--translate later
+	specWarnActivatedVulnerable		= "Show special warning when you are vulnerable to activating paragons",--translate later
 	specWarnCriteriaLinked			= "Show special warning when you are linked to $spell:144095",--translate later
 })
 

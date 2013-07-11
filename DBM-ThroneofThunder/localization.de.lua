@@ -285,7 +285,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Defeat						= "Wartet! Ich bin... Ich bin nicht Euer Feind.",--needs to be verified (video-captured translation)
+	Defeat						= "Wartet!",--needs to be verified (video-captured translation)
 	NoSensitivity				= "Reihenfolge Vitaziele",
 	VitaSoakerOptionConflict	= "Achtung: Du hast die Warnungen für die Einteilung als nächstes bzw. übernächstes Ziel von Instabile Vita aktiviert, aber das Infofenster deaktiviert. Die Warnungen werden ohne das Infofenster nicht funktionieren!",
 	VitaChatMessage				= "Nächstes Vitaziel: %s"

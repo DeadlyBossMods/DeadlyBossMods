@@ -39,7 +39,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)",
 	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!"
 })
 
@@ -49,6 +48,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(814)
 
 L:SetOptionLocalization({
+	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)",
 	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 136340)
 })
 
