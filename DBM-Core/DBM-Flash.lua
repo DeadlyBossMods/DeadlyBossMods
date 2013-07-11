@@ -33,7 +33,7 @@ do
 end
 
 function flashFrame:Show(red, green, blue, dur, alpha)
-	r, g, b, t, a = red or 1, green or 0, blue or 0, dur or 1, alpha or 0.5
+	r, g, b, t, a = red or 1, green or 0, blue or 0, dur or 0.4, alpha or 0.3
 	duration = dur
 	elapsed = 0
 	frame:SetAlpha(0)
