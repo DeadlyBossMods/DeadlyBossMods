@@ -60,12 +60,20 @@ local specWarnPiercingCorruption		= mod:NewSpecialWarningSpell(144657)
 
 local berserkTimer						= mod:NewBerserkTimer(420)--EJ says fight has a 7 min berserk (how convinient).
 
+mod:AddBoolOption("InfoFrame")
+
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader("Corruption")--Will localize later, just want this in before test in a few min
+		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
+	end
 end
 
 function mod:OnCombatEnd()
-
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
