@@ -1985,6 +1985,9 @@ do
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
+		if UnitName("player") == "Cellista" and GetRealmName() == "Khadgar" then
+			print("DBM Debug: ", mapID)
+		end
 		LastInstanceMapID = mapID
 		if instanceType == "none" and (mapID ~= 369) and (mapID ~= 1043) and (mapID ~= 974) then return end -- instance type of brawlers guild and DMF are none
 		self:LoadModsOnDemand("mapId", mapID)
@@ -1994,6 +1997,9 @@ do
 	end
 
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
+		if UnitName("player") == "Cellista" and GetRealmName() == "Khadgar" then
+			print("DBM Debug: Attempting to load mod for: ", checkValue)
+		end
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
 			if not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
