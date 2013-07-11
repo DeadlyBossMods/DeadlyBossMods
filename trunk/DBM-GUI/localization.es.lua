@@ -5,9 +5,12 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods - Español"
 
-L.TranslationBy 	= "Snamor, Interplay"
+L.TranslationByPrefix		= "Traducido por "
+L.TranslationBy 	= "Snamor, Interplay, Sueñalobos"
+L.Website					= "Visita nuestros nuevos foros de discusión y soporte en |cFF73C2FBwww.deadlybossmods.com|r (¡hospedados por Elitist Jerks!)"
+L.WebsiteButton				= "Foro"
 
-L.OTabBosses	= "Bosses"
+L.OTabBosses	= "Jefes"
 L.OTabOptions	= "Opciones"
 
 L.TabCategory_Options 	= "Opciones generales"
@@ -26,35 +29,48 @@ Puedes pulsar en el boton para cargar el modulo manualmente.]]
 L.PosX = 'Posicion X'
 L.PosY = 'Posicion Y'
 
-L.MoveMe 		= 'mueveme'
+L.MoveMe 		= '¡Muéveme!'
 L.Button_OK 		= 'Aceptar'
 L.Button_Cancel 	= 'Cancelar'
 L.Button_LoadMod 	= 'Cargar Modulo'
 L.Mod_Enabled		= "Habilitar modulo de este boss"
+L.Mod_Reset		= "Cargar opciones por defecto"
 L.Reset 		= "resetear"
 
-L.Enable  		= "habilitar"
-L.Disable		= "desabilitar"
+L.Enable  		= "Habilitar"
+L.Disable		= "Desabilitar"
 
 L.NoSound		= "Sin sonido"
 
 L.IconsInUse	= "Iconos usados por este mod"
 
+L.QuestComplete				= "Ya tienes completado las taréas semanales de repu/LFR/legendaria para este encuentro."
+L.QuestIncomplete			= "Todavía puedes completar taréas semanales de repu/LFR/legendaria para este encuentro. NOTA: Recargar el UI or reconectar demasiado pronto después de completar la taréa resultará en un error en el seguimiento de la misma."
+
 -- Tab: Boss Statistics
 L.BossStatistics	= "Estadisticas de Boss"
 L.Statistic_Kills	= "Muertes:"
 L.Statistic_Wipes	= "Wipes:"
+L.Statistic_Incompletes		= "Incompletos:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
 L.Statistic_BestKill	= "Mejor muerte:"
 
--- Tab: General Options
+-- Tab: General Core Options
 L.General 		= "Opciones de DBM"
 L.EnableDBM 		= "Habilitar DBM"
 L.EnableMiniMapIcon	= "Mostrar icono de DBM en el mapa"
-L.UseMasterVolume			= "Usar el canal de audio Principal para reproducir archivos de sonido. (4.0.6+)"
-L.DisableCinematics			= "Desactivar las cinematicas de las estancias"
-L.DisableCinematicsOutside	= "Desactivar las cinematicas fuera de las estancias"
+L.SetPlayerRole				= "Fijar rol del jugador automáticacmente (recomendado)"
+L.UseMasterVolume			= "Usar el canal de audio Principal para reproducir archivos de sonido."
+L.AutologBosses				= "Grabar encuentros automáticamente al registro de combate."
+L.AdvancedAutologBosses		= "Grabar encuentros automáticamente al registro de combato mediante Transcriptor."
+L.LogOnlyRaidBosses			= "Solo grabar encuentros de banda (excluyendo LFR/escenarios)."
+L.Latency_Text				= "Umbral latencia máx. sincronización: %d"
+-- Tab: General Timer Options
+L.TimerGeneral 				= "Opciones generales de los temporizadores"
 L.SKT_Enabled			= "Mostrar siempre el contador para superar récord de tiempo (Sobreescribe la opción de bosses específicos)"
-L.Latency_Text				= "Umbral de latencia máxima para sincronización: %d"
+L.ChallengeTimerOptions		= "Temporizador para mejor tiempo en modos desaafío."
+L.ChallengeTimerPersonal	= "Personal"
+L.ChallengeTimerGuild		= "Hermandad"
+L.ChallengeTimerRealm		= "Reino"
 
 L.ModelOptions				= "Opciones del Visor de Modelos 3D"
 L.EnableModels				= "Activar modelos 3D en las opciones de los jefes"
@@ -90,12 +106,16 @@ L.ShowWarningsInChat 	= "Mostrar avisos en el chat"
 L.ShowFakedRaidWarnings = "Mostrar avisos en el chat de banda"
 L.WarningIconLeft 	= "Mostrar icono en el lado izquierdo"
 L.WarningIconRight 	= "Mostrar icono en el lado derecho"
+L.WarningIconChat 	= "Mostrar iconos en el chat"
+L.ShowCountdownText	= "Mostrar text de cuenta atrás"
 L.RaidWarnMessage 	= "Gracias por usar Deadly Boss Mods - Español"
 L.BarWhileMove 		= "Avisos de banda se pueden mover"
 L.RaidWarnSound		= "Reproducir sonido para aviso-banda"
-L.CountdownVoice	= "Fijar voz para sonido de cuenta atrás y adelante"
+L.CountdownVoice	= "Fijar voz para sonido de cuenta atrás"
+L.CountdownVoice2	= "Fijar voz secundaria para sonido de cuenta atrás"
 L.SpecialWarnSound	= "Fijar sonido para avisos especiales que te afecten a ti o a tu rol"
 L.SpecialWarnSound2	= "Fijar sonido para avisos especiales que afectan a todos"
+L.SpecialWarnSound3	= "Fijar sonido para avisos especiales MUY IMPORTANTES"
 
 -- Tab: Generalwarnings
 L.Tab_GeneralMessages 	= "Mensajes generales"
@@ -138,12 +158,19 @@ L.Panel_SpecWarnFrame		= "Avisos Especiales"
 L.Area_SpecWarn				= "Opciones de Avisos Especiales"
 L.SpecWarn_Enabled			= "Mostrar Avisos Especiales para habilidades de los jefes"
 L.SpecWarn_FlashFrame		= "Mostrar un flash de pantalla para avisos especiales"
-L.SpecWarn_Font				= "Fuente usada para Avisos Especiales"
+L.SpecWarn_AdSound		= "Habilitar opciones avandas de sonidos para avisos especiales (requiere recargar el UI)"
+L.Area_SpecWarnFlash		= "Opciones de parpadeo de Avisos Especiales"
+L.SpecWarn_FlashColor		= "Color del parpadeo"
+L.SpecWarn_FlashDur		= "Duración del parpadeo: %0.1f"
+L.SpecWarn_FlashAlpha		= "Alpha del parpadeo: %0.1f"
+L.Area_SpecWarnFont		= "Opciones de fuente de los Avisos Especiales"
+L.SpecWarn_Font			= "Fuente usada para Avisos Especiales"
 L.SpecWarn_DemoButton		= "Ver ejemplo"
 L.SpecWarn_MoveMe			= "Definir posición"
 L.SpecWarn_FontSize			= "Tamaño de fuente"
 L.SpecWarn_FontColor		= "Color de fuente"
 L.SpecWarn_FontType			= "Selecciona una fuente"
+L.Area_SpecWarnSound		= "Opciones de sonido de Avisos Especiales"
 L.SpecWarn_ResetMe			= "Reiniciar con los valores por defecto"
 
 -- Tab: HealthFrame
@@ -157,7 +184,7 @@ L.BarWidth					= "Ancho de la barra: %d"
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Filtro de Spam"
 L.Area_SpamFilter		= "Opciones de spam"
-L.HideBossEmoteFrame		= "Esconder lo que dice el boss"
+L.StripServerName		= "Eliminar nombre de reino de los avisos y temporizadores"
 L.SpamBlockBossWhispers		= "Filtrar los avisos de <DBM> mientras estas en combate"
 L.BlockVersionUpdateNotice	= "Desabilitar avisos de actualizaciones"
 L.ShowBigBrotherOnCombatStart	= "Comprobar los bufos con Big Brother al inicio del combate"
@@ -167,7 +194,23 @@ L.Area_SpamFilter_Outgoing		= "Opciones de Filtro Global"
 L.SpamBlockNoShowAnnounce		= "No mostrar avisos o reproducir sonidos"
 L.SpamBlockNoSendWhisper		= "No enviar susurros a otros jugadores"
 L.SpamBlockNoSetIcon			= "No poner iconos en objetivos"
+L.SpamBlockNoRangeFrame			= "No mostrar radar de rango"
+L.SpamBlockNoInfoFrame			= "No mostrar marco de información"
 
+L.Area_PullTimer				= "Opciones de filtrado del temporizador de Pull"
+L.DontShowPT					= "No mostrar la barra de temporizador para el pull"
+L.DontShowPTCountdownText		= "No mostrar texto de cuenta atras del pull"
+L.DontPlayPTCountdown			= "No reproducir audio de cuenta atras para el pull"
+L.DontShowPTText				= "No mostrar texto de anuncio de cuenta atras para el pull"
+
+L.Panel_HideBlizzard			= "Esconder Blizzard"
+L.Area_HideBlizzard				= "Opciones para esconder interfaz de Blizzard"
+L.HideBossEmoteFrame			= "Esconder marco de emoción de los Jefes durante el combate"
+L.HideWatchFrame				= "Esconder marco de objetivos durante el combate"
+L.SpamBlockSayYell				= "Esconder texto de bocadillos del chat"
+L.DisableCinematics				= "Saltar secuencias cinemáticas"
+L.AfterFirst					= "Tras haberlas visto la primera vez"
+L.Always						= "Siempre"
 
 -- Misc
 L.FontHeight	= 16

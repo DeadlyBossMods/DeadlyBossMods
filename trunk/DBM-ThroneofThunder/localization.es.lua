@@ -11,7 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "Mostrar aviso especial si permaneces en $spell:138470\n(Aviso al comenzar $spell:137313 o si $spell:138732 expirará pronto)"
+	specWarnWaterMove	= "Mostrar aviso especial si permaneces en $spell:138470<br/>(Aviso al comenzar $spell:137313 o si $spell:138732 expirará pronto)"
 })
 
 
@@ -33,8 +33,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnAdds				= "Anunciar cuando aparecen nuevos adds",
-	warnOrbofControl		= "Anunciar cuando un $journal:7092 está disponible",
-	specWarnOrbofControl	= "Mostrar aviso especial cuando un $journal:7092 está disponible",
+	warnOrbofControl		= "Anunciar cuando un $journal:7092 esté disponible",
+	specWarnOrbofControl	= "Mostrar aviso especial cuando un $journal:7092 esté disponible",
 	timerDoor				= "Mostrar temporizador para la siguiente fase de puerta tribal",
 	timerAdds				= "Mostrar temporizador cuando aparecen nuevos adds",
 	SetIconOnAdds			= "Poner iconos en los adds"
