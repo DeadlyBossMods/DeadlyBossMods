@@ -2109,7 +2109,7 @@ local function CreateOptionsMenu()
 		)
 		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -205)
 
-		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.1, 2, 0.1, 120)   -- (text , min_value , max_value , step , width)
+		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.1, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider:SetPoint('TOPLEFT', SpecialWarnSoundDropDown, "TOPLEFT", 20, -45)
 		do
 			local firstshow = true
@@ -2125,7 +2125,7 @@ local function CreateOptionsMenu()
 			end)
 		end
 
-		local flashdalphaSlider = specArea:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.1, 120)   -- (text , min_value , max_value , step , width)
+		local flashdalphaSlider = specArea:CreateSlider(L.SpecWarn_FlashAlpha, 0.1, 1, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdalphaSlider:SetPoint('BOTTOMLEFT', flashdurSlider, "BOTTOMLEFT", 150, -0)
 		do
 			local firstshow = true
@@ -2148,7 +2148,7 @@ local function CreateOptionsMenu()
 		)
 		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -310)
 
-		local flashdurSlider2 = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.1, 2, 0.1, 120)   -- (text , min_value , max_value , step , width)
+		local flashdurSlider2 = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.1, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider2:SetPoint('TOPLEFT', SpecialWarnSoundDropDown2, "TOPLEFT", 20, -45)
 		do
 			local firstshow = true
