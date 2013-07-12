@@ -11,7 +11,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"UNIT_DIED",
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--This boss changes boss ID every time you jump into one of tests, because he gets unregistered as boss1 then registered as boss2 when you leave, etc
 )
 
 --Amalgam of Corruption
@@ -19,55 +21,57 @@ local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
 --Test of Serenity (DPS)
 local warnTearReality					= mod:NewCastAnnounce(144482, 3)
---local warnExpelCorruptionDPS			= mod:NewCastAnnounce(144479, 3)--spellid probably wrong. there are 3 of them (and for a fact two diff versions of spell, dps and healer)
 --Test of Reliance (Healer)
---local warnStrikeBehind				= mod:NewSpellAnnounce(144512, 3)--Spellid is VERY likely wrong.
+local warnDishearteningLaugh			= mod:NewSpellAnnounce(146707, 3)
 local warnLingeringCorruption			= mod:NewTargetAnnounce(144514, 3)
-local warnBurstOfCorruption				= mod:NewSpellAnnounce(144654, 3)--Spammy? Also, same version as tank, or do tanks use 144507?
 --Test of Confidence (tank)
-local warnTitanicSmash					= mod:NewSpellAnnounce(144628, 4)
-local warnHurlCorruption				= mod:NewSpellAnnounce(144649, 4)
-local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 4)
+local warnTitanicSmash					= mod:NewCastAnnounce(144628, 4)
+local warnBurstOfCorruption				= mod:NewCastAnnounce(144654, 3)
+local warnHurlCorruption				= mod:NewCastAnnounce(144649, 4)
+local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 
 --Amalgam of Corruption
---local specWarnBlindHatred				= mod:NewSpecialWarningMove(145227)
+local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())
+local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
+local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232")--Unleashed Manifestation of Corruption
 --All tests
 --Test of Serenity (DPS)
-local specWarnTearReality				= mod:NewSpecialWarningSpell(144482)
---local specWarnExpelCorruptionDPS		= mod:NewSpecialWarningSpell(144479)
+local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
+local specWarnDishearteningLaugh		= mod:NewSpecialWarningSpell(146707, false, nil, nil, 2)
 local specWarnLingeringCorruption		= mod:NewSpecialWarningDispel(144514)
---local specWarnExpelCorruptionHealer	= mod:NewSpecialWarningSpell(144479)
 --Test of Confidence (tank)
 local specWarnTitanicSmash				= mod:NewSpecialWarningMove(144628)
-local specWarnHurlCorruption			= mod:NewSpecialWarningInterrupt(144649)
+local specWarnBurstOfCorruption			= mod:NewSpecialWarningSpell(144654, nil, nil, nil, 2)
+local specWarnHurlCorruption			= mod:NewSpecialWarningInterrupt(144649, nil, nil, nil, 3)
 local specWarnPiercingCorruption		= mod:NewSpecialWarningSpell(144657)
 
 --Amalgam of Corruption
---local timerUnleashedAngerCD			= mod:NewCDTimer(10, 145216, mod:IsTank())
---local timerBlindHatredCD				= mod:NewCDTimer(70, 145226)
---local timerDespairCD					= mod:NewCDTimer(70, 145725)
+local timerUnleashedAngerCD				= mod:NewCDTimer(11, 145216, mod:IsTank())
+local timerBlindHatred					= mod:NewBuffActiveTimer(30, 145226)
+local timerBlindHatredCD				= mod:NewNextTimer(30, 145226)
 --Test of Serenity (DPS)
---local timerTearRealityCD				= mod:NewCDTimer(10, 144482)
---local timerTearExpelCorruptionDPSCD	= mod:NewCDTimer(10, 144479)
+local timerTearRealityCD				= mod:NewCDTimer(8.5, 144482)--8.5-10sec variation
 --Test of Reliance (Healer)
---local timerStrikeBehindCD				= mod:NewCDTimer(10, 144512)
---local timerLingeringCorruptionCD		= mod:NewCDTimer(10, 144514)
---local timerLingeringCorruptionHealerCD= mod:NewCDTimer(10, 144514)
+local timerDishearteningLaughCD			= mod:NewNextTimer(12, 146707)
+local timerLingeringCorruptionCD		= mod:NewNextTimer(15.5, 144514)
 --Test of Confidence (tank)
---local timerTitanicSmashCD				= mod:NewCDTimer(25, 144628)
---local timerHurlCorruptionCD			= mod:NewCDTimer(25, 144649)
+local timerTitanicSmashCD				= mod:NewCDTimer(14.5, 144628)--14-17sec variation
+local timerPiercingCorruptionCD			= mod:NewCDTimer(14, 144657)--14-17sec variation
+local timerHurlCorruptionCD				= mod:NewNextTimer(20, 144649)
 
 local berserkTimer						= mod:NewBerserkTimer(420)--EJ says fight has a 7 min berserk (how convinient).
 
 mod:AddBoolOption("InfoFrame")
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
+local unleashedAngerCast = 0
 
 function mod:OnCombatStart(delay)
+	timerBlindHatredCD:Start(25-delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(corruptionLevel)--Will localize later, just want this in before test in a few min
+		DBM.InfoFrame:SetHeader(corruptionLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
 end
@@ -80,34 +84,35 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 145216 then
-		warnUnleashedAnger:Show()
---		timerUnleashedAngerCD:Start()
-	elseif args.spellId == 145226 then
-		warnBlindHatred:Show()
---		timerBlindHatredCD:Start()
+		unleashedAngerCast = unleashedAngerCast + 1
+		warnUnleashedAnger:Show(unleashedAngerCast)
+		specWarnUnleashedAnger:Show()
+		if unleashedAngerCast < 3 then
+			timerUnleashedAngerCD:Start(nil, unleashedAngerCast+1)
+		end
 	elseif args.spellId == 144482 then
 		warnTearReality:Show()
 		specWarnTearReality:Show()
---		timerTearRealityCD:Start()
-	elseif args.spellId == 144479 or args.spellId == 144548 or args.spellId == 145064 then
-		print("DBM DEBUG: Expel corruption cast. Tell dbm guy if you're dps, tank or healer and give them this ID: ", args.spellId)
---		warnExpelCorruption:Show()
---		specWarnExpelCorruption:Show()
-
---		timerTearExpelCorruptionCD:Start()
+		timerTearRealityCD:Start()
 	elseif args.spellId == 144654 then
 		warnBurstOfCorruption:Show()
+		specWarnBurstOfCorruption:Show()
 	elseif args.spellId == 144628 then
 		warnTitanicSmash:Show()
 		specWarnTitanicSmash:Show()
---		timerTitanicSmashCD:Start()
+		timerTitanicSmashCD:Start()
 	elseif args.spellId == 144649 then
 		warnHurlCorruption:Show()
 		specWarnHurlCorruption:Show()
---		timerHurlCorruptionCD:Start()
+		timerHurlCorruptionCD:Start()
 	elseif args.spellId == 144657 then
 		warnPiercingCorruption:Show()
 		specWarnPiercingCorruption:Show()
+		timerPiercingCorruptionCD:Start()
+	elseif args.spellId == 146707 then
+		warnDishearteningLaugh:Show()
+		specWarnDishearteningLaugh:Show()
+		timerDishearteningLaughCD:Start()
 	end
 end
 
@@ -115,16 +120,57 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144514 then
 		warnLingeringCorruption:Show(args.destName)
 		specWarnLingeringCorruption:Show(args.destName)
---		timerLingeringCorruptionCD:Start()
+		timerLingeringCorruptionCD:Start()
+	elseif args.spellId == 145226 then
+		self:SendSync("BlindHatred")
 	end
 end
 
---[[
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 145725 then
-		timerDespair:Cancel(args.destName)
-	elseif args.spellId == 144728 and args:IsPlayer() then
-		timerDespairActive:Cancel()
-		countdownDespair:Cancel()
+	if args.spellId == 144849 and args:IsPlayer() then--DPS
+		timerTearRealityCD:Cancel()
+	elseif args.spellId == 144850 and args:IsPlayer() then--Healer
+		timerLingeringCorruptionCD:Cancel()
+		timerDishearteningLaughCD:Cancel()
+	elseif args.spellId == 144851 and args:IsPlayer() then--Tank
+		timerTitanicSmashCD:Cancel()
+		timerHurlCorruptionCD:Cancel()
+		timerPiercingCorruptionCD:Cancel()
+	elseif args.spellId == 145226 then
+		self:SendSync("BlindHatredEnded")
 	end
-end--]]
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 71977 then--Manifestation of Corruption (Dps Test)
+		timerTearRealityCD:Cancel()
+		self:SendSync("ManifestationDied")
+	elseif cid == 72001 then--Greater Corruption (Healer Test)
+		timerLingeringCorruptionCD:Cancel()
+		timerDishearteningLaughCD:Cancel()
+	elseif cid == 72051 then--Titanic Corruption (Tank Test)
+		timerTitanicSmashCD:Cancel()
+		timerHurlCorruptionCD:Cancel()
+		timerPiercingCorruptionCD:Cancel()
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 146179 then--Frayed
+		specWarnManifestation:Show()
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "BlindHatred" then
+		warnBlindHatred:Show()
+		timerBlindHatred:Start()
+	elseif msg == "BlindHatredEnded" then
+		timerBlindHatredCD:Start()
+		unleashedAngerCast = 0
+	elseif msg == "ManifestationDied" then
+		specWarnManifestation:Show()
+	end
+end
+
