@@ -134,6 +134,8 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(L.NoSensitivity)
 		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, true, true)
 		DBM.InfoFrame:RegisterCallback(infoFrameChanged)
+	elseif self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
+		self:AddMsg(L.VitaSoakerOptionConflict)
 	end
 end
 
