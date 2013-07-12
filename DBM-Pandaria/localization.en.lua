@@ -21,7 +21,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(725)
 
 L:SetOptionLocalization({
-	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)",
+	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)"
 })
 
 L:SetMiscLocalization({

@@ -6,38 +6,18 @@ local L
 ---------------
 L= DBM:GetModLocalization(852)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 ---------------------------
 -- The Fallen Protectors --
 ---------------------------
 L= DBM:GetModLocalization(849)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------------------
 -- Norushen --
 ---------------------------
 L= DBM:GetModLocalization(866)
 
-L:SetWarningLocalization({
-})
-
 L:SetOptionLocalization({
+	InfoFrame			= "Информационное окно для $journal:8252"
 })
 
 ------------------
@@ -45,14 +25,8 @@ L:SetOptionLocalization({
 ------------------
 L= DBM:GetModLocalization(867)
 
-L:SetWarningLocalization({
-})
-
 L:SetOptionLocalization({
 	InfoFrame			= "Информационное окно для $journal:8255"
-})
-
-L:SetMiscLocalization({
 })
 
 --------------
@@ -74,42 +48,15 @@ L:SetMiscLocalization({
 --------------------
 L= DBM:GetModLocalization(864)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 --------------------------
 -- Kor'kron Dark Shaman --
 --------------------------
 L= DBM:GetModLocalization(856)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------------
 -- General Nazgrim --
 ---------------------
 L= DBM:GetModLocalization(850)
-
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
 
 L:SetMiscLocalization({
 	newForces1				= "Warriors, on the double!",
@@ -123,12 +70,6 @@ L:SetMiscLocalization({
 -- Malkorok -----
 -----------------
 L= DBM:GetModLocalization(846)
-
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
 
 ------------------------
 -- Spoils of Pandaria --
@@ -163,12 +104,6 @@ L:SetMiscLocalization({
 ----------------------------
 L= DBM:GetModLocalization(865)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 L:SetMiscLocalization({
 	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
 	newShredder	= "An Automated Shredder draws near!"
@@ -185,7 +120,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Спец-предупреждение когда идеал, к которому вы уязвимы активирует идеалов",
+	specWarnActivatedVulnerable		= "Спец-предупреждение когда вы уязвимы к активирующимся идеалам",
 	specWarnCriteriaLinked			= "Спец-предупреждение когда вы слинкованы с $spell:144095"
 })
 
