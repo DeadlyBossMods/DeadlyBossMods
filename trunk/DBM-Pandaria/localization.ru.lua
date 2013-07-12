@@ -8,7 +8,8 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Показывать динамическое окно проверки дистанции, основанное\nна статусе игроков с дебаффом $spell:119622"
+	RangeFrame			= "Показывать динамическое окно проверки дистанции, основанное\nна статусе игроков с дебаффом $spell:119622",
+	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
 })
 
 L:SetMiscLocalization({
@@ -20,6 +21,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
+L:SetOptionLocalization({
+	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
+})
+
 L:SetMiscLocalization({
 	Pull				= "Принесите мне их трупы!"
 })
@@ -29,6 +34,10 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(826)
 
+L:SetOptionLocalization({
+	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
+})
+
 L:SetMiscLocalization({
 	Pull				= "Как вы смеете вмешиваться в наши планы! На этот раз зандаларов не остановить!"
 })
@@ -37,6 +46,10 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
+
+L:SetOptionLocalization({
+	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
+})
 
 ---------------------------
 -- Chi-ji, The Red Crane --
