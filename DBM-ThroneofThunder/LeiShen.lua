@@ -130,9 +130,6 @@ local thunderCount = 0
 local goreCount = 0
 local reflectCount = 0
 local diffusionCastTarget = nil
-local overchargeCast = 0
-local diffusionCast = 0
-local delayedPlayerName = nil
 
 local function warnStaticShockTargets()
 	warnStaticShock:Show(table.concat(staticshockTargets, "<, >"))
@@ -173,9 +170,6 @@ function mod:OnCombatStart(delay)
 	thunderCount = 0
 	goreCount = 0
 	reflectCount = 0
-	overchargeCast = 0
-	diffusionCast = 0
-	delayedPlayerName = nil
 	timerThunderstruckCD:Start(25-delay, 1)
 	countdownThunderstruck:Start(25-delay)
 	timerDecapitateCD:Start(40-delay)--First seems to be 45, rest 50. it's a CD though, not a "next"
@@ -293,21 +287,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if not intermissionActive then
 			timerOverchargeCD:Start()
-		else
-			overchargeCast = overchargeCast + 1
-			if overchargeCast == 2 and not self:IsDifficulty("lfr25") then--This is second overcharge and it's not LFR
-				delayedPlayerName = args.destName--store playername then delay things
-			end
 		end
 		self:Unschedule(warnOverchargeTargets)
 		self:Schedule(0.3, warnOverchargeTargets)
 		if args:IsPlayer() then
-			specWarnOvercharged:Show()--Still warn player right away even if delayedPlayerName is active, because they aren't the ones we are delaying for
-			if not delayedPlayerName then--However, if delayedPlayerName isn't nil, delay their chat yell
-				yellOvercharged:Yell()
-			end
+			specWarnOvercharged:Show()
+			yellOvercharged:Yell()
 		else
-			if not intermissionActive and self:IsMelee() or delayedPlayerName then return end--Block rest of stuff from firing if delayedPlayerName is true or if we are melee and it's not intermission
+			if not intermissionActive and self:IsMelee() then return end--Melee do not help soak these during normal phases, only during intermissions
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then
 				local x, y = GetPlayerMapPosition(uId)
@@ -362,30 +349,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 				countdownDiffusionChain:Start()
 			end
 			specWarnDiffusionChainSoon:Schedule(36)
-		else
-			diffusionCast = diffusionCast + 1
-			if delayedPlayerName and diffusionCast == 2 then--We have an active overcharge and second diffusion just went off. Fire all delayed overcharge stuff
-				if delayedPlayerName == UnitName("player") then
-					yellOvercharged:Yell()
-				end
-			else
-				local uId = DBM:GetRaidUnitId(delayedPlayerName)
-				if uId then
-					local x, y = GetPlayerMapPosition(uId)
-					if x == 0 and y == 0 then
-						SetMapToCurrentZone()
-						x, y = GetPlayerMapPosition(uId)
-					end
-					local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-					if inRange and inRange < 31 then
-						specWarnOverchargedNear:Show(delayedPlayerName)
-						if self.Options.OverchargeArrow then
-							DBM.Arrow:ShowRunTo(delayedPlayerName, 3, 3, 6)
-						end
-					end
-				end
-				delayedPlayerName = nil
-			end
 		end
 	elseif args.spellId == 136543 and self:AntiSpam(2, 1) then
 		ballsCount = ballsCount + 1
@@ -599,9 +562,6 @@ end
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 137146 and self:AntiSpam(2, 2) then--Supercharge Conduits (comes earlier than other events so we use this one)
 		intermissionActive = true
-		diffusionCast = 0
-		overchargeCast = 0
-		delayedPlayerName = nil
 		specWarnDiffusionChainSoon:Cancel()
 		specWarnBouncingBoltSoon:Cancel()
 		timerThunderstruckCD:Cancel()
