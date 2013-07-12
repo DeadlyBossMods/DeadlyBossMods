@@ -312,15 +312,17 @@ L= DBM:GetModLocalization(831)
 
 L:SetWarningLocalization({
 	specWarnVitaSoaker			= "You're next Vita Soaker!",
-	warnVitaSoakerSoon			= "You're second up Vita Soaker"
+	warnVitaSoakerSoon			= "You're second up Vita Soaker",
+	specWarnUnstablVitaJump		= "Unstable Vita jumped to you!"
 })
 
 L:SetOptionLocalization({
-	warnVitaSoakerSoon	= "Announce when you are second up Vita Soaker (Requires InfoFrame enabled)",
-	specWarnVitaSoaker	= "Show special warning when you are next $spell:138297 soaker based on infoframe position (Requires InfoFrame enabled)",
-	SetIconsOnVita		= "Set icons on $spell:138297 debuffed player and furthest player from them",
-	InfoFrame			= "Show info frame for soak order of players without $spell:138372 (excluding tanks)",
-	AnnounceVitaSoaker	= "Announce next $spell:138297 soaker to chat in RAID warnings (Requires Raid leader)"
+	warnVitaSoakerSoon		= "Announce when you are second up Vita Soaker (Requires InfoFrame enabled)",
+	specWarnUnstablVitaJump	= "Show special warning when $spell:138297 jumps to you",
+	specWarnVitaSoaker		= "Show special warning when you are next $spell:138297 soaker based on infoframe position (Requires InfoFrame enabled)",
+	SetIconsOnVita			= "Set icons on $spell:138297 debuffed player and furthest player from them",
+	InfoFrame				= "Show info frame for soak order of players without $spell:138372 (excluding tanks)",
+	AnnounceVitaSoaker		= "Announce next $spell:138297 soaker to chat in RAID warnings (Requires Raid leader)"
 })
 
 L:SetMiscLocalization({
