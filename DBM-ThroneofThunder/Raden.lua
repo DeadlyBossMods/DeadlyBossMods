@@ -134,10 +134,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(L.NoSensitivity)
 		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, true, true)
 		DBM.InfoFrame:RegisterCallback(infoFrameChanged)
-	elseif self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
-		self:AddMsg(L.VitaSoakerOptionConflict)
 	end
-
 end
 
 function mod:OnCombatEnd()
@@ -217,7 +214,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellUnstableAnima:Yell()
 		end
 	elseif args:IsSpellID(138297, 138308) then--Unstable Vita (138297 cast, 138308 jump)
-		DBM.InfoFrame:Update("reverseplayerbaddebuff")
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update("reverseplayerbaddebuff")
+		end
 		if self.Options.SetIconsOnVita then
 			playerWithVita = DBM:GetRaidUnitId(args.destName)
 			self:SetIcon(args.destName, 1)
@@ -294,6 +293,8 @@ end
 
 function mod:UNIT_DIED(args)
 	if not args:IsDestTypeHostile() then
-		DBM.InfoFrame:Update("reverseplayerbaddebuff")--Force update so player dies it reflects this
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Update("reverseplayerbaddebuff")--Force update so player dies it reflects this
+		end
 	end
 end
