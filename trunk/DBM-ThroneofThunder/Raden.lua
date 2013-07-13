@@ -130,7 +130,7 @@ function mod:OnCombatStart(delay)
 	lastPlayerTwo = nil
 	timerCreationCD:Start(11-delay, 1)
 	countdownCreation:Start(11-delay)
-	if not self.Options.InfoFrame and self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
+	if not self.Options.InfoFrame and (self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""]) then
 		self:AddMsg(L.VitaSoakerOptionConflict)
 	end
 end
