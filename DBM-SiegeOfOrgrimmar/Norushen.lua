@@ -34,7 +34,6 @@ local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
---All tests
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
@@ -50,6 +49,8 @@ local specWarnPiercingCorruption		= mod:NewSpecialWarningSpell(144657)
 local timerUnleashedAngerCD				= mod:NewCDTimer(11, 145216, mod:IsTank())
 local timerBlindHatred					= mod:NewBuffActiveTimer(30, 145226)
 local timerBlindHatredCD				= mod:NewNextTimer(30, 145226)
+--All Tests
+local timerLookWithin					= mod:NewBuffFadesTimer(60, "ej8220")
 --Test of Serenity (DPS)
 local timerTearRealityCD				= mod:NewCDTimer(8.5, 144482)--8.5-10sec variation
 --Test of Reliance (Healer)
@@ -60,7 +61,9 @@ local timerTitanicSmashCD				= mod:NewCDTimer(14.5, 144628)--14-17sec variation
 local timerPiercingCorruptionCD			= mod:NewCDTimer(14, 144657)--14-17sec variation
 local timerHurlCorruptionCD				= mod:NewNextTimer(20, 144649)
 
-local berserkTimer						= mod:NewBerserkTimer(420)--EJ says fight has a 7 min berserk (how convinient).
+local berserkTimer						= mod:NewBerserkTimer(420)
+
+local countdownLookWithin				= mod:NewCountdownFades(59, "ej8220")
 
 mod:AddBoolOption("InfoFrame")
 
@@ -123,19 +126,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLingeringCorruptionCD:Start()
 	elseif args.spellId == 145226 then
 		self:SendSync("BlindHatred")
+	elseif args:IsSpellID(144849, 144850, 144851) and args:IsPlayer() then--Look Within
+		timerLookWithin:Start()
+		countdownLookWithin:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 144849 and args:IsPlayer() then--DPS
+	if args:IsSpellID(144849, 144850, 144851) and args:IsPlayer() then--Look Within
 		timerTearRealityCD:Cancel()
-	elseif args.spellId == 144850 and args:IsPlayer() then--Healer
 		timerLingeringCorruptionCD:Cancel()
 		timerDishearteningLaughCD:Cancel()
-	elseif args.spellId == 144851 and args:IsPlayer() then--Tank
 		timerTitanicSmashCD:Cancel()
 		timerHurlCorruptionCD:Cancel()
 		timerPiercingCorruptionCD:Cancel()
+		timerLookWithin:Cancel()
+		countdownLookWithin:Cancel()
 	elseif args.spellId == 145226 then
 		self:SendSync("BlindHatredEnded")
 	end
