@@ -159,12 +159,12 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	spell		= "%s",
 	ends 		= "%s結束",
 	fades		= "%s退去",
-	adds		= "%s還剩餘:%%d",
+	adds		= "%s還剩下:%%d",
 	cast		= "施放%s:%.1f秒",
 	soon		= "%s即將到來",
 	prewarn		= "%s在%s",
 	phase		= "第%s階段",
-	prephase	= "第%s階段 即將到來",
+	prephase	= "第%s階段即將到來",
 	count		= "%s(%%d)",
 	stack		= ">%%s<中了%s(%%d)"
 }
@@ -200,7 +200,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move		= "%s - 快移動",
 	run			= "%s - 快跑開",
 	cast		= "%s - 停止施法",
-	count		= "%s! (%%d)",
+	count		= "%s!(%%d)",
 	stack		= "你中了%%d層%s",
 	switch		= ">%s< - 快更換目標!"
 }
