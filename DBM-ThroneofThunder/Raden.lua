@@ -70,7 +70,7 @@ local countdownCreation			= mod:NewCountdown(32.5, 138321, nil, nil, nil, nil, t
 
 mod:AddBoolOption("SetIconsOnVita", false)--Both the vita target and furthest from vita target
 mod:AddBoolOption("AnnounceVitaSoaker", false)
-mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame", mod:IsDifficulty("normal10", "heroic10"))
 
 local creationCount = 0
 local stalkerCount = 0
@@ -130,11 +130,7 @@ function mod:OnCombatStart(delay)
 	lastPlayerTwo = nil
 	timerCreationCD:Start(11-delay, 1)
 	countdownCreation:Start(11-delay)
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(L.NoSensitivity)
-		DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, true, true)
-		DBM.InfoFrame:RegisterCallback(infoFrameChanged)
-	elseif self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
+	if not self.Options.InfoFrame and self.Options[specWarnVitaSoaker.option or ""] or self.Options[warnVitaSoakerSoon.option or ""] then
 		self:AddMsg(L.VitaSoakerOptionConflict)
 	end
 end
@@ -217,7 +213,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(138297, 138308) then--Unstable Vita (138297 cast, 138308 jump)
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:Update("reverseplayerbaddebuff")
+			if DBM.InfoFrame:IsShown() then
+				DBM.InfoFrame:Update("reverseplayerbaddebuff")
+			else
+				DBM.InfoFrame:SetHeader(L.NoSensitivity)
+				DBM.InfoFrame:Show(10, "reverseplayerbaddebuff", 138372, nil, nil, nil, true, true)
+				DBM.InfoFrame:RegisterCallback(infoFrameChanged)
+			end
 		end
 		if self.Options.SetIconsOnVita then
 			playerWithVita = DBM:GetRaidUnitId(args.destName)
