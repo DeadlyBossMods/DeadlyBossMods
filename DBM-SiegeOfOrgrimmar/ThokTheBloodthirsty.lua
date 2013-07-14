@@ -197,7 +197,7 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 143766  then
-		timerFearsomeRoar:Cancel(ags.destName)
+		timerFearsomeRoar:Cancel(args.destName)
 	elseif args.spellId == 143343  then
 		timerBloodFrenzyCD:Cancel()
 	elseif args.spellId == 143445 then
