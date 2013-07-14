@@ -10,7 +10,7 @@ mod:SetUsedIcons(8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
+--	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -109,12 +109,13 @@ function mod:OnCombatEnd()
 
 end
 
+--[[
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 137399 then
 		self:BossTargetScanner(69465, "FocusedLightningTarget", 0.025, 12)
 		timerFocusedLightningCD:Start()
 	end
-end
+end--]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143428 then
