@@ -690,6 +690,22 @@ do
 			onLoadCallbacks[#onLoadCallbacks + 1] = cb
 		end
 	end
+	
+	local function showOldVerWarning()
+		StaticPopupDialogs["DBM_OLD_BC_VERSION"] = {
+			preferredIndex = STATICPOPUP_NUMDIALOGS,
+			text = "You are still running the old DBM3 compatibility layer for deprecated DBM3 mods which have been replaced by DBM4 mods. This mod will cause error messages on login and must be disabled.\nYou should also remove the folder DBM-BurningCrusade from your Interface/AddOns folder.\nClick okay to disable the mod and reload the UI.",
+			button1 = OKAY,
+			OnAccept = function()
+				DisableAddOn("DBM-BurningCrusade")
+				ReloadUI()
+			end,
+			timeout = 0,
+			exclusive = 1,
+			whileDead = 1
+		}
+		StaticPopup_Show("DBM_OLD_BC_VERSION")
+	end
 
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" and not isLoaded then
@@ -698,6 +714,10 @@ do
 				xpcall(v, geterrorhandler())
 			end
 			onLoadCallbacks = nil
+			local enabled, loadable = select(4, GetAddOnInfo("DBM-BurningCrusade"))
+			if enabled and loadable then
+				showOldVerWarning()
+			end
 			loadOptions()
 			DBM.Bars:LoadOptions("DBM")
 			DBM.Arrow:LoadPosition()
@@ -705,38 +725,42 @@ do
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
 				local addonName = GetAddOnInfo(i)
-				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, addonName) then
-					local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
-					table.insert(self.AddOns, {
-						sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
-						type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
-						category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-						name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or "",
-						mapId			= mapIdTable,
-						subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-						oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
-						hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
-						hasFlex			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Flex") or 0) == 1,
-						hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
-						noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
-						noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
-						modId			= addonName,
-					})
-					for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
-						local id = tonumber(self.AddOns[#self.AddOns].mapId[i])
-						if id then
-							self.AddOns[#self.AddOns].mapId[i] = id
-						else
-							table.remove(self.AddOns[#self.AddOns].mapId, i)
-						end
-					end
-					if self.AddOns[#self.AddOns].subTabs then
-						for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
-							local id = tonumber(self.AddOns[#self.AddOns].subTabs[k])
+				if GetAddOnMetadata(i, "X-DBM-Mod") then
+					if checkEntry(bannedMods, addonName) then
+						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message.")
+					else
+						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
+						table.insert(self.AddOns, {
+							sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
+							type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
+							category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
+							name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or "",
+							mapId			= mapIdTable,
+							subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
+							oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
+							hasLFR			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-LFR") or 0) == 1,
+							hasFlex			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Flex") or 0) == 1,
+							hasChallenge	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Challenge") or 0) == 1,
+							noHeroic		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Heroic") or 0) == 1,
+							noStatistics	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-No-Statistics") or 0) == 1,
+							modId			= addonName,
+						})
+						for i = #self.AddOns[#self.AddOns].mapId, 1, -1 do
+							local id = tonumber(self.AddOns[#self.AddOns].mapId[i])
 							if id then
-								self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim()
+								self.AddOns[#self.AddOns].mapId[i] = id
 							else
-								self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+								table.remove(self.AddOns[#self.AddOns].mapId, i)
+							end
+						end
+						if self.AddOns[#self.AddOns].subTabs then
+							for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
+								local id = tonumber(self.AddOns[#self.AddOns].subTabs[k])
+								if id then
+									self.AddOns[#self.AddOns].subTabs[k] = GetRealZoneText(id):trim()
+								else
+									self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+								end
 							end
 						end
 					end
