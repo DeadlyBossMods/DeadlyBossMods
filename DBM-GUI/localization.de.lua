@@ -158,18 +158,15 @@ L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
 L.SpecWarn_Enabled			= "Zeige Spezialwarnungen für Bossfähigkeiten"
 L.SpecWarn_FlashFrame		= "Aktiviere aufblinkenden Bildschirm bei Spezialwarnungen"
 L.SpecWarn_AdSound			= "Erweiterte Soundeinstellungen für Spezialwarnungen (benötigt /reload)"
-L.Area_SpecWarnFlash		= "Einstellungen für aufblinkenden Bildschirm bei Spezialwarnungen" --unused
-L.SpecWarn_FlashColor		= "Blinkfarbe"
-L.SpecWarn_FlashDur			= "Blinkdauer: %0.1f"
-L.SpecWarn_FlashAlpha		= "Blinkalpha: %0.1f"
-L.Area_SpecWarnFont			= "Schrifteinstellungen für Spezialwarnungen" --unused
 L.SpecWarn_Font				= "Schriftart für Spezialwarnungen" --unused
-L.SpecWarn_DemoButton		= "Zeige Beispiel"
-L.SpecWarn_MoveMe			= "Positionieren"
 L.SpecWarn_FontSize			= "Schriftgröße: %d"
 L.SpecWarn_FontColor		= "Schriftfarbe"
 L.SpecWarn_FontType			= "Schriftart für Spezialwarnungen"
-L.Area_SpecWarnSound		= "Soundeinstellungen für Spezialwarnungen" --unused
+L.SpecWarn_FlashColor		= "Blinkfarbe"
+L.SpecWarn_FlashDur			= "Blinkdauer: %0.1f"
+L.SpecWarn_FlashAlpha		= "Blinkalpha: %0.1f"
+L.SpecWarn_DemoButton		= "Zeige Beispiel"
+L.SpecWarn_MoveMe			= "Positionieren"
 L.SpecWarn_ResetMe			= "Zurücksetzen"
 
 -- Tab: HealthFrame
