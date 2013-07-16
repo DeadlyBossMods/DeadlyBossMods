@@ -57,14 +57,14 @@ local specWarnCrawlerMineFixate			= mod:NewSpecialWarningRun(144010)
 local yellCrawlerMineFixate				= mod:NewYell(144010, nil, false)
 
 --Siegecrafter Blackfuse
-local timerProtectiveFrenzy				= mod:NewBuffActiveTimer(10, 145365, mod:IsTank() or mod:IsHealer())
-local timerElectroStaticCharge			= mod:NewTargetTimer(60, 143385, mod:IsTank())
-local timerElectroStaticChargeCD		= mod:NewCDTimer(17, 143385, mod:IsTank())--17-22 second variation
+local timerProtectiveFrenzy				= mod:NewBuffActiveTimer(10, 145365, nil, mod:IsTank() or mod:IsHealer())
+local timerElectroStaticCharge			= mod:NewTargetTimer(60, 143385, nil, mod:IsTank())
+local timerElectroStaticChargeCD		= mod:NewCDTimer(17, 143385, nil, mod:IsTank())--17-22 second variation
 local timerLaunchSawbladeCD				= mod:NewCDTimer(10, 143265)--10-15sec cd
 --Automated Shredders
 local timerAutomatedShredderCD			= mod:NewNextTimer(60, "ej8199", nil, nil, nil, 85914)--Don't know true cd yet, just timing or first
-local timerDeathFromAboveDebuff			= mod:NewTargetTimer(5, 144210, not mod:IsHealer())
-local timerDeathFromAboveCD				= mod:NewNextTimer(40, 144208, not mod:IsHealer())
+local timerDeathFromAboveDebuff			= mod:NewTargetTimer(5, 144210, nil, not mod:IsHealer())
+local timerDeathFromAboveCD				= mod:NewNextTimer(40, 144208, nil, not mod:IsHealer())
 --The Assembly Line
 local timerAssemblyLineCD				= mod:NewNextTimer(40, "ej8199", nil, nil, nil, 59193)
 local timerPatternRecognition			= mod:NewBuffActiveTimer(60, 144236)

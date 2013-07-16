@@ -47,15 +47,15 @@ local yellCutterLaser			= mod:NewYell(146325)
 
 --Assault Mode
 local timerAssaultModeCD		= mod:NewNextTimer(64, 141395, nil, "timerAssaultModeCD")--141395 is correct timer text but it's wrong spellid, custom option text for real timer description
-local timerIgniteArmor			= mod:NewTargetTimer(30, 144467, mod:IsTank() or mod:IsHealer())
-local timerIgniteArmorCD		= mod:NewCDTimer(10, 144467, mod:IsTank())
-local timerLaserBurn			= mod:NewTargetTimer(16, 144459, false)
+local timerIgniteArmor			= mod:NewTargetTimer(30, 144467, nil, mod:IsTank() or mod:IsHealer())
+local timerIgniteArmorCD		= mod:NewCDTimer(10, 144467, nil, mod:IsTank())
+local timerLaserBurn			= mod:NewTargetTimer(16, 144459, nil, false)
 local timerLaserBurnCD			= mod:NewCDTimer(12, 144459)
 local timerBorerDrillCD			= mod:NewCDTimer(17, 144218)
 local timerCrawlerMineCD		= mod:NewCDTimer(30, 144673)
 --Siege Mode
 --http://us.battle.net/wow/en/forum/topic/9423383447?page=2#38 do to major inconsitecies and possible bugs, Some timers for Siege mode are disabled until a later test
-local timerSiegeModeCD			= mod:NewNextTimer(116, 84974, nil, "timerSiegeModeCD")--Wish spell name was a litlte shorter but still better than localizing
+local timerSiegeModeCD			= mod:NewNextTimer(116, 84974, nil, nil, "timerSiegeModeCD")--Wish spell name was a litlte shorter but still better than localizing
 local timerCuttingLaser			= mod:NewTargetTimer(10, 146325)--Spell tooltip says 15 but combat log showed 10
 --local timerCuttingLaserCD		= mod:NewCDTimer(10, 146325)
 --local timerShockPulseCD		= mod:NewCDTimer(10, 144485)
