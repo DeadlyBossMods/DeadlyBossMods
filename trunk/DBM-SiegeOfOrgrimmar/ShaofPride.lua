@@ -61,9 +61,9 @@ local specWarnMockingBlast		= mod:NewSpecialWarningInterrupt(144379)
 --Sha of Pride
 local timerGiftOfTitansCD		= mod:NewNextTimer(25.5, 144359)--NOT cast or tied or boss, on it's own
 --These abilitie timings are all based on boss1 UNIT_POWER. All timers have a 1 second variance (ie 20-21, 43-44, 48-49, etc)
-local timerMarkCD				= mod:NewNextTimer(20, 144351, mod:IsHealer())
+local timerMarkCD				= mod:NewNextTimer(20, 144351, nil, mod:IsHealer())
 local timerSelfReflectionCD		= mod:NewNextTimer(20, 144800)
-local timerWoundedPrideCD		= mod:NewNextTimer(26, 144358, mod:IsTank())--A tricky on that is based off unit power but with variable timings, but easily workable with an 11, 26 rule
+local timerWoundedPrideCD		= mod:NewNextTimer(26, 144358, nil, mod:IsTank())--A tricky on that is based off unit power but with variable timings, but easily workable with an 11, 26 rule
 local timerCorruptedPrisonCD	= mod:NewNextTimer(43, 144574)--Technically 41 for Imprison base cast, but this is timer til debuffs go out.
 local timerManifestationCD		= mod:NewNextTimer(48, "ej8262")
 local timerSwellingPrideCD		= mod:NewNextTimer(60, 144400)--Energy based, like sha of fear breath, is it also 33?

@@ -125,12 +125,12 @@ local yellAim						= mod:NewYell(142948)
 local specWarnAimOther				= mod:NewSpecialWarningTarget(142948)
 
 --Kil'ruk the Wind-Reaver
-local timerGouge					= mod:NewTargetTimer(10, 143939, mod:IsTank())
+local timerGouge					= mod:NewTargetTimer(10, 143939, nil, mod:IsTank())
 --Xaril the Poisoned-Mind
 local timerToxicCatalystCD			= mod:NewCDTimer(33, "ej8036")
 --Korven the Prime
-local timerShieldBash				= mod:NewTargetTimer(6, 143974, mod:IsTank())
-local timerShieldBashCD				= mod:NewCDTimer(17, 143974, mod:IsTank())
+local timerShieldBash				= mod:NewTargetTimer(6, 143974, nil, mod:IsTank())
+local timerShieldBashCD				= mod:NewCDTimer(17, 143974, nil, mod:IsTank())
 local timerEncaseInAmber			= mod:NewTargetTimer(10, 142564)
 --Iyyokuk the Lucid
 local timerCalculated				= mod:NewBuffFadesTimer(6, 144095)

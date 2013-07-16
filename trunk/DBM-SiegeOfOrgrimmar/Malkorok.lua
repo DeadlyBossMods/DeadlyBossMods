@@ -44,7 +44,7 @@ local timerBloodRageCD					= mod:NewNextTimer(124.7, 142879)
 local timerArcingSmashCD				= mod:NewNextCountTimer(17.5, 142815)--17-18 variation (the 23 second ones are delayed by Breath of Yshaarj)
 local timerSeismicSlamCD				= mod:NewNextCountTimer(17.5, 142851)--Works exactly same as arcingsmash 18 sec unless delayed by breath. two sets of 3
 local timerBreathofYShaarjCD			= mod:NewNextCountTimer(59, 142842)
-local timerFatalStrike					= mod:NewTargetTimer(30, 142990, mod:IsTank())
+local timerFatalStrike					= mod:NewTargetTimer(30, 142990, nil, mod:IsTank())
 
 local berserkTimer						= mod:NewBerserkTimer(360)
 
