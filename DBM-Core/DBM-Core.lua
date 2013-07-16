@@ -4004,7 +4004,11 @@ do
 			obj.localization.general.name = string.split(",", t or name)
 		elseif name:match("d%d+") then
 			local t = GetDungeonInfo(string.sub(name, 2))
-			obj.localization.general.name = string.split(",", t or name)
+			if modId == "DBM-ProvingGrounds-MoP" then
+				obj.localization.general.name = select(2, string.split(":", t or name))
+			else
+				obj.localization.general.name = string.split(",", t or name)
+			end
 		end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
