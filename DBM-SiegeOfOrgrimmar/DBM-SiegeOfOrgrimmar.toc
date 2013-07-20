@@ -2,14 +2,14 @@
 ## X-Min-Interface: 50400
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Siege of Orgrimmar|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Осада Оргриммара|r
-## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Die Belagerung Orgrimmars|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Schlacht um Orgrimmar|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0오그리마 공성전|r
 ## Author: MysticalOS
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMSiegeOfOrgrimmar_SavedVars, DBMSiegeOfOrgrimmar_SavedStats
 ## X-DBM-Mod-Name: Siege of Orgrimmar
-## X-DBM-Mod-Name-deDE: Die Belagerung Orgrimmars
+## X-DBM-Mod-Name-deDE: Schlacht um Orgrimmar
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
