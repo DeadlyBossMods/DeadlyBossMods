@@ -525,9 +525,9 @@ local function LoopIntermission()
 	end
 	if not westDestroyed or mod:IsDifficulty("heroic10", "heroic25") then
 		if mod:IsDifficulty("lfr25") then
-			warnBouncingBolt:Schedule(9)
-			specWarnBouncingBolt:Schedule(9)
-			timerBouncingBoltCD:Start(9)
+			warnBouncingBolt:Schedule(8.5)
+			specWarnBouncingBolt:Schedule(8.5)
+			timerBouncingBoltCD:Start(8.5)
 		elseif mod:IsDifficulty("heroic10", "heroic25") then
 			warnBouncingBolt:Schedule(15.5)--Delayed by second helm of command i believe
 			specWarnBouncingBolt:Schedule(15.5)
