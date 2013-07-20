@@ -204,6 +204,7 @@ function mod:UNIT_DIED(args)
 	if cid == 68905 then--Lu'lin
 		timerCosmicBarrageCD:Cancel()
 		timerTidalForceCD:Cancel()
+		timerBeastOfNightmaresCD:Cancel()
 		timerDayCD:Cancel()
 		timerDuskCD:Cancel()
 		timerNuclearInfernoCD:Cancel()
