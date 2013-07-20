@@ -233,7 +233,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerDayCD		= "낮 단계",
-	timerDuskCD		= "황혼 단계",
+	timerDuskCD		= "황혼 단계"
 })
 
 L:SetMiscLocalization({
@@ -246,11 +246,18 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(832)
 
 L:SetWarningLocalization({
-	specWarnIntermissionSoon	= "곧 사잇단계!"
+	specWarnIntermissionSoon	= "곧 사잇단계!",
+	warnDiffusionChainSpread	= "%s 전이 : >%s<"
+})
+
+L:SetTimerLocalization({
+	timerConduitCD				= "도관 기술 가능"
 })
 
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "사잇단계 진입 전에 특수 경고 보기",
+	warnDiffusionChainSpread	= "$spell:135991 전이 대상 알림 보기",
+	timerConduitCD				= "최초 도관 기술 대기시간 바 표시",
 	StaticShockArrow			= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
 	OverchargeArrow				= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
 })
@@ -266,11 +273,13 @@ L= DBM:GetModLocalization(831)
 
 L:SetWarningLocalization({
 	specWarnVitaSoaker			= "당신이 다음 불안정한 생령 전이자 입니다!",
-	warnVitaSoakerSoon			= "불안정한 생령 전이까지 2명 남음"
+	warnVitaSoakerSoon			= "불안정한 생령 전이까지 2명 남음",
+	specWarnUnstablVitaJump		= "당신에게 불안정한 생령 전이됨!"
 })
 
 L:SetOptionLocalization({
 	warnVitaSoakerSoon			= "$spell:138297 전이 차례가 두번째 일때 알림 보기(정보 창 필요)",
+	specWarnUnstablVitaJump		= "$spell:138297 주문이 당신에게 전이된 경우 특수 경고 보기",
 	specWarnVitaSoaker			= "다음 $spell:138297 전이 차례가 당신일 경우 특수 경고 보기(정보 창 필요)",
 	SetIconsOnVita				= "$spell:138297 대상과 그 대상에서 가장 먼 공격대원에게 전술 목표 아이콘 설정",
 	InfoFrame					= "$spell:138372 효과가 없는 대상을 정렬하여 정보 창에서 보기<br/>(방어 전담 제외, 불안정한 생령 전이 알림 사용시 반드시 활성화 되어 있어야 합니다.)",

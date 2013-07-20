@@ -6,38 +6,18 @@ local L
 ---------------
 L= DBM:GetModLocalization(852)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 ---------------------------
 -- The Fallen Protectors --
 ---------------------------
 L= DBM:GetModLocalization(849)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ---------------------------
 -- Norushen --
 ---------------------------
 L= DBM:GetModLocalization(866)
 
-L:SetWarningLocalization({
-})
-
 L:SetOptionLocalization({
+	InfoFrame			= "$journal:8252에 대한 정보 창 보기"
 })
 
 ------------------
@@ -45,14 +25,8 @@ L:SetOptionLocalization({
 ------------------
 L= DBM:GetModLocalization(867)
 
-L:SetWarningLocalization({
-})
-
 L:SetOptionLocalization({
 	InfoFrame			= "$journal:8255에 대한 정보 창 보기"
-})
-
-L:SetMiscLocalization({
 })
 
 --------------
@@ -60,56 +34,20 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 --------------------
 --Iron Juggernaut --
 --------------------
 L= DBM:GetModLocalization(864)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 --------------------------
 -- Kor'kron Dark Shaman --
 --------------------------
 L= DBM:GetModLocalization(856)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ---------------------
 -- General Nazgrim --
 ---------------------
 L= DBM:GetModLocalization(850)
-
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
 
 L:SetMiscLocalization({--정식버전 출시시 로컬라이징 필요
 	newForces1				= "Warriors, on the double!",
@@ -124,52 +62,22 @@ L:SetMiscLocalization({--정식버전 출시시 로컬라이징 필요
 -----------------
 L= DBM:GetModLocalization(846)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 ------------------------
 -- Spoils of Pandaria --
 ------------------------
 L= DBM:GetModLocalization(870)
-
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
 
 ---------------------------
 -- Thok the Bloodthirsty --
 ---------------------------
 L= DBM:GetModLocalization(851)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 ----------------------------
 -- Siegecrafter Blackfuse --
 ----------------------------
 L= DBM:GetModLocalization(865)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
+L:SetMiscLocalization({--정식버전 출시시 로컬라이징 필요
 	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
 	newShredder	= "An Automated Shredder draws near!"
 })
@@ -224,12 +132,6 @@ L:SetMiscLocalization({
 ------------------------
 L= DBM:GetModLocalization(869)
 
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 -------------
 --  Trash  --
 -------------
@@ -237,7 +139,4 @@ L = DBM:GetModLocalization("FoOTrash")
 
 L:SetGeneralLocalization({
 	name =	"오그리마 공성전: 일반구간"
-})
-
-L:SetOptionLocalization({
 })
