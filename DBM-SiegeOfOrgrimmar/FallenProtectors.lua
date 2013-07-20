@@ -139,7 +139,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		local source = args.sourceName
 		if source == UnitName("target") or source == UnitName("focus") then--Only warn if your target or focus, period, because if you aren't actually dpsing her, you just stay out of melee range and ignore this
 			warnShaShear:Show()
-			specWarnShaShear:show(source)
+			specWarnShaShear:Show(source)
 		end
 	end
 end
