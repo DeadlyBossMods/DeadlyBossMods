@@ -7,7 +7,8 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "$spell:119622 상태에 따른 거리 창 보기"
+	RangeFrame			= "$spell:119622 상태에 따른 거리 창 보기",
+	ReadyCheck			= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)",
 })
 
 L:SetMiscLocalization({
@@ -19,6 +20,10 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
+L:SetOptionLocalization({
+	ReadyCheck			= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)",
+})
+
 L:SetMiscLocalization({
 	Pull				= "놈들의 시체를 가져와라!"
 })
@@ -28,6 +33,10 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(826)
 
+L:SetOptionLocalization({
+	ReadyCheck			= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)",
+})
+
 L:SetMiscLocalization({
 	Pull				= "감히 우릴 막겠다고? 잔달라 부족을 막을 순 없다! 이번엔 안 돼!"
 })
@@ -36,6 +45,10 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
+
+L:SetOptionLocalization({
+	ReadyCheck			= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)",
+})
 
 ---------------------------
 -- Chi-ji, The Red Crane --

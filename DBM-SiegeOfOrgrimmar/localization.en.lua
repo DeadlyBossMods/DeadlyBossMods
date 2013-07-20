@@ -34,15 +34,6 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 --------------------
 --Iron Juggernaut --
 --------------------
@@ -92,28 +83,10 @@ L:SetOptionLocalization({
 ------------------------
 L= DBM:GetModLocalization(870)
 
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
 ---------------------------
 -- Thok the Bloodthirsty --
 ---------------------------
 L= DBM:GetModLocalization(851)
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 ----------------------------
 -- Siegecrafter Blackfuse --
@@ -182,12 +155,6 @@ L:SetMiscLocalization({
 ------------------------
 L= DBM:GetModLocalization(869)
 
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 -------------
 --  Trash  --
 -------------
@@ -195,7 +162,4 @@ L = DBM:GetModLocalization("FoOTrash")
 
 L:SetGeneralLocalization({
 	name =	"Siege of Orgrimmar Trash"
-})
-
-L:SetOptionLocalization({
 })
