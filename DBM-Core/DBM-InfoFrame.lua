@@ -69,6 +69,7 @@ local lines = {}
 local icons = {}
 local sortedLines = {}
 local lastStacks = {}
+local currentMapName
 
 -------------------
 -- Local Globals --
@@ -401,8 +402,6 @@ function onUpdate(self, elapsed)
 		updatePlayerTargets()
 	end
 --	updateIcons()
-	local currentMapId = GetCurrentMapAreaID()
-	local currentMapName = GetMapNameByID(currentMapId)
 	local linesShown = 0
 	for i = 1, #sortedLines do
 		if linesShown >= maxlines then
@@ -447,6 +446,9 @@ end
 --  Methods  --
 ---------------
 function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPowerIndex, sortLowest, ignoreTank, ...)
+	SetMapToCurrentZone()
+	local currentMapId = GetCurrentMapAreaID()
+	currentMapName = GetMapNameByID(currentMapId)
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
 	maxLines = maxLines or 5
 	
