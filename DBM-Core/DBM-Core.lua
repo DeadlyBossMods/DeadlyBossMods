@@ -2244,7 +2244,7 @@ do
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
 			local revDifference = revision - tonumber(DBM.Revision)
-			if version > tonumber(DBM.Version) then -- Update reminder
+			if version > tonumber(DBM.Version) and version >= tonumber(DBM.Revision) then -- Update reminder
 				if not showedUpdateReminder then
 					local found = false
 					local other = nil
