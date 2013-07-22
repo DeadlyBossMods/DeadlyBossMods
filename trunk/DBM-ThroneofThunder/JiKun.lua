@@ -24,6 +24,7 @@ local warnFlock				= mod:NewAnnounce("warnFlock", 3, 15746)--Some random egg ico
 local warnTalonRake			= mod:NewStackAnnounce(134366, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnDowndraft			= mod:NewSpellAnnounce(134370, 3)
 local warnFeedYoung			= mod:NewSpellAnnounce(137528, 3)--No Cd because it variable based on triggering from eggs, it's cast when one of young call out and this varies too much
+local warnPrimalNutriment	= mod:NewCountAnnounce(140741, 1)
 
 local specWarnQuills		= mod:NewSpecialWarningSpell(134380, nil, nil, nil, 2)
 local specWarnFlock			= mod:NewSpecialWarning("specWarnFlock", false)--For those assigned in egg/bird killing group to enable on their own (and tank on heroic)
@@ -103,6 +104,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 133755 and args:IsPlayer() then
 		timerFlight:Start()
 	elseif args.spellId == 140741 and args:IsPlayer() then
+		warnPrimalNutriment:Show(args.amount or 1)
 		timerPrimalNutriment:Start()
 	end
 end
