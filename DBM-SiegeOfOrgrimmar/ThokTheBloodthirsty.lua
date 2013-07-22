@@ -17,7 +17,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
@@ -70,6 +69,7 @@ local yellBurningBlood				= mod:NewYell(143783, nil, false)
 local timerFearsomeRoar			= mod:NewTargetTimer(30, 143766, nil, mod:IsTank() or mod:IsHealer())
 local timerFearsomeRoarCD		= mod:NewCDTimer(11, 143766, nil, mod:IsTank())
 local timerDeafeningScreechCD	= mod:NewNextCountTimer(25, 143343)-- (143345 base power regen, 4 per second)
+local timerTailLashCD			= mod:NewCDTimer(10, 143428, nil, false)
 --Stage 2: Frenzy for Blood!
 local timerBloodFrenzyCD		= mod:NewNextTimer(5, 143442)
 local timerFixate				= mod:NewTargetTimer(12, 143445)
@@ -142,6 +142,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)
 	elseif args.spellId == 143428 then
 		warnTailLash:Show()
+		timerTailLashCD:Start()
 	end
 end
 
@@ -275,24 +276,21 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
---SPELL_CAST_START not show in combat log, only applied
---"<80.7 19:14:22> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#%s detects a cluster of injured enemies and goes into a  |cFFFF0404|Hspell:143440|h[Blood Frenzy]|h|r!#Thok the Bloodthirsty
---"<84.2 19:14:26> [CLEU] SPELL_AURA_APPLIED#false#0xF151176900000D94#Thok the Bloodthirsty#68168#0#0xF151176900000D94#Thok the Bloodthirsty#68168#0#143440#Blood Frenzy#1#BUFF", -- [6851]
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find("spell:143440") then
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	--"<80.5 19:14:22> [UNIT_SPELLCAST_SUCCEEDED] Thok the Bloodthirsty [[boss1:Blood Frenzy::0:144067]]", -- [6548]
+	--"<80.7 19:14:22> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#%s detects a cluster of injured enemies and goes into a  |cFFFF0404|Hspell:143440|h[Blood Frenzy]|h|r!#Thok the Bloodthirsty
+	--"<84.2 19:14:26> [CLEU] SPELL_AURA_APPLIED#false#0xF151176900000D94#Thok the Bloodthirsty#68168#0#0xF151176900000D94#Thok the Bloodthirsty#68168#0#143440#Blood Frenzy#1#BUFF", -- [6851]
+	if spellId == 144067 then--Faster than combatlog ^^
 		--Unlike bloods, breaths do cancel in frenzy phase
 		timerFearsomeRoarCD:Cancel()
 		timerAcidBreathCD:Cancel()
 		timerFrostBreathCD:Cancel()
 		timerScorchingBreathCD:Cancel()
+		timerTailLashCD:Cancel()
 		specWarnBloodFrenzy:Show()
-	end
-end
-
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	--He retains/casts "blood" abilities through Blood frenzy, and only stops them when he changes to different Pustles
 	--This is why we cancel Blood cds here
-	if spellId == 143971 then
+	elseif spellId == 143971 then
 		timerBurningBloodCD:Cancel()
 		warnAcidPustules:Show()
 		timerCorrosiveBloodCD:Start(14)
