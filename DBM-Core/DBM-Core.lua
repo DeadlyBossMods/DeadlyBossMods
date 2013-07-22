@@ -45,6 +45,7 @@
 DBM = {
 	Revision = tonumber(("$Revision$"):sub(12, -3)),
 	DisplayVersion = "5.3.6 alpha", -- the string that is shown as version
+	DisplayReleaseVersion = "5.3.5", -- Needed to work around bigwigs sending improper version information
 	ReleaseRevision = 10055 -- the revision of the latest stable version that is available
 }
 
@@ -2244,7 +2245,21 @@ do
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
 			local revDifference = revision - tonumber(DBM.Revision)
-			if version > tonumber(DBM.Version) and version >= tonumber(DBM.Revision) then -- Update reminder
+			if version > tonumber(DBM.Version) then -- Update reminder
+				--Bigwigs version faking breaks version update notification because they send alpha revision as release revision with their faking code
+				--Bigwigs sniffs highest REVISION it finds in raid, (not highest ReleaseRevision) and then passes it as ReleaseRevision arg when sending sync back
+				--As a result, we'll get a valid DisplayVersion but the highest alpha Revision bigwigs saw in raid roster as a sync.
+				--For example, we might get 5.3.5 revision 10066 which is IMPOSSIBLE, anything above 10055 would be 5.3.6 alpha.
+				--So below we fix these problems so our users don't get spammed with invalid update notifications do to BW sending bad  version information
+				if displayVersion == DBM.DisplayVersion or displayVersion == DBM.DisplayReleaseVersion then--Their version is higher than hours, but display version is same, ignore it.
+					print(("DBM Debug: Ignoring invalid version information sent by BigWigs DBM Faking"):format(sender))
+					--Since we know their version information is crap, nil it out.
+					raid[sender].revision = nil
+					raid[sender].version = nil
+					raid[sender].displayVersion = nil
+					DBM:GROUP_ROSTER_UPDATE()
+					return
+				end
 				if not showedUpdateReminder then
 					local found = false
 					local other = nil
@@ -2264,7 +2279,6 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://www.deadlybossmods.com]"):format(displayVersion, version))
 						end
-						print(("DBM Debug: Showing update notification because %s and %s are running version %d which is > than our version %d"):format(sender, other, version, DBM.Version))
 	--					if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
 	--						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
 	--						DBM:Disable(true)
@@ -2289,7 +2303,6 @@ do
 					if found then--Running alpha version that's out of date
 						showedUpdateReminder = true
 						--Bug happened again, but this print NEVER happened?? In fact, everyone in raid got the bug to happen, and suspiciously after several people in raid turned bigwigs on....
-						print(("DBM Debug: Showing alpha update notification because %s and %s are running revision %d which is > than our revision %d"):format(sender, other, revision, DBM.Revision))
 						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
 					end
 				end
