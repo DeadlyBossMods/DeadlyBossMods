@@ -135,8 +135,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "huevos de uno de los nidos inferiores empiezan",
-	eggsHatchU		= "huevos de uno de los nidos superiores empiezan",
+	eggsHatch		= "empiezan a abrirse",
 	Upper			= "Arriba",
 	Lower			= "Abajo",
 	UpperAndLower	= "Arriba y Abajo",

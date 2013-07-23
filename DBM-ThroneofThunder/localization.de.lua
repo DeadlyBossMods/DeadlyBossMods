@@ -132,8 +132,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "Die Eier in einem der unteren Nester beginnen, aufzubrechen!",
-	eggsHatchU		= "Die Eier in einem der oberen Nester beginnen, aufzubrechen!",
+	eggsHatch		= "Nester beginnen, aufzubrechen!",
 	Upper			= "Oben",
 	Lower			= "Unten",
 	UpperAndLower	= "Oben & Unten",

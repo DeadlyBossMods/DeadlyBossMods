@@ -132,8 +132,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "아랫둥지에 있는 알들이 부화하기 시작합니다!",
-	eggsHatchU		= "위쪽 둥지에 있는 알들이 부화하기 시작합니다!",
+	eggsHatch		= "있는 알들이 부화하기 시작합니다!",
 	Upper			= "윗쪽",
 	Lower			= "아래쪽",
 	UpperAndLower	= "윗쪽 + 아래쪽",
