@@ -132,8 +132,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	eggsHatchL		= "Яйца в одном из нижних гнезд начинают проклевываться!",
-	eggsHatchU		= "Яйца в одном из верхних гнезд начинают проклевываться!",
+	eggsHatch		= "гнезд начинают проклевываться!",
 	Upper			= "Верхний",
 	Lower			= "Нижний",
 	UpperAndLower	= "Верхний и Нижний",
