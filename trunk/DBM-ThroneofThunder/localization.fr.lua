@@ -52,6 +52,10 @@ L= DBM:GetModLocalization(821)
 ------------
 L= DBM:GetModLocalization(828)
 
+L:SetMiscLocalization({
+	eggsHatch		= "commencent à éclore"
+})
+
 --------------------------
 -- Durumu the Forgotten --
 --------------------------
