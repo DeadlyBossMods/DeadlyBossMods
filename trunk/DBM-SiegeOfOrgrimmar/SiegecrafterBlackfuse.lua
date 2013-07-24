@@ -26,6 +26,7 @@ mod:RegisterEventsInCombat(
 local warnLaunchSawblade				= mod:NewTargetAnnounce(143265, 3)
 local warnProtectiveFrenzy				= mod:NewTargetAnnounce(145365, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnElectroStaticCharge			= mod:NewStackAnnounce(143385, 2, nil, mod:IsTank())
+local warnOvercharge					= mod:NewTargetAnnounce(145774, 4)--Heroic. Probably doesn't show in combat log and will require emotes i'm sure.
 --Automated Shredders
 local warnDeathFromAbove				= mod:NewTargetAnnounce(144208, 4)--Player target, not vulnerable shredder target. (should always be cast on highest threat target, but i like it still being a "target" warning)
 --The Assembly Line
@@ -192,6 +193,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 144466 and self:AntiSpam(15, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
 		warnMagneticCrush:Show()
 		specWarnMagneticCrush:Show()
+	elseif args.spellId == 145774 then
+		warnOvercharge:Show()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -234,7 +237,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg == L.newWeapons or msg:find(L.newWeapons) then
 		specWarnAssemblyLine:Show()
 		timerAssemblyLineCD:Start()
@@ -242,5 +245,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		specWarnAutomatedShredder:Show()
 		timerDeathFromAboveCD:Start(17)
 --		timerAutomatedShredderCD:Start()
+	elseif msg:find("spell:145774") then
+		print("DBM Debug: Drycoded Fallback, in case Overcharge is hidden from combat log", npc or "noNPC", target or "noTarget")
 	end
 end
