@@ -1839,7 +1839,9 @@ end
 
 function DBM:LFG_PROPOSAL_SHOW()
 	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-	PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+	if DBM.Options.UseMasterVolume then
+		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+	end
 end
 
 function DBM:LFG_PROPOSAL_FAILED()
