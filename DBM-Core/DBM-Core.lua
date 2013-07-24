@@ -289,7 +289,7 @@ local function removeEntry(t, val)
 	local existed = false
 	for i = #t, 1, -1 do
 		if t[i] == val then
-			table.remove(t, i)
+			tremove(t, i)
 			existed = true
 		end
 	end
@@ -312,7 +312,7 @@ end
 
 local function strFromTime(time)
 	if type(time) ~= "number" then time = 0 end
-	time = math.floor(time)
+	time = floor(time)
 	if time < 60 then
 		return DBM_CORE_TIMER_FORMAT_SECS:format(time)
 	elseif time % 60 == 0 then
@@ -735,7 +735,7 @@ do
 						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message.")
 					else
 						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
-						table.insert(self.AddOns, {
+						tinsert(self.AddOns, {
 							sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 							type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 							category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
@@ -755,7 +755,7 @@ do
 							if id then
 								self.AddOns[#self.AddOns].mapId[i] = id
 							else
-								table.remove(self.AddOns[#self.AddOns].mapId, i)
+								tremove(self.AddOns[#self.AddOns].mapId, i)
 							end
 						end
 						if self.AddOns[#self.AddOns].subTabs then
@@ -836,7 +836,7 @@ do
 			error("Usage: DBM:RegisterCallback(event, callbackFunc)", 2)
 		end
 		callbacks[event] = callbacks[event] or {}
-		table.insert(callbacks[event], f)
+		tinsert(callbacks[event], f)
 		return #callbacks[event]
 	end
 end
@@ -956,7 +956,7 @@ do
 						end
 					end
 					if match then
-						table.remove(heap, i)
+						tremove(heap, i)
 						firstFree = firstFree - 1
 						foundMatch = true
 					end
@@ -1191,7 +1191,7 @@ do
 
 	function DBM:ShowVersions(notify)
 		for i, v in pairs(raid) do
-			table.insert(sortMe, v)
+			tinsert(sortMe, v)
 		end
 		table.sort(sortMe, sort)
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
@@ -1348,7 +1348,7 @@ do
 	end
 
 	function DBM:RegisterOnGuiLoadCallback(f, sort)
-		table.insert(callOnLoad, {f, sort or math.huge})
+		tinsert(callOnLoad, {f, sort or math.huge})
 	end
 end
 
@@ -1467,7 +1467,7 @@ do
 
 	local function updateAllRoster()
 		if IsInRaid() then
-			table.wipe(raidShortNames)
+			twipe(raidShortNames)
 			enableIcons = false
 			local latestRevision = tonumber(DBM.Revision)
 			if not inRaid then
@@ -1529,7 +1529,7 @@ do
 				end
 			end
 		elseif IsInGroup() then
-			table.wipe(raidShortNames)
+			twipe(raidShortNames)
 			if not inRaid then
 				-- joined a new party
 				inRaid = true
@@ -1591,7 +1591,7 @@ do
 			inRaid = false
 			enableIcons = true
 			fireEvent("raidLeave", playerName)
-			table.wipe(raid)
+			twipe(raid)
 			-- restore playerinfo into raid table on raidleave. (for solo raid)
 			raid[playerName] = {}
 			raid[playerName].name = playerName
@@ -1824,8 +1824,8 @@ do
 				if v.OnInitialize then v:OnInitialize() end
 				for i, cat in ipairs(v.categorySort) do -- temporary hack
 					if cat == "misc" then
-						table.remove(v.categorySort, i)
-						table.insert(v.categorySort, cat)
+						tremove(v.categorySort, i)
+						tinsert(v.categorySort, cat)
 						break
 					end
 				end
@@ -2420,7 +2420,7 @@ do
 					maxPlayers = maxPlayers,
 				}
 				results.data[instanceId].ids[id] = results.data[instanceId].ids[id] or { progress = progress }
-				table.insert(results.data[instanceId].ids[id], sender)
+				tinsert(results.data[instanceId].ids[id], sender)
 			end
 
 			if numResponses >= expectedResponses then -- unlikely, lol
@@ -2448,15 +2448,15 @@ do
 			local noResponse = {}
 			for i = 1, GetNumGroupMembers() do
 				if not UnitIsUnit("raid"..i, "player") then
-					table.insert(noResponse, (GetRaidRosterInfo(i)))
+					tinsert(noResponse, (GetRaidRosterInfo(i)))
 				end
 			end
 			for i, v in pairs(results.responses) do
 				if v == "Data" or v == "NoData" then
 				elseif v == "timeout" then
-					table.insert(away, i)
+					tinsert(away, i)
 				else -- could be "clicked" or "override", in both cases we don't get the data because the dialog requesting it was dismissed
-					table.insert(denied, i)
+					tinsert(denied, i)
 				end
 				removeEntry(noResponse, i)
 			end
@@ -2521,7 +2521,7 @@ do
 					local noResponse = {}
 					for i = 1, GetNumGroupMembers() do
 						if not UnitIsUnit("raid"..i, "player") and raid[GetRaidRosterInfo(i)] and raid[GetRaidRosterInfo(i)].revision then -- only show players who actually can respond (== DBM users)
-							table.insert(noResponse, (GetRaidRosterInfo(i)))
+							tinsert(noResponse, (GetRaidRosterInfo(i)))
 						end
 					end
 					for i, v in pairs(results.responses) do
@@ -2721,7 +2721,7 @@ do
 	end
 
 	local function clearTargetList()
-		table.wipe(targetList)
+		twipe(targetList)
 	end
 
 	local function scanForCombat(mod, mob, delay)
@@ -2910,7 +2910,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 		end
 		savedDifficulty, difficultyText, flexSize = self:GetCurrentInstanceDifficulty()
 		if synced and savedDifficulty == "worldboss" and not UnitAffectingCombat("player") then return end--Ignore world boss pulls if you aren't fighting them.
-		table.insert(inCombat, mod)
+		tinsert(inCombat, mod)
 		bossHealth[mod.combatInfo.mob or -1] = 1
 		if mod.multiMobPullDetection then
 			for _, mob in ipairs(mod.multiMobPullDetection) do
@@ -3303,8 +3303,8 @@ function DBM:EndCombat(mod, wipe)
 			end
 			fireEvent("kill", mod)
 		end
-		table.wipe(autoRespondSpam)
-		table.wipe(bossHealth)
+		twipe(autoRespondSpam)
+		twipe(bossHealth)
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		DBM.BossHealth:Hide()
 		DBM.Arrow:Hide(true)
@@ -3453,7 +3453,7 @@ do
 			local lag = select(4, GetNetStats()) / 1000
 			if not mod.combatInfo then return end
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(mod.combatInfo.name, strFromTime(time + lag)))
-			table.insert(inCombat, mod)
+			tinsert(inCombat, mod)
 			bossHealth[mod.combatInfo.mob or -1] = 1
 			if mod.multiMobPullDetection then
 				for _, mob in ipairs(mod.multiMobPullDetection) do
@@ -3857,7 +3857,7 @@ DBM.Bars:SetAnnounceHook(function(bar)
 		prefix = DBM_CORE_ALLIANCE or FACTION_ALLIANCE
 	end
 	if prefix then
-		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName().."BarName"]:GetText(), math.floor(bar.timer / 60), bar.timer % 60)
+		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName().."BarName"]:GetText(), floor(bar.timer / 60), bar.timer % 60)
 	end
 end)
 
@@ -4035,7 +4035,7 @@ do
 				obj.localization.general.name = string.split(",", t or name)
 			end
 		end
-		table.insert(self.Mods, obj)
+		tinsert(self.Mods, obj)
 		modsById[name] = obj
 		obj:AddBoolOption("SpeedKillTimer", false, "misc")
 		obj:AddBoolOption("HealthFrame", false, "misc")
@@ -4571,7 +4571,7 @@ do
 			obj.option = text
 			self:AddBoolOption(text, optionDefault, "announce")
 		end
-		table.insert(self.announces, obj)
+		tinsert(self.announces, obj)
 		return obj
 	end
 
@@ -4625,7 +4625,7 @@ do
 			self:AddBoolOption("Announce"..unparsedId..announceType, optionDefault, "announce")
 			self.localization.options["Announce"..unparsedId..announceType] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		end
-		table.insert(self.announces, obj)
+		tinsert(self.announces, obj)
 		return obj
 	end
 
@@ -4836,7 +4836,7 @@ do
 			self:AddBoolOption(obj.id, optionDefault, "misc")
 			self.localization.options[obj.id] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
 		end
-		table.insert(self.countdowns, obj)
+		tinsert(self.countdowns, obj)
 		return obj
 	end
 
@@ -4877,7 +4877,7 @@ do
 			self:AddBoolOption(obj.id, optionDefault, "misc")
 			self.localization.options[obj.id] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2:format(spellId)
 		end
-		table.insert(self.countdowns, obj)
+		tinsert(self.countdowns, obj)
 		return obj
 	end	
 end
@@ -5125,7 +5125,7 @@ do
 			obj.option = optionId
 			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
 		end
-		table.insert(self.specwarns, obj)
+		tinsert(self.specwarns, obj)
 		return obj
 	end
 
@@ -5182,7 +5182,7 @@ do
 		if optionId then
 			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
 		end
-		table.insert(self.specwarns, obj)
+		tinsert(self.specwarns, obj)
 		return obj
 	end
 
@@ -5406,7 +5406,7 @@ do
 			end
 			msg = msg:gsub(">.-<", stripName)
 			bar:SetText(msg)
-			table.insert(self.startedTimers, id)
+			tinsert(self.startedTimers, id)
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
 			return bar
@@ -5435,7 +5435,7 @@ do
 			for i = #self.startedTimers, 1, -1 do
 				if self.startedTimers[i] == id then
 					DBM.Bars:CancelBar(id)
-					table.remove(self.startedTimers, i)
+					tremove(self.startedTimers, i)
 				end
 			end
 		end
@@ -5527,7 +5527,7 @@ do
 			mt
 		)
 		obj:AddOption(optionDefault, optionName)--countdownDefault
-		table.insert(self.timers, obj)
+		tinsert(self.timers, obj)
 		return obj
 	end
 
@@ -5581,7 +5581,7 @@ do
 			mt
 		)
 		obj:AddOption(optionDefault, optionName)--countdownDefault
-		table.insert(self.timers, obj)
+		tinsert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
 		if timerType == "achievement" then
 			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
@@ -5721,7 +5721,7 @@ do
 
 	local function getShieldHPFunc(shieldInfo)
 		return function()
-			return math.max(1, math.floor(shieldInfo.absorbRemaining / shieldInfo.maxAbsorb * 100))
+			return math.max(1, floor(shieldInfo.absorbRemaining / shieldInfo.maxAbsorb * 100))
 		end
 	end
 
@@ -5761,7 +5761,7 @@ do
 		for i = #activeShields, 1, -1 do
 			if activeShields[i].guid == guid and activeShields[i].mod == self.id and (not spellId or activeShields[i].spellId == spellId) then
 				DBM.BossHealth.RemoveBoss(activeShields[i].func)
-				table.remove(activeShields, i)
+				tremove(activeShields, i)
 			end
 		end
 	end
@@ -5772,7 +5772,7 @@ do
 			if activeShields[i].mod == self.id then
 				DBM.BossHealth.RemoveBoss(activeShields[i].func)
 				shieldsByGuid[activeShields[i].guid] = nil
-				table.remove(activeShields, i)
+				tremove(activeShields, i)
 			end
 		end
 	end
@@ -5843,7 +5843,7 @@ end
 function bossModPrototype:AddOptionSpacer(cat)
 	cat = cat or "misc"
 	if self.optionCategories[cat] then
-		table.insert(self.optionCategories[cat], DBM_OPTION_SPACER)
+		tinsert(self.optionCategories[cat], DBM_OPTION_SPACER)
 	end
 end
 
@@ -5875,9 +5875,9 @@ function bossModPrototype:SetOptionCategory(name, cat)
 	end
 	if not self.optionCategories[cat] then
 		self.optionCategories[cat] = {}
-		table.insert(self.categorySort, cat)
+		tinsert(self.categorySort, cat)
 	end
-	table.insert(self.optionCategories[cat], name)
+	tinsert(self.optionCategories[cat], name)
 end
 
 
@@ -5909,7 +5909,7 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if not self.zones then return end
 	for v in pairs(self.zones) do
 		combatInfo[v] = combatInfo[v] or {}
-		table.insert(combatInfo[v], info)
+		tinsert(combatInfo[v], info)
 	end
 end
 
