@@ -26,6 +26,8 @@ local warnMark					= mod:NewTargetAnnounce(144351, 3, nil, mod:IsHealer())
 local warnWoundedPride			= mod:NewTargetAnnounce(144358, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnSelfReflection		= mod:NewSpellAnnounce(144800, 3)
 local warnCorruptedPrison		= mod:NewTargetAnnounce(144574, 3)
+local warnBanishment			= mod:NewTargetAnnounce(145215, 3)--Heroic (may not be right spellid)
+local warnUnstableCorruption	= mod:NewSpellAnnounce(147198, 3)--Heroic
 local warnUnleashed				= mod:NewSpellAnnounce(144832, 3)--Phase 2
 --Pride
 local warnBurstingPride			= mod:NewTargetAnnounce(144911, 2)--25-49 Energy
@@ -33,7 +35,6 @@ local warnProjection			= mod:NewTargetAnnounce(146822, 3)--50-74 Energy
 local warnAuraOfPride			= mod:NewTargetAnnounce(146817, 3)--75-99 Energy
 local warnOvercome				= mod:NewTargetAnnounce(144843, 3)--100 Energy (pre mind control)
 local warnOvercomeMC			= mod:NewTargetAnnounce(144863, 4)--Mind control version (ie applied being hit by swelling pride while you have 144843)
-local warnBanishment			= mod:NewTargetAnnounce(145066, 3)--Heroic (may not be right spellid)
 --Manifestation of Pride
 local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3)
 local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3)
@@ -45,6 +46,7 @@ local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
 local specWarnSelfReflection	= mod:NewSpecialWarningSpell(144800, nil, nil, nil, 2)
 local specWarnCorruptedPrison	= mod:NewSpecialWarningYou(144574, false)--Since you can't do anything about it, might as well be off by default. but an option cause someone will want it
 local yellCorruptedPrison		= mod:NewYell(144574)--Yell useful though, they have to be freed quickly
+local specWarnUnstableCorruption= mod:NewSpecialWarningSpell(147198, nil, nil, nil, 2)
 --Pride
 local specWarnAuraOfPride		= mod:NewSpecialWarningYou(146817)
 local specWarnBurstingPride		= mod:NewSpecialWarningMove(144911)--25-49 Energy
@@ -78,6 +80,7 @@ mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetIconOnMark", false)
 
 local tinsert, tconcat, twipe = table.insert, table.concat, table.wipe--Sha of tables....Might as well cache frequent table globals
+local UnitPower, UnitPowerMax, UnitIsDeadOrGhost = UnitPower, UnitPowerMax, UnitIsDeadOrGhost--Power is checked VERY frequently
 local giftOfTitansTargets = {}
 local burstingPrideTargets = {}
 local projectionTargets = {}
@@ -239,6 +242,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 144800 then
 		warnSelfReflection:Show()
 		specWarnSelfReflection:Show()
+	elseif args.spellId == 147391 then--Could also be 147183 or 147198 (147198 is unlikely that seems like damage ID that triggers every 3-8 seconds)
+		warnUnstableCorruption:Show()
+		specWarnUnstableCorruption:Show()
 	end
 end
 

@@ -167,6 +167,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if seismicSlamCount < 3 then
 			timerSeismicSlamCD:Start(nil, seismicSlamCount+1)
 		end
+	elseif args.spellId == 143913 then--May not be right spell event
+		print("Essence of Y'Shaarj (5 rage gain) detected via SPELL_CAST_SUCCESS")
+		--5 rage gained from Essence of Y'Shaarj would progress timer about 2.5 seconds
+		--May choose a more accurate UNIT_POWER monitoring method if this doesn't feel accurate enough
+		if self:AntiSpam() then
+			local elapsed, total = timerBloodRageCD:GetTime()
+			timerBloodRageCD:Update(elapsed+2.5, total)
+		end
 	end
 end
 
@@ -190,7 +198,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnDisplacedEnergyTargets)
 	elseif args.spellId == 142990 then
 		local amount = args.amount or 1
-		warnFatalStrike:Show(args.destName, amount)
+		if amount % 3 == 0 or amount >= 10 then
+			warnFatalStrike:Show(args.destName, amount)
+		end
 		timerFatalStrike:Start(args.destName)
 		if amount >= 10 then
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
@@ -226,6 +236,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnArcingSmash:Show(arcingSmashCount)
 		if arcingSmashCount < 3 then
 			timerArcingSmashCD:Start(nil, arcingSmashCount+1)
+		end
+	elseif spellId == 143913 then--May not be right spell event
+		print("Essence of Y'Shaarj (5 rage gain) detected via UNIT_SPELLCAST_SUCCEEDED")
+		--5 rage gained from Essence of Y'Shaarj would progress timer about 2.5 seconds
+		--May choose a more accurate UNIT_POWER monitoring method if this doesn't feel accurate enough
+		if self:AntiSpam() then
+			local elapsed, total = timerBloodRageCD:GetTime()
+			timerBloodRageCD:Update(elapsed+2.5, total)
 		end
 	end
 end
