@@ -85,6 +85,7 @@ local timerScorchingBreath		= mod:NewTargetTimer(30, 143767, nil, mod:IsTank() o
 local timerScorchingBreathCD	= mod:NewCDTimer(11, 143767, nil, mod:IsTank())
 local timerBurningBloodCD		= mod:NewCDTimer(5, 143783)--cast often, but actually work showing. Fire bad
 
+mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("FixateIcon", true)
 
 local screechCount = 0
@@ -134,6 +135,19 @@ function mod:OnCombatStart(delay)
 	table.wipe(burningBloodTargets)
 	timerFearsomeRoarCD:Start(-delay)
 	timerDeafeningScreechCD:Start(-delay)
+	if self.Options.RangeFrame then
+		if self:IsDifficulty("normal10", "heroic10") then
+			DBM.RangeCheck:Show(10, nil, nil, 4)
+		else
+			DBM.RangeCheck:Show(10, nil, nil, 14)
+		end
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -252,6 +266,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args.spellId == 143411 then
 		screechCount = 0
 		timerDeafeningScreechCD:Start()
+		if self.Options.RangeFrame then
+			if self:IsDifficulty("normal10", "heroic10") then
+				DBM.RangeCheck:Show(10, nil, nil, 4)
+			else
+				DBM.RangeCheck:Show(10, nil, nil, 14)
+			end
+		end
 	end
 end
 
@@ -288,6 +309,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerScorchingBreathCD:Cancel()
 		timerTailLashCD:Cancel()
 		specWarnBloodFrenzy:Show()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	--He retains/casts "blood" abilities through Blood frenzy, and only stops them when he changes to different Pustles
 	--This is why we cancel Blood cds here
 	elseif spellId == 143971 then
