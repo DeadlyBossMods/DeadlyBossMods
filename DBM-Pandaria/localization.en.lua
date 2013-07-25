@@ -52,6 +52,10 @@ L:SetOptionLocalization({
 	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 136340)
 })
 
+L:SetMiscLocalization({
+	Pull				= "Can you feel a chill wind blow? The storm is coming..."
+})
+
 ---------------------------
 -- Chi-ji, The Red Crane --
 ---------------------------
