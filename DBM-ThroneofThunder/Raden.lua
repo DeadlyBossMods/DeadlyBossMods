@@ -302,7 +302,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:UNIT_DIED(args)
-	if not args:IsDestTypeHostile() and self.Options.InfoFrame then
+	if not args:IsDestTypeHostile() and self.Options.InfoFrame and DBM.InfoFrame:IsShown() then
 		DBM.InfoFrame:Update("reverseplayerbaddebuff")--Force update so player dies it reflects this
 	end
 end
