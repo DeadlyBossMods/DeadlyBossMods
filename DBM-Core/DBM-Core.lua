@@ -2254,7 +2254,6 @@ do
 				--For example, we might get 5.3.5 revision 10066 which is IMPOSSIBLE, anything above 10055 would be 5.3.6 alpha.
 				--So below we fix these problems so our users don't get spammed with invalid update notifications do to BW sending bad  version information
 				if displayVersion == DBM.DisplayVersion or displayVersion == DBM.DisplayReleaseVersion then--Their version is higher than hours, but display version is same, ignore it.
-					print(("DBM Debug: Ignoring invalid version information sent by BigWigs DBM Faking from %s"):format(sender))
 					--Since we know their version information is crap, nil it out.
 					raid[sender].revision = nil
 					raid[sender].version = nil
