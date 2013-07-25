@@ -65,7 +65,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if self:GetCIDFromGUID(UnitGUID("target")) == 62346 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 62346 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
-		elseif self.Options.ReadyCheck then
+		elseif self.Options.ReadyCheck and not IsQuestFlaggedCompleted(32098) then
 			PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
 		end
 	end
