@@ -31,8 +31,8 @@ local warnCorruptionShock			= mod:NewSpellAnnounce(143958, 3)--Embodied Gloom (s
 local warnDefiledGround				= mod:NewSpellAnnounce(143961, 3, nil, mod:IsTank())--Embodied Misery
 local warnInfernoStrike				= mod:NewSpellAnnounce(143962, 3)
 --He Softfoot
-local warnGouge						= mod:NewCastAnnounce(143330, 3, nil, nil, mod:IsTank())--The cast, so you can react and turn back to it and avoid stun.
-local warnGougeStun					= mod:NewTargetAnnounce(143301, 3, nil, mod:IsTank())--Failed, stunned. the success ID is 143331 (knockback)
+local warnGouge						= mod:NewCastAnnounce(143330, 4, nil, nil, mod:IsTank())--The cast, so you can react and turn back to it and avoid stun.
+local warnGougeStun					= mod:NewTargetAnnounce(143301, 4, nil, mod:IsTank())--Failed, stunned. the success ID is 143331 (knockback)
 local warnGorrote					= mod:NewTargetAnnounce(143198, 3, nil, mod:IsHealer())
 ----He Softfoot's Desperate Measures
 local warnMarkOfAnguish				= mod:NewSpellAnnounce(143812, 2)--Activation
@@ -106,7 +106,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143330 then
 		warnGouge:Show()
 		timerGougeCD:Start()
-		if args.sourceName == UnitName("target") then--Todo, check the bosses target instead for more accurate detection of which tank is on which boss.
+		if args.sourceGUID == UnitGUID("target") then--Todo, check the bosses target instead for more accurate detection of which tank is on which boss.
 			specWarnGouge:Show()
 		end
 	elseif args.spellId == 143446 then
