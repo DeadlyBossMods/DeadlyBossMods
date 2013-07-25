@@ -232,6 +232,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 142898 then--Faster than combat log
+		arcingSmashCount = arcingSmashCount + 1
 		warnArcingSmash:Show(arcingSmashCount)
 		specWarnArcingSmash:Show(arcingSmashCount)
 		if arcingSmashCount < 3 then
