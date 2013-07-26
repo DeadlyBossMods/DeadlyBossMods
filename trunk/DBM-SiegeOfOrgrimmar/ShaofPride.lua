@@ -26,8 +26,8 @@ local warnMark					= mod:NewTargetAnnounce(144351, 3, nil, mod:IsHealer())
 local warnWoundedPride			= mod:NewTargetAnnounce(144358, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnSelfReflection		= mod:NewSpellAnnounce(144800, 3)
 local warnCorruptedPrison		= mod:NewTargetAnnounce(144574, 3)
-local warnBanishment			= mod:NewTargetAnnounce(145215, 3)--Heroic (may not be right spellid)
-local warnUnstableCorruption	= mod:NewSpellAnnounce(147198, 3)--Heroic
+local warnBanishment			= mod:NewTargetAnnounce(145215, 3)--Heroic
+local warnWeakenedResolve		= mod:NewTargetAnnounce(147207, 2, nil, false)--Heroic
 local warnUnleashed				= mod:NewSpellAnnounce(144832, 3)--Phase 2
 --Pride
 local warnBurstingPride			= mod:NewTargetAnnounce(144911, 2)--25-49 Energy
@@ -44,11 +44,10 @@ local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
 local specWarnSwellingPride		= mod:NewSpecialWarningSpell(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
 local specWarnSelfReflection	= mod:NewSpecialWarningSpell(144800, nil, nil, nil, 2)
-local specWarnCorruptedPrison	= mod:NewSpecialWarningYou(144574, false)--Since you can't do anything about it, might as well be off by default. but an option cause someone will want it
+local specWarnCorruptedPrison	= mod:NewSpecialWarningSpell(144574)
+local specWarnCorruptedPrisonYou= mod:NewSpecialWarningYou(144574, false)--Since you can't do anything about it, might as well be off by default. but an option cause someone will want it
 local yellCorruptedPrison		= mod:NewYell(144574)--Yell useful though, they have to be freed quickly
-local specWarnUnstableCorruption= mod:NewSpecialWarningSpell(147198, nil, nil, nil, 2)
 --Pride
-local specWarnAuraOfPride		= mod:NewSpecialWarningYou(146817)
 local specWarnBurstingPride		= mod:NewSpecialWarningMove(144911)--25-49 Energy
 local yellBurstingPride			= mod:NewYell(144911)
 local specWarnProjection		= mod:NewSpecialWarningYou(146822)--50-74 Energy
@@ -63,18 +62,19 @@ local specWarnMockingBlast		= mod:NewSpecialWarningInterrupt(144379)
 --Sha of Pride
 local timerGiftOfTitansCD		= mod:NewNextTimer(25.5, 144359)--NOT cast or tied or boss, on it's own
 --These abilitie timings are all based on boss1 UNIT_POWER. All timers have a 1 second variance (ie 20-21, 43-44, 48-49, etc)
-local timerMarkCD				= mod:NewNextTimer(20, 144351, nil, mod:IsHealer())
-local timerSelfReflectionCD		= mod:NewNextTimer(20, 144800)
+local timerMarkCD				= mod:NewNextTimer(20.5, 144351, nil, mod:IsHealer())
+local timerSelfReflectionCD		= mod:NewNextTimer(20.5, 144800)
 local timerWoundedPrideCD		= mod:NewNextTimer(26, 144358, nil, mod:IsTank())--A tricky on that is based off unit power but with variable timings, but easily workable with an 11, 26 rule
-local timerCorruptedPrisonCD	= mod:NewNextTimer(43, 144574)--Technically 41 for Imprison base cast, but this is timer til debuffs go out.
+local timerCorruptedPrisonCD	= mod:NewNextTimer(42, 144574)--Technically 40 for Imprison base cast, but this is timer til debuffs go out.
 local timerManifestationCD		= mod:NewNextTimer(48, "ej8262")
-local timerSwellingPrideCD		= mod:NewNextTimer(60, 144400)--Energy based, like sha of fear breath, is it also 33?
+local timerSwellingPrideCD		= mod:NewNextTimer(60.5, 144400)--Energy based, like sha of fear breath, is it also 33?
+local timerWeakenedResolve		= mod:NewBuffFadesTimer(60, 147207, nil, false)
 --Pride
 local timerBurstingPride		= mod:NewCastTimer(3, 144911)
 local timerProjection			= mod:NewCastTimer(6, 146822)
 
-local countdownSwellingPride	= mod:NewCountdown(60, 144400)
-local countdownReflection		= mod:NewCountdown(20, 144800, nil, nil, nil, nil, true)
+local countdownSwellingPride	= mod:NewCountdown(60.5, 144400)
+local countdownReflection		= mod:NewCountdown(20.5, 144800, nil, nil, nil, nil, true)
 
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetIconOnMark", false)
@@ -139,6 +139,7 @@ end
 
 local function warnCorruptedPrisonTargets()
 	warnCorruptedPrison:Show(tconcat(corruptedPrisonTargets, "<, >"))
+	specWarnCorruptedPrison:Show()
 	twipe(corruptedPrisonTargets)
 end
 
@@ -174,7 +175,7 @@ function mod:OnCombatStart(delay)
 	twipe(markOfArroganceIcons)
 	timerGiftOfTitansCD:Start(7.5-delay)
 	timerMarkCD:Start(-delay)
-	timerWoundedPrideCD:Start(11-delay)
+	timerWoundedPrideCD:Start(10-delay)
 	timerSelfReflectionCD:Start(-delay)
 	countdownReflection:Start(-delay)
 	timerCorruptedPrisonCD:Start(-delay)
@@ -242,9 +243,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 144800 then
 		warnSelfReflection:Show()
 		specWarnSelfReflection:Show()
-	elseif args.spellId == 147391 then--Could also be 147183 or 147198 (147198 is unlikely that seems like damage ID that triggers every 3-8 seconds)
-		warnUnstableCorruption:Show()
-		specWarnUnstableCorruption:Show()
 	end
 end
 
@@ -319,8 +317,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnCorruptedPrisonTargets)
 		self:Schedule(0.5, warnCorruptedPrisonTargets)
 		if args:IsPlayer() then
-			specWarnCorruptedPrison:Show()
+			specWarnCorruptedPrisonYou:Show()
 			yellCorruptedPrison:Yell()
+		end
+	elseif args.spellId == 147207 then
+		warnWeakenedResolve:Show(args.destName)
+		if args:IsPlayer() then
+			timerWeakenedResolve:Start()
 		end
 	end
 end
@@ -329,6 +332,8 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 144351 and self.Options.SetIconOnMark then
 		self:SetIcon(args.destName, 0)
+	elseif args.spellId == 147207 and args:IsPlayer() then
+		timerWeakenedResolve:Cancel()
 	end
 end
 
