@@ -17,7 +17,7 @@ L= DBM:GetModLocalization(849)
 L= DBM:GetModLocalization(866)
 
 L:SetOptionLocalization({
-	InfoFrame			= "Show info frame for $journal:8252"
+	InfoFrame			= "為$journal:8252顯示訊息框架"
 })
 
 ------------------
@@ -26,22 +26,13 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(867)
 
 L:SetOptionLocalization({
-	InfoFrame			= "Show info frame for $journal:8255"
+	InfoFrame			= "為$journal:8255顯示訊息框架"
 })
 
 --------------
 -- Galakras --
 --------------
 L= DBM:GetModLocalization(868)
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
 
 --------------------
 --Iron Juggernaut --
@@ -71,33 +62,18 @@ L:SetMiscLocalization({
 -----------------
 L= DBM:GetModLocalization(846)
 
-
 ------------------------
 -- Spoils of Pandaria --
 ------------------------
 L= DBM:GetModLocalization(870)
-
-L:SetWarningLocalization({
-})
-
-L:SetOptionLocalization({
-})
 
 ---------------------------
 -- Thok the Bloodthirsty --
 ---------------------------
 L= DBM:GetModLocalization(851)
 
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
 L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
+	RangeFrame	= "顯示動態距離框架(10碼)\n(This is a smart range frame that shows when you reach Frenzy threshold)"
 })
 
 ----------------------------
@@ -121,8 +97,14 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	warnToxicCatalyst				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej8036"),
+	specWarnToxicInjection			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(142528),
+	specWarnToxicCatalyst			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format("ej8036"),
 	specWarnActivatedVulnerable		= "Show special warning when you are vulnerable to activating paragons",
 	specWarnCriteriaLinked			= "Show special warning when you are linked to $spell:144095",
+	SetIconOnAim					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(142948),
+	yellToxicCatalyst				= DBM_CORE_AUTO_YELL_OPTION_TEXT:format("ej8036"),
+	RangeFrame						= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6/5")
 })
 
 L:SetMiscLocalization({
@@ -161,20 +143,11 @@ L:SetMiscLocalization({
 ------------------------
 L= DBM:GetModLocalization(869)
 
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-})
-
 -------------
 --  Trash  --
 -------------
 L = DBM:GetModLocalization("FoOTrash")
 
 L:SetGeneralLocalization({
-	name =	"Siege of Orgrimmar Trash"
-})
-
-L:SetOptionLocalization({
+	name =	"圍攻奧格瑪小兵"
 })
