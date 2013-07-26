@@ -147,31 +147,40 @@ end
 
 local function CheckHeads(GUID)
 	for i = 1, 5 do
-		if UnitExists("boss"..i) and not activeHeadGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
-			activeHeadGUIDS[UnitGUID("boss"..i)] = true
-			local cid = mod:GetCIDFromGUID(UnitGUID("boss"..i))
-			if cid == 70235 then--Frozen
-				iceInFront = iceInFront + 1
-				if iceBehind > 0 then
-					iceBehind = iceBehind - 1
-				end
-			elseif cid == 70212 then--Flaming
-				fireInFront = fireInFront + 1
-				if fireBehind > 0 then
-					fireBehind = fireBehind - 1
-				end
-			elseif cid == 70247 then--Venomous
-				venomInFront = venomInFront + 1
-				if venomBehind > 0 then
-					venomBehind = venomBehind - 1
-				end
-			elseif cid == 70248 then--Arcane
-				arcaneInFront = arcaneInFront + 1
-				if arcaneBehind > 0 then
-					arcaneBehind = arcaneBehind - 1
+		local megaeraFound = false
+		if UnitExists("boss"..i) then--Check if new units exist we haven't detected and added yet.
+			if not activeHeadGUIDS[UnitGUID("boss"..i)] then
+				activeHeadGUIDS[UnitGUID("boss"..i)] = true
+				local cid = mod:GetCIDFromGUID(UnitGUID("boss"..i))
+				if cid == 70235 then--Frozen
+					iceInFront = iceInFront + 1
+					if iceBehind > 0 then
+						iceBehind = iceBehind - 1
+					end
+				elseif cid == 70212 then--Flaming
+					fireInFront = fireInFront + 1
+					if fireBehind > 0 then
+						fireBehind = fireBehind - 1
+					end
+				elseif cid == 70247 then--Venomous
+					venomInFront = venomInFront + 1
+					if venomBehind > 0 then
+						venomBehind = venomBehind - 1
+					end
+				elseif cid == 70248 then--Arcane
+					arcaneInFront = arcaneInFront + 1
+					if arcaneBehind > 0 then
+						arcaneBehind = arcaneBehind - 1
+					end
 				end
 			end
+			if cid == 68065 then--Megaera
+				megaeraFound = true
+			end
 		end
+	end
+	if not megaeraFound then--If you reset megaera with a vanish or feign death, etc. EncounterInProgress() stays true after wipe
+		DBM:EndCombat(self, true)--So we need this work around to detect and force end combat on megaera if this happens
 	end
 --	print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
 --	print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
