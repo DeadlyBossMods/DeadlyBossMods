@@ -85,9 +85,6 @@ local timerGarroteCD				= mod:NewCDTimer(30, 143198, nil, mod:IsHealer())--30-36
 local timerBaneCD					= mod:NewCDTimer(25, 143446, nil, mod:IsHealer())--25-30 (heroic 13-20)
 local timerCalamityCD				= mod:NewCDTimer(39, 143491)--39-43
 
---local countdownLightningStorm		= mod:NewCountdown(42, 118077, false)
---local countdownExpelCorruption		= mod:NewCountdown(38.5, 117975)
-
 --local berserkTimer					= mod:NewBerserkTimer(490)
 
 local UnitExists = UnitExists
