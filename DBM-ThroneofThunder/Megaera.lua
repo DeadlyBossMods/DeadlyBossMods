@@ -146,8 +146,8 @@ local function findTorrent()
 end
 
 local function CheckHeads(GUID)
+	local megaeraFound = false
 	for i = 1, 5 do
-		local megaeraFound = false
 		if UnitExists("boss"..i) then--Check if new units exist we haven't detected and added yet.
 			if not activeHeadGUIDS[UnitGUID("boss"..i)] then
 				activeHeadGUIDS[UnitGUID("boss"..i)] = true
