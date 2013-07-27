@@ -33,7 +33,7 @@ local warnDeathFromAbove				= mod:NewTargetAnnounce(144208, 4)--Player target, n
 local warnShockwaveMissileActivated		= mod:NewSpellAnnounce("ej8204", 3, 143639)--Unsure if this will even show in CLEU, may need UNIT event or emote
 local warnShockwaveMissile				= mod:NewCountAnnounce(143641, 3)
 local warnLaserTurretActivated			= mod:NewSpellAnnounce("ej8208", 3, 143867, false)--Many scripted triggers. gonna need an emote or UNIT_SPELL event for this i'm sure
-local warnLaserFixate					= mod:NewTargetAnnounce(143833, 3, 143867)--Not in combat log, needs more debugging to find a way around blizz fail
+local warnLaserFixate					= mod:NewTargetAnnounce(143828, 3, 143867)--Not in combat log, needs more debugging to find a way around blizz fail
 local warnMagneticCrush					= mod:NewSpellAnnounce(144466, 3)--Unsure if correct ID, could be 143487 instead
 local warnBreakinPeriod					= mod:NewTargetAnnounce(145269, 3)--Crawler Mine Spawning
 local warnReadyToGo						= mod:NewTargetAnnounce(145580, 4)--Crawler mine not dead fast enough
@@ -50,8 +50,8 @@ local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199")--i
 local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("ej8199", mod:IsDps())
 local specWarnShockwaveMissileActive	= mod:NewSpecialWarningSpell("ej8204", nil, nil, nil, 2)
 local specWarnReadyToGo					= mod:NewSpecialWarningTarget(145580)
-local specWarnLaserFixate				= mod:NewSpecialWarningRun(143833)
-local yellLaserFixate					= mod:NewYell(143867)
+local specWarnLaserFixate				= mod:NewSpecialWarningRun(143828)
+local yellLaserFixate					= mod:NewYell(143828)
 local specWarnSuperheated				= mod:NewSpecialWarningMove(143856)--From lasers. Hard to see, this warning will help a ton
 local specWarnMagneticCrush				= mod:NewSpecialWarningSpell(144466, nil, nil, nil, 2)
 local specWarnCrawlerMineFixate			= mod:NewSpecialWarningRun(144010)
@@ -98,17 +98,12 @@ function mod:DeathFromAboveTarget(sGUID)
 end
 
 --like many important debuffs last tier and now this tier, APPLIED & REMOVED SPELL_CAST events are disabled, so we have to waste cpu to find them.
-local spellName = GetSpellInfo(143867)
-local spellName2 = GetSpellInfo(143833)
+local spellName = GetSpellInfo(143828)
 local function findLaser()
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if UnitDebuff(uId, spellName) then
 			print("DBM DEBUG: Possible match to laser targeting using "..spellName)
-			warnLaserFixate:Show(name)
-			return
-		elseif UnitDebuff(uId, spellName2) then
-			print("DBM DEBUG: Possible match to laser targeting using "..spellName2)
 			warnLaserFixate:Show(name)
 			if name == UnitName("player") then
 				specWarnLaserFixate:Show()
