@@ -97,13 +97,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
+
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Pull and not self:IsInCombat() then
+	if (msg == L.Victory or msg:find(L.Victory)) and self:IsInCombat() then
+		DBM:EndCombat(self)
+	--[[elseif msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 71953 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71953 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
-		end
+		end--]]
 	end
-end--]]
-
+end
