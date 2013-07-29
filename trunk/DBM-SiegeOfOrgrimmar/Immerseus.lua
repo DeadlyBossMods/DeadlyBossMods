@@ -37,10 +37,20 @@ local timerPurifiedResidue	= mod:NewBuffActiveTimer(15, 143524)
 
 local berserkTimer			= mod:NewBerserkTimer(605)
 
+local lastPower = 100
+
 function mod:OnCombatStart(delay)
+	lastPower = 100
 	timerBreathCD:Start(10-delay)
 	timerSwirlCD:Start(20-delay)
 	berserkTimer:Start(-delay)
+	self:RegisterShortTermEvents(
+		"UNIT_POWER_FREQUENT boss1"--Do not want this one persisting out of combat even after a wipe, in case you go somewhere else.
+	)
+end
+
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -90,6 +100,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnShaBolt:Show()
 		timerShaBoltCD:Start()
 	end
+end
+
+function mod:UNIT_POWER_FREQUENT(uId)
+	local power = UnitPower(uId)
+	if power == 0 and self:AntiSpam(3, 1) then
+		print("DBM Debug: Boss defeated?")
+	end
+	if power > lastPower then--Only time his power ever goes UP is when he is defeated. he reaches 0 power, then goes back to 1 power
+		DBM:EndCombat(self)
+		print("DBM Debug: Boss gained power. This has only been observed in victories so assuming this is a victory")
+	end
+	lastPower = power
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
