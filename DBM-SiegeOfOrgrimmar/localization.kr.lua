@@ -72,6 +72,10 @@ L= DBM:GetModLocalization(870)
 ---------------------------
 L= DBM:GetModLocalization(851)
 
+L:SetOptionLocalization({
+	RangeFrame	= "거리 창 보기(10m)\n(광기 경고 수치에 달한 공격대원만 보임)"
+})
+
 ----------------------------
 -- Siegecrafter Blackfuse --
 ----------------------------
