@@ -111,7 +111,7 @@ local function warnProjectionTargets()
 	twipe(projectionTargets)
 end
 
-local function warnAuraOfPride()
+local function warnAuraOfPrideTargets()
 	warnAuraOfPride:Show(tconcat(auraOfPrideTargets, "<, >"))
 	twipe(auraOfPrideTargets)
 end
@@ -271,8 +271,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 146817 then
 		auraOfPrideTargets[#auraOfPrideTargets + 1] = args.destName
-		self:Unschedule(warnAuraOfPride)
-		self:Schedule(0.5, warnAuraOfPride)
+		self:Unschedule(warnAuraOfPrideTargets)
+		self:Schedule(0.5, warnAuraOfPrideTargets)
 		if args:IsPlayer() then
 			specWarnAuraOfPride:Show()
 			yellAuraOfPride:Yell()
