@@ -41,12 +41,13 @@ local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3)
 
 --Sha of Pride
 local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
+local yellGiftOfTitans			= mod:NewYell(144359)
 local specWarnSwellingPride		= mod:NewSpecialWarningSpell(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
 local specWarnSelfReflection	= mod:NewSpecialWarningSpell(144800, nil, nil, nil, 2)
 local specWarnCorruptedPrison	= mod:NewSpecialWarningSpell(144574)
 local specWarnCorruptedPrisonYou= mod:NewSpecialWarningYou(144574, false)--Since you can't do anything about it, might as well be off by default. but an option cause someone will want it
-local yellCorruptedPrison		= mod:NewYell(144574)--Yell useful though, they have to be freed quickly
+local yellCorruptedPrison		= mod:NewYell(144574, nil, false)
 --Pride
 local specWarnBurstingPride		= mod:NewSpecialWarningMove(144911)--25-49 Energy
 local yellBurstingPride			= mod:NewYell(144911)
@@ -253,6 +254,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.5, warnGiftOfTitansTargets)
 		if args:IsPlayer() then
 			specWarnGiftOfTitans:Show()
+			yellGiftOfTitans:Yell()
 		end
 	elseif args.spellId == 145215 then
 		banishmentTargets[#banishmentTargets + 1] = args.destName

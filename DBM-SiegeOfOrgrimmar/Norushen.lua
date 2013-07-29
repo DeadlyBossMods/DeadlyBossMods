@@ -179,6 +179,7 @@ end
 function mod:OnSync(msg)
 	if msg == "BlindHatred" then
 		warnBlindHatred:Show()
+		specWarnBlindHatred:Show()
 		timerBlindHatred:Start()
 	elseif msg == "BlindHatredEnded" then
 		timerBlindHatredCD:Start()
