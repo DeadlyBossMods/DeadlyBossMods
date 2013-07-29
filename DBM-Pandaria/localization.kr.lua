@@ -50,6 +50,10 @@ L:SetOptionLocalization({
 	ReadyCheck			= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)",
 })
 
+L:SetMiscLocalization({
+	Pull				= "Can you feel a chill wind blow? The storm is coming..."
+})
+
 ---------------------------
 -- Chi-ji, The Red Crane --
 ---------------------------
@@ -57,6 +61,10 @@ L= DBM:GetModLocalization(857)
 
 L:SetOptionLocalization({
 	BeaconArrow			= "$spell:144473 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
+})
+
+L:SetMiscLocalization({
+	Victory					= "Your hope shines brightly, and even more brightly when you work together to overcome. It will ever light your way in even the darkest of places."
 })
 
 ------------------------------
@@ -73,6 +81,10 @@ L= DBM:GetModLocalization(859)
 -- Xuen, The White Tiger --
 ---------------------------
 L= DBM:GetModLocalization(860)
+
+L:SetMiscLocalization({
+	Victory					= "You are strong, stronger even than you realize. Carry this thought with you into the darkness ahead, and let it shield you."
+})
 
 ------------------------------------
 -- Ordos, Fire-God of the Yaungol --
