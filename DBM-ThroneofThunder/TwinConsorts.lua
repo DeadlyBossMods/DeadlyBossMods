@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(68905, 68904)--Lu'lin 68905, Suen 68904
-mod:SetQuestID(32755)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
 
