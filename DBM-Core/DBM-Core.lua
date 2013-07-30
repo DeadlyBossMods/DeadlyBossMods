@@ -2104,7 +2104,7 @@ function DBM:LoadMod(mod)
 			RequestChallengeModeMapInfo()
 			RequestChallengeModeLeaders(mapID)
 		end
-		if instanceType == "pvp" and mod.revision == 0 then
+		if instanceType == "pvp" and DBM:GetModByName("z30").revision == 0 then
 			--Not the new stand alone pvp mods these are old ones and user needs to remove them or install updated package
 			self:AddMsg(DBM_CORE_OUTDATED_PVP_MODS)
 		end
