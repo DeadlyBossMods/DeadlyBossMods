@@ -4126,10 +4126,6 @@ function bossModPrototype:SetCreatureID(...)
 	end
 end
 
-function bossModPrototype:SetQuestID(id)
-	self.questId = id
-end
-
 function bossModPrototype:Toggle()
 	if self.Options.Enabled then
 		self:DisableMod()
