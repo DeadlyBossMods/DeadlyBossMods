@@ -259,6 +259,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				countdownUnstableVita:Start()
 			end
 		end
+	elseif args.spellId == 27827 and self.Options.InfoFrame and DBM.InfoFrame:IsShown() then
+		DBM.InfoFrame:Update("reverseplayerbaddebuff")--Force update for holy priest deaths so we can remove them soon as they gain spirit of redemption
 	end
 end
 
