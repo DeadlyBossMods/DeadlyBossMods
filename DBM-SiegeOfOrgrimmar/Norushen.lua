@@ -67,7 +67,7 @@ local countdownLookWithin				= mod:NewCountdownFades(59, "ej8220")
 local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, mod:IsHealer(), nil, nil, nil, true)
 local countdownHurlCorruption			= mod:NewCountdown(20, 144649, mod:IsTank(), nil, nil, nil, true)
 
-mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame", false)--maybe change it ot a simple yes/no for 144452 instead of unit power. unit power is very inaccurate on this fight for some reason
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0
