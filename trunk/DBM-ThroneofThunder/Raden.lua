@@ -107,16 +107,29 @@ function mod:checkVitaDistance()
 	self:ScheduleMethod(1, "checkVitaDistance")
 end
 
-local function infoFrameChanged(players)
-	if players[1] and players[1] ~= lastPlayerOne then
-		if players[1] == playerName then
+local function playerSoak(name)
+	if mod:AntiSpam(3, name) then--Use name as antispam so if we already pre warned this in last 3 seconds skip it, but if we haven't, then it's probably a last second change resulted in a bad jump or death
+		if name == playerName then
 			specWarnVitaSoaker:Show()
 		end
 		if mod.Options.AnnounceVitaSoaker and DBM:GetRaidRank() > 1 then
-			SendChatMessage(L.VitaChatMessage:format(players[1]), "RAID_WARNING")
+			SendChatMessage(L.VitaChatMessage:format(name), "RAID_WARNING")
 		end
-	elseif players[2] and players[2] == playerName and playerName ~= lastPlayerTwo then
-		warnVitaSoakerSoon:Show()
+	end
+end
+
+local function infoFrameChanged(players)
+	if players[1] and players[1] ~= lastPlayerOne then
+		mod:Unschedule(playerSoak)
+		playerSoak(players[1])
+	elseif players[2] and players[2] ~= lastPlayerTwo then
+		if players[2] == playerName then
+			warnVitaSoakerSoon:Show()
+		end
+		if mod:IsDifficulty("heroic25") then--try to give 25 man a higher reaction time
+			mod:Unschedule(playerSoak)
+			mod:Schedule(3, playerSoak, players[2])
+		end
 	end
 	lastPlayerOne = players[1]
 	lastPlayerTwo = players[2]
