@@ -2810,23 +2810,7 @@ do
 			elseif	i == 8 then		icon:SetTexCoord(0.75,	1,		0.25,	0.5)
 			end
 		end
-		
-		--[[IsQuestFlaggedCompleted() is throttled by the server and will only get a response every 2-3 minutes.
-		It's cached internally by the client during that time.
-		If you reload, the client probably loses its cache and is unable to refresh it for a few minutes
-		In other words, if you reloadui often or log in and out a bunch, the checks will be all wrong.
-		--]]
-		if mod.questId then
-			local icon = panel.frame:CreateTexture()
-			if IsQuestFlaggedCompleted(mod.questId) then
-				icon:SetTexture(READY_CHECK_READY_TEXTURE)--Already complete for week. (ie, recieved LFR loot, legendary quest chance, and rep off boss for week)
-			else
-				icon:SetTexture(READY_CHECK_NOT_READY_TEXTURE)--Not yet completed for week  (ie, has not yet recieved LFR loot, legendary quest chance, and rep off boss for week)
-			end
-			icon:SetPoint("TOPLEFT", panel.frame, "TOPRIGHT", -14, -20)--Meh, it's not ugly, but probably not right place or even coordinates for it, i plugged in random numbers and it looked ok!
-			icon:SetWidth(16)
-			icon:SetHeight(16)
-		end
+
 		local reset  = panel:CreateButton(L.Mod_Reset, 150, nil, nil, GameFontNormalSmall)
 		reset:SetPoint('TOPRIGHT', panel.frame, "TOPRIGHT", -14, -2)
 		reset:SetScript("OnClick", function(self)
