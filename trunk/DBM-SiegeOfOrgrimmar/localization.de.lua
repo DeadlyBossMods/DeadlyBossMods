@@ -72,6 +72,10 @@ L= DBM:GetModLocalization(870)
 ---------------------------
 L= DBM:GetModLocalization(851)
 
+L:SetOptionLocalization({
+	RangeFrame	= "Zeige dynamisches Abstandsfenster (10m)\n(mit Indikator für den \"Blutrausch\"-Schwellwert)"
+})
+
 ----------------------------
 -- Siegecrafter Blackfuse --
 ----------------------------
