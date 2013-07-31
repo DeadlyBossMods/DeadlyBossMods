@@ -37,7 +37,7 @@ local warnGarrote					= mod:NewTargetAnnounce(143198, 3, nil, mod:IsHealer())
 local warnMarkOfAnguish				= mod:NewSpellAnnounce(143812, 2)--Activation
 local warnMarked					= mod:NewTargetAnnounce(143840, 3)--Embodied Anguish			
 --Sun Tenderheart
-local warnShaShear					= mod:NewCastAnnounce(143423, 3, 5)
+local warnShaShear					= mod:NewCastAnnounce(143423, 3, 5, nil, false)
 local warnBane						= mod:NewCastAnnounce(143446, 4, nil, nil, mod:IsHealer())
 local warnCalamity					= mod:NewSpellAnnounce(143491, 4)
 ----Sun Tenderheart's Desperate Measures
@@ -64,7 +64,7 @@ local specWarnMarkOfAnquish			= mod:NewSpecialWarningSpell(143812)
 local specWarnMarked				= mod:NewSpecialWarningYou(143840)
 local yellMarked					= mod:NewYell(143840, nil, false)
 --Sun Tenderheart
-local specWarnShaShear				= mod:NewSpecialWarningInterrupt(143423, mod:IsMelee())
+local specWarnShaShear				= mod:NewSpecialWarningInterrupt(143423, false)
 local specWarnBane					= mod:NewSpecialWarningSpell(143446, mod:IsHealer())
 local specWarnCalamity				= mod:NewSpecialWarningSpell(143491, nil, nil, nil, 2)
 ----Sun Tenderheart's Desperate Measures
@@ -84,7 +84,7 @@ local timerGarroteCD				= mod:NewCDTimer(30, 143198, nil, mod:IsHealer())--30-36
 local timerBaneCD					= mod:NewCDTimer(25, 143446, nil, mod:IsHealer())--25-30 (heroic 13-20)
 local timerCalamityCD				= mod:NewCDTimer(39, 143491)--39-43
 
---local berserkTimer					= mod:NewBerserkTimer(490)
+--local berserkTimer				= mod:NewBerserkTimer(490)
 
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
