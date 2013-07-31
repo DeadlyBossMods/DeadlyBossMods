@@ -75,7 +75,8 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) und %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Kein Boss Mod installiert"
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d Spieler mit DBM und %d Spieler mit BigWigs gefunden"
-DBM_CORE_YOUR_VERSION_OUTDATED      = "Deine Version von Deadly Boss Mods ist veraltet! Bitte besuche http://dev.deadlybossmods.com um die neueste Version herunterzuladen."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "Deine Version von Deadly Boss Mods ist veraltet! Bitte besuche http://www.deadlybossmods.com um die neueste Version herunterzuladen."
+DBM_CORE_OUTDATED_PVP_MODS			= "Deine PvP-Mods von DBM sind veraltet. Die PvP-Mods sind nicht mehr im \"DBM-Core\"-Download enthalten. Die aktuellsten PvP-Mods findest du unter http://www.deadlybossmods.com als separaten Download. Bitte lösche den Ordner \"DBM-PvP\" (unterhalb des Ordners \"...\\Interface\\AddOns\"), falls du die PvP-Mods nicht benutzt."
 --DBM_BIG_WIGS
 --DBM_BIG_WIGS_ALPHA
 

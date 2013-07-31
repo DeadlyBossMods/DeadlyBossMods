@@ -43,9 +43,6 @@ L.NoSound					= "Kein Sound"
 
 L.IconsInUse				= "Von diesem Mod benutzte Zeichen"
 
-L.QuestComplete				= "Dieser Boss wurde in dieser Woche bereits besiegt."
-L.QuestIncomplete			= "Dieser Boss wurde in dieser Woche noch nicht besiegt. HINWEIS: Falls du nach Abfrage des Status zu schnell /reload ausführst oder dich neu einloggst werden Bosse fälschlicherweise als \"nicht besiegt\" angezeigt."
-
 -- Tab: Boss Statistics
 L.BossStatistics			= "Boss Statistiken"
 L.Statistic_Kills			= "Siege:"
