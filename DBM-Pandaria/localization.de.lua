@@ -50,6 +50,10 @@ L:SetOptionLocalization({
 	ReadyCheck			= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Weltboss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
 })
 
+L:SetMiscLocalization({
+	Pull				= "Könnt Ihr den kalten Hauch spüren? Ein Sturm naht.."
+})
+
 ---------------------------
 -- Chi-ji, The Red Crane --
 ---------------------------
@@ -59,11 +63,14 @@ L:SetOptionLocalization({
 	BeaconArrow				= "Zeige DBM-Pfeil, wenn jemand von $spell:144473 betroffen ist"
 })
 
+L:SetMiscLocalization({
+	Victory					= "Your hope shines brightly, and even more brightly when you work together to overcome. It will ever light your way in even the darkest of places."--translate (trigger)
+})
+
 ------------------------------
 -- Yu'lon, The Jade Serpent --
 ------------------------------
 L= DBM:GetModLocalization(858)
-
 
 --------------------------
 -- Niuzao, The Black Ox --
@@ -75,9 +82,11 @@ L= DBM:GetModLocalization(859)
 ---------------------------
 L= DBM:GetModLocalization(860)
 
+L:SetMiscLocalization({
+	Victory					= "You are strong, stronger even than you realize. Carry this thought with you into the darkness ahead, and let it shield you."--translate (trigger)
+})
 
 ------------------------------------
 -- Ordos, Fire-God of the Yaungol --
 ------------------------------------
 L= DBM:GetModLocalization(861)
-
