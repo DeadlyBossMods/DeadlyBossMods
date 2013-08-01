@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(868, "DBM-SiegeOfOrgrimmar", nil, 369)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(72311, 72249)--Boss needs to engage off king varian, not the boss. I include the boss too so we don't detect a win off losing varian. :)
+mod:SetCreatureID(72311, 72560, 72249)--Boss needs to engage off Varian/Lor'themar, not the boss. I include the boss too so we don't detect a win off losing varian. :)
 mod:SetMainBossID(72249)
 mod:SetZone()
 
@@ -15,6 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
@@ -43,6 +45,7 @@ local specWarnFractureYou			= mod:NewSpecialWarningYou(146899)
 local yellFracture					= mod:NewYell(146899)
 local specWarnFracture				= mod:NewSpecialWarningTarget(146899, mod:IsHealer())
 local specWarnChainheal				= mod:NewSpecialWarningInterrupt(146757)
+local specWarnFlameArrow			= mod:NewSpecialWarningMove(146764)
 ----Master Cannoneer Dragryn
 local specWarnMuzzleSpray			= mod:NewSpecialWarningSpell(147824, nil, nil, nil, 2)
 ----Lieutenant General Krugruk
@@ -188,6 +191,13 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
+	if spellId == 146764 and destGUID == UnitGUID("player") and self:AntiSpam() then
+		specWarnFlameArrow:Show()
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
