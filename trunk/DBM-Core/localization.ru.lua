@@ -75,7 +75,8 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) и %s (r%d)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Boss Mod не установлен"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Найдено %d |4игрок:игрока:игроков; с DBM и %d |4игрок:игрока:игроков; с Bigwigs"
-DBM_CORE_YOUR_VERSION_OUTDATED      = "Ваша версия Deadly Boss Mods устарела! Пожалуйста, посетите http://dev.deadlybossmods.com для загрузки последней версии."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "Ваша версия Deadly Boss Mods устарела! Пожалуйста, посетите http://www.deadlybossmods.com для загрузки последней версии."
+DBM_CORE_OUTDATED_PVP_MODS			= "Ваши модули DBM-PvP устарели и должны быть удалены, если не успользуются, либо обновлены до нового самостоятельного пакета. Эти модули больше не входят в пакет DBM-Core. Последние модули PvP могут быть найдены на http://www.deadlybossmods.com"
 --DBM_BIG_WIGS
 --DBM_BIG_WIGS_ALPHA
 

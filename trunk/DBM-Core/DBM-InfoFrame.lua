@@ -57,6 +57,7 @@ local dropdownFrame
 local initializeDropdown
 local maxlines
 local infoFrameThreshold
+local infoFrameSpellName
 local pIndex
 local extraPIndex
 local lowestFirst
@@ -261,7 +262,7 @@ end
 local function updatePlayerBuffs()
 	table.wipe(lines)
 	for uId in DBM:GetGroupMembers() do
-		if not UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) then
+		if not UnitBuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) then
 			lines[UnitName(uId)] = ""
 		end
 	end
@@ -273,7 +274,7 @@ end
 local function updateGoodPlayerDebuffs()
 	table.wipe(lines)
 	for uId in DBM:GetGroupMembers() do
-		if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if not UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 			lines[UnitName(uId)] = ""
 		end
 	end
@@ -284,8 +285,8 @@ end
 --Debuffs that are bad to have, therefor it is bad to have them.
 local function updateBadPlayerDebuffs()
 	table.wipe(lines)
-	for uId, i in DBM:GetGroupMembers() do
-		if UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+	for uId in DBM:GetGroupMembers() do
+		if UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
 			lines[UnitName(uId)] = ""
 		end
 	end
@@ -297,7 +298,7 @@ end
 local function updateReverseBadPlayerDebuffs()
 	table.wipe(lines)
 	for uId, i in DBM:GetGroupMembers() do
-		if not UnitDebuff(uId, GetSpellInfo(infoFrameThreshold)) and not UnitIsDeadOrGhost(uId) and not UnitDebuff(uId, GetSpellInfo(27827)) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
+		if not UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) and not UnitDebuff(uId, GetSpellInfo(27827)) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 			lines[UnitName(uId)] = i
 		end
 	end
@@ -309,8 +310,8 @@ local function updatePlayerBuffStacks()
 	table.wipe(lines)
 	updateIcons()	-- update Icons first in case of an "icon modifier"
 	for uId in DBM:GetGroupMembers() do
-		if UnitBuff(uId, GetSpellInfo(infoFrameThreshold)) then
-			lines[UnitName(uId)] = select(4, UnitBuff(uId, GetSpellInfo(infoFrameThreshold)))
+		if UnitBuff(uId, infoFrameSpellName) then
+			lines[UnitName(uId)] = select(4, UnitBuff(uId, infoFrameSpellName))
 		elseif UnitBuff(uId, GetSpellInfo(pIndex)) then
 			lines[UnitName(uId)] = lastStacks[UnitName(uId)] or 0			-- is always 0 ?
 			if iconModifier then
@@ -329,10 +330,9 @@ end
 
 local function updatePlayerDebuffStacks()
 	table.wipe(lines)
-	local spell = GetSpellInfo(infoFrameThreshold)
 	for uId in DBM:GetGroupMembers() do
-		if UnitDebuff(uId, spell) then
-			lines[UnitName(uId)] = select(4, UnitDebuff(uId, spell))
+		if UnitDebuff(uId, infoFrameSpellName) then
+			lines[UnitName(uId)] = select(4, UnitDebuff(uId, infoFrameSpellName))
 		end
 	end
 	updateIcons()
@@ -354,6 +354,7 @@ local function getUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
 	return (guid and (tonumber(guid:sub(6, 10), 16))) or 0
 end
+
 local function updatePlayerTargets()
 	table.wipe(lines)
 	for uId, i in DBM:GetGroupMembers() do
@@ -448,7 +449,7 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 	currentMapName = GetMapNameByID(currentMapId)
 	if DBM.Options.DontShowInfoFrame and (event or 0) ~= "test" then return end
 	maxLines = maxLines or 5
-	
+
 	infoFrameThreshold = threshold
 	maxlines = maxLines
 	pIndex = powerIndex		-- used as 'filter' for player buff stacks
@@ -470,18 +471,24 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 	elseif event == "enemypower" then
 		updateEnemyPower()
 	elseif event == "playerbuff" then
+		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
 		updatePlayerBuffs()
 	elseif event == "playergooddebuff" then
+		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
 		updateGoodPlayerDebuffs()
 	elseif event == "playerbaddebuff" then
+		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
 		updateBadPlayerDebuffs()
 	elseif currentEvent == "reverseplayerbaddebuff" then
+		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
 		updateReverseBadPlayerDebuffs()
 	elseif currentEvent == "playeraggro" then
 		updatePlayerAggro()
 	elseif currentEvent == "playerbuffstacks" then
+		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
 		updatePlayerBuffStacks()
 	elseif currentEvent == "playerdebuffstacks" then
+		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
 		updatePlayerDebuffStacks()
 	elseif currentEvent == "playertargets" then
 		updatePlayerTargets()
@@ -534,6 +541,7 @@ function infoFrame:Hide()
 	headerText = "DBM Info Frame"
 	sortingAsc = false
 	infoFrameThreshold = nil
+	infoFrameSpellName = nil
 	pIndex = nil
 	currentEvent = nil
 	maxlines = nil
