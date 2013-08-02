@@ -59,6 +59,7 @@ local timerFroststormStrikeCD		= mod:NewNextTimer(6, 144215, nil, mod:IsTank())
 local timerToxicMistsCD				= mod:NewNextTimer(30, 144089)
 local timerFoulStreamCD				= mod:NewNextTimer(32.5, 144090)
 local timerAshenWallCD				= mod:NewNextTimer(32.5, 144070)
+local timerIronTombCD				= mod:NewNextTimer(31.5, 144328)
 --Wavebinder Kardris
 local timerFrostStormBoltCD			= mod:NewNextTimer(7.2, 144214, nil, mod:IsTank())
 local timerToxicStormCD				= mod:NewNextTimer(30, 144005)
@@ -74,12 +75,18 @@ mod:AddBoolOption("SetIconOnToxicMists", false)
 
 local toxicMistsTargets = {}
 local toxicMistsTargetsIcons = {}
+local ironPrisonTargets = {}
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 
 local function warnToxicMistTargets()
 	warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
 	timerToxicMistsCD:Start()
 	table.wipe(toxicMistsTargets)
+end
+
+local function warnIronPrisonTargets()
+	warnIronPrison:Show(table.concat(ironPrisonTargets, "<, >"))
+	table.wipe(ironPrisonTargets)
 end
 
 --Auto detection of "tank them apart" strategy. if you keep them > 40 yards apart like we did, abilities other casts do not concern you.
@@ -187,6 +194,10 @@ function mod:SPELL_CAST_START(args)
 		warnIronPrison:Show()
 		timerIronPrisonCD:Start()
 		specWarnIronPrison:Show()
+	elseif args.spellId == 144328 then
+		warnIronTomb:Show()
+		timerIronTombCD:Start()
+		specWarnIronTomb:Show()
 	end
 end
 
@@ -219,7 +230,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount % 3 == 0 then
 			warnRend:Show(args.destName, amount)
 		end
-	elseif args.spellId == 144089 and not args:IsDestTypeHostile() then
+	elseif args.spellId == 144089 then
 		toxicMistsTargets[#toxicMistsTargets + 1] = args.destName
 		self:Unschedule(warnToxicMistTargets)
 		self:Schedule(0.5, warnToxicMistTargets)
@@ -230,6 +241,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:ScheduleMethod(0.5, "SetToxicIcons")
 			end
 		end
+	elseif args.spellId == 144330 then
+		ironPrisonTargets[#ironPrisonTargets + 1] = args.destName
+		self:Unschedule(warnIronPrisonTargets)
+		self:Schedule(0.5, warnIronPrisonTargets)
 	elseif args.spellId == 144215 then
 		local amount = args.amount or 1
 		timerFroststormStrike:Start(args.destName)
