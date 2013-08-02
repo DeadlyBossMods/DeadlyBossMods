@@ -48,8 +48,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnSmolderingHeatTargets)
 		self:Schedule(0.5, warnSmolderingHeatTargets)
+	end
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end--Excluding above ability for now until that ability stops affecting audience
-	elseif args.spellId == 141396 then
+	if args.spellId == 141396 then
 		local amount = args.amount or 1
 		if amount % 5 == 0 then
 			warnIntensifyingAssault:Show(args.destName, amount)
