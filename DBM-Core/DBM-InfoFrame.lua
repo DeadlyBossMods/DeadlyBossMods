@@ -299,7 +299,8 @@ end
 local function updateReverseBadPlayerDebuffs()
 	table.wipe(lines)
 	for uId, i in DBM:GetGroupMembers() do
-		if not UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) and not UnitDebuff(uId, GetSpellInfo(27827)) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
+--		if tankIgnored and UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)
+		if not UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) and not UnitDebuff(uId, GetSpellInfo(27827)) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 			lines[UnitName(uId)] = i
 		end
 	end
@@ -473,7 +474,6 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 		updateEnemyPower()
 	elseif event == "playerbuff" then
 		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
-		print(infoFrameSpellName)
 		updatePlayerBuffs()
 	elseif event == "playergooddebuff" then
 		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
@@ -484,6 +484,7 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 	elseif currentEvent == "reverseplayerbaddebuff" then
 		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
 		updateReverseBadPlayerDebuffs()
+		print(infoFrameSpellName)
 	elseif currentEvent == "playeraggro" then
 		updatePlayerAggro()
 	elseif currentEvent == "playerbuffstacks" then
