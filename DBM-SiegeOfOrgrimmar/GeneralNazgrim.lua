@@ -25,6 +25,7 @@ local warnBattleStance				= mod:NewSpellAnnounce(143589, 2)
 local warnBerserkerStance			= mod:NewSpellAnnounce(143594, 3)
 local warnDefensiveStance			= mod:NewSpellAnnounce(143593, 4)
 local warnAdds						= mod:NewCountAnnounce("ej7920", 3)
+local warnExecute					= mod:NewSpellAnnounce(143502, 4, nil, mod:IsTank())--Heroic
 --Nazgrim Rage Abilities
 local warnHeroicShockwave			= mod:NewSpellAnnounce(143500, 2)
 local warnKorkronBanner				= mod:NewSpellAnnounce(143536, 3)
@@ -41,29 +42,33 @@ local warnEmpoweredChainHeal		= mod:NewSpellAnnounce(143473, 4)
 local warnHealingTideTotem			= mod:NewSpellAnnounce(143474, 4)
 
 --Nazgrim Core Abilities
-local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer())
-local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 5)
+local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer(), 2457)
+local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 4)
 local specWarnSunderOther			= mod:NewSpecialWarningTarget(143494, mod:IsTank())
+local specWarnExecute				= mod:NewSpecialWarningSpell(143502, mod:IsTank(), nil, nil, 3)
 local specWarnBerserkerStance		= mod:NewSpecialWarningSpell(143594, false)--In case you want to throttle damage some
-local specWarnDefensiveStance		= mod:NewSpecialWarningSpell(143593)--Definitely OFF DPS
+local specWarnDefensiveStance		= mod:NewSpecialWarningSpell(143593, nil, nil, nil, 3)--Definitely OFF DPS
 --Nazgrim Rage Abilities
 local specWarnHeroicShockwave		= mod:NewSpecialWarningSpell(143500, nil, nil, nil, 2)
 local specWarnKorkronBanner			= mod:NewSpecialWarningSwitch(143536, mod:IsDps())
-local specWarnRavager				= mod:NewSpecialWarningSpell(143872, false)
-local specWarnWarSong				= mod:NewSpecialWarningSpell(143503, nil, nil, nil, 3)
+local specWarnRavager				= mod:NewSpecialWarningSpell(143872)
+local specWarnWarSong				= mod:NewSpecialWarningSpell(143503, nil, nil, nil, 2)
 --Kor'kron Adds
 local specWarnIronstorm				= mod:NewSpecialWarningInterrupt(143420, mod:IsMelee())--Only needs to be interrupted if melee are near it
 local specWarnArcaneShock			= mod:NewSpecialWarningInterrupt(143432)--Should all be interupted, it's a ranged attack that hurts if not interrupted (increases in damage every missed interrupt)
 local specWarnMagistrike			= mod:NewSpecialWarningInterrupt(143431, mod:IsMelee())--Only needs to be interrupted if melee are near it
 local specWarnEmpoweredChainHeal	= mod:NewSpecialWarningInterrupt(143473)--Concerns everyone, if not interrupted will heal boss for a TON
 local specWarnAssassinsMark			= mod:NewSpecialWarningYou(143480)
+local yellAssassinsMark				= mod:NewYell(143480)
+local specWarnAssassinsMarkOther	= mod:NewSpecialWarningTarget(143480, false)
 local specWarnEarthShield			= mod:NewSpecialWarningDispel(143475, mod:IsMagicDispeller())
 local specWarnHealingTideTotem		= mod:NewSpecialWarningSwitch(143474, false)--Not everyone needs to switch, should be turned on by assigned totem mashing people.
 
 --Nazgrim Core Abilities
-local timerAddsCD					= mod:NewNextCountTimer(45, "ej7920")
+local timerAddsCD					= mod:NewNextCountTimer(45, "ej7920", nil, nil, nil, 2457)
 local timerSunder					= mod:NewTargetTimer(60, 143494, nil, mod:IsTank() or mod:IsHealer())
 local timerSunderCD					= mod:NewCDTimer(10, 143494, nil, mod:IsTank())
+local timerExecuteCD				= mod:NewNextTimer(33.5, 143502, nil, mod:IsTank())
 local timerBoneCD					= mod:NewCDTimer(30, 143638, nil, mod:IsHealer())
 local timerDefensiveStance			= mod:NewBuffActiveTimer(60, 143593)
 --Nazgrim Rage Abilities
@@ -76,7 +81,7 @@ local countdownCoolingOff			= mod:NewCountdown(15, 143484, nil, nil, nil, nil, t
 
 local addsCount = 0
 local boneTargets = {}
-local UnitName = UnitName
+local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
 
 local function warnBoneTargets()
 	warnBonecracker:Show(table.concat(boneTargets, "<, >"))
@@ -106,22 +111,26 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args.spellId == 143431 then
 		local source = args.sourceName
-		warnMagistrike:Show()
 		if source == UnitName("target") or source == UnitName("focus") then
+			warnMagistrike:Show()
 			specWarnMagistrike:Show(source)
 		end
 	elseif args.spellId == 143432 then
 		local source = args.sourceName
-		warnArcaneShock:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
+			warnArcaneShock:Show()
 			specWarnArcaneShock:Show(source)
 		end
 	elseif args.spellId == 143473 then
 		local source = args.sourceName
 		warnEmpoweredChainHeal:Show()
-		if source == UnitName("target") or source == UnitName("focus") then
-			specWarnEmpoweredChainHeal:Show(source)
-			timerEmpoweredChainHealCD:Start(source, args.sourceGUID)
+		specWarnEmpoweredChainHeal:Show(source)
+		timerEmpoweredChainHealCD:Start(source, args.sourceGUID)
+	elseif args.spellId == 143502 then
+		warnExecute:Show()
+		timerExecuteCD:Start()
+		if UnitExists("boss1") and UnitGUID("boss1") == args.sourceGUID and UnitDetailedThreatSituation("player", "boss1") then--threat check instead of target because we may be helping dps adds
+			specWarnExecute:Show()
 		end
 	end
 end
@@ -153,7 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSunder:Show(args.destName, amount)
 		timerSunder:Start(args.destName)
 		if args:IsPlayer() then
-			if amount >= 5 then--At this point the other tank SHOULD be clear.
+			if amount >= 4 then--At this point the other tank SHOULD be clear.
 				specWarnSunder:Show(amount)
 			end
 		else--Taunt as soon as stacks are clear, regardless of stack count.
@@ -169,6 +178,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnAssasinsMark:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnAssassinsMark:Show()
+			yellAssassinsMark:Yell()
+		else
+			specWarnAssassinsMarkOther:Show(args.destName)
 		end
 	elseif args.spellId == 143475 then
 		warnEarthShield:Show(args.destName)
