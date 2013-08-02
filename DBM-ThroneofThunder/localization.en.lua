@@ -310,25 +310,17 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetWarningLocalization({
-	specWarnVitaSoaker			= "You're next Vita Soaker!",
-	warnVitaSoakerSoon			= "You're second up Vita Soaker",
 	specWarnUnstablVitaJump		= "Unstable Vita jumped to you!"
 })
 
 L:SetOptionLocalization({
-	warnVitaSoakerSoon		= "Announce when you are second up Vita Soaker (Requires InfoFrame enabled)",
 	specWarnUnstablVitaJump	= "Show special warning when $spell:138297 jumps to you",
-	specWarnVitaSoaker		= "Show special warning when you are next $spell:138297 soaker based on infoframe position (Requires InfoFrame enabled)",
-	SetIconsOnVita			= "Set icons on $spell:138297 debuffed player and furthest player from them",
-	InfoFrame				= "Show info frame for soak order of players without $spell:138372 (excluding tanks)",
-	AnnounceVitaSoaker		= "Announce next $spell:138297 soaker to chat in RAID warnings (Requires Raid leader)"
+	SetIconsOnVita			= "Set icons on $spell:138297 debuffed player and furthest player from them"
 })
 
 L:SetMiscLocalization({
 	Defeat						= "Wait!",
-	NoSensitivity				= "Vita Soak Order",
-	VitaSoakerOptionConflict	= "Warning: You enabled the Vita Soaker warnings but disabled the Vita Soaker InfoFrame. The warnings will not work without the InfoFrame!",
-	VitaChatMessage				= "Next vita soaker: %s"
+	BigWigsRecommendation		= "If you need a vita soaker list, it's recommended you use BigWigs and BigWigs Ra-den assist for this boss"
 })
 
 -------------
