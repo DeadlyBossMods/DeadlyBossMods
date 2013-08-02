@@ -286,7 +286,8 @@ end
 local function updateBadPlayerDebuffs()
 	table.wipe(lines)
 	for uId in DBM:GetGroupMembers() do
-		if UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) or (tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1))) then
+--		if tankIgnored and UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)
+		if UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) then
 			lines[UnitName(uId)] = ""
 		end
 	end
@@ -472,6 +473,7 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 		updateEnemyPower()
 	elseif event == "playerbuff" then
 		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
+		print(infoFrameSpellName)
 		updatePlayerBuffs()
 	elseif event == "playergooddebuff" then
 		infoFrameSpellName = GetSpellInfo(infoFrameThreshold)
