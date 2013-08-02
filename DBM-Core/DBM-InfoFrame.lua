@@ -286,7 +286,7 @@ end
 local function updateBadPlayerDebuffs()
 	table.wipe(lines)
 	for uId in DBM:GetGroupMembers() do
-		if UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) or tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if UnitDebuff(uId, infoFrameSpellName) and not UnitIsDeadOrGhost(uId) or (tankIgnored and not (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1))) then
 			lines[UnitName(uId)] = ""
 		end
 	end
