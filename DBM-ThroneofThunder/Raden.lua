@@ -65,6 +65,7 @@ local countdownUnstableVita		= mod:NewCountdownFades(11, 138297)
 local countdownCreation			= mod:NewCountdown(32.5, 138321, nil, nil, nil, nil, true)
 
 mod:AddBoolOption("SetIconsOnVita", false)--Both the vita target and furthest from vita target
+local ShowedBigWigsmessage		= mod:NewSpellAnnounce("ShowedBigWigsmessage", 1, nil, false, false)--Dummy option
 
 local creationCount = 0
 local stalkerCount = 0
@@ -107,8 +108,9 @@ function mod:OnCombatStart(delay)
 	lastPlayerTwo = nil
 	timerCreationCD:Start(11-delay, 1)
 	countdownCreation:Start(11-delay)
-	if not BigWigs then
+	if not BigWigs and not self.Options.ShowedBigWigsmessage then
 		DBM:AddMsg(L.BigWigsRecommendation)
+		self.Options.ShowedBigWigsmessage = true
 	end
 end
 
