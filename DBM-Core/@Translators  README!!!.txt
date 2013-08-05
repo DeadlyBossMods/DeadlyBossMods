@@ -12,3 +12,5 @@ svn://svn.deadlybossmods.com/dbm4-raidtools (DBM-RaidLeadTools)
 
 
 If you want to receive notification emails on SVN updates, please drop me a line at tandanu@deadlybossmods.com.
+
+Active translators, if you could, post email addresses where you can be contacted in DBM-core or send privately to mysticalosx@gmail.com
