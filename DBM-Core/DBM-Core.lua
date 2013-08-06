@@ -3704,8 +3704,10 @@ do
 		end
 	end
 
-	function DBM:CHAT_MSG_WHISPER(msg, name)
-		return onWhisper(msg, name, false)
+	function DBM:CHAT_MSG_WHISPER(msg, name, _, _, _, status)
+		if status ~= "GM" then
+			return onWhisper(msg, name, false)
+		end
 	end
 
 	function DBM:CHAT_MSG_BN_WHISPER(msg, ...)
