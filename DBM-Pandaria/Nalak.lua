@@ -105,7 +105,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Pull and not self:IsInCombat() then
+	if (msg == L.Pull or msg:find(L.Pull)) and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 69099 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 69099 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
