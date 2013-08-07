@@ -54,6 +54,10 @@ L:SetOptionLocalization({
 	ReadyCheck			= "當世界首領開打時撥放準備檢查的音效(即使沒有選定目標)"
 })
 
+L:SetMiscLocalization({
+	Pull				= "你感覺到冷風吹過了嗎?風暴要來了..."
+})
+
 ---------------------------
 -- Chi-ji, The Red Crane --
 ---------------------------
@@ -61,6 +65,10 @@ L= DBM:GetModLocalization(857)
 
 L:SetOptionLocalization({
 	BeaconArrow				= "當某人中了$spell:144473顯示DBM箭頭"
+})
+
+L:SetMiscLocalization({
+	Victory					= "Your hope shines brightly, and even more brightly when you work together to overcome. It will ever light your way in even the darkest of places."
 })
 
 ------------------------------
@@ -77,6 +85,10 @@ L= DBM:GetModLocalization(859)
 -- Xuen, The White Tiger --
 ---------------------------
 L= DBM:GetModLocalization(860)
+
+L:SetMiscLocalization({
+	Victory					= "You are strong, stronger even than you realize. Carry this thought with you into the darkness ahead, and let it shield you."
+})
 
 ------------------------------------
 -- Ordos, Fire-God of the Yaungol --

@@ -34,6 +34,11 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetMiscLocalization({
+	tower		= "The door barring the",--The door barring the South/North Tower has been breached!
+	demolisher	= "[Kor'kron Demolisher]|h|r to assault the tower!"--In case they remove the bad epiccenter spellid will use this
+})
+
 --------------------
 --Iron Juggernaut --
 --------------------
