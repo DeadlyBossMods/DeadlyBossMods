@@ -271,25 +271,17 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetWarningLocalization({
-	specWarnVitaSoaker			= "你是下一位動盪生命傳遞者!",
-	warnVitaSoakerSoon			= "你是下下一位，請準備!",
 	specWarnUnstablVitaJump		= "動盪生命傳到你身上!"
 })
 
 L:SetOptionLocalization({
-	warnVitaSoakerSoon		= "提示你為下下一位動盪生命傳遞者(需要開啟訊息框架)",
 	specWarnUnstablVitaJump	= "當$spell:138297傳遞你身上時顯示特別警告",
-	specWarnVitaSoaker		= "當你為下一個$spell:138297傳遞者顯示特別警告，以上基於訊息框架位置(需要開啟訊息框架)",
-	SetIconsOnVita			= "為中了$spell:138297和離他最遠的玩家設置團隊圖示",
-	InfoFrame				= "顯示訊息框架給沒有$spell:138372的人排序動盪生命傳遞(不包含坦克)",
-	AnnounceVitaSoaker		= "使用團隊警告提示下一個$spell:138297傳遞者到頻道(需要團隊隊長)"
+	SetIconsOnVita			= "為中了$spell:138297和離他最遠的玩家設置團隊圖示"
 })
 
 L:SetMiscLocalization({
 	Defeat						= "慢著!",
-	NoSensitivity				= "動盪生命傳遞者排序",
-	VitaSoakerOptionConflict	= "警告:你開啟了動盪生命排序警告但關閉了動盪生命訊息框架。請此警告需要開起動盪生命訊息框架才能正常運作!",
-	VitaChatMessage				= "下一個動盪生命傳遞者:%s"
+	BigWigsRecommendation		= "If you need a vita soaker list, it's recommended you use BigWigs and BigWigs Ra-den assist for this boss"
 })
 
 -------------
