@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 L.MainFrame		 = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻譯:"
-L.TranslationBy 			= "Imbav@聖光之願、Nightkiller@日落沼澤"
+L.TranslationBy 			= "Imbav@聖光之願"
 L.Website					= "拜訪我們新的討論與支援論壇:|cFF73C2FBwww.deadlybossmods.com|r (代管於Elitist Jerks!)"
 L.WebsiteButton				= "論壇"
 
