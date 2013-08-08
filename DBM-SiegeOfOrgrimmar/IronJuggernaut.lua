@@ -32,6 +32,7 @@ local warnNapalmOil				= mod:NewSpellAnnounce(144492, 3)
 local warnShockPulse			= mod:NewSpellAnnounce(144485, 3)--The actual threatening quake mechanic
 local warnDemolisherCanon		= mod:NewSpellAnnounce(144154, 3)
 local warnCutterLaser			= mod:NewTargetAnnounce(146325, 4)--Not holding my breath this shows in combat log.
+local warnMortarBarrage			= mod:NewSpellAnnounce(144555, 4)--Heroic
 
 --Assault Mode
 local specWarnIgniteArmor		= mod:NewSpecialWarningStack(144467, mod:IsTank(), 3)
@@ -43,6 +44,7 @@ local specWarnShockPulse		= mod:NewSpecialWarningSpell(144485, nil, nil, nil, 2)
 local specWarnCutterLaser		= mod:NewSpecialWarningRun(146325)
 local specWarnNapalmOil			= mod:NewSpecialWarningMove(144498)
 local yellCutterLaser			= mod:NewYell(146325)
+local specWarnMortarBarrage		= mod:NewSpecialWarningSpell(144555, nil, nil, nil, 2)
 
 --Assault Mode
 local timerAssaultModeCD		= mod:NewNextTimer(64, 141395, nil, "timerAssaultModeCD")--141395 is correct timer text but it's wrong spellid, custom option text for real timer description
@@ -58,8 +60,9 @@ local timerSiegeModeCD			= mod:NewNextTimer(116, 84974, nil, nil, "timerSiegeMod
 local timerCuttingLaser			= mod:NewTargetTimer(10, 146325)--Spell tooltip says 15 but combat log showed 10
 --local timerCuttingLaserCD		= mod:NewCDTimer(10, 146325)
 --local timerShockPulseCD		= mod:NewCDTimer(10, 144485)
-local timerNapalmOilCD			= mod:NewCDTimer(21.5, 144492)
+--local timerNapalmOilCD		= mod:NewCDTimer(21.5, 144492)
 local timerDemolisherCanonCD	= mod:NewCDTimer(10, 144154)
+local timerMortarBarrageCD		= mod:NewCDTimer(30, 144555)
 
 local soundCuttingLaser			= mod:NewSound(146325)
 
@@ -73,7 +76,7 @@ function mod:OnCombatStart(delay)
 	timerLaserBurnCD:Start(-delay)
 	timerBorerDrillCD:Start(-delay)
 	timerCrawlerMineCD:Start(-delay)
-	timerSiegeModeCD:Start(121-delay)--First one longer than rest
+	timerSiegeModeCD:Start(120.5-delay)--First one longer than rest
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -92,6 +95,9 @@ function mod:SPELL_CAST_START(args)
 		timerCrawlerMineCD:Cancel()
 		timerBorerDrillCD:Cancel()
 		warnSeismicActivity:Show()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerMortarBarrageCD:Start(15)--So far, the ONLY ability with consistent timing that we can start here
+		end
 		timerAssaultModeCD:Start()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -173,11 +179,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDemolisherCanonCD:Start()
 	elseif spellId == 144492 then
 		warnNapalmOil:Show()
-		timerNapalmOilCD:Start()
+--		timerNapalmOilCD:Start()
 	elseif spellId == 146359 then--Regeneration (Assault Mode power regen activation)
 		--2 seconds slower than emote, but it's not pressing enough to matter so it's better localisation wise to do it this way
 		timerNapalmOilCD:Cancel()
 		timerDemolisherCanonCD:Cancel()
+		timerMortarBarrageCD:Cancel()
 --		timerCuttingLaserCD:Cancel()
 --		timerShockPulseCD:Cancel()
 		if siegeMode == true then--don't start timer on pull regenerate, pull regenerate is 5 seconds longer than rest of them
@@ -187,6 +194,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(8)
 		end
+	elseif spellId == 144555 then
+		warnMortarBarrage:Show()
+		specWarnMortarBarrage:Show()
+		timerMortarBarrageCD:Start()
 	end
 end
 
