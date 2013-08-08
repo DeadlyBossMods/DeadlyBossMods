@@ -18,23 +18,25 @@ mod:RegisterEventsInCombat(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnBreath			= mod:NewSpellAnnounce(143436, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnShaBolt			= mod:NewSpellAnnounce(143295, 3, nil, false)
-local warnSwirl				= mod:NewSpellAnnounce(143309, 4)
-local warnSplit				= mod:NewSpellAnnounce(143020, 2)
-local warnReform			= mod:NewSpellAnnounce(143469, 2)
+local warnBreath					= mod:NewSpellAnnounce(143436, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnShaBolt					= mod:NewSpellAnnounce(143295, 3, nil, false)
+local warnSwirl						= mod:NewSpellAnnounce(143309, 4)
+local warnSplit						= mod:NewSpellAnnounce(143020, 2)
+local warnReform					= mod:NewSpellAnnounce(143469, 2)
+local warnSwellingCorruptionCast	= mod:NewSpellAnnounce(143578, 2, 143574)--Heroic (this is the boss spellcast trigger spell NOT personal debuff warning)
 
-local specWarnBreath		= mod:NewSpecialWarningSpell(143436, mod:IsTank())
-local specWarnShaSplash		= mod:NewSpecialWarningMove(143297)
-local specWarnSwirl			= mod:NewSpecialWarningSpell(143309, nil, nil, nil, 2)
+local specWarnBreath				= mod:NewSpecialWarningSpell(143436, mod:IsTank())
+local specWarnShaSplash				= mod:NewSpecialWarningMove(143297)
+local specWarnSwirl					= mod:NewSpecialWarningSpell(143309, nil, nil, nil, 2)
 
-local timerBreathCD			= mod:NewCDTimer(35, 143436, nil, mod:IsTank() or mod:IsHealer())--35-65 second variation wtf?
-local timerShaBoltCD		= mod:NewCDTimer(6, 143295, nil, false)--every 6-20 seconds (yeah it variates that much)
-local timerSwirlCD			= mod:NewCDTimer(48.5, 143309)
-local timerShaResidue		= mod:NewBuffActiveTimer(10, 143459)
-local timerPurifiedResidue	= mod:NewBuffActiveTimer(15, 143524)
+local timerBreathCD					= mod:NewCDTimer(35, 143436, nil, mod:IsTank() or mod:IsHealer())--35-65 second variation wtf?
+local timerShaBoltCD				= mod:NewCDTimer(6, 143295, nil, false)--every 6-20 seconds (yeah it variates that much)
+local timerSwirlCD					= mod:NewCDTimer(48.5, 143309)
+local timerShaResidue				= mod:NewBuffActiveTimer(10, 143459)
+local timerPurifiedResidue			= mod:NewBuffActiveTimer(15, 143524)
+local timerSwellingCorruptionCD		= mod:NewCDTimer(75, 143578, nil, nil, nil, 143574)
 
-local berserkTimer			= mod:NewBerserkTimer(605)
+local berserkTimer					= mod:NewBerserkTimer(605)
 
 local lastPower = 100
 
@@ -46,6 +48,9 @@ function mod:OnCombatStart(delay)
 	self:RegisterShortTermEvents(
 		"UNIT_POWER_FREQUENT boss1"--Do not want this one persisting out of combat even after a wipe, in case you go somewhere else.
 	)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerSwellingCorruptionCD:Start(12.5-delay)--12.5-14sec variation
+	end
 end
 
 function mod:OnCombatEnd()
@@ -95,9 +100,13 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerBreathCD:Cancel()
 		timerSwirlCD:Cancel()
 		timerShaBoltCD:Cancel()
+		timerSwellingCorruptionCD:Cancel()
 	elseif spellId == 143293 and self:AntiSpam(3, 2) then--Sha Bolt
 		warnShaBolt:Show()
 		timerShaBoltCD:Start()
+	elseif spellId == 143578 then--Swelling Corruption
+		warnSwellingCorruptionCast:Show()
+		timerSwellingCorruptionCD:Start()
 	end
 end
 
@@ -118,5 +127,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		warnReform:Show()
 --		timerBreathCD:Start(15)--8-15 second variation, iffy on this being set
 		timerSwirlCD:Start(24)--24-26 variation, this probably is set?
+--[[		if self:IsDifficulty("heroic10", "heroic25") then
+			timerSwellingCorruptionCD:Start(12.5)
+		end--]]
 	end
 end
