@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 	"WORLD_STATE_UI_TIMER_UPDATE"
 )
 
+local warnSuperNova				= mod:NewCastAnnounce(146815, 4)--Heroic
 --Massive Crate of Goods
 local warnReturnToStone			= mod:NewSpellAnnounce(145489, 2)
 local warnSetToBlow				= mod:NewTargetAnnounce(145987, 4)--145996 is cast ID
@@ -46,6 +47,7 @@ local warnBreathofFire			= mod:NewSpellAnnounce(146222, 3)--Do not have timer fo
 local warnGustingCraneKick		= mod:NewSpellAnnounce(146180, 3)
 local warnPathofBlossoms		= mod:NewTargetAnnounce(146256, 3)
 
+local specWarnSuperNova			= mod:NewSpecialWarningSpell(146815, nil, nil, nil, 2)
 --Massive Crate of Goods
 local specWarnSetToBlowYou		= mod:NewSpecialWarningYou(145987)
 local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)
@@ -67,6 +69,7 @@ local specWarnPathOfBlossoms	= mod:NewSpecialWarningMove(146257)
 --Crate of Pandaren Relics
 local specWarnGustingCraneKick	= mod:NewSpecialWarningSpell(146180, nil, nil, nil, 2)
 
+local timerSuperNova			= mod:NewCastTimer(10, 146815)
 --Massive Crate of Goods
 local timerReturnToStoneCD		= mod:NewNextTimer(12, 145489)
 local timerSetToBlowCD			= mod:NewNextTimer(9.5, 145996)
@@ -182,6 +185,10 @@ function mod:SPELL_CAST_START(args)
 		timerReturnToStoneCD:Start(args.sourceGUID)
 	elseif args.spellId == 142947 then--Pre warn more or less
 		warnCrimsonRecon:Show()
+	elseif args.spellId == 146815 then
+		warnSuperNova:Show()
+		specWarnSuperNova:Show()
+		timerSuperNova:Start()
 	end
 end
 
