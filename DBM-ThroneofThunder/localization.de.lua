@@ -271,25 +271,17 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetWarningLocalization({
-	specWarnVitaSoaker			= "Du bist als nächstes Vitaziel eingeteilt!",
-	warnVitaSoakerSoon			= "Du bist als übernächstes Vitaziel eingeteilt.",
 	specWarnUnstablVitaJump		= "Instabile Vita ist auf dich übergesprungen!"
 })
 
 L:SetOptionLocalization({
-	warnVitaSoakerSoon		= "Zeige Warnung, wenn du als übernächstes Ziel für $spell:138297 eingeteilt bist (benötigt aktiviertes Infofenster)",
 	specWarnUnstablVitaJump	= "Spezialwarnung, wenn $spell:138297 auf dich überspringt",
-	specWarnVitaSoaker		= "Spezialwarnung, wenn du als nächstes Ziel für $spell:138297 eingeteilt bist, basierend auf deiner Position im Infofenster (benötigt aktiviertes Infofenster)",
-	SetIconsOnVita			= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler",
-	InfoFrame				= "Zeige Infofenster für eine automatische Einteilung der Reihenfolge der Spieler ohne $spell:138372 (ausgenommen Tanks) als Ziel für $spell:138297",
-	AnnounceVitaSoaker		= "Verkünde nächstes eingeteiltes Ziel für $spell:138297 als Schlachtzugwarnung (nur als Leiter)"
+	SetIconsOnVita			= "Setze Zeichen auf den Spieler mit dem Debuff $spell:138297 und den am weitesten davon entfernten Spieler"
 })
 
 L:SetMiscLocalization({
 	Defeat						= "Wartet!",--needs to be verified (video-captured translation)
-	NoSensitivity				= "Reihenfolge Vitaziele",
-	VitaSoakerOptionConflict	= "Achtung: Du hast die Warnungen für die Einteilung als nächstes bzw. übernächstes Ziel von Instabile Vita aktiviert, aber das Infofenster deaktiviert. Die Warnungen werden ohne das Infofenster nicht funktionieren!",
-	VitaChatMessage				= "Nächstes Vitaziel: %s"
+	BigWigsRecommendation		= "Tipp: Du solltest für diesen Gegner die Mods \"BigWigs\" und \"BigWigs_Ra-denAssist\" nutzen, falls du eine automatische Einteilung der Spieler als Ziel für Instabile Vita benötigst."
 })
 
 -------------

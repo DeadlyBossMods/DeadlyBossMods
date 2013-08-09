@@ -11,6 +11,7 @@
 -- The localizations are written by:
 --    * enGB/enUS: Tandanu & Omegal		http://www.deadlybossmods.com
 --    * deDE: Tandanu					http://www.deadlybossmods.com
+--    * deDE: Ebmor						DBM forums (PM: "Ebmor")
 --    * zhCN: Diablohu					http://www.dreamgen.cn | diablohudream@gmail.com
 --    * ruRU: Swix						stalker.kgv@gmail.com
 --    * ruRU: TOM_RUS
