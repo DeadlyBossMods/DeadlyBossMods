@@ -34,6 +34,11 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetMiscLocalization({
+	tower		= "The door barring the",--translate (trigger)
+	demolisher	= "[Kor'kron Demolisher]|h|r to assault the tower!"--translate (trigger)
+})
+
 --------------------
 --Iron Juggernaut --
 --------------------
@@ -143,5 +148,5 @@ L= DBM:GetModLocalization(869)
 L = DBM:GetModLocalization("FoOTrash")
 
 L:SetGeneralLocalization({
-	name =	"Trash der Belagerung Orgrimmars"
+	name =	"Trash der Schlacht um Orgrimmar"
 })
