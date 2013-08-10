@@ -398,7 +398,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEncaseInAmber:Show(args.destName)
 		timerEncaseInAmber:Start(args.destName)
 		timerEncaseInAmberCD:Start()
-		countdownEncaseInAmber:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			countdownEncaseInAmber:Start()
+		end
 	elseif args.spellId == 143939 then
 		warnGouge:Show(args.destName)
 		timerGouge:Start(args.destName)
