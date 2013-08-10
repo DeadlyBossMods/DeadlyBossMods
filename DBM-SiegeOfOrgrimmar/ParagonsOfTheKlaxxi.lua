@@ -43,7 +43,7 @@ local warnToxicCatalystGreen		= mod:NewCastAnnounce(142730, 4, nil, nil, nil, fa
 local warnMesmerize					= mod:NewTargetAnnounce(142671, 3)
 local warnSonicProjection			= mod:NewSpellAnnounce(143765, 3, nil, false)--Spammy, and target scaning didn't work
 --Korven the Prime
-local warnShieldBash				= mod:NewTargetAnnounce(143974, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnShieldBash				= mod:NewSpellAnnounce(143974, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnEncaseInAmber				= mod:NewTargetAnnounce(142564, 4)
 --Iyyokuk the Lucid
 local warnDiminish					= mod:NewSpellAnnounce(143666, 4, nil, false)--Spammy, target scanning was iffy
@@ -103,17 +103,18 @@ local specWarnKunchongs				= mod:NewSpecialWarningSwitch("ej8043", mod:IsDps())
 --Korven the Prime
 local specWarnShieldBash			= mod:NewSpecialWarningYou(143974)
 local specWarnShieldBashOther		= mod:NewSpecialWarningTarget(143974, mod:IsTank() or mod:IsHealer())
-local specWarnEncaseInAmber			= mod:NewSpecialWarningTarget(142564, mod:IsDps())--Conflicted on using this or NewSpecialWarningSwitch, switch won't have targetname
+local specWarnEncaseInAmber			= mod:NewSpecialWarningTarget(142564, mod:IsDps())--Better than switch because on heroic, you don't actually switch to amber, you switch to a NON amber target. Plus switch gives no targetname
 --Iyyokuk the Lucid
 local specWarnCalculated			= mod:NewSpecialWarningYou(144095)
-local yellCalculated				= mod:NewYell(144095)
+local yellCalculated				= mod:NewYell(144095, nil, false)
 local specWarnCriteriaLinked		= mod:NewSpecialWarning("specWarnCriteriaLinked")--Linked to Calculated target
 local specWarnInsaneCalculationFire	= mod:NewSpecialWarningSpell(142416, nil, nil, nil, 2)
 --Ka'roz the Locust
-local specWarnFlash					= mod:NewSpecialWarningSpell(143709, nil, nil, nil, 2)
+local specWarnFlash					= mod:NewSpecialWarningSpell(143709, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnWhirling				= mod:NewSpecialWarningYou(143701)
 local yellWhirling					= mod:NewYell(143701, nil, false)
 local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)
+local specWarnHurlAmber				= mod:NewSpecialWarningSpell(143759, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 --Skeer the Bloodseeker
 local specWarnBloodletting			= mod:NewSpecialWarningSwitch(143280, not mod:IsHealer())
 --Rik'kal the Dissector
@@ -123,6 +124,7 @@ local specWarnAim					= mod:NewSpecialWarningYou(142948)
 local yellAim						= mod:NewYell(142948)
 local specWarnAimOther				= mod:NewSpecialWarningTarget(142948)
 
+local timerJumpToCenter				= mod:NewCastTimer(5, 143545)
 --Kil'ruk the Wind-Reaver
 local timerGouge					= mod:NewTargetTimer(10, 143939, nil, mod:IsTank())
 --Xaril the Poisoned-Mind
@@ -131,15 +133,19 @@ local timerToxicCatalystCD			= mod:NewCDTimer(33, "ej8036")
 local timerShieldBash				= mod:NewTargetTimer(6, 143974, nil, mod:IsTank())
 local timerShieldBashCD				= mod:NewCDTimer(17, 143974, nil, mod:IsTank())
 local timerEncaseInAmber			= mod:NewTargetTimer(10, 142564)
+local timerEncaseInAmberCD			= mod:NewCDTimer(30, 142564)--Technically a next timer but we use cd cause it's only cast if someone is low when it comes off 30 second internal cd. VERY important timer for heroic
 --Iyyokuk the Lucid
 local timerCalculated				= mod:NewBuffFadesTimer(6, 144095)
+local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but variation is wild (25-50 second variation)
 --Ka'roz the Locust
-local timerFlashCD					= mod:NewCDTimer(64, 143709)
+local timerFlashCD					= mod:NewCDTimer(62, 143709)
 local timerWhirling					= mod:NewBuffFadesTimer(5, 143701)
 --Rik'kal the Dissector
 local timerMutate					= mod:NewBuffFadesTimer(20, 143337)
 --Hisek the Swarmkeeper
 local timerAim						= mod:NewTargetTimer(5, 142948)--or is it 7, conflicting tooltips
+
+local countdownEncaseInAmber		= mod:NewCountdown(30, 142564)--Probably switch to secondary countdown if one of his other abilities proves to have priority
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnAim", true)--multi boss fight, will use star and avoid moving skull off a kill target
@@ -180,13 +186,14 @@ local function hideRangeFrame()
 end
 
 local function CheckBosses(GUID)
+	local vulnerable = false
 	for i = 1, 5 do
-		local vulnerable = false
-		if UnitExists("boss"..i) and not activeBossGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected and added yet.
-			activeBossGUIDS[UnitGUID("boss"..i)] = true
-			activatedTargets[#activatedTargets + 1] = UnitName("boss"..i)
+		local unitID = "boss"..i
+		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] then--Check if new units exist we haven't detected and added yet.
+			activeBossGUIDS[UnitGUID(unitID)] = true
+			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
 			--Activation Controller
-			local cid = mod:GetCIDFromGUID(UnitGUID("boss"..i))
+			local cid = mod:GetCIDFromGUID(UnitGUID(unitID))
 			if cid == 71161 then--Kil'ruk the Wind-Reaver
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
@@ -194,11 +201,11 @@ local function CheckBosses(GUID)
 			elseif cid == 71156 then--Kaz'tik the Manipulator
 		
 			elseif cid == 71155 then--Korven the Prime
-				timerShieldBashCD:Start(21)
+				timerShieldBashCD:Start(25)
 			elseif cid == 71160 then--Iyyokuk the Lucid
-		
+				timerInsaneCalculationCD:Start()
 			elseif cid == 71154 then--Ka'roz the Locust
-				timerFlashCD:Start(11.5)
+				timerFlashCD:Start(15)
 			elseif cid == 71152 then--Skeer the Bloodseeker
 				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
 			elseif cid == 71158 then--Rik'kal the Dissector
@@ -207,6 +214,8 @@ local function CheckBosses(GUID)
 		
 			end
 		end
+	end
+	if #activatedTargets >= 1 then
 		warnActivatedTargets(vulnerable)--Down here so we can send tank vulnerable status
 	end
 end
@@ -221,6 +230,7 @@ function mod:OnCombatStart(delay)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
+	timerJumpToCenter:Start()
 end
 
 function mod:OnCombatEnd()
@@ -334,6 +344,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143280 then
 		warnBloodletting:Show()
 		specWarnBloodletting:Show()
+	elseif args.spellId == 143974 then
+		warnShieldBash:Show()
+		timerShieldBashCD:Start()
 	end
 end
 
@@ -384,6 +397,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEncaseInAmber:Show(args.destName)
 		specWarnEncaseInAmber:Show(args.destName)
 		timerEncaseInAmber:Start(args.destName)
+		timerEncaseInAmberCD:Start()
+		countdownEncaseInAmber:Start()
 	elseif args.spellId == 143939 then
 		warnGouge:Show(args.destName)
 		timerGouge:Start(args.destName)
@@ -393,9 +408,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGougeOther:Show(args.destName)
 		end
 	elseif args.spellId == 143974 then
-		warnShieldBash:Show(args.destName)
 		timerShieldBash:Start(args.destName)
-		timerShieldBashCD:Start()
 		if args.IsPlayer() then
 			specWarnShieldBash:Show()
 		else
@@ -425,6 +438,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 143759 then
 		warnHurlAmber:Show()
+		specWarnHurlAmber:Show()
 	elseif args.spellId == 143337 then
 		warnMutate:Show(args.destName)
 		if args.IsPlayer() then
@@ -479,8 +493,10 @@ function mod:UNIT_DIED(args)
 		
 	elseif cid == 71155 then--Korven the Prime
 		timerShieldBashCD:Cancel()
+		timerEncaseInAmberCD:Cancel()
+		countdownEncaseInAmber:Cancel()
 	elseif cid == 71160 then--Iyyokuk the Lucid
-		
+		timerInsaneCalculationCD:Cancel()
 	elseif cid == 71154 then--Ka'roz the Locust
 		timerFlashCD:Cancel()
 	elseif cid == 71152 then--Skeer the Bloodseeker
@@ -551,8 +567,8 @@ GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(1
 }
 
 --[[
-"<33.9 19:16:49> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Every Solitary One!#Iyyokuk the Lucid###Iyyokuk the Lucid##0#0##0#329#nil#0#false#false", -- [2353]
-"<33.9 19:16:49> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#Iyyokuk the Lucid looks at Dayani with a calculating eye!#Iyyokuk the Lucid###Dayani##0#0##0#330#nil#0#false#false", -- [2355]
+"<32.1 20:15:38> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#Iyyokuk begins choosing criteria from Daltin!#Iyyokuk the Lucid###Daltin##0#0##0#846#nil#0#false#false", -- [2547]
+"<32.1 20:15:38> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Iyyokuk selects: Sword |TInterface\\Icons\\ABILITY_IYYOKUK_SWORD_white.BLP:20|t!#Iyyokuk the Lucid###Iyyokuk the Luci
 --]]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefully, so we have valid criteria to match to on monster emote message
 	if self:AntiSpam() then
@@ -560,27 +576,27 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefu
 		calculatedNumber = nil
 		calculatedColor = nil
 	end
-	--Yay for localizing 15 strings in 10 languages.
-	--Nothing like requiring a mod to scan for 150 possible variations of emotes to work around missing CLEU entries
-	if msg:find(L.red) then
+	--UPDATE. Seems now colors and shapes can avoid localizing with icons and color codes
+	--Still need to localize 5 numbers in 10 languages so 50 localizations instead of 150
+	if msg:find("FFFF0000") then
 		calculatedColor = "Red"
-	elseif msg:find(L.purple) then
+	elseif msg:find(L.purple) then--Needs color code still
 		calculatedColor = "Purple"
-	elseif msg:find(L.blue) then
+	elseif msg:find("FF0000FF") then
 		calculatedColor = "Blue"
-	elseif msg:find(msg == L.green) then
+	elseif msg:find(msg == L.green) then--Needs color code still
 		calculatedColor = "Green"
-	elseif msg:find(L.yellow) then
+	elseif msg:find("FFFFFF00") then
 		calculatedColor = "Yellow"
-	elseif msg:find(L.sword) then
+	elseif msg:find("ABILITY_IYYOKUK_SWORD") then
 		calculatedShape = "Sword"
-	elseif msg:find(L.drums) then
+	elseif msg:find("ABILITY_IYYOKUK_DRUM") then
 		calculatedShape = "Drum"
-	elseif msg:find(L.bomb) then
+	elseif msg:find("ABILITY_IYYOKUK_BOMB") then
 		calculatedShape = "Bomb"
-	elseif msg:find(L.mantid) then
+	elseif msg:find("ABILITY_IYYOKUK_MANTID") then--Assumed icon based on pattern
 		calculatedShape = "Mantid"
-	elseif msg:find(L.staff) then
+	elseif msg:find("ABILITY_IYYOKUK_STAFF") then--Assumed icon based on pattern
 		calculatedShape = "Staff"
 	elseif msg:find(msg == L.one) then
 		calculatedNumber = 1
@@ -595,111 +611,118 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefu
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
-	if msg == L.calculatedTarget or msg:find(L.calculatedTarget) then
-		local target = DBM:GetFullNameByShortName(target)
-		warnCalculated:Show(target)
-		timerCalculated:Start()
-		if target == UnitName("player") then
-			specWarnCalculated:Show()
-			yellCalculated:Yell()
-		else--it's not us, so now lets check activated criteria for target based on previous emotes
-			local criteriaMatched = false--Now to start checking matches.
-			if calculatedColor == "Red" then
-				for _, spellname in ipairs(RedDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Purple" then
-				for _, spellname in ipairs(PurpleDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Blue" then
-				for _, spellname in ipairs(BlueDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Green" then
-				for _, spellname in ipairs(GreenDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Yellow" then
-				for _, spellname in ipairs(YellowDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Sword" then
-				for _, spellname in ipairs(SwordDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Drum" then
-				for _, spellname in ipairs(DrumDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Bomb" then
-				for _, spellname in ipairs(BombDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Mantid" then
-				for _, spellname in ipairs(MantidDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedColor == "Staff" then
-				for _, spellname in ipairs(StaffDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						criteriaMatched = true
-						break
-					end
-				end
-			elseif calculatedNumber then
-				for _, spellname in ipairs(AllDebuffs) do
-					local _, _, _, count = UnitDebuff("player", spellname)
-					if count then--Found
-						if count == calculatedNumber then
-							criteriaMatched = true
-						end
-						break
-					end
+local function delayMonsterEmote()
+	--Because now the raid boss emotes fire AFTER this and we need them first
+	local target = DBM:GetFullNameByShortName(target)
+	warnCalculated:Show(target)
+	timerCalculated:Start()
+	timerInsaneCalculationCD:Start()
+	if target == UnitName("player") then
+		specWarnCalculated:Show()
+		yellCalculated:Yell()
+	else--it's not us, so now lets check activated criteria for target based on previous emotes
+		local criteriaMatched = false--Now to start checking matches.
+		if calculatedColor == "Red" then
+			for _, spellname in ipairs(RedDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
 				end
 			end
-			if criteriaMatched then
-				specWarnCriteriaLinked:Show(target)
---				yellCalculated:Yell()
+		elseif calculatedColor == "Purple" then
+			for _, spellname in ipairs(PurpleDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Blue" then
+			for _, spellname in ipairs(BlueDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Green" then
+			for _, spellname in ipairs(GreenDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Yellow" then
+			for _, spellname in ipairs(YellowDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Sword" then
+			for _, spellname in ipairs(SwordDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Drum" then
+			for _, spellname in ipairs(DrumDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Bomb" then
+			for _, spellname in ipairs(BombDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Mantid" then
+			for _, spellname in ipairs(MantidDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Staff" then
+			for _, spellname in ipairs(StaffDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedNumber then
+			for _, spellname in ipairs(AllDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					if count == calculatedNumber then
+						criteriaMatched = true
+					end
+					break
+				end
 			end
 		end
+		if criteriaMatched then
+			specWarnCriteriaLinked:Show(target)
+			yellCalculated:Yell()
+		end
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
+	if msg == L.calculatedTarget or msg:find(L.calculatedTarget) then
+		self:Unschedule(delayMonsterEmote)
+		self:Schedule(0.5, delayMonsterEmote)
 	end
 end
