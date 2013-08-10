@@ -158,6 +158,7 @@ local GetSpellInfo = GetSpellInfo
 local calculatedShape = nil
 local calculatedNumber = nil
 local calculatedColor = nil
+local mathNumber = 100
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -231,6 +232,11 @@ function mod:OnCombatStart(delay)
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
 	timerJumpToCenter:Start()
+	if self:IsDifficulty("normal25", "heroic25", "lfr25") then--Increaased number of people, decrease likelyhood of chat yell so it levels out
+		mathNumber = 250--0.4% chance per person in 25 man
+	else
+		mathNumber = 100--1% chance of chat yell per person in 10 man
+	end
 end
 
 function mod:OnCombatEnd()
@@ -488,25 +494,56 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
-		
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.KilrukFlavor, "SAY")
+		end
 	elseif cid == 71157 then--Xaril the Poisoned-Mind
 		timerToxicCatalystCD:Cancel()
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.XarilFlavor, "SAY")
+		end
 	elseif cid == 71156 then--Kaz'tik the Manipulator
-		
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.KaztikFlavor, "SAY")
+		end
 	elseif cid == 71155 then--Korven the Prime
 		timerShieldBashCD:Cancel()
 		timerEncaseInAmberCD:Cancel()
 		countdownEncaseInAmber:Cancel()
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.KorvenFlavor2, "SAY")
+		end
 	elseif cid == 71160 then--Iyyokuk the Lucid
 		timerInsaneCalculationCD:Cancel()
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.IyyokukFlavor, "SAY")
+		end
 	elseif cid == 71154 then--Ka'roz the Locust
 		timerFlashCD:Cancel()
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.KarozFlavor, "SAY")
+		end
 	elseif cid == 71152 then--Skeer the Bloodseeker
-		
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.SkeerFlavor, "SAY")
+		end
 	elseif cid == 71158 then--Rik'kal the Dissector
-		
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.RikkalFlavor, "SAY")
+		end
 	elseif cid == 71153 then--Hisek the Swarmkeeper
-		
+		local x = math.random(1, mathNumber)
+		if x == 50 then--1% chance yay
+			SendChatMessage(L.hisekFlavor, "SAY")
+		end
 	end
 end
 
