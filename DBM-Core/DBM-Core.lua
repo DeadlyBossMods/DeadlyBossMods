@@ -1844,7 +1844,7 @@ do
 end
 
 function DBM:LFG_ROLE_CHECK_SHOW()
-	if DBM.Options.UseMasterVolume then
+	if not UnitIsGroupLeader("player") and DBM.Options.UseMasterVolume then
 		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
