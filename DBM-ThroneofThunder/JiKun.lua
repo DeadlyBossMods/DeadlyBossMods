@@ -40,12 +40,13 @@ local timerQuills			= mod:NewBuffActiveTimer(10, 134380)
 local timerQuillsCD			= mod:NewCDCountTimer(62.5, 134380)--variable because he has two other channeled abilities with different cds, so this is cast every 62.5-67 seconds usually after channel of some other spell ends
 local timerFlockCD	 		= mod:NewTimer(30, "timerFlockCD", 15746)
 local timerFeedYoungCD	 	= mod:NewCDTimer(30, 137528)--30-40 seconds (always 30 unless delayed by other channeled spells)
-local timerTalonRakeCD		= mod:NewCDTimer(20, 134366, mod:IsTank() or mod:IsHealer())--20-30 second variation
-local timerTalonRake		= mod:NewTargetTimer(60, 134366, mod:IsTank() or mod:IsHealer())
+local timerTalonRakeCD		= mod:NewCDTimer(20, 134366, nil, mod:IsTank() or mod:IsHealer())--20-30 second variation
+local timerTalonRake		= mod:NewTargetTimer(60, 134366, nil, mod:IsTank() or mod:IsHealer())
 local timerDowndraft		= mod:NewBuffActiveTimer(10, 134370)
 local timerDowndraftCD		= mod:NewCDTimer(97, 134370)
 local timerFlight			= mod:NewBuffFadesTimer(10, 133755)
 local timerPrimalNutriment	= mod:NewBuffFadesTimer(30, 140741)
+local timerLessons			= mod:NewBuffFadesTimer(60, 140571, nil, false)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddDropdownOption("ShowNestArrows", {"Never", "Northeast", "Southeast", "Southwest", "West", "Northwest", "Guardians"}, "Never", "misc")
@@ -105,6 +106,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 140741 and args:IsPlayer() then
 		warnPrimalNutriment:Show(args.amount or 1)
 		timerPrimalNutriment:Start()
+	elseif args.spellId == 140571 and args:IsPlayer() then
+		timerLessons:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -112,6 +115,12 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 134366 then
 		timerTalonRake:Cancel(args.destName)
+	elseif args.spellId == 133755 and args:IsPlayer() then
+		timerFlight:Cancel()
+	elseif args.spellId == 140741 and args:IsPlayer() then
+		timerPrimalNutriment:Cancel()
+	elseif args.spellId == 140571 and args:IsPlayer() then
+		timerLessons:Cancel()
 	end
 end
 
