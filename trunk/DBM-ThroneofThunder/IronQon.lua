@@ -56,8 +56,8 @@ local yellLightningStorm				= mod:NewYell(136192)
 local specWarnFrozenBlood				= mod:NewSpecialWarningMove(136520)
 local specWarnFistSmash					= mod:NewSpecialWarningSpell(136146, nil, nil, nil, 2)
 
-local timerImpale						= mod:NewTargetTimer(40, 134691, mod:IsTank() or mod:IsHealer())
-local timerImpaleCD						= mod:NewCDTimer(20, 134691, mod:IsTank() or mod:IsHealer())
+local timerImpale						= mod:NewTargetTimer(40, 134691, nil, mod:IsTank() or mod:IsHealer())
+local timerImpaleCD						= mod:NewCDTimer(20, 134691, nil, mod:IsTank() or mod:IsHealer())
 local timerThrowSpearCD					= mod:NewCDTimer(30, 134926)--30-42 second variation observed
 local timerUnleashedFlameCD				= mod:NewCDTimer(6, 134611, nil, false)--CD for the periodic trigger, not when he'll actually be at 30 energy and use it.
 local timerScorched						= mod:NewBuffFadesTimer(30, 134647)

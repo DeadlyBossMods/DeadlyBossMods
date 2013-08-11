@@ -52,8 +52,8 @@ local specWarnEyeSore				= mod:NewSpecialWarningMove(140502)
 local specWarnLifeDrain				= mod:NewSpecialWarningTarget(133795, mod:IsTank())
 local yellLifeDrain					= mod:NewYell(133795, L.LifeYell)
 
-local timerHardStareCD				= mod:NewCDTimer(12, 133765, mod:IsTank() or mod:IsHealer())
-local timerSeriousWound				= mod:NewTargetTimer(60, 133767, mod:IsTank() or mod:IsHealer())
+local timerHardStareCD				= mod:NewCDTimer(12, 133765, nil, mod:IsTank() or mod:IsHealer())
+local timerSeriousWound				= mod:NewTargetTimer(60, 133767, nil, mod:IsTank() or mod:IsHealer())
 local timerLingeringGazeCD			= mod:NewCDTimer(46, 138467)
 local timerForceOfWillCD			= mod:NewCDTimer(20, 136413)--Actually has a 20 second cd but rarely cast more than once per phase because of how short the phases are (both beams phases cancel this ability)
 local timerLightSpectrumCD			= mod:NewNextTimer(60, "ej6891")
@@ -62,8 +62,8 @@ local timerDisintegrationBeamCD		= mod:NewNextTimer(136, "ej6882")
 local timerLifeDrainCD				= mod:NewCDTimer(40, 133795)
 local timerLifeDrain				= mod:NewBuffActiveTimer(18, 133795)
 local timerIceWallCD				= mod:NewNextTimer(120, 134587, nil, nil, nil, 111231)
-local timerDarkParasiteCD			= mod:NewCDTimer(60.5, 133597, mod:IsHealer())--Heroic 60-62. (the timer is tricky and looks far more variable but it really isn't, it just doesn't get to utilize it's true cd timer more than twice per fight)
-local timerDarkParasite				= mod:NewTargetTimer(30, 133597, mod:IsHealer())--Only healer/dispeler needs to know this.
+local timerDarkParasiteCD			= mod:NewCDTimer(60.5, 133597, nil, mod:IsHealer())--Heroic 60-62. (the timer is tricky and looks far more variable but it really isn't, it just doesn't get to utilize it's true cd timer more than twice per fight)
+local timerDarkParasite				= mod:NewTargetTimer(30, 133597, nil, mod:IsHealer())--Only healer/dispeler needs to know this.
 local timerDarkPlague				= mod:NewTargetTimer(30, 133598)--EVERYONE needs to know this, if dispeler messed up and dispelled parasite too early you're going to get a new add every 3 seconds for remaining duration of this bar.
 local timerObliterateCD				= mod:NewNextTimer(80, 137747)--Heroic
 
