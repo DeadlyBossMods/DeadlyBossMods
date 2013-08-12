@@ -74,15 +74,15 @@ local timerBloodFrenzyCD		= mod:NewNextTimer(5, 143442)
 local timerFixate				= mod:NewTargetTimer(12, 143445)
 --Infusion of Acid
 local timerAcidBreath			= mod:NewTargetTimer(30, 143780, nil, mod:IsTank() or mod:IsHealer())
-local timerAcidBreathCD			= mod:NewCDTimer(11, 143780, nil, mod:IsTank())
-local timerCorrosiveBloodCD		= mod:NewCDTimer(6, 143791, nil, false)--Cast often, so off by default
+local timerAcidBreathCD			= mod:NewCDTimer(11, 143780, nil, mod:IsTank())--Often 12, but sometimes 11
+local timerCorrosiveBloodCD		= mod:NewCDTimer(3.5, 143791, nil, false)--Cast often, so off by default
 --Infusion of Frost
 local timerFrostBreath			= mod:NewTargetTimer(30, 143773, nil, mod:IsTank() or mod:IsHealer())
 local timerFrostBreathCD		= mod:NewCDTimer(9.5, 143773, nil, mod:IsTank())
 --Infusion of Fire
 local timerScorchingBreath		= mod:NewTargetTimer(30, 143767, nil, mod:IsTank() or mod:IsHealer())
-local timerScorchingBreathCD	= mod:NewCDTimer(11, 143767, nil, mod:IsTank())
-local timerBurningBloodCD		= mod:NewCDTimer(5, 143783)--cast often, but actually work showing. Fire bad
+local timerScorchingBreathCD	= mod:NewCDTimer(11, 143767, nil, mod:IsTank())--Often 12, but sometimes 11
+local timerBurningBloodCD		= mod:NewCDTimer(3.5, 143783, nil, false)--cast often, but someone might want to show it
 
 local soundBloodFrenzy			= mod:NewSound(144067)
 local soundFixate				= mod:NewSound(143445)
@@ -93,6 +93,7 @@ mod:AddBoolOption("FixateIcon", true)
 local screechCount = 0
 local corrosiveBloodTargets = {}
 local burningBloodTargets = {}
+local frozenTargets = {}
 local UnitGUID = UnitGUID
 
 --this boss works similar to staghelm
@@ -160,6 +161,11 @@ local function warnBurningBloodTargets()
 	table.wipe(burningBloodTargets)
 end
 
+local function warnFrozenargets()
+	warnFrozenSolid:Show(table.concat(frozenTargets, "<, >"))
+	table.wipe(frozenTargets)
+end
+
 function mod:OnCombatStart(delay)
 	screechCount = 0
 	table.wipe(corrosiveBloodTargets)
@@ -183,7 +189,9 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
-		specWarnDeafeningScreech:Show()
+		if screechCount < 11 then--Don't spam special warning once cd is lower than 3 seconds.
+			specWarnDeafeningScreech:Show()
+		end
 		timerDeafeningScreechCD:Cancel()
 		timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)
 	elseif args.spellId == 143428 then
@@ -271,8 +279,12 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnIcyBlood:Show(amount)
 		end
 	elseif args.spellId == 143777 then
-		warnFrozenSolid:Show(args.destName)
-		specWarnFrozenSolid:Show(args.destName)
+		frozenTargets[#frozenTargets + 1] = args.destName
+		self:Unschedule(warnFrozenargets)
+		self:Schedule(1, warnFrozenargets)--On 25 man, many targets get frozen and often at/near the same time. try to batch em up a bit
+		if self:AntiSpam(3, 1) then
+			specWarnFrozenSolid:Show(args.destName)
+		end
 	elseif args.spellId == 145974 then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
@@ -324,7 +336,7 @@ end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
-	if spellId == 143784 and destGUID == UnitGUID("player") and self:AntiSpam() then--Different from abobe ID, this is ID that fires for standing in fire on ground (even if you weren't target the fire spawned under)
+	if spellId == 143784 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 2) then--Different from abobe ID, this is ID that fires for standing in fire on ground (even if you weren't target the fire spawned under)
 		specWarnBurningBloodMove:Show()
 	end
 end
@@ -351,7 +363,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 143971 then
 		timerBurningBloodCD:Cancel()
 		warnAcidPustules:Show()
-		timerCorrosiveBloodCD:Start(14)
+		timerCorrosiveBloodCD:Start(6)
 		timerAcidBreathCD:Start()
 	elseif spellId == 143968 then
 		timerBurningBloodCD:Cancel()
@@ -361,7 +373,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 143970 then
 		timerCorrosiveBloodCD:Cancel()
 		warnFirePustules:Show()
-		timerBurningBloodCD:Start(10)
+		timerBurningBloodCD:Start(8)
 		timerScorchingBreathCD:Start()
 	end
 end
