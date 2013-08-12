@@ -133,7 +133,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(corrosiveBloodTargets)
 	table.wipe(burningBloodTargets)
 	timerFearsomeRoarCD:Start(-delay)
-	timerDeafeningScreechCD:Start(-delay)
+	timerDeafeningScreechCD:Start(-delay, 1)
 	if self.Options.RangeFrame then
 		if self:IsDifficulty("normal10", "heroic10") then
 			DBM.RangeCheck:Show(10, nil, nil, 4)
@@ -152,6 +152,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
 		specWarnDeafeningScreech:Show()
+		timerDeafeningScreechCD:Cancel()
 		timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)
 	elseif args.spellId == 143428 then
 		warnTailLash:Show()
@@ -162,7 +163,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 143411 then
 		screechCount = args.amount or 1
-		warnAcceleration:Show(screechCount)
+		warnAcceleration:Show(args.destName, screechCount)
 	elseif args.spellId == 143766 then
 		local amount = args.amount or 1
 		warnFearsomeRoar:Show(args.destName, amount)
@@ -264,7 +265,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args.spellId == 143411 then
 		screechCount = 0
-		timerDeafeningScreechCD:Start()
+		timerDeafeningScreechCD:Start(nil, 1)
 		if self.Options.RangeFrame then
 			if self:IsDifficulty("normal10", "heroic10") then
 				DBM.RangeCheck:Show(10, nil, nil, 4)
