@@ -42,7 +42,7 @@ local warnEmpoweredChainHeal		= mod:NewSpellAnnounce(143473, 4)
 local warnHealingTideTotem			= mod:NewSpellAnnounce(143474, 4)
 
 --Nazgrim Core Abilities
-local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer(), 2457)
+local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer())
 local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 4)
 local specWarnSunderOther			= mod:NewSpecialWarningTarget(143494, mod:IsTank())
 local specWarnExecute				= mod:NewSpecialWarningSpell(143502, mod:IsTank(), nil, nil, 3)
