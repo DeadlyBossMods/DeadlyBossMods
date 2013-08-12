@@ -2,15 +2,14 @@ local mod	= DBM:NewMod(870, "DBM-SiegeOfOrgrimmar", nil, 369)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(71889)
+mod:SetCreatureID(73720, 71512)
 mod:SetZone()
 
+--Can use IEEU to engage now, it's about 4 seconds slower but better than registering an out of combat CLEU event in entire zone.
+--"<10.8 23:23:13> [CLEU] SPELL_CAST_SUCCESS#false#0xF13118D10000674F#Secured Stockpile of Pandaren Spoils#2632#0##nil#-2147483648#-2147483648#145687#Unstable Defense Systems#1", -- [169]
+--"<14.2 23:23:16> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Mogu Spoils#0xF1311FF800006750#elite#1#1#1#Mantid Spoils#0xF131175800006752
 mod:RegisterCombat("combat")
---mod:SetMinCombatTime(35)--Don't think needed but leaving here in case it is
-
-mod:RegisterEvents(
-	"SPELL_CAST_SUCCESS"
-)
+mod:RegisterKill("yell", L.Victory)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -18,8 +17,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_DIED",
-	"WORLD_STATE_UI_TIMER_UPDATE"
+	"UNIT_DIED"
 )
 
 local warnSuperNova				= mod:NewCastAnnounce(146815, 4)--Heroic
@@ -99,6 +97,23 @@ mod:AddBoolOption("InfoFrame")
 local activeBossGUIDS = {}
 local setToBlowTargets = {}
 
+--Attempt to use tanks to filter warnings from quadrants we're not in
+local function checkTankDistance(guid)
+	local _, uId = mod:GetBossTarget(guid)
+	if uId then--Now we know who is tanking that boss
+		local x, y = GetPlayerMapPosition(uId)
+		if x == 0 and y == 0 then
+			SetMapToCurrentZone()
+			x, y = GetPlayerMapPosition(uId)
+		end
+		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
+		if (inRange and inRange < 50) or (x == 0 and y == 0) then--You are near the person tanking boss
+			return true
+		end
+	end
+	return false
+end
+
 local function warnSetToBlowTargets()
 	warnSetToBlow:Show(table.concat(setToBlowTargets, "<, >"))
 	table.wipe(setToBlowTargets)
@@ -129,9 +144,6 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(setToBlowTargets)
-	self:RegisterShortTermEvents(
-		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here because it doesn't need to stay perma registered until boss dies.
-	)
 end
 
 function mod:OnCombatEnd()
@@ -142,48 +154,48 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 145996 then
+	if args.spellId == 145996 and checkTankDistance(args.sourceGUID) then
 		timerSetToBlowCD:Start(args.sourceGUID)
-	elseif args.spellId == 145288 then
+	elseif args.spellId == 145288 and checkTankDistance(args.sourceGUID) then
 		warnMatterScramble:Show()
 		specWarnMatterScramble:Show()
 		timerMatterScrambleCD:Start(args.sourceGUID)
-	elseif args.spellId == 145461 then
+	elseif args.spellId == 145461 and checkTankDistance(args.sourceGUID) then
 		warnEnergize:Show()
-	elseif args.spellId == 142934 then
+	elseif args.spellId == 142934 and checkTankDistance(args.sourceGUID) then
 		warnTorment:Show()
 		specWarnTorment:Show()
-	elseif args.spellId == 142539 then
+	elseif args.spellId == 142539 and checkTankDistance(args.sourceGUID) then
 		warnMantidSwarm:Show()
 		specWarnMantidSwarm:Show()
 		timerMantidSwarmCD:Start(args.sourceGUID)
-	elseif args.spellId == 145816 then
+	elseif args.spellId == 145816 and checkTankDistance(args.sourceGUID) then
 		warnWindStorm:Show()
 		timerWindstormCD:Start(args.sourceGUID)
-	elseif args.spellId == 144922 then
+	elseif args.spellId == 144922 and checkTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnHardenFlesh:Show()
 		timerHardenFleshCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnHardenFlesh:Show(source)
 		end
-	elseif args.spellId == 144923 then
+	elseif args.spellId == 144923 and checkTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnEarthenShard:Show()
 		timerEarthenShardCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnEarthenShard:Show(source)
 		end
-	elseif args.spellId == 146222 then
+	elseif args.spellId == 146222 and checkTankDistance(args.sourceGUID) then
 		warnBreathofFire:Show()
-	elseif args.spellId == 146180 then
+	elseif args.spellId == 146180 and checkTankDistance(args.sourceGUID) then
 		warnGustingCraneKick:Show()
 		specWarnGustingCraneKick:Show()
 		timerGustingCraneKickCD:Start(args.sourceGUID)
-	elseif args.spellId == 145489 then
+	elseif args.spellId == 145489 and checkTankDistance(args.sourceGUID) then
 		warnReturnToStone:Show()
 		timerReturnToStoneCD:Start(args.sourceGUID)
-	elseif args.spellId == 142947 then--Pre warn more or less
+	elseif args.spellId == 142947 and checkTankDistance(args.sourceGUID) then--Pre warn more or less
 		warnCrimsonRecon:Show()
 	elseif args.spellId == 146815 then
 		warnSuperNova:Show()
@@ -193,31 +205,29 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 145687 and not self:IsInCombat() then--Unstable Defensive System
-		DBM:StartCombat(self, 0)
-	elseif args.spellId == 142694 then
+	if args.spellId == 142694 and checkTankDistance(args.sourceGUID) then
 		warnSparkofLife:Show()
 --		specWarnSparkofLife:Show()
-	elseif args.spellId == 142947 then
+	elseif args.spellId == 142947 and checkTankDistance(args.sourceGUID) then
 		specWarnCrimsonRecon:Show()--Done here because we want to warn when we need to move mobs, not on cast start (when we can do nothing)
 		timerCrimsonReconCD:Start(args.sourceGUID)
-	elseif args.spellId == 145712 then
+	elseif args.spellId == 145712 and checkTankDistance(args.sourceGUID) then
 		timerBlazingChargeCD:Start(args.sourceGUID)
 		self:BossTargetScanner(args.sourceGUID, "BlazingChargeTarget", 0.025, 12)
-	elseif args.spellId == 146253 then
+	elseif args.spellId == 146253 and checkTankDistance(args.sourceGUID) then
 		timerPathOfBlossomsCD:Start(args.sourceGUID)
 		self:BossTargetScanner(args.sourceGUID, "PathofBlossomsTarget", 0.025, 12)
-	elseif args.spellId == 145230 then
+	elseif args.spellId == 145230 and checkTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnForbiddenMagic:Show(args.destName)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnForbiddenMagic:Show(source)
 		end
-	elseif args.spellId == 145786 then
+	elseif args.spellId == 145786 and checkTankDistance(args.sourceGUID) then
 		warnResidue:Show()
 		timerResidueCD:Start(args.sourceGUID)
 		specWarnResidue:Show()
-	elseif args.spellId == 145812 then
+	elseif args.spellId == 145812 and checkTankDistance(args.sourceGUID) then
 		warnRageoftheEmpress:Show()
 		specWarnRageoftheEmpress:Show()
 		timerRageoftheEmpressCD:Start(args.sourceGUID)
@@ -225,7 +235,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 145987 then
+	if args.spellId == 145987 and checkTankDistance(args.sourceGUID) then
 		setToBlowTargets[#setToBlowTargets + 1] = args.destName
 		self:Unschedule(warnSetToBlowTargets)
 		self:Schedule(0.5, warnSetToBlowTargets)
@@ -239,10 +249,12 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(32, hideRangeFrame)
 			end
 		end
-	elseif args.spellId == 145692 then
+	elseif args.spellId == 145692 and checkTankDistance(args.sourceGUID) then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
 		timerEnrage:Start(args.destName)
+	elseif args.spellId == 145998 and checkTankDistance(args.sourceGUID) then--This is a massive crate mogu spawning
+		timerReturnToStoneCD:Start(6)
 	end
 end
 
@@ -292,22 +304,4 @@ function mod:UNIT_DIED(args)
 	elseif cid == 72828 then--Nameless Windwalker Spirit
 		timerPathOfBlossomsCD:Cancel(args.destGUID)
 	end
-end
-
-function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	for i = 1, 5 do
-		if UnitExists("boss"..i) and not activeBossGUIDS[UnitGUID("boss"..i)] then--Check if new units exist we haven't detected yet.
-			activeBossGUIDS[UnitGUID("boss"..i)] = true
-			local cid = self:GetCIDFromGUID(UnitGUID("boss"..i))
-			if cid == 71408 then--Shao-Tien Colossus
-				timerReturnToStoneCD:Start(5)
-			elseif cid == 71409 then--Ka'thik Demolisher (doesn't actually fire IEEU yet, hoping that's just a bug)
-				timerSetToBlowCD:Start(5)
-			end
-		end
-	end
-end
-
-function mod:WORLD_STATE_UI_TIMER_UPDATE(...)
---	print(...)
 end
