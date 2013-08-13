@@ -8,6 +8,8 @@ svn://svn.deadlybossmods.com/dbm-cataclysm (Cataclysm mods)
 svn://svn.deadlybossmods.com/dbm4-ldb (LibDataBroker plugin)
 svn://svn.deadlybossmods.com/dbm4-spelltimers (DBM-SpellTimers)
 svn://svn.deadlybossmods.com/dbm4-raidtools (DBM-RaidLeadTools)
+svn://svn.deadlybossmods.com/dbm-pvp (DBM-PVP)
+svn://svn.deadlybossmods.com/dbm-provinggrounds (DBM-Proving Grounds)
 (login data is the same for all repositores)
 
 
