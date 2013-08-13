@@ -17,7 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnSuperNova				= mod:NewCastAnnounce(146815, 4)--Heroic
@@ -68,6 +69,7 @@ local specWarnPathOfBlossoms	= mod:NewSpecialWarningMove(146257)
 local specWarnGustingCraneKick	= mod:NewSpecialWarningSpell(146180, nil, nil, nil, 2)
 
 local timerSuperNova			= mod:NewCastTimer(10, 146815)
+local timerArmageddonCD			= mod:NewCastTimer(270, 145864, (GetSpellInfo(20479)))--145864 will never fly as timer text, it's like bajillion characters long. use 20479 for timertext
 --Massive Crate of Goods
 local timerReturnToStoneCD		= mod:NewNextTimer(12, 145489)
 local timerSetToBlowCD			= mod:NewNextTimer(9.6, 145996)
@@ -91,6 +93,7 @@ local timerGustingCraneKickCD	= mod:NewCDTimer(18, 146180)
 local timerPathOfBlossomsCD		= mod:NewCDTimer(15, 146253)
 
 local countdownSetToBlow		= mod:NewCountdownFades(29, 145996)
+local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, true)
 
 mod:AddBoolOption("InfoFrame")
 
@@ -144,6 +147,8 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(setToBlowTargets)
+	timerArmageddonCD:Start(167.5-delay)--May variate by 1 second, my world state stata is showing osmetimes it's 167 and somtimes it's 168 when IEEU fires. may have to just do shitty world state stuff to make it more accurate
+	countdownArmageddon:Start(167.5-delay)
 end
 
 function mod:OnCombatEnd()
@@ -303,5 +308,24 @@ function mod:UNIT_DIED(args)
 		timerGustingCraneKickCD:Cancel(args.destGUID)
 	elseif cid == 72828 then--Nameless Windwalker Spirit
 		timerPathOfBlossomsCD:Cancel(args.destGUID)
+	end
+end
+
+--[[
+"<270.3 23:27:32> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Module 1's all prepared for system reset.#Secured Stockpile of Pandaren Spoils###Omegal
+"<270.3 23:27:33> [WORLD_STATE_UI_TIMER_UPDATE] |0#0#true#Defense systems activating in 17 seconds.###Time remaining until the GB-11010 \"Armageddon\"-class defense systems activate.###0#0#0", -- [49218]
+"<270.4 23:27:33> [UPDATE_WORLD_STATES] |0#0#true#Defense systems activating in 286 seconds.###Time remaining until the GB-11010 \"Armageddon\"-class defense systems activate.###0#0#0", -- [49221]
+----------------
+"<283.7 22:31:28> [WORLD_STATE_UI_TIMER_UPDATE] |0#0#false#Defense systems activating in 2 seconds.###Time remaining until the GB-11010 \"Armageddon\"-class defense systems activate.###0#0#0", -- [45259]
+"<283.7 22:31:28> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Module 1's all prepared for system reset.#Secured Stockpile of Pandaren Spoils###Daltin##0#0##0#31#nil#0#false#false", -- [45267]
+"<284.7 22:31:29> [UPDATE_WORLD_STATES] |0#0#false#Defense systems activating in 271 seconds.###Time remaining until the GB-11010 \"Armageddon\"-class defense systems activate.###0#0#0", -- [45333]
+--]]
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Module1 or msg:find(L.Module1) then
+		local elapsed, total = timerArmageddonCD:GetTime()
+		local remaining = total - elapsed
+		countdownArmageddon:Cancel()
+		timerArmageddonCD:Start(270+remaining)
+		countdownArmageddon:Start(270+remaining)
 	end
 end
