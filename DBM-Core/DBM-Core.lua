@@ -16,6 +16,7 @@
 --    * ruRU: TOM_RUS
 --    * zhTW: Whyv                      ultrashining@gmail.com
 --    * koKR: nBlueWiz					everfinale@gmail.com
+--    * esES/esMX: Sueñalobos				alcortesm@gmail.com
 --
 -- The former/inactive-translators:
 --    * ruRU: BootWin					bootwin@gmail.com
