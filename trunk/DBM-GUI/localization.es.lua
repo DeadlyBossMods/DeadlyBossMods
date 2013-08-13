@@ -44,11 +44,8 @@ L.NoSound		= "Sin sonido"
 
 L.IconsInUse	= "Iconos usados por este mod"
 
-L.QuestComplete				= "Ya tienes completado las taréas semanales de repu/LFR/legendaria para este encuentro."
-L.QuestIncomplete			= "Todavía puedes completar taréas semanales de repu/LFR/legendaria para este encuentro. NOTA: Recargar el UI or reconectar demasiado pronto después de completar la taréa resultará en un error en el seguimiento de la misma."
-
 -- Tab: Boss Statistics
-L.BossStatistics	= "Estadisticas de Boss"
+L.BossStatistics	= "Estadísticas de Boss"
 L.Statistic_Kills	= "Muertes:"
 L.Statistic_Wipes	= "Wipes:"
 L.Statistic_Incompletes		= "Incompletos:"--For scenarios, TODO, figure out a clean way to replace any Statistic_Wipes with Statistic_Incompletes for scenario mods
@@ -99,8 +96,8 @@ L.RaidWarnColor_1 	= "Color 1"
 L.RaidWarnColor_2 	= "Color 2"
 L.RaidWarnColor_3 	= "Color 3"
 L.RaidWarnColor_4 	= "Color 4"
-L.InfoRaidWarning	= [[Puedes especificar la posición y los colores del cuadro de advertencia de banda. 
-Este marco se utiliza para mensajes como "El jugador X está afectado por Y"]]
+L.InfoRaidWarning	= [[Puedes especificar posición y colores del cuadro de aviso de banda. 
+Este marco se usa en mensajes como "El jugador X está afectado por Y"]]
 L.ColorResetted 	= "Los ajustes de color de este campo se han reiniciado"
 L.ShowWarningsInChat 	= "Mostrar avisos en el chat"
 L.ShowFakedRaidWarnings = "Mostrar avisos en el chat de banda"
@@ -135,8 +132,8 @@ L.WhisperStats 			= "Incluir las veces que se ha derrotado/wipeado en un boss a 
 -- Tab: Barsetup
 L.BarSetup   = "Estilo de barra"
 L.BarTexture = "Textura de barra"
-L.BarStartColor = "Empieza con color"
-L.BarEndColor = "Termina con color"
+L.BarStartColor = "Color de inicio"
+L.BarEndColor = "Color de fin"
 L.ExpandUpwards		= "Ampliar las barras hacia arriba"
 L.Bar_Font			= "Fuente de las barras"
 L.Bar_FontSize		= "Tamaño de la fuente"
@@ -151,26 +148,23 @@ L.BarIconLeft 		= "Icono izq."
 L.BarIconRight 		= "Icono der."
 L.EnableHugeBar 	= "Habilitar barra del medio (Bar 2)"
 L.FillUpBars		= "Llénese Barras"
-L.ClickThrough		= "Desabilitar acciones de raton ( si pulsas en las barras )"
+L.ClickThrough		= "Desabilitar acciones de ratón ( si pulsas en las barras )"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Avisos Especiales"
 L.Area_SpecWarn				= "Opciones de Avisos Especiales"
-L.SpecWarn_Enabled			= "Mostrar Avisos Especiales para habilidades de los jefes"
+L.SpecWarn_Enabled			= "Mostrar Avisos Especiales para habilidades de jefes"
 L.SpecWarn_FlashFrame		= "Mostrar un flash de pantalla para avisos especiales"
-L.SpecWarn_AdSound		= "Habilitar opciones avandas de sonidos para avisos especiales (requiere recargar el UI)"
-L.Area_SpecWarnFlash		= "Opciones de parpadeo de Avisos Especiales"
-L.SpecWarn_FlashColor		= "Color del parpadeo"
+L.SpecWarn_AdSound		= "Habilitar opciones avanzadas de sonido para avisos especiales (requiere recargar UI)"
+L.SpecWarn_Font				= "Fuente usada para avisos especiales"
+L.SpecWarn_FontSize			= "Tamaño de fuente: %d"
+L.SpecWarn_FontColor		= "Fuente"
+L.SpecWarn_FontType			= "Elegir fuente"
+L.SpecWarn_FlashColor		= "Parpadeo"
 L.SpecWarn_FlashDur		= "Duración del parpadeo: %0.1f"
 L.SpecWarn_FlashAlpha		= "Alpha del parpadeo: %0.1f"
-L.Area_SpecWarnFont		= "Opciones de fuente de los Avisos Especiales"
-L.SpecWarn_Font			= "Fuente usada para Avisos Especiales"
 L.SpecWarn_DemoButton		= "Ver ejemplo"
 L.SpecWarn_MoveMe			= "Definir posición"
-L.SpecWarn_FontSize			= "Tamaño de fuente"
-L.SpecWarn_FontColor		= "Color de fuente"
-L.SpecWarn_FontType			= "Selecciona una fuente"
-L.Area_SpecWarnSound		= "Opciones de sonido de Avisos Especiales"
 L.SpecWarn_ResetMe			= "Reiniciar con los valores por defecto"
 
 -- Tab: HealthFrame

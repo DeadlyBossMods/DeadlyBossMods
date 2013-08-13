@@ -277,24 +277,17 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(831)
 
 L:SetWarningLocalization({
-	specWarnVitaSoaker			= "¡Eres el siguiente en absorber Vita!",
-	warnVitaSoakerSoon			= "Eres el segundo en absorber Vita"
+	specWarnUnstablVitaJump		= "¡Vita inestable en ti!"
 })
 
-
 L:SetOptionLocalization({
-	warnVitaSoakerSoon	= "Anunciar cuando eres el segundo en absorber Vita (Requiere activar cuadro de información)",
-	specWarnVitaSoaker	= "Mostrar aviso especial cuando eres el siguiente en absorber $spell:138297 basado en tu posición en el cuadro de información (Requiere activar cuadro de información)",
-	SetIconsOnVita		= "Poner iconos en los jugadores afectados por $spell:138297 y en el jugador más alejado de ellos",
-	InfoFrame			= "Mostrar cuadro de información para el orden de absorción de jugadores sin $spell:138372 (excluyendo tanques)",
-	AnnounceVitaSoaker	= "Anunciar el siguiente absorbedor de $spell:138297 al chat de avisos de BANDA (Requiere ser líder de banda)"
+	specWarnUnstablVitaJump	= "Mostrar aviso especial cunado tengas $spell:138297",
+	SetIconsOnVita			= "Poner iconos en el personaje con $spell:138297 y en el más alejado de él"
 })
 
 L:SetMiscLocalization({
-	Defeat						= "¡Esperad!",--needs to be verified (voice captured from path files)
-	NoSensitivity				= "Orden de absorción de Vita",
-	VitaSoakerOptionConflict	= "Peligro: Has activado los avisos de absorción de Vita, pero has desabilitado en cuadro de información. Los avisos no funcionarán sin el cuadro.",
-	VitaChatMessage				= "Siguiente absorbedor de Vita: %s"
+	Defeat						= "¡Esperad!",
+	BigWigsRecommendation		= "Si necesitas una lista de disipadores de vita, recomendamos utilizar Bigwigs y Bigwigs Ra-den assist para este encuentro"
 })
 
 -------------

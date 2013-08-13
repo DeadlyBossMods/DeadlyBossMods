@@ -76,6 +76,7 @@ DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) y %s (r%d)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM no instalado"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Encontrados %d jugadores con Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "¡Tu versión de Deadly Boss Mods es antigua! Por favor, visita www.deadlybossmods.com para bajarte la última versión."
+DBM_CORE_OUTDATED_PVP_MODS			= "¡Tu versión de DBM-PvP mods es antigua y debe ser eliminada si no se usa, o actualizada al nuevo paquete por separado. Estos mods ya no se incluyen conjuntamente con DBM-Core. La última versión del PVP mods puede edscargarse de http://www.deadlybossmods.com"
 --DBM_BIG_WIGS						= "BigWigs"
 --DBM_BIG_WIGS_ALPHA					= "BigWigs Alpha"
 
