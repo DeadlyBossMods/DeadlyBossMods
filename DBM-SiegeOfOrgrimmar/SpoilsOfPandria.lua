@@ -70,7 +70,7 @@ local specWarnGustingCraneKick	= mod:NewSpecialWarningSpell(146180, nil, nil, ni
 local timerSuperNova			= mod:NewCastTimer(10, 146815)
 --Massive Crate of Goods
 local timerReturnToStoneCD		= mod:NewNextTimer(12, 145489)
-local timerSetToBlowCD			= mod:NewNextTimer(9.5, 145996)
+local timerSetToBlowCD			= mod:NewNextTimer(9.6, 145996)
 local timerSetToBlow			= mod:NewBuffFadesTimer(30, 145996)
 --Stout Crate of Goods
 local timerEnrage				= mod:NewTargetTimer(10, 145692)
