@@ -263,7 +263,7 @@ function mod:OnSync(msg)
 		--Apparently changing in 5.3, so new logs will be needed once patch is deployed.
 		--Got one 5.3 log, doesn't look like they changed a thing.
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerNuclearInfernoCD:Start(45)--45-50 second variation (cd is 45, but there is hard code failsafe that if a commet has spawned recently it's extended?
+			timerNuclearInfernoCD:Start(45, 1)--45-50 second variation (cd is 45, but there is hard code failsafe that if a commet has spawned recently it's extended?
 		end
 		self:RegisterShortTermEvents(
 			"INSTANCE_ENCOUNTER_ENGAGE_UNIT"
@@ -274,7 +274,7 @@ function mod:OnSync(msg)
 		timerIceCometCD:Start(17)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 		timerTidalForceCD:Start(26)
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerNuclearInfernoCD:Start(63)
+			timerNuclearInfernoCD:Start(63, 1)
 		end
 		timerCosmicBarrageCD:Start(54, cosmicCount+1)--I want to analyze a few logs and readd this once I know for certain this IS the minimum time.
 	elseif msg == "Phase3" and GetTime() - self.combatInfo.pull >= 5 then

@@ -182,7 +182,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 --		timerNapalmOilCD:Start()
 	elseif spellId == 146359 then--Regeneration (Assault Mode power regen activation)
 		--2 seconds slower than emote, but it's not pressing enough to matter so it's better localisation wise to do it this way
-		timerNapalmOilCD:Cancel()
+--		timerNapalmOilCD:Cancel()
 		timerDemolisherCanonCD:Cancel()
 		timerMortarBarrageCD:Cancel()
 --		timerCuttingLaserCD:Cancel()

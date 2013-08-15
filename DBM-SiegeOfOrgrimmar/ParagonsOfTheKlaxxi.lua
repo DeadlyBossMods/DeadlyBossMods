@@ -159,6 +159,7 @@ local calculatedShape = nil
 local calculatedNumber = nil
 local calculatedColor = nil
 local mathNumber = 100
+local calculatingDude = EJ_GetSectionInfo(8012)
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -759,8 +760,8 @@ local function delayMonsterEmote()
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_EMOTE(msg, _, _, _, target)
-	if msg == L.calculatedTarget or msg:find(L.calculatedTarget) then
+function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
+	if npc == calculatingDude then
 		self:Unschedule(delayMonsterEmote)
 		self:Schedule(0.5, delayMonsterEmote)
 	end
