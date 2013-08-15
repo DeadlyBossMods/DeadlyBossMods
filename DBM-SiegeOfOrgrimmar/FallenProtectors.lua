@@ -71,18 +71,18 @@ local specWarnCalamity				= mod:NewSpecialWarningSpell(143491, nil, nil, nil, 2)
 local specWarnDarkMeditation		= mod:NewSpecialWarningSpell(143546)
 
 --Rook Stonetoe
-local timerVengefulStrikesCD		= mod:NewCDTimer(43, 144396)--(heroic 28)
+local timerVengefulStrikesCD		= mod:NewCDTimer(21, 144396, nil, mod:IsTank())
 local timerCorruptedBrewCD			= mod:NewCDTimer(11, 143019)--11-27
-local timerClashCD					= mod:NewCDTimer(49.5, 143027)--Seems changed to a next timer
+local timerClashCD					= mod:NewCDTimer(49, 143027)--49 second next timer IF none of bosses enter a special between casts, otherwise always delayed by specials (and usually cast within 5 seconds after special ends)
 ----Rook Stonetoe's Desperate Measures
 local timerDefiledGroundCD			= mod:NewCDTimer(10.5, 143961, nil, mod:IsTank())
-local timerInfernoStrikeCD			= mod:NewNextTimer(10, 143962)
+local timerInfernoStrikeCD			= mod:NewNextTimer(9.5, 143962)
 --He Softfoot
 local timerGougeCD					= mod:NewCDTimer(30, 143330, nil, mod:IsTank())--30-41
-local timerGarroteCD				= mod:NewCDTimer(30, 143198, nil, mod:IsHealer())--30-36 (heroic 20-26)
+local timerGarroteCD				= mod:NewCDTimer(30, 143198, nil, mod:IsHealer())--30-46 (heroic 20-26)
 --Sun Tenderheart
-local timerBaneCD					= mod:NewCDTimer(25, 143446, nil, mod:IsHealer())--25-30 (heroic 13-20)
-local timerCalamityCD				= mod:NewCDTimer(39, 143491)--39-43
+local timerBaneCD					= mod:NewCDTimer(17, 143446, nil, mod:IsHealer())--17-25 (heroic 13-20)
+local timerCalamityCD				= mod:NewCDTimer(42, 143491)--42-50 (when two can be cast in a row) Also affected by boss specials
 
 --local berserkTimer				= mod:NewBerserkTimer(490)
 
@@ -120,13 +120,13 @@ function mod:InfernoStrikeTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	timerVengefulStrikesCD:Start(8-delay)
-	timerGarroteCD:Start(9-delay)
+	timerVengefulStrikesCD:Start(7-delay)
+	timerGarroteCD:Start(15-delay)
 	timerBaneCD:Start(15-delay)
 	timerCorruptedBrewCD:Start(18-delay)
-	timerGougeCD:Start(25-delay)
+	timerGougeCD:Start(23-delay)
 	timerCalamityCD:Start(31-delay)
-	timerClashCD:Start(-delay)
+	timerClashCD:Start(-delay)--Unsure if stll same, since this almost NEVER happens, at least one of them will enter a special and cancel this timer
 --	berserkTimer:Start(-delay)
 end
 
@@ -168,11 +168,7 @@ function mod:SPELL_CAST_START(args)
 		warnBondGoldenLotus:Show()
 	elseif args.spellId == 144396 then
 		warnVengefulStrikes:Show()
-		if self:IsDifficulty("heroic10", "heroic25") then
-			timerVengefulStrikesCD:Start(28)--TODO, verify normal to see if it was changed too
-		else
-			timerVengefulStrikesCD:Start()
-		end
+		timerVengefulStrikesCD:Start()
 		for i = 1, 3 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
@@ -225,19 +221,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDarkMeditation:Show()
 		timerBaneCD:Cancel()
 		timerCalamityCD:Cancel()
+		timerClashCD:Cancel()--Can't be cast during ANYONES special
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
 		warnMiserySorrowGloom:Show()
 		specWarnMiserySorrowGloom:Show()
 		timerVengefulStrikesCD:Cancel()
-		timerClashCD:Cancel()
+		timerClashCD:Cancel()--Can't be cast during ANYONES special
 		timerCorruptedBrewCD:Cancel()
-		timerInfernoStrikeCD:Start(7)
-		timerDefiledGroundCD:Start(9)
+		timerInfernoStrikeCD:Start(8)
+		timerDefiledGroundCD:Start(10)
 	elseif args.spellId == 143812 then--Mark of Anguish
 		warnMarkOfAnguish:Show()
 		specWarnMarkOfAnquish:Show()
 		timerGougeCD:Cancel()
 		timerGarroteCD:Cancel()
+		timerClashCD:Cancel()--Can't be cast during ANYONES special
+		timerCalamityCD:Cancel()--Can't be cast during THIS special
 	end
 end
 
@@ -245,16 +244,16 @@ function mod:SPELL_AURA_REMOVED(args)
 	--Special phases
 	if args.spellId == 143546 then--Dark Meditation
 		timerBaneCD:Start(10)
---		timerCalamityCD:Start()--Seems cast almost right away now?
+		timerCalamityCD:Start(23)--Now back to not cast right away again.
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
 		timerDefiledGroundCD:Cancel()
 		timerInfernoStrikeCD:Cancel()
-		timerVengefulStrikesCD:Start(7.5)
-		timerCorruptedBrewCD:Start(17)
-		timerClashCD:Start(42)--Seems highly variable after his special, 42-49. but is a next timer rest of fight
+		timerCorruptedBrewCD:Start(12)
+		timerVengefulStrikesCD:Start(18)
+		timerClashCD:Start(67)--Seems highly variable after his special, 67-71. but is a next timer rest of fight
 	elseif args.spellId == 143812 then--Mark of Anguish
-		timerGarroteCD:Start(8)--TODO, compare normal logs with heroic logs 
-		timerGougeCD:Start(23)
+		timerGarroteCD:Start(12)--TODO, verify consistency in all difficulties
+		timerGougeCD:Start(23)--Seems to be either be exactly 23 or exactly 35. Not sure what causes it to switch.
 	end
 end
 
