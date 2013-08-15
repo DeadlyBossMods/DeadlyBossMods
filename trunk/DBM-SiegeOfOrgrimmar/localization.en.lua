@@ -134,18 +134,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	calculatedTarget	= "choosing criteria",
-	--thanks to blizz, the only accurate way for this to work, is to translate 15 emotes in all languages
---	yellow				= "Yellow",
---	red					= "Red",
---	blue				= "Blue",
+	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
 	purple				= "Purple",--Needs color code replacement still
 	green				= "Green",--Needs color code replacement still
---	bomb				= "Bomb",
---	sword				= "Sword",
---	drums				= "Drums",
---	mantid				= "Mantid",--Assumed
---	staff 				= "Staff",--Assumed
 	one					= "One",
 	two					= "Two",
 	three				= "Three",
