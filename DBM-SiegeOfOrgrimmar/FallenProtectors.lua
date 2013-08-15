@@ -250,7 +250,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerInfernoStrikeCD:Cancel()
 		timerCorruptedBrewCD:Start(12)
 		timerVengefulStrikesCD:Start(18)
-		timerClashCD:Start(67)--Seems highly variable after his special, 67-71. but is a next timer rest of fight
+--		timerClashCD:Start()--No good data on this, since i have no logs where I didn't push another bosses special before clash was cast after his own
 	elseif args.spellId == 143812 then--Mark of Anguish
 		timerGarroteCD:Start(12)--TODO, verify consistency in all difficulties
 		timerGougeCD:Start(23)--Seems to be either be exactly 23 or exactly 35. Not sure what causes it to switch.
