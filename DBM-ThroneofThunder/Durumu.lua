@@ -99,6 +99,7 @@ local azureFog = EJ_GetSectionInfo(6898)
 local playerName = UnitName("player")
 local firstIcewall = false
 local CVAR = nil
+local yellowRevealed = 0
 
 local function warnLingeringGazeTargets()
 	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
@@ -315,6 +316,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 134124 then--Yellow Beam Precast
 		lastYellow = args.destName
 		totalFogs = 3
+		yellowRevealed = 0
 		lfrCrimsonFogRevealed = false
 		lfrAmberFogRevealed = false
 		lfrAzureFogRevealed = false
@@ -440,10 +442,15 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 --Blizz doesn't like combat log anymore for some spells
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	if (npc == crimsonFog or npc == amberFog or npc == azureFog) and self:AntiSpam(1, npc) then
-		if self:IsDifficulty("lfr25") and npc == azureFog and not lfrAzureFogRevealed then
-			lfrAzureFogRevealed = true
+		if npc == azureFog and not lfrAzureFogRevealed then
+			lfrAzureFogRevealed = true--Only one in ALL modes, so might as well use this to work around the multi emote blizz bug
 			specWarnFogRevealed:Show(npc)
-		elseif not lfrAzureFogRevealed or not self:IsDifficulty("lfr25") then
+		elseif npc == amberFog and not self:IsDifficulty("lfr25") then
+			yellowRevealed = yellowRevealed + 1
+			if yellowRevealed > 2 and self:AntiSpam(10, npc) or yellowRevealed < 3 then--Fix for invisible amber blizz bug (when this happens it spams emote like 20 times)
+				specWarnFogRevealed:Show(npc)
+			end
+		elseif npc == crimsonFog and not self:IsDifficulty("lfr25") then
 			specWarnFogRevealed:Show(npc)
 		end
 	elseif msg:find("spell:133795") then--Does show in combat log, but emote gives targetname 3 seconds earlier.
