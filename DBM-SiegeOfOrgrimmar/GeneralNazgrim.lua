@@ -34,8 +34,8 @@ local warnWarSong					= mod:NewSpellAnnounce(143503, 4)
 local warnCoolingOff				= mod:NewTargetAnnounce(143484, 1)
 --Kor'kron Adds
 local warnIronstorm					= mod:NewSpellAnnounce(143420, 3, nil, mod:IsMelee())
-local warnArcaneShock				= mod:NewSpellAnnounce(143432, 3)--Could not find valid wowhead spellid
-local warnMagistrike				= mod:NewSpellAnnounce(143431, 3, nil, mod:IsMelee())
+local warnArcaneShock				= mod:NewSpellAnnounce(143432, 3, nil, false)--Spammy
+local warnMagistrike				= mod:NewSpellAnnounce(143431, 3, nil, false)--Spammy
 local warnAssasinsMark				= mod:NewTargetAnnounce(143480, 3)
 local warnEarthShield				= mod:NewTargetAnnounce(143475, 4, nil, mod:IsMagicDispeller())
 local warnEmpoweredChainHeal		= mod:NewSpellAnnounce(143473, 4)
@@ -46,7 +46,7 @@ local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer()
 local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 4)
 local specWarnSunderOther			= mod:NewSpecialWarningTarget(143494, mod:IsTank())
 local specWarnExecute				= mod:NewSpecialWarningSpell(143502, mod:IsTank(), nil, nil, 3)
-local specWarnBerserkerStance		= mod:NewSpecialWarningSpell(143594, false)--In case you want to throttle damage some
+local specWarnBerserkerStance		= mod:NewSpecialWarningSpell(143594, mod:IsDps())--In case you want to throttle damage some
 local specWarnDefensiveStance		= mod:NewSpecialWarningSpell(143593, nil, nil, nil, 3)--Definitely OFF DPS
 --Nazgrim Rage Abilities
 local specWarnHeroicShockwave		= mod:NewSpecialWarningSpell(143500, nil, nil, nil, 2)
@@ -55,8 +55,8 @@ local specWarnRavager				= mod:NewSpecialWarningSpell(143872)
 local specWarnWarSong				= mod:NewSpecialWarningSpell(143503, nil, nil, nil, 2)
 --Kor'kron Adds
 local specWarnIronstorm				= mod:NewSpecialWarningInterrupt(143420, mod:IsMelee())--Only needs to be interrupted if melee are near it
-local specWarnArcaneShock			= mod:NewSpecialWarningInterrupt(143432)--Should all be interupted, it's a ranged attack that hurts if not interrupted (increases in damage every missed interrupt)
-local specWarnMagistrike			= mod:NewSpecialWarningInterrupt(143431, mod:IsMelee())--Only needs to be interrupted if melee are near it
+local specWarnArcaneShock			= mod:NewSpecialWarningInterrupt(143432, false)--Spamy as all fuck, so off by default unless maybe heroic
+local specWarnMagistrike			= mod:NewSpecialWarningInterrupt(143431, false)--Spamy as all fuck, so off by default unless maybe heroic
 local specWarnEmpoweredChainHeal	= mod:NewSpecialWarningInterrupt(143473)--Concerns everyone, if not interrupted will heal boss for a TON
 local specWarnAssassinsMark			= mod:NewSpecialWarningYou(143480)
 local yellAssassinsMark				= mod:NewYell(143480)
@@ -213,6 +213,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		specWarnAdds:Show(addsCount)
 		timerAddsCD:Start(nil, addsCount+1)
 		countdownAdds:Start()
+	elseif msg == L.allForces then
+		specWarnAdds:Show(0)
 	end
 end
 
