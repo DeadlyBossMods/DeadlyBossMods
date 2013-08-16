@@ -70,7 +70,8 @@ L:SetMiscLocalization({
 	newForces2				= "Defend the gate!",
 	newForces3				= "Rally the forces!",
 	newForces4				= "Kor'kron, at my side!",
-	newForces5				= "Next squad, to the front!"
+	newForces5				= "Next squad, to the front!",
+	allForces				= "All Kor'kron... under my command... kill them... NOW!"
 })
 
 -----------------
