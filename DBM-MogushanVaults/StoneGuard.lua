@@ -106,7 +106,11 @@ function mod:OnCombatStart(delay)
 	playerHasChains = false
 	table.wipe(jasperChainsTargets)
 	table.wipe(amethystPoolTargets)
-	berserkTimer:Start()--7 min berserk on heroic 10 and 25 at least, unsure about normal/LFR, since i've never seen a log reach 7 min yet in LFR or normal
+	if self:IsDifficulty("heroic10", "heroic25") then
+		berserkTimer:Start(-delay)
+	else
+		berserkTimer:Start(485-delay)
+	end
 	if self:IsDifficulty("normal25", "heroic25") then
 		timerCobaltMineCD:Start(-delay)
 		timerJadeShardsCD:Start(-delay)
