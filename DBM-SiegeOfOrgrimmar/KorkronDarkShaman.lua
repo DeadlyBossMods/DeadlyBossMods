@@ -55,17 +55,17 @@ local specWarnFallingAsh			= mod:NewSpecialWarningSpell(143973, nil, nil, nil, 2
 
 --Earthbreaker Haromm
 local timerFroststormStrike			= mod:NewTargetTimer(30, 144215, nil, mod:IsTank())
-local timerFroststormStrikeCD		= mod:NewNextTimer(6, 144215, nil, mod:IsTank())
-local timerToxicMistsCD				= mod:NewNextTimer(30, 144089)
-local timerFoulStreamCD				= mod:NewNextTimer(32.5, 144090)
-local timerAshenWallCD				= mod:NewNextTimer(32.5, 144070)
-local timerIronTombCD				= mod:NewNextTimer(31.5, 144328)
+local timerFroststormStrikeCD		= mod:NewCDTimer(6, 144215, nil, mod:IsTank())
+local timerToxicMistsCD				= mod:NewCDTimer(32, 144089)--Pretty much a next timers unless boss is casting something else
+local timerFoulStreamCD				= mod:NewCDTimer(32.5, 144090)--Pretty much a next timers unless boss is casting something else
+local timerAshenWallCD				= mod:NewCDTimer(32.5, 144070)--Pretty much a next timers unless boss is casting something else
+local timerIronTombCD				= mod:NewCDTimer(31.5, 144328)--Pretty much a next timers unless boss is casting something else
 --Wavebinder Kardris
-local timerFrostStormBoltCD			= mod:NewNextTimer(7.2, 144214, nil, mod:IsTank())
-local timerToxicStormCD				= mod:NewNextTimer(30, 144005)
-local timerFoulGeyserCD				= mod:NewNextTimer(32.5, 143990)
-local timerFallingAshCD				= mod:NewNextTimer(32.5, 143973)
-local timerIronPrisonCD				= mod:NewNextTimer(31.5, 144330)
+local timerFrostStormBoltCD			= mod:NewCDTimer(6.8, 144214, nil, mod:IsTank())
+local timerToxicStormCD				= mod:NewCDTimer(32, 144005)--Pretty much a next timers unless boss is casting something else
+local timerFoulGeyserCD				= mod:NewCDTimer(32.5, 143990)--Pretty much a next timers unless boss is casting something else
+local timerFallingAshCD				= mod:NewCDTimer(32.5, 143973)--Pretty much a next timers unless boss is casting something else
+local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next timers unless boss is casting something else
 
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990)
 local countdownAshenWall			= mod:NewCountdown(32.5, 144070, nil, nil, nil, nil, true)
@@ -89,7 +89,7 @@ local function warnIronPrisonTargets()
 	table.wipe(ironPrisonTargets)
 end
 
---Auto detection of "tank them apart" strategy. if you keep them > 40 yards apart like we did, abilities other casts do not concern you.
+--Auto detection of "tank them apart" strategy. if you keep them > 50 yards apart like we did, abilities other casts do not concern you.
 local function checkTankDistance(cid)
 	local _, uId = mod:GetBossTarget(cid)
 	if uId then--Now we know who is tanking that boss
@@ -99,7 +99,7 @@ local function checkTankDistance(cid)
 			x, y = GetPlayerMapPosition(uId)
 		end
 		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
-		if (inRange and inRange < 40) or (x == 0 and y == 0) then--You are near the person tanking boss
+		if (inRange and inRange < 50) or (x == 0 and y == 0) then--You are near the person tanking boss
 			return true
 		end
 	end

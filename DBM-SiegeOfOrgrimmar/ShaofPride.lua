@@ -35,8 +35,8 @@ local warnAuraOfPride			= mod:NewTargetAnnounce(146817, 3)--75-99 Energy
 local warnOvercome				= mod:NewTargetAnnounce(144843, 3)--100 Energy (pre mind control)
 local warnOvercomeMC			= mod:NewTargetAnnounce(144863, 4)--Mind control version (ie applied being hit by swelling pride while you have 144843)
 --Manifestation of Pride
-local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3)
-local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3)
+local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
+local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
 
 --Sha of Pride
 local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
@@ -66,7 +66,7 @@ local timerMarkCD				= mod:NewNextTimer(20.5, 144351, nil, mod:IsHealer())
 local timerSelfReflectionCD		= mod:NewNextTimer(20.5, 144800)
 local timerWoundedPrideCD		= mod:NewNextTimer(26, 144358, nil, mod:IsTank())--A tricky on that is based off unit power but with variable timings, but easily workable with an 11, 26 rule
 local timerCorruptedPrisonCD	= mod:NewNextTimer(42, 144574)--Technically 40 for Imprison base cast, but this is timer til debuffs go out.
-local timerManifestationCD		= mod:NewNextTimer(48, "ej8262")
+local timerManifestationCD		= mod:NewNextTimer(48, "ej8262", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local timerSwellingPrideCD		= mod:NewNextTimer(60.5, 144400)--Energy based, like sha of fear breath, is it also 33?
 local timerWeakenedResolve		= mod:NewBuffFadesTimer(60, 147207, nil, false)
 --Pride
@@ -80,7 +80,7 @@ mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetIconOnMark", false)
 
 local tinsert, tconcat, twipe = table.insert, table.concat, table.wipe--Sha of tables....Might as well cache frequent table globals
-local UnitPower, UnitPowerMax, UnitIsDeadOrGhost = UnitPower, UnitPowerMax, UnitIsDeadOrGhost--Power is checked VERY frequently
+local UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID = UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID
 local giftOfTitansTargets = {}
 local burstingPrideTargets = {}
 local projectionTargets = {}
@@ -92,7 +92,6 @@ local markOfArroganceTargets = {}
 local markOfArroganceIcons = {}
 local corruptedPrisonTargets = {}
 local prideLevel = EJ_GetSectionInfo(8255)
-local playerName = UnitName("player")
 local firstWound = false
 
 local function warnGiftOfTitansTargets()
@@ -200,10 +199,10 @@ function mod:SPELL_CAST_START(args)
 		warnSwellingPride:Show()
 		specWarnSwellingPride:Show()
 	elseif args.spellId == 144379 then
-		local source = args.sourceName
+		local sourceGUID = args.sourceGUID
 		warnMockingBlast:Show()
-		if source == UnitName("target") or source == UnitName("focus") then 
-			specWarnMockingBlast:Show(source)
+		if sourceGUID == UnitGUID("target") or sourceGUID == UnitGUID("focus") then 
+			specWarnMockingBlast:Show(args.sourceName)
 		end
 	elseif args.spellId == 144832 then
 		warnUnleashed:Show()
