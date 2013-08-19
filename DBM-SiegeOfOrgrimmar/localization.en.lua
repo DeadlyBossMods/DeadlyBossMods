@@ -34,9 +34,22 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetTimerLocalization({
+	timerAddsCD		= "Next Adds",
+	timerTowerCD	= "Next Tower & Adds"
+})
+
+L:SetOptionLocalization({
+	timerAddsCD		= "Show timer for next adds wave",
+	timerTowerCD	= "Show timer for next tower assault"
+})
+
 L:SetMiscLocalization({
-	tower		= "The door barring the",--The door barring the South/North Tower has been breached!
-	demolisher	= "[Kor'kron Demolisher]|h|r to assault the tower!"--In case they remove the bad epiccenter spellid will use this
+	newForces1	= "Here they come!",--Jaina's line, horde may not be same
+	newForces2	= "Dragonmaw, advance!",
+	newForces3	= "For Hellscream!",
+	newForces4	= "Next squad, push forward!",
+	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
 })
 
 --------------------
@@ -65,13 +78,21 @@ L:SetOptionLocalization({
 ---------------------
 L= DBM:GetModLocalization(850)
 
+L:SetWarningLocalization({
+	warnDefensiveStanceSoon		= "Defensive Stance in %ds"
+})
+
+L:SetOptionLocalization({
+	warnDefensiveStanceSoon		= "Show pre-warning countdown for $spell:143593 (5s before)"
+})
+
 L:SetMiscLocalization({
-	newForces1				= "Warriors, on the double!",
-	newForces2				= "Defend the gate!",
-	newForces3				= "Rally the forces!",
-	newForces4				= "Kor'kron, at my side!",
-	newForces5				= "Next squad, to the front!",
-	allForces				= "All Kor'kron... under my command... kill them... NOW!"
+	newForces1					= "Warriors, on the double!",
+	newForces2					= "Defend the gate!",
+	newForces3					= "Rally the forces!",
+	newForces4					= "Kor'kron, at my side!",
+	newForces5					= "Next squad, to the front!",
+	allForces					= "All Kor'kron... under my command... kill them... NOW!"
 })
 
 -----------------

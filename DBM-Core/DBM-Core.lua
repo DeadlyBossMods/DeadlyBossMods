@@ -1732,8 +1732,8 @@ function DBM:GetNumGroupMembers()
 end
 
 --For returning the number of players actually in zone with us for status functions
---This fails if player is in a  micro dungeon though (such as shrine of seven stars)
---Fortunately as far as i know there aren't many raid bosses there.
+--This is very touchy though and will fail if everyone isn't in same SUB zone (ie same room/area)
+--It should work for pretty much any case we'd use it though except maybe a fight like heroic LK? TODO: check this
 function DBM:GetNumRealGroupMembers()
 	SetMapToCurrentZone()
 	local currentMapId = GetCurrentMapAreaID()
@@ -4223,7 +4223,7 @@ function bossModPrototype:GetBossTarget(cid)
 	cid = cid or self.creatureId
 	local name, uid, bossuid
 	for i, uId in ipairs(bossTargetuIds) do
-		if self:GetUnitCreatureId(uId) == cid or UnitGUID(uId) == cid then
+		if self:GetUnitCreatureId(uId) == cid or UnitGUID(uId) == cid then--Accepts CID or GUID
 			bossuid = uId
 			name = DBM:GetUnitFullName(uId.."target")
 			uid = DBM:GetRaidUnitId(name) or uId.."target"--overrride target uid because uid+"target" is variable uid.
@@ -4283,6 +4283,24 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 			self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan)
 		end
 	end
+end
+
+function bossModPrototype:checkTankDistance(cid, distance)
+	local cid = cid or self.creatureId
+	local distance = distance or 50
+	local _, uId = self:GetBossTarget(cid)
+	if uId then--Now we know who is tanking that boss
+		local x, y = GetPlayerMapPosition(uId)
+		if x == 0 and y == 0 then
+			SetMapToCurrentZone()
+			x, y = GetPlayerMapPosition(uId)
+		end
+		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
+		if (inRange and inRange < distance) or (x == 0 and y == 0) then--You are near the person tanking boss
+			return true
+		end
+	end
+	return false
 end
 
 function bossModPrototype:Stop(cid)
