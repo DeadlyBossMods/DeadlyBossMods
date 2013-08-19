@@ -12,7 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
 
 mod:RegisterEvents(
@@ -98,6 +99,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
+	--Fails if curse of tongues is on boss
 	if (msg == L.Victory or msg:find(L.Victory)) and self:IsInCombat() then
 		DBM:EndCombat(self)
 	--[[elseif msg == L.Pull and not self:IsInCombat() then
@@ -105,5 +107,18 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
 		end--]]
+	end
+end
+
+--This method works without local and doesn't fail with curse of tongs but requires at least ONE person in raid targeting boss to be running dbm (which SHOULD be most of the time)
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
+	if spellId == 148318 or spellId == 148317 or spellId == 149304 and self:AntiSpam(3, 2) then--use all 3 because i'm not sure which ones fire on repeat kills
+		self:SendSync("Victory")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Victory" and self:IsInCombat() then
+		DBM:EndCombat(self)
 	end
 end
