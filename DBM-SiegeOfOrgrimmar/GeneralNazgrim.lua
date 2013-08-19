@@ -23,6 +23,7 @@ local warnSunder					= mod:NewStackAnnounce(143494, 2)--Will add special warning
 local warnBonecracker				= mod:NewTargetAnnounce(143638, 2, nil, mod:IsHealer())
 local warnBattleStance				= mod:NewSpellAnnounce(143589, 2)
 local warnBerserkerStance			= mod:NewSpellAnnounce(143594, 3)
+local warnDefensiveStanceSoon		= mod:NewAnnounce("warnDefensiveStanceSoon", 4, 143593, nil, nil, true)
 local warnDefensiveStance			= mod:NewSpellAnnounce(143593, 4)
 local warnAdds						= mod:NewCountAnnounce("ej7920", 3)
 local warnExecute					= mod:NewSpellAnnounce(143502, 4, nil, mod:IsTank())--Heroic
@@ -43,7 +44,7 @@ local warnHealingTideTotem			= mod:NewSpellAnnounce(143474, 4)
 
 --Nazgrim Core Abilities
 local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer())
-local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 4)
+local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 6)
 local specWarnSunderOther			= mod:NewSpecialWarningTarget(143494, mod:IsTank())
 local specWarnExecute				= mod:NewSpecialWarningSpell(143502, mod:IsTank(), nil, nil, 3)
 local specWarnBerserkerStance		= mod:NewSpecialWarningSpell(143594, mod:IsDps())--In case you want to throttle damage some
@@ -70,6 +71,8 @@ local timerSunder					= mod:NewTargetTimer(60, 143494, nil, mod:IsTank() or mod:
 local timerSunderCD					= mod:NewCDTimer(10, 143494, nil, mod:IsTank())
 local timerExecuteCD				= mod:NewNextTimer(33.5, 143502, nil, mod:IsTank())
 local timerBoneCD					= mod:NewCDTimer(30, 143638, nil, mod:IsHealer())
+local timerBerserkerStanceCD		= mod:NewNextTimer(60, 143594)
+local timerDefensiveStanceCD		= mod:NewNextTimer(60, 143593)
 local timerDefensiveStance			= mod:NewBuffActiveTimer(60, 143593)
 --Nazgrim Rage Abilities
 local timerCoolingOff				= mod:NewBuffFadesTimer(15, 143484)
@@ -138,9 +141,16 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143589 then
 		warnBattleStance:Show()
+		timerBerserkerStanceCD:Start()
 	elseif args.spellId == 143594 then
 		warnBerserkerStance:Show()
 		specWarnBerserkerStance:Show()
+		timerDefensiveStanceCD:Start()
+		warnDefensiveStanceSoon:Schedule(55, 5)--Start pre warning with regular warnings only as you don't move at this point yet.
+		warnDefensiveStanceSoon:Schedule(56, 4)
+		warnDefensiveStanceSoon:Schedule(57, 3)
+		warnDefensiveStanceSoon:Schedule(58, 2)
+		warnDefensiveStanceSoon:Schedule(59, 1)
 	elseif args.spellId == 143593 then
 		warnDefensiveStance:Show()
 		specWarnDefensiveStance:Show()
@@ -162,7 +172,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSunder:Show(args.destName, amount)
 		timerSunder:Start(args.destName)
 		if args:IsPlayer() then
-			if amount >= 4 then--At this point the other tank SHOULD be clear.
+			if amount >= 6 then--At this point the other tank SHOULD be clear.
 				specWarnSunder:Show(amount)
 			end
 		else--Taunt as soon as stacks are clear, regardless of stack count.

@@ -34,7 +34,7 @@ local warnIronTomb					= mod:NewSpellAnnounce(144328, 3)
 --Wavebinder Kardris
 local warnFrostStormBolt			= mod:NewSpellAnnounce(144214, 2, nil, mod:IsTank())
 local warnToxicStorm				= mod:NewSpellAnnounce(144005, 3)
-local warnFoulGeyser				= mod:NewSpellAnnounce(143990, 4)--This may be cast on an actual target player instead of location, as such some changes will be needed
+local warnFoulGeyser				= mod:NewTargetAnnounce(143990, 4)--This may be cast on an actual target player instead of location, as such some changes will be needed
 local warnFallingAsh				= mod:NewSpellAnnounce(143973, 3)
 local warnIronPrison				= mod:NewTargetAnnounce(144330, 3)
 
@@ -51,6 +51,7 @@ local specWarnIronTomb				= mod:NewSpecialWarningSpell(144328, nil, nil, nil, 2)
 local specWarnFrostStormBolt		= mod:NewSpecialWarningSpell(144214, false)--spammy, but useful for a tank if they want to time active mitigation around it.
 local specWarnToxicStorm			= mod:NewSpecialWarningSpell(144005, mod:IsMelee())
 local specWarnFoulGeyser			= mod:NewSpecialWarningSpell(143990)
+local yellFoulGeyser				= mod:NewYell(143990)
 local specWarnFallingAsh			= mod:NewSpecialWarningSpell(143973, nil, nil, nil, 2)--Seems like an everyone waring.
 
 --Earthbreaker Haromm
@@ -89,23 +90,6 @@ local function warnIronPrisonTargets()
 	table.wipe(ironPrisonTargets)
 end
 
---Auto detection of "tank them apart" strategy. if you keep them > 50 yards apart like we did, abilities other casts do not concern you.
-local function checkTankDistance(cid)
-	local _, uId = mod:GetBossTarget(cid)
-	if uId then--Now we know who is tanking that boss
-		local x, y = GetPlayerMapPosition(uId)
-		if x == 0 and y == 0 then
-			SetMapToCurrentZone()
-			x, y = GetPlayerMapPosition(uId)
-		end
-		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
-		if (inRange and inRange < 50) or (x == 0 and y == 0) then--You are near the person tanking boss
-			return true
-		end
-	end
-	return false
-end
-
 local function ClearToxicMistTargets()
 	table.wipe(toxicMistsTargetsIcons)
 end
@@ -136,10 +120,19 @@ function mod:FoulStreamTarget(targetname, uId)
 			specWarnFoulStreamYou:Show()
 			yellFoulStream:Yell()
 		else
-			if checkTankDistance(71859) then
+			if self:checkTankDistance(71859) then
 				specWarnFoulStream:Show()
 			end
 		end
+	end
+end
+
+function mod:ToxicStormTarget(targetname, uId)
+	if not targetname then 
+		print("DBM DEBUG: Target scanning Failed")
+		return
+	else
+		print("DBM DEBUG: ToxicStormTarget returned "..targetname)
 	end
 end
 
@@ -164,30 +157,30 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif args.spellId == 144005 then
+		self:BossTargetScanner(71858, "ToxicStormTarget", 0.025, 12)
 		warnToxicStorm:Show()
 		timerToxicStormCD:Start()
-		if checkTankDistance(args:GetSrcCreatureID()) then
+		if self:checkTankDistance(args:GetSrcCreatureID()) then
 			specWarnToxicStorm:Show()
 		end
 	elseif args.spellId == 144090 then
 		self:BossTargetScanner(71859, "FoulStreamTarget", 0.025, 12)
 	elseif args.spellId == 143990 then
-		warnFoulGeyser:Show()
 		timerFoulGeyserCD:Start()
-		if checkTankDistance(args:GetSrcCreatureID()) then
+		if self:checkTankDistance(args:GetSrcCreatureID()) then
 			specWarnFoulGeyser:Show()
 			countdownFoulGeyser:Start()
 		end
 	elseif args.spellId == 144070 then
 		warnAshenWall:Show()
 		timerAshenWallCD:Start()
-		if checkTankDistance(args:GetSrcCreatureID()) then--Now we know who is tanking that boss
+		if self:checkTankDistance(args:GetSrcCreatureID()) then--Now we know who is tanking that boss
 			specWarnAshenWall:Show()--Give special warning cause this ability concerns you
 		end
 	elseif args.spellId == 143973 then
 		warnFallingAsh:Show()
 		timerFallingAshCD:Start()
-		if checkTankDistance(args:GetSrcCreatureID()) then--Now we know who is tanking that boss
+		if self:checkTankDistance(args:GetSrcCreatureID()) then--Now we know who is tanking that boss
 			specWarnFallingAsh:Show()--Give special warning cause this ability concerns you
 		end
 	elseif args.spellId == 144330 then
@@ -220,6 +213,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 				specWarnFroststormStrikeCast:Schedule(4)
 				timerFroststormStrikeCD:Start()
 			end
+		end
+	elseif args.spellId == 143990 then
+		warnFoulGeyser:Show(args.destName)
+		if args:IsPlayer() then
+			yellFoulGeyser:Yell()
 		end
 	end
 end
