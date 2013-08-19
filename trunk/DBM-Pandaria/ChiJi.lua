@@ -52,7 +52,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144471 then
 		warnBlazingSong:Show()
 		specWarnBlazingSong:Show()
-		timerBlazingSong:Start()
 	elseif args.spellId == 144470 then
 		warnCraneRush:Show()
 		specWarnCraneRush:Show()
