@@ -5,9 +5,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71955)
 mod:SetZone()
-mod:SetMinSyncRevision(10161)
+mod:SetMinSyncRevision(10162)
 
-mod:RegisterCombat("yell", L.Pull)
+--mod:RegisterCombat("combat")--Cannot be used, major problems with multiple world bosses engaging if wrong one is targeted by ANYONE in raid.
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -21,15 +21,15 @@ mod:RegisterEvents(
 
 local warnJadefireBreath		= mod:NewSpellAnnounce(144530, 2, nil, mod:IsTank())
 local warnJadefireBolt			= mod:NewSpellAnnounce(144532, 3)--Target scanning works but only grabs one of like 3-5 targets.
---local warnJadefireWall			= mod:NewSpellAnnounce(144533, 4)
+local warnJadefireWall			= mod:NewSpellAnnounce(144533, 4)
 
 local specWarnJadefireBreath	= mod:NewSpecialWarningSpell(144530, mod:IsTank())
 local specWarnJadefireBlaze		= mod:NewSpecialWarningMove(144538)
---local specWarnJadefireWall		= mod:NewSpecialWarningSpell(144533, nil, nil, nil, 2)
+local specWarnJadefireWall		= mod:NewSpecialWarningSpell(144533, nil, nil, nil, 2)
 
 local timerJadefireBreathCD		= mod:NewCDTimer(18.5, 144530, nil, mod:IsTank())
 local timerJadefireBoltCD		= mod:NewCDTimer(18, 144532)
---local timerJadefireWallCD		= mod:NewCDTimer(25, 144533)
+local timerJadefireWallCD		= mod:NewNextTimer(60, 144533)
 
 mod:AddBoolOption("RangeFrame", true)--For jadefire bolt/blaze (depending how often it's cast, if it's infrequent i'll kill range finder)
 
@@ -63,16 +63,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 144533 then--Does not show in combat log, not possible to warn for
-		warnJadefireWall:Show()
-		specWarnJadefireWall:Show()
---		timerJadefireWallCD:Start()
-	end
-end
---]]
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144537 and args:IsPlayer() then
 		specWarnJadefireBlaze:Show()
@@ -82,11 +72,13 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Victory then
 		self:SendSync("Victory")
-	--[[elseif msg == L.Pull and not self:IsInCombat() then
+	elseif msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 71955 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71955 then
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
-		end--]]
+		end
+	elseif msg == L.Wave1 or msg == L.Wave2 then
+		self:SendSync("Wave")
 	end
 end
 
@@ -100,5 +92,9 @@ end
 function mod:OnSync(msg)
 	if msg == "Victory" and self:IsInCombat() then
 		DBM:EndCombat(self)
+	elseif msg == "Wave" and self:IsInCombat() then
+		warnJadefireWall:Show()
+		specWarnJadefireWall:Show()
+		timerJadefireWallCD:Start()
 	end
 end
