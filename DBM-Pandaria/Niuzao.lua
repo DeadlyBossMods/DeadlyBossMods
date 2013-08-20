@@ -4,8 +4,9 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71954)
+mod:SetMinSyncRevision(10161)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -71,13 +72,13 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Pull and not self:IsInCombat() then
+	if msg == L.VictoryDem then--Only have demonic not regular yet
+		self:SendSync("Victory")
+--[[	elseif msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 71954 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71954 then
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
-		end
-	elseif msg == L.VictoryDem then--Only have demonic not regular yet
-		self:SendSync("Victory")
+		end--]]
 	end
 end
 

@@ -5,8 +5,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71955)
 mod:SetZone()
+mod:SetMinSyncRevision(10161)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -26,7 +27,7 @@ local specWarnJadefireBreath	= mod:NewSpecialWarningSpell(144530, mod:IsTank())
 local specWarnJadefireBlaze		= mod:NewSpecialWarningMove(144538)
 --local specWarnJadefireWall		= mod:NewSpecialWarningSpell(144533, nil, nil, nil, 2)
 
-local timerJadefireBreathCD		= mod:NewCDTimer(19, 144530, nil, mod:IsTank())
+local timerJadefireBreathCD		= mod:NewCDTimer(18.5, 144530, nil, mod:IsTank())
 local timerJadefireBoltCD		= mod:NewCDTimer(18, 144532)
 --local timerJadefireWallCD		= mod:NewCDTimer(25, 144533)
 
@@ -79,13 +80,13 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Pull and not self:IsInCombat() then
+	if msg == L.Victory then
+		self:SendSync("Victory")
+	--[[elseif msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 71955 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71955 then
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
-		end
-	elseif msg == L.Victory then
-		self:SendSync("Victory")
+		end--]]
 	end
 end
 
