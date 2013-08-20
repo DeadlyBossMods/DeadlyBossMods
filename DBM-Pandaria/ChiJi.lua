@@ -7,7 +7,7 @@ mod:SetCreatureID(71952)
 mod:SetZone()
 mod:SetMinSyncRevision(10162)
 
---mod:RegisterCombat("combat")--Cannot be used, major problems with multiple world bosses engaging if wrong one is targeted by ANYONE in raid.
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
