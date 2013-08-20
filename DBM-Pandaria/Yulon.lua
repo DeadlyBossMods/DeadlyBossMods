@@ -20,11 +20,11 @@ mod:RegisterEvents(
 
 local warnJadefireBreath		= mod:NewSpellAnnounce(144530, 2, nil, mod:IsTank())
 local warnJadefireBolt			= mod:NewSpellAnnounce(144532, 3)--Target scanning works but only grabs one of like 3-5 targets.
-local warnJadefireWall			= mod:NewSpellAnnounce(144533, 4)
+--local warnJadefireWall			= mod:NewSpellAnnounce(144533, 4)
 
 local specWarnJadefireBreath	= mod:NewSpecialWarningSpell(144530, mod:IsTank())
 local specWarnJadefireBlaze		= mod:NewSpecialWarningMove(144538)
-local specWarnJadefireWall		= mod:NewSpecialWarningSpell(144533, nil, nil, nil, 2)
+--local specWarnJadefireWall		= mod:NewSpecialWarningSpell(144533, nil, nil, nil, 2)
 
 local timerJadefireBreathCD		= mod:NewCDTimer(19, 144530, nil, mod:IsTank())
 local timerJadefireBoltCD		= mod:NewCDTimer(18, 144532)
