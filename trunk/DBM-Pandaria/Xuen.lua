@@ -5,9 +5,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71953)
 mod:SetZone()
-mod:SetMinSyncRevision(10161)
+mod:SetMinSyncRevision(10162)
 
-mod:RegisterCombat("yell", L.Pull)
+--mod:RegisterCombat("combat")--Cannot be used, major problems with multiple world bosses engaging if wrong one is targeted by ANYONE in raid.
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -26,46 +26,46 @@ local warnAgility					= mod:NewTargetAnnounce(144631, 3)
 local warnCracklingLightning		= mod:NewSpellAnnounce(144635, 3)--According to data, spread range is 60 yards so spreading out for this seems pointless. it's just healed through
 local warnChiBarrage				= mod:NewSpellAnnounce(144642, 4)
 
-local specWarnSpectralSwipe			= mod:NewSpecialWarningStack(144638, mod:IsTank(), 4)--Stack is guesswork
+local specWarnSpectralSwipe			= mod:NewSpecialWarningStack(144638, mod:IsTank(), 5)
 local specWarnSpectralSwipeOther	= mod:NewSpecialWarningTarget(144638, mod:IsTank())
 local specWarnAgility				= mod:NewSpecialWarningDispel(144631, mod:IsMagicDispeller())
 local specWarnChiBarrage			= mod:NewSpecialWarningSpell(144642, nil, nil, nil, 2)
 
 local timerSpectralSwipe			= mod:NewTargetTimer(60, 144638, nil, mod:IsTank() or mod:IsHealer())
---local timerSpectralSwipeCD		= mod:NewCDTimer(26, 144638)
+local timerSpectralSwipeCD			= mod:NewCDTimer(12, 144638)
 --local timerAgilityCD				= mod:NewCDTimer(25, 144631)
---local timerCracklingLightningCD	= mod:NewCDTimer(25, 144635)
---local timerChiBarrageCD			= mod:NewCDTimer(25, 144642)
+local timerCracklingLightningCD		= mod:NewCDTimer(47, 144635)
+local timerChiBarrageCD				= mod:NewCDTimer(20, 144642)
 
 mod:AddBoolOption("RangeFrame", true)--This is for chi barrage spreading.
 
---local yellTriggered = false
+local yellTriggered = false
 
 function mod:OnCombatStart(delay)
---[[	if yellTriggered then
-		timerSpectralSwipeCD:Start(20-delay)
-		timerAgilityCD:Start(40-delay)
-	end--]]
+	if yellTriggered then
+		timerChiBarrageCD:Start(20-delay)
+		timerCracklingLightningCD:Start(38-delay)
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3)
 	end
 end
 
 function mod:OnCombatEnd()
+	yellTriggered = false
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 144635 then
 		warnCracklingLightning:Show()
---		timerCracklingLightningCD:Start()
+		timerCracklingLightningCD:Start()
 	elseif args.spellId == 144642 then
 		warnChiBarrage:Show()
 		specWarnChiBarrage:Show()
---		timerChiBarrageCD:Start()
+		timerChiBarrageCD:Start()
 	end
 end
 
@@ -76,8 +76,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			local amount = args.amount or 1
 			warnSpectralSwipe:Show(args.destName, amount)
 			timerSpectralSwipe:Start(args.destName)
---			timerSpectralSwipeCD:Start()
-			if args:IsPlayer() and amount >= 4 then
+			timerSpectralSwipeCD:Start()
+			if args:IsPlayer() and amount >= 5 then
 				specWarnSpectralSwipe:Show(amount)
 			else
 				if amount >= 2 and not UnitIsDeadOrGhost("player") or not UnitDebuff("player", GetSpellInfo(144638)) then
@@ -103,11 +103,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	--Fails if curse of tongues is on boss
 	if (msg == L.Victory or msg:find(L.Victory)) and self:IsInCombat() then
 		DBM:EndCombat(self)
-	--[[elseif msg == L.Pull and not self:IsInCombat() then
+	elseif msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 71953 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71953 then
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
-		end--]]
+		end
 	end
 end
 
