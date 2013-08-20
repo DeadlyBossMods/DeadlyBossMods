@@ -1937,7 +1937,7 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 					break
 				end
 			end
-		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099 or cId == 71953 or cId == 71954 or cId == 72057 or cId == 71953 or cId == 71955) and not IsAddOnLoaded("DBM-Pandaria") then--Mists of Pandaria World Bosses: Anger, Salyis
+		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099 or cId == 71952 or cId == 71954 or cId == 72057 or cId == 71953 or cId == 71955) and not IsAddOnLoaded("DBM-Pandaria") then--Mists of Pandaria World Bosses: Anger, Salyis
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Pandaria" then
 					self:LoadMod(v)
@@ -1974,7 +1974,7 @@ function DBM:PLAYER_TARGET_CHANGED()
 					break
 				end
 			end
-		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099 or cId == 71953 or cId == 71954 or cId == 72057 or cId == 71953 or cId == 71955) and not IsAddOnLoaded("DBM-Pandaria") then
+		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099 or cId == 71952 or cId == 71954 or cId == 72057 or cId == 71953 or cId == 71955) and not IsAddOnLoaded("DBM-Pandaria") then
 			for i, v in ipairs(DBM.AddOns) do
 				if v.modId == "DBM-Pandaria" then
 					self:LoadMod(v)
