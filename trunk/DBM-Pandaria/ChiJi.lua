@@ -5,8 +5,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71953)
 mod:SetZone()
+mod:SetMinSyncRevision(10161)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -68,11 +69,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	--This victory yell fails if curse of tongues is on boss
 	if msg == L.Victory then
 		self:SendSync("Victory")
-	elseif msg == L.Pull and not self:IsInCombat() then
+--[[	elseif msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 71953 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71953 then--Whole zone gets yell, so lets not engage combat off yell unless he is our target (or the target of our target for healers)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
-		end
+		end--]]
 	end
 end
 
