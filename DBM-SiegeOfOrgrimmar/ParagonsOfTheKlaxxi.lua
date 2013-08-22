@@ -32,6 +32,7 @@ local warnImpact					= mod:NewSpellAnnounce(142232, 3)--Timing too variable for 
 --Xaril the Poisoned-Mind
 local warnTenderizingStirkes		= mod:NewStackAnnounce(142929, 2, nil, false)
 local warnToxicInjection			= mod:NewSpellAnnounce(142528, 3)
+local warnCausticBlood				= mod:NewSpellAnnounce(142315, 4)
 mod:AddBoolOption("warnToxicCatalyst", true, "announce")
 local warnToxicCatalystBlue			= mod:NewCastAnnounce(142725, 4, nil, nil, nil, false)
 local warnToxicCatalystRed			= mod:NewCastAnnounce(142726, 4, nil, nil, nil, false)
@@ -74,6 +75,7 @@ local specWarnActivatedVulnerable	= mod:NewSpecialWarning("specWarnActivatedVuln
 local specWarnGouge					= mod:NewSpecialWarningYou(143939)
 local specWarnGougeOther			= mod:NewSpecialWarningTarget(143939, mod:IsTank() or mod:IsHealer())
 --Xaril the Poisoned-Mind
+local specWarnCausticBlood			= mod:NewSpecialWarningSpell(142315, mod:IsTank())
 mod:AddBoolOption("specWarnToxicInjection", true, "announce")--Combine the 7 special warnings for same spell into 1
 local specWarnToxicBlue				= mod:NewSpecialWarningYou(142532, nil, false)
 local specWarnToxicRed				= mod:NewSpecialWarningYou(142533, nil, false)
@@ -355,6 +357,14 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143974 then
 		warnShieldBash:Show()
 		timerShieldBashCD:Start()
+	elseif args.spellId == 142315 then
+		for i = 1, 3 do
+			local bossUnitID = "boss"..i
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
+				warnCausticBlood:Show()
+				specWarnCausticBlood:Show()--So show tank warning
+			end
+		end
 	end
 end
 

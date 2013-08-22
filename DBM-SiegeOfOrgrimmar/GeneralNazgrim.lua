@@ -44,7 +44,7 @@ local warnHealingTideTotem			= mod:NewSpellAnnounce(143474, 4)
 
 --Nazgrim Core Abilities
 local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer())
-local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 6)
+local specWarnSunder				= mod:NewSpecialWarningStack(143494, mod:IsTank(), 4)
 local specWarnSunderOther			= mod:NewSpecialWarningTarget(143494, mod:IsTank())
 local specWarnExecute				= mod:NewSpecialWarningSpell(143502, mod:IsTank(), nil, nil, 3)
 local specWarnBerserkerStance		= mod:NewSpecialWarningSpell(143594, mod:IsDps())--In case you want to throttle damage some
@@ -67,7 +67,7 @@ local specWarnHealingTideTotem		= mod:NewSpecialWarningSwitch(143474, false)--No
 
 --Nazgrim Core Abilities
 local timerAddsCD					= mod:NewNextCountTimer(45, "ej7920", nil, nil, nil, 2457)
-local timerSunder					= mod:NewTargetTimer(60, 143494, nil, mod:IsTank() or mod:IsHealer())
+local timerSunder					= mod:NewTargetTimer(30, 143494, nil, mod:IsTank() or mod:IsHealer())
 local timerSunderCD					= mod:NewCDTimer(10, 143494, nil, mod:IsTank())
 local timerExecuteCD				= mod:NewNextTimer(33.5, 143502, nil, mod:IsTank())
 local timerBoneCD					= mod:NewCDTimer(30, 143638, nil, mod:IsHealer())
@@ -172,11 +172,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSunder:Show(args.destName, amount)
 		timerSunder:Start(args.destName)
 		if args:IsPlayer() then
-			if amount >= 6 then--At this point the other tank SHOULD be clear.
+			if amount >= 4 then--At this point the other tank SHOULD be clear.
 				specWarnSunder:Show(amount)
 			end
 		else--Taunt as soon as stacks are clear, regardless of stack count.
-			if not UnitDebuff("player", GetSpellInfo(143494)) and not UnitIsDeadOrGhost("player") then
+			if amount >= 3 and not UnitDebuff("player", GetSpellInfo(143494)) and not UnitIsDeadOrGhost("player") then
 				specWarnSunderOther:Show(args.destName)
 			end
 		end
