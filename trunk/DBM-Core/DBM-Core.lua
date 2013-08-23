@@ -249,7 +249,7 @@ local ipairs, pairs, next = ipairs, pairs, next
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 local type = type
 local select = select
-local floor = math.floor
+local floor, mhuge, mmin, mmax = math.floor, math.huge, math.min, math.max
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local IsInRaid = IsInRaid
@@ -743,7 +743,7 @@ do
 					else
 						local mapIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-MapID") or "")}
 						tinsert(self.AddOns, {
-							sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
+							sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
 							type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 							category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 							name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or "",
@@ -1356,7 +1356,7 @@ do
 	end
 
 	function DBM:RegisterOnGuiLoadCallback(f, sort)
-		tinsert(callOnLoad, {f, sort or math.huge})
+		tinsert(callOnLoad, {f, sort or mhuge})
 	end
 end
 
@@ -3071,7 +3071,7 @@ function DBM:UNIT_HEALTH(uId)
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if not v.mod.disableHealthCombat and (v.type == "combat" and v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
-					self:StartCombat(v.mod, health > 0.97 and 0.5 or math.min(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), nil, health, health < 0.90) -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s) / Do not record kill time below 90% (late combat detection)
+					self:StartCombat(v.mod, health > 0.97 and 0.5 or mmin(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), nil, health, health < 0.90) -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s) / Do not record kill time below 90% (late combat detection)
 				end
 			end
 		end
@@ -3213,7 +3213,7 @@ function DBM:EndCombat(mod, wipe)
 					if bestTime and bestTime > 0 and bestTime < 10 then--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
 						mod.stats.lfr25BestTime = thisTime
 					else
-						mod.stats.lfr25BestTime = math.min(bestTime or math.huge, thisTime)
+						mod.stats.lfr25BestTime = mmin(bestTime or mhuge, thisTime)
 					end
 				end
 			elseif savedDifficulty == "normal5" or savedDifficulty == "worldboss" then
@@ -3222,7 +3222,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.normalKills = mod.stats.normalKills + 1
 				if not mod.ignoreBestkill then
 					mod.stats.normalLastTime = thisTime
-					mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
+					mod.stats.normalBestTime = mmin(bestTime or mhuge, thisTime)
 				end
 			elseif savedDifficulty == "heroic5" then
 				if not mod.stats.heroicKills or mod.stats.heroicKills < 0 then mod.stats.heroicKills = 0 end
@@ -3230,7 +3230,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				if not mod.ignoreBestkill then
 					mod.stats.heroicLastTime = thisTime
-					mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
+					mod.stats.heroicBestTime = mmin(bestTime or mhuge, thisTime)
 				end
 			elseif savedDifficulty == "challenge5" then
 				if not mod.stats.challengeKills or mod.stats.challengeKills < 0 then mod.stats.challengeKills = 0 end
@@ -3238,7 +3238,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.challengeKills = mod.stats.challengeKills + 1
 				if not mod.ignoreBestkill then
 					mod.stats.challengeLastTime = thisTime
-					mod.stats.challengeBestTime = math.min(bestTime or math.huge, thisTime)
+					mod.stats.challengeBestTime = mmin(bestTime or mhuge, thisTime)
 				end
 			elseif savedDifficulty == "flex" then
 				if not mod.stats.flexKills or mod.stats.flexKills < 0 then mod.stats.flexKills = 0 end
@@ -3246,7 +3246,7 @@ function DBM:EndCombat(mod, wipe)
 				mod.stats.flexKills = mod.stats.flexKills + 1
 				if not mod.ignoreBestkill then
 					mod.stats.flexLastTime = thisTime
-					mod.stats.flexBestTime = math.min(bestTime or math.huge, thisTime)
+					mod.stats.flexBestTime = mmin(bestTime or mhuge, thisTime)
 				end
 			elseif savedDifficulty == "normal10" then
 				if not mod.stats.normalKills or mod.stats.normalKills < 0 then mod.stats.normalKills = 0 end
@@ -3257,7 +3257,7 @@ function DBM:EndCombat(mod, wipe)
 					if bestTime and bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in one global CD. (all level 60 raids report as instance difficulty 1 which means this time has to be ridiculously low. It's more or less only gonna fix kill times of 0.)
 						mod.stats.normalBestTime = thisTime
 					else
-						mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
+						mod.stats.normalBestTime = mmin(bestTime or mhuge, thisTime)
 					end
 				end
 			elseif savedDifficulty == "heroic10" then
@@ -3269,7 +3269,7 @@ function DBM:EndCombat(mod, wipe)
 					if bestTime and bestTime > 0 and bestTime < 2 then
 						mod.stats.heroicBestTime = thisTime
 					else
-						mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
+						mod.stats.heroicBestTime = mmin(bestTime or mhuge, thisTime)
 					end
 				end
 			elseif savedDifficulty == "normal25" then
@@ -3281,7 +3281,7 @@ function DBM:EndCombat(mod, wipe)
 					if bestTime and bestTime > 0 and bestTime < 3 then
 						mod.stats.normal25BestTime = thisTime
 					else
-						mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
+						mod.stats.normal25BestTime = mmin(bestTime or mhuge, thisTime)
 					end
 				end
 			elseif savedDifficulty == "heroic25" then
@@ -3293,7 +3293,7 @@ function DBM:EndCombat(mod, wipe)
 					if bestTime and bestTime > 0 and bestTime < 4 then
 						mod.stats.heroic25BestTime = thisTime
 					else
-						mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
+						mod.stats.heroic25BestTime = mmin(bestTime or mhuge, thisTime)
 					end
 				end
 			end
@@ -3313,7 +3313,7 @@ function DBM:EndCombat(mod, wipe)
 					else
 						self:AddMsg(DBM_CORE_BOSS_DOWN:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
 					end
-				elseif thisTime < (bestTime or math.huge) then
+				elseif thisTime < (bestTime or mhuge) then
 					if scenario then
 						self:AddMsg(DBM_CORE_SCENARIO_COMPLETE_NR:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime), totalKills))
 					else
@@ -3515,7 +3515,7 @@ do
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - time + lag
 			if mod.minCombatTime then
-				self:Schedule(math.max((mod.minCombatTime - time - lag), 3), checkWipe)
+				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe)
 			else
 				self:Schedule(3, checkWipe)
 			end
@@ -5393,7 +5393,7 @@ do
 				frame:Show()
 				frame:SetFrameStrata("TOOLTIP")
 				frame:SetAlpha(1)
-				frame.timer = math.huge
+				frame.timer = mhuge
 			end
 		end
 	end
@@ -5780,7 +5780,7 @@ do
 
 	local function getShieldHPFunc(shieldInfo)
 		return function()
-			return math.max(1, floor(shieldInfo.absorbRemaining / shieldInfo.maxAbsorb * 100))
+			return mmax(1, floor(shieldInfo.absorbRemaining / shieldInfo.maxAbsorb * 100))
 		end
 	end
 
