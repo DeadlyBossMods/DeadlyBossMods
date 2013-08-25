@@ -118,6 +118,7 @@ DBM.DefaultOptions = {
 	AdvancedAutologBosses = false,
 	LogOnlyRaidBosses = false,
 	UseMasterVolume = true,
+	LFDEnhance = true,
 	SetPlayerRole = true,
 	HideWatchFrame = false,
 	EnableModels = true,
@@ -1865,14 +1866,14 @@ do
 end
 
 function DBM:LFG_ROLE_CHECK_SHOW()
-	if not UnitIsGroupLeader("player") and DBM.Options.UseMasterVolume then
+	if not UnitIsGroupLeader("player") and DBM.Options.LFDEnhance then
 		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
 
 function DBM:LFG_PROPOSAL_SHOW()
 	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
-	if DBM.Options.UseMasterVolume then
+	if DBM.Options.LFDEnhance then
 		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
 	end
 end
@@ -1907,7 +1908,7 @@ function DBM:UPDATE_BATTLEFIELD_STATUS()
 		if GetBattlefieldStatus(i) == "confirm" then
 			queuedBattlefield[i] = select(2, GetBattlefieldStatus(i))
 			DBM.Bars:CreateBar(85, queuedBattlefield[i], "Interface\\Icons\\Spell_Holy_BorrowedTime")	-- need to confirm the timer
-			if DBM.Options.UseMasterVolume then
+			if DBM.Options.LFDEnhance then
 				PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
 			end
 		elseif queuedBattlefield[i] then
