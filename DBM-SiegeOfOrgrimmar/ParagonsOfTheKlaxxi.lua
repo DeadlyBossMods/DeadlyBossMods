@@ -662,9 +662,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefu
 	end
 end
 
-local function delayMonsterEmote()
+local function delayMonsterEmote(target)
 	--Because now the raid boss emotes fire AFTER this and we need them first
-	local target = DBM:GetFullNameByShortName(target)
+	target = DBM:GetFullNameByShortName(target)
 	warnCalculated:Show(target)
 	timerCalculated:Start()
 	timerInsaneCalculationCD:Start()
@@ -774,6 +774,6 @@ end
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	if npc == calculatingDude then
 		self:Unschedule(delayMonsterEmote)
-		self:Schedule(0.5, delayMonsterEmote)
+		self:Schedule(0.5, delayMonsterEmote, target)
 	end
 end

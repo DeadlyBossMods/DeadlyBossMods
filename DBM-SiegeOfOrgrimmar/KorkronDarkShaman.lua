@@ -186,7 +186,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144330 then
 		warnIronPrison:Show()
 		timerIronPrisonCD:Start()
-		specWarnIronPrison:Show()
+--		specWarnIronPrison:Show()
 	elseif args.spellId == 144328 then
 		warnIronTomb:Show()
 		timerIronTombCD:Start()
