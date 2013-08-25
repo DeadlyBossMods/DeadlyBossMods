@@ -156,7 +156,6 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 147068 then
-		timerFlamesofGalakrondCD:Cancel(args.destName)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 0)
 		end
