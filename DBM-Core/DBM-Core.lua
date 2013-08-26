@@ -172,6 +172,7 @@ DBM.DefaultOptions = {
 	DontShowPTCountdownText = false,
 	DontPlayPTCountdown = false,
 	DontShowPTText = false,
+	DontShowPTNoID = false,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
@@ -2192,7 +2193,7 @@ do
 		if select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
 			return
 		end
-		if mapid and mapid ~= LastInstanceMapID then return end
+		if (mapid and mapid ~= LastInstanceMapID) or DBM.Options.DontShowPTNoID and not mapid then return end
 		timer = tonumber(timer or 0)
 		if timer > 60 then
 			return
