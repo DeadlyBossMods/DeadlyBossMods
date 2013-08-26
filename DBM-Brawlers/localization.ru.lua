@@ -164,7 +164,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	rock			= "Камень",
-	paper			= "Бумага",
-	scissors		= "Ножницы"
+	rock			= "камень",
+	paper			= "бумага",
+	scissors		= "ножницы"
 })

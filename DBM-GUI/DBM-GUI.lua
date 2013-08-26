@@ -1369,7 +1369,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 290, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 325, true)
 
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1394,7 +1394,7 @@ local function CreateOptionsMenu()
 		local LogOnlyRaidBosses = generaloptions:CreateCheckButton(L.LogOnlyRaidBosses, true, nil, "LogOnlyRaidBosses")
 
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', LogOnlyRaidBosses, "BOTTOMLEFT", 0, 0)
+		bmrange:SetPoint('TOPLEFT', LogOnlyRaidBosses, "BOTTOMLEFT", 0, -5)
 		bmrange:SetScript("OnClick", function(self)
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
@@ -1941,7 +1941,7 @@ local function CreateOptionsMenu()
 		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
 
 		local color0 = specArea:CreateColorSelect(64)
-		color0:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -105)
+		color0:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -110)
 		local color0text = specArea:CreateText(L.SpecWarn_FontColor, 80)
 		color0text:SetPoint("BOTTOM", color0, "TOP", 5, 4)
 		local color0reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
@@ -1985,7 +1985,7 @@ local function CreateOptionsMenu()
 				DBM:ShowTestSpecialWarning(nil, 1)
 			end
 		)
-		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -100)
+		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -105)
 
 		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 16, 60, 1, 200)
 		fontSizeSlider:SetPoint('TOPLEFT', FontDropDown, "TOPLEFT", 20, -45)
@@ -2112,7 +2112,7 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningSound = value
 			end
 		)
-		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -205)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -210)
 
 		local flashdurSlider = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider:SetPoint('TOPLEFT', SpecialWarnSoundDropDown, "TOPLEFT", 20, -45)
@@ -2151,7 +2151,7 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningSound2 = value
 			end
 		)
-		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -310)
+		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -315)
 
 		local flashdurSlider2 = specArea:CreateSlider(L.SpecWarn_FlashDur, 0.2, 2, 0.2, 120)   -- (text , min_value , max_value , step , width)
 		flashdurSlider2:SetPoint('TOPLEFT', SpecialWarnSoundDropDown2, "TOPLEFT", 20, -45)
