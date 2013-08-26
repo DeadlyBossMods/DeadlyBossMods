@@ -28,7 +28,7 @@ local warnClash						= mod:NewSpellAnnounce(143027, 3)--No target scanning, no e
 local warnMiserySorrowGloom			= mod:NewSpellAnnounce(143955, 2)--Activation
 local warnCorruptionShock			= mod:NewSpellAnnounce(143958, 3)--Embodied Gloom (spammy if you do it wrong, but very important everyone sees. SOMEONE needs to interrupt it if it keeps going off)
 local warnDefiledGround				= mod:NewSpellAnnounce(143961, 3, nil, mod:IsTank())--Embodied Misery
-local warnInfernoStrike				= mod:NewTargetAnnounce(143962, 3)
+local warnInfernoStrike				= mod:NewSpellAnnounce(143962, 3)
 --He Softfoot
 local warnGouge						= mod:NewCastAnnounce(143330, 4, nil, nil, mod:IsTank())--The cast, so you can react and turn back to it and avoid stun.
 local warnGougeStun					= mod:NewTargetAnnounce(143301, 4, nil, mod:IsTank())--Failed, stunned. the success ID is 143331 (knockback)
@@ -53,8 +53,8 @@ local specWarnCorruptedBrewNear		= mod:NewSpecialWarningClose(143019)
 local specWarnMiserySorrowGloom		= mod:NewSpecialWarningSpell(143955)
 local specWarnCorruptionShock		= mod:NewSpecialWarningInterrupt(143958, mod:IsMelee())
 local specWarnDefiledGround			= mod:NewSpecialWarningMove(143959)
-local specWarnInfernoStrike			= mod:NewSpecialWarningYou(143962)
-local yellInfernoStrike				= mod:NewYell(143962)
+--local specWarnInfernoStrike			= mod:NewSpecialWarningYou(143962)
+--local yellInfernoStrike				= mod:NewYell(143962)
 --He Softfoot
 local specWarnGouge					= mod:NewSpecialWarningMove(143330, mod:IsTank())--Maybe localize it as a "turn away" warning.
 local specWarnGougeStunOther		= mod:NewSpecialWarningTarget(143301, mod:IsTank())--Tank is stunned, other tank must taunt or he'll start killing people
@@ -111,6 +111,7 @@ function mod:BrewTarget(targetname, uId)
 	end
 end
 
+--[[
 function mod:InfernoStrikeTarget(targetname, uId)
 	if not targetname then return end
 	warnInfernoStrike:Show(targetname)
@@ -118,7 +119,7 @@ function mod:InfernoStrikeTarget(targetname, uId)
 		specWarnInfernoStrike:Show()
 		yellInfernoStrike:Yell()
 	end
-end
+end--]]
 
 function mod:OnCombatStart(delay)
 	timerVengefulStrikesCD:Start(7-delay)
@@ -163,7 +164,8 @@ function mod:SPELL_CAST_START(args)
 		warnDefiledGround:Show()
 		timerDefiledGroundCD:Start()
 	elseif args.spellId == 143962 then
-		self:BossTargetScanner(71481, "InfernoStrikeTarget", 0.025)
+--		self:BossTargetScanner(71481, "InfernoStrikeTarget", 0.025)
+		warnInfernoStrike:Show()
 		timerInfernoStrikeCD:Start()
 	elseif args.spellId == 143497 then
 		warnBondGoldenLotus:Show()
