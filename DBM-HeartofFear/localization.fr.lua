@@ -21,7 +21,7 @@ L:SetOptionLocalization({
 	warnEcho			= "Annoncer quand un Echo apparaît",
 	warnEchoDown		= "Annoncer quand un Echo est vaincu",
 	specwarnPlatform	= "Alerte indiquant quand le Boss change de platforme",
-	ArrowOnAttenuation	= "Afficher la flêche DBM pendant $spell:127834 \npour indiquer dans quelle direction bouger"
+	ArrowOnAttenuation	= "Afficher la flêche DBM pendant $spell:127834 <br/>pour indiquer dans quelle direction bouger"
 })
 
 L:SetMiscLocalization({
@@ -94,16 +94,16 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnReshapeLifeTutor		= "Voir l'aperçu des compétences de l'Assemblage muté",
 	warnAmberExplosion			= "Alerte (avec la source) quand $spell:122398 est incanté",
-	warnAmberExplosionAM		= "Alerte personnelle quand la Monstruosité d’ambre à lancé\n $spell:122398 (pour interrompre)",
-	warnInterruptsAvailable		= "Annoncer qui a Frappe d'ambre disponible pour interrompre \n $spell:122402",
+	warnAmberExplosionAM		= "Alerte personnelle quand la Monstruosité d’ambre à lancé<br/> $spell:122398 (pour interrompre)",
+	warnInterruptsAvailable		= "Annoncer qui a Frappe d'ambre disponible pour interrompre <br/> $spell:122402",
 	warnWillPower				= "Annonce la Volonté actuelle à 80, 50, 30, 10, et 4.",
 	specwarnWillPower			= "Alerte spéciale quand la Volonté est faible dans l'Assemblage muté",
 	specwarnAmberExplosionYou	= "Alerte spéciale pour interrompre votre propre $spell:122398",
-	specwarnAmberExplosionAM	= "Alerte spéciale pour interrompre $spell:122402\nde la Monstruosité d’ambre",
-	specwarnAmberExplosionOther	= "Alerte spéciale pour interrompre le $spell:122398\nde l'Assemblage muté",-- à vérifier
-	timerAmberExplosionAMCD		= "Afficher le temps avant la prochaine $spell:122402\nde la Monstruosité d'ambre",
+	specwarnAmberExplosionAM	= "Alerte spéciale pour interrompre $spell:122402<br/>de la Monstruosité d’ambre",
+	specwarnAmberExplosionOther	= "Alerte spéciale pour interrompre le $spell:122398<br/>de l'Assemblage muté",-- à vérifier
+	timerAmberExplosionAMCD		= "Afficher le temps avant la prochaine $spell:122402<br/>de la Monstruosité d'ambre",
 	InfoFrame					= "Afficher le cadre d'information de la Volonté des joueurs",
-	FixNameplates				= "Désactiver les barres d'info quand vous êtes en Assemblage muté\n(Restaure les paramètres en quittant le combat)"
+	FixNameplates				= "Désactiver les barres d'info quand vous êtes en Assemblage muté<br/>(Restaure les paramètres en quittant le combat)"
 })
 
 L:SetMiscLocalization({

@@ -6,7 +6,7 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Show dynamic range frame based on player debuff status for\n$spell:119622",
+	RangeFrame			= "Show dynamic range frame based on player debuff status for<br/>$spell:119622",
 	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)",
 	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(119622)
 })

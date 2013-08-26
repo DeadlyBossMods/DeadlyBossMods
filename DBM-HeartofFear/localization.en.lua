@@ -97,17 +97,17 @@ L:SetOptionLocalization({
 	warnReshapeLife				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target:format(122784),
 	warnReshapeLifeTutor		= "Display ability purpose rundown of Mutated Construct abilities",
 	warnAmberExplosion			= "Show warning (with source) when $spell:122398 is cast",
-	warnAmberExplosionAM		= "Show personal warning when Amber Montrosity's\n $spell:122398 is cast(for interrupt)",
-	warnInterruptsAvailable		= "Announce who has Amber Strike interrupts available for\n $spell:122402",
+	warnAmberExplosionAM		= "Show personal warning when Amber Montrosity's<br/> $spell:122398 is cast(for interrupt)",
+	warnInterruptsAvailable		= "Announce who has Amber Strike interrupts available for<br/> $spell:122402",
 	warnWillPower				= "Announce current will power at 80, 50, 30, 10, and 4.",
 	specwarnWillPower			= "Show special warning when will power is low in construct",
 	specwarnAmberExplosionYou	= "Show special warning to interrupt your own $spell:122398",
-	specwarnAmberExplosionAM	= "Show special warning to interrupt Amber Montrosity's\n $spell:122402",
-	specwarnAmberExplosionOther	= "Show special warning to interrupt loose Mutated Construct's\n $spell:122398",
+	specwarnAmberExplosionAM	= "Show special warning to interrupt Amber Montrosity's<br/> $spell:122402",
+	specwarnAmberExplosionOther	= "Show special warning to interrupt loose Mutated Construct's<br/> $spell:122398",
 	timerDestabalize			= DBM_CORE_AUTO_TIMER_OPTIONS.target:format(123059),
 	timerAmberExplosionAMCD		= "Show timer for Amber Monstrosity's next $spell:122402",
 	InfoFrame					= "Show info frame for players will power",
-	FixNameplates				= "Automatically disable interfering nameplates while a construct\n(restores settings upon leaving combat)"
+	FixNameplates				= "Automatically disable interfering nameplates while a construct<br/>(restores settings upon leaving combat)"
 })
 
 L:SetMiscLocalization({

@@ -422,7 +422,7 @@ do
 			textbeside = dropdown
 			textpad = 35
 		end
-		if dropdown or (name and name:find("|H")) then -- ...and replace it with a SimpleHTML frame
+		if name then -- switch all checkbutton frame to SimpleHTML frame (auto wrap)
 			_G[buttonName.."Text"] = CreateFrame("SimpleHTML", buttonName.."Text", button)
 			html = _G[buttonName.."Text"]
 			html:SetFontObject("GameFontNormal")

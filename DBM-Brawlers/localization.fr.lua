@@ -19,7 +19,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "Alerte spéciale quand c'est à vous de combattre",
-	SpectatorMode		= "Voir les alertes/délais lorsque vous êtes en mode spectateur\n(Les \"Alerte spécial\" personnelle, ne sont pas affichées aux spectateurs)"
+	SpectatorMode		= "Voir les alertes/délais lorsque vous êtes en mode spectateur<br/>(Les \"Alerte spécial\" personnelle, ne sont pas affichées aux spectateurs)"
 })
 
 L:SetMiscLocalization({

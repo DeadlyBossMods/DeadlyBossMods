@@ -219,7 +219,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnGetBoned	= "Alerte spéciale quand vous n'avez pas $spell:113996",
-	InfoFrame			= "Afficher le cadre d'informations pour les joueurs n'étant pas touché par\n$spell:113996"
+	InfoFrame			= "Afficher le cadre d'informations pour les joueurs n'étant pas touché par<br/>$spell:113996"
 })
 
 L:SetMiscLocalization({

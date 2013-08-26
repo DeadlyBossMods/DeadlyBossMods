@@ -8,7 +8,7 @@ local L
 L= DBM:GetModLocalization(683)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Mostrar distancia (8) para $spell:111850\n(Muestra a todo el mundo si no tienes el debuff, solo a los jugadores con debuff sino)"
+	RangeFrame			= "Mostrar distancia (8) para $spell:111850<br/>(Muestra a todo el mundo si no tienes el debuff, solo a los jugadores con debuff sino)"
 })
 
 

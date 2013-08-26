@@ -157,7 +157,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetBubbles			= "自動地為$spell:101871關閉對話氣泡功能\n(當遊戲結束後還原功能)"
+	SetBubbles			= "自動地為$spell:101871關閉對話氣泡功能<br/>(當遊戲結束後還原功能)"
 })
 
 ----------------------

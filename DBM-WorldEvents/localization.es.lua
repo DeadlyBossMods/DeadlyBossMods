@@ -159,7 +159,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetBubbles			= "Desactiva los bocadillos de chat durante $spell:101871\n(se restauran una vez finalizada la partida)"
+	SetBubbles			= "Desactiva los bocadillos de chat durante $spell:101871<br/>(se restauran una vez finalizada la partida)"
 })
 
 ----------------------

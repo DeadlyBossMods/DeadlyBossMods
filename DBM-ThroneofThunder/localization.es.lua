@@ -170,7 +170,7 @@ L:SetOptionLocalization({
 	specWarnFogRevealed			= "Mostrar aviso especial cuando se descubre una bestia de niebla",
 	ArrowOnBeam					= "Mostrar flecha indicando la dirección en la que moverse durante $journal:6882",
 	InfoFrame					= "Mostrar cuadro de información para acumulaciones de $spell:133795",
-	SetParticle					= "Bajar densidad de partículas al comenzar el encuentro\n(Restaurar la configuración original al terminar)"
+	SetParticle					= "Bajar densidad de partículas al comenzar el encuentro<br/>(Restaurar la configuración original al terminar)"
 })
 
 L:SetMiscLocalization({
@@ -220,7 +220,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame				= "Mostrar radar de rango dinámico (10)\n(Radar inteligente que muestra cuando hay demasiados jugadores cerca)",
+	RangeFrame				= "Mostrar radar de rango dinámico (10)<br/>(Radar inteligente que muestra cuando hay demasiados jugadores cerca)",
 	InfoFrame				= "Mostrar cuadro de información para jugadores con $spell:136193"
 })
 

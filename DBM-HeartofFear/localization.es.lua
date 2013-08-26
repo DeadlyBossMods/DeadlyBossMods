@@ -87,7 +87,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionOther	= "Mostrar aviso especial para interrumpir $spell:122398 de Ensamblaje mutado",
 	timerAmberExplosionAMCD		= "Mostrar tiempo para el siguiente $spell:122402 de la Monstruosidad de ámbar",
 	InfoFrame					= "Mostrar información con la Voluntad de los jugadores",
-	FixNameplates				= "Desactivar placas de nombres que interfieren al pullear\n(restaura la configuración cuando dejas el combate)"
+	FixNameplates				= "Desactivar placas de nombres que interfieren al pullear<br/>(restaura la configuración cuando dejas el combate)"
 })
 
 L:SetMiscLocalization({
