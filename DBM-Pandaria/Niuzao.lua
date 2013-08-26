@@ -72,7 +72,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.VictoryDem then--Only have demonic not regular yet
+	if msg == L.Victory or msg == L.VictoryDem then
 		self:SendSync("Victory")
 	elseif msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 71954 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71954 then
