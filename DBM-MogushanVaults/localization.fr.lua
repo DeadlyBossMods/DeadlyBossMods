@@ -105,8 +105,8 @@ L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
 	InfoFrame		= "Afficher le cadre d'informations pour les joueurs touché par $spell:116525",
-	CountOutCombo	= "Comptez le nombre de $journal:5673 vocalement\nNOTE: Disponible qu'avec l'option de voix féminine.",
-	ArrowOnCombo	= "Afficher la flêche DBM pendant $journal:5673\nNOTE: Cela suppose que le Tank est face au Boss \net que personne d'autre n'est derrière."
+	CountOutCombo	= "Comptez le nombre de $journal:5673 vocalement<br/>NOTE: Disponible qu'avec l'option de voix féminine.",
+	ArrowOnCombo	= "Afficher la flêche DBM pendant $journal:5673<br/>NOTE: Cela suppose que le Tank est face au Boss <br/>et que personne d'autre n'est derrière."
 })
 
 L:SetMiscLocalization({

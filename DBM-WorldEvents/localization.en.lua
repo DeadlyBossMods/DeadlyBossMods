@@ -155,7 +155,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetBubbles			= "Automatically disable chat bubbles during $spell:101871\n(restores them when game ends)"
+	SetBubbles			= "Automatically disable chat bubbles during $spell:101871<br/>(restores them when game ends)"
 })
 
 ----------------------

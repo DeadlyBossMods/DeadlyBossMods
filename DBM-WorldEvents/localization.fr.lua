@@ -162,7 +162,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetBubbles			= "Désactiver les bulles de texte pendant $spell:101871\n(Restaure les paramètres à la fin du jeu)"
+	SetBubbles			= "Désactiver les bulles de texte pendant $spell:101871<br/>(Restaure les paramètres à la fin du jeu)"
 })
 
 ----------------------

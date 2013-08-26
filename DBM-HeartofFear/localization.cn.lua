@@ -106,7 +106,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionOther	= "特殊警报：打断变异构造体的$spell:122398",
 	timerAmberExplosionAMCD		= "计时条：琥珀畸怪的下一次$spell:122402",
 	InfoFrame					= "信息框：意志值",
-	FixNameplates				= "在变为变异构造体后自动关闭影响战斗的姓名板\n（战斗结束后会自动恢复原始设置）"
+	FixNameplates				= "在变为变异构造体后自动关闭影响战斗的姓名板<br/>（战斗结束后会自动恢复原始设置）"
 })
 
 L:SetMiscLocalization({

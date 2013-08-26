@@ -10,7 +10,7 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Afficher un cadre de distance dynamique (5m)\nbasé sur le debuff des joueurs pour $spell:119622"
+	RangeFrame			= "Afficher un cadre de distance dynamique (5m)<br/>basé sur le debuff des joueurs pour $spell:119622"
 })
 
 -----------------------

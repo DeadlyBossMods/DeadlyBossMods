@@ -11,7 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "$spell:138470 위에 있을 때 특수 경고 보기\n($spell:137313 시전 직전 또는 $spell:138732 약화 효과 시간이 얼마 안 남았을때)"
+	specWarnWaterMove	= "$spell:138470 위에 있을 때 특수 경고 보기<br/>($spell:137313 시전 직전 또는 $spell:138732 약화 효과 시간이 얼마 안 남았을때)"
 })
 
 --------------
@@ -55,7 +55,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "우두머리 체력 바 사용시 $spell:136442 사라짐까지 남은 체력도 함께 보기",
-	AnnounceCooldowns	= "공격대 생존기 사용을 위해 $spell:137166 시전 횟수를 음성으로 듣기\n(카즈라진의 빙의가 풀리면 초기화됨)"
+	AnnounceCooldowns	= "공격대 생존기 사용을 위해 $spell:137166 시전 횟수를 음성으로 듣기<br/>(카즈라진의 빙의가 풀리면 초기화됨)"
 })
 
 ------------
@@ -167,7 +167,7 @@ L:SetOptionLocalization({
 	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
 	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
 	InfoFrame					= "$spell:133795 중첩 정보 창 보기",
-	SetParticle					= "전투 시작시 입자 밀도를 최저로 설정하기\n(전투 종료후 원래 설정이 복구됩니다.)"
+	SetParticle					= "전투 시작시 입자 밀도를 최저로 설정하기<br/>(전투 종료후 원래 설정이 복구됩니다.)"
 })
 
 L:SetMiscLocalization({
@@ -215,7 +215,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame		= "전투 진영에 따라 거리 창 보기(10m)\n(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)",
+	RangeFrame		= "전투 진영에 따라 거리 창 보기(10m)<br/>(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)",
 	InfoFrame		= "$spell:136193 주문에 영향을 받은 대상을 정보 창에서 보기"
 })
 

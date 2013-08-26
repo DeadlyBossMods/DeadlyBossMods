@@ -159,7 +159,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetBubbles			= "Automaticamente desabilitar balões de fala durante $spell:101871\n(Voltando ao normal ao fim da partida)"
+	SetBubbles			= "Automaticamente desabilitar balões de fala durante $spell:101871<br/>(Voltando ao normal ao fim da partida)"
 })
 
 ----------------------
