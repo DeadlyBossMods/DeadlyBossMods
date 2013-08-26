@@ -34,9 +34,22 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetTimerLocalization({
+	timerAddsCD		= "下一波小兵",
+	timerTowerCD	= "下一波塔攻"
+})
+
+L:SetOptionLocalization({
+	timerAddsCD		= "為下一波小兵顯示計時器",
+	timerTowerCD	= "為下一波塔攻顯示計時器"
+})
+
 L:SetMiscLocalization({
-	tower		= "The door barring the",--The door barring the South/North Tower has been breached!
-	demolisher	= "[Kor'kron Demolisher]|h|r to assault the tower!"--In case they remove the bad epiccenter spellid will use this
+	newForces1	= "Here they come!",--Jaina's line, horde may not be same
+	newForces2	= "Dragonmaw, advance!",
+	newForces3	= "For Hellscream!",
+	newForces4	= "Next squad, push forward!",
+	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
 })
 
 --------------------
@@ -54,12 +67,21 @@ L= DBM:GetModLocalization(856)
 ---------------------
 L= DBM:GetModLocalization(850)
 
+L:SetWarningLocalization({
+	warnDefensiveStanceSoon		= "防禦姿態在%d秒"
+})
+
+L:SetOptionLocalization({
+	warnDefensiveStanceSoon		= "為$spell:143593(五秒前)顯示預先警告倒數"
+})
+
 L:SetMiscLocalization({
-	newForces1				= "Warriors, on the double!",
-	newForces2				= "Defend the gate!",
-	newForces3				= "Rally the forces!",
-	newForces4				= "Kor'kron, at my side!",
-	newForces5				= "Next squad, to the front!"
+	newForces1					= "Warriors, on the double!",
+	newForces2					= "Defend the gate!",
+	newForces3					= "Rally the forces!",
+	newForces4					= "Kor'kron, at my side!",
+	newForces5					= "Next squad, to the front!",
+	allForces					= "All Kor'kron... under my command... kill them... NOW!"
 })
 
 -----------------
@@ -71,6 +93,11 @@ L= DBM:GetModLocalization(846)
 -- Spoils of Pandaria --
 ------------------------
 L= DBM:GetModLocalization(870)
+
+L:SetMiscLocalization({
+	Module1 = "Module 1's all prepared for system reset.",
+	Victory	= "Module 2's all prepared for system reset"
+})
 
 ---------------------------
 -- Thok the Bloodthirsty --
@@ -97,39 +124,24 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "You are vulnerable to %s - Avoid!",
-	specWarnCriteriaLinked			= "You are linked to %s!"
+	specWarnActivatedVulnerable		= "你虛弱於%s - 閃躲!",
+	specWarnCriteriaLinked			= "你被%s連線了!"
 })
 
 L:SetOptionLocalization({
-	warnToxicCatalyst				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej8036"),
-	specWarnToxicInjection			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format(142528),
-	specWarnToxicCatalyst			= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you:format("ej8036"),
-	specWarnActivatedVulnerable		= "Show special warning when you are vulnerable to activating paragons",
-	specWarnCriteriaLinked			= "Show special warning when you are linked to $spell:144095",
-	SetIconOnAim					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(142948),
-	yellToxicCatalyst				= DBM_CORE_AUTO_YELL_OPTION_TEXT:format("ej8036"),
-	RangeFrame						= DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6/5")
+	specWarnActivatedVulnerable		= "當你虛弱於活動的議會成員時顯示特別警告",
+	specWarnCriteriaLinked			= "當你被$spell:144095連線時顯示特別警告"
 })
 
 L:SetMiscLocalization({
-	calculatedTarget	= "calculating eye!",
 	--thanks to blizz, the only accurate way for this to work, is to translate 15 emotes in all languages
-	yellow				= "Yellow",
-	red					= "Red",
-	blue				= "Blue",
-	purple				= "Purple",
-	green				= "Green",
-	bomb				= "Bomb",
-	sword				= "Swords",
-	drums				= "Drums",
-	mantid				= "Mantid",--Assumed
-	staff 				= "Staff",--Assumed
+	purple				= "Purple",--Needs color code replacement still
+	green				= "Green",--Needs color code replacement still
 	one					= "One",
-	two					= "Pair",
+	two					= "Two",
 	three				= "Three",
-	four				= "Four",--Assumed
-	five				= "Five",--Assumed
+	four				= "Four",
+	five				= "Five",
 	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
 	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
 	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
