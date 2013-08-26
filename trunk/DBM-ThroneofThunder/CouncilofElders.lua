@@ -259,7 +259,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			dischargeCount = 0
 			kazraPossessed = true
 		end
-		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.PHealthFrame then
+		if DBM.BossHealth:IsShown() and self.Options.PHealthFrame then
 			local bossHealth = math.floor(UnitHealthMax(uid or "boss4") * 0.25)
 			showDamagedHealthBar(self, args.destGUID, args.spellName.." : "..args.destName, bossHealth)
 		end
@@ -349,7 +349,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			kazraPossessed = false
 			timerRecklessChargeCD:Cancel()--Because it's not going to be 25 sec anymore. It'll go back to 6 seconds. He'll probably do it right away since more than likely it'll be off CD
 		end
-		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.PHealthFrame then
+		if DBM.BossHealth:IsShown() and self.Options.PHealthFrame then
 			hideDamagedHealthBar()
 		end
 	elseif args.spellId == 136903 then
