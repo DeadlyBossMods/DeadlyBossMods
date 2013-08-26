@@ -16,7 +16,7 @@
 --    * ruRU: TOM_RUS
 --    * zhTW: Whyv                      ultrashining@gmail.com
 --    * koKR: nBlueWiz					everfinale@gmail.com
---    * esES/esMX: Sueñalobos				alcortesm@gmail.com
+--    * esES/esMX: Sueñalobos			alcortesm@gmail.com
 --
 -- The former/inactive-translators:
 --    * ruRU: BootWin					bootwin@gmail.com
@@ -200,6 +200,7 @@ DBM_OPTION_SPACER = newproxy(false)
 local enabled = true
 local blockEnable = false
 local lastCombatStarted = GetTime()
+local loadcIds = {}
 local inCombat = {}
 local combatInfo = {}
 local bossIds = {}
@@ -774,6 +775,12 @@ do
 								else
 									self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
 								end
+							end
+						end
+						if GetAddOnMetadata(i, "X-DBM-Mod-LoadCID") then
+							local cIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadCID"))}
+							for i = 1, #cIdTable do
+								loadcIds[tonumber(cIdTable[i]) or ""] = addonName
 							end
 						end
 					end
@@ -1924,32 +1931,13 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 	local guid = UnitGUID("mouseover")
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
-		if (cId == 17711 or cId == 18728) and not IsAddOnLoaded("DBM-Outlands") then--Burning Crusade World Bosses: Doomwalker and Kazzak
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-Outlands" then
-					self:LoadMod(v)
-					break
-				end
-			end
-		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not IsAddOnLoaded("DBM-Party-Cataclysm") then--Cataclysm World Bosses: Akamhat, Garr, Julak, Mobus, Xariona
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-Party-Cataclysm" then
-					self:LoadMod(v)
-					break
-				end
-			end
-		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099 or cId == 71952 or cId == 71954 or cId == 72057 or cId == 71953 or cId == 71955) and not IsAddOnLoaded("DBM-Pandaria") then--Mists of Pandaria World Bosses: Anger, Salyis
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-Pandaria" then
-					self:LoadMod(v)
-					break
-				end
-			end
-		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466 or cId == 49687) and not IsAddOnLoaded("DBM-WorldEvents") then--The Abominable Greench & his helpers (Winter Veil world boss), Omen & his minions (Lunar Festival world boss), Plants vs Zombie npc
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-WorldEvents" then
-					self:LoadMod(v)
-					break
+		for bosscId, addon in pairs(loadcIds) do
+			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) then
+				for i, v in ipairs(DBM.AddOns) do
+					if v.modId == addon then
+						self:LoadMod(v)
+						break
+					end
 				end
 			end
 		end
@@ -1961,32 +1949,13 @@ function DBM:PLAYER_TARGET_CHANGED()
 	local guid = UnitGUID("target")
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
-		if (cId == 17711 or cId == 18728) and not IsAddOnLoaded("DBM-Outlands") then
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-Outlands" then
-					self:LoadMod(v)
-					break
-				end
-			end
-		elseif (cId == 50063 or cId == 50056 or cId == 50089 or cId == 50009 or cId == 50061) and not IsAddOnLoaded("DBM-Party-Cataclysm") then
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-Party-Cataclysm" then
-					self:LoadMod(v)
-					break
-				end
-			end
-		elseif (cId == 62346 or cId == 60491 or cId == 69161 or cId == 69099 or cId == 71952 or cId == 71954 or cId == 72057 or cId == 71953 or cId == 71955) and not IsAddOnLoaded("DBM-Pandaria") then
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-Pandaria" then
-					self:LoadMod(v)
-					break
-				end
-			end
-		elseif (cId == 55003 or cId == 54499 or cId == 15467 or cId == 15466 or cId == 49687) and not IsAddOnLoaded("DBM-WorldEvents") then
-			for i, v in ipairs(DBM.AddOns) do
-				if v.modId == "DBM-WorldEvents" then
-					self:LoadMod(v)
-					break
+		for bosscId, addon in pairs(loadcIds) do
+			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) then
+				for i, v in ipairs(DBM.AddOns) do
+					if v.modId == addon then
+						self:LoadMod(v)
+						break
+					end
 				end
 			end
 		end

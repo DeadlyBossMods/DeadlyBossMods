@@ -44,9 +44,6 @@ L.NoSound					= "끄기"
 
 L.IconsInUse				= "현재 전투에서 사용 되는 전술 목표 아이콘:"
 
-L.QuestComplete				= "이 전투를 이미 완료했습니다."
-L.QuestIncomplete			= "이 전투를 아직 완료하지 않았습니다. 참고: 이미 완료한 전투라도 UI 재시작 직후나, 또는 전투가 끝난 후 얼마 지나지 않아 재접속을 한 경우라면 미완료로 표시될 수 있습니다."
-
 -- Tab: Boss Statistics
 L.BossStatistics			= "공략 상황"
 L.Statistic_Kills			= "승리:"
@@ -59,7 +56,8 @@ L.General 					= "기본 DBM 설정"
 L.EnableDBM 				= "DBM 사용"
 L.EnableMiniMapIcon			= "미니맵 버튼 사용"
 L.SetPlayerRole				= "파티 또는 공격대 참여시 역할 자동 설정(추천)"
-L.UseMasterVolume			= "기본 오디오 채널로 애드온 소리 듣기"
+L.UseMasterVolume			= "주 음량 설정에 맞추어 애드온 소리 듣기"
+L.LFDEnhance				= "전장/무작위 공격대 입장, 역할 확인 소리를 주 음량 설정에 맞추어 듣기"
 L.AutologBosses				= "우두머리 전투시 블리자드 전투 기록 자동 활성화"
 L.AdvancedAutologBosses		= "우두머리 전투시 Transcriptor 기록 자동 활성화"
 L.LogOnlyRaidBosses			= "공격대 우두머리 전투만 기록하기(공격대 찾기 제외)"

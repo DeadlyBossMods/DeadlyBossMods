@@ -75,7 +75,8 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) & %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 공격대 경보 애드온이 설치되어 있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "DBM 설치 : %d명, BigWigs 설치 : %d명이 확인되었습니다."
-DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 DBM 버전이 오래되었습니다! wow.inven.co.kr(korean) 또는 dev.deadlybossmods.com에 접속하셔셔 최신 버전을 다운로드 받으세요."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 DBM 버전이 오래되었습니다! http://wow.inven.co.kr(korean) 또는 http://www.deadlybossmods.com에 접속하셔서 최신 버전을 다운로드 받으세요."
+DBM_CORE_OUTDATED_PVP_MODS			= "설치되어 있는 DBM-PvP 경고가 구버전 입니다. http://www.deadlybossmods.com에 접속하셔서 별도로 배포되는 최신 버전으로 업데이트 하시거나, 사용하지 않을 경우 제거하시기 바랍니다. PvP 경고는 DBM-Core에 더 이상 포함되지 않습니다."
 --DBM_BIG_WIGS (Same as English locales)
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
