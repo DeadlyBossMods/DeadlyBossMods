@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Mostrar distancia dinamica basada en el estado de\n$spell:119622",
+	RangeFrame			= "Mostrar distancia dinamica basada en el estado de<br/>$spell:119622",
 	ReadyCheck			= "Reproducir sonido de comprobación de listos si el jefe es pulleado (incluso si no es mi objetivo actual)"
 })
 

@@ -95,7 +95,7 @@ L:SetOptionLocalization({
 	specwarnAmberExplosionOther	= "탑승자가 없는 피조물이 $spell:122398 주문을 시전할때 특수 경고 보기(차단)",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 표시",
 	InfoFrame					= "의지력 정보 창 보기",
-	FixNameplates				= "피조물 탑승시 이름표 겹침 기능 끄기\n(전투 종료시에 원래 설정대로 돌아감)"
+	FixNameplates				= "피조물 탑승시 이름표 겹침 기능 끄기<br/>(전투 종료시에 원래 설정대로 돌아감)"
 })
 
 L:SetMiscLocalization({

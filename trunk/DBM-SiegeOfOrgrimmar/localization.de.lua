@@ -78,7 +78,7 @@ L= DBM:GetModLocalization(870)
 L= DBM:GetModLocalization(851)
 
 L:SetOptionLocalization({
-	RangeFrame	= "Zeige dynamisches Abstandsfenster (10m)\n(mit Indikator für den \"Blutrausch\"-Schwellwert)"
+	RangeFrame	= "Zeige dynamisches Abstandsfenster (10m)<br/>(mit Indikator für den \"Blutrausch\"-Schwellwert)"
 })
 
 ----------------------------

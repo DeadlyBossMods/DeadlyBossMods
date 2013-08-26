@@ -167,7 +167,7 @@ L:SetOptionLocalization({
 	specWarnFogRevealed			= "Spezialwarnung, wenn ein Nebel offenbart wird",
 	ArrowOnBeam					= "Zeige DBM-Pfeil während $journal:6882 zur Anzeige der Ausweichrichtung",
 	InfoFrame					= "Zeige Infofenster für $spell:133795 Stapel",
-	SetParticle					= "Grafikeinstellung 'Partikeldichte' automatisch auf 'Niedrig' setzen\n(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
+	SetParticle					= "Grafikeinstellung 'Partikeldichte' automatisch auf 'Niedrig' setzen<br/>(wird nach dem Kampfende auf die vorherige Einstellung zurückgesetzt)"
 })
 
 L:SetMiscLocalization({
@@ -215,7 +215,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	RangeFrame				= "Zeige dynamisches Abstandsfenster (10m)\n(mit Indikator für zuviele Spieler in Reichweite)",
+	RangeFrame				= "Zeige dynamisches Abstandsfenster (10m)<br/>(mit Indikator für zuviele Spieler in Reichweite)",
 	InfoFrame				= "Zeige Infofenster für Spieler mit $spell:136193"
 })
 

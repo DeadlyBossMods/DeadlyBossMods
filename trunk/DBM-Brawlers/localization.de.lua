@@ -17,11 +17,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnQueuePosition	= "Verkünde deine aktuelle Position in der Warteschlange\n(bei jeder Änderung)",
+	warnQueuePosition	= "Verkünde deine aktuelle Position in der Warteschlange<br/>(bei jeder Änderung)",
 	specWarnYourNext	= "Spezialwarnung, wenn du als nächstes dran bist",
 	specWarnYourTurn	= "Spezialwarnung, wenn es dein Kampf ist",
-	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe\n(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)",
-	SpeakOutQueue		= "Verkünde akustisch deine aktuelle Position in der Warteschlange\n(bei jeder Änderung)"
+	SpectatorMode		= "Zeige Warnungen/Timer auch beim Zuschauen fremder Kämpfe<br/>(persönliche Spezialwarnungsmeldungen werden nicht angezeigt)",
+	SpeakOutQueue		= "Verkünde akustisch deine aktuelle Position in der Warteschlange<br/>(bei jeder Änderung)"
 })
 
 L:SetMiscLocalization({

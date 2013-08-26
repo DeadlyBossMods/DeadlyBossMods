@@ -105,7 +105,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(851)
 
 L:SetOptionLocalization({
-	RangeFrame	= "顯示動態距離框架(10碼)\n(This is a smart range frame that shows when you reach Frenzy threshold)"
+	RangeFrame	= "顯示動態距離框架(10碼)<br/>(This is a smart range frame that shows when you reach Frenzy threshold)"
 })
 
 ----------------------------

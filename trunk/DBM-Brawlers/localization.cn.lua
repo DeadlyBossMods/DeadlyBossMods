@@ -19,7 +19,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnYourTurn	= "特殊警报：轮到玩家登场",
-	SpectatorMode		= "在观看比赛时显示警报与计时条\n（特殊警报不会同步给其他观众）"
+	SpectatorMode		= "在观看比赛时显示警报与计时条<br/>（特殊警报不会同步给其他观众）"
 })
 
 L:SetMiscLocalization({

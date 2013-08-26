@@ -12,7 +12,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnGroupOrder		= "Announce group rotation for $spell:118191<br/>(Currently only supports 25 man 5,2,2,2, etc... strat)",
-	specWarnYourGroup	= "Show special warning when it's your group's turn for $spell:118191\n(25 man only)",
+	specWarnYourGroup	= "Show special warning when it's your group's turn for $spell:118191<br/>(25 man only)",
 	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(8, 111850) .. "<br/>(Shows everyone if you have debuff, only players with debuff if not)",
 	SetIconOnPrison		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(117436)
 })
@@ -46,7 +46,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "Show warning when $spell:123244 has ended",
 	timerSpecialCD			= "Show timer for special ability CD",
-	SetIconOnProtector		= "Set icons on $journal:6224\n(Not Reliable if more than 1 person with assist enables)",
+	SetIconOnProtector		= "Set icons on $journal:6224<br/>(Not Reliable if more than 1 person with assist enables)",
 	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(3, 123121) .. "<br/>(Shows everyone during Hide, otherwise, only shows tanks)",
 	GWHealthFrame			= "Show remaining health frame for $spell:123461 fades<br/>(Requires boss health frame enabled)" -- maybe bad wording, needs review
 })
