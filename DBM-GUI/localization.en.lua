@@ -196,6 +196,7 @@ L.DontShowPT					= "Do not show Pull Timer bar"
 L.DontShowPTCountdownText		= "Do not show Pull Timer countdown text"
 L.DontPlayPTCountdown			= "Do not play Pull Timer countdown audio"
 L.DontShowPTText				= "Do not show announce text for Pull Timer"
+L.DontShowPTNoID				= "Block pull timers sent without a zone ID"
 
 L.Panel_HideBlizzard			= "Hide Blizzard"
 L.Area_HideBlizzard				= "Hide Blizzard Options"
