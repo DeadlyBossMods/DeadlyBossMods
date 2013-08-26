@@ -66,28 +66,30 @@ local countdownLookWithin				= mod:NewCountdownFades(59, "ej8220")
 local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, mod:IsHealer(), nil, nil, nil, true)
 local countdownHurlCorruption			= mod:NewCountdown(20, 144649, mod:IsTank(), nil, nil, nil, true)
 
-mod:AddBoolOption("InfoFrame", false)--maybe change it ot a simple yes/no for 144452 instead of unit power. unit power is very inaccurate on this fight for some reason
+--mod:AddBoolOption("InfoFrame", false)--maybe change it ot a simple yes/no for 144452 instead of unit power. unit power is very inaccurate on this fight for some reason
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0
+local playerInside = false
 
 function mod:OnCombatStart(delay)
+	playerInside = false
 	timerBlindHatredCD:Start(25-delay)
 	if self:IsDifficulty("lfr25") then
 		berserkTimer:Start(413-delay)--Still true?
 	else
 		berserkTimer:Start(-delay)
 	end
-	if self.Options.InfoFrame then
+--[[	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(corruptionLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
-	end
+	end--]]
 end
 
 function mod:OnCombatEnd()
-	if self.Options.InfoFrame then
+--[[	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end
+	end--]]
 end
 
 function mod:SPELL_CAST_START(args)
@@ -134,6 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 145226 then
 		self:SendSync("BlindHatred")
 	elseif args:IsSpellID(144849, 144850, 144851) and args:IsPlayer() then--Look Within
+		playerInside = true
 		timerLookWithin:Start()
 		countdownLookWithin:Start()
 	end
@@ -141,6 +144,7 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(144849, 144850, 144851) and args:IsPlayer() then--Look Within
+		playerInside = false
 		timerTearRealityCD:Cancel()
 		timerLingeringCorruptionCD:Cancel()
 		countdownLingeringCorruption:Cancel()
@@ -182,12 +186,14 @@ end
 function mod:OnSync(msg)
 	if msg == "BlindHatred" then
 		warnBlindHatred:Show()
-		specWarnBlindHatred:Show()
+		if not playerInside then
+			specWarnBlindHatred:Show()
+		end
 		timerBlindHatred:Start()
 	elseif msg == "BlindHatredEnded" then
 		timerBlindHatredCD:Start()
 		unleashedAngerCast = 0
-	elseif msg == "ManifestationDied" then
+	elseif msg == "ManifestationDied" and not playerInside then
 		specWarnManifestation:Show()
 	end
 end

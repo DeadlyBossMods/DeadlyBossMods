@@ -111,15 +111,15 @@ function mod:BrewTarget(targetname, uId)
 	end
 end
 
---[[
 function mod:InfernoStrikeTarget(targetname, uId)
 	if not targetname then return end
-	warnInfernoStrike:Show(targetname)
+	print("DBM DEBUG: ", targetname)
+--[[	warnInfernoStrike:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnInfernoStrike:Show()
 		yellInfernoStrike:Yell()
-	end
-end--]]
+	end--]]
+end
 
 function mod:OnCombatStart(delay)
 	timerVengefulStrikesCD:Start(7-delay)
@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 		warnDefiledGround:Show()
 		timerDefiledGroundCD:Start()
 	elseif args.spellId == 143962 then
---		self:BossTargetScanner(71481, "InfernoStrikeTarget", 0.025)
+		self:BossTargetScanner(71481, "InfernoStrikeTarget", 2, 1)
 		warnInfernoStrike:Show()
 		timerInfernoStrikeCD:Start()
 	elseif args.spellId == 143497 then
