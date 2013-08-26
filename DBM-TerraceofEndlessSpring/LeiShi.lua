@@ -212,7 +212,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerGetAway:Start()
 		end
-		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.GWHealthFrame then
+		if DBM.BossHealth:IsShown() and self.Options.GWHealthFrame then
 			local getAwayHealth = math.floor(UnitHealthMax("boss1") * 0.04)
 			showDamagedHealthBar(self, args.sourceGUID, args.spellName, getAwayHealth)
 		end
@@ -256,7 +256,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSpray:Cancel(args.destName)
 	elseif args.spellId == 123461 then
 		timerGetAway:Cancel()
-		if (self.Options.HealthFrame or DBM.Options.AlwaysShowHealthFrame) and self.Options.GWHealthFrame then
+		if DBM.BossHealth:IsShown() and self.Options.GWHealthFrame then
 			hideDamagedHealthBar()
 		end
 	end

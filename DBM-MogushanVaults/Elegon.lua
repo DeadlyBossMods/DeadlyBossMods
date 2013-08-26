@@ -163,7 +163,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			resetCreatureIconState()
 		end
 		focusActivated = focusActivated + 1
-		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
+		if DBM.BossHealth:IsShown() and not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
 		end
 		if self.Options.SetIconOnCreature and not DBM.Options.DontSetIcons and not creatureIcons[args.sourceGUID] then
@@ -174,7 +174,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDespawnFloor:Start()
 			specWarnDespawnFloor:Show()
 		end
-	elseif args.spellId == 116989 then--Cast when defeated (or rathor 1 HP)
+	elseif args.spellId == 116989 and DBM.BossHealth:IsShown() then--Cast when defeated (or rathor 1 HP)
 		DBM.BossHealth:RemoveBoss(args.sourceGUID)
 	end
 end

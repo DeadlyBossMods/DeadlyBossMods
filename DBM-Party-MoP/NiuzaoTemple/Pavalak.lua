@@ -71,8 +71,10 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 119476 then
-		local shieldname = GetSpellInfo(119476)
-		showShieldHealthBar(self, args.destGUID, shieldname, 1500000)
+		if DBM.BossHealth:IsShown() then
+			local shieldname = GetSpellInfo(119476)
+			showShieldHealthBar(self, args.destGUID, shieldname, 1500000)
+		end
 		phase = phase + 1
 		warnBulwark:Show()
 		specWarnBulwark:Show()
@@ -82,7 +84,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 119476 then--When bullwark breaks, he will instantly cast either tempest or blade rush, need more logs to determine if it's random or set.
+	if args.spellId == 119476 and DBM.BossHealth:IsShown() then--When bullwark breaks, he will instantly cast either tempest or blade rush, need more logs to determine if it's random or set.
 		hideShieldHealthBar()
 	end
 end
