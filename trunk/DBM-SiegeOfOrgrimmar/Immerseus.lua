@@ -113,11 +113,9 @@ end
 function mod:UNIT_POWER_FREQUENT(uId)
 	local power = UnitPower(uId)
 	if power == 0 and self:AntiSpam(3, 1) then
-		print("DBM Debug: Boss defeated?")
 	end
 	if power > lastPower then--Only time his power ever goes UP is when he is defeated. he reaches 0 power, then goes back to 1 power
 		DBM:EndCombat(self)
-		print("DBM Debug: Boss gained power. This has only been observed in victories so assuming this is a victory")
 	end
 	lastPower = power
 end
