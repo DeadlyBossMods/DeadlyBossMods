@@ -74,7 +74,7 @@ local timerBurstingPride		= mod:NewCastTimer(3, 144911)
 local timerProjection			= mod:NewCastTimer(6, 146822)
 
 local countdownSwellingPride	= mod:NewCountdown(60.5, 144400)
-local countdownReflection		= mod:NewCountdown(20.5, 144800, nil, nil, nil, nil, true)
+local countdownReflection		= mod:NewCountdown(20.5, 144800, false, nil, nil, nil, true)
 
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetIconOnMark", false)
