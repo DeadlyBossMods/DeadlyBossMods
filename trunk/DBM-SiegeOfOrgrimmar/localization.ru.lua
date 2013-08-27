@@ -34,6 +34,24 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetTimerLocalization({
+	timerAddsCD		= "След. волна аддов",
+	timerTowerCD	= "След. башня и адды"
+})
+
+L:SetOptionLocalization({
+	timerAddsCD		= "Отсчет времени до следующей волны аддов",
+	timerTowerCD	= "Отсчет времени до следующего нападения на башню"
+})
+
+L:SetMiscLocalization({
+	newForces1	= "Вот и они!",--Jaina's line, horde may not be same, guessed
+	newForces2	= "Dragonmaw, advance!",
+	newForces3	= "За Адского крика!",--guessed
+	newForces4	= "Next squad, push forward!",
+	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
+})
+
 --------------------
 --Iron Juggernaut --
 --------------------
@@ -49,12 +67,21 @@ L= DBM:GetModLocalization(856)
 ---------------------
 L= DBM:GetModLocalization(850)
 
+L:SetWarningLocalization({
+	warnDefensiveStanceSoon		= "Оборонительная стойка через %d сек."
+})
+
+L:SetOptionLocalization({
+	warnDefensiveStanceSoon		= "Обратный отсчет за 5 секунд до $spell:143593"
+})
+
 L:SetMiscLocalization({
-	newForces1				= "Warriors, on the double!",
-	newForces2				= "Defend the gate!",
-	newForces3				= "Rally the forces!",
-	newForces4				= "Kor'kron, at my side!",
-	newForces5				= "Next squad, to the front!"
+	newForces1					= "Warriors, on the double!",
+	newForces2					= "Защищайте ворота!",--guessed
+	newForces3					= "Rally the forces!",
+	newForces4					= "Kor'kron, at my side!",
+	newForces5					= "Next squad, to the front!",
+	allForces					= "All Kor'kron... under my command... kill them... NOW!"
 })
 
 -----------------
@@ -66,6 +93,11 @@ L= DBM:GetModLocalization(846)
 -- Spoils of Pandaria --
 ------------------------
 L= DBM:GetModLocalization(870)
+
+L:SetMiscLocalization({
+	Module1 = "Module 1's all prepared for system reset.",
+	Victory	= "Module 2's all prepared for system reset"
+})
 
 ---------------------------
 -- Thok the Bloodthirsty --
@@ -102,23 +134,14 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	calculatedTarget	= "calculating eye!",
-	--thanks to blizz, the only accurate way for this to work, is to translate 15 emotes in all languages
-	yellow				= "Yellow",
-	red					= "Red",
-	blue				= "Blue",
-	purple				= "Purple",
-	green				= "Green",
-	bomb				= "Bomb",
-	sword				= "Swords",
-	drums				= "Drums",
-	mantid				= "Mantid",--Assumed
-	staff 				= "Staff",--Assumed
-	one					= "One",
-	two					= "Pair",
-	three				= "Three",
-	four				= "Four",--Assumed
-	five				= "Five",--Assumed
+	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
+	purple				= "Фиолетовый",--Needs color code replacement still, guessed
+	green				= "Зеленый",--Needs color code replacement still, guessed
+	one					= "Один",--guessed
+	two					= "Два",--guessed
+	three				= "Три",--guessed
+	four				= "Четыре",--guessed
+	five				= "Пять",--guessed
 	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
 	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
 	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
