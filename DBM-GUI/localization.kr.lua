@@ -198,6 +198,7 @@ L.DontShowPT					= "전투 시작 예정 바 숨기기"
 L.DontShowPTCountdownText		= "전투 시작 예정 초읽기 글자 숨기기"
 L.DontPlayPTCountdown			= "전투 시작 예정 초읽기 소리 숨기기"
 L.DontShowPTText				= "전투 시작 예정 대화 알림 숨기기"
+L.DontShowPTNoID				= "알 수 없는 지역에서 보낸 전투 시작 예정 신호 무시"
 
 L.Panel_HideBlizzard			= "블리자드 기본 기능 숨기기"
 L.Area_HideBlizzard				= "블리자드 기본 기능 숨기기 설정"
