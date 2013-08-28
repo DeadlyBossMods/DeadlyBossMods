@@ -15,8 +15,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_MONSTER_EMOTE",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",
 	"UNIT_DIED"
 )
 
@@ -28,7 +29,7 @@ local warnActivated					= mod:NewTargetAnnounce(118212, 3, 143542)
 --Kil'ruk the Wind-Reaver
 local warnExposedVeins				= mod:NewStackAnnounce(142931, 2, nil, false)
 local warnGouge						= mod:NewTargetAnnounce(143939, 3, nil, mod:IsTank() or mod:IsHealer())--Timing too variable for a CD
-local warnImpact					= mod:NewSpellAnnounce(142232, 3)--Timing too variable for a CD
+local warnDeathFromAbove			= mod:NewTargetAnnounce(142232, 3)
 --Xaril the Poisoned-Mind
 local warnTenderizingStirkes		= mod:NewStackAnnounce(142929, 2, nil, false)
 local warnToxicInjection			= mod:NewSpellAnnounce(142528, 3)
@@ -74,6 +75,9 @@ local specWarnActivatedVulnerable	= mod:NewSpecialWarning("specWarnActivatedVuln
 --Kil'ruk the Wind-Reaver
 local specWarnGouge					= mod:NewSpecialWarningYou(143939)
 local specWarnGougeOther			= mod:NewSpecialWarningTarget(143939, mod:IsTank() or mod:IsHealer())
+local specWarnDeathFromAbove		= mod:NewSpecialWarningYou(142232)
+local specWarnDeathFromAboveNear	= mod:NewSpecialWarningClose(142232)
+local yellDeathFromAbove			= mod:NewYell(142232)
 --Xaril the Poisoned-Mind
 local specWarnCausticBlood			= mod:NewSpecialWarningSpell(142315, mod:IsTank())
 mod:AddBoolOption("specWarnToxicInjection", true, "announce")--Combine the 7 special warnings for same spell into 1
@@ -118,10 +122,12 @@ local specWarnWhirling				= mod:NewSpecialWarningYou(143701)
 local yellWhirling					= mod:NewYell(143701, nil, false)
 local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)
 local specWarnHurlAmber				= mod:NewSpecialWarningSpell(143759, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
+local specWarnCausticAmber			= mod:NewSpecialWarningMove(143735)--Stuff on the ground
 --Skeer the Bloodseeker
 local specWarnBloodletting			= mod:NewSpecialWarningSwitch(143280, not mod:IsHealer())
 --Rik'kal the Dissector
 local specWarnMutate				= mod:NewSpecialWarningYou(143337)
+local specWarnParasiteFixate		= mod:NewSpecialWarningYou(143358)
 --Hisek the Swarmkeeper
 local specWarnAim					= mod:NewSpecialWarningYou(142948)
 local yellAim						= mod:NewYell(142948)
@@ -143,6 +149,8 @@ local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but 
 --Ka'roz the Locust
 local timerFlashCD					= mod:NewCDTimer(62, 143709)
 local timerWhirling					= mod:NewBuffFadesTimer(5, 143701)
+--Skeer the Bloodseeker
+--local timerBloodlettingCD			= mod:NewCDTimer(35, 143280)--Still need more data for this one
 --Rik'kal the Dissector
 local timerMutate					= mod:NewBuffFadesTimer(20, 143337)
 --Hisek the Swarmkeeper
@@ -190,6 +198,37 @@ local function hideRangeFrame()
 	end
 end
 
+--Another pre target scan (ie targets player BEFORE cast like iron qon)
+local function DFAScan()
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71161 then
+			if UnitExists(unitID.."target") and not self:IsTanking(uId, unitID) then
+				mod:Unschedule(DFAScan)
+				local targetname = DBM:GetUnitFullName(unitID.."target")
+				warnDeathFromAbove:Show(targetname)
+				if UnitIsUnit(unitID.."target", "player") then
+					specWarnDeathFromAbove:Show()
+					yellDeathFromAbove:Yell()
+				else
+					local x, y = GetPlayerMapPosition(unitID.."target")
+					if x == 0 and y == 0 then
+						SetMapToCurrentZone()
+						x, y = GetPlayerMapPosition(unitID.."target")
+					end
+					local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+					if inRange and inRange < 6 then
+						specWarnDeathFromAboveNear:Show(targetname)
+					end
+				end
+			else
+				mod:Schedule(0.25, DFAScan)
+			end
+			return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
+		end
+	end
+end
+
 local function CheckBosses(GUID)
 	local vulnerable = false
 	for i = 1, 5 do
@@ -200,6 +239,7 @@ local function CheckBosses(GUID)
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(UnitGUID(unitID))
 			if cid == 71161 then--Kil'ruk the Wind-Reaver
+				mod:Schedule(24, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
 				if UnitDebuff("player", GetSpellInfo(142931)) then vulnerable = true end
@@ -212,6 +252,7 @@ local function CheckBosses(GUID)
 			elseif cid == 71154 then--Ka'roz the Locust
 				timerFlashCD:Start(15)
 			elseif cid == 71152 then--Skeer the Bloodseeker
+				--timerBloodlettingCD:Start()
 				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
 			elseif cid == 71158 then--Rik'kal the Dissector
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
@@ -354,6 +395,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143280 then
 		warnBloodletting:Show()
 		specWarnBloodletting:Show()
+--		timerBloodlettingCD:Start()
 	elseif args.spellId == 143974 then
 		warnShieldBash:Show()
 		timerShieldBashCD:Start()
@@ -372,6 +414,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142528 then
 		warnToxicInjection:Show()
 		timerToxicCatalystCD:Start()
+	elseif args.spellId == 142232 then
+		self:Unschedule(DFAScan)
+		self:Schedule(17, DFAScan)
 	end
 end
 
@@ -465,6 +510,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMutate:Show()
 			timerMutate:Start()
 		end
+	elseif args.spellId == 143358 then
+		if args.IsPlayer() then
+			specWarnParasiteFixate:Show()
+		end
 	elseif args.spellId == 142948 then
 		warnAim:Show(args.destName)
 		timerAim:Start(args.destName)
@@ -503,9 +552,17 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 143735 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+		specWarnCausticAmber:Show()
+	end
+end
+mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
+		self:Unschedule(DFAScan)
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.KilrukFlavor, "SAY")
@@ -542,6 +599,7 @@ function mod:UNIT_DIED(args)
 			SendChatMessage(L.KarozFlavor, "SAY")
 		end
 	elseif cid == 71152 then--Skeer the Bloodseeker
+--		timerBloodlettingCD:Cancel()
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.SkeerFlavor, "SAY")
@@ -559,11 +617,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 142264 then
-		warnImpact:Show()
-	end
-end
 ------------------
 --Normal Only?
 --143605 Red Sword
@@ -622,7 +675,7 @@ GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(1
 "<32.1 20:15:38> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Iyyokuk selects: Sword |TInterface\\Icons\\ABILITY_IYYOKUK_SWORD_white.BLP:20|t!#Iyyokuk the Lucid###Iyyokuk the Luci
 --]]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefully, so we have valid criteria to match to on monster emote message
-	if self:AntiSpam() then
+	if self:AntiSpam(3, 1) then
 		calculatedShape = nil
 		calculatedNumber = nil
 		calculatedColor = nil
@@ -631,11 +684,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefu
 	--Still need to localize 5 numbers in 10 languages so 50 localizations instead of 150
 	if msg:find("FFFF0000") then
 		calculatedColor = "Red"
-	elseif msg:find(L.purple) then--Needs color code still
+	elseif msg:find("FFFF00FF") then
 		calculatedColor = "Purple"
 	elseif msg:find("FF0000FF") then
 		calculatedColor = "Blue"
-	elseif msg:find(msg == L.green) then--Needs color code still
+	elseif msg:find("FF00FF00") then
 		calculatedColor = "Green"
 	elseif msg:find("FFFFFF00") then
 		calculatedColor = "Yellow"
@@ -645,9 +698,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefu
 		calculatedShape = "Drum"
 	elseif msg:find("ABILITY_IYYOKUK_BOMB") then
 		calculatedShape = "Bomb"
-	elseif msg:find("ABILITY_IYYOKUK_MANTID") then--Assumed icon based on pattern
+	elseif msg:find("ABILITY_IYYOKUK_MANTID") then
 		calculatedShape = "Mantid"
-	elseif msg:find("ABILITY_IYYOKUK_STAFF") then--Assumed icon based on pattern
+	elseif msg:find("ABILITY_IYYOKUK_STAFF") then
 		calculatedShape = "Staff"
 	elseif msg:find(msg == L.one) then
 		calculatedNumber = 1

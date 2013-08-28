@@ -15,8 +15,17 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
+L:SetTimerLocalization{
+	timerCombatStarts	= "Combat starts"
+}
+
 L:SetOptionLocalization({
+	timerCombatStarts	= "Show time for start of combat",
 	InfoFrame			= "Show info frame for $journal:8252"
+})
+
+L:SetMiscLocalization({
+	wasteOfTime			= "Very well, I will create a field to keep your corruption quarantined."
 })
 
 ------------------
@@ -71,6 +80,10 @@ L= DBM:GetModLocalization(856)
 L:SetOptionLocalization({
 	SetIconOnToxicMists		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(144089),
 	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(4, 143990)
+})
+
+L:SetMiscLocalization({
+	PrisonYell		= "Prison on %s fades (%d)"
 })
 
 ---------------------
@@ -157,8 +170,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
-	purple				= "Purple",--Needs color code replacement still
-	green				= "Green",--Needs color code replacement still
 	one					= "One",
 	two					= "Two",
 	three				= "Three",
