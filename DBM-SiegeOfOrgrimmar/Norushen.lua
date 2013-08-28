@@ -15,6 +15,10 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--This boss changes boss ID every time you jump into one of tests, because he gets unregistered as boss1 then registered as boss2 when you leave, etc
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 --Amalgam of Corruption
 local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
@@ -33,6 +37,7 @@ local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
+local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer())--WHen the ones die inside they don't spawn right away, there is like a 5-10 second lag, TODO, add a spawn timer for this once timing is figured out.
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
@@ -45,6 +50,7 @@ local specWarnHurlCorruption			= mod:NewSpecialWarningInterrupt(144649, nil, nil
 local specWarnPiercingCorruption		= mod:NewSpecialWarningSpell(144657)
 
 --Amalgam of Corruption
+local timerCombatStarts					= mod:NewTimer(25, "timerCombatStarts", 2457)
 local timerUnleashedAngerCD				= mod:NewCDTimer(11, 145216, nil, mod:IsTank())
 local timerBlindHatred					= mod:NewBuffActiveTimer(30, 145226)
 local timerBlindHatredCD				= mod:NewNextTimer(30, 145226)
@@ -183,6 +189,14 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
+--"<21:44:39> CHAT_MSG_MONSTER_YELL#Very well, I will create a field to keep your corruption quarantined.#Norushen###Shiramune##0#0##0#837#nil#0#false#false", -- [1]
+--"<21:45:04> [UNIT_SPELLCAST_SUCCEEDED] Amalgam of Corruption [[boss1:Icy Fear::0:145733]]", -- [1]
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.wasteOfTime then
+		timerCombatStarts:Start()
+	end
+end
+
 function mod:OnSync(msg)
 	if msg == "BlindHatred" then
 		warnBlindHatred:Show()
@@ -194,7 +208,7 @@ function mod:OnSync(msg)
 		timerBlindHatredCD:Start()
 		unleashedAngerCast = 0
 	elseif msg == "ManifestationDied" and not playerInside then
-		specWarnManifestation:Show()
+		specWarnManifestationSoon:Show()
 	end
 end
 

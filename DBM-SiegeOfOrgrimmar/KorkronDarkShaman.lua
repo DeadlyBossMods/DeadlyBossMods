@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Dogs
-local warnRend						= mod:NewStackAnnounce(144304, 2)--Dont have an idea of frequently yet so just a general anounce for now. tank warnings later
+local warnRend						= mod:NewStackAnnounce(144304, 2)
 
 --General
 local warnPoisonmistTotem			= mod:NewSpellAnnounce(144288, 3)--85%
@@ -28,13 +28,13 @@ local warnRustedIronTotem			= mod:NewSpellAnnounce(144291, 3)--Heroic (95%)
 --Earthbreaker Haromm
 local warnFroststormStrike			= mod:NewStackAnnounce(144215, 2, nil, mod:IsTank())
 local warnToxicMists				= mod:NewTargetAnnounce(144089, 3)
-local warnFoulStream				= mod:NewTargetAnnounce(144090, 3)--Verify if targetscanning will work here (or if spell itself has a target emote or something)
+local warnFoulStream				= mod:NewTargetAnnounce(144090, 3)
 local warnAshenWall					= mod:NewSpellAnnounce(144070, 4)
 local warnIronTomb					= mod:NewSpellAnnounce(144328, 3)
 --Wavebinder Kardris
 local warnFrostStormBolt			= mod:NewSpellAnnounce(144214, 2, nil, mod:IsTank())
 local warnToxicStorm				= mod:NewSpellAnnounce(144005, 3)
-local warnFoulGeyser				= mod:NewTargetAnnounce(143990, 4)--This may be cast on an actual target player instead of location, as such some changes will be needed
+local warnFoulGeyser				= mod:NewTargetAnnounce(143990, 4)
 local warnFallingAsh				= mod:NewSpellAnnounce(143973, 3)
 local warnIronPrison				= mod:NewTargetAnnounce(144330, 3)
 
@@ -53,6 +53,8 @@ local specWarnToxicStorm			= mod:NewSpecialWarningSpell(144005, mod:IsMelee())
 local specWarnFoulGeyser			= mod:NewSpecialWarningSpell(143990)
 local yellFoulGeyser				= mod:NewYell(143990)
 local specWarnFallingAsh			= mod:NewSpecialWarningSpell(143973, nil, nil, nil, 2)--Seems like an everyone waring.
+local specWarnIronPrison			= mod:NewSpecialWarningSoon(144330)--If this generic isn't too clear i'll localize it. this is warning that it's about to expire not that it's just been applied
+local yellIronPrisonFades			= mod:NewYell(144330, L.PrisonYell, false)--Off by default since it's an atypical yell (it's not used for avoiding person it's used to get healer attention to person)
 
 --Earthbreaker Haromm
 local timerFroststormStrike			= mod:NewTargetTimer(30, 144215, nil, mod:IsTank())
@@ -67,6 +69,7 @@ local timerToxicStormCD				= mod:NewCDTimer(32, 144005)--Pretty much a next time
 local timerFoulGeyserCD				= mod:NewCDTimer(32.5, 143990)--Pretty much a next timers unless boss is casting something else
 local timerFallingAshCD				= mod:NewCDTimer(32.5, 143973)--Pretty much a next timers unless boss is casting something else
 local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next timers unless boss is casting something else
+local timerIronPrison				= mod:NewBuffFadesTimer(60, 144330)
 
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990)
 local countdownAshenWall			= mod:NewCountdown(32.5, 144070, nil, nil, nil, nil, true)
@@ -78,6 +81,7 @@ local toxicMistsTargets = {}
 local toxicMistsTargetsIcons = {}
 local ironPrisonTargets = {}
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
+local playerName = UnitName("player")
 
 local function warnToxicMistTargets()
 	warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
@@ -186,7 +190,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144330 then
 		warnIronPrison:Show()
 		timerIronPrisonCD:Start()
---		specWarnIronPrison:Show()
 	elseif args.spellId == 144328 then
 		warnIronTomb:Show()
 		timerIronTombCD:Start()
@@ -256,6 +259,14 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFroststormStrikeOther:Show(args.destName)
 			end
 		end
+	elseif args.spellId == 144330 and args:IsPlayer() then
+		specWarnIronPrison:Schedule(5)
+		timerIronPrison:Start()
+		yellIronPrisonFades:Schedule(59, playerName, 1)
+		yellIronPrisonFades:Schedule(58, playerName, 2)
+		yellIronPrisonFades:Schedule(57, playerName, 3)
+		yellIronPrisonFades:Schedule(56, playerName, 4)
+		yellIronPrisonFades:Schedule(55, playerName, 5)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -265,5 +276,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif args.spellId == 144215 then
 		timerFroststormStrike:Cancel(args.destName)
+	elseif args.spellId == 144330 and args:IsPlayer() then
+		specWarnIronPrison:Cancel()
+		yellIronPrisonFades:Cancel()
+		timerIronPrison:Cancel()
 	end
 end
