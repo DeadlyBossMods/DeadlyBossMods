@@ -16,8 +16,17 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
+L:SetTimerLocalization{
+	timerCombatStarts	= "Kampfbeginn"
+}
+
 L:SetOptionLocalization({
+	timerCombatStarts	= "Zeige Zeit bis Kampfbeginn",
 	InfoFrame			= "Zeige Infofenster für $journal:8252"
+})
+
+L:SetMiscLocalization({
+	wasteOfTime			= "Very well, I will create a field to keep your corruption quarantined."--translate (trigger)
 })
 
 ------------------
@@ -34,9 +43,22 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetTimerLocalization({
+	timerAddsCD		= "Nächste Adds",
+	timerTowerCD	= "Next Tower & Adds"--translate later
+})
+
+L:SetOptionLocalization({
+	timerAddsCD		= "Zeige Zeit bis nächste Add-Welle",
+	timerTowerCD	= "Show timer for next tower assault"--translate later
+})
+
 L:SetMiscLocalization({
-	tower		= "The door barring the",--translate (trigger)
-	demolisher	= "[Kor'kron Demolisher]|h|r to assault the tower!"--translate (trigger)
+	newForces1	= "Here they come!",--translate (trigger)
+	newForces2	= "Dragonmaw, advance!",--translate (trigger)
+	newForces3	= "For Hellscream!",--translate (trigger)
+	newForces4	= "Next squad, push forward!",--translate (trigger)
+	tower		= "The door barring the"--translate (trigger)
 })
 
 --------------------
@@ -49,17 +71,30 @@ L= DBM:GetModLocalization(864)
 --------------------------
 L= DBM:GetModLocalization(856)
 
+L:SetMiscLocalization({
+	PrisonYell		= "Prison on %s fades (%d)"--translate later
+})
+
 ---------------------
 -- General Nazgrim --
 ---------------------
 L= DBM:GetModLocalization(850)
 
+L:SetWarningLocalization({
+	warnDefensiveStanceSoon		= "Verteidigungshaltung in %ds"
+})
+
+L:SetOptionLocalization({
+	warnDefensiveStanceSoon		= "Zeige Vorwarnungscountdown für $spell:143593 (5s zuvor)"
+})
+
 L:SetMiscLocalization({
-	newForces1				= "Warriors, on the double!",--translate (trigger)
-	newForces2				= "Defend the gate!",--translate (trigger)
-	newForces3				= "Rally the forces!",--translate (trigger)
-	newForces4				= "Kor'kron, at my side!",--translate (trigger)
-	newForces5				= "Next squad, to the front!"--translate (trigger)
+	newForces1					= "Warriors, on the double!",--translate (trigger)
+	newForces2					= "Defend the gate!",--translate (trigger)
+	newForces3					= "Rally the forces!",--translate (trigger)
+	newForces4					= "Kor'kron, at my side!",--translate (trigger)
+	newForces5					= "Next squad, to the front!",--translate (trigger)
+	allForces					= "All Kor'kron... under my command... kill them... NOW!"--translate (trigger)
 })
 
 -----------------
@@ -71,6 +106,11 @@ L= DBM:GetModLocalization(846)
 -- Spoils of Pandaria --
 ------------------------
 L= DBM:GetModLocalization(870)
+
+L:SetMiscLocalization({
+	Module1 = "Module 1's all prepared for system reset.",--translate (trigger)
+	Victory	= "Module 2's all prepared for system reset"--translate (trigger)
+})
 
 ---------------------------
 -- Thok the Bloodthirsty --
@@ -87,7 +127,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(865)
 
 L:SetMiscLocalization({
-	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",--translate (trigger)
+	newWeapons	= "Unfertige Waffen werden auf das Fabrikationsband befördert.",--needs to be verified (PTR screenshot-captured translation)
 	newShredder	= "An Automated Shredder draws near!"--translate (trigger)
 })
 
@@ -97,33 +137,22 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "You are vulnerable to %s - Avoid!",--translate later
-	specWarnCriteriaLinked			= "You are linked to %s!"--translate later
+	specWarnActivatedVulnerable		= "%s wird dir erhöhten Schaden zufügen - Meiden!",
+	specWarnCriteriaLinked			= "Du bist verbunden mit %s!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Show special warning when you are vulnerable to activating paragons",--translate later
-	specWarnCriteriaLinked			= "Show special warning when you are linked to $spell:144095",--translate later
+	specWarnActivatedVulnerable		= "Spezialwarnung, wenn dir ein neuer Getreuer erhöhten Schaden zufügen wird",
+	specWarnCriteriaLinked			= "Spezialwarnung, wenn du mit einem anderen Spieler verbunden bist ($spell:144095)",
 })
 
 L:SetMiscLocalization({
 	--translate later (triggers)
-	calculatedTarget	= "calculating eye!",
-	yellow				= "Yellow",
-	red					= "Red",
-	blue				= "Blue",
-	purple				= "Purple",
-	green				= "Green",
-	bomb				= "Bomb",
-	sword				= "Swords",
-	drums				= "Drums",
-	mantid				= "Mantid",--Assumed
-	staff 				= "Staff",--Assumed
 	one					= "One",
-	two					= "Pair",
+	two					= "Two",
 	three				= "Three",
-	four				= "Four",--Assumed
-	five				= "Five",--Assumed
+	four				= "Four",
+	five				= "Five",
 	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
 	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
 	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
