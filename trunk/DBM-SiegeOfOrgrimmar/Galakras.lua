@@ -13,6 +13,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
@@ -42,6 +43,7 @@ local warnShatteringCleave			= mod:NewSpellAnnounce(146849, 3, nil, mod:IsTank()
 --Phase 3: Galakras,The Last of His Progeny
 local warnPhase2					= mod:NewPhaseAnnounce(2, 2)
 local warnFlamesofGalakrondTarget	= mod:NewTargetAnnounce(147068, 4)
+local warnFlamesofGalakrond			= mod:NewStackAnnounce(147029, 2, nil, mod:IsTank())
 
 --Stage 2: Bring Her Down!
 local specWarnWarBanner				= mod:NewSpecialWarningSwitch(147328, not mod:IsHealer())
@@ -62,6 +64,8 @@ local specWarnPoisonCloud			= mod:NewSpecialWarningMove(147705)
 local specWarnFlamesofGalakrond		= mod:NewSpecialWarningSpell(147029, false, nil, nil, 2)--Cast often, so lets make this optional since it's spammy
 local specWarnFlamesofGalakrondYou	= mod:NewSpecialWarningYou(147068)
 local yellFlamesofGalakrond			= mod:NewYell(147068)
+local specWarnFlamesofGalakrondTank	= mod:NewSpecialWarningStack(147029, mod:IsTank(), 3)
+local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:IsTank())
 
 --Stage 2: Bring Her Down!
 local timerAddsCD					= mod:NewTimer(20, "timerAddsCD")
@@ -72,7 +76,8 @@ local timerShatteringCleaveCD		= mod:NewCDTimer(7.5, 146849, nil, mod:IsTank())
 local timerCrushersCallCD			= mod:NewNextTimer(30, 146769)
 
 --Phase 3: Galakras,The Last of His Progeny
-local timerFlamesofGalakrondCD		= mod:NewCDTimer(6, 147029)
+local timerFlamesofGalakrondCD		= mod:NewCDTimer(6, 147068)
+local timerFlamesofGalakrond		= mod:NewTargetTimer(15, 147029, nil, mod:IsTank())
 
 mod:AddBoolOption("FixateIcon", true)
 
@@ -140,6 +145,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
 		end
+	elseif args.spellId == 147029 then--Tank debuff version
+		warnFlamesofGalakrond:Show(args.destName, 1)
+		timerFlamesofGalakrond:Start(args.destName)
 	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID, 60) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
@@ -154,11 +162,28 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args.spellId == 147029 then--Tank debuff version
+		local amount = args.amount or 1
+		warnFlamesofGalakrond:Show(args.destName, amount)
+		timerFlamesofGalakrond:Start(args.destName)
+		if amount >= 3 then
+			if args:IsPlayer() then
+				specWarnFlamesofGalakrondTank:Show(amount)
+			else
+				specWarnFlamesofGalakrondOther:Show(args.destName)
+			end
+		end
+	end
+end
+
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 147068 then
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args.spellId == 147029 then--Tank debuff version
+		timerFlamesofGalakrond:Cancel(args.destName)
 	end
 end
 

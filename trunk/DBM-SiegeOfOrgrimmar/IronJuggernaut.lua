@@ -126,7 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerIgniteArmorCD:Start()
 		if amount >= 3 then
 			if args:IsPlayer() then
-				specWarnIgniteArmor:Show(args.amount)
+				specWarnIgniteArmor:Show(amount)
 			else
 				specWarnIgniteArmorOther:Show(args.destName)
 			end
