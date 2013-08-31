@@ -68,7 +68,7 @@ local specWarnFlamesofGalakrondTank	= mod:NewSpecialWarningStack(147029, mod:IsT
 local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:IsTank())
 
 --Stage 2: Bring Her Down!
-local timerAddsCD					= mod:NewTimer(20, "timerAddsCD")
+local timerAddsCD					= mod:NewTimer(55, "timerAddsCD")
 local timerTowerCD					= mod:NewTimer(20, "timerTowerCD")
 local timerDemolisherCD				= mod:NewNextTimer(20, "ej8562", nil, nil, nil, 116040)--EJ is just not complete yet, shouldn't need localizing
 ----High Enforcer Thranok (Road)
@@ -91,8 +91,7 @@ ENGAGE
 45.5 adds 2
 55.5 adds 3 (also tower)
 +20 (Demolisher)
---Double check for missing wave here I may have been out of yell range
---It makes sense for a set to be here then the pattern would be new adds every 55 seconds
+--This gap verified in 2 logs now and video. Seems intended for miniboss.
 +90 adds 4
 +55 adds 5(also tower)
 +20 (Demolisher)
@@ -249,20 +248,15 @@ function mod:OnSync(msg)
 		if addsCount == 1 then
 			timerAddsCD:Start(45)
 		elseif addsCount == 2 then
-			timerTowerCD:Start(55)
+			timerTowerCD:Start()
 		elseif addsCount == 3 then--This is also a tower so probably don't need redundant emote
 			timerDemolisherCD:Start()
 		elseif addsCount == 4 then
-			timerTowerCD:Start(55)
+			timerTowerCD:Start()
 		elseif addsCount == 5 then--This is also a tower
 			timerDemolisherCD:Start()
-		elseif addsCount == 6 then
-			timerAddsCD:Start(55)
-			addsDebug = GetTime()
-		elseif addsCount >= 7 then--Automatic debugging yay. This will let us jot down additional wave timers with ease
---			print("DBM Debug: Time since adds wave "..addscount-1.." "..GetTime()-addsDebug)
-			addsDebug = GetTime()
-			timerAddsCD:Start(55)--Assumed based on pattern, debugging will confirm it easy enough
+		elseif addsCount >= 6 then
+			timerAddsCD:Start()
 		end
 	end
 end
