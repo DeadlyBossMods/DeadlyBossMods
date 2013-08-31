@@ -68,8 +68,8 @@ local specWarnFlamesofGalakrondTank	= mod:NewSpecialWarningStack(147029, mod:IsT
 local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:IsTank())
 
 --Stage 2: Bring Her Down!
-local timerAddsCD					= mod:NewTimer(55, "timerAddsCD")
-local timerTowerCD					= mod:NewTimer(20, "timerTowerCD")
+local timerAddsCD					= mod:NewTimer(55, "timerAddsCD", 2457)
+local timerTowerCD					= mod:NewTimer(20, "timerTowerCD", 88852)
 local timerDemolisherCD				= mod:NewNextTimer(20, "ej8562", nil, nil, nil, 116040)--EJ is just not complete yet, shouldn't need localizing
 ----High Enforcer Thranok (Road)
 local timerShatteringCleaveCD		= mod:NewCDTimer(7.5, 146849, nil, mod:IsTank())
