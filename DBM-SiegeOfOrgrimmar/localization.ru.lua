@@ -16,8 +16,17 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
+L:SetTimerLocalization{
+	timerCombatStarts	= "Бой начинается"
+}
+
 L:SetOptionLocalization({
+	timerCombatStarts	= "Отсчет времени до начала боя",
 	InfoFrame			= "Информационное окно для $journal:8252"
+})
+
+L:SetMiscLocalization({
+	wasteOfTime			= "Very well, I will create a field to keep your corruption quarantined."
 })
 
 ------------------
@@ -45,11 +54,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1	= "Вот и они!",--Jaina's line, horde may not be same, guessed
-	newForces2	= "Dragonmaw, advance!",
-	newForces3	= "За Адского крика!",--guessed
-	newForces4	= "Next squad, push forward!",
-	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
+	newForces1	= "Вот и они!",--Jaina's line, horde may not be same
+	newForces2	= "Драконья Пасть, вперед!",
+	newForces3	= "За Гарроша!",
+	newForces4	= "Следующий отряд!",
+	tower		= "Дверь "--Дверь южной/северной башни разбита!
 })
 
 --------------------
@@ -61,6 +70,10 @@ L= DBM:GetModLocalization(864)
 -- Kor'kron Dark Shaman --
 --------------------------
 L= DBM:GetModLocalization(856)
+
+L:SetMiscLocalization({
+	PrisonYell		= "Тюрьма на %s спадает (%d)"
+})
 
 ---------------------
 -- General Nazgrim --
@@ -76,12 +89,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1					= "Warriors, on the double!",
-	newForces2					= "Защищайте ворота!",--guessed
-	newForces3					= "Rally the forces!",
-	newForces4					= "Kor'kron, at my side!",
-	newForces5					= "Next squad, to the front!",
-	allForces					= "All Kor'kron... under my command... kill them... NOW!"
+	newForces1					= "Воины, бегом!",
+	newForces2					= "Удерживайте врата!",
+	newForces3					= "Сомкнуть ряды!",
+	newForces4					= "Кор'крон, ко мне!",
+	newForces5					= "Следующий отряд, вперед!",
+	allForces					= "Кор'кронцы... все, кто со мной! Убейте их!"
 })
 
 -----------------
@@ -135,8 +148,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
-	purple				= "Фиолетовый",--Needs color code replacement still, guessed
-	green				= "Зеленый",--Needs color code replacement still, guessed
 	one					= "Один",--guessed
 	two					= "Два",--guessed
 	three				= "Три",--guessed
