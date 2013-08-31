@@ -233,12 +233,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		demoCount = demoCount + 1
 		warnDemolisher:Show()
 		if demoCount == 1 then
-			timerAddsCD:Start(90)--May be 34-35 as well and i was out of range of yell (since i was assaulting tower pretty far away) If i missed one the rest of timers were all be wrong
+			timerAddsCD:Start(90)
 		elseif demoCount == 2 then
 			timerAddsCD:Start(34)
 		end
---	elseif msg == L.tower or msg:find(L.tower) then
-		--towerCount = towerCount + 1
 	end
 end
 
