@@ -58,8 +58,8 @@ L:SetMiscLocalization({
 	newForces1	= "Here they come!",--Jaina's line, horde may not be same
 	newForces2	= "Dragonmaw, advance!",
 	newForces3	= "For Hellscream!",
-	newForces4	= "Next squad, push forward!",
-	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
+	newForces4	= "Next squad, push forward!"
+--	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
 })
 
 --------------------
