@@ -50,7 +50,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerAddsCD		= "Show timer for next adds wave",
-	timerTowerCD	= "Show timer for next tower assault"
+	timerTowerCD	= "Show timer for next tower assault",
+	FixateIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(147068)
 })
 
 L:SetMiscLocalization({
