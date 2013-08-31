@@ -82,6 +82,8 @@ local timerEmpoweredChainHealCD		= mod:NewNextSourceTimer(6, 143473)
 local countdownAdds					= mod:NewCountdown(45, "ej7920")
 local countdownCoolingOff			= mod:NewCountdown(15, 143484, nil, nil, nil, nil, true)
 
+local berserkTimer					= mod:NewBerserkTimer(600)
+
 local addsCount = 0
 local boneTargets = {}
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
@@ -97,6 +99,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(boneTargets)
 	timerAddsCD:Start(-delay, 1)
 	countdownAdds:Start()
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
