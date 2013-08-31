@@ -74,6 +74,8 @@ local timerIronPrison				= mod:NewBuffFadesTimer(60, 144330)
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990)
 local countdownAshenWall			= mod:NewCountdown(32.5, 144070, nil, nil, nil, nil, true)
 
+local berserkTimer					= mod:NewBerserkTimer(540)
+
 mod:AddBoolOption("RangeFrame")--This is more or less for foul geyser and foul stream splash damage
 mod:AddBoolOption("SetIconOnToxicMists", false)
 
@@ -142,6 +144,7 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(toxicMistsTargets)
+	berserkTimer:Start(-delay)
 end
 
 function mod:OnCombatEnd()
