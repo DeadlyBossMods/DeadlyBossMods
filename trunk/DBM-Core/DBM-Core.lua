@@ -5771,7 +5771,7 @@ do
 
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
 		timer = timer or 10
-		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_COMBAT_START_TEXT, barIcon or 2457, nil, "timer_combat")
+		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or 2457, nil, "timer_combat")
 		local obj = setmetatable(
 			{
 				--Maybe get fancy and insert a countdown object here
@@ -6236,7 +6236,7 @@ do
 	local defaultTimerLocalization = {
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_GENERIC_TIMER_BERSERK,
-			timer_combat = DBM_CORE_GENERIC_COMBAT_START_TEXT,
+			timer_combat = DBM_CORE_GENERIC_TIMER_COMBAT,
 			TimerSpeedKill = DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL
 		}, returnKey)
 	}
@@ -6248,7 +6248,7 @@ do
 	local defaultOptionLocalization = {
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_OPTION_TIMER_BERSERK,
-			timer_combat = DBM_CORE_GENERIC_COMBAT_OPTION_TEXT,
+			timer_combat = DBM_CORE_OPTION_TIMER_COMBAT,
 			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME,
 			SpeedKillTimer = DBM_SPEED_KILL_TIMER_OPTION
 		}, returnKey)
