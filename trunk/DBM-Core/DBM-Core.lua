@@ -3929,6 +3929,27 @@ function DBM:FindDungeonIDs()
 	end
 end
 
+function DBM:FindInstanceIDs()
+	for i=1, 1000 do
+		local instance = EJ_GetInstanceInfo(i)
+		if instance then
+			self:AddMsg(i..": "..instance)
+		end
+	end
+end
+
+function DBM:FindEncounterIDs(instanceID)
+	if not instanceID then
+		self:AddMsg("Error: Function requires instanceID be provided")
+	end
+	for i=1, 25 do
+		local name, _, encounterID = EJ_GetEncounterInfoByIndex(i, instanceID)
+		if name then
+			self:AddMsg(encounterID..": "..name)
+		end
+	end
+end
+
 -----------------
 --  Map Sizes  --
 -----------------
