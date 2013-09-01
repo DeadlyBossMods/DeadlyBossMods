@@ -158,14 +158,12 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerCombatStarts		= "Kampfbeginn",
 	timerLostSoulsCD		= "Verirrte Seelen CD"
 }
 
 L:SetOptionLocalization{
 	specWarnLostSouls		= "Spezialwarnung, wenn Verirrte Seelen erscheinen",
 	specWarnEnslavePitLord	= "Spezialwarnung zum Dämonenversklaven, wenn der Grubenlord erscheint/freikommt",
-	timerCombatStarts		= "Zeige Zeit bis Kampfbeginn",
 	timerLostSoulsCD		= "Zeige Zeit bis nächste Verirrte Seelen erscheinen"
 }
 

@@ -16,12 +16,7 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
-L:SetTimerLocalization{
-	timerCombatStarts	= "Бой начинается"
-}
-
 L:SetOptionLocalization({
-	timerCombatStarts	= "Отсчет времени до начала боя",
 	InfoFrame			= "Информационное окно для $journal:8252"
 })
 
