@@ -157,14 +157,12 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerCombatStarts		= "전투 시작",
 	timerLostSoulsCD		= "길 잃은 영혼 가능"
 }
 
 L:SetOptionLocalization{
 	specWarnLostSouls		= "긹 잃은 영혼 소환시 특수 경고 보기",
 	specWarnEnslavePitLord	= "지옥의 군주 활성화 또는 지배 해제시 특수 경고 보기",
-	timerCombatStarts		= "전투 시작 바 표시",
 	timerLostSoulsCD		= "길 잃은 영혼 대기시간 바 표시"
 }
 
