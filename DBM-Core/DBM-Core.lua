@@ -5288,6 +5288,10 @@ do
 	function bossModPrototype:NewSpecialWarningCast(text, optionDefault, ...)
 		return newSpecialWarning(self, "cast", text, nil, optionDefault, ...)
 	end
+	
+	function bossModPrototype:NewSpecialWarningReflect(text, optionDefault, ...)
+		return newSpecialWarning(self, "reflect", text, nil, optionDefault, ...)
+	end
 
 	function bossModPrototype:NewSpecialWarningCount(text, optionDefault, ...)
 		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
@@ -5711,9 +5715,9 @@ do
 end
 
 
----------------------
---  Enrage Object  --
----------------------
+------------------------------
+--  Berserk/Combat Objects  --
+------------------------------
 do
 	local enragePrototype = {}
 	local mt = {__index = enragePrototype}
@@ -5760,6 +5764,22 @@ do
 		)
 		return obj
 	end
+
+	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
+		timer = timer or 10
+		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_COMBAT_START_TEXT, barIcon or 2457, nil, "timer_combat")
+		local obj = setmetatable(
+			{
+				--Maybe get fancy and insert a countdown object here
+				bar = bar,
+				timer = timer,
+				owner = self
+			},
+			mt
+		)
+		return obj
+	end
+
 end
 
 
@@ -6212,6 +6232,7 @@ do
 	local defaultTimerLocalization = {
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_GENERIC_TIMER_BERSERK,
+			timer_combat = DBM_CORE_GENERIC_COMBAT_START_TEXT,
 			TimerSpeedKill = DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL
 		}, returnKey)
 	}
@@ -6223,6 +6244,7 @@ do
 	local defaultOptionLocalization = {
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_OPTION_TIMER_BERSERK,
+			timer_combat = DBM_CORE_GENERIC_COMBAT_OPTION_TEXT,
 			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME,
 			SpeedKillTimer = DBM_SPEED_KILL_TIMER_OPTION
 		}, returnKey)
