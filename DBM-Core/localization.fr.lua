@@ -29,6 +29,8 @@ DBM_CORE_OK							= "Okay"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "Enrage dans %s %s"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "Enrage"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Montrer les chronos pour $spell:26662"
+DBM_CORE_GENERIC_TIMER_COMBAT		= "Le combat débute dans"
+DBM_CORE_OPTION_TIMER_COMBAT		= "Montre le timer avant le début du combat"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Afficher le cadre de vie des Boss"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
