@@ -172,6 +172,7 @@ end
 --  Bar Update  --
 ------------------
 function updateBar(bar, percent, icon, dontShowDead)
+	if not percent then return end
 	local bartimer = _G[bar:GetName() .. "BarTimer"]
 	local barbar = _G[bar:GetName() .. "Bar"]
 	local barIcon = _G[bar:GetName() .. "BarIcon"]
