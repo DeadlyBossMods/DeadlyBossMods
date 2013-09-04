@@ -72,8 +72,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	DarknessSoon		= "$spell:117697 주문의 사전 초읽기 알림 보기(5초 전부터)",
-	timerUSRevive		= "$spell:117506 재형성까지 남은시간 바 표시",
+	DarknessSoon		= "$spell:117697 이전에 초읽기 알림 보기(5초 전부터)",
+	timerUSRevive		= "$spell:117506 재형성까지 남은시간 바 보기",
 })
 
 
@@ -92,7 +92,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "가운데 바닥이 무너지기 전에 특수 경고 보기",
-	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 표시",
+	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 보기",
 	SetIconOnCreature			= "$journal:6193에 전술 목표 아이콘 설정"
 })
 

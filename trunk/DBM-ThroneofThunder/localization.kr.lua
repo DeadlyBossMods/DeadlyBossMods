@@ -34,8 +34,8 @@ L:SetOptionLocalization({
 	warnAdds				= "병력 등장시 알림 보기",
 	warnOrbofControl		= "$journal:7092 떨어짐시 알림 보기",
 	specWarnOrbofControl	= "$journal:7092 떨어짐시 특수 경고 보기",
-	timerDoor				= "다음 부족의 문 열림 바 표시",
-	timerAdds				= "다음 추가 병력 바 표시",
+	timerDoor				= "다음 부족의 문 열림 바 보기",
+	timerAdds				= "다음 추가 병력 바 보기",
 	SetIconOnAdds			= "추가 병력들에게 전술 목표 아이콘 설정하기"
 })
 
@@ -90,7 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerBreaths			= "다음 숨결 바 표시",
+	timerBreaths			= "다음 숨결 바 보기",
 	AnnounceCooldowns		= "공격대 생존기 사용을 위해 광란/확산 시전 횟수를 음성으로 듣기",
 	Never					= "알리지 않음",
 	Every					= "횟수 초기화 하지 않음",
@@ -256,7 +256,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "사잇단계 진입 전에 특수 경고 보기",
 	warnDiffusionChainSpread	= "$spell:135991 전이 대상 알림 보기",
-	timerConduitCD				= "최초 도관 기술 대기시간 바 표시",
+	timerConduitCD				= "최초 도관 기술 대기시간 바 보기",
 	StaticShockArrow			= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
 	OverchargeArrow				= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
 })
