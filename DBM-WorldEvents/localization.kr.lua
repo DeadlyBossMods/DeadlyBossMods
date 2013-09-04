@@ -144,7 +144,7 @@ L:SetOptionLocalization({
 	warnGameOver	= "진행 게임의 최대 점수 알림 보기",
 	warnGnoll		= "놀 등장 알림 보기",
 	warnHogger		= "들창코 놀 등장 알림 보기",
-	specWarnHogger	= "들창코 놀 득장 특수 경고 보기"
+	specWarnHogger	= "들창코 놀 등장 특수 경고 보기"
 })
 
 ------------------------
