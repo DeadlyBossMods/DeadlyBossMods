@@ -20,6 +20,10 @@ L:SetOptionLocalization({
 	InfoFrame			= "$journal:8252에 대한 정보 창 보기"
 })
 
+L:SetMiscLocalization({
+	wasteOfTime			= "Very well, I will create a field to keep your corruption quarantined."
+})
+
 ------------------
 -- Sha of Pride --
 ------------------
@@ -48,8 +52,8 @@ L:SetMiscLocalization({
 	newForces1		= "Here they come!",--Jaina's line, horde may not be same, 호드의 경우 다시 확인
 	newForces2		= "Dragonmaw, advance!",
 	newForces3		= "For Hellscream!",
-	newForces4		= "Next squad, push forward!",
-	tower			= "The door barring the"--The door barring the South/North Tower has been breached!
+	newForces4		= "Next squad, push forward!"
+--	tower			= "The door barring the"--The door barring the South/North Tower has been breached!
 })
 
 --------------------
@@ -61,6 +65,10 @@ L= DBM:GetModLocalization(864)
 -- Kor'kron Dark Shaman --
 --------------------------
 L= DBM:GetModLocalization(856)
+
+L:SetMiscLocalization({
+	PrisonYell		= "%s 감옥 사라짐! (%d)"
+})
 
 ---------------------
 -- General Nazgrim --
@@ -135,8 +143,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
-	purple				= "Purple",--Needs color code replacement still
-	green				= "Green",--Needs color code replacement still
 	one					= "One",
 	two					= "Two",
 	three				= "Three",
