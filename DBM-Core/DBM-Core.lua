@@ -2144,6 +2144,10 @@ do
 		end
 	end
 
+	local function countDownTextDelay()
+		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, 5, 5)
+	end
+
 	local syncHandlers = {}
 	local whisperSyncHandlers = {}
 
@@ -2214,6 +2218,7 @@ do
 			dummyMod.countdown:Cancel()
 		end
 		if not DBM.Options.DontShowPTCountdownText then
+			DBM:Unschedule(countDownTextDelay)
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
 		end
 		dummyMod.text:Cancel()
@@ -2225,7 +2230,11 @@ do
 			dummyMod.countdown:Start(timer)
 		end
 		if not DBM.Options.DontShowPTCountdownText then
-			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+			if timer > 5 then
+				DBM:Schedule(timer-5, countDownTextDelay)
+			else
+				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+			end
 		end
 		if not DBM.Options.DontShowPTText then
 			dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer))
