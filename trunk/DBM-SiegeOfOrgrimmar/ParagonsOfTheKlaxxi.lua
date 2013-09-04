@@ -80,22 +80,20 @@ local specWarnDeathFromAboveNear	= mod:NewSpecialWarningClose(142232)
 local yellDeathFromAbove			= mod:NewYell(142232)
 --Xaril the Poisoned-Mind
 local specWarnCausticBlood			= mod:NewSpecialWarningSpell(142315, mod:IsTank())
-mod:AddBoolOption("specWarnToxicInjection", true, "announce")--Combine the 7 special warnings for same spell into 1
-local specWarnToxicBlue				= mod:NewSpecialWarningYou(142532, nil, false)
-local specWarnToxicRed				= mod:NewSpecialWarningYou(142533, nil, false)
-local specWarnToxicYellow			= mod:NewSpecialWarningYou(142534, nil, false)
-local specWarnToxicOrange			= mod:NewSpecialWarningYou(142547, nil, false)--Heroic
-local specWarnToxicPurple			= mod:NewSpecialWarningYou(142548, nil, false)--Heroic
-local specWarnToxicGreen			= mod:NewSpecialWarningYou(142549, nil, false)--Heroic
---local specWarnToxicWhite			= mod:NewSpecialWarningYou(142550, nil, false)--Not in EJ
-mod:AddBoolOption("specWarnToxicCatalyst", true, "announce")--Combine the cataclysts as well.
-local specWarnCatalystBlue			= mod:NewSpecialWarningYou(142725, nil, false, nil, 3)
-local specWarnCatalystRed			= mod:NewSpecialWarningYou(142726, nil, false, nil, 3)
-local specWarnCatalystYellow		= mod:NewSpecialWarningYou(142727, nil, false, nil, 3)
-local specWarnCatalystOrange		= mod:NewSpecialWarningYou(142728, nil, false, nil, 3)--Heroic
-local specWarnCatalystPurple		= mod:NewSpecialWarningYou(142729, nil, false, nil, 3)--Heroic
-local specWarnCatalystGreen			= mod:NewSpecialWarningYou(142730, nil, false, nil, 3)--Heroic
---local specWarnCatalystWhite		= mod:NewSpecialWarningYou(142731, nil, false, nil, 3)--Not in EJ
+local specWarnToxicBlue				= mod:NewSpecialWarningYou(142532)
+local specWarnToxicRed				= mod:NewSpecialWarningYou(142533)
+local specWarnToxicYellow			= mod:NewSpecialWarningYou(142534)
+local specWarnToxicOrange			= mod:NewSpecialWarningYou(142547)--Heroic
+local specWarnToxicPurple			= mod:NewSpecialWarningYou(142548)--Heroic
+local specWarnToxicGreen			= mod:NewSpecialWarningYou(142549)--Heroic
+--local specWarnToxicWhite			= mod:NewSpecialWarningYou(142550)--Not in EJ
+local specWarnCatalystBlue			= mod:NewSpecialWarningYou(142725, nil, nil, nil, 3)
+local specWarnCatalystRed			= mod:NewSpecialWarningYou(142726, nil, nil, nil, 3)
+local specWarnCatalystYellow		= mod:NewSpecialWarningYou(142727, nil, nil, nil, 3)
+local specWarnCatalystOrange		= mod:NewSpecialWarningYou(142728, nil, nil, nil, 3)--Heroic
+local specWarnCatalystPurple		= mod:NewSpecialWarningYou(142729, nil, nil, nil, 3)--Heroic
+local specWarnCatalystGreen			= mod:NewSpecialWarningYou(142730, nil, nil, nil, 3)--Heroic
+--local specWarnCatalystWhite		= mod:NewSpecialWarningYou(142731, nil, nil, nil, 3)--Not in EJ
 mod:AddBoolOption("yellToxicCatalyst", true, "misc")--And lastly, combine yells
 local yellCatalystBlue				= mod:NewYell(142725, nil, nil, false)
 local yellCatalystRed				= mod:NewYell(142726, nil, nil, false)
@@ -308,9 +306,7 @@ function mod:SPELL_CAST_START(args)
 			warnToxicCatalystBlue:Show()
 		end
 		if UnitDebuff("player", GetSpellInfo(142532)) then
-			if self.Options.specWarnToxicCatalyst then
-				specWarnCatalystBlue:Show()
-			end
+			specWarnCatalystBlue:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystBlue:Yell()
 			end
@@ -321,9 +317,7 @@ function mod:SPELL_CAST_START(args)
 			warnToxicCatalystRed:Show()
 		end
 		if UnitDebuff("player", GetSpellInfo(142533)) then
-			if self.Options.specWarnToxicCatalyst then
-				specWarnCatalystRed:Show()
-			end
+			specWarnCatalystRed:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystRed:Yell()
 			end
@@ -334,9 +328,7 @@ function mod:SPELL_CAST_START(args)
 			warnToxicCatalystYellow:Show()
 		end
 		if UnitDebuff("player", GetSpellInfo(142534)) then
-			if self.Options.specWarnToxicCatalyst then
-				specWarnCatalystYellow:Show()
-			end
+			specWarnCatalystYellow:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystYellow:Yell()
 			end
@@ -347,9 +339,7 @@ function mod:SPELL_CAST_START(args)
 			warnToxicCatalystOrange:Show()
 		end
 		if UnitDebuff("player", GetSpellInfo(142547)) then
-			if self.Options.specWarnToxicCatalyst then
-				specWarnCatalystOrange:Show()
-			end
+			specWarnCatalystOrange:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystOrange:Yell()
 			end
@@ -360,9 +350,7 @@ function mod:SPELL_CAST_START(args)
 			warnToxicCatalystPurple:Show()
 		end
 		if UnitDebuff("player", GetSpellInfo(142548)) then
-			if self.Options.specWarnToxicCatalyst then
-				specWarnCatalystPurple:Show()
-			end
+			specWarnCatalystPurple:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystPurple:Yell()
 			end
@@ -373,9 +361,7 @@ function mod:SPELL_CAST_START(args)
 			warnToxicCatalystGreen:Show()
 		end
 		if UnitDebuff("player", GetSpellInfo(142549)) then
-			if self.Options.specWarnToxicCatalyst then
-				specWarnCatalystGreen:Show()
-			end
+			specWarnCatalystGreen:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystGreen:Yell()
 			end
@@ -439,17 +425,17 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 143339 then
 		local amount = args.amount or 1
 		warnInjection:Show(args.destName, amount)
-	elseif args.spellId == 142532 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+	elseif args.spellId == 142532 and args:IsPlayer() then
 		specWarnToxicBlue:Show()
-	elseif args.spellId == 142533 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+	elseif args.spellId == 142533 and args:IsPlayer() then
 		specWarnToxicRed:Show()
-	elseif args.spellId == 142534 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+	elseif args.spellId == 142534 and args:IsPlayer() then
 		specWarnToxicYellow:Show()
-	elseif args.spellId == 142547 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+	elseif args.spellId == 142547 and args:IsPlayer() then
 		specWarnToxicOrange:Show()
-	elseif args.spellId == 142548 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+	elseif args.spellId == 142548 and args:IsPlayer() then
 		specWarnToxicPurple:Show()
-	elseif args.spellId == 142549 and self.Options.specWarnToxicInjection and args:IsPlayer() then
+	elseif args.spellId == 142549 and args:IsPlayer() then
 		specWarnToxicGreen:Show()
 	elseif args.spellId == 142671 then
 		warnMesmerize:Show(args.destName)
