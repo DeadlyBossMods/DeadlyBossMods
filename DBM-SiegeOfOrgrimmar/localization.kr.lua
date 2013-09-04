@@ -44,8 +44,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "다음 정예 병사 바 표시",
-	timerTowerCD	= "다음 포탑 포격 바 표시"--번역이 조금 다른데? 나중에 확인
+	timerAddsCD		= "다음 정예 병사 바 보기",
+	timerTowerCD	= "다음 포탑 포격 바 보기"--번역이 조금 다른데? 나중에 확인
 })
 
 L:SetMiscLocalization({
@@ -80,7 +80,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "$spell:143593 주문의 사전 초읽기 알림 보기(5초 전부터)"
+	warnDefensiveStanceSoon		= "$spell:143593 이전에 초읽기 알림 보기(5초 전부터)"
 })
 
 L:SetMiscLocalization({

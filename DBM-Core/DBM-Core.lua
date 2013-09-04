@@ -749,7 +749,7 @@ do
 							sort			= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or mhuge) or mhuge,
 							type			= GetAddOnMetadata(i, "X-DBM-Mod-Type") or "OTHER",
 							category		= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-							name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or "",
+							name			= GetAddOnMetadata(i, "X-DBM-Mod-Name") or GetRealZoneText(tonumber(mapIdTable[1])) or "Unknown",
 							mapId			= mapIdTable,
 							subTabs			= GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategoriesID"))} or GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 							oneFormat		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Single-Format") or 0) == 1,
@@ -5141,8 +5141,8 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
-				local soundId = self.mod.Options[self.option .. "SpecialWarningSound"]
-				DBM:PlaySpecialWarningSound(soundId)
+				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
+				DBM:PlaySpecialWarningSound(soundId or 1)
 			end
 		end
 	end
@@ -5179,9 +5179,6 @@ do
 		if optionId then
 			obj.option = optionId
 			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
-		else--Still need to create default sounds even if we don't create an option for them
-			self.Options[optionId] = (optionDefault == nil) or optionDefault
-			self.Options[optionId .. "SpecialWarningSound"] = runSound or "Sound\\Spells\\PVPFlagTaken.ogg"
 		end
 		tinsert(self.specwarns, obj)
 		return obj

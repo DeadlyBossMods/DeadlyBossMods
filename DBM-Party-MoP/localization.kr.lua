@@ -173,7 +173,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWave	= "적 등장 바 표시"
+	TimerWave	= "적 등장 바 보기"
 })
 
 L:SetMiscLocalization({

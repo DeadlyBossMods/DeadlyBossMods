@@ -23,7 +23,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "각 우두머리별 활성화 바 표시"
+	TrioActiveTimer		= "각 우두머리별 활성화 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -49,9 +49,9 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	Emerged			= "등장 알림 보기",
 	specWarnAttack	= "아훈 약화시 특수 경고 보기",
-	SubmergTimer	= "잠수 바 표시",
-	EmergeTimer		= "등장 바 표시",
-	TimerCombat		= "전투 시작 바 표시",
+	SubmergTimer	= "잠수 바 보기",
+	EmergeTimer		= "등장 바 보기",
+	TimerCombat		= "전투 시작 바 보기",
 })
 
 L:SetMiscLocalization({
@@ -95,7 +95,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	WarnPhase				= "단계 전환 알림 보기",
-	TimerCombatStart		= "전투 시작 바 표시",
+	TimerCombatStart		= "전투 시작 바 보기",
 	warnHorsemanSoldiers	= "고동치는 호박 소환 알림 보기",
 	warnHorsemanHead		= "저주받은 기사 머리 생성 알림 보기"
 })
@@ -199,7 +199,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	warnTotalAdds	= "각 총공격시마다 이전 단계에 생성된 적 수 보기",
 	specWarnWave	= "총공격 시작시 특수 경고 보기",
-	timerWave		= "다음 총공격 바 표시"
+	timerWave		= "다음 총공격 바 보기"
 })
 
 L:SetMiscLocalization({
