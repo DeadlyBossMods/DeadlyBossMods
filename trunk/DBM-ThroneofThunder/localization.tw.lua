@@ -55,7 +55,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "為$spell:136442退去前顯示剩餘血量框架(需要首領血量框架開啟)",
-	AnnounceCooldowns	= "為團隊冷卻數出$spell:137166施放(數到3)",
+	AnnounceCooldowns	= "為團隊冷卻數出$spell:137166施放(數到3)"
 })
 
 ------------
@@ -180,7 +180,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount		= "突變:%d/5有益和%d有害",
+	warnDebuffCount		= "突變:%d/5有益和%d有害"
 })
 
 L:SetOptionLocalization({

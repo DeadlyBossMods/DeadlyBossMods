@@ -15,11 +15,11 @@ L= DBM:GetModLocalization(827)
 L= DBM:GetModLocalization(819)
 
 L:SetTimerLocalization({
-	timerDoor		= "Prochaine Porte Tribale",
+	timerDoor		= "Prochaine Porte Tribale"
 })
 
 L:SetOptionLocalization({
-	timerDoor		= "Afficher le temps pour la prochain phase de Porte Tribale",
+	timerDoor		= "Afficher le temps pour la prochain phase de Porte Tribale"
 })
 
 L:SetMiscLocalization({

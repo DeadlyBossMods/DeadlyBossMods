@@ -23,7 +23,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "각 우두머리별 활성화 바 보기"
+	TrioActiveTimer		= "각 우두머리 활성화 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -37,7 +37,7 @@ L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
 	Emerged			= "등장",
-	specWarnAttack	= "아훈이 약해졌습니다 - 공격 시작!"
+	specWarnAttack	= "아훈 약화 - 공격 시작!"
 })
 
 L:SetTimerLocalization{
@@ -48,10 +48,10 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	Emerged			= "등장 알림 보기",
-	specWarnAttack	= "아훈 약화시 특수 경고 보기",
+	specWarnAttack	= "아훈 약화 특수 경고 보기",
 	SubmergTimer	= "잠수 바 보기",
 	EmergeTimer		= "등장 바 보기",
-	TimerCombat		= "전투 시작 바 보기",
+	TimerCombat		= "전투 시작 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -64,18 +64,18 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
-	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 맥주를 마셔버리세요!",
-	specWarnBrewStun		= "현재 맥주 소지중. 흑맥주요정이 맥주를 다시 던지기전에 마셔버리면 됩니다!"
+	specWarnBrew		= "가방에 있는 맥주 사용!",
+	specWarnBrewStun	= "맥주를 미리 사용하셔야 기절하지 않습니다!"
 })
 
 L:SetOptionLocalization({
-	specWarnBrew			= "$spell:47376 특수 경고 보기",
-	specWarnBrewStun		= "$spell:47340 특수 경고 보기",
-	YellOnBarrel			= "$spell:51413 주문의 영향을 받은 경우 대화로 알리기"
+	specWarnBrew		= "$spell:47376 특수 경고 보기",
+	specWarnBrewStun	= "$spell:47340 특수 경고 보기",
+	YellOnBarrel		= "$spell:51413 대상이 된 경우 대화로 알리기"
 })
 
 L:SetMiscLocalization{
-	YellBarrel				= "저에게 맥주통!"
+	YellBarrel			= "저에게 맥주통!"
 }
 
 -----------------------------
@@ -96,13 +96,13 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	WarnPhase				= "단계 전환 알림 보기",
 	TimerCombatStart		= "전투 시작 바 보기",
-	warnHorsemanSoldiers	= "고동치는 호박 소환 알림 보기",
+	warnHorsemanSoldiers	= "고동치는 호박 생성 알림 보기",
 	warnHorsemanHead		= "저주받은 기사 머리 생성 알림 보기"
 })
 
 L:SetMiscLocalization({
-	HorsemanSummon				= "기사여, 일어나라...",
-	HorsemanSoldiers			= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!"
+	HorsemanSummon		= "기사여, 일어나라...",
+	HorsemanSoldiers	= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!"
 })
 
 ------------------------------
@@ -133,7 +133,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnGameOverQuest	= "게임 종료. 점수 %d 점, 이 게임의 최대 점수 : %d 점",
+	warnGameOverQuest	= "게임 종료. 획득 점수 %d 점, 이 게임의 최대 점수 : %d 점",
 	warnGameOverNoQuest	= "게임 종료. 이 게임의 최대 점수 : %d 점",
 	warnGnoll			= "놀 등장",
 	warnHogger			= "들창코 놀 등장",
@@ -157,7 +157,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetBubbles			= "$spell:101871 진행 중일때 대화 말풍선을 표시하지 않음<br/>(게임 종료 후 원래대로 복구됨)"
+	SetBubbles	= "$spell:101871 중일때 대화 말풍선을 숨김<br/>(전투 종료 후 원상태로 복구됨)"
 })
 
 ----------------------
@@ -197,8 +197,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	warnTotalAdds	= "각 총공격시마다 이전 단계에 생성된 적 수 보기",
-	specWarnWave	= "총공격 시작시 특수 경고 보기",
+	warnTotalAdds	= "각 총공격마다 이전 단계에 생성된 적 수 보기",
+	specWarnWave	= "총공격 특수 경고 보기",
 	timerWave		= "다음 총공격 바 보기"
 })
 

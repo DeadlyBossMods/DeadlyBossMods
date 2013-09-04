@@ -99,7 +99,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <sec>: Avvia un Timer di Pull di <sec> secondi. Da' a tutti i giocatori un Timer DBM di Pull (richiede CapoIncursione o Assistente).",
 	"/dbm arrow: Visualizza le Frecce DBM, vedi anche /dbm arrow help per i dettagli.",
 	"/dbm lockout: Chiede a tutti i giocatori di linkare l'ID dell'incursione in cui sono salvati (aliases: lockouts, ids) (richiede CapoIncursione o Assistente).",
-	"/dbm help: Visualizza questo messaggio.",
+	"/dbm help: Visualizza questo messaggio."
 }
 
 DBM_ERROR_NO_PERMISSION				= "Non hai i permessi per eseguire questo comando."
@@ -226,7 +226,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow <x> <y>  crea una freccia che punta in una direzione specifica (0 < x/y < 100)",
 	"/dbm arrow <player>  crea una freccia che punta verso un giocatore specifico",
 	"/dbm arrow hide  nasconde la freccia",
-	"/dbm arrow move  rende la freccia mobile",
+	"/dbm arrow move  rende la freccia mobile"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Miglior Uccisione"

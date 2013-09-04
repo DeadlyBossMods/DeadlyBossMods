@@ -51,7 +51,7 @@ L:SetOptionLocalization({
 	specWarnAttack	= "Спец-предупреждение, когда Ахун становится уязвим",
 	SubmergTimer	= "Отсчет времени до исчезновения",
 	EmergeTimer		= "Отсчет времени до появления",
-	TimerCombat		= "Отсчет времени до начала боя",
+	TimerCombat		= "Отсчет времени до начала боя"
 })
 
 L:SetMiscLocalization({

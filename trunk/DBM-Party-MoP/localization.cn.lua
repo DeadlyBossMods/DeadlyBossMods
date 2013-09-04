@@ -104,7 +104,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Kill		= "只要你们心中的暴虐不除……我……就会……回来的……",
+	Kill		= "只要你们心中的暴虐不除……我……就会……回来的……"
 })
 
 -----------------------
@@ -276,7 +276,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "DBM箭头：$spell:114487接近你时",
+	KickArrow	= "DBM箭头：$spell:114487接近你时"
 })
 
 -----------------------

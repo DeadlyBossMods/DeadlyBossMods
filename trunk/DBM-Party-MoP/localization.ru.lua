@@ -92,7 +92,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(685)
 
 L:SetMiscLocalization({
-	Kill		= "Пока в ваших сердцах есть место жестокости... я могу вернуться...",
+	Kill		= "Пока в ваших сердцах есть место жестокости... я могу вернуться..."
 })
 
 -----------------------
@@ -273,7 +273,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "Показывать стрелку DBM, когда $spell:114487 около вас",
+	KickArrow	= "Показывать стрелку DBM, когда $spell:114487 около вас"
 })
 
 -----------------------

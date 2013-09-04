@@ -100,7 +100,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <seg>: Dispara um cronógrafo para iniciar a luta em <seg> segundos. Dá a todos os integrantes da raide um cronógrafo para iniciar a luta (requer status de líder/guia).",
 	"/dbm arrow: Exibe a seta do DBM, veja /dbm arrow help para detalhes.",
 	"/dbm lockout: Pergunta a todos os membros da raid, por seus vínculos de raide (ou: lockouts, ids) (requer status de líder/guia)..",
-	"/dbm help: Exibe essa mensagem.",
+	"/dbm help: Exibe essa mensagem."
 }
 
 DBM_ERROR_NO_PERMISSION				= "Você não tem as permissões necessárias para fazer isso."
@@ -223,7 +223,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow <x> <y>  cria uma seta que aponta para um local específico (0 < x/y < 100)",
 	"/dbm arrow <jogador>  cria uma seta que aponta para um jogador específico no seu grupo",
 	"/dbm arrow hide  esconde a seta",
-	"/dbm arrow move  torna móvel a seta",
+	"/dbm arrow move  torna móvel a seta"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Vitória em tempo récorde"

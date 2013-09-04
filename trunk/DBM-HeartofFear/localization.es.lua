@@ -101,7 +101,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetWarningLocalization({
-	warnAmberTrap		= "Progreso de Trampa de ámbar: (%d/5)",
+	warnAmberTrap		= "Progreso de Trampa de ámbar: (%d/5)"
 })
 
 L:SetOptionLocalization({

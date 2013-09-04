@@ -76,7 +76,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnRemainingNovice	= "음영파 신입생 남은 횟수 알림 보기"
+	warnRemainingNovice	= "음영파 신입생 남은횟수 알림 보기"
 })
 
 L:SetMiscLocalization({
@@ -90,7 +90,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(685)
 
 L:SetMiscLocalization({
-	Kill		= "네 가슴이 폭력에 물들어 있는 한... 난... 다시... 돌아올 것이다.",
+	Kill		= "네 가슴이 폭력에 물들어 있는 한... 난... 다시... 돌아올 것이다."
 })
 
 -----------------------
@@ -99,7 +99,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(686)
 
 L:SetOptionLocalization({
-	InfoFrame			= "$journal:5827 정보 창 보기"
+	InfoFrame			= "$journal:5827 정보를 정보 창으로 보기"
 })
 
 -----------------------
@@ -271,7 +271,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "$spell:114487 주문이 근처에 시전된 경우 DBM 화살표 보기",
+	KickArrow	= "$spell:114487 대상이 가까이 있을 경우 DBM 화살표 보기"
 })
 
 -----------------------

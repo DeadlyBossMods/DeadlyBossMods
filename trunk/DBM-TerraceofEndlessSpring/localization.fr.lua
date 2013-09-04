@@ -67,7 +67,7 @@ L:SetWarningLocalization({
 	MoveWarningForward			= "Allez de l'autre côté !",
 	MoveWarningRight			= "Allez vers la droite !",
 	MoveWarningBack				= "Allez à la position précédente !",
-	specWarnBreathOfFearSoon	= "Souffle de peur bientôt - Allez dans le mur !",
+	specWarnBreathOfFearSoon	= "Souffle de peur bientôt - Allez dans le mur !"
 })
 
 L:SetTimerLocalization({
