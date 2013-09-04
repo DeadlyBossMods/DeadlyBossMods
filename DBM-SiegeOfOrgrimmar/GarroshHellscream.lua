@@ -96,7 +96,7 @@ end
 
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
 local function DesecrateScan()
-	if UnitExists("boss1target") and not self:IsTanking(uId, "boss1") then--Boss 1 is looking at someone that isn't his highest threat or a tank (have to filter tanks cause he looks at them to cast impale, have to filter his highest threat in case it's not a tank, ie a healer)
+	if UnitExists("boss1target") and not mod:IsTanking("boss1target", "boss1") then--Boss 1 is looking at someone that isn't his highest threat or a tank (have to filter tanks cause he looks at them to cast impale, have to filter his highest threat in case it's not a tank, ie a healer)
 		mod:Unschedule(DesecrateScan)
 		local targetname = DBM:GetUnitFullName("boss1target")
 		warnDesecrate:Show(targetname)
