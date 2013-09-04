@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Name: Scenario (MoP)
 ## X-DBM-Mod-Name-ruRU: Сценарии (MoP)
-## X-DBM-Mod-Name-koKR: 시나리오 (판다리아의 안개)
+## X-DBM-Mod-Name-koKR: 시나리오(판다리아의 안개)
 ## X-DBM-Mod-Name-deDE: Szenarien (MoP)
 ## X-DBM-Mod-Name-zhTW: 事件 (潘達利亞之謎)
 ## X-DBM-Mod-Name-zhCN: 场景战役 (熊猫人之谜)

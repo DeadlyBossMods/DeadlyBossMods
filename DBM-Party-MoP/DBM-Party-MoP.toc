@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Has-Challenge: 1
 ## X-DBM-Mod-SubCategoriesID: 960, 961, 959, 962, 994, 1011, 1007, 1001, 1004
 ## X-DBM-Mod-Name: Party (MoP)
-## X-DBM-Mod-Name-koKR: 5인 던전 (판다리아의 안개)
+## X-DBM-Mod-Name-koKR: 5인 던전(판다리아의 안개)
 ## X-DBM-Mod-Name-deDE: Gruppe (MoP)
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья (MoP)
 ## X-DBM-Mod-Name-esES: Mazmorras (MoP)

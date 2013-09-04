@@ -7,11 +7,11 @@ local L
 L= DBM:GetModLocalization("d517")
 
 L:SetTimerLocalization{
-	timerEvent			= "양조 완료 (추정시간)"
+	timerEvent			= "양조 완료(추정시간)"
 }
 
 L:SetOptionLocalization{
-	timerEvent			= "양조 완료 시간 바 보기 (추정)"
+	timerEvent			= "양조 완료 시간 바 보기(추정)"
 }
 
 L:SetMiscLocalization{
@@ -63,7 +63,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	timerBossCD		= "다음 우두머리 소환 바 표시"
+	timerBossCD		= "다음 우두머리 소환 바 보기"
 }
 
 L:SetMiscLocalization{
@@ -88,7 +88,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	timerAddsCD		= "도마뱀군주의 추가 병력 가능 바 표시"
+	timerAddsCD		= "도마뱀군주의 추가 병력 가능 바 보기"
 }
 
 L:SetMiscLocalization{
@@ -161,9 +161,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnLostSouls		= "긹 잃은 영혼 소환시 특수 경고 보기",
+	specWarnLostSouls		= "길 잃은 영혼 소환시 특수 경고 보기",
 	specWarnEnslavePitLord	= "지옥의 군주 활성화 또는 지배 해제시 특수 경고 보기",
-	timerLostSoulsCD		= "길 잃은 영혼 대기시간 바 표시"
+	timerLostSoulsCD		= "길 잃은 영혼 대기시간 바 보기"
 }
 
 L:SetMiscLocalization{
