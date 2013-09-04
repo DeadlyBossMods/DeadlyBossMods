@@ -199,7 +199,7 @@ local function hideRangeFrame()
 end
 
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
-local function DFAScan()
+--[[local function DFAScan()
 	for i = 1, 5 do
 		local unitID = "boss"..i
 		if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71161 then
@@ -227,30 +227,33 @@ local function DFAScan()
 			return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
 		end
 	end
-end
+end--]]
 
 local function CheckBosses(GUID)
 	local vulnerable = false
 	for i = 1, 5 do
 		local unitID = "boss"..i
-		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] then--Check if new units exist we haven't detected and added yet.
+		--"<0.0 19:23:10> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Xaril the Poisoned Mind#0xF13115F500000294#elite#228971920#1#1#Kaz'tik the Manipulator#0xF13115F400000293#elite#183177232#1#1#Hisek the Swarmkeeper#0xF13115F100000290
+		--"<7.4 19:23:17> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Kaz'tik the Manipulator#0xF13115F400000293#elite#183177232#1#1#Xaril the Poisoned Mind#0xF13115F500000294#elite#228971920#1#1#Kil'ruk the Wind-Reaver#0xF13115F900000297#elite#261682208#1#1#Hisek the Swarmkeeper
+		--Only 3 bosses activate, but for some reason inactive bosses are sometimes firing IEEU, all I can do now is try to fix it using UnitAffectingCombat
+		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] and UnitAffectingCombat(unitID) then--Check if new units exist we haven't detected and added yet.
 			activeBossGUIDS[UnitGUID(unitID)] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(UnitGUID(unitID))
 			if cid == 71161 then--Kil'ruk the Wind-Reaver
-				mod:Schedule(24, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
+--				mod:Schedule(24, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
 				if UnitDebuff("player", GetSpellInfo(142931)) then vulnerable = true end
 			elseif cid == 71156 then--Kaz'tik the Manipulator
 		
 			elseif cid == 71155 then--Korven the Prime
-				timerShieldBashCD:Start(25)
+--				timerShieldBashCD:Start(25)
 			elseif cid == 71160 then--Iyyokuk the Lucid
-				timerInsaneCalculationCD:Start()
+--				timerInsaneCalculationCD:Start()
 			elseif cid == 71154 then--Ka'roz the Locust
-				timerFlashCD:Start(15)
+--				timerFlashCD:Start(15)
 			elseif cid == 71152 then--Skeer the Bloodseeker
 				--timerBloodlettingCD:Start()
 				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
@@ -414,9 +417,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142528 then
 		warnToxicInjection:Show()
 		timerToxicCatalystCD:Start()
-	elseif args.spellId == 142232 then
+--[[	elseif args.spellId == 142232 then
 		self:Unschedule(DFAScan)
-		self:Schedule(17, DFAScan)
+		self:Schedule(17, DFAScan)--]]
 	end
 end
 
@@ -562,7 +565,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
-		self:Unschedule(DFAScan)
+--		self:Unschedule(DFAScan)
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.KilrukFlavor, "SAY")
