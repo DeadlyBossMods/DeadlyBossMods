@@ -173,6 +173,7 @@ DBM.DefaultOptions = {
 	DontPlayPTCountdown = false,
 	DontShowPTText = false,
 	DontShowPTNoID = false,
+	DontShowCTCount = false,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
@@ -2213,7 +2214,7 @@ do
 			dummyMod.countdown:Cancel()
 		end
 		if not DBM.Options.DontShowPTCountdownText then
-			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions :\
+			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")--easiest way to nil out timers on TimerTracker frame. This frame just has no actual star/stop functions
 		end
 		dummyMod.text:Cancel()
 		if timer == 0 then return end--"/dbm pull 0" will strictly be used to cancel the pull timer (which is why we let above part of code run but not below)
@@ -2224,7 +2225,7 @@ do
 			dummyMod.countdown:Start(timer)
 		end
 		if not DBM.Options.DontShowPTCountdownText then
-			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)--Hopefully this doesn't taint. Initial tests show positive even though it is an intrusive way of calling a blizzard timer. It's too bad the max value doesn't seem to actually work
+			TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 		end
 		if not DBM.Options.DontShowPTText then
 			dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer))
@@ -5737,6 +5738,14 @@ do
 			if timer > 30 then self.warning2:Schedule(timer - 30, 30, DBM_CORE_SEC) end
 			if timer > 10 then self.warning2:Schedule(timer - 10, 10, DBM_CORE_SEC) end
 		end
+		if countdown then
+			if not DBM.Options.DontPlayPTCountdown then
+				self.countdown:Start(timer)
+			end
+			if not DBM.Options.DontShowPTCountdownText then
+				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+			end
+		end
 	end
 
 	function enragePrototype:Schedule(t)
@@ -5745,8 +5754,16 @@ do
 
 	function enragePrototype:Cancel()
 		self.owner:Unschedule(self.Start, self)
-		self.warning1:Cancel()
-		self.warning2:Cancel()
+		if warning1 then
+			self.warning1:Cancel()
+		end
+		if warning2 then
+			self.warning2:Cancel()
+		end
+		if countdown then
+			self.countdown:Cancel()
+			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
+		end
 		self.bar:Stop()
 	end
 	enragePrototype.Stop = enragePrototype.Cancel
@@ -5772,11 +5789,12 @@ do
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
 		timer = timer or 10
 		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or 2457, nil, "timer_combat")
+		local countdown = self:NewCountdown(timer, 2457)
 		local obj = setmetatable(
 			{
-				--Maybe get fancy and insert a countdown object here
 				bar = bar,
 				timer = timer,
+				countdown = countdown,
 				owner = self
 			},
 			mt
