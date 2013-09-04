@@ -107,7 +107,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	ArrowOnBeam					= "Show DBM Arrow during $journal:6882 to indicate which direction to move",
+	ArrowOnBeam					= "Show DBM Arrow during $journal:6882 to indicate which direction to move"
 })
 
 ----------------

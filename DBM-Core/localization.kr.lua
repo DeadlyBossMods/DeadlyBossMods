@@ -1,7 +1,7 @@
 ﻿if (GetLocale() == "koKR") then
 
 DBM_CORE_NEED_SUPPORT				= "오류/건의사항은 법사세린-아즈샤라(everfinale@gmail.com) 또는 인벤 닉네임 다시날아 로 보내주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주시기 바랍니다."
-DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 표시되는 창에서 각 우두머리에 대한 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
+DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 나타나는 창에서 각 우두머리에 대한 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
 
 DBM_FORUMS_MESSAGE					= "오류나 잘못된 바를 발견하셨나요? 일부 전투에서 추가 알림, 특수 경고 또는 바가 있으면 좋을텐데라고 생각하셨나요?\n새로 개설된 Deadly Boss Mods 토론, 오류 제보 및 요청 게시판을 방문해 보세요. 주소는 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r 입니다. (링크를 클릭하신 후 주소를 복사하실 수 있습니다.)"
 DBM_FORUMS_COPY_URL_DIALOG			= "새로운 게시판을 방문해보세요.\r\n(Elitist Jerks에서 서비스를 제공합니다!)"
@@ -84,7 +84,7 @@ DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습�
 DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다.\n 최소 %d 버전 이상 업데이트 가능합니다. 가능한 최신 alpha 버전이나 안정화 버전으로 업데이트 하시기 바랍니다. 구 버전은 잘못되거나 미완성된 기능들이 있을 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 다운로드 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
-DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "새로운 버전이 발견되면 알림창을 표시합니다."
+DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "새로운 버전이 발견되면 알림창을 보입니다."
 DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전이 지나치게 오래되어 (%d 버전 가량) 업데이트 전까지 작동을 중지합니다. 이것은 오래되거나 호환되지 않는 기능이 작동하여 당신 또는 공격대원에게 잘못된 알림이 되지 않기 위한 조치입니다. 지금 즉시 최신 버전으로 업데이트 하여 주시기 바랍니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
@@ -105,10 +105,10 @@ DBM_CORE_RANGECHECK_SOUND_0			= "소리 없음"
 DBM_CORE_RANGECHECK_SOUND_1			= "기본 소리"
 DBM_CORE_RANGECHECK_SOUND_2			= "짜증나는 소리(-_-;)"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
-DBM_CORE_RANGECHECK_OPTION_FRAMES	= "창 표시 방법"
-DBM_CORE_RANGECHECK_OPTION_RADAR	= "아이콘으로 표시"
-DBM_CORE_RANGECHECK_OPTION_TEXT		= "글자로 표시"
-DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 표시"
+DBM_CORE_RANGECHECK_OPTION_FRAMES	= "창 보기 방법"
+DBM_CORE_RANGECHECK_OPTION_RADAR	= "아이콘으로 보기"
+DBM_CORE_RANGECHECK_OPTION_TEXT		= "글자로 보기"
+DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 보기"
 DBM_CORE_RANGERADAR_HEADER			= "거리 확인 (%dm)"
 DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "거리 이내 : %d명"
 
@@ -127,7 +127,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <sec>: <sec>초 후 풀링한다는 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
 	"/dbm arrow: DBM 화살표를 보여줌. 추가 도움말은 /dbm arrow help 를 입력",
 	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요청함 (출력형식: 던전이름, 던전 ID) (승급 권한 필요)",
-	"/dbm help: 이 도움말을 보여줌",
+	"/dbm help: 이 도움말을 보여줌"
 }
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
@@ -172,12 +172,12 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.targetcount	= "$spell:%s 대상 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell		= "$spell:%s 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.ends			= "$spell:%s 종료 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.fades		= "$spell:%s 사라짐 알림 보기"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "$spell:%s 남은 숫자 알림 보기"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전시 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.adds			= "$spell:%s 남은숫자 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast			= "$spell:%s 시전 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon			= "$spell:%s 이전에 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn		= "$spell:%s 이전에 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase		= "%s 단계 알림 보기"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase		= "%s 단계 전환 전에 알림 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase		= "%s 단계 이전에 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count		= "$spell:%s 알림 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack		= "$spell:%s 중첩 알림 보기"
 
@@ -190,7 +190,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS.dispel		= "%s : >%%s< - 해제!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.interrupt		= "%s : >%%s< - 차단!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.you			= "당신에게 %s"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.target		= "%s : >%%s<"
-DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "당신 근처에 %s (>%%s<)!"
+DBM_CORE_AUTO_SPEC_WARN_TEXTS.close			= "가까운 곳에 %s (>%%s<)!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.move			= "%s - 이동하세요!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.run			= "%s - 도망치세요!"
 DBM_CORE_AUTO_SPEC_WARN_TEXTS.cast			= "%s - 주문 시전 중지!"
@@ -206,15 +206,15 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS.soon		= "$spell:%s 이전에 특수 경고 보�
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.prewarn		= "$spell:%2$s 시전 %1$d초 전에 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.dispel		= "$spell:%s 해제 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.interrupt	= "$spell:%s 차단 특수 경고 보기"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you			= "$spell:%s 대상이 될 경우 특수 경고 보기"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target		= "$spell:%s 주문의 영향을 누군가 받은 경우 특수 경고 보기"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close		= "$spell:%s 대상이 근처에 있을 경우 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.you			= "$spell:%s 대상이 된 경우 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.target		= "$spell:%s 대상이 정해진 경우 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.close		= "$spell:%s 대상이 가까이 있을 경우 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.move		= "$spell:%s 이동 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run			= "$spell:%s 도망치기 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.cast		= "$spell:%s 주문 시전 중지 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.reflect 	= "$spell:%s 공격 중지 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.count		= "$spell:%s 특수 경고 보기"
-DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack		= "$spell:%2$s 주문이 %1$d 중첩 이상시 특수 경고 보기"
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS.stack		= "$spell:%2$s %1$d 중첩 이상시 특수 경고 보기"
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch		= "$spell:%s 대상 전환 특수 경고 보기"
 
 DBM_CORE_AUTO_TIMER_TEXTS.target			= "%s: >%%s<"
@@ -232,24 +232,24 @@ DBM_CORE_AUTO_TIMER_TEXTS.achievement		= "%s"
 DBM_CORE_AUTO_TIMER_OPTIONS.target			= "$spell:%s 약화효과 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast			= "$spell:%s 시전 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.active			= "$spell:%s 유지시간 바 보기"
-DBM_CORE_AUTO_TIMER_OPTIONS.fades			= "$spell:%s 효과가 사라지기 전까지 남은시간 바 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.fades			= "$spell:%s 남은시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cd				= "$spell:%s 대기시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdcount			= "$spell:%s 대기시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cdsource		= "$spell:%s 대기시간 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.next			= "다음 $spell:%s 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextcount		= "다음 $spell:%s 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.nextsource		= "다음 $spell:%s 바 보기"
-DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적을 위한 남은시간 바 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적까지 남은시간 바 보기"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 대상이 될 경우 별도 경고음 듣기"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 대상이 된 경우 별도 경고음 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초읽기 소리 듣기"
-DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 효과의 남은시간 초읽기 소리 듣기"
-DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 주문의 진행시간 초읽기 소리 듣기"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 될 경우 대화로 알리기"
+DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초읽기 소리 듣기"
+DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT		= "$spell:%s 진행시간 초읽기 소리 듣기"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 된 경우 대화로 알리기"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= UnitName("player").."에게 %s!"
-DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 주문에 대한 거리 창 표시(%1$sm)"
-DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 표시(%sm)"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 관련 거리 창 보기(%1$sm)"
+DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기(%sm)"
 
 
 -- New special warnings
@@ -268,15 +268,15 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow hide  화살표를 숨깁니다.",
 	"/dbm arrow move  화살표를 움직이도록 합니다.",
 	"/dbm arrow target 대상을 가리키는 화살표를 만듭니다.",
-	"/dbm arrow focus  주시대상을 가리키는 화살표를 만듭니다.",
+	"/dbm arrow focus  주시대상을 가리키는 화살표를 만듭니다."
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "최고 기록"
-DBM_SPEED_KILL_TIMER_OPTION	= "최고 기록을 바로 표시"
+DBM_SPEED_KILL_TIMER_OPTION	= "최고 기록을 바로 보기"
 DBM_SPEED_CLEAR_TIMER_TEXT	= "최고 기록"
 
 
-DBM_REQ_INSTANCE_ID_PERMISSION		= "%s 님이 당신의 공격대 귀속 정보를 요청합니다.\n%s 님의 요청을 수락하시겠습니까? 정보 확인을 위해 이 메세지가 여러번 표시 될 수도 있습니다."
+DBM_REQ_INSTANCE_ID_PERMISSION		= "%s 님이 당신의 공격대 귀속 정보를 요청합니다.\n%s 님의 요청을 수락하시겠습니까? 정보 확인이 완료될때 까지 이 메세지가 여러번 보일 수도 있습니다."
 DBM_ERROR_NO_RAID					= "이 기능을 사용하기 위해서는 공격대에 속해 있어야 합니다."
 DBM_INSTANCE_INFO_REQUESTED			= "공격대원의 귀속 정보를 요청합니다.\n모든 공격대원이 요청 메세지에 응답하기 전까지 약간의 시간이 소요됩니다."
 DBM_INSTANCE_INFO_STATUS_UPDATE		= "%d명이 응답했습니다. (총 %d명): %d명이 요청을 수락했으며, %d명은 요청을 거부했습니다. (응답 대기 시간 %d초 남음)"

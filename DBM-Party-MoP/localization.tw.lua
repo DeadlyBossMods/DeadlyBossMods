@@ -90,7 +90,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(685)
 
 L:SetMiscLocalization({
-	Kill			= "只要你們心中還存有暴力，我就..會回來...",
+	Kill			= "只要你們心中還存有暴力，我就..會回來..."
 })
 
 -----------------------
@@ -271,7 +271,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "當$spell:114487在你附近時顯示DBM箭頭",
+	KickArrow	= "當$spell:114487在你附近時顯示DBM箭頭"
 })
 
 -----------------------

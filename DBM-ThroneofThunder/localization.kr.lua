@@ -11,7 +11,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnWaterMove	= "$spell:138470 위에 있을 때 특수 경고 보기<br/>($spell:137313 시전 직전 또는 $spell:138732 약화 효과 시간이 얼마 안 남았을때)"
+	specWarnWaterMove	= "$spell:138470 위에 있을 때 특수 경고 보기<br/>($spell:137313 이전 또는 $spell:138732 시간이 얼마 안 남았을때)"
 })
 
 --------------
@@ -54,8 +54,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	PHealthFrame		= "우두머리 체력 바 사용시 $spell:136442 사라짐까지 남은 체력도 함께 보기",
-	AnnounceCooldowns	= "공격대 생존기 사용을 위해 $spell:137166 시전 횟수를 음성으로 듣기<br/>(카즈라진의 빙의가 풀리면 초기화됨)"
+	PHealthFrame		= "우두머리 체력 바 사용시 $spell:136442 사라짐까지 남은체력도 함께 보기",
+	AnnounceCooldowns	= "공격대 생존기 사용을 위해 $spell:137166 횟수를 소리로 듣기<br/>(카즈라진의 빙의가 풀리면 초기화됨)"
 })
 
 ------------
@@ -69,11 +69,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalShell	= "$spell:137633 효과가 없고, 체력이 90% 이상인 경우 특수 경고 보기",
-	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창에서 보기",
+	specWarnCrystalShell	= "$spell:137633 효과가 없고 체력이 90% 이상인 경우 특수 경고 보기",
+	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창으로 보기",
 	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정",
-	ClearIconOnTurtles		= "$journal:7129이 $spell:133971의 영향을 받은 경우 전술 목표 아이콘 지우기",
-	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 시전 횟수를 음성으로 듣기"
+	ClearIconOnTurtles		= "$journal:7129이 $spell:133971를 얻은 경우 전술 목표 아이콘 지우기",
+	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 횟수를 소리로 듣기"
 })
 
 L:SetMiscLocalization({
@@ -91,13 +91,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	timerBreaths			= "다음 숨결 바 보기",
-	AnnounceCooldowns		= "공격대 생존기 사용을 위해 광란/확산 시전 횟수를 음성으로 듣기",
+	AnnounceCooldowns		= "공격대 생존기 사용을 위해 광란/확산 횟수를 소리로 듣기",
 	Never					= "알리지 않음",
 	Every					= "횟수 초기화 하지 않음",
-	EveryTwo				= "2번 시전후 초기화",
-	EveryThree				= "3번 시전후 초기화",
-	EveryTwoExcludeDiff		= "2번 시전후 초기화(확산 제외)",
-	EveryThreeExcludeDiff	= "3번 시전후 초기화(확산 제외)"
+	EveryTwo				= "2번 후 초기화",
+	EveryThree				= "3번 후 초기화",
+	EveryTwoExcludeDiff		= "2번 후 초기화(확산 제외)",
+	EveryThreeExcludeDiff	= "3번 후 초기화(확산 제외)"
 })
 
 L:SetMiscLocalization({
@@ -121,8 +121,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShowNestArrows		= "활성화된 둥지에 화살표 표시",
-	Never				= "표시안함",
+	ShowNestArrows		= "활성화된 둥지쪽으로 화살표 보기",
+	Never				= "보이지 않음",
 	Northeast			= "파랑 - 아래/위 북동쪽",
 	Southeast			= "초록 - 아래/위 남동쪽",
 	Southwest			= "보라/빨강 - 아래 남서쪽 & 위 남서쪽(25인)/위 중앙(10인)",
@@ -163,11 +163,11 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBeam					= "광선 대상 알림 보기",
-	warnAddsLeft				= "안개도깨비 남은 횟수 알림 보기",
+	warnAddsLeft				= "안개도깨비 남은 횟수알림 보기",
 	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
-	ArrowOnBeam					= "$journal:6882 시전 중에 이동해야 될 방향을 DBM 화살표로 보기",
-	InfoFrame					= "$spell:133795 중첩 정보 창 보기",
-	SetParticle					= "전투 시작시 입자 밀도를 최저로 설정하기<br/>(전투 종료후 원래 설정이 복구됩니다.)"
+	ArrowOnBeam					= "$journal:6882 활성화 중에 이동해야 될 방향을 DBM 화살표로 보기",
+	InfoFrame					= "$spell:133795 중첩을 정보 창으로 보기",
+	SetParticle					= "전투 시작시 입자 밀도를 최저로 설정하기<br/>(전투 종료 후 원상태로 복구됨)"
 })
 
 L:SetMiscLocalization({
@@ -216,7 +216,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	RangeFrame		= "전투 진영에 따라 거리 창 보기(10m)<br/>(일정 인원 이상이 뭉쳐 있을 때만 보이는 똑똑한 거리 창 입니다.)",
-	InfoFrame		= "$spell:136193 주문에 영향을 받은 대상을 정보 창에서 보기"
+	InfoFrame		= "$spell:136193 대상을 정보 창으로 보기"
 })
 
 -------------------
@@ -257,8 +257,8 @@ L:SetOptionLocalization({
 	specWarnIntermissionSoon	= "사잇단계 진입 전에 특수 경고 보기",
 	warnDiffusionChainSpread	= "$spell:135991 전이 대상 알림 보기",
 	timerConduitCD				= "최초 도관 기술 대기시간 바 보기",
-	StaticShockArrow			= "$spell:135695 주문의 영향을 누군가 받은 경우 DBM 화살표 보기",
-	OverchargeArrow				= "$spell:136295 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
+	StaticShockArrow			= "$spell:135695 대상이 정해진 경우 DBM 화살표 보기",
+	OverchargeArrow				= "$spell:136295 대상이 정해진 경우 DBM 화살표 보기"
 })
 
 L:SetMiscLocalization({
@@ -275,7 +275,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnUnstablVitaJump		= "$spell:138297 주문이 당신에게 전이된 경우 특수 경고 보기",
+	specWarnUnstablVitaJump		= "$spell:138297 전이 대상이 당신이 된 경우 특수 경고 보기",
 	SetIconsOnVita				= "$spell:138297 대상과 그 대상에서 가장 먼 공격대원에게 전술 목표 아이콘 설정"
 })
 

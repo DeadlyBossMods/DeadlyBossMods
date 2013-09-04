@@ -108,7 +108,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetWarningLocalization({
-	warnAmberTrap	= "Прогресс создания ловушки: (%d/5)",
+	warnAmberTrap	= "Прогресс создания ловушки: (%d/5)"
 })
 
 L:SetOptionLocalization({

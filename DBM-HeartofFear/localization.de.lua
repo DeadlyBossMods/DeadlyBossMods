@@ -108,7 +108,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetWarningLocalization({
-	warnAmberTrap		= "Bernfallenbau: %d/5",
+	warnAmberTrap		= "Bernfallenbau: %d/5"
 })
 
 L:SetOptionLocalization({

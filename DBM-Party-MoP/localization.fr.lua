@@ -95,7 +95,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(685)
 
 L:SetMiscLocalization({
-	Kill		= "Tant que la violence sera tapie dans vos cœurs... je... reviendrai...",
+	Kill		= "Tant que la violence sera tapie dans vos cœurs... je... reviendrai..."
 })
 
 -----------------------
@@ -276,7 +276,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "Voir la flèche DBM lorsque $spell:114487 est près de vous",
+	KickArrow	= "Voir la flèche DBM lorsque $spell:114487 est près de vous"
 })
 
 -----------------------

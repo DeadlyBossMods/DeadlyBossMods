@@ -126,7 +126,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <sec>: Starts a pull timer for <sec> seconds. Gives all raid members with DBM a pull timer (requires leader/promoted status).",
 	"/dbm arrow: shows the DBM arrow, see /dbm arrow help for details.",
 	"/dbm lockout: asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires leader/promoted status).",
-	"/dbm help: Shows this message.",
+	"/dbm help: Shows this message."
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
@@ -282,7 +282,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow <x> <y>  creates an arrow that points to a specific locataion (0 < x/y < 100)",
 	"/dbm arrow <player>  creates and arrow that points to a specific player in your party or raid",
 	"/dbm arrow hide  hides the arrow",
-	"/dbm arrow move  makes the arrow movable",
+	"/dbm arrow move  makes the arrow movable"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Record Victory"

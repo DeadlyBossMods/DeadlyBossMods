@@ -8,14 +8,14 @@ L= DBM:GetModLocalization(679)
 
 L:SetWarningLocalization({
 	SpecWarnOverloadSoon		= "곧 %s - 생존기 준비 또는 수호자 이동!",
-	specWarnBreakJasperChains	= "벽옥 석화 푸세요!"
+	specWarnBreakJasperChains	= "벽옥 석화 해제 가능 - 다른 대상과 멀리 떨어지세요!"
 })
 
 L:SetOptionLocalization({
 	SpecWarnOverloadSoon		= "석화중이지 않은 수호자가 과부화되려고 할 때 특수 경고 보기",
-	specWarnBreakJasperChains	= "$spell:130395 주문을 안전하게 해제할 수 있을 때 특수 경고 보기",
-	ArrowOnJasperChains			= "$spell:130395 주문의 영향을 받은 경우 DBM 화살표 보기",
-	InfoFrame					= "수호자 기력, 현재 석화상태, 석화 진행중인 수호자에 대한 정보 창 보기"
+	specWarnBreakJasperChains	= "$spell:130395를 안전하게 해제할 수 있을 때 특수 경고 보기",
+	ArrowOnJasperChains			= "$spell:130395 대상이 된 경우 DBM 화살표 보기",
+	InfoFrame					= "수호자 기력, 현재 석화상태, 석화 진행중인 수호자를 정보 창으로 보기"
 })
 
 L:SetMiscLocalization({
@@ -35,7 +35,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase			= "단계 전환 알림 보기",
-	specWarnBarrierNow	= "$spell:115817을 사용해야 할 때 특수 경고 보기(무작위 공격대에서만)",
+	specWarnBarrierNow	= "$spell:115817을 사용해야 할 때 특수 경고 보기(무작위 공격대만)",
 	RangeFrame			= "지팡이의 혼 단계에서" .. DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6")
 })
 
@@ -73,7 +73,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	DarknessSoon		= "$spell:117697 이전에 초읽기 알림 보기(5초 전부터)",
-	timerUSRevive		= "$spell:117506 재형성까지 남은시간 바 보기",
+	timerUSRevive		= "$spell:117506 재형성 바 보기"
 })
 
 
@@ -91,8 +91,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDespawnFloor		= "가운데 바닥이 무너지기 전에 특수 경고 보기",
-	timerDespawnFloor			= "가운데 바닥이 무너지기 전까지 남은 시간 바 보기",
+	specWarnDespawnFloor		= "가운데 바닥이 사라짐 이전에 특수 경고 보기",
+	timerDespawnFloor			= "가운데 바닥이 사라짐 바 보기",
 	SetIconOnCreature			= "$journal:6193에 전술 목표 아이콘 설정"
 })
 
@@ -103,8 +103,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(677)
 
 L:SetOptionLocalization({
-	InfoFrame		= "$spell:116525 주문의 영향을 받은 대상을 정보 창에서 보기",
-	CountOutCombo	= "$journal:5673 시전 횟수를 초읽기 소리로 읽기<br/>알림: 초 읽기 소리가 Corsica (Female)로 설정되어 있을때만 작동합니다.",
+	InfoFrame		= "$spell:116525 대상을 정보 창으로 보기",
+	CountOutCombo	= "$journal:5673 횟수를 소리로 듣기<br/>알림: 초읽기 소리가 Corsica (Female)로 설정되어 있을때만 작동합니다.",
 	ArrowOnCombo	= "$journal:5673 도중 이동해야 할 방향을 DBM 화살표로 보기<br/>알림: 방어전담이 우두머리 앞에 있고 나머지 공격대원이 뒤에 있을때를 기준으로 합니다."
 })
 

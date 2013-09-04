@@ -183,7 +183,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(820)
 
 L:SetWarningLocalization({
-	warnDebuffCount				= "Mutaciones: %d/5 buenas, %d malas",
+	warnDebuffCount				= "Mutaciones: %d/5 buenas, %d malas"
 })
 
 L:SetOptionLocalization({
