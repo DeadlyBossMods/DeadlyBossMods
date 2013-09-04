@@ -203,7 +203,7 @@ end
 	for i = 1, 5 do
 		local unitID = "boss"..i
 		if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71161 then
-			if UnitExists(unitID.."target") and not mod:IsTanking(uId, unitID) then
+			if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
 				mod:Unschedule(DFAScan)
 				local targetname = DBM:GetUnitFullName(unitID.."target")
 				warnDeathFromAbove:Show(targetname)
