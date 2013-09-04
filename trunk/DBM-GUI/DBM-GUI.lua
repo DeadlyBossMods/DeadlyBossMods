@@ -91,7 +91,7 @@ do
 	--  arg1 = Text for the UI Button
 	--  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
 	--
-	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub, sortID)
+	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub, sortID, DisplayName)
 		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
@@ -100,6 +100,7 @@ do
 		panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
 
 		panel.name = FrameName
+		panel.displayname = DisplayName or FrameName
 		panel.showsub = (showsub or showsub == nil)
 
 		if (sortID or 0) > 0 then
@@ -971,7 +972,7 @@ do
 			button.toggle:Hide()
 		end
 
-		button.text:SetText(element.name)
+		button.text:SetText(element.displayname)
 		button.text:Show()
 	end
 
@@ -1059,7 +1060,7 @@ do
 		end
 		container.displayedFrame = frame
 
-		DBM_GUI_OptionsFramePanelContainerHeaderText:SetText( frame.name )
+		DBM_GUI_OptionsFramePanelContainerHeaderText:SetText( frame.displayname )
 
 		local mymax = (frame.actualHeight or frame:GetHeight()) - container:GetHeight()
 
@@ -2716,6 +2717,7 @@ do
 	end
 
 	local Categories = {}
+	local subTabId = 0
 	function DBM_GUI:UpdateModList()
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
@@ -2738,7 +2740,7 @@ do
 
 			if not addon.panel then
 				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
-				addon.panel = Categories[addon.category]:CreateNewPanel(addon.name or "Error: X-DBM-Mod-Name", nil, false)
+				addon.panel = Categories[addon.category]:CreateNewPanel(addon.modId or "Error: No-modId", nil, false, nil, addon.name)
 
 				if not IsAddOnLoaded(addon.modId) then
 					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
@@ -2760,7 +2762,8 @@ do
 
 				for k,v in pairs(addon.subTabs) do
 					if not addon.subPanels[k] then
-						addon.subPanels[k] = addon.panel:CreateNewPanel(v or "Error: X-DBM-Mod-Name", nil, false)
+						subTabId = subTabId + 1
+						addon.subPanels[k] = addon.panel:CreateNewPanel("SubTab"..subTabId, nil, false, nil, v)
 						CreateBossModTab(addon, addon.subPanels[k], k)
 					end
 				end
@@ -2771,9 +2774,9 @@ do
 				if mod.modId == addon.modId then
 					if not mod.panel and (not addon.subTabs or (addon.subPanels and addon.subPanels[mod.subTab])) then
 						if addon.subTabs and addon.subPanels[mod.subTab] then
-							mod.panel = addon.subPanels[mod.subTab]:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
+							mod.panel = addon.subPanels[mod.subTab]:CreateNewPanel(mod.id or "Error: DBM.Mods", nil, nil, nil, mod.localization.general.name)
 						else
-							mod.panel = addon.panel:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
+							mod.panel = addon.panel:CreateNewPanel(mod.id or "Error: DBM.Mods", nil, nil, nil, mod.localization.general.name)
 						end
 						DBM_GUI:CreateBossModPanel(mod)
 					end
