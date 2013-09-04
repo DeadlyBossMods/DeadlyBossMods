@@ -5723,27 +5723,33 @@ do
 	local enragePrototype = {}
 	local mt = {__index = enragePrototype}
 
+	local function countDownTextDelay()
+		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, 5, 5)
+	end
+
 	function enragePrototype:Start(timer)
 		timer = timer or self.timer or 600
 		timer = timer <= 0 and self.timer - timer or timer
 		self.bar:SetTimer(timer)
 		self.bar:Start()
-		if warning1 then
+		if self.warning1 then
 			if timer > 660 then self.warning1:Schedule(timer - 600, 10, DBM_CORE_MIN) end
 			if timer > 300 then self.warning1:Schedule(timer - 300, 5, DBM_CORE_MIN) end
 			if timer > 180 then self.warning2:Schedule(timer - 180, 3, DBM_CORE_MIN) end
 		end
-		if warning2 then
+		if self.warning2 then
 			if timer > 60 then self.warning2:Schedule(timer - 60, 1, DBM_CORE_MIN) end
 			if timer > 30 then self.warning2:Schedule(timer - 30, 30, DBM_CORE_SEC) end
 			if timer > 10 then self.warning2:Schedule(timer - 10, 10, DBM_CORE_SEC) end
 		end
-		if countdown then
+		if self.countdown then
 			if not DBM.Options.DontPlayPTCountdown then
 				self.countdown:Start(timer)
 			end
 			if not DBM.Options.DontShowPTCountdownText then
-				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
+				if timer > 5 then
+					DBM:Schedule(timer-5, countDownTextDelay)
+				end
 			end
 		end
 	end
@@ -5761,6 +5767,7 @@ do
 			self.warning2:Cancel()
 		end
 		if countdown then
+			DBM:Unschedule(countDownTextDelay)
 			self.countdown:Cancel()
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 		end
@@ -5789,7 +5796,7 @@ do
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
 		timer = timer or 10
 		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or 2457, nil, "timer_combat")
-		local countdown = self:NewCountdown(timer, 2457)
+		local countdown = self:NewCountdown(0, 0, nil, nil, nil, true)
 		local obj = setmetatable(
 			{
 				bar = bar,
@@ -5801,7 +5808,6 @@ do
 		)
 		return obj
 	end
-
 end
 
 
