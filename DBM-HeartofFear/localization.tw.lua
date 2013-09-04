@@ -109,7 +109,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetWarningLocalization({
-	warnAmberTrap		= "琥珀陷阱:(%d/5)",
+	warnAmberTrap		= "琥珀陷阱:(%d/5)"
 })
 
 L:SetOptionLocalization({

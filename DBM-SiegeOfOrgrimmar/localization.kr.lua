@@ -17,7 +17,7 @@ L= DBM:GetModLocalization(849)
 L= DBM:GetModLocalization(866)
 
 L:SetOptionLocalization({
-	InfoFrame			= "$journal:8252에 대한 정보 창 보기"
+	InfoFrame			= "$journal:8252에 대한 정보를 정보 창으로 보기"
 })
 
 L:SetMiscLocalization({
@@ -30,7 +30,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(867)
 
 L:SetOptionLocalization({
-	InfoFrame			= "$journal:8255에 대한 정보 창 보기"
+	InfoFrame			= "$journal:8255에 대한 정보를 정보 창으로 보기"
 })
 
 --------------
@@ -137,7 +137,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "활성화된 용장에게 당신이 취약할 경우 특수 경고 보기",
+	specWarnActivatedVulnerable		= "활성화된 용장에게 취약할 경우 특수 경고 보기",
 	specWarnCriteriaLinked			= "$spell:144095에 연결된 경우 특수 경고 보기"
 })
 

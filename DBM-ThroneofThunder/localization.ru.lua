@@ -55,7 +55,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	PHealthFrame		= "Показывать оставшееся здоровье босса до спадения $spell:136442<br/>(Требуется включить окно отображения здоровья босса)",
-	AnnounceCooldowns	= "Отсчитывать (до 3) какой сейчас каст $spell:137166 для рейдовых кулдаунов",
+	AnnounceCooldowns	= "Отсчитывать (до 3) какой сейчас каст $spell:137166 для рейдовых кулдаунов"
 })
 
 ------------
@@ -276,7 +276,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnUnstablVitaJump	= "Спец-предупреждение когда $spell:138297 перепрыгивает на вас",
-	SetIconsOnVita			= "Устанавливать метки на игрока с дебаффом $spell:138297 и самого дальнего от него игрока",
+	SetIconsOnVita			= "Устанавливать метки на игрока с дебаффом $spell:138297 и самого дальнего от него игрока"
 })
 
 L:SetMiscLocalization({

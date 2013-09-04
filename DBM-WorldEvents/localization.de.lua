@@ -50,7 +50,7 @@ L:SetOptionLocalization({
 	specWarnAttack	= "Spezialwarnung, wenn Ahune verwundbar wird",
 	SubmergTimer	= "Zeige Zeit bis Abtauchen",
 	EmergeTimer		= "Zeige Zeit bis Auftauchen",
-	TimerCombat		= "Zeige Zeit bis Kampfbeginn",
+	TimerCombat		= "Zeige Zeit bis Kampfbeginn"
 })
 
 L:SetMiscLocalization({

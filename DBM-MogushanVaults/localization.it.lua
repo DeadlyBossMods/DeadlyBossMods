@@ -12,7 +12,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnOverloadSoon	= "Mostra un avviso speciale prima del Sovraccarico",
+	SpecWarnOverloadSoon	= "Mostra un avviso speciale prima del Sovraccarico"
 })
 
 L:SetMiscLocalization({

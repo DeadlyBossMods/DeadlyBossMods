@@ -223,7 +223,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnMatterSwapped	= "Announce targets swapped by $spell:138618",
-	SetIconOnFont           = DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(138707),
+	SetIconOnFont           = DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(138707)
 })
 
 L:SetMiscLocalization({

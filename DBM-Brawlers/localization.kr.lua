@@ -18,10 +18,10 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnQueuePosition	= "대기 인원 변경시 당신이 몇 번째 순위인지 알림 보기",
-	specWarnYourNext	= "다음 차례가 당신 일 경우 특수 경고 보기",
+	specWarnYourNext	= "다음 차례가 당신일 경우 특수 경고 보기",
 	specWarnYourTurn	= "당신 차례가 오면 특수 경고 보기",
-	SpectatorMode		= "관전중 일때도 알림/바 보기<br/>(개별 특수 경고는 관전자에게 보이지 않습니다.)",
-	SpeakOutQueue		= "대기 인원 변경시 당신이 몇 번째 순위인지 음성으로 듣기"
+	SpectatorMode		= "관전중 일때도 알림/바 보기(개별 특수 경고 제외)",
+	SpeakOutQueue		= "대기 인원 변경시 당신의 순위를 소리로 듣기"
 })
 
 L:SetMiscLocalization({
@@ -140,7 +140,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	ArrowOnBoxing	= "$spell:140868, $spell:140862, $spell:140886 주문이 시전 중일때 DBM 화살표 보기"
+	ArrowOnBoxing	= "$spell:140868, $spell:140862, $spell:140886 활성화 중일때 DBM 화살표 보기"
 })
 
 -------------
@@ -158,7 +158,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnRPS			= "$spell:141206 진행 중일때 무엇을 내야할지 특수 경고 보기",
-	SpeakOutStrikes		= "$spell:141190 주문의 공격 횟수를 음성으로 듣기"
+	SpeakOutStrikes		= "$spell:141190 공격 횟수를 소리로 듣기"
 })
 
 L:SetMiscLocalization({

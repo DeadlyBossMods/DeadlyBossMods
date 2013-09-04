@@ -103,7 +103,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(685)
 
 L:SetMiscLocalization({
-	Kill		= "So long has violence lurks in your heart...I will return...",
+	Kill		= "So long has violence lurks in your heart...I will return..."
 })
 
 -----------------------
@@ -289,7 +289,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "Show DBM arrow when $spell:114487 is near you",
+	KickArrow	= "Show DBM arrow when $spell:114487 is near you"
 })
 
 -----------------------

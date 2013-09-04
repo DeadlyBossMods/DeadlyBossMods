@@ -127,7 +127,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需要團隊隊長或助理權限）。",
 	"/dbm arrow: 顯示DBM箭頭, 輸入 /dbm arrow help 獲得更多訊息。",
 	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需要團隊隊長或助理權限)。",
-	"/dbm help：顯示可用命令的說明。",
+	"/dbm help：顯示可用命令的說明。"
 }
 
 DBM_ERROR_NO_PERMISSION				= "無權進行此操作。"
@@ -281,7 +281,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(0 < x/y < 100)",
 	"/dbm arrow <玩家>  建立並箭頭指向你的隊伍或團隊中特定的玩家",
 	"/dbm arrow hide  隱藏箭頭",
-	"/dbm arrow move  可移動箭頭",
+	"/dbm arrow move  可移動箭頭"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "勝利紀錄"

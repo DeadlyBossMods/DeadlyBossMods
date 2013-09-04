@@ -116,7 +116,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetWarningLocalization({
-	warnAmberTrap		= "Progression du Piège d'ambre: (%d/5)",
+	warnAmberTrap		= "Progression du Piège d'ambre: (%d/5)"
 })
 
 L:SetOptionLocalization({

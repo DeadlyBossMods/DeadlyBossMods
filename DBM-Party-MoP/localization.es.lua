@@ -90,7 +90,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(685)
 
 L:SetMiscLocalization({
-	Kill		= "Siempre que la violencia anide en vuestros corazones... volveré...",
+	Kill		= "Siempre que la violencia anide en vuestros corazones... volveré..."
 })
 
 -----------------------
@@ -271,7 +271,7 @@ L= DBM:GetModLocalization(688)
 L= DBM:GetModLocalization(671)
 
 L:SetOptionLocalization({
-	KickArrow	= "Mostrar flecha cuando $spell:114487 está cerca de ti",
+	KickArrow	= "Mostrar flecha cuando $spell:114487 está cerca de ti"
 })
 
 -----------------------

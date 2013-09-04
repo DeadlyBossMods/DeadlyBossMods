@@ -15,10 +15,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnEcho			= "메아리 생성시 알림 보기",
-	warnEchoDown		= "메아리 처치시 알림 보기",
-	specwarnPlatform	= "조르로크가 단상 이동시 특수 경고 보기",
-	ArrowOnAttenuation	= "$spell:127834 시전 중에 이동해야 될 방향을 DBM 화살표로 보기"
+	warnEcho			= "메아리 생성 알림 보기",
+	warnEchoDown		= "메아리 처치 알림 보기",
+	specwarnPlatform	= "단상 이동 특수 경고 보기",
+	ArrowOnAttenuation	= "$spell:127834 활성화 중에 이동해야 될 방향을 DBM 화살표로 보기"
 })
 
 L:SetMiscLocalization({
@@ -32,7 +32,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(744)
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "$spell:122949 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
+	UnseenStrikeArrow	= "$spell:122949 대상이 정해진 경우 DBM 화살표 보기"
 })
 
 -------------------------------
@@ -84,18 +84,18 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnReshapeLifeTutor		= "돌연변이 피조물 탑승시 피조물 주문에 대한 설명 보기",
-	warnAmberExplosion			= "$spell:122398 시전시 알림 보기(시전자 포함)",
-	warnAmberExplosionAM		= "호박석 괴수가 $spell:122402 주문을 시전할 때 개인 차단 알림 보기",
-	warnInterruptsAvailable		= "누가 $spell:122402 주문을 차단할 수 있는지에 대한 알림 보기",
+	warnReshapeLifeTutor		= "돌연변이 피조물 탑승시 피조물 능력에 대한 설명 보기",
+	warnAmberExplosion			= "$spell:122398 시전 알림 보기(당신 포함)",
+	warnAmberExplosionAM		= "호박석 괴수가 $spell:122402을 시전할 때 개인 차단 알림 보기",
+	warnInterruptsAvailable		= "누가 $spell:122402을 차단할 수 있는지에 대한 알림 보기",
 	warnWillPower				= "의지력이 80, 50, 30, 10, 4 일때 알림 보기",
 	specwarnWillPower			= "피조물 탑승 도중 의지력이 낮을 때 특수 경고 보기",
-	specwarnAmberExplosionYou	= "당신의 피조물이 $spell:122402 주문을 시전할때 차단 특수 경고 보기",
-	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402 주문을 시전할때 차단 특수 경고 보기",
-	specwarnAmberExplosionOther	= "탑승자가 없는 피조물이 $spell:122398 주문을 시전할때 차단 특수 경고 보기",
+	specwarnAmberExplosionYou	= "당신의 피조물이 $spell:122402을 시전할때 차단 특수 경고 보기",
+	specwarnAmberExplosionAM	= "호박석 괴수가 $spell:122402을 시전할때 차단 특수 경고 보기",
+	specwarnAmberExplosionOther	= "탑승자가 없는 피조물이 $spell:122398을 시전할때 차단 특수 경고 보기",
 	timerAmberExplosionAMCD		= "호박석 괴수의 다음 $spell:122402 바 보기",
-	InfoFrame					= "의지력 정보 창 보기",
-	FixNameplates				= "피조물 탑승시 이름표 겹침 기능 끄기<br/>(전투 종료시에 원래 설정대로 돌아감)"
+	InfoFrame					= "의지력 정보를 정보 창으로 보기",
+	FixNameplates				= "피조물 탑승시 이름표 겹침 기능 끄기<br/>(전투 종료 후 원래대로 복구됨)"
 })
 
 L:SetMiscLocalization({
@@ -108,12 +108,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(743)
 
 L:SetWarningLocalization({
-	warnAmberTrap		= "호박석 덪 생성중 (%d/5)",
+	warnAmberTrap		= "호박석 덪 생성중 (%d/5)"
 })
 
 L:SetOptionLocalization({
 	warnAmberTrap		= "$spell:125826 생성 과정 알림 보기", 
-	InfoFrame			= "$spell:125390 주문의 영향을 받은 대상을 정보 창에서 보기"
+	InfoFrame			= "$spell:125390 대상을 정보 창으로 보기"
 })
 
 L:SetMiscLocalization({
@@ -131,5 +131,5 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	UnseenStrikeArrow	= "$spell:122949 주문의 영향을 누군가 받은 경우 DBM 화살표 보기"
+	UnseenStrikeArrow	= "$spell:122949 대상이 정해진 경우 DBM 화살표 보기"
 })

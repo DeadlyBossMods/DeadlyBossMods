@@ -103,7 +103,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <sec> : lance un délai de pull de <sec> secondes. Donne à tous les membres du raid ayant DBM ce délai de pull (nécessite d'être chef du raid ou assistant).",
 	"/dbm arrow : affiche la flèche DBM, voir /dbm arrow help pour les détails.",
 	"/dbm lockout : demande aux membres du raid leurs verrouillages actuels d'instance de raid (aliases : lockouts, ids) (nécessite d'être chef du raid ou assistant).",
-	"/dbm help : affiche ce message.",
+	"/dbm help : affiche ce message."
 }
 
 DBM_ERROR_NO_PERMISSION				= "Vous n'avez pas la permission requise pour faire cela."
@@ -230,7 +230,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow <x> <y>  créée une flèche qui pointe vers une position spécifique (0 < x/y < 100)",
 	"/dbm arrow <player>  créée une flèche qui pointe vers un joueur spécifique de votre groupe ou raid",
 	"/dbm arrow hide  masque la flèche",
-	"/dbm arrow move  rend la flèche déplaçable",
+	"/dbm arrow move  rend la flèche déplaçable"
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Record à battre"

@@ -92,7 +92,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(685)
 
 L:SetMiscLocalization({
-	Kill		= "So lange die Gewalt in Euren Herzen wohnt... werde ich... zurückkehren...",
+	Kill		= "So lange die Gewalt in Euren Herzen wohnt... werde ich... zurückkehren..."
 })
 
 -----------------------
