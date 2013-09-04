@@ -199,7 +199,7 @@ local function hideRangeFrame()
 end
 
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
---[[local function DFAScan()
+local function DFAScan()
 	for i = 1, 5 do
 		local unitID = "boss"..i
 		if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71161 then
@@ -227,7 +227,7 @@ end
 			return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
 		end
 	end
-end--]]
+end
 
 local function CheckBosses(GUID)
 	local vulnerable = false
@@ -242,7 +242,7 @@ local function CheckBosses(GUID)
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(UnitGUID(unitID))
 			if cid == 71161 then--Kil'ruk the Wind-Reaver
---				mod:Schedule(24, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
+				mod:Schedule(24, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
 				if UnitDebuff("player", GetSpellInfo(142931)) then vulnerable = true end
@@ -417,9 +417,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142528 then
 		warnToxicInjection:Show()
 		timerToxicCatalystCD:Start()
---[[	elseif args.spellId == 142232 then
+	elseif args.spellId == 142232 then
 		self:Unschedule(DFAScan)
-		self:Schedule(17, DFAScan)--]]
+		self:Schedule(17, DFAScan)
 	end
 end
 
@@ -565,7 +565,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
---		self:Unschedule(DFAScan)
+		self:Unschedule(DFAScan)
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.KilrukFlavor, "SAY")
