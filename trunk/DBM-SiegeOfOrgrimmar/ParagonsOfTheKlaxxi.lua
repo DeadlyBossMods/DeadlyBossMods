@@ -295,7 +295,7 @@ end
 --^don't let above fool you, not all of the paragons fire this spell!!! that is why we MUST use IEEU
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	self:Unschedule(CheckBosses)
-	self:Schedule(0.2, CheckBosses)--Delay check to make sure we run function only once on pull
+	self:Schedule(0.5, CheckBosses)--Delay check to make sure we run function only once on pull
 end
 
 function mod:SPELL_CAST_START(args)

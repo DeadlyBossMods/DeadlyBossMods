@@ -5179,6 +5179,9 @@ do
 		if optionId then
 			obj.option = optionId
 			self:AddSpecialWarningOption(optionId, optionDefault, runSound, "announce")
+		else--Still need to create default sounds even if we don't create an option for them
+			self.Options[optionId] = (optionDefault == nil) or optionDefault
+			self.Options[optionId .. "SpecialWarningSound"] = runSound or "Sound\\Spells\\PVPFlagTaken.ogg"
 		end
 		tinsert(self.specwarns, obj)
 		return obj
