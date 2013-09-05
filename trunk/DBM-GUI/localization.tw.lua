@@ -194,8 +194,8 @@ L.SpamBlockNoInfoFrame			= "不顯示訊息框架"
 
 L.Area_PullTimer				= "開怪計時器過濾選項"
 L.DontShowPT					= "不要顯示開怪倒數計時條"
-L.DontShowPTCountdownText		= "不要顯示開怪倒數文字"
-L.DontPlayPTCountdown			= "不要使用開怪倒數音效"
+L.DontShowPTCountdownText		= "不要顯示開怪/開戰倒數文字"
+L.DontPlayPTCountdown			= "不要使用開怪/開戰倒數音效"
 L.DontShowPTText				= "不要顯示開怪提示文字"
 L.DontShowPTNoID				= "阻擋沒有區域ID的開怪倒數計時條"
 
