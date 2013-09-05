@@ -414,6 +414,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerWindStorm:Schedule(70)
 		timerWindStormCD:Start()
 	elseif spellId == 136146 and self:AntiSpam(2, 5) then
+		if phase < 4 then--Shit broke, which happens sometimes
+			phase = 4
+			timerThrowSpearCD:Cancel()
+			self:Unschedule(checkSpear)
+		end
 		fistSmashCount = fistSmashCount + 1
 		warnFistSmash:Show(fistSmashCount)
 		specWarnFistSmash:Show()
