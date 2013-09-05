@@ -103,8 +103,8 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "Module 1's all prepared for system reset.",
-	Victory	= "Module 2's all prepared for system reset"
+	Module1 = "Первый модуль готов к перезагрузке системы.",
+	Victory	= "Второй модуль готов к перезагрузке системы."
 })
 
 ---------------------------
