@@ -130,8 +130,8 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(setToBlowTargets)
-	timerArmageddonCD:Start(167.5-delay)--May variate by 1 second, my world state stata is showing osmetimes it's 167 and somtimes it's 168 when IEEU fires. may have to just do shitty world state stuff to make it more accurate
-	countdownArmageddon:Start(167.5-delay)
+	timerArmageddonCD:Start(267.5-delay)--May variate by 1 second, my world state stata is showing osmetimes it's 167 and somtimes it's 168 when IEEU fires. may have to just do shitty world state stuff to make it more accurate
+	countdownArmageddon:Start(267.5-delay)
 end
 
 function mod:OnCombatEnd()
