@@ -2145,8 +2145,8 @@ do
 		end
 	end
 
-	local function countDownTextDelay()
-		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, 5, 5)
+	local function countDownTextDelay(timer)
+		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 	end
 
 	local syncHandlers = {}
@@ -2233,7 +2233,7 @@ do
 		if not DBM.Options.DontShowPTCountdownText then
 			local threshold = DBM.Options.PTCountThreshold
 			if timer > threshold then
-				DBM:Schedule(timer-threshold, countDownTextDelay)
+				DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
 			else
 				TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 			end
