@@ -5734,8 +5734,8 @@ do
 	local enragePrototype = {}
 	local mt = {__index = enragePrototype}
 
-	local function countDownTextDelay()
-		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, 5, 5)
+	local function countDownTextDelay(timer)
+		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 	end
 
 	function enragePrototype:Start(timer)
@@ -5758,8 +5758,11 @@ do
 				self.countdown:Start(timer)
 			end
 			if not DBM.Options.DontShowPTCountdownText then
-				if timer > 5 then
-					DBM:Schedule(timer-5, countDownTextDelay)
+				local threshold = DBM.Options.PTCountThreshold
+				if timer > threshold then
+					DBM:Schedule(timer-threshold, countDownTextDelay, threshold)
+				else
+					TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 				end
 			end
 		end
