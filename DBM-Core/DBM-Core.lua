@@ -5799,13 +5799,13 @@ do
 
 	function enragePrototype:Cancel()
 		self.owner:Unschedule(self.Start, self)
-		if warning1 then
+		if self.warning1 then
 			self.warning1:Cancel()
 		end
-		if warning2 then
+		if self.warning2 then
 			self.warning2:Cancel()
 		end
-		if countdown then
+		if self.countdown then
 			DBM:Unschedule(countDownTextDelay)
 			self.countdown:Cancel()
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
