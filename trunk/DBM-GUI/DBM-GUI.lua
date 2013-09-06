@@ -2411,6 +2411,10 @@ do
 				top3value1:SetText( stats.challengeKills )
 				top3value2:SetText( stats.challengePulls-stats.challengeKills )
 				top3value3:SetText( stats.challengeBestTime and ("%d:%02d"):format(math.floor(stats.challengeBestTime / 60), stats.challengeBestTime % 60) or "-" )
+			elseif statsType == 2 and stats.normal25Pulls and stats.normal25Pulls > 0 and stats.normal25Pulls > stats.normalPulls then--Fix for BC instance
+				top1value1:SetText( stats.normal25Kills )
+				top1value2:SetText( stats.normal25Pulls - stats.normal25Kills )
+				top1value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
 			else
 				top2value1:SetText( stats.normal25Kills )
 				top2value2:SetText( stats.normal25Pulls - stats.normal25Kills )
@@ -2527,6 +2531,7 @@ do
 
 				--Set enable or disable per mods.
 				if mod.oneFormat then
+					statsType = 2--Fix for BC instance
 					Title:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(L.FontHeight*5*(bossstats-1)))
 					--Do not use top1 header.
 					top1text1:SetPoint("TOPLEFT", Title, "BOTTOMLEFT", 20, -5)
