@@ -122,8 +122,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(865)
 
 L:SetMiscLocalization({
-	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
-	newShredder	= "An Automated Shredder draws near!"
+	newWeapons	= "На сборочную линию начинает поступать незаконченное оружие.",
+	newShredder	= "Приближается автоматический крошшер!"
 })
 
 ----------------------------
