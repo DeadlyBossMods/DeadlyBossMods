@@ -188,6 +188,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(prideLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
+	print("DBM NOTICED: Blizzard changed power gains after this mod was writen and it's likely most of timers will be wrong until fight is relogged and mod is patched")
 end
 
 function mod:OnCombatEnd()
