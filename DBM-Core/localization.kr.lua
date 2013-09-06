@@ -124,7 +124,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm timer <숫자> <글자>: <숫자>초 지속되는 <글자>바가 생성됨",
 	"/dbm broadcast timer <숫자> <글자>: <숫자>초 지속되는 <글자>바를 공격대에 보여줌 (승급 권한 필요)",
 	"/dbm break <min>: <min>분 지속되는 휴식 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
-	"/dbm pull <sec>: <sec>초 후 풀링한다는 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
+	"/dbm pull <sec>: <sec>초 후 전투 예정 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
 	"/dbm arrow: DBM 화살표를 보여줌. 추가 도움말은 /dbm arrow help 를 입력",
 	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요청함 (출력형식: 던전이름, 던전 ID) (승급 권한 필요)",
 	"/dbm help: 이 도움말을 보여줌"
@@ -147,7 +147,7 @@ DBM_CORE_BREAK_SEC					= "%s 초 후 쉬는 시간이 끝납니다!"
 DBM_CORE_TIMER_BREAK				= "쉬는 시간"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 종료되었습니다."
 
-DBM_CORE_TIMER_PULL					= "전투 시작 예정"
+DBM_CORE_TIMER_PULL					= "전투 예정"
 DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 시작 합니다."
 DBM_CORE_ANNOUNCE_PULL_NOW			= "시작합니다. 긴장하세요.!"
 
