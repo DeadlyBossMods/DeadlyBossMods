@@ -130,8 +130,13 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(setToBlowTargets)
-	timerArmageddonCD:Start(267.5-delay)--May variate by 1 second, my world state stata is showing osmetimes it's 167 and somtimes it's 168 when IEEU fires. may have to just do shitty world state stuff to make it more accurate
-	countdownArmageddon:Start(267.5-delay)
+	if self:IsDifficulty("lfr25") then
+		timerArmageddonCD:Start(297.5-delay)
+		countdownArmageddon:Start(297.5-delay)
+	else
+		timerArmageddonCD:Start(267.5-delay)--May variate by 1 second, my world state stata is showing osmetimes it's 167 and somtimes it's 168 when IEEU fires. may have to just do shitty world state stuff to make it more accurate
+		countdownArmageddon:Start(267.5-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -308,7 +313,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		local elapsed, total = timerArmageddonCD:GetTime()
 		local remaining = total - elapsed
 		countdownArmageddon:Cancel()
-		timerArmageddonCD:Start(270+remaining)
-		countdownArmageddon:Start(270+remaining)
+		if self:IsDifficulty("lfr25") then
+			timerArmageddonCD:Start(300+remaining)
+			countdownArmageddon:Start(300+remaining)
+		else
+			timerArmageddonCD:Start(270+remaining)
+			countdownArmageddon:Start(270+remaining)
+		end
 	end
 end
