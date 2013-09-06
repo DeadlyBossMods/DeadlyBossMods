@@ -84,6 +84,8 @@ local timerScorchingBreath		= mod:NewTargetTimer(30, 143767, nil, mod:IsTank() o
 local timerScorchingBreathCD	= mod:NewCDTimer(11, 143767, nil, mod:IsTank())--Often 12, but sometimes 11
 local timerBurningBloodCD		= mod:NewCDTimer(3.5, 143783, nil, false)--cast often, but someone might want to show it
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 local soundBloodFrenzy			= mod:NewSound(144067)
 local soundFixate				= mod:NewSound(143445)
 
@@ -172,6 +174,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(burningBloodTargets)
 	timerFearsomeRoarCD:Start(-delay)
 	timerDeafeningScreechCD:Start(-delay, 1)
+	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		if self:IsDifficulty("normal10", "heroic10") then
 			DBM.RangeCheck:Show(10, nil, nil, 4)
