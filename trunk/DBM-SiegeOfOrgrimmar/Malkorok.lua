@@ -120,7 +120,11 @@ function mod:OnCombatStart(delay)
 	timerArcingSmashCD:Start(11-delay, 1)
 	timerBreathofYShaarjCD:Start(-delay, 1)
 	timerBloodRageCD:Start(122-delay)
-	berserkTimer:Start(-delay)
+	if self:IsDifficulty("lfr25") then
+		berserkTimer:Start(720-delay)
+	else
+		berserkTimer:Start(-delay)
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
