@@ -130,7 +130,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(851)
 
 L:SetOptionLocalization({
-	RangeFrame	= "Show dynamic range frame (10)<br/>(This is a smart range frame that shows when you reach Frenzy threshold)"
+	RangeFrame	= "Show dynamic range frame (10)<br/>(This is a smart range frame that shows when you reach Frenzy threshold)",
+	FixateIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(143445)
 })
 
 ----------------------------
