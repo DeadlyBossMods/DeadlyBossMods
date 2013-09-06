@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "koKR" then return end
-
 local L
 
 ------------
@@ -42,16 +41,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization{
 	SubmergTimer	= "잠수",
-	EmergeTimer		= "등장",
-	TimerCombat		= "전투 시작"
+	EmergeTimer		= "등장"
 }
 
 L:SetOptionLocalization({
 	Emerged			= "등장 알림 보기",
 	specWarnAttack	= "아훈 약화 특수 경고 보기",
 	SubmergTimer	= "잠수 바 보기",
-	EmergeTimer		= "등장 바 보기",
-	TimerCombat		= "전투 시작 바 보기"
+	EmergeTimer		= "등장 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -89,13 +86,8 @@ L:SetWarningLocalization({
 	warnHorsemanHead		= "저주받은 기사의 머리 생성"
 })
 
-L:SetTimerLocalization{
-	TimerCombatStart		= "전투 시작"
-}
-
 L:SetOptionLocalization({
 	WarnPhase				= "단계 전환 알림 보기",
-	TimerCombatStart		= "전투 시작 바 보기",
 	warnHorsemanSoldiers	= "고동치는 호박 생성 알림 보기",
 	warnHorsemanHead		= "저주받은 기사 머리 생성 알림 보기"
 })

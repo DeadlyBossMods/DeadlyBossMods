@@ -14,6 +14,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_PERIODIC_MISSED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED"
 )
@@ -177,9 +179,7 @@ function mod:OnCombatStart(delay)
 	self:RegisterShortTermEvents(
 		"UNIT_HEALTH_FREQUENT boss1",
 		"SPELL_DAMAGE",
-		"SPELL_MISSED",
-		"SPELL_PERIODIC_DAMAGE",
-		"SPELL_PERIODIC_MISSED"
+		"SPELL_MISSED"
 	)-- Do not use on phase 3.
 end
 
@@ -316,8 +316,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.RangeFrame and self:IsRanged() then--Shouldn't target melee during a normal pillar, only during intermission when all melee are with ranged and out of melee range of boss
 			DBM.RangeCheck:Show(8)--Assume 8 since spell tooltip has no info
 		end
-	elseif args.spellId == 137176 and self:AntiSpam(3, 5) and args:IsPlayer() then
-		specWarnOverloadedCircuits:Show()
 	elseif args.spellId == 139011 then
 		helmOfCommandTarget[#helmOfCommandTarget + 1] = args.destName
 		if args:IsPlayer() then
@@ -417,6 +415,8 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 135153 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 4) then
 		specWarnCrashingThunder:Show()
+	elseif spellId == 137176 and destGUID == UnitGUID("player") and self:AntiSpam(3, 5) then
+		specWarnOverloadedCircuits:Show()
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
