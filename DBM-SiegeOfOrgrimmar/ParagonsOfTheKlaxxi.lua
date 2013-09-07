@@ -278,10 +278,10 @@ function mod:OnCombatStart(delay)
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
 	timerJumpToCenter:Start()
-	if self:IsDifficulty("normal25", "heroic25", "lfr25") then--Increaased number of people, decrease likelyhood of chat yell so it levels out
-		mathNumber = 250--0.4% chance per person in 25 man
+	if self:IsDifficulty("normal10", "heroic10") then--Increaased number of people, decrease likelyhood of chat yell so it levels out
+		mathNumber = 100
 	else
-		mathNumber = 100--1% chance of chat yell per person in 10 man
+		mathNumber = 250--0.4% chance per person in 25 man, LFR, Flex
 	end
 end
 
