@@ -42,16 +42,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	SubmergTimer		= "隱沒",
-	EmergeTimer			= "現身",
-	TimerCombat			= "戰鬥開始"
+	EmergeTimer			= "現身"
 })
 
 L:SetOptionLocalization({
 	Emerged				= "當艾胡恩現身時顯示警告",
 	specWarnAttack		= "當艾胡恩變得脆弱時顯示特別警告",
 	SubmergTimer		= "為隱沒顯示計時器",
-	EmergeTimer			= "為現身顯示計時器",
-	TimerCombat			= "為戰鬥開始顯示計時器"
+	EmergeTimer			= "為現身顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -89,13 +87,8 @@ L:SetWarningLocalization({
 	warnHorsemanHead		= "旋風斬 - 轉換目標!"
 })
 
-L:SetTimerLocalization{
-	TimerCombatStart		= "戰鬥開始"
-}
-
 L:SetOptionLocalization({
 	WarnPhase				= "為每個階段改變顯示警告",
-	TimerCombatStart		= "顯示戰鬥開始的計時器",
 	warnHorsemanSoldiers	= "為跳動的南瓜出現顯示警告",
 	warnHorsemanHead		= "為旋風斬顯示特別警告 (第二次及最後的頭顱出現)"
 })
