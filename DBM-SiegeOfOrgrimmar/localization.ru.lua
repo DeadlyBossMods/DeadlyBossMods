@@ -143,22 +143,22 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
-	one					= "Один",--guessed
-	two					= "Два",--guessed
-	three				= "Три",--guessed
-	four				= "Четыре",--guessed
-	five				= "Пять",--guessed
-	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
-	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
-	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
-	KaztikFlavor		= "Reduced to mere kunchong treats",--http://ptr.wowhead.com/quest=31024
-	KaztikFlavor2		= "1 Mantid down, only 199 to go",--http://ptr.wowhead.com/quest=31808
-	KorvenFlavor		= "The end of an ancient empire",--http://ptr.wowhead.com/quest=31232
-	KorvenFlavor2		= "Take your Gurthani Tablets and choke on them",--http://ptr.wowhead.com/quest=31232
-	IyyokukFlavor		= "See opportunities. Exploit them!",--Does not have quests, http://ptr.wowhead.com/npc=65305
-	KarozFlavor			= "You won't be leaping anymore!",---Does not have questst, http://ptr.wowhead.com/npc=65303
-	SkeerFlavor			= "A bloody delight!",--http://ptr.wowhead.com/quest=31178
-	RikkalFlavor		= "Specimen request fulfilled"--http://ptr.wowhead.com/quest=31508
+	one					= "один",
+	two					= "два",
+	three				= "три",
+	four				= "четыре",
+	five				= "пять",
+	hisekFlavor			= "Смотрите, кто теперь тихий",--http://ptr.wowhead.com/quest=31510
+	KilrukFlavor		= "Обычный рабочий день, уничтожаем рой",--http://ptr.wowhead.com/quest=31109
+	XarilFlavor			= "Я вижу только темные небеса в твоем будущем",--http://ptr.wowhead.com/quest=31216
+	KaztikFlavor		= "Сойдёт на угощение куньчуну",--http://ptr.wowhead.com/quest=31024
+	KaztikFlavor2		= "1 богомол убит, осталось 199",--http://ptr.wowhead.com/quest=31808
+	KorvenFlavor		= "Конец древней империи",--http://ptr.wowhead.com/quest=31232
+	KorvenFlavor2		= "Забери свои гуртанские таблички и подавись ими",--http://ptr.wowhead.com/quest=31232
+	IyyokukFlavor		= "Видишь возможности. Используй их!",--Does not have quests, http://ptr.wowhead.com/npc=65305
+	KarozFlavor			= "Ты больше не будешь прыгать!",---Does not have questst, http://ptr.wowhead.com/npc=65303
+	SkeerFlavor			= "Кровавое удовольствие!",--http://ptr.wowhead.com/quest=31178
+	RikkalFlavor		= "Запрос образцов выполнен"--http://ptr.wowhead.com/quest=31508
 })
 
 ------------------------
@@ -169,7 +169,7 @@ L= DBM:GetModLocalization(869)
 -------------
 --  Trash  --
 -------------
-L = DBM:GetModLocalization("FoOTrash")
+L = DBM:GetModLocalization("SoOTrash")
 
 L:SetGeneralLocalization({
 	name =	"Трэш мобы Осады Оргриммара"
