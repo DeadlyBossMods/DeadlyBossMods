@@ -201,6 +201,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	move		= "%s - ¡muévete!",
 	run			= "%s - ¡corre!",
 	cast		= "%s - ¡para de castear!",
+	reflect		= "%s - ¡para de atacar!",
 	count		= "%s! (%%d)",
 	stack		= "%%d acumulaciones de %s en ti",
 	switch		= ">%s< - ¡cambio de objetivos!"
@@ -220,7 +221,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	close 		= "Mostrar aviso especial cuando a alguien cerca tuyo le afecte $spell:%s",
 	move 		= "Mostrar aviso especial para salir de $spell:%s",
 	run 		= "Mostrar aviso especial para huir de $spell:%s",
-	cast 		= "Mostrar aviso especial para el lanzamiento de $spell:%s",
+	cast 		= "Mostrar aviso especial para parar de castear por $spell:%s",
+	reflect 	= "Mostrar aviso especial para parar de atacar por $spell:%s",
 	count 		= "Mostrar aviso especial para $spell:%s",
 	stack 		= "Mostrar aviso especial cuando tienes >=%d acumulaciones de $spell:%s",--too long?
 	switch		= "Mostrar aviso especial para cambiar objetivos con $spell:%s"

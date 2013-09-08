@@ -11,12 +11,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnYourTurn	= "You're up!"
+	warnQueuePosition	= "You're %d in queue", --TODO need translation
+	specWarnYourNext	= "You're next!", --TODO need translation
+	specWarnYourTurn	= "You're up!" --TODO need translation
 })
 
 L:SetOptionLocalization({
+	warnQueuePosition	= "Anunciar tu posición en la cola cunado cambie",
+	specWarnYourNext	= "Mostrar aviso especial cuando seas el siguiente",
 	specWarnYourTurn	= "Mostrar aviso especial cuando es tu combate",
-	SpectatorMode		= "Mostrar tiempos/avisos cuando estas en modo espectador"
+	SpectatorMode		= "Mostrar tiempos/avisos cuando estas en modo espectador",
+	SpeakOutQueue		= "Anunciar verbalmente tu posición en la cola cuando cambie"
 })
 
 L:SetMiscLocalization({
