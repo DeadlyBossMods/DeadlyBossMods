@@ -57,8 +57,8 @@ local specWarnLaserFixate				= mod:NewSpecialWarningRun(143828)
 local yellLaserFixate					= mod:NewYell(143828)
 local specWarnSuperheated				= mod:NewSpecialWarningMove(143856)--From lasers. Hard to see, this warning will help a ton
 local specWarnMagneticCrush				= mod:NewSpecialWarningSpell(144466, nil, nil, nil, 2)
-local specWarnCrawlerMineFixate			= mod:NewSpecialWarningRun(144010)
-local yellCrawlerMineFixate				= mod:NewYell(144010, nil, false)
+local specWarnCrawlerMineFixate			= mod:NewSpecialWarningRun("ej8212")
+local yellCrawlerMineFixate				= mod:NewYell("ej8212", nil, false)
 
 --Siegecrafter Blackfuse
 local timerProtectiveFrenzy				= mod:NewBuffActiveTimer(10, 145365, nil, mod:IsTank() or mod:IsHealer())
