@@ -36,24 +36,20 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
-	Submerged		= "Ahune se sumerge",
 	Emerged			= "Ahune emerge",
 	specWarnAttack	= "Ahune es vulnerable ¡Ataca ahora!"
 })
 
 L:SetTimerLocalization{
 	SubmergTimer	= "Se sumerge",
-	EmergeTimer		= "Emerge",
-	TimerCombat		= "Inicio del combate"
+	EmergeTimer		= "Emerge"
 }
 
 L:SetOptionLocalization({
-	Submerged		= "Mostrar aviso cuando Ahune se sumerge",
 	Emerged			= "Mostrar aviso cuando Ahune emerge",
 	specWarnAttack	= "Mostrar aviso especial cuando Ahune es vulnerable",
 	SubmergTimer	= "Mostrar tiempo para sumersión",
-	EmergeTimer		= "Mostrar tiempo para emersión",
-	TimerCombat		= "Mostrar tiempo para inicio del combate"
+	EmergeTimer		= "Mostrar tiempo para emersión"
 })
 
 L:SetMiscLocalization({
@@ -91,13 +87,8 @@ L:SetWarningLocalization({
 	warnHorsemanHead		= "¡Torbellino! ¡Mata a la cabeza!"
 })
 
-L:SetTimerLocalization{
-	TimerCombatStart		= "Empieza el combate"
-}
-
 L:SetOptionLocalization({
 	WarnPhase				= "Mostrar un aviso para cada cambio de fase",
-	TimerCombatStart		= "Mostrar tiempo para inicio del combate",
 	warnHorsemanSoldiers	= "Mostrar aviso a la llegada de Calabazas con pulso",
 	warnHorsemanHead		= "Mostrar un aviso para torbellino (2ª i posteriores apariciones de cabeza)"
 })

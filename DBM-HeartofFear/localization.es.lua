@@ -64,13 +64,16 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(737)
 
 L:SetWarningLocalization({
+	warnReshapeLife				= "%s en >%s< (%d)",
 	warnReshapeLifeTutor		= "1: Interrumpe/debuffa objetivo, 2: Interrúmpete a tí mismo, 3: Regenera vida/voluntad, 4: Salir del vehículo",
 	warnAmberExplosion			= ">%s< está casteando %s",
+	specwarnAmberExplosionAM	= "Monstruosidad de Ámber está lanzando Explosión de Ámbar - ¡Interrumpe ahora!",
 	warnInterruptsAvailable		= "Interrupciones disponibles para %s: >%s<",
-	specwarnWillPower			= "¡Se te agota la voluntad!",
+	warnWillPower				= "Voluntad disponible: %s",
+	specwarnWillPower			= "¡Se te agota la voluntad! - Abandona vehículo o consume un charco",
 	specwarnAmberExplosionYou	= "Interrumpte TU %s!",--Struggle for Control interrupt.
 	specwarnAmberExplosionAM	= "%s: Interrumpe %s!",--Amber Montrosity
-	specwarnAmberExplosionOther	= "%s: Interrumpe %s!"--Amber Montrosity
+	specwarnAmberExplosionOther	= "%s: Interrumpe %s!"--Mutated Construct
 })
 
 L:SetTimerLocalization({
