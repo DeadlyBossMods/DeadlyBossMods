@@ -65,6 +65,7 @@ local warnInjection					= mod:NewStackAnnounce(143339)--Triggers 143340 at 10 st
 local warnMutate					= mod:NewTargetAnnounce(143337, 3)
 --Hisek the Swarmkeeper
 local warnAim						= mod:NewTargetAnnounce(142948, 4)--Maybe wrong debuff id, maybe 144759 instead
+local warnRapidFire					= mod:NewSpellAnnounce(143243, 3)
 
 --All
 --NOTE, this is purely off assumption the ones that make you vunerable to eachother don't spawn at same time.
@@ -130,6 +131,7 @@ local specWarnParasiteFixate		= mod:NewSpecialWarningYou(143358)
 local specWarnAim					= mod:NewSpecialWarningYou(142948)
 local yellAim						= mod:NewYell(142948)
 local specWarnAimOther				= mod:NewSpecialWarningTarget(142948)
+local specWarnRapidFire				= mod:NewSpecialWarningSpell(143243, nil, nil, nil, 2)
 
 local timerJumpToCenter				= mod:NewCastTimer(5, 143545)
 --Kil'ruk the Wind-Reaver
@@ -147,12 +149,18 @@ local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but 
 --Ka'roz the Locust
 local timerFlashCD					= mod:NewCDTimer(62, 143709)
 local timerWhirling					= mod:NewBuffFadesTimer(5, 143701)
+local timerHurlAmberCD				= mod:NewCDTimer(62, 143759)--TODO< verify cd on spell itself. in my logs he died after only casting it once every time.
 --Skeer the Bloodseeker
---local timerBloodlettingCD			= mod:NewCDTimer(35, 143280)--Still need more data for this one
+local timerBloodlettingCD			= mod:NewCDTimer(35, 143280)--35-65 variable. most of the time it's around 42 range
 --Rik'kal the Dissector
 local timerMutate					= mod:NewBuffFadesTimer(20, 143337)
+local timerMutateCD					= mod:NewCDTimer(45, 143337)
 --Hisek the Swarmkeeper
 local timerAim						= mod:NewTargetTimer(5, 142948)--or is it 7, conflicting tooltips
+local timerAimCD					= mod:NewCDTimer(42, 142948)
+--local timerRapidFireCD			= mod:NewCDTimer(30, 143243)--Heroic, unknown Cd
+
+local berserkTimer					= mod:NewBerserkTimer(720)
 
 local countdownEncaseInAmber		= mod:NewCountdown(30, 142564)--Probably switch to secondary countdown if one of his other abilities proves to have priority
 
@@ -161,6 +169,7 @@ mod:AddBoolOption("SetIconOnAim", true)--multi boss fight, will use star and avo
 
 local activatedTargets = {}--A table, for the 3 on pull
 local whirlingTargets = {}
+local mutateTargets = {}
 local activeBossGUIDS = {}
 local UnitDebuff = UnitDebuff
 local GetSpellInfo = GetSpellInfo
@@ -169,6 +178,7 @@ local calculatedNumber = nil
 local calculatedColor = nil
 local mathNumber = 100
 local calculatingDude = EJ_GetSectionInfo(8012)
+local readyToFight = GetSpellInfo(143542)
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -188,6 +198,12 @@ end
 local function warnWhirlingTargets()
 	warnWhirling:Show(table.concat(whirlingTargets, "<, >"))
 	table.wipe(whirlingTargets)
+end
+
+local function warnMutatedTargets()
+	warnMutate:Show(table.concat(mutateTargets, "<, >"))
+	timerMutateCD:Start()
+	table.wipe(mutateTargets)
 end
 
 local function hideRangeFrame()
@@ -234,7 +250,8 @@ local function CheckBosses(GUID)
 		--"<0.0 19:23:10> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Xaril the Poisoned Mind#0xF13115F500000294#elite#228971920#1#1#Kaz'tik the Manipulator#0xF13115F400000293#elite#183177232#1#1#Hisek the Swarmkeeper#0xF13115F100000290
 		--"<7.4 19:23:17> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Kaz'tik the Manipulator#0xF13115F400000293#elite#183177232#1#1#Xaril the Poisoned Mind#0xF13115F500000294#elite#228971920#1#1#Kil'ruk the Wind-Reaver#0xF13115F900000297#elite#261682208#1#1#Hisek the Swarmkeeper
 		--Only 3 bosses activate, but for some reason inactive bosses are sometimes firing IEEU, all I can do now is try to fix it using a scan for "ready to fight" to filter out the IEEU that fires for the next boss
-		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] and not UnitBuff(UnitID, GetSpellInfo(143542)) then--Check if new units exist we haven't detected and added yet.
+		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] and not UnitBuff(unitID, readyToFight) then--Check if new units exist we haven't detected and added yet.
+			print("DBM DEBUG: Valid Boss Activation detected from: "..UnitName(unitID))
 			activeBossGUIDS[UnitGUID(unitID)] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
 			--Activation Controller
@@ -247,18 +264,21 @@ local function CheckBosses(GUID)
 			elseif cid == 71156 then--Kaz'tik the Manipulator
 		
 			elseif cid == 71155 then--Korven the Prime
-				timerShieldBashCD:Start(25)
+				timerShieldBashCD:Start(20)--20seconds from jump to center and REAL IEEU. question is whether or not filtering readyToFight will ignore the bad IEEU that come earlier
 			elseif cid == 71160 then--Iyyokuk the Lucid
 				timerInsaneCalculationCD:Start()
 			elseif cid == 71154 then--Ka'roz the Locust
-				timerFlashCD:Start(15)
+				timerFlashCD:Start(15)--In final LFR test, he didn't cast this for 20 seconds. TODO check this change
+				timerHurlAmberCD:Start(45)
 			elseif cid == 71152 then--Skeer the Bloodseeker
-				--timerBloodlettingCD:Start()
+				timerBloodlettingCD:Start(10)
 				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
 			elseif cid == 71158 then--Rik'kal the Dissector
+				timerMutateCD:Start(35)
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
 			elseif cid == 71153 then--Hisek the Swarmkeeper
-		
+				timerAimCD:Start(38)--Might be 32 now with the UnitBuff filter, so pay attention to that and adjust as needed
+				--timerRapidFireCD:Start()
 			end
 		end
 	end
@@ -271,13 +291,15 @@ function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(activatedTargets)
 	table.wipe(whirlingTargets)
+	table.wipe(mutateTargets)
 	calculatedShape = nil
 	calculatedNumber = nil
 	calculatedColor = nil
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
-	timerJumpToCenter:Start()
+	timerJumpToCenter:Start(-delay)
+	berserkTimer:Start(-delay)
 	if self:IsDifficulty("normal10", "heroic10") then--Increaased number of people, decrease likelyhood of chat yell so it levels out
 		mathNumber = 100
 	else
@@ -384,7 +406,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143280 then
 		warnBloodletting:Show()
 		specWarnBloodletting:Show()
---		timerBloodlettingCD:Start()
+		timerBloodlettingCD:Start()
 	elseif args.spellId == 143974 then
 		warnShieldBash:Show()
 		timerShieldBashCD:Start()
@@ -396,6 +418,10 @@ function mod:SPELL_CAST_START(args)
 				specWarnCausticBlood:Show()--So show tank warning
 			end
 		end
+	elseif args.spellId == 143243 then
+		warnRapidFire:Show()
+		specWarnRapidFire:Show()
+		--timerRapidFireCD:Start()
 	end
 end
 
@@ -493,12 +519,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 143759 then
 		warnHurlAmber:Show()
 		specWarnHurlAmber:Show()
+		timerHurlAmberCD:Start()
 	elseif args.spellId == 143337 then
-		warnMutate:Show(args.destName)
+		mutateTargets[#mutateTargets + 1] = args.destName
 		if args.IsPlayer() then
 			specWarnMutate:Show()
 			timerMutate:Start()
 		end
+		self:Unschedule(warnMutatedTargets)
+		self:Schedule(0.5, warnMutatedTargets)
 	elseif args.spellId == 143358 then
 		if args.IsPlayer() then
 			specWarnParasiteFixate:Show()
@@ -506,6 +535,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 142948 then
 		warnAim:Show(args.destName)
 		timerAim:Start(args.destName)
+		timerAimCD:Start()
 		if args.IsPlayer() then
 			specWarnAim:Show()
 			yellAim:Yell()
@@ -583,22 +613,26 @@ function mod:UNIT_DIED(args)
 		end
 	elseif cid == 71154 then--Ka'roz the Locust
 		timerFlashCD:Cancel()
+		timerHurlAmberCD:Cancel()
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.KarozFlavor, "SAY")
 		end
 	elseif cid == 71152 then--Skeer the Bloodseeker
---		timerBloodlettingCD:Cancel()
+		timerBloodlettingCD:Cancel()
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.SkeerFlavor, "SAY")
 		end
 	elseif cid == 71158 then--Rik'kal the Dissector
+		timerMutateCD:Cancel()
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.RikkalFlavor, "SAY")
 		end
 	elseif cid == 71153 then--Hisek the Swarmkeeper
+		timerAimCD:Cancel()
+		--timerRapidFireCD:Cancel()
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
 			SendChatMessage(L.hisekFlavor, "SAY")
