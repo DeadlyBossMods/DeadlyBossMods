@@ -40,20 +40,20 @@ L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
 	timerAddsCD		= "Nächste Adds",
-	timerTowerCD	= "Next Tower & Adds"--translate later
+	timerTowerCD	= "Nächster Turm & Adds"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Zeige Zeit bis nächste Add-Welle",
-	timerTowerCD	= "Show timer for next tower assault"--translate later
+	timerAddsCD		= "Zeige Zeit bis nächste Gegnerwelle",
+	timerTowerCD	= "Zeige Zeit bis nächsten Turmangriff"
 })
 
 L:SetMiscLocalization({
-	newForces1	= "Here they come!",--translate (trigger)
-	newForces2	= "Dragonmaw, advance!",--translate (trigger)
-	newForces3	= "For Hellscream!",--translate (trigger)
-	newForces4	= "Next squad, push forward!",--translate (trigger)
-	tower		= "The door barring the"--translate (trigger)
+	newForces1	= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation)
+	newForces2	= "Drachenmalklan, ausrücken!",--needs to be verified (PTR screenshot-captured translation)
+	newForces3	= "Für Höllschrei!",--needs to be verified (PTR screenshot-captured translation)
+	newForces4	= "Nächster Trupp, vorwärts!"--needs to be verified (PTR screenshot-captured translation)
+--	tower		= "Das Tor zum"--needs to be verified (PTR screenshot-captured translation)
 })
 
 --------------------
@@ -67,7 +67,7 @@ L= DBM:GetModLocalization(864)
 L= DBM:GetModLocalization(856)
 
 L:SetMiscLocalization({
-	PrisonYell		= "Prison on %s fades (%d)"--translate later
+	PrisonYell		= "Gefängnis auf %s schwindet (%d)"
 })
 
 ---------------------
@@ -84,12 +84,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1					= "Warriors, on the double!",--translate (trigger)
-	newForces2					= "Defend the gate!",--translate (trigger)
-	newForces3					= "Rally the forces!",--translate (trigger)
-	newForces4					= "Kor'kron, at my side!",--translate (trigger)
-	newForces5					= "Next squad, to the front!",--translate (trigger)
-	allForces					= "All Kor'kron... under my command... kill them... NOW!"--translate (trigger)
+	newForces1					= "Krieger, im Laufschritt!",--needs to be verified (PTR screenshot-captured translation)
+	newForces2					= "Verteidigt das Tor!",--needs to be verified (PTR screenshot-captured translation)
+	newForces3					= "Truppen, sammelt Euch!",--needs to be verified (PTR video-captured translation)
+	newForces4					= "Kor'kron, zu mir!",--needs to be verified (PTR video-captured translation)
+	newForces5					= "Nächste Staffel, nach vorn!",--needs to be verified (PTR screenshot-captured translation)
+	allForces					= "Alle Kor'kron unter meinem Befehl, tötet sie! Jetzt!"--needs to be verified (PTR video-captured translation)
 })
 
 -----------------

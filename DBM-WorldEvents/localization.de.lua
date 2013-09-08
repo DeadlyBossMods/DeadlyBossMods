@@ -41,16 +41,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization{
 	SubmergTimer	= "Abtauchen",
-	EmergeTimer		= "Auftauchen",
-	TimerCombat		= "Kampfbeginn"
+	EmergeTimer		= "Auftauchen"
 }
 
 L:SetOptionLocalization({
 	Emerged			= "Zeige Warnung, wenn Ahune auftaucht",
 	specWarnAttack	= "Spezialwarnung, wenn Ahune verwundbar wird",
 	SubmergTimer	= "Zeige Zeit bis Abtauchen",
-	EmergeTimer		= "Zeige Zeit bis Auftauchen",
-	TimerCombat		= "Zeige Zeit bis Kampfbeginn"
+	EmergeTimer		= "Zeige Zeit bis Auftauchen"
 })
 
 L:SetMiscLocalization({
@@ -88,13 +86,8 @@ L:SetWarningLocalization({
 	warnHorsemanHead		= "Kopf des Reiters aktiv"
 })
 
-L:SetTimerLocalization{
-	TimerCombatStart		= "Kampfbeginn"
-}
-
 L:SetOptionLocalization({
 	WarnPhase				= "Zeige Warnung für jeden Phasenwechsel",
-	TimerCombatStart		= "Zeige Zeit bis Kampfbeginn",
 	warnHorsemanSoldiers	= "Zeige Warnung, wenn Pulsierende Kürbnisse erscheinen",
 	warnHorsemanHead		= "Zeige Warnung, wenn Kopf des Reiters erscheint"
 })

@@ -18,6 +18,7 @@ L.TabCategory_CATA	 		= "Cataclysm"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
 L.TabCategory_BC 			= "The Burning Crusade"
 L.TabCategory_CLASSIC		= "Classic"
+L.TabCategory_PVP 			= "PvP"
 L.TabCategory_OTHER    		= "Sonstige Boss Mods"
 
 L.BossModLoaded 			= "Statistiken von %s"
@@ -192,11 +193,12 @@ L.SpamBlockNoRangeFrame			= "Zeige kein Abstandsfenster/-radar an"
 L.SpamBlockNoInfoFrame			= "Zeige kein Infofenster an"
 
 L.Area_PullTimer				= "Filtereinstellungen für Pull-Timer"
+L.DontShowPTNoID				= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zone gesendet worden sind"
 L.DontShowPT					= "Zeige keinen Timerbalken für Pull-Timer"
-L.DontShowPTCountdownText		= "Zeige keinen optischen Countdown für Pull-Timer"
-L.DontPlayPTCountdown			= "Spiele keinen akustischen Countdown für Pull-Timer"
 L.DontShowPTText				= "Zeige keine Mitteilungen für Pull-Timer im Chatfenster"
-L.DontShowPTNoID				= "Blockiere Pull-Timer, die ohne Zonen-ID gesendet worden sind"
+L.DontPlayPTCountdown			= "Spiele keinen akustischen Countdown für Pull/Kampfbeginn-Timer"
+L.DontShowPTCountdownText		= "Zeige keinen optischen Countdown für Pull/Kampfbeginn-Timer"
+L.PT_Threshold					= "Zeige keinen optischen Countdown für Pull/Kampfbeginn-Timer über: %d"
 
 
 L.Panel_HideBlizzard			= "Verberge Spielelemente"
