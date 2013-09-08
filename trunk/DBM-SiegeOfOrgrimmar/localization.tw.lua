@@ -169,7 +169,7 @@ L= DBM:GetModLocalization(869)
 -------------
 --  Trash  --
 -------------
-L = DBM:GetModLocalization("FoOTrash")
+L = DBM:GetModLocalization("SoOTrash")
 
 L:SetGeneralLocalization({
 	name =	"圍攻奧格瑪小兵"

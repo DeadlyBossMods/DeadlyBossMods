@@ -578,64 +578,46 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
+local FlavorTable = {
+	[71161] = L.KilrukFlavor,--Kil'ruk the Wind-Reaver
+	[71157] = L.XarilFlavor,--Xaril the Poisoned-Mind
+	[71156] = L.KaztikFlavor,--Kaz'tik the Manipulator
+	[71155] = L.KorvenFlavor2,--Korven the Prime
+	[71160] = L.IyyokukFlavor,--Iyyokuk the Lucid
+	[71154] = L.KarozFlavor,--Ka'roz the Locust
+	[71152] = L.SkeerFlavor,--Skeer the Bloodseeker
+	[71158] = L.RikkalFlavor,--Rik'kal the Dissector
+	[71153] = L.hisekFlavor--Hisek the Swarmkeeper
+}
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
 		self:Unschedule(DFAScan)
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.KilrukFlavor, "SAY")
-		end
 	elseif cid == 71157 then--Xaril the Poisoned-Mind
 		timerToxicCatalystCD:Cancel()
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.XarilFlavor, "SAY")
-		end
-	elseif cid == 71156 then--Kaz'tik the Manipulator
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.KaztikFlavor, "SAY")
-		end
 	elseif cid == 71155 then--Korven the Prime
 		timerShieldBashCD:Cancel()
 		timerEncaseInAmberCD:Cancel()
 		countdownEncaseInAmber:Cancel()
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.KorvenFlavor2, "SAY")
-		end
 	elseif cid == 71160 then--Iyyokuk the Lucid
 		timerInsaneCalculationCD:Cancel()
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.IyyokukFlavor, "SAY")
-		end
 	elseif cid == 71154 then--Ka'roz the Locust
 		timerFlashCD:Cancel()
 		timerHurlAmberCD:Cancel()
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.KarozFlavor, "SAY")
-		end
 	elseif cid == 71152 then--Skeer the Bloodseeker
 		timerBloodlettingCD:Cancel()
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.SkeerFlavor, "SAY")
-		end
 	elseif cid == 71158 then--Rik'kal the Dissector
 		timerMutateCD:Cancel()
-		local x = math.random(1, mathNumber)
-		if x == 50 then--1% chance yay
-			SendChatMessage(L.RikkalFlavor, "SAY")
-		end
 	elseif cid == 71153 then--Hisek the Swarmkeeper
 		timerAimCD:Cancel()
 		--timerRapidFireCD:Cancel()
+	end
+
+	if FlavorTable[cid] then
 		local x = math.random(1, mathNumber)
 		if x == 50 then--1% chance yay
-			SendChatMessage(L.hisekFlavor, "SAY")
+			SendChatMessage(FlavorTable[cid], "SAY")
 		end
 	end
 end

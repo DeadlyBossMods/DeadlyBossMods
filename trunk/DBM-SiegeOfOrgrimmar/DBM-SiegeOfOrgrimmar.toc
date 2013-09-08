@@ -10,7 +10,6 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMSiegeOfOrgrimmar_SavedVars, DBMSiegeOfOrgrimmar_SavedStats
 ## X-DBM-Mod-Name: Siege of Orgrimmar
-## X-DBM-Mod-Name-deDE: Schlacht um Orgrimmar
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
@@ -37,4 +36,4 @@ ThokTheBloodthirsty.lua
 SiegecrafterBlackfuse.lua
 ParagonsOfTheKlaxxi.lua
 GarroshHellscream.lua
-FoOTrash.lua
+SoOTrash.lua
