@@ -261,6 +261,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		warnAutomatedShredder:Show()
 		specWarnAutomatedShredder:Show()
 		timerDeathFromAboveCD:Start(17)
-		timerAutomatedShredderCD:Start()
+--		timerAutomatedShredderCD:Start()--Changed? and i lost log so i just have to disable the timer.
 	end
 end
