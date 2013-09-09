@@ -257,11 +257,9 @@ function mod:OnSync(msg)
 		timerBeastOfNightmaresCD:Cancel()
 		warnDay:Show()
 		timerLightOfDayCD:Start()
-		timerIceCometCD:Start()
+		timerIceCometCD:Start()--TODO, update timer for late 5.3 hotfix.
 		timerFanOfFlamesCD:Start()
 		--timerFlamesOfPassionCD:Start(12.5)
-		--Apparently changing in 5.3, so new logs will be needed once patch is deployed.
-		--Got one 5.3 log, doesn't look like they changed a thing.
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerNuclearInfernoCD:Start(45, 1)--45-50 second variation (cd is 45, but there is hard code failsafe that if a commet has spawned recently it's extended?
 		end
