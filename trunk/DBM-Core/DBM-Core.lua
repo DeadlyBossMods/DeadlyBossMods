@@ -1645,12 +1645,6 @@ do
 		self:Schedule(1.5, updateAllRoster)
 	end
 
---[[
-	function DBM:INSTANCE_GROUP_SIZE_CHANGED()
-		I don't feel this will really be needed. we'll update size on combatstart. unless someone leaving group in middle of boss fight updates boss scaling WHILE ENGAGED, this is probably not nessesary but we'll see.
-	end
---]]
-
 	function DBM:IsInRaid()
 		return inRaid
 	end
@@ -1879,9 +1873,11 @@ do
 	end
 end
 
+local lastLFGAlert = 0
 function DBM:LFG_ROLE_CHECK_SHOW()
-	if not UnitIsGroupLeader("player") and DBM.Options.LFDEnhance then
+	if not UnitIsGroupLeader("player") and DBM.Options.LFDEnhance and GetTime() - lastLFGAlert > 5 then
 		PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")--Because regular sound uses SFX channel which is too low of volume most of time
+		lastLFGAlert = GetTime()
 	end
 end
 
