@@ -829,7 +829,7 @@ local function delayMonsterEmote(target)
 end
 
 function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
-	local targetname = DBM:GetFullNameByShortName(target)
+	local targetname = DBM:GetUnitFullName(target)
 	if npc == calculatingDude then
 		self:Unschedule(delayMonsterEmote)
 		self:Schedule(0.5, delayMonsterEmote, targetname)
