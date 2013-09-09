@@ -66,7 +66,7 @@ local timerElectroStaticCharge			= mod:NewTargetTimer(60, 143385, nil, mod:IsTan
 local timerElectroStaticChargeCD		= mod:NewCDTimer(17, 143385, nil, mod:IsTank())--17-22 second variation
 local timerLaunchSawbladeCD				= mod:NewCDTimer(10, 143265)--10-15sec cd
 --Automated Shredders
-local timerAutomatedShredderCD			= mod:NewNextTimer(120, "ej8199", nil, nil, nil, 85914)
+local timerAutomatedShredderCD			= mod:NewNextTimer(60, "ej8199", nil, nil, nil, 85914)
 local timerDeathFromAboveDebuff			= mod:NewTargetTimer(5, 144210, nil, not mod:IsHealer())
 local timerDeathFromAboveCD				= mod:NewNextTimer(40, 144208, nil, not mod:IsHealer())
 --The Assembly Line
@@ -261,6 +261,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		warnAutomatedShredder:Show()
 		specWarnAutomatedShredder:Show()
 		timerDeathFromAboveCD:Start(17)
---		timerAutomatedShredderCD:Start()--Changed? and i lost log so i just have to disable the timer.
+		timerAutomatedShredderCD:Start()
 	end
 end
