@@ -247,37 +247,34 @@ local function CheckBosses(GUID)
 	local vulnerable = false
 	for i = 1, 5 do
 		local unitID = "boss"..i
-		--"<0.0 19:23:10> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Xaril the Poisoned Mind#0xF13115F500000294#elite#228971920#1#1#Kaz'tik the Manipulator#0xF13115F400000293#elite#183177232#1#1#Hisek the Swarmkeeper#0xF13115F100000290
-		--"<7.4 19:23:17> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#1#1#Kaz'tik the Manipulator#0xF13115F400000293#elite#183177232#1#1#Xaril the Poisoned Mind#0xF13115F500000294#elite#228971920#1#1#Kil'ruk the Wind-Reaver#0xF13115F900000297#elite#261682208#1#1#Hisek the Swarmkeeper
-		--Only 3 bosses activate, but for some reason inactive bosses are sometimes firing IEEU, all I can do now is try to fix it using a scan for "ready to fight" to filter out the IEEU that fires for the next boss
+		--Only 3 bosses activate on pull, however now the inactive or (next boss to activate) also fires IEEU. As such, we have to filter that boss by scaning for readytofight. Works well though.
 		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] and not UnitBuff(unitID, readyToFight) then--Check if new units exist we haven't detected and added yet.
---			print("DBM DEBUG: Valid Boss Activation detected from: "..UnitName(unitID))
 			activeBossGUIDS[UnitGUID(unitID)] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(UnitGUID(unitID))
 			if cid == 71161 then--Kil'ruk the Wind-Reaver
-				mod:Schedule(24, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
+				mod:Schedule(23, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
 				if UnitDebuff("player", GetSpellInfo(142931)) then vulnerable = true end
 			elseif cid == 71156 then--Kaz'tik the Manipulator
 		
 			elseif cid == 71155 then--Korven the Prime
-				timerShieldBashCD:Start(20)--20seconds from jump to center and REAL IEEU. question is whether or not filtering readyToFight will ignore the bad IEEU that come earlier
+				timerShieldBashCD:Start(19)--20seconds from jump to center and REAL IEEU. question is whether or not filtering readyToFight will ignore the bad IEEU that come earlier
 			elseif cid == 71160 then--Iyyokuk the Lucid
 				timerInsaneCalculationCD:Start()
 			elseif cid == 71154 then--Ka'roz the Locust
-				timerFlashCD:Start(15)--In final LFR test, he didn't cast this for 20 seconds. TODO check this change
-				timerHurlAmberCD:Start(45)
+				timerFlashCD:Start(14)--In final LFR test, he didn't cast this for 20 seconds. TODO check this change
+				timerHurlAmberCD:Start(44)
 			elseif cid == 71152 then--Skeer the Bloodseeker
-				timerBloodlettingCD:Start(10)
+				timerBloodlettingCD:Start(9)
 				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
 			elseif cid == 71158 then--Rik'kal the Dissector
-				timerMutateCD:Start(35)
+				timerMutateCD:Start(34)
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
 			elseif cid == 71153 then--Hisek the Swarmkeeper
-				timerAimCD:Start(38)--Might be 32 now with the UnitBuff filter, so pay attention to that and adjust as needed
+				timerAimCD:Start(37)--Might be 32 now with the UnitBuff filter, so pay attention to that and adjust as needed
 				--timerRapidFireCD:Start()
 			end
 		end
@@ -318,7 +315,7 @@ end
 --^don't let above fool you, not all of the paragons fire this spell!!! that is why we MUST use IEEU
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	self:Unschedule(CheckBosses)
-	self:Schedule(0.5, CheckBosses)--Delay check to make sure we run function only once on pull
+	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
 end
 
 function mod:SPELL_CAST_START(args)
