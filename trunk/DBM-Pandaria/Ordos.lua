@@ -79,7 +79,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnBurningSoul then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args.spellId == 144693 then
+	elseif args.spellId == 144693 and args:IsPlayer() then
 		specWarnPoolOfFire:Show()--maybe add DAMAGE event too if it feels like this isn't enough
 	end
 end
