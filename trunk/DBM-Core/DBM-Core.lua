@@ -1129,8 +1129,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
---		sendSync("PT", timer.."\t"..LastInstanceMapID)--Temp disable until 5.4 release
-		sendSync("PT", timer)
+		sendSync("PT", timer.."\t"..LastInstanceMapID)
 	elseif cmd:sub(1, 5) == "arrow" then
 		if not DBM:IsInRaid() then
 			DBM:AddMsg(DBM_ARROW_NO_RAIDGROUP)
