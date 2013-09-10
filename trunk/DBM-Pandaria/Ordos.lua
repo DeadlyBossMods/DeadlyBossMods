@@ -80,7 +80,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args.spellId == 144693 then
-		specWarnPoolOfFire()--maybe add DAMAGE event too if it feels like this isn't enough
+		specWarnPoolOfFire:Show()--maybe add DAMAGE event too if it feels like this isn't enough
 	end
 end
 
