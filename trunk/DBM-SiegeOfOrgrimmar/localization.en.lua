@@ -5,6 +5,10 @@ local L
 ---------------
 L= DBM:GetModLocalization(852)
 
+L:SetMiscLocalization({
+	Victory			= "Ah, you have done it! The waters are pure once more."
+})
+
 ---------------------------
 -- The Fallen Protectors --
 ---------------------------
