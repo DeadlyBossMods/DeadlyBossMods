@@ -119,7 +119,7 @@ function mod:SPELL_CAST_START(args)
 		timerTitanicSmashCD:Start()
 	elseif args.spellId == 144649 then
 		warnHurlCorruption:Show()
-		specWarnHurlCorruption:Show()
+		specWarnHurlCorruption:Show(args.sourceName)
 		timerHurlCorruptionCD:Start()
 		countdownHurlCorruption:Start()
 	elseif args.spellId == 144657 then
