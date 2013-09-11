@@ -15,7 +15,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnBreath					= mod:NewSpellAnnounce(143436, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -128,5 +129,17 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 --[[		if self:IsDifficulty("heroic10", "heroic25") then
 			timerSwellingCorruptionCD:Start(12.5)
 		end--]]
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Victory then
+		self:SendSync("Victory")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Victory" and self:IsInCombat() then
+		DBM:EndCombat(self)
 	end
 end
