@@ -1971,6 +1971,7 @@ function DBM:CINEMATIC_START(...)
 	if DBM.Options.MovieFilter == "Never" then return end
 	SetMapToCurrentZone()
 	local currentMapID = GetCurrentMapAreaID()
+	if currentMapID == 993 then return end--It bugs out in SoO and just skips all movies :\
 	local currentFloor = GetCurrentMapDungeonLevel() or 0
 	if DBM.Options.MovieFilter == "Block" or DBM.Options.MovieFilter == "AfterFirst" and DBM.Options.MoviesSeen[currentMapID..currentFloor] then
 		CinematicFrame_CancelCinematic()
