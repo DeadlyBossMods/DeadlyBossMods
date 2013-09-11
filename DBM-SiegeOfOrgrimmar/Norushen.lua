@@ -66,7 +66,7 @@ local timerTitanicSmashCD				= mod:NewCDTimer(14.5, 144628)--14-17sec variation
 local timerPiercingCorruptionCD			= mod:NewCDTimer(14, 144657)--14-17sec variation
 local timerHurlCorruptionCD				= mod:NewNextTimer(20, 144649)
 
-local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer						= mod:NewBerserkTimer(420)
 
 local countdownLookWithin				= mod:NewCountdownFades(59, "ej8220")
 local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, mod:IsHealer(), nil, nil, nil, true)
@@ -81,8 +81,8 @@ local playerInside = false
 function mod:OnCombatStart(delay)
 	playerInside = false
 	timerBlindHatredCD:Start(25-delay)
-	if self:IsDifficulty("lfr25") then
-		berserkTimer:Start(413-delay)--Still true?
+	if self:IsDifficulty("lfr25") then--Might also be flex as well
+		berserkTimer:Start(600-delay)--Still true?
 	else
 		berserkTimer:Start(-delay)
 	end
