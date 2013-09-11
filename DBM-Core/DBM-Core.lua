@@ -277,6 +277,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local LoadAddOn = LoadAddOn
 local IsEncounterInProgress = IsEncounterInProgress
 local InCombatLockdown = InCombatLockdown
+local GetAddOnInfo = GetAddOnInfo
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -1934,7 +1935,8 @@ function DBM:UPDATE_MOUSEOVER_UNIT()
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
 		for bosscId, addon in pairs(loadcIds) do
-			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) then
+			local _, _, _, enabled = GetAddOnInfo(addon)
+			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) and enabled then
 				for i, v in ipairs(DBM.AddOns) do
 					if v.modId == addon then
 						self:LoadMod(v)
@@ -1952,7 +1954,8 @@ function DBM:PLAYER_TARGET_CHANGED()
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 		local cId = tonumber(guid:sub(6, 10), 16)
 		for bosscId, addon in pairs(loadcIds) do
-			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) then
+			local _, _, _, enabled = GetAddOnInfo(addon)
+			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) and enabled then
 				for i, v in ipairs(DBM.AddOns) do
 					if v.modId == addon then
 						self:LoadMod(v)
@@ -2039,7 +2042,8 @@ do
 	function DBM:LoadModsOnDemand(checkTable, checkValue)
 		for i, v in ipairs(DBM.AddOns) do
 			local modTable = v[checkTable]
-			if not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
+			local _, _, _, enabled = GetAddOnInfo(v.modId)
+			if enabled and not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
 				if self:LoadMod(v) and v.type == "SCENARIO" then
 					DBM:InstanceCheck()
 				end
@@ -2077,10 +2081,6 @@ function DBM:LoadMod(mod)
 			loadDelay = mod
 		end
 		return
-	end
-	local _, _, _, enabled = GetAddOnInfo(mod.modId)
-	if not enabled then
-		EnableAddOn(mod.modId)
 	end
 
 	local loaded, reason = LoadAddOn(mod.modId)
