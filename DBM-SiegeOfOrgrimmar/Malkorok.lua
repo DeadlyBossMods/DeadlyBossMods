@@ -203,7 +203,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		self:Unschedule(warnDisplacedEnergyTargets)
-		self:Schedule(0.3, warnDisplacedEnergyTargets)
+		self:Schedule(0.5, warnDisplacedEnergyTargets)
 	elseif args.spellId == 142990 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then
