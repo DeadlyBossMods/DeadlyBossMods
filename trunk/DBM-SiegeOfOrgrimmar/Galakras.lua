@@ -69,7 +69,7 @@ local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:Is
 
 --Stage 2: Bring Her Down!
 local timerAddsCD					= mod:NewTimer(55, "timerAddsCD", 2457)
-local timerTowerCD					= mod:NewTimer(20, "timerTowerCD", 88852)
+local timerTowerCD					= mod:NewTimer(151, "timerTowerCD", 88852)
 local timerDemolisherCD				= mod:NewNextTimer(20, "ej8562", nil, nil, nil, 116040)--EJ is just not complete yet, shouldn't need localizing
 ----High Enforcer Thranok (Road)
 local timerShatteringCleaveCD		= mod:NewCDTimer(7.5, 146849, nil, mod:IsTank())
@@ -81,30 +81,14 @@ local timerFlamesofGalakrond		= mod:NewTargetTimer(15, 147029, nil, mod:IsTank()
 
 mod:AddBoolOption("FixateIcon", true)
 
-local demoCount = 0
 local addsCount = 0
-local addsDebug = 0
-
---[[
-ENGAGE
-14.5 adds 1
-45.5 adds 2
-55.5 adds 3 (also tower)
-+20 (Demolisher)
---This gap verified in 2 logs now and video. Seems intended for miniboss.
-+90 adds 4
-+55 adds 5(also tower)
-+20 (Demolisher)
-+34 adds 6 (or 54 after tower)
-+55 adds 7
-?? Unknown, had boss down by then
---]]
+local firstTower = false
 
 function mod:OnCombatStart(delay)
-	demoCount = 0
 	addsCount = 0
-	addsDebug = 0
-	timerAddsCD:Start(14-delay)
+	firstTower = false
+	timerAddsCD:Start(11-delay)
+	timerTowerCD:Start(116.5-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -230,30 +214,24 @@ end
 --"<167.7 21:23:40> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Warlord Zaela orders a |cFFFF0404|hKor'kron Demolisher|h|r to assault the tower!
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("cFFFF0404") then--They fixed epiccenter bug (figured they would). Color code should be usuable though. It's only emote on encounter that uses it.
-		demoCount = demoCount + 1
 		warnDemolisher:Show()
-		if demoCount == 1 then
-			timerAddsCD:Start(90)
-		elseif demoCount == 2 then
-			timerAddsCD:Start(34)
+	elseif msg:find(L.tower) then
+		timerDemolisherCD:Start()
+		if not firstTower then
+			firstTower = true
+			timerTowerCD:Start()
 		end
 	end
 end
 
 function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(15, 3) then
+	if msg == "Adds" and self:AntiSpam(10, 3) then
 		addsCount = addsCount + 1
 		if addsCount == 1 then
-			timerAddsCD:Start(45)
-		elseif addsCount == 2 then
-			timerTowerCD:Start()
-		elseif addsCount == 3 then--This is also a tower so probably don't need redundant emote
-			timerDemolisherCD:Start()
-		elseif addsCount == 4 then
-			timerTowerCD:Start()
-		elseif addsCount == 5 then--This is also a tower
-			timerDemolisherCD:Start()
-		elseif addsCount >= 6 then
+			timerAddsCD:Start(48)
+		elseif addsCount == 3 then
+			timerAddsCD:Start(110)
+		else
 			timerAddsCD:Start()
 		end
 	end

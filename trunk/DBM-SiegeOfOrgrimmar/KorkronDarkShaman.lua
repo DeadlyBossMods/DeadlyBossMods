@@ -164,7 +164,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end
 	elseif args.spellId == 144005 then
-		self:BossTargetScanner(71858, "ToxicStormTarget", 0.025, 12)
+		self:BossTargetScanner(71858, "ToxicStormTarget", 0.05, 16)
 		warnToxicStorm:Show()
 		timerToxicStormCD:Start()
 		if self:checkTankDistance(args:GetSrcCreatureID()) then

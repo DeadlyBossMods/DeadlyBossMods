@@ -34,7 +34,7 @@ local warnTorment				= mod:NewSpellAnnounce(142934, 3, nil, mod:IsHealer())
 local warnMantidSwarm			= mod:NewSpellAnnounce(142539, 3, nil, mod:IsTank())
 local warnResidue				= mod:NewCastAnnounce(145786, 4, nil, nil, mod:IsMagicDispeller())
 local warnRageoftheEmpress		= mod:NewCastAnnounce(145812, 4, nil, nil, mod:IsMagicDispeller())
-local warnWindStorm				= mod:NewSpellAnnounce(145816, 3)--Stunable?
+local warnWindStorm				= mod:NewSpellAnnounce(145286, 3)--Stunable?
 --Lightweight Crate of Goods
 local warnHardenFlesh			= mod:NewSpellAnnounce(144922, 2, nil, false)
 local warnEarthenShard			= mod:NewSpellAnnounce(144923, 2, nil, false)
@@ -80,7 +80,7 @@ local timerMatterScrambleCD		= mod:NewCDTimer(18, 145288)--18-22 sec variation. 
 local timerCrimsonReconCD		= mod:NewNextTimer(15, 142947)
 local timerMantidSwarmCD		= mod:NewCDTimer(35, 142539)
 local timerResidueCD			= mod:NewCDTimer(18, 145786, nil, mod:IsMagicDispeller())
-local timerWindstormCD			= mod:NewCDTimer(34, 145816, nil, false)--Spammy but might be useful to some, if they aren't releasing a ton of these at once.
+local timerWindstormCD			= mod:NewCDTimer(34, 145286, nil, false)--Spammy but might be useful to some, if they aren't releasing a ton of these at once.
 local timerRageoftheEmpressCD	= mod:NewCDTimer(18, 145812, nil, mod:IsMagicDispeller())
 --Lightweight Crate of Goods
 ----Most of these timers are included simply because of how accurate they are. Predictable next timers. However, MANY of these adds up at once.
@@ -162,7 +162,7 @@ function mod:SPELL_CAST_START(args)
 		warnMantidSwarm:Show()
 		specWarnMantidSwarm:Show()
 		timerMantidSwarmCD:Start(args.sourceGUID)
-	elseif args.spellId == 145816 and self:checkTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145286 and self:checkTankDistance(args.sourceGUID) then
 		warnWindStorm:Show()
 		timerWindstormCD:Start(args.sourceGUID)
 	elseif args.spellId == 144922 and self:checkTankDistance(args.sourceGUID) then
