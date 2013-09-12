@@ -68,8 +68,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull					= "Then let us begin.",
-	Victory					= "Your hope shines brightly, and even more brightly when you work together to overcome. It will ever light your way in even the darkest of places."
+	Pull					= "那我們就開始吧。",
+	Victory					= "你的希望閃耀，尤其在團結後更是燦爛。即使在最黑暗的地方，它也會照亮你的路途。"
 })
 
 ------------------------------
@@ -78,10 +78,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(858)
 
 L:SetMiscLocalization({
-	Pull					= "The trial begins!",
-	Wave1					= "Do not let your judgement be clouded in trying times!",
-	Wave2					= "Listen to your inner voice, and seek out the truth!",
-	Victory					= "Your wisdom has seen you through this trial. May it ever light your way out of dark places."
+	Pull					= "試煉開始!",
+	Wave1					= "別讓你們的判斷被困境蒙蔽!",
+	Wave2					= "傾聽你們內心的聲音，找出真相!",
+	Victory					= "你們的智慧幫你們度過了考驗。希望智慧能在黑暗中照亮你們的道路。"
 })
 
 --------------------------
@@ -90,8 +90,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(859)
 
 L:SetMiscLocalization({
-	Pull					= "We shall see.",
---	Victory					= "",
+	Pull					= "我們拭目以待。",
+	Victory					= "雖然被難以想像的敵人包圍，你的堅毅會讓你堅持下去。在未來要記得這一點。",
 	VictoryDem				= "Rakkas shi alar re pathrebosh il zila rethule kiel shi shi belaros rikk kanrethad adare revos shi xi thorje Rukadare zila te lok zekul melar "--Cover all bases and all
 })
 
@@ -102,8 +102,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(860)
 
 L:SetMiscLocalization({
-	Pull					= "Ha ha! The trial commences",
-	Victory					= "You are strong, stronger even than you realize. Carry this thought with you into the darkness ahead, and let it shield you."
+	Pull					= "哈哈!試煉開始吧!",
+	Victory					= "你很強，比你認知的還要強大。帶著這個信念迎接前方的黑暗，讓它保護你。"
 })
 
 ------------------------------------
