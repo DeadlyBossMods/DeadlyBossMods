@@ -64,8 +64,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "Then let us begin.",
-	Victory				= "Your hope shines brightly, and even more brightly when you work together to overcome. It will ever light your way in even the darkest of places."
+	Pull				= "자, 시작하자.",
+	Victory				= "너희의 희망은 밝게 빛나고, 역경을 극복하려고 힘을 합치면 더욱 밝게 빛난다. 가장 어두운 곳에서도, 희망이 너희의 길을 밝혀줄 것이다."
 })
 
 ------------------------------
@@ -74,10 +74,10 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(858)
 
 L:SetMiscLocalization({
-	Pull				= "The trial begins!",
-	Wave1				= "Do not let your judgement be clouded in trying times!",
-	Wave2				= "Listen to your inner voice, and seek out the truth!",
-	Victory				= "Your wisdom has seen you through this trial. May it ever light your way out of dark places."
+	Pull				= "시험을 시작하자!",
+	Wave1				= "너희 행동이 어떤 결과를 낳을지 생각해라!",
+	Wave2				= "내면의 목소리에 귀를 기울이고, 진실을 찾아라!",
+	Victory				= "이 시험에서 너희의 지혜가 빛을 발했다. 그 지혜가 어두운 곳에서 항상 너희의 등불이 되길."
 })
 
 --------------------------
@@ -86,8 +86,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(859)
 
 L:SetMiscLocalization({
-	Pull				= "We shall see.",
---	Victory				= "",
+	Pull				= "지금 확인해 보지.",
+	Victory				= "상상도 할 수 없는 강력한 적들에게 둘러싸여 있는 그런 때에도, 인내가 너희를 굳건히 지탱할 것이다. 다가오는 시간에 이 교훈을 반드시 기억해라.",
 	VictoryDem			= "Rakkas shi alar re pathrebosh il zila rethule kiel shi shi belaros rikk kanrethad adare revos shi xi thorje Rukadare zila te lok zekul melar "--Cover all bases and all
 })
 
@@ -97,8 +97,8 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(860)
 
 L:SetMiscLocalization({
-	Pull				= "Ha ha! The trial commences",
-	Victory				= "You are strong, stronger even than you realize. Carry this thought with you into the darkness ahead, and let it shield you."
+	Pull				= "하하! 시험을 시작하자!",
+	Victory				= "너흰 강하다. 너희 생각보다 훨씬. 앞에 놓인 어둠 속으로 들어갈 때 이것을 기억하고, 방패로 삼아라."
 })
 
 ------------------------------------

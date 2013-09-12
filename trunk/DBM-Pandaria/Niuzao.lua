@@ -9,7 +9,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
@@ -29,6 +28,7 @@ local specWarnMassiveQuake		= mod:NewSpecialWarningCast(144611, mod:IsHealer())
 local specWarnCharge			= mod:NewSpecialWarningSpell(144609, nil, nil, nil, 2)--66 and 33%. Maybe add pre warns
 
 local timerHeadbuttCD			= mod:NewCDTimer(47, 144610, nil, mod:IsTank())
+local timerMassiveQuake			= mod:NewBuffActiveTimer(13, 144611)
 local timerMassiveQuakeCD		= mod:NewCDTimer(48, 144611)
 
 local yellTriggered = false
@@ -52,12 +52,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144611 then
 		warnMassiveQuake:Show()
 		specWarnMassiveQuake:Show()
+		timerMassiveQuake:Start()
 		timerMassiveQuakeCD:Start()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 144609 then
+	elseif args.spellId == 144608 then
 		warnCharge:Show()
 		specWarnCharge:Show()
 	end

@@ -33,6 +33,7 @@ local specWarnChiBarrage			= mod:NewSpecialWarningSpell(144642, nil, nil, nil, 2
 local timerSpectralSwipe			= mod:NewTargetTimer(60, 144638, nil, mod:IsTank() or mod:IsHealer())
 local timerSpectralSwipeCD			= mod:NewCDTimer(12, 144638)
 --local timerAgilityCD				= mod:NewCDTimer(25, 144631)
+local timerCracklingLightning		= mod:NewBuffActiveTimer(13, 144635)
 local timerCracklingLightningCD		= mod:NewCDTimer(47, 144635)
 local timerChiBarrageCD				= mod:NewCDTimer(20, 144642)
 
@@ -60,6 +61,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 144635 then
 		warnCracklingLightning:Show()
+		timerCracklingLightning:Start()
 		timerCracklingLightningCD:Start()
 	elseif args.spellId == 144642 then
 		warnChiBarrage:Show()

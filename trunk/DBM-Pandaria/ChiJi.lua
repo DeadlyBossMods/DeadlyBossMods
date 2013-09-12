@@ -19,18 +19,19 @@ mod:RegisterEvents(
 )
 
 local warnInspiringSong			= mod:NewSpellAnnounce(144468, 3)
-local warnBeaconOfHope			= mod:NewTargetAnnounce(144473, 1)
+local warnBeaconOfHope			= mod:NewSpellAnnounce(144473, 1)
 local warnFirestorm				= mod:NewSpellAnnounce(144461, 3)
 local warnBlazingSong			= mod:NewSpellAnnounce(144471, 4)
 local warnCraneRush				= mod:NewSpellAnnounce(144470, 3)--Health based, 66% and 33% (maybe register UNIT_HEALTH and give soon warning?)
 
 local specWarnInspiringSong		= mod:NewSpecialWarningInterrupt(144468)
 local specWarnBeaconOfHope		= mod:NewSpecialWarningSpell(144473)
-local specWarnFirestorm			= mod:NewSpecialWarningSpell(144461, nil, nil, nil, 2)
+local specWarnFirestorm			= mod:NewSpecialWarningSpell(144461, mod:IsMelee(), nil, nil, 2)
 local specWarnBlazingSong		= mod:NewSpecialWarningSpell(144471, nil, nil, nil, 3)
 local specWarnCraneRush			= mod:NewSpecialWarningSpell(144470, nil, nil, nil, 2)
 
 local timerInspiringSongCD		= mod:NewCDTimer(30, 144468)--30-50sec variation?
+local timerBlazingSong			= mod:NewBuffActiveTimer(15, 144471)
 
 local yellTriggered = false
 
@@ -47,11 +48,12 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 144468 then
 		warnInspiringSong:Show()
-		specWarnInspiringSong:Show()
+		specWarnInspiringSong:Show(args.sourceName)
 		timerInspiringSongCD:Start()
 	elseif args.spellId == 144471 then
 		warnBlazingSong:Show()
 		specWarnBlazingSong:Show()
+		timerBlazingSong:Start()
 	elseif args.spellId == 144470 then
 		warnCraneRush:Show()
 		specWarnCraneRush:Show()
