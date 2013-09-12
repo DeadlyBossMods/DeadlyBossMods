@@ -40,7 +40,7 @@ L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
 	timerAddsCD		= "다음 병사",
-	timerTowerCD	= "다음 포탑과 병사"
+	timerTowerCD	= "다음 포탑"
 })
 
 L:SetOptionLocalization({
@@ -52,8 +52,8 @@ L:SetMiscLocalization({
 	newForces1		= "Here they come!",--Jaina's line, horde may not be same, 호드의 경우 다시 확인
 	newForces2		= "Dragonmaw, advance!",
 	newForces3		= "For Hellscream!",
-	newForces4		= "Next squad, push forward!"
---	tower			= "The door barring the"--The door barring the South/North Tower has been breached!
+	newForces4		= "Next squad, push forward!",
+	tower			= "The door barring the"--The door barring the South/North Tower has been breached!
 })
 
 --------------------
