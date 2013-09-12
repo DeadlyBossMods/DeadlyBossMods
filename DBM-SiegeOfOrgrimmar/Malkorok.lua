@@ -206,11 +206,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnDisplacedEnergyTargets)
 	elseif args.spellId == 142990 then
 		local amount = args.amount or 1
-		if amount % 3 == 0 or amount >= 12 then
+		if amount % 3 == 0 then
 			warnFatalStrike:Show(args.destName, amount)
 		end
 		timerFatalStrike:Start(args.destName)
-		if amount >= 12 then
+		if amount % 3 == 0 and amount >= 12 then
 			if args:IsPlayer() then--At this point the other tank SHOULD be clear.
 				specWarnFatalStrike:Show(amount)
 			else--Taunt as soon as stacks are clear, regardless of stack count.
