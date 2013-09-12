@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Dogs
-local warnRend						= mod:NewStackAnnounce(144304, 2)
+local warnRend						= mod:NewStackAnnounce(144304, 2, nil, mod:IsTank())
 
 --General
 local warnPoisonmistTotem			= mod:NewSpellAnnounce(144288, 3)--85%
