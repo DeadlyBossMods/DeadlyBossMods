@@ -30,7 +30,7 @@ local warnEnrage					= mod:NewTargetAnnounce(145974, 3, nil, mod:IsTank() or mod
 --Infusion of Acid
 local warnAcidPustules				= mod:NewSpellAnnounce(143971, 2)
 local warnAcidBreath				= mod:NewStackAnnounce(143780, 2, nil, mod:IsTank())
-local warnCorrosiveBlood			= mod:NewTargetAnnounce(143791, 2, nil, mod:IsHealer())
+local warnCorrosiveBlood			= mod:NewTargetAnnounce(143791, 2, nil, false)--Spammy, CD was reduced to 2 seconds
 --Infusion of Frost
 local warnFrostPustules				= mod:NewSpellAnnounce(143968, 3)
 local warnFrostBreath				= mod:NewStackAnnounce(143773, 2, nil, mod:IsTank())
@@ -43,7 +43,7 @@ local warnBurningBloodBlood			= mod:NewTargetAnnounce(143783, 3)
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
 local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTarget(143766, mod:IsTank())
-local specWarnDeafeningScreech		= mod:NewSpecialWarningCast(143343, nil, nil, nil, 2)
+local specWarnDeafeningScreech		= mod:NewSpecialWarningSpell(143343, nil, nil, nil, 2)--Too late to give a stop casting warning, so it's spell now.
 --Stage 2: Frenzy for Blood!
 local specWarnBloodFrenzy			= mod:NewSpecialWarningSpell(143440, nil, nil, nil, 2)
 local specWarnFixate				= mod:NewSpecialWarningRun(143445, nil, nil, nil, 3)
@@ -192,8 +192,8 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
-		if screechCount < 11 then--Don't spam special warning once cd is lower than 3 seconds.
-			specWarnDeafeningScreech:Show()
+		if screechCount < 8 then--Don't spam special warning once cd is lower than 4.8 seconds.
+			screechCount:Show()
 		end
 		timerDeafeningScreechCD:Cancel()
 		timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)

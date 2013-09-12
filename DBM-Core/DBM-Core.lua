@@ -4324,8 +4324,9 @@ function bossModPrototype:checkTankDistance(cid, distance)
 			SetMapToCurrentZone()
 			x, y = GetPlayerMapPosition(uId)
 		end
+		if x == 0 and y == 0 then return true end
 		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
-		if (inRange and inRange > distance) or not (x == 0 and y == 0) then--You are not near the person tanking boss
+		if (inRange and inRange > distance) then--You are not near the person tanking boss
 			return false
 		end
 	end

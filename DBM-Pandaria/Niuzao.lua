@@ -29,7 +29,7 @@ local specWarnMassiveQuake		= mod:NewSpecialWarningCast(144611, mod:IsHealer())
 local specWarnCharge			= mod:NewSpecialWarningSpell(144609, nil, nil, nil, 2)--66 and 33%. Maybe add pre warns
 
 local timerHeadbuttCD			= mod:NewCDTimer(47, 144610, nil, mod:IsTank())
-local timerMassiveQuakeCD		= mod:NewCDTimer(48, 137511)
+local timerMassiveQuakeCD		= mod:NewCDTimer(48, 144611)
 
 local yellTriggered = false
 

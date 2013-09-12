@@ -52,8 +52,8 @@ L:SetMiscLocalization({
 	newForces1	= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation)
 	newForces2	= "Drachenmalklan, ausrücken!",--needs to be verified (PTR screenshot-captured translation)
 	newForces3	= "Für Höllschrei!",--needs to be verified (PTR screenshot-captured translation)
-	newForces4	= "Nächster Trupp, vorwärts!"--needs to be verified (PTR screenshot-captured translation)
---	tower		= "Das Tor zum"--needs to be verified (PTR screenshot-captured translation)
+	newForces4	= "Nächster Trupp, vorwärts!",--needs to be verified (PTR screenshot-captured translation)
+	tower		= "Das Tor zum"--needs to be verified (PTR screenshot-captured translation)
 })
 
 --------------------

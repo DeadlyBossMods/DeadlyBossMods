@@ -113,7 +113,7 @@ end
 
 function mod:InfernoStrikeTarget(targetname, uId)
 	if not targetname then return end
-	print("DBM DEBUG: ", targetname)
+	print("DBM DEBUG: InfernoStrikeTarget", targetname)--Need to verify timing is grabbing new target and not previous target
 --[[	warnInfernoStrike:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnInfernoStrike:Show()
@@ -224,12 +224,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDarkMeditation:Show()
 		timerBaneCD:Cancel()
 		timerCalamityCD:Cancel()
-		timerClashCD:Cancel()--Can't be cast during ANYONES special
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
 		warnMiserySorrowGloom:Show()
 		specWarnMiserySorrowGloom:Show()
 		timerVengefulStrikesCD:Cancel()
-		timerClashCD:Cancel()--Can't be cast during ANYONES special
+		timerClashCD:Cancel()
 		timerCorruptedBrewCD:Cancel()
 		timerInfernoStrikeCD:Start(8)
 		timerDefiledGroundCD:Start(10)
@@ -238,7 +237,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnMarkOfAnquish:Show()
 		timerGougeCD:Cancel()
 		timerGarroteCD:Cancel()
-		timerClashCD:Cancel()--Can't be cast during ANYONES special
 		timerCalamityCD:Cancel()--Can't be cast during THIS special
 	end
 end
@@ -253,7 +251,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerInfernoStrikeCD:Cancel()
 		timerCorruptedBrewCD:Start(12)
 		timerVengefulStrikesCD:Start(18)
---		timerClashCD:Start()--No good data on this, since i have no logs where I didn't push another bosses special before clash was cast after his own
+		timerClashCD:Start(46)--Still needs more verification.
 	elseif args.spellId == 143812 then--Mark of Anguish
 		timerGarroteCD:Start(12)--TODO, verify consistency in all difficulties
 		timerGougeCD:Start(23)--Seems to be either be exactly 23 or exactly 35. Not sure what causes it to switch.
