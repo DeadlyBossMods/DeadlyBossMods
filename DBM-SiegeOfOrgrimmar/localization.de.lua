@@ -6,6 +6,10 @@ local L
 ---------------
 L= DBM:GetModLocalization(852)
 
+L:SetMiscLocalization({
+	Victory			= "Ah, Ihr habt es geschafft! Das Wasser ist wieder rein."
+})
+
 ---------------------------
 -- The Fallen Protectors --
 ---------------------------
@@ -21,7 +25,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	wasteOfTime			= "Very well, I will create a field to keep your corruption quarantined."--translate (trigger)
+	wasteOfTime			= "Nun gut, ich werde ein Feld erschaffen, das Eure Verderbnis eindämmt."
 })
 
 ------------------
@@ -40,7 +44,7 @@ L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
 	timerAddsCD		= "Nächste Adds",
-	timerTowerCD	= "Nächster Turm & Adds"
+	timerTowerCD	= "Nächster Turm"
 })
 
 L:SetOptionLocalization({
