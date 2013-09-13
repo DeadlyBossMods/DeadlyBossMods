@@ -95,11 +95,15 @@ local function warnTouchOfYShaarjTargets(spellId)
 end
 
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
-local function DesecrateScan()
+local function DesecrateScan(spellid)
 	if UnitExists("boss1target") and not mod:IsTanking("boss1target", "boss1") then--Boss 1 is looking at someone that isn't his highest threat or a tank (have to filter tanks cause he looks at them to cast impale, have to filter his highest threat in case it's not a tank, ie a healer)
 		mod:Unschedule(DesecrateScan)
 		local targetname = DBM:GetUnitFullName("boss1target")
-		warnDesecrate:Show(targetname)
+		if spellid == 144748 then
+			warnDesecrate:Show(targetname)
+		else
+			warnEmpDesecrate:Show(targetname)
+		end
 		if UnitIsUnit("boss1target", "player") then--you are target
 			yellDesecrate:Yell()
 		end
@@ -159,24 +163,24 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144748 then
-		self:BossTargetScanner(71865, "DesecrateScan", 0.025, 12)--Forgot to see if this is working
-		warnDesecrate:Show()
+		self:Unschedule(DesecrateScan)
 		specWarnDesecrate:Show()
 		if phase == 2 then
 			timerDesecrateCD:Start(35)
+			self:Schedule(30, DesecrateScan, 144749)
 		else
 			timerDesecrateCD:Start()
+			self:Schedule(35, DesecrateScan, 144749)
 		end
 	elseif args.spellId == 144749 then
 		self:Unschedule(DesecrateScan)
-		warnEmpDesecrate:Show()
 		specWarnEmpDesecrate:Show()
 		if phase == 2 then
 			timerDesecrateCD:Start(35)
-			self:Schedule(30, DesecrateScan)
+			self:Schedule(30, DesecrateScan, 144749)
 		else
 			timerDesecrateCD:Start()
-			self:Schedule(35, DesecrateScan)
+			self:Schedule(35, DesecrateScan, 144749)
 		end
 	elseif args:IsSpellID(145183, 145195) then--Can miss, so we start timer here
 		timerGrippingDespairCD:Start()
