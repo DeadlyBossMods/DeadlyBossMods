@@ -38,7 +38,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!"--translate (trigger)
+	Pull				= "Ihr wagt es, uns're Vorbereitungen zu stör'n? Die Zandalari werd'n sich nicht aufhalten lass'n, diesmal nicht!"
 })
 
 ---------------------------
@@ -75,7 +75,7 @@ L= DBM:GetModLocalization(858)
 
 L:SetMiscLocalization({
 	Pull					= "Die Prüfung beginnt!",
-	Wave1					= "Do not let your judgement be clouded in trying times!",--translate (trigger)
+	Wave1					= "Lasst Euren Verstand nicht von schweren Zeiten verschleiern!",
 	Wave2					= "Hört auf Eure innere Stimme und sucht nach der Wahrheit.",
 	Victory					= "Eure Weisheit hat Euch diese Prüfung bestehen lassen. Möge sie Euch den Weg aus der Dunkelheit erhellen."
 })
@@ -87,7 +87,8 @@ L= DBM:GetModLocalization(859)
 
 L:SetMiscLocalization({
 	Pull					= "Wir werden sehen.",
-	VictoryDem				= "Rakkas shi alar re pathrebosh il zila rethule kiel shi shi belaros rikk kanrethad adare revos shi xi thorje Rukadare zila te lok zekul melar "--translate (trigger)
+	Victory					= "Auch wenn Ihr von Feinden jenseits Eurer Vorstellungskraft umringt seid, wird Eure Ausdauer Euch bewahren. Erinnert Euch daran in den kommenden Tagen.",
+	VictoryDem				= "Rakkas shi alar re pathrebosh il zila rethule kiel shi shi belaros rikk kanrethad adare revos shi xi thorje Rukadare zila te lok zekul melar "--needs to be verified
 })
 
 ---------------------------
