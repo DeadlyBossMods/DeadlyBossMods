@@ -2452,6 +2452,8 @@ do
 		buttondtext:SetPoint("CENTER", buttondecline, "CENTER", 0, 5)
 		buttondtext:SetText(NO)
 
+		inspopup:Hide()
+
 		local function autoDecline(sender, force)
 			inspopup:Hide()
 			savedSender = nil
