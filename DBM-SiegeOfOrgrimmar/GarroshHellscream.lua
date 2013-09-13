@@ -56,7 +56,7 @@ local specWarnAnnihilate			= mod:NewSpecialWarningSpell(144969, nil, nil, nil, 3
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningRun(144985, mod:IsMelee())
 local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningRun(145037, mod:IsMelee())
 local specWarnEmpDesecrate			= mod:NewSpecialWarningSpell(144749, nil, nil, nil, 2)
-local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 2)
+local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 3)
 local specWarnGrippingDespairOther	= mod:NewSpecialWarningTarget(145183, mod:IsTank())
 
 --Stage 1: A Cry in the Darkness
@@ -67,17 +67,18 @@ local timerFarseerWolfRiderCD		= mod:NewNextTimer(50, "ej8294", nil, nil, nil, 1
 local timerSiegeEngineerCD			= mod:NewNextTimer(40, "ej8298", nil, nil, nil, 144616)
 local timerPowerIronStar			= mod:NewCastTimer(15, 144616)
 --Intermission: Realm of Y'Shaarj
-local timerYShaarjsProtection		= mod:NewCastTimer(60, 144945)
+local timerEnterRealm				= mod:NewCastTimer(25, 144866, nil, nil, nil, 144945)
+local timerYShaarjsProtection		= mod:NewBuffActiveTimer(61, 144945)
 --Stage Two: Power of Y'Shaarj
 local timerWhirlingCorruptionCD		= mod:NewCDTimer(40, 144985)--One bar for both, "empowered" makes timer too long. CD not yet known except for first
 local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985)
 local timerTouchOfYShaarjCD			= mod:NewCDTimer(45, 145071)
-local timerGrippingDespairCD		= mod:NewCDTimer(8.5, 145183, nil, mod:IsTank())
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 
 local soundWhirlingCorrpution		= mod:NewSound(144985)
 local countdownPowerIronStar		= mod:NewCountdown(15, 144616)
 local countdownWhirlingCorruption	= mod:NewCountdown(40, 144985)
+local countdownTouchOfYShaarj		= mod:NewCountdown(45, 145071, false, nil, nil, nil, true)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 
 local touchOfYShaarjTargets = {}
 local firstIronStar = false
@@ -122,10 +123,6 @@ function mod:OnCombatStart(delay)
 	timerSiegeEngineerCD:Start(20-delay)
 	timerHellscreamsWarsongCD:Start(22-delay)
 	timerFarseerWolfRiderCD:Start(30-delay)
-end
-
-function mod:OnCombatEnd()
-
 end
 
 function mod:SPELL_CAST_START(args)
@@ -182,30 +179,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerDesecrateCD:Start()
 			self:Schedule(35, DesecrateScan, 144749)
 		end
-	elseif args:IsSpellID(145183, 145195) then--Can miss, so we start timer here
-		timerGrippingDespairCD:Start()
---[[	elseif args:IsSpellID(145065, 145171) then--Seems no longer in combat log.
-		--"<259.0 20:29:21> [CLEU] SPELL_CAST_START#false#0xF15118B900011259#Garrosh Hellscream#68168#0##nil#-2147483648#-2147483648#145065#Touch of Y'Shaarj#32", -- [41491]
-		--"<259.9 20:29:21> [CLEU] SPELL_CAST_SUCCESS#false#0x01000000001FC86D#Torima#1300#0##nil#-2147483648#-2147483648#31224#Cloak of Shadows#1", -- [41583]
-		--"<260.7 20:29:22> [CLEU] SPELL_MISSED#false#0xF15118B900011259#Garrosh Hellscream#68168#0#0x01000000001FC86D#Torima#1300#0#145065#Touch of Y'Shaarj#32#IMMUNE#nil", -- [41679]
-		timerTouchOfYShaarjCD:Start()--]]
+	elseif args:IsSpellID(145065, 145171) then--Seems no longer in combat log.
+		timerTouchOfYShaarjCD:Start()
+		countdownTouchOfYShaarj:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144945 then--Intermission (there are earlier events but until the shield goes up phase 1 abilities can still be cast. the phase isn't truely over until this is cast, this is why we don't use the 2-3 second earlier events
-		timerDesecrateCD:Cancel()
-		self:Unschedule(DesecrateScan)
-		timerSiegeEngineerCD:Cancel()
-		timerFarseerWolfRiderCD:Cancel()
-		timerHellscreamsWarsongCD:Cancel()
 		warnYShaarjsProtection:Show(args.destName)
 		timerYShaarjsProtection:Start()
 	elseif args:IsSpellID(145065, 145171) then
 		touchOfYShaarjTargets[#touchOfYShaarjTargets + 1] = args.destName
 		self:Unschedule(warnTouchOfYShaarjTargets)
 		self:Schedule(0.5, warnTouchOfYShaarjTargets, args.spellId)
-		timerTouchOfYShaarjCD:Start()
 	elseif args:IsSpellID(145071, 145175) then--Touch of Yshaarj Spread IDs?
 
 	elseif args:IsSpellID(145183, 145195) then
@@ -216,7 +203,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnEmpGrippingDespair:Show(args.destName, amount)
 		end
 		timerGrippingDespair:Start(args.destName)
-		if amount >= 2 then
+		if amount >= 3 then
 			if args:IsPlayer() then
 				specWarnGrippingDespair:Show(amount)
 			else
@@ -255,12 +242,26 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnHellscreamsWarsong:Show()
 		specWarnHellscreamsWarsong:Show()
 		timerHellscreamsWarsongCD:Start()
+	elseif spellId == 145235 then--Throw Axe At Heart
+		timerSiegeEngineerCD:Cancel()
+		timerFarseerWolfRiderCD:Cancel()
+		timerEnterRealm:Start()
+	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
+		timerPowerIronStar:Cancel()
+		countdownPowerIronStar:Cancel()
+		timerDesecrateCD:Cancel()
+		self:Unschedule(DesecrateScan)
+		timerHellscreamsWarsongCD:Cancel()
+		timerTouchOfYShaarjCD:Cancel()
+		countdownTouchOfYShaarj:Cancel()
+		timerWhirlingCorruptionCD:Cancel()
+		countdownWhirlingCorruption:Cancel()
 	elseif spellId == 144956 then--Jump To Ground (intermission ending) Used instead of 144945 because 144945 can be removed early during intermission for free damage.
 		phase = 2
-		timerGrippingDespairCD:Start(5.5)
 		self:Schedule(5, DesecrateScan)
 		timerDesecrateCD:Start(10)
 		timerTouchOfYShaarjCD:Start(15)
+		countdownTouchOfYShaarj:Start(15)
 		timerWhirlingCorruptionCD:Start(30)
 		countdownWhirlingCorruption:Start(30)
 	end
