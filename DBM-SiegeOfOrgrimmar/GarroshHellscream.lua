@@ -51,7 +51,7 @@ local specWarnSiegeEngineer			= mod:NewSpecialWarningSwitch("ej8298", mod:IsDps(
 local specWarnChainHeal				= mod:NewSpecialWarningInterrupt(144583)
 local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(144584, false)
 --Intermission: Realm of Y'Shaarj
-local specWarnAnnihilate			= mod:NewSpecialWarningSpell(144969, nil, nil, nil, 3)
+local specWarnAnnihilate			= mod:NewSpecialWarningSpell(144969, false, nil, nil, 3)
 --Stage Two: Power of Y'Shaarj
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningRun(144985, mod:IsMelee())
 local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningRun(145037, mod:IsMelee())
