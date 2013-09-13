@@ -134,7 +134,6 @@ DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für die
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Verstecken"
 
-DBM_CORE_WORLD_BOSS					= "Weltboss"
 DBM_CORE_UNKNOWN					= "unbekannt"
 DBM_CORE_LEFT						= "Links"
 DBM_CORE_RIGHT						= "Rechts"

@@ -134,7 +134,6 @@ DBM_ERROR_NO_PERMISSION				= "У вас недостаточно прав для
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Скрыть"
 
-DBM_CORE_WORLD_BOSS					= "Мировой босс"
 DBM_CORE_UNKNOWN					= "неизвестно"
 DBM_CORE_LEFT						= "Налево"
 DBM_CORE_RIGHT						= "Направо"

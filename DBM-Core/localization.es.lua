@@ -134,7 +134,6 @@ DBM_ERROR_NO_PERMISSION				= "No tienes permiso para hacer eso."
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Esconder marco de vida"
 
-DBM_CORE_WORLD_BOSS					= "Jefe del mundo"
 DBM_CORE_UNKNOWN					= "desconocido"--UNKNOWN which is "Unknown" (does u vs U matter?)
 DBM_CORE_LEFT						= "Izquierda"
 DBM_CORE_RIGHT						= "Derecha"

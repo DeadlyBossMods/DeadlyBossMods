@@ -134,7 +134,6 @@ DBM_ERROR_NO_PERMISSION				= "無權進行此操作。"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "關閉血量框架"
 
-DBM_CORE_WORLD_BOSS					= "世界首領"
 DBM_CORE_UNKNOWN					= "未知"
 DBM_CORE_LEFT						= "左"
 DBM_CORE_RIGHT						= "右"
