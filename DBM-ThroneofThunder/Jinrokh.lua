@@ -183,7 +183,7 @@ mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:137175") then
-		local target = DBM:GetFullNameByShortName(target)
+		local target = DBM:GetUnitFullName(target)
 		warnThrow:Show(target)
 		timerStormCD:Start()
 		self:Schedule(55.5, checkWaterStorm)--check before 5 sec.

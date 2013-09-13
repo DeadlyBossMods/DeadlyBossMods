@@ -419,7 +419,7 @@ function onUpdate(self, elapsed)
 		end
 		local name = sortedLines[i]
 		-- filter players who are not in the current zone (i.e. just idling/watching while being in the raid)
-		local unitId = DBM:GetRaidUnitId(DBM:GetFullNameByShortName(name))
+		local unitId = DBM:GetRaidUnitId(DBM:GetUnitFullName(name))
 		local raidId = unitId and unitId:sub(0, 4) == "raid" and (tonumber(unitId:sub(5) or 0) or 0)
 		if not raidId or select(7, GetRaidRosterInfo(raidId)) == currentMapName then
 			linesShown = linesShown + 1

@@ -332,7 +332,7 @@ function mod:OnSync(msg, targetOrGuid, ver)
 	local target = targetOrGuid
 	local guid = targetOrGuid
 	if msg == "ChargeTo" and target then
-		local target = DBM:GetFullNameByShortName(target)
+		local target = DBM:GetUnitFullName(target)
 		warnCharge:Show(target)
 		timerCharge:Start()
 		timerChargeCD:Start()

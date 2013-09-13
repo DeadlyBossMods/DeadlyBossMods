@@ -61,7 +61,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:141407") then--Does show in combat log, but emote gives targetname 2 seconds earlier.
-		local target = DBM:GetFullNameByShortName(target)
+		local target = DBM:GetUnitFullName(target)
 		warnFrozenSolid:Show(target)
 		specWarnFrozenSolid:Show()
 		timerFrozenSolidCD:Start()
