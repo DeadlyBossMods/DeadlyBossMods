@@ -159,7 +159,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144748 then
-		self:BossTargetScanner(71865, "DesecrateTarget", 0.025, 12)--Forgot to see if this is working
+		self:BossTargetScanner(71865, "DesecrateScan", 0.025, 12)--Forgot to see if this is working
 		warnDesecrate:Show()
 		specWarnDesecrate:Show()
 		if phase == 2 then
