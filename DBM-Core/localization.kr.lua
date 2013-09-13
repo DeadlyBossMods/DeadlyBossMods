@@ -134,7 +134,6 @@ DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "우두머리 체력 바 닫기"
 
-DBM_CORE_WORLD_BOSS					= "야외 우두머리"
 DBM_CORE_UNKNOWN					= "알 수 없음"--UNKNOWN
 DBM_CORE_LEFT						= "왼쪽"
 DBM_CORE_RIGHT						= "오른쪽"

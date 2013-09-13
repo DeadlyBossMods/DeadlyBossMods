@@ -3518,7 +3518,7 @@ end
 function DBM:GetCurrentInstanceDifficulty()
 	local _, instanceType, difficulty, difficultyName, maxPlayers, _, _, _, instanceGroupSize = GetInstanceInfo()
 	if difficulty == 0 then
-		return "worldboss", DBM_CORE_WORLD_BOSS.." - "
+		return "worldboss", RAID_INFO_WORLD_BOSS.." - "
 	elseif difficulty == 1 then
 		return "normal5", difficultyName.." - "
 	elseif difficulty == 2 then
