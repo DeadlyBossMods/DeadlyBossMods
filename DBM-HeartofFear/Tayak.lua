@@ -137,7 +137,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:122949") then--Does not show in combat log except for after it hits. IT does fire a UNIT_SPELLCAST event but has no target info. You can get target 1 sec faster with UNIT_AURA but it's more cpu and not worth the trivial gain IMO
-		local target = DBM:GetFullNameByShortName(target)
+		local target = DBM:GetUnitFullName(target)
 		warnUnseenStrike:Show(target)
 		timerUnseenStrike:Start()
 		timerUnseenStrikeCD:Start()
