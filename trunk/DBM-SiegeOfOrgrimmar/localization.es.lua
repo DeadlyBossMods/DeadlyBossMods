@@ -6,6 +6,10 @@ local L
 ---------------
 L= DBM:GetModLocalization(852)
 
+L:SetMiscLocalization({
+	Victory			= "Ah, you have done it!  The waters are pure once more." --TODO need translation
+})
+
 ---------------------------
 -- The Fallen Protectors --
 ---------------------------
@@ -21,7 +25,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	wasteOfTime			= "Very well, I will create a field to keep your corruption quarantined." --TODO need translation
+	wasteOfTime			= "Muy bien, crearé un campo para mantener aislada vuestra corrupción."
 })
 
 ------------------
@@ -40,7 +44,7 @@ L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
 	timerAddsCD		= "Siguientes adds",
-	timerTowerCD	= "Siguient torre y adds"
+	timerTowerCD	= "Siguiente torre"
 })
 
 L:SetOptionLocalization({
@@ -52,8 +56,8 @@ L:SetMiscLocalization({
 	newForces1	= "Here they come!",--Jaina's line, horde may not be same, TODO need translation
 	newForces2	= "Dragonmaw, advance!", --TODO need translation
 	newForces3	= "For Hellscream!", --TODO need translation
-	newForces4	= "Next squad, push forward!" --TODO need translation
---	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
+	newForces4	= "Next squad, push forward!", --TODO need translation
+	tower		= "The door barring the"--The door barring the South/North Tower has been breached!, TODO need translation
 })
 
 --------------------
