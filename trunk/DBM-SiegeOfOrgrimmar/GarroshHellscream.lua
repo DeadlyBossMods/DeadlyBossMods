@@ -70,14 +70,14 @@ local timerPowerIronStar			= mod:NewCastTimer(15, 144616)
 local timerEnterRealm				= mod:NewCastTimer(25, 144866, nil, nil, nil, 144945)
 local timerYShaarjsProtection		= mod:NewBuffActiveTimer(61, 144945)
 --Stage Two: Power of Y'Shaarj
-local timerWhirlingCorruptionCD		= mod:NewCDTimer(40, 144985)--One bar for both, "empowered" makes timer too long. CD not yet known except for first
+local timerWhirlingCorruptionCD		= mod:NewCDTimer(52, 144985)--One bar for both, "empowered" makes timer too long. CD not yet known except for first
 local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985)
 local timerTouchOfYShaarjCD			= mod:NewCDTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 
 local soundWhirlingCorrpution		= mod:NewSound(144985)
 local countdownPowerIronStar		= mod:NewCountdown(15, 144616)
-local countdownWhirlingCorruption	= mod:NewCountdown(40, 144985)
+local countdownWhirlingCorruption	= mod:NewCountdown(52, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown(45, 145071, false, nil, nil, nil, true)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 
 local touchOfYShaarjTargets = {}
@@ -155,15 +155,15 @@ function mod:SPELL_CAST_START(args)
 		warnWhirlingCorruption:Show()
 		specWarnWhirlingCorruption:Show()
 		timerWhirlingCorruption:Start()
-		--timerWhirlingCorruptionCD:Start()
-		--countdownWhirlingCorruption:Start()
+		timerWhirlingCorruptionCD:Start()
+		countdownWhirlingCorruption:Start()
 		soundWhirlingCorrpution:Play()
 	elseif args.spellId == 145037 then
 		warnEmpWhirlingCorruption:Show()
 		specWarnEmpWhirlingCorruption:Show()
 		timerWhirlingCorruption:Start()
-		--timerWhirlingCorruptionCD:Start()
-		--countdownWhirlingCorruption:Start()
+		timerWhirlingCorruptionCD:Start()
+		countdownWhirlingCorruption:Start()
 		soundWhirlingCorrpution:Play()
 	end
 end
