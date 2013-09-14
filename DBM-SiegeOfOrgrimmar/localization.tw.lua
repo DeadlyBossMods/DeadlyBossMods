@@ -53,11 +53,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1	= "Here they come!",--Jaina's line, horde may not be same
-	newForces2	= "Dragonmaw, advance!",
-	newForces3	= "For Hellscream!",
-	newForces4	= "Next squad, push forward!",
-	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
+	newForces1	= "趕快把她弄下來，讓我用手掐死她。",
+	newForces2	= "龍喉氏族，前進!",
+	newForces3	= "為了地獄吼!",
+	newForces4	= "下一隊，前進!",
+	tower		= "的門已經遭到破壞!"
 })
 
 --------------------
@@ -88,12 +88,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1					= "Warriors, on the double!",
-	newForces2					= "Defend the gate!",
-	newForces3					= "Rally the forces!",
-	newForces4					= "Kor'kron, at my side!",
-	newForces5					= "Next squad, to the front!",
-	allForces					= "All Kor'kron... under my command... kill them... NOW!"
+	newForces1					= "戰士們，快點過來!",
+	newForces2					= "守住大門!",
+	newForces3					= "重整部隊!",
+	newForces4					= "柯爾克隆，來我身邊!",
+	newForces5					= "下一隊，來前線!",
+	allForces					= "所有柯爾克隆...聽我號令...殺死他們!"
 })
 
 -----------------
