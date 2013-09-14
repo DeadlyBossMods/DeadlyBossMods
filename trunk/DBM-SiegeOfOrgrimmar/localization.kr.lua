@@ -21,7 +21,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	wasteOfTime			= "Very well, I will create a field to keep your corruption quarantined."
+	wasteOfTime			= "그래, 좋다. 너희 타락을 가두어 둘 공간을 만들겠다."
 })
 
 ------------------
@@ -44,16 +44,17 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "다음 정예 병사 바 보기",
-	timerTowerCD	= "다음 포탑 포격 바 보기"--번역이 조금 다른데? 나중에 확인
+	timerAddsCD		= "다음 병사 바 보기",
+	timerTowerCD	= "다음 포탑 바 보기"--번역이 조금 다른데? 나중에 확인
 })
 
 L:SetMiscLocalization({
-	newForces1		= "Here they come!",--Jaina's line, horde may not be same, 호드의 경우 다시 확인
-	newForces2		= "Dragonmaw, advance!",
-	newForces3		= "For Hellscream!",
-	newForces4		= "Next squad, push forward!",
-	tower			= "The door barring the"--The door barring the South/North Tower has been breached!
+	newForces1		= "놈들이 와요!",--제이나 대사
+	--newForces1H		= "",--Unconfirmed
+	newForces2		= "용아귀 용사들아, 진격하라!",
+	newForces3		= "헬스크림 님을 위하여!",
+	newForces4		= "다음 분대, 진격!",
+	tower			= "문이 뚫렸습니다!"--The door barring the South/North Tower has been breached!
 })
 
 --------------------
@@ -84,12 +85,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1					= "Warriors, on the double!",
-	newForces2					= "Defend the gate!",
-	newForces3					= "Rally the forces!",
-	newForces4					= "Kor'kron, at my side!",
-	newForces5					= "Next squad, to the front!",
-	allForces					= "All Kor'kron... under my command... kill them... NOW!"
+	newForces1	= "전사들이여! 이리로!",
+	newForces2	= "놈들을 막아라!",
+	newForces3	= "병력 집결!",
+	newForces4	= "코르크론! 날 지원하라!",
+	newForces5	= "다음 분대, 앞으로!",
+	allForces	= "전 코르크론, 내 명령을 따르라. 모두 죽여!"
 })
 
 -----------------
@@ -121,9 +122,9 @@ L:SetOptionLocalization({
 ----------------------------
 L= DBM:GetModLocalization(865)
 
-L:SetMiscLocalization({--정식버전 출시시 로컬라이징 필요
-	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
-	newShredder	= "An Automated Shredder draws near!"
+L:SetMiscLocalization({
+	newWeapons	= "생산 설비에서 미완성 무기가 나오기 시작합니다.",
+	newShredder	= "자동 분쇄기가 다가옵니다!"
 })
 
 ----------------------------

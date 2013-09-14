@@ -1513,7 +1513,6 @@ do
 	
 	local raidUIds = {}
 	local raidGuids = {}
-	local raidShortNames = {}
 	
 
 	--	save playerinfo into raid table on load. (for solo raid)
@@ -1533,14 +1532,12 @@ do
 				raid[playerName].locale = GetLocale()
 				raidUIds["player"] = playerName
 				raidGuids[UnitGUID("player")] = playerName
-				raidShortNames[playerName] = playerName
 			end
 		end)
 	end)
 
 	local function updateAllRoster()
 		if IsInRaid() then
-			twipe(raidShortNames)
 			enableIcons = false
 			local latestRevision = tonumber(DBM.Revision)
 			if not inRaid then
@@ -1575,11 +1572,6 @@ do
 					raid[name].updated = true
 					raidUIds[id] = name
 					raidGuids[UnitGUID(id) or ""] = name
-					if not raidShortNames[shortname] then
-						raidShortNames[shortname] = name
-					else
-						raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
-					end
 					--Something is wrong here, need to investigate. I watched MULTIPLE revisions OLDER than mine setting icons, revisions that HAVE this change. it is NOT disabling icons for revisions. I am seeing 5.2.3 release set icons when i have 5.2.4 alpha, even some 5.2.2 alphas setting icons when there is a 5.2.3 and 5.2.4 alpha in raid. this should not happen!
 					--Maybe this improve wrong icon setting? (but, older verison also to be updated)
 					if raid[name].revision and raid[name].revision > tonumber(DBM.Revision) then
@@ -1594,7 +1586,6 @@ do
 				if not v.updated then
 					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
-					raidShortNames[v.shortname] = nil
 					raid[i] = nil
 					fireEvent("raidLeave", i)
 				else
@@ -1602,7 +1593,6 @@ do
 				end
 			end
 		elseif IsInGroup() then
-			twipe(raidShortNames)
 			if not inRaid then
 				-- joined a new party
 				inRaid = true
@@ -1642,17 +1632,11 @@ do
 				raid[name].updated = true
 				raidUIds[id] = name
 				raidGuids[UnitGUID(id) or ""] = name
-				if not raidShortNames[shortname] then
-					raidShortNames[shortname] = name
-				else
-					raidShortNames[shortname] = DBM_CORE_GENERIC_WARNING_DUPLICATE:format(name:gsub("%-.*$", ""))
-				end
 			end
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
 					raidGuids[v.guid] = nil
-					raidShortNames[v.shortname] = nil
 					raid[i] = nil
 					fireEvent("partyLeave", i)
 				else
@@ -1679,7 +1663,6 @@ do
 			raid[playerName].locale = GetLocale()
 			raidUIds["player"] = playerName
 			raidGuids[UnitGUID("player")] = playerName
-			raidShortNames[playerName] = playerName
 		end
 	end
 
@@ -1721,10 +1704,6 @@ do
 
 	function DBM:GetRaidUnitId(name)
 		return raid[name] and raid[name].id
-	end
-
-	function DBM:GetFullNameByShortName(name)
-		return raidShortNames[name]
 	end
 
 	function DBM:GetUnitFullName(uId)
