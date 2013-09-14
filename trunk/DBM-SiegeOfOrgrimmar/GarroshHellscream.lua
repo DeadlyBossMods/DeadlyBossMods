@@ -95,6 +95,7 @@ local function warnTouchOfYShaarjTargets(spellId)
 	table.wipe(touchOfYShaarjTargets)
 end
 
+--[[
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
 local function DesecrateScan(spellid)
 	if UnitExists("boss1target") and not mod:IsTanking("boss1target", "boss1") then--Boss 1 is looking at someone that isn't his highest threat or a tank (have to filter tanks cause he looks at them to cast impale, have to filter his highest threat in case it's not a tank, ie a healer)
@@ -111,6 +112,15 @@ local function DesecrateScan(spellid)
 	else
 		mod:Schedule(0.25, DesecrateScan)
 	end
+end--]]
+
+function mod:DesecrateTarget(targetname, uId)
+	if not targetname then return end
+	if self:IsTanking(uId, "boss1") then return end--Never targets tanks
+	warnDesecrate:Show(targetname)
+	if targetname == UnitName("player") then
+		yellDesecrate:Yell()
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -118,7 +128,7 @@ function mod:OnCombatStart(delay)
 	engineerDied = 0
 	phase = 1
 	table.wipe(touchOfYShaarjTargets)
-	self:Schedule(3, DesecrateScan)
+--	self:Schedule(3, DesecrateScan)
 	timerDesecrateCD:Start(10.5-delay)
 	timerSiegeEngineerCD:Start(20-delay)
 	timerHellscreamsWarsongCD:Start(22-delay)
@@ -160,25 +170,27 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144748 then
-		self:Unschedule(DesecrateScan)
+--		self:Unschedule(DesecrateScan)
 		specWarnDesecrate:Show()
 		if phase == 2 then
 			timerDesecrateCD:Start(35)
-			self:Schedule(30, DesecrateScan, 144749)
+--			self:Schedule(30, DesecrateScan, 144749)
 		else
 			timerDesecrateCD:Start()
-			self:Schedule(35, DesecrateScan, 144749)
+--			self:Schedule(35, DesecrateScan, 144749)
 		end
+		self:BossTargetScanner(71865, "DesecrateTarget", 0.025, 12)
 	elseif args.spellId == 144749 then
-		self:Unschedule(DesecrateScan)
+--		self:Unschedule(DesecrateScan)
 		specWarnEmpDesecrate:Show()
 		if phase == 2 then
 			timerDesecrateCD:Start(35)
-			self:Schedule(30, DesecrateScan, 144749)
+--			self:Schedule(30, DesecrateScan, 144749)
 		else
 			timerDesecrateCD:Start()
-			self:Schedule(35, DesecrateScan, 144749)
+--			self:Schedule(35, DesecrateScan, 144749)
 		end
+		self:BossTargetScanner(71865, "DesecrateTarget", 0.025, 12)
 	elseif args:IsSpellID(145065, 145171) then--Seems no longer in combat log.
 		timerTouchOfYShaarjCD:Start()
 		countdownTouchOfYShaarj:Start()
@@ -250,7 +262,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerPowerIronStar:Cancel()
 		countdownPowerIronStar:Cancel()
 		timerDesecrateCD:Cancel()
-		self:Unschedule(DesecrateScan)
+--		self:Unschedule(DesecrateScan)
 		timerHellscreamsWarsongCD:Cancel()
 		timerTouchOfYShaarjCD:Cancel()
 		countdownTouchOfYShaarj:Cancel()
@@ -258,7 +270,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownWhirlingCorruption:Cancel()
 	elseif spellId == 144956 then--Jump To Ground (intermission ending) Used instead of 144945 because 144945 can be removed early during intermission for free damage.
 		phase = 2
-		self:Schedule(5, DesecrateScan)
+--		self:Schedule(5, DesecrateScan)
 		timerDesecrateCD:Start(10)
 		timerTouchOfYShaarjCD:Start(15)
 		countdownTouchOfYShaarj:Start(15)
