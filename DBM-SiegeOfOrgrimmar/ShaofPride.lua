@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 
 --Sha of Pride
 local warnGiftOfTitans			= mod:NewTargetAnnounce(144359, 1)
-local warnSwellingPride			= mod:NewSpellAnnounce(144400, 3)
+local warnSwellingPride			= mod:NewCountAnnounce(144400, 3)
 local warnMark					= mod:NewTargetAnnounce(144351, 3, nil, mod:IsHealer())
 local warnWoundedPride			= mod:NewTargetAnnounce(144358, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnSelfReflection		= mod:NewSpellAnnounce(144800, 3)
@@ -41,7 +41,7 @@ local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
 --Sha of Pride
 local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
 local yellGiftOfTitans			= mod:NewYell(144359)
-local specWarnSwellingPride		= mod:NewSpecialWarningSpell(144400, nil, nil, nil, 2)
+local specWarnSwellingPride		= mod:NewSpecialWarningCount(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
 local specWarnSelfReflection	= mod:NewSpecialWarningSpell(144800, nil, nil, nil, 2)
 local specWarnCorruptedPrison	= mod:NewSpecialWarningSpell(144574)
@@ -94,6 +94,7 @@ local corruptedPrisonTargets = {}
 local prideLevel = EJ_GetSectionInfo(8255)
 local firstWound = false
 local UnleashedCast = false
+local swellingCount = 0
 
 local function warnGiftOfTitansTargets()
 	warnGiftOfTitans:Show(tconcat(giftOfTitansTargets, "<, >"))
@@ -184,6 +185,7 @@ function mod:OnCombatStart(delay)
 	countdownSwellingPride:Start(-delay)
 	firstWound = false
 	UnleashedCast = false
+	swellingCount = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(prideLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
@@ -198,8 +200,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 144400 then
-		warnSwellingPride:Show()
-		specWarnSwellingPride:Show()
+		swellingCount = swellingCount + 1
+		warnSwellingPride:Show(swellingCount)
+		specWarnSwellingPride:Show(swellingCount)
 	elseif args.spellId == 144379 then
 		local sourceGUID = args.sourceGUID
 		warnMockingBlast:Show()
