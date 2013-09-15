@@ -43,12 +43,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "След. адды",
 	timerTowerCD	= "След. башня"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Отсчет времени до следующей волны аддов",
 	timerTowerCD	= "Отсчет времени до следующего нападения на башню"
 })
 

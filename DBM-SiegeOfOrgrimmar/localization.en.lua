@@ -43,12 +43,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "Next Adds",
 	timerTowerCD	= "Next Tower"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Show timer for next adds wave",
 	timerTowerCD	= "Show timer for next tower assault",
 	FixateIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(147068)
 })
