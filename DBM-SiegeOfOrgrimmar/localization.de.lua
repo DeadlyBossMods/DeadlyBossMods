@@ -54,10 +54,10 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	newForces1	= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation)
-	newForces2	= "Drachenmalklan, ausrücken!",--needs to be verified (PTR screenshot-captured translation)
-	newForces3	= "Für Höllschrei!",--needs to be verified (PTR screenshot-captured translation)
-	newForces4	= "Nächster Trupp, vorwärts!",--needs to be verified (PTR screenshot-captured translation)
-	tower		= "Das Tor zum"--needs to be verified (PTR screenshot-captured translation)
+	newForces2	= "Drachenmalklan, ausrücken!",
+	newForces3	= "Für Höllschrei!",
+	newForces4	= "Nächster Trupp, vorwärts!",
+	tower		= "Das Tor zum"--"Das Tor zum Nordturm ist durchbrochen!"/"Das Tor zum Südturm ist durchbrochen!"
 })
 
 --------------------
@@ -107,8 +107,8 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "Module 1's all prepared for system reset.",--translate (trigger)
-	Victory	= "Module 2's all prepared for system reset"--translate (trigger)
+	Module1 = "Modul 1 bereit für den Systemneustart.",--needs to be verified (PTR screenshot-captured translation)
+	Victory	= "Modul 2 bereit für den Systemneustart."--needs to be verified (PTR screenshot-captured translation)
 })
 
 ---------------------------
