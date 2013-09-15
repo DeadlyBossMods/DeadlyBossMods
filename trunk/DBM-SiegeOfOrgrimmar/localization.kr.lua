@@ -39,12 +39,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "다음 병사",
 	timerTowerCD	= "다음 포탑"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "다음 병사 바 보기",
 	timerTowerCD	= "다음 포탑 바 보기"--번역이 조금 다른데? 나중에 확인
 })
 

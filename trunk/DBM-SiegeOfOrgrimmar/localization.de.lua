@@ -43,12 +43,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "Nächste Adds",
 	timerTowerCD	= "Nächster Turm"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Zeige Zeit bis nächste Gegnerwelle",
 	timerTowerCD	= "Zeige Zeit bis nächsten Turmangriff"
 })
 
