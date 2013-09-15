@@ -43,12 +43,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "Siguientes adds",
 	timerTowerCD	= "Siguiente torre"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "Mostrar temporizador para la siguiente oleada de adds",
 	timerTowerCD	= "Mostrar temporizador para el siguiente asalto a la torre"
 })
 

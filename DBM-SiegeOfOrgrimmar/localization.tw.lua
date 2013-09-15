@@ -43,12 +43,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetTimerLocalization({
-	timerAddsCD		= "下一波小兵",
 	timerTowerCD	= "下一波塔攻"
 })
 
 L:SetOptionLocalization({
-	timerAddsCD		= "為下一波小兵顯示計時器",
 	timerTowerCD	= "為下一波塔攻顯示計時器"
 })
 
