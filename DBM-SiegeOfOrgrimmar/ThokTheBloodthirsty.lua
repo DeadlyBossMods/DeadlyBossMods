@@ -193,7 +193,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
 		if screechCount < 8 then--Don't spam special warning once cd is lower than 4.8 seconds.
-			screechCount:Show()
+			specWarnDeafeningScreech:Show()
 		end
 		timerDeafeningScreechCD:Cancel()
 		timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)
