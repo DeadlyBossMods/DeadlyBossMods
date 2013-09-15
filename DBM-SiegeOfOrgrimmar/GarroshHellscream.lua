@@ -40,7 +40,7 @@ local warnGrippingDespair			= mod:NewStackAnnounce(145183, 2, nil, mod:IsTank())
 local warnEmpGrippingDespair		= mod:NewStackAnnounce(145195, 3, nil, mod:IsTank())--Distinction is not that important, may just remove for the tank warning.
 
 --Stage 1: The True Horde
-local specWarnDesecrate				= mod:NewSpecialWarningSpell(144748, nil, nil, nil, 2)
+local specWarnDesecrate				= mod:NewSpecialWarningCount(144748, nil, nil, nil, 2)
 local specWarnDesecrateYou			= mod:NewSpecialWarningYou(144748)
 local yellDesecrate					= mod:NewYell(144748)
 local specWarnHellscreamsWarsong	= mod:NewSpecialWarningSpell(144821, mod:IsTank() or mod:IsHealer())
@@ -55,7 +55,7 @@ local specWarnAnnihilate			= mod:NewSpecialWarningSpell(144969, false, nil, nil,
 --Stage Two: Power of Y'Shaarj
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningCount(144985)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
 local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningCount(145037)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
-local specWarnEmpDesecrate			= mod:NewSpecialWarningSpell(144749, nil, nil, nil, 2)--^^
+local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil, 2)--^^
 local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 3)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
 local specWarnGrippingDespairOther	= mod:NewSpecialWarningTarget(145183, mod:IsTank())
 
@@ -68,7 +68,7 @@ local timerSiegeEngineerCD			= mod:NewNextTimer(40, "ej8298", nil, nil, nil, 144
 local timerPowerIronStar			= mod:NewCastTimer(15, 144616)
 --Intermission: Realm of Y'Shaarj
 local timerEnterRealm				= mod:NewNextTimer(145.5, 144866, nil, nil, nil, 144945)
-local timerYShaarjsProtection		= mod:NewBuffActiveTimer(61, 144945)
+local timerYShaarjsProtection		= mod:NewBuffActiveTimer(61, "ej8305", nil, nil, nil, 144945)--May be too long, but intermission makes more sense than protection buff which actually fades before intermission ends if you do it right.
 --Stage Two: Power of Y'Shaarj
 local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(52, 144985)--One bar for both, "empowered" makes timer too long. CD not yet known except for first
 local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985)
@@ -86,6 +86,7 @@ local engineerDied = 0
 local phase = 1
 local UnitExists = UnitExists
 local whirlCount = 0
+local desecrateCount = 0
 
 local function warnTouchOfYShaarjTargets(spellId)
 	if spellId == 145171 then
@@ -111,8 +112,9 @@ function mod:OnCombatStart(delay)
 	engineerDied = 0
 	phase = 1
 	whirlCount = 0
+	desecrateCount = 0
 	table.wipe(touchOfYShaarjTargets)
-	timerDesecrateCD:Start(10.5-delay)
+	timerDesecrateCD:Start(10.5-delay, 1)
 	timerSiegeEngineerCD:Start(20-delay)
 	timerHellscreamsWarsongCD:Start(22-delay)
 	timerFarseerWolfRiderCD:Start(30-delay)
@@ -134,18 +136,15 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144969 then
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
-	elseif args.spellId == 144985 then
+	elseif args:IsSpellID(144985, 145037) then
+		if args.spellId == 144985 then
+			warnWhirlingCorruption:Show(whirlCount)
+			specWarnWhirlingCorruption:Show(whirlCount)
+		else
+			warnEmpWhirlingCorruption:Show(whirlCount)
+			specWarnEmpWhirlingCorruption:Show(whirlCount)
+		end
 		whirlCount = whirlCount + 1
-		warnWhirlingCorruption:Show(whirlCount)
-		specWarnWhirlingCorruption:Show(whirlCount)
-		timerWhirlingCorruption:Start()
-		timerWhirlingCorruptionCD:Start(nil, whirlCount+1)
-		countdownWhirlingCorruption:Start()
-		soundWhirlingCorrpution:Play()
-	elseif args.spellId == 145037 then
-		whirlCount = whirlCount + 1
-		warnEmpWhirlingCorruption:Show(whirlCount)
-		specWarnEmpWhirlingCorruption:Show(whirlCount)
 		timerWhirlingCorruption:Start()
 		timerWhirlingCorruptionCD:Start(nil, whirlCount+1)
 		countdownWhirlingCorruption:Start()
@@ -154,30 +153,27 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 144748 then
-		specWarnDesecrate:Show()
-		if phase == 2 then
-			timerDesecrateCD:Start(35)
+	if args:IsSpellID(144748, 144749) then
+		desecrateCount = desecrateCount + 1
+		if args.spellId == 144748 then
+			specWarnDesecrate:Show(desecrateCount)
 		else
-			timerDesecrateCD:Start()
+			specWarnEmpDesecrate:Show(desecrateCount)
+		end
+		if phase == 2 then
+			timerDesecrateCD:Start(35, desecrateCount+1)
+		else
+			timerDesecrateCD:Start(nil, desecrateCount+1)
 		end
 		self:BossTargetScanner(71865, "DesecrateTarget", 0.025, 12)
-	elseif args.spellId == 144749 then
-		specWarnEmpDesecrate:Show()
-		if phase == 2 then
-			timerDesecrateCD:Start(35)
-		else
-			timerDesecrateCD:Start()
-		end
-		self:BossTargetScanner(71865, "DesecrateTarget", 0.025, 12)
-	elseif args:IsSpellID(145065, 145171) then--Seems no longer in combat log.
+	elseif args:IsSpellID(145065, 145171) then
 		timerTouchOfYShaarjCD:Start()
 		countdownTouchOfYShaarj:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 144945 then--Intermission (there are earlier events but until the shield goes up phase 1 abilities can still be cast. the phase isn't truely over until this is cast, this is why we don't use the 2-3 second earlier events
+	if args.spellId == 144945 then
 		warnYShaarjsProtection:Show(args.destName)
 		timerYShaarjsProtection:Start()
 	elseif args:IsSpellID(145065, 145171) then
@@ -246,10 +242,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownTouchOfYShaarj:Cancel()
 		timerWhirlingCorruptionCD:Cancel()
 		countdownWhirlingCorruption:Cancel()
-	elseif spellId == 144956 then--Jump To Ground (intermission ending) Used instead of 144945 because 144945 can be removed early during intermission for free damage.
+	elseif spellId == 144956 then--Jump To Ground (intermission ending)
 		phase = 2
 		whirlCount = 0
-		timerDesecrateCD:Start(10)
+		desecrateCount = 0
+		timerDesecrateCD:Start(10, 1)
 		timerTouchOfYShaarjCD:Start(15)
 		countdownTouchOfYShaarj:Start(15)
 		timerWhirlingCorruptionCD:Start(30, 1)
@@ -261,7 +258,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:144616") then
 		engineerDied = 0
-		warnSiegeEngineer:Show()--Possibly an earlier place to warn for engineer though, they shouldn't cast this instantly as they have to run from side first
+		warnSiegeEngineer:Show()
 		specWarnSiegeEngineer:Show()
 		if not firstIronStar then
 			firstIronStar = true
