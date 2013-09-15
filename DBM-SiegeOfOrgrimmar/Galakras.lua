@@ -6,6 +6,7 @@ mod:SetCreatureID(72311, 72560, 72249)--Boss needs to engage off Varian/Lor'them
 mod:SetReCombatTime(120)--fix combat re-starts after killed. Same issue as tsulong. Fires TONS of IEEU for like 1-2 minutes after fight ends.
 mod:SetMainBossID(72249)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
