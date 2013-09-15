@@ -61,7 +61,7 @@ local specWarnCrushersCall			= mod:NewSpecialWarningSpell(146769, false, nil, ni
 ----Korgra the Snake (Road)
 local specWarnPoisonCloud			= mod:NewSpecialWarningMove(147705)
 --Phase 3: Galakras,The Last of His Progeny
-local specWarnFlamesofGalakrond		= mod:NewSpecialWarningSpell(147029, false, nil, nil, 2)--Cast often, so lets make this optional since it's spammy
+local specWarnFlamesofGalakrond		= mod:NewSpecialWarningCount(147029, false, nil, nil, 2)--Cast often, so lets make this optional since it's spammy
 local specWarnFlamesofGalakrondYou	= mod:NewSpecialWarningYou(147068)
 local yellFlamesofGalakrond			= mod:NewYell(147068)
 local specWarnFlamesofGalakrondTank	= mod:NewSpecialWarningStack(147029, mod:IsTank(), 3)
@@ -76,17 +76,19 @@ local timerShatteringCleaveCD		= mod:NewCDTimer(7.5, 146849, nil, mod:IsTank())
 local timerCrushersCallCD			= mod:NewNextTimer(30, 146769)
 
 --Phase 3: Galakras,The Last of His Progeny
-local timerFlamesofGalakrondCD		= mod:NewCDTimer(6, 147068)
+local timerFlamesofGalakrondCD		= mod:NewCDCountTimer(6, 147068)
 local timerFlamesofGalakrond		= mod:NewTargetTimer(15, 147029, nil, mod:IsTank())
 
 mod:AddBoolOption("FixateIcon", true)
 
 local addsCount = 0
 local firstTower = false
+local flamesCount = 0
 
 function mod:OnCombatStart(delay)
 	addsCount = 0
 	firstTower = false
+	flamesCount = 0
 	timerAddsCD:Start(11-delay)
 	timerTowerCD:Start(116.5-delay)
 end
@@ -117,13 +119,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 147068 then
+		flamesCount = flamesCount + 1
 		warnFlamesofGalakrondTarget:Show(args.destName)
-		timerFlamesofGalakrondCD:Start()
+		timerFlamesofGalakrondCD:Start(nil, flamesCount+1)
 		if args:IsPlayer() then
 			specWarnFlamesofGalakrondYou:Show()
 			yellFlamesofGalakrond:Yell()
 		else
-			specWarnFlamesofGalakrond:Show()
+			specWarnFlamesofGalakrond:Show(flamesCount)
 		end
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
