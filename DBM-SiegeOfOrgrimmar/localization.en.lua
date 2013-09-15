@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	newForces1	= "Here they come!",--Jaina's line, alliance
-	newForces1H	= "UNKNOWNUNKNOWNUNKNOWNUNKNOWN",--Sylva's line, horde
+	newForces1H	= "Bring her down quick so i can wrap my fingers around her neck.",--Sylva's line, horde
 	newForces2	= "Dragonmaw, advance!",
 	newForces3	= "For Hellscream!",
 	newForces4	= "Next squad, push forward!",

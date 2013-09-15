@@ -51,7 +51,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1	= "趕快把她弄下來，讓我用手掐死她。",
+	newForces1	= "他們來了!",
+	newForces1H	= "趕快把她弄下來，讓我用手掐死她。",
 	newForces2	= "龍喉氏族，前進!",
 	newForces3	= "為了地獄吼!",
 	newForces4	= "下一隊，前進!",
@@ -105,8 +106,8 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "Module 1's all prepared for system reset.",
-	Victory	= "Module 2's all prepared for system reset"
+	Module1 = "模組一號已準備好系統重置。",
+	Victory	= "模組二號已準備好系統重置。"
 })
 
 ---------------------------
@@ -115,7 +116,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(851)
 
 L:SetOptionLocalization({
-	RangeFrame	= "顯示動態距離框架(10碼)<br/>(This is a smart range frame that shows when you reach Frenzy threshold)"
+	RangeFrame	= "顯示動態距離框架(10碼)<br/>(這是智慧距離框架，當到達血之狂暴階段時自動切換)"
 })
 
 ----------------------------
@@ -124,8 +125,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(865)
 
 L:SetMiscLocalization({
-	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
-	newShredder	= "An Automated Shredder draws near!"
+	newWeapons	= "尚未完成的武器開始從生產線上掉落。",
+	newShredder	= "有個自動化伐木機靠近了!"
 })
 
 ----------------------------
