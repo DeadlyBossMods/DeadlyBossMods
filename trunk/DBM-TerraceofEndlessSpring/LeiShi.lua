@@ -303,7 +303,10 @@ end
 --Fires twice when boss returns, once BEFORE visible (and before we can detect unitID, so it flags unknown), then once a 2nd time after visible
 --"<233.9> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:#nil#nil#Unknown#0xF130F6070000006C#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#nil#nil#nil#nil#normal#0#Real Args:", -- [14168]
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event)
-	hideActive = false
+	if hideActive then
+        hideActive = false
+		return
+	end
 	self:SetWipeTime(3)
 	self:UnregisterShortTermEvents()--Once boss appears, unregister event, so we ignore the next two that will happen, which will be 2nd time after reappear, and right before next Hide.
 	warnHideOver:Show(GetSpellInfo(123244))
