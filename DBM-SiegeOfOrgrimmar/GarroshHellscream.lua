@@ -58,9 +58,10 @@ local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningCount(145037)--Two op
 local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil, 2)--^^
 local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 3)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
 local specWarnGrippingDespairOther	= mod:NewSpecialWarningTarget(145183, mod:IsTank())
+local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch(145071)
 
 --Stage 1: A Cry in the Darkness
-local timerDesecrateCD				= mod:NewCDTimer(41, 144748)
+local timerDesecrateCD				= mod:NewCDTimer(35, 144748)
 local timerHellscreamsWarsongCD		= mod:NewNextTimer(42.2, 144821, nil, mod:IsTank() or mod:IsHealer())
 --local timerKorkronWarbringerCD	= mod:NewCDTimer(30, "ej8292")
 local timerFarseerWolfRiderCD		= mod:NewNextTimer(50, "ej8294", nil, nil, nil, 144585)--EJ says they come faster as phase progresses but all i saw was 3 spawn on any given pull and it was 30 50 50
@@ -70,9 +71,9 @@ local timerPowerIronStar			= mod:NewCastTimer(15, 144616)
 local timerEnterRealm				= mod:NewNextTimer(145.5, 144866, nil, nil, nil, 144945)
 local timerYShaarjsProtection		= mod:NewBuffActiveTimer(61, "ej8305", nil, nil, nil, 144945)--May be too long, but intermission makes more sense than protection buff which actually fades before intermission ends if you do it right.
 --Stage Two: Power of Y'Shaarj
-local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(52, 144985)--One bar for both, "empowered" makes timer too long. CD not yet known except for first
+local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(51.5, 144985)--One bar for both, "empowered" makes timer too long. CD not yet known except for first
 local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985)
-local timerTouchOfYShaarjCD			= mod:NewCDTimer(45, 145071)
+local timerTouchOfYShaarjCD			= mod:NewCDCountTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 
 local soundWhirlingCorrpution		= mod:NewSound(144985, nil, false)--Depends on strat. common one on 25 man is to never run away from it
@@ -87,6 +88,7 @@ local phase = 1
 local UnitExists = UnitExists
 local whirlCount = 0
 local desecrateCount = 0
+local mindControlCount = 0
 
 local function warnTouchOfYShaarjTargets(spellId)
 	if spellId == 145171 then
@@ -113,6 +115,7 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	whirlCount = 0
 	desecrateCount = 0
+	mindControlCount = 0
 	table.wipe(touchOfYShaarjTargets)
 	timerDesecrateCD:Start(10.5-delay, 1)
 	timerSiegeEngineerCD:Start(20-delay)
@@ -137,6 +140,7 @@ function mod:SPELL_CAST_START(args)
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
 	elseif args:IsSpellID(144985, 145037) then
+		whirlCount = whirlCount + 1
 		if args.spellId == 144985 then
 			warnWhirlingCorruption:Show(whirlCount)
 			specWarnWhirlingCorruption:Show(whirlCount)
@@ -144,7 +148,6 @@ function mod:SPELL_CAST_START(args)
 			warnEmpWhirlingCorruption:Show(whirlCount)
 			specWarnEmpWhirlingCorruption:Show(whirlCount)
 		end
-		whirlCount = whirlCount + 1
 		timerWhirlingCorruption:Start()
 		timerWhirlingCorruptionCD:Start(nil, whirlCount+1)
 		countdownWhirlingCorruption:Start()
@@ -160,15 +163,29 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnEmpDesecrate:Show(desecrateCount)
 		end
-		if phase == 2 then
-			timerDesecrateCD:Start(35, desecrateCount+1)
-		else
+		if phase == 1 then
+			timerDesecrateCD:Start(41, desecrateCount+1)
+		elseif phase == 3 then
+			timerDesecrateCD:Start(25, desecrateCount+1)
+		else--Phase 2
 			timerDesecrateCD:Start(nil, desecrateCount+1)
 		end
-		self:BossTargetScanner(71865, "DesecrateTarget", 0.025, 12)
+		self:BossTargetScanner(71865, "DesecrateTarget", 0.02, 16)
 	elseif args:IsSpellID(145065, 145171) then
-		timerTouchOfYShaarjCD:Start()
-		countdownTouchOfYShaarj:Start()
+		mindControlCount = mindControlCount + 1
+		specWarnTouchOfYShaarj:Show()
+		if phase == 3 then
+			if mindControlCount == 1 then--First one in phase is shorter than rest (well that or rest are delayed because of whirling)
+				timerTouchOfYShaarjCD:Start(35, mindControlCount+1)
+				countdownTouchOfYShaarj:Start(35)
+			else
+				timerTouchOfYShaarjCD:Start(42, mindControlCount+1)
+				countdownTouchOfYShaarj:Start(42)
+			end
+		else
+			timerTouchOfYShaarjCD:Start(nil, mindControlCount+1)
+			countdownTouchOfYShaarj:Start()
+		end
 	end
 end
 
@@ -232,7 +249,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 145235 then--Throw Axe At Heart
 		timerSiegeEngineerCD:Cancel()
 		timerFarseerWolfRiderCD:Cancel()
-		timerEnterRealm:Start(25)
+--		timerEnterRealm:Start(25)--For some reason this isn't starting a 25 second timer, wtf?
 	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
 		timerPowerIronStar:Cancel()
 		countdownPowerIronStar:Cancel()
@@ -246,12 +263,27 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		phase = 2
 		whirlCount = 0
 		desecrateCount = 0
+		mindControlCount = 0
 		timerDesecrateCD:Start(10, 1)
-		timerTouchOfYShaarjCD:Start(15)
+		timerTouchOfYShaarjCD:Start(15, 1)
 		countdownTouchOfYShaarj:Start(15)
 		timerWhirlingCorruptionCD:Start(30, 1)
 		countdownWhirlingCorruption:Start(30)
 		timerEnterRealm:Start()
+	--"<556.9 21:41:56> [UNIT_SPELLCAST_SUCCEEDED] Garrosh Hellscream [[boss1:Realm of Y'Shaarj::0:145647]]", -- [169886]
+	elseif spellId == 145647 then--Phase 3 trigger
+		timerEnterRealm:Cancel()
+		countdownTouchOfYShaarj:Cancel()
+		countdownWhirlingCorruption:Cancel()
+		phase = 3
+		whirlCount = 0
+		desecrateCount = 0
+		mindControlCount = 0
+		timerDesecrateCD:Start(21, 1)
+		timerTouchOfYShaarjCD:Start(30, 1)
+		countdownTouchOfYShaarj:Start(30)
+		timerWhirlingCorruptionCD:Start(47.5, 1)
+		countdownWhirlingCorruption:Start(47.5)
 	end
 end
 
