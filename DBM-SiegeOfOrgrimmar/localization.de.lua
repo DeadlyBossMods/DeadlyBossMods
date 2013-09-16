@@ -51,7 +51,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1	= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation)
+	newForces1	= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation) (alliance)
+	newForces1H	= "Holt sie schnell vom Himmel, damit ich sie erwürgen kann.",
 	newForces2	= "Drachenmalklan, ausrücken!",
 	newForces3	= "Für Höllschrei!",
 	newForces4	= "Nächster Trupp, vorwärts!",
