@@ -51,11 +51,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1	= "Here they come!",--Jaina's line, horde may not be same, TODO need translation
-	newForces2	= "Dragonmaw, advance!", --TODO need translation
-	newForces3	= "For Hellscream!", --TODO need translation
-	newForces4	= "Next squad, push forward!", --TODO need translation
-	tower		= "The door barring the"--The door barring the South/North Tower has been breached!, TODO need translation
+	newForces1	= "¡Ya vienen!",--Jaina's line, alliance
+	newForces1H	= "Bring her down quick so i can wrap my fingers around her neck.",--Sylva's line, horde, TODO needs translation
+	newForces2	= "¡Faucedraco, avanzad!",
+	newForces3	= "¡Por Grito Infernal!",
+	newForces4	= "¡Siguiente escuadrón, adelante!",
+	tower		= "¡La puerta de la torre"--The door barring the South/North Tower has been breached!
 })
 
 --------------------

@@ -22,18 +22,18 @@ L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
 L.TabCategory_PVP	= "PvP"
 L.TabCategory_OTHER     = "Otros Boss Mods"
 
-L.BossModLoaded 	= "%s estadisticas"
+L.BossModLoaded 	= "%s estadísticas"
 L.BossModLoad_now 	= [[Este modulo no esta cargado. 
 Si no se carga al entrar en la estancia. 
 Puedes pulsar en el boton para cargar el modulo manualmente.]]
 
-L.PosX = 'Posicion X'
-L.PosY = 'Posicion Y'
+L.PosX = 'Posición X'
+L.PosY = 'Posición Y'
 
 L.MoveMe 		= '¡Muéveme!'
 L.Button_OK 		= 'Aceptar'
 L.Button_Cancel 	= 'Cancelar'
-L.Button_LoadMod 	= 'Cargar Modulo'
+L.Button_LoadMod 	= 'Cargar Módulo'
 L.Mod_Enabled		= "Habilitar modulo de este boss"
 L.Mod_Reset		= "Cargar opciones por defecto"
 L.Reset 		= "resetear"
@@ -62,7 +62,7 @@ L.LFDEnhance				= "Reproducir sonido de 'listos' para comprobaciones de función
 L.AutologBosses				= "Grabar encuentros automáticamente al registro de combate."
 L.AdvancedAutologBosses		= "Grabar encuentros automáticamente al registro de combato mediante Transcriptor."
 L.LogOnlyRaidBosses			= "Solo grabar encuentros de banda (excluyendo LFR/escenarios)."
-L.Latency_Text				= "Umbral latencia máx. sincronización: %d"
+L.Latency_Text				= "Latencia máx. sincronización: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Opciones generales de los temporizadores"
 L.SKT_Enabled			= "Mostrar siempre el contador para superar récord de tiempo (Sobreescribe la opción de bosses específicos)"
@@ -73,16 +73,16 @@ L.ChallengeTimerRealm		= "Reino"
 
 L.ModelOptions				= "Opciones del Visor de Modelos 3D"
 L.EnableModels				= "Activar modelos 3D en las opciones de los jefes"
-L.ModelSoundOptions			= "Assignar la opción de sonido para el Visor de Modelos"
+L.ModelSoundOptions			= "Asignar la opción de sonido para el Visor de Modelos"
 L.ModelSoundShort			= "Corto"
 L.ModelSoundLong			= "Largo"
 
-L.Button_RangeFrame			= "Mostrar/Ocultar cuadro de distancia"
-L.Button_RangeRadar			= "Mostrar/Ocultar radar de distancia"
+L.Button_RangeFrame			= "Mostrar/Ocultar cuadro de rango"
+L.Button_RangeRadar			= "Mostrar/Ocultar radar de rango"
 L.Button_InfoFrame			= "Mostrar/Ocultar cuadro de información"
 L.Button_TestBars			= "Probar barras"
 
-L.PizzaTimer_Headline 	= 'Crear "Cronomentro"'
+L.PizzaTimer_Headline 	= 'Crear "Cronómentro"'
 L.PizzaTimer_Title	= 'Nombre (ej. "Pizza!")'
 L.PizzaTimer_Hours 	= "Horas"
 L.PizzaTimer_Mins 	= "Min"
@@ -93,7 +93,7 @@ L.PizzaTimer_BroadCast	= "Anunciar a Banda"
 -- Tab: Raidwarning
 L.Tab_RaidWarning 	= "Avisos a banda"
 L.RaidWarning_Header= "Opciones de aviso de banda"
-L.RaidWarnColors 	= "Colores de Avisos a banda"
+L.RaidWarnColors 	= "Colores de avisos a banda"
 L.RaidWarnColor_1 	= "Color 1"
 L.RaidWarnColor_2 	= "Color 2"
 L.RaidWarnColor_3 	= "Color 3"
@@ -196,9 +196,9 @@ L.SpamBlockNoInfoFrame			= "No mostrar marco de información"
 L.Area_PullTimer				= "Opciones de filtrado del temporizador de Pull"
 L.DontShowPTNoID				= "Bloquear temporizatores de pull de áreas en las que no estés"
 L.DontShowPT					= "No mostrar la barra de temporizador para el pull"
-L.DontShowPTText				= "No mostrar texto de anuncio de cuenta atras para el pull"
-L.DontPlayPTCountdown			= "No reproducir audio de cuenta atras para el pull"
-L.DontShowPTCountdownText		= "No mostrar texto de cuenta atras del pull"
+L.DontShowPTText				= "No mostrar texto de anuncio de cuenta atrás para el pull"
+L.DontPlayPTCountdown			= "No reproducir audio de cuenta atrás para el pull"
+L.DontShowPTCountdownText		= "No mostrar texto de cuenta atrás del pull"
 L.PT_Threshold					= "No mostrar temporizador de pull por encima de %d segundos"
 
 L.Panel_HideBlizzard			= "Esconder Blizzard"
