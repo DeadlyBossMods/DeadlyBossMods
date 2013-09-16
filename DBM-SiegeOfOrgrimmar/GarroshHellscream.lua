@@ -249,7 +249,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 145235 then--Throw Axe At Heart
 		timerSiegeEngineerCD:Cancel()
 		timerFarseerWolfRiderCD:Cancel()
---		timerEnterRealm:Start(25)--For some reason this isn't starting a 25 second timer, wtf?
+		timerEnterRealm:Start(25)
 	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
 		timerPowerIronStar:Cancel()
 		countdownPowerIronStar:Cancel()
@@ -260,6 +260,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerWhirlingCorruptionCD:Cancel()
 		countdownWhirlingCorruption:Cancel()
 	elseif spellId == 144956 then--Jump To Ground (intermission ending)
+		--This will only happen in ONE situation, after Throw Axe At Heart. Used to block a bad phase 2 start
+		--Sure I could just use the phase 2 var for it, but I like this method more because then it's more disconnect friendly
+		--therwise we may not start timers for someone who DCed, so using timerEnterRealm:GetTime best filter for bad 144956 event
+		if timerEnterRealm:GetTime() > 0 then return end
 		phase = 2
 		whirlCount = 0
 		desecrateCount = 0
