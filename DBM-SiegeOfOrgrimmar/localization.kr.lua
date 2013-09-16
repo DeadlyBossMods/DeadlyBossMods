@@ -142,11 +142,11 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
-	one					= "1!",
-	two					= "2!",
-	three				= "3!",
-	four				= "4!",
-	five				= "5!",
+	one					= "가 1",
+	two					= "가 2",
+	three				= "가 3",
+	four				= "가 4",
+	five				= "가 5",
 	hisekFlavor			= "누가 이제 조용한지 봐라.",
 	KilrukFlavor		= "무리의 도태가 일어난 또 다른 날이 되었군.",
 	XarilFlavor			= "너의 미래에 검은 하늘만 보일뿐.",
