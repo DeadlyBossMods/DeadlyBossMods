@@ -26,7 +26,7 @@ local warnFireUnstableIronStar		= mod:NewSpellAnnounce(147047, 3)
 local warnFarseerWolfRider			= mod:NewSpellAnnounce("ej8294", 3, 144585)
 local warnSiegeEngineer				= mod:NewSpellAnnounce("ej8298", 4, 144616)
 local warnChainHeal					= mod:NewSpellAnnounce(144583, 4)
-local warnChainLightning			= mod:NewSpellAnnounce(144584, 3)--Maybe turn off by default if too spammy
+local warnChainLightning			= mod:NewSpellAnnounce(144584, 3, nil, false)--Maybe turn off by default if too spammy
 --Intermission: Realm of Y'Shaarj
 local warnYShaarjsProtection		= mod:NewTargetAnnounce(144945, 2)
 local warnAnnihilate				= mod:NewCastAnnounce(144969, 4)
