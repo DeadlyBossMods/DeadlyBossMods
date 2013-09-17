@@ -70,7 +70,7 @@ L= DBM:GetModLocalization(864)
 L= DBM:GetModLocalization(856)
 
 L:SetMiscLocalization({
-	PrisonYell		= "Prison on %s fades (%d)"
+	PrisonYell		= "%s的囚犯被釋放 (%d)"
 })
 
 ---------------------
@@ -146,22 +146,22 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	--thanks to blizz, the only accurate way for this to work, is to translate 5 emotes in all languages
-	one					= "One",
-	two					= "Two",
-	three				= "Three",
-	four				= "Four",
-	five				= "Five",
-	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
-	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
-	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
-	KaztikFlavor		= "Reduced to mere kunchong treats",--http://ptr.wowhead.com/quest=31024
-	KaztikFlavor2		= "1 Mantid down, only 199 to go",--http://ptr.wowhead.com/quest=31808
-	KorvenFlavor		= "The end of an ancient empire",--http://ptr.wowhead.com/quest=31232
-	KorvenFlavor2		= "Take your Gurthani Tablets and choke on them",--http://ptr.wowhead.com/quest=31232
-	IyyokukFlavor		= "See opportunities. Exploit them!",--Does not have quests, http://ptr.wowhead.com/npc=65305
-	KarozFlavor			= "You won't be leaping anymore!",---Does not have questst, http://ptr.wowhead.com/npc=65303
-	SkeerFlavor			= "A bloody delight!",--http://ptr.wowhead.com/quest=31178
-	RikkalFlavor		= "Specimen request fulfilled"--http://ptr.wowhead.com/quest=31508
+	one					= "一",
+	two					= "二",
+	three				= "三",
+	four				= "四",
+	five				= "五",
+	hisekFlavor			= "現在是誰寂然無聲啊",--http://ptr.wowhead.com/quest=31510
+	KilrukFlavor		= "又是個撲殺蟲群的一天",--http://ptr.wowhead.com/quest=31109
+	XarilFlavor			= "我只在你的未來看到黑色天空",--http://ptr.wowhead.com/quest=31216
+	KaztikFlavor		= "減少隻昆蟲的蟲害",--http://ptr.wowhead.com/quest=31024
+	KaztikFlavor2		= "1隻螳螂倒下了，還有199隻要殺",--http://ptr.wowhead.com/quest=31808
+	KorvenFlavor		= "古代帝國的終結",--http://ptr.wowhead.com/quest=31232
+	KorvenFlavor2		= "拿著你的葛薩尼石板窒息吧",--http://ptr.wowhead.com/quest=31232
+	IyyokukFlavor		= "看到機會。剝削他們!",--Does not have quests, http://ptr.wowhead.com/npc=65305
+	KarozFlavor			= "你再也跳不起來了!",---Does not have questst, http://ptr.wowhead.com/npc=65303
+	SkeerFlavor			= "一份血腥的喜悅!",--http://ptr.wowhead.com/quest=31178
+	RikkalFlavor		= "已滿足樣本要求"--http://ptr.wowhead.com/quest=31508
 })
 
 ------------------------
