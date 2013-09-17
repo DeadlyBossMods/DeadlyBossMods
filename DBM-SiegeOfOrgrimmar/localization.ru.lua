@@ -52,6 +52,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	newForces1	= "Вот и они!",--Jaina's line, horde may not be same
+	newForces1H	= "Сбейте ее скорее, не терпится взять ее за глотку.",--Sylva's line, horde
 	newForces2	= "Драконья Пасть, вперед!",
 	newForces3	= "За Гарроша!",
 	newForces4	= "Следующий отряд!",
