@@ -87,12 +87,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1					= "Krieger, im Laufschritt!",--needs to be verified (PTR screenshot-captured translation)
-	newForces2					= "Verteidigt das Tor!",--needs to be verified (PTR screenshot-captured translation)
-	newForces3					= "Truppen, sammelt Euch!",--needs to be verified (PTR video-captured translation)
-	newForces4					= "Kor'kron, zu mir!",--needs to be verified (PTR video-captured translation)
-	newForces5					= "Nächste Staffel, nach vorn!",--needs to be verified (PTR screenshot-captured translation)
-	allForces					= "Alle Kor'kron unter meinem Befehl, tötet sie! Jetzt!"--needs to be verified (PTR video-captured translation)
+	newForces1					= "Krieger, im Laufschritt!",
+	newForces2					= "Verteidigt das Tor!",
+	newForces3					= "Truppen, sammelt Euch!",
+	newForces4					= "Kor'kron, zu mir!",
+	newForces5					= "Nächste Staffel, nach vorn!",
+	allForces					= "Alle Kor'kron unter meinem Befehl, tötet sie! Jetzt!"
 })
 
 -----------------

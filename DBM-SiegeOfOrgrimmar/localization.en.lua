@@ -122,6 +122,10 @@ L:SetOptionLocalization({
 ------------------------
 L= DBM:GetModLocalization(870)
 
+L:SetOptionLocalization({
+	RangeFrame	= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 145987)
+})
+
 L:SetMiscLocalization({
 	Module1 = "Module 1's all prepared for system reset.",
 	Victory	= "Module 2's all prepared for system reset"
