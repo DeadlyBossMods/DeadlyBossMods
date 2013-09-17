@@ -95,7 +95,7 @@ local timerPathOfBlossomsCD		= mod:NewCDTimer(15, 146253)
 local countdownSetToBlow		= mod:NewCountdownFades(29, 145996)
 local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, true)
 
-mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("RangeFrame")
 
 local activeBossGUIDS = {}
 local setToBlowTargets = {}
