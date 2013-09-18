@@ -40,7 +40,7 @@ local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
 
 --Sha of Pride
 local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
-local yellGiftOfTitans			= mod:NewYell(144359)
+local yellGiftOfTitans			= mod:NewYell(146594, nil, false)
 local specWarnSwellingPride		= mod:NewSpecialWarningCount(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
 local specWarnSelfReflection	= mod:NewSpecialWarningSpell(144800, nil, nil, nil, 2)
@@ -176,7 +176,9 @@ function mod:OnCombatStart(delay)
 	twipe(markOfArroganceIcons)
 	timerGiftOfTitansCD:Start(7.5-delay)
 	timerMarkCD:Start(-delay)
-	timerWoundedPrideCD:Start(10-delay)
+	if not self:IsDifficulty("lfr25") then
+		timerWoundedPrideCD:Start(10-delay)
+	end
 	timerSelfReflectionCD:Start(-delay)
 	countdownReflection:Start(-delay)
 	timerCorruptedPrisonCD:Start(-delay)
@@ -212,7 +214,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144832 then
 		--These abilitie cd reset on CAST_START not finish and cause a desync from energy
 		countdownReflection:Cancel()
-		timerWoundedPrideCD:Start()
+		if not self:IsDifficulty("lfr25") then
+			timerWoundedPrideCD:Start()
+		end
 		timerSelfReflectionCD:Start()
 		countdownReflection:Start()
 		timerCorruptedPrisonCD:Start()
@@ -232,7 +236,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerSelfReflectionCD:Start()
 			countdownReflection:Start()
 			timerCorruptedPrisonCD:Start()
-			timerWoundedPrideCD:Start(11.5)
+			if not self:IsDifficulty("lfr25") then
+				timerWoundedPrideCD:Start(11.5)
+			end
 		end
 		timerManifestationCD:Start()--Unconfirmed but likely remaining in sync with UNIT_POWER
 		timerSwellingPrideCD:Start()--Unconfirmed but likely remaining in sync with UNIT_POWER
@@ -277,7 +283,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.5, warnGiftOfTitansTargets)
 		if args:IsPlayer() then
 			specWarnGiftOfTitans:Show()
-			yellGiftOfTitans:Yell()
+			if not self:IsDifficulty("lfr25") then
+				yellGiftOfTitans:Yell()
+			end
 		end
 	elseif args.spellId == 145215 then
 		banishmentTargets[#banishmentTargets + 1] = args.destName
@@ -333,7 +341,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 144358 then
 		warnWoundedPride:Show(args.destName)
 		specWarnWoundedPride:Show()
-		if not firstWound then
+		if not firstWound and not self:IsDifficulty("lfr25") then
 			firstWound = true
 			timerWoundedPrideCD:Start()
 		end
