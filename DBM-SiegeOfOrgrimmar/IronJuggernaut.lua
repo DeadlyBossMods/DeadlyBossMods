@@ -127,15 +127,18 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144467 then
-		local amount = args.amount or 1
-		warnIgniteArmor:Show(args.destName, amount)
-		timerIgniteArmor:Start(args.destName)
-		timerIgniteArmorCD:Start()
-		if amount >= 3 then
-			if args:IsPlayer() then
-				specWarnIgniteArmor:Show(amount)
-			else
-				specWarnIgniteArmorOther:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") then
+			local amount = args.amount or 1
+			warnIgniteArmor:Show(args.destName, amount)
+			timerIgniteArmor:Start(args.destName)
+			timerIgniteArmorCD:Start()
+			if amount >= 3 then
+				if args:IsPlayer() then
+					specWarnIgniteArmor:Show(amount)
+				else
+					specWarnIgniteArmorOther:Show(args.destName)
+				end
 			end
 		end
 	elseif args.spellId == 146325 then
