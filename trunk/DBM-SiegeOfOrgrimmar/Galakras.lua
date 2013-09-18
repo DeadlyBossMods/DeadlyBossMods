@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED target focus boss1",
+	"UNIT_SPELLCAST_SUCCEEDED",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
@@ -96,10 +96,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 147688 and self:checkTankDistance(args.sourceGUID, 60) then--Might be an applied event instead
+	if args.spellId == 147688 and self:checkTankDistance(args.sourceGUID, 40) then--Might be an applied event instead
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
-	elseif args.spellId == 146757 and self:checkTankDistance(args.sourceGUID, 60) then
+	elseif args.spellId == 146757 and self:checkTankDistance(args.sourceGUID, 40) then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
@@ -109,11 +109,11 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 146769 and self:checkTankDistance(args.sourceGUID, 60) then
+	if args.spellId == 146769 and self:checkTankDistance(args.sourceGUID, 40) then
 		warnCrushersCall:Show()
 		specWarnCrushersCall:Show()
 		timerCrushersCallCD:Start()
-	elseif args.spellId == 146849 and self:checkTankDistance(args.sourceGUID, 60) then
+	elseif args.spellId == 146849 and self:checkTankDistance(args.sourceGUID, 40) then
 		warnShatteringCleave:Show()
 		timerShatteringCleaveCD:Start()
 	end
@@ -136,10 +136,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 147029 then--Tank debuff version
 		warnFlamesofGalakrond:Show(args.destName, 1)
 		timerFlamesofGalakrond:Start(args.destName)
-	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID, 60) then
+	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID, 40) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif args.spellId == 146899 and self:checkTankDistance(args.sourceGUID, 60) then
+	elseif args.spellId == 146899 and self:checkTankDistance(args.sourceGUID, 40) then
 		warnFracture:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFractureYou:Show()
@@ -152,14 +152,23 @@ end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args.spellId == 147029 then--Tank debuff version
-		local amount = args.amount or 1
-		warnFlamesofGalakrond:Show(args.destName, amount)
-		timerFlamesofGalakrond:Start(args.destName)
-		if amount >= 3 then
-			if args:IsPlayer() then
-				specWarnFlamesofGalakrondTank:Show(amount)
-			else
-				specWarnFlamesofGalakrondOther:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		for i = 1, 5 do
+			local bossUnitID = "boss"..i
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID then
+				if self:IsTanking(uId, bossUnitID) then
+					local amount = args.amount or 1
+					warnFlamesofGalakrond:Show(args.destName, amount)
+					timerFlamesofGalakrond:Start(args.destName)
+					if amount >= 3 then
+						if args:IsPlayer() then
+							specWarnFlamesofGalakrondTank:Show(amount)
+						else
+							specWarnFlamesofGalakrondOther:Show(args.destName)
+						end
+					end
+				end
+				break--break loop if find right boss
 			end
 		end
 	end
@@ -176,14 +185,14 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 147705 and destGUID == UnitGUID("player") and self:AntiSpam() then
+	if spellId == 147705 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnPoisonCloud:Show()
 	end
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 146764 and destGUID == UnitGUID("player") and self:AntiSpam() then
+	if spellId == 146764 and destGUID == UnitGUID("player") and self:AntiSpam(2, 1) then
 		specWarnFlameArrow:Show()
 	end
 end
@@ -200,10 +209,10 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 147825 then--Muzzle Spray::0:147825
+	if spellId == 147825 and self:AntiSpam(2, 2) then--Muzzle Spray::0:147825
 		warnMuzzleSpray:Show()
 		specWarnMuzzleSpray:Show()
-	elseif spellId == 50630 then--Eject All Passengers:
+	elseif spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
 		timerAddsCD:Cancel()
 		warnPhase2:Show()
 		timerFlamesofGalakrondCD:Start(18.6)--TODO, verify consistency since this timing may depend on where drake lands and time it takes to get picked up.
@@ -230,7 +239,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:OnSync(msg)
-	if msg == "Adds" and self:AntiSpam(10, 3) then
+	if msg == "Adds" and self:AntiSpam(10, 4) then
 		addsCount = addsCount + 1
 		if addsCount == 1 then
 			timerAddsCD:Start(48)
