@@ -121,3 +121,7 @@ L:SetOptionLocalization({
 	SetIconOnBurningSoul	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(144689),
 	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(8, 144689)
 })
+
+L:SetMiscLocalization({
+	Pull					= "You will take my place on the eternal brazier."
+})
