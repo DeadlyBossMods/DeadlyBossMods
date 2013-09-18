@@ -84,9 +84,14 @@ local countdownCoolingOff			= mod:NewCountdown(15, 143484, nil, nil, nil, nil, t
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
+mod:AddBoolOption("SetIconOnAdds", false)
+
 local addsCount = 0
 local boneTargets = {}
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
+local Adds = {}
+--local iconsSet = 3
+local scanLimiter = 0
 
 local function warnBoneTargets()
 	warnBonecracker:Show(table.concat(boneTargets, "<, >"))
@@ -94,8 +99,62 @@ local function warnBoneTargets()
 	table.wipe(boneTargets)
 end
 
+local function scanForMobs()
+--	if DBM:GetRaidRank() > 0 and not ((addsCount > 4) and (iconsSet == 3) or (addsCount < 5) and (iconsSet == 2)) then
+	if DBM:GetRaidRank() > 0 then--Cannot impliment counting until i know which wave it actually goes from 2 to 3 in all difficulties
+		scanLimiter = scanLimiter + 1
+		for uId in DBM:GetGroupMembers() do
+			local unitid = uId.."target"
+			local guid = UnitGUID(unitid)
+			local cid = mod:GetCIDFromGUID(guid)
+			if not adds[guid] then
+				if cid == 71626 then--Banner
+					SetRaidTarget(unitid, 8)
+				elseif cid == 71519 then--Shaman
+					SetRaidTarget(unitid, 7)
+				elseif cid == 71517 then--Arcweaver
+					SetRaidTarget(unitid, 6)
+				elseif cid == 71518 then--Assassin
+					SetRaidTarget(unitid, 1)
+				elseif cid == 71516 then--Iron Blade
+					SetRaidTarget(unitid, 2)
+				elseif cid == 71656 then--Sniper
+					SetRaidTarget(unitid, 4)
+				end
+				--consSet = iconsSet + 1
+				adds[guid] = true
+			end
+		end
+		local guid2 = UnitGUID("mouseover")
+		local cid = mod:GetCIDFromGUID(guid2)
+		if not adds[guid2] then
+			if cid == 71626 then--Banner
+				SetRaidTarget("mouseover", 8)
+			elseif cid == 71519 then--Shaman
+				SetRaidTarget("mouseover", 7)
+			elseif cid == 71517 then--Arcweaver
+				SetRaidTarget("mouseover", 6)
+			elseif cid == 71518 then--Assassin
+				SetRaidTarget("mouseover", 1)
+			elseif cid == 71516 then--Iron Blade
+				SetRaidTarget("mouseover", 2)
+			elseif cid == 71656 then--Sniper
+				SetRaidTarget("mouseover", 4)
+			end
+			--iconsSet = iconsSet + 1
+			adds[guid2] = true
+		end
+		--This version of it has no returns because it has to find more than one mob, therefor it's simply a 10 second timed scan (or when iconset is reached)
+		if scanLimiter < 50 then--Don't scan for more than 10 seconds
+			mod:Schedule(0.2, scanForMobs)
+		end
+	end
+end--]]
+
 function mod:OnCombatStart(delay)
 	addsCount = 0
+	table.wipe(adds)
+--	iconsSet = 2
 	table.wipe(boneTargets)
 	timerAddsCD:Start(-delay, 1)
 	countdownAdds:Start()
@@ -226,7 +285,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		specWarnAdds:Show(addsCount)
 		timerAddsCD:Start(nil, addsCount+1)
 		countdownAdds:Start()
+		if self.Options.SetIconOnAdds then
+			--iconsSet = 0
+			scanLimiter = 0
+			scanForMobs()
+		end
 	elseif msg == L.allForces then
+		--Icon setting not put here on purpose, so as not ot mess with existing adds (it's burn boss phase anyawys)
 		specWarnAdds:Show(0)
 	end
 end
