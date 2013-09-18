@@ -95,7 +95,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "Show pre-warning countdown for $spell:143593 (5s before)"
+	warnDefensiveStanceSoon		= "Show pre-warning countdown for $spell:143593 (5s before)",
+	SetIconOnAdds				= "Set icon on $journal:7920"
 })
 
 L:SetMiscLocalization({
@@ -194,6 +195,10 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
+
+L:SetOptionLocalization({
+	SetIconOnShaman			= "Set icon on $journal:8294"
+})
 
 -------------
 --  Trash  --
