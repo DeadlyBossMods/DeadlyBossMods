@@ -12,7 +12,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--This boss changes boss ID every time you jump into one of tests, because he gets unregistered as boss1 then registered as boss2 when you leave, etc
+	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",--This boss can change boss ID any time you jump into one of tests, because he gets unregistered as boss1 then registered as boss2 when you leave, etc
+	"CHAT_MSG_ADDON"
 )
 
 mod:RegisterEvents(
@@ -189,8 +190,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
---"<21:44:39> CHAT_MSG_MONSTER_YELL#Very well, I will create a field to keep your corruption quarantined.#Norushen###Shiramune##0#0##0#837#nil#0#false#false", -- [1]
---"<21:45:04> [UNIT_SPELLCAST_SUCCEEDED] Amalgam of Corruption [[boss1:Icy Fear::0:145733]]", -- [1]
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.wasteOfTime then
 		self:SendSync("prepull")
@@ -207,9 +206,23 @@ function mod:OnSync(msg)
 	elseif msg == "BlindHatredEnded" then
 		timerBlindHatredCD:Start()
 		unleashedAngerCast = 0
-	elseif msg == "ManifestationDied" and not playerInside then
-		specWarnManifestationSoon:Show()
 	elseif msg == "prepull" then
 		timerCombatStarts:Start()
+	end
+end
+
+function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
+	--Because core already registers BigWigs prefix with server, shouldn't need it here
+	if prefix == "BigWigs" and message then
+		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
+		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(5, sender) then
+			specWarnManifestationSoon:Show()
+		end
+	--Filter the DBm message here vs OnSync because OnSync pre handles sender and it's not as easy to filter as this
+	elseif prefix == "D4" and message then
+		local dbmPrefix, dbmMsg = strsplit("\t", message)
+		if dbmMsg == "ManifestationDied" and not playerInside and self:AntiSpam(5, sender) then
+			specWarnManifestationSoon:Show()
+		end
 	end
 end
