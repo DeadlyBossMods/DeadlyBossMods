@@ -14,10 +14,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED"
 )
 
---[[
 mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
-)--]]
+)
 
 local warnAncientFlame			= mod:NewSpellAnnounce(144695, 2)--probably add a move warning with right DAMAGE event
 local warnBurningSoul			= mod:NewTargetAnnounce(144689, 3)
@@ -31,12 +30,12 @@ local specWarnEternalAgony		= mod:NewSpecialWarningSpell(144696, nil, nil, nil, 
 --local timerAncientFlameCD		= mod:NewCDTimer(43, 144695)--Insufficent logs
 --local timerBurningSoulCD		= mod:NewCDTimer(22, 144689)--22-30 sec variation (maybe larger, small sample size)w
 
---local berserkTimer				= mod:NewBerserkTimer(300)
+local berserkTimer				= mod:NewBerserkTimer(300)
 
-mod:AddBoolOption("SetIconOnBurningSoul", true)
+mod:AddBoolOption("SetIconOnBurningSoul")
 mod:AddBoolOption("RangeFrame", true)
 
---local yellTriggered = false
+local yellTriggered = false
 local DebuffTargets = {}
 local DebuffIcons = {}
 local DebuffIcon = 8
@@ -57,22 +56,21 @@ do
 			self:SetIcon(v, DebuffIcon)
 			DebuffIcon = DebuffIcon - 1
 		end
+		table.wipe(DebuffIcons)
 	end
 end
 
 function mod:OnCombatStart(delay)
---[[	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
-		timerPiercingRoarCD:Start(20-delay)
-		timerFrillBlastCD:Start(40-delay)
-		berserkTimer:Start(-delay)
-	end--]]
+	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
+		berserkTimer:Start()
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
---	yellTriggered = false
+	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -135,7 +133,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Pull and not self:IsInCombat() then
 		if self:GetCIDFromGUID(UnitGUID("target")) == 72057 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 72057 then
@@ -144,4 +141,3 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		end
 	end
 end
---]]
