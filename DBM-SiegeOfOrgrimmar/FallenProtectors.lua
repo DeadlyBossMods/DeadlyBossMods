@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71479, 71475, 71480)--He-Softfoot, Rook Stonetoe, Sun Tenderheart
 mod:SetZone()
+mod:SetUsedIcons(7)
 
 mod:RegisterCombat("combat")
 
@@ -62,8 +63,8 @@ local specWarnCorruptedBrewNear		= mod:NewSpecialWarningClose(143019)
 local specWarnMiserySorrowGloom		= mod:NewSpecialWarningSpell(143955)
 local specWarnCorruptionShock		= mod:NewSpecialWarningInterrupt(143958, mod:IsMelee())
 local specWarnDefiledGround			= mod:NewSpecialWarningMove(143959)
---local specWarnInfernoStrike			= mod:NewSpecialWarningYou(143962)
---local yellInfernoStrike				= mod:NewYell(143962)
+local specWarnInfernoStrike			= mod:NewSpecialWarningYou(143962)
+local yellInfernoStrike				= mod:NewYell(143962)
 --He Softfoot
 local specWarnGouge					= mod:NewSpecialWarningMove(143330, mod:IsTank())--Maybe localize it as a "turn away" warning.
 local specWarnGougeStunOther		= mod:NewSpecialWarningTarget(143301, mod:IsTank())--Tank is stunned, other tank must taunt or he'll start killing people
@@ -95,9 +96,13 @@ local timerCalamityCD				= mod:NewCDTimer(42, 143491)--42-50 (when two can be ca
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
+mod:AddBoolOption("SetIconOnStrike")
+
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local strikeDebuff = GetSpellInfo(143962)--Cast spellid, Unconfirmed if debuff has same id or even name. Need to verify
+local previousStrike = nil
 
 function mod:BrewTarget(targetname, uId)
 	if not targetname then return end
@@ -118,6 +123,28 @@ function mod:BrewTarget(targetname, uId)
 			end
 		end
 	end
+end
+
+local function findDebuff(spellName)
+	for uId in DBM:GetGroupMembers() do
+		local name = DBM:GetUnitFullName(uId)
+		if UnitDebuff(uId, strikeDebuff) then
+			print("DBM DEBUG: InfernoStrike on "..name)
+			if name == UnitName("player") then
+				specWarnInfernoStrike:Show()
+				yellInfernoStrike:Yell()
+			end
+			if mod.Options.SetIconOnStrike then
+				SetRaidTarget(uId, 7)
+				if previousStrike then
+					SetRaidTarget(previousStrike, 0)
+				end
+			end
+			previousStrike = uId
+			return
+		end
+	end
+	mod:Schedule(0.1, findDebuff)
 end
 
 function mod:OnCombatStart(delay)
@@ -165,6 +192,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143962 then
 		warnInfernoStrike:Show()
 		timerInfernoStrikeCD:Start()
+		self:Schedule(0.5, findDebuff)
 	elseif args.spellId == 143497 then
 		warnBondGoldenLotus:Show()
 	elseif args.spellId == 144396 then
@@ -249,7 +277,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerInfernoStrikeCD:Cancel()
 		timerCorruptedBrewCD:Start(12)
 		timerVengefulStrikesCD:Start(18)
-		timerClashCD:Start(46)--Still needs more verification.
+		timerClashCD:Start(46)
+		if previousStrike and self.Options.SetIconOnStrike then
+			SetRaidTarget(previousStrike, 0)
+			previousStrike = nil
+		end
+		self:Unschedule(findDebuff)
 	elseif args.spellId == 143812 then--Mark of Anguish
 		timerGarroteCD:Start(12)--TODO, verify consistency in all difficulties
 		timerGougeCD:Start(23)--Seems to be either be exactly 23 or exactly 35. Not sure what causes it to switch.
