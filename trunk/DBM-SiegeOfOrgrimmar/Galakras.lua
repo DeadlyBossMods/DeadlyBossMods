@@ -244,7 +244,7 @@ function mod:OnSync(msg)
 		if addsCount == 1 then
 			timerAddsCD:Start(48)
 		elseif addsCount == 3 then
-			timerProtoCD:Start()
+			timerProtoCD:Start()--TODO seems there is another drake wave in a late wave, like 8-10ish, need to find that wave
 			timerAddsCD:Start(110)
 		else
 			timerAddsCD:Start()
