@@ -67,7 +67,7 @@ local timerTitanicSmashCD				= mod:NewCDTimer(14.5, 144628)--14-17sec variation
 local timerPiercingCorruptionCD			= mod:NewCDTimer(14, 144657)--14-17sec variation
 local timerHurlCorruptionCD				= mod:NewNextTimer(20, 144649)
 
-local berserkTimer						= mod:NewBerserkTimer(420)
+local berserkTimer						= mod:NewBerserkTimer(418)
 
 local countdownLookWithin				= mod:NewCountdownFades(59, "ej8220")
 local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, nil, nil, nil, nil, true)
