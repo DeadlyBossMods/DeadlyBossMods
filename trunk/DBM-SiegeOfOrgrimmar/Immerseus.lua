@@ -96,13 +96,7 @@ end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 143020 then--Split
-		warnSplit:Show()
-		timerBreathCD:Cancel()
-		timerSwirlCD:Cancel()
-		timerShaBoltCD:Cancel()
-		timerSwellingCorruptionCD:Cancel()
-	elseif spellId == 143293 and self:AntiSpam(3, 2) then--Sha Bolt
+	if spellId == 143293 and self:AntiSpam(3, 2) then--Sha Bolt
 		warnShaBolt:Show()
 		timerShaBoltCD:Start()
 	elseif spellId == 143578 then--Swelling Corruption
@@ -129,6 +123,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 --[[		if self:IsDifficulty("heroic10", "heroic25") then
 			timerSwellingCorruptionCD:Start(12.5)
 		end--]]
+	elseif msg:find("spell:143020") then--split
+		warnSplit:Show()
+		timerBreathCD:Cancel()
+		timerSwirlCD:Cancel()
+		timerShaBoltCD:Cancel()
+		timerSwellingCorruptionCD:Cancel()
 	end
 end
 

@@ -185,7 +185,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 140546 and args:IsPlayer() then
 		specWarnFullyMutated:Show()
-		timerFullyMutated:Start()
+		local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
+		timerFullyMutated:Start(expires-GetTime())
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
