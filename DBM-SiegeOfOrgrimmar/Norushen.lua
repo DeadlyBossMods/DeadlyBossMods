@@ -20,6 +20,12 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
+local boss = EJ_GetSectionInfo(8216)
+
+mod:SetBossHealthInfo(
+	72276, boss
+)
+
 --Amalgam of Corruption
 local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)

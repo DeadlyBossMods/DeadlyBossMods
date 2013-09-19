@@ -67,7 +67,7 @@ local timerSelfReflectionCD		= mod:NewNextTimer(25, 144800)
 local timerWoundedPrideCD		= mod:NewNextTimer(30, 144358, nil, mod:IsTank())--A tricky on that is based off unit power but with variable timings, but easily workable with an 11, 26 rule
 local timerCorruptedPrisonCD	= mod:NewNextTimer(53, 144574)--Technically 51 for Imprison base cast, but this is timer til debuffs go out.
 local timerManifestationCD		= mod:NewNextTimer(60, "ej8262", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
-local timerSwellingPrideCD		= mod:NewNextTimer(75.5, 144400)
+local timerSwellingPrideCD		= mod:NewNextCountTimer(75.5, 144400)
 local timerWeakenedResolve		= mod:NewBuffFadesTimer(60, 147207, nil, false)
 --Pride
 local timerBurstingPride		= mod:NewCastTimer(3, 144911)
@@ -183,7 +183,7 @@ function mod:OnCombatStart(delay)
 	countdownReflection:Start(-delay)
 	timerCorruptedPrisonCD:Start(-delay)
 	timerManifestationCD:Start(-delay)
-	timerSwellingPrideCD:Start(-delay)
+	timerSwellingPrideCD:Start(-delay, 1)
 	countdownSwellingPride:Start(-delay)
 	firstWound = false
 	UnleashedCast = false
@@ -241,7 +241,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end
 		timerManifestationCD:Start()--Unconfirmed but likely remaining in sync with UNIT_POWER
-		timerSwellingPrideCD:Start()--Unconfirmed but likely remaining in sync with UNIT_POWER
+		timerSwellingPrideCD:Start(nil, swellingCount + 1)--Unconfirmed but likely remaining in sync with UNIT_POWER
 		countdownSwellingPride:Start()--Unconfirmed but likely remaining in sync with UNIT_POWER
 		--This is done here because a lot can change during a cast, and we need to know players energy when cast ends, i.e. this event
 		for uId in DBM:GetGroupMembers() do
