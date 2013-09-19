@@ -105,3 +105,7 @@ L:SetMiscLocalization({
 -- Ordos, Fire-God of the Yaungol --
 ------------------------------------
 L= DBM:GetModLocalization(861)
+
+L:SetMiscLocalization({
+	Pull					= "Ihr werdet meinen Platz in den ewigen Flammen einnehmen."
+})
