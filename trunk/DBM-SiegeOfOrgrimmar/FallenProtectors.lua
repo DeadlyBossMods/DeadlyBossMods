@@ -128,7 +128,7 @@ function mod:OnCombatStart(delay)
 	timerCorruptedBrewCD:Start(18-delay)
 	timerGougeCD:Start(23-delay)
 	timerCalamityCD:Start(31-delay)
-	timerClashCD:Start(-delay)--Unsure if stll same, since this almost NEVER happens, at least one of them will enter a special and cancel this timer
+	timerClashCD:Start(45-delay)
 --	berserkTimer:Start(-delay)
 end
 
