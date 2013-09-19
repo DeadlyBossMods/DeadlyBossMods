@@ -17,6 +17,15 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
+local Softfoot = EJ_GetSectionInfo(7889)
+local Stonetoe = EJ_GetSectionInfo(7885)
+local Tenderheart = EJ_GetSectionInfo(7904)
+
+mod:SetBossHealthInfo(
+	71479, Softfoot,
+	71475, Stonetoe,
+	71480, Tenderheart
+)
 
 --All
 local warnBondGoldenLotus			= mod:NewCastAnnounce(143497, 4)
