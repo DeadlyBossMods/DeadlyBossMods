@@ -14,6 +14,10 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(849)
 
+L:SetOptionLocalization({
+	SetIconOnStrike		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(143962)
+})
+
 ---------------------------
 -- Norushen --
 ---------------------------
