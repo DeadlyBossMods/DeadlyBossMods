@@ -1126,7 +1126,8 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, true)
 	elseif cmd:sub(0,5) == "break" then
-		if DBM:GetRaidRank(playerName) == 0 or IsInGroup(LE_PARTY_CATEGORY_INSTANCE) or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
+		local _, _, difficultyID = GetInstanceInfo()
+		if DBM:GetRaidRank(playerName) == 0 or difficultyID == 7 or difficultyID == 1 or difficultyID == 2 or IsEncounterInProgress() then--No break timers if not assistant or if it's LFR (because break timers in LFR are just not cute)
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 			return
 		end
@@ -2346,10 +2347,10 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://www.deadlybossmods.com]"):format(displayVersion, version))
 						end
-	--					if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
-	--						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
-	--						DBM:Disable(true)
-	--					end
+						if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
+							DBM:Disable(true)
+						end
 					end
 				end
 			end
