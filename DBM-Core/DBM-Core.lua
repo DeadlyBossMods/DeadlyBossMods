@@ -4412,6 +4412,7 @@ function bossModPrototype:checkTankDistance(cid, distance)
 	local distance = distance or 50
 	local _, uId = self:GetBossTarget(cid)
 	if uId then--Now we know who is tanking that boss
+		print("DBM DEBUG: checkTankDistance CID/uId,Name is ", cid, uId, UnitName(uId))
 		local x, y = GetPlayerMapPosition(uId)
 		if x == 0 and y == 0 then
 			SetMapToCurrentZone()
@@ -4419,6 +4420,7 @@ function bossModPrototype:checkTankDistance(cid, distance)
 		end
 		if x == 0 and y == 0 then return true end
 		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
+		print("DBM DEBUG: checkTankDistance Range is "..inRange)
 		if (inRange and inRange > distance) then--You are not near the person tanking boss
 			return false
 		end
