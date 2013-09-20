@@ -51,6 +51,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Pull		= "龍喉氏族，奪回碼頭，把他們推進海裡!以地獄吼及正統部落之名!",
 	newForces1	= "他們來了!",
 	newForces1H	= "趕快把她弄下來，讓我用手掐死她。",
 	newForces2	= "龍喉氏族，前進!",
