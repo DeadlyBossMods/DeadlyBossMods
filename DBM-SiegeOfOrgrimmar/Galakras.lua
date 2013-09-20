@@ -10,6 +10,10 @@ mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
@@ -22,7 +26,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED",
-	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
@@ -92,7 +95,9 @@ function mod:OnCombatStart(delay)
 	firstTower = false
 	flamesCount = 0
 	timerAddsCD:Start(11-delay)
-	timerTowerCD:Start(116.5-delay)
+	if not self:IsDifficulty("heroic10", "heroic25") then
+		timerTowerCD:Start(116.5-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -222,6 +227,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.newForces1 or msg == L.newForces1H or msg == L.newForces2 or msg == L.newForces3 or msg == L.newForces4 then
 		self:SendSync("Adds")
+	elseif msg == L.Pull and not self:IsInCombat() then
+		DBM:StartCombat(self, 0)
 	end
 end
 
@@ -231,7 +238,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnDemolisher:Show()
 	elseif msg:find(L.tower) then
 		timerDemolisherCD:Start()
-		if not firstTower then
+		if not firstTower and not self:IsDifficulty("heroic10", "heroic25") then
 			firstTower = true
 			timerTowerCD:Start()
 		end
