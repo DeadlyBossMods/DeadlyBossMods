@@ -268,10 +268,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnUnleashed:Show()
 		timerGiftOfTitansCD:Cancel()
 		countdownSwellingPride:Cancel()
+		timerSwellingPrideCD:Cancel()
 		firstWound = false
 		UnleashedCast = true
 		timerManifestationCD:Start()--Not yet verified if altered or not
-		timerSwellingPrideCD:Start(75)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
+		timerSwellingPrideCD:Start(75, swellingCount + 1)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
 		countdownSwellingPride:Start(75)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
 	elseif args.spellId == 144800 then
 		warnSelfReflection:Show()
