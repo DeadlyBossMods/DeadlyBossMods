@@ -1034,7 +1034,7 @@ do
 		-- clean up sync spam timers and auto respond spam blockers
 		-- TODO: optimize this; using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than 4 entries...
 		local k, v = next(modSyncSpam, nil)
-		if v and (time - v > 2.5) then
+		if v and (time - v > 10) then
 			modSyncSpam[k] = nil
 		end
 	end)
@@ -6220,7 +6220,7 @@ function bossModPrototype:SendSync(event, ...)
 	local time = GetTime()
 	--Mod syncs are more strict and enforce latency threshold always.
 	--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
-	if select(4, GetNetStats()) < DBM.Options.LatencyThreshold and (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5) then
+	if select(4, GetNetStats()) < DBM.Options.LatencyThreshold and (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 10) then
 		self:ReceiveSync(event, nil, self.revision or 0, tostringall(...))
 		sendSync("M", str)
 	end
@@ -6229,7 +6229,7 @@ end
 function bossModPrototype:ReceiveSync(event, sender, revision, ...)
 	local spamId = self.id .. event .. strjoin("\t", ...)
 	local time = GetTime()
-	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 10) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
 		modSyncSpam[spamId] = time
 		-- we have to use the sender as last argument for compatibility reasons (stupid old API...)
 		-- avoid table allocations for frequently used number of arguments
