@@ -94,7 +94,7 @@ function mod:OnCombatStart(delay)
 	addsCount = 0
 	firstTower = false
 	flamesCount = 0
-	timerAddsCD:Start(11-delay)
+	timerAddsCD:Start(10.5-delay)
 	if not self:IsDifficulty("heroic10", "heroic25") then
 		timerTowerCD:Start(116.5-delay)
 	end
