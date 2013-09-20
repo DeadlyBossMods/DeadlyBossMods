@@ -83,7 +83,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "$spell:143593 이전에 초읽기 알림 보기(5초 전부터)"
+	warnDefensiveStanceSoon		= "$spell:143593 이전에 초읽기 알림 보기(5초 전부터)",
+	SetIconOnAdds				= "$journal:7920에 전술 목표 아이콘 설정"
 })
 
 L:SetMiscLocalization({
@@ -168,6 +169,10 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
+
+L:SetOptionLocalization({
+	SetIconOnShaman			= "$journal:8294에 전술 목표 아이콘 설정"
+})
 
 -------------
 --  Trash  --
