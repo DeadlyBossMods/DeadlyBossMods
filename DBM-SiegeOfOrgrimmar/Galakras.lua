@@ -144,7 +144,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID, 40) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif args.spellId == 146899 then--Can't tank check this case mobs target npcs only (and we cannot unit range them)
+	elseif args.spellId == 146899 and self:checkTankDistance(args.sourceGUID, 50) then--Use a bigger range than 40 since npcs tend to stand further out
 		warnFracture:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFractureYou:Show()
