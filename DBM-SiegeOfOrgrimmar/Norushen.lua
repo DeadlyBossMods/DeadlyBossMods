@@ -50,6 +50,7 @@ local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
 local specWarnDishearteningLaugh		= mod:NewSpecialWarningSpell(146707, false, nil, nil, 2)
 local specWarnLingeringCorruption		= mod:NewSpecialWarningDispel(144514)
+local specWarnBottomlessPitMove			= mod:NewSpecialWarningMove(146703)
 --Test of Confidence (tank)
 local specWarnTitanicSmash				= mod:NewSpecialWarningMove(144628)
 local specWarnBurstOfCorruption			= mod:NewSpecialWarningSpell(144654, nil, nil, nil, 2)
@@ -152,6 +153,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		playerInside = true
 		timerLookWithin:Start()
 		countdownLookWithin:Start()
+	elseif args.spellId == 146703 and args:IsPlayer() and self:AntiSpam(3, 2) then
+		specWarnBottomlessPitMove:Show()
 	end
 end
 
