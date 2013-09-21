@@ -80,8 +80,8 @@ local timerCoolingOff				= mod:NewBuffFadesTimer(15, 143484)
 --Kor'kron Adds
 local timerEmpoweredChainHealCD		= mod:NewNextSourceTimer(6, 143473)
 
-local countdownAdds					= mod:NewCountdown(45, "ej7920")
-local countdownCoolingOff			= mod:NewCountdown(15, 143484, nil, nil, nil, nil, true)
+local countdownAdds					= mod:NewCountdown(45, "ej7920", false)--Confusing with Colling Off. off by default.
+local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, nil, true)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -90,7 +90,7 @@ mod:AddBoolOption("SetIconOnAdds", false)
 local addsCount = 0
 local boneTargets = {}
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
-local Adds = {}
+local adds = {}
 --local iconsSet = 3
 local scanLimiter = 0
 
@@ -255,7 +255,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			specWarnAssassinsMarkOther:Show(args.destName)
 		end
-	elseif args.spellId == 143475 then
+	elseif args.spellId == 143475 and not args:IsDestTypePlayer() then
 		warnEarthShield:Show(args.destName)
 		specWarnEarthShield:Show(args.destName)
 	elseif args.spellId == 143638 then

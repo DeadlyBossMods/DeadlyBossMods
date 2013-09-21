@@ -219,8 +219,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnMuzzleSpray:Show()
 	elseif spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
 		timerAddsCD:Cancel()
+		timerProtoCD:Cancel()
 		warnPhase2:Show()
-		timerFlamesofGalakrondCD:Start(18.6)--TODO, verify consistency since this timing may depend on where drake lands and time it takes to get picked up.
+		timerFlamesofGalakrondCD:Start(18.6, 1)--TODO, verify consistency since this timing may depend on where drake lands and time it takes to get picked up.
 	end
 end
 
@@ -250,8 +251,8 @@ function mod:OnSync(msg)
 		addsCount = addsCount + 1
 		if addsCount == 1 then
 			timerAddsCD:Start(48)
-		elseif addsCount == 3 then
-			timerProtoCD:Start()--TODO seems there is another drake wave in a late wave, like 8-10ish, need to find that wave
+		elseif addsCount % 3 == 0 then--seems that 4, 7, 10 wave Proto?
+			timerProtoCD:Start()
 			timerAddsCD:Start(110)
 		else
 			timerAddsCD:Start()

@@ -33,6 +33,7 @@ local specWarnSwellingCorruptionTarget	= mod:NewSpecialWarningTarget(143578)
 local specWarnSwellingCorruptionFades	= mod:NewSpecialWarningFades(143578)
 
 local timerBreathCD						= mod:NewCDTimer(35, 143436, nil, mod:IsTank() or mod:IsHealer())--35-65 second variation wtf?
+local timerSwirl						= mod:NewBuffActiveTimer(13, 143309)
 local timerShaBoltCD					= mod:NewCDTimer(6, 143295, nil, false)--every 6-20 seconds (yeah it variates that much)
 local timerSwirlCD						= mod:NewCDTimer(48.5, 143309)
 local timerShaResidue					= mod:NewBuffActiveTimer(10, 143459)
@@ -68,6 +69,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143309 then
 		warnSwirl:Show()
 		specWarnSwirl:Show()
+		timerSwirl:Start()
 		timerSwirlCD:Show()
 	end
 end
