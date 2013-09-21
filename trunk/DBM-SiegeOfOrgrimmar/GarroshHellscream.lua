@@ -161,6 +161,7 @@ function mod:OnCombatStart(delay)
 	mindControlCount = 0
 	shamanAlive = 0
 	table.wipe(touchOfYShaarjTargets)
+	table.wipe(adds)
 	timerDesecrateCD:Start(10.5-delay, 1)
 	timerSiegeEngineerCD:Start(20-delay)
 	timerHellscreamsWarsongCD:Start(22-delay)
