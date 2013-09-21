@@ -4412,15 +4412,22 @@ function bossModPrototype:checkTankDistance(cid, distance)
 	local cid = cid or self.creatureId
 	local distance = distance or 50
 	local _, uId = self:GetBossTarget(cid)
-	if uId then--Now we know who is tanking that boss
+	if uId then--Now we know who mob is targeting
 		local x, y = GetPlayerMapPosition(uId)
 		if x == 0 and y == 0 then
 			SetMapToCurrentZone()
 			x, y = GetPlayerMapPosition(uId)
 		end
-		if x == 0 and y == 0 then return true end
+		if x == 0 and y == 0 then--Failed to pull coords. This is either a pet or an NPC
+			local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on pets and some NPCS
+			if checkedRange and not inRange2 then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
+				return false
+			else
+				return true
+			end
+		end
 		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
-		if not inRange then--No map info, possibly an NPC
+		if not inRange then--X and Y were nil, not 0. (not sure this is even possible but failsafe regardless).
 			local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on some NPCs
 			if checkedRange and not inRange2 then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
 				return false
