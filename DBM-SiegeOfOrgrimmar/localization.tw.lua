@@ -126,6 +126,10 @@ L:SetOptionLocalization({
 ----------------------------
 L= DBM:GetModLocalization(865)
 
+L:SetOptionLocalization({
+	InfoFrame	= "為$journal:8202顯示距離框架"
+})
+
 L:SetMiscLocalization({
 	newWeapons	= "尚未完成的武器開始從生產線上掉落。",
 	newShredder	= "有個自動化伐木機靠近了!"
