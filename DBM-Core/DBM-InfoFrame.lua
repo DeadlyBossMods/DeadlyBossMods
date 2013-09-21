@@ -61,6 +61,8 @@ local infoFrameSpellName
 local pIndex
 local extraPIndex
 local lowestFirst
+local lowestT
+local lowestF
 local tankIgnored
 local iconModifier
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
@@ -192,6 +194,7 @@ end
 local updateCallbacks = {}
 local function sortFuncDesc(a, b) return lines[a] > lines[b] end
 local function sortFuncAsc(a, b) return lines[a] < lines[b] end
+local function namesortFuncAsc(a, b) return a < b end
 local function updateLines()
 	table.wipe(sortedLines)
 	for i in pairs(lines) do
@@ -511,6 +514,8 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 	extraPIndex = extraPowerIndex
 	lowestFirst = sortLowest
 	tankIgnored = ignoreTank
+	lowestT = select(1, ...)
+	lowestF = select(2, ...)
 	currentEvent = event
 	frame = frame or createFrame()
 
@@ -606,6 +611,8 @@ function infoFrame:Hide()
 	lowestFirst = nil
 	tankIgnored = nil
 	extraPIndex = nil
+	lowestT = nil
+	lowestF = nil
 	if frame then
 		frame:Hide()
 	end
