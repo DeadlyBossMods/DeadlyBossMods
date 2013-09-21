@@ -126,6 +126,10 @@ L:SetOptionLocalization({
 ----------------------------
 L= DBM:GetModLocalization(865)
 
+L:SetOptionLocalization({
+	InfoFrame	= "$journal:8202에 대한 정보를 정보 창으로 보기"
+})
+
 L:SetMiscLocalization({
 	newWeapons	= "생산 설비에서 미완성 무기가 나오기 시작합니다.",
 	newShredder	= "자동 분쇄기가 다가옵니다!"
