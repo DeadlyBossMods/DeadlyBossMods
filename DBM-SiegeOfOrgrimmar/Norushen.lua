@@ -79,7 +79,7 @@ local countdownLookWithin				= mod:NewCountdownFades(59, "ej8220")
 local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, nil, nil, nil, nil, true)
 local countdownHurlCorruption			= mod:NewCountdown(20, 144649, nil, nil, nil, nil, true)
 
---mod:AddBoolOption("InfoFrame", false)--maybe change it ot a simple yes/no for 144452 instead of unit power. unit power is very inaccurate on this fight for some reason
+mod:AddBoolOption("InfoFrame", false)--May still be buggy but it's needed for heroic.
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0
@@ -93,16 +93,16 @@ function mod:OnCombatStart(delay)
 	else
 		berserkTimer:Start(-delay)
 	end
---[[	if self.Options.InfoFrame then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(corruptionLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
-	end--]]
+	end
 end
 
 function mod:OnCombatEnd()
---[[	if self.Options.InfoFrame then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
-	end--]]
+	end
 end
 
 function mod:SPELL_CAST_START(args)

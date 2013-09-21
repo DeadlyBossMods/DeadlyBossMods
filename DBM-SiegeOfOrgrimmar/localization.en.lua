@@ -152,6 +152,10 @@ L:SetOptionLocalization({
 ----------------------------
 L= DBM:GetModLocalization(865)
 
+L:SetOptionLocalization({
+	InfoFrame			= "Show info frame for $journal:8202"
+})
+
 L:SetMiscLocalization({
 	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.",
 	newShredder	= "An Automated Shredder draws near!"
