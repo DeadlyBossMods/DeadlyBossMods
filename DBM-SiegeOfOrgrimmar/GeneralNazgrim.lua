@@ -91,7 +91,6 @@ local addsCount = 0
 local boneTargets = {}
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
 local adds = {}
---local iconsSet = 3
 local scanLimiter = 0
 
 local function warnBoneTargets()
@@ -101,8 +100,7 @@ local function warnBoneTargets()
 end
 
 local function scanForMobs()
---	if DBM:GetRaidRank() > 0 and not ((addsCount > 4) and (iconsSet == 3) or (addsCount < 5) and (iconsSet == 2)) then
-	if DBM:GetRaidRank() > 0 then--Cannot impliment counting until i know which wave it actually goes from 2 to 3 in all difficulties
+	if DBM:GetRaidRank() > 0 then--Cannot impliment counting because it seems there is too much variation between difficulties and it would be ugly
 		scanLimiter = scanLimiter + 1
 		for uId in DBM:GetGroupMembers() do
 			local unitid = uId.."target"
@@ -122,8 +120,7 @@ local function scanForMobs()
 				elseif cid == 71656 then--Sniper
 					SetRaidTarget(unitid, 4)
 				end
-				--consSet = iconsSet + 1
-				adds[guid] = true
+				adds[guid] = true--Errors out "table index is nil" Can someone explain that?
 			end
 		end
 		local guid2 = UnitGUID("mouseover")
@@ -142,8 +139,7 @@ local function scanForMobs()
 			elseif cid == 71656 then--Sniper
 				SetRaidTarget("mouseover", 4)
 			end
-			--iconsSet = iconsSet + 1
-			adds[guid2] = true
+			adds[guid2] = true--Errors out "table index is nil" Can someone explain that?
 		end
 		--This version of it has no returns because it has to find more than one mob, therefor it's simply a 10 second timed scan (or when iconset is reached)
 		if scanLimiter < 50 then--Don't scan for more than 10 seconds
@@ -155,7 +151,6 @@ end--]]
 function mod:OnCombatStart(delay)
 	addsCount = 0
 	table.wipe(adds)
---	iconsSet = 2
 	table.wipe(boneTargets)
 	timerAddsCD:Start(-delay, 1)
 	countdownAdds:Start()
@@ -287,7 +282,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerAddsCD:Start(nil, addsCount+1)
 		countdownAdds:Start()
 		if self.Options.SetIconOnAdds then
-			--iconsSet = 0
 			scanLimiter = 0
 			scanForMobs()
 		end
