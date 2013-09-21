@@ -82,11 +82,11 @@ local missileCount = 0
 --local activeWeaponsGUIDS = {}
 local shockwaveOvercharged = false
 local weapon = 0
-local zp = EJ_GetSectionInfo(8202)
-local dl = EJ_GetSectionInfo(8212)
-local fd = EJ_GetSectionInfo(8205)
-local jg = EJ_GetSectionInfo(8208)
-local dc = EJ_GetSectionInfo(8210)
+local assemblyLine = EJ_GetSectionInfo(8202)
+local crawlerMine = EJ_GetSectionInfo(8212)
+local shockwaveMissile = EJ_GetSectionInfo(8205)
+local laserTurret = EJ_GetSectionInfo(8208)
+local electroMagnet = EJ_GetSectionInfo(8210)
 
 function mod:LaunchSawBladeTarget(targetname, uId)
 	warnLaunchSawblade:Show(targetname)
@@ -110,21 +110,21 @@ end
 --VEM Idea
 local function showWeaponInfo(weaponnum)
 	if mod.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(zp.."("..weaponnum..")")
+		DBM.InfoFrame:SetHeader(assemblyLine.."("..weaponnum..")")
 		if weaponnum == 1 or weaponnum == 2 or weaponnum == 4 or weaponnum == 10 or weaponnum == 13 then
-			DBM.InfoFrame:Show(1, "other", fd.." / "..jg, dl)
+			DBM.InfoFrame:Show(1, "other", shockwaveMissile.." / "..laserTurret, crawlerMine)
 		elseif weaponnum == 3 then
-			DBM.InfoFrame:Show(1, "other", fd.." / "..jg, dc)
+			DBM.InfoFrame:Show(1, "other", shockwaveMissile.." / "..laserTurret, electroMagnet)
 		elseif weaponnum == 5 or weaponnum == 7 or weaponnum == 8 then
-			DBM.InfoFrame:Show(1, "other", dc.." / "..fd, dl)
+			DBM.InfoFrame:Show(1, "other", electroMagnet.." / "..shockwaveMissile, crawlerMine)
 		elseif weaponnum == 6 then
-			DBM.InfoFrame:Show(1, "other", dl.." / "..fd, dl)
+			DBM.InfoFrame:Show(1, "other", crawlerMine.." / "..shockwaveMissile, crawlerMine)
 		elseif weaponnum == 9 then
-			DBM.InfoFrame:Show(1, "other", jg.." / "..jg, dc)
+			DBM.InfoFrame:Show(1, "other", laserTurret.." / "..laserTurret, electroMagnet)
 		elseif weaponnum == 11 then
-			DBM.InfoFrame:Show(1, "other", fd.." / "..fd, dc)
+			DBM.InfoFrame:Show(1, "other", shockwaveMissile.." / "..shockwaveMissile, electroMagnet)
 		elseif weaponnum == 12 then
-			DBM.InfoFrame:Show(1, "other", dc.." / "..jg, dl)
+			DBM.InfoFrame:Show(1, "other", electroMagnet.." / "..laserTurret, crawlerMine)
 		else
 			DBM.InfoFrame:Show(1, "other", "", _G["UNKNOWN"])
 		end

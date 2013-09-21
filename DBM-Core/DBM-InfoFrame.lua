@@ -207,6 +207,27 @@ local function updateLines()
 	end
 end
 
+local function updateNamesortLines()
+	table.wipe(sortedLines)
+	for i in pairs(lines) do
+		sortedLines[#sortedLines + 1] = i
+	end
+	table.sort(sortedLines, namesortFuncAsc)
+	for i, v in ipairs(updateCallbacks) do
+		v(sortedLines)
+	end
+end
+
+local function updateNotsortLines()
+	table.wipe(sortedLines)
+	for i, v in ipairs(lines) do
+		sortedLines[#sortedLines + 1] = v
+	end
+	for i, v in ipairs(updateCallbacks) do
+		v(sortedLines)
+	end
+end
+
 local function updateIcons()
 	table.wipe(icons)
 	for uId in DBM:GetGroupMembers() do
@@ -378,6 +399,25 @@ local function updatePlayerTargets()
 	updateIcons()
 end
 
+local function updateOther()
+	table.wipe(lines)
+	lines[pIndex]= infoFrameThreshold
+	lines[1]= pIndex
+	if extraPIndex then
+		lines[extraPIndex]= iconModifier
+		lines[2]= extraPIndex
+	end
+	if tankIgnored then
+		lines[tankIgnored]= lowestFirst
+		lines[3]= tankIgnored
+	end
+	if lowestF then
+		lines[lowestF]= lowestT
+		lines[4]= lowestF
+	end
+	updateNotsortLines()
+end
+
 ----------------
 --  OnUpdate  --
 ----------------
@@ -410,6 +450,8 @@ function onUpdate(self, elapsed)
 		updatePlayerDebuffStacks()
 	elseif currentEvent == "playertargets" then
 		updatePlayerTargets()
+	elseif currentEvent == "other" then
+		updateOther()
 	end
 --	updateIcons()
 	local linesShown = 0
@@ -504,6 +546,8 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 		updatePlayerDebuffStacks()
 	elseif currentEvent == "playertargets" then
 		updatePlayerTargets()
+	elseif currentEvent == "other" then
+		updateOther()
 	elseif currentEvent == "test" then
 	else
 		error("DBM-InfoFrame: Unsupported event", 2)
@@ -541,6 +585,8 @@ function infoFrame:Update(event)
 		updatePlayerDebuffStacks()
 	elseif event == "playertargets" then
 		updatePlayerTargets()
+	elseif currentEvent == "other" then
+		updateOther()
 	else
 		error("DBM-InfoFrame: Unsupported event", 2)
 	end
