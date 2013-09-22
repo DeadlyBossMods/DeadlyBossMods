@@ -4408,37 +4408,44 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	end
 end
 
-function bossModPrototype:checkTankDistance(cid, distance)
-	local cid = cid or self.creatureId
+function bossModPrototype:checkTankDistance(guid, distance)
+	local guid = guid or self.creatureId--CID fallback since GetBossTarget should sort it out
 	local distance = distance or 50
-	local _, uId = self:GetBossTarget(cid)
-	if uId then--Now we know who mob is targeting
+	local _, uId, mobuId = self:GetBossTarget(guid)
+	if not uId or (uId and (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5")) then--Mob has no target, or is targeting a UnitID we cannot range check
+		if IsInRaid() then
+			for i = 1, GetNumGroupMembers() do
+				if UnitDetailedThreatSituation("raid"..i, mobuId) == 3 then uId = "raid"..i end--Found highest threat target, make them uId
+				break
+			end
+		elseif IsInGroup() then
+			for i = 1, GetNumSubgroupMembers() do
+				if UnitDetailedThreatSituation("party"..i, mobuId) == 3 then uId = "party"..i end
+				break
+			end
+		end
+	end
+	if uId then--Now we know who mob is targeting (or highest threat is)
+		if UnitIsUnit("player", uId) then return true end--If "player" is target, avoid doing any complicated stuff
 		local x, y = GetPlayerMapPosition(uId)
 		if x == 0 and y == 0 then
 			SetMapToCurrentZone()
 			x, y = GetPlayerMapPosition(uId)
 		end
-		if x == 0 and y == 0 then--Failed to pull coords. This is either a pet or an NPC
-			local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on pets and some NPCS
+		if x == 0 and y == 0 then--Failed to pull coords. This is likely a pet or a guardian or an NPC.
+			local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on pets and some NPCS (npcs that get a party/raid/pet ID)
 			if checkedRange and not inRange2 then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
 				return false
-			else
+			else--Its probably a totem or just something we can't assess. Fall back to no filtering
 				return true
 			end
 		end
 		local inRange = DBM.RangeCheck:GetDistance("player", x, y)--We check how far we are from the tank who has that boss
-		if not inRange then--X and Y were nil, not 0. (not sure this is even possible but failsafe regardless).
-			local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on some NPCs
-			if checkedRange and not inRange2 then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
-				return false
-			end
-		else
-			if inRange > distance then--You are not near the person tanking boss
-				return false
-			end
+		if inRange and (inRange > distance) then--You are not near the person tanking boss
+			return false
 		end
 	end
-	return true
+	return true--When we simply can't figure anything out, always return true and allow warnings using this filter to fire
 end
 
 function bossModPrototype:Stop(cid)
