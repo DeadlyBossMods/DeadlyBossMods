@@ -75,7 +75,6 @@ local specWarnMarked				= mod:NewSpecialWarningYou(143840)
 local yellMarked					= mod:NewYell(143840, nil, false)
 --Sun Tenderheart
 local specWarnShaShear				= mod:NewSpecialWarningInterrupt(143423, false)
-local specWarnBane					= mod:NewSpecialWarningSpell(143446, mod:IsHealer())
 local specWarnCalamity				= mod:NewSpecialWarningSpell(143491, nil, nil, nil, 2)
 ----Sun Tenderheart's Desperate Measures
 local specWarnDarkMeditation		= mod:NewSpecialWarningSpell(143546)
@@ -92,7 +91,7 @@ local timerGougeCD					= mod:NewCDTimer(30, 143330, nil, mod:IsTank())--30-41
 local timerGarroteCD				= mod:NewCDTimer(30, 143198, nil, mod:IsHealer())--30-46 (heroic 20-26)
 --Sun Tenderheart
 local timerBaneCD					= mod:NewCDTimer(17, 143446, nil, mod:IsHealer())--17-25 (heroic 13-20)
-local timerCalamityCD				= mod:NewCDTimer(42, 143491)--42-50 (when two can be cast in a row) Also affected by boss specials
+local timerCalamityCD				= mod:NewCDTimer(40, 143491)--40-50 (when two can be cast in a row) Also affected by boss specials
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -176,7 +175,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args.spellId == 143446 then
 		warnBane:Show()
-		specWarnBane:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerBaneCD:Start(13)--TODO, verify normal to see if it was changed too
 		else
