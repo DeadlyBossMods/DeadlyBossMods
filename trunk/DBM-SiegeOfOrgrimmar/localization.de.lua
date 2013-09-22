@@ -51,6 +51,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Pull		= "Drachenmalklan, nehmt den Hafen wieder ein und treibt sie ins Meer! Im Namen Höllschreis und der wahren Horde!",
 	newForces1	= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation) (alliance)
 	newForces1H	= "Holt sie schnell vom Himmel, damit ich sie erwürgen kann.",
 	newForces2	= "Drachenmalklan, ausrücken!",
@@ -124,6 +125,10 @@ L:SetOptionLocalization({
 -- Siegecrafter Blackfuse --
 ----------------------------
 L= DBM:GetModLocalization(865)
+
+L:SetOptionLocalization({
+	InfoFrame			= "Zeige Infofenster für $journal:8202"
+})
 
 L:SetMiscLocalization({
 	newWeapons	= "Unfertige Waffen werden auf das Fabrikationsband befördert.",--needs to be verified (PTR screenshot-captured translation)
