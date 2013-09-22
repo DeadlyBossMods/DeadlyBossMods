@@ -181,7 +181,7 @@ function mod:SPELL_CAST_START(args)
 			end
 		end--]]
 	elseif args.spellId == 144090 then
-		self:BossTargetScanner(71859, "FoulStreamTarget", 0.025, 12)
+		self:BossTargetScanner(71859, "FoulStreamTarget", 0.05, 16)
 	elseif args.spellId == 143990 then
 		timerFoulGeyserCD:Start()
 		if self:checkTankDistance(args:GetSrcCreatureID()) then
