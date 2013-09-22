@@ -149,7 +149,7 @@ mod:RegisterOnUpdateHandler(function(self)
 			local unitid = uId.."target"
 			local guid = UnitGUID(unitid)
 			local cid = self:GetCIDFromGUID(guid)
-			if not adds[guid] and balcMobs[cid] then
+			if guid and not adds[guid] and balcMobs[cid] then
 				if cid == 69221 then--Dinomancer always skull
 					SetRaidTarget(unitid, 8)
 				else
@@ -162,7 +162,7 @@ mod:RegisterOnUpdateHandler(function(self)
 		end
 		local guid2 = UnitGUID("mouseover")
 		local cid = self:GetCIDFromGUID(guid2)
-		if not adds[guid2] and balcMobs[cid] then
+		if guid2 and not adds[guid2] and balcMobs[cid] then
 			if cid == 69221 then--Dinomancer always skull
 				SetRaidTarget("mouseover", 8)
 			else

@@ -106,7 +106,7 @@ local function scanForMobs()
 			local unitid = uId.."target"
 			local guid = UnitGUID(unitid)
 			local cid = mod:GetCIDFromGUID(guid)
-			if not adds[guid] then
+			if guid and not adds[guid] then
 				if cid == 71626 then--Banner
 					SetRaidTarget(unitid, 8)
 				elseif cid == 71519 then--Shaman
@@ -120,12 +120,12 @@ local function scanForMobs()
 				elseif cid == 71656 then--Sniper
 					SetRaidTarget(unitid, 4)
 				end
-				adds[guid] = true--Errors out "table index is nil" Can someone explain that?
+				adds[guid] = true
 			end
 		end
 		local guid2 = UnitGUID("mouseover")
 		local cid = mod:GetCIDFromGUID(guid2)
-		if not adds[guid2] then
+		if guid2 and not adds[guid2] then
 			if cid == 71626 then--Banner
 				SetRaidTarget("mouseover", 8)
 			elseif cid == 71519 then--Shaman
@@ -139,14 +139,14 @@ local function scanForMobs()
 			elseif cid == 71656 then--Sniper
 				SetRaidTarget("mouseover", 4)
 			end
-			adds[guid2] = true--Errors out "table index is nil" Can someone explain that?
+			adds[guid2] = true
 		end
 		--This version of it has no returns because it has to find more than one mob, therefor it's simply a 10 second timed scan (or when iconset is reached)
 		if scanLimiter < 50 then--Don't scan for more than 10 seconds
 			mod:Schedule(0.2, scanForMobs)
 		end
 	end
-end--]]
+end
 
 function mod:OnCombatStart(delay)
 	addsCount = 0
