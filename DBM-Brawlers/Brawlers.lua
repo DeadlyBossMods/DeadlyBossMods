@@ -30,7 +30,7 @@ mod:RemoveOption("SpeedKillTimer")
 local playerIsFighting = false
 local currentFighter = nil
 local currentRank = 0--Used to stop bars for the right sub mod based on dynamic rank detection from pulls
-local currentZoneID = DBM:GetCurrentArea()--As core what current area is on load, since core should know
+local currentZoneID = select(8, GetInstanceInfo())--As core what current area is on load, since core should know
 local modsStopped = false
 local eventsRegistered = false
 local lastRank = 0
@@ -132,15 +132,18 @@ end
 function mod:UNIT_DIED(args)
 	if not args.destName then return end
 	--Another backup for when npc doesn't yell. This is a way to detect a wipe at least.
-	local thingThatDied = string.split("-", args.destName)--currentFighter never has realm name, so we need to strip it from combat log for CRZ support
-	if currentFighter and currentFighter == thingThatDied then--They wiped.
+	if currentFighter and currentFighter == args.destName then--They wiped.
 		self:SendSync("MatchEnd")
 	end
 end
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	currentZoneID = DBM:GetCurrentArea()
+	currentZoneID = select(8, GetInstanceInfo())
 	if currentZoneID == 369 or currentZoneID == 1043 then
+		playerIsFighting = false
+		currentFighter = nil
+		currentRank = 0
+		lastRank = 0
 		modsStopped = false
 		eventsRegistered = true
 		self:RegisterShortTermEvents(
@@ -169,7 +172,6 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	end
 	modsStopped = true
 end
-
 
 local startCallbacks, endCallbacks = {}, {}
 
