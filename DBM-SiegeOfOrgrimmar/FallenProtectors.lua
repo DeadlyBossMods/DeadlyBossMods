@@ -124,26 +124,12 @@ function mod:BrewTarget(targetname, uId)
 	end
 end
 
-local function findDebuff(spellName)
-	for uId in DBM:GetGroupMembers() do
-		local name = DBM:GetUnitFullName(uId)
-		if UnitDebuff(uId, strikeDebuff) then
-			print("DBM DEBUG: InfernoStrike on "..name)
-			if name == UnitName("player") then
-				specWarnInfernoStrike:Show()
-				yellInfernoStrike:Yell()
-			end
-			if mod.Options.SetIconOnStrike then
-				SetRaidTarget(uId, 7)
-				if previousStrike then
-					SetRaidTarget(previousStrike, 0)
-				end
-			end
-			previousStrike = uId
-			return
-		end
+function mod:InfernoStrikeTarget(targetname, uId)
+	if not targetname then return end
+	print("DBM DEBUG: Infero Strike on "..targetname.." ?")
+	if targetname == UnitName("player") then
+		
 	end
-	mod:Schedule(0.1, findDebuff)
 end
 
 function mod:OnCombatStart(delay)
@@ -190,7 +176,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143962 then
 		warnInfernoStrike:Show()
 		timerInfernoStrikeCD:Start()
-		self:Schedule(0.5, findDebuff)
+		self:BossTargetScanner(71481, "InfernoStrikeTarget", 0.5, 1)--This one is a pain, because boss looks at CORRECT target for a super split second, then stares at previous target for rest of time. Repeated scans don't fix it because you really can't tell good target from shit one
 	elseif args.spellId == 143497 then
 		warnBondGoldenLotus:Show()
 	elseif args.spellId == 144396 then
@@ -280,7 +266,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			SetRaidTarget(previousStrike, 0)
 			previousStrike = nil
 		end
-		self:Unschedule(findDebuff)
 	elseif args.spellId == 143812 then--Mark of Anguish
 		timerGarroteCD:Start(12)--TODO, verify consistency in all difficulties
 		timerGougeCD:Start(23)--Seems to be either be exactly 23 or exactly 35. Not sure what causes it to switch.
