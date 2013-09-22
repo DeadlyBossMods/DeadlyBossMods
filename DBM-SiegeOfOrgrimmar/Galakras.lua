@@ -101,7 +101,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 147688 then--Can't tank check because this mob has no target during cast
+	if args.spellId == 147688 and self:checkTankDistance(args.sourceGUID, 40) then
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
 	elseif args.spellId == 146757 and self:checkTankDistance(args.sourceGUID, 40) then
