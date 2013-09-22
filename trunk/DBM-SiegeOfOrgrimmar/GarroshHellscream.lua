@@ -106,7 +106,7 @@ local function scanForMobs()
 			local unitid = uId.."target"
 			local guid = UnitGUID(unitid)
 			local cid = mod:GetCIDFromGUID(guid)
-			if cid == 71983 and not adds[guid] then
+			if cid == 71983 and guid and not adds[guid] then
 				if shamanAlive == 1 then
 					SetRaidTarget(unitid, 8)
 				else--We are behind on them, so use X instead of skull
@@ -118,7 +118,7 @@ local function scanForMobs()
 		end
 		local guid2 = UnitGUID("mouseover")
 		local cid = mod:GetCIDFromGUID(guid2)
-		if cid == 71983 and not adds[guid2] then
+		if cid == 71983 and guid2 and not adds[guid2] then
 			if shamanAlive == 1 then
 				SetRaidTarget("mouseover", 8)
 			else--We are behind on them, so use X instead of skull
