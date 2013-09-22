@@ -169,3 +169,12 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	LostSouls				= "이곳의 힘은 너 따위의 것이 아니다. 흑마법사!"
 }
+
+-------------------------------
+-- Finding Secret Ingredient --
+-------------------------------
+L= DBM:GetModLocalization("745")
+
+L:SetMiscLocalization{
+	End		= "훌륭해요!"
+}
