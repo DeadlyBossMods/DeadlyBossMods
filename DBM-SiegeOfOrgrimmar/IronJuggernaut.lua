@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 --Assault Mode
 local warnBorerDrill			= mod:NewSpellAnnounce(144218, 3)
 local warnLaserBurn				= mod:NewTargetAnnounce(144459, 3, nil, mod:IsHealer())
-local warnMortarCannon			= mod:NewSpellAnnounce(144316, 3, nil, mod:IsRanged())--Could not get target scanning working.
+local warnMortarCannon			= mod:NewSpellAnnounce(144316, 3, nil, false)--Could not get target scanning working.
 local warnCrawlerMine			= mod:NewSpellAnnounce(144673, 3)
 local warnIgniteArmor			= mod:NewStackAnnounce(144467, 2, nil, mod:IsTank())--Seems redundant to count debuffs and warn for breath, so just do debuffs
 --Siege Mode
