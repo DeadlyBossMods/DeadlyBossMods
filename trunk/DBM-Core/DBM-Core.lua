@@ -759,8 +759,8 @@ do
 			if not DBM.Options.ShowMinimapButton then self:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
-				local addonName = GetAddOnInfo(i)
-				if GetAddOnMetadata(i, "X-DBM-Mod") then
+				local addonName, _, _, enabled = GetAddOnInfo(i)
+				if GetAddOnMetadata(i, "X-DBM-Mod") and enabled then
 					if checkEntry(bannedMods, addonName) then
 						print("The mod " .. addonName .. " is deprecated and will not be available. Please remove the folder " .. addonName .. " from your Interface" .. (IsWindowsClient() and "\\" or "/") .. "AddOns folder to get rid of this message.")
 					else
@@ -2330,12 +2330,16 @@ do
 				end
 				if not showedUpdateReminder then
 					local found = false
+					local secondfound = false
 					local other = nil
 					for i, v in pairs(raid) do
 						if v.version == version and v ~= raid[sender] then
+							if found then
+								secondfound = true
+								break
+							end
 							found = true
 							other = i
-							break
 						end
 					end
 					if found then
@@ -2348,7 +2352,8 @@ do
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://www.deadlybossmods.com]"):format(displayVersion, version))
 						end
 						if GetLocale() ~= "deDE" then--the following code give players the power to disable a mod of another player by spoofing the revision -> not acceptable for deDE
-							if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
+							--The following code requires at least THREE people to send that higher revision (I just upped it from 2). That should be more than adaquate, especially since there is also a display version validator now too (that had to be writen when bigwigs was sending bad revisions few versions back)
+							if secondfound and revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
 								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
 								DBM:Disable(true)
 							end
