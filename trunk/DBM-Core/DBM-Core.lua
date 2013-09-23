@@ -1151,7 +1151,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		sendSync("PT", timer.."\t"..LastInstanceMapID)
 	elseif cmd:sub(1, 3) == "lag" then
 		sendSync("L")
-		DBM:AddMsg(VEM_CORE_LAG_CHECKING)
+		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 		DBM:Schedule(5, function() DBM:ShowLag() end)
 	elseif cmd:sub(1, 5) == "arrow" then
 		if not DBM:IsInRaid() then
