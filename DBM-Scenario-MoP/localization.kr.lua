@@ -176,5 +176,5 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization("745")
 
 L:SetMiscLocalization{
-	End		= "훌륭해요!"
+	Clear		= "훌륭해요!"
 }
