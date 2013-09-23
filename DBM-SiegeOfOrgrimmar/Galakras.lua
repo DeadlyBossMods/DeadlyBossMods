@@ -101,10 +101,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 147688 and self:checkTankDistance(args.sourceGUID, 40) then
+	if args.spellId == 147688 and self:checkTankDistance(args.sourceGUID) then
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
-	elseif args.spellId == 146757 and self:checkTankDistance(args.sourceGUID, 40) then
+	elseif args.spellId == 146757 and self:checkTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
@@ -114,11 +114,11 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 146769 and self:checkTankDistance(args.sourceGUID, 40) then
+	if args.spellId == 146769 and self:checkTankDistance(args.sourceGUID) then
 		warnCrushersCall:Show()
 		specWarnCrushersCall:Show()
 		timerCrushersCallCD:Start()
-	elseif args.spellId == 146849 and self:checkTankDistance(args.sourceGUID, 40) then
+	elseif args.spellId == 146849 and self:checkTankDistance(args.sourceGUID) then
 		warnShatteringCleave:Show()
 		timerShatteringCleaveCD:Start()
 	end
@@ -138,7 +138,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID, 40) then
+	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
 	elseif args.spellId == 146899 and self:checkTankDistance(args.sourceGUID, 50) then--Use a bigger range than 40 since npcs tend to stand further out
