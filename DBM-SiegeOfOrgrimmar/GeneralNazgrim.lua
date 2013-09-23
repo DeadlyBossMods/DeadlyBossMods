@@ -86,17 +86,45 @@ local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, n
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnAdds", false)
+mod:AddBoolOption("InfoFrame", true)
 
 local addsCount = 0
 local boneTargets = {}
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
 local adds = {}
 local scanLimiter = 0
+local scanLimiter2 = 0
 
 local function warnBoneTargets()
 	warnBonecracker:Show(table.concat(boneTargets, "<, >"))
 	timerBoneCD:Start()
 	table.wipe(boneTargets)
+end
+
+local function scanForBanner()
+	if DBM:GetRaidRank() > 0 then--Cannot impliment counting because it seems there is too much variation between difficulties and it would be ugly
+		scanLimiter2 = scanLimiter2 + 1
+		for uId in DBM:GetGroupMembers() do
+			local unitid = uId.."target"
+			local guid = UnitGUID(unitid)
+			local cid = mod:GetCIDFromGUID(guid)
+			if guid and not adds[guid] and cid == 71626 then--Banner
+				SetRaidTarget(unitid, 8)
+				adds[guid] = true
+				return--Only one banner, so we can kill loop early
+			end
+		end
+		local guid2 = UnitGUID("mouseover")
+		local cid = mod:GetCIDFromGUID(guid2)
+		if guid2 and not adds[guid2] and cid == 71626 then--Banner
+			SetRaidTarget("mouseover", 8)
+			adds[guid2] = true
+			return--Only one banner, so we can kill loop early
+		end
+		if scanLimiter2 < 20 then--Don't scan for more than 4 seconds
+			mod:Schedule(0.2, scanForBanner)
+		end
+	end
 end
 
 local function scanForMobs()
@@ -107,9 +135,7 @@ local function scanForMobs()
 			local guid = UnitGUID(unitid)
 			local cid = mod:GetCIDFromGUID(guid)
 			if guid and not adds[guid] then
-				if cid == 71626 then--Banner
-					SetRaidTarget(unitid, 8)
-				elseif cid == 71519 then--Shaman
+				if cid == 71519 then--Shaman
 					SetRaidTarget(unitid, 7)
 				elseif cid == 71517 then--Arcweaver
 					SetRaidTarget(unitid, 6)
@@ -117,7 +143,7 @@ local function scanForMobs()
 					SetRaidTarget(unitid, 1)
 				elseif cid == 71516 then--Iron Blade
 					SetRaidTarget(unitid, 2)
-				elseif cid == 71656 then--Sniper
+				elseif cid == 71656 then--Sniper (Heroic)
 					SetRaidTarget(unitid, 4)
 				end
 				adds[guid] = true
@@ -126,9 +152,7 @@ local function scanForMobs()
 		local guid2 = UnitGUID("mouseover")
 		local cid = mod:GetCIDFromGUID(guid2)
 		if guid2 and not adds[guid2] then
-			if cid == 71626 then--Banner
-				SetRaidTarget("mouseover", 8)
-			elseif cid == 71519 then--Shaman
+			if cid == 71519 then--Shaman
 				SetRaidTarget("mouseover", 7)
 			elseif cid == 71517 then--Arcweaver
 				SetRaidTarget("mouseover", 6)
@@ -136,12 +160,11 @@ local function scanForMobs()
 				SetRaidTarget("mouseover", 1)
 			elseif cid == 71516 then--Iron Blade
 				SetRaidTarget("mouseover", 2)
-			elseif cid == 71656 then--Sniper
+			elseif cid == 71656 then--Sniper (Heroic)
 				SetRaidTarget("mouseover", 4)
 			end
 			adds[guid2] = true
 		end
-		--This version of it has no returns because it has to find more than one mob, therefor it's simply a 10 second timed scan (or when iconset is reached)
 		if scanLimiter < 50 then--Don't scan for more than 10 seconds
 			mod:Schedule(0.2, scanForMobs)
 		end
@@ -156,6 +179,12 @@ function mod:OnCombatStart(delay)
 	countdownAdds:Start()
 	berserkTimer:Start(-delay)
 end
+
+function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
+end 
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 143872 then
@@ -200,6 +229,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143589 then
 		warnBattleStance:Show()
 		timerBerserkerStanceCD:Start()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
+			DBM.InfoFrame:Show(4, "nazgrimpower")
+		end
 	elseif args.spellId == 143594 then
 		warnBerserkerStance:Show()
 		specWarnBerserkerStance:Show()
@@ -209,13 +242,25 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDefensiveStanceSoon:Schedule(57, 3)
 		warnDefensiveStanceSoon:Schedule(58, 2)
 		warnDefensiveStanceSoon:Schedule(59, 1)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(143594))
+			DBM.InfoFrame:Show(4, "nazgrimpower")
+		end
 	elseif args.spellId == 143593 then
 		warnDefensiveStance:Show()
 		specWarnDefensiveStance:Show()
 		timerDefensiveStance:Start()
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(GetSpellInfo(143593))
+			DBM.InfoFrame:Show(4, "nazgrimpower")
+		end
 	elseif args.spellId == 143536 then
 		warnKorkronBanner:Show()
 		specWarnKorkronBanner:Show()
+		if self.Options.SetIconOnAdds then
+			scanLimiter2 = 0
+			scanForBanner()
+		end
 	elseif args.spellId == 143474 then
 		warnHealingTideTotem:Show()
 		specWarnHealingTideTotem:Show()

@@ -302,3 +302,8 @@ DBM_INSTANCE_INFO_STATS_AWAY		= "Away: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No recent DBM version installed: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Instance ID scan results. Note that instances might show up more than once if there are players with localized WoW clients in your raid."
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
+
+DBM_CORE_LAG_CHECKING				= "Checking raid Latency..."
+DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latency Results"
+DBM_CORE_LAG_ENTRY					= "%s: World delay[%d ms] / Home delay[%d ms]"
+DBM_CORE_LAG_FOOTER					= "No Response:%s"
