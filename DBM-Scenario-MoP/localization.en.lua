@@ -184,7 +184,7 @@ L:SetMiscLocalization{
 -------------------------------
 -- Finding Secret Ingredient --
 -------------------------------
-L= DBM:GetModLocalization("745")
+L= DBM:GetModLocalization("d745")
 
 L:SetMiscLocalization{
 	Clear		= "Well done!"
