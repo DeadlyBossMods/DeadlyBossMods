@@ -101,7 +101,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDefensiveStanceSoon		= "Show pre-warning countdown for $spell:143593 (5s before)",
-	SetIconOnAdds				= "Set icon on $journal:7920"
+	SetIconOnAdds				= "Set icon on $journal:7920",
+	InfoFrame					= "Show info frame for $journal:7909"
 })
 
 L:SetMiscLocalization({

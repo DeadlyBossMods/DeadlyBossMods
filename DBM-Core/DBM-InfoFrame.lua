@@ -282,6 +282,32 @@ local function updateEnemyPower()
 	updateLines()
 end
 
+local function updateNazgrimPower()
+	table.wipe(lines)	
+	if UnitPower("boss1") < 50 then
+		lines["|cFF088A08"..GetSpellInfo(143500).."|r"] = UnitPower("boss1")
+		lines[GetSpellInfo(143536)] = 50
+		lines[GetSpellInfo(143503)] = 70
+		lines[GetSpellInfo(143872)] = 100
+	elseif UnitPower("boss1") < 70 then
+		lines[GetSpellInfo(143500)] = 25
+		lines["|cFF088A08"..GetSpellInfo(143536).."|r"] = UnitPower("boss1")
+		lines[GetSpellInfo(143503)] = 70
+		lines[GetSpellInfo(143872)] = 100
+	elseif UnitPower("boss1") < 100 then
+		lines[GetSpellInfo(143500)] = 25
+		lines[GetSpellInfo(143536)] = 50
+		lines["|cFF088A08"..GetSpellInfo(143503).."|r"] = UnitPower("boss1")
+		lines[GetSpellInfo(143872)] = 100
+	elseif UnitPower("boss1") == 100 then
+		lines[GetSpellInfo(143500)] = 25
+		lines[GetSpellInfo(143536)] = 50
+		lines[GetSpellInfo(143503)] = 70
+		lines["|cFF088A08"..GetSpellInfo(143872).."|r"] = UnitPower("boss1")
+	end
+	updateLines()
+end
+
 --Buffs that are good to have, therefor bad not to have them.
 local function updatePlayerBuffs()
 	table.wipe(lines)
@@ -453,6 +479,8 @@ function onUpdate(self, elapsed)
 		updatePlayerDebuffStacks()
 	elseif currentEvent == "playertargets" then
 		updatePlayerTargets()
+	elseif currentEvent == "nazgrimpower" then
+		updateNazgrimPower()
 	elseif currentEvent == "other" then
 		updateOther()
 	end
@@ -551,6 +579,8 @@ function infoFrame:Show(maxLines, event, threshold, powerIndex, iconMod, extraPo
 		updatePlayerDebuffStacks()
 	elseif currentEvent == "playertargets" then
 		updatePlayerTargets()
+	elseif currentEvent == "nazgrimpower" then
+		updateNazgrimPower()
 	elseif currentEvent == "other" then
 		updateOther()
 	elseif currentEvent == "test" then
@@ -590,7 +620,9 @@ function infoFrame:Update(event)
 		updatePlayerDebuffStacks()
 	elseif event == "playertargets" then
 		updatePlayerTargets()
-	elseif currentEvent == "other" then
+	elseif event == "nazgrimpower" then
+		updateNazgrimPower()
+	elseif event == "other" then
 		updateOther()
 	else
 		error("DBM-InfoFrame: Unsupported event", 2)

@@ -96,9 +96,6 @@ local desecrateCount = 0
 local mindControlCount = 0
 local shamanAlive = 0
 
---This should be faster and more controllable then a perminant onupdate handler that wastes cpu whole fight.
---This is me testing better icon method that i may migrate to older mods still wasting cpu on onupdate stuff
---Or maybe find a workable tempate with args for a core function
 local function scanForMobs()
 	if DBM:GetRaidRank() > 0 then
 		scanLimiter = scanLimiter + 1
