@@ -108,7 +108,7 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "Modul 1 bereit für den Systemneustart.",--needs to be verified (PTR screenshot-captured translation)
+	Module1 = "Modul 1 bereit für den Systemneustart.",
 	Victory	= "Modul 2 bereit für den Systemneustart."--needs to be verified (PTR screenshot-captured translation)
 })
 
