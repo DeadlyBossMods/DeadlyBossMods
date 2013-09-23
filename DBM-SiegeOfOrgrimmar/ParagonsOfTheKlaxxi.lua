@@ -427,6 +427,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143339 then
 		specWarnInjection:Show()
 		timerInjectionCD:Start()
+		countdownInjection:Cancel()--Sometimes boss stutter casts so need to do this
 		countdownInjection:Start()
 	end
 end
