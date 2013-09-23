@@ -85,7 +85,7 @@ DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "Deine Alphaversion von Deadly Boss Mods 
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Downloadlink in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Link in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "Zeige Popup, wenn eine neue Version verfügbar ist"
---DBM_CORE_UPDATEREMINDER_DISABLE -- not translated, players should never be able to disable mods of other players..
+DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNUNG: Da dein Deadly Boss Mods extrem veraltet ist (%d Revisionen), hat es sich bis zu einer Aktualisierung deaktiviert. Derart alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen."
 
 DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 

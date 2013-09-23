@@ -170,3 +170,12 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	LostSouls				= "Stellt Euch den Seelen, die Ihr in die Verdammnis schicken wolltet!"--needs to be verified (wowhead-captured translation)
 }
+
+-------------------------------
+-- Finding Secret Ingredient --
+-------------------------------
+L= DBM:GetModLocalization("745")
+
+L:SetMiscLocalization{
+	Clear		= "Gut gemacht!"
+}
