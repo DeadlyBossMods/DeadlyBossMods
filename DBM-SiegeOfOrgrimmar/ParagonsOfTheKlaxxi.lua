@@ -84,9 +84,9 @@ local specWarnCausticBlood			= mod:NewSpecialWarningSpell(142315, mod:IsTank())
 local specWarnToxicBlue				= mod:NewSpecialWarningYou(142532)
 local specWarnToxicRed				= mod:NewSpecialWarningYou(142533)
 local specWarnToxicYellow			= mod:NewSpecialWarningYou(142534)
-local specWarnToxicOrange			= mod:NewSpecialWarningYou(142547)--Heroic
-local specWarnToxicPurple			= mod:NewSpecialWarningYou(142548)--Heroic
-local specWarnToxicGreen			= mod:NewSpecialWarningYou(142549)--Heroic
+--local specWarnToxicOrange			= mod:NewSpecialWarningYou(142547)--Heroic
+--local specWarnToxicPurple			= mod:NewSpecialWarningYou(142548)--Heroic
+--local specWarnToxicGreen			= mod:NewSpecialWarningYou(142549)--Heroic
 --local specWarnToxicWhite			= mod:NewSpecialWarningYou(142550)--Not in EJ
 local specWarnCatalystBlue			= mod:NewSpecialWarningYou(142725, nil, nil, nil, 3)
 local specWarnCatalystRed			= mod:NewSpecialWarningYou(142726, nil, nil, nil, 3)
@@ -362,7 +362,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystOrange:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142547)) then
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
 			specWarnCatalystOrange:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystOrange:Yell()
@@ -373,7 +373,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystPurple:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142548)) then
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
 			specWarnCatalystPurple:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystPurple:Yell()
@@ -384,7 +384,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystGreen:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142549)) then
+		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
 			specWarnCatalystGreen:Show()
 			if self.Options.yellToxicCatalyst then
 				yellCatalystGreen:Yell()
@@ -464,12 +464,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnToxicRed:Show()
 	elseif args.spellId == 142534 and args:IsPlayer() then
 		specWarnToxicYellow:Show()
-	elseif args.spellId == 142547 and args:IsPlayer() then
+--[[	elseif args.spellId == 142547 and args:IsPlayer() then
 		specWarnToxicOrange:Show()
 	elseif args.spellId == 142548 and args:IsPlayer() then
 		specWarnToxicPurple:Show()
 	elseif args.spellId == 142549 and args:IsPlayer() then
-		specWarnToxicGreen:Show()
+		specWarnToxicGreen:Show()--]]
 	elseif args.spellId == 142671 then
 		warnMesmerize:Show(args.destName)
 		if args.IsPlayer() then
