@@ -138,9 +138,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args.spellId == 147029 then--Tank debuff version
-		warnFlamesofGalakrond:Show(args.destName, 1)
-		timerFlamesofGalakrond:Start(args.destName)
 	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID, 40) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
