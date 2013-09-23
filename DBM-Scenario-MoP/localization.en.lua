@@ -187,5 +187,5 @@ L:SetMiscLocalization{
 L= DBM:GetModLocalization("745")
 
 L:SetMiscLocalization{
-	End				= "Well done!"
+	Clear		= "Well done!"
 }
