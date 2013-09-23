@@ -124,8 +124,9 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second DBM Timer with the name <text> to the raid (requires leader/promoted status).",
 	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
 	"/dbm pull <sec>: Starts a pull timer for <sec> seconds. Gives all raid members with DBM a pull timer (requires leader/promoted status).",
-	"/dbm arrow: shows the DBM arrow, see /dbm arrow help for details.",
-	"/dbm lockout: asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires leader/promoted status).",
+	"/dbm arrow: Shows the DBM arrow, see /dbm arrow help for details.",
+	"/dbm lockout: Asks raid members for their current raid instance lockouts (aliases: lockouts, ids) (requires leader/promoted status).",
+	"/dbm lag: Performs a raid-wide latency check.",
 	"/dbm help: Shows this message."
 }
 
@@ -305,5 +306,5 @@ DBM_INSTANCE_INFO_SHOW_RESULTS		= "Players yet to respond: %s\n|HDBM:showRaidIdR
 
 DBM_CORE_LAG_CHECKING				= "Checking raid Latency..."
 DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latency Results"
-DBM_CORE_LAG_ENTRY					= "%s: World delay[%d ms] / Home delay[%d ms]"
-DBM_CORE_LAG_FOOTER					= "No Response:%s"
+DBM_CORE_LAG_ENTRY					= "%s: World delay [%d ms] / Home delay [%d ms]"
+DBM_CORE_LAG_FOOTER					= "No Response: %s"
