@@ -8,8 +8,8 @@ DBM_FORUMS_COPY_URL_DIALOG			= "Besuche unsere neuen Diskussions- und Support-Fo
 
 DBM_CORE_LOAD_MOD_ERROR				= "Fehler beim Laden der Boss Mods für %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen. Für weitere Einstellungen /dbm oder /dbm help im Chatfenster eingeben!"
-DBM_CORE_LOAD_MOD_COMBAT			= "Laden von '%s' verzögert bis du den Kampf verlässt"
-DBM_CORE_LOAD_GUI_ERROR				= "Konnte die grafische Benutzeroberfläche nicht laden: %s"
+DBM_CORE_LOAD_MOD_COMBAT			= "Laden von '%s' verzögert bis du den Kampf verlässt."
+DBM_CORE_LOAD_GUI_ERROR				= "Konnte die grafische Benutzeroberfläche nicht laden: %s."
 DBM_CORE_LOAD_GUI_COMBAT			= "Die grafische Benutzeroberfläche kann nicht im Kampf geladen werden. Zur Vornahme von Einstellungen bitte diese zunächst außerhalb des Kampfes laden. Danach steht sie auch im Kampf zur Verfügung."
 DBM_CORE_BAD_LOAD					= "Dein Boss Mod für diese Instanz konnte nicht vollständig korrekt im Kampf geladen werden. Bitte führe baldmöglichst nach Kampfende /reload aus."
 
@@ -73,8 +73,8 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s hat %s abgebrochen. Das war der %
 DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mod - Versionen"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (r%d) und %s (r%d)"
-DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Kein Boss Mod installiert"
-DBM_CORE_VERSIONCHECK_FOOTER		= "%d Spieler mit DBM und %d Spieler mit BigWigs gefunden"
+DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: Kein Boss Mod installiert."
+DBM_CORE_VERSIONCHECK_FOOTER		= "%d Spieler mit DBM und %d Spieler mit BigWigs gefunden."
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Deine Version von Deadly Boss Mods ist veraltet! Bitte besuche http://www.deadlybossmods.com um die neueste Version herunterzuladen."
 DBM_CORE_OUTDATED_PVP_MODS			= "Deine PvP-Mods von DBM sind veraltet. Die PvP-Mods sind nicht mehr im \"DBM-Core\"-Download enthalten. Die aktuellsten PvP-Mods findest du unter http://www.deadlybossmods.com als separaten Download. Bitte lösche den Ordner \"DBM-PvP\" (unterhalb des Ordners \"...\\Interface\\AddOns\"), falls du die PvP-Mods nicht benutzt."
 --DBM_BIG_WIGS
@@ -118,15 +118,16 @@ DBM_LFG_INVITE						= "Einladung der Gruppensuche"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Verfügbare Slash-Kommandos:",
-	"/dbm version: Prüft die Version im gesamten Schlachtzug (Alias: ver)",
+	"/dbm version: Prüft die Version im gesamten Schlachtzug (Alias: ver).",
 --	"/dbm version2: Prüft die Version im gesamten Schlachtzug und flüstert Mitglieder mit veralteten Versionen an (Alias: ver2).",
-	"/dbm unlock: Zeigt einen bewegbaren Timer an (alias: move)",
-	"/dbm timer <x> <text>: Startet einen <x> Sekunden langen DBM-Timer mit dem Namen <text>",
-	"/dbm broadcast timer <x> <text>: Schickt einen <x> Sekunden langen DBM-Timer mit dem Namen <text> an den Schlachtzug (nur als Leiter/Assistent)",
+	"/dbm unlock: Zeigt einen bewegbaren Timer an (alias: move).",
+	"/dbm timer <x> <text>: Startet einen <x> Sekunden langen DBM-Timer mit dem Namen <text>.",
+	"/dbm broadcast timer <x> <text>: Schickt einen <x> Sekunden langen DBM-Timer mit dem Namen <text> an den Schlachtzug (nur als Leiter/Assistent).",
 	"/dbm break <min>: Startet einen Pause-Timer für <min> Minuten. Schickt allen Schlachzugsmitgliedern mit DBM einen Pause-Timer (nur als Leiter/Assistent).",
 	"/dbm pull <sec>: Startet einen Pull-Timer für <sec> Sekunden. Schickt allen Schlachzugsmitgliedern mit DBM einen Pull-Timer (nur als Leiter/Assistent).",
 	"/dbm arrow: Zeigt den DBM-Pfeil, siehe /dbm arrow help für Details.",
 	"/dbm lockout: Fragt die Schlachtzugsmitglieder nach ihren derzeitigen Instanzsperren (IDs) (nur als Leiter/Assistent).",
+	"/dbm lag: Prüft die Latenz im gesamten Schlachtzug.",
 	"/dbm help: Zeigt diese Hilfe."
 }
 
@@ -303,3 +304,8 @@ DBM_INSTANCE_INFO_STATS_AWAY		= "Abwesend: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "Keine aktuelle DBM-Version installiert: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Ergebnis des Instanzsperren-Scans (IDs). Bitte beachte, dass Instanzen mehrmals angezeigt werden, wenn sich Spieler mit anderssprachigen WoW-Klienten im Schlachtzug befinden."
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "Spieler die noch nicht geantwortet haben: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Ergebnisse jetzt anzeigen]|r|h"
+
+DBM_CORE_LAG_CHECKING				= "Prüfe Schlachtzuglatenz..."
+DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Latenzergebnisse"
+DBM_CORE_LAG_ENTRY					= "%s: %dms (Welt) / %dms (Standort)"
+DBM_CORE_LAG_FOOTER					= "Keine Antwort: %s"
