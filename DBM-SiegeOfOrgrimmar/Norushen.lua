@@ -90,7 +90,7 @@ function mod:OnCombatStart(delay)
 	playerInside = false
 	timerBlindHatredCD:Start(25-delay)
 	if self:IsDifficulty("lfr25") then--Might also be flex as well
-		berserkTimer:Start(600-delay)--Still true?
+		berserkTimer:Start(480-delay)--8min in LFR
 	else
 		berserkTimer:Start(-delay)
 	end
