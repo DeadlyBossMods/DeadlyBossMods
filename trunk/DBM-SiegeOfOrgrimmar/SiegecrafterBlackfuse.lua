@@ -108,27 +108,26 @@ function mod:DeathFromAboveTarget(sGUID)
 end
 
 --VEM Idea
-local function showWeaponInfo(weaponnum)
-	if mod.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(assemblyLine.."("..weaponnum..")")
-		if weaponnum == 1 or weaponnum == 2 or weaponnum == 4 or weaponnum == 10 or weaponnum == 13 then
-			DBM.InfoFrame:Show(1, "other", shockwaveMissile.." / "..laserTurret, crawlerMine)
-		elseif weaponnum == 3 then
-			DBM.InfoFrame:Show(1, "other", shockwaveMissile.." / "..laserTurret, electroMagnet)
-		elseif weaponnum == 5 or weaponnum == 7 or weaponnum == 8 then
-			DBM.InfoFrame:Show(1, "other", electroMagnet.." / "..shockwaveMissile, crawlerMine)
-		elseif weaponnum == 6 then
-			DBM.InfoFrame:Show(1, "other", crawlerMine.." / "..shockwaveMissile, crawlerMine)
-		elseif weaponnum == 9 then
-			DBM.InfoFrame:Show(1, "other", laserTurret.." / "..laserTurret, electroMagnet)
-		elseif weaponnum == 11 then
-			DBM.InfoFrame:Show(1, "other", shockwaveMissile.." / "..shockwaveMissile, electroMagnet)
-		elseif weaponnum == 12 then
-			DBM.InfoFrame:Show(1, "other", electroMagnet.." / "..laserTurret, crawlerMine)
-		else
-			DBM.InfoFrame:Show(1, "other", "", _G["UNKNOWN"])
-		end
+local function showWeaponInfo()
+	local lines = {}
+	if weapon == 1 or weapon == 2 or weapon == 4 or weapon == 10 or weapon == 13 then
+		lines[crawlerMine] = shockwaveMissile.." / "..laserTurret
+	elseif weapon == 3 then
+		lines[electroMagnet] = shockwaveMissile.." / "..laserTurret
+	elseif weapon == 5 or weapon == 7 or weapon == 8 then
+		lines[crawlerMine] = electroMagnet.." / "..shockwaveMissile
+	elseif weapon == 6 then
+		lines[crawlerMine] = crawlerMine.." / "..shockwaveMissile
+	elseif weapon == 9 then
+		lines[laserTurret] =  laserTurret.." / "..laserTurret
+	elseif weapon == 11 then
+		lines[electroMagnet] = shockwaveMissile.." / "..shockwaveMissile
+	elseif weapon == 12 then
+		lines[crawlerMine] = electroMagnet.." / "..laserTurret
+	else
+		lines[_G["UNKNOWN"]] = ""
 	end
+	return lines
 end
 --End VEM Idea
 
@@ -270,7 +269,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		warnAssemblyLine:Show()
 		specWarnAssemblyLine:Show()
 		timerAssemblyLineCD:Start()
-		showWeaponInfo(weapon)
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:SetHeader(assemblyLine.."("..weapon..")")
+			DBM.InfoFrame:Show(1, "function", showWeaponInfo, true)
+		end
 	elseif msg == L.newShredder or msg:find(L.newShredder) then
 		warnAutomatedShredder:Show()
 		specWarnAutomatedShredder:Show()
