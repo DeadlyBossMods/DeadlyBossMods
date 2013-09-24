@@ -251,7 +251,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	end
 end
-DBM.InfoFrame:Show(4, "function", updateInfoFrame)
+
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143589 then
 		warnBattleStance:Show()
