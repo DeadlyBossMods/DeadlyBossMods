@@ -85,7 +85,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDefensiveStanceSoon		= "Zeige Vorwarnungscountdown für $spell:143593 (5s zuvor)",
-	SetIconOnAdds				= "Setze Zeichen auf $journal:7920"
+	SetIconOnAdds				= "Setze Zeichen auf $journal:7920",
+	InfoFrame					= "Zeige Infofenster für $journal:7909"
 })
 
 L:SetMiscLocalization({
@@ -109,7 +110,7 @@ L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
 	Module1 = "Modul 1 bereit für den Systemneustart.",
-	Victory	= "Modul 2 bereit für den Systemneustart."--needs to be verified (PTR screenshot-captured translation)
+	Victory	= "Modul 2 bereit für den Systemneustart."
 })
 
 ---------------------------
@@ -131,8 +132,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newWeapons	= "Unfertige Waffen werden auf das Fabrikationsband befördert.",--needs to be verified (PTR screenshot-captured translation)
-	newShredder	= "An Automated Shredder draws near!"--translate (trigger)
+	newWeapons	= "Unfertige Waffen werden auf das Fabrikationsband befördert.",--needs to be verified (video-captured translation)
+	newShredder	= "Ein automatisierter Schredder nähert sich!"--needs to be verified (video-captured translation)
 })
 
 ----------------------------
