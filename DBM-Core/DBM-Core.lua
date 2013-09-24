@@ -204,6 +204,8 @@ local enabled = true
 local blockEnable = false
 local lastCombatStarted = GetTime()
 local loadcIds = {}
+local forceloadmapIds = {}
+local blockMovieSkipItems = {}
 local inCombat = {}
 local combatInfo = {}
 local bossIds = {}
@@ -799,9 +801,21 @@ do
 							end
 						end
 						if GetAddOnMetadata(i, "X-DBM-Mod-LoadCID") then
-							local cIdTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadCID"))}
-							for i = 1, #cIdTable do
-								loadcIds[tonumber(cIdTable[i]) or ""] = addonName
+							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadCID"))}
+							for i = 1, #idTable do
+								loadcIds[tonumber(idTable[i]) or ""] = addonName
+							end
+						end
+						if GetAddOnMetadata(i, "X-DBM-Mod-ForceLoad-MapID") then
+							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-ForceLoad-MapID"))}
+							for i = 1, #idTable do
+								forceloadmapIds[tonumber(idTable[i]) or ""] = true
+							end
+						end
+						if GetAddOnMetadata(i, "X-DBM-Mod-Block-Movie-Skip-ItemID") then
+							local idTable = {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-Block-Movie-Skip-ItemID"))}
+							for i = 1, #idTable do
+								blockMovieSkipItems[tonumber(idTable[i]) or ""] = tonumber(mapIdTable[1])
 							end
 						end
 					end
@@ -2035,13 +2049,13 @@ function DBM:PLAYER_TARGET_CHANGED()
 	end
 end
 
-function DBM:CINEMATIC_START(...)
+function DBM:CINEMATIC_START()
 	if DBM.Options.MovieFilter == "Never" then return end
 	SetMapToCurrentZone()
-	local currentMapID = GetCurrentMapAreaID()
-	if currentMapID == 953 then--Siege of Org
-		for i = 105930, 105935 do--Scan items that trigger movies
-			if select(3,GetItemCooldown(i)) > 0 then return end--Prevent movie skip if we detect any of them on cooldown (ie it was JUST used)
+	local _, _, _, _, _, _, _, currentMapID = GetInstanceInfo()
+	for itemId, mapId in pairs(blockMovieSkipItems) do
+		if mapId == currentMapID then
+			if select(3, GetItemCooldown(itemId)) > 0 then return end
 		end
 	end
 	local currentFloor = GetCurrentMapDungeonLevel() or 0
@@ -2101,11 +2115,8 @@ do
 	local function FixForShittyComputers()
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
 		LastInstanceMapID = mapID
-		if instanceType == "none" and (mapID ~= 369) and (mapID ~= 1043) and (mapID ~= 974) then return end -- instance type of brawlers guild and DMF are none
+		if instanceType == "none" and not forceloadmapIds[mapID] then return end
 		DBM:LoadModsOnDemand("mapId", mapID)
-		if instanceType == "scenario" and (mapID ~= 1148) and DBM:GetModByName("d511") then--mod already loaded (Filter 1148, which is proving grounds)
-			DBM:InstanceCheck()
-		end
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
 	function DBM:LOADING_SCREEN_DISABLED()
@@ -2117,16 +2128,15 @@ do
 			local modTable = v[checkTable]
 			local _, _, _, enabled = GetAddOnInfo(v.modId)
 			if enabled and not IsAddOnLoaded(v.modId) and modTable and checkEntry(modTable, checkValue) then
-				if self:LoadMod(v) and v.type == "SCENARIO" then
-					DBM:InstanceCheck()
-				end
+				self:LoadMod(v)
 			end
 		end
+		DBM:ScenarioCheck()--Do not filter. Because ScenarioCheck function includes filter.
 	end
 end
 
 --Scenario mods
-function DBM:InstanceCheck()
+function DBM:ScenarioCheck()
 	if combatInfo[LastInstanceMapID] then
 		for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 			if (v.type == "scenario") and checkEntry(v.msgs, LastInstanceMapID) then
@@ -2187,7 +2197,7 @@ function DBM:LoadMod(mod)
 			RequestChallengeModeMapInfo()
 			RequestChallengeModeLeaders(mapID)
 		end
-		if instanceType == "pvp" and IsAddOnLoaded("DBM-PVP") then--Is a battleground and pvp mods are installed
+		if instanceType == "pvp" and IsAddOnLoaded("DBM-PvP") then--Is a battleground and pvp mods are installed
 			if DBM:GetModByName("z30") and DBM:GetModByName("z30").revision >= 3 then--They are loaded and correct revision
 				--Do nothing
 			else--They either aren't loaded or are wrong revision. in either case, it means they have old pvp mods installed that don't load correctly or are out of date
