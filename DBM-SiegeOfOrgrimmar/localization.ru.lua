@@ -85,7 +85,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDefensiveStanceSoon		= "Обратный отсчет за 5 секунд до $spell:143593",
-	SetIconOnAdds				= "Устанавливать метки на $journal:7920"
+	SetIconOnAdds				= "Устанавливать метки на $journal:7920",
+	InfoFrame					= "Информационное окно для $journal:7909"
 })
 
 L:SetMiscLocalization({
