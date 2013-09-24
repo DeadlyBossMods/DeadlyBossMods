@@ -140,7 +140,11 @@ function mod:OnCombatStart(delay)
 	timerGougeCD:Start(23-delay)
 	timerCalamityCD:Start(31-delay)
 	timerClashCD:Start(45-delay)
-	berserkTimer:Start(-delay)
+	if self:IsDifficulty("lfr25") then--Might also be flex as well
+		berserkTimer:Start(900-delay)--15min confirmed
+	else
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)

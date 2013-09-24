@@ -90,7 +90,7 @@ function mod:OnCombatStart(delay)
 	playerInside = false
 	timerBlindHatredCD:Start(25-delay)
 	if self:IsDifficulty("lfr25") then--Might also be flex as well
-		berserkTimer:Start(480-delay)--8min in LFR (I did lfr run last week, And confirmed LFR berserk is 10min. Why changed to 8min? Hotfixed? Please removd this comment on next commit)
+		berserkTimer:Start(600-delay)--No log to confirm 8 min, only one report, so changing back to 10 min for now.
 	else
 		berserkTimer:Start(-delay)
 	end
