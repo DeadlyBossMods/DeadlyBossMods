@@ -37,6 +37,7 @@
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
 ## X-DBM-Mod-Name-frFR: Évènements Mondiaux
 ## X-DBM-Mod-MapID: 230,189,33,547,974,1
+## X-DBM-Mod-ForceLoad-MapID: 974
 ## X-DBM-Mod-Sort: 50
 ## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687
 localization.en.lua

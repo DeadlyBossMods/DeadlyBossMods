@@ -214,7 +214,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnGetBoned	= "$spell:113996 효과가 없을 경우 특수 경고 보기",
-	InfoFrame			= "$spell:113996 효과 없음에 대한 정보 창 보기"
+	InfoFrame			= "$spell:113996 없는 대상을 정보 창으로 보기"
 })
 
 L:SetMiscLocalization({

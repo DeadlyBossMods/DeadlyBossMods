@@ -69,8 +69,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalShell	= "$spell:137633 효과가 없고 체력이 90% 이상인 경우 특수 경고 보기",
-	InfoFrame				= "$spell:137633 효과가 없는 대상을 정보 창으로 보기",
+	specWarnCrystalShell	= "$spell:137633이 없고 체력이 90% 이상인 경우 특수 경고 보기",
+	InfoFrame				= "$spell:137633 없는 대상을 정보 창으로 보기",
 	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정",
 	ClearIconOnTurtles		= "$journal:7129이 $spell:133971를 얻은 경우 전술 목표 아이콘 지우기",
 	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 횟수를 소리로 듣기"
@@ -184,7 +184,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDebuffCount				= "웅덩이를 흡수할 때 변형 상태에 대한 알림 보기",
+	warnDebuffCount				= "웅덩이를 흡수할 때 변형 상태 알림 보기",
 	SetIconOnBigOoze			= "$journal:6969에 전술 목표 아이콘 설정"
 })
 

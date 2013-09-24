@@ -21,7 +21,7 @@ L= DBM:GetModLocalization(849)
 L= DBM:GetModLocalization(866)
 
 L:SetOptionLocalization({
-	InfoFrame			= "$journal:8252에 대한 정보를 정보 창으로 보기"
+	InfoFrame			= "$journal:8252 정보를 정보 창으로 보기"
 })
 
 L:SetMiscLocalization({
@@ -34,7 +34,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(867)
 
 L:SetOptionLocalization({
-	InfoFrame			= "$journal:8255에 대한 정보를 정보 창으로 보기"
+	InfoFrame			= "$journal:8255 정보를 정보 창으로 보기"
 })
 
 --------------
@@ -85,7 +85,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnDefensiveStanceSoon		= "$spell:143593 이전에 초읽기 알림 보기(5초 전부터)",
-	SetIconOnAdds				= "$journal:7920에 전술 목표 아이콘 설정"
+	SetIconOnAdds				= "$journal:7920에 전술 목표 아이콘 설정",
+	InfoFrame					= "$journal:7909 정보를 정보 창으로 보기"
 })
 
 L:SetMiscLocalization({
@@ -127,7 +128,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(865)
 
 L:SetOptionLocalization({
-	InfoFrame	= "$journal:8202에 대한 정보를 정보 창으로 보기"
+	InfoFrame	= "$journal:8202 정보를 정보 창으로 보기"
 })
 
 L:SetMiscLocalization({

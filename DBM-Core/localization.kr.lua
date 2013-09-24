@@ -1,7 +1,7 @@
 ﻿if (GetLocale() == "koKR") then
 
 DBM_CORE_NEED_SUPPORT				= "오류/건의사항은 법사세린-아즈샤라(everfinale@gmail.com) 또는 인벤 닉네임 다시날아 로 보내주시기 바랍니다. DBM Team은 프로그래밍 또는 외국어에 능통하신 분의 도움을 기다리고 있습니다. 자세한 사항은 www.deadlybossmods.com 을 방문하시거나 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com 으로 메일을 보내주시기 바랍니다."
-DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 나타나는 창에서 각 우두머리에 대한 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
+DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 위해서는 /dbm을 입력후 나타나는 창에서 각 우두머리 세부 설정을 할 수 있습니다. DBM은 처음 설치시 캐릭터 특성에 맞는 적절한 경고를 선택하며, 옵션에서 추가 설정 또한 가능합니다."
 
 DBM_FORUMS_MESSAGE					= "오류나 잘못된 바를 발견하셨나요? 일부 전투에서 추가 알림, 특수 경고 또는 바가 있으면 좋을텐데라고 생각하셨나요?\n새로 개설된 Deadly Boss Mods 토론, 오류 제보 및 요청 게시판을 방문해 보세요. 주소는 |HDBM:forums|h|cff3588ffhttp://www.deadlybossmods.com|r 입니다. (링크를 클릭하신 후 주소를 복사하실 수 있습니다.)"
 DBM_FORUMS_COPY_URL_DIALOG			= "새로운 게시판을 방문해보세요.\r\n(Elitist Jerks에서 서비스를 제공합니다!)"
@@ -118,16 +118,17 @@ DBM_LFG_INVITE						= "던전 입장"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능한 명령어:",
-	"/dbm version: 공격대원의 DBM 버전 체크 (줄임말: ver)",
---	"/dbm version2: 공격대 전체 DBM 버전 체크. 오래된 DBM일 경우 귓속말로 알립니다. (줄임말: ver2).",
-	"/dbm unlock(move): 바 위치조정을 할 수 있도록 위치조정 바를 보여줌",
-	"/dbm timer <숫자> <글자>: <숫자>초 지속되는 <글자>바가 생성됨",
-	"/dbm broadcast timer <숫자> <글자>: <숫자>초 지속되는 <글자>바를 공격대에 보여줌 (승급 권한 필요)",
-	"/dbm break <min>: <min>분 지속되는 휴식 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
-	"/dbm pull <sec>: <sec>초 후 전투 예정 바를 보여줌. DBM을 설치한 모든 공격대원이 볼 수 있음 (승급 권한 필요)",
-	"/dbm arrow: DBM 화살표를 보여줌. 추가 도움말은 /dbm arrow help 를 입력",
-	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요청함 (출력형식: 던전이름, 던전 ID) (승급 권한 필요)",
-	"/dbm help: 이 도움말을 보여줌"
+	"/dbm version: 공격대원의 DBM 버전 체크(줄임말: ver)",
+--	"/dbm version2: 공격대 전체 DBM 버전 체크 + 구버전 귓속말 알림(줄임말: ver2).",
+	"/dbm unlock(move): 바의 위치조정 바를 보임",
+	"/dbm timer <숫자> <글자>: <숫자>초 지속되는 <글자>바를 생성",
+	"/dbm broadcast timer <숫자> <글자>: <숫자>초 지속되는 <글자>바를 공격대원에게 보냄(승급 권한 필요)",
+	"/dbm break <min>: <min>분 지속되는 휴식 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
+	"/dbm pull <sec>: <sec>초 후 전투 예정 바를 보냄. DBM을 설치한 모든 공격대원이 볼 수 있음(승급 권한 필요)",
+	"/dbm arrow: DBM 화살표 보임. 추가 도움말은 /dbm arrow help 를 입력",
+	"/dbm lockout: 현재 공격대원에게 공격대 귀속 정보를 요(출력형식: 던전이름, 던전 ID)(승급 권한 필요)",
+	"/dbm lag: 공격대원의 지연시간을 확인",
+	"/dbm help: 이 도움말을 봄"
 }
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
@@ -288,5 +289,10 @@ DBM_INSTANCE_INFO_STATS_AWAY		= "자리비움: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "DBM 구버전 사용중: %s"
 DBM_INSTANCE_INFO_RESULTS			= "공격대 귀속 정보 확인 결과입니다. 만약 공격대원이 다른 언어의 WoW 클라이언트를 사용 중이라면 결과가 올바르게 보이지 않을 수도 있습니다."
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "아직 응답하지 않은 공격대원: %s\n|HDBM:showRaidIdResults|h|cff3588ff[지금 결과 보기]|r|h"
+
+DBM_CORE_LAG_CHECKING				= "지연시간 확인중..."
+DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - 지연시간 확인 결과"
+DBM_CORE_LAG_ENTRY					= "%s: 서버지연시간 [%d ms] / 개인지연시간 [%d ms]"
+DBM_CORE_LAG_FOOTER					= "응답없음: %s"
 
 end
