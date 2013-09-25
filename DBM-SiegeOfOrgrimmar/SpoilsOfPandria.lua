@@ -206,10 +206,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCrimsonReconCD:Start(args.sourceGUID)
 	elseif args.spellId == 145712 and self:checkTankDistance(args.sourceGUID) then
 		timerBlazingChargeCD:Start(args.sourceGUID)
-		self:BossTargetScanner(args.sourceGUID, "BlazingChargeTarget", 0.025, 12)
+--		self:BossTargetScanner(args.sourceGUID, "BlazingChargeTarget", 0.025, 12)
 	elseif args.spellId == 146253 and self:checkTankDistance(args.sourceGUID) then
 		timerPathOfBlossomsCD:Start(args.sourceGUID)
-		self:BossTargetScanner(args.sourceGUID, "PathofBlossomsTarget", 0.025, 12)
+--		self:BossTargetScanner(args.sourceGUID, "PathofBlossomsTarget", 0.025, 12)
 	elseif args.spellId == 145230 and self:checkTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnForbiddenMagic:Show(args.destName)
