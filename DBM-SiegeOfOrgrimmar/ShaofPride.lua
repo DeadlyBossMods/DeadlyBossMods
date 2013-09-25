@@ -217,6 +217,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144832 then
 		--These abilitie cd reset on CAST_START not finish and cause a desync from energy
 		countdownReflection:Cancel()
+		countdownSwellingPride:Cancel()
+		timerSwellingPrideCD:Cancel()
 		if not self:IsDifficulty("lfr25") then
 			timerWoundedPrideCD:Start()
 		end
@@ -267,8 +269,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 144832 then
 		warnUnleashed:Show()
 		timerGiftOfTitansCD:Cancel()
-		countdownSwellingPride:Cancel()
-		timerSwellingPrideCD:Cancel()
 		firstWound = false
 		UnleashedCast = true
 		timerManifestationCD:Start()--Not yet verified if altered or not
