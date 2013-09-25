@@ -3254,15 +3254,12 @@ end
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		local scenario = mod.type == "SCENARIO"
-		if not wipe then
-			mod.lastKillTime = GetTime()
-			if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
-				-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
-				mod:UnregisterInCombatEvents("SPELL_AURA_REMOVED")
-				self:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
-				self:Schedule(2.1, mod.Stop, mod) -- Remove accident started timers.
-				mod.inCombatOnlyEventsRegistered = nil
-			end
+		if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
+			-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
+			mod:UnregisterInCombatEvents("SPELL_AURA_REMOVED")
+			self:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
+			self:Schedule(2.1, mod.Stop, mod) -- Remove accident started timers.
+			mod.inCombatOnlyEventsRegistered = nil
 		end
 		mod:Stop()
 		mod.inCombat = false
@@ -3339,6 +3336,7 @@ function DBM:EndCombat(mod, wipe)
 			end
 			fireEvent("wipe", mod)
 		else
+			mod.lastKillTime = GetTime()
 			local thisTime = GetTime() - mod.combatInfo.pull
 			local lastTime = (savedDifficulty == "lfr25" and mod.stats.lfr25LastTime) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicLastTime) or (savedDifficulty == "challenge5" and mod.stats.challengeLastTime) or (savedDifficulty == "flex" and mod.stats.flexLastTime) or (savedDifficulty == "normal25" and mod.stats.normal25LastTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25LastTime) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalLastTime) or nil
 			local bestTime = (savedDifficulty == "lfr25" and mod.stats.lfr25BestTime) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicBestTime) or (savedDifficulty == "challenge5" and mod.stats.challengeBestTime) or (savedDifficulty == "flex" and mod.stats.flexBestTime) or (savedDifficulty == "normal25" and mod.stats.normal25BestTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25BestTime) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalBestTime) or nil
