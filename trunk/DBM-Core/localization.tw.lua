@@ -85,7 +85,7 @@ DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "你的alpha版本Deadly Boss Mods已經�
 DBM_CORE_UPDATEREMINDER_FOOTER			= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製下載網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "按下" .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  "：複製網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "當有新版本時顯示彈出提示"
-DBM_CORE_UPDATEREMINDER_DISABLE			= "警告: 你的DBM版本已大幅度的過期(%d修訂版)，已禁用除非更新。這是為了確保舊而不相容的程式碼不會對你而團隊夥伴造成低落的遊戲體驗。"
+DBM_CORE_UPDATEREMINDER_DISABLE			= "警告: 你的DBM版本已大幅度的過期(%d修訂版)，已被禁用了除非更新至最新版本。這是為了確保舊而不相容的程式碼不會對你而團隊夥伴造成低落的遊戲體驗。"
 
 DBM_CORE_MOVABLE_BAR				= "拖動我!"
 
@@ -127,6 +127,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm pull <秒數>: 開始備戰計時器<秒數>。向所有團隊成員發送一個DBM備戰計時器（需要團隊隊長或助理權限）。",
 	"/dbm arrow: 顯示DBM箭頭, 輸入 /dbm arrow help 獲得更多訊息。",
 	"/dbm lockout: 向團隊成員請求他們當前的團隊副本鎖定訊息(鎖定訊息、副本id) (需要團隊隊長或助理權限)。",
+	"/dbm lag: 進行團隊範圍內的網路延遲檢測。",
 	"/dbm help：顯示可用命令的說明。"
 }
 
@@ -301,3 +302,8 @@ DBM_INSTANCE_INFO_STATS_AWAY		= "離開:%s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "沒有安裝最新版本的DBM:%s"
 DBM_INSTANCE_INFO_RESULTS			= "副本ID掃描結果。注意如果團隊中有不同語言版本的魔獸客戶端，那麼同一副本可能會出現不止一次。"
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "仍未回覆的玩家: %s\n|HDBM:showRaidIdResults|h|cff3588ff[查看結果]|r|h"
+
+DBM_CORE_LAG_CHECKING				= "檢測團隊成員的網路延遲中..."
+DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - 網路延遲結果"
+DBM_CORE_LAG_ENTRY					= "%s:世界延遲[%d毫秒]/家延遲[%d毫秒]"
+DBM_CORE_LAG_FOOTER					= "無回應:%s"

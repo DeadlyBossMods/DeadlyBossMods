@@ -181,3 +181,12 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	LostSouls				= "面對注定滅亡的同儕靈魂，術士!"
 }
+
+-------------------------------
+-- Finding Secret Ingredient --
+-------------------------------
+L= DBM:GetModLocalization("d745")
+
+L:SetMiscLocalization{
+	Clear		= "做得好!"
+}
