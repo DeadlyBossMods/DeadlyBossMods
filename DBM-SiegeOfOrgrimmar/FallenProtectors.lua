@@ -66,7 +66,7 @@ local specWarnDefiledGround			= mod:NewSpecialWarningMove(143959)
 local specWarnInfernoStrike			= mod:NewSpecialWarningYou(143962)
 local yellInfernoStrike				= mod:NewYell(143962)
 --He Softfoot
-local specWarnGouge					= mod:NewSpecialWarningMove(143330, mod:IsTank())--Maybe localize it as a "turn away" warning.
+local specWarnGouge					= mod:NewSpecialWarningMove(143330, mod:IsTank(), nil, nil, 3)--Maybe localize it as a "turn away" warning.
 local specWarnGougeStunOther		= mod:NewSpecialWarningTarget(143301, mod:IsTank())--Tank is stunned, other tank must taunt or he'll start killing people
 local specWarnNoxiousPoison			= mod:NewSpecialWarningMove(144367)
 ----He Softfoot's Desperate measures
@@ -157,7 +157,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143330 then
 		warnGouge:Show()
 		timerGougeCD:Start()
-		for i = 1, 3 do
+		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				specWarnGouge:Show()--So show tank warning
@@ -186,7 +186,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144396 then
 		warnVengefulStrikes:Show()
 		timerVengefulStrikesCD:Start()
-		for i = 1, 3 do
+		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				specWarnVengefulStrikes:Show()--So show tank warning
