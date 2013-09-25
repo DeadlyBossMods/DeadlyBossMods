@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(852)
 
 L:SetMiscLocalization({
-	Victory			= "啊，你成功了!水又再次純淨了。"
+	Victory	= "啊，你成功了!水又再次純淨了。"
 })
 
 ---------------------------
@@ -21,11 +21,11 @@ L= DBM:GetModLocalization(849)
 L= DBM:GetModLocalization(866)
 
 L:SetOptionLocalization({
-	InfoFrame			= "為$journal:8252顯示訊息框架"
+	InfoFrame	= "為$journal:8252顯示訊息框架"
 })
 
 L:SetMiscLocalization({
-	wasteOfTime			= "很好，我會創造一個力場隔離你們的腐化。"
+	wasteOfTime	= "很好，我會創造一個力場隔離你們的腐化。"
 })
 
 ------------------
@@ -34,7 +34,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(867)
 
 L:SetOptionLocalization({
-	InfoFrame			= "為$journal:8255顯示訊息框架"
+	InfoFrame	= "為$journal:8255顯示訊息框架"
 })
 
 --------------
@@ -71,7 +71,7 @@ L= DBM:GetModLocalization(864)
 L= DBM:GetModLocalization(856)
 
 L:SetMiscLocalization({
-	PrisonYell		= "%s的囚犯被釋放 (%d)"
+	PrisonYell	= "%s的囚犯被釋放 (%d)"
 })
 
 ---------------------
@@ -80,21 +80,22 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(850)
 
 L:SetWarningLocalization({
-	warnDefensiveStanceSoon		= "防禦姿態在%d秒"
+	warnDefensiveStanceSoon	= "%d秒後防禦姿態"
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "為$spell:143593(五秒前)顯示預先警告倒數",
-	SetIconOnAdds				= "設置團隊圖示在$journal:7920"
+	warnDefensiveStanceSoon	= "為$spell:143593(五秒前)顯示預先警告倒數",
+	SetIconOnAdds			= "設置團隊圖示在$journal:7920",
+	InfoFrame				= "為$journal:7909顯示訊息框架"
 })
 
 L:SetMiscLocalization({
-	newForces1					= "戰士們，快點過來!",
-	newForces2					= "守住大門!",
-	newForces3					= "重整部隊!",
-	newForces4					= "柯爾克隆，來我身邊!",
-	newForces5					= "下一隊，來前線!",
-	allForces					= "所有柯爾克隆...聽我號令...殺死他們!"
+	newForces1	= "戰士們，快點過來!",
+	newForces2	= "守住大門!",
+	newForces3	= "重整部隊!",
+	newForces4	= "柯爾克隆，來我身邊!",
+	newForces5	= "下一隊，來前線!",
+	allForces	= "所有柯爾克隆...聽我號令...殺死他們!"
 })
 
 -----------------
@@ -141,13 +142,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "你虛弱於%s - 閃躲!",
-	specWarnCriteriaLinked			= "你被%s連線了!"
+	specWarnActivatedVulnerable	= "你虛弱於%s - 換坦!",
+	specWarnCriteriaLinked		= "你被%s連線了!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "當你虛弱於活動的議會成員時顯示特別警告",
-	specWarnCriteriaLinked			= "當你被$spell:144095連線時顯示特別警告"
+	specWarnActivatedVulnerable	= "當你虛弱於活動的議會成員時顯示特別警告",
+	specWarnCriteriaLinked		= "當你被$spell:144095連線時顯示特別警告"
 })
 
 L:SetMiscLocalization({
@@ -175,7 +176,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(869)
 
 L:SetOptionLocalization({
-	SetIconOnShaman			= "設定團隊圖示在$journal:8294"
+	SetIconOnShaman	= "設定團隊圖示在$journal:8294"
 })
 
 -------------
