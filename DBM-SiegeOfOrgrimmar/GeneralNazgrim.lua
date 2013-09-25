@@ -174,25 +174,25 @@ end
 local function updateInfoFrame()
 	local lines = {}
 	if UnitPower("boss1") < 50 then
-		lines["|cFF088A08"..GetSpellInfo(143500).."|r"] = UnitPower("boss1")
+		lines["|cFF088A08"..GetSpellInfo(143500).."|r"] = UnitPower("boss1")--Green
 		lines[GetSpellInfo(143536)] = 50
 		lines[GetSpellInfo(143503)] = 70
 		lines[GetSpellInfo(143872)] = 100
 	elseif UnitPower("boss1") < 70 then
 		lines[GetSpellInfo(143500)] = 25
-		lines["|cFF088A08"..GetSpellInfo(143536).."|r"] = UnitPower("boss1")
+		lines["|cFF088A08"..GetSpellInfo(143536).."|r"] = UnitPower("boss1")--Green (Would yellow be too hard to see on this?)
 		lines[GetSpellInfo(143503)] = 70
 		lines[GetSpellInfo(143872)] = 100
 	elseif UnitPower("boss1") < 100 then
 		lines[GetSpellInfo(143500)] = 25
 		lines[GetSpellInfo(143536)] = 50
-		lines["|cFF088A08"..GetSpellInfo(143503).."|r"] = UnitPower("boss1")
+		lines["|cFF088A08"..GetSpellInfo(143503).."|r"] = UnitPower("boss1")--Green (Maybe change to orange?)
 		lines[GetSpellInfo(143872)] = 100
 	elseif UnitPower("boss1") == 100 then
 		lines[GetSpellInfo(143500)] = 25
 		lines[GetSpellInfo(143536)] = 50
 		lines[GetSpellInfo(143503)] = 70
-		lines["|cFF088A08"..GetSpellInfo(143872).."|r"] = UnitPower("boss1")
+		lines["|cFFFF0000"..GetSpellInfo(143872).."|r"] = UnitPower("boss1")--Red (definitely work making this one red, it's really the only critically bad one)
 	end
 	
 	return lines
