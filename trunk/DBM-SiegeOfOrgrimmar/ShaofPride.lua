@@ -65,6 +65,7 @@ local timerGiftOfTitansCD		= mod:NewNextTimer(25.5, 144359)--NOT cast or tied or
 local timerMarkCD				= mod:NewNextTimer(20.5, 144351, nil, mod:IsHealer())
 local timerSelfReflectionCD		= mod:NewNextTimer(25, 144800)
 local timerWoundedPrideCD		= mod:NewNextTimer(30, 144358, nil, mod:IsTank())--A tricky on that is based off unit power but with variable timings, but easily workable with an 11, 26 rule
+local timerBanishmentCD			= mod:NewNextTimer(37.5, 145215)
 local timerCorruptedPrisonCD	= mod:NewNextTimer(53, 144574)--Technically 51 for Imprison base cast, but this is timer til debuffs go out.
 local timerManifestationCD		= mod:NewNextTimer(60, "ej8262", nil, nil, nil, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local timerSwellingPrideCD		= mod:NewNextCountTimer(75.5, 144400)
@@ -95,7 +96,6 @@ local markOfArroganceIcons = {}
 local corruptedPrisonTargets = {}
 local prideLevel = EJ_GetSectionInfo(8255)
 local firstWound = false
-local UnleashedCast = false
 local swellingCount = 0
 
 local function warnGiftOfTitansTargets()
@@ -189,11 +189,13 @@ function mod:OnCombatStart(delay)
 	countdownSwellingPride:Start(-delay)
 	berserkTimer:Start(-delay)
 	firstWound = false
-	UnleashedCast = false
 	swellingCount = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(prideLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
+	end
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerBanishmentCD:Start(-delay)
 	end
 end
 
@@ -215,7 +217,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnMockingBlast:Show(args.sourceName)
 		end
 	elseif args.spellId == 144832 then
-		--These abilitie cd reset on CAST_START not finish and cause a desync from energy
+		--These abilitie cd reset on SPELL_CAST_START (they no longer desync though, they sync back up after first off sync cast)
 		countdownReflection:Cancel()
 		countdownSwellingPride:Cancel()
 		timerSwellingPrideCD:Cancel()
@@ -225,6 +227,9 @@ function mod:SPELL_CAST_START(args)
 		timerSelfReflectionCD:Start()
 		countdownReflection:Start()
 		timerCorruptedPrisonCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerBanishmentCD:Start()
+		end
 	end
 end
 
@@ -232,22 +237,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144400 then--Swelling Pride Cast END
 		firstWound = false
 		--Since we register this event anyways for bursting, might as well start cd bars here instead
-		if UnleashedCast then--Account for the 3 abilities (or more unsure about manifestations) that change timing when unleashed is cast
-			timerSelfReflectionCD:Start(16.5)
-			countdownReflection:Start(16.5)
-			timerCorruptedPrisonCD:Start(34)
---			timerWoundedPrideCD:Start(2)--Unconfirmed, but likely and a 2 second timer kind of worthless and i may adjust stuff
-		else
-			timerSelfReflectionCD:Start()
-			countdownReflection:Start()
-			timerCorruptedPrisonCD:Start()
-			if not self:IsDifficulty("lfr25") then
-				timerWoundedPrideCD:Start(11.5)
-			end
-		end
+		timerSelfReflectionCD:Start()
+		countdownReflection:Start()
+		timerCorruptedPrisonCD:Start()
 		timerManifestationCD:Start()
 		timerSwellingPrideCD:Start(nil, swellingCount + 1)
 		countdownSwellingPride:Start()
+		if not self:IsDifficulty("lfr25") then
+			timerWoundedPrideCD:Start(11)
+		end
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerBanishmentCD:Start()
+		end
 		--This is done here because a lot can change during a cast, and we need to know players energy when cast ends, i.e. this event
 		for uId in DBM:GetGroupMembers() do
 			local maxPower = UnitPowerMax(uId, ALTERNATE_POWER_INDEX)
@@ -270,7 +271,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnUnleashed:Show()
 		timerGiftOfTitansCD:Cancel()
 		firstWound = false
-		UnleashedCast = true
 		timerManifestationCD:Start()--Not yet verified if altered or not
 		timerSwellingPrideCD:Start(75, swellingCount + 1)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
 		countdownSwellingPride:Start(75)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
