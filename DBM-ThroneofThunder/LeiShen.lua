@@ -546,15 +546,13 @@ local function LoopIntermission()
 end
 
 function mod:UNIT_HEALTH_FREQUENT(uId)
-	if UnitName(uId) == L.name then
-		local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
-		if hp > 65 and hp < 66.5 and warnedCount == 0 then
-			warnedCount = 1
-			specWarnIntermissionSoon:Show()
-		elseif hp > 30 and hp < 31.5 and warnedCount == 1 then
-			warnedCount = 2
-			specWarnIntermissionSoon:Show()
-		end
+	local hp = UnitHealth(uId) / UnitHealthMax(uId) * 100
+	if hp > 65 and hp < 67.5 and warnedCount == 0 then
+		warnedCount = 1
+		specWarnIntermissionSoon:Show()
+	elseif hp > 30 and hp < 32.5 and warnedCount == 1 then
+		warnedCount = 2
+		specWarnIntermissionSoon:Show()
 	end
 end
 
