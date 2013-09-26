@@ -108,5 +108,5 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(861)
 
 L:SetMiscLocalization({
-	Pull					= "You will take my place on the eternal brazier."
+	Pull					= "영원한 화로에서 내 자리를 대신해라."
 })
