@@ -6489,9 +6489,7 @@ do
 		}, returnKey)
 	}
 	local defaultMiscLocalization = {
-		__index = function(t, k)
-			return t.misc.general[k] or t.misc.options[k] or t.misc.warnings[k] or t.misc.timers[k] or t.misc.cats[k] or k
-		end
+		__index = {}
 	}
 
 	function modLocalizationPrototype:SetGeneralLocalization(t)
@@ -6540,7 +6538,6 @@ do
 			miscStrings = setmetatable({}, defaultMiscLocalization),
 			cats = setmetatable({}, defaultCatLocalization),
 		}
-		obj.miscStrings.misc = obj
 		setmetatable(obj, mt)
 		modLocalizations[name] = obj
 		return obj
