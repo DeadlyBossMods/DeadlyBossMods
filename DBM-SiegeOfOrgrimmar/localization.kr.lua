@@ -47,7 +47,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerTowerCD	= "다음 포탑 바 보기"--번역이 조금 다른데? 나중에 확인
+	timerTowerCD	= "다음 포탑 바 보기"
 })
 
 L:SetMiscLocalization({
@@ -57,7 +57,7 @@ L:SetMiscLocalization({
 	newForces2		= "용아귀 용사들아, 진격하라!",
 	newForces3		= "헬스크림 님을 위하여!",
 	newForces4		= "다음 분대, 진격!",
-	tower			= "문이 뚫렸습니다!"--The door barring the South/North Tower has been breached!
+	tower			= "문이 뚫렸습니다!"
 })
 
 --------------------

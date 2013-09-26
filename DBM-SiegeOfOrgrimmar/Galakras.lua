@@ -128,6 +128,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 147068 then
 		flamesCount = flamesCount + 1
 		warnFlamesofGalakrondTarget:Show(args.destName)
+		timerFlamesofGalakrondCD:Cancel(flamesCount)
 		timerFlamesofGalakrondCD:Start(nil, flamesCount+1)
 		if args:IsPlayer() then
 			specWarnFlamesofGalakrondYou:Show()
@@ -238,7 +239,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		timerDemolisherCD:Start()
 		if not firstTower and not self:IsDifficulty("heroic10", "heroic25") then
 			firstTower = true
-			timerTowerCD:Start()
+			if self:IsDifficulty("lfr25") then
+				timerTowerCD:Start(166)
+			else
+				timerTowerCD:Start()
+			end
 		end
 	end
 end
