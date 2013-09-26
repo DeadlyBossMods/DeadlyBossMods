@@ -6306,7 +6306,9 @@ function bossModPrototype:SendSync(event, ...)
 	--Do not put latency check in main sendSync local function (line 313) though as we still want to get version information, etc from these users.
 	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 8 then
 		self:ReceiveSync(event, nil, self.revision or 0, tostringall(...))
-		sendSync("M", str)
+		if select(4, GetNetStats()) < DBM.Options.LatencyThreshold then
+			sendSync("M", str)
+		end
 	end
 end
 
