@@ -58,7 +58,7 @@ local timerCrawlerMineCD		= mod:NewCDTimer(30, 144673)
 local timerSiegeModeCD			= mod:NewNextTimer(116, 84974, nil, nil, "timerSiegeModeCD")--Wish spell name was a litlte shorter but still better than localizing
 local timerCuttingLaser			= mod:NewTargetTimer(10, 146325)--Spell tooltip says 15 but combat log showed 10
 local timerShockPulseCD			= mod:NewNextCountTimer(16.5, 144485)
-local timerDemolisherCanonCD	= mod:NewCDTimer(9, 144154)
+local timerDemolisherCanonCD	= mod:NewCDTimer(8.5, 144154)
 local timerMortarBarrageCD		= mod:NewCDTimer(30, 144555)
 
 local soundCuttingLaser			= mod:NewSound(146325)
@@ -191,7 +191,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnNapalmOil:Show()
 	elseif spellId == 146359 then--Regeneration (Assault Mode power regen activation)
 		--2 seconds slower than emote, but it's not pressing enough to matter so it's better localisation wise to do it this way
-		timerDemolisherCanonCD:Cancel()
 		timerMortarBarrageCD:Cancel()
 		if siegeMode == true then--don't start timer on pull regenerate, pull regenerate is 5 seconds longer than rest of them
 			timerSiegeModeCD:Start()
