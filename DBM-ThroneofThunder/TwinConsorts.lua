@@ -20,8 +20,8 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2"
 )
 
-local Lulin = EJ_GetSectionInfo(7629)
-local Suen = EJ_GetSectionInfo(7642)
+local Lulin = select(2, EJ_GetCreatureInfo(1, 829))
+local Suen = select(2, EJ_GetCreatureInfo(2, 829))
 
 mod:SetBossHealthInfo(
 	68905, Lulin,

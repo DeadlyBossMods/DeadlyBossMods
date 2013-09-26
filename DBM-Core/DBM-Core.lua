@@ -4217,7 +4217,7 @@ do
 	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
-	function DBM:NewMod(name, modId, modSubTab, instanceId)
+	function DBM:NewMod(name, modId, modSubTab, instanceId, creatureInfoId)
 		name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
@@ -4252,7 +4252,16 @@ do
 		end
 
 		if tonumber(name) then
-			local t = EJ_GetEncounterInfo(tonumber(name))
+			local t = ""
+			if type(creatureInfoId) == "number" then
+				t = select(2, EJ_GetCreatureInfo(creatureInfoId, tonumber(name)))
+			else
+				t = EJ_GetEncounterInfo(tonumber(name))
+			end
+			obj.localization.general.name = string.split(",", t or name)
+			obj.modelId = select(4, EJ_GetCreatureInfo(1, tonumber(name)))
+		elseif name:match("z%d+") then
+			local t = EJ_GetCreatureInfo(1, 817)(tonumber(name))
 			obj.localization.general.name = string.split(",", t or name)
 			obj.modelId = select(4, EJ_GetCreatureInfo(1, tonumber(name)))
 		elseif name:match("z%d+") then
