@@ -63,7 +63,7 @@ local timerMortarBarrageCD		= mod:NewCDTimer(30, 144555)
 
 local soundCuttingLaser			= mod:NewSound(146325)
 
-local berserkTimer				= mod:NewBerserkTimer(600)
+local berserkTimer				= mod:NewBerserkTimer(450)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
@@ -78,7 +78,11 @@ function mod:OnCombatStart(delay)
 	timerBorerDrillCD:Start(-delay)
 	timerCrawlerMineCD:Start(-delay)
 	timerSiegeModeCD:Start(120.5-delay)--First one longer than rest
-	berserkTimer:Start(-delay)
+	if self:IsDifficulty("lfr25") then
+		berserkTimer:Start(600-delay)
+	else
+		berserkTimer:Start(-delay)
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
