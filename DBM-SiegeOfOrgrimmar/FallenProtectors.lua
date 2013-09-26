@@ -75,6 +75,7 @@ local specWarnMarked				= mod:NewSpecialWarningYou(143840)
 local yellMarked					= mod:NewYell(143840, nil, false)
 --Sun Tenderheart
 local specWarnShaShear				= mod:NewSpecialWarningInterrupt(143423, false)
+local specWarnShaShearYou			= mod:NewSpecialWarningYou(143423, false)--some heroic player request.
 local specWarnCalamity				= mod:NewSpecialWarningSpell(143491, nil, nil, nil, 2)
 ----Sun Tenderheart's Desperate Measures
 local specWarnDarkMeditation		= mod:NewSpecialWarningSpell(143546)
@@ -96,6 +97,7 @@ local timerCalamityCD				= mod:NewCDTimer(40, 143491)--40-50 (when two can be ca
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnStrike")
+mod:AddBoolOption("RangeFrame", false)
 
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
@@ -144,6 +146,15 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(900-delay)--15min confirmed
 	else
 		berserkTimer:Start(-delay)
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(5)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -252,6 +263,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGougeCD:Cancel()
 		timerGarroteCD:Cancel()
 		timerCalamityCD:Cancel()--Can't be cast during THIS special
+	elseif args.spellId == 143423 and args:IsPlayer() then
+		specWarnShaShearYou:Show()
 	end
 end
 
