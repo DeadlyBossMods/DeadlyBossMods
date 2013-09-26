@@ -84,6 +84,7 @@ L:SetMiscLocalization({
 	Pull					= "The trial begins!",
 	Wave1					= "Do not let your judgement be clouded in trying times!",
 	Wave2					= "Listen to your inner voice, and seek out the truth!",
+	Wave3					= "Always consider the consequences of your actions!",
 	Victory					= "Your wisdom has seen you through this trial. May it ever light your way out of dark places."
 })
 
