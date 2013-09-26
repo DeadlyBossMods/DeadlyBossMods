@@ -72,7 +72,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			yellTriggered = true
 			DBM:StartCombat(self, 0)
 		end
-	elseif msg == L.Wave1 or msg == L.Wave2 then
+	elseif msg == L.Wave1 or msg == L.Wave2 or msg == L.Wave3 then
 		self:SendSync("Wave")
 	end
 end
