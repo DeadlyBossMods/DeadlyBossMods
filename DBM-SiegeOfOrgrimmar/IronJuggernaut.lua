@@ -63,7 +63,7 @@ local timerMortarBarrageCD		= mod:NewCDTimer(30, 144555)
 
 local soundCuttingLaser			= mod:NewSound(146325)
 
-local berserkTimer				= mod:NewBerserkTimer(450)
+local berserkTimer				= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 
@@ -78,8 +78,8 @@ function mod:OnCombatStart(delay)
 	timerBorerDrillCD:Start(-delay)
 	timerCrawlerMineCD:Start(-delay)
 	timerSiegeModeCD:Start(120.5-delay)--First one longer than rest
-	if self:IsDifficulty("lfr25") then
-		berserkTimer:Start(600-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		berserkTimer:Start(450-delay)
 	else
 		berserkTimer:Start(-delay)
 	end
