@@ -382,7 +382,7 @@ function mod:UNIT_POWER_FREQUENT(uId)
 		manifestationWarned = true
 		warnManifestation:Show()
 		specWarnManifestation:Show()--No spawn trigger to speak of. fortunately for us, they spawn based on boss power.
-	elseif power > 10 and manifestationWarned then
+	elseif power > 10 and power < 82 and manifestationWarned then
 		manifestationWarned = false
 	end
 end
