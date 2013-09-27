@@ -65,8 +65,9 @@ local timerIronTombCD				= mod:NewCDTimer(31.5, 144328)--Pretty much a next time
 local timerToxicStormCD				= mod:NewCDTimer(32, 144005)--Pretty much a next timers unless boss is casting something else
 local timerFoulGeyserCD				= mod:NewCDTimer(32.5, 143990)--Pretty much a next timers unless boss is casting something else
 local timerFallingAshCD				= mod:NewCDCountTimer(32.5, 143973)--Pretty much a next timers unless boss is casting something else
+local timerIronPrison				= mod:NewTargetTimer(60, 144330, nil, mod:IsHealer())
 local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next timers unless boss is casting something else
-local timerIronPrison				= mod:NewBuffFadesTimer(60, 144330)
+local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990)
 local countdownAshenWall			= mod:NewCountdown(32.5, 144070, nil, nil, nil, nil, true)
@@ -252,14 +253,17 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnFroststormStrikeOther:Show(args.destName)
 			end
 		end
-	elseif args.spellId == 144330 and args:IsPlayer() then
-		specWarnIronPrison:Schedule(5)
-		timerIronPrison:Start()
-		yellIronPrisonFades:Schedule(59, playerName, 1)
-		yellIronPrisonFades:Schedule(58, playerName, 2)
-		yellIronPrisonFades:Schedule(57, playerName, 3)
-		yellIronPrisonFades:Schedule(56, playerName, 4)
-		yellIronPrisonFades:Schedule(55, playerName, 5)
+	elseif args.spellId == 144330 then
+		timerIronPrison:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnIronPrison:Schedule(5)
+			timerIronPrisonSelf:Start()
+			yellIronPrisonFades:Schedule(59, playerName, 1)
+			yellIronPrisonFades:Schedule(58, playerName, 2)
+			yellIronPrisonFades:Schedule(57, playerName, 3)
+			yellIronPrisonFades:Schedule(56, playerName, 4)
+			yellIronPrisonFades:Schedule(55, playerName, 5)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -269,9 +273,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif args.spellId == 144215 then
 		timerFroststormStrike:Cancel(args.destName)
-	elseif args.spellId == 144330 and args:IsPlayer() then
-		specWarnIronPrison:Cancel()
-		yellIronPrisonFades:Cancel()
-		timerIronPrison:Cancel()
+	elseif args.spellId == 144330 then
+		timerIronPrison:Cancel(args.destName)
+		if args:IsPlayer() then
+			specWarnIronPrison:Cancel()
+			yellIronPrisonFades:Cancel()
+			timerIronPrisonSelf:Cancel()
+		end
 	end
 end
