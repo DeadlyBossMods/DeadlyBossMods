@@ -166,7 +166,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144005 then
+	if args.spellId == 144005 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		self:BossTargetScanner(71858, "ToxicStormTarget", 0.05, 16)
 		timerToxicStormCD:Start()
 --[[elseif args.spellId == 144214 then
@@ -178,9 +178,9 @@ function mod:SPELL_CAST_START(args)
 				timerFrostStormBoltCD:Start()
 			end
 		end--]]
-	elseif args.spellId == 144090 and self:checkTankDistance(args:GetSrcCreatureID(), 50)  then
+	elseif args.spellId == 144090 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		self:BossTargetScanner(71859, "FoulStreamTarget", 0.05, 16)
-	elseif args.spellId == 143990 and self:checkTankDistance(args:GetSrcCreatureID(), 50)  then
+	elseif args.spellId == 143990 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		timerFoulGeyserCD:Start()
 		specWarnFoulGeyser:Show()
 		countdownFoulGeyser:Start()
