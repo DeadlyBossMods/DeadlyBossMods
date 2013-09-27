@@ -193,7 +193,6 @@ function mod:SPELL_CAST_START(args)
 		timerFallingAshCD:Start()
 		specWarnFallingAsh:Schedule(15)--Give special warning when damage happens, not cast
 	elseif args.spellId == 144330 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
-		warnIronPrison:Show()
 		timerIronPrisonCD:Start()
 	elseif args.spellId == 144328 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		warnIronTomb:Show()
