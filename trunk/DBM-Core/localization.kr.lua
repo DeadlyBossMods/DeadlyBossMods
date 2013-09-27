@@ -250,7 +250,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 된 경우 대화로 알
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= UnitName("player").."에게 %s!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 관련 거리 창 보기(%1$sm)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기(%sm)"
-
+DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"
