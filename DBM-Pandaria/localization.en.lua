@@ -7,7 +7,6 @@ L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
 	RangeFrame			= "Show dynamic range frame based on player debuff status for<br/>$spell:119622",
-	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)",
 	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(119622)
 })
 
@@ -20,10 +19,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "Bring me their corpses!"
 })
@@ -34,7 +29,6 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(826)
 
 L:SetOptionLocalization({
-	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)",
 	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 137511)
 })
 
@@ -48,7 +42,6 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(814)
 
 L:SetOptionLocalization({
-	ReadyCheck			= "Play ready check sound when world boss is pulled (even if it's not targeted)",
 	RangeFrame			= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(10, 136340)
 })
 

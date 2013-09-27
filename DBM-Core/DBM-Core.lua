@@ -2925,8 +2925,12 @@ do
 	local function scanForCombat(mod, mob, delay)
 		if not checkEntry(inCombat, mod) then
 			buildTargetList()
-			if targetList[mob] and UnitAffectingCombat(targetList[mob]) then
-				DBM:StartCombat(mod, delay or 3)
+			if targetList[mob] then
+				if delay > 0 and UnitAffectingCombat(targetList[mob]) then
+					DBM:StartCombat(mod, delay)
+				else
+					DBM:StartCombat(mod, 0, nil, nil, nil, true)
+				end
 			end
 			clearTargetList()
 		end
@@ -2950,7 +2954,7 @@ do
 		if not combatInitialized then return end
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if v.type == "combat" then
+				if v.type == "combat" or v.type == "combat_yell" or v.type == "combat_emote" or v.type == "combat_say" then--this will be faster than string.find
 					if v.multiMobPullDetection then
 						for _, mob in ipairs(v.multiMobPullDetection) do
 							if checkForPull(mob, v) then
@@ -2990,9 +2994,6 @@ do
 			end
 		end
 	end
-end
-
-do
 
 	local function checkExpressionList(exp, str)
 		for i, v in ipairs(exp) do
@@ -3008,9 +3009,13 @@ do
 		-- pull detection
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if v.type == type and checkEntry(v.msgs, msg)
-				or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
+				if v.type == type and checkEntry(v.msgs, msg) or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0)
+				elseif v.type == "combat_" .. type and checkEntry(v.msgs, msg) then
+					scanForCombat(v.mod, v.mob, 0)
+					if v.mod.Options.ReadyCheck and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
+						PlaySoundFile("Sound\\interface\\levelup2.ogg", "Master")
+					end
 				end
 			end
 		end
@@ -3097,7 +3102,7 @@ function checkWipe(confirm)
 	end
 end
 
-function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
+function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggered)
 	if not checkEntry(inCombat, mod) then
 		if not mod.Options.Enabled then return end
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
@@ -3186,7 +3191,9 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord)
 				speedTimer:Start()
 			end
 		end
-		if mod.OnCombatStart and not mod.ignoreBestkill then mod:OnCombatStart(delay or 0) end
+		if mod.OnCombatStart and not mod.ignoreBestkill then
+			mod:OnCombatStart(delay or 0, triggered)
+		end
 		if not synced then
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp)
 		end
@@ -6133,6 +6140,13 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self.Options[name] = (default == nil) or default
 	self.Options[name .. "SpecialWarningSound"] = defaultSound or "Sound\\Spells\\PVPFlagTaken.ogg"
 	self:SetOptionCategory(name, cat)
+end
+
+function bossModPrototype:AddReadyCheckOption(questId, default)
+	self.readyCheckQuestId = questId
+	self.Options["ReadyCheck"] = (default == nil) or default
+	self.localization.options["ReadyCheck"] = DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT
+	self:SetOptionCategory("ReadyCheck", "misc")
 end
 
 function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat, func)
