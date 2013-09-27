@@ -35,6 +35,7 @@ local timerCracklingLightningCD		= mod:NewCDTimer(47, 144635)
 local timerChiBarrageCD				= mod:NewCDTimer(20, 144642)
 
 mod:AddBoolOption("RangeFrame", true)--This is for chi barrage spreading.
+mod:AddReadyCheckOption(33117, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
