@@ -1898,8 +1898,10 @@ do
 	function loadModOptions(modId)
 		local savedOptions = _G[modId:gsub("-", "").."_SavedVars"] or {}
 		local savedStats = _G[modId:gsub("-", "").."_SavedStats"] or {}
+		local existId = {}
 		for i, v in ipairs(DBM.Mods) do
 			if v.modId == modId then
+				existId[v.id] = true
 				-- import old options from mods that were using the encounter ID as number as id
 				-- this was changed to use the string for compatibility reasons (see issues with sync),
 				-- but a user might still have saved options or stats that still use the old id as number
@@ -1919,6 +1921,12 @@ do
 					v.DefaultOptions[option] = optionValue
 					if savedOptions[v.id][option] == nil then
 						savedOptions[v.id][option] = optionValue
+					end
+				end
+				--clean unused savedvariables
+				for option, optionValue in pairs(savedOptions[v.id]) do
+					if v.DefaultOptions[option] == nil then
+						savedOptions[v.id][option] = nil
 					end
 				end
 				v.Options = savedOptions[v.id] or {}
@@ -1948,6 +1956,17 @@ do
 						break
 					end
 				end
+			end
+		end
+		--clean unused savedvariables
+		for id, table in pairs(savedOptions) do
+			if existId[id] == nil then
+				savedOptions[id] = nil
+			end
+		end
+		for id, table in pairs(savedStats) do
+			if existId[id] == nil then
+				savedStats[id] = nil
 			end
 		end
 		_G[modId:gsub("-", "").."_SavedVars"] = savedOptions
@@ -4973,7 +4992,7 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(optionName, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
 			obj.option = "Sound"..spellId..(optionSaveVar or "")
 			self:AddBoolOption(obj.option, optionDefault, "misc")
@@ -5099,9 +5118,10 @@ do
 			mt
 		)
 		obj.option = obj.id
-		self:AddBoolOption(obj.option, optionDefault, "misc")
 		if optionName then
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT:format(spellId)
 		end
 		tinsert(self.countdowns, obj)
@@ -5138,10 +5158,10 @@ do
 			mt
 		)
 		obj.option = obj.id
-		self:AddBoolOption(obj.option, optionDefault, "misc")
 		if optionName then
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
-			obj.option = obj.id
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2:format(spellId)
 		end
 		tinsert(self.countdowns, obj)
@@ -5214,7 +5234,7 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(optionName, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
 			obj.option = "Countout"..spellId..(optionSaveVar or "")
 			self:AddBoolOption(obj.option, optionDefault, "misc")
@@ -5253,7 +5273,7 @@ do
 		)
 		if optionName then
 			obj.option = optionName
-			self:AddBoolOption(optionName, optionDefault, "misc")
+			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
 			obj.option = "Yell"..(spellId or yellText)..(optionSaveVar or "")
 			self:AddBoolOption(obj.option, optionDefault, "misc")
@@ -6009,7 +6029,7 @@ do
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
 		timer = timer or 10
 		local bar = self:NewTimer(timer, barText or DBM_CORE_GENERIC_TIMER_COMBAT, barIcon or 2457, nil, "timer_combat")
-		local countdown = self:NewCountdown(0, 0, nil, false, nil, true)
+		local countdown = self:NewCountdown(2457, 0, nil, false, nil, true)
 		local obj = setmetatable(
 			{
 				bar = bar,
