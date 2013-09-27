@@ -35,7 +35,7 @@ local warnIronTomb					= mod:NewSpellAnnounce(144328, 3)
 --local warnFrostStormBolt			= mod:NewSpellAnnounce(144214, 2, nil, mod:IsTank())
 local warnToxicStorm				= mod:NewTargetAnnounce(144005, 3)
 local warnFoulGeyser				= mod:NewTargetAnnounce(143990, 4)
-local warnFallingAsh				= mod:NewSpellAnnounce(143973, 3)
+local warnFallingAsh				= mod:NewCastAnnounce(143973, 3, 15)
 local warnIronPrison				= mod:NewTargetAnnounce(144330, 3)
 
 --Earthbreaker Haromm
@@ -128,9 +128,7 @@ function mod:FoulStreamTarget(targetname, uId)
 			specWarnFoulStreamYou:Show()
 			yellFoulStream:Yell()
 		else
-			if self:checkTankDistance(71859) then
-				specWarnFoulStream:Show()
-			end
+			specWarnFoulStream:Show()
 		end
 	end
 end
@@ -180,30 +178,24 @@ function mod:SPELL_CAST_START(args)
 				timerFrostStormBoltCD:Start()
 			end
 		end--]]
-	elseif args.spellId == 144090 then
+	elseif args.spellId == 144090 and self:checkTankDistance(args:GetSrcCreatureID(), 50)  then
 		self:BossTargetScanner(71859, "FoulStreamTarget", 0.05, 16)
-	elseif args.spellId == 143990 then
+	elseif args.spellId == 143990 and self:checkTankDistance(args:GetSrcCreatureID(), 50)  then
 		timerFoulGeyserCD:Start()
-		if self:checkTankDistance(args:GetSrcCreatureID()) then
-			specWarnFoulGeyser:Show()
-			countdownFoulGeyser:Start()
-		end
-	elseif args.spellId == 144070 then
+		specWarnFoulGeyser:Show()
+		countdownFoulGeyser:Start()
+	elseif args.spellId == 144070 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		warnAshenWall:Show()
 		timerAshenWallCD:Start()
-		if self:checkTankDistance(args:GetSrcCreatureID()) then--Now we know who is tanking that boss
-			specWarnAshenWall:Show()--Give special warning cause this ability concerns you
-		end
-	elseif args.spellId == 143973 then
+		specWarnAshenWall:Show()--Give special warning cause this ability concerns you
+	elseif args.spellId == 143973 then--No filter, damages entire raid
 		warnFallingAsh:Show()
 		timerFallingAshCD:Start()
-		if self:checkTankDistance(args:GetSrcCreatureID()) then--Now we know who is tanking that boss
-			specWarnFallingAsh:Show()--Give special warning cause this ability concerns you
-		end
-	elseif args.spellId == 144330 then
+		specWarnFallingAsh:Schedule(15)--Give special warning when damage happens, not cast
+	elseif args.spellId == 144330 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		warnIronPrison:Show()
 		timerIronPrisonCD:Start()
-	elseif args.spellId == 144328 then
+	elseif args.spellId == 144328 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		warnIronTomb:Show()
 		timerIronTombCD:Start()
 		specWarnIronTomb:Show()
@@ -231,7 +223,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			end
 		end--]]
 	elseif args.spellId == 143990 then
-		warnFoulGeyser:Show(args.destName)
+		if self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+			warnFoulGeyser:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			yellFoulGeyser:Yell()
 		end
@@ -255,7 +249,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:ScheduleMethod(0.5, "SetToxicIcons")
 			end
 		end
-	elseif args.spellId == 144330 then
+	elseif args.spellId == 144330 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		ironPrisonTargets[#ironPrisonTargets + 1] = args.destName
 		self:Unschedule(warnIronPrisonTargets)
 		self:Schedule(0.5, warnIronPrisonTargets)
