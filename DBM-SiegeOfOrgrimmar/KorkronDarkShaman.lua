@@ -32,15 +32,13 @@ local warnFoulStream				= mod:NewTargetAnnounce(144090, 3)
 local warnAshenWall					= mod:NewSpellAnnounce(144070, 4)
 local warnIronTomb					= mod:NewSpellAnnounce(144328, 3)
 --Wavebinder Kardris
---local warnFrostStormBolt			= mod:NewSpellAnnounce(144214, 2, nil, mod:IsTank())
 local warnToxicStorm				= mod:NewTargetAnnounce(144005, 3)
 local warnFoulGeyser				= mod:NewTargetAnnounce(143990, 4)
 local warnFallingAsh				= mod:NewCastAnnounce(143973, 3, 15)
 local warnIronPrison				= mod:NewTargetAnnounce(144330, 3)
 
 --Earthbreaker Haromm
---local specWarnFroststormStrikeCast	= mod:NewSpecialWarningSpell(144215, false)--spammy, but useful for a tank if they want to time active mitigation around it.
-local specWarnFroststormStrike		= mod:NewSpecialWarningStack(144215, mod:IsTank(), 6)
+local specWarnFroststormStrike		= mod:NewSpecialWarningStack(144215, mod:IsTank(), 5)
 local specWarnFroststormStrikeOther	= mod:NewSpecialWarningTarget(144215, mod:IsTank())
 local specWarnFoulStreamYou			= mod:NewSpecialWarningYou(144090)
 local yellFoulStream				= mod:NewYell(144090)
@@ -48,28 +46,25 @@ local specWarnFoulStream			= mod:NewSpecialWarningSpell(144090, nil, nil, nil, 2
 local specWarnAshenWall				= mod:NewSpecialWarningSpell(144070, nil, nil, nil, 2)
 local specWarnIronTomb				= mod:NewSpecialWarningSpell(144328, nil, nil, nil, 2)
 --Wavebinder Kardris
---local specWarnFrostStormBolt		= mod:NewSpecialWarningSpell(144214, false)--spammy, but useful for a tank if they want to time active mitigation around it.
 local specWarnToxicStorm			= mod:NewSpecialWarningYou(144017)--Spellid changed to force an option default reset. melee default was for ptr version that always targeted tank
 local specWarnToxicStormNear		= mod:NewSpecialWarningClose(144005)
 local yellToxicStorm				= mod:NewYell(144005)
 local specWarnFoulGeyser			= mod:NewSpecialWarningSpell(143990)
 local yellFoulGeyser				= mod:NewYell(143990)
-local specWarnFallingAsh			= mod:NewSpecialWarningSpell(143973, nil, nil, nil, 2)--Seems like an everyone waring.
+local specWarnFallingAsh			= mod:NewSpecialWarningPreWarn(143973, nil, 3, nil, 2)
 local specWarnIronPrison			= mod:NewSpecialWarningSoon(144330)--If this generic isn't too clear i'll localize it. this is warning that it's about to expire not that it's just been applied
 local yellIronPrisonFades			= mod:NewYell(144330, L.PrisonYell, false)--Off by default since it's an atypical yell (it's not used for avoiding person it's used to get healer attention to person)
 
 --Earthbreaker Haromm
 local timerFroststormStrike			= mod:NewTargetTimer(30, 144215, nil, mod:IsTank())
---local timerFroststormStrikeCD		= mod:NewCDTimer(6, 144215, nil, mod:IsTank())
 local timerToxicMistsCD				= mod:NewCDTimer(32, 144089)--Pretty much a next timers unless boss is casting something else
 local timerFoulStreamCD				= mod:NewCDTimer(32.5, 144090)--Pretty much a next timers unless boss is casting something else
 local timerAshenWallCD				= mod:NewCDTimer(32.5, 144070)--Pretty much a next timers unless boss is casting something else
 local timerIronTombCD				= mod:NewCDTimer(31.5, 144328)--Pretty much a next timers unless boss is casting something else
 --Wavebinder Kardris
---local timerFrostStormBoltCD			= mod:NewCDTimer(6.8, 144214, nil, mod:IsTank())
 local timerToxicStormCD				= mod:NewCDTimer(32, 144005)--Pretty much a next timers unless boss is casting something else
 local timerFoulGeyserCD				= mod:NewCDTimer(32.5, 143990)--Pretty much a next timers unless boss is casting something else
-local timerFallingAshCD				= mod:NewCDTimer(32.5, 143973)--Pretty much a next timers unless boss is casting something else
+local timerFallingAshCD				= mod:NewCDCountTimer(32.5, 143973)--Pretty much a next timers unless boss is casting something else
 local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next timers unless boss is casting something else
 local timerIronPrison				= mod:NewBuffFadesTimer(60, 144330)
 
@@ -86,6 +81,7 @@ local toxicMistsTargetsIcons = {}
 local ironPrisonTargets = {}
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local playerName = UnitName("player")
+local ashCount = 0
 
 local function warnToxicMistTargets()
 	warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
@@ -155,6 +151,7 @@ function mod:ToxicStormTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
+	ashCount = 0
 	table.wipe(toxicMistsTargets)
 	berserkTimer:Start(-delay)
 end
@@ -169,15 +166,6 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 144005 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		self:BossTargetScanner(71858, "ToxicStormTarget", 0.05, 16)
 		timerToxicStormCD:Start()
---[[elseif args.spellId == 144214 then
-		for i = 1, 2 do
-			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
-				warnFrostStormBolt:Show()
-				specWarnFrostStormBolt:Show()
-				timerFrostStormBoltCD:Start()
-			end
-		end--]]
 	elseif args.spellId == 144090 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		self:BossTargetScanner(71859, "FoulStreamTarget", 0.05, 16)
 	elseif args.spellId == 143990 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
@@ -189,9 +177,10 @@ function mod:SPELL_CAST_START(args)
 		timerAshenWallCD:Start()
 		specWarnAshenWall:Show()--Give special warning cause this ability concerns you
 	elseif args.spellId == 143973 then--No filter, damages entire raid
+		ashCount = ashCount + 1
 		warnFallingAsh:Show()
-		timerFallingAshCD:Start()
-		specWarnFallingAsh:Schedule(15)--Give special warning when damage happens, not cast
+		timerFallingAshCD:Start(nil, ashCount+1)
+		specWarnFallingAsh:Schedule(12)--Give special warning 3 seconds before happens, not cast
 	elseif args.spellId == 144330 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 		timerIronPrisonCD:Start()
 	elseif args.spellId == 144328 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
@@ -213,14 +202,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnAshflareTotem:Show()
 	elseif args.spellId == 144291 and self:AntiSpam() then
 		warnRustedIronTotem:Show()
---[[elseif args.spellId == 144215 and args.sourceName == UnitName("target") then
-		for i = 1, 2 do
-			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
-				specWarnFroststormStrikeCast:Schedule(4)
-				timerFroststormStrikeCD:Start()
-			end
-		end--]]
 	elseif args.spellId == 143990 then
 		if self:checkTankDistance(args:GetSrcCreatureID(), 50) then
 			warnFoulGeyser:Show(args.destName)
@@ -258,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if amount % 2 == 0 then
 			warnFroststormStrike:Show(args.destName, amount)
 		end
-		if amount >= 6 then
+		if amount >= 5 then
 			if args:IsPlayer() then
 				specWarnFroststormStrike:Show(amount)
 			else
