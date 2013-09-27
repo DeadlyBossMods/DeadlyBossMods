@@ -40,7 +40,7 @@ local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
 
 --Sha of Pride
 local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
-local yellGiftOfTitans			= mod:NewYell(146594, nil, false)
+local yellGiftOfTitans			= mod:NewYell(146594, nil, false, nil, nil, 2)
 local specWarnSwellingPride		= mod:NewSpecialWarningCount(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
 local specWarnSelfReflection	= mod:NewSpecialWarningSpell(144800, nil, nil, nil, 2)
