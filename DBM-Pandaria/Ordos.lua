@@ -6,16 +6,12 @@ mod:SetCreatureID(72057)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
-)
-
-mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnAncientFlame			= mod:NewSpellAnnounce(144695, 2)--probably add a move warning with right DAMAGE event
@@ -35,7 +31,6 @@ local berserkTimer				= mod:NewBerserkTimer(300)
 mod:AddBoolOption("SetIconOnBurningSoul")
 mod:AddBoolOption("RangeFrame", true)
 
-local yellTriggered = false
 local DebuffTargets = {}
 local DebuffIcons = {}
 local DebuffIcon = 8
@@ -60,7 +55,7 @@ do
 	end
 end
 
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
 		berserkTimer:Start()
 	end
@@ -70,7 +65,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -129,15 +123,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 		if args:IsPlayer() and self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
-		end
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Pull and not self:IsInCombat() then
-		if self:GetCIDFromGUID(UnitGUID("target")) == 72057 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 72057 then
-			yellTriggered = true
-			DBM:StartCombat(self, 0)
 		end
 	end
 end

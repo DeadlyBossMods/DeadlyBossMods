@@ -5,17 +5,14 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71954)
 mod:SetMinSyncRevision(10162)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat_yell", L.Pull)
+mod:RegisterKill("yell", L.Victory, L.VictoryDem)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
-)
-
-mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnHeadbutt				= mod:NewSpellAnnounce(144610, 3, nil, mod:IsTank())
@@ -31,17 +28,11 @@ local timerHeadbuttCD			= mod:NewCDTimer(47, 144610, nil, mod:IsTank())
 local timerMassiveQuake			= mod:NewBuffActiveTimer(13, 144611)
 local timerMassiveQuakeCD		= mod:NewCDTimer(48, 144611)
 
-local yellTriggered = false
-
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then
 		timerHeadbuttCD:Start(16-delay)
 		timerMassiveQuakeCD:Start(45-delay)
 	end
-end
-
-function mod:OnCombatEnd()
-	yellTriggered = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -66,17 +57,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Victory or msg == L.VictoryDem then
-		self:SendSync("Victory")
-	elseif msg == L.Pull and not self:IsInCombat() then
-		if self:GetCIDFromGUID(UnitGUID("target")) == 71954 or self:GetCIDFromGUID(UnitGUID("targettarget")) == 71954 then
-			yellTriggered = true
-			DBM:StartCombat(self, 0)
-		end
-	end
-end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 148318 or spellId == 148317 or spellId == 149304 and self:AntiSpam(3, 2) then--use all 3 because i'm not sure which ones fire on repeat kills
