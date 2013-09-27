@@ -30,6 +30,7 @@ local berserkTimer				= mod:NewBerserkTimer(300)
 
 mod:AddBoolOption("SetIconOnBurningSoul")
 mod:AddBoolOption("RangeFrame", true)
+mod:AddReadyCheckOption(33118, false)
 
 local DebuffTargets = {}
 local DebuffIcons = {}
