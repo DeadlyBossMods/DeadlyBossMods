@@ -84,13 +84,17 @@ local playerName = UnitName("player")
 local ashCount = 0
 
 local function warnToxicMistTargets()
-	warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
-	timerToxicMistsCD:Start()
+	if mod:checkTankDistance(71859, 50) then
+		warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
+		timerToxicMistsCD:Start()
+	end
 	table.wipe(toxicMistsTargets)
 end
 
 local function warnIronPrisonTargets()
-	warnIronPrison:Show(table.concat(ironPrisonTargets, "<, >"))
+	if mod:checkTankDistance(71858, 50) then
+		warnIronPrison:Show(table.concat(ironPrisonTargets, "<, >"))
+	end
 	table.wipe(ironPrisonTargets)
 end
 
@@ -219,9 +223,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnRend:Show(args.destName, amount)
 		end
 	elseif args.spellId == 144089 then
+		--Filter warnings only
 		toxicMistsTargets[#toxicMistsTargets + 1] = args.destName
 		self:Unschedule(warnToxicMistTargets)
 		self:Schedule(0.5, warnToxicMistTargets)
+		--Not filter icons, in case the only person with assist/icons enabled is far away.
 		if self.Options.SetIconOnToxicMists and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
 			table.insert(toxicMistsTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
 			self:UnscheduleMethod("SetToxicIcons")
@@ -229,7 +235,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:ScheduleMethod(0.5, "SetToxicIcons")
 			end
 		end
-	elseif args.spellId == 144330 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+	elseif args.spellId == 144330 then
 		ironPrisonTargets[#ironPrisonTargets + 1] = args.destName
 		self:Unschedule(warnIronPrisonTargets)
 		self:Schedule(0.5, warnIronPrisonTargets)
