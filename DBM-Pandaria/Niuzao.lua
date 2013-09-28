@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71954)
+mod:SetReCombatTime(20)
 mod:SetMinSyncRevision(10162)
 
 mod:RegisterCombat("combat_yell", L.Pull)

@@ -147,48 +147,48 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 145996 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	if args.spellId == 145996 and self:CheckTankDistance(args.sourceGUID) then
 		timerSetToBlowCD:Start(args.sourceGUID)
-	elseif args.spellId == 145288 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145288 and self:CheckTankDistance(args.sourceGUID) then
 		warnMatterScramble:Show()
 		specWarnMatterScramble:Show()
 		timerMatterScrambleCD:Start(args.sourceGUID)
-	elseif args.spellId == 145461 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145461 and self:CheckTankDistance(args.sourceGUID) then
 		warnEnergize:Show()
-	elseif args.spellId == 142934 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 142934 and self:CheckTankDistance(args.sourceGUID) then
 		warnTorment:Show()
 		specWarnTorment:Show()
-	elseif args.spellId == 142539 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 142539 and self:CheckTankDistance(args.sourceGUID) then
 		warnMantidSwarm:Show()
 		specWarnMantidSwarm:Show()
 		timerMantidSwarmCD:Start(args.sourceGUID)
-	elseif args.spellId == 145286 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145286 and self:CheckTankDistance(args.sourceGUID) then
 		warnWindStorm:Show()
 		timerWindstormCD:Start(args.sourceGUID)
-	elseif args.spellId == 144922 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 144922 and self:CheckTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnHardenFlesh:Show()
 		timerHardenFleshCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnHardenFlesh:Show(source)
 		end
-	elseif args.spellId == 144923 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 144923 and self:CheckTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnEarthenShard:Show()
 		timerEarthenShardCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnEarthenShard:Show(source)
 		end
-	elseif args.spellId == 146222 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 146222 and self:CheckTankDistance(args.sourceGUID) then
 		warnBreathofFire:Show()
-	elseif args.spellId == 146180 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 146180 and self:CheckTankDistance(args.sourceGUID) then
 		warnGustingCraneKick:Show()
 		specWarnGustingCraneKick:Show()
 		timerGustingCraneKickCD:Start(args.sourceGUID)
-	elseif args.spellId == 145489 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145489 and self:CheckTankDistance(args.sourceGUID) then
 		warnReturnToStone:Show()
 		timerReturnToStoneCD:Start(args.sourceGUID)
-	elseif args.spellId == 142947 and self:CheckTankDistance(args:GetSrcCreatureID()) then--Pre warn more or less
+	elseif args.spellId == 142947 and self:CheckTankDistance(args.sourceGUID) then--Pre warn more or less
 		warnCrimsonRecon:Show()
 	elseif args.spellId == 146815 then
 		warnSuperNova:Show()
@@ -198,29 +198,29 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 142694 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	if args.spellId == 142694 and self:CheckTankDistance(args.sourceGUID) then
 		warnSparkofLife:Show()
 --		specWarnSparkofLife:Show()
-	elseif args.spellId == 142947 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 142947 and self:CheckTankDistance(args.sourceGUID) then
 		specWarnCrimsonRecon:Show()--Done here because we want to warn when we need to move mobs, not on cast start (when we can do nothing)
 		timerCrimsonReconCD:Start(args.sourceGUID)
-	elseif args.spellId == 145712 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145712 and self:CheckTankDistance(args.sourceGUID) then
 		timerBlazingChargeCD:Start(args.sourceGUID)
 --		self:BossTargetScanner(args.sourceGUID, "BlazingChargeTarget", 0.025, 12)
-	elseif args.spellId == 146253 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 146253 and self:CheckTankDistance(args.sourceGUID) then
 		timerPathOfBlossomsCD:Start(args.sourceGUID)
 --		self:BossTargetScanner(args.sourceGUID, "PathofBlossomsTarget", 0.025, 12)
-	elseif args.spellId == 145230 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145230 and self:CheckTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnForbiddenMagic:Show(args.destName)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnForbiddenMagic:Show(source)
 		end
-	elseif args.spellId == 145786 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145786 and self:CheckTankDistance(args.sourceGUID) then
 		warnResidue:Show()
 		timerResidueCD:Start(args.sourceGUID)
 		specWarnResidue:Show()
-	elseif args.spellId == 145812 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145812 and self:CheckTankDistance(args.sourceGUID) then
 		warnRageoftheEmpress:Show()
 		specWarnRageoftheEmpress:Show()
 		timerRageoftheEmpressCD:Start(args.sourceGUID)
@@ -228,7 +228,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 145987 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	if args.spellId == 145987 and self:CheckTankDistance(args.sourceGUID) then
 		setToBlowTargets[#setToBlowTargets + 1] = args.destName
 		self:Unschedule(warnSetToBlowTargets)
 		self:Schedule(0.5, warnSetToBlowTargets)
@@ -242,11 +242,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(32, hideRangeFrame)
 			end
 		end
-	elseif args.spellId == 145692 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 145692 and self:CheckTankDistance(args.sourceGUID) then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
 		timerEnrage:Start(args.destName)
-	elseif args.spellId == 145998 and self:CheckTankDistance(args:GetSrcCreatureID()) then--This is a massive crate mogu spawning
+	elseif args.spellId == 145998 and self:CheckTankDistance(args.sourceGUID) then--This is a massive crate mogu spawning
 		timerReturnToStoneCD:Start(6)
 	end
 end
