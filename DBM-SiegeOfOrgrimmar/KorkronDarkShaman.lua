@@ -71,7 +71,7 @@ local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next ti
 local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990, mod:IsTank() or mod:IsRangedDps(), nil, nil, nil, nil, 2)
-local countdownAshenWall			= mod:NewCountdown(32.5, 144070, false, nil, nil, nil, true, 3)--Default value changed. need force reset.
+local countdownFallingAsh			= mod:NewCountdown(15, 143973)
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
@@ -143,7 +143,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144070 and self:CheckTankDistance(args:GetSrcCreatureID(), 30) then
 		warnAshenWall:Show()
 		timerAshenWallCD:Start()
-		countdownAshenWall:Start()
 		specWarnAshenWall:Show()
 	elseif args.spellId == 143973 then--No filter, damages entire raid
 		ashCount = ashCount + 1
@@ -151,6 +150,7 @@ function mod:SPELL_CAST_START(args)
 		timerFallingAsh:Start()
 		timerFallingAshCD:Start(nil, ashCount+1)
 		specWarnFallingAsh:Schedule(12)--Give special warning 3 seconds before happens, not cast
+		countdownFallingAsh:Start(15)
 	elseif args.spellId == 144330 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
 		timerIronPrisonCD:Start()
 	elseif args.spellId == 144328 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
