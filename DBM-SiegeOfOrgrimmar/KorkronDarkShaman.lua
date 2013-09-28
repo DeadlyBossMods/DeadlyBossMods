@@ -71,7 +71,7 @@ local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next ti
 local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990, mod:IsTank() or mod:IsRangedDps(), nil, nil, nil, nil, 2)
-local countdownAshenWall			= mod:NewCountdown(32.5, 144070, false, nil, nil, nil, true)
+local countdownAshenWall			= mod:NewCountdown(32.5, 144070, false, nil, nil, nil, true, 3)--Default value changed. need force reset.
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
