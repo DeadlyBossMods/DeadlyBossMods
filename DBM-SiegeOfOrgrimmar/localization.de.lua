@@ -20,10 +20,6 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
-L:SetOptionLocalization({
-	InfoFrame			= "Zeige Infofenster für $journal:8252"
-})
-
 L:SetMiscLocalization({
 	wasteOfTime			= "Nun gut, ich werde ein Feld erschaffen, das Eure Verderbnis eindämmt."
 })
@@ -32,10 +28,6 @@ L:SetMiscLocalization({
 -- Sha of Pride --
 ------------------
 L= DBM:GetModLocalization(867)
-
-L:SetOptionLocalization({
-	InfoFrame			= "Zeige Infofenster für $journal:8255"
-})
 
 --------------
 -- Galakras --
@@ -84,9 +76,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "Zeige Vorwarnungscountdown für $spell:143593 (5s zuvor)",
-	SetIconOnAdds				= "Setze Zeichen auf $journal:7920",
-	InfoFrame					= "Zeige Infofenster für $journal:7909"
+	warnDefensiveStanceSoon		= "Zeige Vorwarnungscountdown für $spell:143593 (5s zuvor)"
 })
 
 L:SetMiscLocalization({
@@ -126,10 +116,6 @@ L:SetOptionLocalization({
 -- Siegecrafter Blackfuse --
 ----------------------------
 L= DBM:GetModLocalization(865)
-
-L:SetOptionLocalization({
-	InfoFrame			= "Zeige Infofenster für $journal:8202"
-})
 
 L:SetMiscLocalization({
 	newWeapons	= "Unfertige Waffen werden auf das Fabrikationsband befördert.",--needs to be verified (video-captured translation)
@@ -175,10 +161,6 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
-
-L:SetOptionLocalization({
-	SetIconOnShaman			= "Setze Zeichen auf $journal:8294"
-})
 
 -------------
 --  Trash  --

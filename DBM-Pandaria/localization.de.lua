@@ -7,8 +7,7 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Zeige dynamisches Abstandsfenster (5m) basierend auf Spieler-Debuffs für $spell:119622",
-	ReadyCheck			= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Weltboss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
+	RangeFrame			= "Zeige dynamisches Abstandsfenster (5m) basierend auf Spieler-Debuffs für $spell:119622"
 })
 
 L:SetMiscLocalization({
@@ -20,10 +19,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Weltboss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "Bringt mir ihre Leichen!"
 })
@@ -33,10 +28,6 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(826)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Weltboss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "Ihr wagt es, uns're Vorbereitungen zu stör'n? Die Zandalari werd'n sich nicht aufhalten lass'n, diesmal nicht!"
 })
@@ -45,10 +36,6 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
-
-L:SetOptionLocalization({
-	ReadyCheck			= "Spiele \"Bereitschaftscheck\"-Sound, wenn der Weltboss angegriffen wird (auch wenn er nicht als Ziel gesetzt ist)"
-})
 
 L:SetMiscLocalization({
 	Pull				= "Könnt Ihr den kalten Hauch spüren?"
@@ -77,6 +64,7 @@ L:SetMiscLocalization({
 	Pull					= "Die Prüfung beginnt!",
 	Wave1					= "Lasst Euren Verstand nicht von schweren Zeiten verschleiern!",
 	Wave2					= "Hört auf Eure innere Stimme und sucht nach der Wahrheit.",
+	Wave3					= "Bedenkt stets die Konsequenzen Eurer Taten!",
 	Victory					= "Eure Weisheit hat Euch diese Prüfung bestehen lassen. Möge sie Euch den Weg aus der Dunkelheit erhellen."
 })
 
