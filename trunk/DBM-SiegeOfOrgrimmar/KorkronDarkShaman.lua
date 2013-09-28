@@ -34,7 +34,7 @@ local warnIronTomb					= mod:NewSpellAnnounce(144328, 3)
 --Wavebinder Kardris
 local warnToxicStorm				= mod:NewTargetAnnounce(144005, 2)
 local warnFoulGeyser				= mod:NewTargetAnnounce(143990, 4)
-local warnFallingAsh				= mod:NewCastAnnounce(143973, 4, 15)
+local warnFallingAsh				= mod:NewCastAnnounce(143973, 4, 17)
 local warnIronPrison				= mod:NewTargetAnnounce(144330, 3)
 
 --Earthbreaker Haromm
@@ -64,7 +64,7 @@ local timerIronTombCD				= mod:NewCDTimer(31.5, 144328)--Pretty much a next time
 --Wavebinder Kardris
 local timerToxicStormCD				= mod:NewCDTimer(32, 144005)--Pretty much a next timers unless boss is casting something else
 local timerFoulGeyserCD				= mod:NewCDTimer(32.5, 143990)--Pretty much a next timers unless boss is casting something else
-local timerFallingAsh				= mod:NewCastTimer(15, 143973)
+local timerFallingAsh				= mod:NewCastTimer(17, 143973)
 local timerFallingAshCD				= mod:NewCDCountTimer(32.5, 143973)--Pretty much a next timers unless boss is casting something else
 local timerIronPrison				= mod:NewTargetTimer(60, 144330, nil, mod:IsHealer())
 local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next timers unless boss is casting something else
@@ -149,8 +149,8 @@ function mod:SPELL_CAST_START(args)
 		warnFallingAsh:Show()
 		timerFallingAsh:Start()
 		timerFallingAshCD:Start(nil, ashCount+1)
-		specWarnFallingAsh:Schedule(12)--Give special warning 3 seconds before happens, not cast
-		countdownFallingAsh:Start(15)
+		specWarnFallingAsh:Schedule(14)--Give special warning 3 seconds before happens, not cast
+		countdownFallingAsh:Start(17)
 	elseif args.spellId == 144330 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
 		timerIronPrisonCD:Start()
 	elseif args.spellId == 144328 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then

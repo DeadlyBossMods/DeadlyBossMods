@@ -20,7 +20,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Nazgrim Core Abilities
-local warnSunder					= mod:NewStackAnnounce(143494, 2)--Will add special warnings and such when know cd and stack count needed for swaps
+local warnSunder					= mod:NewStackAnnounce(143494, 2, nil, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, 2)--Will add special warnings and such when know cd and stack count needed for swaps
 local warnBonecracker				= mod:NewTargetAnnounce(143638, 2, nil, false, nil, nil, nil, nil, 2)
 local warnBattleStance				= mod:NewSpellAnnounce(143589, 2)
 local warnBerserkerStance			= mod:NewSpellAnnounce(143594, 3)
@@ -344,7 +344,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEarthShield:Show(args.destName)
 	elseif args.spellId == 143638 then
 		warnBonecracker:CombinedShow(1.5, args.destName)
-		timerBondCD:DelayedStart(1.5)--Takes a while to get on all targets. 1.5 seconds in 10 man, not sure about 25 man yet
+		timerBoneCD:DelayedStart(1.5)--Takes a while to get on all targets. 1.5 seconds in 10 man, not sure about 25 man yet
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
