@@ -4511,24 +4511,29 @@ end
 function bossModPrototype:CheckTankDistance(cid, distance)
 	local cid = cid or self.creatureId--GetBossTarget supports GUID or CID and it will automatically return correct values with EITHER ONE
 	local distance = distance or 40
-	local _, uId, mobuId = self:GetBossTarget(cid)
-	if mobuId then
-		if uId then
-			print("DBM CheckTankDistance DEBUG uId/mobuId: "..uId.." ("..UnitName(uId).." "..mobuId.." ("..UnitName(mobuId))
+	local uId
+	local _, fallbackuId, mobuId = self:GetBossTarget(cid)
+	if mobuId then--Have a valid mob unit ID
+		if fallbackuId then
+			print("DBM CheckTankDistance DEBUG fallbackuId/mobuId: "..fallbackuId.." ("..UnitName(fallbackuId).." "..mobuId.." ("..UnitName(mobuId))
 		else
-			print("DBM CheckTankDistance DEBUG mobuId (no valid uId): "..mobuId.." ("..UnitName(mobuId))
+			print("DBM CheckTankDistance DEBUG mobuId (no valid fallbackuId): "..mobuId.." ("..UnitName(mobuId))
 		end
-	end
-	if mobuId and (not uId or (uId and (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5"))) then--Mob has no target, or is targeting a UnitID we cannot range check
+		--First, use trust threat more than fallbackuId and see what we pull from it first.
+		--This is because for CheckTankDistance we want to know who is tanking it, not who it's targeting it.
 		local unitID = (IsInRaid() and "raid") or (IsInGroup() and "party") or "player"
 		for i = 1, DBM:GetNumGroupMembers() do
 			local tanking, status = UnitDetailedThreatSituation(unitID..i, mobuId)--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
-			if tanking or status == 3 then uId = unitID..i end--Found highest threat target, make their uId
+			if tanking or status == 3 then uId = unitID..i end--Found highest threat target, make them uId
 			print("DBM CheckTankDistance DEBUG Threat uId: "..uId.." ("..UnitName(unitID..i)..")")
 			break
 		end
 	end
-	if uId then--Now we know who mob is targeting (or highest threat is)
+	--Did not get anything useful from threat, so use who the boss was looking at, at time of cast (ie fallbackuId)
+	if fallbackuId and not uId then
+		uId = fallbackuId
+	end
+	if uId then--Now we have a valid uId
 		if UnitIsUnit("player", uId) then return true end--If "player" is target, avoid doing any complicated stuff
 		local x, y = GetPlayerMapPosition(uId)
 		if x == 0 and y == 0 then
