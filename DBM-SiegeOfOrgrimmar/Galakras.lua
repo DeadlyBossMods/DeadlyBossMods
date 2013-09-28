@@ -26,6 +26,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_MISSED",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED",
+	"UPDATE_WORLD_STATES",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
@@ -73,7 +74,7 @@ local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:Is
 
 --Stage 2: Bring Her Down!
 local timerAddsCD					= mod:NewNextTimer(55, "ej8553", nil, nil, nil, 2457)
-local timerTowerCD					= mod:NewTimer(151, "timerTowerCD", 88852)
+local timerTowerCD					= mod:NewTimer(99, "timerTowerCD", 88852)
 local timerDemolisherCD				= mod:NewNextTimer(20, "ej8562", nil, nil, nil, 116040)--EJ is just not complete yet, shouldn't need localizing
 local timerProtoCD					= mod:NewNextTimer(55, "ej8587", nil, nil, nil, 59961)
 ----High Enforcer Thranok (Road)
@@ -231,20 +232,21 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+function mod:UPDATE_WORLD_STATES()
+	local text = select(4, GetWorldStateUIInfo(4))
+	local percent = tonumber(string.match(text, "%d+"))
+	if percent == 1 and not firstTower and not self:IsDifficulty("heroic10", "heroic25")then
+		firstTower = true
+		timerTowerCD:Start()
+	end
+end
+
 --"<167.7 21:23:40> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Warlord Zaela orders a |cFFFF0404|hKor'kron Demolisher|h|r to assault the tower!
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("cFFFF0404") then--They fixed epiccenter bug (figured they would). Color code should be usuable though. It's only emote on encounter that uses it.
 		warnDemolisher:Show()
 	elseif msg:find(L.tower) then
 		timerDemolisherCD:Start()
-		if not firstTower and not self:IsDifficulty("heroic10", "heroic25") then
-			firstTower = true
-			if self:IsDifficulty("lfr25") then
-				timerTowerCD:Start(166)
-			else
-				timerTowerCD:Start()
-			end
-		end
 	end
 end
 
