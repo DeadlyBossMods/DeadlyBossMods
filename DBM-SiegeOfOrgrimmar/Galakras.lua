@@ -102,10 +102,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 147688 and self:checkTankDistance(args.sourceGUID) then
+	if args.spellId == 147688 and self:CheckTankDistance(args:GetSrcCreatureID(), 20) then--Tower Spell, use small range
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
-	elseif args.spellId == 146757 and self:checkTankDistance(args.sourceGUID) then
+	elseif args.spellId == 146757 and self:CheckTankDistance(args:GetSrcCreatureID()) then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
@@ -115,11 +115,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 146769 and self:checkTankDistance(args.sourceGUID) then
+	if args.spellId == 147824 and self:CheckTankDistance(args:GetSrcCreatureID(), 20) and self:AntiSpam(3, 2) then--Tower Spell, use small range
+		warnMuzzleSpray:Show()
+		specWarnMuzzleSpray:Show()
+	elseif args.spellId == 146769 and self:CheckTankDistance(args:GetSrcCreatureID()) then
 		warnCrushersCall:Show()
 		specWarnCrushersCall:Show()
 		timerCrushersCallCD:Start()
-	elseif args.spellId == 146849 and self:checkTankDistance(args.sourceGUID) then
+	elseif args.spellId == 146849 and self:CheckTankDistance(args:GetSrcCreatureID()) then
 		warnShatteringCleave:Show()
 		timerShatteringCleaveCD:Start()
 	end
@@ -140,10 +143,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args.spellId == 147328 and self:checkTankDistance(args.sourceGUID) then
+	elseif args.spellId == 147328 and self:CheckTankDistance(args:GetSrcCreatureID()) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif args.spellId == 146899 and self:checkTankDistance(args.sourceGUID, 50) then--Use a bigger range than 40 since npcs tend to stand further out
+	elseif args.spellId == 146899 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then--Use a bigger range than 40 since npcs tend to stand further out
 		warnFracture:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFractureYou:Show()
@@ -213,10 +216,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 147825 and self:AntiSpam(2, 2) then--Muzzle Spray::0:147825
-		warnMuzzleSpray:Show()
-		specWarnMuzzleSpray:Show()
-	elseif spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
+	if spellId == 50630 and self:AntiSpam(2, 3) then--Eject All Passengers:
 		timerAddsCD:Cancel()
 		timerProtoCD:Cancel()
 		warnPhase2:Show()

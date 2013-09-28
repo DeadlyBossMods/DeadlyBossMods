@@ -4510,10 +4510,10 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	end
 end
 
-function bossModPrototype:checkTankDistance(guid, distance)
-	local guid = guid or self.creatureId--CID fallback since GetBossTarget should sort it out (supports GUID or CID)
+function bossModPrototype:CheckTankDistance(cid, distance)
+	local cid = cid or self.creatureId--CID fallback since GetBossTarget should sort it out (CID)
 	local distance = distance or 40
-	local _, uId, mobuId = self:GetBossTarget(guid)
+	local _, uId, mobuId = self:GetBossTarget(cid)
 	if mobuId and (not uId or (uId and (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5"))) then--Mob has no target, or is targeting a UnitID we cannot range check
 		local unitID = (IsInRaid() and "raid") or (IsInGroup() and "party") or "player"
 		for i = 1, DBM:GetNumGroupMembers() do

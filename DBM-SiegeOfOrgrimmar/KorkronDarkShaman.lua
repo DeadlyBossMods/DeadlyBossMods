@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Dogs
-local warnRend						= mod:NewStackAnnounce(144304, 2, nil, mod:IsTank())
+local warnRend						= mod:NewStackAnnounce(144304, 2, nil, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, 2)
 
 --General
 local warnPoisonmistTotem			= mod:NewSpellAnnounce(144288, 3)--85%
@@ -26,15 +26,15 @@ local warnAshflareTotem				= mod:NewSpellAnnounce(144290, 3)--45%
 local warnRustedIronTotem			= mod:NewSpellAnnounce(144291, 3)--Heroic (95%)
 
 --Earthbreaker Haromm
-local warnFroststormStrike			= mod:NewStackAnnounce(144215, 2, nil, mod:IsTank())
-local warnToxicMists				= mod:NewTargetAnnounce(144089, 3, nil, false, nil, nil, nil, nil, 2)
-local warnFoulStream				= mod:NewTargetAnnounce(144090, 3)
+local warnFroststormStrike			= mod:NewStackAnnounce(144215, 2, nil, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, 2)
+local warnToxicMists				= mod:NewTargetAnnounce(144089, 2, nil, false, nil, nil, nil, nil, 2)
+local warnFoulStream				= mod:NewTargetAnnounce(144090, 4)
 local warnAshenWall					= mod:NewSpellAnnounce(144070, 4)
 local warnIronTomb					= mod:NewSpellAnnounce(144328, 3)
 --Wavebinder Kardris
-local warnToxicStorm				= mod:NewTargetAnnounce(144005, 3)
+local warnToxicStorm				= mod:NewTargetAnnounce(144005, 2)
 local warnFoulGeyser				= mod:NewTargetAnnounce(143990, 4)
-local warnFallingAsh				= mod:NewCastAnnounce(143973, 3, 15)
+local warnFallingAsh				= mod:NewCastAnnounce(143973, 4, 15)
 local warnIronPrison				= mod:NewTargetAnnounce(144330, 3)
 
 --Earthbreaker Haromm
@@ -43,7 +43,7 @@ local specWarnFroststormStrikeOther	= mod:NewSpecialWarningTarget(144215, mod:Is
 local specWarnFoulStreamYou			= mod:NewSpecialWarningYou(144090)
 local yellFoulStream				= mod:NewYell(144090)
 local specWarnFoulStream			= mod:NewSpecialWarningSpell(144090, nil, nil, nil, 2)
-local specWarnAshenWall				= mod:NewSpecialWarningSpell(144070, nil, nil, nil, 2)
+local specWarnAshenWall				= mod:NewSpecialWarningSpell(144070, not mod:IsHealer(), nil, nil, 2, 2)
 local specWarnIronTomb				= mod:NewSpecialWarningSpell(144328, nil, nil, nil, 2)
 --Wavebinder Kardris
 local specWarnToxicStorm			= mod:NewSpecialWarningYou(144017)--Spellid changed to force an option default reset. melee default was for ptr version that always targeted tank
@@ -64,13 +64,14 @@ local timerIronTombCD				= mod:NewCDTimer(31.5, 144328)--Pretty much a next time
 --Wavebinder Kardris
 local timerToxicStormCD				= mod:NewCDTimer(32, 144005)--Pretty much a next timers unless boss is casting something else
 local timerFoulGeyserCD				= mod:NewCDTimer(32.5, 143990)--Pretty much a next timers unless boss is casting something else
+local timerFallingAsh				= mod:NewCastTimer(15, 143973)
 local timerFallingAshCD				= mod:NewCDCountTimer(32.5, 143973)--Pretty much a next timers unless boss is casting something else
 local timerIronPrison				= mod:NewTargetTimer(60, 144330, nil, mod:IsHealer())
 local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next timers unless boss is casting something else
 local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 
-local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990)
-local countdownAshenWall			= mod:NewCountdown(32.5, 144070, nil, nil, nil, nil, true)
+local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990, mod:IsRangedDps(), nil, nil, nil, nil, 2)
+local countdownAshenWall			= mod:NewCountdown(32.5, 144070, not mod:IsHealer(), nil, nil, nil, true, 2)
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
@@ -85,7 +86,7 @@ local playerName = UnitName("player")
 local ashCount = 0
 
 local function warnToxicMistTargets()
-	if mod:checkTankDistance(71859, 50) then
+	if mod:CheckTargetDistance(71859, 50) then
 		warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
 		timerToxicMistsCD:Start()
 	end
@@ -93,7 +94,7 @@ local function warnToxicMistTargets()
 end
 
 local function warnIronPrisonTargets()
-	if mod:checkTankDistance(71858, 50) then
+	if mod:CheckTargetDistance(71858, 50) then
 		warnIronPrison:Show(table.concat(ironPrisonTargets, "<, >"))
 	end
 	table.wipe(ironPrisonTargets)
@@ -168,27 +169,29 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 144005 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+	if args.spellId == 144005 and self:CheckTargetDistance(CheckTankDistance, 50) then
 		self:BossTargetScanner(71858, "ToxicStormTarget", 0.05, 16)
 		timerToxicStormCD:Start()
-	elseif args.spellId == 144090 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+	elseif args.spellId == 144090 and self:CheckTargetDistance(CheckTankDistance, 50) then
 		self:BossTargetScanner(71859, "FoulStreamTarget", 0.05, 16)
-	elseif args.spellId == 143990 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+	elseif args.spellId == 143990 and self:CheckTargetDistance(CheckTankDistance, 50) then
 		timerFoulGeyserCD:Start()
 		specWarnFoulGeyser:Show()
 		countdownFoulGeyser:Start()
-	elseif args.spellId == 144070 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+	elseif args.spellId == 144070 and self:CheckTargetDistance(CheckTankDistance, 50) then
 		warnAshenWall:Show()
 		timerAshenWallCD:Start()
+		countdownAshenWall:Start()
 		specWarnAshenWall:Show()--Give special warning cause this ability concerns you
 	elseif args.spellId == 143973 then--No filter, damages entire raid
 		ashCount = ashCount + 1
 		warnFallingAsh:Show()
+		timerFallingAsh:Start()
 		timerFallingAshCD:Start(nil, ashCount+1)
 		specWarnFallingAsh:Schedule(12)--Give special warning 3 seconds before happens, not cast
-	elseif args.spellId == 144330 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+	elseif args.spellId == 144330 and self:CheckTargetDistance(CheckTankDistance, 50) then
 		timerIronPrisonCD:Start()
-	elseif args.spellId == 144328 and self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+	elseif args.spellId == 144328 and self:CheckTargetDistance(CheckTankDistance, 50) then
 		warnIronTomb:Show()
 		timerIronTombCD:Start()
 		specWarnIronTomb:Show()
@@ -208,7 +211,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 144291 and self:AntiSpam() then
 		warnRustedIronTotem:Show()
 	elseif args.spellId == 143990 then
-		if self:checkTankDistance(args:GetSrcCreatureID(), 50) then
+		if self:CheckTargetDistance(CheckTankDistance, 50) then
 			warnFoulGeyser:Show(args.destName)
 		end
 		if args:IsPlayer() then
