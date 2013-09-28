@@ -235,7 +235,7 @@ end
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(4))
 	local percent = tonumber(string.match(text, "%d+"))
-	if percent == 1 and not firstTower and not self:IsDifficulty("heroic10", "heroic25")then
+	if percent == 1 and not firstTower and not self:IsDifficulty("heroic10", "heroic25") then
 		firstTower = true
 		timerTowerCD:Start()
 	end
