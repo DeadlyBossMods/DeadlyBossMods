@@ -82,7 +82,7 @@ local countdownPowerIronStar		= mod:NewCountdown(15, 144616)
 local countdownWhirlingCorruption	= mod:NewCountdown(52, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown(45, 145071, false, nil, nil, nil, true)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 
-mod:AddBoolOption("SetIconOnShaman", false)
+mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 
 local touchOfYShaarjTargets = {}
 local adds = {}

@@ -85,8 +85,8 @@ local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, n
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("SetIconOnAdds", false)
-mod:AddBoolOption("InfoFrame", true)
+mod:AddSetIconOption("SetIconOnAdds", "ej7920", false, true)
+mod:AddInfoFrameOption("ej7909")
 
 local addsCount = 0
 local boneTargets = {}

@@ -242,6 +242,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextsource		= "다음 $spell:%s 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적까지 남은시간 바 보기"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s 에게 전술 목표 아이콘 설정"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 대상이 된 경우 별도 경고음 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초읽기 소리 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초읽기 소리 듣기"
@@ -250,6 +251,7 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%s 대상이 된 경우 대화로 알
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= UnitName("player").."에게 %s!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "$spell:%2$s 관련 거리 창 보기(%1$sm)"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "거리 창 보기(%sm)"
+DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "$spell:%s 정보를 정보 창으로 보기"
 DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "우두머리 전투 시작시 전투 준비 소리 듣기(대상 선택 유무 무관)"
 
 -- New special warnings

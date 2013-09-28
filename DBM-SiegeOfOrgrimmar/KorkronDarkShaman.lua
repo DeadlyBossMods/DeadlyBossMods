@@ -74,8 +74,8 @@ local countdownAshenWall			= mod:NewCountdown(32.5, 144070, nil, nil, nil, nil, 
 
 local berserkTimer					= mod:NewBerserkTimer(540)
 
-mod:AddBoolOption("RangeFrame")--This is more or less for foul geyser and foul stream splash damage
-mod:AddBoolOption("SetIconOnToxicMists", false)
+mod:AddRangeFrameOption(4, 143990)--This is more or less for foul geyser and foul stream splash damage
+mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
 
 local toxicMistsTargets = {}
 local toxicMistsTargetsIcons = {}

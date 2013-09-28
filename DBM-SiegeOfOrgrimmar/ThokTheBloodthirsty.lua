@@ -89,8 +89,8 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 local soundBloodFrenzy			= mod:NewSound(144067)
 local soundFixate				= mod:NewSound(143445)
 
-mod:AddBoolOption("RangeFrame", true)
-mod:AddBoolOption("FixateIcon", true)
+mod:AddBoolOption("RangeFrame")
+mod:AddSetIconOption("FixateIcon", 143445)
 
 local screechCount = 0
 local corrosiveBloodTargets = {}
