@@ -54,8 +54,8 @@ local countdownImplodingEnergy			= mod:NewCountdown(10, 142986)
 
 local soundDisplacedEnergy				= mod:NewSound(142913)
 
-mod:AddBoolOption("RangeFrame", true)--Various things
-mod:AddBoolOption("SetIconOnDisplacedEnergy", false)
+mod:AddRangeFrameOption("8/5")--Various things
+mod:AddSetIconOption("SetIconOnDisplacedEnergy", 142913, false)
 
 local displacedEnergyTargets	= {}
 local displacedEnergyTargetsIcons = {}

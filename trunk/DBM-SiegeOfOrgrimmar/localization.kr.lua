@@ -20,10 +20,6 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
-L:SetOptionLocalization({
-	InfoFrame			= "$journal:8252 정보를 정보 창으로 보기"
-})
-
 L:SetMiscLocalization({
 	wasteOfTime			= "그래, 좋다. 너희 타락을 가두어 둘 공간을 만들겠다."
 })
@@ -32,10 +28,6 @@ L:SetMiscLocalization({
 -- Sha of Pride --
 ------------------
 L= DBM:GetModLocalization(867)
-
-L:SetOptionLocalization({
-	InfoFrame			= "$journal:8255 정보를 정보 창으로 보기"
-})
 
 --------------
 -- Galakras --
@@ -84,9 +76,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon		= "$spell:143593 이전에 초읽기 알림 보기(5초 전부터)",
-	SetIconOnAdds				= "$journal:7920에 전술 목표 아이콘 설정",
-	InfoFrame					= "$journal:7909 정보를 정보 창으로 보기"
+	warnDefensiveStanceSoon		= "$spell:143593 이전에 초읽기 알림 보기(5초 전부터)"
 })
 
 L:SetMiscLocalization({
@@ -175,10 +165,6 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
-
-L:SetOptionLocalization({
-	SetIconOnShaman			= "$journal:8294에 전술 목표 아이콘 설정"
-})
 
 -------------
 --  Trash  --
