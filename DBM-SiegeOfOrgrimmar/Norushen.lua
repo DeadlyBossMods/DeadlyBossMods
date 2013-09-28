@@ -80,7 +80,7 @@ local countdownLookWithin				= mod:NewCountdownFades(59, "ej8220")
 local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, nil, nil, nil, nil, true)
 local countdownHurlCorruption			= mod:NewCountdown(20, 144649, nil, nil, nil, nil, true)
 
-mod:AddBoolOption("InfoFrame", false)--May still be buggy but it's needed for heroic.
+mod:AddInfoFrameOption("ej8252", false)--May still be buggy but it's needed for heroic.
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0

@@ -69,7 +69,7 @@ local soundCuttingLaser			= mod:NewSound(146325)
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("RangeFrame", mod:IsRanged())
+mod:AddRangeFrameOption(6, 144154, mod:IsRanged())
 
 local siegeMode = false
 local shockCount = 0

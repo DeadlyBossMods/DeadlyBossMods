@@ -84,7 +84,7 @@ local timerCrushersCallCD			= mod:NewNextTimer(30, 146769)
 local timerFlamesofGalakrondCD		= mod:NewCDCountTimer(6, 147068)
 local timerFlamesofGalakrond		= mod:NewTargetTimer(15, 147029, nil, mod:IsTank())
 
-mod:AddBoolOption("FixateIcon", true)
+mod:AddSetIconOption("FixateIcon", 147068)
 
 local addsCount = 0
 local firstTower = false

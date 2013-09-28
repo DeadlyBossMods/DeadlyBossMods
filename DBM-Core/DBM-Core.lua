@@ -6146,6 +6146,32 @@ function bossModPrototype:AddSpecialWarningOption(name, default, defaultSound, c
 	self:SetOptionCategory(name, cat)
 end
 
+function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile)
+	self.Options[name] = (default == nil) or default
+	self:SetOptionCategory(name, "misc")
+	if isHostile then
+		self.localization.options[name] = DBM_CORE_AUTO_ICONS_OPTION_TEXT2:format(spellId)
+	else
+		self.localization.options[name] = DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(spellId)
+	end
+end
+
+function bossModPrototype:AddRangeFrameOption(range, spellId, default)
+	self.Options["RangeFrame"] = (default == nil) or default
+	self:SetOptionCategory("RangeFrame", "misc")
+	if spellId then
+		self.localization.options["RangeFrame"] = DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(range, spellId)
+	else
+		self.localization.options["RangeFrame"] = DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format(range)
+	end
+end
+
+function bossModPrototype:AddInfoFrameOption(spellId, default)
+	self.Options["InfoFrame"] = (default == nil) or default
+	self:SetOptionCategory("InfoFrame", "misc")
+	self.localization.options["InfoFrame"] = DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT:format(spellId)
+end
+
 function bossModPrototype:AddReadyCheckOption(questId, default)
 	self.readyCheckQuestId = questId
 	self.Options["ReadyCheck"] = (default == nil) or default

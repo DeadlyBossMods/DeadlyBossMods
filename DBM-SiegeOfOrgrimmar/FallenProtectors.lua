@@ -96,8 +96,8 @@ local timerCalamityCD				= mod:NewCDTimer(40, 143491)--40-50 (when two can be ca
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
-mod:AddBoolOption("SetIconOnStrike")
-mod:AddBoolOption("RangeFrame", false)
+mod:AddSetIconOption("SetIconOnStrike", 143962)
+mod:AddRangeFrameOption(5, 143423, false)--For heroic. Need to chage smart range frame?
 
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
