@@ -4512,17 +4512,19 @@ function bossModPrototype:CheckTankDistance(cid, distance)
 	local cid = cid or self.creatureId--GetBossTarget supports GUID or CID and it will automatically return correct values with EITHER ONE
 	local distance = distance or 40
 	local _, uId, mobuId = self:GetBossTarget(cid)
-	if mobuId and (not uId or (uId and (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5"))) then--Mob has no target, or is targeting a UnitID we cannot range check
+	if mobuId then
 		if uId then
-			print("DBM CheckTankDistance DEBUG uId/mobuId: "..uId.." "..mobuId.." ("..UnitName(mobuId)..")")
+			print("DBM CheckTankDistance DEBUG uId/mobuId: "..uId.." ("..UnitName(uId).." "..mobuId.." ("..UnitName(mobuId))
 		else
-			print("DBM CheckTankDistance DEBUG mobuId: "..mobuId.." ("..UnitName(mobuId)..")")
+			print("DBM CheckTankDistance DEBUG mobuId (no valid uId): "..mobuId.." ("..UnitName(mobuId))
 		end
+	end
+	if mobuId and (not uId or (uId and (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4" or uId == "boss5"))) then--Mob has no target, or is targeting a UnitID we cannot range check
 		local unitID = (IsInRaid() and "raid") or (IsInGroup() and "party") or "player"
 		for i = 1, DBM:GetNumGroupMembers() do
 			local tanking, status = UnitDetailedThreatSituation(unitID..i, mobuId)--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
 			if tanking or status == 3 then uId = unitID..i end--Found highest threat target, make their uId
-			print("DBM CheckTankDistance DEBUG uId: "..uId.." ("..UnitName(unitID..i)..")")
+			print("DBM CheckTankDistance DEBUG Threat uId: "..uId.." ("..UnitName(unitID..i)..")")
 			break
 		end
 	end
