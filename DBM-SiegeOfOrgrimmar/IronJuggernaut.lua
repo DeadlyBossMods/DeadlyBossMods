@@ -74,18 +74,10 @@ local siegeMode = false
 local shockCount = 0
 local firstTar = false
 local firstMortar = false
-local laserBurnTargets = {}
-
-local function warnLaserBurnTargets()
-	warnLaserBurn:Show(table.concat(laserBurnTargets, "<, >"))
-	table.wipe(laserBurnTargets)
-	timerLaserBurnCD:Start()
-end
 
 function mod:OnCombatStart(delay)
 	siegeMode = false
 	shockCount = 0
-	table.wipe(laserBurnTargets)
 	timerIgniteArmorCD:Start(9-delay)
 	timerLaserBurnCD:Start(-delay)
 	timerBorerDrillCD:Start(-delay)
@@ -161,9 +153,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 146325 then
 		self:SendSync("LaserTarget", args.destGUID)
 	elseif args.spellId == 144459 then
-		laserBurnTargets[#laserBurnTargets + 1] = args.destName
-		self:Unschedule(warnLaserBurnTargets)
-		self:Schedule(0.5, warnLaserBurnTargets)
+		warnLaserBurn:CombinedShow(0.5, args.destName)
+		timerLaserBurnCD:DelayedStart(0.5)
 	elseif args.spellId == 144498 and args:IsPlayer() then
 		specWarnExplosiveTar:Show()
 	end

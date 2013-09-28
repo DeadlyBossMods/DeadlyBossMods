@@ -98,12 +98,6 @@ local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, t
 mod:AddRangeFrameOption(10, 145987)
 
 local activeBossGUIDS = {}
-local setToBlowTargets = {}
-
-local function warnSetToBlowTargets()
-	warnSetToBlow:Show(table.concat(setToBlowTargets, "<, >"))
-	table.wipe(setToBlowTargets)
-end
 
 function mod:BlazingChargeTarget(targetname)
 	if not targetname then
@@ -129,7 +123,6 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
-	table.wipe(setToBlowTargets)
 	if self:IsDifficulty("lfr25") then
 		timerArmageddonCD:Start(297.5-delay)
 		countdownArmageddon:Start(297.5-delay)
@@ -229,9 +222,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 145987 and self:CheckTankDistance(args.sourceGUID) then
-		setToBlowTargets[#setToBlowTargets + 1] = args.destName
-		self:Unschedule(warnSetToBlowTargets)
-		self:Schedule(0.5, warnSetToBlowTargets)
+		warnSetToBlow:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnSetToBlowYou:Show()
 			countdownSetToBlow:Start()

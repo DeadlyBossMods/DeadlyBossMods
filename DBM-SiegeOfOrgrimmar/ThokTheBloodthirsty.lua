@@ -93,9 +93,6 @@ mod:AddBoolOption("RangeFrame")
 mod:AddSetIconOption("FixateIcon", 143445)
 
 local screechCount = 0
-local corrosiveBloodTargets = {}
-local burningBloodTargets = {}
-local frozenTargets = {}
 local UnitGUID = UnitGUID
 
 --this boss works similar to staghelm
@@ -150,28 +147,8 @@ local screechTimers = {
 	[23]= 1.2,--Anything 23 and beyond is 1.2 with rare 2.4 fluke sometimes
 }
 
-
-local function warnCorrosiveBloodTargets()
-	warnCorrosiveBlood:Show(table.concat(corrosiveBloodTargets, "<, >"))
-	timerCorrosiveBloodCD:Start()
-	table.wipe(corrosiveBloodTargets)
-end
-
-local function warnBurningBloodTargets()
-	warnBurningBloodBlood:Show(table.concat(burningBloodTargets, "<, >"))
-	timerBurningBloodCD:Start()
-	table.wipe(burningBloodTargets)
-end
-
-local function warnFrozenargets()
-	warnFrozenSolid:Show(table.concat(frozenTargets, "<, >"))
-	table.wipe(frozenTargets)
-end
-
 function mod:OnCombatStart(delay)
 	screechCount = 0
-	table.wipe(corrosiveBloodTargets)
-	table.wipe(burningBloodTargets)
 	timerFearsomeRoarCD:Start(-delay)
 	timerDeafeningScreechCD:Start(-delay, 1)
 	berserkTimer:Start(-delay)
@@ -273,18 +250,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args.spellId == 143791 then
-		corrosiveBloodTargets[#corrosiveBloodTargets + 1] = args.destName
-		self:Unschedule(warnCorrosiveBloodTargets)
-		self:Schedule(0.5, warnCorrosiveBloodTargets)
+		warnCorrosiveBlood:CombinedShow(0.5, args.destName)
+		timerCorrosiveBloodCD:DelayedStart(0.5)
 	elseif args.spellId == 143800 and args:IsPlayer() then
 		local amount = args.amount or 1
 		if amount >= 3 then
 			specWarnIcyBlood:Show(amount)
 		end
 	elseif args.spellId == 143777 then
-		frozenTargets[#frozenTargets + 1] = args.destName
-		self:Unschedule(warnFrozenargets)
-		self:Schedule(1, warnFrozenargets)--On 25 man, many targets get frozen and often at/near the same time. try to batch em up a bit
+		warnFrozenSolid:CombinedShow(1, args.destName)--On 25 man, many targets get frozen and often at/near the same time. try to batch em up a bit
 		if self:AntiSpam(3, 1) then
 			specWarnFrozenSolid:Show(args.destName)
 		end
@@ -327,9 +301,8 @@ end
 --High performance detection of burningBlood targets
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	if spellId == 143783 then--The actual target of the fire, has no cast event, just initial damage using THIS ID
-		burningBloodTargets[#burningBloodTargets + 1] = destName
-		self:Unschedule(warnBurningBloodTargets)
-		self:Schedule(0.5, warnBurningBloodTargets)
+		warnBurningBloodBlood:CombinedShow(0.5, destName)
+		timerBurningBloodCD:DelayedStart(0.5)
 		if destGUID == UnitGUID("player") then
 			specWarnBurningBlood:Show()
 			yellBurningBlood:Yell()
