@@ -82,101 +82,13 @@ local countdownReflection		= mod:NewCountdown(25, 144800, false, nil, nil, nil, 
 mod:AddInfoFrameOption("ej8255")
 mod:AddSetIconOption("SetIconOnMark", 144351, false)
 
-local tinsert, tconcat, twipe = table.insert, table.concat, table.wipe--Sha of tables....Might as well cache frequent table globals
 local UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID = UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID
-local giftOfTitansTargets = {}
-local burstingPrideTargets = {}
-local projectionTargets = {}
-local auraOfPrideTargets = {}--74-99 Energy
-local banishmentTargets = {}--Heroic
-local overcomeTargets = {}--100 Energy
-local overcomeMCTargets = {}--100 Energy MC
-local markOfArroganceTargets = {}
-local markOfArroganceIcons = {}
-local corruptedPrisonTargets = {}
 local prideLevel = EJ_GetSectionInfo(8255)
 local firstWound = false
 local manifestationWarned = false
 local swellingCount = 0
 
-local function warnGiftOfTitansTargets()
-	warnGiftOfTitans:Show(tconcat(giftOfTitansTargets, "<, >"))
-	twipe(giftOfTitansTargets)
-	timerGiftOfTitansCD:Start()
-end
-
-local function warnBurstingPrideTargets()
-	warnBurstingPride:Show(tconcat(burstingPrideTargets, "<, >"))
-	twipe(burstingPrideTargets)
-end
-
-local function warnProjectionTargets()
-	warnProjection:Show(tconcat(projectionTargets, "<, >"))
-	twipe(projectionTargets)
-end
-
-local function warnAuraOfPrideTargets()
-	warnAuraOfPride:Show(tconcat(auraOfPrideTargets, "<, >"))
-	twipe(auraOfPrideTargets)
-end
-
-local function warnOvercomeTargets()
-	warnOvercome:Show(tconcat(overcomeTargets, "<, >"))
-	twipe(overcomeTargets)
-end
-
-local function warnOvercomeMCTargets()
-	warnOvercomeMC:Show(tconcat(overcomeMCTargets, "<, >"))
-	twipe(overcomeMCTargets)
-end
-
-local function warnBanishmentTargets()
-	warnBanishment:Show(tconcat(banishmentTargets, "<, >"))
-	twipe(banishmentTargets)
-end
-
-local function warnMarkTargets()
-	warnMark:Show(tconcat(markOfArroganceTargets, "<, >"))
-	timerMarkCD:Start()
-	twipe(markOfArroganceTargets)
-end
-
-local function warnCorruptedPrisonTargets()
-	warnCorruptedPrison:Show(tconcat(corruptedPrisonTargets, "<, >"))
-	specWarnCorruptedPrison:Show()
-	twipe(corruptedPrisonTargets)
-end
-
-local function ClearMarkTargets()
-	twipe(markOfArroganceIcons)
-end
-
-do
-	local function sort_by_group(v1, v2)
-		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-	end
-	function mod:SetMarkIcons()
-		table.sort(markOfArroganceIcons, sort_by_group)
-		local markIcon = 1
-		for i, v in ipairs(markOfArroganceIcons) do
-			self:SetIcon(v, markIcon)
-			markIcon = markIcon + 1
-		end
-		self:Schedule(1.5, ClearMarkTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
-	end
-end
-
 function mod:OnCombatStart(delay)
-	twipe(giftOfTitansTargets)
-	twipe(burstingPrideTargets)
-	twipe(projectionTargets)
-	twipe(banishmentTargets)
-	twipe(overcomeTargets)
-	twipe(overcomeMCTargets)
-	twipe(markOfArroganceTargets)
-	twipe(auraOfPrideTargets)
-	twipe(corruptedPrisonTargets)
-	twipe(markOfArroganceIcons)
 	timerGiftOfTitansCD:Start(7.5-delay)
 	timerMarkCD:Start(-delay)
 	if not self:IsDifficulty("lfr25") then
@@ -258,9 +170,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 				local unitsPower = UnitPower(uId, ALTERNATE_POWER_INDEX) / maxPower * 100
 				if unitsPower > 24 and unitsPower < 50 then--Valid Bursting target
 					local targetName = DBM:GetUnitFullName(uId)
-					burstingPrideTargets[#burstingPrideTargets + 1] = targetName
-					self:Unschedule(warnBurstingPrideTargets)
-					self:Schedule(0.5, warnBurstingPrideTargets)
+					warnBurstingPride:CombinedShow(0.5, targetName)
 					if targetName == UnitName("player") then
 						specWarnBurstingPride:Show()
 						yellBurstingPride:Yell()
@@ -284,9 +194,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(144359, 146594) then
-		giftOfTitansTargets[#giftOfTitansTargets + 1] = args.destName
-		self:Unschedule(warnGiftOfTitansTargets)
-		self:Schedule(0.5, warnGiftOfTitansTargets)
+		warnGiftOfTitans:CombinedShow(0.5, args.destName)
+		timerGiftOfTitansCD:DelayedStart(0.5)
 		if args:IsPlayer() then
 			specWarnGiftOfTitans:Show()
 			if not self:IsDifficulty("lfr25") then
@@ -294,54 +203,39 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args.spellId == 145215 then
-		banishmentTargets[#banishmentTargets + 1] = args.destName
-		self:Unschedule(warnBanishmentTargets)
-		self:Schedule(0.5, warnBanishmentTargets)
+		warnBanishment:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnBanishment:Show()
 		end
 	elseif args.spellId == 146822 then
-		projectionTargets[#projectionTargets + 1] = args.destName
-		self:Unschedule(warnProjectionTargets)
-		self:Schedule(0.5, warnProjectionTargets)
+		warnProjection:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnProjection:Show()
 			timerProjection:Start()
 		end
 	elseif args.spellId == 146817 then
-		auraOfPrideTargets[#auraOfPrideTargets + 1] = args.destName
-		self:Unschedule(warnAuraOfPrideTargets)
-		self:Schedule(0.5, warnAuraOfPrideTargets)
+		warnAuraOfPride:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnAuraOfPride:Show()
 			yellAuraOfPride:Yell()
 		end
 	elseif args.spellId == 144843 then--Same spellid fires for both versions, so we have to do some more advanced filtering
 		if bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0 then--Mind controled version
-			overcomeMCTargets[#overcomeMCTargets + 1] = args.destName
-			self:Unschedule(warnOvercomeMCTargets)
-			self:Schedule(0.5, warnOvercomeMCTargets)
+			warnOvercomeMC:CombinedShow(0.5, args.destName)
 		else--Non mind controlled version
-			overcomeTargets[#overcomeTargets + 1] = args.destName
-			self:Unschedule(warnOvercomeTargets)
-			self:Schedule(0.5, warnOvercomeTargets)
+			warnOvercome:CombinedShow(0.5, args.destName)
 			if args:IsPlayer() then
 				specWarnOvercome:Show()
 			end
 		end
 	elseif args.spellId == 144351 then
-		markOfArroganceTargets[#markOfArroganceTargets + 1] = args.destName
-		self:Unschedule(warnMarkTargets)
-		self:Schedule(0.5, warnMarkTargets)
+		warnMark:CombinedShow(0.5, args.destName)
+		timerMarkCD:DelayedStart(0.5)
 		if self.Options.SetIconOnMark and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
-			tinsert(markOfArroganceIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
-			self:UnscheduleMethod("SetMarkIcons")
-			if (self:IsDifficulty("normal25", "heroic25") and #markOfArroganceIcons >= 8) or (self:IsDifficulty("normal10", "heroic10") and #markOfArroganceIcons >= 3) then
-				self:SetMarkIcons()
-			else
-				if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-					self:ScheduleMethod(0.5, "SetMarkIcons")
-				end
+			if self:IsDifficulty("normal25", "heroic25") then
+				self:SetSortedIcon(0.5, args.destName, 1, 8)
+			elseif self:IsDifficulty("normal10", "heroic10") then
+				self:SetSortedIcon(0.5, args.destName, 1, 3)
 			end
 		end
 	elseif args.spellId == 144358 then
@@ -352,9 +246,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerWoundedPrideCD:Start()
 		end
 	elseif args:IsSpellID(144574, 144636) then--Locational spellids, 2 from 10 man, 25 man will use all 4 where we can get other 2
-		corruptedPrisonTargets[#corruptedPrisonTargets + 1] = args.destName
-		self:Unschedule(warnCorruptedPrisonTargets)
-		self:Schedule(0.5, warnCorruptedPrisonTargets)
+		warnCorruptedPrison:CombinedShow(0.5, args.destName)
+		specWarnCorruptedPrison:DelayedShow(0.5)
 		if args:IsPlayer() then
 			specWarnCorruptedPrisonYou:Show()
 			yellCorruptedPrison:Yell()

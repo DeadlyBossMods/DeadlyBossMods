@@ -4795,9 +4795,10 @@ do
 			local text = ("%s%s%s|r%s"):format(
 				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
 				colorCode,
-				pformat(self.text, ...),
+				pformat(self.text, #self.combinedtext > 0 and table.concat(self.combinedtext, "<, >") or ...),
 				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 			)
+			self.combinedtext = {}
 			if not cachedColorFunctions[self.color] then
 				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
 				cachedColorFunctions[color] = function(cap)
@@ -4840,6 +4841,12 @@ do
 		end
 	end
 
+	function announcePrototype:CombinedShow(delay, text)
+		self.combinedtext[#self.combinedtext + 1] = text or ""
+		unschedule(self.Show, self.mod, self)
+		schedule(delay or 0.5, self.Show, self.mod, self)
+	end
+
 	function announcePrototype:Schedule(t, ...)
 		return schedule(t, self.Show, self.mod, self, ...)
 	end
@@ -4857,6 +4864,7 @@ do
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
+				combinedtext = {},
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				sound = not noSound,
 				mod = self,
@@ -4909,6 +4917,7 @@ do
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
 				text = text,
+				combinedtext = {},
 				announceType = announceType,
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				mod = self,
@@ -5390,6 +5399,11 @@ do
 		end
 	end
 
+	function specialWarningPrototype:DelayedShow(delay, ...)
+		unschedule(self.Show, self.mod, self, ...)
+		schedule(delay or 0.5, self.Show, self.mod, self, ...)
+	end
+
 	function specialWarningPrototype:Schedule(t, ...)
 		return schedule(t, self.Show, self.mod, self, ...)
 	end
@@ -5716,6 +5730,12 @@ do
 		end
 	end
 	timerPrototype.Show = timerPrototype.Start
+
+	function timerPrototype:DelayedStart(delay, ...)
+		unschedule(self.Start, self.mod, self, ...)
+		schedule(delay or 0.5, self.Start, self.mod, self, ...)
+	end
+	timerPrototype.DelayedShow = timerPrototype.DelayedStart
 
 	function timerPrototype:Schedule(t, ...)
 		return schedule(t, self.Start, self.mod, self, ...)
@@ -6451,6 +6471,54 @@ function bossModPrototype:SetIcon(target, icon, timer)
 		if oldIcon then
 			self:ScheduleMethod(timer + 1, "SetIcon", target, oldIcon)
 		end
+	end
+end
+
+local iconSortTable = {}
+local iconSet = 0
+
+local function sort_by_group(v1, v2)
+	return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
+end
+
+local function clearSortTable()
+	table.wipe(iconSortTable)
+	iconSet = 0
+end
+
+function bossModPrototype:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
+	table.sort(iconSortTable, sort_by_group)
+	local icon = startIcon or 1
+	for i, v in ipairs(iconSortTable) do
+		SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
+		if reverseIcon then
+			icon = icon - 1
+		else
+			icon = icon + 1
+		end
+		if returnFunc then
+			self:ScheduleMethod(0, returnFunc, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+		end
+	end
+	self:Schedule(1.5, clearSortTable)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+end
+
+function bossModPrototype:SetSortedIcon(delay, target, startIcon, maxIcon, reverseIcon, returnFunc)
+	if not target then return end
+	if DBM.Options.DontSetIcons or not enableIcons or (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) then
+		return
+	end
+	if not startIcon then startIcon = 1 end
+	startIcon = startIcon and startIcon >= 0 and startIcon <= 8 and startIcon or 8
+	local uId = DBM:GetRaidUnitId(target)
+	if not uId then uId = target end
+	iconSet = iconSet + 1
+	table.insert(iconSortTable, uId)
+	self:UnscheduleMethod("SetIconBySortedTable")
+	if maxIcon and iconSet == maxIcon then
+		self:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
+	elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+		self:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, maxIcon, returnFunc)
 	end
 end
 

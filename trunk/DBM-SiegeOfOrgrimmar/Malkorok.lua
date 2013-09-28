@@ -57,8 +57,6 @@ local soundDisplacedEnergy				= mod:NewSound(142913)
 mod:AddRangeFrameOption("8/5")--Various things
 mod:AddSetIconOption("SetIconOnDisplacedEnergy", 142913, false)
 
-local displacedEnergyTargets	= {}
-local displacedEnergyTargetsIcons = {}
 local displacedEnergyDebuff = GetSpellInfo(142913)
 local playerDebuffs = 0
 local breathCast = 0
@@ -75,44 +73,7 @@ do
 	end
 end
 
-local function warnDisplacedEnergyTargets()
-	if mod.Options.RangeFrame then
-		if UnitDebuff("player", displacedEnergyDebuff) then--You have debuff, show everyone
-			DBM.RangeCheck:Show(8, nil)
-		else--You do not have debuff, only show players who do
-			DBM.RangeCheck:Show(8, debuffFilter)
-		end
-	end
-	warnDisplacedEnergy:Show(table.concat(displacedEnergyTargets, "<, >"))
-	if not displacedCast then--Only cast twice, so we only start cd bar once here
-		timerDisplacedEnergyCD:Start()
-		displacedCast = true
-	end
-	table.wipe(displacedEnergyTargets)
-end
-
-local function ClearIconTargets()
-	table.wipe(displacedEnergyTargetsIcons)
-end
-
-do
-	local function sort_by_group(v1, v2)
-		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-	end
-	function mod:SetIcons()
-		table.sort(displacedEnergyTargetsIcons, sort_by_group)
-		local Icon = 1
-		for i, v in ipairs(displacedEnergyTargetsIcons) do
-			self:SetIcon(v, Icon)
-			Icon = Icon + 1
-		end
-		self:Schedule(1.5, ClearIconTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
-	end
-end
-
 function mod:OnCombatStart(delay)
-	table.wipe(displacedEnergyTargets)
-	table.wipe(displacedEnergyTargetsIcons)
 	playerDebuffs = 0
 	breathCast = 0
 	arcingSmashCount = 0
@@ -189,22 +150,27 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 142913 then
-		displacedEnergyTargets[#displacedEnergyTargets + 1] = args.destName
+		warnDisplacedEnergy:CombinedShow(0.5, args.destName)
 		playerDebuffs = playerDebuffs + 1
 		if args:IsPlayer() then
 			specWarnDisplacedEnergy:Show()
 			soundDisplacedEnergy:Play()
 			yellDisplacedEnergy:Yell()
 		end
+		if not displacedCast then--Only cast twice, so we only start cd bar once here
+			displacedCast = true
+			timerDisplacedEnergyCD:DelayedStart(0.5)
+		end
 		if self.Options.SetIconOnDisplacedEnergy and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
-			table.insert(displacedEnergyTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
-			self:UnscheduleMethod("SetIcons")
-			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.5, "SetIcons")
+			self:SetSortedIcon(0.5, args.destName, 1)
+		end
+		if self.Options.RangeFrame then
+			if UnitDebuff("player", displacedEnergyDebuff) then--You have debuff, show everyone
+				DBM.RangeCheck:Show(8, nil)
+			else--You do not have debuff, only show players who do
+				DBM.RangeCheck:Show(8, debuffFilter)
 			end
 		end
-		self:Unschedule(warnDisplacedEnergyTargets)
-		self:Schedule(0.5, warnDisplacedEnergyTargets)
 	elseif args.spellId == 142990 then
 		local amount = args.amount or 1
 		if amount % 3 == 0 then

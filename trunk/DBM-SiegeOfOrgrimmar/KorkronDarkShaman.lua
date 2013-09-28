@@ -78,46 +78,9 @@ local berserkTimer					= mod:NewBerserkTimer(540)
 mod:AddRangeFrameOption(4, 143990)--This is more or less for foul geyser and foul stream splash damage
 mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
 
-local toxicMistsTargets = {}
-local toxicMistsTargetsIcons = {}
-local ironPrisonTargets = {}
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local playerName = UnitName("player")
 local ashCount = 0
-
-local function warnToxicMistTargets()
-	if mod:CheckTankDistance(71859, 50) then
-		warnToxicMists:Show(table.concat(toxicMistsTargets, "<, >"))
-		timerToxicMistsCD:Start()
-	end
-	table.wipe(toxicMistsTargets)
-end
-
-local function warnIronPrisonTargets()
-	if mod:CheckTankDistance(71858, 50) then
-		warnIronPrison:Show(table.concat(ironPrisonTargets, "<, >"))
-	end
-	table.wipe(ironPrisonTargets)
-end
-
-local function ClearToxicMistTargets()
-	table.wipe(toxicMistsTargetsIcons)
-end
-
-do
-	local function sort_by_group(v1, v2)
-		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-	end
-	function mod:SetToxicIcons()
-		table.sort(toxicMistsTargetsIcons, sort_by_group)
-		local toxicIcon = 1
-		for i, v in ipairs(toxicMistsTargetsIcons) do
-			self:SetIcon(v, toxicIcon)
-			toxicIcon = toxicIcon + 1
-		end
-		self:Schedule(1.5, ClearToxicMistTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
-	end
-end
 
 function mod:FoulStreamTarget(targetname, uId)
 	if not targetname then return end
@@ -158,7 +121,6 @@ end
 
 function mod:OnCombatStart(delay)
 	ashCount = 0
-	table.wipe(toxicMistsTargets)
 	berserkTimer:Start(-delay)
 end
 
@@ -228,21 +190,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 144089 then
 		--Filter warnings only
-		toxicMistsTargets[#toxicMistsTargets + 1] = args.destName
-		self:Unschedule(warnToxicMistTargets)
-		self:Schedule(0.5, warnToxicMistTargets)
+		if self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
+			warnToxicMists:CombinedShow(0.5, args.destName)
+			timerToxicMistsCD:DelayedStart(0.5)
+		end
 		--Not filter icons, in case the only person with assist/icons enabled is far away.
 		if self.Options.SetIconOnToxicMists and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
-			table.insert(toxicMistsTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
-			self:UnscheduleMethod("SetToxicIcons")
-			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.5, "SetToxicIcons")
-			end
+			self:SetSortedIcon(0.5, args.destName, 1)
 		end
-	elseif args.spellId == 144330 then
-		ironPrisonTargets[#ironPrisonTargets + 1] = args.destName
-		self:Unschedule(warnIronPrisonTargets)
-		self:Schedule(0.5, warnIronPrisonTargets)
+	elseif args.spellId == 144330 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
+		warnIronPrison:CombinedShow(0.5, args.destName)
 	elseif args.spellId == 144215 then
 		local amount = args.amount or 1
 		timerFroststormStrike:Start(args.destName)

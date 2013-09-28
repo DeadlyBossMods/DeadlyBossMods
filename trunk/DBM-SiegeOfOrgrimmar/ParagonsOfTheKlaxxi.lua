@@ -171,8 +171,6 @@ mod:AddRangeFrameOption("6/5")
 mod:AddSetIconOption("SetIconOnAim", 142948)--multi boss fight, will use star and avoid moving skull off a kill target
 
 local activatedTargets = {}--A table, for the 3 on pull
-local whirlingTargets = {}
-local mutateTargets = {}
 local activeBossGUIDS = {}
 local UnitDebuff = UnitDebuff
 local GetSpellInfo = GetSpellInfo
@@ -196,17 +194,6 @@ local function warnActivatedTargets(vulnerable)
 		end
 	end
 	table.wipe(activatedTargets)
-end
-
-local function warnWhirlingTargets()
-	warnWhirling:Show(table.concat(whirlingTargets, "<, >"))
-	table.wipe(whirlingTargets)
-end
-
-local function warnMutatedTargets()
-	warnMutate:Show(table.concat(mutateTargets, "<, >"))
-	timerMutateCD:Start()
-	table.wipe(mutateTargets)
 end
 
 local function hideRangeFrame()
@@ -292,8 +279,6 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	table.wipe(activatedTargets)
-	table.wipe(whirlingTargets)
-	table.wipe(mutateTargets)
 	calculatedShape = nil
 	calculatedNumber = nil
 	calculatedColor = nil
@@ -502,9 +487,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnShieldBashOther:Show(args.destName)
 		end
 	elseif args.spellId == 143701 then
-		whirlingTargets[#whirlingTargets + 1] = args.destName
-		self:Unschedule(warnWhirlingTargets)
-		self:Schedule(0.5, warnWhirlingTargets)
+		warnWhirling:CombinedShow(0.5, args.destName)
 		if args.IsPlayer() then
 			specWarnWhirling:Show()
 			yellWhirling:Yell()
@@ -528,13 +511,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnHurlAmber:Show()
 		timerHurlAmberCD:Start()
 	elseif args.spellId == 143337 then
-		mutateTargets[#mutateTargets + 1] = args.destName
 		if args.IsPlayer() then
 			specWarnMutate:Show()
 			timerMutate:Start()
 		end
-		self:Unschedule(warnMutatedTargets)
-		self:Schedule(0.5, warnMutatedTargets)
 	elseif args.spellId == 143358 then
 		if args.IsPlayer() then
 			specWarnParasiteFixate:Show()

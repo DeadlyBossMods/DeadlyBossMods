@@ -91,7 +91,6 @@ mod:AddSetIconOption("SetIconOnAdds", "ej7920", false, true)
 mod:AddInfoFrameOption("ej7909")
 
 local addsCount = 0
-local boneTargets = {}
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
 local adds = {}
 local scanLimiter = 0
@@ -100,12 +99,6 @@ local dotWarned = {}
 local defensiveActive = false
 local allForcesReleased = false
 local sunder = GetSpellInfo(143494)
-
-local function warnBoneTargets()
-	warnBonecracker:Show(table.concat(boneTargets, "<, >"))
-	timerBoneCD:Start()
-	table.wipe(boneTargets)
-end
 
 local function scanForBanner()
 	if DBM:GetRaidRank() > 0 then--Cannot impliment counting because it seems there is too much variation between difficulties and it would be ugly
@@ -207,7 +200,6 @@ end
 function mod:OnCombatStart(delay)
 	addsCount = 0
 	table.wipe(adds)
-	table.wipe(boneTargets)
 	table.wipe(dotWarned)
 	defensiveActive = false
 	allForcesReleased = false
@@ -351,9 +343,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEarthShield:Show(args.destName)
 		specWarnEarthShield:Show(args.destName)
 	elseif args.spellId == 143638 then
-		boneTargets[#boneTargets + 1] = args.destName
-		self:Unschedule(warnBoneTargets)
-		self:Schedule(1.5, warnBoneTargets)--Takes a while to get on all targets. 1.5 seconds in 10 man, not sure about 25 man yet
+		warnBonecracker:CombinedShow(1.5, args.destName)
+		timerBondCD:DelayedStart(1.5)--Takes a while to get on all targets. 1.5 seconds in 10 man, not sure about 25 man yet
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

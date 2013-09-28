@@ -84,7 +84,6 @@ local countdownTouchOfYShaarj		= mod:NewCountdown(45, 145071, false, nil, nil, n
 
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 
-local touchOfYShaarjTargets = {}
 local adds = {}
 local scanLimiter = 0
 local firstIronStar = false
@@ -130,15 +129,6 @@ local function scanForMobs()
 	end
 end
 
-local function warnTouchOfYShaarjTargets(spellId)
-	if spellId == 145171 then
-		warnEmpTouchOfYShaarj:Show(table.concat(touchOfYShaarjTargets, "<, >"))
-	else
-		warnTouchOfYShaarj:Show(table.concat(touchOfYShaarjTargets, "<, >"))
-	end
-	table.wipe(touchOfYShaarjTargets)
-end
-
 function mod:DesecrateTarget(targetname, uId)
 	if not targetname then return end
 	if self:IsTanking(uId) then return end--Never targets tanks
@@ -157,7 +147,6 @@ function mod:OnCombatStart(delay)
 	desecrateCount = 0
 	mindControlCount = 0
 	shamanAlive = 0
-	table.wipe(touchOfYShaarjTargets)
 	table.wipe(adds)
 	timerDesecrateCD:Start(10.5-delay, 1)
 	timerSiegeEngineerCD:Start(20-delay)
@@ -235,10 +224,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144945 then
 		warnYShaarjsProtection:Show(args.destName)
 		timerYShaarjsProtection:Start()
-	elseif args:IsSpellID(145065, 145171) then
-		touchOfYShaarjTargets[#touchOfYShaarjTargets + 1] = args.destName
-		self:Unschedule(warnTouchOfYShaarjTargets)
-		self:Schedule(0.5, warnTouchOfYShaarjTargets, args.spellId)
+	elseif args.spellId == 145065 then
+		warnTouchOfYShaarj:CombinedShow(0.5, args.destName)
+	elseif args.spellId == 145171 then
+		warnEmpTouchOfYShaarj:CombinedShow(0.5, args.destName)
 	elseif args:IsSpellID(145071, 145175) then--Touch of Yshaarj Spread IDs?
 
 	elseif args:IsSpellID(145183, 145195) then
