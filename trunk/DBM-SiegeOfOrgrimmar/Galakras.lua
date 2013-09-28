@@ -102,7 +102,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 147688 and self:CheckTankDistance(args:GetSrcCreatureID(), 20) then--Tower Spell, use small range
+	if args.spellId == 147688 and self:CheckTankDistance(args:GetSrcCreatureID(), 10) then--Tower Spell, use small range
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
 	elseif args.spellId == 146757 and self:CheckTankDistance(args.sourceGUID) then
@@ -115,7 +115,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 147824 and self:CheckTankDistance(args:GetSrcCreatureID(), 20) and self:AntiSpam(3, 2) then--Tower Spell, use small range
+	if args.spellId == 147824 and self:CheckTankDistance(args:GetSrcCreatureID(), 10) and self:AntiSpam(3, 2) then--Tower Spell, use small range
 		warnMuzzleSpray:Show()
 		specWarnMuzzleSpray:Show()
 	elseif args.spellId == 146769 and self:CheckTankDistance(args:GetSrcCreatureID()) then
