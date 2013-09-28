@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 		timerFoulGeyserCD:Start()
 		specWarnFoulGeyser:Show()
 		countdownFoulGeyser:Start()
-	elseif args.spellId == 144070 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
+	elseif args.spellId == 144070 and self:CheckTankDistance(args:GetSrcCreatureID(), 30) then
 		warnAshenWall:Show()
 		timerAshenWallCD:Start()
 		countdownAshenWall:Start()
