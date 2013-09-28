@@ -105,7 +105,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 147688 and self:CheckTankDistance(args:GetSrcCreatureID(), 20) then--Tower Spell, use small range
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
-	elseif args.spellId == 146757 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 146757 and self:CheckTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
@@ -143,10 +143,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args.spellId == 147328 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 147328 and self:CheckTankDistance(args.sourceGUID) then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif args.spellId == 146899 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then--Use a bigger range than 40 since npcs tend to stand further out
+	elseif args.spellId == 146899 and self:CheckTankDistance(args.sourceGUID, 50) then--Use a bigger range than 40 since npcs tend to stand further out
 		warnFracture:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFractureYou:Show()
