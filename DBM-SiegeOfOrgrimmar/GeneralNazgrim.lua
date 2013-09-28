@@ -99,6 +99,7 @@ local scanLimiter2 = 0
 local dotWarned = {}
 local defensiveActive = false
 local allForcesReleased = false
+local sunder = GetSpellInfo(143494)
 
 local function warnBoneTargets()
 	warnBonecracker:Show(table.concat(boneTargets, "<, >"))
@@ -330,7 +331,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSunder:Show(amount)
 			end
 		else--Taunt as soon as stacks are clear, regardless of stack count.
-			if amount >= 3 and not UnitDebuff("player", GetSpellInfo(143494)) and not UnitIsDeadOrGhost("player") then
+			if amount >= 3 and not UnitDebuff("player", sunder) and not UnitIsDeadOrGhost("player") then
 				specWarnSunderOther:Show(args.destName)
 			end
 		end
@@ -398,15 +399,19 @@ end
 
 function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID)
 	if (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(8, 1) then
-		specWarnDefensiveStanceAttack:Show()
+		if not UnitDebuff("player", sunder) then
+			specWarnDefensiveStanceAttack:Show()
+		end
 	end
 end
 mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)--Prevent spam on DoT
-	if (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(8, 1) and not dotWarned[spellId] then
-		dotWarned[spellId] = true
-		specWarnDefensiveStanceAttack:Show()
+	if (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(8, 1) then
+		if not UnitDebuff("player", sunder) and not dotWarned[spellId] then
+			dotWarned[spellId] = true
+			specWarnDefensiveStanceAttack:Show()
+		end
 	end
 end
