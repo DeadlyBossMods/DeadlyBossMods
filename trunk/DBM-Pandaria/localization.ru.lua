@@ -8,8 +8,7 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Показывать динамическое окно проверки дистанции, основанное<br/>на статусе игроков с дебаффом $spell:119622",
-	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
+	RangeFrame			= "Показывать динамическое окно проверки дистанции, основанное<br/>на статусе игроков с дебаффом $spell:119622"
 })
 
 L:SetMiscLocalization({
@@ -21,10 +20,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "Принесите мне их трупы!"
 })
@@ -34,10 +29,6 @@ L:SetMiscLocalization({
 --------------
 L= DBM:GetModLocalization(826)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "Как вы смеете вмешиваться в наши планы! На этот раз зандаларов не остановить!"
 })
@@ -46,10 +37,6 @@ L:SetMiscLocalization({
 -- Nalak, The Storm Lord --
 ---------------------------
 L= DBM:GetModLocalization(814)
-
-L:SetOptionLocalization({
-	ReadyCheck			= "Проигрывать звук проверки готовности когда пулят мирового босса (даже если он не является целью)"
-})
 
 L:SetMiscLocalization({
 	Pull				= "Чувствуете порывы холодного ветра?"
@@ -76,8 +63,9 @@ L= DBM:GetModLocalization(858)
 
 L:SetMiscLocalization({
 	Pull					= "Начнем схватку!",
-	Wave1					= "Думайте о последствиях своих действий!",
+	Wave1					= "Не позволяйте разуму затуманиваться.",
 	Wave2					= "Слушайте внутренний голос и стремитесь к истине!",
+	Wave3					= "Думайте о последствиях своих действий!",
 	Victory					= "Мудрость помогла вам пройти испытание. Пусть она всегда ведет вас к свету."
 })
 
