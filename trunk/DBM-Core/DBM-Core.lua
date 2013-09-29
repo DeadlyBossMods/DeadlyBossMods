@@ -4256,7 +4256,7 @@ do
 	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
-	function DBM:NewMod(name, modId, modSubTab, instanceId, creatureInfoId, splitstring)
+	function DBM:NewMod(name, modId, modSubTab, instanceId, creatureInfoId, splitString, selectSplittedPart)--last 2 arg added for Provinggrounds-MoP. I will get provingground mod modified when svn access available / DBM:NewMod("d640", "DBM-ProvingGrounds-MoP", nil, nil, nil, ":", 2)
 		name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
@@ -4297,14 +4297,14 @@ do
 			else
 				t = EJ_GetEncounterInfo(tonumber(name))
 			end
-			obj.localization.general.name = string.split(splitstring or ",", t or name)
+			obj.localization.general.name = select(selectSplittedPart or 1, string.split(splitstring or ",", t or name))
 			obj.modelId = select(4, EJ_GetCreatureInfo(1, tonumber(name)))
 		elseif name:match("z%d+") then
 			local t = GetRealZoneText(string.sub(name, 2))
-			obj.localization.general.name = string.split(splitstring or ",", t or name)
+			obj.localization.general.name = select(selectSplittedPart or 1, string.split(splitstring or ",", t or name))
 		elseif name:match("d%d+") then
 			local t = GetDungeonInfo(string.sub(name, 2))
-			obj.localization.general.name = select(2, string.split(splitstring or ":", t or name))
+			obj.localization.general.name = select(selectSplittedPart or 1, string.split(splitstring or ",", t or name))
 		end
 		tinsert(self.Mods, obj)
 		modsById[name] = obj
