@@ -29,10 +29,10 @@ local warnBanishment			= mod:NewTargetAnnounce(145215, 3)--Heroic
 local warnWeakenedResolve		= mod:NewTargetAnnounce(147207, 2, nil, false)--Heroic
 local warnUnleashed				= mod:NewSpellAnnounce(144832, 3)--Phase 2
 --Pride / These 5 warnings can be show at same time. Can be extremely spam. Need to throttle these warnings. (core changes not enough)
-local warnBurstingPride			= mod:NewTargetAnnounce(144911, 2)--25-49 Energy
-local warnProjection			= mod:NewTargetAnnounce(146822, 3)--50-74 Energy
-local warnAuraOfPride			= mod:NewTargetAnnounce(146817, 3)--75-99 Energy
-local warnOvercome				= mod:NewTargetAnnounce(144843, 3)--100 Energy (pre mind control)
+local warnBurstingPride			= mod:NewTargetAnnounce(144911, 2, nil, false, nil, nil, nil, nil, 2)--25-49 Energy (off by default, who has them isn't as relevant as to where they are
+local warnProjection			= mod:NewTargetAnnounce(146822, 3)--50-74 Energy (VERY important who has)
+local warnAuraOfPride			= mod:NewTargetAnnounce(146817, 3, nil, false, nil, nil, nil, nil, 2)--75-99 Energy (not important who has them)
+local warnOvercome				= mod:NewTargetAnnounce(144843, 3)--100 Energy (pre mind control) Also very important who has
 local warnOvercomeMC			= mod:NewTargetAnnounce(605, 4)--Mind control version (use priest mind control spellid to discribe. because have same spell name in pre-warning)
 --Manifestation of Pride
 local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
