@@ -4449,7 +4449,7 @@ function bossModPrototype:GetBossTarget(cid)
 		if self:GetUnitCreatureId(uId) == cid or UnitGUID(uId) == cid then--Accepts CID or GUID
 			bossuid = uId
 			name = DBM:GetUnitFullName(uId.."target")
-			uid = DBM:GetRaidUnitId(name) or uId.."target"--overrride target uid because uid+"target" is variable uid.
+			uid = DBM:GetRaidUnitId(name) or (UnitExists(uId.."target") and uId.."target")--overrride target uid because uid+"target" is variable uid.
 			break
 		end
 	end
@@ -4460,7 +4460,7 @@ function bossModPrototype:GetBossTarget(cid)
 			if self:GetUnitCreatureId("raid"..i.."target") == cid or UnitGUID("raid"..i.."target") == cid then
 				bossuid = "raid"..i.."target"
 				name = DBM:GetUnitFullName("raid"..i.."targettarget")
-				uid = DBM:GetRaidUnitId(name) or "raid"..i.."targettarget"--overrride target uid because uid+"target" is variable uid.
+				uid = DBM:GetRaidUnitId(name) or (UnitExists("raid"..i.."targettarget") and "raid"..i.."targettarget")--overrride target uid because uid+"target" is variable uid.
 				break
 			end
 		end
@@ -4469,7 +4469,7 @@ function bossModPrototype:GetBossTarget(cid)
 			if self:GetUnitCreatureId("party"..i.."target") == cid or UnitGUID("party"..i.."target") == cid then
 				bossuid = "party"..i.."target"
 				name = DBM:GetUnitFullName("party"..i.."targettarget")
-				uid = DBM:GetRaidUnitId(name) or "party"..i.."targettarget"--overrride target uid because uid+"target" is variable uid.
+				uid = DBM:GetRaidUnitId(name) or (UnitExists("party"..i.."targettarget") and "party"..i.."targettarget")--overrride target uid because uid+"target" is variable uid.
 				break
 			end
 		end
@@ -4508,7 +4508,7 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	end
 end
 
-function bossModPrototype:CheckTankDistance(cid, distance)
+function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 	local cid = cid or self.creatureId--GetBossTarget supports GUID or CID and it will automatically return correct values with EITHER ONE
 	local distance = distance or 40
 	local uId
@@ -4554,7 +4554,7 @@ function bossModPrototype:CheckTankDistance(cid, distance)
 			return false
 		end
 	end
-	return true--When we simply can't figure anything out, always return true and allow warnings using this filter to fire
+	return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire. But some spells will prefer not to fire(i.e : Galakras tower spell), we can define it on this function calling. 
 end
 
 function bossModPrototype:Stop(cid)
