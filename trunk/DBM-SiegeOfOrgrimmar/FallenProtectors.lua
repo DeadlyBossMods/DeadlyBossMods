@@ -129,6 +129,7 @@ end
 function mod:InfernoStrikeTarget(targetname, uId)
 	if not targetname then return end
 	print("DBM DEBUG: Infero Strike on "..targetname.." ?")
+	self:SetIcon(targetname, 1, 8)--Obviously temp. it's hard to see if printed target is right target on 25 man, because there is a pile of like 25 people and i can't verify WHO the arrow is on. maybe with raid icon easier to spot
 	if targetname == UnitName("player") then
 		
 	end
@@ -191,7 +192,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143962 then
 		warnInfernoStrike:Show()
 		timerInfernoStrikeCD:Start()
---		self:BossTargetScanner(71481, "InfernoStrikeTarget", 0.5, 1)--This one is a pain, because boss looks at CORRECT target for a super split second, then stares at previous target for rest of time. Repeated scans don't fix it because you really can't tell good target from shit one
+		if DBM.Options.DebugMode then
+			self:BossTargetScanner(71481, "InfernoStrikeTarget", 0.5, 1)--This one is a pain, because boss looks at CORRECT target for a super split second, then stares at previous target for rest of time. Repeated scans don't fix it because you really can't tell good target from shit one
+		end
 	elseif args.spellId == 143497 then
 		warnBondGoldenLotus:Show()
 	elseif args.spellId == 144396 then
