@@ -3079,11 +3079,14 @@ function checkWipe(isIEEU, confirm)
 		elseif IsEncounterInProgress() then
 			wipe = 0
 		elseif InCombatLockdown() then
-			wipe = 1
+			wipe = 0
 			if isIEEU then--Due to SoO combat locking on bug, do one more step on wipe check.
 				wipe = 2
 				for i = 1, 5 do
-					if UnitExists("boss"..i) then wipe = 0 end
+					if UnitExists("boss"..i) then
+						wipe = 0 
+						break
+					end
 				end
 			end
 		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- do not wipe on player dead or ghost while worldboss encounter.
@@ -3102,6 +3105,10 @@ function checkWipe(isIEEU, confirm)
 			DBM:Schedule(3, checkWipe, isIEEU)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
+				if DBM.Options.DebugMode then
+					local reason = (wipe == 1 and "Normal Wipe" or "Cannot fount BossN uId")
+					print("You wiped. Reason : "..reason)
+				end
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
@@ -3698,7 +3705,10 @@ do
 			local isIEEU
 			--Hack for wipe function working correctly on timer recovery.
 			for i = 1, 5 do
-				if UnitExists("boss"..i) then isIEEU = true end
+				if UnitExists("boss"..i) then
+					isIEEU = true
+					break
+				end
 			end
 			if mod.minCombatTime then
 				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU)
