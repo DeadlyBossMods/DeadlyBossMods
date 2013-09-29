@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71955)
 mod:SetReCombatTime(20)
 mod:SetZone()
-mod:SetMinSyncRevision(10162)
+mod:SetMinSyncRevision(10466)
 
 mod:RegisterCombat("combat_yell", L.Pull)
 mod:RegisterKill("yell", L.Victory)
