@@ -4811,10 +4811,17 @@ do
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			local text
 			if #self.combinedtext > 0 then
+				--Throttle spam.
+				local displayText = table.concat(self.combinedtext, "<, >")
+				if self.combinedcount == 1 then
+					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS
+				elseif self.combinedcount > 1 then 
+					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS2:format(self.combinedcount) 
+				end
 				text = ("%s%s%s|r%s"):format(
 					(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
 					colorCode,
-					pformat(self.text, table.concat(self.combinedtext, "<, >")),
+					pformat(self.text, displayText),
 					(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 				)
 			else
@@ -4825,6 +4832,7 @@ do
 					(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 				)
 			end
+			self.combinedcount = 0
 			table.wipe(self.combinedtext)
 			if not cachedColorFunctions[self.color] then
 				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
@@ -4869,7 +4877,11 @@ do
 	end
 
 	function announcePrototype:CombinedShow(delay, text, ...)
-		self.combinedtext[#self.combinedtext + 1] = text or ""
+		if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
+			self.combinedtext[#self.combinedtext + 1] = text or ""
+		else
+			self.combinedcount = self.combinedcount + 1
+		end
 		unschedule(self.Show, self.mod, self)
 		schedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
@@ -4892,6 +4904,7 @@ do
 			{
 				text = self.localization.warnings[text],
 				combinedtext = {},
+				combinedcount = 0,
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				sound = not noSound,
 				mod = self,
@@ -4945,6 +4958,7 @@ do
 			{
 				text = text,
 				combinedtext = {},
+				combinedcount = 0,
 				announceType = announceType,
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				mod = self,
