@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(60491)
 mod:SetReCombatTime(20)
 mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
+mod:SetMinSyncRevision(10466)
 mod:SetZone()
 
 mod:RegisterCombat("combat_yell", L.Pull)
