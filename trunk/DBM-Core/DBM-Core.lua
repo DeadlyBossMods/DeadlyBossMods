@@ -2165,7 +2165,7 @@ function DBM:ScenarioCheck()
 	if combatInfo[LastInstanceMapID] then
 		for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 			if (v.type == "scenario") and checkEntry(v.msgs, LastInstanceMapID) then
-				DBM:StartCombat(v.mod, 0, nil, nil, nil, nil, "LOADING_SCREEN_DIASBLED")
+				DBM:StartCombat(v.mod, 0, "LOADING_SCREEN_DIASBLED")
 			end
 		end
 	end
@@ -2293,7 +2293,7 @@ do
 		revision = tonumber(revision or 0) or 0
 		startHp = tonumber(startHp or -1) or -1
 		if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
-			DBM:StartCombat(mod, delay + lag, true, startHp, nil, nil, "SYNC from - ", sender)
+			DBM:StartCombat(mod, delay + lag, "SYNC from - "..sender, true, startHp)
 		end
 	end
 
@@ -2933,9 +2933,9 @@ do
 			buildTargetList()
 			if targetList[mob] then
 				if delay > 0 and UnitAffectingCombat(targetList[mob]) then
-					DBM:StartCombat(mod, delay, nil, nil, nil, nil, "PLAYER_TARGET")
+					DBM:StartCombat(mod, delay, "PLAYER_TARGET")
 				elseif (delay == 0) and select(2, GetInstanceInfo()) == "none" then
-					DBM:StartCombat(mod, 0, nil, nil, nil, true, "PLAYER_TARGET_AND_YELL")
+					DBM:StartCombat(mod, 0, "PLAYER_TARGET_AND_YELL")
 				end
 			end
 			clearTargetList()
@@ -2995,7 +2995,7 @@ do
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
-					self:StartCombat(v.mod, 0, nil, nil, nil, nil, "IEEU")
+					self:StartCombat(v.mod, 0, "IEEU")
 				end
 			end
 		end
@@ -3016,7 +3016,7 @@ do
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == type and checkEntry(v.msgs, msg) or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
-					DBM:StartCombat(v.mod, 0, nil, nil, nil, nil, "MONSTER_MESSAGE")
+					DBM:StartCombat(v.mod, 0, "MONSTER_MESSAGE")
 				elseif v.type == "combat_" .. type and checkEntry(v.msgs, msg) then
 					scanForCombat(v.mod, v.mob, 0)
 					if v.mod.Options.ReadyCheck and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
@@ -3106,7 +3106,7 @@ function checkWipe(isIEEU, confirm)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
 				if DBM.Options.DebugMode then
-					local reason = (wipe == 1 and "Normal Wipe" or "Cannot fount BossN uId")
+					local reason = (wipe == 1 and "Normal Wipe" or "Cannot found BossN uId")
 					print("You wiped. Reason : "..reason)
 				end
 				DBM:EndCombat(inCombat[i], true)
@@ -3121,10 +3121,10 @@ function checkWipe(isIEEU, confirm)
 	end
 end
 
-function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggered, event, sender)
+function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if DBM.Options.DebugMode then
 		if event then
-			print("DBM:StartCombat called by : "..event..(sender or ""))
+			print("DBM:StartCombat called by : "..event)
 		else
 			print("DBM:StartCombat called by individual mod or unknown reason.")
 		end
@@ -3189,8 +3189,8 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, trigge
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 			end
 		end
-		local startHp = mod:GetBossHP(mod.mainBossId or mod.combatInfo.mob) or ((tonumber(syncedStartHp) or 1) < 1 and syncedStartHp) or -1
-		if (mod:IsDifficulty("worldboss") and startHp < 0.98) or noKillRecord then--Boss was not full health when engaged, disable combat start timer and kill record
+		local startHp = (syncedStartHp and (tonumber(syncedStartHp))) or mod:GetBossHP(mod.mainBossId or mod.combatInfo.mob) or -1
+		if (mod:IsDifficulty("worldboss") and startHp < 0.98) or (event == "UNIT_HEALTH" and startHp < 0.90) then--Boss was not full health when engaged, disable combat start timer and kill record
 			mod.ignoreBestkill = true
 		else--Reset ignoreBestkill after wipe
 			mod.ignoreBestkill = false
@@ -3218,7 +3218,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, trigge
 			end
 		end
 		if mod.OnCombatStart and not mod.ignoreBestkill then
-			mod:OnCombatStart(delay or 0, triggered)
+			mod:OnCombatStart(delay or 0, event == "PLAYER_TARGET_AND_YELL")
 		end
 		if not synced then
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp)
@@ -3260,7 +3260,7 @@ function DBM:UNIT_HEALTH(uId)
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if not v.mod.disableHealthCombat and (v.type == "combat" and v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
-					self:StartCombat(v.mod, health > 0.97 and 0.5 or mmin(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), nil, health, health < 0.90, nil, "UNIT_HEALTH") -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s) / Do not record kill time below 90% (late combat detection)
+					self:StartCombat(v.mod, health > 0.97 and 0.5 or mmin(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), "UNIT_HEALTH", nil, health) -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s)
 				end
 			end
 		end
