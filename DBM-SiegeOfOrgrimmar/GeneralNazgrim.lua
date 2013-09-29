@@ -85,7 +85,7 @@ local timerCoolingOff				= mod:NewBuffFadesTimer(15, 143484)
 local timerEmpoweredChainHealCD		= mod:NewNextSourceTimer(6, 143473)
 
 local countdownAdds					= mod:NewCountdown(45, "ej7920", not mod:IsHealer(), nil, nil, nil, nil, 2)
-local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, true, true)
+local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, nil, true)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
