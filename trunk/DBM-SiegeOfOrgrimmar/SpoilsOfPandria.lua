@@ -97,6 +97,12 @@ mod:AddRangeFrameOption(10, 145987)
 
 local activeBossGUIDS = {}
 
+local function hideRangeFrame()
+	if mod.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
 	if self:IsDifficulty("lfr25") then
