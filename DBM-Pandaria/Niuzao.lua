@@ -4,7 +4,8 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71954)
 mod:SetReCombatTime(20)
-mod:SetMinSyncRevision(10162)
+mod:SetZone()
+mod:SetMinSyncRevision(10466)
 
 mod:RegisterCombat("combat_yell", L.Pull)
 mod:RegisterKill("yell", L.Victory, L.VictoryDem)
@@ -22,7 +23,7 @@ local warnMassiveQuake			= mod:NewSpellAnnounce(144611, 3)
 local warnCharge				= mod:NewSpellAnnounce(144609, 4)
 
 local specWarnHeadbutt			= mod:NewSpecialWarningSpell(144610, mod:IsTank())
-local specWarnMassiveQuake		= mod:NewSpecialWarningCast(144611, mod:IsHealer())
+local specWarnMassiveQuake		= mod:NewSpecialWarningSpell(144611, mod:IsHealer())
 local specWarnCharge			= mod:NewSpecialWarningSpell(144609, nil, nil, nil, 2)--66 and 33%. Maybe add pre warns
 
 local timerHeadbuttCD			= mod:NewCDTimer(47, 144610, nil, mod:IsTank())
