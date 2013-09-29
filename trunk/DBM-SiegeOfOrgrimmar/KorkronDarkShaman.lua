@@ -52,7 +52,7 @@ local yellToxicStorm				= mod:NewYell(144005)
 local specWarnFoulGeyser			= mod:NewSpecialWarningSpell(143990)--Hard one to perfect. melee need to treat it as a move away, ranged as a switch. Can't really say both in the same message but I don't want to split it into two
 local yellFoulGeyser				= mod:NewYell(143990)
 local specWarnFallingAsh			= mod:NewSpecialWarningPreWarn(143973, nil, 3, nil, 2)
-local specWarnIronPrison			= mod:NewSpecialWarningSoon(144330)--If this generic isn't too clear i'll localize it. this is warning that it's about to expire not that it's just been applied
+local specWarnIronPrison			= mod:NewSpecialWarningPreWarn(144330, nil, 4)--If this generic isn't too clear i'll localize it. this is warning that it's about to expire not that it's just been applied
 local yellIronPrisonFades			= mod:NewYell(144330, L.PrisonYell, false)--Off by default since it's an atypical yell (it's not used for avoiding person it's used to get healer attention to person)
 
 --Earthbreaker Haromm
@@ -224,7 +224,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerIronPrison:Start(args.destName)
 		end
 		if args:IsPlayer() then
-			specWarnIronPrison:Schedule(5)
+			specWarnIronPrison:Schedule(56)
 			timerIronPrisonSelf:Start()
 			yellIronPrisonFades:Schedule(59, playerName, 1)
 			yellIronPrisonFades:Schedule(58, playerName, 2)
