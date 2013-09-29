@@ -82,6 +82,26 @@ local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, 
 local playerName = UnitName("player")
 local ashCount = 0
 
+-- This is test code for CombinedShow function. I see that this wipes correctly. Try this and report to me.
+--[[mod:Schedule(1, function()
+warnToxicMists:CombinedShow(0.5, "a")
+warnToxicMists:CombinedShow(0.5, "b")
+warnToxicMists:CombinedShow(0.5, "c")
+warnToxicMists:CombinedShow(0.5, "d")
+warnToxicMists:CombinedShow(0.5, "e")
+warnToxicMists:CombinedShow(0.5, "f")
+warnToxicMists:CombinedShow(0.5, "g")
+end)]]
+--[[mod:Schedule(1.8, function()
+warnToxicMists:CombinedShow(0.5, "a1")
+warnToxicMists:CombinedShow(0.5, "b1")
+warnToxicMists:CombinedShow(0.5, "c1")
+warnToxicMists:CombinedShow(0.5, "d1")
+warnToxicMists:CombinedShow(0.5, "e1")
+warnToxicMists:CombinedShow(0.5, "f1")
+warnToxicMists:CombinedShow(0.5, "g1")
+end)]]
+
 function mod:FoulStreamTarget(targetname, uId)
 	if not targetname then return end
 	if self:IsTanking(uId) then--Never target tanks, so if target is tank, that means scanning failed.
