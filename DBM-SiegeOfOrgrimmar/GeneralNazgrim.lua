@@ -63,7 +63,7 @@ local specWarnWarSong				= mod:NewSpecialWarningSpell(143503, nil, nil, nil, 2)
 local specWarnIronstorm				= mod:NewSpecialWarningInterrupt(143420, mod:IsMelee())--Only needs to be interrupted if melee are near it
 local specWarnArcaneShock			= mod:NewSpecialWarningInterrupt(143432, false)--Spamy as all fuck, so off by default unless maybe heroic
 local specWarnMagistrike			= mod:NewSpecialWarningInterrupt(143431, false)--Spamy as all fuck, so off by default unless maybe heroic
-local specWarnEmpoweredChainHeal	= mod:NewSpecialWarningInterrupt(143473)--Concerns everyone, if not interrupted will heal boss for a TON
+local specWarnEmpoweredChainHeal	= mod:NewSpecialWarningInterrupt(143473, not mod:IsHealer(), nil, nil, 1, 2)--Concerns everyone, if not interrupted will heal boss for a TON
 local specWarnAssassinsMark			= mod:NewSpecialWarningYou(143480)
 local yellAssassinsMark				= mod:NewYell(143480)
 local specWarnAssassinsMarkOther	= mod:NewSpecialWarningTarget(143480, false)
@@ -84,7 +84,7 @@ local timerCoolingOff				= mod:NewBuffFadesTimer(15, 143484)
 --Kor'kron Adds
 local timerEmpoweredChainHealCD		= mod:NewNextSourceTimer(6, 143473)
 
-local countdownAdds					= mod:NewCountdown(45, "ej7920")--Not confusing, two different voices (unless you set voice 1 and 2 to same voice but that's own fault. This is mandatory. EVERYONE (and in all modes) needs to know adds are coming so they switch or CC or avoid appropriate adds)
+local countdownAdds					= mod:NewCountdown(45, "ej7920", not mod:IsHealer(), nil, nil, nil, nil, 2)
 local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, true, true)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
@@ -283,8 +283,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:Show(4, "function", updateInfoFrame)
 		end
 	elseif args.spellId == 143593 then
-		defensiveActive = true
 		if not allForcesReleased then
+			defensiveActive = true
 			self:RegisterShortTermEvents(
 				"SWING_DAMAGE",
 				"RANGE_DAMAGE",
@@ -376,6 +376,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		end
 	elseif msg == L.allForces then
 		allForcesReleased = true
+		defensiveActive = false
 		self:UnregisterShortTermEvents()--Do not warn defensive stance below 10%
 		--Icon setting not put here on purpose, so as not ot mess with existing adds (it's burn boss phase anyawys)
 		specWarnAdds:Show(0)
