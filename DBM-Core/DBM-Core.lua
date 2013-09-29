@@ -4515,18 +4515,17 @@ function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 	local _, fallbackuId, mobuId = self:GetBossTarget(cid)
 	if mobuId then--Have a valid mob unit ID
 		if fallbackuId then
-			print("DBM CheckTankDistance DEBUG fallbackuId/mobuId: "..fallbackuId.." ("..UnitName(fallbackuId).." "..mobuId.." ("..UnitName(mobuId))
+			print("DBM CheckTankDistance DEBUG fallbackuId/mobuId: "..fallbackuId.." ("..UnitName(fallbackuId)..") / "..mobuId.." ("..UnitName(mobuId)..")")
 		else
-			print("DBM CheckTankDistance DEBUG mobuId (no valid fallbackuId): "..mobuId.." ("..UnitName(mobuId))
+			print("DBM CheckTankDistance DEBUG mobuId (no valid fallbackuId): "..mobuId.." ("..UnitName(mobuId)..")")
 		end
 		--First, use trust threat more than fallbackuId and see what we pull from it first.
 		--This is because for CheckTankDistance we want to know who is tanking it, not who it's targeting it.
 		local unitID = (IsInRaid() and "raid") or (IsInGroup() and "party") or "player"
-		for i = 1, DBM:GetNumGroupMembers() do
+		for i = 1, GetNumGroupMembers() do
 			local tanking, status = UnitDetailedThreatSituation(unitID..i, mobuId)--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
 			if tanking or status == 3 then uId = unitID..i end--Found highest threat target, make them uId
-			print("DBM CheckTankDistance DEBUG Threat uId: "..uId.." ("..UnitName(unitID..i)..")")
-			break
+			if uId then print("DBM CheckTankDistance DEBUG Threat uId: "..uId.." ("..UnitName(uId)..")") break end
 		end
 	end
 	--Did not get anything useful from threat, so use who the boss was looking at, at time of cast (ie fallbackuId)
