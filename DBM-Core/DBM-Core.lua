@@ -3068,42 +3068,48 @@ local savedDifficulty
 local difficultyText
 local flexSize
 
-function checkWipe(confirm)
+function checkWipe(isIEEU, confirm)
 	if #inCombat > 0 then
 		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText = DBM:GetCurrentInstanceDifficulty()
 		end
-		local wipe = true
+		local wipe = 1 -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
 		if IsInScenarioGroup() then -- do not wipe in Scenario Group even player is ghost.
-			wipe = false
+			wipe = 0
 		elseif IsEncounterInProgress() then
-			wipe = false
+			wipe = 0
 		elseif InCombatLockdown() then
-			wipe = false
+			wipe = 1
+			if isIEEU then--Due to SoO combat locking on bug, do one more step on wipe check.
+				wipe = 2
+				for i = 1, 5 do
+					if UnitExists("boss"..i) then wipe = 0 end
+				end
+			end
 		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- do not wipe on player dead or ghost while worldboss encounter.
-			wipe = false
+			wipe = 0
 		else
 			local uId = (IsInRaid() and "raid") or "party"
 			for i = 0, GetNumGroupMembers() do
 				local id = (i == 0 and "player") or uId..i
 				if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
-					wipe = false
+					wipe = 0
 					break
 				end
 			end
 		end
-		if not wipe then
-			DBM:Schedule(3, checkWipe)
+		if wipe == 0 then
+			DBM:Schedule(3, checkWipe, isIEEU)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
-			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or 5 --wait 25s more on worldboss do actual wipe.
+			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or (wipe == 2 and 20) or 5 --wait 25s more on worldboss do actual wipe, 15 sec more for UnitExists check.
 			for i, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
-			DBM:Schedule(maxDelayTime, checkWipe, true)
+			DBM:Schedule(maxDelayTime, checkWipe, isIEEU, true)
 		end
 	end
 end
@@ -3165,7 +3171,7 @@ function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, trigge
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
-		self:Schedule(mod.minCombatTime or 3, checkWipe)
+		self:Schedule(mod.minCombatTime or 3, checkWipe, (event or "") == "IEEU")
 		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
@@ -3689,10 +3695,15 @@ do
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - time + lag
+			local isIEEU
+			--Hack for wipe function working correctly on timer recovery.
+			for i = 1, 5 do
+				if UnitExists("boss"..i) then isIEEU = true end
+			end
 			if mod.minCombatTime then
-				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe)
+				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU)
 			else
-				self:Schedule(3, checkWipe)
+				self:Schedule(3, checkWipe, isIEEU)
 			end
 			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inSecnario then
 				DBM.BossHealth:Show(mod.localization.general.name)
