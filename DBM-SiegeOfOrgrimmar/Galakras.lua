@@ -102,10 +102,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 147688 and (self:CheckTankDistance(args:GetSrcCreatureID(), 10, false) or UnitGUID("target") == args.sourceGUID) then--Tower Spell, use small range
+	if args.spellId == 147688 and UnitPower("player", ALTERNATE_POWER_INDEX) > 0 then--Tower Spell
 		warnArcingSmash:Show()
 		specWarnArcingSmash:Show()
-	elseif args.spellId == 146757 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 146757 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
@@ -115,14 +115,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 147824 and (self:CheckTankDistance(args:GetSrcCreatureID(), 10, false) or UnitGUID("target") == args.sourceGUID) and self:AntiSpam(3, 2) then--Tower Spell, use small range
+	if args.spellId == 147824 and UnitPower("player", ALTERNATE_POWER_INDEX) > 0 and self:AntiSpam(3, 2) then--Tower Spell
 		warnMuzzleSpray:Show()
 		specWarnMuzzleSpray:Show()
-	elseif args.spellId == 146769 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 146769 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		warnCrushersCall:Show()
 		specWarnCrushersCall:Show()
 		timerCrushersCallCD:Start()
-	elseif args.spellId == 146849 and self:CheckTankDistance(args:GetSrcCreatureID()) then
+	elseif args.spellId == 146849 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		warnShatteringCleave:Show()
 		timerShatteringCleaveCD:Start()
 	end
@@ -143,10 +143,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args.spellId == 147328 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 147328 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		warnWarBanner:Show()
 		specWarnWarBanner:Show()
-	elseif args.spellId == 146899 and self:CheckTankDistance(args.sourceGUID, 50) then--Use a bigger range than 40 since npcs tend to stand further out
+	elseif args.spellId == 146899 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		warnFracture:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFractureYou:Show()
