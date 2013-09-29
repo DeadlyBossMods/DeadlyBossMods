@@ -185,6 +185,7 @@ DBM.DefaultOptions = {
 	MovieFilter = "Never",
 	LastRevision = 0,
 	FilterSayAndYell = false,
+	DebugMode = false,
 	ChatFrame = "DEFAULT_CHAT_FRAME",
 }
 
@@ -1212,6 +1213,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return DBM:AddMsg(DBM_ERROR_NO_RAID)
 		end
 		DBM:RequestInstanceInfo()
+	elseif cmd:sub(1, 5) == "debug" then
+		DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
+		DBM:AddMsg("DebugMode : " .. (DBM.Options.DebugMode and "true" or "false"))
 	else
 		DBM:LoadGUI()
 	end
@@ -2161,7 +2165,7 @@ function DBM:ScenarioCheck()
 	if combatInfo[LastInstanceMapID] then
 		for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 			if (v.type == "scenario") and checkEntry(v.msgs, LastInstanceMapID) then
-				DBM:StartCombat(v.mod, 0)
+				DBM:StartCombat(v.mod, 0, nil, nil, nil, nil, "LOADING_SCREEN_DIASBLED")
 			end
 		end
 	end
@@ -2289,7 +2293,7 @@ do
 		revision = tonumber(revision or 0) or 0
 		startHp = tonumber(startHp or -1) or -1
 		if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
-			DBM:StartCombat(mod, delay + lag, true, startHp)
+			DBM:StartCombat(mod, delay + lag, true, startHp, nil, nil, "SYNC from - ", sender)
 		end
 	end
 
@@ -2929,9 +2933,9 @@ do
 			buildTargetList()
 			if targetList[mob] then
 				if delay > 0 and UnitAffectingCombat(targetList[mob]) then
-					DBM:StartCombat(mod, delay)
+					DBM:StartCombat(mod, delay, nil, nil, nil, nil, "PLAYER_TARGET")
 				elseif select(2, GetInstanceInfo()) == "none" then
-					DBM:StartCombat(mod, 0, nil, nil, nil, true)
+					DBM:StartCombat(mod, 0, nil, nil, nil, true, "PLAYER_TARGET_AND_YELL")
 				end
 			end
 			clearTargetList()
@@ -2991,7 +2995,7 @@ do
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
-					self:StartCombat(v.mod, 0)
+					self:StartCombat(v.mod, 0, nil, nil, nil, nil, "IEEU")
 				end
 			end
 		end
@@ -3012,7 +3016,7 @@ do
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if v.type == type and checkEntry(v.msgs, msg) or v.type == type .. "_regex" and checkExpressionList(v.msgs, msg) then
-					DBM:StartCombat(v.mod, 0)
+					DBM:StartCombat(v.mod, 0, nil, nil, nil, nil, "MONSTER_MESSAGE")
 				elseif v.type == "combat_" .. type and checkEntry(v.msgs, msg) then
 					scanForCombat(v.mod, v.mob, 0)
 					if v.mod.Options.ReadyCheck and not IsQuestFlaggedCompleted(v.mod.readyCheckQuestId) then
@@ -3104,7 +3108,14 @@ function checkWipe(confirm)
 	end
 end
 
-function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggered)
+function DBM:StartCombat(mod, delay, synced, syncedStartHp, noKillRecord, triggered, event, sender)
+	if DBM.Options.DebugMode then
+		if event then
+			print("DBM:StartCombat called by : "..event..(sender or ""))
+		else
+			print("DBM:StartCombat called by individual mod or unknown reason.")
+		end
+	end
 	if not checkEntry(inCombat, mod) then
 		if not mod.Options.Enabled then return end
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
@@ -3236,7 +3247,7 @@ function DBM:UNIT_HEALTH(uId)
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
 				if not v.mod.disableHealthCombat and (v.type == "combat" and v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
-					self:StartCombat(v.mod, health > 0.97 and 0.5 or mmin(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), nil, health, health < 0.90) -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s) / Do not record kill time below 90% (late combat detection)
+					self:StartCombat(v.mod, health > 0.97 and 0.5 or mmin(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), nil, health, health < 0.90, nil, "UNIT_HEALTH") -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s) / Do not record kill time below 90% (late combat detection)
 				end
 			end
 		end
