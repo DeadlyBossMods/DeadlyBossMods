@@ -2930,7 +2930,7 @@ do
 			if targetList[mob] then
 				if delay > 0 and UnitAffectingCombat(targetList[mob]) then
 					DBM:StartCombat(mod, delay)
-				else
+				elseif select(2, GetInstanceInfo()) == "none" then
 					DBM:StartCombat(mod, 0, nil, nil, nil, true)
 				end
 			end
