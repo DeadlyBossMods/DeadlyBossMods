@@ -28,12 +28,12 @@ local warnCorruptedPrison		= mod:NewTargetAnnounce(144574, 3)
 local warnBanishment			= mod:NewTargetAnnounce(145215, 3)--Heroic
 local warnWeakenedResolve		= mod:NewTargetAnnounce(147207, 2, nil, false)--Heroic
 local warnUnleashed				= mod:NewSpellAnnounce(144832, 3)--Phase 2
---Pride
+--Pride / These 5 warnings can be show at same time. Can be extremely spam. Need to throttle these warnings. (core changes not enough)
 local warnBurstingPride			= mod:NewTargetAnnounce(144911, 2)--25-49 Energy
 local warnProjection			= mod:NewTargetAnnounce(146822, 3)--50-74 Energy
 local warnAuraOfPride			= mod:NewTargetAnnounce(146817, 3)--75-99 Energy
 local warnOvercome				= mod:NewTargetAnnounce(144843, 3)--100 Energy (pre mind control)
-local warnOvercomeMC			= mod:NewTargetAnnounce(144863, 4)--Mind control version (ie applied being hit by swelling pride while you have 144843)
+local warnOvercomeMC			= mod:NewTargetAnnounce(605, 4)--Mind control version (use priest mind control spellid to discribe. because have same spell name in pre-warning)
 --Manifestation of Pride
 local warnManifestation			= mod:NewSpellAnnounce("ej8262", 3, "Interface\\Icons\\achievement_raid_terraceofendlessspring04")
 local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
@@ -49,7 +49,7 @@ local specWarnCorruptedPrisonYou= mod:NewSpecialWarningYou(144574, false)--Since
 local yellCorruptedPrison		= mod:NewYell(144574, nil, false)
 --Pride
 local specWarnBurstingPride		= mod:NewSpecialWarningMove(144911)--25-49 Energy
-local yellBurstingPride			= mod:NewYell(144911)
+local yellBurstingPride			= mod:NewYell(144911, nil, false, nil, nil, 2)
 local specWarnProjection		= mod:NewSpecialWarningYou(146822, nil, nil, nil, 3)--50-74 Energy
 local specWarnAuraOfPride		= mod:NewSpecialWarningYou(146817)--75-99 Energy
 local yellAuraOfPride			= mod:NewYell(146818, nil, false)
