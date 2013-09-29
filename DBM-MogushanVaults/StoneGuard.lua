@@ -85,10 +85,12 @@ end
 local function updateInfoFrame()
 	local lines = {}
 	for i = 1, 5 do
-		lines[UnitName("boss"..i)] = UnitPower("boss"..i)
+		if UnitExists("boss"..i) then
+			lines[UnitName("boss"..i)] = UnitPower("boss"..i)
+		end
 	end
 	lines[UnitName("player")] = UnitPower("player", ALTERNATE_POWER_INDEX)
-	
+
 	return lines
 end
 
