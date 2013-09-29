@@ -85,7 +85,7 @@ local timerCoolingOff				= mod:NewBuffFadesTimer(15, 143484)
 local timerEmpoweredChainHealCD		= mod:NewNextSourceTimer(6, 143473)
 
 local countdownAdds					= mod:NewCountdown(45, "ej7920")--Not confusing, two different voices (unless you set voice 1 and 2 to same voice but that's own fault. This is mandatory. EVERYONE (and in all modes) needs to know adds are coming so they switch or CC or avoid appropriate adds)
-local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, nil, true)
+local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, true, true)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
