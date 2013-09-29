@@ -20,10 +20,6 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
-L:SetOptionLocalization({
-	InfoFrame	= "為$journal:8252顯示訊息框架"
-})
-
 L:SetMiscLocalization({
 	wasteOfTime	= "很好，我會創造一個力場隔離你們的腐化。"
 })
@@ -84,9 +80,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnDefensiveStanceSoon	= "為$spell:143593(五秒前)顯示預先警告倒數",
-	SetIconOnAdds			= "設置團隊圖示在$journal:7920",
-	InfoFrame				= "為$journal:7909顯示訊息框架"
+	warnDefensiveStanceSoon	= "為$spell:143593(五秒前)顯示預先警告倒數"
 })
 
 L:SetMiscLocalization({
@@ -126,10 +120,6 @@ L:SetOptionLocalization({
 -- Siegecrafter Blackfuse --
 ----------------------------
 L= DBM:GetModLocalization(865)
-
-L:SetOptionLocalization({
-	InfoFrame	= "為$journal:8202顯示距離框架"
-})
 
 L:SetMiscLocalization({
 	newWeapons	= "尚未完成的武器開始從生產線上掉落。",
@@ -174,10 +164,6 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
-
-L:SetOptionLocalization({
-	SetIconOnShaman	= "設定團隊圖示在$journal:8294"
-})
 
 -------------
 --  Trash  --
