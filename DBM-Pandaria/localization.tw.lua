@@ -8,7 +8,6 @@ L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
 	RangeFrame			= "根據玩家減益顯示動態的距離框以對應$spell:119622",
-	ReadyCheck			= "當世界首領開打時撥放準備檢查的音效(即使沒有選定目標)"
 })
 
 L:SetMiscLocalization({
@@ -20,10 +19,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "當世界首領開打時撥放準備檢查的音效(即使沒有選定目標)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "把他們的屍體帶給我!"
 })
@@ -32,10 +27,6 @@ L:SetMiscLocalization({
 -- Oondasta --
 --------------
 L= DBM:GetModLocalization(826)
-
-L:SetOptionLocalization({
-	ReadyCheck			= "當世界首領開打時撥放準備檢查的音效(即使沒有選定目標)"
-})
 
 L:SetOptionLocalization({
 	RangeFrame			= "為$spell:137511顯示距離框架"
@@ -81,6 +72,7 @@ L:SetMiscLocalization({
 	Pull					= "試煉開始!",
 	Wave1					= "別讓你們的判斷被困境蒙蔽!",
 	Wave2					= "傾聽你們內心的聲音，找出真相!",
+	Wave3					= "時刻考慮你們行動的後果!",
 	Victory					= "你們的智慧幫你們度過了考驗。希望智慧能在黑暗中照亮你們的道路。"
 })
 
