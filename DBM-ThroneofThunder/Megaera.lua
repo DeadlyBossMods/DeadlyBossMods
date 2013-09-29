@@ -145,7 +145,6 @@ local function findTorrent()
 end
 
 local function CheckHeads(GUID)
-	local megaeraFound = false
 	for i = 1, 5 do
 		if UnitExists("boss"..i) then--Check if new units exist we haven't detected and added yet.
 			local cid = mod:GetCIDFromGUID(UnitGUID("boss"..i))
@@ -173,16 +172,12 @@ local function CheckHeads(GUID)
 					end
 				end
 			end
-			if cid == 68065 then--Megaera
-				megaeraFound = true
-			end
 		end
 	end
-	if not megaeraFound then--If you reset megaera with a vanish or feign death, etc. EncounterInProgress() stays true after wipe
-		DBM:EndCombat(mod, true)--So we need this work around to detect and force end combat on megaera if this happens
+	if DBM.Options.DebugMode then
+		print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
+		print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 	end
---	print("DBM Boss Debug: ", "Active Heads: ".."Fire: "..fireInFront.." Ice: "..iceInFront.." Venom: "..venomInFront.." Arcane: "..arcaneInFront)
---	print("DBM Boss Debug: ", "Inactive Heads: ".."Fire: "..fireBehind.." Ice: "..iceBehind.." Venom: "..venomBehind.." Arcane: "..arcaneBehind)
 end
 
 local function clearHeadGUID(GUID)
