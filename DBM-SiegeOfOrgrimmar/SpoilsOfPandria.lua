@@ -28,23 +28,21 @@ local warnSetToBlow				= mod:NewTargetAnnounce(145987, 4)--145996 is cast ID
 --Stout Crate of Goods
 local warnForbiddenMagic		= mod:NewTargetAnnounce(145230, 2)
 local warnMatterScramble		= mod:NewSpellAnnounce(145288, 3)
-local warnCrimsonRecon			= mod:NewCastAnnounce(142947, 4)
+local warnCrimsonRecon			= mod:NewSpellAnnounce(142947, 4, nil, mod:IsTank(), nil, nil, nil, nil, 2)
 local warnEnergize				= mod:NewSpellAnnounce(145461, 3)--May be script spellid that doesn't show in combat log
 local warnTorment				= mod:NewSpellAnnounce(142934, 3, nil, mod:IsHealer())
 local warnMantidSwarm			= mod:NewSpellAnnounce(142539, 3, nil, mod:IsTank())
 local warnResidue				= mod:NewCastAnnounce(145786, 4, nil, nil, mod:IsMagicDispeller())
 local warnRageoftheEmpress		= mod:NewCastAnnounce(145812, 4, nil, nil, mod:IsMagicDispeller())
-local warnWindStorm				= mod:NewSpellAnnounce(145286, 3)--Stunable?
+local warnWindStorm				= mod:NewSpellAnnounce(145286, 3)
 --Lightweight Crate of Goods
 local warnHardenFlesh			= mod:NewSpellAnnounce(144922, 2, nil, false)
 local warnEarthenShard			= mod:NewSpellAnnounce(144923, 2, nil, false)
 local warnSparkofLife			= mod:NewSpellAnnounce(142694, 3, nil, false)
-local warnBlazingCharge			= mod:NewTargetAnnounce(145712, 3)
 local warnEnrage				= mod:NewTargetAnnounce(145692, 3, nil, mod:IsTank() or mod:CanRemoveEnrage())--Do not have timer for this yet, add not alive long enough.
 --Crate of Pandaren Relics
 local warnBreathofFire			= mod:NewSpellAnnounce(146222, 3)--Do not have timer for this yet, add not alive long enough.
 local warnGustingCraneKick		= mod:NewSpellAnnounce(146180, 3)
-local warnPathofBlossoms		= mod:NewTargetAnnounce(146256, 3)
 
 local specWarnSuperNova			= mod:NewSpecialWarningSpell(146815, nil, nil, nil, 2)
 --Massive Crate of Goods
@@ -98,28 +96,6 @@ local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, t
 mod:AddRangeFrameOption(10, 145987)
 
 local activeBossGUIDS = {}
-
-function mod:BlazingChargeTarget(targetname)
-	if not targetname then
-		print("DBM DEBUG: BlazingChargeTarget Scan failed")
-		return
-	end
-	warnBlazingCharge:Show(targetname)
-end
-
-function mod:PathofBlossomsTarget(targetname)
-	if not targetname then
-		print("DBM DEBUG: PathofBlossomsTarget Scan failed")
-		return
-	end
-	warnPathofBlossoms:Show(targetname)
-end
-
-local function hideRangeFrame()
-	if mod.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-end
 
 function mod:OnCombatStart(delay)
 	table.wipe(activeBossGUIDS)
@@ -193,16 +169,13 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142694 and self:CheckTankDistance(args.sourceGUID) then
 		warnSparkofLife:Show()
---		specWarnSparkofLife:Show()
 	elseif args.spellId == 142947 and self:CheckTankDistance(args.sourceGUID) then
 		specWarnCrimsonRecon:Show()--Done here because we want to warn when we need to move mobs, not on cast start (when we can do nothing)
 		timerCrimsonReconCD:Start(args.sourceGUID)
 	elseif args.spellId == 145712 and self:CheckTankDistance(args.sourceGUID) then
 		timerBlazingChargeCD:Start(args.sourceGUID)
---		self:BossTargetScanner(args.sourceGUID, "BlazingChargeTarget", 0.025, 12)
 	elseif args.spellId == 146253 and self:CheckTankDistance(args.sourceGUID) then
 		timerPathOfBlossomsCD:Start(args.sourceGUID)
---		self:BossTargetScanner(args.sourceGUID, "PathofBlossomsTarget", 0.025, 12)
 	elseif args.spellId == 145230 and self:CheckTankDistance(args.sourceGUID) then
 		local source = args.sourceName
 		warnForbiddenMagic:Show(args.destName)

@@ -27,13 +27,11 @@ mod:RegisterEventsInCombat(
 --All
 local warnActivated					= mod:NewTargetAnnounce(118212, 3, 143542)
 --Kil'ruk the Wind-Reaver
-local warnExposedVeins				= mod:NewStackAnnounce(142931, 2, nil, false)
 local warnGouge						= mod:NewTargetAnnounce(143939, 3, nil, mod:IsTank() or mod:IsHealer())--Timing too variable for a CD
 local warnDeathFromAbove			= mod:NewTargetAnnounce(142232, 3)
 --Xaril the Poisoned-Mind
-local warnTenderizingStirkes		= mod:NewStackAnnounce(142929, 2, nil, false)
 local warnToxicInjection			= mod:NewSpellAnnounce(142528, 3)
-local warnCausticBlood				= mod:NewSpellAnnounce(142315, 4)
+local warnCausticBlood				= mod:NewSpellAnnounce(142315, 4, nil, mod:IsTank(), nil, nil, nil, nil, 2)
 mod:AddBoolOption("warnToxicCatalyst", true, "announce")
 local warnToxicCatalystBlue			= mod:NewCastAnnounce(142725, 4, nil, nil, nil, false)
 local warnToxicCatalystRed			= mod:NewCastAnnounce(142726, 4, nil, nil, nil, false)
@@ -57,10 +55,8 @@ local warnFlash						= mod:NewCastAnnounce(143709, 3)--62-70
 local warnWhirling					= mod:NewTargetAnnounce(143701, 3)
 local warnHurlAmber					= mod:NewSpellAnnounce(143759, 3)
 --Skeer the Bloodseeker
-local warnHewn						= mod:NewStackAnnounce(143275, 2, nil, false)
 local warnBloodletting				= mod:NewSpellAnnounce(143280, 4)
 --Rik'kal the Dissector
-local warnGeneticAlteration			= mod:NewStackAnnounce(143279, 2, nil, false)
 local warnInjection					= mod:NewStackAnnounce(143339)
 local warnMutate					= mod:NewTargetAnnounce(143337, 3)
 --Hisek the Swarmkeeper
@@ -398,11 +394,12 @@ function mod:SPELL_CAST_START(args)
 		warnShieldBash:Show()
 		timerShieldBashCD:Start()
 	elseif args.spellId == 142315 then
-		for i = 1, 3 do
+		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				warnCausticBlood:Show()
 				specWarnCausticBlood:Show()--So show tank warning
+				break
 			end
 		end
 	elseif args.spellId == 143243 then
@@ -410,10 +407,16 @@ function mod:SPELL_CAST_START(args)
 		specWarnRapidFire:Show()
 		--timerRapidFireCD:Start()
 	elseif args.spellId == 143339 then
-		specWarnInjection:Show()
-		timerInjectionCD:Start()
-		countdownInjection:Cancel()--Sometimes boss stutter casts so need to do this
-		countdownInjection:Start()
+		for i = 1, 5 do
+			local bossUnitID = "boss"..i
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
+				specWarnInjection:Show()
+				timerInjectionCD:Start()
+				countdownInjection:Cancel()--Sometimes boss stutter casts so need to do this
+				countdownInjection:Start()
+				break
+			end
+		end
 	end
 end
 
@@ -428,19 +431,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 142931 then
-		local amount = args.amount or 1
-		warnExposedVeins:Show(args.destName, amount)
-	elseif args.spellId == 142929 then
-		local amount = args.amount or 1
-		warnTenderizingStirkes:Show(args.destName, amount)
-	elseif args.spellId == 143275 then
-		local amount = args.amount or 1
-		warnHewn:Show(args.destName, amount)
-	elseif args.spellId == 143279 then
-		local amount = args.amount or 1
-		warnGeneticAlteration:Show(args.destName, amount)
-	elseif args.spellId == 143339 then
+	if args.spellId == 143339 then
 		local amount = args.amount or 1
 		warnInjection:Show(args.destName, amount)
 	elseif args.spellId == 142532 and args:IsPlayer() then
