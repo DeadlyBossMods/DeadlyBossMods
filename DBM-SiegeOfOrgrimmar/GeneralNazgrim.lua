@@ -14,6 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
@@ -56,6 +57,7 @@ local specWarnDefensiveStanceEnd	= mod:NewSpecialWarningEnd(143593)
 local specWarnHeroicShockwave		= mod:NewSpecialWarningSpell(143500, nil, nil, nil, 2)
 local specWarnKorkronBanner			= mod:NewSpecialWarningSwitch(143536, mod:IsDps())
 local specWarnRavager				= mod:NewSpecialWarningSpell(143872)
+local specWarnRavagerMove			= mod:NewSpecialWarningMove(143873)
 local specWarnWarSong				= mod:NewSpecialWarningSpell(143503, nil, nil, nil, 2)
 --Kor'kron Adds
 local specWarnIronstorm				= mod:NewSpecialWarningInterrupt(143420, mod:IsMelee())--Only needs to be interrupted if melee are near it
@@ -71,7 +73,7 @@ local specWarnHealingTideTotem		= mod:NewSpecialWarningSwitch(143474, false)--No
 --Nazgrim Core Abilities
 local timerAddsCD					= mod:NewNextCountTimer(45, "ej7920", nil, nil, nil, 2457)
 local timerSunder					= mod:NewTargetTimer(30, 143494, nil, mod:IsTank() or mod:IsHealer())
-local timerSunderCD					= mod:NewCDTimer(10, 143494, nil, mod:IsTank())
+local timerSunderCD					= mod:NewCDTimer(8, 143494, nil, mod:IsTank())
 local timerExecuteCD				= mod:NewCDTimer(18, 143502, nil, mod:IsTank())
 local timerBoneCD					= mod:NewCDTimer(30, 143638, nil, false, nil, nil, nil, nil, nil, nil, 2)
 local timerBattleStanceCD			= mod:NewNextTimer(60, 143589)
@@ -82,7 +84,7 @@ local timerCoolingOff				= mod:NewBuffFadesTimer(15, 143484)
 --Kor'kron Adds
 local timerEmpoweredChainHealCD		= mod:NewNextSourceTimer(6, 143473)
 
-local countdownAdds					= mod:NewCountdown(45, "ej7920", false, nil, nil, nil, nil, 2)--Confusing with Colling Off. off by default.
+local countdownAdds					= mod:NewCountdown(45, "ej7920")--Not confusing, two different voices (unless you set voice 1 and 2 to same voice but that's own fault. This is mandatory. EVERYONE (and in all modes) needs to know adds are coming so they switch or CC or avoid appropriate adds)
 local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, nil, true)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
@@ -286,7 +288,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:RegisterShortTermEvents(
 				"SWING_DAMAGE",
 				"RANGE_DAMAGE",
-				"SPELL_DAMAGE",
 				"SPELL_PERIODIC_DAMAGE"
 			)
 			table.wipe(dotWarned)
@@ -388,8 +389,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID)
-	if (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(8, 1) then
+function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 143873 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
+		specWarnRavagerMove:Show()
+	elseif (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then--If you've been in LFR at all, you'll see that even 3 is generous. 8 is WAY too leaniant.
 		if not UnitDebuff("player", sunder) then
 			specWarnDefensiveStanceAttack:Show()
 		end
@@ -399,7 +402,7 @@ mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)--Prevent spam on DoT
-	if (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(8, 1) then
+	if (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then
 		if not UnitDebuff("player", sunder) and not dotWarned[spellId] then
 			dotWarned[spellId] = true
 			specWarnDefensiveStanceAttack:Show()
