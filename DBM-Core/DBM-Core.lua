@@ -4508,6 +4508,9 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	end
 end
 
+--Now this function works perfectly. But have some limitation due to DBM.RangeCheck:GetDistance() function.
+--Unfortunely, DBM.RangeCheck:GetDistance() function cannot reflects altitude difference. This makes range unreliable.
+--So, we need to cafefully check range in difference altitude (Espcially, tower top and bottom)
 function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 	local cid = cid or self.creatureId--GetBossTarget supports GUID or CID and it will automatically return correct values with EITHER ONE
 	local distance = distance or 40
@@ -4521,12 +4524,7 @@ function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 			local id = (i == 0 and "target") or unitId..i
 			local tanking, status = UnitDetailedThreatSituation(id, mobuId)--Tanking may return 0 if npc is temporarily looking at an NPC (IE fracture) but status will still be 3 on true tank
 			if tanking or (status == 3) then uId = id end--Found highest threat target, make them uId
-			if uId then print("DBM CheckTankDistance DEBUG Threat uId: "..uId.." ("..UnitName(uId)..")") break end
-		end
-		if fallbackuId then
-			print("DBM CheckTankDistance DEBUG fallbackuId/mobuId: "..fallbackuId.." ("..UnitName(fallbackuId)..") / "..mobuId.." ("..UnitName(mobuId)..")")
-		else
-			print("DBM CheckTankDistance DEBUG mobuId (no valid fallbackuId): "..mobuId.." ("..UnitName(mobuId)..")")
+			if uId then break end
 		end
 		--Did not get anything useful from threat, so use who the boss was looking at, at time of cast (ie fallbackuId)
 		if fallbackuId and not uId then
@@ -4534,7 +4532,6 @@ function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 		end
 	end
 	if uId then--Now we have a valid uId
-		print("DBM CheckTankDistance DEBUG Selected Tank: "..uId.." ("..UnitName(uId)..")")
 		if UnitIsUnit("player", uId) then return true end--If "player" is target, avoid doing any complicated stuff
 		local x, y = GetPlayerMapPosition(uId)
 		if x == 0 and y == 0 then
@@ -4544,7 +4541,6 @@ function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 		if x == 0 and y == 0 then--Failed to pull coords. This is likely a pet or a guardian or an NPC.
 			local inRange2, checkedRange = UnitInRange(uId)--Use an API that works on pets and some NPCS (npcs that get a party/raid/pet ID)
 			if inRange2 and checkedRange then
-				print("DBM CheckTankDistance DEBUG UnitInRange: "..inRange2.." "..checkedRange)
 			end
 			if checkedRange and not inRange2 then--checkedRange only returns true if api worked, so if we get false, true then we are not near npc
 				return false
@@ -4556,13 +4552,9 @@ function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 		if inRange and (inRange > distance) then--You are not near the person tanking boss
 			return false
 		end
-		if inRange then
-			print("DBM CheckTankDistance DEBUG CalculatedRange: "..math.floor(inRange))
-		end
 		--Tank in range, return true.
 		return true
 	end
-	print("DBM CheckTankDistance DEBUG: FAILED TO DETECT TANK")
 	return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire. But some spells will prefer not to fire(i.e : Galakras tower spell), we can define it on this function calling. 
 end
 
