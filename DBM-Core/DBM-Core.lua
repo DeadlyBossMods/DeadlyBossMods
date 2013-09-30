@@ -2285,6 +2285,7 @@ do
 
 	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision)
 		local _, instanceType = GetInstanceInfo()
+		if sender == playerName then return end
 		if instanceType == "pvp" then return end
 		if not IsEncounterInProgress() and instanceType == "raid" and IsPartyLFG() then return end--Ignore syncs if we cannot validate IsEncounterInProgress as true
 		local lag = select(4, GetNetStats()) / 1000
