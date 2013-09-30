@@ -15,6 +15,7 @@
 ## Author: Tandanu and Nitram
 ## X-Website: http://www.deadlybossmods.com
 
+Libs\LibStub\LibStub.lua
 Libs\LibChatAnims\LibChatAnims.xml
 
 localization.en.lua
