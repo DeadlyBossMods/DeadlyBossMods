@@ -2486,7 +2486,7 @@ do
 		local accessList = {}
 		local savedSender
 
-		local inspopup = CreateFrame("Frame", "DBMINSTANCEPOPUP", UIParent)
+		local inspopup = CreateFrame("Frame", "DBMPopupLockout", UIParent)
 		inspopup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",
 			edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
 			tile = true, tileSize = 16, edgeSize = 16,
@@ -2582,11 +2582,11 @@ do
 		end
 
 		syncHandlers["IRE"] = function(sender)
-			local popup = DBMINSTANCEPOPUP:IsShown()
+			local popup = inspopup:IsShown()
 			if popup and savedSender == sender then -- found the popup with the correct data
 				savedSender = nil
 				DBM:Unschedule(autoDecline)
-				DBMINSTANCEPOPUP:Hide()
+				inspopup:Hide()
 			end
 		end
 
