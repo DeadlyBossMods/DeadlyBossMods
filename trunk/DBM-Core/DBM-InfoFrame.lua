@@ -259,7 +259,7 @@ local function updatePlayerPower()
 	local threshold = value[1]
 	local powerType = value[2]
 	for uId in DBM:GetGroupMembers() do
-		local maxPower = UnitPowerMax(uId, pIndex)
+		local maxPower = UnitPowerMax(uId, powerType)
 		if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, powerType) / UnitPowerMax(uId, powerType) * 100 >= threshold then
 			lines[UnitName(uId)] = UnitPower(uId, powerType)
 		end
