@@ -2451,7 +2451,7 @@ do
 		area.onshowcall = {}
 
 		for _, mod in ipairs(DBM.Mods) do
-			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
+			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) and not mod.isTrashMod and not mod.noStatistics then
 				local statsType = 0
 				bossstats = bossstats + 1
 				if not mod.stats then
