@@ -2283,17 +2283,19 @@ do
 		end
 	end
 
-	syncHandlers["C"] = function(sender, delay, mod, modRevision, startHp, dbmRevision)
+	syncHandlers["C"] = function(sender, delay, mod, dbmRevision, startHp, modRevision)
 		local _, instanceType = GetInstanceInfo()
 		if instanceType == "pvp" then return end
 		if not IsEncounterInProgress() and instanceType == "raid" and IsPartyLFG() then return end--Ignore syncs if we cannot validate IsEncounterInProgress as true
 		local lag = select(4, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
 		mod = DBM:GetModByName(mod or "")
+		-- below r10480 mod still sending modRevison as dbmRevison.
+		revision = tonumber(dbmRevision or 0) or 0
 		modRevision = tonumber(modRevision or 0) or 0
-		dbmRevision = tonumber(dbmRevision or 0) or 0
 		startHp = tonumber(startHp or -1) or -1
-		if dbmRevision < 10467 then return end
+		-- block sync from old mod (prevent false combatstart)
+		if revision < 10480 then return end
 		if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, "SYNC from - "..sender, true, startHp)
 		end
@@ -3223,7 +3225,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			mod:OnCombatStart(delay or 0, event == "PLAYER_TARGET_AND_YELL")
 		end
 		if not synced then
-			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp, DBM.Revision)
+			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..DBM.Revision.."\t"..startHp.."\t"..(mod.revision or 0))
 		end
 		fireEvent("pull", mod, delay, synced, startHp)
 		self:ToggleRaidBossEmoteFrame(1)
