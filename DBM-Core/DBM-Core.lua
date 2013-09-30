@@ -4280,7 +4280,7 @@ do
 	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
-	function DBM:NewMod(name, modId, modSubTab, instanceId, creatureInfoId, splitString, selectSplittedPart)--last 2 arg added for Provinggrounds-MoP. I will get provingground mod modified when svn access available / DBM:NewMod("d640", "DBM-ProvingGrounds-MoP", nil, nil, nil, ":", 2)
+	function DBM:NewMod(name, modId, modSubTab, instanceId, nameModifier)
 		name = tostring(name) -- the name should never be a number of something as it confuses sync handlers that just receive some string and try to get the mod from it
 		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
@@ -4315,20 +4315,34 @@ do
 		end
 
 		if tonumber(name) then
-			local t = ""
-			if type(creatureInfoId) == "number" then
-				t = select(2, EJ_GetCreatureInfo(creatureInfoId, tonumber(name)))
-			else
-				t = EJ_GetEncounterInfo(tonumber(name))
+			local t = EJ_GetEncounterInfo(tonumber(name))
+			if type(nameModifier) == "number" then--Get name form EJ_GetCreatureInfo
+				t = select(2, EJ_GetCreatureInfo(nameModifier, tonumber(name)))
+			elseif type(nameModifier) == "function" then--custom name modifiy function
+				t = nameModifier(t or name)
+			else--default name modify
+				t = string.split(",", t or name)
 			end
-			obj.localization.general.name = select(selectSplittedPart or 1, string.split(splitstring or ",", t or name))
+			obj.localization.general.name = t
 			obj.modelId = select(4, EJ_GetCreatureInfo(1, tonumber(name)))
 		elseif name:match("z%d+") then
 			local t = GetRealZoneText(string.sub(name, 2))
-			obj.localization.general.name = select(selectSplittedPart or 1, string.split(splitstring or ",", t or name))
+			if type(nameModifier) == "number" then--do nothing
+			elseif type(nameModifier) == "function" then--custom name modifiy function
+				t = nameModifier(t or name)
+			else--default name modify
+				t = string.split(",", t or name)
+			end
+			obj.localization.general.name = t
 		elseif name:match("d%d+") then
 			local t = GetDungeonInfo(string.sub(name, 2))
-			obj.localization.general.name = select(selectSplittedPart or 1, string.split(splitstring or ",", t or name))
+			if type(nameModifier) == "number" then--do nothing
+			elseif type(nameModifier) == "function" then--custom name modifiy function
+				t = nameModifier(t or name)
+			else--default name modify
+				t = string.split(",", t or name)
+			end
+			obj.localization.general.name = t
 		end
 		tinsert(self.Mods, obj)
 		modsById[name] = obj
@@ -5035,16 +5049,16 @@ do
 		return newAnnounce(self, "stack", spellId, color or 2, ...)
 	end
 
-	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName)
-		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime)
+	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, ...)
+		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, ...)
 	end
 
 	function bossModPrototype:NewSoonAnnounce(spellId, color, ...)
 		return newAnnounce(self, "soon", spellId, color or 1, ...)
 	end
 
-	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName)
-		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time)
+	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, ...)
+		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time, ...)
 	end
 
 	function bossModPrototype:NewPhaseAnnounce(phase, color, icon, ...)
