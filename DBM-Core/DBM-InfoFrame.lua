@@ -60,6 +60,7 @@ local maxlines
 local currentEvent
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local lines = {}
+local sortingAsc
 local sortedLines = {}
 local icons = {}
 local value = {}
@@ -258,6 +259,7 @@ local function updatePlayerPower()
 	local threshold = value[1]
 	local powerType = value[2]
 	for uId in DBM:GetGroupMembers() do
+		local maxPower = UnitPowerMax(uId, pIndex)
 		if maxPower ~= 0 and not UnitIsDeadOrGhost(uId) and UnitPower(uId, powerType) / UnitPowerMax(uId, powerType) * 100 >= threshold then
 			lines[UnitName(uId)] = UnitPower(uId, powerType)
 		end
