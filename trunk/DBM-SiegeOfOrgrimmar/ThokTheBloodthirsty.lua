@@ -185,51 +185,64 @@ function mod:SPELL_AURA_APPLIED(args)
 		screechCount = args.amount or 1
 		warnAcceleration:Show(args.destName, screechCount)
 	elseif args.spellId == 143766 then
-		local amount = args.amount or 1
-		warnFearsomeRoar:Show(args.destName, amount)
-		timerFearsomeRoar:Start(args.destName)
 		timerFearsomeRoarCD:Start()
-		if amount >= 2 then
-			if args:IsPlayer() then
-				specWarnFearsomeRoar:Show(args.amount)
-			else
-				specWarnFearsomeRoarOther:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") then
+			local amount = args.amount or 1
+			warnFearsomeRoar:Show(args.destName, amount)
+			timerFearsomeRoar:Start(args.destName)
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specWarnFearsomeRoar:Show(args.amount)
+				else
+					specWarnFearsomeRoarOther:Show(args.destName)
+				end
 			end
 		end
 	elseif args.spellId == 143780 then
-		local amount = args.amount or 1
-		warnAcidBreath:Show(args.destName, amount)
-		timerAcidBreath:Start(args.destName)
 		timerAcidBreathCD:Start()
-		if amount >= 2 then
-			if args:IsPlayer() then
-				specWarnAcidBreath:Show(args.amount)
-			else
-				specWarnAcidBreathOther:Show(args.destName)
+		local amount = args.amount or 1
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") then
+			warnAcidBreath:Show(args.destName, amount)
+			timerAcidBreath:Start(args.destName)
+			timerAcidBreathCD:Start()
+			if amount >= 2 then
+				if args:IsPlayer() then
+					specWarnAcidBreath:Show(args.amount)
+				else
+					specWarnAcidBreathOther:Show(args.destName)
+				end
 			end
 		end
 	elseif args.spellId == 143773 then
-		local amount = args.amount or 1
-		warnFrostBreath:Show(args.destName, amount)
-		timerFrostBreath:Start(args.destName)
 		timerFrostBreathCD:Start()
-		if amount >= 3 then
-			if args:IsPlayer() then
-				specWarnFrostBreath:Show(args.amount)
-			else
-				specWarnFrostBreathOther:Show(args.destName)
+		local amount = args.amount or 1
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") then
+			warnFrostBreath:Show(args.destName, amount)
+			timerFrostBreath:Start(args.destName)
+			if amount >= 3 then
+				if args:IsPlayer() then
+					specWarnFrostBreath:Show(args.amount)
+				else
+					specWarnFrostBreathOther:Show(args.destName)
+				end
 			end
 		end
 	elseif args.spellId == 143767 then
-		local amount = args.amount or 1
-		warnScorchingBreath:Show(args.destName, amount)
-		timerScorchingBreath:Start(args.destName)
 		timerScorchingBreathCD:Start()
-		if amount >= 3 then
-			if args:IsPlayer() then
-				specWarnScorchingBreath:Show(args.amount)
-			else
-				specWarnScorchingBreathOther:Show(args.destName)
+		local amount = args.amount or 1
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if self:IsTanking(uId, "boss1") then
+			warnScorchingBreath:Show(args.destName, amount)
+			timerScorchingBreath:Start(args.destName)
+			if amount >= 3 then
+				if args:IsPlayer() then
+					specWarnScorchingBreath:Show(args.amount)
+				else
+					specWarnScorchingBreathOther:Show(args.destName)
+				end
 			end
 		end
 	elseif args.spellId == 143440 then
