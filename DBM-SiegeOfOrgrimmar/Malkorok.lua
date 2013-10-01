@@ -56,6 +56,7 @@ local soundDisplacedEnergy				= mod:NewSound(142913)
 
 mod:AddRangeFrameOption("8/5")--Various things
 mod:AddSetIconOption("SetIconOnDisplacedEnergy", 142913, false)
+mod:AddSetIconOption("SetIconOnAdds", "ej7952", false, true)
 
 local displacedEnergyDebuff = GetSpellInfo(142913)
 local playerDebuffs = 0
@@ -137,6 +138,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnSeismicSlam:Show(seismicSlamCount)
 		if seismicSlamCount < 3 then
 			timerSeismicSlamCD:Start(nil, seismicSlamCount+1)
+		end
+		if self.Options.SetIconOnAdds then
+			self:ScanForMobs(71644, 8, 30)
 		end
 	elseif args.spellId == 143913 then--May not be right spell event
 		--5 rage gained from Essence of Y'Shaarj would progress timer about 2.5 seconds
