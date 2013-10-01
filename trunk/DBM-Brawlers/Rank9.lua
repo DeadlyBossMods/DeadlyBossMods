@@ -31,7 +31,7 @@ local brawlersMod = DBM:GetModByName("Brawlers")
 
 function mod:SPELL_CAST_START(args)
 	if not brawlersMod.Options.SpectatorMode and not brawlersMod:PlayerFighting() then return end
-	if args.spellId == 141013 then
+	if args.spellId == 142621 then
 		warnCompleteHeal:Show()
 		if brawlersMod:PlayerFighting() then
 			specWarnCompleteHeal:Show()
