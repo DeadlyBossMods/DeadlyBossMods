@@ -82,7 +82,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
-	elseif args.spellId == 144631 and not args:IsDestTypePlayer() then
+	elseif args.spellId == 144631 and args.sourceGUID == args.destGUID then
 		warnAgility:Show(args.destName)
 		specWarnAgility:Show(args.destName)
 --		timerAgilityCD:Start()
