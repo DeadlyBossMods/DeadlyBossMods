@@ -118,8 +118,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(865)
 
 L:SetMiscLocalization({
-	newWeapons	= "Unfertige Waffen werden auf das Fabrikationsband befördert.",--needs to be verified (video-captured translation)
-	newShredder	= "Ein automatisierter Schredder nähert sich!"--needs to be verified (video-captured translation)
+	newWeapons	= "Unfertige Waffen werden auf das Fabrikationsband befördert.",
+	newShredder	= "Ein automatisierter Schredder nähert sich!"
 })
 
 ----------------------------
