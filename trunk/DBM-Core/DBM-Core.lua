@@ -4549,6 +4549,54 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	end
 end
 
+local scanLimiter = 0
+local scanIcon = nil
+local scansDone = 0
+local scanAdds = {}--This is wiped on combat end at mod level, not function level
+function bossModPrototype:ScanForMobs(creatureID, startIcon, scanTimes, mobTotal, reverse)
+	if DBM:GetRaidRank() > 0 then
+		scansDone = scansDone + 1
+		if scansDone > mobTotal then return end--Easier to termiante loop at beginning than have duplicate calls in mouseover and target
+		local scanTimes = scanTimes or 40
+		local creatureID = creatureID or self.creatureId
+		if not scanIcon then scanIcon = startIcon end--Set our scan icon, its first scan
+		scanLimiter = scanLimiter + 1
+		for uId in DBM:GetGroupMembers() do
+			local unitid = uId.."target"
+			local guid = UnitGUID(unitid)
+			local cid = self:GetCIDFromGUID(guid)
+			if cid == creatureID and guid and not scanAdds[guid] then
+				SetRaidTarget(unitid, scanIcon)
+				scanAdds[guid] = true
+				if reverse then
+					scanIcon = scanIcon + 1
+				else
+					scanIcon = scanIcon - 1
+				end
+			end
+		end
+		local guid2 = UnitGUID("mouseover")
+		local cid = self:GetCIDFromGUID(guid2)
+		if cid == creatureID and guid2 and not scanAdds[guid2] then
+			SetRaidTarget("mouseover", scanIcon)
+			scanAdds[guid2] = true
+			if reverse then
+				scanIcon = scanIcon + 1
+			else
+				scanIcon = scanIcon - 1
+			end
+		end
+		if scanLimiter < scanTimes then--Don't scan for more than 8 seconds
+			self:ScheduleMethod(0.2, "ScanForMobs", creatureID, startIcon, scanTimes, mobTotal, reverse)
+		else
+			scanLimiter = 0
+			scansDone = 0
+			scanIcon = nil
+			--Do not wipe adds GUID table here, it's wiped by :Stop() which is called by EndCombat
+		end
+	end
+end
+
 --Now this function works perfectly. But have some limitation due to DBM.RangeCheck:GetDistance() function.
 --Unfortunely, DBM.RangeCheck:GetDistance() function cannot reflects altitude difference. This makes range unreliable.
 --So, we need to cafefully check range in difference altitude (Espcially, tower top and bottom)
@@ -4607,6 +4655,8 @@ function bossModPrototype:Stop(cid)
 		v:Stop()
 	end
 	self:Unschedule()
+	twipe(scanAdds)--Wiped here when mod stop is called by CombatEnd
+	scanIcon = nil--For good measure, in cast stop is called in a way that prevents clearing this icon.
 end
 
 function bossModPrototype:IsDifficulty(...)

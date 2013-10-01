@@ -81,6 +81,7 @@ local countdownReflection		= mod:NewCountdown(25, 144800, false, nil, nil, nil, 
 
 mod:AddInfoFrameOption("ej8255")
 mod:AddSetIconOption("SetIconOnMark", 144351, false)
+mod:AddSetIconOption("SetIconOnFragment", 146823, false, true)
 
 local UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID = UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID
 local prideLevel = EJ_GetSectionInfo(8255)
@@ -189,6 +190,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 144800 then
 		warnSelfReflection:Show()
 		specWarnSelfReflection:Show()
+	elseif args.spellId == 146823 and self.Options.SetIconOnFragment then--Banishment cast. Not want to use applied for add mark scheduling
+		self:ScanForMobs(72569, 8)
 	end
 end
 
