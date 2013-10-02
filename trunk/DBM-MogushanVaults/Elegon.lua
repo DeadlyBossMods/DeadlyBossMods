@@ -140,7 +140,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
 		end
 		if self.Options.SetIconOnCreature then
-			self:ScanForMobs(args.sourceGUID, 0, 8, 6, 0,5, 6)
+			self:ScanForMobs(args.sourceGUID, 0, 8, 6, 0.5, 10)
 		end
 		if focusActivated == 6 then
 			timerDespawnFloor:Start()
