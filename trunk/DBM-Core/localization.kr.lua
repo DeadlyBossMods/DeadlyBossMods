@@ -243,7 +243,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.nextsource		= "다음 $spell:%s 바 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement		= "%s 업적까지 남은시간 바 보기"
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%s 대상에게 전술 목표 아이콘 설정"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s 에게 전술 목표 아이콘 설정"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "$spell:%s 에게 전술 목표 아이콘 설정(공격대원 중 한명만 활성화 권장)"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%s 대상이 된 경우 별도 경고음 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "$spell:%s 이전에 초읽기 소리 듣기"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "$spell:%s 남은시간 초읽기 소리 듣기"

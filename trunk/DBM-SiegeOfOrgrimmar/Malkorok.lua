@@ -140,7 +140,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerSeismicSlamCD:Start(nil, seismicSlamCount+1)
 		end
 		if self.Options.SetIconOnAdds and self:IsDifficulty("heroic10", "heroic25") then
-			self:ScanForMobs(71644, 8, 30)
+			self:ScanForMobs(71644, 8, 0.2, 30)
 		end
 	elseif args.spellId == 143913 then--May not be right spell event
 		--5 rage gained from Essence of Y'Shaarj would progress timer about 2.5 seconds

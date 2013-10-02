@@ -42,7 +42,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "$spell:123244 종료 알림 보기",
 	timerSpecialCD			= "$spell:123244 또는 $spell:123461 대기시간 바 보기",
-	SetIconOnProtector		= "$journal:6224에 전술 목표 아이콘 설정<br/>(승급자가 1명 이상일 경우에는 오작동 할 수 있습니다.)",
 	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(3, 123121).."<br/>(숨기 중일때는 모든 공격대원 보임, 그 외에는 방어전담만 보임)",
 	GWHealthFrame			= "우두머리 체력 바 사용시 $spell:123461 사라짐까지 남은체력도 함께 보기"
 })
