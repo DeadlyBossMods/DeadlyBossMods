@@ -46,7 +46,7 @@ local timerDespawnFloor				= mod:NewTimer(6.5, "timerDespawnFloor", 116994)--6.5
 local berserkTimer					= mod:NewBerserkTimer(570)
 
 mod:AddBoolOption("SetIconOnDestabilized", true)
-mod:AddBoolOption("SetIconOnCreature", true)
+mod:AddSetIconOption("SetIconOnCreature", "ej6193", false, true)
 
 local phase2Started = false
 local protectorCount = 0
@@ -55,9 +55,6 @@ local closedCircuitTargets = {}
 local stunTargets = {}
 local stunIcon = 8
 local focusActivated = 0
-local creatureIcons = {}
-local creatureIcon = 8
-local iconsSet = 6
 
 local function warnClosedCircuitTargets()
 	warnClosedCircuit:Show(table.concat(closedCircuitTargets, "<, >"))
@@ -69,12 +66,6 @@ local function warnStunnedTargets()
 	table.wipe(stunTargets)
 end
 
-local function resetCreatureIconState()
-	table.wipe(creatureIcons)
-	creatureIcon = 8
-	iconsSet = 0
-end
-
 function mod:OnCombatStart(delay)
 	protectorCount = 0
 	stunIcon = 8
@@ -84,7 +75,6 @@ function mod:OnCombatStart(delay)
 	iconsSet = 6
 	table.wipe(closedCircuitTargets)
 	table.wipe(stunTargets)
-	table.wipe(creatureIcons)
 	timerBreathCD:Start(8-delay)
 	timerProtectorCD:Start(10-delay)
 	berserkTimer:Start(-delay)
@@ -143,32 +133,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-mod:RegisterOnUpdateHandler(function(self)
-	if self.Options.SetIconOnCreature and not DBM.Options.DontSetIcons and DBM:GetRaidRank() > 0 and not (iconsSet == 6) then
-		for uId in DBM:GetGroupMembers() do
-			local unitid = uId.."target"
-			local guid = UnitGUID(unitid)
-			if creatureIcons[guid] then
-				SetRaidTarget(unitid, creatureIcons[guid])
-				iconsSet = iconsSet + 1
-				creatureIcons[guid] = nil
-			end
-		end
-	end
-end, 1)
-
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(116598, 132265) then--Cast when these are activated
-		if focusActivated == 0 then
-			resetCreatureIconState()
-		end
 		focusActivated = focusActivated + 1
 		if DBM.BossHealth:IsShown() and not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
 		end
-		if self.Options.SetIconOnCreature and not DBM.Options.DontSetIcons and not creatureIcons[args.sourceGUID] then
-			creatureIcons[args.sourceGUID] = creatureIcon
-			creatureIcon = creatureIcon - 1
+		if self.Options.SetIconOnCreature then
+			self:ScanForMobs(args.sourceGUID, 0, 8, 6, 0,5, 6)
 		end
 		if focusActivated == 6 then
 			timerDespawnFloor:Start()

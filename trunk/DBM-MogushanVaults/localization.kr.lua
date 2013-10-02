@@ -92,8 +92,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "가운데 바닥이 사라짐 이전에 특수 경고 보기",
-	timerDespawnFloor			= "가운데 바닥이 사라짐 바 보기",
-	SetIconOnCreature			= "$journal:6193에 전술 목표 아이콘 설정"
+	timerDespawnFloor			= "가운데 바닥이 사라짐 바 보기"
 })
 
 
