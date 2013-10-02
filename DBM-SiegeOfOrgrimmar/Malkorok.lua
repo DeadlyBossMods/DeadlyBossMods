@@ -139,7 +139,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if seismicSlamCount < 3 then
 			timerSeismicSlamCD:Start(nil, seismicSlamCount+1)
 		end
-		if self.Options.SetIconOnAdds then
+		if self.Options.SetIconOnAdds and self:IsDifficulty("heroic10", "heroic25") then
 			self:ScanForMobs(71644, 8, 30)
 		end
 	elseif args.spellId == 143913 then--May not be right spell event
