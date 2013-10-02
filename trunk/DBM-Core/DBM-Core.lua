@@ -4553,6 +4553,9 @@ local scanLimiter = 0
 local scanIcon = nil
 local AddsFound = 0
 local scanAdds = {}--This is wiped on combat end at mod level, not function level
+--IMPORTANT note. This function works, but it doesn't do verifications that Tortos and lei shi mod use
+--This means, if two people turn icons on, it will probably break since both will try to set icons and do so on different targets.
+--For this reason I haven't back ported it to tortos and lei shi yet since I'm unsure if I want to break that smart icon choosing code yet.
 function bossModPrototype:ScanForMobs(creatureID, startIcon, scanTimes, mobTotal, reverse)
 	if DBM:GetRaidRank() > 0 then
 		local scanTimes = scanTimes or 40
