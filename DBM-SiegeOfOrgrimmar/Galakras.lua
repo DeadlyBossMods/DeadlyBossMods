@@ -263,7 +263,7 @@ function mod:OnSync(msg)
 			timerAddsCD:Start()
 		end
 		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(72958, 8, 0.2, 40, 2)
+			self:ScanForMobs(72958, 0, 8, 2, 0.2, 8)
 		end
 	end
 end
