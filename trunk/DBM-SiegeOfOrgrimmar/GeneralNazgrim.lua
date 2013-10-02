@@ -94,83 +94,10 @@ mod:AddInfoFrameOption("ej7909")
 
 local addsCount = 0
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
-local adds = {}
-local scanLimiter = 0
-local scanLimiter2 = 0
 local dotWarned = {}
 local defensiveActive = false
 local allForcesReleased = false
 local sunder = GetSpellInfo(143494)
-
-local function scanForBanner()
-	if DBM:GetRaidRank() > 0 then--Cannot impliment counting because it seems there is too much variation between difficulties and it would be ugly
-		scanLimiter2 = scanLimiter2 + 1
-		for uId in DBM:GetGroupMembers() do
-			local unitid = uId.."target"
-			local guid = UnitGUID(unitid)
-			local cid = mod:GetCIDFromGUID(guid)
-			if guid and not adds[guid] and cid == 71626 then--Banner
-				SetRaidTarget(unitid, 8)
-				adds[guid] = true
-				return--Only one banner, so we can kill loop early
-			end
-		end
-		local guid2 = UnitGUID("mouseover")
-		local cid = mod:GetCIDFromGUID(guid2)
-		if guid2 and not adds[guid2] and cid == 71626 then--Banner
-			SetRaidTarget("mouseover", 8)
-			adds[guid2] = true
-			return--Only one banner, so we can kill loop early
-		end
-		if scanLimiter2 < 20 then--Don't scan for more than 4 seconds
-			mod:Schedule(0.2, scanForBanner)
-		end
-	end
-end
-
-local function scanForMobs()
-	if DBM:GetRaidRank() > 0 then--Cannot impliment counting because it seems there is too much variation between difficulties and it would be ugly
-		scanLimiter = scanLimiter + 1
-		for uId in DBM:GetGroupMembers() do
-			local unitid = uId.."target"
-			local guid = UnitGUID(unitid)
-			local cid = mod:GetCIDFromGUID(guid)
-			if guid and not adds[guid] then
-				if cid == 71519 then--Shaman
-					SetRaidTarget(unitid, 7)
-				elseif cid == 71517 then--Arcweaver
-					SetRaidTarget(unitid, 6)
-				elseif cid == 71518 then--Assassin
-					SetRaidTarget(unitid, 1)
-				elseif cid == 71516 then--Iron Blade
-					SetRaidTarget(unitid, 2)
-				elseif cid == 71656 then--Sniper (Heroic)
-					SetRaidTarget(unitid, 4)
-				end
-				adds[guid] = true
-			end
-		end
-		local guid2 = UnitGUID("mouseover")
-		local cid = mod:GetCIDFromGUID(guid2)
-		if guid2 and not adds[guid2] then
-			if cid == 71519 then--Shaman
-				SetRaidTarget("mouseover", 7)
-			elseif cid == 71517 then--Arcweaver
-				SetRaidTarget("mouseover", 6)
-			elseif cid == 71518 then--Assassin
-				SetRaidTarget("mouseover", 1)
-			elseif cid == 71516 then--Iron Blade
-				SetRaidTarget("mouseover", 2)
-			elseif cid == 71656 then--Sniper (Heroic)
-				SetRaidTarget("mouseover", 4)
-			end
-			adds[guid2] = true
-		end
-		if scanLimiter < 50 then--Don't scan for more than 10 seconds
-			mod:Schedule(0.2, scanForMobs)
-		end
-	end
-end
 
 local function updateInfoFrame()
 	local lines = {}
@@ -201,7 +128,6 @@ end
 
 function mod:OnCombatStart(delay)
 	addsCount = 0
-	table.wipe(adds)
 	table.wipe(dotWarned)
 	defensiveActive = false
 	allForcesReleased = false
@@ -303,8 +229,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnKorkronBanner:Show()
 		specWarnKorkronBanner:Show()
 		if self.Options.SetIconOnAdds then
-			scanLimiter2 = 0
-			scanForBanner()
+			self:ScanForMobs(71626, 2, 8, 1, 0,2, 4)--banner
 		end
 	elseif args.spellId == 143474 then
 		warnHealingTideTotem:Show()
@@ -371,8 +296,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerAddsCD:Start(nil, addsCount+1)
 		countdownAdds:Start()
 		if self.Options.SetIconOnAdds then
-			scanLimiter = 0
-			scanForMobs()
+			self:ScanForMobs(71519, 2, 7, 1, 0,2, 10)--Shaman
+			self:ScanForMobs(71517, 2, 6, 1, 0,2, 10)--Arcweaver
+			self:ScanForMobs(71518, 2, 1, 1, 0,2, 10)--Assassin
+			self:ScanForMobs(71516, 2, 2, 1, 0,2, 10)--Iron Blade
+			self:ScanForMobs(71556, 2, 4, 1, 0,2, 10)--Sniper (Heroic)
 		end
 	elseif msg == L.allForces then
 		allForcesReleased = true
