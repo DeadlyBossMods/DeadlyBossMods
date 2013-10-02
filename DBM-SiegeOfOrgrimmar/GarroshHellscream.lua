@@ -215,9 +215,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFarseerWolfRiderCD:Start()
 		if self.Options.SetIconOnShaman then
 			if shamanAlive == 1 then
-				self:ScanForMobs(71983, 2, 8, 1, 0,2, 8)
+				self:ScanForMobs(71983, 2, 8, 1, 0.2, 8)
 			else--Only go up to 2 at once. if 3 are up at once, this is a doomed wipe
-				self:ScanForMobs(71983, 2, 8, 1, 0,2, 8)
+				self:ScanForMobs(71983, 2, 8, 1, 0.2, 8)
 			end
 		end
 	end

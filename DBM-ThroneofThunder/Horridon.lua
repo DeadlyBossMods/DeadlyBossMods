@@ -125,38 +125,6 @@ function mod:OnCombatEnd()
 	end
 end
 
-mod:RegisterOnUpdateHandler(function(self)
-	if hasHighestVersion and not (iconsSet == addsJumped) then
-		for uId in DBM:GetGroupMembers() do
-			local unitid = uId.."target"
-			local guid = UnitGUID(unitid)
-			local cid = self:GetCIDFromGUID(guid)
-			if guid and not adds[guid] and balcMobs[cid] then
-				if cid == 69221 then--Dinomancer always skull
-					SetRaidTarget(unitid, 8)
-				else
-					SetRaidTarget(unitid, AddIcon)
-					AddIcon = AddIcon - 1
-				end
-				iconsSet = iconsSet + 1
-				adds[guid] = true
-			end
-		end
-		local guid2 = UnitGUID("mouseover")
-		local cid = self:GetCIDFromGUID(guid2)
-		if guid2 and not adds[guid2] and balcMobs[cid] then
-			if cid == 69221 then--Dinomancer always skull
-				SetRaidTarget("mouseover", 8)
-			else
-				SetRaidTarget("mouseover", AddIcon)
-				AddIcon = AddIcon - 1
-			end
-			iconsSet = iconsSet + 1
-			adds[guid2] = true
-		end
-	end
-end, 0.2)
-
 --[[
 Back to backs, as expected
 "<244.6 15:11:23> [CLEU] SPELL_CAST_START#false#0xF1310B7C0000383C#Horridon#68168#0##nil#-2147483648#-2147483648#136741#Double Swipe#1", -- [17383]
@@ -333,7 +301,7 @@ function mod:OnSync(msg, targetOrGuid, ver)
 		warnDino:Schedule(56.75)
 		specWarnDino:Schedule(56.75)
 		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(balcMobs, 0, 7, 6, 0,2, 64)--Shaman
+			self:ScanForMobs(balcMobs, 0, 7, 6, 0.2, 64)
 		end
 		if doorNumber == 1 then
 			timerAdds:Start(18.9, Farraki)
