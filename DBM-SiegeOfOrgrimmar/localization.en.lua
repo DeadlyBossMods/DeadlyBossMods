@@ -28,6 +28,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(867)
 
+L:SetOptionLocalization({
+	SetIconOnFragment	= "Set icon on Corrupted Fragment"
+})
+
 --------------
 -- Galakras --
 --------------

@@ -29,6 +29,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(867)
 
+L:SetOptionLocalization({
+	SetIconOnFragment	= "타락한 조각 에게 전술 목표 아이콘 설정"
+})
+
 --------------
 -- Galakras --
 --------------
