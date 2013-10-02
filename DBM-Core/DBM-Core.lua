@@ -4551,12 +4551,10 @@ end
 
 local scanLimiter = 0
 local scanIcon = nil
-local scansDone = 0
+local AddsFound = 0
 local scanAdds = {}--This is wiped on combat end at mod level, not function level
 function bossModPrototype:ScanForMobs(creatureID, startIcon, scanTimes, mobTotal, reverse)
 	if DBM:GetRaidRank() > 0 then
-		scansDone = scansDone + 1
-		if scansDone > mobTotal then return end--Easier to termiante loop at beginning than have duplicate calls in mouseover and target
 		local scanTimes = scanTimes or 40
 		local creatureID = creatureID or self.creatureId
 		if not scanIcon then scanIcon = startIcon end--Set our scan icon, its first scan
@@ -4573,6 +4571,8 @@ function bossModPrototype:ScanForMobs(creatureID, startIcon, scanTimes, mobTotal
 				else
 					scanIcon = scanIcon - 1
 				end
+				AddsFound = AddsFound + 1
+				if AddsFound > mobTotal then return end
 			end
 		end
 		local guid2 = UnitGUID("mouseover")
@@ -4585,12 +4585,14 @@ function bossModPrototype:ScanForMobs(creatureID, startIcon, scanTimes, mobTotal
 			else
 				scanIcon = scanIcon - 1
 			end
+			AddsFound = AddsFound + 1
+			if AddsFound > mobTotal then return end
 		end
 		if scanLimiter < scanTimes then--Don't scan for more than 8 seconds
 			self:ScheduleMethod(0.2, "ScanForMobs", creatureID, startIcon, scanTimes, mobTotal, reverse)
 		else
 			scanLimiter = 0
-			scansDone = 0
+			AddsFound = 0
 			scanIcon = nil
 			--Do not wipe adds GUID table here, it's wiped by :Stop() which is called by EndCombat
 		end
