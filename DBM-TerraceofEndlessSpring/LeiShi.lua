@@ -146,7 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSpecialCD:Cancel()
 		end)
 	elseif args.spellId == 123505 then
-		self:ScanForMobs(args.destGUID, 8, 0.05, 100)
+		self:ScanForMobs(args.destGUID, 0, 8, nil, 0.05, 6)
 	elseif args.spellId == 123461 then
 		specialsCast = specialsCast + 1
 		warnGetAway:Show(specialsCast)
