@@ -27,6 +27,7 @@ local warnTailLash					= mod:NewSpellAnnounce(143428, 3, nil, false)--Hey, someo
 local warnBloodFrenzy				= mod:NewStackAnnounce(143442, 3)
 local warnFixate					= mod:NewTargetAnnounce(143445, 4)
 local warnEnrage					= mod:NewTargetAnnounce(145974, 3, nil, mod:IsTank() or mod:CanRemoveEnrage())
+local warnKey						= mod:NewTargetAnnounce(146589, 3)
 --Infusion of Acid
 local warnAcidPustules				= mod:NewSpellAnnounce(143971, 2)
 local warnAcidBreath				= mod:NewStackAnnounce(143780, 2, nil, mod:IsTank())
@@ -278,6 +279,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 145974 then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
+	elseif args.spellId == 146589 then
+		warnKey:Show(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
