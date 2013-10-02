@@ -79,7 +79,6 @@ L:SetOptionLocalization({
 	warnKickShell			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(134031),
 	specWarnCrystalShell	= "Show special warning when you are missing<br/> $spell:137633 debuff and are above 90% health",
 	InfoFrame				= "Show info frame for players without $spell:137633",
-	SetIconOnTurtles		= "Set icons on $journal:7129",
 	ClearIconOnTurtles		= "Clear icons on $journal:7129 when affected by $spell:133971",
 	AnnounceCooldowns		= "Count out which $spell:134920 cast it is for raid cooldowns"
 })

@@ -186,6 +186,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 140546 and args:IsPlayer() then
 		specWarnFullyMutated:Show()
 		local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
+		if DBM.Options.DebugMode then
+			print(expires, expires-GetTime())
+		end
 		timerFullyMutated:Start(expires-GetTime())
 	end
 end
