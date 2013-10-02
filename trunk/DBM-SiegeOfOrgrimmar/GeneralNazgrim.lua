@@ -229,7 +229,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnKorkronBanner:Show()
 		specWarnKorkronBanner:Show()
 		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(71626, 2, 8, 1, 0,2, 4)--banner
+			self:ScanForMobs(71626, 2, 8, 1, 0.2, 4)--banner
 		end
 	elseif args.spellId == 143474 then
 		warnHealingTideTotem:Show()
@@ -296,11 +296,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerAddsCD:Start(nil, addsCount+1)
 		countdownAdds:Start()
 		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(71519, 2, 7, 1, 0,2, 10)--Shaman
-			self:ScanForMobs(71517, 2, 6, 1, 0,2, 10)--Arcweaver
-			self:ScanForMobs(71518, 2, 1, 1, 0,2, 10)--Assassin
-			self:ScanForMobs(71516, 2, 2, 1, 0,2, 10)--Iron Blade
-			self:ScanForMobs(71556, 2, 4, 1, 0,2, 10)--Sniper (Heroic)
+			self:ScanForMobs(71519, 2, 7, 1, 0.2, 10)--Shaman
+			self:ScanForMobs(71517, 2, 6, 1, 0.2, 10)--Arcweaver
+			self:ScanForMobs(71518, 2, 1, 1, 0.2, 10)--Assassin
+			self:ScanForMobs(71516, 2, 2, 1, 0.2, 10)--Iron Blade
+			self:ScanForMobs(71556, 2, 4, 1, 0.2, 10)--Sniper (Heroic)
 		end
 	elseif msg == L.allForces then
 		allForcesReleased = true

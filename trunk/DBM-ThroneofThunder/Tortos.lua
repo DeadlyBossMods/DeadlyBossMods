@@ -111,9 +111,6 @@ function mod:OnCombatStart(delay)
 	else
 		berserkTimer:Start(-delay)
 	end
-	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnTurtles and not DBM.Options.DontSetIcons then--You can set marks and you have icons turned on
-		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
-	end
 end
 
 function mod:OnCombatEnd()
