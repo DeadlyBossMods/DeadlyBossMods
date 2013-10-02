@@ -141,7 +141,11 @@ end
 
 function mod:OnCombatStart(delay)
 	ashCount = 0
-	berserkTimer:Start(-delay)
+	if self:IsDifficulty("lfr25") then
+		berserkTimer:Start(600-delay)
+	else
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
