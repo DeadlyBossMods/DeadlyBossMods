@@ -259,7 +259,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Set icons on $spell:%s targets"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Set icons on $spell:%s"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Set icons on $spell:%s (Recommended only one person enable)"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Play \"run away\" sound for $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Play countdown sound for $spell:%s cooldown"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Play countdown sound for when $spell:%s fades"
