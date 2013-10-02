@@ -13,7 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
---	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"UNIT_POWER_FREQUENT boss1"
 )
@@ -81,7 +80,7 @@ local countdownReflection		= mod:NewCountdown(25, 144800, false, nil, nil, nil, 
 
 mod:AddInfoFrameOption("ej8255")
 mod:AddSetIconOption("SetIconOnMark", 144351, false)
-mod:AddSetIconOption("SetIconOnFragment", 146823, false, true)
+mod:AddSetIconOption("SetIconOnFragment", 146823, false, true)--This does not get along with SetIconOnMark though
 
 local UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID = UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID
 local prideLevel = EJ_GetSectionInfo(8255)
@@ -191,7 +190,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnSelfReflection:Show()
 		specWarnSelfReflection:Show()
 	elseif args.spellId == 146823 and self.Options.SetIconOnFragment then--Banishment cast. Not want to use applied for add mark scheduling
-		self:ScanForMobs(72569, 8)
+		self:ScanForMobs(72569, 8, nil, 3)
 	end
 end
 
