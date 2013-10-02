@@ -80,7 +80,8 @@ local soundDireFixate			= mod:NewSound(140946)
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnCharge")
-mod:AddBoolOption("SetIconOnAdds", false)
+mod:AddBoolOption("SetIconOnAdds", false) -- use custom string.
+mod.findFastestComputer = "SetIconOnAdds" -- for set icon stuff.
 
 local doorNumber = 0
 local direNumber = 0
@@ -90,19 +91,13 @@ local Farraki	= EJ_GetSectionInfo(7098)
 local Gurubashi	= EJ_GetSectionInfo(7100)
 local Drakkari	= EJ_GetSectionInfo(7103)
 local Amani		= EJ_GetSectionInfo(7106)
-local adds = {}
-local AddIcon = 7
-local addsJumped = 0
-local iconsSet = 0
-local highestVersion = 0
-local hasHighestVersion = false
 local balcMobs = {
 	[69164] = true,
 	[69175] = true,
 	[69176] = true,
 	[69177] = true,
 	[69178] = true,
-	[69221] = true,
+	[69221] = 8,
 }
 
 function mod:OnCombatStart(delay)
@@ -110,11 +105,6 @@ function mod:OnCombatStart(delay)
 	direNumber = 0
 	shamandead = 0
 	jalakEngaged = false
-	table.wipe(adds)
-	AddIcon = 7
-	iconsSet = 0
-	addsJumped = 0
-	highestVersion = 0
 	timerPunctureCD:Start(10-delay)
 	timerDoubleSwipeCD:Start(16-delay)--16-17 second variation
 	timerDoor:Start(16.5-delay)
@@ -126,9 +116,6 @@ function mod:OnCombatStart(delay)
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to prevent detecting first heads on pull before variables reset from first engage fire. We'll catch them on delayed engages fired couple seconds later
 	)
-	if DBM:GetRaidRank() > 0 and self.Options.SetIconOnAdds and not DBM.Options.DontSetIcons then--You can set marks and you have icons turned on
-		self:SendSync("IconCheck", UnitGUID("player"), tostring(DBM.Revision))
-	end
 end
 
 function mod:OnCombatEnd()
@@ -136,11 +123,6 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-end
-
-local function resetaddstate(addCount)
-	iconsSet = 0
-	addsJumped = addCount
 end
 
 mod:RegisterOnUpdateHandler(function(self)
@@ -316,8 +298,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 69374 then
 		timerBestialCryCD:Cancel()
-	elseif hasHighestVersion and cid == 69177 then--shaman bear
-		resetaddstate(1)--Bear died, so start looking for shaman who jumpped off of it
 	elseif cid == 69176 then--shaman
 		shamandead = shamandead + 1
 		if shamandead == 3 then
@@ -352,11 +332,8 @@ function mod:OnSync(msg, targetOrGuid, ver)
 		timerDinoCD:Start()
 		warnDino:Schedule(56.75)
 		specWarnDino:Schedule(56.75)
-		if hasHighestVersion then
-			AddIcon = 7
-			self:Schedule(18.9, resetaddstate, 1)
-			self:Schedule(37.8, resetaddstate, 2)
-			self:Schedule(56.75, resetaddstate, 1)
+		if self.Options.SetIconOnAdds then
+			self:ScanForMobs(balcMobs, 0, 7, 6, 0,2, 64)--Shaman
 		end
 		if doorNumber == 1 then
 			timerAdds:Start(18.9, Farraki)
@@ -384,26 +361,6 @@ function mod:OnSync(msg, targetOrGuid, ver)
 			if not jalakEngaged then
 				timerJalakCD:Start(143)
 			end
-		end
-	elseif msg == "IconCheck" and guid and ver then
-		ver = tonumber(ver) or 0
-		if ver > highestVersion then
-			highestVersion = ver--Keep bumping highest version to highest we recieve from the icon setters
-			if guid == UnitGUID("player") then--Check if that highest version was from ourself
-				hasHighestVersion = true
-				self:Unschedule(self.SendSync)
-				self:Schedule(5, self.SendSync, self, "FastestPerson", UnitGUID("player"))
-			else--Not from self, it means someone with a higher version than us probably sent it
-				self:Unschedule(self.SendSync)
-				hasHighestVersion = false
-			end
-		end
-	elseif msg == "FastestPerson" and guid and self:AntiSpam(10, 1) then--Whoever sends this sync first wins all. They have highest version and fastest computer
-		self:Unschedule(self.SendSync)
-		if guid == UnitGUID("player") then
-			hasHighestVersion = true
-		else
-			hasHighestVersion = false
 		end
 	end
 end

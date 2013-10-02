@@ -36,7 +36,7 @@ L:SetOptionLocalization({
 	specWarnOrbofControl	= "$journal:7092 떨어짐시 특수 경고 보기",
 	timerDoor				= "다음 부족의 문 열림 바 보기",
 	timerAdds				= "다음 추가 병력 바 보기",
-	SetIconOnAdds			= "추가 병력들에게 전술 목표 아이콘 설정하기"
+	SetIconOnAdds			= "추가 병력들에게 전술 목표 아이콘 설정"
 })
 
 L:SetMiscLocalization({
@@ -71,7 +71,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "$spell:137633이 없고 체력이 90% 이상인 경우 특수 경고 보기",
 	InfoFrame				= "$spell:137633 없는 대상을 정보 창으로 보기",
-	SetIconOnTurtles		= "$journal:7129에 전술 목표 아이콘 설정",
 	ClearIconOnTurtles		= "$journal:7129이 $spell:133971를 얻은 경우 전술 목표 아이콘 지우기",
 	AnnounceCooldowns		= "공격대 생존기 사용을 위해 $spell:134920 횟수를 소리로 듣기"
 })
@@ -167,7 +166,7 @@ L:SetOptionLocalization({
 	specWarnFogRevealed			= "안개도깨비가 드러날 때 특수 경고 보기",
 	ArrowOnBeam					= "$journal:6882 활성화 중에 이동해야 될 방향을 DBM 화살표로 보기",
 	InfoFrame					= "$spell:133795 중첩을 정보 창으로 보기",
-	SetParticle					= "전투 시작시 입자 밀도를 최저로 설정하기<br/>(전투 종료 후 원상태로 복구됨)"
+	SetParticle					= "전투 시작시 입자 밀도를 최저로 설정<br/>(전투 종료 후 원상태로 복구됨)"
 })
 
 L:SetMiscLocalization({
