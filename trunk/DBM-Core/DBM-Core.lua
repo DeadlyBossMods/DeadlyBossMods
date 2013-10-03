@@ -2229,7 +2229,7 @@ function DBM:LoadMod(mod)
 				--Not the new stand alone pvp mods these are old ones and user needs to remove them or install updated package
 				self:AddMsg(DBM_CORE_OUTDATED_PVP_MODS)
 			end
-		elseif instanceType ~="pvp" and #inCombat == 0 then--do timer recovery only mod load
+		elseif instanceType ~="pvp" and #inCombat == 0 and IsInGroup() then--do timer recovery only mod load
 			local doRequest = false
 			if IsEncounterInProgress() then
 				doRequest = true
@@ -2798,11 +2798,11 @@ do
 		DBM:SendTimers(sender)
 	end
 
-	whisperSyncHandlers["CI"] = function(sender, mod, time)
+	whisperSyncHandlers["CI"] = function(sender, mod, time, isIEEU)
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
-			DBM:ReceiveCombatInfo(sender, mod, time)
+			DBM:ReceiveCombatInfo(sender, mod, time, isIEEU)
 		end
 	end
 
@@ -3147,6 +3147,8 @@ function checkWipe(isIEEU, confirm)
 	end
 end
 
+local combatStartedByIEEU = false
+
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if DBM.Options.DebugMode then
 		if event then
@@ -3204,7 +3206,8 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
-		self:Schedule(mod.minCombatTime or 3, checkWipe, (event or "") == "IEEU")
+		combatStartedByIEEU = (event or "") == "IEEU"
+		self:Schedule(mod.minCombatTime or 3, checkWipe, combatStartedByIEEU)
 		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
@@ -3714,7 +3717,7 @@ do
 		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
 	end
 
-	function DBM:ReceiveCombatInfo(sender, mod, time)
+	function DBM:ReceiveCombatInfo(sender, mod, time, isIEEU)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			if not mod.Options.Enabled then return end
 			local lag = select(4, GetNetStats()) / 1000
@@ -3738,15 +3741,20 @@ do
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - time + lag
-			local isIEEU
-			--Hack for wipe function working correctly on timer recovery.
-			if IsEncounterInProgress() then
-				isIEEU = true
+			local isIEEU = isIEEU
+			--hack for no iEEU information provided.
+			if not isIEEU then
+				for i = 1, 5 do
+					if UnitExits("boss"..i) then
+						isIEEU = "true"
+						break
+					end
+				end
 			end
 			if mod.minCombatTime then
-				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU)
+				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU == "true")
 			else
-				self:Schedule(3, checkWipe, isIEEU)
+				self:Schedule(3, checkWipe, isIEEU == "true")
 			end
 			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inSecnario then
 				DBM.BossHealth:Show(mod.localization.general.name)
@@ -3842,7 +3850,7 @@ function DBM:SendBGTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	return SendAddonMessage("D4", ("CI\t%s\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull, tostring(combatStartedByIEEU)), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
