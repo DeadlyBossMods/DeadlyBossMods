@@ -88,8 +88,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "Spezialwarnung bevor der Boden (Energievortex) verschwindet",
-	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet",
-	SetIconOnCreature		= "Setze Zeichen auf $journal:6193"
+	timerDespawnFloor		= "Zeige Zeit bis der Boden (Energievortex) verschwindet"
 })
 
 ------------

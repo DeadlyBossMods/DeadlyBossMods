@@ -260,7 +260,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Setze Zeichen auf Ziele von $spell:%s"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Setze Zeichen auf $spell:%s"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Setze Zeichen auf $spell:%s (sollte nicht von mehr als einem Spieler aktiviert werden)"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Spiele \"Lauf weg!\"-Sound für $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Spiele akustischen Countdown bis $spell:%s gewirkt wird"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Spiele akustischen Countdown bis $spell:%s schwindet"
