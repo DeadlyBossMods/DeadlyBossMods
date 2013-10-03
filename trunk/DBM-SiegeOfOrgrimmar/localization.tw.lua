@@ -30,7 +30,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(867)
 
 L:SetOptionLocalization({
-	InfoFrame	= "為$journal:8255顯示訊息框架"
+	SetIconOnFragment	= "為腐化的碎片設置圖示"
 })
 
 --------------

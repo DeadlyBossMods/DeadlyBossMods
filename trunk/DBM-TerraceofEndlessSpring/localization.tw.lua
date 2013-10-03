@@ -44,7 +44,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	warnHideOver			= "為$spell:123244結束顯示警告",
 	timerSpecialCD			= "為下一次特別技能冷卻顯示計時器",
-	SetIconOnProtector		= "為$journal:6224標示團隊圖示(超過一名以上的團隊助理時不可靠)",
 	RangeFrame				= DBM_CORE_AUTO_RANGE_OPTION_TEXT:format(3, 123121) .. "<br/>(消失時顯示所有玩家其餘時間只有顯示坦)",
 	GWHealthFrame			= "為$spell:123461退去顯示血量框架(首領血量框架需要開啟)" -- maybe bad wording, needs review
 })
