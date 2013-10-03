@@ -148,7 +148,7 @@ DBM_CORE_TIMER_BREAK				= "Break time!"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "Break time is over"
 
 DBM_CORE_TIMER_PULL					= "Pull in"
-DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec"
+DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec (Sent by %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Achievement"--BATTLE_PET_SOURCE_6
