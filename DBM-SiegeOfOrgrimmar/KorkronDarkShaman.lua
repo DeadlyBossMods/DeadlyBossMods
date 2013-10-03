@@ -3,7 +3,6 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71859, 71858)--haromm, Kardris
-mod:SetReCombatTime(180, 20)
 mod:SetZone()
 mod:SetUsedIcons(5, 4, 3, 2, 1)
 
