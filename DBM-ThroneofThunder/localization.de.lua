@@ -71,7 +71,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "Spezialwarnung, falls dir der $spell:137633 Buff fehlt",
 	InfoFrame				= "Zeige Infofenster für Spieler ohne $spell:137633<br/>mit mehr als 90% Lebenspunkten",
-	SetIconOnTurtles		= "Setze Zeichen auf $journal:7129",
 	ClearIconOnTurtles		= "Entferne Zeichen von $journal:7129 im Zustand $spell:133971",
 	AnnounceCooldowns		= "Zähle akustisch die Anzahl der $spell:134920 Wirkungen<br/>(für \"Raid-Cooldowns\")"
 })
