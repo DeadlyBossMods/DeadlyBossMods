@@ -331,7 +331,7 @@ mod.RANGE_DAMAGE = mod.SPELL_DAMAGE
 mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)--Prevent spam on DoT
-	if (sourceGUID == UnitGUID("player") or sourceGUID == UnitGUID("pet")) and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then
+	if sourceGUID == UnitGUID("player") and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then
 		if not UnitDebuff("player", sunder) and defensiveActive and not dotWarned[spellId] then
 			dotWarned[spellId] = true
 			specWarnDefensiveStanceAttack:Show()
