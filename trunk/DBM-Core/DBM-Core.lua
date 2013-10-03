@@ -236,7 +236,6 @@ local loadDelay2 = nil
 local stopDelay = nil
 local watchFrameRestore = false
 local currentSizes = nil
-local IEEU = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2230,6 +2229,26 @@ function DBM:LoadMod(mod)
 				--Not the new stand alone pvp mods these are old ones and user needs to remove them or install updated package
 				self:AddMsg(DBM_CORE_OUTDATED_PVP_MODS)
 			end
+		elseif instanceType ~="pvp" and #inCombat == 0 then--do timer recovery only mod load
+			local doRequest = false
+			if IsEncounterInProgress() then
+				doRequest = true
+			else
+				local uId = (IsInRaid() and "raid") or "party"
+				for i = 0, GetNumGroupMembers() do
+					local id = (i == 0 and "player") or uId..i
+					if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+						doRequest = true
+						break
+					end
+				end
+			end
+			if doRequest then
+				-- Request timer to 3 person to prevent failure.
+				DBM:Schedule(2, DBM.RequestTimers, DBM)
+				DBM:Schedule(4, DBM.RequestTimers, DBM)
+				DBM:Schedule(6, DBM.RequestTimers, DBM)
+			end
 		end
 		if not InCombatLockdown() then--We loaded in combat because a raid boss was in process, but lets at least delay the garbage collect so at least load mod is half as bad, to do our best to avoid "script ran too long"
 			collectgarbage("collect")
@@ -2779,11 +2798,11 @@ do
 		DBM:SendTimers(sender)
 	end
 
-	whisperSyncHandlers["CI"] = function(sender, mod, time, IEEU)
+	whisperSyncHandlers["CI"] = function(sender, mod, time)
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
-			DBM:ReceiveCombatInfo(sender, mod, time, IEEU)
+			DBM:ReceiveCombatInfo(sender, mod, time)
 		end
 	end
 
@@ -3119,7 +3138,7 @@ function checkWipe(isIEEU, confirm)
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
-			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or (wipe == 2 and 10) or 5 --wait 25s more on worldboss do actual wipe, 15 sec more for UnitExists check.
+			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or (wipe == 2 and 2) or 5 --wait 25s more on worldboss do actual wipe, wipe early if not encounter status detected. (this may cause false wipe? need to review)
 			for i, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
@@ -3185,12 +3204,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
-		if event == "IEEU" then	
-			IEEU = true
-		else
-			IEEU = false
-		end
-		self:Schedule(mod.minCombatTime or 3, checkWipe, IEEU)
+		self:Schedule(mod.minCombatTime or 3, checkWipe, (event or "") == "IEEU")
 		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
@@ -3248,6 +3262,10 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			end
 		end
 		self:StartLogging(0, nil)
+		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
+			WatchFrame:Hide()
+			watchFrameRestore = true
+		end
 		if DBM.Options.ShowEngageMessage then
 			if mod.ignoreBestkill and mod:IsDifficulty("worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 				self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
@@ -3259,9 +3277,12 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 				end
 			end
 		end
-		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
-			WatchFrame:Hide()
-			watchFrameRestore = true
+		local dummyMod = self:GetModByName("PullTimerCountdownDummy")
+		if dummyMod then--stop pull timer, warning, countdowns
+			dummyMod.countdown:Cancel()
+			dummyMod.text:Cancel()
+			DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL) 
+			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 		end
 	end
 end
@@ -3329,7 +3350,6 @@ function DBM:EndCombat(mod, wipe)
 			mod.inCombatOnlyEventsRegistered = nil
 		end
 		mod:Stop()
-		IEEU = false
 		mod.inCombat = false
 		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
@@ -3694,7 +3714,7 @@ do
 		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
 	end
 
-	function DBM:ReceiveCombatInfo(sender, mod, time, senderIEEU)
+	function DBM:ReceiveCombatInfo(sender, mod, time)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			if not mod.Options.Enabled then return end
 			local lag = select(4, GetNetStats()) / 1000
@@ -3718,13 +3738,10 @@ do
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - time + lag
-			local isIEEU = senderIEEU or nil
+			local isIEEU
 			--Hack for wipe function working correctly on timer recovery.
-			for i = 1, 5 do
-				if UnitExists("boss"..i) then
-					isIEEU = true
-					break
-				end
+			if IsEncounterInProgress() then
+				isIEEU = true
 			end
 			if mod.minCombatTime then
 				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU)
@@ -3825,7 +3842,7 @@ function DBM:SendBGTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target, IEEU)
+	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
@@ -3846,28 +3863,8 @@ function DBM:SendTimerInfo(mod, target)
 end
 
 do
-	local function requestTimers()
-		if #inCombat == 0 then
-			if IsEncounterInProgress() then
-				DBM:RequestTimers()
-			else
-				local uId = (IsInRaid() and "raid") or "party"
-				for i = 0, GetNumGroupMembers() do
-					local id = (i == 0 and "player") or uId..i
-					if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
-						DBM:RequestTimers()
-						break
-					end
-				end
-			end
-		end
-	end
 
 	function DBM:PLAYER_ENTERING_WORLD()
-		self:Schedule(6, requestTimers) -- Time recovery. 3.5 sec too early if you have slow machine. try multiple check
-		self:Schedule(10, requestTimers)
-		self:Schedule(14, requestTimers)
-		self:Schedule(18, requestTimers)
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true self:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 		self:Schedule(16, function() if not DBM.Options.ForumsMessageShown then DBM.Options.ForumsMessageShown = DBM.ReleaseRevision self:AddMsg(DBM_FORUMS_MESSAGE) end end)
