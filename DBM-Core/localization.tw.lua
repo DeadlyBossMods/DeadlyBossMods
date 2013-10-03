@@ -257,7 +257,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%s的目標設置標記"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "為$spell:%s設置標記"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "為$spell:%s設置標記(建議只有一個玩家開啟此功能)"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%s時播放音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "為$spell:%s的冷卻播放倒數計時音效"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "為$spell:%s的減益播放倒數計時音效"

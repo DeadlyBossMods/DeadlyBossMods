@@ -92,8 +92,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "為地板消失之前顯示特別警告",
-	timerDespawnFloor			= "為地板消失顯示計時器",
-	SetIconOnCreature			= "為$journal:6193設置團隊圖示"
+	timerDespawnFloor			= "為地板消失顯示計時器"
 })
 
 
