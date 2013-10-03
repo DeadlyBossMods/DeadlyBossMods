@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
+	"RAID_BOSS_WHISPER",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3"
 )
 
@@ -169,12 +170,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143330 then
 		warnGouge:Show()
 		timerGougeCD:Start()
-		for i = 1, 5 do
-			local bossUnitID = "boss"..i
-			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
-				specWarnGouge:Show()--So show tank warning
-			end
-		end
 	elseif args.spellId == 143446 then
 		warnBane:Show()
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -300,6 +295,12 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:143330") then--Emote giving ONLY to the person tanking boss. Better than scanning boss 1-5 for this one which fails from time to time
+		specWarnGouge:Show()--So show tank warning
+	end
+end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 143019 then--Does not show in combat log on normal
