@@ -76,7 +76,8 @@ local specWarnMarked				= mod:NewSpecialWarningYou(143840)
 local yellMarked					= mod:NewYell(143840, nil, false)
 --Sun Tenderheart
 local specWarnShaShear				= mod:NewSpecialWarningInterrupt(143423, false)
-local specWarnShaShearYou			= mod:NewSpecialWarningYou(143423, false)--some heroic player request.
+local specWarnShaShearYou			= mod:NewSpecialWarningYou(143423)--some heroic player request.
+local yellShaShear					= mod:NewYell(143423)
 local specWarnCalamity				= mod:NewSpecialWarningSpell(143491, nil, nil, nil, 2)
 ----Sun Tenderheart's Desperate Measures
 local specWarnDarkMeditation		= mod:NewSpecialWarningSpell(143546)
@@ -104,6 +105,7 @@ local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local strikeDebuff = GetSpellInfo(143962)--Cast spellid, Unconfirmed if debuff has same id or even name. Need to verify
+local sorrowActive = false
 
 function mod:BrewTarget(targetname, uId)
 	if not targetname then return end
@@ -247,6 +249,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBaneCD:Cancel()
 		timerCalamityCD:Cancel()
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
+		sorrowActive = false
 		warnMiserySorrowGloom:Show()
 		specWarnMiserySorrowGloom:Show()
 		timerVengefulStrikesCD:Cancel()
@@ -254,14 +257,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCorruptedBrewCD:Cancel()
 		timerInfernoStrikeCD:Start(8)
 		timerDefiledGroundCD:Start(10)
+		self:RegisterShortTermEvents(
+			"UNIT_DIED"--We register here to make sure we wipe variables on pull
+		)
 	elseif args.spellId == 143812 then--Mark of Anguish
 		warnMarkOfAnguish:Show()
 		specWarnMarkOfAnquish:Show()
 		timerGougeCD:Cancel()
 		timerGarroteCD:Cancel()
 		timerCalamityCD:Cancel()--Can't be cast during THIS special
-	elseif args.spellId == 143423 and args:IsPlayer() then
+	elseif args.spellId == 143423 and args:IsPlayer() and sorrowActive and not self:IsDifficulty("lfr25") then
 		specWarnShaShearYou:Show()
+		yellShaShear:Yell()
 	end
 end
 
@@ -271,11 +278,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBaneCD:Start(10)
 		timerCalamityCD:Start(23)--Now back to not cast right away again.
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
+		sorrowActive = false--Just in case UNIT_DIED doesn't fire.
 		timerDefiledGroundCD:Cancel()
 		timerInfernoStrikeCD:Cancel()
 		timerCorruptedBrewCD:Start(12)
 		timerVengefulStrikesCD:Start(18)
 		timerClashCD:Start(46)
+		self:UnregisterShortTermEvents()
 	elseif args.spellId == 143812 then--Mark of Anguish
 		timerGarroteCD:Start(12)--TODO, verify consistency in all difficulties
 		timerGougeCD:Start(23)--Seems to be either be exactly 23 or exactly 35. Not sure what causes it to switch.
@@ -290,6 +299,13 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 71481 then--Sorrow
+		sorrowActive = false
+	end
+end
 
 function mod:RAID_BOSS_WHISPER(msg)
 	if msg:find("spell:143330") then--Emote giving ONLY to the person tanking boss. Better than scanning boss 1-5 for this one which fails from time to time
