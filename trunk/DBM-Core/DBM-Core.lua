@@ -1215,7 +1215,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:RequestInstanceInfo()
 	elseif cmd:sub(1, 5) == "debug" then
 		DBM.Options.DebugMode = DBM.Options.DebugMode == false and true or false
-		DBM:AddMsg("DebugMode : " .. (DBM.Options.DebugMode and "true" or "false"))
+		DBM:AddMsg("DebugMode : " .. (DBM.Options.DebugMode and "on" or "off"))
 	else
 		DBM:LoadGUI()
 	end
@@ -3100,29 +3100,27 @@ function checkWipe(isIEEU, confirm)
 			savedDifficulty, difficultyText = DBM:GetCurrentInstanceDifficulty()
 		end
 		local wipe = 1 -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
-		if IsInScenarioGroup() then -- do not wipe in Scenario Group even player is ghost.
+		if IsInScenarioGroup() then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
 			wipe = 0
-		elseif IsEncounterInProgress() then
+		elseif IsEncounterInProgress() then -- Encounter Progress marked, you obiously combat whth boss. So do not Wipe
 			wipe = 0
-		elseif InCombatLockdown() then
+		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- On dead or ghost, unit combat status detection would be fail. If you ghost in instance, that means wipe. But in worldboss, ghost means not wipe. So do not wipe.
 			wipe = 0
-			if isIEEU then--Due to SoO combat locking on bug, do one more step on wipe check.
-				wipe = 2
-				for i = 1, 5 do
-					if UnitExists("boss"..i) then
-						wipe = 0 
-						break
-					end
+		elseif isIEEU then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
+			wipe = 2
+			for i = 1, 5 do
+				if UnitExists("boss"..i) then
+					wipe = 0 -- Boss found. No wipe
+					break
 				end
 			end
-		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- do not wipe on player dead or ghost while worldboss encounter.
-			wipe = 0
-		else
+		else -- Unit combat status detection. No combat unit in your party and no EncounterProgress marked, that means wipe
+			wipe = 1
 			local uId = (IsInRaid() and "raid") or "party"
 			for i = 0, GetNumGroupMembers() do
 				local id = (i == 0 and "player") or uId..i
 				if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
-					wipe = 0
+					wipe = 0 -- Someone still in combat. No wipe
 					break
 				end
 			end
@@ -3132,13 +3130,13 @@ function checkWipe(isIEEU, confirm)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
 				if DBM.Options.DebugMode then
-					local reason = (wipe == 1 and "Normal Wipe" or "Cannot found BossN uId")
+					local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found")
 					print("You wiped. Reason : "..reason)
 				end
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
-			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or (wipe == 2 and 2) or 5 --wait 25s more on worldboss do actual wipe, wipe early if not encounter status detected. (this may cause false wipe? need to review)
+			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or 5 --wait 25s more on worldboss do actual wipe.
 			for i, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
