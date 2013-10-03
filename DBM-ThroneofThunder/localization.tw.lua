@@ -71,7 +71,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "當你沒有$spell:137633減益並且血量大於90%時顯示特別警告",
 	InfoFrame				= "為玩家沒有$spell:137633顯示訊息框架",
-	SetIconOnTurtles		= "為$journal:7129標示團隊圖示",
 	ClearIconOnTurtles		= "當$journal:7129中了$spell:133971清除團隊圖示",
 	AnnounceCooldowns		= "為團隊冷卻數出$spell:134920施放"
 })
