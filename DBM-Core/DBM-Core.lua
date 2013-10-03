@@ -236,6 +236,7 @@ local loadDelay2 = nil
 local stopDelay = nil
 local watchFrameRestore = false
 local currentSizes = nil
+local IEEU = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2778,11 +2779,11 @@ do
 		DBM:SendTimers(sender)
 	end
 
-	whisperSyncHandlers["CI"] = function(sender, mod, time)
+	whisperSyncHandlers["CI"] = function(sender, mod, time, IEEU)
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
-			DBM:ReceiveCombatInfo(sender, mod, time)
+			DBM:ReceiveCombatInfo(sender, mod, time, IEEU)
 		end
 	end
 
@@ -3118,7 +3119,7 @@ function checkWipe(isIEEU, confirm)
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
-			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or (wipe == 2 and 20) or 5 --wait 25s more on worldboss do actual wipe, 15 sec more for UnitExists check.
+			local maxDelayTime = (savedDifficulty == "worldboss" and 30) or (wipe == 2 and 10) or 5 --wait 25s more on worldboss do actual wipe, 15 sec more for UnitExists check.
 			for i, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
@@ -3184,7 +3185,12 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
-		self:Schedule(mod.minCombatTime or 3, checkWipe, (event or "") == "IEEU")
+		if event == "IEEU" then	
+			IEEU = true
+		else
+			IEEU = false
+		end
+		self:Schedule(mod.minCombatTime or 3, checkWipe, IEEU)
 		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
@@ -3323,6 +3329,7 @@ function DBM:EndCombat(mod, wipe)
 			mod.inCombatOnlyEventsRegistered = nil
 		end
 		mod:Stop()
+		IEEU = false
 		mod.inCombat = false
 		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
@@ -3687,7 +3694,7 @@ do
 		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
 	end
 
-	function DBM:ReceiveCombatInfo(sender, mod, time)
+	function DBM:ReceiveCombatInfo(sender, mod, time, senderIEEU)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			if not mod.Options.Enabled then return end
 			local lag = select(4, GetNetStats()) / 1000
@@ -3711,7 +3718,7 @@ do
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - time + lag
-			local isIEEU
+			local isIEEU = senderIEEU or nil
 			--Hack for wipe function working correctly on timer recovery.
 			for i = 1, 5 do
 				if UnitExists("boss"..i) then
@@ -3818,7 +3825,7 @@ function DBM:SendBGTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target, IEEU)
 end
 
 function DBM:SendTimerInfo(mod, target)
