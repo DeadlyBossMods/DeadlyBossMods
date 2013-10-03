@@ -4707,7 +4707,7 @@ function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIco
 				return
 			end
 		end
-		if timeNow < scanExpires then--scan for limited times.
+		if timeNow < scanExpires[scanID] then--scan for limited times.
 			self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime)
 		else
 			--clear variables
