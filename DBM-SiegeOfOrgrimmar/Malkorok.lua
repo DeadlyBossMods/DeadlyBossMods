@@ -33,7 +33,7 @@ local specWarnDisplacedEnergy			= mod:NewSpecialWarningRun(142913)
 local yellDisplacedEnergy				= mod:NewYell(142913)
 --Might of the Kor'kron
 local specWarnArcingSmash				= mod:NewSpecialWarningCount(142815, nil, nil, nil, 2)
-local specWarnImplodingEnergySoon		= mod:NewSpecialWarningPreWarn(142986, nil, 5)
+local specWarnImplodingEnergySoon		= mod:NewSpecialWarningPreWarn(142986, nil, 6)
 local specWarnBreathofYShaarj			= mod:NewSpecialWarningCount(142842, nil, nil, nil, 3)
 local specWarnFatalStrike				= mod:NewSpecialWarningStack(142990, mod:IsTank(), 12)--stack guessed, based on CD
 local specWarnFatalStrikeOther			= mod:NewSpecialWarningTarget(142990, mod:IsTank())
@@ -50,7 +50,7 @@ local timerFatalStrike					= mod:NewTargetTimer(30, 142990, nil, mod:IsTank())
 
 local berserkTimer						= mod:NewBerserkTimer(360)
 
-local countdownImplodingEnergy			= mod:NewCountdown(10, 142986)
+local countdownImplodingEnergy			= mod:NewCountdown(10, 142986, nil, nil, 8)
 
 local soundDisplacedEnergy				= mod:NewSound(142913)
 
@@ -216,7 +216,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnArcingSmash:Show(arcingSmashCount)
 		timerImplodingEnergy:Start()
 		countdownImplodingEnergy:Start()
-		specWarnImplodingEnergySoon:Schedule(5)
+		specWarnImplodingEnergySoon:Schedule(6)
 		if arcingSmashCount < 3 then
 			timerArcingSmashCD:Start(nil, arcingSmashCount+1)
 		end
