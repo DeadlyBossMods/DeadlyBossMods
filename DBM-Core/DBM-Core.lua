@@ -236,6 +236,10 @@ local loadDelay2 = nil
 local stopDelay = nil
 local watchFrameRestore = false
 local currentSizes = nil
+local bossHealth = {}
+local savedDifficulty
+local difficultyText
+local flexSize
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -828,6 +832,7 @@ do
 			self:RegisterEvents(
 				"COMBAT_LOG_EVENT_UNFILTERED",
 				"GROUP_ROSTER_UPDATE",
+				"UNIT_NAME_UPDATE_UNFILTERED",
 				--"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
@@ -1171,7 +1176,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:AddMsg(DBM_CORE_LAG_CHECKING)
 		DBM:Schedule(5, function() DBM:ShowLag() end)
 	elseif cmd:sub(1, 5) == "arrow" then
-		if not DBM:IsInRaid() then
+		if not IsInRaid() then
 			DBM:AddMsg(DBM_ARROW_NO_RAIDGROUP)
 			return false
 		end
@@ -1737,8 +1742,9 @@ do
 		self:Schedule(1.5, updateAllRoster)
 	end
 
-	function DBM:IsInRaid()
-		return inRaid
+	--Joined lfr during combat, many unit shows "Somewhat" and invisiable, and break class coloring temporarly. So update roster table again when unit name successfully updated.
+	function DBM:UNIT_NAME_UPDATE_UNFILTERED()
+		self:Schedule(0.5, updateAllRoster)
 	end
 
 	function DBM:GetRaidRank(name)
@@ -2141,6 +2147,17 @@ do
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
 		LastInstanceMapID = mapID
 		if instanceType == "none" and not forceloadmapIds[mapID] then return end
+		-- You entered instance duing worldboss combat. Force end worldboss mod.
+		if inscanceType ~= "none" and savedDifficulty == "worldboss" then
+			for i = #inCombat, 1, -1 do
+				if DBM.Options.DebugMode then
+					local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found")
+					print("You wiped. Reason : "..reason)
+				end
+				DBM:EndCombat(inCombat[i], true)
+			end
+		end
+		-- LoadMod
 		DBM:LoadModsOnDemand("mapId", mapID)
 	end
 	--Faster and more accurate loading for instances, but useless outside of them
@@ -2373,7 +2390,7 @@ do
 			end
 		end
 		if not DBM.Options.DontShowPTText then
-			dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer, sender))
+			dummyMod.text:Show(DBM_CORE_ANNOUNCE_PULL:format(timer))
 			dummyMod.text:Schedule(timer, DBM_CORE_ANNOUNCE_PULL_NOW)
 		end
 		DBM:StartLogging(timer, checkForActualPull)
@@ -3089,10 +3106,6 @@ end
 ---------------------------
 --  Kill/Wipe Detection  --
 ---------------------------
-local bossHealth = {}
-local savedDifficulty
-local difficultyText
-local flexSize
 
 function checkWipe(isIEEU, confirm)
 	if #inCombat > 0 then
@@ -3581,6 +3594,9 @@ function DBM:EndCombat(mod, wipe)
 			WatchFrame:Show()
 			watchFrameRestore = false
 		end
+		savedDifficulty = nil
+		difficultyText = nil
+		flexSize = nil
 	end
 end
 
@@ -4805,7 +4821,7 @@ function bossModPrototype:IsDifficulty(...)
 end
 
 function bossModPrototype:FlexSize()
-	return flexSize
+	return flexSize or 10
 end
 
 function bossModPrototype:SetUsedIcons(...)
