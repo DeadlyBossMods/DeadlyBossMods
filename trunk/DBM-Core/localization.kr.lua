@@ -143,13 +143,13 @@ DBM_CORE_BACK						= "뒤쪽"--BACK
 DBM_CORE_FRONT						= "앞쪽"
 
 DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s 분 남았습니다!"
-DBM_CORE_BREAK_MIN					= "%s 분 후 쉬는 시간이 끝납니다!"
-DBM_CORE_BREAK_SEC					= "%s 초 후 쉬는 시간이 끝납니다!"
+DBM_CORE_BREAK_MIN					= "%s분 후 쉬는 시간이 끝납니다!"
+DBM_CORE_BREAK_SEC					= "%s초 후 쉬는 시간이 끝납니다!"
 DBM_CORE_TIMER_BREAK				= "쉬는 시간"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 종료되었습니다."
 
 DBM_CORE_TIMER_PULL					= "전투 예정"
-DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 시작 합니다. (%s|1이;가; 보냄)"
+DBM_CORE_ANNOUNCE_PULL				= "%d초 뒤 시작 합니다. (%s|1이;가; 보냄)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "시작합니다. 긴장하세요.!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"--BATTLE_PET_SOURCE_6
@@ -160,7 +160,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell			= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.ends			= "%s 종료"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.fades			= "%s 사라짐"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.adds			= "%s : %%d 남음"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "주문시전 %s : %.1f 초"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast			= "주문시전 %s : %.1f초"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon			= "곧 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn		= "%2$s 후 %1$s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase			= "%s 단계"
