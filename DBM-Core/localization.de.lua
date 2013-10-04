@@ -149,7 +149,7 @@ DBM_CORE_TIMER_BREAK				= "Pause!"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "Pause ist vorbei"
 
 DBM_CORE_TIMER_PULL					= "Pull in"
-DBM_CORE_ANNOUNCE_PULL				= "Pull in %d Sek"
+DBM_CORE_ANNOUNCE_PULL				= "Pull in %d Sekunden (gesendet von: %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull jetzt!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Zeit für Erfolg"
