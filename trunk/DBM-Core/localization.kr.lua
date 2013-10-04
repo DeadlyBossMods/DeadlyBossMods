@@ -149,7 +149,7 @@ DBM_CORE_TIMER_BREAK				= "쉬는 시간"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 종료되었습니다."
 
 DBM_CORE_TIMER_PULL					= "전투 예정"
-DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 시작 합니다."
+DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 시작 합니다. (%s|1이;가; 보냄)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "시작합니다. 긴장하세요.!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적)"--BATTLE_PET_SOURCE_6
