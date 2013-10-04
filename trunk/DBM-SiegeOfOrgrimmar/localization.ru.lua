@@ -29,6 +29,10 @@ L:SetMiscLocalization({
 ------------------
 L= DBM:GetModLocalization(867)
 
+L:SetOptionLocalization({
+	SetIconOnFragment	= "Устанавливать метку на Оскверненный осколок"
+})
+
 --------------
 -- Galakras --
 --------------
