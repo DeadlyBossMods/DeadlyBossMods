@@ -44,7 +44,8 @@ DBM_CORE_MIN_FMT					= "%d мин"
 DBM_CORE_SEC						= "сек"
 DBM_CORE_SEC_FMT					= "%d сек"
 
-DBM_CORE_GENERIC_WARNING_DUPLICATE	= "Один из %s"
+DBM_CORE_GENERIC_WARNING_OTHERS		= "и еще один"
+DBM_CORE_GENERIC_WARNING_OTHERS2	= "и %d других"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "Берсерк через %s %s"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "Берсерк"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Отсчет времени до $spell:26662"
@@ -148,7 +149,7 @@ DBM_CORE_TIMER_BREAK				= "Перерыв!"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "Перерыв закончился"
 
 DBM_CORE_TIMER_PULL					= "Атака"
-DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек."
+DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек. (отправил %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Достижение"
@@ -247,7 +248,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Отсчет времени для %s
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Устанавливать метки на цели заклинания $spell:%s"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Устанавливать метки на $spell:%s"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Устанавливать метки на $spell:%s (рекомендуется включить только одному)"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Звуковой сигнал \"бегите\" для $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Звуковой отсчет до восстановления $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Звуковой отсчет до спадения $spell:%s"

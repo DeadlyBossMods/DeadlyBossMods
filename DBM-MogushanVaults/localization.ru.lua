@@ -79,7 +79,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization(726)
 
 L:SetWarningLocalization({
-	specWarnDespawnFloor	= "Смотрите под ноги!"
+	specWarnDespawnFloor	= "Пол исчезнет через 6 сек.!"
 })
 
 L:SetTimerLocalization({
@@ -88,8 +88,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor	= "Спец-предупреждение перед исчезновением пола",
-	timerDespawnFloor		= "Отсчет времени до исчезновения пола",
-	SetIconOnCreature		= "Устанавливать метки на $journal:6193"
+	timerDespawnFloor		= "Отсчет времени до исчезновения пола"
 })
 
 ------------
