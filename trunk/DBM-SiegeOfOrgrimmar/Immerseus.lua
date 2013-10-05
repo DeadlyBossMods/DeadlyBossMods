@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71543)--Doesn't die, will need kill detection
 mod:SetReCombatTime(45)--Lets just assume he has same bug as tsulong in advance and avoid problems
+mod:SetWipeTime(20)--Kill yell fires litte lately, prevent wipe.
 mod:SetZone()
 
 mod:RegisterCombat("combat")
@@ -11,6 +12,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
@@ -85,6 +87,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnSwellingCorruptionTarget:Show(args.destName)
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 143459 and args:IsPlayer() then
