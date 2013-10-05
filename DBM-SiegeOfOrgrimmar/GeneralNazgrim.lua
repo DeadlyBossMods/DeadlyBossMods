@@ -304,7 +304,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerAddsCD:Start(nil, addsCount+1)
 		countdownAdds:Start()
 		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(addsTable, 2, 7, 5, 0.2, 10)
+			self:ScanForMobs(addsTable, 2, 7, 4, 0.2, 10)
 		end
 	elseif msg == L.allForces then
 		allForcesReleased = true
