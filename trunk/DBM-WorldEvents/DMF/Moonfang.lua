@@ -71,7 +71,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_START(args)
+function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144590 and args:IsPlayer() then
 		specWarnCurse:Show()
 	end
