@@ -93,7 +93,14 @@ L:SetMiscLocalization({
 	newForces3					= "Rally the forces!",
 	newForces4					= "Kor'kron, at my side!",
 	newForces5					= "Next squad, to the front!",
-	allForces					= "All Kor'kron... under my command... kill them... NOW!"
+	allForces					= "All Kor'kron... under my command... kill them... NOW!",
+	nextAdds					= "Next Adds: ",
+	--You'd think blizz would have globals for these but apparently not
+	mage						= "|cff69ccf0Mage|r",
+	shaman						= "|cff0070deShaman|r",
+	rogue						= "|cfffff569Rogue|r",
+	hunter						= "|ffabd473Hunter|r",
+	warrior						= "|cffc79c6eWarrior|r"
 })
 
 -----------------
