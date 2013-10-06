@@ -30,7 +30,7 @@ local warnDefensiveStance			= mod:NewSpellAnnounce(143593, 4)
 local warnAdds						= mod:NewCountAnnounce("ej7920", 3, 2457)
 local warnExecute					= mod:NewSpellAnnounce(143502, 4, nil, mod:IsTank())--Heroic
 --Nazgrim Rage Abilities
-local warnHeroicShockwave			= mod:NewSpellAnnounce(143500, 2)
+local warnHeroicShockwave			= mod:NewTargetAnnounce(143500, 2)
 local warnKorkronBanner				= mod:NewSpellAnnounce(143536, 3)
 local warnRavager					= mod:NewSpellAnnounce(143872, 3)
 local warnWarSong					= mod:NewSpellAnnounce(143503, 4)
@@ -54,7 +54,10 @@ local specWarnDefensiveStance		= mod:NewSpecialWarningSpell(143593, nil, nil, ni
 local specWarnDefensiveStanceAttack	= mod:NewSpecialWarningReflect(143593)
 local specWarnDefensiveStanceEnd	= mod:NewSpecialWarningEnd(143593)
 --Nazgrim Rage Abilities
-local specWarnHeroicShockwave		= mod:NewSpecialWarningSpell(143500, nil, nil, nil, 2)
+local specWarnHeroicShockwave		= mod:NewSpecialWarningYou(143500)
+local yellHeroicShockwave			= mod:NewYell(143500)
+local specWarnHeroicShockwaveNear	= mod:NewSpecialWarningClose(143500)
+local specWarnHeroicShockwaveAll	= mod:NewSpecialWarningSpell(143500, nil, nil, nil, 2)
 local specWarnKorkronBanner			= mod:NewSpecialWarningSwitch(143536, mod:IsDps())
 local specWarnRavager				= mod:NewSpecialWarningSpell(143872)
 local specWarnRavagerMove			= mod:NewSpecialWarningMove(143873)
@@ -132,6 +135,29 @@ local function updateInfoFrame()
 	end
 	
 	return lines
+end
+
+function mod:LeapTarget(targetname, uId)
+	if not targetname then return end
+	warnHeroicShockwave:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnHeroicShockwave:Show()
+		yellHeroicShockwave:Yell()
+	else
+		if uId then
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 8 then--Range guesswork
+				specWarnHeroicShockwaveNear:Show(targetname)
+			else
+				specWarnHeroicShockwaveAll:Show()
+			end
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -317,8 +343,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 143500 then--Faster than combat log by 0.3-0.5 seconds
-		warnHeroicShockwave:Show()
-		specWarnHeroicShockwave:Show()
+		self:BossTargetScanner(71515, "LeapTarget", 0.05, 16)
 	end
 end
 
