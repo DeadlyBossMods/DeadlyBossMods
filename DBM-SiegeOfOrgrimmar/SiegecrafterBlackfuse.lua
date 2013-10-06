@@ -82,6 +82,7 @@ local missileCount = 0
 --local activeWeaponsGUIDS = {}
 local shockwaveOvercharged = false
 local weapon = 0
+--Names very long in english, makes frame HUGE, may switch to shorter localized names
 local assemblyLine = EJ_GetSectionInfo(8202)
 local crawlerMine = EJ_GetSectionInfo(8212)
 local shockwaveMissile = EJ_GetSectionInfo(8205)
