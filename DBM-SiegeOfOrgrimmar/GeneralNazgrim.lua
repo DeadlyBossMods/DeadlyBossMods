@@ -133,7 +133,31 @@ local function updateInfoFrame()
 		lines[GetSpellInfo(143503)] = 70
 		lines["|cFFFF0000"..GetSpellInfo(143872).."|r"] = UnitPower("boss1")--Red (definitely work making this one red, it's really the only critically bad one)
 	end
-	
+	if self:IsDifficulty("heroic10", "heroic25") then--Same on 10 heroic? TODO, get normal LFR and flex adds info verified
+		if addsCount == 0 then
+			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.warrior
+		elseif addsCount == 1 then
+			lines[L.nextAdds] = L.shaman..", "..L.rogue..", "..L.hunter
+		elseif addsCount == 2 then
+			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.warrior
+		elseif addsCount == 3 then
+			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.hunter
+		elseif addsCount == 4 then
+			lines[L.nextAdds] = L.shaman..", "..L.rogue..", "..L.warrior
+		elseif addsCount == 5 then
+			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.hunter
+		elseif addsCount == 6 then
+			lines[L.nextAdds] = L.rogue..", "..L.hunter..", "..L.warrior
+		elseif addsCount == 7 then
+			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.rogue
+		elseif addsCount == 8 then
+			lines[L.nextAdds] = L.shaman..", "..L.hunter..", "..L.warrior
+		elseif addsCount == 9 then
+			lines[L.nextAdds] = L.mage..", "..L.hunter..", "..L.warrior
+		else
+			lines[""] = ""
+		end
+	end
 	return lines
 end
 
@@ -227,7 +251,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBerserkerStanceCD:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
-			DBM.InfoFrame:Show(4, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
 	elseif args.spellId == 143594 then
 		warnBerserkerStance:Show()
@@ -240,7 +264,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDefensiveStanceSoon:Schedule(59, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143594))
-			DBM.InfoFrame:Show(4, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
 	elseif args.spellId == 143593 then
 		if not allForcesReleased then
@@ -257,7 +281,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBattleStanceCD:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143593))
-			DBM.InfoFrame:Show(4, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
 	elseif args.spellId == 143536 then
 		warnKorkronBanner:Show()
@@ -331,6 +355,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		countdownAdds:Start()
 		if self.Options.SetIconOnAdds then
 			self:ScanForMobs(addsTable, 2, 7, 4, 0.2, 10)
+		end
+		if self.Options.InfoFrame then
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
 		end
 	elseif msg == L.allForces then
 		allForcesReleased = true
