@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Rabbit", "DBM-WorldEvents", 2)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 8974 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71992)
 --mod:SetModelID(328)
 mod:SetZone()
