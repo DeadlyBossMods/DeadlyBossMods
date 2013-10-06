@@ -60,4 +60,5 @@ DMF\Gnoll.lua
 DMF\Shot.lua
 DMF\Tonks.lua
 DMF\Rabbit.lua
+DMF\Moonfang.lua
 Quests\Plants.lua
