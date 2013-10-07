@@ -3154,7 +3154,7 @@ end
 local combatStartedByIEEU = false
 
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
-	if DBM.Options.DebugMode then
+	if DBM.Options.DebugMode and not mod.inCombat then
 		if event then
 			print("DBM:StartCombat called by : "..event)
 		else
