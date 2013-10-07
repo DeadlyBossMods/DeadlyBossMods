@@ -135,7 +135,7 @@ function mod:SPELL_CAST_START(args)
 		warnMantidSwarm:Show()
 		specWarnMantidSwarm:Show()
 		timerMantidSwarmCD:Start(args.sourceGUID)
-	elseif args.spellId == 145286 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145286 and self:CheckTankDistance(args.sourceGUID) and self:AntiSpam(5, args.sourceGUI) then
 		warnWindStorm:Show()
 		timerWindstormCD:Start(args.sourceGUID)
 	elseif args.spellId == 144922 and self:CheckTankDistance(args.sourceGUID) then
@@ -163,7 +163,7 @@ function mod:SPELL_CAST_START(args)
 		timerReturnToStoneCD:Start(args.sourceGUID)
 	elseif args.spellId == 142947 and self:CheckTankDistance(args.sourceGUID) then--Pre warn more or less
 		warnCrimsonRecon:Show()
-	elseif args.spellId == 146815 and self:CheckTankDistance(args.sourceGUID) then--Filtering iffy here. spark has threat table, but they aren't tanked so they may target healer on wrong side, or a dps on correct side, hoping for dps
+	elseif args.spellId == 146815  then--Filtering simply does not work for these :\
 		warnSuperNova:Show()
 		specWarnSuperNova:Show()
 		timerSuperNova:Start()
