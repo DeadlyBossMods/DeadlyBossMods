@@ -2150,10 +2150,6 @@ do
 		-- You entered instance duing worldboss combat. Force end worldboss mod.
 		if inscanceType ~= "none" and savedDifficulty == "worldboss" then
 			for i = #inCombat, 1, -1 do
-				if DBM.Options.DebugMode then
-					local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found")
-					print("You wiped. Reason : "..reason)
-				end
 				DBM:EndCombat(inCombat[i], true)
 			end
 		end
@@ -3140,7 +3136,7 @@ function checkWipe(isIEEU, confirm)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
 				if DBM.Options.DebugMode then
-					local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found")
+					local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found : "..(wipe or "nil"))
 					print("You wiped. Reason : "..reason)
 				end
 				DBM:EndCombat(inCombat[i], true)
@@ -4523,7 +4519,7 @@ function bossModPrototype:GetBossTarget(cid)
 		end
 	end
 	if DBM.Options.DebugMode then
-		print("DBM GetBossTarget DEBUG: name, uid, bossuid = "..name..", "..uid..", "..bossuid)
+		print("DBM GetBossTarget DEBUG: name, uid, bossuid = "..(name or nil)..", "..(uid or "nil")..", "..(bossuid or "nil"))
 	end
 	if name and bossuid then return name, uid, bossuid end
 	-- failed to detect from default uIds, scan all group members's target.
@@ -4559,7 +4555,7 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	local scanTimes = scanTimes or 16
 	local targetname, targetuid, bossuid = self:GetBossTarget(cid)
 	--Do scan
-	if isEnemyScan and targetname or UnitExists(targetname) then--We check target exists on player scan to prevent nil error. But on enemy scan, do not check target exists.
+	if isEnemyScan and targetname or UnitExists(targetuid) then--We check target exists on player scan to prevent nil error. But on enemy scan, do not check target exists.
 		if (isEnemyScan and UnitIsFriend("player", targetuid) or self:IsTanking(targetuid, bossuid)) and not isFinalScan then--On player scan, ignore tanks. On enemy scan, ignore friendly player.
 			if targetScanCount < scanTimes then--Make sure no infinite loop.
 				self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan).
@@ -4571,7 +4567,7 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 			self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
 				if DBM.Options.DebugMode then
-					print("DBM BossTargetScanner Results DEBUG: name, uid, bossuid = "..targetname..", "..targetuid..", "..bossuid)
+					print("DBM BossTargetScanner Results DEBUG: name, uid, bossuid = "..(targetname or "nil")..", "..(targetuid or "nil")..", "..(bossuid or "nil"))
 				end
 				self:ScheduleMethod(0, returnFunc, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 			end
