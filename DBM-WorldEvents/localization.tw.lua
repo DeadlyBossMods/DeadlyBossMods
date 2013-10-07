@@ -171,6 +171,15 @@ L:SetGeneralLocalization({
 	name = "暗月小兔"
 })
 
+-----------------------
+--  Darkmoon Moonfang  --
+-----------------------
+L = DBM:GetModLocalization("Moonfang")
+
+L:SetGeneralLocalization({
+	name = "月牙"
+})
+
 --------------------------
 --  Plants Vs. Zombies  --
 --------------------------
