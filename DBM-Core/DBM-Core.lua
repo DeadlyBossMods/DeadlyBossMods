@@ -2334,9 +2334,6 @@ do
 		if dbmRevision < 10481 then return end
 		if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, "SYNC from - "..sender, true, startHp)
-			if DBM:GetRaidRank() > 0 and mod.findFastestComputer and mod.Options[mod.findFastestComputer] and not DBM.Options.DontSetIcons then
-				mod:ReceiveIconSetPerson(DBM:GetUnitFullName(sender), dbmRevision)
-			end
 		end
 	end
 
