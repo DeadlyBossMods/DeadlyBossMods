@@ -71,8 +71,6 @@ function mod:OnCombatStart(delay)
 	stunIcon = 8
 	focusActivated = 0
 	powerCount = 0
-	creatureIcon = 8
-	iconsSet = 6
 	table.wipe(closedCircuitTargets)
 	table.wipe(stunTargets)
 	timerBreathCD:Start(8-delay)
