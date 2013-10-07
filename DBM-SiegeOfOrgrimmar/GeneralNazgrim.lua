@@ -133,7 +133,7 @@ local function updateInfoFrame()
 		lines[GetSpellInfo(143503)] = 70
 		lines["|cFFFF0000"..GetSpellInfo(143872).."|r"] = UnitPower("boss1")--Red (definitely work making this one red, it's really the only critically bad one)
 	end
-	if self:IsDifficulty("heroic10", "heroic25") then--Same on 10 heroic? TODO, get normal LFR and flex adds info verified
+	if mod:IsDifficulty("heroic10", "heroic25") then--Same on 10 heroic? TODO, get normal LFR and flex adds info verified
 		if addsCount == 0 then
 			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.warrior
 		elseif addsCount == 1 then
