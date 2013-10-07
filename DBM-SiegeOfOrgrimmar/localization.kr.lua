@@ -89,7 +89,14 @@ L:SetMiscLocalization({
 	newForces3	= "병력 집결!",
 	newForces4	= "코르크론! 날 지원하라!",
 	newForces5	= "다음 분대, 앞으로!",
-	allForces	= "전 코르크론, 내 명령을 따르라. 모두 죽여!"
+	allForces	= "전 코르크론, 내 명령을 따르라. 모두 죽여!",
+	nextAdds	= "다음 병력: ",
+	--You'd think blizz would have globals for these but apparently not
+	mage		= "|cff69ccf0대마법사|r",
+	shaman		= "|cff0070de전투주술사|r",
+	rogue		= "|cfffff569암살자|r",
+	hunter		= "|ffabd473저격수|r",
+	warrior		= "|cffc79c6e무쇠칼날|r"
 })
 
 -----------------

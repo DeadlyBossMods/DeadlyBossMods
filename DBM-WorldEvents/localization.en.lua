@@ -169,9 +169,9 @@ L:SetGeneralLocalization({
 	name = "Darkmoon Rabbit"
 })
 
------------------------
---  Darkmoon Rabbit  --
------------------------
+-------------------------
+--  Darkmoon Moonfang  --
+-------------------------
 L = DBM:GetModLocalization("Moonfang")
 
 L:SetGeneralLocalization({
