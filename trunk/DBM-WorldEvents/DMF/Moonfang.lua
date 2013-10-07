@@ -20,7 +20,6 @@ local warnMoonfangCurse		= mod:NewSpellAnnounce(144590, 4)
 
 local specWarnLeap			= mod:NewSpecialWarningYou(144546)
 local yellLeap				= mod:NewYell(144546)
-local specWarnLeapNear		= mod:NewSpecialWarningClose(144546)
 local specWarnCallPack		= mod:NewSpecialWarningSwitch(144602, mod:IsTank())
 local specWarnTears			= mod:NewSpecialWarningSpell(144702, nil, nil, nil, 2)
 local specWarnMoonfangCurse	= mod:NewSpecialWarningRun(144590, mod:IsMelee())
@@ -38,18 +37,6 @@ function mod:LeapTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnLeap:Show()
 		yellLeap:Yell()
-	else
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 8 then--Range guesswork
-				specWarnLeapNear:Show(targetname)
-			end
-		end
 	end
 end
 
