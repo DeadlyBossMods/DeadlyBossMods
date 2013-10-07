@@ -4518,18 +4518,21 @@ function bossModPrototype:GetBossTarget(cid)
 		if self:GetUnitCreatureId(uId) == cid or UnitGUID(uId) == cid then--Accepts CID or GUID
 			bossuid = uId
 			name = DBM:GetUnitFullName(uId.."target")
-			uid = DBM:GetRaidUnitId(name) or (UnitExists(uId.."target") and uId.."target")--overrride target uid because uid+"target" is variable uid.
+			uid = uId.."target"
 			break
 		end
 	end
-	if name and uid and bossuid then return name, uid, bossuid end
+	if DBM.Options.DebugMode then
+		print("DBM GetBossTarget DEBUG: name, uid, bossuid = "..name..", "..uid..", "..bossuid)
+	end
+	if name and bossuid then return name, uid, bossuid end
 	-- failed to detect from default uIds, scan all group members's target.
 	if IsInRaid() then
 		for i = 1, GetNumGroupMembers() do
 			if self:GetUnitCreatureId("raid"..i.."target") == cid or UnitGUID("raid"..i.."target") == cid then
 				bossuid = "raid"..i.."target"
 				name = DBM:GetUnitFullName("raid"..i.."targettarget")
-				uid = DBM:GetRaidUnitId(name) or (UnitExists("raid"..i.."targettarget") and "raid"..i.."targettarget")--overrride target uid because uid+"target" is variable uid.
+				uid = "raid"..i.."targettarget"
 				break
 			end
 		end
@@ -4538,7 +4541,7 @@ function bossModPrototype:GetBossTarget(cid)
 			if self:GetUnitCreatureId("party"..i.."target") == cid or UnitGUID("party"..i.."target") == cid then
 				bossuid = "party"..i.."target"
 				name = DBM:GetUnitFullName("party"..i.."targettarget")
-				uid = DBM:GetRaidUnitId(name) or (UnitExists("party"..i.."targettarget") and "party"..i.."targettarget")--overrride target uid because uid+"target" is variable uid.
+				uid = "party"..i.."targettarget"
 				break
 			end
 		end
@@ -4567,6 +4570,9 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 			targetScanCount = 0--Reset count for later use.
 			self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
+				if DBM.Options.DebugMode then
+					print("DBM BossTargetScanner Results DEBUG: name, uid, bossuid = "..targetname..", "..targetuid..", "..bossuid)
+				end
 				self:ScheduleMethod(0, returnFunc, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 			end
 		end
