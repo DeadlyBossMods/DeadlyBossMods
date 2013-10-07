@@ -4518,9 +4518,6 @@ function bossModPrototype:GetBossTarget(cid)
 			break
 		end
 	end
-	if DBM.Options.DebugMode then
-		print("DBM GetBossTarget DEBUG: name, uid, bossuid = "..(name or nil)..", "..(uid or "nil")..", "..(bossuid or "nil"))
-	end
 	if name and bossuid then return name, uid, bossuid end
 	-- failed to detect from default uIds, scan all group members's target.
 	if IsInRaid() then
@@ -4566,9 +4563,6 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 			targetScanCount = 0--Reset count for later use.
 			self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
-				if DBM.Options.DebugMode then
-					print("DBM BossTargetScanner Results DEBUG: name, uid, bossuid = "..(targetname or "nil")..", "..(targetuid or "nil")..", "..(bossuid or "nil"))
-				end
 				self:ScheduleMethod(0, returnFunc, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 			end
 		end
