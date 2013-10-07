@@ -84,12 +84,18 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1	= "戰士們，快點過來!",
-	newForces2	= "守住大門!",
-	newForces3	= "重整部隊!",
-	newForces4	= "柯爾克隆，來我身邊!",
-	newForces5	= "下一隊，來前線!",
-	allForces	= "所有柯爾克隆...聽我號令...殺死他們!"
+	newForces1					= "戰士們，快點過來!",
+	newForces2					= "守住大門!",
+	newForces3					= "重整部隊!",
+	newForces4					= "柯爾克隆，來我身邊!",
+	newForces5					= "下一隊，來前線!",
+	allForces					= "所有柯爾克隆...聽我號令...殺死他們!",
+	nextAdds					= "下一次小兵: ",
+	mage						= "|cff69ccf0法師|r",
+	shaman						= "|cff0070de薩滿|r",
+	rogue						= "|cfffff569盜賊|r",
+	hunter						= "|ffabd473獵人|r",
+	warrior						= "|cffc79c6e戰士|r"
 })
 
 -----------------
