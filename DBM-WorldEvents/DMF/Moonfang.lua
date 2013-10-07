@@ -43,7 +43,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 144546 then
 		timerLeapCD:Start()
-		self:BossTargetScanner(71992, "LeapTarget", 0.05, 16)
+		self:BossTargetScanner(71992, "LeapTarget", 0.02, 40)
 	elseif args.spellId == 144590 then
 		warnMoonfangCurse:Show()
 		specWarnMoonfangCurse:Show()

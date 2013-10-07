@@ -4542,16 +4542,6 @@ function bossModPrototype:GetBossTarget(cid)
 				break
 			end
 		end
-	else--Solo
-		if self:GetUnitCreatureId("playertarget") == cid or UnitGUID("playertarget") == cid then
-			bossuid = "playertarget"
-			name = DBM:GetUnitFullName("playertargettarget")
-			uid = "playertargettarget"
-		elseif self:GetUnitCreatureId("focustarget") == cid or UnitGUID("focustarget") == cid then
-			bossuid = "focustarget"
-			name = DBM:GetUnitFullName("focustargettarget")
-			uid = "focustargettarget"
-		end
 	end
 	return name, uid, bossuid
 end
