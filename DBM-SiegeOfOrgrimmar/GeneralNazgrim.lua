@@ -154,7 +154,31 @@ local function updateInfoFrame()
 			lines[L.nextAdds] = L.shaman..", "..L.hunter..", "..L.warrior
 		elseif addsCount == 9 then
 			lines[L.nextAdds] = L.mage..", "..L.hunter..", "..L.warrior
-		else
+		else--Already had all 10 adds sets now we're just going to get no more adds (except for 10%)
+			lines[""] = ""
+		end
+	else--Not heroic
+		if addsCount == 0 then
+			lines[L.nextAdds] = L.mage..", "..L.warrior
+		elseif addsCount == 1 then
+			lines[L.nextAdds] = L.shaman..", "..L.rogue
+		elseif addsCount == 2 then
+			lines[L.nextAdds] = L.rogue..", "..L.warrior
+		elseif addsCount == 3 then
+			lines[L.nextAdds] = L.mage..", "..L.shaman
+		elseif addsCount == 4 then
+			lines[L.nextAdds] = L.shaman..", "..L.warrior
+		elseif addsCount == 5 then
+			lines[L.nextAdds] = L.mage..", "..L.rogue
+		elseif addsCount == 6 then
+			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.rogue
+		elseif addsCount == 7 then
+			lines[L.nextAdds] = L.shaman..", "..L.rogue..", "..L.warrior
+		elseif addsCount == 8 then
+			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.warrior
+		elseif addsCount == 9 then
+			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.warrior
+		else--Already had all 10 adds sets now we're just going to get no more adds (except for 10%)
 			lines[""] = ""
 		end
 	end
