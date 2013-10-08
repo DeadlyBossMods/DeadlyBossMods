@@ -184,8 +184,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCallPack		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:run(144602),
-	specWarnMoonfangCurse	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.switch:run(144590)
+	specWarnCallPack		= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(144602),
+	specWarnMoonfangCurse	= DBM_CORE_AUTO_SPEC_WARN_OPTIONS.run:format(144590)
 })
 
 --------------------------
