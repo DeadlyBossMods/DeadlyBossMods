@@ -20,15 +20,16 @@ local warnMoonfangCurse		= mod:NewSpellAnnounce(144590, 4)
 
 local specWarnLeap			= mod:NewSpecialWarningYou(144546)
 local yellLeap				= mod:NewYell(144546)
-local specWarnCallPack		= mod:NewSpecialWarningSwitch(144602, mod:IsTank())
+local specWarnCallPack		= mod:NewSpecialWarning("specWarnCallPack", mod:IsRanged() or mod:IsTank())--Summons add for every person within 40 yards of boss. Ranged should be able to avoid this. Tank in warning to pick ones up spawned by melee
 local specWarnTears			= mod:NewSpecialWarningSpell(144702, nil, nil, nil, 2)
-local specWarnMoonfangCurse	= mod:NewSpecialWarningRun(144590, mod:IsMelee())
+local specWarnMoonfangCurse	= mod:NewSpecialWarning("specWarnMoonfangCurse", mod:IsMelee())
 local specWarnCurse			= mod:NewSpecialWarningYou(144590)--You failed to move away. Maybe change to localized warning explaining that you need to spam 1 to break MC, not yell at others for not attacking you because you failed mechanic in first place.
 
 local timerLeapCD			= mod:NewCDTimer(12, 144546)
 local timerMoonfangsTearCD	= mod:NewNextTimer(23, 144702)
 
 local soundMoonfangCurse	= mod:NewSound(144590, nil, mod:IsMelee())
+local soundCallPack			= mod:NewSound(144602, nil, mod:IsRanged())
 
 
 function mod:LeapTarget(targetname, uId)
@@ -51,6 +52,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 144602 then
 		warnCallPack:Show()
 		specWarnCallPack:Show()
+		soundCallPack:Play()
 	elseif args.spellId == 144702 then
 		warnMoonfangTears:Show()
 		specWarnTears:Show()
