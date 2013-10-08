@@ -85,7 +85,7 @@ mod.findFastestComputer = "SetIconOnFragment" -- for set icon stuff.
 
 local UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID = UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID
 local prideLevel = EJ_GetSectionInfo(8255)
-local firstWound = false
+local woundCount = 0
 local manifestationWarned = false
 local swellingCount = 0
 
@@ -102,7 +102,7 @@ function mod:OnCombatStart(delay)
 	timerSwellingPrideCD:Start(-delay, 1)
 	countdownSwellingPride:Start(-delay)
 	berserkTimer:Start(-delay)
-	firstWound = false
+	woundCount = 0
 	manifestationWarned = false
 	swellingCount = 0
 	if self.Options.InfoFrame then
@@ -150,7 +150,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144400 then--Swelling Pride Cast END
-		firstWound = false
+		woundCount = 0
 		--Since we register this event anyways for bursting, might as well start cd bars here instead
 		timerSelfReflectionCD:Start()
 		countdownReflection:Start()
@@ -183,7 +183,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 144832 then
 		warnUnleashed:Show()
 		timerGiftOfTitansCD:Cancel()
-		firstWound = false
+		woundCount = 0
 		timerManifestationCD:Start()--Not yet verified if altered or not
 		timerSwellingPrideCD:Start(75, swellingCount + 1)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
 		countdownSwellingPride:Start(75)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
@@ -244,8 +244,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 144358 then
 		warnWoundedPride:Show(args.destName)
 		specWarnWoundedPride:Show()
-		if not firstWound and not self:IsDifficulty("lfr25") then
-			firstWound = true
+		if woundCount < 2 and not self:IsDifficulty("lfr25") then
+			woundCount = woundCount + 1
 			timerWoundedPrideCD:Start()
 		end
 	elseif args:IsSpellID(144574, 144636) then--Locational spellids, 2 from 10 man, 25 man will use all 4 where we can get other 2
