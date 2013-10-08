@@ -49,7 +49,7 @@ local function findUnseen()
 end
 
 function mod:SPELL_CAST_START(args)
-	if not mod.Options.Enabled then return end
+	if not self.Options.Enabled then return end
 	if args.spellId == 125877 then
 		warnDispatch:Show()
 		if args.sourceGUID == UnitGUID("target") then
@@ -59,7 +59,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if not mod.Options.Enabled then return end
+	if not self.Options.Enabled then return end
 	if spellId == 122949 and self:AntiSpam() and self:GetCIDFromGUID(UnitGUID(uId)) == 64340 then
 		self:SendSync("UnseenTrash")
 	end
