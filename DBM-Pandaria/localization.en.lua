@@ -102,7 +102,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull					= "Ha ha! The trial commences",
+	Pull					= "Ha ha! The trial commences!",
 	Victory					= "You are strong, stronger even than you realize. Carry this thought with you into the darkness ahead, and let it shield you."
 })
 
