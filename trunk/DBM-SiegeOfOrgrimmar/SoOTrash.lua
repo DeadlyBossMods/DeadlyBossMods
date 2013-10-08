@@ -30,7 +30,7 @@ mod:RemoveOption("SpeedKillTimer")
 local galakrasMod = DBM:GetModByName("868")--Because for first 10-20 seconds of galakras, EncounterInProcess() return false, so mod.isTrashMod = true won't filter first set of adds
 
 function mod:SPELL_AURA_APPLIED(args)
-	if not mod.Options.Enabled then return end
+	if not self.Options.Enabled then return end
 	if args.spellId == 146899 and not galakrasMod:IsInCombat() then
 		warnFracture:Show(args.destName)
 		specWarnFracture:Show(args.destName)
@@ -41,7 +41,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if not mod.Options.Enabled then return end
+	if not self.Options.Enabled then return end
 	if args.spellId == 146757 and not galakrasMod:IsInCombat() then
 		local source = args.sourceName
 		warnChainHeal:Show()
@@ -52,6 +52,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:RAID_BOSS_WHISPER(msg)
+	if not self.Options.Enabled then return end
 	if msg:find("Ability_Siege_Engineer_Superheated") then
 		specWarnLockedOn:Show()
 		self:SendSync("LockedOnTarget", UnitGUID("player"))
@@ -61,7 +62,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnSync(msg, guid)
-	if msg == "LockedOnTarget" and guid then
+	if msg == "LockedOnTarget" and guid and self.Options.Enabled then
 		local targetName = DBM:GetFullPlayerNameByGUID(guid)
 		warnLockedOn:Show(targetName)
 	end
