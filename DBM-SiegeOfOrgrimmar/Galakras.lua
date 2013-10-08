@@ -34,7 +34,7 @@ mod:RegisterEventsInCombat(
 ----TODO, don't want this mod to register events in entire zone so it can warn for prelude trash.
 ----I'll put duplicate events in trash mod instead since trash mod will be disabled during encounters
 local warnWarBanner					= mod:NewSpellAnnounce(147328, 3)
-local warnFracture					= mod:NewTargetAnnounce(146899, 3)--TODO: see if target scanning works with one of earlier events
+local warnFracture					= mod:NewTargetAnnounce(146899, 3)
 local warnChainHeal					= mod:NewCastAnnounce(146757, 4)
 local warnDemolisher				= mod:NewSpellAnnounce("ej8562", 3, 116040)
 ----Master Cannoneer Dragryn (Tower)
@@ -52,8 +52,6 @@ local warnFlamesofGalakrond			= mod:NewStackAnnounce(147029, 2, nil, mod:IsTank(
 
 --Stage 2: Bring Her Down!
 local specWarnWarBanner				= mod:NewSpecialWarningSwitch(147328, not mod:IsHealer())
-local specWarnFractureYou			= mod:NewSpecialWarningYou(146899)
-local yellFracture					= mod:NewYell(146899)
 local specWarnFracture				= mod:NewSpecialWarningTarget(146899, mod:IsHealer())
 local specWarnChainheal				= mod:NewSpecialWarningInterrupt(146757)
 local specWarnFlameArrow			= mod:NewSpecialWarningMove(146764)
@@ -149,12 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnWarBanner:Show()
 	elseif args.spellId == 146899 and UnitPower("player", ALTERNATE_POWER_INDEX) == 0 then
 		warnFracture:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnFractureYou:Show()
-			yellFracture:Yell()
-		else
-			specWarnFracture:Show(args.destName)
-		end
+		specWarnFracture:Show(args.destName)
 	end
 end
 
