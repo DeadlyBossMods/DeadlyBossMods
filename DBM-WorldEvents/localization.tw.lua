@@ -180,6 +180,11 @@ L:SetGeneralLocalization({
 	name = "月牙"
 })
 
+L:SetWarningLocalization({
+	specWarnCallPack		= "呼叫狼群 - 跑離月牙超過40碼!",
+	specWarnMoonfangCurse	= "月牙的詛咒- 跑離月牙超過10碼!"
+})
+
 --------------------------
 --  Plants Vs. Zombies  --
 --------------------------
