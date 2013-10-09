@@ -408,11 +408,11 @@ end
 local function updateByFunction()
 	table.wipe(lines)
 	local func = value[1]
-	local noSort = value[2]
+	local sortFunc = value[2]
 	local useIcon = value[3]
 	lines = func()
-	if noSort then
-		updateLinesNoSort()
+	if sortFunc then
+		updateLinesCustomSort(sortFunc)
 	else
 		updateLines()
 	end
