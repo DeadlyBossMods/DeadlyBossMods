@@ -14,13 +14,13 @@ mod:RegisterEvents(
 )
 
 local warnWarBanner					= mod:NewSpellAnnounce(147328, 3)
-local warnFracture					= mod:NewTargetAnnounce(146899, 3)
-local warnChainHeal					= mod:NewCastAnnounce(146757, 4)
+local warnFracture					= mod:NewTargetAnnounce(147200, 3)
+local warnChainHeal					= mod:NewCastAnnounce(146728, 4)
 local warnLockedOn					= mod:NewTargetAnnounce(146680, 3)
 
 local specWarnWarBanner				= mod:NewSpecialWarningSwitch(147328, not mod:IsHealer())
-local specWarnFracture				= mod:NewSpecialWarningTarget(146899, false)
-local specWarnChainheal				= mod:NewSpecialWarningInterrupt(146757)
+local specWarnFracture				= mod:NewSpecialWarningTarget(147200, false)
+local specWarnChainheal				= mod:NewSpecialWarningInterrupt(146728)
 local specWarnLockedOn				= mod:NewSpecialWarningRun(146680)
 local specWarnCrawlerMineFixate		= mod:NewSpecialWarningYou("ej8212")
 
@@ -31,7 +31,7 @@ local galakrasMod = DBM:GetModByName("868")--Because for first 10-20 seconds of 
 
 function mod:SPELL_AURA_APPLIED(args)
 	if not self.Options.Enabled then return end
-	if args.spellId == 146899 and not galakrasMod:IsInCombat() then
+	if args.spellId == 147200 and not galakrasMod:IsInCombat() then
 		warnFracture:Show(args.destName)
 		specWarnFracture:Show(args.destName)
 	elseif args.spellId == 147328 and not galakrasMod:IsInCombat() then
@@ -42,7 +42,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if not self.Options.Enabled then return end
-	if args.spellId == 146757 and not galakrasMod:IsInCombat() then
+	if args.spellId == 146728 and not galakrasMod:IsInCombat() then
 		local source = args.sourceName
 		warnChainHeal:Show()
 		if source == UnitName("target") or source == UnitName("focus") then 
