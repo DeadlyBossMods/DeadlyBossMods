@@ -212,10 +212,13 @@ local function updateNamesortLines()
 	end
 end
 
-local function updateLinesNoSort()
+local function updateLinesCustomSort(sortFunc)
 	table.wipe(sortedLines)
 	for i in pairs(lines) do
 		sortedLines[#sortedLines + 1] = i
+	end
+	if type(sortFunc) == "function" then
+		table.sort(sortedLines, sortFunc)
 	end
 	for i, v in ipairs(updateCallbacks) do
 		v(sortedLines)
