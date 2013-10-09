@@ -1744,7 +1744,8 @@ do
 
 	--Joined lfr during combat, many unit shows "Somewhat" and invisiable, and break class coloring temporarly. So update roster table again when unit name successfully updated.
 	function DBM:UNIT_NAME_UPDATE_UNFILTERED()
-		self:Schedule(0.5, updateAllRoster)
+		self:Unschedule(updateAllRoster)
+		self:Schedule(1.5, updateAllRoster)
 	end
 
 	function DBM:GetRaidRank(name)
