@@ -189,12 +189,14 @@ local function updateInfoFrame()
 	return lines
 end
 
+--Temp test function
+--/script DBM:GetModByName("850"):TestInfo(1, 33)
 function mod:TestInfo(wave, power)
 	addsCount = wave--Fake current adds wave
 	bossPower = power--Fake current boss power
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)--Only works if you pass true to disable the sorting.
 	end
 end
 
