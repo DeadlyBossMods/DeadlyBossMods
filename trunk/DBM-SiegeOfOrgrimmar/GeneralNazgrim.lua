@@ -111,8 +111,18 @@ local addsTable = {
 }
 
 local bossPower = 0--Will be moved into updateinfoframe function when test code removed
+local lines = {}
+
+local function sortInfoFrame(a, b)
+	local a = lines[a]
+	local b = lines[b]
+	if not tonumber(a) then a = 0 end
+	if not tonumber(b) then b = 0 end
+	if a > b then return true else return false end
+end
+
 local function updateInfoFrame()
-	local lines = {}
+	table.wipe(lines)
 	if UnitExists("boss1") then
 		bossPower = UnitPower("boss1")
 	end
@@ -196,7 +206,7 @@ function mod:TestInfo(wave, power)
 	bossPower = power--Fake current boss power
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)--Only works if you pass true to disable the sorting.
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 	end
 end
 
@@ -290,7 +300,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBerserkerStanceCD:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	elseif args.spellId == 143594 then
 		warnBerserkerStance:Show()
@@ -303,7 +313,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDefensiveStanceSoon:Schedule(59, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143594))
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	elseif args.spellId == 143593 then
 		if not allForcesReleased then
@@ -320,7 +330,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBattleStanceCD:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143593))
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	elseif args.spellId == 143536 then
 		warnKorkronBanner:Show()
@@ -396,7 +406,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			self:ScanForMobs(addsTable, 2, 7, 4, 0.2, 10)
 		end
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	elseif msg == L.allForces then
 		allForcesReleased = true
