@@ -110,28 +110,32 @@ local addsTable = {
 	[71556] = 4,--Sniper (Heroic)
 }
 
+local bossPower = 0--Will be moved into updateinfoframe function when test code removed
 local function updateInfoFrame()
 	local lines = {}
-	if UnitPower("boss1") < 50 then
-		lines["|cFF088A08"..GetSpellInfo(143500).."|r"] = UnitPower("boss1")--Green
+	if UnitExists("boss1") then
+		bossPower = UnitPower("boss1")
+	end
+	if bossPower < 50 then
+		lines["|cFF088A08"..GetSpellInfo(143500).."|r"] = bossPower--Green
 		lines[GetSpellInfo(143536)] = 50
 		lines[GetSpellInfo(143503)] = 70
 		lines[GetSpellInfo(143872)] = 100
-	elseif UnitPower("boss1") < 70 then
+	elseif bossPower < 70 then
 		lines[GetSpellInfo(143500)] = 25
-		lines["|cFF088A08"..GetSpellInfo(143536).."|r"] = UnitPower("boss1")--Green (Would yellow be too hard to see on this?)
+		lines["|cFF088A08"..GetSpellInfo(143536).."|r"] = bossPower--Green (Would yellow be too hard to see on this?)
 		lines[GetSpellInfo(143503)] = 70
 		lines[GetSpellInfo(143872)] = 100
-	elseif UnitPower("boss1") < 100 then
+	elseif bossPower < 100 then
 		lines[GetSpellInfo(143500)] = 25
 		lines[GetSpellInfo(143536)] = 50
-		lines["|cFF088A08"..GetSpellInfo(143503).."|r"] = UnitPower("boss1")--Green (Maybe change to orange?)
+		lines["|cFF088A08"..GetSpellInfo(143503).."|r"] = bossPower--Green (Maybe change to orange?)
 		lines[GetSpellInfo(143872)] = 100
-	elseif UnitPower("boss1") == 100 then
+	elseif bossPower == 100 then
 		lines[GetSpellInfo(143500)] = 25
 		lines[GetSpellInfo(143536)] = 50
 		lines[GetSpellInfo(143503)] = 70
-		lines["|cFFFF0000"..GetSpellInfo(143872).."|r"] = UnitPower("boss1")--Red (definitely work making this one red, it's really the only critically bad one)
+		lines["|cFFFF0000"..GetSpellInfo(143872).."|r"] = bossPower--Red (definitely work making this one red, it's really the only critically bad one)
 	end
 	if mod:IsDifficulty("heroic10", "heroic25") then--Same on 10 heroic? TODO, get normal LFR and flex adds info verified
 		if addsCount == 0 then
@@ -183,6 +187,15 @@ local function updateInfoFrame()
 		end
 	end
 	return lines
+end
+
+function mod:TestInfo(wave, power)
+	addsCount = wave--Fake current adds wave
+	bossPower = power--Fake current boss power
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
+	end
 end
 
 function mod:LeapTarget(targetname, uId)
@@ -275,7 +288,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBerserkerStanceCD:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
 		end
 	elseif args.spellId == 143594 then
 		warnBerserkerStance:Show()
@@ -288,7 +301,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnDefensiveStanceSoon:Schedule(59, 1)
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143594))
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
 		end
 	elseif args.spellId == 143593 then
 		if not allForcesReleased then
@@ -305,7 +318,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBattleStanceCD:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(GetSpellInfo(143593))
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
 		end
 	elseif args.spellId == 143536 then
 		warnKorkronBanner:Show()
@@ -381,7 +394,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			self:ScanForMobs(addsTable, 2, 7, 4, 0.2, 10)
 		end
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+			DBM.InfoFrame:Show(5, "function", updateInfoFrame, true)
 		end
 	elseif msg == L.allForces then
 		allForcesReleased = true
