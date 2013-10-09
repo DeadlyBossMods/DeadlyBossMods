@@ -116,8 +116,8 @@ local lines = {}
 local function sortInfoFrame(a, b)
 	local a = lines[a]
 	local b = lines[b]
-	if not tonumber(a) then a = 0 end
-	if not tonumber(b) then b = 0 end
+	if not tonumber(a) then a = -1 end
+	if not tonumber(b) then b = -1 end
 	if a > b then return true else return false end
 end
 
