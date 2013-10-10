@@ -40,7 +40,7 @@ local specWarnFatalStrikeOther			= mod:NewSpecialWarningTarget(142990, mod:IsTan
 
 local timerBloodRage					= mod:NewBuffActiveTimer(22.5, 142879)--2.5sec cast plus 20 second duration
 local timerDisplacedEnergyCD			= mod:NewNextTimer(11, 142913)
-local timerBloodRageCD					= mod:NewNextTimer(124.7, 142879)
+local timerBloodRageCD					= mod:NewNextTimer(127.7, 142879)
 --Might of the Kor'kron
 local timerArcingSmashCD				= mod:NewNextCountTimer(17.5, 142815)--17-18 variation (the 23 second ones are delayed by Breath of Yshaarj)
 local timerImplodingEnergy				= mod:NewCastTimer(10, 142986)--Always 10 seconds after arcing
