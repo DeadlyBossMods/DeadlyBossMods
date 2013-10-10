@@ -18,7 +18,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_POWER_FREQUENT boss1, boss2, player"
 )
 
 local warnSuperNova				= mod:NewCastAnnounce(146815, 4)--Heroic
@@ -267,6 +268,18 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+local lastplayer = 0
+function mod:UNIT_POWER_FREQUENT(uId)
+	local boss1Power = UnitPower("boss1")
+	local boss2Power = UnitPower("boss2")
+	local boss1AltPower = UnitPower("boss1", 2)
+	local boss2AltPower = UnitPower("boss2", 2)
+	local playerPower = UnitPower("player", 2)
+	if DBM.Options.DebugMode and (lastplayer ~= playerPower) then
+		print("DBM DEBUG: Boss1 Power is "..boss1Power.."/"..boss1AltPower..", Boss2 Power is "..boss2Power.."/"..boss2AltPower..", Player Power is "..playerPower)
+		lastplayer = playerPower
+	end
+end
 --[[
 "<270.3 23:27:32> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Module 1's all prepared for system reset.#Secured Stockpile of Pandaren Spoils###Omegal
 "<270.3 23:27:33> [WORLD_STATE_UI_TIMER_UPDATE] |0#0#true#Defense systems activating in 17 seconds.###Time remaining until the GB-11010 \"Armageddon\"-class defense systems activate.###0#0#0", -- [49218]
