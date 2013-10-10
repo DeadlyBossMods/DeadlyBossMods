@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71865)
 mod:SetZone()
-mod:SetUsedIcons(8, 7)
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--I think garrosh will cap at 7 in most cases for minions on 25 man but show all 8 in case some real crap group has 8 shaman up? lol
 
 mod:RegisterCombat("combat")
 
@@ -23,7 +23,6 @@ mod:RegisterEventsInCombat(
 local warnDesecrate					= mod:NewTargetAnnounce(144748, 3)
 local warnHellscreamsWarsong		= mod:NewSpellAnnounce(144821, 3)
 local warnFireUnstableIronStar		= mod:NewSpellAnnounce(147047, 3)
---local warnKorkronWarbringer		= mod:NewSpellAnnounce("ej8292", 3)--unlike shaman which very conviniently cast 144585 the instant they join the fight, warbringers are going to need additional work
 local warnFarseerWolfRider			= mod:NewSpellAnnounce("ej8294", 3, 144585)
 local warnSiegeEngineer				= mod:NewSpellAnnounce("ej8298", 4, 144616)
 local warnChainHeal					= mod:NewSpellAnnounce(144583, 4)
@@ -46,7 +45,6 @@ local specWarnDesecrateYou			= mod:NewSpecialWarningYou(144748)
 local yellDesecrate					= mod:NewYell(144748)
 local specWarnHellscreamsWarsong	= mod:NewSpecialWarningSpell(144821, mod:IsTank() or mod:IsHealer())
 local specWarnFireUnstableIronStar	= mod:NewSpecialWarningSpell(147047, nil, nil, nil, 3)
---local specWarnKorkronWarbringer	= mod:NewSpecialWarningSwitch("ej8292", not mod:IsHealer())
 local specWarnFarseerWolfRider		= mod:NewSpecialWarningSwitch("ej8294", not mod:IsHealer())
 local specWarnSiegeEngineer			= mod:NewSpecialWarningSwitch("ej8298", false)--Only 1 person on 10 man and 2 on 25 needed, so should be off for most of raid
 local specWarnChainHeal				= mod:NewSpecialWarningInterrupt(144583)
@@ -64,7 +62,6 @@ local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch(145071)
 --Stage 1: A Cry in the Darkness
 local timerDesecrateCD				= mod:NewCDTimer(35, 144748)
 local timerHellscreamsWarsongCD		= mod:NewNextTimer(42.2, 144821, nil, mod:IsTank() or mod:IsHealer())
---local timerKorkronWarbringerCD	= mod:NewCDTimer(30, "ej8292")
 local timerFarseerWolfRiderCD		= mod:NewNextTimer(50, "ej8294", nil, nil, nil, 144585)--EJ says they come faster as phase progresses but all i saw was 3 spawn on any given pull and it was 30 50 50
 local timerSiegeEngineerCD			= mod:NewNextTimer(40, "ej8298", nil, nil, nil, 144616)
 local timerPowerIronStar			= mod:NewCastTimer(15, 144616)
@@ -83,6 +80,7 @@ local countdownWhirlingCorruption	= mod:NewCountdown(52, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown(45, 145071, false, nil, nil, nil, true)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
+mod:AddSetIconOption("SetIconOnMinions", "ej8310", false, true)
 
 local firstIronStar = false
 local engineerDied = 0
@@ -141,6 +139,9 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnEmpWhirlingCorruption:Show(whirlCount)
 			specWarnEmpWhirlingCorruption:Show(whirlCount)
+			if self.Options.SetIconOnMinions then
+				self:ScanForMobs(72272, 0, 8, nil, 0.2, 12)--I think max adds is 7 on 25 man, TODO is confirm this and set max icon to 7 instead of nil/8. Long scan time because of slow spawn
+			end
 		end
 		timerWhirlingCorruption:Start()
 		timerWhirlingCorruptionCD:Start(nil, whirlCount+1)
@@ -213,12 +214,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFarseerWolfRider:Show()
 		specWarnFarseerWolfRider:Show()
 		timerFarseerWolfRiderCD:Start()
-		if self.Options.SetIconOnShaman then
-			if shamanAlive == 1 then
-				self:ScanForMobs(71983, 2, 8, 1, 0.2, 10)
-			else--Only go up to 2 at once. if 3 are up at once, this is a doomed wipe
-				self:ScanForMobs(71983, 2, 7, 1, 0.2, 10)
-			end
+		if self.Options.SetIconOnShaman and shamanAlive < 9 then--Support for marking up to 8 shaman
+			self:ScanForMobs(71983, 2, 9-shamanAlive, 1, 0.2, 10)
 		end
 	end
 end

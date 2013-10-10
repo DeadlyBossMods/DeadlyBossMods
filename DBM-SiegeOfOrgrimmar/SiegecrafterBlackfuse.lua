@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71504)--71591 Automated Shredder
 mod:SetZone()
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Not sure how many mines spawn on 25 man, even more of them on heroic 25, so maybe all 8 used?
 
 mod:RegisterCombat("combat")
 
@@ -76,6 +77,7 @@ local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)
 local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269, nil, false)--Many mines can be up at once so timer off by default do to spam
 
 mod:AddInfoFrameOption("ej8202")
+mod:AddSetIconOption("SetIconOnMines", "ej8212", false, true)
 
 local missileCount = 0
 --local laserCount = 0--Fires 3 times
@@ -207,6 +209,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(10, 3) then
 			warnCrawlerMine:Show()
 			specWarnCrawlerMine:Show()
+			if self.Options.SetIconOnMines then
+				self:ScanForMobs(71788, 0, 8, nil, 0.2, 12)--Not sure max mines. Long scan period because they spawn slowly over time
+			end
 		end
 		timerBreakinPeriod:Start(args.destName, args.destGUID)
 	elseif args.spellId == 145580 then
