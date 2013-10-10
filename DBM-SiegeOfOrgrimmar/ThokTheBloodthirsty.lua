@@ -39,7 +39,7 @@ local warnFrozenSolid				= mod:NewTargetAnnounce(143777, 4)--This only thing wor
 --Infusion of Fire
 local warnFirePustules				= mod:NewSpellAnnounce(143970, 2)
 local warnScorchingBreath			= mod:NewStackAnnounce(143767, 2, nil, mod:IsTank())
-local warnBurningBloodBlood			= mod:NewTargetAnnounce(143783, 3)
+local warnBurningBlood				= mod:NewTargetAnnounce(143783, 3)
 
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
@@ -95,32 +95,9 @@ mod:AddSetIconOption("FixateIcon", 143445)
 
 local screechCount = 0
 local UnitGUID = UnitGUID
+local bloodTargets = {}
 
 --this boss works similar to staghelm
---[[Old values, keeping them for now cause they may be used in LFR
-local screechTimers = {
-	[0] = 25,
-	[1] = 13.2,
-	[2] = 8.5,
-	[3] = 7.2,
-	[4] = 4.8,
-	[5] = 4.8,--in rare flukes this is 6.1
-	[6] = 4.8,
-	[7] = 3.6,--In rare cases you get a 4th 4.8
-	[8] = 3.6,--If you get 4 4.8s then second 3.6 becomes a 2.5
-	[9] = 3.6,
-	[10]= 2.4,
-	[11]= 2.4,
-	[12]= 2.4,
-	[13]= 2.4,
-	[14]= 2.4,
-	[15]= 2.4,
-	[16]= 2.4,
-	[17]= 2.4,
-	[18]= 1.2,--Anything 18 and beyond is 1.2 with rare 2.4 fluke at 19 sometimes
-}
---]]
-
 local screechTimers = {
 	[0] = 13.2,
 	[1] = 8.5,
@@ -148,10 +125,19 @@ local screechTimers = {
 	[23]= 1.2,--Anything 23 and beyond is 1.2 with rare 2.4 fluke sometimes
 }
 
+local function clearBloodTargets()
+	table.wipe(bloodTargets)
+end
+
 function mod:OnCombatStart(delay)
 	screechCount = 0
+	table.wipe(bloodTargets)
 	timerFearsomeRoarCD:Start(-delay)
-	timerDeafeningScreechCD:Start(-delay, 1)
+	if self:IsDifficulty("lfr25") then
+		timerDeafeningScreechCD:Start(18-delay, 1)
+	else
+		timerDeafeningScreechCD:Start(-delay, 1)
+	end
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		if self:IsDifficulty("normal10", "heroic10") then
@@ -174,7 +160,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnDeafeningScreech:Show()
 		end
 		timerDeafeningScreechCD:Cancel()
-		timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)
+		if self:IsDifficulty("lfr25") then
+			timerDeafeningScreechCD:Start(18, screechCount+1)
+		else
+			timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)
+		end
 	elseif args.spellId == 143428 then
 		warnTailLash:Show()
 		timerTailLashCD:Start()
@@ -294,16 +284,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFrostBreath:Cancel(args.destName)
 	elseif args.spellId == 143767 then
 		timerScorchingBreath:Cancel(args.destName)
-	elseif args.spellId == 143440  then
+	elseif args.spellId == 143440 then
 		timerBloodFrenzyCD:Cancel()
-	elseif args.spellId == 143445 then
-		timerFixate:Cancel(args.destName)
-		if self.Options.FixateIcon then
-			self:SetIcon(args.destName, 0)
-		end
-	elseif args.spellId == 143411 then
 		screechCount = 0
-		timerDeafeningScreechCD:Start(nil, 1)
+		if self:IsDifficulty("lfr25") then
+			timerDeafeningScreechCD:Start(18, 1)
+		else
+			timerDeafeningScreechCD:Start(nil, 1)
+		end
 		if self.Options.RangeFrame then
 			if self:IsDifficulty("normal10", "heroic10") then
 				DBM.RangeCheck:Show(10, nil, nil, 4)
@@ -311,14 +299,22 @@ function mod:SPELL_AURA_REMOVED(args)
 				DBM.RangeCheck:Show(10, nil, nil, 14)
 			end
 		end
+	elseif args.spellId == 143445 then
+		timerFixate:Cancel(args.destName)
+		if self.Options.FixateIcon then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
 --High performance detection of burningBlood targets
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
-	if spellId == 143783 then--The actual target of the fire, has no cast event, just initial damage using THIS ID
-		warnBurningBloodBlood:CombinedShow(0.5, destName)
+	if spellId == 143783 and not bloodTargets[destGUID] then--The actual target of the fire, has no cast event, just initial damage using THIS ID
+		bloodTargets[destGUID] = true
+		warnBurningBlood:CombinedShow(0.5, destName)
 		timerBurningBloodCD:DelayedStart(0.5)
+		self:Unschedule(clearBloodTargets)
+		self:Schedule(3, clearBloodTargets)
 		if destGUID == UnitGUID("player") then
 			specWarnBurningBlood:Show()
 			yellBurningBlood:Yell()
