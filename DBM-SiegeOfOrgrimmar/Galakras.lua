@@ -31,12 +31,11 @@ mod:RegisterEventsInCombat(
 )
 
 --Stage 2: Bring Her Down!
-----TODO, don't want this mod to register events in entire zone so it can warn for prelude trash.
-----I'll put duplicate events in trash mod instead since trash mod will be disabled during encounters
 local warnWarBanner					= mod:NewSpellAnnounce(147328, 3)
 local warnFracture					= mod:NewTargetAnnounce(146899, 3)
 local warnChainHeal					= mod:NewCastAnnounce(146757, 4)
 local warnDemolisher				= mod:NewSpellAnnounce("ej8562", 3, 116040)
+local warnTowerGrunt				= mod:NewAnnounce("warnTowerGrunt", 3, 89253)
 ----Master Cannoneer Dragryn (Tower)
 local warnMuzzleSpray				= mod:NewSpellAnnounce(147824, 3)--147824 spams combat log, 147825 is actual cast but does not show in combat log only UNIT event
 ----Lieutenant General Krugruk (Tower)
@@ -73,6 +72,7 @@ local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:Is
 --Stage 2: Bring Her Down!
 local timerAddsCD					= mod:NewNextTimer(55, "ej8553", nil, nil, nil, 2457)
 local timerTowerCD					= mod:NewTimer(99, "timerTowerCD", 88852)
+local timerTowerGruntCD				= mod:NewTimer(60, "timerTowerGruntCD", 89253)
 local timerDemolisherCD				= mod:NewNextTimer(20, "ej8562", nil, nil, nil, 116040)--EJ is just not complete yet, shouldn't need localizing
 local timerProtoCD					= mod:NewNextTimer(55, "ej8587", nil, nil, nil, 59961)
 ----High Enforcer Thranok (Road)
@@ -87,16 +87,26 @@ mod:AddSetIconOption("FixateIcon", 147068)
 mod:AddSetIconOption("SetIconOnAdds", "ej8556", false, true)
 
 local addsCount = 0
-local firstTower = false
+local firstTower = 0--0: first tower not started, 1: first tower started, 2: first tower breached
 local flamesCount = 0
+
+
+local function TowerGrunt()
+	warnTowerGrunt:Show()
+	timerTowerGruntCD:Start()
+	mod:Schedule(60, TowerGrunt)
+end
 
 function mod:OnCombatStart(delay)
 	addsCount = 0
-	firstTower = false
+	firstTower = 0
 	flamesCount = 0
 	timerAddsCD:Start(6.5-delay)
 	if not self:IsDifficulty("heroic10", "heroic25") then
 		timerTowerCD:Start(116.5-delay)
+	else
+		timerTowerGruntCD:Start(6)
+		mod:Schedule(6, TowerGrunt)
 	end
 end
 
@@ -229,8 +239,8 @@ end
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(4))
 	local percent = tonumber(string.match(text or "", "%d+"))
-	if percent == 1 and not firstTower and not self:IsDifficulty("heroic10", "heroic25") then
-		firstTower = true
+	if percent == 1 and (firstTower == 0) and not self:IsDifficulty("heroic10", "heroic25") then
+		firstTower = 1
 		timerTowerCD:Start()
 	end
 end
@@ -241,6 +251,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnDemolisher:Show()
 	elseif msg:find(L.tower) then
 		timerDemolisherCD:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerTowerGruntCD:Cancel()
+			self:Unschedule(TowerGrunt)
+			if firstTower == 1 then
+--				timerTowerGruntCD:Start(x)
+--				self:Schedule(x, TowerGrunt)--TODO, figure x timing out and enable
+				firstTower = 2
+			end
+		end
 	end
 end
 
