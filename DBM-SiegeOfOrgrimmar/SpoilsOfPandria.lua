@@ -40,12 +40,12 @@ local warnMantidSwarm			= mod:NewSpellAnnounce(142539, 3, nil, mod:IsTank())
 local warnResidue				= mod:NewCastAnnounce(145786, 4, nil, nil, mod:IsMagicDispeller())
 local warnRageoftheEmpress		= mod:NewCastAnnounce(145812, 4, nil, nil, mod:IsMagicDispeller())
 local warnWindStorm				= mod:NewSpellAnnounce(145286, 3)
+local warnEnrage				= mod:NewTargetAnnounce(145692, 3, nil, mod:IsTank() or mod:CanRemoveEnrage())--Do not have timer for this yet, add not alive long enough.
 --Lightweight Crate of Goods
 ----Mogu
 local warnHardenFlesh			= mod:NewSpellAnnounce(144922, 2, nil, false)
 local warnEarthenShard			= mod:NewSpellAnnounce(144923, 2, nil, false)
 local warnSparkofLife			= mod:NewSpellAnnounce(142694, 3, nil, false)
-local warnEnrage				= mod:NewTargetAnnounce(145692, 3, nil, mod:IsTank() or mod:CanRemoveEnrage())--Do not have timer for this yet, add not alive long enough.
 --Crate of Pandaren Relics
 local warnBreathofFire			= mod:NewSpellAnnounce(146222, 3)--Do not have timer for this yet, add not alive long enough.
 local warnGustingCraneKick		= mod:NewSpellAnnounce(146180, 3)
@@ -64,11 +64,11 @@ local specWarnTorment			= mod:NewSpecialWarningSpell(142934, mod:IsHealer())
 local specWarnMantidSwarm		= mod:NewSpecialWarningSpell(142539, mod:IsTank())
 local specWarnResidue			= mod:NewSpecialWarningSpell(145786, mod:IsMagicDispeller())
 local specWarnRageoftheEmpress	= mod:NewSpecialWarningSpell(145812, mod:IsMagicDispeller())
+local specWarnEnrage			= mod:NewSpecialWarningDispel(145692, mod:CanRemoveEnrage())--Question is, do we want to dispel it? might make this off by default since kiting it may be more desired than dispeling it
 --Lightweight Crate of Goods
 ----Mogu
 local specWarnHardenFlesh		= mod:NewSpecialWarningInterrupt(144922, false)
 local specWarnEarthenShard		= mod:NewSpecialWarningInterrupt(144923, false)
-local specWarnEnrage			= mod:NewSpecialWarningDispel(145692, mod:CanRemoveEnrage())--Question is, do we want to dispel it? might make this off by default since kiting it may be more desired than dispeling it
 ----Mantid
 local specWarnBlazingCharge		= mod:NewSpecialWarningMove(145716)
 local specWarnBubblingAmber		= mod:NewSpecialWarningMove(145748)
@@ -82,7 +82,6 @@ local timerReturnToStoneCD		= mod:NewNextTimer(12, 145489)
 local timerSetToBlowCD			= mod:NewNextTimer(9.6, 145996)
 local timerSetToBlow			= mod:NewBuffFadesTimer(30, 145996)
 --Stout Crate of Goods
-local timerEnrage				= mod:NewTargetTimer(10, 145692)
 local timerMatterScrambleCD		= mod:NewCDTimer(18, 145288)--18-22 sec variation. most of time it's 20 exactly, unsure what causes the +-2 variations
 local timerCrimsonReconCD		= mod:NewNextTimer(15, 142947)
 local timerMantidSwarmCD		= mod:NewCDTimer(35, 142539)
@@ -92,6 +91,7 @@ local timerRageoftheEmpressCD	= mod:NewCDTimer(18, 145812, nil, mod:IsMagicDispe
 --Lightweight Crate of Goods
 ----Most of these timers are included simply because of how accurate they are. Predictable next timers. However, MANY of these adds up at once.
 ----They are off by default and a user elected choice to possibly pick one specific timer they are in charge of dispeling/interrupting or whatever
+local timerEnrage				= mod:NewTargetTimer(10, 145692)
 local timerHardenFleshCD		= mod:NewNextTimer(8, 144922, nil, false)
 local timerEarthenShardCD		= mod:NewNextTimer(10, 144923, nil, false)
 local timerBlazingChargeCD		= mod:NewNextTimer(12, 145712, nil, false)
@@ -239,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(32, hideRangeFrame)
 			end
 		end
-	elseif args.spellId == 145692 and not isPlayerInMantid() then
+	elseif args.spellId == 145692 and isPlayerInMantid() then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
 		timerEnrage:Start(args.destName)
