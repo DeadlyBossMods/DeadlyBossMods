@@ -81,7 +81,7 @@ local countdownReflection		= mod:NewCountdown(25, 144800, false, nil, nil, nil, 
 mod:AddInfoFrameOption("ej8255")
 mod:AddSetIconOption("SetIconOnMark", 144351, false)
 mod:AddBoolOption("SetIconOnFragment", false)--This does not get along with SetIconOnMark though
-mod.findFastestComputer = "SetIconOnFragment" -- for set icon stuff.
+mod.findFastestComputer = {"SetIconOnFragment"} -- for set icon stuff.
 
 local UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID = UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID
 local prideLevel = EJ_GetSectionInfo(8255)
