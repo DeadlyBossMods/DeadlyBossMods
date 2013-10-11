@@ -24,19 +24,24 @@ mod:RegisterEventsInCombat(
 
 local warnSuperNova				= mod:NewCastAnnounce(146815, 4)--Heroic
 --Massive Crate of Goods
+----Mogu
 local warnReturnToStone			= mod:NewSpellAnnounce(145489, 2)
+----Mantid
 local warnSetToBlow				= mod:NewTargetAnnounce(145987, 4)--145996 is cast ID
 --Stout Crate of Goods
+----Mogu
 local warnForbiddenMagic		= mod:NewTargetAnnounce(145230, 2)
 local warnMatterScramble		= mod:NewSpellAnnounce(145288, 3)
 local warnCrimsonRecon			= mod:NewSpellAnnounce(142947, 4, nil, mod:IsTank(), nil, nil, nil, nil, 2)
 local warnEnergize				= mod:NewSpellAnnounce(145461, 3)--May be script spellid that doesn't show in combat log
 local warnTorment				= mod:NewSpellAnnounce(142934, 3, nil, mod:IsHealer())
+----Mantid
 local warnMantidSwarm			= mod:NewSpellAnnounce(142539, 3, nil, mod:IsTank())
 local warnResidue				= mod:NewCastAnnounce(145786, 4, nil, nil, mod:IsMagicDispeller())
 local warnRageoftheEmpress		= mod:NewCastAnnounce(145812, 4, nil, nil, mod:IsMagicDispeller())
 local warnWindStorm				= mod:NewSpellAnnounce(145286, 3)
 --Lightweight Crate of Goods
+----Mogu
 local warnHardenFlesh			= mod:NewSpellAnnounce(144922, 2, nil, false)
 local warnEarthenShard			= mod:NewSpellAnnounce(144923, 2, nil, false)
 local warnSparkofLife			= mod:NewSpellAnnounce(142694, 3, nil, false)
@@ -50,17 +55,21 @@ local specWarnSuperNova			= mod:NewSpecialWarningSpell(146815, nil, nil, nil, 2)
 local specWarnSetToBlowYou		= mod:NewSpecialWarningYou(145987)
 local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)
 --Stout Crate of Goods
+----Mogu
 local specWarnForbiddenMagic	= mod:NewSpecialWarningInterrupt(145230, mod:IsMelee())
 local specWarnMatterScramble	= mod:NewSpecialWarningSpell(145288, nil, nil, nil, 2)
 local specWarnCrimsonRecon		= mod:NewSpecialWarningMove(142947, mod:IsTank())
 local specWarnTorment			= mod:NewSpecialWarningSpell(142934, mod:IsHealer())
+----Mantid
 local specWarnMantidSwarm		= mod:NewSpecialWarningSpell(142539, mod:IsTank())
 local specWarnResidue			= mod:NewSpecialWarningSpell(145786, mod:IsMagicDispeller())
 local specWarnRageoftheEmpress	= mod:NewSpecialWarningSpell(145812, mod:IsMagicDispeller())
 --Lightweight Crate of Goods
+----Mogu
 local specWarnHardenFlesh		= mod:NewSpecialWarningInterrupt(144922, false)
 local specWarnEarthenShard		= mod:NewSpecialWarningInterrupt(144923, false)
 local specWarnEnrage			= mod:NewSpecialWarningDispel(145692, mod:CanRemoveEnrage())--Question is, do we want to dispel it? might make this off by default since kiting it may be more desired than dispeling it
+----Mantid
 local specWarnBlazingCharge		= mod:NewSpecialWarningMove(145716)
 local specWarnBubblingAmber		= mod:NewSpecialWarningMove(145748)
 local specWarnPathOfBlossoms	= mod:NewSpecialWarningMove(146257)
@@ -142,50 +151,50 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 145996 and self:CheckTankDistance(args.sourceGUID) then
+	if args.spellId == 145996 and isPlayerInMantid() then
 		timerSetToBlowCD:Start(args.sourceGUID)
-	elseif args.spellId == 145288 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145288 and not isPlayerInMantid() then
 		warnMatterScramble:Show()
 		specWarnMatterScramble:Show()
 		timerMatterScrambleCD:Start(args.sourceGUID)
-	elseif args.spellId == 145461 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145461 and not isPlayerInMantid() then
 		warnEnergize:Show()
-	elseif args.spellId == 142934 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 142934 and not isPlayerInMantid() then
 		warnTorment:Show()
 		specWarnTorment:Show()
-	elseif args.spellId == 142539 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 142539 and isPlayerInMantid() then
 		warnMantidSwarm:Show()
 		specWarnMantidSwarm:Show()
 		timerMantidSwarmCD:Start(args.sourceGUID)
-	elseif args.spellId == 145286 and self:CheckTankDistance(args.sourceGUID) and self:AntiSpam(5, args.sourceGUI) then
+	elseif args.spellId == 145286 and isPlayerInMantid() and self:AntiSpam(5, args.sourceGUID) then
 		warnWindStorm:Show()
 		timerWindstormCD:Start(args.sourceGUID)
-	elseif args.spellId == 144922 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 144922 and not isPlayerInMantid() then
 		local source = args.sourceName
 		warnHardenFlesh:Show()
 		timerHardenFleshCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnHardenFlesh:Show(source)
 		end
-	elseif args.spellId == 144923 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 144923 and not isPlayerInMantid() then
 		local source = args.sourceName
 		warnEarthenShard:Show()
 		timerEarthenShardCD:Start(args.sourceGUID)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnEarthenShard:Show(source)
 		end
-	elseif args.spellId == 146222 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 146222 and self:CheckTankDistance(args.sourceGUID) then--Relics can be either side, must use CheckTank Distance
 		warnBreathofFire:Show()
-	elseif args.spellId == 146180 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 146180 and self:CheckTankDistance(args.sourceGUID) then--Also a Relic
 		warnGustingCraneKick:Show()
 		specWarnGustingCraneKick:Show()
 		timerGustingCraneKickCD:Start(args.sourceGUID)
-	elseif args.spellId == 145489 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145489 and not isPlayerInMantid() then
 		warnReturnToStone:Show()
 		timerReturnToStoneCD:Start(args.sourceGUID)
-	elseif args.spellId == 142947 and self:CheckTankDistance(args.sourceGUID) then--Pre warn more or less
+	elseif args.spellId == 142947 and not isPlayerInMantid() then--Pre warn more or less
 		warnCrimsonRecon:Show()
-	elseif args.spellId == 146815  then--Filtering simply does not work for these :\
+	elseif args.spellId == 146815 then--Will do more work on this later, not enough time before raid, but i have an idea for it
 		warnSuperNova:Show()
 		specWarnSuperNova:Show()
 		timerSuperNova:Start()
@@ -193,26 +202,26 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 142694 and self:CheckTankDistance(args.sourceGUID) then
+	if args.spellId == 142694 and not isPlayerInMantid() then
 		warnSparkofLife:Show()
-	elseif args.spellId == 142947 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 142947 and not isPlayerInMantid() then
 		specWarnCrimsonRecon:Show()--Done here because we want to warn when we need to move mobs, not on cast start (when we can do nothing)
 		timerCrimsonReconCD:Start(args.sourceGUID)
-	elseif args.spellId == 145712 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145712 and isPlayerInMantid() then
 		timerBlazingChargeCD:Start(args.sourceGUID)
-	elseif args.spellId == 146253 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 146253 and isPlayerInMantid() then
 		timerPathOfBlossomsCD:Start(args.sourceGUID)
-	elseif args.spellId == 145230 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145230 and not isPlayerInMantid() then
 		local source = args.sourceName
 		warnForbiddenMagic:Show(args.destName)
 		if source == UnitName("target") or source == UnitName("focus") then 
 			specWarnForbiddenMagic:Show(source)
 		end
-	elseif args.spellId == 145786 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145786 and isPlayerInMantid() then
 		warnResidue:Show()
 		timerResidueCD:Start(args.sourceGUID)
 		specWarnResidue:Show()
-	elseif args.spellId == 145812 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145812 and isPlayerInMantid() then
 		warnRageoftheEmpress:Show()
 		specWarnRageoftheEmpress:Show()
 		timerRageoftheEmpressCD:Start(args.sourceGUID)
@@ -220,7 +229,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 145987 and self:CheckTankDistance(args.sourceGUID) then
+	if args.spellId == 145987 and isPlayerInMantid() then
 		warnSetToBlow:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnSetToBlowYou:Show()
@@ -232,11 +241,11 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(32, hideRangeFrame)
 			end
 		end
-	elseif args.spellId == 145692 and self:CheckTankDistance(args.sourceGUID) then
+	elseif args.spellId == 145692 and not isPlayerInMantid() then
 		warnEnrage:Show(args.destName)
 		specWarnEnrage:Show(args.destName)
 		timerEnrage:Start(args.destName)
-	elseif args.spellId == 145998 and self:CheckTankDistance(args.sourceGUID) then--This is a massive crate mogu spawning
+	elseif args.spellId == 145998 and not isPlayerInMantid() then--This is a massive crate mogu spawning
 		timerReturnToStoneCD:Start(6)
 	end
 end
