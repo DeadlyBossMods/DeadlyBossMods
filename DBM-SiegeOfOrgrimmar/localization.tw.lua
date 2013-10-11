@@ -38,12 +38,19 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetWarningLocalization({
+	warnTowerGrunt		= "塔防蠻兵"
+})
+
 L:SetTimerLocalization({
-	timerTowerCD	= "下一波塔攻"
+	timerTowerCD		= "下一波塔攻",
+	timerTowerGruntCD	= "下一次塔防蠻兵"
 })
 
 L:SetOptionLocalization({
-	timerTowerCD	= "為下一波塔攻顯示計時器"
+	warnTowerGrunt		= "提示新的塔防蠻兵重生",
+	timerTowerCD		= "為下一波塔攻顯示計時器",
+	timerTowerGruntCD	= "為下一次塔防蠻兵顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -84,13 +91,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1					= "戰士們，快點過來!",
-	newForces2					= "守住大門!",
-	newForces3					= "重整部隊!",
-	newForces4					= "柯爾克隆，來我身邊!",
-	newForces5					= "下一隊，來前線!",
-	allForces					= "所有柯爾克隆...聽我號令...殺死他們!",
-	nextAdds					= "下一次小兵: "
+	newForces1			= "戰士們，快點過來!",
+	newForces2			= "守住大門!",
+	newForces3			= "重整部隊!",
+	newForces4			= "柯爾克隆，來我身邊!",
+	newForces5			= "下一隊，來前線!",
+	allForces			= "所有柯爾克隆...聽我號令...殺死他們!",
+	nextAdds			= "下一次小兵: "
 })
 
 -----------------
