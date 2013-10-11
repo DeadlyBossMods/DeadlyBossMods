@@ -38,6 +38,10 @@ local warnEmpTouchOfYShaarj			= mod:NewTargetAnnounce(145175, 3)
 local warnEmpDesecrate				= mod:NewSpellAnnounce(144749, 3)
 local warnGrippingDespair			= mod:NewStackAnnounce(145183, 2, nil, mod:IsTank())
 local warnEmpGrippingDespair		= mod:NewStackAnnounce(145195, 3, nil, mod:IsTank())--Distinction is not that important, may just remove for the tank warning.
+--Starge Three: MY WORLD
+local warnMalice					= mod:NewTargetAnnounce(147209, 2)
+local warnBombardment				= mod:NewSpellAnnounce(147120, 3)
+local warnManifestRage				= mod:NewSpellAnnounce(147011, 4)
 
 --Stage 1: The True Horde
 local specWarnDesecrate				= mod:NewSpecialWarningCount(144748, nil, nil, nil, 2)
@@ -58,6 +62,9 @@ local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil,
 local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 3)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
 local specWarnGrippingDespairOther	= mod:NewSpecialWarningTarget(145183, mod:IsTank())
 local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch(145071)
+--Starge Three: MY WORLD
+local specWarnMaliceYou				= mod:NewSpecialWarningYou(147209)
+local yellMalice					= mod:NewYell(147209)
 
 --Stage 1: A Cry in the Darkness
 local timerDesecrateCD				= mod:NewCDTimer(35, 144748)
@@ -73,6 +80,10 @@ local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(51.5, 144985)--One bar fo
 local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985)
 local timerTouchOfYShaarjCD			= mod:NewCDCountTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
+--Starge Three: MY WORLD
+local timerMaliceCD					= mod:NewNextTimer(29.5, 147209)
+local timerBombardmentCD			= mod:NewNextTimer(55, 147120)
+local timerBombardment				= mod:NewBuffActiveTimer(13, 147120)
 
 local soundWhirlingCorrpution		= mod:NewSound(144985, nil, false)--Depends on strat. common one on 25 man is to never run away from it
 local countdownPowerIronStar		= mod:NewCountdown(15, 144616)
@@ -147,6 +158,10 @@ function mod:SPELL_CAST_START(args)
 		timerWhirlingCorruptionCD:Start(nil, whirlCount+1)
 		countdownWhirlingCorruption:Start()
 		soundWhirlingCorrpution:Play()
+	elseif args.spellId == 147120 then
+		warnBombardment:Show()
+		timerBombardment:Start()
+		timerBombardmentCD:Start()
 	end
 end
 
@@ -216,6 +231,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFarseerWolfRiderCD:Start()
 		if self.Options.SetIconOnShaman and shamanAlive < 9 then--Support for marking up to 8 shaman
 			self:ScanForMobs(71983, 2, 9-shamanAlive, 1, 0.2, 10)
+		end
+	elseif args.spellId == 147209 then
+		warnMalice:CombinedShow(0.5, args.destName)
+		timerMalice:DelayedStart(0.5)
+		if args:IsPlayer() then
+			specWarnMaliceYou:Show()
+			yellMalice:Yell()
 		end
 	end
 end
@@ -289,6 +311,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownTouchOfYShaarj:Start(30)
 		timerWhirlingCorruptionCD:Start(47.5, 1)
 		countdownWhirlingCorruption:Start(47.5)
+	elseif spellId == 146984 then--Phase 4 trigger
+		phase = 4
+		timerMaliceCD:Start(30)
+		timerBombardmentCD:Start(69)
 	end
 end
 
@@ -307,5 +333,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		countdownPowerIronStar:Start()
 		warnFireUnstableIronStar:Schedule(15)
 		specWarnFireUnstableIronStar:Schedule(15)
+	elseif msg:find("spell:147011") then--may be need to change if we get combatlog.
+		warnManifestRage:Show()
 	end
 end
