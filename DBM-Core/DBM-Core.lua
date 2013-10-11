@@ -2277,6 +2277,11 @@ function DBM:LoadMod(mod)
 end
 
 
+local canSetIcons = {}
+local iconSetRevision = {}
+local iconSetPerson = {}
+local addsGUIDs = {}
+
 -----------------------------
 --  Handle Incoming Syncs  --
 -----------------------------
@@ -2297,6 +2302,7 @@ do
 	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
 	-- C = Combat start
+	-- IS = Icon set info
 	-- K = Kill
 	-- H = Hi!
 	-- V = Incoming version information
@@ -2321,6 +2327,7 @@ do
 		if sender == playerName then return end
 		local _, instanceType = GetInstanceInfo()
 		if instanceType == "pvp" then return end
+		if instanceType == "none" and not UnitAffectingCombat("player") and #InCombat > 0 then return end--Ignore world boss pulls if you aren't fighting them. Also ignore world boss pull if already in combat.
 		if not IsEncounterInProgress() and instanceType == "raid" and IsPartyLFG() then return end--Ignore syncs if we cannot validate IsEncounterInProgress as true
 		local lag = select(4, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
@@ -2331,6 +2338,18 @@ do
 		if dbmRevision < 10481 then return end
 		if mod and delay and (not mod.zones or mod.zones[LastInstanceMapID]) and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, "SYNC from - "..sender, true, startHp)
+		end
+	end
+
+	syncHandlers["IS"] = function(sender, guid, ver, optionName)
+		if ver > (iconSetRevision[optionName] or 0) then--Save first synced version and person, ignore same version. refresh occurs only above version (fastest person)
+			iconSetRevision[optionName] = ver
+			iconSetPerson[optionName] = guid
+		end
+		if iconSetPerson[optionName] == UnitGUID("player") then--Check if that highest version was from ourself
+			canSetIcons[optionName] = true
+		else--Not from self, it means someone with a higher version than us probably sent it
+			canSetIcons[optionName] = false
 		end
 	end
 
@@ -3172,7 +3191,6 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			return
 		end
 		savedDifficulty, difficultyText, flexSize = self:GetCurrentInstanceDifficulty()
-		if synced and savedDifficulty == "worldboss" and not UnitAffectingCombat("player") then return end--Ignore world boss pulls if you aren't fighting them.
 		tinsert(inCombat, mod)
 		bossHealth[mod.combatInfo.mob or -1] = 1
 		if mod.multiMobPullDetection then
@@ -3256,11 +3274,16 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		end
 		if not synced then
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
-			if DBM:GetRaidRank() > 0 and mod.findFastestComputer and #mod.findFastestComputer > 0 and not DBM.Options.DontSetIcons then
+		end
+		if DBM:GetRaidRank() > 0 and mod.findFastestComputer and not DBM.Options.DontSetIcons then
+			local optionName = mod.findFastestComputer[1]
+			if #mod.findFastestComputer == 1 and mod.Options[optionName] then
+				sendSync("IS", UnitGUID("player").."\t"..DBM.Revision.."\t"..optionName)
+			else
 				for i = 1, #mod.findFastestComputer do
 					local option = mod.findFastestComputer[i]
 					if mod.Options[option] then
-						mod:ReceiveIconSetPerson(playerName, DBM.Revision)
+						sendSync("IS", UnitGUID("player").."\t"..DBM.Revision.."\t"..option)
 					end
 				end
 			end
@@ -4579,46 +4602,13 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	end
 end
 
---This variables wiped at mod level, not function level
-local canSetIcons = false
-local iconSetRevision = 0
-local lastIconSetElected = 0
-local addsGUIDs = {}
-
---This variables wiped at function level
 local scanExpires = {}
 local addsIcon = {}
 local addsIconSet = {}
 
-function bossModPrototype:SetIconSetPerson(name)
-	if name and GetTime() - lastIconSetElected > 10 then--Whoever sends this sync first wins all. They have highest version and probably the lowest ping. Do not use self:AntiSpam here not to break mod:AntiSpam()
-		-- note: this assumes that everyone sees chat/addon-messages in the same order which seems to be true at the moment; can be changed to use GetNetStats() if this changes
-		lastIconSetElected = GetTime()
-		self:UnscheduleMethod("SetIconSetPerson")
-		if name == playerName then
-			canSetIcons = true
-		else
-			canSetIcons = false
-		end
-	end
-end
-
-function bossModPrototype:ReceiveIconSetPerson(name, ver)
-	if ver > iconSetRevision then
-		iconSetRevision = ver--Keep bumping highest version to highest we Receive from the icon setters
-		if name == playerName then--Check if that highest version was from ourself
-			canSetIcons = true
-			self:UnscheduleMethod("SetIconSetPerson")
-			self:ScheduleMethod(5, "SetIconSetPerson", name)
-		else--Not from self, it means someone with a higher version than us probably sent it
-			canSetIcons = false
-			self:UnscheduleMethod("SetIconSetPerson")
-		end
-	end
-end
-
-function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime)
-	if canSetIcons then
+function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
+	if not optionName then optionName = self.findFastestComputer[1] end
+	if canSetIcons[optionName] then
 		--Declare variables.
 		local timeNow = GetTime()
 		local creatureID = creatureID--This function must not be used to boss, so remove self.creatureId. Accepts cid, guid and cid table
@@ -4732,7 +4722,7 @@ function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIco
 			end
 		end
 		if timeNow < scanExpires[scanID] then--scan for limited times.
-			self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime)
+			self:ScheduleMethod(scanInterval, "ScanForMobs", creatureID, iconSetMethod, mobIcon, maxIcon, scanInterval, scanningTime, optionName)
 		else
 			--clear variables
 			scanExpires[scanID] = nil
@@ -4801,9 +4791,9 @@ function bossModPrototype:Stop(cid)
 		v:Stop()
 	end
 	self:Unschedule()
-	canSetIcons = false--Wiped here when mod stop is called by CombatEnd
-	iconSetRevision = 0
-	lastIconSetElected = 0
+	twipe(canSetIcons)--Wiped here when mod stop is called by CombatEnd
+	twipe(iconSetRevision)
+	twipe(iconSetPerson)
 	twipe(addsGUIDs)
 end
 
