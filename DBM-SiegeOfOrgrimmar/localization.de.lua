@@ -38,12 +38,19 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetWarningLocalization({
+	warnTowerGrunt		= "Turmgrunzer"
+})
+
 L:SetTimerLocalization({
-	timerTowerCD	= "Nächster Turm"
+	timerTowerCD		= "Nächster Turm",
+	timerTowerGruntCD	= "Nächster Turmgrunzer"
 })
 
 L:SetOptionLocalization({
-	timerTowerCD	= "Zeige Zeit bis nächsten Turmangriff"
+	warnTowerGrunt		= "Verkünde das Erscheinen eines Turmgrunzers",
+	timerTowerCD		= "Zeige Zeit bis nächsten Turmangriff",
+	timerTowerGruntCD	= "Zeige Zeit bis nächster Turmgrunzer erscheint"
 })
 
 L:SetMiscLocalization({
@@ -89,7 +96,8 @@ L:SetMiscLocalization({
 	newForces3					= "Truppen, sammelt Euch!",
 	newForces4					= "Kor'kron, zu mir!",
 	newForces5					= "Nächste Staffel, nach vorn!",
-	allForces					= "Alle Kor'kron unter meinem Befehl, tötet sie! Jetzt!"
+	allForces					= "Alle Kor'kron unter meinem Befehl, tötet sie! Jetzt!",
+	nextAdds					= "Nächste Adds: "
 })
 
 -----------------
