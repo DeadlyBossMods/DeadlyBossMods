@@ -76,7 +76,6 @@ local specWarnPathOfBlossoms	= mod:NewSpecialWarningMove(146257)
 --Crate of Pandaren Relics
 local specWarnGustingCraneKick	= mod:NewSpecialWarningSpell(146180, nil, nil, nil, 2)
 
-local timerSuperNova			= mod:NewCastTimer(10, 146815)
 --local timerArmageddonCD			= mod:NewCastTimer(270, 145864, (GetSpellInfo(20479)))--145864 will never fly as timer text, it's like bajillion characters long. use 20479 for timertext
 --Massive Crate of Goods
 local timerReturnToStoneCD		= mod:NewNextTimer(12, 145489)
@@ -197,7 +196,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 146815 then--Will do more work on this later, not enough time before raid, but i have an idea for it
 		warnSuperNova:Show()
 		specWarnSuperNova:Show()
-		timerSuperNova:Start()
 	end
 end
 
