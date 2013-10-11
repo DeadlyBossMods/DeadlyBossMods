@@ -151,7 +151,7 @@ function mod:SPELL_CAST_START(args)
 			warnEmpWhirlingCorruption:Show(whirlCount)
 			specWarnEmpWhirlingCorruption:Show(whirlCount)
 			if self.Options.SetIconOnMinions then
-				self:ScanForMobs(72272, 0, 8, nil, 0.2, 12)--I think max adds is 7 on 25 man, TODO is confirm this and set max icon to 7 instead of nil/8. Long scan time because of slow spawn
+				self:ScanForMobs(72272, 0, 8, nil, 0.2, 12, "SetIconOnMinions")--I think max adds is 7 on 25 man, TODO is confirm this and set max icon to 7 instead of nil/8. Long scan time because of slow spawn
 			end
 		end
 		timerWhirlingCorruption:Start()
@@ -230,7 +230,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFarseerWolfRider:Show()
 		timerFarseerWolfRiderCD:Start()
 		if self.Options.SetIconOnShaman and shamanAlive < 9 then--Support for marking up to 8 shaman
-			self:ScanForMobs(71983, 2, 9-shamanAlive, 1, 0.2, 10)
+			self:ScanForMobs(71983, 2, 9-shamanAlive, 1, 0.2, 10, "SetIconOnShaman")
 		end
 	elseif args.spellId == 147209 then
 		warnMalice:CombinedShow(0.5, args.destName)
