@@ -58,7 +58,7 @@ local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)
 ----Mogu
 local specWarnForbiddenMagic	= mod:NewSpecialWarningInterrupt(145230, mod:IsMelee())
 local specWarnMatterScramble	= mod:NewSpecialWarningSpell(145288, nil, nil, nil, 2)
-local specWarnCrimsonRecon		= mod:NewSpecialWarningMove(142947, mod:IsTank())
+local specWarnCrimsonRecon		= mod:NewSpecialWarningMove(142947, mod:IsTank(), nil, nil, 3)
 local specWarnTorment			= mod:NewSpecialWarningSpell(142934, mod:IsHealer())
 ----Mantid
 local specWarnMantidSwarm		= mod:NewSpecialWarningSpell(142539, mod:IsTank())
