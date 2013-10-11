@@ -81,7 +81,7 @@ local soundDireFixate			= mod:NewSound(140946)
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnCharge")
 mod:AddBoolOption("SetIconOnAdds", false) -- use custom string.
-mod.findFastestComputer = "SetIconOnAdds" -- for set icon stuff.
+mod.findFastestComputer = {"SetIconOnAdds"} -- for set icon stuff.
 
 local doorNumber = 0
 local direNumber = 0

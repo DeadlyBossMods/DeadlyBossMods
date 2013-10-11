@@ -3256,8 +3256,13 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		end
 		if not synced then
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
-			if DBM:GetRaidRank() > 0 and mod.findFastestComputer and mod.Options[mod.findFastestComputer] and not DBM.Options.DontSetIcons then
-				mod:ReceiveIconSetPerson(playerName, DBM.Revision)
+			if DBM:GetRaidRank() > 0 and mod.findFastestComputer and #mod.findFastestComputer > 0 and not DBM.Options.DontSetIcons then
+				for i = 1, #mod.findFastestComputer do
+					local option = mod.findFastestComputer[i]
+					if mod.Options[option] then
+						mod:ReceiveIconSetPerson(playerName, DBM.Revision)
+					end
+				end
 			end
 		end
 		fireEvent("pull", mod, delay, synced, startHp)
@@ -6448,7 +6453,10 @@ function bossModPrototype:AddSetIconOption(name, spellId, default, isHostile)
 	self.Options[name] = (default == nil) or default
 	self:SetOptionCategory(name, "misc")
 	if isHostile then
-		self.findFastestComputer = name
+		if not self.findFastestComputer then
+			self.findFastestComputer = {}
+		end
+		self.findFastestComputer[#self.findFastestComputer + 1] = name
 		self.localization.options[name] = DBM_CORE_AUTO_ICONS_OPTION_TEXT2:format(spellId)
 	else
 		self.localization.options[name] = DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(spellId)
