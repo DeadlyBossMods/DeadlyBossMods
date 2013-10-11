@@ -96,6 +96,27 @@ local countdownSetToBlow		= mod:NewCountdownFades(29, 145996)
 
 mod:AddRangeFrameOption(10, 145987)
 
+local point1 = {0.488816, 0.208129}
+local point2 = {0.562330, 0.371684}
+
+local function isPlayerInMantid()
+	local x, y = GetPlayerMapPosition("player")
+	if x == 0 and y == 0 then
+		SetMapToCurrentZone()
+		x, y = GetPlayerMapPosition("player")
+	end
+	local lineX, diffX, calcY
+	lineX = point2[1] - point1[1]
+	diffX = x - point1[1]
+	if diffX <= 0 then return true end
+	if diffX >= lineX then return false end
+	calcY = (diffX / lineX) * (point2[2]-point1[2]) + point1[2]
+	if y >= calcY then
+		return true
+	else
+		return false
+	end
+end
 
 local function hideRangeFrame()
 	if mod.Options.RangeFrame then
