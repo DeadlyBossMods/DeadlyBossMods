@@ -44,7 +44,7 @@ local warnBurningBlood				= mod:NewTargetAnnounce(143783, 3, nil, false, nil, ni
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
 local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTarget(143766, mod:IsTank())
-local specWarnDeafeningScreech		= mod:NewSpecialWarningCast(143343, nil, nil, nil, 2)--Change to cast. LFR player no not stop casting even do not know about this skill.
+local specWarnDeafeningScreech		= mod:NewSpecialWarningSpell(143343, nil, nil, nil, 2)
 --Stage 2: Frenzy for Blood!
 local specWarnBloodFrenzy			= mod:NewSpecialWarningSpell(143440, nil, nil, nil, 2)
 local specWarnFixate				= mod:NewSpecialWarningRun(143445, nil, nil, nil, 3)
@@ -159,7 +159,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if screechCount < 8 then--Don't spam special warning once cd is lower than 4.8 seconds.
 			specWarnDeafeningScreech:Show()
 		end
-		timerDeafeningScreechCD:Cancel(screechCount)
+		timerDeafeningScreechCD:Cancel()
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(18, screechCount+1)
 		else
@@ -342,8 +342,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerAcidBreathCD:Cancel()
 		timerFrostBreathCD:Cancel()
 		timerScorchingBreathCD:Cancel()
-		timerDeafeningScreechCD:Cancel(screechCount)
-		timerDeafeningScreechCD:Cancel(screechCount+1)
+		timerDeafeningScreechCD:Cancel()
 		timerTailLashCD:Cancel()
 		specWarnBloodFrenzy:Show()
 		soundBloodFrenzy:Play()
