@@ -296,10 +296,11 @@ function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(5))
 	local time = tonumber(string.match(text or "", "%d+"))
 	if time > worldTimer then
+		local newTime = time + (time/100) + 1 -- bliz timer litte slow. wtf? If this correction is not right, need to timer update every 30s or 1m.
 		berserkTimer:Cancel()
 		countdownArmageddon:Cancel()
-		berserkTimer:Start(time)
-		countdownArmageddon:Start(time)
+		berserkTimer:Start(newTime)
+		countdownArmageddon:Start(newTime)
 	end
 	worldTimer = time
 end
