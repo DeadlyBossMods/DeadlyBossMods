@@ -71,7 +71,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "Спец-предупреждение, когда на Вас нет дебаффа $spell:137633 и более 90% здоровья",
 	InfoFrame				= "Информационное окно для игроков без $spell:137633",
-	SetIconOnTurtles		= "Устанавливать метки на $journal:7129",
 	ClearIconOnTurtles		= "Убирать метки с $journal:7129, когда активируется $spell:133971",
 	AnnounceCooldowns		= "Отсчитывать какой сейчас каст $spell:134920 для рейдовых кулдаунов"
 })

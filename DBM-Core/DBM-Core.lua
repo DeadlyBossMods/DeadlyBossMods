@@ -4380,7 +4380,7 @@ do
 			local t = EJ_GetEncounterInfo(tonumber(name))
 			if type(nameModifier) == "number" then--Get name form EJ_GetCreatureInfo
 				t = select(2, EJ_GetCreatureInfo(nameModifier, tonumber(name)))
-			elseif type(nameModifier) == "function" then--custom name modifiy function
+			elseif type(nameModifier) == "function" then--custom name modify function
 				t = nameModifier(t or name)
 			else--default name modify
 				t = string.split(",", t or name)
@@ -4390,7 +4390,7 @@ do
 		elseif name:match("z%d+") then
 			local t = GetRealZoneText(string.sub(name, 2))
 			if type(nameModifier) == "number" then--do nothing
-			elseif type(nameModifier) == "function" then--custom name modifiy function
+			elseif type(nameModifier) == "function" then--custom name modify function
 				t = nameModifier(t or name)
 			else--default name modify
 				t = string.split(",", t or name)
@@ -4399,7 +4399,7 @@ do
 		elseif name:match("d%d+") then
 			local t = GetDungeonInfo(string.sub(name, 2))
 			if type(nameModifier) == "number" then--do nothing
-			elseif type(nameModifier) == "function" then--custom name modifiy function
+			elseif type(nameModifier) == "function" then--custom name modify function
 				t = nameModifier(t or name)
 			else--default name modify
 				t = string.split(",", t or name)
