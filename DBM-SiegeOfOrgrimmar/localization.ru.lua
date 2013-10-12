@@ -38,12 +38,19 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetWarningLocalization({
+	warnTowerGrunt		= "Рубака у башни"
+})
+
 L:SetTimerLocalization({
-	timerTowerCD	= "След. башня"
+	timerTowerCD		= "След. башня",
+	timerTowerGruntCD	= "След. Рубака у башни"
 })
 
 L:SetOptionLocalization({
-	timerTowerCD	= "Отсчет времени до следующего нападения на башню"
+	warnTowerGrunt		= "Объявлять когда появляется новый Рубака у башни",
+	timerTowerCD		= "Отсчет времени до следующего нападения на башню",
+	timerTowerGruntCD	= "Отсчет времени до следующего Рубаки у башни"
 })
 
 L:SetMiscLocalization({
@@ -89,7 +96,8 @@ L:SetMiscLocalization({
 	newForces3					= "Сомкнуть ряды!",
 	newForces4					= "Кор'крон, ко мне!",
 	newForces5					= "Следующий отряд, вперед!",
-	allForces					= "Кор'кронцы... все, кто со мной! Убейте их!"
+	allForces					= "Кор'кронцы... все, кто со мной! Убейте их!",
+	nextAdds					= "След. адды: "
 })
 
 -----------------
