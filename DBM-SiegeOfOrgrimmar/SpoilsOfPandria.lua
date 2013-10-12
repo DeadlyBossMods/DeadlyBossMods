@@ -18,8 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_DIED",
-	"UPDATE_WORLD_STATES",
-	"CHAT_MSG_MONSTER_YELL"
+	"UPDATE_WORLD_STATES"
 )
 
 local warnSuperNova				= mod:NewCastAnnounce(146815, 4)--Heroic
