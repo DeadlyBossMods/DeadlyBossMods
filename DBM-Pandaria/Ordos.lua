@@ -17,6 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 local warnAncientFlame			= mod:NewSpellAnnounce(144695, 2)--probably add a move warning with right DAMAGE event
+local warnMagmaCrush			= mod:NewSpellAnnounce(144688, 3)
 local warnBurningSoul			= mod:NewTargetAnnounce(144689, 3)
 local warnEternalAgony			= mod:NewSpellAnnounce(144696, 4)
 
@@ -74,6 +75,8 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 144696 then
 		warnEternalAgony:Show()
 		specWarnEternalAgony:Show()
+	elseif args.spellId == 144688 then
+		warnMagmaCrush:Show()
 	elseif args.spellId == 144695 then
 		warnAncientFlame:Show()
 --		timerAncientFlameCD:Start()

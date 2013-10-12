@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_DIED",
+	"UPDATE_WORLD_STATES",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -101,10 +102,13 @@ local timerPathOfBlossomsCD		= mod:NewCDTimer(15, 146253)
 local countdownSetToBlow		= mod:NewCountdownFades(29, 145996)
 --local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, true)
 
+local berserkTimer				= mod:NewBerserkTimer(480)
+
 mod:AddRangeFrameOption(10, 145987)
 
 local point1 = {0.488816, 0.208129}
 local point2 = {0.562330, 0.371684}
+local worldTimer = 0
 
 local function isPlayerInMantid()
 	local x, y = GetPlayerMapPosition("player")
@@ -132,6 +136,7 @@ local function hideRangeFrame()
 end
 
 function mod:OnCombatStart(delay)
+	worldTimer = 0
 --[[	if self:IsDifficulty("lfr25") then
 		timerArmageddonCD:Start(297.5-delay)
 		countdownArmageddon:Start(297.5-delay)
@@ -293,6 +298,16 @@ function mod:UNIT_DIED(args)
 	elseif cid == 72828 then--Nameless Windwalker Spirit
 		timerPathOfBlossomsCD:Cancel(args.destGUID)
 	end
+end
+
+function mod:UPDATE_WORLD_STATES()
+	local text = select(4, GetWorldStateUIInfo(5))
+	local time = tonumber(string.match(text or "", "%d+"))
+	if time > worldTimer then
+		berserkTimer:Cancel()
+		berserkTimer:Start(time)
+	end
+	worldTimer = time
 end
 
 --[[
