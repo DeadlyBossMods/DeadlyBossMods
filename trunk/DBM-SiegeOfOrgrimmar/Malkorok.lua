@@ -64,6 +64,7 @@ local breathCast = 0
 local arcingSmashCount = 0
 local seismicSlamCount = 0
 local displacedCast = false
+local rageActive = false
 local UnitDebuff = UnitDebuff
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 
@@ -79,6 +80,7 @@ function mod:OnCombatStart(delay)
 	breathCast = 0
 	arcingSmashCount = 0
 	seismicSlamCount = 0
+	rageActive = false
 	if self:IsDifficulty("lfr25") then
 		timerSeismicSlamCD:Start(7.5-delay, 1)
 		timerArcingSmashCD:Start(14-delay, 1)
@@ -108,6 +110,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 142879 then
 		displacedCast = false
+		rageActive = true
 		warnBloodRage:Show()
 		specWarnBloodRage:Show()
 		timerBloodRage:Start()
@@ -133,6 +136,7 @@ function mod:SPELL_CAST_START(args)
 		breathCast = 0
 		arcingSmashCount = 0
 		seismicSlamCount = 0
+		rageActive = false
 		specWarnBloodRageEnded:Show()
 		if self:IsDifficulty("lfr25") then
 			timerSeismicSlamCD:Start(7.5, 1)
@@ -222,7 +226,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() and self.Options.RangeFrame and playerDebuffs >= 1 then
 			DBM.RangeCheck:Show(10, debuffFilter)--Change to debuff filter based check since theirs is gone but there are still others in raid.
 		end
-		if self.Options.RangeFrame and playerDebuffs == 0 then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
+		if self.Options.RangeFrame and playerDebuffs == 0 and rageActive then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
 			DBM.RangeCheck:Hide()
 		end
 		if self.Options.SetIconOnDisplacedEnergy then
