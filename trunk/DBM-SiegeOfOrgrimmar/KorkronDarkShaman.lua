@@ -73,7 +73,7 @@ local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990, mod:IsTank() or mod:IsRangedDps(), nil, nil, nil, nil, 2)
 local countdownFallingAsh			= mod:NewCountdown(15, 143973, nil, nil, nil, nil, true)
 
-local berserkTimer					= mod:NewBerserkTimer(540)
+local berserkTimer					= mod:NewBerserkTimer(555)
 
 mod:AddRangeFrameOption(4, 143990)--This is more or less for foul geyser and foul stream splash damage
 mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
