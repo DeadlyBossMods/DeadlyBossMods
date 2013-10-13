@@ -189,7 +189,7 @@ function mod:SPELL_CAST_START(args)
 		timerReturnToStoneCD:Start(args.sourceGUID)
 	elseif args.spellId == 142947 and not isPlayerInMantid() then--Pre warn more or less
 		warnCrimsonRecon:Show()
-	elseif args.spellId == 146815 then--Will do more work on this later, not enough time before raid, but i have an idea for it
+	elseif args.spellId == 146815 and self:AntiSpam(2, 4)  then--Will do more work on this later, not enough time before raid, but i have an idea for it
 		warnSuperNova:Show()
 		specWarnSuperNova:Show()
 	end
