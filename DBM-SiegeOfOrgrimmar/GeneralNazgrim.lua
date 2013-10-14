@@ -400,10 +400,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		addsCount = addsCount + 1
 		warnAdds:Show(addsCount)
 		specWarnAdds:Show(addsCount)
-		timerAddsCD:Start(nil, addsCount+1)
-		countdownAdds:Start()
+		if addCounts < 11 then
+			timerAddsCD:Start(nil, addsCount+1)
+			countdownAdds:Start()
+		end
 		if self.Options.SetIconOnAdds then
-			self:ScanForMobs(addsTable, 2, 7, 4, 0.2, 10)
+			self:ScanForMobs(addsTable, 2, 7, 4, 0.2, 15)
 		end
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
