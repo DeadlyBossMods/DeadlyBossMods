@@ -103,6 +103,7 @@ local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, t
 local berserkTimer				= mod:NewBerserkTimer(480)
 
 mod:AddRangeFrameOption(10, 145987)
+mod:AddInfoFrameOption("ej8350")--Eh, "overview" works.
 
 local select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo = select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo
 local point1 = {0.488816, 0.208129}
@@ -136,12 +137,18 @@ end
 
 function mod:OnCombatStart(delay)
 	worldTimer = 0
+	if self.Options.InfoFrame then--Will just call it "infoframe" that's good enough
+		 DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
+	end
 end
 
 function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
