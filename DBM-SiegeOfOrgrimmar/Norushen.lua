@@ -45,7 +45,7 @@ local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
-local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", mod:IsTank(), nil, nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
+local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer(), nil, nil, nil)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
