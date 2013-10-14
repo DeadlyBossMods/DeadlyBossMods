@@ -234,7 +234,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 147209 then
 		warnMalice:CombinedShow(0.5, args.destName)
-		timerMalice:DelayedStart(0.5)
+		timerMaliceCD:DelayedStart(0.5)
 		if args:IsPlayer() then
 			specWarnMaliceYou:Show()
 			yellMalice:Yell()
