@@ -44,7 +44,7 @@ local warnBurningBlood				= mod:NewTargetAnnounce(143783, 3, nil, false, nil, ni
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
 local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTarget(143766, mod:IsTank())
-local specWarnDeafeningScreech		= mod:NewSpecialWarningSpell(143343, nil, nil, nil, 2)
+local specWarnDeafeningScreech		= mod:NewSpecialWarningCast(143343, nil, nil, nil, 2)
 --Stage 2: Frenzy for Blood!
 local specWarnBloodFrenzy			= mod:NewSpecialWarningSpell(143440, nil, nil, nil, 2)
 local specWarnFixate				= mod:NewSpecialWarningRun(143445, nil, nil, nil, 3)
@@ -99,30 +99,14 @@ local bloodTargets = {}
 
 --this boss works similar to staghelm
 local screechTimers = {
-	[0] = 13.2,
-	[1] = 8.5,
+	[0] = 13.5,
+	[1] = 11,
 	[2] = 7.2,
-	[3] = 7.2,
-	[4] = 6,--Not enough data, but this may pop 4.8 sometimes, if so i'll drop it to that
-	[5] = 4.8,
-	[6] = 4.8,--probably another 4.8 baseline but my data is actually 6
-	[7] = 4.8,--probably another 4.8 baseline but my data is actually 5.2
-	[8] = 3.6,
-	[9] = 3.6,--Can be a 4.8
-	[10]= 3.6,
-	[11]= 2.4,
-	[12]= 2.4,
-	[13]= 2.4,
-	[14]= 2.4,
-	[15]= 2.4,
-	[16]= 2.4,
-	[17]= 2.4,
-	[18]= 2.4,
-	[19]= 2.4,
-	[20]= 2.4,
-	[21]= 2.4,
-	[22]= 2.4,--TODO< see if 1.2 can occur earlier. my log show that blizz buffing energy regen rate somehow caused the 2.4 string to last longer
-	[23]= 1.2,--Anything 23 and beyond is 1.2 with rare 2.4 fluke sometimes
+	[3] = 5,
+	[4] = 3.5,--These 3.5s tend to variate a little. May be 3.8 or 3.9 even.
+	[5] = 3.5,
+	[6] = 3.5,
+	--Anything beyond this is 2.4 or lower, useless
 }
 
 local function clearBloodTargets()
@@ -156,14 +140,14 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
-		if screechCount < 8 then--Don't spam special warning once cd is lower than 4.8 seconds.
-			specWarnDeafeningScreech:Show()
-		end
 		timerDeafeningScreechCD:Cancel()
+		if screechCount < 7 then--Don't spam special warning once cd is lower than 4.8 seconds.
+			timerDeafeningScreechCD:Start(screechTimers[screechCount], screechCount+1)
+			specWarnDeafeningScreech:Schedule(screechTimers[screechCount]-1.5)
+		end
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(18, screechCount+1)
-		else
-			timerDeafeningScreechCD:Start(screechTimers[screechCount] or 1.2, screechCount+1)
+			specWarnDeafeningScreech:Show()
 		end
 	elseif args.spellId == 143428 then
 		warnTailLash:Show()

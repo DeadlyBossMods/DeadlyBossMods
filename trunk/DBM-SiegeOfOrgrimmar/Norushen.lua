@@ -45,7 +45,7 @@ local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
-local specWarnManifestationSoon			= mod:NewSpecialWarningPreWarn("ej8232", mod:IsTank(), 5, nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
+local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", mod:IsTank(), 5, nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
@@ -82,7 +82,7 @@ local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, nil, nil, n
 local countdownHurlCorruption			= mod:NewCountdown(20, 144649, nil, nil, nil, nil, true)
 
 mod:AddInfoFrameOption("ej8252", false)--May still be buggy but it's needed for heroic.
-mod:AddSetIconOption("SetIconOnAdds", "ej8232", false, true)
+--mod:AddSetIconOption("SetIconOnAdds", "ej8232", false, true)
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0
@@ -95,9 +95,9 @@ local addsAlive = 0
 local function addsDelay()
 	addsAlive = addsAlive + 1
 	specWarnManifestation:Show()
-	if mod.Options.SetIconOnAdds and addsAlive < 9 then--If you have more than 8 addsAlive, wtf are you doing?
+--[[	if mod.Options.SetIconOnAdds and addsAlive < 9 then--If you have more than 8 addsAlive, wtf are you doing?
 		mod:ScanForMobs(72264, 0, 9-addsAlive, 1, 0.2, 5)
-	end
+	end+--]]
 end
 
 function mod:OnCombatStart(delay)
@@ -236,7 +236,7 @@ function mod:OnSync(msg, guid)
 		timerCombatStarts:Start()
 	elseif msg == "ManifestationDied" and not playerInside and self:AntiSpam(1) then
 		specWarnManifestationSoon:Show()
-		self:Schedule(5, addsDelay)
+--		self:Schedule(5, addsDelay)
 	elseif msg == "outsideAddDied" then--We don't actually use GUID, just use it to prevent 8 second antispam from ignoring adds
 		addsAlive = addsAlive - 1
 	end
