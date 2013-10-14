@@ -21,7 +21,7 @@ mod:RegisterEventsInCombat(
 	"UPDATE_WORLD_STATES"
 )
 
-local warnSuperNova				= mod:NewCastAnnounce(146815, 4)--Heroic
+local warnSuperNova				= mod:NewCastAnnounce(146815, 4, nil, false, nil, nil, nil, nil, 2)--Heroic
 --Massive Crate of Goods
 ----Mogu
 local warnReturnToStone			= mod:NewSpellAnnounce(145489, 2)
@@ -49,7 +49,7 @@ local warnSparkofLife			= mod:NewSpellAnnounce(142694, 3, nil, false)
 local warnBreathofFire			= mod:NewSpellAnnounce(146222, 3)--Do not have timer for this yet, add not alive long enough.
 local warnGustingCraneKick		= mod:NewSpellAnnounce(146180, 3)
 
-local specWarnSuperNova			= mod:NewSpecialWarningSpell(146815, nil, nil, nil, 2)
+local specWarnSuperNova			= mod:NewSpecialWarningSpell(146815, false, nil, nil, 2, 2)
 --Massive Crate of Goods
 local specWarnSetToBlowYou		= mod:NewSpecialWarningYou(145987)
 local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)
