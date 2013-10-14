@@ -2342,6 +2342,7 @@ do
 	end
 
 	syncHandlers["IS"] = function(sender, guid, ver, optionName)
+		ver = tonumber(ver)
 		if ver > (iconSetRevision[optionName] or 0) then--Save first synced version and person, ignore same version. refresh occurs only above version (fastest person)
 			iconSetRevision[optionName] = ver
 			iconSetPerson[optionName] = guid
