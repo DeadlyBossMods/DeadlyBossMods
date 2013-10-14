@@ -119,7 +119,7 @@ function mod:OnCombatStart(delay)
 	timerFearsomeRoarCD:Start(-delay)
 	if self:IsDifficulty("lfr25") then
 		timerDeafeningScreechCD:Start(19-delay, 1)
-		specWarnDeafeningScreech:Schedule(18.5)
+		specWarnDeafeningScreech:Schedule(17.5)
 	else
 		timerDeafeningScreechCD:Start(-delay, 1)
 		specWarnDeafeningScreech:Schedule(12)
@@ -145,7 +145,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDeafeningScreechCD:Cancel()
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(18, screechCount+1)
-			specWarnDeafeningScreech:Schedule(17.5)
+			specWarnDeafeningScreech:Schedule(16.5)
 		else
 			if screechCount < 7 then--Don't spam special warning once cd is lower than 4.8 seconds.
 				timerDeafeningScreechCD:Start(screechTimers[screechCount], screechCount+1)
@@ -278,7 +278,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		screechCount = 0
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(19, 1)
-			specWarnDeafeningScreech:Schedule(18.5)
+			specWarnDeafeningScreech:Schedule(17.5)
 		else
 			timerDeafeningScreechCD:Start(nil, 1)
 			specWarnDeafeningScreech:Schedule(11.5)
