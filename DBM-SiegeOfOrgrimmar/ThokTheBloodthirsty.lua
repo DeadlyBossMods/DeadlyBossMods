@@ -119,8 +119,10 @@ function mod:OnCombatStart(delay)
 	timerFearsomeRoarCD:Start(-delay)
 	if self:IsDifficulty("lfr25") then
 		timerDeafeningScreechCD:Start(19-delay, 1)
+		specWarnDeafeningScreech:Schedule(18.5)
 	else
 		timerDeafeningScreechCD:Start(-delay, 1)
+		specWarnDeafeningScreech:Schedule(12)
 	end
 	berserkTimer:Start(-delay)
 	if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
@@ -143,7 +145,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDeafeningScreechCD:Cancel()
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(18, screechCount+1)
-			specWarnDeafeningScreech:Show()
+			specWarnDeafeningScreech:Schedule(17.5)
 		else
 			if screechCount < 7 then--Don't spam special warning once cd is lower than 4.8 seconds.
 				timerDeafeningScreechCD:Start(screechTimers[screechCount], screechCount+1)
@@ -276,8 +278,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		screechCount = 0
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(19, 1)
+			specWarnDeafeningScreech:Schedule(18.5)
 		else
 			timerDeafeningScreechCD:Start(nil, 1)
+			specWarnDeafeningScreech:Schedule(11.5)
 		end
 		if self.Options.RangeFrame and not self:IsDifficulty("lfr25") then
 			if self:IsDifficulty("normal10", "heroic10") then
@@ -328,6 +332,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFrostBreathCD:Cancel()
 		timerScorchingBreathCD:Cancel()
 		timerDeafeningScreechCD:Cancel()
+		specWarnDeafeningScreech:Cancel()
 		timerTailLashCD:Cancel()
 		specWarnBloodFrenzy:Show()
 		soundBloodFrenzy:Play()
