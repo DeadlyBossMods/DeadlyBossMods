@@ -400,7 +400,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		addsCount = addsCount + 1
 		warnAdds:Show(addsCount)
 		specWarnAdds:Show(addsCount)
-		if addCounts < 11 then
+		if addCounts < 10 then
 			timerAddsCD:Start(nil, addsCount+1)
 			countdownAdds:Start()
 		end
