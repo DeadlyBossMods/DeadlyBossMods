@@ -87,6 +87,7 @@ DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " �
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "새로운 버전이 발견되면 알림창을 보입니다."
 DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전이 지나치게 오래되어 (%d 버전 가량) 업데이트 전까지 작동을 중지합니다. 이것은 오래되거나 호환되지 않는 기능이 작동하여 당신 또는 공격대원에게 잘못된 알림이 되지 않기 위한 조치입니다. 지금 즉시 최신 버전으로 업데이트 하여 주시기 바랍니다."
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하시는 DBM 버전은 이 우두머리 전투에서 잘못된 알림과 바를 표시할 것입니다. 이 오류는 다음 정식 버전에서 수정될 것이며, 최신 Alpha 버전으로 업데이트 하면 즉시 수정할 수 있습니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
