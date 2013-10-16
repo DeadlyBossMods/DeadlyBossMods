@@ -108,7 +108,7 @@ mod:AddInfoFrameOption("ej8350")--Eh, "overview" works.
 local select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo = select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo
 local point1 = {0.488816, 0.208129}
 local point2 = {0.562330, 0.371684}
-local worldTimer = 0
+--local worldTimer = 0
 
 local function isPlayerInMantid()
 	local x, y = GetPlayerMapPosition("player")
@@ -136,7 +136,7 @@ local function hideRangeFrame()
 end
 
 function mod:OnCombatStart(delay)
-	worldTimer = 0
+--	worldTimer = 0
 	if self.Options.InfoFrame then--Will just call it "infoframe" that's good enough
 		 DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
 	end
@@ -303,12 +303,11 @@ end
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(5))
 	local time = tonumber(string.match(text or "", "%d+"))
-	if time > worldTimer then
-		local newTime = time - (time/100) - 1 -- bliz timer litte fast. wtf?
+	if time > worldTimer and time == 10 then
 		berserkTimer:Cancel()
 		countdownArmageddon:Cancel()
-		berserkTimer:Start(newTime)
-		countdownArmageddon:Start(newTime)
+		berserkTimer:Start(time)
+		countdownArmageddon:Start(time)
 	end
 	worldTimer = time
 end--]]
