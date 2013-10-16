@@ -17,8 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_DIED"
---	"UPDATE_WORLD_STATES"
+	"UNIT_DIED",
+	"UPDATE_WORLD_STATES"
 )
 
 mod:RegisterEvents(
@@ -103,9 +103,12 @@ local timerGustingCraneKickCD	= mod:NewCDTimer(18, 146180)
 local timerPathOfBlossomsCD		= mod:NewCDTimer(15, 146253)
 
 local countdownSetToBlow		= mod:NewCountdownFades(29, 145996)
---local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, true)
 
---local berserkTimer				= mod:NewBerserkTimer(480)
+--Berserk Timer stuff
+local berserkTimer				= mod:NewTimer(480, DBM_CORE_GENERIC_TIMER_BERSERK, 28131, nil, "timer_berserk")
+local countdownBerserk			= mod:NewCountdown(20, 26662, nil, nil, nil, nil, true)
+local berserkWarning1			= mod:NewAnnounce(DBM_CORE_GENERIC_WARNING_BERSERK, 1, nil, "warning_berserk", false)
+local berserkWarning2			= mod:NewAnnounce(DBM_CORE_GENERIC_WARNING_BERSERK, 4, nil, "warning_berserk", false)
 
 mod:AddRangeFrameOption(10, 145987)
 mod:AddInfoFrameOption("ej8350")--Eh, "overview" works.
@@ -113,7 +116,8 @@ mod:AddInfoFrameOption("ej8350")--Eh, "overview" works.
 local select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo = select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo
 local point1 = {0.488816, 0.208129}
 local point2 = {0.562330, 0.371684}
---local worldTimer = 0
+local worldTimer = 0
+local maxTimer = 0
 
 local function isPlayerInMantid()
 	local x, y = GetPlayerMapPosition("player")
@@ -141,7 +145,8 @@ local function hideRangeFrame()
 end
 
 function mod:OnCombatStart(delay)
---	worldTimer = 0
+	worldTimer = 0
+	maxTimer = 0
 	if self.Options.InfoFrame then--Will just call it "infoframe" that's good enough
 		 DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
 	end
@@ -310,18 +315,71 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
---[[
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(5))
 	local time = tonumber(string.match(text or "", "%d+"))
-	if time > worldTimer and time == 10 then
+	if time > worldTimer then
+		maxTimer = time
 		berserkTimer:Cancel()
-		countdownArmageddon:Cancel()
-		berserkTimer:Start(time)
-		countdownArmageddon:Start(time)
+		countdownBerserk:Cancel()
+		berserkTimer:Start(time+1)
+	end
+	if time % 10 == 0 then
+		berserkTimer:Update(maxTimer-time-1, maxTimer)
+		if time == 300 and self.Options["timer_berserk"] then
+			berserkWarning1:Show(5, DBM_CORE_MIN)
+		elseif time == 180 and self.Options["timer_berserk"] then
+			berserkWarning1:Show(3, DBM_CORE_MIN)
+		elseif time == 60 and self.Options["timer_berserk"] then
+			berserkWarning2:Show(1, DBM_CORE_MIN)
+		elseif time == 30 and self.Options["timer_berserk"] then
+			berserkWarning2:Show(30, DBM_CORE_SEC)
+		elseif time == 20 then
+			countdownBerserk:Start()
+		elseif time == 10 and self.Options["timer_berserk"] then
+			berserkWarning2:Show(10, DBM_CORE_SEC)
+		end
 	end
 	worldTimer = time
-end--]]
+end
+
+--[[
+function mod:Test(time)
+	if time > worldTimer then
+		maxTimer = time
+		berserkTimer:Cancel()
+		countdownBerserk:Cancel()
+		berserkTimer:Start(time+1)
+	end
+	if time % 10 == 0 then
+		berserkTimer:Update(maxTimer-time-1, maxTimer)
+		if time == 300 and self.Options["timer_berserk"] then
+			berserkWarning1:Show(5, DBM_CORE_MIN)
+		elseif time == 180 and self.Options["timer_berserk"] then
+			berserkWarning1:Show(3, DBM_CORE_MIN)
+		elseif time == 60 and self.Options["timer_berserk"] then
+			berserkWarning2:Show(1, DBM_CORE_MIN)
+		elseif time == 30 and self.Options["timer_berserk"] then
+			berserkWarning2:Show(30, DBM_CORE_SEC)
+		elseif time == 20 then
+			countdownBerserk:Start()
+		elseif time == 10 and self.Options["timer_berserk"] then
+			berserkWarning2:Show(10, DBM_CORE_SEC)
+		end
+	end
+	worldTimer = time
+end
+--/script DBM:GetModByName("870"):Test2()
+local test = 0
+function mod:Test2()
+	test = test + 1
+	local time = 272 - test
+	if time < 2 then test = 0 end
+	print(time)
+	self:Test(time)
+	self:ScheduleMethod(0.9, "Test2")
+end
+]]
 
 function mod:OnSync(msg)
 	if msg == "prepull" then
