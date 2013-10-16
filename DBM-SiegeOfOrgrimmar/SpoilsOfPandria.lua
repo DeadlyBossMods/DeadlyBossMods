@@ -17,8 +17,8 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"UNIT_DIED",
-	"UPDATE_WORLD_STATES"
+	"UNIT_DIED"
+--	"UPDATE_WORLD_STATES"
 )
 
 local warnSuperNova				= mod:NewCastAnnounce(146815, 4, nil, false, nil, nil, nil, nil, 2)--Heroic
@@ -98,9 +98,9 @@ local timerGustingCraneKickCD	= mod:NewCDTimer(18, 146180)
 local timerPathOfBlossomsCD		= mod:NewCDTimer(15, 146253)
 
 local countdownSetToBlow		= mod:NewCountdownFades(29, 145996)
-local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, true)
+--local countdownArmageddon		= mod:NewCountdown(270, 145864, nil, nil, nil, nil, true)
 
-local berserkTimer				= mod:NewBerserkTimer(480)
+--local berserkTimer				= mod:NewBerserkTimer(480)
 
 mod:AddRangeFrameOption(10, 145987)
 mod:AddInfoFrameOption("ej8350")--Eh, "overview" works.
@@ -299,6 +299,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(5))
 	local time = tonumber(string.match(text or "", "%d+"))
@@ -310,4 +311,4 @@ function mod:UPDATE_WORLD_STATES()
 		countdownArmageddon:Start(newTime)
 	end
 	worldTimer = time
-end
+end--]]
