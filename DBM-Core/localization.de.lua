@@ -87,6 +87,7 @@ DBM_CORE_UPDATEREMINDER_FOOTER			= "Drücke " .. (IsMacClient() and "Cmd-C" or "
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Drücke " .. (IsMacClient() and "Cmd-C" or "Strg+C")  ..  " um den Link in die Zwischenablage zu kopieren."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "Zeige Popup, wenn eine neue Version verfügbar ist"
 DBM_CORE_UPDATEREMINDER_DISABLE			= "WARNUNG: Da dein Deadly Boss Mods extrem veraltet ist (%d Revisionen), hat es sich bis zu einer Aktualisierung deaktiviert. Derart alter und inkompatibler Code kann zu einem schlechten Spielerlebnis bei dir oder deinen Schlachtzugsmitgliedern führen."
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "Deine Version von DBM wird für diesen Bosskampf falsche Timer und Warnungen anzeigen. Dies wird in einem künftigen Release von DBM korrigiert oder kann sofort durch ein Update auf die aktuelle Alphaversion behoben werden."
 
 DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 
