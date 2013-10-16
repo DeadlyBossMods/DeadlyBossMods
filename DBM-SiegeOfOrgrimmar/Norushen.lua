@@ -82,7 +82,7 @@ local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, nil, nil, n
 local countdownHurlCorruption			= mod:NewCountdown(20, 144649, nil, nil, nil, nil, true)
 
 mod:AddInfoFrameOption("ej8252", false)--May still be buggy but it's needed for heroic.
---mod:AddSetIconOption("SetIconOnAdds", "ej8232", false, true)
+mod:AddSetIconOption("SetIconOnAdds", "ej8232", false, true)
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0
@@ -92,12 +92,15 @@ local addsAlive = 0
 --May be buggy with two adds spawning at exact same time
 --Two different icon functions end up both marking same mob with 8 and 7 and other mob getting no mark.
 --Not sure if GUID table will be fast enough to prevent, we shall see!
-local function addsDelay()
+local function addsDelay(delayTriggered)
 	addsAlive = addsAlive + 1
 	specWarnManifestation:Show()
---[[	if mod.Options.SetIconOnAdds and addsAlive < 9 then--If you have more than 8 addsAlive, wtf are you doing?
+	if mod.Options.SetIconOnAdds and addsAlive < 9 then--If you have more than 8 addsAlive, wtf are you doing?
 		mod:ScanForMobs(72264, 0, 9-addsAlive, 1, 0.2, 5)
-	end+--]]
+	end
+	if delayTriggered and DBM.Options.DebugMode then
+		print("DBM DEBUG: Verify add spawn timing")
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -236,7 +239,9 @@ function mod:OnSync(msg, guid)
 		timerCombatStarts:Start()
 	elseif msg == "ManifestationDied" and not playerInside and self:AntiSpam(1) then
 		specWarnManifestationSoon:Show()
---		self:Schedule(5, addsDelay)
+		if not self:IsDifficulty("lfr25") then
+			self:Schedule(5, addsDelay, true)--More verification needed
+		end
 	elseif msg == "outsideAddDied" then--We don't actually use GUID, just use it to prevent 8 second antispam from ignoring adds
 		addsAlive = addsAlive - 1
 	end
