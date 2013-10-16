@@ -111,8 +111,9 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "제1 모듈, 시스템 초기화 준비 완료.",
-	Victory	= "제2 모듈, 시스템 초기화 준비 완료."
+	wasteOfTime	= "Hey, we recording?  Yeah?  Okay.  Goblin-Titan control module starting up, please stand back.",
+	Module1 	= "제1 모듈, 시스템 초기화 준비 완료.",
+	Victory		= "제2 모듈, 시스템 초기화 준비 완료."
 })
 
 ---------------------------
