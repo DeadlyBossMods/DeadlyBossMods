@@ -21,6 +21,10 @@ mod:RegisterEventsInCombat(
 --	"UPDATE_WORLD_STATES"
 )
 
+mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_YELL"
+)
+
 local warnSuperNova				= mod:NewCastAnnounce(146815, 4, nil, false, nil, nil, nil, nil, 2)--Heroic
 --Massive Crate of Goods
 ----Mogu
@@ -75,6 +79,7 @@ local specWarnPathOfBlossoms	= mod:NewSpecialWarningMove(146257)
 --Crate of Pandaren Relics
 local specWarnGustingCraneKick	= mod:NewSpecialWarningSpell(146180, nil, nil, nil, 2)
 
+local timerCombatStarts			= mod:NewCombatTimer(19)
 --Massive Crate of Goods
 local timerReturnToStoneCD		= mod:NewNextTimer(12, 145489)
 local timerSetToBlowCD			= mod:NewNextTimer(9.6, 145996)
@@ -299,6 +304,12 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.wasteOfTime then
+		self:SendSync("prepull")
+	end
+end
+
 --[[
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(5))
@@ -311,3 +322,9 @@ function mod:UPDATE_WORLD_STATES()
 	end
 	worldTimer = time
 end--]]
+
+function mod:OnSync(msg)
+	if msg == "prepull" then
+		timerCombatStarts:Start()
+	end
+end
