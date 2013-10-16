@@ -111,8 +111,9 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "Modul 1 bereit für den Systemneustart.",
-	Victory	= "Modul 2 bereit für den Systemneustart."
+	wasteOfTime		= "Hallo? Mikrofontest... 1, 2, 3 – ok. Goblinisch-titanisches Steuerungsmodul wird gestartet, bitte zurückbleiben.",
+	Module1 		= "Modul 1 bereit für den Systemneustart.",
+	Victory			= "Modul 2 bereit für den Systemneustart."
 })
 
 ---------------------------
