@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(72276)
 mod:SetZone()
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--All CAN be used, but not likely to use more than 3-5 of em
 
 mod:RegisterCombat("combat")
 
@@ -82,22 +81,16 @@ local countdownLingeringCorruption		= mod:NewCountdown(15.5, 144514, nil, nil, n
 local countdownHurlCorruption			= mod:NewCountdown(20, 144649, nil, nil, nil, nil, true)
 
 mod:AddInfoFrameOption("ej8252", false)--May still be buggy but it's needed for heroic.
-mod:AddSetIconOption("SetIconOnAdds", "ej8232", false, true)
 
 local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0
 local playerInside = false
-local addsAlive = 0
 
 --May be buggy with two adds spawning at exact same time
 --Two different icon functions end up both marking same mob with 8 and 7 and other mob getting no mark.
 --Not sure if GUID table will be fast enough to prevent, we shall see!
 local function addsDelay(delayTriggered)
-	addsAlive = addsAlive + 1
 	specWarnManifestation:Show()
-	if mod.Options.SetIconOnAdds and addsAlive < 9 then--If you have more than 8 addsAlive, wtf are you doing?
-		mod:ScanForMobs(72264, 0, 9-addsAlive, 1, 0.2, 5)
-	end
 	if delayTriggered and DBM.Options.DebugMode then
 		print("DBM DEBUG: Verify add spawn timing")
 	end
@@ -105,7 +98,6 @@ end
 
 function mod:OnCombatStart(delay)
 	playerInside = false
-	addsAlive = 0
 	timerBlindHatredCD:Start(25-delay)
 	if self:IsDifficulty("lfr25") then--Might also be flex as well
 		berserkTimer:Start(600-delay)--No log to confirm 8 min, only one report, so changing back to 10 min for now.
@@ -208,13 +200,11 @@ function mod:UNIT_DIED(args)
 		timerHurlCorruptionCD:Cancel()
 		countdownHurlCorruption:Cancel()
 		timerPiercingCorruptionCD:Cancel()
-	elseif cid == 72264 then--Manifestation of Corruption (Outside)
-		self:SendSync("outsideAddDied", args.destGUID)--To ensure icon markers who go into test keep a valid adds count.
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 146179 then--Frayed
+	if spellId == 145769 then--Unleash Corruption
 		addsDelay()
 	end
 end
@@ -242,8 +232,6 @@ function mod:OnSync(msg, guid)
 		if not self:IsDifficulty("lfr25") then
 			self:Schedule(5, addsDelay, true)--More verification needed
 		end
-	elseif msg == "outsideAddDied" then--We don't actually use GUID, just use it to prevent 8 second antispam from ignoring adds
-		addsAlive = addsAlive - 1
 	end
 end
 
