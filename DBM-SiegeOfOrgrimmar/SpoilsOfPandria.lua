@@ -318,6 +318,7 @@ end
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(5))
 	local time = tonumber(string.match(text or "", "%d+"))
+	if not time then return end
 	if time > worldTimer then
 		maxTimer = time
 		berserkTimer:Cancel()
