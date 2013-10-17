@@ -111,8 +111,9 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "模組一號已準備好系統重置。",
-	Victory	= "模組二號已準備好系統重置。"
+	wasteOfTime		= "我們在錄音嗎?有嗎?好。哥布林-泰坦控制模組開始運作，請後退。",
+	Module1 		= "模組一號已準備好系統重置。",
+	Victory			= "模組二號已準備好系統重置。"
 })
 
 ---------------------------
