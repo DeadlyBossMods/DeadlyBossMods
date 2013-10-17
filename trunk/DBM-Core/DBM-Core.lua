@@ -3194,8 +3194,8 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if not checkEntry(inCombat, mod) then
 		if not mod.Options.Enabled then return end
 		-- HACK: makes sure that we don't detect a false pull if the event fires again when the boss dies...
-		if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 120) then return end
-		if mod.lastWipeTime and GetTime() - mod.lastWipeTime < (mod.reCombatTime2 or 20) then return end
+		if mod.lastKillTime and GetTime() - mod.lastKillTime < (mod.reCombatTime or 120) and event ~= "LOADING_SCREEN_DISABLED" then return end
+		if mod.lastWipeTime and GetTime() - mod.lastWipeTime < (mod.reCombatTime2 or 20) and event ~= "LOADING_SCREEN_DISABLED" then return end
 		if not mod.combatInfo then return end
 		if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 			return
