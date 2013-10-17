@@ -73,7 +73,7 @@ local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990, mod:IsTank() or mod:IsRangedDps(), nil, nil, nil, nil, 2)
 local countdownFallingAsh			= mod:NewCountdown(15, 143973, nil, nil, nil, nil, true)
 
-local berserkTimer					= mod:NewBerserkTimer(555)
+--local berserkTimer					= mod:NewBerserkTimer(540)
 
 mod:AddRangeFrameOption(4, 143990)--This is more or less for foul geyser and foul stream splash damage
 mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
@@ -81,26 +81,6 @@ mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local playerName = UnitName("player")
 local ashCount = 0
-
--- This is test code for CombinedShow function. I see that this wipes correctly. Try this and report to me.
---[[mod:Schedule(1, function()
-warnToxicMists:CombinedShow(0.5, "a")
-warnToxicMists:CombinedShow(0.5, "b")
-warnToxicMists:CombinedShow(0.5, "c")
-warnToxicMists:CombinedShow(0.5, "d")
-warnToxicMists:CombinedShow(0.5, "e")
-warnToxicMists:CombinedShow(0.5, "f")
-warnToxicMists:CombinedShow(0.5, "g")
-end)]]
---[[mod:Schedule(1.8, function()
-warnToxicMists:CombinedShow(0.5, "a1")
-warnToxicMists:CombinedShow(0.5, "b1")
-warnToxicMists:CombinedShow(0.5, "c1")
-warnToxicMists:CombinedShow(0.5, "d1")
-warnToxicMists:CombinedShow(0.5, "e1")
-warnToxicMists:CombinedShow(0.5, "f1")
-warnToxicMists:CombinedShow(0.5, "g1")
-end)]]
 
 function mod:FoulStreamTarget(targetname, uId)
 	if not targetname then return end
@@ -141,11 +121,12 @@ end
 
 function mod:OnCombatStart(delay)
 	ashCount = 0
+	--[[
 	if self:IsDifficulty("lfr25") then
-		berserkTimer:Start(600-delay)
+		berserkTimer:Start(555-delay)
 	else
 		berserkTimer:Start(-delay)
-	end
+	end--]]
 end
 
 function mod:OnCombatEnd()
