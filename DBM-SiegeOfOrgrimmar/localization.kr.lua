@@ -111,7 +111,7 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	wasteOfTime	= "Hey, we recording?  Yeah?  Okay.  Goblin-Titan control module starting up, please stand back.",
+	wasteOfTime	= "녹음되고 있는 건가? 응? 좋아. 고블린 티탄 제어 모듈 시동 중. 물러서라고.",
 	Module1 	= "제1 모듈, 시스템 초기화 준비 완료.",
 	Victory		= "제2 모듈, 시스템 초기화 준비 완료."
 })
