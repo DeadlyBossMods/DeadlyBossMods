@@ -73,7 +73,7 @@ local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990, mod:IsTank() or mod:IsRangedDps(), nil, nil, nil, nil, 2)
 local countdownFallingAsh			= mod:NewCountdown(15, 143973, nil, nil, nil, nil, true)
 
---local berserkTimer					= mod:NewBerserkTimer(540)
+local berserkCD						= mod:NewCDTimer(540, 26662)
 
 mod:AddRangeFrameOption(4, 143990)--This is more or less for foul geyser and foul stream splash damage
 mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
@@ -121,12 +121,7 @@ end
 
 function mod:OnCombatStart(delay)
 	ashCount = 0
-	--[[
-	if self:IsDifficulty("lfr25") then
-		berserkTimer:Start(555-delay)
-	else
-		berserkTimer:Start(-delay)
-	end--]]
+	berserkCD:Start()
 end
 
 function mod:OnCombatEnd()
