@@ -91,7 +91,7 @@ local timerDefiledGroundCD			= mod:NewCDTimer(10.5, 143961, nil, mod:IsTank())
 local timerInfernoStrikeCD			= mod:NewNextTimer(9.5, 143962)
 --He Softfoot
 local timerGougeCD					= mod:NewCDTimer(30, 143330, nil, mod:IsTank())--30-41
-local timerGarroteCD				= mod:NewCDTimer(30, 143198, nil, mod:IsHealer())--30-46 (heroic 20-26)
+local timerGarroteCD				= mod:NewCDTimer(29, 143198, nil, mod:IsHealer())--30-46 (heroic 20-26)
 --Sun Tenderheart
 local timerBaneCD					= mod:NewCDTimer(17, 143446, nil, mod:IsHealer())--17-25 (heroic 13-20)
 local timerCalamityCD				= mod:NewCDTimer(40, 143491)--40-50 (when two can be cast in a row) Also affected by boss specials
@@ -231,11 +231,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGougeStunOther:Show(args.destName)
 		end
 	elseif args.spellId == 143198 then
-		warnGarrote:Show(args.destName)
+		warnGarrote:CombinedShow(1, args.destName)
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerGarroteCD:Start(20)--TODO, see if it's cast more often on heroic only, or if normal was also changed to 20
+			timerGarroteCD:DelayedStart(1, 20)--TODO, see if it's cast more often on heroic only, or if normal was also changed to 20
 		else
-			timerGarroteCD:Start()
+			timerGarroteCD:DelayedStart(1)
 		end
 	elseif args.spellId == 143840 then
 		warnMarked:Show(args.destName)
