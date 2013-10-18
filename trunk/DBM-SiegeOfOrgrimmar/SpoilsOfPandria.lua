@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
 	"UNIT_DIED",
+	"RAID_BOSS_WHISPER",
 	"UPDATE_WORLD_STATES"
 )
 
@@ -244,14 +245,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 145987 and isPlayerInMantid() then
 		warnSetToBlow:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
-			specWarnSetToBlowYou:Show()
-			countdownSetToBlow:Start()
-			timerSetToBlow:Start()
-			specWarnSetToBlow:Schedule(26)
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)--Range assumed, spell tooltips not informative enough
-				self:Schedule(32, hideRangeFrame)
-			end
+			local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
+			local buffTime = expires-GetTime()
+			countdownSetToBlow:Start(buffTime)
+			timerSetToBlow:Start(buffTime)
+			specWarnSetToBlow:Schedule(buffTime)
 		end
 	elseif args.spellId == 145692 and isPlayerInMantid() then
 		warnEnrage:Show(args.destName)
@@ -307,6 +305,16 @@ function mod:UNIT_DIED(args)
 		timerGustingCraneKickCD:Cancel(args.destGUID)
 	elseif cid == 72828 then--Nameless Windwalker Spirit
 		timerPathOfBlossomsCD:Cancel(args.destGUID)
+	end
+end
+
+function mod:RAID_BOSS_WHISPER(msg)
+	if msg:find("spell:146364") then
+		specWarnSetToBlowYou:Show()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)--Range assumed, spell tooltips not informative enough
+			self:Schedule(32, hideRangeFrame)
+		end
 	end
 end
 
