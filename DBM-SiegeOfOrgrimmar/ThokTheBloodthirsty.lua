@@ -30,6 +30,7 @@ local function customMelee()
 	or (class == "DRUID" and (GetSpecialization() == 2 or GetSpecialization() == 3))
 end
 
+local warnDevotionAura				= mod:NewTargetAnnounce(31821, 1, nil, not customMelee())
 --Stage 1: A Cry in the Darkness
 local warnFearsomeRoar				= mod:NewStackAnnounce(143766, 2, nil, mod:IsTank())--143426
 local warnAcceleration				= mod:NewStackAnnounce(143411, 3)--Staghelm 2.0
@@ -38,7 +39,7 @@ local warnTailLash					= mod:NewSpellAnnounce(143428, 3, nil, false)--Hey, someo
 local warnBloodFrenzy				= mod:NewStackAnnounce(143442, 3)
 local warnFixate					= mod:NewTargetAnnounce(143445, 4)
 local warnEnrage					= mod:NewTargetAnnounce(145974, 3, nil, mod:IsTank() or mod:CanRemoveEnrage())
-local warnKey						= mod:NewTargetAnnounce(146589, 3)
+local warnKey						= mod:NewTargetAnnounce(146589, 2)
 --Infusion of Acid
 local warnAcidPustules				= mod:NewSpellAnnounce(143971, 2)
 local warnAcidBreath				= mod:NewStackAnnounce(143780, 2, nil, mod:IsTank())
@@ -170,6 +171,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnTailLash:Show()
 		timerTailLashCD:Start()
 	elseif args.spellId == 31821 and not self:IsDifficulty("lfr25") then
+		warnDevotionAura:Show(args.sourceName)
 		specWarnDevotionAura:Cancel()
 		specWarnDevotionAura:Schedule(6)--Use scheduling but cancel it if a recast happens, that way we don't falsely warn it's gone since REMOVED fires while buff still up from another person
 		timerDevotionAura:Start()
