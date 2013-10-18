@@ -55,7 +55,7 @@ local warnFirePustules				= mod:NewSpellAnnounce(143970, 2)
 local warnScorchingBreath			= mod:NewStackAnnounce(143767, 2, nil, mod:IsTank())
 local warnBurningBlood				= mod:NewTargetAnnounce(143783, 3, nil, false, nil, nil, nil, nil, 2)
 
-local specWarnDevotionAura			= mod:NewSpecialWarningFaded(31821, not immuneCaster())
+local specWarnDevotionAura			= mod:NewSpecialWarningFades(31821, not immuneCaster())
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
 local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTarget(143766, mod:IsTank())
