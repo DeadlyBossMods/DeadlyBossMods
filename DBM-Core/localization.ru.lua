@@ -87,6 +87,7 @@ DBM_CORE_UPDATEREMINDER_FOOTER			= "Нажмите " .. (IsMacClient() and "Cmd-
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Нажмите " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  ", чтобы скопировать ссылку в буфер обмена."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "Всплывающее сообщение при наличии новой версии"
 DBM_CORE_UPDATEREMINDER_DISABLE			= "ПРЕДУПРЕЖДЕНИЕ: В связи с тем, что Ваш Deadly Boss Mods сильно устарел (%d ревизий), он был отключен до обновления. Это сделано для того, чтобы старый и несовместимый код не вызывал плохой игровой опыт для Вас и других членов рейда."
+DBM_CORE_UPDATEREMINDER_HOTFIX			= "Ваша версия DBM будет иметь некорректные таймеры или предупреждения во время этого энкаунтера. Это исправлено в следующий версии или может быть немедленно исправлено путем обновления до последней альфа-версии."
 
 DBM_CORE_MOVABLE_BAR				= "Перетащите!"
 
@@ -248,7 +249,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Отсчет времени для %s
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Устанавливать метки на цели заклинания $spell:%s"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Устанавливать метки на $spell:%s (рекомендуется включить только одному)"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Устанавливать метки на $spell:%s"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Звуковой сигнал \"бегите\" для $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Звуковой отсчет до восстановления $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2	= "Звуковой отсчет до спадения $spell:%s"
