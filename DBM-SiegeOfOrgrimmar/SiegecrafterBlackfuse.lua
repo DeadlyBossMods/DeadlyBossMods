@@ -206,11 +206,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 144236 and args:IsPlayer() then
 		timerPatternRecognition:Start()
 	elseif args.spellId == 145269 then
-		if self:AntiSpam(10, 3) then
+		if self:AntiSpam(20, 3) then
 			warnCrawlerMine:Show()
 			specWarnCrawlerMine:Show()
 			if self.Options.SetIconOnMines then
-				self:ScanForMobs(71788, 0, 8, nil, 0.2, 12)--Not sure max mines. Long scan period because they spawn slowly over time
+				self:ScanForMobs(71788, 0, 8, nil, 0.2, 20)--Not sure max mines. Long scan period because they spawn slowly over time
 			end
 		end
 		timerBreakinPeriod:Start(args.destName, args.destGUID)
