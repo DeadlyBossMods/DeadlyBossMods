@@ -14,7 +14,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+--	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_DIED"
 )
@@ -24,13 +24,13 @@ local warnShockwave			= mod:NewSpellAnnounce(119922, 4)--Kuai's Attack
 local warnWhirlingDervish	= mod:NewSpellAnnounce(119981, 3)--Ming's Attack
 local warnTraumaticBlow		= mod:NewTargetAnnounce(123655, 3)--Haiyan's Attack
 local warnConflag			= mod:NewTargetAnnounce(120201, 3)--Haiyan's Attack
-local warnMeteor			= mod:NewTargetAnnounce(120195, 4)--Haiyan's Attack
+--local warnMeteor			= mod:NewTargetAnnounce(120195, 4)--Haiyan's Attack
 
 local specWarnRavage		= mod:NewSpecialWarningTarget(119946, mod:IsHealer())
 local specWarnShockwave		= mod:NewSpecialWarningMove(119922, mod:IsTank())--Not sure if he always faced it toward tank, or did it blackhorn style, if it's blackhorn style this needs to be changed to a targetscan if possible
 local specWarnLightningBolt	= mod:NewSpecialWarningInterrupt(123654, false)
 local specWarnConflag		= mod:NewSpecialWarningTarget(120201, mod:IsHealer())
-local specWarnMeteor		= mod:NewSpecialWarningTarget(120195, nil, nil, nil, true)
+--local specWarnMeteor		= mod:NewSpecialWarningTarget(120195, nil, nil, nil, true)
 
 local timerRavage			= mod:NewTargetTimer(11, 119946)
 local timerRavageCD			= mod:NewCDTimer(20, 119946)
@@ -90,6 +90,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg == L.Meteor or msg:find(L.Meteor) then
 		local target = DBM:GetUnitFullName(target)
@@ -97,7 +98,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		specWarnMeteor:Show(target)
 		timerMeteorCD:Start()
 	end
-end
+end--]]
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Kuai or msg:find(L.Kuai) then
