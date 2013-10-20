@@ -101,7 +101,7 @@ function mod:OnCombatStart(delay)
 	addsCount = 0
 	firstTower = 0
 	flamesCount = 0
-	timerAddsCD:Start(6.5-delay)
+--	timerAddsCD:Start(6.5-delay)--First wave actually seems to have a couple second variation, since timer is so short anyways, just disabling it
 	if not self:IsDifficulty("heroic10", "heroic25") then
 		timerTowerCD:Start(116.5-delay)
 	else
