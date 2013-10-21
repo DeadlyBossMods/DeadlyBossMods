@@ -210,7 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnCrawlerMine:Show()
 			specWarnCrawlerMine:Show()
 			if self.Options.SetIconOnMines then
-				self:ScanForMobs(71788, 0, 8, nil, 0.2, 20)--Not sure max mines. Long scan period because they spawn slowly over time
+				self:ScanForMobs(71788, 0, 8, nil, 0.1, 20)
 			end
 		end
 		timerBreakinPeriod:Start(args.destName, args.destGUID)
