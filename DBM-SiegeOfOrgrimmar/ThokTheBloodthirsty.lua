@@ -22,6 +22,7 @@ mod:RegisterEventsInCombat(
 --People who aren't affected by the bosses screech (so they don't need to track devotion aura up time.
 --Ret Paladins excluded because they do need to track devotion aura to use theirs properly
 local function immuneCaster(includeMeleePal)
+	local _, class = UnitClass("player")
 	return class == "ROGUE"
 	or class == "WARRIOR"
 	or class == "DEATHKNIGHT"
@@ -32,7 +33,7 @@ local function immuneCaster(includeMeleePal)
 	or (class == "PALADIN" and includeMeleePal and (GetSpecialization() ~= 1))
 end
 
-local warnDevotionAura				= mod:NewTargetAnnounce(31821, 1, nil, not immuneCaster())
+local warnDevotionAura				= mod:NewTargetAnnounce(31821, 1, nil, not immuneCaster(), nil, nil, nil, nil, 2)
 --Stage 1: A Cry in the Darkness
 local warnFearsomeRoar				= mod:NewStackAnnounce(143766, 2, nil, mod:IsTank())--143426
 local warnAcceleration				= mod:NewStackAnnounce(143411, 3)--Staghelm 2.0
@@ -55,7 +56,7 @@ local warnFirePustules				= mod:NewSpellAnnounce(143970, 2)
 local warnScorchingBreath			= mod:NewStackAnnounce(143767, 2, nil, mod:IsTank())
 local warnBurningBlood				= mod:NewTargetAnnounce(143783, 3, nil, false, nil, nil, nil, nil, 2)
 
-local specWarnDevotionAura			= mod:NewSpecialWarningFades(31821, not immuneCaster())
+local specWarnDevotionAura			= mod:NewSpecialWarningFades(31821, not immuneCaster(), nil, nil, nil, 2)
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
 local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTarget(143766, mod:IsTank())
