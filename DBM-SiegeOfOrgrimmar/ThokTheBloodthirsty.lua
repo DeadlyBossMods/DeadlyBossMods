@@ -82,7 +82,7 @@ local specWarnBurningBloodMove		= mod:NewSpecialWarningMove(143784)
 local yellBurningBlood				= mod:NewYell(143783, nil, false)
 
 
-local timerDevotionAura				= mod:NewBuffActiveTimer(6, 31821, nil, not immuneCaster())
+local timerDevotionAura				= mod:NewBuffActiveTimer(6, 31821, nil, not immuneCaster(), nil, nil, nil, nil, nil, nil, 2)
 --Stage 1: A Cry in the Darkness
 local timerFearsomeRoar				= mod:NewTargetTimer(30, 143766, nil, mod:IsTank() or mod:IsHealer())
 local timerFearsomeRoarCD			= mod:NewCDTimer(11, 143766, nil, mod:IsTank())
