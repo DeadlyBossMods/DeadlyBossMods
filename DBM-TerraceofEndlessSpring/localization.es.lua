@@ -37,8 +37,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	warnHideOver			= "Mostrar aviso cuando $spell:123244 ha terminado",
-	timerSpecialCD			= "Mostrar tiempo para la siguiente habilidad especial.",
-	SetIconOnProtector		= "Poner iconos en $journal:6224<br/>(Poco fiable si varias personas están de ayudante)"
+	timerSpecialCD			= "Mostrar tiempo para la siguiente habilidad especial."
 })
 
 L:SetMiscLocalization{

@@ -44,7 +44,8 @@ DBM_CORE_MIN_FMT					= "%d min"
 DBM_CORE_SEC						= "seg"
 DBM_CORE_SEC_FMT					= "%d seg"
 
-DBM_CORE_GENERIC_WARNING_DUPLICATE	= "Uno de %s"
+DBM_CORE_GENERIC_WARNING_OTHERS		= "y otro"
+DBM_CORE_GENERIC_WARNING_OTHERS2	= "y otros %d"
 DBM_CORE_GENERIC_WARNING_BERSERK	= "Enrage en %s %s"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "Enrage"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Mostrar tiempo para Enrage"
@@ -85,7 +86,8 @@ DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "La versión alpha de Deadly Boss Mods es
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Presiona Contro+C para copiar el enlace de la descarga."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= "Presiona " .. (IsMacClient() and "Cmd-C" or "Ctrl-C")  ..  " para copiar el enlace de la descarga."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Mostrar popup si hay nueva version de Deadly Boss Mods"
---DBM_CORE_UPDATEREMINDER_DISABLE			= "PELIGRO: Como tu versión de Deadly Boss Mods está drásticamente atrasada (%d revisiones), ha sido desabilitado hasta que actualices. Esto asegura que el código viejo e incompatible no provoque una pobre experiencia de juego para ti y el resto de tus compañeros de banda."
+DBM_CORE_UPDATEREMINDER_DISABLE		= "PELIGRO: Como tu versión de Deadly Boss Mods está drásticamente atrasada (%d revisiones), ha sido desabilitado hasta que actualices. Esto asegura que el código viejo e incompatible no provoque una pobre experiencia de juego para ti y el resto de tus compañeros de banda."
+DBM_CORE_UPDATEREMINDER_HOTFIX		= "Tu versión de DBM contiene valores incorrectos de los temporizadores y avisos en este encuentro. Esto se arreglará en versiones futuras o directamente descargando una versión alfa actualizada."
 
 DBM_CORE_MOVABLE_BAR				= "¡Muéveme!"
 
@@ -121,12 +123,13 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm version: comprueba la versión de DBM de toda la banda (alias: ver)",
 --	"/dbm version2: comprueba la versión de DBM de toda la banda y susurra a los miembros que estan desactualizados (alias: ver2).",
 	"/dbm unlock: muestra una barra de estado desplazable (alias: move)",
-	"/dbm timer <x> <text>: Muestra un contador de <x> segundos con el nombre <text>",
-	"/dbm broadcast timer <x> <text>: Muestra un contador de <x> segundos con el nombre <text> a la banda (requiere lider/ayudante)",
+	"/dbm timer <x> <texto>: Muestra un contador de <x> segundos con el nombre <texto>",
+	"/dbm broadcast timer <x> <texto>: Muestra un contador de <x> segundos con el nombre <texto> a la banda (requiere lider/ayudante)",
 	"/dbm break <min>: Empieza un descanso de <min> minutos. Muestra a todos los miembros de banda con DBM un contador de descanso (requiere lider/ayudante).",
 	"/dbm pull <seg>: Empieza una cuenta atrás para pullear en <seg> segundos. Muestra a todos los miembros de banda con DBM un contador para pullear (requiere lider/ayudante).",
 	"/dbm arrow: Muestra la flecha DBM, escribe /dbm arrow help para más detalles.",
 	"/dbm lockout: pregunta a los miembros de la raid por sus bloqueos de estancia (alias: lockouts, ids) (requiere líder/ayudante).",
+	"/dbm lag: Realiza una comprobación de latencia a todos los miembros de la banda.",
 	"/dbm help: muestra esta ayuda"
 }
 
@@ -147,7 +150,7 @@ DBM_CORE_TIMER_BREAK				= "¡Descanso!"
 DBM_CORE_ANNOUNCE_BREAK_OVER		= "El descanso terminó"
 
 DBM_CORE_TIMER_PULL					= "Pull en"
-DBM_CORE_ANNOUNCE_PULL				= "Pull en %d seg"
+DBM_CORE_ANNOUNCE_PULL				= "Pull en %d seg (Iniciado por %s)"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull ahora!"
 
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Matar rapido"
@@ -246,6 +249,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS.achievement	= "Mostrar temporizador para %s"
 
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "Poner iconos en objetivos de $spell:%s"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT2		= "Poner iconos en hechizo $spell:%s"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "Reproducir sonido \"huye pequeña\" en $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT		= "Reproducir sonido de cuenta atrás para $spell:%s"
 DBM_CORE_AUTO_COUNTDOWN_OPTION_TEXT2		= "Reproducir sonido de cuenta atrás para cuando $spell:%s se disipa"
@@ -254,6 +258,8 @@ DBM_CORE_AUTO_YELL_OPTION_TEXT			= "Gritar cuando tengas $spell:%s"
 DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "¡%s en " .. UnitName("player") .. "!"
 DBM_CORE_AUTO_RANGE_OPTION_TEXT			= "Mostrar radar de rango (%s) para $spell:%s"--string used for range so we can use things like "5/2" as a value for that field
 DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT	= "Mostrar radar de rango (%s)"--For when a range frame is just used for more than one thing
+DBM_CORE_AUTO_INFO_FRAME_OPTION_TEXT	= "Mostrar cuadro de información para $spell:%s"
+DBM_CORE_AUTO_READY_CHECK_OPTION_TEXT	= "Reproducir sonido de listos al comienzo del combate (incluso si no se tiene como objetivo al jefe)"
 
 
 -- New special warnings
@@ -291,3 +297,8 @@ DBM_INSTANCE_INFO_STATS_AWAY		= "Ausentes: %s"
 DBM_INSTANCE_INFO_STATS_NO_RESPONSE	= "No tienen una versión reciente de DBM instalada: %s"
 DBM_INSTANCE_INFO_RESULTS			= "Resultado del escaneo del ID de estancia. Quizas algunas estancias aparezcan más de una vez si hay jugadores que juegan a WoW con distintos idiomas en la banda."
 DBM_INSTANCE_INFO_SHOW_RESULTS		= "Jugadores que aún no han contestado: %s\n|HDBM:showRaidIdResults|h|cff3588ff[Show results now]|r|h"
+
+DBM_CORE_LAG_CHECKING				= "Comprobando latencia de la banda..."
+DBM_CORE_LAG_HEADER					= "Deadly Boss Mods - Resultados de latencia"
+DBM_CORE_LAG_ENTRY					= "%s: latencia del mundo [%d ms] / latencia del hogar [%d ms]"
+DBM_CORE_LAG_FOOTER					= "Sin respuesta: %s"

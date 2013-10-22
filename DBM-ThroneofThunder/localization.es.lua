@@ -74,7 +74,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnCrystalShell	= "Mostrar aviso especial cuando te falta<br/> $spell:137633 y estás por encima del 90% de salud",
 	InfoFrame				= "Mostrar cuadro de información para los jugadores sin $spell:137633",
-	SetIconOnTurtles		= "Poner iconos en $journal:7129",
 	ClearIconOnTurtles		= "Quitar iconos en $journal:7129 cuando les afecte $spell:133971",
 	AnnounceCooldowns		= "Mostrar cuenta de $spell:134920 para el uso de cooldowns de banda"
 })

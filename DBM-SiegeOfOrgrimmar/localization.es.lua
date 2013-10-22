@@ -20,10 +20,6 @@ L= DBM:GetModLocalization(849)
 ---------------------------
 L= DBM:GetModLocalization(866)
 
-L:SetOptionLocalization({
-	InfoFrame			= "Mostrar marco de información para $journal:8252"
-})
-
 L:SetMiscLocalization({
 	wasteOfTime			= "Muy bien, crearé un campo para mantener aislada vuestra corrupción."
 })
@@ -34,7 +30,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(867)
 
 L:SetOptionLocalization({
-	InfoFrame			= "Mostrar marco de información para $journal:8255"
+	SetIconOnFragment	= "Mostrar icono en fragmento corrupto"
 })
 
 --------------
@@ -42,15 +38,23 @@ L:SetOptionLocalization({
 --------------
 L= DBM:GetModLocalization(868)
 
+L:SetWarningLocalization({
+	warnTowerGrunt		= "Adds defendiendo la torre"
+})
+
 L:SetTimerLocalization({
-	timerTowerCD	= "Siguiente torre"
+	timerTowerCD		= "Siguiente torre",
+	timerTowerGruntCD	= "Siguientes adds defendiendo la torre"
 })
 
 L:SetOptionLocalization({
-	timerTowerCD	= "Mostrar temporizador para el siguiente asalto a la torre"
+	warnTowerGrunt		= "Anunciar cuando aparecen nuevos adds defendiendo la torre",
+	timerTowerCD		= "Mostrar temporizador para el siguiente asalto a la torre",
+	timerTowerGruntCD	= "Mostrar temporizador para los siguientes adds defendiendo la torre"
 })
 
 L:SetMiscLocalization({
+	Pull		= "Clan Faucedraco, ¡recuperad los muelles y empujadlos al mar! ¡Por Grito Infernal! ¡Por la Horda auténtica!",
 	newForces1	= "¡Ya vienen!",--Jaina's line, alliance
 	newForces1H	= "Bring her down quick so i can wrap my fingers around her neck.",--Sylva's line, horde, TODO needs translation
 	newForces2	= "¡Faucedraco, avanzad!",
@@ -92,7 +96,8 @@ L:SetMiscLocalization({
 	newForces3					= "Rally the forces!", --TODO need translation
 	newForces4					= "Kor'kron, at my side!", --TODO need translation
 	newForces5					= "Next squad, to the front!", --TODO need translation
-	allForces					= "All Kor'kron... under my command... kill them... NOW!" --TODO need translation
+	allForces					= "All Kor'kron... under my command... kill them... NOW!", --TODO need translation
+	nextAdds					= "Siguientes Adds: "
 })
 
 -----------------
@@ -106,8 +111,9 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	Module1 = "Module 1's all prepared for system reset.", --TODO need translation
-	Victory	= "Module 2's all prepared for system reset" --TODO need translation
+	wasteOfTime		= "Hey, we recording?  Yeah?  Okay.  Goblin-Titan control module starting up, please stand back.", --TODO need translation
+	Module1			= "Module 1's all prepared for system reset.", --TODO need translation
+	Victory			= "Module 2's all prepared for system reset" --TODO need translation
 })
 
 ---------------------------
@@ -116,7 +122,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(851)
 
 L:SetOptionLocalization({
-	RangeFrame	= "Mostrar radar de rango dinámico (10)<br/>(Se muestra cuando llegas a umbral de \"Frenzy\")" --TODO need translation
+	RangeFrame	= "Mostrar radar de rango dinámico (10)<br/>(Se muestra cuando llegas a umbral de Frenesí)" --TODO need translation
 })
 
 ----------------------------

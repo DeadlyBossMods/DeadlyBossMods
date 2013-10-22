@@ -85,8 +85,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	specWarnDespawnFloor		= "Mostrar aviso especial antes de que el suelo se desaparezca",
-	timerDespawnFloor			= "Mostrar tiempo para que el suelo desaparezca",
-	SetIconOnCreature			= "Poner iconos en $journal:6193"
+	timerDespawnFloor			= "Mostrar tiempo para que el suelo desaparezca"
 })
 
 

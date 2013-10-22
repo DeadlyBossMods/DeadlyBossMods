@@ -7,8 +7,7 @@ local L
 L= DBM:GetModLocalization(691)
 
 L:SetOptionLocalization({
-	RangeFrame			= "Mostrar distancia dinamica basada en el estado de<br/>$spell:119622",
-	ReadyCheck			= "Reproducir sonido de comprobación de listos si el jefe es pulleado (incluso si no es mi objetivo actual)"
+	RangeFrame			= "Mostrar distancia dinamica basada en el estado de<br/>$spell:119622"
 })
 
 L:SetMiscLocalization({
@@ -20,10 +19,6 @@ L:SetMiscLocalization({
 -----------------------
 L= DBM:GetModLocalization(725)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "Reproducir sonido de comprobación de listos si el jefe es pulleado (incluso si no es mi objetivo actual)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "¡Quiero sus cadáveres!"
 })
@@ -32,10 +27,6 @@ L:SetMiscLocalization({
 -- Oondasta --
 --------------
 L= DBM:GetModLocalization(826)
-
-L:SetOptionLocalization({
-	ReadyCheck			= "Reproducir sonido de comprobación de listos si el jefe es pulleado (incluso si no es mi objetivo actual)"
-})
 
 L:SetMiscLocalization({
 	Pull				= "How dare you interrupt our preparations! The Zandalari will not be stopped, not this time!" --TODO need translation
@@ -46,14 +37,9 @@ L:SetMiscLocalization({
 ---------------------------
 L= DBM:GetModLocalization(814)
 
-L:SetOptionLocalization({
-	ReadyCheck			= "Rerpoducir sonido de comprobación de listos si el jefe es pulleado (incluso si no es mi objetivo actual)"
-})
-
 L:SetMiscLocalization({
 	Pull				= "un viento frío? Se avecina la tormenta" -- first word is different in esMX, so we skip it
 })
-
 
 ---------------------------
 -- Chi-ji, The Red Crane --
@@ -78,6 +64,7 @@ L:SetMiscLocalization({
 	Pull					= "¡Comienza la prueba!",
 	Wave1					= "¡No dejéis que las dificultades os nublen el juicio!",
 	Wave2					= "¡Escuchad vuestra voz interior y buscad la verdad!",
+	Wave3					= "¡Considerad siempre las consecuencias de vuestros actos!",
 	Victory					= "Vuestra sabiduría os ha hecho superar esta prueba. Que siempre ilumine vuestro camino en la oscuridad."
 })
 
@@ -107,3 +94,6 @@ L:SetMiscLocalization({
 ------------------------------------
 L= DBM:GetModLocalization(861)
 
+L:SetMiscLocalization({
+	Pull					= "Ocuparéis mi lugar en el fuego eterno."
+})

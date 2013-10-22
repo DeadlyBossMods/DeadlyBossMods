@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
-
 local L
 
 ------------
@@ -11,9 +10,9 @@ L:SetGeneralLocalization({
 	name = "Omen"
 })
 
------------------------
---  Apothecary Trio  --
------------------------
+------------------------------
+--  The Crown Chemical Co.  --
+------------------------------
 L = DBM:GetModLocalization("d288")
 
 L:SetTimerLocalization{
@@ -30,9 +29,9 @@ L:SetMiscLocalization({
 	SayCombatStart		= "¿Se han molestado en decirte quién soy y por qué estoy haciendo esto?"
 })
 
------------------------
---  Lord Ahune  --
------------------------
+----------------------------
+--  The Frost Lord Ahune  --
+----------------------------
 L = DBM:GetModLocalization("d286")
 
 L:SetWarningLocalization({
@@ -56,9 +55,10 @@ L:SetMiscLocalization({
 	Pull			= "¡La piedra de hielo se ha derretido!"
 })
 
--------------------
--- Coren Direbrew --
--------------------
+
+----------------------
+--  Coren Direbrew  --
+----------------------
 L = DBM:GetModLocalization("d287")
 
 L:SetWarningLocalization({
@@ -76,9 +76,9 @@ L:SetMiscLocalization({
 	YellBarrel		= "¡Tengo el Barril!"
 })
 
--------------------
--- Headless Horseman --
--------------------
+-----------------------------
+--  The Headless Horseman  --
+-----------------------------
 L = DBM:GetModLocalization("d285")
 
 L:SetWarningLocalization({
@@ -98,13 +98,14 @@ L:SetMiscLocalization({
 	HorsemanSoldiers			= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero."
 })
 
+
 ------------------------------
 --  The Abominable Greench  --
 ------------------------------
 L = DBM:GetModLocalization("Greench")
 
 L:SetGeneralLocalization({
-	name = "The Abominable Greench"
+	name = "The Abominable Greench" --TODO, needs translation
 })
 
 --------------------------
@@ -171,6 +172,20 @@ L:SetGeneralLocalization({
 	name = "Conejo de la Luna Negra"
 })
 
+-------------------------
+--  Darkmoon Moonfang  --
+-------------------------
+L = DBM:GetModLocalization("Moonfang")
+
+L:SetGeneralLocalization({
+	name = "Moonfang" --TODO, needs translation
+})
+
+L:SetWarningLocalization({
+	specWarnCallPack		= "Call the Pack - Run > 40 yards from Moonfang!", --TODO, needs translation
+	specWarnMoonfangCurse	= "Moonfang's Curse - Run > 10 yards from Moonfang!" --TODO, needs translation
+})
+
 --------------------------
 --  Plants Vs. Zombies  --
 --------------------------
@@ -196,6 +211,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	MassiveWave		= "A Massive Wave of Zombies is Approaching!"--translate
+	MassiveWave		= "A Massive Wave of Zombies is Approaching!" --TODO, needs translation
 })
-
