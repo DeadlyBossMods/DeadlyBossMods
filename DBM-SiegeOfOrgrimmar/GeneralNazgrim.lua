@@ -107,7 +107,7 @@ local addsTable = {
 	[71517] = 6,--Arcweaver
 	[71518] = 1,--Assassin
 	[71516] = 2,--Iron Blade
-	[71556] = 4,--Sniper (Heroic)
+	[71656] = 4,--Sniper (Heroic)
 }
 
 local bossPower = 0--Will be moved into updateinfoframe function when test code removed
