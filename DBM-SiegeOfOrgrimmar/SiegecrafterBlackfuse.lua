@@ -48,7 +48,7 @@ local specWarnAutomatedShredder			= mod:NewSpecialWarningSpell("ej8199", mod:IsT
 local specWarnDeathFromAbove			= mod:NewSpecialWarningYou(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
-local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("ej8212")
+local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("ej8212", not mod:IsHealer(), nil, nil, nil, 2)
 local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("ej8202", mod:IsDps())
 local specWarnShockwaveMissileActive	= mod:NewSpecialWarningSpell("ej8204", nil, nil, nil, 2)
 local specWarnReadyToGo					= mod:NewSpecialWarningTarget(145580)
