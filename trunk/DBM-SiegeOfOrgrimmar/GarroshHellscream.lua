@@ -31,14 +31,17 @@ local warnChainLightning			= mod:NewSpellAnnounce(144584, 3, nil, false)--Maybe 
 local warnYShaarjsProtection		= mod:NewTargetAnnounce(144945, 2)
 local warnAnnihilate				= mod:NewCastAnnounce(144969, 4)
 --Stage Two: Power of Y'Shaarj
+local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnWhirlingCorruption		= mod:NewCountAnnounce(144985, 3)
-local warnEmpWhirlingCorruption		= mod:NewSpellAnnounce(145037, 3)
 local warnTouchOfYShaarj			= mod:NewTargetAnnounce(145071, 3)
-local warnEmpTouchOfYShaarj			= mod:NewTargetAnnounce(145175, 3)
-local warnEmpDesecrate				= mod:NewSpellAnnounce(144749, 3)
 local warnGrippingDespair			= mod:NewStackAnnounce(145183, 2, nil, mod:IsTank())
-local warnEmpGrippingDespair		= mod:NewStackAnnounce(145195, 3, nil, mod:IsTank())--Distinction is not that important, may just remove for the tank warning.
 --Starge Three: MY WORLD
+local warnPhase3					= mod:NewPhaseAnnounce(3)
+local warnEmpWhirlingCorruption		= mod:NewSpellAnnounce(145037, 3)
+local warnEmpTouchOfYShaarj			= mod:NewTargetAnnounce(145175, 3)
+local warnEmpGrippingDespair		= mod:NewStackAnnounce(145195, 3, nil, mod:IsTank())--Distinction is not that important, may just remove for the tank warning.
+--Starge Four: Heroic Hidden Phase
+local warnPhase4					= mod:NewPhaseAnnounce(4)
 local warnMalice					= mod:NewTargetAnnounce(147209, 2)
 local warnBombardment				= mod:NewSpellAnnounce(147120, 3)
 local warnManifestRage				= mod:NewSpellAnnounce(147011, 4)
@@ -54,20 +57,21 @@ local specWarnSiegeEngineer			= mod:NewSpecialWarningSwitch("ej8298", false)--On
 local specWarnChainHeal				= mod:NewSpecialWarningInterrupt(144583)
 local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(144584, false)
 --Intermission: Realm of Y'Shaarj
-local specWarnAnnihilate			= mod:NewSpecialWarningSpell(144969, false, nil, nil, 3)
+local specWarnAnnihilate			= mod:NewSpecialWarningSpell(144969, false, nil, nil, 3, 2)
 --Stage Two: Power of Y'Shaarj
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningCount(144985)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
-local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningCount(145037)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
-local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil, 2)--^^
 local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 3)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
 local specWarnGrippingDespairOther	= mod:NewSpecialWarningTarget(145183, mod:IsTank())
-local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch(145071)
+local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch(145071, not mod:IsHealer(), nil, nil, nil, 2)
 --Starge Three: MY WORLD
+local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningCount(145037)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
+local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil, 2)--^^
+--Starge Four: Heroic Hidden Phase
 local specWarnMaliceYou				= mod:NewSpecialWarningYou(147209)
 local yellMalice					= mod:NewYell(147209)
 
 --Stage 1: A Cry in the Darkness
-local timerDesecrateCD				= mod:NewCDTimer(35, 144748)
+local timerDesecrateCD				= mod:NewCDCountTimer(35, 144748)
 local timerHellscreamsWarsongCD		= mod:NewNextTimer(42.2, 144821, nil, mod:IsTank() or mod:IsHealer())
 local timerFarseerWolfRiderCD		= mod:NewNextTimer(50, "ej8294", nil, nil, nil, 144585)--EJ says they come faster as phase progresses but all i saw was 3 spawn on any given pull and it was 30 50 50
 local timerSiegeEngineerCD			= mod:NewNextTimer(40, "ej8298", nil, nil, nil, 144616)
@@ -76,18 +80,19 @@ local timerPowerIronStar			= mod:NewCastTimer(15, 144616)
 local timerEnterRealm				= mod:NewNextTimer(145.5, 144866, nil, nil, nil, 144945)
 local timerYShaarjsProtection		= mod:NewBuffActiveTimer(61, "ej8305", nil, nil, nil, 144945)--May be too long, but intermission makes more sense than protection buff which actually fades before intermission ends if you do it right.
 --Stage Two: Power of Y'Shaarj
-local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(51.5, 144985)--One bar for both, "empowered" makes timer too long. CD not yet known except for first
+local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(49.5, 144985)--One bar for both, "empowered" makes timer too long
 local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985)
 local timerTouchOfYShaarjCD			= mod:NewCDCountTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 --Starge Three: MY WORLD
+--Starge Four: Heroic Hidden Phase
 local timerMaliceCD					= mod:NewNextTimer(29.5, 147209)
 local timerBombardmentCD			= mod:NewNextTimer(55, 147120)
 local timerBombardment				= mod:NewBuffActiveTimer(13, 147120)
 
 local soundWhirlingCorrpution		= mod:NewSound(144985, nil, false)--Depends on strat. common one on 25 man is to never run away from it
 local countdownPowerIronStar		= mod:NewCountdown(15, 144616)
-local countdownWhirlingCorruption	= mod:NewCountdown(52, 144985)
+local countdownWhirlingCorruption	= mod:NewCountdown(49.5, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown(45, 145071, false, nil, nil, nil, true)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
@@ -270,49 +275,61 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnHellscreamsWarsong:Show()
 		timerHellscreamsWarsongCD:Start()
 	elseif spellId == 145235 then--Throw Axe At Heart
-		timerSiegeEngineerCD:Cancel()
-		timerFarseerWolfRiderCD:Cancel()
-		timerEnterRealm:Start(25)
-	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
 		timerPowerIronStar:Cancel()
 		countdownPowerIronStar:Cancel()
+		timerSiegeEngineerCD:Cancel()
+		timerFarseerWolfRiderCD:Cancel()
 		timerDesecrateCD:Cancel()
 		timerHellscreamsWarsongCD:Cancel()
+		timerEnterRealm:Start(25)
+	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
+		timerDesecrateCD:Cancel()
 		timerTouchOfYShaarjCD:Cancel()
 		countdownTouchOfYShaarj:Cancel()
 		timerWhirlingCorruptionCD:Cancel()
 		countdownWhirlingCorruption:Cancel()
 	elseif spellId == 144956 then--Jump To Ground (intermission ending)
-		--This will only happen in ONE situation, after Throw Axe At Heart. Used to block a bad phase 2 start
-		--Sure I could just use the phase 2 var for it, but I like this method more because then it's more disconnect friendly
-		--therwise we may not start timers for someone who DCed, so using timerEnterRealm:GetTime best filter for bad 144956 event
-		if timerEnterRealm:GetTime() > 0 then return end
-		phase = 2
-		whirlCount = 0
-		desecrateCount = 0
-		mindControlCount = 0
-		timerDesecrateCD:Start(10, 1)
-		timerTouchOfYShaarjCD:Start(15, 1)
-		countdownTouchOfYShaarj:Start(15)
-		timerWhirlingCorruptionCD:Start(30, 1)
-		countdownWhirlingCorruption:Start(30)
-		timerEnterRealm:Start()
+		if timerEnterRealm:GetTime() > 0 then--first cast, phase2 trigger.
+			phase = 2
+			warnPhase2:Show()
+		else
+			whirlCount = 0
+			desecrateCount = 0
+			mindControlCount = 0
+			timerDesecrateCD:Start(10, 1)
+			timerTouchOfYShaarjCD:Start(15, 1)
+			countdownTouchOfYShaarj:Start(15)
+			timerWhirlingCorruptionCD:Start(30, 1)
+			countdownWhirlingCorruption:Start(30)
+			timerEnterRealm:Start()
+		end
 	--"<556.9 21:41:56> [UNIT_SPELLCAST_SUCCEEDED] Garrosh Hellscream [[boss1:Realm of Y'Shaarj::0:145647]]", -- [169886]
 	elseif spellId == 145647 then--Phase 3 trigger
-		timerEnterRealm:Cancel()
-		countdownTouchOfYShaarj:Cancel()
-		countdownWhirlingCorruption:Cancel()
 		phase = 3
 		whirlCount = 0
 		desecrateCount = 0
 		mindControlCount = 0
+		warnPhase3:Show()
+		timerEnterRealm:Cancel()
+		timerDesecrateCD:Cancel()
+		timerTouchOfYShaarjCD:Cancel()
+		countdownTouchOfYShaarj:Cancel()
+		timerWhirlingCorruptionCD:Cancel()
+		countdownWhirlingCorruption:Cancel()
 		timerDesecrateCD:Start(21, 1)
 		timerTouchOfYShaarjCD:Start(30, 1)
 		countdownTouchOfYShaarj:Start(30)
-		timerWhirlingCorruptionCD:Start(47.5, 1)
-		countdownWhirlingCorruption:Start(47.5)
+		timerWhirlingCorruptionCD:Start(44.5, 1)
+		countdownWhirlingCorruption:Start(44.5)
 	elseif spellId == 146984 then--Phase 4 trigger
 		phase = 4
+		timerEnterRealm:Cancel()
+		timerDesecrateCD:Cancel()
+		timerTouchOfYShaarjCD:Cancel()
+		countdownTouchOfYShaarj:Cancel()
+		timerWhirlingCorruptionCD:Cancel()
+		countdownWhirlingCorruption:Cancel()
+		warnPhase4:Show()
 		timerMaliceCD:Start(30)
 		timerBombardmentCD:Start(69)
 	end
