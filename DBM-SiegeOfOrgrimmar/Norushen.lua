@@ -89,11 +89,8 @@ local playerInside = false
 --May be buggy with two adds spawning at exact same time
 --Two different icon functions end up both marking same mob with 8 and 7 and other mob getting no mark.
 --Not sure if GUID table will be fast enough to prevent, we shall see!
-local function addsDelay(delayTriggered)
+local function addsDelay()
 	specWarnManifestation:Show()
-	if delayTriggered and DBM.Options.DebugMode then
-		print("DBM DEBUG: Verify add spawn timing")
-	end
 end
 
 function mod:OnCombatStart(delay)
@@ -205,7 +202,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 145769 then--Unleash Corruption
-		addsDelay()
+		self:Schedule(5, addsDelay)
 	end
 end
 
@@ -230,7 +227,7 @@ function mod:OnSync(msg, guid)
 	elseif msg == "ManifestationDied" and not playerInside and self:AntiSpam(1) then
 		specWarnManifestationSoon:Show()
 		if not self:IsDifficulty("lfr25") then
-			self:Schedule(5, addsDelay, true)--More verification needed
+			self:Schedule(5, addsDelay)
 		end
 	end
 end
