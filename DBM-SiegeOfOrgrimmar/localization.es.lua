@@ -111,9 +111,9 @@ L= DBM:GetModLocalization(846)
 L= DBM:GetModLocalization(870)
 
 L:SetMiscLocalization({
-	wasteOfTime		= "Hey, we recording?  Yeah?  Okay.  Goblin-Titan control module starting up, please stand back.", --TODO need translation
-	Module1			= "Module 1's all prepared for system reset.", --TODO need translation
-	Victory			= "Module 2's all prepared for system reset" --TODO need translation
+	wasteOfTime		= "¿Estamos grabando? ¿Sí? Vale. Iniciando módulo de control goblin-titán. Atrás.",
+	Module1			= "El módulo 1 está listo para el reinicio del sistema.",
+	Victory			= "El módulo 2 está listo para el reinicio del sistema."
 })
 
 ---------------------------
@@ -122,7 +122,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(851)
 
 L:SetOptionLocalization({
-	RangeFrame	= "Mostrar radar de rango dinámico (10)<br/>(Se muestra cuando llegas a umbral de Frenesí)" --TODO need translation
+	RangeFrame	= "Mostrar radar de rango dinámico (10)<br/>(Se muestra cuando llegas a umbral de Frenesí)"
 })
 
 ----------------------------
@@ -131,8 +131,8 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(865)
 
 L:SetMiscLocalization({
-	newWeapons	= "Unfinished weapons begin to roll out on the assembly line.", --TODO need translation
-	newShredder	= "An Automated Shredder draws near!" --TODO need translation
+	newWeapons	= "La cadena de montaje empieza a sacar armas sin terminar.",
+	newShredder	= "¡Una trituradora automática se acerca!"
 })
 
 ----------------------------
