@@ -5358,6 +5358,7 @@ do
 			count = count or self.count or 5
 			if timer <= count then count = floor(timer) end
 			if DBM.Options.ShowCountdownText and not (self.textDisabled or self.alternateVoice) then
+				stopCountdown()
 				if timer >= count then 
 					DBM:Schedule(timer-count, showCountdown, count)
 				else
