@@ -249,16 +249,16 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("cFFFF0404") then--They fixed epiccenter bug (figured they would). Color code should be usuable though. It's only emote on encounter that uses it.
 		warnDemolisher:Show()
+		if self:IsDifficulty("heroic10", "heroic25") and firstTower == 1 then
+			timerTowerGruntCD:Start(15)
+			self:Schedule(15, TowerGrunt)
+			firstTower = 2
+		end
 	elseif msg:find(L.tower) then
 		timerDemolisherCD:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerTowerGruntCD:Cancel()
 			self:Unschedule(TowerGrunt)
-			if firstTower == 1 then
---				timerTowerGruntCD:Start(x)
---				self:Schedule(x, TowerGrunt)--TODO, figure x timing out and enable
-				firstTower = 2
-			end
 		end
 	end
 end
