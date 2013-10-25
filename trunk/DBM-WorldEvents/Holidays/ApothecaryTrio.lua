@@ -10,10 +10,13 @@ mod:SetReCombatTime(10)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"CHAT_MSG_MONSTER_SAY"
+)
+
+mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"CHAT_MSG_MONSTER_SAY"
+	"SPELL_MISSED"
 )
 
 local warnChainReaction			= mod:NewCastAnnounce(68821, 3)
