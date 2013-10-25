@@ -77,7 +77,8 @@ local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)
 local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269, nil, false)--Many mines can be up at once so timer off by default do to spam
 
 local countdownAssemblyLine				= mod:NewCountdown(40, "ej8202", false)
-local countdownShredder					= mod:NewCountdown(60, "ej8199", mod:IsTank(), nil, nil, nil, true)
+local countdownShredder					= mod:NewCountdown(60, "ej8199", mod:IsTank())
+local countdownElectroStatic			= mod:NewCountdown(17, 143385, mod:IsTank(), nil, nil, nil, true)
 
 mod:AddInfoFrameOption("ej8202")
 mod:AddSetIconOption("SetIconOnMines", "ej8212", false, true)
@@ -206,6 +207,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnElectroStaticCharge:Show(args.destName, amount)
 		timerElectroStaticCharge:Start(args.destName)
 		timerElectroStaticChargeCD:Start()
+		countdownElectroStatic:Start()
 	elseif args.spellId == 144210 and not args:IsDestTypePlayer() then
 		timerDeathFromAboveDebuff:Start(args.destName)
 	elseif args.spellId == 144236 and args:IsPlayer() then
