@@ -49,7 +49,7 @@ local specWarnDeathFromAbove			= mod:NewSpecialWarningYou(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
 local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("ej8212", not mod:IsHealer(), nil, nil, nil, 2)
-local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("ej8202", mod:IsDps())
+local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("ej8202", false, nil, nil, nil, 2)--Not all in raid need, just those assigned
 local specWarnShockwaveMissileActive	= mod:NewSpecialWarningSpell("ej8204", nil, nil, nil, 2)
 local specWarnReadyToGo					= mod:NewSpecialWarningTarget(145580)
 local specWarnLaserFixate				= mod:NewSpecialWarningRun(143828)
@@ -93,6 +93,7 @@ local crawlerMine = EJ_GetSectionInfo(8212)
 local shockwaveMissile = EJ_GetSectionInfo(8205)
 local laserTurret = EJ_GetSectionInfo(8208)
 local electroMagnet = EJ_GetSectionInfo(8210)
+local assemblyDebuff = false
 
 function mod:LaunchSawBladeTarget(targetname, uId)
 	warnLaunchSawblade:Show(targetname)
@@ -209,6 +210,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDeathFromAboveDebuff:Start(args.destName)
 	elseif args.spellId == 144236 and args:IsPlayer() then
 		timerPatternRecognition:Start()
+		assemblyDebuff = true
 	elseif args.spellId == 145269 then
 		if self:AntiSpam(20, 3) then
 			warnCrawlerMine:Show()
@@ -245,6 +247,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerElectroStaticCharge:Cancel(args.destName)
 	elseif args.spellId == 144236 and args:IsPlayer() then
 		timerPatternRecognition:Cancel()
+		assemblyDebuff = false
 	elseif args.spellId == 145269 then
 		timerBreakinPeriod:Cancel(args.destName, args.destGUID)
 	elseif args.spellId == 143639 then
@@ -277,7 +280,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg == L.newWeapons or msg:find(L.newWeapons) then
 		weapon = weapon + 1
 		warnAssemblyLine:Show()
-		specWarnAssemblyLine:Show()
+		if not assemblyDebuff then--Don't warn if you can't go
+			specWarnAssemblyLine:Show()
+		end
 		timerAssemblyLineCD:Start()
 		countdownAssemblyLine:Start()
 		if self.Options.InfoFrame then
