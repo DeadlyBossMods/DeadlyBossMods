@@ -33,14 +33,14 @@ local warnAssemblyLine					= mod:NewSpellAnnounce("ej8202", 3, 85914)
 local warnShockwaveMissileActivated		= mod:NewSpellAnnounce("ej8204", 3, 143639)--Unsure if this will even show in CLEU, may need UNIT event or emote
 local warnShockwaveMissile				= mod:NewCountAnnounce(143641, 3)
 --local warnLaserTurretActivated			= mod:NewSpellAnnounce("ej8208", 3, 143867, false)--No event to detect it
-local warnLaserFixate					= mod:NewTargetAnnounce(143828, 3, 143867)--Not in combat log, needs more debugging to find a way around blizz fail
+--local warnLaserFixate					= mod:NewTargetAnnounce(143828, 3, 143867)--FIXME
 local warnMagneticCrush					= mod:NewSpellAnnounce(144466, 3)--Unsure if correct ID, could be 143487 instead
 local warnCrawlerMine					= mod:NewSpellAnnounce("ej8212", 3, 144010)--Crawler Mine Spawning
 local warnReadyToGo						= mod:NewTargetAnnounce(145580, 4)--Crawler mine not dead fast enough
 
 --Siegecrafter Blackfuse
 local specWarnLaunchSawblade			= mod:NewSpecialWarningYou(143265)
-local yellLaunchSawblade				= mod:NewYell(143265)
+local yellLaunchSawblade				= mod:NewYell(143265, nil, false, nil, nil, 2)
 local specWarnProtectiveFrenzy			= mod:NewSpecialWarningTarget(145365, mod:IsTank())
 local specWarnOvercharge				= mod:NewSpecialWarningTarget(145774)
 --Automated Shredders
@@ -75,6 +75,9 @@ local timerPatternRecognition			= mod:NewBuffActiveTimer(60, 144236)
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
 local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)
 local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269, nil, false)--Many mines can be up at once so timer off by default do to spam
+
+local countdownAssemblyLine				= mod:NewCountdown(40, "ej8202", false)
+local countdownShredder					= mod:NewCountdown(60, "ej8199", mod:IsTank(), nil, nil, nil, true)
 
 mod:AddInfoFrameOption("ej8202")
 mod:AddSetIconOption("SetIconOnMines", "ej8212", false, true)
@@ -141,6 +144,7 @@ function mod:OnCombatStart(delay)
 	weapon = 0
 	shockwaveOvercharged = false
 	timerAutomatedShredderCD:Start(35-delay)
+	countdownShredder:Start(35-delay)
 end
 
 function mod:OnCombatEnd()
@@ -275,6 +279,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		warnAssemblyLine:Show()
 		specWarnAssemblyLine:Show()
 		timerAssemblyLineCD:Start()
+		countdownAssemblyLine:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(assemblyLine.."("..weapon..")")
 			DBM.InfoFrame:Show(1, "function", showWeaponInfo, true)
@@ -284,5 +289,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnAutomatedShredder:Show()
 		timerDeathFromAboveCD:Start(17)
 		timerAutomatedShredderCD:Start()
+		countdownShredder:Start()
 	end
 end
