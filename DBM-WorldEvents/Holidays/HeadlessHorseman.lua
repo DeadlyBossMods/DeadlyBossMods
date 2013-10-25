@@ -10,13 +10,13 @@ mod:SetReCombatTime(10)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED",
-	"UNIT_SPELLCAST_SUCCEEDED target focus",
-	"CHAT_MSG_MONSTER_SAY",
 	"CHAT_MSG_SAY"
 )
 
 mod:RegisterEventsInCombat(
+	"SPELL_AURA_APPLIED",
+	"UNIT_SPELLCAST_SUCCEEDED target focus",
+	"CHAT_MSG_MONSTER_SAY",
 	"UNIT_DIED"
 )
 
