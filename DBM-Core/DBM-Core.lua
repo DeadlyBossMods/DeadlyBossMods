@@ -239,7 +239,6 @@ local currentSizes = nil
 local bossHealth = {}
 local savedDifficulty
 local difficultyText
-local flexSize
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -3135,10 +3134,10 @@ end
 function checkWipe(isIEEU, confirm)
 	if #inCombat > 0 then
 		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
-			savedDifficulty, difficultyText = DBM:GetCurrentInstanceDifficulty()
+			savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
 		end
 		local wipe = 1 -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
-		if IsInScenarioGroup() then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
+		if IsInScenarioGroup() or (difficultyIndex == 11) or (difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
 			wipe = 0
 		elseif IsEncounterInProgress() then -- Encounter Progress marked, you obiously combat whth boss. So do not Wipe
 			wipe = 0
@@ -3202,7 +3201,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
 			return
 		end
-		savedDifficulty, difficultyText, flexSize = self:GetCurrentInstanceDifficulty()
+		savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 		tinsert(inCombat, mod)
 		bossHealth[mod.combatInfo.mob or -1] = 1
 		if mod.multiMobPullDetection then
@@ -3641,7 +3640,6 @@ function DBM:EndCombat(mod, wipe)
 		end
 		savedDifficulty = nil
 		difficultyText = nil
-		flexSize = nil
 	end
 end
 
@@ -3716,31 +3714,31 @@ function DBM:GetCurrentInstanceDifficulty()
 	if difficulty == 0 then
 		return "worldboss", RAID_INFO_WORLD_BOSS.." - "
 	elseif difficulty == 1 then
-		return "normal5", difficultyName.." - "
+		return "normal5", difficultyName.." - ", difficulty
 	elseif difficulty == 2 then
-		return "heroic5", difficultyName.." - "
+		return "heroic5", difficultyName.." - ", difficulty
 	elseif difficulty == 3 then
-		return "normal10", difficultyName.." - "
+		return "normal10", difficultyName.." - ", difficulty
 	elseif difficulty == 4 then
-		return "normal25", difficultyName.." - "
+		return "normal25", difficultyName.." - ", difficulty
 	elseif difficulty == 5 then
-		return "heroic10", difficultyName.." - "
+		return "heroic10", difficultyName.." - ", difficulty
 	elseif difficulty == 6 then
-		return "heroic25", difficultyName.." - "
+		return "heroic25", difficultyName.." - ", difficulty
 	elseif difficulty == 7 then
-		return "lfr25", difficultyName.." - "
+		return "lfr25", difficultyName.." - ", difficulty
 	elseif difficulty == 8 then
-		return "challenge5", difficultyName.." - "
+		return "challenge5", difficultyName.." - ", difficulty
 	elseif difficulty == 9 then--40 man raids have their own difficulty now, no longer returned as normal 10man raids
-		return "normal10", difficultyName.." - "--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
+		return "normal10", difficultyName.." - ",difficulty--Just use normal10 anyways, since that's where we been saving 40 man stuff for so long anyways, no reason to change it now, not like any 40 mans can be toggled between 10 and 40 where we NEED to tell the difference.
 	elseif difficulty == 11 then--5.3 heroic scenario
-		return "heroic5", difficultyName.." - "
+		return "heroic5", difficultyName.." - ", difficulty
 	elseif difficulty == 12 then--5.3 normal scenario
-		return "normal5", difficultyName.." - "
+		return "normal5", difficultyName.." - ", difficulty
 	elseif difficulty == 14 then
-		return "flex", difficultyName.." - ", instanceGroupSize
+		return "flex", difficultyName.." - ", difficulty
 	else--failsafe
-		return "normal5", ""
+		return "normal5", "", difficulty
 	end
 end
 
@@ -3789,7 +3787,7 @@ do
 					if not bossHealth[mob] then bossHealth[mob] = 1 end
 				end
 			end
-			savedDifficulty, difficultyText, flexSize = self:GetCurrentInstanceDifficulty()
+			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
 			if mod.inCombatOnlyEvents and not mod.inCombatOnlyEventsRegistered then
 				mod.inCombatOnlyEventsRegistered = 1
 				mod:RegisterEvents(unpack(mod.inCombatOnlyEvents))
@@ -4829,10 +4827,6 @@ function bossModPrototype:IsDifficulty(...)
 		end
 	end
 	return false
-end
-
-function bossModPrototype:FlexSize()
-	return flexSize or 10
 end
 
 function bossModPrototype:SetUsedIcons(...)
