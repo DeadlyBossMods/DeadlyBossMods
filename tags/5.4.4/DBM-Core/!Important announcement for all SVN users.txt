@@ -1,0 +1,13 @@
+We are currently separating the web server and the development server (which 
+are on one and the same physical server at the moment, hence you can reach both 
+the website and the svn under the same domain name deadlybossmods.com)
+
+The domain of the svn server will be changed to svn.deadlybossmods.com in 
+order to move the web site to a different server.
+
+PLEASE USE svn://svn.deadlybossmods.com/* INSTEAD OF svn://deadlybossmods.com/* TO ACCESS THE SVN SERVER FROM NOW ON.
+
+Note that this is not a new repository, just a new name for the old repository. 
+The old URLs will be kept available for at least a few more weeks. Note that 
+your svn client might forget your login data if you change the URL. Send me 
+an email to tandanu@deadlybossmods.com if you need to reset your password.
