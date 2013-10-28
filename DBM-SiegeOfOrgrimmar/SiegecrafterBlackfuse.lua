@@ -30,7 +30,7 @@ local warnAutomatedShredder				= mod:NewSpellAnnounce("ej8199", 3, 85914)
 local warnOverload						= mod:NewStackAnnounce(145444, 3)
 local warnDeathFromAbove				= mod:NewTargetAnnounce(144208, 4)--Player target, not vulnerable shredder target. (should always be cast on highest threat target, but i like it still being a "target" warning)
 --The Assembly Line
-local warnAssemblyLine					= mod:NewSpellAnnounce("ej8202", 3, 85914)
+local warnAssemblyLine					= mod:NewSpellAnnounce("ej8202", 3, 85914, mod:IsDps(), nil, nil, nil, nil, 2)
 local warnShockwaveMissileActivated		= mod:NewSpellAnnounce("ej8204", 3, 143639)--Unsure if this will even show in CLEU, may need UNIT event or emote
 local warnShockwaveMissile				= mod:NewCountAnnounce(143641, 3)
 --local warnLaserTurretActivated			= mod:NewSpellAnnounce("ej8208", 3, 143867, false)--No event to detect it
@@ -66,12 +66,12 @@ local timerElectroStaticCharge			= mod:NewTargetTimer(60, 143385, nil, mod:IsTan
 local timerElectroStaticChargeCD		= mod:NewCDTimer(17, 143385, nil, mod:IsTank())--17-22 second variation
 local timerLaunchSawbladeCD				= mod:NewCDTimer(10, 143265)--10-15sec cd
 --Automated Shredders
-local timerAutomatedShredderCD			= mod:NewNextTimer(60, "ej8199", nil, nil, nil, 85914)
+local timerAutomatedShredderCD			= mod:NewNextTimer(60, "ej8199", nil, mod:IsTank(), nil, 85914, nil, nil, nil, nil, 2)
 local timerOverloadCD					= mod:NewCDCountTimer(10, 145444)
 local timerDeathFromAboveDebuff			= mod:NewTargetTimer(5, 144210, nil, not mod:IsHealer())
 local timerDeathFromAboveCD				= mod:NewNextTimer(40, 144208, nil, not mod:IsHealer())
 --The Assembly Line
-local timerAssemblyLineCD				= mod:NewNextTimer(40, "ej8202", nil, nil, nil, 59193)
+local timerAssemblyLineCD				= mod:NewNextTimer(40, "ej8202", nil, mod:IsDps(), nil, 59193, nil, nil, nil, nil, 2)
 local timerPatternRecognition			= mod:NewBuffActiveTimer(60, 144236)
 --local timerDisintegrationLaserCD		= mod:NewNextCountTimer(10, 143867)
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
