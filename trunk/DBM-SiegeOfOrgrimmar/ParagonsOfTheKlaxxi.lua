@@ -229,12 +229,12 @@ local function DFAScan()
 	end
 end
 
-local function CheckBosses(GUID)
+local function CheckBosses()
 	local vulnerable = false
-	for i = 1, 5 do
+	for i = 1, 3 do--Assume boss 4 is always the inactive one. Need to verify this works, because filtering by ready to fight causes start timers not to work
 		local unitID = "boss"..i
 		--Only 3 bosses activate on pull, however now the inactive or (next boss to activate) also fires IEEU. As such, we have to filter that boss by scaning for readytofight. Works well though.
-		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] and not UnitBuff(unitID, readyToFight) then--Check if new units exist we haven't detected and added yet.
+		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] then--Check if new units exist we haven't detected and added yet.
 			activeBossGUIDS[UnitGUID(unitID)] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
 			--Activation Controller
