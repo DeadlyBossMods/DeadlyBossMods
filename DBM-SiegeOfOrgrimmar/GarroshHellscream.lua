@@ -81,7 +81,7 @@ local timerEnterRealm				= mod:NewNextTimer(145.5, 144866, nil, nil, nil, 144945
 local timerYShaarjsProtection		= mod:NewBuffActiveTimer(61, "ej8305", nil, nil, nil, 144945)--May be too long, but intermission makes more sense than protection buff which actually fades before intermission ends if you do it right.
 --Stage Two: Power of Y'Shaarj
 local timerWhirlingCorruptionCD		= mod:NewCDCountTimer(49.5, 144985)--One bar for both, "empowered" makes timer too long
-local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985)
+local timerWhirlingCorruption		= mod:NewBuffActiveTimer(9, 144985, nil, false, nil, nil, nil, nil, nil, 2)
 local timerTouchOfYShaarjCD			= mod:NewCDCountTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 --Starge Three: MY WORLD
@@ -90,7 +90,7 @@ local timerMaliceCD					= mod:NewNextTimer(29.5, 147209)
 local timerBombardmentCD			= mod:NewNextTimer(55, 147120)
 local timerBombardment				= mod:NewBuffActiveTimer(13, 147120)
 
-local soundWhirlingCorrpution		= mod:NewSound(144985, nil, false)--Depends on strat. common one on 25 man is to never run away from it
+local soundWhirlingCorrpution		= mod:NewSound(144985, nil, false, 2)--Depends on strat. common one on 25 man is to never run away from it
 local countdownPowerIronStar		= mod:NewCountdown(15, 144616)
 local countdownWhirlingCorruption	= mod:NewCountdown(49.5, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown(45, 145071, false, nil, nil, nil, true)--Off by default only because it's a cooldown and it does have a 45-48sec variation

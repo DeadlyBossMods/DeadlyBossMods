@@ -60,7 +60,7 @@ local specWarnPiercingCorruption		= mod:NewSpecialWarningSpell(144657)
 --Amalgam of Corruption
 local timerCombatStarts					= mod:NewCombatTimer(25)
 local timerUnleashedAngerCD				= mod:NewCDTimer(11, 145216, nil, mod:IsTank())
-local timerBlindHatred					= mod:NewBuffActiveTimer(30, 145226)
+local timerBlindHatred					= mod:NewBuffActiveTimer(30, 145226, nil, false, nil, nil, nil, nil, nil, 2)
 local timerBlindHatredCD				= mod:NewNextTimer(30, 145226)
 --All Tests
 local timerLookWithin					= mod:NewBuffFadesTimer(60, "ej8220")
