@@ -46,7 +46,7 @@ local specWarnProtectiveFrenzy			= mod:NewSpecialWarningTarget(145365, mod:IsTan
 local specWarnOvercharge				= mod:NewSpecialWarningTarget(145774)
 --Automated Shredders
 local specWarnAutomatedShredder			= mod:NewSpecialWarningSpell("ej8199", mod:IsTank())--No sense in dps switching when spawn, has damage reduction. This for tank pickup
-local specWarnDeathFromAbove			= mod:NewSpecialWarningYou(144208)
+local specWarnDeathFromAbove			= mod:NewSpecialWarningSpell(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
 local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("ej8212", not mod:IsHealer(), nil, nil, nil, 2)
@@ -61,7 +61,7 @@ local specWarnCrawlerMineFixate			= mod:NewSpecialWarningRun("ej8212")
 local yellCrawlerMineFixate				= mod:NewYell("ej8212", nil, false)
 
 --Siegecrafter Blackfuse
-local timerProtectiveFrenzy				= mod:NewBuffActiveTimer(10, 145365, nil, mod:IsTank() or mod:IsHealer())
+local timerProtectiveFrenzy				= mod:NewBuffActiveTimer(10, 145365, nil, false, nil, nil, nil, nil, nil, 2)
 local timerElectroStaticCharge			= mod:NewTargetTimer(60, 143385, nil, mod:IsTank())
 local timerElectroStaticChargeCD		= mod:NewCDTimer(17, 143385, nil, mod:IsTank())--17-22 second variation
 local timerLaunchSawbladeCD				= mod:NewCDTimer(10, 143265)--10-15sec cd
@@ -72,7 +72,7 @@ local timerDeathFromAboveDebuff			= mod:NewTargetTimer(5, 144210, nil, not mod:I
 local timerDeathFromAboveCD				= mod:NewNextTimer(40, 144208, nil, not mod:IsHealer())
 --The Assembly Line
 local timerAssemblyLineCD				= mod:NewNextTimer(40, "ej8202", nil, mod:IsDps(), nil, 59193, nil, nil, nil, nil, 2)
-local timerPatternRecognition			= mod:NewBuffActiveTimer(60, 144236)
+local timerPatternRecognition			= mod:NewBuffFadesTimer(60, 144236, nil, false, nil, nil, nil, nil, nil, 2)
 --local timerDisintegrationLaserCD		= mod:NewNextCountTimer(10, 143867)
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
 local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)
