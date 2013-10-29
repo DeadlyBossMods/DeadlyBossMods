@@ -4951,6 +4951,16 @@ function bossModPrototype:IsTank()
 	or (class == "MONK" and (GetSpecialization() == 1))
 end
 
+function bossModPrototype:IsSpellCaster(includePal)
+	return class == "MAGE"
+	or class == "WARLOCK"
+	or class == "PRIEST"
+	or (class == "MONK" and (GetSpecialization() == 2))
+    or (class == "SHAMAN" and (GetSpecialization() ~= 2))
+	or (class == "DRUID" and (GetSpecialization() == 1 or GetSpecialization() == 4))
+	or (class == "PALADIN" and (GetSpecialization() == 1 or (includePal or false)))
+end
+
 function bossModPrototype:IsTanking(unit, boss)
 	if not unit then return false end 
 	if GetPartyAssignment("MAINTANK", unit, 1) then
