@@ -132,7 +132,7 @@ end
 function mod:UNIT_DIED(args)
 	if not args.destName then return end
 	--Another backup for when npc doesn't yell. This is a way to detect a wipe at least.
-	if currentFighter and currentFighter == args.destName then--They wiped.
+	if currentFighter and args.destName == currentFighter and args:IsDestTypePlayer() then--They wiped. Fix match ends when mage's mirror image died. 
 		self:SendSync("MatchEnd")
 	end
 end
