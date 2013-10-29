@@ -151,23 +151,22 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	--translate later (triggers)
-	one					= "One",
-	two					= "Two",
-	three				= "Three",
-	four				= "Four",
-	five				= "Five",
-	hisekFlavor			= "Look who's quiet now",--http://ptr.wowhead.com/quest=31510
-	KilrukFlavor		= "Just another day, culling the swarm",--http://ptr.wowhead.com/quest=31109
-	XarilFlavor			= "I see only dark skies in your future",--http://ptr.wowhead.com/quest=31216
-	KaztikFlavor		= "Reduced to mere kunchong treats",--http://ptr.wowhead.com/quest=31024
-	KaztikFlavor2		= "1 Mantid down, only 199 to go",--http://ptr.wowhead.com/quest=31808
-	KorvenFlavor		= "The end of an ancient empire",--http://ptr.wowhead.com/quest=31232
-	KorvenFlavor2		= "Take your Gurthani Tablets and choke on them",--http://ptr.wowhead.com/quest=31232
-	IyyokukFlavor		= "See opportunities. Exploit them!",--Does not have quests, http://ptr.wowhead.com/npc=65305
-	KarozFlavor			= "You won't be leaping anymore!",---Does not have questst, http://ptr.wowhead.com/npc=65303
-	SkeerFlavor			= "A bloody delight!",--http://ptr.wowhead.com/quest=31178
-	RikkalFlavor		= "Specimen request fulfilled"--http://ptr.wowhead.com/quest=31508
+	one					= "Eins",--needs to be verified (guessed)
+	two					= "Zwei",
+	three				= "Drei",
+	four				= "Vier",--needs to be verified (guessed)
+	five				= "Fünf",--needs to be verified (guessed)
+	hisekFlavor			= "Na, wer wurde jetzt zum Schweigen gebracht?",
+	KilrukFlavor		= "Ein weiterer Tag der Vernichtung des Schwarms!",
+	XarilFlavor			= "I sehe nur finstere Himmel in deiner Zukunft!",
+	KaztikFlavor		= "Zerkleinert zu bloßen Kunchong-Leckereien!",
+	KaztikFlavor2		= "1 Mantis tot, nur noch 199 weitere verbleibend!",
+	KorvenFlavor		= "Das Ende eines uralten Reiches!",
+	KorvenFlavor2		= "Nimm deine Gurthanitafeln und ersticke daran!",
+	IyyokukFlavor		= "Erkennt die Möglichkeiten. Nutzt sie aus!",
+	KarozFlavor			= "Du wirst nicht mehr herumspringen!",
+	SkeerFlavor			= "Ein blutiges Vergnügen!",
+	RikkalFlavor		= "Probenanforderung abgeschlossen!"
 })
 
 ------------------------
