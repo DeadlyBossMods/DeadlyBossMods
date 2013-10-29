@@ -16,7 +16,9 @@
 ## X-Website: http://www.deadlybossmods.com
 
 Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\LibChatAnims\LibChatAnims.xml
+Libs\LibSharedMedia-3.0\lib.xml
 
 localization.en.lua
 localization.de.lua
