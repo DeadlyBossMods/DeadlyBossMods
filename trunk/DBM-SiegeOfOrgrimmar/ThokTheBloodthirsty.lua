@@ -52,6 +52,7 @@ local specWarnBloodFrenzy			= mod:NewSpecialWarningSpell(143440, nil, nil, nil, 
 local specWarnFixate				= mod:NewSpecialWarningRun(143445, nil, nil, nil, 3)
 local yellFixate					= mod:NewYell(143445)
 local specWarnEnrage				= mod:NewSpecialWarningTarget(145974, mod:IsTank() or mod:CanRemoveEnrage())
+local specWarnBloodFrenzyOver		= mod:NewSpecialWarningEnd(143440)
 --Infusion of Acid
 local specWarnAcidBreath			= mod:NewSpecialWarningStack(143780, mod:IsTank(), 2)
 local specWarnAcidBreathOther		= mod:NewSpecialWarningTarget(143780, mod:IsTank())
@@ -354,15 +355,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnAcidPustules:Show()
 		timerCorrosiveBloodCD:Start(6)
 		timerAcidBreathCD:Start()
+		specWarnBloodFrenzyOver:Show()
 	elseif spellId == 143968 then
 		timerBurningBloodCD:Cancel()
 		timerCorrosiveBloodCD:Cancel()
 		warnFrostPustules:Show()
 		timerFrostBreathCD:Start(6)
+		specWarnBloodFrenzyOver:Show()
 	elseif spellId == 143970 then
 		timerCorrosiveBloodCD:Cancel()
 		warnFirePustules:Show()
 		timerBurningBloodCD:Start(8)
 		timerScorchingBreathCD:Start()
+		specWarnBloodFrenzyOver:Show()
 	end
 end
