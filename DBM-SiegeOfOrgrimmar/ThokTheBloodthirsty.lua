@@ -30,15 +30,15 @@ local warnFixate					= mod:NewTargetAnnounce(143445, 4)
 local warnEnrage					= mod:NewTargetAnnounce(145974, 3, nil, mod:IsTank() or mod:CanRemoveEnrage())
 local warnKey						= mod:NewTargetAnnounce(146589, 2)
 --Infusion of Acid
-local warnAcidPustules				= mod:NewSpellAnnounce(143971, 2)
+local warnAcidPustules				= mod:NewSpellAnnounce(143971, 2, 143791)
 local warnAcidBreath				= mod:NewStackAnnounce(143780, 2, nil, mod:IsTank())
 local warnCorrosiveBlood			= mod:NewTargetAnnounce(143791, 2, nil, false)--Spammy, CD was reduced to 2 seconds
 --Infusion of Frost
-local warnFrostPustules				= mod:NewSpellAnnounce(143968, 3)
+local warnFrostPustules				= mod:NewSpellAnnounce(143968, 3, 143777)
 local warnFrostBreath				= mod:NewStackAnnounce(143773, 2, nil, mod:IsTank())
 local warnFrozenSolid				= mod:NewTargetAnnounce(143777, 4)--This only thing worth announcing. the stacks of Icy Blood cast SUPER often and not useful
 --Infusion of Fire
-local warnFirePustules				= mod:NewSpellAnnounce(143970, 2)
+local warnFirePustules				= mod:NewSpellAnnounce(143970, 2, 143783)
 local warnScorchingBreath			= mod:NewStackAnnounce(143767, 2, nil, mod:IsTank())
 local warnBurningBlood				= mod:NewTargetAnnounce(143783, 3, nil, false, nil, nil, nil, nil, 2)
 
