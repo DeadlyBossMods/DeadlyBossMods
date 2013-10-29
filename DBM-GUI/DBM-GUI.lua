@@ -406,7 +406,7 @@ do
 			name = name:gsub("%$journal:(%d+)", replaceJournalLinks)
 		end
 		local dropdown
-		if soundVal and DBM.Options.ShowAdvSWSounds then
+		if soundVal and DBM.Options.ShowAdvSWSound then
 			dropdown = self:CreateDropdown(nil,sounds,mod.Options[soundVal], function(value)
 				mod.Options[soundVal] = value
 				DBM:PlaySpecialWarningSound(value)
@@ -1927,7 +1927,7 @@ local function CreateOptionsMenu()
 		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 515, true)
 		local check1 = specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
 		local check2 = specArea:CreateCheckButton(L.SpecWarn_FlashFrame, true, nil, "ShowFlashFrame")
-		local check3 = specArea:CreateCheckButton(L.SpecWarn_AdSound, true, nil, "ShowAdvSWSounds")
+		local check3 = specArea:CreateCheckButton(L.SpecWarn_AdSound, true, nil, "ShowAdvSWSound")
 
 		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
 		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)
@@ -2232,7 +2232,7 @@ local function CreateOptionsMenu()
 		resetbutton:SetScript("OnClick", function()
 				DBM.Options.ShowSpecialWarnings = DBM.DefaultOptions.ShowSpecialWarnings
 				DBM.Options.ShowFlashFrame = DBM.DefaultOptions.ShowFlashFrame
-				DBM.Options.ShowAdvSWSounds = DBM.DefaultOptions.ShowAdvSWSounds
+				DBM.Options.ShowAdvSWSound = DBM.DefaultOptions.ShowAdvSWSound
 				DBM.Options.SpecialWarningFont = DBM.DefaultOptions.SpecialWarningFont
 				DBM.Options.SpecialWarningSound = DBM.DefaultOptions.SpecialWarningSound
 				DBM.Options.SpecialWarningSound2 = DBM.DefaultOptions.SpecialWarningSound2
@@ -2258,7 +2258,7 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
 				check1:SetChecked(DBM.Options.ShowSpecialWarnings)
 				check2:SetChecked(DBM.Options.ShowFlashFrame)
-				check3:SetChecked(DBM.Options.ShowAdvSWSounds)
+				check3:SetChecked(DBM.Options.ShowAdvSWSound)
 				FontDropDown:SetSelectedValue(DBM.Options.SpecialWarningFont)
 				SpecialWarnSoundDropDown:SetSelectedValue(DBM.Options.SpecialWarningSound)
 				SpecialWarnSoundDropDown2:SetSelectedValue(DBM.Options.SpecialWarningSound2)
