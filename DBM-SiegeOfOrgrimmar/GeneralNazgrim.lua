@@ -66,7 +66,7 @@ local specWarnWarSong				= mod:NewSpecialWarningSpell(143503, nil, nil, nil, 2)
 local specWarnIronstorm				= mod:NewSpecialWarningInterrupt(143420, mod:IsMelee())--Only needs to be interrupted if melee are near it
 local specWarnArcaneShock			= mod:NewSpecialWarningInterrupt(143432, false)--Spamy as all fuck, so off by default unless maybe heroic
 local specWarnMagistrike			= mod:NewSpecialWarningInterrupt(143431, false)--Spamy as all fuck, so off by default unless maybe heroic
-local specWarnEmpoweredChainHeal	= mod:NewSpecialWarningInterrupt("OptionVersion2", 143473, not mod:IsHealer())--Concerns everyone, if not interrupted will heal boss for a TON
+local specWarnEmpoweredChainHeal	= mod:NewSpecialWarningInterrupt("OptionVersion3", 143473, not mod:IsHealer())--Concerns everyone, if not interrupted will heal boss for a TON
 local specWarnAssassinsMark			= mod:NewSpecialWarningYou(143480)
 local yellAssassinsMark				= mod:NewYell(143480)
 local specWarnAssassinsMarkOther	= mod:NewSpecialWarningTarget(143480, false)
@@ -88,7 +88,7 @@ local timerCoolingOff				= mod:NewBuffFadesTimer(15, 143484)
 local timerEmpoweredChainHealCD		= mod:NewNextSourceTimer(6, 143473)
 
 local countdownAdds					= mod:NewCountdown("OptionVersion2", 45, "ej7920", not mod:IsHealer())
-local countdownCoolingOff			= mod:NewCountdownFades(15, 143484, nil, nil, nil, nil, true)
+local countdownCoolingOff			= mod:NewCountdownFades("Alt15", 143484)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 

@@ -49,8 +49,8 @@ local specWarnAutomatedShredder			= mod:NewSpecialWarningSpell("ej8199", mod:IsT
 local specWarnDeathFromAbove			= mod:NewSpecialWarningSpell(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
-local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("OptionVersion2", "ej8212", not mod:IsHealer())
-local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("OptionVersion2", "ej8202", false)--Not all in raid need, just those assigned
+local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("OptionVersion3", "ej8212", not mod:IsHealer())
+local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("OptionVersion3", "ej8202", false)--Not all in raid need, just those assigned
 local specWarnShockwaveMissileActive	= mod:NewSpecialWarningSpell("ej8204", nil, nil, nil, 2)
 local specWarnReadyToGo					= mod:NewSpecialWarningTarget(145580)
 local specWarnLaserFixate				= mod:NewSpecialWarningRun(143828)
@@ -80,7 +80,7 @@ local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269, nil, false)--Many m
 
 local countdownAssemblyLine				= mod:NewCountdown(40, "ej8202", false)
 local countdownShredder					= mod:NewCountdown(60, "ej8199", mod:IsTank())
-local countdownElectroStatic			= mod:NewCountdown(17, 143385, mod:IsTank(), nil, nil, nil, true)
+local countdownElectroStatic			= mod:NewCountdown("Alt17", 143385, mod:IsTank())
 
 local soundMineFixate					= mod:NewSound("ej8212", nil, mod:IsMelee())--No strat involves ranged moving for these, they should die before reaching ranged. But melee must run out.
 local soundLaserFixate					= mod:NewSound(143828, nil, false)

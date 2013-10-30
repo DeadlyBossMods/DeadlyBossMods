@@ -511,7 +511,7 @@ do
 		end
 
 	end
-	
+
 
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss" which only trigger the event for the given unit ids
 	function DBM:RegisterEvents(...)
@@ -545,11 +545,11 @@ do
 			end
 		end
 	end
-	
+
 	local function unregisterEvent(mod, event)
 		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 			local event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
-			if event:sub(event:len() - 10) == "_UNFILTERED" then 
+			if event:sub(event:len() - 10) == "_UNFILTERED" then
 				mainFrame:UnregisterEvent(event:sub(0, -12))
 			else
 				unregisterUnitEvent(mod, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
@@ -705,10 +705,10 @@ end
 --  OnLoad  --
 --------------
 do
-	
+
 	local isLoaded = false
 	local onLoadCallbacks = {}
-	
+
 	-- register a callback that will be executed once the addon is fully loaded (ADDON_LOADED fired, saved vars are available)
 	function DBM:RegisterOnLoadCallback(cb)
 		if isLoaded then
@@ -717,7 +717,7 @@ do
 			onLoadCallbacks[#onLoadCallbacks + 1] = cb
 		end
 	end
-	
+
 	local function showOldVerWarning()
 		local popup = CreateFrame("Frame", nil, UIParent)
 		popup:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",
@@ -1244,7 +1244,7 @@ end
 
 do
 	local sortMe = {}
-	
+
 	local function sort(v1, v2)
 		if v1.revision and not v2.revision then
 			return true
@@ -1428,7 +1428,7 @@ do
 			DBM:ShowRaidIDRequestResults()
 		end
 	end
-	
+
 	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", linkHook) -- handles the weird case that the default chat frame is not one of the normal chat frames (3rd party chat frames or whatever causes this)
 	local i = 1
 	while _G["ChatFrame" .. i] do
@@ -1572,10 +1572,10 @@ end
 -------------------------------------------------
 do
 	local inRaid = false
-	
+
 	local raidUIds = {}
 	local raidGuids = {}
-	
+
 
 	--	save playerinfo into raid table on load. (for solo raid)
 	DBM:RegisterOnLoadCallback(function()
@@ -1808,7 +1808,7 @@ do
 			end
 		end
 	end
-	
+
 	local function soloIterator(_, state)
 		if not state then -- no state == first call
 			return "player", 0
@@ -2341,7 +2341,7 @@ do
 			DBM:StartCombat(mod, delay + lag, "SYNC from - "..sender, true, startHp)
 		end
 	end
-	
+
 	syncHandlers["HF"] = function(sender, mod, modRevision)
 		mod = DBM:GetModByName(mod or "")
 		modRevision = tonumber(modRevision or 0) or 0
@@ -2388,7 +2388,7 @@ do
 		end
 		--Cancel any existing pull timers before creating new ones, we don't want double countdowns or mismatching blizz countdown text (cause you can't call another one if one is in progress)
 		if not DBM.Options.DontShowPT and DBM.Bars:GetBar(DBM_CORE_TIMER_PULL) then
-			DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL) 
+			DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
 		end
 		if not DBM.Options.DontPlayPTCountdown then
 			dummyMod.countdown:Cancel()
@@ -2435,7 +2435,7 @@ do
 			raid[sender].bwrevision = tonumber(bwrevision)
 		end
 	end
-	
+
 	syncHandlers["VRA"] = function(sender, bwarevision)--Sent by bigwigs Alphas
 		if bwarevision and raid[sender] then
 			raid[sender].bwarevision = tonumber(bwarevision)
@@ -2524,7 +2524,7 @@ do
 		local _, _, home, world = GetNetStats()
 		sendSync("LAG", ("%d\t%d"):format(home, world))
 	end
-	
+
 	syncHandlers["LAG"] = function(sender, homelag, worldlag)
 		homelag, worldlag = tonumber(homelag or ""), tonumber(worldlag or "")
 		if homelag and worldlag and raid[sender] then
@@ -2606,7 +2606,7 @@ do
 			DBM:Unschedule(autoDecline)
 			DBM:Schedule(59, autoDecline, sender)
 			inspopup:Hide()
-			if savedSender ~= sender then 
+			if savedSender ~= sender then
 				if savedSender then
 					autoDecline(savedSender, 1) -- Do not allow multiple popups, so auto decline to previous sender.
 				end
@@ -2889,7 +2889,7 @@ end
 -----------------------
 do
 	local frame, fontstring, fontstringFooter
-	
+
 	local function createFrame()
 		frame = CreateFrame("Frame", nil, UIParent)
 		frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
@@ -3337,7 +3337,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		if dummyMod then--stop pull timer, warning, countdowns
 			dummyMod.countdown:Cancel()
 			dummyMod.text:Cancel()
-			DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL) 
+			DBM.Bars:CancelBar(DBM_CORE_TIMER_PULL)
 			TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 		end
 		if mod.hotfixNoticeRev then
@@ -3761,7 +3761,7 @@ do
 	function DBM:RequestTimers()
 		local bestClient
 		for i, v in pairs(raid) do
-			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all. 
+			-- If bestClient player's realm is not same with your's, timer recovery by bestClient not works at all.
 			-- SendAddonMessage target channel is "WHISPER" and target player is other realm, no msg sends at all. At same realm, message sending works fine. (Maybe bliz bug or SendAddonMessage function restriction?)
 			if v.name ~= playerName and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > ((bestClient and bestClient.revision) or 0) and not select(2, UnitName(v.id)) and not clientUsed[v.name] then
 				bestClient = v
@@ -3963,7 +3963,7 @@ do
 		end
 		return alive
 	end
-	
+
 	local function getNumRealAlivePlayers()
 		local alive = 0
 		local currentMapId = GetCurrentMapAreaID()
@@ -4308,7 +4308,7 @@ function DBM:UpdateMapSizes()
 	if dims then
 		currentSizes = dims
 		return
-	end 
+	end
 
 	-- failed, try Blizzard's map size
 	if not (a1 and b1 and c1 and d1) then
@@ -4802,7 +4802,7 @@ function bossModPrototype:CheckTankDistance(cid, distance, defaultReturn)
 		--Tank in range, return true.
 		return true
 	end
-	return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire. But some spells will prefer not to fire(i.e : Galakras tower spell), we can define it on this function calling. 
+	return (defaultReturn == nil) or defaultReturn--When we simply can't figure anything out, return true and allow warnings using this filter to fire. But some spells will prefer not to fire(i.e : Galakras tower spell), we can define it on this function calling.
 end
 
 function bossModPrototype:Stop(cid)
@@ -4962,7 +4962,7 @@ function bossModPrototype:IsSpellCaster(includePal)
 end
 
 function bossModPrototype:IsTanking(unit, boss)
-	if not unit then return false end 
+	if not unit then return false end
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
@@ -5073,8 +5073,8 @@ do
 				local displayText = table.concat(self.combinedtext, "<, >")
 				if self.combinedcount == 1 then
 					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS
-				elseif self.combinedcount > 1 then 
-					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS2:format(self.combinedcount) 
+				elseif self.combinedcount > 1 then
+					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS2:format(self.combinedcount)
 				end
 				text = ("%s%s%s|r%s"):format(
 					(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
@@ -5189,8 +5189,9 @@ do
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(spellId, 14)
-			spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound = color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion
+			spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound = color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, temp
 		end
 		local unparsedId = spellId
 		local spellName
@@ -5274,16 +5275,28 @@ do
 		return newAnnounce(self, "stack", spellId, color or 2, ...)
 	end
 
-	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, ...)
-		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, ...)
+	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName, noArg, noSound, optionVersion)
+		local spellId, color, castTime, icon, optionDefault, optionName, noArg, noSound, optionVersion = spellId, color, castTime, icon, optionDefault, optionName, noArg, noSound, optionVersion
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
+			optionVersion = string.sub(spellId, 14)
+			spellId, color, castTime, icon, optionDefault, optionName, noArg, noSound = color, castTime, icon, optionDefault, optionName, noArg, noSound, temp
+		end
+		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime, nil, noSound, optionVersion)
 	end
 
 	function bossModPrototype:NewSoonAnnounce(spellId, color, ...)
 		return newAnnounce(self, "soon", spellId, color or 1, ...)
 	end
 
-	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, ...)
-		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time, ...)
+	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName, noArg, noSound, optionVersion)
+		local spellId, time, color, icon, optionDefault, optionName, noArg, noSound, optionVersion = spellId, time, color, icon, optionDefault, optionName, noArg, noSound, optionVersion
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
+			optionVersion = string.sub(spellId, 14)
+			spellId, time, color, icon, optionDefault, optionName, noArg, noSound = time, color, icon, optionDefault, optionName, noArg, noSound, temp
+		end
+		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time, noSound, optionVersion)
 	end
 
 	function bossModPrototype:NewPhaseAnnounce(phase, color, icon, ...)
@@ -5309,8 +5322,9 @@ do
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(spellId, 14)
-			spellId, optionName, optionDefault = optionName, optionDefault, optionVersion
+			spellId, optionName, optionDefault = optionName, optionDefault, temp
 		end
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
@@ -5360,7 +5374,7 @@ do
 	local function showCountdown(timer)
 		TimerTracker_OnEvent(TimerTracker, "START_TIMER", 2, timer, timer)
 	end
-	
+
 	local function stopCountdown()
 		TimerTracker_OnEvent(TimerTracker, "PLAYER_ENTERING_WORLD")
 	end
@@ -5373,7 +5387,7 @@ do
 			if timer <= count then count = floor(timer) end
 			if DBM.Options.ShowCountdownText and not (self.textDisabled or self.alternateVoice) then
 				stopCountdown()
-				if timer >= count then 
+				if timer >= count then
 					DBM:Schedule(timer-count, showCountdown, count)
 				else
 					DBM:Schedule(timer%1, showCountdown, floor(timer))
@@ -5425,8 +5439,13 @@ do
 			return
 		end
 		if type(timer) == "string" and timer:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(timer, 14)
-			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion
+			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, temp
+		end
+		if type(timer) == "string" and timer:match("Alt") then
+			altVoice = true
+			timer = tonumber(string.sub(timer, 4))
 		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
@@ -5471,8 +5490,9 @@ do
 			return
 		end
 		if type(timer) == "string" and timer:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(timer, 14)
-			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion
+			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, temp
 		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
@@ -5508,7 +5528,7 @@ do
 		end
 		tinsert(self.countdowns, obj)
 		return obj
-	end	
+	end
 end
 
 ------------------------
@@ -5557,8 +5577,9 @@ do
 			return
 		end
 		if type(timer) == "string" and timer:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(timer, 14)
-			timer, spellId, optionDefault, optionName = spellId, optionDefault, optionName, optionVersion
+			timer, spellId, optionDefault, optionName = spellId, optionDefault, optionName, temp
 		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
@@ -5604,8 +5625,9 @@ do
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(spellId, 14)
-			spellId, yellText, optionDefault, optionName, chatType = yellText, optionDefault, optionName, chatType, optionVersion
+			spellId, yellText, optionDefault, optionName, chatType = yellText, optionDefault, optionName, chatType, temp
 		end
 		local displayText
 		if not yellText then
@@ -5780,8 +5802,9 @@ do
 			return
 		end
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(spellId, 14)
-			spellId, stacks, optionDefault, optionName, noSound, runSound = stacks, optionDefault, optionName, noSound, runSound, optionVersion
+			spellId, optionDefault, optionName, noSound, runSound = optionDefault, optionName, noSound, runSound, temp
 		end
 		if runSound == true then
 			runSound = 2
@@ -5881,7 +5904,7 @@ do
 	function bossModPrototype:NewSpecialWarningCast(text, optionDefault, ...)
 		return newSpecialWarning(self, "cast", text, nil, optionDefault, ...)
 	end
-	
+
 	function bossModPrototype:NewSpecialWarningReflect(text, optionDefault, ...)
 		return newSpecialWarning(self, "reflect", text, nil, optionDefault, ...)
 	end
@@ -5890,8 +5913,14 @@ do
 		return newSpecialWarning(self, "count", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, ...)
-		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion)
+		local text, optionDefault, stacks, optionName, noSound, runSound, optionVersion = text, optionDefault, stacks, optionName, noSound, runSound, optionVersion
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
+			optionVersion = string.sub(spellId, 14)
+			text, optionDefault, stacks, optionName, noSound, runSound = optionDefault, stacks, optionName, noSound, runSound, temp
+		end
+		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion)
 	end
 
 	function bossModPrototype:NewSpecialWarningSwitch(text, optionDefault, ...)
@@ -5899,9 +5928,15 @@ do
 	end
 
 	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
-		return newSpecialWarning(self, "prewarn", text, time, optionDefault, ...)
+		local text, optionDefault, time, optionName, noSound, runSound, optionVersion = text, optionDefault, time, optionName, noSound, runSound, optionVersion
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			local temp = optionVersion
+			optionVersion = string.sub(spellId, 14)
+			text, optionDefault, time, optionName, noSound, runSound = optionDefault, time, optionName, noSound, runSound, temp
+		end
+		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion)
 	end
-	
+
 	function DBM:PlayCountSound(number, forceVoice)
 		if number > 10 then return end
 		local voice, voice2
@@ -5924,7 +5959,7 @@ do
 			PlaySoundFile("Interface\\AddOns\\DBM-Core\\Sounds\\"..voice.."\\"..number..".ogg")
 		end
 	end
-	
+
 	function DBM:PlaySpecialWarningSound(soundId)
 		local sound = type(soundId) == "number" and DBM.Options["SpecialWarningSound" .. (soundId == 1 and "" or soundId)] or soundId or DBM.Options.SpecialWarningSound
 		if DBM.Options.UseMasterVolume then
@@ -6197,8 +6232,9 @@ do
 	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion)--countdownDefault should be a number, such as 5 or 10 hard coded in boss mod to say "audio countdown is on by default for this timer and default count start point is 5 or 10
 		local timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion = timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion
 		if type(timer) == "string" and timer:match("OptionVersion") then
+			local temp = optionVersion
 			optionVersion = string.sub(timer, 14)
-			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault = spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion
+			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault = spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, temp
 		end
 		-- new argument timerText is optional (usually only required for achievement timers as they have looooong names)
 		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
@@ -6267,7 +6303,7 @@ do
 	end
 
 	function bossModPrototype:NewCastTimer(timer, ...)
-		if timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
+		if tonumber(timer) and timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
 			timer = select(7, GetSpellInfo(spellId)) or 1000 -- GetSpellInfo takes YOUR spell haste into account...WTF?
 			local spellHaste = select(7, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
