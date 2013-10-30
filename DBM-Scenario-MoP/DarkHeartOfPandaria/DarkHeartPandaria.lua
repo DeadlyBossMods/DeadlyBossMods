@@ -16,7 +16,7 @@ mod:RegisterEventsInCombat(
 
 --Trash (and somewhat Urtharges)
 local warnStoneRain				= mod:NewSpellAnnounce(142139, 3)--Hit debuff, interrupt or move out of it
-local warnSpellShatter			= mod:NewCastAnnounce(141421, 3, 2, nil, mod:IsSpellCaster(), nil, nil, nil, 2)--Spell interrupt. Cast time is long enough to /stopcasting this
+local warnSpellShatter			= mod:NewCastAnnounce("OptionVersion2", 141421, 3, 2, nil, mod:IsSpellCaster())--Spell interrupt. Cast time is long enough to /stopcasting this
 local warnSummonFieryAnger		= mod:NewCastAnnounce(141488, 3, 2.5)
 local warnDetonate				= mod:NewCastAnnounce(141456, 4, 5)--Can kill or run away from. It's actually more practical to ignore it and let it kill itself to speed up run
 --Urtharges the Destroyer
@@ -27,7 +27,7 @@ local warnMalevolentForce		= mod:NewCastAnnounce(142840, 4, 2)
 
 --Trash (and somewhat Urtharges)
 local specWarnStoneRain			= mod:NewSpecialWarningSpell(142139, nil, nil, nil, 2)--Let you choose to interrupt it or move out of it.
-local specWarnSpellShatter		= mod:NewSpecialWarningCast(141421, mod:IsSpellCaster(), nil, nil, nil, 2)
+local specWarnSpellShatter		= mod:NewSpecialWarningCast("OptionVersion2", 141421, mod:IsSpellCaster())
 local specWarnSummonFieryAnger	= mod:NewSpecialWarningInterrupt(141488)
 local specWarnDetonate			= mod:NewSpecialWarningRun(141456)--Technically can kill it too vs run, but I favor run strategy more.
 --Urtharges the Destroyer

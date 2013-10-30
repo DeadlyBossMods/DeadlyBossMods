@@ -5182,10 +5182,15 @@ do
 	end
 
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionSaveVar)
+	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion)
+		local spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion = spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion
 		if not spellId then
 			error("newAnnounce: you must provide spellId", 2)
 			return
+		end
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			optionVersion = string.sub(spellId, 14)
+			spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound = color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion
 		end
 		local unparsedId = spellId
 		local spellName
@@ -5229,7 +5234,7 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "announce")
 		elseif not (optionName == false) then
-			obj.option = "Announce"..unparsedId..announceType..(optionSaveVar or "")
+			obj.option = "Announce"..unparsedId..announceType..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, "announce")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(unparsedId)
 		end
@@ -5297,10 +5302,15 @@ end
 do
 	local soundPrototype = {}
 	local mt = { __index = soundPrototype }
-	function bossModPrototype:NewSound(spellId, optionName, optionDefault, optionSaveVar)
+	function bossModPrototype:NewSound(spellId, optionName, optionDefault, optionVersion)
+		local spellId, optionName, optionDefault, optionVersion = spellId, optionName, optionDefault, optionVersion
 		if not spellId and not optionName then
 			error("NewSound: you must provide either spellId or optionName", 2)
 			return
+		end
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			optionVersion = string.sub(spellId, 14)
+			spellId, optionName, optionDefault = optionName, optionDefault, optionVersion
 		end
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
@@ -5313,7 +5323,7 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
-			obj.option = "Sound"..spellId..(optionSaveVar or "")
+			obj.option = "Sound"..spellId..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId)
 		end
@@ -5408,10 +5418,15 @@ do
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
 
-	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionSaveVar)
+	function bossModPrototype:NewCountdown(timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion)
+		local timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion = timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion
 		if not spellId and not optionName then
 			error("NewCountdown: you must provide either spellId or optionName", 2)
 			return
+		end
+		if type(timer) == "string" and timer:match("OptionVersion") then
+			optionVersion = string.sub(timer, 14)
+			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion
 		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
@@ -5423,7 +5438,7 @@ do
 		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
-				id = optionName or "Countdown"..spellId..(optionSaveVar or ""),
+				id = optionName or "Countdown"..spellId..(optionVersion or ""),
 				sound1 = sound1,
 				sound2 = sound2,
 				sound3 = sound3,
@@ -5449,10 +5464,15 @@ do
 		return obj
 	end
 
-	function bossModPrototype:NewCountdownFades(timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionSaveVar)
+	function bossModPrototype:NewCountdownFades(timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion)
+		local timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion = timer, spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion
 		if not spellId and not optionName then
 			error("NewCountdownFades: you must provide either spellId or optionName", 2)
 			return
+		end
+		if type(timer) == "string" and timer:match("OptionVersion") then
+			optionVersion = string.sub(timer, 14)
+			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, optionVersion
 		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
@@ -5464,7 +5484,7 @@ do
 		spellId = spellId or 39505
 		local obj = setmetatable(
 			{
-				id = optionName or "CountdownFades"..spellId..(optionSaveVar or ""),
+				id = optionName or "CountdownFades"..spellId..(optionVersion or ""),
 				sound1 = sound1,
 				sound2 = sound2,
 				sound3 = sound3,
@@ -5530,10 +5550,15 @@ do
 	end
 	countoutProtoType.Stop = countoutProtoType.Cancel
 
-	function bossModPrototype:NewCountout(timer, spellId, optionDefault, optionName, optionSaveVar)
+	function bossModPrototype:NewCountout(timer, spellId, optionDefault, optionName, optionVersion)
+		local timer, spellId, optionDefault, optionName, optionVersion = timer, spellId, optionDefault, optionName, optionVersion
 		if not spellId and not optionName then
 			error("NewCountout: you must provide either spellId or optionName", 2)
 			return
+		end
+		if type(timer) == "string" and timer:match("OptionVersion") then
+			optionVersion = string.sub(timer, 14)
+			timer, spellId, optionDefault, optionName = spellId, optionDefault, optionName, optionVersion
 		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
@@ -5558,7 +5583,7 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
-			obj.option = "Countout"..spellId..(optionSaveVar or "")
+			obj.option = "Countout"..spellId..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_COUNTOUT_OPTION_TEXT:format(spellId)
 		end
@@ -5572,10 +5597,15 @@ end
 do
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
-	function bossModPrototype:NewYell(spellId, yellText, optionDefault, optionName, chatType, optionSaveVar)
+	function bossModPrototype:NewYell(spellId, yellText, optionDefault, optionName, chatType, optionVersion)
+		local spellId, yellText, optionDefault, optionName, chatType, optionVersion = spellId, yellText, optionDefault, optionName, chatType, optionVersion
 		if not spellId and not yellText then
 			error("NewYell: you must provide either spellId or yellText", 2)
 			return
+		end
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			optionVersion = string.sub(spellId, 14)
+			spellId, yellText, optionDefault, optionName, chatType = yellText, optionDefault, optionName, chatType, optionVersion
 		end
 		local displayText
 		if not yellText then
@@ -5597,7 +5627,7 @@ do
 			obj.option = optionName
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 		elseif not (optionName == false) then
-			obj.option = "Yell"..(spellId or yellText)..(optionSaveVar or "")
+			obj.option = "Yell"..(spellId or yellText)..(optionVersion or "")
 			self:AddBoolOption(obj.option, optionDefault, "misc")
 			self.localization.options[obj.option] = DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId)
 		end
@@ -5743,10 +5773,15 @@ do
 		return obj
 	end
 
-	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionSaveVar)
+	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion)
+		local spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion = spellId, stacks, optionDefault, optionName, noSound, runSound, optionVersion
 		if not spellId then
 			error("newSpecialWarning: you must provide spellId", 2)
 			return
+		end
+		if type(spellId) == "string" and spellId:match("OptionVersion") then
+			optionVersion = string.sub(spellId, 14)
+			spellId, stacks, optionDefault, optionName, noSound, runSound = stacks, optionDefault, optionName, noSound, runSound, optionVersion
 		end
 		if runSound == true then
 			runSound = 2
@@ -5783,7 +5818,7 @@ do
 		if optionName then
 			obj.option = optionName
 		elseif not (optionName == false) then
-			obj.option = "SpecWarn"..spellId..announceType..(optionSaveVar or "")
+			obj.option = "SpecWarn"..spellId..announceType..(optionVersion or "")
 			if announceType == "stack" then
 				self.localization.options[obj.option] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
 			elseif announceType == "prewarn" then
@@ -6159,10 +6194,15 @@ do
 	-- todo: disable the timer if the player already has the achievement and when the ACHIEVEMENT_EARNED event is fired
 	-- problem: heroic/normal achievements :[
 	-- local achievementTimers = {}
-	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionSaveVar)--countdownDefault should be a number, such as 5 or 10 hard coded in boss mod to say "audio countdown is on by default for this timer and default count start point is 5 or 10
+	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion)--countdownDefault should be a number, such as 5 or 10 hard coded in boss mod to say "audio countdown is on by default for this timer and default count start point is 5 or 10
+		local timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion = timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion
+		if type(timer) == "string" and timer:match("OptionVersion") then
+			optionVersion = string.sub(timer, 14)
+			timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault = spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion
+		end
 		-- new argument timerText is optional (usually only required for achievement timers as they have looooong names)
 		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
-			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault)
+			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion)
 		end
 		local spellName, icon
 		local unparsedId = spellId
@@ -6186,7 +6226,7 @@ do
 			end
 		end
 		spellName = spellName or tostring(spellId)
-		local id = "Timer"..(spellId or 0)..timerType..(optionSaveVar or "")
+		local id = "Timer"..(spellId or 0)..timerType..(optionVersion or "")
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[timerText],
