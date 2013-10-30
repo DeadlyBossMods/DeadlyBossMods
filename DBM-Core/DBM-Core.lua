@@ -5494,6 +5494,10 @@ do
 			optionVersion = string.sub(timer, 14)
 			timer, spellId, optionDefault, optionName, count, textDisabled, altVoice = spellId, optionDefault, optionName, count, textDisabled, altVoice, temp
 		end
+		if type(timer) == "string" and timer:match("Alt") then
+			altVoice = true
+			timer = tonumber(string.sub(timer, 4))
+		end
 		local sound5 = self:NewSound(5, false, true)
 		local sound4 = self:NewSound(4, false, true)
 		local sound3 = self:NewSound(3, false, true)
