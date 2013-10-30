@@ -75,7 +75,7 @@ local timerProjection			= mod:NewCastTimer(6, 146822)
 local berserkTimer				= mod:NewBerserkTimer(600)
 
 local countdownSwellingPride	= mod:NewCountdown(75.5, 144400)
-local countdownReflection		= mod:NewCountdown(25, 144800, false, nil, nil, nil, true)
+local countdownReflection		= mod:NewCountdown("Alt25", 144800, false)
 
 mod:AddInfoFrameOption("ej8255")
 mod:AddSetIconOption("SetIconOnMark", 144351, false)

@@ -54,7 +54,7 @@ local warnSparkofLife			= mod:NewSpellAnnounce(142694, 3, nil, false)
 local warnBreathofFire			= mod:NewSpellAnnounce(146222, 3)--Do not have timer for this yet, add not alive long enough.
 local warnGustingCraneKick		= mod:NewSpellAnnounce(146180, 3)
 
-local specWarnSuperNova			= mod:NewSpecialWarningSpell("OptionVersion2", 146815, false, nil, nil, 2)
+local specWarnSuperNova			= mod:NewSpecialWarningSpell("OptionVersion3", 146815, false, nil, nil, 2)
 --Massive Crate of Goods
 local specWarnSetToBlowYou		= mod:NewSpecialWarningYou(145987)
 local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)

@@ -42,11 +42,11 @@ local warnFirePustules				= mod:NewSpellAnnounce(143970, 2, 143783)
 local warnScorchingBreath			= mod:NewStackAnnounce(143767, 2, nil, mod:IsTank())
 local warnBurningBlood				= mod:NewTargetAnnounce("OptionVersion2", 143783, 3, nil, false)
 
-local specWarnDevotionAura			= mod:NewSpecialWarningFades("OptionVersion2", 31821, mod:IsSpellCaster(true))
+local specWarnDevotionAura			= mod:NewSpecialWarningFades("OptionVersion3", 31821, mod:IsSpellCaster(true))
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
 local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTarget(143766, mod:IsTank())
-local specWarnDeafeningScreech		= mod:NewSpecialWarningCast("OptionVersion2", 143343, mod:IsSpellCaster(), nil, nil, 2)
+local specWarnDeafeningScreech		= mod:NewSpecialWarningCast("OptionVersion3", 143343, mod:IsSpellCaster(), nil, nil, 2)
 --Stage 2: Frenzy for Blood!
 local specWarnBloodFrenzy			= mod:NewSpecialWarningSpell(143440, nil, nil, nil, 2)
 local specWarnFixate				= mod:NewSpecialWarningRun(143445, nil, nil, nil, 3)
