@@ -20,11 +20,11 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
-local warnDemolisherCanon		= mod:NewSpellAnnounce(144154, 1, nil, false, nil, nil, nil, nil, 2)--This spell uses in both mode.
+local warnDemolisherCanon		= mod:NewSpellAnnounce("OptionVersion2", 144154, 1, nil, false)--This spell uses in both mode.
 --Assault Mode
 local warnBorerDrill			= mod:NewSpellAnnounce(144218, 4)
-local warnLaserBurn				= mod:NewTargetAnnounce(144459, 2, nil, false, nil, nil, nil, nil, 2)
-local warnMortarCannon			= mod:NewSpellAnnounce(144316, 3, nil, false, nil, nil, nil, nil, 2)--Could not get target scanning working.
+local warnLaserBurn				= mod:NewTargetAnnounce("OptionVersion2", 144459, 2, nil, false)
+local warnMortarCannon			= mod:NewSpellAnnounce("OptionVersion2", 144316, 3, nil, false)--Could not get target scanning working.
 local warnCrawlerMine			= mod:NewSpellAnnounce(144673, 3)
 local warnIgniteArmor			= mod:NewStackAnnounce(144467, 2, nil, mod:IsTank())--Seems redundant to count debuffs and warn for breath, so just do debuffs
 local warnRicochet				= mod:NewSpellAnnounce(144356, 3)
@@ -48,12 +48,12 @@ local specWarnExplosiveTar		= mod:NewSpecialWarningMove(144498)
 local yellCutterLaser			= mod:NewYell(146325)
 local specWarnMortarBarrage		= mod:NewSpecialWarningSpell(144555, nil, nil, nil, 2)
 
-local timerDemolisherCanonCD	= mod:NewCDTimer(8.5, 144154, nil, false, nil, nil, nil, nil, nil, nil, 2)--Spammy. off by default
+local timerDemolisherCanonCD	= mod:NewCDTimer("OptionVersion2", 8.5, 144154, nil, false)--Spammy. off by default
 --Assault Mode
 local timerAssaultModeCD		= mod:NewNextTimer(62, 141395, nil, "timerAssaultModeCD")--141395 is correct timer text but it's wrong spellid, custom option text for real timer description
 local timerIgniteArmor			= mod:NewTargetTimer(30, 144467, nil, mod:IsTank() or mod:IsHealer())
 local timerIgniteArmorCD		= mod:NewCDTimer(10, 144467, nil, mod:IsTank())
-local timerLaserBurnCD			= mod:NewCDTimer(11.5, 144459, nil, false, nil, nil, nil, nil, nil, nil, 2)--Also off by default(bar spam)
+local timerLaserBurnCD			= mod:NewCDTimer("OptionVersion2", 11.5, 144459, nil, false)--Also off by default(bar spam)
 local timerBorerDrillCD			= mod:NewCDTimer(17, 144218)
 local timerCrawlerMineCD		= mod:NewCDTimer(30, 144673)
 local timerRicochetCD			= mod:NewCDTimer(15, 144356)

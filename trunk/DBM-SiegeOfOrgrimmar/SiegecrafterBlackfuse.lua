@@ -30,7 +30,7 @@ local warnAutomatedShredder				= mod:NewSpellAnnounce("ej8199", 3, 85914)
 local warnOverload						= mod:NewStackAnnounce(145444, 3)
 local warnDeathFromAbove				= mod:NewTargetAnnounce(144208, 4)--Player target, not vulnerable shredder target. (should always be cast on highest threat target, but i like it still being a "target" warning)
 --The Assembly Line
-local warnAssemblyLine					= mod:NewSpellAnnounce("ej8202", 3, 85914, mod:IsDps(), nil, nil, nil, nil, 2)
+local warnAssemblyLine					= mod:NewSpellAnnounce("OptionVersion2", "ej8202", 3, 85914, mod:IsDps())
 local warnShockwaveMissileActivated		= mod:NewSpellAnnounce("ej8204", 3, 143639)--Unsure if this will even show in CLEU, may need UNIT event or emote
 local warnShockwaveMissile				= mod:NewCountAnnounce(143641, 3)
 --local warnLaserTurretActivated			= mod:NewSpellAnnounce("ej8208", 3, 143867, false)--No event to detect it
@@ -49,8 +49,8 @@ local specWarnAutomatedShredder			= mod:NewSpecialWarningSpell("ej8199", mod:IsT
 local specWarnDeathFromAbove			= mod:NewSpecialWarningSpell(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
-local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("ej8212", not mod:IsHealer(), nil, nil, nil, 2)
-local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("ej8202", false, nil, nil, nil, 2)--Not all in raid need, just those assigned
+local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("OptionVersion2", "ej8212", not mod:IsHealer())
+local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("OptionVersion2", "ej8202", false)--Not all in raid need, just those assigned
 local specWarnShockwaveMissileActive	= mod:NewSpecialWarningSpell("ej8204", nil, nil, nil, 2)
 local specWarnReadyToGo					= mod:NewSpecialWarningTarget(145580)
 local specWarnLaserFixate				= mod:NewSpecialWarningRun(143828)
@@ -66,13 +66,13 @@ local timerElectroStaticCharge			= mod:NewTargetTimer(60, 143385, nil, mod:IsTan
 local timerElectroStaticChargeCD		= mod:NewCDTimer(17, 143385, nil, mod:IsTank())--17-22 second variation
 local timerLaunchSawbladeCD				= mod:NewCDTimer(10, 143265)--10-15sec cd
 --Automated Shredders
-local timerAutomatedShredderCD			= mod:NewNextTimer(60, "ej8199", nil, mod:IsTank(), nil, 85914, nil, nil, nil, nil, 2)
+local timerAutomatedShredderCD			= mod:NewNextTimer("OptionVersion2", 60, "ej8199", nil, mod:IsTank(), nil, 85914)
 local timerOverloadCD					= mod:NewCDCountTimer(10, 145444)
 local timerDeathFromAboveDebuff			= mod:NewTargetTimer(5, 144210, nil, not mod:IsHealer())
 local timerDeathFromAboveCD				= mod:NewNextTimer(40, 144208, nil, not mod:IsHealer())
 --The Assembly Line
-local timerAssemblyLineCD				= mod:NewNextTimer(40, "ej8202", nil, mod:IsDps(), nil, 59193, nil, nil, nil, nil, 2)
-local timerPatternRecognition			= mod:NewBuffFadesTimer(60, 144236, nil, false, nil, nil, nil, nil, nil, 2)
+local timerAssemblyLineCD				= mod:NewNextTimer("OptionVersion2", 40, "ej8202", nil, mod:IsDps(), nil, 59193)
+local timerPatternRecognition			= mod:NewBuffFadesTimer("OptionVersion2", 60, 144236, nil, false)
 --local timerDisintegrationLaserCD		= mod:NewNextCountTimer(10, 143867)
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
 local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)

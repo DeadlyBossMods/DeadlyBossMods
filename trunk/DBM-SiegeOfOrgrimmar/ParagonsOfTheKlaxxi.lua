@@ -31,7 +31,7 @@ local warnGouge						= mod:NewTargetAnnounce(143939, 3, nil, mod:IsTank() or mod
 local warnDeathFromAbove			= mod:NewTargetAnnounce(142232, 3)
 --Xaril the Poisoned-Mind
 local warnToxicInjection			= mod:NewSpellAnnounce(142528, 3)
-local warnCausticBlood				= mod:NewSpellAnnounce(142315, 4, nil, mod:IsTank(), nil, nil, nil, nil, 2)
+local warnCausticBlood				= mod:NewSpellAnnounce("OptionVersion2", 142315, 4, nil, mod:IsTank())
 mod:AddBoolOption("warnToxicCatalyst", true, "announce")
 local warnToxicCatalystBlue			= mod:NewCastAnnounce(142725, 4, nil, nil, nil, false)
 local warnToxicCatalystRed			= mod:NewCastAnnounce(142726, 4, nil, nil, nil, false)
@@ -52,7 +52,7 @@ local warnCalculated				= mod:NewTargetAnnounce(144095, 3)--Wild variation on ti
 local warnInsaneCalculationFire		= mod:NewCastAnnounce(142416, 4)--3 seconds after 144095
 --Ka'roz the Locust
 local warnFlash						= mod:NewCastAnnounce(143709, 3)--62-70
-local warnWhirling					= mod:NewTargetAnnounce(143701, 3, nil, false, nil, nil, nil, nil, 2)--Spammy
+local warnWhirling					= mod:NewTargetAnnounce("OptionVersion2", 143701, 3, nil, false)--Spammy
 local warnHurlAmber					= mod:NewSpellAnnounce(143759, 3)
 --Skeer the Bloodseeker
 local warnBloodletting				= mod:NewSpellAnnounce(143280, 4)

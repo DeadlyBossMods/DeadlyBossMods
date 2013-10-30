@@ -38,8 +38,8 @@ local timerBreathCD						= mod:NewCDTimer(35, 143436, nil, mod:IsTank() or mod:I
 local timerSwirl						= mod:NewBuffActiveTimer(13, 143309)
 local timerShaBoltCD					= mod:NewCDTimer(6, 143295, nil, false)--every 6-20 seconds (yeah it variates that much)
 local timerSwirlCD						= mod:NewCDTimer(48.5, 143309)
-local timerShaResidue					= mod:NewBuffFadesTimer(10, 143459, nil, false, nil, nil, nil, nil, nil, 2)
-local timerPurifiedResidue				= mod:NewBuffFadesTimer(15, 143524, nil, false, nil, nil, nil, nil, nil, 2)
+local timerShaResidue					= mod:NewBuffFadesTimer("OptionVersion2", 10, 143459, nil, false)
+local timerPurifiedResidue				= mod:NewBuffFadesTimer("OptionVersion2", 15, 143524, nil, false)
 local timerSwellingCorruptionCD			= mod:NewCDTimer(75, 143578, nil, nil, nil, 143574)
 
 local berserkTimer						= mod:NewBerserkTimer(605)
