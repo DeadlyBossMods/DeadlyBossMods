@@ -66,7 +66,7 @@ local specWarnPoisonCloud			= mod:NewSpecialWarningMove(147705)
 local specWarnFlamesofGalakrond		= mod:NewSpecialWarningCount(147029, false, nil, nil, 2)--Cast often, so lets make this optional since it's spammy
 local specWarnFlamesofGalakrondYou	= mod:NewSpecialWarningYou(147068)
 local yellFlamesofGalakrond			= mod:NewYell(147068)
-local specWarnFlamesofGalakrondStack= mod:NewSpecialWarningStack("OptionVersion4", 147029, nil, 3)
+local specWarnFlamesofGalakrondStack= mod:NewSpecialWarningStack("OptionVersion4", 147029, nil, 6)
 local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:IsTank())
 
 --Stage 2: Bring Her Down!
@@ -164,7 +164,7 @@ end
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args.spellId == 147029 then
 		local amount = args.amount or 1
-		if amount >= 3 and args:IsPlayer() then
+		if amount >= 6 and args:IsPlayer() then
 			specWarnFlamesofGalakrondStack:Show(amount)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -174,7 +174,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 				if self:IsTanking(uId, bossUnitID) then
 					warnFlamesofGalakrond:Show(args.destName, amount)
 					timerFlamesofGalakrond:Start(args.destName)
-					if amount >= 3 then
+					if amount >= 6 then
 						specWarnFlamesofGalakrondOther:Show(args.destName)
 					end
 				end
