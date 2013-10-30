@@ -5915,9 +5915,9 @@ do
 
 	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion)
 		local text, optionDefault, stacks, optionName, noSound, runSound, optionVersion = text, optionDefault, stacks, optionName, noSound, runSound, optionVersion
-		if type(spellId) == "string" and spellId:match("OptionVersion") then
+		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
-			optionVersion = string.sub(spellId, 14)
+			optionVersion = string.sub(text, 14)
 			text, optionDefault, stacks, optionName, noSound, runSound = optionDefault, stacks, optionName, noSound, runSound, temp
 		end
 		return newSpecialWarning(self, "stack", text, stacks, optionDefault, optionName, noSound, runSound, optionVersion)
@@ -5929,9 +5929,9 @@ do
 
 	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
 		local text, optionDefault, time, optionName, noSound, runSound, optionVersion = text, optionDefault, time, optionName, noSound, runSound, optionVersion
-		if type(spellId) == "string" and spellId:match("OptionVersion") then
+		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
-			optionVersion = string.sub(spellId, 14)
+			optionVersion = string.sub(text, 14)
 			text, optionDefault, time, optionName, noSound, runSound = optionDefault, time, optionName, noSound, runSound, temp
 		end
 		return newSpecialWarning(self, "prewarn", text, time, optionDefault, optionName, noSound, runSound, optionVersion)

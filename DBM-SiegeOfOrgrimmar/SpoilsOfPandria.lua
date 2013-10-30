@@ -26,7 +26,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnSuperNova				= mod:NewCastAnnounce("OptionVersion2", 146815, 4, nil, false)--Heroic
+local warnSuperNova				= mod:NewCastAnnounce("OptionVersion3", 146815, 4, nil, nil, false)--Heroic
 --Massive Crate of Goods
 ----Mogu
 local warnReturnToStone			= mod:NewSpellAnnounce(145489, 2)
