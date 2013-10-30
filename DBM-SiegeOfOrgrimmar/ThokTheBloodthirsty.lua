@@ -19,7 +19,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
-local warnDevotionAura				= mod:NewTargetAnnounce(31821, 1, nil, mod:IsSpellCaster(true), nil, nil, nil, nil, 2)
+local warnDevotionAura				= mod:NewTargetAnnounce("OptionVersion2", 31821, 1, nil, mod:IsSpellCaster(true))
 --Stage 1: A Cry in the Darkness
 local warnFearsomeRoar				= mod:NewStackAnnounce(143766, 2, nil, mod:IsTank())--143426
 local warnAcceleration				= mod:NewStackAnnounce(143411, 3)--Staghelm 2.0
@@ -40,13 +40,13 @@ local warnFrozenSolid				= mod:NewTargetAnnounce(143777, 4)--This only thing wor
 --Infusion of Fire
 local warnFirePustules				= mod:NewSpellAnnounce(143970, 2, 143783)
 local warnScorchingBreath			= mod:NewStackAnnounce(143767, 2, nil, mod:IsTank())
-local warnBurningBlood				= mod:NewTargetAnnounce(143783, 3, nil, false, nil, nil, nil, nil, 2)
+local warnBurningBlood				= mod:NewTargetAnnounce("OptionVersion2", 143783, 3, nil, false)
 
-local specWarnDevotionAura			= mod:NewSpecialWarningFades(31821, mod:IsSpellCaster(true), nil, nil, nil, 2)
+local specWarnDevotionAura			= mod:NewSpecialWarningFades("OptionVersion2", 31821, mod:IsSpellCaster(true))
 --Stage 1: A Cry in the Darkness
 local specWarnFearsomeRoar			= mod:NewSpecialWarningStack(143766, mod:IsTank(), 2)
 local specWarnFearsomeRoarOther		= mod:NewSpecialWarningTarget(143766, mod:IsTank())
-local specWarnDeafeningScreech		= mod:NewSpecialWarningCast(143343, mod:IsSpellCaster(), nil, nil, 2, 2)
+local specWarnDeafeningScreech		= mod:NewSpecialWarningCast("OptionVersion2", 143343, mod:IsSpellCaster(), nil, nil, 2)
 --Stage 2: Frenzy for Blood!
 local specWarnBloodFrenzy			= mod:NewSpecialWarningSpell(143440, nil, nil, nil, 2)
 local specWarnFixate				= mod:NewSpecialWarningRun(143445, nil, nil, nil, 3)
@@ -68,7 +68,7 @@ local specWarnBurningBlood			= mod:NewSpecialWarningYou(143783)
 local specWarnBurningBloodMove		= mod:NewSpecialWarningMove(143784)
 local yellBurningBlood				= mod:NewYell(143783, nil, false)
 
-local timerDevotionAura				= mod:NewBuffActiveTimer(6, 31821, nil, mod:IsSpellCaster(true), nil, nil, nil, nil, nil, nil, 2)
+local timerDevotionAura				= mod:NewBuffActiveTimer("OptionVersion2", 6, 31821, nil, mod:IsSpellCaster(true))
 --Stage 1: A Cry in the Darkness
 local timerFearsomeRoar				= mod:NewTargetTimer(30, 143766, nil, mod:IsTank() or mod:IsHealer())
 local timerFearsomeRoarCD			= mod:NewCDTimer(11, 143766, nil, mod:IsTank())

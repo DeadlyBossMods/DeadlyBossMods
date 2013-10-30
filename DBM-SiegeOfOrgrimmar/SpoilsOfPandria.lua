@@ -26,7 +26,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnSuperNova				= mod:NewCastAnnounce(146815, 4, nil, false, nil, nil, nil, nil, 2)--Heroic
+local warnSuperNova				= mod:NewCastAnnounce("OptionVersion2", 146815, 4, nil, false)--Heroic
 --Massive Crate of Goods
 ----Mogu
 local warnReturnToStone			= mod:NewSpellAnnounce(145489, 2)
@@ -36,7 +36,7 @@ local warnSetToBlow				= mod:NewTargetAnnounce(145987, 4)--145996 is cast ID
 ----Mogu
 local warnForbiddenMagic		= mod:NewTargetAnnounce(145230, 2)
 local warnMatterScramble		= mod:NewSpellAnnounce(145288, 3)
-local warnCrimsonRecon			= mod:NewSpellAnnounce(142947, 4, nil, mod:IsTank(), nil, nil, nil, nil, 2)
+local warnCrimsonRecon			= mod:NewSpellAnnounce("OptionVersion2", 142947, 4, nil, mod:IsTank())
 local warnEnergize				= mod:NewSpellAnnounce(145461, 3)--May be script spellid that doesn't show in combat log
 local warnTorment				= mod:NewSpellAnnounce(142934, 3, nil, mod:IsHealer())
 ----Mantid
@@ -54,7 +54,7 @@ local warnSparkofLife			= mod:NewSpellAnnounce(142694, 3, nil, false)
 local warnBreathofFire			= mod:NewSpellAnnounce(146222, 3)--Do not have timer for this yet, add not alive long enough.
 local warnGustingCraneKick		= mod:NewSpellAnnounce(146180, 3)
 
-local specWarnSuperNova			= mod:NewSpecialWarningSpell(146815, false, nil, nil, 2, 2)
+local specWarnSuperNova			= mod:NewSpecialWarningSpell("OptionVersion2", 146815, false, nil, nil, 2)
 --Massive Crate of Goods
 local specWarnSetToBlowYou		= mod:NewSpecialWarningYou(145987)
 local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)

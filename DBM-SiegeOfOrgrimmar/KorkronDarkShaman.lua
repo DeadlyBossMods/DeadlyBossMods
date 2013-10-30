@@ -17,7 +17,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Dogs
-local warnRend						= mod:NewStackAnnounce(144304, 2, nil, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, 2)
+local warnRend						= mod:NewStackAnnounce("OptionVersion2", 144304, 2, nil, mod:IsTank() or mod:IsHealer())
 
 --General
 local warnPoisonmistTotem			= mod:NewSpellAnnounce(144288, 3)--85%
@@ -26,8 +26,8 @@ local warnAshflareTotem				= mod:NewSpellAnnounce(144290, 3)--45%
 local warnRustedIronTotem			= mod:NewSpellAnnounce(144291, 3)--Heroic (95%)
 
 --Earthbreaker Haromm
-local warnFroststormStrike			= mod:NewStackAnnounce(144215, 2, nil, mod:IsTank() or mod:IsHealer(), nil, nil, nil, nil, 2)
-local warnToxicMists				= mod:NewTargetAnnounce(144089, 2, nil, false, nil, nil, nil, nil, 2)
+local warnFroststormStrike			= mod:NewStackAnnounce("OptionVersion2", 144215, 2, nil, mod:IsTank() or mod:IsHealer())
+local warnToxicMists				= mod:NewTargetAnnounce("OptionVersion2", 144089, 2, nil, false)
 local warnFoulStream				= mod:NewTargetAnnounce(144090, 4)
 local warnAshenWall					= mod:NewSpellAnnounce(144070, 4)
 local warnIronTomb					= mod:NewSpellAnnounce(144328, 3)
@@ -57,7 +57,7 @@ local yellIronPrisonFades			= mod:NewYell(144330, L.PrisonYell, false)--Off by d
 
 --Earthbreaker Haromm
 local timerFroststormStrike			= mod:NewTargetTimer(30, 144215, nil, mod:IsTank())
-local timerToxicMistsCD				= mod:NewCDTimer(32, 144089, nil, false, nil, nil, nil, nil, nil, nil, 2)--Pretty much a next timers unless boss is casting something else
+local timerToxicMistsCD				= mod:NewCDTimer("OptionVersion2", 32, 144089, nil, false)--Pretty much a next timers unless boss is casting something else
 local timerFoulStreamCD				= mod:NewCDTimer(32.5, 144090)--Pretty much a next timers unless boss is casting something else
 local timerAshenWallCD				= mod:NewCDTimer(32.5, 144070)--Pretty much a next timers unless boss is casting something else
 local timerIronTombCD				= mod:NewCDTimer(31.5, 144328)--Pretty much a next timers unless boss is casting something else
@@ -70,7 +70,7 @@ local timerIronPrison				= mod:NewTargetTimer(60, 144330, nil, mod:IsHealer())
 local timerIronPrisonCD				= mod:NewCDTimer(31.5, 144330)--Pretty much a next timers unless boss is casting something else
 local timerIronPrisonSelf			= mod:NewBuffFadesTimer(60, 144330)
 
-local countdownFoulGeyser			= mod:NewCountdown(32.5, 143990, mod:IsTank() or mod:IsRangedDps(), nil, nil, nil, nil, 2)
+local countdownFoulGeyser			= mod:NewCountdown("OptionVersion2", 32.5, 143990, mod:IsTank() or mod:IsRangedDps())
 local countdownFallingAsh			= mod:NewCountdown(15, 143973, nil, nil, nil, nil, true)
 
 local berserkCD						= mod:NewCDTimer(540, 26662)
