@@ -161,7 +161,7 @@ local timerAimCD					= mod:NewCDTimer(42, 142948)
 local berserkTimer					= mod:NewBerserkTimer(720)
 
 local countdownEncaseInAmber		= mod:NewCountdown(30, 142564)--Probably switch to secondary countdown if one of his other abilities proves to have priority
-local countdownInjection			= mod:NewCountdown(9.5, 143339, mod:IsTank(), nil, nil, nil, true)
+local countdownInjection			= mod:NewCountdown("Alt9.5", 143339, mod:IsTank())
 
 mod:AddRangeFrameOption("6/5")
 mod:AddSetIconOption("SetIconOnAim", 142948)--multi boss fight, will use star and avoid moving skull off a kill target
