@@ -69,6 +69,7 @@ local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil,
 --Starge Four: Heroic Hidden Phase
 local specWarnMaliceYou				= mod:NewSpecialWarningYou(147209)
 local yellMalice					= mod:NewYell(147209)
+local specWarnBombardment			= mod:NewSpecialWarningSpell(147120, nil, nil, nil, 2)
 
 --Stage 1: A Cry in the Darkness
 local timerDesecrateCD				= mod:NewCDCountTimer(35, 144748)
@@ -165,8 +166,11 @@ function mod:SPELL_CAST_START(args)
 		soundWhirlingCorrpution:Play()
 	elseif args.spellId == 147120 then
 		warnBombardment:Show()
+		specWarnBombardment:Show()
 		timerBombardment:Start()
 		timerBombardmentCD:Start()
+	elseif args.spellId == 147011 then
+		warnManifestRage:Show()
 	end
 end
 
@@ -331,7 +335,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownWhirlingCorruption:Cancel()
 		warnPhase4:Show()
 		timerMaliceCD:Start(30)
-		timerBombardmentCD:Start(69)
+		timerBombardmentCD:Start(70)
 	end
 end
 
@@ -350,7 +354,5 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		countdownPowerIronStar:Start()
 		warnFireUnstableIronStar:Schedule(15)
 		specWarnFireUnstableIronStar:Schedule(15)
-	elseif msg:find("spell:147011") then--may be need to change if we get combatlog.
-		warnManifestRage:Show()
 	end
 end
