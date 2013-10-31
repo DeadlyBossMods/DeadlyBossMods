@@ -32,7 +32,7 @@ local timerDashingStrikeCD		= mod:NewCDTimer(13.5, 120789)--14-16 second variati
 local timerThousandBladesCD		= mod:NewNextTimer(15, 120759)
 local timerThousandBlades		= mod:NewBuffActiveTimer(4, 120759)
 
-local soundThousandBlades		= mod:NewSound(120759, nil, mod:IsMelee())
+local soundThousandBlades		= mod:NewSound(120759, mod:IsMelee())
 
 --local Swarmers 		= EJ_GetSectionInfo(6280)
 --local Demolishers 	= EJ_GetSectionInfo(6282)

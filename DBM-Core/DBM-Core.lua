@@ -5315,8 +5315,8 @@ end
 do
 	local soundPrototype = {}
 	local mt = { __index = soundPrototype }
-	function bossModPrototype:NewSound(spellId, optionName, optionDefault, optionVersion)
-		local spellId, optionName, optionDefault, optionVersion = spellId, optionName, optionDefault, optionVersion
+	function bossModPrototype:NewSound(spellId, optionDefault, optionName, optionVersion)
+		local spellId, optionDefault, optionName, optionVersion = spellId, optionDefault, optionName, optionVersion
 		if not spellId and not optionName then
 			error("NewSound: you must provide either spellId or optionName", 2)
 			return
@@ -5324,7 +5324,7 @@ do
 		if type(spellId) == "string" and spellId:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(spellId, 14)
-			spellId, optionName, optionDefault = optionName, optionDefault, temp
+			spellId, optionDefault, optionName = optionDefault, optionName, temp
 		end
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
@@ -5447,11 +5447,11 @@ do
 			altVoice = true
 			timer = tonumber(string.sub(timer, 4))
 		end
-		local sound5 = self:NewSound(5, false, true)
-		local sound4 = self:NewSound(4, false, true)
-		local sound3 = self:NewSound(3, false, true)
-		local sound2 = self:NewSound(2, false, true)
-		local sound1 = self:NewSound(1, false, true)
+		local sound5 = self:NewSound(5, true, false)
+		local sound4 = self:NewSound(4, true, false)
+		local sound3 = self:NewSound(3, true, false)
+		local sound2 = self:NewSound(2, true, false)
+		local sound1 = self:NewSound(1, true, false)
 		timer = timer or 10
 		count = count or 5
 		spellId = spellId or 39505
@@ -5498,11 +5498,11 @@ do
 			altVoice = true
 			timer = tonumber(string.sub(timer, 4))
 		end
-		local sound5 = self:NewSound(5, false, true)
-		local sound4 = self:NewSound(4, false, true)
-		local sound3 = self:NewSound(3, false, true)
-		local sound2 = self:NewSound(2, false, true)
-		local sound1 = self:NewSound(1, false, true)
+		local sound5 = self:NewSound(5, true, false)
+		local sound4 = self:NewSound(4, true, false)
+		local sound3 = self:NewSound(3, true, false)
+		local sound2 = self:NewSound(2, true, false)
+		local sound1 = self:NewSound(1, true, false)
 		timer = timer or 10
 		count = count or 5
 		spellId = spellId or 39505
@@ -5585,11 +5585,11 @@ do
 			optionVersion = string.sub(timer, 14)
 			timer, spellId, optionDefault, optionName = spellId, optionDefault, optionName, temp
 		end
-		local sound5 = self:NewSound(5, false, true)
-		local sound4 = self:NewSound(4, false, true)
-		local sound3 = self:NewSound(3, false, true)
-		local sound2 = self:NewSound(2, false, true)
-		local sound1 = self:NewSound(1, false, true)
+		local sound5 = self:NewSound(5, true, false)
+		local sound4 = self:NewSound(4, true, false)
+		local sound3 = self:NewSound(3, true, false)
+		local sound2 = self:NewSound(2, true, false)
+		local sound1 = self:NewSound(1, true, false)
 		timer = timer or 10
 		spellId = spellId or 39505
 		local obj = setmetatable(

@@ -28,8 +28,8 @@ local specWarnCurse			= mod:NewSpecialWarningYou(144590)--You failed to move awa
 local timerLeapCD			= mod:NewCDTimer(12, 144546)
 local timerMoonfangsTearCD	= mod:NewNextTimer(23, 144702)
 
-local soundMoonfangCurse	= mod:NewSound(144590, nil, mod:IsMelee())
-local soundCallPack			= mod:NewSound(144602, nil, mod:IsRanged())
+local soundMoonfangCurse	= mod:NewSound(144590, mod:IsMelee())
+local soundCallPack			= mod:NewSound(144602, mod:IsRanged())
 
 
 function mod:LeapTarget(targetname, uId)
