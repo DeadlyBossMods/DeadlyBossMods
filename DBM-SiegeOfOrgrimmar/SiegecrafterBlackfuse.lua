@@ -123,20 +123,26 @@ end
 --VEM Idea
 local function showWeaponInfo()
 	local lines = {}
-	if weapon == 1 or weapon == 2 or weapon == 4 or weapon == 10 or weapon == 13 then
-		lines[crawlerMine] = shockwaveMissile.." / "..laserTurret
+	if weapon == 1 or weapon == 2 or weapon == 4 then
+		lines[shockwaveMissile] = laserTurret.." , "..crawlerMine
 	elseif weapon == 3 then
-		lines[electroMagnet] = shockwaveMissile.." / "..laserTurret
-	elseif weapon == 5 or weapon == 7 or weapon == 8 then
-		lines[crawlerMine] = electroMagnet.." / "..shockwaveMissile
+		lines[shockwaveMissile] = laserTurret.." , "..electroMagnet
+	elseif weapon == 5 then
+		lines[shockwaveMissile] = electroMagnet.." , "..crawlerMine
 	elseif weapon == 6 then
-		lines[crawlerMine] = crawlerMine.." / "..shockwaveMissile
+		lines[crawlerMine] = laserTurret.." , "..crawlerMine
+	elseif weapon == 7 then
+		lines[shockwaveMissile] = laserTurret.." , "..crawlerMine
+	elseif weapon == 8 then
+		lines[shockwaveMissile] = electroMagnet.." , "..crawlerMine
 	elseif weapon == 9 then
-		lines[laserTurret] =  laserTurret.." / "..laserTurret
+		lines[laserTurret] =  crawlerMine.." , "..laserTurret
+	elseif weapon == 10 then
+		lines[shockwaveMissile] =  crawlerMine.." , "..laserTurret
 	elseif weapon == 11 then
-		lines[electroMagnet] = shockwaveMissile.." / "..shockwaveMissile
+		lines[shockwaveMissile] = electroMagnet.." , "..shockwaveMissile
 	elseif weapon == 12 then
-		lines[crawlerMine] = electroMagnet.." / "..laserTurret
+		lines[electroMagnet] = crawlerMine.." , "..laserTurret
 	else
 		lines[_G["UNKNOWN"]] = ""
 	end
