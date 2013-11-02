@@ -91,12 +91,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	newForces1					= "Warriors, on the double!", --TODO need translation
-	newForces2					= "Defend the gate!", --TODO need translation
-	newForces3					= "Rally the forces!", --TODO need translation
-	newForces4					= "Kor'kron, at my side!", --TODO need translation
-	newForces5					= "Next squad, to the front!", --TODO need translation
-	allForces					= "All Kor'kron... under my command... kill them... NOW!", --TODO need translation
+	newForces1					= "¡Guerreros, paso ligero!",
+	newForces2					= "uerta", --TODO, need the whole message
+	newForces3					= "¡Reunid a las tropas!",
+	newForces4					= "¡Kor'kron, conmigo!",
+	newForces5					= "¡Siguiente escuadrón, al frente!",
+	allForces					= "Atención, Korkron: ¡matadlos!",
 	nextAdds					= "Siguientes Adds: "
 })
 
