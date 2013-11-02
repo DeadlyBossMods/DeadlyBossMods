@@ -7,7 +7,7 @@ local L
 L= DBM:GetModLocalization(852)
 
 L:SetMiscLocalization({
-	Victory			= "Ah, you have done it!  The waters are pure once more." --TODO need translation
+	Victory			= "¡Ah, lo habéis logrado! Las aguas vuelven a ser puras."
 })
 
 ---------------------------
