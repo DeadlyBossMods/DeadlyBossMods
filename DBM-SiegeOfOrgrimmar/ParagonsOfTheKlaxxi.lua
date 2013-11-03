@@ -29,6 +29,7 @@ local warnActivated					= mod:NewTargetAnnounce(118212, 3, 143542)
 --Kil'ruk the Wind-Reaver
 local warnGouge						= mod:NewTargetAnnounce(143939, 3, nil, mod:IsTank() or mod:IsHealer())--Timing too variable for a CD
 local warnDeathFromAbove			= mod:NewTargetAnnounce(142232, 3)
+local warnReave						= mod:NewCastAnnounce(148676, 3)
 --Xaril the Poisoned-Mind
 local warnToxicInjection			= mod:NewSpellAnnounce(142528, 3)
 local warnCausticBlood				= mod:NewSpellAnnounce("OptionVersion2", 142315, 4, nil, mod:IsTank())
@@ -75,6 +76,7 @@ local specWarnGougeOther			= mod:NewSpecialWarningTarget(143939, mod:IsTank() or
 local specWarnDeathFromAbove		= mod:NewSpecialWarningYou(142232)
 local specWarnDeathFromAboveNear	= mod:NewSpecialWarningClose(142232)
 local yellDeathFromAbove			= mod:NewYell(142232)
+local specWarnReave					= mod:NewSpecialWarningSpell(148676, nil, nil, nil, 2)--Heroic
 --Xaril the Poisoned-Mind
 local specWarnCausticBlood			= mod:NewSpecialWarningSpell(142315, mod:IsTank())
 local specWarnToxicBlue				= mod:NewSpecialWarningYou(142532)
@@ -133,6 +135,7 @@ local specWarnRapidFire				= mod:NewSpecialWarningSpell(143243, nil, nil, nil, 2
 local timerJumpToCenter				= mod:NewCastTimer(5, 143545)
 --Kil'ruk the Wind-Reaver
 local timerGouge					= mod:NewTargetTimer(10, 143939, nil, mod:IsTank())
+local timerReaveCD					= mod:NewCDTimer(33, 148676)
 --Xaril the Poisoned-Mind
 local timerToxicCatalystCD			= mod:NewCDTimer(33, "ej8036")
 --Korven the Prime
@@ -156,7 +159,7 @@ local timerInjectionCD				= mod:NewNextTimer(9.5, 143339, nil, mod:IsTank())
 --Hisek the Swarmkeeper
 local timerAim						= mod:NewTargetTimer(5, 142948)--or is it 7, conflicting tooltips
 local timerAimCD					= mod:NewCDTimer(42, 142948)
---local timerRapidFireCD			= mod:NewCDTimer(30, 143243)--Heroic, unknown Cd
+local timerRapidFireCD				= mod:NewCDTimer(47, 143243)--Heroic, unknown Cd
 
 local berserkTimer					= mod:NewBerserkTimer(720)
 
@@ -240,6 +243,9 @@ local function CheckBosses()
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(UnitGUID(unitID))
 			if cid == 71161 then--Kil'ruk the Wind-Reaver
+				if mod:IsDifficulty("heroic10", "heroic25") then
+					timerReaveCD:Start(38.5)
+				end
 				mod:Schedule(23, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
@@ -247,7 +253,7 @@ local function CheckBosses()
 			elseif cid == 71156 then--Kaz'tik the Manipulator
 		
 			elseif cid == 71155 then--Korven the Prime
-				timerShieldBashCD:Start(19)--20seconds from jump to center and REAL IEEU. question is whether or not filtering readyToFight will ignore the bad IEEU that come earlier
+				timerShieldBashCD:Start(19)--20seconds from REAL IEEU
 			elseif cid == 71160 then--Iyyokuk the Lucid
 				timerInsaneCalculationCD:Start()
 			elseif cid == 71154 then--Ka'roz the Locust
@@ -263,7 +269,9 @@ local function CheckBosses()
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
 			elseif cid == 71153 then--Hisek the Swarmkeeper
 				timerAimCD:Start(37)--Might be 32 now with the UnitBuff filter, so pay attention to that and adjust as needed
-				--timerRapidFireCD:Start()
+				if mod:IsDifficulty("heroic10", "heroic25") then
+					timerRapidFireCD:Start(44.5)
+				end
 			end
 		end
 	end
@@ -405,7 +413,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143243 then
 		warnRapidFire:Show()
 		specWarnRapidFire:Show()
-		--timerRapidFireCD:Start()
+		timerRapidFireCD:Start()
 	elseif args.spellId == 143339 then
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
@@ -417,13 +425,17 @@ function mod:SPELL_CAST_START(args)
 				break
 			end
 		end
+	elseif args.spellId == 148676 then
+		warnReave:Show()
+		specWarnReave:Show()
+		timerReaveCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142528 then
 		warnToxicInjection:Show()
-		timerToxicCatalystCD:Start()
+		timerToxicCatalystCD:Start(21)--21-23 variance observed on normal and heroic
 	elseif args.spellId == 142232 then
 		self:Unschedule(DFAScan)
 		self:Schedule(17, DFAScan)
@@ -572,6 +584,7 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
 		self:Unschedule(DFAScan)
+		timerReaveCD:Cancel()
 	elseif cid == 71157 then--Xaril the Poisoned-Mind
 		timerToxicCatalystCD:Cancel()
 	elseif cid == 71155 then--Korven the Prime
@@ -591,7 +604,7 @@ function mod:UNIT_DIED(args)
 		countdownInjection:Cancel()
 	elseif cid == 71153 then--Hisek the Swarmkeeper
 		timerAimCD:Cancel()
-		--timerRapidFireCD:Cancel()
+		timerRapidFireCD:Cancel()
 	end
 
 	if FlavorTable[cid] then
@@ -603,7 +616,7 @@ function mod:UNIT_DIED(args)
 end
 
 ------------------
---Normal Only?
+--Normal Only
 --143605 Red Sword
 --143606 Purple Sword
 --143607 Blue Sword
@@ -622,7 +635,7 @@ end
 --143618 Green Bomb
 --143619 Yellow Bomb
 ----------------------
---25man Only?
+--25man Only
 --143620 Red Mantid
 --143621 Purple Mantid
 --143622 Blue Mantid
