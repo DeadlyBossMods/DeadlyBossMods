@@ -2,7 +2,7 @@ local mod	= DBM:NewMod(852, "DBM-SiegeOfOrgrimmar", nil, 369)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(71543)--Doesn't die, will need kill detection
+mod:SetCreatureID(71543)
 mod:SetReCombatTime(45)--Lets just assume he has same bug as tsulong in advance and avoid problems
 mod:SetZone()
 
@@ -86,6 +86,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 143574 then
 		specWarnSwellingCorruptionTarget:Show(args.destName)
 	end
+	if DBM.Options.DebugMode and args:GetDestCreatureID() == 71543 and bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == 0 then
+		print("DBM Debug: Detected Immerseus bitflag as 'friendly' off of SPELL_AURA_APPLIED.")
+	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
@@ -96,6 +99,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerPurifiedResidue:Cancel()
 	elseif args.spellId == 143574 then
 		specWarnSwellingCorruptionFades:Show()
+	end
+	if DBM.Options.DebugMode and args:GetDestCreatureID() == 71543 and bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == 0 then
+		print("DBM Debug: Detected Immerseus bitflag as 'friendly' off of SPELL_AURA_REMOVED")
 	end
 end
 
