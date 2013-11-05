@@ -110,7 +110,7 @@ local specWarnShieldBashOther		= mod:NewSpecialWarningTarget(143974, mod:IsTank(
 local specWarnEncaseInAmber			= mod:NewSpecialWarningTarget(142564, mod:IsDps())--Better than switch because on heroic, you don't actually switch to amber, you switch to a NON amber target. Plus switch gives no targetname
 --Iyyokuk the Lucid
 local specWarnCalculated			= mod:NewSpecialWarningYou(144095)
-local yellCalculated				= mod:NewYell(144095, nil, false)
+local yellCalculated				= mod:NewYell(142416, nil, false)
 local specWarnCriteriaLinked		= mod:NewSpecialWarning("specWarnCriteriaLinked")--Linked to Calculated target
 local specWarnInsaneCalculationFire	= mod:NewSpecialWarningSpell(142416, nil, nil, nil, 2)
 --Ka'roz the Locust
@@ -701,7 +701,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote always comes first hopefu
 	elseif msg:find("ABILITY_IYYOKUK_STAFF") then
 		calculatedShape = "Staff"
 	elseif msg:find(msg == L.one) then
-		calculatedNumber = 1
+		calculatedNumber = 0--1 stacks actually return as 0 in checks
 	elseif msg:find(msg == L.two) then
 		calculatedNumber = 2
 	elseif msg:find(msg == L.three) then
@@ -825,6 +825,6 @@ function mod:CHAT_MSG_MONSTER_EMOTE(msg, npc, _, _, target)
 	local targetname = DBM:GetUnitFullName(target)
 	if npc == calculatingDude then
 		self:Unschedule(delayMonsterEmote)
-		self:Schedule(0.5, delayMonsterEmote, targetname)
+		self:Schedule(0.2, delayMonsterEmote, targetname)
 	end
 end
