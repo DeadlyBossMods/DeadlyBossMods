@@ -36,14 +36,14 @@ local specWarnSummonBats			= mod:NewSpecialWarningSwitch("ej7140", mod:IsTank())
 local timerBiteCD					= mod:NewCDTimer(8, 135251, nil, mod:IsTank())
 local timerRockfallCD				= mod:NewCDTimer(10, 134476)
 local timerCallTortosCD				= mod:NewNextTimer(60.5, 136294)
-local timerStompCD					= mod:NewNextCountTimer(49, 134920)
+local timerStompCD					= mod:NewCDCountTimer(47, 134920)
 local timerBreathCD					= mod:NewCDTimer(46, 133939)--TODO, adjust timer when Growing Anger is cast, so we can use a Next bar more accurately
 local timerSummonBatsCD				= mod:NewCDTimer(45, "ej7140", nil, nil, nil, 136685)--45-47. This doesn't always sync up to furious stone breath. Longer fight goes on more out of sync they get. So both bars needed I suppose
 local timerStompActive				= mod:NewBuffActiveTimer(10.8, 134920)--Duration of the rapid caveins
 local timerShellConcussion			= mod:NewBuffFadesTimer(20, 136431)
 
-local countdownStomp				= mod:NewCountdown(49, 134920, mod:IsHealer())
-local countdownBreath				= mod:NewCountdown(46, 133939, false, nil, nil, nil, true) -- Coundown for the kicker. mod:IsRanged() and mod:IsDps()
+local countdownStomp				= mod:NewCountdown(47, 134920, mod:IsHealer())
+local countdownBreath				= mod:NewCountdown("Alt46", 133939, false) -- Coundown for the kicker. mod:IsRanged() and mod:IsDps()
 
 local berserkTimer					= mod:NewBerserkTimer(780)
 
@@ -97,8 +97,8 @@ function mod:OnCombatStart(delay)
 	table.wipe(kickedShells)
 	timerRockfallCD:Start(15-delay)
 	timerCallTortosCD:Start(21-delay)
-	timerStompCD:Start(29-delay, 1)
-	countdownStomp:Start(29-delay)
+	timerStompCD:Start(27-delay, 1)
+	countdownStomp:Start(27-delay)
 	timerBreathCD:Start(-delay)
 	countdownBreath:Start(-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
