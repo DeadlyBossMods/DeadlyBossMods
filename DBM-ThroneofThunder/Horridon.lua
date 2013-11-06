@@ -206,7 +206,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFireball:Show(args.sourceName)
 		end
 	elseif args.spellId == 140946 then
-		warnDireFixate:Show(args.destName)
+		warnDireFixate:CombinedShow(1.0, args.destName)
 		if args:IsPlayer() then
 			specWarnDireFixate:Show()
 			soundDireFixate:Play()
@@ -276,20 +276,20 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:OnSync(msg, targetOrGuid, ver)
-	local target = targetOrGuid
-	local guid = targetOrGuid
-	if msg == "ChargeTo" and target then
-		local target = DBM:GetUnitFullName(target)
-		warnCharge:Show(target)
-		timerCharge:Start()
-		timerChargeCD:Start()
-		if target == UnitName("player") then
-			specWarnCharge:Show()
-			yellCharge:Yell()
-		end
-		if UnitExists(target) and self.Options.SetIconOnCharge then
-			self:SetIcon(target, 1, 5)--star
+function mod:OnSync(msg, targetname)
+	if msg == "ChargeTo" and targetname then
+		local target = DBM:GetUnitFullName(targetname)
+		if target then
+			warnCharge:Show(target)
+			timerCharge:Start()
+			timerChargeCD:Start()
+			if target == UnitName("player") then
+				specWarnCharge:Show()
+				yellCharge:Yell()
+			end
+			if UnitExists(target) and self.Options.SetIconOnCharge then
+				self:SetIcon(target, 1, 5)--star
+			end
 		end
 	elseif msg == "Door" and self:AntiSpam(15, 3) then--prevent bad doorNumber increase if very late sync received. (60 too high, breaks first door warnings after a quick wipe recovery since antispam carries over from previous pull)
 	--Doors spawn every 131.5 seconds
