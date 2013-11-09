@@ -213,7 +213,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnProtectiveFrenzy:Show(args.destName)
 		specWarnProtectiveFrenzy:Show(args.destName)
 		timerProtectiveFrenzy:Start()
-	elseif args.spellId == 143385 then
+	elseif args.spellId == 143385 and args:IsDestTypePlayer() then
 		local amount = args.amount or 1
 		warnElectroStaticCharge:Show(args.destName, amount)
 		timerElectroStaticCharge:Start(args.destName)
