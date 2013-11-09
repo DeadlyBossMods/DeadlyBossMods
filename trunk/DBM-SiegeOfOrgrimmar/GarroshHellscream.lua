@@ -173,7 +173,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 147011 then
 		warnManifestRage:Show()
 	elseif args.spellId == 145599 then
-		warnBombardment:Show()
 		specWarnTouchInterrupt:Show(args.sourceName)
 	end
 end
