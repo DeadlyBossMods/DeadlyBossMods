@@ -59,9 +59,9 @@ local warnHurlAmber					= mod:NewSpellAnnounce(143759, 3)
 local warnBloodletting				= mod:NewSpellAnnounce(143280, 4)
 --Rik'kal the Dissector
 local warnInjection					= mod:NewStackAnnounce(143339)
-local warnMutate					= mod:NewTargetAnnounce(143337, 3)
+local warnMutate					= mod:NewTargetCountAnnounce(143337, 3)
 --Hisek the Swarmkeeper
-local warnAim						= mod:NewTargetAnnounce(142948, 4)--Maybe wrong debuff id, maybe 144759 instead
+local warnAim						= mod:NewTargetCountAnnounce(142948, 4)--Maybe wrong debuff id, maybe 144759 instead
 local warnRapidFire					= mod:NewSpellAnnounce(143243, 3)
 
 --All
@@ -115,7 +115,7 @@ local specWarnCausticAmber			= mod:NewSpecialWarningMove(143735)--Stuff on the g
 local specWarnBloodletting			= mod:NewSpecialWarningSwitch(143280, not mod:IsHealer())
 --Rik'kal the Dissector
 local specWarnMutate				= mod:NewSpecialWarningYou(143337)
-local specWarnParasiteFixate		= mod:NewSpecialWarningYou(143358)
+local specWarnParasiteFixate		= mod:NewSpecialWarningYou("OptionVersion2", 143358, false)
 local specWarnInjection				= mod:NewSpecialWarningSpell(143339, mod:IsTank(), nil, nil, 3)
 --Hisek the Swarmkeeper
 local specWarnAim					= mod:NewSpecialWarningYou(142948)
@@ -171,6 +171,8 @@ local calculatedColor = nil
 local mathNumber = 100
 local calculatingDude = EJ_GetSectionInfo(8012)
 local readyToFight = GetSpellInfo(143542)
+local mutateCount = 0
+local aimCount = 0
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -278,6 +280,8 @@ function mod:OnCombatStart(delay)
 	calculatedShape = nil
 	calculatedNumber = nil
 	calculatedColor = nil
+	mutateCount = 0
+	aimCount = 0
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
@@ -488,7 +492,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWhirling:CombinedShow(0.5, args.destName)
 		if args.IsPlayer() then
 			specWarnWhirling:Show()
-			yellWhirling:Yell()
+			if not self:IsDifficulty("lfr25") then
+				yellWhirling:Yell()
+			end
 			timerWhirling:Start()
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
@@ -509,18 +515,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnHurlAmber:Show()
 		timerHurlAmberCD:Start()
 	elseif args.spellId == 143337 then
-		warnMutate:CombinedShow(0.5, args.destName)
-		timerMutateCD:Start()
+		if self:AntiSpam(2, 3) then
+			mutateCount = mutateCount + 1
+			timerMutateCD:Start()
+		end
+		warnMutate:CombinedShow(0.5, args.destName, mutateCount)
 		if args.IsPlayer() then
 			specWarnMutate:Show()
 			timerMutate:Start()
 		end
-	elseif args.spellId == 143358 then
-		if args.IsPlayer() then
-			specWarnParasiteFixate:Show()
-		end
+	elseif args.spellId == 143358 and args.IsPlayer() then
+		specWarnParasiteFixate:Show()
 	elseif args.spellId == 142948 then
-		warnAim:Show(args.destName)
+		aimCount = aimCount + 1
+		warnAim:Show(args.destName, aimCount)
 		timerAim:Start(args.destName)
 		timerAimCD:Start()
 		if args.IsPlayer() then
@@ -720,7 +728,9 @@ local function delayMonsterEmote(target)
 	timerInsaneCalculationCD:Start()
 	if target == UnitName("player") then
 		specWarnCalculated:Show()
-		yellCalculated:Yell()
+		if not mod:IsDifficulty("lfr25") then
+			yellCalculated:Yell()
+		end
 	else--it's not us, so now lets check activated criteria for target based on previous emotes
 		local criteriaMatched = false--Now to start checking matches.
 		if calculatedColor == "Red" then
@@ -816,7 +826,9 @@ local function delayMonsterEmote(target)
 		end
 		if criteriaMatched then
 			specWarnCalculated:Show()
-			yellCalculated:Yell()
+			if not mod:IsDifficulty("lfr25") then
+				yellCalculated:Yell()
+			end
 		end
 	end
 end
