@@ -103,7 +103,7 @@ function mod:OnCombatStart(delay)
 		timerTowerCD:Start(116.5-delay)
 	else
 		timerTowerGruntCD:Start(6)
-		mod:Schedule(6, TowerGrunt)
+		self:Schedule(6, TowerGrunt)
 	end
 end
 
