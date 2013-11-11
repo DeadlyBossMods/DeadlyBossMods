@@ -145,7 +145,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Спец-предупреждение когда вы уязвимы к активирующимся идеалам"
+	specWarnActivatedVulnerable		= "Спец-предупреждение когда вы уязвимы к активирующимся идеалам",
+	AimArrow						= "Показывать стрелку DBM, когда на ком-то $spell:142948"
 })
 
 L:SetMiscLocalization({
