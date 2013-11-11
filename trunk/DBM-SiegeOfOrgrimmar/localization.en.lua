@@ -156,6 +156,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnToxicCatalyst				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej8036"),
 	specWarnActivatedVulnerable		= "Show special warning when you are vulnerable to activating paragons",
+	AimArrow						= "Show DBM Arrow when someone is affected by $spell:142948",
 	yellToxicCatalyst				= DBM_CORE_AUTO_YELL_OPTION_TEXT:format("ej8036")
 })
 

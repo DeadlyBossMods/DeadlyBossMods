@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71152, 71153, 71154, 71155, 71156, 71157, 71158, 71160, 71161)
 mod:SetZone()
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(3)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
@@ -41,7 +41,6 @@ local warnToxicCatalystYellow		= mod:NewCastAnnounce(142727, 4, nil, nil, nil, f
 local warnToxicCatalystOrange		= mod:NewCastAnnounce(142728, 4, nil, nil, nil, false)--Heroic
 local warnToxicCatalystPurple		= mod:NewCastAnnounce(142729, 4, nil, nil, nil, false)--Heroic
 local warnToxicCatalystGreen		= mod:NewCastAnnounce(142730, 4, nil, nil, nil, false)--Heroic
---local warnToxicCatalystWhite		= mod:NewCastAnnounce(142731, 3, nil, nil, nil, false)--Not in EJ
 --Kaz'tik the Manipulator
 local warnMesmerize					= mod:NewTargetAnnounce(142671, 3)
 local warnSonicProjection			= mod:NewSpellAnnounce(143765, 3, nil, false)--Spammy, and target scaning didn't work
@@ -66,9 +65,6 @@ local warnAim						= mod:NewTargetAnnounce(142948, 4)--Maybe wrong debuff id, ma
 local warnRapidFire					= mod:NewSpellAnnounce(143243, 3)
 
 --All
---NOTE, this is purely off assumption the ones that make you vunerable to eachother don't spawn at same time.
---It's also possible tehse tank only activate warnings are useless if 4 vulnerability mobs always spawns in pairs
---Then it just means it's an anti solo tank mechanic and we don't need special warnings for it.
 local specWarnActivated				= mod:NewSpecialWarningTarget(118212)
 local specWarnActivatedVulnerable	= mod:NewSpecialWarning("specWarnActivatedVulnerable", mod:IsTank())--Alternate activate warning to warn a tank not to pick up a specific boss
 --Kil'ruk the Wind-Reaver
@@ -83,17 +79,12 @@ local specWarnCausticBlood			= mod:NewSpecialWarningSpell(142315, mod:IsTank())
 local specWarnToxicBlue				= mod:NewSpecialWarningYou(142532)
 local specWarnToxicRed				= mod:NewSpecialWarningYou(142533)
 local specWarnToxicYellow			= mod:NewSpecialWarningYou(142534)
---local specWarnToxicOrange			= mod:NewSpecialWarningYou(142547)--Heroic
---local specWarnToxicPurple			= mod:NewSpecialWarningYou(142548)--Heroic
---local specWarnToxicGreen			= mod:NewSpecialWarningYou(142549)--Heroic
---local specWarnToxicWhite			= mod:NewSpecialWarningYou(142550)--Not in EJ
 local specWarnCatalystBlue			= mod:NewSpecialWarningYou(142725, nil, nil, nil, 3)
 local specWarnCatalystRed			= mod:NewSpecialWarningYou(142726, nil, nil, nil, 3)
 local specWarnCatalystYellow		= mod:NewSpecialWarningYou(142727, nil, nil, nil, 3)
 local specWarnCatalystOrange		= mod:NewSpecialWarningYou(142728, nil, nil, nil, 3)--Heroic
 local specWarnCatalystPurple		= mod:NewSpecialWarningYou(142729, nil, nil, nil, 3)--Heroic
 local specWarnCatalystGreen			= mod:NewSpecialWarningYou(142730, nil, nil, nil, 3)--Heroic
---local specWarnCatalystWhite		= mod:NewSpecialWarningYou(142731, nil, nil, nil, 3)--Not in EJ
 mod:AddBoolOption("yellToxicCatalyst", true, "misc")--And lastly, combine yells
 local yellCatalystBlue				= mod:NewYell(142725, nil, nil, false)
 local yellCatalystRed				= mod:NewYell(142726, nil, nil, false)
@@ -168,6 +159,7 @@ local countdownInjection			= mod:NewCountdown("Alt9.5", 143339, mod:IsTank())
 
 mod:AddRangeFrameOption("6/5")
 mod:AddSetIconOption("SetIconOnAim", 142948, false)--multi boss fight, will use star and avoid moving skull off a kill target
+mod:AddBoolOption("AimArrow", false)
 
 local activatedTargets = {}--A table, for the 3 on pull
 local activeBossGUIDS = {}
@@ -263,8 +255,8 @@ local function CheckBosses()
 				timerBloodlettingCD:Start(9)
 				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
 			elseif cid == 71158 then--Rik'kal the Dissector
-				timerInjectionCD:Start(14)
-				countdownInjection:Start(14)
+				timerInjectionCD:Start(13)
+				countdownInjection:Start(13)
 				timerMutateCD:Start(34)
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
 			elseif cid == 71153 then--Hisek the Swarmkeeper
@@ -302,6 +294,9 @@ function mod:OnCombatEnd()
 	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.AimArrow then
+		DBM.Arrow:Hide()
 	end
 end
 
@@ -402,7 +397,7 @@ function mod:SPELL_CAST_START(args)
 		warnShieldBash:Show()
 		timerShieldBashCD:Start()
 	elseif args.spellId == 142315 then
-		for i = 1, 5 do
+		for i = 1, 3 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				warnCausticBlood:Show()
@@ -415,7 +410,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRapidFire:Show()
 		timerRapidFireCD:Start()
 	elseif args.spellId == 143339 then
-		for i = 1, 5 do
+		for i = 1, 3 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
 				specWarnInjection:Show()
@@ -538,7 +533,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			DBM.RangeCheck:Show(5)
 		end
 		if self.Options.SetIconOnAim then
-			self:SetIcon(args.destName, 1)
+			self:SetIcon(args.destName, 3)
+		end
+		if self.Options.AimArrow then
+			DBM.Arrow:ShowRunTo(args.destName, 3, 3, 5)
 		end
 	end
 end
