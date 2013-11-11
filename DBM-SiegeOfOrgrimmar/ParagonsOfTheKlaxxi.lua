@@ -514,6 +514,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnHurlAmber:Show()
 		timerHurlAmberCD:Start()
 	elseif args.spellId == 143337 then
+		warnMutate:CombinedShow(0.5, targetName)
+		timerMutateCD:start()
 		if args.IsPlayer() then
 			specWarnMutate:Show()
 			timerMutate:Start()
