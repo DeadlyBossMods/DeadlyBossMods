@@ -110,9 +110,8 @@ local specWarnShieldBash			= mod:NewSpecialWarningYou(143974)
 local specWarnShieldBashOther		= mod:NewSpecialWarningTarget(143974, mod:IsTank() or mod:IsHealer())
 local specWarnEncaseInAmber			= mod:NewSpecialWarningTarget(142564, mod:IsDps())--Better than switch because on heroic, you don't actually switch to amber, you switch to a NON amber target. Plus switch gives no targetname
 --Iyyokuk the Lucid
-local specWarnCalculated			= mod:NewSpecialWarningYou(144095)
+local specWarnCalculated			= mod:NewSpecialWarningYou(142416)
 local yellCalculated				= mod:NewYell(142416, nil, false)
-local specWarnCriteriaLinked		= mod:NewSpecialWarning("specWarnCriteriaLinked")--Linked to Calculated target
 local specWarnInsaneCalculationFire	= mod:NewSpecialWarningSpell(142416, nil, nil, nil, 2)
 --Ka'roz the Locust
 local specWarnFlash					= mod:NewSpecialWarningSpell(143709, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
@@ -145,7 +144,7 @@ local timerShieldBashCD				= mod:NewCDTimer(17, 143974, nil, mod:IsTank())
 local timerEncaseInAmber			= mod:NewTargetTimer(10, 142564)
 local timerEncaseInAmberCD			= mod:NewCDTimer(30, 142564)--Technically a next timer but we use cd cause it's only cast if someone is low when it comes off 30 second internal cd. VERY important timer for heroic
 --Iyyokuk the Lucid
-local timerCalculated				= mod:NewBuffFadesTimer(6, 144095)
+local timerCalculated				= mod:NewBuffFadesTimer(6, 142416)
 local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but variation is wild (25-50 second variation)
 --Ka'roz the Locust
 local timerFlashCD					= mod:NewCDTimer(62, 143709)
@@ -168,7 +167,7 @@ local countdownEncaseInAmber		= mod:NewCountdown(30, 142564)--Probably switch to
 local countdownInjection			= mod:NewCountdown("Alt9.5", 143339, mod:IsTank())
 
 mod:AddRangeFrameOption("6/5")
-mod:AddSetIconOption("SetIconOnAim", 142948)--multi boss fight, will use star and avoid moving skull off a kill target
+mod:AddSetIconOption("SetIconOnAim", 142948, false)--multi boss fight, will use star and avoid moving skull off a kill target
 
 local activatedTargets = {}--A table, for the 3 on pull
 local activeBossGUIDS = {}
@@ -816,7 +815,7 @@ local function delayMonsterEmote(target)
 			end
 		end
 		if criteriaMatched then
-			specWarnCriteriaLinked:Show(target)
+			specWarnCalculated:Show()
 			yellCalculated:Yell()
 		end
 	end

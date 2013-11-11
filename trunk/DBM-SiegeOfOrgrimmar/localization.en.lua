@@ -151,13 +151,11 @@ L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
 	specWarnActivatedVulnerable		= "You are vulnerable to %s - Avoid!",
-	specWarnCriteriaLinked			= "You are linked to %s!"
 })
 
 L:SetOptionLocalization({
 	warnToxicCatalyst				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format("ej8036"),
 	specWarnActivatedVulnerable		= "Show special warning when you are vulnerable to activating paragons",
-	specWarnCriteriaLinked			= "Show special warning when you are linked to $spell:144095",
 	yellToxicCatalyst				= DBM_CORE_AUTO_YELL_OPTION_TEXT:format("ej8036")
 })
 

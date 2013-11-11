@@ -141,13 +141,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "%s wird dir erhöhten Schaden zufügen - Meiden!",
-	specWarnCriteriaLinked			= "Du bist verbunden mit %s!"
+	specWarnActivatedVulnerable		= "%s wird dir erhöhten Schaden zufügen - Meiden!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Spezialwarnung, wenn dir ein neuer Getreuer erhöhten Schaden zufügen wird",
-	specWarnCriteriaLinked			= "Spezialwarnung, wenn du mit einem anderen Spieler verbunden bist ($spell:144095)"
+	specWarnActivatedVulnerable		= "Spezialwarnung, wenn dir ein neuer Getreuer erhöhten Schaden zufügen wird"
 })
 
 L:SetMiscLocalization({
