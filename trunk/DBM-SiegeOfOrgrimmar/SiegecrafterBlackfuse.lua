@@ -30,7 +30,7 @@ local warnAutomatedShredder				= mod:NewSpellAnnounce("ej8199", 3, 85914)
 local warnOverload						= mod:NewStackAnnounce(145444, 3)
 local warnDeathFromAbove				= mod:NewTargetAnnounce(144208, 4)--Player target, not vulnerable shredder target. (should always be cast on highest threat target, but i like it still being a "target" warning)
 --The Assembly Line
-local warnAssemblyLine					= mod:NewSpellAnnounce("OptionVersion2", "ej8202", 3, 85914, mod:IsDps())
+local warnAssemblyLine					= mod:NewCountAnnounce("OptionVersion2", "ej8202", 3, 85914, mod:IsDps())
 local warnShockwaveMissileActivated		= mod:NewSpellAnnounce("ej8204", 3, 143639)--Unsure if this will even show in CLEU, may need UNIT event or emote
 local warnShockwaveMissile				= mod:NewCountAnnounce(143641, 3)
 --local warnLaserTurretActivated			= mod:NewSpellAnnounce("ej8208", 3, 143867, false)--No event to detect it
@@ -50,7 +50,7 @@ local specWarnDeathFromAbove			= mod:NewSpecialWarningSpell(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
 local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("OptionVersion3", "ej8212", not mod:IsHealer())
-local specWarnAssemblyLine				= mod:NewSpecialWarningSpell("OptionVersion3", "ej8202", false)--Not all in raid need, just those assigned
+local specWarnAssemblyLine				= mod:NewSpecialWarningCount("OptionVersion3", "ej8202", false)--Not all in raid need, just those assigned
 local specWarnShockwaveMissileActive	= mod:NewSpecialWarningSpell("ej8204", nil, nil, nil, 2)
 local specWarnReadyToGo					= mod:NewSpecialWarningTarget(145580)
 local specWarnLaserFixate				= mod:NewSpecialWarningRun(143828)
@@ -300,9 +300,9 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg == L.newWeapons or msg:find(L.newWeapons) then
 		weapon = weapon + 1
-		warnAssemblyLine:Show()
+		warnAssemblyLine:Show(weapon)
 		if not assemblyDebuff then--Don't warn if you can't go
-			specWarnAssemblyLine:Show()
+			specWarnAssemblyLine:Show(weapon)
 		end
 		timerAssemblyLineCD:Start()
 		countdownAssemblyLine:Start()
