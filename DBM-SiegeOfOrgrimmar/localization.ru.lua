@@ -141,13 +141,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "Вы уязвимы к %s - Избегайте!",
-	specWarnCriteriaLinked			= "Вы слинкованы с %s!"
+	specWarnActivatedVulnerable		= "Вы уязвимы к %s - Избегайте!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Спец-предупреждение когда вы уязвимы к активирующимся идеалам",
-	specWarnCriteriaLinked			= "Спец-предупреждение когда вы слинкованы с $spell:144095"
+	specWarnActivatedVulnerable		= "Спец-предупреждение когда вы уязвимы к активирующимся идеалам"
 })
 
 L:SetMiscLocalization({

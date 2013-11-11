@@ -145,13 +145,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "%s에게 취약함 - 주의!",
-	specWarnCriteriaLinked			= "계산 완료 대상과 연결됨 : %s!"
+	specWarnActivatedVulnerable		= "%s에게 취약함 - 주의!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "활성화된 용장중 주의해야 할 용장이 있을 경우 특수 경고 보기",
-	specWarnCriteriaLinked			= "$spell:144095 대상과 연결된 경우 특수 경고 보기"
+	specWarnActivatedVulnerable		= "활성화된 용장중 주의해야 할 용장이 있을 경우 특수 경고 보기"
 })
 
 L:SetMiscLocalization({

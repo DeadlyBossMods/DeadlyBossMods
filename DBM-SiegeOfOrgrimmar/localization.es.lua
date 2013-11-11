@@ -141,13 +141,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "Eres vulnerable a %s - ¡Esquiva!",
-	specWarnCriteriaLinked			= "!Estás enlazado a %s!"
+	specWarnActivatedVulnerable		= "Eres vulnerable a %s - ¡Esquiva!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Mostrar aviso especial cunado eres vulnerable a activar paragons",
-	specWarnCriteriaLinked			= "Mostrar aviso especial cuando estés enlazado con $spell:144095"
+	specWarnActivatedVulnerable		= "Mostrar aviso especial cunado eres vulnerable a activar paragons"
 })
 
 L:SetMiscLocalization({
