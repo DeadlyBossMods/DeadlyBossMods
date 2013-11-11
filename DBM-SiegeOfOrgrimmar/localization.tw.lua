@@ -141,13 +141,11 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable	= "你虛弱於%s - 換坦!",
-	specWarnCriteriaLinked		= "你被%s連線了!"
+	specWarnActivatedVulnerable	= "你虛弱於%s - 換坦!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable	= "當你虛弱於活動的議會成員時顯示特別警告",
-	specWarnCriteriaLinked		= "當你被$spell:144095連線時顯示特別警告"
+	specWarnActivatedVulnerable	= "當你虛弱於活動的議會成員時顯示特別警告"
 })
 
 L:SetMiscLocalization({
