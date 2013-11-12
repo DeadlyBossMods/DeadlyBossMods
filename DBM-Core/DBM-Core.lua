@@ -6278,7 +6278,6 @@ do
 	-- problem: heroic/normal achievements :[
 	-- local achievementTimers = {}
 	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion)--countdownDefault should be a number, such as 5 or 10 hard coded in boss mod to say "audio countdown is on by default for this timer and default count start point is 5 or 10
-		local timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion = timer, spellId, timerText, optionDefault, optionName, texture, r, g, b, countdownDefault, optionVersion
 		if type(timer) == "string" and timer:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(timer, 14)
