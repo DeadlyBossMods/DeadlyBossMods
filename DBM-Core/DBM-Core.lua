@@ -5227,7 +5227,6 @@ do
 
 	-- new constructor (auto-localized warnings and options, yay!)
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion)
-		local spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion = spellId, color, icon, optionDefault, optionName, castTime, preWarnTime, noSound, optionVersion
 		if not spellId then
 			error("newAnnounce: you must provide spellId", 2)
 			return
