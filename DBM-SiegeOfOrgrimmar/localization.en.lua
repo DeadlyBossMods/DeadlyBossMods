@@ -150,7 +150,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "You are vulnerable to %s - Avoid!",
+	specWarnActivatedVulnerable		= "You are vulnerable to %s - Avoid!"
 })
 
 L:SetOptionLocalization({
