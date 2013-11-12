@@ -519,7 +519,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			mutateCount = mutateCount + 1
 			timerMutateCD:Start()
 		end
-		warnMutate:CombinedShow(0.5, args.destName, mutateCount)
+		warnMutate:CombinedShow(0.5, mutateCount, args.destName)
 		if args.IsPlayer() then
 			specWarnMutate:Show()
 			timerMutate:Start()
