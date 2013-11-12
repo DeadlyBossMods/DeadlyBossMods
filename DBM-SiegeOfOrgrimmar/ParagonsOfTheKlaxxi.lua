@@ -107,7 +107,6 @@ local specWarnInsaneCalculationFire	= mod:NewSpecialWarningSpell(142416, nil, ni
 --Ka'roz the Locust
 local specWarnFlash					= mod:NewSpecialWarningSpell(143709, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnWhirling				= mod:NewSpecialWarningYou(143701)
-local yellWhirling					= mod:NewYell(143701, nil, false)
 local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)
 local specWarnHurlAmber				= mod:NewSpecialWarningSpell(143759, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnCausticAmber			= mod:NewSpecialWarningMove(143735)--Stuff on the ground
@@ -145,12 +144,12 @@ local timerHurlAmberCD				= mod:NewCDTimer(62, 143759)--TODO< verify cd on spell
 local timerBloodlettingCD			= mod:NewCDTimer(35, 143280)--35-65 variable. most of the time it's around 42 range
 --Rik'kal the Dissector
 local timerMutate					= mod:NewBuffFadesTimer(20, 143337, nil, false, nil, nil, nil, nil, nil, 2)
-local timerMutateCD					= mod:NewCDTimer(45, 143337)
+local timerMutateCD					= mod:NewCDCountTimer(31.5, 143337)
 local timerInjectionCD				= mod:NewNextTimer(9.5, 143339, nil, mod:IsTank())
 --Hisek the Swarmkeeper
 local timerAim						= mod:NewTargetTimer(5, 142948)--or is it 7, conflicting tooltips
-local timerAimCD					= mod:NewCDTimer(42, 142948)
-local timerRapidFireCD				= mod:NewCDTimer(47, 143243)--Heroic, unknown Cd
+local timerAimCD					= mod:NewCDCountTimer(42, 142948)
+local timerRapidFireCD				= mod:NewCDTimer(47, 143243)--Heroic, 47-50 variation
 
 local berserkTimer					= mod:NewBerserkTimer(720)
 
@@ -226,17 +225,42 @@ local function DFAScan()
 	end
 end
 
-local function CheckBosses()
+local function CheckBosses(ignoreRTF)
 	local vulnerable = false
-	for i = 1, 3 do--Assume boss 4 is always the inactive one. Need to verify this works, because filtering by ready to fight causes start timers not to work
+	if DBM.Options.DebugMode then
+		print("DBM DEBUG: CheckBosses fired.")
+	end
+	for i = 1, 5 do
 		local unitID = "boss"..i
+		local unitGUID = UnitGUID(unitID)
+		if DBM.Options.DebugMode then
+			local hasRTF = false
+			if UnitBuff(unitID, readyToFight) then hasRTF = true end
+			print(UnitName(unitID), hasRTF)
+		end
 		--Only 3 bosses activate on pull, however now the inactive or (next boss to activate) also fires IEEU. As such, we have to filter that boss by scaning for readytofight. Works well though.
-		if UnitExists(unitID) and not activeBossGUIDS[UnitGUID(unitID)] then--Check if new units exist we haven't detected and added yet.
-			activeBossGUIDS[UnitGUID(unitID)] = true
+		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] and not UnitBuff(unitID, readyToFight) then
+			activeBossGUIDS[unitGUID] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
+			if DBM.Options.DebugMode then
+				print("DBM DEBUG: "..UnitName(unitID).." passed join validation. Timers should start")
+			end
 			--Activation Controller
-			local cid = mod:GetCIDFromGUID(UnitGUID(unitID))
-			if cid == 71161 then--Kil'ruk the Wind-Reaver
+			local cid = mod:GetCIDFromGUID(unitGUID)
+			if cid == 71152 then--Skeer the Bloodseeker
+				timerBloodlettingCD:Start(9)
+				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
+			elseif cid == 71158 then--Rik'kal the Dissector
+				timerInjectionCD:Start(13)
+				countdownInjection:Start(13)
+				timerMutateCD:Start(34, 1)
+				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
+			elseif cid == 71153 then--Hisek the Swarmkeeper
+				timerAimCD:Start(37, 1)--Might be 32 now with the UnitBuff filter, so pay attention to that and adjust as needed
+				if mod:IsDifficulty("heroic10", "heroic25") then
+					timerRapidFireCD:Start(44.5)
+				end
+			elseif cid == 71161 then--Kil'ruk the Wind-Reaver
 				if mod:IsDifficulty("heroic10", "heroic25") then
 					timerReaveCD:Start(38.5)
 				end
@@ -253,19 +277,6 @@ local function CheckBosses()
 			elseif cid == 71154 then--Ka'roz the Locust
 				timerFlashCD:Start(14)--In final LFR test, he didn't cast this for 20 seconds. TODO check this change
 				timerHurlAmberCD:Start(44)
-			elseif cid == 71152 then--Skeer the Bloodseeker
-				timerBloodlettingCD:Start(9)
-				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
-			elseif cid == 71158 then--Rik'kal the Dissector
-				timerInjectionCD:Start(13)
-				countdownInjection:Start(13)
-				timerMutateCD:Start(34)
-				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
-			elseif cid == 71153 then--Hisek the Swarmkeeper
-				timerAimCD:Start(37)--Might be 32 now with the UnitBuff filter, so pay attention to that and adjust as needed
-				if mod:IsDifficulty("heroic10", "heroic25") then
-					timerRapidFireCD:Start(44.5)
-				end
 			end
 		end
 	end
@@ -401,7 +412,7 @@ function mod:SPELL_CAST_START(args)
 		warnShieldBash:Show()
 		timerShieldBashCD:Start()
 	elseif args.spellId == 142315 then
-		for i = 1, 3 do
+		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then--We are highest threat target
 				warnCausticBlood:Show()
@@ -414,7 +425,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnRapidFire:Show()
 		timerRapidFireCD:Start()
 	elseif args.spellId == 143339 then
-		for i = 1, 3 do
+		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
 				specWarnInjection:Show()
@@ -492,9 +503,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWhirling:CombinedShow(0.5, args.destName)
 		if args.IsPlayer() then
 			specWarnWhirling:Show()
-			if not self:IsDifficulty("lfr25") then
-				yellWhirling:Yell()
-			end
 			timerWhirling:Start()
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
@@ -517,7 +525,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 143337 then
 		if self:AntiSpam(2, 3) then
 			mutateCount = mutateCount + 1
-			timerMutateCD:Start()
+			timerMutateCD:Start(nil, mutateCount+1)
 		end
 		warnMutate:CombinedShow(0.5, mutateCount, args.destName)
 		if args.IsPlayer() then
@@ -528,9 +536,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnParasiteFixate:Show()
 	elseif args.spellId == 142948 then
 		aimCount = aimCount + 1
-		warnAim:Show(args.destName, aimCount)
+		warnAim:Show(aimCount, args.destName)
 		timerAim:Start(args.destName)
-		timerAimCD:Start()
+		timerAimCD:Start(nil, aimCount+1)
 		if args.IsPlayer() then
 			specWarnAim:Show()
 			yellAim:Yell()
