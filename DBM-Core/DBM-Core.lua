@@ -5072,7 +5072,23 @@ do
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			local text
-			if #self.combinedtext > 0 then
+			if #self.combinedtext > 0 then--very ugly code. need tweaking. can cause script lan too long?
+				local count = select("#", ...)
+				-- create temporary arg table.
+				local argTable = {}
+				local pointToProcess = 0
+				if count == 1 then
+					pointToProcess = 1
+					argTable[1] = select(1, ...)
+				else
+					for i = 1, select("#", ...) do
+						local value = select(i, ...)
+						if type(value) == "table" then
+							pointToProcess = i
+						end
+						argTable[i] = value
+					end
+				end
 				--Throttle spam.
 				local displayText = table.concat(self.combinedtext, "<, >")
 				if self.combinedcount == 1 then
@@ -5080,10 +5096,11 @@ do
 				elseif self.combinedcount > 1 then
 					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS2:format(self.combinedcount)
 				end
+				argTable[pointToProcess] = displayText
 				text = ("%s%s%s|r%s"):format(
 					(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
 					colorCode,
-					pformat(self.text, displayText),
+					pformat(self.text, argTable[1], argTable[2], argTable[3], argTable[4], argTable[5]),
 					(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 				)
 			else
@@ -5138,14 +5155,37 @@ do
 		end
 	end
 
-	function announcePrototype:CombinedShow(delay, text, ...)
+	function announcePrototype:CombinedShow(delay, ...)--very ugly code. need tweaking. can cause script lan too long?
+		local count = select("#", ...)
+		-- support only 5 args.
+		if count > 5 then error("CombinedShow method only support up to 5 args", 2) end
+		-- create temporary arg table.
+		local argTable = {}
+		local pointToCombine = 0
+		if count == 1 then
+			pointToCombine = 1
+			argTable[1] = select(1, ...)
+		else
+			for i = 1, select("#", ...) do
+				local value = select(i, ...)
+				if type(value) == "string" then
+					pointToCombine = i
+				end
+				argTable[i] = value
+			end
+		end
+		-- process text combine.
+		local text = select(pointToCombine, ...)
 		if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
 			self.combinedtext[#self.combinedtext + 1] = text or ""
 		else
 			self.combinedcount = self.combinedcount + 1
 		end
+		-- replace arg table
+		argTable[pointToCombine] = self.combinedtext
+		-- return to show method (up to 5 args)
 		unschedule(self.Show, self.mod, self)
-		schedule(delay or 0.5, self.Show, self.mod, self, ...)
+		schedule(delay or 0.5, self.Show, self.mod, self, argTable[1], argTable[2], argTable[3], argTable[4], argTable[5])
 	end
 
 	function announcePrototype:Schedule(t, ...)

@@ -149,7 +149,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "활성화된 용장중 주의해야 할 용장이 있을 경우 특수 경고 보기"
+	specWarnActivatedVulnerable		= "활성화된 용장중 주의해야 할 용장이 있을 경우 특수 경고 보기",
+	AimArrow						= "$spell:142948 대상이 정해진 경우 DBM 화살표 보기"
 })
 
 L:SetMiscLocalization({
