@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71152, 71153, 71154, 71155, 71156, 71157, 71158, 71160, 71161)
+mod:SetEncounterID(1593)
 mod:SetZone()
 mod:SetUsedIcons(3)
 mod:SetBossHPInfoToHighest()
@@ -716,15 +717,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote comes second, so we have 
 		calculatedShape = "Mantid"
 	elseif msg:find("ABILITY_IYYOKUK_STAFF") then
 		calculatedShape = "Staff"
-	elseif msg:find(msg == L.one) then
+	elseif msg:find(L.one) then
 		calculatedNumber = 0--1 stacks actually return as 0 in checks
-	elseif msg:find(msg == L.two) then
+	elseif msg:find(L.two) then
 		calculatedNumber = 2
-	elseif msg:find(msg == L.three) then
+	elseif msg:find(L.three) then
 		calculatedNumber = 3
-	elseif msg:find(msg == L.four) then
+	elseif msg:find(L.four) then
 		calculatedNumber = 4
-	elseif msg:find(msg == L.five) then
+	elseif msg:find(L.five) then
 		calculatedNumber = 5
 	end
 end
