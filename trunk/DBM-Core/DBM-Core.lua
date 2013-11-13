@@ -695,10 +695,26 @@ do
 			elseif event == "DAMAGE_SPLIT" then
 				args.spellId, args.spellName, args.spellSchool = select(1, ...)
 				args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
-			elseif DBM.Options.DebugMode and event == "ENCOUNTER_START" then--5.4.2 prep
-				print("DBM Debug: ENCOUNTER_START fired. args are "..select(1,...))
-			elseif DBM.Options.DebugMode and event == "ENCOUNTER_END" then--5.4.2 prep
-				print("DBM Debug: ENCOUNTER_END fired. args are "..select(1,...))
+			elseif event == "ENCOUNTER_START" then
+				--encounter ID, encounter name (localized), difficulty ID, group size
+				if combatInfo[LastInstanceMapID] then
+					for i, v in ipairs(combatInfo[LastInstanceMapID]) do
+						if hideCaster == v.encounter then
+							self:StartCombat(v.mod, 0, "ENCOUNTER_START")
+						end
+					end
+				end
+			elseif event == "ENCOUNTER_END" then
+				--encounter ID, encounter name (localized), difficulty ID, group size, success
+				for i = #inCombat, 1, -1 do
+					local v = inCombat[i]
+					if not v.combatInfo then return end
+					if hideCaster == v.encounter then
+						local wipe = nil
+						if sourceRaidFlags == 0 then wipe = true end
+						self:EndCombat(v, wipe)
+					end
+				end
 			end
 			return handleEvent(nil, event, args)
 		end
@@ -4512,6 +4528,11 @@ function bossModPrototype:SetCreatureID(...)
 	end
 end
 
+--NOT same as encounter journal IDs.
+function bossModPrototype:SetEncounterID(...)
+	self.encounterId = ...
+end
+
 function bossModPrototype:Toggle()
 	if self.Options.Enabled then
 		self:DisableMod()
@@ -6719,6 +6740,7 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	local info = {
 		type = cType,
 		mob = self.creatureId,
+		encounter = self.encounterId,
 		name = self.localization.general.name or self.id,
 		msgs = (cType ~= "combat") and {...},
 		mod = self
