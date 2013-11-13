@@ -699,8 +699,16 @@ do
 				--encounter ID, encounter name (localized), difficulty ID, group size
 				if combatInfo[LastInstanceMapID] then
 					for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-						if hideCaster == v.encounter then
+						if v.multiEncounterPullDetection then
+							for _, encounter in ipairs(v.multiEncounterPullDetection) do
+								if hideCaster == encounter then
+									self:StartCombat(v.mod, 0, "ENCOUNTER_START")
+									return
+								end
+							end
+						elseif hideCaster == v.encounter then
 							self:StartCombat(v.mod, 0, "ENCOUNTER_START")
+							return
 						end
 					end
 				end
@@ -713,6 +721,7 @@ do
 						local wipe = nil
 						if sourceRaidFlags == 0 then wipe = true end
 						self:EndCombat(v, wipe)
+						return
 					end
 				end
 			end
@@ -4531,6 +4540,12 @@ end
 --NOT same as encounter journal IDs.
 function bossModPrototype:SetEncounterID(...)
 	self.encounterId = ...
+	if select("#", ...) > 1 then
+		self.multiEncounterPullDetection = {...}
+		if self.combatInfo then
+			self.combatInfo.multiEncounterPullDetection = self.multiEncounterPullDetection
+		end
+	end
 end
 
 function bossModPrototype:Toggle()
@@ -6747,6 +6762,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	}
 	if self.multiMobPullDetection then
 		info.multiMobPullDetection = self.multiMobPullDetection
+	end
+	if self.multiEncounterPullDetection then
+		info.multiEncounterPullDetection = self.multiEncounterPullDetection
 	end
 	-- use pull-mobs as kill mobs by default, can be overriden by RegisterKill
 	if self.multiMobPullDetection then
