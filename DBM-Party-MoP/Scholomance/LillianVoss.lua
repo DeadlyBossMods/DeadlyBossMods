@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(58722)--58722 is Body, 58791 is soul. Body is engaged first
+mod:SetEncounterID(1429)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
