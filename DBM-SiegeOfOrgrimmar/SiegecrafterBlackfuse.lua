@@ -78,6 +78,7 @@ local timerPatternRecognition			= mod:NewBuffFadesTimer("OptionVersion2", 60, 14
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
 local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)
 local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269, nil, false)--Many mines can be up at once so timer off by default do to spam
+local timerMagneticCrush				= mod:NewBuffActiveTimer(30, 144466)
 
 local countdownAssemblyLine				= mod:NewCountdown(40, "ej8202", false)
 local countdownShredder					= mod:NewCountdown(60, "ej8199", mod:IsTank())
@@ -254,6 +255,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 144466 and self:AntiSpam(15, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
 		warnMagneticCrush:Show()
 		specWarnMagneticCrush:Show()
+		timerMagneticCrush:Start()
 	elseif args.spellId == 143856 and args:IsPlayer() and self:AntiSpam(2, 2) then
 		specWarnSuperheated:Show()
 	end

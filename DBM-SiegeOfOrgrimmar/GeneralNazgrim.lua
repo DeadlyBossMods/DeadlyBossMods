@@ -44,6 +44,7 @@ local warnAssasinsMark				= mod:NewTargetAnnounce(143480, 3)
 local warnEarthShield				= mod:NewTargetAnnounce(143475, 4, nil, mod:IsMagicDispeller())
 local warnEmpoweredChainHeal		= mod:NewCastAnnounce(143473, 4)
 local warnHealingTideTotem			= mod:NewSpellAnnounce(143474, 4)
+local warnHuntersMark				= mod:NewTargetAnnounce(143882, 3)
 
 --Nazgrim Core Abilities
 local specWarnAdds					= mod:NewSpecialWarningCount("ej7920", not mod:IsHealer())
@@ -73,6 +74,9 @@ local yellAssassinsMark				= mod:NewYell(143480)
 local specWarnAssassinsMarkOther	= mod:NewSpecialWarningTarget(143480, false)
 local specWarnEarthShield			= mod:NewSpecialWarningDispel(143475, mod:IsMagicDispeller())
 local specWarnHealingTideTotem		= mod:NewSpecialWarningSwitch(143474, false)--Not everyone needs to switch, should be turned on by assigned totem mashing people.
+local specWarnHuntersMark			= mod:NewSpecialWarningYou(143882)
+local yellHuntersMark				= mod:NewYell(143882)
+local specWarnHuntersMarkOther		= mod:NewSpecialWarningTarget(143882, false)
 
 --Nazgrim Core Abilities
 local timerAddsCD					= mod:NewNextCountTimer(45, "ej7920", nil, nil, nil, 2457)
@@ -379,6 +383,14 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 143638 then
 		warnBonecracker:CombinedShow(1.5, args.destName)
 		timerBoneCD:DelayedStart(1.5)--Takes a while to get on all targets. 1.5 seconds in 10 man, not sure about 25 man yet
+	elseif args.spellId == 143882 then
+		warnHuntersMark:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnHuntersMark:Show()
+			yellHuntersMark:Yell()
+		else
+			specWarnHuntersMarkOther:Show(args.destName)
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
