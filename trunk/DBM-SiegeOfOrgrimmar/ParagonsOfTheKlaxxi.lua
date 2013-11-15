@@ -98,7 +98,7 @@ local specWarnMesmerize				= mod:NewSpecialWarningYou(142671)
 local yellMesmerize					= mod:NewYell(142671, nil, false)
 local specWarnKunchongs				= mod:NewSpecialWarningSwitch("ej8043", mod:IsDps())
 --Korven the Prime
-local specWarnShieldBash			= mod:NewSpecialWarningYou(143974)
+local specWarnShieldBash			= mod:NewSpecialWarningSpell(143974)
 local specWarnShieldBashOther		= mod:NewSpecialWarningTarget(143974, mod:IsTank() or mod:IsHealer())
 local specWarnEncaseInAmber			= mod:NewSpecialWarningTarget(142564, mod:IsDps())--Better than switch because on heroic, you don't actually switch to amber, you switch to a NON amber target. Plus switch gives no targetname
 --Iyyokuk the Lucid
@@ -228,38 +228,27 @@ end
 
 local function CheckBosses(ignoreRTF)
 	local vulnerable = false
-	if DBM.Options.DebugMode then
-		print("DBM DEBUG: CheckBosses fired.")
-	end
 	for i = 1, 5 do
 		local unitID = "boss"..i
 		local unitGUID = UnitGUID(unitID)
-		if DBM.Options.DebugMode then
-			local hasRTF = false
-			if UnitBuff(unitID, readyToFight) then hasRTF = true end
-			print(UnitName(unitID), hasRTF)
-		end
 		--Only 3 bosses activate on pull, however now the inactive or (next boss to activate) also fires IEEU. As such, we have to filter that boss by scaning for readytofight. Works well though.
 		if UnitExists(unitID) and not activeBossGUIDS[unitGUID] and not UnitBuff(unitID, readyToFight) then
 			activeBossGUIDS[unitGUID] = true
 			activatedTargets[#activatedTargets + 1] = UnitName(unitID)
-			if DBM.Options.DebugMode then
-				print("DBM DEBUG: "..UnitName(unitID).." passed join validation. Timers should start")
-			end
 			--Activation Controller
 			local cid = mod:GetCIDFromGUID(unitGUID)
 			if cid == 71152 then--Skeer the Bloodseeker
-				timerBloodlettingCD:Start(9)
+				timerBloodlettingCD:Start(5)--5-6
 				if UnitDebuff("player", GetSpellInfo(143279)) then vulnerable = true end
 			elseif cid == 71158 then--Rik'kal the Dissector
-				timerInjectionCD:Start(13)
-				countdownInjection:Start(13)
-				timerMutateCD:Start(34, 1)
+				timerInjectionCD:Start(8)
+				countdownInjection:Start(8)
+				timerMutateCD:Start(23, 1)
 				if UnitDebuff("player", GetSpellInfo(143275)) then vulnerable = true end
 			elseif cid == 71153 then--Hisek the Swarmkeeper
-				timerAimCD:Start(37, 1)--Might be 32 now with the UnitBuff filter, so pay attention to that and adjust as needed
+				timerAimCD:Start(35, 1)--Might be 35-37 with unitdebuff filter
 				if mod:IsDifficulty("heroic10", "heroic25") then
-					timerRapidFireCD:Start(44.5)
+					timerRapidFireCD:Start(47.5)--47-50 with unitdebuff filter
 				end
 			elseif cid == 71161 then--Kil'ruk the Wind-Reaver
 				if mod:IsDifficulty("heroic10", "heroic25") then
@@ -411,6 +400,7 @@ function mod:SPELL_CAST_START(args)
 		timerBloodlettingCD:Start()
 	elseif args.spellId == 143974 then
 		warnShieldBash:Show()
+		specWarnShieldBash:Show()
 		timerShieldBashCD:Start()
 	elseif args.spellId == 142315 then
 		for i = 1, 5 do
@@ -495,10 +485,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 143974 then
 		timerShieldBash:Start(args.destName)
-		if args.IsPlayer() then
-			specWarnShieldBash:Show()
-		else
-			specWarnShieldBashOther:Show(args.destName)
+		if not args.IsPlayer() then
+			specWarnShieldBashOther:Show(args.destName)--So warn AGAIN
 		end
 	elseif args.spellId == 143701 then
 		warnWhirling:CombinedShow(0.5, args.destName)
