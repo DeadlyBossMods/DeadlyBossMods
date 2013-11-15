@@ -27,7 +27,7 @@ local warnProtectiveFrenzy				= mod:NewTargetAnnounce(145365, 3, nil, mod:IsTank
 local warnElectroStaticCharge			= mod:NewStackAnnounce(143385, 2, nil, mod:IsTank())
 local warnOvercharge					= mod:NewTargetAnnounce(145774, 4)--Heroic. Probably doesn't show in combat log and will require emotes i'm sure.
 --Automated Shredders
-local warnAutomatedShredder				= mod:NewSpellAnnounce("ej8199", 3, 85914)
+local warnAutomatedShredder				= mod:NewCountAnnounce("ej8199", 3, 85914)
 local warnOverload						= mod:NewStackAnnounce(145444, 3)
 local warnDeathFromAbove				= mod:NewTargetAnnounce(144208, 4)--Player target, not vulnerable shredder target. (should always be cast on highest threat target, but i like it still being a "target" warning)
 --The Assembly Line
@@ -46,7 +46,7 @@ local yellLaunchSawblade				= mod:NewYell(143265, nil, false, nil, nil, 2)
 local specWarnProtectiveFrenzy			= mod:NewSpecialWarningTarget(145365, mod:IsTank())
 local specWarnOvercharge				= mod:NewSpecialWarningTarget(145774)
 --Automated Shredders
-local specWarnAutomatedShredder			= mod:NewSpecialWarningSpell("ej8199", mod:IsTank())--No sense in dps switching when spawn, has damage reduction. This for tank pickup
+local specWarnAutomatedShredder			= mod:NewSpecialWarningCount("ej8199", mod:IsTank())--No sense in dps switching when spawn, has damage reduction. This for tank pickup
 local specWarnDeathFromAbove			= mod:NewSpecialWarningSpell(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
@@ -102,6 +102,7 @@ local shockwaveMissile = EJ_GetSectionInfo(8205)
 local laserTurret = EJ_GetSectionInfo(8208)
 local electroMagnet = EJ_GetSectionInfo(8210)
 local assemblyDebuff = false
+local shredderCount = 0
 
 function mod:LaunchSawBladeTarget(targetname, uId)
 	warnLaunchSawblade:Show(targetname)
@@ -157,8 +158,9 @@ function mod:OnCombatStart(delay)
 	missileCount = 0
 --	laserCount = 0
 	weapon = 0
+	shredderCount = 0
 	shockwaveOvercharged = false
-	timerAutomatedShredderCD:Start(35-delay)
+	timerAutomatedShredderCD:Start(35-delay, 1)
 	countdownShredder:Start(35-delay)
 end
 
@@ -314,10 +316,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 			DBM.InfoFrame:Show(1, "function", showWeaponInfo, true)
 		end
 	elseif msg == L.newShredder or msg:find(L.newShredder) then
-		warnAutomatedShredder:Show()
-		specWarnAutomatedShredder:Show()
+		shredderCount = shredderCount + 1
+		warnAutomatedShredder:Show(shredderCount)
+		specWarnAutomatedShredder:Show(shredderCount)
 		timerDeathFromAboveCD:Start(17)
-		timerAutomatedShredderCD:Start()
+		timerAutomatedShredderCD:Start(nil, shredderCount+14)
 		countdownShredder:Start()
 	end
 end
