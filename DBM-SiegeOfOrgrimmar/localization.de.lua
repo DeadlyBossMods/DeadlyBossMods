@@ -145,11 +145,12 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Spezialwarnung, wenn dir ein neuer Getreuer erhöhten Schaden zufügen wird"
+	specWarnActivatedVulnerable		= "Spezialwarnung, wenn dir ein neuer Getreuer erhöhten Schaden zufügen wird",
+	AimArrow						= "Zeige DBM-Pfeil, wenn jemand von $spell:142948 betroffen ist"
 })
 
 L:SetMiscLocalization({
-	one					= "Eins",--needs to be verified (guessed)
+	one					= "Eins",
 	two					= "Zwei",
 	three				= "Drei",
 	four				= "Vier",--needs to be verified (guessed)
