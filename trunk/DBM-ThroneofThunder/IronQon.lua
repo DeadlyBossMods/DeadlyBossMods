@@ -425,7 +425,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnFistSmash:Show()
 		timerFistSmash:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then
-			timerFistSmashCD:Start(30, fistSmashCount+1) -- heroic cd longer.
+			timerFistSmashCD:Start(28, fistSmashCount+1) -- heroic cd longer.
 		else
 			timerFistSmashCD:Start(nil, fistSmashCount+1)
 		end
