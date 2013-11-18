@@ -61,6 +61,7 @@ local warnBloodletting				= mod:NewSpellAnnounce(143280, 4)
 --Rik'kal the Dissector
 local warnInjection					= mod:NewStackAnnounce(143339)
 local warnMutate					= mod:NewTargetCountAnnounce(143337, 3)
+local warnParasitesLeft				= mod:NewAddsLeftAnnounce("ej8065", 3, 143383, mod:IsTank())
 --Hisek the Swarmkeeper
 local warnAim						= mod:NewTargetCountAnnounce(142948, 4)--Maybe wrong debuff id, maybe 144759 instead
 local warnRapidFire					= mod:NewSpellAnnounce(143243, 3)
@@ -117,6 +118,7 @@ local specWarnBloodletting			= mod:NewSpecialWarningSwitch(143280, not mod:IsHea
 local specWarnMutate				= mod:NewSpecialWarningYou(143337)
 local specWarnParasiteFixate		= mod:NewSpecialWarningYou("OptionVersion2", 143358, false)
 local specWarnInjection				= mod:NewSpecialWarningSpell(143339, mod:IsTank(), nil, nil, 3)
+local specWarnMoreParasites			= mod:NewSpecialWarning("specWarnMoreParasites", mod:IsTank())
 --Hisek the Swarmkeeper
 local specWarnAim					= mod:NewSpecialWarningYou(142948)
 local yellAim						= mod:NewYell(142948)
@@ -173,6 +175,7 @@ local calculatingDude = EJ_GetSectionInfo(8012)
 local readyToFight = GetSpellInfo(143542)
 local mutateCount = 0
 local aimCount = 0
+local parasitesActive = 0
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -283,6 +286,7 @@ function mod:OnCombatStart(delay)
 	calculatedColor = nil
 	mutateCount = 0
 	aimCount = 0
+	parasitesActive = 0
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
@@ -419,7 +423,13 @@ function mod:SPELL_CAST_START(args)
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
-				specWarnInjection:Show()
+				local elapsed, total = timerMutateCD:GetTime(mutateCount+1)
+				local remaining = total - elapsed
+				if self:IsDifficulty("heroic10", "heroic25") and (remaining < 20) and (parasitesActive < 3) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
+					specWarnMoreParasites:Show()
+				else--We want to block attack and not spawn anything
+					specWarnInjection:Show()
+				end
 				timerInjectionCD:Start()
 				countdownInjection:Cancel()--Sometimes boss stutter casts so need to do this
 				countdownInjection:Start()
@@ -485,8 +495,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 143974 then
 		timerShieldBash:Start(args.destName)
-		if not args.IsPlayer() then
-			specWarnShieldBashOther:Show(args.destName)--So warn AGAIN
+		for i = 1, 5 do
+			local bossUnitID = "boss"..i
+			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and not UnitDetailedThreatSituation("player", bossUnitID) then--We are not highest threat target
+				specWarnShieldBashOther:Show(args.destName)--So warn AGAIN
+				break
+			end
 		end
 	elseif args.spellId == 143701 then
 		warnWhirling:CombinedShow(0.5, args.destName)
@@ -563,6 +577,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnAim then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args.spellId == 143339 then
+		parasitesActive = parasitesActive + 8
 	end
 end
 
@@ -610,6 +626,11 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71153 then--Hisek the Swarmkeeper
 		timerAimCD:Cancel()
 		timerRapidFireCD:Cancel()
+	elseif cid == 71578 then--Amber Parasite
+		parasitesActive = parasitesActive - 1
+		if parasitesActive < 3 then
+			warnParasitesLeft:Show(parasitesActive)
+		end
 	end
 
 	if FlavorTable[cid] then
