@@ -12,6 +12,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"UNIT_DIED"
 )
 
@@ -39,6 +40,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnUltimatePower:Show(args.destName)
 		specWarnUltimatePower:Show(args.destName)
 		timerUltimatePower:Start(args.destName)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 122714 then
+		DBM:EndCombat(self)--Alternte win detection, UNIT_DIED not fire for 59051 (Strife), 59726 (Anger)
 	end
 end
 
