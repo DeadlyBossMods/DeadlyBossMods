@@ -695,35 +695,6 @@ do
 			elseif event == "DAMAGE_SPLIT" then
 				args.spellId, args.spellName, args.spellSchool = select(1, ...)
 				args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
-			elseif event == "ENCOUNTER_START" then
-				--encounter ID, encounter name (localized), difficulty ID, group size
-				if combatInfo[LastInstanceMapID] then
-					for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-						if v.multiEncounterPullDetection then
-							for _, encounter in ipairs(v.multiEncounterPullDetection) do
-								if hideCaster == encounter then
-									self:StartCombat(v.mod, 0, "ENCOUNTER_START")
-									return
-								end
-							end
-						elseif hideCaster == v.encounter then
-							self:StartCombat(v.mod, 0, "ENCOUNTER_START")
-							return
-						end
-					end
-				end
-			elseif event == "ENCOUNTER_END" then
-				--encounter ID, encounter name (localized), difficulty ID, group size, success
-				for i = #inCombat, 1, -1 do
-					local v = inCombat[i]
-					if not v.combatInfo then return end
-					if hideCaster == v.encounter then
-						local wipe = nil
-						if sourceRaidFlags == 0 then wipe = true end
-						self:EndCombat(v, wipe)
-						return
-					end
-				end
 			end
 			return handleEvent(nil, event, args)
 		end
@@ -868,6 +839,8 @@ do
 				"PLAYER_REGEN_DISABLED",
 				"PLAYER_REGEN_ENABLED",
 				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+				"ENCOUNTER_START",
+				"ENCOUNTER_END",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
 				"UNIT_HEALTH mouseover target focus boss1 boss2 boss3 boss4 boss5",
@@ -3094,6 +3067,43 @@ do
 				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, "IEEU")
 				end
+			end
+		end
+	end
+	
+	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
+		if DBM.Options.DebugMode then
+			print("ENCOUNTER_START EVENT Fired", encounterID, name, difficulty, size)
+		end
+		if combatInfo[LastInstanceMapID] then
+			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
+				if v.multiEncounterPullDetection then
+					for _, encounter in ipairs(v.multiEncounterPullDetection) do
+						if encounterID == encounter then
+							self:StartCombat(v.mod, 0, "ENCOUNTER_START")
+							return
+						end
+					end
+				elseif encounterID == v.encounter then
+					self:StartCombat(v.mod, 0, "ENCOUNTER_START")
+					return
+				end
+			end
+		end
+	end
+	
+	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
+		if DBM.Options.DebugMode then
+			print("ENCOUNTER_END EVENT Fired", encounterID, name, difficulty, size, success)
+		end
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			if not v.combatInfo then return end
+			if encounterID == v.encounter then
+				local wipe = nil
+				if success == 0 then wipe = true end
+				self:EndCombat(v, wipe)
+				return
 			end
 		end
 	end
