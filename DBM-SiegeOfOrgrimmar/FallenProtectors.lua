@@ -129,6 +129,7 @@ function mod:BrewTarget(targetname, uId)
 	end
 end
 
+--[[
 function mod:InfernoStrikeTarget(targetname, uId)
 	if not targetname then return end
 	warnInfernoStrike:Show(targetname)
@@ -139,7 +140,7 @@ function mod:InfernoStrikeTarget(targetname, uId)
 		specWarnInfernoStrike:Show()
 		yellInfernoStrike:Yell()
 	end
-end
+end--]]
 
 function mod:OnCombatStart(delay)
 	timerVengefulStrikesCD:Start(7-delay)
