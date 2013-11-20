@@ -3173,6 +3173,7 @@ end
 
 function checkWipe(isIEEU, confirm)
 	if #inCombat > 0 then
+		local difficultyIndex
 		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
 		end
@@ -6007,7 +6008,6 @@ do
 	end
 
 	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, optionName, noSound, runSound, optionVersion)
-		local text, optionDefault, stacks, optionName, noSound, runSound, optionVersion = text, optionDefault, stacks, optionName, noSound, runSound, optionVersion
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
@@ -6020,8 +6020,7 @@ do
 		return newSpecialWarning(self, "switch", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, ...)
-		local text, optionDefault, time, optionName, noSound, runSound, optionVersion = text, optionDefault, time, optionName, noSound, runSound, optionVersion
+	function bossModPrototype:NewSpecialWarningPreWarn(text, optionDefault, time, optionName, noSound, runSound, optionVersion)
 		if type(text) == "string" and text:match("OptionVersion") then
 			local temp = optionVersion
 			optionVersion = string.sub(text, 14)
