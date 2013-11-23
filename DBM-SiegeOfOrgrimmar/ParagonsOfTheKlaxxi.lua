@@ -159,7 +159,7 @@ local berserkTimer					= mod:NewBerserkTimer(720)
 local countdownEncaseInAmber		= mod:NewCountdown(30, 142564)--Probably switch to secondary countdown if one of his other abilities proves to have priority
 local countdownInjection			= mod:NewCountdown("Alt9.5", 143339, mod:IsTank())
 
-mod:AddRangeFrameOption("6/5")
+mod:AddRangeFrameOption("6/5/3")
 mod:AddSetIconOption("SetIconOnAim", 142948, false)--multi boss fight, will use star and avoid moving skull off a kill target
 mod:AddBoolOption("AimArrow", false)
 
@@ -176,6 +176,8 @@ local readyToFight = GetSpellInfo(143542)
 local mutateCount = 0
 local aimCount = 0
 local parasitesActive = 0
+local aimActive = false
+local mutateActive = false
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -192,10 +194,13 @@ local function warnActivatedTargets(vulnerable)
 	table.wipe(activatedTargets)
 end
 
+local function showRangeFrame()
+	DBM.RangeCheck:Show(3)
+	mutateActive = true
+end
+
 local function hideRangeFrame()
-	if mod.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
+	DBM.RangeCheck:Hide()
 end
 
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
@@ -287,6 +292,8 @@ function mod:OnCombatStart(delay)
 	mutateCount = 0
 	aimCount = 0
 	parasitesActive = 0
+	aimActive = false
+	mutateActive = false
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
@@ -529,6 +536,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:AntiSpam(2, 3) then
 			mutateCount = mutateCount + 1
 			timerMutateCD:Start(nil, mutateCount+1)
+			if self.Options.RangeFrame then
+				mutateActive = false
+				if not aimActive then
+					DBM.RangeCheck:Hide()--Hide it if aim isn't active, otherwise, delay hide call until hide is called by SPELL_AURA_REMOVED for aim
+				end
+				self:Schedule(26.5, showRangeFrame)--Show about 5 seconds before mutate cast
+			end
 		end
 		warnMutate:CombinedShow(0.5, mutateCount, args.destName)
 		if args.IsPlayer() then
@@ -539,6 +553,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnParasiteFixate:Show()
 	elseif args.spellId == 142948 then
 		aimCount = aimCount + 1
+		aimActive = true
 		warnAim:Show(aimCount, args.destName)
 		timerAim:Start(args.destName)
 		timerAimCD:Start(nil, aimCount+1)
@@ -549,7 +564,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnAimOther:Show(args.destName)
 		end
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(5)
+			if self:IsDifficulty("normal25", "heroic25") then
+				DBM.RangeCheck:Show(3)
+			else
+				DBM.RangeCheck:Show(5)
+			end
 		end
 		if self.Options.SetIconOnAim then
 			self:SetIcon(args.destName, 3)
@@ -568,11 +587,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGouge:Cancel(args.destName)
 	elseif args.spellId == 143974 then
 		timerShieldBash:Cancel(args.destName)
-	elseif args.spellId == 143700 and self.Options.RangeFrame then
+	elseif args.spellId == 143700 and self.Options.RangeFrame and not mutateActive and not aimActive then
 		DBM.RangeCheck:Hide()
 	elseif args.spellId == 142948 then
+		aimActive = false
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			if not mutateActive then--Don't call hide because frame is needed by mutate and will be hiden after that.
+				DBM.RangeCheck:Hide()
+			end
 		end
 		if self.Options.SetIconOnAim then
 			self:SetIcon(args.destName, 0)
@@ -623,6 +645,7 @@ function mod:UNIT_DIED(args)
 		timerMutateCD:Cancel()
 		timerInjectionCD:Cancel()
 		countdownInjection:Cancel()
+		self:Unschedule(showRangeFrame)
 	elseif cid == 71153 then--Hisek the Swarmkeeper
 		timerAimCD:Cancel()
 		timerRapidFireCD:Cancel()
