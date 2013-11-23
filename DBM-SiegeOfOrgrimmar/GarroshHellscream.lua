@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71865)
 mod:SetEncounterID(1623)
 mod:SetZone()
-mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--I think garrosh will cap at 7 in most cases for minions on 25 man but show all 8 in case some real crap group has 8 shaman up? lol
+mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 
 mod:RegisterCombat("combat")
 
@@ -99,7 +99,7 @@ local countdownWhirlingCorruption	= mod:NewCountdown(49.5, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown("Alt45", 145071, false)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
-mod:AddSetIconOption("SetIconOnMinions", "ej8310", false, true)
+mod:AddSetIconOption("SetIconOnMC", 145071, false)
 
 local firstIronStar = false
 local engineerDied = 0
@@ -159,9 +159,6 @@ function mod:SPELL_CAST_START(args)
 			warnEmpWhirlingCorruption:Show(whirlCount)
 			specWarnEmpWhirlingCorruption:Show(whirlCount)
 		end
-		if self.Options.SetIconOnMinions then--TODO, figure out why this only marks 1-2 mobs then stops.
-			self:ScanForMobs(72272, 0, 8, nil, 0.2, 12, "SetIconOnMinions")--I think max adds is 7 on 25 man, TODO is confirm this and set max icon to 7 instead of nil/8. Long scan time because of slow spawn
-		end
 		timerWhirlingCorruption:Start()
 		timerWhirlingCorruptionCD:Start(nil, whirlCount+1)
 		countdownWhirlingCorruption:Start()
@@ -216,8 +213,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144945 then
 		warnYShaarjsProtection:Show(args.destName)
 		timerYShaarjsProtection:Start()
-	elseif args.spellId == 145065 then
+	elseif args:IsSpellID(145065, 145171) then
 		warnTouchOfYShaarj:CombinedShow(0.5, args.destName)
+		if self.Options.SetIconOnMC then
+			self:SetSortedIcon(0.5, args.destName, 1)
+		end
 	elseif args.spellId == 145171 then
 		warnEmpTouchOfYShaarj:CombinedShow(0.5, args.destName)
 	elseif args:IsSpellID(145071, 145175) then--Touch of Yshaarj Spread IDs?
@@ -259,6 +259,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(145183, 145195) then
 		timerGrippingDespair:Cancel(args.destName)
+	elseif args:IsSpellID(145065, 145171) and self.Options.SetIconOnMC then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
