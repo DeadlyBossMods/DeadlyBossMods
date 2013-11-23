@@ -49,6 +49,7 @@ local warnTidalForce					= mod:NewCastAnnounce(137531, 3, 2)
 local specWarnCosmicBarrage				= mod:NewSpecialWarningCount(136752, true, nil, nil, 2)--better as a cosmic barrage warning with cast bar being stars. Also good as count warning for cooldowns
 local specWarnTearsOfSun				= mod:NewSpecialWarningSpell(137404, nil, nil, nil, 2)
 local specWarnBeastOfNightmares			= mod:NewSpecialWarningTarget(137375, mod:IsTank() or mod:IsHealer())
+local specWarnCorruptedHealing			= mod:NewSpecialWarningStack(137360, mod:IsHealer())
 --Light
 local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, mod:IsTank(), 2)
 local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTarget(137408, mod:IsTank())
@@ -162,6 +163,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 137417 and args:IsPlayer() and self:AntiSpam(3, 4) then
 		specWarnFlamesofPassionMove:Show()
+	elseif args.spellId == 137360 and args:IsPlayer() then
+		specWarnCorruptedHealing:Show(args.amount or 1)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
