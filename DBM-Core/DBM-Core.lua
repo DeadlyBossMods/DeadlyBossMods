@@ -4439,7 +4439,7 @@ do
 			else--default name modify
 				t = string.split(",", t or name)
 			end
-			obj.localization.general.name = t
+			obj.localization.general.name = t or name
 			obj.modelId = select(4, EJ_GetCreatureInfo(1, tonumber(name)))
 		elseif name:match("z%d+") then
 			local t = GetRealZoneText(string.sub(name, 2))
@@ -4449,7 +4449,7 @@ do
 			else--default name modify
 				t = string.split(",", t or name)
 			end
-			obj.localization.general.name = t
+			obj.localization.general.name = t or name
 		elseif name:match("d%d+") then
 			local t = GetDungeonInfo(string.sub(name, 2))
 			if type(nameModifier) == "number" then--do nothing
@@ -4458,7 +4458,9 @@ do
 			else--default name modify
 				t = string.split(",", t or name)
 			end
-			obj.localization.general.name = t
+			obj.localization.general.name = t or name
+		else
+			obj.localization.general.name = name
 		end
 		tinsert(self.Mods, obj)
 		modsById[name] = obj
