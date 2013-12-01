@@ -141,11 +141,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "%s wird dir erhöhten Schaden zufügen - Meiden!"
+	specWarnActivatedVulnerable		= "%s wird dir erhöhten Schaden zufügen - Meiden!",
+	specWarnMoreParasites			= "Es werden mehr Parasiten benötigt - NICHT blocken!"
 })
 
 L:SetOptionLocalization({
 	specWarnActivatedVulnerable		= "Spezialwarnung, wenn dir ein neuer Getreuer erhöhten Schaden zufügen wird",
+	specWarnMoreParasites			= "Spezialwarnung, wenn mehr Parasiten benötigt werden",
 	AimArrow						= "Zeige DBM-Pfeil, wenn jemand von $spell:142948 betroffen ist"
 })
 
