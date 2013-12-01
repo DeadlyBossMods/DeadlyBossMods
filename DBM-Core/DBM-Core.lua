@@ -4460,7 +4460,7 @@ do
 			end
 			obj.localization.general.name = t or name
 		else
-			obj.localization.general.name = name
+			obj.localization.general.name = obj.localization.general.name or name
 		end
 		tinsert(self.Mods, obj)
 		modsById[name] = obj
