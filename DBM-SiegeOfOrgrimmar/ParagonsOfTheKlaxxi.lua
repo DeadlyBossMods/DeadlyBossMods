@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(71152, 71153, 71154, 71155, 71156, 71157, 71158, 71160, 71161)
 mod:SetEncounterID(1593)
 mod:SetZone()
-mod:SetUsedIcons(3)
+mod:SetUsedIcons(3, 1)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
@@ -160,7 +160,8 @@ local countdownEncaseInAmber		= mod:NewCountdown(30, 142564)--Probably switch to
 local countdownInjection			= mod:NewCountdown("Alt9.5", 143339, mod:IsTank())
 
 mod:AddRangeFrameOption("6/5/3")
-mod:AddSetIconOption("SetIconOnAim", 142948, false)--multi boss fight, will use star and avoid moving skull off a kill target
+mod:AddSetIconOption("SetIconOnAim", 142948, false)
+mod:AddSetIconOption("SetIconOnMesmerize", 142671, false)
 mod:AddBoolOption("AimArrow", false)
 
 local activatedTargets = {}--A table, for the 3 on pull
@@ -178,6 +179,7 @@ local aimCount = 0
 local parasitesActive = 0
 local aimActive = false
 local mutateActive = false
+local toxicInjection = false--Workaround blizzard bug
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -265,6 +267,7 @@ local function CheckBosses(ignoreRTF)
 				mod:Schedule(23, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
+				timerToxicCatalystCD:Start(19.5)--May need tweaking by about a sec or two. Need some transcriptors
 				if UnitDebuff("player", GetSpellInfo(142931)) then vulnerable = true end
 			elseif cid == 71156 then--Kaz'tik the Manipulator
 		
@@ -294,6 +297,7 @@ function mod:OnCombatStart(delay)
 	parasitesActive = 0
 	aimActive = false
 	mutateActive = false
+	toxicInjection = false
 	self:RegisterShortTermEvents(
 		"INSTANCE_ENCOUNTER_ENGAGE_UNIT"--We register here to make sure we wipe variables on pull
 	)
@@ -323,72 +327,121 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
 end
 
+local function delayedCatalyst(spellID)
+	--Fake it to true because after first time
+	--we won't need work around anymore since you'll get injections from the catalysts cast
+	toxicInjection = true
+	if spellID == 142725 then
+		if UnitDebuff("player", GetSpellInfo(142532)) then
+			specWarnCatalystBlue:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystBlue:Yell()
+			end
+		end
+	elseif spellID == 142726 then
+		if UnitDebuff("player", GetSpellInfo(142533)) then
+			specWarnCatalystRed:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystRed:Yell()
+			end
+		end
+	elseif spellID == 142727 then
+		if UnitDebuff("player", GetSpellInfo(142534)) then
+			specWarnCatalystYellow:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystYellow:Yell()
+			end
+		end
+	elseif spellID == 142728 then
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
+			specWarnCatalystOrange:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystOrange:Yell()
+			end
+		end
+	elseif spellID == 142729 then
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
+			specWarnCatalystPurple:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystPurple:Yell()
+			end
+		end
+	elseif spellID == 142730 then
+		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
+			specWarnCatalystGreen:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystGreen:Yell()
+			end
+		end
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 142725 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystBlue:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142532)) then
-			specWarnCatalystBlue:Show()
-			if self.Options.yellToxicCatalyst then
-				yellCatalystBlue:Yell()
-			end
+		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
+		if not toxicInjection then
+			self:Schedule(0.5, delayedCatalyst, args.spellId)
+		else
+			delayedCatalyst(args.spellId)
 		end
 	elseif args.spellId == 142726 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystRed:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142533)) then
-			specWarnCatalystRed:Show()
-			if self.Options.yellToxicCatalyst then
-				yellCatalystRed:Yell()
-			end
+		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
+		if not toxicInjection then
+			self:Schedule(0.5, delayedCatalyst, args.spellId)
+		else
+			delayedCatalyst(args.spellId)
 		end
 	elseif args.spellId == 142727 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystYellow:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142534)) then
-			specWarnCatalystYellow:Show()
-			if self.Options.yellToxicCatalyst then
-				yellCatalystYellow:Yell()
-			end
+		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
+		if not toxicInjection then
+			self:Schedule(0.5, delayedCatalyst, args.spellId)
+		else
+			delayedCatalyst(args.spellId)
 		end
 	elseif args.spellId == 142728 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystOrange:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
-			specWarnCatalystOrange:Show()
-			if self.Options.yellToxicCatalyst then
-				yellCatalystOrange:Yell()
-			end
+		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
+		if not toxicInjection then
+			self:Schedule(0.5, delayedCatalyst, args.spellId)
+		else
+			delayedCatalyst(args.spellId)
 		end
 	elseif args.spellId == 142729 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystPurple:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
-			specWarnCatalystPurple:Show()
-			if self.Options.yellToxicCatalyst then
-				yellCatalystPurple:Yell()
-			end
+		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
+		if not toxicInjection then
+			self:Schedule(0.5, delayedCatalyst, args.spellId)
+		else
+			delayedCatalyst(args.spellId)
 		end
 	elseif args.spellId == 142730 then
 		timerToxicCatalystCD:Start()
 		if self.Options.warnToxicCatalyst then
 			warnToxicCatalystGreen:Show()
 		end
-		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
-			specWarnCatalystGreen:Show()
-			if self.Options.yellToxicCatalyst then
-				yellCatalystGreen:Yell()
-			end
+		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
+		if not toxicInjection then
+			self:Schedule(0.5, delayedCatalyst, args.spellId)
+		else
+			delayedCatalyst(args.spellId)
 		end
 	elseif args.spellId == 143765 then
 		warnSonicProjection:Show()
@@ -452,8 +505,9 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142528 then
+		toxicInjection = true
 		warnToxicInjection:Show()
-		timerToxicCatalystCD:Start(21)--21-23 variance observed on normal and heroic
+		timerToxicCatalystCD:Start(20)
 	elseif args.spellId == 142232 then
 		self:Unschedule(DFAScan)
 		self:Schedule(17, DFAScan)
@@ -483,6 +537,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellMesmerize:Yell()
 		else
 			specWarnKunchongs:Show()
+		end
+		if self.Options.SetIconOnMesmerize then
+			self:SetIcon(args.destName, 1)
 		end
 	elseif args.spellId == 142564 then
 		warnEncaseInAmber:Show(args.destName)
@@ -601,6 +658,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args.spellId == 143339 then
 		parasitesActive = parasitesActive + 8
+	elseif args.spellId == 142671 and self.Options.SetIconOnMesmerize then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
