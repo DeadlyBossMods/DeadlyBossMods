@@ -1,6 +1,6 @@
 --[[
 Name: LibSharedMedia-3.0
-Revision: $Revision: 74 $
+Revision: $Revision: 85 $
 Author: Elkano (elkano@gmx.de)
 Inspired By: SurfaceLib by Haste/Otravi (troeks@gmail.com)
 Website: http://www.wowace.com/projects/libsharedmedia-3-0/
@@ -9,7 +9,7 @@ Dependencies: LibStub, CallbackHandler-1.0
 License: LGPL v2.1
 ]]
 
-local MAJOR, MINOR = "LibSharedMedia-3.0", 5000402 -- 5.0.4 v2 / increase manually on changes
+local MAJOR, MINOR = "LibSharedMedia-3.0", 5000404 -- 5.0.4 v4 / increase manually on changes
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then return end
@@ -101,7 +101,7 @@ bHEI01B.ttf			AR Heiti2 Bold B5				-		-		-		-		X
 bKAI00M.ttf			AR Kaiti Medium B5				-		-		-		-		X
 bLEI00D.ttf			AR Leisu Demi B5				-		-		-		-		X
 FRIZQT__.TTF		Friz Quadrata TT				X		-		-		-		-
-FRIZQT___CYR.TTF	FrizQuadrataCTT					-		-		X		-		-
+FRIZQT___CYR.TTF	FrizQuadrataCTT					X		-		X		-		-
 K_Damage.TTF		YDIWingsM						-		X		X		-		-
 K_Pagetext.TTF		MoK								X		X		X		-		-
 MORPHEUS.TTF		Morpheus						X		-		-		-		-
@@ -109,6 +109,8 @@ MORPHEUS_CYR.TTF	Morpheus						X		-		X		-		-
 NIM_____.ttf		Nimrod MT						X		-		X		-		-
 SKURRI.TTF			Skurri							X		-		-		-		-
 SKURRI_CYR.TTF		Skurri							X		-		X		-		-
+
+WARNING: Although FRIZQT___CYR is available on western clients, it doesn't support special European characters e.g. é, ï, ö
 ]]
 
 if locale == "koKR" then
