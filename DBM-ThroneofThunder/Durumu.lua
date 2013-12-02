@@ -81,10 +81,7 @@ mod:AddBoolOption("SetIconOnParasite", false)
 mod:AddBoolOption("SetParticle", true)
 
 local totalFogs = 3
-local lingeringGazeTargets = {}
 local lingeringGazeCD = 46
-local darkParasiteTargets = {}
-local darkParasiteTargetsIcons = {}
 local lastRed = nil
 local lastBlue = nil
 local lastYellow = nil
@@ -102,24 +99,17 @@ local firstIcewall = false
 local CVAR = nil
 local yellowRevealed = 0
 
-local function warnLingeringGazeTargets()
-	warnLingeringGaze:Show(table.concat(lingeringGazeTargets, "<, >"))
-	table.wipe(lingeringGazeTargets)
-end
-
-local function warnDarkParasiteTargets()
-	warnDarkParasite:Show(table.concat(darkParasiteTargets, "<, >"))
-	if not lifeDrained then--Only time spell ever gets to use it's true 60 second cd without one of the two failsafes altering it. very first phase
-		timerDarkParasiteCD:Start()
-	end
-	table.wipe(darkParasiteTargets)
-end
-
 local function warnBeam()
 	if mod:IsDifficulty("heroic10", "heroic25", "lfr25") then
 		warnBeamHeroic:Show(lastRed, lastBlue, lastYellow)
 	else
 		warnBeamNormal:Show(lastRed, lastBlue)
+	end
+end
+
+local function HideInfoFrame()
+	if mod.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
@@ -142,10 +132,34 @@ local function BeamEnded()
 	end
 end
 
-local function HideInfoFrame()
-	if mod.Options.InfoFrame then
-		DBM.InfoFrame:Hide()
+local function findBeamJump(spellName, spellId)
+	for uId in DBM:GetGroupMembers() do
+		local name = DBM:GetUnitFullName(uId)
+		if spellId == 139202 and UnitDebuff(uId, spellName) and lastBlue ~= name then
+			lastBlue = name
+			if name == UnitName("player") then
+				if mod:IsDifficulty("lfr25") and mod.Options.specWarnBlueBeam then
+					specWarnBlueBeamLFR:Show()
+				else
+					specWarnBlueBeam:Show()
+				end
+			end
+			if mod.Options.SetIconRays then
+				SetRaidTarget(uId, 6)--Square
+			end
+			return
+		elseif spellId == 139204 and UnitDebuff(uId, spellName) and lastRed ~= name then
+			lastRed = name
+			if name == UnitName("player") then
+				specWarnRedBeam:Show()
+			end
+			if mod.Options.SetIconRays then
+				SetRaidTarget(uId, 7)--Cross
+			end
+			return
+		end
 	end
+	mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
 end
 
 function mod:OnCombatStart(delay)
@@ -159,8 +173,6 @@ function mod:OnCombatStart(delay)
 	lfrAmberFogRevealed = false
 	lfrAzureFogRevealed = false
 	CVAR = nil
-	table.wipe(lingeringGazeTargets)
-	table.wipe(darkParasiteTargets)
 	timerHardStareCD:Start(5-delay)
 	timerLingeringGazeCD:Start(15.5-delay)
 	timerForceOfWillCD:Start(33.5-delay)
@@ -201,25 +213,6 @@ function mod:OnCombatEnd()
 	end
 end
 
-local function ClearParasiteTargets()
-	table.wipe(darkParasiteTargetsIcons)
-end
-
-do
-	local function sort_by_group(v1, v2)
-		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-	end
-	function mod:SetParasiteIcons()
-		table.sort(darkParasiteTargetsIcons, sort_by_group)
-		local parasiteIcon = 5
-		for i, v in ipairs(darkParasiteTargetsIcons) do
-			self:SetIcon(v, parasiteIcon)
-			parasiteIcon = parasiteIcon - 1
-		end
-		self:Schedule(1.5, ClearParasiteTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 133765 then
 		warnHardStare:Show()
@@ -236,36 +229,6 @@ function mod:SPELL_CAST_START(args)
 			timerDarkParasiteCD:Start(50)--50-52.5
 		end
 	end
-end
-
-local function findBeamJump(spellName, spellId)
-	for uId in DBM:GetGroupMembers() do
-		local name = DBM:GetUnitFullName(uId)
-		if spellId == 139202 and UnitDebuff(uId, spellName) and lastBlue ~= name then
-			lastBlue = name
-			if name == UnitName("player") then
-				if mod:IsDifficulty("lfr25") and mod.Options.specWarnBlueBeam then
-					specWarnBlueBeamLFR:Show()
-				else
-					specWarnBlueBeam:Show()
-				end
-			end
-			if mod.Options.SetIconRays then
-				SetRaidTarget(uId, 6)--Square
-			end
-			return
-		elseif spellId == 139204 and UnitDebuff(uId, spellName) and lastRed ~= name then
-			lastRed = name
-			if name == UnitName("player") then
-				specWarnRedBeam:Show()
-			end
-			if mod.Options.SetIconRays then
-				SetRaidTarget(uId, 7)--Cross
-			end
-			return
-		end
-	end
-	mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -356,42 +319,25 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args.spellId == 133597 and not args:IsDestTypeHostile() then--Dark Parasite (filtering the wierd casts they put on themselves periodicly using same spellid that don't interest us and would mess up cooldowns)
-		darkParasiteTargets[#darkParasiteTargets + 1] = args.destName
+		warnDarkParasite:CombinedShow(0.5, args.destName)
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		timerDarkParasite:Start(duration, args.destName)
-		self:Unschedule(warnDarkParasiteTargets)
-		if (self:IsDifficulty("heroic25") and #darkParasiteTargets >= 3) or self:IsDifficulty("heroic10") then
-			warnDarkParasiteTargets()
-		else
-			self:Schedule(0.5, warnDarkParasiteTargets)
+		if not lifeDrained then--Only time spell ever gets to use it's true 60 second cd without one of the two failsafes altering it. very first phase
+			timerDarkParasiteCD:DelayedStart(0.5)
 		end
 		if self.Options.SetIconOnParasite and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
-			table.insert(darkParasiteTargetsIcons, DBM:GetRaidUnitId(DBM:GetFullPlayerNameByGUID(args.destGUID)))
-			self:UnscheduleMethod("SetParasiteIcons")
-			if self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				if (self:IsDifficulty("heroic25") and #darkParasiteTargets >= 3) or self:IsDifficulty("heroic10") then
-					self:SetParasiteIcons()
-				else
-					self:ScheduleMethod(0.5, "SetParasiteIcons")
-				end
-			end
+			self:SetSortedIcon(0.5, args.destName, 5, 3, true)
 		end
 	elseif args.spellId == 133598 then--Dark Plague
 		local _, _, _, _, _, duration = UnitDebuff(args.destName, args.spellName)
 		--maybe add a warning/special warning for everyone if duration is too high and many adds expected
 		timerDarkPlague:Start(duration, args.destName)
 	elseif args.spellId == 134626 then
-		lingeringGazeTargets[#lingeringGazeTargets + 1] = args.destName
+		warnLingeringGaze:CombinedShow(0.5, args.destName)
 		if args:IsPlayer() then
 			specWarnLingeringGaze:Show()
 			yellLingeringGaze:Yell()
 			soundLingeringGaze:Play()
-		end
-		self:Unschedule(warnLingeringGazeTargets)
-		if #lingeringGazeTargets >= 5 and self:IsDifficulty("normal25", "heroic25") or #lingeringGazeTargets >= 2 and self:IsDifficulty("normal10", "heroic10") then--TODO, add LFR number of targets
-			warnLingeringGazeTargets()
-		else
-			self:Schedule(0.5, warnLingeringGazeTargets)
 		end
 	elseif args.spellId == 137727 and self.Options.SetIconLifeDrain then -- Life Drain current target. If target warning needed, insert into this block. (maybe very spammy)
 		self:SetIcon(args.destName, 8)--Skull

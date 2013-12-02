@@ -1,6 +1,6 @@
 --[[
 Name: LibSharedMedia-3.0
-Revision: $Revision: 85 $
+Revision: $Revision: 86 $
 Author: Elkano (elkano@gmx.de)
 Inspired By: SurfaceLib by Haste/Otravi (troeks@gmail.com)
 Website: http://www.wowace.com/projects/libsharedmedia-3-0/
@@ -89,6 +89,8 @@ lib.DefaultMedia.border = "None"
 if not lib.MediaTable.font then lib.MediaTable.font = {} end
 local SML_MT_font = lib.MediaTable.font
 --[[
+All font files are currently in all clients, the following table depicts which font supports which charset as of 5.0.4
+
 file				name							latin	koKR	ruRU	zhCN	zhTW
 2002.ttf			2002							X		X		X		-		-
 2002B.ttf			2002 Bold						X		X		X		-		-
@@ -101,7 +103,7 @@ bHEI01B.ttf			AR Heiti2 Bold B5				-		-		-		-		X
 bKAI00M.ttf			AR Kaiti Medium B5				-		-		-		-		X
 bLEI00D.ttf			AR Leisu Demi B5				-		-		-		-		X
 FRIZQT__.TTF		Friz Quadrata TT				X		-		-		-		-
-FRIZQT___CYR.TTF	FrizQuadrataCTT					X		-		X		-		-
+FRIZQT___CYR.TTF	FrizQuadrataCTT					-		-		X		-		-
 K_Damage.TTF		YDIWingsM						-		X		X		-		-
 K_Pagetext.TTF		MoK								X		X		X		-		-
 MORPHEUS.TTF		Morpheus						X		-		-		-		-
@@ -111,6 +113,7 @@ SKURRI.TTF			Skurri							X		-		-		-		-
 SKURRI_CYR.TTF		Skurri							X		-		X		-		-
 
 WARNING: Although FRIZQT___CYR is available on western clients, it doesn't support special European characters e.g. é, ï, ö
+Due to this, we cannot use it as a replacement for FRIZQT__.TTF
 ]]
 
 if locale == "koKR" then
