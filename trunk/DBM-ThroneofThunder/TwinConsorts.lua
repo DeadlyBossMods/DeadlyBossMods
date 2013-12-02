@@ -69,7 +69,7 @@ local timerBeastOfNightmaresCD			= mod:NewCDTimer(51, 137375, nil, mod:IsTank() 
 --Light
 local timerDuskCD						= mod:NewTimer(360, "timerDuskCD", "Interface\\Icons\\achievement_zone_easternplaguelands")--it seems always 360s after combat entered. (day timer is variables, so not reliable to day phase)
 local timerLightOfDayCD					= mod:NewCDTimer(6, 137403, nil, false)--Trackable in day phase using UNIT event since boss1 can be used in this phase. Might be useful for heroic to not run behind in shadows too early preparing for a special
-local timerFanOfFlamesCD				= mod:NewNextTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
+local timerFanOfFlamesCD				= mod:NewCDTimer(12, 137408, nil, mod:IsTank() or mod:IsHealer())
 local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
 --local timerFlamesOfPassionCD			= mod:NewCDTimer(30, 137414)--Also very high variation. (31~65). Can be confuse, no use.
 local timerIceCometCD					= mod:NewCDTimer(20.5, 137419)--Every 20.5-25 seconds on normal. On 10 heroic, variables 20.5~41s. 25 heroic vary 20.5-27.
@@ -214,7 +214,7 @@ function mod:UNIT_DIED(args)
 		timerNuclearInfernoCD:Cancel()
 		warnDay:Show()
 		timerLightOfDayCD:Start()
-		timerFanOfFlamesCD:Start(19)
+		timerFanOfFlamesCD:Start(13)
 		--She also does Flames of passion, but this is done 3 seconds after Lu'lin dies, is a 3 second timer worth it?
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
@@ -264,7 +264,7 @@ function mod:OnSync(msg)
 		warnDay:Show()
 		timerLightOfDayCD:Start()
 		timerIceCometCD:Start()--TODO, update timer for late 5.3 hotfix.
-		timerFanOfFlamesCD:Start()
+		timerFanOfFlamesCD:Start(6)
 		--timerFlamesOfPassionCD:Start(12.5)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerNuclearInfernoCD:Start(45, 1)--45-50 second variation (cd is 45, but there is hard code failsafe that if a commet has spawned recently it's extended?
