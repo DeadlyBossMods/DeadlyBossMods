@@ -328,11 +328,11 @@ function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 end
 
 local function delayedCatalyst(spellID)
-	--Fake it to true because after first time
-	--we won't need work around anymore since you'll get injections from the catalysts cast
-	toxicInjection = true
+	toxicInjection = true--we won't need work around anymore since you'll get injections from the catalysts cast
+	local debuffFound = false
 	if spellID == 142725 then
 		if UnitDebuff("player", GetSpellInfo(142532)) then
+			debuffFound = true
 			specWarnCatalystBlue:Show()
 			if mod.Options.yellToxicCatalyst then
 				yellCatalystBlue:Yell()
@@ -340,6 +340,7 @@ local function delayedCatalyst(spellID)
 		end
 	elseif spellID == 142726 then
 		if UnitDebuff("player", GetSpellInfo(142533)) then
+			debuffFound = true
 			specWarnCatalystRed:Show()
 			if mod.Options.yellToxicCatalyst then
 				yellCatalystRed:Yell()
@@ -347,6 +348,7 @@ local function delayedCatalyst(spellID)
 		end
 	elseif spellID == 142727 then
 		if UnitDebuff("player", GetSpellInfo(142534)) then
+			debuffFound = true
 			specWarnCatalystYellow:Show()
 			if mod.Options.yellToxicCatalyst then
 				yellCatalystYellow:Yell()
@@ -354,6 +356,7 @@ local function delayedCatalyst(spellID)
 		end
 	elseif spellID == 142728 then
 		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
+			debuffFound = true
 			specWarnCatalystOrange:Show()
 			if mod.Options.yellToxicCatalyst then
 				yellCatalystOrange:Yell()
@@ -361,6 +364,7 @@ local function delayedCatalyst(spellID)
 		end
 	elseif spellID == 142729 then
 		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
+			debuffFound = true
 			specWarnCatalystPurple:Show()
 			if mod.Options.yellToxicCatalyst then
 				yellCatalystPurple:Yell()
@@ -368,11 +372,15 @@ local function delayedCatalyst(spellID)
 		end
 	elseif spellID == 142730 then
 		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
+			debuffFound = true
 			specWarnCatalystGreen:Show()
 			if mod.Options.yellToxicCatalyst then
 				yellCatalystGreen:Yell()
 			end
 		end
+	end
+	if not debuffFound and not UnitIsDeadOrGhost("player") then--You didn't have a debuff yet, check again.
+		mod:Schedule(0.2, delayedCatalyst, spellID)
 	end
 end
 
@@ -384,7 +392,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
 		if not toxicInjection then
-			self:Schedule(0.5, delayedCatalyst, args.spellId)
+			self:Schedule(0.2, delayedCatalyst, args.spellId)
 		else
 			delayedCatalyst(args.spellId)
 		end
@@ -395,7 +403,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
 		if not toxicInjection then
-			self:Schedule(0.5, delayedCatalyst, args.spellId)
+			self:Schedule(0.2, delayedCatalyst, args.spellId)
 		else
 			delayedCatalyst(args.spellId)
 		end
@@ -406,7 +414,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
 		if not toxicInjection then
-			self:Schedule(0.5, delayedCatalyst, args.spellId)
+			self:Schedule(0.2, delayedCatalyst, args.spellId)
 		else
 			delayedCatalyst(args.spellId)
 		end
@@ -417,7 +425,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
 		if not toxicInjection then
-			self:Schedule(0.5, delayedCatalyst, args.spellId)
+			self:Schedule(0.2, delayedCatalyst, args.spellId)
 		else
 			delayedCatalyst(args.spellId)
 		end
@@ -428,7 +436,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
 		if not toxicInjection then
-			self:Schedule(0.5, delayedCatalyst, args.spellId)
+			self:Schedule(0.2, delayedCatalyst, args.spellId)
 		else
 			delayedCatalyst(args.spellId)
 		end
@@ -439,7 +447,7 @@ function mod:SPELL_CAST_START(args)
 		end
 		--Work around blizzard bug. Sometimes he doesn't cast injection, causing you to not have a color assignment until 0.5 after this SPELL_CAST_START event.
 		if not toxicInjection then
-			self:Schedule(0.5, delayedCatalyst, args.spellId)
+			self:Schedule(0.2, delayedCatalyst, args.spellId)
 		else
 			delayedCatalyst(args.spellId)
 		end
