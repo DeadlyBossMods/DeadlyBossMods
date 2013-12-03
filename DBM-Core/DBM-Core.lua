@@ -1578,7 +1578,7 @@ do
 
 	local raidUIds = {}
 	local raidGuids = {}
-
+	local iconSeter = {}
 
 	--	save playerinfo into raid table on load. (for solo raid)
 	DBM:RegisterOnLoadCallback(function()
@@ -1595,6 +1595,7 @@ do
 				raid[playerName].version = tonumber(DBM.Version)
 				raid[playerName].displayVersion = DBM.DisplayVersion
 				raid[playerName].locale = GetLocale()
+				raid[playerName].enabledIcons = tostring(not DBM.Options.DontSetIcons)
 				raidUIds["player"] = playerName
 				raidGuids[UnitGUID("player")] = playerName
 			end
@@ -1603,8 +1604,6 @@ do
 
 	local function updateAllRoster()
 		if IsInRaid() then
-			enableIcons = false
-			local latestRevision = tonumber(DBM.Revision)
 			if not inRaid then
 				inRaid = true
 				sendSync("H")
@@ -1637,16 +1636,10 @@ do
 					raid[name].updated = true
 					raidUIds[id] = name
 					raidGuids[UnitGUID(id) or ""] = name
-					--Something is wrong here, need to investigate. I watched MULTIPLE revisions OLDER than mine setting icons, revisions that HAVE this change. it is NOT disabling icons for revisions. I am seeing 5.2.3 release set icons when i have 5.2.4 alpha, even some 5.2.2 alphas setting icons when there is a 5.2.3 and 5.2.4 alpha in raid. this should not happen!
-					--Maybe this improve wrong icon setting? (but, older verison also to be updated)
-					if raid[name].revision and raid[name].revision > tonumber(DBM.Revision) then
-						latestRevision = raid[name].revision
-					end
 				end
 			end
-			if latestRevision == tonumber(DBM.Revision) and DBM:GetRaidRank(playerName) > 0 then
-				enableIcons = true
-			end
+			enableIcons = false
+			table.wipe(iconSeter)
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
@@ -1655,6 +1648,16 @@ do
 					fireEvent("raidLeave", i)
 				else
 					v.updated = nil
+					if v.revision and v.rank > 0 and (v.enabledIcons or "") == "true" then
+						iconSeter[#iconSeter + 1] = v.revision.." "..v.name
+					end
+				end
+			end
+			if #iconSeter > 0 then
+				table.sort(iconSeter, function(a, b) return a > b end)
+				local elected = iconSeter[1]
+				if playerName == elected:sub(elected:find(" ") + 1) then
+					enableIcons = true
 				end
 			end
 		elseif IsInGroup() then
@@ -1698,6 +1701,8 @@ do
 				raidUIds[id] = name
 				raidGuids[UnitGUID(id) or ""] = name
 			end
+			enableIcons = false
+			table.wipe(iconSeter)
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raidUIds[v.id] = nil
@@ -1706,6 +1711,16 @@ do
 					fireEvent("partyLeave", i)
 				else
 					v.updated = nil
+					if v.revision and v.rank > 0 and (v.enabledIcons or "") == "true" then
+						iconSeter[#iconSeter + 1] = v.revision.." "..v.name
+					end
+				end
+			end
+			if #iconSeter > 0 then
+				table.sort(iconSeter, function(a, b) return a > b end)
+				local elected = iconSeter[1]
+				if playerName == elected:sub(elected:find(" ") + 1) then
+					enableIcons = true
 				end
 			end
 		else
@@ -2424,7 +2439,7 @@ do
 	end
 
 	local function SendVersion()
-		sendSync("V", ("%d\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
+		sendSync("V", ("%d\t%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale(), tostring(not DBM.Options.DontSetIcons)))
 	end
 
 	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
@@ -2445,14 +2460,15 @@ do
 		end
 	end
 
-	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale)
+	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale, iconEnabled)
 		revision, version = tonumber(revision or ""), tonumber(version or "")
 		if revision and version and displayVersion and raid[sender] then
 			raid[sender].revision = revision
 			raid[sender].version = version
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
-			local revDifference = revision - tonumber(DBM.Revision)
+			raid[sender].enabledIcons = iconEnabled or "false"
+			local revDifference = revision - DBM.Revision
 			if version > tonumber(DBM.Version) then -- Update reminder
 				--Old version of Bigwigs version faking breaks version update notification because they send alpha revision as release revision with their faking code
 				--Bigwigs sniffs highest REVISION it finds in raid, (not highest ReleaseRevision) and then passes it as ReleaseRevision arg when sending sync back
@@ -2471,7 +2487,6 @@ do
 				if not showedUpdateReminder then
 					local found = false
 					local secondfound = false
-					local other = nil
 					for i, v in pairs(raid) do
 						if v.version == version and v ~= raid[sender] then
 							if found then
@@ -2479,7 +2494,6 @@ do
 								break
 							end
 							found = true
-							other = i
 						end
 					end
 					if found then--Only requires 2 for update notification (maybe also make 3?)
@@ -2499,24 +2513,17 @@ do
 					end
 				end
 			end
-			if revision > tonumber(DBM.Revision) then
-				if raid[sender].rank >= 1 then
-					enableIcons = false
+			if (revision > DBM.Revision) and not showedUpdateReminder and DBM.DisplayVersion:find("alpha") and (revDifference > 20) then
+				local found = false
+				for i, v in pairs(raid) do
+					if v.revision == revision and v ~= raid[sender] then
+						found = true
+						break
+					end
 				end
-				if not showedUpdateReminder and DBM.DisplayVersion:find("alpha") and (revDifference > 20) then
-					local found = false
-					local other = nil
-					for i, v in pairs(raid) do
-						if v.revision == revision and v ~= raid[sender] then
-							found = true
-							other = i
-							break
-						end
-					end
-					if found then--Running alpha version that's out of date
-						showedUpdateReminder = true
-						DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
-					end
+				if found then--Running alpha version that's out of date
+					showedUpdateReminder = true
+					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
 				end
 			end
 		end
