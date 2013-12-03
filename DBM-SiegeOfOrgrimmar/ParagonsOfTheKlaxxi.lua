@@ -131,6 +131,8 @@ local timerGouge					= mod:NewTargetTimer(10, 143939, nil, mod:IsTank())
 local timerReaveCD					= mod:NewCDTimer(33, 148676)
 --Xaril the Poisoned-Mind
 local timerToxicCatalystCD			= mod:NewCDTimer(33, "ej8036")
+--Kaz'tik the Manipulator
+local timerMesmerizeCD				= mod:NewCDTimer(34, 142671)
 --Korven the Prime
 local timerShieldBash				= mod:NewTargetTimer(6, 143974, nil, mod:IsTank())
 local timerShieldBashCD				= mod:NewCDTimer(17, 143974, nil, mod:IsTank())
@@ -270,7 +272,7 @@ local function CheckBosses(ignoreRTF)
 				timerToxicCatalystCD:Start(19.5)--May need tweaking by about a sec or two. Need some transcriptors
 				if UnitDebuff("player", GetSpellInfo(142931)) then vulnerable = true end
 			elseif cid == 71156 then--Kaz'tik the Manipulator
-		
+--				timerMesmerizeCD:Start(20)--Need transcriptor log. Seems WILDLY variable though and probably not useful
 			elseif cid == 71155 then--Korven the Prime
 				timerShieldBashCD:Start(19)--20seconds from REAL IEEU
 			elseif cid == 71160 then--Iyyokuk the Lucid
@@ -540,6 +542,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnToxicGreen:Show()--]]
 	elseif args.spellId == 142671 then
 		warnMesmerize:Show(args.destName)
+		timerMesmerizeCD:Start()
 		if args.IsPlayer() then
 			specWarnMesmerize:Show()
 			yellMesmerize:Yell()
@@ -718,9 +721,9 @@ function mod:UNIT_DIED(args)
 		timerRapidFireCD:Cancel()
 	elseif cid == 71578 then--Amber Parasite
 		parasitesActive = parasitesActive - 1
-		if parasitesActive < 3 then
-			warnParasitesLeft:Show(parasitesActive)
-		end
+		warnParasitesLeft:Show(parasitesActive)
+	elseif cid == 71156 then--Kaz'tik the Manipulator
+		timerMesmerizeCD:Cancel()
 	end
 
 	if FlavorTable[cid] then
