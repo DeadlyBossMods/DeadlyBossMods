@@ -12,7 +12,8 @@ mod:SetUsedIcons(8, 7, 2)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_MONSTER_SAY"
 )
 
 mod:RegisterEventsInCombat(
@@ -68,6 +69,7 @@ local specWarnFlamesofGalakrondStack= mod:NewSpecialWarningStack("OptionVersion4
 local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:IsTank())
 
 --Stage 2: Bring Her Down!
+local timerCombatStarts				= mod:NewCombatTimer(14.5)
 local timerAddsCD					= mod:NewNextTimer(55, "ej8553", nil, nil, nil, 2457)
 local timerTowerCD					= mod:NewTimer(99, "timerTowerCD", 88852)
 local timerTowerGruntCD				= mod:NewTimer(60, "timerTowerGruntCD", 89253)
@@ -218,6 +220,20 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
+--[[
+TODO, see if one of these earlier says are a pull say (not sure if they are part of pull, or RP from ships landing)
+"<12.2 21:55:36> [CHAT_MSG_MONSTER_SAY] CHAT_MSG_MONSTER_SAY#Well done! Landing parties, form up! Footmen to the front!#King Varian Wrynn#
+"<18.0 21:55:42> [CHAT_MSG_MONSTER_SAY] CHAT_MSG_MONSTER_SAY#The Dragonmaw are supporting the Warchief.#Lady Jaina Proudmoore#
+"<32.4 21:55:56> [CHAT_MSG_MONSTER_SAY] CHAT_MSG_MONSTER_SAY#We're going to need some serious firepower.#Lady Jaina Proudmoore
+"<47.1 21:56:11> [INSTANCE_ENCOUNTER_ENGAGE_UNIT] Fake Args:
+"<47.9 21:56:12> [PLAYER_REGEN_DISABLED]  ++ > Regen Disabled : Entering combat! ++ > ", -- [1167]
+--]]
+function mod:CHAT_MSG_MONSTER_SAY(msg)
+	if msg == L.wasteOfTime then
+		self:SendSync("prepull")
+	end
+end
+
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.newForces1 or msg == L.newForces1H or msg == L.newForces2 or msg == L.newForces3 or msg == L.newForces4 then
 		self:SendSync("Adds")
@@ -267,5 +283,7 @@ function mod:OnSync(msg)
 		if self.Options.SetIconOnAdds then
 			self:ScanForMobs(72958, 0, 8, 2, 0.2, 8)
 		end
+	elseif msg == "prepull" then
+		timerCombatStarts:Start()
 	end
 end
