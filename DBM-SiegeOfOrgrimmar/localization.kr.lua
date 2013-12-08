@@ -54,6 +54,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	wasteOfTime		= "잘했다! 상륙 부대, 정렬! 보병대, 앞으로!",--Alliance Version
+	wasteOfTime2	= "잘 했소. 선봉대가 성공적으로 상륙했군.",--Horde Version
 	Pull			= "용아귀 부족 용사들이여! 항구를 탈환하고 적을 바다로 몰아내라! 헬스크림 님과 진정한 호드를 위하여!",
 	newForces1		= "놈들이 와요!",--제이나 대사
 	newForces1H		= "저 계집을 당장 끌어내려라. 내가 친히 그녀의 목을 죌 것이다.",--실바나스 대사 (확인 필요)
