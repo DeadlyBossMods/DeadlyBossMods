@@ -53,14 +53,15 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	wasteOfTime	= "We're going to need some serious firepower.",--Might use an even earlier string if I verify which ones are tied to just landing and which are tied to starting first pull
-	Pull		= "Dragonmaw clan, retake the docks and push them into the sea!  In the name of Hellscream and the True Horde!",
-	newForces1	= "Here they come!",--Jaina's line, alliance
-	newForces1H	= "Bring her down quick so i can wrap my fingers around her neck.",--Sylva's line, horde
-	newForces2	= "Dragonmaw, advance!",
-	newForces3	= "For Hellscream!",
-	newForces4	= "Next squad, push forward!",
-	tower		= "The door barring the"--The door barring the South/North Tower has been breached!
+	wasteOfTime		= "Well done! Landing parties, form up! Footmen to the front!",--Alliance Version
+	wasteOfTime2	= "Well done. The first brigade has made landfall.",--Horde Version
+	Pull			= "Dragonmaw clan, retake the docks and push them into the sea!  In the name of Hellscream and the True Horde!",
+	newForces1		= "Here they come!",--Jaina's line, alliance
+	newForces1H		= "Bring her down quick so i can wrap my fingers around her neck.",--Sylva's line, horde
+	newForces2		= "Dragonmaw, advance!",
+	newForces3		= "For Hellscream!",
+	newForces4		= "Next squad, push forward!",
+	tower			= "The door barring the"--The door barring the South/North Tower has been breached!
 })
 
 --------------------

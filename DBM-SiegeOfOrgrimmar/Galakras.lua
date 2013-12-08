@@ -69,7 +69,7 @@ local specWarnFlamesofGalakrondStack= mod:NewSpecialWarningStack("OptionVersion4
 local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:IsTank())
 
 --Stage 2: Bring Her Down!
-local timerCombatStarts				= mod:NewCombatTimer(14.5)
+local timerCombatStarts				= mod:NewCombatTimer(35.5)
 local timerAddsCD					= mod:NewNextTimer(55, "ej8553", nil, nil, nil, 2457)
 local timerTowerCD					= mod:NewTimer(99, "timerTowerCD", 88852)
 local timerTowerGruntCD				= mod:NewTimer(60, "timerTowerGruntCD", 89253)
@@ -231,6 +231,8 @@ TODO, see if one of these earlier says are a pull say (not sure if they are part
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.wasteOfTime then
 		self:SendSync("prepull")
+	elseif msg == L.wasteOfTime2 then
+		self:SendSync("prepull2")
 	end
 end
 
@@ -283,7 +285,9 @@ function mod:OnSync(msg)
 		if self.Options.SetIconOnAdds then
 			self:ScanForMobs(72958, 0, 8, 2, 0.2, 8)
 		end
-	elseif msg == "prepull" then
+	elseif msg == "prepull" then--Alliance
 		timerCombatStarts:Start()
+	elseif msg == "prepull2" then--Horde
+		timerCombatStarts:Start(31.5)
 	end
 end
