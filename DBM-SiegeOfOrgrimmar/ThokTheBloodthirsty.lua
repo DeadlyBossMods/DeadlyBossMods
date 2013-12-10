@@ -7,7 +7,7 @@ mod:SetEncounterID(1599)
 mod:SetZone()
 mod:SetUsedIcons(8)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("ES")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS",
