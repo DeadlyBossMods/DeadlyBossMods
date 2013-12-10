@@ -54,6 +54,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	wasteOfTime		= "¡Bien hecho! ¡Grupos de desembarco, formad! ¡Infantería, al frente!",--Alliance Version
+	wasteOfTime2	= "Well done. The first brigade has made landfall.",--Horde Version, TODO needs translation
 	Pull		= "Clan Faucedraco, ¡recuperad los muelles y empujadlos al mar! ¡Por Grito Infernal! ¡Por la Horda auténtica!",
 	newForces1	= "¡Ya vienen!",--Jaina's line, alliance
 	newForces1H	= "Bring her down quick so i can wrap my fingers around her neck.",--Sylva's line, horde, TODO needs translation
@@ -92,7 +94,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	newForces1					= "¡Guerreros, paso ligero!",
-	newForces2					= "uerta", --TODO, need the whole message
+	newForces2					= "¡Defended la puerta",
 	newForces3					= "¡Reunid a las tropas!",
 	newForces4					= "¡Kor'kron, conmigo!",
 	newForces5					= "¡Siguiente escuadrón, al frente!",
@@ -141,11 +143,14 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(853)
 
 L:SetWarningLocalization({
-	specWarnActivatedVulnerable		= "Eres vulnerable a %s - ¡Esquiva!"
+	specWarnActivatedVulnerable		= "Eres vulnerable a %s - ¡Evítalo!",
+	specWarnMoreParasites			= "Hacen falta más parásitos - ¡NO mitigues actívamente!"
 })
 
 L:SetOptionLocalization({
-	specWarnActivatedVulnerable		= "Mostrar aviso especial cunado eres vulnerable a activar paragons"
+	specWarnActivatedVulnerable		= "Mostrar aviso especial cuando eres vulnerable a un Dechado",
+	specWarnMoreParasites			= "Mostrar aviso especial cuando se necesiten más parásitos",
+	AimArrow						= "Mostrar flecha del DBM cuando a alguien le afecte $spell:142948"
 })
 
 L:SetMiscLocalization({
