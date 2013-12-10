@@ -121,6 +121,7 @@ DBM.DefaultOptions = {
 	LFDEnhance = true,
 	SetPlayerRole = true,
 	HideWatchFrame = false,
+	HideTooltips = false,
 	EnableModels = true,
 	RangeFrameFrames = "radar",
 	RangeFrameUpdates = "Average",
@@ -3080,7 +3081,7 @@ do
 	
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
 		if DBM.Options.DebugMode then
-			print("ENCOUNTER_START EVENT Fired", encounterID, name, difficulty, size)
+			print("ENCOUNTER_START event fired:", encounterID, name, difficulty, size)
 		end
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
@@ -3101,7 +3102,7 @@ do
 	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		if DBM.Options.DebugMode then
-			print("ENCOUNTER_END EVENT Fired", encounterID, name, difficulty, size, success)
+			print("ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
 		end
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
@@ -3369,6 +3370,10 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
 			WatchFrame:Hide()
 			watchFrameRestore = true
+		end
+		if DBM.Options.HideTooltips then
+			--Better or cleaner way?
+			GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
 		end
 		if DBM.Options.ShowEngageMessage then
 			if mod.ignoreBestkill and mod:IsDifficulty("worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
@@ -3685,6 +3690,10 @@ function DBM:EndCombat(mod, wipe)
 		if DBM.Options.HideWatchFrame and watchFrameRestore and not scenario then
 			WatchFrame:Show()
 			watchFrameRestore = false
+		end
+		if DBM.Options.HideTooltips then
+			--Better or cleaner way?
+			GameTooltip:SetScript("OnShow", GameTooltip.Show)
 		end
 		savedDifficulty = nil
 		difficultyText = nil
