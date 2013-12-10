@@ -356,9 +356,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		else
 			timerSiegeEngineerCD:Start()
 		end
-		timerPowerIronStar:Start()
-		countdownPowerIronStar:Start()
-		warnFireUnstableIronStar:Schedule(15)
-		specWarnFireUnstableIronStar:Schedule(15)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			timerPowerIronStar:Start(10)
+			countdownPowerIronStar:Start(10)
+			warnFireUnstableIronStar:Schedule(10)
+			specWarnFireUnstableIronStar:Schedule(10)
+		else
+			timerPowerIronStar:Start()
+			countdownPowerIronStar:Start()
+			warnFireUnstableIronStar:Schedule(15)
+			specWarnFireUnstableIronStar:Schedule(15)
+        end
 	end
 end
