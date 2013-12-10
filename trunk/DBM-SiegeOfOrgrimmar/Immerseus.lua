@@ -7,7 +7,7 @@ mod:SetEncounterID(1602)
 mod:SetReCombatTime(45)--Lets just assume he has same bug as tsulong in advance and avoid problems
 mod:SetZone()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("ES")
 mod:SetWipeTime(20)--Kill yell fires litte lately, prevent wipe.
 
 mod:RegisterEventsInCombat(
