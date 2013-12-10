@@ -6,7 +6,7 @@ mod:SetCreatureID(72276)
 mod:SetEncounterID(1624)
 mod:SetZone()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("ES")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",

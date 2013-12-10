@@ -9,10 +9,9 @@ mod:SetMainBossID(72249)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 2)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("ES")
 
 mod:RegisterEvents(
-	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_MONSTER_SAY"
 )
 
@@ -239,8 +238,6 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.newForces1 or msg == L.newForces1H or msg == L.newForces2 or msg == L.newForces3 or msg == L.newForces4 then
 		self:SendSync("Adds")
-	elseif msg == L.Pull and not self:IsInCombat() then
-		DBM:StartCombat(self, 0)
 	end
 end
 

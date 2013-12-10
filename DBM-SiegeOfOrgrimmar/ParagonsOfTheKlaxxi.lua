@@ -8,7 +8,7 @@ mod:SetZone()
 mod:SetUsedIcons(3, 1)
 mod:SetBossHPInfoToHighest()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("ES")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
