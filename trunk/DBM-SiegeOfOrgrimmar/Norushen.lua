@@ -106,8 +106,8 @@ function mod:OnCombatStart(delay)
 	playerInside = false
 	previousPower = nil
 	timerBlindHatredCD:Start(25-delay)
-	if self:IsDifficulty("lfr25") then--Might also be flex as well
-		berserkTimer:Start(600-delay)--No log to confirm 8 min, only one report, so changing back to 10 min for now.
+	if self:IsDifficulty("lfr25") then
+		berserkTimer:Start(600-delay)
 	else
 		berserkTimer:Start(-delay)
 	end
