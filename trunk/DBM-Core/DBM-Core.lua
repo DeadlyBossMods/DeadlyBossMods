@@ -3107,10 +3107,16 @@ do
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
+			if DBM.Options.DebugMode then
+				print("Encounter Active:", v.encounter, v.name)
+			end
 			if encounterID == v.encounter then
-				local wipe = nil
+				local wipe = false
 				if success == 0 then wipe = true end
 				self:EndCombat(v, wipe)
+				if DBM.Options.DebugMode then
+					print("Called EndCombat for: ", v.encounter, v.name, wipe)
+				end
 				return
 			end
 		end
