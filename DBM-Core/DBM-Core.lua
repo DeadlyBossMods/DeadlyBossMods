@@ -3086,6 +3086,7 @@ do
 		end
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
+				if not v.type == "ES" then break end
 				if v.multiEncounterPullDetection then
 					for _, encounter in ipairs(v.multiEncounterPullDetection) do
 						if encounterID == encounter then
@@ -3108,6 +3109,7 @@ do
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
+			if not v.combatInfo.type == "ES" then return end
 			if encounterID == v.combatInfo.encounter then
 				local wipe = false
 				if success == 0 then wipe = true end
