@@ -3109,7 +3109,6 @@ do
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
-			if not v.combatInfo.type == "ES" then return end
 			if encounterID == v.combatInfo.encounter then
 				local wipe = false
 				if success == 0 then wipe = true end
