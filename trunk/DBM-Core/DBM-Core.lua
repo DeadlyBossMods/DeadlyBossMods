@@ -3108,9 +3108,9 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if DBM.Options.DebugMode then
-				print("Encounter Active:", v.encounter, v.name)
+				print("Encounter Active:", v.combatInfo.encounter, v.combatInfo.name, v.encounter, v.name)
 			end
-			if encounterID == v.encounter then
+			if encounterID == v.combatInfo.encounter then
 				local wipe = false
 				if success == 0 then wipe = true end
 				self:EndCombat(v, wipe)
