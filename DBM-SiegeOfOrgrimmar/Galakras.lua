@@ -9,7 +9,7 @@ mod:SetMainBossID(72249)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 2)
 
-mod:RegisterCombat("ES")
+mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_SAY"
