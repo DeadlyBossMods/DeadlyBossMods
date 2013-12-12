@@ -8,6 +8,7 @@ mod:SetReCombatTime(45)--Lets just assume he has same bug as tsulong in advance 
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.Victory)
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -17,8 +18,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_PERIODIC_MISSED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnBreath						= mod:NewSpellAnnounce(143436, 3, nil, mod:IsTank() or mod:IsHealer())
@@ -51,9 +51,6 @@ function mod:OnCombatStart(delay)
 	timerBreathCD:Start(10-delay)
 	timerSwirlCD:Start(20-delay)
 	berserkTimer:Start(-delay)
-	self:RegisterShortTermEvents(
-		"UNIT_POWER_FREQUENT boss1"--Do not want this one persisting out of combat even after a wipe, in case you go somewhere else.
-	)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerSwellingCorruptionCD:Start(10-delay)--10-14sec variation
 	end
@@ -86,9 +83,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 143574 then
 		specWarnSwellingCorruptionTarget:Show(args.destName)
 	end
-	if DBM.Options.DebugMode and args:GetDestCreatureID() == 71543 and bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == 0 then
-		print("DBM Debug: Detected Immerseus bitflag as 'friendly' off of SPELL_AURA_APPLIED.")
-	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
@@ -99,9 +93,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerPurifiedResidue:Cancel()
 	elseif args.spellId == 143574 then
 		specWarnSwellingCorruptionFades:Show()
-	end
-	if DBM.Options.DebugMode and args:GetDestCreatureID() == 71543 and bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) == 0 then
-		print("DBM Debug: Detected Immerseus bitflag as 'friendly' off of SPELL_AURA_REMOVED")
 	end
 end
 
@@ -122,16 +113,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	end
 end
 
-function mod:UNIT_POWER_FREQUENT(uId)
-	local power = UnitPower(uId)
-	if power == 0 and self:AntiSpam(3, 1) then
-	end
-	if power > lastPower then--Only time his power ever goes UP is when he is defeated. he reaches 0 power, then goes back to 1 power
-		DBM:EndCombat(self)
-	end
-	lastPower = power
-end
-
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:143469") then--Reforms
 		warnReform:Show()
@@ -146,17 +127,5 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		timerSwirlCD:Cancel()
 		timerShaBoltCD:Cancel()
 		timerSwellingCorruptionCD:Cancel()
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Victory then
-		self:SendSync("Victory")
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "Victory" and self:IsInCombat() then
-		DBM:EndCombat(self)
 	end
 end
