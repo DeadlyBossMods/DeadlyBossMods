@@ -3085,7 +3085,7 @@ do
 		end
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if not v.noES then
+				if not v.noESDetection then
 					if v.multiEncounterPullDetection then
 						for _, eId in ipairs(v.multiEncounterPullDetection) do
 							if encounterID == eId then
@@ -4581,9 +4581,9 @@ function bossModPrototype:SetEncounterID(...)
 end
 
 function bossModPrototype:DisableESCombatDectection()
-	self.noES = true
+	self.noESDetection = true
 	if self.combatInfo then
-		self.combatInfo.noES = true
+		self.combatInfo.noESDetection = true
 	end
 end
 
@@ -6802,6 +6802,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	end
 	if self.multiEncounterPullDetection then
 		info.multiEncounterPullDetection = self.multiEncounterPullDetection
+	end
+	if self.noESDetection then
+		info.noESDetection = self.noESDetection
 	end
 	-- use pull-mobs as kill mobs by default, can be overriden by RegisterKill
 	if self.multiMobPullDetection then
