@@ -3292,11 +3292,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		combatStartedByIEEU = (event or "") == "IEEU"
-		if mod.combatInfo.type == "ES" and wowBuild >= 17658 then
-			--Do nothing
-		else
-			self:Schedule(mod.minCombatTime or 3, checkWipe, combatStartedByIEEU)
-		end
+		self:Schedule(mod.minCombatTime or 3, checkWipe, combatStartedByIEEU)
 		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
@@ -3871,14 +3867,10 @@ do
 					end
 				end
 			end
-			if mod.combatInfo.type == "ES" and wowBuild >= 17658 then
-				--Do nothing
+			if mod.minCombatTime then
+				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU == "true")
 			else
-				if mod.minCombatTime then
-					self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU == "true")
-				else
-					self:Schedule(3, checkWipe, isIEEU == "true")
-				end
+				self:Schedule(3, checkWipe, isIEEU == "true")
 			end
 			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inSecnario then
 				DBM.BossHealth:Show(mod.localization.general.name)
