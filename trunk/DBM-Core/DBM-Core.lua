@@ -3472,7 +3472,7 @@ function DBM:EndEncounter(encounterID, success, synced)
 				if encounterID == eId then
 					self:EndCombat(v, success == 0)
 					if not synced then
-						sendSync("EE", encounterID.."\t"..success.."\t"..v.."\t"..(v.revision or 0))
+						sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
 					end
 					return
 				end
@@ -3480,7 +3480,7 @@ function DBM:EndEncounter(encounterID, success, synced)
 		elseif encounterID == v.combatInfo.eId then
 			self:EndCombat(v, success == 0)
 			if not synced then
-				sendSync("EE", encounterID.."\t"..success.."\t"..v.."\t"..(v.revision or 0))
+				sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
 			end
 			return
 		end
