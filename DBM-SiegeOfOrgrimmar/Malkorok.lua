@@ -7,7 +7,7 @@ mod:SetEncounterID(1595)
 mod:SetZone()
 mod:SetUsedIcons(8, 7, 6, 4, 3, 2, 1)
 
-mod:RegisterCombat("ES")
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",

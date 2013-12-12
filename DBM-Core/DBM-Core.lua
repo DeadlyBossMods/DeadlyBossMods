@@ -240,7 +240,6 @@ local currentSizes = nil
 local bossHealth = {}
 local savedDifficulty
 local difficultyText
-local wowBuild = tonumber((select(2, GetBuildInfo())))
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -2851,11 +2850,11 @@ do
 		DBM:SendTimers(sender)
 	end
 
-	whisperSyncHandlers["CI"] = function(sender, mod, time, isIEEU)
+	whisperSyncHandlers["CI"] = function(sender, mod, time)
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
-			DBM:ReceiveCombatInfo(sender, mod, time, isIEEU)
+			DBM:ReceiveCombatInfo(sender, mod, time)
 		end
 	end
 
@@ -3073,35 +3072,36 @@ do
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if (v.type == "combat" or (v.type == "ES" and wowBuild < 17658)) and isBossEngaged(v.multiMobPullDetection or v.mob) then
+				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
 					self:StartCombat(v.mod, 0, "IEEU")
 				end
 			end
 		end
 	end
-	
+
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
 		if DBM.Options.DebugMode then
 			print("ENCOUNTER_START event fired:", encounterID, name, difficulty, size)
 		end
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if not v.type == "ES" then break end
-				if v.multiEncounterPullDetection then
-					for _, encounter in ipairs(v.multiEncounterPullDetection) do
-						if encounterID == encounter then
-							self:StartCombat(v.mod, 0, "ENCOUNTER_START")
-							return
+				if not v.noES then
+					if v.multiEncounterPullDetection then
+						for _, eId in ipairs(v.multiEncounterPullDetection) do
+							if encounterID == eId then
+								self:StartCombat(v.mod, 0, "ENCOUNTER_START")
+								return
+							end
 						end
+					elseif encounterID == v.eId then
+						self:StartCombat(v.mod, 0, "ENCOUNTER_START")
+						return
 					end
-				elseif encounterID == v.encounter then
-					self:StartCombat(v.mod, 0, "ENCOUNTER_START")
-					return
 				end
 			end
 		end
 	end
-	
+
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		if DBM.Options.DebugMode then
 			print("ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
@@ -3109,10 +3109,15 @@ do
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
-			if encounterID == v.combatInfo.encounter then
-				local wipe = false
-				if success == 0 then wipe = true end
-				self:EndCombat(v, wipe)
+			if v.multiEncounterPullDetection then
+				for _, eId in ipairs(v.multiEncounterPullDetection) do
+					if encounterID == eId then
+						self:EndCombat(v, success == 0)
+						return
+					end
+				end
+			elseif encounterID == v.combatInfo.eId then
+				self:EndCombat(v, success == 0)
 				return
 			end
 		end
@@ -3186,6 +3191,15 @@ function checkWipe(isIEEU, confirm)
 		local difficultyIndex
 		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
+		end
+		--hack for no iEEU information is provided.
+		if not isIEEU then
+			for i = 1, 5 do
+				if UnitExists("boss"..i) then
+					isIEEU = true
+					break
+				end
+			end
 		end
 		local wipe = 1 -- 0: no wipe, 1: normal wipe, 2: wipe by UnitExists check.
 		if IsInScenarioGroup() or (difficultyIndex == 11) or (difficultyIndex == 12) then -- Scenario mod uses special combat start and must be enabled before sceniro end. So do not wipe.
@@ -3291,8 +3305,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
-		combatStartedByIEEU = (event or "") == "IEEU"
-		self:Schedule(mod.minCombatTime or 3, checkWipe, combatStartedByIEEU)
+		self:Schedule(mod.minCombatTime or 3, checkWipe, (event or "") == "IEEU")
 		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inScenario then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
@@ -3833,7 +3846,7 @@ do
 		SendAddonMessage("D4", "RT", "WHISPER", bestClient.name)
 	end
 
-	function DBM:ReceiveCombatInfo(sender, mod, time, isIEEU)
+	function DBM:ReceiveCombatInfo(sender, mod, time)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			if not mod.Options.Enabled then return end
 			local lag = select(4, GetNetStats()) / 1000
@@ -3857,20 +3870,10 @@ do
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			mod.combatInfo.pull = GetTime() - time + lag
-			local isIEEU = isIEEU
-			--hack for no iEEU information provided.
-			if not isIEEU then
-				for i = 1, 5 do
-					if UnitExists("boss"..i) then
-						isIEEU = "true"
-						break
-					end
-				end
-			end
 			if mod.minCombatTime then
-				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe, isIEEU == "true")
+				self:Schedule(mmax((mod.minCombatTime - time - lag), 3), checkWipe)
 			else
-				self:Schedule(3, checkWipe, isIEEU == "true")
+				self:Schedule(3, checkWipe)
 			end
 			if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and not mod.inSecnario then
 				DBM.BossHealth:Show(mod.localization.general.name)
@@ -3966,7 +3969,7 @@ function DBM:SendBGTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	return SendAddonMessage("D4", ("CI\t%s\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull, tostring(combatStartedByIEEU)), "WHISPER", target)
+	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
@@ -4576,6 +4579,13 @@ function bossModPrototype:SetEncounterID(...)
 		if self.combatInfo then
 			self.combatInfo.multiEncounterPullDetection = self.multiEncounterPullDetection
 		end
+	end
+end
+
+function bossModPrototype:DisableESCombatDectection()
+	self.noES = true
+	if self.combatInfo then
+		self.combatInfo.noES = true
 	end
 end
 
@@ -6784,7 +6794,7 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	local info = {
 		type = cType,
 		mob = self.creatureId,
-		encounter = self.encounterId,
+		eId = self.encounterId,
 		name = self.localization.general.name or self.id,
 		msgs = (cType ~= "combat") and {...},
 		mod = self
