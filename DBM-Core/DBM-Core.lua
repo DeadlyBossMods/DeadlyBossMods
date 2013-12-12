@@ -3459,6 +3459,10 @@ function DBM:GetBossHealthByCID(cid)
 end
 
 function DBM:EndEncounter(encounterID, success, synced)
+	if DBM.Options.DebugMode then
+		print("EndEncounter event fired:", IsEncounterInProgress())
+	end
+	if synced and (IsEncounterInProgress() or not IsInRaid()) then return end--Security, prevent people using /script maliciously to trick dbm into EndCombat
 	for i = #inCombat, 1, -1 do
 		local v = inCombat[i]
 		if not v.combatInfo then return end
