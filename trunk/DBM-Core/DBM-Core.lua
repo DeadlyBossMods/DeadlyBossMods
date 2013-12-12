@@ -2389,6 +2389,13 @@ do
 		if cId then DBM:OnMobKill(cId, true) end
 	end
 
+	syncHandlers["EE"] = function(sender, eId, success)
+		if select(2, IsInInstance()) == "pvp" then return end
+		eId = tonumber(cId or "")
+		success = tonumber(wipe)
+		if eId and success then DBM:EndEncounter(eId, success, true) end
+	end
+
 	local dummyMod -- dummy mod for the pull sound effect
 	syncHandlers["PT"] = function(sender, timer, lastMapID)
 		if select(2, IsInInstance()) == "pvp" or DBM:GetRaidRank(sender) == 0 or IsEncounterInProgress() then
@@ -3106,21 +3113,7 @@ do
 		if DBM.Options.DebugMode then
 			print("ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
 		end
-		for i = #inCombat, 1, -1 do
-			local v = inCombat[i]
-			if not v.combatInfo then return end
-			if v.multiEncounterPullDetection then
-				for _, eId in ipairs(v.multiEncounterPullDetection) do
-					if encounterID == eId then
-						self:EndCombat(v, success == 0)
-						return
-					end
-				end
-			elseif encounterID == v.combatInfo.eId then
-				self:EndCombat(v, success == 0)
-				return
-			end
-		end
+		self:EndEncounter(encounterID, success)
 	end
 
 	local function checkExpressionList(exp, str)
@@ -3461,6 +3454,30 @@ function DBM:GetBossHealthByCID(cid)
 		end
 	end
 	return health
+end
+
+function DBM:EndEncounter(encounterID, success, synced)
+	for i = #inCombat, 1, -1 do
+		local v = inCombat[i]
+		if not v.combatInfo then return end
+		if v.multiEncounterPullDetection then
+			for _, eId in ipairs(v.multiEncounterPullDetection) do
+				if encounterID == eId then
+					self:EndCombat(v, success == 0)
+					if not synced then
+						sendSync("EE", encounterID.."\t"..success)
+					end
+					return
+				end
+			end
+		elseif encounterID == v.combatInfo.eId then
+			self:EndCombat(v, success == 0)
+			if not synced then
+				sendSync("EE", encounterID.."\t"..success)
+			end
+			return
+		end
+	end
 end
 
 function DBM:EndCombat(mod, wipe)
