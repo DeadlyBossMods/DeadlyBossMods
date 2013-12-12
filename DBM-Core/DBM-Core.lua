@@ -2297,6 +2297,8 @@ function DBM:LoadMod(mod)
 end
 
 
+local eeSyncSender = {}
+local eeSyncReceived = 0
 local canSetIcons = {}
 local iconSetRevision = {}
 local iconSetPerson = {}
@@ -2395,7 +2397,13 @@ do
 		success = tonumber(wipe)
 		mod = DBM:GetModByName(mod or "")
 		modRevision = tonumber(modRevision or 0) or 0
-		if eId and success and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) then DBM:EndEncounter(eId, success, true) end
+		if eId and success and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) and not eeSyncSender[sender] then
+			eeSyncSender[sender] = true
+			eeSyncReceived = eeSyncReceived + 1
+			if eeSyncReceived > 2 then -- need at least 3 person to combat end. (for security)
+				DBM:EndCombat(mod, success == 0)
+			end
+		end
 	end
 
 	local dummyMod -- dummy mod for the pull sound effect
@@ -3115,7 +3123,23 @@ do
 		if DBM.Options.DebugMode then
 			print("ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
 		end
-		self:EndEncounter(encounterID, success)
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			if not v.combatInfo then return end
+			if v.multiEncounterPullDetection then
+				for _, eId in ipairs(v.multiEncounterPullDetection) do
+					if encounterID == eId then
+						self:EndCombat(v, success == 0)
+						sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
+						return
+					end
+				end
+			elseif encounterID == v.combatInfo.eId then
+				self:EndCombat(v, success == 0)
+				sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
+				return
+			end
+		end
 	end
 
 	local function checkExpressionList(exp, str)
@@ -3419,7 +3443,7 @@ function DBM:UNIT_HEALTH(uId)
 	if #inCombat == 0 and bossIds[cId] and InCombatLockdown() and UnitAffectingCombat(uId) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH event, for older instances.
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
-				if not v.mod.disableHealthCombat and (v.type == "combat" and v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
+				if v.mod.Options.Enabled and not v.mod.disableHealthCombat and (v.type == "combat" and v.multiMobPullDetection and checkEntry(v.multiMobPullDetection, cId) or v.mob == cId) then
 					self:StartCombat(v.mod, health > 0.97 and 0.5 or mmin(20, (lastCombatStarted and GetTime() - lastCombatStarted) or 2.1), "UNIT_HEALTH", nil, health) -- Above 97%, boss pulled during combat, set min delay (0.5) / Below 97%, combat enter detection failure, use normal delay (max 20s)
 				end
 			end
@@ -3457,34 +3481,6 @@ function DBM:GetBossHealthByCID(cid)
 		end
 	end
 	return health
-end
-
-function DBM:EndEncounter(encounterID, success, synced)
-	if DBM.Options.DebugMode then
-		print("EndEncounter event fired:", IsEncounterInProgress())
-	end
-	if synced and (IsEncounterInProgress() or not IsInRaid()) then return end--Security, prevent people using /script maliciously to trick dbm into EndCombat
-	for i = #inCombat, 1, -1 do
-		local v = inCombat[i]
-		if not v.combatInfo then return end
-		if v.multiEncounterPullDetection then
-			for _, eId in ipairs(v.multiEncounterPullDetection) do
-				if encounterID == eId then
-					self:EndCombat(v, success == 0)
-					if not synced then
-						sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
-					end
-					return
-				end
-			end
-		elseif encounterID == v.combatInfo.eId then
-			self:EndCombat(v, success == 0)
-			if not synced then
-				sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
-			end
-			return
-		end
-	end
 end
 
 function DBM:EndCombat(mod, wipe)
@@ -3734,6 +3730,8 @@ function DBM:EndCombat(mod, wipe)
 		end
 		savedDifficulty = nil
 		difficultyText = nil
+		eeSyncSender = {}
+		eeSyncReceived = 0
 	end
 end
 
