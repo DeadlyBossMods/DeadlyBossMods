@@ -5,8 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(73720, 71512)
 mod:SetEncounterID(1594)
 mod:DisableESCombatDectection()
-mod:SetMinSyncRevision(10761)
-mod:SetHotfixNoticeRev(10761)
+mod:SetMinSyncRevision(10768)
+mod:SetHotfixNoticeRev(10768)
 mod:SetZone()
 
 --Can use IEEU to engage now, it's about 4 seconds slower but better than registering an out of combat CLEU event in entire zone.
