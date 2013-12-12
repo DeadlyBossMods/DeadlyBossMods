@@ -3366,22 +3366,12 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
 		end
 		fireEvent("pull", mod, delay, synced, startHp)
-		self:ToggleRaidBossEmoteFrame(1)
 		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			if DBM.Options.BigBrotherAnnounceToRaid then
 				BigBrother:ConsumableCheck("RAID")
 			else
 				BigBrother:ConsumableCheck("SELF")
 			end
-		end
-		self:StartLogging(0, nil)
-		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
-			WatchFrame:Hide()
-			watchFrameRestore = true
-		end
-		if DBM.Options.HideTooltips then
-			--Better or cleaner way?
-			GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
 		end
 		if DBM.Options.ShowEngageMessage then
 			if mod.ignoreBestkill and mod:IsDifficulty("worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
@@ -3404,6 +3394,16 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		if mod.hotfixNoticeRev then
 			sendSync("HF", mod.id.."\t"..mod.hotfixNoticeRev)
 		end
+		self:ToggleRaidBossEmoteFrame(1)
+		self:StartLogging(0, nil)
+		if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
+			WatchFrame:Hide()
+			watchFrameRestore = true
+		end
+		if DBM.Options.HideTooltips then
+			--Better or cleaner way?
+			GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
+		end
 	end
 end
 
@@ -3415,6 +3415,7 @@ function DBM:UNIT_HEALTH(uId)
 	if #inCombat > 0 and bossHealth[cId] then
 		bossHealth[cId] = health
 	end
+	if health < 0.05 then return end -- prevent spam call if boss not dies
 	if #inCombat == 0 and bossIds[cId] and InCombatLockdown() and UnitAffectingCombat(uId) and healthCombatInitialized then -- StartCombat by UNIT_HEALTH event, for older instances.
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
@@ -3930,6 +3931,15 @@ do
 				end
 			end
 			self:ToggleRaidBossEmoteFrame(1)
+			self:StartLogging(0, nil)
+			if DBM.Options.HideWatchFrame and WatchFrame:IsVisible() and not (mod.type == "SCENARIO") then
+				WatchFrame:Hide()
+				watchFrameRestore = true
+			end
+			if DBM.Options.HideTooltips then
+				--Better or cleaner way?
+				GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
+			end
 		end
 	end
 
