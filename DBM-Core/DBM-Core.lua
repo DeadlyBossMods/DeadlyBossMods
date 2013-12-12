@@ -3247,8 +3247,6 @@ function checkWipe(isIEEU, confirm)
 	end
 end
 
-local combatStartedByIEEU = false
-
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if DBM.Options.DebugMode and not mod.inCombat then
 		if event then
