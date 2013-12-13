@@ -2352,7 +2352,6 @@ do
 		local _, instanceType = GetInstanceInfo()
 		if instanceType == "pvp" then return end
 		if instanceType == "none" and (not UnitAffectingCombat("player") or #inCombat > 0) then return end--Ignore world boss pulls if you aren't fighting them. Also ignore world boss pull if already in combat.
-		if not IsEncounterInProgress() and instanceType == "raid" and IsPartyLFG() then return end--Ignore syncs if we cannot validate IsEncounterInProgress as true
 		if not cSyncSender[sender] then
 			cSyncSender[sender] = true
 			cSyncReceived = cSyncReceived + 1
