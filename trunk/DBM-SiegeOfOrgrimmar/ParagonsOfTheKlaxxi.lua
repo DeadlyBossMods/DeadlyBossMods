@@ -103,7 +103,7 @@ local specWarnMesmerizeOther		= mod:NewSpecialWarningTarget(142671, false)--Pers
 local yellMesmerize					= mod:NewYell(142671, nil, false)
 local specWarnKunchongs				= mod:NewSpecialWarningSwitch("ej8043", mod:IsDps())
 --Korven the Prime
-local specWarnShieldBash			= mod:NewSpecialWarningSpell(143974)
+local specWarnShieldBash			= mod:NewSpecialWarningSpell("OptionVersion2", 143974, mod:IsTank())
 local specWarnShieldBashOther		= mod:NewSpecialWarningTarget(143974, mod:IsTank() or mod:IsHealer())
 local specWarnEncaseInAmber			= mod:NewSpecialWarningTarget(142564, mod:IsDps())--Better than switch because on heroic, you don't actually switch to amber, you switch to a NON amber target. Plus switch gives no targetname
 --Iyyokuk the Lucid
