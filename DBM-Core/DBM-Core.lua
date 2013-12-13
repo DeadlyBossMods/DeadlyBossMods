@@ -902,6 +902,14 @@ do
 		tinsert(callbacks[event], f)
 		return #callbacks[event]
 	end
+
+	function DBM:UnregisterCallback(event)
+		if not event or not callbacks[event] then return end
+		for k,v in pairs(callbacks) do
+			print(k)
+		end
+		callbacks[event] = nil
+	end
 end
 
 
