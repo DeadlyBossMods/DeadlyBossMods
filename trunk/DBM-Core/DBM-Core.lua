@@ -5143,6 +5143,7 @@ do
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			local text
+			local message
 			if #self.combinedtext > 0 then--very ugly code. need tweaking. can cause script lan too long?
 				local count = select("#", ...)
 				-- create temporary arg table.
@@ -5174,6 +5175,7 @@ do
 					pformat(self.text, argTable[1], argTable[2], argTable[3], argTable[4], argTable[5]),
 					(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 				)
+				message = pformat(self.text, argTable[1], argTable[2], argTable[3], argTable[4], argTable[5])
 			else
 				text = ("%s%s%s|r%s"):format(
 					(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
@@ -5181,7 +5183,12 @@ do
 					pformat(self.text, ...),
 					(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 				)
+				message = pformat(self.text, ...)
 			end
+			message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
+			message = message:gsub(">", "")
+			message = message:gsub("<", "")
+			fireEvent("DBM_Message", message)
 			self.combinedcount = 0
 			table.wipe(self.combinedtext)
 			if not cachedColorFunctions[self.color] then
