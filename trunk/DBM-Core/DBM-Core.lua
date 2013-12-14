@@ -3281,10 +3281,14 @@ end
 local statVarTable = {
 	["normal5"] = "normal",
 	["normal10"] = "normal",
-	["worldboss"] = "normal",
+	["normal25"] = "normal25",
 	["heroic5"] = "heroic",
 	["heroic10"] = "heroic",
+	["heroic25"] = "heroic25",
 	["challenge5"] = "challenge",
+	["worldboss"] = "normal",
+	["lfr25"] = "lfr25",
+	["flex"] = "flex",
 }
 
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
