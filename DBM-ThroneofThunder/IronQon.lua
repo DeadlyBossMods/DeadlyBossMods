@@ -237,7 +237,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 134647 and args:IsPlayer() then
 		local amount = args.amount or 1
-		timerScorched:Start()
+		if self:IsDifficulty("lfr25") then
+			timerScorched:Start(15)
+		else
+			timerScorched:Start()
+		end
 		if amount > 2 then
 			specWarnScorched:Show(amount)
 		end
@@ -333,7 +337,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnBurningCinders:Show()
 	elseif spellId == 137669 and destGUID == UnitGUID("player") and self:AntiSpam(3, 3) then
 		specWarnStormCloud:Show()
-	elseif spellId == 136520 and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
+	elseif (spellId == 136520 or spellId == 137764) and destGUID == UnitGUID("player") and self:AntiSpam(2, 4) then
 		specWarnFrozenBlood:Show()
 	end
 end
