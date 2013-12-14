@@ -2400,7 +2400,7 @@ do
 	syncHandlers["EE"] = function(sender, eId, success, mod, modRevision)
 		if select(2, IsInInstance()) == "pvp" then return end
 		eId = tonumber(eId or "")
-		success = tonumber(wipe)
+		success = tonumber(success)
 		mod = DBM:GetModByName(mod or "")
 		modRevision = tonumber(modRevision or 0) or 0
 		if eId and success and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) and not eeSyncSender[sender] then
