@@ -76,7 +76,7 @@ local timerProjection			= mod:NewCastTimer(6, 146822)
 local berserkTimer				= mod:NewBerserkTimer(600)
 
 local countdownSwellingPride	= mod:NewCountdown(75.5, 144400)
-local countdownReflection		= mod:NewCountdown("Alt25", 144800, false)
+local countdownReflection		= mod:NewCountdown("OptionVersion2", "Alt25", 144800)
 
 mod:AddInfoFrameOption("ej8255")
 mod:AddSetIconOption("SetIconOnMark", 144351, false)
@@ -91,7 +91,7 @@ local swellingCount = 0
 
 function mod:OnCombatStart(delay)
 	timerGiftOfTitansCD:Start(7.5-delay)
-	timerMarkCD:Start(-delay)
+	timerMarkCD:Start(11-delay)
 	if not self:IsDifficulty("lfr25") then
 		timerWoundedPrideCD:Start(10-delay)
 	end
@@ -152,6 +152,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144400 then--Swelling Pride Cast END
 		woundCount = 0
 		--Since we register this event anyways for bursting, might as well start cd bars here instead
+		timerMarkCD:Start(10.5)
 		timerSelfReflectionCD:Start()
 		countdownReflection:Start()
 		timerCorruptedPrisonCD:Start()
