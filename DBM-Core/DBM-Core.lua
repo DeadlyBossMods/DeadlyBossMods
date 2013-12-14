@@ -3278,6 +3278,15 @@ function checkWipe(isIEEU, confirm)
 	end
 end
 
+local statVarTable = {
+	["normal5"] = "normal",
+	["normal10"] = "normal",
+	["worldboss"] = "normal",
+	["heroic5"] = "heroic",
+	["heroic10"] = "heroic",
+	["challenge5"] = "challenge",
+}
+
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if DBM.Options.DebugMode and not mod.inCombat then
 		if event then
@@ -3332,7 +3341,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			bossHealth[mod.combatInfo.mob or -1] = 1
 		end
 		local startHp = (syncedStartHp and (tonumber(syncedStartHp))) or mod:GetBossHP(mod.mainBossId or mod.combatInfo.mob) or -1
-		if (mod:IsDifficulty("worldboss") and startHp < 0.98) or (event == "UNIT_HEALTH" and startHp < 0.90) or event == "TIMER_RECOVERY" then--Boss was not full health when engaged, disable combat start timer and kill record
+		if (savedDifficulty == "worldboss" and startHp < 0.98) or (event == "UNIT_HEALTH" and startHp < 0.90) or event == "TIMER_RECOVERY" then--Boss was not full health when engaged, disable combat start timer and kill record
 			mod.ignoreBestkill = true
 		else--Reset ignoreBestkill after wipe
 			mod.ignoreBestkill = false
@@ -3359,42 +3368,17 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			--Better or cleaner way?
 			GameTooltip.Temphide = function() GameTooltip:Hide() end; GameTooltip:SetScript("OnShow", GameTooltip.Temphide)
 		end
+		fireEvent("pull", mod, delay, synced, startHp)
 		--serperate timer recovery and normal start.
 		if event ~= "TIMER_RECOVERY" then
 			--add pull count
-			if mod:IsDifficulty("lfr25") then
-				mod.stats.lfr25Pulls = mod.stats.lfr25Pulls + 1
-			elseif mod:IsDifficulty("normal5", "normal10", "worldboss") then
-				mod.stats.normalPulls = mod.stats.normalPulls + 1
-			elseif mod:IsDifficulty("heroic5", "heroic10") then
-				mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			elseif mod:IsDifficulty("challenge5") then
-				mod.stats.challengePulls = mod.stats.challengePulls + 1
-			elseif mod:IsDifficulty("flex") then
-				mod.stats.flexPulls = mod.stats.flexPulls + 1
-			elseif mod:IsDifficulty("normal25") then
-				mod.stats.normal25Pulls = mod.stats.normal25Pulls + 1
-			elseif mod:IsDifficulty("heroic25") then
-				mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
+			if mod.stats then
+				if not mod.stats[statVarTable[savedDifficulty].."Pulls"] then mod.stats[statVarTable[savedDifficulty].."Pulls"] = 0 end
+				mod.stats[statVarTable[savedDifficulty].."Pulls"] = mod.stats[statVarTable[savedDifficulty].."Pulls"] + 1
 			end
 			--show speed timer
-			if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and not mod.ignoreBestkill then
-				local bestTime
-				if mod:IsDifficulty("lfr25") and mod.stats.lfr25BestTime then
-					bestTime = mod.stats.lfr25BestTime
-				elseif mod:IsDifficulty("normal5", "normal10", "worldboss") and mod.stats.normalBestTime then
-					bestTime = mod.stats.normalBestTime
-				elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
-					bestTime = mod.stats.heroicBestTime
-				elseif mod:IsDifficulty("challenge5") and mod.stats.challengeBestTime then
-					bestTime = mod.stats.challengeBestTime
-				elseif mod:IsDifficulty("flex") and mod.stats.flexBestTime then
-					bestTime = mod.stats.flexBestTime
-				elseif mod:IsDifficulty("normal25") and mod.stats.normal25BestTime then
-					bestTime = mod.stats.normal25BestTime
-				elseif mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime then
-					bestTime = mod.stats.heroic25BestTime
-				end
+			if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.stats and not mod.ignoreBestkill then
+				local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
 				if bestTime and bestTime > 0 then
 					local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 					speedTimer:Start()
@@ -3431,7 +3415,6 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if not synced then
 				sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0).."\t"..startHp.."\t"..DBM.Revision)
 			end
-			fireEvent("pull", mod, delay, synced, startHp)
 			--show bigbrother check
 			if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 				if DBM.Options.BigBrotherAnnounceToRaid then
@@ -3442,7 +3425,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			end
 			--show enage message
 			if DBM.Options.ShowEngageMessage then
-				if mod.ignoreBestkill and mod:IsDifficulty("worldboss") then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
+				if mod.ignoreBestkill and savedDifficulty == "worldboss" then--Should only be true on in progress field bosses, not in progress raid bosses we did timer recovery on.
 					self:AddMsg(DBM_CORE_COMBAT_STARTED_IN_PROGRESS:format(difficultyText..mod.combatInfo.name))
 				else
 					if mod.type == "SCENARIO" then
@@ -3522,6 +3505,14 @@ function DBM:GetBossHealthByCID(cid)
 	return health
 end
 
+local minBestTime = {
+	["lfr25"] = 10,
+	["normal10"] = 1.5,
+	["heroic10"] = 2,
+	["normal25"] = 3,
+	["heroic25"] = 4,
+}
+
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		local scenario = mod.type == "SCENARIO"
@@ -3553,24 +3544,10 @@ function DBM:EndCombat(mod, wipe)
 			--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
 			local thisTime = GetTime() - mod.combatInfo.pull
 			local wipeHP = ("%d%%"):format((mod.mainBossId and DBM:GetBossHealthByCID(mod.mainBossId) or mod.highesthealth and DBM:GetHighestBossHealth() or DBM:GetLowestBossHealth()) * 100)
-			local totalPulls = (savedDifficulty == "lfr25" and mod.stats.lfr25Pulls) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicPulls) or (savedDifficulty == "challenge5" and mod.stats.challengePulls) or (savedDifficulty == "flex" and mod.stats.flexPulls) or (savedDifficulty == "normal25" and mod.stats.normal25Pulls) or (savedDifficulty == "heroic25" and mod.stats.heroic25Pulls) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalPulls) or 0
-			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "challenge5" and mod.stats.challengeKills) or (savedDifficulty == "flex" and mod.stats.flexKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalKills) or 0
+			local totalPulls = mod.stats[statVarTable[savedDifficulty].."Pulls"]
+			local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
 			if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
-				if savedDifficulty == "lfr25" then
-					mod.stats.lfr25Pulls = mod.stats.lfr25Pulls - 1
-				elseif savedDifficulty == "heroic5" or savedDifficulty == "heroic10" then
-					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
-				elseif savedDifficulty == "challenge5" then
-					mod.stats.challengePulls = mod.stats.challengePulls - 1
-				elseif savedDifficulty == "flex" then
-					mod.stats.flexPulls = mod.stats.flexPulls - 1
-				elseif savedDifficulty == "normal25" then
-					mod.stats.normal25Pulls = mod.stats.normal25Pulls - 1
-				elseif savedDifficulty == "heroic25" then
-					mod.stats.heroic25Pulls = mod.stats.heroic25Pulls - 1
-				else
-					mod.stats.normalPulls = mod.stats.normalPulls - 1
-				end
+				totalPulls = totalPulls - 1
 				if DBM.Options.ShowWipeMessage then
 					if scenario then
 						self:AddMsg(DBM_CORE_SCENARIO_ENDED_AT:format(difficultyText..mod.combatInfo.name, strFromTime(thisTime)))
@@ -3608,105 +3585,25 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			mod.lastKillTime = GetTime()
-			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = (savedDifficulty == "lfr25" and mod.stats.lfr25LastTime) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicLastTime) or (savedDifficulty == "challenge5" and mod.stats.challengeLastTime) or (savedDifficulty == "flex" and mod.stats.flexLastTime) or (savedDifficulty == "normal25" and mod.stats.normal25LastTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25LastTime) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalLastTime) or nil
-			local bestTime = (savedDifficulty == "lfr25" and mod.stats.lfr25BestTime) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicBestTime) or (savedDifficulty == "challenge5" and mod.stats.challengeBestTime) or (savedDifficulty == "flex" and mod.stats.flexBestTime) or (savedDifficulty == "normal25" and mod.stats.normal25BestTime) or (savedDifficulty == "heroic25" and mod.stats.heroic25BestTime) or ((savedDifficulty == "normal5" or savedDifficulty == "normal10" or savedDifficulty == "worldboss") and mod.stats.normalBestTime) or nil
-			if savedDifficulty == "lfr25" then
-				if not mod.stats.lfr25Kills or mod.stats.lfr25Kills < 0 then mod.stats.lfr25Kills = 0 end
-				if mod.stats.lfr25Kills > mod.stats.lfr25Pulls then mod.stats.lfr25Kills = mod.stats.lfr25Pulls end--Fix logical error i've seen where for some reason we have more kills then pulls for boss as seen by - stats for wipe messages.
-				mod.stats.lfr25Kills = mod.stats.lfr25Kills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.lfr25LastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 10 then--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
-						mod.stats.lfr25BestTime = thisTime
-					else
-						mod.stats.lfr25BestTime = mmin(bestTime or mhuge, thisTime)
-					end
-				end
-			elseif savedDifficulty == "normal5" or savedDifficulty == "worldboss" then
-				if not mod.stats.normalKills or mod.stats.normalKills < 0 then mod.stats.normalKills = 0 end
-				if mod.stats.normalKills > mod.stats.normalPulls then mod.stats.normalKills = mod.stats.normalPulls end
-				mod.stats.normalKills = mod.stats.normalKills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.normalLastTime = thisTime
-					mod.stats.normalBestTime = mmin(bestTime or mhuge, thisTime)
-				end
-			elseif savedDifficulty == "heroic5" then
-				if not mod.stats.heroicKills or mod.stats.heroicKills < 0 then mod.stats.heroicKills = 0 end
-				if mod.stats.heroicKills > mod.stats.heroicPulls then mod.stats.heroicKills = mod.stats.heroicPulls end
-				mod.stats.heroicKills = mod.stats.heroicKills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.heroicLastTime = thisTime
-					mod.stats.heroicBestTime = mmin(bestTime or mhuge, thisTime)
-				end
-			elseif savedDifficulty == "challenge5" then
-				if not mod.stats.challengeKills or mod.stats.challengeKills < 0 then mod.stats.challengeKills = 0 end
-				if mod.stats.challengeKills > mod.stats.challengePulls then mod.stats.challengeKills = mod.stats.challengePulls end
-				mod.stats.challengeKills = mod.stats.challengeKills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.challengeLastTime = thisTime
-					mod.stats.challengeBestTime = mmin(bestTime or mhuge, thisTime)
-				end
-			elseif savedDifficulty == "flex" then
-				if not mod.stats.flexKills or mod.stats.flexKills < 0 then mod.stats.flexKills = 0 end
-				if mod.stats.flexKills > mod.stats.flexPulls then mod.stats.flexKills = mod.stats.flexPulls end
-				mod.stats.flexKills = mod.stats.flexKills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.flexLastTime = thisTime
-					mod.stats.flexBestTime = mmin(bestTime or mhuge, thisTime)
-				end
-			elseif savedDifficulty == "normal10" then
-				if not mod.stats.normalKills or mod.stats.normalKills < 0 then mod.stats.normalKills = 0 end
-				if mod.stats.normalKills > mod.stats.normalPulls then mod.stats.normalKills = mod.stats.normalPulls end
-				mod.stats.normalKills = mod.stats.normalKills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.normalLastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in one global CD. (all level 60 raids report as instance difficulty 1 which means this time has to be ridiculously low. It's more or less only gonna fix kill times of 0.)
-						mod.stats.normalBestTime = thisTime
-					else
-						mod.stats.normalBestTime = mmin(bestTime or mhuge, thisTime)
-					end
-				end
-			elseif savedDifficulty == "heroic10" then
-				if not mod.stats.heroicKills or mod.stats.heroicKills < 0 then mod.stats.heroicKills = 0 end
-				if mod.stats.heroicKills > mod.stats.heroicPulls then mod.stats.heroicKills = mod.stats.heroicPulls end
-				mod.stats.heroicKills = mod.stats.heroicKills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.heroicLastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 2 then
-						mod.stats.heroicBestTime = thisTime
-					else
-						mod.stats.heroicBestTime = mmin(bestTime or mhuge, thisTime)
-					end
-				end
-			elseif savedDifficulty == "normal25" then
-				if not mod.stats.normal25Kills or mod.stats.normal25Kills < 0 then mod.stats.normal25Kills = 0 end
-				if mod.stats.normal25Kills > mod.stats.normal25Pulls then mod.stats.normal25Kills = mod.stats.normal25Pulls end
-				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.normal25LastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 3 then
-						mod.stats.normal25BestTime = thisTime
-					else
-						mod.stats.normal25BestTime = mmin(bestTime or mhuge, thisTime)
-					end
-				end
-			elseif savedDifficulty == "heroic25" then
-				if not mod.stats.heroic25Kills or mod.stats.heroic25Kills < 0 then mod.stats.heroic25Kills = 0 end
-				if mod.stats.heroic25Kills > mod.stats.heroic25Pulls then mod.stats.heroic25Kills = mod.stats.heroic25Pulls end
-				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
-				if not mod.ignoreBestkill then
-					mod.stats.heroic25LastTime = thisTime
-					if bestTime and bestTime > 0 and bestTime < 4 then
-						mod.stats.heroic25BestTime = thisTime
-					else
-						mod.stats.heroic25BestTime = mmin(bestTime or mhuge, thisTime)
-					end
+			local thisTime = GetTime() - (mod.combatInfo.pull or 0)
+			local lastTime = mod.stats[statVarTable[savedDifficulty].."LastTime"]
+			local bestTime = mod.stats[statVarTable[savedDifficulty].."BestTime"]
+			if not mod.stats[statVarTable[savedDifficulty].."Kills"] or mod.stats[statVarTable[savedDifficulty].."Kills"] < 0 then mod.stats[statVarTable[savedDifficulty].."Kills"] = 0 end
+			--Fix logical error i've seen where for some reason we have more kills then pulls for boss as seen by - stats for wipe messages.
+			if mod.stats[statVarTable[savedDifficulty].."Kills"] > mod.stats[statVarTable[savedDifficulty].."Pulls"] then mod.stats[statVarTable[savedDifficulty].."Kills"] = mod.stats[statVarTable[savedDifficulty].."Pulls"] end
+			mod.stats[statVarTable[savedDifficulty].."Kills"] = mod.stats[statVarTable[savedDifficulty].."Kills"] + 1
+			if not mod.ignoreBestkill and mod.combatInfo.pull then
+				mod.stats[statVarTable[savedDifficulty].."LastTime"] = thisTime
+				--Just to prevent pre mature end combat calls from broken mods from saving bad time stats.
+				if bestTime and bestTime > 0 and minBestTime[savedDifficulty] and bestTime < minBestTime[savedDifficulty] then
+					mod.stats[statVarTable[savedDifficulty].."BestTime"] = thisTime
+				else
+					mod.stats[statVarTable[savedDifficulty].."BestTime"] = mmin(bestTime or mhuge, thisTime)
 				end
 			end
-			local totalKills = (savedDifficulty == "lfr25" and mod.stats.lfr25Kills) or ((savedDifficulty == "heroic5" or savedDifficulty == "heroic10") and mod.stats.heroicKills) or (savedDifficulty == "challenge5" and mod.stats.challengeKills) or (savedDifficulty == "flex" and mod.stats.flexKills) or (savedDifficulty == "normal25" and mod.stats.normal25Kills) or (savedDifficulty == "heroic25" and mod.stats.heroic25Kills) or mod.stats.normalKills
+			local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
 			if DBM.Options.ShowKillMessage then
-				if not thisTime then--was a bad pull so we ignored thisTime
+				if not mod.combatInfo.pull then--was a bad pull so we ignored thisTime, should never happen
 					if scenario then
 						self:AddMsg(DBM_CORE_SCENARIO_COMPLETE:format(difficultyText..mod.combatInfo.name, DBM_CORE_UNKNOWN))
 					else
@@ -4905,6 +4802,14 @@ function bossModPrototype:IsDifficulty(...)
 		if diff == select(i, ...) then
 			return true
 		end
+	end
+	return false
+end
+
+function bossModPrototype:IsHeroic()
+	local diff = DBM:GetCurrentInstanceDifficulty()
+	if diff == "heroic5" or diff == "heroic10" or diff == "heroic25" then
+		return true
 	end
 	return false
 end
