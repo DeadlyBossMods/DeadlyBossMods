@@ -118,7 +118,6 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(corruptionLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
 	end
-	self:Schedule(1, addsDelay)
 end
 
 function mod:OnCombatEnd()
@@ -216,8 +215,8 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
-	if spellId == 145769 then--Unleash Corruption
-		self:Schedule(5, addsDelay)
+	if spellId == 145769 and self:AntiSpam(1) then--Unleash Corruption
+		self:Schedule(5, addsDelay, GetTime())
 	end
 end
 
@@ -242,7 +241,7 @@ function mod:OnSync(msg, guid)
 	elseif msg == "ManifestationDied" and not playerInside and self:AntiSpam(1) then
 		specWarnManifestationSoon:Show()
 		if not self:IsDifficulty("lfr25") then
-			self:Schedule(5, addsDelay)
+			self:Schedule(5, addsDelay, GetTime())
 		end
 	end
 end
@@ -253,6 +252,9 @@ function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
 		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(1) then
 			specWarnManifestationSoon:Show()
+			if not self:IsDifficulty("lfr25") then
+				self:Schedule(5, addsDelay, GetTime())
+			end
 		end
 	end
 end

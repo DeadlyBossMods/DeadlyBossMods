@@ -4567,7 +4567,7 @@ function bossModPrototype:GetBossTarget(cid)
 end
 
 local targetScanCount = 0
-function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, isFinalScan)
+function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank, isFinalScan)
 	--Increase scan count
 	targetScanCount = targetScanCount + 1
 	--Set default values
@@ -4577,22 +4577,25 @@ function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanT
 	local targetname, targetuid, bossuid = self:GetBossTarget(cid)
 	--Do scan
 	if isEnemyScan and targetname or UnitExists(targetuid) then--We check target exists on player scan to prevent nil error. But on enemy scan, do not check target exists.
-		if (isEnemyScan and UnitIsFriend("player", targetuid) or self:IsTanking(targetuid, bossuid)) and not isFinalScan then--On player scan, ignore tanks. On enemy scan, ignore friendly player.
+		if (isEnemyScan and UnitIsFriend("player", targetuid) or self:IsTanking(targetuid, bossuid)) and not isFinalScan and not includeTank then--On player scan, ignore tanks. On enemy scan, ignore friendly player.
 			if targetScanCount < scanTimes then--Make sure no infinite loop.
-				self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan).
+				self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan).
 			else--Go final scan.
-				self:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, true)
+				self:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank, true)
 			end
 		else--Scan success. (or failed to detect right target.) But some spells can be used on tanks, anyway warns tank if player scan. (enemy scan block it)
 			targetScanCount = 0--Reset count for later use.
 			self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 			if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
-				self:ScheduleMethod(0, returnFunc, targetname, targetuid, bossuid)--Return results to warning function with all variables.
+				self[returnFunc](self, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 			end
 		end
 	else--target was nil, lets schedule a rescan here too.
 		if targetScanCount < scanTimes then--Make sure not to infinite loop here as well.
-			self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan)
+			self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank)
+		else
+			targetScanCount = 0--Reset count for later use.
+			self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
 		end
 	end
 end
