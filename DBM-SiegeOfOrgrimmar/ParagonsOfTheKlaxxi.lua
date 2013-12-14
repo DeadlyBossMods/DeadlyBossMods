@@ -889,7 +889,7 @@ local function delayMonsterEmote(target)
 					break
 				end
 			end
-		elseif calculatedColor == "Sword" then
+		elseif calculatedShape == "Sword" then
 			for _, spellname in ipairs(SwordDebuffs) do
 				local _, _, _, count = UnitDebuff("player", spellname)
 				if count then--Found
@@ -897,7 +897,7 @@ local function delayMonsterEmote(target)
 					break
 				end
 			end
-		elseif calculatedColor == "Drum" then
+		elseif calculatedShape == "Drum" then
 			for _, spellname in ipairs(DrumDebuffs) do
 				local _, _, _, count = UnitDebuff("player", spellname)
 				if count then--Found
@@ -905,7 +905,7 @@ local function delayMonsterEmote(target)
 					break
 				end
 			end
-		elseif calculatedColor == "Bomb" then
+		elseif calculatedShape == "Bomb" then
 			for _, spellname in ipairs(BombDebuffs) do
 				local _, _, _, count = UnitDebuff("player", spellname)
 				if count then--Found
@@ -913,7 +913,7 @@ local function delayMonsterEmote(target)
 					break
 				end
 			end
-		elseif calculatedColor == "Mantid" then
+		elseif calculatedShape == "Mantid" then
 			for _, spellname in ipairs(MantidDebuffs) do
 				local _, _, _, count = UnitDebuff("player", spellname)
 				if count then--Found
@@ -921,7 +921,7 @@ local function delayMonsterEmote(target)
 					break
 				end
 			end
-		elseif calculatedColor == "Staff" then
+		elseif calculatedShape == "Staff" then
 			for _, spellname in ipairs(StaffDebuffs) do
 				local _, _, _, count = UnitDebuff("player", spellname)
 				if count then--Found
