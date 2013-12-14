@@ -54,7 +54,7 @@ local yellDesecrate					= mod:NewYell(144748)
 local specWarnHellscreamsWarsong	= mod:NewSpecialWarningSpell(144821, mod:IsTank() or mod:IsHealer())
 local specWarnFireUnstableIronStar	= mod:NewSpecialWarningSpell(147047, nil, nil, nil, 3)
 local specWarnFarseerWolfRider		= mod:NewSpecialWarningSwitch("ej8294", not mod:IsHealer())
-local specWarnSiegeEngineer			= mod:NewSpecialWarningSwitch("ej8298", false)--Only 1 person on 10 man and 2 on 25 needed, so should be off for most of raid
+local specWarnSiegeEngineer			= mod:NewSpecialWarningPreWarn("ej8298", false, 4)
 local specWarnChainHeal				= mod:NewSpecialWarningInterrupt(144583)
 local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(144584, false)
 --Intermission: Realm of Y'Shaarj
@@ -129,6 +129,7 @@ function mod:OnCombatStart(delay)
 	mindControlCount = 0
 	shamanAlive = 0
 	timerDesecrateCD:Start(10.5-delay, 1)
+	specWarnSiegeEngineer:Schedule(16-delay)
 	timerSiegeEngineerCD:Start(20-delay)
 	timerHellscreamsWarsongCD:Start(22-delay)
 	timerFarseerWolfRiderCD:Start(30-delay)
@@ -289,6 +290,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerFarseerWolfRiderCD:Cancel()
 		timerDesecrateCD:Cancel()
 		timerHellscreamsWarsongCD:Cancel()
+		specWarnSiegeEngineer:Cancel()
 		timerEnterRealm:Start(25)
 	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
 		timerPowerIronStar:Cancel()
@@ -349,7 +351,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:find("spell:144616") then
 		engineerDied = 0
 		warnSiegeEngineer:Show()
-		specWarnSiegeEngineer:Show()
+		specWarnSiegeEngineer:Cancel()
+		specWarnSiegeEngineer:Schedule(41)
 		if not firstIronStar then
 			firstIronStar = true
 			timerSiegeEngineerCD:Start(45)
