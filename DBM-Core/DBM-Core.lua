@@ -2399,7 +2399,7 @@ do
 
 	syncHandlers["EE"] = function(sender, eId, success, mod, modRevision)
 		if select(2, IsInInstance()) == "pvp" then return end
-		eId = tonumber(cId or "")
+		eId = tonumber(eId or "")
 		success = tonumber(wipe)
 		mod = DBM:GetModByName(mod or "")
 		modRevision = tonumber(modRevision or 0) or 0
@@ -5483,10 +5483,6 @@ do
 			stopCountdown()
 		end
 		self.mod:Unschedule(self.Start, self)
-		self.sound1:Cancel()
-		self.sound2:Cancel()
-		self.sound3:Cancel()
-		self.sound4:Cancel()
 		self.sound5:Cancel()
 	end
 	countdownProtoType.Stop = countdownProtoType.Cancel
@@ -5513,10 +5509,6 @@ do
 			{
 				id = optionName or countdownType..spellId..(optionVersion or ""),
 				type = countdownType,
-				sound1 = sound1,
-				sound2 = sound2,
-				sound3 = sound3,
-				sound4 = sound4,
 				sound5 = sound5,
 				timer = timer,
 				count = count,
