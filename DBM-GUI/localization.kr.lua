@@ -6,7 +6,7 @@ local L = DBM_GUI_Translations
 L.MainFrame = "죽이는 보스 모드"
 
 L.TranslationByPrefix		= "번역: "
-L.TranslationBy 			= "법사세린-아즈샤라(everfinale@gmail.com)"
+L.TranslationBy 			= "법사세린-아즈샤라(배틀태그: 세린#3105 / everfinale@gmail.com)"
 L.Website					= "|cFF73C2FBwww.deadlybossmods.com|r에 있는 게시판을 방문해 보세요. (Elitist Jerks에서 서비스를 제공합니다!)"
 L.WebsiteButton				= "게시판"
 
@@ -102,6 +102,7 @@ L.InfoRaidWarning			= [[레이드 경보 프레임의 위치와 색상을 수정
 이 경보 프레임에 "X가 Y의 영향을 받았습니다." 같은 DBM 알림을 나타냅니다.]]
 L.ColorResetted 			= "현재 색상 설정을 초기화 합니다."
 L.ShowWarningsInChat 		= "알림을 대화창에 보여줍니다."
+L.ShowSWarningsInChat 		= "특수 경고를 대화창에 보여줍니다."
 L.ShowFakedRaidWarnings 	= "알림을 공격대 경보 대화처럼 보여줍니다."
 L.WarningIconLeft 			= "왼쪽에 아이콘 보기"
 L.WarningIconRight 			= "오른쪽에 아이콘 보기"
