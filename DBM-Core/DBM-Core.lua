@@ -239,8 +239,8 @@ local stopDelay = nil
 local watchFrameRestore = false
 local currentSizes = nil
 local bossHealth = {}
-local savedDifficulty
-local difficultyText
+local savedDifficulty, difficultyText, difficultyIndex
+local bossuIdFound = false
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 local guiRequested = false
@@ -331,6 +331,8 @@ local function sendSync(prefix, msg)
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "RAID")
 		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
 			SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
+		else--for solo raid
+			SendAddonMessage("D4", prefix .. "\t" .. msg, "WHISPER", playerName)
 		end
 	end
 end
@@ -3125,6 +3127,11 @@ do
 		end
 	end
 
+	local function endCombat(v, success, encounterID)
+		DBM:EndCombat(v, success == 0)
+		sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
+	end
+	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		if DBM.Options.DebugMode then
 			print("ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
@@ -3132,17 +3139,26 @@ do
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
+			if v.noEEDetection then return end
 			if v.multiEncounterPullDetection then
 				for _, eId in ipairs(v.multiEncounterPullDetection) do
 					if encounterID == eId then
-						self:EndCombat(v, success == 0)
-						sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
+						if bossuIdFound or success == 1 then
+							self:EndCombat(v, success == 0)
+							sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
+						else--hack wotlk instance EE bug. wotlk instances always wipe, so delay 3sec do actual wipe.
+							self:Schedule(3, endCombat, v, success, encounterID)
+						end
 						return
 					end
 				end
 			elseif encounterID == v.combatInfo.eId then
-				self:EndCombat(v, success == 0)
-				sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
+				if bossuIdFound or success == 1 then
+					self:EndCombat(v, success == 0)
+					sendSync("EE", encounterID.."\t"..success.."\t"..v.id.."\t"..(v.revision or 0))
+				else--hack wotlk instance EE bug. wotlk instances always wipe, so delay 3sec do actual wipe.
+					self:Schedule(3, endCombat, v, success, encounterID)
+				end
 				return
 			end
 		end
@@ -3210,17 +3226,17 @@ end
 --  Kill/Wipe Detection  --
 ---------------------------
 
-function checkWipe(isIEEU, confirm)
+function checkWipe(confirm)
 	if #inCombat > 0 then
-		local difficultyIndex
-		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
+		local _, instanceType = GetInstanceInfo()
+		if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
 			savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
 		end
 		--hack for no iEEU information is provided.
-		if not isIEEU then
+		if not bossuIdFound then
 			for i = 1, 5 do
 				if UnitExists("boss"..i) then
-					isIEEU = true
+					bossuIdFound = true
 					break
 				end
 			end
@@ -3232,7 +3248,7 @@ function checkWipe(isIEEU, confirm)
 			wipe = 0
 		elseif savedDifficulty == "worldboss" and UnitIsDeadOrGhost("player") then -- On dead or ghost, unit combat status detection would be fail. If you ghost in instance, that means wipe. But in worldboss, ghost means not wipe. So do not wipe.
 			wipe = 0
-		elseif isIEEU and IsInRaid() then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
+		elseif bossuIdFound and instanceType == "raid" then -- Combat started by IEEU and no boss exist and no EncounterProgress marked, that means wipe
 			wipe = 2
 			for i = 1, 5 do
 				if UnitExists("boss"..i) then
@@ -3252,7 +3268,7 @@ function checkWipe(isIEEU, confirm)
 			end
 		end
 		if wipe == 0 then
-			DBM:Schedule(3, checkWipe, isIEEU)
+			DBM:Schedule(3, checkWipe)
 		elseif confirm then
 			for i = #inCombat, 1, -1 do
 				if DBM.Options.DebugMode then
@@ -3266,7 +3282,7 @@ function checkWipe(isIEEU, confirm)
 			for i, v in ipairs(inCombat) do
 				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
 			end
-			DBM:Schedule(maxDelayTime, checkWipe, isIEEU, true)
+			DBM:Schedule(maxDelayTime, checkWipe, true)
 		end
 	end
 end
@@ -3317,17 +3333,18 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			delay = delay + select(4, GetNetStats()) / 1000
 		end
 		--set mod default info
-		savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
+		savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
 		if C_Scenario.IsInScenario() then
 			mod.inScenario = true
 		end
 		mod.inCombat = true
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
+		bossuIdFound = (event or "") == "IEEU"
 		if mod.minCombatTime then
-			self:Schedule(mmax((mod.minCombatTime - delay), 3), checkWipe, (event or "") == "IEEU")
+			self:Schedule(mmax((mod.minCombatTime - delay), 3), checkWipe)
 		else
-			self:Schedule(3, checkWipe, (event or "") == "IEEU")
+			self:Schedule(3, checkWipe)
 		end
 		--set initial health info
 		if mod.multiMobPullDetection then
@@ -3497,8 +3514,8 @@ function DBM:EndCombat(mod, wipe)
 			end
 		end
 		self:Schedule(10, DBM.StopLogging, DBM)--small delay to catch kill/died combatlog events
-		if not savedDifficulty or not difficultyText then--prevent error if savedDifficulty or difficultyText is nil
-			savedDifficulty, difficultyText = self:GetCurrentInstanceDifficulty()
+		if not savedDifficulty or not difficultyText or not difficultyIndex then--prevent error if savedDifficulty or difficultyText is nil
+			savedDifficulty, difficultyText, difficultyIndex = DBM:GetCurrentInstanceDifficulty()
 		end
 		if not mod.stats then--This will be nil if the mod for this intance failed to load fully because "script ran too long" (it tried to load in combat and failed)
 			self:AddMsg(DBM_CORE_BAD_LOAD)--Warn user that they should reload ui soon as they leave combat to get their mod to load correctly as soon as possible
@@ -3631,6 +3648,8 @@ function DBM:EndCombat(mod, wipe)
 		end
 		savedDifficulty = nil
 		difficultyText = nil
+		difficultyIndex = nil
+		bossuIdFound = false
 		eeSyncSender = {}
 		eeSyncReceived = 0
 	end
@@ -6559,6 +6578,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.noESDetection then
 		info.noESDetection = self.noESDetection
 	end
+	if self.noEEDetection then
+		info.noEEDetection = self.noEEDetection
+	end
 	-- use pull-mobs as kill mobs by default, can be overriden by RegisterKill
 	if self.multiMobPullDetection then
 		for i, v in ipairs(self.multiMobPullDetection) do
@@ -6637,6 +6659,13 @@ function bossModPrototype:DisableESCombatDectection()
 	self.noESDetection = true
 	if self.combatInfo then
 		self.combatInfo.noESDetection = true
+	end
+end
+
+function bossModPrototype:DisableEEKillDectection()
+	self.noEEDetection = true
+	if self.combatInfo then
+		self.combatInfo.noEEDetection = true
 	end
 end
 
