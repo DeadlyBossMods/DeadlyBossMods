@@ -67,7 +67,7 @@ local specWarnSetToBlow			= mod:NewSpecialWarningPreWarn(145996, nil, 4, nil, 3)
 local specWarnForbiddenMagic	= mod:NewSpecialWarningInterrupt(145230, mod:IsMelee())
 local specWarnMatterScramble	= mod:NewSpecialWarningSpell(145288, nil, nil, nil, 2)
 local specWarnCrimsonRecon		= mod:NewSpecialWarningMove(142947, mod:IsTank(), nil, nil, 3)
-local specWarnTorment			= mod:NewSpecialWarningSpell(142934, mod:IsHealer())
+local specWarnTorment			= mod:NewSpecialWarningSpell("OptionVersion2", 142934, false)
 ----Mantid
 local specWarnMantidSwarm		= mod:NewSpecialWarningSpell(142539, mod:IsTank())
 local specWarnResidue			= mod:NewSpecialWarningSpell(145786, mod:IsMagicDispeller())
@@ -356,44 +356,6 @@ function mod:UPDATE_WORLD_STATES()
 	end
 	worldTimer = time
 end
-
---[[
-function mod:Test(time)
-	if time > worldTimer then
-		maxTimer = time
-		berserkTimer:Cancel()
-		countdownBerserk:Cancel()
-		berserkTimer:Start(time+1)
-	end
-	if time % 10 == 0 then
-		berserkTimer:Update(maxTimer-time-1, maxTimer)
-		if time == 300 and self.Options["timer_berserk"] then
-			berserkWarning1:Show(5, DBM_CORE_MIN)
-		elseif time == 180 and self.Options["timer_berserk"] then
-			berserkWarning1:Show(3, DBM_CORE_MIN)
-		elseif time == 60 and self.Options["timer_berserk"] then
-			berserkWarning2:Show(1, DBM_CORE_MIN)
-		elseif time == 30 and self.Options["timer_berserk"] then
-			berserkWarning2:Show(30, DBM_CORE_SEC)
-		elseif time == 20 then
-			countdownBerserk:Start()
-		elseif time == 10 and self.Options["timer_berserk"] then
-			berserkWarning2:Show(10, DBM_CORE_SEC)
-		end
-	end
-	worldTimer = time
-end
---/script DBM:GetModByName("870"):Test2()
-local test = 0
-function mod:Test2()
-	test = test + 1
-	local time = 272 - test
-	if time < 2 then test = 0 end
-	print(time)
-	self:Test(time)
-	self:ScheduleMethod(0.9, "Test2")
-end
-]]
 
 function mod:OnSync(msg)
 	if msg == "prepull" then
