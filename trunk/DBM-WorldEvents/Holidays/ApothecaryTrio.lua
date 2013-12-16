@@ -37,7 +37,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId)
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 68927 and destGUID == UnitGUID("player") and self:AntiSpam() then
 		specWarnPerfumeSpill:Show()
 	elseif spellId == 68934 and destGUID == UnitGUID("player") and self:AntiSpam() then

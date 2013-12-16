@@ -49,52 +49,12 @@ local lastProtect = 0
 local specialRemaining = 0
 local lostHealth = 0
 local prevlostHealth = 0
-local hideDebug = 0
-local damageDebug = 0
-local timeDebug = 0
 local hideTime = 0
 
 local bossTank
 do
 	bossTank = function(uId)
 		return mod:IsTanking(uId, "boss1")
-	end
-end
-
-local showDamagedHealthBar, hideDamagedHealthBar
-do
-	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
-	local damagedMob
-	local hpRemaining = 0
-	local maxhp = 0
-	local function getDamagedHP()
-		return math.max(1, math.floor(hpRemaining / maxhp * 100))
-	end
-	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, _, _, _, _, _, destGUID, _, _, _, ...)
-		if damagedMob == destGUID then
-			local damage
-			if subEvent == "SWING_DAMAGE" then 
-				damage = select( 1, ... ) 
-			elseif subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then 
-				damage = select( 4, ... )
-			end
-			if damage then
-				hpRemaining = hpRemaining - damage
-			end
-		end
-	end)
-	
-	function showDamagedHealthBar(self, mob, spellName, health)
-		damagedMob = mob
-		hpRemaining = health
-		maxhp = health
-		DBM.BossHealth:RemoveBoss(getDamagedHP)
-		DBM.BossHealth:AddBoss(getDamagedHP, spellName)
-	end
-	
-	function hideDamagedHealthBar()
-		DBM.BossHealth:RemoveBoss(getDamagedHP)
 	end
 end
 
@@ -110,9 +70,6 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(3, bossTank)
 	end
-	hideDebug = 0
-	damageDebug = 0
-	timeDebug = 0
 	hideTime = 0
 	getAwayHP = 0
 	specialsCast = 0
@@ -160,7 +117,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if DBM.BossHealth:IsShown() and self.Options.GWHealthFrame then
 			local getAwayHealth = math.floor(UnitHealthMax("boss1") * 0.04)
-			showDamagedHealthBar(self, args.sourceGUID, args.spellName, getAwayHealth)
+			self:ShowDamagedHealthBar(args.sourceGUID, args.spellName, getAwayHealth)
 		end
 	elseif args.spellId == 123121 then
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -200,15 +157,13 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args.spellId == 123461 then
 		timerGetAway:Cancel()
 		if DBM.BossHealth:IsShown() and self.Options.GWHealthFrame then
-			hideDamagedHealthBar()
+			self:RemoveDamagedHealthBar()
 		end
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 123244 then
-		hideDebug = 0
-		damageDebug = 0
 		hideTime = GetTime()
 		specialsCast = specialsCast + 1
 		hideActive = true

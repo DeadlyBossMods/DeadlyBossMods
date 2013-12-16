@@ -35,14 +35,14 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(115297, 116648) then
+	if args.spellId == 115297 then
 		warnEvictSoul:Show(args.destName)
 		timerEvictSoul:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(115297, 116648) then
+	if args.spellId == 115297 then
 		timerEvictSoul:Cancel(args.destName)
 	end
 end
