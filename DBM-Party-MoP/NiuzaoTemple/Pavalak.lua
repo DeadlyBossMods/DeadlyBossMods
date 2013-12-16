@@ -28,43 +28,6 @@ mod:AddBoolOption("HealthFrame", true)
 
 local phase = 1
 
-local showShieldHealthBar, hideShieldHealthBar
-do
-	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
-	local shieldedMob
-	local absorbRemaining = 0
-	local maxAbsorb = 0
-	local function getShieldHP()
-		return math.max(1, math.floor(absorbRemaining / maxAbsorb * 100))
-	end
-	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
-		if shieldedMob == destGUID then
-			local absorbed
-			if subEvent == "SWING_MISSED" then 
-				absorbed = select( 3, ... ) 
-			elseif subEvent == "RANGE_MISSED" or subEvent == "SPELL_MISSED" or subEvent == "SPELL_PERIODIC_MISSED" then 
-				absorbed = select( 6, ... )
-			end
-			if absorbed then
-				absorbRemaining = absorbRemaining - absorbed
-			end
-		end
-	end)
-	
-	function showShieldHealthBar(self, mob, shieldName, absorb)
-		shieldedMob = mob
-		absorbRemaining = absorb
-		maxAbsorb = absorb
-		DBM.BossHealth:RemoveBoss(getShieldHP)
-		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
-	end
-	
-	function hideShieldHealthBar()
-		DBM.BossHealth:RemoveBoss(getShieldHP)
-	end
-end
-
 function mod:OnCombatStart(delay)
 	phase = 1
 	timerBladeRushCD:Start(-delay)
@@ -72,10 +35,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 119476 then
-		if DBM.BossHealth:IsShown() then
-			local shieldname = GetSpellInfo(119476)
-			showShieldHealthBar(self, args.destGUID, shieldname, 1500000)
-		end
+		self:ShowShieldHealthBar(args.destGUID, args.spellName, 1500000)
 		phase = phase + 1
 		warnBulwark:Show()
 		specWarnBulwark:Show()
@@ -85,8 +45,8 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 119476 and DBM.BossHealth:IsShown() then--When bullwark breaks, he will instantly cast either tempest or blade rush, need more logs to determine if it's random or set.
-		hideShieldHealthBar()
+	if args.spellId == 119476 then--When bullwark breaks, he will instantly cast either tempest or blade rush, need more logs to determine if it's random or set.
+		self:RemoveShieldHealthBar(args.destGUID)
 	end
 end
 

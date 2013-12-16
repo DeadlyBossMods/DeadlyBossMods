@@ -114,43 +114,6 @@ local possessesDone = 0
 local dischargeCount = 0
 local darkPowerWarned = false
 
-local showDamagedHealthBar, hideDamagedHealthBar
-do
-	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
-	local damagedMob
-	local hpRemaining = 0
-	local maxhp = 0
-	local function getDamagedHP()
-		return math.max(1, math.floor(hpRemaining / maxhp * 100))
-	end
-	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, _, _, _, _, _, destGUID, _, _, _, ...)
-		if damagedMob == destGUID then
-			local damage
-			if subEvent == "SWING_DAMAGE" then 
-				damage = select( 1, ... ) 
-			elseif subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then 
-				damage = select( 4, ... )
-			end
-			if damage then
-				hpRemaining = hpRemaining - damage
-			end
-		end
-	end)
-	
-	function showDamagedHealthBar(self, mob, spellName, health)
-		damagedMob = mob
-		hpRemaining = health
-		maxhp = health
-		DBM.BossHealth:RemoveBoss(getDamagedHP)
-		DBM.BossHealth:AddBoss(getDamagedHP, spellName)
-	end
-	
-	function hideDamagedHealthBar()
-		DBM.BossHealth:RemoveBoss(getDamagedHP)
-	end
-end
-
 function mod:OnCombatStart(delay)
 	kazraPossessed = false
 	darkPowerWarned = false
@@ -262,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if DBM.BossHealth:IsShown() and self.Options.PHealthFrame then
 			local bossHealth = math.floor(UnitHealthMax(uid or "boss4") * 0.25)
-			showDamagedHealthBar(self, args.destGUID, args.spellName.." : "..args.destName, bossHealth)
+			self:ShowDamagedHealthBar(args.destGUID, args.spellName.." : "..args.destName, bossHealth)
 		end
 	elseif args.spellId == 136903 then--Player Debuff version, not cast version
 		timerFrigidAssault:Start(args.destName)
@@ -351,7 +314,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			timerRecklessChargeCD:Cancel()--Because it's not going to be 25 sec anymore. It'll go back to 6 seconds. He'll probably do it right away since more than likely it'll be off CD
 		end
 		if DBM.BossHealth:IsShown() and self.Options.PHealthFrame then
-			hideDamagedHealthBar()
+			self:RemoveDamagedHealthBar()
 		end
 	elseif args.spellId == 136903 then
 		timerFrigidAssault:Cancel(args.destName)

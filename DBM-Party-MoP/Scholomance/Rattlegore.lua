@@ -78,8 +78,8 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)--120037 is a weak version of same spell by exit points, 115219 is the 50k per second icewall that will most definitely wipe your group if it consumes the room cause you're dps sucks.
-	if (spellId == 114009 or spellId == 115365) and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 114009 and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
 		specWarnSoulFlame:Show()
 	end
 end

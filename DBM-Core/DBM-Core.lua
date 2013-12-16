@@ -3686,38 +3686,49 @@ function DBM:OnMobKill(cId, synced)
 	end
 end
 
-function DBM:StartLogging(timer, checkFunc)
-	self:Unschedule(DBM.StopLogging)
-	if DBM.Options.LogOnlyRaidBosses and savedDifficulty ~= "normal10" and savedDifficulty ~= "normal25" and savedDifficulty ~= "heroic10" and savedDifficulty ~= "heroic25" and savedDifficulty ~= "flex" then return end
-	if DBM.Options.AutologBosses and not LoggingCombat() then--Start logging here to catch pre pots.
-		self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
-		LoggingCombat(1)
-		if checkFunc then
-			self:Unschedule(checkFunc)
-			self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
-		end
-	end
-	if DBM.Options.AdvancedAutologBosses and Transcriptor then
-		if not Transcriptor:IsLogging() then
-			self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
-			Transcriptor:StartLog(1)
-		end
-		if checkFunc then
-			self:Unschedule(checkFunc)
-			self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
-		end
-	end
-end
+do
+	local autoLog = false
+	local autoTLog = false
 
-function DBM:StopLogging()
-	if DBM.Options.AutologBosses and LoggingCombat() then
-		DBM:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
-		LoggingCombat(0)
+	function DBM:StartLogging(timer, checkFunc)
+		self:Unschedule(DBM.StopLogging)
+		if DBM.Options.LogOnlyRaidBosses and savedDifficulty ~= "normal10" and savedDifficulty ~= "normal25" and savedDifficulty ~= "heroic10" and savedDifficulty ~= "heroic25" and savedDifficulty ~= "flex" then return end
+		if DBM.Options.AutologBosses then--Start logging here to catch pre pots.
+			if not LoggingCombat() then
+				autoLog = true
+				self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
+				LoggingCombat(1)
+				if checkFunc then
+					self:Unschedule(checkFunc)
+					self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
+				end
+			end
+		end
+		if DBM.Options.AdvancedAutologBosses and Transcriptor then
+			if not Transcriptor:IsLogging() then
+				autoTLog = true
+				self:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_START.."|r")
+				Transcriptor:StartLog(1)
+			end
+			if checkFunc then
+				self:Unschedule(checkFunc)
+				self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
+			end
+		end
 	end
-	if DBM.Options.AdvancedAutologBosses and Transcriptor then
-		if Transcriptor:IsLogging() then
-			DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
-			Transcriptor:StopLog(1)
+
+	function DBM:StopLogging()
+		if DBM.Options.AutologBosses and LoggingCombat() and autoLog then
+			autoLog = false
+			DBM:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
+			LoggingCombat(0)
+		end
+		if DBM.Options.AdvancedAutologBosses and Transcriptor and autoTLog then
+			if Transcriptor:IsLogging() then
+				autoTLog = false
+				DBM:AddMsg("|cffffff00"..DBM_CORE_TRANSCRIPTOR_LOG_END.."|r")
+				Transcriptor:StopLog(1)
+			end
 		end
 	end
 end
@@ -4812,15 +4823,10 @@ do
 	local activeShields = {}
 	local shieldsByGuid = {}
 
-	local function getShieldHPFunc(shieldInfo)
-		return function()
-			return mmax(1, floor(shieldInfo.absorbRemaining / shieldInfo.maxAbsorb * 100))
-		end
-	end
-
-	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
-			local shieldInfo = destGUID and shieldsByGuid[destGUID]
-			if shieldInfo then
+	frame:SetScript("OnEvent", function(self, _, _, subEvent, _, _, _, _, _, destGUID, _, _, _, ...)
+		local info = destGUID and shieldsByGuid[destGUID]
+		if info then
+			if info.maxAbsorb then
 				local absorbed
 				if subEvent == "SWING_MISSED" then
 					absorbed = select(3, ...)
@@ -4828,16 +4834,41 @@ do
 					absorbed = select(6, ...)
 				end
 				if absorbed then
-					shieldInfo.absorbRemaining = shieldInfo.absorbRemaining - absorbed
+					info.absorbRemaining = info.absorbRemaining - absorbed
+				end
+			elseif info.maxDamage then
+				local damage
+				if subEvent == "SWING_DAMAGE" then 
+					damage = select(1, ...) 
+				elseif subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then 
+					damage = select(4, ...)
+				end
+				if damage then
+					info.damageRemaining = info.damageRemaining - damage
+				end
+			elseif info.maxHeal then
+				local absorbed
+				if subEvent == "SPELL_HEAL" or subEvent == "SPELL_PERIODIC_HEAL" then
+					absorbed = select(6, ...)
+				end
+				if absorbed then
+					info.healed = info.healed + absorbed
 				end
 			end
+		end
 	end)
 
-	function bossModPrototype:ShowShieldHealthBar(guid, spellId, absorb)
-		self:RemoveShieldHealthBar(guid, spellId)
+	local function getShieldHPFunc(info)
+		return function()
+			return mmax(1, floor(info.absorbRemaining / info.maxAbsorb * 100))
+		end
+	end
+
+	function bossModPrototype:ShowShieldHealthBar(guid, name, absorb)
+		self:RemoveShieldHealthBar(guid, name)
 		local obj = {
 			mod = self.id,
-			spellId = spellId,
+			name = name,
 			guid = guid,
 			absorbRemaining = absorb,
 			maxAbsorb = absorb,
@@ -4845,25 +4876,78 @@ do
 		obj.func = getShieldHPFunc(obj)
 		activeShields[#activeShields + 1] = obj
 		shieldsByGuid[guid] = obj
-		DBM.BossHealth:AddBoss(obj.func, GetSpellInfo(spellId) or spellId)
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(obj.func, name)
+		end
 	end
 
-	-- removes shield health bars for a specific guid and spellId (optional)
-	function bossModPrototype:RemoveShieldHealthBar(guid, spellId)
+	function bossModPrototype:RemoveShieldHealthBar(guid, name)
 		shieldsByGuid[guid] = nil
 		for i = #activeShields, 1, -1 do
-			if activeShields[i].guid == guid and activeShields[i].mod == self.id and (not spellId or activeShields[i].spellId == spellId) then
-				DBM.BossHealth.RemoveBoss(activeShields[i].func)
+			if activeShields[i].guid == guid and activeShields[i].mod == self.id and (not name or activeShields[i].name == name) then
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth.RemoveBoss(activeShields[i].func)
+				end
 				tremove(activeShields, i)
 			end
 		end
 	end
 
-	-- removes all shield bars of a boss mod
-	function bossModPrototype:RemoveAllShieldHealthBars()
+	local function getDamagedHPFunc(info)
+		return function()
+			return mmax(1, floor(info.damageRemaining / info.maxDamage * 100))
+		end
+	end
+
+	function bossModPrototype:ShowDamagedHealthBar(guid, name, damage)
+		self:RemoveDamagedHealthBar(guid, name)
+		local obj = {
+			mod = self.id,
+			name = name,
+			guid = guid,
+			damageRemaining = damage,
+			maxDamage = damage,
+		}
+		obj.func = getDamagedHPFunc(obj)
+		activeShields[#activeShields + 1] = obj
+		shieldsByGuid[guid] = obj
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(obj.func, name)
+		end
+	end
+	bossModPrototype.RemoveDamagedHealthBar = bossModPrototype.RemoveShieldHealthBar
+
+	local function getHealedHPFunc(info)
+		return function()
+			return mmax(1, floor(info.healed / info.maxHeal * 100))
+		end
+	end
+
+	function bossModPrototype:ShowAbsorbedHealHealthBar(guid, name, heal)
+		self:RemoveAbsorbedHealHealthBar(guid, name)
+		local obj = {
+			mod = self.id,
+			name = name,
+			guid = guid,
+			healed = 0,
+			maxHeal = heal,
+		}
+		obj.func = getHealedHPFunc(obj)
+		activeShields[#activeShields + 1] = obj
+		shieldsByGuid[guid] = obj
+		if DBM.BossHealth:IsShown() then
+			DBM.BossHealth:AddBoss(obj.func, name)
+		end
+	end
+	bossModPrototype.RemoveAbsorbedHealHealthBar = bossModPrototype.RemoveShieldHealthBar
+
+	-- removes all shield, damaged, healed bars of a boss mod
+	function bossModPrototype:RemoveAllSpecialHealthBars()
 		for i = #activeShields, 1, -1 do
 			if activeShields[i].mod == self.id then
-				DBM.BossHealth.RemoveBoss(activeShields[i].func)
+				if DBM.BossHealth:IsShown() then
+					DBM.BossHealth.RemoveBoss(activeShields[i].func)
+				end
 				shieldsByGuid[activeShields[i].guid] = nil
 				tremove(activeShields, i)
 			end
