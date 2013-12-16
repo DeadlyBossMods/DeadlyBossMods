@@ -23,7 +23,7 @@ mod:RegisterEventsInCombat(
 --Stage 1: The True Horde
 local warnDesecrate					= mod:NewTargetAnnounce(144748, 3)
 local warnHellscreamsWarsong		= mod:NewSpellAnnounce(144821, 3)
-local warnFireUnstableIronStar		= mod:NewSpellAnnounce(147047, 3)
+local warnExplodingIronStar			= mod:NewSpellAnnounce(144798, 3)
 local warnFarseerWolfRider			= mod:NewSpellAnnounce("ej8294", 3, 144585)
 local warnSiegeEngineer				= mod:NewSpellAnnounce("ej8298", 4, 144616)
 local warnChainHeal					= mod:NewSpellAnnounce(144583, 4)
@@ -44,15 +44,17 @@ local warnEmpGrippingDespair		= mod:NewStackAnnounce(145195, 3, nil, mod:IsTank(
 --Starge Four: Heroic Hidden Phase
 local warnPhase4					= mod:NewPhaseAnnounce(4)
 local warnMalice					= mod:NewTargetAnnounce(147209, 2)
-local warnBombardment				= mod:NewSpellAnnounce(147120, 3)
+local warnBombardment				= mod:NewCountAnnounce(147120, 3)
 local warnManifestRage				= mod:NewSpellAnnounce(147011, 4)
+local warnIronStarFixate			= mod:NewTargetAnnounce(147665, 2)
+local warnIronStarSpawn				= mod:NewSpellAnnounce(147047, 2)
 
 --Stage 1: The True Horde
 local specWarnDesecrate				= mod:NewSpecialWarningCount(144748, nil, nil, nil, 2)
 local specWarnDesecrateYou			= mod:NewSpecialWarningYou(144748)
 local yellDesecrate					= mod:NewYell(144748)
 local specWarnHellscreamsWarsong	= mod:NewSpecialWarningSpell(144821, mod:IsTank() or mod:IsHealer())
-local specWarnFireUnstableIronStar	= mod:NewSpecialWarningSpell(147047, nil, nil, nil, 3)
+local specWarnExplodingIronStar		= mod:NewSpecialWarningSpell(144798, nil, nil, nil, 3)
 local specWarnFarseerWolfRider		= mod:NewSpecialWarningSwitch("ej8294", not mod:IsHealer())
 local specWarnSiegeEngineer			= mod:NewSpecialWarningPreWarn("ej8298", false, 4)
 local specWarnChainHeal				= mod:NewSpecialWarningInterrupt(144583)
@@ -71,7 +73,11 @@ local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil,
 --Starge Four: Heroic Hidden Phase
 local specWarnMaliceYou				= mod:NewSpecialWarningYou(147209)
 local yellMalice					= mod:NewYell(147209)
-local specWarnBombardment			= mod:NewSpecialWarningSpell(147120, nil, nil, nil, 2)
+local specWarnBombardment			= mod:NewSpecialWarningCount(147120, nil, nil, nil, 2)
+local specWarnISFixate				= mod:NewSpecialWarningYou(147665)
+local specWarnIronStarSpawn			= mod:NewSpecialWarningSpell(147047, false)
+local specWarnManifestRage			= mod:NewSpecialWarningInterrupt(147011, nil, nil, nil, 3)
+local specWarnMaliciousBlast		= mod:NewSpecialWarningStack(147235, nil, 3)
 
 --Stage 1: A Cry in the Darkness
 local timerDesecrateCD				= mod:NewCDCountTimer(35, 144748)
@@ -89,9 +95,11 @@ local timerTouchOfYShaarjCD			= mod:NewCDCountTimer(45, 145071)
 local timerGrippingDespair			= mod:NewTargetTimer(15, 145183, nil, mod:IsTank())
 --Starge Three: MY WORLD
 --Starge Four: Heroic Hidden Phase
-local timerMaliceCD					= mod:NewNextTimer(29.5, 147209)
+local timerMaliceCD					= mod:NewNextTimer(29.5, 147209)--29.5-33sec variation
 local timerBombardmentCD			= mod:NewNextTimer(55, 147120)
 local timerBombardment				= mod:NewBuffActiveTimer(13, 147120)
+local timerClumpCheck				= mod:NewNextTimer(3, 147126)
+local timerMaliciousBlast			= mod:NewBuffFadesTimer(3, 147235, nil, false)
 
 local soundWhirlingCorrpution		= mod:NewSound("OptionVersion2", 144985, false)--Depends on strat. common one on 25 man is to never run away from it
 local countdownPowerIronStar		= mod:NewCountdown(16.5, 144616)
@@ -100,6 +108,7 @@ local countdownTouchOfYShaarj		= mod:NewCountdown("Alt45", 145071, false)--Off b
 
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 mod:AddSetIconOption("SetIconOnMC", 145071, false)
+mod:AddSetIconOption("SetIconOnMalice", 147209, false)
 
 local firstIronStar = false
 local engineerDied = 0
@@ -109,6 +118,8 @@ local whirlCount = 0
 local desecrateCount = 0
 local mindControlCount = 0
 local shamanAlive = 0
+local bombardCount = 0
+local bombardCD = {55, 40, 40, 25, 25}
 
 function mod:DesecrateTarget(targetname, uId)
 	if not targetname then return end
@@ -128,6 +139,7 @@ function mod:OnCombatStart(delay)
 	desecrateCount = 0
 	mindControlCount = 0
 	shamanAlive = 0
+	bombardCount = 0
 	timerDesecrateCD:Start(10.5-delay, 1)
 	specWarnSiegeEngineer:Schedule(16-delay)
 	timerSiegeEngineerCD:Start(20-delay)
@@ -165,12 +177,17 @@ function mod:SPELL_CAST_START(args)
 		countdownWhirlingCorruption:Start()
 		soundWhirlingCorrpution:Play()
 	elseif args.spellId == 147120 then
-		warnBombardment:Show()
-		specWarnBombardment:Show()
+		bombardCount = bombardCount + 1
+		warnBombardment:Show(bombardCount)
+		specWarnBombardment:Show(bombardCount)
 		timerBombardment:Start()
-		timerBombardmentCD:Start()
+		timerBombardmentCD:Start(bombardCD[bombardCount] or 15, bombardCount+1)
+		timerClumpCheck:Start()
 	elseif args.spellId == 147011 then
 		warnManifestRage:Show()
+		if UnitDebuff("player", GetSpellInfo(147665)) then--Kiting an Unstable Iron Star
+			specWarnManifestRage:Show()
+		end
 	elseif args.spellId == 145599 then
 		specWarnTouchInterrupt:Show(args.sourceName)
 	end
@@ -221,8 +238,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 145171 then
 		warnEmpTouchOfYShaarj:CombinedShow(0.5, args.destName)
-	elseif args:IsSpellID(145071, 145175) then--Touch of Yshaarj Spread IDs?
-
 	elseif args:IsSpellID(145183, 145195) then
 		local amount = args.amount or 1
 		if args.spellId == 145183 then
@@ -253,6 +268,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnMaliceYou:Show()
 			yellMalice:Yell()
 		end
+		if self.Options.SetIconOnMalice then
+			self:SetIcon(args.destName, 7)
+		end
+	elseif args.spellId == 147665 then
+		warnIronStarFixate:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnISFixate:Show()
+		end
+	elseif args.spellId == 147235 and args:IsPlayer() then
+		local amount = args.amount or 1
+		timerGrippingDespair:Start(args.destName)
+		if amount >= 3 then
+			specWarnMaliciousBlast:Show(amount)
+			timerMaliciousBlast:Start()
+		end
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -262,6 +292,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGrippingDespair:Cancel(args.destName)
 	elseif args:IsSpellID(145065, 145171) and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
+	elseif args.spellId == 147209 and self.Options.SetIconOnMalice then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
@@ -270,8 +302,8 @@ function mod:UNIT_DIED(args)
 	if cid == 71984 then--Siege Engineer
 		engineerDied = engineerDied + 1
 		if engineerDied == 2 then
-			warnFireUnstableIronStar:Cancel()
-			specWarnFireUnstableIronStar:Cancel()
+			warnExplodingIronStar:Cancel()
+			specWarnExplodingIronStar:Cancel()
 			timerPowerIronStar:Cancel()
 			countdownPowerIronStar:Cancel()
 		end
@@ -342,8 +374,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerWhirlingCorruptionCD:Cancel()
 		countdownWhirlingCorruption:Cancel()
 		warnPhase4:Show()
-		timerMaliceCD:Start(30)
+		timerMaliceCD:Start()
 		timerBombardmentCD:Start(70)
+	elseif spellId == 147126 then--Clump Check
+		timerClumpCheck:Start()
 	end
 end
 
@@ -362,13 +396,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerPowerIronStar:Start(11.5)
 			countdownPowerIronStar:Start(11.5)
-			warnFireUnstableIronStar:Schedule(11.5)
-			specWarnFireUnstableIronStar:Schedule(11.5)
+			warnExplodingIronStar:Schedule(11.5)
+			specWarnExplodingIronStar:Schedule(11.5)
 		else
 			timerPowerIronStar:Start()
 			countdownPowerIronStar:Start()
-			warnFireUnstableIronStar:Schedule(16.5)
-			specWarnFireUnstableIronStar:Schedule(16.5	)
+			warnExplodingIronStar:Schedule(16.5)
+			specWarnExplodingIronStar:Schedule(16.5	)
         end
+	elseif msg:find("spell:147047") then
+		warnIronStarSpawn:Show()
+		specWarnIronStarSpawn:Show()
 	end
 end
