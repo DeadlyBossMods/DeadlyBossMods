@@ -346,6 +346,11 @@ function bossHealth:Show(name)
 	bossHealth:Clear()
 end
 
+function bossHealth:SetHeaderText(name)
+	if not anchor then return end
+	header:SetText(name)
+end
+
 function bossHealth:Clear()
 	if not anchor or not anchor:IsShown() then return end
 	for i = #bars, 1, -1 do
