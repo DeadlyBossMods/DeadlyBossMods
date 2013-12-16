@@ -6,8 +6,8 @@ local L = DBM_GUI_Translations
 L.MainFrame = "죽이는 보스 모드"
 
 L.TranslationByPrefix		= "번역: "
-L.TranslationBy 			= "법사세린-아즈샤라(배틀태그: 세린#3105 / everfinale@gmail.com)"
-L.Website					= "|cFF73C2FBwww.deadlybossmods.com|r에 있는 게시판을 방문해 보세요. (Elitist Jerks에서 서비스를 제공합니다!)"
+L.TranslationBy 			= "법사세린(BT: 세린#3105 / everfinale@gmail.com)"
+L.Website					= "|cFF73C2FBwww.deadlybossmods.com|r에 있는 게시판을 방문해 보세요. (Elitist Jerks 제공!)"
 L.WebsiteButton				= "게시판"
 
 L.OTabBosses	= "우두머리"

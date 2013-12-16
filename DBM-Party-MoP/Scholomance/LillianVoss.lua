@@ -69,7 +69,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDeathsGrasp:Show()
 		timerDeathsGraspCD:Start()
 		timerShadowShivCD:Start()--Resets CD when she casts Grasp
-	elseif args:IsSpellID(111775, 115362) then
+	elseif args.spellId == 111775 then
 		warnShadowShiv:Show()
 		timerShadowShivCD:Start()
 	elseif args.spellId == 114262 then--Phase 3, body rezzed and you have soul and body up together.
@@ -87,7 +87,7 @@ end
 
 -- he dies before health 1, so can't use overkill hack.
 function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, _, _, _, overkill)
-	if (spellId == 111628 or spellId == 115361) and destGUID == UnitGUID("player") and self:AntiSpam(2) then
+	if spellId == 111628 and destGUID == UnitGUID("player") and self:AntiSpam(2) then
 		specWarnDarkBlaze:Show()
 	end
 end
