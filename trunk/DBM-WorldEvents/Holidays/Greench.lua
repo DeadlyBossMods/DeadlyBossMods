@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(54499)
 mod:SetModelID(39021)
 mod:SetReCombatTime(10)
-mod:SetZone()
+mod:SetZone(0)--Eastern Kingdoms
 
 mod:RegisterCombat("combat")
 
