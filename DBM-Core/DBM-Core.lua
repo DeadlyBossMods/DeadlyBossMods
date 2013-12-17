@@ -6754,14 +6754,14 @@ function bossModPrototype:SetEncounterID(...)
 	end
 end
 
-function bossModPrototype:DisableESCombatDectection()
+function bossModPrototype:DisableESCombatDetection()
 	self.noESDetection = true
 	if self.combatInfo then
 		self.combatInfo.noESDetection = true
 	end
 end
 
-function bossModPrototype:DisableEEKillDectection()
+function bossModPrototype:DisableEEKillDetection()
 	self.noEEDetection = true
 	if self.combatInfo then
 		self.combatInfo.noEEDetection = true
