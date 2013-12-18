@@ -3454,7 +3454,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 			if mod.hotfixNoticeRev then
 				sendSync("HF", mod.id.."\t"..mod.hotfixNoticeRev)
 			end
-		else--show timer recovery message
+		elseif DBM.Options.ShowRecoveryMessage then--show timer recovery message
 			self:AddMsg(DBM_CORE_COMBAT_STATE_RECOVERED:format(difficultyText..mod.combatInfo.name, strFromTime(delay)))
 		end
 	end
