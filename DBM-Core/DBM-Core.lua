@@ -170,6 +170,7 @@ DBM.DefaultOptions = {
 	DontSetIcons = false,
 	DontShowRangeFrame = false,
 	DontShowInfoFrame = false,
+	DontShowHealthFrame = false,
 	DontShowPT = true,
 	DontShowPTCountdownText = false,
 	DontPlayPTCountdown = false,
@@ -2517,7 +2518,7 @@ do
 						else
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
-							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://www.deadlybossmods.com]"):format(displayVersion, version))
+							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[%s]"):format(displayVersion, version, DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com"))
 						end
 						--The following code requires at least THREE people to send that higher revision (I just upped it from 2). That should be more than adaquate, especially since there is also a display version validator now too (that had to be writen when bigwigs was sending bad revisions few versions back)
 						if secondfound and revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
@@ -2956,10 +2957,10 @@ do
 		editBox:SetFontObject("GameFontHighlight")
 		editBox:SetTextInsets(0, 0, 0, 1)
 		editBox:SetFocus()
-		editBox:SetText("http://www.deadlybossmods.com")
+		editBox:SetText(DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com")
 		editBox:HighlightText()
 		editBox:SetScript("OnTextChanged", function(self)
-			editBox:SetText("http://www.deadlybossmods.com")
+			editBox:SetText(DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com")
 			editBox:HighlightText()
 		end)
 		fontstringFooter = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -6880,51 +6881,53 @@ function bossModPrototype:SetIcon(target, icon, timer)
 	end
 end
 
-local iconSortTable = {}
-local iconSet = 0
+do
+	local iconSortTable = {}
+	local iconSet = 0
 
-local function sort_by_group(v1, v2)
-	return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-end
-
-local function clearSortTable()
-	table.wipe(iconSortTable)
-	iconSet = 0
-end
-
-function bossModPrototype:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
-	table.sort(iconSortTable, sort_by_group)
-	local icon = startIcon or 1
-	for i, v in ipairs(iconSortTable) do
-		SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
-		if reverseIcon then
-			icon = icon - 1
-		else
-			icon = icon + 1
-		end
-		if returnFunc then
-			self:ScheduleMethod(0, returnFunc, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
-		end
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
 	end
-	self:Schedule(1.5, clearSortTable)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
-end
 
-function bossModPrototype:SetSortedIcon(delay, target, startIcon, maxIcon, reverseIcon, returnFunc)
-	if not target then return end
-	if DBM.Options.DontSetIcons or not enableIcons or (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) then
-		return
+	local function clearSortTable()
+		table.wipe(iconSortTable)
+		iconSet = 0
 	end
-	if not startIcon then startIcon = 1 end
-	startIcon = startIcon and startIcon >= 0 and startIcon <= 8 and startIcon or 8
-	local uId = DBM:GetRaidUnitId(target)
-	if not uId then uId = target end
-	iconSet = iconSet + 1
-	table.insert(iconSortTable, uId)
-	self:UnscheduleMethod("SetIconBySortedTable")
-	if maxIcon and iconSet == maxIcon then
-		self:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
-	elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-		self:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, maxIcon, returnFunc)
+
+	function bossModPrototype:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
+		table.sort(iconSortTable, sort_by_group)
+		local icon = startIcon or 1
+		for i, v in ipairs(iconSortTable) do
+			SetRaidTarget(v, icon)--do not use SetIcon function again. It already checked in SetSortedIcon function.
+			if reverseIcon then
+				icon = icon - 1
+			else
+				icon = icon + 1
+			end
+			if returnFunc then
+				self[returnFunc](self, v, icon)--Send icon and target to returnFunc. (Generally used by announce icon targets to raid chat feature)
+			end
+		end
+		self:Schedule(1.5, clearSortTable)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
+	end
+
+	function bossModPrototype:SetSortedIcon(delay, target, startIcon, maxIcon, reverseIcon, returnFunc)
+		if not target then return end
+		if DBM.Options.DontSetIcons or not enableIcons or (DBM:GetRaidRank(playerName) == 0 and IsInGroup()) then
+			return
+		end
+		if not startIcon then startIcon = 1 end
+		startIcon = startIcon and startIcon >= 0 and startIcon <= 8 and startIcon or 8
+		local uId = DBM:GetRaidUnitId(target)
+		if not uId then uId = target end
+		iconSet = iconSet + 1
+		table.insert(iconSortTable, uId)
+		self:UnscheduleMethod("SetIconBySortedTable")
+		if maxIcon and iconSet == maxIcon then
+			self:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
+		elseif self:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+			self:ScheduleMethod(delay or 0.5, "SetIconBySortedTable", startIcon, maxIcon, returnFunc)
+		end
 	end
 end
 

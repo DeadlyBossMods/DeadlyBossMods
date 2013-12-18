@@ -93,11 +93,7 @@ options = {
 		type = "boolean",
 		default = true,
 	},
-	FadeIn = {
-		type = "boolean",
-		default = true,
-	},
-	Break = {
+	Spark = {
 		type = "boolean",
 		default = true,
 	},
@@ -156,6 +152,10 @@ options = {
 	Width = {
 		type = "number",
 		default = 183,
+	},
+	Height = {
+		type = "number",
+		default = 20,
 	},
 	Scale = {
 		type = "number",
@@ -228,7 +228,11 @@ options = {
 	Skin = {
 		type = "string",
 		default = "DefaultSkin"
-	}
+	},
+	Style = {
+		type = "string",
+		default = "DBM",
+	},
 }
 
 --------------------------
@@ -431,7 +435,8 @@ do
 			end
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
-			if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
+			local enlargeTime = self.options.Style ~= "BigWigs" and self.options.EnlargeBarsTime or 10
+			if timer <= enlargeTime and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
 				self.hugeBars:Append(newBar)
 			else
@@ -549,7 +554,9 @@ end
 
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
-	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) then
+	local enlargeTime = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsTime or 10
+	local enlargePer = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsPercent or 0
+	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		local next = self.next
 		self:RemoveFromList()
 		self.enlarged = nil
@@ -593,48 +600,69 @@ function barPrototype:Update(elapsed)
 	local spark = _G[frame_name.."BarSpark"]
 	local timer = _G[frame_name.."BarTimer"]
 	local obj = self.owner
+	local sparkEnabled = obj.options.Style ~= "BigWigs" and obj.options.Spark
 	self.timer = self.timer - elapsed
 	if obj.options.DynamicColor and not self.color then
 		local r = obj.options.StartColorR  + (obj.options.EndColorR - obj.options.StartColorR) * (1 - self.timer/self.totalTime)
 		local g = obj.options.StartColorG  + (obj.options.EndColorG - obj.options.StartColorG) * (1 - self.timer/self.totalTime)
 		local b = obj.options.StartColorB  + (obj.options.EndColorB - obj.options.StartColorB) * (1 - self.timer/self.totalTime)
 		bar:SetStatusBarColor(r, g, b)
-		spark:SetVertexColor(r, g, b)
+		if sparkEnabled then
+			spark:SetVertexColor(r, g, b)
+		end
 	end
 	if self.timer <= 0 then
 		return self:Cancel()
 	else
 		if obj.options.FillUpBars then
-			bar:SetValue(1 - self.timer/self.totalTime)
+			if obj.options.Style == "BigWigs" and self.enlarged then
+				bar:SetValue(1 - self.timer/10)
+			else
+				bar:SetValue(1 - self.timer/self.totalTime)
+			end
 		else
-			bar:SetValue(self.timer/self.totalTime)
+			if obj.options.Style == "BigWigs" and self.enlarged then
+				bar:SetValue(self.timer/10)
+			else
+				bar:SetValue(self.timer/self.totalTime)
+			end
 		end
-		spark:ClearAllPoints()
-		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 		timer:SetText(stringFromTimer(self.timer))
 	end
-	if obj.options.FadeIn and self.fadingIn and self.fadingIn < 0.5 then
+	if self.fadingIn and self.fadingIn < 0.5 and obj.options.Style ~= "BigWigs" then
 		self.fadingIn = self.fadingIn + elapsed
 		frame:SetAlpha((self.fadingIn) / 0.5)
 	elseif self.fadingIn then
 		self.fadingIn = nil
 	end
-
-	if self.timer <= 7.75 and not self.flashing and obj.options.Flash then
+	if self.timer <= 7.75 and not self.flashing and obj.options.Flash and obj.options.Style ~= "BigWigs" then
 		self.flashing = true
 		self.ftimer = 0
+	end
+	if sparkEnabled then
+		spark:ClearAllPoints()
+		spark:SetSize(12, obj.options.Height * 3)
+		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
+	else
+		spark:SetAlpha(0)
 	end
 	if self.flashing then
 		local ftime = self.ftimer % 1.25
 		if ftime >= 0.5 then
 			texture:SetAlpha(1)
-			spark:SetAlpha(1)
+			if sparkEnabled then
+				spark:SetAlpha(1)
+			end
 		elseif ftime >= 0.25 then
 			texture:SetAlpha(1 - (0.5 - ftime) / 0.25)
-			spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
+			if sparkEnabled then
+				spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
+			end
 		else
 			texture:SetAlpha(1 - (ftime / 0.25))
-			spark:SetAlpha(1 - (ftime / 0.25))
+			if sparkEnabled then
+				spark:SetAlpha(1 - (ftime / 0.25))
+			end
 		end
 		self.ftimer = self.ftimer + elapsed
 	end
@@ -642,8 +670,8 @@ function barPrototype:Update(elapsed)
 		self.moveElapsed = self.moveElapsed + elapsed
 		local newX = self.moveOffsetX + (obj.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 0.5)
 		local newY
-		if self.owner.options.ExpandUpwards then
-			newY = self.moveOffsetY + 40 + (obj.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 0.5)
+		if obj.options.ExpandUpwards then
+			newY = self.moveOffsetY + obj.options.Height * 2 + (obj.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 0.5)
 		else
 			newY = self.moveOffsetY + (-obj.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 0.5)
 		end
@@ -652,16 +680,49 @@ function barPrototype:Update(elapsed)
 	elseif self.moving == "move" then
 		self.moving = nil
 		self:SetPosition()
+	elseif self.moving == "next" then
+		self.moving = nil
+		local newX = self.moveOffsetX + (obj.options.BarXOffset - self.moveOffsetX)
+		local newY
+		if obj.options.ExpandUpwards then
+			newY = self.moveOffsetY + obj.options.Height * 2 + (obj.options.BarYOffset - self.moveOffsetY)
+		else
+			newY = self.moveOffsetY + (-obj.options.BarYOffset - self.moveOffsetY)
+		end
+		frame:ClearAllPoints()
+		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+		self:SetPosition()
 	elseif self.moving == "enlarge" and self.moveElapsed <= 1 then
 		self:AnimateEnlarge(elapsed)
 	elseif self.moving == "enlarge" then
 		self.moving = nil
 		self.enlarged = true
-		self.owner.hugeBars:Append(self)
+		obj.hugeBars:Append(self)
+		self:ApplyStyle()
+		self:SetPosition()
+	elseif self.moving == "nextEnlarge" then
+		self.moving = nil
+		self.enlarged = true
+		local newAnchor = (obj.hugeBars.last and obj.hugeBars.last.frame) or obj.secAnchor
+		local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
+		local oldY = self.frame:GetTop()
+		self.frame:ClearAllPoints()
+		if obj.options.ExpandUpwards then
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", obj.options.BarXOffset, 40 + obj.options.BarYOffset)
+		else
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", obj.options.BarXOffset, -obj.options.BarYOffset)
+		end
+		local newX = self.frame:GetRight() - self.frame:GetWidth()/2
+		local newY = self.frame:GetTop()
+		self.frame:ClearAllPoints()
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
+		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 		self:SetPosition()
 	end
-	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" and self.owner:GetOption("HugeBarsEnabled") then
+	local enlargeTime = obj.options.Style ~= "BigWigs" and obj.options.EnlargeBarsTime or 10
+	local enlargePer = obj.options.Style ~= "BigWigs" and obj.options.EnlargeBarsPercent or 0
+	if (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		local next = self.next
 		self:RemoveFromList()
 		local oldX, oldY
@@ -775,27 +836,39 @@ function barPrototype:ApplyStyle()
 	local icon2 = _G[frame_name.."BarIcon2"]
 	local name = _G[frame_name.."BarName"]
 	local timer = _G[frame_name.."BarTimer"]
+	local sparkEnabled = self.owner.options.Style ~= "BigWigs" and self.owner.options.Spark
 	texture:SetTexture(self.owner.options.Texture)
 	if self.color then
 		bar:SetStatusBarColor(self.color.r, self.color.g, self.color.b)
-		spark:SetVertexColor(self.color.r, self.color.g, self.color.b)
+		if sparkEnabled then
+			spark:SetVertexColor(self.color.r, self.color.g, self.color.b)
+		end
 	else
 		bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
-		spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+		if sparkEnabled then
+			spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+		end
 	end
 	name:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
 	timer:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
-	if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth) else frame:SetWidth(self.owner.options.Width) end
-	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth) else bar:SetWidth(self.owner.options.Width) end
+	if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth); frame:SetHeight(self.owner.options.Height); else frame:SetWidth(self.owner.options.Width); frame:SetHeight(self.owner.options.Height); end
+	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth); bar:SetHeight(self.owner.options.Height); else bar:SetWidth(self.owner.options.Width) bar:SetHeight(self.owner.options.Height); end
 	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetScale(self.owner.options.Scale) end
+	icon1:SetWidth(self.owner.options.Height)
+	icon1:SetHeight(self.owner.options.Height)
+	icon2:SetWidth(self.owner.options.Height)
+	icon2:SetHeight(self.owner.options.Height)
 	self.frame:Show()
-	spark:SetAlpha(1)
+	if sparkEnabled then
+		spark:SetAlpha(1)
+	end
 	texture:SetAlpha(1)
 	bar:SetAlpha(1)
 	frame:SetAlpha(1)
 	name:SetFont(self.owner.options.Font, self.owner.options.FontSize)
+	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
 end
@@ -958,7 +1031,7 @@ function barPrototype:SetPosition()
 	local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, 40 + self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.Height * 2 + self.owner.options.BarYOffset)
 	else
 		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 	end
@@ -971,7 +1044,7 @@ function barPrototype:MoveToNextPosition(oldX, oldY)
 	local oldY = oldY or (self.frame:GetTop())
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, 40 + self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.Height * 2 + self.owner.options.BarYOffset)
 	else
 		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 	end
@@ -979,7 +1052,7 @@ function barPrototype:MoveToNextPosition(oldX, oldY)
 	local newY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
-	self.moving = "move"
+	self.moving = self.owner.options.Style == "BigWigs" and "next" or "move"
 	self.movePoint = "TOP"
 	self.moveRelPoint = "BOTTOM"
 	self.moveAnchor = newAnchor
@@ -1002,7 +1075,7 @@ function barPrototype:Enlarge()
 	local newY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
-	self.moving = "enlarge"
+	self.moving = self.owner.options.Style == "BigWigs" and "nextEnlarge" or "enlarge"
 	self.movePoint = "TOP"
 	self.moveRelPoint = "BOTTOM"
 	self.moveAnchor = newAnchor
