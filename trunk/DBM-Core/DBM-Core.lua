@@ -3710,7 +3710,7 @@ do
 			if not LoggingCombat() then
 				autoLog = true
 				self:AddMsg("|cffffff00"..COMBATLOGENABLED.."|r")
-				LoggingCombat(1)
+				LoggingCombat(true)
 				if checkFunc then
 					self:Unschedule(checkFunc)
 					self:Schedule(timer+10, checkFunc)--But if pull was canceled and we don't have a boss engaged within 10 seconds of pull timer ending, abort log
@@ -3734,7 +3734,7 @@ do
 		if DBM.Options.AutologBosses and LoggingCombat() and autoLog then
 			autoLog = false
 			DBM:AddMsg("|cffffff00"..COMBATLOGDISABLED.."|r")
-			LoggingCombat(0)
+			LoggingCombat(false)
 		end
 		if DBM.Options.AdvancedAutologBosses and Transcriptor and autoTLog then
 			if Transcriptor:IsLogging() then
