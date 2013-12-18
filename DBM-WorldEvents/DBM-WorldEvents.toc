@@ -17,16 +17,16 @@
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Single-Format: 1
-## X-DBM-Mod-SubCategories: Holidays,Darkmoon Faire,Quests
-## X-DBM-Mod-SubCategories-deDE: Feiertage,Dunkelmond-Jahrmarkt,Quests
-## X-DBM-Mod-SubCategories-ruRU: Праздники,Ярмарка Новолуния,Задания
-## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,다크문 축제,퀘스트
-## X-DBM-Mod-SubCategories-zhTW: 節慶,暗月馬戲團,任務
-## X-DBM-Mod-SubCategories-zhCN: 节日,暗月马戏团,任务
-## X-DBM-Mod-SubCategories-esES: Fiestas,Feria de la Luna Negra,Quests
-## X-DBM-Mod-SubCategories-esMX: Holidays,Darkmoon Faire,Quests
-## X-DBM-Mod-SubCategories-ptBR: Holidays,Darkmoon Faire,Quests
-## X-DBM-Mod-SubCategories-frFR: Vacances,Foire de Sombrelune,Quêtes
+## X-DBM-Mod-SubCategories: Holidays,Quests
+## X-DBM-Mod-SubCategories-deDE: Feiertage,Quests
+## X-DBM-Mod-SubCategories-ruRU: Праздники,Задания
+## X-DBM-Mod-SubCategories-koKR: 연간 이벤트,퀘스트
+## X-DBM-Mod-SubCategories-zhTW: 節慶,任務
+## X-DBM-Mod-SubCategories-zhCN: 节日,任务
+## X-DBM-Mod-SubCategories-esES: Fiestas,Quests
+## X-DBM-Mod-SubCategories-esMX: Holidays,Quests
+## X-DBM-Mod-SubCategories-ptBR: Holidays,Quests
+## X-DBM-Mod-SubCategories-frFR: Vacances,Quêtes
 ## X-DBM-Mod-Name: World Events
 ## X-DBM-Mod-Name-esES: Eventos del Mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события
@@ -36,8 +36,7 @@
 ## X-DBM-Mod-Name-deDE: Weltereignisse
 ## X-DBM-Mod-Name-ptBR: Eventos Mundiais
 ## X-DBM-Mod-Name-frFR: Évènements Mondiaux
-## X-DBM-Mod-MapID: 230,189,33,547,974,1004
-## X-DBM-Mod-ForceLoad-MapID: 974
+## X-DBM-Mod-MapID: 230,189,33,547,1004, 1, 0
 ## X-DBM-Mod-Sort: 50
 ## X-DBM-Mod-LoadCID: 55003,54499,15467,15466,49687
 localization.en.lua
@@ -55,10 +54,4 @@ Holidays\Ahune.lua
 Holidays\CorenDirebrew.lua
 Holidays\HeadlessHorseman.lua
 Holidays\Greench.lua
-DMF\Cannon.lua
-DMF\Gnoll.lua
-DMF\Shot.lua
-DMF\Tonks.lua
-DMF\Rabbit.lua
-DMF\Moonfang.lua
 Quests\Plants.lua
