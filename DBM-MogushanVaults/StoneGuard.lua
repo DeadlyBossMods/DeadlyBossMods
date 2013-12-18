@@ -28,7 +28,7 @@ local warnAmethystPool				= mod:NewTargetAnnounce(130774, 3, nil, false)
 local warnPowerDown					= mod:NewSpellAnnounce(116529, 4, nil, not mod:IsTank())
 
 local specWarnOverloadSoon			= mod:NewSpecialWarning("SpecWarnOverloadSoon", nil, nil, nil, 2)
-local specWarnJasperChains			= mod:NewSpecialWarningYou(130395)
+local specWarnJasperChains			= mod:NewSpecialWarningMoveTo(130395)
 local specWarnBreakJasperChains		= mod:NewSpecialWarning("specWarnBreakJasperChains", false)
 local yellJasperChains				= mod:NewYell(130395, nil, false)
 local specWarnAmethystPool			= mod:NewSpecialWarningMove(130774)
@@ -155,14 +155,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.ArrowOnJasperChains and #jasperChainsTargets == 2 then
 				if jasperChainsTargets[1] == UnitName("player") then
 					DBM.Arrow:ShowRunTo(jasperChainsTargets[2])
+					specWarnJasperChains:Show(jasperChainsTargets[2])
 				elseif jasperChainsTargets[2] == UnitName("player") then
 					DBM.Arrow:ShowRunTo(jasperChainsTargets[1])
+					specWarnJasperChains:Show(jasperChainsTargets[1])
 				end
 			end
 		end
 		if args:IsPlayer() then
 			playerHasChains = true
-			specWarnJasperChains:Show()
 			if not self:IsDifficulty("lfr25") then
 				yellJasperChains:Yell()
 			end

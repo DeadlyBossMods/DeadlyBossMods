@@ -77,7 +77,7 @@ local specWarnMarked				= mod:NewSpecialWarningYou(143840)
 local yellMarked					= mod:NewYell(143840, nil, false)
 --Sun Tenderheart
 local specWarnShaShear				= mod:NewSpecialWarningInterrupt(143423, false)
-local specWarnShaShearYou			= mod:NewSpecialWarningYou(143423)--some heroic player request.
+local specWarnShaShearYou			= mod:NewSpecialWarningMoveAway(143423)--some heroic player request. Warning to move away from group so Sha shear not hit everyone.
 local yellShaShear					= mod:NewYell(143423)
 local specWarnCalamity				= mod:NewSpecialWarningSpell(143491, nil, nil, nil, 2)
 ----Sun Tenderheart's Desperate Measures
@@ -108,6 +108,7 @@ local UnitGUID = UnitGUID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local strikeDebuff = GetSpellInfo(143962)--Cast spellid, Unconfirmed if debuff has same id or even name. Need to verify
 local sorrowActive = false
+local isInfernoTarget = false
 
 function mod:BrewTarget(targetname, uId)
 	if not targetname then return end
@@ -137,13 +138,17 @@ function mod:InfernoStrikeTarget(targetname, uId)
 		self:SetIcon(targetname, 7, 5)
 	end
 	if targetname == UnitName("player") then
+		isInfernoTarget = true
 		specWarnInfernoStrike:Show()
 		yellInfernoStrike:Yell()
 		timerInfernoStrike:Start()
+	else
+		isInfernoTarget = false
 	end
 end
 
 function mod:OnCombatStart(delay)
+	isInfernoTarget = false
 	timerVengefulStrikesCD:Start(7-delay)
 	timerGarroteCD:Start(15-delay)
 	timerBaneCD:Start(15-delay)
@@ -269,7 +274,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGougeCD:Cancel()
 		timerGarroteCD:Cancel()
 		timerCalamityCD:Cancel()--Can't be cast during THIS special
-	elseif args.spellId == 143423 and args:IsPlayer() and sorrowActive and not self:IsDifficulty("lfr25") then
+	elseif args.spellId == 143423 and args:IsPlayer() and sorrowActive and not self:IsDifficulty("lfr25") and not isInfernoTarget then
 		specWarnShaShearYou:Show()
 		yellShaShear:Yell()
 	end
