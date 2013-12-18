@@ -63,7 +63,7 @@ local specWarnDrawFlame				= mod:NewSpecialWarningSpell(116711, nil, nil, nil, 2
 --Arcane/Staff
 local specWarnArcaneShock			= mod:NewSpecialWarningStack(131790, mod:IsTank(), 2)
 local specWarnArcaneShockOther		= mod:NewSpecialWarningTarget(131790, mod:IsTank())
-local specWarnArcaneResonance		= mod:NewSpecialWarningYou(116417)
+local specWarnArcaneResonance		= mod:NewSpecialWarningMoveAway(116417)
 local yellArcaneResonance			= mod:NewYell(116417)
 local specWarnArcaneVelocity		= mod:NewSpecialWarningSpell(116364, nil, nil, nil, 2)
 --Shadow/Shield (Heroic Only)

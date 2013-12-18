@@ -21,7 +21,7 @@ local warnMagmaCrush			= mod:NewSpellAnnounce(144688, 3)
 local warnBurningSoul			= mod:NewTargetAnnounce(144689, 3)
 local warnEternalAgony			= mod:NewSpellAnnounce(144696, 4)
 
-local specWarnBurningSoul		= mod:NewSpecialWarningYou(144689)
+local specWarnBurningSoul		= mod:NewSpecialWarningMoveAway(144689)
 local yellBurningSoul			= mod:NewYell(144689)
 local specWarnPoolOfFire		= mod:NewSpecialWarningMove(144693)
 local specWarnEternalAgony		= mod:NewSpecialWarningSpell(144696, nil, nil, nil, 2)--Fights over, this is 5 minute berserk spell.
