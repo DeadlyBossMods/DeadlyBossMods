@@ -27,7 +27,7 @@ local warnBladeTempest					= mod:NewCastAnnounce(125310, 4)--Phase 1 heroic
 local warnStormUnleashed				= mod:NewSpellAnnounce(123815, 3)--Phase 2
 
 local specWarnUnseenStrike				= mod:NewSpecialWarningYou(122949)
-local specWarnUnseenStrikeOther			= mod:NewSpecialWarningTarget(122949)--Everyone needs to know this, and run to this person.
+local specWarnUnseenStrikeOther			= mod:NewSpecialWarningMoveTo(122949)--Everyone needs to know this, and run to this person.
 local yellUnseenStrike					= mod:NewYell(122949)
 local specWarnOverwhelmingAssault		= mod:NewSpecialWarningStack(123474, mod:IsTank(), 2)
 local specWarnOverwhelmingAssaultOther	= mod:NewSpecialWarningTarget(123474, mod:IsTank())

@@ -16,7 +16,7 @@ local warnUnseenStrike			= mod:NewTargetAnnounce(122949, 4, 123017)
 local warnDispatch				= mod:NewSpellAnnounce(125877, 3)
 
 local specWarnUnseenStrike		= mod:NewSpecialWarningYou(123017)
-local specWarnUnseenStrikeOther	= mod:NewSpecialWarningTarget(123017)
+local specWarnUnseenStrikeOther	= mod:NewSpecialWarningMoveTo(123017)
 local yellUnseenStrike			= mod:NewYell(122949)
 local specWarnDispatch			= mod:NewSpecialWarningInterrupt(125877)
 
