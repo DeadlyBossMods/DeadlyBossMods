@@ -198,9 +198,9 @@ function mod:SPELL_CAST_START(args)
 		timerClumpCheck:Start()
 		if self.Options.RangeFrame then
 			if self:IsDifficulty("heroic10") then
-				DBM.RangeCheck:Show(8, nil, nil, 3)--Number is a guess
+				DBM.RangeCheck:Show(8, nil, nil, 2)--Number is a guess
 			else
-				DBM.RangeCheck:Show(8, nil, nil, 7)--Number is a guess
+				DBM.RangeCheck:Show(8, nil, nil, 6)--Number is a guess
 			end
 			self:Schedule(13, hideRangeDelay)
 		end
