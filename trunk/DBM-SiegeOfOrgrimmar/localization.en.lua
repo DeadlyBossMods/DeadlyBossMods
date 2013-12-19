@@ -175,7 +175,7 @@ L:SetMiscLocalization({
 	KorvenFlavor		= "The end of an ancient empire",--http://ptr.wowhead.com/quest=31232
 	KorvenFlavor2		= "Take your Gurthani Tablets and choke on them",--http://ptr.wowhead.com/quest=31232
 	IyyokukFlavor		= "See opportunities. Exploit them!",--Does not have quests, http://ptr.wowhead.com/npc=65305
-	KarozFlavor			= "You won't be leaping anymore!",---Does not have questst, http://ptr.wowhead.com/npc=65303
+	KarozFlavor			= "You won't be leaping anymore!",---Does not have quests, http://ptr.wowhead.com/npc=65303
 	SkeerFlavor			= "A bloody delight!",--http://ptr.wowhead.com/quest=31178
 	RikkalFlavor		= "Specimen request fulfilled"--http://ptr.wowhead.com/quest=31508
 })
@@ -184,6 +184,10 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
+
+L:SetOptionLocalization({
+	RangeFrame	= "Show dynamic range frame (8)<br/>(This is a smart range frame that shows when you reach $spell:147126 threshold)"
+})
 
 -------------
 --  Trash  --
