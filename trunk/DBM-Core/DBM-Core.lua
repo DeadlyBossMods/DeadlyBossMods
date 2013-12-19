@@ -6911,6 +6911,9 @@ do
 	local function clearSortTable()
 		table.wipe(iconSortTable)
 		iconSet = 0
+		if DBM.Options.DebugMode then
+			print("iconSortTable cleared")
+		end
 	end
 
 	function bossModPrototype:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
