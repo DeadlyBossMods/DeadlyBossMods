@@ -436,7 +436,7 @@ do
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
 			local enlargeTime = self.options.Style ~= "BigWigs" and self.options.EnlargeBarsTime or 10
-			if timer <= enlargeTime and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
+			if (timer <= enlargeTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
 				self.hugeBars:Append(newBar)
 			else
