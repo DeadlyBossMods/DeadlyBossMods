@@ -178,6 +178,10 @@ L:SetMiscLocalization({
 ------------------------
 L= DBM:GetModLocalization(869)
 
+L:SetOptionLocalization({
+	RangeFrame	= "거리 창 보기(8m)($spell:147126 주문의 경고 수치에 도달한 경우에만 보임)"
+})
+
 -------------
 --  Trash  --
 -------------
