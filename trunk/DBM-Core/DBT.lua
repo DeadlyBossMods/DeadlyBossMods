@@ -638,7 +638,7 @@ function barPrototype:Update(elapsed)
 	if self.timer <= 7.75 and not self.flashing and obj.options.Flash and obj.options.Style ~= "BigWigs" then
 		self.flashing = true
 		self.ftimer = 0
-	elseif self.flashing then
+	elseif self.flashing and self.timer > 7.75 then
 		self.flashing = nil
 		self.ftimer = nil
 	end
