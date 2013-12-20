@@ -171,6 +171,10 @@ L:SetMiscLocalization({
 ------------------------
 L= DBM:GetModLocalization(869)
 
+L:SetOptionLocalization({
+	RangeFrame	= "顯示動態距離框架(10碼)<br/>(這是智慧距離框架，當到達$spell:147126門檻時自動切換)"
+})
+
 -------------
 --  Trash  --
 -------------
