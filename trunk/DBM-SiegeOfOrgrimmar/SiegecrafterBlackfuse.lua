@@ -72,7 +72,7 @@ local timerOverloadCD					= mod:NewCDCountTimer(10, 145444)
 local timerDeathFromAboveDebuff			= mod:NewTargetTimer(5, 144210, nil, not mod:IsHealer())
 local timerDeathFromAboveCD				= mod:NewNextTimer(40, 144208, nil, not mod:IsHealer())
 --The Assembly Line
-local timerAssemblyLineCD				= mod:NewNextTimer("OptionVersion2", 40, "ej8202", nil, mod:IsDps(), nil, 59193)
+local timerAssemblyLineCD				= mod:NewNextCountTimer("OptionVersion2", 40, "ej8202", nil, mod:IsDps(), nil, 59193)
 local timerPatternRecognition			= mod:NewBuffFadesTimer("OptionVersion2", 60, 144236, nil, false)
 --local timerDisintegrationLaserCD		= mod:NewNextCountTimer(10, 143867)
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
@@ -309,7 +309,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		if not assemblyDebuff then--Don't warn if you can't go
 			specWarnAssemblyLine:Show(weapon)
 		end
-		timerAssemblyLineCD:Start()
+		timerAssemblyLineCD:Start(nil, weapon + 1)
 		countdownAssemblyLine:Start()
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(assemblyLine.."("..weapon..")")
