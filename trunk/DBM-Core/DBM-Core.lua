@@ -4904,13 +4904,17 @@ do
 	end
 
 	function bossModPrototype:RemoveShieldHealthBar(guid, name)
-		shieldsByGuid[guid] = nil
-		for i = #activeShields, 1, -1 do
-			if activeShields[i].guid == guid and activeShields[i].mod == self.id and (not name or activeShields[i].name == name) then
-				if DBM.BossHealth:IsShown() then
-					DBM.BossHealth.RemoveBoss(activeShields[i].func)
+		if not guid then
+			self:RemoveAllSpecialHealthBars()
+		else
+			shieldsByGuid[guid] = nil
+			for i = #activeShields, 1, -1 do
+				if activeShields[i].guid == guid and activeShields[i].mod == self.id and (not name or activeShields[i].name == name) then
+					if DBM.BossHealth:IsShown() then
+						DBM.BossHealth.RemoveBoss(activeShields[i].func)
+					end
+					tremove(activeShields, i)
 				end
-				tremove(activeShields, i)
 			end
 		end
 	end
