@@ -616,13 +616,13 @@ function barPrototype:Update(elapsed)
 	else
 		if obj.options.FillUpBars then
 			if obj.options.Style == "BigWigs" and self.enlarged then
-				bar:SetValue(1 - self.timer/10)
+				bar:SetValue(1 - self.timer/(self.totalTime < 10 and self.totalTime or 10))
 			else
 				bar:SetValue(1 - self.timer/self.totalTime)
 			end
 		else
 			if obj.options.Style == "BigWigs" and self.enlarged then
-				bar:SetValue(self.timer/10)
+				bar:SetValue(self.timer/(self.totalTime < 10 and self.totalTime or 10))
 			else
 				bar:SetValue(self.timer/self.totalTime)
 			end
