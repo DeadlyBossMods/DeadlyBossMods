@@ -118,3 +118,31 @@ L = DBM:GetModLocalization("Greench")
 L:SetGeneralLocalization({
 	name = "讨厌的格林奇"
 })
+
+--------------------------
+--  Plants Vs. Zombies  --
+--------------------------
+L = DBM:GetModLocalization("PlantsVsZombies")
+
+L:SetGeneralLocalization({
+	name = "植物大战僵尸"
+})
+
+L:SetWarningLocalization({
+	warnTotalAdds	= "上一次大波僵尸后僵尸计数：%d",
+	specWarnWave	= "一大波僵尸！"
+})
+
+L:SetTimerLocalization{
+	timerWave		= "下一大波僵尸"
+}
+
+L:SetOptionLocalization({
+	warnTotalAdds	= "警报：每次大波僵尸之间的僵尸出现计数",
+	specWarnWave	= "特殊警报：一大波僵尸",
+	timerWave		= "计时条：下一大波僵尸"
+})
+
+L:SetMiscLocalization({
+	MassiveWave		= "一大波僵尸正在靠近！"
+})

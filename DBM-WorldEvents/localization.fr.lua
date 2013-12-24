@@ -118,3 +118,32 @@ L = DBM:GetModLocalization("Greench")
 L:SetGeneralLocalization({
 	name = "L'abominable Grinche"
 })
+
+--------------------------
+--  Plants Vs. Zombies  --
+--------------------------
+L = DBM:GetModLocalization("PlantsVsZombies")
+
+L:SetGeneralLocalization({
+	name = "Plants Vs. Zombies"
+})
+
+L:SetWarningLocalization({
+	warnTotalAdds	= "Total des zombies engendrées depuis la dernière vague massive : %d",
+	specWarnWave	= "Vague Massive !"
+})
+
+L:SetTimerLocalization{
+	timerWave		= "Prochaine Vague Massive"
+}
+
+L:SetOptionLocalization({
+	warnTotalAdds	= "Afficher le nombre total d'add engendrées entre chaque vague massive",
+	specWarnWave	= "Alerte spécial quand une Vague Massive arrive",
+	timerWave		= "Délai avant la prochaine Vague Massive"
+})
+
+L:SetMiscLocalization({
+	MassiveWave		= "Une Vague Massive de Zombies est en approche !"
+})
+

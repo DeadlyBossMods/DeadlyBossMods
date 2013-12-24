@@ -106,3 +106,31 @@ L = DBM:GetModLocalization("Greench")
 L:SetGeneralLocalization({
 	name = "Омерзительный Гринч"
 })
+
+--------------------------
+--  Plants Vs. Zombies  --
+--------------------------
+L = DBM:GetModLocalization("PlantsVsZombies")
+
+L:SetGeneralLocalization({
+	name = "Растения против зомби"
+})
+
+L:SetWarningLocalization({
+	warnTotalAdds	= "Всего появилось зомби с прошлой большой волны: %d",
+	specWarnWave	= "Большая волна!"
+})
+
+L:SetTimerLocalization{
+	timerWave		= "След. большая волна"
+}
+
+L:SetOptionLocalization({
+	warnTotalAdds	= "Объявлять общее число появившихся аддов между каждой большой волной",
+	specWarnWave	= "Спец-предупреждение когда начинается большая волна",
+	timerWave		= "Отсчет времени до следующей большой волны"
+})
+
+L:SetMiscLocalization({
+	MassiveWave		= "Приближается большая волна зомби!"
+})
