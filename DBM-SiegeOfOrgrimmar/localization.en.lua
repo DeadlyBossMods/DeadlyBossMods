@@ -186,7 +186,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(869)
 
 L:SetOptionLocalization({
-	RangeFrame	= "Show dynamic range frame (8)<br/>(This is a smart range frame that shows when you reach $spell:147126 threshold)"
+	RangeFrame			= "Show dynamic range frame (8)<br/>(This is a smart range frame that shows when you reach $spell:147126 threshold)",
+	yellMaliceFading	= "Yell when $spell:147209 is about to fade"
+})
+
+L:SetMiscLocalization({
+	MaliceFadeYell		= "Malice fading on %s (%d)"
 })
 
 -------------

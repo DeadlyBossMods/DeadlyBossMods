@@ -106,6 +106,7 @@ local countdownPowerIronStar		= mod:NewCountdown(16.5, 144616)
 local countdownWhirlingCorruption	= mod:NewCountdown(49.5, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown("Alt45", 145071, false)--Off by default only because it's a cooldown and it does have a 45-48sec variation
 
+mod:AddBoolOption("yellMaliceFading", false)
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 mod:AddSetIconOption("SetIconOnMC", 145071, false)
 mod:AddSetIconOption("SetIconOnMalice", 147209, false)
@@ -294,6 +295,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnMaliceYou:Show()
 			yellMalice:Yell()
+			if self.Options.yellMaliceFading then
+				local playerName = UnitName("player")
+				DBM:Schedule(13, SendChatMessage, L.MaliceFadeYell:format(playerName, 1), "SAY")
+				DBM:Schedule(12, SendChatMessage, L.MaliceFadeYell:format(playerName, 2), "SAY")
+				DBM:Schedule(11, SendChatMessage, L.MaliceFadeYell:format(playerName, 3), "SAY")
+			end
 		end
 		if self.Options.SetIconOnMalice then
 			self:SetIcon(args.destName, 7)
