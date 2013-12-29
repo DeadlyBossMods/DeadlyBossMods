@@ -35,7 +35,7 @@ mod:SetBossHealthInfo(
 --Amalgam of Corruption
 local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
-local warnManifestation					= mod:NewSpellAnnounce("ej8232", 1)
+local warnManifestation					= mod:NewSpellAnnounce("ej8232", 1, 147082)
 local warnResidualCorruption			= mod:NewSpellAnnounce(145073)
 --Test of Serenity (DPS)
 local warnTearReality					= mod:NewCastAnnounce(144482, 3)
@@ -53,7 +53,7 @@ local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank()
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
 local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer(), nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
-local specWarnResidualCorruption		= mod:NewSpecialWarningSpell(145073, not mod:IsDps())
+local specWarnResidualCorruption		= mod:NewSpecialWarningSpell("OptionVersion2", 145073, false)--spammy. but sometimes needed.
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
@@ -256,9 +256,7 @@ function mod:OnSync(msg, guid)
 		timerCombatStarts:Start()
 	elseif msg == "ManifestationDied" and not playerInside and self:AntiSpam(1) then
 		specWarnManifestationSoon:Show()
-		if not self:IsDifficulty("lfr25") then
-			self:Schedule(5, addsDelay, GetTime())
-		end
+		self:Schedule(5, addsDelay, GetTime())
 	end
 end
 
@@ -268,9 +266,7 @@ function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
 		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(1) then
 			specWarnManifestationSoon:Show()
-			if not self:IsDifficulty("lfr25") then
-				self:Schedule(5, addsDelay, GetTime())
-			end
+			self:Schedule(5, addsDelay, GetTime())
 		end
 	end
 end
