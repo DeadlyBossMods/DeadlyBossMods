@@ -73,7 +73,7 @@ local specWarnFlamesofGalakrondStack= mod:NewSpecialWarningStack("OptionVersion4
 local specWarnFlamesofGalakrondOther= mod:NewSpecialWarningTarget(147029, mod:IsTank())
 
 --Stage 2: Bring Her Down!
-local timerCombatStarts				= mod:NewCombatTimer(35.5)
+local timerCombatStarts				= mod:NewCombatTimer(34.5)
 local timerAddsCD					= mod:NewNextTimer(55, "ej8553", nil, nil, nil, 2457)
 local timerTowerCD					= mod:NewTimer(99, "timerTowerCD", 88852)
 local timerTowerGruntCD				= mod:NewTimer(60, "timerTowerGruntCD", 89253)
@@ -307,6 +307,6 @@ function mod:OnSync(msg)
 	elseif msg == "prepull" then--Alliance
 		timerCombatStarts:Start()
 	elseif msg == "prepull2" then--Horde
-		timerCombatStarts:Start(31.5)
+		timerCombatStarts:Start(30.5)
 	end
 end

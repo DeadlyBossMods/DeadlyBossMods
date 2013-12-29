@@ -6955,8 +6955,17 @@ do
 		startIcon = startIcon and startIcon >= 0 and startIcon <= 8 and startIcon or 8
 		local uId = DBM:GetRaidUnitId(target)
 		if not uId then uId = target end
-		iconSet = iconSet + 1
-		table.insert(iconSortTable, uId)
+		local foundDuplicate = false
+		for i = #iconSortTable, 1, -1 do
+			if iconSortTable[i] == uId then
+				foundDuplicate = true
+				break
+			end
+		end
+		if not foundDuplicate then
+			iconSet = iconSet + 1
+			table.insert(iconSortTable, uId)
+		end
 		self:UnscheduleMethod("SetIconBySortedTable")
 		if maxIcon and iconSet == maxIcon then
 			self:SetIconBySortedTable(startIcon, reverseIcon, returnFunc)
