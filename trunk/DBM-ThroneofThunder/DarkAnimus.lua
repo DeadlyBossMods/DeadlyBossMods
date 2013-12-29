@@ -7,7 +7,7 @@ mod:SetEncounterID(1576)
 mod:SetZone()
 mod:SetUsedIcons(1)
 
-mod:RegisterCombat("emote", L.Pull)
+mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
@@ -51,6 +51,7 @@ local timerAnimusActivation			= mod:NewCastTimer(60, 139537)--LFR only
 local timerSiphonAnimaCD			= mod:NewNextCountTimer(20, 138644)--Needed mainly for heroic. not important on normal/LFR
 local timerAnimaRingCD				= mod:NewNextTimer(24.2, 136954, nil, mod:IsTank())--Updated/Verified post march 19 hotfix
 local timerAnimaFontCD				= mod:NewCDTimer(25, 138691)
+local timerInterruptingJolt			= mod:NewCastTimer(2.2, 138763)
 local timerInterruptingJoltCD		= mod:NewCDCountTimer(21.5, 138763)--seems 23~24 normal and lfr. every 21.5 exactly on heroic
 local timerEmpowerGolemCD			= mod:NewCDTimer(16, 138780)
 
@@ -100,6 +101,11 @@ function mod:SPELL_CAST_START(args)
 		jolt = jolt + 1
 		warnInterruptingJolt:Show(jolt)
 		specWarnInterruptingJolt:Show()
+		if self:IsDifficulty("lfr25") then
+			timerInterruptingJolt:Start(3.8)
+		else
+			timerInterruptingJolt:Start()
+		end
 		if self:IsDifficulty("heroic10", "heroic25") then
 			timerInterruptingJoltCD:Start(nil, jolt+1)
 			countdownInterruptingJolt:Start()

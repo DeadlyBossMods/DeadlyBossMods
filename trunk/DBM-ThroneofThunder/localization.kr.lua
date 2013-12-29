@@ -170,7 +170,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	LifeYell					= "%s에게 생명력 흡수! (%d)"
+	LifeYell					= "%s 생명력 흡수 중! (%d중첩)"
 })
 
 ----------------
@@ -261,7 +261,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	StaticYell		= "%s에게 전하 충격! (%d)"
+	StaticYell		= "%s의 전하 충격 발생 전! (%d초 남음)"
 })
 
 ------------

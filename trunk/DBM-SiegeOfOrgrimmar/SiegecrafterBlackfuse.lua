@@ -42,7 +42,7 @@ local warnReadyToGo						= mod:NewTargetAnnounce(145580, 4)--Crawler mine not de
 
 --Siegecrafter Blackfuse
 local specWarnLaunchSawblade			= mod:NewSpecialWarningYou(143265)
-local yellLaunchSawblade				= mod:NewYell(143265, nil, false, nil, nil, 2)
+local yellLaunchSawblade				= mod:NewYell("OptionVersion3", 143265)
 local specWarnProtectiveFrenzy			= mod:NewSpecialWarningTarget(145365, mod:IsTank())
 local specWarnOvercharge				= mod:NewSpecialWarningTarget(145774)
 --Automated Shredders
@@ -77,6 +77,7 @@ local timerPatternRecognition			= mod:NewBuffFadesTimer("OptionVersion2", 60, 14
 --local timerDisintegrationLaserCD		= mod:NewNextCountTimer(10, 143867)
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
 local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)
+local timerLaserFixate					= mod:NewBuffFadesTimer(15, 143828)
 local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269, nil, false)--Many mines can be up at once so timer off by default do to spam
 local timerMagneticCrush				= mod:NewBuffActiveTimer(30, 144466)
 
@@ -254,7 +255,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if laserCount < 3 then--Seems each laser construction casts 3 times, then disapears.
 			timerDisintegrationLaserCD:Start(nil, laserCount+1)
 		end--]]
-	elseif args.spellId == 144466 and self:AntiSpam(15, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
+	elseif args.spellId == 144466 and self:AntiSpam(30, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
 		warnMagneticCrush:Show()
 		specWarnMagneticCrush:Show()
 		timerMagneticCrush:Start()
@@ -297,6 +298,7 @@ function mod:RAID_BOSS_WHISPER(msg)
 	elseif msg:find("Ability_Siege_Engineer_Superheated") then
 		specWarnLaserFixate:Show()
 		yellLaserFixate:Yell()
+		timerLaserFixate:Start()
 		soundLaserFixate:Play()
 		self:SendSync("LockedOnTarget", UnitGUID("player"))
 	end
@@ -319,7 +321,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		shredderCount = shredderCount + 1
 		warnAutomatedShredder:Show(shredderCount)
 		specWarnAutomatedShredder:Show(shredderCount)
-		timerDeathFromAboveCD:Start(17)
+		timerDeathFromAboveCD:Start(18)
 		timerAutomatedShredderCD:Start(nil, shredderCount+14)
 		countdownShredder:Start()
 	end

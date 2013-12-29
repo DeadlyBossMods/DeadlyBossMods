@@ -36,8 +36,10 @@ local specWarnCallElemental		= mod:NewSpecialWarningSpell(141872)
 --Echo of Y'Shaarj
 local specWarnMalevolentForce	= mod:NewSpecialWarningInterrupt(142840)--Not only cast by last boss but trash near him as well, interrupt important for both. Although only bosses counts for achievement.
 
+--Trash
+local timerSpellShatter			= mod:NewCastTimer(2, 141421, nil, mod:IsSpellCaster())
 --Urtharges the Destroyer
-local timerCallElementalCD	= mod:NewCDTimer(50, 141872)
+local timerCallElementalCD		= mod:NewCDTimer(50, 141872)
 
 mod:RemoveOption("HealthFrame")
 
@@ -48,6 +50,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 141421 then
 		warnSpellShatter:Show()
 		specWarnSpellShatter:Show()
+		timerSpellShatter:Start(nil, args.sourceGUID)
 	elseif args.spellId == 141421 and self:AntiSpam(3, 2) then
 		warnSummonFieryAnger:Show()
 		specWarnSummonFieryAnger:Show(args.sourceName)

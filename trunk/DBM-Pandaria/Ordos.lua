@@ -28,36 +28,13 @@ local specWarnEternalAgony		= mod:NewSpecialWarningSpell(144696, nil, nil, nil, 
 
 --local timerAncientFlameCD		= mod:NewCDTimer(43, 144695)--Insufficent logs
 --local timerBurningSoulCD		= mod:NewCDTimer(22, 144689)--22-30 sec variation (maybe larger, small sample size)w
+local timerBurningSoul			= mod:NewBuffFadesTimer(10, 144689)
 
 local berserkTimer				= mod:NewBerserkTimer(300)
 
 mod:AddBoolOption("SetIconOnBurningSoul")
 mod:AddBoolOption("RangeFrame", true)
 mod:AddReadyCheckOption(33118, false)
-
-local DebuffTargets = {}
-local DebuffIcons = {}
-local DebuffIcon = 8
-
-local function warnDebuffTargets()
-	warnBurningSoul:Show(table.concat(DebuffTargets, "<, >"))
-	table.wipe(DebuffTargets)
-	DebuffIcon = 8
-end
-
-do
-	local function sortByGroup(v1, v2)
-		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-	end
-	function mod:SetIcons()
-		table.sort(DebuffIcons, sortByGroup)
-		for i, v in ipairs(DebuffIcons) do
-			self:SetIcon(v, DebuffIcon)
-			DebuffIcon = DebuffIcon - 1
-		end
-		table.wipe(DebuffIcons)
-	end
-end
 
 function mod:OnCombatStart(delay, yellTriggered)
 	if yellTriggered then--We know for sure this is an actual pull and not diving into in progress
@@ -85,7 +62,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 144689 then
-		DebuffTargets[#DebuffTargets + 1] = args.destName
+		warnBurningSoul:CombinedShow(1.2, args.destName)
+		timerBurningSoul:Start()
 --		timerBurningSoulCD:Start()
 		if args:IsPlayer() then
 			specWarnBurningSoul:Show()
@@ -95,27 +73,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.SetIconOnBurningSoul then--Set icons on first debuff to get an earlier spread out.
-			local targetUnitID = DBM:GetRaidUnitId(args.destName)
-			--Added to fix a bug with duplicate entries of same person in icon table more than once
-			local foundDuplicate = false
-			for i = #DebuffIcons, 1, -1 do
-				if DebuffIcons[i].targetUnitID then--make sure they aren't in table before inserting into table again. (not sure why this happens in LFR but it does, probably someone really high ping that cranked latency check way up)
-					foundDuplicate = true
-				end
-			end
-			if not foundDuplicate then
-				table.insert(DebuffIcons, targetUnitID)
-			end
-			self:UnscheduleMethod("SetIcons")
-			if self:LatencyCheck() then
-				self:ScheduleMethod(1.2, "SetIcons")
-			end
-		end
-		self:Unschedule(warnDebuffTargets)
-		if #DebuffTargets >= 3 then
-			warnDebuffTargets()
-		else
-			self:Schedule(1.2, warnDebuffTargets)
+			self:SetSortedIcon(1.2, args.destName, 8, 3, true)
 		end
 	elseif args.spellId == 144693 and args:IsPlayer() then
 		specWarnPoolOfFire:Show()--One warning is enough, because it honestly isn't worth moving for unless blizz buffs it.
