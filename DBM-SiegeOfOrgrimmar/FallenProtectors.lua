@@ -96,6 +96,7 @@ local timerGougeCD					= mod:NewCDTimer(30, 143330, nil, mod:IsTank())--30-41
 local timerGarroteCD				= mod:NewCDTimer(29, 143198, nil, mod:IsHealer())--30-46 (heroic 20-26)
 --Sun Tenderheart
 local timerBaneCD					= mod:NewCDTimer(17, 143446, nil, mod:IsHealer())--17-25 (heroic 13-20)
+local timerCalamity					= mod:NewCastTimer(5, 143491)
 local timerCalamityCD				= mod:NewCDTimer(40, 143491)--40-50 (when two can be cast in a row) Also affected by boss specials
 
 local berserkTimer					= mod:NewBerserkTimer(600)
@@ -192,6 +193,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 143491 then
 		warnCalamity:Show()
 		specWarnCalamity:Show()
+		timerCalamity:Start()
 		timerCalamityCD:Start()
 	elseif args.spellId == 143961 then
 		warnDefiledGround:Show()

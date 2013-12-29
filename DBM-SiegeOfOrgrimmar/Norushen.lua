@@ -15,6 +15,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",--This boss can change boss ID any time you jump into one of tests, because he gets unregistered as boss1 then registered as boss2 when you leave, etc
 	"CHAT_MSG_ADDON",
@@ -34,6 +35,8 @@ mod:SetBossHealthInfo(
 --Amalgam of Corruption
 local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
+local warnManifestation					= mod:NewSpellAnnounce("ej8232", 1)
+local warnResidualCorruption			= mod:NewSpellAnnounce(145073)
 --Test of Serenity (DPS)
 local warnTearReality					= mod:NewCastAnnounce(144482, 3)
 --Test of Reliance (Healer)
@@ -49,7 +52,8 @@ local warnPiercingCorruption			= mod:NewSpellAnnounce(144657, 3)
 local specWarnUnleashedAnger			= mod:NewSpecialWarningSpell(145216, mod:IsTank())
 local specWarnBlindHatred				= mod:NewSpecialWarningSpell(145226, nil, nil, nil, 2)
 local specWarnManifestation				= mod:NewSpecialWarningSwitch("ej8232", not mod:IsHealer())--Unleashed Manifestation of Corruption
-local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer(), nil, nil, nil)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
+local specWarnManifestationSoon			= mod:NewSpecialWarningSoon("ej8232", not mod:IsHealer(), nil, nil, 2)--WHen the ones die inside they don't spawn right away, there is like a 5 second lag.
+local specWarnResidualCorruption		= mod:NewSpecialWarningSpell(145073, not mod:IsDps())
 --Test of Serenity (DPS)
 local specWarnTearReality				= mod:NewSpecialWarningMove(144482)
 --Test of Reliance (Healer)
@@ -91,11 +95,13 @@ local corruptionLevel = EJ_GetSectionInfo(8252)
 local unleashedAngerCast = 0
 local playerInside = false
 local previousPower = nil
+local residue = {}
 
 --May be buggy with two adds spawning at exact same time
 --Two different icon functions end up both marking same mob with 8 and 7 and other mob getting no mark.
 --Not sure if GUID table will be fast enough to prevent, we shall see!
 local function addsDelay()
+	warnManifestation:Show()
 	specWarnManifestation:Show()
 end
 
@@ -108,6 +114,7 @@ end
 function mod:OnCombatStart(delay)
 	playerInside = false
 	previousPower = nil
+	table.wipe(residue)
 	timerBlindHatredCD:Start(25-delay)
 	if self:IsDifficulty("lfr25") then
 		berserkTimer:Start(600-delay)
@@ -197,6 +204,14 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(sourceGUID, _, _, _, _, _, _, _, spellId)
+	if spellId == 145073 and not residue[sourceGUID] then
+		residue[sourceGUID] = true
+		warnResidualCorruption:Show()
+		specWarnResidualCorruption:Show()
+	end
+end
+
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71977 then--Manifestation of Corruption (Dps Test)
@@ -216,6 +231,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 145769 and self:AntiSpam(1) then--Unleash Corruption
+		specWarnManifestationSoon:Show()
 		self:Schedule(5, addsDelay, GetTime())
 	end
 end

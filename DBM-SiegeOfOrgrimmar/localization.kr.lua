@@ -72,7 +72,7 @@ L= DBM:GetModLocalization(864)
 L= DBM:GetModLocalization(856)
 
 L:SetMiscLocalization({
-	PrisonYell		= "%s의 강철 감옥 사라지기 직전! (%d초 남음)"
+	PrisonYell		= "%s의 강철 감옥 %d초 남음!"
 })
 
 ---------------------
@@ -179,7 +179,12 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(869)
 
 L:SetOptionLocalization({
-	RangeFrame	= "거리 창 보기(8m)($spell:147126 주문의 경고 수치에 도달한 경우에만 보임)"
+	RangeFrame			= "거리 창 보기(8m)($spell:147126 주문의 경고 수치에 도달한 경우에만 보임)",
+	yellMaliceFading	= "$spell:147209가 사라지기 전에 대화로 알리기"
+})
+
+L:SetMiscLocalization({
+	MaliceFadeYell		= "%s의 악의 %d초 남음!"
 })
 
 -------------
