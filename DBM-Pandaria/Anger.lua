@@ -44,24 +44,12 @@ local function debuffFilter(uId)
 	return UnitDebuff(uId, GetSpellInfo(119622))
 end
 
+--Why custom remove icon function?
 local function removeIcon(target)
 	for i,j in ipairs(mcTargetIcons) do
 		if j == target then
 			table.remove(mcTargetIcons, i)
 			mod:SetIcon(target, 0)
-		end
-	end
-end
-
-do
-	local function sortByGroup(v1, v2)
-		return DBM:GetRaidSubgroup(DBM:GetUnitFullName(v1)) < DBM:GetRaidSubgroup(DBM:GetUnitFullName(v2))
-	end
-	function mod:SetMCIcons()
-		table.sort(mcTargetIcons, sortByGroup)
-		for i, v in ipairs(mcTargetIcons) do
-			self:SetIcon(v, mcIcon)
-			mcIcon = mcIcon - 1
 		end
 	end
 end
@@ -124,21 +112,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 119622 then
 		warnpreMCTargets[#warnpreMCTargets + 1] = args.destName
 		if self.Options.SetIconOnMC then--Set icons on first debuff to get an earlier spread out.
-			local targetUnitID = DBM:GetRaidUnitId(args.destName)
-			--Added to fix a bug with duplicate entries of same person in icon table more than once
-			local foundDuplicate = false
-			for i = #mcTargetIcons, 1, -1 do
-				if mcTargetIcons[i].targetUnitID then--make sure they aren't in table before inserting into table again. (not sure why this happens in LFR but it does, probably someone really high ping that cranked latency check way up)
-					foundDuplicate = true
-				end
-			end
-			if not foundDuplicate then
-				table.insert(mcTargetIcons, targetUnitID)
-			end
-			self:UnscheduleMethod("SetMCIcons")
-			if self:LatencyCheck() then
-				self:ScheduleMethod(1.2, "SetMCIcons")
-			end
+			self:SetSortedIcon(1.2, args.destName, 8, 3, true)
 		end
 		if args:IsPlayer() then
 			specWarnGrowingAnger:Show()
