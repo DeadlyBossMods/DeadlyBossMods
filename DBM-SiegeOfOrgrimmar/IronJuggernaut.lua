@@ -243,6 +243,6 @@ function mod:OnSync(msg, guid)
 			soundCuttingLaser:Play()
 		end
 	elseif msg == "LaserTargetRemoved" and guid then
-		timerCuttingLaser:Cancel(DBM:GetFullPlayerNameByGUID(guid))
+		timerCutterLaser:Cancel(DBM:GetFullPlayerNameByGUID(guid))
 	end
 end
