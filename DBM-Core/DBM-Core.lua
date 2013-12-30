@@ -2381,6 +2381,10 @@ do
 		else--Not from self, it means someone with a higher version than us probably sent it
 			canSetIcons[optionName] = false
 		end
+		if DBM.Options.DebugMode then
+			local name = GetFullPlayerNameByGUID(iconSetPerson[optionName])
+			print(name.." was elected icon setter for "..optionName)
+		end
 	end
 
 	syncHandlers["K"] = function(sender, cId)
