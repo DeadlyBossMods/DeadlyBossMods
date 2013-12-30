@@ -72,7 +72,7 @@ local specWarnEmpWhirlingCorruption	= mod:NewSpecialWarningCount(145037)--Two op
 local specWarnEmpDesecrate			= mod:NewSpecialWarningCount(144749, nil, nil, nil, 2)--^^
 --Starge Four: Heroic Hidden Phase
 local specWarnMaliceYou				= mod:NewSpecialWarningYou(147209)
-local yellMalice					= mod:NewYell(147209)
+local yellMalice					= mod:NewYell("OptionVersion2", 147209, nil, false)
 local specWarnBombardment			= mod:NewSpecialWarningCount(147120, nil, nil, nil, 2)
 local specWarnISFixate				= mod:NewSpecialWarningYou(147665)
 local specWarnIronStarSpawn			= mod:NewSpecialWarningSpell(147047, false)
