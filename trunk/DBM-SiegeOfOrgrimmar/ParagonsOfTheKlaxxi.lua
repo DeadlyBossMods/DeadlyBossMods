@@ -56,7 +56,7 @@ local warnDiminish					= mod:NewSpellAnnounce(143666, 4, nil, false)--Spammy, ta
 local warnCalculated				= mod:NewTargetAnnounce(144095, 3)--Wild variation on timing noted, 34-130.8 variation (wtf)
 local warnInsaneCalculationFire		= mod:NewCastAnnounce(142416, 4)--3 seconds after 144095
 --Ka'roz the Locust
-local warnFlash						= mod:NewCastAnnounce(143709, 3)--62-70
+local warnFlash						= mod:NewCastAnnounce(143701, 3, 2)--62-70
 local warnWhirling					= mod:NewTargetAnnounce("OptionVersion2", 143701, 3, nil, false)--Spammy
 local warnHurlAmber					= mod:NewSpellAnnounce(143759, 3)
 --Skeer the Bloodseeker
@@ -111,7 +111,7 @@ local specWarnCalculated			= mod:NewSpecialWarningYou(142416)
 local yellCalculated				= mod:NewYell(142416, nil, false)
 local specWarnInsaneCalculationFire	= mod:NewSpecialWarningSpell(142416, nil, nil, nil, 2)
 --Ka'roz the Locust
-local specWarnFlash					= mod:NewSpecialWarningSpell(143709, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
+local specWarnFlash					= mod:NewSpecialWarningSpell(143701, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnWhirling				= mod:NewSpecialWarningYou(143701)
 local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)
 local specWarnHurlAmber				= mod:NewSpecialWarningSpell(143759, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
@@ -143,21 +143,20 @@ local timerShieldBashCD				= mod:NewCDTimer(17, 143974, nil, mod:IsTank())
 local timerEncaseInAmber			= mod:NewTargetTimer(10, 142564)
 local timerEncaseInAmberCD			= mod:NewCDTimer(30, 142564)--Technically a next timer but we use cd cause it's only cast if someone is low when it comes off 30 second internal cd. VERY important timer for heroic
 --Iyyokuk the Lucid
-local timerCalculated				= mod:NewBuffFadesTimer(6, 142416)
 local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but variation is wild (25-50 second variation)
 --Ka'roz the Locust
-local timerFlashCD					= mod:NewCDTimer(62, 143709)
-local timerWhirling					= mod:NewBuffFadesTimer(5, 143701, nil, false, nil, nil, nil, nil, nil, 2)
+local timerFlashCD					= mod:NewCDTimer(62, 143701)
+local timerWhirling					= mod:NewBuffFadesTimer("OptionVersion2", 5, 143701, nil, false)
 local timerHurlAmberCD				= mod:NewCDTimer(62, 143759)--TODO< verify cd on spell itself. in my logs he died after only casting it once every time.
 --Skeer the Bloodseeker
 local timerBloodlettingCD			= mod:NewCDTimer(35, 143280)--35-65 variable. most of the time it's around 42 range
 --Rik'kal the Dissector
-local timerMutate					= mod:NewBuffFadesTimer(20, 143337, nil, false, nil, nil, nil, nil, nil, 2)
+local timerMutate					= mod:NewBuffFadesTimer("OptionVersion2", 20, 143337, nil, false)
 local timerMutateCD					= mod:NewCDCountTimer(31.5, 143337)
 local timerInjectionCD				= mod:NewNextTimer(9.5, 143339, nil, mod:IsTank())
 --Hisek the Swarmkeeper
 local timerAim						= mod:NewTargetTimer(5, 142948)--or is it 7, conflicting tooltips
-local timerAimCD					= mod:NewCDCountTimer(42, 142948)
+local timerAimCD					= mod:NewCDCountTimer(39.5, 142948)
 local timerRapidFireCD				= mod:NewCDTimer(47, 143243)--Heroic, 47-50 variation
 
 local berserkTimer					= mod:NewBerserkTimer(720)
@@ -628,7 +627,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		aimCount = aimCount + 1
 		aimActive = true
 		warnAim:Show(aimCount, args.destName)
-		timerAim:Start(args.destName)
+		if self:IsDifficulty("lfr25") then
+			timerAim:Start(7, args.destName)
+		else
+			timerAim:Start(nil, args.destName)
+		end
 		timerAimCD:Start(nil, aimCount+1)
 		if args.IsPlayer() then
 			specWarnAim:Show()
@@ -840,7 +843,6 @@ end
 local function delayMonsterEmote(target)
 	--Because now the raid boss emotes fire AFTER this and we need them first
 	warnCalculated:Show(target)
-	timerCalculated:Start()
 	timerInsaneCalculationCD:Start()
 	if target == UnitName("player") then
 		specWarnCalculated:Show()
