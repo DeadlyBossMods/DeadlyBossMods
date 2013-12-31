@@ -33,25 +33,11 @@ mod:AddBoolOption("RangeFrame", true)--For Mind control spreading.
 mod:AddBoolOption("SetIconOnMC", true)
 mod:AddReadyCheckOption(32099, false)
 
-local warnpreMCTargets = {}
-local warnMCTargets = {}
-local mcTargetIcons = {}
-local mcIcon = 8
 local bitterThought = GetSpellInfo(119601)
 local playerMCed = false
 
 local function debuffFilter(uId)
 	return UnitDebuff(uId, GetSpellInfo(119622))
-end
-
---Why custom remove icon function?
-local function removeIcon(target)
-	for i,j in ipairs(mcTargetIcons) do
-		if j == target then
-			table.remove(mcTargetIcons, i)
-			mod:SetIcon(target, 0)
-		end
-	end
 end
 
 function mod:updateRangeFrame()
@@ -63,26 +49,8 @@ function mod:updateRangeFrame()
 	end
 end
 
-local function showpreMC()
-	mod:updateRangeFrame()
-	warnGrowingAnger:Show(table.concat(warnpreMCTargets, "<, >"))
-	table.wipe(warnpreMCTargets)
-	mcIcon = 8
-end
-
-local function showMC()
-	warnAggressiveBehavior:Show(table.concat(warnMCTargets, "<, >"))
-	table.wipe(warnMCTargets)
-	if mod.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-end
-
 function mod:OnCombatStart(delay, yellTriggered)
 	playerMCed = false
-	table.wipe(warnpreMCTargets)
-	table.wipe(warnMCTargets)
-	mcIcon = 8
 	if yellTriggered then
 		timerUnleashedWrathCD:Start(-delay)
 		timerGrowingAngerCD:Start(-delay)
@@ -94,8 +62,6 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	playerMCed = false
-	table.wipe(warnpreMCTargets)
-	table.wipe(warnMCTargets)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -110,33 +76,29 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 119622 then
-		warnpreMCTargets[#warnpreMCTargets + 1] = args.destName
+		warnGrowingAnger:CombinedShow(1.2, args.destName)
+		self:updateRangeFrame()
 		if self.Options.SetIconOnMC then--Set icons on first debuff to get an earlier spread out.
 			self:SetSortedIcon(1.2, args.destName, 8, 3, true)
 		end
 		if args:IsPlayer() then
 			specWarnGrowingAnger:Show()
 		end
-		self:Unschedule(showpreMC)
-		if #warnpreMCTargets >= 3 then
-			showpreMC()
-		else
-			self:Schedule(1.2, showpreMC)
-		end
 	elseif args.spellId == 119626 then
 		--Maybe add in function to update icons here in case of a spread that results in more then the original 3 getting the final MC debuff.
-		warnMCTargets[#warnMCTargets + 1] = args.destName
-		self:Unschedule(showMC)
-		self:Schedule(2.5, showMC)--These can be vastly spread out, not even need to use 3, depends on what more data says. As well as spread failures.
+		warnAggressiveBehavior:CombinedShow(2.5, args.destName)
 		if args:IsPlayer() then
 			playerMCed = true
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 119626 and self.Options.SetIconOnMC then--Remove them after the MCs break.
-		removeIcon(DBM:GetRaidUnitId(args.destName))
+		self:SetIcon(args.destName, 0)
 		if args:IsPlayer() then
 			playerMCed = false
 		end
