@@ -2382,7 +2382,7 @@ do
 			canSetIcons[optionName] = false
 		end
 		if DBM.Options.DebugMode then
-			local name = GetFullPlayerNameByGUID(iconSetPerson[optionName])
+			local name = DBM:GetFullPlayerNameByGUID(iconSetPerson[optionName])
 			print(name.." was elected icon setter for "..optionName)
 		end
 	end
