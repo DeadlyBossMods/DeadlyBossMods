@@ -29,7 +29,7 @@ local specWarnZandalarBanner= mod:NewSpecialWarningSwitch(142669)
 
 --Farastu
 local timerIceSpikesCD		= mod:NewCDTimer(10, 132980)
-local timerFrozenSolidCD	= mod:NewCDTimer(25, 141407)
+local timerFrozenSolidCD	= mod:NewCDTimer(20, 141407)
 
 mod:RemoveOption("HealthFrame")
 

@@ -9,7 +9,6 @@ mod:RegisterCombat("scenario", 1144)
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
@@ -38,8 +37,6 @@ local specWarnMalevolentForce	= mod:NewSpecialWarningInterrupt(142840)--Not only
 
 --Trash
 local timerSpellShatter			= mod:NewCastTimer(2, 141421, nil, mod:IsSpellCaster())
---Urtharges the Destroyer
-local timerCallElementalCD		= mod:NewCDTimer(50, 141872)
 
 mod:RemoveOption("HealthFrame")
 
@@ -72,27 +69,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 70959 then--Urtharges the Destroyer
-		timerCallElementalCD:Cancel()
-	end
-end
-
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 141872 and self:AntiSpam(3, 1) then--Call Elemental
 		self:SendSync("CallElemental")
 	end
 end
 
---"<515.8 16:07:40> [SCENARIO_CRITERIA_UPDATE] criteriaID#23357#Info#Dark Heart of Pandaria#5#5#0#true#false#false#StepInfo#Heartbreak#Destroy the Echo of Y'Sharrj.#1#BonusStepInfo#Bonus Objectives#Complete the Bonus Objective to receive bonus Valor.#1#false#CriteriaInfo1#Echo of Y'Sharrj slain#0#false#0#1#0#71123#0#23251#0#BonusCriteriaInfo1#Echo of Y'Shaarj slain (Timed)#0#false#0#1#0#71123#0#23357#180#false", -- [6605]
---function mod:SCENARIO_CRITERIA_UPDATE(criteriaID)
-	--Just in case this is needed, i can't find any consistency in bosses timers at the moment to make use of engage timing.
---end
-
---Fallback, in case no one is targeting boss (cause he does summon adds, may be targeting adds)
---"<70.5 16:00:15> [UNIT_SPELLCAST_SUCCEEDED] Urtharges the Destroyer [[target:Call Elemental::0:141872]]",
---"<70.7 16:00:15> [CHAT_MSG_MONSTER_YELL] CHAT_MSG_MONSTER_YELL#Minions, destroy these insects!#Urtharges the Destroyer#####0#0##0#447#nil#0#false#false",
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.summonElemental or msg:find(L.summonElemental)) and self:AntiSpam(3, 1) then
 		self:SendSync("CallElemental")
@@ -103,6 +85,5 @@ function mod:OnSync(msg)
 	if msg == "CallElemental" then
 		warnCallElemental:Show()
 		specWarnCallElemental:Show()
-		timerCallElementalCD:Start()
 	end
 end

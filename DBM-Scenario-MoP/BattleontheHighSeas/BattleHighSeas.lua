@@ -28,7 +28,7 @@ local specWarnVolatileConcoction= mod:NewSpecialWarningSpell(141327)
 local specWarnVerticalSlash		= mod:NewSpecialWarningSpell(141187)
 
 --Lieutenant Drak'on
-local timerSwashbucklingCD		= mod:NewNextTimer(17, 141438)
+local timerSwashbucklingCD		= mod:NewNextTimer(16, 141438)
 --Lieutenant Fizzel
 local timerThrowBombCD			= mod:NewNextTimer(6, 132995, nil, false)
 --Admiral Hagman
