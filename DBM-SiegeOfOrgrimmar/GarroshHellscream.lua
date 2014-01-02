@@ -107,7 +107,7 @@ local soundWhirlingCorrpution		= mod:NewSound("OptionVersion2", 144985, false)--
 local countdownPowerIronStar		= mod:NewCountdown(16.5, 144616)
 local countdownWhirlingCorruption	= mod:NewCountdown(49.5, 144985)
 local countdownTouchOfYShaarj		= mod:NewCountdown("Alt45", 145071, false)--Off by default only because it's a cooldown and it does have a 45-48sec variation
-local countdownRealm				= mod:NewCountdown(61, 144945)
+local countdownRealm				= mod:NewCountdown(61, 144945, nil, nil, 10)
 
 mod:AddBoolOption("yellMaliceFading", false)
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
