@@ -105,6 +105,15 @@ local function addsDelay()
 	specWarnManifestation:Show()
 end
 
+local function addSync()
+	specWarnManifestationSoon:Show()
+	if mod:IsDifficulty("lfr25") then
+		mod:Schedule(10, addsDelay, GetTime())
+	else
+		mod:Schedule(5, addsDelay, GetTime())
+	end
+end
+
 local function delayPowerSync()
 	mod:RegisterShortTermEvents(
 		"UNIT_POWER player"
@@ -261,14 +270,12 @@ function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	--Because core already registers BigWigs prefix with server, shouldn't need it here
 	if prefix == "D4" and message then
 		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1) then
-			specWarnManifestationSoon:Show()
-			self:Schedule(5, addsDelay, GetTime())
+			addSync()
 		end
 	elseif prefix == "BigWigs" and message then
 		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
 		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(1) then
-			specWarnManifestationSoon:Show()
-			self:Schedule(5, addsDelay, GetTime())
+			addSync()
 		end
 	end
 end
