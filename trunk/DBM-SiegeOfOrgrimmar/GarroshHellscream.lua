@@ -119,7 +119,7 @@ mod:AddBoolOption("RangeFrame")
 local firstIronStar = false
 local engineerDied = 0
 local phase = 1
-local UnitExists = UnitExists
+local UnitExists, UnitDebuff = UnitExists, UnitDebuff
 local whirlCount = 0
 local desecrateCount = 0
 local mindControlCount = 0
@@ -127,12 +127,12 @@ local shamanAlive = 0
 local bombardCount = 0
 local bombardCD = {55, 40, 40, 25, 25}
 local lines = {}
+local spellName1 = GetSpellInfo(149004)
+local spellName2 = GetSpellInfo(148983)
+local spellName3 = GetSpellInfo(148994)
 
 local function updateInfoFrame()
 	table.wipe(lines)
-	local spellName1 = GetSpellInfo(149004)
-	local spellName2 = GetSpellInfo(148983)
-	local spellName3 = GetSpellInfo(148994)
 	for uId in DBM:GetGroupMembers() do
 		if not (UnitDebuff(uId, spellName1) or UnitDebuff(uId, spellName2) or UnitDebuff(uId, spellName3)) and not UnitIsDeadOrGhost(uId) then
 			lines[UnitName(uId)] = ""
@@ -356,7 +356,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerGrippingDespair:Cancel(args.destName)
 	elseif args.spellId == 144945 then
 		warnYShaarjsProtectionFade:Show()
-		self:Schedule(3, showInfoFrame)
+		showInfoFrame()
 	elseif args:IsSpellID(145065, 145171) and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
 	elseif args.spellId == 147209 and self.Options.SetIconOnMalice then
