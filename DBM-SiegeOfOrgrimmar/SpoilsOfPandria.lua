@@ -90,6 +90,7 @@ local timerReturnToStoneCD		= mod:NewNextTimer(12, 145489)
 local timerSetToBlowCD			= mod:NewNextTimer(9.6, 145996)
 local timerSetToBlow			= mod:NewBuffFadesTimer(30, 145996)
 --Stout Crate of Goods
+local timerMatterScramble		= mod:NewCastTimer(7, 145288, nil, not mod:IsTank())
 local timerMatterScrambleCD		= mod:NewCDTimer(18, 145288)--18-22 sec variation. most of time it's 20 exactly, unsure what causes the +-2 variations
 local timerCrimsonReconCD		= mod:NewNextTimer(15, 142947)
 local timerMantidSwarmCD		= mod:NewCDTimer(35, 142539)
@@ -173,6 +174,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 145288 and not isPlayerInMantid() then
 		warnMatterScramble:Show()
 		specWarnMatterScramble:Show()
+		timerMatterScramble:Start()
 		timerMatterScrambleCD:Start(args.sourceGUID)
 	elseif args.spellId == 145461 and not isPlayerInMantid() then
 		warnEnergize:Show()
