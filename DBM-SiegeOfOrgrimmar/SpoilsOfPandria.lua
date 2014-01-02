@@ -153,8 +153,9 @@ end
 function mod:OnCombatStart(delay)
 	worldTimer = 0
 	maxTimer = 0
-	if self.Options.InfoFrame then--Will just call it "infoframe" that's good enough
-		 DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.name)
+		DBM.InfoFrame:Show(2, "enemypower", 2, ALTERNATE_POWER_INDEX)
 	end
 end
 

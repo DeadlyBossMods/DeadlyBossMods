@@ -31,6 +31,7 @@ local warnChainHeal					= mod:NewSpellAnnounce(144583, 4)
 local warnChainLightning			= mod:NewSpellAnnounce(144584, 3, nil, false)--Maybe turn off by default if too spammy
 --Intermission: Realm of Y'Shaarj
 local warnYShaarjsProtection		= mod:NewTargetAnnounce(144945, 2)
+local warnYShaarjsProtectionFade	= mod:NewFadesAnnounce(144945, 1)
 local warnAnnihilate				= mod:NewCastAnnounce(144969, 4)
 --Stage Two: Power of Y'Shaarj
 local warnPhase2					= mod:NewPhaseAnnounce(2)
@@ -112,6 +113,7 @@ mod:AddBoolOption("yellMaliceFading", false)
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 mod:AddSetIconOption("SetIconOnMC", 145071, false)
 mod:AddSetIconOption("SetIconOnMalice", 147209, false)
+mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("RangeFrame")
 
 local firstIronStar = false
@@ -124,6 +126,31 @@ local mindControlCount = 0
 local shamanAlive = 0
 local bombardCount = 0
 local bombardCD = {55, 40, 40, 25, 25}
+local lines = {}
+
+local function updateInfoFrame()
+	table.wipe(lines)
+	local spellName1 = GetSpellInfo(149004)
+	local spellName2 = GetSpellInfo(148983)
+	local spellName3 = GetSpellInfo(148994)
+	for uId in DBM:GetGroupMembers() do
+		if not (UnitDebuff(uId, spellName1) or UnitDebuff(uId, spellName2) or UnitDebuff(uId, spellName3)) and not UnitIsDeadOrGhost(uId) then
+			lines[UnitName(uId)] = ""
+		end
+	end
+	return lines
+end
+
+local function showInfoFrame()
+	if mod.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.NoReduce)
+		DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+	end
+end
+
+local function hideInfoFrame()
+	DBM.InfoFrame:Hide()
+end
 
 function mod:DesecrateTarget(targetname, uId)
 	if not targetname then return end
@@ -327,6 +354,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(145183, 145195) then
 		timerGrippingDespair:Cancel(args.destName)
+	elseif args.spellId == 144945 then
+		warnYShaarjsProtectionFade:Show()
+		self:Schedule(3, showInfoFrame)
 	elseif args:IsSpellID(145065, 145171) and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
 	elseif args.spellId == 147209 and self.Options.SetIconOnMalice then
@@ -377,6 +407,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			whirlCount = 0
 			desecrateCount = 0
 			mindControlCount = 0
+			hideInfoFrame()
 			timerDesecrateCD:Start(10, 1)
 			timerTouchOfYShaarjCD:Start(15, 1)
 			countdownTouchOfYShaarj:Start(15)
