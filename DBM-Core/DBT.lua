@@ -435,7 +435,7 @@ do
 			end
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
-			local enlargeTime = self.options.Style ~= "BigWigs" and self.options.EnlargeBarsTime or 10
+			local enlargeTime = self.options.Style ~= "BigWigs" and self.options.EnlargeBarsTime or 11
 			if (timer <= enlargeTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
 				self.hugeBars:Append(newBar)
@@ -554,7 +554,7 @@ end
 
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
-	local enlargeTime = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsTime or 10
+	local enlargeTime = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsTime or 11
 	local enlargePer = self.owner.options.Style ~= "BigWigs" and self.owner.options.EnlargeBarsPercent or 0
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) then
 		local next = self.next
@@ -616,13 +616,13 @@ function barPrototype:Update(elapsed)
 	else
 		if obj.options.FillUpBars then
 			if obj.options.Style == "BigWigs" and self.enlarged then
-				bar:SetValue(1 - self.timer/(self.totalTime < 10 and self.totalTime or 10))
+				bar:SetValue(1 - self.timer/(self.totalTime < 11 and self.totalTime or 11))
 			else
 				bar:SetValue(1 - self.timer/self.totalTime)
 			end
 		else
 			if obj.options.Style == "BigWigs" and self.enlarged then
-				bar:SetValue(self.timer/(self.totalTime < 10 and self.totalTime or 10))
+				bar:SetValue(self.timer/(self.totalTime < 11 and self.totalTime or 11))
 			else
 				bar:SetValue(self.timer/self.totalTime)
 			end
@@ -723,7 +723,7 @@ function barPrototype:Update(elapsed)
 		self:ApplyStyle()
 		self:SetPosition()
 	end
-	local enlargeTime = obj.options.Style ~= "BigWigs" and obj.options.EnlargeBarsTime or 10
+	local enlargeTime = obj.options.Style ~= "BigWigs" and obj.options.EnlargeBarsTime or 11
 	local enlargePer = obj.options.Style ~= "BigWigs" and obj.options.EnlargeBarsPercent or 0
 	if (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		local next = self.next

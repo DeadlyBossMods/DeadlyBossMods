@@ -57,7 +57,7 @@ local warnCalculated				= mod:NewTargetAnnounce(144095, 3)--Wild variation on ti
 local warnInsaneCalculationFire		= mod:NewCastAnnounce(142416, 4)--3 seconds after 144095
 --Ka'roz the Locust
 local warnFlash						= mod:NewCastAnnounce(143701, 3, 2)--62-70
-local warnWhirling					= mod:NewTargetAnnounce("OptionVersion2", 143701, 3, nil, false)--Spammy
+local warnWhirling					= mod:NewTargetAnnounce("OptionVersion3", 143701, 3)
 local warnHurlAmber					= mod:NewSpellAnnounce(143759, 3)
 --Skeer the Bloodseeker
 local warnBloodletting				= mod:NewSpellAnnounce(143280, 4)
@@ -114,6 +114,7 @@ local specWarnInsaneCalculationFire	= mod:NewSpecialWarningSpell(142416, nil, ni
 local specWarnFlash					= mod:NewSpecialWarningSpell(143701, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnWhirling				= mod:NewSpecialWarningYou(143701)
 local specWarnWhirlingNear			= mod:NewSpecialWarningClose(143701)
+local yellWhirling					= mod:NewYell(143701)
 local specWarnHurlAmber				= mod:NewSpecialWarningSpell(143759, nil, nil, nil, 2)--I realize two abilities on same boss both using same sound is less than ideal, but user can change it now, and 1 or 3 feel appropriate for both of these
 local specWarnCausticAmber			= mod:NewSpecialWarningMove(143735)--Stuff on the ground
 --Skeer the Bloodseeker
@@ -237,6 +238,45 @@ local function DFAScan()
 				mod:Schedule(0.25, DFAScan)
 			end
 			return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
+		end
+	end
+end
+
+do
+	local whirlScanCount = 0
+
+	local function whirlingScan()
+		whirlScanCount = whirlScanCount + 1
+		if whirlScanCount < 80 then -- scan for 20s.
+			for i = 1, 5 do
+				local unitID = "boss"..i
+				if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71154 then
+					if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
+						mod:Unschedule(whirlingScan)
+						local targetname = DBM:GetUnitFullName(unitID.."target")
+						warnWhirling:Show(targetname)
+						if UnitIsUnit(unitID.."target", "player") then
+							specWarnWhirling:Show()
+							yellWhirling:Yell()
+						else
+							local x, y = GetPlayerMapPosition(unitID.."target")
+							if x == 0 and y == 0 then
+								SetMapToCurrentZone()
+								x, y = GetPlayerMapPosition(unitID.."target")
+							end
+							local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+							if inRange and inRange < 10 then
+								specWarnWhirlingNear:Show(targetname)
+							end
+						end
+					else
+						mod:Schedule(0.25, whirlingScan)
+					end
+					return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
+				end
+			end
+		else
+			mod:Unschedule(whirlingScan)
 		end
 	end
 end
@@ -467,6 +507,8 @@ function mod:SPELL_CAST_START(args)
 		warnFlash:Show()
 		specWarnFlash:Show()
 		timerFlashCD:Start()
+		whirlScanCount = 0
+		whirlingScan()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
 			self:Schedule(5, hideRangeFrame)
@@ -581,25 +623,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				break
 			end
 		end
-	elseif args.spellId == 143701 then
-		warnWhirling:CombinedShow(0.5, args.destName)
-		if args.IsPlayer() then
-			specWarnWhirling:Show()
-			timerWhirling:Start()
-		else
-			local uId = DBM:GetRaidUnitId(args.destName)
-			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-				if inRange and inRange < 6 then
-					specWarnWhirlingNear:Show(args.destName)
-				end
-			end
-		end
+	elseif args.spellId == 143701 and args:IsPlayer() then
+		timerWhirling:Start()
 	elseif args.spellId == 143759 then
 		warnHurlAmber:Show()
 		specWarnHurlAmber:Show()
@@ -715,6 +740,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71160 then--Iyyokuk the Lucid
 		timerInsaneCalculationCD:Cancel()
 	elseif cid == 71154 then--Ka'roz the Locust
+		self:Unschedule(whirlingScan)
 		timerFlashCD:Cancel()
 		timerHurlAmberCD:Cancel()
 	elseif cid == 71152 then--Skeer the Bloodseeker
