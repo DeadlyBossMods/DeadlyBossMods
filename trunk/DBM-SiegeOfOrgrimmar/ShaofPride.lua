@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 )
 
 --Sha of Pride
-local warnGiftOfTitans			= mod:NewTargetAnnounce(144359, 1)
+local warnGiftOfTitans			= mod:NewTargetAnnounce("OptionVersion2", 144359, 1, nil, false)
 local warnSwellingPride			= mod:NewCountAnnounce(144400, 3)
 local warnMark					= mod:NewTargetAnnounce(144351, 3, nil, mod:IsHealer())
 local warnWoundedPride			= mod:NewTargetAnnounce(144358, 4, nil, mod:IsTank() or mod:IsHealer())
@@ -39,7 +39,7 @@ local warnMockingBlast			= mod:NewSpellAnnounce(144379, 3, nil, false)
 
 --Sha of Pride
 local specWarnGiftOfTitans		= mod:NewSpecialWarningYou(144359)
-local yellGiftOfTitans			= mod:NewYell(146594, nil, false, nil, nil, 2)
+local yellGiftOfTitans			= mod:NewYell("OptionVersion2", 146594, nil, false)
 local specWarnSwellingPride		= mod:NewSpecialWarningCount(144400, nil, nil, nil, 2)
 local specWarnWoundedPride		= mod:NewSpecialWarningSpell(144358, mod:IsTank())
 local specWarnSelfReflection	= mod:NewSpecialWarningSpell(144800, nil, nil, nil, 2)
@@ -48,7 +48,8 @@ local specWarnCorruptedPrisonYou= mod:NewSpecialWarningYou(144574, false)--Since
 local yellCorruptedPrison		= mod:NewYell(144574, nil, false)
 --Pride
 local specWarnBurstingPride		= mod:NewSpecialWarningMove(144911)--25-49 Energy
-local yellBurstingPride			= mod:NewYell(144911, nil, false, nil, nil, 2)
+local specWarnBurstingPrideNear	= mod:NewSpecialWarningClose(144911)
+local yellBurstingPride			= mod:NewYell("OptionVersion2", 144911, nil, false)
 local specWarnProjection		= mod:NewSpecialWarningYou(146822, nil, nil, nil, 3)--50-74 Energy
 local specWarnAuraOfPride		= mod:NewSpecialWarningYou(146817)--75-99 Energy
 local yellAuraOfPride			= mod:NewYell(146818, nil, false)
@@ -88,6 +89,7 @@ local prideLevel = EJ_GetSectionInfo(8255)
 local woundCount = 0
 local manifestationWarned = false
 local swellingCount = 0
+local bpSpecWarnFired = false
 
 function mod:OnCombatStart(delay)
 	timerGiftOfTitansCD:Start(7.5-delay)
@@ -105,6 +107,7 @@ function mod:OnCombatStart(delay)
 	woundCount = 0
 	manifestationWarned = false
 	swellingCount = 0
+	bpSpecWarnFired = false
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(prideLevel)
 		DBM.InfoFrame:Show(5, "playerpower", 5, ALTERNATE_POWER_INDEX)
@@ -151,6 +154,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144400 then--Swelling Pride Cast END
 		woundCount = 0
+		bpSpecWarnFired = false
 		--Since we register this event anyways for bursting, might as well start cd bars here instead
 		timerMarkCD:Start(10.5)
 		timerSelfReflectionCD:Start()
@@ -174,9 +178,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 					local targetName = DBM:GetUnitFullName(uId)
 					warnBurstingPride:CombinedShow(0.5, targetName)
 					if targetName == UnitName("player") then
+						bpSpecWarnFired = true
 						specWarnBurstingPride:Show()
 						yellBurstingPride:Yell()
 						timerBurstingPride:Start()
+					else
+						local x, y = GetPlayerMapPosition(uId)
+						if x == 0 and y == 0 then
+							SetMapToCurrentZone()
+							x, y = GetPlayerMapPosition(uId)
+						end
+						local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+						if inRange and inRange < 6 and not bpSpecWarnFired then
+							bpSpecWarnFired = true
+							specWarnBurstingPrideNear:Show(args.destName)
+						end
 					end
 				end
 			end

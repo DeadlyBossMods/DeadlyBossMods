@@ -254,15 +254,17 @@ function mod:OnSync(msg, guid)
 		unleashedAngerCast = 0
 	elseif msg == "prepull" then
 		timerCombatStarts:Start()
-	elseif msg == "ManifestationDied" and not playerInside and self:AntiSpam(1) then
-		specWarnManifestationSoon:Show()
-		self:Schedule(5, addsDelay, GetTime())
 	end
 end
 
 function mod:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	--Because core already registers BigWigs prefix with server, shouldn't need it here
-	if prefix == "BigWigs" and message then
+	if prefix == "D4" and message then
+		if message:find("ManifestationDied") and not playerInside and self:AntiSpam(1) then
+			specWarnManifestationSoon:Show()
+			self:Schedule(5, addsDelay, GetTime())
+		end
+	elseif prefix == "BigWigs" and message then
 		local bwPrefix, bwMsg = message:match("^(%u-):(.+)")
 		if bwMsg == "InsideBigAddDeath" and not playerInside and self:AntiSpam(1) then
 			specWarnManifestationSoon:Show()

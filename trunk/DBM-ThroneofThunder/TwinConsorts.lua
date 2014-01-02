@@ -41,6 +41,10 @@ local warnFanOfFlames					= mod:NewStackAnnounce(137408, 2, nil, mod:IsTank() or
 local warnFlamesOfPassion				= mod:NewSpellAnnounce(137414, 2)--Todo, check target scanning
 local warnIceComet						= mod:NewSpellAnnounce(137419, 1)
 local warnNuclearInferno				= mod:NewCastAnnounce(137491, 4, 4)--Heroic
+--Celestials Assist
+local warnTiger							= mod:NewSpellAnnounce(138855)
+local warnSerpent						= mod:NewSpellAnnounce(138306)
+local warnOx							= mod:NewSpellAnnounce(138300)
 --Dusk
 local warnDusk							= mod:NewAnnounce("warnDusk", 2, "Interface\\Icons\\achievement_zone_easternplaguelands")--"achievement_zone_easternplaguelands" (best Dusk icon i could find)
 local warnTidalForce					= mod:NewCastAnnounce(137531, 3, 2)
@@ -75,6 +79,10 @@ local timerFanOfFlames					= mod:NewTargetTimer(30, 137408, nil, mod:IsTank())
 local timerIceCometCD					= mod:NewCDTimer(20.5, 137419)--Every 20.5-25 seconds on normal. On 10 heroic, variables 20.5~41s. 25 heroic vary 20.5-27.
 local timerNuclearInferno				= mod:NewBuffActiveTimer(12, 137491)
 local timerNuclearInfernoCD				= mod:NewCDCountTimer(49.5, 137491)
+--Celestials Assist
+local timerTiger						= mod:NewBuffFadesTimer(138855)
+local timerSerpent						= mod:NewBuffFadesTimer(138306)
+local timerOx							= mod:NewBuffFadesTimer(138300)
 --Dusk
 local timerTidalForce					= mod:NewBuffActiveTimer(18 ,137531)
 local timerTidalForceCD					= mod:NewCDTimer(71, 137531)
@@ -165,6 +173,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnFlamesofPassionMove:Show()
 	elseif args.spellId == 137360 and args:IsPlayer() then
 		specWarnCorruptedHealing:Show(args.amount or 1)
+	elseif args.spellId == 138855 and self:AntiSpam(3, 5) then
+		warnTiger:Show()
+		timerTiger:Start()
+	elseif args.spellId == 138306 and self:AntiSpam(3, 5) then
+		warnSerpent:Show()
+		timerSerpent:Start()
+	elseif args.spellId == 138300 and self:AntiSpam(3, 5) then
+		warnOx:Show()
+		timerOx:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED

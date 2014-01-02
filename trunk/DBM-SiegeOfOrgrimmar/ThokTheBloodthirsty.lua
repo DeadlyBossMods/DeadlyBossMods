@@ -30,6 +30,7 @@ local warnBloodFrenzy				= mod:NewStackAnnounce(143442, 3)
 local warnFixate					= mod:NewTargetAnnounce(143445, 4)
 local warnEnrage					= mod:NewTargetAnnounce(145974, 3, nil, mod:IsTank() or mod:CanRemoveEnrage())
 local warnKey						= mod:NewTargetAnnounce(146589, 2)
+local warnKeyOpen					= mod:NewSpellAnnounce(143917, 1)
 --Infusion of Acid
 local warnAcidPustules				= mod:NewSpellAnnounce(143971, 2, 143791)
 local warnAcidBreath				= mod:NewStackAnnounce(143780, 2, nil, mod:IsTank())
@@ -76,6 +77,7 @@ local timerDeafeningScreechCD		= mod:NewNextCountTimer(13, 143343)-- (143345 bas
 local timerTailLashCD				= mod:NewCDTimer(10, 143428, nil, false)
 --Stage 2: Frenzy for Blood!
 local timerBloodFrenzyCD			= mod:NewNextTimer(5, 143442)
+local timerBloodFrenzyEnd			= mod:NewBuffActiveTimer(13, 143442)
 local timerFixate					= mod:NewTargetTimer(12, 143445)
 --Infusion of Acid
 local timerAcidBreath				= mod:NewTargetTimer(30, 143780, nil, mod:IsTank() or mod:IsHealer())
@@ -282,6 +284,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFrostBreath:Cancel(args.destName)
 	elseif args.spellId == 143767 then
 		timerScorchingBreath:Cancel(args.destName)
+	elseif args.spellId == 146589 then
+		warnKeyOpen:Show()
+		timerBloodFrenzyEnd:Start()
 	elseif args.spellId == 143440 then
 		timerBloodFrenzyCD:Cancel()
 		screechCount = 0
