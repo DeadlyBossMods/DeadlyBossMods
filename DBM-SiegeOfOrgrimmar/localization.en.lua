@@ -192,7 +192,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NoReduce			= "No damage reduce",
+	NoReduce			= "No damage reduction",
 	MaliceFadeYell		= "Malice fading on %s (%d)"
 })
 
