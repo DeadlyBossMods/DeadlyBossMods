@@ -145,7 +145,7 @@ end
 local function showInfoFrame()
 	if mod.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.NoReduce)
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame)
+		DBM.InfoFrame:Show(10, "function", updateInfoFrame)
 	end
 end
 
