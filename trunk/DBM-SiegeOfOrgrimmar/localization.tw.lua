@@ -172,11 +172,13 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(869)
 
 L:SetOptionLocalization({
-	RangeFrame	= "顯示動態距離框架(10碼)<br/>(這是智慧距離框架，當到達$spell:147126門檻時自動切換)",
+	RangeFrame			= "顯示動態距離框架(10碼)<br/>(這是智慧距離框架，當到達$spell:147126門檻時自動切換)",
+	InfoFrame			= "為玩家在中場階段時沒有傷害減免顯示訊息框架",
 	yellMaliceFading	= "當$spell:147209將要退去時大喊"
 })
 
 L:SetMiscLocalization({
+	NoReduce			= "無傷害減免",
 	MaliceFadeYell		= "%s的惡意消退中(%d)"
 })
 
