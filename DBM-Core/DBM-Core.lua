@@ -2367,7 +2367,9 @@ do
 		modRevision = tonumber(modRevision or 0) or 0
 		if mod and (mod.revision < modRevision) then
 			--TODO, maybe require at least 2 senders? this doesn't disable mod or make a popup though, just warn in chat that mod may have invalid timers/warnings do to a blizzard hotfix
-			DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX)
+			if mod:AntiSpam(3, 50) then--No mod should be using an ID of 50, so using mods own prototype should not conflict anywhere.
+				DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HOTFIX)
+			end
 		end
 	end
 
