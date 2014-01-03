@@ -66,7 +66,7 @@ local specWarnChainLightning		= mod:NewSpecialWarningInterrupt(144584, false)
 local specWarnAnnihilate			= mod:NewSpecialWarningSpell("OptionVersion3", 144969, false, nil, nil, 3)
 --Stage Two: Power of Y'Shaarj
 local specWarnWhirlingCorruption	= mod:NewSpecialWarningCount(144985)--Two options important, for distinction and setting custom sounds for empowered one vs non empowered one, don't merge
-local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 3)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
+local specWarnGrippingDespair		= mod:NewSpecialWarningStack(145183, mod:IsTank(), 4)--Unlike whirling and desecrate, doesn't need two options, distinction isn't important for tank swaps.
 local specWarnGrippingDespairOther	= mod:NewSpecialWarningTarget(145183, mod:IsTank())
 local specWarnTouchOfYShaarj		= mod:NewSpecialWarningSwitch("OptionVersion3", 145071, not mod:IsHealer())
 local specWarnTouchInterrupt		= mod:NewSpecialWarningInterrupt(145599, false)
@@ -170,7 +170,7 @@ function mod:DesecrateTarget(targetname, uId)
 				x, y = GetPlayerMapPosition(targetname)
 			end
 			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 15 then
+			if inRange and inRange < 20 then
 				specWarnDesecrateNear:Show(targetname)
 			end
 		end
@@ -319,7 +319,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnEmpGrippingDespair:Show(args.destName, amount)
 		end
 		timerGrippingDespair:Start(args.destName)
-		if amount >= 3 then
+		if amount >= 4 then
 			if args:IsPlayer() then
 				specWarnGrippingDespair:Show(amount)
 			else
