@@ -77,7 +77,7 @@ local timerDeafeningScreechCD		= mod:NewNextCountTimer(13, 143343)-- (143345 bas
 local timerTailLashCD				= mod:NewCDTimer(10, 143428, nil, false)
 --Stage 2: Frenzy for Blood!
 local timerBloodFrenzyCD			= mod:NewNextTimer(5, 143442)
-local timerBloodFrenzyEnd			= mod:NewBuffActiveTimer(13, 143442)
+local timerBloodFrenzyEnd			= mod:NewBuffActiveTimer(13.5, 143442)
 local timerFixate					= mod:NewTargetTimer(12, 143445)
 --Infusion of Acid
 local timerAcidBreath				= mod:NewTargetTimer(30, 143780, nil, mod:IsTank() or mod:IsHealer())
