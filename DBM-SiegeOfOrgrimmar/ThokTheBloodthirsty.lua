@@ -79,6 +79,7 @@ local timerTailLashCD				= mod:NewCDTimer(10, 143428, nil, false)
 local timerBloodFrenzyCD			= mod:NewNextTimer(5, 143442)
 local timerBloodFrenzyEnd			= mod:NewBuffActiveTimer(13.5, 143442)
 local timerFixate					= mod:NewTargetTimer(12, 143445)
+local timerKey						= mod:NewTargetTimer(60, 146589) 
 --Infusion of Acid
 local timerAcidBreath				= mod:NewTargetTimer(30, 143780, nil, mod:IsTank() or mod:IsHealer())
 local timerAcidBreathCD				= mod:NewCDTimer(11, 143780, nil, mod:IsTank())--Often 12, but sometimes 11
@@ -271,6 +272,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEnrage:Show(args.destName)
 	elseif args.spellId == 146589 then
 		warnKey:Show(args.destName)
+		timerKey:Start(args.destName)
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -285,6 +287,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args.spellId == 143767 then
 		timerScorchingBreath:Cancel(args.destName)
 	elseif args.spellId == 146589 then
+		timerKey:Cancel(args.destName)
 		warnKeyOpen:Show()
 		timerBloodFrenzyEnd:Start()
 	elseif args.spellId == 143440 then

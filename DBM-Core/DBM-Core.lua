@@ -14,7 +14,7 @@
 --    * deDE: Ebmor						DBM forums (PM: "Ebmor")
 --    * ruRU: Swix						stalker.kgv@gmail.com
 --    * ruRU: TOM_RUS
---    * zhTW: Whyv                      ultrashining@gmail.com
+--    * zhTW: Whyv						ultrashining@gmail.com
 --    * koKR: nBlueWiz					everfinale@gmail.com
 --    * esES/esMX: Sueñalobos			alcortesm@gmail.com
 --
@@ -838,7 +838,8 @@ do
 				"ENCOUNTER_END",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
-				"UNIT_HEALTH mouseover target focus boss1 boss2 boss3 boss4 boss5",
+				"UNIT_HEALTH mouseover target focus",
+				"UNIT_HEALTH_FREQUENT boss1 boss2 boss3 boss4 boss5",
 				"CHAT_MSG_WHISPER",
 				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
@@ -3357,7 +3358,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		elseif not bossHealth[mod.combatInfo.mob or -1] then
 			bossHealth[mod.combatInfo.mob or -1] = 1
 		end
-		local startHp = (syncedStartHp and (tonumber(syncedStartHp))) or mod:GetBossHP(mod.mainBossId or mod.combatInfo.mob) or -1
+		local startHp = (syncedStartHp and (tonumber(syncedStartHp))) or mod:GetTargetBossHP(mod.mainBossId or mod.combatInfo.mob or -1) or -1
 		if (savedDifficulty == "worldboss" and startHp < 0.98) or (event == "UNIT_HEALTH" and startHp < 0.90) or event == "TIMER_RECOVERY" then--Boss was not full health when engaged, disable combat start timer and kill record
 			mod.ignoreBestkill = true
 		elseif mod.inScenario then
@@ -3486,7 +3487,8 @@ function DBM:UNIT_HEALTH(uId)
 	local cId = UnitGUID(uId) and tonumber(UnitGUID(uId):sub(6, 10), 16)
 	if not cId then return end
 	local health = (UnitHealth(uId) or 0) / (UnitHealthMax(uId) or 1)
-	if #inCombat > 0 and bossHealth[cId] then
+	if bossHealth[cId] then
+		--print("DBM Debug Boss Health - id : ", uId, ", health : ", health * 100)
 		bossHealth[cId] = health
 	end
 	if health < 0.05 then return end -- prevent spam call if boss not dies
@@ -3498,6 +3500,17 @@ function DBM:UNIT_HEALTH(uId)
 				end
 			end
 		end
+	end
+end
+
+function DBM:UNIT_HEALTH_FREQUENT(uId)
+	if not UnitExists(uId) then return end
+	local cId = UnitGUID(uId) and tonumber(UnitGUID(uId):sub(6, 10), 16)
+	if not cId then return end
+	local health = (UnitHealth(uId) or 0) / (UnitHealthMax(uId) or 1)
+	if bossHealth[cId] then
+		--print("DBM Debug Boss Health - id : ", uId, ", health : ", health * 100)
+		bossHealth[cId] = health
 	end
 end
 
@@ -3538,7 +3551,7 @@ function DBM:EndCombat(mod, wipe)
 			mod.lastWipeTime = GetTime()
 			--Fix for "attempt to perform arithmetic on field 'pull' (a nil value)" (which was actually caused by stats being nil, so we never did getTime on pull, fixing one SHOULD fix the other)
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local wipeHP = ("%d%%"):format((mod.mainBossId and mod:GetBossHealthByCID(mod.mainBossId) or mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) * 100)
+			local wipeHP = ("%d%%"):format((mod.highesthealth and mod:GetHighestBossHealth() or mod:GetBossHealth(mod.mainBossId or mod.combatInfo.mob or -1)) * 100)
 			local totalPulls = mod.stats[statVarTable[savedDifficulty].."Pulls"]
 			local totalKills = mod.stats[statVarTable[savedDifficulty].."Kills"]
 			if thisTime < 30 then -- Normally, one attempt will last at least 30 sec.
@@ -3566,15 +3579,21 @@ function DBM:EndCombat(mod, wipe)
 					if scenario then
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalPulls - totalKills)
 					else
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP, totalPulls - totalKills)
+						local hpText
+						if mod.variables.phase then
+							hpText = wipeHP.."("..mod.variables.phase..")"
+						else
+							hpText = wipeHP
+						end
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText, totalPulls - totalKills)
 					end
 				else
 					if scenario then
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(mod.combatInfo.name or ""))
 					else
 						local hpText
-						if mod.phase then
-							hpText = wipeHP.."("..mod.phase..")"
+						if mod.variables.phase then
+							hpText = wipeHP.."("..mod.variables.phase..")"
 						else
 							hpText = wipeHP
 						end
@@ -4020,7 +4039,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			local hp = ("%d%%"):format((mod.mainBossId and mod:GetBossHealthByCID(mod.mainBossId) or mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) * 100)
+			local hp = ("%d%%"):format((mod.highesthealth and mod:GetHighestBossHealth() or mod:GetBossHealth(mod.mainBossId or mod.combatInfo.mob or -1)) * 100)
 			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format(difficultyText..(mod.combatInfo.name or ""), hp or DBM_CORE_UNKNOWN, IsInInstance() and getNumRealAlivePlayers() or getNumAlivePlayers(), DBM:GetNumRealGroupMembers()))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or not DBM:GetRaidUnitId(select(4, BNGetFriendInfoByID(sender)))) or not isRealIdMessage and not DBM:GetRaidUnitId(sender)) then
@@ -4032,7 +4051,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			local hp = ("%d%%"):format((mod.mainBossId and mod:GetBossHealthByCID(mod.mainBossId) or mod.highesthealth and mod:GetHighestBossHealth() or mod:GetLowestBossHealth()) * 100)
+			local hp = ("%d%%"):format((mod.highesthealth and mod:GetHighestBossHealth() or mod:GetBossHealth(mod.mainBossId or mod.combatInfo.mob or -1)) * 100)
 			if not autoRespondSpam[sender] then
 				if IsInScenarioGroup() then
 					sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER_SCENARIO:format(playerName, difficultyText..(mod.combatInfo.name or ""), getNumAlivePlayers(), DBM:GetNumGroupMembers()))
@@ -5183,7 +5202,29 @@ function bossModPrototype:SetBossHPInfoToHighest()
 	self.highesthealth = true
 end
 
-function bossModPrototype:GetBossHP(cId)
+function bossModPrototype:GetBossHealth(cid)
+	if #bossHealth == 0 then return 1 end
+	local health
+	for i, v in pairs(bossHealth) do
+		if i == cid then
+			health = v
+		end
+	end
+	return health
+end
+
+function bossModPrototype:GetHighestBossHealth()
+	if #bossHealth == 0 then return 1 end
+	local highestBossHealth = 0
+	for i, v in pairs(bossHealth) do
+		if v > highestBossHealth then
+			highestBossHealth = v
+		end
+	end
+	return highestBossHealth
+end
+
+function bossModPrototype:GetTargetBossHP(cId)
 	for i = 1, 5 do
 		local guid = UnitGUID("boss"..i)
 		if guid and tonumber(guid:sub(6, 10), 16) == cId then
@@ -5199,38 +5240,6 @@ function bossModPrototype:GetBossHP(cId)
 		end
 	end
 	return nil
-end
-
-function bossModPrototype:GetLowestBossHealth()
-	local lowestBossHealth = 1
-	for i, v in pairs(bossHealth) do
-		if v < lowestBossHealth then
-			lowestBossHealth = v
-		end
-	end
-	return lowestBossHealth
-end
-
-function bossModPrototype:GetHighestBossHealth()
-	if #bossHealth == 0 then return 1 end
-	local highestBossHealth = 0
-	for i, v in pairs(bossHealth) do
-		if v > highestBossHealth then
-			highestBossHealth = v
-		end
-	end
-	return highestBossHealth
-end
-
-function bossModPrototype:GetBossHealthByCID(cid)
-	if #bossHealth == 0 then return 1 end
-	local health
-	for i, v in pairs(bossHealth) do
-		if i == cid then
-			health = v
-		end
-	end
-	return health
 end
 
 -----------------------
@@ -6794,7 +6803,7 @@ function bossModPrototype:SetDetectCombatInVehicle(flag)
 end
 
 function bossModPrototype:SetCreatureID(...)
-	self.creatureId = ...
+	self.creatureId = select(1, ...)
 	if select("#", ...) > 1 then
 		self.multiMobPullDetection = {...}
 		if self.combatInfo then
