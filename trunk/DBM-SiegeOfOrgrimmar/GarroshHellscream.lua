@@ -117,9 +117,9 @@ mod:AddSetIconOption("SetIconOnMalice", 147209, false)
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("RangeFrame")
 
+mod:Phase(1)
 local firstIronStar = false
 local engineerDied = 0
-local phase = 1
 local UnitExists, UnitDebuff = UnitExists, UnitDebuff
 local whirlCount = 0
 local desecrateCount = 0
@@ -161,7 +161,7 @@ function mod:DesecrateTarget(targetname, uId)
 		specWarnDesecrateYou:Show()
 		yellDesecrate:Yell()
 	else
-		if self:IsDifficulty("heroic10", "heroic25") and phase == 1 then return end--On heroic, All strat stack in weapon in phase 1 and don't want to move. Phase 2-3 all player want to run from weapon
+		if self:IsDifficulty("heroic10", "heroic25") and self:Phase() == 1 then return end--On heroic, All strat stack in weapon in phase 1 and don't want to move. Phase 2-3 all player want to run from weapon
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local x, y = GetPlayerMapPosition(targetname)
@@ -180,7 +180,7 @@ end
 function mod:OnCombatStart(delay)
 	firstIronStar = false
 	engineerDied = 0
-	phase = 1
+	self:Phase(1)
 	whirlCount = 0
 	desecrateCount = 0
 	mindControlCount = 0
@@ -267,9 +267,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			specWarnEmpDesecrate:Show(desecrateCount)
 		end
-		if phase == 1 then
+		if self:Phase() == 1 then
 			timerDesecrateCD:Start(41, desecrateCount+1)
-		elseif phase == 3 then
+		elseif self:Phase() == 3 then
 			timerDesecrateCD:Start(25, desecrateCount+1)
 		else--Phase 2
 			timerDesecrateCD:Start(nil, desecrateCount+1)
@@ -278,7 +278,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(145065, 145171) then
 		mindControlCount = mindControlCount + 1
 		specWarnTouchOfYShaarj:Show()
-		if phase == 3 then
+		if self:Phase() == 3 then
 			if mindControlCount == 1 then--First one in phase is shorter than rest (well that or rest are delayed because of whirling)
 				timerTouchOfYShaarjCD:Start(35, mindControlCount+1)
 				countdownTouchOfYShaarj:Start(35)
@@ -416,7 +416,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownWhirlingCorruption:Cancel()
 	elseif spellId == 144956 then--Jump To Ground (intermission ending)
 		if timerEnterRealm:GetTime() > 0 then--first cast, phase2 trigger.
-			phase = 2
+			self:Phase(2)
 			warnPhase2:Show()
 		else
 			whirlCount = 0
@@ -432,7 +432,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	--"<556.9 21:41:56> [UNIT_SPELLCAST_SUCCEEDED] Garrosh Hellscream [[boss1:Realm of Y'Shaarj::0:145647]]", -- [169886]
 	elseif spellId == 145647 then--Phase 3 trigger
-		phase = 3
+		self:Phase(3)
 		whirlCount = 0
 		desecrateCount = 0
 		mindControlCount = 0
@@ -449,7 +449,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerWhirlingCorruptionCD:Start(44.5, 1)
 		countdownWhirlingCorruption:Start(44.5)
 	elseif spellId == 146984 then--Phase 4 trigger
-		phase = 4
+		self:Phase(4)
 		timerEnterRealm:Cancel()
 		timerDesecrateCD:Cancel()
 		timerTouchOfYShaarjCD:Cancel()
