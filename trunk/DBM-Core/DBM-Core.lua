@@ -2889,6 +2889,12 @@ do
 		end
 	end
 
+	whisperSyncHandlers["VI"] = function(sender, mod, name, value)
+		mod = DBM:GetModByName(mod or "")
+		value = tonumber(value) or value
+		DBM:ReceiveVariableInfo(sender, mod, name, value)
+	end
+
 	local function handleSync(channel, sender, prefix, ...)
 		if not prefix then
 			return
@@ -3851,6 +3857,12 @@ do
 			end
 		end
 	end
+
+	function DBM:ReceiveVariableInfo(sender, mod, name, value)
+		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
+			mod.variables[name] = value
+		end
+	end
 end
 
 do
@@ -3879,6 +3891,7 @@ do
 		mod = mod or inCombat[1]
 		self:SendCombatInfo(mod, target)
 		self:SendTimerInfo(mod, target)
+		self:SendVariableInfo(mod, target)
 	end
 end
 
@@ -3913,6 +3926,15 @@ function DBM:SendTimerInfo(mod, target)
 			if timeLeft > 0 and totalTime > 0 then
 				SendAddonMessage("D4", ("TI\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
 			end
+		end
+	end
+end
+
+function DBM:SendVariableInfo(mod, target)
+	for vname, v in pairs(mod.variables) do
+		local v2 = tostring(v)
+		if v2 then
+			SendAddonMessage("D4", ("VI\t%s\t%s\t%s"):format(mod.id, vname, v2), "WHISPER", target)
 		end
 	end
 end
@@ -4366,6 +4388,7 @@ do
 				specwarns = {},
 				timers = {},
 				countdowns = {},
+				variables = {},
 				modId = modId,
 				instanceId = instanceId,
 				revision = 0,
@@ -6817,9 +6840,9 @@ end
 
 function bossModPrototype:Phase(set)
 	if set then
-		self.phase = set
+		self.variables.phase = set
 	else
-		return self.phase
+		return self.variables.phase
 	end
 end
 

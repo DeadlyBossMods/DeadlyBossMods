@@ -76,7 +76,7 @@ local timerAssemblyLineCD				= mod:NewNextCountTimer("OptionVersion2", 40, "ej82
 local timerPatternRecognition			= mod:NewBuffFadesTimer("OptionVersion2", 60, 144236, nil, false)
 --local timerDisintegrationLaserCD		= mod:NewNextCountTimer(10, 143867)
 --local timerShockwaveMissileActive		= mod:NewBuffActiveTimer(30, 143639)
-local timerShockwaveMissileCD			= mod:NewNextCountTimer(15, 143641)
+--local timerShockwaveMissileCD			= mod:NewNextCountTimer(40, 143641)
 local timerLaserFixate					= mod:NewBuffFadesTimer(15, 143828)
 local timerBreakinPeriod				= mod:NewTargetTimer(60, 145269, nil, false)--Many mines can be up at once so timer off by default do to spam
 local timerMagneticCrush				= mod:NewBuffActiveTimer(30, 144466)
@@ -188,9 +188,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnShockwaveMissileActive:Show()
 --		timerShockwaveMissileActive:Start()
 		missileCount = 0
-		if not shockwaveOvercharged then--Works differently on heroic, different timing when overcharged, need a bigger sample size though since a ptr pug always wiped to this i didn't get heroic timing other than to find it's not 15
-			timerShockwaveMissileCD:Start(3, 1)
-		end
+		--if not shockwaveOvercharged then--Works differently on heroic, different timing when overcharged, need a bigger sample size though since a ptr pug always wiped to this i didn't get heroic timing other than to find it's not 15
+			--timerShockwaveMissileCD:Start(3, 1)
+		--end
 	elseif args.spellId == 145774 then
 		warnOvercharge:Show(args.destName)
 		specWarnOvercharge:Show(args.destName)
@@ -207,9 +207,9 @@ function mod:SPELL_SUMMON(args)
 	if args.spellId == 143641 then--Missile Launching
 		missileCount = missileCount + 1
 		warnShockwaveMissile:Show(missileCount)
-		if not shockwaveOvercharged then
-			timerShockwaveMissileCD:Start(nil, missileCount+1)
-		end
+		--if not shockwaveOvercharged then
+			--timerShockwaveMissileCD:Start(nil, missileCount+1)
+		--end
 	end
 end
 
@@ -255,7 +255,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if laserCount < 3 then--Seems each laser construction casts 3 times, then disapears.
 			timerDisintegrationLaserCD:Start(nil, laserCount+1)
 		end--]]
-	elseif args.spellId == 144466 and self:AntiSpam(30, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
+	elseif args.spellId == 144466 and self:AntiSpam(35, 1) then--Only way i see to detect magnet activation, antispam is so it doesn't break if a player dies during it.
 		warnMagneticCrush:Show()
 		specWarnMagneticCrush:Show()
 		timerMagneticCrush:Start()
@@ -274,7 +274,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args.spellId == 145269 then
 		timerBreakinPeriod:Cancel(args.destName, args.destGUID)
 	elseif args.spellId == 143639 then
-		timerShockwaveMissileCD:Cancel()
+		--timerShockwaveMissileCD:Cancel()
 	end
 end
 

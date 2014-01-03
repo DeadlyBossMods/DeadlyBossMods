@@ -183,6 +183,7 @@ local readyToFight = GetSpellInfo(143542)
 local mutateCount = 0
 local aimCount = 0
 local parasitesActive = 0
+local whirlScanCount = 0
 local aimActive = false
 local mutateActive = false
 local toxicInjection = false--Workaround blizzard bug
@@ -242,42 +243,36 @@ local function DFAScan()
 	end
 end
 
-do
-	local whirlScanCount = 0
-
-	local function whirlingScan()
-		whirlScanCount = whirlScanCount + 1
-		if whirlScanCount < 80 then -- scan for 20s.
-			for i = 1, 5 do
-				local unitID = "boss"..i
-				if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71154 then
-					if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
-						mod:Unschedule(whirlingScan)
-						local targetname = DBM:GetUnitFullName(unitID.."target")
-						warnWhirling:Show(targetname)
-						if UnitIsUnit(unitID.."target", "player") then
-							specWarnWhirling:Show()
-							yellWhirling:Yell()
-						else
-							local x, y = GetPlayerMapPosition(unitID.."target")
-							if x == 0 and y == 0 then
-								SetMapToCurrentZone()
-								x, y = GetPlayerMapPosition(unitID.."target")
-							end
-							local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-							if inRange and inRange < 10 then
-								specWarnWhirlingNear:Show(targetname)
-							end
-						end
+local function whirlingScan()
+	whirlScanCount = whirlScanCount + 1
+	if whirlScanCount < 80 then -- scan for 20s.
+		for i = 1, 5 do
+			local unitID = "boss"..i
+			if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71154 then
+				if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
+					mod:Unschedule(whirlingScan)
+					local targetname = DBM:GetUnitFullName(unitID.."target")
+					warnWhirling:Show(targetname)
+					if UnitIsUnit(unitID.."target", "player") then
+						specWarnWhirling:Show()
+						yellWhirling:Yell()
 					else
-						mod:Schedule(0.25, whirlingScan)
+						local x, y = GetPlayerMapPosition(unitID.."target")
+						if x == 0 and y == 0 then
+							SetMapToCurrentZone()
+							x, y = GetPlayerMapPosition(unitID.."target")
+						end
+						local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+						if inRange and inRange < 10 then
+							specWarnWhirlingNear:Show(targetname)
+						end
 					end
-					return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
 				end
 			end
-		else
-			mod:Unschedule(whirlingScan)
 		end
+		mod:Schedule(0.25, whirlingScan)
+	else
+		mod:Unschedule(whirlingScan)
 	end
 end
 

@@ -405,7 +405,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDesecrateCD:Cancel()
 		timerHellscreamsWarsongCD:Cancel()
 		specWarnSiegeEngineer:Cancel()
-		timerEnterRealm:Start(25)
+		if self:Phase() == 1 then
+			timerEnterRealm:Start(25)
+		end
 	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
 		timerPowerIronStar:Cancel()
 		countdownPowerIronStar:Cancel()
