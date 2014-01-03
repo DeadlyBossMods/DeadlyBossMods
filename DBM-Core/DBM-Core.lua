@@ -2386,7 +2386,7 @@ do
 		end
 		if DBM.Options.DebugMode then
 			local name = DBM:GetFullPlayerNameByGUID(iconSetPerson[optionName])
-			print(name.." was elected icon setter for "..optionName)
+			print("DBM Debug: "..name.." was elected icon setter for "..optionName)
 		end
 	end
 
@@ -3102,7 +3102,7 @@ do
 
 	function DBM:ENCOUNTER_START(encounterID, name, difficulty, size)
 		if DBM.Options.DebugMode then
-			print("ENCOUNTER_START event fired:", encounterID, name, difficulty, size)
+			print("DBM Debug: ENCOUNTER_START event fired:", encounterID, name, difficulty, size)
 		end
 		if combatInfo[LastInstanceMapID] then
 			for i, v in ipairs(combatInfo[LastInstanceMapID]) do
@@ -3131,7 +3131,7 @@ do
 	
 	function DBM:ENCOUNTER_END(encounterID, name, difficulty, size, success)
 		if DBM.Options.DebugMode then
-			print("ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
+			print("DBM Debug: ENCOUNTER_END event fired:", encounterID, name, difficulty, size, success)
 		end
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
@@ -3270,7 +3270,7 @@ function checkWipe(confirm)
 			for i = #inCombat, 1, -1 do
 				if DBM.Options.DebugMode then
 					local reason = (wipe == 1 and "No combat unit found in your party." or "No boss found : "..(wipe or "nil"))
-					print("You wiped. Reason : "..reason)
+					print("DBM Debug: You wiped. Reason : "..reason)
 				end
 				DBM:EndCombat(inCombat[i], true)
 			end
@@ -3300,9 +3300,9 @@ local statVarTable = {
 function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 	if DBM.Options.DebugMode and not mod.inCombat then
 		if event then
-			print("DBM:StartCombat called by : "..event)
+			print("DBM Debug: StartCombat called by : "..event)
 		else
-			print("DBM:StartCombat called by individual mod or unknown reason.")
+			print("DBM Debug: StartCombat called by individual mod or unknown reason.")
 		end
 	end
 	cSyncSender = {}
@@ -3566,7 +3566,13 @@ function DBM:EndCombat(mod, wipe)
 					if scenario then
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(mod.combatInfo.name or ""))
 					else
-						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), wipeHP)
+						local hpText
+						if mod.phase then
+							hpText = wipeHP.."("..mod.phase..")"
+						else
+							hpText = wipeHP
+						end
+						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText)
 					end
 				end
 				sendWhisper(k, msg)
@@ -6809,6 +6815,14 @@ function bossModPrototype:IsInCombat()
 	return self.inCombat
 end
 
+function bossModPrototype:Phase(set)
+	if set then
+		self.phase = set
+	else
+		return self.phase
+	end
+end
+
 function bossModPrototype:SetMinCombatTime(t)
 	self.minCombatTime = t
 end
@@ -6942,7 +6956,7 @@ do
 		table.wipe(iconSortTable)
 		iconSet = 0
 		if DBM.Options.DebugMode then
-			print("iconSortTable cleared")
+			print("DBM Debug: iconSortTable cleared")
 		end
 	end
 
