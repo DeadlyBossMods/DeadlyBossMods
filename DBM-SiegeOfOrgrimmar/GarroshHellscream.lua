@@ -54,6 +54,7 @@ local warnIronStarSpawn				= mod:NewSpellAnnounce(147047, 2)
 --Stage 1: The True Horde
 local specWarnDesecrate				= mod:NewSpecialWarningCount(144748, nil, nil, nil, 2)
 local specWarnDesecrateYou			= mod:NewSpecialWarningYou(144748)
+local specWarnDesecrateNear			= mod:NewSpecialWarningClose(144748)
 local yellDesecrate					= mod:NewYell(144748)
 local specWarnHellscreamsWarsong	= mod:NewSpecialWarningSpell(144821, mod:IsTank() or mod:IsHealer())
 local specWarnExplodingIronStar		= mod:NewSpecialWarningSpell(144798, nil, nil, nil, 3)
@@ -159,6 +160,20 @@ function mod:DesecrateTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnDesecrateYou:Show()
 		yellDesecrate:Yell()
+	else
+		if self:IsDifficulty("heroic10", "heroic25") and phase == 1 then return end--On heroic, All strat stack in weapon in phase 1 and don't want to move. Phase 2-3 all player want to run from weapon
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if uId then
+			local x, y = GetPlayerMapPosition(targetname)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(targetname)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 15 then
+				specWarnDesecrateNear:Show(targetname)
+			end
+		end
 	end
 end
 
