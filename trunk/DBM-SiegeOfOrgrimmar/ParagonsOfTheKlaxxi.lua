@@ -172,23 +172,23 @@ mod:AddBoolOption("AimArrow", false)
 
 local activatedTargets = {}--A table, for the 3 on pull
 local activeBossGUIDS = {}
-local UnitDebuff = UnitDebuff
-local GetSpellInfo = GetSpellInfo
-local calculatedShape = nil
-local calculatedNumber = nil
-local calculatedColor = nil
-local mathNumber = 100
-local calculatingDude = EJ_GetSectionInfo(8012)
-local readyToFight = GetSpellInfo(143542)
-local mutateCount = 0
-local aimCount = 0
-local parasitesActive = 0
-local whirlCast = 0
+--Upvales, don't need variables
+local UnitDebuff, GetSpellInfo = UnitDebuff, GetSpellInfo
+local calculatingDude, readyToFight = EJ_GetSectionInfo(8012), GetSpellInfo(143542)
+--Always nil before cast, don't need variables
+local calculatedShape, calculatedNumber, calculatedColor  = nil, nil, nil
 local lastWhirl = nil
-
+--Not important
+local mathNumber = 100
+--Important variables to recover
+mod.variables.mutateCount = 0
+mod.variables.aimCount = 0
+mod.variables.parasitesActive = 0
+mod.variables.whirlCast = 0
+--Maybe need variables?
 local aimActive = false
 local mutateActive = false
-local toxicInjection = false--Workaround blizzard bug
+local toxicInjection = false--Workaround blizzard bug (double check if hotfix live and if workaround still needed on heroic)
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -245,8 +245,8 @@ local function whirlingScan()
 				local targetname = DBM:GetUnitFullName(unitID.."target")
 				if targetname ~= lastWhirl then
 					lastWhirl = targetname
-					whirlCast = whirlCast + 1
-					warnWhirling:Show(whirlCast, targetname)
+					mod.variables.whirlCast = mod.variables.whirlCast + 1
+					warnWhirling:Show(mod.variables.whirlCast, targetname)
 					if UnitIsUnit(unitID.."target", "player") then
 						specWarnWhirling:Show()
 						yellWhirling:Yell()
@@ -257,7 +257,7 @@ local function whirlingScan()
 			end
 		end
 	end
-	if whirlCast < 3 then
+	if mod.variables.whirlCast < 3 then
 		mod:Schedule(0.25, whirlingScan)
 	else
 		mod:Unschedule(whirlingScan)
@@ -320,9 +320,9 @@ function mod:OnCombatStart(delay)
 	calculatedShape = nil
 	calculatedNumber = nil
 	calculatedColor = nil
-	mutateCount = 0
-	aimCount = 0
-	parasitesActive = 0
+	self.variables.mutateCount = 0
+	self.variables.aimCount = 0
+	self.variables.parasitesActive = 0
 	aimActive = false
 	mutateActive = false
 	toxicInjection = false
@@ -490,7 +490,7 @@ function mod:SPELL_CAST_START(args)
 		warnFlash:Show()
 		specWarnFlash:Show()
 		timerFlashCD:Start()
-		whirlCast = 0
+		self.variables.whirlCast = 0
 		lastWhirl = nil
 		whirlingScan()
 		if self.Options.RangeFrame then
@@ -522,9 +522,9 @@ function mod:SPELL_CAST_START(args)
 		for i = 1, 5 do
 			local bossUnitID = "boss"..i
 			if UnitExists(bossUnitID) and UnitGUID(bossUnitID) == args.sourceGUID and UnitDetailedThreatSituation("player", bossUnitID) then
-				local elapsed, total = timerMutateCD:GetTime(mutateCount+1)
+				local elapsed, total = timerMutateCD:GetTime(self.variables.mutateCount+1)
 				local remaining = total - elapsed
-				if self:IsDifficulty("heroic10", "heroic25") and (remaining < 20) and (parasitesActive < 3) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
+				if self:IsDifficulty("heroic10", "heroic25") and (remaining < 20) and (self.variables.parasitesActive < 3) and not UnitDebuff("player", GetSpellInfo(143339)) then--We need more parasites to spawn with this attack
 					specWarnMoreParasites:Show()
 				else--We want to block attack and not spawn anything
 					specWarnInjection:Show()
@@ -615,8 +615,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerHurlAmberCD:Start()
 	elseif args.spellId == 143337 then
 		if self:AntiSpam(2, 3) then
-			mutateCount = mutateCount + 1
-			timerMutateCD:Start(nil, mutateCount+1)
+			self.variables.mutateCount = self.variables.mutateCount + 1
+			timerMutateCD:Start(nil, self.variables.mutateCount+1)
 			if self.Options.RangeFrame then
 				mutateActive = false
 				if not aimActive then
@@ -625,7 +625,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:Schedule(26.5, showRangeFrame)--Show about 5 seconds before mutate cast
 			end
 		end
-		warnMutate:CombinedShow(0.5, mutateCount, args.destName)
+		warnMutate:CombinedShow(0.5, self.variables.mutateCount, args.destName)
 		if args.IsPlayer() then
 			specWarnMutate:Show()
 			timerMutate:Start()
@@ -633,15 +633,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 143358 and args.IsPlayer() then
 		specWarnParasiteFixate:Show()
 	elseif args.spellId == 142948 then
-		aimCount = aimCount + 1
+		self.variables.aimCount = self.variables.aimCount + 1
 		aimActive = true
-		warnAim:Show(aimCount, args.destName)
+		warnAim:Show(self.variables.aimCount, args.destName)
 		if self:IsDifficulty("lfr25") then
 			timerAim:Start(7, args.destName)
 		else
 			timerAim:Start(nil, args.destName)
 		end
-		timerAimCD:Start(nil, aimCount+1)
+		timerAimCD:Start(nil, self.variables.aimCount+1)
 		if args.IsPlayer() then
 			specWarnAim:Show()
 			yellAim:Yell()
@@ -685,7 +685,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args.spellId == 143339 then
-		parasitesActive = parasitesActive + 8
+		self.variables.parasitesActive = self.variables.parasitesActive + 8
 	elseif args.spellId == 142671 and self.Options.SetIconOnMesmerize then
 		self:SetIcon(args.destName, 0)
 	end
@@ -738,8 +738,8 @@ function mod:UNIT_DIED(args)
 		timerAimCD:Cancel()
 		timerRapidFireCD:Cancel()
 	elseif cid == 71578 then--Amber Parasite
-		parasitesActive = parasitesActive - 1
-		warnParasitesLeft:Show(parasitesActive)
+		self.variables.parasitesActive = self.variables.parasitesActive - 1
+		warnParasitesLeft:Show(self.variables.parasitesActive)
 	elseif cid == 71156 then--Kaz'tik the Manipulator
 		timerMesmerizeCD:Cancel()
 	end
