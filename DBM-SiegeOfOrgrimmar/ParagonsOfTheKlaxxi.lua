@@ -226,16 +226,8 @@ local function DFAScan()
 				if UnitIsUnit(unitID.."target", "player") then
 					specWarnDeathFromAbove:Show()
 					yellDeathFromAbove:Yell()
-				else
-					local x, y = GetPlayerMapPosition(unitID.."target")
-					if x == 0 and y == 0 then
-						SetMapToCurrentZone()
-						x, y = GetPlayerMapPosition(unitID.."target")
-					end
-					local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-					if inRange and inRange < 6 then
-						specWarnDeathFromAboveNear:Show(targetname)
-					end
+				elseif mod:CheckNearby(6, targetname) then
+					specWarnDeathFromAboveNear:Show(targetname)
 				end
 			else
 				mod:Schedule(0.25, DFAScan)
@@ -258,16 +250,8 @@ local function whirlingScan()
 					if UnitIsUnit(unitID.."target", "player") then
 						specWarnWhirling:Show()
 						yellWhirling:Yell()
-					else
-						local x, y = GetPlayerMapPosition(unitID.."target")
-						if x == 0 and y == 0 then
-							SetMapToCurrentZone()
-							x, y = GetPlayerMapPosition(unitID.."target")
-						end
-						local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-						if inRange and inRange < 10 then
-							specWarnWhirlingNear:Show(targetname)
-						end
+					elseif mod:CheckNearby(10, targetname) then
+						specWarnWhirlingNear:Show(targetname)
 					end
 				end
 			end

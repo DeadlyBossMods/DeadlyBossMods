@@ -120,19 +120,8 @@ function mod:DeathFromAboveTarget(sGUID)
 	warnDeathFromAbove:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnDeathFromAbove:Show()
-	else
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local x, y = GetPlayerMapPosition(targetname)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(targetname)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 10 then
-				specWarnDeathFromAboveNear:Show(targetname)
-			end
-		end
+	elseif self:CheckNearby(10, targetname) then
+		specWarnDeathFromAboveNear:Show(targetname)
 	end
 end
 

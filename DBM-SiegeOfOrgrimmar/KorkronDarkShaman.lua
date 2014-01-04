@@ -105,18 +105,8 @@ function mod:ToxicStormTarget(targetname, uId)
 	if targetname == UnitName("player") then
 		specWarnToxicStorm:Show()
 		yellToxicStorm:Yell()
-	else
-		if uId then
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 8 then--Range guesswork
-				specWarnToxicStormNear:Show(targetname)
-			end
-		end
+	elseif self:CheckNearby(8, targetname) then
+		specWarnToxicStormNear:Show(targetname)
 	end
 end
 
