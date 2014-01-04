@@ -4861,6 +4861,22 @@ function bossModPrototype:ScanForMobs(creatureID, iconSetMethod, mobIcon, maxIco
 	end
 end
 
+function bossModPrototype:CheckNearby(range, targetname)
+	local uId = DBM:GetRaidUnitId(targetname)
+	if uId then
+		local x, y = GetPlayerMapPosition(targetname)
+		if x == 0 and y == 0 then
+			SetMapToCurrentZone()
+			x, y = GetPlayerMapPosition(targetname)
+		end
+		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+		if inRange and inRange < range then
+			return true
+		end
+	end
+	return false
+end
+
 --Now this function works perfectly. But have some limitation due to DBM.RangeCheck:GetDistance() function.
 --Unfortunely, DBM.RangeCheck:GetDistance() function cannot reflects altitude difference. This makes range unreliable.
 --So, we need to cafefully check range in difference altitude (Espcially, tower top and bottom)
