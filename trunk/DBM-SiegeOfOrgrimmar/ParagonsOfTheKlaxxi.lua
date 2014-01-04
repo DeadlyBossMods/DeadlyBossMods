@@ -57,7 +57,7 @@ local warnCalculated				= mod:NewTargetAnnounce(144095, 3)--Wild variation on ti
 local warnInsaneCalculationFire		= mod:NewCastAnnounce(142416, 4)--3 seconds after 144095
 --Ka'roz the Locust
 local warnFlash						= mod:NewCastAnnounce(143701, 3, 2)--62-70
-local warnWhirling					= mod:NewTargetAnnounce("OptionVersion3", 143701, 3)
+local warnWhirling					= mod:NewTargetCountAnnounce(143701, 3)
 local warnHurlAmber					= mod:NewSpellAnnounce(143759, 3)
 --Skeer the Bloodseeker
 local warnBloodletting				= mod:NewSpellAnnounce(143280, 4)
@@ -183,7 +183,9 @@ local readyToFight = GetSpellInfo(143542)
 local mutateCount = 0
 local aimCount = 0
 local parasitesActive = 0
-local whirlScanCount = 0
+local whirlCast = 0
+local lastWhirl = nil
+
 local aimActive = false
 local mutateActive = false
 local toxicInjection = false--Workaround blizzard bug
@@ -244,15 +246,15 @@ local function DFAScan()
 end
 
 local function whirlingScan()
-	whirlScanCount = whirlScanCount + 1
-	if whirlScanCount < 80 then -- scan for 20s.
-		for i = 1, 5 do
-			local unitID = "boss"..i
-			if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71154 then
-				if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
-					mod:Unschedule(whirlingScan)
-					local targetname = DBM:GetUnitFullName(unitID.."target")
-					warnWhirling:Show(targetname)
+	for i = 1, 5 do
+		local unitID = "boss"..i
+		if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71154 then
+			if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
+				local targetname = DBM:GetUnitFullName(unitID.."target")
+				if targetname ~= lastWhirl then
+					lastWhirl = targetname
+					whirlCast = whirlCast + 1
+					warnWhirling:Show(whirlCast, targetname)
 					if UnitIsUnit(unitID.."target", "player") then
 						specWarnWhirling:Show()
 						yellWhirling:Yell()
@@ -270,6 +272,8 @@ local function whirlingScan()
 				end
 			end
 		end
+	end
+	if whirlCast < 3 then
 		mod:Schedule(0.25, whirlingScan)
 	else
 		mod:Unschedule(whirlingScan)
@@ -502,7 +506,8 @@ function mod:SPELL_CAST_START(args)
 		warnFlash:Show()
 		specWarnFlash:Show()
 		timerFlashCD:Start()
-		whirlScanCount = 0
+		whirlCast = 0
+		lastWhirl = nil
 		whirlingScan()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
