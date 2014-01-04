@@ -58,6 +58,7 @@ local warnDarkMeditation			= mod:NewSpellAnnounce(143546, 2)--Activation
 --Rook Stonetoe
 local specWarnVengefulStrikes		= mod:NewSpecialWarningSpell(144396, mod:IsTank())
 local specWarnClash					= mod:NewSpecialWarningYou(143027)
+local specWarnKick					= mod:NewSpecialWarningMove(143007, not mod:IsTank())
 local specWarnCorruptedBrew			= mod:NewSpecialWarningYou(143019)
 local yellCorruptedBrew				= mod:NewYell(143019)
 local specWarnCorruptedBrewNear		= mod:NewSpecialWarningClose(143019)
@@ -297,6 +298,8 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 		specWarnDefiledGround:Show()
 	elseif spellId == 144367 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 4) then
 		specWarnNoxiousPoison:Show()
+	elseif spellId == 143009 and destGUID == UnitGUID("player") and self:AntiSpam(1.5, 5) then
+		specWarnKick:Show()
 	end
 end
 mod.SPELL_MISSED = mod.SPELL_DAMAGE

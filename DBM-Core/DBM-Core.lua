@@ -5574,6 +5574,10 @@ do
 		return newAnnounce(self, "ends", spellId, color or 3, ...)
 	end
 
+	function bossModPrototype:NewEndTargetAnnounce(spellId, color, ...)
+		return newAnnounce(self, "endtarget", spellId, color or 3, ...)
+	end
+
 	function bossModPrototype:NewFadesAnnounce(spellId, color, ...)
 		return newAnnounce(self, "fades", spellId, color or 3, ...)
 	end
