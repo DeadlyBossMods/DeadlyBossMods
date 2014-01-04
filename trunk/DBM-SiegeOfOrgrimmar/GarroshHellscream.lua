@@ -155,24 +155,17 @@ end
 
 function mod:DesecrateTarget(targetname, uId)
 	if not targetname then return end
-	if self:IsTanking(uId) then return end--Never targets tanks
 	warnDesecrate:Show(targetname)
-	if targetname == UnitName("player") then
+	if targetname == UnitName("player") and not self:IsTanking(uId) then--Never targets tanks
 		specWarnDesecrateYou:Show()
 		yellDesecrate:Yell()
+	elseif self:Phase() ~= 1 and self:CheckNearby(20, targetname) then
+		specWarnDesecrateNear:Show(targetname)
 	else
-		if self:IsDifficulty("heroic10", "heroic25") and self:Phase() == 1 then return end--On heroic, All strat stack in weapon in phase 1 and don't want to move. Phase 2-3 all player want to run from weapon
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local x, y = GetPlayerMapPosition(targetname)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(targetname)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
-			if inRange and inRange < 20 then
-				specWarnDesecrateNear:Show(targetname)
-			end
+		if UnitPower("boss1") < 75 then
+			specWarnDesecrate:Show(desecrateCount)
+		else
+			specWarnEmpDesecrate:Show(desecrateCount)
 		end
 	end
 end
@@ -262,11 +255,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(144748, 144749) then
 		desecrateCount = desecrateCount + 1
-		if args.spellId == 144748 then
-			specWarnDesecrate:Show(desecrateCount)
-		else
-			specWarnEmpDesecrate:Show(desecrateCount)
-		end
 		if self:Phase() == 1 then
 			timerDesecrateCD:Start(41, desecrateCount+1)
 		elseif self:Phase() == 3 then
