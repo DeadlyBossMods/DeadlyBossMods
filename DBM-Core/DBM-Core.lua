@@ -3307,7 +3307,7 @@ function checkBossHealth()
 	if #inCombat > 0 then
 		for i, v in ipairs(inCombat) do
 			if not v.multiMobPullDetection or v.mainBoss then
-				DBM:GetBossHP(v.mainBoss or v.combatInfo.mob)
+				DBM:GetBossHP(v.mainBoss or v.combatInfo.mob or -1)
 			else
 				for _, mob in ipairs(v.multiMobPullDetection) do
 					DBM:GetBossHP(mob)
@@ -3381,9 +3381,9 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		if syncedStartHp and syncedStartHp < 1 then
 			syncedStartHp = syncedStartHp * 100
 		end
-		local startHp = syncedStartHp or mod:GetBossHP(mod.mainBoss or mod.combatInfo.mob) or 0
+		local startHp = syncedStartHp or mod:GetBossHP(mod.mainBoss or mod.combatInfo.mob or -1) or 0
 		--check boss engaged first?
-		if (savedDifficulty == "worldboss" and startHp < 98) or (event == "UNIT_HEALTH" and delay) or event == "TIMER_RECOVERY" then--Boss was not full health when engaged, disable combat start timer and kill record
+		if (savedDifficulty == "worldboss" and startHp < 98) or (event == "UNIT_HEALTH" and delay > 4) or event == "TIMER_RECOVERY" then--Boss was not full health when engaged, disable combat start timer and kill record
 			mod.ignoreBestkill = true
 		elseif mod.inScenario then
 			local _, currentStage, numStages = C_Scenario.GetInfo()
@@ -3411,6 +3411,7 @@ function DBM:StartCombat(mod, delay, event, synced, syncedStartHp)
 		elseif not mod.inScenario then
 			self:Schedule(1, checkBossHealth)
 		end
+		self:Schedule(1, checkBossHealth)
 		--process global options
 		self:ToggleRaidBossEmoteFrame(1)
 		self:StartLogging(0, nil)
@@ -5274,10 +5275,10 @@ end
 function bossModPrototype:GetHighestBossHealth()
 	local hp
 	if not self.multiMobPullDetection or self.mainBoss then
-		hp = bossHealth[self.mainBoss or self.combatInfo.mob]
+		hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
 	else
 		for _, mob in ipairs(self.multiMobPullDetection) do
-			if (bossHealth[mob] or 0) > (hp or 0) then
+			if (bossHealth[mob] or 0) > (hp or 0) and (bossHealth[mob] or 0) < 100 then-- ignore full health.
 				hp = bossHealth[mob]
 			end
 		end
@@ -5288,10 +5289,10 @@ end
 function bossModPrototype:GetLowestBossHealth()
 	local hp
 	if not self.multiMobPullDetection or self.mainBoss then
-		hp = bossHealth[self.mainBoss or self.combatInfo.mob]
+		hp = bossHealth[self.mainBoss or self.combatInfo.mob or -1]
 	else
 		for _, mob in ipairs(self.multiMobPullDetection) do
-			if (bossHealth[mob] or 100) < (hp or 100) then
+			if (bossHealth[mob] or 100) < (hp or 100) and (bossHealth[mob] or 100) > 0 then-- ignore zero health.
 				hp = bossHealth[mob]
 			end
 		end
@@ -6863,7 +6864,7 @@ function bossModPrototype:SetDetectCombatInVehicle(flag)
 end
 
 function bossModPrototype:SetCreatureID(...)
-	self.creatureId = select(1, ...)
+	self.creatureId = ...
 	if select("#", ...) > 1 then
 		self.multiMobPullDetection = {...}
 		if self.combatInfo then
