@@ -199,97 +199,6 @@ function updateBar(bar, percent, icon, dontShowDead)
 end
 
 do
-	-- TODO: entries in these caches might never get deleted, worst case: one entry per added boss to the health frame; consider wiping these tables on remove of the corresponding bar or on hiding
-	local targetCache = {}
-	local targetGuidCache = {}
-	local function getCIDfromGUID(guid)
-		if not guid then
-			return -1
-		end
-		local cType = bit.band(guid:sub(0, 5), 0x00F)
-		return (cType == 3 or cType == 5) and tonumber(guid:sub(6, 10), 16) or -1
-	end
-
---	local function compareBars(b1, b2)
---		return b1.value > b2.value
---	end
-
-	-- gets the health and unit id of the given creature id, returns nil if the target could not be found
-	local function getHealth(cId)
-		local id = targetCache[cId] -- ask the cache if we already know where the mob is
-		if getCIDfromGUID(UnitGUID(id or "")) ~= cId then -- the cache doesn't know it or has invalid data, update it
-			targetCache[cId] = nil
-			-- check focus target
-			if getCIDfromGUID(UnitGUID("focus")) == cId then
-				targetCache[cId] = "focus"
-			else
-				-- just some hack to add support for boss unit ids
-				local found = false
-				for i = 1, 5 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
-					id = "boss"..i
-					if getCIDfromGUID(UnitGUID(id)) == cId then
-						found = true
-						targetCache[cId] = id
-						break
-					end
-				end
-				if not found then
-					-- check target and raid/party targets
-					local uId = (IsInRaid() and "raid") or "party"
-					for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
-						id = (i == 0 and "target") or uId..i.."target"
-						if getCIDfromGUID(UnitGUID(id or "")) == cId then
-							targetCache[cId] = id
-							break
-						end
-					end
-				end
-			end
-		end
-		-- UnitHealthMax is sometimes 0 for one frame when the unit just showed up; so we need to check this here due to stupid UI changes
-		if getCIDfromGUID(UnitGUID(id or "")) == cId and UnitHealthMax(id) ~= 0 then -- did we find the mob? if yes: update the health bar
-			return UnitHealth(id) / UnitHealthMax(id) * 100, id
-		end
-	end
-
-	-- gets the health and unit id of the given GUID, returns nil if the target could not be found
-	-- TODO: mostly copy & paste from getHealth, these functions should probably be merged somehow...
-	local function getHealthByGuid(guid)
-		local id = targetGuidCache[guid] -- ask the cache if we already know where the mob is
-		if UnitGUID(id or "") ~= guid then -- cache miss :(
-			targetGuidCache[guid] = nil
-			-- check focus target
-			if UnitGUID("focus") == guid then
-				targetGuidCache[guid] = "focus"
-			else
-				local found = false
-				for i = 1, 5 do -- are there really just boss1 to boss4? everyone seems to be assuming this...
-					id = "boss"..i
-					if UnitGUID(id) == guid then
-						found = true
-						targetGuidCache[guid] = id
-						break
-					end
-				end
-				if not found then
-				-- check target and raid/party targets
-					local uId = (IsInRaid() and "raid") or "party"
-					for i = 0, math.max(GetNumGroupMembers(), GetNumSubgroupMembers()) do
-						id = (i == 0 and "target") or uId..i.."target"
-						if UnitGUID(id or "") == guid then
-							targetGuidCache[guid] = id
-							break
-						end
-					end
-				end
-			end
-		end
-		-- blah, see above
-		if UnitGUID(id or "") == guid and UnitHealthMax(id) ~= 0  then -- did we find the mob? if yes: update the health bar
-			return UnitHealth(id) / UnitHealthMax(id) * 100, id
-		end
-	end
-
 	local t = 0
 	function updateFrame(self, e)
 		t = t + e
@@ -308,12 +217,12 @@ do
 --					v:Show()
 --				end
 				if type(v.id) == "number" then -- creature ID
-					local health, id = getHealth(v.id)
+					local health, id = DBM:GetBossHP(v.id)
 					if health then
 						updateBar(v, health, GetRaidTargetIndex(id))
 					end
 				elseif type(v.id) == "string" then -- GUID
-					local health, id = getHealthByGuid(v.id)
+					local health, id = DBM:GetBossHPByGUID(v.id)
 					if health then
 						updateBar(v, health, GetRaidTargetIndex(id))
 					end
@@ -321,7 +230,7 @@ do
 					-- TODO: it would be more efficient to scan all party/raid members for all IDs instead of going over all raid members n times
 					-- this is especially important for the cache
 					for j, id in ipairs(v.id) do
-						local health = getHealth(id)
+						local health = DBM:GetBossHP(id)
 						if health then
 							updateBar(v, health)
 							break
