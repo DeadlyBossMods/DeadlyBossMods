@@ -40,7 +40,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	timerTowerCD		= "Next Tower",
-	timerTowerGruntCD	= "Next tower grunt"
+	timerTowerGruntCD	= "Next Tower Grunt"
 })
 
 L:SetOptionLocalization({
