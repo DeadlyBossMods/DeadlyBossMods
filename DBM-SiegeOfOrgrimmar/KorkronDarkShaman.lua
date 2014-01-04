@@ -135,19 +135,8 @@ function mod:SPELL_CAST_START(args)
 		warnAshenWall:Show()
 		timerAshenWallCD:Start()
 		specWarnAshenWall:Show()
-	elseif args.spellId == 143973 then--No filter, damages entire raid
-		ashCount = ashCount + 1
-		warnFallingAsh:Show()
-		timerFallingAsh:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then--On heroic, base spell 1 second cast, not 2.
-			timerFallingAshCD:Start(16, ashCount+1)
-			specWarnFallingAsh:Schedule(13)--Give special warning 3 seconds before happens, not cast
-			countdownFallingAsh:Start(16)
-		else
-			timerFallingAshCD:Start(nil, ashCount+1)
-			specWarnFallingAsh:Schedule(14)--Give special warning 3 seconds before happens, not cast
-			countdownFallingAsh:Start(17)
-		end
+	elseif args.spellId == 143973 then--No filter, damages entire raid. / In split strat, this sometimes goes out of combatlog range. So use sync.
+		self:SendSync("FallingAsh")
 	elseif args.spellId == 144330 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
 		timerIronPrisonCD:Start()
 	elseif args.spellId == 144328 and self:CheckTankDistance(args:GetSrcCreatureID(), 50) then
@@ -237,6 +226,23 @@ function mod:SPELL_AURA_REMOVED(args)
 			specWarnIronPrison:Cancel()
 			yellIronPrisonFades:Cancel()
 			timerIronPrisonSelf:Cancel()
+		end
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "FallingAsh" then
+		ashCount = ashCount + 1
+		warnFallingAsh:Show()
+		timerFallingAsh:Start()
+		if self:IsDifficulty("heroic10", "heroic25") then--On heroic, base spell 1 second cast, not 2.
+			timerFallingAshCD:Start(16, ashCount+1)
+			specWarnFallingAsh:Schedule(13)--Give special warning 3 seconds before happens, not cast
+			countdownFallingAsh:Start(16)
+		else
+			timerFallingAshCD:Start(nil, ashCount+1)
+			specWarnFallingAsh:Schedule(14)--Give special warning 3 seconds before happens, not cast
+			countdownFallingAsh:Start(17)
 		end
 	end
 end

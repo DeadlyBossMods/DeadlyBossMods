@@ -295,6 +295,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71409 then--Ka'thik Demolisher
 		timerSetToBlowCD:Cancel(args.destGUID)
 	elseif cid == 71395 then--Modified Anima Golem
+		timerMatterScramble:Cancel()
 		timerMatterScrambleCD:Cancel(args.destGUID)
 		timerCrimsonReconCD:Cancel(args.destGUID)
 	elseif cid == 71397 then--Ka'thik Swarmleader

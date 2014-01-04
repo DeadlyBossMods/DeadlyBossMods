@@ -37,6 +37,7 @@ local warnUnleashedAnger				= mod:NewSpellAnnounce(145216, 2, nil, mod:IsTank())
 local warnBlindHatred					= mod:NewSpellAnnounce(145226, 3)
 local warnManifestation					= mod:NewSpellAnnounce("ej8232", 1, 147082)
 local warnResidualCorruption			= mod:NewSpellAnnounce(145073)
+local warnLookWithinEnd					= mod:NewEndTargetAnnounce("ej8220", 2)
 --Test of Serenity (DPS)
 local warnTearReality					= mod:NewCastAnnounce(144482, 3)
 --Test of Reliance (Healer)
@@ -108,7 +109,7 @@ end
 local function addSync()
 	specWarnManifestationSoon:Show()
 	if mod:IsDifficulty("lfr25") then
-		mod:Schedule(10, addsDelay, GetTime())
+		mod:Schedule(15, addsDelay, GetTime())
 	else
 		mod:Schedule(5, addsDelay, GetTime())
 	end
@@ -196,18 +197,21 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(144849, 144850, 144851) and args:IsPlayer() then--Look Within
-		playerInside = false
-		timerTearRealityCD:Cancel()
-		timerLingeringCorruptionCD:Cancel()
-		countdownLingeringCorruption:Cancel()
-		timerDishearteningLaughCD:Cancel()
-		timerTitanicSmashCD:Cancel()
-		timerHurlCorruptionCD:Cancel()
-		countdownHurlCorruption:Cancel()
-		timerPiercingCorruptionCD:Cancel()
-		timerLookWithin:Cancel()
-		countdownLookWithin:Cancel()
+	if args:IsSpellID(144849, 144850, 144851) then--Look Within
+		warnLookWithinEnd:CombinedShow(1, args.destName)
+		if args:IsPlayer() then
+			playerInside = false
+			timerTearRealityCD:Cancel()
+			timerLingeringCorruptionCD:Cancel()
+			countdownLingeringCorruption:Cancel()
+			timerDishearteningLaughCD:Cancel()
+			timerTitanicSmashCD:Cancel()
+			timerHurlCorruptionCD:Cancel()
+			countdownHurlCorruption:Cancel()
+			timerPiercingCorruptionCD:Cancel()
+			timerLookWithin:Cancel()
+			countdownLookWithin:Cancel()
+		end
 	elseif args.spellId == 145226 then
 		self:SendSync("BlindHatredEnded")
 	end
