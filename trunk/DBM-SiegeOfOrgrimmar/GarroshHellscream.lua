@@ -114,7 +114,7 @@ mod:AddBoolOption("yellMaliceFading", false)
 mod:AddSetIconOption("SetIconOnShaman", "ej8294", false, true)
 mod:AddSetIconOption("SetIconOnMC", 145071, false)
 mod:AddSetIconOption("SetIconOnMalice", 147209, false)
-mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame", mod:IsHealer())
 mod:AddBoolOption("RangeFrame")
 
 mod:Phase(1)
