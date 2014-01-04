@@ -47,6 +47,7 @@ local specWarnOvercharge				= mod:NewSpecialWarningTarget(145774)
 --Automated Shredders
 local specWarnAutomatedShredder			= mod:NewSpecialWarningCount("ej8199", mod:IsTank())--No sense in dps switching when spawn, has damage reduction. This for tank pickup
 local specWarnDeathFromAbove			= mod:NewSpecialWarningYou(144208)
+local specWarnDeathFromAboveNear		= mod:NewSpecialWarningClose(144208)
 local specWarnAutomatedShredderSwitch	= mod:NewSpecialWarningSwitch("ej8199", false)--Strat dependant, you may just ignore them and have tank kill them with laser pools
 --The Assembly Line
 local specWarnCrawlerMine				= mod:NewSpecialWarningSwitch("OptionVersion3", "ej8212", not mod:IsHealer())
@@ -118,6 +119,19 @@ function mod:DeathFromAboveTarget(sGUID)
 	warnDeathFromAbove:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnDeathFromAbove:Show()
+	else
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local x, y = GetPlayerMapPosition(targetname)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(targetname)
+			end
+			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			if inRange and inRange < 10 then
+				specWarnDeathFromAboveNear:Show(targetname)
+			end
+		end
 	end
 end
 
