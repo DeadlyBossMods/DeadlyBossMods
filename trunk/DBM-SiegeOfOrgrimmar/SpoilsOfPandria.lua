@@ -175,7 +175,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 145288 and not isPlayerInMantid() then
 		warnMatterScramble:Show()
 		specWarnMatterScramble:Show()
-		timerMatterScramble:Start()
+		timerMatterScramble:Start(args.sourceGUID)
 		timerMatterScrambleCD:Start(args.sourceGUID)
 	elseif args.spellId == 145461 and not isPlayerInMantid() then
 		warnEnergize:Show()
@@ -295,7 +295,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71409 then--Ka'thik Demolisher
 		timerSetToBlowCD:Cancel(args.destGUID)
 	elseif cid == 71395 then--Modified Anima Golem
-		timerMatterScramble:Cancel()
+		timerMatterScramble:Cancel(args.sourceGUID)
 		timerMatterScrambleCD:Cancel(args.destGUID)
 		timerCrimsonReconCD:Cancel(args.destGUID)
 	elseif cid == 71397 then--Ka'thik Swarmleader
