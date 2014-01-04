@@ -45,7 +45,6 @@ local specWarnFatalStrikeOther			= mod:NewSpecialWarningTarget(142990, mod:IsTan
 
 local timerBloodRage					= mod:NewBuffActiveTimer(22.5, 142879)--2.5sec cast plus 20 second duration
 local timerDisplacedEnergyCD			= mod:NewNextTimer(11, 142913)
-local timerBloodRageCD					= mod:NewNextTimer(127.7, 142879)
 --Might of the Kor'kron
 local timerArcingSmashCD				= mod:NewCDCountTimer(19, 142815)
 local timerImplodingEnergy				= mod:NewCastTimer(10, 142986)--Always 10 seconds after arcing
@@ -88,8 +87,7 @@ function mod:OnCombatStart(delay)
 	rageActive = false
 	timerSeismicSlamCD:Start(5-delay, 1)
 	timerArcingSmashCD:Start(11-delay, 1)
-	timerBreathofYShaarjCD:Start(70-delay, 1)
-	timerBloodRageCD:Start(122-delay)
+	timerBreathofYShaarjCD:Start(68-delay, 1)
 	if self:IsDifficulty("lfr25") then
 		berserkTimer:Start(720-delay)
 	else
@@ -134,7 +132,6 @@ function mod:SPELL_CAST_START(args)
 		timerSeismicSlamCD:Start(7.5, 1)
 		timerArcingSmashCD:Start(14, 1)
 		timerBreathofYShaarjCD:Start(70, 1)
-		timerBloodRageCD:Start()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)
 		end
@@ -150,13 +147,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if self.Options.SetIconOnAdds and self:IsDifficulty("heroic10", "heroic25") then
 			self:ScanForMobs(71644, 0, 8, nil, 0.2, 6)
-		end
-	elseif args.spellId == 143913 then--May not be right spell event
-		--5 rage gained from Essence of Y'Shaarj would progress timer about 2.5 seconds
-		--May choose a more accurate UNIT_POWER monitoring method if this doesn't feel accurate enough
-		if self:AntiSpam() then
-			local elapsed, total = timerBloodRageCD:GetTime()
-			timerBloodRageCD:Update(elapsed+2.5, total)
 		end
 	end
 end
