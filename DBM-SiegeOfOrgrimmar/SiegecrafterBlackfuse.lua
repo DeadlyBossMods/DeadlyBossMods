@@ -116,6 +116,7 @@ function mod:DeathFromAboveTarget(sGUID)
 			break
 		end
 	end
+	if not targetname then return end
 	warnDeathFromAbove:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnDeathFromAbove:Show()
