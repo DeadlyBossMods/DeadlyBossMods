@@ -130,7 +130,7 @@ local yellAim						= mod:NewYell(142948)
 local specWarnAimOther				= mod:NewSpecialWarningTarget(142948)
 local specWarnRapidFire				= mod:NewSpecialWarningSpell(143243, nil, nil, nil, 2)
 
-local timerJumpToCenter				= mod:NewCastTimer(5, 143545)
+local timerJumpToCenter				= mod:NewCastTimer(7, 143545)
 --Kil'ruk the Wind-Reaver
 local timerGouge					= mod:NewTargetTimer(10, 143939, nil, mod:IsTank())
 local timerReaveCD					= mod:NewCDTimer(33, 148676)
@@ -144,6 +144,7 @@ local timerShieldBashCD				= mod:NewCDTimer(17, 143974, nil, mod:IsTank())
 local timerEncaseInAmber			= mod:NewTargetTimer(10, 142564)
 local timerEncaseInAmberCD			= mod:NewCDTimer(30, 142564)--Technically a next timer but we use cd cause it's only cast if someone is low when it comes off 30 second internal cd. VERY important timer for heroic
 --Iyyokuk the Lucid
+local timerInsaneCalculation		= mod:NewBuffActiveTimer(9, 142808)
 local timerInsaneCalculationCD		= mod:NewCDTimer(25, 142416)--25 is minimum but variation is wild (25-50 second variation)
 --Ka'roz the Locust
 local timerFlashCD					= mod:NewCDTimer(62, 143701)
@@ -185,10 +186,13 @@ mod.variables.mutateCount = 0
 mod.variables.aimCount = 0
 mod.variables.parasitesActive = 0
 mod.variables.whirlCast = 0
+mod.variables.whirlTime = 0
 --Maybe need variables?
 local aimActive = false
 local mutateActive = false
 local toxicInjection = false--Workaround blizzard bug (double check if hotfix live and if workaround still needed on heroic)
+local dfaScanCache = nil
+local whirlScanCache = nil
 
 local function warnActivatedTargets(vulnerable)
 	if #activatedTargets > 1 then
@@ -215,52 +219,62 @@ local function hideRangeFrame()
 end
 
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
-local function DFAScan()
-	for i = 1, 5 do
-		local unitID = "boss"..i
-		if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71161 then
-			if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
-				mod:Unschedule(DFAScan)
-				local targetname = DBM:GetUnitFullName(unitID.."target")
-				warnDeathFromAbove:Show(targetname)
-				if UnitIsUnit(unitID.."target", "player") then
-					specWarnDeathFromAbove:Show()
-					yellDeathFromAbove:Yell()
-				elseif mod:CheckNearby(6, targetname) then
-					specWarnDeathFromAboveNear:Show(targetname)
-				end
-			else
-				mod:Schedule(0.25, DFAScan)
+local function DFAScan(guid)
+	local unitID = dfaScanCache or "boss1"
+	if UnitGUID(unitID) ~= guid then
+		for i = 1, 5 do
+			unitID = "boss"..i
+			if UnitGUID(unitID) == guid then
+				dfaScanCache = unitID
+				break
 			end
-			return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
 		end
 	end
+	if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
+		mod:Unschedule(DFAScan, guid)
+		local targetname = DBM:GetUnitFullName(unitID.."target")
+		warnDeathFromAbove:Show(targetname)
+		if UnitIsUnit(unitID.."target", "player") then
+			specWarnDeathFromAbove:Show()
+			yellDeathFromAbove:Yell()
+		elseif mod:CheckNearby(10, targetname) then
+			specWarnDeathFromAboveNear:Show(targetname)
+		end
+	else
+		mod:Schedule(0.25, DFAScan, guid)
+	end
+	return--If we found the boss before hitting 5, want to fire this return to break checking other bosses needlessly
 end
 
-local function whirlingScan()
-	for i = 1, 5 do
-		local unitID = "boss"..i
-		if UnitExists(unitID) and mod:GetCIDFromGUID(UnitGUID(unitID)) == 71154 then
-			if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
-				local targetname = DBM:GetUnitFullName(unitID.."target")
-				if targetname ~= lastWhirl then
-					lastWhirl = targetname
-					mod.variables.whirlCast = mod.variables.whirlCast + 1
-					warnWhirling:Show(mod.variables.whirlCast, targetname)
-					if UnitIsUnit(unitID.."target", "player") then
-						specWarnWhirling:Show()
-						yellWhirling:Yell()
-					elseif mod:CheckNearby(10, targetname) then
-						specWarnWhirlingNear:Show(targetname)
-					end
-				end
+local function whirlingScan(guid)
+	local unitID = whirlScanCache or "boss1"
+	if UnitGUID(unitID) ~= guid then
+		for i = 1, 5 do
+			unitID = "boss"..i
+			if UnitGUID(unitID) == guid then
+				whirlScanCache = unitID
+				break
 			end
 		end
 	end
-	if mod.variables.whirlCast < 3 then
-		mod:Schedule(0.25, whirlingScan)
+	if UnitExists(unitID.."target") and not mod:IsTanking(unitID.."target", unitID) then
+		local targetname = DBM:GetUnitFullName(unitID.."target")
+		if targetname ~= lastWhirl then
+			lastWhirl = targetname
+			mod.variables.whirlCast = mod.variables.whirlCast + 1
+			warnWhirling:Show(mod.variables.whirlCast, targetname)
+			if UnitIsUnit(unitID.."target", "player") then
+				specWarnWhirling:Show()
+				yellWhirling:Yell()
+			elseif mod:CheckNearby(10, targetname) then
+				specWarnWhirlingNear:Show(targetname)
+			end
+		end
+	end
+	if mod.variables.whirlCast < 3 or GetTime() - mod.variables.whirlTime < 10 then
+		mod:Schedule(0.08, whirlingScan, guid)
 	else
-		mod:Unschedule(whirlingScan)
+		mod:Unschedule(whirlingScan, guid)
 	end
 end
 
@@ -292,7 +306,7 @@ local function CheckBosses(ignoreRTF)
 				if mod:IsDifficulty("heroic10", "heroic25") then
 					timerReaveCD:Start(38.5)
 				end
-				mod:Schedule(23, DFAScan)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
+				mod:Schedule(23, DFAScan, unitGUID)--Not a large sample size, data shows it happen 29-30 seconds after IEEU fires on two different pulls. Although 2 is a poor sample
 				if UnitDebuff("player", GetSpellInfo(142929)) then vulnerable = true end
 			elseif cid == 71157 then--Xaril the Poisoned-Mind
 				timerToxicCatalystCD:Start(19.5)--May need tweaking by about a sec or two. Need some transcriptors
@@ -491,8 +505,9 @@ function mod:SPELL_CAST_START(args)
 		specWarnFlash:Show()
 		timerFlashCD:Start()
 		self.variables.whirlCast = 0
+		self.variables.whirlTime = GetTime()
 		lastWhirl = nil
-		whirlingScan()
+		whirlingScan(args.sourceGUID)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)--Range assumed, spell tooltips not informative enough
 			self:Schedule(5, hideRangeFrame)
@@ -548,8 +563,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnToxicInjection:Show()
 		timerToxicCatalystCD:Start(20)
 	elseif args.spellId == 142232 then
-		self:Unschedule(DFAScan)
-		self:Schedule(17, DFAScan)
+		self:Unschedule(DFAScan, args.sourceGUID)
+		self:Schedule(17, DFAScan, args.sourceGUID)
 	end
 end
 
@@ -713,7 +728,7 @@ local FlavorTable = {
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
-		self:Unschedule(DFAScan)
+		self:Unschedule(DFAScan, args.destGUID)
 		timerReaveCD:Cancel()
 	elseif cid == 71157 then--Xaril the Poisoned-Mind
 		timerToxicCatalystCD:Cancel()
@@ -724,7 +739,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 71160 then--Iyyokuk the Lucid
 		timerInsaneCalculationCD:Cancel()
 	elseif cid == 71154 then--Ka'roz the Locust
-		self:Unschedule(whirlingScan)
+		self:Unschedule(whirlingScan, args.destGUID)
 		timerFlashCD:Cancel()
 		timerHurlAmberCD:Cancel()
 	elseif cid == 71152 then--Skeer the Bloodseeker
@@ -853,6 +868,7 @@ end
 local function delayMonsterEmote(target)
 	--Because now the raid boss emotes fire AFTER this and we need them first
 	warnCalculated:Show(target)
+	timerInsaneCalculation:Start()
 	timerInsaneCalculationCD:Start()
 	if target == UnitName("player") then
 		specWarnCalculated:Show()

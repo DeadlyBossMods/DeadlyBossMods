@@ -35,17 +35,19 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetWarningLocalization({
+	warnTowerOpen	= "탑문 열림",
 	warnTowerGrunt	= "폭파조 등장"
 })
 
 L:SetTimerLocalization({
-	timerTowerCD		= "다음 포탑",
+	timerTowerCD		= "다음 탑문 열림",
 	timerTowerGruntCD	= "다음 폭파조"
 })
 
 L:SetOptionLocalization({
+	warnTowerOpen		= "탑문 열림 알림 보기",
 	warnTowerGrunt		= "폭파조 등장 알림 보기",
-	timerTowerCD		= "다음 포탑 바 보기",
+	timerTowerCD		= "다음 탑문 열림 바 보기",
 	timerTowerGruntCD	= "다음 폭파조 바 보기"
 })
 
