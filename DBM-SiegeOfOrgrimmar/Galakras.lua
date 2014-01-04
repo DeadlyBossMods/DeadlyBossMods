@@ -90,9 +90,9 @@ local timerFlamesofGalakrond		= mod:NewTargetTimer(15, 147029, nil, mod:IsTank()
 mod:AddSetIconOption("FixateIcon", 147068)
 mod:AddSetIconOption("SetIconOnAdds", "ej8556", false, true)
 
-local addsCount = 0
-local firstTower = 0--0: first tower not started, 1: first tower started, 2: first tower breached
-local flamesCount = 0
+mod.variables.addsCount = 0
+mod.variables.firstTower = 0--0: first tower not started, 1: first tower started, 2: first tower breached
+mod.variables.flamesCount = 0
 
 
 local function TowerGrunt()
@@ -102,9 +102,9 @@ local function TowerGrunt()
 end
 
 function mod:OnCombatStart(delay)
-	addsCount = 0
-	firstTower = 0
-	flamesCount = 0
+	self.variables.addsCount = 0
+	self.variables.firstTower = 0
+	self.variables.flamesCount = 0
 --	timerAddsCD:Start(6.5-delay)--First wave actually seems to have a couple second variation, since timer is so short anyways, just disabling it
 	if not self:IsDifficulty("heroic10", "heroic25") then
 		timerTowerCD:Start(116.5-delay)
@@ -153,15 +153,15 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 147068 then
-		flamesCount = flamesCount + 1
+		self.variables.flamesCount = self.variables.flamesCount + 1
 		warnFlamesofGalakrondTarget:Show(args.destName)
-		timerFlamesofGalakrondCD:Cancel(flamesCount)
-		timerFlamesofGalakrondCD:Start(nil, flamesCount+1)
+		timerFlamesofGalakrondCD:Cancel(self.variables.flamesCount)
+		timerFlamesofGalakrondCD:Start(nil, self.variables.flamesCount+1)
 		if args:IsPlayer() then
 			specWarnFlamesofGalakrondYou:Show()
 			yellFlamesofGalakrond:Yell()
 		else
-			specWarnFlamesofGalakrond:Show(flamesCount)
+			specWarnFlamesofGalakrond:Show(self.variables.flamesCount)
 		end
 		if self.Options.FixateIcon then
 			self:SetIcon(args.destName, 2)
@@ -266,8 +266,8 @@ end
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(4))
 	local percent = tonumber(string.match(text or "", "%d+"))
-	if percent == 1 and (firstTower == 0) and not self:IsDifficulty("heroic10", "heroic25") then
-		firstTower = 1
+	if percent == 1 and (self.variables.firstTower == 0) and not self:IsDifficulty("heroic10", "heroic25") then
+		self.variables.firstTower = 1
 		timerTowerCD:Start()
 	end
 end
@@ -276,10 +276,10 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("cFFFF0404") then--They fixed epiccenter bug (figured they would). Color code should be usuable though. It's only emote on encounter that uses it.
 		warnDemolisher:Show()
-		if self:IsDifficulty("heroic10", "heroic25") and firstTower == 0 then
+		if self:IsDifficulty("heroic10", "heroic25") and self.variables.firstTower == 0 then
 			timerTowerGruntCD:Start(15)
 			self:Schedule(15, TowerGrunt)
-			firstTower = 2
+			self.variables.firstTower = 2
 		end
 	elseif msg:find(L.tower) then
 		timerDemolisherCD:Start()
@@ -292,8 +292,8 @@ end
 
 function mod:OnSync(msg)
 	if msg == "Adds" and self:AntiSpam(10, 4) then
-		addsCount = addsCount + 1
-		if addsCount == 1 then
+		self.variables.addsCount = self.variables.addsCount + 1
+		if self.variables.addsCount == 1 then
 			timerAddsCD:Start(48)
 		elseif addsCount == 3 or addsCount == 7 or addsCount == 11 then--Verified. Every 4th wave gets a proto. IE waves 4, 8, 12
 			timerProtoCD:Start()
