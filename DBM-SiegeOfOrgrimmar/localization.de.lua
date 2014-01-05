@@ -35,6 +35,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetWarningLocalization({
+	warnTowerOpen		= "Turm offen",
 	warnTowerGrunt		= "Turmgrunzer"
 })
 
@@ -44,19 +45,22 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnTowerGrunt		= "Verkünde, wenn ein Turm geöffnet wurde",
 	warnTowerGrunt		= "Verkünde das Erscheinen eines Turmgrunzers",
 	timerTowerCD		= "Zeige Zeit bis nächsten Turmangriff",
 	timerTowerGruntCD	= "Zeige Zeit bis nächster Turmgrunzer erscheint"
 })
 
 L:SetMiscLocalization({
-	Pull		= "Drachenmalklan, nehmt den Hafen wieder ein und treibt sie ins Meer! Im Namen Höllschreis und der wahren Horde!",
-	newForces1	= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation) (alliance)
-	newForces1H	= "Holt sie schnell vom Himmel, damit ich sie erwürgen kann.",
-	newForces2	= "Drachenmalklan, ausrücken!",
-	newForces3	= "Für Höllschrei!",
-	newForces4	= "Nächster Trupp, vorwärts!",
-	tower		= "Das Tor zum"--"Das Tor zum Nordturm ist durchbrochen!"/"Das Tor zum Südturm ist durchbrochen!"
+	wasteOfTime		= "Well done! Landing parties, form up! Footmen to the front!",--translate (alliance trigger)
+	wasteOfTime2	= "Gute Arbeit. Die erste Kompanie ist an Land.",
+	Pull			= "Drachenmalklan, nehmt den Hafen wieder ein und treibt sie ins Meer! Im Namen Höllschreis und der wahren Horde!",
+	newForces1		= "Da kommen sie!",--needs to be verified (PTR screenshot-captured translation) (alliance)
+	newForces1H		= "Holt sie schnell vom Himmel, damit ich sie erwürgen kann.",
+	newForces2		= "Drachenmalklan, ausrücken!",
+	newForces3		= "Für Höllschrei!",
+	newForces4		= "Nächster Trupp, vorwärts!",
+	tower			= "Das Tor zum"--"Das Tor zum Nordturm ist durchbrochen!"/"Das Tor zum Südturm ist durchbrochen!"
 })
 
 --------------------
@@ -170,6 +174,17 @@ L:SetMiscLocalization({
 -- Garrosh Hellscream --
 ------------------------
 L= DBM:GetModLocalization(869)
+
+L:SetOptionLocalization({
+	RangeFrame			= "Zeige dynamisches Abstandsfenster (8m)<br/>(mit Indikator für den $spell:147088 Schwellwert)",
+	InfoFrame			= "Zeige Infofenster für Spieler ohne Schadensreduzierung während der Unterbrechungsphasen",
+	yellMaliceFading	= "Schreie, wenn $spell:147209 bald ausläuft"
+})
+
+L:SetMiscLocalization({
+	NoReduce			= "Keine Schadensreduzierung",
+	MaliceFadeYell		= "Bösartigkeit schwindet auf %s (%d)"
+})
 
 -------------
 --  Trash  --
