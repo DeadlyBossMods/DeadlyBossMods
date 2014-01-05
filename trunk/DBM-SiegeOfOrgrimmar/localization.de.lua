@@ -45,7 +45,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnTowerGrunt		= "Verkünde, wenn ein Turm geöffnet wurde",
+	warnTowerOpen		= "Verkünde, wenn ein Turm geöffnet wurde",
 	warnTowerGrunt		= "Verkünde das Erscheinen eines Turmgrunzers",
 	timerTowerCD		= "Zeige Zeit bis nächsten Turmangriff",
 	timerTowerGruntCD	= "Zeige Zeit bis nächster Turmgrunzer erscheint"
