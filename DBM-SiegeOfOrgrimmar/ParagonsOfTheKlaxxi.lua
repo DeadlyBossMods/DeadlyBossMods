@@ -289,7 +289,7 @@ function mod:WhirlingScan(targetname)
 			specWarnWhirlingNear:Show(targetname)
 		end
 	end
-	if self.vb.whirlCast > 2 or (GetTime() - self.vb.whirlTime) > 10 then
+	if (self.vb.whirlCast > 2) or ((GetTime() - self.vb.whirlTime) > 10) then
 		self:StopRepeatedScan("WhirlingScan")
 	end
 end
