@@ -243,6 +243,7 @@ local watchFrameRestore = false
 local currentSizes = nil
 local bossHealth = {}
 local bossHealthuIdCache = {}
+local bossuIdCache = {}
 local savedDifficulty, difficultyText, difficultyIndex
 local bossuIdFound = false
 local timerRequestInProgress = false
@@ -2276,7 +2277,7 @@ local function loadModByUnit(uId)
 	if IsInInstance() or not UnitIsFriend("player", uId) and UnitIsDead("player") or UnitIsDead(uId) then return end--If you're in an instance no reason to waste cpu. If THE BOSS dead, no reason to load a mod for it. To prevent rare lua error, needed to filter on player dead.
 	local guid = UnitGUID(uId)
 	if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
-		local cId = DBM:GetUnitCreatureId(uId)
+		local cId = DBM:GetCIDFromGUID(guid)
 		for bosscId, addon in pairs(loadcIds) do
 			local _, _, _, enabled = GetAddOnInfo(addon)
 			if cId and bosscId and cId == bosscId and not IsAddOnLoaded(addon) and enabled then
@@ -3703,12 +3704,20 @@ function DBM:EndCombat(mod, wipe)
 				--Better or cleaner way?
 				GameTooltip:SetScript("OnShow", GameTooltip.Show)
 			end
-			twipe(autoRespondSpam)
-			twipe(bossHealth)
-			twipe(bossHealthuIdCache)
+			--difficulty table
 			savedDifficulty = nil
 			difficultyText = nil
 			difficultyIndex = nil
+			--cache table
+			twipe(autoRespondSpam)
+			twipe(bossHealth)
+			twipe(bossHealthuIdCache)
+			twipe(bossuIdCache)
+			--sync table
+			twipe(canSetIcons)
+			twipe(iconSetRevision)
+			twipe(iconSetPerson)
+			twipe(addsGUIDs)
 			bossuIdFound = false
 			eeSyncSender = {}
 			eeSyncReceived = 0
@@ -4532,10 +4541,6 @@ function bossModPrototype:Stop()
 		v:Stop()
 	end
 	self:Unschedule()
-	twipe(canSetIcons)--Wiped here when mod stop is called by CombatEnd
-	twipe(iconSetRevision)
-	twipe(iconSetPerson)
-	twipe(addsGUIDs)
 end
 
 function bossModPrototype:SetUsedIcons(...)
@@ -4654,43 +4659,99 @@ end
 bossModPrototype.GetUnitCreatureId = DBM.GetUnitCreatureId
 bossModPrototype.GetCIDFromGUID = DBM.GetCIDFromGUID
 
-local bossTargetuIds = {
-	"target", "focus", "boss1", "boss2", "boss3", "boss4", "boss5"
-}
+do
+	local bossTargetuIds = {
+		"target", "focus", "boss1", "boss2", "boss3", "boss4", "boss5"
+	}
 
-function bossModPrototype:GetBossTarget(cid)
-	cid = cid or self.creatureId
-	local name, uid, bossuid
-	for i, uId in ipairs(bossTargetuIds) do
-		if self:GetUnitCreatureId(uId) == cid or UnitGUID(uId) == cid then--Accepts CID or GUID
-			bossuid = uId
-			name = DBM:GetUnitFullName(uId.."target")
-			uid = uId.."target"
-			break
+	local function getBossTarget(guid)
+		local name, uid, bossuid
+		bossuid = bossuIdCache[guid] or "boss1"
+		if UnitGUID(bossuIdCache[guid]) == guid then
+			bossuid = bossuIdCache[guid]
+			name = DBM:GetUnitFullName(bossuIdCache[guid].."target")
+			uid = bossuIdCache[guid].."target"
 		end
-	end
-	if name then return name, uid, bossuid end
-	-- failed to detect from default uIds, scan all group members's target.
-	if IsInRaid() then
-		for i = 1, GetNumGroupMembers() do
-			if self:GetUnitCreatureId("raid"..i.."target") == cid or UnitGUID("raid"..i.."target") == cid then
-				bossuid = "raid"..i.."target"
-				name = DBM:GetUnitFullName("raid"..i.."targettarget")
-				uid = "raid"..i.."targettarget"
+		if name then return name, uid, bossuid end
+		for i, uId in ipairs(bossTargetuIds) do
+			if UnitGUID(uId) == guid then
+				bossuid = uId
+				name = DBM:GetUnitFullName(uId.."target")
+				uid = uId.."target"
+				bossuIdCache[guid] = bossuid
 				break
 			end
 		end
-	elseif IsInGroup() then
-		for i = 1, GetNumSubgroupMembers() do
-			if self:GetUnitCreatureId("party"..i.."target") == cid or UnitGUID("party"..i.."target") == cid then
-				bossuid = "party"..i.."target"
-				name = DBM:GetUnitFullName("party"..i.."targettarget")
-				uid = "party"..i.."targettarget"
-				break
+		if name then return name, uid, bossuid end
+		-- failed to detect from default uIds, scan all group members's target.
+		if IsInRaid() then
+			for i = 1, GetNumGroupMembers() do
+				if UnitGUID("raid"..i.."target") == guid then
+					bossuid = "raid"..i.."target"
+					name = DBM:GetUnitFullName("raid"..i.."targettarget")
+					uid = "raid"..i.."targettarget"
+					bossuIdCache[guid] = bossuid
+					break
+				end
+			end
+		elseif IsInGroup() then
+			for i = 1, GetNumSubgroupMembers() do
+				if UnitGUID("party"..i.."target") == guid then
+					bossuid = "party"..i.."target"
+					name = DBM:GetUnitFullName("party"..i.."targettarget")
+					uid = "party"..i.."targettarget"
+					bossuIdCache[guid] = bossuid
+					break
+				end
 			end
 		end
+		return name, uid, bossuid
 	end
-	return name, uid, bossuid
+
+	function bossModPrototype:GetBossTarget(cid)
+		if type(cid) == "number" then
+			local cid = cid or self.creatureId
+			local uid = bossuIdCache[cid] or "boss1"
+			if self:GetUnitCreatureId(uid) == cid then
+				bossuIdCache[UnitGUID(uid)] = uid
+				getBossTarget(UnitGUID(uid))
+			else
+				local found = false
+				for i, uId in ipairs(bossTargetuIds) do
+					if self:GetUnitCreatureId(uId) == cid then
+						found = true
+						bossuIdCache[cid] = uId
+						bossuIdCache[UnitGUID(uId)] = uId
+						getBossTarget(UnitGUID(uId))
+						break
+					end
+				end
+				if not found then
+					if IsInRaid() then
+						for i = 1, GetNumGroupMembers() do
+							if self:GetUnitCreatureId("raid"..i.."target") == cid then
+								bossuIdCache[cid] = "raid"..i.."target"
+								bossuIdCache[UnitGUID("raid"..i.."target")] = "raid"..i.."target"
+								getBossTarget(UnitGUID("raid"..i.."target"))
+								break
+							end
+						end
+					elseif IsInGroup() then
+						for i = 1, GetNumSubgroupMembers() do
+							if self:GetUnitCreatureId("party"..i.."target") == cid then
+								bossuIdCache[cid] = "party"..i.."target"
+								bossuIdCache[UnitGUID("party"..i.."target")] = "party"..i.."target"
+								getBossTarget(UnitGUID("party"..i.."target"))
+								break
+							end
+						end
+					end
+				end
+			end
+		else
+			getBossTarget(cid)
+		end
+	end
 end
 
 do
