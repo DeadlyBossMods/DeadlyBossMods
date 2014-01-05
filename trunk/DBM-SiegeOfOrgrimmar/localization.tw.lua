@@ -35,6 +35,7 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(868)
 
 L:SetWarningLocalization({
+	warnTowerOpen		= "砲塔門被打開了",
 	warnTowerGrunt		= "塔防蠻兵"
 })
 
@@ -44,6 +45,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	warnTowerGrunt		= "提示砲塔門被打開",
 	warnTowerGrunt		= "提示新的塔防蠻兵重生",
 	timerTowerCD		= "為下一波塔攻顯示計時器",
 	timerTowerGruntCD	= "為下一次塔防蠻兵顯示計時器"
