@@ -3745,9 +3745,9 @@ function DBM:OnMobKill(cId, synced)
 			end
 			v.combatInfo.killMobs[cId] = false
 			if v.numBoss then
-				v.bossLeft = (v.bossLeft or v.numBoss) - 1
+				v.vb.bossLeft = (v.vb.bossLeft or v.numBoss) - 1
 				if DBM.Options.DebugMode then
-					print("DBM Debug: Boss left - "..v.BossLeft.."/"..v.numBoss)
+					print("DBM Debug: Boss left - "..v.vb.BossLeft.."/"..v.numBoss)
 				end
 			end
 			local allMobsDown = true
