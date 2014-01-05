@@ -62,15 +62,18 @@ mod:AddRangeFrameOption("8/5")--Various things
 mod:AddSetIconOption("SetIconOnDisplacedEnergy", 142913, false)
 mod:AddSetIconOption("SetIconOnAdds", "ej7952", false, true)
 
+--Upvales, don't need variables
 local displacedEnergyDebuff = GetSpellInfo(142913)
-local playerDebuffs = 0
-local breathCast = 0
-local arcingSmashCount = 0
-local seismicSlamCount = 0
-local displacedCast = false
-local rageActive = false
 local UnitDebuff = UnitDebuff
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+--Not important, don't need to recover
+local playerDebuffs = 0
+--Important, needs recover
+mod.vb.breathCast = 0
+mod.vb.arcingSmashCount = 0
+mod.vb.seismicSlamCount = 0
+mod.vb.displacedCast = false
+mod.vb.rageActive = false
 
 local debuffFilter
 do
@@ -81,10 +84,10 @@ end
 
 function mod:OnCombatStart(delay)
 	playerDebuffs = 0
-	breathCast = 0
-	arcingSmashCount = 0
-	seismicSlamCount = 0
-	rageActive = false
+	self.vb.breathCast = 0
+	self.vb.arcingSmashCount = 0
+	self.vb.seismicSlamCount = 0
+	self.vb.rageActive = false
 	timerSeismicSlamCD:Start(5-delay, 1)
 	timerArcingSmashCD:Start(11-delay, 1)
 	timerBreathofYShaarjCD:Start(68-delay, 1)
@@ -106,28 +109,28 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 142879 then
-		displacedCast = false
-		rageActive = true
+		self.vb.displacedCast = false
+		self.vb.rageActive = true
 		warnBloodRage:Show()
 		specWarnBloodRage:Show()
 		timerBloodRage:Start()
 		timerDisplacedEnergyCD:Start(3.5)
 	elseif args.spellId == 142842 then
-		breathCast = breathCast + 1
-		warnBreathofYShaarj:Show(breathCast)
-		specWarnBreathofYShaarj:Show(breathCast)
-		if breathCast == 1 then
-			arcingSmashCount = 0
-			seismicSlamCount = 0
+		self.vb.breathCast = self.vb.breathCast + 1
+		warnBreathofYShaarj:Show(self.vb.breathCast)
+		specWarnBreathofYShaarj:Show(self.vb.breathCast)
+		if self.vb.breathCast == 1 then
+			self.vb.arcingSmashCount = 0
+			self.vb.seismicSlamCount = 0
 			timerSeismicSlamCD:Start(7.5, 1)
 			timerArcingSmashCD:Start(14, 1)
 			timerBreathofYShaarjCD:Start(70, 2)
 		end
 	elseif args.spellId == 143199 then
-		breathCast = 0
-		arcingSmashCount = 0
-		seismicSlamCount = 0
-		rageActive = false
+		self.vb.breathCast = 0
+		self.vb.arcingSmashCount = 0
+		self.vb.seismicSlamCount = 0
+		self.vb.rageActive = false
 		specWarnBloodRageEnded:Show()
 		timerSeismicSlamCD:Start(7.5, 1)
 		timerArcingSmashCD:Start(14, 1)
@@ -140,10 +143,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142851 then
-		seismicSlamCount = seismicSlamCount + 1
-		warnSeismicSlam:Show(seismicSlamCount)
-		if seismicSlamCount < 3 then
-			timerSeismicSlamCD:Start(nil, seismicSlamCount+1)
+		self.vb.seismicSlamCount = self.vb.seismicSlamCount + 1
+		warnSeismicSlam:Show(self.vb.seismicSlamCount)
+		if self.vb.seismicSlamCount < 3 then
+			timerSeismicSlamCD:Start(nil, self.vb.seismicSlamCount+1)
 		end
 		if self.Options.SetIconOnAdds and self:IsDifficulty("heroic10", "heroic25") then
 			self:ScanForMobs(71644, 0, 8, nil, 0.2, 6)
@@ -160,8 +163,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			soundDisplacedEnergy:Play()
 			yellDisplacedEnergy:Yell()
 		end
-		if not displacedCast then--Only cast twice, so we only start cd bar once here
-			displacedCast = true
+		if not self.vb.displacedCast then--Only cast twice, so we only start cd bar once here
+			self.vb.displacedCast = true
 			timerDisplacedEnergyCD:DelayedStart(0.5)
 		end
 		if self.Options.SetIconOnDisplacedEnergy and args:IsDestTypePlayer() then--Filter further on icons because we don't want to set icons on grounding totems
@@ -199,7 +202,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() and self.Options.RangeFrame and playerDebuffs >= 1 then
 			DBM.RangeCheck:Show(10, debuffFilter)--Change to debuff filter based check since theirs is gone but there are still others in raid.
 		end
-		if self.Options.RangeFrame and playerDebuffs == 0 and rageActive then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
+		if self.Options.RangeFrame and playerDebuffs == 0 and self.vb.rageActive then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
 			DBM.RangeCheck:Hide()
 		end
 		if self.Options.SetIconOnDisplacedEnergy then
@@ -210,14 +213,14 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	if spellId == 142898 then--Faster than combat log
-		arcingSmashCount = arcingSmashCount + 1
-		warnArcingSmash:Show(arcingSmashCount)
-		specWarnArcingSmash:Show(arcingSmashCount)
+		self.vb.arcingSmashCount = self.vb.arcingSmashCount + 1
+		warnArcingSmash:Show(self.vb.arcingSmashCount)
+		specWarnArcingSmash:Show(self.vb.arcingSmashCount)
 		timerImplodingEnergy:Start()
 		countdownImplodingEnergy:Start()
 		specWarnImplodingEnergySoon:Schedule(6)
-		if arcingSmashCount < 3 then
-			timerArcingSmashCD:Start(nil, arcingSmashCount+1)
+		if self.vb.arcingSmashCount < 3 then
+			timerArcingSmashCD:Start(nil, self.vb.arcingSmashCount+1)
 		end
 	end
 end

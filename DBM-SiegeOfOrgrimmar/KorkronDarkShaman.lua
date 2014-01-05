@@ -79,9 +79,11 @@ local berserkCD						= mod:NewCDTimer(540, 26662)
 mod:AddRangeFrameOption(4, 143990)--This is more or less for foul geyser and foul stream splash damage
 mod:AddSetIconOption("SetIconOnToxicMists", 144089, false)
 
+--Upvales, don't need variables
 local UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitExists, UnitGUID, UnitDetailedThreatSituation
 local playerName = UnitName("player")
-local ashCount = 0
+--Important, needs recover
+mod.vb.ashCount = 0
 
 function mod:FoulStreamTarget(targetname, uId)
 	if not targetname then return end
@@ -111,7 +113,7 @@ function mod:ToxicStormTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	ashCount = 0
+	self.vb.ashCount = 0
 	berserkCD:Start()
 end
 
@@ -232,15 +234,15 @@ end
 
 function mod:OnSync(msg)
 	if msg == "FallingAsh" then
-		ashCount = ashCount + 1
+		self.vb.ashCount = self.vb.ashCount + 1
 		warnFallingAsh:Show()
 		timerFallingAsh:Start()
 		if self:IsDifficulty("heroic10", "heroic25") then--On heroic, base spell 1 second cast, not 2.
-			timerFallingAshCD:Start(16, ashCount+1)
+			timerFallingAshCD:Start(16, self.vb.ashCount+1)
 			specWarnFallingAsh:Schedule(13)--Give special warning 3 seconds before happens, not cast
 			countdownFallingAsh:Start(16)
 		else
-			timerFallingAshCD:Start(nil, ashCount+1)
+			timerFallingAshCD:Start(nil, self.vb.ashCount+1)
 			specWarnFallingAsh:Schedule(14)--Give special warning 3 seconds before happens, not cast
 			countdownFallingAsh:Start(17)
 		end

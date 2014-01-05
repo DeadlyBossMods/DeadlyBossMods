@@ -92,11 +92,15 @@ local countdownHurlCorruption			= mod:NewCountdown("Alt20", 144649)
 
 mod:AddInfoFrameOption("ej8252", false)--May still be buggy but it's needed for heroic.
 
+--Upvales, don't need variables
 local corruptionLevel = EJ_GetSectionInfo(8252)
-local unleashedAngerCast = 0
+--Tables, can't recover
+local residue = {}
+--Not important, don't need to recover
 local playerInside = false
 local previousPower = nil
-local residue = {}
+--Important, needs recover
+mod.vb.unleashedAngerCast = 0
 
 --May be buggy with two adds spawning at exact same time
 --Two different icon functions end up both marking same mob with 8 and 7 and other mob getting no mark.
@@ -124,6 +128,7 @@ end
 function mod:OnCombatStart(delay)
 	playerInside = false
 	previousPower = nil
+	mod.vb.unleashedAngerCast = 0
 	table.wipe(residue)
 	timerBlindHatredCD:Start(25-delay)
 	if self:IsDifficulty("lfr25") then
@@ -146,11 +151,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 145216 then
-		unleashedAngerCast = unleashedAngerCast + 1
-		warnUnleashedAnger:Show(unleashedAngerCast)
+		self.vb.unleashedAngerCast = self.vb.unleashedAngerCast + 1
+		warnUnleashedAnger:Show(self.vb.unleashedAngerCast)
 		specWarnUnleashedAnger:Show()
-		if unleashedAngerCast < 3 then
-			timerUnleashedAngerCD:Start(nil, unleashedAngerCast+1)
+		if self.vb.unleashedAngerCast < 3 then
+			timerUnleashedAngerCD:Start(nil, self.vb.unleashedAngerCast+1)
 		end
 	elseif args.spellId == 144482 then
 		warnTearReality:Show()
@@ -264,7 +269,7 @@ function mod:OnSync(msg, guid)
 		timerBlindHatred:Start()
 	elseif msg == "BlindHatredEnded" then
 		timerBlindHatredCD:Start()
-		unleashedAngerCast = 0
+		self.vb.unleashedAngerCast = 0
 	elseif msg == "prepull" then
 		timerCombatStarts:Start()
 	end

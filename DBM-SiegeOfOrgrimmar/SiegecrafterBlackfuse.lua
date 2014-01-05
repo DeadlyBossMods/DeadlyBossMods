@@ -90,18 +90,48 @@ local soundLaserFixate					= mod:NewSound(143828, false)
 mod:AddInfoFrameOption("ej8202")
 mod:AddSetIconOption("SetIconOnMines", "ej8212", false, true)
 
---local laserCount = 0--Fires 3 times
---local activeWeaponsGUIDS = {}
-local shockwaveOvercharged = false
-local weapon = 0
+--Upvales, don't need variables
 --Names very long in english, makes frame HUGE, may switch to shorter localized names
 local assemblyLine = EJ_GetSectionInfo(8202)
 local crawlerMine = EJ_GetSectionInfo(8212)
 local shockwaveMissile = EJ_GetSectionInfo(8205)
 local laserTurret = EJ_GetSectionInfo(8208)
 local electroMagnet = EJ_GetSectionInfo(8210)
-local assemblyDebuff = false
-local shredderCount = 0
+--Not important, don't need to recover
+--Important, needs recover
+mod.vb.shockwaveOvercharged = false
+mod.vb.weapon = 0
+mod.vb.shredderCount = 0
+
+--VEM Idea
+local function showWeaponInfo()
+	local lines = {}
+	if mod.vb.weapon == 1 or mod.vb.weapon == 2 or mod.vb.weapon == 4 then
+		lines[shockwaveMissile] = laserTurret.." , "..crawlerMine
+	elseif mod.vb.weapon == 3 then
+		lines[shockwaveMissile] = laserTurret.." , "..electroMagnet
+	elseif mod.vb.weapon == 5 then
+		lines[shockwaveMissile] = electroMagnet.." , "..crawlerMine
+	elseif mod.vb.weapon == 6 then
+		lines[crawlerMine] = laserTurret.." , "..crawlerMine
+	elseif mod.vb.weapon == 7 then
+		lines[shockwaveMissile] = laserTurret.." , "..crawlerMine
+	elseif mod.vb.weapon == 8 then
+		lines[shockwaveMissile] = electroMagnet.." , "..crawlerMine
+	elseif mod.vb.weapon == 9 then
+		lines[laserTurret] =  crawlerMine.." , "..laserTurret
+	elseif mod.vb.weapon == 10 then
+		lines[shockwaveMissile] =  crawlerMine.." , "..laserTurret
+	elseif mod.vb.weapon == 11 then
+		lines[shockwaveMissile] = electroMagnet.." , "..shockwaveMissile
+	elseif mod.vb.weapon == 12 then
+		lines[electroMagnet] = crawlerMine.." , "..laserTurret
+	else
+		lines[_G["UNKNOWN"]] = ""
+	end
+	return lines
+end
+--End VEM Idea
 
 function mod:LaunchSawBladeTarget(targetname, uId)
 	warnLaunchSawblade:Show(targetname)
@@ -125,42 +155,12 @@ function mod:DeathFromAboveTarget(sGUID)
 	end
 end
 
---VEM Idea
-local function showWeaponInfo()
-	local lines = {}
-	if weapon == 1 or weapon == 2 or weapon == 4 then
-		lines[shockwaveMissile] = laserTurret.." , "..crawlerMine
-	elseif weapon == 3 then
-		lines[shockwaveMissile] = laserTurret.." , "..electroMagnet
-	elseif weapon == 5 then
-		lines[shockwaveMissile] = electroMagnet.." , "..crawlerMine
-	elseif weapon == 6 then
-		lines[crawlerMine] = laserTurret.." , "..crawlerMine
-	elseif weapon == 7 then
-		lines[shockwaveMissile] = laserTurret.." , "..crawlerMine
-	elseif weapon == 8 then
-		lines[shockwaveMissile] = electroMagnet.." , "..crawlerMine
-	elseif weapon == 9 then
-		lines[laserTurret] =  crawlerMine.." , "..laserTurret
-	elseif weapon == 10 then
-		lines[shockwaveMissile] =  crawlerMine.." , "..laserTurret
-	elseif weapon == 11 then
-		lines[shockwaveMissile] = electroMagnet.." , "..shockwaveMissile
-	elseif weapon == 12 then
-		lines[electroMagnet] = crawlerMine.." , "..laserTurret
-	else
-		lines[_G["UNKNOWN"]] = ""
-	end
-	return lines
-end
---End VEM Idea
-
 function mod:OnCombatStart(delay)
 --	table.wipe(activeWeaponsGUIDS)
 --	laserCount = 0
-	weapon = 0
-	shredderCount = 0
-	shockwaveOvercharged = false
+	self.vb.weapon = 0
+	self.vb.shredderCount = 0
+	self.vb.shockwaveOvercharged = false
 	timerAutomatedShredderCD:Start(35-delay, 1)
 	countdownShredder:Start(35-delay)
 end
@@ -188,9 +188,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnOvercharge:Show(args.destName)
 		local cid = self:GetCIDFromGUID(args.destGUID)
 		if cid == 71638 then
-			shockwaveOvercharged = true
+			self.vb.shockwaveOvercharged = true
 		else
-			shockwaveOvercharged = false
+			self.vb.shockwaveOvercharged = false
 		end
 	end
 end
@@ -221,7 +221,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDeathFromAboveDebuff:Start(args.destName)
 	elseif args.spellId == 144236 and args:IsPlayer() then
 		timerPatternRecognition:Start()
-		assemblyDebuff = true
 	elseif args.spellId == 145269 then
 		if self:AntiSpam(20, 3) then
 			warnCrawlerMine:Show()
@@ -259,7 +258,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerElectroStaticCharge:Cancel(args.destName)
 	elseif args.spellId == 144236 and args:IsPlayer() then
 		timerPatternRecognition:Cancel()
-		assemblyDebuff = false
 	elseif args.spellId == 145269 then
 		timerBreakinPeriod:Cancel(args.destName, args.destGUID)
 	end
@@ -293,23 +291,21 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 	if msg == L.newWeapons or msg:find(L.newWeapons) then
-		weapon = weapon + 1
-		warnAssemblyLine:Show(weapon)
-		if not assemblyDebuff then--Don't warn if you can't go
-			specWarnAssemblyLine:Show(weapon)
-		end
-		timerAssemblyLineCD:Start(nil, weapon + 1)
+		self.vb.weapon = self.vb.weapon + 1
+		warnAssemblyLine:Show(self.vb.weapon)
+		specWarnAssemblyLine:Show(self.vb.weapon)
+		timerAssemblyLineCD:Start(nil, self.vb.weapon + 1)
 		countdownAssemblyLine:Start()
 		if self.Options.InfoFrame then
-			DBM.InfoFrame:SetHeader(assemblyLine.."("..weapon..")")
+			DBM.InfoFrame:SetHeader(assemblyLine.."("..self.vb.weapon..")")
 			DBM.InfoFrame:Show(1, "function", showWeaponInfo, true)
 		end
 	elseif msg == L.newShredder or msg:find(L.newShredder) then
-		shredderCount = shredderCount + 1
-		warnAutomatedShredder:Show(shredderCount)
-		specWarnAutomatedShredder:Show(shredderCount)
+		self.vb.shredderCount = self.vb.shredderCount + 1
+		warnAutomatedShredder:Show(self.vb.shredderCount)
+		specWarnAutomatedShredder:Show(self.vb.shredderCount)
 		timerDeathFromAboveCD:Start(18)
-		timerAutomatedShredderCD:Start(nil, shredderCount+14)
+		timerAutomatedShredderCD:Start(nil, self.vb.shredderCount+14)
 		countdownShredder:Start()
 	end
 end
