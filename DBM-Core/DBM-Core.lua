@@ -2415,7 +2415,7 @@ do
 		success = tonumber(success)
 		mod = DBM:GetModByName(mod or "")
 		modRevision = tonumber(modRevision or 0) or 0
-		if eId and success and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) and not eeSyncSender[sender] then
+		if mod and eId and success and (not mod.minSyncRevision or modRevision >= mod.minSyncRevision) and not eeSyncSender[sender] then
 			eeSyncSender[sender] = true
 			eeSyncReceived = eeSyncReceived + 1
 			if eeSyncReceived > 2 then -- need at least 3 person to combat end. (for security)
@@ -2905,7 +2905,9 @@ do
 	whisperSyncHandlers["VI"] = function(sender, mod, name, value)
 		mod = DBM:GetModByName(mod or "")
 		value = tonumber(value) or value
-		DBM:ReceiveVariableInfo(sender, mod, name, value)
+		if mod and name and value then
+			DBM:ReceiveVariableInfo(sender, mod, name, value)
+		end
 	end
 
 	local function handleSync(channel, sender, prefix, ...)
@@ -3944,8 +3946,8 @@ do
 		end
 		mod = mod or inCombat[1]
 		self:SendCombatInfo(mod, target)
-		self:SendTimerInfo(mod, target)
 		self:SendVariableInfo(mod, target)
+		self:SendTimerInfo(mod, target)
 	end
 end
 
@@ -4679,11 +4681,11 @@ do
 
 	local function getBossTarget(guid, scanOnlyBoss)
 		local name, uid, bossuid
-		bossuid = bossuIdCache[guid] or "boss1"
-		if UnitGUID(bossuIdCache[guid]) == guid then
-			bossuid = bossuIdCache[guid]
-			name = DBM:GetUnitFullName(bossuIdCache[guid].."target")
-			uid = bossuIdCache[guid].."target"
+		local cacheuid = bossuIdCache[guid] or "boss1"
+		if UnitGUID(cacheuid) == guid then
+			bossuid = cacheuid
+			name = DBM:GetUnitFullName(cacheuid.."target")
+			uid = cacheuid.."target"
 		end
 		if name then return name, uid, bossuid end
 		for i, uId in ipairs(bossTargetuIds) do
@@ -4722,12 +4724,13 @@ do
 	end
 
 	function bossModPrototype:GetBossTarget(cidOrGuid, scanOnlyBoss)
+		local name, uid, bossuid
 		if type(cidOrGuid) == "number" then
 			local cidOrGuid = cidOrGuid or self.creatureId
 			local uid = bossuIdCache[cidOrGuid] or "boss1"
 			if self:GetUnitCreatureId(uid) == cidOrGuid then
 				bossuIdCache[UnitGUID(uid)] = uid
-				getBossTarget(UnitGUID(uid), scanOnlyBoss)
+				name, uid, bossuid = getBossTarget(UnitGUID(uid), scanOnlyBoss)
 			else
 				local found = false
 				for i, uId in ipairs(bossTargetuIds) do
@@ -4735,7 +4738,7 @@ do
 						found = true
 						bossuIdCache[cidOrGuid] = uId
 						bossuIdCache[UnitGUID(uId)] = uId
-						getBossTarget(UnitGUID(uId), scanOnlyBoss)
+						name, uid, bossuid = getBossTarget(UnitGUID(uId), scanOnlyBoss)
 						break
 					end
 				end
@@ -4745,7 +4748,7 @@ do
 							if self:GetUnitCreatureId("raid"..i.."target") == cidOrGuid then
 								bossuIdCache[cidOrGuid] = "raid"..i.."target"
 								bossuIdCache[UnitGUID("raid"..i.."target")] = "raid"..i.."target"
-								getBossTarget(UnitGUID("raid"..i.."target"))
+								name, uid, bossuid = getBossTarget(UnitGUID("raid"..i.."target"))
 								break
 							end
 						end
@@ -4754,7 +4757,7 @@ do
 							if self:GetUnitCreatureId("party"..i.."target") == cidOrGuid then
 								bossuIdCache[cidOrGuid] = "party"..i.."target"
 								bossuIdCache[UnitGUID("party"..i.."target")] = "party"..i.."target"
-								getBossTarget(UnitGUID("party"..i.."target"))
+								name, uid, bossuid = getBossTarget(UnitGUID("party"..i.."target"))
 								break
 							end
 						end
@@ -4762,8 +4765,9 @@ do
 				end
 			end
 		else
-			getBossTarget(cidOrGuid, scanOnlyBoss)
+			name, uid, bossuid = getBossTarget(cidOrGuid, scanOnlyBoss)
 		end
+		return name, uid, bossuid
 	end
 
 	function bossModPrototype:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank, isFinalScan)
