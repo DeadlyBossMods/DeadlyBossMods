@@ -194,7 +194,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerBorerDrillCD:Start()
 	elseif spellId == 144673 then
 		warnCrawlerMine:Show()
-		if not siegeMode then--These spawn during siege mode but random as all hell, there is no timer in this phase for these
+		if not self.vb.siegeMode then--These spawn during siege mode but random as all hell, there is no timer in this phase for these
 			timerCrawlerMineCD:Start()
 		end
 	elseif spellId == 144198 then

@@ -4799,7 +4799,7 @@ do
 		local cidOrGuid = cidOrGuid or self.creatureId
 		local scanInterval = scanInterval or 0.1
 		local targetname, targetuid, bossuid = self:GetBossTarget(cidOrGuid, scanOnlyBoss)
-		if targetname and (includeTank or not IsTanking(targetuid, bossuid)) then
+		if targetname and (includeTank or not self:IsTanking(targetuid, bossuid)) then
 			self[returnFunc](self, targetname, targetuid, bossuid)
 		end
 		self:ScheduleMethod(scanInterval, "StartRepeatedScan", cidOrGuid, returnFunc, scanInterval, scanOnlyBoss, includeTank)
