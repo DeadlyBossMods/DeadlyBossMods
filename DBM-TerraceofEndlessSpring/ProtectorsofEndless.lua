@@ -238,7 +238,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 117309 then
-		self:BossTargetScanner(60586, "WatersTarget", 0.1, 15, true)
+		self:BossTargetScanner(60586, "WatersTarget", 0.1, 15, true, true)
 		timerCleansingWatersCD:Start()
 	elseif args.spellId == 117975 then
 		warnExpelCorruption:Show()
