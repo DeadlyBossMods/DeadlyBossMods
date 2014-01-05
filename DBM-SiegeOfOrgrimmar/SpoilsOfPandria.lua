@@ -119,9 +119,11 @@ local berserkWarning2			= mod:NewAnnounce(DBM_CORE_GENERIC_WARNING_BERSERK, 4, n
 mod:AddRangeFrameOption(10, 145987)
 mod:AddInfoFrameOption("ej8350")--Eh, "overview" works.
 
+--Upvales, don't need variables
 local select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo = select, tonumber, GetPlayerMapPosition, GetWorldStateUIInfo
 local point1 = {0.488816, 0.208129}
 local point2 = {0.562330, 0.371684}
+--Not important, don't need to recover
 local worldTimer = 0
 local maxTimer = 0
 

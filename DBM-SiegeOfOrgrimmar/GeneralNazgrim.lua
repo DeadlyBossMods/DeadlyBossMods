@@ -100,12 +100,15 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 mod:AddSetIconOption("SetIconOnAdds", "ej7920", false, true)
 mod:AddInfoFrameOption("ej7909")
 
-local addsCount = 0
+--Upvales, don't need variables
 local UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation = UnitName, UnitExists, UnitGUID, UnitDetailedThreatSituation
-local dotWarned = {}
-local defensiveActive = false
-local allForcesReleased = false
 local sunder = GetSpellInfo(143494)
+--Tables, can't recover
+local dotWarned = {}
+--Important, needs recover
+mod.vb.addsCount = 0
+mod.vb.defensiveActive = false
+mod.vb.allForcesReleased = false
 
 local addsTable = {
 	[71519] = 7,--Shaman
@@ -153,66 +156,55 @@ local function updateInfoFrame()
 		lines["|cFFFF0000"..GetSpellInfo(143872).."|r"] = bossPower--Red (definitely work making this one red, it's really the only critically bad one)
 	end
 	if mod:IsDifficulty("heroic10", "heroic25") then--Same on 10 heroic? TODO, get normal LFR and flex adds info verified
-		if addsCount == 0 then
+		if mod.vb.addsCount == 0 then
 			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.warrior
-		elseif addsCount == 1 then
+		elseif mod.vb.addsCount == 1 then
 			lines[L.nextAdds] = L.shaman..", "..L.rogue..", "..L.hunter
-		elseif addsCount == 2 then
+		elseif mod.vb.addsCount == 2 then
 			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.warrior
-		elseif addsCount == 3 then
+		elseif mod.vb.addsCount == 3 then
 			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.hunter
-		elseif addsCount == 4 then
+		elseif mod.vb.addsCount == 4 then
 			lines[L.nextAdds] = L.shaman..", "..L.rogue..", "..L.warrior
-		elseif addsCount == 5 then
+		elseif mod.vb.addsCount == 5 then
 			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.hunter
-		elseif addsCount == 6 then
+		elseif mod.vb.addsCount == 6 then
 			lines[L.nextAdds] = L.rogue..", "..L.hunter..", "..L.warrior
-		elseif addsCount == 7 then
+		elseif mod.vb.addsCount == 7 then
 			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.rogue
-		elseif addsCount == 8 then
+		elseif mod.vb.addsCount == 8 then
 			lines[L.nextAdds] = L.shaman..", "..L.hunter..", "..L.warrior
-		elseif addsCount == 9 then
+		elseif mod.vb.addsCount == 9 then
 			lines[L.nextAdds] = L.mage..", "..L.hunter..", "..L.warrior
 		else--Already had all 10 adds sets now we're just going to get no more adds (except for 10%)
 			lines[""] = ""
 		end
 	else--Not heroic
-		if addsCount == 0 then
+		if mod.vb.addsCount == 0 then
 			lines[L.nextAdds] = L.mage..", "..L.warrior
-		elseif addsCount == 1 then
+		elseif mod.vb.addsCount == 1 then
 			lines[L.nextAdds] = L.shaman..", "..L.rogue
-		elseif addsCount == 2 then
+		elseif mod.vb.addsCount == 2 then
 			lines[L.nextAdds] = L.rogue..", "..L.warrior
-		elseif addsCount == 3 then
+		elseif mod.vb.addsCount == 3 then
 			lines[L.nextAdds] = L.mage..", "..L.shaman
-		elseif addsCount == 4 then
+		elseif mod.vb.addsCount == 4 then
 			lines[L.nextAdds] = L.shaman..", "..L.warrior
-		elseif addsCount == 5 then
+		elseif mod.vb.addsCount == 5 then
 			lines[L.nextAdds] = L.mage..", "..L.rogue
-		elseif addsCount == 6 then
+		elseif mod.vb.addsCount == 6 then
 			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.rogue
-		elseif addsCount == 7 then
+		elseif mod.vb.addsCount == 7 then
 			lines[L.nextAdds] = L.shaman..", "..L.rogue..", "..L.warrior
-		elseif addsCount == 8 then
+		elseif mod.vb.addsCount == 8 then
 			lines[L.nextAdds] = L.mage..", "..L.shaman..", "..L.warrior
-		elseif addsCount == 9 then
+		elseif mod.vb.addsCount == 9 then
 			lines[L.nextAdds] = L.mage..", "..L.rogue..", "..L.warrior
 		else--Already had all 10 adds sets now we're just going to get no more adds (except for 10%)
 			lines[""] = ""
 		end
 	end
 	return lines
-end
-
---Temp test function
---/script DBM:GetModByName("850"):TestInfo(1, 33)
-function mod:TestInfo(wave, power)
-	addsCount = wave--Fake current adds wave
-	bossPower = power--Fake current boss power
-	if self.Options.InfoFrame then
-		DBM.InfoFrame:SetHeader(GetSpellInfo(143589))
-		DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
-	end
 end
 
 function mod:LeapTarget(targetname, uId)
@@ -229,10 +221,10 @@ function mod:LeapTarget(targetname, uId)
 end
 
 function mod:OnCombatStart(delay)
-	addsCount = 0
 	table.wipe(dotWarned)
-	defensiveActive = false
-	allForcesReleased = false
+	self.vb.addsCount = 0
+	self.vb.defensiveActive = false
+	self.vb.allForcesReleased = false
 	timerAddsCD:Start(-delay, 1)
 	countdownAdds:Start()
 	berserkTimer:Start(-delay)
@@ -286,8 +278,8 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143589 then
-		if defensiveActive then
-			defensiveActive = false
+		if self.vb.defensiveActive then
+			self.vb.defensiveActive = false
 			specWarnDefensiveStanceEnd:Show()
 		end
 		self:UnregisterShortTermEvents()
@@ -311,8 +303,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	elseif args.spellId == 143593 then
-		if not allForcesReleased then
-			defensiveActive = true
+		if not self.vb.allForcesReleased then
+			self.vb.defensiveActive = true
 			self:RegisterShortTermEvents(
 				"SWING_DAMAGE",
 				"RANGE_DAMAGE",
@@ -400,15 +392,15 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.newForces1 or msg == L.newForces2 or msg == L.newForces3 or msg == L.newForces4 or msg == L.newForces5 then
-		addsCount = addsCount + 1
-		warnAdds:Show(addsCount)
-		specWarnAdds:Show(addsCount)
-		if addsCount < 10 then
-			timerAddsCD:Start(nil, addsCount+1)
+		self.vb.addsCount = self.vb.addsCount + 1
+		warnAdds:Show(self.vb.addsCount)
+		specWarnAdds:Show(self.vb.addsCount)
+		if self.vb.addsCount < 10 then
+			timerAddsCD:Start(nil, self.vb.addsCount+1)
 			countdownAdds:Start()
 		end
 		if self.Options.SetIconOnAdds then
-			if self:IsDifficulty("heroic10", "heroic25") or addsCount > 6 then--3 Adds
+			if self:IsDifficulty("heroic10", "heroic25") or self.vb.addsCount > 6 then--3 Adds
 				self:ScanForMobs(addsTable, 2, 7, 3, 0.2, 15)
 			else
 				self:ScanForMobs(addsTable, 2, 7, 2, 0.2, 15)--2 adds
@@ -418,11 +410,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			DBM.InfoFrame:Show(5, "function", updateInfoFrame, sortInfoFrame)
 		end
 	elseif msg == L.allForces then
-		allForcesReleased = true
-		defensiveActive = false
+		self.vb.allForcesReleased = true
+		self.vb.defensiveActive = false
 		self:UnregisterShortTermEvents()--Do not warn defensive stance below 10%
 		--Icon setting not put here on purpose, so as not ot mess with existing adds (it's burn boss phase anyawys)
-		specWarnAdds:Show(0)
 	end
 end
 
@@ -436,7 +427,7 @@ function mod:SPELL_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)
 	if spellId == 143873 and destGUID == UnitGUID("player") and self:AntiSpam(3, 2) then
 		specWarnRavagerMove:Show()
 	elseif sourceGUID == UnitGUID("player") and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then--If you've been in LFR at all, you'll see that even 3 is generous. 8 is WAY too leaniant.
-		if not UnitDebuff("player", sunder) and defensiveActive then
+		if not UnitDebuff("player", sunder) and self.vb.defensiveActive then
 			specWarnDefensiveStanceAttack:Show()
 		end
 	end
@@ -446,7 +437,7 @@ mod.SWING_DAMAGE = mod.SPELL_DAMAGE
 
 function mod:SPELL_PERIODIC_DAMAGE(sourceGUID, _, _, _, destGUID, _, _, _, spellId)--Prevent spam on DoT
 	if sourceGUID == UnitGUID("player") and destGUID == UnitGUID("boss1") and self:AntiSpam(3, 1) then
-		if not UnitDebuff("player", sunder) and defensiveActive and not dotWarned[spellId] then
+		if not UnitDebuff("player", sunder) and self.vb.defensiveActive and not dotWarned[spellId] then
 			dotWarned[spellId] = true
 			specWarnDefensiveStanceAttack:Show()
 		end

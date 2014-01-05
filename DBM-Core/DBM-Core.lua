@@ -3597,8 +3597,8 @@ function DBM:EndCombat(mod, wipe)
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS:format(playerName, difficultyText..(mod.combatInfo.name or ""), totalPulls - totalKills)
 					else
 						local hpText
-						if mod.variables.phase then
-							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.variables.phase)..")"
+						if mod.vb.phase then
+							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 						end
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_STATS_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText or wipeHP, totalPulls - totalKills)
 					end
@@ -3607,8 +3607,8 @@ function DBM:EndCombat(mod, wipe)
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_SCENARIO_END_WIPE:format(playerName, difficultyText..(mod.combatInfo.name or ""))
 					else
 						local hpText
-						if mod.variables.phase then
-							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.variables.phase)..")"
+						if mod.vb.phase then
+							hpText = wipeHP.." ("..SCENARIO_STAGE:format(mod.vb.phase)..")"
 						end
 						msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE_AT:format(playerName, difficultyText..(mod.combatInfo.name or ""), hpText or wipeHP)
 					end
@@ -3902,7 +3902,13 @@ do
 
 	function DBM:ReceiveVariableInfo(sender, mod, name, value)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
-			mod.variables[name] = value
+			if value == "true" then
+				mod.vb[name] = true
+			elseif value == "false" then
+				mod.vb[name] = false
+			else
+				mod.vb[name] = value
+			end
 		end
 	end
 end
@@ -3973,7 +3979,7 @@ function DBM:SendTimerInfo(mod, target)
 end
 
 function DBM:SendVariableInfo(mod, target)
-	for vname, v in pairs(mod.variables) do
+	for vname, v in pairs(mod.vb) do
 		local v2 = tostring(v)
 		if v2 then
 			SendAddonMessage("D4", ("VI\t%s\t%s\t%s"):format(mod.id, vname, v2), "WHISPER", target)
@@ -4430,7 +4436,7 @@ do
 				specwarns = {},
 				timers = {},
 				countdowns = {},
-				variables = {},
+				vb = {},
 				modId = modId,
 				instanceId = instanceId,
 				revision = 0,
@@ -7000,14 +7006,6 @@ end
 
 function bossModPrototype:IsInCombat()
 	return self.inCombat
-end
-
-function bossModPrototype:Phase(set)
-	if set then
-		self.variables.phase = set
-	else
-		return self.variables.phase
-	end
 end
 
 function bossModPrototype:SetMinCombatTime(t)

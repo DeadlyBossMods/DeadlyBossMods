@@ -71,14 +71,15 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(6, 144154, mod:IsRanged())
 
-local siegeMode = false
-local shockCount = 0
-local firstTar = false
-local firstMortar = false
+--Important, needs recover
+mod.vb.shockCount = 0
+mod.vb.siegeMode = false
+mod.vb.firstTar = false
+mod.vb.firstMortar = false
 
 function mod:OnCombatStart(delay)
-	siegeMode = false
-	shockCount = 0
+	self.vb.shockCount = 0
+	self.vb.siegeMode = false
 	timerIgniteArmorCD:Start(9-delay)
 	timerLaserBurnCD:Start(-delay)
 	timerBorerDrillCD:Start(-delay)
@@ -103,10 +104,10 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 144483 then--Siege mode transition
-		siegeMode = true
-		shockCount = 0
-		firstTar = false
-		firstMortar = false
+		self.vb.shockCount = 0
+		self.vb.siegeMode = true
+		self.vb.firstTar = false
+		self.vb.firstMortar = false
 		timerLaserBurnCD:Cancel()
 		timerCrawlerMineCD:Cancel()
 		timerBorerDrillCD:Cancel()
@@ -120,11 +121,11 @@ function mod:SPELL_CAST_START(args)
 		end
 		timerAssaultModeCD:Start()
 	elseif args.spellId == 144485 then
-		shockCount = shockCount + 1
-		warnShockPulse:Show(shockCount)
-		specWarnShockPulse:Show(shockCount)
-		if shockCount < 3 then
-			timerShockPulseCD:Start(nil, shockCount+1)
+		self.vb.shockCount = self.vb.shockCount + 1
+		warnShockPulse:Show(self.vb.shockCount)
+		specWarnShockPulse:Show(self.vb.shockCount)
+		if self.vb.shockCount < 3 then
+			timerShockPulseCD:Start(nil, self.vb.shockCount+1)
 		end
 	end
 end
@@ -201,16 +202,16 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDemolisherCanonCD:Start()
 	elseif spellId == 144492 then
 		warnExplosiveTar:Show()
-		if not firstTar then
-			firstTar = true
+		if not self.vb.firstTar then
+			self.vb.firstTar = true
 			timerExplosiveTarCD:Start()
 		end
 	elseif spellId == 146359 then--Regeneration (Assault Mode power regen activation)
 		--2 seconds slower than emote, but it's not pressing enough to matter so it's better localisation wise to do it this way
 		timerMortarBarrageCD:Cancel()
-		if siegeMode == true then--don't start timer on pull regenerate, pull regenerate is 5 seconds longer than rest of them
+		if self.vb.siegeMode == true then--don't start timer on pull regenerate, pull regenerate is 5 seconds longer than rest of them
+			self.vb.siegeMode = false
 			timerSiegeModeCD:Start()
-			siegeMode = false
 		end
 		--[[if self:IsDifficulty("heroic10", "heroic25") then
 			timerRicochetCD:Start(22)
@@ -218,8 +219,8 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 	elseif spellId == 144555 then
 		warnMortarBarrage:Show()
 		specWarnMortarBarrage:Show()
-		if not firstMortar then
-			firstMortar = true
+		if not self.vb.firstMortar then
+			self.vb.firstMortar = true
 			timerMortarBarrageCD:Start()
 		end
 	elseif spellId == 144356 then

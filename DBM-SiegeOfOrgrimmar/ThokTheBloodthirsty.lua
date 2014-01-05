@@ -100,9 +100,12 @@ local soundFixate					= mod:NewSound(143445)
 mod:AddBoolOption("RangeFrame")
 mod:AddSetIconOption("FixateIcon", 143445)
 
-local screechCount = 0
+--Upvales, don't need variables
 local UnitGUID = UnitGUID
+--Tables, can't recover
 local bloodTargets = {}
+--Important, needs recover
+mod.vb.screechCount = 0
 
 --this boss works similar to staghelm
 local screechTimers = {
@@ -121,7 +124,7 @@ local function clearBloodTargets()
 end
 
 function mod:OnCombatStart(delay)
-	screechCount = 0
+	self.vb.screechCount = 0
 	table.wipe(bloodTargets)
 	timerFearsomeRoarCD:Start(-delay)
 	if self:IsDifficulty("lfr25") then
@@ -151,12 +154,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 143343 then--Assumed, 2 second channel but "Instant" cast flagged, this generally means SPELL_AURA_APPLIED
 		timerDeafeningScreechCD:Cancel()
 		if self:IsDifficulty("lfr25") then
-			timerDeafeningScreechCD:Start(18, screechCount+1)
+			timerDeafeningScreechCD:Start(18, self.vb.screechCount+1)
 			specWarnDeafeningScreech:Schedule(16.5)
 		else
-			if screechCount < 7 then--Don't spam special warning once cd is lower than 4.8 seconds.
-				timerDeafeningScreechCD:Start(screechTimers[screechCount], screechCount+1)
-				specWarnDeafeningScreech:Schedule(screechTimers[screechCount]-1.5)
+			if self.vb.screechCount < 7 then--Don't spam special warning once cd is lower than 4.8 seconds.
+				timerDeafeningScreechCD:Start(screechTimers[self.vb.screechCount], self.vb.screechCount+1)
+				specWarnDeafeningScreech:Schedule(screechTimers[self.vb.screechCount]-1.5)
 			end
 		end
 	elseif args.spellId == 143428 then
@@ -172,8 +175,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 143411 then
-		screechCount = args.amount or 1
-		warnAcceleration:Show(args.destName, screechCount)
+		self.vb.screechCount = args.amount or 1
+		warnAcceleration:Show(args.destName, self.vb.screechCount)
 	elseif args.spellId == 143766 then
 		timerFearsomeRoarCD:Start()
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -292,7 +295,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBloodFrenzyEnd:Start()
 	elseif args.spellId == 143440 then
 		timerBloodFrenzyCD:Cancel()
-		screechCount = 0
+		self.vb.screechCount = 0
 		if self:IsDifficulty("lfr25") then
 			timerDeafeningScreechCD:Start(19, 1)
 			specWarnDeafeningScreech:Schedule(17.5)
