@@ -4727,10 +4727,10 @@ do
 		local name, uid, bossuid
 		if type(cidOrGuid) == "number" then
 			local cidOrGuid = cidOrGuid or self.creatureId
-			local uid = bossuIdCache[cidOrGuid] or "boss1"
-			if self:GetUnitCreatureId(uid) == cidOrGuid then
-				bossuIdCache[UnitGUID(uid)] = uid
-				name, uid, bossuid = getBossTarget(UnitGUID(uid), scanOnlyBoss)
+			local cacheuid = bossuIdCache[cidOrGuid] or "boss1"
+			if self:GetUnitCreatureId(cacheuid) == cidOrGuid then
+				bossuIdCache[UnitGUID(cacheuid)] = cacheuid
+				name, uid, bossuid = getBossTarget(UnitGUID(cacheuid), scanOnlyBoss)
 			else
 				local found = false
 				for i, uId in ipairs(bossTargetuIds) do
@@ -4773,6 +4773,7 @@ do
 	function bossModPrototype:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank, isFinalScan)
 		--Increase scan count
 		local cidOrGuid = cidOrGuid or self.creatureId
+		if not cidOrGuid then return end
 		if not targetScanCount[cidOrGuid] then targetScanCount[cidOrGuid] = 0 end
 		targetScanCount[cidOrGuid] = targetScanCount[cidOrGuid] + 1
 		--Set default values
@@ -4789,7 +4790,7 @@ do
 				end
 			else--Scan success. (or failed to detect right target.) But some spells can be used on tanks, anyway warns tank if player scan. (enemy scan block it)
 				targetScanCount[cidOrGuid] = nil--Reset count for later use.
-				self:UnscheduleMethod("BossTargetScanner", returnFunc)--Unschedule all checks just to be sure none are running, we are done.
+				self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
 				if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
 					self[returnFunc](self, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 				end
@@ -4799,7 +4800,7 @@ do
 				self:ScheduleMethod(scanInterval, "BossTargetScanner", cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank)
 			else
 				targetScanCount[cidOrGuid] = nil--Reset count for later use.
-				self:UnscheduleMethod("BossTargetScanner", returnFunc)--Unschedule all checks just to be sure none are running, we are done.
+				self:UnscheduleMethod("BossTargetScanner", cidOrGuid, returnFunc)--Unschedule all checks just to be sure none are running, we are done.
 			end
 		end
 	end
