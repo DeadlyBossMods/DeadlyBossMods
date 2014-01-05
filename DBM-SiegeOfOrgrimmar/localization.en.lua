@@ -44,7 +44,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	warnTowerGrunt		= "Announce when tower opens",
+	warnTowerOpen		= "Announce when tower opens",
 	warnTowerGrunt		= "Announce when new tower grunt spawns",
 	timerTowerCD		= "Show timer for next tower assault",
 	timerTowerGruntCD	= "Show timer for next tower grunt"
