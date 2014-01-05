@@ -32,6 +32,7 @@ local warnOverload						= mod:NewStackAnnounce(145444, 3)
 local warnDeathFromAbove				= mod:NewTargetAnnounce(144208, 4)--Player target, not vulnerable shredder target. (should always be cast on highest threat target, but i like it still being a "target" warning)
 --The Assembly Line
 local warnAssemblyLine					= mod:NewCountAnnounce("OptionVersion2", "ej8202", 3, 85914, mod:IsDps())
+local warnInactive						= mod:NewTargetAnnounce(138089, 1)
 local warnShockwaveMissile				= mod:NewSpellAnnounce(143641, 3)
 --local warnLaserTurretActivated			= mod:NewSpellAnnounce("ej8208", 3, 143867, false)--No event to detect it
 local warnLaserFixate					= mod:NewTargetAnnounce(143828, 3, 143867)
@@ -97,6 +98,13 @@ local crawlerMine = EJ_GetSectionInfo(8212)
 local shockwaveMissile = EJ_GetSectionInfo(8205)
 local laserTurret = EJ_GetSectionInfo(8208)
 local electroMagnet = EJ_GetSectionInfo(8210)
+local assemblyName = {
+	[71606] = shockwaveMissile, -- Deactivated Missile Turret
+	[71790] = crawlerMine, -- Disassembled Crawler Mines
+	[71751] = laserTurret, -- Deactivated Laser Turret
+	[71694] = electroMagnet, -- Deactivated Electromagnet
+}
+
 --Not important, don't need to recover
 --Important, needs recover
 mod.vb.shockwaveOvercharged = false
@@ -207,6 +215,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnProtectiveFrenzy:Show(args.destName)
 		specWarnProtectiveFrenzy:Show(args.destName)
 		timerProtectiveFrenzy:Start()
+		for i= 1, 5 do
+			if UnitExists("boss"..i) and UnitIsDead("boss"..i) then
+				local cId = self:GetUnitCreatureId(UnitGUID("boss"..i))
+				if assemblyName[cId] then
+					warnInactive:Show(assemblyName[cId])
+				end
+			end
+		end
 	elseif args.spellId == 143385 and args:IsDestTypePlayer() then
 		local amount = args.amount or 1
 		warnElectroStaticCharge:Show(args.destName, amount)
