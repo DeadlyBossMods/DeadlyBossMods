@@ -84,12 +84,15 @@ mod:AddSetIconOption("SetIconOnMark", 144351, false)
 mod:AddBoolOption("SetIconOnFragment", false)--This does not get along with SetIconOnMark though
 mod.findFastestComputer = {"SetIconOnFragment"} -- for set icon stuff.
 
+--Upvales, don't need variables
 local UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID = UnitPower, UnitPowerMax, UnitIsDeadOrGhost, UnitGUID
 local prideLevel = EJ_GetSectionInfo(8255)
-local woundCount = 0
+--Not important, don't need to recover
 local manifestationWarned = false
-local swellingCount = 0
 local bpSpecWarnFired = false
+--Important, needs recover
+mod.vb.woundCount = 0
+mod.vb.swellingCount = 0
 
 function mod:OnCombatStart(delay)
 	timerGiftOfTitansCD:Start(7.5-delay)
@@ -104,9 +107,9 @@ function mod:OnCombatStart(delay)
 	timerSwellingPrideCD:Start(-delay, 1)
 	countdownSwellingPride:Start(-delay)
 	berserkTimer:Start(-delay)
-	woundCount = 0
+	self.vb.woundCount = 0
 	manifestationWarned = false
-	swellingCount = 0
+	self.vb.swellingCount = 0
 	bpSpecWarnFired = false
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(prideLevel)
@@ -125,9 +128,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 144400 then
-		swellingCount = swellingCount + 1
-		warnSwellingPride:Show(swellingCount)
-		specWarnSwellingPride:Show(swellingCount)
+		self.vb.swellingCount = self.vb.swellingCount + 1
+		warnSwellingPride:Show(self.vb.swellingCount)
+		specWarnSwellingPride:Show(self.vb.swellingCount)
 	elseif args.spellId == 144379 then
 		local sourceGUID = args.sourceGUID
 		warnMockingBlast:Show()
@@ -153,7 +156,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 144400 then--Swelling Pride Cast END
-		woundCount = 0
+		self.vb.woundCount = 0
 		bpSpecWarnFired = false
 		--Since we register this event anyways for bursting, might as well start cd bars here instead
 		timerMarkCD:Start(10.5)
@@ -161,7 +164,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		countdownReflection:Start()
 		timerCorruptedPrisonCD:Start()
 		timerManifestationCD:Start()
-		timerSwellingPrideCD:Start(nil, swellingCount + 1)
+		timerSwellingPrideCD:Start(nil, self.vb.swellingCount + 1)
 		countdownSwellingPride:Start()
 		if not self:IsDifficulty("lfr25") then
 			timerWoundedPrideCD:Start(11)
@@ -192,9 +195,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 144832 then
 		warnUnleashed:Show()
 		timerGiftOfTitansCD:Cancel()
-		woundCount = 0
+		self.vb.woundCount = 0
 		timerManifestationCD:Start()--Not yet verified if altered or not
-		timerSwellingPrideCD:Start(75, swellingCount + 1)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
+		timerSwellingPrideCD:Start(75, self.vb.swellingCount + 1)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
 		countdownSwellingPride:Start(75)--Not yet verified if altered or not (it would be 62 instead of 60 though since we'd be starting at 0 energy instead of cast finish of last swelling)
 	elseif args.spellId == 144800 then
 		warnSelfReflection:Show()
@@ -253,8 +256,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 144358 then
 		warnWoundedPride:Show(args.destName)
 		specWarnWoundedPride:Show()
-		if woundCount < 2 and not self:IsDifficulty("lfr25") then
-			woundCount = woundCount + 1
+		if self.vb.woundCount < 2 and not self:IsDifficulty("lfr25") then
+			self.vb.woundCount = self.vb.woundCount + 1
 			timerWoundedPrideCD:Start()
 		end
 	elseif args:IsSpellID(144574, 144636) then--Locational spellids, 2 from 10 man, 25 man will use all 4 where we can get other 2

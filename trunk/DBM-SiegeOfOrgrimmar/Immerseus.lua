@@ -44,10 +44,7 @@ local timerSwellingCorruptionCD			= mod:NewCDTimer(75, 143578, nil, nil, nil, 14
 
 local berserkTimer						= mod:NewBerserkTimer(605)
 
-local lastPower = 100
-
 function mod:OnCombatStart(delay)
-	lastPower = 100
 	timerBreathCD:Start(10-delay)
 	timerSwirlCD:Start(20-delay)
 	berserkTimer:Start(-delay)

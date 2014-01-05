@@ -117,20 +117,24 @@ mod:AddSetIconOption("SetIconOnMalice", 147209, false)
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 mod:AddBoolOption("RangeFrame")
 
-mod:Phase(1)
-local firstIronStar = false
-local engineerDied = 0
+--Upvales, don't need variables
 local UnitExists, UnitDebuff = UnitExists, UnitDebuff
-local whirlCount = 0
-local desecrateCount = 0
-local mindControlCount = 0
-local shamanAlive = 0
-local bombardCount = 0
 local bombardCD = {55, 40, 40, 25, 25}
-local lines = {}
 local spellName1 = GetSpellInfo(149004)
 local spellName2 = GetSpellInfo(148983)
 local spellName3 = GetSpellInfo(148994)
+--Tables, can't recover
+local lines = {}
+--Not important, don't need to recover
+local engineerDied = 0
+local shamanAlive = 0
+--Important, needs recover
+mod.vb.phase = 1
+mod.vb.whirlCount = 0
+mod.vb.desecrateCount = 0
+mod.vb.mindControlCount = 0
+mod.vb.bombardCount = 0
+mod.vb.firstIronStar = false
 
 local function updateInfoFrame()
 	table.wipe(lines)
@@ -159,26 +163,26 @@ function mod:DesecrateTarget(targetname, uId)
 	if targetname == UnitName("player") and not self:IsTanking(uId) then--Never targets tanks
 		specWarnDesecrateYou:Show()
 		yellDesecrate:Yell()
-	elseif self:Phase() ~= 1 and self:CheckNearby(20, targetname) then
+	elseif self.vb.phase ~= 1 and self:CheckNearby(20, targetname) then
 		specWarnDesecrateNear:Show(targetname)
 	else
 		if UnitPower("boss1") < 75 then
-			specWarnDesecrate:Show(desecrateCount)
+			specWarnDesecrate:Show(self.vb.desecrateCount)
 		else
-			specWarnEmpDesecrate:Show(desecrateCount)
+			specWarnEmpDesecrate:Show(self.vb.desecrateCount)
 		end
 	end
 end
 
 function mod:OnCombatStart(delay)
-	firstIronStar = false
 	engineerDied = 0
-	self:Phase(1)
-	whirlCount = 0
-	desecrateCount = 0
-	mindControlCount = 0
 	shamanAlive = 0
-	bombardCount = 0
+	self.vb.phase = 1
+	self.vb.whirlCount = 0
+	self.vb.desecrateCount = 0
+	self.vb.mindControlCount = 0
+	self.vb.bombardCount = 0
+	self.vb.firstIronStar = false
 	timerDesecrateCD:Start(10.5-delay, 1)
 	specWarnSiegeEngineer:Schedule(16-delay)
 	timerSiegeEngineerCD:Start(20-delay)
@@ -215,24 +219,24 @@ function mod:SPELL_CAST_START(args)
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
 	elseif args:IsSpellID(144985, 145037) then
-		whirlCount = whirlCount + 1
+		self.vb.whirlCount = self.vb.whirlCount + 1
 		if args.spellId == 144985 then
-			warnWhirlingCorruption:Show(whirlCount)
-			specWarnWhirlingCorruption:Show(whirlCount)
+			warnWhirlingCorruption:Show(self.vb.whirlCount)
+			specWarnWhirlingCorruption:Show(self.vb.whirlCount)
 		else
-			warnEmpWhirlingCorruption:Show(whirlCount)
-			specWarnEmpWhirlingCorruption:Show(whirlCount)
+			warnEmpWhirlingCorruption:Show(self.vb.whirlCount)
+			specWarnEmpWhirlingCorruption:Show(self.vb.whirlCount)
 		end
 		timerWhirlingCorruption:Start()
-		timerWhirlingCorruptionCD:Start(nil, whirlCount+1)
+		timerWhirlingCorruptionCD:Start(nil, self.vb.whirlCount+1)
 		countdownWhirlingCorruption:Start()
 		soundWhirlingCorrpution:Play()
 	elseif args.spellId == 147120 then
-		bombardCount = bombardCount + 1
-		warnBombardment:Show(bombardCount)
-		specWarnBombardment:Show(bombardCount)
+		self.vb.bombardCount = self.vb.bombardCount + 1
+		warnBombardment:Show(self.vb.bombardCount)
+		specWarnBombardment:Show(self.vb.bombardCount)
 		timerBombardment:Start()
-		timerBombardmentCD:Start(bombardCD[bombardCount] or 15, bombardCount+1)
+		timerBombardmentCD:Start(bombardCD[self.vb.bombardCount] or 15, self.vb.bombardCount+1)
 		timerClumpCheck:Start()
 		if self.Options.RangeFrame then
 			if self:IsDifficulty("heroic10") then
@@ -254,28 +258,28 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(144748, 144749) then
-		desecrateCount = desecrateCount + 1
-		if self:Phase() == 1 then
-			timerDesecrateCD:Start(41, desecrateCount+1)
-		elseif self:Phase() == 3 then
-			timerDesecrateCD:Start(25, desecrateCount+1)
+		self.vb.desecrateCount = self.vb.desecrateCount + 1
+		if self.vb.phase == 1 then
+			timerDesecrateCD:Start(41, self.vb.desecrateCount+1)
+		elseif self.vb.phase == 3 then
+			timerDesecrateCD:Start(25, self.vb.desecrateCount+1)
 		else--Phase 2
-			timerDesecrateCD:Start(nil, desecrateCount+1)
+			timerDesecrateCD:Start(nil, self.vb.desecrateCount+1)
 		end
 		self:BossTargetScanner(71865, "DesecrateTarget", 0.02, 16)
 	elseif args:IsSpellID(145065, 145171) then
-		mindControlCount = mindControlCount + 1
+		self.vb.mindControlCount = self.vb.mindControlCount + 1
 		specWarnTouchOfYShaarj:Show()
-		if self:Phase() == 3 then
-			if mindControlCount == 1 then--First one in phase is shorter than rest (well that or rest are delayed because of whirling)
-				timerTouchOfYShaarjCD:Start(35, mindControlCount+1)
+		if self.vb.phase == 3 then
+			if self.vb.mindControlCount == 1 then--First one in phase is shorter than rest (well that or rest are delayed because of whirling)
+				timerTouchOfYShaarjCD:Start(35, self.vb.mindControlCount+1)
 				countdownTouchOfYShaarj:Start(35)
 			else
-				timerTouchOfYShaarjCD:Start(42, mindControlCount+1)
+				timerTouchOfYShaarjCD:Start(42, self.vb.mindControlCount+1)
 				countdownTouchOfYShaarj:Start(42)
 			end
 		else
-			timerTouchOfYShaarjCD:Start(nil, mindControlCount+1)
+			timerTouchOfYShaarjCD:Start(nil, self.vb.mindControlCount+1)
 			countdownTouchOfYShaarj:Start()
 		end
 	end
@@ -393,7 +397,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerDesecrateCD:Cancel()
 		timerHellscreamsWarsongCD:Cancel()
 		specWarnSiegeEngineer:Cancel()
-		if self:Phase() == 1 then
+		if self.vb.phase == 1 then
 			timerEnterRealm:Start(25)
 		end
 	elseif spellId == 144866 then--Enter Realm of Y'Shaarj
@@ -406,12 +410,12 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		countdownWhirlingCorruption:Cancel()
 	elseif spellId == 144956 then--Jump To Ground (intermission ending)
 		if timerEnterRealm:GetTime() > 0 then--first cast, phase2 trigger.
-			self:Phase(2)
+			self.vb.phase = 2
 			warnPhase2:Show()
 		else
-			whirlCount = 0
-			desecrateCount = 0
-			mindControlCount = 0
+			self.vb.whirlCount = 0
+			self.vb.desecrateCount = 0
+			self.vb.mindControlCount = 0
 			hideInfoFrame()
 			timerDesecrateCD:Start(10, 1)
 			timerTouchOfYShaarjCD:Start(15, 1)
@@ -422,10 +426,10 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		end
 	--"<556.9 21:41:56> [UNIT_SPELLCAST_SUCCEEDED] Garrosh Hellscream [[boss1:Realm of Y'Shaarj::0:145647]]", -- [169886]
 	elseif spellId == 145647 then--Phase 3 trigger
-		self:Phase(3)
-		whirlCount = 0
-		desecrateCount = 0
-		mindControlCount = 0
+		self.vb.phase = 3
+		self.vb.whirlCount = 0
+		self.vb.desecrateCount = 0
+		self.vb.mindControlCount = 0
 		warnPhase3:Show()
 		timerEnterRealm:Cancel()
 		timerDesecrateCD:Cancel()
@@ -439,7 +443,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerWhirlingCorruptionCD:Start(44.5, 1)
 		countdownWhirlingCorruption:Start(44.5)
 	elseif spellId == 146984 then--Phase 4 trigger
-		self:Phase(4)
+		self.vb.phase = 4
 		timerEnterRealm:Cancel()
 		timerDesecrateCD:Cancel()
 		timerTouchOfYShaarjCD:Cancel()
@@ -460,8 +464,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		warnSiegeEngineer:Show()
 		specWarnSiegeEngineer:Cancel()
 		specWarnSiegeEngineer:Schedule(41)
-		if not firstIronStar then
-			firstIronStar = true
+		if not self.vb.firstIronStar then
+			self.vb.firstIronStar = true
 			timerSiegeEngineerCD:Start(45)
 		else
 			timerSiegeEngineerCD:Start()

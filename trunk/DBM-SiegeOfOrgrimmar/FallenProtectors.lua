@@ -105,12 +105,14 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 mod:AddSetIconOption("SetIconOnStrike", 143962, false)
 mod:AddRangeFrameOption(5, 143423, false)--For heroic. Need to chage smart range frame?
 
+--Upvales, don't need variables
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-local strikeDebuff = GetSpellInfo(143962)--Cast spellid, Unconfirmed if debuff has same id or even name. Need to verify
-local sorrowActive = false
+--Not important, don't need to recover
 local isInfernoTarget = false
+--Important, needs recover
+mod.vb.sorrowActive = false
 
 function mod:BrewTarget(targetname, uId)
 	if not targetname then return end
@@ -250,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBaneCD:Cancel()
 		timerCalamityCD:Cancel()
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
-		sorrowActive = true
+		self.vb.sorrowActive = true
 		warnMiserySorrowGloom:Show()
 		specWarnMiserySorrowGloom:Show()
 		timerVengefulStrikesCD:Cancel()
@@ -267,7 +269,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGougeCD:Cancel()
 		timerGarroteCD:Cancel()
 		timerCalamityCD:Cancel()--Can't be cast during THIS special
-	elseif args.spellId == 143423 and args:IsPlayer() and sorrowActive and not self:IsDifficulty("lfr25") and not isInfernoTarget then
+	elseif args.spellId == 143423 and args:IsPlayer() and self.vb.sorrowActive and not self:IsDifficulty("lfr25") and not isInfernoTarget then
 		specWarnShaShearYou:Show()
 		yellShaShear:Yell()
 	end
@@ -279,7 +281,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBaneCD:Start(10)
 		timerCalamityCD:Start(23)--Now back to not cast right away again.
 	elseif args.spellId == 143955 then--Misery, Sorrow, and Gloom
-		sorrowActive = false--Just in case UNIT_DIED doesn't fire.
+		self.vb.sorrowActive = false--Just in case UNIT_DIED doesn't fire.
 		timerDefiledGroundCD:Cancel()
 		timerInfernoStrikeCD:Cancel()
 		timerInfernoStrike:Cancel()
@@ -307,7 +309,7 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71481 then--Sorrow
-		sorrowActive = false
+		self.vb.sorrowActive = false
 	end
 end
 

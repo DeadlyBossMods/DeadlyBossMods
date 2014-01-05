@@ -97,9 +97,10 @@ local timerPulsingFlames			= mod:NewBuffActiveTimer(7, 147042)
 mod:AddSetIconOption("FixateIcon", 147068)
 mod:AddSetIconOption("SetIconOnAdds", "ej8556", false, true)
 
-mod.variables.addsCount = 0
-mod.variables.firstTower = 0--0: first tower not started, 1: first tower started, 2: first tower breached
-mod.variables.pulseCount = 0
+--Important, needs recover
+mod.vb.addsCount = 0
+mod.vb.firstTower = 0--0: first tower not started, 1: first tower started, 2: first tower breached
+mod.vb.pulseCount = 0
 
 local function TowerGrunt()
 	warnTowerGrunt:Show()
@@ -108,9 +109,9 @@ local function TowerGrunt()
 end
 
 function mod:OnCombatStart(delay)
-	self.variables.addsCount = 0
-	self.variables.firstTower = 0
-	self.variables.pulseCount = 0
+	self.vb.addsCount = 0
+	self.vb.firstTower = 0
+	self.vb.pulseCount = 0
 --	timerAddsCD:Start(6.5-delay)--First wave actually seems to have a couple second variation, since timer is so short anyways, just disabling it
 	if not self:IsDifficulty("heroic10", "heroic25") then
 		timerTowerCD:Start(116.5-delay)
@@ -177,11 +178,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFracture:Show(args.destName)
 		specWarnFracture:Show(args.destName)
 	elseif args.spellId == 147042 then
-		self.variables.pulseCount = self.variables.pulseCount + 1
-		warnPulsingFlames:Show(self.variables.pulseCount)
+		self.vb.pulseCount = self.vb.pulseCount + 1
+		warnPulsingFlames:Show(self.vb.pulseCount)
 		specWarnPulsingFlames:Show()
 		timerPulsingFlames:Start()
-		timerPulsingFlamesCD:Start(nil, self.variables.pulseCount + 1)
+		timerPulsingFlamesCD:Start(nil, self.vb.pulseCount + 1)
 	end
 end
 
@@ -277,8 +278,8 @@ end
 function mod:UPDATE_WORLD_STATES()
 	local text = select(4, GetWorldStateUIInfo(4))
 	local percent = tonumber(string.match(text or "", "%d+"))
-	if percent == 1 and (self.variables.firstTower == 0) and not self:IsDifficulty("heroic10", "heroic25") then
-		self.variables.firstTower = 1
+	if percent == 1 and (self.vb.firstTower == 0) and not self:IsDifficulty("heroic10", "heroic25") then
+		self.vb.firstTower = 1
 		timerTowerCD:Start()
 	end
 end
@@ -287,10 +288,10 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find("cFFFF0404") then--They fixed epiccenter bug (figured they would). Color code should be usuable though. It's only emote on encounter that uses it.
 		warnDemolisher:Show()
-		if self:IsDifficulty("heroic10", "heroic25") and self.variables.firstTower == 0 then
+		if self:IsDifficulty("heroic10", "heroic25") and self.vb.firstTower == 0 then
 			timerTowerGruntCD:Start(15)
 			self:Schedule(15, TowerGrunt)
-			self.variables.firstTower = 2
+			self.vb.firstTower = 2
 		end
 	elseif msg:find(L.tower) then
 		warnTowerOpen:Show()
@@ -304,19 +305,19 @@ end
 
 function mod:OnSync(msg)
 	if msg == "Adds" and self:AntiSpam(10, 4) then
-		self.variables.addsCount = self.variables.addsCount + 1
-		if self.variables.addsCount % 4 == 0 then
-			warnProto:Show(self.variables.addsCount)
-			timerAddsCD:Start(self.variables.addsCount + 1)
-		elseif self.variables.addsCount % 4 == 3 then
-			warnAdd:Show(self.variables.addsCount)
-			timerProtoCD:Start(self.variables.addsCount + 1)
-		elseif self.variables.addsCount == 1 then
-			warnAdd:Show(self.variables.addsCount)
+		self.vb.addsCount = self.vb.addsCount + 1
+		if self.vb.addsCount % 4 == 0 then
+			warnProto:Show(self.vb.addsCount)
+			timerAddsCD:Start(self.vb.addsCount + 1)
+		elseif self.vb.addsCount % 4 == 3 then
+			warnAdd:Show(self.vb.addsCount)
+			timerProtoCD:Start(self.vb.addsCount + 1)
+		elseif self.vb.addsCount == 1 then
+			warnAdd:Show(self.vb.addsCount)
 			timerAddsCD:Start(48, 2)
 		else
-			warnAdd:Show(self.variables.addsCount)
-			timerAddsCD:Start(nil, self.variables.addsCount + 1)
+			warnAdd:Show(self.vb.addsCount)
+			timerAddsCD:Start(nil, self.vb.addsCount + 1)
 		end
 		if self.Options.SetIconOnAdds then
 			self:ScanForMobs(72958, 0, 8, 2, 0.2, 8)
