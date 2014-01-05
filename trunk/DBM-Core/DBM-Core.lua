@@ -3749,7 +3749,7 @@ function DBM:OnMobKill(cId, synced)
 			if v.numBoss then
 				v.vb.bossLeft = (v.vb.bossLeft or v.numBoss) - 1
 				if DBM.Options.DebugMode then
-					print("DBM Debug: Boss left - "..v.vb.BossLeft.."/"..v.numBoss)
+					print("DBM Debug: Boss left - "..v.vb.bossLeft.."/"..v.numBoss)
 				end
 			end
 			local allMobsDown = true
@@ -5375,7 +5375,7 @@ function bossModPrototype:SetMainBossID(cid)
 end
 
 function bossModPrototype:SetBossHPInfoToHighest(numBoss)
-	self.numBoss = numBoss or select("#", self.creatureId)
+	self.numBoss = numBoss or (self.multiMobPullDetection and #self.multiMobPullDetection)
 	self.highesthealth = true
 end
 
