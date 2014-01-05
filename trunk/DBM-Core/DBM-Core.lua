@@ -4663,8 +4663,9 @@ do
 	local bossTargetuIds = {
 		"target", "focus", "boss1", "boss2", "boss3", "boss4", "boss5"
 	}
+	local targetScanCount = {}
 
-	local function getBossTarget(guid)
+	local function getBossTarget(guid, scanOnlyBoss)
 		local name, uid, bossuid
 		bossuid = bossuIdCache[guid] or "boss1"
 		if UnitGUID(bossuIdCache[guid]) == guid then
@@ -4682,7 +4683,7 @@ do
 				break
 			end
 		end
-		if name then return name, uid, bossuid end
+		if name or scanOnlyBoss then return name, uid, bossuid end
 		-- failed to detect from default uIds, scan all group members's target.
 		if IsInRaid() then
 			for i = 1, GetNumGroupMembers() do
@@ -4708,29 +4709,29 @@ do
 		return name, uid, bossuid
 	end
 
-	function bossModPrototype:GetBossTarget(cid)
-		if type(cid) == "number" then
-			local cid = cid or self.creatureId
-			local uid = bossuIdCache[cid] or "boss1"
-			if self:GetUnitCreatureId(uid) == cid then
+	function bossModPrototype:GetBossTarget(cidOrGuid, scanOnlyBoss)
+		if type(cidOrGuid) == "number" then
+			local cidOrGuid = cidOrGuid or self.creatureId
+			local uid = bossuIdCache[cidOrGuid] or "boss1"
+			if self:GetUnitCreatureId(uid) == cidOrGuid then
 				bossuIdCache[UnitGUID(uid)] = uid
-				getBossTarget(UnitGUID(uid))
+				getBossTarget(UnitGUID(uid), scanOnlyBoss)
 			else
 				local found = false
 				for i, uId in ipairs(bossTargetuIds) do
-					if self:GetUnitCreatureId(uId) == cid then
+					if self:GetUnitCreatureId(uId) == cidOrGuid then
 						found = true
-						bossuIdCache[cid] = uId
+						bossuIdCache[cidOrGuid] = uId
 						bossuIdCache[UnitGUID(uId)] = uId
-						getBossTarget(UnitGUID(uId))
+						getBossTarget(UnitGUID(uId), scanOnlyBoss)
 						break
 					end
 				end
-				if not found then
+				if not found and not scanOnlyBoss then
 					if IsInRaid() then
 						for i = 1, GetNumGroupMembers() do
-							if self:GetUnitCreatureId("raid"..i.."target") == cid then
-								bossuIdCache[cid] = "raid"..i.."target"
+							if self:GetUnitCreatureId("raid"..i.."target") == cidOrGuid then
+								bossuIdCache[cidOrGuid] = "raid"..i.."target"
 								bossuIdCache[UnitGUID("raid"..i.."target")] = "raid"..i.."target"
 								getBossTarget(UnitGUID("raid"..i.."target"))
 								break
@@ -4738,8 +4739,8 @@ do
 						end
 					elseif IsInGroup() then
 						for i = 1, GetNumSubgroupMembers() do
-							if self:GetUnitCreatureId("party"..i.."target") == cid then
-								bossuIdCache[cid] = "party"..i.."target"
+							if self:GetUnitCreatureId("party"..i.."target") == cidOrGuid then
+								bossuIdCache[cidOrGuid] = "party"..i.."target"
 								bossuIdCache[UnitGUID("party"..i.."target")] = "party"..i.."target"
 								getBossTarget(UnitGUID("party"..i.."target"))
 								break
@@ -4749,45 +4750,57 @@ do
 				end
 			end
 		else
-			getBossTarget(cid)
+			getBossTarget(cidOrGuid, scanOnlyBoss)
 		end
 	end
-end
 
-do
-	local targetScanCount = {}
-	function bossModPrototype:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank, isFinalScan)
+	function bossModPrototype:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank, isFinalScan)
 		--Increase scan count
-		local cid = cid or self.creatureId
-		if not targetScanCount[cid] then targetScanCount[cid] = 0 end
-		targetScanCount[cid] = targetScanCount[cid] + 1
+		local cidOrGuid = cidOrGuid or self.creatureId
+		if not targetScanCount[cidOrGuid] then targetScanCount[cidOrGuid] = 0 end
+		targetScanCount[cidOrGuid] = targetScanCount[cidOrGuid] + 1
 		--Set default values
 		local scanInterval = scanInterval or 0.05
 		local scanTimes = scanTimes or 16
-		local targetname, targetuid, bossuid = self:GetBossTarget(cid)
+		local targetname, targetuid, bossuid = self:GetBossTarget(cidOrGuid, scanOnlyBoss)
 		--Do scan
 		if targetname then
 			if (isEnemyScan and UnitIsFriend("player", targetuid) or self:IsTanking(targetuid, bossuid)) and not isFinalScan and not includeTank then--On player scan, ignore tanks. On enemy scan, ignore friendly player.
-				if targetScanCount[cid] < scanTimes then--Make sure no infinite loop.
-					self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan).
+				if targetScanCount[cidOrGuid] < scanTimes then--Make sure no infinite loop.
+					self:ScheduleMethod(scanInterval, "BossTargetScanner", cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank)--Scan multiple times to be sure it's not on something other then tank (or friend on enemy scan).
 				else--Go final scan.
-					self:BossTargetScanner(cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank, true)
+					self:BossTargetScanner(cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank, true)
 				end
 			else--Scan success. (or failed to detect right target.) But some spells can be used on tanks, anyway warns tank if player scan. (enemy scan block it)
-				targetScanCount[cid] = nil--Reset count for later use.
-				self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
+				targetScanCount[cidOrGuid] = nil--Reset count for later use.
+				self:UnscheduleMethod("BossTargetScanner", returnFunc)--Unschedule all checks just to be sure none are running, we are done.
 				if not (isEnemyScan and isFinalScan) then--If enemy scan, player target is always bad. So do not warn anything. Also, must filter nil value on returnFunc.
 					self[returnFunc](self, targetname, targetuid, bossuid)--Return results to warning function with all variables.
 				end
 			end
 		else--target was nil, lets schedule a rescan here too.
-			if targetScanCount[cid] < scanTimes then--Make sure not to infinite loop here as well.
-				self:ScheduleMethod(scanInterval, "BossTargetScanner", cid, returnFunc, scanInterval, scanTimes, isEnemyScan, includeTank)
+			if targetScanCount[cidOrGuid] < scanTimes then--Make sure not to infinite loop here as well.
+				self:ScheduleMethod(scanInterval, "BossTargetScanner", cidOrGuid, returnFunc, scanInterval, scanTimes, scanOnlyBoss, isEnemyScan, includeTank)
 			else
-				targetScanCount[cid] = nil--Reset count for later use.
-				self:UnscheduleMethod("BossTargetScanner")--Unschedule all checks just to be sure none are running, we are done.
+				targetScanCount[cidOrGuid] = nil--Reset count for later use.
+				self:UnscheduleMethod("BossTargetScanner", returnFunc)--Unschedule all checks just to be sure none are running, we are done.
 			end
 		end
+	end
+
+	--infinite scanner. so use this carefully.
+	function bossModPrototype:StartRepeatedScan(cidOrGuid, returnFunc, scanInterval, scanOnlyBoss, includeTank)
+		local cidOrGuid = cidOrGuid or self.creatureId
+		local scanInterval = scanInterval or 0.1
+		local targetname, targetuid, bossuid = self:GetBossTarget(cidOrGuid, scanOnlyBoss)
+		if targetname and (includeTank or not IsTanking(targetuid, bossuid)) then
+			self[returnFunc](self, targetname, targetuid, bossuid)
+		end
+		self:ScheduleMethod(scanInterval, "StartRepeatedScan", cidOrGuid, returnFunc, scanInterval, scanOnlyBoss, includeTank)
+	end
+
+	function bossModPrototype:StopRepeatedScan(returnFunc)
+		self:UnscheduleMethod("StartRepeatedScan", returnFunc)
 	end
 end
 
