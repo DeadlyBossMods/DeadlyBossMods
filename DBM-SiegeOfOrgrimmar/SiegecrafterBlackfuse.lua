@@ -215,9 +215,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnProtectiveFrenzy:Show(args.destName)
 		specWarnProtectiveFrenzy:Show(args.destName)
 		timerProtectiveFrenzy:Start()
-		for i= 1, 5 do
+		for i = 1, 5 do
 			if UnitExists("boss"..i) and UnitIsDead("boss"..i) then
-				local cId = self:GetUnitCreatureId(UnitGUID("boss"..i))
+				local cId = self:GetUnitCreatureId("boss"..i)
 				if assemblyName[cId] then
 					warnInactive:Show(assemblyName[cId])
 				end
