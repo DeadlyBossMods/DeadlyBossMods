@@ -223,7 +223,7 @@ local chatPrefix = "<Deadly Boss Mods> "
 local chatPrefixShort = "<DBM> "
 local ver = ("%s (r%d)"):format(DBM.DisplayVersion, DBM.Revision)
 local mainFrame = CreateFrame("Frame")
-local showedUpdateReminder = false
+local newerVersionPerson = {}
 local combatInitialized = false
 local healthCombatInitialized = false
 local schedule
@@ -2504,7 +2504,6 @@ do
 			raid[sender].displayVersion = displayVersion
 			raid[sender].locale = locale
 			raid[sender].enabledIcons = iconEnabled or "false"
-			local revDifference = revision - DBM.Revision
 			if version > tonumber(DBM.Version) then -- Update reminder
 				--Old version of Bigwigs version faking breaks version update notification because they send alpha revision as release revision with their faking code
 				--Bigwigs sniffs highest REVISION it finds in raid, (not highest ReleaseRevision) and then passes it as ReleaseRevision arg when sending sync back
@@ -2520,20 +2519,20 @@ do
 					DBM:GROUP_ROSTER_UPDATE()
 					return
 				end
-				if not showedUpdateReminder then
-					local found = false
-					local secondfound = false
+				if not checkEntry(newerVersionPerson, sender) then
+					newerVersionPerson[#newerVersionPerson + 1] = sender
+				end
+				if #newerVersionPerson < 3 then
 					for i, v in pairs(raid) do
-						if v.version == version and v ~= raid[sender] then
-							if found then
-								secondfound = true
-								break
+						if v.version >= version and v ~= raid[sender] then
+							if not checkEntry(newerVersionPerson, sender) then
+								newerVersionPerson[#newerVersionPerson + 1] = sender
 							end
-							found = true
 						end
 					end
-					if found then--Only requires 2 for update notification (maybe also make 3?)
-						showedUpdateReminder = true
+					if #newerVersionPerson == 2 then--Only requires 2 for update notification.
+						--Find min revision.
+						local revDifference = mmin((raid[newerVersionPerson[1]].revision - DBM.Revision), (raid[newerVersionPerson[2]].revision - DBM.Revision))
 						if not DBM.Options.BlockVersionUpdateNotice or revDifference > 333 then
 							DBM:ShowUpdateReminder(displayVersion, version)
 						else
@@ -2541,25 +2540,26 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, version))
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[%s]"):format(displayVersion, version, DBM_CORE_UPDATEREMINDER_URL or "http://www.deadlybossmods.com"))
 						end
+					elseif #newerVersionPerson == 3 then--Requires 3 for force disable.
+						--Find min revision.
+						local revDifference = mmin((raid[newerVersionPerson[1]].revision - DBM.Revision), (raid[newerVersionPerson[2]].revision - DBM.Revision), (raid[newerVersionPerson[3]].revision - DBM.Revision))
 						--The following code requires at least THREE people to send that higher revision (I just upped it from 2). That should be more than adaquate, especially since there is also a display version validator now too (that had to be writen when bigwigs was sending bad revisions few versions back)
-						if secondfound and revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
+						if revDifference > 400 then--WTF? Sorry but your DBM is being turned off until you update. Grossly out of date mods cause fps loss, freezes, lua error spam, or just very bad information, if mod is not up to date with latest changes. All around undesirable experience to put yourself or other raid mates through
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_DISABLE:format(revDifference))
 							DBM:Disable(true)
 						end
 					end
 				end
 			end
-			if (revision > DBM.Revision) and not showedUpdateReminder and DBM.DisplayVersion:find("alpha") and (revDifference > 20) then
-				local found = false
+			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30.
 				for i, v in pairs(raid) do
-					if v.revision == revision and v ~= raid[sender] then
+					if v.revision >= revision and v ~= raid[sender] then
 						found = true
 						break
 					end
 				end
 				if found then--Running alpha version that's out of date
-					showedUpdateReminder = true
-					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revDifference))
+					DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER_ALPHA:format(revision - DBM.Revision))
 				end
 			end
 		end
