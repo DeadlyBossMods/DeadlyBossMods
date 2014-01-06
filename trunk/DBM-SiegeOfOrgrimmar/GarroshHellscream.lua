@@ -80,7 +80,7 @@ local specWarnBombardment			= mod:NewSpecialWarningCount(147120, nil, nil, nil, 
 local specWarnISFixate				= mod:NewSpecialWarningYou(147665)
 local specWarnIronStarSpawn			= mod:NewSpecialWarningSpell(147047, false)
 local specWarnManifestRage			= mod:NewSpecialWarningInterrupt(147011, nil, nil, nil, 3)
-local specWarnMaliciousBlast		= mod:NewSpecialWarningStack(147235, nil, 2)
+local specWarnMaliciousBlast		= mod:NewSpecialWarningStack(147235, nil, 1)
 
 --Stage 1: A Cry in the Darkness
 local timerDesecrateCD				= mod:NewCDCountTimer(35, 144748)
@@ -339,7 +339,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 147235 and args:IsPlayer() then
 		local amount = args.amount or 1
 		timerGrippingDespair:Start(args.destName)
-		if amount >= 2 then
+		if amount >= 1 then
 			specWarnMaliciousBlast:Show(amount)
 			timerMaliciousBlast:Start()
 		end
