@@ -83,12 +83,12 @@ DBM_CORE_OUTDATED_PVP_MODS			= "설치되어 있는 DBM-PvP 경고가 구버전 
 --DBM_BIG_WIGS (Same as English locales)
 --DBM_BIG_WIGS_ALPHA (Same as English locales)
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습니다!\n Version %s (r%d) 가 새로운 버전입니다. 포럼 주소:"
-DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다.\n %d 버전 이상 업데이트 가능합니다. 가능한 빠른 시일내로 최신버전으로 업데이트 하시기 바랍니다. 계속 사용하실 경우 잘못된 경고를 표시할 수도 있습니다."
+DBM_CORE_UPDATEREMINDER_HEADER			= "사용중인 DBM 버전이 오래되었습니다.\n%s (r%d) 이상으로 업데이트 가능합니다. 다음 주소를 방문하세요."
+DBM_CORE_UPDATEREMINDER_HEADER_ALPHA	= "사용중인 DBM alpha 버전이 오래되었습니다. r%d 이상 업데이트 가능합니다. 가능한 빠른 시일내로 최신버전으로 업데이트 하시기 바랍니다. 계속 사용하실 경우 잘못된 경고를 표시할 수도 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER			= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_FOOTER_GENERIC	= (IsMacClient() and "Cmd-C" or "Ctrl-C").. " 를 누르면 주소를 복사하실 수 있습니다."
 DBM_CORE_UPDATEREMINDER_URL				= "http://www.inven.co.kr/board/powerbbs.php?come_idx=3716"
-DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전은 지나치게 오래되어 (%d 버전 가량) 사용하실 수 없습니다. 이것은 당신 및 공격대원에게 잘못된 알림으로 혼동을 주지 않기 위함입니다. 계속 사용하시려면 지금 즉시 최신 버전으로 업데이트하여 주시기 바랍니다."
+DBM_CORE_UPDATEREMINDER_DISABLE			= "경고: 현재 사용중인 DBM 버전은 지나치게 오래되어 (r%d 가량) 사용하실 수 없습니다. 이것은 당신 및 공격대원에게 잘못된 알림으로 혼동을 주지 않기 위함입니다. 계속 사용하시려면 지금 즉시 최신 버전으로 업데이트하여 주시기 바랍니다."
 DBM_CORE_UPDATEREMINDER_HOTFIX			= "지금 사용하시는 DBM 버전은 이 전투에서 잘못된 경고를 표시합니다. 이 오류는 다음 버전에서 수정되오나, 다음 버전이 없을 경우 최신 alpha 버전으로 업데이트 하면 수정할 수 있습니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"

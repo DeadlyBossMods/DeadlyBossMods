@@ -2522,9 +2522,9 @@ do
 				if not checkEntry(newerVersionPerson, sender) then
 					newerVersionPerson[#newerVersionPerson + 1] = sender
 				end
-				if #newerVersionPerson < 3 then
+				if #newerVersionPerson < 4 then
 					for i, v in pairs(raid) do
-						if v.version >= version and v ~= raid[sender] then
+						if (v.version or 0) >= version and v ~= raid[sender] then
 							if not checkEntry(newerVersionPerson, sender) then
 								newerVersionPerson[#newerVersionPerson + 1] = sender
 							end
@@ -2553,7 +2553,7 @@ do
 			end
 			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30.
 				for i, v in pairs(raid) do
-					if v.revision >= revision and v ~= raid[sender] then
+					if (v.revision or 0) >= revision and v ~= raid[sender] then
 						found = true
 						break
 					end
