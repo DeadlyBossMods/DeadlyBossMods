@@ -2552,6 +2552,7 @@ do
 				end
 			end
 			if DBM.DisplayVersion:find("alpha") and #newerVersionPerson < 2 and (revision - DBM.Revision) > 30 then--Revision 20 can be increased in 1 day, so raised it to 30.
+				local found = false
 				for i, v in pairs(raid) do
 					if (v.revision or 0) >= revision and v ~= raid[sender] then
 						found = true
