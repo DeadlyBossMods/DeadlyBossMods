@@ -147,14 +147,16 @@ local function updateInfoFrame()
 end
 
 local function showInfoFrame()
-	if mod.Options.InfoFrame then
+	if mod.Options.InfoFrame and mod:IsInCombat() then
 		DBM.InfoFrame:SetHeader(L.NoReduce)
 		DBM.InfoFrame:Show(10, "function", updateInfoFrame)
 	end
 end
 
 local function hideInfoFrame()
-	DBM.InfoFrame:Hide()
+	if mod.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 end
 
 function mod:DesecrateTarget(targetname, uId)
@@ -194,6 +196,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	hideInfoFrame()
 end
 
 local function hideRangeDelay()
@@ -251,7 +254,7 @@ function mod:SPELL_CAST_START(args)
 		if UnitDebuff("player", GetSpellInfo(147665)) then--Kiting an Unstable Iron Star
 			specWarnManifestRage:Show()
 		end
-	elseif args.spellId == 145599 then
+	elseif args.spellId == 145599 and self:AntiSpam(1.5) then
 		specWarnTouchInterrupt:Show(args.sourceName)
 	end
 end
@@ -327,21 +330,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScanForMobs(71983, 2, 9-shamanAlive, 1, 0.2, 10, "SetIconOnShaman")
 		end
 	elseif args.spellId == 147209 then
-		warnMalice:CombinedShow(0.5, args.destName)
-		timerMaliceCD:DelayedStart(0.5)
-		if args:IsPlayer() then
-			specWarnMaliceYou:Show()
-			yellMalice:Yell()
-			if self.Options.yellMaliceFading then
-				local playerName = UnitName("player")
-				DBM:Schedule(13, SendChatMessage, L.MaliceFadeYell:format(playerName, 1), "SAY")
-				DBM:Schedule(12, SendChatMessage, L.MaliceFadeYell:format(playerName, 2), "SAY")
-				DBM:Schedule(11, SendChatMessage, L.MaliceFadeYell:format(playerName, 3), "SAY")
-			end
-		end
-		if self.Options.SetIconOnMalice then
-			self:SetIcon(args.destName, 7)
-		end
+		self:SendSync("MaliceTarget", args.destGUID)
 	elseif args.spellId == 147665 then
 		warnIronStarFixate:Show(args.destName)
 		if args:IsPlayer() then
@@ -361,13 +350,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(145183, 145195) then
 		timerGrippingDespair:Cancel(args.destName)
-	elseif args.spellId == 144945 and self:IsInCombat() then
+	elseif args.spellId == 144945 then
 		warnYShaarjsProtectionFade:Show()
 		showInfoFrame()
 	elseif args:IsSpellID(145065, 145171) and self.Options.SetIconOnMC then
 		self:SetIcon(args.destName, 0)
-	elseif args.spellId == 147209 and self.Options.SetIconOnMalice then
-		self:SetIcon(args.destName, 0)
+	elseif args.spellId == 147209 then
+		self:SendSync("MaliceTargetRemoved", args.destGUID)
 	end
 end
 
@@ -484,5 +473,29 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	elseif msg:find("spell:147047") then
 		warnIronStarSpawn:Show()
 		specWarnIronStarSpawn:Show()
+	end
+end
+
+function mod:OnSync(msg, guid)
+	if msg == "MaliceTarget" and guid then
+		local targetName = DBM:GetFullPlayerNameByGUID(guid)
+		warnMalice:Show(targetName)
+		timerMaliceCD:Start()
+		if targetName == UnitName("player") then
+			specWarnMaliceYou:Show()
+			yellMalice:Yell()
+			if self.Options.yellMaliceFading then
+				local playerName = UnitName("player")
+				DBM:Schedule(13, SendChatMessage, L.MaliceFadeYell:format(playerName, 1), "SAY")
+				DBM:Schedule(12, SendChatMessage, L.MaliceFadeYell:format(playerName, 2), "SAY")
+				DBM:Schedule(11, SendChatMessage, L.MaliceFadeYell:format(playerName, 3), "SAY")
+			end
+		end
+		if self.Options.SetIconOnMalice then
+			self:SetIcon(targetName, 7)
+		end
+	elseif msg == "MaliceTargetRemoved" and guid and self.Options.SetIconOnMalice then
+		local targetName = DBM:GetFullPlayerNameByGUID(guid)
+		self:SetIcon(targetName, 0)
 	end
 end
