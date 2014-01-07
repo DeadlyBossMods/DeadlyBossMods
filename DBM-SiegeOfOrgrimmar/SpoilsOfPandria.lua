@@ -16,11 +16,12 @@ mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Victory)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
+	"SPELL_CAST_START 145996 145288 145461 142934 142539 145286 144922 144923 146222 146180 145489 142947 146815",
+	"SPELL_CAST_SUCCESS 142694 142947 145712 146253 145230 145786 145812",
+	"SPELL_AURA_APPLIED 145987 145692 145998",
+	"SPELL_AURA_REMOVED 145987 145692",
+	"SPELL_DAMAGE 145716 145748 146257",
+	"SPELL_MISSED 145716 145748 146257",
 	"UNIT_DIED",
 	"RAID_BOSS_WHISPER",
 	"UPDATE_WORLD_STATES"
@@ -227,7 +228,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 142694 and not isPlayerInMantid() then
 		warnSparkofLife:Show()
 	elseif args.spellId == 142947 and not isPlayerInMantid() then
-		specWarnCrimsonRecon:Show()--Done here because we want to warn when we need to move mobs, not on cast start (when we can do nothing)
 		timerCrimsonReconCD:Start(args.sourceGUID)
 	elseif args.spellId == 145712 and isPlayerInMantid() then
 		timerBlazingChargeCD:Start(args.sourceGUID)

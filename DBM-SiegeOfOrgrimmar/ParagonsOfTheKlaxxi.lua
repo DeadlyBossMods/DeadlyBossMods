@@ -14,13 +14,13 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
+	"SPELL_CAST_START 142725 142726 142727 142728 142729 142730 143765 143666 142416 143709 143280 143974 142315 143243 143339 148676",
+	"SPELL_CAST_SUCCESS 142528 142232",
+	"SPELL_AURA_APPLIED 143339 142532 142533 142534 142671 142564 143939 143974 143701 143759 143337 143358 142948",
+	"SPELL_AURA_APPLIED_DOSE 143339",--needs review
+	"SPELL_AURA_REMOVED 142564 143939 143974 143700 142948 143339 142671",
+	"SPELL_PERIODIC_DAMAGE 143735",
+	"SPELL_PERIODIC_MISSED 143735",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_EMOTE",
 	"UNIT_DIED"
@@ -174,6 +174,70 @@ mod:AddBoolOption("AimArrow", false)
 --Upvales, don't need variables
 local UnitDebuff, GetSpellInfo = UnitDebuff, GetSpellInfo
 local calculatingDude, readyToFight = EJ_GetSectionInfo(8012), GetSpellInfo(143542)
+------------------
+--Normal Only
+--143605 Red Sword
+--143606 Purple Sword
+--143607 Blue Sword
+--143608 Green Sword
+--143609 Yellow Sword
+
+--143610 Red Drum
+--143611 Purple Drum
+--143612 Blue Drum
+--143613 Green Drum
+--143614 Yellow Drum
+
+--143615 Red Bomb
+--143616 Purple Bomb
+--143617 Blue Bomb
+--143618 Green Bomb
+--143619 Yellow Bomb
+----------------------
+--25man Only
+--143620 Red Mantid
+--143621 Purple Mantid
+--143622 Blue Mantid
+--143623 Green Mantid
+--143624 Yellow Mantid
+
+--143627 Red Staff
+--143628 Purple Staff
+--143629 Blue Staff
+--143630 Green Staff
+--143631 Yellow Staff
+
+local RedDebuffs = {GetSpellInfo(143605), GetSpellInfo(143610), GetSpellInfo(143615), GetSpellInfo(143620), (GetSpellInfo(143627))}
+local PurpleDebuffs = {GetSpellInfo(143606), GetSpellInfo(143611), GetSpellInfo(143616), GetSpellInfo(143621), (GetSpellInfo(143628))}
+local BlueDebuffs = {GetSpellInfo(143607), GetSpellInfo(143612), GetSpellInfo(143617), GetSpellInfo(143622), (GetSpellInfo(143629))}
+local GreenDebuffs = {GetSpellInfo(143608), GetSpellInfo(143613), GetSpellInfo(143618), GetSpellInfo(143623), (GetSpellInfo(143630))}
+local YellowDebuffs = {GetSpellInfo(143610), GetSpellInfo(143614), GetSpellInfo(143619), GetSpellInfo(143624), (GetSpellInfo(143631))}
+
+local SwordDebuffs = {GetSpellInfo(143605), GetSpellInfo(143606), GetSpellInfo(143607), GetSpellInfo(143608), (GetSpellInfo(143609))}
+local DrumDebuffs = {GetSpellInfo(143610), GetSpellInfo(143611), GetSpellInfo(143612), GetSpellInfo(143613), (GetSpellInfo(143614))}
+local BombDebuffs = {GetSpellInfo(143615), GetSpellInfo(143616), GetSpellInfo(143617), GetSpellInfo(143618), (GetSpellInfo(143619))}
+local MantidDebuffs = {GetSpellInfo(143620), GetSpellInfo(143621), GetSpellInfo(143622), GetSpellInfo(143623), (GetSpellInfo(143624))}
+local StaffDebuffs = {GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), (GetSpellInfo(143631))}
+
+local AllDebuffs = {
+GetSpellInfo(143605), GetSpellInfo(143606), GetSpellInfo(143607), GetSpellInfo(143608), GetSpellInfo(143609),
+GetSpellInfo(143610), GetSpellInfo(143611), GetSpellInfo(143612), GetSpellInfo(143613), GetSpellInfo(143614),
+GetSpellInfo(143615), GetSpellInfo(143616), GetSpellInfo(143617), GetSpellInfo(143618), GetSpellInfo(143619),
+GetSpellInfo(143620), GetSpellInfo(143621), GetSpellInfo(143622), GetSpellInfo(143623), GetSpellInfo(143624),
+GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), (GetSpellInfo(143631))
+}
+
+local FlavorTable = {
+	[71161] = L.KilrukFlavor,--Kil'ruk the Wind-Reaver
+	[71157] = L.XarilFlavor,--Xaril the Poisoned-Mind
+	[71156] = L.KaztikFlavor,--Kaz'tik the Manipulator
+	[71155] = L.KorvenFlavor2,--Korven the Prime
+	[71160] = L.IyyokukFlavor,--Iyyokuk the Lucid
+	[71154] = L.KarozFlavor,--Ka'roz the Locust
+	[71152] = L.SkeerFlavor,--Skeer the Bloodseeker
+	[71158] = L.RikkalFlavor,--Rik'kal the Dissector
+	[71153] = L.hisekFlavor--Hisek the Swarmkeeper
+}
 --Tables, can't recover
 local activatedTargets = {}--A table, for the 3 on pull
 local activeBossGUIDS = {}
@@ -265,6 +329,175 @@ local function CheckBosses(ignoreRTF)
 	end
 end
 
+local function delayedCatalyst(spellID)
+	mod.vb.toxicInjection = true--we won't need work around anymore since you'll get injections from the catalysts cast
+	local debuffFound = false
+	if spellID == 142725 then
+		if UnitDebuff("player", GetSpellInfo(142532)) then
+			debuffFound = true
+			specWarnCatalystBlue:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystBlue:Yell()
+			end
+		end
+	elseif spellID == 142726 then
+		if UnitDebuff("player", GetSpellInfo(142533)) then
+			debuffFound = true
+			specWarnCatalystRed:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystRed:Yell()
+			end
+		end
+	elseif spellID == 142727 then
+		if UnitDebuff("player", GetSpellInfo(142534)) then
+			debuffFound = true
+			specWarnCatalystYellow:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystYellow:Yell()
+			end
+		end
+	elseif spellID == 142728 then
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
+			debuffFound = true
+			specWarnCatalystOrange:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystOrange:Yell()
+			end
+		end
+	elseif spellID == 142729 then
+		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
+			debuffFound = true
+			specWarnCatalystPurple:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystPurple:Yell()
+			end
+		end
+	elseif spellID == 142730 then
+		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
+			debuffFound = true
+			specWarnCatalystGreen:Show()
+			if mod.Options.yellToxicCatalyst then
+				yellCatalystGreen:Yell()
+			end
+		end
+	end
+	if not debuffFound and not UnitIsDeadOrGhost("player") then--You didn't have a debuff yet, check again.
+		mod:Schedule(0.2, delayedCatalyst, spellID)
+	end
+end
+
+local function delayMonsterEmote(target)
+	--Because now the raid boss emotes fire AFTER this and we need them first
+	warnCalculated:Show(target)
+	timerInsaneCalculation:Start()
+	timerInsaneCalculationCD:Start()
+	if target == UnitName("player") then
+		specWarnCalculated:Show()
+		if not mod:IsDifficulty("lfr25") then
+			yellCalculated:Yell()
+		end
+	else--it's not us, so now lets check activated criteria for target based on previous emotes
+		local criteriaMatched = false--Now to start checking matches.
+		if calculatedColor == "Red" then
+			for _, spellname in ipairs(RedDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Purple" then
+			for _, spellname in ipairs(PurpleDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Blue" then
+			for _, spellname in ipairs(BlueDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Green" then
+			for _, spellname in ipairs(GreenDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedColor == "Yellow" then
+			for _, spellname in ipairs(YellowDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedShape == "Sword" then
+			for _, spellname in ipairs(SwordDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedShape == "Drum" then
+			for _, spellname in ipairs(DrumDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedShape == "Bomb" then
+			for _, spellname in ipairs(BombDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedShape == "Mantid" then
+			for _, spellname in ipairs(MantidDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedShape == "Staff" then
+			for _, spellname in ipairs(StaffDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					criteriaMatched = true
+					break
+				end
+			end
+		elseif calculatedNumber then
+			for _, spellname in ipairs(AllDebuffs) do
+				local _, _, _, count = UnitDebuff("player", spellname)
+				if count then--Found
+					if count == calculatedNumber then
+						criteriaMatched = true
+					end
+					break
+				end
+			end
+		end
+		if criteriaMatched then
+			specWarnCalculated:Show()
+			if not mod:IsDifficulty("lfr25") then
+				yellCalculated:Yell()
+			end
+		end
+	end
+end
+
 --Another pre target scan (ie targets player BEFORE cast like iron qon)
 function mod:DFAScan(targetname)
 	self:StopRepeatedScan("DFAScan")
@@ -333,63 +566,6 @@ end
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 	self:Unschedule(CheckBosses)
 	self:Schedule(1, CheckBosses)--Delay check to make sure we run function only once on pull
-end
-
-local function delayedCatalyst(spellID)
-	mod.vb.toxicInjection = true--we won't need work around anymore since you'll get injections from the catalysts cast
-	local debuffFound = false
-	if spellID == 142725 then
-		if UnitDebuff("player", GetSpellInfo(142532)) then
-			debuffFound = true
-			specWarnCatalystBlue:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystBlue:Yell()
-			end
-		end
-	elseif spellID == 142726 then
-		if UnitDebuff("player", GetSpellInfo(142533)) then
-			debuffFound = true
-			specWarnCatalystRed:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystRed:Yell()
-			end
-		end
-	elseif spellID == 142727 then
-		if UnitDebuff("player", GetSpellInfo(142534)) then
-			debuffFound = true
-			specWarnCatalystYellow:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystYellow:Yell()
-			end
-		end
-	elseif spellID == 142728 then
-		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142534)) then--Red or Yellow
-			debuffFound = true
-			specWarnCatalystOrange:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystOrange:Yell()
-			end
-		end
-	elseif spellID == 142729 then
-		if UnitDebuff("player", GetSpellInfo(142533)) or UnitDebuff("player", GetSpellInfo(142532)) then--Red or Blue
-			debuffFound = true
-			specWarnCatalystPurple:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystPurple:Yell()
-			end
-		end
-	elseif spellID == 142730 then
-		if UnitDebuff("player", GetSpellInfo(142534)) or UnitDebuff("player", GetSpellInfo(142532)) then--Yellow or Blue
-			debuffFound = true
-			specWarnCatalystGreen:Show()
-			if mod.Options.yellToxicCatalyst then
-				yellCatalystGreen:Yell()
-			end
-		end
-	end
-	if not debuffFound and not UnitIsDeadOrGhost("player") then--You didn't have a debuff yet, check again.
-		mod:Schedule(0.2, delayedCatalyst, spellID)
-	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -679,18 +855,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-local FlavorTable = {
-	[71161] = L.KilrukFlavor,--Kil'ruk the Wind-Reaver
-	[71157] = L.XarilFlavor,--Xaril the Poisoned-Mind
-	[71156] = L.KaztikFlavor,--Kaz'tik the Manipulator
-	[71155] = L.KorvenFlavor2,--Korven the Prime
-	[71160] = L.IyyokukFlavor,--Iyyokuk the Lucid
-	[71154] = L.KarozFlavor,--Ka'roz the Locust
-	[71152] = L.SkeerFlavor,--Skeer the Bloodseeker
-	[71158] = L.RikkalFlavor,--Rik'kal the Dissector
-	[71153] = L.hisekFlavor--Hisek the Swarmkeeper
-}
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 71161 then--Kil'ruk the Wind-Reaver
@@ -733,63 +897,6 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-------------------
---Normal Only
---143605 Red Sword
---143606 Purple Sword
---143607 Blue Sword
---143608 Green Sword
---143609 Yellow Sword
-
---143610 Red Drum
---143611 Purple Drum
---143612 Blue Drum
---143613 Green Drum
---143614 Yellow Drum
-
---143615 Red Bomb
---143616 Purple Bomb
---143617 Blue Bomb
---143618 Green Bomb
---143619 Yellow Bomb
-----------------------
---25man Only
---143620 Red Mantid
---143621 Purple Mantid
---143622 Blue Mantid
---143623 Green Mantid
---143624 Yellow Mantid
-
---143627 Red Staff
---143628 Purple Staff
---143629 Blue Staff
---143630 Green Staff
---143631 Yellow Staff
-
-local RedDebuffs = {GetSpellInfo(143605), GetSpellInfo(143610), GetSpellInfo(143615), GetSpellInfo(143620), (GetSpellInfo(143627))}
-local PurpleDebuffs = {GetSpellInfo(143606), GetSpellInfo(143611), GetSpellInfo(143616), GetSpellInfo(143621), (GetSpellInfo(143628))}
-local BlueDebuffs = {GetSpellInfo(143607), GetSpellInfo(143612), GetSpellInfo(143617), GetSpellInfo(143622), (GetSpellInfo(143629))}
-local GreenDebuffs = {GetSpellInfo(143608), GetSpellInfo(143613), GetSpellInfo(143618), GetSpellInfo(143623), (GetSpellInfo(143630))}
-local YellowDebuffs = {GetSpellInfo(143610), GetSpellInfo(143614), GetSpellInfo(143619), GetSpellInfo(143624), (GetSpellInfo(143631))}
-
-local SwordDebuffs = {GetSpellInfo(143605), GetSpellInfo(143606), GetSpellInfo(143607), GetSpellInfo(143608), (GetSpellInfo(143609))}
-local DrumDebuffs = {GetSpellInfo(143610), GetSpellInfo(143611), GetSpellInfo(143612), GetSpellInfo(143613), (GetSpellInfo(143614))}
-local BombDebuffs = {GetSpellInfo(143615), GetSpellInfo(143616), GetSpellInfo(143617), GetSpellInfo(143618), (GetSpellInfo(143619))}
-local MantidDebuffs = {GetSpellInfo(143620), GetSpellInfo(143621), GetSpellInfo(143622), GetSpellInfo(143623), (GetSpellInfo(143624))}
-local StaffDebuffs = {GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), (GetSpellInfo(143631))}
-
-local AllDebuffs = {
-GetSpellInfo(143605), GetSpellInfo(143606), GetSpellInfo(143607), GetSpellInfo(143608), GetSpellInfo(143609),
-GetSpellInfo(143610), GetSpellInfo(143611), GetSpellInfo(143612), GetSpellInfo(143613), GetSpellInfo(143614),
-GetSpellInfo(143615), GetSpellInfo(143616), GetSpellInfo(143617), GetSpellInfo(143618), GetSpellInfo(143619),
-GetSpellInfo(143620), GetSpellInfo(143621), GetSpellInfo(143622), GetSpellInfo(143623), GetSpellInfo(143624),
-GetSpellInfo(143627), GetSpellInfo(143628), GetSpellInfo(143629), GetSpellInfo(143630), (GetSpellInfo(143631))
-}
-
---[[
-"<32.1 20:15:38> [CHAT_MSG_MONSTER_EMOTE] CHAT_MSG_MONSTER_EMOTE#Iyyokuk begins choosing criteria from Daltin!#Iyyokuk the Lucid###Daltin##0#0##0#846#nil#0#false#false", -- [2547]
-"<32.1 20:15:38> [CHAT_MSG_RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE#Iyyokuk selects: Sword |TInterface\\Icons\\ABILITY_IYYOKUK_SWORD_white.BLP:20|t!#Iyyokuk the Lucid###Iyyokuk the Luci
---]]
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote comes second, so we have to parse things backwards by delaying CHAT_MSG_MONSTER_EMOTE event until this data is complete
 	if self:AntiSpam(3, 1) then
 		calculatedShape = nil
@@ -828,118 +935,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--This emote comes second, so we have 
 		calculatedNumber = 4
 	elseif msg:find(L.five) then
 		calculatedNumber = 5
-	end
-end
-
-local function delayMonsterEmote(target)
-	--Because now the raid boss emotes fire AFTER this and we need them first
-	warnCalculated:Show(target)
-	timerInsaneCalculation:Start()
-	timerInsaneCalculationCD:Start()
-	if target == UnitName("player") then
-		specWarnCalculated:Show()
-		if not mod:IsDifficulty("lfr25") then
-			yellCalculated:Yell()
-		end
-	else--it's not us, so now lets check activated criteria for target based on previous emotes
-		local criteriaMatched = false--Now to start checking matches.
-		if calculatedColor == "Red" then
-			for _, spellname in ipairs(RedDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedColor == "Purple" then
-			for _, spellname in ipairs(PurpleDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedColor == "Blue" then
-			for _, spellname in ipairs(BlueDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedColor == "Green" then
-			for _, spellname in ipairs(GreenDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedColor == "Yellow" then
-			for _, spellname in ipairs(YellowDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedShape == "Sword" then
-			for _, spellname in ipairs(SwordDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedShape == "Drum" then
-			for _, spellname in ipairs(DrumDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedShape == "Bomb" then
-			for _, spellname in ipairs(BombDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedShape == "Mantid" then
-			for _, spellname in ipairs(MantidDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedShape == "Staff" then
-			for _, spellname in ipairs(StaffDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					criteriaMatched = true
-					break
-				end
-			end
-		elseif calculatedNumber then
-			for _, spellname in ipairs(AllDebuffs) do
-				local _, _, _, count = UnitDebuff("player", spellname)
-				if count then--Found
-					if count == calculatedNumber then
-						criteriaMatched = true
-					end
-					break
-				end
-			end
-		end
-		if criteriaMatched then
-			specWarnCalculated:Show()
-			if not mod:IsDifficulty("lfr25") then
-				yellCalculated:Yell()
-			end
-		end
 	end
 end
 

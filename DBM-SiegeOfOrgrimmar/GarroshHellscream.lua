@@ -11,11 +11,11 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 144583 144584 144969 144985 145037 147120 147011 145599",
+	"SPELL_CAST_SUCCESS 144748 144749 145065 145171",
+	"SPELL_AURA_APPLIED 144945 145065 145171 145183 145195 144585 147209 147665 147235",
+	"SPELL_AURA_APPLIED_DOSE 145183 145195 147235",--needs review
+	"SPELL_AURA_REMOVED 145183 145195 144945 145065 145171 147209",
 	"UNIT_DIED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"--I saw garrosh fire boss1 and boss3 events, so use all 5 to be safe
@@ -294,7 +294,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerYShaarjsProtection:Start()
 		countdownRealm:Start()
 	elseif args:IsSpellID(145065, 145171) then
-		warnTouchOfYShaarj:CombinedShow(0.5, args.destName)
+		if args.spellId == 145065 then
+			warnTouchOfYShaarj:CombinedShow(0.5, args.destName)
+		else
+			warnEmpTouchOfYShaarj:CombinedShow(0.5, args.destName)
+		end
 		if self.Options.SetIconOnMC then
 			if self:IsDifficulty("normal25", "heroic25", "lfr25") then
 				self:SetSortedIcon(1, args.destName, 1, 4)
@@ -304,8 +308,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetSortedIcon(1, args.destName, 1)
 			end
 		end
-	elseif args.spellId == 145171 then
-		warnEmpTouchOfYShaarj:CombinedShow(0.5, args.destName)
 	elseif args:IsSpellID(145183, 145195) then
 		local amount = args.amount or 1
 		if args.spellId == 145183 then
