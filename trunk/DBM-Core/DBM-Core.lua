@@ -394,6 +394,8 @@ local BNSendWhisper = sendWhisper
 --------------
 do
 	local registeredEvents = {}
+	local registeredSpellIds = {}
+	local unfilteredCLEUEvents = {}
 	local registeredUnitEventIds = {}
 	local argsMT = {__index = {}}
 	local args = setmetatable({}, argsMT)
@@ -465,7 +467,7 @@ do
 		end
 	end
 
-	local registerUnitEvent, unregisterUnitEvent
+	local registerUnitEvent, unregisterUnitEvent, registerSpellId, unregisterSpellId, registerCLEUEvent, unregisterCLEUEvent
 	do
 		local frames = {} -- frames that are being used for unit events, one frame per unit id (this could be optimized, as it currently creates a new frame even for a different event, but that's not worth the effort as 90% of all calls are just boss1 anyways)
 
@@ -521,44 +523,133 @@ do
 			end
 		end
 
-	end
+		function registerSpellId(event, spellId)
+			if not GetSpellInfo(spellId) then
+				print("RegisterEvents : "..spellId.." spell id not exists!")
+				return
+			end
+			if not registeredSpellIds[event] then
+				registeredSpellIds[event] = {}
+			end
+			registeredSpellIds[event][spellId] = (registeredSpellIds[event][spellId] or 0) + 1
+		end
 
+		function unregisterSpellId(event, spellId)
+			if not registeredSpellIds[event] then return end
+			local refs = (registeredSpellIds[event][spellId] or 1) - 1
+			registeredSpellIds[event][spellId] = refs
+			if refs <= 0 then
+				registeredSpellIds[event][spellId] = nil
+			end
+		end
+
+		--There are 2 tables. unfilteredCLEUEvents and registeredSpellIds table.
+		--unfilteredCLEUEvents saves UNFILTERED cleu event count. this is count table to prevent bad unregister.
+		--registeredSpellIds tables filtered table. this saves event and spell ids. works smiliar with unfilteredCLEUEvents table.
+		function registerCLEUEvent(mod, event)
+			local argTable = {strsplit(" ", event)}
+			-- filtered cleu event. save information in registeredSpellIds table.
+			if #argTable > 1 then
+				event = argTable[1]
+				for i = 2, #argTable do
+					registerSpellId(event, tonumber(argTable[i]))
+				end
+			-- no args. works as unfiltered. save information in unfilteredCLEUEvents table.
+			else
+				unfilteredCLEUEvents[event] = (unfilteredCLEUEvents[event] or 0) + 1
+			end
+			registeredEvents[event] = registeredEvents[event] or {}
+			tinsert(registeredEvents[event], mod)
+		end
+
+		function unregisterCLEUEvent(mod, event)
+			local argTable = {strsplit(" ", event)}
+			local eventCleared = false
+			-- filtered cleu event. save information in registeredSpellIds table.
+			if #argTable > 1 then
+				event = argTable[1]
+				for i = 2, #argTable do
+					unregisterSpellId(event, tonumber(argTable[i]))
+				end
+				local remainingSpellIdCount = 0
+				if registeredSpellIds[event] then
+					for i, v in pairs(registeredSpellIds[event]) do
+						remainingSpellIdCount = remainingSpellIdCount + 1
+					end
+				end
+				if remainingSpellIdCount == 0 then
+					registeredSpellIds[event] = nil
+					-- if unfilteredCLEUEvents and registeredSpellIds do not exists, clear registeredEvents.
+					if not unfilteredCLEUEvents[event] then
+						eventCleared = true
+					end
+				end
+			-- no args. works as unfiltered. save information in unfilteredCLEUEvents table.
+			else
+				local refs = (unfilteredCLEUEvents[event] or 1) - 1
+				unfilteredCLEUEvents[event] = refs
+				if refs <= 0 then
+					unfilteredCLEUEvents[event] = nil
+					-- if unfilteredCLEUEvents and registeredSpellIds do not exists, clear registeredEvents.
+					if not registeredSpellIds[event] then
+						eventCleared = true
+					end
+				end
+			end
+			for i = #registeredEvents[event], 1, -1 do
+				if registeredEvents[event][i] == mod then
+					registeredEvents[event][i] = {}
+				end
+			end
+			if eventCleared then
+				registeredEvents[event] = nil
+			end
+		end
+	end
 
 	-- UNIT_* events are special: they can take 'parameters' like this: "UNIT_HEALTH boss1 boss2" which only trigger the event for the given unit ids
 	function DBM:RegisterEvents(...)
 		for i = 1, select("#", ...) do
 			local event = select(i, ...)
-			local eventWithArgs = event
-			-- unit events need special care
-			if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
-				-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus))
-				local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
-				event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
-				if not arg1 and event:sub(event:len() - 10) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
-					eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target focus"
-					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
-				end
-				if event:sub(event:len() - 10) == "_UNFILTERED" then
-					-- we really want *all* unit ids
-					mainFrame:RegisterEvent(event:sub(0, -12))
-				else
-					registerUnitEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
-				end
+			-- spell events with special care.
+			if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+				registerCLEUEvent(self, event)
 			else
-				-- normal events
-				mainFrame:RegisterEvent(event)
-			end
-			registeredEvents[eventWithArgs] = registeredEvents[eventWithArgs] or {}
-			tinsert(registeredEvents[eventWithArgs], self)
-			if event ~= eventWithArgs then
-				registeredEvents[event] = registeredEvents[event] or {}
-				tinsert(registeredEvents[event], self)
+				local eventWithArgs = event
+				-- unit events need special care
+				if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
+					-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus))
+					local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
+					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
+					if not arg1 and event:sub(event:len() - 10) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
+						eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target focus"
+						event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
+					end
+					if event:sub(event:len() - 10) == "_UNFILTERED" then
+						-- we really want *all* unit ids
+						mainFrame:RegisterEvent(event:sub(0, -12))
+					else
+						registerUnitEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+					end
+				-- spell events with filter
+				else
+					-- normal events
+					mainFrame:RegisterEvent(event)
+				end
+				registeredEvents[eventWithArgs] = registeredEvents[eventWithArgs] or {}
+				tinsert(registeredEvents[eventWithArgs], self)
+				if event ~= eventWithArgs then
+					registeredEvents[event] = registeredEvents[event] or {}
+					tinsert(registeredEvents[event], self)
+				end
 			end
 		end
 	end
 
 	local function unregisterEvent(mod, event)
-		if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
+		if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+			unregisterCLEUEvent(mod, event)
+		elseif event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
 			local event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
 			if event:sub(event:len() - 10) == "_UNFILTERED" then
 				mainFrame:UnregisterEvent(event:sub(0, -12))
@@ -570,14 +661,39 @@ do
 		end
 	end
 
-	function DBM:UnregisterInCombatEvents(ignore)
+	local function findRealEvent(t, val)
+		for i, v in ipairs(t) do
+			if v:find(val) then
+				return v
+			end
+		end
+	end
+
+	function DBM:UnregisterInCombatEvents(srmOnly)
 		for event, mods in pairs(registeredEvents) do
-			if event ~= ignore then
+			if srmOnly then
+				for i = #mods, 1, -1 do
+					if mods[i] == self then
+						local findEvent = findRealEvent(self.inCombatOnlyEvents, "SPELL_AURA_REMOVED")
+						if findEvent then
+							unregisterCLEUEvent(self, findEvent)
+						end
+					end
+				end
+			else
 				local match = false
 				for i = #mods, 1, -1 do
-					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event)  then
-						tremove(mods, i)
-						match = true
+					if mods[i] == self then
+						if (event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_") and event ~= "SPELL_AURA_REMOVED" then
+							local findEvent = findRealEvent(self.inCombatOnlyEvents, event)
+							if findEvent then
+								unregisterCLEUEvent(self, findEvent)
+							end
+						end
+						if checkEntry(self.inCombatOnlyEvents, event) and event:sub(0, 6) ~= "SPELL_" and event:sub(0, 6) ~= "RANGE_" then
+							tremove(mods, i)
+							match = true
+						end
 					end
 				end
 				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
@@ -595,9 +711,17 @@ do
 			for event, mods in pairs(registeredEvents) do
 				local match = false
 				for i = #mods, 1, -1 do
-					if mods[i] == self and checkEntry(self.shortTermRegisterEvents, event)  then
-						tremove(mods, i)
-						match = true
+					if mods[i] == self then
+						if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+							local findEvent = findRealEvent(self.shortTermRegisterEvents, event)
+							if findEvent then
+								unregisterCLEUEvent(self, findEvent)
+							end
+						end
+						if checkEntry(self.shortTermRegisterEvents, event) and event:sub(0, 6) ~= "SPELL_" and event:sub(0, 6) ~= "RANGE_" then
+							tremove(mods, i)
+							match = true
+						end
 					end
 				end
 				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
@@ -612,23 +736,20 @@ do
 		end
 	end
 
-
-
 	DBM:RegisterEvents("ADDON_LOADED")
 
 	function DBM:FilterRaidBossEmote(msg, ...)
 		return handleEvent(nil, "CHAT_MSG_RAID_BOSS_EMOTE_FILTERED", msg:gsub("\124c%x+(.-)\124r", "%1"), ...)
 	end
 
-
 	local noArgTableEvents = {
 		SWING_DAMAGE = true,
 		SWING_MISSED = true,
+		RANGE_DAMAGE = true,
+		RANGE_MISSED = true,
 		SPELL_DAMAGE = true,
 		SPELL_BUILDING_DAMAGE = true,
 		SPELL_MISSED = true,
-		RANGE_DAMAGE = true,
-		RANGE_MISSED = true,
 		SPELL_HEAL = true,
 		SPELL_ENERGIZE = true,
 		SPELL_PERIODIC_MISSED = true,
@@ -641,6 +762,10 @@ do
 	}
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
 		if not registeredEvents[event] then return end
+		if (event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_") and not unfilteredCLEUEvents[event] then
+			local spellId = ...
+			if not registeredSpellIds[event][spellId] then return end
+		end
 		-- process some high volume events without building the whole table which is somewhat faster
 		-- this prevents work-around with mods that used to have their own event handler to prevent this overhead
 		if noArgTableEvents[event] then
@@ -831,7 +956,6 @@ do
 			self:RegisterEvents(
 				"COMBAT_LOG_EVENT_UNFILTERED",
 				"GROUP_ROSTER_UPDATE",
-				"UNIT_NAME_UPDATE_UNFILTERED",
 				--"INSTANCE_GROUP_SIZE_CHANGED",
 				"CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
@@ -1759,12 +1883,6 @@ do
 	end
 
 	function DBM:GROUP_ROSTER_UPDATE()
-		self:Schedule(1.5, updateAllRoster)
-	end
-
-	--Joined lfr during combat, many unit shows "Somewhat" and invisiable, and break class coloring temporarly. So update roster table again when unit name successfully updated.
-	function DBM:UNIT_NAME_UPDATE_UNFILTERED()
-		self:Unschedule(updateAllRoster)
 		self:Schedule(1.5, updateAllRoster)
 	end
 
@@ -3547,8 +3665,8 @@ function DBM:EndCombat(mod, wipe)
 		local scenario = mod.type == "SCENARIO"
 		if mod.inCombatOnlyEvents and mod.inCombatOnlyEventsRegistered then
 			-- unregister all events except for SPELL_AURA_REMOVED events (might still be needed to remove icons etc...)
-			mod:UnregisterInCombatEvents("SPELL_AURA_REMOVED")
-			self:Schedule(2, mod.UnregisterInCombatEvents, mod) -- 2 seconds should be enough for all auras to fade
+			mod:UnregisterInCombatEvents()
+			self:Schedule(2, mod.UnregisterInCombatEvents, mod, true) -- 2 seconds should be enough for all auras to fade
 			self:Schedule(2.1, mod.Stop, mod) -- Remove accident started timers.
 			mod.inCombatOnlyEventsRegistered = nil
 		end
@@ -5021,7 +5139,6 @@ end
 
 do
 	local frame = CreateFrame("Frame") -- frame for CLEU events, we don't want to run all *_MISSED events through the whole DBM event system...
-	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 
 	local activeShields = {}
 	local shieldsByGuid = {}
@@ -5069,6 +5186,9 @@ do
 
 	function bossModPrototype:ShowShieldHealthBar(guid, name, absorb)
 		self:RemoveShieldHealthBar(guid, name)
+		if #activeShields == 0 then
+			frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		end
 		local obj = {
 			mod = self.id,
 			name = name,
@@ -5096,6 +5216,9 @@ do
 					end
 					tremove(activeShields, i)
 				end
+			end
+			if #activeShields == 0 then
+				frame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 			end
 		end
 	end
@@ -5150,6 +5273,7 @@ do
 
 	-- removes all shield, damaged, healed bars of a boss mod
 	function bossModPrototype:RemoveAllSpecialHealthBars()
+		frame:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		for i = #activeShields, 1, -1 do
 			if activeShields[i].mod == self.id then
 				if DBM.BossHealth:IsShown() then
