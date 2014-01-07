@@ -8,8 +8,8 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED 147200 147328 145553",
+	"SPELL_CAST_START 146728",
 	"RAID_BOSS_WHISPER"
 )
 
