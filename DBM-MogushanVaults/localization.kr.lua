@@ -13,7 +13,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnOverloadSoon		= "석화중이지 않은 수호자가 과부화되려고 할 때 특수 경고 보기",
-	specWarnBreakJasperChains	= "$spell:130395를 안전하게 해제할 수 있을 때 특수 경고 보기",
+	specWarnBreakJasperChains	= "$spell:130395 를 안전하게 해제할 수 있을 때 특수 경고 보기",
 	ArrowOnJasperChains			= "$spell:130395 대상이 된 경우 DBM 화살표 보기",
 	InfoFrame					= "수호자 기력, 현재 석화상태, 석화 진행중인 수호자를 정보 창으로 보기"
 })
@@ -35,7 +35,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase			= "단계 전환 알림 보기",
-	specWarnBarrierNow	= "$spell:115817을 사용해야 할 때 특수 경고 보기(무작위 공격대만)",
+	specWarnBarrierNow	= "$spell:115817 을 사용해야 할 때 특수 경고 보기(공격대 찾기 전용)",
 	RangeFrame			= "지팡이의 혼 단계에서" .. DBM_CORE_AUTO_RANGE_OPTION_TEXT_SHORT:format("6")
 })
 
