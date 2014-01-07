@@ -11,12 +11,12 @@ mod:SetBossHPInfoToHighest()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
+	"SPELL_CAST_START 136189 136521 136894 137203 137350 137891 136990",
+	"SPELL_AURA_APPLIED 136442 136903 136992 136922 136860 136878 137359 137166 137641",
+	"SPELL_AURA_APPLIED_DOSE 136903",--needs review
+	"SPELL_AURA_REMOVED 136442 136903 136904 137359 136992 136922",
+	"SPELL_DAMAGE 136507",
+	"SPELL_MISSED 136507",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5"
 )
@@ -252,7 +252,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerBitingCold:Start()
 			yellBitingCold:Yell()
 		end
-	elseif args.spellId == 136922 and (args.amount or 1) == 1 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
+	elseif args.spellId == 136922 then--Player Debuff version, not cast version (amount is just a spam filter for ignoring SPELL_AURA_APPLIED_DOSE on this event)
 		warnFrostBite:Show(args.destName)
 		if self.Options.SetIconOnFrostBite then
 			self:SetIcon(args.destName, 6)--Square

@@ -10,11 +10,11 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 2, 1)--Although if you have 8 viscous horrors
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 136216",
+	"SPELL_CAST_SUCCESS 136037",
+	"SPELL_AURA_APPLIED 136050 137000 136215 136246 136225 136228 136245 136218 140546",
+	"SPELL_AURA_APPLIED_DOSE 136050 137000",--needs review
+	"SPELL_AURA_REMOVED 136050 136215 136246 136225 136245 136218 140546",
 	"UNIT_AURA player",
 	"UNIT_DIED"
 )
@@ -187,9 +187,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 140546 and args:IsPlayer() then
 		specWarnFullyMutated:Show()
 		local _, _, _, _, _, _, expires = UnitDebuff("player", args.spellName)
-		if DBM.Options.DebugMode then
-			print(expires, expires-GetTime())
-		end
 		timerFullyMutated:Start(expires-GetTime())
 	end
 end

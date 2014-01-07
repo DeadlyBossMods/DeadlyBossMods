@@ -10,13 +10,13 @@ mod:SetUsedIcons(1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
+	"SPELL_CAST_START 136594 138763 139867 139869",
+	"SPELL_CAST_SUCCESS 138644",
+	"SPELL_AURA_APPLIED 138569 138609 138780 139537 138691",
+	"SPELL_AURA_APPLIED_DOSE 138569",
+	"SPELL_AURA_REMOVED 138609 138569 138691",
+	"SPELL_DAMAGE 138405",
+	"SPELL_MISSED 138618",
 	"RAID_BOSS_WHISPER"
 )
 
@@ -69,6 +69,14 @@ local jolt = 0
 
 mod:AddBoolOption("SetIconOnFont", true)
 
+local function PowerDelay()
+	local power = UnitPower("boss1")
+	if power >= 70 and power < 75 then
+		timerInterruptingJoltCD:Start(18, 1)
+		countdownInterruptingJolt:Start(18)
+	end
+end
+
 function mod:AnimaRingTarget(targetname)
 	warnAnimaRing:Show(targetname)
 	if targetname == UnitName("player") then
@@ -112,14 +120,6 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerInterruptingJoltCD:Start(23, jolt+1)
 		end
-	end
-end
-
-local function PowerDelay()
-	local power = UnitPower("boss1")
-	if power >= 70 and power < 75 then
-		timerInterruptingJoltCD:Start(18, 1)
-		countdownInterruptingJolt:Start(18)
 	end
 end
 

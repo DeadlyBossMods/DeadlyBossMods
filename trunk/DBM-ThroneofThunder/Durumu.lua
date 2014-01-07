@@ -10,15 +10,15 @@ mod:SetUsedIcons(8, 7, 6, 5, 4, 3, 1)
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
-	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISS",
+	"SPELL_CAST_START 133765 138467 136154 134587",
+	"SPELL_CAST_SUCCESS 136932 134122 134123 134124 139202 139204",
+	"SPELL_AURA_APPLIED 133767 133597 133598 134626 137727 133798",
+	"SPELL_AURA_APPLIED_DOSE 133767",--needs review
+	"SPELL_AURA_REMOVED 133767 137727 133597",
+	"SPELL_DAMAGE 134044",
+	"SPELL_MISSED 134044",
+	"SPELL_PERIODIC_DAMAGE 134755",
+	"SPELL_PERIODIC_MISS 134755",
 	"CHAT_MSG_MONSTER_EMOTE",
 	"UNIT_DIED"
 )
@@ -211,6 +211,7 @@ function mod:OnCombatEnd()
 	if CVAR then--CVAR was set on pull which means we changed it, change it back
 		SetCVar("particleDensity", CVAR)
 	end
+	self:UnregisterShortTermEvents()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -267,6 +268,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 		if self.Options.SetIconRays then
 			self:SetIcon(args.destName, 6)--Square
+		end
+		if self:IsDifficulty("lfr25") then
+			self:RegisterShortTermEvents(
+				"SPELL_DAMAGE"
+			)
 		end
 		self:Schedule(0.5, warnBeam)
 	elseif args.spellId == 134123 then--Red Beam Precast
@@ -368,6 +374,7 @@ function mod:SPELL_DAMAGE(_, _, _, _, destGUID, destName, _, _, spellId)
 	end
 	if not lfrEngaged or lfrAmberFogRevealed then return end -- To reduce cpu usage normal and heroic.
 	if destName == amberFog and not lfrAmberFogRevealed then -- Lfr Amger fog do not have CLEU, no unit events and no emote.
+		self:UnregisterShortTermEvents()
 		lfrAmberFogRevealed = true
 		specWarnFogRevealed:Show(amberFog)
 	end
