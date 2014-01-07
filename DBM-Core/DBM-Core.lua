@@ -388,6 +388,13 @@ local function sendWhisper(target, msg)
 end
 local BNSendWhisper = sendWhisper
 
+local function stripServerName(cap)
+	cap = cap:sub(2, -2)
+	if DBM.Options.StripServerName then
+		cap = cap:gsub("%-.*$", "")
+	end
+	return cap
+end
 
 --------------
 --  Events  --
@@ -5552,56 +5559,32 @@ do
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
+			local argTable = {...}
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
-			local text
-			local message
-			if #self.combinedtext > 0 then--very ugly code. need tweaking. can cause script lan too long?
-				local count = select("#", ...)
-				-- create temporary arg table.
-				local argTable = {}
-				local pointToProcess = 0
-				if count == 1 then
-					pointToProcess = 1
-					argTable[1] = select(1, ...)
-				else
-					for i = 1, select("#", ...) do
-						local value = select(i, ...)
-						if type(value) == "table" then
-							pointToProcess = i
-						end
-						argTable[i] = value
+			if #self.combinedtext > 0 then
+				--Throttle spam.
+				local combinedText = table.concat(self.combinedtext, "<, >")
+				if self.combinedcount == 1 then
+					combinedText = combinedText.." "..DBM_CORE_GENERIC_WARNING_OTHERS
+				elseif self.combinedcount > 1 then
+					combinedText = combinedText.." "..DBM_CORE_GENERIC_WARNING_OTHERS2:format(self.combinedcount)
+				end
+				--Process
+				for i = 1, #argTable do
+					if type(argTable[i]) == "string" then
+						argTable[i] = combinedText
 					end
 				end
-				--Throttle spam.
-				local displayText = table.concat(self.combinedtext, "<, >")
-				if self.combinedcount == 1 then
-					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS
-				elseif self.combinedcount > 1 then
-					displayText = displayText.." "..DBM_CORE_GENERIC_WARNING_OTHERS2:format(self.combinedcount)
-				end
-				argTable[pointToProcess] = displayText
-				text = ("%s%s%s|r%s"):format(
-					(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
-					colorCode,
-					pformat(self.text, argTable[1], argTable[2], argTable[3], argTable[4], argTable[5]),
-					(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
-				)
-				message = pformat(self.text, argTable[1], argTable[2], argTable[3], argTable[4], argTable[5])
-			else
-				text = ("%s%s%s|r%s"):format(
-					(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
-					colorCode,
-					pformat(self.text, ...),
-					(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
-				)
-				message = pformat(self.text, ...)
 			end
-			message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
-			message = message:gsub(">", "")
-			message = message:gsub("<", "")
-			fireEvent("DBM_Announce", message)
+			local message = pformat(self.text, unpack(argTable))
+			local text = ("%s%s%s|r%s"):format(
+				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
+				colorCode,
+				message,
+				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
+			)
 			self.combinedcount = 0
-			table.wipe(self.combinedtext)
+			self.combinedtext = {}
 			if not cachedColorFunctions[self.color] then
 				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
 				cachedColorFunctions[color] = function(cap)
@@ -5641,40 +5624,23 @@ do
 					PlaySoundFile(DBM.Options.RaidWarningSound)
 				end
 			end
+			fireEvent("DBM_Announce", message)
 		end
 	end
 
-	function announcePrototype:CombinedShow(delay, ...)--very ugly code. need tweaking. can cause script lan too long?
-		local count = select("#", ...)
-		-- support only 5 args.
-		if count > 5 then error("CombinedShow method only support up to 5 args", 2) end
-		-- create temporary arg table.
-		local argTable = {}
-		local pointToCombine = 0
-		if count == 1 then
-			pointToCombine = 1
-			argTable[1] = select(1, ...)
-		else
-			for i = 1, select("#", ...) do
-				local value = select(i, ...)
-				if type(value) == "string" then
-					pointToCombine = i
+	function announcePrototype:CombinedShow(delay, ...)
+		local argTable = {...}
+		for i = 1, #argTable do
+			if type(argTable[i]) == "string" then
+				if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
+					self.combinedtext[#self.combinedtext + 1] = argTable[i]
+				else
+					self.combinedcount = self.combinedcount + 1
 				end
-				argTable[i] = value
 			end
 		end
-		-- process text combine.
-		local text = select(pointToCombine, ...)
-		if #self.combinedtext < 8 then--Throttle spam. We may not need more than 9 targets..
-			self.combinedtext[#self.combinedtext + 1] = text or ""
-		else
-			self.combinedcount = self.combinedcount + 1
-		end
-		-- replace arg table
-		argTable[pointToCombine] = self.combinedtext
-		-- return to show method (up to 5 args)
 		unschedule(self.Show, self.mod, self)
-		schedule(delay or 0.5, self.Show, self.mod, self, argTable[1], argTable[2], argTable[3], argTable[4], argTable[5])
+		schedule(delay or 0.5, self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Schedule(t, ...)
@@ -6151,16 +6117,8 @@ do
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			local msg = pformat(self.text, ...)
-			local stripName = function(cap)
-				cap = cap:sub(2, -2)
-				if DBM.Options.StripServerName then
-					cap = cap:gsub("%-.*$", "")
-				end
-				return cap
-			end
-			msg = msg:gsub(">.-<", stripName)
+			msg = msg:gsub(">.-<", stripServerName)
 			font:SetText(msg)
-			fireEvent("DBM_SpecWarn", msg)
 			if DBM.Options.ShowSWarningsInChat then
 				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontColor[1] * 255, DBM.Options.SpecialWarningFontColor[2] * 255, DBM.Options.SpecialWarningFontColor[3] * 255)
 				self.mod:AddMsg(colorCode.."["..DBM_CORE_MOVE_SPECIAL_WARNING_TEXT.."] "..msg.."|r", nil)
@@ -6181,6 +6139,7 @@ do
 				local soundId = self.option and self.mod.Options[self.option .. "SpecialWarningSound"] or self.flash
 				DBM:PlaySpecialWarningSound(soundId or 1)
 			end
+			fireEvent("DBM_SpecWarn", msg)
 		end
 	end
 
@@ -6519,14 +6478,7 @@ do
 			else
 				msg = pformat(self.text, ...)
 			end
-			local stripName = function(cap)
-				cap = cap:sub(2, -2)
-				if DBM.Options.StripServerName then
-					cap = cap:gsub("%-.*$", "")
-				end
-				return cap
-			end
-			msg = msg:gsub(">.-<", stripName)
+			msg = msg:gsub(">.-<", stripServerName)
 			bar:SetText(msg)
 			fireEvent("DBM_TimerStart", id, msg, timer..DBM_CORE_SEC)
 			tinsert(self.startedTimers, id)
