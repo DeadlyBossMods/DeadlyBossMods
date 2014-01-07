@@ -5234,7 +5234,7 @@ do
 			for i = #activeShields, 1, -1 do
 				if activeShields[i].guid == guid and activeShields[i].mod == self.id and (not name or activeShields[i].name == name) then
 					if DBM.BossHealth:IsShown() then
-						DBM.BossHealth.RemoveBoss(activeShields[i].func)
+						DBM.BossHealth:RemoveBoss(activeShields[i].func)
 					end
 					tremove(activeShields, i)
 				end
@@ -5305,7 +5305,7 @@ do
 		for i = #activeShields, 1, -1 do
 			if activeShields[i].mod == self.id then
 				if DBM.BossHealth:IsShown() then
-					DBM.BossHealth.RemoveBoss(activeShields[i].func)
+					DBM.BossHealth:RemoveBoss(activeShields[i].func)
 				end
 				shieldsByGuid[activeShields[i].guid] = nil
 				tremove(activeShields, i)
