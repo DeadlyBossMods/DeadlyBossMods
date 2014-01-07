@@ -653,6 +653,46 @@ do
 			end
 		end
 	end
+	
+	--Copy & Paste. May be errors
+	--Reverse of above
+	function DBM:UnregisterEvents(...)
+		for i = 1, select("#", ...) do
+			local event = select(i, ...)
+			-- spell events with special care.
+			if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+				unregisterCLEUEvent(self, event)
+			else
+				local eventWithArgs = event
+				-- unit events need special care
+				if event:sub(0, 5) == "UNIT_" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED" then
+					-- unit events are limited to 8 "parameters", as there is no good reason to ever use more than 5 (it's just that the code old code supported 8 (boss1-5, target, focus))
+					local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8
+					event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", event)
+					if not arg1 and event:sub(event:len() - 10) ~= "_UNFILTERED" then -- no arguments given, support for legacy mods
+						eventWithArgs = event .. " boss1 boss2 boss3 boss4 boss5 target focus"
+						event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 = strsplit(" ", eventWithArgs)
+					end
+					if event:sub(event:len() - 10) == "_UNFILTERED" then
+						mainFrame:UnregisterEvent(event:sub(0, -12))
+					else
+						unregisterUnitEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+					end
+				-- spell events with filter
+				else
+					-- normal events
+					mainFrame:UnregisterEvent(event)
+				end
+				--Tthis code is probably wrong, because I have no idea why dbm uses it's own special registered events table in first place, no other mod does this.
+				registeredEvents[eventWithArgs] = nil
+				--tremove(registeredEvents[eventWithArgs], self)--Generates nil error, so commented out. so this probably leaves ghosts in table, oh well
+				if event ~= eventWithArgs then
+					registeredEvents[event] = nil
+					tremove(registeredEvents[event], self)
+				end
+			end
+		end
+	end
 
 	local function unregisterEvent(mod, event)
 		if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
@@ -1001,8 +1041,6 @@ do
 				"LFG_PROPOSAL_FAILED",
 				"LFG_PROPOSAL_SUCCEEDED",
 				"UPDATE_BATTLEFIELD_STATUS",
-				"UPDATE_MOUSEOVER_UNIT",
-				"UNIT_TARGET_UNFILTERED",
 				"CINEMATIC_START",
 				"LFG_COMPLETION_REWARD",
 				"WORLD_STATE_TIMER_START",
@@ -2274,15 +2312,33 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 do
+	local targetEventsRegistered = false
 	local function FixForShittyComputers()
 		timerRequestInProgress = false
 		local _, instanceType, _, _, _, _, _, mapID = GetInstanceInfo()
 		LastInstanceMapID = mapID
-		if instanceType == "none" and not forceloadmapIds[mapID] then return end
+		if instanceType == "none" then
+			if not targetEventsRegistered then
+				DBM:RegisterEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
+				targetEventsRegistered = true
+				if DBM.Options.DebugMode then
+					print("DBM Debug: targetEventsRegistered true")
+				end
+			end
+			if not forceloadmapIds[mapID] then return end
 		-- You entered instance duing worldboss combat. Force end worldboss mod.
-		if instanceType ~= "none" and savedDifficulty == "worldboss" then
-			for i = #inCombat, 1, -1 do
-				DBM:EndCombat(inCombat[i], true)
+		elseif instanceType ~= "none" then
+			if targetEventsRegistered then
+				DBM:UnregisterEvents("UPDATE_MOUSEOVER_UNIT", "UNIT_TARGET_UNFILTERED")
+				targetEventsRegistered = false
+				if DBM.Options.DebugMode then
+					print("DBM Debug: targetEventsRegistered false")
+				end
+			end
+			if savedDifficulty == "worldboss" then
+				for i = #inCombat, 1, -1 do
+					DBM:EndCombat(inCombat[i], true)
+				end
 			end
 		end
 		-- LoadMod
@@ -4303,16 +4359,16 @@ end
 --Toggle is for if we are turning off or on.
 --Custom is for exterior mods to call function without needing global option turned on (such as BG mods option)
 --All also handled by core so both core AND pvp mods aren't trying to hook/hide it. Should all be done HERE
-local unRegistered = false
+local RBEFUnregistered = false
 function DBM:ToggleRaidBossEmoteFrame(toggle, custom)
 	if not DBM.Options.HideBossEmoteFrame and not custom then return end
-	if toggle == 1 and not unRegistered then
-		unRegistered = true
+	if toggle == 1 and not RBEFUnregistered then
+		RBEFUnregistered = true
 		RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_EMOTE")
 		RaidBossEmoteFrame:UnregisterEvent("RAID_BOSS_WHISPER")
 		RaidBossEmoteFrame:UnregisterEvent("CLEAR_BOSS_EMOTES")
-	elseif toggle == 0 and unRegistered then
-		unRegistered = false
+	elseif toggle == 0 and RBEFUnregistered then
+		RBEFUnregistered = false
 		RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_EMOTE")
 		RaidBossEmoteFrame:RegisterEvent("RAID_BOSS_WHISPER")
 		RaidBossEmoteFrame:RegisterEvent("CLEAR_BOSS_EMOTES")
