@@ -11,9 +11,9 @@ mod:SetZone()
 mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START 119488 119622",
+	"SPELL_AURA_APPLIED 119622 119626",
+	"SPELL_AURA_REMOVED 119626 119488",
 	"UNIT_AURA player"
 )
 
