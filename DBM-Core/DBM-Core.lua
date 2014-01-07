@@ -5253,6 +5253,9 @@ do
 
 	function bossModPrototype:ShowDamagedHealthBar(guid, name, damage)
 		self:RemoveDamagedHealthBar(guid, name)
+		if #activeShields == 0 then
+			frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		end
 		local obj = {
 			mod = self.id,
 			name = name,
@@ -5277,6 +5280,9 @@ do
 
 	function bossModPrototype:ShowAbsorbedHealHealthBar(guid, name, heal)
 		self:RemoveAbsorbedHealHealthBar(guid, name)
+		if #activeShields == 0 then
+			frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		end
 		local obj = {
 			mod = self.id,
 			name = name,
