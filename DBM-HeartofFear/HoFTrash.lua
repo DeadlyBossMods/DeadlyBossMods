@@ -8,7 +8,7 @@ mod:SetZone()
 mod.isTrashMod = true
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
+	"SPELL_CAST_START 125877",
 	"UNIT_SPELLCAST_SUCCEEDED target focus"
 )
 
