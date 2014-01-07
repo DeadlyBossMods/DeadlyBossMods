@@ -6,7 +6,7 @@ mod:SetModelID(6923)
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
+	"SPELL_CAST_START 133362 133346 124860 124935",
 	"UNIT_SPELLCAST_INTERRUPTED target focus"
 )
 

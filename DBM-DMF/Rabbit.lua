@@ -6,10 +6,10 @@ mod:SetCreatureID(58336)
 mod:SetModelID(328)
 mod:SetZone()
 
-mod:RegisterEventsInCombat("combat")
+mod:RegisterCombat("combat")
 
-mod:RegisterEvents(
-	"SPELL_AURA_APPLIED"
+mod:RegisterEventsInCombat(
+	"SPELL_AURA_APPLIED 114078"
 )
 
 local warnTeeth				= mod:NewTargetAnnounce(114078, 4)
