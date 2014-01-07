@@ -2011,10 +2011,10 @@ local function CreateOptionsMenu()
 		local color0reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
 		color0reset:SetPoint('TOP', color0, "BOTTOM", 5, -10)
 		color0reset:SetScript("OnClick", function(self)
-				DBM.Options.SpecialWarningFontColor[1] = DBM.DefaultOptions.SpecialWarningFontColor[1]
-				DBM.Options.SpecialWarningFontColor[2] = DBM.DefaultOptions.SpecialWarningFontColor[2]
-				DBM.Options.SpecialWarningFontColor[3] = DBM.DefaultOptions.SpecialWarningFontColor[3]
-				color0:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+				DBM.Options.SpecialWarningFontCol[1] = DBM.DefaultOptions.SpecialWarningFontCol[1]
+				DBM.Options.SpecialWarningFontCol[2] = DBM.DefaultOptions.SpecialWarningFontCol[2]
+				DBM.Options.SpecialWarningFontCol[3] = DBM.DefaultOptions.SpecialWarningFontCol[3]
+				color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
 				DBM:UpdateSpecialWarningOptions()
 				DBM:ShowTestSpecialWarning(nil, 1)
 		end)
@@ -2022,13 +2022,13 @@ local function CreateOptionsMenu()
 			local firstshow = true
 			color0:SetScript("OnShow", function(self)
 					firstshow = true
-					self:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+					self:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
 			end)
 			color0:SetScript("OnColorSelect", function(self)
 					if firstshow then firstshow = false return end
-					DBM.Options.SpecialWarningFontColor[1] = select(1, self:GetColorRGB())
-					DBM.Options.SpecialWarningFontColor[2] = select(2, self:GetColorRGB())
-					DBM.Options.SpecialWarningFontColor[3] = select(3, self:GetColorRGB())
+					DBM.Options.SpecialWarningFontCol[1] = select(1, self:GetColorRGB())
+					DBM.Options.SpecialWarningFontCol[2] = select(2, self:GetColorRGB())
+					DBM.Options.SpecialWarningFontCol[3] = select(3, self:GetColorRGB())
 					color0text:SetTextColor(self:GetColorRGB())
 					DBM:UpdateSpecialWarningOptions()
 					DBM:ShowTestSpecialWarning(nil, 1)
@@ -2327,7 +2327,7 @@ local function CreateOptionsMenu()
 				SpecialWarnSoundDropDown2:SetSelectedValue(DBM.Options.SpecialWarningSound2)
 				SpecialWarnSoundDropDown3:SetSelectedValue(DBM.Options.SpecialWarningSound3)
 				fontSizeSlider:SetValue(DBM.DefaultOptions.SpecialWarningFontSize)
-				color0:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+				color0:SetColorRGB(DBM.Options.SpecialWarningFontCol[1], DBM.Options.SpecialWarningFontCol[2], DBM.Options.SpecialWarningFontCol[3])
 				color1:SetColorRGB(DBM.Options.SpecialWarningFlashCol1[1], DBM.Options.SpecialWarningFlashCol1[2], DBM.Options.SpecialWarningFlashCol1[3])
 				color2:SetColorRGB(DBM.Options.SpecialWarningFlashCol2[1], DBM.Options.SpecialWarningFlashCol2[2], DBM.Options.SpecialWarningFlashCol2[3])
 				color3:SetColorRGB(DBM.Options.SpecialWarningFlashCol3[1], DBM.Options.SpecialWarningFlashCol3[2], DBM.Options.SpecialWarningFlashCol3[3])
