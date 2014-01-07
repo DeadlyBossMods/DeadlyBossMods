@@ -606,6 +606,7 @@ do
 			for i = #registeredEvents[event], 1, -1 do
 				if registeredEvents[event][i] == mod then
 					registeredEvents[event][i] = {}
+					break
 				end
 			end
 			if eventCleared then
@@ -670,7 +671,8 @@ do
 
 	local function findRealEvent(t, val)
 		for i, v in ipairs(t) do
-			if v:find(val) then
+			local event = strsplit(" ", v)
+			if event == val then
 				return v
 			end
 		end
@@ -679,28 +681,35 @@ do
 	function DBM:UnregisterInCombatEvents(srmOnly)
 		for event, mods in pairs(registeredEvents) do
 			if srmOnly then
-				for i = #mods, 1, -1 do
+				local i = 1
+				while mods[i] do
 					if mods[i] == self and event == "SPELL_AURA_REMOVED" then
 						local findEvent = findRealEvent(self.inCombatOnlyEvents, "SPELL_AURA_REMOVED")
 						if findEvent then
 							unregisterCLEUEvent(self, findEvent)
+							break
 						end
 					end
+					i = i +1
+				end
+			elseif (event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_") then
+				local i = 1
+				while mods[i] do
+					if mods[i] == self and event ~= "SPELL_AURA_REMOVED" then
+						local findEvent = findRealEvent(self.inCombatOnlyEvents, event)
+						if findEvent then
+							unregisterCLEUEvent(self, findEvent)
+							break
+						end
+					end
+					i = i +1
 				end
 			else
 				local match = false
 				for i = #mods, 1, -1 do
-					if mods[i] == self then
-						if (event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_") and event ~= "SPELL_AURA_REMOVED" then
-							local findEvent = findRealEvent(self.inCombatOnlyEvents, event)
-							if findEvent then
-								unregisterCLEUEvent(self, findEvent)
-							end
-						end
-						if checkEntry(self.inCombatOnlyEvents, event) and event:sub(0, 6) ~= "SPELL_" and event:sub(0, 6) ~= "RANGE_" then
-							tremove(mods, i)
-							match = true
-						end
+					if mods[i] == self and checkEntry(self.inCombatOnlyEvents, event)  then
+						tremove(mods, i)
+						match = true
 					end
 				end
 				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then -- unit events have their own reference count
@@ -716,26 +725,32 @@ do
 	function DBM:UnregisterShortTermEvents()
 		if self.shortTermRegisterEvents then
 			for event, mods in pairs(registeredEvents) do
-				local match = false
-				for i = #mods, 1, -1 do
-					if mods[i] == self then
-						if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+				if event:sub(0, 6) == "SPELL_" or event:sub(0, 6) == "RANGE_" then
+					local i = 1
+					while mods[i] do
+						if mods[i] == self then
 							local findEvent = findRealEvent(self.shortTermRegisterEvents, event)
 							if findEvent then
 								unregisterCLEUEvent(self, findEvent)
+								break
 							end
 						end
-						if checkEntry(self.shortTermRegisterEvents, event) and event:sub(0, 6) ~= "SPELL_" and event:sub(0, 6) ~= "RANGE_" then
+						i = i +1
+					end
+				else
+					local match = false
+					for i = #mods, 1, -1 do
+						if mods[i] == self and checkEntry(self.shortTermRegisterEvents, event) then
 							tremove(mods, i)
 							match = true
 						end
 					end
-				end
-				if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
-					unregisterEvent(self, event)
-				end
-				if #mods == 0 then
-					registeredEvents[event] = nil
+					if #mods == 0 or (match and event:sub(0, 5) == "UNIT_" and event:sub(0, -10) ~= "_UNFILTERED" and event ~= "UNIT_DIED" and event ~= "UNIT_DESTROYED") then
+						unregisterEvent(self, event)
+					end
+					if #mods == 0 then
+						registeredEvents[event] = nil
+					end
 				end
 			end
 			self.shortTermEventsRegistered = nil
