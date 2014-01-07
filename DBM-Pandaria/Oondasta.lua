@@ -10,11 +10,11 @@ mod:SetMinSyncRevision(10466)
 mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED"
+	"SPELL_CAST_START 137457 137505",
+	"SPELL_CAST_SUCCESS 137508 137511",
+	"SPELL_AURA_APPLIED 137504",
+	"SPELL_AURA_APPLIED_DOSE 137504",
+	"SPELL_AURA_REMOVED 137504"
 )
 
 local warnCrush					= mod:NewStackAnnounce(137504, 2, nil, mod:IsTank() or mod:IsHealer())--Cast every 30 seconds roughly, lasts 1 minute. you need 3 tanks to be able to tank the boss without debuff. 2 tanks CAN do but they will always have 1 stack and take 25% more damage
