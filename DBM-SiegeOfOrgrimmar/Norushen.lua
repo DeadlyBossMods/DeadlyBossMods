@@ -12,10 +12,10 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
-	"SPELL_DAMAGE",
+	"SPELL_CAST_START 145216 144482 144654 144628 144649 144657 146707",
+	"SPELL_AURA_APPLIED 144514 145226 144849 144850 144851",
+	"SPELL_AURA_REMOVED 145226 144849 144850 144851",
+	"SPELL_DAMAGE 145073",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4 boss5",--This boss can change boss ID any time you jump into one of tests, because he gets unregistered as boss1 then registered as boss2 when you leave, etc
 	"CHAT_MSG_ADDON",
