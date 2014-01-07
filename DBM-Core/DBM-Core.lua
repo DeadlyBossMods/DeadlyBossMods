@@ -680,7 +680,7 @@ do
 		for event, mods in pairs(registeredEvents) do
 			if srmOnly then
 				for i = #mods, 1, -1 do
-					if mods[i] == self then
+					if mods[i] == self and event == "SPELL_AURA_REMOVED" then
 						local findEvent = findRealEvent(self.inCombatOnlyEvents, "SPELL_AURA_REMOVED")
 						if findEvent then
 							unregisterCLEUEvent(self, findEvent)
@@ -5625,6 +5625,9 @@ do
 				end
 			end
 			fireEvent("DBM_Announce", message)
+		else
+			self.combinedcount = 0
+			self.combinedtext = {}
 		end
 	end
 
@@ -6117,10 +6120,11 @@ do
 	function specialWarningPrototype:Show(...)
 		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then
 			local msg = pformat(self.text, ...)
-			font:SetText(msg:gsub(">.-<", stripServerName))
+			local text = msg:gsub(">.-<", stripServerName)
+			font:SetText(text)
 			if DBM.Options.ShowSWarningsInChat then
 				local colorCode = ("|cff%.2x%.2x%.2x"):format(DBM.Options.SpecialWarningFontColor[1] * 255, DBM.Options.SpecialWarningFontColor[2] * 255, DBM.Options.SpecialWarningFontColor[3] * 255)
-				self.mod:AddMsg(colorCode.."["..DBM_CORE_MOVE_SPECIAL_WARNING_TEXT.."] "..msg.."|r", nil)
+				self.mod:AddMsg(colorCode.."["..DBM_CORE_MOVE_SPECIAL_WARNING_TEXT.."] "..text.."|r", nil)
 			end
 			if not UnitIsDeadOrGhost("player") and DBM.Options.ShowFlashFrame then
 				if self.flash == 1 then
