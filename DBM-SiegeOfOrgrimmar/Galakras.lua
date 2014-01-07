@@ -19,13 +19,13 @@ mod:RegisterEvents(
 )
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
-	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_PERIODIC_MISSED",
+	"SPELL_CAST_START 147688 146757",
+	"SPELL_CAST_SUCCESS 147824 146769 146849",
+	"SPELL_AURA_APPLIED 147068 147328 146899 147042",
+	"SPELL_AURA_APPLIED_DOSE 147029",
+	"SPELL_AURA_REMOVED 147068 147029",
+	"SPELL_PERIODIC_DAMAGE 147705",
+	"SPELL_PERIODIC_MISSED 147705",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED",
 	"UPDATE_WORLD_STATES",
@@ -127,8 +127,8 @@ function mod:OnCombatStart(delay)
 	end
 	if self.Options.SpecWarn146764move then--specWarnFlameArrow is turned on, since it's off by default, no reasont to register high CPU events unless user turns it on
 		self:RegisterShortTermEvents(
-			"SPELL_DAMAGE",
-			"SPELL_MISSED"
+			"SPELL_DAMAGE 146764",
+			"SPELL_MISSED 146764"
 		)
 	end
 end
