@@ -39,7 +39,7 @@ local QueuedBuff = GetSpellInfo(132639)
 if currentZoneID == 369 or currentZoneID == 1043 then
 	eventsRegistered = true
 	mod:RegisterShortTermEvents(
-		"SPELL_CAST_START",
+		"SPELL_CAST_START 135385 135386",
 		"PLAYER_REGEN_ENABLED",
 		"UNIT_DIED",
 		"UNIT_AURA player"

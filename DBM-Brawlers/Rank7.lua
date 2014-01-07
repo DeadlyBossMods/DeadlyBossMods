@@ -6,8 +6,8 @@ mod:SetModelID(46798)
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START 133212 125212 133465 133017",
+	"SPELL_AURA_APPLIED 133015 133018"
 )
 
 local warnRockets				= mod:NewCastAnnounce(133212, 4)

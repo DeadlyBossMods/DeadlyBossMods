@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
-	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_SUCCESS 102120",
 	"UNIT_AURA player"
 )
 
